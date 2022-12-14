@@ -42,3 +42,15 @@ documentation:
 
 "QL-for-QL":
   - ql/**/*
+  - .github/workflows/ql-for-ql*
+
+# Since these are all shared files that need to be synced, just pick _one_ copy of each.
+"DataFlow Library":
+  - "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl.qll"
+  - "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll"
+  - "java/ql/lib/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
+  - "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll"
+  - "java/ql/lib/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll"
+
+"ATM":
+  - javascript/ql/experimental/adaptivethreatmodeling/**/*

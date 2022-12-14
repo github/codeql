@@ -1896,7 +1896,8 @@ class VarAccess extends Expr, @varaccess {
 class ExtensionReceiverAccess extends VarAccess {
   ExtensionReceiverAccess() {
     exists(Parameter p |
-      this.getVariable() = p and p.getPosition() = 0 and p.getCallable() instanceof ExtensionMethod
+      this.getVariable() = p and
+      p.isExtensionParameter()
     )
   }
 
@@ -2026,6 +2027,7 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
   override CompilationUnit getCompilationUnit() { result = Expr.super.getCompilationUnit() }
 
   /** Gets a printable representation of this expression. */
+  pragma[assume_small_delta]
   override string toString() {
     result = this.getQualifier().toString() + "." + this.getType().toString()
     or
@@ -2367,12 +2369,31 @@ class Argument extends Expr {
    */
   predicate isNthVararg(int arrayindex) {
     not this.isExplicitVarargsArray() and
-    exists(Callable tgt, int varargsParamPos |
+    exists(Callable tgt |
       call.getCallee() = tgt and
-      tgt.getParameter(varargsParamPos).isVarargs() and
-      arrayindex = pos - varargsParamPos and
+      arrayindex = pos - tgt.getVaragsParameterIndex() and
       arrayindex >= 0 and
       arrayindex <= call.getNumArgument() - tgt.getNumberOfParameters()
+    )
+  }
+
+  /**
+   * Gets the parameter position that will receive this argument.
+   *
+   * For all vararg arguments, this is the position of the vararg array parameter.
+   */
+  int getParameterPos() {
+    exists(Callable c | c = call.getCallee() |
+      if c.isVarargs()
+      then
+        if pos < c.getVaragsParameterIndex()
+        then result = pos // Vararg method argument, before the vararg parameter
+        else (
+          if this.isVararg()
+          then result = c.getVaragsParameterIndex() // Part of the implicit vararg array
+          else result = pos - (call.getNumArgument() - c.getNumberOfParameters()) // Vararg method argument, after the vararg parameter (offset could be -1 in the zero-vararg case)
+        )
+      else result = pos // Not a vararg method
     )
   }
 }

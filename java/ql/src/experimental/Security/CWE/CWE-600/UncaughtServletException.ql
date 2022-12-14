@@ -76,5 +76,5 @@ class UncaughtServletExceptionConfiguration extends TaintTracking::Configuration
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, UncaughtServletExceptionConfiguration c
 where c.hasFlowPath(source, sink) and not hasErrorPage()
-select sink.getNode(), source, sink, "$@ flows to here and can throw uncaught exception.",
-  source.getNode(), "User-provided value"
+select sink.getNode(), source, sink, "This value depends on a $@ and can throw uncaught exception.",
+  source.getNode(), "user-provided value"

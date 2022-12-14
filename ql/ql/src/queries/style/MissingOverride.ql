@@ -1,6 +1,6 @@
 /**
  * @name Missing override annotation
- * @description Predicates that overide another predicate should have an `override` annotation.
+ * @description Predicates that override another predicate should have an `override` annotation.
  * @kind problem
  * @problem.severity warning
  * @precision very-high

@@ -3,19 +3,36 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class SequenceExprBase extends Synth::TSequenceExpr, Expr {
-  override string getAPrimaryQlClass() { result = "SequenceExpr" }
+module Generated {
+  class SequenceExpr extends Synth::TSequenceExpr, Expr {
+    override string getAPrimaryQlClass() { result = "SequenceExpr" }
 
-  Expr getImmediateElement(int index) {
-    result =
-      Synth::convertExprFromRaw(Synth::convertSequenceExprToRaw(this)
-            .(Raw::SequenceExpr)
-            .getElement(index))
+    /**
+     * Gets the `index`th element of this sequence expression (0-based).
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateElement(int index) {
+      result =
+        Synth::convertExprFromRaw(Synth::convertSequenceExprToRaw(this)
+              .(Raw::SequenceExpr)
+              .getElement(index))
+    }
+
+    /**
+     * Gets the `index`th element of this sequence expression (0-based).
+     */
+    final Expr getElement(int index) { result = getImmediateElement(index).resolve() }
+
+    /**
+     * Gets any of the elements of this sequence expression.
+     */
+    final Expr getAnElement() { result = getElement(_) }
+
+    /**
+     * Gets the number of elements of this sequence expression.
+     */
+    final int getNumberOfElements() { result = count(int i | exists(getElement(i))) }
   }
-
-  final Expr getElement(int index) { result = getImmediateElement(index).resolve() }
-
-  final Expr getAnElement() { result = getElement(_) }
-
-  final int getNumberOfElements() { result = count(getAnElement()) }
 }

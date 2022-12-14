@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Frameworks
+private import semmle.python.security.internal.EncryptionKeySizes
 
 /**
  * A data-flow node that executes an operating system command,
@@ -311,7 +312,7 @@ module CodeExecution {
  * Often, it is worthy of an alert if an SQL statement is constructed such that
  * executing it would be a security risk.
  *
- * If it is important that the SQL statement is indeed executed, then use `SQLExecution`.
+ * If it is important that the SQL statement is indeed executed, then use `SqlExecution`.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SqlConstruction::Range` instead.
@@ -329,7 +330,7 @@ module SqlConstruction {
    * Often, it is worthy of an alert if an SQL statement is constructed such that
    * executing it would be a security risk.
    *
-   * If it is important that the SQL statement is indeed executed, then use `SQLExecution`.
+   * If it is important that the SQL statement is indeed executed, then use `SqlExecution`.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `SqlConstruction` instead.
@@ -344,7 +345,7 @@ module SqlConstruction {
  * A data-flow node that executes SQL statements.
  *
  * If the context of interest is such that merely constructing an SQL statement
- * would be valuabe to report, then consider using `SqlConstruction`.
+ * would be valuable to report, then consider using `SqlConstruction`.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SqlExecution::Range` instead.
@@ -360,7 +361,7 @@ module SqlExecution {
    * A data-flow node that executes SQL statements.
    *
    * If the context of interest is such that merely constructing an SQL statement
-   * would be valuabe to report, then consider using `SqlConstruction`.
+   * would be valuable to report, then consider using `SqlConstruction`.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `SqlExecution` instead.
@@ -465,7 +466,7 @@ module XML {
    * A data-flow node that executes a xpath expression.
    *
    * If the context of interest is such that merely constructing an XPath expression
-   * would be valuabe to report, then consider using `XPathConstruction`.
+   * would be valuable to report, then consider using `XPathConstruction`.
    *
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `XPathExecution::Range` instead.
@@ -487,7 +488,7 @@ module XML {
      * A data-flow node that executes a XPath expression.
      *
      * If the context of interest is such that merely constructing an XPath expression
-     * would be valuabe to report, then consider using `XPathConstruction`.
+     * would be valuable to report, then consider using `XPathConstruction`.
      *
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `XPathExecution` instead.
@@ -565,7 +566,7 @@ module XML {
 }
 
 /** Provides classes for modeling LDAP-related APIs. */
-module LDAP {
+module Ldap {
   /**
    * A data-flow node that executes an LDAP query.
    *
@@ -597,6 +598,9 @@ module LDAP {
     }
   }
 }
+
+/** DEPRECATED: Alias for Ldap */
+deprecated module LDAP = Ldap;
 
 /**
  * A data-flow node that escapes meta-characters, which could be used to prevent
@@ -706,7 +710,7 @@ class LdapFilterEscaping extends Escaping {
 }
 
 /** Provides classes for modeling HTTP-related APIs. */
-module HTTP {
+module Http {
   /** Gets an HTTP verb, in upper case */
   string httpVerb() { result in ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"] }
 
@@ -917,7 +921,7 @@ module HTTP {
        * Extend this class to model new APIs. If you want to refine existing API models,
        * extend `HttpResponse` instead.
        */
-      abstract class Range extends HTTP::Server::HttpResponse::Range {
+      abstract class Range extends Http::Server::HttpResponse::Range {
         /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
         abstract DataFlow::Node getRedirectLocation();
       }
@@ -1046,72 +1050,13 @@ module HTTP {
     }
   }
 
-  /** Provides classes for modeling HTTP clients. */
-  module Client {
-    /**
-     * A data-flow node that makes an outgoing HTTP request.
-     *
-     * Extend this class to refine existing API models. If you want to model new APIs,
-     * extend `HTTP::Client::Request::Range` instead.
-     */
-    class Request extends DataFlow::Node instanceof Request::Range {
-      /**
-       * Gets a data-flow node that contributes to the URL of the request.
-       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-       */
-      DataFlow::Node getAUrlPart() { result = super.getAUrlPart() }
-
-      /** Gets a string that identifies the framework used for this request. */
-      string getFramework() { result = super.getFramework() }
-
-      /**
-       * Holds if this request is made using a mode that disables SSL/TLS
-       * certificate validation, where `disablingNode` represents the point at
-       * which the validation was disabled, and `argumentOrigin` represents the origin
-       * of the argument that disabled the validation (which could be the same node as
-       * `disablingNode`).
-       */
-      predicate disablesCertificateValidation(
-        DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
-      ) {
-        super.disablesCertificateValidation(disablingNode, argumentOrigin)
-      }
-    }
-
-    /** Provides a class for modeling new HTTP requests. */
-    module Request {
-      /**
-       * A data-flow node that makes an outgoing HTTP request.
-       *
-       * Extend this class to model new APIs. If you want to refine existing API models,
-       * extend `HTTP::Client::Request` instead.
-       */
-      abstract class Range extends DataFlow::Node {
-        /**
-         * Gets a data-flow node that contributes to the URL of the request.
-         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-         */
-        abstract DataFlow::Node getAUrlPart();
-
-        /** Gets a string that identifies the framework used for this request. */
-        abstract string getFramework();
-
-        /**
-         * Holds if this request is made using a mode that disables SSL/TLS
-         * certificate validation, where `disablingNode` represents the point at
-         * which the validation was disabled, and `argumentOrigin` represents the origin
-         * of the argument that disabled the validation (which could be the same node as
-         * `disablingNode`).
-         */
-        abstract predicate disablesCertificateValidation(
-          DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
-        );
-      }
-    }
-    // TODO: investigate whether we should treat responses to client requests as
-    // remote-flow-sources in general.
-  }
+  import semmle.python.internal.ConceptsShared::Http::Client as Client
+  // TODO: investigate whether we should treat responses to client requests as
+  // remote-flow-sources in general.
 }
+
+/** DEPRECATED: Alias for Http */
+deprecated module HTTP = Http;
 
 /**
  * Provides models for cryptographic things.
@@ -1197,21 +1142,21 @@ module Cryptography {
       abstract class RsaRange extends Range {
         final override string getName() { result = "RSA" }
 
-        final override int minimumSecureKeySize() { result = 2048 }
+        final override int minimumSecureKeySize() { result = minSecureKeySizeRsa() }
       }
 
       /** A data-flow node that generates a new DSA key-pair. */
       abstract class DsaRange extends Range {
         final override string getName() { result = "DSA" }
 
-        final override int minimumSecureKeySize() { result = 2048 }
+        final override int minimumSecureKeySize() { result = minSecureKeySizeDsa() }
       }
 
       /** A data-flow node that generates a new ECC key-pair. */
       abstract class EccRange extends Range {
         final override string getName() { result = "ECC" }
 
-        final override int minimumSecureKeySize() { result = 224 }
+        final override int minimumSecureKeySize() { result = minSecureKeySizeEcc() }
       }
     }
   }

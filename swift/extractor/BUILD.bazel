@@ -1,15 +1,37 @@
 load("//swift:rules.bzl", "swift_cc_binary")
+load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")
+load("//misc/bazel:pkg_runfiles.bzl", "pkg_runfiles")
 
 swift_cc_binary(
-    name = "extractor",
+    name = "extractor.real",
     srcs = glob([
         "*.h",
         "*.cpp",
     ]),
-    visibility = ["//swift:__pkg__"],
     deps = [
         "//swift/extractor/infra",
-        "//swift/extractor/visitors",
-        "//swift/tools/prebuilt:swift-llvm-support",
+        "//swift/extractor/invocation",
+        "//swift/extractor/remapping",
+        "//swift/extractor/translators",
+        "//swift/third_party/swift-llvm-support",
     ],
+)
+
+generate_cmake(
+    name = "cmake",
+    targets = [":extractor.real"],
+    visibility = ["//visibility:public"],
+)
+
+sh_binary(
+    name = "extractor",
+    srcs = ["extractor.sh"],
+    data = [":extractor.real"],
+)
+
+pkg_runfiles(
+    name = "pkg",
+    srcs = [":extractor"],
+    excludes = ["extractor.sh"],  # script gets copied as "extractor", no need for the original .sh file
+    visibility = ["//swift:__pkg__"],
 )

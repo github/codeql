@@ -489,6 +489,80 @@ public class DataFlow
 
         Inner(_ => { }, b, "taint source");
     }
+
+    public class SimpleClass
+    {
+        public string field = "";
+    }
+
+    private void TaintField(SimpleClass sc)
+    {
+        sc.field = "taint source";
+    }
+
+    public void M6(bool b1, bool b2, bool b3)
+    {
+        var x1 = new SimpleClass();
+        var x2 = new SimpleClass();
+        TaintField(b1 ? x1 : x2);
+        Check(x1.field);
+        Check(x2.field);
+
+        var y1 = new SimpleClass();
+        var y2 = new SimpleClass();
+        var y3 = new SimpleClass();
+        TaintField(b2 ? (b3 ? y1 : y2) : y3);
+        Check(y1.field);
+        Check(y2.field);
+        Check(y3.field);
+    }
+
+    private class SubSimpleClass : SimpleClass { }
+
+    public void M7()
+    {
+        var x = new SubSimpleClass();
+        TaintField((SimpleClass)x);
+        Check(x.field);
+    }
+
+    public void M8(SimpleClass x)
+    {
+        var y = new SimpleClass();
+        TaintField(x ?? y);
+        Check(x.field);
+        Check(y.field);
+    }
+
+    public void M9(string choice)
+    {
+        var x = new SimpleClass();
+        var y = new SimpleClass();
+        var z = new SimpleClass();
+        TaintField(choice switch
+        {
+            "x" => x,
+            "y" => y,
+            _ => z
+        });
+        Check(x.field);
+        Check(y.field);
+        Check(z.field);
+    }
+
+    public void M10(SimpleClass? sc)
+    {
+        TaintField(sc!);
+        Check(sc.field);
+    }
+
+    public void M11()
+    {
+        SimpleClass y = null;
+        var x = new SimpleClass();
+        TaintField(y = x);
+        Check(x.field);
+    }
 }
 
 static class IEnumerableExtensions

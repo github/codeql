@@ -42,7 +42,7 @@ class FullServerSideRequestForgeryConfiguration extends TaintTracking::Configura
 /**
  * Holds if all URL parts of `request` is fully user controlled.
  */
-predicate fullyControlledRequest(HTTP::Client::Request request) {
+predicate fullyControlledRequest(Http::Client::Request request) {
   exists(FullServerSideRequestForgeryConfiguration fullConfig |
     forall(DataFlow::Node urlPart | urlPart = request.getAUrlPart() |
       fullConfig.hasFlow(_, urlPart)

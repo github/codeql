@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.UnarySyntaxSugarType
 
-class VariadicSequenceTypeBase extends Synth::TVariadicSequenceType, UnarySyntaxSugarType {
-  override string getAPrimaryQlClass() { result = "VariadicSequenceType" }
+module Generated {
+  class VariadicSequenceType extends Synth::TVariadicSequenceType, UnarySyntaxSugarType {
+    override string getAPrimaryQlClass() { result = "VariadicSequenceType" }
+  }
 }

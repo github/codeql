@@ -12,15 +12,13 @@ module Fastify {
   /**
    * An expression that creates a new Fastify server.
    */
-  abstract class ServerDefinition extends HTTP::Servers::StandardServerDefinition { }
+  abstract class ServerDefinition extends Http::Servers::StandardServerDefinition { }
 
   /**
    * A standard way to create a Fastify server.
    */
   class StandardServerDefinition extends ServerDefinition {
-    StandardServerDefinition() {
-      this = DataFlow::moduleImport("fastify").getAnInvocation().asExpr()
-    }
+    StandardServerDefinition() { this = DataFlow::moduleImport("fastify").getAnInvocation() }
   }
 
   /** Gets a data flow node referring to a fastify server. */
@@ -78,7 +76,7 @@ module Fastify {
    * but support for other kinds of route handlers can be added by implementing
    * additional subclasses of this class.
    */
-  abstract class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
+  abstract class RouteHandler extends Http::Servers::StandardRouteHandler, DataFlow::ValueNode {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
@@ -105,7 +103,7 @@ module Fastify {
    * A Fastify reply source, that is, the `reply` parameter of a
    * route handler.
    */
-  private class ReplySource extends HTTP::Servers::ResponseSource {
+  private class ReplySource extends Http::Servers::ResponseSource {
     RouteHandler rh;
 
     ReplySource() { this = rh.getReplyParameter() }
@@ -120,7 +118,7 @@ module Fastify {
    * A Fastify request source, that is, the request parameter of a
    * route handler.
    */
-  private class RequestSource extends HTTP::Servers::RequestSource {
+  private class RequestSource extends Http::Servers::RequestSource {
     RouteHandler rh;
 
     RequestSource() { this = rh.getRequestParameter() }
@@ -134,12 +132,12 @@ module Fastify {
   /**
    * A call to a Fastify method that sets up a route.
    */
-  class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends DataFlow::MethodCallNode, Http::Servers::StandardRouteSetup {
     ServerDefinition server;
     string methodName;
 
     RouteSetup() {
-      this = server(server.flow()).getAMethodCall(methodName).asExpr() and
+      this = server(server).getAMethodCall(methodName) and
       methodName = ["route", "get", "head", "post", "put", "delete", "options", "patch"]
     }
 
@@ -149,31 +147,33 @@ module Fastify {
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = this.getARouteHandlerExpr().getALocalSource()
+      result = this.getARouteHandlerNode().getALocalSource()
       or
       exists(DataFlow::TypeBackTracker t2 | result = this.getARouteHandler(t2).backtrack(t2, t))
     }
 
-    override Expr getServer() { result = server }
+    override DataFlow::SourceNode getServer() { result = server }
 
-    /** Gets an argument that represents a route handler being registered. */
-    DataFlow::Node getARouteHandlerExpr() {
+    /**
+     * DEPRECATED: Use `getARouteHandlerNode` instead.
+     * Gets an argument that represents a route handler being registered.
+     */
+    deprecated DataFlow::Node getARouteHandlerExpr() { result = this.getARouteHandlerNode() }
+
+    /**  Gets an argument that represents a route handler being registered. */
+    DataFlow::Node getARouteHandlerNode() {
       if methodName = "route"
-      then
-        result = this.flow().(DataFlow::MethodCallNode).getOptionArgument(0, getNthHandlerName(_))
-      else result = this.getLastArgument().flow()
+      then result = this.getOptionArgument(0, getNthHandlerName(_))
+      else result = this.getLastArgument()
     }
   }
 
-  private class ShorthandRoutingTreeSetup extends Routing::RouteSetup::MethodCall {
-    ShorthandRoutingTreeSetup() {
-      this.asExpr() instanceof RouteSetup and
-      not this.getMethodName() = "route"
-    }
+  private class ShorthandRoutingTreeSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup {
+    ShorthandRoutingTreeSetup() { not this.getMethodName() = "route" }
 
     override string getRelativePath() { result = this.getArgument(0).getStringValue() }
 
-    override HTTP::RequestMethodName getHttpMethod() { result = this.getMethodName().toUpperCase() }
+    override Http::RequestMethodName getHttpMethod() { result = this.getMethodName().toUpperCase() }
   }
 
   /** Gets the name of the `n`th handler function that can be installed a route setup, in order of execution. */
@@ -183,15 +183,12 @@ module Fastify {
           .splitAt(",", n)
   }
 
-  private class FullRoutingTreeSetup extends Routing::RouteSetup::MethodCall {
-    FullRoutingTreeSetup() {
-      this.asExpr() instanceof RouteSetup and
-      this.getMethodName() = "route"
-    }
+  private class FullRoutingTreeSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup {
+    FullRoutingTreeSetup() { this.getMethodName() = "route" }
 
     override string getRelativePath() { result = this.getOptionArgument(0, "url").getStringValue() }
 
-    override HTTP::RequestMethodName getHttpMethod() {
+    override Http::RequestMethodName getHttpMethod() {
       result = this.getOptionArgument(0, "method").getStringValue().toUpperCase()
     }
 
@@ -223,7 +220,7 @@ module Fastify {
       result = this.pluginBody(DataFlow::TypeBackTracker::end())
     }
 
-    override HTTP::RequestMethodName getHttpMethod() {
+    override Http::RequestMethodName getHttpMethod() {
       result = this.getOptionArgument(1, "method").getStringValue().toUpperCase()
     }
 
@@ -249,7 +246,7 @@ module Fastify {
   /**
    * An access to a user-controlled Fastify request input.
    */
-  private class RequestInputAccess extends HTTP::RequestInputAccess {
+  private class RequestInputAccess extends Http::RequestInputAccess {
     RouteHandler rh;
     string kind;
 
@@ -287,13 +284,7 @@ module Fastify {
    */
   private predicate usesFastifyPlugin(RouteHandler rh, DataFlow::SourceNode plugin) {
     exists(RouteSetup setup |
-      plugin
-          .flowsTo(setup
-                .getServer()
-                .flow()
-                .(DataFlow::SourceNode)
-                .getAMethodCall("register")
-                .getArgument(0)) and // only matches the plugins that apply to all routes
+      plugin.flowsTo(setup.getServer().getAMethodCall("register").getArgument(0)) and // only matches the plugins that apply to all routes
       rh = setup.getARouteHandler()
     )
   }
@@ -303,13 +294,7 @@ module Fastify {
    */
   private predicate usesMiddleware(RouteHandler rh, DataFlow::SourceNode middleware) {
     exists(RouteSetup setup |
-      middleware
-          .flowsTo(setup
-                .getServer()
-                .flow()
-                .(DataFlow::SourceNode)
-                .getAMethodCall("use")
-                .getArgument(0)) and // only matches the middlewares that apply to all routes
+      middleware.flowsTo(setup.getServer().getAMethodCall("use").getArgument(0)) and // only matches the middlewares that apply to all routes
       rh = setup.getARouteHandler()
     )
   }
@@ -317,7 +302,7 @@ module Fastify {
   /**
    * An access to a header on a Fastify request.
    */
-  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+  private class RequestHeaderAccess extends Http::RequestHeaderAccess {
     RouteHandler rh;
 
     RequestHeaderAccess() {
@@ -336,13 +321,13 @@ module Fastify {
   /**
    * An argument passed to the `send` or `end` method of an HTTP response object.
    */
-  private class ResponseSendArgument extends HTTP::ResponseSendArgument {
+  private class ResponseSendArgument extends Http::ResponseSendArgument {
     RouteHandler rh;
 
     ResponseSendArgument() {
-      this = rh.getAResponseSource().ref().getAMethodCall("send").getArgument(0).asExpr()
+      this = rh.getAResponseSource().ref().getAMethodCall("send").getArgument(0)
       or
-      this = rh.(DataFlow::FunctionNode).getAReturn().asExpr()
+      this = rh.(DataFlow::FunctionNode).getAReturn()
     }
 
     override RouteHandler getRouteHandler() { result = rh }
@@ -351,14 +336,12 @@ module Fastify {
   /**
    * An invocation of the `redirect` method of an HTTP response object.
    */
-  private class RedirectInvocation extends HTTP::RedirectInvocation, MethodCallExpr {
+  private class RedirectInvocation extends Http::RedirectInvocation, DataFlow::MethodCallNode {
     RouteHandler rh;
 
-    RedirectInvocation() {
-      this = rh.getAResponseSource().ref().getAMethodCall("redirect").asExpr()
-    }
+    RedirectInvocation() { this = rh.getAResponseSource().ref().getAMethodCall("redirect") }
 
-    override Expr getUrlArgument() { result = this.getLastArgument() }
+    override DataFlow::Node getUrlArgument() { result = this.getLastArgument() }
 
     override RouteHandler getRouteHandler() { result = rh }
   }
@@ -366,7 +349,7 @@ module Fastify {
   /**
    * An invocation that sets a single header of the HTTP response.
    */
-  private class SetOneHeader extends HTTP::Servers::StandardHeaderDefinition,
+  private class SetOneHeader extends Http::Servers::StandardHeaderDefinition,
     DataFlow::MethodCallNode {
     RouteHandler rh;
 
@@ -381,7 +364,7 @@ module Fastify {
   /**
    * An invocation that sets any number of headers of the HTTP response.
    */
-  class SetMultipleHeaders extends HTTP::ExplicitHeaderDefinition, DataFlow::MethodCallNode {
+  class SetMultipleHeaders extends Http::ExplicitHeaderDefinition, DataFlow::MethodCallNode {
     RouteHandler rh;
 
     SetMultipleHeaders() {
@@ -394,18 +377,18 @@ module Fastify {
      */
     private DataFlow::SourceNode getAHeaderSource() { result.flowsTo(this.getArgument(0)) }
 
-    override predicate definesExplicitly(string headerName, Expr headerValue) {
+    override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
       exists(string header |
-        this.getAHeaderSource().hasPropertyWrite(header, headerValue.flow()) and
+        this.getAHeaderSource().hasPropertyWrite(header, headerValue) and
         headerName = header.toLowerCase()
       )
     }
 
     override RouteHandler getRouteHandler() { result = rh }
 
-    override Expr getNameExpr() {
+    override DataFlow::Node getNameNode() {
       exists(DataFlow::PropWrite write | this.getAHeaderSource().getAPropertyWrite() = write |
-        result = write.getPropertyNameExpr()
+        result = write.getPropertyNameExpr().flow()
       )
     }
   }
@@ -425,7 +408,7 @@ module Fastify {
     override DataFlow::Node getTemplateParamsNode() { result = this.getArgument(1) }
   }
 
-  private class FastifyCookieMiddleware extends HTTP::CookieMiddlewareInstance {
+  private class FastifyCookieMiddleware extends Http::CookieMiddlewareInstance {
     FastifyCookieMiddleware() {
       this = DataFlow::moduleImport(["fastify-cookie", "fastify-session", "fastify-secure-session"])
     }

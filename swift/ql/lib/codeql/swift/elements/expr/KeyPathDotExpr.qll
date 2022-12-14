@@ -1,5 +1,5 @@
 private import codeql.swift.generated.expr.KeyPathDotExpr
 
-class KeyPathDotExpr extends KeyPathDotExprBase {
+class KeyPathDotExpr extends Generated::KeyPathDotExpr {
   override string toString() { result = "\\...." }
 }

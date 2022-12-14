@@ -8,7 +8,7 @@ class XmlTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasXmlResult" and
-    exists(XMLAttribute a |
+    exists(XmlAttribute a |
       a.getLocation() = location and
       element = a.toString() and
       value = ""

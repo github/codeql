@@ -1,5 +1,5 @@
 private import codeql.swift.generated.stmt.FailStmt
 
-class FailStmt extends FailStmtBase {
+class FailStmt extends Generated::FailStmt {
   override string toString() { result = "fail" }
 }

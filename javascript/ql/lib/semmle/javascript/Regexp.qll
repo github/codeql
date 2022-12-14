@@ -176,6 +176,13 @@ class RegExpTerm extends Locatable, @regexpterm {
    * Gets a string that is matched by this regular-expression term.
    */
   string getAMatchedString() { result = this.getConstantValue() }
+
+  /** Holds if this term has the specified location. */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 /**
@@ -1005,7 +1012,10 @@ module RegExpPatterns {
    * Gets a pattern that matches common top-level domain names in lower case.
    * DEPRECATED: use `getACommonTld` instead
    */
-  deprecated predicate commonTLD = getACommonTld/0;
+  deprecated predicate commonTld = getACommonTld/0;
+
+  /** DEPRECATED: Alias for commonTld */
+  deprecated predicate commonTLD = commonTld/0;
 }
 
 /**

@@ -32,4 +32,4 @@ where
     not exptmp.getEnclosingStmt() = expr.getEnclosingStmt()
   ) and
   globalValueNumber(fc.getArgument(0)) = globalValueNumber(exprarr.getArrayBase())
-select expr, "potential unsafe or redundant assignment."
+select expr, "Potential unsafe or redundant assignment."

@@ -4,4 +4,6 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.TypeDecl
 
-class GenericTypeDeclBase extends Synth::TGenericTypeDecl, GenericContext, TypeDecl { }
+module Generated {
+  class GenericTypeDecl extends Synth::TGenericTypeDecl, GenericContext, TypeDecl { }
+}

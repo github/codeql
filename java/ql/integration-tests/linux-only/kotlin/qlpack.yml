@@ -1,2 +1,2 @@
-libraryPathDependencies:
-  - codeql-java
+dependencies:
+  codeql/java-all: '*'

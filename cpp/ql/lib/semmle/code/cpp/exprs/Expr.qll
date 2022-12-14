@@ -451,7 +451,7 @@ class Expr extends StmtParent, @expr {
     // For performance, we avoid a full transitive closure over `getConversion`.
     // Since there can be several implicit conversions before and after an
     // explicit conversion, use `getImplicitlyConverted` to step over them
-    // cheaply. Then, if there is an explicit conversion following the implict
+    // cheaply. Then, if there is an explicit conversion following the implicit
     // conversion sequence, recurse to handle multiple explicit conversions.
     if this.getImplicitlyConverted().hasExplicitConversion()
     then result = this.getImplicitlyConverted().getConversion().getExplicitlyConverted()

@@ -12,10 +12,10 @@ package com.github.codeql
  * `shortName` is a Java primitive name (e.g. "int"), a class short name with Java-style type arguments ("InnerClass<E>" or
  * "OuterClass<ConcreteArgument>" or "OtherClass<? extends Bound>") or an array ("componentShortName[]").
  */
-data class TypeResultGeneric<SignatureType,out LabelType>(val id: Label<out LabelType>, val signature: SignatureType, val shortName: String) {
-    fun <U> cast(): TypeResult<U> {
+data class TypeResultGeneric<SignatureType,out LabelType: AnyDbType>(val id: Label<out LabelType>, val signature: SignatureType?, val shortName: String) {
+    fun <U: AnyDbType> cast(): TypeResultGeneric<SignatureType,U> {
         @Suppress("UNCHECKED_CAST")
-        return this as TypeResult<U>
+        return this as TypeResultGeneric<SignatureType,U>
     }
 }
 data class TypeResultsGeneric<SignatureType>(val javaResult: TypeResultGeneric<SignatureType,DbType>, val kotlinResult: TypeResultGeneric<SignatureType,DbKt_type>)
@@ -25,6 +25,6 @@ typealias TypeResultWithoutSignature<T> = TypeResultGeneric<Unit,T>
 typealias TypeResults = TypeResultsGeneric<String>
 typealias TypeResultsWithoutSignatures = TypeResultsGeneric<Unit>
 
-fun <T> TypeResult<T>.forgetSignature(): TypeResultWithoutSignature<T> {
+fun <T: AnyDbType> TypeResult<T>.forgetSignature(): TypeResultWithoutSignature<T> {
     return TypeResultWithoutSignature(this.id, Unit, this.shortName)
 }

@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.ArchetypeType
 
-class PrimaryArchetypeTypeBase extends Synth::TPrimaryArchetypeType, ArchetypeType {
-  override string getAPrimaryQlClass() { result = "PrimaryArchetypeType" }
+module Generated {
+  class PrimaryArchetypeType extends Synth::TPrimaryArchetypeType, ArchetypeType {
+    override string getAPrimaryQlClass() { result = "PrimaryArchetypeType" }
+  }
 }

@@ -10,6 +10,7 @@
  */
 
 import java
+import semmle.code.java.frameworks.kotlin.Serialization
 
 int eval(Expr e) { result = e.(CompileTimeConstantExpr).getIntValue() }
 
@@ -59,5 +60,7 @@ where
   // Exclude explicit zero multiplication.
   not e.(MulExpr).getAnOperand().(IntegerLiteral).getIntValue() = 0 and
   // Exclude expressions that appear to be disabled deliberately (e.g. `false && ...`).
-  not e.(AndLogicalExpr).getAnOperand().(BooleanLiteral).getBooleanValue() = false
+  not e.(AndLogicalExpr).getAnOperand().(BooleanLiteral).getBooleanValue() = false and
+  // Exclude expressions that are in serialization constructors, which are auto-generated.
+  not e.getEnclosingCallable() instanceof SerializationConstructor
 select e, "Expression always evaluates to the same value."

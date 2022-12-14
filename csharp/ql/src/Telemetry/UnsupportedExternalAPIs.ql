@@ -8,14 +8,14 @@
 
 private import csharp
 private import semmle.code.csharp.dispatch.Dispatch
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import ExternalApi
 
-private predicate getRelevantUsages(ExternalApi api, int usages) {
-  not api.isUninteresting() and
+private predicate relevant(ExternalApi api) {
   not api.isSupported() and
-  usages = strictcount(DispatchCall c | c = api.getACall())
+  not api instanceof FlowSummaryImpl::Public::NeutralCallable
 }
 
-from ExternalApi api, int usages
-where Results<getRelevantUsages/2>::restrict(api, usages)
-select api.getInfo() as info, usages order by usages desc
+from string info, int usages
+where Results<relevant/1>::restrict(info, usages)
+select info, usages order by usages desc

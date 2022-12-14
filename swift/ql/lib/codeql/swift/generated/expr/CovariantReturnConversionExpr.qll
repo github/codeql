@@ -3,7 +3,9 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class CovariantReturnConversionExprBase extends Synth::TCovariantReturnConversionExpr,
-  ImplicitConversionExpr {
-  override string getAPrimaryQlClass() { result = "CovariantReturnConversionExpr" }
+module Generated {
+  class CovariantReturnConversionExpr extends Synth::TCovariantReturnConversionExpr,
+    ImplicitConversionExpr {
+    override string getAPrimaryQlClass() { result = "CovariantReturnConversionExpr" }
+  }
 }

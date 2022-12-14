@@ -1,6 +1,6 @@
 private import codeql.swift.generated.stmt.CaseStmt
 
-class CaseStmt extends CaseStmtBase {
+class CaseStmt extends Generated::CaseStmt {
   CaseLabelItem getFirstLabel() { result = this.getLabel(0) }
 
   CaseLabelItem getLastLabel() {

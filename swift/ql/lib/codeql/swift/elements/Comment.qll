@@ -1,6 +1,6 @@
 private import codeql.swift.generated.Comment
 
-class Comment extends CommentBase {
+class Comment extends Generated::Comment {
   /** toString */
   override string toString() { result = this.getText() }
 }

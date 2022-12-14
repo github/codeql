@@ -28,7 +28,7 @@ Editing settings
 Choosing a version of the CodeQL CLI
 --------------------------------------
 
-The CodeQL extension uses the CodeQL CLI to run commands. If you already have the CLI installed and added to your ``PATH``, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from LGTM.com. Otherwise, the extension automatically manages access to the executable of the CLI for you. For more information about creating databases, see ":ref:`Creating CodeQL databases <creating-codeql-databases>`" in the CLI help.
+The CodeQL extension uses the CodeQL CLI to run commands. If you already have the CLI installed and added to your ``PATH``, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from GitHub.com. Otherwise, the extension automatically manages access to the executable of the CLI for you. For more information about creating databases, see ":ref:`Creating CodeQL databases <creating-codeql-databases>`" in the CLI help.
 
 To override the default behavior and use a different CLI, you can specify the CodeQL CLI **Executable Path**.
 
@@ -46,6 +46,12 @@ The query history **Format** setting controls how the extension lists queries in
 - ``%t`` is the time the query was run
 
 To override the default label, you can specify a different format for the query history items.
+
+
+Changing the retention period for query history items
+-----------------------------------------------------
+
+By default, items in the query history view are retained for 30 days. You can set a different time to live (TTL) by changing the "Code QL > Query History: TTL" setting. To retain items indefinitely, set the value to 0.
 
 .. _configuring-settings-for-running-queries:
 

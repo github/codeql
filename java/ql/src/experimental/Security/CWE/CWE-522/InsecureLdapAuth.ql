@@ -126,7 +126,7 @@ predicate isBasicAuthEnv(MethodAccess ma) {
 /**
  * Holds if `ma` sets `java.naming.security.protocol` (also known as `Context.SECURITY_PROTOCOL`) to `ssl` in some `Hashtable`.
  */
-predicate isSSLEnv(MethodAccess ma) {
+predicate isSslEnv(MethodAccess ma) {
   hasFieldValueEnv(ma, "java.naming.security.protocol", "ssl") or
   hasFieldNameEnv(ma, "SECURITY_PROTOCOL", "ssl")
 }
@@ -183,13 +183,13 @@ class BasicAuthFlowConfig extends DataFlow::Configuration {
 /**
  * A taint-tracking configuration for `ssl` configuration in LDAP authentication.
  */
-class SSLFlowConfig extends DataFlow::Configuration {
-  SSLFlowConfig() { this = "InsecureLdapAuth:SSLFlowConfig" }
+class SslFlowConfig extends DataFlow::Configuration {
+  SslFlowConfig() { this = "InsecureLdapAuth:SSLFlowConfig" }
 
   /** Source of `ssl` configuration. */
   override predicate isSource(DataFlow::Node src) {
     exists(MethodAccess ma |
-      isSSLEnv(ma) and ma.getQualifier() = src.(PostUpdateNode).getPreUpdateNode().asExpr()
+      isSslEnv(ma) and ma.getQualifier() = src.(PostUpdateNode).getPreUpdateNode().asExpr()
     )
   }
 
@@ -206,6 +206,6 @@ from DataFlow::PathNode source, DataFlow::PathNode sink, InsecureUrlFlowConfig c
 where
   config.hasFlowPath(source, sink) and
   exists(BasicAuthFlowConfig bc | bc.hasFlowTo(sink.getNode())) and
-  not exists(SSLFlowConfig sc | sc.hasFlowTo(sink.getNode()))
+  not exists(SslFlowConfig sc | sc.hasFlowTo(sink.getNode()))
 select sink.getNode(), source, sink, "Insecure LDAP authentication from $@.", source.getNode(),
   "LDAP connection string"

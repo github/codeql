@@ -1,3 +1,5 @@
+WARNING: Module TaintedWithPath has been deprecated and may be removed in future (tainted_ir.ql:3,35-50)
+WARNING: Module TaintedWithPath has been deprecated and may be removed in future (tainted_ir.ql:9,3-18)
 | test.cpp:23:23:23:28 | call to getenv | test.cpp:23:23:23:28 | call to getenv |
 | test.cpp:23:23:23:28 | call to getenv | test.cpp:23:23:23:40 | (const char *)... |
 | test.cpp:23:23:23:28 | call to getenv | test.cpp:25:6:25:29 | ! ... |

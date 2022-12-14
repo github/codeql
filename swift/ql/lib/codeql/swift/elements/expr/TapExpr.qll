@@ -8,4 +8,4 @@ private import codeql.swift.generated.expr.TapExpr
  * 2. Execute `e.getBody()` which potentially modifies the local variable.
  * 3. Return the value of the local variable.
  */
-class TapExpr extends TapExprBase { }
+class TapExpr extends Generated::TapExpr { }

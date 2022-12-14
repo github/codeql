@@ -25,5 +25,5 @@ where
   exists(Expr e1, Expr e2 | e1 = vd1.getInit() and e2 = vd2.getInit() |
     not v.getAnAccess().getParentExpr*() = e2
   )
-select vd2.(FirstLineOf), "This initialization of " + v.getName() + " overwrites $@.", vd1,
-  "an earlier initialization"
+select vd2.(FirstLineOf), "This initialization of " + v.getName() + " overwrites an $@.", vd1,
+  "earlier initialization"

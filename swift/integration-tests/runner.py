@@ -16,16 +16,16 @@ import argparse
 import shutil
 import platform
 
-this_dir = pathlib.Path(__file__).parent
-
+this_dir = pathlib.Path(__file__).parent.resolve()
 
 def options():
     p = argparse.ArgumentParser()
     p.add_argument("--test-dir", "-d", type=pathlib.Path, action="append")
-    #FIXME: the following should be the default
+    # FIXME: the following should be the default
     p.add_argument("--check-databases", action="store_true")
     p.add_argument("--learn", action="store_true")
     p.add_argument("--threads", "-j", type=int, default=0)
+    p.add_argument("--compilation-cache")
     return p.parse_args()
 
 
@@ -55,7 +55,7 @@ def main(opts):
         codeql_root = this_dir.parents[1]
         cmd = [
             "codeql", "test", "run",
-            f"--search-path={codeql_root}",
+            f"--additional-packs={codeql_root}",
             "--keep-databases",
             "--dataset=db/db-swift",
             f"--threads={opts.threads}",
@@ -66,6 +66,8 @@ def main(opts):
             cmd.append("--no-check-databases")
         if opts.learn:
             cmd.append("--learn")
+        if opts.compilation_cache:
+            cmd.append(f'--compilation-cache="{opts.compilation_cache}"')
         cmd.extend(str(t.parent) for t in succesful_db_creation)
         ql_test_success = subprocess.run(cmd).returncode == 0
 

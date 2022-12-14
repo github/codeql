@@ -28,6 +28,9 @@
 | Faraday.rb:35:10:35:28 | call to get | Faraday | Faraday.rb:34:26:34:50 | Pair | Faraday.rb:36:1:36:11 | call to body |
 | Faraday.rb:35:10:35:28 | call to get | Faraday | Faraday.rb:34:31:34:50 | "http://example.com" | Faraday.rb:36:1:36:11 | call to body |
 | Faraday.rb:35:10:35:28 | call to get | Faraday | Faraday.rb:35:25:35:27 | "/" | Faraday.rb:36:1:36:11 | call to body |
+| Faraday.rb:39:10:39:28 | call to get | Faraday | Faraday.rb:38:38:38:63 | Pair | Faraday.rb:40:1:40:11 | call to body |
+| Faraday.rb:39:10:39:28 | call to get | Faraday | Faraday.rb:38:43:38:63 | "https://example.com" | Faraday.rb:40:1:40:11 | call to body |
+| Faraday.rb:39:10:39:28 | call to get | Faraday | Faraday.rb:39:25:39:27 | "/" | Faraday.rb:40:1:40:11 | call to body |
 | HttpClient.rb:3:9:3:45 | call to get | HTTPClient | HttpClient.rb:3:24:3:44 | "http://example.com/" | HttpClient.rb:4:1:4:10 | call to body |
 | HttpClient.rb:6:9:6:65 | call to post | HTTPClient | HttpClient.rb:6:25:6:45 | "http://example.com/" | HttpClient.rb:7:1:7:13 | call to content |
 | HttpClient.rb:9:9:9:64 | call to put | HTTPClient | HttpClient.rb:9:24:9:44 | "http://example.com/" | HttpClient.rb:10:1:10:15 | call to http_body |

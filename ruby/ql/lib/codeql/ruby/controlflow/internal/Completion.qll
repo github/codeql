@@ -71,18 +71,22 @@ private predicate completionIsValidForStmt(AstNode n, Completion c) {
   c = TReturnCompletion()
 }
 
+private AstNode getARescuableBodyChild() {
+  exists(Trees::BodyStmtTree bst | result = bst.getBodyChild(_, true) |
+    exists(bst.getARescue())
+    or
+    exists(bst.getEnsure())
+  )
+  or
+  result = getARescuableBodyChild().getAChild()
+}
+
 /**
  * Holds if `c` happens in an exception-aware context, that is, it may be
  * `rescue`d or `ensure`d. In such cases, we assume that the target of `c`
  * may raise an exception (in addition to evaluating normally).
  */
-private predicate mayRaise(Call c) {
-  exists(Trees::BodyStmtTree bst | c = bst.getBodyChild(_, true).getAChild*() |
-    exists(bst.getARescue())
-    or
-    exists(bst.getEnsure())
-  )
-}
+private predicate mayRaise(Call c) { c = getARescuableBodyChild() }
 
 /** A completion of a statement or an expression. */
 abstract class Completion extends TCompletion {
@@ -207,8 +211,11 @@ private predicate inBooleanContext(AstNode n) {
   or
   exists(CaseExpr c, WhenClause w |
     not exists(c.getValue()) and
-    c.getABranch() = w and
+    c.getABranch() = w
+  |
     w.getPattern(_) = n
+    or
+    w = n
   )
 }
 
@@ -229,8 +236,11 @@ private predicate inMatchingContext(AstNode n) {
   or
   exists(CaseExpr c, WhenClause w |
     exists(c.getValue()) and
-    c.getABranch() = w and
+    c.getABranch() = w
+  |
     w.getPattern(_) = n
+    or
+    w = n
   )
   or
   n instanceof CasePattern

@@ -11,6 +11,11 @@ private import semmle.javascript.dataflow.TypeTracking
 private import semmle.javascript.internal.CachedStages
 
 /**
+ * An alias for `SourceNode`.
+ */
+class LocalSourceNode = SourceNode;
+
+/**
  * A source node for local data flow, that is, a node from which local data flow is tracked.
  *
  * This includes function invocations, parameters, object creation, and references to a property or global variable.
@@ -332,6 +337,8 @@ module SourceNode {
       or
       // Include return nodes because they model the implicit Promise creation in async functions.
       DataFlow::functionReturnNode(this, _)
+      or
+      this instanceof DataFlow::ReflectiveParametersNode
     }
   }
 }
@@ -341,7 +348,7 @@ private class NodeModuleSourcesNodes extends SourceNode::Range {
 
   NodeModuleSourcesNodes() {
     exists(NodeModule m |
-      this = DataFlow::ssaDefinitionNode(SSA::implicitInit(v)) and
+      this = DataFlow::ssaDefinitionNode(Ssa::implicitInit(v)) and
       v = [m.getModuleVariable(), m.getExportsVariable()]
     )
   }

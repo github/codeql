@@ -57,6 +57,16 @@ pathnameInstances
 | Pathname.rb:39:12:39:19 | foo_path |
 | Pathname.rb:41:1:41:3 | p08 |
 | Pathname.rb:42:1:42:3 | p01 |
+| file://:0:0:0:0 | parameter position 0 of + |
+| file://:0:0:0:0 | parameter self of + |
+| file://:0:0:0:0 | parameter self of Pathname;Method[cleanpath] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[expand_path] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[realpath] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[relative_path_from] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[sub_ext] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[to_path] |
+| file://:0:0:0:0 | parameter self of sub |
+| file://:0:0:0:0 | parameter self of to_s |
 fileSystemAccesses
 | Pathname.rb:26:12:26:24 | call to open | Pathname.rb:26:12:26:19 | foo_path |
 | Pathname.rb:28:11:28:22 | call to opendir | Pathname.rb:28:11:28:14 | pwd1 |
@@ -123,6 +133,16 @@ fileNameSources
 | Pathname.rb:39:12:39:19 | foo_path |
 | Pathname.rb:41:1:41:3 | p08 |
 | Pathname.rb:42:1:42:3 | p01 |
+| file://:0:0:0:0 | parameter position 0 of + |
+| file://:0:0:0:0 | parameter self of + |
+| file://:0:0:0:0 | parameter self of Pathname;Method[cleanpath] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[expand_path] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[realpath] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[relative_path_from] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[sub_ext] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[to_path] |
+| file://:0:0:0:0 | parameter self of sub |
+| file://:0:0:0:0 | parameter self of to_s |
 fileSystemReadAccesses
 | Pathname.rb:32:12:32:24 | call to read | Pathname.rb:32:12:32:24 | call to read |
 fileSystemWriteAccesses

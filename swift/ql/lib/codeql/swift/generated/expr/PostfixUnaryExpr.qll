@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ApplyExpr
 
-class PostfixUnaryExprBase extends Synth::TPostfixUnaryExpr, ApplyExpr {
-  override string getAPrimaryQlClass() { result = "PostfixUnaryExpr" }
+module Generated {
+  class PostfixUnaryExpr extends Synth::TPostfixUnaryExpr, ApplyExpr {
+    override string getAPrimaryQlClass() { result = "PostfixUnaryExpr" }
+  }
 }

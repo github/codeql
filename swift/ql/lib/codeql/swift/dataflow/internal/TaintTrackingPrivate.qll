@@ -2,8 +2,10 @@ private import swift
 private import DataFlowPrivate
 private import TaintTrackingPublic
 private import codeql.swift.dataflow.DataFlow
+private import codeql.swift.dataflow.FlowSteps
 private import codeql.swift.dataflow.Ssa
 private import codeql.swift.controlflow.CfgNodes
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -32,7 +34,7 @@ private module Cached {
       nodeFrom.asExpr() = [apply.getAnArgument().getExpr(), apply.getQualifier()] and
       apply.getStaticTarget().getName() = ["appendLiteral(_:)", "appendInterpolation(_:)"] and
       e.getExpr() = [apply.getAnArgument().getExpr(), apply.getQualifier()] and
-      nodeTo.asDefinition().(Ssa::WriteDefinition).isInoutDef(e)
+      nodeTo.(PostUpdateNodeImpl).getPreUpdateNode().getCfgNode() = e
     )
     or
     // Flow from the computation of the interpolated string literal to the result of the interpolation.
@@ -48,15 +50,22 @@ private module Cached {
       ae.getType().getName() = "String"
     )
     or
-    // allow flow through `URL.init`.
-    exists(CallExpr call, ClassDecl c, AbstractFunctionDecl f |
-      c.getName() = "URL" and
-      c.getAMember() = f and
-      f.getName() = ["init(string:)", "init(string:relativeTo:)"] and
-      call.getFunction().(ApplyExpr).getStaticTarget() = f and
-      nodeFrom.asExpr() = call.getAnArgument().getExpr() and
-      nodeTo.asExpr() = call
+    // flow through a subscript access
+    exists(SubscriptExpr se |
+      se.getBase() = nodeFrom.asExpr() and
+      se = nodeTo.asExpr()
     )
+    or
+    // flow through the read of a content that inherits taint
+    exists(DataFlow::ContentSet f |
+      readStep(nodeFrom, f, nodeTo) and
+      f.getAReadContent() instanceof TaintInheritingContent
+    )
+    or
+    // flow through a flow summary (extension of `SummaryModelCsv`)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    or
+    any(AdditionalTaintStep a).step(nodeFrom, nodeTo)
   }
 
   /**
@@ -65,7 +74,13 @@ private module Cached {
    */
   cached
   predicate localTaintStepCached(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    DataFlow::localFlowStep(nodeFrom, nodeTo)
+    or
     defaultAdditionalTaintStep(nodeFrom, nodeTo)
+    or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
   }
 }
 

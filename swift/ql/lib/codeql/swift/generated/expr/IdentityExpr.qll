@@ -3,13 +3,24 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class IdentityExprBase extends Synth::TIdentityExpr, Expr {
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertIdentityExprToRaw(this)
-            .(Raw::IdentityExpr)
-            .getSubExpr())
-  }
+module Generated {
+  class IdentityExpr extends Synth::TIdentityExpr, Expr {
+    /**
+     * Gets the sub expression of this identity expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertIdentityExprToRaw(this)
+              .(Raw::IdentityExpr)
+              .getSubExpr())
+    }
 
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+    /**
+     * Gets the sub expression of this identity expression.
+     */
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+  }
 }

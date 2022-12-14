@@ -68,7 +68,7 @@ private class TrackStringsInAngularCode extends DataFlow::SourceNode::Range, Dat
  */
 private DataFlow::CallNode angularModuleCall(string name) {
   result = angular().getAMemberCall("module") and
-  result.getArgument(0).asExpr().mayHaveStringValue(name)
+  result.getArgument(0).mayHaveStringValue(name)
 }
 
 /**
@@ -105,8 +105,8 @@ class AngularModule extends TAngularModule {
   /**
    * Get the array of dependencies from this module's definition.
    */
-  ArrayExpr getDependencyArray() {
-    this.getADefinition().getArgument(1).getALocalSource().asExpr() = result
+  DataFlow::ArrayCreationNode getDependencyArray() {
+    this.getADefinition().getArgument(1).getALocalSource() = result
   }
 
   /**
@@ -160,14 +160,10 @@ class ModuleApiCall extends DataFlow::CallNode {
   string getMethodName() { result = methodName }
 }
 
-class ModuleApiCallDependencyInjection extends DependencyInjection {
-  ModuleApiCall call;
+class ModuleApiCallDependencyInjection extends DependencyInjection instanceof ModuleApiCall {
   string methodName;
 
-  ModuleApiCallDependencyInjection() {
-    this = call and
-    methodName = call.getMethodName()
-  }
+  ModuleApiCallDependencyInjection() { methodName = super.getMethodName() }
 
   /**
    * Gets the argument position for this method call that expects an injectable function.
@@ -183,7 +179,7 @@ class ModuleApiCallDependencyInjection extends DependencyInjection {
   }
 
   override DataFlow::Node getAnInjectableFunction() {
-    result = call.getArgument(this.injectableArgPos())
+    result = super.getArgument(this.injectableArgPos())
   }
 }
 
@@ -266,10 +262,10 @@ abstract class CustomDirective extends DirectiveInstance {
   DataFlow::SourceNode getMember(string name) { result.flowsTo(this.getMemberInit(name)) }
 
   /** Gets the method `name` of this directive. */
-  Function getMethod(string name) { DataFlow::valueNode(result) = this.getMember(name) }
+  DataFlow::FunctionNode getMethod(string name) { result = this.getMember(name) }
 
   /** Gets a link function of this directive. */
-  abstract Function getALinkFunction();
+  abstract DataFlow::FunctionNode getALinkFunction();
 
   /** Holds if this directive's properties are bound to the controller. */
   abstract predicate bindsToController();
@@ -284,7 +280,7 @@ abstract class CustomDirective extends DirectiveInstance {
   InjectableFunction getController() { result = this.getMember("controller") }
 
   /** Gets the template URL of this directive, if any. */
-  string getTemplateUrl() { this.getMember("templateUrl").asExpr().mayHaveStringValue(result) }
+  string getTemplateUrl() { this.getMember("templateUrl").mayHaveStringValue(result) }
 
   /**
    * Gets a template file for this directive, if any.
@@ -302,9 +298,7 @@ abstract class CustomDirective extends DirectiveInstance {
     else result = DirectiveInstance.super.getAScope()
   }
 
-  private string getRestrictionString() {
-    this.getMember("restrict").asExpr().mayHaveStringValue(result)
-  }
+  private string getRestrictionString() { this.getMember("restrict").mayHaveStringValue(result) }
 
   private predicate hasTargetType(DirectiveTargetType type) {
     not exists(this.getRestrictionString()) or
@@ -332,10 +326,10 @@ class GeneralDirective extends CustomDirective, MkCustomDirective {
 
   /** Gets a node that contributes to the return value of the factory function. */
   override DataFlow::SourceNode getAnInstantiation() {
-    exists(Function factory, InjectableFunction f |
+    exists(DataFlow::FunctionNode factory, InjectableFunction f |
       f = definition.getAFactoryFunction() and
       factory = f.asFunction() and
-      result.flowsToExpr(factory.getAReturnedExpr())
+      result.flowsTo(factory.getAReturn())
     )
   }
 
@@ -344,7 +338,7 @@ class GeneralDirective extends CustomDirective, MkCustomDirective {
   }
 
   /** Gets the compile function of this directive, if any. */
-  Function getCompileFunction() { result = this.getMethod("compile") }
+  DataFlow::FunctionNode getCompileFunction() { result = this.getMethod("compile") }
 
   /**
    * Gets a pre/post link function of this directive defined on its definition object.
@@ -365,9 +359,8 @@ class GeneralDirective extends CustomDirective, MkCustomDirective {
     result = this.getMember("link").getAPropertySource(kind)
     or
     // { compile: function() { ... return link; } }
-    exists(Expr compileReturn, DataFlow::SourceNode compileReturnSrc |
-      compileReturn = this.getCompileFunction().getAReturnedExpr() and
-      compileReturnSrc.flowsToExpr(compileReturn)
+    exists(DataFlow::SourceNode compileReturnSrc |
+      compileReturnSrc.flowsTo(this.getCompileFunction().getAReturn())
     |
       // link = function postLink() { ... }
       kind = "post" and
@@ -380,18 +373,20 @@ class GeneralDirective extends CustomDirective, MkCustomDirective {
   }
 
   /** Gets the pre-link function of this directive. */
-  Function getPreLinkFunction() { result = this.getLinkFunction("pre").getAstNode() }
+  DataFlow::FunctionNode getPreLinkFunction() { result = this.getLinkFunction("pre") }
 
   /** Gets the post-link function of this directive. */
-  Function getPostLinkFunction() { result = this.getLinkFunction("post").getAstNode() }
+  DataFlow::FunctionNode getPostLinkFunction() { result = this.getLinkFunction("post") }
 
-  override Function getALinkFunction() { result = this.getLinkFunction(_).getAstNode() }
+  override DataFlow::FunctionNode getALinkFunction() { result = this.getLinkFunction(_) }
 
   override predicate bindsToController() {
-    this.getMemberInit("bindToController").asExpr().mayHaveBooleanValue(true)
+    this.getMemberInit("bindToController").mayHaveBooleanValue(true)
   }
 
-  override predicate hasIsolateScope() { this.getMember("scope").asExpr() instanceof ObjectExpr }
+  override predicate hasIsolateScope() {
+    this.getMember("scope") instanceof DataFlow::ObjectLiteralNode
+  }
 }
 
 /**
@@ -412,7 +407,7 @@ class ComponentDirective extends CustomDirective, MkCustomComponent {
     comp.getConfig().hasPropertyWrite(name, result)
   }
 
-  override Function getALinkFunction() { none() }
+  override DataFlow::FunctionNode getALinkFunction() { none() }
 
   override predicate bindsToController() { none() }
 
@@ -473,14 +468,10 @@ abstract class DirectiveTarget extends Locatable {
 /**
  * A DOM element, viewed as directive target.
  */
-private class DomElementAsElement extends DirectiveTarget {
-  DOM::ElementDefinition element;
+private class DomElementAsElement extends DirectiveTarget instanceof DOM::ElementDefinition {
+  override string getName() { result = DOM::ElementDefinition.super.getName() }
 
-  DomElementAsElement() { this = element }
-
-  override string getName() { result = element.getName() }
-
-  override DOM::ElementDefinition getElement() { result = element }
+  override DOM::ElementDefinition getElement() { result = this }
 
   override DirectiveTargetType getType() { result = E() }
 }
@@ -488,18 +479,16 @@ private class DomElementAsElement extends DirectiveTarget {
 /**
  * A DOM attribute, viewed as a directive target.
  */
-private class DomAttributeAsElement extends DirectiveTarget {
-  DOM::AttributeDefinition attr;
+private class DomAttributeAsElement extends DirectiveTarget instanceof DOM::AttributeDefinition {
+  override string getName() { result = DOM::AttributeDefinition.super.getName() }
 
-  DomAttributeAsElement() { this = attr }
-
-  override string getName() { result = attr.getName() }
-
-  override DOM::ElementDefinition getElement() { result = attr.getElement() }
+  override DOM::ElementDefinition getElement() {
+    result = DOM::AttributeDefinition.super.getElement()
+  }
 
   override DirectiveTargetType getType() { result = A() }
 
-  DOM::AttributeDefinition asAttribute() { result = attr }
+  DOM::AttributeDefinition asAttribute() { result = this }
 }
 
 /**
@@ -561,13 +550,12 @@ class DirectiveTargetName extends string {
  *
  * See https://docs.angularjs.org/api/ng/service/$location for details.
  */
-private class LocationFlowSource extends RemoteFlowSource {
+private class LocationFlowSource extends RemoteFlowSource instanceof DataFlow::MethodCallNode {
   LocationFlowSource() {
-    exists(ServiceReference service, MethodCallExpr mce, string m, int n |
+    exists(ServiceReference service, string m, int n |
       service.getName() = "$location" and
-      this.asExpr() = mce and
-      mce = service.getAMethodCall(m) and
-      n = mce.getNumArgument()
+      this = service.getAMethodCall(m) and
+      n = super.getNumArgument()
     |
       m = "search" and n < 2
       or
@@ -605,7 +593,7 @@ private class JQLiteObject extends JQuery::ObjectSource::Range {
   JQLiteObject() {
     this = angular().getAMemberCall("element")
     or
-    exists(Parameter param | this = DataFlow::parameterNode(param) |
+    exists(DataFlow::ParameterNode param | this = param |
       // element parameters to user-functions invoked by AngularJS
       param = any(LinkFunction link).getElementParameter()
       or
@@ -613,13 +601,13 @@ private class JQLiteObject extends JQuery::ObjectSource::Range {
         param = d.getCompileFunction().getParameter(0)
         or
         exists(DataFlow::FunctionNode f, int i |
-          f.flowsToExpr(d.getCompileFunction().getAReturnedExpr()) and i = 1
+          f.flowsTo(d.getCompileFunction().getAReturn()) and i = 1
           or
           f = d.getMember("template") and i = 0
           or
           f = d.getMember("templateUrl") and i = 0
         |
-          param = f.getAstNode().(Function).getParameter(i)
+          param = f.getParameter(i)
         )
       )
     )
@@ -631,99 +619,111 @@ private class JQLiteObject extends JQuery::ObjectSource::Range {
 }
 
 /**
+ * DEPRECATED: Use `AngularJSCallNode` instead.
  * A call to an AngularJS function.
  *
  * Used for exposing behavior that is similar to the behavior of other libraries.
  */
-abstract class AngularJSCall extends CallExpr {
+deprecated class AngularJSCall extends CallExpr {
+  AngularJSCallNode node;
+
+  AngularJSCall() { this.flow() = node }
+
+  /** Holds if `e` is an argument that this call interprets as HTML. */
+  deprecated predicate interpretsArgumentAsHtml(Expr e) { node.interpretsArgumentAsHtml(e.flow()) }
+
+  /** Holds if `e` is an argument that this call stores globally, e.g. in a cookie. */
+  deprecated predicate storesArgumentGlobally(Expr e) { node.storesArgumentGlobally(e.flow()) }
+
+  /** Holds if `e` is an argument that this call interprets as code. */
+  deprecated predicate interpretsArgumentAsCode(Expr e) { node.interpretsArgumentAsCode(e.flow()) }
+}
+
+/**
+ * A call to an AngularJS function.
+ *
+ * Used for exposing behavior that is similar to the behavior of other libraries.
+ */
+abstract class AngularJSCallNode extends DataFlow::CallNode {
   /**
    * Holds if `e` is an argument that this call interprets as HTML.
    */
-  abstract predicate interpretsArgumentAsHtml(Expr e);
+  abstract predicate interpretsArgumentAsHtml(DataFlow::Node e);
 
   /**
    * Holds if `e` is an argument that this call stores globally, e.g. in a cookie.
    */
-  abstract predicate storesArgumentGlobally(Expr e);
+  abstract predicate storesArgumentGlobally(DataFlow::Node e);
 
   /**
    * Holds if `e` is an argument that this call interprets as code.
    */
-  abstract predicate interpretsArgumentAsCode(Expr e);
+  abstract predicate interpretsArgumentAsCode(DataFlow::Node e);
 }
 
 /**
  * A call to a method on the AngularJS object itself.
  */
-private class AngularMethodCall extends AngularJSCall {
-  MethodCallExpr mce;
+private class AngularMethodCall extends AngularJSCallNode {
+  AngularMethodCall() { this = angular().getAMemberCall(_) }
 
-  AngularMethodCall() {
-    mce = angular().getAMemberCall(_).asExpr() and
-    mce = this
+  override predicate interpretsArgumentAsHtml(DataFlow::Node e) {
+    super.getCalleeName() = "element" and
+    e = super.getArgument(0)
   }
 
-  override predicate interpretsArgumentAsHtml(Expr e) {
-    mce.getMethodName() = "element" and
-    e = mce.getArgument(0)
-  }
+  override predicate storesArgumentGlobally(DataFlow::Node e) { none() }
 
-  override predicate storesArgumentGlobally(Expr e) { none() }
-
-  override predicate interpretsArgumentAsCode(Expr e) { none() }
+  override predicate interpretsArgumentAsCode(DataFlow::Node e) { none() }
 }
 
 /**
  * A call to a builtin service or one of its methods.
  */
-private class BuiltinServiceCall extends AngularJSCall {
-  CallExpr call;
-
+private class BuiltinServiceCall extends AngularJSCallNode {
   BuiltinServiceCall() {
     exists(BuiltinServiceReference service |
       service.getAMethodCall(_) = this or
       service.getACall() = this
-    |
-      call = this
     )
   }
 
-  override predicate interpretsArgumentAsHtml(Expr e) {
+  override predicate interpretsArgumentAsHtml(DataFlow::Node e) {
     exists(ServiceReference service, string methodName |
       service.getName() = "$sce" and
-      call = service.getAMethodCall(methodName)
+      this = service.getAMethodCall(methodName)
     |
       // specialized call
       (methodName = "trustAsHtml" or methodName = "trustAsCss") and
-      e = call.getArgument(0)
+      e = this.getArgument(0)
       or
       // generic call with enum argument
       methodName = "trustAs" and
       exists(DataFlow::PropRead prn |
-        prn.asExpr() = call.getArgument(0) and
+        prn = this.getArgument(0) and
         (prn = service.getAPropertyAccess("HTML") or prn = service.getAPropertyAccess("CSS")) and
-        e = call.getArgument(1)
+        e = this.getArgument(1)
       )
     )
   }
 
-  override predicate storesArgumentGlobally(Expr e) {
+  override predicate storesArgumentGlobally(DataFlow::Node e) {
     exists(ServiceReference service, string serviceName, string methodName |
       service.getName() = serviceName and
-      call = service.getAMethodCall(methodName)
+      this = service.getAMethodCall(methodName)
     |
       // AngularJS caches (only available during runtime, so similar to sessionStorage)
       (serviceName = "$cacheFactory" or serviceName = "$templateCache") and
       methodName = "put" and
-      e = call.getArgument(1)
+      e = this.getArgument(1)
       or
       serviceName = "$cookies" and
       (methodName = "put" or methodName = "putObject") and
-      e = call.getArgument(1)
+      e = this.getArgument(1)
     )
   }
 
-  override predicate interpretsArgumentAsCode(Expr e) {
+  override predicate interpretsArgumentAsCode(DataFlow::Node e) {
     exists(ScopeServiceReference scope, string methodName |
       methodName =
         [
@@ -731,22 +731,21 @@ private class BuiltinServiceCall extends AngularJSCall {
           "$watchGroup"
         ]
     |
-      call = scope.getAMethodCall(methodName) and
-      e = call.getArgument(0)
+      this = scope.getAMethodCall(methodName) and
+      e = this.getArgument(0)
     )
     or
     exists(ServiceReference service | service.getName() = ["$compile", "$parse", "$interpolate"] |
-      call = service.getACall() and
-      e = call.getArgument(0)
+      this = service.getACall() and
+      e = this.getArgument(0)
     )
     or
-    exists(ServiceReference service, CallExpr filterInvocation |
+    exists(ServiceReference service |
       // `$filter('orderBy')(collection, expression)`
       service.getName() = "$filter" and
-      call = service.getACall() and
-      call.getArgument(0).mayHaveStringValue("orderBy") and
-      filterInvocation.getCallee() = call and
-      e = filterInvocation.getArgument(1)
+      this = service.getACall() and
+      this.getArgument(0).mayHaveStringValue("orderBy") and
+      e = this.getACall().getArgument(1)
     )
   }
 }
@@ -754,33 +753,33 @@ private class BuiltinServiceCall extends AngularJSCall {
 /**
  * A link-function used in a custom AngularJS directive.
  */
-class LinkFunction extends Function {
+class LinkFunction extends DataFlow::FunctionNode {
   LinkFunction() { this = any(GeneralDirective d).getALinkFunction() }
 
   /**
    * Gets the scope parameter of this function.
    */
-  Parameter getScopeParameter() { result = this.getParameter(0) }
+  DataFlow::ParameterNode getScopeParameter() { result = this.getParameter(0) }
 
   /**
    * Gets the element parameter of this function (contains a jqLite-wrapped DOM element).
    */
-  Parameter getElementParameter() { result = this.getParameter(1) }
+  DataFlow::ParameterNode getElementParameter() { result = this.getParameter(1) }
 
   /**
    * Gets the attributes parameter of this function.
    */
-  Parameter getAttributesParameter() { result = this.getParameter(2) }
+  DataFlow::ParameterNode getAttributesParameter() { result = this.getParameter(2) }
 
   /**
    * Gets the controller parameter of this function.
    */
-  Parameter getControllerParameter() { result = this.getParameter(3) }
+  DataFlow::ParameterNode getControllerParameter() { result = this.getParameter(3) }
 
   /**
    * Gets the transclude-function parameter of this function.
    */
-  Parameter getTranscludeFnParameter() { result = this.getParameter(4) }
+  DataFlow::ParameterNode getTranscludeFnParameter() { result = this.getParameter(4) }
 }
 
 /**
@@ -807,29 +806,29 @@ class AngularScope extends TAngularScope {
   /**
    * Gets an access to this scope object.
    */
-  Expr getAnAccess() {
+  DataFlow::Node getAnAccess() {
     exists(CustomDirective d | this = d.getAScope() |
-      exists(Parameter p |
+      exists(DataFlow::ParameterNode p |
         p = d.getController().getDependencyParameter("$scope") or
         p = d.getALinkFunction().getParameter(0)
       |
-        result.mayReferToParameter(p)
+        p.flowsTo(result)
       )
       or
       exists(DataFlow::ThisNode dis |
-        dis.flowsToExpr(result) and
-        dis.getBinder().getAstNode() = d.getController().asFunction() and
+        dis.flowsTo(result) and
+        dis.getBinder() = d.getController().asFunction() and
         d.bindsToController()
       )
       or
-      d.hasIsolateScope() and result = d.getMember("scope").asExpr()
+      d.hasIsolateScope() and result = d.getMember("scope")
     )
     or
-    exists(DirectiveController c, DOM::ElementDefinition elem, Parameter p |
+    exists(DirectiveController c, DOM::ElementDefinition elem, DataFlow::ParameterNode p |
       c.boundTo(elem) and
       this.mayApplyTo(elem) and
       p = c.getFactoryFunction().getDependencyParameter("$scope") and
-      result.mayReferToParameter(p)
+      p.flowsTo(result)
     )
   }
 
@@ -925,9 +924,7 @@ class RouteSetup extends DataFlow::CallNode, DependencyInjection {
     |
       result = controllerProperty
       or
-      exists(ControllerDefinition def |
-        controllerProperty.asExpr().mayHaveStringValue(def.getName())
-      |
+      exists(ControllerDefinition def | controllerProperty.mayHaveStringValue(def.getName()) |
         result = def.getAService()
       )
     )
@@ -959,17 +956,13 @@ abstract class Controller extends DataFlow::Node {
 /**
  * A controller instantiated through a directive, e.g. `<div ngController="myController"/>`.
  */
-private class DirectiveController extends Controller {
-  ControllerDefinition def;
-
-  DirectiveController() { this = def }
-
+private class DirectiveController extends Controller instanceof ControllerDefinition {
   private predicate boundAnonymously(DOM::ElementDefinition elem) {
     exists(DirectiveInstance instance, DomAttributeAsElement attr |
       instance.getName() = "ngController" and
       instance.getATarget() = attr and
       elem = attr.getElement() and
-      attr.asAttribute().getStringValue() = def.getName()
+      attr.asAttribute().getStringValue() = super.getName()
     )
   }
 
@@ -986,28 +979,26 @@ private class DirectiveController extends Controller {
         attributeValue = attr.asAttribute().getStringValue() and
         pattern = "([^ ]+) +as +([^ ]+)"
       |
-        attributeValue.regexpCapture(pattern, 1) = def.getName() and
+        attributeValue.regexpCapture(pattern, 1) = ControllerDefinition.super.getName() and
         attributeValue.regexpCapture(pattern, 2) = alias
       )
     )
   }
 
-  override InjectableFunction getFactoryFunction() { result = def.getAFactoryFunction() }
+  override InjectableFunction getFactoryFunction() {
+    result = ControllerDefinition.super.getAFactoryFunction()
+  }
 }
 
 /**
  * A controller instantiated through routes, e.g. `$routeProvider.otherwise({controller: ...})`.
  */
-private class RouteInstantiatedController extends Controller {
-  RouteSetup setup;
-
-  RouteInstantiatedController() { this = setup }
-
-  override InjectableFunction getFactoryFunction() { result = setup.getController() }
+private class RouteInstantiatedController extends Controller instanceof RouteSetup {
+  override InjectableFunction getFactoryFunction() { result = super.getController() }
 
   override predicate boundTo(DOM::ElementDefinition elem) {
     exists(string url, HTML::HtmlFile template |
-      setup.getRouteParam("templateUrl").asExpr().mayHaveStringValue(url) and
+      super.getRouteParam("templateUrl").mayHaveStringValue(url) and
       template.getAbsolutePath().regexpMatch(".*\\Q" + url + "\\E") and
       elem.getFile() = template
     )
@@ -1015,22 +1006,19 @@ private class RouteInstantiatedController extends Controller {
 
   override predicate boundToAs(DOM::ElementDefinition elem, string name) {
     this.boundTo(elem) and
-    setup.getRouteParam("controllerAs").asExpr().mayHaveStringValue(name)
+    super.getRouteParam("controllerAs").mayHaveStringValue(name)
   }
 }
 
 /**
  * Dataflow for the arguments of AngularJS dependency-injected functions.
  */
-private class DependencyInjectedArgumentInitializer extends DataFlow::AnalyzedNode {
+private class DependencyInjectedArgumentInitializer extends DataFlow::AnalyzedNode instanceof DataFlow::ParameterNode {
   DataFlow::AnalyzedNode service;
 
   DependencyInjectedArgumentInitializer() {
-    exists(
-      AngularJS::InjectableFunction f, Parameter param, AngularJS::CustomServiceDefinition def
-    |
-      this = DataFlow::parameterNode(param) and
-      def.getServiceReference() = f.getAResolvedDependency(param) and
+    exists(AngularJS::InjectableFunction f, AngularJS::CustomServiceDefinition def |
+      def.getServiceReference() = f.getAResolvedDependency(this) and
       service = def.getAService()
     )
   }

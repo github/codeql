@@ -4,10 +4,6 @@ _dirs = ("", "decl/", "expr/", "pattern/", "stmt/", "type/")
 
 genrule(
     name = "cppgen",
-    srcs = [
-        "//swift/codegen:schema",
-        "//swift/codegen:schema_includes",
-    ],
     outs = [
         "generated/swift.dbscheme",
         "generated/TrapTags.h",
@@ -20,7 +16,6 @@ genrule(
     cmd = " ".join([
         "$(location //swift/codegen)",
         "--generate=dbscheme,trap,cpp",
-        "--schema $(location //swift/codegen:schema)",
         "--dbscheme $(RULEDIR)/generated/swift.dbscheme",
         "--cpp-output $(RULEDIR)/generated",
     ]),

@@ -50,7 +50,7 @@ module ClickhouseDriver {
   string getExecuteMethodName() { result in ["execute_with_progress", "execute", "execute_iter"] }
 
   /**
-   * A call to any of the the execute methods on a `clickhouse_driver.Client` method
+   * A call to any of the execute methods on a `clickhouse_driver.Client` method
    *
    * See
    * - https://clickhouse-driver.readthedocs.io/en/latest/api.html#clickhouse_driver.Client.execute

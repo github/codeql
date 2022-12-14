@@ -48,8 +48,12 @@ module CleartextLogging {
         write.writesField(trg.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, src)
       )
       or
-      // taint steps that do not include flow through fields
-      TaintTracking::localTaintStep(src, trg) and not TaintTracking::fieldReadStep(src, trg)
+      // taint steps that do not include flow through fields. Field reads would produce FPs due to
+      // the additional taint step above that taints whole structs from individual field writes.
+      TaintTracking::localTaintStep(src, trg) and
+      not TaintTracking::fieldReadStep(src, trg) and
+      // Also exclude protobuf field fetches, since they amount to single field reads.
+      not any(Protobuf::GetMethod gm).taintStep(src, trg)
     }
   }
 }

@@ -78,9 +78,9 @@ def test_property_predicate_getter():
     assert prop.getter == "prop"
 
 
-def test_class_sorts_bases():
+def test_class_processes_bases():
     bases = ["B", "Ab", "C", "Aa"]
-    expected = ["Aa", "Ab", "B", "C"]
+    expected = [ql.Base("B"), ql.Base("Ab", prev="B"), ql.Base("C", prev="Ab"), ql.Base("Aa", prev="C")]
     cls = ql.Class("Foo", bases=bases)
     assert cls.bases == expected
 
@@ -103,6 +103,48 @@ def test_root_class():
 def test_non_root_class():
     cls = ql.Class("Class", bases=["A"])
     assert not cls.root
+
+
+@pytest.mark.parametrize("prev_child,is_child", [(None, False), ("", True), ("x", True)])
+def test_is_child(prev_child, is_child):
+    p = ql.Property("Foo", "int", prev_child=prev_child)
+    assert p.is_child is is_child
+
+
+def test_empty_class_no_children():
+    cls = ql.Class("Class", properties=[])
+    assert cls.has_children is False
+
+
+def test_class_no_children():
+    cls = ql.Class("Class", properties=[ql.Property("Foo", "int"), ql.Property("Bar", "string")])
+    assert cls.has_children is False
+
+
+def test_class_with_children():
+    cls = ql.Class("Class", properties=[ql.Property("Foo", "int"), ql.Property("Child", "x", prev_child=""),
+                                        ql.Property("Bar", "string")])
+    assert cls.has_children is True
+
+
+def test_class_with_doc():
+    cls = ql.Class("Class", doc=["foo", "bar"])
+    assert cls.has_doc is True
+
+
+def test_class_without_doc():
+    cls = ql.Class("Class", doc=[])
+    assert cls.has_doc is False
+
+
+def test_property_with_description():
+    prop = ql.Property("X", "int", description=["foo", "bar"])
+    assert prop.has_description is True
+
+
+def test_class_without_description():
+    prop = ql.Property("X", "int")
+    assert prop.has_description is False
 
 
 if __name__ == '__main__':

@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.SubstitutableType
 
-class GenericTypeParamTypeBase extends Synth::TGenericTypeParamType, SubstitutableType {
-  override string getAPrimaryQlClass() { result = "GenericTypeParamType" }
+module Generated {
+  class GenericTypeParamType extends Synth::TGenericTypeParamType, SubstitutableType {
+    override string getAPrimaryQlClass() { result = "GenericTypeParamType" }
+  }
 }

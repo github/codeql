@@ -161,5 +161,5 @@ predicate transitiveDelta(Call rec, TransitivelyClosedCall tc) {
 
 from Call rec, TransitivelyClosedCall tc, AstNode reason
 where transitiveDelta(rec, tc) and reason = tc.getReason()
-select tc, "This recursive delta is transively closed $@, which may be a performance problem.",
-  reason, "here"
+select tc, "This recursive delta is $@, which may be a performance problem.", reason,
+  "transitively closed"

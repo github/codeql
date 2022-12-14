@@ -770,7 +770,7 @@ private class FlowStepThroughImport extends SharedFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ImportSpecifier specifier |
       pred = DataFlow::valueNode(specifier) and
-      succ = DataFlow::ssaDefinitionNode(SSA::definition(specifier))
+      succ = DataFlow::ssaDefinitionNode(Ssa::definition(specifier))
     )
   }
 }
@@ -1175,6 +1175,7 @@ private predicate parameterPropReadStep(
     invk = getAwaitOperand(succ)
   ) and
   callInputStep(f, invk, arg, parm, cfg) and
+  prop = pragma[only_bind_into](getARelevantProp(cfg)) and
   (
     read = parm.getAPropertyRead(prop)
     or
@@ -1192,13 +1193,41 @@ private predicate reachesReturn(
   isRelevant(read, cfg) and
   returnExpr(f, read, _) and
   summary = PathSummary::level() and
-  callInputStep(f, _, _, _, _) // check that a relevant result can exist.
+  parameterPropReadStep(_, _, _, cfg, _, _, f, _) // check that a relevant result can exist.
   or
   exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
     flowStep(read, cfg, mid, oldSummary) and
     reachesReturn(f, mid, cfg, newSummary) and
-    summary = oldSummary.append(newSummary)
+    summary = oldSummary.append(newSummary) and
+    pragma[only_bind_out](summary).isLevel()
   )
+}
+
+// used in `getARelevantProp`, outlined for performance
+pragma[noinline]
+private string getARelevantStoreProp(DataFlow::Configuration cfg) {
+  exists(DataFlow::Node previous | isRelevant(previous, cfg) |
+    basicStoreStep(previous, _, result) or
+    isAdditionalStoreStep(previous, _, result, cfg)
+  )
+}
+
+// used in `getARelevantProp`, outlined for performance
+pragma[noinline]
+private string getARelevantLoadProp(DataFlow::Configuration cfg) {
+  exists(DataFlow::Node previous | isRelevant(previous, cfg) |
+    basicLoadStep(previous, _, result) or
+    isAdditionalLoadStep(previous, _, result, cfg)
+  )
+}
+
+/** Gets the name of a property that is both loaded and stored according to the exploratory analysis. */
+pragma[noinline]
+private string getARelevantProp(DataFlow::Configuration cfg) {
+  result = getARelevantStoreProp(cfg) and
+  result = getARelevantLoadProp(cfg)
+  or
+  result = getAPropertyUsedInLoadStore(cfg)
 }
 
 /**
@@ -1267,55 +1296,48 @@ private predicate loadStep(
  * If `onlyRelevantInCall` is true, the `base` object will not be propagated out of return edges, because
  * the flow that originally reached `base.startProp` used a call edge.
  */
-pragma[nomagic]
+pragma[noopt]
 private predicate reachableFromStoreBase(
   string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd,
-  DataFlow::Configuration cfg, PathSummary summary, boolean onlyRelevantInCall
+  DataFlow::Configuration cfg, TPathSummary summary, boolean onlyRelevantInCall
 ) {
-  exists(PathSummary s1, PathSummary s2, DataFlow::Node rhs |
-    reachableFromSource(rhs, cfg, s1) and
-    onlyRelevantInCall = s1.hasCall()
-    or
-    reachableFromStoreBase(_, _, _, rhs, cfg, s1, onlyRelevantInCall)
-  |
+  exists(TPathSummary s1, TPathSummary s2, DataFlow::Node rhs |
     storeStep(rhs, nd, startProp, cfg, s2) and
+    startProp = getARelevantProp(cfg) and
     endProp = startProp and
     base = nd and
-    summary =
-      MkPathSummary(false, s2.hasCall(), DataFlow::FlowLabel::data(), DataFlow::FlowLabel::data())
+    exists(boolean hasCall, DataFlow::FlowLabel data |
+      hasCall = hasCall(s2) and
+      data = DataFlow::FlowLabel::data() and
+      summary = MkPathSummary(false, hasCall, data, data)
+    )
+  |
+    reachableFromSource(rhs, cfg, s1) and
+    onlyRelevantInCall = hasCall(s1)
+    or
+    reachableFromStoreBase(_, _, _, rhs, cfg, s1, onlyRelevantInCall)
   )
   or
-  exists(PathSummary newSummary, PathSummary oldSummary |
-    reachableFromStoreBaseStep(startProp, endProp, base, nd, cfg, oldSummary, newSummary,
-      onlyRelevantInCall) and
-    summary = oldSummary.appendValuePreserving(newSummary)
-  )
-}
-
-/**
- * Holds if `base` is the base of a write to property `endProp`, and `nd` is reachable
- * from `base` under configuration `cfg` (possibly through callees) along a path whose
- * last step is summarized by `newSummary`, and the previous steps are summarized
- * by `oldSummary`.
- */
-pragma[noinline]
-private predicate reachableFromStoreBaseStep(
-  string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd,
-  DataFlow::Configuration cfg, PathSummary oldSummary, PathSummary newSummary,
-  boolean onlyRelevantInCall
-) {
-  exists(DataFlow::Node mid |
+  exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
     reachableFromStoreBase(startProp, endProp, base, mid, cfg, oldSummary, onlyRelevantInCall) and
     flowStep(mid, cfg, nd, newSummary) and
-    onlyRelevantInCall.booleanAnd(newSummary.hasReturn()) = false
+    exists(boolean hasReturn |
+      hasReturn = newSummary.hasReturn() and
+      onlyRelevantInCall.booleanAnd(hasReturn) = false
+    )
     or
     exists(string midProp |
       reachableFromStoreBase(startProp, midProp, base, mid, cfg, oldSummary, onlyRelevantInCall) and
       isAdditionalLoadStoreStep(mid, nd, midProp, endProp, cfg) and
+      endProp = getARelevantProp(cfg) and
       newSummary = PathSummary::level()
     )
+  |
+    summary = oldSummary.appendValuePreserving(newSummary)
   )
 }
+
+private boolean hasCall(PathSummary summary) { result = summary.hasCall() }
 
 /**
  * Holds if the value of `pred` is written to a property of some base object, and that base
@@ -1786,7 +1808,7 @@ class MidPathNode extends PathNode, MkMidNode {
       SsaImplicitDefinition
     or
     // Skip SSA definition of parameter as its location coincides with the parameter node
-    nd = DataFlow::ssaDefinitionNode(SSA::definition(any(SimpleParameter p)))
+    nd = DataFlow::ssaDefinitionNode(Ssa::definition(any(SimpleParameter p)))
     or
     // Skip to the top of big left-leaning string concatenation trees.
     nd = any(AddExpr add).flow() and

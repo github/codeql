@@ -56,7 +56,7 @@ private predicate alwaysNotNullVariableUpdate(VariableUpdate vu) {
 
 /** Holds if expression `expr` always evaluates to non-null. */
 private predicate alwaysNotNullExpr(Expr expr) {
-  expr instanceof Opcodes::Newobj
+  expr instanceof Opcodes::NewObj
   or
   expr instanceof Literal and not expr instanceof NullLiteral
   or

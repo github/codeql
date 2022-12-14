@@ -14,10 +14,10 @@
 import go
 
 /** Gets the global value number of `e`, which is the `i`th case label of `switch`. */
-GVN switchCaseGVN(SwitchStmt switch, int i, Expr e) {
+GVN switchCaseGvn(SwitchStmt switch, int i, Expr e) {
   e = switch.getCase(i).getExpr(0) and result = e.getGlobalValueNumber()
 }
 
 from SwitchStmt switch, int i, Expr e, int j, Expr f
-where switchCaseGVN(switch, i, e) = switchCaseGVN(switch, j, f) and i < j
-select f, "This case is a duplicate of $@.", e, "an earlier case"
+where switchCaseGvn(switch, i, e) = switchCaseGvn(switch, j, f) and i < j
+select f, "This case is a duplicate of an $@.", e, "earlier case"

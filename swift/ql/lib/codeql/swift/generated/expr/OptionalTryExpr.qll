@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.AnyTryExpr
 
-class OptionalTryExprBase extends Synth::TOptionalTryExpr, AnyTryExpr {
-  override string getAPrimaryQlClass() { result = "OptionalTryExpr" }
+module Generated {
+  class OptionalTryExpr extends Synth::TOptionalTryExpr, AnyTryExpr {
+    override string getAPrimaryQlClass() { result = "OptionalTryExpr" }
+  }
 }

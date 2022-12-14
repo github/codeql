@@ -9,4 +9,4 @@ nodes
 | Test.java:19:34:19:38 | index | semmle.label | index |
 subpaths
 #select
-| Test.java:19:34:19:38 | index | Test.java:14:27:14:60 | getProperty(...) : String | Test.java:19:34:19:38 | index | $@ flows to here and is used as an index causing an ArrayIndexOutOfBoundsException. | Test.java:14:27:14:60 | getProperty(...) | User-provided value |
+| Test.java:19:34:19:38 | index | Test.java:14:27:14:60 | getProperty(...) : String | Test.java:19:34:19:38 | index | This index depends on a $@ which can cause an ArrayIndexOutOfBoundsException. | Test.java:14:27:14:60 | getProperty(...) | user-provided value |

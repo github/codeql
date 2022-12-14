@@ -1,0 +1,86 @@
+name: "C#: Run QL Tests"
+
+on:
+  push:
+    paths:
+      - "csharp/**"
+      - "shared/**"
+      - .github/actions/fetch-codeql/action.yml
+      - codeql-workspace.yml
+    branches:
+      - main
+      - "rc/*"
+  pull_request:
+    paths:
+      - "csharp/**"
+      - "shared/**"
+      - .github/workflows/csharp-qltest.yml
+      - .github/actions/fetch-codeql/action.yml
+      - codeql-workspace.yml
+    branches:
+      - main
+      - "rc/*"
+
+defaults:
+  run:
+    working-directory: csharp
+
+jobs:
+  qlupgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/fetch-codeql
+      - name: Check DB upgrade scripts
+        run: |
+          echo >empty.trap
+          codeql dataset import -S ql/lib/upgrades/initial/semmlecode.csharp.dbscheme testdb empty.trap
+          codeql dataset upgrade testdb --additional-packs ql/lib
+          diff -q testdb/semmlecode.csharp.dbscheme ql/lib/semmlecode.csharp.dbscheme
+      - name: Check DB downgrade scripts
+        run: |
+          echo >empty.trap
+          rm -rf testdb; codeql dataset import -S ql/lib/semmlecode.csharp.dbscheme testdb empty.trap
+          codeql resolve upgrades --format=lines --allow-downgrades --additional-packs downgrades \
+           --dbscheme=ql/lib/semmlecode.csharp.dbscheme --target-dbscheme=downgrades/initial/semmlecode.csharp.dbscheme |
+           xargs codeql execute upgrades testdb
+          diff -q testdb/semmlecode.csharp.dbscheme downgrades/initial/semmlecode.csharp.dbscheme
+  qltest:
+    runs-on: ubuntu-latest-xl
+    strategy:
+      fail-fast: false
+      matrix:
+        slice: ["1/2", "2/2"]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/fetch-codeql
+      - uses: ./csharp/actions/create-extractor-pack
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
+        with:
+          key: csharp-qltest-${{ matrix.slice }}
+      - name: Run QL tests
+        run: |
+          CODEQL_PATH=$(gh codeql version --format=json | jq -r .unpackedLocation)
+          # The legacy ASP extractor is not in this repo, so take the one from the nightly build
+          mv "$CODEQL_PATH/csharp/tools/extractor-asp.jar" "${{ github.workspace }}/csharp/extractor-pack/tools"
+          # Safe guard against using the bundled extractor
+          rm -rf "$CODEQL_PATH/csharp"
+          codeql test run --threads=0 --ram 50000 --slice ${{ matrix.slice }} --search-path "${{ github.workspace }}/csharp/extractor-pack" --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.202
+      - name: Extractor unit tests
+        run: |
+          dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/csharp/extractor/Semmle.Util.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/csharp/extractor/Semmle.Extraction.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/csharp/autobuilder/Semmle.Autobuild.CSharp.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"

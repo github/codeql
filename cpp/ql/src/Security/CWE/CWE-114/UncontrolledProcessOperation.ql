@@ -14,7 +14,7 @@
 
 import cpp
 import semmle.code.cpp.security.Security
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 import TaintedWithPath
 
 predicate isProcessOperationExplanation(Expr arg, string processOperation) {
@@ -34,5 +34,5 @@ where
   isProcessOperationExplanation(arg, processOperation) and
   taintedWithPath(source, arg, sourceNode, sinkNode)
 select arg, sourceNode, sinkNode,
-  "The value of this argument may come from $@ and is being passed to " + processOperation, source,
-  source.toString()
+  "The value of this argument may come from $@ and is being passed to " + processOperation + ".",
+  source, source.toString()

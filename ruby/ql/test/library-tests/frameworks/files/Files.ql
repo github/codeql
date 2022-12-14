@@ -1,4 +1,4 @@
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.frameworks.Files
 private import codeql.ruby.frameworks.core.IO
 private import codeql.ruby.Concepts

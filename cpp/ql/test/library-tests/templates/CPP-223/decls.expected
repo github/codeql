@@ -13,6 +13,7 @@
 | test.cpp:4:26:4:26 | c<<expression>> |
 | test.cpp:4:26:4:26 | c<<unnamed>> |
 | test.cpp:5:29:5:29 | e |
+| test.cpp:6:24:6:24 | f |
 | test.cpp:6:26:6:26 | (unnamed parameter 0) |
 | test.cpp:6:29:6:31 | (unnamed parameter 1) |
 | test.cpp:7:20:7:20 | f |

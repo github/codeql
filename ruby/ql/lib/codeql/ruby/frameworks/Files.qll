@@ -2,7 +2,7 @@
  * Provides classes for working with file system libraries.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
@@ -133,7 +133,7 @@ module File {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[0..]" and
+      input = "Argument[0,1..]" and
       output = "ReturnValue" and
       preservesValue = false
     }
@@ -181,4 +181,40 @@ module FileUtils {
 
     override DataFlow::Node getAPermissionNode() { result = permissionArg }
   }
+}
+
+/**
+ * Classes and predicates for modeling the core `Dir` module.
+ */
+module Dir {
+  /**
+   * A call to a method on `Dir` that operates on a path as its first argument, and produces file-names.
+   * Considered as a `FileNameSource` and a `FileSystemAccess`.
+   */
+  class DirGlob extends FileSystemAccess::Range, FileNameSource instanceof DataFlow::CallNode {
+    DirGlob() {
+      this =
+        API::getTopLevelMember("Dir")
+            .getAMethodCall(["glob", "[]", "children", "each_child", "entries", "foreach"])
+    }
+
+    override DataFlow::Node getAPathArgument() { result = super.getArgument(0) }
+  }
+
+  /**
+   * A call to a method on `Dir` that operates on a path as its first argument, considered as a `FileSystemAccess`.
+   */
+  class DirPathAccess extends FileSystemAccess::Range instanceof DataFlow::CallNode {
+    DirPathAccess() {
+      this =
+        API::getTopLevelMember("Dir")
+            .getAMethodCall([
+                "chdir", "chroot", "delete", "empty?", "exist?", "exists?", "mkdir", "new", "open",
+                "rmdir", "unlink"
+              ])
+    }
+
+    override DataFlow::Node getAPathArgument() { result = super.getArgument(0) }
+  }
+  // TODO: Model that `(Dir.new "foo").each { |f| ... }` yields a filename (and some other public methods)
 }

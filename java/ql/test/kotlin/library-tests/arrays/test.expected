@@ -18,6 +18,7 @@ sourceSignatures
 | arrayCreations.kt:27:24:27:38 | invoke | invoke(int) |
 | arrayGetsSets.kt:1:1:22:1 | arrayGetSet | arrayGetSet(int[],short[],byte[],long[],float[],double[],boolean[],char[],java.lang.Object[]) |
 | arrayGetsSets.kt:24:1:41:1 | arrayGetSetInPlace | arrayGetSetInPlace(int[],long[],float[],double[]) |
+| arrayIterators.kt:1:1:13:1 | test | test(java.lang.Integer[],int[],boolean[]) |
 | primitiveArrays.kt:3:1:7:1 | Test | Test() |
 | primitiveArrays.kt:5:3:5:123 | test | test(java.lang.Integer[],java.lang.Integer[],int[],java.lang.Integer[][],java.lang.Integer[][],int[][]) |
 #select

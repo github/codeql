@@ -1,3 +1,69 @@
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+### New Queries
+
+* Added a new query, `rb/shell-command-constructed-from-input`, to detect libraries that unsafely construct shell commands from their inputs.
+
+### Minor Analysis Improvements
+
+* The `rb/sql-injection` query now considers consider SQL constructions, such as calls to `Arel.sql`, as sinks.
+
+## 0.4.3
+
+### Minor Analysis Improvements
+
+* The `rb/weak-cryptographic-algorithm` has been updated to no longer report uses of hash functions such as `MD5` and `SHA1` even if they are known to be weak. These hash algorithms are used very often in non-sensitive contexts, making the query too imprecise in practice.
+
+## 0.4.2
+
+### New Queries
+
+* Added a new query, `rb/non-constant-kernel-open`, to detect uses of Kernel.open and related methods with non-constant values.
+* Added a new query, `rb/sensitive-get-query`, to detect cases where sensitive data is read from the query parameters of an HTTP `GET` request.
+
+### Minor Analysis Improvements
+
+* HTTP response header and body writes via `ActionDispatch::Response` are now
+  recognized.
+* The `rb/path-injection` query now treats the `file:` argument of the Rails `render` method as a sink.
+* The alert messages of many queries were changed to better follow the style guide and make the messages consistent with other languages.
+
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* The `rb/xxe` query has been updated to add the following sinks for XML external entity expansion:
+    1. Calls to parse XML using `LibXML` when its `default_substitute_entities` option is enabled.
+    2. Uses of the Rails methods `ActiveSupport::XmlMini.parse`, `Hash.from_xml`, and `Hash.from_trusted_xml` when `ActiveSupport::XmlMini` is configured to use `LibXML` as its backend, and its `default_substitute_entities` option is enabled.
+
+## 0.4.0
+
+### New Queries
+
+* Added a new query, `rb/hardcoded-data-interpreted-as-code`, to detect cases where hardcoded data is executed as code, a technique associated with backdoors.
+
+### Minor Analysis Improvements
+
+* The `rb/unsafe-deserialization` query now includes alerts for user-controlled data passed to `Hash.from_trusted_xml`, since that method can deserialize YAML embedded in the XML, which in turn can result in deserialization of arbitrary objects.
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
+## 0.3.4
+
+## 0.3.3
+
+### New Queries
+
+* Added a new query, `rb/log-injection`, to detect cases where a malicious user may be able to forge log entries.
+* Added a new query, `rb/incomplete-multi-character-sanitization`. The query
+  finds string transformations that do not replace all occurrences of a
+  multi-character substring.
+* Added a new query, `rb/suspicious-regexp-range`, to detect character ranges in regular expressions that seem to match 
+  too many characters.
+
 ## 0.3.2
 
 ## 0.3.1
@@ -87,7 +153,7 @@
 ### New Queries
 
 * A new query (`rb/request-forgery`) has been added. The query finds HTTP requests made with user-controlled URLs.
-* A new query (`rb/csrf-protection-disabled`) has been added. The query finds cases where cross-site forgery protection is explictly disabled.
+* A new query (`rb/csrf-protection-disabled`) has been added. The query finds cases where cross-site forgery protection is explicitly disabled.
 
 ### Query Metadata Changes
 

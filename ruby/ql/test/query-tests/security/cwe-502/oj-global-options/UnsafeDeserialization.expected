@@ -7,4 +7,4 @@ nodes
 | OjGlobalOptions.rb:14:22:14:30 | json_data | semmle.label | json_data |
 subpaths
 #select
-| OjGlobalOptions.rb:14:22:14:30 | json_data | OjGlobalOptions.rb:13:17:13:22 | call to params :  | OjGlobalOptions.rb:14:22:14:30 | json_data | Unsafe deserialization of $@. | OjGlobalOptions.rb:13:17:13:22 | call to params | user input |
+| OjGlobalOptions.rb:14:22:14:30 | json_data | OjGlobalOptions.rb:13:17:13:22 | call to params :  | OjGlobalOptions.rb:14:22:14:30 | json_data | Unsafe deserialization depends on a $@. | OjGlobalOptions.rb:13:17:13:22 | call to params | user-provided value |

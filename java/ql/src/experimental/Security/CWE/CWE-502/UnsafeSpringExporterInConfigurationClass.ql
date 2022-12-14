@@ -56,4 +56,4 @@ private class UnsafeBeanInitMethod extends Method {
 
 from UnsafeBeanInitMethod method
 select method,
-  "Unsafe deserialization in a Spring exporter bean '" + method.getBeanIdentifier() + "'"
+  "Unsafe deserialization in a Spring exporter bean '" + method.getBeanIdentifier() + "'."

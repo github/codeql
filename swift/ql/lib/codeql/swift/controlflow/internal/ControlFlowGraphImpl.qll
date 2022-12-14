@@ -993,16 +993,36 @@ module Decls {
     AbstractFunctionDecl getAst() { result = ast }
 
     final override ControlFlowElement getChildElement(int i) {
+      i = -1 and
+      result.asAstNode() = ast.getSelfParam()
+      or
       result.asAstNode() = ast.getParam(i)
       or
       result.asAstNode() = ast.getBody() and
       i = ast.getNumberOfParams()
     }
   }
+
+  /**
+   * The control-flow of an #if block.
+   * The active elements are already listed in the containing scope, so we can just flow through
+   * this as a leaf.
+   */
+  class IfConfigDeclTree extends AstLeafTree {
+    override IfConfigDecl ast;
+  }
 }
 
 module Exprs {
   module AssignExprs {
+    /**
+     * The control-flow of a `DiscardAssignmentExpr`, which represents the
+     * `_` leaf expression that may appear on the left-hand side of an `AssignExpr`.
+     */
+    private class DiscardAssignmentExprTree extends AstLeafTree {
+      override DiscardAssignmentExpr ast;
+    }
+
     /**
      * The control-flow of an assignment operation.
      *
@@ -1062,7 +1082,7 @@ module Exprs {
 
     /**
      * The control-flow for assignments where the left-hand side has
-     * direct-to-implmentation-access semantics.
+     * direct-to-implementation-access semantics.
      */
     class PropertyAssignExpr extends AssignExprTree {
       AccessorDecl accessorDecl;

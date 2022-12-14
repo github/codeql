@@ -298,9 +298,7 @@ class MethodCallNode extends CallNode instanceof DataFlow::Impl::MethodCallNodeD
  * new Array(16)
  * ```
  */
-class NewNode extends InvokeNode {
-  NewNode() { this instanceof DataFlow::Impl::NewNodeDef }
-}
+class NewNode extends InvokeNode instanceof DataFlow::Impl::NewNodeDef { }
 
 /**
  * A data flow node corresponding to the `this` parameter in a function or `this` at the top-level.
@@ -472,6 +470,12 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   /** Gets a parameter of this function. */
   ParameterNode getAParameter() { result = this.getParameter(_) }
 
+  /** Gets the parameter named `name` of this function, if any. */
+  DataFlow::ParameterNode getParameterByName(string name) {
+    result = this.getAParameter() and
+    result.getName() = name
+  }
+
   /** Gets the number of parameters declared on this function. */
   int getNumParameter() { result = count(astNode.getAParameter()) }
 
@@ -555,6 +559,14 @@ class ObjectLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   /** Gets the property setter of the given name, installed on this object literal. */
   DataFlow::FunctionNode getPropertySetter(string name) {
     result = astNode.getPropertyByName(name).(PropertySetter).getInit().flow()
+  }
+
+  /** Gets the value of a computed property name of this object literal, such as `x` in `{[x]: 1}` */
+  DataFlow::Node getAComputedPropertyName() {
+    exists(Property prop | prop = astNode.getAProperty() |
+      prop.isComputed() and
+      result = prop.getNameExpr().flow()
+    )
   }
 }
 

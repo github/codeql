@@ -33,9 +33,7 @@ module LogInjection {
   abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /** A source of untrusted data, considered as a taint source for log injection. */
-  class UntrustedFlowAsSource extends Source {
-    UntrustedFlowAsSource() { this instanceof UntrustedFlowSource }
-  }
+  class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
 
   /** An argument to a logging mechanism. */
   class LoggerSink extends Sink {

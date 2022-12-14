@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.Stmt
 
-class FailStmtBase extends Synth::TFailStmt, Stmt {
-  override string getAPrimaryQlClass() { result = "FailStmt" }
+module Generated {
+  class FailStmt extends Synth::TFailStmt, Stmt {
+    override string getAPrimaryQlClass() { result = "FailStmt" }
+  }
 }

@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.LookupExpr
 
-class DynamicLookupExprBase extends Synth::TDynamicLookupExpr, LookupExpr { }
+module Generated {
+  class DynamicLookupExpr extends Synth::TDynamicLookupExpr, LookupExpr { }
+}

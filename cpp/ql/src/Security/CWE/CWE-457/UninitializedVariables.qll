@@ -10,12 +10,6 @@ private predicate reaches(ControlFlowNode a, ControlFlowNode b) = fastTC(success
 
 private predicate successor(ControlFlowNode a, ControlFlowNode b) { b = a.getASuccessor() }
 
-class WhitelistedCallsConfig extends string {
-  WhitelistedCallsConfig() { this = "config" }
-
-  abstract predicate isWhitelisted(Call c);
-}
-
 abstract class WhitelistedCall extends Call {
   override Function getTarget() { none() }
 }

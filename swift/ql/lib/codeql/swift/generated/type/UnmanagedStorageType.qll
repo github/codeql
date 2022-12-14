@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.ReferenceStorageType
 
-class UnmanagedStorageTypeBase extends Synth::TUnmanagedStorageType, ReferenceStorageType {
-  override string getAPrimaryQlClass() { result = "UnmanagedStorageType" }
+module Generated {
+  class UnmanagedStorageType extends Synth::TUnmanagedStorageType, ReferenceStorageType {
+    override string getAPrimaryQlClass() { result = "UnmanagedStorageType" }
+  }
 }

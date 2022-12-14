@@ -4,11 +4,9 @@ func foo(
   _: Builtin.FPIEEE32,
   _: Builtin.FPIEEE64,
   _: Builtin.BridgeObject,
-  _: Builtin.DefaultActorStorage,
-  _: Builtin.Executor,
-  _: Builtin.Job,
   _: Builtin.NativeObject,
   _: Builtin.RawPointer,
-  _: Builtin.RawUnsafeContinuation,
-  _: Builtin.UnsafeValueBuffer
+  _: Builtin.Executor,
+  _: Builtin.Job,
+  _: Builtin.RawUnsafeContinuation
 ) {}

@@ -34,3 +34,7 @@ resp10.body
 connection = Faraday.new(url: "http://example.com")
 resp11 = connection.get("/")
 resp11.body
+
+connection = Faraday::Connection.new(url: "https://example.com")
+resp12 = connection.get("/")
+resp12.body

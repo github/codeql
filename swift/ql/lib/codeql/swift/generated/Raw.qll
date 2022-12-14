@@ -6,6 +6,8 @@ module Raw {
   }
 
   class Callable extends @callable, Element {
+    ParamDecl getSelfParam() { callable_self_params(this, result) }
+
     ParamDecl getParam(int index) { callable_params(this, index, result) }
 
     BraceStmt getBody() { callable_bodies(this, result) }
@@ -13,16 +15,6 @@ module Raw {
 
   class File extends @file, Element {
     string getName() { files(this, result) }
-  }
-
-  class GenericContext extends @generic_context, Element {
-    GenericTypeParamDecl getGenericTypeParam(int index) {
-      generic_context_generic_type_params(this, index, result)
-    }
-  }
-
-  class IterableDeclContext extends @iterable_decl_context, Element {
-    Decl getMember(int index) { iterable_decl_context_members(this, index, result) }
   }
 
   class Locatable extends @locatable, Element {
@@ -41,58 +33,12 @@ module Raw {
     int getEndColumn() { locations(this, _, _, _, _, result) }
   }
 
-  class Type extends @type, Element {
-    string getName() { types(this, result, _) }
-
-    Type getCanonicalType() { types(this, _, result) }
-  }
-
-  class AnyFunctionType extends @any_function_type, Type {
-    Type getResult() { any_function_types(this, result) }
-
-    Type getParamType(int index) { any_function_type_param_types(this, index, result) }
-
-    string getParamLabel(int index) { any_function_type_param_labels(this, index, result) }
-
-    predicate isThrowing() { any_function_type_is_throwing(this) }
-
-    predicate isAsync() { any_function_type_is_async(this) }
-  }
-
-  class AnyGenericType extends @any_generic_type, Type {
-    Type getParent() { any_generic_type_parents(this, result) }
-
-    Decl getDeclaration() { any_generic_types(this, result) }
-  }
-
-  class AnyMetatypeType extends @any_metatype_type, Type { }
-
-  class Argument extends @argument, Locatable {
-    override string toString() { result = "Argument" }
-
-    string getLabel() { arguments(this, result, _) }
-
-    Expr getExpr() { arguments(this, _, result) }
-  }
-
   class AstNode extends @ast_node, Locatable { }
-
-  class BuiltinType extends @builtin_type, Type { }
 
   class Comment extends @comment, Locatable {
     override string toString() { result = "Comment" }
 
     string getText() { comments(this, result) }
-  }
-
-  class ConditionElement extends @condition_element, Locatable {
-    override string toString() { result = "ConditionElement" }
-
-    Expr getBoolean() { condition_element_booleans(this, result) }
-
-    Pattern getPattern() { condition_element_patterns(this, result) }
-
-    Expr getInitializer() { condition_element_initializers(this, result) }
   }
 
   class DbFile extends @db_file, File {
@@ -103,250 +49,307 @@ module Raw {
     override string toString() { result = "DbLocation" }
   }
 
-  class DependentMemberType extends @dependent_member_type, Type {
-    override string toString() { result = "DependentMemberType" }
+  class Diagnostics extends @diagnostics, Locatable {
+    override string toString() { result = "Diagnostics" }
 
-    Type getBaseType() { dependent_member_types(this, result, _) }
+    string getText() { diagnostics(this, result, _) }
 
-    AssociatedTypeDecl getAssociatedTypeDecl() { dependent_member_types(this, _, result) }
+    int getKind() { diagnostics(this, _, result) }
   }
 
-  class DynamicSelfType extends @dynamic_self_type, Type {
-    override string toString() { result = "DynamicSelfType" }
+  class ErrorElement extends @error_element, Locatable { }
 
-    Type getStaticSelfType() { dynamic_self_types(this, result) }
+  class UnspecifiedElement extends @unspecified_element, ErrorElement {
+    override string toString() { result = "UnspecifiedElement" }
+
+    Element getParent() { unspecified_element_parents(this, result) }
+
+    string getProperty() { unspecified_elements(this, result, _) }
+
+    int getIndex() { unspecified_element_indices(this, result) }
+
+    string getError() { unspecified_elements(this, _, result) }
   }
 
-  class ErrorType extends @error_type, Type {
-    override string toString() { result = "ErrorType" }
+  class Decl extends @decl, AstNode {
+    ModuleDecl getModule() { decls(this, result) }
   }
 
-  class ExistentialType extends @existential_type, Type {
-    override string toString() { result = "ExistentialType" }
-
-    Type getConstraint() { existential_types(this, result) }
+  class GenericContext extends @generic_context, Element {
+    GenericTypeParamDecl getGenericTypeParam(int index) {
+      generic_context_generic_type_params(this, index, result)
+    }
   }
 
-  class IfConfigClause extends @if_config_clause, Locatable {
-    override string toString() { result = "IfConfigClause" }
-
-    Expr getCondition() { if_config_clause_conditions(this, result) }
-
-    AstNode getElement(int index) { if_config_clause_elements(this, index, result) }
-
-    predicate isActive() { if_config_clause_is_active(this) }
+  class IterableDeclContext extends @iterable_decl_context, Element {
+    Decl getMember(int index) { iterable_decl_context_members(this, index, result) }
   }
 
-  class InOutType extends @in_out_type, Type {
-    override string toString() { result = "InOutType" }
+  class EnumCaseDecl extends @enum_case_decl, Decl {
+    override string toString() { result = "EnumCaseDecl" }
 
-    Type getObjectType() { in_out_types(this, result) }
+    EnumElementDecl getElement(int index) { enum_case_decl_elements(this, index, result) }
   }
 
-  class LValueType extends @l_value_type, Type {
-    override string toString() { result = "LValueType" }
+  class ExtensionDecl extends @extension_decl, GenericContext, IterableDeclContext, Decl {
+    override string toString() { result = "ExtensionDecl" }
 
-    Type getObjectType() { l_value_types(this, result) }
+    NominalTypeDecl getExtendedTypeDecl() { extension_decls(this, result) }
   }
 
-  class ModuleType extends @module_type, Type {
-    override string toString() { result = "ModuleType" }
+  class IfConfigDecl extends @if_config_decl, Decl {
+    override string toString() { result = "IfConfigDecl" }
 
-    ModuleDecl getModule() { module_types(this, result) }
+    AstNode getActiveElement(int index) { if_config_decl_active_elements(this, index, result) }
   }
 
-  class PlaceholderType extends @placeholder_type, Type {
-    override string toString() { result = "PlaceholderType" }
+  class ImportDecl extends @import_decl, Decl {
+    override string toString() { result = "ImportDecl" }
+
+    predicate isExported() { import_decl_is_exported(this) }
+
+    ModuleDecl getImportedModule() { import_decl_imported_modules(this, result) }
+
+    ValueDecl getDeclaration(int index) { import_decl_declarations(this, index, result) }
   }
 
-  class ProtocolCompositionType extends @protocol_composition_type, Type {
-    override string toString() { result = "ProtocolCompositionType" }
+  class MissingMemberDecl extends @missing_member_decl, Decl {
+    override string toString() { result = "MissingMemberDecl" }
 
-    Type getMember(int index) { protocol_composition_type_members(this, index, result) }
+    string getName() { missing_member_decls(this, result) }
   }
 
-  class ReferenceStorageType extends @reference_storage_type, Type {
-    Type getReferentType() { reference_storage_types(this, result) }
+  class OperatorDecl extends @operator_decl, Decl {
+    string getName() { operator_decls(this, result) }
   }
 
-  class SilBlockStorageType extends @sil_block_storage_type, Type {
-    override string toString() { result = "SilBlockStorageType" }
+  class PatternBindingDecl extends @pattern_binding_decl, Decl {
+    override string toString() { result = "PatternBindingDecl" }
+
+    Expr getInit(int index) { pattern_binding_decl_inits(this, index, result) }
+
+    Pattern getPattern(int index) { pattern_binding_decl_patterns(this, index, result) }
   }
 
-  class SilBoxType extends @sil_box_type, Type {
-    override string toString() { result = "SilBoxType" }
+  class PoundDiagnosticDecl extends @pound_diagnostic_decl, Decl {
+    override string toString() { result = "PoundDiagnosticDecl" }
+
+    int getKind() { pound_diagnostic_decls(this, result, _) }
+
+    StringLiteralExpr getMessage() { pound_diagnostic_decls(this, _, result) }
   }
 
-  class SilFunctionType extends @sil_function_type, Type {
-    override string toString() { result = "SilFunctionType" }
+  class PrecedenceGroupDecl extends @precedence_group_decl, Decl {
+    override string toString() { result = "PrecedenceGroupDecl" }
   }
 
-  class SilTokenType extends @sil_token_type, Type {
-    override string toString() { result = "SilTokenType" }
+  class TopLevelCodeDecl extends @top_level_code_decl, Decl {
+    override string toString() { result = "TopLevelCodeDecl" }
+
+    BraceStmt getBody() { top_level_code_decls(this, result) }
   }
 
-  class SubstitutableType extends @substitutable_type, Type { }
-
-  class SugarType extends @sugar_type, Type { }
-
-  class TupleType extends @tuple_type, Type {
-    override string toString() { result = "TupleType" }
-
-    Type getType(int index) { tuple_type_types(this, index, result) }
-
-    string getName(int index) { tuple_type_names(this, index, result) }
+  class ValueDecl extends @value_decl, Decl {
+    Type getInterfaceType() { value_decls(this, result) }
   }
 
-  class TypeVariableType extends @type_variable_type, Type {
-    override string toString() { result = "TypeVariableType" }
+  class AbstractFunctionDecl extends @abstract_function_decl, GenericContext, ValueDecl, Callable {
+    string getName() { abstract_function_decls(this, result) }
   }
 
-  class UnresolvedType extends @unresolved_type, Type {
-    override string toString() { result = "UnresolvedType" }
+  class AbstractStorageDecl extends @abstract_storage_decl, ValueDecl {
+    AccessorDecl getAccessorDecl(int index) {
+      abstract_storage_decl_accessor_decls(this, index, result)
+    }
   }
 
-  class AnyBuiltinIntegerType extends @any_builtin_integer_type, BuiltinType { }
+  class EnumElementDecl extends @enum_element_decl, ValueDecl {
+    override string toString() { result = "EnumElementDecl" }
 
-  class ArchetypeType extends @archetype_type, SubstitutableType {
-    Type getInterfaceType() { archetype_types(this, result) }
+    string getName() { enum_element_decls(this, result) }
 
-    Type getSuperclass() { archetype_type_superclasses(this, result) }
-
-    ProtocolDecl getProtocol(int index) { archetype_type_protocols(this, index, result) }
+    ParamDecl getParam(int index) { enum_element_decl_params(this, index, result) }
   }
 
-  class BuiltinBridgeObjectType extends @builtin_bridge_object_type, BuiltinType {
-    override string toString() { result = "BuiltinBridgeObjectType" }
+  class InfixOperatorDecl extends @infix_operator_decl, OperatorDecl {
+    override string toString() { result = "InfixOperatorDecl" }
+
+    PrecedenceGroupDecl getPrecedenceGroup() { infix_operator_decl_precedence_groups(this, result) }
   }
 
-  class BuiltinDefaultActorStorageType extends @builtin_default_actor_storage_type, BuiltinType {
-    override string toString() { result = "BuiltinDefaultActorStorageType" }
+  class PostfixOperatorDecl extends @postfix_operator_decl, OperatorDecl {
+    override string toString() { result = "PostfixOperatorDecl" }
   }
 
-  class BuiltinExecutorType extends @builtin_executor_type, BuiltinType {
-    override string toString() { result = "BuiltinExecutorType" }
+  class PrefixOperatorDecl extends @prefix_operator_decl, OperatorDecl {
+    override string toString() { result = "PrefixOperatorDecl" }
   }
 
-  class BuiltinFloatType extends @builtin_float_type, BuiltinType {
-    override string toString() { result = "BuiltinFloatType" }
+  class TypeDecl extends @type_decl, ValueDecl {
+    string getName() { type_decls(this, result) }
+
+    Type getBaseType(int index) { type_decl_base_types(this, index, result) }
   }
 
-  class BuiltinJobType extends @builtin_job_type, BuiltinType {
-    override string toString() { result = "BuiltinJobType" }
+  class AbstractTypeParamDecl extends @abstract_type_param_decl, TypeDecl { }
+
+  class ConstructorDecl extends @constructor_decl, AbstractFunctionDecl {
+    override string toString() { result = "ConstructorDecl" }
   }
 
-  class BuiltinNativeObjectType extends @builtin_native_object_type, BuiltinType {
-    override string toString() { result = "BuiltinNativeObjectType" }
+  class DestructorDecl extends @destructor_decl, AbstractFunctionDecl {
+    override string toString() { result = "DestructorDecl" }
   }
 
-  class BuiltinRawPointerType extends @builtin_raw_pointer_type, BuiltinType {
-    override string toString() { result = "BuiltinRawPointerType" }
+  class FuncDecl extends @func_decl, AbstractFunctionDecl { }
+
+  class GenericTypeDecl extends @generic_type_decl, GenericContext, TypeDecl { }
+
+  class ModuleDecl extends @module_decl, TypeDecl {
+    override string toString() { result = "ModuleDecl" }
+
+    predicate isBuiltinModule() { module_decl_is_builtin_module(this) }
+
+    predicate isSystemModule() { module_decl_is_system_module(this) }
+
+    ModuleDecl getImportedModule(int index) { module_decl_imported_modules(this, index, result) }
+
+    ModuleDecl getExportedModule(int index) { module_decl_exported_modules(this, index, result) }
   }
 
-  class BuiltinRawUnsafeContinuationType extends @builtin_raw_unsafe_continuation_type, BuiltinType {
-    override string toString() { result = "BuiltinRawUnsafeContinuationType" }
+  class SubscriptDecl extends @subscript_decl, AbstractStorageDecl, GenericContext {
+    override string toString() { result = "SubscriptDecl" }
+
+    ParamDecl getParam(int index) { subscript_decl_params(this, index, result) }
+
+    Type getElementType() { subscript_decls(this, result) }
   }
 
-  class BuiltinUnsafeValueBufferType extends @builtin_unsafe_value_buffer_type, BuiltinType {
-    override string toString() { result = "BuiltinUnsafeValueBufferType" }
+  class VarDecl extends @var_decl, AbstractStorageDecl {
+    string getName() { var_decls(this, result, _) }
+
+    Type getType() { var_decls(this, _, result) }
+
+    Type getAttachedPropertyWrapperType() { var_decl_attached_property_wrapper_types(this, result) }
+
+    Pattern getParentPattern() { var_decl_parent_patterns(this, result) }
+
+    Expr getParentInitializer() { var_decl_parent_initializers(this, result) }
+
+    PatternBindingDecl getPropertyWrapperBackingVarBinding() {
+      var_decl_property_wrapper_backing_var_bindings(this, result)
+    }
+
+    VarDecl getPropertyWrapperBackingVar() { var_decl_property_wrapper_backing_vars(this, result) }
+
+    PatternBindingDecl getPropertyWrapperProjectionVarBinding() {
+      var_decl_property_wrapper_projection_var_bindings(this, result)
+    }
+
+    VarDecl getPropertyWrapperProjectionVar() {
+      var_decl_property_wrapper_projection_vars(this, result)
+    }
   }
 
-  class BuiltinVectorType extends @builtin_vector_type, BuiltinType {
-    override string toString() { result = "BuiltinVectorType" }
+  class AccessorDecl extends @accessor_decl, FuncDecl {
+    override string toString() { result = "AccessorDecl" }
+
+    predicate isGetter() { accessor_decl_is_getter(this) }
+
+    predicate isSetter() { accessor_decl_is_setter(this) }
+
+    predicate isWillSet() { accessor_decl_is_will_set(this) }
+
+    predicate isDidSet() { accessor_decl_is_did_set(this) }
+
+    predicate isRead() { accessor_decl_is_read(this) }
+
+    predicate isModify() { accessor_decl_is_modify(this) }
+
+    predicate isUnsafeAddress() { accessor_decl_is_unsafe_address(this) }
+
+    predicate isUnsafeMutableAddress() { accessor_decl_is_unsafe_mutable_address(this) }
   }
 
-  class CaseLabelItem extends @case_label_item, AstNode {
-    override string toString() { result = "CaseLabelItem" }
-
-    Pattern getPattern() { case_label_items(this, result) }
-
-    Expr getGuard() { case_label_item_guards(this, result) }
+  class AssociatedTypeDecl extends @associated_type_decl, AbstractTypeParamDecl {
+    override string toString() { result = "AssociatedTypeDecl" }
   }
 
-  class Decl extends @decl, AstNode { }
+  class ConcreteFuncDecl extends @concrete_func_decl, FuncDecl {
+    override string toString() { result = "ConcreteFuncDecl" }
+  }
 
-  class ExistentialMetatypeType extends @existential_metatype_type, AnyMetatypeType {
-    override string toString() { result = "ExistentialMetatypeType" }
+  class ConcreteVarDecl extends @concrete_var_decl, VarDecl {
+    override string toString() { result = "ConcreteVarDecl" }
+
+    int getIntroducerInt() { concrete_var_decls(this, result) }
+  }
+
+  class GenericTypeParamDecl extends @generic_type_param_decl, AbstractTypeParamDecl {
+    override string toString() { result = "GenericTypeParamDecl" }
+  }
+
+  class NominalTypeDecl extends @nominal_type_decl, GenericTypeDecl, IterableDeclContext {
+    Type getType() { nominal_type_decls(this, result) }
+  }
+
+  class OpaqueTypeDecl extends @opaque_type_decl, GenericTypeDecl {
+    override string toString() { result = "OpaqueTypeDecl" }
+
+    ValueDecl getNamingDeclaration() { opaque_type_decls(this, result) }
+
+    GenericTypeParamType getOpaqueGenericParam(int index) {
+      opaque_type_decl_opaque_generic_params(this, index, result)
+    }
+  }
+
+  class ParamDecl extends @param_decl, VarDecl {
+    override string toString() { result = "ParamDecl" }
+
+    predicate isInout() { param_decl_is_inout(this) }
+
+    PatternBindingDecl getPropertyWrapperLocalWrappedVarBinding() {
+      param_decl_property_wrapper_local_wrapped_var_bindings(this, result)
+    }
+
+    VarDecl getPropertyWrapperLocalWrappedVar() {
+      param_decl_property_wrapper_local_wrapped_vars(this, result)
+    }
+  }
+
+  class TypeAliasDecl extends @type_alias_decl, GenericTypeDecl {
+    override string toString() { result = "TypeAliasDecl" }
+  }
+
+  class ClassDecl extends @class_decl, NominalTypeDecl {
+    override string toString() { result = "ClassDecl" }
+  }
+
+  class EnumDecl extends @enum_decl, NominalTypeDecl {
+    override string toString() { result = "EnumDecl" }
+  }
+
+  class ProtocolDecl extends @protocol_decl, NominalTypeDecl {
+    override string toString() { result = "ProtocolDecl" }
+  }
+
+  class StructDecl extends @struct_decl, NominalTypeDecl {
+    override string toString() { result = "StructDecl" }
+  }
+
+  class Argument extends @argument, Locatable {
+    override string toString() { result = "Argument" }
+
+    string getLabel() { arguments(this, result, _) }
+
+    Expr getExpr() { arguments(this, _, result) }
   }
 
   class Expr extends @expr, AstNode {
     Type getType() { expr_types(this, result) }
   }
 
-  class FunctionType extends @function_type, AnyFunctionType {
-    override string toString() { result = "FunctionType" }
-  }
-
-  class GenericFunctionType extends @generic_function_type, AnyFunctionType {
-    override string toString() { result = "GenericFunctionType" }
-
-    GenericTypeParamType getGenericParam(int index) {
-      generic_function_type_generic_params(this, index, result)
-    }
-  }
-
-  class GenericTypeParamType extends @generic_type_param_type, SubstitutableType {
-    override string toString() { result = "GenericTypeParamType" }
-  }
-
-  class MetatypeType extends @metatype_type, AnyMetatypeType {
-    override string toString() { result = "MetatypeType" }
-  }
-
-  class NominalOrBoundGenericNominalType extends @nominal_or_bound_generic_nominal_type,
-    AnyGenericType { }
-
-  class ParenType extends @paren_type, SugarType {
-    override string toString() { result = "ParenType" }
-
-    Type getType() { paren_types(this, result) }
-  }
-
-  class Pattern extends @pattern, AstNode { }
-
-  class Stmt extends @stmt, AstNode { }
-
-  class StmtCondition extends @stmt_condition, AstNode {
-    override string toString() { result = "StmtCondition" }
-
-    ConditionElement getElement(int index) { stmt_condition_elements(this, index, result) }
-  }
-
-  class SyntaxSugarType extends @syntax_sugar_type, SugarType { }
-
-  class TypeAliasType extends @type_alias_type, SugarType {
-    override string toString() { result = "TypeAliasType" }
-
-    TypeAliasDecl getDecl() { type_alias_types(this, result) }
-  }
-
-  class TypeRepr extends @type_repr, AstNode {
-    override string toString() { result = "TypeRepr" }
-
-    Type getType() { type_repr_types(this, result) }
-  }
-
-  class UnboundGenericType extends @unbound_generic_type, AnyGenericType {
-    override string toString() { result = "UnboundGenericType" }
-  }
-
-  class UnmanagedStorageType extends @unmanaged_storage_type, ReferenceStorageType {
-    override string toString() { result = "UnmanagedStorageType" }
-  }
-
-  class UnownedStorageType extends @unowned_storage_type, ReferenceStorageType {
-    override string toString() { result = "UnownedStorageType" }
-  }
-
-  class WeakStorageType extends @weak_storage_type, ReferenceStorageType {
-    override string toString() { result = "WeakStorageType" }
-  }
-
-  class AbstractClosureExpr extends @abstract_closure_expr, Callable, Expr { }
-
-  class AnyPattern extends @any_pattern, Pattern {
-    override string toString() { result = "AnyPattern" }
-  }
+  class AbstractClosureExpr extends @abstract_closure_expr, Expr, Callable { }
 
   class AnyTryExpr extends @any_try_expr, Expr {
     Expr getSubExpr() { any_try_exprs(this, result) }
@@ -354,16 +357,18 @@ module Raw {
 
   class AppliedPropertyWrapperExpr extends @applied_property_wrapper_expr, Expr {
     override string toString() { result = "AppliedPropertyWrapperExpr" }
+
+    int getKind() { applied_property_wrapper_exprs(this, result, _, _) }
+
+    Expr getValue() { applied_property_wrapper_exprs(this, _, result, _) }
+
+    ParamDecl getParam() { applied_property_wrapper_exprs(this, _, _, result) }
   }
 
   class ApplyExpr extends @apply_expr, Expr {
     Expr getFunction() { apply_exprs(this, result) }
 
     Argument getArgument(int index) { apply_expr_arguments(this, index, result) }
-  }
-
-  class ArrowExpr extends @arrow_expr, Expr {
-    override string toString() { result = "ArrowExpr" }
   }
 
   class AssignExpr extends @assign_expr, Expr {
@@ -380,46 +385,6 @@ module Raw {
     Expr getSubExpr() { bind_optional_exprs(this, result) }
   }
 
-  class BindingPattern extends @binding_pattern, Pattern {
-    override string toString() { result = "BindingPattern" }
-
-    Pattern getSubPattern() { binding_patterns(this, result) }
-  }
-
-  class BoolPattern extends @bool_pattern, Pattern {
-    override string toString() { result = "BoolPattern" }
-
-    boolean getValue() { bool_patterns(this, result) }
-  }
-
-  class BoundGenericType extends @bound_generic_type, NominalOrBoundGenericNominalType {
-    Type getArgType(int index) { bound_generic_type_arg_types(this, index, result) }
-  }
-
-  class BraceStmt extends @brace_stmt, Stmt {
-    override string toString() { result = "BraceStmt" }
-
-    AstNode getElement(int index) { brace_stmt_elements(this, index, result) }
-  }
-
-  class BreakStmt extends @break_stmt, Stmt {
-    override string toString() { result = "BreakStmt" }
-
-    string getTargetName() { break_stmt_target_names(this, result) }
-
-    Stmt getTarget() { break_stmt_targets(this, result) }
-  }
-
-  class BuiltinIntegerLiteralType extends @builtin_integer_literal_type, AnyBuiltinIntegerType {
-    override string toString() { result = "BuiltinIntegerLiteralType" }
-  }
-
-  class BuiltinIntegerType extends @builtin_integer_type, AnyBuiltinIntegerType {
-    override string toString() { result = "BuiltinIntegerType" }
-
-    int getWidth() { builtin_integer_type_widths(this, result) }
-  }
-
   class CaptureListExpr extends @capture_list_expr, Expr {
     override string toString() { result = "CaptureListExpr" }
 
@@ -430,29 +395,7 @@ module Raw {
     ClosureExpr getClosureBody() { capture_list_exprs(this, result) }
   }
 
-  class CaseStmt extends @case_stmt, Stmt {
-    override string toString() { result = "CaseStmt" }
-
-    Stmt getBody() { case_stmts(this, result) }
-
-    CaseLabelItem getLabel(int index) { case_stmt_labels(this, index, result) }
-
-    VarDecl getVariable(int index) { case_stmt_variables(this, index, result) }
-  }
-
-  class CodeCompletionExpr extends @code_completion_expr, Expr {
-    override string toString() { result = "CodeCompletionExpr" }
-  }
-
   class CollectionExpr extends @collection_expr, Expr { }
-
-  class ContinueStmt extends @continue_stmt, Stmt {
-    override string toString() { result = "ContinueStmt" }
-
-    string getTargetName() { continue_stmt_target_names(this, result) }
-
-    Stmt getTarget() { continue_stmt_targets(this, result) }
-  }
 
   class DeclRefExpr extends @decl_ref_expr, Expr {
     override string toString() { result = "DeclRefExpr" }
@@ -468,6 +411,8 @@ module Raw {
     }
 
     predicate hasOrdinarySemantics() { decl_ref_expr_has_ordinary_semantics(this) }
+
+    predicate hasDistributedThunkSemantics() { decl_ref_expr_has_distributed_thunk_semantics(this) }
   }
 
   class DefaultArgumentExpr extends @default_argument_expr, Expr {
@@ -478,20 +423,6 @@ module Raw {
     int getParamIndex() { default_argument_exprs(this, _, result) }
 
     Expr getCallerSideDefault() { default_argument_expr_caller_side_defaults(this, result) }
-  }
-
-  class DeferStmt extends @defer_stmt, Stmt {
-    override string toString() { result = "DeferStmt" }
-
-    BraceStmt getBody() { defer_stmts(this, result) }
-  }
-
-  class DictionaryType extends @dictionary_type, SyntaxSugarType {
-    override string toString() { result = "DictionaryType" }
-
-    Type getKeyType() { dictionary_types(this, result, _) }
-
-    Type getValueType() { dictionary_types(this, _, result) }
   }
 
   class DiscardAssignmentExpr extends @discard_assignment_expr, Expr {
@@ -512,24 +443,6 @@ module Raw {
     Expr getBase() { dynamic_type_exprs(this, result) }
   }
 
-  class EditorPlaceholderExpr extends @editor_placeholder_expr, Expr {
-    override string toString() { result = "EditorPlaceholderExpr" }
-  }
-
-  class EnumCaseDecl extends @enum_case_decl, Decl {
-    override string toString() { result = "EnumCaseDecl" }
-
-    EnumElementDecl getElement(int index) { enum_case_decl_elements(this, index, result) }
-  }
-
-  class EnumElementPattern extends @enum_element_pattern, Pattern {
-    override string toString() { result = "EnumElementPattern" }
-
-    EnumElementDecl getElement() { enum_element_patterns(this, result) }
-
-    Pattern getSubPattern() { enum_element_pattern_sub_patterns(this, result) }
-  }
-
   class EnumIsCaseExpr extends @enum_is_case_expr, Expr {
     override string toString() { result = "EnumIsCaseExpr" }
 
@@ -538,36 +451,12 @@ module Raw {
     EnumElementDecl getElement() { enum_is_case_exprs(this, _, result) }
   }
 
-  class ErrorExpr extends @error_expr, Expr {
+  class ErrorExpr extends @error_expr, Expr, ErrorElement {
     override string toString() { result = "ErrorExpr" }
   }
 
   class ExplicitCastExpr extends @explicit_cast_expr, Expr {
     Expr getSubExpr() { explicit_cast_exprs(this, result) }
-  }
-
-  class ExprPattern extends @expr_pattern, Pattern {
-    override string toString() { result = "ExprPattern" }
-
-    Expr getSubExpr() { expr_patterns(this, result) }
-  }
-
-  class ExtensionDecl extends @extension_decl, Decl, GenericContext, IterableDeclContext {
-    override string toString() { result = "ExtensionDecl" }
-
-    NominalTypeDecl getExtendedTypeDecl() { extension_decls(this, result) }
-  }
-
-  class FailStmt extends @fail_stmt, Stmt {
-    override string toString() { result = "FailStmt" }
-  }
-
-  class FallthroughStmt extends @fallthrough_stmt, Stmt {
-    override string toString() { result = "FallthroughStmt" }
-
-    CaseStmt getFallthroughSource() { fallthrough_stmts(this, result, _) }
-
-    CaseStmt getFallthroughDest() { fallthrough_stmts(this, _, result) }
   }
 
   class ForceValueExpr extends @force_value_expr, Expr {
@@ -578,12 +467,6 @@ module Raw {
 
   class IdentityExpr extends @identity_expr, Expr {
     Expr getSubExpr() { identity_exprs(this, result) }
-  }
-
-  class IfConfigDecl extends @if_config_decl, Decl {
-    override string toString() { result = "IfConfigDecl" }
-
-    IfConfigClause getClause(int index) { if_config_decl_clauses(this, index, result) }
   }
 
   class IfExpr extends @if_expr, Expr {
@@ -600,28 +483,10 @@ module Raw {
     Expr getSubExpr() { implicit_conversion_exprs(this, result) }
   }
 
-  class ImportDecl extends @import_decl, Decl {
-    override string toString() { result = "ImportDecl" }
-
-    predicate isExported() { import_decl_is_exported(this) }
-
-    ModuleDecl getModule() { import_decls(this, result) }
-
-    ValueDecl getDeclaration(int index) { import_decl_declarations(this, index, result) }
-  }
-
   class InOutExpr extends @in_out_expr, Expr {
     override string toString() { result = "InOutExpr" }
 
     Expr getSubExpr() { in_out_exprs(this, result) }
-  }
-
-  class IsPattern extends @is_pattern, Pattern {
-    override string toString() { result = "IsPattern" }
-
-    TypeRepr getCastTypeRepr() { is_pattern_cast_type_reprs(this, result) }
-
-    Pattern getSubPattern() { is_pattern_sub_patterns(this, result) }
   }
 
   class KeyPathApplicationExpr extends @key_path_application_expr, Expr {
@@ -642,10 +507,6 @@ module Raw {
     TypeRepr getRoot() { key_path_expr_roots(this, result) }
 
     Expr getParsedPath() { key_path_expr_parsed_paths(this, result) }
-  }
-
-  class LabeledStmt extends @labeled_stmt, Stmt {
-    string getLabel() { labeled_stmt_labels(this, result) }
   }
 
   class LazyInitializerExpr extends @lazy_initializer_expr, Expr {
@@ -672,26 +533,6 @@ module Raw {
     Expr getSubExpr() { make_temporarily_escapable_exprs(this, _, _, result) }
   }
 
-  class MissingMemberDecl extends @missing_member_decl, Decl {
-    override string toString() { result = "MissingMemberDecl" }
-  }
-
-  class NamedPattern extends @named_pattern, Pattern {
-    override string toString() { result = "NamedPattern" }
-
-    string getName() { named_patterns(this, result) }
-  }
-
-  class NestedArchetypeType extends @nested_archetype_type, ArchetypeType {
-    override string toString() { result = "NestedArchetypeType" }
-
-    ArchetypeType getParent() { nested_archetype_types(this, result, _) }
-
-    AssociatedTypeDecl getAssociatedTypeDeclaration() { nested_archetype_types(this, _, result) }
-  }
-
-  class NominalType extends @nominal_type, NominalOrBoundGenericNominalType { }
-
   class ObjCSelectorExpr extends @obj_c_selector_expr, Expr {
     override string toString() { result = "ObjCSelectorExpr" }
 
@@ -704,10 +545,6 @@ module Raw {
     override string toString() { result = "OneWayExpr" }
 
     Expr getSubExpr() { one_way_exprs(this, result) }
-  }
-
-  class OpaqueTypeArchetypeType extends @opaque_type_archetype_type, ArchetypeType {
-    override string toString() { result = "OpaqueTypeArchetypeType" }
   }
 
   class OpaqueValueExpr extends @opaque_value_expr, Expr {
@@ -724,24 +561,10 @@ module Raw {
     OpaqueValueExpr getOpaqueExpr() { open_existential_exprs(this, _, _, result) }
   }
 
-  class OpenedArchetypeType extends @opened_archetype_type, ArchetypeType {
-    override string toString() { result = "OpenedArchetypeType" }
-  }
-
-  class OperatorDecl extends @operator_decl, Decl {
-    string getName() { operator_decls(this, result) }
-  }
-
   class OptionalEvaluationExpr extends @optional_evaluation_expr, Expr {
     override string toString() { result = "OptionalEvaluationExpr" }
 
     Expr getSubExpr() { optional_evaluation_exprs(this, result) }
-  }
-
-  class OptionalSomePattern extends @optional_some_pattern, Pattern {
-    override string toString() { result = "OptionalSomePattern" }
-
-    Pattern getSubPattern() { optional_some_patterns(this, result) }
   }
 
   class OtherConstructorDeclRefExpr extends @other_constructor_decl_ref_expr, Expr {
@@ -750,40 +573,20 @@ module Raw {
     ConstructorDecl getConstructorDecl() { other_constructor_decl_ref_exprs(this, result) }
   }
 
-  class OverloadSetRefExpr extends @overload_set_ref_expr, Expr { }
+  class OverloadedDeclRefExpr extends @overloaded_decl_ref_expr, Expr, ErrorElement {
+    override string toString() { result = "OverloadedDeclRefExpr" }
 
-  class ParenPattern extends @paren_pattern, Pattern {
-    override string toString() { result = "ParenPattern" }
-
-    Pattern getSubPattern() { paren_patterns(this, result) }
-  }
-
-  class PatternBindingDecl extends @pattern_binding_decl, Decl {
-    override string toString() { result = "PatternBindingDecl" }
-
-    Expr getInit(int index) { pattern_binding_decl_inits(this, index, result) }
-
-    Pattern getPattern(int index) { pattern_binding_decl_patterns(this, index, result) }
-  }
-
-  class PoundAssertStmt extends @pound_assert_stmt, Stmt {
-    override string toString() { result = "PoundAssertStmt" }
-  }
-
-  class PoundDiagnosticDecl extends @pound_diagnostic_decl, Decl {
-    override string toString() { result = "PoundDiagnosticDecl" }
-  }
-
-  class PrecedenceGroupDecl extends @precedence_group_decl, Decl {
-    override string toString() { result = "PrecedenceGroupDecl" }
-  }
-
-  class PrimaryArchetypeType extends @primary_archetype_type, ArchetypeType {
-    override string toString() { result = "PrimaryArchetypeType" }
+    ValueDecl getPossibleDeclaration(int index) {
+      overloaded_decl_ref_expr_possible_declarations(this, index, result)
+    }
   }
 
   class PropertyWrapperValuePlaceholderExpr extends @property_wrapper_value_placeholder_expr, Expr {
     override string toString() { result = "PropertyWrapperValuePlaceholderExpr" }
+
+    Expr getWrappedValue() { property_wrapper_value_placeholder_expr_wrapped_values(this, result) }
+
+    OpaqueValueExpr getPlaceholder() { property_wrapper_value_placeholder_exprs(this, result) }
   }
 
   class RebindSelfInConstructorExpr extends @rebind_self_in_constructor_expr, Expr {
@@ -792,16 +595,6 @@ module Raw {
     Expr getSubExpr() { rebind_self_in_constructor_exprs(this, result, _) }
 
     VarDecl getSelf() { rebind_self_in_constructor_exprs(this, _, result) }
-  }
-
-  class ReturnStmt extends @return_stmt, Stmt {
-    override string toString() { result = "ReturnStmt" }
-
-    Expr getResult() { return_stmt_results(this, result) }
-  }
-
-  class SequenceArchetypeType extends @sequence_archetype_type, ArchetypeType {
-    override string toString() { result = "SequenceArchetypeType" }
   }
 
   class SequenceExpr extends @sequence_expr, Expr {
@@ -826,18 +619,6 @@ module Raw {
     VarDecl getVar() { tap_exprs(this, _, result) }
   }
 
-  class ThrowStmt extends @throw_stmt, Stmt {
-    override string toString() { result = "ThrowStmt" }
-
-    Expr getSubExpr() { throw_stmts(this, result) }
-  }
-
-  class TopLevelCodeDecl extends @top_level_code_decl, Decl {
-    override string toString() { result = "TopLevelCodeDecl" }
-
-    BraceStmt getBody() { top_level_code_decls(this, result) }
-  }
-
   class TupleElementExpr extends @tuple_element_expr, Expr {
     override string toString() { result = "TupleElementExpr" }
 
@@ -852,37 +633,19 @@ module Raw {
     Expr getElement(int index) { tuple_expr_elements(this, index, result) }
   }
 
-  class TuplePattern extends @tuple_pattern, Pattern {
-    override string toString() { result = "TuplePattern" }
-
-    Pattern getElement(int index) { tuple_pattern_elements(this, index, result) }
-  }
-
   class TypeExpr extends @type_expr, Expr {
     override string toString() { result = "TypeExpr" }
 
     TypeRepr getTypeRepr() { type_expr_type_reprs(this, result) }
   }
 
-  class TypedPattern extends @typed_pattern, Pattern {
-    override string toString() { result = "TypedPattern" }
-
-    Pattern getSubPattern() { typed_patterns(this, result) }
-
-    TypeRepr getTypeRepr() { typed_pattern_type_reprs(this, result) }
-  }
-
-  class UnarySyntaxSugarType extends @unary_syntax_sugar_type, SyntaxSugarType {
-    Type getBaseType() { unary_syntax_sugar_types(this, result) }
-  }
-
-  class UnresolvedDeclRefExpr extends @unresolved_decl_ref_expr, Expr {
+  class UnresolvedDeclRefExpr extends @unresolved_decl_ref_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedDeclRefExpr" }
 
     string getName() { unresolved_decl_ref_expr_names(this, result) }
   }
 
-  class UnresolvedDotExpr extends @unresolved_dot_expr, Expr {
+  class UnresolvedDotExpr extends @unresolved_dot_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedDotExpr" }
 
     Expr getBase() { unresolved_dot_exprs(this, result, _) }
@@ -890,24 +653,22 @@ module Raw {
     string getName() { unresolved_dot_exprs(this, _, result) }
   }
 
-  class UnresolvedMemberExpr extends @unresolved_member_expr, Expr {
+  class UnresolvedMemberExpr extends @unresolved_member_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedMemberExpr" }
 
     string getName() { unresolved_member_exprs(this, result) }
   }
 
-  class UnresolvedPatternExpr extends @unresolved_pattern_expr, Expr {
+  class UnresolvedPatternExpr extends @unresolved_pattern_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedPatternExpr" }
 
     Pattern getSubPattern() { unresolved_pattern_exprs(this, result) }
   }
 
-  class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr {
+  class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedSpecializeExpr" }
-  }
 
-  class ValueDecl extends @value_decl, Decl {
-    Type getInterfaceType() { value_decls(this, result) }
+    Expr getSubExpr() { unresolved_specialize_exprs(this, result) }
   }
 
   class VarargExpansionExpr extends @vararg_expansion_expr, Expr {
@@ -916,20 +677,8 @@ module Raw {
     Expr getSubExpr() { vararg_expansion_exprs(this, result) }
   }
 
-  class YieldStmt extends @yield_stmt, Stmt {
-    override string toString() { result = "YieldStmt" }
-
-    Expr getResult(int index) { yield_stmt_results(this, index, result) }
-  }
-
-  class AbstractFunctionDecl extends @abstract_function_decl, Callable, GenericContext, ValueDecl {
-    string getName() { abstract_function_decls(this, result) }
-  }
-
-  class AbstractStorageDecl extends @abstract_storage_decl, ValueDecl {
-    AccessorDecl getAccessorDecl(int index) {
-      abstract_storage_decl_accessor_decls(this, index, result)
-    }
+  class AbiSafeConversionExpr extends @abi_safe_conversion_expr, ImplicitConversionExpr {
+    override string toString() { result = "AbiSafeConversionExpr" }
   }
 
   class AnyHashableErasureExpr extends @any_hashable_erasure_expr, ImplicitConversionExpr {
@@ -946,10 +695,6 @@ module Raw {
     Expr getElement(int index) { array_expr_elements(this, index, result) }
   }
 
-  class ArraySliceType extends @array_slice_type, UnarySyntaxSugarType {
-    override string toString() { result = "ArraySliceType" }
-  }
-
   class ArrayToPointerExpr extends @array_to_pointer_expr, ImplicitConversionExpr {
     override string toString() { result = "ArrayToPointerExpr" }
   }
@@ -964,18 +709,6 @@ module Raw {
 
   class BinaryExpr extends @binary_expr, ApplyExpr {
     override string toString() { result = "BinaryExpr" }
-  }
-
-  class BoundGenericClassType extends @bound_generic_class_type, BoundGenericType {
-    override string toString() { result = "BoundGenericClassType" }
-  }
-
-  class BoundGenericEnumType extends @bound_generic_enum_type, BoundGenericType {
-    override string toString() { result = "BoundGenericEnumType" }
-  }
-
-  class BoundGenericStructType extends @bound_generic_struct_type, BoundGenericType {
-    override string toString() { result = "BoundGenericStructType" }
   }
 
   class BridgeFromObjCExpr extends @bridge_from_obj_c_expr, ImplicitConversionExpr {
@@ -996,10 +729,6 @@ module Raw {
 
   class ClassMetatypeToObjectExpr extends @class_metatype_to_object_expr, ImplicitConversionExpr {
     override string toString() { result = "ClassMetatypeToObjectExpr" }
-  }
-
-  class ClassType extends @class_type, NominalType {
-    override string toString() { result = "ClassType" }
   }
 
   class ClosureExpr extends @closure_expr, AbstractClosureExpr {
@@ -1053,37 +782,11 @@ module Raw {
     override string toString() { result = "DifferentiableFunctionExtractOriginalExpr" }
   }
 
-  class DoCatchStmt extends @do_catch_stmt, LabeledStmt {
-    override string toString() { result = "DoCatchStmt" }
-
-    Stmt getBody() { do_catch_stmts(this, result) }
-
-    CaseStmt getCatch(int index) { do_catch_stmt_catches(this, index, result) }
-  }
-
-  class DoStmt extends @do_stmt, LabeledStmt {
-    override string toString() { result = "DoStmt" }
-
-    BraceStmt getBody() { do_stmts(this, result) }
-  }
-
   class DotSelfExpr extends @dot_self_expr, IdentityExpr {
     override string toString() { result = "DotSelfExpr" }
   }
 
   class DynamicLookupExpr extends @dynamic_lookup_expr, LookupExpr { }
-
-  class EnumElementDecl extends @enum_element_decl, ValueDecl {
-    override string toString() { result = "EnumElementDecl" }
-
-    string getName() { enum_element_decls(this, result) }
-
-    ParamDecl getParam(int index) { enum_element_decl_params(this, index, result) }
-  }
-
-  class EnumType extends @enum_type, NominalType {
-    override string toString() { result = "EnumType" }
-  }
 
   class ErasureExpr extends @erasure_expr, ImplicitConversionExpr {
     override string toString() { result = "ErasureExpr" }
@@ -1092,18 +795,6 @@ module Raw {
   class ExistentialMetatypeToObjectExpr extends @existential_metatype_to_object_expr,
     ImplicitConversionExpr {
     override string toString() { result = "ExistentialMetatypeToObjectExpr" }
-  }
-
-  class ForEachStmt extends @for_each_stmt, LabeledStmt {
-    override string toString() { result = "ForEachStmt" }
-
-    Pattern getPattern() { for_each_stmts(this, result, _, _) }
-
-    Expr getSequence() { for_each_stmts(this, _, result, _) }
-
-    Expr getWhere() { for_each_stmt_wheres(this, result) }
-
-    BraceStmt getBody() { for_each_stmts(this, _, _, result) }
   }
 
   class ForceTryExpr extends @force_try_expr, AnyTryExpr {
@@ -1120,12 +811,6 @@ module Raw {
 
   class InOutToPointerExpr extends @in_out_to_pointer_expr, ImplicitConversionExpr {
     override string toString() { result = "InOutToPointerExpr" }
-  }
-
-  class InfixOperatorDecl extends @infix_operator_decl, OperatorDecl {
-    override string toString() { result = "InfixOperatorDecl" }
-
-    PrecedenceGroupDecl getPrecedenceGroup() { infix_operator_decl_precedence_groups(this, result) }
   }
 
   class InjectIntoOptionalExpr extends @inject_into_optional_expr, ImplicitConversionExpr {
@@ -1148,10 +833,6 @@ module Raw {
     }
 
     TapExpr getAppendingExpr() { interpolated_string_literal_expr_appending_exprs(this, result) }
-  }
-
-  class LabeledConditionalStmt extends @labeled_conditional_stmt, LabeledStmt {
-    StmtCondition getCondition() { labeled_conditional_stmts(this, result) }
   }
 
   class LinearFunctionExpr extends @linear_function_expr, ImplicitConversionExpr {
@@ -1184,6 +865,10 @@ module Raw {
     }
 
     predicate hasOrdinarySemantics() { member_ref_expr_has_ordinary_semantics(this) }
+
+    predicate hasDistributedThunkSemantics() {
+      member_ref_expr_has_distributed_thunk_semantics(this)
+    }
   }
 
   class MetatypeConversionExpr extends @metatype_conversion_expr, ImplicitConversionExpr {
@@ -1196,18 +881,14 @@ module Raw {
 
   class ObjectLiteralExpr extends @object_literal_expr, LiteralExpr {
     override string toString() { result = "ObjectLiteralExpr" }
+
+    int getKind() { object_literal_exprs(this, result) }
+
+    Argument getArgument(int index) { object_literal_expr_arguments(this, index, result) }
   }
 
   class OptionalTryExpr extends @optional_try_expr, AnyTryExpr {
     override string toString() { result = "OptionalTryExpr" }
-  }
-
-  class OptionalType extends @optional_type, UnarySyntaxSugarType {
-    override string toString() { result = "OptionalType" }
-  }
-
-  class OverloadedDeclRefExpr extends @overloaded_decl_ref_expr, OverloadSetRefExpr {
-    override string toString() { result = "OverloadedDeclRefExpr" }
   }
 
   class ParenExpr extends @paren_expr, IdentityExpr {
@@ -1218,16 +899,8 @@ module Raw {
     override string toString() { result = "PointerToPointerExpr" }
   }
 
-  class PostfixOperatorDecl extends @postfix_operator_decl, OperatorDecl {
-    override string toString() { result = "PostfixOperatorDecl" }
-  }
-
   class PostfixUnaryExpr extends @postfix_unary_expr, ApplyExpr {
     override string toString() { result = "PostfixUnaryExpr" }
-  }
-
-  class PrefixOperatorDecl extends @prefix_operator_decl, OperatorDecl {
-    override string toString() { result = "PrefixOperatorDecl" }
   }
 
   class PrefixUnaryExpr extends @prefix_unary_expr, ApplyExpr {
@@ -1239,20 +912,8 @@ module Raw {
     override string toString() { result = "ProtocolMetatypeToObjectExpr" }
   }
 
-  class ProtocolType extends @protocol_type, NominalType {
-    override string toString() { result = "ProtocolType" }
-  }
-
   class RegexLiteralExpr extends @regex_literal_expr, LiteralExpr {
     override string toString() { result = "RegexLiteralExpr" }
-  }
-
-  class RepeatWhileStmt extends @repeat_while_stmt, LabeledStmt {
-    override string toString() { result = "RepeatWhileStmt" }
-
-    Expr getCondition() { repeat_while_stmts(this, result, _) }
-
-    Stmt getBody() { repeat_while_stmts(this, _, result) }
   }
 
   class SelfApplyExpr extends @self_apply_expr, ApplyExpr {
@@ -1261,10 +922,6 @@ module Raw {
 
   class StringToPointerExpr extends @string_to_pointer_expr, ImplicitConversionExpr {
     override string toString() { result = "StringToPointerExpr" }
-  }
-
-  class StructType extends @struct_type, NominalType {
-    override string toString() { result = "StructType" }
   }
 
   class SubscriptExpr extends @subscript_expr, LookupExpr {
@@ -1279,24 +936,14 @@ module Raw {
     }
 
     predicate hasOrdinarySemantics() { subscript_expr_has_ordinary_semantics(this) }
-  }
 
-  class SwitchStmt extends @switch_stmt, LabeledStmt {
-    override string toString() { result = "SwitchStmt" }
-
-    Expr getExpr() { switch_stmts(this, result) }
-
-    CaseStmt getCase(int index) { switch_stmt_cases(this, index, result) }
+    predicate hasDistributedThunkSemantics() {
+      subscript_expr_has_distributed_thunk_semantics(this)
+    }
   }
 
   class TryExpr extends @try_expr, AnyTryExpr {
     override string toString() { result = "TryExpr" }
-  }
-
-  class TypeDecl extends @type_decl, ValueDecl {
-    string getName() { type_decls(this, result) }
-
-    Type getBaseType(int index) { type_decl_base_types(this, index, result) }
   }
 
   class UnderlyingToOpaqueExpr extends @underlying_to_opaque_expr, ImplicitConversionExpr {
@@ -1307,20 +954,15 @@ module Raw {
     override string toString() { result = "UnevaluatedInstanceExpr" }
   }
 
-  class UnresolvedMemberChainResultExpr extends @unresolved_member_chain_result_expr, IdentityExpr {
+  class UnresolvedMemberChainResultExpr extends @unresolved_member_chain_result_expr, IdentityExpr,
+    ErrorElement {
     override string toString() { result = "UnresolvedMemberChainResultExpr" }
   }
 
   class UnresolvedTypeConversionExpr extends @unresolved_type_conversion_expr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr, ErrorElement {
     override string toString() { result = "UnresolvedTypeConversionExpr" }
   }
-
-  class VariadicSequenceType extends @variadic_sequence_type, UnarySyntaxSugarType {
-    override string toString() { result = "VariadicSequenceType" }
-  }
-
-  class AbstractTypeParamDecl extends @abstract_type_param_decl, TypeDecl { }
 
   class BooleanLiteralExpr extends @boolean_literal_expr, BuiltinLiteralExpr {
     override string toString() { result = "BooleanLiteralExpr" }
@@ -1332,16 +974,8 @@ module Raw {
     override string toString() { result = "ConditionalCheckedCastExpr" }
   }
 
-  class ConstructorDecl extends @constructor_decl, AbstractFunctionDecl {
-    override string toString() { result = "ConstructorDecl" }
-  }
-
   class ConstructorRefCallExpr extends @constructor_ref_call_expr, SelfApplyExpr {
     override string toString() { result = "ConstructorRefCallExpr" }
-  }
-
-  class DestructorDecl extends @destructor_decl, AbstractFunctionDecl {
-    override string toString() { result = "DestructorDecl" }
   }
 
   class DotSyntaxCallExpr extends @dot_syntax_call_expr, SelfApplyExpr {
@@ -1360,9 +994,259 @@ module Raw {
     override string toString() { result = "ForcedCheckedCastExpr" }
   }
 
-  class FuncDecl extends @func_decl, AbstractFunctionDecl { }
+  class IsExpr extends @is_expr, CheckedCastExpr {
+    override string toString() { result = "IsExpr" }
+  }
 
-  class GenericTypeDecl extends @generic_type_decl, GenericContext, TypeDecl { }
+  class MagicIdentifierLiteralExpr extends @magic_identifier_literal_expr, BuiltinLiteralExpr {
+    override string toString() { result = "MagicIdentifierLiteralExpr" }
+
+    string getKind() { magic_identifier_literal_exprs(this, result) }
+  }
+
+  class NumberLiteralExpr extends @number_literal_expr, BuiltinLiteralExpr { }
+
+  class StringLiteralExpr extends @string_literal_expr, BuiltinLiteralExpr {
+    override string toString() { result = "StringLiteralExpr" }
+
+    string getValue() { string_literal_exprs(this, result) }
+  }
+
+  class FloatLiteralExpr extends @float_literal_expr, NumberLiteralExpr {
+    override string toString() { result = "FloatLiteralExpr" }
+
+    string getStringValue() { float_literal_exprs(this, result) }
+  }
+
+  class IntegerLiteralExpr extends @integer_literal_expr, NumberLiteralExpr {
+    override string toString() { result = "IntegerLiteralExpr" }
+
+    string getStringValue() { integer_literal_exprs(this, result) }
+  }
+
+  class Pattern extends @pattern, AstNode { }
+
+  class AnyPattern extends @any_pattern, Pattern {
+    override string toString() { result = "AnyPattern" }
+  }
+
+  class BindingPattern extends @binding_pattern, Pattern {
+    override string toString() { result = "BindingPattern" }
+
+    Pattern getSubPattern() { binding_patterns(this, result) }
+  }
+
+  class BoolPattern extends @bool_pattern, Pattern {
+    override string toString() { result = "BoolPattern" }
+
+    boolean getValue() { bool_patterns(this, result) }
+  }
+
+  class EnumElementPattern extends @enum_element_pattern, Pattern {
+    override string toString() { result = "EnumElementPattern" }
+
+    EnumElementDecl getElement() { enum_element_patterns(this, result) }
+
+    Pattern getSubPattern() { enum_element_pattern_sub_patterns(this, result) }
+  }
+
+  class ExprPattern extends @expr_pattern, Pattern {
+    override string toString() { result = "ExprPattern" }
+
+    Expr getSubExpr() { expr_patterns(this, result) }
+  }
+
+  class IsPattern extends @is_pattern, Pattern {
+    override string toString() { result = "IsPattern" }
+
+    TypeRepr getCastTypeRepr() { is_pattern_cast_type_reprs(this, result) }
+
+    Pattern getSubPattern() { is_pattern_sub_patterns(this, result) }
+  }
+
+  class NamedPattern extends @named_pattern, Pattern {
+    override string toString() { result = "NamedPattern" }
+
+    string getName() { named_patterns(this, result) }
+  }
+
+  class OptionalSomePattern extends @optional_some_pattern, Pattern {
+    override string toString() { result = "OptionalSomePattern" }
+
+    Pattern getSubPattern() { optional_some_patterns(this, result) }
+  }
+
+  class ParenPattern extends @paren_pattern, Pattern {
+    override string toString() { result = "ParenPattern" }
+
+    Pattern getSubPattern() { paren_patterns(this, result) }
+  }
+
+  class TuplePattern extends @tuple_pattern, Pattern {
+    override string toString() { result = "TuplePattern" }
+
+    Pattern getElement(int index) { tuple_pattern_elements(this, index, result) }
+  }
+
+  class TypedPattern extends @typed_pattern, Pattern {
+    override string toString() { result = "TypedPattern" }
+
+    Pattern getSubPattern() { typed_patterns(this, result) }
+
+    TypeRepr getTypeRepr() { typed_pattern_type_reprs(this, result) }
+  }
+
+  class CaseLabelItem extends @case_label_item, AstNode {
+    override string toString() { result = "CaseLabelItem" }
+
+    Pattern getPattern() { case_label_items(this, result) }
+
+    Expr getGuard() { case_label_item_guards(this, result) }
+  }
+
+  class ConditionElement extends @condition_element, AstNode {
+    override string toString() { result = "ConditionElement" }
+
+    Expr getBoolean() { condition_element_booleans(this, result) }
+
+    Pattern getPattern() { condition_element_patterns(this, result) }
+
+    Expr getInitializer() { condition_element_initializers(this, result) }
+  }
+
+  class Stmt extends @stmt, AstNode { }
+
+  class StmtCondition extends @stmt_condition, AstNode {
+    override string toString() { result = "StmtCondition" }
+
+    ConditionElement getElement(int index) { stmt_condition_elements(this, index, result) }
+  }
+
+  class BraceStmt extends @brace_stmt, Stmt {
+    override string toString() { result = "BraceStmt" }
+
+    AstNode getElement(int index) { brace_stmt_elements(this, index, result) }
+  }
+
+  class BreakStmt extends @break_stmt, Stmt {
+    override string toString() { result = "BreakStmt" }
+
+    string getTargetName() { break_stmt_target_names(this, result) }
+
+    Stmt getTarget() { break_stmt_targets(this, result) }
+  }
+
+  class CaseStmt extends @case_stmt, Stmt {
+    override string toString() { result = "CaseStmt" }
+
+    Stmt getBody() { case_stmts(this, result) }
+
+    CaseLabelItem getLabel(int index) { case_stmt_labels(this, index, result) }
+
+    VarDecl getVariable(int index) { case_stmt_variables(this, index, result) }
+  }
+
+  class ContinueStmt extends @continue_stmt, Stmt {
+    override string toString() { result = "ContinueStmt" }
+
+    string getTargetName() { continue_stmt_target_names(this, result) }
+
+    Stmt getTarget() { continue_stmt_targets(this, result) }
+  }
+
+  class DeferStmt extends @defer_stmt, Stmt {
+    override string toString() { result = "DeferStmt" }
+
+    BraceStmt getBody() { defer_stmts(this, result) }
+  }
+
+  class FailStmt extends @fail_stmt, Stmt {
+    override string toString() { result = "FailStmt" }
+  }
+
+  class FallthroughStmt extends @fallthrough_stmt, Stmt {
+    override string toString() { result = "FallthroughStmt" }
+
+    CaseStmt getFallthroughSource() { fallthrough_stmts(this, result, _) }
+
+    CaseStmt getFallthroughDest() { fallthrough_stmts(this, _, result) }
+  }
+
+  class LabeledStmt extends @labeled_stmt, Stmt {
+    string getLabel() { labeled_stmt_labels(this, result) }
+  }
+
+  class PoundAssertStmt extends @pound_assert_stmt, Stmt {
+    override string toString() { result = "PoundAssertStmt" }
+
+    Expr getCondition() { pound_assert_stmts(this, result, _) }
+
+    string getMessage() { pound_assert_stmts(this, _, result) }
+  }
+
+  class ReturnStmt extends @return_stmt, Stmt {
+    override string toString() { result = "ReturnStmt" }
+
+    Expr getResult() { return_stmt_results(this, result) }
+  }
+
+  class ThrowStmt extends @throw_stmt, Stmt {
+    override string toString() { result = "ThrowStmt" }
+
+    Expr getSubExpr() { throw_stmts(this, result) }
+  }
+
+  class YieldStmt extends @yield_stmt, Stmt {
+    override string toString() { result = "YieldStmt" }
+
+    Expr getResult(int index) { yield_stmt_results(this, index, result) }
+  }
+
+  class DoCatchStmt extends @do_catch_stmt, LabeledStmt {
+    override string toString() { result = "DoCatchStmt" }
+
+    Stmt getBody() { do_catch_stmts(this, result) }
+
+    CaseStmt getCatch(int index) { do_catch_stmt_catches(this, index, result) }
+  }
+
+  class DoStmt extends @do_stmt, LabeledStmt {
+    override string toString() { result = "DoStmt" }
+
+    BraceStmt getBody() { do_stmts(this, result) }
+  }
+
+  class ForEachStmt extends @for_each_stmt, LabeledStmt {
+    override string toString() { result = "ForEachStmt" }
+
+    Pattern getPattern() { for_each_stmts(this, result, _, _) }
+
+    Expr getSequence() { for_each_stmts(this, _, result, _) }
+
+    Expr getWhere() { for_each_stmt_wheres(this, result) }
+
+    BraceStmt getBody() { for_each_stmts(this, _, _, result) }
+  }
+
+  class LabeledConditionalStmt extends @labeled_conditional_stmt, LabeledStmt {
+    StmtCondition getCondition() { labeled_conditional_stmts(this, result) }
+  }
+
+  class RepeatWhileStmt extends @repeat_while_stmt, LabeledStmt {
+    override string toString() { result = "RepeatWhileStmt" }
+
+    Expr getCondition() { repeat_while_stmts(this, result, _) }
+
+    Stmt getBody() { repeat_while_stmts(this, _, result) }
+  }
+
+  class SwitchStmt extends @switch_stmt, LabeledStmt {
+    override string toString() { result = "SwitchStmt" }
+
+    Expr getExpr() { switch_stmts(this, result) }
+
+    CaseStmt getCase(int index) { switch_stmt_cases(this, index, result) }
+  }
 
   class GuardStmt extends @guard_stmt, LabeledConditionalStmt {
     override string toString() { result = "GuardStmt" }
@@ -1378,131 +1262,308 @@ module Raw {
     Stmt getElse() { if_stmt_elses(this, result) }
   }
 
-  class IsExpr extends @is_expr, CheckedCastExpr {
-    override string toString() { result = "IsExpr" }
-  }
-
-  class MagicIdentifierLiteralExpr extends @magic_identifier_literal_expr, BuiltinLiteralExpr {
-    override string toString() { result = "MagicIdentifierLiteralExpr" }
-
-    string getKind() { magic_identifier_literal_exprs(this, result) }
-  }
-
-  class ModuleDecl extends @module_decl, TypeDecl {
-    override string toString() { result = "ModuleDecl" }
-
-    predicate isBuiltinModule() { module_decl_is_builtin_module(this) }
-
-    predicate isSystemModule() { module_decl_is_system_module(this) }
-  }
-
-  class NumberLiteralExpr extends @number_literal_expr, BuiltinLiteralExpr { }
-
-  class StringLiteralExpr extends @string_literal_expr, BuiltinLiteralExpr {
-    override string toString() { result = "StringLiteralExpr" }
-
-    string getValue() { string_literal_exprs(this, result) }
-  }
-
-  class SubscriptDecl extends @subscript_decl, AbstractStorageDecl, GenericContext {
-    override string toString() { result = "SubscriptDecl" }
-
-    ParamDecl getParam(int index) { subscript_decl_params(this, index, result) }
-
-    Type getElementType() { subscript_decls(this, result) }
-  }
-
-  class VarDecl extends @var_decl, AbstractStorageDecl {
-    string getName() { var_decls(this, result, _) }
-
-    Type getType() { var_decls(this, _, result) }
-
-    Type getAttachedPropertyWrapperType() { var_decl_attached_property_wrapper_types(this, result) }
-
-    Pattern getParentPattern() { var_decl_parent_patterns(this, result) }
-
-    Expr getParentInitializer() { var_decl_parent_initializers(this, result) }
-  }
-
   class WhileStmt extends @while_stmt, LabeledConditionalStmt {
     override string toString() { result = "WhileStmt" }
 
     Stmt getBody() { while_stmts(this, result) }
   }
 
-  class AccessorDecl extends @accessor_decl, FuncDecl {
-    override string toString() { result = "AccessorDecl" }
+  class Type extends @type, Element {
+    string getName() { types(this, result, _) }
 
-    predicate isGetter() { accessor_decl_is_getter(this) }
-
-    predicate isSetter() { accessor_decl_is_setter(this) }
-
-    predicate isWillSet() { accessor_decl_is_will_set(this) }
-
-    predicate isDidSet() { accessor_decl_is_did_set(this) }
+    Type getCanonicalType() { types(this, _, result) }
   }
 
-  class AssociatedTypeDecl extends @associated_type_decl, AbstractTypeParamDecl {
-    override string toString() { result = "AssociatedTypeDecl" }
+  class TypeRepr extends @type_repr, AstNode {
+    override string toString() { result = "TypeRepr" }
+
+    Type getType() { type_reprs(this, result) }
   }
 
-  class ConcreteFuncDecl extends @concrete_func_decl, FuncDecl {
-    override string toString() { result = "ConcreteFuncDecl" }
+  class AnyFunctionType extends @any_function_type, Type {
+    Type getResult() { any_function_types(this, result) }
+
+    Type getParamType(int index) { any_function_type_param_types(this, index, result) }
+
+    string getParamLabel(int index) { any_function_type_param_labels(this, index, result) }
+
+    predicate isThrowing() { any_function_type_is_throwing(this) }
+
+    predicate isAsync() { any_function_type_is_async(this) }
   }
 
-  class ConcreteVarDecl extends @concrete_var_decl, VarDecl {
-    override string toString() { result = "ConcreteVarDecl" }
+  class AnyGenericType extends @any_generic_type, Type {
+    Type getParent() { any_generic_type_parents(this, result) }
 
-    int getIntroducerInt() { concrete_var_decls(this, result) }
+    Decl getDeclaration() { any_generic_types(this, result) }
   }
 
-  class FloatLiteralExpr extends @float_literal_expr, NumberLiteralExpr {
-    override string toString() { result = "FloatLiteralExpr" }
+  class AnyMetatypeType extends @any_metatype_type, Type { }
 
-    string getStringValue() { float_literal_exprs(this, result) }
+  class BuiltinType extends @builtin_type, Type { }
+
+  class DependentMemberType extends @dependent_member_type, Type {
+    override string toString() { result = "DependentMemberType" }
+
+    Type getBaseType() { dependent_member_types(this, result, _) }
+
+    AssociatedTypeDecl getAssociatedTypeDecl() { dependent_member_types(this, _, result) }
   }
 
-  class GenericTypeParamDecl extends @generic_type_param_decl, AbstractTypeParamDecl {
-    override string toString() { result = "GenericTypeParamDecl" }
+  class DynamicSelfType extends @dynamic_self_type, Type {
+    override string toString() { result = "DynamicSelfType" }
+
+    Type getStaticSelfType() { dynamic_self_types(this, result) }
   }
 
-  class IntegerLiteralExpr extends @integer_literal_expr, NumberLiteralExpr {
-    override string toString() { result = "IntegerLiteralExpr" }
-
-    string getStringValue() { integer_literal_exprs(this, result) }
+  class ErrorType extends @error_type, Type, ErrorElement {
+    override string toString() { result = "ErrorType" }
   }
 
-  class NominalTypeDecl extends @nominal_type_decl, GenericTypeDecl, IterableDeclContext {
-    Type getType() { nominal_type_decls(this, result) }
+  class ExistentialType extends @existential_type, Type {
+    override string toString() { result = "ExistentialType" }
+
+    Type getConstraint() { existential_types(this, result) }
   }
 
-  class OpaqueTypeDecl extends @opaque_type_decl, GenericTypeDecl {
-    override string toString() { result = "OpaqueTypeDecl" }
+  class InOutType extends @in_out_type, Type {
+    override string toString() { result = "InOutType" }
+
+    Type getObjectType() { in_out_types(this, result) }
   }
 
-  class ParamDecl extends @param_decl, VarDecl {
-    override string toString() { result = "ParamDecl" }
+  class LValueType extends @l_value_type, Type {
+    override string toString() { result = "LValueType" }
 
-    predicate isInout() { param_decl_is_inout(this) }
+    Type getObjectType() { l_value_types(this, result) }
   }
 
-  class TypeAliasDecl extends @type_alias_decl, GenericTypeDecl {
-    override string toString() { result = "TypeAliasDecl" }
+  class ModuleType extends @module_type, Type {
+    override string toString() { result = "ModuleType" }
+
+    ModuleDecl getModule() { module_types(this, result) }
   }
 
-  class ClassDecl extends @class_decl, NominalTypeDecl {
-    override string toString() { result = "ClassDecl" }
+  class ParameterizedProtocolType extends @parameterized_protocol_type, Type {
+    override string toString() { result = "ParameterizedProtocolType" }
+
+    ProtocolType getBase() { parameterized_protocol_types(this, result) }
+
+    Type getArg(int index) { parameterized_protocol_type_args(this, index, result) }
   }
 
-  class EnumDecl extends @enum_decl, NominalTypeDecl {
-    override string toString() { result = "EnumDecl" }
+  class ProtocolCompositionType extends @protocol_composition_type, Type {
+    override string toString() { result = "ProtocolCompositionType" }
+
+    Type getMember(int index) { protocol_composition_type_members(this, index, result) }
   }
 
-  class ProtocolDecl extends @protocol_decl, NominalTypeDecl {
-    override string toString() { result = "ProtocolDecl" }
+  class ReferenceStorageType extends @reference_storage_type, Type {
+    Type getReferentType() { reference_storage_types(this, result) }
   }
 
-  class StructDecl extends @struct_decl, NominalTypeDecl {
-    override string toString() { result = "StructDecl" }
+  class SubstitutableType extends @substitutable_type, Type { }
+
+  class SugarType extends @sugar_type, Type { }
+
+  class TupleType extends @tuple_type, Type {
+    override string toString() { result = "TupleType" }
+
+    Type getType(int index) { tuple_type_types(this, index, result) }
+
+    string getName(int index) { tuple_type_names(this, index, result) }
+  }
+
+  class UnresolvedType extends @unresolved_type, Type, ErrorElement {
+    override string toString() { result = "UnresolvedType" }
+  }
+
+  class AnyBuiltinIntegerType extends @any_builtin_integer_type, BuiltinType { }
+
+  class ArchetypeType extends @archetype_type, SubstitutableType {
+    Type getInterfaceType() { archetype_types(this, result) }
+
+    Type getSuperclass() { archetype_type_superclasses(this, result) }
+
+    ProtocolDecl getProtocol(int index) { archetype_type_protocols(this, index, result) }
+  }
+
+  class BuiltinBridgeObjectType extends @builtin_bridge_object_type, BuiltinType {
+    override string toString() { result = "BuiltinBridgeObjectType" }
+  }
+
+  class BuiltinDefaultActorStorageType extends @builtin_default_actor_storage_type, BuiltinType {
+    override string toString() { result = "BuiltinDefaultActorStorageType" }
+  }
+
+  class BuiltinExecutorType extends @builtin_executor_type, BuiltinType {
+    override string toString() { result = "BuiltinExecutorType" }
+  }
+
+  class BuiltinFloatType extends @builtin_float_type, BuiltinType {
+    override string toString() { result = "BuiltinFloatType" }
+  }
+
+  class BuiltinJobType extends @builtin_job_type, BuiltinType {
+    override string toString() { result = "BuiltinJobType" }
+  }
+
+  class BuiltinNativeObjectType extends @builtin_native_object_type, BuiltinType {
+    override string toString() { result = "BuiltinNativeObjectType" }
+  }
+
+  class BuiltinRawPointerType extends @builtin_raw_pointer_type, BuiltinType {
+    override string toString() { result = "BuiltinRawPointerType" }
+  }
+
+  class BuiltinRawUnsafeContinuationType extends @builtin_raw_unsafe_continuation_type, BuiltinType {
+    override string toString() { result = "BuiltinRawUnsafeContinuationType" }
+  }
+
+  class BuiltinUnsafeValueBufferType extends @builtin_unsafe_value_buffer_type, BuiltinType {
+    override string toString() { result = "BuiltinUnsafeValueBufferType" }
+  }
+
+  class BuiltinVectorType extends @builtin_vector_type, BuiltinType {
+    override string toString() { result = "BuiltinVectorType" }
+  }
+
+  class ExistentialMetatypeType extends @existential_metatype_type, AnyMetatypeType {
+    override string toString() { result = "ExistentialMetatypeType" }
+  }
+
+  class FunctionType extends @function_type, AnyFunctionType {
+    override string toString() { result = "FunctionType" }
+  }
+
+  class GenericFunctionType extends @generic_function_type, AnyFunctionType {
+    override string toString() { result = "GenericFunctionType" }
+
+    GenericTypeParamType getGenericParam(int index) {
+      generic_function_type_generic_params(this, index, result)
+    }
+  }
+
+  class GenericTypeParamType extends @generic_type_param_type, SubstitutableType {
+    override string toString() { result = "GenericTypeParamType" }
+  }
+
+  class MetatypeType extends @metatype_type, AnyMetatypeType {
+    override string toString() { result = "MetatypeType" }
+  }
+
+  class NominalOrBoundGenericNominalType extends @nominal_or_bound_generic_nominal_type,
+    AnyGenericType { }
+
+  class ParenType extends @paren_type, SugarType {
+    override string toString() { result = "ParenType" }
+
+    Type getType() { paren_types(this, result) }
+  }
+
+  class SyntaxSugarType extends @syntax_sugar_type, SugarType { }
+
+  class TypeAliasType extends @type_alias_type, SugarType {
+    override string toString() { result = "TypeAliasType" }
+
+    TypeAliasDecl getDecl() { type_alias_types(this, result) }
+  }
+
+  class UnboundGenericType extends @unbound_generic_type, AnyGenericType {
+    override string toString() { result = "UnboundGenericType" }
+  }
+
+  class UnmanagedStorageType extends @unmanaged_storage_type, ReferenceStorageType {
+    override string toString() { result = "UnmanagedStorageType" }
+  }
+
+  class UnownedStorageType extends @unowned_storage_type, ReferenceStorageType {
+    override string toString() { result = "UnownedStorageType" }
+  }
+
+  class WeakStorageType extends @weak_storage_type, ReferenceStorageType {
+    override string toString() { result = "WeakStorageType" }
+  }
+
+  class BoundGenericType extends @bound_generic_type, NominalOrBoundGenericNominalType {
+    Type getArgType(int index) { bound_generic_type_arg_types(this, index, result) }
+  }
+
+  class BuiltinIntegerLiteralType extends @builtin_integer_literal_type, AnyBuiltinIntegerType {
+    override string toString() { result = "BuiltinIntegerLiteralType" }
+  }
+
+  class BuiltinIntegerType extends @builtin_integer_type, AnyBuiltinIntegerType {
+    override string toString() { result = "BuiltinIntegerType" }
+
+    int getWidth() { builtin_integer_type_widths(this, result) }
+  }
+
+  class DictionaryType extends @dictionary_type, SyntaxSugarType {
+    override string toString() { result = "DictionaryType" }
+
+    Type getKeyType() { dictionary_types(this, result, _) }
+
+    Type getValueType() { dictionary_types(this, _, result) }
+  }
+
+  class NominalType extends @nominal_type, NominalOrBoundGenericNominalType { }
+
+  class OpaqueTypeArchetypeType extends @opaque_type_archetype_type, ArchetypeType {
+    override string toString() { result = "OpaqueTypeArchetypeType" }
+
+    OpaqueTypeDecl getDeclaration() { opaque_type_archetype_types(this, result) }
+  }
+
+  class OpenedArchetypeType extends @opened_archetype_type, ArchetypeType {
+    override string toString() { result = "OpenedArchetypeType" }
+  }
+
+  class PrimaryArchetypeType extends @primary_archetype_type, ArchetypeType {
+    override string toString() { result = "PrimaryArchetypeType" }
+  }
+
+  class UnarySyntaxSugarType extends @unary_syntax_sugar_type, SyntaxSugarType {
+    Type getBaseType() { unary_syntax_sugar_types(this, result) }
+  }
+
+  class ArraySliceType extends @array_slice_type, UnarySyntaxSugarType {
+    override string toString() { result = "ArraySliceType" }
+  }
+
+  class BoundGenericClassType extends @bound_generic_class_type, BoundGenericType {
+    override string toString() { result = "BoundGenericClassType" }
+  }
+
+  class BoundGenericEnumType extends @bound_generic_enum_type, BoundGenericType {
+    override string toString() { result = "BoundGenericEnumType" }
+  }
+
+  class BoundGenericStructType extends @bound_generic_struct_type, BoundGenericType {
+    override string toString() { result = "BoundGenericStructType" }
+  }
+
+  class ClassType extends @class_type, NominalType {
+    override string toString() { result = "ClassType" }
+  }
+
+  class EnumType extends @enum_type, NominalType {
+    override string toString() { result = "EnumType" }
+  }
+
+  class OptionalType extends @optional_type, UnarySyntaxSugarType {
+    override string toString() { result = "OptionalType" }
+  }
+
+  class ProtocolType extends @protocol_type, NominalType {
+    override string toString() { result = "ProtocolType" }
+  }
+
+  class StructType extends @struct_type, NominalType {
+    override string toString() { result = "StructType" }
+  }
+
+  class VariadicSequenceType extends @variadic_sequence_type, UnarySyntaxSugarType {
+    override string toString() { result = "VariadicSequenceType" }
   }
 }

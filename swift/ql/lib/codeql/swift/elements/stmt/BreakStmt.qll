@@ -1,6 +1,6 @@
 private import codeql.swift.generated.stmt.BreakStmt
 
-class BreakStmt extends BreakStmtBase {
+class BreakStmt extends Generated::BreakStmt {
   override string toString() {
     result = "break " + this.getTargetName()
     or

@@ -1,6 +1,6 @@
 private import codeql.swift.generated.Element
 
-class Element extends ElementBase {
+class Element extends Generated::Element {
   private predicate resolvesFrom(Element e) { e.getResolveStep() = this }
 
   override string toString() { result = this.getPrimaryQlClasses() }

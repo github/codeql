@@ -11,4 +11,4 @@ import RangeAnalysis
 
 from Expr expr
 where exprMayOverflow(expr) or exprMayUnderflow(expr)
-select expr, "this expression may cause an integer overflow"
+select expr, "This expression may cause an integer overflow."

@@ -7,7 +7,7 @@
  * `XSS::StoredXSS` should be imported instead.
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 

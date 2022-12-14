@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.NominalType
 
-class StructTypeBase extends Synth::TStructType, NominalType {
-  override string getAPrimaryQlClass() { result = "StructType" }
+module Generated {
+  class StructType extends Synth::TStructType, NominalType {
+    override string getAPrimaryQlClass() { result = "StructType" }
+  }
 }

@@ -3,7 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class ClassMetatypeToObjectExprBase extends Synth::TClassMetatypeToObjectExpr,
-  ImplicitConversionExpr {
-  override string getAPrimaryQlClass() { result = "ClassMetatypeToObjectExpr" }
+module Generated {
+  class ClassMetatypeToObjectExpr extends Synth::TClassMetatypeToObjectExpr, ImplicitConversionExpr {
+    override string getAPrimaryQlClass() { result = "ClassMetatypeToObjectExpr" }
+  }
 }

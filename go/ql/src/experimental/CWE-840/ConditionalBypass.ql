@@ -37,6 +37,5 @@ where
   rhs.getNode().asExpr() = c.getRightOperand() and
   config.hasFlowPath(lhsSource, lhs) and
   lhs.getNode().asExpr() = c.getLeftOperand()
-select c,
-  "This comparison compares user-controlled values from $@ and $@, and hence can be bypassed.",
-  lhsSource, "here", rhsSource, "here"
+select c, "This comparison of a $@ with another $@ can be bypassed by a malicious user.",
+  lhsSource.getNode(), "user-controlled value", rhsSource.getNode(), "user-controlled value"

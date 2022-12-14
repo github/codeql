@@ -21,7 +21,7 @@ class AddCertToRootStoreConfig extends DataFlow::Configuration {
     exists(ObjectCreation oc | oc = source.asExpr() |
       oc.getType()
           .(RefType)
-          .hasQualifiedName("System.Security.Cryptography.X509Certificates.X509Store") and
+          .hasQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store") and
       oc.getArgument(0).(Access).getTarget().hasName("Root")
     )
   }
@@ -30,9 +30,10 @@ class AddCertToRootStoreConfig extends DataFlow::Configuration {
     exists(MethodCall mc |
       (
         mc.getTarget()
-            .hasQualifiedName("System.Security.Cryptography.X509Certificates.X509Store", "Add") or
+            .hasQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store", "Add") or
         mc.getTarget()
-            .hasQualifiedName("System.Security.Cryptography.X509Certificates.X509Store", "AddRange")
+            .hasQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store",
+              "AddRange")
       ) and
       sink.asExpr() = mc.getQualifier()
     )
@@ -41,4 +42,4 @@ class AddCertToRootStoreConfig extends DataFlow::Configuration {
 
 from DataFlow::PathNode oc, DataFlow::PathNode mc, AddCertToRootStoreConfig config
 where config.hasFlowPath(oc, mc)
-select mc.getNode(), oc, mc, "Certificate added to the root certificate store."
+select mc.getNode(), oc, mc, "This certificate is added to the root certificate store."

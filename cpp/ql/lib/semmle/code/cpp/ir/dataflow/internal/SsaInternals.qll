@@ -1,10 +1,10 @@
-import SsaImplCommon
 private import cpp as Cpp
 private import semmle.code.cpp.ir.IR
 private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.models.interfaces.Allocation as Alloc
 private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
+private import codeql.ssa.Ssa as SsaImplCommon
 
 private module SourceVariables {
   private newtype TSourceVariable =
@@ -37,8 +37,6 @@ private module SourceVariables {
     override string toString() { result = "*" + this.getUnderlyingIRVariable().toString() }
   }
 }
-
-import SourceVariables
 
 cached
 private newtype TDefOrUse =
@@ -86,7 +84,7 @@ abstract class Def extends DefOrUse {
   Instruction getInstruction() { result = store }
 
   /** Gets the variable that is defined by this definition. */
-  abstract SourceVariable getSourceVariable();
+  abstract SourceVariables::SourceVariable getSourceVariable();
 
   /** Holds if this definition is guaranteed to happen. */
   abstract predicate isCertain();
@@ -103,10 +101,10 @@ abstract class Def extends DefOrUse {
 private class ExplicitDef extends Def, TExplicitDef {
   ExplicitDef() { this = TExplicitDef(store) }
 
-  override SourceVariable getSourceVariable() {
+  override SourceVariables::SourceVariable getSourceVariable() {
     exists(VariableInstruction var |
       explicitWrite(_, this.getInstruction(), var) and
-      result.(SourceIRVariable).getIRVariable() = var.getIRVariable()
+      result.(SourceVariables::SourceIRVariable).getIRVariable() = var.getIRVariable()
     )
   }
 
@@ -116,11 +114,11 @@ private class ExplicitDef extends Def, TExplicitDef {
 private class ParameterDef extends Def, TInitializeParam {
   ParameterDef() { this = TInitializeParam(store) }
 
-  override SourceVariable getSourceVariable() {
-    result.(SourceIRVariable).getIRVariable() =
+  override SourceVariables::SourceVariable getSourceVariable() {
+    result.(SourceVariables::SourceIRVariable).getIRVariable() =
       store.(InitializeParameterInstruction).getIRVariable()
     or
-    result.(SourceIRVariableIndirection).getUnderlyingIRVariable() =
+    result.(SourceVariables::SourceIRVariableIndirection).getUnderlyingIRVariable() =
       store.(InitializeIndirectionInstruction).getIRVariable()
   }
 
@@ -138,7 +136,7 @@ abstract class Use extends DefOrUse {
   override string toString() { result = "Use" }
 
   /** Gets the variable that is used by this use. */
-  abstract SourceVariable getSourceVariable();
+  abstract SourceVariables::SourceVariable getSourceVariable();
 
   override IRBlock getBlock() { result = use.getUse().getBlock() }
 
@@ -148,12 +146,14 @@ abstract class Use extends DefOrUse {
 private class ExplicitUse extends Use, TExplicitUse {
   ExplicitUse() { this = TExplicitUse(use) }
 
-  override SourceVariable getSourceVariable() {
+  override SourceVariables::SourceVariable getSourceVariable() {
     exists(VariableInstruction var |
       use.getDef() = var and
       if use.getUse() instanceof ReadSideEffectInstruction
-      then result.(SourceIRVariableIndirection).getUnderlyingIRVariable() = var.getIRVariable()
-      else result.(SourceIRVariable).getIRVariable() = var.getIRVariable()
+      then
+        result.(SourceVariables::SourceIRVariableIndirection).getUnderlyingIRVariable() =
+          var.getIRVariable()
+      else result.(SourceVariables::SourceIRVariable).getIRVariable() = var.getIRVariable()
     )
   }
 }
@@ -161,10 +161,11 @@ private class ExplicitUse extends Use, TExplicitUse {
 private class ReturnParameterIndirection extends Use, TReturnParamIndirection {
   ReturnParameterIndirection() { this = TReturnParamIndirection(use) }
 
-  override SourceVariable getSourceVariable() {
+  override SourceVariables::SourceVariable getSourceVariable() {
     exists(ReturnIndirectionInstruction ret |
       returnParameterIndirection(use, ret) and
-      result.(SourceIRVariableIndirection).getUnderlyingIRVariable() = ret.getIRVariable()
+      result.(SourceVariables::SourceIRVariableIndirection).getUnderlyingIRVariable() =
+        ret.getIRVariable()
     )
   }
 }
@@ -265,9 +266,6 @@ Instruction getSourceAddressFromNode(Node node) {
   or
   result = getSourceAddress(node.asOperand().(SideEffectOperand).getUse())
 }
-
-/** Gets the source value of `instr` if it's an instruction that behaves like a `LoadInstruction`. */
-Instruction getSourceValue(Instruction instr) { result = getSourceValueOperand(instr).getDef() }
 
 /**
  * Gets the operand that represents the source value of `instr` if it's an instruction
@@ -610,27 +608,45 @@ private module Cached {
 
 import Cached
 
-/**
- * Holds if the `i`'th write in block `bb` writes to the variable `v`.
- * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
- */
-predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
-  DataFlowImplCommon::forceCachingInSameStage() and
-  exists(Def def |
-    def.hasIndexInBlock(bb, i) and
-    v = def.getSourceVariable() and
-    (if def.isCertain() then certain = true else certain = false)
-  )
+private module SsaInput implements SsaImplCommon::InputSig {
+  private import semmle.code.cpp.ir.IR
+
+  class BasicBlock = IRBlock;
+
+  class SourceVariable = SourceVariables::SourceVariable;
+
+  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
+
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
+
+  class ExitBasicBlock extends IRBlock {
+    ExitBasicBlock() { this.getLastInstruction() instanceof ExitFunctionInstruction }
+  }
+
+  /**
+   * Holds if the `i`'th write in block `bb` writes to the variable `v`.
+   * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
+   */
+  predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    DataFlowImplCommon::forceCachingInSameStage() and
+    exists(Def def |
+      def.hasIndexInBlock(bb, i) and
+      v = def.getSourceVariable() and
+      (if def.isCertain() then certain = true else certain = false)
+    )
+  }
+
+  /**
+   * Holds if the `i`'th read in block `bb` reads to the variable `v`.
+   * `certain` is `true` if the read is guaranteed. For C++, this is always the case.
+   */
+  predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    exists(Use use |
+      use.hasIndexInBlock(bb, i) and
+      v = use.getSourceVariable() and
+      certain = true
+    )
+  }
 }
 
-/**
- * Holds if the `i`'th read in block `bb` reads to the variable `v`.
- * `certain` is `true` if the read is guaranteed. For C++, this is always the case.
- */
-predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
-  exists(Use use |
-    use.hasIndexInBlock(bb, i) and
-    v = use.getSourceVariable() and
-    certain = true
-  )
-}
+import SsaImplCommon::Make<SsaInput>

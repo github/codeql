@@ -24,4 +24,4 @@ where
   va.getExplicitlyConverted().getType().getSize() > fct.getSize() and
   va.getTarget() = fi and
   not fct.getUnspecifiedType() instanceof BoolType
-select va, "Implicit downcast of bitfield $@", fi, fi.toString()
+select va, "Implicit downcast of bitfield $@.", fi, fi.toString()

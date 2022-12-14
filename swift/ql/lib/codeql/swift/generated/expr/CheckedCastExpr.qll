@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ExplicitCastExpr
 
-class CheckedCastExprBase extends Synth::TCheckedCastExpr, ExplicitCastExpr { }
+module Generated {
+  class CheckedCastExpr extends Synth::TCheckedCastExpr, ExplicitCastExpr { }
+}

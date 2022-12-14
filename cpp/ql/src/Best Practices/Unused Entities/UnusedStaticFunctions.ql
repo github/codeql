@@ -13,16 +13,32 @@
 
 import cpp
 
+pragma[noinline]
+predicate possiblyIncompleteFile(File f) {
+  exists(Diagnostic d | d.getFile() = f and d.getSeverity() >= 3)
+}
+
 predicate immediatelyReachableFunction(Function f) {
-  not f.isStatic() or
-  exists(BlockExpr be | be.getFunction() = f) or
-  f instanceof MemberFunction or
-  f instanceof TemplateFunction or
-  f.getFile() instanceof HeaderFile or
-  f.getAnAttribute().hasName("constructor") or
-  f.getAnAttribute().hasName("destructor") or
-  f.getAnAttribute().hasName("used") or
+  not f.isStatic()
+  or
+  exists(BlockExpr be | be.getFunction() = f)
+  or
+  f instanceof MemberFunction
+  or
+  f instanceof TemplateFunction
+  or
+  f.getFile() instanceof HeaderFile
+  or
+  f.getAnAttribute().hasName("constructor")
+  or
+  f.getAnAttribute().hasName("destructor")
+  or
+  f.getAnAttribute().hasName("used")
+  or
   f.getAnAttribute().hasName("unused")
+  or
+  // a compiler error in the same file suggests we may be missing data
+  possiblyIncompleteFile(f.getFile())
 }
 
 predicate immediatelyReachableVariable(Variable v) {

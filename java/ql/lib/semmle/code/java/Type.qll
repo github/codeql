@@ -304,6 +304,7 @@ private predicate hasSubtypeStar1(RefType t, RefType sub) {
 /**
  * Holds if `hasSubtype*(t, sub)`, but manual-magic'ed with `getAWildcardLowerBound(sub)`.
  */
+pragma[assume_small_delta]
 pragma[nomagic]
 private predicate hasSubtypeStar2(RefType t, RefType sub) {
   sub = t and getAWildcardLowerBound(sub)
@@ -686,7 +687,7 @@ class SrcRefType extends RefType {
 /** A class declaration. */
 class Class extends ClassOrInterface, @class {
   /** Holds if this class is an anonymous class. */
-  predicate isAnonymous() { isAnonymClass(this, _) }
+  predicate isAnonymous() { isAnonymClass(this.getSourceDeclaration(), _) }
 
   override RefType getSourceDeclaration() { classes(this, _, _, result) }
 
@@ -724,6 +725,13 @@ class CompanionObject extends Class {
 
   /** Gets the instance variable that implements this `companion object`. */
   Field getInstance() { type_companion_object(_, result, this) }
+}
+
+/**
+ * A Kotlin data class declaration.
+ */
+class DataClass extends Class {
+  DataClass() { ktDataClasses(this) }
 }
 
 /**
@@ -793,10 +801,13 @@ class AnonymousClass extends NestedClass {
   }
 
   /** Gets the class instance expression where this anonymous class occurs. */
-  ClassInstanceExpr getClassInstanceExpr() { isAnonymClass(this, result) }
+  ClassInstanceExpr getClassInstanceExpr() { isAnonymClass(this.getSourceDeclaration(), result) }
 
   override string toString() {
-    result = "new " + this.getClassInstanceExpr().getTypeName() + "(...) { ... }"
+    // Include super.toString, i.e. the name given in the database, because for Kotlin anonymous
+    // classes we can get specialisations of anonymous generic types, and this will supply the
+    // trailing type arguments.
+    result = "new " + this.getClassInstanceExpr().getTypeName() + "(...) { ... }" + super.toString()
   }
 
   /**
@@ -816,12 +827,6 @@ class LocalClassOrInterface extends NestedType, ClassOrInterface {
 
   /** Gets the statement that declares this local class. */
   LocalTypeDeclStmt getLocalTypeDeclStmt() { isLocalClassOrInterface(this, result) }
-
-  /**
-   * DEPRECATED: renamed `getLocalTypeDeclStmt` to reflect the fact that
-   * as of Java 16 interfaces can also be declared locally.
-   */
-  deprecated LocalTypeDeclStmt getLocalClassDeclStmt() { result = this.getLocalTypeDeclStmt() }
 
   override string getAPrimaryQlClass() { result = "LocalClassOrInterface" }
 }

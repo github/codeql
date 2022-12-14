@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @id ql/inconsistent-deprecation
  * @tags correctness
- *       maintanability
+ *       maintainability
  * @precision very-high
  */
 

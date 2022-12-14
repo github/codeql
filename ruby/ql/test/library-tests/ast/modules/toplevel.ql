@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 query predicate toplevel(Toplevel m, string pClass) { pClass = m.getAPrimaryQlClass() }
 

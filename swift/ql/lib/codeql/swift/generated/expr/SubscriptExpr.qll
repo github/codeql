@@ -4,31 +4,66 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Argument
 import codeql.swift.elements.expr.LookupExpr
 
-class SubscriptExprBase extends Synth::TSubscriptExpr, LookupExpr {
-  override string getAPrimaryQlClass() { result = "SubscriptExpr" }
+module Generated {
+  class SubscriptExpr extends Synth::TSubscriptExpr, LookupExpr {
+    override string getAPrimaryQlClass() { result = "SubscriptExpr" }
 
-  Argument getImmediateArgument(int index) {
-    result =
-      Synth::convertArgumentFromRaw(Synth::convertSubscriptExprToRaw(this)
-            .(Raw::SubscriptExpr)
-            .getArgument(index))
-  }
+    /**
+     * Gets the `index`th argument of this subscript expression (0-based).
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Argument getImmediateArgument(int index) {
+      result =
+        Synth::convertArgumentFromRaw(Synth::convertSubscriptExprToRaw(this)
+              .(Raw::SubscriptExpr)
+              .getArgument(index))
+    }
 
-  final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }
+    /**
+     * Gets the `index`th argument of this subscript expression (0-based).
+     */
+    final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }
 
-  final Argument getAnArgument() { result = getArgument(_) }
+    /**
+     * Gets any of the arguments of this subscript expression.
+     */
+    final Argument getAnArgument() { result = getArgument(_) }
 
-  final int getNumberOfArguments() { result = count(getAnArgument()) }
+    /**
+     * Gets the number of arguments of this subscript expression.
+     */
+    final int getNumberOfArguments() { result = count(int i | exists(getArgument(i))) }
 
-  predicate hasDirectToStorageSemantics() {
-    Synth::convertSubscriptExprToRaw(this).(Raw::SubscriptExpr).hasDirectToStorageSemantics()
-  }
+    /**
+     * Holds if this subscript expression has direct to storage semantics.
+     */
+    predicate hasDirectToStorageSemantics() {
+      Synth::convertSubscriptExprToRaw(this).(Raw::SubscriptExpr).hasDirectToStorageSemantics()
+    }
 
-  predicate hasDirectToImplementationSemantics() {
-    Synth::convertSubscriptExprToRaw(this).(Raw::SubscriptExpr).hasDirectToImplementationSemantics()
-  }
+    /**
+     * Holds if this subscript expression has direct to implementation semantics.
+     */
+    predicate hasDirectToImplementationSemantics() {
+      Synth::convertSubscriptExprToRaw(this)
+          .(Raw::SubscriptExpr)
+          .hasDirectToImplementationSemantics()
+    }
 
-  predicate hasOrdinarySemantics() {
-    Synth::convertSubscriptExprToRaw(this).(Raw::SubscriptExpr).hasOrdinarySemantics()
+    /**
+     * Holds if this subscript expression has ordinary semantics.
+     */
+    predicate hasOrdinarySemantics() {
+      Synth::convertSubscriptExprToRaw(this).(Raw::SubscriptExpr).hasOrdinarySemantics()
+    }
+
+    /**
+     * Holds if this subscript expression has distributed thunk semantics.
+     */
+    predicate hasDistributedThunkSemantics() {
+      Synth::convertSubscriptExprToRaw(this).(Raw::SubscriptExpr).hasDistributedThunkSemantics()
+    }
   }
 }

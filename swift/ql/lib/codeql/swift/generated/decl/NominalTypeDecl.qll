@@ -5,13 +5,24 @@ import codeql.swift.elements.decl.GenericTypeDecl
 import codeql.swift.elements.decl.IterableDeclContext
 import codeql.swift.elements.type.Type
 
-class NominalTypeDeclBase extends Synth::TNominalTypeDecl, GenericTypeDecl, IterableDeclContext {
-  Type getImmediateType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertNominalTypeDeclToRaw(this)
-            .(Raw::NominalTypeDecl)
-            .getType())
-  }
+module Generated {
+  class NominalTypeDecl extends Synth::TNominalTypeDecl, GenericTypeDecl, IterableDeclContext {
+    /**
+     * Gets the type of this nominal type declaration.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertNominalTypeDeclToRaw(this)
+              .(Raw::NominalTypeDecl)
+              .getType())
+    }
 
-  final Type getType() { result = getImmediateType().resolve() }
+    /**
+     * Gets the type of this nominal type declaration.
+     */
+    final Type getType() { result = getImmediateType().resolve() }
+  }
 }

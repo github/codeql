@@ -45,6 +45,33 @@ private class NokogiriXmlParserCall extends XmlParserCall::Range, DataFlow::Call
   }
 }
 
+/**
+ * Holds if `assign` enables the `default_substitute_entities` option in
+ * libxml-ruby.
+ */
+private predicate enablesLibXmlDefaultEntitySubstitution(AssignExpr assign) {
+  // look for an assignment inside:
+  // XML.class_eval do
+  //   def self.default_substitute_entities
+  //     ...
+  //   end
+  // end
+  exists(MethodCall classEvalCall, SingletonMethod defaultSubstituteEntitiesMethod |
+    classEvalCall.getMethodName() = "class_eval" and
+    classEvalCall.getReceiver().(ConstantReadAccess).getName() = "XML" and
+    defaultSubstituteEntitiesMethod.getName() = "default_substitute_entities" and
+    defaultSubstituteEntitiesMethod.getEnclosingCallable() = classEvalCall.getBlock() and
+    defaultSubstituteEntitiesMethod = assign.getEnclosingMethod()
+  ) and
+  // that assignment should be to `default_substitute_entities`.
+  exists(MethodCall c | c = assign.getLeftOperand() |
+    c.getMethodName() = "default_substitute_entities" and
+    c.getReceiver().(ConstantReadAccess).getName() = "XML"
+  ) and
+  // and the right-hand side should be true
+  assign.getRightOperand().getConstantValue().isBoolean(true)
+}
+
 private class LibXmlRubyXmlParserCall extends XmlParserCall::Range, DataFlow::CallNode {
   LibXmlRubyXmlParserCall() {
     this =
@@ -66,7 +93,61 @@ private class LibXmlRubyXmlParserCall extends XmlParserCall::Range, DataFlow::Ca
           trackDisableFeature(TNONET())
         ].asExpr()
     )
+    or
+    // If the database contains a call to set `default_substitute_entities` to
+    // true, then we assume external entities are enabled for this call
+    exists(AssignExpr ae | enablesLibXmlDefaultEntitySubstitution(ae))
   }
+}
+
+/**
+ * Holds if `call` sets `ActiveSupport::XmlMini.backend` to `"LibXML"`.
+ */
+private predicate setsXmlMiniBackendToLibXml(DataFlow::CallNode call) {
+  call = API::getTopLevelMember("ActiveSupport").getMember("XmlMini").getAMethodCall("backend=") and
+  call.getArgument(0)
+      .asExpr()
+      .(CfgNodes::ExprNodes::AssignExprCfgNode)
+      .getRhs()
+      .getConstantValue()
+      .isString("LibXML")
+}
+
+/**
+ * Holds if the database contains a call that sets
+ * `ActiveSupport::XmlMini.backend` to `"LibXML"` as well as a call to enable
+ * LibXML's `default_substitute_entities`.
+ */
+private predicate xmlMiniEntitySubstitutionEnabled() {
+  setsXmlMiniBackendToLibXml(_) and
+  enablesLibXmlDefaultEntitySubstitution(_)
+}
+
+/**
+ * A call to `ActiveSupport::XmlMini.parse` considered as an `XmlParserCall`.
+ */
+private class XmlMiniXmlParserCall extends XmlParserCall::Range, DataFlow::CallNode {
+  XmlMiniXmlParserCall() {
+    this = API::getTopLevelMember("ActiveSupport").getMember("XmlMini").getAMethodCall("parse")
+  }
+
+  override DataFlow::Node getInput() { result = this.getArgument(0) }
+
+  override predicate externalEntitiesEnabled() { xmlMiniEntitySubstitutionEnabled() }
+}
+
+/**
+ * A call to `Hash.from_xml` or `Hash.from_trusted_xml` considered as an
+ * `XmlParserCall`.
+ */
+private class HashFromXmlXmlParserCall extends XmlParserCall::Range, DataFlow::CallNode {
+  HashFromXmlXmlParserCall() {
+    this = API::getTopLevelMember("Hash").getAMethodCall(["from_xml", "from_trusted_xml"])
+  }
+
+  override DataFlow::Node getInput() { result = this.getArgument(0) }
+
+  override predicate externalEntitiesEnabled() { xmlMiniEntitySubstitutionEnabled() }
 }
 
 private newtype TFeature =
@@ -97,19 +178,19 @@ class Feature extends TFeature {
   abstract string getConstantName();
 }
 
-private class FeatureNOENT extends Feature, TNOENT {
+private class FeatureNoent extends Feature, TNOENT {
   override int getValue() { result = 2 }
 
   override string getConstantName() { result = "NOENT" }
 }
 
-private class FeatureNONET extends Feature, TNONET {
+private class FeatureNonet extends Feature, TNONET {
   override int getValue() { result = 2048 }
 
   override string getConstantName() { result = "NONET" }
 }
 
-private class FeatureDTDLOAD extends Feature, TDTDLOAD {
+private class FeatureDtdLoad extends Feature, TDTDLOAD {
   override int getValue() { result = 4 }
 
   override string getConstantName() { result = "DTDLOAD" }

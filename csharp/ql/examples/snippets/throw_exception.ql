@@ -9,5 +9,5 @@
 import csharp
 
 from ThrowStmt throw
-where throw.getThrownExceptionType().getBaseClass*().hasQualifiedName("System.IO.IOException")
+where throw.getThrownExceptionType().getBaseClass*().hasQualifiedName("System.IO", "IOException")
 select throw

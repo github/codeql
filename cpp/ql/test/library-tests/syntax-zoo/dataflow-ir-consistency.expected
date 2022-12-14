@@ -1463,6 +1463,8 @@ uniqueNodeToString
 missingToString
 parameterCallable
 localFlowIsLocal
+readStepIsLocal
+storeStepIsLocal
 compatibleTypesReflexive
 unreachableNodeCCtx
 localCallNodes
@@ -1598,17 +1600,17 @@ postWithInFlow
 | constmemberaccess.cpp:9:2:9:2 | i [post update] | PostUpdateNode should not be the target of local flow. |
 | constructorinitializer.cpp:8:4:8:4 | Argument this [post update] | PostUpdateNode should not be the target of local flow. |
 | constructorinitializer.cpp:8:4:8:4 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
-| cpp11.cpp:6:5:6:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
-| cpp11.cpp:6:5:6:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
-| cpp11.cpp:6:5:6:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
-| cpp11.cpp:6:16:6:17 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:6:5:8:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:6:5:8:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:6:5:8:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:6:5:8:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:7:7:7:8 | (reference dereference) [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:7:7:7:8 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:7:7:7:8 | el [post update] | PostUpdateNode should not be the target of local flow. |
-| cpp11.cpp:28:5:28:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
-| cpp11.cpp:28:5:28:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
-| cpp11.cpp:28:5:28:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
-| cpp11.cpp:28:16:28:17 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:28:5:30:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:28:5:30:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:28:5:30:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:28:5:30:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:28:21:28:21 | (__begin) [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:28:21:28:21 | (__begin) [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:28:21:28:21 | (__begin) [post update] | PostUpdateNode should not be the target of local flow. |
@@ -2644,10 +2646,10 @@ postWithInFlow
 | stmt_expr.cpp:27:5:27:7 | ptr [post update] | PostUpdateNode should not be the target of local flow. |
 | stream_it.cpp:4:16:4:30 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | stream_it.cpp:5:14:5:28 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
-| stream_it.cpp:11:3:11:3 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
-| stream_it.cpp:11:3:11:3 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
-| stream_it.cpp:11:3:11:3 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
-| stream_it.cpp:11:10:11:12 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| stream_it.cpp:11:3:13:3 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| stream_it.cpp:11:3:13:3 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| stream_it.cpp:11:3:13:3 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| stream_it.cpp:11:3:13:3 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | stream_it.cpp:11:16:11:16 | (__range) [post update] | PostUpdateNode should not be the target of local flow. |
 | stream_it.cpp:11:16:11:16 | (__range) [post update] | PostUpdateNode should not be the target of local flow. |
 | stream_it.cpp:11:16:11:16 | (__range) [post update] | PostUpdateNode should not be the target of local flow. |
@@ -2710,3 +2712,9 @@ postWithInFlow
 | whilestmt.c:11:5:11:8 | done [post update] | PostUpdateNode should not be the target of local flow. |
 | whilestmt.c:40:7:40:7 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | whilestmt.c:42:7:42:7 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+viableImplInCallContextTooLarge
+uniqueParameterNodeAtPosition
+| ir.cpp:724:6:724:13 | TryCatch | 0 | ir.cpp:735:22:735:22 | *s | Parameters with overlapping positions. |
+| ir.cpp:724:6:724:13 | TryCatch | 0 | ir.cpp:738:24:738:24 | *e | Parameters with overlapping positions. |
+uniqueParameterNodePosition
+uniqueContentApprox

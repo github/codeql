@@ -3,13 +3,24 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class OneWayExprBase extends Synth::TOneWayExpr, Expr {
-  override string getAPrimaryQlClass() { result = "OneWayExpr" }
+module Generated {
+  class OneWayExpr extends Synth::TOneWayExpr, Expr {
+    override string getAPrimaryQlClass() { result = "OneWayExpr" }
 
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertOneWayExprToRaw(this).(Raw::OneWayExpr).getSubExpr())
+    /**
+     * Gets the sub expression of this one way expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertOneWayExprToRaw(this).(Raw::OneWayExpr).getSubExpr())
+    }
+
+    /**
+     * Gets the sub expression of this one way expression.
+     */
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 }

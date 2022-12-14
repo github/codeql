@@ -3,5 +3,7 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.AnyGenericType
 
-class NominalOrBoundGenericNominalTypeBase extends Synth::TNominalOrBoundGenericNominalType,
-  AnyGenericType { }
+module Generated {
+  class NominalOrBoundGenericNominalType extends Synth::TNominalOrBoundGenericNominalType,
+    AnyGenericType { }
+}

@@ -32,7 +32,7 @@ func test(s: String) {
     let ns = NSString(string: s)
 
     let nstr1 = ns.substring(from: ns.length - 1) // GOOD
-    let nstr2 = ns.substring(from: s.count - 1) // BAD: String length used in NSString [NOT DETECTED]
+    let nstr2 = ns.substring(from: s.count - 1) // BAD: String length used in NSString
     let nstr3 = ns.substring(to: ns.length - 1) // GOOD
     let nstr4 = ns.substring(to: s.count - 1) // BAD: String length used in NSString
     print("substrings '\(nstr1)' '\(nstr2)' / '\(nstr3)' '\(nstr4)'")

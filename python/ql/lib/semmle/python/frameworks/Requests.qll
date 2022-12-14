@@ -28,11 +28,11 @@ private module Requests {
    *
    * See https://requests.readthedocs.io/en/latest/api/#requests.request
    */
-  private class OutgoingRequestCall extends HTTP::Client::Request::Range, API::CallNode {
+  private class OutgoingRequestCall extends Http::Client::Request::Range, API::CallNode {
     string methodName;
 
     OutgoingRequestCall() {
-      methodName in [HTTP::httpVerbLower(), "request"] and
+      methodName in [Http::httpVerbLower(), "request"] and
       (
         this = API::moduleImport("requests").getMember(methodName).getACall()
         or
@@ -113,7 +113,7 @@ private module Requests {
       ClassInstantiation() { this = classRef().getACall() }
     }
 
-    /** Return value from making a reuqest. */
+    /** Return value from making a request. */
     private class RequestReturnValue extends InstanceSource, DataFlow::Node {
       RequestReturnValue() { this = any(OutgoingRequestCall c) }
     }

@@ -61,6 +61,7 @@ class SsaSourceVariable extends TSsaSourceVariable {
    * accessed from nested callables are therefore associated with several
    * `SsaSourceVariable`s.
    */
+  pragma[assume_small_delta]
   cached
   VarAccess getAnAccess() {
     exists(LocalScopeVariable v, Callable c |

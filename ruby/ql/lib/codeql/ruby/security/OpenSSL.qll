@@ -87,7 +87,7 @@ module Ciphers {
    *
    * See https://ruby-doc.org/stdlib-3.0.1/libdoc/openssl/rdoc/OpenSSL/Cipher.html
    */
-  predicate isOpenSSLCipher(string name) {
+  predicate isOpenSslCipher(string name) {
     name =
       [
         "aes-128-cbc", "aes-128-cbc-hmac-sha1", "aes-128-cbc-hmac-sha256", "aes-128-ccm",
@@ -138,6 +138,9 @@ module Ciphers {
         "SM4-CTR", "SM4-ECB", "SM4-OFB", "chacha", "gost89", "gost89-cnt", "gost89-ecb"
       ]
   }
+
+  /** DEPRECATED: Alias for isOpenSslCipher */
+  deprecated predicate isOpenSSLCipher = isOpenSslCipher/1;
 
   /**
    * Gets the canonical cipher name in cases where this isn't simply an
@@ -249,7 +252,7 @@ module Ciphers {
    * No result if `name` is not a known OpenSSL cipher name.
    */
   string getCanonicalCipherName(string name) {
-    isOpenSSLCipher(name) and
+    isOpenSslCipher(name) and
     (
       result = getSpecialCanonicalCipherName(name)
       or
@@ -261,20 +264,26 @@ module Ciphers {
   /**
    * Holds if `name` is the name of an OpenSSL cipher that is known to be weak.
    */
-  predicate isWeakOpenSSLCipher(string name) {
-    isOpenSSLCipher(name) and
+  predicate isWeakOpenSslCipher(string name) {
+    isOpenSslCipher(name) and
     name.toUpperCase().regexpMatch(getInsecureAlgorithmRegex())
   }
+
+  /** DEPRECATED: Alias for isWeakOpenSslCipher */
+  deprecated predicate isWeakOpenSSLCipher = isWeakOpenSslCipher/1;
 
   /**
    * Holds if `name` is the name of an OpenSSL cipher that is known to be strong.
    */
-  predicate isStrongOpenSSLCipher(string name) {
-    isOpenSSLCipher(name) and
+  predicate isStrongOpenSslCipher(string name) {
+    isOpenSslCipher(name) and
     name.toUpperCase().regexpMatch(getSecureAlgorithmRegex()) and
     // exclude algorithms that include a weak component
     not name.toUpperCase().regexpMatch(getInsecureAlgorithmRegex())
   }
+
+  /** DEPRECATED: Alias for isStrongOpenSslCipher */
+  deprecated predicate isStrongOpenSSLCipher = isStrongOpenSslCipher/1;
 }
 
 private import Ciphers
@@ -282,22 +291,22 @@ private import Ciphers
 /**
  * An OpenSSL cipher.
  */
-private newtype TOpenSSLCipher =
-  MkOpenSSLCipher(string name, boolean isWeak) {
-    isStrongOpenSSLCipher(name) and isWeak = false
+private newtype TOpenSslCipher =
+  MkOpenSslCipher(string name, boolean isWeak) {
+    isStrongOpenSslCipher(name) and isWeak = false
     or
-    isWeakOpenSSLCipher(name) and isWeak = true
+    isWeakOpenSslCipher(name) and isWeak = true
   }
 
 /**
  * A known OpenSSL cipher. This may include information about the block
  * encryption mode, which can affect if the cipher is marked as being weak.
  */
-class OpenSSLCipher extends MkOpenSSLCipher {
+class OpenSslCipher extends MkOpenSslCipher {
   string name;
   boolean isWeak;
 
-  OpenSSLCipher() { this = MkOpenSSLCipher(name, isWeak) }
+  OpenSslCipher() { this = MkOpenSslCipher(name, isWeak) }
 
   /**
    * Gets a name of this cipher.
@@ -324,6 +333,9 @@ class OpenSSLCipher extends MkOpenSSLCipher {
   /** Gets the encryption algorithm used by this cipher. */
   Cryptography::EncryptionAlgorithm getAlgorithm() { result.matchesName(this.getCanonicalName()) }
 }
+
+/** DEPRECATED: Alias for OpenSslCipher */
+deprecated class OpenSSLCipher = OpenSslCipher;
 
 /** `OpenSSL::Cipher` or `OpenSSL::Cipher::Cipher` */
 private API::Node cipherApi() {
@@ -394,7 +406,7 @@ private Cryptography::BlockMode getBlockModeFromCipherName(string blockCipherNam
  * `cipher` instance with mode `cipherMode`.
  */
 private predicate cipherInstantiationGeneric(
-  DataFlow::CallNode call, OpenSSLCipher cipher, CipherMode cipherMode
+  DataFlow::CallNode call, OpenSslCipher cipher, CipherMode cipherMode
 ) {
   exists(string cipherName | cipher.matchesName(cipherName) |
     // `OpenSSL::Cipher.new('<cipherName>')`
@@ -412,7 +424,7 @@ private predicate cipherInstantiationGeneric(
  * with mode `cipherMode`.
  */
 private predicate cipherInstantiationAES(
-  DataFlow::CallNode call, OpenSSLCipher cipher, CipherMode cipherMode
+  DataFlow::CallNode call, OpenSslCipher cipher, CipherMode cipherMode
 ) {
   exists(string cipherName | cipher.matchesName(cipherName) |
     // `OpenSSL::Cipher::AES` instantiations
@@ -459,7 +471,7 @@ private predicate cipherInstantiationAES(
  * specific to a block encryption algorithm, e.g. Blowfish, DES, etc.
  */
 private predicate cipherInstantiationSpecific(
-  DataFlow::CallNode call, OpenSSLCipher cipher, CipherMode cipherMode
+  DataFlow::CallNode call, OpenSslCipher cipher, CipherMode cipherMode
 ) {
   exists(string cipherName | cipher.matchesName(cipherName) |
     // Block ciphers with dedicated modules
@@ -486,7 +498,7 @@ private predicate cipherInstantiationSpecific(
  * instance with mode `cipherMode`.
  */
 private predicate cipherInstantiationRC4(
-  DataFlow::CallNode call, OpenSSLCipher cipher, CipherMode cipherMode
+  DataFlow::CallNode call, OpenSslCipher cipher, CipherMode cipherMode
 ) {
   exists(string cipherName | cipher.matchesName(cipherName) |
     // RC4 stream cipher
@@ -502,7 +514,7 @@ private predicate cipherInstantiationRC4(
 
 /** A call to `OpenSSL::Cipher.new` or similar. */
 private class CipherInstantiation extends DataFlow::CallNode {
-  private OpenSSLCipher cipher;
+  private OpenSslCipher cipher;
   private CipherMode cipherMode;
 
   CipherInstantiation() {
@@ -512,15 +524,15 @@ private class CipherInstantiation extends DataFlow::CallNode {
     cipherInstantiationRC4(this, cipher, cipherMode)
   }
 
-  /** Gets the `OpenSSLCipher` associated with this instance. */
-  OpenSSLCipher getCipher() { result = cipher }
+  /** Gets the `OpenSslCipher` associated with this instance. */
+  OpenSslCipher getCipher() { result = cipher }
 
   /** Gets the mode used by this cipher, if applicable. */
   CipherMode getCipherMode() { result = cipherMode }
 }
 
 private DataFlow::LocalSourceNode cipherInstance(
-  TypeTracker t, OpenSSLCipher cipher, CipherMode cipherMode
+  TypeTracker t, OpenSslCipher cipher, CipherMode cipherMode
 ) {
   t.start() and
   result.(CipherInstantiation).getCipher() = cipher and
@@ -531,13 +543,13 @@ private DataFlow::LocalSourceNode cipherInstance(
 
 /** A node with flow from `OpenSSL::Cipher.new`. */
 private class CipherNode extends DataFlow::Node {
-  private OpenSSLCipher cipher;
+  private OpenSslCipher cipher;
   private CipherMode cipherMode;
 
   CipherNode() { cipherInstance(TypeTracker::end(), cipher, cipherMode).flowsTo(this) }
 
   /** Gets the cipher associated with this node. */
-  OpenSSLCipher getCipher() { result = cipher }
+  OpenSslCipher getCipher() { result = cipher }
 
   /** Gets the cipher associated with this node. */
   CipherMode getCipherMode() { result = cipherMode }
@@ -567,5 +579,51 @@ private class CipherOperation extends Cryptography::CryptographicOperation::Rang
 
   override Cryptography::BlockMode getBlockMode() {
     result = cipherNode.getCipherMode().getBlockMode()
+  }
+}
+
+/** Predicates and classes modeling the `OpenSSL::Digest` module */
+private module Digest {
+  private import codeql.ruby.ApiGraphs
+
+  /** A call that hashes some input using a hashing algorithm from the `OpenSSL::Digest` module. */
+  private class DigestCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode {
+    Cryptography::HashingAlgorithm algo;
+
+    DigestCall() {
+      exists(API::MethodAccessNode call |
+        call = API::getTopLevelMember("OpenSSL").getMember("Digest").getMethod("new")
+      |
+        this = call.getReturn().getAMethodCall(["digest", "update", "<<"]) and
+        algo.matchesName(call.getCallNode()
+              .getArgument(0)
+              .asExpr()
+              .getExpr()
+              .getConstantValue()
+              .getString())
+      )
+    }
+
+    override Cryptography::HashingAlgorithm getAlgorithm() { result = algo }
+
+    override DataFlow::Node getAnInput() { result = super.getArgument(0) }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
+  }
+
+  /** A call to `OpenSSL::Digest.digest` that hashes input directly without constructing a digest instance. */
+  private class DigestCallDirect extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode {
+    Cryptography::HashingAlgorithm algo;
+
+    DigestCallDirect() {
+      this = API::getTopLevelMember("OpenSSL").getMember("Digest").getMethod("digest").getCallNode() and
+      algo.matchesName(this.getArgument(0).asExpr().getExpr().getConstantValue().getString())
+    }
+
+    override Cryptography::HashingAlgorithm getAlgorithm() { result = algo }
+
+    override DataFlow::Node getAnInput() { result = super.getArgument(1) }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 }

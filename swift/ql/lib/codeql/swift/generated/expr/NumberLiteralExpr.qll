@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.BuiltinLiteralExpr
 
-class NumberLiteralExprBase extends Synth::TNumberLiteralExpr, BuiltinLiteralExpr { }
+module Generated {
+  class NumberLiteralExpr extends Synth::TNumberLiteralExpr, BuiltinLiteralExpr { }
+}

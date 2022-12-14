@@ -1,3 +1,4 @@
+WARNING: Type GVN has been deprecated and may be removed in future (ast_gvn.ql:4,6-9)
 | test.cpp:5:3:5:3 | x | 5:c3-c3 6:c3-c3 |
 | test.cpp:5:7:5:8 | p0 | 5:c7-c8 6:c7-c8 |
 | test.cpp:5:7:5:13 | ... + ... | 5:c7-c13 6:c7-c13 7:c7-c7 |

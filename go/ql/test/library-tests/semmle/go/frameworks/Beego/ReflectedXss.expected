@@ -1,317 +1,192 @@
 edges
-| test.go:26:6:26:10 | definition of bound : bindMe | test.go:28:13:28:30 | type conversion |
-| test.go:26:6:26:10 | definition of bound : bindMe | test.go:28:20:28:26 | selection of a : slice type |
-| test.go:26:6:26:10 | definition of bound : bindMe | test.go:29:13:29:27 | type conversion |
-| test.go:26:6:26:10 | definition of bound : bindMe | test.go:30:13:30:29 | type conversion |
-| test.go:26:6:26:10 | definition of bound : bindMe | test.go:30:20:30:26 | selection of c : subBindMe |
-| test.go:28:20:28:26 | selection of a : slice type | test.go:28:13:28:30 | type conversion |
-| test.go:30:20:30:26 | selection of c : subBindMe | test.go:30:13:30:29 | type conversion |
-| test.go:35:20:35:42 | call to Cookie : string | test.go:35:13:35:43 | type conversion |
-| test.go:40:20:40:31 | call to Data : map type | test.go:40:13:40:52 | type conversion |
-| test.go:45:20:45:43 | call to GetData : basic interface type | test.go:45:13:45:53 | type conversion |
-| test.go:50:20:50:42 | call to Header : string | test.go:50:13:50:43 | type conversion |
-| test.go:55:20:55:41 | call to Param : string | test.go:55:13:55:42 | type conversion |
-| test.go:60:20:60:33 | call to Params : map type | test.go:60:13:60:45 | type conversion |
-| test.go:65:20:65:41 | call to Query : string | test.go:65:13:65:42 | type conversion |
-| test.go:70:20:70:32 | call to Refer : string | test.go:70:13:70:33 | type conversion |
-| test.go:75:20:75:34 | call to Referer : string | test.go:75:13:75:35 | type conversion |
-| test.go:80:20:80:30 | call to URI : string | test.go:80:13:80:31 | type conversion |
-| test.go:85:20:85:30 | call to URL : string | test.go:85:13:85:31 | type conversion |
-| test.go:90:20:90:36 | call to UserAgent : string | test.go:90:13:90:37 | type conversion |
-| test.go:95:14:95:25 | call to Data : map type | test.go:95:14:95:45 | type assertion |
-| test.go:107:14:107:25 | call to Data : map type | test.go:107:14:107:45 | type assertion |
-| test.go:119:14:119:25 | call to Data : map type | test.go:119:14:119:45 | type assertion |
-| test.go:136:23:136:42 | call to Data : map type | test.go:136:23:136:62 | type assertion |
-| test.go:192:15:192:26 | call to Data : map type | test.go:193:14:193:55 | type conversion |
-| test.go:192:15:192:26 | call to Data : map type | test.go:194:14:194:58 | type conversion |
-| test.go:192:15:192:26 | call to Data : map type | test.go:196:14:196:28 | type assertion |
-| test.go:192:15:192:26 | call to Data : map type | test.go:197:14:197:55 | type conversion |
-| test.go:192:15:192:26 | call to Data : map type | test.go:198:14:198:59 | type conversion |
-| test.go:201:18:201:33 | selection of Form : Values | test.go:202:14:202:28 | type conversion |
-| test.go:216:2:216:34 | ... := ...[0] : File | test.go:219:14:219:20 | content |
-| test.go:216:2:216:34 | ... := ...[1] : pointer type | test.go:217:14:217:32 | type conversion |
-| test.go:216:2:216:34 | ... := ...[1] : pointer type | test.go:217:21:217:22 | implicit dereference : FileHeader |
-| test.go:217:21:217:22 | implicit dereference : FileHeader | test.go:217:14:217:32 | type conversion |
-| test.go:217:21:217:22 | implicit dereference : FileHeader | test.go:217:21:217:22 | implicit dereference : FileHeader |
-| test.go:221:2:221:40 | ... := ...[0] : slice type | test.go:222:14:222:38 | type conversion |
-| test.go:221:2:221:40 | ... := ...[0] : slice type | test.go:222:21:222:28 | implicit dereference : FileHeader |
-| test.go:221:2:221:40 | ... := ...[0] : slice type | test.go:222:21:222:28 | index expression : pointer type |
-| test.go:222:21:222:28 | implicit dereference : FileHeader | test.go:222:14:222:38 | type conversion |
-| test.go:222:21:222:28 | implicit dereference : FileHeader | test.go:222:21:222:28 | implicit dereference : FileHeader |
-| test.go:222:21:222:28 | implicit dereference : FileHeader | test.go:222:21:222:28 | index expression : pointer type |
-| test.go:222:21:222:28 | index expression : pointer type | test.go:222:14:222:38 | type conversion |
-| test.go:222:21:222:28 | index expression : pointer type | test.go:222:21:222:28 | implicit dereference : FileHeader |
-| test.go:222:21:222:28 | index expression : pointer type | test.go:222:21:222:28 | index expression : pointer type |
-| test.go:224:7:224:28 | call to GetString : string | test.go:225:14:225:22 | type conversion |
-| test.go:227:8:227:35 | call to GetStrings : slice type | test.go:228:14:228:26 | type conversion |
-| test.go:230:9:230:17 | call to Input : Values | test.go:231:14:231:27 | type conversion |
-| test.go:233:6:233:8 | definition of str : myStruct | test.go:235:14:235:30 | type conversion |
-| test.go:239:15:239:36 | call to GetString : string | test.go:242:21:242:29 | untrusted |
-| test.go:252:23:252:44 | call to GetCookie : string | test.go:252:16:252:45 | type conversion |
-| test.go:263:62:263:83 | call to GetCookie : string | test.go:263:55:263:84 | type conversion |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:276:21:276:61 | call to GetDisplayString |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:276:44:276:51 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:276:44:276:51 | index expression : pointer type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:277:21:277:53 | call to SliceChunk : slice type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:277:21:277:56 | index expression : slice type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:277:21:277:83 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:277:21:277:92 | selection of Filename |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:278:21:278:60 | call to SliceDiff : slice type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:278:21:278:87 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:278:21:278:96 | selection of Filename |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:283:3:285:44 | call to SliceFilter : slice type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:283:3:285:71 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:283:3:285:80 | selection of Filename |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:286:21:286:65 | call to SliceIntersect : slice type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:286:21:286:92 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:286:21:286:101 | selection of Filename |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:287:21:287:65 | call to SliceIntersect : slice type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:287:21:287:92 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:287:21:287:101 | selection of Filename |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:288:21:288:61 | call to SliceMerge : slice type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:288:21:288:88 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:288:21:288:97 | selection of Filename |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:289:21:289:61 | call to SliceMerge : slice type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:289:21:289:88 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:289:21:289:97 | selection of Filename |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:290:21:290:66 | call to SlicePad : slice type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:290:21:290:93 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:290:21:290:102 | selection of Filename |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:291:21:291:66 | call to SlicePad : slice type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:291:21:291:93 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:291:21:291:102 | selection of Filename |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:292:21:292:73 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:292:21:292:82 | selection of Filename |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:294:21:294:97 | call to SliceReduce : slice type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:294:21:294:124 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:294:21:294:133 | selection of Filename |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:295:21:295:52 | call to SliceShuffle : slice type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:295:21:295:79 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:295:21:295:88 | selection of Filename |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:296:21:296:51 | call to SliceUnique : slice type |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:296:21:296:78 | implicit dereference : FileHeader |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:296:21:296:87 | selection of Filename |
-| test.go:276:44:276:51 | implicit dereference : FileHeader | test.go:276:21:276:61 | call to GetDisplayString |
-| test.go:276:44:276:51 | implicit dereference : FileHeader | test.go:276:44:276:51 | implicit dereference : FileHeader |
-| test.go:276:44:276:51 | implicit dereference : FileHeader | test.go:276:44:276:51 | index expression : pointer type |
-| test.go:276:44:276:51 | index expression : pointer type | test.go:276:21:276:61 | call to GetDisplayString |
-| test.go:276:44:276:51 | index expression : pointer type | test.go:276:44:276:51 | implicit dereference : FileHeader |
-| test.go:276:44:276:51 | index expression : pointer type | test.go:276:44:276:51 | index expression : pointer type |
-| test.go:277:21:277:53 | call to SliceChunk : slice type | test.go:277:21:277:56 | index expression : slice type |
-| test.go:277:21:277:53 | call to SliceChunk : slice type | test.go:277:21:277:83 | implicit dereference : FileHeader |
-| test.go:277:21:277:53 | call to SliceChunk : slice type | test.go:277:21:277:92 | selection of Filename |
-| test.go:277:21:277:56 | index expression : slice type | test.go:277:21:277:83 | implicit dereference : FileHeader |
-| test.go:277:21:277:56 | index expression : slice type | test.go:277:21:277:92 | selection of Filename |
-| test.go:277:21:277:83 | implicit dereference : FileHeader | test.go:277:21:277:92 | selection of Filename |
-| test.go:278:21:278:60 | call to SliceDiff : slice type | test.go:278:21:278:87 | implicit dereference : FileHeader |
-| test.go:278:21:278:60 | call to SliceDiff : slice type | test.go:278:21:278:96 | selection of Filename |
-| test.go:278:21:278:87 | implicit dereference : FileHeader | test.go:278:21:278:96 | selection of Filename |
-| test.go:283:3:285:44 | call to SliceFilter : slice type | test.go:283:3:285:71 | implicit dereference : FileHeader |
-| test.go:283:3:285:44 | call to SliceFilter : slice type | test.go:283:3:285:80 | selection of Filename |
-| test.go:283:3:285:71 | implicit dereference : FileHeader | test.go:283:3:285:80 | selection of Filename |
-| test.go:286:21:286:65 | call to SliceIntersect : slice type | test.go:286:21:286:92 | implicit dereference : FileHeader |
-| test.go:286:21:286:65 | call to SliceIntersect : slice type | test.go:286:21:286:101 | selection of Filename |
-| test.go:286:21:286:92 | implicit dereference : FileHeader | test.go:286:21:286:101 | selection of Filename |
-| test.go:287:21:287:65 | call to SliceIntersect : slice type | test.go:287:21:287:92 | implicit dereference : FileHeader |
-| test.go:287:21:287:65 | call to SliceIntersect : slice type | test.go:287:21:287:101 | selection of Filename |
-| test.go:287:21:287:92 | implicit dereference : FileHeader | test.go:287:21:287:101 | selection of Filename |
-| test.go:288:21:288:61 | call to SliceMerge : slice type | test.go:288:21:288:88 | implicit dereference : FileHeader |
-| test.go:288:21:288:61 | call to SliceMerge : slice type | test.go:288:21:288:97 | selection of Filename |
-| test.go:288:21:288:88 | implicit dereference : FileHeader | test.go:288:21:288:97 | selection of Filename |
-| test.go:289:21:289:61 | call to SliceMerge : slice type | test.go:289:21:289:88 | implicit dereference : FileHeader |
-| test.go:289:21:289:61 | call to SliceMerge : slice type | test.go:289:21:289:97 | selection of Filename |
-| test.go:289:21:289:88 | implicit dereference : FileHeader | test.go:289:21:289:97 | selection of Filename |
-| test.go:290:21:290:66 | call to SlicePad : slice type | test.go:290:21:290:93 | implicit dereference : FileHeader |
-| test.go:290:21:290:66 | call to SlicePad : slice type | test.go:290:21:290:102 | selection of Filename |
-| test.go:290:21:290:93 | implicit dereference : FileHeader | test.go:290:21:290:102 | selection of Filename |
-| test.go:291:21:291:66 | call to SlicePad : slice type | test.go:291:21:291:93 | implicit dereference : FileHeader |
-| test.go:291:21:291:66 | call to SlicePad : slice type | test.go:291:21:291:102 | selection of Filename |
-| test.go:291:21:291:93 | implicit dereference : FileHeader | test.go:291:21:291:102 | selection of Filename |
-| test.go:292:21:292:73 | implicit dereference : FileHeader | test.go:292:21:292:82 | selection of Filename |
-| test.go:294:21:294:97 | call to SliceReduce : slice type | test.go:294:21:294:124 | implicit dereference : FileHeader |
-| test.go:294:21:294:97 | call to SliceReduce : slice type | test.go:294:21:294:133 | selection of Filename |
-| test.go:294:21:294:124 | implicit dereference : FileHeader | test.go:294:21:294:133 | selection of Filename |
-| test.go:295:21:295:52 | call to SliceShuffle : slice type | test.go:295:21:295:79 | implicit dereference : FileHeader |
-| test.go:295:21:295:52 | call to SliceShuffle : slice type | test.go:295:21:295:88 | selection of Filename |
-| test.go:295:21:295:79 | implicit dereference : FileHeader | test.go:295:21:295:88 | selection of Filename |
-| test.go:296:21:296:51 | call to SliceUnique : slice type | test.go:296:21:296:78 | implicit dereference : FileHeader |
-| test.go:296:21:296:51 | call to SliceUnique : slice type | test.go:296:21:296:87 | selection of Filename |
-| test.go:296:21:296:78 | implicit dereference : FileHeader | test.go:296:21:296:87 | selection of Filename |
-| test.go:302:15:302:36 | call to GetString : string | test.go:304:21:304:48 | type assertion |
-| test.go:302:15:302:36 | call to GetString : string | test.go:305:21:305:32 | call to Items : map type |
-| test.go:302:15:302:36 | call to GetString : string | test.go:305:21:305:52 | type assertion |
-| test.go:305:21:305:32 | call to Items : map type | test.go:305:21:305:52 | type assertion |
+| test.go:27:6:27:10 | definition of bound : bindMe | test.go:29:13:29:30 | type conversion |
+| test.go:27:6:27:10 | definition of bound : bindMe | test.go:30:13:30:27 | type conversion |
+| test.go:27:6:27:10 | definition of bound : bindMe | test.go:31:13:31:29 | type conversion |
+| test.go:36:20:36:42 | call to Cookie : string | test.go:36:13:36:43 | type conversion |
+| test.go:41:20:41:31 | call to Data : map type | test.go:41:13:41:52 | type conversion |
+| test.go:46:20:46:43 | call to GetData : basic interface type | test.go:46:13:46:53 | type conversion |
+| test.go:51:20:51:42 | call to Header : string | test.go:51:13:51:43 | type conversion |
+| test.go:56:20:56:41 | call to Param : string | test.go:56:13:56:42 | type conversion |
+| test.go:61:20:61:33 | call to Params : map type | test.go:61:13:61:45 | type conversion |
+| test.go:66:20:66:41 | call to Query : string | test.go:66:13:66:42 | type conversion |
+| test.go:71:20:71:32 | call to Refer : string | test.go:71:13:71:33 | type conversion |
+| test.go:76:20:76:34 | call to Referer : string | test.go:76:13:76:35 | type conversion |
+| test.go:81:20:81:30 | call to URI : string | test.go:81:13:81:31 | type conversion |
+| test.go:86:20:86:30 | call to URL : string | test.go:86:13:86:31 | type conversion |
+| test.go:91:20:91:36 | call to UserAgent : string | test.go:91:13:91:37 | type conversion |
+| test.go:96:14:96:25 | call to Data : map type | test.go:96:14:96:45 | type assertion |
+| test.go:108:14:108:25 | call to Data : map type | test.go:108:14:108:45 | type assertion |
+| test.go:120:14:120:25 | call to Data : map type | test.go:120:14:120:45 | type assertion |
+| test.go:137:23:137:42 | call to Data : map type | test.go:137:23:137:62 | type assertion |
+| test.go:193:15:193:26 | call to Data : map type | test.go:194:14:194:55 | type conversion |
+| test.go:193:15:193:26 | call to Data : map type | test.go:195:14:195:58 | type conversion |
+| test.go:193:15:193:26 | call to Data : map type | test.go:197:14:197:28 | type assertion |
+| test.go:193:15:193:26 | call to Data : map type | test.go:198:14:198:55 | type conversion |
+| test.go:193:15:193:26 | call to Data : map type | test.go:199:14:199:59 | type conversion |
+| test.go:202:18:202:33 | selection of Form : Values | test.go:203:14:203:28 | type conversion |
+| test.go:217:2:217:34 | ... := ...[0] : File | test.go:220:14:220:20 | content |
+| test.go:217:2:217:34 | ... := ...[1] : pointer type | test.go:218:14:218:32 | type conversion |
+| test.go:222:2:222:40 | ... := ...[0] : slice type | test.go:223:14:223:38 | type conversion |
+| test.go:225:7:225:28 | call to GetString : string | test.go:226:14:226:22 | type conversion |
+| test.go:228:8:228:35 | call to GetStrings : slice type | test.go:229:14:229:26 | type conversion |
+| test.go:231:9:231:17 | call to Input : Values | test.go:232:14:232:27 | type conversion |
+| test.go:234:6:234:8 | definition of str : myStruct | test.go:236:14:236:30 | type conversion |
+| test.go:240:15:240:36 | call to GetString : string | test.go:243:21:243:29 | untrusted |
+| test.go:253:23:253:44 | call to GetCookie : string | test.go:253:16:253:45 | type conversion |
+| test.go:264:62:264:83 | call to GetCookie : string | test.go:264:55:264:84 | type conversion |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:277:21:277:61 | call to GetDisplayString |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:278:21:278:92 | selection of Filename |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:279:21:279:96 | selection of Filename |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:284:3:286:80 | selection of Filename |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:287:21:287:101 | selection of Filename |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:288:21:288:101 | selection of Filename |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:289:21:289:97 | selection of Filename |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:290:21:290:97 | selection of Filename |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:291:21:291:102 | selection of Filename |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:292:21:292:102 | selection of Filename |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:293:21:293:82 | selection of Filename |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:295:21:295:133 | selection of Filename |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:296:21:296:88 | selection of Filename |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:297:21:297:87 | selection of Filename |
+| test.go:303:15:303:36 | call to GetString : string | test.go:305:21:305:48 | type assertion |
+| test.go:303:15:303:36 | call to GetString : string | test.go:306:21:306:52 | type assertion |
 nodes
-| test.go:26:6:26:10 | definition of bound : bindMe | semmle.label | definition of bound : bindMe |
-| test.go:28:13:28:30 | type conversion | semmle.label | type conversion |
-| test.go:28:20:28:26 | selection of a : slice type | semmle.label | selection of a : slice type |
-| test.go:29:13:29:27 | type conversion | semmle.label | type conversion |
-| test.go:30:13:30:29 | type conversion | semmle.label | type conversion |
-| test.go:30:20:30:26 | selection of c : subBindMe | semmle.label | selection of c : subBindMe |
-| test.go:35:13:35:43 | type conversion | semmle.label | type conversion |
-| test.go:35:20:35:42 | call to Cookie : string | semmle.label | call to Cookie : string |
-| test.go:40:13:40:52 | type conversion | semmle.label | type conversion |
-| test.go:40:20:40:31 | call to Data : map type | semmle.label | call to Data : map type |
-| test.go:45:13:45:53 | type conversion | semmle.label | type conversion |
-| test.go:45:20:45:43 | call to GetData : basic interface type | semmle.label | call to GetData : basic interface type |
-| test.go:50:13:50:43 | type conversion | semmle.label | type conversion |
-| test.go:50:20:50:42 | call to Header : string | semmle.label | call to Header : string |
-| test.go:55:13:55:42 | type conversion | semmle.label | type conversion |
-| test.go:55:20:55:41 | call to Param : string | semmle.label | call to Param : string |
-| test.go:60:13:60:45 | type conversion | semmle.label | type conversion |
-| test.go:60:20:60:33 | call to Params : map type | semmle.label | call to Params : map type |
-| test.go:65:13:65:42 | type conversion | semmle.label | type conversion |
-| test.go:65:20:65:41 | call to Query : string | semmle.label | call to Query : string |
-| test.go:70:13:70:33 | type conversion | semmle.label | type conversion |
-| test.go:70:20:70:32 | call to Refer : string | semmle.label | call to Refer : string |
-| test.go:75:13:75:35 | type conversion | semmle.label | type conversion |
-| test.go:75:20:75:34 | call to Referer : string | semmle.label | call to Referer : string |
-| test.go:80:13:80:31 | type conversion | semmle.label | type conversion |
-| test.go:80:20:80:30 | call to URI : string | semmle.label | call to URI : string |
-| test.go:85:13:85:31 | type conversion | semmle.label | type conversion |
-| test.go:85:20:85:30 | call to URL : string | semmle.label | call to URL : string |
-| test.go:90:13:90:37 | type conversion | semmle.label | type conversion |
-| test.go:90:20:90:36 | call to UserAgent : string | semmle.label | call to UserAgent : string |
-| test.go:95:14:95:25 | call to Data : map type | semmle.label | call to Data : map type |
-| test.go:95:14:95:45 | type assertion | semmle.label | type assertion |
-| test.go:107:14:107:25 | call to Data : map type | semmle.label | call to Data : map type |
-| test.go:107:14:107:45 | type assertion | semmle.label | type assertion |
-| test.go:119:14:119:25 | call to Data : map type | semmle.label | call to Data : map type |
-| test.go:119:14:119:45 | type assertion | semmle.label | type assertion |
-| test.go:136:23:136:42 | call to Data : map type | semmle.label | call to Data : map type |
-| test.go:136:23:136:62 | type assertion | semmle.label | type assertion |
-| test.go:192:15:192:26 | call to Data : map type | semmle.label | call to Data : map type |
-| test.go:193:14:193:55 | type conversion | semmle.label | type conversion |
-| test.go:194:14:194:58 | type conversion | semmle.label | type conversion |
-| test.go:196:14:196:28 | type assertion | semmle.label | type assertion |
-| test.go:197:14:197:55 | type conversion | semmle.label | type conversion |
-| test.go:198:14:198:59 | type conversion | semmle.label | type conversion |
-| test.go:201:18:201:33 | selection of Form : Values | semmle.label | selection of Form : Values |
-| test.go:202:14:202:28 | type conversion | semmle.label | type conversion |
-| test.go:216:2:216:34 | ... := ...[0] : File | semmle.label | ... := ...[0] : File |
-| test.go:216:2:216:34 | ... := ...[1] : pointer type | semmle.label | ... := ...[1] : pointer type |
-| test.go:217:14:217:32 | type conversion | semmle.label | type conversion |
-| test.go:217:21:217:22 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
-| test.go:219:14:219:20 | content | semmle.label | content |
-| test.go:221:2:221:40 | ... := ...[0] : slice type | semmle.label | ... := ...[0] : slice type |
-| test.go:222:14:222:38 | type conversion | semmle.label | type conversion |
-| test.go:222:21:222:28 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
-| test.go:222:21:222:28 | index expression : pointer type | semmle.label | index expression : pointer type |
-| test.go:224:7:224:28 | call to GetString : string | semmle.label | call to GetString : string |
-| test.go:225:14:225:22 | type conversion | semmle.label | type conversion |
-| test.go:227:8:227:35 | call to GetStrings : slice type | semmle.label | call to GetStrings : slice type |
-| test.go:228:14:228:26 | type conversion | semmle.label | type conversion |
-| test.go:230:9:230:17 | call to Input : Values | semmle.label | call to Input : Values |
-| test.go:231:14:231:27 | type conversion | semmle.label | type conversion |
-| test.go:233:6:233:8 | definition of str : myStruct | semmle.label | definition of str : myStruct |
-| test.go:235:14:235:30 | type conversion | semmle.label | type conversion |
-| test.go:239:15:239:36 | call to GetString : string | semmle.label | call to GetString : string |
-| test.go:242:21:242:29 | untrusted | semmle.label | untrusted |
-| test.go:252:16:252:45 | type conversion | semmle.label | type conversion |
-| test.go:252:23:252:44 | call to GetCookie : string | semmle.label | call to GetCookie : string |
-| test.go:257:16:257:37 | call to GetCookie | semmle.label | call to GetCookie |
-| test.go:258:15:258:41 | call to GetCookie | semmle.label | call to GetCookie |
-| test.go:263:55:263:84 | type conversion | semmle.label | type conversion |
-| test.go:263:62:263:83 | call to GetCookie : string | semmle.label | call to GetCookie : string |
-| test.go:268:2:268:40 | ... := ...[0] : slice type | semmle.label | ... := ...[0] : slice type |
-| test.go:276:21:276:61 | call to GetDisplayString | semmle.label | call to GetDisplayString |
-| test.go:276:44:276:51 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
-| test.go:276:44:276:51 | index expression : pointer type | semmle.label | index expression : pointer type |
-| test.go:277:21:277:53 | call to SliceChunk : slice type | semmle.label | call to SliceChunk : slice type |
-| test.go:277:21:277:56 | index expression : slice type | semmle.label | index expression : slice type |
-| test.go:277:21:277:83 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
-| test.go:277:21:277:92 | selection of Filename | semmle.label | selection of Filename |
-| test.go:278:21:278:60 | call to SliceDiff : slice type | semmle.label | call to SliceDiff : slice type |
-| test.go:278:21:278:87 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
-| test.go:278:21:278:96 | selection of Filename | semmle.label | selection of Filename |
-| test.go:283:3:285:44 | call to SliceFilter : slice type | semmle.label | call to SliceFilter : slice type |
-| test.go:283:3:285:71 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
-| test.go:283:3:285:80 | selection of Filename | semmle.label | selection of Filename |
-| test.go:286:21:286:65 | call to SliceIntersect : slice type | semmle.label | call to SliceIntersect : slice type |
-| test.go:286:21:286:92 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
-| test.go:286:21:286:101 | selection of Filename | semmle.label | selection of Filename |
-| test.go:287:21:287:65 | call to SliceIntersect : slice type | semmle.label | call to SliceIntersect : slice type |
-| test.go:287:21:287:92 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
+| test.go:27:6:27:10 | definition of bound : bindMe | semmle.label | definition of bound : bindMe |
+| test.go:29:13:29:30 | type conversion | semmle.label | type conversion |
+| test.go:30:13:30:27 | type conversion | semmle.label | type conversion |
+| test.go:31:13:31:29 | type conversion | semmle.label | type conversion |
+| test.go:36:13:36:43 | type conversion | semmle.label | type conversion |
+| test.go:36:20:36:42 | call to Cookie : string | semmle.label | call to Cookie : string |
+| test.go:41:13:41:52 | type conversion | semmle.label | type conversion |
+| test.go:41:20:41:31 | call to Data : map type | semmle.label | call to Data : map type |
+| test.go:46:13:46:53 | type conversion | semmle.label | type conversion |
+| test.go:46:20:46:43 | call to GetData : basic interface type | semmle.label | call to GetData : basic interface type |
+| test.go:51:13:51:43 | type conversion | semmle.label | type conversion |
+| test.go:51:20:51:42 | call to Header : string | semmle.label | call to Header : string |
+| test.go:56:13:56:42 | type conversion | semmle.label | type conversion |
+| test.go:56:20:56:41 | call to Param : string | semmle.label | call to Param : string |
+| test.go:61:13:61:45 | type conversion | semmle.label | type conversion |
+| test.go:61:20:61:33 | call to Params : map type | semmle.label | call to Params : map type |
+| test.go:66:13:66:42 | type conversion | semmle.label | type conversion |
+| test.go:66:20:66:41 | call to Query : string | semmle.label | call to Query : string |
+| test.go:71:13:71:33 | type conversion | semmle.label | type conversion |
+| test.go:71:20:71:32 | call to Refer : string | semmle.label | call to Refer : string |
+| test.go:76:13:76:35 | type conversion | semmle.label | type conversion |
+| test.go:76:20:76:34 | call to Referer : string | semmle.label | call to Referer : string |
+| test.go:81:13:81:31 | type conversion | semmle.label | type conversion |
+| test.go:81:20:81:30 | call to URI : string | semmle.label | call to URI : string |
+| test.go:86:13:86:31 | type conversion | semmle.label | type conversion |
+| test.go:86:20:86:30 | call to URL : string | semmle.label | call to URL : string |
+| test.go:91:13:91:37 | type conversion | semmle.label | type conversion |
+| test.go:91:20:91:36 | call to UserAgent : string | semmle.label | call to UserAgent : string |
+| test.go:96:14:96:25 | call to Data : map type | semmle.label | call to Data : map type |
+| test.go:96:14:96:45 | type assertion | semmle.label | type assertion |
+| test.go:108:14:108:25 | call to Data : map type | semmle.label | call to Data : map type |
+| test.go:108:14:108:45 | type assertion | semmle.label | type assertion |
+| test.go:120:14:120:25 | call to Data : map type | semmle.label | call to Data : map type |
+| test.go:120:14:120:45 | type assertion | semmle.label | type assertion |
+| test.go:137:23:137:42 | call to Data : map type | semmle.label | call to Data : map type |
+| test.go:137:23:137:62 | type assertion | semmle.label | type assertion |
+| test.go:193:15:193:26 | call to Data : map type | semmle.label | call to Data : map type |
+| test.go:194:14:194:55 | type conversion | semmle.label | type conversion |
+| test.go:195:14:195:58 | type conversion | semmle.label | type conversion |
+| test.go:197:14:197:28 | type assertion | semmle.label | type assertion |
+| test.go:198:14:198:55 | type conversion | semmle.label | type conversion |
+| test.go:199:14:199:59 | type conversion | semmle.label | type conversion |
+| test.go:202:18:202:33 | selection of Form : Values | semmle.label | selection of Form : Values |
+| test.go:203:14:203:28 | type conversion | semmle.label | type conversion |
+| test.go:217:2:217:34 | ... := ...[0] : File | semmle.label | ... := ...[0] : File |
+| test.go:217:2:217:34 | ... := ...[1] : pointer type | semmle.label | ... := ...[1] : pointer type |
+| test.go:218:14:218:32 | type conversion | semmle.label | type conversion |
+| test.go:220:14:220:20 | content | semmle.label | content |
+| test.go:222:2:222:40 | ... := ...[0] : slice type | semmle.label | ... := ...[0] : slice type |
+| test.go:223:14:223:38 | type conversion | semmle.label | type conversion |
+| test.go:225:7:225:28 | call to GetString : string | semmle.label | call to GetString : string |
+| test.go:226:14:226:22 | type conversion | semmle.label | type conversion |
+| test.go:228:8:228:35 | call to GetStrings : slice type | semmle.label | call to GetStrings : slice type |
+| test.go:229:14:229:26 | type conversion | semmle.label | type conversion |
+| test.go:231:9:231:17 | call to Input : Values | semmle.label | call to Input : Values |
+| test.go:232:14:232:27 | type conversion | semmle.label | type conversion |
+| test.go:234:6:234:8 | definition of str : myStruct | semmle.label | definition of str : myStruct |
+| test.go:236:14:236:30 | type conversion | semmle.label | type conversion |
+| test.go:240:15:240:36 | call to GetString : string | semmle.label | call to GetString : string |
+| test.go:243:21:243:29 | untrusted | semmle.label | untrusted |
+| test.go:253:16:253:45 | type conversion | semmle.label | type conversion |
+| test.go:253:23:253:44 | call to GetCookie : string | semmle.label | call to GetCookie : string |
+| test.go:258:16:258:37 | call to GetCookie | semmle.label | call to GetCookie |
+| test.go:259:15:259:41 | call to GetCookie | semmle.label | call to GetCookie |
+| test.go:264:55:264:84 | type conversion | semmle.label | type conversion |
+| test.go:264:62:264:83 | call to GetCookie : string | semmle.label | call to GetCookie : string |
+| test.go:269:2:269:40 | ... := ...[0] : slice type | semmle.label | ... := ...[0] : slice type |
+| test.go:277:21:277:61 | call to GetDisplayString | semmle.label | call to GetDisplayString |
+| test.go:278:21:278:92 | selection of Filename | semmle.label | selection of Filename |
+| test.go:279:21:279:96 | selection of Filename | semmle.label | selection of Filename |
+| test.go:284:3:286:80 | selection of Filename | semmle.label | selection of Filename |
 | test.go:287:21:287:101 | selection of Filename | semmle.label | selection of Filename |
-| test.go:288:21:288:61 | call to SliceMerge : slice type | semmle.label | call to SliceMerge : slice type |
-| test.go:288:21:288:88 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
-| test.go:288:21:288:97 | selection of Filename | semmle.label | selection of Filename |
-| test.go:289:21:289:61 | call to SliceMerge : slice type | semmle.label | call to SliceMerge : slice type |
-| test.go:289:21:289:88 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
+| test.go:288:21:288:101 | selection of Filename | semmle.label | selection of Filename |
 | test.go:289:21:289:97 | selection of Filename | semmle.label | selection of Filename |
-| test.go:290:21:290:66 | call to SlicePad : slice type | semmle.label | call to SlicePad : slice type |
-| test.go:290:21:290:93 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
-| test.go:290:21:290:102 | selection of Filename | semmle.label | selection of Filename |
-| test.go:291:21:291:66 | call to SlicePad : slice type | semmle.label | call to SlicePad : slice type |
-| test.go:291:21:291:93 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
+| test.go:290:21:290:97 | selection of Filename | semmle.label | selection of Filename |
 | test.go:291:21:291:102 | selection of Filename | semmle.label | selection of Filename |
-| test.go:292:21:292:73 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
-| test.go:292:21:292:82 | selection of Filename | semmle.label | selection of Filename |
-| test.go:294:21:294:97 | call to SliceReduce : slice type | semmle.label | call to SliceReduce : slice type |
-| test.go:294:21:294:124 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
-| test.go:294:21:294:133 | selection of Filename | semmle.label | selection of Filename |
-| test.go:295:21:295:52 | call to SliceShuffle : slice type | semmle.label | call to SliceShuffle : slice type |
-| test.go:295:21:295:79 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
-| test.go:295:21:295:88 | selection of Filename | semmle.label | selection of Filename |
-| test.go:296:21:296:51 | call to SliceUnique : slice type | semmle.label | call to SliceUnique : slice type |
-| test.go:296:21:296:78 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
-| test.go:296:21:296:87 | selection of Filename | semmle.label | selection of Filename |
-| test.go:302:15:302:36 | call to GetString : string | semmle.label | call to GetString : string |
-| test.go:304:21:304:48 | type assertion | semmle.label | type assertion |
-| test.go:305:21:305:32 | call to Items : map type | semmle.label | call to Items : map type |
-| test.go:305:21:305:52 | type assertion | semmle.label | type assertion |
+| test.go:292:21:292:102 | selection of Filename | semmle.label | selection of Filename |
+| test.go:293:21:293:82 | selection of Filename | semmle.label | selection of Filename |
+| test.go:295:21:295:133 | selection of Filename | semmle.label | selection of Filename |
+| test.go:296:21:296:88 | selection of Filename | semmle.label | selection of Filename |
+| test.go:297:21:297:87 | selection of Filename | semmle.label | selection of Filename |
+| test.go:303:15:303:36 | call to GetString : string | semmle.label | call to GetString : string |
+| test.go:305:21:305:48 | type assertion | semmle.label | type assertion |
+| test.go:306:21:306:52 | type assertion | semmle.label | type assertion |
 subpaths
 #select
-| test.go:28:13:28:30 | type conversion | test.go:26:6:26:10 | definition of bound : bindMe | test.go:28:13:28:30 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:26:6:26:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:29:13:29:27 | type conversion | test.go:26:6:26:10 | definition of bound : bindMe | test.go:29:13:29:27 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:26:6:26:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:30:13:30:29 | type conversion | test.go:26:6:26:10 | definition of bound : bindMe | test.go:30:13:30:29 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:26:6:26:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:35:13:35:43 | type conversion | test.go:35:20:35:42 | call to Cookie : string | test.go:35:13:35:43 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:35:20:35:42 | call to Cookie | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:40:13:40:52 | type conversion | test.go:40:20:40:31 | call to Data : map type | test.go:40:13:40:52 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:40:20:40:31 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:45:13:45:53 | type conversion | test.go:45:20:45:43 | call to GetData : basic interface type | test.go:45:13:45:53 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:45:20:45:43 | call to GetData | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:50:13:50:43 | type conversion | test.go:50:20:50:42 | call to Header : string | test.go:50:13:50:43 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:50:20:50:42 | call to Header | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:55:13:55:42 | type conversion | test.go:55:20:55:41 | call to Param : string | test.go:55:13:55:42 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:55:20:55:41 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:60:13:60:45 | type conversion | test.go:60:20:60:33 | call to Params : map type | test.go:60:13:60:45 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:60:20:60:33 | call to Params | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:65:13:65:42 | type conversion | test.go:65:20:65:41 | call to Query : string | test.go:65:13:65:42 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:65:20:65:41 | call to Query | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:70:13:70:33 | type conversion | test.go:70:20:70:32 | call to Refer : string | test.go:70:13:70:33 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:70:20:70:32 | call to Refer | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:75:13:75:35 | type conversion | test.go:75:20:75:34 | call to Referer : string | test.go:75:13:75:35 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:75:20:75:34 | call to Referer | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:80:13:80:31 | type conversion | test.go:80:20:80:30 | call to URI : string | test.go:80:13:80:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:80:20:80:30 | call to URI | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:85:13:85:31 | type conversion | test.go:85:20:85:30 | call to URL : string | test.go:85:13:85:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:85:20:85:30 | call to URL | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:90:13:90:37 | type conversion | test.go:90:20:90:36 | call to UserAgent : string | test.go:90:13:90:37 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:90:20:90:36 | call to UserAgent | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:95:14:95:45 | type assertion | test.go:95:14:95:25 | call to Data : map type | test.go:95:14:95:45 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:95:14:95:25 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:107:14:107:45 | type assertion | test.go:107:14:107:25 | call to Data : map type | test.go:107:14:107:45 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:107:14:107:25 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:119:14:119:45 | type assertion | test.go:119:14:119:25 | call to Data : map type | test.go:119:14:119:45 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:119:14:119:25 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:136:23:136:62 | type assertion | test.go:136:23:136:42 | call to Data : map type | test.go:136:23:136:62 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:136:23:136:42 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:193:14:193:55 | type conversion | test.go:192:15:192:26 | call to Data : map type | test.go:193:14:193:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:192:15:192:26 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:194:14:194:58 | type conversion | test.go:192:15:192:26 | call to Data : map type | test.go:194:14:194:58 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:192:15:192:26 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:196:14:196:28 | type assertion | test.go:192:15:192:26 | call to Data : map type | test.go:196:14:196:28 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:192:15:192:26 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:197:14:197:55 | type conversion | test.go:192:15:192:26 | call to Data : map type | test.go:197:14:197:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:192:15:192:26 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:198:14:198:59 | type conversion | test.go:192:15:192:26 | call to Data : map type | test.go:198:14:198:59 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:192:15:192:26 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:202:14:202:28 | type conversion | test.go:201:18:201:33 | selection of Form : Values | test.go:202:14:202:28 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:201:18:201:33 | selection of Form | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:217:14:217:32 | type conversion | test.go:216:2:216:34 | ... := ...[1] : pointer type | test.go:217:14:217:32 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:216:2:216:34 | ... := ...[1] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:219:14:219:20 | content | test.go:216:2:216:34 | ... := ...[0] : File | test.go:219:14:219:20 | content | Cross-site scripting vulnerability due to $@. | test.go:216:2:216:34 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:222:14:222:38 | type conversion | test.go:221:2:221:40 | ... := ...[0] : slice type | test.go:222:14:222:38 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:221:2:221:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:225:14:225:22 | type conversion | test.go:224:7:224:28 | call to GetString : string | test.go:225:14:225:22 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:224:7:224:28 | call to GetString | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:228:14:228:26 | type conversion | test.go:227:8:227:35 | call to GetStrings : slice type | test.go:228:14:228:26 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:227:8:227:35 | call to GetStrings | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:231:14:231:27 | type conversion | test.go:230:9:230:17 | call to Input : Values | test.go:231:14:231:27 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:230:9:230:17 | call to Input | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:235:14:235:30 | type conversion | test.go:233:6:233:8 | definition of str : myStruct | test.go:235:14:235:30 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:233:6:233:8 | definition of str | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:242:21:242:29 | untrusted | test.go:239:15:239:36 | call to GetString : string | test.go:242:21:242:29 | untrusted | Cross-site scripting vulnerability due to $@. | test.go:239:15:239:36 | call to GetString | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:252:16:252:45 | type conversion | test.go:252:23:252:44 | call to GetCookie : string | test.go:252:16:252:45 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:252:23:252:44 | call to GetCookie | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:257:16:257:37 | call to GetCookie | test.go:257:16:257:37 | call to GetCookie | test.go:257:16:257:37 | call to GetCookie | Cross-site scripting vulnerability due to $@. | test.go:257:16:257:37 | call to GetCookie | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:258:15:258:41 | call to GetCookie | test.go:258:15:258:41 | call to GetCookie | test.go:258:15:258:41 | call to GetCookie | Cross-site scripting vulnerability due to $@. | test.go:258:15:258:41 | call to GetCookie | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:263:55:263:84 | type conversion | test.go:263:62:263:83 | call to GetCookie : string | test.go:263:55:263:84 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:263:62:263:83 | call to GetCookie | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:276:21:276:61 | call to GetDisplayString | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:276:21:276:61 | call to GetDisplayString | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:277:21:277:92 | selection of Filename | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:277:21:277:92 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:278:21:278:96 | selection of Filename | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:278:21:278:96 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:283:3:285:80 | selection of Filename | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:283:3:285:80 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:286:21:286:101 | selection of Filename | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:286:21:286:101 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:287:21:287:101 | selection of Filename | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:287:21:287:101 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:288:21:288:97 | selection of Filename | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:288:21:288:97 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:289:21:289:97 | selection of Filename | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:289:21:289:97 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:290:21:290:102 | selection of Filename | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:290:21:290:102 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:291:21:291:102 | selection of Filename | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:291:21:291:102 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:292:21:292:82 | selection of Filename | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:292:21:292:82 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:294:21:294:133 | selection of Filename | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:294:21:294:133 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:295:21:295:88 | selection of Filename | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:295:21:295:88 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:296:21:296:87 | selection of Filename | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:296:21:296:87 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:268:2:268:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:304:21:304:48 | type assertion | test.go:302:15:302:36 | call to GetString : string | test.go:304:21:304:48 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:302:15:302:36 | call to GetString | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:305:21:305:52 | type assertion | test.go:302:15:302:36 | call to GetString : string | test.go:305:21:305:52 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:302:15:302:36 | call to GetString | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:29:13:29:30 | type conversion | test.go:27:6:27:10 | definition of bound : bindMe | test.go:29:13:29:30 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:27:6:27:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:30:13:30:27 | type conversion | test.go:27:6:27:10 | definition of bound : bindMe | test.go:30:13:30:27 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:27:6:27:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:31:13:31:29 | type conversion | test.go:27:6:27:10 | definition of bound : bindMe | test.go:31:13:31:29 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:27:6:27:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:36:13:36:43 | type conversion | test.go:36:20:36:42 | call to Cookie : string | test.go:36:13:36:43 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:36:20:36:42 | call to Cookie | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:41:13:41:52 | type conversion | test.go:41:20:41:31 | call to Data : map type | test.go:41:13:41:52 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:41:20:41:31 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:46:13:46:53 | type conversion | test.go:46:20:46:43 | call to GetData : basic interface type | test.go:46:13:46:53 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:46:20:46:43 | call to GetData | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:51:13:51:43 | type conversion | test.go:51:20:51:42 | call to Header : string | test.go:51:13:51:43 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:51:20:51:42 | call to Header | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:56:13:56:42 | type conversion | test.go:56:20:56:41 | call to Param : string | test.go:56:13:56:42 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:56:20:56:41 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:61:13:61:45 | type conversion | test.go:61:20:61:33 | call to Params : map type | test.go:61:13:61:45 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:61:20:61:33 | call to Params | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:66:13:66:42 | type conversion | test.go:66:20:66:41 | call to Query : string | test.go:66:13:66:42 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:66:20:66:41 | call to Query | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:71:13:71:33 | type conversion | test.go:71:20:71:32 | call to Refer : string | test.go:71:13:71:33 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:71:20:71:32 | call to Refer | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:76:13:76:35 | type conversion | test.go:76:20:76:34 | call to Referer : string | test.go:76:13:76:35 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:76:20:76:34 | call to Referer | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:81:13:81:31 | type conversion | test.go:81:20:81:30 | call to URI : string | test.go:81:13:81:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:81:20:81:30 | call to URI | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:86:13:86:31 | type conversion | test.go:86:20:86:30 | call to URL : string | test.go:86:13:86:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:86:20:86:30 | call to URL | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:91:13:91:37 | type conversion | test.go:91:20:91:36 | call to UserAgent : string | test.go:91:13:91:37 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:91:20:91:36 | call to UserAgent | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:96:14:96:45 | type assertion | test.go:96:14:96:25 | call to Data : map type | test.go:96:14:96:45 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:96:14:96:25 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:108:14:108:45 | type assertion | test.go:108:14:108:25 | call to Data : map type | test.go:108:14:108:45 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:108:14:108:25 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:120:14:120:45 | type assertion | test.go:120:14:120:25 | call to Data : map type | test.go:120:14:120:45 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:120:14:120:25 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:137:23:137:62 | type assertion | test.go:137:23:137:42 | call to Data : map type | test.go:137:23:137:62 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:137:23:137:42 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:194:14:194:55 | type conversion | test.go:193:15:193:26 | call to Data : map type | test.go:194:14:194:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:193:15:193:26 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:195:14:195:58 | type conversion | test.go:193:15:193:26 | call to Data : map type | test.go:195:14:195:58 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:193:15:193:26 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:197:14:197:28 | type assertion | test.go:193:15:193:26 | call to Data : map type | test.go:197:14:197:28 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:193:15:193:26 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:198:14:198:55 | type conversion | test.go:193:15:193:26 | call to Data : map type | test.go:198:14:198:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:193:15:193:26 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:199:14:199:59 | type conversion | test.go:193:15:193:26 | call to Data : map type | test.go:199:14:199:59 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:193:15:193:26 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:203:14:203:28 | type conversion | test.go:202:18:202:33 | selection of Form : Values | test.go:203:14:203:28 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:202:18:202:33 | selection of Form | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:218:14:218:32 | type conversion | test.go:217:2:217:34 | ... := ...[1] : pointer type | test.go:218:14:218:32 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:217:2:217:34 | ... := ...[1] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:220:14:220:20 | content | test.go:217:2:217:34 | ... := ...[0] : File | test.go:220:14:220:20 | content | Cross-site scripting vulnerability due to $@. | test.go:217:2:217:34 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:223:14:223:38 | type conversion | test.go:222:2:222:40 | ... := ...[0] : slice type | test.go:223:14:223:38 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:222:2:222:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:226:14:226:22 | type conversion | test.go:225:7:225:28 | call to GetString : string | test.go:226:14:226:22 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:225:7:225:28 | call to GetString | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:229:14:229:26 | type conversion | test.go:228:8:228:35 | call to GetStrings : slice type | test.go:229:14:229:26 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:228:8:228:35 | call to GetStrings | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:232:14:232:27 | type conversion | test.go:231:9:231:17 | call to Input : Values | test.go:232:14:232:27 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:231:9:231:17 | call to Input | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:236:14:236:30 | type conversion | test.go:234:6:234:8 | definition of str : myStruct | test.go:236:14:236:30 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:234:6:234:8 | definition of str | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:243:21:243:29 | untrusted | test.go:240:15:240:36 | call to GetString : string | test.go:243:21:243:29 | untrusted | Cross-site scripting vulnerability due to $@. | test.go:240:15:240:36 | call to GetString | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:253:16:253:45 | type conversion | test.go:253:23:253:44 | call to GetCookie : string | test.go:253:16:253:45 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:253:23:253:44 | call to GetCookie | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:258:16:258:37 | call to GetCookie | test.go:258:16:258:37 | call to GetCookie | test.go:258:16:258:37 | call to GetCookie | Cross-site scripting vulnerability due to $@. | test.go:258:16:258:37 | call to GetCookie | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:259:15:259:41 | call to GetCookie | test.go:259:15:259:41 | call to GetCookie | test.go:259:15:259:41 | call to GetCookie | Cross-site scripting vulnerability due to $@. | test.go:259:15:259:41 | call to GetCookie | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:264:55:264:84 | type conversion | test.go:264:62:264:83 | call to GetCookie : string | test.go:264:55:264:84 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:264:62:264:83 | call to GetCookie | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:277:21:277:61 | call to GetDisplayString | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:277:21:277:61 | call to GetDisplayString | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:278:21:278:92 | selection of Filename | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:278:21:278:92 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:279:21:279:96 | selection of Filename | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:279:21:279:96 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:284:3:286:80 | selection of Filename | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:284:3:286:80 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:287:21:287:101 | selection of Filename | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:287:21:287:101 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:288:21:288:101 | selection of Filename | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:288:21:288:101 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:289:21:289:97 | selection of Filename | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:289:21:289:97 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:290:21:290:97 | selection of Filename | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:290:21:290:97 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:291:21:291:102 | selection of Filename | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:291:21:291:102 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:292:21:292:102 | selection of Filename | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:292:21:292:102 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:293:21:293:82 | selection of Filename | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:293:21:293:82 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:295:21:295:133 | selection of Filename | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:295:21:295:133 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:296:21:296:88 | selection of Filename | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:296:21:296:88 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:297:21:297:87 | selection of Filename | test.go:269:2:269:40 | ... := ...[0] : slice type | test.go:297:21:297:87 | selection of Filename | Cross-site scripting vulnerability due to $@. | test.go:269:2:269:40 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:305:21:305:48 | type assertion | test.go:303:15:303:36 | call to GetString : string | test.go:305:21:305:48 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:303:15:303:36 | call to GetString | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:306:21:306:52 | type assertion | test.go:303:15:303:36 | call to GetString : string | test.go:306:21:306:52 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:303:15:303:36 | call to GetString | user-provided value | test.go:0:0:0:0 | test.go |  |

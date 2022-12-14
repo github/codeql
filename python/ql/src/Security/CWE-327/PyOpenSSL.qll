@@ -7,13 +7,13 @@ private import python
 private import semmle.python.ApiGraphs
 import TlsLibraryModel
 
-class PyOpenSSLContextCreation extends ContextCreation, DataFlow::CallCfgNode {
-  PyOpenSSLContextCreation() {
+class PyOpenSslContextCreation extends ContextCreation, DataFlow::CallCfgNode {
+  PyOpenSslContextCreation() {
     this = API::moduleImport("OpenSSL").getMember("SSL").getMember("Context").getACall()
   }
 
   override string getProtocol() {
-    exists(DataFlow::Node protocolArg, PyOpenSSL pyo |
+    exists(DataFlow::Node protocolArg, PyOpenSsl pyo |
       protocolArg in [this.getArg(0), this.getArgByName("method")]
     |
       protocolArg in [
@@ -51,12 +51,12 @@ class SetOptionsCall extends ProtocolRestriction, DataFlow::CallCfgNode {
   }
 }
 
-class UnspecificPyOpenSSLContextCreation extends PyOpenSSLContextCreation, UnspecificContextCreation {
-  UnspecificPyOpenSSLContextCreation() { library instanceof PyOpenSSL }
+class UnspecificPyOpenSslContextCreation extends PyOpenSslContextCreation, UnspecificContextCreation {
+  UnspecificPyOpenSslContextCreation() { library instanceof PyOpenSsl }
 }
 
-class PyOpenSSL extends TlsLibrary {
-  PyOpenSSL() { this = "pyOpenSSL" }
+class PyOpenSsl extends TlsLibrary {
+  PyOpenSsl() { this = "pyOpenSSL" }
 
   override string specific_version_name(ProtocolVersion version) { result = version + "_METHOD" }
 
@@ -70,7 +70,7 @@ class PyOpenSSL extends TlsLibrary {
   override ContextCreation default_context_creation() { none() }
 
   override ContextCreation specific_context_creation() {
-    result instanceof PyOpenSSLContextCreation
+    result instanceof PyOpenSslContextCreation
   }
 
   override DataFlow::Node insecure_connection_creation(ProtocolVersion version) { none() }
@@ -80,6 +80,6 @@ class PyOpenSSL extends TlsLibrary {
   override ProtocolRestriction protocol_restriction() { result instanceof SetOptionsCall }
 
   override ProtocolUnrestriction protocol_unrestriction() {
-    result instanceof UnspecificPyOpenSSLContextCreation
+    result instanceof UnspecificPyOpenSslContextCreation
   }
 }

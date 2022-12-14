@@ -32,6 +32,19 @@ module Consistency {
 
     /** Holds if `n` should be excluded from the consistency test `reverseRead`. */
     predicate reverseReadExclude(Node n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `postHasUniquePre`. */
+    predicate postHasUniquePreExclude(PostUpdateNode n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `uniquePostUpdate`. */
+    predicate uniquePostUpdateExclude(Node n) { none() }
+
+    /** Holds if `(call, ctx)` should be excluded from the consistency test `viableImplInCallContextTooLargeExclude`. */
+    predicate viableImplInCallContextTooLargeExclude(
+      DataFlowCall call, DataFlowCall ctx, DataFlowCallable callable
+    ) {
+      none()
+    }
   }
 
   private class RelevantNode extends Node {
@@ -123,6 +136,18 @@ module Consistency {
     msg = "Local flow step does not preserve enclosing callable."
   }
 
+  query predicate readStepIsLocal(Node n1, Node n2, string msg) {
+    readStep(n1, _, n2) and
+    nodeGetEnclosingCallable(n1) != nodeGetEnclosingCallable(n2) and
+    msg = "Read step does not preserve enclosing callable."
+  }
+
+  query predicate storeStepIsLocal(Node n1, Node n2, string msg) {
+    storeStep(n1, _, n2) and
+    nodeGetEnclosingCallable(n1) != nodeGetEnclosingCallable(n2) and
+    msg = "Store step does not preserve enclosing callable."
+  }
+
   private DataFlowType typeRepr() { result = getNodeType(_) }
 
   query predicate compatibleTypesReflexive(DataFlowType t, string msg) {
@@ -166,6 +191,7 @@ module Consistency {
   }
 
   query predicate postHasUniquePre(PostUpdateNode n, string msg) {
+    not any(ConsistencyConfiguration conf).postHasUniquePreExclude(n) and
     exists(int c |
       c = count(n.getPreUpdateNode()) and
       c != 1 and
@@ -174,6 +200,7 @@ module Consistency {
   }
 
   query predicate uniquePostUpdate(Node n, string msg) {
+    not any(ConsistencyConfiguration conf).uniquePostUpdateExclude(n) and
     1 < strictcount(PostUpdateNode post | post.getPreUpdateNode() = n) and
     msg = "Node has multiple PostUpdateNodes."
   }
@@ -208,5 +235,34 @@ module Consistency {
     simpleLocalFlowStep(_, n) and
     not any(ConsistencyConfiguration c).postWithInFlowExclude(n) and
     msg = "PostUpdateNode should not be the target of local flow."
+  }
+
+  query predicate viableImplInCallContextTooLarge(
+    DataFlowCall call, DataFlowCall ctx, DataFlowCallable callable
+  ) {
+    callable = viableImplInCallContext(call, ctx) and
+    not callable = viableCallable(call) and
+    not any(ConsistencyConfiguration c).viableImplInCallContextTooLargeExclude(call, ctx, callable)
+  }
+
+  query predicate uniqueParameterNodeAtPosition(
+    DataFlowCallable c, ParameterPosition pos, Node p, string msg
+  ) {
+    isParameterNode(p, c, pos) and
+    not exists(unique(Node p0 | isParameterNode(p0, c, pos))) and
+    msg = "Parameters with overlapping positions."
+  }
+
+  query predicate uniqueParameterNodePosition(
+    DataFlowCallable c, ParameterPosition pos, Node p, string msg
+  ) {
+    isParameterNode(p, c, pos) and
+    not exists(unique(ParameterPosition pos0 | isParameterNode(p, c, pos0))) and
+    msg = "Parameter node with multiple positions."
+  }
+
+  query predicate uniqueContentApprox(Content c, string msg) {
+    not exists(unique(ContentApprox approx | approx = getContentApprox(c))) and
+    msg = "Non-unique content approximation."
   }
 }

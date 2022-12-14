@@ -4,7 +4,7 @@
  * own.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.RemoteFlowSources
@@ -50,14 +50,16 @@ module UrlRedirect {
   /**
    * A source of remote user input, considered as a flow source.
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  class HttpRequestInputAccessAsSource extends Source, Http::Server::RequestInputAccess {
+    HttpRequestInputAccessAsSource() { this.isThirdPartyControllable() }
+  }
 
   /**
    * A HTTP redirect response, considered as a flow sink.
    */
   class RedirectLocationAsSink extends Sink {
     RedirectLocationAsSink() {
-      exists(HTTP::Server::HttpRedirectResponse e, MethodBase method |
+      exists(Http::Server::HttpRedirectResponse e, MethodBase method |
         this = e.getRedirectLocation() and
         // We only want handlers for GET requests.
         // Handlers for other HTTP methods are not as vulnerable to URL

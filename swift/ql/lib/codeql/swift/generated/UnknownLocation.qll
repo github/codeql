@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.Location
 
-class UnknownLocationBase extends Synth::TUnknownLocation, Location {
-  override string getAPrimaryQlClass() { result = "UnknownLocation" }
+module Generated {
+  class UnknownLocation extends Synth::TUnknownLocation, Location {
+    override string getAPrimaryQlClass() { result = "UnknownLocation" }
+  }
 }

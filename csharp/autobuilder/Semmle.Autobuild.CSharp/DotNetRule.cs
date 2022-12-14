@@ -5,7 +5,6 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 using Semmle.Util;
-using System.Text.RegularExpressions;
 using Semmle.Autobuild.Shared;
 
 namespace Semmle.Autobuild.CSharp
@@ -14,9 +13,9 @@ namespace Semmle.Autobuild.CSharp
     /// A build rule where the build command is of the form "dotnet build".
     /// Currently unused because the tracer does not work with dotnet.
     /// </summary>
-    internal class DotNetRule : IBuildRule
+    internal class DotNetRule : IBuildRule<CSharpAutobuildOptions>
     {
-        public BuildScript Analyse(Autobuilder builder, bool auto)
+        public BuildScript Analyse(IAutobuilder<CSharpAutobuildOptions> builder, bool auto)
         {
             if (!builder.ProjectsOrSolutionsToBuild.Any())
                 return BuildScript.Failure;
@@ -25,7 +24,7 @@ namespace Semmle.Autobuild.CSharp
             {
                 var notDotNetProject = builder.ProjectsOrSolutionsToBuild
                     .SelectMany(p => Enumerators.Singleton(p).Concat(p.IncludedProjects))
-                    .OfType<Project>()
+                    .OfType<Project<CSharpAutobuildOptions>>()
                     .FirstOrDefault(p => !p.DotNetProject);
                 if (notDotNetProject is not null)
                 {
@@ -57,7 +56,7 @@ namespace Semmle.Autobuild.CSharp
                 });
         }
 
-        private static BuildScript WithDotNet(Autobuilder builder, Func<string?, IDictionary<string, string>?, BuildScript> f)
+        private static BuildScript WithDotNet(IAutobuilder<AutobuildOptionsShared> builder, Func<string?, IDictionary<string, string>?, BuildScript> f)
         {
             var installDir = builder.Actions.PathCombine(builder.Options.RootDirectory, ".dotnet");
             var installScript = DownloadDotNet(builder, installDir);
@@ -81,9 +80,6 @@ namespace Semmle.Autobuild.CSharp
                     env = null;
                 }
 
-                if (env is null)
-                    env = new Dictionary<string, string>();
-                env.Add("UseSharedCompilation", "false");
                 return f(installDir, env);
             });
         }
@@ -96,7 +92,7 @@ namespace Semmle.Autobuild.CSharp
         /// variables needed by the installed .NET Core (<code>null</code> when no variables
         /// are needed).
         /// </summary>
-        public static BuildScript WithDotNet(Autobuilder builder, Func<IDictionary<string, string>?, BuildScript> f)
+        public static BuildScript WithDotNet(IAutobuilder<AutobuildOptionsShared> builder, Func<IDictionary<string, string>?, BuildScript> f)
             => WithDotNet(builder, (_1, env) => f(env));
 
         /// <summary>
@@ -104,7 +100,7 @@ namespace Semmle.Autobuild.CSharp
         /// .NET Core SDK. The SDK(s) will be installed at <code>installDir</code>
         /// (provided that the script succeeds).
         /// </summary>
-        private static BuildScript DownloadDotNet(Autobuilder builder, string installDir)
+        private static BuildScript DownloadDotNet(IAutobuilder<AutobuildOptionsShared> builder, string installDir)
         {
             if (!string.IsNullOrEmpty(builder.Options.DotNetVersion))
                 // Specific version supplied in configuration: always use that
@@ -141,7 +137,7 @@ namespace Semmle.Autobuild.CSharp
         ///
         /// See https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script.
         /// </summary>
-        private static BuildScript DownloadDotNetVersion(Autobuilder builder, string path, string version)
+        private static BuildScript DownloadDotNetVersion(IAutobuilder<AutobuildOptionsShared> builder, string path, string version)
         {
             return BuildScript.Bind(GetInstalledSdksScript(builder.Actions), (sdks, sdksRet) =>
                 {
@@ -237,7 +233,7 @@ namespace Semmle.Autobuild.CSharp
         /// <summary>
         /// Gets the `dotnet build` script.
         /// </summary>
-        private static BuildScript GetBuildScript(Autobuilder builder, string? dotNetPath, IDictionary<string, string>? environment, string projOrSln)
+        private static BuildScript GetBuildScript(IAutobuilder<CSharpAutobuildOptions> builder, string? dotNetPath, IDictionary<string, string>? environment, string projOrSln)
         {
             var build = new CommandBuilder(builder.Actions, null, environment);
             var script = build.RunCommand(DotNetCommand(builder.Actions, dotNetPath)).
@@ -245,8 +241,7 @@ namespace Semmle.Autobuild.CSharp
                 Argument("--no-incremental");
 
             return
-                script.Argument("/p:UseSharedCompilation=false").
-                    Argument(builder.Options.DotNetArguments).
+                script.Argument(builder.Options.DotNetArguments).
                     QuoteArgument(projOrSln).
                     Script;
         }

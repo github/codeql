@@ -2260,12 +2260,8 @@ literals/literals.rb:
 #  189|     getAnOperand/getLeftOperand: [LocalVariableAccess] query
 #  189|     getAnOperand/getRightOperand: [HereDoc] <<'DOC'
 #  189|       getComponent: [StringTextComponent] 
-#  189|        text without 
-#  190|       getComponent: [StringInterpolationComponent] #{...}
-#  190|         getStmt: [MethodCall] call to interpolation
-#  190|           getReceiver: [SelfVariableAccess] self
-#  190|       getComponent: [StringTextComponent]  !
-#  190|       
+#  189|        text without #{ interpolation } !
+#  189|       
 #  193|   getStmt: [AssignExpr] ... = ...
 #  193|     getAnOperand/getLeftOperand: [LocalVariableAccess] output
 #  193|     getAnOperand/getRightOperand: [HereDoc] <<`SCRIPT`
@@ -2293,6 +2289,17 @@ literals/literals.rb:
 #  199|       getKey: [SymbolLiteral] :Z
 #  199|         getComponent: [StringTextComponent] Z
 #  199|       getValue: [ConstantReadAccess] Z
+#  201|   getStmt: [StringLiteral] "@foo: #{...} @@bar: #{...} $_..."
+#  201|     getComponent: [StringTextComponent] @foo: 
+#  201|     getComponent: [StringInterpolationComponent] #{...}
+#  201|       getStmt: [InstanceVariableAccess] @foo
+#  201|         getReceiver: [SelfVariableAccess] self
+#  201|     getComponent: [StringTextComponent]  @@bar: 
+#  201|     getComponent: [StringInterpolationComponent] #{...}
+#  201|       getStmt: [ClassVariableAccess] @@bar
+#  201|     getComponent: [StringTextComponent]  $_: 
+#  201|     getComponent: [StringInterpolationComponent] #{...}
+#  201|       getStmt: [GlobalVariableAccess] $_
 control/loops.rb:
 #    1| [Toplevel] loops.rb
 #    2|   getStmt: [AssignExpr] ... = ...
@@ -2826,6 +2833,29 @@ operations/operations.rb:
 #   96|   getStmt: [AssignMulExpr] ... *= ...
 #   96|     getAnOperand/getLeftOperand: [GlobalVariableAccess] $global_var
 #   96|     getAnOperand/getRightOperand: [IntegerLiteral] 6
+#   98|   getStmt: [AssignExpr] ... = ...
+#   98|     getAnOperand/getLeftOperand: [ConstantAssignment] CONSTANT1
+#   98|     getAnOperand/getRightOperand: [IntegerLiteral] 5
+#   99|   getStmt: [AssignAddExpr] ... += ...
+#   99|     getAnOperand/getLeftOperand: [ConstantAssignment, ConstantReadAccess] CONSTANT2
+#   99|     getAnOperand/getRightOperand: [IntegerLiteral] 6
+#  100|   getStmt: [AssignLogicalOrExpr] ... ||= ...
+#  100|     getAnOperand/getLeftOperand: [ConstantAssignment, ConstantReadAccess] CONSTANT3
+#  100|     getAnOperand/getRightOperand: [IntegerLiteral] 7
+#  101|   getStmt: [AssignLogicalOrExpr] ... ||= ...
+#  101|     getAnOperand/getLeftOperand: [ConstantAssignment, ConstantReadAccess] MemberConstant
+#  101|       getScopeExpr: [ConstantReadAccess] Foo
+#  101|     getAnOperand/getRightOperand: [IntegerLiteral] 8
+#  102|   getStmt: [AssignLogicalOrExpr] ... ||= ...
+#  102|     getAnOperand/getLeftOperand: [ConstantAssignment, ConstantReadAccess] OtherConstant
+#  102|       getScopeExpr: [MethodCall] call to bar
+#  102|         getReceiver: [MethodCall] call to foo
+#  102|           getReceiver: [SelfVariableAccess] self
+#  102|           getArgument: [IntegerLiteral] 1
+#  102|     getAnOperand/getRightOperand: [IntegerLiteral] 7
+#  103|   getStmt: [AssignLogicalOrExpr] ... ||= ...
+#  103|     getAnOperand/getLeftOperand: [ConstantAssignment, ConstantReadAccess] CONSTANT4
+#  103|     getAnOperand/getRightOperand: [IntegerLiteral] 7
 params/params.rb:
 #    1| [Toplevel] params.rb
 #    4|   getStmt: [Method] identifier_method_params

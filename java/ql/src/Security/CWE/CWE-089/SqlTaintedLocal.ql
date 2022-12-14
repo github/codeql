@@ -36,5 +36,5 @@ class LocalUserInputToQueryInjectionFlowConfig extends TaintTracking::Configurat
 from
   DataFlow::PathNode source, DataFlow::PathNode sink, LocalUserInputToQueryInjectionFlowConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Query might include code from $@.", source.getNode(),
-  "this user input"
+select sink.getNode(), source, sink, "This query depends on a $@.", source.getNode(),
+  "user-provided value"

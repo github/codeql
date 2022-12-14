@@ -158,7 +158,7 @@ private module RestFramework {
    * `HTTP::Server::RequestHandler`. We only need this for the ones that doesn't have a
    * known route setup.
    */
-  class RestFrameworkFunctionBasedViewWithoutKnownRoute extends HTTP::Server::RequestHandler::Range,
+  class RestFrameworkFunctionBasedViewWithoutKnownRoute extends Http::Server::RequestHandler::Range,
     PrivateDjango::DjangoRouteHandler instanceof RestFrameworkFunctionBasedView {
     RestFrameworkFunctionBasedViewWithoutKnownRoute() {
       not exists(PrivateDjango::DjangoRouteSetup setup | setup.getARequestHandler() = this)
@@ -220,7 +220,7 @@ private module RestFramework {
      *
      * Use the predicate `Request::instance()` to get references to instances of `rest_framework.request.Request`.
      */
-    abstract class InstanceSource extends PrivateDjango::DjangoImpl::Http::Request::HttpRequest::InstanceSource {
+    abstract class InstanceSource extends PrivateDjango::DjangoImpl::DjangoHttp::Request::HttpRequest::InstanceSource {
     }
 
     /** A direct instantiation of `rest_framework.request.Request`. */
@@ -296,7 +296,7 @@ private module RestFramework {
     }
 
     /** A direct instantiation of `rest_framework.response.Response`. */
-    private class ClassInstantiation extends PrivateDjango::DjangoImpl::Http::Response::HttpResponse::InstanceSource,
+    private class ClassInstantiation extends PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponse::InstanceSource,
       DataFlow::CallCfgNode {
       ClassInstantiation() { this = classRef().getACall() }
 
@@ -320,7 +320,7 @@ private module RestFramework {
    */
   module ApiException {
     /** A direct instantiation of `rest_framework.exceptions.ApiException` or subclass. */
-    private class ClassInstantiation extends HTTP::Server::HttpResponse::Range,
+    private class ClassInstantiation extends Http::Server::HttpResponse::Range,
       DataFlow::CallCfgNode {
       string className;
 

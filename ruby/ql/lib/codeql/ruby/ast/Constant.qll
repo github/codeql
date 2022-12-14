@@ -65,7 +65,7 @@ class ConstantValue extends TConstantValue {
   /** Holds if this is the string value `s`. */
   predicate isString(string s) { s = this.getString() }
 
-  /** Gets the symbol value (exluding the `:` prefix), if this is a symbol. */
+  /** Gets the symbol value (excluding the `:` prefix), if this is a symbol. */
   string getSymbol() { this = TSymbol(result) }
 
   /** Holds if this is the symbol value `:s`. */
@@ -170,6 +170,24 @@ module ConstantValue {
 
   /** A constant `nil` value. */
   class ConstantNilValue extends ConstantValue, TNil { }
+
+  /** Gets the integer constant `x`. */
+  ConstantValue fromInt(int x) { result.getInt() = x }
+
+  /** Gets the float constant `x`. */
+  ConstantValue fromFloat(float x) { result.getFloat() = x }
+
+  /** Gets the string constant `x`. */
+  ConstantValue fromString(string x) { result.getString() = x }
+
+  /** Gets the symbol constant `x`. */
+  ConstantValue fromSymbol(string x) { result.getSymbol() = x }
+
+  /** Gets the regexp constant `x`. */
+  ConstantValue fromRegExp(string x) { result.getRegExp() = x }
+
+  /** Gets the string, symbol, or regexp constant `x`. */
+  ConstantValue fromStringlikeValue(string x) { result.getStringlikeValue() = x }
 }
 
 /** An access to a constant. */
@@ -252,6 +270,20 @@ private class ConstantReadAccessSynth extends ConstantAccess, TConstantReadAcces
   final override predicate hasGlobalScope() { value.matches("::%") }
 }
 
+private class ConstantWriteAccessSynth extends ConstantAccess, TConstantWriteAccessSynth {
+  private string value;
+
+  ConstantWriteAccessSynth() { this = TConstantWriteAccessSynth(_, _, value) }
+
+  final override string getName() {
+    if this.hasGlobalScope() then result = value.suffix(2) else result = value
+  }
+
+  final override Expr getScopeExpr() { synthChild(this, 0, result) }
+
+  final override predicate hasGlobalScope() { value.matches("::%") }
+}
+
 /**
  * A use (read) of a constant.
  *
@@ -293,6 +325,15 @@ class ConstantReadAccess extends ConstantAccess {
    */
   Expr getValue() { result = getConstantReadAccessValue(this) }
 
+  /**
+   * Gets a fully qualified name for this constant read, based on the context in
+   * which it occurs.
+   */
+  string getAQualifiedName() { result = resolveConstant(this) }
+
+  /** Gets the module that this read access resolves to, if any. */
+  Module getModule() { result = resolveConstantReadAccess(this) }
+
   final override string getAPrimaryQlClass() { result = "ConstantReadAccess" }
 }
 
@@ -314,7 +355,9 @@ class ConstantReadAccess extends ConstantAccess {
  */
 class ConstantWriteAccess extends ConstantAccess {
   ConstantWriteAccess() {
-    explicitAssignmentNode(toGenerated(this), _) or this instanceof TNamespace
+    explicitAssignmentNode(toGenerated(this), _) or
+    this instanceof TNamespace or
+    this instanceof TConstantWriteAccessSynth
   }
 
   override string getAPrimaryQlClass() { result = "ConstantWriteAccess" }
@@ -354,7 +397,7 @@ class ConstantWriteAccess extends ConstantAccess {
    * constants up the namespace chain, the fully qualified name of a nested
    * constant can be ambiguous from just statically looking at the AST.
    */
-  string getAQualifiedName() { result = resolveConstantWriteAccess(this) }
+  string getAQualifiedName() { result = resolveConstantWrite(this) }
 
   /**
    * Gets a qualified name for this constant. Deprecated in favor of

@@ -146,7 +146,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
 
   /** Holds if this method is a destructor/finalizer. */
   predicate isFinalizer() {
-    this.getOverriddenMethod*().getQualifiedName() = "System.Object.Finalize"
+    this.getOverriddenMethod*().hasQualifiedName("System", "Object", "Finalize")
   }
 
   /** Holds if this method is an operator. */
@@ -258,7 +258,7 @@ class Setter extends Accessor {
 
   /** Holds if this setter is an `init` accessor. */
   predicate isInitOnly() {
-    exists(Type t | t.getQualifiedName() = "System.Runtime.CompilerServices.IsExternalInit" |
+    exists(Type t | t.hasQualifiedName("System.Runtime.CompilerServices", "IsExternalInit") |
       this.hasRequiredCustomModifier(t)
     )
   }
@@ -270,7 +270,7 @@ class Setter extends Accessor {
  */
 class TrivialSetter extends Method {
   TrivialSetter() {
-    exists(MethodImplementation impl | impl = this.getImplementation() |
+    exists(MethodImplementation impl | impl = this.getAnImplementation() |
       impl.getInstruction(0) instanceof ThisAccess and
       impl.getInstruction(1).(ParameterReadAccess).getTarget().getIndex() = 1 and
       impl.getInstruction(2) instanceof FieldWriteAccess

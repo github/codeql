@@ -61,12 +61,12 @@ predicate isBuiltinMember(string qual, string ret, string name, string args) {
 }
 
 module BuiltinsConsistency {
-  query predicate noBuildinParse(string sig) {
+  query predicate noBuiltinParse(string sig) {
     isBuiltinMember(sig) and
     not exists(sig.regexpCapture("(\\w+) (\\w+)\\.(\\w+)\\(([\\w, ]*)\\)", _))
   }
 
-  query predicate noBuildinClasslessParse(string sig) {
+  query predicate noBuiltinClasslessParse(string sig) {
     isBuiltinClassless(sig) and
     not exists(sig.regexpCapture("(\\w+) (\\w+)\\(([\\w, ]*)\\)", _))
   }

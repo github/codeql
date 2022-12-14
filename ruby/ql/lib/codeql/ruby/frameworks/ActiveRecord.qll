@@ -8,7 +8,6 @@ private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.dataflow.internal.DataFlowPrivate
-private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.Stdlib
 private import codeql.ruby.frameworks.Core
@@ -95,7 +94,7 @@ class ActiveRecordModelClassMethodCall extends MethodCall {
 
   ActiveRecordModelClassMethodCall() {
     // e.g. Foo.where(...)
-    recvCls.getModule() = resolveConstantReadAccess(this.getReceiver())
+    recvCls.getModule() = this.getReceiver().(ConstantReadAccess).getModule()
     or
     // e.g. Foo.joins(:bars).where(...)
     recvCls = this.getReceiver().(ActiveRecordModelClassMethodCall).getReceiverClass()
@@ -255,7 +254,7 @@ private string staticFinderMethodName() {
     result = baseName + ["", "!"]
   )
   or
-  result = "new"
+  result = ["new", "create"]
 }
 
 // Gets the "final" receiver in a chain of method calls.
@@ -282,7 +281,7 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
       recv = getUltimateReceiver(call) and
       (
         // The receiver refers to an `ActiveRecordModelClass` by name
-        resolveConstant(recv) = cls.getAQualifiedName()
+        recv.(ConstantReadAccess).getAQualifiedName() = cls.getAQualifiedName()
         or
         // The receiver is self, and the call is within a singleton method of
         // the `ActiveRecordModelClass`
@@ -528,13 +527,17 @@ private module Persistence {
  * end
  * ```
  */
-private class ActiveRecordAssociation extends DataFlow::CallNode {
+class ActiveRecordAssociation extends DataFlow::CallNode {
   private ActiveRecordModelClass modelClass;
 
   ActiveRecordAssociation() {
     not exists(this.asExpr().getExpr().getEnclosingMethod()) and
     this.asExpr().getExpr().getEnclosingModule() = modelClass and
-    this.getMethodName() = ["has_one", "has_many", "belongs_to", "has_and_belongs_to_many"]
+    this.getMethodName() =
+      [
+        "has_one", "has_many", "belongs_to", "has_and_belongs_to_many", "has_one_attached",
+        "has_many_attached"
+      ]
   }
 
   /**
@@ -568,9 +571,7 @@ private class ActiveRecordAssociation extends DataFlow::CallNode {
    * For example, in `has_many :posts`, this is `post`.
    */
   string getTargetModelName() {
-    exists(string s |
-      s = this.getArgument(0).asExpr().getExpr().getConstantValue().getStringlikeValue()
-    |
+    exists(string s | s = this.getArgument(0).getConstantValue().getStringlikeValue() |
       // has_one :profile
       // belongs_to :user
       this.isSingular() and
@@ -584,21 +585,32 @@ private class ActiveRecordAssociation extends DataFlow::CallNode {
   }
 
   /** Holds if this association is one-to-one */
-  predicate isSingular() { this.getMethodName() = ["has_one", "belongs_to"] }
+  predicate isSingular() { this.getMethodName() = ["has_one", "belongs_to", "has_one_attached"] }
 
   /** Holds if this association is one-to-many or many-to-many */
-  predicate isCollection() { this.getMethodName() = ["has_many", "has_and_belongs_to_many"] }
+  predicate isCollection() {
+    this.getMethodName() = ["has_many", "has_and_belongs_to_many", "has_many_attached"]
+  }
 }
 
 /**
  * Converts `input` to plural form.
+ *
+ * Examples:
+ *
+ * - photo -> photos
+ * - story -> stories
+ * - photos -> photos
  */
 bindingset[input]
 bindingset[result]
 private string pluralize(string input) {
   exists(string stem | stem + "y" = input | result = stem + "ies")
   or
+  not exists(string stem | stem + "s" = input) and
   result = input + "s"
+  or
+  exists(string stem | stem + "s" = input) and result = input
 }
 
 /**

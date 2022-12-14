@@ -1,4 +1,4 @@
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.frameworks.ActionDispatch
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.ApiGraphs
@@ -29,9 +29,7 @@ query predicate underscore(string input, string output) {
     ]
 }
 
-query predicate mimeTypeInstances(API::Node n) {
-  n = ModelOutput::getATypeNode("actiondispatch", "Mime::Type")
-}
+query predicate mimeTypeInstances(API::Node n) { n = ModelOutput::getATypeNode("Mime::Type") }
 
 query predicate mimeTypeMatchRegExpInterpretations(
   ActionDispatch::MimeTypeMatchRegExpInterpretation s

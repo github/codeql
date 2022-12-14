@@ -9,6 +9,7 @@ private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowImplConsistency
+private import DataFlowNodes
 import DataFlowNodes::Private
 
 private newtype TReturnKind = TNormalReturnKind()
@@ -83,6 +84,8 @@ predicate jumpStep(Node node1, Node node2) {
   or
   any(AdditionalValueStep a).step(node1, node2) and
   node1.getEnclosingCallable() != node2.getEnclosingCallable()
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(node1, node2)
 }
 
 /**
@@ -240,12 +243,6 @@ class DataFlowCallable extends TDataFlowCallable {
   SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
   Field asFieldScope() { this = TFieldScope(result) }
-
-  RefType getDeclaringType() {
-    result = this.asCallable().getDeclaringType() or
-    result = this.asSummarizedCallable().getDeclaringType() or
-    result = this.asFieldScope().getDeclaringType()
-  }
 
   string toString() {
     result = this.asCallable().toString() or
@@ -422,6 +419,48 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+}
+
+/** An approximated `Content`. */
+class ContentApprox extends TContentApprox {
+  /** Gets a textual representation of this approximated `Content`. */
+  string toString() {
+    exists(string firstChar |
+      this = TFieldContentApprox(firstChar) and
+      result = "approximated field " + firstChar
+    )
+    or
+    this = TArrayContentApprox() and
+    result = "[]"
+    or
+    this = TCollectionContentApprox() and
+    result = "<element>"
+    or
+    this = TMapKeyContentApprox() and
+    result = "<map.key>"
+    or
+    this = TMapValueContentApprox() and
+    result = "<map.value>"
+    or
+    this = TSyntheticFieldApproxContent() and
+    result = "approximated synthetic field"
+  }
+}
+
+/** Gets an approximated value for content `c`. */
+pragma[nomagic]
+ContentApprox getContentApprox(Content c) {
+  result = TFieldContentApprox(approximateFieldContent(c))
+  or
+  c instanceof ArrayContent and result = TArrayContentApprox()
+  or
+  c instanceof CollectionContent and result = TCollectionContentApprox()
+  or
+  c instanceof MapKeyContent and result = TMapKeyContentApprox()
+  or
+  c instanceof MapValueContent and result = TMapValueContentApprox()
+  or
+  c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
 }
 
 private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {

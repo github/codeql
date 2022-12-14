@@ -1,7 +1,7 @@
 private import codeql.swift.generated.stmt.IfStmt
 private import codeql.swift.elements.stmt.ConditionElement
 
-class IfStmt extends IfStmtBase {
+class IfStmt extends Generated::IfStmt {
   ConditionElement getACondition() { result = this.getCondition(_) }
 
   ConditionElement getCondition(int i) { result = this.getCondition().getElement(i) }

@@ -5,10 +5,12 @@
  */
 
 import javascript
-import SuperlinearBackTracking
+private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeView
 
 /** Module containing sources, sinks, and sanitizers for polynomial regular expression denial-of-service attacks. */
 module PolynomialReDoS {
+  import codeql.regex.nfa.SuperlinearBackTracking::Make<TreeView>
+
   /**
    * A data flow source node for polynomial regular expression denial-of-service vulnerabilities.
    */
@@ -48,8 +50,8 @@ module PolynomialReDoS {
    * A remote input to a server, seen as a source for polynomial
    * regular expression denial-of-service vulnerabilities.
    */
-  class RequestInputAccessAsSource extends Source instanceof HTTP::RequestInputAccess {
-    override string getKind() { result = HTTP::RequestInputAccess.super.getKind() }
+  class RequestInputAccessAsSource extends Source instanceof Http::RequestInputAccess {
+    override string getKind() { result = Http::RequestInputAccess.super.getKind() }
   }
 
   /**
@@ -90,7 +92,8 @@ module PolynomialReDoS {
         isCharClassLike(root)
       )
       or
-      this.(DataFlow::MethodCallNode).getMethodName() = StringOps::substringMethodName()
+      this.(DataFlow::MethodCallNode).getMethodName() = StringOps::substringMethodName() and
+      not this.(DataFlow::MethodCallNode).getNumArgument() = 1 // with one argument it just slices off the beginning
     }
   }
 
@@ -138,7 +141,7 @@ module PolynomialReDoS {
   /**
    * A parameter of an exported function, seen as a source for polynomial-redos.
    */
-  class ExternalInputSource extends Source, DataFlow::SourceNode {
+  class ExternalInputSource extends Source {
     ExternalInputSource() { this = Exports::getALibraryInputParameter() }
 
     override string getKind() { result = "library" }

@@ -256,12 +256,6 @@ CppType getInstructionOperandType(Instruction instruction, TypedOperandTag tag) 
         .getInstructionMemoryOperandType(getInstructionTag(instruction), tag)
 }
 
-Instruction getPhiOperandDefinition(
-  PhiInstruction instruction, IRBlock predecessorBlock, Overlap overlap
-) {
-  none()
-}
-
 Instruction getPhiInstructionBlockStart(PhiInstruction instr) { none() }
 
 Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {

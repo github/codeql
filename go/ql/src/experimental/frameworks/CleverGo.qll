@@ -174,7 +174,7 @@ private module CleverGo {
   /**
    * Models HTTP redirects.
    */
-  private class HttpRedirect extends HTTP::Redirect::Range, DataFlow::CallNode {
+  private class HttpRedirect extends Http::Redirect::Range, DataFlow::CallNode {
     string package;
     DataFlow::Node urlNode;
 
@@ -191,13 +191,13 @@ private module CleverGo {
 
     override DataFlow::Node getUrl() { result = urlNode }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
   }
 
   /**
    * Models HTTP ResponseBody where the content-type is static and non-modifiable.
    */
-  private class HttpResponseBodyStaticContentType extends HTTP::ResponseBody::Range {
+  private class HttpResponseBodyStaticContentType extends Http::ResponseBody::Range {
     string contentTypeString;
     DataFlow::Node receiverNode;
 
@@ -209,7 +209,7 @@ private module CleverGo {
 
     override string getAContentType() { result = contentTypeString }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
 
   // Holds for a call that sets the body; the content-type is implicitly set.
@@ -304,7 +304,7 @@ private module CleverGo {
   /**
    * Models HTTP ResponseBody where the content-type can be dynamically set by the caller.
    */
-  private class HttpResponseBodyDynamicContentType extends HTTP::ResponseBody::Range {
+  private class HttpResponseBodyDynamicContentType extends Http::ResponseBody::Range {
     DataFlow::Node contentTypeNode;
     DataFlow::Node receiverNode;
 
@@ -316,7 +316,7 @@ private module CleverGo {
 
     override DataFlow::Node getAContentTypeNode() { result = contentTypeNode }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
 
   // Holds for a call that sets the body; the content-type is a parameter.
@@ -352,7 +352,7 @@ private module CleverGo {
   /**
    * Models HTTP ResponseBody where only the body is set.
    */
-  private class HttpResponseBodyNoContentType extends HTTP::ResponseBody::Range {
+  private class HttpResponseBodyNoContentType extends Http::ResponseBody::Range {
     DataFlow::Node receiverNode;
 
     HttpResponseBodyNoContentType() {
@@ -361,7 +361,7 @@ private module CleverGo {
       )
     }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
 
   // Holds for a call that sets the body. The content-type is not defined.
@@ -394,7 +394,7 @@ private module CleverGo {
    * Models HTTP header writers.
    * The write is done with a call where you can set both the key and the value of the header.
    */
-  private class HeaderWrite extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+  private class HeaderWrite extends Http::HeaderWrite::Range, DataFlow::CallNode {
     DataFlow::Node receiverNode;
     DataFlow::Node headerNameNode;
     DataFlow::Node headerValueNode;
@@ -407,7 +407,7 @@ private module CleverGo {
 
     override DataFlow::Node getValue() { result = headerValueNode }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
 
   // Holds for a call that sets a header with a key-value combination.
@@ -437,7 +437,7 @@ private module CleverGo {
   /**
    * Models an HTTP static content-type header setter.
    */
-  private class StaticContentTypeHeaderSetter extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+  private class StaticContentTypeHeaderSetter extends Http::HeaderWrite::Range, DataFlow::CallNode {
     DataFlow::Node receiverNode;
     string valueString;
 
@@ -453,7 +453,7 @@ private module CleverGo {
 
     override DataFlow::Node getValue() { none() }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
 
   // Holds for a call that sets the content-type header (implicit).
@@ -494,7 +494,7 @@ private module CleverGo {
   /**
    * Models an HTTP dynamic content-type header setter.
    */
-  private class DynamicContentTypeHeaderSetter extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+  private class DynamicContentTypeHeaderSetter extends Http::HeaderWrite::Range, DataFlow::CallNode {
     DataFlow::Node receiverNode;
     DataFlow::Node valueNode;
 
@@ -508,7 +508,7 @@ private module CleverGo {
 
     override DataFlow::Node getValue() { result = valueNode }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
 
   // Holds for a call that sets the content-type header via a parameter.

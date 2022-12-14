@@ -4,7 +4,7 @@
  * adding your own.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts

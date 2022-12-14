@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinJobTypeBase extends Synth::TBuiltinJobType, BuiltinType {
-  override string getAPrimaryQlClass() { result = "BuiltinJobType" }
+module Generated {
+  class BuiltinJobType extends Synth::TBuiltinJobType, BuiltinType {
+    override string getAPrimaryQlClass() { result = "BuiltinJobType" }
+  }
 }

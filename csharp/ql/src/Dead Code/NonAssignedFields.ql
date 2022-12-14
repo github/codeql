@@ -111,6 +111,5 @@ where
     fa.getTarget() = g and
     g.getUnboundDeclaration() = f
   )
-select f,
-  "The field '" + f.getName() + "' is never explicitly assigned a value, yet it is read $@.", fa,
-  "here"
+select f, "The field '" + f.getName() + "' is never explicitly assigned a value, yet $@.", fa,
+  "the field is read"

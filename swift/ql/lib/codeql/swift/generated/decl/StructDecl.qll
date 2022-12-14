@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.NominalTypeDecl
 
-class StructDeclBase extends Synth::TStructDecl, NominalTypeDecl {
-  override string getAPrimaryQlClass() { result = "StructDecl" }
+module Generated {
+  class StructDecl extends Synth::TStructDecl, NominalTypeDecl {
+    override string getAPrimaryQlClass() { result = "StructDecl" }
+  }
 }

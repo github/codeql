@@ -98,16 +98,16 @@ class ParameterPosition = Position;
 /** An argument position represented by an integer. */
 class ArgumentPosition = Position;
 
-class Position extends TPosition {
+abstract class Position extends TPosition {
   abstract string toString();
 }
 
-class DirectPosition extends TDirectPosition {
+class DirectPosition extends Position, TDirectPosition {
   int index;
 
   DirectPosition() { this = TDirectPosition(index) }
 
-  string toString() {
+  override string toString() {
     index = -1 and
     result = "this"
     or
@@ -118,12 +118,12 @@ class DirectPosition extends TDirectPosition {
   int getIndex() { result = index }
 }
 
-class IndirectionPosition extends TIndirectionPosition {
+class IndirectionPosition extends Position, TIndirectionPosition {
   int index;
 
   IndirectionPosition() { this = TIndirectionPosition(index) }
 
-  string toString() {
+  override string toString() {
     index = -1 and
     result = "this"
     or
@@ -399,6 +399,13 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) { none() }
+
+/** An approximated `Content`. */
+class ContentApprox = Unit;
+
+/** Gets an approximated value for content `c`. */
+pragma[inline]
+ContentApprox getContentApprox(Content c) { any() }
 
 private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
   override predicate argHasPostUpdateExclude(ArgumentNode n) {

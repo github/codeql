@@ -14,7 +14,7 @@
  *       external/cwe/cwe-829
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.security.InsecureDependencyQuery
 
 from Expr url, string msg

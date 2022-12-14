@@ -2,7 +2,7 @@
  * Provides classes and predicates used by the XSS queries.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.DataFlow2
 private import codeql.ruby.CFG
@@ -10,6 +10,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.ActionView
+private import codeql.ruby.frameworks.Rails
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
@@ -61,10 +62,7 @@ private module Shared {
    */
   class HtmlSafeCallAsSink extends Sink {
     HtmlSafeCallAsSink() {
-      exists(HtmlSafeCall c, ErbOutputDirective d |
-        this.asExpr().getExpr() = c.getReceiver() and
-        c = d.getTerminalStmt()
-      )
+      this = any(DataFlow::CallNode call | call.getMethodName() = "html_safe").getReceiver()
     }
   }
 
@@ -76,12 +74,42 @@ private module Shared {
   }
 
   /**
+   * An argument to an ActionView helper method which is not escaped,
+   * considered as a flow sink.
+   */
+  class RawHelperCallArgumentAsSink extends Sink {
+    RawHelperCallArgumentAsSink() {
+      exists(ErbOutputDirective d, ActionView::Helpers::RawHelperCall c |
+        d.getTerminalStmt() = c and this.asExpr().getExpr() = c.getRawArgument()
+      )
+    }
+  }
+
+  /**
+   * An argument that is used to construct the `src` attribute of a `<script>`
+   * tag.
+   */
+  class ArgumentInterpretedAsUrlAsSink extends Sink, ErbOutputMethodCallArgumentNode,
+    ActionView::ArgumentInterpretedAsUrl { }
+
+  /**
    * A argument to a call to the `link_to` method, which does not expect
    * unsanitized user-input, considered as a flow sink.
    */
   class LinkToCallArgumentAsSink extends Sink, ErbOutputMethodCallArgumentNode {
     LinkToCallArgumentAsSink() {
       this.asExpr().getExpr() = this.getCall().(LinkToCall).getPathArgument()
+    }
+  }
+
+  /** A write to an HTTP response header, considered as a flow sink. */
+  class HeaderWriteAsSink extends Sink {
+    HeaderWriteAsSink() {
+      exists(Http::Server::HeaderWriteAccess a |
+        a.getName() = ["content-type", "access-control-allow-origin"]
+      |
+        this = a.getValue()
+      )
     }
   }
 
@@ -140,7 +168,7 @@ private module Shared {
    */
   pragma[noinline]
   private predicate renderCallLocals(string hashKey, Expr value, ErbFile erb) {
-    exists(RenderCall call, Pair kvPair |
+    exists(Rails::RenderCall call, Pair kvPair |
       call.getLocals().getAKeyValuePair() = kvPair and
       kvPair.getValue() = value and
       kvPair.getKey().getConstantValue().isStringlikeValue(hashKey) and
@@ -152,11 +180,10 @@ private module Shared {
   private predicate isFlowFromLocals0(
     CfgNodes::ExprNodes::ElementReferenceCfgNode refNode, string hashKey, ErbFile erb
   ) {
-    exists(DataFlow::Node argNode, CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
+    exists(DataFlow::Node argNode |
       argNode.asExpr() = refNode.getArgument(0) and
       refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "local_assigns" and
-      argNode.getALocalSource() = DataFlow::exprNode(strNode) and
-      strNode.getExpr().getConstantValue().isStringlikeValue(hashKey) and
+      argNode.getALocalSource().getConstantValue().isStringlikeValue(hashKey) and
       erb = refNode.getFile()
     )
   }
@@ -292,9 +319,11 @@ module ReflectedXss {
   deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * A HTTP request input, considered as a flow source.
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  class HttpRequestInputAccessAsSource extends Source, Http::Server::RequestInputAccess {
+    HttpRequestInputAccessAsSource() { this.isThirdPartyControllable() }
+  }
 }
 
 /** DEPRECATED: Alias for ReflectedXss */
@@ -309,17 +338,13 @@ private module OrmTracking {
 
     override predicate isSource(DataFlow2::Node source) { source instanceof OrmInstantiation }
 
-    // Select any call node and narrow down later
-    override predicate isSink(DataFlow2::Node sink) { sink instanceof DataFlow2::CallNode }
+    // Select any call receiver and narrow down later
+    override predicate isSink(DataFlow2::Node sink) {
+      sink = any(DataFlow2::CallNode c).getReceiver()
+    }
 
     override predicate isAdditionalFlowStep(DataFlow2::Node node1, DataFlow2::Node node2) {
       Shared::isAdditionalXssFlowStep(node1, node2)
-      or
-      // Propagate flow through arbitrary method calls
-      node2.(DataFlow2::CallNode).getReceiver() = node1
-      or
-      // Propagate flow through "or" expressions `or`/`||`
-      node2.asExpr().getExpr().(LogicalOrExpr).getAnOperand() = node1.asExpr().getExpr()
     }
   }
 }
@@ -352,10 +377,9 @@ module StoredXss {
 
   private class OrmFieldAsSource extends Source instanceof DataFlow2::CallNode {
     OrmFieldAsSource() {
-      exists(OrmTracking::Configuration subConfig, DataFlow2::CallNode subSrc, MethodCall call |
-        subConfig.hasFlow(subSrc, this) and
-        call = this.asExpr().getExpr() and
-        subSrc.(OrmInstantiation).methodCallMayAccessField(call.getMethodName())
+      exists(OrmTracking::Configuration subConfig, DataFlow2::CallNode subSrc |
+        subConfig.hasFlow(subSrc, this.getReceiver()) and
+        subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName())
       )
     }
   }

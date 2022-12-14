@@ -132,6 +132,9 @@ module Rbi {
       }
     }
 
+    /**
+     * A use of `T::Hash`.
+     */
     class RbiHashType extends RbiType, ConstantReadAccessFromT {
       RbiHashType() { this.getName() = "Hash" }
 
@@ -144,28 +147,25 @@ module Rbi {
       Expr getValueType() { result = this.getRefNode().getArgument(1) }
     }
 
+    /** A type instantiated with type arguments, such as `T::Array[String]`. */
+    class RbiInstantiatedType extends RbiType, ElementReference {
+      RbiInstantiatedType() { this.getReceiver() instanceof RbiType }
+    }
+
     /**
      * A call to `T.proc`. This defines a type signature for a proc or block
      */
     class ProcCall extends RbiType, SignatureCall, MethodCallAgainstT {
       ProcCall() { this.getMethodName() = "proc" }
 
-      private ProcReturnsTypeCall getReturnsTypeCall() { result.getProcCall() = this }
-
-      private ProcParamsCall getParamsCall() { result.getProcCall() = this }
-
-      /**
-       * Gets the return type of this type signature.
-       */
-      override ReturnType getReturnType() { result = this.getReturnsTypeCall().getReturnType() }
-
-      /**
-       * Gets the type of a parameter of this type signature.
-       */
-      override ParameterType getAParameterType() {
-        result = this.getParamsCall().getAParameterType()
+      override ReturnsTypeCall getReturnsTypeCall() {
+        result.(ProcReturnsTypeCall).getProcCall() = this
       }
-      // TODO: get associated method to which this can be passed
+
+      override ProcParamsCall getParamsCall() { result.getProcCall() = this }
+
+      // TODO: widen type for procs/blocks
+      override MethodBase getAssociatedMethod() { none() }
     }
   }
 
@@ -207,15 +207,11 @@ module Rbi {
    * A call that defines a type signature for a method or proc.
    */
   abstract class SignatureCall extends MethodCall {
-    /**
-     * Gets the return type of this type signature.
-     */
-    abstract ReturnType getReturnType();
+    abstract ParamsCall getParamsCall();
 
-    /**
-     * Gets the type of a parameter of this type signature.
-     */
-    abstract ParameterType getAParameterType();
+    abstract ReturnsTypeCall getReturnsTypeCall();
+
+    abstract MethodBase getAssociatedMethod();
   }
 
   private predicate isMethodSignatureCallNode(CfgNode n) {
@@ -240,20 +236,35 @@ module Rbi {
     )
   }
 
+  /**
+   * A call to a method named `attr_reader` or `attr_accessor`, used to define
+   * attribute reader methods for a named attribute.
+   */
+  class AttrReaderMethodCall extends MethodCall {
+    AttrReaderMethodCall() { this.getMethodName() = ["attr_reader", "attr_accessor"] }
+
+    /** Gets a name of an attribute defined by this call. */
+    string getAnAttributeName() {
+      result = this.getAnArgument().getConstantValue().getStringlikeValue()
+    }
+  }
+
   /** A call to `sig` to define the type signature of a method. */
   class MethodSignatureCall extends SignatureCall {
     MethodSignatureCall() { this.getMethodName() = "sig" }
 
-    private MethodReturnsTypeCall getReturnsTypeCall() { result.getMethodSignatureCall() = this }
+    override ReturnsTypeCall getReturnsTypeCall() {
+      result.(MethodReturnsTypeCall).getMethodSignatureCall() = this
+    }
 
-    private MethodParamsCall getParamsCall() { result.getMethodSignatureCall() = this }
+    override MethodParamsCall getParamsCall() { result.getMethodSignatureCall() = this }
 
     private ExprCfgNode getCfgNode() { result.getExpr() = this }
 
     /**
      * Gets the method whose type signature is defined by this call.
      */
-    MethodBase getAssociatedMethod() {
+    override MethodBase getAssociatedMethod() {
       result =
         min(ExprCfgNode methodCfgNode, int i |
           methodSignatureSuccessorNodeRanked(this.getCfgNode(), methodCfgNode, i) and
@@ -267,10 +278,10 @@ module Rbi {
      * Gets a call to `attr_reader` or `attr_accessor` where the return type of
      * the generated method is described by this call.
      */
-    MethodCall getAssociatedAttrReaderCall() {
+    AttrReaderMethodCall getAssociatedAttrReaderCall() {
       result =
         min(ExprNodes::MethodCallCfgNode c, int i |
-          c.getExpr().getMethodName() = ["attr_reader", "attr_accessor"] and
+          c.getExpr() instanceof AttrReaderMethodCall and
           methodSignatureSuccessorNodeRanked(this.getCfgNode(), c, i)
         |
           c order by i
@@ -280,12 +291,7 @@ module Rbi {
     /**
      * Gets the return type of this type signature.
      */
-    override ReturnType getReturnType() { result = this.getReturnsTypeCall().getReturnType() }
-
-    /**
-     * Gets the type of a parameter of this type signature.
-     */
-    override ParameterType getAParameterType() { result = this.getParamsCall().getAParameterType() }
+    ReturnType getReturnType() { result = this.getReturnsTypeCall().getReturnType() }
   }
 
   /**
@@ -320,12 +326,54 @@ module Rbi {
     ParamsCall() { this.getMethodName() = "params" }
 
     /**
-     * Gets the type of a parameter defined by this call.
+     * Gets the type of a positional parameter defined by this call.
      */
-    ParameterType getAParameterType() { result = this.getArgument(_) }
+    ParameterType getPositionalParameterType(int i) {
+      result = this.getArgument(i) and
+      // explicitly exclude keyword parameters
+      not this.getAssociatedParameter(result.getName()) instanceof KeywordParameter and
+      // and exclude block arguments
+      not this.getAssociatedParameter(result.getName()) instanceof BlockParameter
+    }
+
+    /** Gets the type of the keyword parameter named `keyword`. */
+    ParameterType getKeywordParameterType(string keyword) {
+      exists(KeywordParameter kp |
+        kp = this.getAssociatedParameter(keyword) and
+        kp.getName() = keyword and
+        result.getType() = this.getKeywordArgument(keyword)
+      )
+    }
+
+    /** Gets the type of the block parameter to the associated method. */
+    ParameterType getBlockParameterType() {
+      this.getAssociatedParameter(result.getName()) instanceof BlockParameter and
+      result = this.getArgument(_)
+    }
+
+    /** Gets the parameter with the given name. */
+    NamedParameter getAssociatedParameter(string name) {
+      result = this.getSignatureCall().getAssociatedMethod().getAParameter() and
+      result.getName() = name
+    }
+
+    /** Gets the signature call which this params call belongs to. */
+    SignatureCall getSignatureCall() { this = result.getParamsCall() }
+
+    /** Gets a parameter type associated with this call */
+    ParameterType getAParameterType() {
+      result = this.getPositionalParameterType(_) or
+      result = this.getKeywordParameterType(_) or
+      result = this.getBlockParameterType()
+    }
   }
 
+  /**
+   * A call that defines a return type for an associated method.
+   * The return type is either a specific type, or the void type (i.e. "don't care").
+   */
   abstract class ReturnsTypeCall extends MethodCall {
+    /** Get the `ReturnType` corresponding to this call. */
     abstract ReturnType getReturnType();
   }
 
@@ -369,7 +417,7 @@ module Rbi {
     override ReturnType getReturnType() { result = ReturnsCall.super.getReturnType() }
   }
 
-  /** A call to `void` that spcifies that a given method does not return a useful value. */
+  /** A call to `void` that specifies that a given method does not return a useful value. */
   class MethodVoidCall extends MethodReturnsTypeCall instanceof VoidCall {
     override ReturnType getReturnType() { result = VoidCall.super.getReturnType() }
   }
@@ -391,6 +439,7 @@ module Rbi {
   abstract class ProcReturnsTypeCall extends ReturnsTypeCall, ProcSignatureDefiningCall { }
 
   /** A call that defines the parameter types of a proc or block. */
+  // TODO: there is currently no way to map from this to parameter types with actual associated parameters
   class ProcParamsCall extends ParamsCall, ProcSignatureDefiningCall { }
 
   /** A call that defines the return type of a non-void proc or block. */
@@ -399,7 +448,7 @@ module Rbi {
   }
 
   /**
-   * A call to `void` that spcifies that a given proc or block does not return
+   * A call to `void` that specifies that a given proc or block does not return
    * a useful value.
    */
   class ProcVoidCall extends ProcReturnsTypeCall instanceof VoidCall {
@@ -408,25 +457,30 @@ module Rbi {
 
   /**
    * A pair defining the type of a parameter to a method.
+   *
+   * This is an argument to some call to `params`.
    */
   class ParameterType extends Pair {
-    private RbiType t;
+    private ParamsCall paramsCall;
 
-    ParameterType() { t = this.getValue() }
+    ParameterType() { paramsCall.getAnArgument() = this }
 
-    /** Gets the `RbiType` of this parameter. */
-    RbiType getType() { result = t }
-
-    private SignatureCall getOuterMethodSignatureCall() { this = result.getAParameterType() }
+    private SignatureCall getMethodSignatureCall() { paramsCall = result.getParamsCall() }
 
     private MethodBase getAssociatedMethod() {
-      result = this.getOuterMethodSignatureCall().(MethodSignatureCall).getAssociatedMethod()
+      result = this.getMethodSignatureCall().(MethodSignatureCall).getAssociatedMethod()
     }
 
-    /** Gets the parameter to which this type applies. */
+    /** Gets the `RbiType` of this parameter. */
+    RbiType getType() { result = this.getValue() }
+
+    /** Gets the name of this parameter. */
+    string getName() { result = this.getKey().getConstantValue().getStringlikeValue() }
+
+    /** Gets the `NamedParameter` to which this type applies. */
     NamedParameter getParameter() {
       result = this.getAssociatedMethod().getAParameter() and
-      result.getName() = this.getKey().getConstantValue().getStringlikeValue()
+      result.getName() = this.getName()
     }
   }
 }

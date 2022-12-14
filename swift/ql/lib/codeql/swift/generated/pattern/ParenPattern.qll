@@ -3,15 +3,26 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.pattern.Pattern
 
-class ParenPatternBase extends Synth::TParenPattern, Pattern {
-  override string getAPrimaryQlClass() { result = "ParenPattern" }
+module Generated {
+  class ParenPattern extends Synth::TParenPattern, Pattern {
+    override string getAPrimaryQlClass() { result = "ParenPattern" }
 
-  Pattern getImmediateSubPattern() {
-    result =
-      Synth::convertPatternFromRaw(Synth::convertParenPatternToRaw(this)
-            .(Raw::ParenPattern)
-            .getSubPattern())
+    /**
+     * Gets the sub pattern of this paren pattern.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Pattern getImmediateSubPattern() {
+      result =
+        Synth::convertPatternFromRaw(Synth::convertParenPatternToRaw(this)
+              .(Raw::ParenPattern)
+              .getSubPattern())
+    }
+
+    /**
+     * Gets the sub pattern of this paren pattern.
+     */
+    final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
   }
-
-  final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
 }

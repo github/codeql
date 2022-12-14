@@ -3,6 +3,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
+private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 
@@ -15,6 +16,15 @@ private string lastBlockParam(MethodCall mc, string name, int lastBlockParam) {
   mc.getMethodName() = name and
   result = name + "(" + lastBlockParam + ")" and
   lastBlockParam = mc.getBlock().getNumberOfParameters() - 1
+}
+
+/**
+ * Gets a call to the method `name` invoked on the `Array` object
+ * (not on an array instance).
+ */
+private MethodCall getAStaticArrayCall(string name) {
+  result.getMethodName() = name and
+  resolveConstantReadAccess(result.getReceiver()) = TResolved("Array")
 }
 
 /**
@@ -34,9 +44,7 @@ module Array {
   private class ArrayLiteralSummary extends SummarizedCallable {
     ArrayLiteralSummary() { this = "Array.[]" }
 
-    override MethodCall getACall() {
-      result = API::getTopLevelMember("Array").getAMethodCall("[]").getExprNode().getExpr()
-    }
+    override MethodCall getACallSimple() { result = getAStaticArrayCall("[]") }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       exists(ArrayIndex i |
@@ -50,9 +58,7 @@ module Array {
   private class NewSummary extends SummarizedCallable {
     NewSummary() { this = "Array.new" }
 
-    override MethodCall getACall() {
-      result = API::getTopLevelMember("Array").getAnInstantiation().getExprNode().getExpr()
-    }
+    override MethodCall getACallSimple() { result = getAStaticArrayCall("new") }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -72,9 +78,7 @@ module Array {
   private class TryConvertSummary extends SummarizedCallable {
     TryConvertSummary() { this = "Array.try_convert" }
 
-    override MethodCall getACall() {
-      result = API::getTopLevelMember("Array").getAMethodCall("try_convert").getExprNode().getExpr()
-    }
+    override MethodCall getACallSimple() { result = getAStaticArrayCall("try_convert") }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[0].WithElement[any]" and
@@ -86,7 +90,7 @@ module Array {
   private class SetIntersectionSummary extends SummarizedCallable {
     SetIntersectionSummary() { this = "&" }
 
-    override BitwiseAndExpr getACall() { any() }
+    override BitwiseAndExpr getACallSimple() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = ["Argument[self].Element[any]", "Argument[0].Element[any]"] and
@@ -98,7 +102,7 @@ module Array {
   private class SetUnionSummary extends SummarizedCallable {
     SetUnionSummary() { this = "|" }
 
-    override BitwiseOrExpr getACall() { any() }
+    override BitwiseOrExpr getACallSimple() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = ["Argument[self].Element[any]", "Argument[0].Element[any]"] and
@@ -110,7 +114,7 @@ module Array {
   private class RepetitionSummary extends SummarizedCallable {
     RepetitionSummary() { this = "*" }
 
-    override MulExpr getACall() { any() }
+    override MulExpr getACallSimple() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[any]" and
@@ -122,7 +126,7 @@ module Array {
   private class ConcatenationSummary extends SummarizedCallable {
     ConcatenationSummary() { this = "+" }
 
-    override AddExpr getACall() { any() }
+    override AddExpr getACallSimple() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -136,10 +140,9 @@ module Array {
     }
   }
 
-  private class SetDifferenceSummary extends SummarizedCallable {
-    SetDifferenceSummary() { this = "-" }
-
-    override SubExpr getACall() { any() }
+  abstract private class DifferenceSummaryShared extends SummarizedCallable {
+    bindingset[this]
+    DifferenceSummaryShared() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[any]" and
@@ -148,11 +151,17 @@ module Array {
     }
   }
 
+  private class SetDifferenceSummary extends DifferenceSummaryShared {
+    SetDifferenceSummary() { this = "-" }
+
+    override SubExpr getACallSimple() { any() }
+  }
+
   /** Flow summary for `Array#<<`. For `Array#append`, see `PushSummary`. */
   private class AppendOperatorSummary extends SummarizedCallable {
     AppendOperatorSummary() { this = "<<" }
 
-    override LShiftExpr getACall() { any() }
+    override LShiftExpr getACallSimple() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -176,9 +185,11 @@ module Array {
     ElementReferenceReadMethodName methodName; // adding this as a field helps give a better join order
 
     bindingset[this]
-    ElementReferenceReadSummary() { mc.getMethodName() = methodName }
+    ElementReferenceReadSummary() {
+      mc.getMethodName() = methodName and not mc = getAStaticArrayCall(methodName)
+    }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   /** A call to `[]` with a known index. */
@@ -193,7 +204,7 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[?," + index.serialize() + "]" and
+      input = "Argument[self].Element[" + index.serialize() + "]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -258,7 +269,7 @@ module Array {
         output = "ReturnValue"
         or
         exists(ArrayIndex i | i >= start and i <= end |
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "ReturnValue.Element[" + (i - start) + "]"
         )
       )
@@ -290,7 +301,7 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[?,0..]" and
+      input = "Argument[self].Element[0..]" and
       output = "ReturnValue.Element[?]" and
       preservesValue = true
     }
@@ -303,7 +314,7 @@ module Array {
     bindingset[this]
     ElementReferenceStoreSummary() { mc.getMethodName() = "[]=" }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
   }
 
   /** A call to `[]=` with a known index. */
@@ -321,7 +332,7 @@ module Array {
       output = "Argument[self].Element[" + index.serialize() + "]" and
       preservesValue = true
       or
-      input = "Argument[self].WithoutElement[" + index.serialize() + "]" and
+      input = "Argument[self].WithoutElement[" + index.serialize() + "!]" and
       output = "Argument[self]" and
       preservesValue = true
     }
@@ -388,7 +399,7 @@ module Array {
     bindingset[this]
     AtSummary() { mc.getMethodName() = "at" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class AtKnownSummary extends AtSummary {
@@ -401,7 +412,7 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[" + index.serialize() + ",?]" and
+      input = "Argument[self].Element[" + index.serialize() + "]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -484,7 +495,7 @@ module Array {
     CompactBangSummary() { this = "compact!" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[?,0..]" and
+      input = "Argument[self].Element[0..]" and
       output = ["ReturnValue.Element[?]", "Argument[self].Element[?]"] and
       preservesValue = true
     }
@@ -519,7 +530,7 @@ module Array {
     bindingset[this]
     DeleteSummary() { mc.getMethodName() = "delete" }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -552,18 +563,18 @@ module Array {
           if index.isInt(_)
           then
             // array indices may get shifted
-            input = "Argument[self].WithoutElement[" + index.serialize() + "].Element[0..]" and
+            input = "Argument[self].WithoutElement[" + index.serialize() + "!].Element[0..!]" and
             output = "Argument[self].Element[?]"
             or
-            input = "Argument[self].WithoutElement[0..]" and
+            input = "Argument[self].WithoutElement[0..!]" and
             output = "Argument[self]"
           else (
-            input = "Argument[self].WithoutElement[" + index.serialize() + "]" and
+            input = "Argument[self].WithoutElement[" + index.serialize() + "!]" and
             output = "Argument[self]"
           )
         )
         or
-        input = "Argument[self].Element[" + index.serialize() + ",?]" and
+        input = "Argument[self].Element[" + index.serialize() + "]" and
         output = "ReturnValue"
       ) and
       preservesValue = true
@@ -581,10 +592,10 @@ module Array {
       or
       (
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = "Argument[self].Element[?]"
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = "Argument[self]"
         or
         input = "Argument[self].Element[any]" and
@@ -606,7 +617,7 @@ module Array {
       preservesValue = true
     }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class DeleteAtKnownSummary extends DeleteAtSummary {
@@ -625,19 +636,16 @@ module Array {
         input = "Argument[self].Element[?]" and
         output = ["ReturnValue", "Argument[self].Element[?]"]
         or
-        input = "Argument[self].Element[" + i + "]" and
-        output = "ReturnValue"
-        or
-        input = "Argument[self].Element[" + i + "]" and
+        input = "Argument[self].Element[" + i + "!]" and
         output = "ReturnValue"
         or
         exists(ArrayIndex j |
           j < i and
-          input = "Argument[self].WithElement[" + j + "]" and
+          input = "Argument[self].WithElement[" + j + "!]" and
           output = "Argument[self]"
           or
           j > i and
-          input = "Argument[self].Element[" + j + "]" and
+          input = "Argument[self].Element[" + j + "!]" and
           output = "Argument[self].Element[" + (j - 1) + "]"
         )
       ) and
@@ -666,7 +674,7 @@ module Array {
 
     DeleteIfSummary() { this = lastBlockParam(mc, "delete_if", lastBlockParam) }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -674,24 +682,18 @@ module Array {
         output = "Argument[block].Parameter[" + lastBlockParam + "]"
         or
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = ["ReturnValue.Element[?]", "Argument[self].Element[?]"]
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = ["ReturnValue", "Argument[self]"]
       ) and
       preservesValue = true
     }
   }
 
-  private class DifferenceSummary extends SimpleSummarizedCallable {
+  private class DifferenceSummary extends DifferenceSummaryShared, SimpleSummarizedCallable {
     DifferenceSummary() { this = "difference" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      // `Array#difference` and `Array#-` do not behave exactly the same way,
-      // but we model their flow the same way.
-      any(SetDifferenceSummary s).propagatesFlowExt(input, output, preservesValue)
-    }
   }
 
   private string getDigArg(MethodCall dig, int i) {
@@ -713,7 +715,7 @@ module Array {
   private string buildDigInputSpecComponent(RelevantDigMethodCall dig, int i) {
     exists(string s |
       s = getDigArg(dig, i) and
-      if s = "?" then result = "any" else result = s + ",?"
+      if s = "?" then result = "any" else result = s
     )
   }
 
@@ -740,7 +742,7 @@ module Array {
           ) + ")"
     }
 
-    override MethodCall getACall() { result = dig }
+    override MethodCall getACallSimple() { result = dig }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self]" + buildDigInputSpec(dig) and
@@ -761,7 +763,7 @@ module Array {
       )
     }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -791,7 +793,7 @@ module Array {
     bindingset[this]
     FetchSummary() { mc.getMethodName() = "fetch" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class FetchKnownSummary extends FetchSummary {
@@ -805,7 +807,7 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "Argument[self].Element[?," + index.serialize() + "]" and
+        input = "Argument[self].Element[" + index.serialize() + "]" and
         output = "ReturnValue"
         or
         input = "Argument[0]" and
@@ -844,7 +846,7 @@ module Array {
     bindingset[this]
     FillSummary() { mc.getMethodName() = "fill" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = ["Argument[0]", "Argument[block].ReturnValue"] and
@@ -932,7 +934,7 @@ module Array {
     bindingset[this]
     InsertSummary() { mc.getMethodName() = "insert" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class InsertKnownSummary extends InsertSummary {
@@ -955,13 +957,13 @@ module Array {
         exists(ArrayIndex j |
           // Existing elements before the insertion point are unaffected.
           j < i and
-          input = "Argument[self].WithElement[" + j + "]" and
+          input = "Argument[self].WithElement[" + j + "!]" and
           output = r
           or
           // Existing elements after the insertion point are shifted by however
           // many values we're inserting.
           j >= i and
-          input = "Argument[self].Element[" + j + "]" and
+          input = "Argument[self].Element[" + j + "!]" and
           output = r + ".Element[" + (j + numValues) + "]"
         )
         or
@@ -1011,7 +1013,7 @@ module Array {
       preservesValue = true
     }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class KeepIfSummary extends SummarizedCallable {
@@ -1020,7 +1022,7 @@ module Array {
 
     KeepIfSummary() { this = lastBlockParam(mc, "keep_if", lastBlockParam) }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -1028,10 +1030,10 @@ module Array {
         output = "Argument[self]"
         or
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = ["ReturnValue.Element[?]", "Argument[self].Element[?]"]
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = ["ReturnValue", "Argument[self]"]
         or
         input = "Argument[self].Element[any]" and
@@ -1047,7 +1049,7 @@ module Array {
     bindingset[this]
     LastSummary() { mc.getMethodName() = "last" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class LastNoArgSummary extends LastSummary {
@@ -1101,7 +1103,7 @@ module Array {
     bindingset[this]
     PopSummary() { mc.getMethodName() = "pop" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class PopNoArgSummary extends PopSummary {
@@ -1139,12 +1141,17 @@ module Array {
       this = mc.getMethodName() + "(" + mc.getNumberOfArguments() + ")"
     }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() {
+      result = mc and
+      // Filter out obvious 'prepend' calls in a module scope
+      // Including such calls is mostly harmless but also easy to filter out
+      not result.getReceiver().(SelfVariableAccess).getCfgScope() instanceof ModuleBase
+    }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       exists(int num | num = mc.getNumberOfArguments() and preservesValue = true |
         exists(ArrayIndex i |
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "Argument[self].Element[" + (i + num) + "]"
         )
         or
@@ -1203,15 +1210,15 @@ module Array {
 
     RejectBangSummary() { this = lastBlockParam(mc, "reject!", lastBlockParam) }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = ["ReturnValue.Element[?]", "Argument[self].Element[?]"]
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = ["ReturnValue", "Argument[self]"]
         or
         input = "Argument[self].Element[any]" and
@@ -1261,7 +1268,7 @@ module Array {
     bindingset[this]
     RotateSummary() { mc.getMethodName() = "rotate" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class RotateKnownSummary extends RotateSummary {
@@ -1281,7 +1288,7 @@ module Array {
         output = "ReturnValue.Element[?]"
         or
         exists(ArrayIndex i |
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           (
             i < c and output = "ReturnValue.Element[?]"
             or
@@ -1312,7 +1319,7 @@ module Array {
     bindingset[this]
     RotateBangSummary() { mc.getMethodName() = "rotate!" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].WithoutElement[any]" and
@@ -1339,7 +1346,7 @@ module Array {
         output = r + ".Element[?]"
         or
         exists(ArrayIndex i |
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           (
             i < c and output = r + ".Element[?]"
             or
@@ -1377,7 +1384,7 @@ module Array {
       )
     }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -1385,10 +1392,10 @@ module Array {
         output = "Argument[block].Parameter[" + lastBlockParam + "]"
         or
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = ["ReturnValue.Element[?]", "Argument[self].Element[?]"]
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = ["ReturnValue", "Argument[self]"]
         or
         input = "Argument[self].WithoutElement[any]" and
@@ -1404,7 +1411,7 @@ module Array {
     bindingset[this]
     ShiftSummary() { mc.getMethodName() = "shift" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].WithoutElement[any]" and
@@ -1421,7 +1428,7 @@ module Array {
       or
       preservesValue = true and
       (
-        input = "Argument[self].WithoutElement[0..]" and
+        input = "Argument[self].WithoutElement[0..!]" and
         output = "Argument[self]"
         or
         input = "Argument[self].Element[?]" and
@@ -1431,10 +1438,10 @@ module Array {
             "ReturnValue.Element[1]" // hash
           ]
         or
-        input = "Argument[self].WithoutElement[0..].WithoutElement[?].Element[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithoutElement[?].Element[any]" and
         output = "ReturnValue.Element[1]"
         or
-        exists(ArrayIndex i | input = "Argument[self].Element[" + i + "]" |
+        exists(ArrayIndex i | input = "Argument[self].Element[" + i + "!]" |
           i = 0 and output = "ReturnValue"
           or
           i > 0 and output = "Argument[self].Element[" + (i - 1) + "]"
@@ -1461,11 +1468,11 @@ module Array {
         or
         exists(ArrayIndex i |
           i < n and
-          input = "Argument[self].WithElement[" + i + "]" and
+          input = "Argument[self].WithElement[" + i + "!]" and
           output = "ReturnValue"
           or
           i >= n and
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "Argument[self].Element[" + (i - n) + "]"
         )
       )
@@ -1518,7 +1525,7 @@ module Array {
       preservesValue = true
     }
 
-    override Call getACall() { result = mc }
+    override Call getACallSimple() { result = mc }
   }
 
   /** A call to `slice!` with a known integer index. */
@@ -1539,15 +1546,15 @@ module Array {
         input = "Argument[self].Element[?]" and
         output = ["ReturnValue", "Argument[self].Element[?]"]
         or
-        input = "Argument[self].Element[" + n + "]" and output = "ReturnValue"
+        input = "Argument[self].Element[" + n + "!]" and output = "ReturnValue"
         or
         exists(ArrayIndex i |
           i < n and
-          input = "Argument[self].WithElement[" + i + "]" and
+          input = "Argument[self].WithElement[" + i + "!]" and
           output = "Argument[self]"
           or
           i > n and
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "Argument[self].Element[" + (i - 1) + "]"
         )
       )
@@ -1619,16 +1626,16 @@ module Array {
         or
         exists(ArrayIndex i |
           i < start and
-          input = "Argument[self].WithElement[" + i + "]" and
+          input = "Argument[self].WithElement[" + i + "!]" and
           output = "Argument[self]"
           or
           i >= start and
           i <= end and
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "ReturnValue.Element[" + (i - start) + "]"
           or
           i > end and
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "Argument[self].Element[" + (i - (end - start + 1)) + "]"
         )
       )
@@ -1711,8 +1718,16 @@ module Array {
         output = "ReturnValue.Element[?].Element[?]"
         or
         exists(ArrayIndex i, ArrayIndex j |
-          input = "Argument[self].Element[" + j + "].Element[" + i + "]" and
+          input = "Argument[self].Element[" + j + "!].Element[" + i + "!]" and
           output = "ReturnValue.Element[" + i + "].Element[" + j + "]"
+        )
+        or
+        exists(ArrayIndex i |
+          input = "Argument[self].Element[" + i + "!].Element[?]" and
+          output = "ReturnValue.Element[?].Element[" + i + "]"
+          or
+          input = "Argument[self].Element[?].Element[" + i + "!]" and
+          output = "ReturnValue.Element[" + i + "].Element[?]"
         )
       )
     }
@@ -1755,7 +1770,7 @@ module Array {
     bindingset[this]
     ValuesAtSummary() { mc.getMethodName() = "values_at" }
 
-    override Call getACall() { result = mc }
+    override Call getACallSimple() { result = mc }
   }
 
   private string getValuesAtComponent(MethodCall mc, int i) {
@@ -1863,13 +1878,13 @@ module Enumerable {
     CompactSummary() { this = "compact" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[?,0..]" and
+      input = "Argument[self].Element[0..]" and
       output = "ReturnValue.Element[?]" and
       preservesValue = true
       or
       exists(ConstantValue index |
         not index.isInt(_) and
-        input = "Argument[self].WithElement[" + index.serialize() + "]" and
+        input = "Argument[self].WithElement[" + index.serialize() + "!]" and
         output = "ReturnValue" and
         preservesValue = true
       )
@@ -1918,7 +1933,7 @@ module Enumerable {
     bindingset[this]
     DropSummary() { mc.getMethodName() = "drop" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class DropKnownSummary extends DropSummary {
@@ -1935,7 +1950,7 @@ module Enumerable {
         output = "ReturnValue.Element[?]"
         or
         exists(ArrayIndex j |
-          input = "Argument[self].Element[" + j + "]" and
+          input = "Argument[self].Element[" + j + "!]" and
           output = "ReturnValue.Element[" + (j - i) + "]"
         )
       ) and
@@ -2062,14 +2077,14 @@ module Enumerable {
     bindingset[this]
     FirstSummary() { mc.getMethodName() = "first" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class FirstNoArgSummary extends FirstSummary {
     FirstNoArgSummary() { this = "first(no_arg)" and mc.getNumberOfArguments() = 0 }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["Argument[self].Element[0]", "Argument[self].Element[?]"] and
+      input = "Argument[self].Element[0]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -2086,12 +2101,12 @@ module Enumerable {
       (
         exists(ArrayIndex i |
           i < n and
-          input = "Argument[self].WithElement[" + i + "]" and
+          input = "Argument[self].WithElement[" + i + "!]" and
           output = "ReturnValue"
         )
         or
-        input = "Argument[self].Element[?]" and
-        output = "ReturnValue.Element[?]"
+        input = "Argument[self].WithElement[?]" and
+        output = "ReturnValue"
       ) and
       preservesValue = true
     }
@@ -2122,7 +2137,7 @@ module Enumerable {
     bindingset[this]
     GrepSummary() { mc.getMethodName() = methodName }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class GrepBlockSummary extends GrepSummary {
@@ -2173,7 +2188,7 @@ module Enumerable {
     bindingset[this]
     InjectSummary() { mc.getMethodName() = methodName }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class InjectNoArgSummary extends InjectSummary {
@@ -2187,7 +2202,7 @@ module Enumerable {
         input = "Argument[self].Element[0]" and
         output = "Argument[block].Parameter[0]"
         or
-        exists(ArrayIndex i | i > 0 | input = "Argument[self].Element[" + i + "]") and
+        input = "Argument[self].Element[1..]" and
         output = "Argument[block].Parameter[1]"
         or
         input = "Argument[block].ReturnValue" and output = "ReturnValue"
@@ -2206,7 +2221,7 @@ module Enumerable {
         output = "Argument[block].Parameter[0]"
         or
         // Each element in the receiver is passed to the second block parameter.
-        exists(ArrayIndex i | input = "Argument[self].Element[" + i + "]") and
+        input = "Argument[self].Element[0..]" and
         output = "Argument[block].Parameter[1]"
         or
         input = "Argument[block].ReturnValue" and output = "ReturnValue"
@@ -2226,7 +2241,7 @@ module Enumerable {
     bindingset[this]
     MinOrMaxBySummary() { mc.getMethodName() = methodName }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class MinOrMaxByNoArgSummary extends MinOrMaxBySummary {
@@ -2266,7 +2281,7 @@ module Enumerable {
     bindingset[this]
     MinOrMaxSummary() { mc.getMethodName() = methodName }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class MinOrMaxNoArgNoBlockSummary extends MinOrMaxSummary {
@@ -2332,7 +2347,7 @@ module Enumerable {
     bindingset[this]
     MinmaxSummary() { mc.getMethodName() = "minmax" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class MinmaxNoArgNoBlockSummary extends MinmaxSummary {
@@ -2393,7 +2408,7 @@ module Enumerable {
       )
     }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[any]" and
@@ -2408,15 +2423,15 @@ module Enumerable {
 
     RejectSummary() { this = lastBlockParam(mc, "reject", lastBlockParam) }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = "ReturnValue.Element[?]"
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = "ReturnValue"
         or
         input = "Argument[self].Element[any]" and
@@ -2437,15 +2452,15 @@ module Enumerable {
       )
     }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = "ReturnValue.Element[?]"
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = "ReturnValue"
         or
         input = "Argument[self].Element[any]" and
@@ -2512,7 +2527,7 @@ module Enumerable {
     bindingset[this]
     TakeSummary() { mc.getMethodName() = "take" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class TakeKnownSummary extends TakeSummary {
@@ -2525,11 +2540,11 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "Argument[self].Element[?]" and
-        output = "ReturnValue.Element[?]"
+        input = "Argument[self].WithElement[?]" and
+        output = "ReturnValue"
         or
         exists(ArrayIndex j | j < i |
-          input = "Argument[self].WithElement[" + j + "]" and
+          input = "Argument[self].WithElement[" + j + "!]" and
           output = "ReturnValue"
         )
       ) and
@@ -2576,7 +2591,7 @@ module Enumerable {
     ToASummary() { this = ["to_a", "entries", "to_ary"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].WithElement[?,0..]" and
+      input = "Argument[self].WithElement[0..]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -2598,7 +2613,7 @@ module Enumerable {
     bindingset[this]
     ZipSummary() { mc.getMethodName() = "zip" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class ZipBlockSummary extends ZipSummary {
@@ -2625,7 +2640,7 @@ module Enumerable {
       (
         // receiver[i] -> return_value[i][0]
         exists(ArrayIndex i |
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "ReturnValue.Element[" + i + "].Element[0]"
         )
         or
@@ -2635,7 +2650,7 @@ module Enumerable {
         or
         // arg_j[i] -> return_value[i][j+1]
         exists(ArrayIndex i, int j | j in [0 .. (mc.getNumberOfArguments() - 1)] |
-          input = "Argument[" + j + "].Element[" + i + "]" and
+          input = "Argument[" + j + "].Element[" + i + "!]" and
           output = "ReturnValue.Element[" + i + "].Element[" + (j + 1) + "]"
         )
         or

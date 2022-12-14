@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.BoundGenericType
 
-class BoundGenericEnumTypeBase extends Synth::TBoundGenericEnumType, BoundGenericType {
-  override string getAPrimaryQlClass() { result = "BoundGenericEnumType" }
+module Generated {
+  class BoundGenericEnumType extends Synth::TBoundGenericEnumType, BoundGenericType {
+    override string getAPrimaryQlClass() { result = "BoundGenericEnumType" }
+  }
 }

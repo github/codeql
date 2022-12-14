@@ -15,7 +15,7 @@
 
 import javascript
 
-from AngularJS::ServiceReference compile, SimpleParameter elem, CallExpr c
+from AngularJS::ServiceReference compile, DataFlow::ParameterNode elem, DataFlow::CallNode c
 where
   compile.getName() = "$compile" and
   elem =
@@ -24,7 +24,7 @@ where
         .(AngularJS::LinkFunction)
         .getElementParameter() and
   c = compile.getACall() and
-  c.getArgument(0).mayReferToParameter(elem) and
+  elem.flowsTo(c.getArgument(0)) and
   // don't flag $compile calls that specify a `maxPriority`
   c.getNumArgument() < 3
 select c, "This call to $compile may cause double compilation of '" + elem + "'."

@@ -904,8 +904,8 @@ private class SinonJS extends FrameworkLibraryWithGenericUrl, FrameworkLibraryWi
 /**
  * The TinyMCE framework.
  */
-private class TinyMCE extends FrameworkLibraryWithGenericUrl {
-  TinyMCE() { this = "tinymce" }
+private class TinyMce extends FrameworkLibraryWithGenericUrl {
+  TinyMce() { this = "tinymce" }
 
   override string getAnAlias() { result = "jquery.tinymce" or result = "tinymce.jquery" }
 }

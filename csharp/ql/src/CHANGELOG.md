@@ -1,3 +1,43 @@
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+No user-facing changes.
+
+## 0.4.3
+
+No user-facing changes.
+
+## 0.4.2
+
+No user-facing changes.
+
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* The alert message of many queries have been changed to better follow the style guide and make the message consistent with other languages.
+
+## 0.4.0
+
+### Minor Analysis Improvements
+
+* A new extractor option has been introduced for disabling CIL extraction. Either pass `-Ocil=false` to the `codeql` CLI or set the environment variable `CODEQL_EXTRACTOR_CSHARP_OPTION_CIL=false`.
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
+## 0.3.4
+
+## 0.3.3
+
+### Minor Analysis Improvements
+
+* Parameters of delegates passed to routing endpoint calls like `MapGet` in ASP.NET Core are now considered remote flow sources.
+* The query `cs/unsafe-deserialization-untrusted-input` is not reporting on all calls of `JsonConvert.DeserializeObject` any longer, it only covers cases that explicitly use unsafe serialization settings.
+* Added better support for the SQLite framework in the SQL injection query.
+* File streams are now considered stored flow sources. For example, reading query elements from a file can lead to a Second Order SQL injection alert.
+
 ## 0.3.2
 
 ## 0.3.1

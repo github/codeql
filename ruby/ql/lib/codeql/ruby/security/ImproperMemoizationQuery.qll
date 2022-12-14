@@ -2,7 +2,7 @@
  * Provides predicates for reasoning about improper memoization methods.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 

@@ -41,7 +41,7 @@ public class JaxRs1 { // $ RootResourceClass
   @Produces("text/plain") // $ ProducesAnnotation=text/plain
   @DELETE
   double Delete() { // $ ResourceMethod=text/plain ResourceMethodOnResourceClass
-    return 0.0; // $ XssSink
+    return 0.0;
   }
 
   @Produces(MediaType.TEXT_HTML) // $ ProducesAnnotation=text/html
@@ -77,7 +77,7 @@ public class JaxRs1 { // $ RootResourceClass
     @Produces(MediaType.TEXT_PLAIN) // $ ProducesAnnotation=text/plain
     @DELETE
     double Delete() { // $ ResourceMethod=text/plain ResourceMethodOnResourceClass
-      return 0.0; // $ XssSink
+      return 0.0;
     }
 
     @Path("")

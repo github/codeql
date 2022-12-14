@@ -23,7 +23,7 @@ class SuppressionAnnotation extends SuppressWarningsAnnotation {
   string text;
 
   SuppressionAnnotation() {
-    text = this.getASuppressedWarningLiteral().getValue() and
+    text = this.getASuppressedWarning() and
     exists(getAnnotationText(text))
   }
 
@@ -69,9 +69,7 @@ class SuppressionAnnotation extends SuppressWarningsAnnotation {
 /**
  * The scope of an alert suppression annotation.
  */
-class SuppressionScope extends @annotation {
-  SuppressionScope() { this instanceof SuppressionAnnotation }
-
+class SuppressionScope extends @annotation instanceof SuppressionAnnotation {
   /** Gets a suppression annotation with this scope. */
   SuppressionAnnotation getSuppressionAnnotation() { result = this }
 
@@ -85,7 +83,7 @@ class SuppressionScope extends @annotation {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.(SuppressionAnnotation).covers(filepath, startline, startcolumn, endline, endcolumn)
+    super.covers(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /** Gets a textual representation of this element. */

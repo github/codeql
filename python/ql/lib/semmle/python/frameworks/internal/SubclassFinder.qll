@@ -68,9 +68,9 @@ private module NotExposed {
   // modeling. See https://github.com/github/codeql/pull/5632 for more discussion.
   //
   //
-  bindingset[fullyQaulified]
-  string fullyQualifiedToApiGraphPath(string fullyQaulified) {
-    result = "moduleImport(\"" + fullyQaulified.replaceAll(".", "\").getMember(\"") + "\")"
+  bindingset[fullyQualified]
+  string fullyQualifiedToApiGraphPath(string fullyQualified) {
+    result = "moduleImport(\"" + fullyQualified.replaceAll(".", "\").getMember(\"") + "\")"
   }
 
   /** DEPRECATED: Alias for fullyQualifiedToApiGraphPath */

@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class AnyHashableErasureExprBase extends Synth::TAnyHashableErasureExpr, ImplicitConversionExpr {
-  override string getAPrimaryQlClass() { result = "AnyHashableErasureExpr" }
+module Generated {
+  class AnyHashableErasureExpr extends Synth::TAnyHashableErasureExpr, ImplicitConversionExpr {
+    override string getAPrimaryQlClass() { result = "AnyHashableErasureExpr" }
+  }
 }

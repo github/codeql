@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.CheckedCastExpr
 
-class ConditionalCheckedCastExprBase extends Synth::TConditionalCheckedCastExpr, CheckedCastExpr {
-  override string getAPrimaryQlClass() { result = "ConditionalCheckedCastExpr" }
+module Generated {
+  class ConditionalCheckedCastExpr extends Synth::TConditionalCheckedCastExpr, CheckedCastExpr {
+    override string getAPrimaryQlClass() { result = "ConditionalCheckedCastExpr" }
+  }
 }

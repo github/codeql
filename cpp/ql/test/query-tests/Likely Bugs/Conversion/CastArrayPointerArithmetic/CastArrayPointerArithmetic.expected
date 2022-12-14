@@ -120,18 +120,18 @@ subpaths
 | test.cpp:88:21:88:22 | d2 | test.cpp:34:31:34:31 | b | test.cpp:34:31:34:31 | b | test.cpp:88:21:88:22 | ref arg d2 |
 | test.cpp:90:22:90:23 | d2 | test.cpp:38:35:38:35 | d | test.cpp:38:35:38:35 | d | test.cpp:90:22:90:23 | ref arg d2 |
 #select
-| test.cpp:27:2:27:2 | b | test.cpp:57:19:57:19 | d | test.cpp:27:2:27:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:57:19:57:19 | d | here |
-| test.cpp:27:2:27:2 | b | test.cpp:74:19:74:21 | dss | test.cpp:27:2:27:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:74:19:74:21 | dss | here |
-| test.cpp:27:2:27:2 | b | test.cpp:86:19:86:20 | d2 | test.cpp:27:2:27:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:86:19:86:20 | d2 | here |
-| test.cpp:31:2:31:2 | b | test.cpp:57:19:57:19 | d | test.cpp:31:2:31:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:57:19:57:19 | d | here |
-| test.cpp:31:2:31:2 | b | test.cpp:58:25:58:25 | d | test.cpp:31:2:31:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:58:25:58:25 | d | here |
-| test.cpp:31:2:31:2 | b | test.cpp:74:19:74:21 | dss | test.cpp:31:2:31:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:74:19:74:21 | dss | here |
-| test.cpp:31:2:31:2 | b | test.cpp:75:25:75:27 | dss | test.cpp:31:2:31:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:75:25:75:27 | dss | here |
-| test.cpp:31:2:31:2 | b | test.cpp:86:19:86:20 | d2 | test.cpp:31:2:31:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:86:19:86:20 | d2 | here |
-| test.cpp:31:2:31:2 | b | test.cpp:87:25:87:26 | d2 | test.cpp:31:2:31:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:87:25:87:26 | d2 | here |
-| test.cpp:35:2:35:2 | b | test.cpp:57:19:57:19 | d | test.cpp:35:2:35:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:57:19:57:19 | d | here |
-| test.cpp:35:2:35:2 | b | test.cpp:59:21:59:21 | d | test.cpp:35:2:35:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:59:21:59:21 | d | here |
-| test.cpp:35:2:35:2 | b | test.cpp:74:19:74:21 | dss | test.cpp:35:2:35:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:74:19:74:21 | dss | here |
-| test.cpp:35:2:35:2 | b | test.cpp:76:21:76:23 | dss | test.cpp:35:2:35:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:76:21:76:23 | dss | here |
-| test.cpp:35:2:35:2 | b | test.cpp:86:19:86:20 | d2 | test.cpp:35:2:35:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:86:19:86:20 | d2 | here |
-| test.cpp:35:2:35:2 | b | test.cpp:88:21:88:22 | d2 | test.cpp:35:2:35:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:88:21:88:22 | d2 | here |
+| test.cpp:27:2:27:2 | b | test.cpp:57:19:57:19 | d | test.cpp:27:2:27:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:57:19:57:19 | d | this cast |
+| test.cpp:27:2:27:2 | b | test.cpp:74:19:74:21 | dss | test.cpp:27:2:27:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:74:19:74:21 | dss | this cast |
+| test.cpp:27:2:27:2 | b | test.cpp:86:19:86:20 | d2 | test.cpp:27:2:27:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:86:19:86:20 | d2 | this cast |
+| test.cpp:31:2:31:2 | b | test.cpp:57:19:57:19 | d | test.cpp:31:2:31:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:57:19:57:19 | d | this cast |
+| test.cpp:31:2:31:2 | b | test.cpp:58:25:58:25 | d | test.cpp:31:2:31:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:58:25:58:25 | d | this cast |
+| test.cpp:31:2:31:2 | b | test.cpp:74:19:74:21 | dss | test.cpp:31:2:31:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:74:19:74:21 | dss | this cast |
+| test.cpp:31:2:31:2 | b | test.cpp:75:25:75:27 | dss | test.cpp:31:2:31:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:75:25:75:27 | dss | this cast |
+| test.cpp:31:2:31:2 | b | test.cpp:86:19:86:20 | d2 | test.cpp:31:2:31:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:86:19:86:20 | d2 | this cast |
+| test.cpp:31:2:31:2 | b | test.cpp:87:25:87:26 | d2 | test.cpp:31:2:31:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:87:25:87:26 | d2 | this cast |
+| test.cpp:35:2:35:2 | b | test.cpp:57:19:57:19 | d | test.cpp:35:2:35:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:57:19:57:19 | d | this cast |
+| test.cpp:35:2:35:2 | b | test.cpp:59:21:59:21 | d | test.cpp:35:2:35:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:59:21:59:21 | d | this cast |
+| test.cpp:35:2:35:2 | b | test.cpp:74:19:74:21 | dss | test.cpp:35:2:35:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:74:19:74:21 | dss | this cast |
+| test.cpp:35:2:35:2 | b | test.cpp:76:21:76:23 | dss | test.cpp:35:2:35:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:76:21:76:23 | dss | this cast |
+| test.cpp:35:2:35:2 | b | test.cpp:86:19:86:20 | d2 | test.cpp:35:2:35:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:86:19:86:20 | d2 | this cast |
+| test.cpp:35:2:35:2 | b | test.cpp:88:21:88:22 | d2 | test.cpp:35:2:35:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:88:21:88:22 | d2 | this cast |

@@ -11,7 +11,7 @@ class MyRelevantNode extends RelevantNode {
 
   private AstNode asAstNode() { result = this.getNode().asAstNode() }
 
-  override string getOrderDisambuigation() {
+  override string getOrderDisambiguation() {
     result = this.asAstNode().getPrimaryQlClasses()
     or
     not exists(this.asAstNode()) and result = ""

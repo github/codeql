@@ -19,4 +19,4 @@ import DataFlow::PathGraph
 
 from QueryInjectionSink query, DataFlow::PathNode source, DataFlow::PathNode sink
 where queryTaintedBy(query, source, sink)
-select query, source, sink, "Query might include code from $@.", source.getNode(), "this user input"
+select query, source, sink, "This query depends on a $@.", source.getNode(), "user-provided value"

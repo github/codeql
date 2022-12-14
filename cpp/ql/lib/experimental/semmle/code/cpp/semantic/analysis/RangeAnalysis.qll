@@ -223,7 +223,9 @@ private SemGuard boundFlowCond(
       else resultIsStrict = testIsTrue.booleanNot()
     ) and
     (
-      if getTrackedTypeForSsaVariable(v) instanceof SemIntegerType
+      if
+        getTrackedTypeForSsaVariable(v) instanceof SemIntegerType or
+        getTrackedTypeForSsaVariable(v) instanceof SemAddressType
       then
         upper = true and strengthen = -1
         or
@@ -542,10 +544,30 @@ private predicate unequalIntegralSsa(
 ) {
   exists(SemExpr e, int d1, int d2 |
     unequalFlowStepIntegralSsa(v, pos, e, d1, reason) and
-    bounded(e, b, d2, true, _, _, _) and
-    bounded(e, b, d2, false, _, _, _) and
+    boundedUpper(e, b, d1) and
+    boundedLower(e, b, d2) and
     delta = d2 + d1
   )
+}
+
+/**
+ * Holds if `b + delta` is an upper bound for `e`.
+ *
+ * This predicate only exists to prevent a bad standard order in `unequalIntegralSsa`.
+ */
+pragma[nomagic]
+private predicate boundedUpper(SemExpr e, SemBound b, int delta) {
+  bounded(e, b, delta, true, _, _, _)
+}
+
+/**
+ * Holds if `b + delta` is a lower bound for `e`.
+ *
+ * This predicate only exists to prevent a bad standard order in `unequalIntegralSsa`.
+ */
+pragma[nomagic]
+private predicate boundedLower(SemExpr e, SemBound b, int delta) {
+  bounded(e, b, delta, false, _, _, _)
 }
 
 /** Weakens a delta to lie in the range `[-1..1]`. */

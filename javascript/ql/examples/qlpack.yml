@@ -3,4 +3,4 @@ groups:
   - javascript
   - examples
 dependencies:
-  codeql/javascript-all: "*"
+  codeql/javascript-all: ${workspace}

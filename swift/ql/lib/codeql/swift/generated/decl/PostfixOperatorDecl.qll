@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.OperatorDecl
 
-class PostfixOperatorDeclBase extends Synth::TPostfixOperatorDecl, OperatorDecl {
-  override string getAPrimaryQlClass() { result = "PostfixOperatorDecl" }
+module Generated {
+  class PostfixOperatorDecl extends Synth::TPostfixOperatorDecl, OperatorDecl {
+    override string getAPrimaryQlClass() { result = "PostfixOperatorDecl" }
+  }
 }

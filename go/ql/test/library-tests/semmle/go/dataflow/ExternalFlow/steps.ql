@@ -1,7 +1,7 @@
 import go
 import semmle.go.dataflow.ExternalFlow
-import semmle.go.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import CsvValidation
+import semmle.go.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
 class SummaryModelTest extends SummaryModelCsv {
   override predicate row(string row) {
@@ -22,5 +22,5 @@ class SummaryModelTest extends SummaryModelCsv {
 }
 
 from DataFlow::Node node1, DataFlow::Node node2
-where FlowSummaryImpl::Private::Steps::summaryThroughStep(node1, node2, false)
+where FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(node1, node2, _)
 select node1, node2

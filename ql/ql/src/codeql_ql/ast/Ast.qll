@@ -25,6 +25,10 @@ class AstNode extends TAstNode {
   cached
   Location getLocation() { result = this.getFullLocation() } // overridden in some subclasses
 
+  /** Gets the file containing this AST node. */
+  cached
+  File getFile() { result = this.getFullLocation().getFile() }
+
   /** Gets the location that spans the entire AST node. */
   cached
   final Location getFullLocation() {
@@ -152,12 +156,24 @@ class TopLevel extends TTopLevel, AstNode {
   }
 
   QLDoc getQLDocFor(ModuleMember m) {
-    exists(int i | i > 0 and result = this.getMember(i) and m = this.getMember(i + 1))
+    exists(int i | result = this.getMember(i) and m = this.getMember(i + 1)) and
+    (
+      m instanceof ClasslessPredicate
+      or
+      m instanceof Class
+      or
+      m instanceof Module
+    )
   }
 
   override string getAPrimaryQlClass() { result = "TopLevel" }
 
-  override QLDoc getQLDoc() { result = this.getMember(0) }
+  override QLDoc getQLDoc() {
+    result = this.getMember(0) and
+    // it's not the QLDoc for a module member
+    not this.getQLDocFor(_) = result and
+    result.getLocation().getStartLine() = 1 // this might not hold if there is a block comment above, and that's the point.
+  }
 }
 
 abstract class Comment extends AstNode, TComment {
@@ -186,7 +202,9 @@ class QueryDoc extends QLDoc {
   override string getAPrimaryQlClass() { result = "QueryDoc" }
 
   /** Gets the @kind for the query */
-  string getQueryKind() { result = this.getContents().regexpCapture("(?s).*@kind (\\w+)\\s.*", 1) }
+  string getQueryKind() {
+    result = this.getContents().regexpCapture("(?s).*@kind ([\\w-]+)\\s.*", 1)
+  }
 
   /** Gets the id part (without language) of the @id */
   string getQueryId() {
@@ -241,6 +259,12 @@ class Select extends TSelect, AstNode {
    * Gets the `i`th expression in the `select` clause.
    */
   Expr getExpr(int i) { toQL(result) = sel.getChild(_).(QL::AsExprs).getChild(i) }
+
+  Expr getMessage() {
+    if this.getQueryDoc().getQueryKind() = "path-problem"
+    then result = this.getExpr(3)
+    else result = this.getExpr(1)
+  }
 
   // TODO: This gets the `i`th order-by, but some expressions might not have an order-by.
   Expr getOrderBy(int i) { toQL(result) = sel.getChild(_).(QL::OrderBys).getChild(i).getChild(0) }
@@ -521,6 +545,15 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
   }
 
   override predicate isPrivate() { Predicate.super.isPrivate() }
+
+  /** Holds if this classless predicate is a signature predicate with no body. */
+  predicate isSignature() { not exists(this.getBody()) }
+
+  override QLDoc getQLDoc() {
+    result = any(TopLevel m).getQLDocFor(this)
+    or
+    result = any(Module m).getQLDocFor(this)
+  }
 }
 
 /**
@@ -842,7 +875,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   override string getName() { result = cls.getName().getValue() }
 
   /**
-   * Gets the charateristic predicate for this class.
+   * Gets the characteristic predicate for this class.
    */
   CharPred getCharPred() { toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_) }
 
@@ -968,6 +1001,8 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
 
   override NewTypeBranchType getReturnType() { result.getDeclaration() = this }
 
+  override Annotation getAnAnnotation() { toQL(this).getAFieldOrChild() = toQL(result) }
+
   override Type getParameterType(int i) { result = this.getField(i).getType() }
 
   override int getArity() { result = count(this.getField(_)) }
@@ -998,7 +1033,7 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
 class Call extends TCall, Expr, Formula {
   /** Gets the `i`th argument of this call. */
   Expr getArgument(int i) {
-    none() // overridden in sublcasses.
+    none() // overridden in subclasses.
   }
 
   /** Gets an argument of this call, if any. */
@@ -1399,6 +1434,14 @@ class ComparisonFormula extends TComparisonFormula, Formula {
     pred = directMember("getLeftOperand") and result = this.getLeftOperand()
     or
     pred = directMember("getRightOperand") and result = this.getRightOperand()
+  }
+
+  /** Holds if this comparison has the operands `a` and `b` (in any order). */
+  pragma[noinline]
+  predicate hasOperands(Expr a, Expr b) {
+    this.getLeftOperand() = a and this.getRightOperand() = b
+    or
+    this.getLeftOperand() = b and this.getRightOperand() = a
   }
 }
 
@@ -2374,6 +2417,8 @@ private class AnnotationArg extends TAnnotationArg, AstNode {
   }
 
   override string toString() { result = this.getValue() }
+
+  override string getAPrimaryQlClass() { result = "AnnotationArg" }
 }
 
 private class NoInlineArg extends AnnotationArg {
@@ -2477,18 +2522,21 @@ class BindingSet extends Annotation {
  */
 module YAML {
   /** A node in a YAML file */
-  class YAMLNode extends TYamlNode, AstNode {
+  class YamlNode extends TYamlNode, AstNode {
     /** Holds if the predicate is a root node (has no parent) */
     predicate isRoot() { not exists(this.getParent()) }
 
     override AstNode getParent() { toGenerateYaml(result) = toGenerateYaml(this).getParent() }
   }
 
+  /** DEPRECATED: Alias for YamlNode */
+  deprecated class YAMLNode = YamlNode;
+
   /** A YAML comment. */
-  class YamlComment extends TYamlCommemt, YAMLNode {
+  class YamlComment extends TYamlComment, YamlNode {
     Yaml::Comment yamlcomment;
 
-    YamlComment() { this = TYamlCommemt(yamlcomment) }
+    YamlComment() { this = TYamlComment(yamlcomment) }
 
     override string getAPrimaryQlClass() { result = "YamlComment" }
   }
@@ -2497,7 +2545,7 @@ module YAML {
   deprecated class YAMLComment = YamlComment;
 
   /** A YAML entry. */
-  class YamlEntry extends TYamlEntry, YAMLNode {
+  class YamlEntry extends TYamlEntry, YamlNode {
     Yaml::Entry yamle;
 
     YamlEntry() { this = TYamlEntry(yamle) }
@@ -2527,7 +2575,7 @@ module YAML {
   deprecated class YAMLEntry = YamlEntry;
 
   /** A YAML key. */
-  class YamlKey extends TYamlKey, YAMLNode {
+  class YamlKey extends TYamlKey, YamlNode {
     Yaml::Key yamlkey;
 
     YamlKey() { this = TYamlKey(yamlkey) }
@@ -2566,7 +2614,7 @@ module YAML {
   deprecated class YAMLKey = YamlKey;
 
   /** A YAML list item. */
-  class YamlListItem extends TYamlListitem, YAMLNode {
+  class YamlListItem extends TYamlListitem, YamlNode {
     Yaml::Listitem yamllistitem;
 
     YamlListItem() { this = TYamlListitem(yamllistitem) }
@@ -2583,7 +2631,7 @@ module YAML {
   deprecated class YAMLListItem = YamlListItem;
 
   /** A YAML value. */
-  class YamlValue extends TYamlValue, YAMLNode {
+  class YamlValue extends TYamlValue, YamlNode {
     Yaml::Value yamlvalue;
 
     YamlValue() { this = TYamlValue(yamlvalue) }
@@ -2691,7 +2739,7 @@ module YAML {
     Location getLocation() {
       // hacky, just pick the first node in the file.
       result =
-        min(YAMLNode entry, Location l, File f |
+        min(YamlNode entry, Location l, File f |
           entry.getLocation().getFile() = file and
           f = file and
           l = entry.getLocation()

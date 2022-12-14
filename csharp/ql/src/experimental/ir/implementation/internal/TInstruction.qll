@@ -20,24 +20,24 @@ newtype TInstruction =
     IRConstruction::Raw::hasInstruction(tag1, tag2)
   } or
   TUnaliasedSsaPhiInstruction(
-    TRawInstruction blockStartInstr, UnaliasedSsa::SSA::MemoryLocation memoryLocation
+    TRawInstruction blockStartInstr, UnaliasedSsa::Ssa::MemoryLocation memoryLocation
   ) {
-    UnaliasedSsa::SSA::hasPhiInstruction(blockStartInstr, memoryLocation)
+    UnaliasedSsa::Ssa::hasPhiInstruction(blockStartInstr, memoryLocation)
   } or
   TUnaliasedSsaChiInstruction(TRawInstruction primaryInstruction) { none() } or
   TUnaliasedSsaUnreachedInstruction(IRFunctionBase irFunc) {
-    UnaliasedSsa::SSA::hasUnreachedInstruction(irFunc)
+    UnaliasedSsa::Ssa::hasUnreachedInstruction(irFunc)
   } or
   TAliasedSsaPhiInstruction(
-    TRawInstruction blockStartInstr, AliasedSSA::SSA::MemoryLocation memoryLocation
+    TRawInstruction blockStartInstr, AliasedSsa::Ssa::MemoryLocation memoryLocation
   ) {
-    AliasedSSA::SSA::hasPhiInstruction(blockStartInstr, memoryLocation)
+    AliasedSsa::Ssa::hasPhiInstruction(blockStartInstr, memoryLocation)
   } or
   TAliasedSsaChiInstruction(TRawInstruction primaryInstruction) {
-    AliasedSSA::SSA::hasChiInstruction(primaryInstruction)
+    AliasedSsa::Ssa::hasChiInstruction(primaryInstruction)
   } or
   TAliasedSsaUnreachedInstruction(IRFunctionBase irFunc) {
-    AliasedSSA::SSA::hasUnreachedInstruction(irFunc)
+    AliasedSsa::Ssa::hasUnreachedInstruction(irFunc)
   }
 
 /**
@@ -50,7 +50,7 @@ module UnaliasedSsaInstructions {
   class TPhiInstruction = TUnaliasedSsaPhiInstruction;
 
   TPhiInstruction phiInstruction(
-    TRawInstruction blockStartInstr, UnaliasedSsa::SSA::MemoryLocation memoryLocation
+    TRawInstruction blockStartInstr, UnaliasedSsa::Ssa::MemoryLocation memoryLocation
   ) {
     result = TUnaliasedSsaPhiInstruction(blockStartInstr, memoryLocation)
   }
@@ -83,7 +83,7 @@ module AliasedSsaInstructions {
   class TPhiInstruction = TAliasedSsaPhiInstruction or TUnaliasedSsaPhiInstruction;
 
   TPhiInstruction phiInstruction(
-    TRawInstruction blockStartInstr, AliasedSSA::SSA::MemoryLocation memoryLocation
+    TRawInstruction blockStartInstr, AliasedSsa::Ssa::MemoryLocation memoryLocation
   ) {
     result = TAliasedSsaPhiInstruction(blockStartInstr, memoryLocation)
   }

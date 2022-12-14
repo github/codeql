@@ -5,7 +5,7 @@ class NSObject
 {
 }
 
-class URL
+struct URL
 {
 	init?(string: String) {}
 	init?(string: String, relativeTo: URL?) {}
@@ -14,9 +14,9 @@ class URL
 extension String {
 	init(contentsOf: URL) throws {
         var data = ""
-        
+
         // ...
-        
+
         self.init(data)
     }
 }
@@ -151,7 +151,7 @@ func testUIWebView() {
 	webview.load(localData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: localSafeURL!) // GOOD: the data is local
 	webview.load(remoteData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: localSafeURL!) // GOOD: a safe baseURL is specified
 	webview.load(localData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: remoteURL!) // GOOD: the HTML data is local
-	webview.load(remoteData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: remoteURL!) // BAD [NOT DETECTED]
+	webview.load(remoteData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: remoteURL!) // BAD
 }
 
 func testWKWebView() {
@@ -198,7 +198,7 @@ func testWKWebView() {
 	webview.load(localData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: localSafeURL!) // GOOD: the data is local
 	webview.load(remoteData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: localSafeURL!) // GOOD: a safe baseURL is specified
 	webview.load(localData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: remoteURL!) // GOOD: the HTML data is local
-	webview.load(remoteData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: remoteURL!) // BAD [NOT DETECTED]
+	webview.load(remoteData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: remoteURL!) // BAD
 }
 
 func testQHelpExamples() {

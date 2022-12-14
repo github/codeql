@@ -52,7 +52,7 @@ predicate isInterestingSemiAnchoredRegexpString(string re, string msg) {
 bindingset[re]
 predicate isInterestingUnanchoredRegexpString(string re, string msg) {
   // a substring sequence of a protocol and subdomains, perhaps with some regex characters mixed in, followed by a known TLD
-  re.regexpMatch("(?i)[():|?a-z0-9-\\\\./]+[.]" + commonTLD() + "([/#?():]\\S*)?") and
+  re.regexpMatch("(?i)[():|?a-z0-9-\\\\./]+[.]" + commonTld() + "([/#?():]\\S*)?") and
   // without any anchors
   not re.regexpMatch(".*(\\$|\\^|\\\\A|\\\\z).*") and
   msg =
@@ -63,7 +63,7 @@ predicate isInterestingUnanchoredRegexpString(string re, string msg) {
 class Config extends DataFlow::Configuration {
   Config() { this = "MissingRegexpAnchor::Config" }
 
-  predicate isSource(DataFlow::Node source, string msg) {
+  predicate isSourceString(DataFlow::Node source, string msg) {
     exists(Expr e | e = source.asExpr() |
       isInterestingUnanchoredRegexpString(e.getStringValue(), msg)
       or
@@ -71,11 +71,11 @@ class Config extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSource(DataFlow::Node source) { isSource(source, _) }
+  override predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
 }
 
 from Config c, DataFlow::PathNode source, string msg
-where c.hasFlowPath(source, _) and c.isSource(source.getNode(), msg)
+where c.hasFlowPath(source, _) and c.isSourceString(source.getNode(), msg)
 select source.getNode(), msg

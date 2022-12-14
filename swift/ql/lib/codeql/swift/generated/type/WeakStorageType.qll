@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.ReferenceStorageType
 
-class WeakStorageTypeBase extends Synth::TWeakStorageType, ReferenceStorageType {
-  override string getAPrimaryQlClass() { result = "WeakStorageType" }
+module Generated {
+  class WeakStorageType extends Synth::TWeakStorageType, ReferenceStorageType {
+    override string getAPrimaryQlClass() { result = "WeakStorageType" }
+  }
 }

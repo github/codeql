@@ -56,10 +56,10 @@ genericFunction
 | generics.kt:57:5:62:5 | fn1 | generics.kt:56:1:63:1 | Class1 | generics.kt:57:10:57:11 | T2 | 0 |
 | generics.kt:59:13:59:43 | fn2 | generics.kt:58:9:60:9 | Local | generics.kt:59:18:59:19 | T4 | 0 |
 genericCall
-| generics.kt:27:17:27:22 | f2(...) | generics.kt:15:10:15:10 | U | String |
-| generics.kt:30:17:30:21 | f2(...) | generics.kt:15:10:15:10 | U | Integer |
-| generics.kt:32:8:32:12 | f4(...) | generics.kt:21:10:21:10 | P | Integer |
-| generics.kt:61:22:61:31 | fn2(...) | generics.kt:59:18:59:19 | T4 | String |
+| generics.kt:27:14:27:22 | f2(...) | generics.kt:15:10:15:10 | U | String |
+| generics.kt:30:14:30:21 | f2(...) | generics.kt:15:10:15:10 | U | Integer |
+| generics.kt:32:5:32:12 | f4(...) | generics.kt:21:10:21:10 | P | Integer |
+| generics.kt:61:9:61:31 | fn2(...) | generics.kt:59:18:59:19 | T4 | String |
 genericCtor
 | generics.kt:16:16:16:26 | new C1<U,U>(...) | 0 | U |
 | generics.kt:16:16:16:26 | new C1<U,U>(...) | 1 | U |

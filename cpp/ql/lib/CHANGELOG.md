@@ -1,3 +1,58 @@
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+No user-facing changes.
+
+## 0.4.3
+
+### Minor Analysis Improvements
+
+* Fixed bugs in the `FormatLiteral` class that were causing `getMaxConvertedLength` and related predicates to return no results when the format literal was `%e`, `%f` or `%g` and an explicit precision was specified.
+
+## 0.4.2
+
+No user-facing changes.
+
+## 0.4.1
+
+No user-facing changes.
+
+## 0.4.0
+
+### Deprecated APIs
+
+* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+### New Features
+
+* Added subclasses of `BuiltInOperations` for `__is_same`, `__is_function`, `__is_layout_compatible`, `__is_pointer_interconvertible_base_of`, `__is_array`, `__array_rank`, `__array_extent`, `__is_arithmetic`, `__is_complete_type`, `__is_compound`, `__is_const`, `__is_floating_point`, `__is_fundamental`, `__is_integral`, `__is_lvalue_reference`, `__is_member_function_pointer`, `__is_member_object_pointer`, `__is_member_pointer`, `__is_object`, `__is_pointer`, `__is_reference`, `__is_rvalue_reference`, `__is_scalar`, `__is_signed`, `__is_unsigned`, `__is_void`, and `__is_volatile`.
+
+### Bug Fixes
+
+* Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.
+
+## 0.3.5
+
+## 0.3.4
+
+### Deprecated APIs
+
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+### New Features
+
+* Added support for getting the link targets of global and namespace variables.
+* Added a `BlockAssignExpr` class, which models a `memcpy`-like operation used in compiler generated copy/move constructors and assignment operations.
+
+### Minor Analysis Improvements
+
+* All deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
+
 ## 0.3.3
 
 ### New Features

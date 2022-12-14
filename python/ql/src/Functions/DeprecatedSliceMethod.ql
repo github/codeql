@@ -21,4 +21,4 @@ where
   not f.isOverridingMethod() and
   slice_method_name(meth) and
   f.getName() = meth
-select f, meth + " method has been deprecated since Python 2.0"
+select f, meth + " method has been deprecated since Python 2.0."

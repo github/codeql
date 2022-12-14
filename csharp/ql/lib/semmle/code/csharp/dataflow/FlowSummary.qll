@@ -97,7 +97,7 @@ module SummaryComponentStack {
     result = push(SummaryComponent::element(), container)
   }
 
-  /** Gets a stack representing a propery `p` of `object`. */
+  /** Gets a stack representing a property `p` of `object`. */
   SummaryComponentStack propertyOf(Property p, SummaryComponentStack object) {
     result = push(SummaryComponent::property(p), object)
   }

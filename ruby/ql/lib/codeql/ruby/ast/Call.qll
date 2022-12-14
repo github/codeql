@@ -106,7 +106,7 @@ class MethodCall extends Call instanceof MethodCallImpl {
   final Block getBlock() { result = super.getBlockImpl() }
 
   /**
-   * Holds if the safe nagivation operator (`&.`) is used in this call.
+   * Holds if the safe navigation operator (`&.`) is used in this call.
    * ```rb
    * foo&.empty?
    * ```

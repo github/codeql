@@ -167,7 +167,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   /**
    * Holds if this expression may refer to the initial value of parameter `p`.
    */
-  predicate mayReferToParameter(Parameter p) { this.flow().mayReferToParameter(p) }
+  predicate mayReferToParameter(Parameter p) { DataFlow::parameterNode(p).flowsToExpr(this) }
 
   /**
    * Gets the static type of this expression, as determined by the TypeScript type system.

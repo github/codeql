@@ -1177,7 +1177,7 @@ module InterProceduralPointsTo {
     )
   }
 
-  /** Holds if the named `argument` given the context `caller` is transferred to the parameter `param` with conntext `callee` by a call. */
+  /** Holds if the named `argument` given the context `caller` is transferred to the parameter `param` with context `callee` by a call. */
   cached
   predicate named_argument_transfer(
     ControlFlowNode argument, PointsToContext caller, ParameterDefinition param,

@@ -48,4 +48,32 @@ public class ResponseSplitting extends HttpServlet {
 		Cookie cookie2 = new Cookie("name", cookie.getName());
 		response.addCookie(cookie2);
 	}
+
+	public void sanitizerTests(HttpServletRequest request, HttpServletResponse response){
+		String t = request.getParameter("contentType");
+
+		// GOOD: whitelist-based sanitization
+		response.setHeader("h", t.replaceAll("[^a-zA-Z]", ""));
+
+		// BAD: not replacing all problematic characters
+		response.setHeader("h", t.replaceFirst("[^a-zA-Z]", ""));
+
+		// GOOD: replace all line breaks
+		response.setHeader("h", t.replace('\n', ' ').replace('\r', ' '));
+
+		// FALSE NEGATIVE: replace only some line breaks
+		response.setHeader("h", t.replace('\n', ' '));
+
+		// FALSE NEGATIVE: replace only some line breaks
+		response.setHeader("h", t.replaceAll("\r", ""));
+
+		// GOOD: replace all linebreaks with a simple regex
+		response.setHeader("h", t.replaceAll("\n", "").replaceAll("\r", ""));
+
+		// GOOD: replace all linebreaks with a complex regex
+		response.setHeader("h", t.replaceAll("[\n\r]", ""));
+
+		// GOOD: replace all linebreaks with a complex regex
+		response.setHeader("h", t.replaceAll("something|[a\nb\rc]+|somethingelse", ""));
+	}
 }

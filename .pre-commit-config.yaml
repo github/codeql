@@ -19,7 +19,7 @@ repos:
     rev: v1.6.0
     hooks:
       - id: autopep8
-        files: ^swift/codegen/.*\.py
+        files: ^swift/.*\.py
 
   - repo: local
     hooks:
@@ -31,7 +31,7 @@ repos:
 
       - id: sync-files
         name: Fix files required to be identical
-        files: \.(qll?|qhelp|swift)$
+        files: \.(qll?|qhelp|swift)$|^config/identical-files\.json$
         language: system
         entry: python3 config/sync-files.py --latest
         pass_filenames: false
@@ -44,7 +44,7 @@ repos:
 
       - id: swift-codegen
         name: Run Swift checked in code generation
-        files: ^swift/(codegen/|.*/generated/|ql/lib/(swift\.dbscheme$|codeql/swift/elements))
+        files: ^swift/(schema.py$|codegen/|.*/generated/|ql/lib/(swift\.dbscheme$|codeql/swift/elements)|ql/\.generated.list)
         language: system
         entry: bazel run //swift/codegen -- --quiet
         pass_filenames: false

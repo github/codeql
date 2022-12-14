@@ -2,7 +2,7 @@
  * Provides a taint-tracking configuration for reasoning about untrusted user input used in log entries.
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
@@ -58,6 +58,14 @@ class StringReplaceSanitizer extends Sanitizer {
     // exclude replacement methods that may not fully sanitize the string
     this.(StringSubstitutionCall).isGlobal()
   }
+}
+
+/**
+ * A call to `Object#inspect`, considered as a sanitizer.
+ * This is because `inspect` will replace newlines in strings with `\n`.
+ */
+class InspectSanitizer extends Sanitizer {
+  InspectSanitizer() { this.(DataFlow::CallNode).getMethodName() = "inspect" }
 }
 
 /**

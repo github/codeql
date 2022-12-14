@@ -33,7 +33,7 @@ selector to determine which element should be manipulated.
 <p>
 However, if an attacker can control the <code>data-target</code> attribute, 
 then the value of <code>target</code> can be used to cause the <code>$</code> function
-to execute arbitary JavaScript. 
+to execute arbitrary JavaScript. 
 </p>
 <p>
 The above vulnerability can be fixed by using <code>$.find</code> instead of <code>$</code>. 

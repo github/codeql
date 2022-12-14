@@ -27,7 +27,7 @@ A.kt:
 #   10|         2: [ExprStmt] <Expr>;
 #   10|           0: [MethodAccess] println(...)
 #   10|             -1: [TypeAccess] ConsoleKt
-#   10|             0: [StringLiteral] 
+#   10|             0: [StringLiteral] ""
 #   13|     6: [Method] getProp
 #   13|       3: [TypeAccess] int
 #   13|       5: [BlockStmt] { ... }
@@ -86,8 +86,10 @@ A.kt:
 #   23|         5: [BlockStmt] { ... }
 #   23|           0: [ExprStmt] <Expr>;
 #   23|             0: [ClassInstanceExpr] new Enum(...)
-#   23|               -3: [TypeAccess] Unit
+#   23|               -3: [TypeAccess] Enum<Enu>
 #   23|                 0: [TypeAccess] Enu
+#   23|               0: [NullLiteral] null
+#   23|               1: [IntegerLiteral] 0
 #   23|           1: [BlockStmt] { ... }
 #   24|       5: [FieldDeclaration] Enu A;
 #   24|         -1: [TypeAccess] Enu

@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 from Operation o, string operator, Expr operand, string pClass
 where

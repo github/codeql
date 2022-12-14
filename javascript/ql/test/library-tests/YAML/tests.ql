@@ -1,18 +1,18 @@
 import javascript
 
-query predicate anchors(YAMLNode n, string anchor) { n.getAnchor() = anchor }
+query predicate anchors(YamlNode n, string anchor) { n.getAnchor() = anchor }
 
-query predicate eval(YAMLNode n, YAMLValue eval) {
+query predicate eval(YamlNode n, YamlValue eval) {
   not n.eval() = n and
   eval = n.eval()
 }
 
-query predicate yamlParseError(YAMLParseError err) { any() }
+query predicate yamlParseError(YamlParseError err) { any() }
 
-query predicate yamlMapping_maps(YAMLMapping m, YAMLValue k, YAMLValue v) { m.maps(k, v) }
+query predicate yamlMapping_maps(YamlMapping m, YamlValue k, YamlValue v) { m.maps(k, v) }
 
-query predicate yamlNode(YAMLNode n, string tag) { tag = n.getTag() }
+query predicate yamlNode(YamlNode n, string tag) { tag = n.getTag() }
 
-query predicate yamlScalar(YAMLScalar s, string style, string value) {
+query predicate yamlScalar(YamlScalar s, string style, string value) {
   style = s.getStyle() and value = s.getValue()
 }

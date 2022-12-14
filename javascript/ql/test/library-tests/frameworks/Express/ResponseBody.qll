@@ -1,5 +1,5 @@
 import javascript
 
-query predicate test_ResponseBody(HTTP::ResponseBody rb, Express::RouteHandler rh) {
+query predicate test_ResponseBody(Http::ResponseBody rb, Express::RouteHandler rh) {
   rb.getRouteHandler() = rh
 }

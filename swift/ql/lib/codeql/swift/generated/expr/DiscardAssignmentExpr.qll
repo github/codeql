@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class DiscardAssignmentExprBase extends Synth::TDiscardAssignmentExpr, Expr {
-  override string getAPrimaryQlClass() { result = "DiscardAssignmentExpr" }
+module Generated {
+  class DiscardAssignmentExpr extends Synth::TDiscardAssignmentExpr, Expr {
+    override string getAPrimaryQlClass() { result = "DiscardAssignmentExpr" }
+  }
 }

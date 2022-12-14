@@ -114,7 +114,7 @@ module Revel {
    * We look particularly for html file extensions, since these are the only ones we currently have special rules
    * for (in particular, detecting XSS vulnerabilities).
    */
-  private class ControllerRenderMethods extends HTTP::ResponseBody::Range {
+  private class ControllerRenderMethods extends Http::ResponseBody::Range {
     string contentType;
 
     ControllerRenderMethods() {
@@ -149,7 +149,7 @@ module Revel {
       )
     }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
 
     override string getAContentType() { result = contentType }
   }
@@ -174,7 +174,7 @@ module Revel {
    * It is currently assumed that a tainted `value` in `Redirect(url, value)`, which calls `Sprintf(url, value)`
    * internally, cannot lead to an open redirect vulnerability.
    */
-  private class ControllerRedirectMethod extends HTTP::Redirect::Range, DataFlow::CallNode {
+  private class ControllerRedirectMethod extends Http::Redirect::Range, DataFlow::CallNode {
     ControllerRedirectMethod() {
       exists(Method m | m.hasQualifiedName(packagePath(), "Controller", "Redirect") |
         this = m.getACall()
@@ -183,7 +183,7 @@ module Revel {
 
     override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
   }
 
   /**
@@ -226,7 +226,7 @@ module Revel {
   /**
    * A write to a template argument field that is read raw inside of a template.
    */
-  private class RawTemplateArgument extends HTTP::TemplateResponseBody::Range {
+  private class RawTemplateArgument extends Http::TemplateResponseBody::Range {
     RawTemplateRead read;
 
     RawTemplateArgument() {
@@ -261,7 +261,7 @@ module Revel {
 
     override string getAContentType() { result = "text/html" }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
 
     override HtmlTemplate::TemplateRead getRead() { result = read }
   }

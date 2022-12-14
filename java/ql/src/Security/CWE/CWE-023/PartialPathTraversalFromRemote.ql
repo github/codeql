@@ -16,4 +16,5 @@ import DataFlow::PathGraph
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where any(PartialPathTraversalFromRemoteConfig config).hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Partial Path Traversal Vulnerability due to insufficient guard against path traversal from user-supplied data"
+  "Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@.",
+  source, "user-supplied data"

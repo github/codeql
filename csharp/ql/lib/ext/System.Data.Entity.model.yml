@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: extSinkModel
+    data:
+      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommand", "(System.Data.Entity.TransactionalBehavior,System.String,System.Object[])", "", "Argument[1]", "sql", "manual"]
+      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommand", "(System.String,System.Object[])", "", "Argument[0]", "sql", "manual"]
+      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommandAsync", "(System.Data.Entity.TransactionalBehavior,System.String,System.Object[])", "", "Argument[1]", "sql", "manual"]
+      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommandAsync", "(System.Data.Entity.TransactionalBehavior,System.String,System.Threading.CancellationToken,System.Object[])", "", "Argument[1]", "sql", "manual"]
+      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommandAsync", "(System.String,System.Object[])", "", "Argument[0]", "sql", "manual"]
+      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommandAsync", "(System.String,System.Threading.CancellationToken,System.Object[])", "", "Argument[0]", "sql", "manual"]
+      - ["System.Data.Entity", "Database", False, "SqlQuery", "(System.Type,System.String,System.Object[])", "", "Argument[1]", "sql", "manual"]
+      - ["System.Data.Entity", "Database", False, "SqlQuery<>", "(System.String,System.Object[])", "", "Argument[0]", "sql", "manual"]
+      - ["System.Data.Entity", "DbSet", False, "SqlQuery", "(System.String,System.Object[])", "", "Argument[0]", "sql", "manual"]

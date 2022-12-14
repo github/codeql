@@ -8,7 +8,7 @@
  * @id rb/file-classifier
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.filters.GeneratedCode
 
 predicate classify(File f, string category) {

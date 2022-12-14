@@ -77,8 +77,15 @@
 %>
 
 <%# BAD: Indirect to a database value without escaping %>
-<%# TODO: we do not detect that `display_name` can return a DB field %>
 <%= @user.display_name.html_safe %>
 
 <%# BAD: Indirect to a database value without escaping %>
 <%= @other_user_raw_name.html_safe %>
+
+<%# BAD: Kernel.sprintf is a taint-step %>
+<%=
+  sprintf("%s", @user.handle).html_safe
+%>
+
+<%# GOOD: The `foo.bar.baz` is not recognized as a source %>
+<%= @other_user_raw_name.foo.bar.baz.html_safe %>

@@ -1,5 +1,4 @@
 import java
-private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 
 /** The class `com.jfinal.core.Controller`. */
@@ -59,26 +58,5 @@ private class SetToGetAttributeStep extends AdditionalValueStep {
       pred.asExpr() = sma.getArgument(1) and
       succ.asExpr() = gma
     )
-  }
-}
-
-/** Remote flow source models relating to `JFinal`. */
-private class JFinalControllerSource extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "com.jfinal.core;Controller;true;getCookie" + ["", "Object", "Objects", "ToInt", "ToLong"] +
-          ";;;ReturnValue;remote;manual",
-        "com.jfinal.core;Controller;true;getFile" + ["", "s"] + ";;;ReturnValue;remote;manual",
-        "com.jfinal.core;Controller;true;getHeader;;;ReturnValue;remote;manual",
-        "com.jfinal.core;Controller;true;getKv;;;ReturnValue;remote;manual",
-        "com.jfinal.core;Controller;true;getPara" +
-          [
-            "", "Map", "ToBoolean", "ToDate", "ToInt", "ToLong", "Values", "ValuesToInt",
-            "ValuesToLong"
-          ] + ";;;ReturnValue;remote;manual",
-        "com.jfinal.core;Controller;true;get" + ["", "Int", "Long", "Boolean", "Date"] +
-          ";;;ReturnValue;remote;manual"
-      ]
   }
 }

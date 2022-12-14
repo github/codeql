@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.UnarySyntaxSugarType
 
-class OptionalTypeBase extends Synth::TOptionalType, UnarySyntaxSugarType {
-  override string getAPrimaryQlClass() { result = "OptionalType" }
+module Generated {
+  class OptionalType extends Synth::TOptionalType, UnarySyntaxSugarType {
+    override string getAPrimaryQlClass() { result = "OptionalType" }
+  }
 }

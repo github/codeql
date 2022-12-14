@@ -42,6 +42,7 @@ EqualityTest varEqualityTestExpr(SsaVariable v1, SsaVariable v2, boolean isEqual
 }
 
 /** Gets an expression that is provably not `null`. */
+pragma[assume_small_delta]
 Expr clearlyNotNullExpr(Expr reason) {
   result instanceof ClassInstanceExpr and reason = result
   or
@@ -236,6 +237,7 @@ Expr directNullGuard(SsaVariable v, boolean branch, boolean isnull) {
  * If `result` evaluates to `branch`, then `v` is guaranteed to be null if `isnull`
  * is true, and non-null if `isnull` is false.
  */
+pragma[assume_small_delta]
 Guard nullGuard(SsaVariable v, boolean branch, boolean isnull) {
   result = directNullGuard(v, branch, isnull) or
   exists(boolean branch0 | implies_v3(result, branch, nullGuard(v, branch0, isnull), branch0))

@@ -5,26 +5,80 @@ import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.Element
 import codeql.swift.elements.decl.ParamDecl
 
-class CallableBase extends Synth::TCallable, Element {
-  ParamDecl getImmediateParam(int index) {
-    result =
-      Synth::convertParamDeclFromRaw(Synth::convertCallableToRaw(this)
-            .(Raw::Callable)
-            .getParam(index))
+module Generated {
+  class Callable extends Synth::TCallable, Element {
+    /**
+     * Gets the self parameter of this callable, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    ParamDecl getImmediateSelfParam() {
+      result =
+        Synth::convertParamDeclFromRaw(Synth::convertCallableToRaw(this)
+              .(Raw::Callable)
+              .getSelfParam())
+    }
+
+    /**
+     * Gets the self parameter of this callable, if it exists.
+     */
+    final ParamDecl getSelfParam() { result = getImmediateSelfParam().resolve() }
+
+    /**
+     * Holds if `getSelfParam()` exists.
+     */
+    final predicate hasSelfParam() { exists(getSelfParam()) }
+
+    /**
+     * Gets the `index`th parameter of this callable (0-based).
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    ParamDecl getImmediateParam(int index) {
+      result =
+        Synth::convertParamDeclFromRaw(Synth::convertCallableToRaw(this)
+              .(Raw::Callable)
+              .getParam(index))
+    }
+
+    /**
+     * Gets the `index`th parameter of this callable (0-based).
+     */
+    final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
+
+    /**
+     * Gets any of the parameters of this callable.
+     */
+    final ParamDecl getAParam() { result = getParam(_) }
+
+    /**
+     * Gets the number of parameters of this callable.
+     */
+    final int getNumberOfParams() { result = count(int i | exists(getParam(i))) }
+
+    /**
+     * Gets the body of this callable, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    BraceStmt getImmediateBody() {
+      result =
+        Synth::convertBraceStmtFromRaw(Synth::convertCallableToRaw(this).(Raw::Callable).getBody())
+    }
+
+    /**
+     * Gets the body of this callable, if it exists.
+     *
+     * The body is absent within protocol declarations.
+     */
+    final BraceStmt getBody() { result = getImmediateBody().resolve() }
+
+    /**
+     * Holds if `getBody()` exists.
+     */
+    final predicate hasBody() { exists(getBody()) }
   }
-
-  final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
-
-  final ParamDecl getAParam() { result = getParam(_) }
-
-  final int getNumberOfParams() { result = count(getAParam()) }
-
-  BraceStmt getImmediateBody() {
-    result =
-      Synth::convertBraceStmtFromRaw(Synth::convertCallableToRaw(this).(Raw::Callable).getBody())
-  }
-
-  final BraceStmt getBody() { result = getImmediateBody().resolve() }
-
-  final predicate hasBody() { exists(getBody()) }
 }

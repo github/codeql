@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.frameworks.PosixSpawn
 import codeql.ruby.DataFlow
 

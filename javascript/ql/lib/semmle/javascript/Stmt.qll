@@ -291,9 +291,12 @@ class StrictModeDecl extends KnownDirective {
  * "use asm";
  * ```
  */
-class ASMJSDirective extends KnownDirective {
-  ASMJSDirective() { this.getDirectiveText() = "use asm" }
+class AsmJSDirective extends KnownDirective {
+  AsmJSDirective() { this.getDirectiveText() = "use asm" }
 }
+
+/** DEPRECATED: Alias for AsmJSDirective */
+deprecated class ASMJSDirective = AsmJSDirective;
 
 /**
  * A Babel directive.

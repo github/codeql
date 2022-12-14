@@ -12,7 +12,7 @@ private newtype TNode =
   MkGlobalFunctionNode(Function f) or
   MkSummarizedParameterNode(DataFlowCallable c, int i) {
     not exists(c.getFuncDef()) and
-    c instanceof SummarizedCallable and
+    c.asCallable() instanceof SummarizedCallable and
     (
       i in [0 .. c.getType().getNumParameter() - 1]
       or
@@ -25,6 +25,8 @@ private newtype TNode =
 
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
+  private import DataFlowDispatch
+
   /** Gets the callable in which this node occurs. */
   DataFlowCallable nodeGetEnclosingCallable(Node n) {
     result.asCallable() = n.getEnclosingCallable()
@@ -33,8 +35,13 @@ module Private {
   }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-  predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) {
+  predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
     p.isParameterOf(c.asCallable(), pos)
+  }
+
+  /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+  predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
+    arg.argumentOf(c, pos)
   }
 
   /** A data flow node that represents returning a value from a function. */
@@ -115,7 +122,7 @@ module Public {
       exists(DataFlowCallable dfc | result = dfc.asCallable() |
         this = MkSummarizedParameterNode(dfc, _)
         or
-        this = MkSummaryInternalNode(dfc, _)
+        this = MkSummaryInternalNode(dfc.asCallable(), _)
       )
     }
 
@@ -341,13 +348,9 @@ module Public {
   }
 
   /** A function, viewed as a node in a data flow graph. */
-  class FunctionNode extends Node {
-    FunctionNode::Range self;
-
-    FunctionNode() { this = self }
-
+  class FunctionNode extends Node instanceof FunctionNode::Range {
     /** Gets the `i`th parameter of this function. */
-    ParameterNode getParameter(int i) { result = self.getParameter(i) }
+    ParameterNode getParameter(int i) { result = super.getParameter(i) }
 
     /** Gets a parameter of this function. */
     ParameterNode getAParameter() { result = this.getParameter(_) }
@@ -356,18 +359,18 @@ module Public {
     int getNumParameter() { result = count(this.getAParameter()) }
 
     /** Gets the name of this function, if it has one. */
-    string getName() { result = self.getName() }
+    string getName() { result = super.getName() }
 
     /**
      * Gets the dataflow node holding the value of the receiver, if any.
      */
-    ReceiverNode getReceiver() { result = self.getReceiver() }
+    ReceiverNode getReceiver() { result = super.getReceiver() }
 
     /**
      * Gets a value returned by the given function via a return statement or an assignment to a
      * result variable.
      */
-    ResultNode getAResult() { result = self.getAResult() }
+    ResultNode getAResult() { result = super.getAResult() }
 
     /**
      * Gets the data-flow node corresponding to the `i`th result of this function.
@@ -379,7 +382,7 @@ module Public {
      *
      * Note that this predicate has no result for function literals.
      */
-    Function getFunction() { result = self.getFunction() }
+    Function getFunction() { result = super.getFunction() }
   }
 
   /** A representation of a function that is declared in the module scope. */

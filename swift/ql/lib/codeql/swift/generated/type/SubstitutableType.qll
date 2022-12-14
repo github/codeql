@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class SubstitutableTypeBase extends Synth::TSubstitutableType, Type { }
+module Generated {
+  class SubstitutableType extends Synth::TSubstitutableType, Type { }
+}

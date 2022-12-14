@@ -13,4 +13,4 @@ nodes
 | tests.cpp:53:16:53:19 | data indirection | semmle.label | data indirection |
 subpaths
 #select
-| tests.cpp:53:16:53:19 | data | tests.cpp:33:34:33:39 | call to getenv | tests.cpp:53:16:53:19 | data indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | tests.cpp:33:34:33:39 | call to getenv | user input (an environment variable) | tests.cpp:38:25:38:36 | strncat output argument | strncat output argument |
+| tests.cpp:53:16:53:19 | data | tests.cpp:33:34:33:39 | call to getenv | tests.cpp:53:16:53:19 | data indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string). | tests.cpp:33:34:33:39 | call to getenv | user input (an environment variable) | tests.cpp:38:25:38:36 | strncat output argument | strncat output argument |

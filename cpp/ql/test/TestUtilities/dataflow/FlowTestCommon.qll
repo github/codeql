@@ -13,7 +13,7 @@
 
 import cpp
 private import semmle.code.cpp.ir.dataflow.DataFlow::DataFlow as IRDataFlow
-private import semmle.code.cpp.dataflow.DataFlow::DataFlow as ASTDataFlow
+private import semmle.code.cpp.dataflow.DataFlow::DataFlow as AstDataFlow
 import TestUtilities.InlineExpectationsTest
 
 class IRFlowTest extends InlineExpectationsTest {
@@ -49,11 +49,11 @@ class AstFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(
-      ASTDataFlow::Node source, ASTDataFlow::Node sink, ASTDataFlow::Configuration conf, int n
+      AstDataFlow::Node source, AstDataFlow::Node sink, AstDataFlow::Configuration conf, int n
     |
       tag = "ast" and
       conf.hasFlow(source, sink) and
-      n = strictcount(ASTDataFlow::Node otherSource | conf.hasFlow(otherSource, sink)) and
+      n = strictcount(AstDataFlow::Node otherSource | conf.hasFlow(otherSource, sink)) and
       (
         n = 1 and value = ""
         or

@@ -31,29 +31,3 @@ predicate alwaysNotNullCallable(Callable c) {
     forex(Expr e | c.canReturn(e) | e instanceof NonNullExpr)
   )
 }
-
-/** Holds if callable 'c' always throws an exception. */
-predicate alwaysThrowsCallable(Callable c) {
-  finalCallable(c) and
-  (
-    forex(ControlFlow::Node pre | pre = c.getExitPoint().getAPredecessor() |
-      pre.getElement() instanceof ThrowElement
-    )
-    or
-    exists(CIL::Method m | m.matchesHandle(c) | CR::alwaysThrowsMethod(m))
-  )
-}
-
-/** Holds if callable `c` always throws exception `ex`. */
-predicate alwaysThrowsException(Callable c, Class ex) {
-  finalCallable(c) and
-  (
-    forex(ControlFlow::Node pre | pre = c.getExitPoint().getAPredecessor() |
-      pre.getElement().(ThrowElement).getThrownExceptionType() = ex
-    )
-    or
-    exists(CIL::Method m, CIL::Type t | m.matchesHandle(c) |
-      CR::alwaysThrowsException(m, t) and t.matchesHandle(ex)
-    )
-  )
-}

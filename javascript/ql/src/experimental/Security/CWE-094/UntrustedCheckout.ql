@@ -79,9 +79,9 @@ class ProbableJob extends Actions::Job {
 /**
  * An action step that doesn't contain `actor` or `label` check in `if:` or
  */
-class ProbablePullRequestTarget extends Actions::On, YAMLMappingLikeNode {
+class ProbablePullRequestTarget extends Actions::On, YamlMappingLikeNode {
   ProbablePullRequestTarget() {
-    exists(YAMLNode prtNode |
+    exists(YamlNode prtNode |
       // The `on:` is triggered on `pull_request_target`
       this.getNode("pull_request_target") = prtNode and
       (
@@ -89,7 +89,7 @@ class ProbablePullRequestTarget extends Actions::On, YAMLMappingLikeNode {
         not exists(prtNode.getAChild())
         or
         // or has the filter, that is something else than just [labeled]
-        exists(YAMLMappingLikeNode prt, YAMLMappingLikeNode types |
+        exists(YamlMappingLikeNode prt, YamlMappingLikeNode types |
           types = prt.getNode("types") and
           prtNode = prt and
           (
@@ -118,4 +118,4 @@ where
         ]) and
   step instanceof ProbableStep and
   job instanceof ProbableJob
-select step, "Potential unsafe checkout of untrusted pull request on `pull_request_target`"
+select step, "Potential unsafe checkout of untrusted pull request on 'pull_request_target'."

@@ -73,7 +73,7 @@ class SafeValidator extends VarAccess {
   SafeValidator() {
     exists(Variable v | v = this.getVariable() |
       exists(ValidatorConfig config | config.getQualifier() = v.getAnAccess() |
-        config.disables(configAccessExternalDTD())
+        config.disables(configAccessExternalDtd())
       ) and
       exists(ValidatorConfig config | config.getQualifier() = v.getAnAccess() |
         config.disables(configAccessExternalSchema())

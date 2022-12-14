@@ -4,7 +4,7 @@ private import codeql.swift.elements.expr.DeclRefExpr
 private import codeql.swift.elements.expr.MethodRefExpr
 private import codeql.swift.elements.expr.ConstructorRefCallExpr
 
-class ApplyExpr extends ApplyExprBase {
+class ApplyExpr extends Generated::ApplyExpr {
   AbstractFunctionDecl getStaticTarget() {
     exists(Expr f |
       f = this.getFunction() and
@@ -18,6 +18,14 @@ class ApplyExpr extends ApplyExprBase {
 
   /** Gets the method qualifier, if this is applying a method */
   Expr getQualifier() { none() }
+
+  /**
+   * Gets the argument of this `ApplyExpr` called `label` (if any).
+   */
+  final Argument getArgumentWithLabel(string label) {
+    result = this.getAnArgument() and
+    result.getLabel() = label
+  }
 
   override string toString() {
     result = "call to " + this.getStaticTarget().toString()

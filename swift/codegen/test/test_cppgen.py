@@ -49,28 +49,11 @@ def test_two_class_hierarchy(generate):
     base = cpp.Class(name="A")
     assert generate([
         schema.Class(name="A", derived={"B"}),
-        schema.Class(name="B", bases={"A"}),
+        schema.Class(name="B", bases=["A"]),
     ]) == [
         base,
         cpp.Class(name="B", bases=[base], final=True, trap_name="Bs"),
     ]
-
-
-def test_complex_hierarchy_topologically_ordered(generate):
-    a = cpp.Class(name="A")
-    b = cpp.Class(name="B")
-    c = cpp.Class(name="C", bases=[a])
-    d = cpp.Class(name="D", bases=[a])
-    e = cpp.Class(name="E", bases=[b, c, d], final=True, trap_name="Es")
-    f = cpp.Class(name="F", bases=[c], final=True, trap_name="Fs")
-    assert generate([
-        schema.Class(name="F", bases={"C"}),
-        schema.Class(name="B", derived={"E"}),
-        schema.Class(name="D", bases={"A"}, derived={"E"}),
-        schema.Class(name="C", bases={"A"}, derived={"E", "F"}),
-        schema.Class(name="E", bases={"B", "C", "D"}),
-        schema.Class(name="A", derived={"C", "D"}),
-    ]) == [a, b, c, d, e, f]
 
 
 @pytest.mark.parametrize("type,expected", [
@@ -94,6 +77,25 @@ def test_class_with_field(generate, type, expected, property_cls, optional, repe
                                     is_repeated=repeated, trap_name=trap_name)],
                   trap_name="MyClasses",
                   final=True)
+    ]
+
+
+def test_class_field_with_null(generate, input):
+    input.null = "Null"
+    a = cpp.Class(name="A")
+    assert generate([
+        schema.Class(name="A", derived={"B"}),
+        schema.Class(name="B", bases=["A"], properties=[
+            schema.SingleProperty("x", "A"),
+            schema.SingleProperty("y", "B"),
+        ])
+    ]) == [
+        a,
+        cpp.Class(name="B", bases=[a], final=True, trap_name="Bs",
+                  fields=[
+            cpp.Field("x", "TrapLabel<ATag>"),
+            cpp.Field("y", "TrapLabel<BOrNoneTag>"),
+        ]),
     ]
 
 
@@ -153,10 +155,10 @@ def test_classes_with_dirs(generate_grouped):
     cbase = cpp.Class(name="CBase")
     assert generate_grouped([
         schema.Class(name="A"),
-        schema.Class(name="B", dir=pathlib.Path("foo")),
-        schema.Class(name="C", bases={"CBase"}, dir=pathlib.Path("bar")),
-        schema.Class(name="CBase", derived={"C"}, dir=pathlib.Path("bar")),
-        schema.Class(name="D", dir=pathlib.Path("foo/bar/baz")),
+        schema.Class(name="B", group="foo"),
+        schema.Class(name="CBase", derived={"C"}, group="bar"),
+        schema.Class(name="C", bases=["CBase"], group="bar"),
+        schema.Class(name="D", group="foo/bar/baz"),
     ]) == {
         ".": [cpp.Class(name="A", trap_name="As", final=True)],
         "foo": [cpp.Class(name="B", trap_name="Bs", final=True)],
@@ -175,6 +177,28 @@ def test_cpp_skip_pragma(generate):
         cpp.Class(name="A", final=True, trap_name="As", fields=[
             cpp.Field("x", "foo"),
         ]),
+    ]
+
+
+def test_ipa_classes_ignored(generate):
+    assert generate([
+        schema.Class(
+            name="W",
+            ipa=schema.IpaInfo(),
+        ),
+        schema.Class(
+            name="X",
+            ipa=schema.IpaInfo(from_class="A"),
+        ),
+        schema.Class(
+            name="Y",
+            ipa=schema.IpaInfo(on_arguments={"a": "A", "b": "int"}),
+        ),
+        schema.Class(
+            name="Z",
+        ),
+    ]) == [
+        cpp.Class(name="Z", final=True, trap_name="Zs"),
     ]
 
 

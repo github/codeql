@@ -2,7 +2,38 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
+import codeql.swift.elements.expr.StringLiteralExpr
 
-class PoundDiagnosticDeclBase extends Synth::TPoundDiagnosticDecl, Decl {
-  override string getAPrimaryQlClass() { result = "PoundDiagnosticDecl" }
+module Generated {
+  /**
+   * A diagnostic directive, which is either `#error` or `#warning`.
+   */
+  class PoundDiagnosticDecl extends Synth::TPoundDiagnosticDecl, Decl {
+    override string getAPrimaryQlClass() { result = "PoundDiagnosticDecl" }
+
+    /**
+     * Gets the This is 1 for `#error` and 2 for `#warning`.
+     */
+    int getKind() {
+      result = Synth::convertPoundDiagnosticDeclToRaw(this).(Raw::PoundDiagnosticDecl).getKind()
+    }
+
+    /**
+     * Gets the message of this pound diagnostic declaration.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    StringLiteralExpr getImmediateMessage() {
+      result =
+        Synth::convertStringLiteralExprFromRaw(Synth::convertPoundDiagnosticDeclToRaw(this)
+              .(Raw::PoundDiagnosticDecl)
+              .getMessage())
+    }
+
+    /**
+     * Gets the message of this pound diagnostic declaration.
+     */
+    final StringLiteralExpr getMessage() { result = getImmediateMessage().resolve() }
+  }
 }

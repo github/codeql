@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.SelfApplyExpr
 
-class DotSyntaxCallExprBase extends Synth::TDotSyntaxCallExpr, SelfApplyExpr {
-  override string getAPrimaryQlClass() { result = "DotSyntaxCallExpr" }
+module Generated {
+  class DotSyntaxCallExpr extends Synth::TDotSyntaxCallExpr, SelfApplyExpr {
+    override string getAPrimaryQlClass() { result = "DotSyntaxCallExpr" }
+  }
 }

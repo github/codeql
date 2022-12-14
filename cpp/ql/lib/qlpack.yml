@@ -1,7 +1,9 @@
 name: codeql/cpp-all
-version: 0.3.4-dev
+version: 0.4.6-dev
 groups: cpp
 dbscheme: semmlecode.cpp.dbscheme
 extractor: cpp
 library: true
 upgrades: upgrades
+dependencies:
+  codeql/ssa: ${workspace}

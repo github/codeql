@@ -1470,7 +1470,7 @@ module Internal {
         )
       }
 
-      private predicate firstReadSameVarUniquePredecesssor(
+      private predicate firstReadSameVarUniquePredecessor(
         PreSsa::Definition def, AssignableRead read
       ) {
         read = def.getAFirstRead() and
@@ -1603,7 +1603,7 @@ module Internal {
           g1 = def.getARead() and
           isGuard(g1, v1) and
           v2 = v1 and
-          if v1.isReferentialProperty() then firstReadSameVarUniquePredecesssor(def, g1) else any()
+          if v1.isReferentialProperty() then firstReadSameVarUniquePredecessor(def, g1) else any()
         )
         or
         exists(PreSsa::Definition def, AbstractValue v |
@@ -1684,7 +1684,7 @@ module Internal {
           mid = e.(Cast).getExpr()
         )
         or
-        exists(PreSsa::Definition def | emptyDef(def) | firstReadSameVarUniquePredecesssor(def, e))
+        exists(PreSsa::Definition def | emptyDef(def) | firstReadSameVarUniquePredecessor(def, e))
         or
         exists(MethodCall mc |
           mc.getTarget().getAnUltimateImplementee().getUnboundDeclaration() =
@@ -1708,7 +1708,7 @@ module Internal {
         )
         or
         exists(PreSsa::Definition def | nonEmptyDef(def) |
-          firstReadSameVarUniquePredecesssor(def, e)
+          firstReadSameVarUniquePredecessor(def, e)
         )
         or
         exists(MethodCall mc |

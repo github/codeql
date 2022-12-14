@@ -4,9 +4,9 @@ groups:
     - solorigate
     - test
 dependencies:
-  codeql/csharp-all: "*"
-  codeql/csharp-queries: "*"
-  codeql/csharp-solorigate-all: "*"
-  codeql/csharp-solorigate-queries: "*"
+  codeql/csharp-all: ${workspace}
+  codeql/csharp-queries: ${workspace}
+  codeql/csharp-solorigate-all: ${workspace}
+  codeql/csharp-solorigate-queries: ${workspace}
 extractor: csharp
 tests: .

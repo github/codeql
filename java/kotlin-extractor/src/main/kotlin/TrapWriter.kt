@@ -1,7 +1,6 @@
 package com.github.codeql
 
 import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
-import com.github.codeql.utils.versions.FileEntry
 import java.io.BufferedWriter
 import java.io.File
 import org.jetbrains.kotlin.ir.IrElement
@@ -15,6 +14,7 @@ import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 
 import com.semmle.extractor.java.PopulateFile
 import com.semmle.util.unicode.UTF8Util
+import org.jetbrains.kotlin.ir.expressions.IrCall
 
 /**
  * Each `.trap` file has a `TrapLabelManager` while we are writing it.
@@ -26,7 +26,7 @@ class TrapLabelManager {
     private var nextInt: Int = 100
 
     /** Returns a fresh label. */
-    fun <T> getFreshLabel(): Label<T> {
+    fun <T: AnyDbType> getFreshLabel(): Label<T> {
         return IntLabel(nextInt++)
     }
 
@@ -64,7 +64,7 @@ open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelMa
      * `getLabelFor` instead, which allows non-existent labels to be
      * initialised.
      */
-    fun <T> getExistingLabelFor(key: String): Label<T>? {
+    fun <T: AnyDbType> getExistingLabelFor(key: String): Label<T>? {
         return lm.labelMapping.get(key)?.cast<T>()
     }
     /**
@@ -73,7 +73,7 @@ open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelMa
      * is run on it, and it is returned.
      */
     @JvmOverloads // Needed so Java can call a method with an optional argument
-    fun <T> getLabelFor(key: String, initialise: (Label<T>) -> Unit = {}): Label<T> {
+    fun <T: AnyDbType> getLabelFor(key: String, initialise: (Label<T>) -> Unit = {}): Label<T> {
         val maybeLabel: Label<T>? = getExistingLabelFor(key)
         if(maybeLabel == null) {
             val label: Label<T> = lm.getFreshLabel()
@@ -89,7 +89,7 @@ open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelMa
     /**
      * Returns a label for a fresh ID (i.e. a new label bound to `*`).
      */
-    fun <T> getFreshIdLabel(): Label<T> {
+    fun <T: AnyDbType> getFreshIdLabel(): Label<T> {
         val label: Label<T> = lm.getFreshLabel()
         writeTrap("$label = *\n")
         return label
@@ -269,11 +269,42 @@ open class FileTrapWriter (
      */
     val fileId = mkFileId(filePath, populateFileTables)
 
+    private fun offsetMinOf(default: Int, vararg options: Int?): Int {
+        if (default == UNDEFINED_OFFSET || default == SYNTHETIC_OFFSET) {
+            return default
+        }
+
+        var currentMin = default
+        for (option in options) {
+            if (option != null && option != UNDEFINED_OFFSET && option != SYNTHETIC_OFFSET && option < currentMin) {
+                currentMin = option
+            }
+        }
+
+        return currentMin
+    }
+
+    private fun getStartOffset(e: IrElement): Int {
+        return when (e) {
+            is IrCall -> {
+                // Calls have incorrect startOffset, so we adjust them:
+                val dr = e.dispatchReceiver?.let { getStartOffset(it) }
+                val er = e.extensionReceiver?.let { getStartOffset(it) }
+                offsetMinOf(e.startOffset, dr, er)
+            }
+            else -> e.startOffset
+        }
+    }
+
+    private fun getEndOffset(e: IrElement): Int {
+        return e.endOffset
+    }
+
     /**
      * Gets a label for the location of `e`.
      */
     fun getLocation(e: IrElement): Label<DbLocation> {
-        return getLocation(e.startOffset, e.endOffset)
+        return getLocation(getStartOffset(e), getEndOffset(e))
     }
     /**
      * Gets a label for the location corresponding to `startOffset` and
@@ -319,7 +350,7 @@ class SourceFileTrapWriter (
     lm: TrapLabelManager,
     bw: BufferedWriter,
     diagnosticTrapWriter: TrapWriter?,
-    irFile: IrFile,
+    val irFile: IrFile,
     populateFileTables: Boolean) :
     FileTrapWriter(loggerBase, lm, bw, diagnosticTrapWriter, irFile.path, populateFileTables) {
 

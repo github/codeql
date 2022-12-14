@@ -12,6 +12,7 @@ private import dotnet
 // import `TaintedMember` definitions from other files to avoid potential reevaluation
 private import semmle.code.csharp.frameworks.JsonNET
 private import semmle.code.csharp.frameworks.WCF
+private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -26,13 +27,14 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
 
-private CIL::DataFlowNode asCilDataFlowNode(DataFlow::Node node) {
-  result = node.asParameter() or
-  result = node.asExpr()
+private predicate localCilTaintStep(CIL::DataFlowNode src, CIL::DataFlowNode sink) {
+  src = sink.(CIL::BinaryArithmeticExpr).getAnOperand() or
+  src = sink.(CIL::Opcodes::Neg).getOperand() or
+  src = sink.(CIL::UnaryBitwiseOperation).getOperand()
 }
 
 private predicate localTaintStepCil(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  asCilDataFlowNode(nodeFrom).getALocalFlowSucc(asCilDataFlowNode(nodeTo), any(CIL::Tainted t))
+  localCilTaintStep(asCilDataFlowNode(nodeFrom), asCilDataFlowNode(nodeTo))
 }
 
 private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityConfiguration {

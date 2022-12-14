@@ -10,6 +10,8 @@ string visibility(Method m) {
   result = "internal" and m.isInternal()
 }
 
+predicate hasPackagePrivateVisibility(Method m) { not exists(visibility(m)) }
+
 // TODO: This ought to check more than just methods
 from Method m
 where
@@ -19,5 +21,6 @@ where
   // TODO: This ought to have visibility information
   not m.getName() = "<clinit>" and
   count(visibility(m)) != 1 and
-  not (count(visibility(m)) = 2 and visibility(m) = "public" and visibility(m) = "internal") // This is a reasonable result, since the JVM symbol is declared public, but Kotlin metadata flags it as internal
+  not (count(visibility(m)) = 2 and visibility(m) = "public" and visibility(m) = "internal") and // This is a reasonable result, since the JVM symbol is declared public, but Kotlin metadata flags it as internal
+  not (hasPackagePrivateVisibility(m) and m.getName().matches("%$default")) // This is a reasonable result because the $default forwarder methods corresponding to private methods are package-private.
 select m, concat(visibility(m), ", ")

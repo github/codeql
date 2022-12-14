@@ -6,7 +6,6 @@ private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
-private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.dispatch.RuntimeCallable
 private import semmle.code.csharp.frameworks.system.Collections
@@ -175,10 +174,19 @@ private module DispatchImpl {
    * restricted to those `call`s for which a context might make a difference.
    */
   DataFlowCallable viableImplInCallContext(NonDelegateDataFlowCall call, DataFlowCall ctx) {
-    result.getUnderlyingCallable() =
-      call.getDispatchCall()
-          .getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall).getDispatchCall())
-          .getUnboundDeclaration()
+    exists(DispatchCall dc | dc = call.getDispatchCall() |
+      result.getUnderlyingCallable() =
+        getCallableForDataFlow(dc.getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall)
+                .getDispatchCall()).getUnboundDeclaration())
+      or
+      exists(Callable c, DataFlowCallable encl |
+        result.asSummarizedCallable() = c and
+        mayBenefitFromCallContext(call, encl) and
+        encl = ctx.getARuntimeTarget() and
+        c = dc.getAStaticTarget().getUnboundDeclaration() and
+        not c instanceof RuntimeCallable
+      )
+    )
   }
 }
 

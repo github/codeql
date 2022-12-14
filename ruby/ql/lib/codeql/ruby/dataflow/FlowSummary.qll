@@ -1,16 +1,17 @@
 /** Provides classes and predicates for defining flow summaries. */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
-private import codeql.ruby.frameworks.data.ModelsAsData
-private import codeql.ruby.ApiGraphs
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch
+private import internal.DataFlowImplCommon as DataFlowImplCommon
 private import internal.DataFlowPrivate
+private import internal.FlowSummaryImplSpecific
 
 // import all instances below
 private module Summaries {
   private import codeql.ruby.Frameworks
+  private import codeql.ruby.frameworks.data.ModelsAsData
 }
 
 class SummaryComponent = Impl::Public::SummaryComponent;
@@ -46,6 +47,17 @@ module SummaryComponent {
   }
 
   /**
+   * Gets a summary component that represents an element in a collection at a specific
+   * known index `cv`, or an unknown index.
+   */
+  SummaryComponent elementKnownOrUnknown(ConstantValue cv) {
+    result = SC::content(TKnownOrUnknownElementContent(TKnownElementContent(cv)))
+    or
+    not exists(TKnownElementContent(cv)) and
+    result = elementUnknown()
+  }
+
+  /**
    * Gets a summary component that represents an element in a collection at either an unknown
    * index or known index. This has the same semantics as
    *
@@ -62,17 +74,15 @@ module SummaryComponent {
    * integer index `lower` or above.
    */
   SummaryComponent elementLowerBound(int lower) {
-    result = SC::content(TElementLowerBoundContent(lower))
+    result = SC::content(TElementLowerBoundContent(lower, false))
   }
 
-  /** Gets a summary component that represents a value in a pair at an unknown key. */
-  SummaryComponent pairValueUnknown() {
-    result = SC::content(TSingletonContent(TUnknownPairValueContent()))
-  }
-
-  /** Gets a summary component that represents a value in a pair at a known key. */
-  SummaryComponent pairValueKnown(ConstantValue key) {
-    result = SC::content(TSingletonContent(TKnownPairValueContent(key)))
+  /**
+   * Gets a summary component that represents an element in a collection at known
+   * integer index `lower` or above, or possibly at an unknown index.
+   */
+  SummaryComponent elementLowerBoundOrUnknown(int lower) {
+    result = SC::content(TElementLowerBoundContent(lower, true))
   }
 
   /** Gets a summary component that represents the return value of a call. */
@@ -119,6 +129,17 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
    */
   pragma[nomagic]
   predicate propagatesFlowExt(string input, string output, boolean preservesValue) { none() }
+
+  /**
+   * Gets the synthesized parameter that results from an input specification
+   * that starts with `Argument[s]` for this library callable.
+   */
+  DataFlow::ParameterNode getParameter(string s) {
+    exists(ParameterPosition pos |
+      DataFlowImplCommon::parameterNode(result, TLibraryCallable(this), pos) and
+      s = getParameterPositionCsv(pos)
+    )
+  }
 }
 
 /**
@@ -131,37 +152,7 @@ abstract class SimpleSummarizedCallable extends SummarizedCallable {
   bindingset[this]
   SimpleSummarizedCallable() { mc.getMethodName() = this }
 
-  final override MethodCall getACall() { result = mc }
+  final override MethodCall getACallSimple() { result = mc }
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
-
-private class SummarizedCallableFromModel extends SummarizedCallable {
-  string package;
-  string type;
-  string path;
-
-  SummarizedCallableFromModel() {
-    ModelOutput::relevantSummaryModel(package, type, path, _, _, _) and
-    this = package + ";" + type + ";" + path
-  }
-
-  override Call getACall() {
-    exists(API::MethodAccessNode base |
-      ModelOutput::resolvedSummaryBase(package, type, path, base) and
-      result = base.getCallNode().asExpr().getExpr()
-    )
-  }
-
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    exists(string kind |
-      ModelOutput::relevantSummaryModel(package, type, path, input, output, kind)
-    |
-      kind = "value" and
-      preservesValue = true
-      or
-      kind = "taint" and
-      preservesValue = false
-    )
-  }
-}

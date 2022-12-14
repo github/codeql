@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.AbstractFunctionDecl
 
-class FuncDeclBase extends Synth::TFuncDecl, AbstractFunctionDecl { }
+module Generated {
+  class FuncDecl extends Synth::TFuncDecl, AbstractFunctionDecl { }
+}

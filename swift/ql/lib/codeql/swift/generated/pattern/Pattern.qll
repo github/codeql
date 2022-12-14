@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 
-class PatternBase extends Synth::TPattern, AstNode { }
+module Generated {
+  class Pattern extends Synth::TPattern, AstNode { }
+}

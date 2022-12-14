@@ -19,5 +19,5 @@ import DataFlow::PathGraph
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "A $@ is parsed as XML without guarding against uncontrolled entity expansion.", source.getNode(),
-  "user-provided value"
+  "XML parsing depends on a $@ without guarding against uncontrolled entity expansion.",
+  source.getNode(), "user-provided value"

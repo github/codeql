@@ -120,7 +120,7 @@ func main() {
 			}
 		})
 		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-			// OK-ish: the input origin header is validated agains a whitelist.
+			// OK-ish: the input origin header is validated against a whitelist.
 			responseHeader := w.Header()
 			{
 				origin := req.Header.Get("origin")
@@ -137,7 +137,7 @@ func main() {
 		})
 		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 			originSuffix := ".example.com"
-			// OK-ish: the input origin header is validated agains a suffix.
+			// OK-ish: the input origin header is validated against a suffix.
 			origin := req.Header.Get("Origin")
 			if origin != "" && (originSuffix == "" || strings.HasSuffix(origin, originSuffix)) {
 				w.Header().Set("Access-Control-Allow-Origin", origin)
@@ -152,7 +152,7 @@ func main() {
 		})
 		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 			originSuffix := ".example.com"
-			// OK-ish: the input origin header is validated agains a whitelist.
+			// OK-ish: the input origin header is validated against a whitelist.
 			origin := req.Header.Get("Origin")
 			if origin != "" && (originSuffix == "" || AccessControlAllowOrigins[origin]) {
 				w.Header().Set("Access-Control-Allow-Origin", origin)
@@ -166,7 +166,7 @@ func main() {
 			}
 		})
 		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-			// OK-ish: the input origin header is validated agains a whitelist.
+			// OK-ish: the input origin header is validated against a whitelist.
 			origin := req.Header.Get("origin")
 			if origin != "" && origin != "null" {
 				if len(AccessControlAllowOrigins) == 0 || AccessControlAllowOrigins[origin] {
@@ -178,7 +178,7 @@ func main() {
 			}
 		})
 		// http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		//  // OK-ish: the input origin header is validated agains a whitelist.
+		//  // OK-ish: the input origin header is validated against a whitelist.
 		// 	origin := req.Header.Get("origin")
 		// 	if origin != "" && origin != "null" {
 		// 		if _, ok := AccessControlAllowOrigins[origin]; ok {
@@ -190,7 +190,7 @@ func main() {
 		// 	}
 		// })
 		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-			// OK-ish: the input origin header is validated agains a whitelist.
+			// OK-ish: the input origin header is validated against a whitelist.
 			if origin := req.Header.Get("Origin"); cors[origin] {
 				w.Header().Set("Access-Control-Allow-Origin", origin)
 			} else if len(origin) > 0 && cors["*"] {
@@ -202,7 +202,7 @@ func main() {
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
 		})
 		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-			// OK-ish: the input origin header is validated agains a whitelist.
+			// OK-ish: the input origin header is validated against a whitelist.
 			origin := req.Header.Get("origin")
 			for _, v := range GetAllowOrigin() {
 				if v == origin {

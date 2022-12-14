@@ -3,24 +3,56 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class IfExprBase extends Synth::TIfExpr, Expr {
-  override string getAPrimaryQlClass() { result = "IfExpr" }
+module Generated {
+  class IfExpr extends Synth::TIfExpr, Expr {
+    override string getAPrimaryQlClass() { result = "IfExpr" }
 
-  Expr getImmediateCondition() {
-    result = Synth::convertExprFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getCondition())
+    /**
+     * Gets the condition of this if expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateCondition() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getCondition())
+    }
+
+    /**
+     * Gets the condition of this if expression.
+     */
+    final Expr getCondition() { result = getImmediateCondition().resolve() }
+
+    /**
+     * Gets the then expression of this if expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateThenExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getThenExpr())
+    }
+
+    /**
+     * Gets the then expression of this if expression.
+     */
+    final Expr getThenExpr() { result = getImmediateThenExpr().resolve() }
+
+    /**
+     * Gets the else expression of this if expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateElseExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getElseExpr())
+    }
+
+    /**
+     * Gets the else expression of this if expression.
+     */
+    final Expr getElseExpr() { result = getImmediateElseExpr().resolve() }
   }
-
-  final Expr getCondition() { result = getImmediateCondition().resolve() }
-
-  Expr getImmediateThenExpr() {
-    result = Synth::convertExprFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getThenExpr())
-  }
-
-  final Expr getThenExpr() { result = getImmediateThenExpr().resolve() }
-
-  Expr getImmediateElseExpr() {
-    result = Synth::convertExprFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getElseExpr())
-  }
-
-  final Expr getElseExpr() { result = getImmediateElseExpr().resolve() }
 }

@@ -6,7 +6,7 @@
 <include src="ThreadUnsafeICryptoTransformOverview.inc.qhelp" />
 </overview>
 <recommendation>
-<p>Create new instances of the object that implements or has a field of type <code>System.Security.Cryptography.ICryptoTransform</code> to avoid sharing it accross multiple threads.</p>
+<p>Create new instances of the object that implements or has a field of type <code>System.Security.Cryptography.ICryptoTransform</code> to avoid sharing it across multiple threads.</p>
 
 </recommendation>
 <example>

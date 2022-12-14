@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.NominalTypeDecl
 
-class ClassDeclBase extends Synth::TClassDecl, NominalTypeDecl {
-  override string getAPrimaryQlClass() { result = "ClassDecl" }
+module Generated {
+  class ClassDecl extends Synth::TClassDecl, NominalTypeDecl {
+    override string getAPrimaryQlClass() { result = "ClassDecl" }
+  }
 }

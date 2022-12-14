@@ -2,7 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.DataFlow2
 
 /**
  * Holds if `array` is initialized only with constants.
@@ -54,10 +54,25 @@ private class ArrayUpdate extends Expr {
       ma = this and
       ma.getArgument(0) = array
     |
-      m.hasQualifiedName("java.io", "InputStream", "read") or
+      m.getAnOverride*().hasQualifiedName("java.io", ["InputStream", "RandomAccessFile"], "read") or
+      m.getAnOverride*().hasQualifiedName("java.io", "DataInput", "readFully") or
       m.hasQualifiedName("java.nio", "ByteBuffer", "get") or
       m.hasQualifiedName("java.security", "SecureRandom", "nextBytes") or
-      m.hasQualifiedName("java.util", "Random", "nextBytes")
+      m.hasQualifiedName("java.util", "Random", "nextBytes") or
+      m.hasQualifiedName("java.util.zip", "Inflater", "inflate") or
+      m.hasQualifiedName("io.netty.buffer", "ByteBuf", "readBytes") or
+      m.getAnOverride*().hasQualifiedName("org.bouncycastle.crypto", "Digest", "doFinal")
+    )
+    or
+    exists(MethodAccess ma, Method m |
+      m = ma.getMethod() and
+      ma = this and
+      ma.getArgument(1) = array
+    |
+      m.hasQualifiedName("org.apache.commons.io", "IOUtils", ["read", "readFully"]) or
+      m.hasQualifiedName("io.netty.buffer", "ByteBuf", "getBytes") or
+      m.hasQualifiedName("org.bouncycastle.crypto.generators",
+        any(string s | s.matches("%BytesGenerator")), "generateBytes")
     )
   }
 
@@ -68,7 +83,7 @@ private class ArrayUpdate extends Expr {
 /**
  * A config that tracks dataflow from creating an array to an operation that updates it.
  */
-private class ArrayUpdateConfig extends TaintTracking2::Configuration {
+private class ArrayUpdateConfig extends DataFlow2::Configuration {
   ArrayUpdateConfig() { this = "ArrayUpdateConfig" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -76,6 +91,8 @@ private class ArrayUpdateConfig extends TaintTracking2::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ArrayUpdate upd).getArray() }
+
+  override predicate isBarrierOut(DataFlow::Node node) { this.isSink(node) }
 }
 
 /**
@@ -95,17 +112,15 @@ private class StaticInitializationVectorSource extends DataFlow::Node {
 }
 
 /**
- * A sink that initializes a cipher for encryption with unsafe parameters.
+ * A sink that initializes a cipher with unsafe parameters.
  */
 private class EncryptionInitializationSink extends DataFlow::Node {
   EncryptionInitializationSink() {
-    exists(MethodAccess ma, Method m, FieldRead fr | m = ma.getMethod() |
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
       m.hasQualifiedName("javax.crypto", "Cipher", "init") and
       m.getParameterType(2)
           .(RefType)
           .hasQualifiedName("java.security.spec", "AlgorithmParameterSpec") and
-      fr.getField().hasQualifiedName("javax.crypto", "Cipher", "ENCRYPT_MODE") and
-      DataFlow::localExprFlow(fr, ma.getArgument(0)) and
       ma.getArgument(2) = this.asExpr()
     )
   }

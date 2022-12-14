@@ -3,18 +3,38 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.LookupExpr
 
-class MemberRefExprBase extends Synth::TMemberRefExpr, LookupExpr {
-  override string getAPrimaryQlClass() { result = "MemberRefExpr" }
+module Generated {
+  class MemberRefExpr extends Synth::TMemberRefExpr, LookupExpr {
+    override string getAPrimaryQlClass() { result = "MemberRefExpr" }
 
-  predicate hasDirectToStorageSemantics() {
-    Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasDirectToStorageSemantics()
-  }
+    /**
+     * Holds if this member ref expression has direct to storage semantics.
+     */
+    predicate hasDirectToStorageSemantics() {
+      Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasDirectToStorageSemantics()
+    }
 
-  predicate hasDirectToImplementationSemantics() {
-    Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasDirectToImplementationSemantics()
-  }
+    /**
+     * Holds if this member ref expression has direct to implementation semantics.
+     */
+    predicate hasDirectToImplementationSemantics() {
+      Synth::convertMemberRefExprToRaw(this)
+          .(Raw::MemberRefExpr)
+          .hasDirectToImplementationSemantics()
+    }
 
-  predicate hasOrdinarySemantics() {
-    Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasOrdinarySemantics()
+    /**
+     * Holds if this member ref expression has ordinary semantics.
+     */
+    predicate hasOrdinarySemantics() {
+      Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasOrdinarySemantics()
+    }
+
+    /**
+     * Holds if this member ref expression has distributed thunk semantics.
+     */
+    predicate hasDistributedThunkSemantics() {
+      Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasDistributedThunkSemantics()
+    }
   }
 }

@@ -5,38 +5,84 @@ import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.type.Type
 
-class DeclRefExprBase extends Synth::TDeclRefExpr, Expr {
-  override string getAPrimaryQlClass() { result = "DeclRefExpr" }
+module Generated {
+  class DeclRefExpr extends Synth::TDeclRefExpr, Expr {
+    override string getAPrimaryQlClass() { result = "DeclRefExpr" }
 
-  Decl getImmediateDecl() {
-    result =
-      Synth::convertDeclFromRaw(Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).getDecl())
-  }
+    /**
+     * Gets the declaration of this declaration ref expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Decl getImmediateDecl() {
+      result =
+        Synth::convertDeclFromRaw(Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).getDecl())
+    }
 
-  final Decl getDecl() { result = getImmediateDecl().resolve() }
+    /**
+     * Gets the declaration of this declaration ref expression.
+     */
+    final Decl getDecl() { result = getImmediateDecl().resolve() }
 
-  Type getImmediateReplacementType(int index) {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertDeclRefExprToRaw(this)
-            .(Raw::DeclRefExpr)
-            .getReplacementType(index))
-  }
+    /**
+     * Gets the `index`th replacement type of this declaration ref expression (0-based).
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateReplacementType(int index) {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertDeclRefExprToRaw(this)
+              .(Raw::DeclRefExpr)
+              .getReplacementType(index))
+    }
 
-  final Type getReplacementType(int index) { result = getImmediateReplacementType(index).resolve() }
+    /**
+     * Gets the `index`th replacement type of this declaration ref expression (0-based).
+     */
+    final Type getReplacementType(int index) {
+      result = getImmediateReplacementType(index).resolve()
+    }
 
-  final Type getAReplacementType() { result = getReplacementType(_) }
+    /**
+     * Gets any of the replacement types of this declaration ref expression.
+     */
+    final Type getAReplacementType() { result = getReplacementType(_) }
 
-  final int getNumberOfReplacementTypes() { result = count(getAReplacementType()) }
+    /**
+     * Gets the number of replacement types of this declaration ref expression.
+     */
+    final int getNumberOfReplacementTypes() {
+      result = count(int i | exists(getReplacementType(i)))
+    }
 
-  predicate hasDirectToStorageSemantics() {
-    Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDirectToStorageSemantics()
-  }
+    /**
+     * Holds if this declaration ref expression has direct to storage semantics.
+     */
+    predicate hasDirectToStorageSemantics() {
+      Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDirectToStorageSemantics()
+    }
 
-  predicate hasDirectToImplementationSemantics() {
-    Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDirectToImplementationSemantics()
-  }
+    /**
+     * Holds if this declaration ref expression has direct to implementation semantics.
+     */
+    predicate hasDirectToImplementationSemantics() {
+      Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDirectToImplementationSemantics()
+    }
 
-  predicate hasOrdinarySemantics() {
-    Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasOrdinarySemantics()
+    /**
+     * Holds if this declaration ref expression has ordinary semantics.
+     */
+    predicate hasOrdinarySemantics() {
+      Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasOrdinarySemantics()
+    }
+
+    /**
+     * Holds if this declaration ref expression has distributed thunk semantics.
+     */
+    predicate hasDistributedThunkSemantics() {
+      Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDistributedThunkSemantics()
+    }
   }
 }

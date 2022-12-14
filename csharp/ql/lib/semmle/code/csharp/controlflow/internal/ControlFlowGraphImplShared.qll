@@ -885,7 +885,7 @@ module TestOutput {
     /**
      * Gets a string used to resolve ties in node and edge ordering.
      */
-    string getOrderDisambuigation() { result = "" }
+    string getOrderDisambiguation() { result = "" }
   }
 
   query predicate nodes(RelevantNode n, string attr, string val) {
@@ -900,16 +900,20 @@ module TestOutput {
             order by
               l.getFile().getBaseName(), l.getFile().getAbsolutePath(), l.getStartLine(),
               l.getStartColumn(), l.getEndLine(), l.getEndColumn(), p.toString(),
-              p.getOrderDisambuigation()
+              p.getOrderDisambiguation()
           )
       ).toString()
   }
 
   query predicate edges(RelevantNode pred, RelevantNode succ, string attr, string val) {
     attr = "semmle.label" and
-    exists(SuccessorType t | succ = getASuccessor(pred, t) |
-      if successorTypeIsSimple(t) then val = "" else val = t.toString()
-    )
+    val =
+      strictconcat(SuccessorType t, string s |
+        succ = getASuccessor(pred, t) and
+        if successorTypeIsSimple(t) then s = "" else s = t.toString()
+      |
+        s, ", " order by s
+      )
     or
     attr = "semmle.order" and
     val =
@@ -923,7 +927,7 @@ module TestOutput {
             order by
               l.getFile().getBaseName(), l.getFile().getAbsolutePath(), l.getStartLine(),
               l.getStartColumn(), l.getEndLine(), l.getEndColumn(), t.toString(), s.toString(),
-              s.getOrderDisambuigation()
+              s.getOrderDisambiguation()
           )
       ).toString()
   }

@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.AbstractClosureExpr
 
-class ClosureExprBase extends Synth::TClosureExpr, AbstractClosureExpr {
-  override string getAPrimaryQlClass() { result = "ClosureExpr" }
+module Generated {
+  class ClosureExpr extends Synth::TClosureExpr, AbstractClosureExpr {
+    override string getAPrimaryQlClass() { result = "ClosureExpr" }
+  }
 }

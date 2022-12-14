@@ -1,5 +1,5 @@
 /**
- * Provides an extension point for for modeling user-controlled data.
+ * Provides an extension point for modeling user-controlled data.
  * Such data is often used as data-flow sources in security queries.
  */
 
@@ -15,13 +15,9 @@ private import semmle.python.Concepts
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `RemoteFlowSource::Range` instead.
  */
-class RemoteFlowSource extends DataFlow::Node {
-  RemoteFlowSource::Range self;
-
-  RemoteFlowSource() { this = self }
-
+class RemoteFlowSource extends DataFlow::Node instanceof RemoteFlowSource::Range {
   /** Gets a string that describes the type of this remote flow source. */
-  string getSourceType() { result = self.getSourceType() }
+  string getSourceType() { result = super.getSourceType() }
 }
 
 /** Provides a class for modeling new sources of remote user input. */

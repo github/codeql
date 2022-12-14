@@ -14,12 +14,24 @@ namespace codeql {
 
 // {{table_name}}
 struct {{name}}Trap {
-{{#fields}}
+  static constexpr const char* NAME = "{{name}}Trap";
+
+  {{#fields}}
   {{type}} {{field_name}}{};
-{{/fields}}
+  {{/fields}}
+
+  template <typename F>
+  void forEachLabel(F f) {
+    {{#fields}}
+    {{#is_label}}
+    f("{{field_name}}", -1, {{field_name}});
+    {{/is_label}}
+    {{/fields}}
+  }
 };
 
 std::ostream &operator<<(std::ostream &out, const {{name}}Trap &e);
+
 {{#id}}
 
 namespace detail {

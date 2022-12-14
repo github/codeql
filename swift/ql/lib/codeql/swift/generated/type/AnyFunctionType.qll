@@ -3,40 +3,83 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class AnyFunctionTypeBase extends Synth::TAnyFunctionType, Type {
-  Type getImmediateResult() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertAnyFunctionTypeToRaw(this)
-            .(Raw::AnyFunctionType)
-            .getResult())
+module Generated {
+  class AnyFunctionType extends Synth::TAnyFunctionType, Type {
+    /**
+     * Gets the result of this function type.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateResult() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertAnyFunctionTypeToRaw(this)
+              .(Raw::AnyFunctionType)
+              .getResult())
+    }
+
+    /**
+     * Gets the result of this function type.
+     */
+    final Type getResult() { result = getImmediateResult().resolve() }
+
+    /**
+     * Gets the `index`th parameter type of this function type (0-based).
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateParamType(int index) {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertAnyFunctionTypeToRaw(this)
+              .(Raw::AnyFunctionType)
+              .getParamType(index))
+    }
+
+    /**
+     * Gets the `index`th parameter type of this function type (0-based).
+     */
+    final Type getParamType(int index) { result = getImmediateParamType(index).resolve() }
+
+    /**
+     * Gets any of the parameter types of this function type.
+     */
+    final Type getAParamType() { result = getParamType(_) }
+
+    /**
+     * Gets the number of parameter types of this function type.
+     */
+    final int getNumberOfParamTypes() { result = count(int i | exists(getParamType(i))) }
+
+    /**
+     * Gets the `index`th parameter label of this function type (0-based), if it exists.
+     */
+    string getParamLabel(int index) {
+      result = Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).getParamLabel(index)
+    }
+
+    /**
+     * Holds if `getParamLabel(index)` exists.
+     */
+    final predicate hasParamLabel(int index) { exists(getParamLabel(index)) }
+
+    /**
+     * Gets any of the parameter labels of this function type.
+     */
+    final string getAParamLabel() { result = getParamLabel(_) }
+
+    /**
+     * Holds if this type refers to a throwing function.
+     */
+    predicate isThrowing() {
+      Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).isThrowing()
+    }
+
+    /**
+     * Holds if this type refers to an `async` function.
+     */
+    predicate isAsync() {
+      Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).isAsync()
+    }
   }
-
-  final Type getResult() { result = getImmediateResult().resolve() }
-
-  Type getImmediateParamType(int index) {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertAnyFunctionTypeToRaw(this)
-            .(Raw::AnyFunctionType)
-            .getParamType(index))
-  }
-
-  final Type getParamType(int index) { result = getImmediateParamType(index).resolve() }
-
-  final Type getAParamType() { result = getParamType(_) }
-
-  final int getNumberOfParamTypes() { result = count(getAParamType()) }
-
-  string getParamLabel(int index) {
-    result = Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).getParamLabel(index)
-  }
-
-  final string getAParamLabel() { result = getParamLabel(_) }
-
-  final int getNumberOfParamLabels() { result = count(getAParamLabel()) }
-
-  predicate isThrowing() {
-    Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).isThrowing()
-  }
-
-  predicate isAsync() { Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).isAsync() }
 }

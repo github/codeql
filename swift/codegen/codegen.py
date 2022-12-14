@@ -23,7 +23,7 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--swift-dir", type=_abspath, default=paths.swift_dir,
                    help="the directory that should be regarded as the root of the swift codebase. Used to compute QL "
                         "imports and in some comments (default %(default)s)")
-    p.add_argument("--schema", type=_abspath, default=paths.swift_dir / "codegen/schema.yml",
+    p.add_argument("--schema", type=_abspath, default=paths.swift_dir / "schema.py",
                    help="input schema file (default %(default)s)")
     p.add_argument("--dbscheme", type=_abspath, default=paths.swift_dir / "ql/lib/swift.dbscheme",
                    help="output file for dbscheme generation, input file for trap generation (default %(default)s)")
@@ -40,11 +40,15 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--codeql-binary", default="codeql", help="command to use for QL formatting (default %(default)s)")
     p.add_argument("--cpp-output", type=_abspath,
                    help="output directory for generated C++ files, required if trap or cpp is provided to --generate")
+    p.add_argument("--generated-registry", type=_abspath, default=paths.swift_dir / "ql/.generated.list",
+                   help="registry file containing information about checked-in generated code")
+    p.add_argument("--force", "-f", action="store_true",
+                   help="generate all files without skipping unchanged files and overwriting modified ones")
     return p.parse_args()
 
 
-def _abspath(x: str) -> pathlib.Path:
-    return pathlib.Path(x).resolve()
+def _abspath(x: str) -> typing.Optional[pathlib.Path]:
+    return pathlib.Path(x).resolve() if x else None
 
 
 def run():
@@ -56,9 +60,8 @@ def run():
     else:
         log_level = logging.INFO
     logging.basicConfig(format="{levelname} {message}", style='{', level=log_level)
-    exe_path = paths.exe_file.relative_to(opts.swift_dir)
     for target in opts.generate:
-        generate(target, opts, render.Renderer(exe_path))
+        generate(target, opts, render.Renderer(opts.swift_dir))
 
 
 if __name__ == "__main__":

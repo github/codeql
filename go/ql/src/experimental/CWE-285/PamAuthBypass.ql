@@ -3,7 +3,7 @@
  * @description Not using `pam.AcctMgmt` after `pam.Authenticate` to check the validity of a login can lead to authorization bypass.
  * @kind problem
  * @problem.severity warning
- * @id go/unreachable-statement
+ * @id go/pam-auth-bypass
  * @tags maintainability
  *       correctness
  *       external/cwe/cwe-561

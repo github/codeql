@@ -138,25 +138,6 @@ module Ssa {
     }
   }
 
-  private string getSplitString(Definition def) {
-    exists(ControlFlow::BasicBlock bb, int i, ControlFlow::Node cfn |
-      def.definesAt(_, bb, i) and
-      result = cfn.(ControlFlow::Nodes::ElementNode).getSplitsString()
-    |
-      cfn = bb.getNode(i)
-      or
-      not exists(bb.getNode(i)) and
-      cfn = bb.getFirstNode()
-    )
-  }
-
-  private string getToStringPrefix(Definition def) {
-    result = "[" + getSplitString(def) + "] "
-    or
-    not exists(getSplitString(def)) and
-    result = ""
-  }
-
   /**
    * A static single assignment (SSA) definition. Either an explicit variable
    * definition (`ExplicitDefinition`), an implicit variable definition
@@ -173,7 +154,7 @@ module Ssa {
     }
 
     /**
-     * Holds is this SSA definition is live at the end of basic block `bb`.
+     * Holds if this SSA definition is live at the end of basic block `bb`.
      * That is, this definition reaches the end of basic block `bb`, at which
      * point it is still live, without crossing another SSA definition of the
      * same source variable.
@@ -521,8 +502,8 @@ module Ssa {
 
     override string toString() {
       if this.getADefinition() instanceof AssignableDefinitions::ImplicitParameterDefinition
-      then result = getToStringPrefix(this) + "SSA param(" + this.getSourceVariable() + ")"
-      else result = getToStringPrefix(this) + "SSA def(" + this.getSourceVariable() + ")"
+      then result = SsaImpl::getToStringPrefix(this) + "SSA param(" + this.getSourceVariable() + ")"
+      else result = SsaImpl::getToStringPrefix(this) + "SSA def(" + this.getSourceVariable() + ")"
     }
 
     override Location getLocation() { result = ad.getLocation() }
@@ -570,8 +551,12 @@ module Ssa {
 
     override string toString() {
       if this.getSourceVariable().getAssignable() instanceof LocalScopeVariable
-      then result = getToStringPrefix(this) + "SSA capture def(" + this.getSourceVariable() + ")"
-      else result = getToStringPrefix(this) + "SSA entry def(" + this.getSourceVariable() + ")"
+      then
+        result =
+          SsaImpl::getToStringPrefix(this) + "SSA capture def(" + this.getSourceVariable() + ")"
+      else
+        result =
+          SsaImpl::getToStringPrefix(this) + "SSA entry def(" + this.getSourceVariable() + ")"
     }
 
     override Location getLocation() { result = this.getCallable().getLocation() }
@@ -612,7 +597,7 @@ module Ssa {
     }
 
     override string toString() {
-      result = getToStringPrefix(this) + "SSA call def(" + this.getSourceVariable() + ")"
+      result = SsaImpl::getToStringPrefix(this) + "SSA call def(" + this.getSourceVariable() + ")"
     }
 
     override Location getLocation() { result = this.getCall().getLocation() }
@@ -640,7 +625,8 @@ module Ssa {
     final Definition getQualifierDefinition() { result = q }
 
     override string toString() {
-      result = getToStringPrefix(this) + "SSA qualifier def(" + this.getSourceVariable() + ")"
+      result =
+        SsaImpl::getToStringPrefix(this) + "SSA qualifier def(" + this.getSourceVariable() + ")"
     }
 
     override Location getLocation() { result = this.getQualifierDefinition().getLocation() }
@@ -682,7 +668,7 @@ module Ssa {
     }
 
     override string toString() {
-      result = getToStringPrefix(this) + "SSA phi(" + this.getSourceVariable() + ")"
+      result = SsaImpl::getToStringPrefix(this) + "SSA phi(" + this.getSourceVariable() + ")"
     }
 
     /*

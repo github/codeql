@@ -6,53 +6,45 @@
 #include <queue>
 
 #include <swift/AST/SourceFile.h>
-#include <swift/Basic/FileTypes.h>
-#include <llvm/ADT/SmallString.h>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/Path.h>
+#include <swift/AST/Builtins.h>
 
-#include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/trap/TrapDomain.h"
-#include "swift/extractor/visitors/SwiftVisitor.h"
+#include "swift/extractor/translators/SwiftVisitor.h"
 #include "swift/extractor/TargetTrapFile.h"
+#include "swift/extractor/SwiftBuiltinSymbols.h"
+#include "swift/extractor/infra/file/Path.h"
 
 using namespace codeql;
 using namespace std::string_literals;
+namespace fs = std::filesystem;
 
-static void archiveFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
-  if (std::error_code ec = llvm::sys::fs::create_directories(config.trapDir)) {
-    std::cerr << "Cannot create TRAP directory: " << ec.message() << "\n";
-    return;
-  }
-
-  if (std::error_code ec = llvm::sys::fs::create_directories(config.sourceArchiveDir)) {
-    std::cerr << "Cannot create source archive directory: " << ec.message() << "\n";
-    return;
-  }
-
-  llvm::SmallString<PATH_MAX> srcFilePath(file.getFilename());
-  llvm::sys::fs::make_absolute(srcFilePath);
-
-  llvm::SmallString<PATH_MAX> dstFilePath(config.sourceArchiveDir);
-  llvm::sys::path::append(dstFilePath, srcFilePath);
-
-  llvm::StringRef parent = llvm::sys::path::parent_path(dstFilePath);
-  if (std::error_code ec = llvm::sys::fs::create_directories(parent)) {
-    std::cerr << "Cannot create source archive destination directory '" << parent.str()
-              << "': " << ec.message() << "\n";
-    return;
-  }
-
-  if (std::error_code ec = llvm::sys::fs::copy_file(srcFilePath, dstFilePath)) {
-    std::cerr << "Cannot archive source file '" << srcFilePath.str().str() << "' -> '"
-              << dstFilePath.str().str() << "': " << ec.message() << "\n";
-    return;
+static void ensureDirectory(const char* label, const fs::path& dir) {
+  std::error_code ec;
+  fs::create_directories(dir, ec);
+  if (ec) {
+    std::cerr << "Cannot create " << label << " directory: " << ec.message() << "\n";
+    std::abort();
   }
 }
 
-static std::string getFilename(swift::ModuleDecl& module, swift::SourceFile* primaryFile) {
+static void archiveFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
+  auto source = codeql::resolvePath(file.getFilename());
+  auto destination = config.sourceArchiveDir / source.relative_path();
+
+  ensureDirectory("source archive destination", destination.parent_path());
+
+  std::error_code ec;
+  fs::copy(source, destination, fs::copy_options::overwrite_existing, ec);
+
+  if (ec) {
+    std::cerr << "Cannot archive source file " << source << " -> " << destination << ": "
+              << ec.message() << "\n";
+  }
+}
+
+static fs::path getFilename(swift::ModuleDecl& module, swift::SourceFile* primaryFile) {
   if (primaryFile) {
-    return primaryFile->getFilename().str();
+    return resolvePath(primaryFile->getFilename());
   }
   // PCM clang module
   if (module.isNonSwiftModule()) {
@@ -60,12 +52,46 @@ static std::string getFilename(swift::ModuleDecl& module, swift::SourceFile* pri
     // In this case we want to differentiate them
     // Moreover, pcm files may come from caches located in different directories, but are
     // unambiguously identified by the base file name, so we can discard the absolute directory
-    std::string filename = "/pcms/"s + llvm::sys::path::filename(module.getModuleFilename()).str();
+    fs::path filename = "/pcms";
+    filename /= fs::path{std::string_view{module.getModuleFilename()}}.filename();
     filename += "-";
     filename += module.getName().str();
     return filename;
   }
-  return module.getModuleFilename().str();
+  if (module.isBuiltinModule()) {
+    // The Builtin module has an empty filename, let's fix that
+    return "/__Builtin__";
+  }
+  std::string_view filename = module.getModuleFilename();
+  // there is a special case of a module without an actual filename reporting `<imports>`: in this
+  // case we want to avoid the `<>` characters, in case a dirty DB is imported on Windows
+  if (filename == "<imports>") {
+    return "/__imports__";
+  }
+  return resolvePath(filename);
+}
+
+/* The builtin module is special, as it does not publish any top-level declaration
+ * It creates (and caches) declarations on demand when a lookup is carried out
+ * (see BuiltinUnit in swift/AST/FileUnit.h for the cache details, and getBuiltinValueDecl in
+ * swift/AST/Builtins.h for the creation details)
+ * As we want to create the Builtin trap file once and for all so that it works for other
+ * extraction runs, rather than collecting what we need we pre-populate the builtin trap with
+ * what we expect. This list might need thus to be expanded.
+ * Notice, that while swift/AST/Builtins.def has a list of builtin symbols, it does not contain
+ * all information required to instantiate builtin variants.
+ * Other possible approaches:
+ * * create one trap per builtin declaration when encountered
+ * * expand the list to all possible builtins (of which there are a lot)
+ */
+static void getBuiltinDecls(swift::ModuleDecl& builtinModule,
+                            llvm::SmallVector<swift::Decl*>& decls) {
+  llvm::SmallVector<swift::ValueDecl*> values;
+  for (auto symbol : swiftBuiltins) {
+    builtinModule.lookupValue(builtinModule.getASTContext().getIdentifier(symbol),
+                              swift::NLKind::QualifiedLookup, values);
+  }
+  decls.insert(decls.end(), values.begin(), values.end());
 }
 
 static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& module,
@@ -74,16 +100,19 @@ static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& modul
   ret.push_back(&module);
   if (primaryFile) {
     primaryFile->getTopLevelDecls(ret);
+  } else if (module.isBuiltinModule()) {
+    getBuiltinDecls(module, ret);
   } else {
     module.getTopLevelDecls(ret);
   }
   return ret;
 }
 
-static void extractDeclarations(const SwiftExtractorConfiguration& config,
-                                swift::CompilerInstance& compiler,
-                                swift::ModuleDecl& module,
-                                swift::SourceFile* primaryFile = nullptr) {
+static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
+    const SwiftExtractorConfiguration& config,
+    swift::CompilerInstance& compiler,
+    swift::ModuleDecl& module,
+    swift::SourceFile* primaryFile = nullptr) {
   auto filename = getFilename(module, primaryFile);
 
   // The extractor can be called several times from different processes with
@@ -92,7 +121,7 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   auto trapTarget = createTargetTrapFile(config, filename);
   if (!trapTarget) {
     // another process arrived first, nothing to do for us
-    return;
+    return {};
   }
   TrapDomain trap{*trapTarget};
 
@@ -116,6 +145,7 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   for (auto& comment : comments) {
     visitor.extract(comment);
   }
+  return std::move(visitor).getEncounteredModules();
 }
 
 static std::unordered_set<std::string> collectInputFilenames(swift::CompilerInstance& compiler) {
@@ -132,40 +162,26 @@ static std::unordered_set<std::string> collectInputFilenames(swift::CompilerInst
   return sourceFiles;
 }
 
-static std::unordered_set<swift::ModuleDecl*> collectModules(swift::CompilerInstance& compiler) {
-  // getASTContext().getLoadedModules() does not provide all the modules available within the
-  // program.
-  // We need to iterate over all the imported modules (recursively) to see the whole "universe."
-  std::unordered_set<swift::ModuleDecl*> allModules;
-  std::queue<swift::ModuleDecl*> worklist;
-  for (auto& [_, module] : compiler.getASTContext().getLoadedModules()) {
-    worklist.push(module);
-    allModules.insert(module);
+static std::vector<swift::ModuleDecl*> collectLoadedModules(swift::CompilerInstance& compiler) {
+  std::vector<swift::ModuleDecl*> ret;
+  for (const auto& [id, module] : compiler.getASTContext().getLoadedModules()) {
+    std::ignore = id;
+    ret.push_back(module);
   }
-
-  while (!worklist.empty()) {
-    auto module = worklist.front();
-    worklist.pop();
-    llvm::SmallVector<swift::ImportedModule> importedModules;
-    // TODO: we may need more than just Exported ones
-    module->getImportedModules(importedModules, swift::ModuleDecl::ImportFilterKind::Exported);
-    for (auto& imported : importedModules) {
-      if (allModules.count(imported.importedModule) == 0) {
-        worklist.push(imported.importedModule);
-        allModules.insert(imported.importedModule);
-      }
-    }
-  }
-  return allModules;
+  return ret;
 }
 
 void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
                                swift::CompilerInstance& compiler) {
   auto inputFiles = collectInputFilenames(compiler);
-  auto modules = collectModules(compiler);
+  std::vector<swift::ModuleDecl*> todo = collectLoadedModules(compiler);
+  std::unordered_set<swift::ModuleDecl*> seen{todo.begin(), todo.end()};
 
-  for (auto& module : modules) {
+  while (!todo.empty()) {
+    auto module = todo.back();
+    todo.pop_back();
     bool isFromSourceFile = false;
+    std::unordered_set<swift::ModuleDecl*> encounteredModules;
     for (auto file : module->getFiles()) {
       auto sourceFile = llvm::dyn_cast<swift::SourceFile>(file);
       if (!sourceFile) {
@@ -176,10 +192,16 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
         continue;
       }
       archiveFile(config, *sourceFile);
-      extractDeclarations(config, compiler, *module, sourceFile);
+      encounteredModules = extractDeclarations(config, compiler, *module, sourceFile);
     }
     if (!isFromSourceFile) {
-      extractDeclarations(config, compiler, *module);
+      encounteredModules = extractDeclarations(config, compiler, *module);
+    }
+    for (auto encountered : encounteredModules) {
+      if (seen.count(encountered) == 0) {
+        todo.push_back(encountered);
+        seen.insert(encountered);
+      }
     }
   }
 }

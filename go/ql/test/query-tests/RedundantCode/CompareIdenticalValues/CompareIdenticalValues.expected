@@ -1,4 +1,4 @@
-| CompareIdenticalValues.go:9:3:9:8 | ...<=... | This expression compares $@ to itself. | CompareIdenticalValues.go:9:3:9:3 | y | an expression |
-| tst.go:6:9:6:14 | ...==... | This expression compares $@ to itself. | tst.go:6:9:6:9 | x | an expression |
-| tst.go:60:9:60:14 | ...==... | This expression compares $@ to itself. | tst.go:60:9:60:9 | y | an expression |
-| vp.go:16:9:16:38 | ...!=... | This expression compares $@ to itself. | vp.go:16:9:16:21 | call to GetLength | an expression |
+| CompareIdenticalValues.go:9:3:9:8 | ...<=... | This expression compares an $@ to itself. | CompareIdenticalValues.go:9:3:9:3 | y | expression |
+| tst.go:6:9:6:14 | ...==... | This expression compares an $@ to itself. | tst.go:6:9:6:9 | x | expression |
+| tst.go:60:9:60:14 | ...==... | This expression compares an $@ to itself. | tst.go:60:9:60:9 | y | expression |
+| vp.go:16:9:16:38 | ...!=... | This expression compares an $@ to itself. | vp.go:16:9:16:21 | call to GetLength | expression |

@@ -112,7 +112,7 @@ module ClientRequest {
   /**
    * Gets the name of an HTTP request method, in all-lowercase.
    */
-  private string httpMethodName() { result = any(HTTP::RequestMethodName m).toLowerCase() }
+  private string httpMethodName() { result = any(Http::RequestMethodName m).toLowerCase() }
 
   /**
    * Gets a model of an instance of the `request` library, or one of
@@ -270,16 +270,16 @@ module ClientRequest {
   }
 
   /** An expression that is used as a credential in a request. */
-  private class AuthorizationHeader extends CredentialsExpr {
+  private class AuthorizationHeader extends CredentialsNode {
     AuthorizationHeader() {
       exists(DataFlow::PropWrite write | write.getPropertyName().regexpMatch("(?i)authorization") |
-        this = write.getRhs().asExpr()
+        this = write.getRhs()
       )
       or
       exists(DataFlow::MethodCallNode call | call.getMethodName() = ["append", "set"] |
         call.getNumArgument() = 2 and
         call.getArgument(0).getStringValue().regexpMatch("(?i)authorization") and
-        this = call.getArgument(1).asExpr()
+        this = call.getArgument(1)
       )
     }
 
@@ -671,7 +671,7 @@ module ClientRequest {
     }
 
     /**
-     * Gets the response type corresponding to `getReponse()` but not
+     * Gets the response type corresponding to `getResponse()` but not
      * for explicitly typed calls like `getResponseJson()`.
      */
     string getAssignedResponseType() {
@@ -762,14 +762,12 @@ module ClientRequest {
   /**
    * A shell execution of `curl` that downloads some file.
    */
-  class CurlDownload extends ClientRequest::Range {
-    SystemCommandExecution cmd;
-
+  class CurlDownload extends ClientRequest::Range instanceof SystemCommandExecution {
     CurlDownload() {
-      this = cmd and
       (
-        cmd.getACommandArgument().getStringValue() = "curl" or
-        cmd.getACommandArgument()
+        super.getACommandArgument().getStringValue() = "curl" or
+        super
+            .getACommandArgument()
             .(StringOps::ConcatenationRoot)
             .getConstantStringParts()
             .matches("curl %")
@@ -777,8 +775,8 @@ module ClientRequest {
     }
 
     override DataFlow::Node getUrl() {
-      result = cmd.getArgumentList().getALocalSource().getAPropertyWrite().getRhs() or
-      result = cmd.getACommandArgument().(StringOps::ConcatenationRoot).getALeaf()
+      result = super.getArgumentList().getALocalSource().getAPropertyWrite().getRhs() or
+      result = super.getACommandArgument().(StringOps::ConcatenationRoot).getALeaf()
     }
 
     override DataFlow::Node getHost() { none() }

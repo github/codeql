@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.Location
 
-class DbLocationBase extends Synth::TDbLocation, Location {
-  override string getAPrimaryQlClass() { result = "DbLocation" }
+module Generated {
+  class DbLocation extends Synth::TDbLocation, Location {
+    override string getAPrimaryQlClass() { result = "DbLocation" }
+  }
 }

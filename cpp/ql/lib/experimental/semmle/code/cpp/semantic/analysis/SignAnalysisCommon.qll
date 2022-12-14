@@ -33,23 +33,15 @@ abstract private class FlowSignDef extends SignDef {
 }
 
 /** An SSA definition whose sign is determined by the sign of that definitions source expression. */
-private class ExplicitSignDef extends FlowSignDef {
-  SemSsaExplicitUpdate update;
-
-  ExplicitSignDef() { update = this }
-
-  final override Sign getSign() { result = semExprSign(update.getSourceExpr()) }
+private class ExplicitSignDef extends FlowSignDef instanceof SemSsaExplicitUpdate {
+  final override Sign getSign() { result = semExprSign(super.getSourceExpr()) }
 }
 
 /** An SSA Phi definition, whose sign is the union of the signs of its inputs. */
-private class PhiSignDef extends FlowSignDef {
-  SemSsaPhiNode phi;
-
-  PhiSignDef() { phi = this }
-
+private class PhiSignDef extends FlowSignDef instanceof SemSsaPhiNode {
   final override Sign getSign() {
     exists(SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge |
-      edge.phiInput(phi, inp) and
+      edge.phiInput(this, inp) and
       result = semSsaSign(inp, edge)
     )
   }
@@ -71,7 +63,7 @@ abstract class CustomSignDef extends SignDef {
  * Concrete implementations extend one of the following subclasses:
  * - `ConstantSignExpr`, for expressions with a compile-time constant value.
  * - `FlowSignExpr`, for expressions whose sign can be computed from the signs of their operands.
- * - `CustomsignExpr`, for expressions shose sign can be computed by a language-specific
+ * - `CustomsignExpr`, for expressions whose sign can be computed by a language-specific
  *   implementation.
  *
  * If the same expression matches more than one of the above subclasses, the sign is computed as
@@ -204,6 +196,7 @@ private class BinarySignExpr extends FlowSignExpr {
   }
 }
 
+pragma[nomagic]
 private predicate binaryExprOperands(SemBinaryExpr binary, SemExpr left, SemExpr right) {
   binary.getLeftOperand() = left and binary.getRightOperand() = right
 }

@@ -830,7 +830,7 @@ public class FlowParser extends ESNextParser {
 
   /** Should Flow syntax be allowed? */
   private boolean flow() {
-    return options.esnext();
+    return options.allowFlowTypes();
   }
 
   @Override

@@ -52,7 +52,7 @@ module ConnectExpressShared {
   /**
    * Holds if `function` appears to match the given signature based on parameter naming.
    */
-  private predicate matchesSignature(Function function, RouteHandlerSignature sig) {
+  private predicate matchesSignature(DataFlow::FunctionNode function, RouteHandlerSignature sig) {
     function.getNumParameter() = sig.getArity() and
     function.getParameter(sig.getParameterIndex("request")).getName() = ["req", "request"] and
     function.getParameter(sig.getParameterIndex("response")).getName() = ["res", "response"] and
@@ -71,8 +71,8 @@ module ConnectExpressShared {
    * so the caller should restrict the function accordingly.
    */
   pragma[inline]
-  private Parameter getRouteHandlerParameter(
-    Function routeHandler, RouteHandlerSignature sig, string kind
+  private DataFlow::ParameterNode getRouteHandlerParameter(
+    DataFlow::FunctionNode routeHandler, RouteHandlerSignature sig, string kind
   ) {
     result = routeHandler.getParameter(sig.getParameterIndex(kind))
   }
@@ -83,7 +83,9 @@ module ConnectExpressShared {
    * `kind` is one of: "error", "request", "response", "next".
    */
   pragma[inline]
-  Parameter getRouteParameterHandlerParameter(Function routeHandler, string kind) {
+  DataFlow::ParameterNode getRouteParameterHandlerParameter(
+    DataFlow::FunctionNode routeHandler, string kind
+  ) {
     result =
       getRouteHandlerParameter(routeHandler, RouteHandlerSignature::requestResponseNextParameter(),
         kind)
@@ -95,7 +97,7 @@ module ConnectExpressShared {
    * `kind` is one of: "error", "request", "response", "next".
    */
   pragma[inline]
-  Parameter getRouteHandlerParameter(Function routeHandler, string kind) {
+  DataFlow::ParameterNode getRouteHandlerParameter(DataFlow::FunctionNode routeHandler, string kind) {
     if routeHandler.getNumParameter() = 4
     then
       // For arity 4 there is ambiguity between (err, req, res, next) and (req, res, next, param)
@@ -113,9 +115,9 @@ module ConnectExpressShared {
    *
    * For example, this could be the function `function(req, res, next){...}`.
    */
-  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate {
+  class RouteHandlerCandidate extends Http::RouteHandlerCandidate {
     RouteHandlerCandidate() {
-      matchesSignature(astNode, _) and
+      matchesSignature(this, _) and
       not (
         // heuristic: not a class method (the server invokes this with a function call)
         astNode = any(MethodDefinition def).getBody()

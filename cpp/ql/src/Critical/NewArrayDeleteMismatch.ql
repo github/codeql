@@ -14,4 +14,4 @@ from Expr alloc, Expr free, Expr freed
 where
   allocReaches(freed, alloc, "new[]") and
   freeExprOrIndirect(free, freed, "delete")
-select free, "This memory may have been allocated with '$@', not 'new'.", alloc, "new[]"
+select free, "This memory may have been allocated with $@, not 'new'.", alloc, "new[]"

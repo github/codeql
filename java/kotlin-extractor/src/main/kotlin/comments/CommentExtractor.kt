@@ -2,11 +2,18 @@ package com.github.codeql.comments
 
 import com.github.codeql.*
 import com.github.codeql.utils.IrVisitorLookup
-import com.github.codeql.utils.versions.Psi2Ir
+import com.github.codeql.utils.isLocalFunction
+import com.github.codeql.utils.versions.getPsi2Ir
+import com.github.codeql.utils.versions.Psi2IrFacade
 import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.expressions.IrBody
+import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.util.isAnonymousObject
+import org.jetbrains.kotlin.ir.util.parentClassOrNull
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtVisitor
@@ -16,18 +23,23 @@ import org.jetbrains.kotlin.psi.psiUtil.startOffset
 class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private val file: IrFile, private val fileLabel: Label<out DbFile>) {
     private val tw = fileExtractor.tw
     private val logger = fileExtractor.logger
-    private val psi2Ir = Psi2Ir(logger)
-    private val ktFile = psi2Ir.getKtFile(file)
 
     fun extract() {
+        val psi2Ir = getPsi2Ir()
+        if (psi2Ir == null) {
+            logger.warn("Comments will not be extracted as Kotlin version is too old (${KotlinCompilerVersion.getVersion()})")
+            return
+        }
+        val ktFile = psi2Ir.getKtFile(file)
         if (ktFile == null) {
             logger.warn("Comments are not being processed in ${file.path}.")
-        } else {
-            ktFile.accept(commentVisitor)
+            return
         }
+        val commentVisitor = mkCommentVisitor(psi2Ir)
+        ktFile.accept(commentVisitor)
     }
 
-    private val commentVisitor =
+    private fun mkCommentVisitor(psi2Ir: Psi2IrFacade): KtVisitor<Unit, Unit> =
         object : KtVisitor<Unit, Unit>() {
             override fun visitElement(element: PsiElement) {
                 element.acceptChildren(this)
@@ -89,38 +101,87 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                 file.accept(IrVisitorLookup(psi2Ir, ownerPsi, file), owners)
 
                 for (ownerIr in owners) {
-                    val ownerLabel =
-                        if (ownerIr == file)
-                            fileLabel
-                        else {
-                            if (ownerIr is IrValueParameter && ownerIr.index == -1) {
-                                // Don't attribute comments to the implicit `this` parameter of a function.
-                                continue
-                            }
-                            val label: String
-                            val existingLabel = if (ownerIr is IrVariable) {
-                                label = "variable ${ownerIr.name.asString()}"
-                                tw.getExistingVariableLabelFor(ownerIr)
-                            } else {
-                                label = fileExtractor.getLabel(ownerIr) ?: continue
-                                tw.getExistingLabelFor<DbTop>(label)
-                            }
-                            if (existingLabel == null) {
-                                logger.warn("Couldn't get existing label for $label")
-                                continue
-                            }
-                            existingLabel
-                        }
-                    tw.writeKtCommentOwners(commentLabel, ownerLabel)
+                    val ownerLabel = getLabel(ownerIr)
+                    if (ownerLabel != null) {
+                        tw.writeKtCommentOwners(commentLabel, ownerLabel)
+                    }
                 }
             }
 
             private fun getKDocOwner(comment: KDoc) : PsiElement? {
                 val owner = comment.owner
                 if (owner == null) {
-                    logger.warn("Couldn't get owner of KDoc.")
+                    logger.warn("Couldn't get owner of KDoc. The comment is extracted without an owner.")
                 }
                 return owner
             }
+
+            private fun getLabel(element: IrElement): Label<out DbTop>? {
+                if (element == file)
+                    return fileLabel
+
+                if (element is IrValueParameter && element.index == -1) {
+                    // Don't attribute comments to the implicit `this` parameter of a function.
+                    return null
+                }
+
+                val label: String
+                val existingLabel = if (element is IrVariable) {
+                    // local variables are not named globally, so we need to get them from the variable label cache
+                    label = "variable ${element.name.asString()}"
+                    tw.getExistingVariableLabelFor(element)
+                } else if (element is IrFunction && element.isLocalFunction()) {
+                    // local functions are not named globally, so we need to get them from the local function label cache
+                    label = "local function ${element.name.asString()}"
+                    fileExtractor.getExistingLocallyVisibleFunctionLabel(element)
+                } else {
+                    label = getLabelForNamedElement(element) ?: return null
+                    tw.getExistingLabelFor<DbTop>(label)
+                }
+                if (existingLabel == null) {
+                    logger.warn("Couldn't get existing label for $label")
+                    return null
+                }
+                return existingLabel
+            }
+
+            private fun getLabelForNamedElement(element: IrElement) : String? {
+                when (element) {
+                    is IrClass -> return fileExtractor.getClassLabel(element, listOf()).classLabel
+                    is IrTypeParameter -> return fileExtractor.getTypeParameterLabel(element)
+                    is IrFunction -> {
+                        return if (element.isLocalFunction()) {
+                            null
+                        } else {
+                            fileExtractor.getFunctionLabel(element, null)
+                        }
+                    }
+                    is IrValueParameter -> return fileExtractor.getValueParameterLabel(element, null)
+                    is IrProperty -> return fileExtractor.getPropertyLabel(element)
+                    is IrField -> return fileExtractor.getFieldLabel(element)
+                    is IrEnumEntry -> return fileExtractor.getEnumEntryLabel(element)
+                    is IrTypeAlias -> return fileExtractor.getTypeAliasLabel(element)
+
+                    is IrAnonymousInitializer -> {
+                        val parentClass = element.parentClassOrNull
+                        if (parentClass == null) {
+                            logger.warnElement("Parent of anonymous initializer is not a class", element)
+                            return null
+                        }
+                        // Assign the comment to the class. The content of the `init` blocks might be extracted in multiple constructors.
+                        return getLabelForNamedElement(parentClass)
+                    }
+
+                    // Fresh entities, not named elements:
+                    is IrBody -> return null
+                    is IrExpression -> return null
+
+                    // todo add others:
+                    else -> {
+                        logger.warnElement("Unhandled element type found during comment extraction: ${element::class}", element)
+                        return null
+                    }
+                }
         }
+    }
 }

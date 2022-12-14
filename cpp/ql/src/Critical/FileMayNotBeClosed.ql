@@ -164,4 +164,4 @@ where
     fopenVariableReaches(v, def, ret) and
     ret.getAChild*() = v.getAnAccess()
   )
-select def, "The file opened here may not be closed at $@.", ret, "this exit point"
+select def, "This file may not be closed at $@.", ret, "this exit point"

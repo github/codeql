@@ -1,6 +1,6 @@
 private import codeql.swift.generated.stmt.StmtCondition
 
-class StmtCondition extends StmtConditionBase {
+class StmtCondition extends Generated::StmtCondition {
   ConditionElement getFirstElement() { result = this.getElement(0) }
 
   ConditionElement getLastElement() {

@@ -3,21 +3,41 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.Stmt
 
-class BreakStmtBase extends Synth::TBreakStmt, Stmt {
-  override string getAPrimaryQlClass() { result = "BreakStmt" }
+module Generated {
+  class BreakStmt extends Synth::TBreakStmt, Stmt {
+    override string getAPrimaryQlClass() { result = "BreakStmt" }
 
-  string getTargetName() {
-    result = Synth::convertBreakStmtToRaw(this).(Raw::BreakStmt).getTargetName()
+    /**
+     * Gets the target name of this break statement, if it exists.
+     */
+    string getTargetName() {
+      result = Synth::convertBreakStmtToRaw(this).(Raw::BreakStmt).getTargetName()
+    }
+
+    /**
+     * Holds if `getTargetName()` exists.
+     */
+    final predicate hasTargetName() { exists(getTargetName()) }
+
+    /**
+     * Gets the target of this break statement, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Stmt getImmediateTarget() {
+      result =
+        Synth::convertStmtFromRaw(Synth::convertBreakStmtToRaw(this).(Raw::BreakStmt).getTarget())
+    }
+
+    /**
+     * Gets the target of this break statement, if it exists.
+     */
+    final Stmt getTarget() { result = getImmediateTarget().resolve() }
+
+    /**
+     * Holds if `getTarget()` exists.
+     */
+    final predicate hasTarget() { exists(getTarget()) }
   }
-
-  final predicate hasTargetName() { exists(getTargetName()) }
-
-  Stmt getImmediateTarget() {
-    result =
-      Synth::convertStmtFromRaw(Synth::convertBreakStmtToRaw(this).(Raw::BreakStmt).getTarget())
-  }
-
-  final Stmt getTarget() { result = getImmediateTarget().resolve() }
-
-  final predicate hasTarget() { exists(getTarget()) }
 }

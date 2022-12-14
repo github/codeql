@@ -29,3 +29,5 @@ overlapsWithClass2 = /[\w,.-?:*+]/ # NOT OK
 escapes = /[\000-\037\047\134\177-\377]/n # OK - they are escapes
 
 nested = /[a-z&&[^a-c]]/ # OK
+
+overlapsWithNothing = /[\w_%-.]/;

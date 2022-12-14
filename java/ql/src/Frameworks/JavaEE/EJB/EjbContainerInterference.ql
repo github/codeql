@@ -7,7 +7,6 @@
  *              Such operations could interfere with the EJB container's operation.
  * @kind problem
  * @problem.severity error
- * @security-severity 5.8
  * @precision low
  * @id java/ejb/container-interference
  * @tags reliability

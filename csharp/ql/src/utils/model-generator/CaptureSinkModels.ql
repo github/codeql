@@ -6,8 +6,12 @@
  * @tags model-generator
  */
 
-private import internal.CaptureModels
+import utils.modelgenerator.internal.CaptureModels
 
-from TargetApi api, string sink
+class Activate extends ActiveConfiguration {
+  override predicate activateToSinkConfig() { any() }
+}
+
+from DataFlowTargetApi api, string sink
 where sink = captureSink(api)
 select sink order by sink

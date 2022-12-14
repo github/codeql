@@ -55,5 +55,4 @@ class DivideByZeroCheckConfig extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, DivideByZeroCheckConfig cfg
 where cfg.hasFlowPath(source, sink)
-select sink, source, sink, "Variable $@ might be zero leading to a division-by-zero panic.", sink,
-  sink.getNode().toString()
+select sink, source, sink, "This variable might be zero leading to a division-by-zero panic."

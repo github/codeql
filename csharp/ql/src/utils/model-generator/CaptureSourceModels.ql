@@ -6,8 +6,12 @@
  * @tags model-generator
  */
 
-private import internal.CaptureModels
+import utils.modelgenerator.internal.CaptureModels
 
-from TargetApi api, string source
+class Activate extends ActiveConfiguration {
+  override predicate activateFromSourceConfig() { any() }
+}
+
+from DataFlowTargetApi api, string source
 where source = captureSource(api)
 select source order by source

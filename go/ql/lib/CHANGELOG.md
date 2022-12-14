@@ -1,3 +1,43 @@
+## 0.3.5
+
+No user-facing changes.
+
+## 0.3.4
+
+No user-facing changes.
+
+## 0.3.3
+
+No user-facing changes.
+
+## 0.3.2
+
+No user-facing changes.
+
+## 0.3.1
+
+### Minor Analysis Improvements
+
+* Added support for `BeegoInput.RequestBody` as a source of untrusted data.
+
+## 0.3.0
+
+### Deprecated APIs
+
+* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+## 0.2.5
+
+## 0.2.4
+
+### Minor Analysis Improvements
+
+* Go 1.19 is now supported, including adding new taint propagation steps for new standard-library functions introduced in this release.
+* Most deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
+* Fixed data-flow to captured variable references.
+* We now assume that if a channel-typed field is only referred to twice in the user codebase, once in a send operation and once in a receive, then data flows from the send to the receive statement. This enables finding some cross-goroutine flow.
+
 ## 0.2.3
 
 ## 0.2.2

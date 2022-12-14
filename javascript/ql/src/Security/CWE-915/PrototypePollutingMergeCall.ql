@@ -28,5 +28,5 @@ where
   cfg.hasFlowPath(source, sink) and
   sink.getNode().(Sink).dependencyInfo(moduleName, dependencyLoc)
 select sink.getNode(), source, sink,
-  "Prototype pollution caused by merging a user-controlled value from $@ using a vulnerable version of $@.",
-  source, "here", dependencyLoc, moduleName
+  "Prototype pollution caused by merging a $@ using a vulnerable version of $@.", source,
+  "user-controlled value", dependencyLoc, moduleName

@@ -1,10 +1,18 @@
 edges
-| ServerSideRequestForgery.rb:9:32:9:37 | call to params :  | ServerSideRequestForgery.rb:9:32:9:60 | ...[...] :  |
-| ServerSideRequestForgery.rb:9:32:9:60 | ...[...] :  | ServerSideRequestForgery.rb:10:31:10:62 | "#{...}/logins" |
+| ServerSideRequestForgery.rb:10:32:10:37 | call to params :  | ServerSideRequestForgery.rb:10:32:10:60 | ...[...] :  |
+| ServerSideRequestForgery.rb:10:32:10:60 | ...[...] :  | ServerSideRequestForgery.rb:11:31:11:62 | "#{...}/logins" |
+| ServerSideRequestForgery.rb:15:33:15:38 | call to params :  | ServerSideRequestForgery.rb:15:33:15:44 | ...[...] |
+| ServerSideRequestForgery.rb:20:45:20:50 | call to params :  | ServerSideRequestForgery.rb:20:45:20:56 | ...[...] |
 nodes
-| ServerSideRequestForgery.rb:9:32:9:37 | call to params :  | semmle.label | call to params :  |
-| ServerSideRequestForgery.rb:9:32:9:60 | ...[...] :  | semmle.label | ...[...] :  |
-| ServerSideRequestForgery.rb:10:31:10:62 | "#{...}/logins" | semmle.label | "#{...}/logins" |
+| ServerSideRequestForgery.rb:10:32:10:37 | call to params :  | semmle.label | call to params :  |
+| ServerSideRequestForgery.rb:10:32:10:60 | ...[...] :  | semmle.label | ...[...] :  |
+| ServerSideRequestForgery.rb:11:31:11:62 | "#{...}/logins" | semmle.label | "#{...}/logins" |
+| ServerSideRequestForgery.rb:15:33:15:38 | call to params :  | semmle.label | call to params :  |
+| ServerSideRequestForgery.rb:15:33:15:44 | ...[...] | semmle.label | ...[...] |
+| ServerSideRequestForgery.rb:20:45:20:50 | call to params :  | semmle.label | call to params :  |
+| ServerSideRequestForgery.rb:20:45:20:56 | ...[...] | semmle.label | ...[...] |
 subpaths
 #select
-| ServerSideRequestForgery.rb:10:31:10:62 | "#{...}/logins" | ServerSideRequestForgery.rb:9:32:9:37 | call to params :  | ServerSideRequestForgery.rb:10:31:10:62 | "#{...}/logins" | The URL of this request depends on $@. | ServerSideRequestForgery.rb:9:32:9:37 | call to params | a user-provided value |
+| ServerSideRequestForgery.rb:11:31:11:62 | "#{...}/logins" | ServerSideRequestForgery.rb:10:32:10:37 | call to params :  | ServerSideRequestForgery.rb:11:31:11:62 | "#{...}/logins" | The URL of this request depends on a $@. | ServerSideRequestForgery.rb:10:32:10:37 | call to params | user-provided value |
+| ServerSideRequestForgery.rb:15:33:15:44 | ...[...] | ServerSideRequestForgery.rb:15:33:15:38 | call to params :  | ServerSideRequestForgery.rb:15:33:15:44 | ...[...] | The URL of this request depends on a $@. | ServerSideRequestForgery.rb:15:33:15:38 | call to params | user-provided value |
+| ServerSideRequestForgery.rb:20:45:20:56 | ...[...] | ServerSideRequestForgery.rb:20:45:20:50 | call to params :  | ServerSideRequestForgery.rb:20:45:20:56 | ...[...] | The URL of this request depends on a $@. | ServerSideRequestForgery.rb:20:45:20:50 | call to params | user-provided value |

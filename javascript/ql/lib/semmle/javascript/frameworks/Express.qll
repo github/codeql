@@ -40,31 +40,27 @@ module Express {
     )
   }
 
-  /**
-   * Holds if `e` may refer to the given `router` object.
-   */
-  private predicate isRouter(Expr e, RouterDefinition router) { router.flowsTo(e) }
+  /** Holds if `e` may refer to the given `router` object. */
+  private predicate isRouter(DataFlow::Node e, RouterDefinition router) { router.ref().flowsTo(e) }
 
   /**
    * Holds if `e` may refer to a router object.
    */
-  private predicate isRouter(Expr e) {
+  private predicate isRouter(DataFlow::Node e) {
     isRouter(e, _)
     or
-    e.getType().hasUnderlyingType("express", "Router")
+    e.asExpr().getType().hasUnderlyingType("express", "Router")
     or
     // created by `webpack-dev-server`
-    WebpackDevServer::webpackDevServerApp().flowsToExpr(e)
+    WebpackDevServer::webpackDevServerApp().flowsTo(e)
   }
 
   /**
+   * DEPRECATED: Use `RouterDefinition.ref()` or `RouteSetup` instead.
    * An expression that refers to a route.
    */
-  class RouteExpr extends MethodCallExpr {
-    RouteExpr() { isRouter(this) }
-
-    /** Gets the router from which this route was created, if it is known. */
-    RouterDefinition getRouter() { isRouter(this, result) }
+  deprecated class RouteExpr extends MethodCallExpr {
+    RouteExpr() { isRouter(this.flow()) }
   }
 
   /**
@@ -74,29 +70,23 @@ module Express {
     result = "param" or
     result = "all" or
     result = "use" or
-    result = any(HTTP::RequestMethodName m).toLowerCase() or
+    result = any(Http::RequestMethodName m).toLowerCase() or
     // deprecated methods
     result = "error" or
     result = "del"
   }
 
-  private class RouterRange extends Routing::Router::Range {
-    RouterDefinition def;
-
-    RouterRange() { this = def.flow() }
-
-    override DataFlow::SourceNode getAReference() { result = def.ref() }
+  private class RouterRange extends Routing::Router::Range instanceof RouterDefinition {
+    override DataFlow::SourceNode getAReference() { result = super.ref() }
   }
 
-  private class RoutingTreeSetup extends Routing::RouteSetup::MethodCall {
-    RoutingTreeSetup() { this.asExpr() instanceof RouteSetup }
-
+  private class RoutingTreeSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup {
     override string getRelativePath() {
       not this.getMethodName() = "param" and // do not treat parameter name as a path
       result = this.getArgument(0).getStringValue()
     }
 
-    override HTTP::RequestMethodName getHttpMethod() { result.toLowerCase() = this.getMethodName() }
+    override Http::RequestMethodName getHttpMethod() { result.toLowerCase() = this.getMethodName() }
   }
 
   /**
@@ -140,7 +130,7 @@ module Express {
   /**
    * A call to an Express router method that sets up a route.
    */
-  class RouteSetup extends HTTP::Servers::StandardRouteSetup, MethodCallExpr {
+  class RouteSetup extends Http::Servers::StandardRouteSetup, DataFlow::MethodCallNode {
     RouteSetup() {
       isRouter(this.getReceiver()) and
       this.getMethodName() = routeSetupMethodName()
@@ -156,12 +146,23 @@ module Express {
     predicate isUseCall() { this.getMethodName() = "use" }
 
     /**
+     * DEPRECATED: Use `getRouteHandlerNode` instead.
      * Gets the `n`th handler registered by this setup, with 0 being the first.
      *
      * This differs from `getARouteHandler` in that the argument expression is
      * returned, not its dataflow source.
      */
-    Expr getRouteHandlerExpr(int index) {
+    deprecated Expr getRouteHandlerExpr(int index) {
+      result = this.getRouteHandlerNode(index).asExpr()
+    }
+
+    /**
+     * Gets the `n`th handler registered by this setup, with 0 being the first.
+     *
+     * This differs from `getARouteHandler` in that the argument expression is
+     * returned, not its dataflow source.
+     */
+    DataFlow::Node getRouteHandlerNode(int index) {
       // The first argument is a URI pattern if it is a string. If it could possibly be
       // a function, we consider it to be a route handler, otherwise a URI pattern.
       exists(AnalyzedNode firstArg | firstArg = this.getArgument(0).analyze() |
@@ -173,12 +174,30 @@ module Express {
       )
     }
 
-    /** Gets an argument that represents a route handler being registered. */
-    Expr getARouteHandlerExpr() { result = this.getRouteHandlerExpr(_) }
+    /**
+     * DEPRECATED: Use `getARouteHandlerNode` instead.
+     * Gets an argument that represents a route handler being registered.
+     */
+    deprecated Expr getARouteHandlerExpr() { result = this.getRouteHandlerExpr(_) }
 
-    /** Gets the last argument representing a route handler being registered. */
-    Expr getLastRouteHandlerExpr() {
+    /**
+     * Gets an argument that represents a route handler being registered.
+     */
+    DataFlow::Node getARouteHandlerNode() { result = this.getRouteHandlerNode(_) }
+
+    /**
+     * DEPRECATED: Use `getLastRouteHandlerExpr` instead.
+     * Gets the last argument representing a route handler being registered.
+     */
+    deprecated Expr getLastRouteHandlerExpr() {
       result = max(int i | | this.getRouteHandlerExpr(i) order by i)
+    }
+
+    /**
+     * Gets the last argument representing a route handler being registered.
+     */
+    DataFlow::Node getLastRouteHandlerNode() {
+      result = max(int i | | this.getRouteHandlerNode(i) order by i)
     }
 
     override DataFlow::SourceNode getARouteHandler() {
@@ -187,26 +206,28 @@ module Express {
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = this.getARouteHandlerExpr().flow().getALocalSource()
+      result = this.getARouteHandlerNode().getALocalSource()
       or
       exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ |
         succ = this.getARouteHandler(t2)
       |
         result = succ.backtrack(t2, t)
         or
-        HTTP::routeHandlerStep(result, succ) and
+        Http::routeHandlerStep(result, succ) and
         t = t2
       )
     }
 
-    override Expr getServer() { result.(Application).getARouteHandler() = this.getARouteHandler() }
+    override DataFlow::Node getServer() {
+      result.(Application).getARouteHandler() = this.getARouteHandler()
+    }
 
     /**
      * Gets the HTTP request type this is registered for, if any.
      *
      * Has no result for `use`, `all`, or `param` calls.
      */
-    HTTP::RequestMethodName getRequestMethod() { result.toLowerCase() = this.getMethodName() }
+    Http::RequestMethodName getRequestMethod() { result.toLowerCase() = this.getMethodName() }
 
     /**
      * Holds if this registers a route for all request methods.
@@ -233,16 +254,16 @@ module Express {
   /**
    * A call that sets up a Passport router that includes the request object.
    */
-  private class PassportRouteSetup extends HTTP::Servers::StandardRouteSetup, CallExpr {
+  private class PassportRouteSetup extends Http::Servers::StandardRouteSetup, DataFlow::CallNode {
     DataFlow::ModuleImportNode importNode;
     DataFlow::FunctionNode callback;
 
     // looks for this pattern: passport.use(new Strategy({passReqToCallback: true}, callback))
     PassportRouteSetup() {
       importNode = DataFlow::moduleImport("passport") and
-      this = importNode.getAMemberCall("use").asExpr() and
+      this = importNode.getAMemberCall("use") and
       exists(DataFlow::NewNode strategy |
-        strategy.flowsToExpr(this.getArgument(0)) and
+        strategy.flowsTo(this.getArgument(0)) and
         strategy.getNumArgument() = 2 and
         // new Strategy({passReqToCallback: true}, ...)
         strategy.getOptionArgument(0, "passReqToCallback").mayHaveBooleanValue(true) and
@@ -250,7 +271,7 @@ module Express {
       )
     }
 
-    override Expr getServer() { result = importNode.asExpr() }
+    override DataFlow::Node getServer() { result = importNode }
 
     override DataFlow::SourceNode getARouteHandler() { result = callback }
   }
@@ -258,16 +279,60 @@ module Express {
   /**
    * The callback given to passport in PassportRouteSetup.
    */
-  private class PassportRouteHandler extends RouteHandler, HTTP::Servers::StandardRouteHandler,
-    DataFlow::ValueNode {
-    override Function astNode;
-
+  private class PassportRouteHandler extends RouteHandler, Http::Servers::StandardRouteHandler,
+    DataFlow::FunctionNode {
     PassportRouteHandler() { this = any(PassportRouteSetup setup).getARouteHandler() }
 
-    override Parameter getRouteHandlerParameter(string kind) {
+    override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
       kind = "request" and
-      result = astNode.getParameter(0)
+      result = this.getParameter(0)
     }
+  }
+
+  /**
+   * DEPRECATED: Use `RouteHandlerNode` instead.
+   * An expression used as an Express route handler, such as `submitHandler` below:
+   * ```
+   * app.post('/submit', submitHandler)
+   * ```
+   *
+   * Unlike `RouterHandler`, this is the argument passed to a setup, as opposed to
+   * a function that flows into such an argument.
+   */
+  deprecated class RouteHandlerExpr extends Expr {
+    RouteHandlerNode node;
+
+    RouteHandlerExpr() { this.flow() = node }
+
+    /** Gets the setup call that registers this route handler. */
+    deprecated RouteSetup getSetup() { result = node.getSetup() }
+
+    /** Gets the function body of this handler, if it is defined locally. */
+    deprecated RouteHandler getBody() { result = node.getBody() }
+
+    /** Holds if this is not followed by more handlers. */
+    deprecated predicate isLastHandler() { node.isLastHandler() }
+
+    /** Gets a route handler that immediately precedes this in the route stack. */
+    deprecated Express::RouteHandlerExpr getPreviousMiddleware() {
+      result = node.getPreviousMiddleware().asExpr()
+    }
+
+    /** Gets a route handler that may follow immediately after this one in its route stack. */
+    deprecated Express::RouteHandlerExpr getNextMiddleware() {
+      result = node.getNextMiddleware().asExpr()
+    }
+
+    /**
+     * Gets a route handler that precedes this one (not necessarily immediately), may handle
+     * same request method, and matches on the same path or a prefix.
+     */
+    deprecated Express::RouteHandlerExpr getAMatchingAncestor() {
+      result = node.getAMatchingAncestor().asExpr()
+    }
+
+    /** Gets the router being registered as a sub-router here, if any. */
+    deprecated RouterDefinition getAsSubRouter() { result = node.getAsSubRouter() }
   }
 
   /**
@@ -279,11 +344,11 @@ module Express {
    * Unlike `RouterHandler`, this is the argument passed to a setup, as opposed to
    * a function that flows into such an argument.
    */
-  class RouteHandlerExpr extends Expr {
+  class RouteHandlerNode extends DataFlow::Node {
     RouteSetup setup;
     int index;
 
-    RouteHandlerExpr() { this = setup.getRouteHandlerExpr(index) }
+    RouteHandlerNode() { this = setup.getRouteHandlerNode(index) }
 
     /**
      * Gets the setup call that registers this route handler.
@@ -294,7 +359,7 @@ module Express {
      * Gets the function body of this handler, if it is defined locally.
      */
     RouteHandler getBody() {
-      exists(DataFlow::SourceNode source | source = this.flow().getALocalSource() |
+      exists(DataFlow::SourceNode source | source = this.getALocalSource() |
         result = source
         or
         DataFlow::functionOneWayForwardingStep(result.(DataFlow::SourceNode).getALocalUse(), source)
@@ -306,7 +371,7 @@ module Express {
      */
     predicate isLastHandler() {
       not setup.isUseCall() and
-      not exists(setup.getRouteHandlerExpr(index + 1))
+      not exists(setup.getRouteHandlerNode(index + 1))
     }
 
     /**
@@ -331,10 +396,11 @@ module Express {
      * In this case, the previous from `foo` is `auth` although they do not act on the
      * same requests.
      */
-    Express::RouteHandlerExpr getPreviousMiddleware() {
-      index = 0 and result = setup.getRouter().getMiddlewareStackAt(setup.getAPredecessor())
+    Express::RouteHandlerNode getPreviousMiddleware() {
+      index = 0 and
+      result = setup.getRouter().getMiddlewareStackAt(setup.asExpr().getAPredecessor())
       or
-      index > 0 and result = setup.getRouteHandlerExpr(index - 1)
+      index > 0 and result = setup.getRouteHandlerNode(index - 1)
       or
       // Outside the router's original container, use the flow-insensitive model of its middleware stack.
       // Its state is not tracked to CFG nodes outside its original container.
@@ -348,7 +414,7 @@ module Express {
     /**
      * Gets a route handler that may follow immediately after this one in its route stack.
      */
-    Express::RouteHandlerExpr getNextMiddleware() { result.getPreviousMiddleware() = this }
+    Express::RouteHandlerNode getNextMiddleware() { result.getPreviousMiddleware() = this }
 
     /**
      * Gets a route handler that precedes this one (not necessarily immediately), may handle
@@ -361,7 +427,7 @@ module Express {
      * router installs a route handler `r1` on a path that matches the path of a route handler
      * `r2` installed on a subrouter, `r1` will not be recognized as an ancestor of `r2`.
      */
-    Express::RouteHandlerExpr getAMatchingAncestor() {
+    Express::RouteHandlerNode getAMatchingAncestor() {
       result = this.getPreviousMiddleware+() and
       exists(RouteSetup resSetup | resSetup = result.getSetup() |
         // check whether request methods are compatible
@@ -378,7 +444,7 @@ module Express {
       or
       // if this is a sub-router, any previously installed middleware for the same
       // request method will necessarily match
-      exists(RouteHandlerExpr outer |
+      exists(RouteHandlerNode outer |
         setup.getRouter() = outer.getAsSubRouter() and
         outer.getSetup().handlesSameRequestMethodAs(setup) and
         result = outer.getAMatchingAncestor()
@@ -398,52 +464,57 @@ module Express {
    * but support for other kinds of route handlers can be added by implementing
    * additional subclasses of this class.
    */
-  abstract class RouteHandler extends HTTP::RouteHandler {
+  abstract class RouteHandler extends Http::RouteHandler {
     /**
      * Gets the parameter of kind `kind` of this route handler.
      *
      * `kind` is one of: "error", "request", "response", "next", or "parameter".
      */
-    abstract Parameter getRouteHandlerParameter(string kind);
+    abstract DataFlow::ParameterNode getRouteHandlerParameter(string kind);
 
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    Parameter getRequestParameter() { result = this.getRouteHandlerParameter("request") }
+    DataFlow::ParameterNode getRequestParameter() {
+      result = this.getRouteHandlerParameter("request")
+    }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    Parameter getResponseParameter() { result = this.getRouteHandlerParameter("response") }
+    DataFlow::ParameterNode getResponseParameter() {
+      result = this.getRouteHandlerParameter("response")
+    }
 
     /**
      * Gets a request body access of this handler.
      */
-    Expr getARequestBodyAccess() { result.(PropAccess).accesses(this.getARequestExpr(), "body") }
+    DataFlow::PropRead getARequestBodyAccess() { result.accesses(this.getARequestNode(), "body") }
   }
 
   /**
    * An Express route handler installed by a route setup.
    */
-  class StandardRouteHandler extends RouteHandler, HTTP::Servers::StandardRouteHandler,
-    DataFlow::ValueNode {
-    override Function astNode;
+  class StandardRouteHandler extends RouteHandler, Http::Servers::StandardRouteHandler,
+    DataFlow::FunctionNode {
     RouteSetup routeSetup;
 
     StandardRouteHandler() { this = routeSetup.getARouteHandler() }
 
-    override Parameter getRouteHandlerParameter(string kind) {
+    override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
       if routeSetup.isParameterHandler()
-      then result = getRouteParameterHandlerParameter(astNode, kind)
-      else result = getRouteHandlerParameter(astNode, kind)
+      then result = getRouteParameterHandlerParameter(this, kind)
+      else result = getRouteHandlerParameter(this, kind)
     }
   }
 
   /**
    * Holds if `call` is a chainable method call on the response object of `handler`.
    */
-  private predicate isChainableResponseMethodCall(RouteHandler handler, MethodCallExpr call) {
-    exists(string name | call.calls(handler.getAResponseExpr(), name) |
+  private predicate isChainableResponseMethodCall(
+    RouteHandler handler, DataFlow::MethodCallNode call
+  ) {
+    exists(string name | call.calls(handler.getAResponseNode(), name) |
       name =
         [
           "append", "attachment", "location", "send", "sendStatus", "set", "status", "type", "vary",
@@ -453,7 +524,7 @@ module Express {
   }
 
   /** An Express response source. */
-  abstract class ResponseSource extends HTTP::Servers::ResponseSource { }
+  abstract class ResponseSource extends Http::Servers::ResponseSource { }
 
   /**
    * An Express response source, that is, the response parameter of a
@@ -463,9 +534,9 @@ module Express {
     RouteHandler rh;
 
     ExplicitResponseSource() {
-      this = DataFlow::parameterNode(rh.getResponseParameter())
+      this = rh.getResponseParameter()
       or
-      isChainableResponseMethodCall(rh, this.asExpr())
+      isChainableResponseMethodCall(rh, this)
     }
 
     /**
@@ -484,7 +555,7 @@ module Express {
   }
 
   /** An Express request source. */
-  abstract class RequestSource extends HTTP::Servers::RequestSource { }
+  abstract class RequestSource extends Http::Servers::RequestSource { }
 
   /**
    * An Express request source, that is, the request parameter of a
@@ -493,7 +564,7 @@ module Express {
   private class ExplicitRequestSource extends RequestSource {
     RouteHandler rh;
 
-    ExplicitRequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
+    ExplicitRequestSource() { this = rh.getRequestParameter() }
 
     /**
      * Gets the route handler that handles this request.
@@ -511,16 +582,32 @@ module Express {
   }
 
   /**
+   * DEPRECATED: Use `ResponseNode` instead.
    * An Express response expression.
    */
-  class ResponseExpr extends NodeJSLib::ResponseExpr {
+  deprecated class ResponseExpr extends NodeJSLib::ResponseExpr {
+    ResponseExpr() { this.flow() instanceof ResponseNode }
+  }
+
+  /**
+   * An Express response expression.
+   */
+  class ResponseNode extends NodeJSLib::ResponseNode {
     override ResponseSource src;
+  }
+
+  /**
+   * DEPRECATED: Use `RequestNode` instead.
+   * An Express request expression.
+   */
+  deprecated class RequestExpr extends NodeJSLib::RequestExpr {
+    RequestExpr() { this.flow() instanceof RequestNode }
   }
 
   /**
    * An Express request expression.
    */
-  class RequestExpr extends NodeJSLib::RequestExpr {
+  class RequestNode extends NodeJSLib::RequestNode {
     override RequestSource src;
   }
 
@@ -539,16 +626,16 @@ module Express {
   }
 
   /** The input parameter to an `app.param()` route handler. */
-  private class ParamHandlerInputAccess extends HTTP::RequestInputAccess {
+  private class ParamHandlerInputAccess extends Http::RequestInputAccess {
     RouteHandler rh;
 
     ParamHandlerInputAccess() {
       exists(RouteSetup setup | rh = setup.getARouteHandler() |
-        this = DataFlow::parameterNode(rh.getRouteHandlerParameter("parameter"))
+        this = rh.getRouteHandlerParameter("parameter")
       )
     }
 
-    override HTTP::RouteHandler getRouteHandler() { result = rh }
+    override Http::RouteHandler getRouteHandler() { result = rh }
 
     override string getKind() { result = "parameter" }
   }
@@ -582,7 +669,7 @@ module Express {
   /**
    * An access to a user-controlled Express request input.
    */
-  class RequestInputAccess extends HTTP::RequestInputAccess {
+  class RequestInputAccess extends Http::RequestInputAccess {
     RequestSource request;
     string kind;
 
@@ -640,7 +727,7 @@ module Express {
   /**
    * An access to a header on an Express request.
    */
-  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+  private class RequestHeaderAccess extends Http::RequestHeaderAccess {
     RequestSource request;
 
     RequestHeaderAccess() {
@@ -669,40 +756,40 @@ module Express {
   /**
    * HTTP headers created by Express calls
    */
-  abstract private class ExplicitHeader extends HTTP::ExplicitHeaderDefinition { }
+  abstract private class ExplicitHeader extends Http::ExplicitHeaderDefinition { }
 
   /**
    * Holds if `e` is an HTTP request object.
    */
-  predicate isRequest(Expr e) { any(RouteHandler rh).getARequestExpr() = e }
+  predicate isRequest(DataFlow::Node e) { any(RouteHandler rh).getARequestNode() = e }
 
   /**
    * Holds if `e` is an HTTP response object.
    */
-  predicate isResponse(Expr e) { any(RouteHandler rh).getAResponseExpr() = e }
+  predicate isResponse(DataFlow::Node e) { any(RouteHandler rh).getAResponseNode() = e }
 
   /**
    * An access to the HTTP request body.
    */
-  class RequestBodyAccess extends Expr {
+  class RequestBodyAccess extends DataFlow::Node {
     RequestBodyAccess() { any(RouteHandler h).getARequestBodyAccess() = this }
   }
 
-  abstract private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
-    HeaderDefinition() { isResponse(astNode.getReceiver()) }
+  abstract private class HeaderDefinition extends Http::Servers::StandardHeaderDefinition {
+    HeaderDefinition() { isResponse(this.getReceiver()) }
 
-    override RouteHandler getRouteHandler() { astNode.getReceiver() = result.getAResponseExpr() }
+    override RouteHandler getRouteHandler() { this.getReceiver() = result.getAResponseNode() }
   }
 
   /**
    * An invocation of the `redirect` method of an HTTP response object.
    */
-  private class RedirectInvocation extends HTTP::RedirectInvocation, MethodCallExpr {
+  private class RedirectInvocation extends Http::RedirectInvocation, DataFlow::MethodCallNode {
     ResponseSource response;
 
-    RedirectInvocation() { this = response.ref().getAMethodCall("redirect").asExpr() }
+    RedirectInvocation() { this = response.ref().getAMethodCall("redirect") }
 
-    override Expr getUrlArgument() { result = this.getLastArgument() }
+    override DataFlow::Node getUrlArgument() { result = this.getLastArgument() }
 
     override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
   }
@@ -713,8 +800,8 @@ module Express {
    */
   private class SetOneHeader extends HeaderDefinition {
     SetOneHeader() {
-      astNode.getMethodName() = any(string n | n = "set" or n = "header") and
-      astNode.getNumArgument() = 2
+      this.getMethodName() = any(string n | n = "set" or n = "header") and
+      this.getNumArgument() = 2
     }
   }
 
@@ -735,18 +822,18 @@ module Express {
      */
     private DataFlow::SourceNode getAHeaderSource() { result.flowsTo(this.getArgument(0)) }
 
-    override predicate definesExplicitly(string headerName, Expr headerValue) {
+    override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
       exists(string header |
-        this.getAHeaderSource().hasPropertyWrite(header, DataFlow::valueNode(headerValue)) and
+        this.getAHeaderSource().hasPropertyWrite(header, headerValue) and
         headerName = header.toLowerCase()
       )
     }
 
     override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
 
-    override Expr getNameExpr() {
+    override DataFlow::Node getNameNode() {
       exists(DataFlow::PropWrite write | this.getAHeaderSource().getAPropertyWrite() = write |
-        result = write.getPropertyNameExpr()
+        result = write.getPropertyNameExpr().flow()
       )
     }
   }
@@ -755,16 +842,16 @@ module Express {
    * An invocation of the `append` method on an HTTP response object.
    */
   private class AppendHeader extends HeaderDefinition {
-    AppendHeader() { astNode.getMethodName() = "append" }
+    AppendHeader() { this.getMethodName() = "append" }
   }
 
   /**
    * An argument passed to the `send` or `end` method of an HTTP response object.
    */
-  private class ResponseSendArgument extends HTTP::ResponseSendArgument {
+  private class ResponseSendArgument extends Http::ResponseSendArgument {
     ResponseSource response;
 
-    ResponseSendArgument() { this = response.ref().getAMethodCall("send").getArgument(0).asExpr() }
+    ResponseSendArgument() { this = response.ref().getAMethodCall("send").getArgument(0) }
 
     override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
   }
@@ -772,14 +859,14 @@ module Express {
   /**
    * An invocation of the `cookie` method on an HTTP response object.
    */
-  class SetCookie extends HTTP::CookieDefinition, MethodCallExpr {
+  class SetCookie extends Http::CookieDefinition, DataFlow::MethodCallNode {
     ResponseSource response;
 
-    SetCookie() { this = response.ref().getAMethodCall("cookie").asExpr() }
+    SetCookie() { this = response.ref().getAMethodCall("cookie") }
 
-    override Expr getNameArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getNameArgument() { result = this.getArgument(0) }
 
-    override Expr getValueArgument() { result = this.getArgument(1) }
+    override DataFlow::Node getValueArgument() { result = this.getArgument(1) }
 
     override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
   }
@@ -788,11 +875,11 @@ module Express {
    * An expression passed to the `render` method of an HTTP response object
    * as the value of a template variable.
    */
-  private class TemplateInput extends HTTP::ResponseBody {
+  private class TemplateInput extends Http::ResponseBody {
     TemplateObjectInput obj;
 
     TemplateInput() {
-      obj.getALocalSource().(DataFlow::ObjectLiteralNode).hasPropertyWrite(_, this.flow())
+      obj.getALocalSource().(DataFlow::ObjectLiteralNode).hasPropertyWrite(_, this)
     }
 
     override RouteHandler getRouteHandler() { result = obj.getRouteHandler() }
@@ -820,26 +907,24 @@ module Express {
   /**
    * An Express server application.
    */
-  private class Application extends HTTP::ServerDefinition {
-    Application() { this = appCreation().asExpr() }
+  private class Application extends Http::ServerDefinition {
+    Application() { this = appCreation() }
 
     /**
      * Gets a route handler of the application, regardless of nesting.
      */
-    override HTTP::RouteHandler getARouteHandler() {
+    override Http::RouteHandler getARouteHandler() {
       result = this.(RouterDefinition).getASubRouter*().getARouteHandler()
     }
   }
 
-  /**
-   * An Express router.
-   */
-  class RouterDefinition extends InvokeExpr {
-    RouterDefinition() { this = routerCreation().asExpr() }
+  /** An Express router. */
+  class RouterDefinition extends DataFlow::Node instanceof DataFlow::InvokeNode {
+    RouterDefinition() { this = routerCreation() }
 
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and
-      result = DataFlow::exprNode(this)
+      result = this
       or
       exists(string name | result = this.ref(t.continue()).getAMethodCall(name) |
         name = "route" or
@@ -853,29 +938,24 @@ module Express {
     DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
 
     /**
-     * Holds if `sink` may refer to this router.
-     */
-    predicate flowsTo(Expr sink) { this.ref().flowsToExpr(sink) }
-
-    /**
      * Gets a `RouteSetup` that was used for setting up a route on this router.
      */
-    private RouteSetup getARouteSetup() { this.flowsTo(result.getReceiver()) }
+    private RouteSetup getARouteSetup() { this.ref().flowsTo(result.getReceiver()) }
 
     /**
      * Gets a sub-router registered on this router.
      *
      * Example: `router2` for `router1.use(router2)` or `router1.use("/route2", router2)`
      */
-    RouterDefinition getASubRouter() { result.flowsTo(this.getARouteSetup().getAnArgument()) }
+    RouterDefinition getASubRouter() { result.ref().flowsTo(this.getARouteSetup().getAnArgument()) }
 
     /**
      * Gets a route handler registered on this router.
      *
      * Example: `fun` for `router1.use(fun)` or `router.use("/route", fun)`
      */
-    HTTP::RouteHandler getARouteHandler() {
-      result.(DataFlow::SourceNode).flowsToExpr(this.getARouteSetup().getAnArgument())
+    Http::RouteHandler getARouteHandler() {
+      result.(DataFlow::SourceNode).flowsTo(this.getARouteSetup().getAnArgument())
     }
 
     /**
@@ -893,25 +973,25 @@ module Express {
      *
      * If `node` is not in the same container where `router` was defined, the predicate has no result.
      */
-    Express::RouteHandlerExpr getMiddlewareStackAt(ControlFlowNode node) {
+    Express::RouteHandlerNode getMiddlewareStackAt(ControlFlowNode node) {
       if
-        exists(Express::RouteSetup setup | node = setup and setup.getRouter() = this |
+        exists(Express::RouteSetup setup | node = setup.asExpr() and setup.getRouter() = this |
           setup.isUseCall()
         )
-      then result = node.(Express::RouteSetup).getLastRouteHandlerExpr()
+      then result = node.(AST::ValueNode).flow().(Express::RouteSetup).getLastRouteHandlerNode()
       else result = this.getMiddlewareStackAt(node.getAPredecessor())
     }
 
     /**
      * Gets the final middleware registered on this router.
      */
-    Express::RouteHandlerExpr getMiddlewareStack() {
+    Express::RouteHandlerNode getMiddlewareStack() {
       result = this.getMiddlewareStackAt(this.getContainer().getExit())
     }
   }
 
   /** An expression that is passed as `expressBasicAuth({ users: { <user>: <password> }})`. */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     string kind;
 
     Credentials() {
@@ -922,9 +1002,9 @@ module Express {
           usersSrc.flowsTo(call.getOptionArgument(0, "users")) and
           usersSrc.flowsTo(pwn.getBase())
         |
-          this = pwn.getPropertyNameExpr() and kind = "user name"
+          this = pwn.getPropertyNameExpr().flow() and kind = "user name"
           or
-          this = pwn.getRhs().asExpr() and kind = "password"
+          this = pwn.getRhs() and kind = "password"
         )
       )
     }
@@ -937,7 +1017,7 @@ module Express {
     DataFlow::MethodCallNode {
     ResponseSendFileAsFileSystemAccess() {
       exists(string name | name = "sendFile" or name = "sendfile" |
-        this.calls(any(ResponseExpr res).flow(), name)
+        this.calls(any(ResponseNode res), name)
       )
     }
 
@@ -958,15 +1038,15 @@ module Express {
    * A function that flows to a route setup.
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     RouteSetup routeSetup;
 
     TrackedRouteHandlerCandidateWithSetup() { this = routeSetup.getARouteHandler() }
 
-    override Parameter getRouteHandlerParameter(string kind) {
+    override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
       if routeSetup.isParameterHandler()
-      then result = getRouteParameterHandlerParameter(astNode, kind)
-      else result = getRouteHandlerParameter(astNode, kind)
+      then result = getRouteParameterHandlerParameter(this, kind)
+      else result = getRouteHandlerParameter(this, kind)
     }
   }
 
@@ -977,14 +1057,14 @@ module Express {
    * `router.post(handler)` where it is unknown if `router` is an
    * Express router.
    */
-  class RouteSetupCandidate extends HTTP::RouteSetupCandidate, DataFlow::MethodCallNode {
+  class RouteSetupCandidate extends Http::RouteSetupCandidate, DataFlow::MethodCallNode {
     DataFlow::ValueNode routeHandlerArg;
 
     RouteSetupCandidate() {
       exists(string methodName |
         methodName = "all" or
         methodName = "use" or
-        methodName = any(HTTP::RequestMethodName m).toLowerCase()
+        methodName = any(Http::RequestMethodName m).toLowerCase()
       |
         this.getMethodName() = methodName and
         exists(DataFlow::ValueNode arg | arg = this.getAnArgument() |

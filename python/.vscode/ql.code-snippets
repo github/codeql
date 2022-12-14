@@ -25,6 +25,17 @@
         "description": "has relative path",
     },
 
+
+    "debug based on location": {
+        "scope": "ql",
+        "prefix": "debug based on location",
+        "body": [
+            "$1.getLocation().getFile().getShortName() = \"$2\" and",
+            "$1.getLocation().getStartLine() = $3 and",
+        ],
+        "description": "debug based on location",
+    },
+
     "Exists": {
         "scope": "ql",
         "prefix": "exists",

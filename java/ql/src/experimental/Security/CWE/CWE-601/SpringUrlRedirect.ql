@@ -12,7 +12,7 @@
  */
 
 import java
-import SpringUrlRedirect
+import experimental.semmle.code.java.security.SpringUrlRedirect
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.controlflow.Guards
 import DataFlow::PathGraph

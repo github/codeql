@@ -1,0 +1,65 @@
+edges
+| test.swift:76:3:76:3 | this string is constant :  | test.swift:92:18:92:36 | call to getConstantString() :  |
+| test.swift:90:26:90:121 | [...] :  | test.swift:117:22:117:22 | key |
+| test.swift:90:26:90:121 | [...] :  | test.swift:118:22:118:22 | key |
+| test.swift:90:26:90:121 | [...] :  | test.swift:128:26:128:26 | key |
+| test.swift:90:26:90:121 | [...] :  | test.swift:135:25:135:25 | key |
+| test.swift:90:26:90:121 | [...] :  | test.swift:140:25:140:25 | key |
+| test.swift:90:26:90:121 | [...] :  | test.swift:145:26:145:26 | key |
+| test.swift:90:26:90:121 | [...] :  | test.swift:150:26:150:26 | key |
+| test.swift:90:26:90:121 | [...] :  | test.swift:151:26:151:26 | key |
+| test.swift:90:26:90:121 | [...] :  | test.swift:161:24:161:24 | key |
+| test.swift:90:26:90:121 | [...] :  | test.swift:163:24:163:24 | key |
+| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:108:21:108:21 | keyString |
+| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:109:21:109:21 | keyString |
+| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:119:22:119:22 | keyString |
+| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:120:22:120:22 | keyString |
+| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:129:26:129:26 | keyString |
+| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:152:26:152:26 | keyString |
+| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:153:26:153:26 | keyString |
+| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:162:24:162:24 | keyString |
+| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:164:24:164:24 | keyString |
+nodes
+| test.swift:76:3:76:3 | this string is constant :  | semmle.label | this string is constant :  |
+| test.swift:90:26:90:121 | [...] :  | semmle.label | [...] :  |
+| test.swift:92:18:92:36 | call to getConstantString() :  | semmle.label | call to getConstantString() :  |
+| test.swift:108:21:108:21 | keyString | semmle.label | keyString |
+| test.swift:109:21:109:21 | keyString | semmle.label | keyString |
+| test.swift:117:22:117:22 | key | semmle.label | key |
+| test.swift:118:22:118:22 | key | semmle.label | key |
+| test.swift:119:22:119:22 | keyString | semmle.label | keyString |
+| test.swift:120:22:120:22 | keyString | semmle.label | keyString |
+| test.swift:128:26:128:26 | key | semmle.label | key |
+| test.swift:129:26:129:26 | keyString | semmle.label | keyString |
+| test.swift:135:25:135:25 | key | semmle.label | key |
+| test.swift:140:25:140:25 | key | semmle.label | key |
+| test.swift:145:26:145:26 | key | semmle.label | key |
+| test.swift:150:26:150:26 | key | semmle.label | key |
+| test.swift:151:26:151:26 | key | semmle.label | key |
+| test.swift:152:26:152:26 | keyString | semmle.label | keyString |
+| test.swift:153:26:153:26 | keyString | semmle.label | keyString |
+| test.swift:161:24:161:24 | key | semmle.label | key |
+| test.swift:162:24:162:24 | keyString | semmle.label | keyString |
+| test.swift:163:24:163:24 | key | semmle.label | key |
+| test.swift:164:24:164:24 | keyString | semmle.label | keyString |
+subpaths
+#select
+| test.swift:108:21:108:21 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:108:21:108:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
+| test.swift:109:21:109:21 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:109:21:109:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
+| test.swift:117:22:117:22 | key | test.swift:90:26:90:121 | [...] :  | test.swift:117:22:117:22 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
+| test.swift:118:22:118:22 | key | test.swift:90:26:90:121 | [...] :  | test.swift:118:22:118:22 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
+| test.swift:119:22:119:22 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:119:22:119:22 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
+| test.swift:120:22:120:22 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:120:22:120:22 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
+| test.swift:128:26:128:26 | key | test.swift:90:26:90:121 | [...] :  | test.swift:128:26:128:26 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
+| test.swift:129:26:129:26 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:129:26:129:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
+| test.swift:135:25:135:25 | key | test.swift:90:26:90:121 | [...] :  | test.swift:135:25:135:25 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
+| test.swift:140:25:140:25 | key | test.swift:90:26:90:121 | [...] :  | test.swift:140:25:140:25 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
+| test.swift:145:26:145:26 | key | test.swift:90:26:90:121 | [...] :  | test.swift:145:26:145:26 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
+| test.swift:150:26:150:26 | key | test.swift:90:26:90:121 | [...] :  | test.swift:150:26:150:26 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
+| test.swift:151:26:151:26 | key | test.swift:90:26:90:121 | [...] :  | test.swift:151:26:151:26 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
+| test.swift:152:26:152:26 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:152:26:152:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
+| test.swift:153:26:153:26 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:153:26:153:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
+| test.swift:161:24:161:24 | key | test.swift:90:26:90:121 | [...] :  | test.swift:161:24:161:24 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
+| test.swift:162:24:162:24 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:162:24:162:24 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
+| test.swift:163:24:163:24 | key | test.swift:90:26:90:121 | [...] :  | test.swift:163:24:163:24 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
+| test.swift:164:24:164:24 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:164:24:164:24 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |

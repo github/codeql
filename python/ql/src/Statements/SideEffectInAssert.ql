@@ -42,4 +42,4 @@ predicate probable_side_effect(Expr e) {
 
 from Assert a, Expr e
 where probable_side_effect(e) and a.contains(e)
-select a, "This 'assert' statement contains $@ which may have side effects.", e, "an expression"
+select a, "This 'assert' statement contains an $@ which may have side effects.", e, "expression"

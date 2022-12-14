@@ -90,11 +90,9 @@ nodes
 | globalVars.c:24:11:24:14 | argv | semmle.label | argv |
 | globalVars.c:24:11:24:14 | argv indirection | semmle.label | argv indirection |
 | globalVars.c:27:9:27:12 | (const char *)... | semmle.label | (const char *)... |
-| globalVars.c:27:9:27:12 | (const char *)... | semmle.label | (const char *)... |
 | globalVars.c:27:9:27:12 | copy | semmle.label | copy |
 | globalVars.c:27:9:27:12 | copy | semmle.label | copy |
 | globalVars.c:27:9:27:12 | copy | semmle.label | copy |
-| globalVars.c:27:9:27:12 | copy indirection | semmle.label | copy indirection |
 | globalVars.c:27:9:27:12 | copy indirection | semmle.label | copy indirection |
 | globalVars.c:30:15:30:18 | copy | semmle.label | copy |
 | globalVars.c:30:15:30:18 | copy | semmle.label | copy |
@@ -106,11 +104,9 @@ nodes
 | globalVars.c:35:11:35:14 | copy | semmle.label | copy |
 | globalVars.c:35:11:35:14 | copy | semmle.label | copy |
 | globalVars.c:38:9:38:13 | (const char *)... | semmle.label | (const char *)... |
-| globalVars.c:38:9:38:13 | (const char *)... | semmle.label | (const char *)... |
 | globalVars.c:38:9:38:13 | copy2 | semmle.label | copy2 |
 | globalVars.c:38:9:38:13 | copy2 | semmle.label | copy2 |
 | globalVars.c:38:9:38:13 | copy2 | semmle.label | copy2 |
-| globalVars.c:38:9:38:13 | copy2 indirection | semmle.label | copy2 indirection |
 | globalVars.c:38:9:38:13 | copy2 indirection | semmle.label | copy2 indirection |
 | globalVars.c:41:15:41:19 | copy2 | semmle.label | copy2 |
 | globalVars.c:41:15:41:19 | copy2 | semmle.label | copy2 |
@@ -120,15 +116,13 @@ nodes
 | globalVars.c:41:15:41:19 | printWrapper output argument | semmle.label | printWrapper output argument |
 | globalVars.c:44:15:44:19 | copy2 | semmle.label | copy2 |
 | globalVars.c:50:9:50:13 | (const char *)... | semmle.label | (const char *)... |
-| globalVars.c:50:9:50:13 | (const char *)... | semmle.label | (const char *)... |
 | globalVars.c:50:9:50:13 | copy2 | semmle.label | copy2 |
 | globalVars.c:50:9:50:13 | copy2 | semmle.label | copy2 |
 | globalVars.c:50:9:50:13 | copy2 | semmle.label | copy2 |
-| globalVars.c:50:9:50:13 | copy2 indirection | semmle.label | copy2 indirection |
 | globalVars.c:50:9:50:13 | copy2 indirection | semmle.label | copy2 indirection |
 #select
-| globalVars.c:27:9:27:12 | copy | globalVars.c:24:11:24:14 | argv | globalVars.c:27:9:27:12 | copy | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | globalVars.c:24:11:24:14 | argv | argv |
-| globalVars.c:30:15:30:18 | copy | globalVars.c:24:11:24:14 | argv | globalVars.c:30:15:30:18 | copy | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(str), which calls printf(format) | globalVars.c:24:11:24:14 | argv | argv |
-| globalVars.c:38:9:38:13 | copy2 | globalVars.c:24:11:24:14 | argv | globalVars.c:38:9:38:13 | copy2 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | globalVars.c:24:11:24:14 | argv | argv |
-| globalVars.c:41:15:41:19 | copy2 | globalVars.c:24:11:24:14 | argv | globalVars.c:41:15:41:19 | copy2 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(str), which calls printf(format) | globalVars.c:24:11:24:14 | argv | argv |
-| globalVars.c:50:9:50:13 | copy2 | globalVars.c:24:11:24:14 | argv | globalVars.c:50:9:50:13 | copy2 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | globalVars.c:24:11:24:14 | argv | argv |
+| globalVars.c:27:9:27:12 | copy | globalVars.c:24:11:24:14 | argv | globalVars.c:27:9:27:12 | copy | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | globalVars.c:24:11:24:14 | argv | argv |
+| globalVars.c:30:15:30:18 | copy | globalVars.c:24:11:24:14 | argv | globalVars.c:30:15:30:18 | copy | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(str), which calls printf(format). | globalVars.c:24:11:24:14 | argv | argv |
+| globalVars.c:38:9:38:13 | copy2 | globalVars.c:24:11:24:14 | argv | globalVars.c:38:9:38:13 | copy2 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | globalVars.c:24:11:24:14 | argv | argv |
+| globalVars.c:41:15:41:19 | copy2 | globalVars.c:24:11:24:14 | argv | globalVars.c:41:15:41:19 | copy2 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(str), which calls printf(format). | globalVars.c:24:11:24:14 | argv | argv |
+| globalVars.c:50:9:50:13 | copy2 | globalVars.c:24:11:24:14 | argv | globalVars.c:50:9:50:13 | copy2 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | globalVars.c:24:11:24:14 | argv | argv |

@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.dataflow.new.FlowSummary
 private import semmle.python.frameworks.PEP249
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.internal.SelfRefMixin
@@ -1162,13 +1163,16 @@ private module StdlibPrivate {
   API::Node subprocess() { result = API::moduleImport("subprocess") }
 
   /**
-   * A call to `subprocess.Popen` or helper functions (call, check_call, check_output, run)
+   * A call to `subprocess.Popen` or helper functions (call, check_call, check_output, run, getoutput, getstatusoutput)
    * See https://docs.python.org/3.8/library/subprocess.html#subprocess.Popen
+   * ref: https://docs.python.org/3/library/subprocess.html#legacy-shell-invocation-functions
    */
   private class SubprocessPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     SubprocessPopenCall() {
       exists(string name |
-        name in ["Popen", "call", "check_call", "check_output", "run"] and
+        name in [
+            "Popen", "call", "check_call", "check_output", "run", "getoutput", "getstatusoutput"
+          ] and
         this = subprocess().getMember(name).getACall()
       )
     }
@@ -1724,39 +1728,21 @@ private module StdlibPrivate {
       API::Node getlistResult() { result = getlistRef().getReturn() }
 
       /** Gets a reference to a list of fields. */
-      private DataFlow::TypeTrackingNode fieldList(DataFlow::TypeTracker t) {
-        t.start() and
-        // TODO: Should have better handling of subscripting
-        result.asCfgNode().(SubscriptNode).getObject() =
-          instance().getAValueReachableFromSource().asCfgNode()
+      API::Node fieldList() {
+        result = getlistResult()
         or
-        exists(DataFlow::TypeTracker t2 | result = fieldList(t2).track(t2, t))
-      }
-
-      /** Gets a reference to a list of fields. */
-      DataFlow::Node fieldList() {
-        result = getlistResult().getAValueReachableFromSource() or
-        result = getvalueResult().getAValueReachableFromSource() or
-        fieldList(DataFlow::TypeTracker::end()).flowsTo(result)
+        result = getvalueResult()
+        or
+        result = instance().getASubscript()
       }
 
       /** Gets a reference to a field. */
-      private DataFlow::TypeTrackingNode field(DataFlow::TypeTracker t) {
-        t.start() and
-        // TODO: Should have better handling of subscripting
-        result.asCfgNode().(SubscriptNode).getObject() =
-          [instance().getAValueReachableFromSource(), fieldList()].asCfgNode()
+      API::Node field() {
+        result = getfirstResult()
         or
-        exists(DataFlow::TypeTracker t2 | result = field(t2).track(t2, t))
-      }
-
-      /** Gets a reference to a field. */
-      DataFlow::Node field() {
-        result = getfirstResult().getAValueReachableFromSource()
+        result = getvalueResult()
         or
-        result = getvalueResult().getAValueReachableFromSource()
-        or
-        field(DataFlow::TypeTracker::end()).flowsTo(result)
+        result = [instance(), fieldList()].getASubscript()
       }
 
       private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
@@ -1779,11 +1765,13 @@ private module StdlibPrivate {
           )
           or
           // Indexing
-          nodeFrom in [instance().getAValueReachableFromSource(), fieldList()] and
+          nodeFrom in [
+              instance().getAValueReachableFromSource(), fieldList().getAValueReachableFromSource()
+            ] and
           nodeTo.asCfgNode().(SubscriptNode).getObject() = nodeFrom.asCfgNode()
           or
           // Attributes on Field
-          nodeFrom = field() and
+          nodeFrom = field().getAValueReachableFromSource() and
           exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
             read.getAttributeName() in ["value", "file", "filename"]
           )
@@ -1854,15 +1842,21 @@ private module StdlibPrivate {
   deprecated API::Node cgiHTTPServer() { result = cgiHttpServer() }
 
   /** Provides models for the `CGIHTTPServer` module. */
-  module CGIHTTPServer {
+  module CgiHttpServer {
     /**
      * Provides models for the `CGIHTTPServer.CGIHTTPRequestHandler` class (Python 2 only).
      */
-    module CGIHTTPRequestHandler {
-      /** Gets a reference to the `CGIHTTPServer.CGIHTTPRequestHandler` class. */
+    module CgiHttpRequestHandler {
+      /** Gets a reference to the `CGIHTTPServer.CgiHttpRequestHandler` class. */
       API::Node classRef() { result = cgiHttpServer().getMember("CGIHTTPRequestHandler") }
     }
+
+    /** DEPRECATED: Alias for CgiHttpRequestHandler */
+    deprecated module CGIHTTPRequestHandler = CgiHttpRequestHandler;
   }
+
+  /** DEPRECATED: Alias for CgiHttpServer */
+  deprecated module CGIHTTPServer = CgiHttpServer;
 
   // ---------------------------------------------------------------------------
   // http (Python 3 only)
@@ -1871,7 +1865,7 @@ private module StdlibPrivate {
   API::Node http() { result = API::moduleImport("http") }
 
   /** Provides models for the `http` module. */
-  module Http {
+  module StdlibHttp {
     // -------------------------------------------------------------------------
     // http.server
     // -------------------------------------------------------------------------
@@ -1911,10 +1905,13 @@ private module StdlibPrivate {
        *
        * See https://docs.python.org/3.9/library/http.server.html#http.server.CGIHTTPRequestHandler.
        */
-      module CGIHTTPRequestHandler {
+      module CgiHttpRequestHandler {
         /** Gets a reference to the `http.server.CGIHTTPRequestHandler` class. */
         API::Node classRef() { result = server().getMember("CGIHTTPRequestHandler") }
       }
+
+      /** DEPRECATED: Alias for CgiHttpRequestHandler */
+      deprecated module CGIHTTPRequestHandler = CgiHttpRequestHandler;
     }
   }
 
@@ -1933,11 +1930,11 @@ private module StdlibPrivate {
           // Python 2
           BaseHttpServer::BaseHttpRequestHandler::classRef(),
           SimpleHttpServer::SimpleHttpRequestHandler::classRef(),
-          CGIHTTPServer::CGIHTTPRequestHandler::classRef(),
+          CgiHttpServer::CgiHttpRequestHandler::classRef(),
           // Python 3
-          Http::Server::BaseHttpRequestHandler::classRef(),
-          Http::Server::SimpleHttpRequestHandler::classRef(),
-          Http::Server::CGIHTTPRequestHandler::classRef()
+          StdlibHttp::Server::BaseHttpRequestHandler::classRef(),
+          StdlibHttp::Server::SimpleHttpRequestHandler::classRef(),
+          StdlibHttp::Server::CgiHttpRequestHandler::classRef()
         ].getASubclass*()
     }
 
@@ -2017,10 +2014,10 @@ private module StdlibPrivate {
      *
      * Not essential for any functionality, but provides a consistent modeling.
      */
-    private class RequestHandlerFunc extends HTTP::Server::RequestHandler::Range {
+    private class RequestHandlerFunc extends Http::Server::RequestHandler::Range {
       RequestHandlerFunc() {
         this = any(HttpRequestHandlerClassDef cls).getAMethod() and
-        this.getName() = "do_" + HTTP::httpVerb()
+        this.getName() = "do_" + Http::httpVerb()
       }
 
       override Parameter getARoutedParameter() { none() }
@@ -2055,7 +2052,7 @@ private module StdlibPrivate {
      * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L137
      * for how a request is processed and given to an application.
      */
-    class WsgirefSimpleServerApplication extends HTTP::Server::RequestHandler::Range {
+    class WsgirefSimpleServerApplication extends Http::Server::RequestHandler::Range {
       WsgirefSimpleServerApplication() {
         exists(DataFlow::Node appArg, DataFlow::CallCfgNode setAppCall |
           (
@@ -2089,8 +2086,8 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3.10/library/wsgiref.html#wsgiref.simple_server.WSGIRequestHandler.get_environ
      */
-    class WSGIEnvirontParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
-      WSGIEnvirontParameter() {
+    class WsgiEnvirontParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+      WsgiEnvirontParameter() {
         exists(WsgirefSimpleServerApplication func |
           if func.isMethod()
           then this.getParameter() = func.getArg(1)
@@ -2102,6 +2099,9 @@ private module StdlibPrivate {
         result = "Stdlib: wsgiref.simple_server application: WSGI environment parameter"
       }
     }
+
+    /** DEPRECATED: Alias for WsgiEnvirontParameter */
+    deprecated class WSGIEnvirontParameter = WsgiEnvirontParameter;
 
     /**
      * Gets a reference to the parameter of a `WsgirefSimpleServerApplication` that
@@ -2154,7 +2154,7 @@ private module StdlibPrivate {
      *
      * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L276
      */
-    class WsgirefSimpleServerApplicationWriteCall extends HTTP::Server::HttpResponse::Range,
+    class WsgirefSimpleServerApplicationWriteCall extends Http::Server::HttpResponse::Range,
       DataFlow::CallCfgNode {
       WsgirefSimpleServerApplicationWriteCall() { this.getFunction() = writeFunction() }
 
@@ -2168,7 +2168,7 @@ private module StdlibPrivate {
     /**
      * A return from a `WsgirefSimpleServerApplication`, which is included in the response body.
      */
-    class WsgirefSimpleServerApplicationReturn extends HTTP::Server::HttpResponse::Range,
+    class WsgirefSimpleServerApplicationReturn extends Http::Server::HttpResponse::Range,
       DataFlow::CfgNode {
       WsgirefSimpleServerApplicationReturn() {
         exists(WsgirefSimpleServerApplication requestHandler |
@@ -2255,7 +2255,7 @@ private module StdlibPrivate {
     }
 
     /** A method call on a HttpConnection that sends off a request */
-    private class RequestCall extends HTTP::Client::Request::Range, DataFlow::MethodCallNode {
+    private class RequestCall extends Http::Client::Request::Range, DataFlow::MethodCallNode {
       RequestCall() { this.calls(instance(_), ["request", "_send_request", "putrequest"]) }
 
       DataFlow::Node getUrlArg() { result in [this.getArg(1), this.getArgByName("url")] }
@@ -2406,7 +2406,7 @@ private module StdlibPrivate {
 
   /**
    * Gets a name of a constructor for a `pathlib.Path` object.
-   * We include the pure paths, as they can be "exported" (say with `as_posix`) and then used to acces the underlying file system.
+   * We include the pure paths, as they can be "exported" (say with `as_posix`) and then used to access the underlying file system.
    */
   private string pathlibPathConstructor() {
     result in ["Path", "PurePath", "PurePosixPath", "PureWindowsPath", "PosixPath", "WindowsPath"]
@@ -2513,11 +2513,11 @@ private module StdlibPrivate {
   /** A file system access from a `pathlib.Path` method call. */
   private class PathlibFileAccess extends FileSystemAccess::Range, DataFlow::CallCfgNode {
     DataFlow::AttrRead fileAccess;
-    string attrbuteName;
+    string attributeName;
 
     PathlibFileAccess() {
-      attrbuteName = fileAccess.getAttributeName() and
-      attrbuteName in [
+      attributeName = fileAccess.getAttributeName() and
+      attributeName in [
           "stat", "chmod", "exists", "expanduser", "glob", "group", "is_dir", "is_file", "is_mount",
           "is_symlink", "is_socket", "is_fifo", "is_block_device", "is_char_device", "iter_dir",
           "lchmod", "lstat", "mkdir", "open", "owner", "read_bytes", "read_text", "readlink",
@@ -2533,14 +2533,14 @@ private module StdlibPrivate {
 
   /** A file system write from a `pathlib.Path` method call. */
   private class PathlibFileWrites extends PathlibFileAccess, FileSystemWriteAccess::Range {
-    PathlibFileWrites() { attrbuteName in ["write_bytes", "write_text"] }
+    PathlibFileWrites() { attributeName in ["write_bytes", "write_text"] }
 
     override DataFlow::Node getADataNode() { result in [this.getArg(0), this.getArgByName("data")] }
   }
 
   /** A call to the `open` method on a `pathlib.Path` instance. */
   private class PathLibOpenCall extends PathlibFileAccess, Stdlib::FileLikeObject::InstanceSource {
-    PathLibOpenCall() { attrbuteName = "open" }
+    PathLibOpenCall() { attributeName = "open" }
   }
 
   /**
@@ -2552,7 +2552,7 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.symlink_to
    */
   private class PathLibLinkToCall extends PathlibFileAccess, API::CallNode {
-    PathLibLinkToCall() { attrbuteName in ["link_to", "hardlink_to", "symlink_to"] }
+    PathLibLinkToCall() { attributeName in ["link_to", "hardlink_to", "symlink_to"] }
 
     override DataFlow::Node getAPathArgument() {
       result = super.getAPathArgument()
@@ -2569,7 +2569,7 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.rename
    */
   private class PathLibReplaceCall extends PathlibFileAccess, API::CallNode {
-    PathLibReplaceCall() { attrbuteName in ["replace", "rename"] }
+    PathLibReplaceCall() { attributeName in ["replace", "rename"] }
 
     override DataFlow::Node getAPathArgument() {
       result = super.getAPathArgument()
@@ -2584,7 +2584,7 @@ private module StdlibPrivate {
    * See https://docs.python.org/3/library/pathlib.html#pathlib.Path.samefile
    */
   private class PathLibSameFileCall extends PathlibFileAccess, API::CallNode {
-    PathLibSameFileCall() { attrbuteName = "samefile" }
+    PathLibSameFileCall() { attributeName = "samefile" }
 
     override DataFlow::Node getAPathArgument() {
       result = super.getAPathArgument()
@@ -2723,7 +2723,7 @@ private module StdlibPrivate {
 
   /**
    * A hashing operation from the `hashlib` package using one of the predefined classes
-   * (such as `hashlib.md5`), by calling its' `update` mehtod.
+   * (such as `hashlib.md5`), by calling its' `update` method.
    */
   class HashlibHashClassUpdateCall extends HashlibGenericHashOperation {
     HashlibHashClassUpdateCall() { this = hashClass.getReturn().getMember("update").getACall() }
@@ -2829,25 +2829,14 @@ private module StdlibPrivate {
     override string getName() { result = "re." + method }
   }
 
-  /** Helper module for tracking compiled regexes. */
-  private module CompiledRegexes {
-    private DataFlow::TypeTrackingNode compiledRegex(DataFlow::TypeTracker t, DataFlow::Node regex) {
-      t.start() and
-      result = API::moduleImport("re").getMember("compile").getACall() and
-      regex in [
-          result.(DataFlow::CallCfgNode).getArg(0),
-          result.(DataFlow::CallCfgNode).getArgByName("pattern")
-        ]
-      or
-      exists(DataFlow::TypeTracker t2 | result = compiledRegex(t2, regex).track(t2, t))
-    }
-
-    DataFlow::Node compiledRegex(DataFlow::Node regex) {
-      compiledRegex(DataFlow::TypeTracker::end(), regex).flowsTo(result)
-    }
+  API::Node compiledRegex(API::Node regex) {
+    exists(API::CallNode compilation |
+      compilation = API::moduleImport("re").getMember("compile").getACall()
+    |
+      result = compilation.getReturn() and
+      regex = compilation.getParameter(0, "pattern")
+    )
   }
-
-  private import CompiledRegexes
 
   /**
    * A call on compiled regular expression (obtained via `re.compile`) executing a
@@ -2873,7 +2862,11 @@ private module StdlibPrivate {
     DataFlow::Node regexNode;
     RegexExecutionMethod method;
 
-    CompiledRegexExecution() { this.calls(compiledRegex(regexNode), method) }
+    CompiledRegexExecution() {
+      exists(API::Node regex | regexNode = regex.asSink() |
+        this.calls(compiledRegex(regex).getAValueReachableFromSource(), method)
+      )
+    }
 
     override DataFlow::Node getRegex() { result = regexNode }
 
@@ -3657,6 +3650,23 @@ private module StdlibPrivate {
     }
 
     override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
+  }
+
+  /** A flow summary for `reversed`. */
+  class ReversedSummary extends SummarizedCallable {
+    ReversedSummary() { this = "builtins.reversed" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("reversed").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("reversed").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0].ListElement" and
+      output = "ReturnValue.ListElement" and
+      preservesValue = true
+    }
   }
 }
 

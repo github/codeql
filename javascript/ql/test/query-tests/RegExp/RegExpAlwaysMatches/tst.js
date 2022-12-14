@@ -83,10 +83,10 @@ function nonWordBoundary(x) {
 }
 
 function emptyRegex(x) {
-  return new RegExp("").test(x); // NOT OK
+  return new RegExp("").test(x); // OK
 }
 
 function parserTest(x) {
   /(\w\s*:\s*[^:}]+|#){|@import[^\n]+(?:url|,)/.test(x); // OK
-  /^((?:a{0,2}|-)|\w\{\d,\d\})+X$/.text(x); // ok 
+  /^((?:a{0,2}|-)|\w\{\d,\d\})+X$/.text(x); // ok
 }

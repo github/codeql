@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.NominalTypeDecl
 
-class ProtocolDeclBase extends Synth::TProtocolDecl, NominalTypeDecl {
-  override string getAPrimaryQlClass() { result = "ProtocolDecl" }
+module Generated {
+  class ProtocolDecl extends Synth::TProtocolDecl, NominalTypeDecl {
+    override string getAPrimaryQlClass() { result = "ProtocolDecl" }
+  }
 }

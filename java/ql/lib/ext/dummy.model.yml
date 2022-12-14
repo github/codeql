@@ -1,0 +1,18 @@
+extensions:
+  # Make sure that the extensible model predicates are at least defined as empty.
+  - addsTo:
+      pack: codeql/java-all
+      extensible: extSourceModel
+    data: []
+  - addsTo:
+      pack: codeql/java-all
+      extensible: extSinkModel
+    data: []
+  - addsTo:
+      pack: codeql/java-all
+      extensible: extSummaryModel
+    data: []
+  - addsTo:
+      pack: codeql/java-all
+      extensible: extNeutralModel
+    data: []

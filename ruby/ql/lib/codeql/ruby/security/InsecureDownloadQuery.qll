@@ -6,7 +6,7 @@
  * `InsecureDownloadCustomizations` should be imported instead.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 import InsecureDownloadCustomizations::InsecureDownload
 

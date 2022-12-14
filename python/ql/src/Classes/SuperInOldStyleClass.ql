@@ -24,4 +24,4 @@ predicate uses_of_super_in_old_style_class(Call s) {
 
 from Call c
 where uses_of_super_in_old_style_class(c)
-select c, "super() will not work in old-style classes"
+select c, "'super()' will not work in old-style classes."

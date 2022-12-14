@@ -23,8 +23,8 @@ nodes
 | test.cpp:121:11:121:13 | ptr | semmle.label | ptr |
 subpaths
 #select
-| test.cpp:28:10:28:29 | http://example.com | test.cpp:28:10:28:29 | http://example.com | test.cpp:15:30:15:32 | url | A URL may be constructed with the HTTP protocol. |
-| test.cpp:35:23:35:42 | http://example.com | test.cpp:35:23:35:42 | http://example.com | test.cpp:15:30:15:32 | url | A URL may be constructed with the HTTP protocol. |
-| test.cpp:36:26:36:45 | http://example.com | test.cpp:36:26:36:45 | http://example.com | test.cpp:15:30:15:32 | url | A URL may be constructed with the HTTP protocol. |
-| test.cpp:46:18:46:26 | http:// | test.cpp:46:18:46:26 | http:// | test.cpp:15:30:15:32 | url | A URL may be constructed with the HTTP protocol. |
-| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com | test.cpp:15:30:15:32 | url | A URL may be constructed with the HTTP protocol. |
+| test.cpp:28:10:28:29 | http://example.com | test.cpp:28:10:28:29 | http://example.com | test.cpp:15:30:15:32 | url | This URL may be constructed with the HTTP protocol. |
+| test.cpp:35:23:35:42 | http://example.com | test.cpp:35:23:35:42 | http://example.com | test.cpp:15:30:15:32 | url | This URL may be constructed with the HTTP protocol. |
+| test.cpp:36:26:36:45 | http://example.com | test.cpp:36:26:36:45 | http://example.com | test.cpp:15:30:15:32 | url | This URL may be constructed with the HTTP protocol. |
+| test.cpp:46:18:46:26 | http:// | test.cpp:46:18:46:26 | http:// | test.cpp:15:30:15:32 | url | This URL may be constructed with the HTTP protocol. |
+| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com | test.cpp:15:30:15:32 | url | This URL may be constructed with the HTTP protocol. |

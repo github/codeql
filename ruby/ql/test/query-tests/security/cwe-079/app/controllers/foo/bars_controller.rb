@@ -20,6 +20,14 @@ class BarsController < ApplicationController
     @safe_foo = params[:text]
     @safe_foo = "safe_foo"
     @html_escaped = ERB::Util.html_escape(params[:text])
+    @header_escaped = ERB::Util.html_escape(cookies[:foo]) # OK - cookies not controllable by 3rd party
+    response.header["content-type"] = params[:content_type]
+    response.header["x-customer-header"] = params[:bar] # OK - header not relevant to XSS
     render "foo/bars/show", locals: { display_text: dt, safe_text: "hello" }
+  end
+
+  def make_safe_html
+    str = params[:user_name]
+    str.html_safe
   end
 end

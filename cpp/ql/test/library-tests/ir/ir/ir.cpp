@@ -1851,4 +1851,39 @@ void magicvars() {
     const char *strfunc = __func__;
 }
 
+namespace missing_declaration_entries {
+    struct S {};
+
+    template<typename A, typename B> struct pair{};
+
+    template<typename T> struct Bar1 {
+        typedef S* pointer;
+
+        void* missing_type_decl_entry(pointer p) {
+            typedef pair<pointer, bool> _Res;
+            return p;
+        }
+    };
+
+    void test1() {
+        Bar1<int> b;
+        b.missing_type_decl_entry(nullptr);
+    }
+
+    template<typename T> struct Bar2 {
+
+        int two_missing_variable_declaration_entries() {
+            int x[10], y[10];
+            *x = 10;
+            *y = 10;
+            return *x + *y;
+        }
+    };
+
+    void test2() {
+        Bar2<int> b;
+        b.two_missing_variable_declaration_entries();
+    }
+}
+
 // semmle-extractor-options: -std=c++17 --clang

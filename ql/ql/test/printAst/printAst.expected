@@ -1,8 +1,8 @@
 nodes
 | Foo.qll:1:1:1:17 | Import | semmle.label | [Import] Import |
 | Foo.qll:1:1:1:17 | Import | semmle.order | 1 |
-| Foo.qll:1:1:27:2 | TopLevel | semmle.label | [TopLevel] TopLevel |
-| Foo.qll:1:1:27:2 | TopLevel | semmle.order | 1 |
+| Foo.qll:1:1:31:17 | TopLevel | semmle.label | [TopLevel] TopLevel |
+| Foo.qll:1:1:31:17 | TopLevel | semmle.order | 1 |
 | Foo.qll:1:8:1:17 | javascript | semmle.label | [ModuleExpr] javascript |
 | Foo.qll:1:8:1:17 | javascript | semmle.order | 3 |
 | Foo.qll:3:7:3:9 | Class Foo | semmle.label | [Class] Class Foo |
@@ -153,6 +153,14 @@ nodes
 | Foo.qll:26:3:26:14 | ComparisonFormula | semmle.order | 75 |
 | Foo.qll:26:10:26:14 | Boolean | semmle.label | [Boolean] Boolean |
 | Foo.qll:26:10:26:14 | Boolean | semmle.order | 77 |
+| Foo.qll:29:9:29:17 | NewType TPathNode | semmle.label | [NewType] NewType TPathNode |
+| Foo.qll:29:9:29:17 | NewType TPathNode | semmle.order | 78 |
+| Foo.qll:30:3:30:28 | annotation | semmle.label | [Annotation] annotation |
+| Foo.qll:30:3:30:28 | annotation | semmle.order | 79 |
+| Foo.qll:30:10:30:27 | assume_small_delta | semmle.label | [AnnotationArg] assume_small_delta |
+| Foo.qll:30:10:30:27 | assume_small_delta | semmle.order | 80 |
+| Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | semmle.label | [NewTypeBranch] NewTypeBranch TPathNodeMid |
+| Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | semmle.order | 81 |
 | file://:0:0:0:0 | abs | semmle.label | [BuiltinPredicate] abs |
 | file://:0:0:0:0 | abs | semmle.label | [BuiltinPredicate] abs |
 | file://:0:0:0:0 | acos | semmle.label | [BuiltinPredicate] acos |
@@ -235,22 +243,24 @@ nodes
 | file://:0:0:0:0 | trim | semmle.label | [BuiltinPredicate] trim |
 | file://:0:0:0:0 | ulp | semmle.label | [BuiltinPredicate] ulp |
 | printAst.ql:1:1:1:28 | Import | semmle.label | [Import] Import |
-| printAst.ql:1:1:1:28 | Import | semmle.order | 78 |
+| printAst.ql:1:1:1:28 | Import | semmle.order | 82 |
 | printAst.ql:1:1:1:29 | TopLevel | semmle.label | [TopLevel] TopLevel |
-| printAst.ql:1:1:1:29 | TopLevel | semmle.order | 78 |
+| printAst.ql:1:1:1:29 | TopLevel | semmle.order | 82 |
 | printAst.ql:1:18:1:28 | printAstAst | semmle.label | [ModuleExpr] printAstAst |
-| printAst.ql:1:18:1:28 | printAstAst | semmle.order | 80 |
+| printAst.ql:1:18:1:28 | printAstAst | semmle.order | 84 |
 edges
 | Foo.qll:1:1:1:17 | Import | Foo.qll:1:8:1:17 | javascript | semmle.label | getModuleExpr() |
 | Foo.qll:1:1:1:17 | Import | Foo.qll:1:8:1:17 | javascript | semmle.order | 3 |
-| Foo.qll:1:1:27:2 | TopLevel | Foo.qll:1:1:1:17 | Import | semmle.label | getAnImport() |
-| Foo.qll:1:1:27:2 | TopLevel | Foo.qll:1:1:1:17 | Import | semmle.order | 1 |
-| Foo.qll:1:1:27:2 | TopLevel | Foo.qll:3:7:3:9 | Class Foo | semmle.label | getAClass() |
-| Foo.qll:1:1:27:2 | TopLevel | Foo.qll:3:7:3:9 | Class Foo | semmle.order | 4 |
-| Foo.qll:1:1:27:2 | TopLevel | Foo.qll:9:17:9:19 | ClasslessPredicate foo | semmle.label | getAPredicate() |
-| Foo.qll:1:1:27:2 | TopLevel | Foo.qll:9:17:9:19 | ClasslessPredicate foo | semmle.order | 16 |
-| Foo.qll:1:1:27:2 | TopLevel | Foo.qll:13:11:13:15 | ClasslessPredicate calls | semmle.label | getAPredicate() |
-| Foo.qll:1:1:27:2 | TopLevel | Foo.qll:13:11:13:15 | ClasslessPredicate calls | semmle.order | 32 |
+| Foo.qll:1:1:31:17 | TopLevel | Foo.qll:1:1:1:17 | Import | semmle.label | getAnImport() |
+| Foo.qll:1:1:31:17 | TopLevel | Foo.qll:1:1:1:17 | Import | semmle.order | 1 |
+| Foo.qll:1:1:31:17 | TopLevel | Foo.qll:3:7:3:9 | Class Foo | semmle.label | getAClass() |
+| Foo.qll:1:1:31:17 | TopLevel | Foo.qll:3:7:3:9 | Class Foo | semmle.order | 4 |
+| Foo.qll:1:1:31:17 | TopLevel | Foo.qll:9:17:9:19 | ClasslessPredicate foo | semmle.label | getAPredicate() |
+| Foo.qll:1:1:31:17 | TopLevel | Foo.qll:9:17:9:19 | ClasslessPredicate foo | semmle.order | 16 |
+| Foo.qll:1:1:31:17 | TopLevel | Foo.qll:13:11:13:15 | ClasslessPredicate calls | semmle.label | getAPredicate() |
+| Foo.qll:1:1:31:17 | TopLevel | Foo.qll:13:11:13:15 | ClasslessPredicate calls | semmle.order | 32 |
+| Foo.qll:1:1:31:17 | TopLevel | Foo.qll:29:9:29:17 | NewType TPathNode | semmle.label | getANewType() |
+| Foo.qll:1:1:31:17 | TopLevel | Foo.qll:29:9:29:17 | NewType TPathNode | semmle.order | 78 |
 | Foo.qll:3:7:3:9 | Class Foo | Foo.qll:3:19:3:22 | TypeExpr | semmle.label | getASuperType() |
 | Foo.qll:3:7:3:9 | Class Foo | Foo.qll:3:19:3:22 | TypeExpr | semmle.order | 5 |
 | Foo.qll:3:7:3:9 | Class Foo | Foo.qll:4:3:4:17 | CharPred Foo | semmle.label | getCharPred() |
@@ -393,9 +403,15 @@ edges
 | Foo.qll:26:3:26:14 | ComparisonFormula | Foo.qll:26:3:26:6 | Boolean | semmle.order | 75 |
 | Foo.qll:26:3:26:14 | ComparisonFormula | Foo.qll:26:10:26:14 | Boolean | semmle.label | getRightOperand() |
 | Foo.qll:26:3:26:14 | ComparisonFormula | Foo.qll:26:10:26:14 | Boolean | semmle.order | 77 |
+| Foo.qll:29:9:29:17 | NewType TPathNode | Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | semmle.label | getABranch() |
+| Foo.qll:29:9:29:17 | NewType TPathNode | Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | semmle.order | 81 |
+| Foo.qll:30:3:30:28 | annotation | Foo.qll:30:10:30:27 | assume_small_delta | semmle.label | getArgs(_) |
+| Foo.qll:30:3:30:28 | annotation | Foo.qll:30:10:30:27 | assume_small_delta | semmle.order | 80 |
+| Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | Foo.qll:30:3:30:28 | annotation | semmle.label | getAnAnnotation() |
+| Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | Foo.qll:30:3:30:28 | annotation | semmle.order | 79 |
 | printAst.ql:1:1:1:28 | Import | printAst.ql:1:18:1:28 | printAstAst | semmle.label | getModuleExpr() |
-| printAst.ql:1:1:1:28 | Import | printAst.ql:1:18:1:28 | printAstAst | semmle.order | 80 |
+| printAst.ql:1:1:1:28 | Import | printAst.ql:1:18:1:28 | printAstAst | semmle.order | 84 |
 | printAst.ql:1:1:1:29 | TopLevel | printAst.ql:1:1:1:28 | Import | semmle.label | getAnImport() |
-| printAst.ql:1:1:1:29 | TopLevel | printAst.ql:1:1:1:28 | Import | semmle.order | 78 |
+| printAst.ql:1:1:1:29 | TopLevel | printAst.ql:1:1:1:28 | Import | semmle.order | 82 |
 graphProperties
 | semmle.graphKind | tree |

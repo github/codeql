@@ -283,7 +283,7 @@ abstract class RegexString extends Expr {
 
   /**
    * Helper predicate for `escapingChar`.
-   * In order to avoid negative recusrion, we return a boolean.
+   * In order to avoid negative recursion, we return a boolean.
    * This way, we can refer to `escaping(pos - 1).booleanNot()`
    * rather than to a negated version of `escaping(pos)`.
    */

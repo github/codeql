@@ -6,15 +6,28 @@ import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.IterableDeclContext
 import codeql.swift.elements.decl.NominalTypeDecl
 
-class ExtensionDeclBase extends Synth::TExtensionDecl, Decl, GenericContext, IterableDeclContext {
-  override string getAPrimaryQlClass() { result = "ExtensionDecl" }
+module Generated {
+  class ExtensionDecl extends Synth::TExtensionDecl, GenericContext, IterableDeclContext, Decl {
+    override string getAPrimaryQlClass() { result = "ExtensionDecl" }
 
-  NominalTypeDecl getImmediateExtendedTypeDecl() {
-    result =
-      Synth::convertNominalTypeDeclFromRaw(Synth::convertExtensionDeclToRaw(this)
-            .(Raw::ExtensionDecl)
-            .getExtendedTypeDecl())
+    /**
+     * Gets the extended type declaration of this extension declaration.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    NominalTypeDecl getImmediateExtendedTypeDecl() {
+      result =
+        Synth::convertNominalTypeDeclFromRaw(Synth::convertExtensionDeclToRaw(this)
+              .(Raw::ExtensionDecl)
+              .getExtendedTypeDecl())
+    }
+
+    /**
+     * Gets the extended type declaration of this extension declaration.
+     */
+    final NominalTypeDecl getExtendedTypeDecl() {
+      result = getImmediateExtendedTypeDecl().resolve()
+    }
   }
-
-  final NominalTypeDecl getExtendedTypeDecl() { result = getImmediateExtendedTypeDecl().resolve() }
 }

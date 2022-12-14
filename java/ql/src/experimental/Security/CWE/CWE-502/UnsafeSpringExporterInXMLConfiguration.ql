@@ -18,4 +18,4 @@ import UnsafeSpringExporterLib
 
 from SpringBean bean
 where isRemoteInvocationSerializingExporter(bean.getClass())
-select bean, "Unsafe deserialization in a Spring exporter bean '" + bean.getBeanIdentifier() + "'"
+select bean, "Unsafe deserialization in a Spring exporter bean '" + bean.getBeanIdentifier() + "'."

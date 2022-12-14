@@ -56,44 +56,36 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
   StringLengthConflationConfiguration() { this = "StringLengthConflationConfiguration" }
 
   override predicate isSource(DataFlow::Node node, string flowstate) {
-    // result of a call to `String.count`
-    exists(MemberRefExpr member |
-      member.getBase().getType().getName() = "String" and
-      member.getMember().(VarDecl).getName() = "count" and
-      node.asExpr() = member and
-      flowstate = "String"
-    )
-    or
-    // result of a call to `NSString.length`
-    exists(MemberRefExpr member |
-      member.getBase().getType().getName() = ["NSString", "NSMutableString"] and
-      member.getMember().(VarDecl).getName() = "length" and
-      node.asExpr() = member and
-      flowstate = "NSString"
-    )
-    or
-    // result of a call to `String.utf8.count`
-    exists(MemberRefExpr member |
-      member.getBase().getType().getName() = "String.UTF8View" and
-      member.getMember().(VarDecl).getName() = "count" and
-      node.asExpr() = member and
-      flowstate = "String.utf8"
-    )
-    or
-    // result of a call to `String.utf16.count`
-    exists(MemberRefExpr member |
-      member.getBase().getType().getName() = "String.UTF16View" and
-      member.getMember().(VarDecl).getName() = "count" and
-      node.asExpr() = member and
-      flowstate = "String.utf16"
-    )
-    or
-    // result of a call to `String.unicodeScalars.count`
-    exists(MemberRefExpr member |
-      member.getBase().getType().getName() = "String.UnicodeScalarView" and
-      member.getMember().(VarDecl).getName() = "count" and
-      node.asExpr() = member and
-      flowstate = "String.unicodeScalars"
+    exists(MemberRefExpr memberRef, string className, string varName |
+      memberRef.getBase().getType().(NominalType).getABaseType*().getName() = className and
+      memberRef.getMember().(VarDecl).getName() = varName and
+      node.asExpr() = memberRef and
+      (
+        // result of a call to `String.count`
+        className = "String" and
+        varName = "count" and
+        flowstate = "String"
+        or
+        // result of a call to `NSString.length`
+        className = ["NSString", "NSMutableString"] and
+        varName = "length" and
+        flowstate = "NSString"
+        or
+        // result of a call to `String.utf8.count`
+        className = "String.UTF8View" and
+        varName = "count" and
+        flowstate = "String.utf8"
+        or
+        // result of a call to `String.utf16.count`
+        className = "String.UTF16View" and
+        varName = "count" and
+        flowstate = "String.utf16"
+        or
+        // result of a call to `String.unicodeScalars.count`
+        className = "String.UnicodeScalarView" and
+        varName = "count" and
+        flowstate = "String.unicodeScalars"
+      )
     )
   }
 
@@ -102,40 +94,38 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
    * that sink. We actually want to report incorrect flow states.
    */
   predicate isSinkImpl(DataFlow::Node node, string flowstate) {
-    exists(
-      AbstractFunctionDecl funcDecl, CallExpr call, string funcName, string paramName, int arg
-    |
+    exists(AbstractFunctionDecl funcDecl, CallExpr call, string funcName, int arg |
       (
         // arguments to method calls...
-        exists(string className, ClassDecl c |
+        exists(string className, ClassOrStructDecl c |
           (
             // `NSRange.init`
             className = "NSRange" and
             funcName = "init(location:length:)" and
-            paramName = ["location", "length"]
+            arg = [0, 1]
             or
             // `NSString.character`
             className = ["NSString", "NSMutableString"] and
             funcName = "character(at:)" and
-            paramName = "at"
+            arg = 0
             or
             // `NSString.character`
             className = ["NSString", "NSMutableString"] and
             funcName = "substring(from:)" and
-            paramName = "from"
+            arg = 0
             or
             // `NSString.character`
             className = ["NSString", "NSMutableString"] and
             funcName = "substring(to:)" and
-            paramName = "to"
+            arg = 0
             or
             // `NSMutableString.insert`
             className = "NSMutableString" and
             funcName = "insert(_:at:)" and
-            paramName = "at"
+            arg = 1
           ) and
           c.getName() = className and
-          c.getAMember() = funcDecl and
+          c.getABaseTypeDecl*().(ClassOrStructDecl).getAMember() = funcDecl and
           call.getStaticTarget() = funcDecl and
           flowstate = "NSString"
         )
@@ -143,7 +133,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
         // arguments to function calls...
         // `NSMakeRange`
         funcName = "NSMakeRange(_:_:)" and
-        paramName = ["loc", "len"] and
+        arg = [0, 1] and
         call.getStaticTarget() = funcDecl and
         flowstate = "NSString"
         or
@@ -151,31 +141,30 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
         (
           // `String.dropFirst`, `String.dropLast`, `String.removeFirst`, `String.removeLast`
           funcName = ["dropFirst(_:)", "dropLast(_:)", "removeFirst(_:)", "removeLast(_:)"] and
-          paramName = "k"
+          arg = 0
           or
           // `String.prefix`, `String.suffix`
           funcName = ["prefix(_:)", "suffix(_:)"] and
-          paramName = "maxLength"
+          arg = 0
           or
           // `String.Index.init`
           funcName = "init(encodedOffset:)" and
-          paramName = "offset"
+          arg = 0
           or
           // `String.index`
           funcName = ["index(_:offsetBy:)", "index(_:offsetBy:limitBy:)"] and
-          paramName = "n"
+          arg = [0, 1]
           or
           // `String.formIndex`
           funcName = ["formIndex(_:offsetBy:)", "formIndex(_:offsetBy:limitBy:)"] and
-          paramName = "distance"
+          arg = [0, 1]
         ) and
         call.getStaticTarget() = funcDecl and
         flowstate = "String"
       ) and
-      // match up `funcName`, `paramName`, `arg`, `node`.
+      // match up `funcName`, `arg`, `node`.
       funcDecl.getName() = funcName and
-      funcDecl.getParam(pragma[only_bind_into](arg)).getName() = paramName and
-      call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr()
+      call.getArgument(arg).getExpr() = node.asExpr()
     )
   }
 

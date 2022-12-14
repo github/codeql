@@ -28,4 +28,19 @@ module.exports.safe = function (x) {
 	/f*g/.test(y); // OK
 }
 
+module.exports.useArguments = function () {
+	usedWithArguments.apply(this, arguments);
+}
+
+function usedWithArguments(name) {
+	/f*g/.test(name); // NOT OK
+}
+
 module.exports.snapdragon = require("./snapdragon")
+
+module.exports.foo = function (name) {
+    var data1 = name.match(/f*g/); // NOT OK
+
+    name = name.substr(1);
+    var data2 = name.match(/f*g/); // NOT OK
+}

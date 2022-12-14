@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.LiteralExpr
 
-class RegexLiteralExprBase extends Synth::TRegexLiteralExpr, LiteralExpr {
-  override string getAPrimaryQlClass() { result = "RegexLiteralExpr" }
+module Generated {
+  class RegexLiteralExpr extends Synth::TRegexLiteralExpr, LiteralExpr {
+    override string getAPrimaryQlClass() { result = "RegexLiteralExpr" }
+  }
 }

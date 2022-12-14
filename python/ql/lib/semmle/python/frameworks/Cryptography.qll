@@ -14,7 +14,7 @@ private import semmle.python.ApiGraphs
  */
 private module CryptographyModel {
   /**
-   * Provides helper predicates for the eliptic curve cryptography parts in
+   * Provides helper predicates for the elliptic curve cryptography parts in
    * `cryptography.hazmat.primitives.asymmetric.ec`.
    */
   module Ecc {

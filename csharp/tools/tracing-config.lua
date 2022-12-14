@@ -1,7 +1,9 @@
 function RegisterExtractorPack(id)
-    local extractor = GetPlatformToolsDirectory() ..
-        'Semmle.Extraction.CSharp.Driver'
-    if OperatingSystem == 'windows' then extractor = extractor .. '.exe' end
+    function Exify(path)
+        if OperatingSystem == 'windows' then return path .. '.exe' else return path end
+    end
+
+    local extractor = Exify(GetPlatformToolsDirectory() .. 'Semmle.Extraction.CSharp.Driver')
 
     function DotnetMatcherBuild(compilerName, compilerPath, compilerArguments,
                                 _languageId)
@@ -16,9 +18,11 @@ function RegisterExtractorPack(id)
         -- For now, parse the command line as follows:
         -- Everything that starts with `-` (or `/`) will be ignored.
         -- The first non-option argument is treated as the command.
-        -- if that's `build`, we append `/p:UseSharedCompilation=false` to the command line,
+        -- if that's `build`, we append `-p:UseSharedCompilation=false` to the command line,
         -- otherwise we do nothing.
         local match = false
+        local dotnetRunNeedsSeparator = false;
+        local dotnetRunInjectionIndex = nil;
         local argv = compilerArguments.argv
         if OperatingSystem == 'windows' then
             -- let's hope that this split matches the escaping rules `dotnet` applies to command line arguments
@@ -30,28 +34,102 @@ function RegisterExtractorPack(id)
             -- dotnet options start with either - or / (both are legal)
             local firstCharacter = string.sub(arg, 1, 1)
             if not (firstCharacter == '-') and not (firstCharacter == '/') then
-                Log(1, 'Dotnet subcommand detected: %s', arg)
-                if arg == 'build' or arg == 'msbuild' then match = true end
+                if (not match) then
+                    Log(1, 'Dotnet subcommand detected: %s', arg)
+                end
+                if arg == 'build' or arg == 'msbuild' or arg == 'publish' or arg == 'pack' or arg == 'test' then
+                    match = true
+                    break
+                end
+                if arg == 'run' then
+                    -- for `dotnet run`, we need to make sure that `-p:UseSharedCompilation=false` is
+                    -- not passed in as an argument to the program that is run
+                    match = true
+                    dotnetRunNeedsSeparator = true
+                    dotnetRunInjectionIndex = i + 1
+                end
+            end
+            -- if we see a separator to `dotnet run`, inject just prior to the existing separator
+            if arg == '--' then
+                dotnetRunNeedsSeparator = false
+                dotnetRunInjectionIndex = i
                 break
+            end
+            -- if we see an option to `dotnet run` (e.g., `--project`), inject just prior
+            -- to the last option
+            if firstCharacter == '-' then
+                dotnetRunNeedsSeparator = false
+                dotnetRunInjectionIndex = i
             end
         end
         if match then
-            return {
-                order = ORDER_REPLACE,
-                invocation = BuildExtractorInvocation(id, compilerPath,
-                    compilerPath,
-                    compilerArguments, nil, {
-                    '/p:UseSharedCompilation=false'
-                })
-            }
+            local injections = { '-p:UseSharedCompilation=false' }
+            if dotnetRunNeedsSeparator then
+                table.insert(injections, '--')
+            end
+            if dotnetRunInjectionIndex == nil then
+                -- Simple case; just append at the end
+                return {
+                    order = ORDER_REPLACE,
+                    invocation = BuildExtractorInvocation(id, compilerPath, compilerPath, compilerArguments, nil,
+                        injections)
+                }
+            end
+
+            -- Complex case; splice injections into the middle of the command line
+            for i, injectionArg in ipairs(injections) do
+                table.insert(argv, dotnetRunInjectionIndex + i - 1, injectionArg)
+            end
+
+            if OperatingSystem == 'windows' then
+                return {
+                    order = ORDER_REPLACE,
+                    invocation = {
+                        path = AbsolutifyExtractorPath(id, compilerPath),
+                        arguments = {
+                            commandLineString = table.concat(argv, " ")
+                        }
+                    }
+                }
+            else
+                return {
+                    order = ORDER_REPLACE,
+                    invocation = {
+                        path = AbsolutifyExtractorPath(id, compilerPath),
+                        arguments = {
+                            argv = argv
+                        }
+                    }
+                }
+            end
         end
         return nil
     end
 
+    function MsBuildMatcher(compilerName, compilerPath, compilerArguments, _languageId)
+        if MatchCompilerName('^' .. Exify('msbuild') .. '$', compilerName, compilerPath,
+            compilerArguments) or
+            MatchCompilerName('^' .. Exify('xbuild') .. '$', compilerName, compilerPath,
+                compilerArguments) then
+            return {
+                order = ORDER_REPLACE,
+                invocation = BuildExtractorInvocation(id, compilerPath,
+                    compilerPath,
+                    compilerArguments,
+                    nil, {
+                    '/p:UseSharedCompilation=false',
+                    '/p:MvcBuildViews=true'
+                })
+
+            }
+        end
+    end
+
     local windowsMatchers = {
         DotnetMatcherBuild,
+        MsBuildMatcher,
         CreatePatternMatcher({ '^csc.*%.exe$' }, MatchCompilerName, extractor, {
-            prepend = { '--cil', '--compiler', '"${compiler}"' },
+            prepend = { '--compiler', '"${compiler}"' },
             order = ORDER_BEFORE
         }),
         CreatePatternMatcher({ '^fakes.*%.exe$', 'moles.*%.exe' },
@@ -64,7 +142,7 @@ function RegisterExtractorPack(id)
 
             local seenCompilerCall = false
             local argv = NativeArgumentsToArgv(compilerArguments.nativeArgumentPointer)
-            local extractorArgs = { '--cil', '--compiler' }
+            local extractorArgs = { '--compiler' }
             for _, arg in ipairs(argv) do
                 if arg:match('csc%.dll$') then
                     seenCompilerCall = true
@@ -92,25 +170,11 @@ function RegisterExtractorPack(id)
         DotnetMatcherBuild,
         CreatePatternMatcher({ '^mcs%.exe$', '^csc%.exe$' }, MatchCompilerName,
             extractor, {
-            prepend = { '--cil', '--compiler', '"${compiler}"' },
+            prepend = { '--compiler', '"${compiler}"' },
             order = ORDER_BEFORE
-        }), function(compilerName, compilerPath, compilerArguments, _languageId)
-            if MatchCompilerName('^msbuild$', compilerName, compilerPath,
-                compilerArguments) or
-                MatchCompilerName('^xbuild$', compilerName, compilerPath,
-                    compilerArguments) then
-                return {
-                    order = ORDER_REPLACE,
-                    invocation = BuildExtractorInvocation(id, compilerPath,
-                        compilerPath,
-                        compilerArguments,
-                        nil, {
-                        '/p:UseSharedCompilation=false'
-                    })
-
-                }
-            end
-        end, function(compilerName, compilerPath, compilerArguments, _languageId)
+        }),
+        MsBuildMatcher,
+        function(compilerName, compilerPath, compilerArguments, _languageId)
             -- handle cases like `dotnet exec csc.dll <args>` and `mono(-sgen64) csc.exe <args>`
             if compilerName ~= 'dotnet' and not compilerName:match('^mono') then
                 return nil
@@ -118,7 +182,7 @@ function RegisterExtractorPack(id)
 
             local seenCompilerCall = false
             local argv = compilerArguments.argv
-            local extractorArgs = { '--cil', '--compiler' }
+            local extractorArgs = { '--compiler' }
             for _, arg in ipairs(argv) do
                 if arg:match('csc%.dll$') or arg:match('csc%.exe$') or arg:match('mcs%.exe$') then
                     seenCompilerCall = true

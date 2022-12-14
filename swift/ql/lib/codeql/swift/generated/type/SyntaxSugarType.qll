@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.SugarType
 
-class SyntaxSugarTypeBase extends Synth::TSyntaxSugarType, SugarType { }
+module Generated {
+  class SyntaxSugarType extends Synth::TSyntaxSugarType, SugarType { }
+}

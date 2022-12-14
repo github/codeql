@@ -1,6 +1,7 @@
 /**
  * @name Insecure temporary file
- * @description Creating a temporary file that is accessible by other users TODO:
+ * @description Creating a temporary file that is accessible by other users can
+ * lead to information disclosure and sometimes remote code execution.
  * @kind path-problem
  * @id js/insecure-temporary-file
  * @problem.severity warning

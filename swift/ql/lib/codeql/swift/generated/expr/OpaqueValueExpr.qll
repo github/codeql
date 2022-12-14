@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class OpaqueValueExprBase extends Synth::TOpaqueValueExpr, Expr {
-  override string getAPrimaryQlClass() { result = "OpaqueValueExpr" }
+module Generated {
+  class OpaqueValueExpr extends Synth::TOpaqueValueExpr, Expr {
+    override string getAPrimaryQlClass() { result = "OpaqueValueExpr" }
+  }
 }

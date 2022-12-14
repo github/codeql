@@ -3,7 +3,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.dataflow.FlowSummary
+private import codeql.ruby.dataflow.FlowSummary as FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.Regexp as RE
@@ -105,6 +105,18 @@ module String {
     input = "Argument[self]" and
     output = "ReturnValue" and
     preservesValue = false
+  }
+
+  /** A `String` callable with a flow summary. */
+  abstract class SummarizedCallable extends FlowSummary::SummarizedCallable {
+    bindingset[this]
+    SummarizedCallable() { any() }
+  }
+
+  abstract private class SimpleSummarizedCallable extends SummarizedCallable,
+    FlowSummary::SimpleSummarizedCallable {
+    bindingset[this]
+    SimpleSummarizedCallable() { any() }
   }
 
   private class NewSummary extends SummarizedCallable {

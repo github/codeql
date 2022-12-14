@@ -11,7 +11,7 @@
       by changes to other packages. If this metric value is high, a package is easily 
       influenced. If the values is low, the impact of changes to other packages is likely to be minimal. Instability 
       is estimated as the number of outgoing dependencies relative to the total
-      number of depencies.</p>
+      number of dependencies.</p>
 </overview>
 
 <references>

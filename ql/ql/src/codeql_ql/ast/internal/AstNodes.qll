@@ -60,7 +60,7 @@ newtype TAstNode =
   TPredicateExpr(QL::PredicateExpr pe) or
   TAnnotation(QL::Annotation annot) or
   TAnnotationArg(QL::AnnotArg arg) or
-  TYamlCommemt(Yaml::Comment yc) or
+  TYamlComment(Yaml::Comment yc) or
   TYamlEntry(Yaml::Entry ye) or
   TYamlKey(Yaml::Key yk) or
   TYamlListitem(Yaml::Listitem yli) or
@@ -86,7 +86,7 @@ class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
 class TTypeRef = TImport or TModuleExpr or TType;
 
-class TYamlNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
+class TYamlNode = TYamlComment or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
 
 class TSignatureExpr = TPredicateExpr or TType or TModuleExpr;
 
@@ -125,7 +125,7 @@ private QL::AstNode toQLExpr(AST::AstNode n) {
 }
 
 Yaml::AstNode toGenerateYaml(AST::AstNode n) {
-  n = TYamlCommemt(result) or
+  n = TYamlComment(result) or
   n = TYamlEntry(result) or
   n = TYamlKey(result) or
   n = TYamlListitem(result) or

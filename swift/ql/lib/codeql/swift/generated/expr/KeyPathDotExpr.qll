@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class KeyPathDotExprBase extends Synth::TKeyPathDotExpr, Expr {
-  override string getAPrimaryQlClass() { result = "KeyPathDotExpr" }
+module Generated {
+  class KeyPathDotExpr extends Synth::TKeyPathDotExpr, Expr {
+    override string getAPrimaryQlClass() { result = "KeyPathDotExpr" }
+  }
 }

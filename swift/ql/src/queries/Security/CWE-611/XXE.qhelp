@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Parsing untrusted XML files with a weakly configured XML parser may lead to an XML External Entity (XXE) attack. This type of attack
+uses external entity references to access arbitrary files on a system, carry out denial-of-service attacks, or server-side
+request forgery. Even when the result of parsing is not returned to the user, out-of-band
+data retrieval techniques may allow attackers to steal sensitive data. Denial of services can also be
+carried out in this situation.
+</p>
+</overview>
+
+<recommendation>
+<p>
+The easiest way to prevent XXE attacks is to disable external entity handling when
+parsing untrusted data.  How this is done depends on the library being used. Note that some
+libraries, such as recent versions of <code>XMLParser</code>, disable entity expansion by default,
+so unless you have explicitly enabled entity expansion, no further action needs to be taken.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses the <code>XMLParser</code> class to parse a string <code>data</code>.
+If that string is from an untrusted source, this code may be vulnerable to an XXE attack, since
+the parser is also setting its <code>shouldResolveExternalEntities</code> option to <code>true</code>:
+</p>
+<sample src="XXEBad.swift" />
+
+<p>
+To guard against XXE attacks, the <code>shouldResolveExternalEntities</code> option should be
+left unset or explicitly set to <code>false</code>.
+</p>
+<sample src="XXEGood.swift" />
+
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing">XML External Entity (XXE) Processing</a>.
+</li>
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html">XML External Entity Prevention Cheat Sheet</a>.
+</li>
+<li>
+Timothy D. Morgan and Omar Al Ibrahim
+<a href="https://research.nccgroup.com/2014/05/19/xml-schema-dtd-and-entity-attacks-a-compendium-of-known-techniques/">XML Schema, DTD, and Entity Attacks: A Compendium of Known Techniques</a>.
+</li>
+<li>
+Timur Yunusov, Alexey Osipov:
+<a href="https://www.slideshare.net/qqlan/bh-ready-v4">XML Out-Of-Band Data Retrieval</a>.
+</li>
+</references>
+</qhelp>

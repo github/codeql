@@ -36,6 +36,13 @@ abstract class RemoteFlowSource extends DataFlow::Node {
   abstract string getSourceType();
 }
 
+/**
+ * A module for importing frameworks that define remote flow sources.
+ */
+private module RemoteFlowSources {
+  private import semmle.code.java.frameworks.android.Widget
+}
+
 private class ExternalRemoteFlowSource extends RemoteFlowSource {
   ExternalRemoteFlowSource() { sourceNode(this, "remote") }
 
@@ -88,7 +95,7 @@ private class ReverseDnsSource extends RemoteFlowSource {
   ReverseDnsSource() {
     // Try not to trigger on `localhost`.
     exists(MethodAccess m | m = this.asExpr() |
-      m.getMethod() instanceof ReverseDNSMethod and
+      m.getMethod() instanceof ReverseDnsMethod and
       not exists(MethodAccess l |
         (variableStep(l, m.getQualifier()) or l = m.getQualifier()) and
         l.getMethod().getName() = "getLocalHost"
@@ -165,9 +172,7 @@ abstract class UserInput extends DataFlow::Node { }
 /**
  * Input that may be controlled by a remote user.
  */
-private class RemoteUserInput extends UserInput {
-  RemoteUserInput() { this instanceof RemoteFlowSource }
-}
+private class RemoteUserInput extends UserInput instanceof RemoteFlowSource { }
 
 /** A node with input that may be controlled by a local user. */
 abstract class LocalUserInput extends UserInput { }
@@ -221,8 +226,8 @@ class TypeInetAddr extends RefType {
 }
 
 /** A reverse DNS method. */
-class ReverseDNSMethod extends Method {
-  ReverseDNSMethod() {
+class ReverseDnsMethod extends Method {
+  ReverseDnsMethod() {
     this.getDeclaringType() instanceof TypeInetAddr and
     (
       this.getName() = "getHostName" or
@@ -230,6 +235,9 @@ class ReverseDNSMethod extends Method {
     )
   }
 }
+
+/** DEPRECATED: Alias for ReverseDnsMethod */
+deprecated class ReverseDNSMethod = ReverseDnsMethod;
 
 /** Android `Intent` that may have come from a hostile application. */
 class AndroidIntentInput extends DataFlow::Node {
@@ -245,6 +253,12 @@ class AndroidIntentInput extends DataFlow::Node {
     exists(Method m, AndroidReceiveIntentMethod rI |
       m.overrides*(rI) and
       this.asParameter() = m.getParameter(1) and
+      receiverType = m.getDeclaringType()
+    )
+    or
+    exists(Method m, AndroidServiceIntentMethod sI |
+      m.overrides*(sI) and
+      this.asParameter() = m.getParameter(0) and
       receiverType = m.getDeclaringType()
     )
   }

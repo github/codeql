@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.AnyMetatypeType
 
-class MetatypeTypeBase extends Synth::TMetatypeType, AnyMetatypeType {
-  override string getAPrimaryQlClass() { result = "MetatypeType" }
+module Generated {
+  class MetatypeType extends Synth::TMetatypeType, AnyMetatypeType {
+    override string getAPrimaryQlClass() { result = "MetatypeType" }
+  }
 }

@@ -61,9 +61,7 @@ module TaintedPath {
   }
 
   /** A source of untrusted data, considered as a taint source for path traversal. */
-  class UntrustedFlowAsSource extends Source {
-    UntrustedFlowAsSource() { this instanceof UntrustedFlowSource }
-  }
+  class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
 
   /** A path expression, considered as a taint sink for path traversal. */
   class PathAsSink extends Sink {

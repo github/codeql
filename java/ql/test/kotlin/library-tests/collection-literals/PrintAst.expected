@@ -1,0 +1,12 @@
+test.kt:
+#    0| [CompilationUnit] test
+#    1|   1: [Interface] Ann
+#-----|     -3: (Annotations)
+#    0|       1: [Annotation] Retention
+#    0|         1: [VarAccess] RetentionPolicy.RUNTIME
+#    0|           -1: [TypeAccess] RetentionPolicy
+#    1|     1: [Method] arr1
+#    1|       3: [TypeAccess] String[]
+#    1|         0: [TypeAccess] String
+#    1|     2: [Method] arr2
+#    1|       3: [TypeAccess] int[]

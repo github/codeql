@@ -1,7 +1,7 @@
 /**
  * @id py/examples/override-method
  * @name Override of method
- * @description Finds methods that overide MyClass.methodName
+ * @description Finds methods that override MyClass.methodName
  * @tags method
  *       override
  */

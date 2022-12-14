@@ -31,7 +31,7 @@ module DomBasedXss {
       )
       or
       // call to an Angular method that interprets its argument as HTML
-      any(AngularJS::AngularJSCall call).interpretsArgumentAsHtml(this.asExpr())
+      any(AngularJS::AngularJSCallNode call).interpretsArgumentAsHtml(this)
       or
       // call to a WinJS function that interprets its argument as HTML
       exists(DataFlow::MethodCallNode mcn, string m |
@@ -130,12 +130,12 @@ module DomBasedXss {
   class DomSink extends Sink {
     DomSink() {
       // Call to a DOM function that inserts its argument into the DOM
-      any(DomMethodCallExpr call).interpretsArgumentsAsHtml(this.asExpr())
+      any(DomMethodCallNode call).interpretsArgumentsAsHtml(this)
       or
       // Assignment to a dangerous DOM property
-      exists(DomPropWriteNode pw |
+      exists(DomPropertyWrite pw |
         pw.interpretsValueAsHtml() and
-        this = DataFlow::valueNode(pw.getRhs())
+        this = pw.getRhs()
       )
       or
       // `html` or `source.html` properties of React Native `WebView`
@@ -159,7 +159,7 @@ module DomBasedXss {
       )
       or
       exists(DataFlow::MethodCallNode ccf |
-        isDomValue(ccf.getReceiver().asExpr()) and
+        isDomNode(ccf.getReceiver()) and
         ccf.getMethodName() = "createContextualFragment" and
         this = ccf.getArgument(0)
       )
@@ -318,9 +318,7 @@ module DomBasedXss {
   }
 
   /** A source of remote user input, considered as a flow source for DOM-based XSS. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * A flow-label representing tainted values where the prefix is attacker controlled.
@@ -341,5 +339,9 @@ module DomBasedXss {
       label = prefixLabel() and
       outcome = super.getPolarity()
     }
+  }
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("html-injection").asSink() }
   }
 }

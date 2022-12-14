@@ -12,7 +12,7 @@ private import internal.ConstantExprs
  * relation). The refinement manifests itself in two changes:
  *
  * - The successor relation on `BasicBlock`s uses `successors_adapted`
- * (instead of `successors_extended` used by `PrimtiveBasicBlock`s). Consequently,
+ * (instead of `successors_extended` used by `PrimitiveBasicBlock`s). Consequently,
  * some edges between `BasicBlock`s may be removed. Example:
  * ```
  * x = 1;      // s1

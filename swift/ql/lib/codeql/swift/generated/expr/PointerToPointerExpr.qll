@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class PointerToPointerExprBase extends Synth::TPointerToPointerExpr, ImplicitConversionExpr {
-  override string getAPrimaryQlClass() { result = "PointerToPointerExpr" }
+module Generated {
+  class PointerToPointerExpr extends Synth::TPointerToPointerExpr, ImplicitConversionExpr {
+    override string getAPrimaryQlClass() { result = "PointerToPointerExpr" }
+  }
 }

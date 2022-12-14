@@ -1,7 +1,15 @@
-#-----| BasicObject
-
 #-----| Class
 #-----|  -> Module
+
+#-----| EsotericInstanceMethods
+
+#-----| MyStruct
+
+#-----| Struct
+
+#-----| UnresolvedNamespace
+
+#-----| BasicObject
 
 #-----| Complex
 #-----|  -> Numeric
@@ -29,43 +37,104 @@
 #-----|  -> Object
 
 calls.rb:
-#   15| M
+#   21| M
 
-#   29| C
+#   43| C
 #-----|  -> Object
 
-#   51| D
+#   65| D
 #-----|  -> C
 
-#   77| Integer
+#   91| Integer
 #-----|  -> Numeric
 
-#   82| String
+#   96| String
 #-----|  -> Object
 
-#   86| Kernel
+#  100| Kernel
 
-#   90| Module
+#  105| Module
 #-----|  -> Object
 
-#   97| Object
+#  115| Object
 #-----|  -> BasicObject
 
-#  102| Hash
+#  120| Hash
 #-----|  -> Object
 
-#  106| Array
+#  125| Array
 #-----|  -> Object
 
-#  144| S
+#  165| S
 #-----|  -> Object
 
-#  150| A
+#  171| A
 #-----|  -> B
 #-----|  -> S
 
-#  155| B
+#  176| B
 #-----|  -> S
+
+#  190| Singletons
+#-----|  -> Object
+
+#  310| SelfNew
+#-----|  -> Object
+
+#  325| C1
+#-----|  -> Object
+
+#  331| C2
+#-----|  -> C1
+
+#  337| C3
+#-----|  -> C2
+
+#  377| SingletonOverride1
+#-----|  -> Object
+
+#  412| SingletonOverride2
+#-----|  -> SingletonOverride1
+
+#  433| ConditionalInstanceMethods
+#-----|  -> Object
+
+#  496| ExtendSingletonMethod
+
+#  506| ExtendSingletonMethod2
+
+#  512| ExtendSingletonMethod3
+
+#  525| ProtectedMethodInModule
+
+#  531| ProtectedMethods
+#-----|  -> Object
+
+#  550| ProtectedMethodsSub
+#-----|  -> ProtectedMethods
+
+#  564| SingletonUpCall_Base
+#-----|  -> Object
+
+#  568| SingletonUpCall_Sub
+#-----|  -> SingletonUpCall_Base
+
+#  576| SingletonUpCall_SubSub
+#-----|  -> SingletonUpCall_Sub
+
+#  583| SingletonA
+#-----|  -> Object
+
+#  596| SingletonB
+#-----|  -> SingletonA
+
+#  605| SingletonC
+#-----|  -> SingletonA
+
+#  618| Included
+
+#  626| IncludesIncluded
+#-----|  -> Object
 
 hello.rb:
 #    1| EnglishWords
@@ -75,6 +144,13 @@ hello.rb:
 
 #   18| HelloWorld
 #-----|  -> Greeting
+
+instance_fields.rb:
+#   11| A_target
+#-----|  -> Object
+
+#   26| B_target
+#-----|  -> Object
 
 modules.rb:
 #    1| Empty
@@ -144,17 +220,39 @@ modules.rb:
 #  116| XX::YY
 #-----|  -> YY
 
-#  120| Test::Foo1::Bar::Baz
+#  123| Test::Foo1::Bar::Baz
 
 modules_rec.rb:
 #    1| B::A
-#-----|  -> Object
-
-#    4| A::B
 #-----|  -> Object
 
 private.rb:
 #    1| E
 #-----|  -> Object
 
-#   42| F
+#   62| F
+
+#   82| PrivateOverride1
+#-----|  -> Object
+
+#   96| PrivateOverride2
+#-----|  -> PrivateOverride1
+
+toplevel_self_singleton.rb:
+#    2| A::B
+#-----|  -> Object
+
+#   24| Good
+
+unresolved_subclass.rb:
+#    1| ResolvableBaseClass
+#-----|  -> Object
+
+#    4| UnresolvedNamespace::Subclass1
+#-----|  -> ResolvableBaseClass
+
+#    7| UnresolvedNamespace::Subclass2
+#-----|  -> UnresolvedNamespace::Subclass1
+
+#   11| UnresolvedNamespace::A
+#-----|  -> Object

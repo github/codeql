@@ -203,3 +203,32 @@ class OtherClass {
     this.accessorAroundField = source(); // NOT OK
   }
 }
+
+testlib.foo.memberSink(source()); // NOT OK
+testlib.bar.memberSink(source()); // NOT OK
+testlib.memberSink(source()); // OK
+testlib.overloadedSink('safe', source()); // OK
+testlib.overloadedSink('danger', source()); // NOT OK
+
+function typeVars() {
+  testlib.typevar.a.b().c.mySink(source()); // NOT OK
+
+  testlib.typevar.mySink(source()); // OK - does not match sub path
+  testlib.typevar.a.mySink(source()); // OK - does not match sub path
+  testlib.typevar.a.b.mySink(source()); // OK - does not match sub path
+  testlib.typevar.a.b.c.mySink(source()); // OK - does not match sub path
+  testlib.typevar.a.b(1).c.mySink(source()); // OK - does not match sub path
+
+  testlib.typevar.a.b().c.a.b().c.mySink(source(), 0); // OK
+  testlib.typevar.a.b().c.a.b().c.mySink(0, source()); // NOT OK
+
+  testlib.typevar.left.x.right.mySink(source()); // NOT OK
+  testlib.typevar.left.left.x.right.right.mySink(source()); // NOT OK
+  testlib.typevar.left.x.right.right.mySink(source()); // OK - mismatched left and right
+  testlib.typevar.left.left.x.right.mySink(source()); // OK - mismatched left and right
+
+  testlib.typevar.getThis().getThis().left.x.right.mySink(source()); // NOT OK
+  testlib.typevar.left.getThis().getThis().x.right.mySink(source()); // NOT OK
+  testlib.typevar.left.x.getThis().getThis().right.mySink(source()); // NOT OK
+  testlib.typevar.left.x.right.getThis().getThis().mySink(source()); // NOT OK
+}

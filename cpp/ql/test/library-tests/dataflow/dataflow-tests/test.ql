@@ -77,27 +77,9 @@ module IRTest {
       )
     }
 
-    override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-      exists(GlobalOrNamespaceVariable var | var.getName().matches("flowTestGlobal%") |
-        writesVariable(n1.asInstruction(), var) and
-        var = n2.asVariable()
-        or
-        readsVariable(n2.asInstruction(), var) and
-        var = n1.asVariable()
-      )
-    }
-
     override predicate isBarrier(DataFlow::Node barrier) {
       barrier.asExpr().(VariableAccess).getTarget().hasName("barrier") or
       barrier = DataFlow::InstructionBarrierGuard<testBarrierGuard/3>::getABarrierNode()
     }
-  }
-
-  private predicate readsVariable(LoadInstruction load, Variable var) {
-    load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
-  }
-
-  private predicate writesVariable(StoreInstruction store, Variable var) {
-    store.getDestinationAddress().(VariableAddressInstruction).getAstVariable() = var
   }
 }

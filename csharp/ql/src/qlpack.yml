@@ -1,5 +1,5 @@
 name: codeql/csharp-queries
-version: 0.3.3-dev
+version: 0.4.6-dev
 groups: 
   - csharp
   - queries
@@ -7,5 +7,5 @@ suites: codeql-suites
 extractor: csharp
 defaultSuiteFile: codeql-suites/csharp-code-scanning.qls
 dependencies:
-  codeql/csharp-all: "*"
-  codeql/suite-helpers: "*"
+  codeql/csharp-all: ${workspace}
+  codeql/suite-helpers: ${workspace}

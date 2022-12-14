@@ -218,7 +218,7 @@ namespace Semmle.Extraction.CIL
         public PdbSourceFile CreateSourceFile(PDB.ISourceFile file) => sourceFiles[file];
 
         /// <summary>
-        /// Creates a folder entitiy with the given path.
+        /// Creates a folder entity with the given path.
         /// </summary>
         /// <param name="path">The path of the folder.</param>
         /// <returns>A folder entity.</returns>

@@ -135,5 +135,5 @@ where
   sink.getNode().asExpr() = va and
   missingGuard(va, effect)
 select sink.getNode(), source, sink,
-  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
-  getExpr(source.getNode()), "Uncontrolled value"
+  "This arithmetic expression depends on an $@, potentially causing an " + effect + ".",
+  getExpr(source.getNode()), "uncontrolled value"

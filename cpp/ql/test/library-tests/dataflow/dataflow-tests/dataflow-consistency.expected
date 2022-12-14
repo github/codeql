@@ -6,6 +6,8 @@ uniqueNodeToString
 missingToString
 parameterCallable
 localFlowIsLocal
+readStepIsLocal
+storeStepIsLocal
 compatibleTypesReflexive
 unreachableNodeCCtx
 localCallNodes
@@ -87,3 +89,10 @@ postWithInFlow
 | test.cpp:465:3:465:4 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:465:4:465:4 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:470:22:470:22 | x [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:499:3:499:4 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:499:4:499:4 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:505:35:505:35 | x [inner post update] | PostUpdateNode should not be the target of local flow. |
+viableImplInCallContextTooLarge
+uniqueParameterNodeAtPosition
+uniqueParameterNodePosition
+uniqueContentApprox

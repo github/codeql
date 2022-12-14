@@ -3,10 +3,15 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.BuiltinLiteralExpr
 
-class StringLiteralExprBase extends Synth::TStringLiteralExpr, BuiltinLiteralExpr {
-  override string getAPrimaryQlClass() { result = "StringLiteralExpr" }
+module Generated {
+  class StringLiteralExpr extends Synth::TStringLiteralExpr, BuiltinLiteralExpr {
+    override string getAPrimaryQlClass() { result = "StringLiteralExpr" }
 
-  string getValue() {
-    result = Synth::convertStringLiteralExprToRaw(this).(Raw::StringLiteralExpr).getValue()
+    /**
+     * Gets the value of this string literal expression.
+     */
+    string getValue() {
+      result = Synth::convertStringLiteralExprToRaw(this).(Raw::StringLiteralExpr).getValue()
+    }
   }
 }

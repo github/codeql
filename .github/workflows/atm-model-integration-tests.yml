@@ -1,0 +1,12 @@
+name: ATM Model Integration Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  hello-world:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: foo
+        run: echo "Hello world"

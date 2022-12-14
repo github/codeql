@@ -65,13 +65,17 @@ private class DefaultSafeExternalApi extends SafeExternalApi {
 
 /** A node representing data being passed to an external API through a call. */
 class ExternalApiDataNode extends DataFlow::Node {
-  DataFlowPrivate::DataFlowCall call;
   DataFlowPrivate::DataFlowCallable callable;
   int i;
 
   ExternalApiDataNode() {
-    exists(call.getLocation().getFile().getRelativePath()) and
-    callable = call.getCallable() and
+    exists(DataFlowPrivate::DataFlowCall call |
+      exists(call.getLocation().getFile().getRelativePath())
+    |
+      callable = call.getCallable() and
+      // TODO: this ignores some complexity of keyword arguments (especially keyword-only args)
+      this = call.getArg(i)
+    ) and
     not any(SafeExternalApi safe).getSafeCallable() = callable and
     exists(Value cv | cv = callable.getCallableValue() |
       cv.isAbsent()
@@ -82,8 +86,6 @@ class ExternalApiDataNode extends DataFlow::Node {
       or
       not exists(cv.(CallableValue).getScope().getLocation().getFile().getRelativePath())
     ) and
-    // TODO: this ignores some complexity of keyword arguments (especially keyword-only args)
-    this = call.getArg(i) and
     // Not already modeled as a taint step
     not exists(DataFlow::Node next | TaintTrackingPrivate::defaultAdditionalTaintStep(this, next)) and
     // for `list.append(x)`, we have a additional taint step from x -> [post] list.
@@ -129,7 +131,9 @@ class UntrustedExternalApiDataNode extends ExternalApiDataNode {
 /** DEPRECATED: Alias for UntrustedExternalApiDataNode */
 deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
 
+/** An external API which is used with untrusted data. */
 private newtype TExternalApi =
+  /** An untrusted API method `m` where untrusted data is passed at `index`. */
   TExternalApiParameter(DataFlowPrivate::DataFlowCallable callable, int index) {
     exists(UntrustedExternalApiDataNode n |
       callable = n.getCallable() and

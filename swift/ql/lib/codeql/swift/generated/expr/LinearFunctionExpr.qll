@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class LinearFunctionExprBase extends Synth::TLinearFunctionExpr, ImplicitConversionExpr {
-  override string getAPrimaryQlClass() { result = "LinearFunctionExpr" }
+module Generated {
+  class LinearFunctionExpr extends Synth::TLinearFunctionExpr, ImplicitConversionExpr {
+    override string getAPrimaryQlClass() { result = "LinearFunctionExpr" }
+  }
 }

@@ -2,7 +2,72 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.GenericTypeDecl
+import codeql.swift.elements.type.GenericTypeParamType
+import codeql.swift.elements.decl.ValueDecl
 
-class OpaqueTypeDeclBase extends Synth::TOpaqueTypeDecl, GenericTypeDecl {
-  override string getAPrimaryQlClass() { result = "OpaqueTypeDecl" }
+module Generated {
+  /**
+   * A declaration of an opaque type, that is formally equivalent to a given type but abstracts it
+   * away.
+   *
+   * Such a declaration is implicitly given when a declaration is written with an opaque result type,
+   * for example
+   * ```
+   * func opaque() -> some SignedInteger { return 1 }
+   * ```
+   * See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html.
+   */
+  class OpaqueTypeDecl extends Synth::TOpaqueTypeDecl, GenericTypeDecl {
+    override string getAPrimaryQlClass() { result = "OpaqueTypeDecl" }
+
+    /**
+     * Gets the naming declaration of this opaque type declaration.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    ValueDecl getImmediateNamingDeclaration() {
+      result =
+        Synth::convertValueDeclFromRaw(Synth::convertOpaqueTypeDeclToRaw(this)
+              .(Raw::OpaqueTypeDecl)
+              .getNamingDeclaration())
+    }
+
+    /**
+     * Gets the naming declaration of this opaque type declaration.
+     */
+    final ValueDecl getNamingDeclaration() { result = getImmediateNamingDeclaration().resolve() }
+
+    /**
+     * Gets the `index`th opaque generic parameter of this opaque type declaration (0-based).
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    GenericTypeParamType getImmediateOpaqueGenericParam(int index) {
+      result =
+        Synth::convertGenericTypeParamTypeFromRaw(Synth::convertOpaqueTypeDeclToRaw(this)
+              .(Raw::OpaqueTypeDecl)
+              .getOpaqueGenericParam(index))
+    }
+
+    /**
+     * Gets the `index`th opaque generic parameter of this opaque type declaration (0-based).
+     */
+    final GenericTypeParamType getOpaqueGenericParam(int index) {
+      result = getImmediateOpaqueGenericParam(index).resolve()
+    }
+
+    /**
+     * Gets any of the opaque generic parameters of this opaque type declaration.
+     */
+    final GenericTypeParamType getAnOpaqueGenericParam() { result = getOpaqueGenericParam(_) }
+
+    /**
+     * Gets the number of opaque generic parameters of this opaque type declaration.
+     */
+    final int getNumberOfOpaqueGenericParams() {
+      result = count(int i | exists(getOpaqueGenericParam(i)))
+    }
+  }
 }

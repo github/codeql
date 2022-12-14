@@ -50,9 +50,7 @@ class SpringBeanAnnotatedMethod extends CallableEntryPoint {
 /**
  * A live entry point within a Spring controller.
  */
-class SpringControllerEntryPoint extends CallableEntryPoint {
-  SpringControllerEntryPoint() { this instanceof SpringControllerMethod }
-}
+class SpringControllerEntryPoint extends CallableEntryPoint instanceof SpringControllerMethod { }
 
 /**
  * A method that is accessible in a response, because it is part of the returned model,
@@ -104,8 +102,8 @@ class SpringAspect extends CallableEntryPoint {
 /**
  * Spring Shell provides annotations for identifying methods that contribute CLI commands.
  */
-class SpringCLI extends CallableEntryPoint {
-  SpringCLI() {
+class SpringCli extends CallableEntryPoint {
+  SpringCli() {
     (
       hasAnnotation("org.springframework.shell.core.annotation", "CliCommand") or
       hasAnnotation("org.springframework.shell.core.annotation", "CliAvailabilityIndicator")
@@ -115,6 +113,9 @@ class SpringCLI extends CallableEntryPoint {
         .hasQualifiedName("org.springframework.shell.core", "CommandMarker")
   }
 }
+
+/** DEPRECATED: Alias for SpringCli */
+deprecated class SpringCLI = SpringCli;
 
 /**
  * An entry point which acts as a remote API for a Flex application to access a Spring application.

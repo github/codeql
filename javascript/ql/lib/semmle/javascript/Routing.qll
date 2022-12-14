@@ -282,7 +282,7 @@ module Routing {
      * Gets an HTTP method name which this node will accept, or nothing if the node accepts all HTTP methods, not
      * taking into account the context from ancestors or children nodes.
      */
-    HTTP::RequestMethodName getOwnHttpMethod() { none() } // Overridden in subclass
+    Http::RequestMethodName getOwnHttpMethod() { none() } // Overridden in subclass
 
     private Node getAUseSiteInRouteSetup() {
       if this.getParent() instanceof RouteSetup
@@ -383,7 +383,7 @@ module Routing {
        * Gets an HTTP request method name (in upper case) matched by this node, or nothing
        * if all HTTP request method names are accepted.
        */
-      HTTP::RequestMethodName getHttpMethod() { none() }
+      Http::RequestMethodName getHttpMethod() { none() }
     }
 
     private class ValueNodeImpl extends Node, MkValueNode {
@@ -407,7 +407,7 @@ module Routing {
 
       override string getRelativePath() { result = range.getRelativePath() }
 
-      override HTTP::RequestMethodName getOwnHttpMethod() { result = range.getHttpMethod() }
+      override Http::RequestMethodName getOwnHttpMethod() { result = range.getHttpMethod() }
     }
 
     private StepSummary routeStepSummary() {
@@ -434,7 +434,7 @@ module Routing {
         or
         StepSummary::smallstep(result, this, routeStepSummary())
         or
-        HTTP::routeHandlerStep(result, this)
+        Http::routeHandlerStep(result, this)
         or
         RouteHandlerTrackingStep::step(result, this)
         or
@@ -508,9 +508,7 @@ module Routing {
     /**
      * An array which has been determined to be a route node, seen as a route node with arguments.
      */
-    private class ImpliedArrayRoute extends ValueNode::WithArguments, DataFlow::ArrayCreationNode {
-      ImpliedArrayRoute() { this instanceof ValueNode::UseSite }
-
+    private class ImpliedArrayRoute extends ValueNode::WithArguments, DataFlow::ArrayCreationNode instanceof ValueNode::UseSite {
       override DataFlow::Node getArgumentNode(int n) { result = this.getElement(n) }
     }
   }
@@ -599,7 +597,7 @@ module Routing {
        * Gets an HTTP request method name (in upper case) matched by this node, or nothing
        * if all HTTP request method names are accepted.
        */
-      HTTP::RequestMethodName getHttpMethod() { none() }
+      Http::RequestMethodName getHttpMethod() { none() }
 
       /**
        * Holds if this route setup targets `router` and occurs at the given `cfgNode`.
@@ -635,7 +633,7 @@ module Routing {
 
       override string getRelativePath() { result = range.getRelativePath() }
 
-      override HTTP::RequestMethodName getOwnHttpMethod() { result = range.getHttpMethod() }
+      override Http::RequestMethodName getOwnHttpMethod() { result = range.getHttpMethod() }
     }
 
     /**

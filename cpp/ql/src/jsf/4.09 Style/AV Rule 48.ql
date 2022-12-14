@@ -93,4 +93,4 @@ where
     // they are both variable names in close enough scopes for the confusion to matter
     d1 instanceof Variable and d2 instanceof Variable and compatibleScopes(d1, d2)
   )
-select d1, "AV Rule 48: this identifier is too close to another identifier (" + d2.getName() + ")"
+select d1, "AV Rule 48: this identifier is too close to another identifier (" + d2.getName() + ")."

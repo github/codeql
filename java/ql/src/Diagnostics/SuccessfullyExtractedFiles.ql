@@ -4,6 +4,7 @@
  *              were extracted without encountering an error in the file.
  * @kind diagnostic
  * @id java/diagnostics/successfully-extracted-files
+ * @tags successfully-extracted-files
  */
 
 import java

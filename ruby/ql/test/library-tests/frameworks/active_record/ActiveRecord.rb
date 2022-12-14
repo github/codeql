@@ -80,6 +80,10 @@ class BazController < BarController
     Admin.create({name: params[:name], password: params[:password]})
   end
 
+  def create4
+    Admin.create
+  end
+
   def update1
     Admin.update(1, params)
   end

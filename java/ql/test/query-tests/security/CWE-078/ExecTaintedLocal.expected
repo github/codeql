@@ -33,8 +33,8 @@ nodes
 | Test.java:61:23:61:25 | arg : String | semmle.label | arg : String |
 subpaths
 #select
-| Test.java:7:44:7:69 | ... + ... | Test.java:57:27:57:39 | args : String[] | Test.java:7:44:7:69 | ... + ... | $@ flows to here and is used in a command. | Test.java:57:27:57:39 | args | User-provided value |
-| Test.java:10:29:10:74 | new String[] | Test.java:57:27:57:39 | args : String[] | Test.java:10:29:10:74 | new String[] | $@ flows to here and is used in a command. | Test.java:57:27:57:39 | args | User-provided value |
-| Test.java:18:29:18:31 | cmd | Test.java:57:27:57:39 | args : String[] | Test.java:18:29:18:31 | cmd | $@ flows to here and is used in a command. | Test.java:57:27:57:39 | args | User-provided value |
-| Test.java:24:29:24:32 | cmd1 | Test.java:57:27:57:39 | args : String[] | Test.java:24:29:24:32 | cmd1 | $@ flows to here and is used in a command. | Test.java:57:27:57:39 | args | User-provided value |
-| Test.java:29:44:29:64 | ... + ... | Test.java:57:27:57:39 | args : String[] | Test.java:29:44:29:64 | ... + ... | $@ flows to here and is used in a command. | Test.java:57:27:57:39 | args | User-provided value |
+| Test.java:7:44:7:69 | ... + ... | Test.java:57:27:57:39 | args : String[] | Test.java:7:44:7:69 | ... + ... | This command line depends on a $@. | Test.java:57:27:57:39 | args | user-provided value |
+| Test.java:10:29:10:74 | new String[] | Test.java:57:27:57:39 | args : String[] | Test.java:10:29:10:74 | new String[] | This command line depends on a $@. | Test.java:57:27:57:39 | args | user-provided value |
+| Test.java:18:29:18:31 | cmd | Test.java:57:27:57:39 | args : String[] | Test.java:18:29:18:31 | cmd | This command line depends on a $@. | Test.java:57:27:57:39 | args | user-provided value |
+| Test.java:24:29:24:32 | cmd1 | Test.java:57:27:57:39 | args : String[] | Test.java:24:29:24:32 | cmd1 | This command line depends on a $@. | Test.java:57:27:57:39 | args | user-provided value |
+| Test.java:29:44:29:64 | ... + ... | Test.java:57:27:57:39 | args : String[] | Test.java:29:44:29:64 | ... + ... | This command line depends on a $@. | Test.java:57:27:57:39 | args | user-provided value |

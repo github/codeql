@@ -3,7 +3,6 @@
  */
 
 import java
-private import semmle.code.java.dataflow.ExternalFlow
 
 /** The class `flexjson.JSONDeserializer`. */
 class FlexjsonDeserializer extends RefType {
@@ -31,11 +30,5 @@ class FlexjsonDeserializerUseMethod extends Method {
     this.getDeclaringType().getSourceDeclaration().getASourceSupertype*() instanceof
       FlexjsonDeserializer and
     this.hasName("use")
-  }
-}
-
-private class FluentUseMethodModel extends SummaryModelCsv {
-  override predicate row(string r) {
-    r = "flexjson;JSONDeserializer;true;use;;;Argument[-1];ReturnValue;value;manual"
   }
 }

@@ -9,6 +9,7 @@ import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * IPA type for data flow nodes.
@@ -100,7 +101,17 @@ newtype TNode =
   //
   // So for now we live with having these synthetic ORM nodes for _all_ classes, which
   // is a bit wasteful, but we don't think it will hurt too much.
-  TSyntheticOrmModelNode(Class cls)
+  TSyntheticOrmModelNode(Class cls) or
+  TSummaryNode(
+    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state
+  ) {
+    FlowSummaryImpl::Private::summaryNodeRange(c, state)
+  } or
+  TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
+    FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
+  }
+
+class TParameterNode = TCfgNode or TSummaryParameterNode;
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
@@ -277,40 +288,56 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends CfgNode, LocalSourceNode {
+class ParameterNode extends Node, TParameterNode instanceof ParameterNodeImpl {
+  /** Gets the parameter corresponding to this node, if any. */
+  final Parameter getParameter() { result = super.getParameter() }
+}
+
+/** A parameter node found in the source code (not in a summary). */
+class ExtractedParameterNode extends ParameterNodeImpl, CfgNode {
+  //, LocalSourceNode {
   ParameterDefinition def;
 
-  ParameterNode() {
+  ExtractedParameterNode() {
     node = def.getDefiningNode() and
     // Disregard parameters that we cannot resolve
     // TODO: Make this unnecessary
     exists(DataFlowCallable c | node = c.getParameter(_))
   }
 
-  /**
-   * Holds if this node is the parameter of callable `c` at the
-   * (zero-based) index `i`.
-   */
-  predicate isParameterOf(DataFlowCallable c, int i) { node = c.getParameter(i) }
+  override predicate isParameterOf(DataFlowCallable c, int i) { node = c.getParameter(i) }
 
   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
 
   /** Gets the `Parameter` this `ParameterNode` represents. */
-  Parameter getParameter() { result = def.getParameter() }
+  override Parameter getParameter() { result = def.getParameter() }
 }
 
+class LocalSourceParameterNode extends ExtractedParameterNode, LocalSourceNode { }
+
 /** Gets a node corresponding to parameter `p`. */
-ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+ExtractedParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** A data flow node that represents a call argument. */
-class ArgumentNode extends Node {
-  ArgumentNode() { this = any(DataFlowCall c).getArg(_) }
-
+abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
-  predicate argumentOf(DataFlowCall call, int pos) { this = call.getArg(pos) }
+  abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
 
-  /** Gets the call in which this node is an argument. */
-  final DataFlowCall getCall() { this.argumentOf(result, _) }
+  /** Gets the call in which this node is an argument, if any. */
+  final ExtractedDataFlowCall getCall() { this.argumentOf(result, _) }
+}
+
+/** A data flow node that represents a call argument found in the source code. */
+class ExtractedArgumentNode extends ArgumentNode {
+  ExtractedArgumentNode() { this = any(ExtractedDataFlowCall c).getArg(_) }
+
+  final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    this.extractedArgumentOf(call, pos)
+  }
+
+  predicate extractedArgumentOf(ExtractedDataFlowCall call, ArgumentPosition pos) {
+    this = call.getArg(pos)
+  }
 }
 
 /**
@@ -390,7 +417,16 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
 
   /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
   EssaNode getAWrite() {
-    result.asVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
+    result.getVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
+  }
+
+  /** Gets the possible values of the variable at the end of import time */
+  CfgNode getADefiningWrite() {
+    exists(SsaVariable def |
+      def = any(SsaVariable ssa_var).getAnUltimateDefinition() and
+      def.getDefinition() = result.asCfgNode() and
+      def.getVariable() = var
+    )
   }
 
   override DataFlowCallable getEnclosingCallable() { result.(DataFlowModuleScope).getScope() = mod }

@@ -4,24 +4,44 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.AbstractFunctionDecl
 import codeql.swift.elements.expr.Expr
 
-class ObjCSelectorExprBase extends Synth::TObjCSelectorExpr, Expr {
-  override string getAPrimaryQlClass() { result = "ObjCSelectorExpr" }
+module Generated {
+  class ObjCSelectorExpr extends Synth::TObjCSelectorExpr, Expr {
+    override string getAPrimaryQlClass() { result = "ObjCSelectorExpr" }
 
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertObjCSelectorExprToRaw(this)
-            .(Raw::ObjCSelectorExpr)
-            .getSubExpr())
+    /**
+     * Gets the sub expression of this obj c selector expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertObjCSelectorExprToRaw(this)
+              .(Raw::ObjCSelectorExpr)
+              .getSubExpr())
+    }
+
+    /**
+     * Gets the sub expression of this obj c selector expression.
+     */
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+
+    /**
+     * Gets the method of this obj c selector expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    AbstractFunctionDecl getImmediateMethod() {
+      result =
+        Synth::convertAbstractFunctionDeclFromRaw(Synth::convertObjCSelectorExprToRaw(this)
+              .(Raw::ObjCSelectorExpr)
+              .getMethod())
+    }
+
+    /**
+     * Gets the method of this obj c selector expression.
+     */
+    final AbstractFunctionDecl getMethod() { result = getImmediateMethod().resolve() }
   }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
-
-  AbstractFunctionDecl getImmediateMethod() {
-    result =
-      Synth::convertAbstractFunctionDeclFromRaw(Synth::convertObjCSelectorExprToRaw(this)
-            .(Raw::ObjCSelectorExpr)
-            .getMethod())
-  }
-
-  final AbstractFunctionDecl getMethod() { result = getImmediateMethod().resolve() }
 }

@@ -3,13 +3,24 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class ReferenceStorageTypeBase extends Synth::TReferenceStorageType, Type {
-  Type getImmediateReferentType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertReferenceStorageTypeToRaw(this)
-            .(Raw::ReferenceStorageType)
-            .getReferentType())
-  }
+module Generated {
+  class ReferenceStorageType extends Synth::TReferenceStorageType, Type {
+    /**
+     * Gets the referent type of this reference storage type.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateReferentType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertReferenceStorageTypeToRaw(this)
+              .(Raw::ReferenceStorageType)
+              .getReferentType())
+    }
 
-  final Type getReferentType() { result = getImmediateReferentType().resolve() }
+    /**
+     * Gets the referent type of this reference storage type.
+     */
+    final Type getReferentType() { result = getImmediateReferentType().resolve() }
+  }
 }

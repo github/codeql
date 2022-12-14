@@ -4,33 +4,62 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 
-class MakeTemporarilyEscapableExprBase extends Synth::TMakeTemporarilyEscapableExpr, Expr {
-  override string getAPrimaryQlClass() { result = "MakeTemporarilyEscapableExpr" }
+module Generated {
+  class MakeTemporarilyEscapableExpr extends Synth::TMakeTemporarilyEscapableExpr, Expr {
+    override string getAPrimaryQlClass() { result = "MakeTemporarilyEscapableExpr" }
 
-  OpaqueValueExpr getImmediateEscapingClosure() {
-    result =
-      Synth::convertOpaqueValueExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
-            .(Raw::MakeTemporarilyEscapableExpr)
-            .getEscapingClosure())
+    /**
+     * Gets the escaping closure of this make temporarily escapable expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    OpaqueValueExpr getImmediateEscapingClosure() {
+      result =
+        Synth::convertOpaqueValueExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
+              .(Raw::MakeTemporarilyEscapableExpr)
+              .getEscapingClosure())
+    }
+
+    /**
+     * Gets the escaping closure of this make temporarily escapable expression.
+     */
+    final OpaqueValueExpr getEscapingClosure() { result = getImmediateEscapingClosure().resolve() }
+
+    /**
+     * Gets the nonescaping closure of this make temporarily escapable expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateNonescapingClosure() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
+              .(Raw::MakeTemporarilyEscapableExpr)
+              .getNonescapingClosure())
+    }
+
+    /**
+     * Gets the nonescaping closure of this make temporarily escapable expression.
+     */
+    final Expr getNonescapingClosure() { result = getImmediateNonescapingClosure().resolve() }
+
+    /**
+     * Gets the sub expression of this make temporarily escapable expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
+              .(Raw::MakeTemporarilyEscapableExpr)
+              .getSubExpr())
+    }
+
+    /**
+     * Gets the sub expression of this make temporarily escapable expression.
+     */
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
-
-  final OpaqueValueExpr getEscapingClosure() { result = getImmediateEscapingClosure().resolve() }
-
-  Expr getImmediateNonescapingClosure() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
-            .(Raw::MakeTemporarilyEscapableExpr)
-            .getNonescapingClosure())
-  }
-
-  final Expr getNonescapingClosure() { result = getImmediateNonescapingClosure().resolve() }
-
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
-            .(Raw::MakeTemporarilyEscapableExpr)
-            .getSubExpr())
-  }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 }

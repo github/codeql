@@ -34,9 +34,23 @@
 | classes.kt:119:13:121:13 | Local2 | C1$Local2 | final, private |
 | classes.kt:127:16:134:9 | new Object(...) { ... } | <anonymous class> | final, private |
 | classes.kt:129:17:131:17 | Local3 | C1$$Local3 | final, private |
+| classes.kt:138:1:148:1 | Cl0 | Cl0 | final, public |
+| classes.kt:140:9:146:9 |  | Cl0$ | final, private |
+| classes.kt:141:13:145:13 | Cl1 | Cl0$Cl1 | final, private |
+| classes.kt:150:1:156:1 | Cl00 | Cl00 | final, public |
+| classes.kt:151:5:155:5 | Cl01 | Cl00$Cl01 | final, public |
+| classes.kt:159:5:159:14 | X | ClassesKt$X | final, private |
+| classes.kt:162:13:162:22 | new Object(...) { ... } | <anonymous class> | final, private |
 | generic_anonymous.kt:0:0:0:0 | Generic_anonymousKt | Generic_anonymousKt | final, public |
 | generic_anonymous.kt:1:1:9:1 | Generic | Generic | final, private |
 | generic_anonymous.kt:3:19:5:3 | new Object(...) { ... } | <anonymous class> | final, private |
+| generic_anonymous.kt:15:1:33:1 | Outer | Outer | final, public |
+| generic_anonymous.kt:25:9:31:9 |  | Outer$ | final, private |
+| generic_anonymous.kt:26:13:26:37 | new Object(...) { ... } | <anonymous class> | final, private |
+| generic_anonymous.kt:27:13:27:37 | new Object(...) { ... } | <anonymous class> | final, private |
+| generic_anonymous.kt:28:13:28:41 | new Object(...) { ... } | <anonymous class> | final, private |
+| generic_anonymous.kt:29:13:29:29 | new C0<U2>(...) { ... } | <anonymous class> | final, private |
+| generic_anonymous.kt:30:13:30:33 | new C0<String>(...) { ... } | <anonymous class> | final, private |
 | localClassField.kt:1:1:11:1 | A | A | final, public |
 | localClassField.kt:3:9:3:19 | L | A$L | final, private |
 | localClassField.kt:8:9:8:19 | L | A$L | final, private |

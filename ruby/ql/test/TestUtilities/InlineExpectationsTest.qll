@@ -137,6 +137,7 @@ abstract class InlineExpectationsTest extends string {
   final predicate hasFailureMessage(FailureLocatable element, string message) {
     exists(ActualResult actualResult |
       actualResult.getTest() = this and
+      actualResult.getTag() = this.getARelevantTag() and
       element = actualResult and
       (
         exists(FalseNegativeExpectation falseNegative |
@@ -150,9 +151,18 @@ abstract class InlineExpectationsTest extends string {
       )
     )
     or
+    exists(ActualResult actualResult |
+      actualResult.getTest() = this and
+      not actualResult.getTag() = this.getARelevantTag() and
+      element = actualResult and
+      message =
+        "Tag mismatch: Actual result with tag '" + actualResult.getTag() +
+          "' that is not part of getARelevantTag()"
+    )
+    or
     exists(ValidExpectation expectation |
       not exists(ActualResult actualResult | expectation.matchesActualResult(actualResult)) and
-      expectation.getTag() = getARelevantTag() and
+      expectation.getTag() = this.getARelevantTag() and
       element = expectation and
       (
         expectation instanceof GoodExpectation and

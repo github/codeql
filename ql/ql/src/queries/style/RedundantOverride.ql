@@ -13,4 +13,4 @@ import codeql_ql.style.RedundantOverrideQuery
 
 from ClassPredicate pred, ClassPredicate sup
 where redundantOverride(pred, sup)
-select pred, "Redundant override of $@ predicate", sup, "this"
+select pred, "Redundant override of $@.", sup, "this predicate"

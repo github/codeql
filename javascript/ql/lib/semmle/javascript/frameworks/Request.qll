@@ -6,7 +6,7 @@ import javascript
 
 module Request {
   /** A credentials expression that is used for authentication. */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     string kind;
 
     Credentials() {
@@ -17,12 +17,12 @@ module Request {
           action = mod.getAnInvocation()
           or
           // specialized form: `request.get(...)`
-          action = mod.getAMemberCall(any(HTTP::RequestMethodName n).toLowerCase())
+          action = mod.getAMemberCall(any(Http::RequestMethodName n).toLowerCase())
         )
       |
-        exists(MethodCallExpr auth, int argIndex |
+        exists(DataFlow::MethodCallNode auth, int argIndex |
           // request.get(url).auth('username', 'password', _, 'token');
-          auth = action.getAMemberCall("auth").asExpr() and
+          auth = action.getAMemberCall("auth") and
           this = auth.getArgument(argIndex)
         |
           argIndex = 0 and kind = "user name"
@@ -35,7 +35,7 @@ module Request {
         exists(DataFlow::ObjectLiteralNode auth, string propertyName |
           // request.get(url, { auth: {user: 'username', pass: 'password', bearer: 'token'}})
           auth.flowsTo(action.getOptionArgument(1, "auth")) and
-          auth.hasPropertyWrite(propertyName, DataFlow::valueNode(this))
+          auth.hasPropertyWrite(propertyName, this)
         |
           (propertyName = "user" or propertyName = "username") and
           kind = "user name"

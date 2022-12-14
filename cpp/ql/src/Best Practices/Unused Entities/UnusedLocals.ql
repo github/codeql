@@ -58,4 +58,4 @@ where
   not exists(AsmStmt s | f = s.getEnclosingFunction()) and
   not v.getAnAttribute().getName() = "unused" and
   not any(ErrorExpr e).getEnclosingFunction() = f // unextracted expr may use `v`
-select v, "Variable " + v.getName() + " is not used"
+select v, "Variable " + v.getName() + " is not used."

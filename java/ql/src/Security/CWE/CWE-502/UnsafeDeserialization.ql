@@ -18,4 +18,4 @@ import DataFlow::PathGraph
 from DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeDeserializationConfig conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode().(UnsafeDeserializationSink).getMethodAccess(), source, sink,
-  "Unsafe deserialization of $@.", source.getNode(), "user input"
+  "Unsafe deserialization depends on a $@.", source.getNode(), "user-provided value"

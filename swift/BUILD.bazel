@@ -3,25 +3,24 @@ load("@rules_pkg//:install.bzl", "pkg_install")
 load("//:defs.bzl", "codeql_platform")
 load("//misc/bazel:pkg_runfiles.bzl", "pkg_runfiles")
 
+filegroup(
+    name = "schema",
+    srcs = ["schema.py"],
+    visibility = ["//swift:__subpackages__"],
+)
+
+filegroup(
+    name = "schema_includes",
+    srcs = glob(["*.dbscheme"]),
+    visibility = ["//swift:__subpackages__"],
+)
+
 pkg_files(
     name = "dbscheme_files",
     srcs = [
         "ql/lib/swift.dbscheme.stats",
         "//swift/extractor/trap:generated_dbscheme",
     ],
-)
-
-pkg_files(
-    name = "qltest",
-    srcs = ["tools/qltest.sh"],
-    attributes = pkg_attributes(mode = "0755"),
-    prefix = "tools",
-)
-
-pkg_files(
-    name = "tracing-config",
-    srcs = ["tools/tracing-config.lua"],
-    prefix = "tools",
 )
 
 pkg_files(
@@ -34,21 +33,27 @@ pkg_filegroup(
     srcs = [
         ":dbscheme_files",
         ":manifest",
-        ":qltest",
-        ":tracing-config",
+        "//swift/downgrades",
+        "//swift/tools",
     ],
     visibility = ["//visibility:public"],
 )
 
-pkg_runfiles(
+pkg_filegroup(
     name = "extractor",
-    srcs = ["//swift/extractor"],
+    srcs = ["//swift/extractor:pkg"],
+    prefix = "tools/" + codeql_platform,
+)
+
+pkg_runfiles(
+    name = "xcode-autobuilder",
+    srcs = ["//swift/xcode-autobuilder"],
     prefix = "tools/" + codeql_platform,
 )
 
 pkg_files(
     name = "swift-test-sdk-arch",
-    srcs = ["//swift/tools/prebuilt:swift-test-sdk"],
+    srcs = ["//swift/third_party/swift-llvm-support:swift-test-sdk"],
     prefix = "qltest/" + codeql_platform,
     strip_prefix = strip_prefix.from_pkg(),
 )
@@ -58,7 +63,12 @@ pkg_filegroup(
     srcs = [
         ":extractor",
         ":swift-test-sdk-arch",
-    ],
+    ] + select({
+        "@platforms//os:linux": [],
+        "@platforms//os:macos": [
+            ":xcode-autobuilder",
+        ],
+    }),
     visibility = ["//visibility:public"],
 )
 
@@ -78,7 +88,7 @@ pkg_install(
 
 py_binary(
     name = "create-extractor-pack",
-    srcs = ["tools/create_extractor_pack.py"],
-    main = "tools/create_extractor_pack.py",
+    srcs = ["create_extractor_pack.py"],
+    main = "create_extractor_pack.py",
     deps = [":_create_extractor_pack"],
 )

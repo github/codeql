@@ -5,6 +5,13 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+    paths:
+      - "ql/**"
+      - "**.qll"
+      - "**.ql"
+      - "**.dbscheme"
+      - "**/qlpack.yml"
+      - ".github/workflows/ql-for-ql-build.yml"
 
 env:
   CARGO_TERM_COLOR: always
@@ -15,43 +22,53 @@ jobs:
     steps:
       ### Build the queries ###
       - uses: actions/checkout@v3
+      - name: Find latest bundle
+        id: find-latest-bundle
+        uses: ./.github/actions/find-latest-bundle
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
+        uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
         with:
           languages: javascript # does not matter
+          tools: ${{ steps.find-latest-bundle.outputs.url }}
       - name: Get CodeQL version
         id: get-codeql-version
         run: |
-          echo "::set-output name=version::$("${CODEQL}" --version | head -n 1 | rev | cut -d " " -f 1 | rev)"
+          echo "version=$("${CODEQL}" --version | head -n 1 | rev | cut -d " " -f 1 | rev)" >> $GITHUB_OUTPUT
         shell: bash
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
+      - name: Cache entire pack
+        id: cache-pack
+        uses: actions/cache@v3
+        with:
+          path: ${{ runner.temp }}/pack
+          key: ${{ runner.os }}-pack-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('ql/**/*.rs') }}-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/**/qlpack.yml') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}--${{ hashFiles('.github/workflows/ql-for-ql-build.yml') }}
       - name: Cache queries
+        if: steps.cache-pack.outputs.cache-hit != 'true'
         id: cache-queries
         uses: actions/cache@v3
         with:
-          path: ${{ runner.temp }}/query-pack.zip
-          key: queries-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/**/qlpack.yml') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}
+          path: ${{ runner.temp }}/queries
+          key: queries-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/**/qlpack.yml') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}--${{ hashFiles('.github/workflows/ql-for-ql-build.yml') }}
       - name: Build query pack
-        if: steps.cache-queries.outputs.cache-hit != 'true'
+        if: steps.cache-queries.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         run: |
           cd ql/ql/src
-          "${CODEQL}" pack create
-          cd .codeql/pack/codeql/ql/0.0.0
-          zip "${PACKZIP}" -r .
-          rm -rf *
+          "${CODEQL}" pack create -j 16
+          mv .codeql/pack/codeql/ql/0.0.0 ${{ runner.temp }}/queries
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
-          PACKZIP: ${{ runner.temp }}/query-pack.zip
-      - name: Upload query pack
-        uses: actions/upload-artifact@v3
-        with:
-          name: query-pack-zip
-          path: ${{ runner.temp }}/query-pack.zip
+      - name: Move cache queries to pack
+        if: steps.cache-pack.outputs.cache-hit != 'true'
+        run: |
+          cp -r ${{ runner.temp }}/queries ${{ runner.temp }}/pack
+        env:
+          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
 
       ### Build the extractor ###
       - name: Cache entire extractor
+        if: steps.cache-pack.outputs.cache-hit != 'true'
         id: cache-extractor
         uses: actions/cache@v3
         with:
@@ -62,7 +79,7 @@ jobs:
             ql/target/release/ql-extractor.exe
           key: ${{ runner.os }}-extractor-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('ql/**/*.rs') }}
       - name: Cache cargo
-        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         uses: actions/cache@v3
         with:
           path: |
@@ -71,76 +88,38 @@ jobs:
             ql/target
           key: ${{ runner.os }}-rust-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
       - name: Check formatting
-        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         run: cd ql; cargo fmt --all -- --check
       - name: Build
-        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         run: cd ql; cargo build --verbose
       - name: Run tests
-        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         run: cd ql; cargo test --verbose
       - name: Release build
-        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         run: cd ql; cargo build --release
       - name: Generate dbscheme
-        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         run: ql/target/release/ql-generator --dbscheme ql/ql/src/ql.dbscheme --library ql/ql/src/codeql_ql/ast/internal/TreeSitter.qll
-      - uses: actions/upload-artifact@v3
-        with:
-          name: extractor-ubuntu-latest
-          path: |
-            ql/target/release/ql-autobuilder
-            ql/target/release/ql-autobuilder.exe
-            ql/target/release/ql-extractor
-            ql/target/release/ql-extractor.exe
-          retention-days: 1
 
       ### Package the queries and extractor ###
-      - uses: actions/download-artifact@v3
-        with:
-          name: query-pack-zip
-          path: query-pack-zip
-      - uses: actions/download-artifact@v3
-        with:
-          name: extractor-ubuntu-latest
-          path: linux64
-      - run: |
-          unzip query-pack-zip/*.zip -d pack
-          cp -r ql/codeql-extractor.yml ql/tools ql/ql/src/ql.dbscheme.stats pack/
-          mkdir -p pack/tools/linux64
-          if [[ -f linux64/ql-autobuilder ]]; then
-            cp linux64/ql-autobuilder pack/tools/linux64/autobuilder
-            chmod +x pack/tools/linux64/autobuilder
-          fi
-          if [[ -f linux64/ql-extractor ]]; then
-            cp linux64/ql-extractor pack/tools/linux64/extractor
-            chmod +x pack/tools/linux64/extractor
-          fi
-          cd pack
-          zip -rq ../codeql-ql.zip .
-          rm -rf *
-      - uses: actions/upload-artifact@v3
-        with:
-          name: codeql-ql-pack
-          path: codeql-ql.zip
-          retention-days: 1
+      - name: Package pack
+        if: steps.cache-pack.outputs.cache-hit != 'true'
+        run: |
+          cp -r ql/codeql-extractor.yml ql/tools ql/ql/src/ql.dbscheme.stats ${PACK}/
+          mkdir -p ${PACK}/tools/linux64
+          cp ql/target/release/ql-autobuilder  ${PACK}/tools/linux64/autobuilder
+          cp ql/target/release/ql-extractor ${PACK}/tools/linux64/extractor
+          chmod +x ${PACK}/tools/linux64/autobuilder
+          chmod +x ${PACK}/tools/linux64/extractor
+        env:
+          PACK: ${{ runner.temp }}/pack
 
       ### Run the analysis ###
-      - name: Download pack
-        uses: actions/download-artifact@v3
-        with:
-          name: codeql-ql-pack
-          path: ${{ runner.temp }}/codeql-ql-pack-artifact
-
-      - name: Prepare pack
-        run: |
-          unzip "${PACK_ARTIFACT}/*.zip" -d "${PACK}"
-        env:
-          PACK_ARTIFACT: ${{ runner.temp }}/codeql-ql-pack-artifact
-          PACK: ${{ runner.temp }}/pack
       - name: Hack codeql-action options
         run: |
-          JSON=$(jq -nc --arg pack "${PACK}" '.database."run-queries"=["--search-path", $pack] | .resolve.queries=["--search-path", $pack] | .resolve.extractor=["--search-path", $pack] | .database.init=["--search-path", $pack]')
+          JSON=$(jq -nc --arg pack "${PACK}" '.database."run-queries"=["--search-path", $pack] | .resolve.queries=["--search-path", $pack] | .resolve.extractor=["--search-path", $pack] | .resolve.languages=["--search-path", $pack] | .database.init=["--search-path", $pack]')
           echo "CODEQL_ACTION_EXTRA_OPTIONS=${JSON}" >> ${GITHUB_ENV}
         env:
           PACK: ${{ runner.temp }}/pack
@@ -148,31 +127,37 @@ jobs:
       - name: Create CodeQL config file
         run: |
           echo "paths-ignore:" >> ${CONF}
-          echo "  - ql/ql/test" >> ${CONF} 
-          echo "  - \"*/ql/lib/upgrades/\"" >> ${CONF} 
+          echo "  - ql/ql/test" >> ${CONF}
+          echo "  - \"*/ql/lib/upgrades/\"" >> ${CONF}
           echo "disable-default-queries: true" >> ${CONF}
-          echo "packs:" >> ${CONF}
-          echo "  - codeql/ql" >> ${CONF}
+          echo "queries:" >> ${CONF}
+          echo "  - uses: ./ql/ql/src/codeql-suites/ql-code-scanning.qls" >> ${CONF}
           echo "Config file: "
           cat ${CONF}
-        env: 
+        env:
           CONF: ./ql-for-ql-config.yml
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
+        uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
         with:
           languages: ql
           db-location: ${{ runner.temp }}/db
           config-file: ./ql-for-ql-config.yml
+          tools: ${{ steps.find-latest-bundle.outputs.url }}
+      - name: Move pack cache
+        run: |
+          cp -r ${PACK}/.cache ql/ql/src/.cache
+        env:
+          PACK: ${{ runner.temp }}/pack
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@aa93aea877e5fb8841bcb1193f672abf6e9f2980
-        with: 
+        uses: github/codeql-action/analyze@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
+        with:
           category: "ql-for-ql"
       - name: Copy sarif file to CWD
         run: cp ../results/ql.sarif ./ql-for-ql.sarif
       - name: Fixup the $scema in sarif  # Until https://github.com/microsoft/sarif-vscode-extension/pull/436/ is part in a stable release
         run: |
-          sed -i 's/\$schema.*/\$schema": "https:\/\/raw.githubusercontent.com\/oasis-tcs\/sarif-spec\/master\/Schemata\/sarif-schema-2.1.0",/' ql-for-ql.sarif 
+          sed -i 's/\$schema.*/\$schema": "https:\/\/raw.githubusercontent.com\/oasis-tcs\/sarif-spec\/master\/Schemata\/sarif-schema-2.1.0",/' ql-for-ql.sarif
       - name: Sarif as artifact
         uses: actions/upload-artifact@v3
         with:

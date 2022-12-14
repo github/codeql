@@ -4,13 +4,24 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.type.Type
 
-class ValueDeclBase extends Synth::TValueDecl, Decl {
-  Type getImmediateInterfaceType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertValueDeclToRaw(this)
-            .(Raw::ValueDecl)
-            .getInterfaceType())
-  }
+module Generated {
+  class ValueDecl extends Synth::TValueDecl, Decl {
+    /**
+     * Gets the interface type of this value declaration.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateInterfaceType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertValueDeclToRaw(this)
+              .(Raw::ValueDecl)
+              .getInterfaceType())
+    }
 
-  final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }
+    /**
+     * Gets the interface type of this value declaration.
+     */
+    final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }
+  }
 }

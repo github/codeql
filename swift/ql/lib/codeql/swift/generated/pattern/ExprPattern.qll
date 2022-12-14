@@ -4,13 +4,26 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 
-class ExprPatternBase extends Synth::TExprPattern, Pattern {
-  override string getAPrimaryQlClass() { result = "ExprPattern" }
+module Generated {
+  class ExprPattern extends Synth::TExprPattern, Pattern {
+    override string getAPrimaryQlClass() { result = "ExprPattern" }
 
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertExprPatternToRaw(this).(Raw::ExprPattern).getSubExpr())
+    /**
+     * Gets the sub expression of this expression pattern.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertExprPatternToRaw(this)
+              .(Raw::ExprPattern)
+              .getSubExpr())
+    }
+
+    /**
+     * Gets the sub expression of this expression pattern.
+     */
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 }

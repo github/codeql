@@ -4,13 +4,24 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ApplyExpr
 import codeql.swift.elements.expr.Expr
 
-class SelfApplyExprBase extends Synth::TSelfApplyExpr, ApplyExpr {
-  Expr getImmediateBase() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertSelfApplyExprToRaw(this)
-            .(Raw::SelfApplyExpr)
-            .getBase())
-  }
+module Generated {
+  class SelfApplyExpr extends Synth::TSelfApplyExpr, ApplyExpr {
+    /**
+     * Gets the base of this self apply expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateBase() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertSelfApplyExprToRaw(this)
+              .(Raw::SelfApplyExpr)
+              .getBase())
+    }
 
-  final Expr getBase() { result = getImmediateBase().resolve() }
+    /**
+     * Gets the base of this self apply expression.
+     */
+    final Expr getBase() { result = getImmediateBase().resolve() }
+  }
 }

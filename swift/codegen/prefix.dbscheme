@@ -1,7 +1,0 @@
-/**
- * The source location of the snapshot.
- */
-sourceLocationPrefix(
-  string prefix: string ref
-);
-

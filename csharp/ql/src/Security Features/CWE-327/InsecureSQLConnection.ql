@@ -41,5 +41,6 @@ class TaintTrackingConfiguration extends DataFlow::Configuration {
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and does not specify `Encrypt=True`.",
-  source.getNode(), "Connection string"
+select sink.getNode(), source, sink,
+  "$@ flows to this SQL connection and does not specify `Encrypt=True`.", source.getNode(),
+  "Connection string"

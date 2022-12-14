@@ -123,5 +123,5 @@ where
   conf.hasFlowPath(source, sink) and
   isFlowSource(source.getNode(), sourceType)
 select sink.getNode(), source, sink,
-  "$@ flows to here and is used in an array indexing expression, potentially causing an invalid access.",
+  "An array indexing expression depends on $@ that might be outside the bounds of the array.",
   source.getNode(), sourceType

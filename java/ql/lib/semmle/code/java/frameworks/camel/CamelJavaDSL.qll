@@ -35,14 +35,20 @@ library class ProcessorDefinitionElement extends MethodAccess {
  *
  * This declares a "target" for this route, described by the URI given as the first argument.
  */
-class CamelJavaDSLToDecl extends ProcessorDefinitionElement {
-  CamelJavaDSLToDecl() { getMethod().hasName("to") }
+class CamelJavaDslToDecl extends ProcessorDefinitionElement {
+  CamelJavaDslToDecl() { getMethod().hasName("to") }
 
   /**
    * Gets the URI specified by this `to` declaration.
    */
-  string getURI() { result = getArgument(0).(CompileTimeConstantExpr).getStringValue() }
+  string getUri() { result = getArgument(0).(CompileTimeConstantExpr).getStringValue() }
+
+  /** DEPRECATED: Alias for getUri */
+  deprecated string getURI() { result = getUri() }
 }
+
+/** DEPRECATED: Alias for CamelJavaDslToDecl */
+deprecated class CamelJavaDSLToDecl = CamelJavaDslToDecl;
 
 /**
  * A declaration of a "bean" target in the Apache Camel Java DSL.
@@ -50,8 +56,8 @@ class CamelJavaDSLToDecl extends ProcessorDefinitionElement {
  * This declares a bean to call for this route. The bean is defined either by a Class<?> reference,
  * or the bean object itself.
  */
-class CamelJavaDSLBeanDecl extends ProcessorDefinitionElement {
-  CamelJavaDSLBeanDecl() { getMethod().hasName("bean") }
+class CamelJavaDslBeanDecl extends ProcessorDefinitionElement {
+  CamelJavaDslBeanDecl() { getMethod().hasName("bean") }
 
   /**
    * Gets a bean class that may be registered as a target by this `bean()` declaration.
@@ -68,6 +74,9 @@ class CamelJavaDSLBeanDecl extends ProcessorDefinitionElement {
   }
 }
 
+/** DEPRECATED: Alias for CamelJavaDslBeanDecl */
+deprecated class CamelJavaDSLBeanDecl = CamelJavaDslBeanDecl;
+
 /**
  * A declaration of a "beanRef" target in the Apache Camel Java DSL.
  *
@@ -75,8 +84,8 @@ class CamelJavaDSLBeanDecl extends ProcessorDefinitionElement {
  * the bean reference is dependent on which registries are used by Apache Camel, but we make the
  * assumption that it either represetns a qualified name, or a Srping bean identifier.
  */
-class CamelJavaDSLBeanRefDecl extends ProcessorDefinitionElement {
-  CamelJavaDSLBeanRefDecl() { getMethod().hasName("beanRef") }
+class CamelJavaDslBeanRefDecl extends ProcessorDefinitionElement {
+  CamelJavaDslBeanRefDecl() { getMethod().hasName("beanRef") }
 
   /**
    * Gets the string describing the bean referred to.
@@ -95,13 +104,16 @@ class CamelJavaDSLBeanRefDecl extends ProcessorDefinitionElement {
   }
 }
 
+/** DEPRECATED: Alias for CamelJavaDslBeanRefDecl */
+deprecated class CamelJavaDSLBeanRefDecl = CamelJavaDslBeanRefDecl;
+
 /**
  * A "method" Camel expression in the Apache Camel Java DSL.
  *
  * An expression that represents a call to a bean, or particular method on a bean.
  */
-class CamelJavaDSLMethodDecl extends MethodAccess {
-  CamelJavaDSLMethodDecl() {
+class CamelJavaDslMethodDecl extends MethodAccess {
+  CamelJavaDslMethodDecl() {
     getMethod()
         .getDeclaringType()
         .getSourceDeclaration()
@@ -126,3 +138,6 @@ class CamelJavaDSLMethodDecl extends MethodAccess {
       else result = getArgument(0).getType()
   }
 }
+
+/** DEPRECATED: Alias for CamelJavaDslMethodDecl */
+deprecated class CamelJavaDSLMethodDecl = CamelJavaDslMethodDecl;

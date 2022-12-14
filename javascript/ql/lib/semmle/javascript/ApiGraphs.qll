@@ -460,7 +460,6 @@ module API {
       this = Impl::MkClassInstance(result) or
       this = Impl::MkUse(result) or
       this = Impl::MkDef(result) or
-      this = Impl::MkAsyncFuncResult(result) or
       this = Impl::MkSyntheticCallbackArg(_, _, result)
     }
 
@@ -533,8 +532,9 @@ module API {
 
   /** Gets a node corresponding to an import of module `m`. */
   Node moduleImport(string m) {
-    result = Impl::MkModuleImport(m) or
-    result = Impl::MkModuleImport(m).(Node).getMember("default")
+    result = Internal::getAModuleImportRaw(m)
+    or
+    result = ModelOutput::getATypeNode(m, "")
   }
 
   /** Gets a node corresponding to an export of module `m`. */
@@ -544,7 +544,26 @@ module API {
   module Node {
     /** Gets a node whose type has the given qualified name. */
     Node ofType(string moduleName, string exportedName) {
+      result = Internal::getANodeOfTypeRaw(moduleName, exportedName)
+      or
+      result = ModelOutput::getATypeNode(moduleName, exportedName)
+    }
+  }
+
+  /** Provides access to API graph nodes without taking into account types from models. */
+  module Internal {
+    /** Gets a node corresponding to an import of module `m` without taking into account types from models. */
+    Node getAModuleImportRaw(string m) {
+      result = Impl::MkModuleImport(m) or
+      result = Impl::MkModuleImport(m).(Node).getMember("default")
+    }
+
+    /** Gets a node whose type has the given qualified name, not including types from models. */
+    Node getANodeOfTypeRaw(string moduleName, string exportedName) {
       result = Impl::MkTypeUse(moduleName, exportedName).(Node).getInstance()
+      or
+      exportedName = "" and
+      result = getAModuleImportRaw(moduleName)
     }
   }
 
@@ -635,7 +654,7 @@ module API {
           exports(m, _, _)
           or
           exists(NodeModule nm | nm = mod |
-            exists(SSA::implicitInit([nm.getModuleVariable(), nm.getExportsVariable()]))
+            exists(Ssa::implicitInit([nm.getModuleVariable(), nm.getExportsVariable()]))
           )
         )
       } or
@@ -646,9 +665,13 @@ module API {
         or
         any(Type t).hasUnderlyingType(m, _)
       } or
-      MkClassInstance(DataFlow::ClassNode cls) { cls = trackDefNode(_) and hasSemantics(cls) } or
-      MkAsyncFuncResult(DataFlow::FunctionNode f) {
-        f = trackDefNode(_) and f.getFunction().isAsync() and hasSemantics(f)
+      MkClassInstance(DataFlow::ClassNode cls) {
+        hasSemantics(cls) and
+        (
+          cls = trackDefNode(_)
+          or
+          cls.getAnInstanceReference() = trackDefNode(_)
+        )
       } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
@@ -664,8 +687,7 @@ module API {
 
     class TDef = MkModuleDef or TNonModuleDef;
 
-    class TNonModuleDef =
-      MkModuleExport or MkClassInstance or MkAsyncFuncResult or MkDef or MkSyntheticCallbackArg;
+    class TNonModuleDef = MkModuleExport or MkClassInstance or MkDef or MkSyntheticCallbackArg;
 
     class TUse = MkModuleUse or MkModuleImport or MkUse or MkTypeUse;
 
@@ -716,10 +738,11 @@ module API {
             rhs = m.getAnExportedValue(prop)
           )
           or
-          exists(DataFlow::FunctionNode fn | fn = pred |
-            not fn.getFunction().isAsync() and
-            lbl = Label::return() and
-            rhs = fn.getAReturn()
+          exists(DataFlow::FunctionNode fn |
+            fn = pred and
+            lbl = Label::return()
+          |
+            if fn.getFunction().isAsync() then rhs = fn.getReturnNode() else rhs = fn.getAReturn()
           )
           or
           lbl = Label::promised() and
@@ -738,16 +761,6 @@ module API {
                   .getStaticMember(name, DataFlow::MemberKind::getter())
                   .getAReturn()
           )
-          or
-          // If `new C()` escapes, generate edges to its instance members
-          exists(DataFlow::ClassNode cls, string name |
-            pred = cls.getAClassReference().getAnInstantiation() and
-            lbl = Label::member(name)
-          |
-            rhs = cls.getInstanceMethod(name)
-            or
-            rhs = cls.getInstanceMember(name, DataFlow::MemberKind::getter()).getAReturn()
-          )
         )
         or
         exists(DataFlow::ClassNode cls, string name |
@@ -760,13 +773,12 @@ module API {
         )
         or
         exists(DataFlow::FunctionNode f |
-          base = MkAsyncFuncResult(f) and
+          f.getFunction().isAsync() and
+          base = MkDef(f.getReturnNode())
+        |
           lbl = Label::promised() and
           rhs = f.getAReturn()
-        )
-        or
-        exists(DataFlow::FunctionNode f |
-          base = MkAsyncFuncResult(f) and
+          or
           lbl = Label::promisedError() and
           rhs = f.getExceptionalReturn()
         )
@@ -1236,9 +1248,13 @@ module API {
         succ = MkUse(ref)
       )
       or
-      exists(DataFlow::Node rhs |
-        rhs(pred, lbl, rhs) and
+      exists(DataFlow::Node rhs | rhs(pred, lbl, rhs) |
         succ = MkDef(rhs)
+        or
+        exists(DataFlow::ClassNode cls |
+          cls.getAnInstanceReference() = rhs and
+          succ = MkClassInstance(cls)
+        )
       )
       or
       exists(DataFlow::Node def |
@@ -1254,10 +1270,11 @@ module API {
       )
       or
       exists(DataFlow::Node nd, DataFlow::FunctionNode f |
+        f.getFunction().isAsync() and
         pred = MkDef(nd) and
         f = trackDefNode(nd) and
         lbl = Label::return() and
-        succ = MkAsyncFuncResult(f)
+        succ = MkDef(f.getReturnNode())
       )
       or
       exists(int bound, DataFlow::InvokeNode call |
@@ -1477,7 +1494,7 @@ module API {
         /** Gets the EntryPoint associated with this label. */
         API::EntryPoint getEntryPoint() { result = e }
 
-        override string toString() { result = "getASuccessor(Label::entryPoint(\"" + e + "\"))" }
+        override string toString() { result = "entryPoint(\"" + e + "\")" }
       }
 
       /** A label that gets a promised value. */
