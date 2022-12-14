@@ -249,7 +249,7 @@ class Node extends TIRDataFlowNode {
    * the value of `x`.
    * - The node `n` such that `n.asParameter(1)` is the parameter `x` represents
    * the value of `*x`.
-   * The node `n` such that `n.asParameter(2)` is the parameter `x` represents
+   * - The node `n` such that `n.asParameter(2)` is the parameter `x` represents
    * the value of `**x`.
    */
   Parameter asParameter(int index) {
