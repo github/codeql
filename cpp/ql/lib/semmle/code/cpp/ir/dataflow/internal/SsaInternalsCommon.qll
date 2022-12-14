@@ -428,9 +428,12 @@ private module Cached {
     boolean certain, Node0Impl value, Operand address, BaseSourceVariableInstruction base, int ind,
     int indirectionIndex
   ) {
-    exists(int ind0, CppType type, int lower, int upper |
-      isWrite(value, address, certain) and
-      isDefImpl(address, base, ind0) and
+    exists(
+      boolean writeIsCertain, boolean addressIsCertain, int ind0, CppType type, int lower, int upper
+    |
+      isWrite(value, address, writeIsCertain) and
+      isDefImpl(address, base, ind0, addressIsCertain) and
+      certain = writeIsCertain.booleanAnd(addressIsCertain) and
       type = getLanguageType(address) and
       upper = countIndirectionsForCppType(type) and
       ind = ind0 + [lower .. upper] and
@@ -440,33 +443,46 @@ private module Cached {
   }
 
   /**
+   * Holds if the address computed by `operand` is guarenteed to write
+   * to a specific address.
+   */
+  private predicate isCertainAddress(Operand operand) {
+    operand.getDef() instanceof VariableAddressInstruction
+    or
+    operand.getType() instanceof Cpp::ReferenceType
+  }
+
+  /**
    * Holds if `address` is a use of an SSA variable rooted at `base`, and the
    * path from `base` to `address` passes through `ind` load-like instructions.
    *
    * Note: Unlike `isUseImpl`, this predicate recurses through pointer-arithmetic
    * instructions.
    */
-  private predicate isDefImpl(Operand address, BaseSourceVariableInstruction base, int ind) {
+  private predicate isDefImpl(
+    Operand operand, BaseSourceVariableInstruction base, int ind, boolean certain
+  ) {
     DataFlowImplCommon::forceCachingInSameStage() and
     ind = 0 and
-    address = base.getAUse()
+    operand = base.getAUse() and
+    (if isCertainAddress(operand) then certain = true else certain = false)
     or
-    exists(Operand mid, Instruction instr |
-      isDefImpl(mid, base, ind) and
-      instr = address.getDef() and
-      conversionFlow(mid, instr, _)
+    exists(Operand mid, Instruction instr, boolean certain0, boolean isPointerArith |
+      isDefImpl(mid, base, ind, certain0) and
+      instr = operand.getDef() and
+      conversionFlow(mid, instr, isPointerArith) and
+      if isPointerArith = true then certain = false else certain = certain0
     )
     or
-    exists(int ind0 |
-      exists(Operand operand |
-        isDereference(address.getDef(), operand) and
-        isDefImpl(operand, base, ind - 1)
-      )
-      or
-      isDefImpl(address.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0)
+    exists(Operand address, boolean certain0 |
+      isDereference(operand.getDef(), address) and
+      isDefImpl(address, base, ind - 1, certain0)
     |
-      ind0 = ind - 1
+      if isCertainAddress(operand) then certain = certain0 else certain = false
     )
+    or
+    isDefImpl(operand.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind - 1, _) and
+    certain = true
   }
 }
 

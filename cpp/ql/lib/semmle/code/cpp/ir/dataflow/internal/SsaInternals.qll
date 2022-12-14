@@ -291,10 +291,13 @@ predicate outNodeHasAddressAndIndex(
   out.getIndirectionIndex() = indirectionIndex
 }
 
-private predicate defToNode(Node nodeFrom, Def def) {
-  nodeHasOperand(nodeFrom, def.getValue().asOperand(), def.getIndirectionIndex())
-  or
-  nodeHasInstruction(nodeFrom, def.getValue().asInstruction(), def.getIndirectionIndex())
+private predicate defToNode(Node nodeFrom, Def def, boolean uncertain) {
+  (
+    nodeHasOperand(nodeFrom, def.getValue().asOperand(), def.getIndirectionIndex())
+    or
+    nodeHasInstruction(nodeFrom, def.getValue().asInstruction(), def.getIndirectionIndex())
+  ) and
+  if def.isCertain() then uncertain = false else uncertain = true
 }
 
 /**
@@ -302,12 +305,13 @@ private predicate defToNode(Node nodeFrom, Def def) {
  *
  * Holds if `nodeFrom` is the node that correspond to the definition or use `defOrUse`.
  */
-predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
+predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse, boolean uncertain) {
   // Node -> Def
-  defToNode(nodeFrom, defOrUse)
+  defToNode(nodeFrom, defOrUse, uncertain)
   or
   // Node -> Use
-  useToNode(defOrUse, nodeFrom)
+  useToNode(defOrUse, nodeFrom) and
+  uncertain = false
 }
 
 /**
@@ -316,7 +320,7 @@ predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
  */
 private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
   not exists(UseOrPhi defOrUse |
-    nodeToDefOrUse(nTo, defOrUse) and
+    nodeToDefOrUse(nTo, defOrUse, _) and
     adjacentDefRead(defOrUse, _)
   ) and
   exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
@@ -342,28 +346,57 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
  * So this predicate recurses back along conversions and `PointerArithmeticInstruction`s to find the
  * first use that has provides use-use flow, and uses that target as the target of the `nodeFrom`.
  */
-private predicate adjustForPointerArith(Node nodeFrom, UseOrPhi use) {
+private predicate adjustForPointerArith(Node nodeFrom, UseOrPhi use, boolean uncertain) {
   nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
   exists(DefOrUse defOrUse, Node adjusted |
     indirectConversionFlowStep*(adjusted, nodeFrom) and
-    nodeToDefOrUse(adjusted, defOrUse) and
+    nodeToDefOrUse(adjusted, defOrUse, uncertain) and
     adjacentDefRead(defOrUse, use)
   )
 }
 
-/** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
-predicate ssaFlow(Node nodeFrom, Node nodeTo) {
+private predicate ssaFlowImpl(Node nodeFrom, Node nodeTo, boolean uncertain) {
   // `nodeFrom = any(PostUpdateNode pun).getPreUpdateNode()` is implied by adjustedForPointerArith.
   exists(UseOrPhi use |
-    adjustForPointerArith(nodeFrom, use) and
+    adjustForPointerArith(nodeFrom, use, uncertain) and
     useToNode(use, nodeTo)
   )
   or
   not nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
   exists(DefOrUse defOrUse1, UseOrPhi use |
-    nodeToDefOrUse(nodeFrom, defOrUse1) and
+    nodeToDefOrUse(nodeFrom, defOrUse1, uncertain) and
     adjacentDefRead(defOrUse1, use) and
     useToNode(use, nodeTo)
+  )
+}
+
+/**
+ * Holds if `def` is the corresponding definition of
+ * the SSA library's `definition`.
+ */
+private predicate ssaDefinition(Def def, Definition definition) {
+  exists(IRBlock block, int i, SourceVariable sv |
+    def.hasIndexInBlock(block, i, sv) and
+    definition.definesAt(sv, block, i)
+  )
+}
+
+/** Gets a node that represents the prior definition of `node`. */
+private Node getAPriorDefinition(Node node) {
+  exists(Def def, Definition definition, Definition inp, Def input |
+    defToNode(node, def, true) and
+    ssaDefinition(def, definition) and
+    uncertainWriteDefinitionInput(pragma[only_bind_into](definition), pragma[only_bind_into](inp)) and
+    ssaDefinition(input, inp) and
+    defToNode(result, input, _)
+  )
+}
+
+/** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
+predicate ssaFlow(Node nodeFrom, Node nodeTo) {
+  exists(Node nFrom, boolean uncertain |
+    ssaFlowImpl(nFrom, nodeTo, uncertain) and
+    if uncertain = true then nodeFrom = [nFrom, getAPriorDefinition(nFrom)] else nodeFrom = nFrom
   )
 }
 
@@ -460,6 +493,11 @@ module SsaCached {
   predicate lastRefRedef(Definition def, IRBlock bb, int i, Definition next) {
     SsaImpl::lastRefRedef(def, bb, i, next)
   }
+
+  cached
+  predicate uncertainWriteDefinitionInput(SsaImpl::UncertainWriteDefinition def, Definition inp) {
+    SsaImpl::uncertainWriteDefinitionInput(def, inp)
+  }
 }
 
 cached
@@ -498,6 +536,10 @@ class DefOrUse extends TDefOrUse, SsaDefOrUse {
   final SourceVariable getSourceVariable() { result = defOrUse.getSourceVariable() }
 
   override string toString() { result = defOrUse.toString() }
+
+  predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
+    defOrUse.hasIndexInBlock(block, index, sv)
+  }
 }
 
 class Phi extends TPhi, SsaDefOrUse {
@@ -541,6 +583,8 @@ class Def extends DefOrUse {
   }
 
   Node0Impl getValue() { result = defOrUse.getValue() }
+
+  predicate isCertain() { defOrUse.isCertain() }
 }
 
 private module SsaImpl = SsaImplCommon::Make<SsaInput>;
@@ -548,5 +592,7 @@ private module SsaImpl = SsaImplCommon::Make<SsaInput>;
 class PhiNode = SsaImpl::PhiNode;
 
 class Definition = SsaImpl::Definition;
+
+class UncertainWriteDefinition = SsaImpl::UncertainWriteDefinition;
 
 import SsaCached
