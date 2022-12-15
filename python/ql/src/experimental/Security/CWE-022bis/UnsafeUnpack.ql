@@ -43,6 +43,21 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     exists(MethodCallNode mcn |
       mcn = API::moduleImport("wget").getMember("download").getACall() and source = mcn.getArg(1)
     )
+    or
+    // catch the uploaded files as a source
+    exists(Subscript s, Attribute at |
+      at = s.getObject() and at.getAttr() = "FILES" and source.asExpr() = s
+    )
+    or
+    exists(Node obj, AttrRead ar |
+      ar.getAMethodCall("get").flowsTo(source) and
+      ar.accesses(obj, "FILES")
+    )
+    or
+    exists(Node obj, AttrRead ar |
+      ar.getAMethodCall("getlist").flowsTo(source) and
+      ar.accesses(obj, "FILES")
+    )
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -51,53 +66,66 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    (
-      // Writing the response data to the archive
-      exists(Stdlib::FileLikeObject::InstanceSource is, Node f, MethodCallNode mc |
-        is.flowsTo(f) and
-        mc.getMethodName() = "write" and
-        f = mc.getObject() and
-        nodeFrom = mc.getArg(0) and
-        nodeTo = is.(CallCfgNode).getArg(0)
-      )
-      or
-      // Copying the response data to the archive
-      exists(Stdlib::FileLikeObject::InstanceSource is, Node f, MethodCallNode mc |
-        is.flowsTo(f) and
-        mc = API::moduleImport("shutil").getMember("copyfileobj").getACall() and
-        f = mc.getArg(1) and
-        nodeFrom = mc.getArg(0) and
-        nodeTo = is.(CallCfgNode).getArg(0)
-      )
-      or
-      // Reading the response
-      exists(MethodCallNode mc |
-        nodeFrom = mc.getObject() and
-        mc.getMethodName() = "read" and
-        mc.flowsTo(nodeTo)
-      )
-      or
-      // Accessing the name or raw content
-      exists(AttrRead ar | ar.accesses(nodeFrom, ["name", "raw"]) and ar.flowsTo(nodeTo))
-      or
-      //Use of join of filename
-      exists(API::CallNode mcn |
-        mcn = API::moduleImport("os").getMember("path").getMember("join").getACall() and
-        nodeFrom = mcn.getArg(1) and
-        mcn.flowsTo(nodeTo)
-      )
-      or
-      // Read by chunks
-      exists(MethodCallNode mc |
-        nodeFrom = mc.getObject() and mc.getMethodName() = "chunks" and mc.flowsTo(nodeTo)
-      )
-      or
-      // Considering the use of closing()
-      exists(API::CallNode closing |
-        closing = API::moduleImport("contextlib").getMember("closing").getACall() and
-        closing.flowsTo(nodeTo) and
-        nodeFrom = closing.getArg(0)
-      )
+    // Writing the response data to the archive
+    exists(Stdlib::FileLikeObject::InstanceSource is, Node f, MethodCallNode mc |
+      is.flowsTo(f) and
+      mc.getMethodName() = "write" and
+      f = mc.getObject() and
+      nodeFrom = mc.getArg(0) and
+      nodeTo = is.(CallCfgNode).getArg(0)
+    )
+    or
+    // Copying the response data to the archive
+    exists(Stdlib::FileLikeObject::InstanceSource is, Node f, MethodCallNode mc |
+      is.flowsTo(f) and
+      mc = API::moduleImport("shutil").getMember("copyfileobj").getACall() and
+      f = mc.getArg(1) and
+      nodeFrom = mc.getArg(0) and
+      nodeTo = is.(CallCfgNode).getArg(0)
+    )
+    or
+    // Reading the response
+    exists(MethodCallNode mc |
+      nodeFrom = mc.getObject() and
+      mc.getMethodName() = "read" and
+      mc.flowsTo(nodeTo)
+    )
+    or
+    // Accessing the name or raw content
+    exists(AttrRead ar | ar.accesses(nodeFrom, ["name", "raw"]) and ar.flowsTo(nodeTo))
+    or
+    //Use of join of filename
+    exists(API::CallNode mcn |
+      mcn = API::moduleImport("os").getMember("path").getMember("join").getACall() and
+      nodeFrom = mcn.getArg(1) and
+      mcn.flowsTo(nodeTo)
+    )
+    or
+    // Read by chunks
+    exists(MethodCallNode mc |
+      nodeFrom = mc.getObject() and mc.getMethodName() = "chunks" and mc.flowsTo(nodeTo)
+    )
+    or
+    // Considering the use of closing()
+    exists(API::CallNode closing |
+      closing = API::moduleImport("contextlib").getMember("closing").getACall() and
+      closing.flowsTo(nodeTo) and
+      nodeFrom = closing.getArg(0)
+    )
+    or
+    // Considering the use of "fs"
+    exists(API::CallNode fs, MethodCallNode mcn |
+      fs =
+        API::moduleImport("django")
+            .getMember("core")
+            .getMember("files")
+            .getMember("storage")
+            .getMember("FileSystemStorage")
+            .getACall() and
+      fs.flowsTo(mcn.getObject()) and
+      mcn.getMethodName() = ["save", "path"] and
+      nodeFrom = mcn.getArg(0) and
+      nodeTo = mcn
     )
   }
 }
