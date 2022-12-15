@@ -3,13 +3,7 @@
 Customizing Library Models for JavaScript
 =========================================
 
-.. pull-quote::
-
-   Beta Notice - Unstable API
-
-   Library customization using data extensions is currently in beta and subject to change.
-
-   Breaking changes to this format may occur while in beta.
+.. include:: ../reusables/beta-note-customizing-library-models.rst
 
 The JavaScript analysis can be customized by adding library models in data extension files.
 
