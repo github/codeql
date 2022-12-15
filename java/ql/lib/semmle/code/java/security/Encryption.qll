@@ -290,9 +290,7 @@ string getSecureAlgorithmRegex() {
  * algorithm. For example, methods returning ciphers, decryption methods,
  * constructors of cipher classes, etc.
  */
-abstract class CryptoAlgoSpec extends Top {
-  CryptoAlgoSpec() { this instanceof Call }
-
+abstract class CryptoAlgoSpec extends Top instanceof Call {
   abstract Expr getAlgoSpec();
 }
 

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Collections.Generic", "Dictionary<,>", False, "Add", "(System.Collections.Generic.KeyValuePair<TKey,TValue>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key]", "value", "manual"]
       - ["System.Collections.Generic", "Dictionary<,>", False, "Add", "(System.Collections.Generic.KeyValuePair<TKey,TValue>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value]", "value", "manual"]

@@ -23,8 +23,6 @@ In the following example we find instances of ``AssignExpr`` which assign the co
    where e.getRValue().getValue().toInt() = 0
    select e, "Assigning the value 0 to something."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505908086530/>`__
-
 The ``where`` clause in this example gets the expression on the right side of the assignment, ``getRValue()``, and compares it with zero. Notice that there are no checks to make sure that the right side of the assignment is an integer or that it has a value (that is, it is compile-time constant, rather than a variable). For expressions where either of these assumptions is wrong, the associated predicate simply does not return anything and the ``where`` clause will not produce a result. You could think of it as if there is an implicit ``exists(e.getRValue().getValue().toInt())`` at the beginning of this line.
 
 It is also worth noting that the query above would find this C code:
@@ -33,7 +31,7 @@ It is also worth noting that the query above would find this C code:
 
    yPtr = NULL;
 
-This is because the database contains a representation of the code base after the preprocessor transforms have run. This means that any macro invocations, such as the ``NULL`` define used here, are expanded during the creation of the database. If you want to write queries about macros then there are some special library classes that have been designed specifically for this purpose (for example, the ``Macro``, ``MacroInvocation`` classes and predicates like ``Element.isInMacroExpansion()``). In this case, it is good that macros are expanded, but we do not want to find assignments to pointers. For more information, see `Database generation <https://lgtm.com/help/lgtm/generate-database>`__ on LGTM.com.
+This is because the database contains a representation of the code base after the preprocessor transforms have run. This means that any macro invocations, such as the ``NULL`` define used here, are expanded during the creation of the database. If you want to write queries about macros then there are some special library classes that have been designed specifically for this purpose (for example, the ``Macro``, ``MacroInvocation`` classes and predicates like ``Element.isInMacroExpansion()``). In this case, it is good that macros are expanded, but we do not want to find assignments to pointers. For more information, see `Database creation <https://codeql.github.com/docs/codeql-overview/about-codeql/#database-creation>`__.
 
 Finding assignments of 0 to an integer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,8 +46,6 @@ We can make the query more specific by defining a condition for the left side of
    where e.getRValue().getValue().toInt() = 0
      and e.getLValue().getType().getUnspecifiedType() instanceof IntegralType
    select e, "Assigning the value 0 to an integer."
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505906986578/>`__
 
 This checks that the left side of the assignment has a type that is some kind of integer. Note the call to ``Type.getUnspecifiedType()``. This resolves ``typedef`` types to their underlying types so that the query finds assignments like this one:
 
@@ -109,8 +105,6 @@ Unfortunately this would not quite work, because the loop initialization is actu
      and e.getLValue().getType().getUnspecifiedType() instanceof IntegralType
    select e, "Assigning the value 0 to an integer, inside a for loop initialization."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505909016965/>`__
-
 Finding assignments of 0 within the loop body
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -126,8 +120,6 @@ We can find assignments inside the loop body using similar code with the predica
      and e.getRValue().getValue().toInt() = 0
      and e.getLValue().getType().getUnderlyingType() instanceof IntegralType
    select e, "Assigning the value 0 to an integer, inside a for loop body."
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505901437190/>`__
 
 Note that we replaced ``e.getEnclosingStmt()`` with ``e.getEnclosingStmt().getParentStmt*()``, to find an assignment expression that is deeply nested inside the loop body. The transitive closure modifier ``*`` here indicates that ``Stmt.getParentStmt()`` may be followed zero or more times, rather than just once, giving us the statement, its parent statement, its parent's parent statement etc.
 

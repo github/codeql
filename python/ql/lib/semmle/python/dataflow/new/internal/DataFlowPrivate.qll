@@ -948,3 +948,10 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
 }
+
+/** An approximated `Content`. */
+class ContentApprox = Unit;
+
+/** Gets an approximated value for content `c`. */
+pragma[inline]
+ContentApprox getContentApprox(Content c) { any() }

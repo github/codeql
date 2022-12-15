@@ -34,6 +34,6 @@ module Generated {
     /**
      * Gets the number of accessor declarations of this abstract storage declaration.
      */
-    final int getNumberOfAccessorDecls() { result = count(getAnAccessorDecl()) }
+    final int getNumberOfAccessorDecls() { result = count(int i | exists(getAccessorDecl(i))) }
   }
 }

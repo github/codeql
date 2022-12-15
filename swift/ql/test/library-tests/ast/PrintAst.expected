@@ -1,9 +1,3 @@
-#-----| [ModuleDecl] __ObjC
-#-----| [ModuleDecl] cfg
-#-----| [ModuleDecl] declarations
-#-----| [ModuleDecl] expressions
-#-----| [ModuleDecl] patterns
-#-----| [ModuleDecl] statements
 cfg.swift:
 #    1| [TopLevelCodeDecl] { ... }
 #    1|   getBody(): [BraceStmt] { ... }
@@ -2453,7 +2447,7 @@ cfg.swift:
 #-----|           getDest(): [MemberRefExpr] .field
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#  394|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  394|     getAccessorDecl(2): [AccessorDecl] _modify
 #  394|         InterfaceType = (Structors) -> () -> ()
 #  394|       getSelfParam(): [ParamDecl] self
 #  394|           Type = Structors
@@ -2525,7 +2519,7 @@ cfg.swift:
 #-----|               getDest(): [MemberRefExpr] .x
 #-----|                 getBase(): [DeclRefExpr] self
 #-----|               getSource(): [DeclRefExpr] value
-#  410|         getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  410|         getAccessorDecl(2): [AccessorDecl] _modify
 #  410|             InterfaceType = (MyLocalClass) -> () -> ()
 #  410|           getSelfParam(): [ParamDecl] self
 #  410|               Type = MyLocalClass
@@ -2575,7 +2569,7 @@ cfg.swift:
 #-----|               getDest(): [MemberRefExpr] .x
 #-----|                 getBase(): [DeclRefExpr] self
 #-----|               getSource(): [DeclRefExpr] value
-#  417|         getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  417|         getAccessorDecl(2): [AccessorDecl] _modify
 #  417|             InterfaceType = (inout MyLocalStruct) -> () -> ()
 #  417|           getSelfParam(): [ParamDecl] self
 #  417|               Type = MyLocalStruct
@@ -2754,7 +2748,7 @@ cfg.swift:
 #-----|           getDest(): [MemberRefExpr] .x
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#  446|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  446|     getAccessorDecl(2): [AccessorDecl] _modify
 #  446|         InterfaceType = (inout B) -> () -> ()
 #  446|       getSelfParam(): [ParamDecl] self
 #  446|           Type = B
@@ -2795,7 +2789,7 @@ cfg.swift:
 #-----|           getDest(): [MemberRefExpr] .b
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#  450|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  450|     getAccessorDecl(2): [AccessorDecl] _modify
 #  450|         InterfaceType = (inout A) -> () -> ()
 #  450|       getSelfParam(): [ParamDecl] self
 #  450|           Type = A
@@ -2829,7 +2823,7 @@ cfg.swift:
 #-----|           getDest(): [MemberRefExpr] .bs
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#  451|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  451|     getAccessorDecl(2): [AccessorDecl] _modify
 #  451|         InterfaceType = (inout A) -> () -> ()
 #  451|       getSelfParam(): [ParamDecl] self
 #  451|           Type = A
@@ -2864,7 +2858,7 @@ cfg.swift:
 #-----|           getDest(): [MemberRefExpr] .mayB
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#  452|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  452|     getAccessorDecl(2): [AccessorDecl] _modify
 #  452|         InterfaceType = (inout A) -> () -> ()
 #  452|       getSelfParam(): [ParamDecl] self
 #  452|           Type = A
@@ -2983,7 +2977,7 @@ declarations.swift:
 #-----|           getDest(): [MemberRefExpr] .x
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#    2|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#    2|     getAccessorDecl(2): [AccessorDecl] _modify
 #    2|         InterfaceType = (inout Foo) -> () -> ()
 #    2|       getSelfParam(): [ParamDecl] self
 #    2|           Type = Foo
@@ -3031,7 +3025,7 @@ declarations.swift:
 #    5|               getExpr(): [DeclRefExpr] newValue
 #    5|             getArgument(1): [Argument] : 1
 #    5|               getExpr(): [IntegerLiteralExpr] 1
-#    3|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#    3|     getAccessorDecl(2): [AccessorDecl] _modify
 #    3|         InterfaceType = (inout Foo) -> () -> ()
 #    3|       getSelfParam(): [ParamDecl] self
 #    3|           Type = Foo
@@ -3079,7 +3073,7 @@ declarations.swift:
 #-----|           getDest(): [MemberRefExpr] .x
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#    9|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#    9|     getAccessorDecl(2): [AccessorDecl] _modify
 #    9|         InterfaceType = (Bar) -> () -> ()
 #    9|       getSelfParam(): [ParamDecl] self
 #    9|           Type = Bar
@@ -3306,7 +3300,7 @@ declarations.swift:
 #   23|           Type = Self
 #   23|       getParam(0): [ParamDecl] newValue
 #   23|           Type = Int
-#   23|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   23|     getAccessorDecl(2): [AccessorDecl] _modify
 #   23|         InterfaceType = <Self where Self : MyProtocol> (inout Self) -> () -> ()
 #   23|       getSelfParam(): [ParamDecl] self
 #   23|           Type = Self
@@ -3393,7 +3387,7 @@ declarations.swift:
 #-----|           getDest(): [MemberRefExpr] .field
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#   41|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   41|     getAccessorDecl(2): [AccessorDecl] _modify
 #   41|         InterfaceType = (Baz) -> () -> ()
 #   41|       getSelfParam(): [ParamDecl] self
 #   41|           Type = Baz
@@ -3503,7 +3497,7 @@ declarations.swift:
 #   84|       getBody(): [BraceStmt] { ... }
 #   85|         getElement(0): [ReturnStmt] return ...
 #   85|           getResult(): [IntegerLiteralExpr] 0
-#   82|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   82|     getAccessorDecl(2): [AccessorDecl] _modify
 #   82|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #   82|       getSelfParam(): [ParamDecl] self
 #   82|           Type = HasPropertyAndObserver
@@ -3563,7 +3557,7 @@ declarations.swift:
 #-----|           getDest(): [MemberRefExpr] .normalField
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#  102|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  102|     getAccessorDecl(2): [AccessorDecl] _modify
 #  102|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  102|       getSelfParam(): [ParamDecl] self
 #  102|           Type = HasPropertyAndObserver
@@ -3591,7 +3585,7 @@ declarations.swift:
 #  104|       getParam(1): [ParamDecl] x
 #  104|           Type = Int
 #  108|       getBody(): [BraceStmt] { ... }
-#  104|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  104|     getAccessorDecl(2): [AccessorDecl] _modify
 #  104|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
 #  104|       getSelfParam(): [ParamDecl] self
 #  104|           Type = HasPropertyAndObserver
@@ -3660,7 +3654,7 @@ declarations.swift:
 #-----|           getDest(): [MemberRefExpr] .hasWillSet1
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#  115|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
+#  115|     getAccessorDecl(3): [AccessorDecl] _modify
 #  115|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  115|       getSelfParam(): [ParamDecl] self
 #  115|           Type = HasPropertyAndObserver
@@ -3707,7 +3701,7 @@ declarations.swift:
 #-----|           getDest(): [MemberRefExpr] .hasWillSet2
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#  119|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
+#  119|     getAccessorDecl(3): [AccessorDecl] _modify
 #  119|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  119|       getSelfParam(): [ParamDecl] self
 #  119|           Type = HasPropertyAndObserver
@@ -3761,7 +3755,7 @@ declarations.swift:
 #-----|               getSubExpr(): [DeclRefExpr] self
 #-----|           getArgument(0): [Argument] : tmp
 #-----|             getExpr(): [DeclRefExpr] tmp
-#  123|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
+#  123|     getAccessorDecl(3): [AccessorDecl] _modify
 #  123|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  123|       getSelfParam(): [ParamDecl] self
 #  123|           Type = HasPropertyAndObserver
@@ -3804,7 +3798,7 @@ declarations.swift:
 #-----|           getFunction(): [MethodRefExpr] .didSet
 #-----|             getBase(): [InOutExpr] &...
 #-----|               getSubExpr(): [DeclRefExpr] self
-#  127|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
+#  127|     getAccessorDecl(3): [AccessorDecl] _modify
 #  127|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  127|       getSelfParam(): [ParamDecl] self
 #  127|           Type = HasPropertyAndObserver
@@ -3864,7 +3858,7 @@ declarations.swift:
 #-----|           getFunction(): [MethodRefExpr] .didSet
 #-----|             getBase(): [InOutExpr] &...
 #-----|               getSubExpr(): [DeclRefExpr] self
-#  131|     getAccessorDecl(4): [AccessorDecl] (unnamed function decl)
+#  131|     getAccessorDecl(4): [AccessorDecl] _modify
 #  131|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  131|       getSelfParam(): [ParamDecl] self
 #  131|           Type = HasPropertyAndObserver
@@ -4632,7 +4626,7 @@ expressions.swift:
 #   98|       getBody(): [BraceStmt] { ... }
 #   99|         getElement(0): [ReturnStmt] return ...
 #   99|           getResult(): [IntegerLiteralExpr] 0
-#   96|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   96|     getAccessorDecl(2): [AccessorDecl] _modify
 #   96|         InterfaceType = (inout HasProperty) -> () -> ()
 #   96|       getSelfParam(): [ParamDecl] self
 #   96|           Type = HasProperty
@@ -4692,7 +4686,7 @@ expressions.swift:
 #-----|           getDest(): [MemberRefExpr] .normalField
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#  116|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  116|     getAccessorDecl(2): [AccessorDecl] _modify
 #  116|         InterfaceType = (inout HasProperty) -> () -> ()
 #  116|       getSelfParam(): [ParamDecl] self
 #  116|           Type = HasProperty
@@ -4720,7 +4714,7 @@ expressions.swift:
 #  118|       getParam(1): [ParamDecl] x
 #  118|           Type = Int
 #  122|       getBody(): [BraceStmt] { ... }
-#  118|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  118|     getAccessorDecl(2): [AccessorDecl] _modify
 #  118|         InterfaceType = (inout HasProperty) -> (Int) -> ()
 #  118|       getSelfParam(): [ParamDecl] self
 #  118|           Type = HasProperty
@@ -4845,7 +4839,7 @@ expressions.swift:
 #-----|           getDest(): [MemberRefExpr] .x
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#  142|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  142|     getAccessorDecl(2): [AccessorDecl] _modify
 #  142|         InterfaceType = (inout B) -> () -> ()
 #  142|       getSelfParam(): [ParamDecl] self
 #  142|           Type = B
@@ -4886,7 +4880,7 @@ expressions.swift:
 #-----|           getDest(): [MemberRefExpr] .b
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#  146|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  146|     getAccessorDecl(2): [AccessorDecl] _modify
 #  146|         InterfaceType = (inout A) -> () -> ()
 #  146|       getSelfParam(): [ParamDecl] self
 #  146|           Type = A
@@ -4920,7 +4914,7 @@ expressions.swift:
 #-----|           getDest(): [MemberRefExpr] .bs
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#  147|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  147|     getAccessorDecl(2): [AccessorDecl] _modify
 #  147|         InterfaceType = (inout A) -> () -> ()
 #  147|       getSelfParam(): [ParamDecl] self
 #  147|           Type = A
@@ -4955,7 +4949,7 @@ expressions.swift:
 #-----|           getDest(): [MemberRefExpr] .mayB
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#  148|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  148|     getAccessorDecl(2): [AccessorDecl] _modify
 #  148|         InterfaceType = (inout A) -> () -> ()
 #  148|       getSelfParam(): [ParamDecl] self
 #  148|           Type = A
@@ -5695,7 +5689,7 @@ statements.swift:
 #-----|           getDest(): [MemberRefExpr] .x
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#   75|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   75|     getAccessorDecl(2): [AccessorDecl] _modify
 #   75|         InterfaceType = (inout HasModifyAccessorDecl) -> () -> ()
 #   75|       getSelfParam(): [ParamDecl] self
 #   75|           Type = HasModifyAccessorDecl
@@ -5710,7 +5704,7 @@ statements.swift:
 #   76|       getTypeRepr(): [TypeRepr] Int
 #   76|   getMember(3): [ConcreteVarDecl] hasModify
 #   76|       Type = Int
-#   77|     getAccessorDecl(0): [AccessorDecl] (unnamed function decl)
+#   77|     getAccessorDecl(0): [AccessorDecl] _modify
 #   77|         InterfaceType = (inout HasModifyAccessorDecl) -> () -> ()
 #   77|       getSelfParam(): [ParamDecl] self
 #   77|           Type = HasModifyAccessorDecl

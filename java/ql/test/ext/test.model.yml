@@ -1,0 +1,145 @@
+extensions:
+  # Model(s) for Kotlin - dataflow/notnullexpr and dataflow/whenexpr test cases.
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["", "Uri", False, "getQueryParameter", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+
+  # Model(s) for Java - dataflow/callback-dispatch test case.
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["my.callback.qltest", "A", False, "applyConsumer1", "(Object,Consumer1)", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConsumer1Field1Field2", "(A,A,Consumer1)", "", "Argument[0].Field[my.callback.qltest.A.field1]", "Argument[2].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConsumer1Field1Field2", "(A,A,Consumer1)", "", "Argument[1].Field[my.callback.qltest.A.field2]", "Argument[2].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConsumer2", "(Object,Consumer2)", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConsumer3", "(Object,Consumer3)", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConsumer3_ret_postup", "(Consumer3)", "", "Argument[0].Parameter[0]", "ReturnValue", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "forEach", "(Object[],Consumer3)", "", "Argument[0].ArrayElement", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyProducer1", "(Producer1)", "", "Argument[0].ReturnValue", "ReturnValue", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "produceConsume", "(Producer1,Consumer3)", "", "Argument[0].ReturnValue", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "produceConsume", "(Producer1,Consumer3)", "", "Argument[1].Parameter[0]", "ReturnValue", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConverter1", "(Object,Converter1)", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["my.callback.qltest", "A", False, "applyConverter1", "(Object,Converter1)", "", "Argument[1].ReturnValue", "ReturnValue", "value", "manual"]
+
+  # Model(s) for Java - dataflow/collections test case.
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["", "B", False, "readElement", "(Spliterator)", "", "Argument[0].Element", "ReturnValue", "value", "manual"]
+      - ["", "B", False, "readElement", "(Stream)", "", "Argument[0].Element", "ReturnValue", "value", "manual"]
+
+  # Model(s) for Java - dataflow/external-models test cases.
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: sourceModel
+    data:
+      - ["my.qltest", "A", False, "src1", "()", "", "ReturnValue", "qltest", "manual"]
+      - ["my.qltest", "A", False, "src1", "(String)", "", "ReturnValue", "qltest", "manual"]
+      - ["my.qltest", "A", False, "src1", "(java.lang.String)", "", "ReturnValue", "qltest-alt", "manual"]
+      - ["my.qltest", "A", False, "src1", "", "", "ReturnValue", "qltest-all-overloads", "manual"]
+      - ["my.qltest", "A", False, "src2", "()", "", "ReturnValue", "qltest", "manual"]
+      - ["my.qltest", "A", False, "src3", "()", "", "ReturnValue", "qltest", "manual"]
+      - ["my.qltest", "A", True, "src2", "()", "", "ReturnValue", "qltest-w-subtypes", "manual"]
+      - ["my.qltest", "A", True, "src3", "()", "", "ReturnValue", "qltest-w-subtypes", "manual"]
+      - ["my.qltest", "A", False, "srcArg", "(Object)", "", "Argument[0]", "qltest-argnum", "manual"]
+      - ["my.qltest", "A", False, "srcArg", "(Object)", "", "Argument", "qltest-argany", "manual"]
+      - ["my.qltest", "A$Handler", True, "handle", "(Object)", "", "Parameter[0]", "qltest-param-override", "manual"]
+      - ["my.qltest", "A$Tag", False, "", "", "Annotated", "ReturnValue", "qltest-retval", "manual"]
+      - ["my.qltest", "A$Tag", False, "", "", "Annotated", "Parameter", "qltest-param", "manual"]
+      - ["my.qltest", "A$Tag", False, "", "", "Annotated", "", "qltest-nospec", "manual"]
+      - ["my.qltest", "A", False, "srcTwoArg", "(String,String)", "", "ReturnValue", "qltest-shortsig", "manual"]
+      - ["my.qltest", "A", False, "srcTwoArg", "(java.lang.String,java.lang.String)", "", "ReturnValue", "qltest-longsig", "manual"]
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: sinkModel
+    data:
+      - ["my.qltest", "B", False, "sink1", "(Object)", "", "Argument[0]", "qltest", "manual"]
+      - ["my.qltest", "B", False, "sinkMethod", "()", "", "ReturnValue", "qltest", "manual"]
+      - ["my.qltest", "B$Tag", False, "", "", "Annotated", "ReturnValue", "qltest-retval", "manual"]
+      - ["my.qltest", "B$Tag", False, "", "", "Annotated", "Argument", "qltest-arg", "manual"]
+      - ["my.qltest", "B$Tag", False, "", "", "Annotated", "", "qltest-nospec", "manual"]
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["my.qltest", "C", False, "stepArgRes", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["my.qltest", "C", False, "stepArgArg", "(Object,Object)", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["my.qltest", "C", False, "stepArgQual", "(Object)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["my.qltest", "C", False, "stepQualRes", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["my.qltest", "C", False, "stepQualArg", "(Object)", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["my.qltest", "C", False, "stepArgResGenerated", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "generated"]
+      - ["my.qltest", "C", False, "stepArgResGeneratedIgnored", "(Object,Object)", "", "Argument[0]", "ReturnValue", "taint", "generated"]
+      - ["my.qltest", "C", False, "stepArgResGeneratedIgnored", "(Object,Object)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+
+  # Model(s) for Java - dataflow/synth-global test case.
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["my.qltest.synth", "A", False, "storeInArray", "(String)", "", "Argument[0]", "SyntheticGlobal[db1].ArrayElement", "value", "manual"]
+      - ["my.qltest.synth", "A", False, "storeTaintInArray", "(String)", "", "Argument[0]", "SyntheticGlobal[db1].ArrayElement", "taint", "manual"]
+      - ["my.qltest.synth", "A", False, "storeValue", "(String)", "", "Argument[0]", "SyntheticGlobal[db1]", "value", "manual"]
+      - ["my.qltest.synth", "A", False, "readValue", "()", "", "SyntheticGlobal[db1]", "ReturnValue", "value", "manual"]
+      - ["my.qltest.synth", "A", False, "readArray", "()", "", "SyntheticGlobal[db1].ArrayElement", "ReturnValue", "value", "manual"]
+
+  # Model(s) for Java - frameworks/android/content-provider-summaries test case.
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["generatedtest", "Test", False, "newWithMapValueDefault", "(Object)", "", "Argument[0]", "ReturnValue.MapValue", "value", "manual"]
+      - ["generatedtest", "Test", False, "newWithMapKeyDefault", "(Object)", "", "Argument[0]", "ReturnValue.MapKey", "value", "manual"]
+      - ["generatedtest", "Test", False, "getMapValueDefault", "(Object)", "", "Argument[0].MapValue", "ReturnValue", "value", "manual"]
+      - ["generatedtest", "Test", False, "getMapKeyDefault", "(Object)", "", "Argument[0].MapKey", "ReturnValue", "value", "manual"]
+
+  # Model(s) for Java - frameworks/android/intent test case.
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["generatedtest", "Test", False, "newBundleWithMapValue", "(Object)", "", "Argument[0]", "ReturnValue.MapValue", "value", "manual"]
+      - ["generatedtest", "Test", False, "newPersistableBundleWithMapValue", "(Object)", "", "Argument[0]", "ReturnValue.MapValue", "value", "manual"]
+      - ["generatedtest", "Test", False, "getMapValue", "(BaseBundle)", "", "Argument[0].MapValue", "ReturnValue", "value", "manual"]
+      - ["generatedtest", "Test", False, "newWithIntent_extras", "(Bundle)", "", "Argument[0]", "ReturnValue.SyntheticField[android.content.Intent.extras]", "value", "manual"]
+
+  # Model(s) for Java - frameworks/android/notification test case.
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["generatedtest", "Test", False, "getMapKeyDefault", "(Bundle)", "", "Argument[0].MapKey", "ReturnValue", "value", "manual"]
+
+  # Model(s) for Java - frameworks/apache-collections test case.
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["generatedtest", "Test", False, "newRBWithMapValue", "", "", "Argument[0]", "ReturnValue.MapValue", "value", "manual"]
+      - ["generatedtest", "Test", False, "newRBWithMapKey", "", "", "Argument[0]", "ReturnValue.MapKey", "value", "manual"]
+
+  # Model(s) for Java - frameworks/guave/generated/collect test case.
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["generatedtest", "Test", False, "newWithElementDefault", "(Object)", "", "Argument[0]", "ReturnValue.Element", "value", "manual"]
+      - ["generatedtest", "Test", False, "newWithMapKeyDefault", "(Object)", "", "Argument[0]", "ReturnValue.MapKey", "value", "manual"]
+      - ["generatedtest", "Test", False, "newWithMapValueDefault", "(Object)", "", "Argument[0]", "ReturnValue.MapValue", "value", "manual"]
+
+  # Model(s) for Java - frameworks/stream test case.
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["generatedtest", "Test", False, "getElementSpliterator", "(Spliterator)", "", "Argument[0].Element", "ReturnValue", "value", "manual"]
+
+  # Model(s) for Java - frameworks/stream test case.
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["generatedtest", "Test", False, "getStreamElement", "", "", "Argument[0].Element", "ReturnValue", "value", "manual"]

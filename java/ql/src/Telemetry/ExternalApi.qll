@@ -31,11 +31,17 @@ private string containerAsJar(Container container) {
   if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
 }
 
+/** Holds if the given callable is not worth supporting. */
+private predicate isUninteresting(Callable c) {
+  c.getDeclaringType() instanceof TestLibrary or
+  c.(Constructor).isParameterless()
+}
+
 /**
  * An external API from either the Standard Library or a 3rd party library.
  */
 class ExternalApi extends Callable {
-  ExternalApi() { not this.fromSource() }
+  ExternalApi() { not this.fromSource() and not isUninteresting(this) }
 
   /**
    * Gets information about the external API in the form expected by the CSV modeling framework.
@@ -73,18 +79,6 @@ class ExternalApi extends Callable {
     TaintTracking::localAdditionalTaintStep(this.getAnInput(), _)
   }
 
-  /** Holds if this API is a constructor without parameters. */
-  private predicate isParameterlessConstructor() {
-    this instanceof Constructor and this.getNumberOfParameters() = 0
-  }
-
-  /** Holds if this API is part of a common testing library or framework. */
-  private predicate isTestLibrary() { this.getDeclaringType() instanceof TestLibrary }
-
-  /** Holds if this API is not worth supporting. */
-  predicate isUninteresting() { this.isTestLibrary() or this.isParameterlessConstructor() }
-
-  /** Holds if this API is a known source. */
   predicate isSource() {
     this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
   }

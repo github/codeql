@@ -62,4 +62,8 @@ module ServerSideUrlRedirect {
       )
     }
   }
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
+  }
 }

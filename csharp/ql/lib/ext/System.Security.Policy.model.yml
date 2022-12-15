@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Security.Policy", "ApplicationTrustCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
       - ["System.Security.Policy", "Evidence", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]

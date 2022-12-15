@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.velocity.runtime.resource.util", "StringResourceRepository", True, "putStringResource", "", "", "Argument[1]", "ssti", "manual"]

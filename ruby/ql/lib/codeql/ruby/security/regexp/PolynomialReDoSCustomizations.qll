@@ -129,7 +129,7 @@ module PolynomialReDoS {
     override DataFlow::Node getHighlight() { result = matchNode }
   }
 
-  private predicate lengthGuard(CfgNodes::ExprCfgNode g, CfgNode node, boolean branch) {
+  private predicate lengthGuard(CfgNodes::AstCfgNode g, CfgNode node, boolean branch) {
     exists(DataFlow::Node input, DataFlow::CallNode length, DataFlow::ExprNode operand |
       length.asExpr().getExpr().(Ast::MethodCall).getMethodName() = "length" and
       length.getReceiver() = input and

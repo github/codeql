@@ -80,12 +80,16 @@ private import internal.FlowSummaryImplSpecific
 private module Frameworks {
   private import codeql.swift.frameworks.StandardLibrary.CustomUrlSchemes
   private import codeql.swift.frameworks.StandardLibrary.Data
+  private import codeql.swift.frameworks.StandardLibrary.FilePath
   private import codeql.swift.frameworks.StandardLibrary.InputStream
-  private import codeql.swift.frameworks.StandardLibrary.NSData
+  private import codeql.swift.frameworks.StandardLibrary.NsData
+  private import codeql.swift.frameworks.StandardLibrary.NsUrl
   private import codeql.swift.frameworks.StandardLibrary.String
   private import codeql.swift.frameworks.StandardLibrary.Url
   private import codeql.swift.frameworks.StandardLibrary.UrlSession
   private import codeql.swift.frameworks.StandardLibrary.WebView
+  private import codeql.swift.frameworks.Alamofire.Alamofire
+  private import codeql.swift.security.PathInjection
 }
 
 /**
@@ -390,18 +394,6 @@ predicate matchesSignature(AbstractFunctionDecl func, string signature) {
   paramsString(func) = signature
 }
 
-private NominalType getDeclType(IterableDeclContext decl) {
-  result = decl.(ClassDecl).getType()
-  or
-  result = decl.(StructDecl).getType()
-  or
-  result = getDeclType(decl.(ExtensionDecl).getExtendedTypeDecl())
-  or
-  result = decl.(EnumDecl).getType()
-  or
-  result = decl.(ProtocolDecl).getType()
-}
-
 /**
  * Gets the element in module `namespace` that satisfies the following properties:
  * 1. If the element is a member of a class-like type, then the class-like type has name `type`
@@ -430,32 +422,33 @@ private Element interpretElement0(
     )
     or
     // Member functions
-    exists(NominalType nomType, IterableDeclContext decl, MethodDecl method |
+    exists(NominalTypeDecl nomTypeDecl, IterableDeclContext decl, MethodDecl method |
       method.getName() = name and
       method = decl.getAMember() and
-      nomType.getFullName() = type and
+      nomTypeDecl.getFullName() = type and
       matchesSignature(method, signature) and
       result = method
     |
       subtypes = true and
-      getDeclType(decl) = nomType.getADerivedType*()
+      decl.getNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
       or
       subtypes = false and
-      getDeclType(decl) = nomType
+      decl.getNominalTypeDecl() = nomTypeDecl
     )
     or
+    // Fields
     signature = "" and
-    exists(NominalType nomType, IterableDeclContext decl, FieldDecl field |
+    exists(NominalTypeDecl nomTypeDecl, IterableDeclContext decl, FieldDecl field |
       field.getName() = name and
       field = decl.getAMember() and
-      nomType.getFullName() = type and
+      nomTypeDecl.getFullName() = type and
       result = field
     |
       subtypes = true and
-      getDeclType(decl) = nomType.getADerivedType*()
+      decl.getNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
       or
       subtypes = false and
-      getDeclType(decl) = nomType
+      decl.getNominalTypeDecl() = nomTypeDecl
     )
   )
 }

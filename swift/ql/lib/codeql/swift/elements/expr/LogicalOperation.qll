@@ -30,9 +30,7 @@ class NotExpr extends PrefixUnaryExpr {
   NotExpr() { unaryHasName(this, "!(_:)") }
 }
 
-class UnaryLogicalOperation extends PrefixUnaryExpr {
-  UnaryLogicalOperation() { this instanceof NotExpr }
-}
+class UnaryLogicalOperation extends PrefixUnaryExpr instanceof NotExpr { }
 
 class LogicalOperation extends Expr {
   LogicalOperation() {

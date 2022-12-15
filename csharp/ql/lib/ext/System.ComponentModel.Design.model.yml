@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.ComponentModel.Design", "DesignerCollection", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Collections.IEnumerator.Current]", "value", "manual"]
       - ["System.ComponentModel.Design", "DesignerOptionService+DesignerOptionCollection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]

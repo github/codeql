@@ -83,6 +83,7 @@ extractor-common: codeql-extractor.yml LICENSE ql/lib/go.dbscheme \
 	cp codeql-extractor.yml LICENSE ql/lib/go.dbscheme ql/lib/go.dbscheme.stats $(EXTRACTOR_PACK_OUT)
 	mkdir $(EXTRACTOR_PACK_OUT)/tools
 	cp -r tools/tokenizer.jar $(CODEQL_TOOLS) $(EXTRACTOR_PACK_OUT)/tools
+	cp -r downgrades $(EXTRACTOR_PACK_OUT)
 
 extractor: extractor-common tools-codeql
 	cp -r tools/$(CODEQL_PLATFORM) $(EXTRACTOR_PACK_OUT)/tools
@@ -132,10 +133,3 @@ build/testdb/go.dbscheme: ql/lib/upgrades/initial/go.dbscheme
 	rm -rf build/testdb
 	echo >build/empty.trap
 	codeql dataset import -S ql/lib/upgrades/initial/go.dbscheme build/testdb build/empty.trap
-
-.PHONY: sync-dataflow-libraries
-sync-dataflow-libraries:
-	for f in DataFlowImpl.qll DataFlowImpl2.qll DataFlowImplCommon.qll DataFlowImplConsistency.qll tainttracking1/TaintTrackingImpl.qll tainttracking2/TaintTrackingImpl.qll FlowSummaryImpl.qll AccessPathSyntax.qll;\
-	do\
-		curl -s -o ./ql/lib/semmle/go/dataflow/internal/$$f https://raw.githubusercontent.com/github/codeql/$(DATAFLOW_BRANCH)/java/ql/lib/semmle/code/java/dataflow/internal/$$f;\
-	done

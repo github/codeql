@@ -26,9 +26,10 @@ However, it is worth investigating why a module containing a syntax error
 was able to persist and address that problem as well.
 </p>
 <p>If you suspect that the syntax error is caused by the analysis using the
-wrong version of Python, consider specifying the version explicitly. For
-LGTM.com, you can customize extraction using an <code>lgtm.yml</code> file as
-described <a href="https://lgtm.com/help/lgtm/python-extraction">here</a>.
+wrong version of Python, consider specifying the version explicitly. When
+you run code scanning using the CodeQL action, you can configure the Python
+version to use. For more information, see 
+<a href="https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#analyzing-python-dependencies">Analyzing Python dependencies</a>.
 </p>
 </recommendation>
 <references>

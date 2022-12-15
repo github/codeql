@@ -52,9 +52,7 @@ private string commentText(Ruby::Comment comment) { result = comment.getValue().
 /**
  * The scope of an alert suppression comment.
  */
-class SuppressionScope extends @ruby_token_comment {
-  SuppressionScope() { this instanceof SuppressionComment }
-
+class SuppressionScope extends @ruby_token_comment instanceof SuppressionComment {
   /** Gets a suppression comment with this scope. */
   SuppressionComment getSuppressionComment() { result = this }
 
@@ -68,7 +66,7 @@ class SuppressionScope extends @ruby_token_comment {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.(SuppressionComment).covers(filepath, startline, startcolumn, endline, endcolumn)
+    super.covers(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /** Gets a textual representation of this element. */
