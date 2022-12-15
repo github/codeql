@@ -37,7 +37,7 @@ private predicate isUninteresting(Callable c) {
   or
   c.(Constructor).isParameterless()
   or
-  c.isStatic() and c.hasNoParameters()
+  c.(Method).isStatic() and c.hasNoParameters()
 }
 
 /**
