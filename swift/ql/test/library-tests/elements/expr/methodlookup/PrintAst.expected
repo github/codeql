@@ -62,9 +62,9 @@ methodlookup.swift:
 #-----|           getResult(): [CallExpr] call to UnownedSerialExecutor.init(_:)
 #-----|             getFunction(): [MethodLookupExpr] UnownedSerialExecutor.init(_:)
 #-----|               getBase(): [TypeExpr] UnownedSerialExecutor.Type
-#-----|             getArgument(0): [Argument] : call to ...
-#-----|               getExpr(): [CallExpr] call to ...
-#-----|                 getFunction(): [DeclRefExpr] (unknown declaration)
+#-----|             getArgument(0): [Argument] : call to buildDefaultActorExecutorRef(_:)
+#-----|               getExpr(): [CallExpr] call to buildDefaultActorExecutorRef(_:)
+#-----|                 getFunction(): [DeclRefExpr] buildDefaultActorExecutorRef(_:)
 #-----|                 getArgument(0): [Argument] : self
 #-----|                   getExpr(): [DeclRefExpr] self
 #   15| [ClassDecl] Baz

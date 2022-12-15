@@ -67,5 +67,9 @@ constexpr std::array swiftBuiltins = {
     "Vec16xFPIEEE64",
     "Vec32xFPIEEE64",
     "Vec64xFPIEEE64",
+
+    "buildDefaultActorExecutorRef",
+    "buildMainActorExecutorRef",
+    "buildOrdinarySerialExecutorRef",
 };
 }

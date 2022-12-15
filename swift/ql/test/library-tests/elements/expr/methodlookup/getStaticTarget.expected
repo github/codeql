@@ -1,8 +1,7 @@
 noStaticTarget
-| file://:0:0:0:0 | call to ... | file://:0:0:0:0 | (unknown declaration) | DeclRefExpr |
 #select
-| file://:0:0:0:0 | call to ... | false | - |
 | file://:0:0:0:0 | call to UnownedSerialExecutor.init(_:) | true | UnownedSerialExecutor.init(_:) |
+| file://:0:0:0:0 | call to buildDefaultActorExecutorRef(_:) | true | buildDefaultActorExecutorRef(_:) |
 | file://:0:0:0:0 | call to zeroInitializer() | true | zeroInitializer() |
 | file://:0:0:0:0 | call to zeroInitializer() | true | zeroInitializer() |
 | file://:0:0:0:0 | call to zeroInitializer() | true | zeroInitializer() |
