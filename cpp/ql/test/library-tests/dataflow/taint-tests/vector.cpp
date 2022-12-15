@@ -360,7 +360,7 @@ void test_vector_output_iterator(int b) {
 	*i5 = source();
 	sink(v5); // $ ast,ir
 	*i5 = 1;
-	sink(v5); // $ ast MISSING: ir
+	sink(v5); // $ ast,ir
 
 	std::vector<int>::iterator i6 = v6.begin();
 	*i6 = source();
@@ -382,7 +382,7 @@ void test_vector_output_iterator(int b) {
 	*i8 = source();
 	sink(v8); // $ ast,ir
 	*i8 = 1;
-	sink(v8); // $ SPURIOUS: ast
+	sink(v8); // $ SPURIOUS: ast,ir
 
 	std::vector<int>::iterator i9 = v9.begin();
 
