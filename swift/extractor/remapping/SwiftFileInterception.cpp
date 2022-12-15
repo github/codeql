@@ -12,7 +12,8 @@
 #include "swift/extractor/infra/file/FileHash.h"
 
 #ifdef __APPLE__
-#define SHARED_LIBC "libc.dylib"
+// path is hardcoded as otherwise redirection could break when setting DYLD_FALLBACK_LIBRARY_PATH
+#define SHARED_LIBC "/usr/lib/libc.dylib"
 #define FILE_CREATION_MODE O_CREAT
 #else
 #define SHARED_LIBC "libc.so.6"
@@ -24,8 +25,16 @@ namespace fs = std::filesystem;
 namespace {
 namespace original {
 
+void* openLibC() {
+  if (auto ret = dlopen(SHARED_LIBC, RTLD_LAZY)) {
+    return ret;
+  }
+  std::cerr << "Unable to dlopen " SHARED_LIBC "!\n";
+  std::abort();
+}
+
 void* libc() {
-  static auto ret = dlopen(SHARED_LIBC, RTLD_LAZY);
+  static auto ret = openLibC();
   return ret;
 }
 
