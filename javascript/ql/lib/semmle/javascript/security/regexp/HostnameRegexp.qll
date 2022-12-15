@@ -8,7 +8,8 @@ private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView 
 private import semmle.javascript.Regexp as RegExp
 private import codeql.regex.HostnameRegexp as Shared
 
-private module Impl implements Shared::HostnameRegexpSig<TreeImpl> {
+/** An implementation of the signature that allows the Hostname analysis to run. */
+module Impl implements Shared::HostnameRegexpSig<TreeImpl> {
   class DataFlowNode = JS::DataFlow::Node;
 
   class RegExpPatternSource = RegExp::RegExpPatternSource;

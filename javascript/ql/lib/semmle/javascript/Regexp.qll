@@ -366,6 +366,9 @@ class RegExpAnchor extends RegExpTerm, @regexp_anchor {
   override predicate isNullable() { any() }
 
   override string getAPrimaryQlClass() { result = "RegExpAnchor" }
+
+  /** Gets the char for this term. */
+  abstract string getChar();
 }
 
 /**
@@ -379,6 +382,8 @@ class RegExpAnchor extends RegExpTerm, @regexp_anchor {
  */
 class RegExpCaret extends RegExpAnchor, @regexp_caret {
   override string getAPrimaryQlClass() { result = "RegExpCaret" }
+
+  override string getChar() { result = "^" }
 }
 
 /**
@@ -392,6 +397,8 @@ class RegExpCaret extends RegExpAnchor, @regexp_caret {
  */
 class RegExpDollar extends RegExpAnchor, @regexp_dollar {
   override string getAPrimaryQlClass() { result = "RegExpDollar" }
+
+  override string getChar() { result = "$" }
 }
 
 /**

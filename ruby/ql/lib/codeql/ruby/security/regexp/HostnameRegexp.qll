@@ -8,7 +8,8 @@ private import codeql.ruby.regexp.RegExpTreeView::RegexTreeView as TreeImpl
 private import codeql.ruby.Regexp as Regexp
 private import codeql.regex.HostnameRegexp as Shared
 
-private module Impl implements Shared::HostnameRegexpSig<TreeImpl> {
+/** An implementation of the signature that allows the Hostname analysis to run. */
+module Impl implements Shared::HostnameRegexpSig<TreeImpl> {
   class DataFlowNode = DataFlow::Node;
 
   class RegExpPatternSource = Regexp::RegExpPatternSource;

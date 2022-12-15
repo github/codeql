@@ -73,6 +73,9 @@ signature module RegexTreeViewSig {
     /** Gets the regular expression term that is matched (textually) after this one, if any. */
     RegExpTerm getSuccessor();
 
+    /** Gets the last child term of this element. */
+    RegExpTerm getLastChild();
+
     string toString();
 
     predicate hasLocationInfo(
@@ -148,6 +151,11 @@ signature module RegexTreeViewSig {
      */
     int getUpperBound();
   }
+
+  /**
+   * A non-word boundary, that is, a regular expression term of the form `\B`.
+   */
+  class RegExpNonWordBoundary extends RegExpTerm;
 
   /**
    * An escaped regular expression term, that is, a regular expression
@@ -388,6 +396,20 @@ signature module RegexTreeViewSig {
   class RegExpDot extends RegExpTerm;
 
   /**
+   * A term that matches a specific position between characters in the string.
+   *
+   * Example:
+   *
+   * ```
+   * \A
+   * ```
+   */
+  class RegExpAnchor extends RegExpTerm {
+    /** Gets the char for this term. */
+    string getChar();
+  }
+
+  /**
    * A dollar assertion `$` matching the end of a line.
    *
    * Example:
@@ -396,7 +418,7 @@ signature module RegexTreeViewSig {
    * $
    * ```
    */
-  class RegExpDollar extends RegExpTerm;
+  class RegExpDollar extends RegExpAnchor;
 
   /**
    * A caret assertion `^` matching the beginning of a line.
@@ -407,7 +429,7 @@ signature module RegexTreeViewSig {
    * ^
    * ```
    */
-  class RegExpCaret extends RegExpTerm;
+  class RegExpCaret extends RegExpAnchor;
 
   /**
    * A word boundary assertion.
