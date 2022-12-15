@@ -26,11 +26,8 @@ class TestLibrary extends RefType {
 
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(DotNet::Callable c) {
-  c.getDeclaringType() instanceof TestLibrary
-  or
+  c.getDeclaringType() instanceof TestLibrary or
   c.(Constructor).isParameterless()
-  or
-  c.(Method).isStatic() and c.hasNoParameters()
 }
 
 /**
