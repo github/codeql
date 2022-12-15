@@ -4,6 +4,7 @@ private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.controlflow.CfgNodes::ExprNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import codeql.ruby.ast.internal.Constant
 
 /**
  * Provides modelling for ActionController, which is part of the `actionpack` gem.
@@ -75,8 +76,11 @@ module ActionController {
           result = only.getConstantValue().getStringlikeValue()
           or
           // only: [:index, :show]
-          result =
-            only.(ArrayLiteralCfgNode).getAnArgument().getConstantValue().getStringlikeValue()
+          // only: SOME_CONST_ARRAY
+          exists(ArrayLiteralCfgNode n |
+            isArrayConstant(only, n) and
+            result = n.getAnArgument().getConstantValue().getStringlikeValue()
+          )
         )
       }
 
@@ -305,7 +309,7 @@ module ActionController {
      * Holds if `pred` is called before `succ` in the callback chain for action `action`.
      * `pred` and `succ` may be methods bound to callbacks or controller actions.
      */
-    predicate next(Method pred, Method succ, ActionControllerActionMethod action) {
+    predicate next(ActionControllerActionMethod action, Method pred, Method succ) {
       exists(BeforeFilter f | pred = f.getFilterCallable() |
         // Non-terminal before filter
         succ = f.getNextFilter(action).getFilterCallable()
@@ -331,6 +335,15 @@ module ActionController {
       )
     }
 
+    /**
+     * Holds if `pred` is called before `succ` in the callback chain for some action.
+     * `pred` and `succ` may be methods bound to callbacks or controller actions.
+     */
+    cached
+    predicate next(Method pred, Method succ) {
+      exists(ActionControllerActionMethod action | next(action, pred, succ))
+    }
+
     pragma[inline]
     private predicate variableAccessPostUpdate(DataFlow::PostUpdateNode n, Method m) {
       n.getPreUpdateNode().asExpr() instanceof SelfVariableAccessCfgNode and
@@ -353,7 +366,7 @@ module ActionController {
       exists(Method predMethod, Method succMethod |
         variableAccessPostUpdate(pred, predMethod) and
         selfParameter(succ, succMethod) and
-        next(predMethod, succMethod, _)
+        next(predMethod, succMethod)
       )
     }
   }

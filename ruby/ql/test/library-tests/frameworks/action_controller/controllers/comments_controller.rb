@@ -1,9 +1,11 @@
 class CommentsController < ApplicationController
   before_action :set_user
-  before_action :ensure_user_can_edit_comments, only: [:create, :update, :destroy]
+  before_action :ensure_user_can_edit_comments, only: WRITE_ACTIONS
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
   after_action :log_comment_change, except: [:index, :show, :new]
   prepend_before_action :this_must_run_first
+
+  WRITE_ACTIONS = %i[create update destroy]
 
   def index
     request.params
