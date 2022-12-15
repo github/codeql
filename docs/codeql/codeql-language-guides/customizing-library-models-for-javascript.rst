@@ -255,6 +255,50 @@ To break this down:
 - The last column, **taint**, indicates the kind of flow to add. The value **taint** means the output is not necessarily equal
   to the input, but was was derived from the input in a taint-preserving way.
 
+Example: Adding flow through 'underscore.forEach'
+-------------------------------------------------
+
+In this example, we'll show how to add flow through calls to **forEach** from the **underscore** package:
+
+.. code-block:: js
+
+  require('underscore').forEach([x, y], (v) => { ... }); // add value flow from 'x' and 'y' to 'v'
+
+This flow is already recognized by the CodeQL JS analysis, but we'll show how it could be added with an extension.
+
+.. code-block:: yaml
+
+  extensions:
+    - addsTo:
+        pack: codeql/javascript-all
+        extensible: summaryModel
+      data:
+        - [
+            "underscore",
+            "Member[forEach]",
+            "Argument[0].ArrayElement",
+            "Argument[1].Parameter[0]",
+            "value",
+          ]
+
+To break this down:
+
+- Since we're adding flow *through* a function call, we add a tuple to the **summaryModel** extension point.
+- The first column, **"underscore"**, begins the search for relevant calls at places where the **underscore** package is imported.
+- The second column, **Member[forEach]**, selects references to the **forEach** member from the **underscore** package.
+- The third column specifies the input of the flow:
+
+  - **Argument[0]** selects the first argument of **forEach**, which is the array being iterated over.
+  - **ArrayElement** selects the elements of that array (the expressions **x** and **y**).
+
+- The fourth column specifies the output of the flow:
+
+  - **Argument[1]** selects the second argument of **forEach** (the argument containing the callback function).
+  - **Parameter[0]** selects the first parameter of the callback function (the parameter named **v**).
+
+- The last column, **value**, indicates the kind of flow to add. The value **value** means the input value is unchanged as
+  it flows to the output.
+
 Reference material
 ------------------
 
