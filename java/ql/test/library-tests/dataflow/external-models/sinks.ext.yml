@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: sinkModel
+    data:
+      - ["my.qltest", "B", False, "sink1", "(Object)", "", "Argument[0]", "qltest", "manual"]
+      - ["my.qltest", "B", False, "sinkMethod", "()", "", "ReturnValue", "qltest", "manual"]
+      - ["my.qltest", "B$Tag", False, "", "", "Annotated", "ReturnValue", "qltest-retval", "manual"]
+      - ["my.qltest", "B$Tag", False, "", "", "Annotated", "Argument", "qltest-arg", "manual"]
+      - ["my.qltest", "B$Tag", False, "", "", "Annotated", "", "qltest-nospec", "manual"]

@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["my.qltest.synth", "A", False, "storeInArray", "(String)", "", "Argument[0]", "SyntheticGlobal[db1].ArrayElement", "value", "manual"]
+      - ["my.qltest.synth", "A", False, "storeTaintInArray", "(String)", "", "Argument[0]", "SyntheticGlobal[db1].ArrayElement", "taint", "manual"]
+      - ["my.qltest.synth", "A", False, "storeValue", "(String)", "", "Argument[0]", "SyntheticGlobal[db1]", "value", "manual"]
+      - ["my.qltest.synth", "A", False, "readValue", "()", "", "SyntheticGlobal[db1]", "ReturnValue", "value", "manual"]
+      - ["my.qltest.synth", "A", False, "readArray", "()", "", "SyntheticGlobal[db1].ArrayElement", "ReturnValue", "value", "manual"]
