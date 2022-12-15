@@ -233,8 +233,8 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
   exists(ExprNodes::CallCfgNode call |
     nodeFrom instanceof DataFlowPrivate::ReturnNode and
     nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() = DataFlowDispatch::getTarget(call) and
-    // deliberately do not include `getInitializeTarget`, since there is no direct
-    // flow out (only side-effects on `self`). Any fields being set in the initializer
+    // deliberately do not include `getInitializeTarget`, since calls to `new` should not
+    // get the return value from `initialize`. Any fields being set in the initializer
     // will reach all reads via `callStep` and `localFieldStep`.
     nodeTo.asExpr().getNode() = call.getNode()
   )
