@@ -1,6 +1,6 @@
 import java
-import semmle.code.java.dataflow.ExternalFlow
+import semmle.code.java.dataflow.ExternalFlowExtensions
 
 from string package
-where extSummaryModel(package, _, _, _, _, _, _, _, _, _)
+where summaryModel(package, _, _, _, _, _, _, _, _, _)
 select package

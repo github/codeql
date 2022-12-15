@@ -63,7 +63,7 @@ class Generator:
                 f.write("extensions:\n")
                 f.write("  - addsTo:\n")
                 f.write("      pack: codeql/java-all\n")
-                f.write("      extensible: extSummaryModel\n")
+                f.write("      extensible: summaryModel\n")
                 f.write("    data:\n")
                 self.makeData(f, package)
 
