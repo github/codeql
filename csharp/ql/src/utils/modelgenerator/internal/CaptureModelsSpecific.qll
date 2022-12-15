@@ -40,7 +40,8 @@ private predicate isRelevantForModels(CS::Callable api) {
   not api instanceof Util::MainMethod and
   not api instanceof CS::Destructor and
   not api instanceof CS::AnonymousFunctionExpr and
-  not api.(CS::Constructor).isParameterless()
+  not api.(CS::Constructor).isParameterless() and
+  not (api.(CS::Method).isStatic() and api.hasNoParameters())
 }
 
 /**
