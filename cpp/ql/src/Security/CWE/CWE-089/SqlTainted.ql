@@ -48,7 +48,7 @@ from
 where
   runSql.outermostWrapperFunctionCall(taintedArg, callChain) and
   taintedWithPath(taintSource, taintedArg, sourceNode, sinkNode) and
-  isUserInput(taintSource, taintCause)
+  isUserInputDefault(taintSource, taintCause)
 select taintedArg, sourceNode, sinkNode,
   "This argument to a SQL query function is derived from $@ and then passed to " + callChain + ".",
   taintSource, "user input (" + taintCause + ")"

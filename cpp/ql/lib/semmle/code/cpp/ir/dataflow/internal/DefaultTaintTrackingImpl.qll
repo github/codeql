@@ -7,6 +7,7 @@
 
 import cpp
 import semmle.code.cpp.security.Security
+private import semmle.code.cpp.security.FlowSources
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.DataFlow3
@@ -54,15 +55,31 @@ predicate predictableOnlyFlow(string name) {
     ]
 }
 
+class DefaultTaintTrackingOptions extends string {
+  DefaultTaintTrackingOptions() { this = "DefaultTaintTrackingOptions" }
+
+  predicate isUserInputDefault(Expr source, string cause) {
+    exists(FlowSource node | cause = node.getSourceType() |
+      node = DataFlow::exprNode(source)
+      or
+      node = DataFlow::definitionByReferenceNodeFromArgument(source)
+    )
+  }
+}
+
+predicate isUserInputDefault(Expr expr, string cause) {
+  exists(DefaultTaintTrackingOptions opts | opts.isUserInputDefault(expr, cause))
+}
+
 private DataFlow::Node getNodeForSource(Expr source) {
-  isUserInput(source, _) and
+  isUserInputDefault(source, _) and
   result = getNodeForExpr(source)
 }
 
 private DataFlow::Node getNodeForExpr(Expr node) {
   result = DataFlow::exprNode(node)
   or
-  // Some of the sources in `isUserInput` are intended to match the value of
+  // Some of the sources in `isUserInputDefault` are intended to match the value of
   // an expression, while others (those modeled below) are intended to match
   // the taint that propagates out of an argument, like the `char *` argument
   // to `gets`. It's impossible here to tell which is which, but the "access
@@ -201,7 +218,7 @@ private module Cached {
   cached
   predicate nodeIsBarrierIn(DataFlow::Node node) {
     // don't use dataflow into taint sources, as this leads to duplicate results.
-    exists(Expr source | isUserInput(source, _) |
+    exists(Expr source | isUserInputDefault(source, _) |
       node = DataFlow::exprNode(source)
       or
       // This case goes together with the similar (but not identical) rule in

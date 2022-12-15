@@ -44,8 +44,8 @@ predicate isMinValue(Expr mie) {
   )
 }
 
-class SecurityOptionsArith extends SecurityOptions {
-  override predicate isUserInput(Expr expr, string cause) {
+class DefaultTaintTrackingOptionsArith extends DefaultTaintTrackingOptions {
+  override predicate isUserInputDefault(Expr expr, string cause) {
     isMaxValue(expr) and cause = "max value"
     or
     isMinValue(expr) and cause = "min value"
@@ -53,7 +53,7 @@ class SecurityOptionsArith extends SecurityOptions {
 }
 
 predicate taintedVarAccess(Expr origin, VariableAccess va, string cause) {
-  isUserInput(origin, cause) and
+  isUserInputDefault(origin, cause) and
   tainted(origin, va)
 }
 

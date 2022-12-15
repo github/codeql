@@ -31,7 +31,7 @@ from
 where
   printf.outermostWrapperFunctionCall(arg, printfFunction) and
   taintedWithPath(userValue, arg, sourceNode, sinkNode) and
-  isUserInput(userValue, cause)
+  isUserInputDefault(userValue, cause)
 select arg, sourceNode, sinkNode,
   "The value of this argument may come from $@ and is being used as a formatting argument to " +
     printfFunction + ".", userValue, cause

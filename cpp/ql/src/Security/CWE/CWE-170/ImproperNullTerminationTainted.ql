@@ -17,11 +17,12 @@ import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 /** A user-controlled expression that may not be null terminated. */
 class TaintSource extends VariableAccess {
   TaintSource() {
-    exists(SecurityOptions x, string cause |
+    exists(DefaultTaintTrackingOptions x, FunctionCall call |
       this.getTarget() instanceof SemanticStackVariable and
-      x.isUserInput(this, cause)
+      x.isUserInputDefault(this, _) and
+      call.getAnArgument() = this
     |
-      cause = ["read", "fread", "recv", "recvfrom", "recvmsg"]
+      call.getTarget().getName() = ["read", "fread", "recv", "recvfrom", "recvmsg"]
     )
   }
 
