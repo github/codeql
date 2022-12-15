@@ -216,6 +216,45 @@ For example, the **mysql** model that is included with the CodeQL JS analysis in
 
   - ["mysql.Connection", "mysql", "Member[createConnection].ReturnValue"]
 
+Example: Adding flow through 'decodeURIComponent'
+-------------------------------------------------
+
+In this example, we'll show how to add flow through calls to `decodeURIComponent`:
+
+.. code-block:: js
+
+  let y = decodeURIComponent(x); // add taint flow from 'x' to 'y'
+
+This flow is already recognized by the CodeQL JS analysis, but this is how it could be added with an extension:
+
+.. code-block:: yaml
+
+  extensions:
+    - addsTo:
+        pack: codeql/javascript-all
+        extensible: summaryModel
+      data:
+        - [
+            "global",
+            "Member[decodeURIComponent]",
+            "Argument[0]",
+            "ReturnValue",
+            "taint",
+          ]
+
+To break this down:
+
+- Since we're adding flow *through* a function call, we add a tuple to the **summaryModel** extension point.
+- The first column, **"global"**, begins the search for relevant calls at references to the global object.
+  In JavaScript, global variables are properties of the global object, so this lets us access global variables or functions.
+- The second column, **Member[decodeURIComponent]**, is a path leading to the function calls we wish to model.
+  In this case, we select references to the **decodeURIComponent** member from the global object, that is,
+  the global variable named **decodeURIComponent**.
+- The third column, **Argument[0]**, indicates the input of the flow. In this case, the first argument to the function call.
+- The fourth column, **ReturnValue**, indicates the output of the flow. In this case, the return value of the function call.
+- The last column, **taint**, indicates the kind of flow to add. The value **taint** means the output is not necessarily equal
+  to the input, but was was derived from the input in a taint-preserving way.
+
 Reference material
 ------------------
 
