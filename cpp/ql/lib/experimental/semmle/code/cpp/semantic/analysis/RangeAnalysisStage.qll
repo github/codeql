@@ -63,7 +63,6 @@
  * back-edge as a precise bound might require traversing a loop once).
  */
 
-private import RangeAnalysisSpecific as Specific
 private import RangeUtils as Utils
 private import SignAnalysisCommon
 private import ModulusAnalysis
@@ -150,9 +149,35 @@ signature module UtilSig<DeltaSig DeltaParam> {
   predicate semSsaUpdateStep(SemSsaExplicitUpdate v, SemExpr e, DeltaParam::Delta delta);
 
   predicate semValueFlowStep(SemExpr e2, SemExpr e1, DeltaParam::Delta delta);
+
+  /**
+   * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
+   */
+  predicate hasConstantBound(SemExpr e, int bound, boolean upper);
+
+  /**
+   * Holds if `e >= bound + delta` (if `upper = false`) or `e <= bound + delta` (if `upper = true`).
+   */
+  predicate hasBound(SemExpr e, SemExpr bound, int delta, boolean upper);
+
+  /**
+   * Ignore the bound on this expression.
+   *
+   * This predicate is to keep the results identical to the original Java implementation. It should be
+   * removed once we have the new implementation matching the old results exactly.
+   */
+  predicate ignoreExprBound(SemExpr e);
+
+  /**
+   * Ignore any inferred zero lower bound on this expression.
+   *
+   * This predicate is to keep the results identical to the original Java implementation. It should be
+   * removed once we have the new implementation matching the old results exactly.
+   */
+  predicate ignoreZeroLowerBound(SemExpr e);
 }
 
-module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
+module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
   cached
   private module RangeAnalysisCache {
     cached
@@ -178,7 +203,7 @@ module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
      */
     cached
     predicate possibleReason(SemGuard guard) {
-      guard = boundFlowCond(_, _, _, _, _) or guard = UtilParam::semEqFlowCond(_, _, _, _, _)
+      guard = boundFlowCond(_, _, _, _, _) or guard = LangParam::semEqFlowCond(_, _, _, _, _)
     }
   }
 
@@ -206,11 +231,11 @@ module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
   private predicate boundCondition(
     SemRelationalExpr comp, SemSsaVariable v, SemExpr e, float delta, boolean upper
   ) {
-    comp.getLesserOperand() = UtilParam::semSsaRead(v, D::fromFloat(delta)) and
+    comp.getLesserOperand() = LangParam::semSsaRead(v, D::fromFloat(delta)) and
     e = comp.getGreaterOperand() and
     upper = true
     or
-    comp.getGreaterOperand() = UtilParam::semSsaRead(v, D::fromFloat(delta)) and
+    comp.getGreaterOperand() = LangParam::semSsaRead(v, D::fromFloat(delta)) and
     e = comp.getLesserOperand() and
     upper = false
     or
@@ -218,7 +243,7 @@ module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
       // (v - d) - e < c
       comp.getLesserOperand() = sub and
       comp.getGreaterOperand() = c and
-      sub.getLeftOperand() = UtilParam::semSsaRead(v, D::fromFloat(d)) and
+      sub.getLeftOperand() = LangParam::semSsaRead(v, D::fromFloat(d)) and
       sub.getRightOperand() = e and
       upper = true and
       delta = d + c.getIntValue()
@@ -226,7 +251,7 @@ module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
       // (v - d) - e > c
       comp.getGreaterOperand() = sub and
       comp.getLesserOperand() = c and
-      sub.getLeftOperand() = UtilParam::semSsaRead(v, D::fromFloat(d)) and
+      sub.getLeftOperand() = LangParam::semSsaRead(v, D::fromFloat(d)) and
       sub.getRightOperand() = e and
       upper = false and
       delta = d + c.getIntValue()
@@ -235,7 +260,7 @@ module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
       comp.getLesserOperand() = sub and
       comp.getGreaterOperand() = c and
       sub.getLeftOperand() = e and
-      sub.getRightOperand() = UtilParam::semSsaRead(v, D::fromFloat(d)) and
+      sub.getRightOperand() = LangParam::semSsaRead(v, D::fromFloat(d)) and
       upper = false and
       delta = d - c.getIntValue()
       or
@@ -243,7 +268,7 @@ module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
       comp.getGreaterOperand() = sub and
       comp.getLesserOperand() = c and
       sub.getLeftOperand() = e and
-      sub.getRightOperand() = UtilParam::semSsaRead(v, D::fromFloat(d)) and
+      sub.getRightOperand() = LangParam::semSsaRead(v, D::fromFloat(d)) and
       upper = true and
       delta = d - c.getIntValue()
     )
@@ -339,14 +364,16 @@ module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
       semImplies_v2(result, testIsTrue, boundFlowCond(v, e, delta, upper, testIsTrue0), testIsTrue0)
     )
     or
-    result = UtilParam::semEqFlowCond(v, e, D::fromFloat(delta), true, testIsTrue) and
+    result = LangParam::semEqFlowCond(v, e, D::fromFloat(delta), true, testIsTrue) and
     (upper = true or upper = false)
     or
     // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
     // exists a guard `guardEq` such that `v = v2 - d1 + d2`.
-    exists(SemSsaVariable v2, SemGuard guardEq, boolean eqIsTrue, float d1, float d2, float oldDelta |
+    exists(
+      SemSsaVariable v2, SemGuard guardEq, boolean eqIsTrue, float d1, float d2, float oldDelta
+    |
       guardEq =
-        UtilParam::semEqFlowCond(v, UtilParam::semSsaRead(v2, D::fromFloat(d1)), D::fromFloat(d2),
+        LangParam::semEqFlowCond(v, LangParam::semSsaRead(v2, D::fromFloat(d1)), D::fromFloat(d2),
           true, eqIsTrue) and
       result = boundFlowCond(v2, e, oldDelta, upper, testIsTrue) and
       // guardEq needs to control guard
@@ -394,7 +421,7 @@ module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
     SemSsaVariable v, SemSsaReadPosition pos, SemExpr e, float delta, boolean upper,
     SemReason reason
   ) {
-    UtilParam::semSsaUpdateStep(v, e, D::fromFloat(delta)) and
+    LangParam::semSsaUpdateStep(v, e, D::fromFloat(delta)) and
     pos.hasReadOfVar(v) and
     (upper = true or upper = false) and
     reason = TSemNoReason()
@@ -414,7 +441,7 @@ module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
     Utils::getTrackedTypeForSsaVariable(v) instanceof SemIntegerType and
     exists(SemGuard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
-      guard = UtilParam::semEqFlowCond(v, e, D::fromFloat(delta), false, testIsTrue) and
+      guard = LangParam::semEqFlowCond(v, e, D::fromFloat(delta), false, testIsTrue) and
       semGuardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
       reason = TSemCondReason(guard)
     )
@@ -436,7 +463,7 @@ module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
    * - `upper = false` : `e2 >= e1 + delta`
    */
   private predicate boundFlowStep(SemExpr e2, SemExpr e1, float delta, boolean upper) {
-    UtilParam::semValueFlowStep(e2, e1, D::fromFloat(delta)) and
+    LangParam::semValueFlowStep(e2, e1, D::fromFloat(delta)) and
     (upper = true or upper = false)
     or
     e2.(SafeCastExpr).getOperand() = e1 and
@@ -499,7 +526,7 @@ module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
     delta = 0 and
     upper = false
     or
-    Specific::hasBound(e2, e1, delta, upper)
+    LangParam::hasBound(e2, e1, delta, upper)
   }
 
   /** Holds if `e2 = e1 * factor` and `factor > 0`. */
@@ -741,13 +768,13 @@ module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
    * (for `upper = false`) bound of `b`.
    */
   private predicate baseBound(SemExpr e, float b, boolean upper) {
-    Specific::hasConstantBound(e, b, upper)
+    LangParam::hasConstantBound(e, b, upper)
     or
     upper = false and
     b = 0 and
     semPositive(e.(SemBitAndExpr).getAnOperand()) and
     // REVIEW: We let the language opt out here to preserve original results.
-    not Specific::ignoreZeroLowerBound(e)
+    not LangParam::ignoreZeroLowerBound(e)
   }
 
   /**
