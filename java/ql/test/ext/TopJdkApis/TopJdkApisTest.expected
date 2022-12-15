@@ -6,11 +6,16 @@
 | java.lang.Enum#equals(Object) |
 | java.lang.Enum#name() |
 | java.lang.Enum#toString() |
+| java.lang.IllegalArgumentException#IllegalArgumentException(String) |
+| java.lang.IllegalStateException#IllegalStateException(String) |
+| java.lang.Integer#parseInt(String) |
 | java.lang.Iterable#forEach(Consumer) |
 | java.lang.Object#equals(Object) |
 | java.lang.Object#getClass() |
 | java.lang.Object#hashCode() |
 | java.lang.Object#toString() |
+| java.lang.RuntimeException#RuntimeException(String) |
+| java.lang.RuntimeException#RuntimeException(Throwable) |
 | java.lang.String#charAt(int) |
 | java.lang.String#contains(CharSequence) |
 | java.lang.String#equals(Object) |
@@ -26,6 +31,7 @@
 | java.lang.String#substring(int,int) |
 | java.lang.String#toLowerCase() |
 | java.lang.String#trim() |
+| java.lang.String#valueOf(int) |
 | java.lang.StringBuffer#append(String) |
 | java.lang.StringBuilder#append(Object) |
 | java.lang.StringBuilder#append(String) |
@@ -33,7 +39,11 @@
 | java.lang.StringBuilder#append(int) |
 | java.lang.StringBuilder#toString() |
 | java.lang.System#currentTimeMillis() |
+| java.lang.Throwable#Throwable(Throwable) |
+| java.lang.Throwable#getMessage() |
+| java.math.BigDecimal#BigDecimal(String) |
 | java.nio.file.Path#resolve(String) |
+| java.sql.ResultSet#getString(String) |
 | java.util.ArrayList#ArrayList(Collection) |
 | java.util.ArrayList#add(Object) |
 | java.util.Arrays#asList(Object[]) |
