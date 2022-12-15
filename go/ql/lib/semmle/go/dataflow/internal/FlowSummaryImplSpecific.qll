@@ -40,9 +40,7 @@ DataFlowCall summaryDataFlowCall(Node receiver) {
 DataFlowType getContentType(Content c) { result = c.getType() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
-DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  result = c.getType().getResultType(rk.getIndex())
-}
+DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) { any() }
 
 /**
  * Gets the type of the `i`th parameter in a synthesized call that targets a

@@ -53,9 +53,12 @@ class Call extends Expr instanceof CallImpl {
 
   /** Gets a potential target of this call, if any. */
   final Callable getATarget() {
-    exists(DataFlowCall c | this = c.asCall().getExpr() |
-      TCfgScope(result) = [viableCallable(c), viableCallableLambda(c, _)]
+    exists(DataFlowCall c |
+      this = c.asCall().getExpr() and
+      TCfgScope(result) = viableCallableLambda(c, _)
     )
+    or
+    result = getTarget(this.getAControlFlowNode())
   }
 
   override AstNode getAChild(string pred) {

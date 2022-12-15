@@ -828,8 +828,8 @@ import ParameterNodes
 
 /** A data-flow node used to model flow summaries. */
 class SummaryNode extends NodeImpl, TSummaryNode {
-  private FlowSummaryImpl::Public::SummarizedCallable c;
-  private FlowSummaryImpl::Private::SummaryNodeState state;
+  FlowSummaryImpl::Public::SummarizedCallable c;
+  FlowSummaryImpl::Private::SummaryNodeState state;
 
   SummaryNode() { this = TSummaryNode(c, state) }
 
@@ -951,6 +951,11 @@ private module ArgumentNodes {
 
 import ArgumentNodes
 
+/** A call to `new`. */
+private class NewCall extends DataFlowCall {
+  NewCall() { this.asCall().getExpr().(MethodCall).getMethodName() = "new" }
+}
+
 /** A data-flow node that represents a value syntactically returned by a callable. */
 abstract class ReturningNode extends Node {
   /** Gets the kind of this return node. */
@@ -994,7 +999,12 @@ private module ReturnNodes {
     override ReturnKind getKind() {
       if n.getNode() instanceof BreakStmt
       then result instanceof BreakReturnKind
-      else result instanceof NormalReturnKind
+      else
+        exists(CfgScope scope | scope = this.getCfgScope() |
+          if isUserDefinedNew(scope)
+          then result instanceof NewReturnKind
+          else result instanceof NormalReturnKind
+        )
     }
   }
 
@@ -1018,7 +1028,42 @@ private module ReturnNodes {
   class ExprReturnNode extends ReturningNode, ExprNode {
     ExprReturnNode() { exists(Callable c | implicitReturn(c, this) = c.getAStmt()) }
 
-    override ReturnKind getKind() { result instanceof NormalReturnKind }
+    override ReturnKind getKind() {
+      exists(CfgScope scope | scope = this.(NodeImpl).getCfgScope() |
+        if isUserDefinedNew(scope)
+        then result instanceof NewReturnKind
+        else result instanceof NormalReturnKind
+      )
+    }
+  }
+
+  /**
+   * A `self` node inside an `initialize` method through which data may return.
+   *
+   * For example, in
+   *
+   * ```rb
+   * class C
+   *   def initialize(x)
+   *     @x = x
+   *   end
+   * end
+   * ```
+   *
+   * the implicit `self` reference in `@x` will return data stored in the field
+   * `x` out to the call `C.new`.
+   */
+  class InitializeReturnNode extends ExprPostUpdateNode, ReturningNode {
+    InitializeReturnNode() {
+      exists(Method initialize |
+        this.getCfgScope() = initialize and
+        initialize.getName() = "initialize" and
+        initialize = any(ClassDeclaration c).getAMethod() and
+        this.getPreUpdateNode().asExpr().getExpr() instanceof SelfVariableReadAccess
+      )
+    }
+
+    override ReturnKind getKind() { result instanceof NewReturnKind }
   }
 
   /**
@@ -1054,7 +1099,14 @@ private module ReturnNodes {
 
     SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this, rk) }
 
-    override ReturnKind getKind() { result = rk }
+    override ReturnKind getKind() {
+      result = rk
+      or
+      exists(NewCall new |
+        TLibraryCallable(c) = viableLibraryCallable(new) and
+        result instanceof NewReturnKind
+      )
+    }
   }
 }
 
@@ -1078,7 +1130,9 @@ private module OutNodes {
 
     override DataFlowCall getCall(ReturnKind kind) {
       result = call and
-      kind instanceof NormalReturnKind
+      if call instanceof NewCall
+      then kind instanceof NewReturnKind
+      else kind instanceof NormalReturnKind
     }
   }
 

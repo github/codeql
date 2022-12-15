@@ -226,7 +226,7 @@ if len(supportModelRows) != 0:
         dataextensions = f"""extensions:
   - addsTo:
       pack: codeql/java-tests
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
 {models}
 """

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["Microsoft.Extensions.Primitives", "StringValues", False, "Add", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["Microsoft.Extensions.Primitives", "StringValues", False, "Add", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]

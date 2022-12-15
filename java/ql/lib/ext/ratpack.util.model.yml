@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["ratpack.util", "MultiValueMap", True, "asMultimap", "", "", "Argument[-1].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["ratpack.util", "MultiValueMap", True, "asMultimap", "", "", "Argument[-1].MapValue", "ReturnValue.MapValue", "value", "manual"]

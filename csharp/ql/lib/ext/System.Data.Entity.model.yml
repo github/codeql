@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["System.Data.Entity", "Database", False, "ExecuteSqlCommand", "(System.Data.Entity.TransactionalBehavior,System.String,System.Object[])", "", "Argument[1]", "sql", "manual"]
       - ["System.Data.Entity", "Database", False, "ExecuteSqlCommand", "(System.String,System.Object[])", "", "Argument[0]", "sql", "manual"]
