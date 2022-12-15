@@ -5,101 +5,37 @@
  * @id py/alert-suppression
  */
 
-import python
+private import codeql.suppression.AlertSuppression as AS
+private import semmle.python.Comment as P
 
-/**
- * An alert suppression comment.
- */
-abstract class SuppressionComment extends Comment {
-  /** Gets the scope of this suppression. */
-  abstract SuppressionScope getScope();
-
-  /** Gets the suppression annotation in this comment. */
-  abstract string getAnnotation();
-
-  /**
-   * Holds if this comment applies to the range from column `startcolumn` of line `startline`
-   * to column `endcolumn` of line `endline` in file `filepath`.
-   */
-  abstract predicate covers(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  );
-}
-
-/**
- * An alert comment that applies to a single line
- */
-abstract class LineSuppressionComment extends SuppressionComment {
-  LineSuppressionComment() {
-    exists(string filepath, int l |
-      this.getLocation().hasLocationInfo(filepath, l, _, _, _) and
-      any(AstNode a).getLocation().hasLocationInfo(filepath, l, _, _, _)
-    )
-  }
-
-  /** Gets the scope of this suppression. */
-  override SuppressionScope getScope() { result = this }
-
-  override predicate covers(
+class SingleLineComment instanceof P::Comment {
+  predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.getLocation().hasLocationInfo(filepath, startline, _, endline, endcolumn) and
-    startcolumn = 1
-  }
-}
-
-/**
- * An lgtm suppression comment.
- */
-class LgtmSuppressionComment extends LineSuppressionComment {
-  string annotation;
-
-  LgtmSuppressionComment() {
-    exists(string all | all = this.getContents() |
-      // match `lgtm[...]` anywhere in the comment
-      annotation = all.regexpFind("(?i)\\blgtm\\s*\\[[^\\]]*\\]", _, _)
-      or
-      // match `lgtm` at the start of the comment and after semicolon
-      annotation = all.regexpFind("(?i)(?<=^|;)\\s*lgtm(?!\\B|\\s*\\[)", _, _).trim()
-    )
+    super.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  /** Gets the suppression annotation in this comment. */
-  override string getAnnotation() { result = annotation }
+  string getText() { result = super.getContents() }
+
+  string toString() { result = super.toString() }
 }
+
+import AS::Make<SingleLineComment>
 
 /**
  * A noqa suppression comment. Both pylint and pyflakes respect this, so lgtm ought to too.
  */
-class NoqaSuppressionComment extends LineSuppressionComment {
-  NoqaSuppressionComment() { this.getContents().toLowerCase().regexpMatch("\\s*noqa\\s*([^:].*)?") }
-
-  override string getAnnotation() { result = "lgtm" }
-}
-
-/**
- * The scope of an alert suppression comment.
- */
-class SuppressionScope extends @py_comment instanceof SuppressionComment {
-  /**
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    super.covers(filepath, startline, startcolumn, endline, endcolumn)
+class NoqaSuppressionComment extends SuppressionComment instanceof SingleLineComment {
+  NoqaSuppressionComment() {
+    SingleLineComment.super.getText().regexpMatch("(?i)\\s*noqa\\s*([^:].*)?")
   }
 
-  /** Gets a textual representation of this element. */
-  string toString() { result = "suppression range" }
-}
+  override string getAnnotation() { result = "lgtm" }
 
-from SuppressionComment c
-select c, // suppression comment
-  c.getContents(), // text of suppression comment (excluding delimiters)
-  c.getAnnotation(), // text of suppression annotation
-  c.getScope() // scope of suppression
+  override predicate covers(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.hasLocationInfo(filepath, startline, _, endline, endcolumn) and
+    startcolumn = 1
+  }
+}
