@@ -48,21 +48,29 @@ private int getNumApis(string package) {
 }
 
 from
-  string package, int generatedOnly, int both, int manualOnly, int non, int all,
+  string package, int generatedOnly, int both, int manualOnly, int generated, int manual, int non,
+  int all, float coverage, float generatedCoverage, float manualCoverage,
   float manualCoveredByGenerated, float generatedCoveredByManual, float match
 where
   // count the number of APIs with generated-only, both, and manual-only MaD models for each package
   generatedOnly = getNumMadModeledApis(package, "generated") and
   both = getNumMadModeledApis(package, "both") and
   manualOnly = getNumMadModeledApis(package, "manual") and
+  // calculate the total generated and total manual numbers
+  generated = generatedOnly + both and
+  manual = manualOnly + both and
   // count the total number of `DataFlowTargetApi`s for each package
   all = getNumApis(package) and
   non = all - (generatedOnly + both + manualOnly) and
+  // Proportion of coverage
+  coverage = (generatedOnly + both + manualOnly) / all and
+  generatedCoverage = generated / all and
+  manualCoverage = manual / all and
   // Proportion of manual models covered by generated ones
   manualCoveredByGenerated = (both.(float) / (both + manualOnly)) and
   // Proportion of generated models covered by manual ones
   generatedCoveredByManual = (both.(float) / (both + generatedOnly)) and
   // Proportion of data points that match
   match = (both.(float) + non) / all
-select package, generatedOnly, both, manualOnly, non, all, manualCoveredByGenerated,
-  generatedCoveredByManual, match order by package
+select package, generatedOnly, both, manualOnly, non, all, coverage, generatedCoverage,
+  manualCoverage, manualCoveredByGenerated, generatedCoveredByManual, match order by package
