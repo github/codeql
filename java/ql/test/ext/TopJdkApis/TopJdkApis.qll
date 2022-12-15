@@ -1,32 +1,18 @@
-/** Provides classes and predicates for the Top JDK APIs. */
+/** Provides a class to identify Top JDK APIs. */
 
 import java
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-private import semmle.code.java.dataflow.ExternalFlow // for paramsString
+private import semmle.code.java.dataflow.ExternalFlow
 
-// Note: from ExternalApi.qll for getting the api name returned in the telemetry query results
-//   /**
-//    * Gets information about the external API in the form expected by the CSV modeling framework.
-//    */
-//   string getApiName() {
-//     result =
-//       this.getDeclaringType().getPackage() + "." + this.getDeclaringType().getSourceDeclaration() +
-//         "#" + this.getName() + paramsString(this)
-//   }
 class TopJdkApi extends Callable {
   TopJdkApi() {
-    // (
-    //   this instanceof SummarizedCallable or
-    //   this instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable
-    // ) and
-    // top 101 jdk apis
-    //this.asCallable().getQualifiedName() in ["java.util.Set.add"]
-    exists(string api |
-      api =
+    exists(string apiName |
+      apiName =
         this.getDeclaringType().getPackage() + "." + this.getDeclaringType().getSourceDeclaration() +
           "#" + this.getName() + paramsString(this) and
-      api in [
+      apiName in [
+          // top 100 JDK APIs
           "java.lang.StringBuilder#append(String)", "java.util.List#get(int)",
           "java.util.List#add(Object)", "java.util.Map#put(Object,Object)",
           "java.lang.String#equals(Object)", "java.util.Map#get(Object)", "java.util.List#size()",
@@ -80,27 +66,18 @@ class TopJdkApi extends Callable {
     )
   }
 
-  /** Holds if this API has a supported summary model. */
-  private predicate hasSummary() { this = any(SummarizedCallable sc).asCallable() }
-
-  /** Holds if this API has a supported neutral model. */
-  private predicate hasNeutral() {
-    this = any(FlowSummaryImpl::Public::NegativeSummarizedCallable nsc).asCallable()
+  /** Holds if this API has a manual summary model. */
+  private predicate hasManualSummary() {
+    exists(SummarizedCallable sc | this = sc.asCallable() and sc.hasProvenance(false))
   }
 
-  // ! note: the below will hold for either manual or generated models, should I restrict to just manual?
-  /** Holds if this API has a MaD model. */
-  predicate hasMadModel() { this.hasSummary() or this.hasNeutral() }
+  /** Holds if this API has a manual neutral model. */
+  private predicate hasManualNeutral() {
+    exists(FlowSummaryImpl::Public::NegativeSummarizedCallable nsc |
+      this = nsc.asCallable() and nsc.hasProvenance(false)
+    )
+  }
+
+  /** Holds if this API has a manual MaD model. */
+  predicate hasManualMadModel() { this.hasManualSummary() or this.hasManualNeutral() }
 }
-// class TopJdkApiSummary extends SummarizedCallableBase {
-//   TopJdkApiSummary() {
-//     this instanceof SummarizedCallable and
-//     this.asCallable().getQualifiedName() in ["java.util.Objects."]
-//   }
-// }
-// class TopJdkApiNeutral extends SummarizedCallableBase {
-//   TopJdkApiNeutral() {
-//     this instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable and
-//     this.asCallable().getCompilationUnit().getPackage().getName() = "java.util"
-//   }
-// }
