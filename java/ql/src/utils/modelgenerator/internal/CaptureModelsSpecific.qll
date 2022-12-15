@@ -66,7 +66,8 @@ private predicate isRelevantForModels(J::Callable api) {
   not api instanceof J::MainMethod and
   not api instanceof J::StaticInitializer and
   not exists(J::FunctionalExpr funcExpr | api = funcExpr.asMethod()) and
-  not api.(J::Constructor).isParameterless()
+  not api.(J::Constructor).isParameterless() and
+  not (api.isStatic() and api.hasNoParameters())
 }
 
 /**
