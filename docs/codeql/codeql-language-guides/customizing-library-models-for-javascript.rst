@@ -251,7 +251,7 @@ Adds a new taint sink. Sinks are query-specific and will usually affect one or t
 
 - **type**: Name of a type from which to evaluate **path**.
 - **path**: Access path leading to the sink.
-- **kind**: Kind of sink to add. See `sink kinds <#sink-kinds>`_ for a list of supported kinds.
+- **kind**: Kind of sink to add. See the section on sink kinds for a list of supported kinds.
 
 Example:
 
