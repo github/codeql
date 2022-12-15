@@ -80,4 +80,11 @@ class TopJdkApi extends Callable {
 
   /** Holds if this API has a manual MaD model. */
   predicate hasManualMadModel() { this.hasManualSummary() or this.hasManualNeutral() }
-}
+  /*
+   * Note: the following top-100 APIs are not modeled with MaD:
+   * java.util.stream.Stream#collect(Collector) : handled separately on a case-by-case basis as it is too complex for MaD
+   * java.lang.String#valueOf(Object) : a complex case that we haven't fully decided how to deal with
+   * java.lang.Throwable#printStackTrace() : should probably not be a general step, but there might be specialised queries that care
+   */
+
+  }
