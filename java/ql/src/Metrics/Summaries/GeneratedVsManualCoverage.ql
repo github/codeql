@@ -49,7 +49,7 @@ private int getNumApis(string package) {
 
 from
   string package, int generatedOnly, int both, int manualOnly, int non, int all,
-  float generatedCoverage, float manualCoverage
+  float manualCoveredByGenerated, float generatedCoveredByManual
 where
   // count the number of APIs with generated-only, both, and manual-only MaD models for each package
   generatedOnly = getNumMadModeledApis(package, "generated") and
@@ -59,8 +59,8 @@ where
   all = getNumApis(package) and
   non = all - (generatedOnly + both + manualOnly) and
   // Proportion of manual models covered by generated ones
-  generatedCoverage = (both.(float) / (both + manualOnly)) and
+  manualCoveredByGenerated = (both.(float) / (both + manualOnly)) and
   // Proportion of generated models covered by manual ones
-  manualCoverage = (both.(float) / (both + generatedOnly))
-select package, generatedOnly, both, manualOnly, non, all, generatedCoverage, manualCoverage
-  order by package
+  generatedCoveredByManual = (both.(float) / (both + generatedOnly))
+select package, generatedOnly, both, manualOnly, non, all, manualCoveredByGenerated,
+  generatedCoveredByManual order by package
