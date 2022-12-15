@@ -422,7 +422,7 @@ class Try extends Try_ {
     result = this.getAnOrelse()
   }
 
-  override Stmt getHandler(int i) { result = Try_.super.getHandler(i) }
+  override ExceptionHandler getHandler(int i) { result = Try_.super.getHandler(i) }
 
   /** Gets a normal exception handler, `except`, of this try statement. */
   ExceptStmt getANormalHandler() { result = this.getAHandler() }
