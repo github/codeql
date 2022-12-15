@@ -10,11 +10,6 @@ private import RegexTreeView
  * analysis on regular expressions matching hostnames.
  */
 signature module HostnameRegexpSig<RegexTreeViewSig TreeImpl> {
-  /**
-   * Gets a pattern that matches common top-level domain names in lower case.
-   */
-  string getACommonTld();
-
   /** A node in the data-flow graph. */
   class DataFlowNode;
 
@@ -97,7 +92,7 @@ module Make<RegexTreeViewSig TreeImpl, HostnameRegexpSig<TreeImpl> Specific> {
     seq.getChild(i)
         .(RegExpConstant)
         .getValue()
-        .regexpMatch("(?i)" + Specific::getACommonTld() + "(:\\d+)?([/?#].*)?") and
+        .regexpMatch("(?i)" + getACommonTld() + "(:\\d+)?([/?#].*)?") and
     isDotLike(seq.getChild(i - 1)) and
     not (i = 1 and matchesBeginningOfString(seq))
   }
@@ -264,5 +259,13 @@ module Make<RegexTreeViewSig TreeImpl, HostnameRegexpSig<TreeImpl> Specific> {
 
   private RegExpTerm getLastChild(RegExpTerm parent) {
     result = max(RegExpTerm child, int i | child = parent.getChild(i) | child order by i)
+  }
+
+  /**
+   * Gets a pattern that matches common top-level domain names in lower case.
+   */
+  string getACommonTld() {
+    // according to ranking by http://google.com/search?q=site:.<<TLD>>
+    result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
   }
 }

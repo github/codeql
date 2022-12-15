@@ -31,7 +31,7 @@ query predicate problems(
   (
     // target contains a domain on a common TLD, and perhaps some other URL components
     target
-        .regexpMatch("(?i)([a-z]*:?//)?\\.?([a-z0-9-]+\\.)+" + RegExpPatterns::getACommonTld() +
+        .regexpMatch("(?i)([a-z]*:?//)?\\.?([a-z0-9-]+\\.)+" + HostnameRegexp::getACommonTld() +
             "(:[0-9]+)?/?")
     or
     // target is a HTTP URL to a domain on any TLD

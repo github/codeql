@@ -12,8 +12,6 @@ private module Impl implements Shared::HostnameRegexpSig<TreeImpl> {
   class DataFlowNode = DataFlow::Node;
 
   class RegExpPatternSource = Regexp::RegExpPatternSource;
-
-  string getACommonTld() { result = Regexp::RegExpPatterns::getACommonTld() }
 }
 
 import Shared::Make<TreeImpl, Impl>
