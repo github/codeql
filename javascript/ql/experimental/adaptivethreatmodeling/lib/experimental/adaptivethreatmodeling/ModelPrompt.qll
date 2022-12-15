@@ -16,7 +16,7 @@ module ModelPrompt {
    */
   private string getTrainingSetPrompt() {
     result =
-      "# Examples of security vulnerability sinks and non-sinks\n|Dataflow node|Neighborhood|Classification|\n|---|---|---|\n|`WPUrls.ajaxurl`|`            dataType:  json ,            type:  POST ,            url: WPUrls.ajaxurl,            data: data,            complete: function( json ) {`|"
+      "# List examples of JavaScript security vulnerability sinks and non-sinks\n|Code snippet|Neighborhood|Classification|\n|---|---|---|\n|`WPUrls.ajaxurl`|`            dataType:  json ,            type:  POST ,            url: WPUrls.ajaxurl,            data: data,            complete: function( json ) {`|"
         + any(EndpointTypes::NegativeType endpointType).getDescription() +
         "|\n|`[ handlebars ]`|` use strict ;    if (typeof define ===  function  && define.amd) {        define([ handlebars ], function(Handlebars) {            return factory(Handlebars.default Handlebars);        });`|"
         + any(EndpointTypes::TaintedPathSinkType endpointType).getDescription() +
