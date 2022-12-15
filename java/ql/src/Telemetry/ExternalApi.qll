@@ -33,8 +33,11 @@ private string containerAsJar(Container container) {
 
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(Callable c) {
-  c.getDeclaringType() instanceof TestLibrary or
+  c.getDeclaringType() instanceof TestLibrary
+  or
   c.(Constructor).isParameterless()
+  or
+  c.isStatic() and c.hasNoParameters()
 }
 
 /**
