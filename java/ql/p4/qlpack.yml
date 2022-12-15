@@ -1,0 +1,7 @@
+name: codeql/java-queries-p4
+version: 0.0.0
+extractor: java
+dependencies:
+  codeql/java-all: '*'
+dataExtensions:
+  - ext/*.model.yml
