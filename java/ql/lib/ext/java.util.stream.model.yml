@@ -90,6 +90,6 @@ extensions:
 
   - addsTo:
       pack: codeql/java-all
-      extensible: extNegativeSummaryModel
+      extensible: extNeutralModel
     data:
       - ["java.util.stream", "Collectors", "toList", "()", "manual"]

@@ -103,7 +103,7 @@ extensions:
 
   - addsTo:
       pack: codeql/java-all
-      extensible: extNegativeSummaryModel
+      extensible: extNeutralModel
     data:
       - ["java.lang", "Object", "toString", "()", "manual"]
       - ["java.lang", "Object", "equals", "(Object)", "manual"]

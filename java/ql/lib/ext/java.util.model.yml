@@ -358,7 +358,7 @@ extensions:
 
   - addsTo:
       pack: codeql/java-all
-      extensible: extNegativeSummaryModel
+      extensible: extNeutralModel
     data:
       - ["java.util", "Objects", "equals", "(Object,Object)", "manual"]
       - ["java.util", "Collection", "size", "()", "manual"]

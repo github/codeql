@@ -73,7 +73,7 @@ class TopJdkApi extends Callable {
 
   /** Holds if this API has a manual neutral model. */
   private predicate hasManualNeutral() {
-    exists(FlowSummaryImpl::Public::NegativeSummarizedCallable nsc |
+    exists(FlowSummaryImpl::Public::NeutralCallable nsc |
       this = nsc.asCallable() and nsc.hasProvenance(false)
     )
   }
