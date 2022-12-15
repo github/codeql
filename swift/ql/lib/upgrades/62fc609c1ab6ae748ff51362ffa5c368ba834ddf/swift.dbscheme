@@ -32,6 +32,12 @@ element_is_unknown(
 ;
 
 #keyset[id]
+callable_names(
+  int id: @callable ref,
+  string name: string ref
+);
+
+#keyset[id]
 callable_self_params(
   int id: @callable ref,
   int self_param: @param_decl_or_none ref
@@ -314,12 +320,6 @@ value_decls(  //dir=decl
 | @destructor_decl
 | @func_decl
 ;
-
-#keyset[id]
-abstract_function_decls(  //dir=decl
-  int id: @abstract_function_decl ref,
-  string name: string ref
-);
 
 @abstract_storage_decl =
   @subscript_decl
@@ -870,7 +870,8 @@ if_exprs(  //dir=expr
 );
 
 @implicit_conversion_expr =
-  @any_hashable_erasure_expr
+  @abi_safe_conversion_expr
+| @any_hashable_erasure_expr
 | @archetype_to_super_expr
 | @array_to_pointer_expr
 | @bridge_from_obj_c_expr
@@ -1127,6 +1128,10 @@ unresolved_specialize_exprs(  //dir=expr
 vararg_expansion_exprs(  //dir=expr
   unique int id: @vararg_expansion_expr,
   int sub_expr: @expr_or_none ref
+);
+
+abi_safe_conversion_exprs(  //dir=expr
+  unique int id: @abi_safe_conversion_expr
 );
 
 any_hashable_erasure_exprs(  //dir=expr
