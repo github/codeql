@@ -17,7 +17,7 @@ import semmle.python.pointsto.PointsTo
 
 predicate guarded_against_name_error(Name u) {
   exists(Try t | t.getBody().getAnItem().contains(u) |
-    t.getANormalHandler().getType().(Name).getId() = "NameError"
+    t.getAHandler().getType().(Name).getId() = "NameError"
   )
   or
   exists(ConditionBlock guard, BasicBlock controlled, Call globals |

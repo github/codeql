@@ -1379,7 +1379,7 @@ class Try_ extends @py_Try, Stmt {
   Stmt getHandler(int index) { result = this.getHandlers().getItem(index) }
 
   /** Gets an exception handler of this try statement. */
-  Stmt getAHandler() { result = this.getHandlers().getAnItem() }
+  ExceptionHandler getAHandler() { result = this.getHandlers().getAnItem() }
 
   /** Gets the finally block of this try statement. */
   StmtList getFinalbody() { py_stmt_lists(result, this, 4) }
