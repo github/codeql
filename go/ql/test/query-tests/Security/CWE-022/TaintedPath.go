@@ -31,6 +31,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		w.Write(data)
 	}
 
+	// GOOD: Sanitized by strings.ReplaceAll and replaces all .. with empty string
+	data, _ = ioutil.ReadFile(strings.ReplaceAll(tainted_path, "..", ""))
+	w.Write(data)
+
 	// GOOD: This can only read inside the provided safe path
 	_, err := filepath.Rel("/home/user/safepath", tainted_path)
 	if err == nil {
@@ -53,10 +57,33 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		w.Write(data)
 	}
 
-	// GOOD: Sanitized by [file]path.Clean with a prepended '/' forcing interpretation
+	// GOOD: Sanitized by filepath.Clean with a prepended '/' forcing interpretation
 	// as an absolute path, so that Clean will throw away any leading `..` components.
 	data, _ = ioutil.ReadFile(filepath.Clean("/" + tainted_path))
 	w.Write(data)
+
+	// BAD: Sanitized by path.Clean with a prepended '/' forcing interpretation
+	// as an absolute path, however is not sufficient for Windows paths.
 	data, _ = ioutil.ReadFile(path.Clean("/" + tainted_path))
+	w.Write(data)
+
+	// GOOD: Sanitized by filepath.Base with a prepended '/' forcing interpretation
+	// as an absolute path, so that Base will throw away any leading `..` components.
+	data, _ = ioutil.ReadFile(filepath.Base("/" + tainted_path))
+	w.Write(data)
+
+	// BAD: Sanitized by path.Base with a prepended '/' forcing interpretation
+	// as an absolute path, however is not sufficient for Windows paths.
+	data, _ = ioutil.ReadFile(path.Base("/" + tainted_path))
+	w.Write(data)
+
+	// GOOD: Multipart.Form.FileHeader.Filename sanitized by filepath.Base when calling ParseMultipartForm
+	r.ParseMultipartForm(32 << 20)
+	form := r.MultipartForm
+	files, ok := form.File["files"]
+	if !ok {
+		return
+	}
+	data, _ = ioutil.ReadFile(files[0].Filename)
 	w.Write(data)
 }

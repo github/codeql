@@ -74,19 +74,46 @@ module TaintedPath {
   }
 
   /**
-   * A call to `[file]path.Clean("/" + e)`, considered to sanitize `e` against path traversal.
+   * A call to `filepath.Clean("/" + e)`, considered to sanitize `e` against path traversal.
    */
   class FilepathCleanSanitizer extends Sanitizer {
     FilepathCleanSanitizer() {
       exists(DataFlow::CallNode cleanCall, StringOps::Concatenation concatNode |
         cleanCall =
-          any(Function f | f.hasQualifiedName(["path", "path/filepath"], "Clean")).getACall() and
+          any(Function f | f.hasQualifiedName("path/filepath", "Clean")).getACall() and
         concatNode = cleanCall.getArgument(0) and
         concatNode.getOperand(0).asExpr().(StringLit).getValue() = "/" and
         this = cleanCall.getResult()
       )
     }
   }
+      /**
+   * A call to `filepath.Base(e)`, considered to sanitize `e` against path traversal.
+   */
+  class FilepathBaseSanitizer extends Sanitizer {
+    FilepathBaseSanitizer() {
+      exists(Function f, FunctionOutput outp |
+        f.hasQualifiedName("path/filepath", "Base") and
+        outp.isResult(0) and
+        this = outp.getNode(f.getACall())
+      )
+    }
+  }
+
+  /** An call to ParseMultipartForm creates multipart.Form and cleans mutlpart.Form.FileHeader.Filename using path.Base() */
+  class MultipartClean extends Sanitizer {
+    MultipartClean() {
+      exists(DataFlow::FieldReadNode frn,  ControlFlow::Node node, DataFlow::CallNode cleanCall, Method get |
+        get.hasQualifiedName("net/http","Request", "ParseMultipartForm") and
+        cleanCall = get.getACall() and
+        cleanCall.asInstruction() = node and
+        frn.getField().hasQualifiedName("mime/multipart", "FileHeader", "Filename") and
+        node.getASuccessor*() = frn.asInstruction()
+          |
+        this = frn.getBase()
+      )
+      }
+    }
 
   /**
    * A check of the form `!strings.Contains(nd, "..")`, considered as a sanitizer guard for
@@ -103,6 +130,21 @@ module TaintedPath {
     override predicate checks(Expr e, boolean branch) {
       e = this.getArgument(0).asExpr() and
       branch = false
+    }
+  }
+/**
+   * A replacement of the form `!strings.ReplaceAll(nd, "..")` or `!strings.ReplaceAll(nd, ".")`, considered as a sanitizer guard for
+   * path traversal.
+   */
+  class DotDotReplace extends Sanitizer {
+    DotDotReplace() {
+      exists(DataFlow::CallNode cleanCall, DataFlow::Node valueNode |
+        cleanCall =
+          any(Function f | f.hasQualifiedName("strings", "ReplaceAll")).getACall() and
+        valueNode = cleanCall.getArgument(1) and
+        (valueNode.asExpr().(StringLit).getValue() = ".." or valueNode.asExpr().(StringLit).getValue() = ".") and
+        this = cleanCall.getResult()
+      )
     }
   }
 
