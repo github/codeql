@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["org.springframework.web.multipart", "MultipartFile", True, "getBytes", "()", "", "ReturnValue", "remote", "manual"]
       - ["org.springframework.web.multipart", "MultipartFile", True, "getContentType", "()", "", "ReturnValue", "remote", "manual"]
@@ -17,7 +17,7 @@ extensions:
       - ["org.springframework.web.multipart", "MultipartRequest", True, "getMultipartContentType", "(String)", "", "ReturnValue", "remote", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.springframework.web.multipart", "MultipartFile", True, "getBytes", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.multipart", "MultipartFile", True, "getInputStream", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

@@ -1,13 +1,13 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["android.os", "Environment", False, "getExternalStorageDirectory", "()", "", "ReturnValue", "android-external-storage-dir", "manual"]
       - ["android.os", "Environment", False, "getExternalStoragePublicDirectory", "(String)", "", "ReturnValue", "android-external-storage-dir", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["android.os", "BaseBundle", True, "get", "(String)", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]
       - ["android.os", "BaseBundle", True, "getString", "(String)", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]

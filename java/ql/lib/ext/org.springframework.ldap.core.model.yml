@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.springframework.ldap.core", "LdapOperations", True, "findByDn", "", "", "Argument[0]", "jndi-injection", "manual"]
       - ["org.springframework.ldap.core", "LdapOperations", True, "list", "", "", "Argument[0]", "jndi-injection", "manual"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       # Note that when lambdas are supported we should have more models for TransformedSplitMap
       - ["org.apache.commons.collections.splitmap", "AbstractIterableGetMapDecorator", True, "AbstractIterableGetMapDecorator", "", "", "Argument[0].MapKey", "Argument[-1].MapKey", "value", "manual"]

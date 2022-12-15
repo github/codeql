@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["com.fasterxml.jackson.databind", "ObjectMapper", True, "convertValue", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["com.fasterxml.jackson.databind", "ObjectMapper", False, "createParser", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["android.database.sqlite", "SQLiteDatabase", False, "compileStatement", "(String)", "", "Argument[0]", "sql", "manual"]
       - ["android.database.sqlite", "SQLiteDatabase", False, "delete", "(String,String,String[])", "", "Argument[0..1]", "sql", "manual"]
@@ -57,7 +57,7 @@ extensions:
       - ["android.database.sqlite", "SQLiteQueryBuilder", True, "update", "(SQLiteDatabase,ContentValues,String,String[])", "", "Argument[2]", "sql", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["android.database.sqlite", "SQLiteQueryBuilder", True, "appendColumns", "(StringBuilder,String[])", "", "Argument[1].ArrayElement", "Argument[0]", "taint", "manual"]
       - ["android.database.sqlite", "SQLiteQueryBuilder", True, "appendWhere", "(CharSequence)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]

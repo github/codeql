@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.commons.collections.bidimap", "AbstractBidiMapDecorator", True, "AbstractBidiMapDecorator", "", "", "Argument[0].MapKey", "Argument[-1].MapKey", "value", "manual"]
       - ["org.apache.commons.collections.bidimap", "AbstractBidiMapDecorator", True, "AbstractBidiMapDecorator", "", "", "Argument[0].MapValue", "Argument[-1].MapValue", "value", "manual"]

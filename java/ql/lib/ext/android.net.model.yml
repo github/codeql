@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["android.net", "Uri", True, "buildUpon", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["android.net", "Uri", False, "decode", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
