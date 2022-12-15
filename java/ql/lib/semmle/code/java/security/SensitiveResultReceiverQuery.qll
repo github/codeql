@@ -42,6 +42,12 @@ private class SensitiveResultReceiverConf extends TaintTracking::Configuration {
       node.asExpr() = call.getSentData()
     )
   }
+
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    super.allowImplicitRead(node, c)
+    or
+    this.isSink(node)
+  }
 }
 
 predicate sensitiveResultReceiver(
