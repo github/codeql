@@ -95,7 +95,7 @@ This source is already known by the CodeQL JS analysis, but we'll show how it co
 To break this down:
 
 - Since we're adding a new taint source, we add a tuple to the **sourceModel** extension point.
-- The first column, **"global"**, begins the search at references to the global object (also known as **window**). This is a special JavaScript object that contains all global variables and methods.
+- The first column, **"global"**, begins the search at references to the global object (also known as **window** in browser contexts). This is a special JavaScript object that contains all global variables and methods.
 - **Member[addEventListener]** selects accesses to the **addEventListener** member.
 - **Argument[1]** selects the second argument of calls to that member (the argument containing the callback).
 - **Parameter[0]** selects the first parameter of the callback (the parameter named **event**).
