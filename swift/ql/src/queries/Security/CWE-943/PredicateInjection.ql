@@ -1,6 +1,6 @@
 /**
  * @name Predicate built from user-controlled sources
- * @description Building a NSPredicate from user-controlled sources may lead to attackers
+ * @description Building an NSPredicate from user-controlled sources may lead to attackers
  *              changing the predicate's intended logic.
  * @kind path-problem
  * @problem.severity error

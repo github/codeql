@@ -11,7 +11,7 @@ be able to change the overall meaning of the predicate.
 <p>
 When building a predicate from untrusted data, pass it to the appropriate <code>arguments</code> parameter
 during initialization, or as an array of substitution variables before evaluation, instead of appending
-or concatenating it to the body ofthe predicate.
+or concatenating it to the body of the predicate.
 </p>
 </recommendation>
 <example>
