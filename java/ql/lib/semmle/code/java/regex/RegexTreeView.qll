@@ -558,6 +558,8 @@ module Impl implements RegexTreeViewSig {
     }
   }
 
+  class RegExpCharEscape = RegExpEscape;
+
   /**
    * A word boundary, that is, a regular expression term of the form `\b`.
    */
@@ -868,6 +870,9 @@ module Impl implements RegexTreeViewSig {
     predicate isNamedGroupOfLiteral(RegExpLiteral lit, string name) {
       lit = this.getLiteral() and name = this.getName()
     }
+
+    /** Holds if this is a capture group. */
+    predicate isCapture() { exists(this.getNumber()) }
   }
 
   /**

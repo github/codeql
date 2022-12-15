@@ -454,7 +454,7 @@ module Impl implements RegexTreeViewSig {
     override string getPrimaryQLClass() { result = "RegExpAlt" }
   }
 
-  additional class RegExpCharEscape = RegExpEscape;
+  class RegExpCharEscape = RegExpEscape;
 
   /**
    * An escaped regular expression term, that is, a regular expression

@@ -11,10 +11,10 @@
  *       external/cwe/cwe-020
  */
 
-import HostnameRegexpShared
 import codeql.ruby.DataFlow
 import codeql.ruby.regexp.RegExpTreeView
 import codeql.ruby.Regexp
+private import codeql.ruby.security.regexp.HostnameRegexp
 
 /**
  * Holds if `term` is a final term, that is, no term will match anything after this one.
@@ -32,26 +32,6 @@ predicate isFinalRegExpTerm(RegExpTerm term) {
     term = parent.getAChild() and
     not parent instanceof RegExpSequence and
     not parent instanceof RegExpQuantifier
-  )
-}
-
-/** Holds if `term` is one of the transitive left children of a regexp. */
-predicate isLeftArmTerm(RegExpTerm term) {
-  term.isRootTerm()
-  or
-  exists(RegExpTerm parent |
-    term = parent.getChild(0) and
-    isLeftArmTerm(parent)
-  )
-}
-
-/** Holds if `term` is one of the transitive right children of a regexp. */
-predicate isRightArmTerm(RegExpTerm term) {
-  term.isRootTerm()
-  or
-  exists(RegExpTerm parent |
-    term = parent.getLastChild() and
-    isRightArmTerm(parent)
   )
 }
 
@@ -182,6 +162,7 @@ predicate hasMisleadingAnchorPrecedence(RegExpPatternSource src, string msg) {
  * rather than `\A/\z` which match the start/end of the whole string.
  */
 predicate isLineAnchoredHostnameRegExp(RegExpPatternSource src, string msg) {
+  // TODO: <- this one is Ruby specific.
   // avoid double reporting
   not (
     isSemiAnchoredHostnameRegExp(src, _) or

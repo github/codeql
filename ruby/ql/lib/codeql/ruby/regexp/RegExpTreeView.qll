@@ -539,7 +539,7 @@ private module Impl implements RegexTreeViewSig {
     override predicate isNullable() { this.getAChild().isNullable() }
   }
 
-  additional class RegExpCharEscape = RegExpEscape;
+  class RegExpCharEscape = RegExpEscape;
 
   /**
    * An escaped regular expression term, that is, a regular expression

@@ -210,6 +210,9 @@ signature module RegexTreeViewSig {
      * not a capture group.
      */
     int getNumber();
+
+    /** Holds if this is a capture group. */
+    predicate isCapture();
   }
 
   /**
@@ -323,6 +326,20 @@ signature module RegexTreeViewSig {
      * to a surrogate code point that does not correspond to a character by itself.)
      */
     predicate isCharacter();
+  }
+
+  /**
+   * A character escape in a regular expression.
+   *
+   * Example:
+   *
+   * ```
+   * \.
+   * ```
+   */
+  class RegExpCharEscape extends RegExpEscape {
+    /** Gets the string matched by this term. */
+    string getValue();
   }
 
   /**
