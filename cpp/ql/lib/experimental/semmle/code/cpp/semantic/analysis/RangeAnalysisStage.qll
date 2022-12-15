@@ -131,20 +131,12 @@ private class NarrowingCastExpr extends ConvertOrBoxExpr {
 signature module DeltaSig {
   class Delta;
 
-  bindingset[d]
-  bindingset[result]
   float toFloat(Delta d);
 
-  bindingset[d]
-  bindingset[result]
   int toInt(Delta d);
 
-  bindingset[n]
-  bindingset[result]
   Delta fromInt(int n);
 
-  bindingset[f]
-  bindingset[result]
   Delta fromFloat(float f);
 }
 
@@ -352,13 +344,14 @@ module RangeStage<DeltaSig D, UtilSig<D> UtilParam> {
     or
     // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
     // exists a guard `guardEq` such that `v = v2 - d1 + d2`.
-    exists(SemSsaVariable v2, SemGuard guardEq, boolean eqIsTrue, float d1, float d2 |
+    exists(SemSsaVariable v2, SemGuard guardEq, boolean eqIsTrue, float d1, float d2, float oldDelta |
       guardEq =
         UtilParam::semEqFlowCond(v, UtilParam::semSsaRead(v2, D::fromFloat(d1)), D::fromFloat(d2),
           true, eqIsTrue) and
-      result = boundFlowCond(v2, e, delta + d1 - d2, upper, testIsTrue) and
+      result = boundFlowCond(v2, e, oldDelta, upper, testIsTrue) and
       // guardEq needs to control guard
-      guardEq.directlyControls(result.getBasicBlock(), eqIsTrue)
+      guardEq.directlyControls(result.getBasicBlock(), eqIsTrue) and
+      delta = oldDelta - d1 + d2
     )
   }
 
