@@ -35,7 +35,7 @@ The data extension can contribute to the following extension points:
 
 TODO: mention how to actually load the data extension and/or link to page about data extensions.
 
-We'll explain how to use these using a few examples, and provide a `reference <#reference-1>`_ at the end of this article.
+We'll explain how to use these using a few examples, and provide some reference material at the end of this article.
 
 Example: Taint sink in the 'execa' package
 ------------------------------------------
@@ -216,8 +216,8 @@ For example, the **mysql** model that is included with the CodeQL JS analysis in
 
   - ["mysql.Connection", "mysql", "Member[createConnection].ReturnValue"]
 
-Reference
-=========
+Reference material
+------------------
 
 The following sections provide reference material for extension points, access paths, types, and kinds.
 
