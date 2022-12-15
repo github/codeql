@@ -41,7 +41,7 @@ In this example, we'll show how to add the argument passed to **execa** below as
   import { shell } from "execa";
   shell(cmd); // <-- add 'cmd' as a taint sink
 
-This sink is already recognized by the CodeQL JS analysis, but for the sake of example we'll show how it could be added as an extension.
+This sink is already recognized by the CodeQL JS analysis, but for the sake of this example we'll show how it could be added as an extension.
 
 This can be achieved with the following data extension:
 
