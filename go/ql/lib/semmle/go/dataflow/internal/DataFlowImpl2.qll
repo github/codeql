@@ -622,7 +622,11 @@ private predicate parameterFlowThroughAllowed(ParamNodeEx p, ReturnKindExt kind)
 }
 
 private module Stage1 implements StageSig {
-  class Ap = Unit;
+  class Ap extends int {
+    // workaround for bad functionality-induced joins (happens when using `Unit`)
+    pragma[nomagic]
+    Ap() { this in [0 .. 1] and this < 1 }
+  }
 
   private class Cc = boolean;
 
