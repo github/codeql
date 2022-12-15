@@ -70,6 +70,5 @@ constexpr std::array swiftBuiltins = {
 
     "buildDefaultActorExecutorRef",
     "buildMainActorExecutorRef",
-    "buildOrdinarySerialExecutorRef",
 };
 }
