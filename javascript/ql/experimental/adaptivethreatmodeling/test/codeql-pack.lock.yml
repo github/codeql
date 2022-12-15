@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-12-15-05h03m26s.willing-rose-dpv8b7m0.1e81635608e1eaf1cf42fe970a98063f4e45487965da86053278b6dd4589e048
+compiled: false
