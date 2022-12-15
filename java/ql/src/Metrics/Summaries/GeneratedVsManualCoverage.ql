@@ -63,9 +63,9 @@ where
   all = getNumApis(package) and
   non = all - (generatedOnly + both + manualOnly) and
   // Proportion of coverage
-  coverage = (generatedOnly + both + manualOnly) / all and
-  generatedCoverage = generated / all and
-  manualCoverage = manual / all and
+  coverage = (generatedOnly + both + manualOnly).(float) / all and
+  generatedCoverage = generated.(float) / all and
+  manualCoverage = manual.(float) / all and
   // Proportion of manual models covered by generated ones
   manualCoveredByGenerated = (both.(float) / (both + manualOnly)) and
   // Proportion of generated models covered by manual ones
