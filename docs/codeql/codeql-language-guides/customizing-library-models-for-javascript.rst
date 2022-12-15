@@ -219,6 +219,8 @@ For example, the **mysql** model that is included with the CodeQL JS analysis in
 Reference
 =========
 
+The following sections provide reference material for extension points, access paths, types, and kinds.
+
 Extension points
 ----------------
 
