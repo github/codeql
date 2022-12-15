@@ -13,7 +13,15 @@ private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.Rails
 private import codeql.ruby.frameworks.internal.Rails
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
-import codeql.ruby.frameworks.actioncontroller.Filters
+
+/**
+ * Provides modeling for ActionController, which is part of the `actionpack` gem.
+ * Version: 7.0.
+ */
+module ActionController {
+  // TODO: move the rest of this file inside this module.
+  import codeql.ruby.frameworks.actioncontroller.Filters
+}
 
 /**
  * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::ParamsCall` instead.
