@@ -112,10 +112,21 @@ BasicBlock blockGuardedBy(int value, string op, ScanfFunctionCall call) {
   )
 }
 
+predicate isDeallocationAccess(Access access) {
+  exists(FunctionCall deallocCall, DeallocationFunction deallocFunc |
+    deallocCall.getTarget() = deallocFunc
+  |
+    deallocCall.getArgument(deallocFunc.getFreedArg()) = access
+  )
+  or
+  exists(DeallocationExpr deallocExpr | deallocExpr.getFreedExpr() = access)
+}
+
 from ScanfOutput output, ScanfFunctionCall call, Access access
 where
   output.getCall() = call and
-  output.hasGuardedAccess(access, false)
+  output.hasGuardedAccess(access, false) and
+  not isDeallocationAccess(access)
 select access,
   "This variable is read, but may not have been written. " +
     "It should be guarded by a check that the $@ returns at least " +
