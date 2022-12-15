@@ -7,12 +7,12 @@ private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.ast.internal.Constant
 
 /**
- * Provides modelling for ActionController, which is part of the `actionpack` gem.
+ * Provides modeling for ActionController, which is part of the `actionpack` gem.
  * Version: 7.0.
  */
 module ActionController {
   /**
-   * Provides modelling for ActionController filters.
+   * Provides modeling for ActionController filters.
    */
   module Filters {
     private newtype TFilterKind =
@@ -32,7 +32,7 @@ module ActionController {
 
     /**
      * A call to a class method that adds or removes a filter from the callback chain.
-     * This class exists to encapsulate common behaviour between calls that
+     * This class exists to encapsulate common behavior between calls that
      * register callbacks (`before_action`, `after_action` etc.) and calls that
      * remove callbacks (`skip_before_action`, `skip_after_action` etc.)
      */
@@ -98,14 +98,14 @@ module ActionController {
       StringlikeLiteralCfgNode getFilterArgument() { result = this.getPositionalArgument(_) }
 
       /**
-       * Gets the callable that implements this filter.
+       * Gets the callable that implements the filter with name `name`.
        * This currently only finds methods in the local class or superclass.
        * It doesn't handle:
        * - lambdas
        * - blocks
        * - classes
        *
-       * In the example below, the callable for the filter is the method `foo`.
+       * In the example below, the callable for the filter `:foo` is the method `foo`.
        * ```rb
        * class PostsController < ActionController::Base
        *   before_action :foo
@@ -148,7 +148,7 @@ module ActionController {
      * returned to `trace_request`, which will finish executing.
      *
      * Due to the complexity of dataflow around `yield` calls, currently only
-     * `before_action` and `after_action` callbacks are modelled fully here.
+     * `before_action` and `after_action` callbacks are modeled fully here.
      *
      * ```rb
      * class PostsController < ApplicationController
