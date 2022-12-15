@@ -6,14 +6,11 @@ query predicate noStaticTarget(CallExpr c, Expr func, string funcClass) {
   funcClass = func.getPrimaryQlClasses()
 }
 
-from CallExpr c, boolean hasStaticTarget, string staticTarget
+from CallExpr c, boolean hasStaticTarget
 where
   if exists(c.getStaticTarget().toString())
-  then (
+  then
     hasStaticTarget = true and
-    staticTarget = c.getStaticTarget().toString()
-  ) else (
-    hasStaticTarget = false and
-    staticTarget = "-"
-  )
-select c, hasStaticTarget, staticTarget
+    not c.getStaticTarget().toString() = "zeroInitializer()" // Omit because a different number of these calls appear in linux and macos
+  else hasStaticTarget = false
+select c, hasStaticTarget
