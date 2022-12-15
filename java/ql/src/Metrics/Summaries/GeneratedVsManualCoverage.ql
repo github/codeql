@@ -67,9 +67,9 @@ where
   generatedCoverage = generated.(float) / all and
   manualCoverage = manual.(float) / all and
   // Proportion of manual models covered by generated ones
-  manualCoveredByGenerated = (both.(float) / (both + manualOnly)) and
+  manualCoveredByGenerated = both.(float) / (both + manualOnly) and
   // Proportion of generated models covered by manual ones
-  generatedCoveredByManual = (both.(float) / (both + generatedOnly)) and
+  generatedCoveredByManual = both.(float) / (both + generatedOnly) and
   // Proportion of data points that match
   match = (both.(float) + non) / all
 select package, generatedOnly, both, manualOnly, non, all, coverage, generatedCoverage,
