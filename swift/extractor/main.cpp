@@ -32,51 +32,32 @@ static void lockOutputSwiftModuleTraps(const codeql::SwiftExtractorConfiguration
 }
 
 static void processFrontendOptions(swift::FrontendOptions& options) {
-  using Action = swift::FrontendOptions::ActionType;
-  switch (options.RequestedAction) {
-    case Action::EmitModuleOnly:
-    case Action::MergeModules:
-    case Action::CompileModuleFromInterface:
-    case Action::EmitObject: {
-      auto& inOuts = options.InputsAndOutputs;
-      std::vector<swift::InputFile> inputs;
-      inOuts.forEachInput([&](const swift::InputFile& input) {
-        swift::PrimarySpecificPaths psp{};
-        if (std::filesystem::path output = input.getPrimarySpecificPaths().OutputFilename;
-            !output.empty()) {
-          if (output.extension() == ".swiftmodule") {
-            psp.OutputFilename = codeql::redirect(output);
-          } else {
-            psp.OutputFilename = "/dev/null";
-          }
-        }
-        if (std::filesystem::path module =
-                input.getPrimarySpecificPaths().SupplementaryOutputs.ModuleOutputPath;
-            !module.empty()) {
-          psp.SupplementaryOutputs.ModuleOutputPath = codeql::redirect(module);
-        }
-        auto inputCopy = input;
-        inputCopy.setPrimarySpecificPaths(std::move(psp));
-        inputs.push_back(std::move(inputCopy));
-        return false;
-      });
-      inOuts.clearInputs();
-      for (const auto& i : inputs) {
-        inOuts.addInput(i);
+  auto& inOuts = options.InputsAndOutputs;
+  std::vector<swift::InputFile> inputs;
+  inOuts.forEachInput([&](const swift::InputFile& input) {
+    std::cerr << input.getFileName() << ":\n";
+    swift::PrimarySpecificPaths psp{};
+    if (std::filesystem::path output = input.getPrimarySpecificPaths().OutputFilename;
+        !output.empty()) {
+      if (output.extension() == ".swiftmodule") {
+        psp.OutputFilename = codeql::redirect(output);
+      } else {
+        psp.OutputFilename = "/dev/null";
       }
-      return;
     }
-    case Action::PrintVersion:
-    case Action::DumpAST:
-    case Action::PrintAST:
-    case Action::PrintASTDecl:
-      // these actions are nice to have on the extractor for debugging, so we preserve them. Also,
-      // version printing is used by CI to match up the correct compiler version
-      return;
-    default:
-      // otherwise, we have nothing to do
-      std::cerr << "Frontend action requires no action from extractor, exiting\n";
-      std::exit(0);
+    if (std::filesystem::path module =
+            input.getPrimarySpecificPaths().SupplementaryOutputs.ModuleOutputPath;
+        !module.empty()) {
+      psp.SupplementaryOutputs.ModuleOutputPath = codeql::redirect(module);
+    }
+    auto inputCopy = input;
+    inputCopy.setPrimarySpecificPaths(std::move(psp));
+    inputs.push_back(std::move(inputCopy));
+    return false;
+  });
+  inOuts.clearInputs();
+  for (const auto& i : inputs) {
+    inOuts.addInput(i);
   }
 }
 
