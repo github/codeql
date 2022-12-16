@@ -1276,9 +1276,11 @@
 | url.swift:102:46:102:46 | [post] urlTainted | url.swift:120:46:120:46 | urlTainted |
 | url.swift:102:46:102:46 | urlTainted | url.swift:102:15:102:56 | call to URL.init(string:relativeTo:) |
 | url.swift:102:46:102:46 | urlTainted | url.swift:120:46:120:46 | urlTainted |
+| url.swift:104:5:104:9 | SSA def(x) | url.swift:105:13:105:13 | x |
 | url.swift:104:25:104:25 | [post] clean | url.swift:113:26:113:26 | clean |
 | url.swift:104:25:104:25 | clean | url.swift:104:13:104:30 | call to URL.init(string:) |
 | url.swift:104:25:104:25 | clean | url.swift:113:26:113:26 | clean |
+| url.swift:108:5:108:9 | SSA def(y) | url.swift:109:13:109:13 | y |
 | url.swift:108:25:108:25 | [post] tainted | url.swift:117:28:117:28 | tainted |
 | url.swift:108:25:108:25 | tainted | url.swift:108:13:108:32 | call to URL.init(string:) |
 | url.swift:108:25:108:25 | tainted | url.swift:117:28:117:28 | tainted |

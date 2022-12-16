@@ -30,9 +30,16 @@ module Ssa {
         certain = true
       )
       or
-      exists(PatternBindingDecl decl, Pattern pattern |
+      // Any variable initialization through pattern matching. For example each `x*` in:
+      // ```
+      // var x1 = v
+      // let x2 = v
+      // let (x3, x4) = tuple
+      // if let x5 = optional { ... }
+      // guard let x6 = optional else { ... }
+      // ```
+      exists(Pattern pattern |
         bb.getNode(i).getNode().asAstNode() = pattern and
-        decl.getAPattern() = pattern and
         v.getParentPattern() = pattern and
         certain = true
       )
