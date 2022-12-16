@@ -242,28 +242,36 @@
 | test.swift:282:26:282:27 | ...! | test.swift:282:15:282:38 | ... ? ... : ... |
 | test.swift:282:31:282:38 | call to source() | test.swift:282:15:282:38 | ... ? ... : ... |
 | test.swift:284:8:284:12 | SSA def(z) | test.swift:285:19:285:19 | z |
+| test.swift:284:16:284:16 | x | test.swift:284:8:284:12 | SSA def(z) |
 | test.swift:284:16:284:16 | x | test.swift:291:16:291:16 | x |
 | test.swift:287:8:287:12 | SSA def(z) | test.swift:288:19:288:19 | z |
+| test.swift:287:16:287:16 | y | test.swift:287:8:287:12 | SSA def(z) |
 | test.swift:287:16:287:16 | y | test.swift:294:16:294:16 | y |
 | test.swift:291:8:291:12 | SSA def(z) | test.swift:292:19:292:19 | z |
 | test.swift:291:16:291:16 | x | test.swift:291:16:291:17 | ...? |
 | test.swift:291:16:291:16 | x | test.swift:298:20:298:20 | x |
+| test.swift:291:16:291:26 | OptionalEvaluationExpr | test.swift:291:8:291:12 | SSA def(z) |
 | test.swift:291:16:291:26 | call to signum() | test.swift:291:16:291:26 | OptionalEvaluationExpr |
 | test.swift:294:8:294:12 | SSA def(z) | test.swift:295:19:295:19 | z |
 | test.swift:294:16:294:16 | y | test.swift:294:16:294:17 | ...? |
 | test.swift:294:16:294:16 | y | test.swift:299:20:299:20 | y |
+| test.swift:294:16:294:26 | OptionalEvaluationExpr | test.swift:294:8:294:12 | SSA def(z) |
 | test.swift:294:16:294:26 | call to signum() | test.swift:294:16:294:26 | OptionalEvaluationExpr |
 | test.swift:298:11:298:15 | SSA def(z1) | test.swift:300:15:300:15 | z1 |
+| test.swift:298:20:298:20 | x | test.swift:298:11:298:15 | SSA def(z1) |
 | test.swift:298:20:298:20 | x | test.swift:303:15:303:15 | x |
 | test.swift:299:11:299:15 | SSA def(z2) | test.swift:301:15:301:15 | z2 |
+| test.swift:299:20:299:20 | y | test.swift:299:11:299:15 | SSA def(z2) |
 | test.swift:299:20:299:20 | y | test.swift:304:15:304:15 | y |
 | test.swift:303:15:303:15 | x | test.swift:303:15:303:16 | ...! |
 | test.swift:303:15:303:15 | x | test.swift:306:28:306:28 | x |
 | test.swift:304:15:304:15 | y | test.swift:304:15:304:16 | ...! |
 | test.swift:304:15:304:15 | y | test.swift:309:28:309:28 | y |
 | test.swift:306:13:306:24 | SSA def(z) | test.swift:307:19:307:19 | z |
+| test.swift:306:28:306:28 | x | test.swift:306:13:306:24 | SSA def(z) |
 | test.swift:306:28:306:28 | x | test.swift:313:12:313:12 | x |
 | test.swift:309:13:309:24 | SSA def(z) | test.swift:310:19:310:19 | z |
+| test.swift:309:28:309:28 | y | test.swift:309:13:309:24 | SSA def(z) |
 | test.swift:309:28:309:28 | y | test.swift:319:12:319:12 | y |
 | test.swift:314:10:314:21 | SSA def(z) | test.swift:315:19:315:19 | z |
 | test.swift:320:10:320:21 | SSA def(z) | test.swift:321:19:321:19 | z |

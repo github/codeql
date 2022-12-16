@@ -153,6 +153,14 @@ private module Cached {
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(OptionalEvaluationExpr).getSubExpr()
     or
+    // flow through optional binding `if let`
+    exists(ConditionElement ce, ConcreteVarDecl v |
+      ce.getInitializer() = nodeFrom.asExpr() and
+      ce.getPattern() = v.getParentPattern() and
+      //.(OptionalSomePattern).getSubPattern().(BindingPattern).getSubPattern().(NamedPattern) ?
+      nodeTo.asDefinition().getSourceVariable() = v
+    )
+    or
     // flow through nil-coalescing operator `??`
     exists(BinaryExpr nco |
       nco.getOperator().(FreeFunctionDecl).getName() = "??(_:_:)" and

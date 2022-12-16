@@ -282,14 +282,14 @@ func test_optionals(y: Int?) {
     sink(arg: y != nil ? y! : source()) // $ flow=282
 
     if let z = x {
-        sink(arg: z) // $ MISSING: flow=259
+        sink(arg: z) // $ flow=259
     }
     if let z = y {
         sink(arg: z)
     }
 
-    if let z = x?.signum() { // $ MISSING: flow=259
-        sink(arg: z)
+    if let z = x?.signum() {
+        sink(arg: z) // $ flow=259
     }
     if let z = y?.signum() {
         sink(arg: z)
@@ -297,14 +297,14 @@ func test_optionals(y: Int?) {
 
     guard let z1 = x else { return }
     guard let z2 = y else { return }
-    sink(arg: z1) // $ MISSING: flow=259
+    sink(arg: z1) // $ flow=259
     sink(arg: z2)
 
     sink(arg: x!.signum()) // $ flow=259
     sink(arg: y!.signum())
 
     if case .some(let z) = x {
-        sink(arg: z) // $ MISSING: flow=259
+        sink(arg: z) // $ flow=259
     }
     if case .some(let z) = y {
         sink(arg: z)
