@@ -8,10 +8,16 @@ import java
 import semmle.code.java.dataflow.ExternalFlow
 import TopJdkApis
 
-from TopJdkApi topApi, string apiName
+from string apiName, TopJdkApi topApi
 where
-  topApi.hasManualMadModel() and
+  // top jdk api names for which there is no callable
+  topJdkApiName(apiName) and
+  not hasCallable(apiName)
+  or
+  // top jdk api names for which there isn't a manual model
+  not topApi.hasManualMadModel() and
   apiName =
-    topApi.getDeclaringType().getPackage() + "." + topApi.getDeclaringType().getSourceDeclaration() +
-      "#" + topApi.getName() + paramsString(topApi)
+    topApi.asCallable().getDeclaringType().getPackage() + "." +
+      topApi.asCallable().getDeclaringType().getSourceDeclaration() + "#" +
+      topApi.asCallable().getName() + paramsString(topApi.asCallable())
 select apiName order by apiName
