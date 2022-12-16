@@ -49,7 +49,6 @@ extensions:
       - ["java.lang", "RuntimeException", False, "RuntimeException", "(String)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "RuntimeException", False, "RuntimeException", "(Throwable)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
       - ["java.lang", "String", False, "String", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["java.lang", "String", False, "charAt", "(int)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "concat", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "concat", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "copyValueOf", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

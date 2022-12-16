@@ -19,4 +19,4 @@ extensions:
       pack: codeql/java-all
       extensible: extSummaryModel
     data:
-      - ["java.sql", "ResultSet", True, "getString", "(String)", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
+      - ["java.sql", "ResultSet", True, "getString", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

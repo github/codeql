@@ -1,3 +1,6 @@
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+
 public class Test {
 
     void sink(Object o) { }
@@ -19,5 +22,24 @@ public class Test {
 
         Throwable t = new Throwable((Throwable)source());
         sink((Throwable)t.getCause()); // $hasValueFlow
+
+        Integer x = (Integer)source();
+        int y = x;
+        sink(String.valueOf(y)); // $hasTaintFlow
+
+        String s1 = (String)source();
+        sink(Integer.parseInt(s1)); // $hasTaintFlow
+
+        String s2 = (String)source();
+        int i = 0;
+        sink(s2.charAt(i)); // $hasTaintFlow
+
+        String s3 = (String)source();
+        sink(new BigDecimal(s3)); // $hasTaintFlow
+
+        ResultSet rs = (ResultSet)source();
+        sink(rs.getString("")); // $hasTaintFlow
+
+
     }
 }
