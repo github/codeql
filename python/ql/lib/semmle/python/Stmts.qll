@@ -146,24 +146,8 @@ class Exec extends Exec_ {
 /**
  * An exception handler such as an `except` or an `except*` statement
  * in a `try` statement.
- *
- * We do not wish to expose an abstract class that users are not
- * meant to extend, so this class is kept private. The user facing
- * class is `ExceptionHandler`.
  */
-abstract private class ExceptionHandlerImpl extends Stmt {
-  /** Gets the name of this except group block. */
-  abstract Expr getName();
-
-  /** Gets the type of this except group block. */
-  abstract Expr getType();
-}
-
-/**
- * An exception handler such as an `except` or an `except*` statement
- * in a `try` statement.
- */
-class ExceptionHandler extends Stmt instanceof ExceptionHandlerImpl {
+class ExceptionHandler extends Stmt {
   ExceptionHandler() {
     this instanceof ExceptStmt_
     or
@@ -174,14 +158,14 @@ class ExceptionHandler extends Stmt instanceof ExceptionHandlerImpl {
   Try getTry() { result.getAHandler() = this }
 
   /** Gets the name of this except group block. */
-  Expr getName() { result = super.getName() }
+  abstract Expr getName();
 
   /** Gets the type of this except group block. */
-  Expr getType() { result = super.getType() }
+  abstract Expr getType();
 }
 
 /** An except group statement (part of a `try` statement), such as `except* IOError as err:` */
-class ExceptGroupStmt extends ExceptGroupStmt_, ExceptionHandlerImpl {
+class ExceptGroupStmt extends ExceptGroupStmt_, ExceptionHandler {
   /* syntax: except Expr [ as Expr ]: */
   override Expr getASubExpression() {
     result = this.getName()
@@ -203,7 +187,7 @@ class ExceptGroupStmt extends ExceptGroupStmt_, ExceptionHandlerImpl {
 }
 
 /** An except statement (part of a `try` statement), such as `except IOError as err:` */
-class ExceptStmt extends ExceptStmt_, ExceptionHandlerImpl {
+class ExceptStmt extends ExceptStmt_, ExceptionHandler {
   /* syntax: except Expr [ as Expr ]: */
   override Expr getASubExpression() {
     result = this.getName()
