@@ -829,9 +829,27 @@ private predicate exprNodeShouldBeIndirectOutNode(IndirectArgumentOutNode node, 
 
 /** Holds if `node` should be an instruction node that maps `node.asExpr()` to `e`. */
 predicate exprNodeShouldBeInstruction(Node node, Expr e) {
-  e = node.asInstruction().getConvertedResultExpression() and
   not exprNodeShouldBeOperand(_, e) and
-  not exprNodeShouldBeIndirectOutNode(_, e)
+  not exprNodeShouldBeIndirectOutNode(_, e) and
+  (
+    e = node.asInstruction().getConvertedResultExpression()
+    or
+    // The instruction that contains the result of an `AssignOperation` is
+    // the unloaded left operand (see the comments in `TranslatedAssignOperation`).
+    // That means that for cases like
+    // ```cpp
+    // int x = ...;
+    // x += 1;
+    // ```
+    // the result of `x += 1` is the `VariableAddressInstruction` that represents `x`. But
+    // that instruction doesn't receive the flow from this `AssignOperation`. So instead we
+    // map the operation to the `AddInstruction`.
+    node.asInstruction().getAst() = e.(AssignOperation)
+    or
+    // Same story for `CrementOperation`s (cf. the comments in the subclasses
+    // of `TranslatedCrementOperation`).
+    node.asInstruction().getAst() = e.(CrementOperation)
+  )
 }
 
 /** Holds if `node` should be an `IndirectInstruction` that maps `node.asIndirectExpr()` to `e`. */

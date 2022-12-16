@@ -12,7 +12,9 @@
 | test.cpp:65:12:65:39 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | test.cpp:67:10:67:35 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | test.cpp:70:12:70:20 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:76:12:76:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | test.cpp:82:12:82:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:88:12:88:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | test.cpp:93:12:93:18 | ++ ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | test.cpp:100:12:100:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | test.cpp:110:12:110:24 | new[] | The format string argument to printf should be constant to prevent security issues and other potential errors. |
