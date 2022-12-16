@@ -23,5 +23,7 @@ class ExternalApiUsage {
 		System.out.println(d);
 		System.out.println(map);
 		System.out.println(foo);
+
+		long time = System.currentTimeMillis(); // not interesting: parameterless static method
 	}
 }
