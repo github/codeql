@@ -244,6 +244,7 @@ getTarget
 | calls.rb:647:9:647:34 | call to puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:651:1:651:14 | call to new | calls.rb:117:5:117:16 | new |
 | calls.rb:651:1:651:14 | call to new | calls.rb:642:5:644:7 | new |
+| calls.rb:651:1:651:23 | call to instance | calls.rb:646:5:648:7 | instance |
 | hello.rb:12:5:12:24 | call to include | calls.rb:108:5:110:7 | include |
 | hello.rb:14:16:14:20 | call to hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:20:16:20:20 | call to super | hello.rb:13:5:15:7 | message |
@@ -369,7 +370,6 @@ unresolvedCall
 | calls.rb:562:1:562:39 | call to each |
 | calls.rb:570:5:570:14 | call to singleton2 |
 | calls.rb:643:9:643:21 | call to allocate |
-| calls.rb:651:1:651:23 | call to instance |
 | hello.rb:20:16:20:26 | ... + ... |
 | hello.rb:20:16:20:34 | ... + ... |
 | hello.rb:20:16:20:40 | ... + ... |
