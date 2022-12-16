@@ -524,13 +524,13 @@ void tests2(person_info *pi)
 		char buffer[1024];
 
 		snprintf(buffer, 1024, "lat = %f\n", pi->my_latitude);
-		send(val(), buffer, strlen(buffer), val()); // BAD [NOT DETECTED]
+		send(val(), buffer, strlen(buffer), val()); // BAD
 	}
 	{
 		char buffer[1024];
 
 		snprintf(buffer, 1024, "long = %f\n", pi->home_longitude);
-		send(val(), buffer, strlen(buffer), val()); // BAD [NOT DETECTED]
+		send(val(), buffer, strlen(buffer), val()); // BAD
 	}
 	{
 		char buffer[1024];
