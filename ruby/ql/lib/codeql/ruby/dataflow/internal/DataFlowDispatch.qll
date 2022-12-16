@@ -1178,7 +1178,7 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
       exists(Module m, string name |
         mayBenefitFromCallContextInitialize(ctx.asCall(), pragma[only_bind_into](call0), _, _,
           pragma[only_bind_into](m), pragma[only_bind_into](name)) and
-        res = getTargetInstance(call0, name) and
+        res = getInitializeTarget(call0) and
         res = lookupMethod(m, name)
         or
         exists(boolean exact |
