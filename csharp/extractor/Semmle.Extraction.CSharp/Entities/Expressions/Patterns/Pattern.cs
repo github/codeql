@@ -74,6 +74,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case DiscardPatternSyntax dp:
                     return new Discard(cx, dp, parent, child);
 
+                case ListPatternSyntax listPattern:
+                    return new ListPattern(cx, listPattern, parent, child);
+
+                case SlicePatternSyntax slicePattern:
+                    return new SlicePattern(cx, slicePattern, parent, child);
+
                 default:
                     throw new InternalError(syntax, "Pattern not handled");
             }
