@@ -2,6 +2,7 @@ class CommentsController < ApplicationController
   before_action :set_user
   before_action :ensure_user_can_edit_comments, only: WRITE_ACTIONS
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :foo, :bar
   after_action :log_comment_change, except: [:index, :show, :new]
   prepend_before_action :this_must_run_first
 
@@ -79,5 +80,11 @@ class CommentsController < ApplicationController
 
   def this_must_run_first
     # for whatever reason
+  end
+
+  def foo
+  end
+
+  def bar
   end
 end

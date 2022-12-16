@@ -201,10 +201,23 @@ module Filters {
      * `after_action` callbacks are executed in reverse order.
      */
     predicate registeredBefore(Filter other) {
+      // before_action :this, :other
+      //
+      // before_action :this
+      // before_action :other
+      this.getBasicBlock() = other.getBasicBlock() and this.getASuccessor+() = other
+      or
       this.getEnclosingModule() = other.getEnclosingModule() and
-      this.getLocation().strictlyBefore(other.getLocation())
+      this.getBasicBlock().strictlyDominates(other.getBasicBlock()) and
+      this != other
       or
       // This callback is in a superclass of `other`'s class.
+      //
+      // class A
+      //   before_action :this
+      //
+      // class B < A
+      //   before_action :other
       other.getEnclosingModule().getModule() = this.getEnclosingModule().getModule().getASubClass+()
     }
 
@@ -366,18 +379,20 @@ module Filters {
   private predicate lastVariableAccessPostUpdate(DataFlow::PostUpdateNode n, Method m) {
     variableAccessPostUpdate(n, m) and
     not exists(DataFlow::PostUpdateNode n2 |
-      variableAccessPostUpdate(n2, m) and n.getLocation().strictlyBefore(n2.getLocation())
+      variableAccessPostUpdate(n2, m) and
+      n.getPreUpdateNode().asExpr().getASuccessor+() = n2.getPreUpdateNode().asExpr()
     )
   }
 
   /**
    * Holds if `a` is the syntactically last access of the self variable `v` in method `m`.
    */
-  predicate lastMethodSelfVarAccess(SelfVariableAccess a, SelfVariable v, Method m) {
-    a.getEnclosingMethod() = m and
-    v = a.getVariable() and
-    not exists(SelfVariableAccess a2 |
-      a2.getVariable() = v and a.getLocation().strictlyBefore(a2.getLocation())
+  predicate lastMethodSelfVarAccess(SelfVariableAccessCfgNode a, SelfVariable v, Method m) {
+    a.getExpr().getEnclosingMethod() = m and
+    v = a.getExpr().getVariable() and
+    not exists(SelfVariableAccessCfgNode a2 |
+      a2.getExpr().getVariable() = v and
+      a.getASuccessor+() = a2
     )
   }
 
@@ -428,7 +443,7 @@ module Filters {
         // ...
         //
         not variableAccessPostUpdate(_, predMethod) and
-        lastMethodSelfVarAccess(pred.asExpr().getExpr(), _, predMethod) and
+        lastMethodSelfVarAccess(pred.asExpr(), _, predMethod) and
         selfParameter(succ, succMethod)
         or
         // When there is no access to self in `pred`, flow from the self parameter of `pred` to the self parameter of `succ`
