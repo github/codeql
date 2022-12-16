@@ -12,10 +12,7 @@ where
   // top jdk api names for which there isn't a manual model
   exists(TopJdkApi topApi |
     not topApi.hasManualMadModel() and
-    apiName =
-      topApi.asCallable().getDeclaringType().getPackage() + "." +
-        topApi.asCallable().getDeclaringType().getSourceDeclaration() + "#" +
-        topApi.asCallable().getName() + paramsString(topApi.asCallable()) and
+    apiName = getApiName(topApi.asCallable()) and
     message = "no manual model"
   )
 select apiName, message order by apiName

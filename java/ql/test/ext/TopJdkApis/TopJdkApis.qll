@@ -5,6 +5,7 @@ private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.java.dataflow.ExternalFlow
 
+/** Holds if the given API name is a top JDK API. */
 predicate topJdkApiName(string apiName) {
   apiName in [
       // top 100 JDK APIs
@@ -60,21 +61,24 @@ predicate topJdkApiName(string apiName) {
     ]
 }
 
-predicate hasCallable(string apiName) {
-  exists(Callable c |
-    apiName =
-      c.getDeclaringType().getPackage() + "." + c.getDeclaringType().getSourceDeclaration() + "#" +
-        c.getName() + paramsString(c)
-  )
+/**
+ * Gets information about the given API in the form expected by the
+ * MaD modeling framework.
+ */
+string getApiName(Callable api) {
+  result =
+    api.getDeclaringType().getPackage() + "." + api.getDeclaringType().getSourceDeclaration() + "#" +
+      api.getName() + paramsString(api)
 }
 
+/** Holds if the given API has a `Callable`. */
+predicate hasCallable(string apiName) { exists(Callable callable | apiName = getApiName(callable)) }
+
+/** A top JDK API. */
 class TopJdkApi extends SummarizedCallableBase {
   TopJdkApi() {
     exists(string apiName |
-      apiName =
-        this.asCallable().getDeclaringType().getPackage() + "." +
-          this.asCallable().getDeclaringType().getSourceDeclaration() + "#" +
-          this.asCallable().getName() + paramsString(this.asCallable()) and
+      apiName = getApiName(this.asCallable()) and
       topJdkApiName(apiName)
     )
   }
