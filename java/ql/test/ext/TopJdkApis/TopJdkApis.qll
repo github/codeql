@@ -1,4 +1,4 @@
-/** Provides a class to identify Top JDK APIs. */
+/** Provides classes and predicates for working with Top JDK APIs. */
 
 import java
 private import semmle.code.java.dataflow.FlowSummary

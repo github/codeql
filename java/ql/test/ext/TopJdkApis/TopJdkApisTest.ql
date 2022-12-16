@@ -1,5 +1,4 @@
 import java
-import semmle.code.java.dataflow.ExternalFlow
 import TopJdkApis
 
 from string apiName, string message

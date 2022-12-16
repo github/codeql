@@ -8,6 +8,7 @@ public class Test {
     Object source() { return null; }
 
     public void test() throws Exception {
+
         Exception e1 = new RuntimeException((String)source());
         sink((String)e1.getMessage()); // $hasValueFlow
 
@@ -39,7 +40,6 @@ public class Test {
 
         ResultSet rs = (ResultSet)source();
         sink(rs.getString("")); // $hasTaintFlow
-
 
     }
 }
