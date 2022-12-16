@@ -11,5 +11,5 @@ app.post("/documents/find", (req, res) => {
   query.title = req.body.title;
 
   // NOT OK: query is tainted by user-provided object value
-  db.myDoc.find(query);
+  db.myDoc.find(query, (err, data) => {});
 });
