@@ -46,16 +46,17 @@ DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) { any() }
  * Gets the type of the `i`th parameter in a synthesized call that targets a
  * callback of type `t`.
  */
-DataFlowType getCallbackParameterType(DataFlowType t, int i) { none() }
+bindingset[t, pos]
+DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) { any() }
 
 /**
  * Gets the return type of kind `rk` in a synthesized call that targets a
  * callback of type `t`.
  */
-DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) { none() }
+DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) { any() }
 
 /** Gets the type of synthetic global `sg`. */
-DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { none() }
+DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any() }
 
 /**
  * Holds if an external flow summary exists for `c` with input specification
