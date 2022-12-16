@@ -482,7 +482,7 @@ void test18()
 	while (*p3 != 0) {
 		p3 = update(p3);
 	}
-	p3[-1] = 0; // GOOD [FALSE POSITIVE]
+	p3[-1] = 0; // GOOD
 
 	p4[-1] = 0; // BAD: underrun write
 	p4++;
@@ -492,7 +492,7 @@ void test18()
 	while (*p5 != 0) {
 		p5 = update(p5);
 	}
-	p5[-1] = 0; // GOOD [FALSE POSITIVE]
+	p5[-1] = 0; // GOOD
 }
 
 void test19(bool b)
@@ -576,7 +576,7 @@ void test21(bool cond)
 	} else {
 		if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1]
 	}
-	if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1] or buffer[0]
+	if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1] or buffer[0] [NOT DETECTED]
 
 	ptr = buffer;
 	for (i = 0; i < 2; i++)
