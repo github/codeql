@@ -33,6 +33,12 @@ private newtype TDefOrUseImpl =
   TUseImpl(Operand operand) {
     isUse(_, operand, _, _, _) and
     not isDef(true, _, operand, _, _, _)
+  } or
+  TIteratorDef(BaseSourceVariableInstruction container, Operand iteratorAddress) {
+    isIteratorDef(container, iteratorAddress, _, _, _)
+  } or
+  TIteratorUse(BaseSourceVariableInstruction container, Operand iteratorAddress) {
+    isIteratorUse(container, iteratorAddress, _, _)
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
@@ -63,18 +69,16 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
   final SourceVariable getSourceVariable() {
     result.getBaseVariable() = this.getBaseSourceVariable()
   }
+
+  abstract predicate isCertain();
 }
 
-class DefImpl extends DefOrUseImpl, TDefImpl {
+abstract class DefImpl extends DefOrUseImpl {
   Operand address;
-
-  DefImpl() { this = TDefImpl(address) }
-
-  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
 
   Operand getAddressOperand() { result = address }
 
-  Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+  abstract Node0Impl getValue();
 
   override string toString() { result = address.toString() }
 
@@ -85,14 +89,32 @@ class DefImpl extends DefOrUseImpl, TDefImpl {
   final override predicate hasIndexInBlock(IRBlock block, int index) {
     this.getAddressOperand().getUse() = block.getInstruction(index)
   }
-
-  predicate isCertain() { isDef(true, _, address, _, _, _) }
 }
 
-class UseImpl extends DefOrUseImpl, TUseImpl {
-  Operand operand;
+private class DirectDef extends DefImpl, TDefImpl {
+  DirectDef() { this = TDefImpl(address) }
 
-  UseImpl() { this = TUseImpl(operand) }
+  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
+
+  override Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+
+  override predicate isCertain() { isDef(true, _, address, _, _, _) }
+}
+
+private class IteratorDef extends DefImpl, TIteratorDef {
+  BaseSourceVariableInstruction container;
+
+  IteratorDef() { this = TIteratorDef(container, address) }
+
+  override BaseSourceVariableInstruction getBase() { result = container }
+
+  override Node0Impl getValue() { isIteratorDef(_, address, result, _, _) }
+
+  override predicate isCertain() { none() }
+}
+
+abstract class UseImpl extends DefOrUseImpl {
+  Operand operand;
 
   Operand getOperand() { result = operand }
 
@@ -105,10 +127,24 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
   final override IRBlock getBlock() { result = operand.getUse().getBlock() }
 
   final override Cpp::Location getLocation() { result = operand.getLocation() }
+}
+
+private class DirectUse extends UseImpl, TUseImpl {
+  DirectUse() { this = TUseImpl(operand) }
 
   override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, _) }
 
-  predicate isCertain() { isUse(true, operand, _, _, _) }
+  override predicate isCertain() { isUse(true, operand, _, _, _) }
+}
+
+private class IteratorUse extends UseImpl, TIteratorUse {
+  BaseSourceVariableInstruction container;
+
+  IteratorUse() { this = TIteratorUse(container, operand) }
+
+  override BaseSourceVariableInstruction getBase() { result = container }
+
+  override predicate isCertain() { none() }
 }
 
 private module SsaInput implements SsaImplCommon::InputSig {
@@ -213,6 +249,8 @@ class Def extends DefOrUse {
   override string toString() { result = this.asDefOrUse().toString() }
 
   BaseSourceVariableInstruction getBase() { result = defOrUse.getBase() }
+
+  predicate isIteratorDef() { defOrUse instanceof IteratorDef }
 }
 
 private module SsaImpl = SsaImplCommon::Make<SsaInput>;

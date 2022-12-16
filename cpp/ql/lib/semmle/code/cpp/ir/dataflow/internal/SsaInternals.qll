@@ -119,6 +119,17 @@ private newtype TDefOrUseImpl =
   TUseImpl(Operand operand, int indirectionIndex) {
     isUse(_, operand, _, _, indirectionIndex) and
     not isDef(_, _, operand, _, _, _)
+  } or
+  TIteratorDef(
+    Operand iteratorAddress, BaseSourceVariableInstruction container, int indirectionIndex
+  ) {
+    isIteratorDef(container, iteratorAddress, _, _, indirectionIndex) and
+    any(SsaInternals0::Def def | def.isIteratorDef()).getAddressOperand() = iteratorAddress
+  } or
+  TIteratorUse(
+    Operand iteratorAddress, BaseSourceVariableInstruction container, int indirectionIndex
+  ) {
+    isIteratorUse(container, iteratorAddress, _, indirectionIndex)
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
@@ -192,21 +203,22 @@ private predicate sourceVariableHasBaseAndIndex(SourceVariable v, BaseSourceVari
   v.getIndirection() = ind
 }
 
-class DefImpl extends DefOrUseImpl, TDefImpl {
+abstract class DefImpl extends DefOrUseImpl {
   Operand address;
   int ind;
 
-  DefImpl() { this = TDefImpl(address, ind) }
+  bindingset[ind]
+  DefImpl() { any() }
 
-  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
+  abstract int getIndirection();
+
+  abstract Node0Impl getValue();
+
+  abstract predicate isCertain();
 
   Operand getAddressOperand() { result = address }
 
-  int getIndirection() { isDef(_, _, address, _, result, ind) }
-
   override int getIndirectionIndex() { result = ind }
-
-  Node0Impl getValue() { isDef(_, result, address, _, _, _) }
 
   override string toString() { result = "DefImpl" }
 
@@ -217,15 +229,40 @@ class DefImpl extends DefOrUseImpl, TDefImpl {
   final override predicate hasIndexInBlock(IRBlock block, int index) {
     this.getAddressOperand().getUse() = block.getInstruction(index)
   }
-
-  predicate isCertain() { isDef(true, _, address, _, _, ind) }
 }
 
-class UseImpl extends DefOrUseImpl, TUseImpl {
+private class DirectDef extends DefImpl, TDefImpl {
+  DirectDef() { this = TDefImpl(address, ind) }
+
+  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
+
+  override int getIndirection() { isDef(_, _, address, _, result, ind) }
+
+  override Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+
+  override predicate isCertain() { isDef(true, _, address, _, _, ind) }
+}
+
+private class IteratorDef extends DefImpl, TIteratorDef {
+  BaseSourceVariableInstruction container;
+
+  IteratorDef() { this = TIteratorDef(address, container, ind) }
+
+  override BaseSourceVariableInstruction getBase() { result = container }
+
+  override int getIndirection() { isIteratorDef(container, address, _, result, ind) }
+
+  override Node0Impl getValue() { isIteratorDef(container, address, result, _, _) }
+
+  override predicate isCertain() { none() }
+}
+
+abstract class UseImpl extends DefOrUseImpl {
   Operand operand;
   int ind;
 
-  UseImpl() { this = TUseImpl(operand, ind) }
+  bindingset[ind]
+  UseImpl() { any() }
 
   Operand getOperand() { result = operand }
 
@@ -239,13 +276,33 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
 
   final override Cpp::Location getLocation() { result = operand.getLocation() }
 
-  final int getIndirection() { isUse(_, operand, _, result, ind) }
-
   override int getIndirectionIndex() { result = ind }
+
+  abstract int getIndirection();
+
+  abstract predicate isCertain();
+}
+
+private class DirectUse extends UseImpl, TUseImpl {
+  DirectUse() { this = TUseImpl(operand, ind) }
+
+  override int getIndirection() { isUse(_, operand, _, result, ind) }
 
   override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, ind) }
 
-  predicate isCertain() { isUse(true, operand, _, _, ind) }
+  override predicate isCertain() { isUse(true, operand, _, _, ind) }
+}
+
+private class IteratorUse extends UseImpl, TIteratorUse {
+  BaseSourceVariableInstruction container;
+
+  IteratorUse() { this = TIteratorUse(operand, container, ind) }
+
+  override int getIndirection() { isIteratorUse(container, operand, result, ind) }
+
+  override BaseSourceVariableInstruction getBase() { result = container }
+
+  override predicate isCertain() { none() }
 }
 
 /**

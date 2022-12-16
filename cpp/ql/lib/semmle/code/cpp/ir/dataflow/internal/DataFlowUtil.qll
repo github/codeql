@@ -670,7 +670,15 @@ private Type getTypeImpl(Type t, int indirectionIndex) {
   result = t
   or
   indirectionIndex > 0 and
-  result = getTypeImpl(stripPointer(t), indirectionIndex - 1)
+  exists(Type stripped |
+    stripped = stripPointer(t) and
+    // We need to avoid the case where `stripPointer(t) = t` (which can happen on
+    // iterators that specify a `value_type` that is the iterator itself). Such a type
+    // would create an infinite loop otherwise. For these cases we simply don't produce
+    // a result for `getType`.
+    stripped.getUnspecifiedType() != t.getUnspecifiedType() and
+    result = getTypeImpl(stripPointer(t), indirectionIndex - 1)
+  )
 }
 
 /**
@@ -1209,15 +1217,16 @@ private module Cached {
     // the operand also flows to the indirction of the instruction.
     exists(Operand operand, Instruction instr, int indirectionIndex |
       simpleInstructionLocalFlowStep(operand, instr) and
-      hasOperandAndIndex(nodeFrom, operand, indirectionIndex) and
-      hasInstructionAndIndex(nodeTo, instr, indirectionIndex)
+      hasOperandAndIndex(nodeFrom, operand, pragma[only_bind_into](indirectionIndex)) and
+      hasInstructionAndIndex(nodeTo, instr, pragma[only_bind_into](indirectionIndex))
     )
     or
     // If there's indirect flow to an operand, then there's also indirect
     // flow to the operand after applying some pointer arithmetic.
     exists(PointerArithmeticInstruction pointerArith, int indirectionIndex |
-      hasOperandAndIndex(nodeFrom, pointerArith.getAnOperand(), indirectionIndex) and
-      hasInstructionAndIndex(nodeTo, pointerArith, indirectionIndex)
+      hasOperandAndIndex(nodeFrom, pointerArith.getAnOperand(),
+        pragma[only_bind_into](indirectionIndex)) and
+      hasInstructionAndIndex(nodeTo, pointerArith, pragma[only_bind_into](indirectionIndex))
     )
   }
 
@@ -1229,8 +1238,8 @@ private module Cached {
     exists(Operand operand, Instruction instr, int indirectionIndex |
       simpleOperandLocalFlowStep(pragma[only_bind_into](instr), pragma[only_bind_into](operand))
     |
-      hasOperandAndIndex(nodeTo, operand, indirectionIndex) and
-      hasInstructionAndIndex(nodeFrom, instr, indirectionIndex)
+      hasOperandAndIndex(nodeTo, operand, pragma[only_bind_into](indirectionIndex)) and
+      hasInstructionAndIndex(nodeFrom, instr, pragma[only_bind_into](indirectionIndex))
     )
   }
 
