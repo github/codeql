@@ -202,12 +202,7 @@ module Filters {
      */
     predicate registeredBefore(Filter other) {
       this.getEnclosingModule() = other.getEnclosingModule() and
-      (
-        this.getLocation().getStartLine() < other.getLocation().getStartLine()
-        or
-        this.getLocation().getStartLine() = other.getLocation().getStartLine() and
-        this.getLocation().getStartColumn() < other.getLocation().getStartColumn()
-      )
+      this.getLocation().strictlyBefore(other.getLocation())
       or
       // This callback is in a superclass of `other`'s class.
       other.getEnclosingModule().getModule() = this.getEnclosingModule().getModule().getASubClass+()
@@ -342,14 +337,60 @@ module Filters {
     exists(ActionControllerActionMethod action | next(action, pred, succ))
   }
 
-  pragma[inline]
+  /**
+   * Holds if `n` is the post-update node of a self-variable access in method
+   * `m` which stores content in the self variable.
+   * In the example below, `n` is the post-update node for `@x = 1`.
+   * ```rb
+   * def m
+   *   @x = 1
+   * end
+   * ```
+   */
   private predicate variableAccessPostUpdate(DataFlow::PostUpdateNode n, Method m) {
     n.getPreUpdateNode().asExpr() instanceof SelfVariableAccessCfgNode and
     m = n.getPreUpdateNode().asExpr().getExpr().getEnclosingCallable() and
     DataFlowPrivate::storeStep(_, _, n)
   }
 
-  pragma[inline]
+  /**
+   * Holds if `n` is the syntactically last dataflow node in `m` that satisfies `variableAccessPostUpdate`.
+   * In the example below, `n` is the post-update node for `@y = 2`.
+   * ```rb
+   * def m
+   *   @x = 1
+   *   @y = 2
+   * end
+   * ```
+   */
+  private predicate lastVariableAccessPostUpdate(DataFlow::PostUpdateNode n, Method m) {
+    variableAccessPostUpdate(n, m) and
+    not exists(DataFlow::PostUpdateNode n2 |
+      variableAccessPostUpdate(n2, m) and n.getLocation().strictlyBefore(n2.getLocation())
+    )
+  }
+
+  /**
+   * Holds if `a` is the syntactically last access of the self variable `v` in method `m`.
+   */
+  predicate lastMethodSelfVarAccess(SelfVariableAccess a, SelfVariable v, Method m) {
+    a.getEnclosingMethod() = m and
+    v = a.getVariable() and
+    not exists(SelfVariableAccess a2 |
+      a2.getVariable() = v and a.getLocation().strictlyBefore(a2.getLocation())
+    )
+  }
+
+  /**
+   * Holds if there is no access to `self` in method `m`.
+   */
+  predicate noSelfVarAccess(Method m) {
+    not exists(SelfVariableAccess a | a.getEnclosingMethod() = m)
+  }
+
+  /**
+   * Holds if `n` is the self parameter of method `m`.
+   */
   private predicate selfParameter(DataFlowPrivate::SelfParameterNode n, Method m) {
     m = n.getMethod()
   }
@@ -362,9 +403,45 @@ module Filters {
    */
   predicate additionalJumpStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Method predMethod, Method succMethod |
-      variableAccessPostUpdate(pred, predMethod) and
-      selfParameter(succ, succMethod) and
-      next(predMethod, succMethod)
+      next(predMethod, succMethod) and
+      (
+        // Flow from an update of self in `pred` to the self parameter of `succ`
+        //
+        // def a
+        //   @x = 1 ---+
+        // end         |
+        //             |
+        // def b  <----+
+        //  ...
+        //
+        lastVariableAccessPostUpdate(pred, predMethod) and
+        selfParameter(succ, succMethod)
+        or
+        // When there is no update of self in `pred`, flow from the last access to self to the self parameter of `succ`
+        //
+        // def a
+        //   foo() ---+
+        //   x = 1    |
+        // end        |
+        //            |
+        // def b  <---+
+        // ...
+        //
+        not variableAccessPostUpdate(_, predMethod) and
+        lastMethodSelfVarAccess(pred.asExpr().getExpr(), _, predMethod) and
+        selfParameter(succ, succMethod)
+        or
+        // When there is no access to self in `pred`, flow from the self parameter of `pred` to the self parameter of `succ`
+        //
+        // def a ---+
+        // end      |
+        //          |
+        // def b <--+
+        // ...
+        noSelfVarAccess(predMethod) and
+        selfParameter(pred, predMethod) and
+        selfParameter(succ, succMethod)
+      )
     )
   }
 }
