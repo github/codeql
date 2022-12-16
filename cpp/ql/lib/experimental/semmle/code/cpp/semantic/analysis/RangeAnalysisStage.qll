@@ -70,29 +70,6 @@ private import experimental.semmle.code.cpp.semantic.Semantic
 private import ConstantAnalysis
 
 /**
- * An expression that does conversion, boxing, or unboxing
- */
-private class ConvertOrBoxExpr extends SemUnaryExpr {
-  ConvertOrBoxExpr() {
-    this instanceof SemConvertExpr
-    or
-    this instanceof SemBoxExpr
-    or
-    this instanceof SemUnboxExpr
-  }
-}
-
-/**
- * A cast that can be ignored for the purpose of range analysis.
- */
-private class SafeCastExpr extends ConvertOrBoxExpr {
-  SafeCastExpr() {
-    conversionCannotOverflow(Utils::getTrackedType(pragma[only_bind_into](getOperand())),
-      Utils::getTrackedType(this))
-  }
-}
-
-/**
  * Holds if `typ` is a small integral type with the given lower and upper bounds.
  */
 private predicate typeBound(SemIntegerType typ, int lowerbound, int upperbound) {
@@ -111,54 +88,45 @@ private predicate typeBound(SemIntegerType typ, int lowerbound, int upperbound) 
   )
 }
 
-/**
- * A cast to a small integral type that may overflow or underflow.
- */
-private class NarrowingCastExpr extends ConvertOrBoxExpr {
-  NarrowingCastExpr() {
-    not this instanceof SafeCastExpr and
-    typeBound(Utils::getTrackedType(this), _, _)
-  }
-
-  /** Gets the lower bound of the resulting type. */
-  int getLowerBound() { typeBound(Utils::getTrackedType(this), result, _) }
-
-  /** Gets the upper bound of the resulting type. */
-  int getUpperBound() { typeBound(Utils::getTrackedType(this), _, result) }
-}
-
 signature module DeltaSig {
+  bindingset[this]
   class Delta;
 
+  bindingset[d]
+  bindingset[result]
   float toFloat(Delta d);
 
+  bindingset[d]
+  bindingset[result]
   int toInt(Delta d);
 
+  bindingset[n]
+  bindingset[result]
   Delta fromInt(int n);
 
+  bindingset[f]
+  bindingset[result]
   Delta fromFloat(float f);
 }
 
-signature module UtilSig<DeltaSig DeltaParam> {
-  SemExpr semSsaRead(SemSsaVariable v, DeltaParam::Delta delta);
-
-  SemGuard semEqFlowCond(
-    SemSsaVariable v, SemExpr e, DeltaParam::Delta delta, boolean isEq, boolean testIsTrue
-  );
-
-  predicate semSsaUpdateStep(SemSsaExplicitUpdate v, SemExpr e, DeltaParam::Delta delta);
-
-  predicate semValueFlowStep(SemExpr e2, SemExpr e1, DeltaParam::Delta delta);
+signature module LangSig<DeltaSig D> {
+  /**
+   * Holds if the specified expression should be excluded from the result of `ssaRead()`.
+   *
+   * This predicate is to keep the results identical to the original Java implementation. It should be
+   * removed once we have the new implementation matching the old results exactly.
+   */
+  predicate ignoreSsaReadCopy(SemExpr e);
 
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
-  predicate hasConstantBound(SemExpr e, int bound, boolean upper);
+  predicate hasConstantBound(SemExpr e, D::Delta bound, boolean upper);
 
   /**
    * Holds if `e >= bound + delta` (if `upper = false`) or `e <= bound + delta` (if `upper = true`).
    */
-  predicate hasBound(SemExpr e, SemExpr bound, int delta, boolean upper);
+  predicate hasBound(SemExpr e, SemExpr bound, D::Delta delta, boolean upper);
 
   /**
    * Ignore the bound on this expression.
@@ -175,9 +143,137 @@ signature module UtilSig<DeltaSig DeltaParam> {
    * removed once we have the new implementation matching the old results exactly.
    */
   predicate ignoreZeroLowerBound(SemExpr e);
+
+  /**
+   * Holds if the specified expression should be excluded from the result of `ssaRead()`.
+   *
+   * This predicate is to keep the results identical to the original Java implementation. It should be
+   * removed once we have the new implementation matching the old results exactly.
+   */
+  predicate ignoreSsaReadArithmeticExpr(SemExpr e);
+
+  /**
+   * Holds if the specified variable should be excluded from the result of `ssaRead()`.
+   *
+   * This predicate is to keep the results identical to the original Java implementation. It should be
+   * removed once we have the new implementation matching the old results exactly.
+   */
+  predicate ignoreSsaReadAssignment(SemSsaVariable v);
+
+  /**
+   * Adds additional results to `ssaRead()` that are specific to Java.
+   *
+   * This predicate handles propagation of offsets for post-increment and post-decrement expressions
+   * in exactly the same way as the old Java implementation. Once the new implementation matches the
+   * old one, we should remove this predicate and propagate deltas for all similar patterns, whether
+   * or not they come from a post-increment/decrement expression.
+   */
+  SemExpr specificSsaRead(SemSsaVariable v, D::Delta delta);
+
+  /**
+   * Holds if the value of `dest` is known to be `src + delta`.
+   */
+  predicate additionalValueFlowStep(SemExpr dest, SemExpr src, D::Delta delta);
+
+  /**
+   * Gets the type that range analysis should use to track the result of the specified expression,
+   * if a type other than the original type of the expression is to be used.
+   *
+   * This predicate is commonly used in languages that support immutable "boxed" types that are
+   * actually references but whose values can be tracked as the type contained in the box.
+   */
+  SemType getAlternateType(SemExpr e);
+
+  /**
+   * Gets the type that range analysis should use to track the result of the specified source
+   * variable, if a type other than the original type of the expression is to be used.
+   *
+   * This predicate is commonly used in languages that support immutable "boxed" types that are
+   * actually references but whose values can be tracked as the type contained in the box.
+   */
+  SemType getAlternateTypeForSsaVariable(SemSsaVariable var);
 }
 
-module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
+signature module UtilSig<DeltaSig DeltaParam> {
+  SemExpr semSsaRead(SemSsaVariable v, DeltaParam::Delta delta);
+
+  SemGuard semEqFlowCond(
+    SemSsaVariable v, SemExpr e, DeltaParam::Delta delta, boolean isEq, boolean testIsTrue
+  );
+
+  predicate semSsaUpdateStep(SemSsaExplicitUpdate v, SemExpr e, DeltaParam::Delta delta);
+
+  predicate semValueFlowStep(SemExpr e2, SemExpr e1, DeltaParam::Delta delta);
+
+  /**
+   * Gets the type used to track the specified source variable's range information.
+   *
+   * Usually, this just `e.getType()`, but the language can override this to track immutable boxed
+   * primitive types as the underlying primitive type.
+   */
+  SemType getTrackedTypeForSsaVariable(SemSsaVariable var);
+
+  /**
+   * Gets the type used to track the specified expression's range information.
+   *
+   * Usually, this just `e.getSemType()`, but the language can override this to track immutable boxed
+   * primitive types as the underlying primitive type.
+   */
+  SemType getTrackedType(SemExpr e);
+}
+
+module RangeStage<DeltaSig D, LangSig<D> LangParam, UtilSig<D> UtilParam> {
+  /**
+   * An expression that does conversion, boxing, or unboxing
+   */
+  private class ConvertOrBoxExpr instanceof SemUnaryExpr {
+    ConvertOrBoxExpr() {
+      this instanceof SemConvertExpr
+      or
+      this instanceof SemBoxExpr
+      or
+      this instanceof SemUnboxExpr
+    }
+
+    string toString() { result = super.toString() }
+
+    SemExpr getOperand() { result = super.getOperand() }
+  }
+
+  /**
+   * A cast that can be ignored for the purpose of range analysis.
+   */
+  private class SafeCastExpr extends ConvertOrBoxExpr {
+    SafeCastExpr() {
+      conversionCannotOverflow(UtilParam::getTrackedType(pragma[only_bind_into](getOperand())),
+        UtilParam::getTrackedType(this))
+    }
+  }
+
+  /**
+   * A cast to a small integral type that may overflow or underflow.
+   */
+  private class NarrowingCastExpr extends ConvertOrBoxExpr {
+    NarrowingCastExpr() {
+      not this instanceof SafeCastExpr and
+      typeBound(UtilParam::getTrackedType(this), _, _)
+    }
+
+    /** Gets the lower bound of the resulting type. */
+    int getLowerBound() { typeBound(UtilParam::getTrackedType(this), result, _) }
+
+    /** Gets the upper bound of the resulting type. */
+    int getUpperBound() { typeBound(UtilParam::getTrackedType(this), _, result) }
+  }
+
+  private module SignAnalysisInstantiated = SignAnalysis<D, UtilParam>; // TODO: will this cause reevaluation if it's instantiated with the same DeltaSig and UtilParam multiple times?
+
+  private import SignAnalysisInstantiated
+
+  private module ModulusAnalysisInstantiated = ModulusAnalysis<D, UtilParam>; // TODO: will this cause reevaluation if it's instantiated with the same DeltaSig and UtilParam multiple times?
+
+  private import ModulusAnalysisInstantiated
+
   cached
   private module RangeAnalysisCache {
     cached
@@ -203,7 +299,7 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
      */
     cached
     predicate possibleReason(SemGuard guard) {
-      guard = boundFlowCond(_, _, _, _, _) or guard = LangParam::semEqFlowCond(_, _, _, _, _)
+      guard = boundFlowCond(_, _, _, _, _) or guard = UtilParam::semEqFlowCond(_, _, _, _, _)
     }
   }
 
@@ -231,11 +327,11 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
   private predicate boundCondition(
     SemRelationalExpr comp, SemSsaVariable v, SemExpr e, float delta, boolean upper
   ) {
-    comp.getLesserOperand() = LangParam::semSsaRead(v, D::fromFloat(delta)) and
+    comp.getLesserOperand() = UtilParam::semSsaRead(v, D::fromFloat(delta)) and
     e = comp.getGreaterOperand() and
     upper = true
     or
-    comp.getGreaterOperand() = LangParam::semSsaRead(v, D::fromFloat(delta)) and
+    comp.getGreaterOperand() = UtilParam::semSsaRead(v, D::fromFloat(delta)) and
     e = comp.getLesserOperand() and
     upper = false
     or
@@ -243,7 +339,7 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
       // (v - d) - e < c
       comp.getLesserOperand() = sub and
       comp.getGreaterOperand() = c and
-      sub.getLeftOperand() = LangParam::semSsaRead(v, D::fromFloat(d)) and
+      sub.getLeftOperand() = UtilParam::semSsaRead(v, D::fromFloat(d)) and
       sub.getRightOperand() = e and
       upper = true and
       delta = d + c.getIntValue()
@@ -251,7 +347,7 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
       // (v - d) - e > c
       comp.getGreaterOperand() = sub and
       comp.getLesserOperand() = c and
-      sub.getLeftOperand() = LangParam::semSsaRead(v, D::fromFloat(d)) and
+      sub.getLeftOperand() = UtilParam::semSsaRead(v, D::fromFloat(d)) and
       sub.getRightOperand() = e and
       upper = false and
       delta = d + c.getIntValue()
@@ -260,7 +356,7 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
       comp.getLesserOperand() = sub and
       comp.getGreaterOperand() = c and
       sub.getLeftOperand() = e and
-      sub.getRightOperand() = LangParam::semSsaRead(v, D::fromFloat(d)) and
+      sub.getRightOperand() = UtilParam::semSsaRead(v, D::fromFloat(d)) and
       upper = false and
       delta = d - c.getIntValue()
       or
@@ -268,7 +364,7 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
       comp.getGreaterOperand() = sub and
       comp.getLesserOperand() = c and
       sub.getLeftOperand() = e and
-      sub.getRightOperand() = LangParam::semSsaRead(v, D::fromFloat(d)) and
+      sub.getRightOperand() = UtilParam::semSsaRead(v, D::fromFloat(d)) and
       upper = true and
       delta = d - c.getIntValue()
     )
@@ -338,8 +434,8 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
       ) and
       (
         if
-          Utils::getTrackedTypeForSsaVariable(v) instanceof SemIntegerType or
-          Utils::getTrackedTypeForSsaVariable(v) instanceof SemAddressType
+          UtilParam::getTrackedTypeForSsaVariable(v) instanceof SemIntegerType or
+          UtilParam::getTrackedTypeForSsaVariable(v) instanceof SemAddressType
         then
           upper = true and strengthen = -1
           or
@@ -364,7 +460,7 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
       semImplies_v2(result, testIsTrue, boundFlowCond(v, e, delta, upper, testIsTrue0), testIsTrue0)
     )
     or
-    result = LangParam::semEqFlowCond(v, e, D::fromFloat(delta), true, testIsTrue) and
+    result = UtilParam::semEqFlowCond(v, e, D::fromFloat(delta), true, testIsTrue) and
     (upper = true or upper = false)
     or
     // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
@@ -373,7 +469,7 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
       SemSsaVariable v2, SemGuard guardEq, boolean eqIsTrue, float d1, float d2, float oldDelta
     |
       guardEq =
-        LangParam::semEqFlowCond(v, LangParam::semSsaRead(v2, D::fromFloat(d1)), D::fromFloat(d2),
+        UtilParam::semEqFlowCond(v, UtilParam::semSsaRead(v2, D::fromFloat(d1)), D::fromFloat(d2),
           true, eqIsTrue) and
       result = boundFlowCond(v2, e, oldDelta, upper, testIsTrue) and
       // guardEq needs to control guard
@@ -421,7 +517,7 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
     SemSsaVariable v, SemSsaReadPosition pos, SemExpr e, float delta, boolean upper,
     SemReason reason
   ) {
-    LangParam::semSsaUpdateStep(v, e, D::fromFloat(delta)) and
+    UtilParam::semSsaUpdateStep(v, e, D::fromFloat(delta)) and
     pos.hasReadOfVar(v) and
     (upper = true or upper = false) and
     reason = TSemNoReason()
@@ -438,10 +534,10 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
   private predicate unequalFlowStepIntegralSsa(
     SemSsaVariable v, SemSsaReadPosition pos, SemExpr e, float delta, SemReason reason
   ) {
-    Utils::getTrackedTypeForSsaVariable(v) instanceof SemIntegerType and
+    UtilParam::getTrackedTypeForSsaVariable(v) instanceof SemIntegerType and
     exists(SemGuard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
-      guard = LangParam::semEqFlowCond(v, e, D::fromFloat(delta), false, testIsTrue) and
+      guard = UtilParam::semEqFlowCond(v, e, D::fromFloat(delta), false, testIsTrue) and
       semGuardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
       reason = TSemCondReason(guard)
     )
@@ -449,12 +545,12 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
 
   /** Holds if `e >= 1` as determined by sign analysis. */
   private predicate strictlyPositiveIntegralExpr(SemExpr e) {
-    semStrictlyPositive(e) and Utils::getTrackedType(e) instanceof SemIntegerType
+    semStrictlyPositive(e) and UtilParam::getTrackedType(e) instanceof SemIntegerType
   }
 
   /** Holds if `e <= -1` as determined by sign analysis. */
   private predicate strictlyNegativeIntegralExpr(SemExpr e) {
-    semStrictlyNegative(e) and Utils::getTrackedType(e) instanceof SemIntegerType
+    semStrictlyNegative(e) and UtilParam::getTrackedType(e) instanceof SemIntegerType
   }
 
   /**
@@ -463,7 +559,7 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
    * - `upper = false` : `e2 >= e1 + delta`
    */
   private predicate boundFlowStep(SemExpr e2, SemExpr e1, float delta, boolean upper) {
-    LangParam::semValueFlowStep(e2, e1, D::fromFloat(delta)) and
+    UtilParam::semValueFlowStep(e2, e1, D::fromFloat(delta)) and
     (upper = true or upper = false)
     or
     e2.(SafeCastExpr).getOperand() = e1 and
@@ -526,7 +622,7 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
     delta = 0 and
     upper = false
     or
-    LangParam::hasBound(e2, e1, delta, upper)
+    LangParam::hasBound(e2, e1, D::fromFloat(delta), upper)
   }
 
   /** Holds if `e2 = e1 * factor` and `factor > 0`. */
@@ -768,7 +864,7 @@ module RangeStage<DeltaSig D, UtilSig<D> LangParam> {
    * (for `upper = false`) bound of `b`.
    */
   private predicate baseBound(SemExpr e, float b, boolean upper) {
-    LangParam::hasConstantBound(e, b, upper)
+    LangParam::hasConstantBound(e, D::fromFloat(b), upper)
     or
     upper = false and
     b = 0 and
