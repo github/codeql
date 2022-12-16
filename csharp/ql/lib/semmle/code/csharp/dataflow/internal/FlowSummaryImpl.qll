@@ -249,7 +249,7 @@ module Public {
      * Holds if the summary has the given provenance where `true` is
      * `generated` and `false` is `manual`.
      */
-    predicate hasProvenance(boolean generated) { none() } // ! merge with PR #11585
+    predicate hasProvenance(boolean generated) { none() }
   }
 
   /** A callable where there is no flow via the callable. */
@@ -1027,7 +1027,7 @@ module Private {
 
       override predicate hasProvenance(boolean generated) {
         summaryElement(this, _, _, _, generated)
-      } // ! merge with PR #11585
+      }
     }
 
     /** Holds if component `c` of specification `spec` cannot be parsed. */
