@@ -15,6 +15,7 @@ private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjecti
 private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 private import experimental.adaptivethreatmodeling.XssATM as XssAtm
 private import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
+private import experimental.adaptivethreatmodeling.ShellCommandInjectionFromEnvironmentATM as ShellCommandInjectionFromEnvironmentAtm
 
 /**
  * Gets the set of featureName-featureValue pairs for each endpoint in the training set.
@@ -217,6 +218,10 @@ DataFlow::Configuration getDataFlowCfg(Query query) {
   query instanceof XssQuery and result instanceof XssAtm::DomBasedXssAtmConfig
   or
   query instanceof XssThroughDomQuery and result instanceof XssThroughDomAtm::XssThroughDomAtmConfig
+  or
+  query instanceof ShellCommandInjectionFromEnvironmentQuery and
+  result instanceof
+    ShellCommandInjectionFromEnvironmentAtm::ShellCommandInjectionFromEnvironmentAtmConfig
 }
 
 // TODO: Delete this once we are no longer surfacing `hasFlowFromSource`.
