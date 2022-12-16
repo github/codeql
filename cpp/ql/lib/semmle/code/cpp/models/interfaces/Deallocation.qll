@@ -12,16 +12,6 @@ import semmle.code.cpp.Function
 import semmle.code.cpp.models.Models
 
 /**
- * A deallocation function such as `free`.
- */
-abstract class DeallocationFunction extends Function {
-  /**
-   * Gets the index of the argument that is freed by this function.
-   */
-  int getFreedArg() { none() }
-}
-
-/**
  * An deallocation expression such as call to `free` or a `delete` expression.
  */
 abstract class DeallocationExpr extends Expr {
@@ -29,6 +19,19 @@ abstract class DeallocationExpr extends Expr {
    * Gets the expression that is freed by this function.
    */
   Expr getFreedExpr() { none() }
+}
+
+/**
+ * A deallocation function such as `free`.
+ *
+ * Note: `DeallocationExpr` includes calls to deallocation functions, so prefer
+ * to use that class unless you specifically need to reason about functions.
+ */
+abstract class DeallocationFunction extends Function {
+  /**
+   * Gets the index of the argument that is freed by this function.
+   */
+  int getFreedArg() { none() }
 }
 
 /**

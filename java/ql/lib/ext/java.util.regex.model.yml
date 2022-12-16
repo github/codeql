@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["java.util.regex", "Matcher", False, "matches", "()", "", "Argument[-1]", "regex-use[f]", "manual"]
       - ["java.util.regex", "Pattern", False, "asMatchPredicate", "()", "", "Argument[-1]", "regex-use[f]", "manual"]
@@ -14,7 +14,7 @@ extensions:
       - ["java.util.regex", "Pattern", False, "splitAsStream", "(CharSequence)", "", "Argument[-1]", "regex-use[0]", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["java.util.regex", "Matcher", False, "group", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.util.regex", "Matcher", False, "replaceAll", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

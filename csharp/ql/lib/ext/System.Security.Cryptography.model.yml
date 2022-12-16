@@ -1,14 +1,14 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["System.Security.Cryptography", "SymmetricAlgorithm", True, "CreateDecryptor", "(System.Byte[],System.Byte[])", "", "Argument[0]", "encryption-decryptor", "manual"]
       - ["System.Security.Cryptography", "SymmetricAlgorithm", True, "CreateEncryptor", "(System.Byte[],System.Byte[])", "", "Argument[0]", "encryption-encryptor", "manual"]
       - ["System.Security.Cryptography", "SymmetricAlgorithm", True, "set_Key", "(System.Byte[])", "", "Argument[0]", "encryption-keyprop", "manual"]
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Security.Cryptography", "AsnEncodedDataCollection", False, "Add", "(System.Security.Cryptography.AsnEncodedData)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Security.Cryptography", "AsnEncodedDataCollection", False, "CopyTo", "(System.Security.Cryptography.AsnEncodedData[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]

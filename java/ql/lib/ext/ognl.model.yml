@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["ognl", "Node", False, "getValue", "", "", "Argument[-1]", "ognl-injection", "manual"]
       - ["ognl", "Node", False, "setValue", "", "", "Argument[-1]", "ognl-injection", "manual"]

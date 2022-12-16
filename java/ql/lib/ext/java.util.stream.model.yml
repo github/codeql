@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["java.util.stream", "BaseStream", True, "iterator", "()", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util.stream", "BaseStream", True, "onClose", "(Runnable)", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]

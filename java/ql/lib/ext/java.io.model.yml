@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["java.io", "FileOutputStream", False, "FileOutputStream", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.io", "FileOutputStream", False, "write", "", "", "Argument[0]", "write-file", "manual"]
@@ -42,7 +42,7 @@ extensions:
       - ["java.io", "Writer", True, "write", "", "", "Argument[0]", "write-file", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["java.io", "BufferedInputStream", False, "BufferedInputStream", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.io", "BufferedReader", False, "BufferedReader", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]

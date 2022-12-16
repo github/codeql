@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["java.nio.file", "Files", False, "copy", "", "", "Argument[1]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "createDirectories", "", "", "Argument[0]", "create-file", "manual"]
@@ -20,7 +20,7 @@ extensions:
       - ["java.nio.file", "Files", False, "writeString", "", "", "Argument[1]", "write-file", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["java.nio.file", "FileSystem", True, "getPath", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "FileSystem", True, "getRootDirectories", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

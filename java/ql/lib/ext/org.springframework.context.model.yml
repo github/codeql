@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.springframework.context", "MessageSource", True, "getMessage", "(String,Object[],Locale)", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"]
       - ["org.springframework.context", "MessageSource", True, "getMessage", "(String,Object[],String,Locale)", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"]

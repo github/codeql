@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extExperimentalSummaryModel
+      extensible: experimentalSummaryModel
     data:
       - ["com.auth0.jwt.interfaces", "Verification", True, "acceptExpiresAt", "", "", "Argument[-1]", "ReturnValue", "value", "manual", "hardcoded-jwt-key"]
       - ["com.auth0.jwt.interfaces", "Verification", True, "acceptIssuedAt", "", "", "Argument[-1]", "ReturnValue", "value", "manual", "hardcoded-jwt-key"]
