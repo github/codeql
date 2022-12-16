@@ -473,9 +473,12 @@ private DataFlow::LocalSourceNode trackModuleAccess(Module m) {
 }
 
 pragma[nomagic]
-private predicate hasUserDefinedSelf(Module m) {
-  // cannot use `lookupSingletonMethod` due to negative recursion
-  singletonMethodOnModule(_, "new", m.getSuperClass*()) // not `getAnAncestor` because singleton methods cannot be included
+private predicate hasUserDefinedNew(Module m) {
+  exists(DataFlow::MethodNode method |
+    // not `getAnAncestor` because singleton methods cannot be included
+    singletonMethodOnModule(method.asCallableAstNode(), "new", m.getSuperClass*()) and
+    not method.getSelfParameter().getAMethodCall("allocate").flowsTo(method.getAReturningNode())
+  )
 }
 
 /** Holds if `n` is an instance of type `tp`. */
@@ -536,7 +539,7 @@ private predicate isInstance(DataFlow::Node n, Module tp, boolean exact) {
     flowsToMethodCallReceiver(call, sourceNode, "new") and
     n.asExpr() = call and
     // `tp` should not have a user-defined `self.new` method
-    not hasUserDefinedSelf(tp)
+    not hasUserDefinedNew(tp)
   |
     // `C.new`
     sourceNode = trackModuleAccess(tp) and
