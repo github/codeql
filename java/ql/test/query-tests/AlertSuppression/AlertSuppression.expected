@@ -55,6 +55,10 @@
 | Test.java:36:1:36:52 | /* lgtm[@tag:nullness,java/confusing-method-name] */ | lgtm[@tag:nullness,java/confusing-method-name] | lgtm[@tag:nullness,java/confusing-method-name] | Test.java:37:0:37:0 | suppression range |
 | Test.java:37:1:37:25 | /* lgtm[@tag:nullness] */ | lgtm[@tag:nullness] | lgtm[@tag:nullness] | Test.java:37:1:37:25 | suppression range |
 | Test.java:37:1:37:25 | /* lgtm[@tag:nullness] */ | lgtm[@tag:nullness] | lgtm[@tag:nullness] | Test.java:38:0:38:0 | suppression range |
+| Test.java:39:1:39:32 | // codeql[js/debugger-statement] |  codeql[js/debugger-statement] | lgtm[js/debugger-statement] | Test.java:40:0:40:0 | suppression range |
+| Test.java:40:1:40:32 | // CODEQL[js/debugger-statement] |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | Test.java:41:0:41:0 | suppression range |
+| Test.java:41:1:41:69 | // codeql[js/debugger-statement] -- because I know better than codeql |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | Test.java:42:0:42:0 | suppression range |
+| Test.java:42:1:42:35 | /* codeql[js/debugger-statement] */ | codeql[js/debugger-statement] | lgtm[js/debugger-statement] | Test.java:43:0:43:0 | suppression range |
 | TestWindows.java:1:22:1:29 | // lgtm |  lgtm | lgtm | TestWindows.java:1:1:1:29 | suppression range |
 | TestWindows.java:2:1:2:36 | // lgtm[java/confusing-method-name] |  lgtm[java/confusing-method-name] | lgtm[java/confusing-method-name] | TestWindows.java:2:1:2:36 | suppression range |
 | TestWindows.java:2:1:2:36 | // lgtm[java/confusing-method-name] |  lgtm[java/confusing-method-name] | lgtm[java/confusing-method-name] | TestWindows.java:3:0:3:0 | suppression range |
@@ -112,3 +116,7 @@
 | TestWindows.java:36:1:36:52 | /* lgtm[@tag:nullness,java/confusing-method-name] */ | lgtm[@tag:nullness,java/confusing-method-name] | lgtm[@tag:nullness,java/confusing-method-name] | TestWindows.java:37:0:37:0 | suppression range |
 | TestWindows.java:37:1:37:25 | /* lgtm[@tag:nullness] */ | lgtm[@tag:nullness] | lgtm[@tag:nullness] | TestWindows.java:37:1:37:25 | suppression range |
 | TestWindows.java:37:1:37:25 | /* lgtm[@tag:nullness] */ | lgtm[@tag:nullness] | lgtm[@tag:nullness] | TestWindows.java:38:0:38:0 | suppression range |
+| TestWindows.java:39:1:39:33 | // codeql[js/debugger-statement] |  codeql[js/debugger-statement] | lgtm[js/debugger-statement] | TestWindows.java:40:0:40:0 | suppression range |
+| TestWindows.java:40:1:40:33 | // CODEQL[js/debugger-statement] |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | TestWindows.java:41:0:41:0 | suppression range |
+| TestWindows.java:41:1:41:70 | // codeql[js/debugger-statement] -- because I know better than codeql |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | TestWindows.java:42:0:42:0 | suppression range |
+| TestWindows.java:42:1:42:35 | /* codeql[js/debugger-statement] */ | codeql[js/debugger-statement] | lgtm[js/debugger-statement] | TestWindows.java:43:0:43:0 | suppression range |

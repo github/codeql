@@ -55,6 +55,10 @@
 | tst.c:36:1:36:55 | /* lgtm[@tag:nullness,js/invocation-of-non-function] */ |  lgtm[@tag:nullness,js/invocation-of-non-function]  | lgtm[@tag:nullness,js/invocation-of-non-function] | tst.c:37:0:37:0 | suppression range |
 | tst.c:37:1:37:25 | /* lgtm[@tag:nullness] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tst.c:37:1:37:25 | suppression range |
 | tst.c:37:1:37:25 | /* lgtm[@tag:nullness] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tst.c:38:0:38:0 | suppression range |
+| tst.c:38:1:38:32 | // codeql[js/debugger-statement] |  codeql[js/debugger-statement] | lgtm[js/debugger-statement] | tst.c:39:0:39:0 | suppression range |
+| tst.c:39:1:39:32 | // CODEQL[js/debugger-statement] |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | tst.c:40:0:40:0 | suppression range |
+| tst.c:40:1:40:69 | // codeql[js/debugger-statement] -- because I know better than codeql |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | tst.c:41:0:41:0 | suppression range |
+| tst.c:41:1:41:35 | /* codeql[js/debugger-statement] */ |  codeql[js/debugger-statement]  | lgtm[js/debugger-statement] | tst.c:42:0:42:0 | suppression range |
 | tstWindows.c:1:12:1:18 | // lgtm |  lgtm | lgtm | tstWindows.c:1:1:1:18 | suppression range |
 | tstWindows.c:2:1:2:30 | // lgtm[js/debugger-statement] |  lgtm[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.c:2:1:2:30 | suppression range |
 | tstWindows.c:2:1:2:30 | // lgtm[js/debugger-statement] |  lgtm[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.c:3:0:3:0 | suppression range |
@@ -112,3 +116,7 @@
 | tstWindows.c:36:1:36:55 | /* lgtm[@tag:nullness,js/invocation-of-non-function] */ |  lgtm[@tag:nullness,js/invocation-of-non-function]  | lgtm[@tag:nullness,js/invocation-of-non-function] | tstWindows.c:37:0:37:0 | suppression range |
 | tstWindows.c:37:1:37:25 | /* lgtm[@tag:nullness] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tstWindows.c:37:1:37:25 | suppression range |
 | tstWindows.c:37:1:37:25 | /* lgtm[@tag:nullness] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tstWindows.c:38:0:38:0 | suppression range |
+| tstWindows.c:38:1:38:32 | // codeql[js/debugger-statement] |  codeql[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.c:39:0:39:0 | suppression range |
+| tstWindows.c:39:1:39:32 | // CODEQL[js/debugger-statement] |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.c:40:0:40:0 | suppression range |
+| tstWindows.c:40:1:40:69 | // codeql[js/debugger-statement] -- because I know better than codeql |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | tstWindows.c:41:0:41:0 | suppression range |
+| tstWindows.c:41:1:41:35 | /* codeql[js/debugger-statement] */ |  codeql[js/debugger-statement]  | lgtm[js/debugger-statement] | tstWindows.c:42:0:42:0 | suppression range |

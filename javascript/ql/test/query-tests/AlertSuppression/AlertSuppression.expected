@@ -1,4 +1,5 @@
-| tst.html:5:30:5:42 | <!-- lgtm --> |  lgtm  | lgtm | tst.html:5:1:5:42 | suppression range |
+| tst.html:4:5:4:36 | <!-- codeql[js/duplicate-id] --> |  codeql[js/duplicate-id]  | lgtm[js/duplicate-id] | tst.html:5:0:5:0 | suppression range |
+| tst.html:6:30:6:42 | <!-- lgtm --> |  lgtm  | lgtm | tst.html:6:1:6:42 | suppression range |
 | tst.js:1:11:1:17 | // lgtm |  lgtm | lgtm | tst.js:1:1:1:17 | suppression range |
 | tst.js:2:1:2:30 | // lgtm ... tement] |  lgtm[js/debugger-statement] | lgtm[js/debugger-statement] | tst.js:2:1:2:30 | suppression range |
 | tst.js:2:1:2:30 | // lgtm ... tement] |  lgtm[js/debugger-statement] | lgtm[js/debugger-statement] | tst.js:3:0:3:0 | suppression range |
@@ -56,7 +57,12 @@
 | tst.js:36:1:36:55 | /* lgtm ... ion] */ |  lgtm[@tag:nullness,js/invocation-of-non-function]  | lgtm[@tag:nullness,js/invocation-of-non-function] | tst.js:37:0:37:0 | suppression range |
 | tst.js:37:1:37:25 | /* lgtm ... ess] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tst.js:37:1:37:25 | suppression range |
 | tst.js:37:1:37:25 | /* lgtm ... ess] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tst.js:38:0:38:0 | suppression range |
-| tstWindows.html:5:30:5:42 | <!-- lgtm --> |  lgtm  | lgtm | tstWindows.html:5:1:5:42 | suppression range |
+| tst.js:38:1:38:32 | // code ... tement] |  codeql[js/debugger-statement] | lgtm[js/debugger-statement] | tst.js:39:0:39:0 | suppression range |
+| tst.js:39:1:39:32 | // CODE ... tement] |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | tst.js:40:0:40:0 | suppression range |
+| tst.js:40:1:40:69 | // code ...  codeql |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | tst.js:41:0:41:0 | suppression range |
+| tst.js:41:1:41:35 | /* code ... ent] */ |  codeql[js/debugger-statement]  | lgtm[js/debugger-statement] | tst.js:42:0:42:0 | suppression range |
+| tstWindows.html:4:5:4:36 | <!-- codeql[js/duplicate-id] --> |  codeql[js/duplicate-id]  | lgtm[js/duplicate-id] | tstWindows.html:5:0:5:0 | suppression range |
+| tstWindows.html:6:30:6:42 | <!-- lgtm --> |  lgtm  | lgtm | tstWindows.html:6:1:6:42 | suppression range |
 | tstWindows.js:1:11:1:17 | // lgtm |  lgtm | lgtm | tstWindows.js:1:1:1:17 | suppression range |
 | tstWindows.js:2:1:2:30 | // lgtm ... tement] |  lgtm[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.js:2:1:2:30 | suppression range |
 | tstWindows.js:2:1:2:30 | // lgtm ... tement] |  lgtm[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.js:3:0:3:0 | suppression range |
@@ -114,3 +120,7 @@
 | tstWindows.js:36:1:36:55 | /* lgtm ... ion] */ |  lgtm[@tag:nullness,js/invocation-of-non-function]  | lgtm[@tag:nullness,js/invocation-of-non-function] | tstWindows.js:37:0:37:0 | suppression range |
 | tstWindows.js:37:1:37:25 | /* lgtm ... ess] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tstWindows.js:37:1:37:25 | suppression range |
 | tstWindows.js:37:1:37:25 | /* lgtm ... ess] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tstWindows.js:38:0:38:0 | suppression range |
+| tstWindows.js:38:1:38:32 | // code ... tement] |  codeql[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.js:39:0:39:0 | suppression range |
+| tstWindows.js:39:1:39:32 | // CODE ... tement] |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.js:40:0:40:0 | suppression range |
+| tstWindows.js:40:1:40:69 | // code ...  codeql |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | tstWindows.js:41:0:41:0 | suppression range |
+| tstWindows.js:41:1:41:35 | /* code ... ent] */ |  codeql[js/debugger-statement]  | lgtm[js/debugger-statement] | tstWindows.js:42:0:42:0 | suppression range |

@@ -47,6 +47,10 @@
 | AlertSuppression.cs:28:1:28:32 | // ... | lgtm[cs/unused-reftype]; lgtm | lgtm | AlertSuppression.cs:29:0:29:0 | suppression range |
 | AlertSuppression.cs:28:1:28:32 | // ... | lgtm[cs/unused-reftype]; lgtm | lgtm[cs/unused-reftype] | AlertSuppression.cs:28:1:28:32 | suppression range |
 | AlertSuppression.cs:28:1:28:32 | // ... | lgtm[cs/unused-reftype]; lgtm | lgtm[cs/unused-reftype] | AlertSuppression.cs:29:0:29:0 | suppression range |
+| AlertSuppression.cs:29:1:29:32 | // ... | codeql[js/debugger-statement] | lgtm[js/debugger-statement] | AlertSuppression.cs:30:0:30:0 | suppression range |
+| AlertSuppression.cs:30:1:30:32 | // ... | CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | AlertSuppression.cs:31:0:31:0 | suppression range |
+| AlertSuppression.cs:31:1:31:69 | // ... | codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | AlertSuppression.cs:32:0:32:0 | suppression range |
+| AlertSuppression.cs:32:1:32:35 | /* ... */ | codeql[js/debugger-statement] | lgtm[js/debugger-statement] | AlertSuppression.cs:33:0:33:0 | suppression range |
 | AlertSuppressionWindows.cs:1:17:1:23 | // ... | lgtm | lgtm | AlertSuppressionWindows.cs:1:1:1:23 | suppression range |
 | AlertSuppressionWindows.cs:2:1:2:26 | // ... | lgtm[cs/unused-reftype] | lgtm[cs/unused-reftype] | AlertSuppressionWindows.cs:2:1:2:26 | suppression range |
 | AlertSuppressionWindows.cs:2:1:2:26 | // ... | lgtm[cs/unused-reftype] | lgtm[cs/unused-reftype] | AlertSuppressionWindows.cs:3:0:3:0 | suppression range |
@@ -104,3 +108,7 @@
 | AlertSuppressionWindows.cs:35:1:35:43 | /* ... */ | lgtm[@tag:nullness,cs/unused-reftype] | lgtm[@tag:nullness,cs/unused-reftype] | AlertSuppressionWindows.cs:36:0:36:0 | suppression range |
 | AlertSuppressionWindows.cs:36:1:36:25 | /* ... */ | lgtm[@tag:nullness] | lgtm[@tag:nullness] | AlertSuppressionWindows.cs:36:1:36:25 | suppression range |
 | AlertSuppressionWindows.cs:36:1:36:25 | /* ... */ | lgtm[@tag:nullness] | lgtm[@tag:nullness] | AlertSuppressionWindows.cs:37:0:37:0 | suppression range |
+| AlertSuppressionWindows.cs:37:1:37:32 | // ... | codeql[js/debugger-statement] | lgtm[js/debugger-statement] | AlertSuppressionWindows.cs:38:0:38:0 | suppression range |
+| AlertSuppressionWindows.cs:38:1:38:32 | // ... | CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | AlertSuppressionWindows.cs:39:0:39:0 | suppression range |
+| AlertSuppressionWindows.cs:39:1:39:69 | // ... | codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | AlertSuppressionWindows.cs:40:0:40:0 | suppression range |
+| AlertSuppressionWindows.cs:40:1:40:35 | /* ... */ | codeql[js/debugger-statement] | lgtm[js/debugger-statement] | AlertSuppressionWindows.cs:41:0:41:0 | suppression range |
