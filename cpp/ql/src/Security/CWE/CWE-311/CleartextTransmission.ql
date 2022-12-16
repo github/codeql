@@ -224,7 +224,7 @@ predicate isSinkEncrypt(DataFlow::Node sink, Encrypted enc) {
  */
 predicate isSourceImpl(DataFlow::Node source) {
   exists(Expr e |
-    e = source.asIndirectConvertedExpr() and
+    e = source.asConvertedExpr() and
     e.getUnconverted().(VariableAccess).getTarget() instanceof SourceVariable and
     not e.hasConversion()
   )
