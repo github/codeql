@@ -48,7 +48,7 @@ apply_lambda(MY_LAMBDA2, taint(9))
 
 class A
   def method1 x
-    sink x # $ hasValueFlow=10 $ hasValueFlow=11 $ hasValueFlow=12 $ hasValueFlow=13 $ hasValueFlow=26 $ hasValueFlow=30 $ SPURIOUS: hasValueFlow=27
+    sink x # $ hasValueFlow=10 $ hasValueFlow=11 $ hasValueFlow=12 $ hasValueFlow=13 $ hasValueFlow=26 $ hasValueFlow=28 $ hasValueFlow=30 $ SPURIOUS: hasValueFlow=27
   end
 
   def method2 x
@@ -94,7 +94,7 @@ class A
   end
 
   def initialize(x)
-    sink x # $ hasValueFlow=26 $ hasValueFlow=30 $ hasValueFlow=32
+    sink x # $ hasValueFlow=28 $ hasValueFlow=30 $ hasValueFlow=32
     method1 x
   end
 end
@@ -157,8 +157,8 @@ def create (type, x)
   type.new x
 end
 
-create(A, taint(26))
-create(B, taint(27))
+create(A, taint(28))
+create(B, taint(29))
 
 class C < A
   def method1 x
