@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["java.beans", "XMLDecoder", False, "XMLDecoder", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]

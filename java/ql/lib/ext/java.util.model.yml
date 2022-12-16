@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["java.util", "AbstractMap$SimpleEntry", False, "SimpleEntry", "(Entry)", "", "Argument[0].MapKey", "Argument[-1].MapKey", "value", "manual"]
       - ["java.util", "AbstractMap$SimpleEntry", False, "SimpleEntry", "(Entry)", "", "Argument[0].MapValue", "Argument[-1].MapValue", "value", "manual"]

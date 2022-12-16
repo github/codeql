@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.hibernate", "QueryProducer", True, "createNativeQuery", "", "", "Argument[0]", "sql", "manual"]
       - ["org.hibernate", "QueryProducer", True, "createQuery", "", "", "Argument[0]", "sql", "manual"]

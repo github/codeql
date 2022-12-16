@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["javax.faces.context", "ExternalContext", True, "getRequestCookieMap", "()", "", "ReturnValue", "remote", "manual"]
       - ["javax.faces.context", "ExternalContext", True, "getRequestHeaderMap", "()", "", "ReturnValue", "remote", "manual"]
@@ -12,7 +12,7 @@ extensions:
       - ["javax.faces.context", "ExternalContext", True, "getRequestPathInfo", "()", "", "ReturnValue", "remote", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["javax.faces.context", "ResponseStream", True, "write", "", "", "Argument[0]", "xss", "manual"]
       - ["javax.faces.context", "ResponseWriter", True, "write", "", "", "Argument[0]", "xss", "manual"]

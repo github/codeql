@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["jakarta.faces.context", "ExternalContext", True, "getRequestCookieMap", "()", "", "ReturnValue", "remote", "manual"]
       - ["jakarta.faces.context", "ExternalContext", True, "getRequestHeaderMap", "()", "", "ReturnValue", "remote", "manual"]
@@ -12,7 +12,7 @@ extensions:
       - ["jakarta.faces.context", "ExternalContext", True, "getRequestPathInfo", "()", "", "ReturnValue", "remote", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["jakarta.faces.context", "ResponseStream", True, "write", "", "", "Argument[0]", "xss", "manual"]
       - ["jakarta.faces.context", "ResponseWriter", True, "write", "", "", "Argument[0]", "xss", "manual"]

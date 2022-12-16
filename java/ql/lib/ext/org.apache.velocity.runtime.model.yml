@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.apache.velocity.runtime", "RuntimeServices", True, "evaluate", "", "", "Argument[3]", "ssti", "manual"]
       - ["org.apache.velocity.runtime", "RuntimeServices", True, "parse", "", "", "Argument[0]", "ssti", "manual"]

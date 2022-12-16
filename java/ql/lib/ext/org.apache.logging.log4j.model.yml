@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.apache.logging.log4j", "LogBuilder", True, "log", "(CharSequence)", "", "Argument[0]", "logging", "manual"]
       - ["org.apache.logging.log4j", "LogBuilder", True, "log", "(Message)", "", "Argument[0]", "logging", "manual"]
@@ -364,7 +364,7 @@ extensions:
       - ["org.apache.logging.log4j", "Logger", True, "warn", "(Supplier,Throwable)", "", "Argument[0]", "logging", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.logging.log4j", "Logger", True, "traceEntry", "(Message)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.logging.log4j", "Logger", True, "traceEntry", "(String,Object[])", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]

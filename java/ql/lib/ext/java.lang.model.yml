@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["java.lang", "String", False, "matches", "(String)", "", "Argument[0]", "regex-use[f-1]", "manual"]
       - ["java.lang", "String", False, "replaceAll", "(String,String)", "", "Argument[0]", "regex-use[-1]", "manual"]
@@ -18,7 +18,7 @@ extensions:
       - ["java.lang", "System$Logger", True, "log", "(Level,String,Throwable)", "", "Argument[1]", "logging", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["java.lang", "AbstractStringBuilder", True, "AbstractStringBuilder", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.lang", "AbstractStringBuilder", True, "append", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]

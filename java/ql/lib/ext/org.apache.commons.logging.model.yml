@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.apache.commons.logging", "Log", True, "debug", "", "", "Argument[0]", "logging", "manual"]
       - ["org.apache.commons.logging", "Log", True, "error", "", "", "Argument[0]", "logging", "manual"]

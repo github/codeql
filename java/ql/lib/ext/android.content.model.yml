@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       # ContentInterface models are here for backwards compatibility (it was removed in API 28)
       - ["android.content", "ContentInterface", True, "call", "(String,String,String,Bundle)", "", "Parameter[0..3]", "contentprovider", "manual"]
@@ -37,7 +37,7 @@ extensions:
       - ["android.content", "Context", True, "getExternalFilesDirs", "(String)", "", "ReturnValue", "android-external-storage-dir", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["android.content", "ContentProvider", True, "delete", "(Uri,String,String[])", "", "Argument[1]", "sql", "manual"]
       - ["android.content", "ContentProvider", True, "query", "(Uri,String[],String,String[],String)", "", "Argument[2]", "sql", "manual"]
@@ -65,7 +65,7 @@ extensions:
       - ["android.content", "Context", True, "startServiceAsUser", "", "", "Argument[0]", "intent-start", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["android.content", "ComponentName", False, "ComponentName", "(Context,Class)", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
       - ["android.content", "ComponentName", False, "ComponentName", "(Context,String)", "", "Argument[1]", "Argument[-1]", "taint", "manual"]

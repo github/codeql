@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.jdbi.v3.core", "Jdbi", False, "create", "(String)", "", "Argument[0]", "jdbc-url", "manual"]
       - ["org.jdbi.v3.core", "Jdbi", False, "create", "(String,Properties)", "", "Argument[0]", "jdbc-url", "manual"]

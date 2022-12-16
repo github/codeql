@@ -1,32 +1,32 @@
 edges
-| DivideByZero.go:10:12:10:16 | selection of URL : pointer type | DivideByZero.go:12:16:12:20 | value |
-| DivideByZero.go:17:12:17:16 | selection of URL : pointer type | DivideByZero.go:18:11:18:24 | type conversion : uint8 |
-| DivideByZero.go:18:11:18:24 | type conversion : uint8 | DivideByZero.go:19:16:19:20 | value |
-| DivideByZero.go:24:12:24:16 | selection of URL : pointer type | DivideByZero.go:26:16:26:20 | value |
-| DivideByZero.go:31:12:31:16 | selection of URL : pointer type | DivideByZero.go:33:16:33:20 | value |
-| DivideByZero.go:38:12:38:16 | selection of URL : pointer type | DivideByZero.go:40:16:40:20 | value |
-| DivideByZero.go:54:12:54:16 | selection of URL : pointer type | DivideByZero.go:55:11:55:24 | type conversion : uint8 |
-| DivideByZero.go:55:11:55:24 | type conversion : uint8 | DivideByZero.go:57:17:57:21 | value |
+| DivideByZero.go:10:12:10:16 | selection of URL | DivideByZero.go:12:16:12:20 | value |
+| DivideByZero.go:17:12:17:16 | selection of URL | DivideByZero.go:18:11:18:24 | type conversion |
+| DivideByZero.go:18:11:18:24 | type conversion | DivideByZero.go:19:16:19:20 | value |
+| DivideByZero.go:24:12:24:16 | selection of URL | DivideByZero.go:26:16:26:20 | value |
+| DivideByZero.go:31:12:31:16 | selection of URL | DivideByZero.go:33:16:33:20 | value |
+| DivideByZero.go:38:12:38:16 | selection of URL | DivideByZero.go:40:16:40:20 | value |
+| DivideByZero.go:54:12:54:16 | selection of URL | DivideByZero.go:55:11:55:24 | type conversion |
+| DivideByZero.go:55:11:55:24 | type conversion | DivideByZero.go:57:17:57:21 | value |
 nodes
-| DivideByZero.go:10:12:10:16 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| DivideByZero.go:10:12:10:16 | selection of URL | semmle.label | selection of URL |
 | DivideByZero.go:12:16:12:20 | value | semmle.label | value |
-| DivideByZero.go:17:12:17:16 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
-| DivideByZero.go:18:11:18:24 | type conversion : uint8 | semmle.label | type conversion : uint8 |
+| DivideByZero.go:17:12:17:16 | selection of URL | semmle.label | selection of URL |
+| DivideByZero.go:18:11:18:24 | type conversion | semmle.label | type conversion |
 | DivideByZero.go:19:16:19:20 | value | semmle.label | value |
-| DivideByZero.go:24:12:24:16 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| DivideByZero.go:24:12:24:16 | selection of URL | semmle.label | selection of URL |
 | DivideByZero.go:26:16:26:20 | value | semmle.label | value |
-| DivideByZero.go:31:12:31:16 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| DivideByZero.go:31:12:31:16 | selection of URL | semmle.label | selection of URL |
 | DivideByZero.go:33:16:33:20 | value | semmle.label | value |
-| DivideByZero.go:38:12:38:16 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| DivideByZero.go:38:12:38:16 | selection of URL | semmle.label | selection of URL |
 | DivideByZero.go:40:16:40:20 | value | semmle.label | value |
-| DivideByZero.go:54:12:54:16 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
-| DivideByZero.go:55:11:55:24 | type conversion : uint8 | semmle.label | type conversion : uint8 |
+| DivideByZero.go:54:12:54:16 | selection of URL | semmle.label | selection of URL |
+| DivideByZero.go:55:11:55:24 | type conversion | semmle.label | type conversion |
 | DivideByZero.go:57:17:57:21 | value | semmle.label | value |
 subpaths
 #select
-| DivideByZero.go:12:16:12:20 | value | DivideByZero.go:10:12:10:16 | selection of URL : pointer type | DivideByZero.go:12:16:12:20 | value | This variable might be zero leading to a division-by-zero panic. |
-| DivideByZero.go:19:16:19:20 | value | DivideByZero.go:17:12:17:16 | selection of URL : pointer type | DivideByZero.go:19:16:19:20 | value | This variable might be zero leading to a division-by-zero panic. |
-| DivideByZero.go:26:16:26:20 | value | DivideByZero.go:24:12:24:16 | selection of URL : pointer type | DivideByZero.go:26:16:26:20 | value | This variable might be zero leading to a division-by-zero panic. |
-| DivideByZero.go:33:16:33:20 | value | DivideByZero.go:31:12:31:16 | selection of URL : pointer type | DivideByZero.go:33:16:33:20 | value | This variable might be zero leading to a division-by-zero panic. |
-| DivideByZero.go:40:16:40:20 | value | DivideByZero.go:38:12:38:16 | selection of URL : pointer type | DivideByZero.go:40:16:40:20 | value | This variable might be zero leading to a division-by-zero panic. |
-| DivideByZero.go:57:17:57:21 | value | DivideByZero.go:54:12:54:16 | selection of URL : pointer type | DivideByZero.go:57:17:57:21 | value | This variable might be zero leading to a division-by-zero panic. |
+| DivideByZero.go:12:16:12:20 | value | DivideByZero.go:10:12:10:16 | selection of URL | DivideByZero.go:12:16:12:20 | value | This variable might be zero leading to a division-by-zero panic. |
+| DivideByZero.go:19:16:19:20 | value | DivideByZero.go:17:12:17:16 | selection of URL | DivideByZero.go:19:16:19:20 | value | This variable might be zero leading to a division-by-zero panic. |
+| DivideByZero.go:26:16:26:20 | value | DivideByZero.go:24:12:24:16 | selection of URL | DivideByZero.go:26:16:26:20 | value | This variable might be zero leading to a division-by-zero panic. |
+| DivideByZero.go:33:16:33:20 | value | DivideByZero.go:31:12:31:16 | selection of URL | DivideByZero.go:33:16:33:20 | value | This variable might be zero leading to a division-by-zero panic. |
+| DivideByZero.go:40:16:40:20 | value | DivideByZero.go:38:12:38:16 | selection of URL | DivideByZero.go:40:16:40:20 | value | This variable might be zero leading to a division-by-zero panic. |
+| DivideByZero.go:57:17:57:21 | value | DivideByZero.go:54:12:54:16 | selection of URL | DivideByZero.go:57:17:57:21 | value | This variable might be zero leading to a division-by-zero panic. |

@@ -1,19 +1,19 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["org.apache.http", "HttpEntity", False, "getContent", "()", "", "ReturnValue", "remote", "manual"]
       - ["org.apache.http", "HttpMessage", False, "getParams", "()", "", "ReturnValue", "remote", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.apache.http", "HttpRequest", True, "setURI", "", "", "Argument[0]", "open-url", "manual"]
       - ["org.apache.http", "HttpResponse", True, "setEntity", "(HttpEntity)", "", "Argument[0]", "xss", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.http", "Header", True, "getElements", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["org.apache.http", "HeaderElement", True, "getName", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
