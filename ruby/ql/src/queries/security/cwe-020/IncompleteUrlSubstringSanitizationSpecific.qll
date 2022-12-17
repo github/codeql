@@ -5,5 +5,3 @@ import codeql.ruby.StringOps
 predicate mayHaveStringValue(DataFlow::Node node, string value) {
   node.asExpr().getConstantValue().getString() = value
 }
-
-import codeql.ruby.security.regexp.HostnameRegexp as HostnameRegexp

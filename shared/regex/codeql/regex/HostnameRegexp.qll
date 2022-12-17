@@ -11,7 +11,10 @@ private import RegexTreeView
  */
 signature module HostnameRegexpSig<RegexTreeViewSig TreeImpl> {
   /** A node in the data-flow graph. */
-  class DataFlowNode;
+  class DataFlowNode {
+    /** Gets a string representation of this node. */
+    string toString();
+  }
 
   /** A node in the data-flow graph that represents a regular expression pattern. */
   class RegExpPatternSource extends DataFlowNode {
@@ -29,11 +32,25 @@ signature module HostnameRegexpSig<RegexTreeViewSig TreeImpl> {
 }
 
 /**
+ * Utility predicates and classes that doesn't depend on any signature.
+ */
+module Utils {
+  /**
+   * Gets a pattern that matches common top-level domain names in lower case.
+   */
+  string getACommonTld() {
+    // according to ranking by http://google.com/search?q=site:.<<TLD>>
+    result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
+  }
+}
+
+/**
  * Classes and predicates implementing an analysis on regular expressions
  * that match URLs and hostname patterns.
  */
 module Make<RegexTreeViewSig TreeImpl, HostnameRegexpSig<TreeImpl> Specific> {
   private import TreeImpl
+  import Utils
 
   /**
    * Holds if the given constant is unlikely to occur in the origin part of a URL.
@@ -213,30 +230,6 @@ module Make<RegexTreeViewSig TreeImpl, HostnameRegexpSig<TreeImpl> Specific> {
     )
   }
 
-  /**
-   * Holds if `regexp` is a regular expression that is likely to match a hostname,
-   * but the pattern is incomplete and may match more hosts than intended.
-   */
-  predicate incompleteHostnameRegExp(
-    RegExpSequence hostSequence, string message, Specific::DataFlowNode aux, string label
-  ) {
-    exists(Specific::RegExpPatternSource re, RegExpTerm regexp, string msg, string kind |
-      regexp = re.getRegExpTerm() and
-      isIncompleteHostNameRegExpPattern(regexp, hostSequence, msg) and
-      (
-        if re.getAParse() != re
-        then (
-          kind = "string, which is used as a regular expression $@," and
-          aux = re.getAParse()
-        ) else (
-          kind = "regular expression" and aux = re
-        )
-      )
-    |
-      message = "This " + kind + " " + msg and label = "here"
-    )
-  }
-
   /** Holds if `term` is one of the transitive left children of a regexp. */
   predicate isLeftArmTerm(RegExpTerm term) {
     term.isRootTerm()
@@ -262,10 +255,26 @@ module Make<RegexTreeViewSig TreeImpl, HostnameRegexpSig<TreeImpl> Specific> {
   }
 
   /**
-   * Gets a pattern that matches common top-level domain names in lower case.
+   * Holds if `regexp` is a regular expression that is likely to match a hostname,
+   * but the pattern is incomplete and may match more hosts than intended.
    */
-  string getACommonTld() {
-    // according to ranking by http://google.com/search?q=site:.<<TLD>>
-    result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
+  predicate incompleteHostnameRegExp(
+    RegExpSequence hostSequence, string message, Specific::DataFlowNode aux, string label
+  ) {
+    exists(Specific::RegExpPatternSource re, RegExpTerm regexp, string msg, string kind |
+      regexp = re.getRegExpTerm() and
+      isIncompleteHostNameRegExpPattern(regexp, hostSequence, msg) and
+      (
+        if re.getAParse() != re
+        then (
+          kind = "string, which is used as a regular expression $@," and
+          aux = re.getAParse()
+        ) else (
+          kind = "regular expression" and aux = re
+        )
+      )
+    |
+      message = "This " + kind + " " + msg and label = "here"
+    )
   }
 }
