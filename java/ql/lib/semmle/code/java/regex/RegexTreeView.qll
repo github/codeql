@@ -561,6 +561,15 @@ module Impl implements RegexTreeViewSig {
     }
   }
 
+  /**
+   * A character escape in a regular expression.
+   *
+   * Example:
+   *
+   * ```
+   * \.
+   * ```
+   */
   class RegExpCharEscape = RegExpEscape;
 
   /**
