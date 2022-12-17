@@ -262,7 +262,7 @@ void badTestf13(int type) {
   if (is < 5)
     badMySubDiv(type, is); // BAD
   if (is < 0)
-    badMySubDiv(type, is); // BAD
+    badMySubDiv(type, is); // BAD [NOT DETECTED]
   if (is > 5)
     badMySubDiv(type, is); // GOOD
   if (is == 0)
