@@ -26,10 +26,7 @@
 | test.cpp:258:3:258:10 | call to badMyDiv | Can lead to division by 0, since the function getSize can return a value 0. |
 | test.cpp:259:3:259:10 | call to badMyDiv | Can lead to division by 0, since the function getSize can return a value 2. |
 | test.cpp:260:3:260:13 | call to badMySubDiv | Can lead to division by 0, since the function getSize can return a value 3. |
-| test.cpp:260:3:260:13 | call to badMySubDiv | Can lead to division by 0, since the function getSize can return a value -1. |
 | test.cpp:263:5:263:15 | call to badMySubDiv | Can lead to division by 0, since the function getSize can return a value 3. |
-| test.cpp:263:5:263:15 | call to badMySubDiv | Can lead to division by 0, since the function getSize can return a value -1. |
-| test.cpp:265:5:265:15 | call to badMySubDiv | Can lead to division by 0, since the function getSize can return a value -1. |
 | test.cpp:269:5:269:12 | call to badMyDiv | Can lead to division by 0, since the function getSize can return a value 0. |
 | test.cpp:273:5:273:12 | call to badMyDiv | Can lead to division by 0, since the function getSize can return a value 3. |
 | test.cpp:275:5:275:12 | call to badMyDiv | Can lead to division by 0, since the function getSize can return a value -1. |
