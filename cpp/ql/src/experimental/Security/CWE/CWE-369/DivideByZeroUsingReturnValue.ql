@@ -62,7 +62,6 @@ predicate mayBeReturnZero(Function fn) {
 }
 
 /** Gets the Guard which compares the expression `bound` */
-pragma[inline]
 GuardCondition checkByValue(Expr bound, Expr val) {
   exists(GuardCondition gc |
     (
@@ -122,6 +121,10 @@ predicate compareFunctionWithValue(Expr guardExp, Function compArg, Expr valArg)
 pragma[inline]
 predicate checkConditions1(Expr div, Function fn, float changeInt) {
   exists(Expr val |
+    (
+      val.getEnclosingFunction() = fn or
+      val.getEnclosingFunction() = div.getEnclosingFunction()
+    ) and
     val.getValue().toFloat() = changeInt and
     compareFunctionWithValue(div, fn, val)
   )
@@ -169,6 +172,11 @@ predicate compareExprWithValue(Expr guardExp, Expr compArg, Expr valArg) {
 pragma[inline]
 predicate checkConditions2(Expr div, Expr divVal, float changeInt2) {
   exists(Expr val |
+    (
+      val.getEnclosingFunction() =
+        div.getEnclosingFunction().getACallToThisFunction().getEnclosingFunction() or
+      val.getEnclosingFunction() = div.getEnclosingFunction()
+    ) and
     val.getValue().toFloat() = changeInt2 and
     compareExprWithValue(div, divVal, val)
   )
@@ -218,7 +226,7 @@ where
       changeInt = 0
       or
       // Denominator can be sum or difference.
-      pragma[only_bind_into](changeInt) = getValueOperand(div.getRV(), findVal.getAnExpr(), _) and
+      changeInt = getValueOperand(div.getRV(), findVal.getAnExpr(), _) and
       mayBeReturnValue(fn, changeInt)
     ) and
     exp = div and
@@ -246,14 +254,13 @@ where
           changeInt2 = 0
           or
           // Denominator can be sum or difference.
-          pragma[only_bind_into](changeInt) =
-            getValueOperand(divFc.getArgument(posArg), findVal.getAnExpr(), _) and
+          changeInt = getValueOperand(divFc.getArgument(posArg), findVal.getAnExpr(), _) and
           mayBeReturnValue(fn, changeInt) and
           changeInt2 = 0
         )
         or
         // Look for a situation where the difference or subtraction is considered as an argument, and it can be used in the same way.
-        pragma[only_bind_into](changeInt) = getValueOperand(div.getRV(), divVal, _) and
+        changeInt = getValueOperand(div.getRV(), divVal, _) and
         changeInt2 = changeInt and
         mayBeReturnValue(fn, changeInt) and
         divFc.getArgument(posArg) = findVal.getAnExpr()
