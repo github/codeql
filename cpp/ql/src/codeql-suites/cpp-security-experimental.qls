@@ -3,3 +3,7 @@
 - apply: security-experimental-selectors.yml
   from: codeql/suite-helpers
 - apply: codeql-suites/exclude-slow-queries.yml
+# Excluding problematically slow experimental queries
+- exclude:
+    query path:
+      - experimental/Security/CWE/CWE-266/IncorrectPrivilegeAssignment.ql
