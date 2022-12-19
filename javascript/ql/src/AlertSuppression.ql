@@ -8,7 +8,7 @@
 private import codeql.suppression.AlertSuppression as AS
 private import javascript as JS
 
-class SingleLineComment extends L::Locatable {
+class SingleLineComment extends JS::Locatable {
   private string text;
 
   SingleLineComment() {
