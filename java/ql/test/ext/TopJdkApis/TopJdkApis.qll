@@ -78,14 +78,10 @@ class TopJdkApi extends SummarizedCallableBase {
   }
 
   /** Holds if this API has a manual summary model. */
-  private predicate hasManualSummary() {
-    this instanceof SummarizedCallable and
-    this.(SummarizedCallable).hasProvenance(false)
-  }
+  private predicate hasManualSummary() { this.(SummarizedCallable).hasProvenance(false) }
 
   /** Holds if this API has a manual neutral model. */
   private predicate hasManualNeutral() {
-    this instanceof FlowSummaryImpl::Public::NeutralCallable and
     this.(FlowSummaryImpl::Public::NeutralCallable).hasProvenance(false)
   }
 
@@ -94,7 +90,7 @@ class TopJdkApi extends SummarizedCallableBase {
   /*
    * Note: the following top-100 APIs are not modeled with MaD:
    * java.util.stream.Stream#collect(Collector) : handled separately on a case-by-case basis as it is too complex for MaD
-   * java.lang.String#valueOf(Object) : a complex case that we haven't fully decided how to deal with
+   * java.lang.String#valueOf(Object) : also a complex case; an alias for `Object.toString`, except the dispatch is hidden
    * java.lang.Throwable#printStackTrace() : should probably not be a general step, but there might be specialised queries that care
    */
 
