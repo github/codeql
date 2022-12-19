@@ -39,8 +39,7 @@ private newtype TIRDataFlowNode =
   } or
   TSsaPhiNode(Ssa::PhiNode phi) or
   TIndirectArgumentOutNode(ArgumentOperand operand, int indirectionIndex) {
-    Ssa::isModifiableByCall(operand) and
-    indirectionIndex = [1 .. Ssa::countIndirectionsForCppType(operand.getLanguageType())]
+    Ssa::isModifiableByCall(operand, indirectionIndex)
   } or
   TRawIndirectOperand(Operand op, int indirectionIndex) {
     Ssa::hasRawIndirectOperand(op, indirectionIndex)
@@ -374,11 +373,13 @@ class OperandNode extends Node, Node0 {
 }
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Returns `t`, but stripped of the outermost pointer, reference, etc.
  *
  * For example, `stripPointers(int*&)` is `int*` and `stripPointers(int*)` is `int`.
  */
-private Type stripPointer(Type t) {
+Type stripPointer(Type t) {
   result = any(Ssa::Indirection ind | ind.getType() = t).getBaseType()
   or
   // These types have a sensible base type, but don't receive additional
@@ -665,19 +666,24 @@ private class PostIndirectReturnOutNode extends IndirectReturnOutNode, PostUpdat
   override Node getPreUpdateNode() { result = this }
 }
 
-private Type getTypeImpl(Type t, int indirectionIndex) {
+/**
+ * INTERNAL: Do not use.
+ *
+ * Returns `t`, but stripped of the outer-most `indirectionIndex` number of indirections.
+ */
+Type getTypeImpl(Type t, int indirectionIndex) {
   indirectionIndex = 0 and
   result = t
   or
   indirectionIndex > 0 and
   exists(Type stripped |
-    stripped = stripPointer(t) and
+    stripped = stripPointer(t.stripTopLevelSpecifiers()) and
     // We need to avoid the case where `stripPointer(t) = t` (which can happen on
     // iterators that specify a `value_type` that is the iterator itself). Such a type
     // would create an infinite loop otherwise. For these cases we simply don't produce
     // a result for `getType`.
     stripped.getUnspecifiedType() != t.getUnspecifiedType() and
-    result = getTypeImpl(stripPointer(t), indirectionIndex - 1)
+    result = getTypeImpl(stripped, indirectionIndex - 1)
   )
 }
 

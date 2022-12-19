@@ -4,6 +4,7 @@ import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.ir.implementation.raw.internal.SideEffects as SideEffects
 private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowUtil
+private import semmle.code.cpp.models.interfaces.PointerWrapper
 private import DataFlowPrivate
 
 /**
@@ -137,7 +138,7 @@ abstract class Indirection extends Type {
   Type baseType;
 
   /** Gets the type of this indirection. */
-  final Type getType() { result = super.getUnspecifiedType() }
+  final Type getType() { result = this }
 
   /**
    * Gets the number of indirections supported by this type.
@@ -166,7 +167,7 @@ abstract class Indirection extends Type {
    *
    * For example, the base type of `int*&` is `int*`, and the base type of `int*` is `int`.
    */
-  final Type getBaseType() { result = baseType.getUnspecifiedType() }
+  final Type getBaseType() { result = baseType }
 
   /** Holds if there should be an additional taint step from `node1` to `node2`. */
   predicate isAdditionalTaintStep(Node node1, Node node2) { none() }
@@ -181,7 +182,9 @@ abstract class Indirection extends Type {
 private class PointerOrReferenceTypeIndirection extends Indirection instanceof PointerOrReferenceType {
   PointerOrReferenceTypeIndirection() { baseType = PointerOrReferenceType.super.getBaseType() }
 
-  override int getNumberOfIndirections() { result = 1 + countIndirections(this.getBaseType()) }
+  override int getNumberOfIndirections() {
+    result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
+  }
 
   override predicate isAdditionalDereference(Instruction deref, Operand address) { none() }
 
@@ -198,7 +201,9 @@ private module IteratorIndirections {
       not this instanceof PointerOrReferenceTypeIndirection and baseType = super.getValueType()
     }
 
-    override int getNumberOfIndirections() { result = 1 + countIndirections(this.getBaseType()) }
+    override int getNumberOfIndirections() {
+      result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
+    }
 
     override predicate isAdditionalDereference(Instruction deref, Operand address) {
       exists(CallInstruction call |
@@ -352,8 +357,9 @@ class BaseCallVariable extends BaseSourceVariable, TBaseCallVariable {
  * Holds if the value pointed to by `operand` can potentially be
  * modified be the caller.
  */
-predicate isModifiableByCall(ArgumentOperand operand) {
+predicate isModifiableByCall(ArgumentOperand operand, int indirectionIndex) {
   exists(CallInstruction call, int index, CppType type |
+    indirectionIndex = [1 .. countIndirectionsForCppType(type)] and
     type = getLanguageType(operand) and
     call.getArgumentOperand(index) = operand and
     if index = -1
@@ -385,13 +391,50 @@ predicate isModifiableByCall(ArgumentOperand operand) {
       else any()
     else
       // An argument is modifiable if it's a non-const pointer or reference type.
-      exists(Type t, boolean isGLValue | type.hasType(t, isGLValue) |
-        // If t is a glvalue it means that t is always a pointer-like type.
-        isGLValue = true
-        or
-        t instanceof PointerOrReferenceType and
-        not SideEffects::isConstPointerLike(t)
-      )
+      isModifiableAt(type, indirectionIndex)
+  )
+}
+
+/**
+ * Holds if `t` is a pointer or reference type that supports at least `indirectionIndex` number
+ * of indirections, and the `indirectionIndex` indirection cannot be modfiied by passing a
+ * value of `t` to a function.
+ */
+private predicate isModifiableAtImpl(CppType cppType, int indirectionIndex) {
+  indirectionIndex = [1 .. countIndirectionsForCppType(cppType)] and
+  (
+    exists(PointerOrReferenceType pointerType, Type base, Type t |
+      cppType.hasType(t, _) and
+      pointerType = t.getUnderlyingType() and
+      base = getTypeImpl(pointerType, indirectionIndex)
+    |
+      // The value cannot be modified if it has a const specifier,
+      not base.isConst()
+      or
+      // but in the case of a class type, it may be the case that
+      // one of the members were modified.
+      exists(base.stripType().(Cpp::Class).getAField())
+    )
+    or
+    // If the `indirectionIndex`'th dereference of a type can be modified
+    // then so can the  `indirectionIndex + 1`'th dereference.
+    isModifiableAtImpl(cppType, indirectionIndex - 1)
+  )
+}
+
+/**
+ * Holds if `t` is a type with at least `indirectionIndex` number of indirections,
+ * and the `indirectionIndex` indirection can be modified by passing a value of
+ * type `t` to a function function.
+ */
+bindingset[indirectionIndex]
+private predicate isModifiableAt(CppType cppType, int indirectionIndex) {
+  isModifiableAtImpl(cppType, indirectionIndex)
+  or
+  exists(PointerWrapper pw, Type t |
+    cppType.hasType(t, _) and
+    t.stripType() = pw and
+    not pw.pointsToConst()
   )
 }
 
