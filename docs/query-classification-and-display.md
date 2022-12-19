@@ -74,28 +74,3 @@ results it is supposed to find, i.e., how well it implements its
 on what we consider that rule to be. We generally try to sharpen our
 rules to focus on results that a developer might actually be interested
 in.
-
-## Which queries to run and display on LGTM
-
-The following queries are run:
-
-Precision:     | very-high | high    | medium  | low
----------------|-----------|---------|---------|----
-Error          | **Yes**   | **Yes** | **Yes** | No
-Warning        | **Yes**   | **Yes** | **Yes** | No
-Recommendation | **Yes**   | **Yes** | No      | No
-
-The following queries have their results displayed by default:
-
-Precision:     | very-high | high    | medium | low
----------------|-----------|---------|--------|----
-Error          | **Yes**   | **Yes** | No     | No
-Warning        | **Yes**   | **Yes** | No     | No
-Recommendation | **Yes**   | No      | No     | No
-  
-Results for queries that are run but not displayed by default can be
-made visible by editing the project configuration.
-  
-Queries from custom query packs (in-repo or site-wide) are always run
-and displayed by default. They can be hidden by editing the project
-config, and "disabled" by removing them from the query pack.
