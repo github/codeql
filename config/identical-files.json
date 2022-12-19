@@ -505,14 +505,6 @@
     "python/ql/lib/semmle/python/dataflow/new/internal/TypeTracker.qll",
     "ruby/ql/lib/codeql/ruby/typetracking/TypeTracker.qll"
   ],
-  "CodeQL Tutorial": [
-    "cpp/ql/lib/tutorial.qll",
-    "csharp/ql/lib/tutorial.qll",
-    "java/ql/lib/tutorial.qll",
-    "javascript/ql/lib/tutorial.qll",
-    "python/ql/lib/tutorial.qll",
-    "ruby/ql/lib/tutorial.qll"
-  ],
   "AccessPathSyntax": [
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/AccessPathSyntax.qll",
     "go/ql/lib/semmle/go/dataflow/internal/AccessPathSyntax.qll",

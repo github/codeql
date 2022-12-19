@@ -7,3 +7,4 @@ library: true
 upgrades: upgrades
 dependencies:
   codeql/ssa: ${workspace}
+  codeql/tutorial: ${workspace}

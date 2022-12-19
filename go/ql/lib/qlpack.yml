@@ -5,3 +5,6 @@ dbscheme: go.dbscheme
 extractor: go
 library: true
 upgrades: upgrades
+dependencies:
+  codeql/tutorial: ${workspace}
+
