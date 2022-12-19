@@ -61,6 +61,7 @@
  */
 
 private import go
+private import ExternalFlowExtensions as Extensions
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
