@@ -1,5 +1,5 @@
+private import ruby
 private import codeql.files.FileSystem
-private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.security.CodeInjectionCustomizations
 private import codeql.ruby.security.CommandInjectionCustomizations
@@ -34,6 +34,12 @@ DataFlow::Node relevantTaintSink(string kind) {
     kind = "UnsafeDeserialization" and result instanceof UnsafeDeserialization::Sink
     or
     kind = "UrlRedirect" and result instanceof UrlRedirect::Sink
+  ) and
+  // the sink is not a string literal
+  not exists(Ast::StringLiteral str |
+    str = result.asExpr().getExpr() and
+    // ensure there is no interpolation, as that is not a literal
+    not str.getComponent(_) instanceof Ast::StringInterpolationComponent
   )
 }
 
