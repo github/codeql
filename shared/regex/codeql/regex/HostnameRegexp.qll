@@ -245,13 +245,9 @@ module Make<RegexTreeViewSig TreeImpl, HostnameRegexpSig<TreeImpl> Specific> {
     term.isRootTerm()
     or
     exists(RegExpTerm parent |
-      term = getLastChild(parent) and
+      term = parent.getLastChild() and
       isRightArmTerm(parent)
     )
-  }
-
-  private RegExpTerm getLastChild(RegExpTerm parent) {
-    result = max(RegExpTerm child, int i | child = parent.getChild(i) | child order by i)
   }
 
   /**

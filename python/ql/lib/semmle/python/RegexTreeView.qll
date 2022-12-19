@@ -858,7 +858,7 @@ module Impl implements RegexTreeViewSig {
    * ```
    */
   class RegExpAnchor extends RegExpSpecialChar {
-    RegExpAnchor() { this.getChar() = ["^", "$"] }
+    RegExpAnchor() { this.getChar() = ["\\A", "^", "$", "\\Z"] }
   }
 
   /**
