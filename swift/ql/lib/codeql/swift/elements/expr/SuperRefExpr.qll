@@ -5,5 +5,5 @@ private import codeql.swift.elements.decl.MethodDecl
 class SuperRefExpr extends Generated::SuperRefExpr {
   override string toString() { result = "super" }
 
-  MethodDecl getMethodDecl() { this.getSelf() = result.getSelfParam() }
+  MethodDecl getDeclaringMethod() { this.getSelf() = result.getSelfParam() }
 }

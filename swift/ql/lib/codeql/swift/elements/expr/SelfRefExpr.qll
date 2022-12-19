@@ -10,5 +10,5 @@ class SelfRefExpr extends DeclRefExpr {
 
   VarDecl getSelf() { result = this.getDecl() }
 
-  MethodDecl getMethodDecl() { result = methodDecl }
+  MethodDecl getDeclaringMethod() { result = methodDecl }
 }
