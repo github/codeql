@@ -7,19 +7,13 @@ import PrintAstNode
 cached
 private int getOrder(PrintAstNode node) {
   node =
-    rank[result](PrintAstNode n, Location loc, int index, string accessor |
-      loc = n.getLocation() and
-      if any(PrintAstNode p).hasChild(n, index, accessor)
-      then any()
-      else (
-        index = -1 and
-        accessor = ""
-      )
+    rank[result](PrintAstNode n, Location loc |
+      loc = n.getLocation()
     |
       n
       order by
         loc.getFile().getName(), loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(),
-        loc.getEndColumn(), index, accessor
+        loc.getEndColumn()
     )
 }
 
