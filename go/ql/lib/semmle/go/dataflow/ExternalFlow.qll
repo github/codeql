@@ -76,16 +76,6 @@ private module Frameworks {
   private import semmle.go.frameworks.Stdlib
 }
 
-private class BuiltinModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        ";;false;append;;;Argument[0].ArrayElement;ReturnValue.ArrayElement;value",
-        ";;false;append;;;Argument[1];ReturnValue.ArrayElement;value"
-      ]
-  }
-}
-
 /**
  * A unit class for adding additional source model rows.
  *
@@ -126,65 +116,13 @@ predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
 predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 
 /** Holds if a source model exists for the given parameters. */
-predicate sourceModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance
-) {
-  exists(string row |
-    sourceModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = output and
-    row.splitAt(";", 7) = kind and
-    provenance = "manual"
-  )
-}
+predicate sourceModel = Extensions::sourceModel/9;
 
 /** Holds if a sink model exists for the given parameters. */
-predicate sinkModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance
-) {
-  exists(string row |
-    sinkModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = kind and
-    provenance = "manual"
-  )
-}
+predicate sinkModel = Extensions::sinkModel/9;
 
 /** Holds if a summary model exists for the given parameters. */
-predicate summaryModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance
-) {
-  exists(string row |
-    summaryModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = output and
-    row.splitAt(";", 8) = kind
-  ) and
-  provenance = "manual"
-}
+predicate summaryModel = Extensions::summaryModel/10;
 
 /** Holds if `package` have CSV framework coverage. */
 private predicate packageHasCsvCoverage(string package) {
