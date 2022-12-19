@@ -10,7 +10,7 @@
 
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/translators/SwiftVisitor.h"
-#include "swift/extractor/TargetTrapFile.h"
+#include "swift/extractor/TargetTrapDomain.h"
 #include "swift/extractor/SwiftBuiltinSymbols.h"
 #include "swift/extractor/infra/file/Path.h"
 
@@ -118,12 +118,11 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
   // The extractor can be called several times from different processes with
   // the same input file(s). Using `TargetFile` the first process will win, and the following
   // will just skip the work
-  auto trapTarget = createTargetTrapFile(config, filename);
-  if (!trapTarget) {
+  auto trap = createTargetTrapDomain(config, filename);
+  if (!trap) {
     // another process arrived first, nothing to do for us
     return {};
   }
-  TrapDomain trap{*trapTarget};
 
   std::vector<swift::Token> comments;
   if (primaryFile && primaryFile->getBufferID().hasValue()) {
@@ -137,7 +136,7 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
     }
   }
 
-  SwiftVisitor visitor(compiler.getSourceMgr(), trap, module, primaryFile);
+  SwiftVisitor visitor(compiler.getSourceMgr(), *trap, module, primaryFile);
   auto topLevelDecls = getTopLevelDecls(module, primaryFile);
   for (auto decl : topLevelDecls) {
     visitor.extract(decl);

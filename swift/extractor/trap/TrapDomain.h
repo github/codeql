@@ -10,10 +10,10 @@ namespace codeql {
 
 // Abstracts a given trap output file, with its own universe of trap labels
 class TrapDomain {
-  TargetFile& out_;
+  TargetFile out_;
 
  public:
-  explicit TrapDomain(TargetFile& out) : out_{out} {}
+  explicit TrapDomain(TargetFile&& out) : out_{std::move(out)} {}
 
   template <typename Entry>
   void emit(const Entry& e) {
