@@ -1,6 +1,6 @@
 import go
 import semmle.go.dataflow.ExternalFlow
-import CsvValidation
+import ModelValidation
 import semmle.go.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
 from DataFlow::Node node1, DataFlow::Node node2

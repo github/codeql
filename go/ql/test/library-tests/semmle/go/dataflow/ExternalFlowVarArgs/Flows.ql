@@ -1,6 +1,6 @@
 import go
 import semmle.go.dataflow.ExternalFlow
-import CsvValidation
+import ModelValidation
 import TestUtilities.InlineExpectationsTest
 
 class DataConfiguration extends DataFlow::Configuration {

@@ -4,7 +4,7 @@
 
 import go
 import semmle.go.dataflow.ExternalFlow
-import CsvValidation
+import ModelValidation
 import semmle.go.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import TestUtilities.InlineFlowTest
 
