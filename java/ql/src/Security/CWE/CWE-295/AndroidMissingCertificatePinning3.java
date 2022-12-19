@@ -10,7 +10,7 @@ client.newCall(new Request.Builder().url("https://example.com").build()).execute
 
 
 
-// GOOD: Certificate pinning implemented vis a TrustManager
+// GOOD: Certificate pinning implemented via a TrustManager
 KeyStore keyStore = KeyStore.getInstance("BKS");
 keyStore.load(resources.openRawResource(R.raw.cert), null);
 
