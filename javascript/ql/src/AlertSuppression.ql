@@ -6,15 +6,15 @@
  */
 
 private import codeql.suppression.AlertSuppression as AS
-private import semmle.javascript.Locations as L
+private import javascript as JS
 
 class SingleLineComment extends L::Locatable {
   private string text;
 
   SingleLineComment() {
     (
-      text = this.(L::Comment).getText() or
-      text = this.(L::HTML::CommentNode).getText()
+      text = this.(JS::Comment).getText() or
+      text = this.(JS::HTML::CommentNode).getText()
     ) and
     // suppression comments must be single-line
     not text.matches("%\n%")
