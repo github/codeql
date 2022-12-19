@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.apache.velocity.app", "Velocity", True, "evaluate", "", "", "Argument[3]", "ssti", "manual"]
       - ["org.apache.velocity.app", "Velocity", True, "mergeTemplate", "", "", "Argument[2]", "ssti", "manual"]

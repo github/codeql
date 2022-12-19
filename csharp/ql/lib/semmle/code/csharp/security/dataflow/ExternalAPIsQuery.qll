@@ -17,8 +17,7 @@ abstract class SafeExternalApiCallable extends Callable { }
 /** DEPRECATED: Alias for SafeExternalApiCallable */
 deprecated class SafeExternalAPICallable = SafeExternalApiCallable;
 
-private class SummarizedCallableSafe extends SafeExternalApiCallable {
-  SummarizedCallableSafe() { this instanceof SummarizedCallable }
+private class SummarizedCallableSafe extends SafeExternalApiCallable instanceof SummarizedCallable {
 }
 
 /** The default set of "safe" external APIs. */

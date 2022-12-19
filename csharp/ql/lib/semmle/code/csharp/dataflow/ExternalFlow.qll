@@ -11,9 +11,9 @@
  *   `namespace; type; subtypes; name; signature; ext; input; kind; provenance`
  * - Summaries:
  *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
- * - Negative Summaries:
+ * - Neutrals:
  *   `namespace; type; name; signature; provenance`
- *   A negative summary is used to indicate that there is no flow via a callable.
+ *   A neutral is used to indicate that there is no flow via a callable.
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -82,6 +82,7 @@
  */
 
 import csharp
+private import ExternalFlowExtensions as Extensions
 private import internal.AccessPathSyntax
 private import internal.DataFlowDispatch
 private import internal.DataFlowPrivate
@@ -132,37 +133,11 @@ private class SummaryModelCsvInternal extends Unit {
   abstract predicate row(string row);
 }
 
-/**
- * DEPRECATED: Define negative summary models as data extensions instead.
- *
- * A unit class for adding additional negative summary model rows.
- *
- * Extend this class to add additional negative summary definitions.
- */
-deprecated class NegativeSummaryModelCsv = NegativeSummaryModelCsvInternal;
-
-private class NegativeSummaryModelCsvInternal extends Unit {
-  /** Holds if `row` specifies a negative summary definition. */
-  abstract predicate row(string row);
-}
-
 private predicate sourceModelInternal(string row) { any(SourceModelCsvInternal s).row(row) }
 
 private predicate summaryModelInternal(string row) { any(SummaryModelCsvInternal s).row(row) }
 
 private predicate sinkModelInternal(string row) { any(SinkModelCsvInternal s).row(row) }
-
-private predicate negativeSummaryModelInternal(string row) {
-  any(NegativeSummaryModelCsvInternal s).row(row)
-}
-
-/**
- * Holds if a source model exists for the given parameters.
- */
-extensible predicate extSourceModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance
-);
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
@@ -183,14 +158,8 @@ predicate sourceModel(
     row.splitAt(";", 8) = provenance
   )
   or
-  extSourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)
+  Extensions::sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)
 }
-
-/** Holds if a sink model exists for the given parameters. */
-extensible predicate extSinkModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance
-);
 
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
@@ -211,14 +180,8 @@ predicate sinkModel(
     row.splitAt(";", 8) = provenance
   )
   or
-  extSinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)
+  Extensions::sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)
 }
-
-/** Holds if a summary model exists for the given parameters. */
-extensible predicate extSummaryModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance
-);
 
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
@@ -240,29 +203,12 @@ predicate summaryModel(
     row.splitAt(";", 9) = provenance
   )
   or
-  extSummaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)
+  Extensions::summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
+    provenance)
 }
 
-/** Holds if a summary model exists indicating there is no flow for the given parameters. */
-extensible predicate extNegativeSummaryModel(
-  string namespace, string type, string name, string signature, string provenance
-);
-
-/** Holds if a summary model exists indicating there is no flow for the given parameters. */
-predicate negativeSummaryModel(
-  string namespace, string type, string name, string signature, string provenance
-) {
-  exists(string row |
-    negativeSummaryModelInternal(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = name and
-    row.splitAt(";", 3) = signature and
-    row.splitAt(";", 4) = provenance
-  )
-  or
-  extNegativeSummaryModel(namespace, type, name, signature, provenance)
-}
+/** Holds if a model exists indicating there is no flow for the given parameters. */
+predicate neutralModel = Extensions::neutralModel/5;
 
 private predicate relevantNamespace(string namespace) {
   sourceModel(namespace, _, _, _, _, _, _, _, _) or
@@ -365,7 +311,7 @@ module ModelValidation {
     )
     or
     exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["local", "file"] and
+      not kind = ["local", "remote", "file"] and
       result = "Invalid kind \"" + kind + "\" in source model."
     )
   }
@@ -393,8 +339,6 @@ module ModelValidation {
       sinkModelInternal(row) and expect = 9 and pred = "sink"
       or
       summaryModelInternal(row) and expect = 10 and pred = "summary"
-      or
-      negativeSummaryModelInternal(row) and expect = 5 and pred = "negative summary"
     |
       exists(int cols |
         cols = 1 + max(int n | exists(row.splitAt(";", n))) and
@@ -418,9 +362,9 @@ module ModelValidation {
       summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance) and
       pred = "summary"
       or
-      negativeSummaryModel(namespace, type, name, signature, provenance) and
+      neutralModel(namespace, type, name, signature, provenance) and
       ext = "" and
-      pred = "negative summary"
+      pred = "neutral"
     |
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
       result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
@@ -461,7 +405,7 @@ private predicate elementSpec(
   or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
   or
-  negativeSummaryModel(namespace, type, name, signature, _) and ext = "" and subtypes = false
+  neutralModel(namespace, type, name, signature, _) and ext = "" and subtypes = false
 }
 
 private predicate elementSpec(
@@ -595,7 +539,7 @@ private Element interpretElement0(
   )
 }
 
-/** Gets the source/sink/summary/negativesummary element corresponding to the supplied parameters. */
+/** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
 Element interpretElement(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {

@@ -1,14 +1,14 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["javax.ws.rs.core", "Response", True, "seeOther", "", "", "Argument[0]", "url-redirect", "manual"]
       - ["javax.ws.rs.core", "Response", True, "temporaryRedirect", "", "", "Argument[0]", "url-redirect", "manual"]
       - ["javax.ws.rs.core", "ResponseBuilder", False, "header", "", "", "Argument[1]", "header-splitting", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["javax.ws.rs.core", "AbstractMultivaluedMap", False, "AbstractMultivaluedMap", "", "", "Argument[0].MapKey", "Argument[-1].MapKey", "value", "manual"]
       - ["javax.ws.rs.core", "AbstractMultivaluedMap", False, "AbstractMultivaluedMap", "", "", "Argument[0].MapValue", "Argument[-1].MapValue", "value", "manual"]

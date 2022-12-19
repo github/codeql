@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.springframework.validation", "Errors", True, "addAllErrors", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["org.springframework.validation", "Errors", True, "getAllErrors", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

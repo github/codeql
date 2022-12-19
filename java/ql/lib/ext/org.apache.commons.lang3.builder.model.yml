@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.commons.lang3.builder", "ToStringBuilder", False, "append", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
       - ["org.apache.commons.lang3.builder", "ToStringBuilder", False, "append", "(java.lang.Object)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]

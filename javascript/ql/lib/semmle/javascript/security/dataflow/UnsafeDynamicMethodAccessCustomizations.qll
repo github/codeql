@@ -54,9 +54,7 @@ module UnsafeDynamicMethodAccess {
   /**
    * A source of remote user input, considered as a source for unsafe dynamic method access.
    */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * A function invocation of an unsafe function, as a sink for remote unsafe dynamic method access.

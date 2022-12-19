@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.mvel2.compiler", "Accessor", False, "getValue", "", "", "Argument[-1]", "mvel", "manual"]
       - ["org.mvel2.compiler", "CompiledAccExpression", False, "getValue", "", "", "Argument[-1]", "mvel", "manual"]

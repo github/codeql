@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       # Note that when lambdas are supported we should have more models for TransformedMultiValuedMap
       - ["org.apache.commons.collections.multimap", "ArrayListValuedHashMap", True, "ArrayListValuedHashMap", "(Map)", "", "Argument[0].MapKey", "Argument[-1].MapKey", "value", "manual"]

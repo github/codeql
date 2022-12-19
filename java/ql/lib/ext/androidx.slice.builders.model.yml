@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["androidx.slice.builders", "ListBuilder", True, "addAction", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
       - ["androidx.slice.builders", "ListBuilder", True, "addAction", "", "", "Argument[0].SyntheticField[androidx.slice.Slice.action]", "Argument[-1].SyntheticField[androidx.slice.Slice.action]", "taint", "manual"]

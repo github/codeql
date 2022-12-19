@@ -136,6 +136,12 @@ calls.rb:
 #  626| IncludesIncluded
 #-----|  -> Object
 
+#  633| CustomNew1
+#-----|  -> Object
+
+#  641| CustomNew2
+#-----|  -> Object
+
 hello.rb:
 #    1| EnglishWords
 

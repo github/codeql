@@ -149,7 +149,7 @@ private newtype TContent =
  */
 class Content extends TContent {
   /** Gets the type of the contained data for the purpose of type pruning. */
-  DataFlowType getType() { result instanceof EmptyInterfaceType }
+  DataFlowType getType() { any() }
 
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -177,7 +177,7 @@ class FieldContent extends Content, TFieldContent {
   /** Gets the field associated with this `FieldContent`. */
   Field getField() { result = f }
 
-  override DataFlowType getType() { result = f.getType() }
+  override DataFlowType getType() { any() }
 
   override string toString() { result = f.toString() }
 
@@ -205,7 +205,7 @@ class PointerContent extends Content, TPointerContent {
   /** Gets the pointer type that containers with this content must have. */
   PointerType getPointerType() { result = t }
 
-  override DataFlowType getType() { result = t.getBaseType() }
+  override DataFlowType getType() { any() }
 
   override string toString() { result = "pointer" }
 }
@@ -228,7 +228,7 @@ class SyntheticFieldContent extends Content, TSyntheticFieldContent {
   /** Gets the field associated with this `SyntheticFieldContent`. */
   SyntheticField getField() { result = s }
 
-  override DataFlowType getType() { result = s.getType() }
+  override DataFlowType getType() { any() }
 
   override string toString() { result = s.toString() }
 }

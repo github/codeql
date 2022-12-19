@@ -66,9 +66,7 @@ class ElseDirective extends Directive {
   override predicate mismatched() { depth() < 1 }
 }
 
-class EndifDirective extends Directive {
-  EndifDirective() { this instanceof PreprocessorEndif }
-
+class EndifDirective extends Directive instanceof PreprocessorEndif {
   override int depthChange() { result = -1 }
 
   override predicate mismatched() { depth() < 0 }

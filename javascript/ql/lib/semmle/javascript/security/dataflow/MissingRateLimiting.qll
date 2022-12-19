@@ -80,30 +80,22 @@ abstract class ExpensiveAction extends DataFlow::Node {
 }
 
 /** A call to an authorization function, considered as an expensive action. */
-class AuthorizationCallAsExpensiveAction extends ExpensiveAction {
-  AuthorizationCallAsExpensiveAction() { this instanceof AuthorizationCall }
-
+class AuthorizationCallAsExpensiveAction extends ExpensiveAction instanceof AuthorizationCall {
   override string describe() { result = "authorization" }
 }
 
 /** A file system access, considered as an expensive action. */
-class FileSystemAccessAsExpensiveAction extends ExpensiveAction {
-  FileSystemAccessAsExpensiveAction() { this instanceof FileSystemAccess }
-
+class FileSystemAccessAsExpensiveAction extends ExpensiveAction instanceof FileSystemAccess {
   override string describe() { result = "a file system access" }
 }
 
 /** A system command execution, considered as an expensive action. */
-class SystemCommandExecutionAsExpensiveAction extends ExpensiveAction {
-  SystemCommandExecutionAsExpensiveAction() { this instanceof SystemCommandExecution }
-
+class SystemCommandExecutionAsExpensiveAction extends ExpensiveAction instanceof SystemCommandExecution {
   override string describe() { result = "a system command" }
 }
 
 /** A database access, considered as an expensive action. */
-class DatabaseAccessAsExpensiveAction extends ExpensiveAction {
-  DatabaseAccessAsExpensiveAction() { this instanceof DatabaseAccess }
-
+class DatabaseAccessAsExpensiveAction extends ExpensiveAction instanceof DatabaseAccess {
   override string describe() { result = "a database access" }
 }
 
@@ -208,8 +200,7 @@ class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
 /**
  * A route-handler expression that is rate-limited by the `rate-limiter-flexible` package.
  */
-class RouteHandlerLimitedByRateLimiterFlexible extends RateLimitingMiddleware {
-  RouteHandlerLimitedByRateLimiterFlexible() { this instanceof RateLimiterFlexibleRateLimiter }
+class RouteHandlerLimitedByRateLimiterFlexible extends RateLimitingMiddleware instanceof RateLimiterFlexibleRateLimiter {
 }
 
 private class FastifyRateLimiter extends RateLimitingMiddleware {

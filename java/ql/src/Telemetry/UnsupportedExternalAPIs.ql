@@ -11,9 +11,8 @@ import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import ExternalApi
 
 private predicate relevant(ExternalApi api) {
-  not api.isUninteresting() and
   not api.isSupported() and
-  not api = any(FlowSummaryImpl::Public::NegativeSummarizedCallable nsc).asCallable()
+  not api = any(FlowSummaryImpl::Public::NeutralCallable nsc).asCallable()
 }
 
 from string apiName, int usages

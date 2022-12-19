@@ -4,7 +4,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["kotlin.io", "FilesKt", false, "appendBytes", "(File,byte[])", "", "Argument[0]", "create-file", "generated"]
       - ["kotlin.io", "FilesKt", false, "appendText", "(File,String,Charset)", "", "Argument[0]", "create-file", "generated"]
@@ -22,7 +22,7 @@ extensions:
 
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["kotlin.collections", "AbstractCollection", true, "toString", "()", "", "Argument[-1]", "ReturnValue", "taint", "generated"]
       - ["kotlin.collections", "ArrayDeque", false, "ArrayDeque", "(Collection)", "", "Argument[0].Element", "Argument[-1]", "taint", "generated"]
@@ -1861,7 +1861,7 @@ extensions:
 
   - addsTo:
       pack: codeql/java-all
-      extensible: extNegativeSummaryModel
+      extensible: neutralModel
     data:
       - ["kotlin.annotation", "AnnotationRetention", "valueOf", "(String)", "generated"]
       - ["kotlin.annotation", "AnnotationRetention", "values", "()", "generated"]

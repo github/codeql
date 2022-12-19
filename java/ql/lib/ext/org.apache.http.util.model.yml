@@ -1,12 +1,12 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.apache.http.util", "EntityUtils", True, "updateEntity", "(HttpResponse,HttpEntity)", "", "Argument[1]", "xss", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.http.util", "Args", True, "containsNoBlanks", "(CharSequence,String)", "", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["org.apache.http.util", "Args", True, "notBlank", "(CharSequence,String)", "", "Argument[0]", "ReturnValue", "value", "manual"]

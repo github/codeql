@@ -83,7 +83,7 @@ private class Recv extends AliasFunction, ArrayFunction, SideEffectFunction,
       or
       this.hasGlobalName("recvfrom") and output.isParameterDeref([4, 5])
     ) and
-    description = "Buffer read by " + this.getName()
+    description = "buffer read by " + this.getName()
   }
 
   override predicate hasSocketInput(FunctionInput input) { input.isParameter(0) }
