@@ -9,13 +9,14 @@
 
 #include <swift/Basic/LLVMInitialize.h>
 #include <swift/FrontendTool/FrontendTool.h>
+#include <swift/Basic/InitializeSwiftModules.h>
 
 #include "swift/extractor/SwiftExtractor.h"
 #include "swift/extractor/TargetTrapDomain.h"
 #include "swift/extractor/remapping/SwiftFileInterception.h"
 #include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
+#include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/trap/TrapDomain.h"
-#include <swift/Basic/InitializeSwiftModules.h>
 
 using namespace std::string_literals;
 
@@ -61,14 +62,15 @@ static void processFrontendOptions(swift::FrontendOptions& options) {
   }
 }
 
+static codeql::TrapDomain invocationTrapDomain(
+    const codeql::SwiftExtractorConfiguration& configuration);
+
 // This is part of the swiftFrontendTool interface, we hook into the
 // compilation pipeline and extract files after the Swift frontend performed
 // semantic analysis
 class Observer : public swift::FrontendObserver {
  public:
-  explicit Observer(const codeql::SwiftExtractorConfiguration& config,
-                    codeql::SwiftDiagnosticsConsumer& diagConsumer)
-      : config{config}, diagConsumer{diagConsumer} {}
+  explicit Observer(const codeql::SwiftExtractorConfiguration& config) : config{config} {}
 
   void parsedArgs(swift::CompilerInvocation& invocation) override {
     processFrontendOptions(invocation.getFrontendOptions());
@@ -81,11 +83,13 @@ class Observer : public swift::FrontendObserver {
 
   void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
     codeql::extractSwiftFiles(config, compiler);
+    codeql::extractSwiftInvocation(config, compiler, invocationTrap);
   }
 
  private:
   const codeql::SwiftExtractorConfiguration& config;
-  codeql::SwiftDiagnosticsConsumer& diagConsumer;
+  codeql::TrapDomain invocationTrap{invocationTrapDomain(config)};
+  codeql::SwiftDiagnosticsConsumer diagConsumer{invocationTrap};
 };
 
 static std::string getenv_or(const char* envvar, const std::string& def) {
@@ -178,9 +182,7 @@ int main(int argc, char** argv) {
 
   auto openInterception = codeql::setupFileInterception(configuration.getTempArtifactDir());
 
-  auto invocationDomain = invocationTrapDomain(configuration);
-  codeql::SwiftDiagnosticsConsumer diagConsumer(invocationDomain);
-  Observer observer(configuration, diagConsumer);
+  Observer observer(configuration);
   int frontend_rc = swift::performFrontend(configuration.frontendOptions, "swift-extractor",
                                            (void*)main, &observer);
 
