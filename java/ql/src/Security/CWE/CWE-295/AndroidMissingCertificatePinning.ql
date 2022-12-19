@@ -1,6 +1,6 @@
 /**
  * @name Android missing certificate pinning
- * @description Network connections that do not use certificate pinning may allow attackers to eavesdrop communications.
+ * @description Network connections that do not use certificate pinning may allow attackers to eavesdrop on communications.
  * @kind problem
  * @problem.severity warning
  * @security-severity 5.9
