@@ -169,25 +169,19 @@ predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind, string provenance
 ) {
-  summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance, _)
-}
-
-/** Holds if a summary model `row` exists for the given parameters. */
-predicate summaryModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance, string row
-) {
-  summaryModel(row) and
-  row.splitAt(";", 0) = namespace and
-  row.splitAt(";", 1) = type and
-  row.splitAt(";", 2) = subtypes.toString() and
-  subtypes = [true, false] and
-  row.splitAt(";", 3) = name and
-  row.splitAt(";", 4) = signature and
-  row.splitAt(";", 5) = ext and
-  row.splitAt(";", 6) = input and
-  row.splitAt(";", 7) = output and
-  row.splitAt(";", 8) = kind and
+  exists(string row |
+    summaryModel(row) and
+    row.splitAt(";", 0) = namespace and
+    row.splitAt(";", 1) = type and
+    row.splitAt(";", 2) = subtypes.toString() and
+    subtypes = [true, false] and
+    row.splitAt(";", 3) = name and
+    row.splitAt(";", 4) = signature and
+    row.splitAt(";", 5) = ext and
+    row.splitAt(";", 6) = input and
+    row.splitAt(";", 7) = output and
+    row.splitAt(";", 8) = kind
+  ) and
   provenance = "manual"
 }
 
