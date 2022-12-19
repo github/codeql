@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <unordered_set>
 #include <filesystem>
 
 #include <swift/AST/Decl.h>
@@ -17,7 +18,7 @@ struct SwiftExtractorState {
 
   // All modules encountered during this extractor run, which therefore are dependencies of the
   // outcomes of this run
-  std::vector<const swift::ModuleDecl*> encounteredModules;
+  std::unordered_set<const swift::ModuleDecl*> encounteredModules;
 };
 
 }  // namespace codeql

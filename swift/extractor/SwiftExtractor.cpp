@@ -173,7 +173,7 @@ static std::vector<swift::ModuleDecl*> collectLoadedModules(swift::CompilerInsta
 void codeql::extractSwiftFiles(SwiftExtractorState& state, swift::CompilerInstance& compiler) {
   auto inputFiles = collectInputFilenames(compiler);
   std::vector<swift::ModuleDecl*> todo = collectLoadedModules(compiler);
-  std::unordered_set<swift::ModuleDecl*> seen{todo.begin(), todo.end()};
+  state.encounteredModules.insert(todo.begin(), todo.end());
 
   while (!todo.empty()) {
     auto module = todo.back();
@@ -196,9 +196,9 @@ void codeql::extractSwiftFiles(SwiftExtractorState& state, swift::CompilerInstan
       encounteredModules = extractDeclarations(state, compiler, *module);
     }
     for (auto encountered : encounteredModules) {
-      if (seen.count(encountered) == 0) {
+      if (state.encounteredModules.count(encountered) == 0) {
         todo.push_back(encountered);
-        seen.insert(encountered);
+        state.encounteredModules.insert(encountered);
       }
     }
   }
