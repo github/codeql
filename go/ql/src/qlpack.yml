@@ -9,3 +9,4 @@ defaultSuiteFile: codeql-suites/go-code-scanning.qls
 dependencies:
   codeql/go-all: ${workspace}
   codeql/suite-helpers: ${workspace}
+  codeql/util: ${workspace}
