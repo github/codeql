@@ -539,7 +539,16 @@ private module Impl implements RegexTreeViewSig {
     override predicate isNullable() { this.getAChild().isNullable() }
   }
 
-  additional class RegExpCharEscape = RegExpEscape;
+  /**
+   * A character escape in a regular expression.
+   *
+   * Example:
+   *
+   * ```
+   * \.
+   * ```
+   */
+  class RegExpCharEscape = RegExpEscape;
 
   /**
    * An escaped regular expression term, that is, a regular expression
@@ -620,7 +629,7 @@ private module Impl implements RegexTreeViewSig {
   /**
    * A non-word boundary, that is, a regular expression term of the form `\B`.
    */
-  additional class RegExpNonWordBoundary extends RegExpSpecialChar {
+  class RegExpNonWordBoundary extends RegExpSpecialChar {
     RegExpNonWordBoundary() { this.getChar() = "\\B" }
 
     override string getAPrimaryQlClass() { result = "RegExpNonWordBoundary" }
@@ -926,7 +935,7 @@ private module Impl implements RegexTreeViewSig {
    * \A
    * ```
    */
-  additional class RegExpAnchor extends RegExpSpecialChar {
+  class RegExpAnchor extends RegExpSpecialChar {
     RegExpAnchor() { this.getChar() = ["^", "$", "\\A", "\\Z", "\\z"] }
 
     override string getAPrimaryQlClass() { result = "RegExpAnchor" }
