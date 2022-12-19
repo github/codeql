@@ -66,7 +66,12 @@
 private import RangeUtils as Utils
 private import SignAnalysisCommon
 private import ModulusAnalysis
-private import experimental.semmle.code.cpp.semantic.Semantic
+import experimental.semmle.code.cpp.semantic.SemanticExpr
+import experimental.semmle.code.cpp.semantic.SemanticSSA
+import experimental.semmle.code.cpp.semantic.SemanticGuard
+import experimental.semmle.code.cpp.semantic.SemanticCFG
+import experimental.semmle.code.cpp.semantic.SemanticType
+import experimental.semmle.code.cpp.semantic.SemanticOpcode
 private import ConstantAnalysis
 
 /**
@@ -222,7 +227,19 @@ signature module UtilSig<DeltaSig DeltaParam> {
   SemType getTrackedType(SemExpr e);
 }
 
-module RangeStage<DeltaSig D, LangSig<D> LangParam, UtilSig<D> UtilParam> {
+signature module BoundSig<DeltaSig D> {
+  class SemBound {
+    SemExpr getExpr(D::Delta delta);
+  }
+  class SemZeroBound extends SemBound;
+  class SemSsaBound extends SemBound {
+    SemSsaVariable getAVariable();
+  }
+}
+
+module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<D> UtilParam> {
+  import Bounds // TODO: remove this import?
+
   /**
    * An expression that does conversion, boxing, or unboxing
    */
@@ -270,7 +287,7 @@ module RangeStage<DeltaSig D, LangSig<D> LangParam, UtilSig<D> UtilParam> {
 
   private import SignAnalysisInstantiated
 
-  private module ModulusAnalysisInstantiated = ModulusAnalysis<D, UtilParam>; // TODO: will this cause reevaluation if it's instantiated with the same DeltaSig and UtilParam multiple times?
+  private module ModulusAnalysisInstantiated = ModulusAnalysis<D, Bounds, UtilParam>; // TODO: will this cause reevaluation if it's instantiated with the same DeltaSig and UtilParam multiple times?
 
   private import ModulusAnalysisInstantiated
 
@@ -906,7 +923,7 @@ module RangeStage<DeltaSig D, LangSig<D> LangParam, UtilSig<D> UtilParam> {
   ) {
     not Specific::ignoreExprBound(e) and
     (
-      e = b.getExpr(delta) and
+      e = b.getExpr(D::fromFloat(delta)) and
       (upper = true or upper = false) and
       fromBackEdge = false and
       origdelta = delta and
