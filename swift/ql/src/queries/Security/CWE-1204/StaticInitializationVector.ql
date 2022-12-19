@@ -38,9 +38,7 @@ class EncryptionInitializationSink extends Expr {
               "AES", "ChaCha20", "Blowfish", "Rabbit", "CBC", "CFB", "GCM", "OCB", "OFB", "PCBC",
               "CCM", "CTR"
             ], fName) and
-      call.getArgumentWithLabel("iv").getExpr() = this and
-      not call.isSelfCall() and
-      not call.isSuperCall()
+      call.getArgumentWithLabel("iv").getExpr() = this
     )
   }
 }
