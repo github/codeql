@@ -8,3 +8,8 @@ def bar(s:set)->Set:
 
 t1 = Optional[Optional[int]]
 t2 = Optional[int][int]
+
+class baz():
+    pass
+while True:
+    baz = baz[baz]
