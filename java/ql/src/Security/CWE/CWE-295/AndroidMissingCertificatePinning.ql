@@ -3,7 +3,7 @@
  * @description Network connections that do not use certificate pinning may allow attackers to eavesdrop communications.
  * @kind problem
  * @problem.severity warning
- * @security-severity 7.5
+ * @security-severity 5.9
  * @precision medium
  * @id java/android/missing-certificate-pinning
  * @tags security
