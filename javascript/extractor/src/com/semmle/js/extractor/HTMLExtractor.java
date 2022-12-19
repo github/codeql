@@ -13,7 +13,6 @@ import com.semmle.js.extractor.ExtractorConfig.ECMAVersion;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.parser.ParseError;
-import com.semmle.util.data.Option;
 import com.semmle.util.data.Pair;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.io.WholeIO;
@@ -239,7 +238,7 @@ public class HTMLExtractor implements IExtractor {
       extractor.setSourceMap(textualExtractor.getSourceMap());
     }
 
-    List<Label> rootNodes = extractor.doit(Option.some(eltHandler));
+    List<Label> rootNodes = extractor.doit(eltHandler);
 
     return Pair.make(rootNodes, locInfo);
   }
