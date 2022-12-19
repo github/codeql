@@ -122,3 +122,29 @@ end
 def dup_tap
   sink(source(1).dup.tap { |x| puts "hello" }.dup)  # $ hasValueFlow=1
 end
+
+def use x
+  rand()
+end
+
+def use_use_madness
+  x = ""
+  if use(x)
+    if use(x) || use(x)
+      use(x)
+    else
+      use(x)
+      if use(x) && !use(x)
+      end
+    end
+
+    if !use(x) || (use(x) && !use(x))
+      nil
+    elsif use(x) || use(x)
+          use(x)
+    end
+
+    use(x)
+    use(x)
+  end
+end

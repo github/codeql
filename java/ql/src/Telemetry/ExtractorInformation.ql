@@ -9,6 +9,13 @@
 import java
 import semmle.code.java.Diagnostics
 
+predicate compilationInfo(string key, int value) {
+  exists(Compilation c, string infoKey |
+    key = infoKey + ": " + c.getInfo(infoKey) and
+    value = 1
+  )
+}
+
 predicate fileCount(string key, int value) {
   key = "Number of files" and
   value = strictcount(File f)
@@ -53,13 +60,38 @@ predicate extractorDiagnostics(string key, int value) {
   )
 }
 
+/*
+ * Just counting the diagnostics doesn't give the full picture, as
+ * CODEQL_EXTRACTOR_KOTLIN_DIAGNOSTIC_LIMIT means that some diagnostics
+ * will be suppressed. In that case, we need to look for the
+ * suppression message, uncount those that did get emitted, uncount the
+ * suppression message itself, and then add on the full count.
+ */
+
+predicate extractorTotalDiagnostics(string key, int value) {
+  exists(string extractor, string limitRegex |
+    limitRegex = "Total of ([0-9]+) diagnostics \\(reached limit of ([0-9]+)\\).*" and
+    key = "Total number of diagnostics from " + extractor and
+    value =
+      strictcount(Diagnostic d | d.getGeneratedBy() = extractor) +
+        sum(Diagnostic d |
+          d.getGeneratedBy() = extractor
+        |
+          d.getMessage().regexpCapture(limitRegex, 1).toInt() -
+              d.getMessage().regexpCapture(limitRegex, 2).toInt() - 1
+        )
+  )
+}
+
 from string key, int value
 where
+  compilationInfo(key, value) or
   fileCount(key, value) or
   fileCountByExtension(key, value) or
   totalNumberOfLines(key, value) or
   numberOfLinesOfCode(key, value) or
   totalNumberOfLinesByExtension(key, value) or
   numberOfLinesOfCodeByExtension(key, value) or
-  extractorDiagnostics(key, value)
+  extractorDiagnostics(key, value) or
+  extractorTotalDiagnostics(key, value)
 select key, value

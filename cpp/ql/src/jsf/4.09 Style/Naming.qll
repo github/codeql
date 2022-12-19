@@ -1,4 +1,4 @@
-/*
+/**
  * Common functions for implementing naming conventions
  *
  * Naming rules are the following:

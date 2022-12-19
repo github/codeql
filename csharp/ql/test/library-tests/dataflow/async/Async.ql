@@ -14,7 +14,7 @@ class MySink extends DataFlow::ExprNode {
 class MySource extends DataFlow::ParameterNode {
   MySource() {
     exists(Parameter p | p = this.getParameter() |
-      p = any(Class c | c.hasQualifiedName("Test")).getAMethod().getAParameter()
+      p = any(Class c | c.hasQualifiedName("", "Test")).getAMethod().getAParameter()
     )
   }
 }

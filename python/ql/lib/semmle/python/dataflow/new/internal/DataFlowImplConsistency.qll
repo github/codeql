@@ -136,6 +136,18 @@ module Consistency {
     msg = "Local flow step does not preserve enclosing callable."
   }
 
+  query predicate readStepIsLocal(Node n1, Node n2, string msg) {
+    readStep(n1, _, n2) and
+    nodeGetEnclosingCallable(n1) != nodeGetEnclosingCallable(n2) and
+    msg = "Read step does not preserve enclosing callable."
+  }
+
+  query predicate storeStepIsLocal(Node n1, Node n2, string msg) {
+    storeStep(n1, _, n2) and
+    nodeGetEnclosingCallable(n1) != nodeGetEnclosingCallable(n2) and
+    msg = "Store step does not preserve enclosing callable."
+  }
+
   private DataFlowType typeRepr() { result = getNodeType(_) }
 
   query predicate compatibleTypesReflexive(DataFlowType t, string msg) {
@@ -231,5 +243,26 @@ module Consistency {
     callable = viableImplInCallContext(call, ctx) and
     not callable = viableCallable(call) and
     not any(ConsistencyConfiguration c).viableImplInCallContextTooLargeExclude(call, ctx, callable)
+  }
+
+  query predicate uniqueParameterNodeAtPosition(
+    DataFlowCallable c, ParameterPosition pos, Node p, string msg
+  ) {
+    isParameterNode(p, c, pos) and
+    not exists(unique(Node p0 | isParameterNode(p0, c, pos))) and
+    msg = "Parameters with overlapping positions."
+  }
+
+  query predicate uniqueParameterNodePosition(
+    DataFlowCallable c, ParameterPosition pos, Node p, string msg
+  ) {
+    isParameterNode(p, c, pos) and
+    not exists(unique(ParameterPosition pos0 | isParameterNode(p, c, pos0))) and
+    msg = "Parameter node with multiple positions."
+  }
+
+  query predicate uniqueContentApprox(Content c, string msg) {
+    not exists(unique(ContentApprox approx | approx = getContentApprox(c))) and
+    msg = "Non-unique content approximation."
   }
 }

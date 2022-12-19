@@ -16,6 +16,9 @@ void ExprTranslator::fillAccessorSemantics(const T& ast, TrapClassOf<T>& entry) 
     case swift::AccessSemantics::Ordinary:
       entry.has_ordinary_semantics = true;
       break;
+    case swift::AccessSemantics::DistributedThunk:
+      entry.has_distributed_thunk_semantics = true;
+      break;
   }
 }
 

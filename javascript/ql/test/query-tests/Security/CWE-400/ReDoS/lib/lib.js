@@ -37,3 +37,10 @@ function usedWithArguments(name) {
 }
 
 module.exports.snapdragon = require("./snapdragon")
+
+module.exports.foo = function (name) {
+    var data1 = name.match(/f*g/); // NOT OK
+
+    name = name.substr(1);
+    var data2 = name.match(/f*g/); // NOT OK
+}

@@ -109,7 +109,7 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
    * not also in a right-shift expression. We allow this case because it is
    * a common pattern to serialise `byte(v)`, `byte(v >> 8)`, and so on.
    */
-  predicate isSink(DataFlow::TypeCastNode sink, int bitSize) {
+  predicate isSinkWithBitSize(DataFlow::TypeCastNode sink, int bitSize) {
     sink.asExpr() instanceof ConversionExpr and
     exists(IntegerType integerType | sink.getResultType().getUnderlyingType() = integerType |
       bitSize = integerType.getSize()
@@ -125,7 +125,7 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, sinkBitSize) }
+  override predicate isSink(DataFlow::Node sink) { this.isSinkWithBitSize(sink, sinkBitSize) }
 
   override predicate isSanitizer(DataFlow::Node node) {
     // To catch flows that only happen on 32-bit architectures we
@@ -140,7 +140,7 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
 
   override predicate isSanitizerOut(DataFlow::Node node) {
     exists(int bitSize | isIncorrectIntegerConversion(sourceBitSize, bitSize) |
-      this.isSink(node, bitSize)
+      this.isSinkWithBitSize(node, bitSize)
     )
   }
 }

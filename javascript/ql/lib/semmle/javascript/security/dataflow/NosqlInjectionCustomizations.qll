@@ -31,9 +31,7 @@ module NosqlInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of remote user input, considered as a flow source for NoSql injection. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /** An expression interpreted as a NoSql query, viewed as a sink. */
   class NosqlQuerySink extends Sink instanceof NoSql::Query { }

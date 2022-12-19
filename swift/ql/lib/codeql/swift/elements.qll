@@ -6,12 +6,12 @@ import codeql.swift.elements.DbFile
 import codeql.swift.elements.DbLocation
 import codeql.swift.elements.Diagnostics
 import codeql.swift.elements.Element
+import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.File
 import codeql.swift.elements.Locatable
 import codeql.swift.elements.Location
 import codeql.swift.elements.UnknownFile
 import codeql.swift.elements.UnknownLocation
-import codeql.swift.elements.UnresolvedElement
 import codeql.swift.elements.UnspecifiedElement
 import codeql.swift.elements.decl.AbstractFunctionDecl
 import codeql.swift.elements.decl.AbstractStorageDecl
@@ -55,6 +55,7 @@ import codeql.swift.elements.decl.TypeAliasDecl
 import codeql.swift.elements.decl.TypeDecl
 import codeql.swift.elements.decl.ValueDecl
 import codeql.swift.elements.decl.VarDecl
+import codeql.swift.elements.expr.AbiSafeConversionExpr
 import codeql.swift.elements.expr.AbstractClosureExpr
 import codeql.swift.elements.expr.AnyHashableErasureExpr
 import codeql.swift.elements.expr.AnyTryExpr
@@ -263,7 +264,6 @@ import codeql.swift.elements.type.PrimaryArchetypeType
 import codeql.swift.elements.type.ProtocolCompositionType
 import codeql.swift.elements.type.ProtocolType
 import codeql.swift.elements.type.ReferenceStorageType
-import codeql.swift.elements.type.SequenceArchetypeType
 import codeql.swift.elements.type.StructType
 import codeql.swift.elements.type.SubstitutableType
 import codeql.swift.elements.type.SugarType
@@ -272,7 +272,6 @@ import codeql.swift.elements.type.TupleType
 import codeql.swift.elements.type.Type
 import codeql.swift.elements.type.TypeAliasType
 import codeql.swift.elements.type.TypeRepr
-import codeql.swift.elements.type.TypeVariableType
 import codeql.swift.elements.type.UnarySyntaxSugarType
 import codeql.swift.elements.type.UnboundGenericType
 import codeql.swift.elements.type.UnmanagedStorageType

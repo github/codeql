@@ -222,9 +222,7 @@ class VarDef extends ControlFlowNode {
  *
  * Some variable definitions are also uses, notably the operands of update expressions.
  */
-class VarUse extends ControlFlowNode, @varref {
-  VarUse() { this instanceof RValue }
-
+class VarUse extends ControlFlowNode, @varref instanceof RValue {
   /** Gets the variable this use refers to. */
   Variable getVariable() { result = this.(VarRef).getVariable() }
 

@@ -4,8 +4,9 @@ edges
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:23:58:23:65 | ControlFlowNode for password |
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:27:40:27:47 | ControlFlowNode for password |
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:30:58:30:65 | ControlFlowNode for password |
-| test.py:65:14:68:5 | ControlFlowNode for Dict | test.py:69:11:69:31 | ControlFlowNode for Subscript |
-| test.py:67:21:67:37 | ControlFlowNode for Attribute | test.py:65:14:68:5 | ControlFlowNode for Dict |
+| test.py:44:9:44:25 | ControlFlowNode for Attribute() | test.py:45:11:45:11 | ControlFlowNode for x |
+| test.py:70:14:73:5 | ControlFlowNode for Dict | test.py:74:11:74:31 | ControlFlowNode for Subscript |
+| test.py:72:21:72:37 | ControlFlowNode for Attribute | test.py:70:14:73:5 | ControlFlowNode for Dict |
 nodes
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:20:48:20:55 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
@@ -17,9 +18,11 @@ nodes
 | test.py:37:11:37:24 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:39:22:39:35 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:40:22:40:35 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
-| test.py:65:14:68:5 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
-| test.py:67:21:67:37 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| test.py:69:11:69:31 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:44:9:44:25 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:45:11:45:11 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:70:14:73:5 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| test.py:72:21:72:37 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:74:11:74:31 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 subpaths
 #select
 | test.py:20:48:20:55 | ControlFlowNode for password | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:20:48:20:55 | ControlFlowNode for password | This expression logs $@ as clear text. | test.py:19:16:19:29 | ControlFlowNode for get_password() | sensitive data (password) |
@@ -31,4 +34,5 @@ subpaths
 | test.py:37:11:37:24 | ControlFlowNode for get_password() | test.py:37:11:37:24 | ControlFlowNode for get_password() | test.py:37:11:37:24 | ControlFlowNode for get_password() | This expression logs $@ as clear text. | test.py:37:11:37:24 | ControlFlowNode for get_password() | sensitive data (password) |
 | test.py:39:22:39:35 | ControlFlowNode for get_password() | test.py:39:22:39:35 | ControlFlowNode for get_password() | test.py:39:22:39:35 | ControlFlowNode for get_password() | This expression logs $@ as clear text. | test.py:39:22:39:35 | ControlFlowNode for get_password() | sensitive data (password) |
 | test.py:40:22:40:35 | ControlFlowNode for get_password() | test.py:40:22:40:35 | ControlFlowNode for get_password() | test.py:40:22:40:35 | ControlFlowNode for get_password() | This expression logs $@ as clear text. | test.py:40:22:40:35 | ControlFlowNode for get_password() | sensitive data (password) |
-| test.py:69:11:69:31 | ControlFlowNode for Subscript | test.py:67:21:67:37 | ControlFlowNode for Attribute | test.py:69:11:69:31 | ControlFlowNode for Subscript | This expression logs $@ as clear text. | test.py:67:21:67:37 | ControlFlowNode for Attribute | sensitive data (password) |
+| test.py:45:11:45:11 | ControlFlowNode for x | test.py:44:9:44:25 | ControlFlowNode for Attribute() | test.py:45:11:45:11 | ControlFlowNode for x | This expression logs $@ as clear text. | test.py:44:9:44:25 | ControlFlowNode for Attribute() | sensitive data (password) |
+| test.py:74:11:74:31 | ControlFlowNode for Subscript | test.py:72:21:72:37 | ControlFlowNode for Attribute | test.py:74:11:74:31 | ControlFlowNode for Subscript | This expression logs $@ as clear text. | test.py:72:21:72:37 | ControlFlowNode for Attribute | sensitive data (password) |

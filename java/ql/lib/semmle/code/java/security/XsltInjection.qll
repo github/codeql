@@ -15,20 +15,6 @@ private class DefaultXsltInjectionSink extends XsltInjectionSink {
   DefaultXsltInjectionSink() { sinkNode(this, "xslt") }
 }
 
-private class DefaultXsltInjectionSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "javax.xml.transform;Transformer;false;transform;;;Argument[-1];xslt;manual",
-        "net.sf.saxon.s9api;XsltTransformer;false;transform;;;Argument[-1];xslt;manual",
-        "net.sf.saxon.s9api;Xslt30Transformer;false;transform;;;Argument[-1];xslt;manual",
-        "net.sf.saxon.s9api;Xslt30Transformer;false;applyTemplates;;;Argument[-1];xslt;manual",
-        "net.sf.saxon.s9api;Xslt30Transformer;false;callFunction;;;Argument[-1];xslt;manual",
-        "net.sf.saxon.s9api;Xslt30Transformer;false;callTemplate;;;Argument[-1];xslt;manual"
-      ]
-  }
-}
-
 /**
  * A unit class for adding additional taint steps.
  *

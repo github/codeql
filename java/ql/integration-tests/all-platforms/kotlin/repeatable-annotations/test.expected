@@ -1,0 +1,16 @@
+| JavaUser.java:9:14:9:21 | JavaUser | out2/JavaUser.class:0:0:0:0 | Container | value | out2/JavaUser.class:0:0:0:0 | {...} |
+| JavaUser.java:9:14:9:21 | JavaUser | out2/JavaUser.class:0:0:0:0 | Container | value | out2/JavaUser.class:0:0:0:0 | {...} |
+| JavaUser.java:9:14:9:21 | JavaUser | out2/JavaUser.class:0:0:0:0 | JavaDefinedContainer | value | out2/JavaUser.class:0:0:0:0 | {...} |
+| JavaUser.java:9:14:9:21 | JavaUser | out2/JavaUser.class:0:0:0:0 | KtDefinedContainer | value | out2/JavaUser.class:0:0:0:0 | {...} |
+| out/ExplicitContainerRepeatable.class:0:0:0:0 | ExplicitContainerRepeatable | out/ExplicitContainerRepeatable.class:0:0:0:0 | Repeatable | value | out/ExplicitContainerRepeatable.class:0:0:0:0 | KtDefinedContainer.class |
+| out/ExplicitContainerRepeatable.class:0:0:0:0 | ExplicitContainerRepeatable | out/ExplicitContainerRepeatable.class:0:0:0:0 | Retention | value | out/ExplicitContainerRepeatable.class:0:0:0:0 | RUNTIME |
+| out/JavaDefinedRepeatable.class:0:0:0:0 | JavaDefinedRepeatable | out/JavaDefinedRepeatable.class:0:0:0:0 | Repeatable | value | out/JavaDefinedRepeatable.class:0:0:0:0 | JavaDefinedContainer.class |
+| out/KtDefinedContainer.class:0:0:0:0 | KtDefinedContainer | out/KtDefinedContainer.class:0:0:0:0 | Retention | value | out/KtDefinedContainer.class:0:0:0:0 | RUNTIME |
+| out/LibRepeatable.class:0:0:0:0 | LibRepeatable | out/LibRepeatable.class:0:0:0:0 | Repeatable | value | out/LibRepeatable.class:0:0:0:0 | Container.class |
+| out/LibRepeatable.class:0:0:0:0 | LibRepeatable | out/LibRepeatable.class:0:0:0:0 | Retention | value | out/LibRepeatable.class:0:0:0:0 | RUNTIME |
+| test.kt:1:1:2:43 | LocalRepeatable | test.kt:0:0:0:0 | Repeatable | value | test.kt:0:0:0:0 | Container.class |
+| test.kt:1:1:2:43 | LocalRepeatable | test.kt:0:0:0:0 | Retention | value | test.kt:0:0:0:0 | RetentionPolicy.RUNTIME |
+| test.kt:4:1:12:21 | User | test.kt:0:0:0:0 | Container | value | test.kt:0:0:0:0 | {...} |
+| test.kt:4:1:12:21 | User | test.kt:0:0:0:0 | Container | value | test.kt:0:0:0:0 | {...} |
+| test.kt:4:1:12:21 | User | test.kt:0:0:0:0 | JavaDefinedContainer | value | test.kt:0:0:0:0 | {...} |
+| test.kt:4:1:12:21 | User | test.kt:0:0:0:0 | KtDefinedContainer | value | test.kt:0:0:0:0 | {...} |

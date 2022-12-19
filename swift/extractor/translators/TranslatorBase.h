@@ -58,6 +58,13 @@ DEFINE_TRANSLATE_CHECKER(TypeRepr, , )
 #include "swift/AST/TypeReprNodes.def"
 }  // namespace detail
 
+enum class TranslatorPolicy {
+  ignore,
+  translate,
+  translateParent,
+  emitUnknown,
+};
+
 // we want to override the default swift visitor behaviour of chaining calls to immediate
 // superclasses by default and instead provide our own TBD default (using the exact type).
 // Moreover, if the implementation class has translate##CLASS##KIND (that uses generated C++
@@ -66,15 +73,30 @@ DEFINE_TRANSLATE_CHECKER(TypeRepr, , )
 // A special case is for explicitly ignored classes marked with void, which we should never
 // encounter.
 #define DEFINE_VISIT(KIND, CLASS, PARENT)                                            \
+ public:                                                                             \
+  static constexpr TranslatorPolicy getPolicyFor##CLASS##KIND() {                    \
+    if constexpr (std::is_same_v<TrapTagOf<swift::CLASS##KIND>, void>) {             \
+      return TranslatorPolicy::ignore;                                               \
+    } else if constexpr (detail::HasTranslate##CLASS##KIND<CrtpSubclass>::value) {   \
+      return TranslatorPolicy::translate;                                            \
+    } else if constexpr (detail::HasTranslate##PARENT<CrtpSubclass>::value) {        \
+      return TranslatorPolicy::translateParent;                                      \
+    } else {                                                                         \
+      return TranslatorPolicy::emitUnknown;                                          \
+    }                                                                                \
+  }                                                                                  \
+                                                                                     \
+ private:                                                                            \
   void visit##CLASS##KIND(swift::CLASS##KIND* e) {                                   \
-    if constexpr (std::is_same_v<CLASS##KIND##Tag, void>) {                          \
+    constexpr auto policy = getPolicyFor##CLASS##KIND();                             \
+    if constexpr (policy == TranslatorPolicy::ignore) {                              \
       std::cerr << "Unexpected " #CLASS #KIND "\n";                                  \
       return;                                                                        \
-    } else if constexpr (detail::HasTranslate##CLASS##KIND<CrtpSubclass>::value) {   \
+    } else if constexpr (policy == TranslatorPolicy::translate) {                    \
       dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##CLASS##KIND(*e)); \
-    } else if constexpr (detail::HasTranslate##PARENT<CrtpSubclass>::value) {        \
+    } else if constexpr (policy == TranslatorPolicy::translateParent) {              \
       dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##PARENT(*e));      \
-    } else {                                                                         \
+    } else if constexpr (policy == TranslatorPolicy::emitUnknown) {                  \
       dispatcher.emitUnknown(e);                                                     \
     }                                                                                \
   }

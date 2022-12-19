@@ -4,13 +4,16 @@ import TestUtils
 
 from
   OpaqueTypeArchetypeType x, string getName, Type getCanonicalType, Type getInterfaceType,
-  OpaqueTypeDecl getDeclaration
+  string hasSuperclass, int getNumberOfProtocols, OpaqueTypeDecl getDeclaration
 where
   toBeTested(x) and
   not x.isUnknown() and
   getName = x.getName() and
   getCanonicalType = x.getCanonicalType() and
   getInterfaceType = x.getInterfaceType() and
+  (if x.hasSuperclass() then hasSuperclass = "yes" else hasSuperclass = "no") and
+  getNumberOfProtocols = x.getNumberOfProtocols() and
   getDeclaration = x.getDeclaration()
 select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getInterfaceType:",
-  getInterfaceType, "getDeclaration:", getDeclaration
+  getInterfaceType, "hasSuperclass:", hasSuperclass, "getNumberOfProtocols:", getNumberOfProtocols,
+  "getDeclaration:", getDeclaration

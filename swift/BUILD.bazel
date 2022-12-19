@@ -33,14 +33,15 @@ pkg_filegroup(
     srcs = [
         ":dbscheme_files",
         ":manifest",
+        "//swift/downgrades",
         "//swift/tools",
     ],
     visibility = ["//visibility:public"],
 )
 
-pkg_runfiles(
+pkg_filegroup(
     name = "extractor",
-    srcs = ["//swift/extractor"],
+    srcs = ["//swift/extractor:pkg"],
     prefix = "tools/" + codeql_platform,
 )
 

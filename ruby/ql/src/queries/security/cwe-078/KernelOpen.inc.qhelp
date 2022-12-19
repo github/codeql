@@ -6,15 +6,19 @@
 <p>If <code>Kernel.open</code> is given a file name that starts with a <code>|</code>
 character, it will execute the remaining string as a shell command. If a
 malicious user can control the file name, they can execute arbitrary code.
-The same vulnerability applies to <code>IO.read</code>.
+The same vulnerability applies to <code>IO.read</code>, <code>IO.write</code>,
+<code>IO.binread</code>, <code>IO.binwrite</code>, <code>IO.foreach</code>,
+<code>IO.readlines</code> and <code>URI.open</code>.
 </p>
 
 </overview>
 <recommendation>
 
 <p>Use <code>File.open</code> instead of <code>Kernel.open</code>, as the former
-does not have this vulnerability. Similarly, use <code>File.read</code> instead
+does not have this vulnerability. Similarly, use the methods from the <code>File</code>
+class instead of the <code>IO</code> class e.g. <code>File.read</code> instead
 of <code>IO.read</code>.</p>
+<p>Instead of <code>URI.open</code> use <code>URI(..).open</code> or an HTTP Client.</p>
 
 </recommendation>
 <example>
@@ -36,6 +40,7 @@ user-supplied file path.
 <li>
 OWASP:
 <a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Ruby_on_Rails_Cheat_Sheet.html#command-injection">Ruby on Rails Cheat Sheet: Command Injection</a>.
 </li>
 
 <li>

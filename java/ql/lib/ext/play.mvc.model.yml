@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["play.mvc", "Http$RequestHeader", False, "getHeader", "", "", "ReturnValue", "remote", "manual"]
+      - ["play.mvc", "Http$RequestHeader", False, "getQueryString", "", "", "ReturnValue", "remote", "manual"]
+      - ["play.mvc", "Http$RequestHeader", False, "header", "", "", "ReturnValue", "remote", "manual"]
+      - ["play.mvc", "Http$RequestHeader", False, "queryString", "", "", "ReturnValue", "remote", "manual"]

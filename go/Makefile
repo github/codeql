@@ -34,7 +34,6 @@ autoformat:
 	find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -w
 
 check-formatting:
-	find ql -iregex '.*\.qll?' -print0 | xargs -0 codeql query format --check-only
 	test -z "$$(find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -l)"
 
 install-deps:
@@ -84,6 +83,7 @@ extractor-common: codeql-extractor.yml LICENSE ql/lib/go.dbscheme \
 	cp codeql-extractor.yml LICENSE ql/lib/go.dbscheme ql/lib/go.dbscheme.stats $(EXTRACTOR_PACK_OUT)
 	mkdir $(EXTRACTOR_PACK_OUT)/tools
 	cp -r tools/tokenizer.jar $(CODEQL_TOOLS) $(EXTRACTOR_PACK_OUT)/tools
+	cp -r downgrades $(EXTRACTOR_PACK_OUT)
 
 extractor: extractor-common tools-codeql
 	cp -r tools/$(CODEQL_PLATFORM) $(EXTRACTOR_PACK_OUT)/tools
@@ -117,9 +117,9 @@ ql/lib/go.dbscheme.stats: ql/lib/go.dbscheme build/stats/src.stamp extractor
 	codeql dataset measure -o $@ build/stats/database/db-go
 
 test: all build/testdb/check-upgrade-path
-	codeql test run ql/test --search-path build/codeql-extractor-go --consistency-queries ql/test/consistency
+	codeql test run -j0 ql/test --search-path build/codeql-extractor-go --consistency-queries ql/test/consistency --compilation-cache=$(cache)
   #	use GOOS=linux because GOOS=darwin GOARCH=386 is no longer supported
-	env GOOS=linux GOARCH=386 codeql$(EXE) test run ql/test/query-tests/Security/CWE-681 --search-path build/codeql-extractor-go --consistency-queries ql/test/consistency
+	env GOOS=linux GOARCH=386 codeql$(EXE) test run -j0 ql/test/query-tests/Security/CWE-681 --search-path build/codeql-extractor-go --consistency-queries ql/test/consistency --compilation-cache=$(cache)
 	cd extractor; go test -mod=vendor ./... | grep -vF "[no test files]"
 	bash extractor-smoke-test/test.sh || (echo "Extractor smoke test FAILED"; exit 1)
 
@@ -133,10 +133,3 @@ build/testdb/go.dbscheme: ql/lib/upgrades/initial/go.dbscheme
 	rm -rf build/testdb
 	echo >build/empty.trap
 	codeql dataset import -S ql/lib/upgrades/initial/go.dbscheme build/testdb build/empty.trap
-
-.PHONY: sync-dataflow-libraries
-sync-dataflow-libraries:
-	for f in DataFlowImpl.qll DataFlowImpl2.qll DataFlowImplCommon.qll DataFlowImplConsistency.qll tainttracking1/TaintTrackingImpl.qll tainttracking2/TaintTrackingImpl.qll FlowSummaryImpl.qll AccessPathSyntax.qll;\
-	do\
-		curl -s -o ./ql/lib/semmle/go/dataflow/internal/$$f https://raw.githubusercontent.com/github/codeql/$(DATAFLOW_BRANCH)/java/ql/lib/semmle/code/java/dataflow/internal/$$f;\
-	done

@@ -4,7 +4,7 @@
  *              destination file path is within the destination directory can cause files outside
  *              the destination directory to be overwritten.
  * @kind path-problem
- * @id py/tarslip
+ * @id py/tarslip-extended
  * @problem.severity error
  * @security-severity 7.5
  * @precision high

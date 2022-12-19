@@ -115,7 +115,8 @@ BasicBlock blockGuardedBy(int value, string op, ScanfFunctionCall call) {
 from ScanfOutput output, ScanfFunctionCall call, Access access
 where
   output.getCall() = call and
-  output.hasGuardedAccess(access, false)
+  output.hasGuardedAccess(access, false) and
+  not exists(DeallocationExpr dealloc | dealloc.getFreedExpr() = access)
 select access,
   "This variable is read, but may not have been written. " +
     "It should be guarded by a check that the $@ returns at least " +

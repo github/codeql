@@ -1,10 +1,11 @@
 private import codeql.swift.elements
+private import codeql.swift.generated.ParentChild
 
 cached
 predicate toBeTested(Element e) {
   e instanceof File
   or
-  e instanceof AppliedPropertyWrapperExpr
+  e instanceof ParameterizedProtocolType
   or
   exists(ModuleDecl m |
     m = e and
@@ -32,6 +33,8 @@ predicate toBeTested(Element e) {
       e.(UnspecifiedElement).getParent() = tested
       or
       e.(OpaqueTypeDecl).getNamingDeclaration() = tested
+      or
+      tested = getImmediateParent(e)
     )
   )
 }

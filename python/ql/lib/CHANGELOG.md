@@ -1,3 +1,17 @@
+## 0.6.6
+
+No user-facing changes.
+
+## 0.6.5
+
+No user-facing changes.
+
+## 0.6.4
+
+### Minor Analysis Improvements
+
+ * The ReDoS libraries in `semmle.code.python.security.regexp` have been moved to a shared pack inside the `shared/` folder, and the previous location has been deprecated.
+
 ## 0.6.3
 
 No user-facing changes.

@@ -1,9 +1,3 @@
-#-----| [ModuleDecl] __ObjC
-#-----| [ModuleDecl] cfg
-#-----| [ModuleDecl] declarations
-#-----| [ModuleDecl] expressions
-#-----| [ModuleDecl] patterns
-#-----| [ModuleDecl] statements
 cfg.swift:
 #    1| [TopLevelCodeDecl] { ... }
 #    1|   getBody(): [BraceStmt] { ... }
@@ -206,9 +200,13 @@ cfg.swift:
 #   40|               getExpr(): [VarargExpansionExpr] [...]
 #   40|                 getSubExpr(): [ArrayExpr] [...]
 #   40|                   getElement(0): [InterpolatedStringLiteralExpr] "..."
+#-----|                     getInterpolationCountExpr(): [IntegerLiteralExpr] 1
+#-----|                     getLiteralCapacityExpr(): [IntegerLiteralExpr] 14
 #   40|                     getAppendingExpr(): [TapExpr] TapExpr
 #   40|                       getSubExpr(): [OpaqueValueExpr] OpaqueValueExpr
 #   40|                       getBody(): [BraceStmt] { ... }
+#-----|                         getElement(0): [ConcreteVarDecl] $interpolation
+#-----|                             Type = DefaultStringInterpolation
 #   40|                         getElement(1): [CallExpr] call to appendLiteral(_:)
 #   40|                           getFunction(): [MethodRefExpr] .appendLiteral(_:)
 #   40|                             getBase(): [InOutExpr] &...
@@ -461,6 +459,9 @@ cfg.swift:
 #   99|       getSelfParam(): [ParamDecl] self
 #   99|           Type = C
 #   99|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .myInt
+#-----|             getBase(): [DeclRefExpr] self
 #  100|   getMember(2): [ConstructorDecl] init(n:)
 #  100|       InterfaceType = (C.Type) -> (Int) -> C
 #  100|     getSelfParam(): [ParamDecl] self
@@ -1358,9 +1359,13 @@ cfg.swift:
 #  262|   getBody(): [BraceStmt] { ... }
 #  263|     getElement(0): [ReturnStmt] return ...
 #  263|       getResult(): [InterpolatedStringLiteralExpr] "..."
+#-----|         getInterpolationCountExpr(): [IntegerLiteralExpr] 4
+#-----|         getLiteralCapacityExpr(): [IntegerLiteralExpr] 37
 #  263|         getAppendingExpr(): [TapExpr] TapExpr
 #  263|           getSubExpr(): [OpaqueValueExpr] OpaqueValueExpr
 #  263|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [ConcreteVarDecl] $interpolation
+#-----|                 Type = DefaultStringInterpolation
 #  263|             getElement(1): [CallExpr] call to appendLiteral(_:)
 #  263|               getFunction(): [MethodRefExpr] .appendLiteral(_:)
 #  263|                 getBase(): [InOutExpr] &...
@@ -2229,6 +2234,9 @@ cfg.swift:
 #  353|       getSelfParam(): [ParamDecl] self
 #  353|           Type = OptionalC
 #  353|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .c
+#-----|             getBase(): [DeclRefExpr] self
 #  354|   getMember(2): [ConstructorDecl] init(arg:)
 #  354|       InterfaceType = (OptionalC.Type) -> (C?) -> OptionalC
 #  354|     getSelfParam(): [ParamDecl] self
@@ -2351,23 +2359,27 @@ cfg.swift:
 #  377|       InterfaceType = (Derived.Type) -> (Int) -> Derived
 #  377|     getSelfParam(): [ParamDecl] self
 #  377|         Type = Derived
+#-----|     getParam(0): [ParamDecl] n
+#-----|         Type = Int
+#-----|     getBody(): [BraceStmt] { ... }
+#  377|       getElement(0): [CallExpr] call to _unimplementedInitializer(className:initName:file:line:column:)
+#  377|         getFunction(): [DeclRefExpr] _unimplementedInitializer(className:initName:file:line:column:)
+#  377|         getArgument(0): [Argument] : cfg.Derived
+#  377|           getExpr(): [StringLiteralExpr] cfg.Derived
+#  377|         getArgument(1): [Argument] : #...
+#  377|           getExpr(): [MagicIdentifierLiteralExpr] #...
+#  377|         getArgument(2): [Argument] : #...
+#  377|           getExpr(): [MagicIdentifierLiteralExpr] #...
+#  377|         getArgument(3): [Argument] : #...
+#  377|           getExpr(): [MagicIdentifierLiteralExpr] #...
+#  377|         getArgument(4): [Argument] : #...
+#  377|           getExpr(): [MagicIdentifierLiteralExpr] #...
+#-----|       getElement(1): [ReturnStmt] return
 #  377|   getMember(2): [DestructorDecl] deinit()
 #  377|       InterfaceType = (Derived) -> () -> ()
 #  377|     getSelfParam(): [ParamDecl] self
 #  377|         Type = Derived
 #  377|     getBody(): [BraceStmt] { ... }
-#  377| [CallExpr] call to _unimplementedInitializer(className:initName:file:line:column:)
-#  377|   getFunction(): [DeclRefExpr] _unimplementedInitializer(className:initName:file:line:column:)
-#  377|   getArgument(0): [Argument] : cfg.Derived
-#  377|     getExpr(): [StringLiteralExpr] cfg.Derived
-#  377|   getArgument(1): [Argument] : #...
-#  377|     getExpr(): [MagicIdentifierLiteralExpr] #...
-#  377|   getArgument(2): [Argument] : #...
-#  377|     getExpr(): [MagicIdentifierLiteralExpr] #...
-#  377|   getArgument(3): [Argument] : #...
-#  377|     getExpr(): [MagicIdentifierLiteralExpr] #...
-#  377|   getArgument(4): [Argument] : #...
-#  377|     getExpr(): [MagicIdentifierLiteralExpr] #...
 #  383| [ConcreteFuncDecl] doWithoutCatch(x:)
 #  383|     InterfaceType = (Int) throws -> Int
 #  383|   getParam(0): [ParamDecl] x
@@ -2421,6 +2433,9 @@ cfg.swift:
 #  394|       getSelfParam(): [ParamDecl] self
 #  394|           Type = Structors
 #  394|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .field
+#-----|             getBase(): [DeclRefExpr] self
 #  394|     getAccessorDecl(1): [AccessorDecl] set
 #  394|         InterfaceType = (Structors) -> (Int) -> ()
 #  394|       getSelfParam(): [ParamDecl] self
@@ -2428,12 +2443,19 @@ cfg.swift:
 #  394|       getParam(0): [ParamDecl] value
 #  394|           Type = Int
 #  394|       getBody(): [BraceStmt] { ... }
-#  394|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .field
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  394|     getAccessorDecl(2): [AccessorDecl] _modify
 #  394|         InterfaceType = (Structors) -> () -> ()
 #  394|       getSelfParam(): [ParamDecl] self
 #  394|           Type = Structors
 #  394|       getBody(): [BraceStmt] { ... }
 #  394|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .field
+#-----|               getBase(): [DeclRefExpr] self
 #  395|   getMember(2): [ConstructorDecl] init()
 #  395|       InterfaceType = (Structors.Type) -> () -> Structors
 #  395|     getSelfParam(): [ParamDecl] self
@@ -2483,6 +2505,9 @@ cfg.swift:
 #  410|           getSelfParam(): [ParamDecl] self
 #  410|               Type = MyLocalClass
 #  410|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [ReturnStmt] return ...
+#-----|               getResult(): [MemberRefExpr] .x
+#-----|                 getBase(): [DeclRefExpr] self
 #  410|         getAccessorDecl(1): [AccessorDecl] set
 #  410|             InterfaceType = (MyLocalClass) -> (Int) -> ()
 #  410|           getSelfParam(): [ParamDecl] self
@@ -2490,12 +2515,19 @@ cfg.swift:
 #  410|           getParam(0): [ParamDecl] value
 #  410|               Type = Int
 #  410|           getBody(): [BraceStmt] { ... }
-#  410|         getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [MemberRefExpr] .x
+#-----|                 getBase(): [DeclRefExpr] self
+#-----|               getSource(): [DeclRefExpr] value
+#  410|         getAccessorDecl(2): [AccessorDecl] _modify
 #  410|             InterfaceType = (MyLocalClass) -> () -> ()
 #  410|           getSelfParam(): [ParamDecl] self
 #  410|               Type = MyLocalClass
 #  410|           getBody(): [BraceStmt] { ... }
 #  410|             getElement(0): [YieldStmt] yield ...
+#-----|               getResult(0): [InOutExpr] &...
+#-----|                 getSubExpr(): [MemberRefExpr] .x
+#-----|                   getBase(): [DeclRefExpr] self
 #  411|       getMember(2): [ConstructorDecl] init()
 #  411|           InterfaceType = (MyLocalClass.Type) -> () -> MyLocalClass
 #  411|         getSelfParam(): [ParamDecl] self
@@ -2523,6 +2555,9 @@ cfg.swift:
 #  417|           getSelfParam(): [ParamDecl] self
 #  417|               Type = MyLocalStruct
 #  417|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [ReturnStmt] return ...
+#-----|               getResult(): [MemberRefExpr] .x
+#-----|                 getBase(): [DeclRefExpr] self
 #  417|         getAccessorDecl(1): [AccessorDecl] set
 #  417|             InterfaceType = (inout MyLocalStruct) -> (Int) -> ()
 #  417|           getSelfParam(): [ParamDecl] self
@@ -2530,12 +2565,19 @@ cfg.swift:
 #  417|           getParam(0): [ParamDecl] value
 #  417|               Type = Int
 #  417|           getBody(): [BraceStmt] { ... }
-#  417|         getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [MemberRefExpr] .x
+#-----|                 getBase(): [DeclRefExpr] self
+#-----|               getSource(): [DeclRefExpr] value
+#  417|         getAccessorDecl(2): [AccessorDecl] _modify
 #  417|             InterfaceType = (inout MyLocalStruct) -> () -> ()
 #  417|           getSelfParam(): [ParamDecl] self
 #  417|               Type = MyLocalStruct
 #  417|           getBody(): [BraceStmt] { ... }
 #  417|             getElement(0): [YieldStmt] yield ...
+#-----|               getResult(0): [InOutExpr] &...
+#-----|                 getSubExpr(): [MemberRefExpr] .x
+#-----|                   getBase(): [DeclRefExpr] self
 #  418|       getMember(2): [ConstructorDecl] init()
 #  418|           InterfaceType = (MyLocalStruct.Type) -> () -> MyLocalStruct
 #  418|         getSelfParam(): [ParamDecl] self
@@ -2551,6 +2593,107 @@ cfg.swift:
 #  424|       getMember(1): [EnumElementDecl] A
 #  425|       getMember(2): [EnumCaseDecl] case ...
 #  425|       getMember(3): [EnumElementDecl] B
+#-----|       getMember(4): [ConcreteFuncDecl] __derived_enum_equals(_:_:)
+#-----|           InterfaceType = (MyLocalEnum.Type) -> (MyLocalEnum, MyLocalEnum) -> Bool
+#-----|         getSelfParam(): [ParamDecl] self
+#-----|             Type = MyLocalEnum.Type
+#-----|         getParam(0): [ParamDecl] a
+#-----|             Type = MyLocalEnum
+#-----|         getParam(1): [ParamDecl] b
+#-----|             Type = MyLocalEnum
+#-----|         getBody(): [BraceStmt] { ... }
+#-----|           getElement(0): [PatternBindingDecl] var ... = ...
+#-----|             getPattern(0): [TypedPattern] ... as ...
+#-----|               getSubPattern(): [NamedPattern] index_a
+#-----|           getElement(1): [SwitchStmt] switch a { ... }
+#-----|             getExpr(): [DeclRefExpr] a
+#-----|             getCase(0): [CaseStmt] case ...
+#-----|               getBody(): [BraceStmt] { ... }
+#-----|                 getElement(0): [AssignExpr]  ... = ...
+#-----|                   getDest(): [DeclRefExpr] index_a
+#-----|                   getSource(): [IntegerLiteralExpr] 0
+#-----|               getLabel(0): [CaseLabelItem] .A
+#-----|                 getPattern(): [EnumElementPattern] .A
+#-----|             getCase(1): [CaseStmt] case ...
+#-----|               getBody(): [BraceStmt] { ... }
+#-----|                 getElement(0): [AssignExpr]  ... = ...
+#-----|                   getDest(): [DeclRefExpr] index_a
+#-----|                   getSource(): [IntegerLiteralExpr] 1
+#-----|               getLabel(0): [CaseLabelItem] .B
+#-----|                 getPattern(): [EnumElementPattern] .B
+#-----|           getElement(2): [PatternBindingDecl] var ... = ...
+#-----|             getPattern(0): [TypedPattern] ... as ...
+#-----|               getSubPattern(): [NamedPattern] index_b
+#-----|           getElement(3): [SwitchStmt] switch b { ... }
+#-----|             getExpr(): [DeclRefExpr] b
+#-----|             getCase(0): [CaseStmt] case ...
+#-----|               getBody(): [BraceStmt] { ... }
+#-----|                 getElement(0): [AssignExpr]  ... = ...
+#-----|                   getDest(): [DeclRefExpr] index_b
+#-----|                   getSource(): [IntegerLiteralExpr] 0
+#-----|               getLabel(0): [CaseLabelItem] .A
+#-----|                 getPattern(): [EnumElementPattern] .A
+#-----|             getCase(1): [CaseStmt] case ...
+#-----|               getBody(): [BraceStmt] { ... }
+#-----|                 getElement(0): [AssignExpr]  ... = ...
+#-----|                   getDest(): [DeclRefExpr] index_b
+#-----|                   getSource(): [IntegerLiteralExpr] 1
+#-----|               getLabel(0): [CaseLabelItem] .B
+#-----|                 getPattern(): [EnumElementPattern] .B
+#-----|           getElement(4): [ReturnStmt] return ...
+#-----|             getResult(): [BinaryExpr] ... .==(_:_:) ...
+#-----|               getFunction(): [MethodRefExpr] .==(_:_:)
+#-----|                 getBase(): [TypeExpr] Int.Type
+#-----|               getArgument(0): [Argument] : index_a
+#-----|                 getExpr(): [DeclRefExpr] index_a
+#-----|               getArgument(1): [Argument] : index_b
+#-----|                 getExpr(): [DeclRefExpr] index_b
+#-----|       getMember(5): [PatternBindingDecl] var ... = ...
+#-----|         getPattern(0): [TypedPattern] ... as ...
+#-----|           getSubPattern(): [NamedPattern] hashValue
+#-----|       getMember(6): [ConcreteFuncDecl] hash(into:)
+#-----|           InterfaceType = (MyLocalEnum) -> (inout Hasher) -> ()
+#-----|         getSelfParam(): [ParamDecl] self
+#-----|             Type = MyLocalEnum
+#-----|         getParam(0): [ParamDecl] hasher
+#-----|             Type = Hasher
+#-----|         getBody(): [BraceStmt] { ... }
+#-----|           getElement(0): [PatternBindingDecl] var ... = ...
+#-----|             getPattern(0): [TypedPattern] ... as ...
+#-----|               getSubPattern(): [NamedPattern] discriminator
+#-----|           getElement(1): [SwitchStmt] switch self { ... }
+#-----|             getExpr(): [DeclRefExpr] self
+#-----|             getCase(0): [CaseStmt] case ...
+#-----|               getBody(): [BraceStmt] { ... }
+#-----|                 getElement(0): [AssignExpr]  ... = ...
+#-----|                   getDest(): [DeclRefExpr] discriminator
+#-----|                   getSource(): [IntegerLiteralExpr] 0
+#-----|               getLabel(0): [CaseLabelItem] .A
+#-----|                 getPattern(): [EnumElementPattern] .A
+#-----|             getCase(1): [CaseStmt] case ...
+#-----|               getBody(): [BraceStmt] { ... }
+#-----|                 getElement(0): [AssignExpr]  ... = ...
+#-----|                   getDest(): [DeclRefExpr] discriminator
+#-----|                   getSource(): [IntegerLiteralExpr] 1
+#-----|               getLabel(0): [CaseLabelItem] .B
+#-----|                 getPattern(): [EnumElementPattern] .B
+#-----|           getElement(2): [CallExpr] call to ...
+#-----|             getFunction(): [UnresolvedDotExpr] ... .combine(_:)
+#-----|               getBase(): [DeclRefExpr] hasher
+#-----|             getArgument(0): [Argument] : discriminator
+#-----|               getExpr(): [DeclRefExpr] discriminator
+#-----|       getMember(7): [ConcreteVarDecl] hashValue
+#-----|           Type = Int
+#-----|         getAccessorDecl(0): [AccessorDecl] get
+#-----|             InterfaceType = (MyLocalEnum) -> () -> Int
+#-----|           getSelfParam(): [ParamDecl] self
+#-----|               Type = MyLocalEnum
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [ReturnStmt] return ...
+#-----|               getResult(): [CallExpr] call to _hashValue(for:)
+#-----|                 getFunction(): [DeclRefExpr] _hashValue(for:)
+#-----|                 getArgument(0): [Argument] for: self
+#-----|                   getExpr(): [DeclRefExpr] self
 #  428|     getElement(3): [PatternBindingDecl] var ... = ...
 #  428|       getPattern(0): [TypedPattern] ... as ...
 #  428|         getSubPattern(): [NamedPattern] myLocalVar
@@ -2591,6 +2734,9 @@ cfg.swift:
 #  446|       getSelfParam(): [ParamDecl] self
 #  446|           Type = B
 #  446|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
 #  446|     getAccessorDecl(1): [AccessorDecl] set
 #  446|         InterfaceType = (inout B) -> (Int) -> ()
 #  446|       getSelfParam(): [ParamDecl] self
@@ -2598,12 +2744,19 @@ cfg.swift:
 #  446|       getParam(0): [ParamDecl] value
 #  446|           Type = Int
 #  446|       getBody(): [BraceStmt] { ... }
-#  446|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  446|     getAccessorDecl(2): [AccessorDecl] _modify
 #  446|         InterfaceType = (inout B) -> () -> ()
 #  446|       getSelfParam(): [ParamDecl] self
 #  446|           Type = B
 #  446|       getBody(): [BraceStmt] { ... }
 #  446|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .x
+#-----|               getBase(): [DeclRefExpr] self
 #  445|   getMember(2): [ConstructorDecl] init(x:)
 #  445|       InterfaceType = (B.Type) -> (Int) -> B
 #  445|     getSelfParam(): [ParamDecl] self
@@ -2622,6 +2775,9 @@ cfg.swift:
 #  450|       getSelfParam(): [ParamDecl] self
 #  450|           Type = A
 #  450|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .b
+#-----|             getBase(): [DeclRefExpr] self
 #  450|     getAccessorDecl(1): [AccessorDecl] set
 #  450|         InterfaceType = (inout A) -> (B) -> ()
 #  450|       getSelfParam(): [ParamDecl] self
@@ -2629,12 +2785,19 @@ cfg.swift:
 #  450|       getParam(0): [ParamDecl] value
 #  450|           Type = B
 #  450|       getBody(): [BraceStmt] { ... }
-#  450|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .b
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  450|     getAccessorDecl(2): [AccessorDecl] _modify
 #  450|         InterfaceType = (inout A) -> () -> ()
 #  450|       getSelfParam(): [ParamDecl] self
 #  450|           Type = A
 #  450|       getBody(): [BraceStmt] { ... }
 #  450|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .b
+#-----|               getBase(): [DeclRefExpr] self
 #  451|   getMember(2): [PatternBindingDecl] var ... = ...
 #  451|     getPattern(0): [TypedPattern] ... as ...
 #  451|       getSubPattern(): [NamedPattern] bs
@@ -2646,6 +2809,9 @@ cfg.swift:
 #  451|       getSelfParam(): [ParamDecl] self
 #  451|           Type = A
 #  451|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .bs
+#-----|             getBase(): [DeclRefExpr] self
 #  451|     getAccessorDecl(1): [AccessorDecl] set
 #  451|         InterfaceType = (inout A) -> ([B]) -> ()
 #  451|       getSelfParam(): [ParamDecl] self
@@ -2653,13 +2819,21 @@ cfg.swift:
 #  451|       getParam(0): [ParamDecl] value
 #  451|           Type = [B]
 #  451|       getBody(): [BraceStmt] { ... }
-#  451|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .bs
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  451|     getAccessorDecl(2): [AccessorDecl] _modify
 #  451|         InterfaceType = (inout A) -> () -> ()
 #  451|       getSelfParam(): [ParamDecl] self
 #  451|           Type = A
 #  451|       getBody(): [BraceStmt] { ... }
 #  451|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .bs
+#-----|               getBase(): [DeclRefExpr] self
 #  452|   getMember(4): [PatternBindingDecl] var ... = ...
+#-----|     getInit(0): [NilLiteralExpr] nil
 #  452|     getPattern(0): [TypedPattern] ... as ...
 #  452|       getSubPattern(): [NamedPattern] mayB
 #  452|       getTypeRepr(): [TypeRepr] B?
@@ -2670,6 +2844,9 @@ cfg.swift:
 #  452|       getSelfParam(): [ParamDecl] self
 #  452|           Type = A
 #  452|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .mayB
+#-----|             getBase(): [DeclRefExpr] self
 #  452|     getAccessorDecl(1): [AccessorDecl] set
 #  452|         InterfaceType = (inout A) -> (B?) -> ()
 #  452|       getSelfParam(): [ParamDecl] self
@@ -2677,12 +2854,19 @@ cfg.swift:
 #  452|       getParam(0): [ParamDecl] value
 #  452|           Type = B?
 #  452|       getBody(): [BraceStmt] { ... }
-#  452|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .mayB
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  452|     getAccessorDecl(2): [AccessorDecl] _modify
 #  452|         InterfaceType = (inout A) -> () -> ()
 #  452|       getSelfParam(): [ParamDecl] self
 #  452|           Type = A
 #  452|       getBody(): [BraceStmt] { ... }
 #  452|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .mayB
+#-----|               getBase(): [DeclRefExpr] self
 #  449|   getMember(6): [ConstructorDecl] init(b:bs:mayB:)
 #  449|       InterfaceType = (A.Type) -> (B, [B], B?) -> A
 #  449|     getSelfParam(): [ParamDecl] self
@@ -2779,6 +2963,9 @@ declarations.swift:
 #    2|       getSelfParam(): [ParamDecl] self
 #    2|           Type = Foo
 #    2|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
 #    2|     getAccessorDecl(1): [AccessorDecl] set
 #    2|         InterfaceType = (inout Foo) -> (Int) -> ()
 #    2|       getSelfParam(): [ParamDecl] self
@@ -2786,12 +2973,19 @@ declarations.swift:
 #    2|       getParam(0): [ParamDecl] value
 #    2|           Type = Int
 #    2|       getBody(): [BraceStmt] { ... }
-#    2|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#    2|     getAccessorDecl(2): [AccessorDecl] _modify
 #    2|         InterfaceType = (inout Foo) -> () -> ()
 #    2|       getSelfParam(): [ParamDecl] self
 #    2|           Type = Foo
 #    2|       getBody(): [BraceStmt] { ... }
 #    2|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .x
+#-----|               getBase(): [DeclRefExpr] self
 #    3|   getMember(2): [PatternBindingDecl] var ... = ...
 #    3|     getPattern(0): [TypedPattern] ... as ...
 #    3|       getSubPattern(): [NamedPattern] next
@@ -2831,12 +3025,15 @@ declarations.swift:
 #    5|               getExpr(): [DeclRefExpr] newValue
 #    5|             getArgument(1): [Argument] : 1
 #    5|               getExpr(): [IntegerLiteralExpr] 1
-#    3|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#    3|     getAccessorDecl(2): [AccessorDecl] _modify
 #    3|         InterfaceType = (inout Foo) -> () -> ()
 #    3|       getSelfParam(): [ParamDecl] self
 #    3|           Type = Foo
 #    3|       getBody(): [BraceStmt] { ... }
 #    3|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .next
+#-----|               getBase(): [DeclRefExpr] self
 #    1|   getMember(4): [ConstructorDecl] init()
 #    1|       InterfaceType = (Foo.Type) -> () -> Foo
 #    1|     getSelfParam(): [ParamDecl] self
@@ -2862,6 +3059,9 @@ declarations.swift:
 #    9|       getSelfParam(): [ParamDecl] self
 #    9|           Type = Bar
 #    9|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
 #    9|     getAccessorDecl(1): [AccessorDecl] set
 #    9|         InterfaceType = (Bar) -> (Double) -> ()
 #    9|       getSelfParam(): [ParamDecl] self
@@ -2869,12 +3069,19 @@ declarations.swift:
 #    9|       getParam(0): [ParamDecl] value
 #    9|           Type = Double
 #    9|       getBody(): [BraceStmt] { ... }
-#    9|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#    9|     getAccessorDecl(2): [AccessorDecl] _modify
 #    9|         InterfaceType = (Bar) -> () -> ()
 #    9|       getSelfParam(): [ParamDecl] self
 #    9|           Type = Bar
 #    9|       getBody(): [BraceStmt] { ... }
 #    9|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .x
+#-----|               getBase(): [DeclRefExpr] self
 #    9|   getMember(2): [DestructorDecl] deinit()
 #    9|       InterfaceType = (Bar) -> () -> ()
 #    9|     getSelfParam(): [ParamDecl] self
@@ -2894,6 +3101,170 @@ declarations.swift:
 #   13|   getMember(4): [EnumElementDecl] value3
 #   13|   getMember(5): [EnumElementDecl] value4
 #   13|   getMember(6): [EnumElementDecl] value5
+#-----|   getMember(7): [ConcreteFuncDecl] __derived_enum_equals(_:_:)
+#-----|       InterfaceType = (EnumValues.Type) -> (EnumValues, EnumValues) -> Bool
+#-----|     getSelfParam(): [ParamDecl] self
+#-----|         Type = EnumValues.Type
+#-----|     getParam(0): [ParamDecl] a
+#-----|         Type = EnumValues
+#-----|     getParam(1): [ParamDecl] b
+#-----|         Type = EnumValues
+#-----|     getBody(): [BraceStmt] { ... }
+#-----|       getElement(0): [PatternBindingDecl] var ... = ...
+#-----|         getPattern(0): [TypedPattern] ... as ...
+#-----|           getSubPattern(): [NamedPattern] index_a
+#-----|       getElement(1): [SwitchStmt] switch a { ... }
+#-----|         getExpr(): [DeclRefExpr] a
+#-----|         getCase(0): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_a
+#-----|               getSource(): [IntegerLiteralExpr] 0
+#-----|           getLabel(0): [CaseLabelItem] .value1
+#-----|             getPattern(): [EnumElementPattern] .value1
+#-----|         getCase(1): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_a
+#-----|               getSource(): [IntegerLiteralExpr] 1
+#-----|           getLabel(0): [CaseLabelItem] .value2
+#-----|             getPattern(): [EnumElementPattern] .value2
+#-----|         getCase(2): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_a
+#-----|               getSource(): [IntegerLiteralExpr] 2
+#-----|           getLabel(0): [CaseLabelItem] .value3
+#-----|             getPattern(): [EnumElementPattern] .value3
+#-----|         getCase(3): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_a
+#-----|               getSource(): [IntegerLiteralExpr] 3
+#-----|           getLabel(0): [CaseLabelItem] .value4
+#-----|             getPattern(): [EnumElementPattern] .value4
+#-----|         getCase(4): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_a
+#-----|               getSource(): [IntegerLiteralExpr] 4
+#-----|           getLabel(0): [CaseLabelItem] .value5
+#-----|             getPattern(): [EnumElementPattern] .value5
+#-----|       getElement(2): [PatternBindingDecl] var ... = ...
+#-----|         getPattern(0): [TypedPattern] ... as ...
+#-----|           getSubPattern(): [NamedPattern] index_b
+#-----|       getElement(3): [SwitchStmt] switch b { ... }
+#-----|         getExpr(): [DeclRefExpr] b
+#-----|         getCase(0): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_b
+#-----|               getSource(): [IntegerLiteralExpr] 0
+#-----|           getLabel(0): [CaseLabelItem] .value1
+#-----|             getPattern(): [EnumElementPattern] .value1
+#-----|         getCase(1): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_b
+#-----|               getSource(): [IntegerLiteralExpr] 1
+#-----|           getLabel(0): [CaseLabelItem] .value2
+#-----|             getPattern(): [EnumElementPattern] .value2
+#-----|         getCase(2): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_b
+#-----|               getSource(): [IntegerLiteralExpr] 2
+#-----|           getLabel(0): [CaseLabelItem] .value3
+#-----|             getPattern(): [EnumElementPattern] .value3
+#-----|         getCase(3): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_b
+#-----|               getSource(): [IntegerLiteralExpr] 3
+#-----|           getLabel(0): [CaseLabelItem] .value4
+#-----|             getPattern(): [EnumElementPattern] .value4
+#-----|         getCase(4): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_b
+#-----|               getSource(): [IntegerLiteralExpr] 4
+#-----|           getLabel(0): [CaseLabelItem] .value5
+#-----|             getPattern(): [EnumElementPattern] .value5
+#-----|       getElement(4): [ReturnStmt] return ...
+#-----|         getResult(): [BinaryExpr] ... .==(_:_:) ...
+#-----|           getFunction(): [MethodRefExpr] .==(_:_:)
+#-----|             getBase(): [TypeExpr] Int.Type
+#-----|           getArgument(0): [Argument] : index_a
+#-----|             getExpr(): [DeclRefExpr] index_a
+#-----|           getArgument(1): [Argument] : index_b
+#-----|             getExpr(): [DeclRefExpr] index_b
+#-----|   getMember(8): [PatternBindingDecl] var ... = ...
+#-----|     getPattern(0): [TypedPattern] ... as ...
+#-----|       getSubPattern(): [NamedPattern] hashValue
+#-----|   getMember(9): [ConcreteFuncDecl] hash(into:)
+#-----|       InterfaceType = (EnumValues) -> (inout Hasher) -> ()
+#-----|     getSelfParam(): [ParamDecl] self
+#-----|         Type = EnumValues
+#-----|     getParam(0): [ParamDecl] hasher
+#-----|         Type = Hasher
+#-----|     getBody(): [BraceStmt] { ... }
+#-----|       getElement(0): [PatternBindingDecl] var ... = ...
+#-----|         getPattern(0): [TypedPattern] ... as ...
+#-----|           getSubPattern(): [NamedPattern] discriminator
+#-----|       getElement(1): [SwitchStmt] switch self { ... }
+#-----|         getExpr(): [DeclRefExpr] self
+#-----|         getCase(0): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] discriminator
+#-----|               getSource(): [IntegerLiteralExpr] 0
+#-----|           getLabel(0): [CaseLabelItem] .value1
+#-----|             getPattern(): [EnumElementPattern] .value1
+#-----|         getCase(1): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] discriminator
+#-----|               getSource(): [IntegerLiteralExpr] 1
+#-----|           getLabel(0): [CaseLabelItem] .value2
+#-----|             getPattern(): [EnumElementPattern] .value2
+#-----|         getCase(2): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] discriminator
+#-----|               getSource(): [IntegerLiteralExpr] 2
+#-----|           getLabel(0): [CaseLabelItem] .value3
+#-----|             getPattern(): [EnumElementPattern] .value3
+#-----|         getCase(3): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] discriminator
+#-----|               getSource(): [IntegerLiteralExpr] 3
+#-----|           getLabel(0): [CaseLabelItem] .value4
+#-----|             getPattern(): [EnumElementPattern] .value4
+#-----|         getCase(4): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] discriminator
+#-----|               getSource(): [IntegerLiteralExpr] 4
+#-----|           getLabel(0): [CaseLabelItem] .value5
+#-----|             getPattern(): [EnumElementPattern] .value5
+#-----|       getElement(2): [CallExpr] call to ...
+#-----|         getFunction(): [UnresolvedDotExpr] ... .combine(_:)
+#-----|           getBase(): [DeclRefExpr] hasher
+#-----|         getArgument(0): [Argument] : discriminator
+#-----|           getExpr(): [DeclRefExpr] discriminator
+#-----|   getMember(10): [ConcreteVarDecl] hashValue
+#-----|       Type = Int
+#-----|     getAccessorDecl(0): [AccessorDecl] get
+#-----|         InterfaceType = (EnumValues) -> () -> Int
+#-----|       getSelfParam(): [ParamDecl] self
+#-----|           Type = EnumValues
+#-----|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [CallExpr] call to _hashValue(for:)
+#-----|             getFunction(): [DeclRefExpr] _hashValue(for:)
+#-----|             getArgument(0): [Argument] for: self
+#-----|               getExpr(): [DeclRefExpr] self
 #   16| [EnumDecl] EnumWithParams
 #   17|   getMember(0): [EnumCaseDecl] case ...
 #   17|   getMember(1): [EnumElementDecl] nodata1
@@ -2912,6 +3283,7 @@ declarations.swift:
 #   19|     getParam(2): [ParamDecl] _
 #   19|         Type = Double
 #   22| [ProtocolDecl] MyProtocol
+#-----|   getGenericTypeParam(0): [GenericTypeParamDecl] Self
 #   23|   getMember(0): [PatternBindingDecl] var ... = ...
 #   23|     getPattern(0): [TypedPattern] ... as ...
 #   23|       getSubPattern(): [NamedPattern] mustBeSettable
@@ -2928,7 +3300,7 @@ declarations.swift:
 #   23|           Type = Self
 #   23|       getParam(0): [ParamDecl] newValue
 #   23|           Type = Int
-#   23|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   23|     getAccessorDecl(2): [AccessorDecl] _modify
 #   23|         InterfaceType = <Self where Self : MyProtocol> (inout Self) -> () -> ()
 #   23|       getSelfParam(): [ParamDecl] self
 #   23|           Type = Self
@@ -3001,6 +3373,9 @@ declarations.swift:
 #   41|       getSelfParam(): [ParamDecl] self
 #   41|           Type = Baz
 #   41|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .field
+#-----|             getBase(): [DeclRefExpr] self
 #   41|     getAccessorDecl(1): [AccessorDecl] set
 #   41|         InterfaceType = (Baz) -> (Int) -> ()
 #   41|       getSelfParam(): [ParamDecl] self
@@ -3008,12 +3383,19 @@ declarations.swift:
 #   41|       getParam(0): [ParamDecl] value
 #   41|           Type = Int
 #   41|       getBody(): [BraceStmt] { ... }
-#   41|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .field
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#   41|     getAccessorDecl(2): [AccessorDecl] _modify
 #   41|         InterfaceType = (Baz) -> () -> ()
 #   41|       getSelfParam(): [ParamDecl] self
 #   41|           Type = Baz
 #   41|       getBody(): [BraceStmt] { ... }
 #   41|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .field
+#-----|               getBase(): [DeclRefExpr] self
 #   42|   getMember(2): [ConstructorDecl] init()
 #   42|       InterfaceType = (Baz.Type) -> () -> Baz
 #   42|     getSelfParam(): [ParamDecl] self
@@ -3078,18 +3460,22 @@ declarations.swift:
 #   77|       getAccessorDecl(0): [AccessorDecl] get
 #   77|           InterfaceType = () -> Int
 #   77|         getBody(): [BraceStmt] { ... }
+#-----|           getElement(0): [ReturnStmt] return ...
+#-----|             getResult(): [MemberRefExpr] .wrappedValue
+#-----|               getBase(): [DeclRefExpr] _x
+#-----|       getPropertyWrapperBackingVarBinding(): [PatternBindingDecl] var ... = ...
+#   77|         getInit(0): [CallExpr] call to init()
+#   77|           getFunction(): [ConstructorRefCallExpr] call to init()
+#   77|             getFunction(): [DeclRefExpr] init()
+#   77|             getArgument(0): [Argument] : ZeroWrapper.Type
+#   77|               getExpr(): [TypeExpr] ZeroWrapper.Type
+#   77|                 getTypeRepr(): [TypeRepr] ZeroWrapper
+#   77|         getPattern(0): [TypedPattern] ... as ...
+#   77|           getSubPattern(): [NamedPattern] _x
+#   77|       getPropertyWrapperBackingVar(): [ConcreteVarDecl] _x
+#   77|           Type = ZeroWrapper
 #   78|     getElement(2): [ReturnStmt] return ...
 #   78|       getResult(): [DeclRefExpr] x
-#   77| [CallExpr] call to init()
-#   77|   getFunction(): [ConstructorRefCallExpr] call to init()
-#   77|     getFunction(): [DeclRefExpr] init()
-#   77|     getArgument(0): [Argument] : ZeroWrapper.Type
-#   77|       getExpr(): [TypeExpr] ZeroWrapper.Type
-#   77|         getTypeRepr(): [TypeRepr] ZeroWrapper
-#   77| [TypedPattern] ... as ...
-#   77|   getSubPattern(): [NamedPattern] _x
-#   77| [ConcreteVarDecl] _x
-#   77|     Type = ZeroWrapper
 #   81| [StructDecl] HasPropertyAndObserver
 #   82|   getMember(0): [PatternBindingDecl] var ... = ...
 #   82|     getPattern(0): [TypedPattern] ... as ...
@@ -3111,12 +3497,15 @@ declarations.swift:
 #   84|       getBody(): [BraceStmt] { ... }
 #   85|         getElement(0): [ReturnStmt] return ...
 #   85|           getResult(): [IntegerLiteralExpr] 0
-#   82|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   82|     getAccessorDecl(2): [AccessorDecl] _modify
 #   82|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #   82|       getSelfParam(): [ParamDecl] self
 #   82|           Type = HasPropertyAndObserver
 #   82|       getBody(): [BraceStmt] { ... }
 #   82|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .settableField
+#-----|               getBase(): [DeclRefExpr] self
 #   91|   getMember(2): [PatternBindingDecl] var ... = ...
 #   91|     getPattern(0): [TypedPattern] ... as ...
 #   91|       getSubPattern(): [NamedPattern] readOnlyField1
@@ -3154,6 +3543,9 @@ declarations.swift:
 #  102|       getSelfParam(): [ParamDecl] self
 #  102|           Type = HasPropertyAndObserver
 #  102|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .normalField
+#-----|             getBase(): [DeclRefExpr] self
 #  102|     getAccessorDecl(1): [AccessorDecl] set
 #  102|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
 #  102|       getSelfParam(): [ParamDecl] self
@@ -3161,12 +3553,19 @@ declarations.swift:
 #  102|       getParam(0): [ParamDecl] value
 #  102|           Type = Int
 #  102|       getBody(): [BraceStmt] { ... }
-#  102|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .normalField
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  102|     getAccessorDecl(2): [AccessorDecl] _modify
 #  102|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  102|       getSelfParam(): [ParamDecl] self
 #  102|           Type = HasPropertyAndObserver
 #  102|       getBody(): [BraceStmt] { ... }
 #  102|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .normalField
+#-----|               getBase(): [DeclRefExpr] self
 #  104|   getMember(8): [SubscriptDecl] subscript ...
 #  105|     getAccessorDecl(0): [AccessorDecl] get
 #  105|         InterfaceType = (HasPropertyAndObserver) -> (Int) -> Int
@@ -3186,12 +3585,19 @@ declarations.swift:
 #  104|       getParam(1): [ParamDecl] x
 #  104|           Type = Int
 #  108|       getBody(): [BraceStmt] { ... }
-#  104|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  104|     getAccessorDecl(2): [AccessorDecl] _modify
 #  104|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
 #  104|       getSelfParam(): [ParamDecl] self
 #  104|           Type = HasPropertyAndObserver
+#-----|       getParam(0): [ParamDecl] x
+#-----|           Type = Int
 #  104|       getBody(): [BraceStmt] { ... }
 #  104|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [SubscriptExpr] ...[...]
+#-----|               getBase(): [DeclRefExpr] self
+#-----|               getArgument(0): [Argument] : x
+#-----|                 getExpr(): [DeclRefExpr] x
 #  104|     getParam(0): [ParamDecl] x
 #  104|         Type = Int
 #  111|   getMember(9): [SubscriptDecl] subscript ...
@@ -3228,6 +3634,9 @@ declarations.swift:
 #  115|       getSelfParam(): [ParamDecl] self
 #  115|           Type = HasPropertyAndObserver
 #  115|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .hasWillSet1
+#-----|             getBase(): [DeclRefExpr] self
 #  115|     getAccessorDecl(2): [AccessorDecl] set
 #  115|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
 #  115|       getSelfParam(): [ParamDecl] self
@@ -3235,12 +3644,25 @@ declarations.swift:
 #  115|       getParam(0): [ParamDecl] value
 #  115|           Type = Int
 #  115|       getBody(): [BraceStmt] { ... }
-#  115|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [CallExpr] call to willSet
+#-----|           getFunction(): [MethodRefExpr] .willSet
+#-----|             getBase(): [InOutExpr] &...
+#-----|               getSubExpr(): [DeclRefExpr] self
+#-----|           getArgument(0): [Argument] : value
+#-----|             getExpr(): [DeclRefExpr] value
+#-----|         getElement(1): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .hasWillSet1
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  115|     getAccessorDecl(3): [AccessorDecl] _modify
 #  115|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  115|       getSelfParam(): [ParamDecl] self
 #  115|           Type = HasPropertyAndObserver
 #  115|       getBody(): [BraceStmt] { ... }
 #  115|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .hasWillSet1
+#-----|               getBase(): [DeclRefExpr] self
 #  119|   getMember(12): [PatternBindingDecl] var ... = ...
 #  119|     getPattern(0): [TypedPattern] ... as ...
 #  119|       getSubPattern(): [NamedPattern] hasWillSet2
@@ -3259,6 +3681,9 @@ declarations.swift:
 #  119|       getSelfParam(): [ParamDecl] self
 #  119|           Type = HasPropertyAndObserver
 #  119|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .hasWillSet2
+#-----|             getBase(): [DeclRefExpr] self
 #  119|     getAccessorDecl(2): [AccessorDecl] set
 #  119|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
 #  119|       getSelfParam(): [ParamDecl] self
@@ -3266,12 +3691,25 @@ declarations.swift:
 #  119|       getParam(0): [ParamDecl] value
 #  119|           Type = Int
 #  119|       getBody(): [BraceStmt] { ... }
-#  119|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [CallExpr] call to willSet
+#-----|           getFunction(): [MethodRefExpr] .willSet
+#-----|             getBase(): [InOutExpr] &...
+#-----|               getSubExpr(): [DeclRefExpr] self
+#-----|           getArgument(0): [Argument] : value
+#-----|             getExpr(): [DeclRefExpr] value
+#-----|         getElement(1): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .hasWillSet2
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  119|     getAccessorDecl(3): [AccessorDecl] _modify
 #  119|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  119|       getSelfParam(): [ParamDecl] self
 #  119|           Type = HasPropertyAndObserver
 #  119|       getBody(): [BraceStmt] { ... }
 #  119|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .hasWillSet2
+#-----|               getBase(): [DeclRefExpr] self
 #  123|   getMember(14): [PatternBindingDecl] var ... = ...
 #  123|     getPattern(0): [TypedPattern] ... as ...
 #  123|       getSubPattern(): [NamedPattern] hasDidSet1
@@ -3290,6 +3728,9 @@ declarations.swift:
 #  123|       getSelfParam(): [ParamDecl] self
 #  123|           Type = HasPropertyAndObserver
 #  123|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .hasDidSet1
+#-----|             getBase(): [DeclRefExpr] self
 #  123|     getAccessorDecl(2): [AccessorDecl] set
 #  123|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
 #  123|       getSelfParam(): [ParamDecl] self
@@ -3297,12 +3738,32 @@ declarations.swift:
 #  123|       getParam(0): [ParamDecl] value
 #  123|           Type = Int
 #  123|       getBody(): [BraceStmt] { ... }
-#  123|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [PatternBindingDecl] var ... = ...
+#-----|           getInit(0): [MemberRefExpr] .hasDidSet1
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getInit(0).getFullyConverted(): [LoadExpr] (Int) ...
+#-----|           getPattern(0): [NamedPattern] tmp
+#-----|         getElement(1): [ConcreteVarDecl] tmp
+#-----|             Type = Int
+#-----|         getElement(2): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .hasDidSet1
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#-----|         getElement(3): [CallExpr] call to didSet
+#-----|           getFunction(): [MethodRefExpr] .didSet
+#-----|             getBase(): [InOutExpr] &...
+#-----|               getSubExpr(): [DeclRefExpr] self
+#-----|           getArgument(0): [Argument] : tmp
+#-----|             getExpr(): [DeclRefExpr] tmp
+#  123|     getAccessorDecl(3): [AccessorDecl] _modify
 #  123|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  123|       getSelfParam(): [ParamDecl] self
 #  123|           Type = HasPropertyAndObserver
 #  123|       getBody(): [BraceStmt] { ... }
 #  123|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .hasDidSet1
+#-----|               getBase(): [DeclRefExpr] self
 #  127|   getMember(16): [PatternBindingDecl] var ... = ...
 #  127|     getPattern(0): [TypedPattern] ... as ...
 #  127|       getSubPattern(): [NamedPattern] hasDidSet2
@@ -3319,6 +3780,9 @@ declarations.swift:
 #  127|       getSelfParam(): [ParamDecl] self
 #  127|           Type = HasPropertyAndObserver
 #  127|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .hasDidSet2
+#-----|             getBase(): [DeclRefExpr] self
 #  127|     getAccessorDecl(2): [AccessorDecl] set
 #  127|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
 #  127|       getSelfParam(): [ParamDecl] self
@@ -3326,12 +3790,27 @@ declarations.swift:
 #  127|       getParam(0): [ParamDecl] value
 #  127|           Type = Int
 #  127|       getBody(): [BraceStmt] { ... }
-#  127|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .hasDidSet2
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#-----|         getElement(1): [CallExpr] call to didSet
+#-----|           getFunction(): [MethodRefExpr] .didSet
+#-----|             getBase(): [InOutExpr] &...
+#-----|               getSubExpr(): [DeclRefExpr] self
+#  127|     getAccessorDecl(3): [AccessorDecl] _modify
 #  127|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  127|       getSelfParam(): [ParamDecl] self
 #  127|           Type = HasPropertyAndObserver
 #  127|       getBody(): [BraceStmt] { ... }
 #  127|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .hasDidSet2
+#-----|               getBase(): [DeclRefExpr] self
+#-----|         getElement(1): [CallExpr] call to didSet
+#-----|           getFunction(): [MethodRefExpr] .didSet
+#-----|             getBase(): [InOutExpr] &...
+#-----|               getSubExpr(): [DeclRefExpr] self
 #  131|   getMember(18): [PatternBindingDecl] var ... = ...
 #  131|     getPattern(0): [TypedPattern] ... as ...
 #  131|       getSubPattern(): [NamedPattern] hasBoth
@@ -3355,6 +3834,9 @@ declarations.swift:
 #  131|       getSelfParam(): [ParamDecl] self
 #  131|           Type = HasPropertyAndObserver
 #  131|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .hasBoth
+#-----|             getBase(): [DeclRefExpr] self
 #  131|     getAccessorDecl(3): [AccessorDecl] set
 #  131|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
 #  131|       getSelfParam(): [ParamDecl] self
@@ -3362,12 +3844,29 @@ declarations.swift:
 #  131|       getParam(0): [ParamDecl] value
 #  131|           Type = Int
 #  131|       getBody(): [BraceStmt] { ... }
-#  131|     getAccessorDecl(4): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [CallExpr] call to willSet
+#-----|           getFunction(): [MethodRefExpr] .willSet
+#-----|             getBase(): [InOutExpr] &...
+#-----|               getSubExpr(): [DeclRefExpr] self
+#-----|           getArgument(0): [Argument] : value
+#-----|             getExpr(): [DeclRefExpr] value
+#-----|         getElement(1): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .hasBoth
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#-----|         getElement(2): [CallExpr] call to didSet
+#-----|           getFunction(): [MethodRefExpr] .didSet
+#-----|             getBase(): [InOutExpr] &...
+#-----|               getSubExpr(): [DeclRefExpr] self
+#  131|     getAccessorDecl(4): [AccessorDecl] _modify
 #  131|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  131|       getSelfParam(): [ParamDecl] self
 #  131|           Type = HasPropertyAndObserver
 #  131|       getBody(): [BraceStmt] { ... }
 #  131|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .hasBoth
+#-----|               getBase(): [DeclRefExpr] self
 #   81|   getMember(20): [ConstructorDecl] init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:)
 #   81|       InterfaceType = (HasPropertyAndObserver.Type) -> (Int, Int, Int, Int, Int, Int) -> HasPropertyAndObserver
 #   81|     getSelfParam(): [ParamDecl] self
@@ -3446,6 +3945,14 @@ declarations.swift:
 #  152|       InterfaceType = (Derived.Type) -> () -> Derived
 #  152|     getSelfParam(): [ParamDecl] self
 #  152|         Type = Derived
+#-----|     getBody(): [BraceStmt] { ... }
+#-----|       getElement(0): [RebindSelfInConstructorExpr] self = ...
+#-----|         getSubExpr(): [CallExpr] call to ...
+#-----|           getFunction(): [DotSyntaxCallExpr] call to ...
+#-----|             getFunction(): [OtherConstructorDeclRefExpr] init()
+#-----|             getArgument(0): [Argument] : super
+#-----|               getExpr(): [SuperRefExpr] super
+#-----|       getElement(1): [ReturnStmt] return
 #  152|   getMember(1): [DestructorDecl] deinit()
 #  152|       InterfaceType = (Derived) -> () -> ()
 #  152|     getSelfParam(): [ParamDecl] self
@@ -3528,9 +4035,13 @@ expressions.swift:
 #    7|   getBody(): [BraceStmt] { ... }
 #    7|     getElement(0): [PatternBindingDecl] var ... = ...
 #    7|       getInit(0): [InterpolatedStringLiteralExpr] "..."
+#-----|         getInterpolationCountExpr(): [IntegerLiteralExpr] 1
+#-----|         getLiteralCapacityExpr(): [IntegerLiteralExpr] 6
 #    7|         getAppendingExpr(): [TapExpr] TapExpr
 #    7|           getSubExpr(): [OpaqueValueExpr] OpaqueValueExpr
 #    7|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [ConcreteVarDecl] $interpolation
+#-----|                 Type = DefaultStringInterpolation
 #    7|             getElement(1): [CallExpr] call to appendLiteral(_:)
 #    7|               getFunction(): [MethodRefExpr] .appendLiteral(_:)
 #    7|                 getBase(): [InOutExpr] &...
@@ -3564,6 +4075,86 @@ expressions.swift:
 #   10| [EnumDecl] AnError
 #   11|   getMember(0): [EnumCaseDecl] case ...
 #   11|   getMember(1): [EnumElementDecl] failed
+#-----|   getMember(2): [ConcreteFuncDecl] __derived_enum_equals(_:_:)
+#-----|       InterfaceType = (AnError.Type) -> (AnError, AnError) -> Bool
+#-----|     getSelfParam(): [ParamDecl] self
+#-----|         Type = AnError.Type
+#-----|     getParam(0): [ParamDecl] a
+#-----|         Type = AnError
+#-----|     getParam(1): [ParamDecl] b
+#-----|         Type = AnError
+#-----|     getBody(): [BraceStmt] { ... }
+#-----|       getElement(0): [PatternBindingDecl] var ... = ...
+#-----|         getPattern(0): [TypedPattern] ... as ...
+#-----|           getSubPattern(): [NamedPattern] index_a
+#-----|       getElement(1): [SwitchStmt] switch a { ... }
+#-----|         getExpr(): [DeclRefExpr] a
+#-----|         getCase(0): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_a
+#-----|               getSource(): [IntegerLiteralExpr] 0
+#-----|           getLabel(0): [CaseLabelItem] .failed
+#-----|             getPattern(): [EnumElementPattern] .failed
+#-----|       getElement(2): [PatternBindingDecl] var ... = ...
+#-----|         getPattern(0): [TypedPattern] ... as ...
+#-----|           getSubPattern(): [NamedPattern] index_b
+#-----|       getElement(3): [SwitchStmt] switch b { ... }
+#-----|         getExpr(): [DeclRefExpr] b
+#-----|         getCase(0): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_b
+#-----|               getSource(): [IntegerLiteralExpr] 0
+#-----|           getLabel(0): [CaseLabelItem] .failed
+#-----|             getPattern(): [EnumElementPattern] .failed
+#-----|       getElement(4): [ReturnStmt] return ...
+#-----|         getResult(): [BinaryExpr] ... .==(_:_:) ...
+#-----|           getFunction(): [MethodRefExpr] .==(_:_:)
+#-----|             getBase(): [TypeExpr] Int.Type
+#-----|           getArgument(0): [Argument] : index_a
+#-----|             getExpr(): [DeclRefExpr] index_a
+#-----|           getArgument(1): [Argument] : index_b
+#-----|             getExpr(): [DeclRefExpr] index_b
+#-----|   getMember(3): [PatternBindingDecl] var ... = ...
+#-----|     getPattern(0): [TypedPattern] ... as ...
+#-----|       getSubPattern(): [NamedPattern] hashValue
+#-----|   getMember(4): [ConcreteFuncDecl] hash(into:)
+#-----|       InterfaceType = (AnError) -> (inout Hasher) -> ()
+#-----|     getSelfParam(): [ParamDecl] self
+#-----|         Type = AnError
+#-----|     getParam(0): [ParamDecl] hasher
+#-----|         Type = Hasher
+#-----|     getBody(): [BraceStmt] { ... }
+#-----|       getElement(0): [PatternBindingDecl] var ... = ...
+#-----|         getPattern(0): [TypedPattern] ... as ...
+#-----|           getSubPattern(): [NamedPattern] discriminator
+#-----|       getElement(1): [SwitchStmt] switch self { ... }
+#-----|         getExpr(): [DeclRefExpr] self
+#-----|         getCase(0): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] discriminator
+#-----|               getSource(): [IntegerLiteralExpr] 0
+#-----|           getLabel(0): [CaseLabelItem] .failed
+#-----|             getPattern(): [EnumElementPattern] .failed
+#-----|       getElement(2): [CallExpr] call to ...
+#-----|         getFunction(): [UnresolvedDotExpr] ... .combine(_:)
+#-----|           getBase(): [DeclRefExpr] hasher
+#-----|         getArgument(0): [Argument] : discriminator
+#-----|           getExpr(): [DeclRefExpr] discriminator
+#-----|   getMember(5): [ConcreteVarDecl] hashValue
+#-----|       Type = Int
+#-----|     getAccessorDecl(0): [AccessorDecl] get
+#-----|         InterfaceType = (AnError) -> () -> Int
+#-----|       getSelfParam(): [ParamDecl] self
+#-----|           Type = AnError
+#-----|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [CallExpr] call to _hashValue(for:)
+#-----|             getFunction(): [DeclRefExpr] _hashValue(for:)
+#-----|             getArgument(0): [Argument] for: self
+#-----|               getExpr(): [DeclRefExpr] self
 #   14| [ConcreteFuncDecl] failure(_:)
 #   14|     InterfaceType = (Int) throws -> ()
 #   14|   getParam(0): [ParamDecl] x
@@ -3783,6 +4374,9 @@ expressions.swift:
 #   51|       getSelfParam(): [ParamDecl] self
 #   51|           Type = S
 #   51|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
 #   50|   getMember(2): [ConstructorDecl] init(x:)
 #   50|       InterfaceType = (S.Type) -> (Int) -> S
 #   50|     getSelfParam(): [ParamDecl] self
@@ -3872,6 +4466,9 @@ expressions.swift:
 #   71|       getSelfParam(): [ParamDecl] self
 #   71|           Type = Base
 #   71|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .xx
+#-----|             getBase(): [DeclRefExpr] self
 #   72|   getMember(2): [ConstructorDecl] init(x:)
 #   72|       InterfaceType = (Base.Type) -> (Int) -> Base
 #   72|     getSelfParam(): [ParamDecl] self
@@ -3908,23 +4505,27 @@ expressions.swift:
 #   77|       InterfaceType = (Derived.Type) -> (Int) -> Derived
 #   77|     getSelfParam(): [ParamDecl] self
 #   77|         Type = Derived
+#-----|     getParam(0): [ParamDecl] x
+#-----|         Type = Int
+#-----|     getBody(): [BraceStmt] { ... }
+#   77|       getElement(0): [CallExpr] call to _unimplementedInitializer(className:initName:file:line:column:)
+#   77|         getFunction(): [DeclRefExpr] _unimplementedInitializer(className:initName:file:line:column:)
+#   77|         getArgument(0): [Argument] : expressions.Derived
+#   77|           getExpr(): [StringLiteralExpr] expressions.Derived
+#   77|         getArgument(1): [Argument] : #...
+#   77|           getExpr(): [MagicIdentifierLiteralExpr] #...
+#   77|         getArgument(2): [Argument] : #...
+#   77|           getExpr(): [MagicIdentifierLiteralExpr] #...
+#   77|         getArgument(3): [Argument] : #...
+#   77|           getExpr(): [MagicIdentifierLiteralExpr] #...
+#   77|         getArgument(4): [Argument] : #...
+#   77|           getExpr(): [MagicIdentifierLiteralExpr] #...
+#-----|       getElement(1): [ReturnStmt] return
 #   77|   getMember(2): [DestructorDecl] deinit()
 #   77|       InterfaceType = (Derived) -> () -> ()
 #   77|     getSelfParam(): [ParamDecl] self
 #   77|         Type = Derived
 #   77|     getBody(): [BraceStmt] { ... }
-#   77| [CallExpr] call to _unimplementedInitializer(className:initName:file:line:column:)
-#   77|   getFunction(): [DeclRefExpr] _unimplementedInitializer(className:initName:file:line:column:)
-#   77|   getArgument(0): [Argument] : expressions.Derived
-#   77|     getExpr(): [StringLiteralExpr] expressions.Derived
-#   77|   getArgument(1): [Argument] : #...
-#   77|     getExpr(): [MagicIdentifierLiteralExpr] #...
-#   77|   getArgument(2): [Argument] : #...
-#   77|     getExpr(): [MagicIdentifierLiteralExpr] #...
-#   77|   getArgument(3): [Argument] : #...
-#   77|     getExpr(): [MagicIdentifierLiteralExpr] #...
-#   77|   getArgument(4): [Argument] : #...
-#   77|     getExpr(): [MagicIdentifierLiteralExpr] #...
 #   83| [TopLevelCodeDecl] { ... }
 #   83|   getBody(): [BraceStmt] { ... }
 #   83|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -3947,6 +4548,7 @@ expressions.swift:
 #   86| [TopLevelCodeDecl] { ... }
 #   86|   getBody(): [BraceStmt] { ... }
 #   86|     getElement(0): [PatternBindingDecl] var ... = ...
+#-----|       getInit(0): [NilLiteralExpr] nil
 #   86|       getPattern(0): [TypedPattern] ... as ...
 #   86|         getSubPattern(): [NamedPattern] opt
 #   86|         getTypeRepr(): [TypeRepr] Int?
@@ -4024,12 +4626,15 @@ expressions.swift:
 #   98|       getBody(): [BraceStmt] { ... }
 #   99|         getElement(0): [ReturnStmt] return ...
 #   99|           getResult(): [IntegerLiteralExpr] 0
-#   96|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   96|     getAccessorDecl(2): [AccessorDecl] _modify
 #   96|         InterfaceType = (inout HasProperty) -> () -> ()
 #   96|       getSelfParam(): [ParamDecl] self
 #   96|           Type = HasProperty
 #   96|       getBody(): [BraceStmt] { ... }
 #   96|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .settableField
+#-----|               getBase(): [DeclRefExpr] self
 #  105|   getMember(2): [PatternBindingDecl] var ... = ...
 #  105|     getPattern(0): [TypedPattern] ... as ...
 #  105|       getSubPattern(): [NamedPattern] readOnlyField1
@@ -4067,6 +4672,9 @@ expressions.swift:
 #  116|       getSelfParam(): [ParamDecl] self
 #  116|           Type = HasProperty
 #  116|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .normalField
+#-----|             getBase(): [DeclRefExpr] self
 #  116|     getAccessorDecl(1): [AccessorDecl] set
 #  116|         InterfaceType = (inout HasProperty) -> (Int) -> ()
 #  116|       getSelfParam(): [ParamDecl] self
@@ -4074,12 +4682,19 @@ expressions.swift:
 #  116|       getParam(0): [ParamDecl] value
 #  116|           Type = Int
 #  116|       getBody(): [BraceStmt] { ... }
-#  116|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .normalField
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  116|     getAccessorDecl(2): [AccessorDecl] _modify
 #  116|         InterfaceType = (inout HasProperty) -> () -> ()
 #  116|       getSelfParam(): [ParamDecl] self
 #  116|           Type = HasProperty
 #  116|       getBody(): [BraceStmt] { ... }
 #  116|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .normalField
+#-----|               getBase(): [DeclRefExpr] self
 #  118|   getMember(8): [SubscriptDecl] subscript ...
 #  119|     getAccessorDecl(0): [AccessorDecl] get
 #  119|         InterfaceType = (HasProperty) -> (Int) -> Int
@@ -4099,12 +4714,19 @@ expressions.swift:
 #  118|       getParam(1): [ParamDecl] x
 #  118|           Type = Int
 #  122|       getBody(): [BraceStmt] { ... }
-#  118|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  118|     getAccessorDecl(2): [AccessorDecl] _modify
 #  118|         InterfaceType = (inout HasProperty) -> (Int) -> ()
 #  118|       getSelfParam(): [ParamDecl] self
 #  118|           Type = HasProperty
+#-----|       getParam(0): [ParamDecl] x
+#-----|           Type = Int
 #  118|       getBody(): [BraceStmt] { ... }
 #  118|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [SubscriptExpr] ...[...]
+#-----|               getBase(): [DeclRefExpr] self
+#-----|               getArgument(0): [Argument] : x
+#-----|                 getExpr(): [DeclRefExpr] x
 #  118|     getParam(0): [ParamDecl] x
 #  118|         Type = Int
 #  125|   getMember(9): [SubscriptDecl] subscript ...
@@ -4203,6 +4825,9 @@ expressions.swift:
 #  142|       getSelfParam(): [ParamDecl] self
 #  142|           Type = B
 #  142|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
 #  142|     getAccessorDecl(1): [AccessorDecl] set
 #  142|         InterfaceType = (inout B) -> (Int) -> ()
 #  142|       getSelfParam(): [ParamDecl] self
@@ -4210,12 +4835,19 @@ expressions.swift:
 #  142|       getParam(0): [ParamDecl] value
 #  142|           Type = Int
 #  142|       getBody(): [BraceStmt] { ... }
-#  142|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  142|     getAccessorDecl(2): [AccessorDecl] _modify
 #  142|         InterfaceType = (inout B) -> () -> ()
 #  142|       getSelfParam(): [ParamDecl] self
 #  142|           Type = B
 #  142|       getBody(): [BraceStmt] { ... }
 #  142|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .x
+#-----|               getBase(): [DeclRefExpr] self
 #  141|   getMember(2): [ConstructorDecl] init(x:)
 #  141|       InterfaceType = (B.Type) -> (Int) -> B
 #  141|     getSelfParam(): [ParamDecl] self
@@ -4234,6 +4866,9 @@ expressions.swift:
 #  146|       getSelfParam(): [ParamDecl] self
 #  146|           Type = A
 #  146|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .b
+#-----|             getBase(): [DeclRefExpr] self
 #  146|     getAccessorDecl(1): [AccessorDecl] set
 #  146|         InterfaceType = (inout A) -> (B) -> ()
 #  146|       getSelfParam(): [ParamDecl] self
@@ -4241,12 +4876,19 @@ expressions.swift:
 #  146|       getParam(0): [ParamDecl] value
 #  146|           Type = B
 #  146|       getBody(): [BraceStmt] { ... }
-#  146|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .b
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  146|     getAccessorDecl(2): [AccessorDecl] _modify
 #  146|         InterfaceType = (inout A) -> () -> ()
 #  146|       getSelfParam(): [ParamDecl] self
 #  146|           Type = A
 #  146|       getBody(): [BraceStmt] { ... }
 #  146|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .b
+#-----|               getBase(): [DeclRefExpr] self
 #  147|   getMember(2): [PatternBindingDecl] var ... = ...
 #  147|     getPattern(0): [TypedPattern] ... as ...
 #  147|       getSubPattern(): [NamedPattern] bs
@@ -4258,6 +4900,9 @@ expressions.swift:
 #  147|       getSelfParam(): [ParamDecl] self
 #  147|           Type = A
 #  147|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .bs
+#-----|             getBase(): [DeclRefExpr] self
 #  147|     getAccessorDecl(1): [AccessorDecl] set
 #  147|         InterfaceType = (inout A) -> ([B]) -> ()
 #  147|       getSelfParam(): [ParamDecl] self
@@ -4265,13 +4910,21 @@ expressions.swift:
 #  147|       getParam(0): [ParamDecl] value
 #  147|           Type = [B]
 #  147|       getBody(): [BraceStmt] { ... }
-#  147|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .bs
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  147|     getAccessorDecl(2): [AccessorDecl] _modify
 #  147|         InterfaceType = (inout A) -> () -> ()
 #  147|       getSelfParam(): [ParamDecl] self
 #  147|           Type = A
 #  147|       getBody(): [BraceStmt] { ... }
 #  147|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .bs
+#-----|               getBase(): [DeclRefExpr] self
 #  148|   getMember(4): [PatternBindingDecl] var ... = ...
+#-----|     getInit(0): [NilLiteralExpr] nil
 #  148|     getPattern(0): [TypedPattern] ... as ...
 #  148|       getSubPattern(): [NamedPattern] mayB
 #  148|       getTypeRepr(): [TypeRepr] B?
@@ -4282,6 +4935,9 @@ expressions.swift:
 #  148|       getSelfParam(): [ParamDecl] self
 #  148|           Type = A
 #  148|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .mayB
+#-----|             getBase(): [DeclRefExpr] self
 #  148|     getAccessorDecl(1): [AccessorDecl] set
 #  148|         InterfaceType = (inout A) -> (B?) -> ()
 #  148|       getSelfParam(): [ParamDecl] self
@@ -4289,12 +4945,19 @@ expressions.swift:
 #  148|       getParam(0): [ParamDecl] value
 #  148|           Type = B?
 #  148|       getBody(): [BraceStmt] { ... }
-#  148|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .mayB
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  148|     getAccessorDecl(2): [AccessorDecl] _modify
 #  148|         InterfaceType = (inout A) -> () -> ()
 #  148|       getSelfParam(): [ParamDecl] self
 #  148|           Type = A
 #  148|       getBody(): [BraceStmt] { ... }
 #  148|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .mayB
+#-----|               getBase(): [DeclRefExpr] self
 #  145|   getMember(6): [ConstructorDecl] init(b:bs:mayB:)
 #  145|       InterfaceType = (A.Type) -> (B, [B], B?) -> A
 #  145|     getSelfParam(): [ParamDecl] self
@@ -4742,6 +5405,86 @@ statements.swift:
 #   34| [EnumDecl] AnError
 #   35|   getMember(0): [EnumCaseDecl] case ...
 #   35|   getMember(1): [EnumElementDecl] failed
+#-----|   getMember(2): [ConcreteFuncDecl] __derived_enum_equals(_:_:)
+#-----|       InterfaceType = (AnError.Type) -> (AnError, AnError) -> Bool
+#-----|     getSelfParam(): [ParamDecl] self
+#-----|         Type = AnError.Type
+#-----|     getParam(0): [ParamDecl] a
+#-----|         Type = AnError
+#-----|     getParam(1): [ParamDecl] b
+#-----|         Type = AnError
+#-----|     getBody(): [BraceStmt] { ... }
+#-----|       getElement(0): [PatternBindingDecl] var ... = ...
+#-----|         getPattern(0): [TypedPattern] ... as ...
+#-----|           getSubPattern(): [NamedPattern] index_a
+#-----|       getElement(1): [SwitchStmt] switch a { ... }
+#-----|         getExpr(): [DeclRefExpr] a
+#-----|         getCase(0): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_a
+#-----|               getSource(): [IntegerLiteralExpr] 0
+#-----|           getLabel(0): [CaseLabelItem] .failed
+#-----|             getPattern(): [EnumElementPattern] .failed
+#-----|       getElement(2): [PatternBindingDecl] var ... = ...
+#-----|         getPattern(0): [TypedPattern] ... as ...
+#-----|           getSubPattern(): [NamedPattern] index_b
+#-----|       getElement(3): [SwitchStmt] switch b { ... }
+#-----|         getExpr(): [DeclRefExpr] b
+#-----|         getCase(0): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] index_b
+#-----|               getSource(): [IntegerLiteralExpr] 0
+#-----|           getLabel(0): [CaseLabelItem] .failed
+#-----|             getPattern(): [EnumElementPattern] .failed
+#-----|       getElement(4): [ReturnStmt] return ...
+#-----|         getResult(): [BinaryExpr] ... .==(_:_:) ...
+#-----|           getFunction(): [MethodRefExpr] .==(_:_:)
+#-----|             getBase(): [TypeExpr] Int.Type
+#-----|           getArgument(0): [Argument] : index_a
+#-----|             getExpr(): [DeclRefExpr] index_a
+#-----|           getArgument(1): [Argument] : index_b
+#-----|             getExpr(): [DeclRefExpr] index_b
+#-----|   getMember(3): [PatternBindingDecl] var ... = ...
+#-----|     getPattern(0): [TypedPattern] ... as ...
+#-----|       getSubPattern(): [NamedPattern] hashValue
+#-----|   getMember(4): [ConcreteFuncDecl] hash(into:)
+#-----|       InterfaceType = (AnError) -> (inout Hasher) -> ()
+#-----|     getSelfParam(): [ParamDecl] self
+#-----|         Type = AnError
+#-----|     getParam(0): [ParamDecl] hasher
+#-----|         Type = Hasher
+#-----|     getBody(): [BraceStmt] { ... }
+#-----|       getElement(0): [PatternBindingDecl] var ... = ...
+#-----|         getPattern(0): [TypedPattern] ... as ...
+#-----|           getSubPattern(): [NamedPattern] discriminator
+#-----|       getElement(1): [SwitchStmt] switch self { ... }
+#-----|         getExpr(): [DeclRefExpr] self
+#-----|         getCase(0): [CaseStmt] case ...
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [AssignExpr]  ... = ...
+#-----|               getDest(): [DeclRefExpr] discriminator
+#-----|               getSource(): [IntegerLiteralExpr] 0
+#-----|           getLabel(0): [CaseLabelItem] .failed
+#-----|             getPattern(): [EnumElementPattern] .failed
+#-----|       getElement(2): [CallExpr] call to ...
+#-----|         getFunction(): [UnresolvedDotExpr] ... .combine(_:)
+#-----|           getBase(): [DeclRefExpr] hasher
+#-----|         getArgument(0): [Argument] : discriminator
+#-----|           getExpr(): [DeclRefExpr] discriminator
+#-----|   getMember(5): [ConcreteVarDecl] hashValue
+#-----|       Type = Int
+#-----|     getAccessorDecl(0): [AccessorDecl] get
+#-----|         InterfaceType = (AnError) -> () -> Int
+#-----|       getSelfParam(): [ParamDecl] self
+#-----|           Type = AnError
+#-----|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [CallExpr] call to _hashValue(for:)
+#-----|             getFunction(): [DeclRefExpr] _hashValue(for:)
+#-----|             getArgument(0): [Argument] for: self
+#-----|               getExpr(): [DeclRefExpr] self
 #   38| [ConcreteFuncDecl] failure(_:)
 #   38|     InterfaceType = (Int) throws -> ()
 #   38|   getParam(0): [ParamDecl] x
@@ -4932,6 +5675,9 @@ statements.swift:
 #   75|       getSelfParam(): [ParamDecl] self
 #   75|           Type = HasModifyAccessorDecl
 #   75|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
 #   75|     getAccessorDecl(1): [AccessorDecl] set
 #   75|         InterfaceType = (inout HasModifyAccessorDecl) -> (Int) -> ()
 #   75|       getSelfParam(): [ParamDecl] self
@@ -4939,19 +5685,26 @@ statements.swift:
 #   75|       getParam(0): [ParamDecl] value
 #   75|           Type = Int
 #   75|       getBody(): [BraceStmt] { ... }
-#   75|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#   75|     getAccessorDecl(2): [AccessorDecl] _modify
 #   75|         InterfaceType = (inout HasModifyAccessorDecl) -> () -> ()
 #   75|       getSelfParam(): [ParamDecl] self
 #   75|           Type = HasModifyAccessorDecl
 #   75|       getBody(): [BraceStmt] { ... }
 #   75|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .x
+#-----|               getBase(): [DeclRefExpr] self
 #   76|   getMember(2): [PatternBindingDecl] var ... = ...
 #   76|     getPattern(0): [TypedPattern] ... as ...
 #   76|       getSubPattern(): [NamedPattern] hasModify
 #   76|       getTypeRepr(): [TypeRepr] Int
 #   76|   getMember(3): [ConcreteVarDecl] hasModify
 #   76|       Type = Int
-#   77|     getAccessorDecl(0): [AccessorDecl] (unnamed function decl)
+#   77|     getAccessorDecl(0): [AccessorDecl] _modify
 #   77|         InterfaceType = (inout HasModifyAccessorDecl) -> () -> ()
 #   77|       getSelfParam(): [ParamDecl] self
 #   77|           Type = HasModifyAccessorDecl
@@ -4974,6 +5727,10 @@ statements.swift:
 #   76|       getParam(0): [ParamDecl] value
 #   76|           Type = Int
 #   76|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .hasModify
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
 #   74|   getMember(4): [ConstructorDecl] init(x:)
 #   74|       InterfaceType = (HasModifyAccessorDecl.Type) -> (Int) -> HasModifyAccessorDecl
 #   74|     getSelfParam(): [ParamDecl] self

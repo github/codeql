@@ -1,3 +1,20 @@
+## 0.4.6
+
+### Minor Analysis Improvements
+
+* Kotlin extraction will now fail if the Kotlin version in use is at least 1.7.30. This is to ensure using an as-yet-unsupported version is noticable, rather than silently failing to extract Kotlin code and therefore producing false-negative results.
+
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+### New Queries
+
+* The query `java/insufficient-key-size` has been promoted from experimental to the main query pack. Its results will now appear by default. This query was originally [submitted as an experimental query by @luchua-bc](https://github.com/github/codeql/pull/4926).
+* Added a new query, `java/android/sensitive-keyboard-cache`, to detect instances of sensitive information possibly being saved to the Android keyboard cache.
+
 ## 0.4.3
 
 No user-facing changes.

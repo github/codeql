@@ -33,11 +33,13 @@ class Locatable(Element):
     location: optional[Location] | cpp.skip | doc("location associated with this element in the code")
 
 @qltest.collapse_hierarchy
-class UnresolvedElement(Locatable):
+@qltest.skip
+class ErrorElement(Locatable):
+    """The superclass of all elements indicating some kind of error."""
     pass
 
 @use_for_null
-class UnspecifiedElement(Locatable):
+class UnspecifiedElement(ErrorElement):
     parent: optional[Element]
     property: string
     index: optional[int]
@@ -146,9 +148,33 @@ class VarDecl(AbstractStorageDecl):
     attached_property_wrapper_type: optional[Type]
     parent_pattern: optional[Pattern]
     parent_initializer: optional[Expr]
+    property_wrapper_backing_var_binding: optional[PatternBindingDecl] | child | desc("""
+        This is the synthesized binding introducing the property wrapper backing variable for this
+        variable, if any.
+    """)
+    property_wrapper_backing_var: optional["VarDecl"] | child | desc("""
+        This is the synthesized variable holding the property wrapper for this variable, if any.
+    """)
+    property_wrapper_projection_var_binding: optional[PatternBindingDecl] | child | desc("""
+        This is the synthesized binding introducing the property wrapper projection variable for this
+        variable, if any.
+    """)
+    property_wrapper_projection_var: optional["VarDecl"] | child | desc("""
+        If this variable has a property wrapper with a projected value, this is the corresponding
+        synthesized variable holding that projected value, accessible with this variable's name
+        prefixed with `$`.
+    """)
 
 class ParamDecl(VarDecl):
     is_inout: predicate | doc("this is an `inout` parameter")
+    property_wrapper_local_wrapped_var_binding: optional[PatternBindingDecl] | child | desc("""
+        This is the synthesized binding introducing the property wrapper local wrapped projection
+        variable for this variable, if any.
+    """)
+    property_wrapper_local_wrapped_var: optional["VarDecl"] | child | desc("""
+        This is the synthesized local wrapped value, shadowing this parameter declaration in case it
+        has a property wrapper.
+    """)
 
 class Callable(Element):
     self_param: optional[ParamDecl] | child
@@ -206,6 +232,10 @@ class AccessorDecl(FuncDecl):
     is_setter: predicate | doc('this accessor is a setter')
     is_will_set: predicate | doc('this accessor is a `willSet`, called before the property is set')
     is_did_set: predicate | doc('this accessor is a `didSet`, called after the property is set')
+    is_read: predicate | doc('this accessor is a `_read` coroutine, yielding a borrowed value of the property')
+    is_modify: predicate | doc('this accessor is a `_modify` coroutine, yielding an inout value of the property')
+    is_unsafe_address: predicate | doc('this accessor is an `unsafeAddress` immutable addressor')
+    is_unsafe_mutable_address: predicate | doc('this accessor is an `unsafeMutableAddress` mutable addressor')
 
 class AssociatedTypeDecl(AbstractTypeParamDecl):
     pass
@@ -296,6 +326,7 @@ class DeclRefExpr(Expr):
     has_direct_to_storage_semantics: predicate
     has_direct_to_implementation_semantics: predicate
     has_ordinary_semantics: predicate
+    has_distributed_thunk_semantics: predicate
 
 class DefaultArgumentExpr(Expr):
     param_decl: ParamDecl
@@ -317,7 +348,7 @@ class EnumIsCaseExpr(Expr):
     element: EnumElementDecl
 
 @qltest.skip
-class ErrorExpr(Expr):
+class ErrorExpr(Expr, ErrorElement):
     pass
 
 class ExplicitCastExpr(Expr):
@@ -423,21 +454,16 @@ class TupleExpr(Expr):
 
 class TypeExpr(Expr):
     type_repr: optional["TypeRepr"] | child
-
-class UnresolvedDeclRefExpr(Expr, UnresolvedElement):
+class UnresolvedDeclRefExpr(Expr, ErrorElement):
     name: optional[string]
-
-class UnresolvedDotExpr(Expr, UnresolvedElement):
+class UnresolvedDotExpr(Expr, ErrorElement):
     base: Expr | child
     name: string
-
-class UnresolvedMemberExpr(Expr, UnresolvedElement):
+class UnresolvedMemberExpr(Expr, ErrorElement):
     name: string
-
-class UnresolvedPatternExpr(Expr, UnresolvedElement):
+class UnresolvedPatternExpr(Expr, ErrorElement):
     sub_pattern: Pattern | child
-
-class UnresolvedSpecializeExpr(Expr, UnresolvedElement):
+class UnresolvedSpecializeExpr(Expr, ErrorElement):
     sub_expr: Expr | child
 
 class VarargExpansionExpr(Expr):
@@ -568,6 +594,7 @@ class MemberRefExpr(LookupExpr):
     has_direct_to_storage_semantics: predicate
     has_direct_to_implementation_semantics: predicate
     has_ordinary_semantics: predicate
+    has_distributed_thunk_semantics: predicate
 
 class MetatypeConversionExpr(ImplicitConversionExpr):
     pass
@@ -585,7 +612,7 @@ class ObjectLiteralExpr(LiteralExpr):
 class OptionalTryExpr(AnyTryExpr):
     pass
 
-class OverloadedDeclRefExpr(Expr):
+class OverloadedDeclRefExpr(Expr, ErrorElement):
     """
     An ambiguous expression that might refer to multiple declarations. This will be present only
     for failing compilations.
@@ -621,6 +648,7 @@ class SubscriptExpr(LookupExpr):
     has_direct_to_storage_semantics: predicate
     has_direct_to_implementation_semantics: predicate
     has_ordinary_semantics: predicate
+    has_distributed_thunk_semantics: predicate
 
 class TryExpr(AnyTryExpr):
     pass
@@ -630,13 +658,10 @@ class UnderlyingToOpaqueExpr(ImplicitConversionExpr):
 
 class UnevaluatedInstanceExpr(ImplicitConversionExpr):
     pass
-
-class UnresolvedMemberChainResultExpr(IdentityExpr, UnresolvedElement):
+class UnresolvedMemberChainResultExpr(IdentityExpr, ErrorElement):
     pass
-
-class UnresolvedTypeConversionExpr(ImplicitConversionExpr, UnresolvedElement):
+class UnresolvedTypeConversionExpr(ImplicitConversionExpr, ErrorElement):
     pass
-
 class BooleanLiteralExpr(BuiltinLiteralExpr):
     value: boolean
 
@@ -836,8 +861,7 @@ class DependentMemberType(Type):
 
 class DynamicSelfType(Type):
     static_self_type: Type
-
-class ErrorType(Type):
+class ErrorType(Type, ErrorElement):
     pass
 
 class ExistentialType(Type):
@@ -867,13 +891,8 @@ class SugarType(Type):
 class TupleType(Type):
     types: list[Type]
     names: list[optional[string]]
-
-class TypeVariableType(Type):
+class UnresolvedType(Type, ErrorElement):
     pass
-
-class UnresolvedType(Type, UnresolvedElement):
-    pass
-
 class AnyBuiltinIntegerType(BuiltinType):
     pass
 
@@ -980,10 +999,6 @@ class OpenedArchetypeType(ArchetypeType):
 
 class PrimaryArchetypeType(ArchetypeType):
     pass
-
-class SequenceArchetypeType(ArchetypeType):
-    pass
-
 class UnarySyntaxSugarType(SyntaxSugarType):
     base_type: Type
 
@@ -1018,4 +1033,13 @@ class VariadicSequenceType(UnarySyntaxSugarType):
     pass
 
 class ParameterizedProtocolType(Type):
+    """
+    A sugar type of the form `P<X>` with `P` a protocol.
+
+    If `P` has primary associated type `A`, then `T: P<X>` is a shortcut for `T: P where T.A == X`.
+    """
+    base: ProtocolType
+    args: list[Type]
+
+class AbiSafeConversionExpr(ImplicitConversionExpr):
     pass

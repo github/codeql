@@ -8,8 +8,7 @@ private import codeql.ruby.AST as Ast
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
-private import codeql.ruby.Regexp
-private import codeql.ruby.security.regexp.SuperlinearBackTracking
+private import codeql.ruby.regexp.RegExpTreeView::RegexTreeView as TreeView
 
 /**
  * Provides default sources, sinks and sanitizers for reasoning about
@@ -17,6 +16,9 @@ private import codeql.ruby.security.regexp.SuperlinearBackTracking
  * as extension points for adding your own.
  */
 module PolynomialReDoS {
+  private import TreeView
+  import codeql.regex.nfa.SuperlinearBackTracking::Make<TreeView>
+
   /**
    * A data flow source node for polynomial regular expression denial-of-service vulnerabilities.
    */
@@ -127,7 +129,7 @@ module PolynomialReDoS {
     override DataFlow::Node getHighlight() { result = matchNode }
   }
 
-  private predicate lengthGuard(CfgNodes::ExprCfgNode g, CfgNode node, boolean branch) {
+  private predicate lengthGuard(CfgNodes::AstCfgNode g, CfgNode node, boolean branch) {
     exists(DataFlow::Node input, DataFlow::CallNode length, DataFlow::ExprNode operand |
       length.asExpr().getExpr().(Ast::MethodCall).getMethodName() = "length" and
       length.getReceiver() = input and

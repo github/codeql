@@ -2,7 +2,6 @@
 
 import csharp
 private import system.Reflection
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System` namespace. */
 class SystemNamespace extends Namespace {
@@ -258,9 +257,7 @@ class SystemNullReferenceExceptionClass extends SystemClass {
 }
 
 /** The `System.Object` class. */
-class SystemObjectClass extends SystemClass {
-  SystemObjectClass() { this instanceof ObjectType }
-
+class SystemObjectClass extends SystemClass instanceof ObjectType {
   /** Gets the `Equals(object)` method. */
   Method getEqualsMethod() {
     result.getDeclaringType() = this and

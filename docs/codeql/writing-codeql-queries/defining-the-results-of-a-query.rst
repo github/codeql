@@ -9,8 +9,8 @@ About query results
 -------------------
 
 The information contained in the results of a query is controlled by the ``select`` statement. Part of the process of developing a useful query is to make the results clear and easy for other users to understand.
-When you write your own queries in the query console or in the CodeQL :ref:`extension for VS Code <codeql-for-visual-studio-code>` there are no constraints on what can be selected.
-However, if you want to use a query to create alerts in LGTM or generate valid analysis results using the :ref:`CodeQL CLI <codeql-cli>`, you'll need to make the ``select`` statement report results in the required format. 
+When you write your own queries in the CodeQL :ref:`extension for VS Code <codeql-for-visual-studio-code>` there are no constraints on what can be selected.
+However, if you want to use a query to create alerts for code scanning or generate valid analysis results using the :ref:`CodeQL CLI <codeql-cli>`, you'll need to make the ``select`` statement report results in the required format. 
 You must also ensure that the query has the appropriate metadata properties defined. 
 This topic explains how to write your select statement to generate helpful analysis results. 
 
@@ -23,7 +23,7 @@ In their most basic form, the ``select`` statement must select two 'columns':
 -  **Element**—a code element that's identified by the query. This defines the location of the alert.
 -  **String**—a message to display for this code element, describing why the alert was generated.
 
-If you look at some of the LGTM queries, you'll see that they can select extra element/string pairs, which are combined with ``$@`` placeholder markers in the message to form links. For example, `Dereferenced variable may be null <https://lgtm.com/query/rule:1954750296/lang:java/>`__ (Java), or `Duplicate switch case <https://lgtm.com/query/rule:7890077/lang:javascript/>`__ (JavaScript). 
+If you look at some of the existing queries, you'll see that they can select extra element/string pairs, which are combined with ``$@`` placeholder markers in the message to form links. For example, `Dereferenced variable may be null <https://github.com/github/codeql/blob/95e65347cafe502bbd0d9f48d1175fd3d66e0459/java/ql/src/Likely%20Bugs/Nullness/NullMaybe.ql>`__ (Java), or `Duplicate switch case <https://github.com/github/codeql/blob/95e65347cafe502bbd0d9f48d1175fd3d66e0459/javascript/ql/src/Expressions/DuplicateSwitchCase.ql>`__ (JavaScript). 
 
 .. pull-quote::
 
@@ -34,78 +34,70 @@ If you look at some of the LGTM queries, you'll see that they can select extra e
 Developing a select statement
 -----------------------------
 
-Here's a simple query that uses the standard CodeQL ``CodeDuplication.qll`` library to identify similar files.
+Here's a simple query to find Java classes that extend other classes.
 
 Basic select statement
 ~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: ql
 
-   import java
-   import external.CodeDuplication
-
-   from File f, File other, int percent
-   where similarFiles(f, other, percent)
-   select f, "This file is similar to another file."
+    /**
+     * @kind problem
+     */
+    
+    import java
+    
+    from Class c, Class superclass
+    where superclass = c.getASupertype()
+    select c, "This class extends another class."
 
 This basic select statement has two columns:
 
-#. Element to display the alert on: ``f`` corresponds to ``File``.
-#. String message to display: ``"This file is similar to another file."``
+#. An element with a location to display the alert on: ``c`` corresponds to ``Class``.
+#. String message to display: ``"This class extends another class."``
 
 .. image:: ../images/ql-select-statement-basic.png
    :alt: Results of basic select statement
    :class: border
 
-Including the name of the similar file
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Including the name of the superclass
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The alert message defined by the basic select statement is constant and doesn't give users much information. Since the query identifies the similar file (``other``), it's easy to extend the ``select`` statement to report the name of the similar file. For example:
+The alert message defined by the basic select statement is constant and doesn't give users much information. Since the query identifies the superclass, it's easy to include its name in the string message. For example:
 
 .. code-block:: ql
 
-   select f, "This file is similar to " + other.getBaseName()
+   select c, "This class extends the class " + superclass.getName()
 
-#. Element: ``f`` as before.
-#. String message: ``"This file is similar to "``—the string text is combined with the file name for the ``other``, similar file, returned by ``getBaseName()``.
+#. Element: ``c`` as before.
+#. String message: ``"This class extends the class "``—the string text is combined with the class name for the ``superclass``, returned by ``getName()``.
 
-.. image:: ../images/ql-select-statement-filename.png
+.. image:: ../images/ql-select-statement-class-name.png
    :alt: Results of extended select statement
    :class: border
 
-While this is more informative than the original select statement, the user still needs to find the other file manually.
+While this is more informative than the original select statement, the user still needs to find the superclass manually.
 
-Adding a link to the similar file
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adding a link to the superclass
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can use placeholders in the text of alert messages to insert additional information, such as links to the similar file. Placeholders are defined using ``$@``, and filled using the information in the next two columns of the select statement. For example, this select statement returns four columns:
+You can use placeholders in the text of alert messages to insert additional information, such as links to the superclass. Placeholders are defined using ``$@``, and filled using the information in the next two columns of the select statement. For example, this select statement returns four columns:
 
 .. code-block:: ql
 
-   select f, "This file is similar to $@.", other, other.getBaseName()
+   select c, "This class extends the class $@.", superclass, superclass.getName()
 
-#. Element: ``f`` as before.
-#. String message: ``"This file is similar to $@."``—the string text now includes a placeholder, which will display the combined content of the next two columns.
-#. Element for placeholder: ``other`` corresponds to the similar file.
-#. String text for placeholder: the short file name returned by ``other.getBaseName()``.
+#. Element: ``c`` as before.
+#. String message: ``"This class extends the class $@."``—the string text now includes a placeholder, which will display the combined content of the next two columns.
+#. Element for placeholder: the ``superclass``.
+#. String text for placeholder: the class name returned by ``superclass.getBaseName()``.
 
-When the alert message is displayed, the ``$@`` placeholder is replaced by a link created from the contents of the third and fourth columns defined by the ``select`` statement.
+When the alert message is displayed, the ``$@`` placeholder is replaced by a link created from the contents of the third and fourth columns defined by the ``select`` statement. In this example, the link target will be the location of the superclass's definition, and the link text will be its name. Note that some superclasses, such as ``Object``, will not be in the database, since they are built in to the Java language. Clicking those links will have no effect.
 
 If you use the ``$@`` placeholder marker multiple times in the description text, then the ``N``\ th use is replaced by a link formed from columns ``2N+2`` and ``2N+3``. If there are more pairs of additional columns than there are placeholder markers, then the trailing columns are ignored. Conversely, if there are fewer pairs of additional columns than there are placeholder markers, then the trailing markers are treated as normal text rather than placeholder markers.
 
-Adding details of the extent of similarity
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You could go further and change the ``select`` statement to report on the similarity of content in the two files, since this information is already available in the query. For example:
-
-.. code-block:: ql
-
-   select f, percent + "% of the lines in " + f.getBaseName() + " are similar to lines in $@.", other, other.getBaseName()
-
-The new elements added here don't need to be clickable, so we added them directly to the description string.
-
-.. image:: ../images/ql-select-statement-similarity.png
-   :alt: Results showing the extent of similarity
+.. image:: ../images/ql-select-statement-link.png
+   :alt: Results including links
    :class: border
 
 Further reading

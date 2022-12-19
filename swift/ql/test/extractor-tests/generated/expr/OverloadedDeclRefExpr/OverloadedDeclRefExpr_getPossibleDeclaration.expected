@@ -1,2 +1,0 @@
-| overloaded.swift:6:5:6:5 | OverloadedDeclRefExpr | 0 | overloaded.swift:3:1:3:13 | foo() |
-| overloaded.swift:6:5:6:5 | OverloadedDeclRefExpr | 1 | overloaded.swift:4:1:4:19 | foo(_:) |

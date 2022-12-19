@@ -150,4 +150,8 @@ module ReflectedXss {
       this.(Http::RequestHeaderAccess).getAHeaderName() = "referer"
     }
   }
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("html-injection").asSink() }
+  }
 }

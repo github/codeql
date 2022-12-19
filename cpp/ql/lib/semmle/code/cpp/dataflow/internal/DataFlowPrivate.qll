@@ -296,6 +296,13 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) { none() }
 
+/** An approximated `Content`. */
+class ContentApprox = Unit;
+
+/** Gets an approximated value for content `c`. */
+pragma[inline]
+ContentApprox getContentApprox(Content c) { any() }
+
 private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
   override predicate argHasPostUpdateExclude(ArgumentNode n) {
     // Is the null pointer (or something that's not really a pointer)

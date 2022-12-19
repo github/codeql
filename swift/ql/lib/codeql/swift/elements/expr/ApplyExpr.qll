@@ -19,6 +19,14 @@ class ApplyExpr extends Generated::ApplyExpr {
   /** Gets the method qualifier, if this is applying a method */
   Expr getQualifier() { none() }
 
+  /**
+   * Gets the argument of this `ApplyExpr` called `label` (if any).
+   */
+  final Argument getArgumentWithLabel(string label) {
+    result = this.getAnArgument() and
+    result.getLabel() = label
+  }
+
   override string toString() {
     result = "call to " + this.getStaticTarget().toString()
     or

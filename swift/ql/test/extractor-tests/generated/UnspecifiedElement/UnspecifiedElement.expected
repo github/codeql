@@ -1,9 +1,0 @@
-| wrong.swift:3:1:3:23 | missing extended_type_decl from ExtensionDecl | getProperty: | extended_type_decl | getError: | element was unspecified by the extractor |
-| wrong.swift:9:9:9:9 | missing fallthrough_dest from FallthroughStmt | getProperty: | fallthrough_dest | getError: | element was unspecified by the extractor |
-| wrong.swift:9:9:9:9 | missing fallthrough_source from FallthroughStmt | getProperty: | fallthrough_source | getError: | element was unspecified by the extractor |
-| wrong.swift:12:18:12:21 | missing element from EnumElementPattern | getProperty: | element | getError: | element was unspecified by the extractor |
-| wrong.swift:14:18:14:26 | missing element from EnumElementPattern | getProperty: | element | getError: | element was unspecified by the extractor |
-| wrong.swift:19:18:19:19 | missing element from EnumElementPattern | getProperty: | element | getError: | element was unspecified by the extractor |
-| wrong.swift:22:13:22:13 | missing fallthrough_dest from FallthroughStmt | getProperty: | fallthrough_dest | getError: | element was unspecified by the extractor |
-| wrong.swift:22:13:22:13 | missing fallthrough_source from FallthroughStmt | getProperty: | fallthrough_source | getError: | element was unspecified by the extractor |
-| wrong.swift:26:18:26:19 | missing element from EnumElementPattern | getProperty: | element | getError: | element was unspecified by the extractor |

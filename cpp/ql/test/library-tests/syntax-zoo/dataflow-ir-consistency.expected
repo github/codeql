@@ -1463,6 +1463,8 @@ uniqueNodeToString
 missingToString
 parameterCallable
 localFlowIsLocal
+readStepIsLocal
+storeStepIsLocal
 compatibleTypesReflexive
 unreachableNodeCCtx
 localCallNodes
@@ -2711,3 +2713,8 @@ postWithInFlow
 | whilestmt.c:40:7:40:7 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | whilestmt.c:42:7:42:7 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
+uniqueParameterNodeAtPosition
+| ir.cpp:724:6:724:13 | TryCatch | 0 | ir.cpp:735:22:735:22 | *s | Parameters with overlapping positions. |
+| ir.cpp:724:6:724:13 | TryCatch | 0 | ir.cpp:738:24:738:24 | *e | Parameters with overlapping positions. |
+uniqueParameterNodePosition
+uniqueContentApprox

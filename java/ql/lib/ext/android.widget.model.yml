@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["android.widget", "EditText", True, "getText", "", "", "ReturnValue", "android-widget", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["android.widget", "EditText", True, "getText", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

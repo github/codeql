@@ -12,7 +12,7 @@ func unzipGood(f string) {
 	for _, f := range r.File {
 		p, _ := filepath.Abs(f.Name)
 		// GOOD: Check that path does not contain ".." before using it
-		if !strings.Contains(p, "..") {
+		if !strings.Contains(f.Name, "..") {
 			ioutil.WriteFile(p, []byte("present"), 0666)
 		}
 	}

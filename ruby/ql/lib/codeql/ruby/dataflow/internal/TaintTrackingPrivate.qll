@@ -4,6 +4,7 @@ private import TaintTrackingPublic
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import FlowSummaryImpl as FlowSummaryImpl
+private import codeql.ruby.dataflow.SSA
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -62,6 +63,8 @@ private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
 
 cached
 private module Cached {
+  private import codeql.ruby.dataflow.FlowSteps as FlowSteps
+
   cached
   predicate forceCachingInSameStage() { any() }
 
@@ -75,7 +78,7 @@ private module Cached {
     exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprNodes::InClauseCfgNode clause |
       nodeFrom.asExpr() = case.getValue() and
       clause = case.getBranch(_) and
-      nodeTo.(SsaDefinitionNode).getDefinition().getControlFlowNode() =
+      nodeTo.(SsaDefinitionExtNode).getDefinitionExt().(Ssa::Definition).getControlFlowNode() =
         variablesInPattern(clause.getPattern())
     )
     or
@@ -93,11 +96,9 @@ private module Cached {
         )
     )
     or
-    // string interpolation of `nodeFrom` into `nodeTo`
-    nodeFrom.asExpr() =
-      nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
-    or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    or
+    any(FlowSteps::AdditionalTaintStep s).step(nodeFrom, nodeTo)
     or
     // Although flow through collections is modeled precisely using stores/reads, we still
     // allow flow out of a _tainted_ collection. This is needed in order to support taint-

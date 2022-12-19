@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["javax.faces.context", "ExternalContext", True, "getRequestCookieMap", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.faces.context", "ExternalContext", True, "getRequestHeaderMap", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.faces.context", "ExternalContext", True, "getRequestHeaderValuesMap", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.faces.context", "ExternalContext", True, "getRequestParameterMap", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.faces.context", "ExternalContext", True, "getRequestParameterNames", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.faces.context", "ExternalContext", True, "getRequestParameterValuesMap", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.faces.context", "ExternalContext", True, "getRequestPathInfo", "()", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.faces.context", "ResponseStream", True, "write", "", "", "Argument[0]", "xss", "manual"]
+      - ["javax.faces.context", "ResponseWriter", True, "write", "", "", "Argument[0]", "xss", "manual"]

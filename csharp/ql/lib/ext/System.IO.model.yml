@@ -1,12 +1,12 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["System.IO", "FileStream", False, "FileStream", "", "", "Argument[this]", "file", "manual"]
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.IO", "FileStream", False, "FileStream", "(System.String,System.IO.FileMode)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["System.IO", "FileStream", False, "FileStream", "(System.String,System.IO.FileMode,System.IO.FileAccess)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
@@ -57,7 +57,19 @@ extensions:
       - ["System.IO", "Stream", True, "Write", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[0].Element", "Argument[this]", "taint", "manual"]
       - ["System.IO", "Stream", False, "WriteAsync", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[0].Element", "Argument[this]", "taint", "manual"]
       - ["System.IO", "Stream", True, "WriteAsync", "(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)", "", "Argument[0].Element", "Argument[this]", "taint", "manual"]
-      - ["System.IO", "StreamReader", False, "StreamReader", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.IO.Stream,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.IO.Stream,System.Text.Encoding)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.IO.Stream,System.Text.Encoding,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.IO.Stream,System.Text.Encoding,System.Boolean,System.Int32)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.IO.Stream,System.Text.Encoding,System.Boolean,System.Int32,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.IO.FileStreamOptions)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Text.Encoding)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Text.Encoding,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Text.Encoding,System.Boolean,System.IO.FileStreamOptions)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Text.Encoding,System.Boolean,System.Int32)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["System.IO", "StringReader", False, "StringReader", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["System.IO", "TextReader", True, "Read", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["System.IO", "TextReader", True, "Read", "(System.Char[],System.Int32,System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "manual"]

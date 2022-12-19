@@ -1,74 +1,68 @@
 edges
-| builtin.go:19:12:19:34 | call to FormValue : string | builtin.go:22:21:22:62 | ...+... |
-| builtin.go:83:21:83:31 | call to Referer : string | builtin.go:88:27:88:40 | untrustedInput |
-| builtin.go:97:21:97:31 | call to Referer : string | builtin.go:101:36:101:49 | untrustedInput |
-| builtin.go:111:21:111:31 | call to Referer : string | builtin.go:114:15:114:28 | untrustedInput |
-| builtin.go:129:21:129:31 | call to Referer : string | builtin.go:132:38:132:51 | untrustedInput |
-| new-tests.go:26:26:26:30 | &... : pointer type | new-tests.go:31:11:31:57 | call to Sprintf |
-| new-tests.go:26:26:26:30 | &... : pointer type | new-tests.go:32:11:32:57 | call to Sprintf |
-| new-tests.go:26:26:26:30 | &... : pointer type | new-tests.go:35:12:35:58 | call to Sprintf |
-| new-tests.go:39:18:39:30 | call to Param : string | new-tests.go:47:11:47:46 | ...+... |
-| new-tests.go:49:18:49:30 | call to Query : string | new-tests.go:50:11:50:46 | ...+... |
-| new-tests.go:62:31:62:38 | selection of Body : ReadCloser | new-tests.go:68:11:68:57 | call to Sprintf |
-| new-tests.go:62:31:62:38 | selection of Body : ReadCloser | new-tests.go:69:11:69:57 | call to Sprintf |
-| new-tests.go:62:31:62:38 | selection of Body : ReadCloser | new-tests.go:74:12:74:58 | call to Sprintf |
-| new-tests.go:78:18:78:24 | selection of URL : pointer type | new-tests.go:79:11:79:46 | ...+... |
-| new-tests.go:81:37:81:43 | implicit dereference : URL | new-tests.go:81:37:81:43 | implicit dereference : URL |
-| new-tests.go:81:37:81:43 | implicit dereference : URL | new-tests.go:81:37:81:43 | selection of URL : pointer type |
-| new-tests.go:81:37:81:43 | implicit dereference : URL | new-tests.go:82:11:82:46 | ...+... |
-| new-tests.go:81:37:81:43 | selection of URL : pointer type | new-tests.go:81:37:81:43 | implicit dereference : URL |
-| new-tests.go:81:37:81:43 | selection of URL : pointer type | new-tests.go:81:37:81:43 | selection of URL : pointer type |
-| new-tests.go:81:37:81:43 | selection of URL : pointer type | new-tests.go:82:11:82:46 | ...+... |
-| new-tests.go:86:10:86:20 | call to Vars : map type | new-tests.go:88:11:88:46 | ...+... |
-| new-tests.go:95:18:95:45 | call to URLParam : string | new-tests.go:96:11:96:46 | ...+... |
+| builtin.go:19:12:19:34 | call to FormValue | builtin.go:22:21:22:62 | ...+... |
+| builtin.go:83:21:83:31 | call to Referer | builtin.go:88:27:88:40 | untrustedInput |
+| builtin.go:97:21:97:31 | call to Referer | builtin.go:101:36:101:49 | untrustedInput |
+| builtin.go:111:21:111:31 | call to Referer | builtin.go:114:15:114:28 | untrustedInput |
+| builtin.go:129:21:129:31 | call to Referer | builtin.go:132:38:132:51 | untrustedInput |
+| new-tests.go:26:26:26:30 | &... | new-tests.go:31:11:31:57 | call to Sprintf |
+| new-tests.go:26:26:26:30 | &... | new-tests.go:32:11:32:57 | call to Sprintf |
+| new-tests.go:26:26:26:30 | &... | new-tests.go:35:12:35:58 | call to Sprintf |
+| new-tests.go:39:18:39:30 | call to Param | new-tests.go:47:11:47:46 | ...+... |
+| new-tests.go:49:18:49:30 | call to Query | new-tests.go:50:11:50:46 | ...+... |
+| new-tests.go:62:31:62:38 | selection of Body | new-tests.go:68:11:68:57 | call to Sprintf |
+| new-tests.go:62:31:62:38 | selection of Body | new-tests.go:69:11:69:57 | call to Sprintf |
+| new-tests.go:62:31:62:38 | selection of Body | new-tests.go:74:12:74:58 | call to Sprintf |
+| new-tests.go:78:18:78:24 | selection of URL | new-tests.go:79:11:79:46 | ...+... |
+| new-tests.go:81:37:81:43 | selection of URL | new-tests.go:82:11:82:46 | ...+... |
+| new-tests.go:86:10:86:20 | call to Vars | new-tests.go:88:11:88:46 | ...+... |
+| new-tests.go:95:18:95:45 | call to URLParam | new-tests.go:96:11:96:46 | ...+... |
 nodes
-| builtin.go:19:12:19:34 | call to FormValue : string | semmle.label | call to FormValue : string |
+| builtin.go:19:12:19:34 | call to FormValue | semmle.label | call to FormValue |
 | builtin.go:22:21:22:62 | ...+... | semmle.label | ...+... |
-| builtin.go:83:21:83:31 | call to Referer : string | semmle.label | call to Referer : string |
+| builtin.go:83:21:83:31 | call to Referer | semmle.label | call to Referer |
 | builtin.go:88:27:88:40 | untrustedInput | semmle.label | untrustedInput |
-| builtin.go:97:21:97:31 | call to Referer : string | semmle.label | call to Referer : string |
+| builtin.go:97:21:97:31 | call to Referer | semmle.label | call to Referer |
 | builtin.go:101:36:101:49 | untrustedInput | semmle.label | untrustedInput |
-| builtin.go:111:21:111:31 | call to Referer : string | semmle.label | call to Referer : string |
+| builtin.go:111:21:111:31 | call to Referer | semmle.label | call to Referer |
 | builtin.go:114:15:114:28 | untrustedInput | semmle.label | untrustedInput |
-| builtin.go:129:21:129:31 | call to Referer : string | semmle.label | call to Referer : string |
+| builtin.go:129:21:129:31 | call to Referer | semmle.label | call to Referer |
 | builtin.go:132:38:132:51 | untrustedInput | semmle.label | untrustedInput |
-| new-tests.go:26:26:26:30 | &... : pointer type | semmle.label | &... : pointer type |
+| new-tests.go:26:26:26:30 | &... | semmle.label | &... |
 | new-tests.go:31:11:31:57 | call to Sprintf | semmle.label | call to Sprintf |
 | new-tests.go:32:11:32:57 | call to Sprintf | semmle.label | call to Sprintf |
 | new-tests.go:35:12:35:58 | call to Sprintf | semmle.label | call to Sprintf |
-| new-tests.go:39:18:39:30 | call to Param : string | semmle.label | call to Param : string |
+| new-tests.go:39:18:39:30 | call to Param | semmle.label | call to Param |
 | new-tests.go:47:11:47:46 | ...+... | semmle.label | ...+... |
-| new-tests.go:49:18:49:30 | call to Query : string | semmle.label | call to Query : string |
+| new-tests.go:49:18:49:30 | call to Query | semmle.label | call to Query |
 | new-tests.go:50:11:50:46 | ...+... | semmle.label | ...+... |
-| new-tests.go:62:31:62:38 | selection of Body : ReadCloser | semmle.label | selection of Body : ReadCloser |
+| new-tests.go:62:31:62:38 | selection of Body | semmle.label | selection of Body |
 | new-tests.go:68:11:68:57 | call to Sprintf | semmle.label | call to Sprintf |
 | new-tests.go:69:11:69:57 | call to Sprintf | semmle.label | call to Sprintf |
 | new-tests.go:74:12:74:58 | call to Sprintf | semmle.label | call to Sprintf |
-| new-tests.go:78:18:78:24 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| new-tests.go:78:18:78:24 | selection of URL | semmle.label | selection of URL |
 | new-tests.go:79:11:79:46 | ...+... | semmle.label | ...+... |
-| new-tests.go:81:37:81:43 | implicit dereference : URL | semmle.label | implicit dereference : URL |
-| new-tests.go:81:37:81:43 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| new-tests.go:81:37:81:43 | selection of URL | semmle.label | selection of URL |
 | new-tests.go:82:11:82:46 | ...+... | semmle.label | ...+... |
-| new-tests.go:86:10:86:20 | call to Vars : map type | semmle.label | call to Vars : map type |
+| new-tests.go:86:10:86:20 | call to Vars | semmle.label | call to Vars |
 | new-tests.go:88:11:88:46 | ...+... | semmle.label | ...+... |
-| new-tests.go:95:18:95:45 | call to URLParam : string | semmle.label | call to URLParam : string |
+| new-tests.go:95:18:95:45 | call to URLParam | semmle.label | call to URLParam |
 | new-tests.go:96:11:96:46 | ...+... | semmle.label | ...+... |
 subpaths
 #select
-| builtin.go:22:12:22:63 | call to Get | builtin.go:19:12:19:34 | call to FormValue : string | builtin.go:22:21:22:62 | ...+... | The URL of this request depends on a user-provided value. |
-| builtin.go:88:12:88:53 | call to Dial | builtin.go:83:21:83:31 | call to Referer : string | builtin.go:88:27:88:40 | untrustedInput | The URL of this request depends on a user-provided value. |
-| builtin.go:102:13:102:40 | call to DialConfig | builtin.go:97:21:97:31 | call to Referer : string | builtin.go:101:36:101:49 | untrustedInput | The URL of this request depends on a user-provided value. |
-| builtin.go:114:3:114:39 | call to Dial | builtin.go:111:21:111:31 | call to Referer : string | builtin.go:114:15:114:28 | untrustedInput | The URL of this request depends on a user-provided value. |
-| builtin.go:132:3:132:62 | call to DialContext | builtin.go:129:21:129:31 | call to Referer : string | builtin.go:132:38:132:51 | untrustedInput | The URL of this request depends on a user-provided value. |
-| new-tests.go:31:2:31:58 | call to Get | new-tests.go:26:26:26:30 | &... : pointer type | new-tests.go:31:11:31:57 | call to Sprintf | The URL of this request depends on a user-provided value. |
-| new-tests.go:32:2:32:58 | call to Get | new-tests.go:26:26:26:30 | &... : pointer type | new-tests.go:32:11:32:57 | call to Sprintf | The URL of this request depends on a user-provided value. |
-| new-tests.go:35:3:35:59 | call to Get | new-tests.go:26:26:26:30 | &... : pointer type | new-tests.go:35:12:35:58 | call to Sprintf | The URL of this request depends on a user-provided value. |
-| new-tests.go:47:2:47:47 | call to Get | new-tests.go:39:18:39:30 | call to Param : string | new-tests.go:47:11:47:46 | ...+... | The URL of this request depends on a user-provided value. |
-| new-tests.go:50:2:50:47 | call to Get | new-tests.go:49:18:49:30 | call to Query : string | new-tests.go:50:11:50:46 | ...+... | The URL of this request depends on a user-provided value. |
-| new-tests.go:68:2:68:58 | call to Get | new-tests.go:62:31:62:38 | selection of Body : ReadCloser | new-tests.go:68:11:68:57 | call to Sprintf | The URL of this request depends on a user-provided value. |
-| new-tests.go:69:2:69:58 | call to Get | new-tests.go:62:31:62:38 | selection of Body : ReadCloser | new-tests.go:69:11:69:57 | call to Sprintf | The URL of this request depends on a user-provided value. |
-| new-tests.go:74:3:74:59 | call to Get | new-tests.go:62:31:62:38 | selection of Body : ReadCloser | new-tests.go:74:12:74:58 | call to Sprintf | The URL of this request depends on a user-provided value. |
-| new-tests.go:79:2:79:47 | call to Get | new-tests.go:78:18:78:24 | selection of URL : pointer type | new-tests.go:79:11:79:46 | ...+... | The URL of this request depends on a user-provided value. |
-| new-tests.go:82:2:82:47 | call to Get | new-tests.go:81:37:81:43 | selection of URL : pointer type | new-tests.go:82:11:82:46 | ...+... | The URL of this request depends on a user-provided value. |
-| new-tests.go:88:2:88:47 | call to Get | new-tests.go:86:10:86:20 | call to Vars : map type | new-tests.go:88:11:88:46 | ...+... | The URL of this request depends on a user-provided value. |
-| new-tests.go:96:2:96:47 | call to Get | new-tests.go:95:18:95:45 | call to URLParam : string | new-tests.go:96:11:96:46 | ...+... | The URL of this request depends on a user-provided value. |
+| builtin.go:22:12:22:63 | call to Get | builtin.go:19:12:19:34 | call to FormValue | builtin.go:22:21:22:62 | ...+... | The URL of this request depends on a user-provided value. |
+| builtin.go:88:12:88:53 | call to Dial | builtin.go:83:21:83:31 | call to Referer | builtin.go:88:27:88:40 | untrustedInput | The URL of this request depends on a user-provided value. |
+| builtin.go:102:13:102:40 | call to DialConfig | builtin.go:97:21:97:31 | call to Referer | builtin.go:101:36:101:49 | untrustedInput | The URL of this request depends on a user-provided value. |
+| builtin.go:114:3:114:39 | call to Dial | builtin.go:111:21:111:31 | call to Referer | builtin.go:114:15:114:28 | untrustedInput | The URL of this request depends on a user-provided value. |
+| builtin.go:132:3:132:62 | call to DialContext | builtin.go:129:21:129:31 | call to Referer | builtin.go:132:38:132:51 | untrustedInput | The URL of this request depends on a user-provided value. |
+| new-tests.go:31:2:31:58 | call to Get | new-tests.go:26:26:26:30 | &... | new-tests.go:31:11:31:57 | call to Sprintf | The URL of this request depends on a user-provided value. |
+| new-tests.go:32:2:32:58 | call to Get | new-tests.go:26:26:26:30 | &... | new-tests.go:32:11:32:57 | call to Sprintf | The URL of this request depends on a user-provided value. |
+| new-tests.go:35:3:35:59 | call to Get | new-tests.go:26:26:26:30 | &... | new-tests.go:35:12:35:58 | call to Sprintf | The URL of this request depends on a user-provided value. |
+| new-tests.go:47:2:47:47 | call to Get | new-tests.go:39:18:39:30 | call to Param | new-tests.go:47:11:47:46 | ...+... | The URL of this request depends on a user-provided value. |
+| new-tests.go:50:2:50:47 | call to Get | new-tests.go:49:18:49:30 | call to Query | new-tests.go:50:11:50:46 | ...+... | The URL of this request depends on a user-provided value. |
+| new-tests.go:68:2:68:58 | call to Get | new-tests.go:62:31:62:38 | selection of Body | new-tests.go:68:11:68:57 | call to Sprintf | The URL of this request depends on a user-provided value. |
+| new-tests.go:69:2:69:58 | call to Get | new-tests.go:62:31:62:38 | selection of Body | new-tests.go:69:11:69:57 | call to Sprintf | The URL of this request depends on a user-provided value. |
+| new-tests.go:74:3:74:59 | call to Get | new-tests.go:62:31:62:38 | selection of Body | new-tests.go:74:12:74:58 | call to Sprintf | The URL of this request depends on a user-provided value. |
+| new-tests.go:79:2:79:47 | call to Get | new-tests.go:78:18:78:24 | selection of URL | new-tests.go:79:11:79:46 | ...+... | The URL of this request depends on a user-provided value. |
+| new-tests.go:82:2:82:47 | call to Get | new-tests.go:81:37:81:43 | selection of URL | new-tests.go:82:11:82:46 | ...+... | The URL of this request depends on a user-provided value. |
+| new-tests.go:88:2:88:47 | call to Get | new-tests.go:86:10:86:20 | call to Vars | new-tests.go:88:11:88:46 | ...+... | The URL of this request depends on a user-provided value. |
+| new-tests.go:96:2:96:47 | call to Get | new-tests.go:95:18:95:45 | call to URLParam | new-tests.go:96:11:96:46 | ...+... | The URL of this request depends on a user-provided value. |

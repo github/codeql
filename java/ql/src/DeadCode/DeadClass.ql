@@ -14,6 +14,8 @@ import semmle.code.java.deadcode.DeadCode
 
 from DeadClass c, Element origin, string reason
 where
+  not c.getFile().isKotlinSourceFile() and
+  not origin.getFile().isKotlinSourceFile() and
   if exists(DeadRoot root | root = c.getADeadRoot() | not root = c.getACallable())
   then (
     // Report a list of the dead roots.
