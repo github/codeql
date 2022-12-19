@@ -5,12 +5,12 @@
 #include <swift/AST/SourceFile.h>
 #include <swift/Frontend/Frontend.h>
 
-#include "swift/extractor/config/SwiftExtractorConfiguration.h"
+#include "swift/extractor/config/SwiftExtractorState.h"
 #include "swift/extractor/trap/TrapDomain.h"
 
 namespace codeql {
 
-void extractSwiftInvocation(const SwiftExtractorConfiguration& config,
+void extractSwiftInvocation(const SwiftExtractorState& state,
                             swift::CompilerInstance& compiler,
-                            codeql::TrapDomain& trap);
+                            TrapDomain& trap);
 }  // namespace codeql
