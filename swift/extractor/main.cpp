@@ -9,11 +9,13 @@
 
 #include <swift/Basic/LLVMInitialize.h>
 #include <swift/FrontendTool/FrontendTool.h>
+#include <swift/Basic/InitializeSwiftModules.h>
 
 #include "swift/extractor/SwiftExtractor.h"
 #include "swift/extractor/infra/TargetDomains.h"
 #include "swift/extractor/remapping/SwiftFileInterception.h"
 #include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
+#include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/file/Path.h"
 #include <swift/Basic/InitializeSwiftModules.h>
@@ -89,6 +91,7 @@ class Observer : public swift::FrontendObserver {
 
   void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
     codeql::extractSwiftFiles(state, compiler);
+    codeql::extractSwiftInvocation(state, compiler, invocationTrap);
   }
 
  private:
