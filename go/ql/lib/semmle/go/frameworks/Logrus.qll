@@ -62,26 +62,18 @@ module Logrus {
     }
   }
 
-  private class Formatter extends Type {
-    Formatter() { this.hasQualifiedName(packagePath(), "Formatter") }
-  }
-
-  private class Logger extends Type {
-    Logger() { this.hasQualifiedName(packagePath(), "Logger") }
-  }
-
   private class LoggerFormatter extends Field {
     LoggerFormatter() { this.hasQualifiedName(packagePath(), "Logger", "Formatter") }
   }
 
-  private class JSONFormatter extends Type {
-    JSONFormatter() { this.hasQualifiedName(packagePath(), "JSONFormatter") }
+  private class JsonFormatter extends Type {
+    JsonFormatter() { this.hasQualifiedName(packagePath(), "JSONFormatter") }
   }
 
   /**
    * Gets the types corresponding to sanitizing formatters.
    */
-  private Type sanitizingFormatter() { result instanceof JSONFormatter }
+  private Type sanitizingFormatter() { result instanceof JsonFormatter }
 
   /**
    * An assignment statement that assigns a value to the `Formatter` property of a `Logger` object.
