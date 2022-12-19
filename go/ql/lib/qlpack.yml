@@ -7,4 +7,5 @@ library: true
 upgrades: upgrades
 dependencies:
   codeql/tutorial: ${workspace}
-
+dataExtensions:
+  - ext/*.model.yml
