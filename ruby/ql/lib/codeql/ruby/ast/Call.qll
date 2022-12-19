@@ -125,11 +125,7 @@ class MethodCall extends Call instanceof MethodCallImpl {
    */
   final predicate isSafeNavigation() { super.isSafeNavigationImpl() }
 
-  override string toString() {
-    if this instanceof SuperCall
-    then result = "super call to " + this.getMethodName()
-    else result = "call to " + this.getMethodName()
-  }
+  override string toString() { result = "call to " + this.getMethodName() }
 
   override AstNode getAChild(string pred) {
     result = Call.super.getAChild(pred)
@@ -214,6 +210,8 @@ class YieldCall extends Call instanceof YieldCallImpl {
  */
 class SuperCall extends MethodCall instanceof SuperCallImpl {
   final override string getAPrimaryQlClass() { result = "SuperCall" }
+
+  override string toString() { result = "super call to " + this.getMethodName() }
 }
 
 /**
