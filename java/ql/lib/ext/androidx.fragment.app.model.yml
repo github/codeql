@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["androidx.fragment.app", "FragmentTransaction", True, "add", "(Class,Bundle,String)", "", "Argument[0]", "fragment-injection", "manual"]
       - ["androidx.fragment.app", "FragmentTransaction", True, "add", "(Fragment,String)", "", "Argument[0]", "fragment-injection", "manual"]

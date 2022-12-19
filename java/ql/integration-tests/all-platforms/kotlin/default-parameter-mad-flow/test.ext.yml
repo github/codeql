@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: integrationtest-default-parameter-mad-flow
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["", "ConstructorWithDefaults", True, "ConstructorWithDefaults", "(int,int)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["", "LibKt", True, "topLevelWithDefaults", "(int,int)", "", "Argument[0]", "ReturnValue", "value", "manual"]
@@ -12,14 +12,14 @@ extensions:
       - ["", "LibClass", True, "multiParameterExtensionTest", "(int,int,int,int)", "", "Argument[0, 1]", "ReturnValue", "value", "manual"]
   - addsTo:
       pack: integrationtest-default-parameter-mad-flow
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["", "LibKt", True, "topLevelArgSource", "(SomeToken,int)", "", "Argument[0]", "kotlinMadFlowTest", "manual"]
       - ["", "LibKt", True, "extensionArgSource", "(String,SomeToken,int)", "", "Argument[1]", "kotlinMadFlowTest", "manual"]
       - ["", "SourceClass", True, "memberArgSource", "(SomeToken,int)", "", "Argument[0]", "kotlinMadFlowTest", "manual"]
   - addsTo:
       pack: integrationtest-default-parameter-mad-flow
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["", "SinkClass", True, "SinkClass", "(int,int)", "", "Argument[0]", "kotlinMadFlowTest", "manual"]
       - ["", "LibKt", True, "topLevelSink", "(int,int)", "", "Argument[0]", "kotlinMadFlowTest", "manual"]

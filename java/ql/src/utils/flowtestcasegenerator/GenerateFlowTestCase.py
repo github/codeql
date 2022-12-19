@@ -16,7 +16,7 @@ if any(s == "--help" for s in sys.argv):
 GenerateFlowTestCase.py specsToTest.csv projectPom.xml outdir [--force]
 
 This generates test cases exercising function model specifications found in specsToTest.csv
-producing files Test.java, test.ql and test.expected in outdir.
+producing files Test.java, test.ql, test.ext.yml and test.expected in outdir.
 
 projectPom.xml should be a Maven pom sufficient to resolve the classes named in specsToTest.csv.
 Typically this means supplying a skeleton POM <dependencies> section that retrieves whatever jars
@@ -54,12 +54,11 @@ except Exception as e:
 
 resultJava = os.path.join(sys.argv[3], "Test.java")
 resultQl = os.path.join(sys.argv[3], "test.ql")
-resultYml = os.path.join(sys.argv[3], "test.model.yml")
-resultPack = os.path.join(sys.argv[3], "qlpack.yml")
+resultYml = os.path.join(sys.argv[3], "test.ext.yml")
 
-if not force and (os.path.exists(resultJava) or os.path.exists(resultQl) or os.path.exists(resultYml) or os.path.exists(resultPack)):
-    print("Won't overwrite existing files '%s', '%s', '%s' or '%s'." %
-          (resultJava, resultQl, resultYml, resultPack), file=sys.stderr)
+if not force and (os.path.exists(resultJava) or os.path.exists(resultQl) or os.path.exists(resultYml)):
+    print("Won't overwrite existing files '%s', '%s' or '%s'." %
+          (resultJava, resultQl, resultYml), file=sys.stderr)
     sys.exit(1)
 
 workDir = tempfile.mkdtemp()
@@ -226,23 +225,11 @@ if len(supportModelRows) != 0:
         dataextensions = f"""extensions:
   - addsTo:
       pack: codeql/java-tests
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
 {models}
 """
         f.write(dataextensions)
-    # Make a qlpack file such that the extension will be picked up
-    with open(resultPack, "w") as f:
-        f.write("""name: example-test-pack
-version: 0.0.0
-extractor: java
-dependencies:
-  codeql/java-all: '*'
-  codeql/java-queries: '*'
-  codeql/java-tests: '*'
-dataExtensions:
-  - test.model.yml
-""")
 
 # Make an empty .expected file, since this is an inline-exectations test
 with open(os.path.join(sys.argv[3], "test.expected"), "w"):

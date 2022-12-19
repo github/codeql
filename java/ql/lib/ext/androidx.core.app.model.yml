@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["androidx.core.app", "AlarmManagerCompat", True, "setAlarmClock", "", "", "Argument[2..3]", "pending-intent-sent", "manual"]
       - ["androidx.core.app", "AlarmManagerCompat", True, "setAndAllowWhileIdle", "", "", "Argument[3]", "pending-intent-sent", "manual"]
@@ -11,7 +11,7 @@ extensions:
       - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(int,Notification)", "", "Argument[1]", "pending-intent-sent", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["androidx.core.app", "NotificationCompat$Action", True, "Action", "(IconCompat,CharSequence,PendingIntent)", "", "Argument[2]", "Argument[-1]", "taint", "manual"]
       - ["androidx.core.app", "NotificationCompat$Action", True, "Action", "(int,CharSequence,PendingIntent)", "", "Argument[2]", "Argument[-1]", "taint", "manual"]

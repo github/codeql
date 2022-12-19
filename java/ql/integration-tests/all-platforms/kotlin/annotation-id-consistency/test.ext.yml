@@ -1,5 +1,5 @@
 extensions:
   - addsTo:
       pack: integrationtest-annotation-id-consistency
-      extensible: extNegativeSummaryModel
+      extensible: neutralModel
     data: []

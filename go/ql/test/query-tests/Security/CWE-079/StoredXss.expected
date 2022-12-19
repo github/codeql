@@ -1,16 +1,16 @@
 edges
-| StoredXss.go:13:21:13:31 | call to Name : string | StoredXss.go:13:21:13:36 | ...+... |
-| stored.go:18:3:18:28 | ... := ...[0] : pointer type | stored.go:30:22:30:25 | name |
-| stored.go:59:30:59:33 | definition of path : string | stored.go:61:22:61:25 | path |
+| StoredXss.go:13:21:13:31 | call to Name | StoredXss.go:13:21:13:36 | ...+... |
+| stored.go:18:3:18:28 | ... := ...[0] | stored.go:30:22:30:25 | name |
+| stored.go:59:30:59:33 | definition of path | stored.go:61:22:61:25 | path |
 nodes
-| StoredXss.go:13:21:13:31 | call to Name : string | semmle.label | call to Name : string |
+| StoredXss.go:13:21:13:31 | call to Name | semmle.label | call to Name |
 | StoredXss.go:13:21:13:36 | ...+... | semmle.label | ...+... |
-| stored.go:18:3:18:28 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| stored.go:18:3:18:28 | ... := ...[0] | semmle.label | ... := ...[0] |
 | stored.go:30:22:30:25 | name | semmle.label | name |
-| stored.go:59:30:59:33 | definition of path : string | semmle.label | definition of path : string |
+| stored.go:59:30:59:33 | definition of path | semmle.label | definition of path |
 | stored.go:61:22:61:25 | path | semmle.label | path |
 subpaths
 #select
-| StoredXss.go:13:21:13:36 | ...+... | StoredXss.go:13:21:13:31 | call to Name : string | StoredXss.go:13:21:13:36 | ...+... | Stored cross-site scripting vulnerability due to $@. | StoredXss.go:13:21:13:31 | call to Name | stored value |
-| stored.go:30:22:30:25 | name | stored.go:18:3:18:28 | ... := ...[0] : pointer type | stored.go:30:22:30:25 | name | Stored cross-site scripting vulnerability due to $@. | stored.go:18:3:18:28 | ... := ...[0] | stored value |
-| stored.go:61:22:61:25 | path | stored.go:59:30:59:33 | definition of path : string | stored.go:61:22:61:25 | path | Stored cross-site scripting vulnerability due to $@. | stored.go:59:30:59:33 | definition of path | stored value |
+| StoredXss.go:13:21:13:36 | ...+... | StoredXss.go:13:21:13:31 | call to Name | StoredXss.go:13:21:13:36 | ...+... | Stored cross-site scripting vulnerability due to $@. | StoredXss.go:13:21:13:31 | call to Name | stored value |
+| stored.go:30:22:30:25 | name | stored.go:18:3:18:28 | ... := ...[0] | stored.go:30:22:30:25 | name | Stored cross-site scripting vulnerability due to $@. | stored.go:18:3:18:28 | ... := ...[0] | stored value |
+| stored.go:61:22:61:25 | path | stored.go:59:30:59:33 | definition of path | stored.go:61:22:61:25 | path | Stored cross-site scripting vulnerability due to $@. | stored.go:59:30:59:33 | definition of path | stored value |

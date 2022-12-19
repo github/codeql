@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["System.Web", "HttpResponse", False, "BinaryWrite", "", "", "Argument[0]", "html", "manual"]
       - ["System.Web", "HttpResponse", False, "TransmitFile", "", "", "Argument[0]", "html", "manual"]
@@ -9,7 +9,7 @@ extensions:
       - ["System.Web", "HttpResponse", False, "WriteFile", "", "", "Argument[0]", "html", "manual"]
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Web", "HttpCookie", False, "get_Value", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["System.Web", "HttpCookie", False, "get_Values", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
