@@ -61,24 +61,18 @@ predicate topJdkApiName(string apiName) {
     ]
 }
 
-/**
- * Gets information about the given API in the form expected by the
- * MaD modeling framework.
- */
-string getApiName(Callable api) {
-  result =
-    api.getDeclaringType().getPackage() + "." + api.getDeclaringType().getSourceDeclaration() + "#" +
-      api.getName() + paramsString(api)
+/** Holds if `c` has the MaD-formatted name `apiName`. */
+predicate hasApiName(Callable c, string apiName) {
+  apiName =
+    c.getDeclaringType().getPackage() + "." + c.getDeclaringType().getSourceDeclaration() + "#" +
+      c.getName() + paramsString(c)
 }
-
-/** Holds if the given API has a `Callable`. */
-predicate hasCallable(string apiName) { exists(Callable callable | apiName = getApiName(callable)) }
 
 /** A top JDK API. */
 class TopJdkApi extends SummarizedCallableBase {
   TopJdkApi() {
     exists(string apiName |
-      apiName = getApiName(this.asCallable()) and
+      hasApiName(this.asCallable(), apiName) and
       topJdkApiName(apiName)
     )
   }
