@@ -231,7 +231,9 @@ signature module BoundSig<DeltaSig D> {
   class SemBound {
     SemExpr getExpr(D::Delta delta);
   }
+
   class SemZeroBound extends SemBound;
+
   class SemSsaBound extends SemBound {
     SemSsaVariable getAVariable();
   }

@@ -169,7 +169,9 @@ module ModulusAnalysis<DeltaSig D, BoundSig<D> Bounds, UtilSig<D> U> {
    * Holds if all inputs to `phi` numbered `1` to `rix` are equal to `b + val` modulo `mod`.
    */
   pragma[nomagic]
-  private predicate phiModulusRankStep(SemSsaPhiNode phi, Bounds::SemBound b, int val, int mod, int rix) {
+  private predicate phiModulusRankStep(
+    SemSsaPhiNode phi, Bounds::SemBound b, int val, int mod, int rix
+  ) {
     /*
      * base case. If any phi input is equal to `b + val` modulo `mod`, that's a potential congruence
      * class for the phi node.

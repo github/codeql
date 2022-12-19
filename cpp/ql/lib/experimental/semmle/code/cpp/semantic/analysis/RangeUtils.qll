@@ -49,7 +49,9 @@ module RangeUtil<Range::DeltaSig D, Range::LangSig<D> Lang> implements Range::Ut
    * - `isEq = true`  : `v == e + delta`
    * - `isEq = false` : `v != e + delta`
    */
-  SemGuard semEqFlowCond(SemSsaVariable v, SemExpr e, D::Delta delta, boolean isEq, boolean testIsTrue) {
+  SemGuard semEqFlowCond(
+    SemSsaVariable v, SemExpr e, D::Delta delta, boolean isEq, boolean testIsTrue
+  ) {
     exists(boolean eqpolarity |
       result.isEquality(semSsaRead(v, delta), e, eqpolarity) and
       (testIsTrue = true or testIsTrue = false) and
