@@ -4,6 +4,11 @@
  * Note: Data is usually stored in a separate database and the QL libraries only contain predicates,
  * but for this tutorial both the data and the predicates are stored in the library.
  */
+
+/**
+ * A person known to the QL detective tutorials, represented by a string
+ * (their first name).
+ */
 class Person extends string {
   Person() {
     this =
