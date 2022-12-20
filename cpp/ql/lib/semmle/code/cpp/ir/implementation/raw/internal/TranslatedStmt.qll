@@ -249,10 +249,43 @@ class TranslatedUnreachableReturnStmt extends TranslatedReturnStmt {
 }
 
 /**
- * The IR translation of a C++ `try` statement.
+ * A C/C++ `try` statement, or a `__try __except` or `__try __finally` statement.
+ */
+private class TryOrMicrosoftTryStmt extends Stmt {
+  TryOrMicrosoftTryStmt() {
+    this instanceof TryStmt or
+    this instanceof MicrosoftTryStmt
+  }
+
+  /** Gets the number of `catch block`s of this statement. */
+  int getNumberOfCatchClauses() {
+    result = this.(TryStmt).getNumberOfCatchClauses()
+    or
+    this instanceof MicrosoftTryExceptStmt and
+    result = 1
+  }
+
+  /** Gets the `body` statement of this statement. */
+  Stmt getStmt() {
+    result = this.(TryStmt).getStmt()
+    or
+    result = this.(MicrosoftTryStmt).getStmt()
+  }
+
+  /** Gets the `i`th `catch block` statement of this statement. */
+  Stmt getHandlerStmt(int i) {
+    result = this.(TryStmt).getChild(i + 1)
+    or
+    i = 0 and
+    result = this.(MicrosoftTryExceptStmt).getExcept()
+  }
+}
+
+/**
+ * The IR translation of a C++ `try` (or a `__try __except` or `__try __finally`) statement.
  */
 class TranslatedTryStmt extends TranslatedStmt {
-  override TryStmt stmt;
+  override TryOrMicrosoftTryStmt stmt;
 
   override TranslatedElement getChild(int id) {
     id = 0 and result = getBody()
@@ -291,7 +324,7 @@ class TranslatedTryStmt extends TranslatedStmt {
   }
 
   private TranslatedHandler getHandler(int index) {
-    result = getTranslatedStmt(stmt.getChild(index + 1))
+    result = getTranslatedStmt(stmt.getHandlerStmt(index))
   }
 
   private TranslatedStmt getBody() { result = getTranslatedStmt(stmt.getStmt()) }

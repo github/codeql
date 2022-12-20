@@ -6,8 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| try_except.c:7:13:7:14 | Store: 0 | Instruction 'Store: 0' has no successors in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
-| try_except.c:19:13:19:14 | Store: 0 | Instruction 'Store: 0' has no successors in function '$@'. | try_except.c:18:6:18:6 | void g() | void g() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
