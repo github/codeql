@@ -33,9 +33,7 @@ def load_dependencies(repository_name):
             build_file = _get_build(repository_name, "swift-llvm-support"),
             sha256 = sha256,
             patch_args = ["-p1"],
-            patches = [
-                _get_patch(repository_name, "swift-llvm-support", "allow_modfying_output"),
-            ],
+            patches = [],
         )
 
     http_archive(
