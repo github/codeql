@@ -240,7 +240,7 @@ signature module BoundSig<DeltaSig D> {
 }
 
 module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<D> UtilParam> {
-  import Bounds // TODO: remove this import?
+  private import Bounds // TODO: remove this import?
 
   /**
    * An expression that does conversion, boxing, or unboxing
