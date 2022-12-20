@@ -9,25 +9,20 @@ be able to change the overall meaning of the predicate.
 </overview>
 <recommendation>
 <p>
-When building a predicate from untrusted data, pass it to the appropriate <code>arguments</code> parameter
-during initialization, or as an array of substitution variables before evaluation, instead of appending
-or concatenating it to the body of the predicate.
+When building a predicate from untrusted data, you should either pass it to the appropriate <code>arguments</code> parameter during initialization, or as an array of substitution variables before evaluation. You should not append or concatenate it to the body of the predicate.
 </p>
 </recommendation>
 <example>
 <p>
-In the following insecure example, a <code>NSPredicate</code> is built directly from data obtained from an HTTP request,
-which is untrusted, and can be arbitrarily set by an attacker to alter the meaning of the predicate:
+In the following insecure example, <code>NSPredicate</code> is built directly from data obtained from an HTTP request. This is untrusted, and can be arbitrarily set by an attacker to alter the meaning of the predicate:
 </p>
 <sample src="PredicateInjectionBad.swift" />
 <p>
-A better way to do this is using the <code>arguments</code> parameter of <code>NSPredicate</code>'s constructor,
-which prevents attackers from altering the meaning of the predicate, even if they control the externally-obtained data,
-as seen in the following secure example:
+A better way to do this is to use the <code>arguments</code> parameter of <code>NSPredicate</code>'s constructor. This prevents attackers from altering the meaning of the predicate, even if they control the externally obtained data, as seen in the following secure example:
 </p>
 <sample src="PredicateInjectionGood.swift" />
 </example>
 <references>
-<li>Apple Developer documentation: <a href="https://developer.apple.com/documentation/foundation/nspredicate">NSPredicate</a> </li>
+<li>Apple Developer Documentation: <a href="https://developer.apple.com/documentation/foundation/nspredicate">NSPredicate</a> </li>
 </references>
 </qhelp>
