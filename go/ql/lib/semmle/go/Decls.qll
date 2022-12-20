@@ -423,11 +423,27 @@ class TypeDefSpec extends @typedefspec, TypeSpec { }
  * Examples:
  *
  * ```go
+ * Name string `json:"name"`
  * s string
  * x, y int
+ * p *Point
  * Close() error
  * io.Reader
  * ~int | float32
+ * ```
+ * as in the following code:
+ * ```go
+ * struct {
+ *   io.Reader
+ *   Name string `json:"name"`
+ *   x, y int
+ * }
+ * func (p *Point) f(s string) (x, y int) { }
+ * type MyInterface interface {
+ *   Close() error
+ *   io.Reader
+ *   ~int32 | float32
+ * }
  * ```
  */
 class FieldBase extends @field, ExprParent {
@@ -450,6 +466,15 @@ class FieldBase extends @field, ExprParent {
  * ```go
  * Name string `json:"name"`
  * x, y int
+ * ```
+ *
+ * as in the following code:
+ *
+ * ```go
+ * struct {
+ *   Name string `json:"name"`
+ *   x, y int
+ * }
  * ```
  */
 class FieldDecl extends FieldBase, Documentable, ExprParent {
@@ -488,6 +513,14 @@ class FieldDecl extends FieldBase, Documentable, ExprParent {
  * ```go
  * io.Reader
  * ```
+ *
+ * as in the following code:
+ *
+ * ```go
+ * struct {
+ *   io.Reader
+ * }
+ * ```
  */
 class EmbeddedFieldDecl extends FieldDecl {
   EmbeddedFieldDecl() { not exists(this.getNameExpr(_)) }
@@ -501,8 +534,15 @@ class EmbeddedFieldDecl extends FieldDecl {
  * Examples:
  *
  * ```go
- * name string
+ * s string
  * x, y int
+ * ```
+ *
+ * as in the following code:
+ *
+ * ```go
+ * func f(s string, x, y int) { }
+ * func g() (s string, x, y int){ return }
  * ```
  */
 class ParameterOrResultDecl extends FieldBase, Documentable, ExprParent {
@@ -542,8 +582,14 @@ class ParameterOrResultDecl extends FieldBase, Documentable, ExprParent {
  * Examples:
  *
  * ```go
- * name string
+ * s string
  * x, y int
+ * ```
+ *
+ * as in the following code:
+ *
+ * ```go
+ * func f(s string, x, y int) { }
  * ```
  */
 class ParameterDecl extends ParameterOrResultDecl {
@@ -568,6 +614,13 @@ class ParameterDecl extends ParameterOrResultDecl {
  * ```go
  * p *Point
  * r io.Reader
+ * ```
+ *
+ * as in the following code:
+ *
+ * ```go
+ * func (p *Point) f() { }
+ * func (r io.Reader) g() { }
  * ```
  */
 class ReceiverDecl extends FieldBase, Documentable, ExprParent {
@@ -600,6 +653,14 @@ class ReceiverDecl extends FieldBase, Documentable, ExprParent {
  * r io.Reader
  * x, y int
  * ```
+ *
+ * as in the following code:
+ *
+ * ```go
+ * func f(error) { return nil }
+ * func g(r io.Reader) { return nil }
+ * func h(x, y int) { return }
+ * ```
  */
 class ResultVariableDecl extends ParameterOrResultDecl {
   ResultVariableDecl() { rawIndex < 0 }
@@ -621,10 +682,17 @@ class ResultVariableDecl extends ParameterOrResultDecl {
  * Examples:
  *
  * ```go
- * T any
  * S, T comparable
+ * U any
  * K ~int32 | float32
  * _ any
+ * ```
+ *
+ * as in the following code:
+ *
+ * ```go
+ * type GenericStruct[S, T comparable, U any, K ~int32 | float32, _ any] struct { }
+ * func GenericFunction[S, T comparable, U any, K ~int32 | float32, _ any]() {}
  * ```
  */
 class TypeParamDecl extends @typeparamdecl, Documentable, ExprParent {
@@ -681,9 +749,19 @@ class TypeParamDecl extends @typeparamdecl, Documentable, ExprParent {
  * Examples:
  *
  * ```go
- * Read([]byte) (int, error)
+ * Close() error
  * io.Reader
  * ~int32 | float32
+ * ```
+ *
+ * as in the following code:
+ *
+ * ```go
+ * type MyInterface interface {
+ *   Close() error
+ *   io.Reader
+ *   ~int32 | float32
+ * }
  * ```
  */
 class InterfaceMemberSpec extends FieldBase, Documentable, ExprParent {
@@ -710,7 +788,15 @@ class InterfaceMemberSpec extends FieldBase, Documentable, ExprParent {
  * Examples:
  *
  * ```go
- * Read([]byte) (int, error)
+ * Close() error
+ * ```
+ *
+ * as in the following code:
+ *
+ * ```go
+ * type MyInterface interface {
+ *   Close() error
+ * }
  * ```
  */
 class MethodSpec extends InterfaceMemberSpec {
@@ -736,6 +822,15 @@ class MethodSpec extends InterfaceMemberSpec {
  * ```go
  * io.Reader
  * ~int32 | float32
+ * ```
+ *
+ * as in the following code:
+ *
+ * ```go
+ * type MyInterface interface {
+ *   io.Reader
+ *   ~int32 | float32
+ * }
  * ```
  */
 class EmbeddingSpec extends InterfaceMemberSpec {
