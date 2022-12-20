@@ -66,7 +66,7 @@ module MockModule {
     bindingset[this]
     Range() { this = this }
 
-    /** Gets tthe name of this mocked module. */
+    /** Gets the name of this mocked module. */
     abstract string getName();
 
     /** Gets the id for the `i`th mocked member of this module. */
