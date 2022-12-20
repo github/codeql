@@ -314,17 +314,17 @@ class TranslatedTryStmt extends TranslatedStmt {
     // All non-finally children go to the successor of the `try` if
     // there is no finally block, but if there is a finally block
     // then we go to that one.
-    child = [getBody(), getHandler(_)] and
+    child = [this.getBody(), this.getHandler(_)] and
     (
       not exists(this.getFinally()) and
-      result = getParent().getChildSuccessor(this)
+      result = this.getParent().getChildSuccessor(this)
       or
       result = this.getFinally().getFirstInstruction()
     )
     or
     // And after the finally block we go to the successor of the `try`.
     child = this.getFinally() and
-    result = getParent().getChildSuccessor(this)
+    result = this.getParent().getChildSuccessor(this)
   }
 
   final Instruction getNextHandler(TranslatedHandler handler) {
