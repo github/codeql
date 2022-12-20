@@ -1,1 +1,1 @@
-func bar() {}
+public func bar() {}

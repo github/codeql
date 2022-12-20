@@ -12,7 +12,8 @@
 #include <swift/Basic/InitializeSwiftModules.h>
 
 #include "swift/extractor/SwiftExtractor.h"
-#include "swift/extractor/TargetTrapDomain.h"
+#include "swift/extractor/infra/TargetTrapDomain.h"
+#include "swift/extractor/infra/file/Path.h"
 #include "swift/extractor/remapping/SwiftFileInterception.h"
 #include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
 #include "swift/extractor/invocation/SwiftInvocationExtractor.h"
@@ -21,18 +22,21 @@
 using namespace std::string_literals;
 
 static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
-                                       const swift::CompilerInstance& compiler) {
-  std::filesystem::path output = compiler.getInvocation().getOutputFilename();
-  if (output.extension() == ".swiftmodule") {
-    if (auto target = codeql::createTargetTrapDomain(state, output)) {
-      target->emit("// trap file deliberately empty\n"
-                   "// this swiftmodule was created during the build, so its entities must have"
-                   " been extracted directly from source files");
+                                       const swift::FrontendOptions& options) {
+  for (const auto& input : options.InputsAndOutputs.getAllInputs()) {
+    if (const auto& module = input.getPrimarySpecificPaths().SupplementaryOutputs.ModuleOutputPath;
+        !module.empty()) {
+      if (auto target = codeql::createTargetTrapDomain(state, codeql::resolvePath(module))) {
+        target->emit("// trap file deliberately empty\n"
+                     "// this swiftmodule was created during the build, so its entities must have"
+                     " been extracted directly from source files");
+      }
     }
   }
 }
 
-static void processFrontendOptions(swift::FrontendOptions& options) {
+static void processFrontendOptions(codeql::SwiftExtractorState& state,
+                                   swift::FrontendOptions& options) {
   auto& inOuts = options.InputsAndOutputs;
   std::vector<swift::InputFile> inputs;
   inOuts.forEachInput([&](const swift::InputFile& input) {
@@ -50,6 +54,7 @@ static void processFrontendOptions(swift::FrontendOptions& options) {
             input.getPrimarySpecificPaths().SupplementaryOutputs.ModuleOutputPath;
         !module.empty()) {
       psp.SupplementaryOutputs.ModuleOutputPath = codeql::redirect(module);
+      state.originalOutputModules.push_back(module);
     }
     auto inputCopy = input;
     inputCopy.setPrimarySpecificPaths(std::move(psp));
@@ -72,12 +77,12 @@ class Observer : public swift::FrontendObserver {
   explicit Observer(const codeql::SwiftExtractorConfiguration& config) : state{config} {}
 
   void parsedArgs(swift::CompilerInvocation& invocation) override {
-    processFrontendOptions(invocation.getFrontendOptions());
+    lockOutputSwiftModuleTraps(state, invocation.getFrontendOptions());
+    processFrontendOptions(state, invocation.getFrontendOptions());
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
     instance.addDiagnosticConsumer(&diagConsumer);
-    lockOutputSwiftModuleTraps(state, instance);
   }
 
   void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {

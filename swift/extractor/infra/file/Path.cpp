@@ -16,7 +16,7 @@ static bool shouldCanonicalize() {
   return true;
 }
 
-std::filesystem::path resolvePath(std::string_view path) {
+std::filesystem::path resolvePath(const std::filesystem::path& path) {
   std::error_code ec;
   std::filesystem::path ret = {};
   static const auto canonicalize = shouldCanonicalize();
@@ -27,7 +27,7 @@ std::filesystem::path resolvePath(std::string_view path) {
   }
   if (ec) {
     std::cerr << "Cannot get " << (canonicalize ? "canonical" : "absolute")
-              << " path: " << std::quoted(path) << ": " << ec.message() << "\n";
+              << " path: " << std::quoted(path.c_str()) << ": " << ec.message() << "\n";
     return path;
   }
   return ret;

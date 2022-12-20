@@ -10,7 +10,7 @@
 
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/translators/SwiftVisitor.h"
-#include "swift/extractor/TargetTrapDomain.h"
+#include "swift/extractor/infra/TargetTrapDomain.h"
 #include "swift/extractor/SwiftBuiltinSymbols.h"
 #include "swift/extractor/infra/file/Path.h"
 
@@ -114,6 +114,9 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
     swift::ModuleDecl& module,
     swift::SourceFile* primaryFile = nullptr) {
   auto filename = getFilename(module, primaryFile);
+  if (primaryFile) {
+    state.primaryFiles.push_back(filename);
+  }
 
   // The extractor can be called several times from different processes with
   // the same input file(s). Using `TargetFile` the first process will win, and the following

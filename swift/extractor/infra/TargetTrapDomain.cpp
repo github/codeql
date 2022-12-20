@@ -1,8 +1,11 @@
-#include "swift/extractor/TargetTrapDomain.h"
+#include "swift/extractor/infra/TargetTrapDomain.h"
 #include <iomanip>
 namespace codeql {
 std::optional<TrapDomain> createTargetTrapDomain(SwiftExtractorState& state,
                                                  const std::filesystem::path& target) {
+  if (target.empty()) {
+    return std::nullopt;
+  }
   auto trap = target;
   trap += ".trap";
   state.traps.push_back(trap.relative_path());

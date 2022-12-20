@@ -10,7 +10,7 @@
 
 namespace codeql {
 
-void extractSwiftInvocation(const SwiftExtractorState& state,
+void extractSwiftInvocation(SwiftExtractorState& state,
                             swift::CompilerInstance& compiler,
                             TrapDomain& trap);
 }  // namespace codeql
