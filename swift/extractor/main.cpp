@@ -15,18 +15,22 @@
 #include "swift/extractor/remapping/SwiftFileInterception.h"
 #include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
 #include "swift/extractor/trap/TrapDomain.h"
+#include "swift/extractor/infra/file/Path.h"
 #include <swift/Basic/InitializeSwiftModules.h>
 
 using namespace std::string_literals;
 
+// must be called before processFrontendOptions modifies output paths
 static void lockOutputSwiftModuleTraps(const codeql::SwiftExtractorConfiguration& config,
-                                       const swift::CompilerInstance& compiler) {
-  std::filesystem::path output = compiler.getInvocation().getOutputFilename();
-  if (output.extension() == ".swiftmodule") {
-    if (auto target = codeql::createTargetTrapFile(config, output)) {
-      *target << "// trap file deliberately empty\n"
-                 "// this swiftmodule was created during the build, so its entities must have"
-                 " been extracted directly from source files";
+                                       const swift::FrontendOptions& options) {
+  for (const auto& input : options.InputsAndOutputs.getAllInputs()) {
+    if (const auto& module = input.getPrimarySpecificPaths().SupplementaryOutputs.ModuleOutputPath;
+        !module.empty()) {
+      if (auto target = codeql::createTargetTrapFile(config, codeql::resolvePath(module))) {
+        *target << "// trap file deliberately empty\n"
+                   "// this swiftmodule was created during the build, so its entities must have"
+                   " been extracted directly from source files";
+      }
     }
   }
 }
@@ -71,12 +75,13 @@ class Observer : public swift::FrontendObserver {
       : config{config}, diagConsumer{diagConsumer} {}
 
   void parsedArgs(swift::CompilerInvocation& invocation) override {
-    processFrontendOptions(invocation.getFrontendOptions());
+    auto& options = invocation.getFrontendOptions();
+    lockOutputSwiftModuleTraps(config, options);
+    processFrontendOptions(options);
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
     instance.addDiagnosticConsumer(&diagConsumer);
-    lockOutputSwiftModuleTraps(config, instance);
   }
 
   void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
