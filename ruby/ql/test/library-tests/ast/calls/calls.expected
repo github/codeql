@@ -1,8 +1,8 @@
 callsWithNoReceiverArgumentsOrBlock
 | calls.rb:31:3:31:7 | yield ... | (none) |
-| calls.rb:286:5:286:9 | call to super | super |
-| calls.rb:287:5:287:11 | call to super | super |
-| calls.rb:305:5:305:9 | call to super | super |
+| calls.rb:286:5:286:9 | super call to my_method | my_method |
+| calls.rb:287:5:287:11 | super call to my_method | my_method |
+| calls.rb:305:5:305:9 | super call to another_method | another_method |
 | calls.rb:345:9:345:13 | call to novar | novar |
 callsWithArguments
 | calls.rb:14:1:14:11 | call to foo | foo | 0 | calls.rb:14:5:14:5 | 0 |
@@ -34,17 +34,17 @@ callsWithArguments
 | calls.rb:275:1:275:13 | call to foo | foo | 0 | calls.rb:275:5:275:12 | ** ... |
 | calls.rb:278:1:278:14 | call to foo | foo | 0 | calls.rb:278:5:278:13 | Pair |
 | calls.rb:279:1:279:17 | call to foo | foo | 0 | calls.rb:279:5:279:16 | Pair |
-| calls.rb:288:5:288:16 | call to super | super | 0 | calls.rb:288:11:288:16 | "blah" |
-| calls.rb:289:5:289:17 | call to super | super | 0 | calls.rb:289:11:289:11 | 1 |
-| calls.rb:289:5:289:17 | call to super | super | 1 | calls.rb:289:14:289:14 | 2 |
-| calls.rb:289:5:289:17 | call to super | super | 2 | calls.rb:289:17:289:17 | 3 |
+| calls.rb:288:5:288:16 | super call to my_method | my_method | 0 | calls.rb:288:11:288:16 | "blah" |
+| calls.rb:289:5:289:17 | super call to my_method | my_method | 0 | calls.rb:289:11:289:11 | 1 |
+| calls.rb:289:5:289:17 | super call to my_method | my_method | 1 | calls.rb:289:14:289:14 | 2 |
+| calls.rb:289:5:289:17 | super call to my_method | my_method | 2 | calls.rb:289:17:289:17 | 3 |
 | calls.rb:290:17:290:21 | ... + ... | + | 0 | calls.rb:290:21:290:21 | 1 |
 | calls.rb:291:18:291:22 | ... * ... | * | 0 | calls.rb:291:22:291:22 | 2 |
-| calls.rb:292:5:292:30 | call to super | super | 0 | calls.rb:292:11:292:11 | 4 |
-| calls.rb:292:5:292:30 | call to super | super | 1 | calls.rb:292:14:292:14 | 5 |
+| calls.rb:292:5:292:30 | super call to my_method | my_method | 0 | calls.rb:292:11:292:11 | 4 |
+| calls.rb:292:5:292:30 | super call to my_method | my_method | 1 | calls.rb:292:14:292:14 | 5 |
 | calls.rb:292:22:292:28 | ... + ... | + | 0 | calls.rb:292:26:292:28 | 100 |
-| calls.rb:293:5:293:33 | call to super | super | 0 | calls.rb:293:11:293:11 | 6 |
-| calls.rb:293:5:293:33 | call to super | super | 1 | calls.rb:293:14:293:14 | 7 |
+| calls.rb:293:5:293:33 | super call to my_method | my_method | 0 | calls.rb:293:11:293:11 | 6 |
+| calls.rb:293:5:293:33 | super call to my_method | my_method | 1 | calls.rb:293:14:293:14 | 7 |
 | calls.rb:293:23:293:29 | ... + ... | + | 0 | calls.rb:293:27:293:29 | 200 |
 | calls.rb:311:1:311:7 | call to call | call | 0 | calls.rb:311:6:311:6 | 1 |
 | calls.rb:314:1:314:8 | call to foo= | foo= | 0 | calls.rb:314:12:314:13 | ... = ... |
@@ -91,7 +91,7 @@ callsWithArguments
 | calls.rb:320:21:320:31 | ... + ... | + | 0 | calls.rb:320:31:320:31 | 1 |
 | calls.rb:320:34:320:35 | ... * ... | * | 0 | calls.rb:320:37:320:37 | 2 |
 | calls.rb:328:25:328:37 | call to print | print | 0 | calls.rb:328:31:328:37 | "error" |
-| calls.rb:332:3:332:12 | call to super | super | 0 | calls.rb:332:9:332:11 | ... |
+| calls.rb:332:3:332:12 | super call to foo | foo | 0 | calls.rb:332:9:332:11 | ... |
 | calls.rb:336:3:336:13 | call to bar | bar | 0 | calls.rb:336:7:336:7 | b |
 | calls.rb:336:3:336:13 | call to bar | bar | 1 | calls.rb:336:10:336:12 | ... |
 | calls.rb:340:5:340:5 | call to [] | [] | 0 | calls.rb:340:5:340:5 | 0 |
@@ -305,7 +305,7 @@ callsWithReceiver
 | calls.rb:303:5:303:7 | call to foo | calls.rb:303:5:303:7 | self |
 | calls.rb:303:5:303:13 | call to super | calls.rb:303:5:303:7 | call to foo |
 | calls.rb:304:5:304:14 | call to super | calls.rb:304:5:304:8 | self |
-| calls.rb:305:5:305:15 | call to super | calls.rb:305:5:305:9 | call to super |
+| calls.rb:305:5:305:15 | call to super | calls.rb:305:5:305:9 | super call to another_method |
 | calls.rb:310:1:310:3 | call to foo | calls.rb:310:1:310:3 | self |
 | calls.rb:310:1:310:6 | call to call | calls.rb:310:1:310:3 | call to foo |
 | calls.rb:311:1:311:3 | call to foo | calls.rb:311:1:311:3 | self |
@@ -398,10 +398,10 @@ callsWithBlock
 | calls.rb:95:1:98:3 | call to foo | calls.rb:95:7:98:3 | do ... end |
 | calls.rb:226:1:228:3 | call to each | calls.rb:226:1:228:3 | { ... } |
 | calls.rb:229:1:231:3 | call to each | calls.rb:229:1:231:3 | { ... } |
-| calls.rb:290:5:290:23 | call to super | calls.rb:290:11:290:23 | { ... } |
-| calls.rb:291:5:291:26 | call to super | calls.rb:291:11:291:26 | do ... end |
-| calls.rb:292:5:292:30 | call to super | calls.rb:292:16:292:30 | { ... } |
-| calls.rb:293:5:293:33 | call to super | calls.rb:293:16:293:33 | do ... end |
+| calls.rb:290:5:290:23 | super call to my_method | calls.rb:290:11:290:23 | { ... } |
+| calls.rb:291:5:291:26 | super call to my_method | calls.rb:291:11:291:26 | do ... end |
+| calls.rb:292:5:292:30 | super call to my_method | calls.rb:292:16:292:30 | { ... } |
+| calls.rb:293:5:293:33 | super call to my_method | calls.rb:293:16:293:33 | do ... end |
 | calls.rb:340:1:342:3 | call to each | calls.rb:340:1:342:3 | { ... } |
 | calls.rb:364:1:364:23 | call to bar | calls.rb:364:15:364:23 | { ... } |
 | calls.rb:364:1:364:23 | call to bar | calls.rb:364:15:364:23 | { ... } |
@@ -409,31 +409,31 @@ yieldCalls
 | calls.rb:31:3:31:7 | yield ... |
 | calls.rb:36:3:36:16 | yield ... |
 superCalls
-| calls.rb:286:5:286:9 | call to super |
-| calls.rb:287:5:287:11 | call to super |
-| calls.rb:288:5:288:16 | call to super |
-| calls.rb:289:5:289:17 | call to super |
-| calls.rb:290:5:290:23 | call to super |
-| calls.rb:291:5:291:26 | call to super |
-| calls.rb:292:5:292:30 | call to super |
-| calls.rb:293:5:293:33 | call to super |
-| calls.rb:305:5:305:9 | call to super |
-| calls.rb:332:3:332:12 | call to super |
+| calls.rb:286:5:286:9 | super call to my_method |
+| calls.rb:287:5:287:11 | super call to my_method |
+| calls.rb:288:5:288:16 | super call to my_method |
+| calls.rb:289:5:289:17 | super call to my_method |
+| calls.rb:290:5:290:23 | super call to my_method |
+| calls.rb:291:5:291:26 | super call to my_method |
+| calls.rb:292:5:292:30 | super call to my_method |
+| calls.rb:293:5:293:33 | super call to my_method |
+| calls.rb:305:5:305:9 | super call to another_method |
+| calls.rb:332:3:332:12 | super call to foo |
 superCallsWithArguments
-| calls.rb:288:5:288:16 | call to super | 0 | calls.rb:288:11:288:16 | "blah" |
-| calls.rb:289:5:289:17 | call to super | 0 | calls.rb:289:11:289:11 | 1 |
-| calls.rb:289:5:289:17 | call to super | 1 | calls.rb:289:14:289:14 | 2 |
-| calls.rb:289:5:289:17 | call to super | 2 | calls.rb:289:17:289:17 | 3 |
-| calls.rb:292:5:292:30 | call to super | 0 | calls.rb:292:11:292:11 | 4 |
-| calls.rb:292:5:292:30 | call to super | 1 | calls.rb:292:14:292:14 | 5 |
-| calls.rb:293:5:293:33 | call to super | 0 | calls.rb:293:11:293:11 | 6 |
-| calls.rb:293:5:293:33 | call to super | 1 | calls.rb:293:14:293:14 | 7 |
-| calls.rb:332:3:332:12 | call to super | 0 | calls.rb:332:9:332:11 | ... |
+| calls.rb:288:5:288:16 | super call to my_method | 0 | calls.rb:288:11:288:16 | "blah" |
+| calls.rb:289:5:289:17 | super call to my_method | 0 | calls.rb:289:11:289:11 | 1 |
+| calls.rb:289:5:289:17 | super call to my_method | 1 | calls.rb:289:14:289:14 | 2 |
+| calls.rb:289:5:289:17 | super call to my_method | 2 | calls.rb:289:17:289:17 | 3 |
+| calls.rb:292:5:292:30 | super call to my_method | 0 | calls.rb:292:11:292:11 | 4 |
+| calls.rb:292:5:292:30 | super call to my_method | 1 | calls.rb:292:14:292:14 | 5 |
+| calls.rb:293:5:293:33 | super call to my_method | 0 | calls.rb:293:11:293:11 | 6 |
+| calls.rb:293:5:293:33 | super call to my_method | 1 | calls.rb:293:14:293:14 | 7 |
+| calls.rb:332:3:332:12 | super call to foo | 0 | calls.rb:332:9:332:11 | ... |
 superCallsWithBlock
-| calls.rb:290:5:290:23 | call to super | calls.rb:290:11:290:23 | { ... } |
-| calls.rb:291:5:291:26 | call to super | calls.rb:291:11:291:26 | do ... end |
-| calls.rb:292:5:292:30 | call to super | calls.rb:292:16:292:30 | { ... } |
-| calls.rb:293:5:293:33 | call to super | calls.rb:293:16:293:33 | do ... end |
+| calls.rb:290:5:290:23 | super call to my_method | calls.rb:290:11:290:23 | { ... } |
+| calls.rb:291:5:291:26 | super call to my_method | calls.rb:291:11:291:26 | do ... end |
+| calls.rb:292:5:292:30 | super call to my_method | calls.rb:292:16:292:30 | { ... } |
+| calls.rb:293:5:293:33 | super call to my_method | calls.rb:293:16:293:33 | do ... end |
 setterCalls
 | calls.rb:314:1:314:8 | call to foo= |
 | calls.rb:315:1:315:6 | call to []= |

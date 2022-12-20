@@ -53,7 +53,7 @@ private class ArgvSource extends LocalFlowSource {
     exists(Function main, Parameter argv |
       main.hasGlobalName("main") and
       main.getParameter(1) = argv and
-      argv.getAnAccess() in [this.asExpr(), this.asIndirectExpr()]
+      this.asParameter(_) = argv
     )
   }
 

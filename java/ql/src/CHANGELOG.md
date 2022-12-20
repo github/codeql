@@ -1,3 +1,9 @@
+## 0.4.6
+
+### Minor Analysis Improvements
+
+* Kotlin extraction will now fail if the Kotlin version in use is at least 1.7.30. This is to ensure using an as-yet-unsupported version is noticable, rather than silently failing to extract Kotlin code and therefore producing false-negative results.
+
 ## 0.4.5
 
 No user-facing changes.

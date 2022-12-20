@@ -97,6 +97,15 @@ class MethodCall extends Call instanceof MethodCallImpl {
    * ```
    *
    * the result is `"bar"`.
+   *
+   * Super calls call a method with the same name as the current method, so
+   * the result for a super call is the name of the current method.
+   * E.g:
+   * ```rb
+   * def foo
+   *  super # the result for this super call is "foo"
+   * end
+   * ```
    */
   final string getMethodName() { result = super.getMethodNameImpl() }
 
@@ -201,6 +210,8 @@ class YieldCall extends Call instanceof YieldCallImpl {
  */
 class SuperCall extends MethodCall instanceof SuperCallImpl {
   final override string getAPrimaryQlClass() { result = "SuperCall" }
+
+  override string toString() { result = "super call to " + this.getMethodName() }
 }
 
 /**
