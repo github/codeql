@@ -9140,3 +9140,13 @@
 | struct_init.cpp:41:21:41:32 | ChiTotal | total:m41_7 |
 | struct_init.cpp:41:21:41:32 | SideEffect | ~m41_7 |
 | struct_init.cpp:41:21:41:32 | Unary | r41_3 |
+| try_except.c:6:6:6:6 | ChiPartial | partial:m6_3 |
+| try_except.c:6:6:6:6 | ChiTotal | total:m6_2 |
+| try_except.c:7:7:7:7 | Address | &:r7_1 |
+| try_except.c:7:10:7:10 | Address | &:r7_3 |
+| try_except.c:7:13:7:14 | StoreValue | r7_4 |
+| try_except.c:18:6:18:6 | ChiPartial | partial:m18_3 |
+| try_except.c:18:6:18:6 | ChiTotal | total:m18_2 |
+| try_except.c:19:7:19:7 | Address | &:r19_1 |
+| try_except.c:19:10:19:10 | Address | &:r19_3 |
+| try_except.c:19:13:19:14 | StoreValue | r19_4 |
