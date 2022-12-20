@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.springframework.beans", "MutablePropertyValues", True, "MutablePropertyValues", "(List)", "", "Argument[0].Element", "Argument[-1].Element", "value", "manual"]
       - ["org.springframework.beans", "MutablePropertyValues", True, "MutablePropertyValues", "(Map)", "", "Argument[0].MapKey", "Argument[-1].Element.MapKey", "value", "manual"]

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["", "B", False, "readElement", "(Spliterator)", "", "Argument[0].Element", "ReturnValue", "value", "manual"]
+      - ["", "B", False, "readElement", "(Stream)", "", "Argument[0].Element", "ReturnValue", "value", "manual"]

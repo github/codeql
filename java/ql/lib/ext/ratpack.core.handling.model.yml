@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       # All Context#parse methods that return a Promise are remote flow sources.
       - ["ratpack.core.handling", "Context", True, "parse", "(com.google.common.reflect.TypeToken)", "", "ReturnValue", "remote", "manual"]
@@ -12,7 +12,7 @@ extensions:
       - ["ratpack.core.handling", "Context", True, "parse", "(ratpack.parse.Parse)", "", "ReturnValue", "remote", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["ratpack.core.handling", "Context", True, "parse", "(ratpack.core.http.TypedData,ratpack.core.parse.Parse)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["ratpack.core.handling", "Context", True, "parse", "(ratpack.core.http.TypedData,ratpack.core.parse.Parse)", "", "Argument[0]", "ReturnValue.MapKey", "taint", "manual"]

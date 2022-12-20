@@ -949,6 +949,14 @@
             <v>101</v>
         </e>
         <e>
+            <k>@list_pattern_expr</k>
+            <v>0</v>
+        </e>
+        <e>
+            <k>@slice_pattern_expr</k>
+            <v>0</v>
+        </e>
+        <e>
             <k>@xmldtd</k>
             <v>40</v>
         </e>

@@ -7,3 +7,4 @@ import semmle.javascript.frameworks.Micro
 import semmle.javascript.frameworks.Restify
 import semmle.javascript.frameworks.Connect
 import semmle.javascript.frameworks.Fastify
+import semmle.javascript.frameworks.Spife

@@ -1,10 +1,10 @@
 edges
-| test.cpp:40:21:40:24 | argv | test.cpp:43:38:43:44 | tainted |
-| test.cpp:40:21:40:24 | argv | test.cpp:44:38:44:63 | ... * ... |
-| test.cpp:40:21:40:24 | argv | test.cpp:46:38:46:63 | ... + ... |
-| test.cpp:40:21:40:24 | argv | test.cpp:49:32:49:35 | size |
-| test.cpp:40:21:40:24 | argv | test.cpp:50:26:50:29 | size |
-| test.cpp:40:21:40:24 | argv | test.cpp:53:35:53:60 | ... * ... |
+| test.cpp:39:27:39:30 | argv | test.cpp:43:38:43:44 | tainted |
+| test.cpp:39:27:39:30 | argv | test.cpp:44:38:44:63 | ... * ... |
+| test.cpp:39:27:39:30 | argv | test.cpp:46:38:46:63 | ... + ... |
+| test.cpp:39:27:39:30 | argv | test.cpp:49:32:49:35 | size |
+| test.cpp:39:27:39:30 | argv | test.cpp:50:26:50:29 | size |
+| test.cpp:39:27:39:30 | argv | test.cpp:53:35:53:60 | ... * ... |
 | test.cpp:124:18:124:23 | call to getenv | test.cpp:128:24:128:41 | ... * ... |
 | test.cpp:133:19:133:24 | call to getenv | test.cpp:135:10:135:27 | ... * ... |
 | test.cpp:148:20:148:25 | call to getenv | test.cpp:152:11:152:28 | ... * ... |
@@ -26,7 +26,7 @@ edges
 | test.cpp:289:17:289:20 | size [post update] | test.cpp:291:11:291:28 | ... * ... |
 | test.cpp:305:18:305:21 | size [post update] | test.cpp:308:10:308:27 | ... * ... |
 nodes
-| test.cpp:40:21:40:24 | argv | semmle.label | argv |
+| test.cpp:39:27:39:30 | argv | semmle.label | argv |
 | test.cpp:43:38:43:44 | tainted | semmle.label | tainted |
 | test.cpp:44:38:44:63 | ... * ... | semmle.label | ... * ... |
 | test.cpp:46:38:46:63 | ... + ... | semmle.label | ... + ... |
@@ -60,12 +60,12 @@ nodes
 | test.cpp:308:10:308:27 | ... * ... | semmle.label | ... * ... |
 subpaths
 #select
-| test.cpp:43:31:43:36 | call to malloc | test.cpp:40:21:40:24 | argv | test.cpp:43:38:43:44 | tainted | This allocation size is derived from $@ and might overflow. | test.cpp:40:21:40:24 | argv | user input (a command-line argument) |
-| test.cpp:44:31:44:36 | call to malloc | test.cpp:40:21:40:24 | argv | test.cpp:44:38:44:63 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:40:21:40:24 | argv | user input (a command-line argument) |
-| test.cpp:46:31:46:36 | call to malloc | test.cpp:40:21:40:24 | argv | test.cpp:46:38:46:63 | ... + ... | This allocation size is derived from $@ and might overflow. | test.cpp:40:21:40:24 | argv | user input (a command-line argument) |
-| test.cpp:49:25:49:30 | call to malloc | test.cpp:40:21:40:24 | argv | test.cpp:49:32:49:35 | size | This allocation size is derived from $@ and might overflow. | test.cpp:40:21:40:24 | argv | user input (a command-line argument) |
-| test.cpp:50:17:50:30 | new[] | test.cpp:40:21:40:24 | argv | test.cpp:50:26:50:29 | size | This allocation size is derived from $@ and might overflow. | test.cpp:40:21:40:24 | argv | user input (a command-line argument) |
-| test.cpp:53:21:53:27 | call to realloc | test.cpp:40:21:40:24 | argv | test.cpp:53:35:53:60 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:40:21:40:24 | argv | user input (a command-line argument) |
+| test.cpp:43:31:43:36 | call to malloc | test.cpp:39:27:39:30 | argv | test.cpp:43:38:43:44 | tainted | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv | user input (a command-line argument) |
+| test.cpp:44:31:44:36 | call to malloc | test.cpp:39:27:39:30 | argv | test.cpp:44:38:44:63 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv | user input (a command-line argument) |
+| test.cpp:46:31:46:36 | call to malloc | test.cpp:39:27:39:30 | argv | test.cpp:46:38:46:63 | ... + ... | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv | user input (a command-line argument) |
+| test.cpp:49:25:49:30 | call to malloc | test.cpp:39:27:39:30 | argv | test.cpp:49:32:49:35 | size | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv | user input (a command-line argument) |
+| test.cpp:50:17:50:30 | new[] | test.cpp:39:27:39:30 | argv | test.cpp:50:26:50:29 | size | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv | user input (a command-line argument) |
+| test.cpp:53:21:53:27 | call to realloc | test.cpp:39:27:39:30 | argv | test.cpp:53:35:53:60 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv | user input (a command-line argument) |
 | test.cpp:128:17:128:22 | call to malloc | test.cpp:124:18:124:23 | call to getenv | test.cpp:128:24:128:41 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:124:18:124:23 | call to getenv | user input (an environment variable) |
 | test.cpp:135:3:135:8 | call to malloc | test.cpp:133:19:133:24 | call to getenv | test.cpp:135:10:135:27 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:133:19:133:24 | call to getenv | user input (an environment variable) |
 | test.cpp:152:4:152:9 | call to malloc | test.cpp:148:20:148:25 | call to getenv | test.cpp:152:11:152:28 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:148:20:148:25 | call to getenv | user input (an environment variable) |

@@ -6,7 +6,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["javax.jms", "JMSConsumer", True, "receive", "", "", "ReturnValue", "remote", "manual"]
       - ["javax.jms", "JMSConsumer", True, "receiveBody", "", "", "ReturnValue", "remote", "manual"]
@@ -19,7 +19,7 @@ extensions:
       - ["javax.jms", "TopicRequestor", True, "request", "(Message)", "", "ReturnValue", "remote", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["javax.jms", "BytesMessage", True, "readBoolean", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["javax.jms", "BytesMessage", True, "readByte", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

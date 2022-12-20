@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["java.util.logging", "Logger", True, "config", "", "", "Argument[0]", "logging", "manual"]
       - ["java.util.logging", "Logger", True, "entering", "(String,String)", "", "Argument[0..1]", "logging", "manual"]
@@ -39,6 +39,6 @@ extensions:
       - ["java.util.logging", "Logger", True, "warning", "", "", "Argument[0]", "logging", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["java.util.logging", "LogRecord", False, "LogRecord", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]

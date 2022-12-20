@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(HttpMethod,URI)", "", "Argument[1]", "open-url", "manual"]
       - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(MultiValueMap,HttpMethod,URI)", "", "Argument[2]", "open-url", "manual"]
@@ -19,7 +19,7 @@ extensions:
       - ["org.springframework.http", "RequestEntity", False, "put", "", "", "Argument[0]", "open-url", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.springframework.http", "HttpEntity", True, "HttpEntity", "(MultiValueMap)", "", "Argument[0].MapKey", "Argument[-1]", "taint", "manual"]
       - ["org.springframework.http", "HttpEntity", True, "HttpEntity", "(MultiValueMap)", "", "Argument[0].MapValue.Element", "Argument[-1]", "taint", "manual"]

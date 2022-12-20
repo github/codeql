@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["ratpack.exec", "Promise", True, "apply", "", "", "Argument[-1].Element", "Argument[0].Parameter[0].Element", "value", "manual"]
       - ["ratpack.exec", "Promise", True, "apply", "", "", "Argument[0].ReturnValue.Element", "ReturnValue.Element", "value", "manual"]

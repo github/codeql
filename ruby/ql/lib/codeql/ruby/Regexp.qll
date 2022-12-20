@@ -15,11 +15,12 @@ private import codeql.ruby.ApiGraphs
 /**
  * Provides utility predicates related to regular expressions.
  */
-module RegExpPatterns {
+deprecated module RegExpPatterns {
   /**
    * Gets a pattern that matches common top-level domain names in lower case.
+   * DEPRECATED: use the similarly named predicate from `HostnameRegex` from the `regex` pack instead.
    */
-  string getACommonTld() {
+  deprecated string getACommonTld() {
     // according to ranking by http://google.com/search?q=site:.<<TLD>>
     result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
   }

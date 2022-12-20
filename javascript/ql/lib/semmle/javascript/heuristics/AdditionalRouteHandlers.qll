@@ -38,3 +38,19 @@ private class PromotedConnectCandidate extends Connect::RouteHandler,
     result = ConnectExpressShared::getRouteHandlerParameter(this, kind)
   }
 }
+
+/**
+ * Add `Restify::RouteHandlerCandidate` to the extent of `Restify::RouteHandler`.
+ */
+private class PromotedRestifyCandidate extends Restify::RouteHandler,
+  Http::Servers::StandardRouteHandler {
+  PromotedRestifyCandidate() { this instanceof Restify::RouteHandlerCandidate }
+}
+
+/**
+ * Add `Spife::RouteHandlerCandidate` to the extent of `Spife::RouteHandler`.
+ */
+private class PromotedSpifeCandidate extends Spife::RouteHandler,
+  Http::Servers::StandardRouteHandler {
+  PromotedSpifeCandidate() { this instanceof Spife::RouteHandlerCandidate }
+}

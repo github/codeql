@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getAcceptableLanguages", "", "", "ReturnValue", "remote", "manual"]
       - ["jakarta.ws.rs.container", "ContainerRequestContext", True, "getAcceptableMediaTypes", "", "", "ReturnValue", "remote", "manual"]

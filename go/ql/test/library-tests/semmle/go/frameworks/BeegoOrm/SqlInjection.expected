@@ -1,38 +1,38 @@
 edges
-| test.go:10:15:10:41 | call to UserAgent : string | test.go:12:11:12:19 | untrusted |
-| test.go:10:15:10:41 | call to UserAgent : string | test.go:13:23:13:31 | untrusted |
-| test.go:10:15:10:41 | call to UserAgent : string | test.go:14:14:14:22 | untrusted |
-| test.go:10:15:10:41 | call to UserAgent : string | test.go:15:26:15:34 | untrusted |
-| test.go:10:15:10:41 | call to UserAgent : string | test.go:16:12:16:20 | untrusted |
-| test.go:10:15:10:41 | call to UserAgent : string | test.go:17:24:17:32 | untrusted |
-| test.go:10:15:10:41 | call to UserAgent : string | test.go:18:15:18:23 | untrusted |
-| test.go:10:15:10:41 | call to UserAgent : string | test.go:19:27:19:35 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:26:12:26:20 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:27:10:27:18 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:28:15:28:23 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:29:14:29:22 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:30:15:30:23 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:31:8:31:16 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:32:11:32:19 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:33:9:33:17 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:34:8:34:16 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:35:8:35:16 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:36:13:36:21 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:37:13:37:21 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:38:12:38:20 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:39:12:39:20 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:40:9:40:17 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:41:12:41:20 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:42:16:42:24 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:42:27:42:35 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:43:12:43:20 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:44:14:44:22 | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | test.go:44:25:44:33 | untrusted |
-| test.go:48:15:48:41 | call to UserAgent : string | test.go:49:12:49:20 | untrusted |
-| test.go:54:15:54:41 | call to UserAgent : string | test.go:56:31:56:39 | untrusted |
-| test.go:60:15:60:41 | call to UserAgent : string | test.go:62:19:62:27 | untrusted |
+| test.go:10:15:10:41 | call to UserAgent | test.go:12:11:12:19 | untrusted |
+| test.go:10:15:10:41 | call to UserAgent | test.go:13:23:13:31 | untrusted |
+| test.go:10:15:10:41 | call to UserAgent | test.go:14:14:14:22 | untrusted |
+| test.go:10:15:10:41 | call to UserAgent | test.go:15:26:15:34 | untrusted |
+| test.go:10:15:10:41 | call to UserAgent | test.go:16:12:16:20 | untrusted |
+| test.go:10:15:10:41 | call to UserAgent | test.go:17:24:17:32 | untrusted |
+| test.go:10:15:10:41 | call to UserAgent | test.go:18:15:18:23 | untrusted |
+| test.go:10:15:10:41 | call to UserAgent | test.go:19:27:19:35 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:26:12:26:20 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:27:10:27:18 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:28:15:28:23 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:29:14:29:22 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:30:15:30:23 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:31:8:31:16 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:32:11:32:19 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:33:9:33:17 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:34:8:34:16 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:35:8:35:16 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:36:13:36:21 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:37:13:37:21 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:38:12:38:20 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:39:12:39:20 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:40:9:40:17 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:41:12:41:20 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:42:16:42:24 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:42:27:42:35 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:43:12:43:20 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:44:14:44:22 | untrusted |
+| test.go:24:15:24:41 | call to UserAgent | test.go:44:25:44:33 | untrusted |
+| test.go:48:15:48:41 | call to UserAgent | test.go:49:12:49:20 | untrusted |
+| test.go:54:15:54:41 | call to UserAgent | test.go:56:31:56:39 | untrusted |
+| test.go:60:15:60:41 | call to UserAgent | test.go:62:19:62:27 | untrusted |
 nodes
-| test.go:10:15:10:41 | call to UserAgent : string | semmle.label | call to UserAgent : string |
+| test.go:10:15:10:41 | call to UserAgent | semmle.label | call to UserAgent |
 | test.go:12:11:12:19 | untrusted | semmle.label | untrusted |
 | test.go:13:23:13:31 | untrusted | semmle.label | untrusted |
 | test.go:14:14:14:22 | untrusted | semmle.label | untrusted |
@@ -41,7 +41,7 @@ nodes
 | test.go:17:24:17:32 | untrusted | semmle.label | untrusted |
 | test.go:18:15:18:23 | untrusted | semmle.label | untrusted |
 | test.go:19:27:19:35 | untrusted | semmle.label | untrusted |
-| test.go:24:15:24:41 | call to UserAgent : string | semmle.label | call to UserAgent : string |
+| test.go:24:15:24:41 | call to UserAgent | semmle.label | call to UserAgent |
 | test.go:26:12:26:20 | untrusted | semmle.label | untrusted |
 | test.go:27:10:27:18 | untrusted | semmle.label | untrusted |
 | test.go:28:15:28:23 | untrusted | semmle.label | untrusted |
@@ -63,43 +63,43 @@ nodes
 | test.go:43:12:43:20 | untrusted | semmle.label | untrusted |
 | test.go:44:14:44:22 | untrusted | semmle.label | untrusted |
 | test.go:44:25:44:33 | untrusted | semmle.label | untrusted |
-| test.go:48:15:48:41 | call to UserAgent : string | semmle.label | call to UserAgent : string |
+| test.go:48:15:48:41 | call to UserAgent | semmle.label | call to UserAgent |
 | test.go:49:12:49:20 | untrusted | semmle.label | untrusted |
-| test.go:54:15:54:41 | call to UserAgent : string | semmle.label | call to UserAgent : string |
+| test.go:54:15:54:41 | call to UserAgent | semmle.label | call to UserAgent |
 | test.go:56:31:56:39 | untrusted | semmle.label | untrusted |
-| test.go:60:15:60:41 | call to UserAgent : string | semmle.label | call to UserAgent : string |
+| test.go:60:15:60:41 | call to UserAgent | semmle.label | call to UserAgent |
 | test.go:62:19:62:27 | untrusted | semmle.label | untrusted |
 subpaths
 #select
-| test.go:12:11:12:19 | untrusted | test.go:10:15:10:41 | call to UserAgent : string | test.go:12:11:12:19 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
-| test.go:13:23:13:31 | untrusted | test.go:10:15:10:41 | call to UserAgent : string | test.go:13:23:13:31 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
-| test.go:14:14:14:22 | untrusted | test.go:10:15:10:41 | call to UserAgent : string | test.go:14:14:14:22 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
-| test.go:15:26:15:34 | untrusted | test.go:10:15:10:41 | call to UserAgent : string | test.go:15:26:15:34 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
-| test.go:16:12:16:20 | untrusted | test.go:10:15:10:41 | call to UserAgent : string | test.go:16:12:16:20 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
-| test.go:17:24:17:32 | untrusted | test.go:10:15:10:41 | call to UserAgent : string | test.go:17:24:17:32 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
-| test.go:18:15:18:23 | untrusted | test.go:10:15:10:41 | call to UserAgent : string | test.go:18:15:18:23 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
-| test.go:19:27:19:35 | untrusted | test.go:10:15:10:41 | call to UserAgent : string | test.go:19:27:19:35 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
-| test.go:26:12:26:20 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:26:12:26:20 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:27:10:27:18 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:27:10:27:18 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:28:15:28:23 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:28:15:28:23 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:29:14:29:22 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:29:14:29:22 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:30:15:30:23 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:30:15:30:23 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:31:8:31:16 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:31:8:31:16 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:32:11:32:19 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:32:11:32:19 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:33:9:33:17 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:33:9:33:17 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:34:8:34:16 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:34:8:34:16 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:35:8:35:16 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:35:8:35:16 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:36:13:36:21 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:36:13:36:21 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:37:13:37:21 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:37:13:37:21 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:38:12:38:20 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:38:12:38:20 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:39:12:39:20 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:39:12:39:20 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:40:9:40:17 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:40:9:40:17 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:41:12:41:20 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:41:12:41:20 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:42:16:42:24 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:42:16:42:24 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:42:27:42:35 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:42:27:42:35 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:43:12:43:20 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:43:12:43:20 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:44:14:44:22 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:44:14:44:22 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:44:25:44:33 | untrusted | test.go:24:15:24:41 | call to UserAgent : string | test.go:44:25:44:33 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
-| test.go:49:12:49:20 | untrusted | test.go:48:15:48:41 | call to UserAgent : string | test.go:49:12:49:20 | untrusted | This query depends on a $@. | test.go:48:15:48:41 | call to UserAgent | user-provided value |
-| test.go:56:31:56:39 | untrusted | test.go:54:15:54:41 | call to UserAgent : string | test.go:56:31:56:39 | untrusted | This query depends on a $@. | test.go:54:15:54:41 | call to UserAgent | user-provided value |
-| test.go:62:19:62:27 | untrusted | test.go:60:15:60:41 | call to UserAgent : string | test.go:62:19:62:27 | untrusted | This query depends on a $@. | test.go:60:15:60:41 | call to UserAgent | user-provided value |
+| test.go:12:11:12:19 | untrusted | test.go:10:15:10:41 | call to UserAgent | test.go:12:11:12:19 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
+| test.go:13:23:13:31 | untrusted | test.go:10:15:10:41 | call to UserAgent | test.go:13:23:13:31 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
+| test.go:14:14:14:22 | untrusted | test.go:10:15:10:41 | call to UserAgent | test.go:14:14:14:22 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
+| test.go:15:26:15:34 | untrusted | test.go:10:15:10:41 | call to UserAgent | test.go:15:26:15:34 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
+| test.go:16:12:16:20 | untrusted | test.go:10:15:10:41 | call to UserAgent | test.go:16:12:16:20 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
+| test.go:17:24:17:32 | untrusted | test.go:10:15:10:41 | call to UserAgent | test.go:17:24:17:32 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
+| test.go:18:15:18:23 | untrusted | test.go:10:15:10:41 | call to UserAgent | test.go:18:15:18:23 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
+| test.go:19:27:19:35 | untrusted | test.go:10:15:10:41 | call to UserAgent | test.go:19:27:19:35 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |
+| test.go:26:12:26:20 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:26:12:26:20 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:27:10:27:18 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:27:10:27:18 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:28:15:28:23 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:28:15:28:23 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:29:14:29:22 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:29:14:29:22 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:30:15:30:23 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:30:15:30:23 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:31:8:31:16 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:31:8:31:16 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:32:11:32:19 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:32:11:32:19 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:33:9:33:17 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:33:9:33:17 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:34:8:34:16 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:34:8:34:16 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:35:8:35:16 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:35:8:35:16 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:36:13:36:21 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:36:13:36:21 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:37:13:37:21 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:37:13:37:21 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:38:12:38:20 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:38:12:38:20 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:39:12:39:20 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:39:12:39:20 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:40:9:40:17 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:40:9:40:17 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:41:12:41:20 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:41:12:41:20 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:42:16:42:24 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:42:16:42:24 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:42:27:42:35 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:42:27:42:35 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:43:12:43:20 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:43:12:43:20 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:44:14:44:22 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:44:14:44:22 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:44:25:44:33 | untrusted | test.go:24:15:24:41 | call to UserAgent | test.go:44:25:44:33 | untrusted | This query depends on a $@. | test.go:24:15:24:41 | call to UserAgent | user-provided value |
+| test.go:49:12:49:20 | untrusted | test.go:48:15:48:41 | call to UserAgent | test.go:49:12:49:20 | untrusted | This query depends on a $@. | test.go:48:15:48:41 | call to UserAgent | user-provided value |
+| test.go:56:31:56:39 | untrusted | test.go:54:15:54:41 | call to UserAgent | test.go:56:31:56:39 | untrusted | This query depends on a $@. | test.go:54:15:54:41 | call to UserAgent | user-provided value |
+| test.go:62:19:62:27 | untrusted | test.go:60:15:60:41 | call to UserAgent | test.go:62:19:62:27 | untrusted | This query depends on a $@. | test.go:60:15:60:41 | call to UserAgent | user-provided value |

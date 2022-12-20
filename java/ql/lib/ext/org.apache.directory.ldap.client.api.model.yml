@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.apache.directory.ldap.client.api", "LdapConnection", True, "search", "", "", "Argument[0..2]", "ldap", "manual"]
