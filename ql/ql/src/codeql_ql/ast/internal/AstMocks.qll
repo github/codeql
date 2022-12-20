@@ -64,7 +64,7 @@ class MockModule extends MockAst, TMockModule {
 module MockModule {
   abstract class Range extends string {
     bindingset[this]
-    Range() { this = this }
+    Range() { any() }
 
     /** Gets the name of this mocked module. */
     abstract string getName();
@@ -96,7 +96,7 @@ class MockClass extends MockAst, TMockClass {
 module MockClass {
   abstract class Range extends string {
     bindingset[this]
-    Range() { this = this }
+    Range() { any() }
 
     /** Gets the name of this mocked class. */
     abstract string getName();
@@ -135,7 +135,7 @@ class MockTypeExpr extends MockSignatureExpr, TMockTypeExpr {
 module MockTypeExpr {
   abstract class Range extends string {
     bindingset[this]
-    Range() { this = this }
+    Range() { any() }
 
     /** Gets the name of the type. */
     abstract string getClassName();
@@ -164,7 +164,7 @@ class MockClasslessPredicate extends MockAst {
 module MockClasslessPredicate {
   abstract class Range extends string {
     bindingset[this]
-    Range() { this = this }
+    Range() { any() }
 
     /** Gets the name of the predicate. */
     abstract string getName();
@@ -196,7 +196,7 @@ class MockVarDecl extends MockAst, TMockVarDecl {
 module MockVarDecl {
   abstract class Range extends string {
     bindingset[this]
-    Range() { this = this }
+    Range() { any() }
 
     /** Gets the name of the variable. */
     abstract string getName();
