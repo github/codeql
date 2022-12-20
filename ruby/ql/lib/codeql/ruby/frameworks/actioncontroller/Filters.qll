@@ -411,52 +411,57 @@ module Filters {
   }
 
   /**
-   * Holds if data can flow from `pred` to `succ` via a callback chain.
-   * `pred` is the post-update node of the self parameter in a method, and
-   * `succ` is the self parameter of a subsequent method that is executed as
-   * part of the callback chain.
+   * A class defining additional jump steps arising from filters.
    */
-  predicate additionalJumpStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Method predMethod, Method succMethod |
-      next(predMethod, succMethod) and
-      (
-        // Flow from an update of self in `pred` to the self parameter of `succ`
-        //
-        // def a
-        //   @x = 1 ---+
-        // end         |
-        //             |
-        // def b  <----+
-        //  ...
-        //
-        lastVariableAccessPostUpdate(pred, predMethod) and
-        selfParameter(succ, succMethod)
-        or
-        // When there is no update of self in `pred`, flow from the last access to self to the self parameter of `succ`
-        //
-        // def a
-        //   foo() ---+
-        //   x = 1    |
-        // end        |
-        //            |
-        // def b  <---+
-        // ...
-        //
-        not variableAccessPostUpdate(_, predMethod) and
-        lastMethodSelfVarAccess(pred.asExpr(), _, predMethod) and
-        selfParameter(succ, succMethod)
-        or
-        // When there is no access to self in `pred`, flow from the self parameter of `pred` to the self parameter of `succ`
-        //
-        // def a ---+
-        // end      |
-        //          |
-        // def b <--+
-        // ...
-        noSelfVarAccess(predMethod) and
-        selfParameter(pred, predMethod) and
-        selfParameter(succ, succMethod)
+  class FilterJumpStep extends DataFlowPrivate::AdditionalJumpStep {
+    /**
+     * Holds if data can flow from `pred` to `succ` via a callback chain.
+     * `pred` is the post-update node of the self parameter in a method, and
+     * `succ` is the self parameter of a subsequent method that is executed as
+     * part of the callback chain.
+     */
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Method predMethod, Method succMethod |
+        next(predMethod, succMethod) and
+        (
+          // Flow from an update of self in `pred` to the self parameter of `succ`
+          //
+          // def a
+          //   @x = 1 ---+
+          // end         |
+          //             |
+          // def b  <----+
+          //  ...
+          //
+          lastVariableAccessPostUpdate(pred, predMethod) and
+          selfParameter(succ, succMethod)
+          or
+          // When there is no update of self in `pred`, flow from the last access to self to the self parameter of `succ`
+          //
+          // def a
+          //   foo() ---+
+          //   x = 1    |
+          // end        |
+          //            |
+          // def b  <---+
+          // ...
+          //
+          not variableAccessPostUpdate(_, predMethod) and
+          lastMethodSelfVarAccess(pred.asExpr(), _, predMethod) and
+          selfParameter(succ, succMethod)
+          or
+          // When there is no access to self in `pred`, flow from the self parameter of `pred` to the self parameter of `succ`
+          //
+          // def a ---+
+          // end      |
+          //          |
+          // def b <--+
+          // ...
+          noSelfVarAccess(predMethod) and
+          selfParameter(pred, predMethod) and
+          selfParameter(succ, succMethod)
+        )
       )
-    )
+    }
   }
 }
