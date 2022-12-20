@@ -302,13 +302,15 @@ std::optional<codeql::ModuleDecl> DeclTranslator::translateModuleDecl(
 }
 
 std::string DeclTranslator::mangledName(const swift::ValueDecl& decl) {
+  std::string_view moduleName = decl.getModuleContext()->getRealName().str();
   // ASTMangler::mangleAnyDecl crashes when called on `ModuleDecl`
-  // TODO find a more unique string working also when different modules are compiled with the same
-  // name
-  std::ostringstream ret;
   if (decl.getKind() == swift::DeclKind::Module) {
-    ret << static_cast<const swift::ModuleDecl&>(decl).getRealName().str().str();
-  } else if (decl.getKind() == swift::DeclKind::TypeAlias) {
+    return std::string{moduleName};
+  }
+  std::ostringstream ret;
+  // stamp all declarations with an id-ref of the containing module
+  ret << '{' << ModuleDeclTag::prefix << '_' << moduleName << '}';
+  if (decl.getKind() == swift::DeclKind::TypeAlias) {
     // In cases like this (when coming from PCM)
     //  typealias CFXMLTree = CFTree
     //  typealias CFXMLTreeRef = CFXMLTree
@@ -319,14 +321,6 @@ std::string DeclTranslator::mangledName(const swift::ValueDecl& decl) {
   } else {
     // prefix adds a couple of special symbols, we don't necessary need them
     ret << mangler.mangleAnyDecl(&decl, /* prefix = */ false);
-  }
-  // there can be separate declarations (`VarDecl` or `AccessorDecl`) which are effectively the same
-  // (with equal mangled name) but come from different clang modules. This is the case for example
-  // for glibc constants like `L_SET` that appear in both `SwiftGlibc` and `CDispatch`.
-  // For the moment, we sidestep the problem by making them separate entities in the DB
-  // TODO find a more solid solution
-  if (decl.getModuleContext()->isNonSwiftModule()) {
-    ret << '_' << decl.getModuleContext()->getRealName().str().str();
   }
   return ret.str();
 }
