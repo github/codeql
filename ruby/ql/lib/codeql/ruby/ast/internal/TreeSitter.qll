@@ -1,4 +1,4 @@
-/*
+/**
  * CodeQL library for Ruby
  * Automatically generated from the tree-sitter grammar; do not edit
  */
