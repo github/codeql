@@ -6,6 +6,7 @@ import codeql.swift.elements.DiagnosticsConstructor
 import codeql.swift.elements.UnspecifiedElementConstructor
 import codeql.swift.elements.decl.AccessorDeclConstructor
 import codeql.swift.elements.decl.AssociatedTypeDeclConstructor
+import codeql.swift.elements.decl.CapturedDeclConstructor
 import codeql.swift.elements.decl.ClassDeclConstructor
 import codeql.swift.elements.decl.ConcreteFuncDeclConstructor
 import codeql.swift.elements.decl.ConcreteVarDeclConstructor

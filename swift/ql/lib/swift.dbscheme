@@ -157,7 +157,8 @@ unspecified_element_indices(
 );
 
 @decl =
-  @enum_case_decl
+  @captured_decl
+| @enum_case_decl
 | @extension_decl
 | @if_config_decl
 | @import_decl
@@ -195,6 +196,21 @@ generic_context_generic_type_params(  //dir=decl
   int id: @generic_context ref,
   int index: int ref,
   int generic_type_param: @generic_type_param_decl_or_none ref
+);
+
+captured_decls(  //dir=decl
+  unique int id: @captured_decl,
+  int decl: @value_decl_or_none ref
+);
+
+#keyset[id]
+captured_decl_is_direct(  //dir=decl
+  int id: @captured_decl ref
+);
+
+#keyset[id]
+captured_decl_is_escaping(  //dir=decl
+  int id: @captured_decl ref
 );
 
 enum_case_decls(  //dir=decl
@@ -696,6 +712,13 @@ expr_types(  //dir=expr
   @auto_closure_expr
 | @closure_expr
 ;
+
+#keyset[id, index]
+abstract_closure_expr_captures(  //dir=expr
+  int id: @abstract_closure_expr ref,
+  int index: int ref,
+  int capture: @captured_decl_or_none ref
+);
 
 @any_try_expr =
   @force_try_expr
@@ -2360,6 +2383,11 @@ variadic_sequence_types(  //dir=type
 
 @brace_stmt_or_none =
   @brace_stmt
+| @unspecified_element
+;
+
+@captured_decl_or_none =
+  @captured_decl
 | @unspecified_element
 ;
 

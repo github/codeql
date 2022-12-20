@@ -1,0 +1,2 @@
+| closures.swift:8:12:8:12 | x | getModule: | file://:0:0:0:0 | closures | getDecl: | closures.swift:7:6:7:6 | x | isDirect: | yes | isEscaping: | no |
+| closures.swift:9:12:9:12 | y | getModule: | file://:0:0:0:0 | closures | getDecl: | closures.swift:6:7:6:7 | y | isDirect: | yes | isEscaping: | no |

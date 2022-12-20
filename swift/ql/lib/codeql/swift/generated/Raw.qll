@@ -85,6 +85,16 @@ module Raw {
     }
   }
 
+  class CapturedDecl extends @captured_decl, Decl {
+    override string toString() { result = "CapturedDecl" }
+
+    ValueDecl getDecl() { captured_decls(this, result) }
+
+    predicate isDirect() { captured_decl_is_direct(this) }
+
+    predicate isEscaping() { captured_decl_is_escaping(this) }
+  }
+
   class EnumCaseDecl extends @enum_case_decl, Decl {
     override string toString() { result = "EnumCaseDecl" }
 
@@ -350,7 +360,9 @@ module Raw {
     Type getType() { expr_types(this, result) }
   }
 
-  class AbstractClosureExpr extends @abstract_closure_expr, Expr, Callable { }
+  class AbstractClosureExpr extends @abstract_closure_expr, Expr, Callable {
+    CapturedDecl getCapture(int index) { abstract_closure_expr_captures(this, index, result) }
+  }
 
   class AnyTryExpr extends @any_try_expr, Expr {
     Expr getSubExpr() { any_try_exprs(this, result) }

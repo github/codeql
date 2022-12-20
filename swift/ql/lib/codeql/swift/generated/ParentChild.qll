@@ -234,6 +234,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCapturedDecl(
+    CapturedDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bDecl, int n |
+      b = 0 and
+      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      n = bDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfEnumCaseDecl(
     EnumCaseDecl e, int index, string partialPredicateCall
   ) {
@@ -938,18 +953,22 @@ private module Impl {
   private Element getImmediateChildOfAbstractClosureExpr(
     AbstractClosureExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int bCallable, int n |
+    exists(int b, int bExpr, int bCallable, int n, int nCapture |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       bCallable =
         bExpr + 1 + max(int i | i = -1 or exists(getImmediateChildOfCallable(e, i, _)) | i) and
       n = bCallable and
+      nCapture = n + 1 + max(int i | i = -1 or exists(e.getImmediateCapture(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
         result = getImmediateChildOfCallable(e, index - bExpr, partialPredicateCall)
+        or
+        result = e.getImmediateCapture(index - n) and
+        partialPredicateCall = "Capture(" + (index - n).toString() + ")"
       )
     )
   }
@@ -4737,6 +4756,8 @@ private module Impl {
     result = getImmediateChildOfUnknownLocation(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnspecifiedElement(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCapturedDecl(e, index, partialAccessor)
     or
     result = getImmediateChildOfEnumCaseDecl(e, index, partialAccessor)
     or

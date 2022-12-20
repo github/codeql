@@ -266,6 +266,7 @@ cfg.swift:
 #   47|                 getExpr(): [DeclRefExpr] s
 #   47|               getArgument(1): [Argument] : 
 #   47|                 getExpr(): [StringLiteralExpr] 
+#   47|         getCapture(0): [CapturedDecl] s
 #   51| [ConcreteFuncDecl] createClosure2(x:)
 #   51|     InterfaceType = (Int) -> (Int) -> Int
 #   51|   getParam(0): [ParamDecl] x
@@ -308,6 +309,7 @@ cfg.swift:
 #   60|                 getExpr(): [DeclRefExpr] x
 #   60|               getArgument(1): [Argument] : y
 #   60|                 getExpr(): [DeclRefExpr] y
+#   60|         getCapture(0): [CapturedDecl] x
 #   64| [ConcreteFuncDecl] callClosures()
 #   64|     InterfaceType = () -> ()
 #   64|   getBody(): [BraceStmt] { ... }
@@ -758,6 +760,7 @@ cfg.swift:
 #  144|                         getExpr(): [DeclRefExpr] x
 #  144|                       getArgument(1): [Argument] : 5
 #  144|                         getExpr(): [IntegerLiteralExpr] 5
+#  144|                 getCapture(0): [CapturedDecl] x
 #  146|       getCase(2): [CaseStmt] case ...
 #  147|         getBody(): [BraceStmt] { ... }
 #  147|           getElement(0): [ReturnStmt] return ...
@@ -944,6 +947,7 @@ cfg.swift:
 #  185|                               getExpr(): [DeclRefExpr] x
 #  185|                             getArgument(1): [Argument] : 0
 #  185|                               getExpr(): [IntegerLiteralExpr] 0
+#  185|                       getCapture(0): [CapturedDecl] x
 #  185|               getArgument(1): [Argument] : { ... }
 #  185|                 getExpr(): [AutoClosureExpr] { ... }
 #  185|                   getBody(): [BraceStmt] { ... }
@@ -964,6 +968,7 @@ cfg.swift:
 #  185|                             getArgument(1): [Argument] : 5
 #  185|                               getExpr(): [IntegerLiteralExpr] 5
 #  185|                           getExpr().getFullyConverted(): [ParenExpr] (...)
+#  185|                   getCapture(0): [CapturedDecl] x
 #  185|         getThen(): [BraceStmt] { ... }
 #  186|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #  186|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -1178,6 +1183,7 @@ cfg.swift:
 #  238|                 getBody(): [BraceStmt] { ... }
 #  238|                   getElement(0): [ReturnStmt] return ...
 #  238|                     getResult(): [DeclRefExpr] b2
+#  238|                 getCapture(0): [CapturedDecl] b2
 #  238|           getBoolean().getFullyConverted(): [ParenExpr] (...)
 #  238|       getThen(): [BraceStmt] { ... }
 #  239|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
@@ -2412,6 +2418,7 @@ cfg.swift:
 #  368|           getBody(): [BraceStmt] { ... }
 #  369|             getElement(0): [ReturnStmt] return ...
 #  369|               getResult(): [DeclRefExpr] z
+#  369|           getCapture(0): [CapturedDecl] z
 #  368| [ConcreteVarDecl] z
 #  368|     Type = Int
 #  373| [ConcreteFuncDecl] testTupleElement(t:)

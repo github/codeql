@@ -18,6 +18,7 @@ import codeql.swift.elements.decl.AbstractStorageDecl
 import codeql.swift.elements.decl.AbstractTypeParamDecl
 import codeql.swift.elements.decl.AccessorDecl
 import codeql.swift.elements.decl.AssociatedTypeDecl
+import codeql.swift.elements.decl.CapturedDecl
 import codeql.swift.elements.decl.ClassDecl
 import codeql.swift.elements.decl.ConcreteFuncDecl
 import codeql.swift.elements.decl.ConcreteVarDecl
