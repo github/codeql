@@ -340,7 +340,7 @@ class Argument(Locatable):
     expr: Expr | child
 
 class AbstractClosureExpr(Expr, Callable):
-    pass
+    captures: list["CapturedDecl"] | child
 
 class AnyTryExpr(Expr):
     sub_expr: Expr | child
@@ -361,6 +361,11 @@ class AssignExpr(Expr):
 
 class BindOptionalExpr(Expr):
     sub_expr: Expr | child
+
+class CapturedDecl(Decl):
+    decl: ValueDecl | doc("the declaration captured by the parent closure")
+    is_direct: predicate
+    is_escaping: predicate
 
 class CaptureListExpr(Expr):
     binding_decls: list[PatternBindingDecl] | child

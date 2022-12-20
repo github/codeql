@@ -29,7 +29,8 @@ class SwiftDispatcher {
                                const swift::Expr*,
                                const swift::Pattern*,
                                const swift::TypeRepr*,
-                               const swift::TypeBase*>;
+                               const swift::TypeBase*,
+                               const swift::CapturedValue*>;
 
   template <typename E>
   static constexpr bool IsStorable = std::is_constructible_v<Store::Handle, const E&>;
@@ -218,6 +219,10 @@ class SwiftDispatcher {
     attachLocation(locatable->getStartLoc(), locatable->getEndLoc(), locatableLabel);
   }
 
+  void attachLocation(const swift::CapturedValue* capture, TrapLabel<LocatableTag> locatableLabel) {
+    attachLocation(capture->getLoc(), locatableLabel);
+  }
+
   void attachLocation(const swift::IfConfigClause* clause, TrapLabel<LocatableTag> locatableLabel) {
     attachLocation(clause->Loc, clause->Loc, locatableLabel);
   }
@@ -364,6 +369,7 @@ class SwiftDispatcher {
   virtual void visit(const swift::Pattern* pattern) = 0;
   virtual void visit(const swift::TypeRepr* typeRepr, swift::Type type) = 0;
   virtual void visit(const swift::TypeBase* type) = 0;
+  virtual void visit(const swift::CapturedValue* capture) = 0;
 
   const swift::SourceManager& sourceManager;
   TrapDomain& trap;

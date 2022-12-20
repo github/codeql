@@ -439,4 +439,14 @@ codeql::MissingMemberDecl DeclTranslator::translateMissingMemberDecl(
   entry.name = decl.getName().getBaseName().userFacingName().str();
   return entry;
 }
+
+codeql::CapturedDecl DeclTranslator::translateCapturedValue(const swift::CapturedValue& capture) {
+  codeql::CapturedDecl entry{dispatcher.template assignNewLabel(capture)};
+  auto decl = capture.getDecl();
+  entry.decl = dispatcher.fetchLabel(decl);
+  entry.module = dispatcher.fetchLabel(decl->getModuleContext());
+  entry.is_direct = capture.isDirect();
+  entry.is_escaping = !capture.isNoEscape();
+  return entry;
+}
 }  // namespace codeql
