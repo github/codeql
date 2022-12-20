@@ -110,7 +110,7 @@ private class UntrustedUrlConfig extends TaintTracking::Configuration {
   UntrustedUrlConfig() { this = "UntrustedUrlConfig" }
 
   override predicate isSource(DataFlow::Node node) {
-    exists(string d | trustedDomain(d)) and
+    trustedDomain(_) and
     exists(string lit | lit = node.asExpr().(CompileTimeConstantExpr).getStringValue() |
       lit.matches("%://%") and // it's a URL
       not exists(string dom | trustedDomain(dom) and lit.matches("%" + dom + "%"))
@@ -125,8 +125,7 @@ predicate missingPinning(DataFlow::Node node, string domain) {
   isAndroid() and
   node instanceof MissingPinningSink and
   (
-    not exists(string s | trustedDomain(s)) and
-    domain = ""
+    not trustedDomain(_) and domain = ""
     or
     exists(UntrustedUrlConfig conf, DataFlow::Node src |
       conf.hasFlow(src, node) and
