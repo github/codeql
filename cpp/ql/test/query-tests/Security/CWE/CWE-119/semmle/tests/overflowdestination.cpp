@@ -20,7 +20,7 @@ inline size_t min(size_t a, size_t b) {
 	}
 }
 
-int main(int argc, char* argv[]) {
+int overflowdesination_main(int argc, char* argv[]) {
 	char param[20];
 	char *arg1;
 
