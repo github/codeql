@@ -263,6 +263,9 @@ private class TryOrMicrosoftTryStmt extends Stmt {
     or
     this instanceof MicrosoftTryExceptStmt and
     result = 1
+    or
+    this instanceof MicrosoftTryFinallyStmt and
+    result = 0
   }
 
   /** Gets the `body` statement of this statement. */
@@ -279,6 +282,9 @@ private class TryOrMicrosoftTryStmt extends Stmt {
     i = 0 and
     result = this.(MicrosoftTryExceptStmt).getExcept()
   }
+
+  /** Gets the `finally` statement (usually a BlockStmt), if any. */
+  Stmt getFinally() { result = this.(MicrosoftTryFinallyStmt).getFinally() }
 }
 
 /**
@@ -291,6 +297,9 @@ class TranslatedTryStmt extends TranslatedStmt {
     id = 0 and result = getBody()
     or
     result = getHandler(id - 1)
+    or
+    id = stmt.getNumberOfCatchClauses() + 1 and
+    result = this.getFinally()
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -302,8 +311,20 @@ class TranslatedTryStmt extends TranslatedStmt {
   override Instruction getFirstInstruction() { result = getBody().getFirstInstruction() }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    // All children go to the successor of the `try`.
-    child = getAChild() and result = getParent().getChildSuccessor(this)
+    // All non-finally children go to the successor of the `try` if
+    // there is no finally block, but if there is a finally block
+    // then we go to that one.
+    child = [getBody(), getHandler(_)] and
+    (
+      not exists(this.getFinally()) and
+      result = getParent().getChildSuccessor(this)
+      or
+      result = this.getFinally().getFirstInstruction()
+    )
+    or
+    // And after the finally block we go to the successor of the `try`.
+    child = this.getFinally() and
+    result = getParent().getChildSuccessor(this)
   }
 
   final Instruction getNextHandler(TranslatedHandler handler) {
@@ -326,6 +347,8 @@ class TranslatedTryStmt extends TranslatedStmt {
   private TranslatedHandler getHandler(int index) {
     result = getTranslatedStmt(stmt.getHandlerStmt(index))
   }
+
+  private TranslatedStmt getFinally() { result = getTranslatedStmt(stmt.getFinally()) }
 
   private TranslatedStmt getBody() { result = getTranslatedStmt(stmt.getStmt()) }
 }

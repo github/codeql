@@ -10471,14 +10471,12 @@ try_except.c:
 #   23|     r23_2(int)            = Constant[0]                    : 
 #   23|     v23_3(void)           = Call[ProbeFunction]            : func:r23_1, 0:r23_2
 #   23|     mu23_4(unknown)       = ^CallSideEffect                : ~m?
+#   26|     r26_1(glval<unknown>) = FunctionAddress[sink]          : 
+#   26|     r26_2(glval<int>)     = VariableAddress[x]             : 
+#   26|     r26_3(int)            = Load[x]                        : &:r26_2, ~m?
+#   26|     v26_4(void)           = Call[sink]                     : func:r26_1, 0:r26_3
+#   26|     mu26_5(unknown)       = ^CallSideEffect                : ~m?
 #   28|     v28_1(void)           = NoOp                           : 
 #   18|     v18_4(void)           = ReturnVoid                     : 
 #   18|     v18_5(void)           = AliasedUse                     : ~m?
 #   18|     v18_6(void)           = ExitFunction                   : 
-
-#   26|   Block 1
-#   26|     r26_1(glval<unknown>) = FunctionAddress[sink] : 
-#   26|     r26_2(glval<int>)     = VariableAddress[x]    : 
-#   26|     r26_3(int)            = Load[x]               : &:r26_2, ~m?
-#   26|     v26_4(void)           = Call[sink]            : func:r26_1, 0:r26_3
-#   26|     mu26_5(unknown)       = ^CallSideEffect       : ~m?

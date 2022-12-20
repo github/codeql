@@ -9162,7 +9162,7 @@
 | try_except.c:11:19:11:19 | Arg(0) | 0:r11_2 |
 | try_except.c:18:6:18:6 | ChiPartial | partial:m18_3 |
 | try_except.c:18:6:18:6 | ChiTotal | total:m18_2 |
-| try_except.c:18:6:18:6 | SideEffect | ~m23_5 |
+| try_except.c:18:6:18:6 | SideEffect | ~m26_6 |
 | try_except.c:19:7:19:7 | Address | &:r19_1 |
 | try_except.c:19:10:19:10 | Address | &:r19_3 |
 | try_except.c:19:13:19:14 | StoreValue | r19_4 |
@@ -9180,3 +9180,10 @@
 | try_except.c:23:5:23:17 | ChiTotal | total:m21_5 |
 | try_except.c:23:5:23:17 | SideEffect | ~m21_5 |
 | try_except.c:23:19:23:19 | Arg(0) | 0:r23_2 |
+| try_except.c:26:5:26:8 | CallTarget | func:r26_1 |
+| try_except.c:26:5:26:8 | ChiPartial | partial:m26_5 |
+| try_except.c:26:5:26:8 | ChiTotal | total:m23_5 |
+| try_except.c:26:5:26:8 | SideEffect | ~m23_5 |
+| try_except.c:26:10:26:10 | Address | &:r26_2 |
+| try_except.c:26:10:26:10 | Arg(0) | 0:r26_3 |
+| try_except.c:26:10:26:10 | Load | m22_4 |
