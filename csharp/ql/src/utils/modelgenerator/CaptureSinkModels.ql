@@ -6,7 +6,7 @@
  * @tags modelgenerator
  */
 
-import utils.modelgenerator.internal.CaptureModels
+import internal.CaptureModels
 
 class Activate extends ActiveConfiguration {
   override predicate activateToSinkConfig() { any() }

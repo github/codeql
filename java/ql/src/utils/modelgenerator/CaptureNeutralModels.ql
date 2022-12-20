@@ -6,8 +6,8 @@
  * @tags modelgenerator
  */
 
-import utils.modelgenerator.internal.CaptureModels
-import utils.modelgenerator.internal.CaptureSummaryFlow
+import internal.CaptureModels
+import internal.CaptureSummaryFlow
 
 from DataFlowTargetApi api, string noflow
 where noflow = captureNoFlow(api)

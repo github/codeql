@@ -6,7 +6,7 @@
  * @tags modelgenerator
  */
 
-import utils.modelgenerator.internal.CaptureTypeBasedSummaryModels
+import internal.CaptureTypeBasedSummaryModels
 
 from TypeBasedFlowTargetApi api, string flow
 where flow = captureFlow(api)
