@@ -379,7 +379,10 @@ class NullLiteral extends @null_literal, Literal { }
  * false
  * ```
  */
-class BooleanLiteral extends @boolean_literal, Literal { }
+class BooleanLiteral extends @boolean_literal, Literal {
+  /** Gets the value of this literal. */
+  boolean getBoolValue() { if this.getRawValue() = "true" then result = true else result = false }
+}
 
 /**
  * A numeric literal.
