@@ -1159,7 +1159,7 @@ predicate jumpStep(Node pred, Node succ) {
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
   or
-  ActionController::Filters::additionalJumpStep(pred, succ)
+  any(AdditionalJumpStep s).step(pred, succ)
 }
 
 private ContentSet getKeywordContent(string name) {
@@ -1486,4 +1486,16 @@ ContentApprox getContentApprox(Content c) {
   result = TKnownElementContentApprox(approxKnownElementIndex(c))
   or
   result = TNonElementContentApprox(c)
+}
+
+/**
+ * A unit class for adding additional jump steps.
+ *
+ * Extend this class to add additional jump steps.
+ */
+class AdditionalJumpStep extends Unit {
+  /**
+   * Holds if data can flow from `pred` to `succ` in a way that discards call contexts.
+   */
+  abstract predicate step(Node pred, Node succ);
 }
