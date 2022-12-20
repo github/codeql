@@ -137,3 +137,12 @@ predicate isWeakCipherBlockModeAlgorithm(string name)
  * Holds if `name` corresponds to a stream cipher.
  */
 predicate isStreamCipher(string name) { name = ["CHACHA", "RC4", "ARC4", "ARCFOUR", "RABBIT"] }
+
+
+/**
+ * Holds if `name` corresponds to an asymmetric encryption.
+ */
+bindingset[name]
+predicate isAsymmetricEncryption(string name){ 
+  name.regexpMatch("(?i)^rsa.*")
+}
