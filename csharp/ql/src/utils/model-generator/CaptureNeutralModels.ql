@@ -2,8 +2,8 @@
  * @name Capture neutral models.
  * @description Finds neutral models to be used by other queries.
  * @kind diagnostic
- * @id cs/utils/model-generator/neutral-models
- * @tags model-generator
+ * @id cs/utils/modelgenerator/neutral-models
+ * @tags modelgenerator
  */
 
 import semmle.code.csharp.dataflow.ExternalFlow

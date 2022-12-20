@@ -50,7 +50,7 @@ jobs:
           SLUG: ${{ matrix.slug }}
         run: |
           SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
-          java/ql/src/utils/model-generator/RegenerateModels.py "${SLUG}" dbs/${SHORTNAME}
+          java/ql/src/utils/modelgenerator/RegenerateModels.py "${SLUG}" dbs/${SHORTNAME}
       - name: Stage changes
         run: |
           find java -name "*.model.yml" -print0 | xargs -0 git add
