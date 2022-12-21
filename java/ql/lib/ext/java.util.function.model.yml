@@ -4,3 +4,16 @@ extensions:
       extensible: sinkModel
     data:
       - ["java.util.function", "Predicate", False, "test", "(Object)", "", "Argument[-1]", "regex-use[0]", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.util.function", "Function", True, "apply", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.util.function", "Supplier", False, "get", "()", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.util.function", "Consumer", "accept", "(Object)", "manual"]
