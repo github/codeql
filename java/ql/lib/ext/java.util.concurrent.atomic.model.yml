@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.util.concurrent.atomic", "AtomicInteger", False, "get", "()", "", "Argument[-1].SyntheticField[java.util.concurrent.atomic.AtomicInteger.value]", "ReturnValue", "value", "manual"]
+      - ["java.util.concurrent.atomic", "AtomicReference", False, "get", "()", "", "Argument[-1].SyntheticField[java.util.concurrent.atomic.AtomicReference.value]", "ReturnValue", "value", "manual"]
