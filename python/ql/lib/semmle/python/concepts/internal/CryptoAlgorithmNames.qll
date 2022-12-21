@@ -8,7 +8,6 @@
  * The classification into strong and weak are based on Wikipedia, OWASP and Google (2021).
  */
 
-
  /**
   * Returns a string to represent generally unknown algorithms. 
   * Predicate is to be used to get a consistent string representation 
@@ -66,9 +65,9 @@ predicate isWeakHashingAlgorithm(string name) {
 predicate isStrongEncryptionAlgorithm(string name) {
   name =
     [
-      "AES", "AES128", "AES192", "AES256", "AES512", "AES-128", "AES-192", "AES-256", "AES-512",
+      "AES", "AES128", "AES192", "AES256", "AES512",
       "ARIA", "BLOWFISH", "BF", "ECIES", "CAST", "CAST5", "CAMELLIA", "CAMELLIA128", "CAMELLIA192",
-      "CAMELLIA256", "CAMELLIA-128", "CAMELLIA-192", "CAMELLIA-256", "CHACHA", "GOST", "GOST89",
+      "CAMELLIA256", "CHACHA", "GOST", "GOST89",
       "IDEA", "RABBIT", "RSA", "SEED", "SM3", "SM4"
     ]
 }
@@ -121,7 +120,7 @@ predicate isWeakPasswordHashingAlgorithm(string name) {
  */
 predicate isStrongCipherBlockModeAlgorithm(string name)
 {
-  name = ["CBC", "GCM", "CCM", "CFB", "OFB", "CFB8", "CTR", "OPENPGP", "XTS"]
+  name = ["CBC", "GCM", "CCM", "CFB", "OFB", "CFB8", "CTR", "OPENPGP", "XTS", "EAX"]
 }
 
 /**
