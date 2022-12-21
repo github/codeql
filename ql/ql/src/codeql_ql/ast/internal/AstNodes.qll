@@ -248,8 +248,5 @@ module AstConsistency {
     not (node instanceof QLDoc and node.getLocation().getFile().getExtension() = "dbscheme") // qldoc in dbschemes are not hooked up
   }
 
-  query predicate nonUniqueParent(AstNode node) {
-    count(node.getParent()) >= 2 and
-    not exists(AstNodes::toMock(node)) // we don't care about the mocks, they are nasty by design.
-  }
+  query predicate nonUniqueParent(AstNode node) { count(node.getParent()) >= 2 }
 }

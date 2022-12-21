@@ -140,11 +140,18 @@ module QlBuiltinsMocks {
       override string getName() { result = "T" }
     }
 
-    /** A mock TypeExpr with classname `T`. */
+    /** A mock TypeExpr with classname `T`. Which we have 5 copies of. */
     class DummyTTypeExpr extends MockTypeExpr::Range {
-      DummyTTypeExpr() { this = "Mock: QlBuiltins::T" }
+      int n;
+
+      DummyTTypeExpr() {
+        this = "Mock: QlBuiltins::T(" + n + ")" and
+        n = [0 .. 4]
+      }
 
       override string getClassName() { result = "T" }
+
+      int getN() { result = n }
     }
 
     module EdgeSig {
@@ -154,7 +161,7 @@ module QlBuiltinsMocks {
         override string getName() { result = "EdgeSig" }
 
         override predicate hasTypeParam(int i, string type, string name) {
-          i = 0 and name = "MyT" and type instanceof DummyTTypeExpr
+          i = 0 and name = "MyT" and type.(DummyTTypeExpr).getN() = 0
         }
 
         override string getMember(int i) { i = 0 and result instanceof EdgeSigPred }
@@ -183,7 +190,11 @@ module QlBuiltinsMocks {
 
         override string getName() { result = name }
 
-        override MockTypeExpr::Range getType() { result instanceof DummyTTypeExpr }
+        override MockTypeExpr::Range getType() {
+          name = "a" and result.(DummyTTypeExpr).getN() = 1
+          or
+          name = "b" and result.(DummyTTypeExpr).getN() = 2
+        }
       }
     }
 
@@ -199,7 +210,7 @@ module QlBuiltinsMocks {
       }
 
       override predicate hasTypeParam(int i, string type, string name) {
-        i = 0 and name = "MyT" and type instanceof DummyTTypeExpr
+        i = 0 and name = "MyT" and type.(DummyTTypeExpr).getN() = 3
         or
         none() // TODO: `EdgeSig<MyT>::edgeSig/2 edge` is not implemented.
       }
@@ -213,13 +224,23 @@ module QlBuiltinsMocks {
       override string getName() { result = "getEquivalenceClass" }
 
       override MockVarDecl::Range getParameter(int i) {
-        result.(EdgeSig::EdgeSigPredParam).getName() = "a" and // just reusing another mock node that has the right name and type.
+        result instanceof GetEquivalenceClassPredicateAParam and
         i = 0
       }
 
       override MockTypeExpr::Range getReturnTypeExpr() {
         result instanceof EquivalenceClassTypeExpr
       }
+    }
+
+    class GetEquivalenceClassPredicateAParam extends MockVarDecl::Range {
+      GetEquivalenceClassPredicateAParam() {
+        this = "Mock: QlBuiltins::EquivalenceRelation::getEquivalenceClass::a"
+      }
+
+      override string getName() { result = "a" }
+
+      override MockTypeExpr::Range getType() { result.(DummyTTypeExpr).getN() = 4 }
     }
 
     class EquivalenceClassClass extends MockClass::Range {
