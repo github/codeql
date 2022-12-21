@@ -40,6 +40,7 @@
 | test.py:69:1:69:26 | Comment # codeql[py/line-too-long] |  codeql[py/line-too-long] | lgtm[py/line-too-long] | test.py:70:0:70:0 | suppression range |
 | test.py:71:1:71:25 | Comment #CODEQL[py/line-too-long] | CODEQL[py/line-too-long] | lgtm[py/line-too-long] | test.py:72:0:72:0 | suppression range |
 | test.py:73:1:73:63 | Comment # codeql[py/line-too-long] -- because I know better than codeql |  codeql[py/line-too-long] -- because I know better than codeql | lgtm[py/line-too-long] | test.py:74:0:74:0 | suppression range |
+| test.py:75:4:75:29 | Comment # codeql[py/line-too-long] |  codeql[py/line-too-long] | lgtm[py/line-too-long] | test.py:75:1:75:29 | suppression range |
 | testWindows.py:4:4:4:9 | Comment # lgtm |  lgtm | lgtm | testWindows.py:4:1:4:9 | suppression range |
 | testWindows.py:5:4:5:27 | Comment # lgtm[py/line-too-long] |  lgtm[py/line-too-long] | lgtm[py/line-too-long] | testWindows.py:5:1:5:27 | suppression range |
 | testWindows.py:6:4:6:51 | Comment # lgtm[py/line-too-long, py/non-callable-called] |  lgtm[py/line-too-long, py/non-callable-called] | lgtm[py/line-too-long, py/non-callable-called] | testWindows.py:6:1:6:51 | suppression range |
@@ -75,3 +76,4 @@
 | testWindows.py:52:1:52:26 | Comment # codeql[py/line-too-long] |  codeql[py/line-too-long] | lgtm[py/line-too-long] | testWindows.py:53:0:53:0 | suppression range |
 | testWindows.py:54:1:54:25 | Comment #CODEQL[py/line-too-long] | CODEQL[py/line-too-long] | lgtm[py/line-too-long] | testWindows.py:55:0:55:0 | suppression range |
 | testWindows.py:56:1:56:63 | Comment # codeql[py/line-too-long] -- because I know better than codeql |  codeql[py/line-too-long] -- because I know better than codeql | lgtm[py/line-too-long] | testWindows.py:57:0:57:0 | suppression range |
+| testWindows.py:58:4:58:29 | Comment # codeql[py/line-too-long] |  codeql[py/line-too-long] | lgtm[py/line-too-long] | testWindows.py:58:1:58:29 | suppression range |

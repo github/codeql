@@ -59,6 +59,7 @@
 | Test.java:40:1:40:32 | // CODEQL[js/debugger-statement] |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | Test.java:41:0:41:0 | suppression range |
 | Test.java:41:1:41:69 | // codeql[js/debugger-statement] -- because I know better than codeql |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | Test.java:42:0:42:0 | suppression range |
 | Test.java:42:1:42:35 | /* codeql[js/debugger-statement] */ | codeql[js/debugger-statement] | lgtm[js/debugger-statement] | Test.java:43:0:43:0 | suppression range |
+| Test.java:45:14:45:45 | // codeql[js/debugger-statement] |  codeql[js/debugger-statement] | lgtm[js/debugger-statement] | Test.java:45:1:45:45 | suppression range |
 | TestWindows.java:1:22:1:29 | // lgtm |  lgtm | lgtm | TestWindows.java:1:1:1:29 | suppression range |
 | TestWindows.java:2:1:2:36 | // lgtm[java/confusing-method-name] |  lgtm[java/confusing-method-name] | lgtm[java/confusing-method-name] | TestWindows.java:2:1:2:36 | suppression range |
 | TestWindows.java:2:1:2:36 | // lgtm[java/confusing-method-name] |  lgtm[java/confusing-method-name] | lgtm[java/confusing-method-name] | TestWindows.java:3:0:3:0 | suppression range |
@@ -120,3 +121,4 @@
 | TestWindows.java:40:1:40:33 | // CODEQL[js/debugger-statement] |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | TestWindows.java:41:0:41:0 | suppression range |
 | TestWindows.java:41:1:41:70 | // codeql[js/debugger-statement] -- because I know better than codeql |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | TestWindows.java:42:0:42:0 | suppression range |
 | TestWindows.java:42:1:42:35 | /* codeql[js/debugger-statement] */ | codeql[js/debugger-statement] | lgtm[js/debugger-statement] | TestWindows.java:43:0:43:0 | suppression range |
+| TestWindows.java:45:15:45:47 | // codeql[js/debugger-statement] |  codeql[js/debugger-statement] | lgtm[js/debugger-statement] | TestWindows.java:45:1:45:47 | suppression range |

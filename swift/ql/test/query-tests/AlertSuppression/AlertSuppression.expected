@@ -32,6 +32,7 @@
 | tst.swift:47:2:47:38 | // CODEQL[swift/redundant-assignment]\n |  CODEQL[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tst.swift:48:0:48:0 | suppression range |
 | tst.swift:49:2:49:75 | // codeql[swift/redundant-assignment] -- because I know better than codeql\n |  codeql[swift/redundant-assignment] -- because I know better than codeql | lgtm[swift/redundant-assignment] | tst.swift:50:0:50:0 | suppression range |
 | tst.swift:51:2:51:41 | /* codeql[swift/redundant-assignment] */ |  codeql[swift/redundant-assignment]  | lgtm[swift/redundant-assignment] | tst.swift:52:0:52:0 | suppression range |
+| tst.swift:56:8:56:45 | // codeql[swift/redundant-assignment]\t\n |  codeql[swift/redundant-assignment]\t | lgtm[swift/redundant-assignment] | tst.swift:56:1:56:45 | suppression range |
 | tstWindows.swift:7:8:7:14 | // lgtm\r |  lgtm | lgtm | tstWindows.swift:7:1:7:14 | suppression range |
 | tstWindows.swift:8:8:8:42 | // lgtm[swift/redundant-assignment]\r |  lgtm[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tstWindows.swift:8:1:8:42 | suppression range |
 | tstWindows.swift:9:8:9:42 | // lgtm[swift/redundant-assignment]\r |  lgtm[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tstWindows.swift:9:1:9:42 | suppression range |
@@ -66,3 +67,4 @@
 | tstWindows.swift:47:2:47:38 | // CODEQL[swift/redundant-assignment]\r |  CODEQL[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tstWindows.swift:48:0:48:0 | suppression range |
 | tstWindows.swift:49:2:49:75 | // codeql[swift/redundant-assignment] -- because I know better than codeql\r |  codeql[swift/redundant-assignment] -- because I know better than codeql | lgtm[swift/redundant-assignment] | tstWindows.swift:50:0:50:0 | suppression range |
 | tstWindows.swift:51:2:51:41 | /* codeql[swift/redundant-assignment] */ |  codeql[swift/redundant-assignment]  | lgtm[swift/redundant-assignment] | tstWindows.swift:52:0:52:0 | suppression range |
+| tstWindows.swift:56:8:56:45 | // codeql[swift/redundant-assignment]\t\r |  codeql[swift/redundant-assignment]\t | lgtm[swift/redundant-assignment] | tstWindows.swift:56:1:56:45 | suppression range |

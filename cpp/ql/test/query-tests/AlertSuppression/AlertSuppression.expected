@@ -59,6 +59,7 @@
 | tst.c:39:1:39:32 | // CODEQL[js/debugger-statement] |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | tst.c:40:0:40:0 | suppression range |
 | tst.c:40:1:40:69 | // codeql[js/debugger-statement] -- because I know better than codeql |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | tst.c:41:0:41:0 | suppression range |
 | tst.c:41:1:41:35 | /* codeql[js/debugger-statement] */ |  codeql[js/debugger-statement]  | lgtm[js/debugger-statement] | tst.c:42:0:42:0 | suppression range |
+| tst.c:44:8:44:39 | // codeql[js/debugger-statement] |  codeql[js/debugger-statement] | lgtm[js/debugger-statement] | tst.c:44:1:44:39 | suppression range |
 | tstWindows.c:1:12:1:18 | // lgtm |  lgtm | lgtm | tstWindows.c:1:1:1:18 | suppression range |
 | tstWindows.c:2:1:2:30 | // lgtm[js/debugger-statement] |  lgtm[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.c:2:1:2:30 | suppression range |
 | tstWindows.c:2:1:2:30 | // lgtm[js/debugger-statement] |  lgtm[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.c:3:0:3:0 | suppression range |
@@ -120,3 +121,4 @@
 | tstWindows.c:39:1:39:32 | // CODEQL[js/debugger-statement] |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.c:40:0:40:0 | suppression range |
 | tstWindows.c:40:1:40:69 | // codeql[js/debugger-statement] -- because I know better than codeql |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | tstWindows.c:41:0:41:0 | suppression range |
 | tstWindows.c:41:1:41:35 | /* codeql[js/debugger-statement] */ |  codeql[js/debugger-statement]  | lgtm[js/debugger-statement] | tstWindows.c:42:0:42:0 | suppression range |
+| tstWindows.c:44:8:44:39 | // codeql[js/debugger-statement] |  codeql[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.c:44:1:44:39 | suppression range |

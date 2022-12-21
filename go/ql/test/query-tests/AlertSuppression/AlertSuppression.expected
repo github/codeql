@@ -33,6 +33,7 @@
 | tst.go:47:2:47:33 | comment |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | tst.go:48:0:48:0 | suppression range |
 | tst.go:49:2:49:70 | comment |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | tst.go:50:0:50:0 | suppression range |
 | tst.go:51:2:51:36 | comment |  codeql[js/debugger-statement]  | lgtm[js/debugger-statement] | tst.go:52:0:52:0 | suppression range |
+| tst.go:56:8:56:40 | comment |  codeql[js/debugger-statement]\t | lgtm[js/debugger-statement] | tst.go:56:1:56:40 | suppression range |
 | tstWindows.go:7:8:7:14 | comment |  lgtm | lgtm | tstWindows.go:7:1:7:14 | suppression range |
 | tstWindows.go:8:8:8:39 | comment |  lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tstWindows.go:8:1:8:39 | suppression range |
 | tstWindows.go:9:8:9:39 | comment |  lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tstWindows.go:9:1:9:39 | suppression range |
@@ -67,3 +68,4 @@
 | tstWindows.go:47:2:47:33 | comment |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.go:48:0:48:0 | suppression range |
 | tstWindows.go:49:2:49:70 | comment |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | tstWindows.go:50:0:50:0 | suppression range |
 | tstWindows.go:51:2:51:36 | comment |  codeql[js/debugger-statement]  | lgtm[js/debugger-statement] | tstWindows.go:52:0:52:0 | suppression range |
+| tstWindows.go:56:8:56:40 | comment |  codeql[js/debugger-statement]\t | lgtm[js/debugger-statement] | tstWindows.go:56:1:56:40 | suppression range |

@@ -61,6 +61,7 @@
 | tst.js:39:1:39:32 | // CODE ... tement] |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | tst.js:40:0:40:0 | suppression range |
 | tst.js:40:1:40:69 | // code ...  codeql |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | tst.js:41:0:41:0 | suppression range |
 | tst.js:41:1:41:35 | /* code ... ent] */ |  codeql[js/debugger-statement]  | lgtm[js/debugger-statement] | tst.js:42:0:42:0 | suppression range |
+| tst.js:44:11:44:42 | // code ... tement] |  codeql[js/debugger-statement] | lgtm[js/debugger-statement] | tst.js:44:1:44:42 | suppression range |
 | tstWindows.html:4:5:4:36 | <!-- codeql[js/duplicate-id] --> |  codeql[js/duplicate-id]  | lgtm[js/duplicate-id] | tstWindows.html:5:0:5:0 | suppression range |
 | tstWindows.html:6:30:6:42 | <!-- lgtm --> |  lgtm  | lgtm | tstWindows.html:6:1:6:42 | suppression range |
 | tstWindows.js:1:11:1:17 | // lgtm |  lgtm | lgtm | tstWindows.js:1:1:1:17 | suppression range |
@@ -124,3 +125,4 @@
 | tstWindows.js:39:1:39:32 | // CODE ... tement] |  CODEQL[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.js:40:0:40:0 | suppression range |
 | tstWindows.js:40:1:40:69 | // code ...  codeql |  codeql[js/debugger-statement] -- because I know better than codeql | lgtm[js/debugger-statement] | tstWindows.js:41:0:41:0 | suppression range |
 | tstWindows.js:41:1:41:35 | /* code ... ent] */ |  codeql[js/debugger-statement]  | lgtm[js/debugger-statement] | tstWindows.js:42:0:42:0 | suppression range |
+| tstWindows.js:44:11:44:42 | // code ... tement] |  codeql[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.js:44:1:44:42 | suppression range |
