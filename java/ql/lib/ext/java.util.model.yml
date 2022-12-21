@@ -355,3 +355,26 @@ extensions:
       - ["java.util", "Vector", True, "setElementAt", "(Object,int)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
       - ["java.util", "WeakHashMap", False, "WeakHashMap", "(Map)", "", "Argument[0].MapKey", "Argument[-1].MapKey", "value", "manual"]
       - ["java.util", "WeakHashMap", False, "WeakHashMap", "(Map)", "", "Argument[0].MapValue", "Argument[-1].MapValue", "value", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.util", "Collections", "emptyList", "()", "manual"]
+      - ["java.util", "Collection", "size", "()", "manual"]
+      - ["java.util", "Iterator", "hasNext", "()", "manual"]
+      - ["java.util", "List", "contains", "(Object)", "manual"]
+      - ["java.util", "List", "isEmpty", "()", "manual"]
+      - ["java.util", "List", "size", "()", "manual"]
+      - ["java.util", "Map", "containsKey", "(Object)", "manual"]
+      - ["java.util", "Map", "isEmpty", "()", "manual"]
+      - ["java.util", "Map", "size", "()", "manual"]
+      - ["java.util", "Objects", "equals", "(Object,Object)", "manual"]
+      - ["java.util", "Objects", "hash", "(Object[])", "manual"]
+      - ["java.util", "Optional", "empty", "()", "manual"]
+      - ["java.util", "Optional", "isPresent", "()", "manual"]
+      - ["java.util", "Set", "contains", "(Object)", "manual"]
+      - ["java.util", "Set", "isEmpty", "()", "manual"]
+      - ["java.util", "Set", "size", "()", "manual"]
+      - ["java.util", "UUID", "randomUUID", "()", "manual"]
+      - ["java.util", "UUID", "toString", "()", "manual"]

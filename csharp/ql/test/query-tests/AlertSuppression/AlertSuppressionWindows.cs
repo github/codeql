@@ -34,3 +34,11 @@ class Dead2 { } // lgtm
 */
 /* lgtm[@tag:nullness,cs/unused-reftype] */
 /* lgtm[@tag:nullness] */
+// codeql[js/debugger-statement]
+// CODEQL[js/debugger-statement]
+// codeql[js/debugger-statement] -- because I know better than codeql
+/* codeql[js/debugger-statement] */
+/* codeql[js/debugger-statement] 
+*/
+class End2 { } // codeql[js/debugger-statement]
+

@@ -13,7 +13,7 @@ class ExternalApiUsage {
 
 		Duration d = java.time.Duration.ofMillis(1000); // not supported
 
-		long l = "foo".length(); // not interesting
+		long l = "foo".length(); // supported as a neutral model
 
 		AtomicReference<String> ref = new AtomicReference<>(); // not supported
 		ref.set("foo");

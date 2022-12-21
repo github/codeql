@@ -2,7 +2,7 @@
  * @name Android WebView JavaScript settings
  * @description Enabling JavaScript execution in a WebView can result in cross-site scripting attacks.
  * @kind problem
- * @id java/android-websettings-javascript-enabled
+ * @id java/android/websettings-javascript-enabled
  * @problem.severity warning
  * @security-severity 6.1
  * @precision medium

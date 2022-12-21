@@ -91,7 +91,9 @@ class AstNode extends TAstNode {
   /** Gets an annotation of this AST node. */
   Annotation getAnAnnotation() {
     not this instanceof Annotation and // avoid cyclic parent-child relationship
-    toQL(this).getParent() = pragma[only_bind_out](toQL(result)).getParent()
+    toQL(this).getParent() = pragma[only_bind_out](toQL(result)).getParent() and
+    // special case that is handled in `NewTypeBranch`
+    not any(QL::DatatypeBranch branch) = pragma[only_bind_out](toQL(result)).getParent()
   }
 
   /**
