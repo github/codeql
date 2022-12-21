@@ -206,9 +206,7 @@ private module Fiber {
     DataFlow::Node receiverNode;
 
     ResponseBodyStaticContentType() {
-      exists(string package, string receiverName |
-        setsBodyAndStaticContentType(package, receiverName, this, contentTypeString, receiverNode)
-      )
+      setsBodyAndStaticContentType(_, _, this, contentTypeString, receiverNode)
     }
 
     override string getAContentType() { result = contentTypeString }
@@ -251,11 +249,7 @@ private module Fiber {
   private class ResponseBodyNoContentType extends Http::ResponseBody::Range {
     DataFlow::Node receiverNode;
 
-    ResponseBodyNoContentType() {
-      exists(string package, string receiverName |
-        setsBody(package, receiverName, receiverNode, this)
-      )
-    }
+    ResponseBodyNoContentType() { setsBody(_, _, receiverNode, this) }
 
     override Http::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
