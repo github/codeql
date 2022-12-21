@@ -1,5 +1,5 @@
 /**
- * @name Omittable 'exists' argument
+ * @name Omittable 'exists' variable
  * @description Writing 'exists(x | pred(x))' is bad practice and can be omitted.
  * @kind problem
  * @problem.severity warning
