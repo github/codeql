@@ -677,7 +677,7 @@ class DotSyntaxCallExpr(SelfApplyExpr):
 
 @synth.from_class(SelfApplyExpr)
 class MethodLookupExpr(LookupExpr):
-    pass
+    method_ref: Expr | child | doc("the underlying method declaration reference expression")
 
 class DynamicMemberRefExpr(DynamicLookupExpr):
     pass

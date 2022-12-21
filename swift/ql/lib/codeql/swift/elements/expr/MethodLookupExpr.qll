@@ -1,6 +1,8 @@
 private import codeql.swift.generated.expr.MethodLookupExpr
 private import codeql.swift.elements.expr.MethodLookupExprConstructor
 private import codeql.swift.elements.expr.Expr
+private import codeql.swift.elements.expr.DeclRefExpr
+private import codeql.swift.elements.expr.OtherConstructorDeclRefExpr
 private import codeql.swift.elements.decl.Decl
 private import codeql.swift.elements.decl.MethodDecl
 private import codeql.swift.generated.Raw
@@ -14,7 +16,13 @@ class MethodLookupExpr extends Generated::MethodLookupExpr {
   }
 
   override Decl getImmediateMember() {
-    result = Synth::convertDeclFromRaw(extractDeclFromSelfApplyExpr(this.getUnderlying()))
+    result = this.getMethodRef().(DeclRefExpr).getDecl()
+    or
+    result = this.getMethodRef().(OtherConstructorDeclRefExpr).getConstructorDecl()
+  }
+
+  override Expr getImmediateMethodRef() {
+    result = Synth::convertExprFromRaw(this.getUnderlying().getFunction())
   }
 
   MethodDecl getMethod() { result = this.getMember() }
