@@ -273,11 +273,6 @@ py_extracted_version(int module : @py_Module ref,
 /* <Field> Ellipsis.location = 0, location */
 /* <Field> Ellipsis.parenthesised = 1, bool */
 
-/* <Field> ExceptGroupStmt.location = 0, location */
-/* <Field> ExceptGroupStmt.type = 1, expr */
-/* <Field> ExceptGroupStmt.name = 2, expr */
-/* <Field> ExceptGroupStmt.body = 3, stmt_list */
-
 /* <Field> ExceptStmt.location = 0, location */
 /* <Field> ExceptStmt.type = 1, expr */
 /* <Field> ExceptStmt.name = 2, expr */
@@ -868,26 +863,25 @@ case @py_stmt.kind of
 |   4 = @py_Continue
 |   5 = @py_Delete
 |   6 = @py_ExceptStmt
-|   7 = @py_ExceptGroupStmt
-|   8 = @py_Exec
-|   9 = @py_Expr_stmt
-|   10 = @py_For
-|   11 = @py_Global
-|   12 = @py_If
-|   13 = @py_Import
-|   14 = @py_ImportStar
-|   15 = @py_MatchStmt
-|   16 = @py_Case
-|   17 = @py_Nonlocal
-|   18 = @py_Pass
-|   19 = @py_Print
-|   20 = @py_Raise
-|   21 = @py_Return
-|   22 = @py_Try
-|   23 = @py_While
-|   24 = @py_With
-|   25 = @py_TemplateWrite
-|   26 = @py_AnnAssign;
+|   7 = @py_Exec
+|   8 = @py_Expr_stmt
+|   9 = @py_For
+|   10 = @py_Global
+|   11 = @py_If
+|   12 = @py_Import
+|   13 = @py_ImportStar
+|   14 = @py_MatchStmt
+|   15 = @py_Case
+|   16 = @py_Nonlocal
+|   17 = @py_Pass
+|   18 = @py_Print
+|   19 = @py_Raise
+|   20 = @py_Return
+|   21 = @py_Try
+|   22 = @py_While
+|   23 = @py_With
+|   24 = @py_TemplateWrite
+|   25 = @py_AnnAssign;
 
 case @py_unaryop.kind of
     0 = @py_Invert
@@ -913,7 +907,7 @@ case @py_unaryop.kind of
 
 @py_expr_or_stmt = @py_expr | @py_stmt;
 
-@py_expr_parent = @py_AnnAssign | @py_Assert | @py_Assign | @py_AssignExpr | @py_Attribute | @py_AugAssign | @py_Await | @py_BinaryExpr | @py_Call | @py_Case | @py_Compare | @py_DictComp | @py_DictUnpacking | @py_ExceptGroupStmt | @py_ExceptStmt | @py_Exec | @py_Expr_stmt | @py_Filter | @py_For | @py_FormattedValue | @py_Function | @py_FunctionExpr | @py_GeneratorExp | @py_Guard | @py_If | @py_IfExp | @py_ImportMember | @py_ImportStar | @py_KeyValuePair | @py_ListComp | @py_MatchAsPattern | @py_MatchCapturePattern | @py_MatchClassPattern | @py_MatchKeywordPattern | @py_MatchLiteralPattern | @py_MatchStmt | @py_MatchValuePattern | @py_Print | @py_Raise | @py_Repr | @py_Return | @py_SetComp | @py_Slice | @py_Starred | @py_Subscript | @py_TemplateDottedNotation | @py_TemplateWrite | @py_UnaryExpr | @py_While | @py_With | @py_Yield | @py_YieldFrom | @py_alias | @py_arguments | @py_comprehension | @py_expr_list | @py_keyword | @py_parameter_list;
+@py_expr_parent = @py_AnnAssign | @py_Assert | @py_Assign | @py_AssignExpr | @py_Attribute | @py_AugAssign | @py_Await | @py_BinaryExpr | @py_Call | @py_Case | @py_Compare | @py_DictComp | @py_DictUnpacking | @py_ExceptStmt | @py_Exec | @py_Expr_stmt | @py_Filter | @py_For | @py_FormattedValue | @py_Function | @py_FunctionExpr | @py_GeneratorExp | @py_Guard | @py_If | @py_IfExp | @py_ImportMember | @py_ImportStar | @py_KeyValuePair | @py_ListComp | @py_MatchAsPattern | @py_MatchCapturePattern | @py_MatchClassPattern | @py_MatchKeywordPattern | @py_MatchLiteralPattern | @py_MatchStmt | @py_MatchValuePattern | @py_Print | @py_Raise | @py_Repr | @py_Return | @py_SetComp | @py_Slice | @py_Starred | @py_Subscript | @py_TemplateDottedNotation | @py_TemplateWrite | @py_UnaryExpr | @py_While | @py_With | @py_Yield | @py_YieldFrom | @py_alias | @py_arguments | @py_comprehension | @py_expr_list | @py_keyword | @py_parameter_list;
 
 @py_location_parent = @py_DictUnpacking | @py_KeyValuePair | @py_StringPart | @py_comprehension | @py_expr | @py_keyword | @py_pattern | @py_stmt;
 
@@ -925,7 +919,7 @@ case @py_unaryop.kind of
 
 @py_scope = @py_Class | @py_Function | @py_Module;
 
-@py_stmt_list_parent = @py_Case | @py_Class | @py_ExceptGroupStmt | @py_ExceptStmt | @py_For | @py_Function | @py_If | @py_MatchStmt | @py_Module | @py_Try | @py_While | @py_With;
+@py_stmt_list_parent = @py_Case | @py_Class | @py_ExceptStmt | @py_For | @py_Function | @py_If | @py_MatchStmt | @py_Module | @py_Try | @py_While | @py_With;
 
 @py_str_list_parent = @py_Global | @py_Nonlocal;
 
