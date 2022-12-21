@@ -5,7 +5,7 @@
  * @id cpp/alert-suppression
  */
 
-private import codeql.suppression.AlertSuppression as AS
+private import codeql.util.suppression.AlertSuppression as AS
 private import semmle.code.cpp.Element
 
 class AstNode extends Locatable {

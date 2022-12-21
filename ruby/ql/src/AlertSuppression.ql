@@ -5,7 +5,7 @@
  * @id rb/alert-suppression
  */
 
-private import codeql.suppression.AlertSuppression as AS
+private import codeql.util.suppression.AlertSuppression as AS
 private import codeql.ruby.ast.internal.TreeSitter
 
 class AstNode extends Ruby::Token {

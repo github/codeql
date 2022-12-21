@@ -5,7 +5,7 @@
  * @id cs/alert-suppression
  */
 
-private import codeql.suppression.AlertSuppression as AS
+private import codeql.util.suppression.AlertSuppression as AS
 private import semmle.code.csharp.Comments
 
 class AstNode extends Element {

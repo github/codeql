@@ -5,7 +5,7 @@
  * @id js/alert-suppression
  */
 
-private import codeql.suppression.AlertSuppression as AS
+private import codeql.util.suppression.AlertSuppression as AS
 private import javascript as JS
 
 class AstNode extends JS::Locatable {

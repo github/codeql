@@ -5,7 +5,7 @@
  * @id py/alert-suppression
  */
 
-private import codeql.suppression.AlertSuppression as AS
+private import codeql.util.suppression.AlertSuppression as AS
 private import semmle.python.Comment as P
 
 class AstNode instanceof P::AstNode {
