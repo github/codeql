@@ -287,6 +287,7 @@ cfg.swift:
 #   53|               getExpr(): [DeclRefExpr] x
 #   53|             getArgument(1): [Argument] : y
 #   53|               getExpr(): [DeclRefExpr] y
+#   53|       getCapture(0): [CapturedDecl] x
 #   55|     getElement(1): [ReturnStmt] return ...
 #   55|       getResult(): [DeclRefExpr] f(y:)
 #   58| [ConcreteFuncDecl] createClosure3(x:)
@@ -3585,6 +3586,7 @@ declarations.swift:
 #-----|           getElement(0): [ReturnStmt] return ...
 #-----|             getResult(): [MemberRefExpr] .wrappedValue
 #-----|               getBase(): [DeclRefExpr] _x
+#-----|         getCapture(0): [CapturedDecl] _x
 #-----|       getPropertyWrapperBackingVarBinding(): [PatternBindingDecl] var ... = ...
 #   77|         getInit(0): [CallExpr] call to ZeroWrapper.init()
 #   77|           getFunction(): [MethodLookupExpr] ZeroWrapper.init()

@@ -55,6 +55,13 @@ callable_bodies(
   int body: @brace_stmt_or_none ref
 );
 
+#keyset[id, index]
+callable_captures(
+  int id: @callable ref,
+  int index: int ref,
+  int capture: @captured_decl_or_none ref
+);
+
 @file =
   @db_file
 ;
@@ -712,13 +719,6 @@ expr_types(  //dir=expr
   @auto_closure_expr
 | @closure_expr
 ;
-
-#keyset[id, index]
-abstract_closure_expr_captures(  //dir=expr
-  int id: @abstract_closure_expr ref,
-  int index: int ref,
-  int capture: @captured_decl_or_none ref
-);
 
 @any_try_expr =
   @force_try_expr

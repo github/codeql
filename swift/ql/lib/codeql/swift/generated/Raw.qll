@@ -13,6 +13,8 @@ module Raw {
     ParamDecl getParam(int index) { callable_params(this, index, result) }
 
     BraceStmt getBody() { callable_bodies(this, result) }
+
+    CapturedDecl getCapture(int index) { callable_captures(this, index, result) }
   }
 
   class File extends @file, Element {
@@ -360,9 +362,7 @@ module Raw {
     Type getType() { expr_types(this, result) }
   }
 
-  class AbstractClosureExpr extends @abstract_closure_expr, Expr, Callable {
-    CapturedDecl getCapture(int index) { abstract_closure_expr_captures(this, index, result) }
-  }
+  class AbstractClosureExpr extends @abstract_closure_expr, Expr, Callable { }
 
   class AnyTryExpr extends @any_try_expr, Expr {
     Expr getSubExpr() { any_try_exprs(this, result) }

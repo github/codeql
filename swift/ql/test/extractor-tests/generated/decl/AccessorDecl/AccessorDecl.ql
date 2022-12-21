@@ -4,9 +4,10 @@ import TestUtils
 
 from
   AccessorDecl x, string hasName, string hasSelfParam, int getNumberOfParams, string hasBody,
-  int getNumberOfGenericTypeParams, ModuleDecl getModule, int getNumberOfMembers,
-  Type getInterfaceType, string isGetter, string isSetter, string isWillSet, string isDidSet,
-  string isRead, string isModify, string isUnsafeAddress, string isUnsafeMutableAddress
+  int getNumberOfCaptures, int getNumberOfGenericTypeParams, ModuleDecl getModule,
+  int getNumberOfMembers, Type getInterfaceType, string isGetter, string isSetter, string isWillSet,
+  string isDidSet, string isRead, string isModify, string isUnsafeAddress,
+  string isUnsafeMutableAddress
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -14,6 +15,7 @@ where
   (if x.hasSelfParam() then hasSelfParam = "yes" else hasSelfParam = "no") and
   getNumberOfParams = x.getNumberOfParams() and
   (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
+  getNumberOfCaptures = x.getNumberOfCaptures() and
   getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
   getModule = x.getModule() and
   getNumberOfMembers = x.getNumberOfMembers() and
@@ -29,8 +31,9 @@ where
   then isUnsafeMutableAddress = "yes"
   else isUnsafeMutableAddress = "no"
 select x, "hasName:", hasName, "hasSelfParam:", hasSelfParam, "getNumberOfParams:",
-  getNumberOfParams, "hasBody:", hasBody, "getNumberOfGenericTypeParams:",
-  getNumberOfGenericTypeParams, "getModule:", getModule, "getNumberOfMembers:", getNumberOfMembers,
-  "getInterfaceType:", getInterfaceType, "isGetter:", isGetter, "isSetter:", isSetter, "isWillSet:",
-  isWillSet, "isDidSet:", isDidSet, "isRead:", isRead, "isModify:", isModify, "isUnsafeAddress:",
-  isUnsafeAddress, "isUnsafeMutableAddress:", isUnsafeMutableAddress
+  getNumberOfParams, "hasBody:", hasBody, "getNumberOfCaptures:", getNumberOfCaptures,
+  "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getModule:", getModule,
+  "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:", getInterfaceType, "isGetter:",
+  isGetter, "isSetter:", isSetter, "isWillSet:", isWillSet, "isDidSet:", isDidSet, "isRead:",
+  isRead, "isModify:", isModify, "isUnsafeAddress:", isUnsafeAddress, "isUnsafeMutableAddress:",
+  isUnsafeMutableAddress

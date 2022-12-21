@@ -8,13 +8,14 @@ private module Impl {
   }
 
   private Element getImmediateChildOfCallable(Callable e, int index, string partialPredicateCall) {
-    exists(int b, int bElement, int n, int nSelfParam, int nParam, int nBody |
+    exists(int b, int bElement, int n, int nSelfParam, int nParam, int nBody, int nCapture |
       b = 0 and
       bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
       n = bElement and
       nSelfParam = n + 1 and
       nParam = nSelfParam + 1 + max(int i | i = -1 or exists(e.getImmediateParam(i)) | i) and
       nBody = nParam + 1 and
+      nCapture = nBody + 1 + max(int i | i = -1 or exists(e.getImmediateCapture(i)) | i) and
       (
         none()
         or
@@ -26,6 +27,9 @@ private module Impl {
         partialPredicateCall = "Param(" + (index - nSelfParam).toString() + ")"
         or
         index = nParam and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        or
+        result = e.getImmediateCapture(index - nBody) and
+        partialPredicateCall = "Capture(" + (index - nBody).toString() + ")"
       )
     )
   }
@@ -953,22 +957,18 @@ private module Impl {
   private Element getImmediateChildOfAbstractClosureExpr(
     AbstractClosureExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int bCallable, int n, int nCapture |
+    exists(int b, int bExpr, int bCallable, int n |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       bCallable =
         bExpr + 1 + max(int i | i = -1 or exists(getImmediateChildOfCallable(e, i, _)) | i) and
       n = bCallable and
-      nCapture = n + 1 + max(int i | i = -1 or exists(e.getImmediateCapture(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
         result = getImmediateChildOfCallable(e, index - bExpr, partialPredicateCall)
-        or
-        result = e.getImmediateCapture(index - n) and
-        partialPredicateCall = "Capture(" + (index - n).toString() + ")"
       )
     )
   }
