@@ -34,7 +34,7 @@ class Stmt extends StmtParent, @stmt {
   }
 
   /** Gets a child of this statement. */
-  Element getAChild() { exists(int n | result = this.getChild(n)) }
+  Element getAChild() { result = this.getChild(_) }
 
   /** Gets the parent of this statement, if any. */
   StmtParent getParent() { stmtparents(underlyingElement(this), _, unresolveElement(result)) }

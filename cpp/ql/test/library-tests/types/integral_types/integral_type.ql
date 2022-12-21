@@ -1,7 +1,7 @@
 import cpp
 
 string integralTypeKind(IntegralType t) {
-  if exists(int kind | builtintypes(unresolveElement(t), _, kind, _, _, _))
+  if builtintypes(unresolveElement(t), _, _, _, _, _)
   then
     exists(int kind | builtintypes(unresolveElement(t), _, kind, _, _, _) |
       result = (kind.toString() + " ").prefix(2)

@@ -161,7 +161,7 @@ abstract class InlineExpectationsTest extends string {
     )
     or
     exists(ValidExpectation expectation |
-      not exists(ActualResult actualResult | expectation.matchesActualResult(actualResult)) and
+      not expectation.matchesActualResult(_) and
       expectation.getTag() = this.getARelevantTag() and
       element = expectation and
       (

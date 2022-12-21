@@ -99,10 +99,10 @@ class MetricClass extends Class {
   }
 
   /** Gets any method that accesses some local field. */
-  Function getAccessingMethod() { exists(Field f | this.accessesLocalField(result, f)) }
+  Function getAccessingMethod() { this.accessesLocalField(result, _) }
 
   /** Gets any field that is accessed by a local method. */
-  Field getAccessedField() { exists(Function func | this.accessesLocalField(func, result)) }
+  Field getAccessedField() { this.accessesLocalField(_, result) }
 
   /** Gets the Henderson-Sellers lack-of-cohesion metric. */
   float getLackOfCohesionHS() {
@@ -517,10 +517,10 @@ private predicate dependsOnClassSimple(Class source, Class dest) {
     )
     or
     // a class depends on classes for which a call to its member function is done from a function
-    exists(MemberFunction target, MemberFunction f, Locatable l |
+    exists(MemberFunction target, MemberFunction f |
       f.getDeclaringType() = source and
       f instanceof MemberFunction and
-      f.calls(target, l) and
+      f.calls(target, _) and
       target instanceof MemberFunction and
       target.getDeclaringType() = dest
     )
