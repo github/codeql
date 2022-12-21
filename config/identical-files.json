@@ -403,7 +403,6 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/ControlFlowReachability.qll"
   ],
   "Inline Test Expectations": [
-    "go/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "swift/ql/test/TestUtilities/InlineExpectationsTest.qll"
   ],
   "C++ ExternalAPIs": [
