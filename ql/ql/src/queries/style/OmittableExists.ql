@@ -13,8 +13,7 @@ import ql
 from VarDecl existsArgument, VarAccess use
 where
   existsArgument = any(Exists e).getAnArgument() and
-  strictcount(existsArgument.getAnAccess()) = 1 and
-  use = existsArgument.getAnAccess() and
+  use = unique( | | existsArgument.getAnAccess()) and
   exists(Call c, int argPos | c.getArgument(argPos) = use |
     not existsArgument.getType().getASuperType+() = c.getTarget().getParameterType(argPos)
   )
