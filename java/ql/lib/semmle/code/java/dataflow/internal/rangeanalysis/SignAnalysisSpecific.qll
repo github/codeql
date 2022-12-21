@@ -257,9 +257,7 @@ private module Impl {
   }
 
   /** Holds if the variable underlying the implicit SSA variable `v` is not a field. */
-  predicate nonFieldImplicitSsaDefinition(SsaImplicitInit v) {
-    exists(Parameter p | v.isParameterDefinition(p))
-  }
+  predicate nonFieldImplicitSsaDefinition(SsaImplicitInit v) { v.isParameterDefinition(_) }
 
   /** Returned an expression that is assigned to `f`. */
   Expr getAssignedValueToField(Field f) {
