@@ -29,7 +29,7 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
 
   final override Locatable getAst() { result = tryExcept.getExcept() }
 
-  override Instruction getFirstInstruction() { result = getChild(0).getFirstInstruction() }
+  override Instruction getFirstInstruction() { result = this.getChild(0).getFirstInstruction() }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     // t1 = -1
@@ -87,41 +87,41 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
     tag = TryExceptCompareNegativeOne() and
     (
       operandTag instanceof LeftOperandTag and
-      result = getTranslatedCondition().getResult()
+      result = this.getTranslatedCondition().getResult()
       or
       operandTag instanceof RightOperandTag and
-      result = getInstruction(TryExceptGenerateNegativeOne())
+      result = this.getInstruction(TryExceptGenerateNegativeOne())
     )
     or
     tag = TryExceptCompareNegativeOneBranch() and
     operandTag instanceof ConditionOperandTag and
-    result = getInstruction(TryExceptCompareNegativeOne())
+    result = this.getInstruction(TryExceptCompareNegativeOne())
     or
     tag = TryExceptCompareZero() and
     (
       operandTag instanceof LeftOperandTag and
-      result = getTranslatedCondition().getResult()
+      result = this.getTranslatedCondition().getResult()
       or
       operandTag instanceof RightOperandTag and
-      result = getInstruction(TryExceptGenerateZero())
+      result = this.getInstruction(TryExceptGenerateZero())
     )
     or
     tag = TryExceptCompareZeroBranch() and
     operandTag instanceof ConditionOperandTag and
-    result = getInstruction(TryExceptCompareZero())
+    result = this.getInstruction(TryExceptCompareZero())
     or
     tag = TryExceptCompareOne() and
     (
       operandTag instanceof LeftOperandTag and
-      result = getTranslatedCondition().getResult()
+      result = this.getTranslatedCondition().getResult()
       or
       operandTag instanceof RightOperandTag and
-      result = getInstruction(TryExceptGenerateOne())
+      result = this.getInstruction(TryExceptGenerateOne())
     )
     or
     tag = TryExceptCompareOneBranch() and
     operandTag instanceof ConditionOperandTag and
-    result = getInstruction(TryExceptCompareOne())
+    result = this.getInstruction(TryExceptCompareOne())
   }
 
   override string getInstructionConstantValue(InstructionTag tag) {
@@ -139,12 +139,12 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
     // Generate -1 -> Compare condition
     tag = TryExceptGenerateNegativeOne() and
     kind instanceof GotoEdge and
-    result = getInstruction(TryExceptCompareNegativeOne())
+    result = this.getInstruction(TryExceptCompareNegativeOne())
     or
     // Compare condition -> Branch
     tag = TryExceptCompareNegativeOne() and
     kind instanceof GotoEdge and
-    result = getInstruction(TryExceptCompareNegativeOneBranch())
+    result = this.getInstruction(TryExceptCompareNegativeOneBranch())
     or
     // Branch -> Unwind or Generate 0
     tag = TryExceptCompareNegativeOneBranch() and
@@ -153,61 +153,61 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
       // TODO: This is not really correct. The semantics of `EXCEPTION_CONTINUE_EXECUTION` is that
       // we should continue execution at the point where the exception occurred. But we don't have
       // any instruction to model this behavior.
-      result = getInstruction(UnwindTag())
+      result = this.getInstruction(UnwindTag())
       or
       kind instanceof FalseEdge and
-      result = getInstruction(TryExceptGenerateZero())
+      result = this.getInstruction(TryExceptGenerateZero())
     )
     or
     // Generate 0 -> Compare condition
     tag = TryExceptGenerateZero() and
     kind instanceof GotoEdge and
-    result = getInstruction(TryExceptCompareZero())
+    result = this.getInstruction(TryExceptCompareZero())
     or
     // Compare condition -> Branch
     tag = TryExceptCompareZero() and
     kind instanceof GotoEdge and
-    result = getInstruction(TryExceptCompareZeroBranch())
+    result = this.getInstruction(TryExceptCompareZeroBranch())
     or
     // Branch -> Unwind or Generate 1
     tag = TryExceptCompareZeroBranch() and
     (
       kind instanceof TrueEdge and
-      result = getInstruction(UnwindTag())
+      result = this.getInstruction(UnwindTag())
       or
       kind instanceof FalseEdge and
-      result = getInstruction(TryExceptGenerateOne())
+      result = this.getInstruction(TryExceptGenerateOne())
     )
     or
     // Generate 1 -> Compare condition
     tag = TryExceptGenerateOne() and
     kind instanceof GotoEdge and
-    result = getInstruction(TryExceptCompareOne())
+    result = this.getInstruction(TryExceptCompareOne())
     or
     // Compare condition -> Branch
     tag = TryExceptCompareOne() and
     kind instanceof GotoEdge and
-    result = getInstruction(TryExceptCompareOneBranch())
+    result = this.getInstruction(TryExceptCompareOneBranch())
     or
     // Branch -> Handler (the condition value is always 0, -1 or 1, and we've checked for 0 or -1 already.)
     tag = TryExceptCompareOneBranch() and
     (
       kind instanceof TrueEdge and
-      result = getTranslatedHandler().getFirstInstruction()
+      result = this.getTranslatedHandler().getFirstInstruction()
     )
     or
     // Unwind -> Parent
     tag = UnwindTag() and
     kind instanceof GotoEdge and
-    result = getParent().getChildSuccessor(this)
+    result = this.getParent().getChildSuccessor(this)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getTranslatedCondition() and
-    result = getInstruction(TryExceptGenerateNegativeOne())
+    child = this.getTranslatedCondition() and
+    result = this.getInstruction(TryExceptGenerateNegativeOne())
     or
-    child = getTranslatedHandler() and
-    result = getParent().getChildSuccessor(this)
+    child = this.getTranslatedHandler() and
+    result = this.getParent().getChildSuccessor(this)
   }
 
   private TranslatedExpr getTranslatedCondition() {
@@ -220,10 +220,10 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
 
   override TranslatedElement getChild(int id) {
     id = 0 and
-    result = getTranslatedCondition()
+    result = this.getTranslatedCondition()
     or
     id = 1 and
-    result = getTranslatedHandler()
+    result = this.getTranslatedHandler()
   }
 
   final override Function getFunction() { result = tryExcept.getEnclosingFunction() }
