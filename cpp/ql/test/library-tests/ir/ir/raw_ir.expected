@@ -10434,10 +10434,7 @@ try_except.c:
 #   11|     r11_2(int)            = Constant[0]                    : 
 #   11|     v11_3(void)           = Call[ProbeFunction]            : func:r11_1, 0:r11_2
 #   11|     mu11_4(unknown)       = ^CallSideEffect                : ~m?
-#   16|     v16_1(void)           = NoOp                           : 
-#    6|     v6_4(void)            = ReturnVoid                     : 
-#    6|     v6_5(void)            = AliasedUse                     : ~m?
-#    6|     v6_6(void)            = ExitFunction                   : 
+#-----|   Goto -> Block 3
 
 #   13|   Block 1
 #   13|     r13_1(int) = Constant[0] : 
@@ -10448,6 +10445,13 @@ try_except.c:
 #   14|     r14_3(int)            = Load[x]               : &:r14_2, ~m?
 #   14|     v14_4(void)           = Call[sink]            : func:r14_1, 0:r14_3
 #   14|     mu14_5(unknown)       = ^CallSideEffect       : ~m?
+#-----|   Goto -> Block 3
+
+#   16|   Block 3
+#   16|     v16_1(void) = NoOp         : 
+#    6|     v6_4(void)  = ReturnVoid   : 
+#    6|     v6_5(void)  = AliasedUse   : ~m?
+#    6|     v6_6(void)  = ExitFunction : 
 
 #   18| void g()
 #   18|   Block 0

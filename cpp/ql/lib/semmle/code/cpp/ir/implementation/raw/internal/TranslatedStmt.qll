@@ -344,7 +344,7 @@ class TranslatedTryStmt extends TranslatedStmt {
     result = getHandler(0).getFirstInstruction()
   }
 
-  private TranslatedHandler getHandler(int index) {
+  private TranslatedStmt getHandler(int index) {
     result = getTranslatedStmt(stmt.getHandlerStmt(index))
   }
 

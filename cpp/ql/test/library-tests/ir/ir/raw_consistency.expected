@@ -7,7 +7,6 @@ duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 | try_except.c:13:13:13:13 | Constant: 0 | Instruction 'Constant: 0' has no successors in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
-| try_except.c:14:5:14:8 | CallSideEffect: call to sink | Instruction 'CallSideEffect: call to sink' has no successors in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
