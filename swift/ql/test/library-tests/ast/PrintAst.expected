@@ -17,6 +17,7 @@ cfg.swift:
 #    3|       getFunction(): [MethodLookupExpr] .+(_:_:)
 #    3|         getBase(): [TypeExpr] Int.Type
 #    3|           getTypeRepr(): [TypeRepr] Int
+#    3|         getMethodRef(): [DeclRefExpr] +(_:_:)
 #    3|       getArgument(0): [Argument] : topLevelDecl
 #    3|         getExpr(): [DeclRefExpr] topLevelDecl
 #    3|         getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -37,6 +38,7 @@ cfg.swift:
 #    8|       getFunction(): [MethodLookupExpr] Double.init(_:)
 #    8|         getBase(): [TypeExpr] Double.Type
 #    8|           getTypeRepr(): [TypeRepr] Double
+#    8|         getMethodRef(): [DeclRefExpr] Double.init(_:)
 #    8|       getArgument(0): [Argument] : topLevelDecl
 #    8|         getExpr(): [DeclRefExpr] topLevelDecl
 #    8|         getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -58,6 +60,7 @@ cfg.swift:
 #   15|         getFunction(): [MethodLookupExpr] .==(_:_:)
 #   15|           getBase(): [TypeExpr] Int.Type
 #   15|             getTypeRepr(): [TypeRepr] Int
+#   15|           getMethodRef(): [DeclRefExpr] ==(_:_:)
 #   15|         getArgument(0): [Argument] : x
 #   15|           getExpr(): [DeclRefExpr] x
 #   15|         getArgument(1): [Argument] : 0
@@ -74,6 +77,7 @@ cfg.swift:
 #   18|             getFunction(): [MethodLookupExpr] .>=(_:_:)
 #   18|               getBase(): [TypeExpr] Int.Type
 #   18|                 getTypeRepr(): [TypeRepr] Int
+#   18|               getMethodRef(): [DeclRefExpr] >=(_:_:)
 #   18|             getArgument(0): [Argument] : x
 #   18|               getExpr(): [DeclRefExpr] x
 #   18|             getArgument(1): [Argument] : 0
@@ -83,6 +87,7 @@ cfg.swift:
 #   19|           getSubExpr(): [MethodLookupExpr] .error1
 #   19|             getBase(): [TypeExpr] MyError.Type
 #   19|               getTypeRepr(): [TypeRepr] MyError
+#   19|             getMethodRef(): [DeclRefExpr] error1
 #   19|           getSubExpr().getFullyConverted(): [ErasureExpr] (Error) ...
 #   21|     getElement(1): [GuardStmt] guard ... else { ... }
 #   21|       getCondition(): [StmtCondition] StmtCondition
@@ -91,6 +96,7 @@ cfg.swift:
 #   21|             getFunction(): [MethodLookupExpr] .<=(_:_:)
 #   21|               getBase(): [TypeExpr] Int.Type
 #   21|                 getTypeRepr(): [TypeRepr] Int
+#   21|               getMethodRef(): [DeclRefExpr] <=(_:_:)
 #   21|             getArgument(0): [Argument] : x
 #   21|               getExpr(): [DeclRefExpr] x
 #   21|             getArgument(1): [Argument] : 0
@@ -101,11 +107,13 @@ cfg.swift:
 #   22|             getFunction(): [MethodLookupExpr] .error3
 #   22|               getBase(): [TypeExpr] MyError.Type
 #   22|                 getTypeRepr(): [TypeRepr] MyError
+#   22|               getMethodRef(): [DeclRefExpr] error3
 #   22|             getArgument(0): [Argument] withParam: ... .+(_:_:) ...
 #   22|               getExpr(): [BinaryExpr] ... .+(_:_:) ...
 #   22|                 getFunction(): [MethodLookupExpr] .+(_:_:)
 #   22|                   getBase(): [TypeExpr] Int.Type
 #   22|                     getTypeRepr(): [TypeRepr] Int
+#   22|                   getMethodRef(): [DeclRefExpr] +(_:_:)
 #   22|                 getArgument(0): [Argument] : x
 #   22|                   getExpr(): [DeclRefExpr] x
 #   22|                 getArgument(1): [Argument] : 1
@@ -209,18 +217,21 @@ cfg.swift:
 #   40|                           getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #   40|                             getBase(): [InOutExpr] &...
 #   40|                               getSubExpr(): [DeclRefExpr] $interpolation
+#-----|                             getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #   40|                           getArgument(0): [Argument] : Unknown error 
 #   40|                             getExpr(): [StringLiteralExpr] Unknown error 
 #   40|                         getElement(2): [CallExpr] call to appendInterpolation(_:)
 #   40|                           getFunction(): [MethodLookupExpr] .appendInterpolation(_:)
 #   40|                             getBase(): [InOutExpr] &...
 #   40|                               getSubExpr(): [DeclRefExpr] $interpolation
+#   40|                             getMethodRef(): [DeclRefExpr] appendInterpolation(_:)
 #   40|                           getArgument(0): [Argument] : error
 #   40|                             getExpr(): [DeclRefExpr] error
 #   40|                         getElement(3): [CallExpr] call to appendLiteral(_:)
 #   40|                           getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #   40|                             getBase(): [InOutExpr] &...
 #   40|                               getSubExpr(): [DeclRefExpr] $interpolation
+#-----|                             getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #   40|                           getArgument(0): [Argument] : 
 #   40|                             getExpr(): [StringLiteralExpr] 
 #   40|                   getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
@@ -250,6 +261,7 @@ cfg.swift:
 #   47|               getFunction(): [MethodLookupExpr] .+(_:_:)
 #   47|                 getBase(): [TypeExpr] String.Type
 #   47|                   getTypeRepr(): [TypeRepr] String
+#   47|                 getMethodRef(): [DeclRefExpr] +(_:_:)
 #   47|               getArgument(0): [Argument] : s
 #   47|                 getExpr(): [DeclRefExpr] s
 #   47|               getArgument(1): [Argument] : 
@@ -269,6 +281,7 @@ cfg.swift:
 #   53|             getFunction(): [MethodLookupExpr] .+(_:_:)
 #   53|               getBase(): [TypeExpr] Int.Type
 #   53|                 getTypeRepr(): [TypeRepr] Int
+#   53|               getMethodRef(): [DeclRefExpr] +(_:_:)
 #   53|             getArgument(0): [Argument] : x
 #   53|               getExpr(): [DeclRefExpr] x
 #   53|             getArgument(1): [Argument] : y
@@ -290,6 +303,7 @@ cfg.swift:
 #   60|               getFunction(): [MethodLookupExpr] .+(_:_:)
 #   60|                 getBase(): [TypeExpr] Int.Type
 #   60|                   getTypeRepr(): [TypeRepr] Int
+#   60|                 getMethodRef(): [DeclRefExpr] +(_:_:)
 #   60|               getArgument(0): [Argument] : x
 #   60|                 getExpr(): [DeclRefExpr] x
 #   60|               getArgument(1): [Argument] : y
@@ -338,6 +352,7 @@ cfg.swift:
 #   71|         getFunction(): [MethodLookupExpr] Self.init(_:)
 #   71|           getBase(): [TypeExpr] Int.Type
 #   71|             getTypeRepr(): [TypeRepr] Int
+#   71|           getMethodRef(): [DeclRefExpr] Self.init(_:)
 #   71|         getArgument(0): [Argument] : s
 #   71|           getExpr(): [DeclRefExpr] s
 #   71|       getPattern(0): [TypedPattern] ... as ...
@@ -373,6 +388,7 @@ cfg.swift:
 #   78|         getFunction(): [MethodLookupExpr] .+(_:_:)
 #   78|           getBase(): [TypeExpr] Int.Type
 #   78|             getTypeRepr(): [TypeRepr] Int
+#   78|           getMethodRef(): [DeclRefExpr] +(_:_:)
 #   78|         getArgument(0): [Argument] : nBang
 #   78|           getExpr(): [DeclRefExpr] nBang
 #   78|           getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -400,6 +416,7 @@ cfg.swift:
 #   85|             getFunction(): [MethodLookupExpr] .+(_:_:)
 #   85|               getBase(): [TypeExpr] Int.Type
 #   85|                 getTypeRepr(): [TypeRepr] Int
+#   85|               getMethodRef(): [DeclRefExpr] +(_:_:)
 #   85|             getArgument(0): [Argument] : a
 #   85|               getExpr(): [DeclRefExpr] a
 #   85|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -436,6 +453,7 @@ cfg.swift:
 #   95|         getFunction(): [MethodLookupExpr] .+(_:_:)
 #   95|           getBase(): [TypeExpr] Int.Type
 #   95|             getTypeRepr(): [TypeRepr] Int
+#   95|           getMethodRef(): [DeclRefExpr] +(_:_:)
 #   95|         getArgument(0): [Argument] : temp
 #   95|           getExpr(): [DeclRefExpr] temp
 #   95|           getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -497,6 +515,7 @@ cfg.swift:
 #  110|         getFunction(): [MethodLookupExpr] C.init(n:)
 #  110|           getBase(): [TypeExpr] C.Type
 #  110|             getTypeRepr(): [TypeRepr] C
+#  110|           getMethodRef(): [DeclRefExpr] C.init(n:)
 #  110|         getArgument(0): [Argument] n: 42
 #  110|           getExpr(): [IntegerLiteralExpr] 42
 #  110|       getPattern(0): [NamedPattern] c
@@ -519,6 +538,7 @@ cfg.swift:
 #  113|       getInit(0): [CallExpr] call to getMyInt()
 #  113|         getFunction(): [MethodLookupExpr] .getMyInt()
 #  113|           getBase(): [DeclRefExpr] c
+#  113|           getMethodRef(): [DeclRefExpr] getMyInt()
 #  113|       getPattern(0): [NamedPattern] n3
 #  113|     getElement(7): [ConcreteVarDecl] n3
 #  113|         Type = Int
@@ -527,6 +547,7 @@ cfg.swift:
 #  114|         getFunction(): [MethodLookupExpr] .getMyInt()
 #  114|           getBase(): [DeclRefExpr] c
 #  114|           getBase().getFullyConverted(): [DotSelfExpr] .self
+#  114|           getMethodRef(): [DeclRefExpr] getMyInt()
 #  114|       getPattern(0): [NamedPattern] n4
 #  114|     getElement(9): [ConcreteVarDecl] n4
 #  114|         Type = Int
@@ -547,6 +568,7 @@ cfg.swift:
 #  118|       getInit(0): [CallExpr] call to getMyInt()
 #  118|         getFunction(): [MethodLookupExpr] .getMyInt()
 #  118|           getBase(): [DeclRefExpr] param
+#  118|           getMethodRef(): [DeclRefExpr] getMyInt()
 #  118|       getPattern(0): [NamedPattern] n7
 #  118|     getElement(15): [ConcreteVarDecl] n7
 #  118|         Type = Int
@@ -555,6 +577,7 @@ cfg.swift:
 #  119|         getFunction(): [MethodLookupExpr] .getMyInt()
 #  119|           getBase(): [DeclRefExpr] param
 #  119|           getBase().getFullyConverted(): [DotSelfExpr] .self
+#  119|           getMethodRef(): [DeclRefExpr] getMyInt()
 #  119|       getPattern(0): [NamedPattern] n8
 #  119|     getElement(17): [ConcreteVarDecl] n8
 #  119|         Type = Int
@@ -578,6 +601,7 @@ cfg.swift:
 #  123|         getFunction(): [MethodLookupExpr] .getMyInt()
 #  123|           getBase(): [DeclRefExpr] inoutParam
 #  123|           getBase().getFullyConverted(): [LoadExpr] (C) ...
+#  123|           getMethodRef(): [DeclRefExpr] getMyInt()
 #  123|       getPattern(0): [NamedPattern] n11
 #  123|     getElement(23): [ConcreteVarDecl] n11
 #  123|         Type = Int
@@ -587,6 +611,7 @@ cfg.swift:
 #  124|           getBase(): [DeclRefExpr] inoutParam
 #  124|           getBase().getFullyConverted(): [LoadExpr] (C) ...
 #  124|             getImmediateSubExpr(): [DotSelfExpr] .self
+#  124|           getMethodRef(): [DeclRefExpr] getMyInt()
 #  124|       getPattern(0): [NamedPattern] n12
 #  124|     getElement(25): [ConcreteVarDecl] n12
 #  124|         Type = Int
@@ -610,6 +635,7 @@ cfg.swift:
 #  128|         getFunction(): [MethodLookupExpr] .getMyInt()
 #  128|           getBase(): [ForceValueExpr] ...!
 #  128|             getSubExpr(): [DeclRefExpr] opt
+#  128|           getMethodRef(): [DeclRefExpr] getMyInt()
 #  128|       getPattern(0): [NamedPattern] n15
 #  128|     getElement(31): [ConcreteVarDecl] n15
 #  128|         Type = Int
@@ -619,6 +645,7 @@ cfg.swift:
 #  129|           getBase(): [ForceValueExpr] ...!
 #  129|             getSubExpr(): [DeclRefExpr] opt
 #  129|           getBase().getFullyConverted(): [DotSelfExpr] .self
+#  129|           getMethodRef(): [DeclRefExpr] getMyInt()
 #  129|       getPattern(0): [NamedPattern] n16
 #  129|     getElement(33): [ConcreteVarDecl] n16
 #  129|         Type = Int
@@ -647,6 +674,7 @@ cfg.swift:
 #  133|           getFunction(): [MethodLookupExpr] .getMyInt()
 #  133|             getBase(): [BindOptionalExpr] ...?
 #  133|               getSubExpr(): [DeclRefExpr] opt
+#  133|             getMethodRef(): [DeclRefExpr] getMyInt()
 #  133|         getSubExpr().getFullyConverted(): [InjectIntoOptionalExpr] (Int?) ...
 #  133|       getPattern(0): [NamedPattern] n19
 #  133|     getElement(39): [ConcreteVarDecl] n19
@@ -658,6 +686,7 @@ cfg.swift:
 #  134|             getBase(): [BindOptionalExpr] ...?
 #  134|               getSubExpr(): [DeclRefExpr] opt
 #  134|             getBase().getFullyConverted(): [DotSelfExpr] .self
+#  134|             getMethodRef(): [DeclRefExpr] getMyInt()
 #  134|         getSubExpr().getFullyConverted(): [InjectIntoOptionalExpr] (Int?) ...
 #  134|       getPattern(0): [NamedPattern] n20
 #  134|     getElement(41): [ConcreteVarDecl] n20
@@ -673,6 +702,7 @@ cfg.swift:
 #  138|         getFunction(): [MethodLookupExpr] ....(_:_:)
 #  138|           getBase(): [TypeExpr] Int.Type
 #  138|             getTypeRepr(): [TypeRepr] Int
+#  138|           getMethodRef(): [DeclRefExpr] ...(_:_:)
 #  138|         getArgument(0): [Argument] : 0
 #  138|           getExpr(): [IntegerLiteralExpr] 0
 #  138|         getArgument(1): [Argument] : 10
@@ -703,11 +733,13 @@ cfg.swift:
 #  144|             getFunction(): [MethodLookupExpr] .&&(_:_:)
 #  144|               getBase(): [TypeExpr] Bool.Type
 #  144|                 getTypeRepr(): [TypeRepr] Bool
+#  144|               getMethodRef(): [DeclRefExpr] &&(_:_:)
 #  144|             getArgument(0): [Argument] : ... .>=(_:_:) ...
 #  144|               getExpr(): [BinaryExpr] ... .>=(_:_:) ...
 #  144|                 getFunction(): [MethodLookupExpr] .>=(_:_:)
 #  144|                   getBase(): [TypeExpr] Int.Type
 #  144|                     getTypeRepr(): [TypeRepr] Int
+#  144|                   getMethodRef(): [DeclRefExpr] >=(_:_:)
 #  144|                 getArgument(0): [Argument] : x
 #  144|                   getExpr(): [DeclRefExpr] x
 #  144|                 getArgument(1): [Argument] : 2
@@ -721,6 +753,7 @@ cfg.swift:
 #  144|                       getFunction(): [MethodLookupExpr] .<(_:_:)
 #  144|                         getBase(): [TypeExpr] Int.Type
 #  144|                           getTypeRepr(): [TypeRepr] Int
+#  144|                         getMethodRef(): [DeclRefExpr] <(_:_:)
 #  144|                       getArgument(0): [Argument] : x
 #  144|                         getExpr(): [DeclRefExpr] x
 #  144|                       getArgument(1): [Argument] : 5
@@ -736,6 +769,7 @@ cfg.swift:
 #  150|         getFunction(): [MethodLookupExpr] C.init(n:)
 #  150|           getBase(): [TypeExpr] C.Type
 #  150|             getTypeRepr(): [TypeRepr] C
+#  150|           getMethodRef(): [DeclRefExpr] C.init(n:)
 #  150|         getArgument(0): [Argument] n: x
 #  150|           getExpr(): [DeclRefExpr] x
 #  150|       getInit(0).getFullyConverted(): [ErasureExpr] (AnyObject) ...
@@ -775,6 +809,7 @@ cfg.swift:
 #  157|             getFunction(): [MethodLookupExpr] .==(_:_:)
 #  157|               getBase(): [TypeExpr] Int.Type
 #  157|                 getTypeRepr(): [TypeRepr] Int
+#  157|               getMethodRef(): [DeclRefExpr] ==(_:_:)
 #  157|             getArgument(0): [Argument] : x
 #  157|               getExpr(): [DeclRefExpr] x
 #  157|             getArgument(1): [Argument] : 0
@@ -855,6 +890,7 @@ cfg.swift:
 #  182|             getFunction(): [MethodLookupExpr] .>(_:_:)
 #  182|               getBase(): [TypeExpr] Int.Type
 #  182|                 getTypeRepr(): [TypeRepr] Int
+#  182|               getMethodRef(): [DeclRefExpr] >(_:_:)
 #  182|             getArgument(0): [Argument] : x
 #  182|               getExpr(): [DeclRefExpr] x
 #  182|             getArgument(1): [Argument] : 2
@@ -878,16 +914,19 @@ cfg.swift:
 #  185|               getFunction(): [MethodLookupExpr] .&&(_:_:)
 #  185|                 getBase(): [TypeExpr] Bool.Type
 #  185|                   getTypeRepr(): [TypeRepr] Bool
+#  185|                 getMethodRef(): [DeclRefExpr] &&(_:_:)
 #  185|               getArgument(0): [Argument] : ... .&&(_:_:) ...
 #  185|                 getExpr(): [BinaryExpr] ... .&&(_:_:) ...
 #  185|                   getFunction(): [MethodLookupExpr] .&&(_:_:)
 #  185|                     getBase(): [TypeExpr] Bool.Type
 #  185|                       getTypeRepr(): [TypeRepr] Bool
+#  185|                     getMethodRef(): [DeclRefExpr] &&(_:_:)
 #  185|                   getArgument(0): [Argument] : ... .<=(_:_:) ...
 #  185|                     getExpr(): [BinaryExpr] ... .<=(_:_:) ...
 #  185|                       getFunction(): [MethodLookupExpr] .<=(_:_:)
 #  185|                         getBase(): [TypeExpr] Int.Type
 #  185|                           getTypeRepr(): [TypeRepr] Int
+#  185|                         getMethodRef(): [DeclRefExpr] <=(_:_:)
 #  185|                       getArgument(0): [Argument] : x
 #  185|                         getExpr(): [DeclRefExpr] x
 #  185|                       getArgument(1): [Argument] : 2
@@ -900,6 +939,7 @@ cfg.swift:
 #  185|                             getFunction(): [MethodLookupExpr] .>(_:_:)
 #  185|                               getBase(): [TypeExpr] Int.Type
 #  185|                                 getTypeRepr(): [TypeRepr] Int
+#  185|                               getMethodRef(): [DeclRefExpr] >(_:_:)
 #  185|                             getArgument(0): [Argument] : x
 #  185|                               getExpr(): [DeclRefExpr] x
 #  185|                             getArgument(1): [Argument] : 0
@@ -912,11 +952,13 @@ cfg.swift:
 #  185|                         getFunction(): [MethodLookupExpr] .!(_:)
 #  185|                           getBase(): [TypeExpr] Bool.Type
 #  185|                             getTypeRepr(): [TypeRepr] Bool
+#  185|                           getMethodRef(): [DeclRefExpr] !(_:)
 #  185|                         getArgument(0): [Argument] : ... .==(_:_:) ...
 #  185|                           getExpr(): [BinaryExpr] ... .==(_:_:) ...
 #  185|                             getFunction(): [MethodLookupExpr] .==(_:_:)
 #  185|                               getBase(): [TypeExpr] Int.Type
 #  185|                                 getTypeRepr(): [TypeRepr] Int
+#  185|                               getMethodRef(): [DeclRefExpr] ==(_:_:)
 #  185|                             getArgument(0): [Argument] : x
 #  185|                               getExpr(): [DeclRefExpr] x
 #  185|                             getArgument(1): [Argument] : 5
@@ -972,6 +1014,7 @@ cfg.swift:
 #  201|             getFunction(): [MethodLookupExpr] .<(_:_:)
 #  201|               getBase(): [TypeExpr] Int.Type
 #  201|                 getTypeRepr(): [TypeRepr] Int
+#  201|               getMethodRef(): [DeclRefExpr] <(_:_:)
 #  201|             getArgument(0): [Argument] : x
 #  201|               getExpr(): [DeclRefExpr] x
 #  201|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -984,6 +1027,7 @@ cfg.swift:
 #  202|             getFunction(): [MethodLookupExpr] .-(_:)
 #  202|               getBase(): [TypeExpr] Int.Type
 #  202|                 getTypeRepr(): [TypeRepr] Int
+#  202|               getMethodRef(): [DeclRefExpr] -(_:)
 #  202|             getArgument(0): [Argument] : x
 #  202|               getExpr(): [DeclRefExpr] x
 #  202|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -994,6 +1038,7 @@ cfg.swift:
 #  203|                 getFunction(): [MethodLookupExpr] .>(_:_:)
 #  203|                   getBase(): [TypeExpr] Int.Type
 #  203|                     getTypeRepr(): [TypeRepr] Int
+#  203|                   getMethodRef(): [DeclRefExpr] >(_:_:)
 #  203|                 getArgument(0): [Argument] : x
 #  203|                   getExpr(): [DeclRefExpr] x
 #  203|                   getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -1006,6 +1051,7 @@ cfg.swift:
 #  204|                 getFunction(): [MethodLookupExpr] .-(_:_:)
 #  204|                   getBase(): [TypeExpr] Int.Type
 #  204|                     getTypeRepr(): [TypeRepr] Int
+#  204|                   getMethodRef(): [DeclRefExpr] -(_:_:)
 #  204|                 getArgument(0): [Argument] : x
 #  204|                   getExpr(): [DeclRefExpr] x
 #  204|                   getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -1062,6 +1108,7 @@ cfg.swift:
 #  224|             getFunction(): [MethodLookupExpr] .!(_:)
 #  224|               getBase(): [TypeExpr] Bool.Type
 #  224|                 getTypeRepr(): [TypeRepr] Bool
+#  224|               getMethodRef(): [DeclRefExpr] !(_:)
 #  224|             getArgument(0): [Argument] : true
 #  224|               getExpr(): [BooleanLiteralExpr] true
 #  224|       getThen(): [BraceStmt] { ... }
@@ -1123,6 +1170,7 @@ cfg.swift:
 #  238|             getFunction(): [MethodLookupExpr] .||(_:_:)
 #  238|               getBase(): [TypeExpr] Bool.Type
 #  238|                 getTypeRepr(): [TypeRepr] Bool
+#  238|               getMethodRef(): [DeclRefExpr] ||(_:_:)
 #  238|             getArgument(0): [Argument] : b1
 #  238|               getExpr(): [DeclRefExpr] b1
 #  238|             getArgument(1): [Argument] : { ... }
@@ -1155,6 +1203,7 @@ cfg.swift:
 #  244|         getFunction(): [MethodLookupExpr] .+(_:_:)
 #  244|           getBase(): [TypeExpr] Int.Type
 #  244|             getTypeRepr(): [TypeRepr] Int
+#  244|           getMethodRef(): [DeclRefExpr] +(_:_:)
 #  244|         getArgument(0): [Argument] : a
 #  244|           getExpr(): [DeclRefExpr] a
 #  244|         getArgument(1): [Argument] : b
@@ -1167,6 +1216,7 @@ cfg.swift:
 #  245|         getFunction(): [MethodLookupExpr] .-(_:_:)
 #  245|           getBase(): [TypeExpr] Int.Type
 #  245|             getTypeRepr(): [TypeRepr] Int
+#  245|           getMethodRef(): [DeclRefExpr] -(_:_:)
 #  245|         getArgument(0): [Argument] : a
 #  245|           getExpr(): [DeclRefExpr] a
 #  245|         getArgument(1): [Argument] : b
@@ -1179,6 +1229,7 @@ cfg.swift:
 #  246|         getFunction(): [MethodLookupExpr] .*(_:_:)
 #  246|           getBase(): [TypeExpr] Int.Type
 #  246|             getTypeRepr(): [TypeRepr] Int
+#  246|           getMethodRef(): [DeclRefExpr] *(_:_:)
 #  246|         getArgument(0): [Argument] : a
 #  246|           getExpr(): [DeclRefExpr] a
 #  246|         getArgument(1): [Argument] : b
@@ -1191,6 +1242,7 @@ cfg.swift:
 #  247|         getFunction(): [MethodLookupExpr] ./(_:_:)
 #  247|           getBase(): [TypeExpr] Int.Type
 #  247|             getTypeRepr(): [TypeRepr] Int
+#  247|           getMethodRef(): [DeclRefExpr] /(_:_:)
 #  247|         getArgument(0): [Argument] : a
 #  247|           getExpr(): [DeclRefExpr] a
 #  247|         getArgument(1): [Argument] : b
@@ -1203,6 +1255,7 @@ cfg.swift:
 #  248|         getFunction(): [MethodLookupExpr] .%(_:_:)
 #  248|           getBase(): [TypeExpr] Int.Type
 #  248|             getTypeRepr(): [TypeRepr] Int
+#  248|           getMethodRef(): [DeclRefExpr] %(_:_:)
 #  248|         getArgument(0): [Argument] : a
 #  248|           getExpr(): [DeclRefExpr] a
 #  248|         getArgument(1): [Argument] : b
@@ -1215,6 +1268,7 @@ cfg.swift:
 #  249|         getFunction(): [MethodLookupExpr] .&(_:_:)
 #  249|           getBase(): [TypeExpr] Int.Type
 #  249|             getTypeRepr(): [TypeRepr] Int
+#  249|           getMethodRef(): [DeclRefExpr] &(_:_:)
 #  249|         getArgument(0): [Argument] : a
 #  249|           getExpr(): [DeclRefExpr] a
 #  249|         getArgument(1): [Argument] : b
@@ -1227,6 +1281,7 @@ cfg.swift:
 #  250|         getFunction(): [MethodLookupExpr] .|(_:_:)
 #  250|           getBase(): [TypeExpr] Int.Type
 #  250|             getTypeRepr(): [TypeRepr] Int
+#  250|           getMethodRef(): [DeclRefExpr] |(_:_:)
 #  250|         getArgument(0): [Argument] : a
 #  250|           getExpr(): [DeclRefExpr] a
 #  250|         getArgument(1): [Argument] : b
@@ -1239,6 +1294,7 @@ cfg.swift:
 #  251|         getFunction(): [MethodLookupExpr] .^(_:_:)
 #  251|           getBase(): [TypeExpr] Int.Type
 #  251|             getTypeRepr(): [TypeRepr] Int
+#  251|           getMethodRef(): [DeclRefExpr] ^(_:_:)
 #  251|         getArgument(0): [Argument] : a
 #  251|           getExpr(): [DeclRefExpr] a
 #  251|         getArgument(1): [Argument] : b
@@ -1251,6 +1307,7 @@ cfg.swift:
 #  252|         getFunction(): [MethodLookupExpr] .<<(_:_:)
 #  252|           getBase(): [TypeExpr] Int.Type
 #  252|             getTypeRepr(): [TypeRepr] Int
+#  252|           getMethodRef(): [DeclRefExpr] <<(_:_:)
 #  252|         getArgument(0): [Argument] : a
 #  252|           getExpr(): [DeclRefExpr] a
 #  252|         getArgument(1): [Argument] : b
@@ -1263,6 +1320,7 @@ cfg.swift:
 #  253|         getFunction(): [MethodLookupExpr] .>>(_:_:)
 #  253|           getBase(): [TypeExpr] Int.Type
 #  253|             getTypeRepr(): [TypeRepr] Int
+#  253|           getMethodRef(): [DeclRefExpr] >>(_:_:)
 #  253|         getArgument(0): [Argument] : a
 #  253|           getExpr(): [DeclRefExpr] a
 #  253|         getArgument(1): [Argument] : b
@@ -1275,6 +1333,7 @@ cfg.swift:
 #  254|         getFunction(): [MethodLookupExpr] .==(_:_:)
 #  254|           getBase(): [TypeExpr] Int.Type
 #  254|             getTypeRepr(): [TypeRepr] Int
+#  254|           getMethodRef(): [DeclRefExpr] ==(_:_:)
 #  254|         getArgument(0): [Argument] : a
 #  254|           getExpr(): [DeclRefExpr] a
 #  254|         getArgument(1): [Argument] : b
@@ -1287,6 +1346,7 @@ cfg.swift:
 #  255|         getFunction(): [MethodLookupExpr] .!=(_:_:)
 #  255|           getBase(): [TypeExpr] Int.Type
 #  255|             getTypeRepr(): [TypeRepr] Int
+#  255|           getMethodRef(): [DeclRefExpr] !=(_:_:)
 #  255|         getArgument(0): [Argument] : a
 #  255|           getExpr(): [DeclRefExpr] a
 #  255|         getArgument(1): [Argument] : b
@@ -1299,6 +1359,7 @@ cfg.swift:
 #  256|         getFunction(): [MethodLookupExpr] .<(_:_:)
 #  256|           getBase(): [TypeExpr] Int.Type
 #  256|             getTypeRepr(): [TypeRepr] Int
+#  256|           getMethodRef(): [DeclRefExpr] <(_:_:)
 #  256|         getArgument(0): [Argument] : a
 #  256|           getExpr(): [DeclRefExpr] a
 #  256|         getArgument(1): [Argument] : b
@@ -1311,6 +1372,7 @@ cfg.swift:
 #  257|         getFunction(): [MethodLookupExpr] .<=(_:_:)
 #  257|           getBase(): [TypeExpr] Int.Type
 #  257|             getTypeRepr(): [TypeRepr] Int
+#  257|           getMethodRef(): [DeclRefExpr] <=(_:_:)
 #  257|         getArgument(0): [Argument] : a
 #  257|           getExpr(): [DeclRefExpr] a
 #  257|         getArgument(1): [Argument] : b
@@ -1323,6 +1385,7 @@ cfg.swift:
 #  258|         getFunction(): [MethodLookupExpr] .>(_:_:)
 #  258|           getBase(): [TypeExpr] Int.Type
 #  258|             getTypeRepr(): [TypeRepr] Int
+#  258|           getMethodRef(): [DeclRefExpr] >(_:_:)
 #  258|         getArgument(0): [Argument] : a
 #  258|           getExpr(): [DeclRefExpr] a
 #  258|         getArgument(1): [Argument] : b
@@ -1335,6 +1398,7 @@ cfg.swift:
 #  259|         getFunction(): [MethodLookupExpr] .>=(_:_:)
 #  259|           getBase(): [TypeExpr] Int.Type
 #  259|             getTypeRepr(): [TypeRepr] Int
+#  259|           getMethodRef(): [DeclRefExpr] >=(_:_:)
 #  259|         getArgument(0): [Argument] : a
 #  259|           getExpr(): [DeclRefExpr] a
 #  259|         getArgument(1): [Argument] : b
@@ -1362,41 +1426,48 @@ cfg.swift:
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [InOutExpr] &...
 #  263|                   getSubExpr(): [DeclRefExpr] $interpolation
+#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] : 
 #  263|                 getExpr(): [StringLiteralExpr] 
 #  263|             getElement(2): [CallExpr] call to appendInterpolation(_:)
 #  263|               getFunction(): [MethodLookupExpr] .appendInterpolation(_:)
 #  263|                 getBase(): [InOutExpr] &...
 #  263|                   getSubExpr(): [DeclRefExpr] $interpolation
+#  263|                 getMethodRef(): [DeclRefExpr] appendInterpolation(_:)
 #  263|               getArgument(0): [Argument] : x
 #  263|                 getExpr(): [DeclRefExpr] x
 #  263|             getElement(3): [CallExpr] call to appendLiteral(_:)
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [InOutExpr] &...
 #  263|                   getSubExpr(): [DeclRefExpr] $interpolation
+#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] :  + 
 #  263|                 getExpr(): [StringLiteralExpr]  + 
 #  263|             getElement(4): [CallExpr] call to appendInterpolation(_:)
 #  263|               getFunction(): [MethodLookupExpr] .appendInterpolation(_:)
 #  263|                 getBase(): [InOutExpr] &...
 #  263|                   getSubExpr(): [DeclRefExpr] $interpolation
+#  263|                 getMethodRef(): [DeclRefExpr] appendInterpolation(_:)
 #  263|               getArgument(0): [Argument] : y
 #  263|                 getExpr(): [DeclRefExpr] y
 #  263|             getElement(5): [CallExpr] call to appendLiteral(_:)
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [InOutExpr] &...
 #  263|                   getSubExpr(): [DeclRefExpr] $interpolation
+#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] :  is equal to 
 #  263|                 getExpr(): [StringLiteralExpr]  is equal to 
 #  263|             getElement(6): [CallExpr] call to appendInterpolation(_:)
 #  263|               getFunction(): [MethodLookupExpr] .appendInterpolation(_:)
 #  263|                 getBase(): [InOutExpr] &...
 #  263|                   getSubExpr(): [DeclRefExpr] $interpolation
+#  263|                 getMethodRef(): [DeclRefExpr] appendInterpolation(_:)
 #  263|               getArgument(0): [Argument] : ... .+(_:_:) ...
 #  263|                 getExpr(): [BinaryExpr] ... .+(_:_:) ...
 #  263|                   getFunction(): [MethodLookupExpr] .+(_:_:)
 #  263|                     getBase(): [TypeExpr] Int.Type
 #  263|                       getTypeRepr(): [TypeRepr] Int
+#  263|                     getMethodRef(): [DeclRefExpr] +(_:_:)
 #  263|                   getArgument(0): [Argument] : x
 #  263|                     getExpr(): [DeclRefExpr] x
 #  263|                   getArgument(1): [Argument] : y
@@ -1405,12 +1476,14 @@ cfg.swift:
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [InOutExpr] &...
 #  263|                   getSubExpr(): [DeclRefExpr] $interpolation
+#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] :  and here is a zero: 
 #  263|                 getExpr(): [StringLiteralExpr]  and here is a zero: 
 #  263|             getElement(8): [CallExpr] call to appendInterpolation(_:)
 #  263|               getFunction(): [MethodLookupExpr] .appendInterpolation(_:)
 #  263|                 getBase(): [InOutExpr] &...
 #  263|                   getSubExpr(): [DeclRefExpr] $interpolation
+#  263|                 getMethodRef(): [DeclRefExpr] appendInterpolation(_:)
 #  263|               getArgument(0): [Argument] : call to returnZero()
 #  263|                 getExpr(): [CallExpr] call to returnZero()
 #  263|                   getFunction(): [DeclRefExpr] returnZero()
@@ -1418,6 +1491,7 @@ cfg.swift:
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [InOutExpr] &...
 #  263|                   getSubExpr(): [DeclRefExpr] $interpolation
+#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] : 
 #  263|                 getExpr(): [StringLiteralExpr] 
 #  266| [ConcreteFuncDecl] testSubscriptExpr()
@@ -1450,6 +1524,7 @@ cfg.swift:
 #  269|       getFunction(): [MethodLookupExpr] .+=(_:_:)
 #  269|         getBase(): [TypeExpr] Int.Type
 #  269|           getTypeRepr(): [TypeRepr] Int
+#  269|         getMethodRef(): [DeclRefExpr] +=(_:_:)
 #  269|       getArgument(0): [Argument] : &...
 #  269|         getExpr(): [InOutExpr] &...
 #  269|           getSubExpr(): [SubscriptExpr] ...[...]
@@ -1463,6 +1538,7 @@ cfg.swift:
 #  270|       getFunction(): [MethodLookupExpr] .-=(_:_:)
 #  270|         getBase(): [TypeExpr] Int.Type
 #  270|           getTypeRepr(): [TypeRepr] Int
+#  270|         getMethodRef(): [DeclRefExpr] -=(_:_:)
 #  270|       getArgument(0): [Argument] : &...
 #  270|         getExpr(): [InOutExpr] &...
 #  270|           getSubExpr(): [SubscriptExpr] ...[...]
@@ -1476,6 +1552,7 @@ cfg.swift:
 #  271|       getFunction(): [MethodLookupExpr] .*=(_:_:)
 #  271|         getBase(): [TypeExpr] Int.Type
 #  271|           getTypeRepr(): [TypeRepr] Int
+#  271|         getMethodRef(): [DeclRefExpr] *=(_:_:)
 #  271|       getArgument(0): [Argument] : &...
 #  271|         getExpr(): [InOutExpr] &...
 #  271|           getSubExpr(): [SubscriptExpr] ...[...]
@@ -1489,6 +1566,7 @@ cfg.swift:
 #  272|       getFunction(): [MethodLookupExpr] ./=(_:_:)
 #  272|         getBase(): [TypeExpr] Int.Type
 #  272|           getTypeRepr(): [TypeRepr] Int
+#  272|         getMethodRef(): [DeclRefExpr] /=(_:_:)
 #  272|       getArgument(0): [Argument] : &...
 #  272|         getExpr(): [InOutExpr] &...
 #  272|           getSubExpr(): [SubscriptExpr] ...[...]
@@ -1502,6 +1580,7 @@ cfg.swift:
 #  273|       getFunction(): [MethodLookupExpr] .%=(_:_:)
 #  273|         getBase(): [TypeExpr] Int.Type
 #  273|           getTypeRepr(): [TypeRepr] Int
+#  273|         getMethodRef(): [DeclRefExpr] %=(_:_:)
 #  273|       getArgument(0): [Argument] : &...
 #  273|         getExpr(): [InOutExpr] &...
 #  273|           getSubExpr(): [SubscriptExpr] ...[...]
@@ -1515,6 +1594,7 @@ cfg.swift:
 #  274|       getFunction(): [MethodLookupExpr] .&=(_:_:)
 #  274|         getBase(): [TypeExpr] Int.Type
 #  274|           getTypeRepr(): [TypeRepr] Int
+#  274|         getMethodRef(): [DeclRefExpr] &=(_:_:)
 #  274|       getArgument(0): [Argument] : &...
 #  274|         getExpr(): [InOutExpr] &...
 #  274|           getSubExpr(): [SubscriptExpr] ...[...]
@@ -1528,6 +1608,7 @@ cfg.swift:
 #  275|       getFunction(): [MethodLookupExpr] .|=(_:_:)
 #  275|         getBase(): [TypeExpr] Int.Type
 #  275|           getTypeRepr(): [TypeRepr] Int
+#  275|         getMethodRef(): [DeclRefExpr] |=(_:_:)
 #  275|       getArgument(0): [Argument] : &...
 #  275|         getExpr(): [InOutExpr] &...
 #  275|           getSubExpr(): [SubscriptExpr] ...[...]
@@ -1541,6 +1622,7 @@ cfg.swift:
 #  276|       getFunction(): [MethodLookupExpr] .^=(_:_:)
 #  276|         getBase(): [TypeExpr] Int.Type
 #  276|           getTypeRepr(): [TypeRepr] Int
+#  276|         getMethodRef(): [DeclRefExpr] ^=(_:_:)
 #  276|       getArgument(0): [Argument] : &...
 #  276|         getExpr(): [InOutExpr] &...
 #  276|           getSubExpr(): [SubscriptExpr] ...[...]
@@ -1554,6 +1636,7 @@ cfg.swift:
 #  277|       getFunction(): [MethodLookupExpr] .<<=(_:_:)
 #  277|         getBase(): [TypeExpr] Int.Type
 #  277|           getTypeRepr(): [TypeRepr] Int
+#  277|         getMethodRef(): [DeclRefExpr] <<=(_:_:)
 #  277|       getArgument(0): [Argument] : &...
 #  277|         getExpr(): [InOutExpr] &...
 #  277|           getSubExpr(): [SubscriptExpr] ...[...]
@@ -1567,6 +1650,7 @@ cfg.swift:
 #  278|       getFunction(): [MethodLookupExpr] .>>=(_:_:)
 #  278|         getBase(): [TypeExpr] Int.Type
 #  278|           getTypeRepr(): [TypeRepr] Int
+#  278|         getMethodRef(): [DeclRefExpr] >>=(_:_:)
 #  278|       getArgument(0): [Argument] : &...
 #  278|         getExpr(): [InOutExpr] &...
 #  278|           getSubExpr(): [SubscriptExpr] ...[...]
@@ -1650,6 +1734,7 @@ cfg.swift:
 #  284|         getFunction(): [MethodLookupExpr] .+(_:_:)
 #  284|           getBase(): [TypeExpr] Int.Type
 #  284|             getTypeRepr(): [TypeRepr] Int
+#  284|           getMethodRef(): [DeclRefExpr] +(_:_:)
 #  284|         getArgument(0): [Argument] : ...[...]
 #  284|           getExpr(): [SubscriptExpr] ...[...]
 #  284|             getBase(): [InOutExpr] &...
@@ -1669,6 +1754,7 @@ cfg.swift:
 #  285|         getFunction(): [MethodLookupExpr] .-(_:_:)
 #  285|           getBase(): [TypeExpr] Int.Type
 #  285|             getTypeRepr(): [TypeRepr] Int
+#  285|           getMethodRef(): [DeclRefExpr] -(_:_:)
 #  285|         getArgument(0): [Argument] : ...[...]
 #  285|           getExpr(): [SubscriptExpr] ...[...]
 #  285|             getBase(): [InOutExpr] &...
@@ -1688,6 +1774,7 @@ cfg.swift:
 #  286|         getFunction(): [MethodLookupExpr] .*(_:_:)
 #  286|           getBase(): [TypeExpr] Int.Type
 #  286|             getTypeRepr(): [TypeRepr] Int
+#  286|           getMethodRef(): [DeclRefExpr] *(_:_:)
 #  286|         getArgument(0): [Argument] : ...[...]
 #  286|           getExpr(): [SubscriptExpr] ...[...]
 #  286|             getBase(): [InOutExpr] &...
@@ -1707,6 +1794,7 @@ cfg.swift:
 #  287|         getFunction(): [MethodLookupExpr] ./(_:_:)
 #  287|           getBase(): [TypeExpr] Int.Type
 #  287|             getTypeRepr(): [TypeRepr] Int
+#  287|           getMethodRef(): [DeclRefExpr] /(_:_:)
 #  287|         getArgument(0): [Argument] : ...[...]
 #  287|           getExpr(): [SubscriptExpr] ...[...]
 #  287|             getBase(): [InOutExpr] &...
@@ -1726,6 +1814,7 @@ cfg.swift:
 #  288|         getFunction(): [MethodLookupExpr] .%(_:_:)
 #  288|           getBase(): [TypeExpr] Int.Type
 #  288|             getTypeRepr(): [TypeRepr] Int
+#  288|           getMethodRef(): [DeclRefExpr] %(_:_:)
 #  288|         getArgument(0): [Argument] : ...[...]
 #  288|           getExpr(): [SubscriptExpr] ...[...]
 #  288|             getBase(): [InOutExpr] &...
@@ -1745,6 +1834,7 @@ cfg.swift:
 #  289|         getFunction(): [MethodLookupExpr] .&(_:_:)
 #  289|           getBase(): [TypeExpr] Int.Type
 #  289|             getTypeRepr(): [TypeRepr] Int
+#  289|           getMethodRef(): [DeclRefExpr] &(_:_:)
 #  289|         getArgument(0): [Argument] : ...[...]
 #  289|           getExpr(): [SubscriptExpr] ...[...]
 #  289|             getBase(): [InOutExpr] &...
@@ -1764,6 +1854,7 @@ cfg.swift:
 #  290|         getFunction(): [MethodLookupExpr] .|(_:_:)
 #  290|           getBase(): [TypeExpr] Int.Type
 #  290|             getTypeRepr(): [TypeRepr] Int
+#  290|           getMethodRef(): [DeclRefExpr] |(_:_:)
 #  290|         getArgument(0): [Argument] : ...[...]
 #  290|           getExpr(): [SubscriptExpr] ...[...]
 #  290|             getBase(): [InOutExpr] &...
@@ -1783,6 +1874,7 @@ cfg.swift:
 #  291|         getFunction(): [MethodLookupExpr] .^(_:_:)
 #  291|           getBase(): [TypeExpr] Int.Type
 #  291|             getTypeRepr(): [TypeRepr] Int
+#  291|           getMethodRef(): [DeclRefExpr] ^(_:_:)
 #  291|         getArgument(0): [Argument] : ...[...]
 #  291|           getExpr(): [SubscriptExpr] ...[...]
 #  291|             getBase(): [InOutExpr] &...
@@ -1802,6 +1894,7 @@ cfg.swift:
 #  292|         getFunction(): [MethodLookupExpr] .<<(_:_:)
 #  292|           getBase(): [TypeExpr] Int.Type
 #  292|             getTypeRepr(): [TypeRepr] Int
+#  292|           getMethodRef(): [DeclRefExpr] <<(_:_:)
 #  292|         getArgument(0): [Argument] : ...[...]
 #  292|           getExpr(): [SubscriptExpr] ...[...]
 #  292|             getBase(): [InOutExpr] &...
@@ -1821,6 +1914,7 @@ cfg.swift:
 #  293|         getFunction(): [MethodLookupExpr] .>>(_:_:)
 #  293|           getBase(): [TypeExpr] Int.Type
 #  293|             getTypeRepr(): [TypeRepr] Int
+#  293|           getMethodRef(): [DeclRefExpr] >>(_:_:)
 #  293|         getArgument(0): [Argument] : ...[...]
 #  293|           getExpr(): [SubscriptExpr] ...[...]
 #  293|             getBase(): [InOutExpr] &...
@@ -1855,6 +1949,7 @@ cfg.swift:
 #  296|           getFunction(): [MethodLookupExpr] .+(_:_:)
 #  296|             getBase(): [TypeExpr] Int.Type
 #  296|               getTypeRepr(): [TypeRepr] Int
+#  296|             getMethodRef(): [DeclRefExpr] +(_:_:)
 #  296|           getArgument(0): [Argument] : a1
 #  296|             getExpr(): [DeclRefExpr] a1
 #  296|           getArgument(1): [Argument] : ...[...]
@@ -1868,6 +1963,7 @@ cfg.swift:
 #  296|           getFunction(): [MethodLookupExpr] .+(_:_:)
 #  296|             getBase(): [TypeExpr] Int.Type
 #  296|               getTypeRepr(): [TypeRepr] Int
+#  296|             getMethodRef(): [DeclRefExpr] +(_:_:)
 #  296|           getArgument(0): [Argument] : a2
 #  296|             getExpr(): [DeclRefExpr] a2
 #  296|           getArgument(1): [Argument] : ...[...]
@@ -1881,6 +1977,7 @@ cfg.swift:
 #  296|           getFunction(): [MethodLookupExpr] .+(_:_:)
 #  296|             getBase(): [TypeExpr] Int.Type
 #  296|               getTypeRepr(): [TypeRepr] Int
+#  296|             getMethodRef(): [DeclRefExpr] +(_:_:)
 #  296|           getArgument(0): [Argument] : a3
 #  296|             getExpr(): [DeclRefExpr] a3
 #  296|           getArgument(1): [Argument] : ...[...]
@@ -1894,6 +1991,7 @@ cfg.swift:
 #  296|           getFunction(): [MethodLookupExpr] .+(_:_:)
 #  296|             getBase(): [TypeExpr] Int.Type
 #  296|               getTypeRepr(): [TypeRepr] Int
+#  296|             getMethodRef(): [DeclRefExpr] +(_:_:)
 #  296|           getArgument(0): [Argument] : a4
 #  296|             getExpr(): [DeclRefExpr] a4
 #  296|           getArgument(1): [Argument] : ...[...]
@@ -1907,6 +2005,7 @@ cfg.swift:
 #  296|           getFunction(): [MethodLookupExpr] .+(_:_:)
 #  296|             getBase(): [TypeExpr] Int.Type
 #  296|               getTypeRepr(): [TypeRepr] Int
+#  296|             getMethodRef(): [DeclRefExpr] +(_:_:)
 #  296|           getArgument(0): [Argument] : a5
 #  296|             getExpr(): [DeclRefExpr] a5
 #  296|           getArgument(1): [Argument] : ...[...]
@@ -1928,6 +2027,7 @@ cfg.swift:
 #  300|             getFunction(): [MethodLookupExpr] .>=(_:_:)
 #  300|               getBase(): [TypeExpr] Int.Type
 #  300|                 getTypeRepr(): [TypeRepr] Int
+#  300|               getMethodRef(): [DeclRefExpr] >=(_:_:)
 #  300|             getArgument(0): [Argument] : x
 #  300|               getExpr(): [DeclRefExpr] x
 #  300|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -1950,6 +2050,7 @@ cfg.swift:
 #  302|           getFunction(): [MethodLookupExpr] .-=(_:_:)
 #  302|             getBase(): [TypeExpr] Int.Type
 #  302|               getTypeRepr(): [TypeRepr] Int
+#  302|             getMethodRef(): [DeclRefExpr] -=(_:_:)
 #  302|           getArgument(0): [Argument] : &...
 #  302|             getExpr(): [InOutExpr] &...
 #  302|               getSubExpr(): [DeclRefExpr] x
@@ -1967,6 +2068,7 @@ cfg.swift:
 #  307|             getFunction(): [MethodLookupExpr] .>=(_:_:)
 #  307|               getBase(): [TypeExpr] Int.Type
 #  307|                 getTypeRepr(): [TypeRepr] Int
+#  307|               getMethodRef(): [DeclRefExpr] >=(_:_:)
 #  307|             getArgument(0): [Argument] : x
 #  307|               getExpr(): [DeclRefExpr] x
 #  307|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -1989,6 +2091,7 @@ cfg.swift:
 #  309|           getFunction(): [MethodLookupExpr] .-=(_:_:)
 #  309|             getBase(): [TypeExpr] Int.Type
 #  309|               getTypeRepr(): [TypeRepr] Int
+#  309|             getMethodRef(): [DeclRefExpr] -=(_:_:)
 #  309|           getArgument(0): [Argument] : &...
 #  309|             getExpr(): [InOutExpr] &...
 #  309|               getSubExpr(): [DeclRefExpr] x
@@ -2001,6 +2104,7 @@ cfg.swift:
 #  310|                 getFunction(): [MethodLookupExpr] .>(_:_:)
 #  310|                   getBase(): [TypeExpr] Int.Type
 #  310|                     getTypeRepr(): [TypeRepr] Int
+#  310|                   getMethodRef(): [DeclRefExpr] >(_:_:)
 #  310|                 getArgument(0): [Argument] : x
 #  310|                   getExpr(): [DeclRefExpr] x
 #  310|                   getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -2015,6 +2119,7 @@ cfg.swift:
 #  313|                   getFunction(): [MethodLookupExpr] .>(_:_:)
 #  313|                     getBase(): [TypeExpr] Int.Type
 #  313|                       getTypeRepr(): [TypeRepr] Int
+#  313|                     getMethodRef(): [DeclRefExpr] >(_:_:)
 #  313|                   getArgument(0): [Argument] : x
 #  313|                     getExpr(): [DeclRefExpr] x
 #  313|                     getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -2056,6 +2161,7 @@ cfg.swift:
 #  322|             getFunction(): [MethodLookupExpr] .>=(_:_:)
 #  322|               getBase(): [TypeExpr] Int.Type
 #  322|                 getTypeRepr(): [TypeRepr] Int
+#  322|               getMethodRef(): [DeclRefExpr] >=(_:_:)
 #  322|             getArgument(0): [Argument] : x
 #  322|               getExpr(): [DeclRefExpr] x
 #  322|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -2069,6 +2175,7 @@ cfg.swift:
 #  323|                 getFunction(): [MethodLookupExpr] .>=(_:_:)
 #  323|                   getBase(): [TypeExpr] Int.Type
 #  323|                     getTypeRepr(): [TypeRepr] Int
+#  323|                   getMethodRef(): [DeclRefExpr] >=(_:_:)
 #  323|                 getArgument(0): [Argument] : x
 #  323|                   getExpr(): [DeclRefExpr] x
 #  323|                   getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -2091,6 +2198,7 @@ cfg.swift:
 #  325|               getFunction(): [MethodLookupExpr] .-=(_:_:)
 #  325|                 getBase(): [TypeExpr] Int.Type
 #  325|                   getTypeRepr(): [TypeRepr] Int
+#  325|                 getMethodRef(): [DeclRefExpr] -=(_:_:)
 #  325|               getArgument(0): [Argument] : &...
 #  325|                 getExpr(): [InOutExpr] &...
 #  325|                   getSubExpr(): [DeclRefExpr] x
@@ -2103,6 +2211,7 @@ cfg.swift:
 #  326|                     getFunction(): [MethodLookupExpr] .>(_:_:)
 #  326|                       getBase(): [TypeExpr] Int.Type
 #  326|                         getTypeRepr(): [TypeRepr] Int
+#  326|                       getMethodRef(): [DeclRefExpr] >(_:_:)
 #  326|                     getArgument(0): [Argument] : x
 #  326|                       getExpr(): [DeclRefExpr] x
 #  326|                       getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -2117,6 +2226,7 @@ cfg.swift:
 #  329|                       getFunction(): [MethodLookupExpr] .>(_:_:)
 #  329|                         getBase(): [TypeExpr] Int.Type
 #  329|                           getTypeRepr(): [TypeRepr] Int
+#  329|                         getMethodRef(): [DeclRefExpr] >(_:_:)
 #  329|                       getArgument(0): [Argument] : x
 #  329|                         getExpr(): [DeclRefExpr] x
 #  329|                         getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -2156,6 +2266,7 @@ cfg.swift:
 #  342|         getFunction(): [MethodLookupExpr] .>=(_:_:)
 #  342|           getBase(): [TypeExpr] Int.Type
 #  342|             getTypeRepr(): [TypeRepr] Int
+#  342|           getMethodRef(): [DeclRefExpr] >=(_:_:)
 #  342|         getArgument(0): [Argument] : x
 #  342|           getExpr(): [DeclRefExpr] x
 #  342|           getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -2178,6 +2289,7 @@ cfg.swift:
 #  341|           getFunction(): [MethodLookupExpr] .-=(_:_:)
 #  341|             getBase(): [TypeExpr] Int.Type
 #  341|               getTypeRepr(): [TypeRepr] Int
+#  341|             getMethodRef(): [DeclRefExpr] -=(_:_:)
 #  341|           getArgument(0): [Argument] : &...
 #  341|             getExpr(): [InOutExpr] &...
 #  341|               getSubExpr(): [DeclRefExpr] x
@@ -2198,6 +2310,7 @@ cfg.swift:
 #  347|             getFunction(): [MethodLookupExpr] .<(_:_:)
 #  347|               getBase(): [TypeExpr] Int.Type
 #  347|                 getTypeRepr(): [TypeRepr] Int
+#  347|               getMethodRef(): [DeclRefExpr] <(_:_:)
 #  347|             getArgument(0): [Argument] : x
 #  347|               getExpr(): [DeclRefExpr] x
 #  347|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -2209,6 +2322,7 @@ cfg.swift:
 #  348|           getFunction(): [MethodLookupExpr] .+=(_:_:)
 #  348|             getBase(): [TypeExpr] Int.Type
 #  348|               getTypeRepr(): [TypeRepr] Int
+#  348|             getMethodRef(): [DeclRefExpr] +=(_:_:)
 #  348|           getArgument(0): [Argument] : &...
 #  348|             getExpr(): [InOutExpr] &...
 #  348|               getSubExpr(): [DeclRefExpr] x
@@ -2268,6 +2382,8 @@ cfg.swift:
 #  364|                 getFunction(): [MethodLookupExpr] .getOptional()
 #  364|                   getBase(): [BindOptionalExpr] ...?
 #  364|                     getSubExpr(): [DeclRefExpr] c
+#  364|                   getMethodRef(): [DeclRefExpr] getOptional()
+#  364|             getMethodRef(): [DeclRefExpr] getMyInt()
 #  364|         getSubExpr().getFullyConverted(): [InjectIntoOptionalExpr] (Int?) ...
 #  367| [ConcreteFuncDecl] testCapture(x:y:)
 #  367|     InterfaceType = (Int, Int) -> () -> Int
@@ -2283,6 +2399,7 @@ cfg.swift:
 #  368|             getFunction(): [MethodLookupExpr] .+(_:_:)
 #  368|               getBase(): [TypeExpr] Int.Type
 #  368|                 getTypeRepr(): [TypeRepr] Int
+#  368|               getMethodRef(): [DeclRefExpr] +(_:_:)
 #  368|             getArgument(0): [Argument] : x
 #  368|               getExpr(): [DeclRefExpr] x
 #  368|             getArgument(1): [Argument] : y
@@ -2307,16 +2424,19 @@ cfg.swift:
 #  374|         getFunction(): [MethodLookupExpr] .+(_:_:)
 #  374|           getBase(): [TypeExpr] Int.Type
 #  374|             getTypeRepr(): [TypeRepr] Int
+#  374|           getMethodRef(): [DeclRefExpr] +(_:_:)
 #  374|         getArgument(0): [Argument] : ... .+(_:_:) ...
 #  374|           getExpr(): [BinaryExpr] ... .+(_:_:) ...
 #  374|             getFunction(): [MethodLookupExpr] .+(_:_:)
 #  374|               getBase(): [TypeExpr] Int.Type
 #  374|                 getTypeRepr(): [TypeRepr] Int
+#  374|               getMethodRef(): [DeclRefExpr] +(_:_:)
 #  374|             getArgument(0): [Argument] : ... .+(_:_:) ...
 #  374|               getExpr(): [BinaryExpr] ... .+(_:_:) ...
 #  374|                 getFunction(): [MethodLookupExpr] .+(_:_:)
 #  374|                   getBase(): [TypeExpr] Int.Type
 #  374|                     getTypeRepr(): [TypeRepr] Int
+#  374|                   getMethodRef(): [DeclRefExpr] +(_:_:)
 #  374|                 getArgument(0): [Argument] : .0
 #  374|                   getExpr(): [TupleElementExpr] .0
 #  374|                     getSubExpr(): [DeclRefExpr] t
@@ -2342,6 +2462,7 @@ cfg.swift:
 #  379|         getSubExpr(): [CallExpr] call to C.init(n:)
 #  379|           getFunction(): [MethodLookupExpr] C.init(n:)
 #  379|             getBase(): [SuperRefExpr] super
+#  379|             getMethodRef(): [OtherConstructorDeclRefExpr] C.init(n:)
 #  379|           getArgument(0): [Argument] n: 0
 #  379|             getExpr(): [IntegerLiteralExpr] 0
 #  380|       getElement(1): [ReturnStmt] return
@@ -2634,6 +2755,7 @@ cfg.swift:
 #-----|             getResult(): [BinaryExpr] ... .==(_:_:) ...
 #-----|               getFunction(): [MethodLookupExpr] .==(_:_:)
 #-----|                 getBase(): [TypeExpr] Int.Type
+#-----|                 getMethodRef(): [DeclRefExpr] ==(_:_:)
 #-----|               getArgument(0): [Argument] : index_a
 #-----|                 getExpr(): [DeclRefExpr] index_a
 #-----|               getArgument(1): [Argument] : index_b
@@ -2992,6 +3114,7 @@ declarations.swift:
 #    4|             getFunction(): [MethodLookupExpr] .+(_:_:)
 #    4|               getBase(): [TypeExpr] Int.Type
 #    4|                 getTypeRepr(): [TypeRepr] Int
+#    4|               getMethodRef(): [DeclRefExpr] +(_:_:)
 #    4|             getArgument(0): [Argument] : .x
 #    4|               getExpr(): [MemberRefExpr] .x
 #    4|                 getBase(): [DeclRefExpr] self
@@ -3011,6 +3134,7 @@ declarations.swift:
 #    5|             getFunction(): [MethodLookupExpr] .-(_:_:)
 #    5|               getBase(): [TypeExpr] Int.Type
 #    5|                 getTypeRepr(): [TypeRepr] Int
+#    5|               getMethodRef(): [DeclRefExpr] -(_:_:)
 #    5|             getArgument(0): [Argument] : newValue
 #    5|               getExpr(): [DeclRefExpr] newValue
 #    5|             getArgument(1): [Argument] : 1
@@ -3184,6 +3308,7 @@ declarations.swift:
 #-----|         getResult(): [BinaryExpr] ... .==(_:_:) ...
 #-----|           getFunction(): [MethodLookupExpr] .==(_:_:)
 #-----|             getBase(): [TypeExpr] Int.Type
+#-----|             getMethodRef(): [DeclRefExpr] ==(_:_:)
 #-----|           getArgument(0): [Argument] : index_a
 #-----|             getExpr(): [DeclRefExpr] index_a
 #-----|           getArgument(1): [Argument] : index_b
@@ -3458,6 +3583,7 @@ declarations.swift:
 #   77|           getFunction(): [MethodLookupExpr] ZeroWrapper.init()
 #   77|             getBase(): [TypeExpr] ZeroWrapper.Type
 #   77|               getTypeRepr(): [TypeRepr] ZeroWrapper
+#   77|             getMethodRef(): [DeclRefExpr] ZeroWrapper.init()
 #   77|         getPattern(0): [TypedPattern] ... as ...
 #   77|           getSubPattern(): [NamedPattern] _x
 #   77|       getPropertyWrapperBackingVar(): [ConcreteVarDecl] _x
@@ -3636,6 +3762,7 @@ declarations.swift:
 #-----|           getFunction(): [MethodLookupExpr] .willSet
 #-----|             getBase(): [InOutExpr] &...
 #-----|               getSubExpr(): [DeclRefExpr] self
+#-----|             getMethodRef(): [DeclRefExpr] willSet
 #-----|           getArgument(0): [Argument] : value
 #-----|             getExpr(): [DeclRefExpr] value
 #-----|         getElement(1): [AssignExpr]  ... = ...
@@ -3683,6 +3810,7 @@ declarations.swift:
 #-----|           getFunction(): [MethodLookupExpr] .willSet
 #-----|             getBase(): [InOutExpr] &...
 #-----|               getSubExpr(): [DeclRefExpr] self
+#-----|             getMethodRef(): [DeclRefExpr] willSet
 #-----|           getArgument(0): [Argument] : value
 #-----|             getExpr(): [DeclRefExpr] value
 #-----|         getElement(1): [AssignExpr]  ... = ...
@@ -3741,6 +3869,7 @@ declarations.swift:
 #-----|           getFunction(): [MethodLookupExpr] .didSet
 #-----|             getBase(): [InOutExpr] &...
 #-----|               getSubExpr(): [DeclRefExpr] self
+#-----|             getMethodRef(): [DeclRefExpr] didSet
 #-----|           getArgument(0): [Argument] : tmp
 #-----|             getExpr(): [DeclRefExpr] tmp
 #  123|     getAccessorDecl(3): [AccessorDecl] _modify
@@ -3786,6 +3915,7 @@ declarations.swift:
 #-----|           getFunction(): [MethodLookupExpr] .didSet
 #-----|             getBase(): [InOutExpr] &...
 #-----|               getSubExpr(): [DeclRefExpr] self
+#-----|             getMethodRef(): [DeclRefExpr] didSet
 #  127|     getAccessorDecl(3): [AccessorDecl] _modify
 #  127|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  127|       getSelfParam(): [ParamDecl] self
@@ -3799,6 +3929,7 @@ declarations.swift:
 #-----|           getFunction(): [MethodLookupExpr] .didSet
 #-----|             getBase(): [InOutExpr] &...
 #-----|               getSubExpr(): [DeclRefExpr] self
+#-----|             getMethodRef(): [DeclRefExpr] didSet
 #  131|   getMember(18): [PatternBindingDecl] var ... = ...
 #  131|     getPattern(0): [TypedPattern] ... as ...
 #  131|       getSubPattern(): [NamedPattern] hasBoth
@@ -3836,6 +3967,7 @@ declarations.swift:
 #-----|           getFunction(): [MethodLookupExpr] .willSet
 #-----|             getBase(): [InOutExpr] &...
 #-----|               getSubExpr(): [DeclRefExpr] self
+#-----|             getMethodRef(): [DeclRefExpr] willSet
 #-----|           getArgument(0): [Argument] : value
 #-----|             getExpr(): [DeclRefExpr] value
 #-----|         getElement(1): [AssignExpr]  ... = ...
@@ -3846,6 +3978,7 @@ declarations.swift:
 #-----|           getFunction(): [MethodLookupExpr] .didSet
 #-----|             getBase(): [InOutExpr] &...
 #-----|               getSubExpr(): [DeclRefExpr] self
+#-----|             getMethodRef(): [DeclRefExpr] didSet
 #  131|     getAccessorDecl(4): [AccessorDecl] _modify
 #  131|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
 #  131|       getSelfParam(): [ParamDecl] self
@@ -3890,6 +4023,7 @@ declarations.swift:
 #  144|     getElement(0): [CallExpr] call to id()
 #  144|       getFunction(): [MethodLookupExpr] .id()
 #  144|         getBase(): [IntegerLiteralExpr] 42
+#  144|         getMethodRef(): [DeclRefExpr] id()
 #  146| [ClassDecl] GenericClass
 #  146|   getGenericTypeParam(0): [GenericTypeParamDecl] A
 #  146|   getGenericTypeParam(1): [GenericTypeParamDecl] B
@@ -3938,6 +4072,7 @@ declarations.swift:
 #-----|         getSubExpr(): [CallExpr] call to Baz.init()
 #-----|           getFunction(): [MethodLookupExpr] Baz.init()
 #-----|             getBase(): [SuperRefExpr] super
+#-----|             getMethodRef(): [OtherConstructorDeclRefExpr] Baz.init()
 #-----|       getElement(1): [ReturnStmt] return
 #  152|   getMember(1): [DestructorDecl] Derived.deinit()
 #  152|       InterfaceType = (Derived) -> () -> ()
@@ -3953,6 +4088,7 @@ declarations.swift:
 #  155|         getFunction(): [MethodLookupExpr] Derived.init()
 #  155|           getBase(): [TypeExpr] Derived.Type
 #  155|             getTypeRepr(): [TypeRepr] Derived
+#  155|           getMethodRef(): [DeclRefExpr] Derived.init()
 #  155|       getInit(0).getFullyConverted(): [InjectIntoOptionalExpr] (Baz?) ...
 #  155|         getImmediateSubExpr(): [CoerceExpr] (Baz) ...
 #  155|           getImmediateSubExpr(): [DerivedToBaseExpr] (Baz) ...
@@ -4030,18 +4166,21 @@ expressions.swift:
 #    7|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #    7|                 getBase(): [InOutExpr] &...
 #    7|                   getSubExpr(): [DeclRefExpr] $interpolation
+#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #    7|               getArgument(0): [Argument] : hello 
 #    7|                 getExpr(): [StringLiteralExpr] hello 
 #    7|             getElement(2): [CallExpr] call to appendInterpolation(_:)
 #    7|               getFunction(): [MethodLookupExpr] .appendInterpolation(_:)
 #    7|                 getBase(): [InOutExpr] &...
 #    7|                   getSubExpr(): [DeclRefExpr] $interpolation
+#    7|                 getMethodRef(): [DeclRefExpr] appendInterpolation(_:)
 #    7|               getArgument(0): [Argument] : a
 #    7|                 getExpr(): [DeclRefExpr] a
 #    7|             getElement(3): [CallExpr] call to appendLiteral(_:)
 #    7|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #    7|                 getBase(): [InOutExpr] &...
 #    7|                   getSubExpr(): [DeclRefExpr] $interpolation
+#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #    7|               getArgument(0): [Argument] : 
 #    7|                 getExpr(): [StringLiteralExpr] 
 #    7|       getPattern(0): [NamedPattern] s1
@@ -4096,6 +4235,7 @@ expressions.swift:
 #-----|         getResult(): [BinaryExpr] ... .==(_:_:) ...
 #-----|           getFunction(): [MethodLookupExpr] .==(_:_:)
 #-----|             getBase(): [TypeExpr] Int.Type
+#-----|             getMethodRef(): [DeclRefExpr] ==(_:_:)
 #-----|           getArgument(0): [Argument] : index_a
 #-----|             getExpr(): [DeclRefExpr] index_a
 #-----|           getArgument(1): [Argument] : index_b
@@ -4151,6 +4291,7 @@ expressions.swift:
 #   15|             getFunction(): [MethodLookupExpr] .!=(_:_:)
 #   15|               getBase(): [TypeExpr] Int.Type
 #   15|                 getTypeRepr(): [TypeRepr] Int
+#   15|               getMethodRef(): [DeclRefExpr] !=(_:_:)
 #   15|             getArgument(0): [Argument] : x
 #   15|               getExpr(): [DeclRefExpr] x
 #   15|             getArgument(1): [Argument] : 0
@@ -4160,6 +4301,7 @@ expressions.swift:
 #   16|           getSubExpr(): [MethodLookupExpr] .failed
 #   16|             getBase(): [TypeExpr] AnError.Type
 #   16|               getTypeRepr(): [TypeRepr] AnError
+#   16|             getMethodRef(): [DeclRefExpr] failed
 #   16|           getSubExpr().getFullyConverted(): [ErasureExpr] (Error) ...
 #   20| [TopLevelCodeDecl] { ... }
 #   20|   getBody(): [BraceStmt] { ... }
@@ -4195,6 +4337,7 @@ expressions.swift:
 #   27|         getFunction(): [MethodLookupExpr] Klass.init()
 #   27|           getBase(): [TypeExpr] Klass.Type
 #   27|             getTypeRepr(): [TypeRepr] Klass
+#   27|           getMethodRef(): [DeclRefExpr] Klass.init()
 #   27|       getPattern(0): [NamedPattern] klass
 #   27| [ConcreteVarDecl] klass
 #   27|     Type = Klass
@@ -4280,6 +4423,7 @@ expressions.swift:
 #   42|                 getFunction(): [MethodLookupExpr] .+(_:_:)
 #   42|                   getBase(): [TypeExpr] Int.Type
 #   42|                     getTypeRepr(): [TypeRepr] Int
+#   42|                   getMethodRef(): [DeclRefExpr] +(_:_:)
 #   42|                 getArgument(0): [Argument] : x
 #   42|                   getExpr(): [DeclRefExpr] x
 #   42|                 getArgument(1): [Argument] : y
@@ -4300,6 +4444,7 @@ expressions.swift:
 #   45|                 getFunction(): [MethodLookupExpr] .+(_:_:)
 #   45|                   getBase(): [TypeExpr] Int.Type
 #   45|                     getTypeRepr(): [TypeRepr] Int
+#   45|                   getMethodRef(): [DeclRefExpr] +(_:_:)
 #   45|                 getArgument(0): [Argument] : x
 #   45|                   getExpr(): [DeclRefExpr] x
 #   45|                 getArgument(1): [Argument] : y
@@ -4320,6 +4465,7 @@ expressions.swift:
 #   47|                 getFunction(): [MethodLookupExpr] .+(_:_:)
 #   47|                   getBase(): [TypeExpr] Int.Type
 #   47|                     getTypeRepr(): [TypeRepr] Int
+#   47|                   getMethodRef(): [DeclRefExpr] +(_:_:)
 #   47|                 getArgument(0): [Argument] : $0
 #   47|                   getExpr(): [DeclRefExpr] $0
 #   47|                 getArgument(1): [Argument] : $1
@@ -4340,6 +4486,7 @@ expressions.swift:
 #   48|                 getFunction(): [MethodLookupExpr] .+(_:_:)
 #   48|                   getBase(): [TypeExpr] Int.Type
 #   48|                     getTypeRepr(): [TypeRepr] Int
+#   48|                   getMethodRef(): [DeclRefExpr] +(_:_:)
 #   48|                 getArgument(0): [Argument] : $0
 #   48|                   getExpr(): [DeclRefExpr] $0
 #   48|                 getArgument(1): [Argument] : $1
@@ -4424,6 +4571,7 @@ expressions.swift:
 #   64|               getFunction(): [MethodLookupExpr] .<(_:_:)
 #   64|                 getBase(): [TypeExpr] Int.Type
 #   64|                   getTypeRepr(): [TypeRepr] Int
+#   64|                 getMethodRef(): [DeclRefExpr] <(_:_:)
 #   64|               getArgument(0): [Argument] : x
 #   64|                 getExpr(): [DeclRefExpr] x
 #   64|               getArgument(1): [Argument] : 0
@@ -4478,6 +4626,7 @@ expressions.swift:
 #   79|         getSubExpr(): [CallExpr] call to Base.init(x:)
 #   79|           getFunction(): [MethodLookupExpr] Base.init(x:)
 #   79|             getBase(): [SuperRefExpr] super
+#   79|             getMethodRef(): [OtherConstructorDeclRefExpr] Base.init(x:)
 #   79|           getArgument(0): [Argument] x: 22
 #   79|             getExpr(): [IntegerLiteralExpr] 22
 #   80|       getElement(1): [ReturnStmt] return
@@ -4513,6 +4662,7 @@ expressions.swift:
 #   83|         getFunction(): [MethodLookupExpr] Derived.init()
 #   83|           getBase(): [TypeExpr] Derived.Type
 #   83|             getTypeRepr(): [TypeRepr] Derived
+#   83|           getMethodRef(): [DeclRefExpr] Derived.init()
 #   83|       getPattern(0): [NamedPattern] derived
 #   83| [ConcreteVarDecl] derived
 #   83|     Type = Derived
@@ -4564,11 +4714,14 @@ expressions.swift:
 #   92|             getFunction(): [MethodLookupExpr] .passRetained(_:)
 #   92|               getBase(): [TypeExpr] Unmanaged<ToPtr>.Type
 #   92|                 getTypeRepr(): [TypeRepr] Unmanaged<ToPtr>
+#   92|               getMethodRef(): [DeclRefExpr] passRetained(_:)
 #   92|             getArgument(0): [Argument] : call to ToPtr.init()
 #   92|               getExpr(): [CallExpr] call to ToPtr.init()
 #   92|                 getFunction(): [MethodLookupExpr] ToPtr.init()
 #   92|                   getBase(): [TypeExpr] ToPtr.Type
 #   92|                     getTypeRepr(): [TypeRepr] ToPtr
+#   92|                   getMethodRef(): [DeclRefExpr] ToPtr.init()
+#   92|           getMethodRef(): [DeclRefExpr] toOpaque()
 #   92|       getPattern(0): [NamedPattern] opaque
 #   92| [ConcreteVarDecl] opaque
 #   92|     Type = UnsafeMutableRawPointer
@@ -4578,6 +4731,7 @@ expressions.swift:
 #   93|       getFunction(): [MethodLookupExpr] .fromOpaque(_:)
 #   93|         getBase(): [TypeExpr] Unmanaged<ToPtr>.Type
 #   93|           getTypeRepr(): [TypeRepr] Unmanaged<ToPtr>
+#   93|         getMethodRef(): [DeclRefExpr] fromOpaque(_:)
 #   93|       getArgument(0): [Argument] : opaque
 #   93|         getExpr(): [DeclRefExpr] opaque
 #   93|         getExpr().getFullyConverted(): [PointerToPointerExpr] (UnsafeRawPointer) ...
@@ -4986,6 +5140,7 @@ expressions.swift:
 #  158|         getFunction(): [MethodLookupExpr] .~(_:)
 #  158|           getBase(): [TypeExpr] Int.Type
 #  158|             getTypeRepr(): [TypeRepr] Int
+#  158|           getMethodRef(): [DeclRefExpr] ~(_:)
 #  158|         getArgument(0): [Argument] : 1
 #  158|           getExpr(): [IntegerLiteralExpr] 1
 #  159|     getElement(1): [AssignExpr]  ... = ...
@@ -4994,6 +5149,7 @@ expressions.swift:
 #  159|         getFunction(): [MethodLookupExpr] .&(_:_:)
 #  159|           getBase(): [TypeExpr] Int.Type
 #  159|             getTypeRepr(): [TypeRepr] Int
+#  159|           getMethodRef(): [DeclRefExpr] &(_:_:)
 #  159|         getArgument(0): [Argument] : 1
 #  159|           getExpr(): [IntegerLiteralExpr] 1
 #  159|         getArgument(1): [Argument] : 2
@@ -5004,6 +5160,7 @@ expressions.swift:
 #  160|         getFunction(): [MethodLookupExpr] .|(_:_:)
 #  160|           getBase(): [TypeExpr] Int.Type
 #  160|             getTypeRepr(): [TypeRepr] Int
+#  160|           getMethodRef(): [DeclRefExpr] |(_:_:)
 #  160|         getArgument(0): [Argument] : 1
 #  160|           getExpr(): [IntegerLiteralExpr] 1
 #  160|         getArgument(1): [Argument] : 2
@@ -5014,6 +5171,7 @@ expressions.swift:
 #  161|         getFunction(): [MethodLookupExpr] .^(_:_:)
 #  161|           getBase(): [TypeExpr] Int.Type
 #  161|             getTypeRepr(): [TypeRepr] Int
+#  161|           getMethodRef(): [DeclRefExpr] ^(_:_:)
 #  161|         getArgument(0): [Argument] : 1
 #  161|           getExpr(): [IntegerLiteralExpr] 1
 #  161|         getArgument(1): [Argument] : 2
@@ -5024,6 +5182,7 @@ expressions.swift:
 #  162|         getFunction(): [MethodLookupExpr] .<<(_:_:)
 #  162|           getBase(): [TypeExpr] Int.Type
 #  162|             getTypeRepr(): [TypeRepr] Int
+#  162|           getMethodRef(): [DeclRefExpr] <<(_:_:)
 #  162|         getArgument(0): [Argument] : 1
 #  162|           getExpr(): [IntegerLiteralExpr] 1
 #  162|         getArgument(1): [Argument] : 0
@@ -5034,6 +5193,7 @@ expressions.swift:
 #  163|         getFunction(): [MethodLookupExpr] .>>(_:_:)
 #  163|           getBase(): [TypeExpr] Int.Type
 #  163|             getTypeRepr(): [TypeRepr] Int
+#  163|           getMethodRef(): [DeclRefExpr] >>(_:_:)
 #  163|         getArgument(0): [Argument] : 1
 #  163|           getExpr(): [IntegerLiteralExpr] 1
 #  163|         getArgument(1): [Argument] : 0
@@ -5124,6 +5284,7 @@ patterns.swift:
 #   24|       getInit(0): [MethodLookupExpr] .bar
 #   24|         getBase(): [TypeExpr] Foo.Type
 #   24|           getTypeRepr(): [TypeRepr] Foo
+#   24|         getMethodRef(): [DeclRefExpr] bar
 #   24|       getPattern(0): [TypedPattern] ... as ...
 #   24|         getSubPattern(): [NamedPattern] v
 #   24|         getTypeRepr(): [TypeRepr] Foo
@@ -5234,6 +5395,7 @@ statements.swift:
 #    2|         getFunction(): [MethodLookupExpr] ....(_:_:)
 #    2|           getBase(): [TypeExpr] Int.Type
 #    2|             getTypeRepr(): [TypeRepr] Int
+#    2|           getMethodRef(): [DeclRefExpr] ...(_:_:)
 #    2|         getArgument(0): [Argument] : 1
 #    2|           getExpr(): [IntegerLiteralExpr] 1
 #    2|         getArgument(1): [Argument] : 5
@@ -5246,6 +5408,7 @@ statements.swift:
 #    3|                 getFunction(): [MethodLookupExpr] .==(_:_:)
 #    3|                   getBase(): [TypeExpr] Int.Type
 #    3|                     getTypeRepr(): [TypeRepr] Int
+#    3|                   getMethodRef(): [DeclRefExpr] ==(_:_:)
 #    3|                 getArgument(0): [Argument] : i
 #    3|                   getExpr(): [DeclRefExpr] i
 #    3|                 getArgument(1): [Argument] : 3
@@ -5266,6 +5429,7 @@ statements.swift:
 #   10|             getFunction(): [MethodLookupExpr] .<(_:_:)
 #   10|               getBase(): [TypeExpr] Int.Type
 #   10|                 getTypeRepr(): [TypeRepr] Int
+#   10|               getMethodRef(): [DeclRefExpr] <(_:_:)
 #   10|             getArgument(0): [Argument] : i
 #   10|               getExpr(): [DeclRefExpr] i
 #   10|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -5279,6 +5443,7 @@ statements.swift:
 #   11|             getFunction(): [MethodLookupExpr] .+(_:_:)
 #   11|               getBase(): [TypeExpr] Int.Type
 #   11|                 getTypeRepr(): [TypeRepr] Int
+#   11|               getMethodRef(): [DeclRefExpr] +(_:_:)
 #   11|             getArgument(0): [Argument] : i
 #   11|               getExpr(): [DeclRefExpr] i
 #   11|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -5292,6 +5457,7 @@ statements.swift:
 #   17|         getFunction(): [MethodLookupExpr] .<(_:_:)
 #   17|           getBase(): [TypeExpr] Int.Type
 #   17|             getTypeRepr(): [TypeRepr] Int
+#   17|           getMethodRef(): [DeclRefExpr] <(_:_:)
 #   17|         getArgument(0): [Argument] : i
 #   17|           getExpr(): [DeclRefExpr] i
 #   17|           getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -5305,6 +5471,7 @@ statements.swift:
 #   16|             getFunction(): [MethodLookupExpr] .+(_:_:)
 #   16|               getBase(): [TypeExpr] Int.Type
 #   16|                 getTypeRepr(): [TypeRepr] Int
+#   16|               getMethodRef(): [DeclRefExpr] +(_:_:)
 #   16|             getArgument(0): [Argument] : i
 #   16|               getExpr(): [DeclRefExpr] i
 #   16|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
@@ -5418,6 +5585,7 @@ statements.swift:
 #-----|         getResult(): [BinaryExpr] ... .==(_:_:) ...
 #-----|           getFunction(): [MethodLookupExpr] .==(_:_:)
 #-----|             getBase(): [TypeExpr] Int.Type
+#-----|             getMethodRef(): [DeclRefExpr] ==(_:_:)
 #-----|           getArgument(0): [Argument] : index_a
 #-----|             getExpr(): [DeclRefExpr] index_a
 #-----|           getArgument(1): [Argument] : index_b
@@ -5473,6 +5641,7 @@ statements.swift:
 #   39|             getFunction(): [MethodLookupExpr] .!=(_:_:)
 #   39|               getBase(): [TypeExpr] Int.Type
 #   39|                 getTypeRepr(): [TypeRepr] Int
+#   39|               getMethodRef(): [DeclRefExpr] !=(_:_:)
 #   39|             getArgument(0): [Argument] : x
 #   39|               getExpr(): [DeclRefExpr] x
 #   39|             getArgument(1): [Argument] : 0
@@ -5482,6 +5651,7 @@ statements.swift:
 #   40|           getSubExpr(): [MethodLookupExpr] .failed
 #   40|             getBase(): [TypeExpr] AnError.Type
 #   40|               getTypeRepr(): [TypeRepr] AnError
+#   40|             getMethodRef(): [DeclRefExpr] failed
 #   40|           getSubExpr().getFullyConverted(): [ErasureExpr] (Error) ...
 #   44| [TopLevelCodeDecl] { ... }
 #   44|   getBody(): [BraceStmt] { ... }
@@ -5625,11 +5795,13 @@ statements.swift:
 #   71|         getFunction(): [MethodLookupExpr] .==(_:_:)
 #   71|           getBase(): [TypeExpr] Int.Type
 #   71|             getTypeRepr(): [TypeRepr] Int
+#   71|           getMethodRef(): [DeclRefExpr] ==(_:_:)
 #   71|         getArgument(0): [Argument] : ... .%(_:_:) ...
 #   71|           getExpr(): [BinaryExpr] ... .%(_:_:) ...
 #   71|             getFunction(): [MethodLookupExpr] .%(_:_:)
 #   71|               getBase(): [TypeExpr] Int.Type
 #   71|                 getTypeRepr(): [TypeRepr] Int
+#   71|               getMethodRef(): [DeclRefExpr] %(_:_:)
 #   71|             getArgument(0): [Argument] : number
 #   71|               getExpr(): [DeclRefExpr] number
 #   71|             getArgument(1): [Argument] : 2
