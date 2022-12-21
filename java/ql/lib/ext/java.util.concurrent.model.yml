@@ -18,6 +18,14 @@ extensions:
       - ["java.util.concurrent", "BlockingQueue", True, "put", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
       - ["java.util.concurrent", "BlockingQueue", True, "take", "()", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
       - ["java.util.concurrent", "ConcurrentHashMap", True, "elements", "()", "", "Argument[-1].MapValue", "ReturnValue.Element", "value", "manual"]
+      - ["java.util.concurrent", "CountDownLatch", False, "CountDownLatch", "(int)", "", "Argument[0]", "Argument[-1].SyntheticField[java.util.concurrent.CountDownLatch.count]", "value", "manual"]
+      - ["java.util.concurrent", "CountDownLatch", False, "getCount", "()", "", "Argument[-1].SyntheticField[java.util.concurrent.CountDownLatch.count]", "ReturnValue", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "transfer", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "tryTransfer", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "tryTransfer", "(Object,long,TimeUnit)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.util.concurrent", "CountDownLatch", "countDown", "()", "manual"]
