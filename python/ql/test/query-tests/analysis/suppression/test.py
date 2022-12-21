@@ -64,3 +64,12 @@ class frozenbidict(BidictBase):  # noqa: E501; (line too long) pylint: disable=i
 
 "" # lgtm[py/line-too-long] and lgtm[py/non-callable-called]
 "" # lgtm[py/line-too-long]; lgtm
+
+#CodeQL comments
+# codeql[js/debugger-statement]
+""
+#CODEQL[js/debugger-statement]
+""
+# codeql[js/debugger-statement] -- because I know better than codeql
+""
+"" // codeql[js/debugger-statement]

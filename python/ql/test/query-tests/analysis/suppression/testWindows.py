@@ -47,3 +47,12 @@ class C: # lgtm class
 
 "" # lgtm[py/line-too-long] and lgtm[py/non-callable-called]
 "" # lgtm[py/line-too-long]; lgtm
+
+#CodeQL comments
+# codeql[js/debugger-statement]
+""
+#CODEQL[js/debugger-statement]
+""
+# codeql[js/debugger-statement] -- because I know better than codeql
+""
+"" // codeql[js/debugger-statement]
