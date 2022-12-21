@@ -2,7 +2,7 @@
  * @name Android WebSettings content access
  * @description Access to content providers in a WebView can enable JavaScript to access protected information.
  * @kind problem
- * @id java/android-websettings-content-access
+ * @id java/android/websettings-content-access
  * @problem.severity warning
  * @security-severity 6.5
  * @precision medium
