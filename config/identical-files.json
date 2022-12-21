@@ -406,7 +406,6 @@
     "cpp/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "csharp/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "java/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "python/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "ruby/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "ql/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "go/ql/test/TestUtilities/InlineExpectationsTest.qll",
