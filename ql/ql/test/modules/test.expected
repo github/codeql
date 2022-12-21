@@ -46,3 +46,7 @@ getTargetType
 | Foo.qll:36:31:36:41 | TypeExpr | file://:0:0:0:0 | EquivalenceClass |
 | file://:0:0:0:0 | TypeExpr | file://:0:0:0:0 | EquivalenceClass |
 | file://:0:0:0:0 | TypeExpr | file://:0:0:0:0 | T |
+| file://:0:0:0:0 | TypeExpr | file://:0:0:0:0 | T |
+| file://:0:0:0:0 | TypeExpr | file://:0:0:0:0 | T |
+| file://:0:0:0:0 | TypeExpr | file://:0:0:0:0 | T |
+| file://:0:0:0:0 | TypeExpr | file://:0:0:0:0 | T |
