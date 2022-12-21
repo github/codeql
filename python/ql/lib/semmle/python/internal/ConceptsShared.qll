@@ -53,7 +53,7 @@ module Cryptography {
       if isKnownCipherBlockModeAlgorithm(super.getBlockModeRaw()) then
         result = super.getBlockModeRaw()
       else
-        result = BlockMode::unknown()
+        result = unknownAlgorithm()
     }
 
   }
@@ -88,7 +88,7 @@ module Cryptography {
   class BlockMode extends string {
     BlockMode() { 
       isKnownCipherBlockModeAlgorithm(this) or 
-      (not isKnownCipherBlockModeAlgorithm(this) and this = BlockMode::unknown())
+      ((not isKnownCipherBlockModeAlgorithm(this)) and this = unknownAlgorithm())
     }
 
     /** 
@@ -106,14 +106,6 @@ module Cryptography {
      */
     predicate isUnknown() {
       not isKnownCipherBlockModeAlgorithm(this)
-    }
-  }
-
-  module BlockMode
-  {
-    BlockMode unknown()
-    {
-      result = unknownAlgorithm()
     }
   }
 }
