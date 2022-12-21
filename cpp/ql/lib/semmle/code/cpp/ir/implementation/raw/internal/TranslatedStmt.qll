@@ -13,6 +13,222 @@ private import TranslatedInitialization
 
 TranslatedStmt getTranslatedStmt(Stmt stmt) { result.getAst() = stmt }
 
+TranslatedMicrosoftTryExceptHandler getTranslatedMicrosoftTryExceptHandler(
+  MicrosoftTryExceptStmt tryExcept
+) {
+  result.getAst() = tryExcept.getExcept()
+}
+
+class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
+  TTranslatedMicrosoftTryExceptHandler {
+  MicrosoftTryExceptStmt tryExcept;
+
+  TranslatedMicrosoftTryExceptHandler() { this = TTranslatedMicrosoftTryExceptHandler(tryExcept) }
+
+  final override string toString() { result = tryExcept.toString() }
+
+  final override Locatable getAst() { result = tryExcept.getExcept() }
+
+  override Instruction getFirstInstruction() { result = getChild(0).getFirstInstruction() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    // t1 = -1
+    tag = TryExceptGenerateNegativeOne() and
+    opcode instanceof Opcode::Constant and
+    resultType = getIntType()
+    or
+    // t2 = cmp t1, condition
+    tag = TryExceptCompareNegativeOne() and
+    opcode instanceof Opcode::CompareEQ and
+    resultType = getBoolType()
+    or
+    // if t2 goto ... else goto ...
+    tag = TryExceptCompareNegativeOneBranch() and
+    opcode instanceof Opcode::ConditionalBranch and
+    resultType = getVoidType()
+    or
+    // t1 = 0
+    tag = TryExceptGenerateZero() and
+    opcode instanceof Opcode::Constant and
+    resultType = getIntType()
+    or
+    // t2 = cmp t1, condition
+    tag = TryExceptCompareZero() and
+    opcode instanceof Opcode::CompareEQ and
+    resultType = getBoolType()
+    or
+    // if t2 goto ... else goto ...
+    tag = TryExceptCompareZeroBranch() and
+    opcode instanceof Opcode::ConditionalBranch and
+    resultType = getVoidType()
+    or
+    // t1 = 1
+    tag = TryExceptGenerateOne() and
+    opcode instanceof Opcode::Constant and
+    resultType = getIntType()
+    or
+    // t2 = cmp t1, condition
+    tag = TryExceptCompareOne() and
+    opcode instanceof Opcode::CompareEQ and
+    resultType = getBoolType()
+    or
+    // if t2 goto ... else goto ...
+    tag = TryExceptCompareOneBranch() and
+    opcode instanceof Opcode::ConditionalBranch and
+    resultType = getVoidType()
+    or
+    // unwind stack
+    tag = UnwindTag() and
+    opcode instanceof Opcode::Unwind and
+    resultType = getVoidType()
+  }
+
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = TryExceptCompareNegativeOne() and
+    (
+      operandTag instanceof LeftOperandTag and
+      result = getTranslatedCondition().getResult()
+      or
+      operandTag instanceof RightOperandTag and
+      result = getInstruction(TryExceptGenerateNegativeOne())
+    )
+    or
+    tag = TryExceptCompareNegativeOneBranch() and
+    operandTag instanceof ConditionOperandTag and
+    result = getInstruction(TryExceptCompareNegativeOne())
+    or
+    tag = TryExceptCompareZero() and
+    (
+      operandTag instanceof LeftOperandTag and
+      result = getTranslatedCondition().getResult()
+      or
+      operandTag instanceof RightOperandTag and
+      result = getInstruction(TryExceptGenerateZero())
+    )
+    or
+    tag = TryExceptCompareZeroBranch() and
+    operandTag instanceof ConditionOperandTag and
+    result = getInstruction(TryExceptCompareZero())
+    or
+    tag = TryExceptCompareOne() and
+    (
+      operandTag instanceof LeftOperandTag and
+      result = getTranslatedCondition().getResult()
+      or
+      operandTag instanceof RightOperandTag and
+      result = getInstruction(TryExceptGenerateOne())
+    )
+    or
+    tag = TryExceptCompareOneBranch() and
+    operandTag instanceof ConditionOperandTag and
+    result = getInstruction(TryExceptCompareOne())
+  }
+
+  override string getInstructionConstantValue(InstructionTag tag) {
+    tag = TryExceptGenerateNegativeOne() and
+    result = "-1"
+    or
+    tag = TryExceptGenerateZero() and
+    result = "0"
+    or
+    tag = TryExceptGenerateOne() and
+    result = "1"
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    // Generate -1 -> Compare condition
+    tag = TryExceptGenerateNegativeOne() and
+    kind instanceof GotoEdge and
+    result = getInstruction(TryExceptCompareNegativeOne())
+    or
+    // Compare condition -> Branch
+    tag = TryExceptCompareNegativeOne() and
+    kind instanceof GotoEdge and
+    result = getInstruction(TryExceptCompareNegativeOneBranch())
+    or
+    // Branch -> Unwind or Generate 0
+    tag = TryExceptCompareNegativeOneBranch() and
+    (
+      kind instanceof TrueEdge and
+      // TODO: This is not really correct. The semantics of `EXCEPTION_CONTINUE_EXECUTION` is that
+      // we should continue execution at the point where the exception occurred. But we don't have
+      // any instruction to model this behavior.
+      result = getInstruction(UnwindTag())
+      or
+      kind instanceof FalseEdge and
+      result = getInstruction(TryExceptGenerateZero())
+    )
+    or
+    // Generate 0 -> Compare condition
+    tag = TryExceptGenerateZero() and
+    kind instanceof GotoEdge and
+    result = getInstruction(TryExceptCompareZero())
+    or
+    // Compare condition -> Branch
+    tag = TryExceptCompareZero() and
+    kind instanceof GotoEdge and
+    result = getInstruction(TryExceptCompareZeroBranch())
+    or
+    // Branch -> Unwind or Generate 1
+    tag = TryExceptCompareZeroBranch() and
+    (
+      kind instanceof TrueEdge and
+      result = getInstruction(UnwindTag())
+      or
+      kind instanceof FalseEdge and
+      result = getInstruction(TryExceptGenerateOne())
+    )
+    or
+    // Generate 1 -> Compare condition
+    tag = TryExceptGenerateOne() and
+    kind instanceof GotoEdge and
+    result = getInstruction(TryExceptCompareOne())
+    or
+    // Compare condition -> Branch
+    tag = TryExceptCompareOne() and
+    kind instanceof GotoEdge and
+    result = getInstruction(TryExceptCompareOneBranch())
+    or
+    // Branch -> Handler (the condition value is always 0, -1 or 1, and we've checked for 0 or -1 already.)
+    tag = TryExceptCompareOneBranch() and
+    (
+      kind instanceof TrueEdge and
+      result = getTranslatedHandler().getFirstInstruction()
+    )
+    or
+    // Unwind -> Parent
+    tag = UnwindTag() and
+    kind instanceof GotoEdge and
+    result = getParent().getChildSuccessor(this)
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getTranslatedCondition() and
+    result = getInstruction(TryExceptGenerateNegativeOne())
+    or
+    child = getTranslatedHandler() and
+    result = getParent().getChildSuccessor(this)
+  }
+
+  private TranslatedExpr getTranslatedCondition() {
+    result = getTranslatedExpr(tryExcept.getCondition())
+  }
+
+  private TranslatedStmt getTranslatedHandler() {
+    result = getTranslatedStmt(tryExcept.getExcept())
+  }
+
+  override TranslatedElement getChild(int id) {
+    id = 0 and
+    result = getTranslatedCondition()
+    or
+    id = 1 and
+    result = getTranslatedHandler()
+  }
+
+  final override Function getFunction() { result = tryExcept.getEnclosingFunction() }
+}
+
 abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
   Stmt stmt;
 
@@ -275,12 +491,12 @@ private class TryOrMicrosoftTryStmt extends Stmt {
     result = this.(MicrosoftTryStmt).getStmt()
   }
 
-  /** Gets the `i`th `catch block` statement of this statement. */
-  Stmt getHandlerStmt(int i) {
-    result = this.(TryStmt).getChild(i + 1)
+  /** Gets the `i`th translated handler of this statement. */
+  TranslatedElement getTranslatedHandler(int index) {
+    result = getTranslatedStmt(this.(TryStmt).getChild(index + 1))
     or
-    i = 0 and
-    result = this.(MicrosoftTryExceptStmt).getExcept()
+    index = 0 and
+    result = getTranslatedMicrosoftTryExceptHandler(this)
   }
 
   /** Gets the `finally` statement (usually a BlockStmt), if any. */
@@ -344,9 +560,7 @@ class TranslatedTryStmt extends TranslatedStmt {
     result = getHandler(0).getFirstInstruction()
   }
 
-  private TranslatedStmt getHandler(int index) {
-    result = getTranslatedStmt(stmt.getHandlerStmt(index))
-  }
+  private TranslatedElement getHandler(int index) { result = stmt.getTranslatedHandler(index) }
 
   private TranslatedStmt getFinally() { result = getTranslatedStmt(stmt.getFinally()) }
 
