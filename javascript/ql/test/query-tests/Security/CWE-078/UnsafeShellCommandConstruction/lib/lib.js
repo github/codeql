@@ -592,3 +592,39 @@ module.exports.safeWithBool = function (name) {
 
     cp.exec("rm -rf " + name); // NOT OK
 }
+
+function indirectThing(name) {
+    return isSafeName(name);
+}
+
+function indirectThing2(name) {
+    return isSafeName(name) === true;
+}
+
+function moreIndirect(name) {
+    return indirectThing2(name) !== false;
+}
+
+module.exports.veryIndeirect = function (name) {
+	cp.exec("rm -rf " + name); // NOT OK
+
+	if (indirectThing(name)) {
+        cp.exec("rm -rf " + name); // OK
+    }
+
+    if (indirectThing2(name)) {
+        cp.exec("rm -rf " + name); // OK
+    }
+
+    if (moreIndirect(name)) {
+        cp.exec("rm -rf " + name); // OK
+    }
+
+    if (moreIndirect(name) !== false) {
+        cp.exec("rm -rf " + name); // OK
+    } else {
+        cp.exec("rm -rf " + name); // NOT OK
+    }
+
+    cp.exec("rm -rf " + name); // NOT OK
+}

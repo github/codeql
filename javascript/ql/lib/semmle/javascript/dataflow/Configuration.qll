@@ -161,7 +161,7 @@ abstract class Configuration extends string {
    */
   predicate isBarrier(DataFlow::Node node) {
     exists(BarrierGuardNode guard |
-      isBarrierGuardInternal(guard) and
+      isBarrierGuardInternal(this, guard) and
       barrierGuardBlocksNode(guard, node, "")
     )
   }
@@ -181,7 +181,7 @@ abstract class Configuration extends string {
    */
   predicate isLabeledBarrier(DataFlow::Node node, FlowLabel lbl) {
     exists(BarrierGuardNode guard |
-      isBarrierGuardInternal(guard) and
+      isBarrierGuardInternal(this, guard) and
       barrierGuardBlocksNode(guard, node, lbl)
     )
     or
@@ -197,17 +197,6 @@ abstract class Configuration extends string {
    * `x` into the "then" branch.
    */
   predicate isBarrierGuard(BarrierGuardNode guard) { none() }
-
-  /**
-   * Holds if `guard` is a barrier guard for this configuration, added through
-   * `isBarrierGuard` or `AdditionalBarrierGuardNode`.
-   */
-  pragma[nomagic]
-  private predicate isBarrierGuardInternal(BarrierGuardNode guard) {
-    isBarrierGuard(guard)
-    or
-    guard.(AdditionalBarrierGuardNode).appliesTo(this)
-  }
 
   /**
    * Holds if data may flow from `source` to `sink` for this configuration.
@@ -265,6 +254,17 @@ abstract class Configuration extends string {
   ) {
     none()
   }
+}
+
+/**
+ * Holds if `guard` is a barrier guard for this configuration, added through
+ * `isBarrierGuard` or `AdditionalBarrierGuardNode`.
+ */
+pragma[nomagic]
+private predicate isBarrierGuardInternal(Configuration cfg, BarrierGuardNode guard) {
+  cfg.isBarrierGuard(guard)
+  or
+  guard.(AdditionalBarrierGuardNode).appliesTo(cfg)
 }
 
 /**
@@ -1981,7 +1981,7 @@ private class BarrierGuardFunction extends Function {
   /**
    * Holds if this function applies to the flow in `cfg`.
    */
-  predicate appliesTo(Configuration cfg) { cfg.isBarrierGuard(guard) }
+  predicate appliesTo(Configuration cfg) { isBarrierGuardInternal(cfg, guard) }
 }
 
 /**
@@ -2034,7 +2034,7 @@ private class CallAgainstEqualityCheck extends AdditionalBarrierGuardNode {
     )
   }
 
-  override predicate appliesTo(Configuration cfg) { cfg.isBarrierGuard(prev) }
+  override predicate appliesTo(Configuration cfg) { isBarrierGuardInternal(cfg, prev) }
 }
 
 /**
