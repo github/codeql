@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-12-21-01h55m24s.gray-roof-szzhgkwk.689231edea6179400bcffbcb0e7f6eb2bacd29c6be27a2930dd4f63ccdb64f34
+compiled: false
