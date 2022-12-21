@@ -4,3 +4,12 @@ extensions:
       extensible: summaryModel
     data:
       - ["java.math", "BigDecimal", False, "BigDecimal", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["java.math", "BigDecimal", False, "valueOf", "(long)", "", "Argument[0]", "ReturnValue", "taint", "manual"]   # ! consider making this signatureless and merging with the below line instead
+      - ["java.math", "BigDecimal", False, "valueOf", "(double)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.lang", "Math", False, "min", "(int,int)", "", "Argument[0..1]", "ReturnValue", "value", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.math", "BigDecimal", "compareTo", "(BigDecimal)", "manual"]
