@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.text", "DateFormat", "format", "(Date)", "manual"]
+      - ["java.text", "SimpleDateFormat", "SimpleDateFormat", "(String)", "manual"]
