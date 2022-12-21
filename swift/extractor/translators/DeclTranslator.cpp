@@ -334,6 +334,7 @@ void DeclTranslator::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl&
   entry.params = dispatcher.fetchRepeatedLabels(*decl.getParameters());
   auto self = const_cast<swift::ParamDecl* const>(decl.getImplicitSelfDecl());
   entry.self_param = dispatcher.fetchOptionalLabel(self);
+  entry.captures = dispatcher.fetchRepeatedLabels(decl.getCaptureInfo().getCaptures());
   fillValueDecl(decl, entry);
   fillGenericContext(decl, entry);
 }

@@ -229,6 +229,7 @@ class Callable(Element):
     self_param: optional[ParamDecl] | child
     params: list[ParamDecl] | child
     body: optional["BraceStmt"] | child | desc("The body is absent within protocol declarations.")
+    captures: list["CapturedDecl"] | child
 
 class AbstractFunctionDecl(GenericContext, ValueDecl, Callable):
     pass
@@ -340,7 +341,7 @@ class Argument(Locatable):
     expr: Expr | child
 
 class AbstractClosureExpr(Expr, Callable):
-    captures: list["CapturedDecl"] | child
+    pass
 
 class AnyTryExpr(Expr):
     sub_expr: Expr | child
