@@ -15,7 +15,7 @@ where
   existsArgument = any(Exists e).getAnArgument() and
   use = unique( | | existsArgument.getAnAccess()) and
   exists(Call c, int argPos | c.getArgument(argPos) = use |
-    not existsArgument.getType().getASuperType+() = c.getTarget().getParameterType(argPos)
+    existsArgument.getType() = c.getTarget().getParameterType(argPos).getASuperType*()
   )
-select existsArgument, "This exists argument can be omitted by using a don't-care expression $@.",
+select existsArgument, "This exists variable can be omitted by using a don't-care expression $@.",
   use, "in this argument"

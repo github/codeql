@@ -1,1 +1,1 @@
-| Test.qll:10:10:10:14 | i | This exists argument can be omitted by using a don't-care expression $@. | Test.qll:10:29:10:29 | i | in this argument |
+| Test.qll:10:10:10:14 | i | This exists variable can be omitted by using a don't-care expression $@. | Test.qll:10:29:10:29 | i | in this argument |
