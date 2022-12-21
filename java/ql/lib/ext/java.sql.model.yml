@@ -19,4 +19,13 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
+      - ["java.sql", "PreparedStatement", True, "setInt", "(int,int)", "", "Argument[1]", "Argument[-1].Parameter[Argument[0]]", "value", "manual"]       # ! fix output
+      - ["java.sql", "PreparedStatement", True, "setString", "(int,String)", "", "Argument[1]", "Argument[-1].Parameter[Argument[0]]", "value", "manual"] # ! fix output
+      - ["java.sql", "ResultSet", True, "getInt", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.sql", "ResultSet", True, "getString", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.sql", "ResultSet", "next", "()", "manual"]
