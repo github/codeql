@@ -368,6 +368,8 @@ private predicate barrierGuardBlocksExpr(
   // Handle labelled barrier guard functions specially, to avoid negative recursion
   // through the non-abstract 3-argument version of blocks().
   guard.(AdditionalBarrierGuardCall).internalBlocksLabel(outcome, test, label)
+  or
+  guard.(CallAgainstEqualityCheck).internalBlocksLabel(outcome, test, label)
 }
 
 /**
@@ -1997,6 +1999,42 @@ private class AdditionalBarrierGuardCall extends AdditionalBarrierGuardNode, Dat
   }
 
   override predicate appliesTo(Configuration cfg) { f.appliesTo(cfg) }
+}
+
+/**
+ * A sanitizer where an inner sanitizer is compared against a boolean.
+ * E.g. (assuming `sanitizes(e)` is an existing sanitizer):
+ * ```javascript
+ * if (sanitizes(e) === true) {
+ *  // e is sanitized
+ * }
+ * ```
+ */
+private class CallAgainstEqualityCheck extends AdditionalBarrierGuardNode {
+  DataFlow::BarrierGuardNode prev;
+  boolean polarity;
+
+  CallAgainstEqualityCheck() {
+    prev instanceof DataFlow::CallNode and
+    exists(EqualityTest test, BooleanLiteral bool |
+      this.asExpr() = test and
+      test.hasOperands(prev.asExpr(), bool) and
+      polarity = test.getPolarity().booleanXor(bool.getBoolValue())
+    )
+  }
+
+  override predicate blocks(boolean outcome, Expr e) {
+    none() // handled by internalBlocksLabel
+  }
+
+  predicate internalBlocksLabel(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
+    exists(boolean prevOutcome |
+      barrierGuardBlocksExpr(prev, prevOutcome, e, lbl) and
+      outcome = prevOutcome.booleanXor(polarity)
+    )
+  }
+
+  override predicate appliesTo(Configuration cfg) { cfg.isBarrierGuard(prev) }
 }
 
 /**

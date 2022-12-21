@@ -568,3 +568,27 @@ module.exports.badSanitizer = function (name) {
         exec("rm -rf " + name); // OK
     }
 }
+
+module.exports.safeWithBool = function (name) {
+	cp.exec("rm -rf " + name); // NOT OK
+
+	if (isSafeName(name)) {
+		cp.exec("rm -rf " + name); // OK
+	}
+
+    cp.exec("rm -rf " + name); // NOT OK
+
+    if (isSafeName(name) === true) {
+        cp.exec("rm -rf " + name); // OK
+    }
+
+    if (isSafeName(name) !== false) {
+        cp.exec("rm -rf " + name); // OK
+    }
+
+    if (isSafeName(name) == false) {
+        cp.exec("rm -rf " + name); // NOT OK
+    }
+
+    cp.exec("rm -rf " + name); // NOT OK
+}

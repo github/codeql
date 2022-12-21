@@ -14,7 +14,7 @@ new Router().get("/hello", (ctx) => {
         conditions.push(`version = ${version}`)
     }
 
-    new Sequelize().query(`SELECT * FROM t WHERE ${conditions.join(' and ')}`, null); // OK - but still flagged [INCONSISTENCY]
+    new Sequelize().query(`SELECT * FROM t WHERE ${conditions.join(' and ')}`, null); // OK
 });
 
 function validVersion(version) {
