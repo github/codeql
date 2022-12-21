@@ -630,3 +630,22 @@ class IncludesIncluded
     end
 end
 
+class CustomNew1
+    def self.new
+        C1.new
+    end     
+end
+
+CustomNew1.new.instance
+
+class CustomNew2
+    def self.new
+        self.allocate
+    end
+
+    def instance
+        puts "CustomNew2#instance"
+    end
+end
+
+CustomNew2.new.instance

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["generatedtest", "Test", False, "newWithElementDefault", "(Object)", "", "Argument[0]", "ReturnValue.Element", "value", "manual"]
+      - ["generatedtest", "Test", False, "newWithMapKeyDefault", "(Object)", "", "Argument[0]", "ReturnValue.MapKey", "value", "manual"]
+      - ["generatedtest", "Test", False, "newWithMapValueDefault", "(Object)", "", "Argument[0]", "ReturnValue.MapValue", "value", "manual"]

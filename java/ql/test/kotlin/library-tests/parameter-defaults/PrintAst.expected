@@ -1337,7 +1337,7 @@ test.kt:
 #  145|             0: [AssignExpr] ...=...
 #  145|               0: [VarAccess] p4
 #  145|               1: [MethodAccess] listOf(...)
-#  145|                 -2: [TypeAccess] Object
+#  145|                 -2: [TypeAccess] T
 #  145|                 -1: [TypeAccess] CollectionsKt
 #  145|                 0: [VarAccess] p2
 #  145|         3: [IfStmt] if (...)
@@ -1360,7 +1360,7 @@ test.kt:
 #  145|             0: [AssignExpr] ...=...
 #  145|               0: [VarAccess] p6
 #  145|               1: [MethodAccess] listOf(...)
-#  145|                 -2: [TypeAccess] Object
+#  145|                 -2: [TypeAccess] S
 #  145|                 -1: [TypeAccess] CollectionsKt
 #  145|                 0: [VarAccess] p1
 #  145|         5: [ReturnStmt] return ...

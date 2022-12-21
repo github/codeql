@@ -916,15 +916,15 @@ private module Cached {
     TDataFlowCallSome(DataFlowCall call)
 
   cached
-  newtype TParameterPositionOption =
-    TParameterPositionNone() or
-    TParameterPositionSome(ParameterPosition pos)
+  newtype TParamNodeOption =
+    TParamNodeNone() or
+    TParamNodeSome(ParamNode p)
 
   cached
   newtype TReturnCtx =
     TReturnCtxNone() or
     TReturnCtxNoFlowThrough() or
-    TReturnCtxMaybeFlowThrough(ReturnKindExt kind)
+    TReturnCtxMaybeFlowThrough(ReturnPosition pos)
 
   cached
   newtype TTypedContentApprox =
@@ -1343,15 +1343,15 @@ class DataFlowCallOption extends TDataFlowCallOption {
   }
 }
 
-/** An optional `ParameterPosition`. */
-class ParameterPositionOption extends TParameterPositionOption {
+/** An optional `ParamNode`. */
+class ParamNodeOption extends TParamNodeOption {
   string toString() {
-    this = TParameterPositionNone() and
+    this = TParamNodeNone() and
     result = "(none)"
     or
-    exists(ParameterPosition pos |
-      this = TParameterPositionSome(pos) and
-      result = pos.toString()
+    exists(ParamNode p |
+      this = TParamNodeSome(p) and
+      result = p.toString()
     )
   }
 }
@@ -1363,7 +1363,7 @@ class ParameterPositionOption extends TParameterPositionOption {
  *
  * - `TReturnCtxNone()`: no return flow.
  * - `TReturnCtxNoFlowThrough()`: return flow, but flow through is not possible.
- * - `TReturnCtxMaybeFlowThrough(ReturnKindExt kind)`: return flow, of kind `kind`, and
+ * - `TReturnCtxMaybeFlowThrough(ReturnPosition pos)`: return flow, of kind `pos`, and
  *    flow through may be possible.
  */
 class ReturnCtx extends TReturnCtx {
@@ -1374,9 +1374,9 @@ class ReturnCtx extends TReturnCtx {
     this = TReturnCtxNoFlowThrough() and
     result = "(no flow through)"
     or
-    exists(ReturnKindExt kind |
-      this = TReturnCtxMaybeFlowThrough(kind) and
-      result = kind.toString()
+    exists(ReturnPosition pos |
+      this = TReturnCtxMaybeFlowThrough(pos) and
+      result = pos.toString()
     )
   }
 }

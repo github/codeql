@@ -604,7 +604,7 @@ fn main() -> std::io::Result<()> {
     let mut ql_writer = LineWriter::new(File::create(ql_library_path)?);
     write!(
         ql_writer,
-        "/*\n\
+        "/**\n\
           * CodeQL library for {}
           * Automatically generated from the tree-sitter grammar; do not edit\n\
           */\n\n",

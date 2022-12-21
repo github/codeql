@@ -28,6 +28,13 @@ public class CertificatePinner
     public static CertificatePinner DEFAULT = null;
     public static CertificatePinner.Companion Companion = null;
     public static String pin(Certificate p0){ return null; }
+    static public class Builder
+    {
+        public Builder(){}
+        public final CertificatePinner build(){ return null; }
+        public final CertificatePinner.Builder add(String p0, String... p1){ return null; }
+        public final List<CertificatePinner.Pin> getPins(){ return null; }
+    }
     static public class Companion
     {
         protected Companion() {}
