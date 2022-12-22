@@ -1,5 +1,12 @@
 /**
- * @id java/android-websettings-permit-contentacces
+ * @name Android WebView settings permits content access
+ * @id java/android/websettings-permit-contentacces
+ * @description Access to content providers in a WebView can permit access to protected information by loading content:// links.
+ * @kind problem
+ * @problem.severity warning
+ * @precision medium
+ * @tags security
+ *      external/cwe/cwe-200
  */
 
 import java
