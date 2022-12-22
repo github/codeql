@@ -92,9 +92,6 @@ public class Test {
             long l3 = (long)source();
             sink(String.valueOf(l3)); // $hasTaintFlow
 
-            // System sys = (System)source();
-            // sink(sys.getProperty("")); // $hasValueFlow
-
             // java.math
             long l4 = (long)source();
             sink(BigDecimal.valueOf(l4)); // $hasTaintFlow
@@ -107,36 +104,44 @@ public class Test {
             sink(Math.min(i4, i5)); // $hasValueFlow
 
             // java.sql
-            // Connection con = DriverManager.getConnection("");
-            // PreparedStatement ps = con.prepareStatement("UPDATE EMPLOYEES SET NAME = ? WHERE ID = ?");
-            // ps.setString(1, "testName"); // $hasValueFlow
-            // ps.setInt(2, 110592);        // $hasValueFlow
+            Connection con = DriverManager.getConnection("");
+            PreparedStatement ps1 = con.prepareStatement("UPDATE EMPLOYEES SET NAME = ? WHERE ID = ?");
+            ps1.setString(1, (String)source());
+            sink(ps1); // $hasValueFlow
+            PreparedStatement ps2 = con.prepareStatement("UPDATE EMPLOYEES SET NAME = ? WHERE ID = ?");
+            ps2.setInt(2, (int)source());
+            sink(ps2); // $hasValueFlow
 
             ResultSet rs = (ResultSet)source();
             sink(rs.getInt("")); // $hasTaintFlow
 
             // java.util.concurrent.atomic
-            // AtomicInteger ai = new AtomicInteger((int)source());
-            // sink((int)ai.get());  // $hasValueFlow
+            AtomicInteger ai = new AtomicInteger((int)source());
+            sink(ai.get());  // $hasValueFlow
 
-            // AtomicReference ar = new AtomicReference(source());
-            // sink(ar.get());  // $hasValueFlow
+            AtomicReference ar = new AtomicReference(source());
+            sink(ar.get());  // $hasValueFlow
 
             // java.util.concurrent
             CountDownLatch cdl = new CountDownLatch((int)source());
             sink(cdl.getCount()); // $hasValueFlow
 
             // java.util.function
-            // Function<Object, Object> func = a -> a + "";
-            // sink(func.apply(source()));  // $hasTaintFlow
+            Function<Object, Object> func = a -> a + "";
+            sink(func.apply(source()));  // $hasTaintFlow
+
+            Function<Integer, Double> half = a -> a / 2.0;
+            sink(half.apply((Integer)source())); // $hasTaintFlow
 
             Supplier<Double> sup = (Supplier)source();
             sink(sup.get()); // $hasValueFlow
 
             // java.util
-            // StringJoiner sj = new StringJoiner(",");
-            // sink(sj.add((CharSequence)source())); // $hasTaintFlow
-        }
+            StringJoiner sj1 = new StringJoiner(",");
+            sink(sj1.add((CharSequence)source())); // $hasTaintFlow
 
+            StringJoiner sj2 = (StringJoiner)source();
+            sink(sj2.add("test")); // $hasTaintFlow
+        }
     }
 }
