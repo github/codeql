@@ -1,29 +1,11 @@
 private import swift
-
-private Decl getAMember(IterableDeclContext ctx) {
-  ctx.getAMember() = result
-  or
-  exists(VarDecl var |
-    ctx.getAMember() = var and
-    var.getAnAccessorDecl() = result
-  )
-}
+private import codeql.swift.elements.decl.DeclWithMembers
 
 /**
  * A function that is a member of a class, struct, enum or protocol.
  */
 class MethodDecl extends AbstractFunctionDecl {
-  MethodDecl() {
-    this = getAMember(any(ClassDecl c))
-    or
-    this = getAMember(any(StructDecl c))
-    or
-    this = getAMember(any(ExtensionDecl c))
-    or
-    this = getAMember(any(EnumDecl c))
-    or
-    this = getAMember(any(ProtocolDecl c))
-  }
+  MethodDecl() { this = any(DeclWithMembers decl).getAMember() }
 
   /**
    * Holds if this function is called `funcName` and its a member of a
@@ -32,17 +14,7 @@ class MethodDecl extends AbstractFunctionDecl {
   cached
   predicate hasQualifiedName(string typeName, string funcName) {
     this.getName() = funcName and
-    (
-      exists(NominalTypeDecl c |
-        c.getFullName() = typeName and
-        c.getAMember() = this
-      )
-      or
-      exists(ExtensionDecl e |
-        e.getExtendedTypeDecl().getFullName() = typeName and
-        e.getAMember() = this
-      )
-    )
+    this.getDeclaringTypeDecl().getFullName() = typeName
   }
 
   /**
