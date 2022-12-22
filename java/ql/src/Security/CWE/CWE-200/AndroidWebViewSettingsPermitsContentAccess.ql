@@ -10,9 +10,10 @@
  */
 
 import java
-import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.android.WebView
 
+/** Represents `android.webkit.WebView` and its subclasses. */
 private class TypeWebViewOrSubclass extends RefType {
   TypeWebViewOrSubclass() { this.getASupertype*() instanceof TypeWebView }
 }
@@ -30,69 +31,70 @@ private class PrivateGetterMethodAccess extends MethodAccess {
   }
 }
 
-/**
- * A flow configuration for tracking flow from the creation of a `WebView` object to a call of the `getSettings` method.
- */
-private class WebViewGetSettingsConfiguration extends DataFlow::Configuration {
-  WebViewGetSettingsConfiguration() { this = "WebViewGetSettingsConfiguration" }
-
-  override predicate isSource(DataFlow::Node node) {
-    node.asExpr().getType().(RefType) instanceof TypeWebViewOrSubclass and
+/** A source for `android.webkit.WebView` objects. */
+class WebViewSource extends DataFlow::Node {
+  WebViewSource() {
+    this.getType().(RefType) instanceof TypeWebViewOrSubclass and
     // To reduce duplicate results, we only consider WebView objects from
     // constructor and method calls, or method accesses which are cast to WebView.
     (
-      node.asExpr() instanceof ClassInstanceExpr or
-      node.asExpr() instanceof MethodAccess or
-      node.asExpr().(CastExpr).getAChildExpr() instanceof MethodAccess
+      this.asExpr() instanceof ClassInstanceExpr or
+      this.asExpr() instanceof MethodAccess or
+      this.asExpr().(CastExpr).getAChildExpr() instanceof MethodAccess
     ) and
     // Avoid duplicate results from Kotlin member accesses.
-    not node.asExpr() instanceof PrivateGetterMethodAccess
+    not this.asExpr() instanceof PrivateGetterMethodAccess
+  }
+}
+
+/**
+ * A sink representing a call to `android.webkit.WebSettings.setAllowContentAccess` that
+ * disables content access.
+ */
+class WebSettingsDisallowContentAccessSink extends DataFlow::Node {
+  WebSettingsDisallowContentAccessSink() {
+    exists(MethodAccess ma |
+      ma.getQualifier() = this.asExpr() and
+      ma.getMethod() instanceof AllowContentAccessMethod and
+      ma.getArgument(0).(BooleanLiteral).getBooleanValue() = false
+    )
+  }
+}
+
+class WebViewDisallowContentAccessConfiguration extends TaintTracking::Configuration {
+  WebViewDisallowContentAccessConfiguration() { this = "WebViewDisallowContentAccessConfiguration" }
+
+  override predicate isSource(DataFlow::Node node, DataFlow::FlowState state) {
+    state instanceof DataFlow::FlowStateEmpty and
+    node instanceof WebViewSource
   }
 
-  override predicate isSink(DataFlow::Node node) {
+  /**
+   * Holds if the step from `node1` to `node2` is a dataflow step that gets the `WebSettings` object
+   * from the `getSettings` method of a `WebView` object.
+   */
+  override predicate isAdditionalTaintStep(
+    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
+    DataFlow::FlowState state2
+  ) {
+    state1 instanceof DataFlow::FlowStateEmpty and
+    state2 = "WebSettings" and
+    // settings = webView.getSettings()
+    // ^node2   = ^node1
     exists(MethodAccess ma |
-      ma.getQualifier() = node.asExpr() and
+      ma = node2.asExpr() and
+      ma.getQualifier() = node1.asExpr() and
       ma.getMethod() instanceof WebViewGetSettingsMethod
     )
   }
-}
 
-private class WebSettingsSetAllowContentAccessFalseConfiguration extends DataFlow::Configuration {
-  WebSettingsSetAllowContentAccessFalseConfiguration() {
-    this = "WebSettingsSetAllowContentAccessFalseConfiguration"
-  }
-
-  override predicate isSource(DataFlow::Node node) {
-    node.asExpr().getType() instanceof TypeWebSettings
-  }
-
-  override predicate isSink(DataFlow::Node node) {
-    // sink: settings.setAllowContentAccess(false)
-    // or (in Kotlin): settings.allowContentAccess = false
-    exists(MethodAccess ma |
-      ma.getQualifier() = node.asExpr() and
-      ma.getMethod().hasName("setAllowContentAccess") and
-      ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = false
-    )
+  override predicate isSink(DataFlow::Node node, DataFlow::FlowState state) {
+    state = "WebSettings" and
+    node instanceof WebSettingsDisallowContentAccessSink
   }
 }
 
-predicate hasContentAccessDisabled(Expr webview) {
-  exists(
-    DataFlow::Node wvSource, DataFlow::Node wvSink, WebViewGetSettingsConfiguration viewCfg,
-    DataFlow::Node settingsSource, DataFlow::Node settingsSink,
-    WebSettingsSetAllowContentAccessFalseConfiguration settingsCfg, MethodAccess getSettingsAccess
-  |
-    wvSource = DataFlow::exprNode(webview) and
-    viewCfg.hasFlow(wvSource, wvSink) and
-    settingsCfg.hasFlow(settingsSource, settingsSink) and
-    getSettingsAccess.getQualifier() = wvSink.asExpr() and
-    getSettingsAccess.getMethod() instanceof WebViewGetSettingsMethod and
-    getSettingsAccess = settingsSource.asExpr()
-  )
-}
-
-from Expr source, WebViewGetSettingsConfiguration cfg
-where cfg.isSource(DataFlow::exprNode(source)) and not hasContentAccessDisabled(source)
+from WebViewSource source
+where not any(WebViewDisallowContentAccessConfiguration cfg).hasFlow(source, _)
 select source,
   "Sensitive information may be exposed via a malicious link due to access of content:// links being permitted."
