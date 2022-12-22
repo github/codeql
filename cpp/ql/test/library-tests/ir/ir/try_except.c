@@ -26,3 +26,17 @@ void g() {
     sink(x);
   }
 }
+
+void AfxThrowMemoryException();
+
+void h(int b) {
+  int x = 0;
+    __try {
+        if (b) {
+            AfxThrowMemoryException();
+        }
+    }
+    __except (1) {
+        sink(x);
+    }
+}

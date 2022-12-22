@@ -14931,3 +14931,42 @@ try_except.c:
 #   26|                 Type = [IntType] int
 #   26|                 ValueCategory = prvalue(load)
 #   28|     getStmt(2): [ReturnStmt] return ...
+#   30| [TopLevelFunction] void AfxThrowMemoryException()
+#   30|   <params>: 
+#   32| [TopLevelFunction] void h(int)
+#   32|   <params>: 
+#   32|     getParameter(0): [Parameter] b
+#   32|         Type = [IntType] int
+#   32|   getEntryPoint(): [BlockStmt] { ... }
+#   33|     getStmt(0): [DeclStmt] declaration
+#   33|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   33|           Type = [IntType] int
+#   33|         getVariable().getInitializer(): [Initializer] initializer for x
+#   33|           getExpr(): [Literal] 0
+#   33|               Type = [IntType] int
+#   33|               Value = [Literal] 0
+#   33|               ValueCategory = prvalue
+#   34|     getStmt(1): [MicrosoftTryExceptStmt] __try { ... } __except( ... ) { ... }
+#   34|       getStmt(): [BlockStmt] { ... }
+#   35|         getStmt(0): [IfStmt] if (...) ... 
+#   35|           getCondition(): [VariableAccess] b
+#   35|               Type = [IntType] int
+#   35|               ValueCategory = prvalue(load)
+#   35|           getThen(): [BlockStmt] { ... }
+#   36|             getStmt(0): [ExprStmt] ExprStmt
+#   36|               getExpr(): [FunctionCall] call to AfxThrowMemoryException
+#   36|                   Type = [VoidType] void
+#   36|                   ValueCategory = prvalue
+#   39|       getCondition(): [Literal] 1
+#   39|           Type = [IntType] int
+#   39|           Value = [Literal] 1
+#   39|           ValueCategory = prvalue
+#   39|       getExcept(): [BlockStmt] { ... }
+#   40|         getStmt(0): [ExprStmt] ExprStmt
+#   40|           getExpr(): [FunctionCall] call to sink
+#   40|               Type = [VoidType] void
+#   40|               ValueCategory = prvalue
+#   40|             getArgument(0): [VariableAccess] x
+#   40|                 Type = [IntType] int
+#   40|                 ValueCategory = prvalue(load)
+#   42|     getStmt(2): [ReturnStmt] return ...

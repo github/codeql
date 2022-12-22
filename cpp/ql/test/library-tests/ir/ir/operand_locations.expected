@@ -9187,3 +9187,18 @@
 | try_except.c:26:10:26:10 | Address | &:r26_2 |
 | try_except.c:26:10:26:10 | Arg(0) | 0:r26_3 |
 | try_except.c:26:10:26:10 | Load | m22_4 |
+| try_except.c:32:6:32:6 | ChiPartial | partial:m32_3 |
+| try_except.c:32:6:32:6 | ChiTotal | total:m32_2 |
+| try_except.c:32:6:32:6 | SideEffect | ~m42_1 |
+| try_except.c:32:12:32:12 | Address | &:r32_5 |
+| try_except.c:33:7:33:7 | Address | &:r33_1 |
+| try_except.c:33:10:33:11 | StoreValue | r33_2 |
+| try_except.c:35:13:35:13 | Address | &:r35_1 |
+| try_except.c:35:13:35:13 | Condition | r35_2 |
+| try_except.c:35:13:35:13 | Load | m32_6 |
+| try_except.c:36:13:36:35 | CallTarget | func:r36_1 |
+| try_except.c:36:13:36:35 | ChiPartial | partial:m36_3 |
+| try_except.c:36:13:36:35 | ChiTotal | total:m32_4 |
+| try_except.c:36:13:36:35 | SideEffect | ~m32_4 |
+| try_except.c:42:1:42:1 | Phi | from 0:~m32_4 |
+| try_except.c:42:1:42:1 | Phi | from 1:~m36_4 |

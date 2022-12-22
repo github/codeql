@@ -10506,3 +10506,64 @@ try_except.c:
 #   18|     v18_4(void)           = ReturnVoid                     : 
 #   18|     v18_5(void)           = AliasedUse                     : ~m?
 #   18|     v18_6(void)           = ExitFunction                   : 
+
+#   32| void h(int)
+#   32|   Block 0
+#   32|     v32_1(void)       = EnterFunction          : 
+#   32|     mu32_2(unknown)   = AliasedDefinition      : 
+#   32|     mu32_3(unknown)   = InitializeNonLocal     : 
+#   32|     r32_4(glval<int>) = VariableAddress[b]     : 
+#   32|     mu32_5(int)       = InitializeParameter[b] : &:r32_4
+#   33|     r33_1(glval<int>) = VariableAddress[x]     : 
+#   33|     r33_2(int)        = Constant[0]            : 
+#   33|     mu33_3(int)       = Store[x]               : &:r33_1, r33_2
+#   35|     r35_1(glval<int>) = VariableAddress[b]     : 
+#   35|     r35_2(int)        = Load[b]                : &:r35_1, ~m?
+#   35|     v35_3(void)       = ConditionalBranch      : r35_2
+#-----|   False -> Block 7
+#-----|   True -> Block 1
+
+#   36|   Block 1
+#   36|     r36_1(glval<unknown>) = FunctionAddress[AfxThrowMemoryException] : 
+#   36|     v36_2(void)           = Call[AfxThrowMemoryException]            : func:r36_1
+#   36|     mu36_3(unknown)       = ^CallSideEffect                          : ~m?
+#-----|   Goto -> Block 7
+
+#   39|   Block 2
+#   39|     r39_1(int)  = Constant[0]       : 
+#   39|     r39_2(bool) = CompareEQ         : r39_8, r39_1
+#   39|     v39_3(void) = ConditionalBranch : r39_2
+#-----|   False -> Block 3
+#-----|   True -> Block 4
+
+#   39|   Block 3
+#   39|     r39_4(int)  = Constant[1]       : 
+#   39|     r39_5(bool) = CompareEQ         : r39_8, r39_4
+#   39|     v39_6(void) = ConditionalBranch : r39_5
+#-----|   True -> Block 6
+
+#   39|   Block 4
+#   39|     v39_7(void) = Unwind : 
+#-----|   Goto -> Block 7
+
+#   39|   Block 5
+#   39|     r39_8(int)   = Constant[1]       : 
+#   39|     r39_9(int)   = Constant[-1]      : 
+#   39|     r39_10(bool) = CompareEQ         : r39_8, r39_9
+#   39|     v39_11(void) = ConditionalBranch : r39_10
+#-----|   False -> Block 2
+#-----|   True -> Block 4
+
+#   40|   Block 6
+#   40|     r40_1(glval<unknown>) = FunctionAddress[sink] : 
+#   40|     r40_2(glval<int>)     = VariableAddress[x]    : 
+#   40|     r40_3(int)            = Load[x]               : &:r40_2, ~m?
+#   40|     v40_4(void)           = Call[sink]            : func:r40_1, 0:r40_3
+#   40|     mu40_5(unknown)       = ^CallSideEffect       : ~m?
+#-----|   Goto -> Block 7
+
+#   42|   Block 7
+#   42|     v42_1(void) = NoOp         : 
+#   32|     v32_6(void) = ReturnVoid   : 
+#   32|     v32_7(void) = AliasedUse   : ~m?
+#   32|     v32_8(void) = ExitFunction : 
