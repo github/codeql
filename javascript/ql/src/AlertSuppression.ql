@@ -5,10 +5,20 @@
  * @id js/alert-suppression
  */
 
-private import codeql.suppression.AlertSuppression as AS
+private import codeql.util.suppression.AlertSuppression as AS
 private import javascript as JS
 
-class SingleLineComment extends JS::Locatable {
+class AstNode extends JS::Locatable {
+  AstNode() { not this.(JS::HTML::TextNode).getText().regexpMatch("\\s*") }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}
+
+class SingleLineComment extends AstNode {
   private string text;
 
   SingleLineComment() {
@@ -20,13 +30,7 @@ class SingleLineComment extends JS::Locatable {
     not text.matches("%\n%")
   }
 
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-
   string getText() { result = text }
 }
 
-import AS::Make<SingleLineComment>
+import AS::Make<AstNode, SingleLineComment>
