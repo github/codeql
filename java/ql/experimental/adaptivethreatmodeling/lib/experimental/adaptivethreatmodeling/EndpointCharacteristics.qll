@@ -6,6 +6,8 @@ private import java as java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.QueryInjection
 import experimental.adaptivethreatmodeling.EndpointTypes
+private import experimental.adaptivethreatmodeling.ATMConfig
+private import experimental.adaptivethreatmodeling.SqlInjectionATM
 
 /**
  * A set of characteristics that a particular endpoint might have. This set of characteristics is used to make decisions
@@ -217,6 +219,91 @@ private class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
 //   }
 // }
 /*
+ * Characteristics that are indicative of not being a sink of any type, and have historically been used to select
+ * negative samples for training.
+ */
+
+/**
+ * A characteristic that is an indicator of not being a sink of any type, because it's a modeled argument.
+ */
+abstract class OtherModeledArgumentCharacteristic extends EndpointCharacteristic {
+  bindingset[this]
+  OtherModeledArgumentCharacteristic() { any() }
+}
+
+/**
+ * A characteristic that is an indicator of not being a sink of any type, because it's an argument to a function of a
+ * builtin object.
+ */
+abstract private class ArgumentToBuiltinFunctionCharacteristic extends OtherModeledArgumentCharacteristic {
+  bindingset[this]
+  ArgumentToBuiltinFunctionCharacteristic() { any() }
+}
+
+/**
+ * A high-confidence characteristic that indicates that an endpoint is not a sink of any type.
+ */
+abstract private class NotASinkCharacteristic extends EndpointCharacteristic {
+  bindingset[this]
+  NotASinkCharacteristic() { any() }
+
+  override predicate hasImplications(
+    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
+  ) {
+    endpointClass instanceof NegativeType and
+    isPositiveIndicator = true and
+    confidence = highConfidence()
+  }
+}
+
+/**
+ * A medium-confidence characteristic that indicates that an endpoint is not a sink of any type.
+ *
+ * TODO: This class is currently not private, because the current extraction logic explicitly avoids including these
+ * endpoints in the training data. We might want to change this in the future.
+ */
+abstract class LikelyNotASinkCharacteristic extends EndpointCharacteristic {
+  bindingset[this]
+  LikelyNotASinkCharacteristic() { any() }
+
+  override predicate hasImplications(
+    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
+  ) {
+    endpointClass instanceof NegativeType and
+    isPositiveIndicator = true and
+    confidence = mediumConfidence()
+  }
+}
+
+/**
+ * An EndpointFilterCharacteristic that indicates that an endpoint is a sanitizer for some sink type. A sanitizer can
+ * never be a sink.
+ */
+private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
+  IsSanitizerCharacteristic() { this = "is sanitizer" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    exists(AtmConfig config | config.isSanitizer(n))
+  }
+}
+
+// private class JQueryArgumentCharacteristic extends NotASinkCharacteristic,
+//   OtherModeledArgumentCharacteristic {
+//   JQueryArgumentCharacteristic() { this = "JQueryArgument" }
+//   override predicate appliesToEndpoint(DataFlow::Node n) {
+//     any(JQuery::MethodCall m).getAnArgument() = n
+//   }
+// }
+// private class ClientRequestCharacteristic extends NotASinkCharacteristic,
+//   OtherModeledArgumentCharacteristic {
+//   ClientRequestCharacteristic() { this = "ClientRequest" }
+//   override predicate appliesToEndpoint(DataFlow::Node n) {
+//     exists(ClientRequest r |
+//       r.getAnArgument() = n or n = r.getUrl() or n = r.getHost() or n = r.getADataNode()
+//     )
+//   }
+// }
+/*
  * Characteristics that have historically acted as endpoint filters to exclude endpoints from scoring at inference time.
  */
 
@@ -239,6 +326,38 @@ abstract private class StandardEndpointFilterCharacteristic extends EndpointFilt
     endpointClass instanceof NegativeType and
     isPositiveIndicator = true and
     confidence = mediumConfidence()
+  }
+}
+
+/**
+ * An EndpointFilterCharacteristic that indicates that an endpoint is a constant expression. While a constant expression
+ * can be a sink, it cannot be part of a tainted flow: Constant expressions always evaluate to a constant primitive
+ * value, so they can't ever appear in an alert. These endpoints are therefore excluded from scoring at inference time.
+ *
+ * WARNING: These endpoints should not be used as negative samples for training, because they are not necessarily
+ * non-sinks. They are merely not interesting sinks to run through the ML model because they can never be part of a
+ * tainted flow.
+ */
+private class IsConstantExpressionCharacteristic extends StandardEndpointFilterCharacteristic {
+  IsConstantExpressionCharacteristic() { this = "constant expression" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    n.asExpr() instanceof CompileTimeConstantExpr
+  }
+}
+
+/**
+ * An EndpointFilterCharacteristic that indicates that an endpoint is not part of the source code for the project being
+ * analyzed.
+ *
+ * WARNING: These endpoints should not be used as negative samples for training, because they are not necessarily
+ * non-sinks. They are merely not interesting sinks to run through the ML model.
+ */
+private class IsExternalCharacteristic extends StandardEndpointFilterCharacteristic {
+  IsExternalCharacteristic() { this = "external" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    not exists(n.getLocation().getFile().getRelativePath())
   }
 }
 // class IsArgumentToModeledFunctionCharacteristic extends StandardEndpointFilterCharacteristic {

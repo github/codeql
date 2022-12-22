@@ -96,16 +96,10 @@ abstract class AtmConfig extends TaintTracking::Configuration {
   ) {
     // An endpoint is an effective sink (sink candidate) if none of its characteristics give much indication whether or
     // not it is a sink. Historically, we used endpoint filters, and scored endpoints that are filtered out neither by
-    // a standard endpoint filter nor by an endpoint filter specific to this sink type. To replicate this behavior, we
-    // have given the endpoint filter characteristics medium confidence, and we exclude endpoints that have a
-    // medium-confidence characteristic that indicates that they are not sinks, either in general or for this sink type.
+    // a standard endpoint filter nor by an endpoint filter specific to this sink type.
     exists(EndpointCharacteristics::EndpointCharacteristic filter, float confidence |
       filter.appliesToEndpoint(candidateSink) and
       confidence >= filter.mediumConfidence() and
-      // TODO: Experiment with excluding all endpoints that have a medium- or high-confidence characteristic that
-      // implies they're not sinks, rather than using only medium-confidence characteristics, by deleting the following
-      // line.
-      confidence < filter.highConfidence() and
       (
         // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
         filter.hasImplications(any(NegativeType negative), true, confidence)
