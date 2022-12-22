@@ -92,7 +92,7 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.util.stream", "Collectors", "joining", "(CharSequence)", "manual"]
+      - ["java.util.stream", "Collectors", "joining", "(CharSequence)", "manual"] # ! unsure if should be neutral model, is flow through the param interesting in this case?
       - ["java.util.stream", "Collectors", "toList", "()", "manual"]
-      - ["java.util.stream", "Collectors", "toMap", "(Function,Function)", "manual"]
+      - ["java.util.stream", "Collectors", "toMap", "(Function,Function)", "manual"] # ! unsure if should be neutral model, is flow through the param interesting in this case?
       - ["java.util.stream", "Collectors", "toSet", "()", "manual"]

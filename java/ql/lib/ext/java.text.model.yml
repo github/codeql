@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.text", "DateFormat", "format", "(Date)", "manual"]
-      - ["java.text", "SimpleDateFormat", "SimpleDateFormat", "(String)", "manual"]
+      - ["java.text", "DateFormat", "format", "(Date)", "manual"]  # ! unsure if should be neutral model, is flow through the param interesting in this case?
+      - ["java.text", "SimpleDateFormat", "SimpleDateFormat", "(String)", "manual"]  # ! unsure if should be neutral model, is flow through the param interesting in this case?

@@ -4,5 +4,5 @@ extensions:
       extensible: neutralModel
     data:
       - ["java.time", "Instant", "now", "()", "manual"]
-      - ["java.time", "LocalDate", "of", "(int,int,int)", "manual"]
+      - ["java.time", "LocalDate", "of", "(int,int,int)", "manual"] # ! unsure if should be neutral model, is flow through the param interesting in this case?
       - ["java.time", "ZonedDateTime", "now", "()", "manual"]

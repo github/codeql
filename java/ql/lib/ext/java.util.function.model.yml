@@ -9,11 +9,11 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.util.function", "Function", True, "apply", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.util.function", "Function", True, "apply", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! unsure if should be added as a MaD model and if model is correct
       - ["java.util.function", "Supplier", False, "get", "()", "", "Argument[-1]", "ReturnValue", "value", "manual"]
 
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.util.function", "Consumer", "accept", "(Object)", "manual"]
+      - ["java.util.function", "Consumer", "accept", "(Object)", "manual"] # ! unsure if should be neutral model
