@@ -102,6 +102,8 @@ public class Test {
             int i4 = (int)source();
             int i5 = (int)source();
             sink(Math.min(i4, i5)); // $hasValueFlow
+            sink(Math.min(i4, 42)); // $hasValueFlow
+            sink(Math.min(42, i5)); // $hasValueFlow
 
             // java.sql
             Connection con = DriverManager.getConnection("");
