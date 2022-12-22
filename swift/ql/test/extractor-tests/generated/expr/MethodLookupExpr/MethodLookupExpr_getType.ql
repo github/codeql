@@ -2,6 +2,6 @@
 import codeql.swift.elements
 import TestUtils
 
-from MethodRefExpr x
+from MethodLookupExpr x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getMember()
+select x, x.getType()
