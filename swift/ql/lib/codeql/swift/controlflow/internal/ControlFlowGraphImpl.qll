@@ -1001,6 +1001,8 @@ module Decls {
     AbstractFunctionDecl getAst() { result = ast }
 
     final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = ast.getCapture(i + ast.getNumberOfCaptures() + 1)
+      or
       i = -1 and
       result.asAstNode() = ast.getSelfParam()
       or
@@ -1131,10 +1133,12 @@ module Exprs {
     ClosureExpr getAst() { result = expr }
 
     final override ControlFlowElement getChildElement(int i) {
-      result.asAstNode() = expr.getParam(i)
+      result.asAstNode() = expr.getCapture(i)
+      or
+      result.asAstNode() = expr.getParam(i - expr.getNumberOfCaptures())
       or
       result.asAstNode() = expr.getBody() and
-      i = expr.getNumberOfParams()
+      i = expr.getNumberOfCaptures() + expr.getNumberOfParams()
     }
   }
 
@@ -1155,6 +1159,10 @@ module Exprs {
       i = ast.getNumberOfBindingDecls() and
       result.asAstNode() = ast.getClosureBody().getFullyConverted()
     }
+  }
+
+  private class CapturedDeclTree extends AstLeafTree {
+    override CapturedDecl ast;
   }
 
   module Closures {
