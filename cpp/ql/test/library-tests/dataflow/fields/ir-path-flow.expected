@@ -33,8 +33,9 @@ edges
 | A.cpp:57:11:57:24 | new indirection [c] | A.cpp:28:8:28:10 | this indirection [c] |
 | A.cpp:57:11:57:24 | new indirection [c] | A.cpp:57:10:57:32 | call to get |
 | A.cpp:57:11:57:24 | new indirection [c] | A.cpp:57:11:57:24 | new indirection [c] |
-| A.cpp:57:17:57:23 | new | A.cpp:23:10:23:10 | c |
-| A.cpp:57:17:57:23 | new | A.cpp:57:11:57:24 | call to B [c] |
+| A.cpp:57:17:57:23 | Arg(0) | A.cpp:23:10:23:10 | c |
+| A.cpp:57:17:57:23 | Arg(0) | A.cpp:57:11:57:24 | call to B [c] |
+| A.cpp:57:17:57:23 | new | A.cpp:57:17:57:23 | Arg(0) |
 | A.cpp:64:10:64:15 | call to setOnB indirection [c] | A.cpp:66:10:66:11 | Load indirection [c] |
 | A.cpp:64:21:64:28 | new | A.cpp:64:10:64:15 | call to setOnB indirection [c] |
 | A.cpp:64:21:64:28 | new | A.cpp:64:21:64:28 | new |
@@ -74,8 +75,9 @@ edges
 | A.cpp:120:16:120:16 | FieldAddress indirection | A.cpp:120:12:120:16 | a |
 | A.cpp:120:16:120:16 | FieldAddress indirection | A.cpp:120:16:120:16 | a |
 | A.cpp:126:5:126:5 | set output argument [c] | A.cpp:131:8:131:8 | f7 output argument [c] |
-| A.cpp:126:12:126:18 | new | A.cpp:27:17:27:17 | c |
-| A.cpp:126:12:126:18 | new | A.cpp:126:5:126:5 | set output argument [c] |
+| A.cpp:126:12:126:18 | Arg(0) | A.cpp:27:17:27:17 | c |
+| A.cpp:126:12:126:18 | Arg(0) | A.cpp:126:5:126:5 | set output argument [c] |
+| A.cpp:126:12:126:18 | new | A.cpp:126:12:126:18 | Arg(0) |
 | A.cpp:131:8:131:8 | f7 output argument [c] | A.cpp:132:10:132:10 | Load indirection [c] |
 | A.cpp:132:10:132:10 | Load indirection [c] | A.cpp:132:10:132:13 | c |
 | A.cpp:132:10:132:10 | Load indirection [c] | A.cpp:132:13:132:13 | FieldAddress indirection |
@@ -279,8 +281,8 @@ edges
 | aliasing.cpp:9:3:9:22 | Store | aliasing.cpp:9:6:9:7 | Load indirection [post update] [m1] |
 | aliasing.cpp:9:6:9:7 | Load indirection [post update] [m1] | aliasing.cpp:25:17:25:19 | pointerSetter output argument [m1] |
 | aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:9:3:9:22 | Store |
-| aliasing.cpp:13:3:13:21 | Store | aliasing.cpp:13:5:13:6 | (reference dereference) indirection [post update] [m1] |
-| aliasing.cpp:13:5:13:6 | (reference dereference) indirection [post update] [m1] | aliasing.cpp:26:19:26:20 | referenceSetter output argument [m1] |
+| aliasing.cpp:13:3:13:21 | Store | aliasing.cpp:13:5:13:6 | CopyValue indirection [post update] [m1] |
+| aliasing.cpp:13:5:13:6 | CopyValue indirection [post update] [m1] | aliasing.cpp:26:19:26:20 | referenceSetter output argument [m1] |
 | aliasing.cpp:13:10:13:19 | call to user_input | aliasing.cpp:13:3:13:21 | Store |
 | aliasing.cpp:25:17:25:19 | pointerSetter output argument [m1] | aliasing.cpp:29:8:29:9 | s1 indirection [m1] |
 | aliasing.cpp:26:19:26:20 | referenceSetter output argument [m1] | aliasing.cpp:30:8:30:9 | s2 indirection [m1] |
@@ -478,11 +480,11 @@ edges
 | by_reference.cpp:84:10:84:10 | Load indirection [post update] [a] | by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a] |
 | by_reference.cpp:84:10:84:10 | Load indirection [post update] [a] | by_reference.cpp:107:29:107:37 | taint_inner_a_ptr output argument [a] |
 | by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:84:3:84:25 | Store |
-| by_reference.cpp:88:3:88:24 | Store | by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] |
-| by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] | by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] |
-| by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] | by_reference.cpp:123:21:123:36 | taint_inner_a_ref output argument [a] |
-| by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] |
-| by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] | by_reference.cpp:127:21:127:38 | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:88:3:88:24 | Store | by_reference.cpp:88:9:88:9 | CopyValue indirection [post update] [a] |
+| by_reference.cpp:88:9:88:9 | CopyValue indirection [post update] [a] | by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:88:9:88:9 | CopyValue indirection [post update] [a] | by_reference.cpp:123:21:123:36 | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:88:9:88:9 | CopyValue indirection [post update] [a] | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:88:9:88:9 | CopyValue indirection [post update] [a] | by_reference.cpp:127:21:127:38 | taint_inner_a_ref output argument [a] |
 | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:88:3:88:24 | Store |
 | by_reference.cpp:91:25:91:26 | Load indirection | by_reference.cpp:104:15:104:22 | taint_a_ptr output argument |
 | by_reference.cpp:91:25:91:26 | Load indirection | by_reference.cpp:108:15:108:24 | taint_a_ptr output argument |
@@ -578,13 +580,13 @@ edges
 | complex.cpp:11:22:11:27 | Store | complex.cpp:11:22:11:23 | Load indirection [post update] [a_] |
 | complex.cpp:12:17:12:17 | b | complex.cpp:12:22:12:27 | Store |
 | complex.cpp:12:22:12:27 | Store | complex.cpp:12:22:12:23 | Load indirection [post update] [b_] |
-| complex.cpp:40:17:40:17 | b indirection [inner, f, a_] | complex.cpp:42:8:42:8 | (reference dereference) indirection [inner, f, a_] |
-| complex.cpp:40:17:40:17 | b indirection [inner, f, b_] | complex.cpp:43:8:43:8 | (reference dereference) indirection [inner, f, b_] |
-| complex.cpp:42:8:42:8 | (reference dereference) indirection [inner, f, a_] | complex.cpp:42:10:42:14 | inner indirection [f, a_] |
+| complex.cpp:40:17:40:17 | b indirection [inner, f, a_] | complex.cpp:42:8:42:8 | CopyValue indirection [inner, f, a_] |
+| complex.cpp:40:17:40:17 | b indirection [inner, f, b_] | complex.cpp:43:8:43:8 | CopyValue indirection [inner, f, b_] |
+| complex.cpp:42:8:42:8 | CopyValue indirection [inner, f, a_] | complex.cpp:42:10:42:14 | inner indirection [f, a_] |
 | complex.cpp:42:10:42:14 | inner indirection [f, a_] | complex.cpp:42:16:42:16 | f indirection [a_] |
 | complex.cpp:42:16:42:16 | f indirection [a_] | complex.cpp:9:7:9:7 | this indirection [a_] |
 | complex.cpp:42:16:42:16 | f indirection [a_] | complex.cpp:42:18:42:18 | call to a |
-| complex.cpp:43:8:43:8 | (reference dereference) indirection [inner, f, b_] | complex.cpp:43:10:43:14 | inner indirection [f, b_] |
+| complex.cpp:43:8:43:8 | CopyValue indirection [inner, f, b_] | complex.cpp:43:10:43:14 | inner indirection [f, b_] |
 | complex.cpp:43:10:43:14 | inner indirection [f, b_] | complex.cpp:43:16:43:16 | f indirection [b_] |
 | complex.cpp:43:16:43:16 | f indirection [b_] | complex.cpp:10:7:10:7 | this indirection [b_] |
 | complex.cpp:43:16:43:16 | f indirection [b_] | complex.cpp:43:18:43:18 | call to b |
@@ -628,12 +630,12 @@ edges
 | complex.cpp:62:7:62:8 | CopyValue indirection [inner, f, b_] | complex.cpp:40:17:40:17 | b indirection [inner, f, b_] |
 | complex.cpp:65:7:65:8 | CopyValue indirection [inner, f, a_] | complex.cpp:40:17:40:17 | b indirection [inner, f, a_] |
 | complex.cpp:65:7:65:8 | CopyValue indirection [inner, f, b_] | complex.cpp:40:17:40:17 | b indirection [inner, f, b_] |
-| conflated.cpp:10:3:10:22 | Store | conflated.cpp:10:7:10:7 | (reference dereference) indirection [post update] [p indirection] |
-| conflated.cpp:10:7:10:7 | (reference dereference) indirection [post update] [p indirection] | conflated.cpp:11:9:11:10 | (reference dereference) indirection [p indirection] |
+| conflated.cpp:10:3:10:22 | Store | conflated.cpp:10:7:10:7 | CopyValue indirection [post update] [p indirection] |
+| conflated.cpp:10:7:10:7 | CopyValue indirection [post update] [p indirection] | conflated.cpp:11:9:11:10 | CopyValue indirection [p indirection] |
 | conflated.cpp:10:11:10:20 | call to user_input | conflated.cpp:10:3:10:22 | Store |
-| conflated.cpp:11:9:11:10 | (reference dereference) indirection [p indirection] | conflated.cpp:11:8:11:12 | * ... |
-| conflated.cpp:11:9:11:10 | (reference dereference) indirection [p indirection] | conflated.cpp:11:12:11:12 | FieldAddress indirection |
-| conflated.cpp:11:9:11:10 | (reference dereference) indirection [p indirection] | conflated.cpp:11:12:11:12 | p indirection |
+| conflated.cpp:11:9:11:10 | CopyValue indirection [p indirection] | conflated.cpp:11:8:11:12 | * ... |
+| conflated.cpp:11:9:11:10 | CopyValue indirection [p indirection] | conflated.cpp:11:12:11:12 | FieldAddress indirection |
+| conflated.cpp:11:9:11:10 | CopyValue indirection [p indirection] | conflated.cpp:11:12:11:12 | p indirection |
 | conflated.cpp:11:12:11:12 | FieldAddress indirection | conflated.cpp:11:8:11:12 | * ... |
 | conflated.cpp:11:12:11:12 | p indirection | conflated.cpp:11:8:11:12 | * ... |
 | conflated.cpp:19:19:19:21 | argument_source output argument | conflated.cpp:20:8:20:10 | raw indirection |
@@ -709,7 +711,7 @@ edges
 | qualifiers.cpp:12:40:12:44 | value | qualifiers.cpp:12:49:12:64 | Store |
 | qualifiers.cpp:12:49:12:64 | Store | qualifiers.cpp:12:56:12:56 | Load indirection [post update] [a] |
 | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:51:13:65 | Store |
-| qualifiers.cpp:13:51:13:65 | Store | qualifiers.cpp:13:57:13:57 | (reference dereference) indirection [post update] [a] |
+| qualifiers.cpp:13:51:13:65 | Store | qualifiers.cpp:13:57:13:57 | CopyValue indirection [post update] [a] |
 | qualifiers.cpp:22:5:22:9 | getInner output argument [inner indirection, a] | qualifiers.cpp:23:10:23:14 | outer indirection [inner indirection, a] |
 | qualifiers.cpp:22:5:22:38 | Store | qualifiers.cpp:22:23:22:23 | call to getInner indirection [post update] [a] |
 | qualifiers.cpp:22:23:22:23 | call to getInner indirection [post update] [a] | qualifiers.cpp:22:5:22:9 | getInner output argument [inner indirection, a] |
@@ -921,6 +923,7 @@ nodes
 | A.cpp:57:10:57:32 | call to get | semmle.label | call to get |
 | A.cpp:57:11:57:24 | call to B [c] | semmle.label | call to B [c] |
 | A.cpp:57:11:57:24 | new indirection [c] | semmle.label | new indirection [c] |
+| A.cpp:57:17:57:23 | Arg(0) | semmle.label | Arg(0) |
 | A.cpp:57:17:57:23 | new | semmle.label | new |
 | A.cpp:64:10:64:15 | call to setOnB indirection [c] | semmle.label | call to setOnB indirection [c] |
 | A.cpp:64:21:64:28 | new | semmle.label | new |
@@ -958,6 +961,7 @@ nodes
 | A.cpp:120:16:120:16 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | A.cpp:120:16:120:16 | a | semmle.label | a |
 | A.cpp:126:5:126:5 | set output argument [c] | semmle.label | set output argument [c] |
+| A.cpp:126:12:126:18 | Arg(0) | semmle.label | Arg(0) |
 | A.cpp:126:12:126:18 | new | semmle.label | new |
 | A.cpp:131:8:131:8 | f7 output argument [c] | semmle.label | f7 output argument [c] |
 | A.cpp:132:10:132:10 | Load indirection [c] | semmle.label | Load indirection [c] |
@@ -1151,7 +1155,7 @@ nodes
 | aliasing.cpp:9:6:9:7 | Load indirection [post update] [m1] | semmle.label | Load indirection [post update] [m1] |
 | aliasing.cpp:9:11:9:20 | call to user_input | semmle.label | call to user_input |
 | aliasing.cpp:13:3:13:21 | Store | semmle.label | Store |
-| aliasing.cpp:13:5:13:6 | (reference dereference) indirection [post update] [m1] | semmle.label | (reference dereference) indirection [post update] [m1] |
+| aliasing.cpp:13:5:13:6 | CopyValue indirection [post update] [m1] | semmle.label | CopyValue indirection [post update] [m1] |
 | aliasing.cpp:13:10:13:19 | call to user_input | semmle.label | call to user_input |
 | aliasing.cpp:25:17:25:19 | pointerSetter output argument [m1] | semmle.label | pointerSetter output argument [m1] |
 | aliasing.cpp:26:19:26:20 | referenceSetter output argument [m1] | semmle.label | referenceSetter output argument [m1] |
@@ -1333,7 +1337,7 @@ nodes
 | by_reference.cpp:84:10:84:10 | Load indirection [post update] [a] | semmle.label | Load indirection [post update] [a] |
 | by_reference.cpp:84:14:84:23 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:88:3:88:24 | Store | semmle.label | Store |
-| by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] | semmle.label | (reference dereference) indirection [post update] [a] |
+| by_reference.cpp:88:9:88:9 | CopyValue indirection [post update] [a] | semmle.label | CopyValue indirection [post update] [a] |
 | by_reference.cpp:88:13:88:22 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:91:25:91:26 | Load indirection | semmle.label | Load indirection |
 | by_reference.cpp:92:9:92:18 | call to user_input | semmle.label | call to user_input |
@@ -1427,11 +1431,11 @@ nodes
 | complex.cpp:12:22:12:27 | Store | semmle.label | Store |
 | complex.cpp:40:17:40:17 | b indirection [inner, f, a_] | semmle.label | b indirection [inner, f, a_] |
 | complex.cpp:40:17:40:17 | b indirection [inner, f, b_] | semmle.label | b indirection [inner, f, b_] |
-| complex.cpp:42:8:42:8 | (reference dereference) indirection [inner, f, a_] | semmle.label | (reference dereference) indirection [inner, f, a_] |
+| complex.cpp:42:8:42:8 | CopyValue indirection [inner, f, a_] | semmle.label | CopyValue indirection [inner, f, a_] |
 | complex.cpp:42:10:42:14 | inner indirection [f, a_] | semmle.label | inner indirection [f, a_] |
 | complex.cpp:42:16:42:16 | f indirection [a_] | semmle.label | f indirection [a_] |
 | complex.cpp:42:18:42:18 | call to a | semmle.label | call to a |
-| complex.cpp:43:8:43:8 | (reference dereference) indirection [inner, f, b_] | semmle.label | (reference dereference) indirection [inner, f, b_] |
+| complex.cpp:43:8:43:8 | CopyValue indirection [inner, f, b_] | semmle.label | CopyValue indirection [inner, f, b_] |
 | complex.cpp:43:10:43:14 | inner indirection [f, b_] | semmle.label | inner indirection [f, b_] |
 | complex.cpp:43:16:43:16 | f indirection [b_] | semmle.label | f indirection [b_] |
 | complex.cpp:43:18:43:18 | call to b | semmle.label | call to b |
@@ -1464,10 +1468,10 @@ nodes
 | complex.cpp:65:7:65:8 | CopyValue indirection [inner, f, a_] | semmle.label | CopyValue indirection [inner, f, a_] |
 | complex.cpp:65:7:65:8 | CopyValue indirection [inner, f, b_] | semmle.label | CopyValue indirection [inner, f, b_] |
 | conflated.cpp:10:3:10:22 | Store | semmle.label | Store |
-| conflated.cpp:10:7:10:7 | (reference dereference) indirection [post update] [p indirection] | semmle.label | (reference dereference) indirection [post update] [p indirection] |
+| conflated.cpp:10:7:10:7 | CopyValue indirection [post update] [p indirection] | semmle.label | CopyValue indirection [post update] [p indirection] |
 | conflated.cpp:10:11:10:20 | call to user_input | semmle.label | call to user_input |
 | conflated.cpp:11:8:11:12 | * ... | semmle.label | * ... |
-| conflated.cpp:11:9:11:10 | (reference dereference) indirection [p indirection] | semmle.label | (reference dereference) indirection [p indirection] |
+| conflated.cpp:11:9:11:10 | CopyValue indirection [p indirection] | semmle.label | CopyValue indirection [p indirection] |
 | conflated.cpp:11:12:11:12 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | conflated.cpp:11:12:11:12 | p indirection | semmle.label | p indirection |
 | conflated.cpp:19:19:19:21 | argument_source output argument | semmle.label | argument_source output argument |
@@ -1543,7 +1547,7 @@ nodes
 | qualifiers.cpp:12:56:12:56 | Load indirection [post update] [a] | semmle.label | Load indirection [post update] [a] |
 | qualifiers.cpp:13:42:13:46 | value | semmle.label | value |
 | qualifiers.cpp:13:51:13:65 | Store | semmle.label | Store |
-| qualifiers.cpp:13:57:13:57 | (reference dereference) indirection [post update] [a] | semmle.label | (reference dereference) indirection [post update] [a] |
+| qualifiers.cpp:13:57:13:57 | CopyValue indirection [post update] [a] | semmle.label | CopyValue indirection [post update] [a] |
 | qualifiers.cpp:22:5:22:9 | getInner output argument [inner indirection, a] | semmle.label | getInner output argument [inner indirection, a] |
 | qualifiers.cpp:22:5:22:38 | Store | semmle.label | Store |
 | qualifiers.cpp:22:23:22:23 | call to getInner indirection [post update] [a] | semmle.label | call to getInner indirection [post update] [a] |
@@ -1708,12 +1712,12 @@ subpaths
 | A.cpp:55:12:55:19 | new | A.cpp:27:17:27:17 | c | A.cpp:27:28:27:28 | Load indirection [post update] [c] | A.cpp:55:5:55:5 | set output argument [c] |
 | A.cpp:56:10:56:10 | Load indirection [c] | A.cpp:28:8:28:10 | this indirection [c] | A.cpp:28:8:28:10 | VariableAddress indirection | A.cpp:56:10:56:17 | call to get |
 | A.cpp:57:11:57:24 | new indirection [c] | A.cpp:28:8:28:10 | this indirection [c] | A.cpp:28:8:28:10 | VariableAddress indirection | A.cpp:57:10:57:32 | call to get |
-| A.cpp:57:17:57:23 | new | A.cpp:23:10:23:10 | c | A.cpp:25:13:25:13 | Load indirection [post update] [c] | A.cpp:57:11:57:24 | call to B [c] |
+| A.cpp:57:17:57:23 | Arg(0) | A.cpp:23:10:23:10 | c | A.cpp:25:13:25:13 | Load indirection [post update] [c] | A.cpp:57:11:57:24 | call to B [c] |
 | A.cpp:64:21:64:28 | new | A.cpp:85:26:85:26 | c | A.cpp:85:9:85:14 | VariableAddress indirection [c] | A.cpp:64:10:64:15 | call to setOnB indirection [c] |
 | A.cpp:73:25:73:32 | new | A.cpp:78:27:78:27 | c | A.cpp:78:6:78:15 | VariableAddress indirection [c] | A.cpp:73:10:73:19 | call to setOnBWrap indirection [c] |
 | A.cpp:81:21:81:21 | c | A.cpp:85:26:85:26 | c | A.cpp:85:9:85:14 | VariableAddress indirection [c] | A.cpp:81:10:81:15 | call to setOnB indirection [c] |
 | A.cpp:90:15:90:15 | c | A.cpp:27:17:27:17 | c | A.cpp:27:28:27:28 | Load indirection [post update] [c] | A.cpp:90:7:90:8 | set output argument [c] |
-| A.cpp:126:12:126:18 | new | A.cpp:27:17:27:17 | c | A.cpp:27:28:27:28 | Load indirection [post update] [c] | A.cpp:126:5:126:5 | set output argument [c] |
+| A.cpp:126:12:126:18 | Arg(0) | A.cpp:27:17:27:17 | c | A.cpp:27:28:27:28 | Load indirection [post update] [c] | A.cpp:126:5:126:5 | set output argument [c] |
 | A.cpp:151:18:151:18 | b | A.cpp:140:13:140:13 | b | A.cpp:143:13:143:13 | Load indirection [post update] [b] | A.cpp:151:12:151:24 | call to D [b] |
 | A.cpp:160:29:160:29 | b | A.cpp:181:15:181:21 | newHead | A.cpp:183:7:183:10 | Load indirection [post update] [head] | A.cpp:160:18:160:60 | call to MyList [head] |
 | A.cpp:161:38:161:39 | Load indirection [head] | A.cpp:181:32:181:35 | next indirection [head] | A.cpp:184:13:184:16 | Load indirection [post update] [next indirection, head] | A.cpp:161:18:161:40 | call to MyList [next indirection, head] |
@@ -1750,7 +1754,7 @@ subpaths
 | constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:32:23:36 | this indirection [post update] [b_] | constructors.cpp:36:9:36:9 | call to Foo [b_] |
 | qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:9:21:9:25 | value | qualifiers.cpp:9:36:9:36 | Load indirection [post update] [a] | qualifiers.cpp:27:11:27:18 | setA output argument [a] |
 | qualifiers.cpp:32:35:32:44 | call to user_input | qualifiers.cpp:12:40:12:44 | value | qualifiers.cpp:12:56:12:56 | Load indirection [post update] [a] | qualifiers.cpp:32:23:32:30 | pointerSetA output argument [a] |
-| qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:57:13:57 | (reference dereference) indirection [post update] [a] | qualifiers.cpp:37:19:37:35 | referenceSetA output argument [a] |
+| qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:57:13:57 | CopyValue indirection [post update] [a] | qualifiers.cpp:37:19:37:35 | referenceSetA output argument [a] |
 | simple.cpp:28:10:28:10 | CopyValue indirection [a_] | simple.cpp:18:9:18:9 | this indirection [a_] | simple.cpp:18:9:18:9 | VariableAddress indirection | simple.cpp:28:12:28:12 | call to a |
 | simple.cpp:29:10:29:10 | CopyValue indirection [b_] | simple.cpp:19:9:19:9 | this indirection [b_] | simple.cpp:19:9:19:9 | VariableAddress indirection | simple.cpp:29:12:29:12 | call to b |
 | simple.cpp:39:12:39:21 | call to user_input | simple.cpp:20:19:20:19 | a | simple.cpp:20:24:20:25 | Load indirection [post update] [a_] | simple.cpp:39:5:39:5 | setA output argument [a_] |

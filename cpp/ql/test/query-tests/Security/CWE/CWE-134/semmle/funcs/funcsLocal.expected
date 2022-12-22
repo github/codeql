@@ -2,15 +2,21 @@ edges
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | i1 |
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | i1 |
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | i1 |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | i1 |
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | e1 |
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | e1 |
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | e1 |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | e1 |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 |
+| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 |
+| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 |
+| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | e1 |
+| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | e1 |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | e1 |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | e1 |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | e1 |
@@ -20,6 +26,9 @@ edges
 | funcsLocal.c:26:8:26:9 | fgets output argument | funcsLocal.c:27:9:27:10 | i3 |
 | funcsLocal.c:26:8:26:9 | fgets output argument | funcsLocal.c:27:9:27:10 | i3 |
 | funcsLocal.c:26:8:26:9 | fgets output argument | funcsLocal.c:27:9:27:10 | i3 |
+| funcsLocal.c:26:8:26:9 | fgets output argument | funcsLocal.c:27:9:27:10 | i3 |
+| funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | i3 |
+| funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | i3 |
 | funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | i3 |
 | funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | i3 |
 | funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | i3 |
@@ -41,6 +50,9 @@ edges
 | funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | i5 |
 | funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | i5 |
 | funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | i5 |
+| funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | i5 |
+| funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | i5 |
+| funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | i5 |
 | funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | i5 |
 | funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | i5 |
 | funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | i5 |
@@ -88,9 +100,11 @@ nodes
 | funcsLocal.c:17:9:17:10 | i1 | semmle.label | i1 |
 | funcsLocal.c:17:9:17:10 | i1 | semmle.label | i1 |
 | funcsLocal.c:17:9:17:10 | i1 | semmle.label | i1 |
+| funcsLocal.c:17:9:17:10 | i1 | semmle.label | i1 |
 | funcsLocal.c:26:8:26:9 | fgets output argument | semmle.label | fgets output argument |
 | funcsLocal.c:26:8:26:9 | i3 | semmle.label | i3 |
 | funcsLocal.c:26:8:26:9 | i3 | semmle.label | i3 |
+| funcsLocal.c:27:9:27:10 | i3 | semmle.label | i3 |
 | funcsLocal.c:27:9:27:10 | i3 | semmle.label | i3 |
 | funcsLocal.c:27:9:27:10 | i3 | semmle.label | i3 |
 | funcsLocal.c:27:9:27:10 | i3 | semmle.label | i3 |
@@ -104,6 +118,7 @@ nodes
 | funcsLocal.c:36:7:36:8 | gets output argument | semmle.label | gets output argument |
 | funcsLocal.c:36:7:36:8 | i5 | semmle.label | i5 |
 | funcsLocal.c:36:7:36:8 | i5 | semmle.label | i5 |
+| funcsLocal.c:37:9:37:10 | i5 | semmle.label | i5 |
 | funcsLocal.c:37:9:37:10 | i5 | semmle.label | i5 |
 | funcsLocal.c:37:9:37:10 | i5 | semmle.label | i5 |
 | funcsLocal.c:37:9:37:10 | i5 | semmle.label | i5 |
@@ -127,6 +142,7 @@ nodes
 | funcsLocal.c:53:9:53:11 | * ... | semmle.label | * ... |
 | funcsLocal.c:53:9:53:11 | * ... | semmle.label | * ... |
 | funcsLocal.c:53:9:53:11 | * ... | semmle.label | * ... |
+| funcsLocal.c:58:9:58:10 | e1 | semmle.label | e1 |
 | funcsLocal.c:58:9:58:10 | e1 | semmle.label | e1 |
 | funcsLocal.c:58:9:58:10 | e1 | semmle.label | e1 |
 | funcsLocal.c:58:9:58:10 | e1 | semmle.label | e1 |
