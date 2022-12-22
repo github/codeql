@@ -3,16 +3,17 @@
  *
  * A taint-tracking configuration for reasoning about SQL injection vulnerabilities.
  * Defines shared code used by the SQL injection boosted query.
+ * Largely copied from semmle.code.java.security.SqlInjectionQuery.
  */
 
-import semmle.javascript.heuristics.SyntacticHeuristics
-import semmle.javascript.security.dataflow.SqlInjectionCustomizations
 import AdaptiveThreatModeling
+import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.QueryInjection
 
 class SqlInjectionAtmConfig extends AtmConfig {
   SqlInjectionAtmConfig() { this = "SqlInjectionAtmConfig" }
 
-  override predicate isKnownSource(DataFlow::Node source) { source instanceof SqlInjection::Source }
+  override predicate isKnownSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override EndpointType getASinkEndpointType() { result instanceof SqlInjectionSinkType }
 
@@ -22,7 +23,12 @@ class SqlInjectionAtmConfig extends AtmConfig {
    */
 
   override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof SqlInjection::Sanitizer
+    node.getType() instanceof PrimitiveType or
+    node.getType() instanceof BoxedType or
+    node.getType() instanceof NumberType
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(AdditionalQueryInjectionTaintStep s).step(node1, node2)
   }
 }

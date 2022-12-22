@@ -10,12 +10,12 @@
 private import java
 import semmle.code.java.dataflow.TaintTracking
 private import experimental.adaptivethreatmodeling.ATMConfig as AtmConfig
-private import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
+// private import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
 private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
-private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
-private import experimental.adaptivethreatmodeling.XssATM as XssAtm
-private import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
 
+// private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
+// private import experimental.adaptivethreatmodeling.XssATM as XssAtm
+// private import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
 from DataFlow::PathNode sink
 where exists(AtmConfig::AtmConfig queryConfig | queryConfig.isSinkCandidateWithFlow(sink))
 select sink.getNode().getLocation()

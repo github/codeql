@@ -9,4 +9,3 @@ groups:
     - experimental
 dependencies:
     codeql/java-experimental-atm-lib: ${workspace}
-    codeql/java-experimental-atm-model: "0.3.0"
