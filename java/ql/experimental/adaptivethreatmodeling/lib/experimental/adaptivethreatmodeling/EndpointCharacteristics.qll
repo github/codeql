@@ -8,6 +8,8 @@ import semmle.code.java.security.QueryInjection
 import experimental.adaptivethreatmodeling.EndpointTypes
 private import experimental.adaptivethreatmodeling.ATMConfig
 private import experimental.adaptivethreatmodeling.SqlInjectionATM
+private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
+private import semmle.code.java.Expr as Expr
 
 /**
  * A set of characteristics that a particular endpoint might have. This set of characteristics is used to make decisions
@@ -190,7 +192,7 @@ abstract class EndpointCharacteristic extends string {
  * confidence.
  */
 private class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
-  SqlInjectionSinkCharacteristic() { this = "SqlInjectionSink" }
+  SqlInjectionSinkCharacteristic() { this = any(SqlInjectionSinkType type).getDescription() }
 
   override predicate appliesToEndpoint(DataFlow::Node n) { n instanceof QueryInjectionSink }
 
@@ -284,6 +286,23 @@ private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
     exists(AtmConfig config | config.isSanitizer(n))
+  }
+}
+
+/**
+ * An EndpointFilterCharacteristic that indicates that an endpoint is a sanitizer for some sink type. A sanitizer can
+ * never be a sink.
+ *
+ * TODO: Is this correct?
+ */
+private class SafeExternalApiMethodCharacteristic extends NotASinkCharacteristic {
+  SafeExternalApiMethodCharacteristic() { this = "safe external API method" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    exists(Expr::Call call |
+      n.asExpr() = call.getArgument(_) and
+      call.getCallee() instanceof ExternalAPIs::SafeExternalApiMethod
+    )
   }
 }
 
