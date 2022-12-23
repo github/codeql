@@ -1,4 +1,81 @@
 edges
+| GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:106:41:106:41 | remoteString |
+| GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:108:41:108:41 | remoteString |
+| GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:111:43:111:43 | remoteString |
+| GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:114:51:114:51 | remoteString |
+| GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:117:27:117:27 | remoteString |
+| GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:119:27:119:27 | remoteString |
+| GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:122:41:122:41 | remoteString |
+| GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:124:41:124:41 | remoteString |
+| GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:132:39:132:39 | remoteString |
+| GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:135:46:135:46 | remoteString |
+| GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:138:56:138:56 | remoteString |
+| GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:141:45:141:45 | remoteString |
+| GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:144:29:144:29 | remoteString |
+| GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:145:29:145:29 | remoteString |
+| GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:146:29:146:29 | remoteString |
+| GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:147:29:147:29 | remoteString |
+| GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:148:29:148:29 | remoteString |
+| GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:149:29:149:29 | remoteString |
+| GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:150:29:150:29 | remoteString |
+| GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:151:29:151:29 | remoteString |
+| GRDB.swift:164:26:164:80 | call to String.init(contentsOf:) :  | GRDB.swift:166:33:166:33 | remoteString |
+| GRDB.swift:164:26:164:80 | call to String.init(contentsOf:) :  | GRDB.swift:169:32:169:32 | remoteString |
+| GRDB.swift:164:26:164:80 | call to String.init(contentsOf:) :  | GRDB.swift:172:37:172:37 | remoteString |
+| GRDB.swift:178:26:178:80 | call to String.init(contentsOf:) :  | GRDB.swift:180:36:180:36 | remoteString |
+| GRDB.swift:186:26:186:80 | call to String.init(contentsOf:) :  | GRDB.swift:188:41:188:41 | remoteString |
+| GRDB.swift:186:26:186:80 | call to String.init(contentsOf:) :  | GRDB.swift:189:44:189:44 | remoteString |
+| GRDB.swift:186:26:186:80 | call to String.init(contentsOf:) :  | GRDB.swift:190:47:190:47 | remoteString |
+| GRDB.swift:186:26:186:80 | call to String.init(contentsOf:) :  | GRDB.swift:191:47:191:47 | remoteString |
+| GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) :  | GRDB.swift:203:37:203:37 | remoteString |
+| GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) :  | GRDB.swift:204:37:204:37 | remoteString |
+| GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) :  | GRDB.swift:208:37:208:37 | remoteString |
+| GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) :  | GRDB.swift:209:37:209:37 | remoteString |
+| GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) :  | GRDB.swift:213:36:213:36 | remoteString |
+| GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) :  | GRDB.swift:214:36:214:36 | remoteString |
+| GRDB.swift:221:26:221:80 | call to String.init(contentsOf:) :  | GRDB.swift:223:38:223:38 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:231:32:231:32 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:232:32:232:32 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:233:32:233:32 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:234:32:234:32 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:240:29:240:29 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:241:29:241:29 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:242:29:242:29 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:243:29:243:29 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:249:29:249:29 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:250:29:250:29 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:251:29:251:29 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:252:29:252:29 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:258:29:258:29 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:259:29:259:29 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:260:29:260:29 | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:261:29:261:29 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:272:53:272:53 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:273:53:273:53 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:274:53:274:53 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:275:53:275:53 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:281:50:281:50 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:282:50:282:50 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:283:50:283:50 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:284:50:284:50 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:290:50:290:50 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:291:50:291:50 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:292:50:292:50 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:293:50:293:50 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:299:50:299:50 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:300:50:300:50 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:301:50:301:50 | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:302:50:302:50 | remoteString |
+| GRDB.swift:311:26:311:80 | call to String.init(contentsOf:) :  | GRDB.swift:313:57:313:57 | remoteString |
+| GRDB.swift:311:26:311:80 | call to String.init(contentsOf:) :  | GRDB.swift:314:57:314:57 | remoteString |
+| GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:323:51:323:51 | remoteString |
+| GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:324:51:324:51 | remoteString |
+| GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:325:66:325:66 | remoteString |
+| GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:326:66:326:66 | remoteString |
+| GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:327:69:327:69 | remoteString |
+| GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:328:84:328:84 | remoteString |
+| GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:329:69:329:69 | remoteString |
+| GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:330:84:330:84 | remoteString |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) :  | SQLite.swift:73:17:73:17 | unsafeQuery1 |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) :  | SQLite.swift:74:17:74:17 | unsafeQuery2 |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) :  | SQLite.swift:75:17:75:17 | unsafeQuery3 |
@@ -21,6 +98,94 @@ edges
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:175:29:175:29 | unsafeQuery3 |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 |
 nodes
+| GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| GRDB.swift:106:41:106:41 | remoteString | semmle.label | remoteString |
+| GRDB.swift:108:41:108:41 | remoteString | semmle.label | remoteString |
+| GRDB.swift:111:43:111:43 | remoteString | semmle.label | remoteString |
+| GRDB.swift:114:51:114:51 | remoteString | semmle.label | remoteString |
+| GRDB.swift:117:27:117:27 | remoteString | semmle.label | remoteString |
+| GRDB.swift:119:27:119:27 | remoteString | semmle.label | remoteString |
+| GRDB.swift:122:41:122:41 | remoteString | semmle.label | remoteString |
+| GRDB.swift:124:41:124:41 | remoteString | semmle.label | remoteString |
+| GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| GRDB.swift:132:39:132:39 | remoteString | semmle.label | remoteString |
+| GRDB.swift:135:46:135:46 | remoteString | semmle.label | remoteString |
+| GRDB.swift:138:56:138:56 | remoteString | semmle.label | remoteString |
+| GRDB.swift:141:45:141:45 | remoteString | semmle.label | remoteString |
+| GRDB.swift:144:29:144:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:145:29:145:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:146:29:146:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:147:29:147:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:148:29:148:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:149:29:149:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:150:29:150:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:151:29:151:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:164:26:164:80 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| GRDB.swift:166:33:166:33 | remoteString | semmle.label | remoteString |
+| GRDB.swift:169:32:169:32 | remoteString | semmle.label | remoteString |
+| GRDB.swift:172:37:172:37 | remoteString | semmle.label | remoteString |
+| GRDB.swift:178:26:178:80 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| GRDB.swift:180:36:180:36 | remoteString | semmle.label | remoteString |
+| GRDB.swift:186:26:186:80 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| GRDB.swift:188:41:188:41 | remoteString | semmle.label | remoteString |
+| GRDB.swift:189:44:189:44 | remoteString | semmle.label | remoteString |
+| GRDB.swift:190:47:190:47 | remoteString | semmle.label | remoteString |
+| GRDB.swift:191:47:191:47 | remoteString | semmle.label | remoteString |
+| GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| GRDB.swift:203:37:203:37 | remoteString | semmle.label | remoteString |
+| GRDB.swift:204:37:204:37 | remoteString | semmle.label | remoteString |
+| GRDB.swift:208:37:208:37 | remoteString | semmle.label | remoteString |
+| GRDB.swift:209:37:209:37 | remoteString | semmle.label | remoteString |
+| GRDB.swift:213:36:213:36 | remoteString | semmle.label | remoteString |
+| GRDB.swift:214:36:214:36 | remoteString | semmle.label | remoteString |
+| GRDB.swift:221:26:221:80 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| GRDB.swift:223:38:223:38 | remoteString | semmle.label | remoteString |
+| GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| GRDB.swift:231:32:231:32 | remoteString | semmle.label | remoteString |
+| GRDB.swift:232:32:232:32 | remoteString | semmle.label | remoteString |
+| GRDB.swift:233:32:233:32 | remoteString | semmle.label | remoteString |
+| GRDB.swift:234:32:234:32 | remoteString | semmle.label | remoteString |
+| GRDB.swift:240:29:240:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:241:29:241:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:242:29:242:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:243:29:243:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:249:29:249:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:250:29:250:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:251:29:251:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:252:29:252:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:258:29:258:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:259:29:259:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:260:29:260:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:261:29:261:29 | remoteString | semmle.label | remoteString |
+| GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| GRDB.swift:272:53:272:53 | remoteString | semmle.label | remoteString |
+| GRDB.swift:273:53:273:53 | remoteString | semmle.label | remoteString |
+| GRDB.swift:274:53:274:53 | remoteString | semmle.label | remoteString |
+| GRDB.swift:275:53:275:53 | remoteString | semmle.label | remoteString |
+| GRDB.swift:281:50:281:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:282:50:282:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:283:50:283:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:284:50:284:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:290:50:290:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:291:50:291:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:292:50:292:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:293:50:293:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:299:50:299:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:300:50:300:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:301:50:301:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:302:50:302:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:311:26:311:80 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| GRDB.swift:313:57:313:57 | remoteString | semmle.label | remoteString |
+| GRDB.swift:314:57:314:57 | remoteString | semmle.label | remoteString |
+| GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| GRDB.swift:323:51:323:51 | remoteString | semmle.label | remoteString |
+| GRDB.swift:324:51:324:51 | remoteString | semmle.label | remoteString |
+| GRDB.swift:325:66:325:66 | remoteString | semmle.label | remoteString |
+| GRDB.swift:326:66:326:66 | remoteString | semmle.label | remoteString |
+| GRDB.swift:327:69:327:69 | remoteString | semmle.label | remoteString |
+| GRDB.swift:328:84:328:84 | remoteString | semmle.label | remoteString |
+| GRDB.swift:329:69:329:69 | remoteString | semmle.label | remoteString |
+| GRDB.swift:330:84:330:84 | remoteString | semmle.label | remoteString |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
 | SQLite.swift:73:17:73:17 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:74:17:74:17 | unsafeQuery2 | semmle.label | unsafeQuery2 |
@@ -46,6 +211,83 @@ nodes
 | sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 | semmle.label | unsafeQuery3 |
 subpaths
 #select
+| GRDB.swift:106:41:106:41 | remoteString | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:106:41:106:41 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:108:41:108:41 | remoteString | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:108:41:108:41 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:111:43:111:43 | remoteString | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:111:43:111:43 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:114:51:114:51 | remoteString | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:114:51:114:51 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:117:27:117:27 | remoteString | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:117:27:117:27 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:119:27:119:27 | remoteString | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:119:27:119:27 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:122:41:122:41 | remoteString | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:122:41:122:41 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:124:41:124:41 | remoteString | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:124:41:124:41 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:132:39:132:39 | remoteString | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:132:39:132:39 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:135:46:135:46 | remoteString | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:135:46:135:46 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:138:56:138:56 | remoteString | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:138:56:138:56 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:141:45:141:45 | remoteString | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:141:45:141:45 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:144:29:144:29 | remoteString | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:144:29:144:29 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:145:29:145:29 | remoteString | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:145:29:145:29 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:146:29:146:29 | remoteString | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:146:29:146:29 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:147:29:147:29 | remoteString | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:147:29:147:29 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:148:29:148:29 | remoteString | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:148:29:148:29 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:149:29:149:29 | remoteString | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:149:29:149:29 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:150:29:150:29 | remoteString | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:150:29:150:29 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:151:29:151:29 | remoteString | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) :  | GRDB.swift:151:29:151:29 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:166:33:166:33 | remoteString | GRDB.swift:164:26:164:80 | call to String.init(contentsOf:) :  | GRDB.swift:166:33:166:33 | remoteString | This query depends on a $@. | GRDB.swift:164:26:164:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:169:32:169:32 | remoteString | GRDB.swift:164:26:164:80 | call to String.init(contentsOf:) :  | GRDB.swift:169:32:169:32 | remoteString | This query depends on a $@. | GRDB.swift:164:26:164:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:172:37:172:37 | remoteString | GRDB.swift:164:26:164:80 | call to String.init(contentsOf:) :  | GRDB.swift:172:37:172:37 | remoteString | This query depends on a $@. | GRDB.swift:164:26:164:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:180:36:180:36 | remoteString | GRDB.swift:178:26:178:80 | call to String.init(contentsOf:) :  | GRDB.swift:180:36:180:36 | remoteString | This query depends on a $@. | GRDB.swift:178:26:178:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:188:41:188:41 | remoteString | GRDB.swift:186:26:186:80 | call to String.init(contentsOf:) :  | GRDB.swift:188:41:188:41 | remoteString | This query depends on a $@. | GRDB.swift:186:26:186:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:189:44:189:44 | remoteString | GRDB.swift:186:26:186:80 | call to String.init(contentsOf:) :  | GRDB.swift:189:44:189:44 | remoteString | This query depends on a $@. | GRDB.swift:186:26:186:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:190:47:190:47 | remoteString | GRDB.swift:186:26:186:80 | call to String.init(contentsOf:) :  | GRDB.swift:190:47:190:47 | remoteString | This query depends on a $@. | GRDB.swift:186:26:186:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:191:47:191:47 | remoteString | GRDB.swift:186:26:186:80 | call to String.init(contentsOf:) :  | GRDB.swift:191:47:191:47 | remoteString | This query depends on a $@. | GRDB.swift:186:26:186:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:203:37:203:37 | remoteString | GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) :  | GRDB.swift:203:37:203:37 | remoteString | This query depends on a $@. | GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:204:37:204:37 | remoteString | GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) :  | GRDB.swift:204:37:204:37 | remoteString | This query depends on a $@. | GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:208:37:208:37 | remoteString | GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) :  | GRDB.swift:208:37:208:37 | remoteString | This query depends on a $@. | GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:209:37:209:37 | remoteString | GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) :  | GRDB.swift:209:37:209:37 | remoteString | This query depends on a $@. | GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:213:36:213:36 | remoteString | GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) :  | GRDB.swift:213:36:213:36 | remoteString | This query depends on a $@. | GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:214:36:214:36 | remoteString | GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) :  | GRDB.swift:214:36:214:36 | remoteString | This query depends on a $@. | GRDB.swift:201:26:201:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:223:38:223:38 | remoteString | GRDB.swift:221:26:221:80 | call to String.init(contentsOf:) :  | GRDB.swift:223:38:223:38 | remoteString | This query depends on a $@. | GRDB.swift:221:26:221:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:231:32:231:32 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:231:32:231:32 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:232:32:232:32 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:232:32:232:32 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:233:32:233:32 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:233:32:233:32 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:234:32:234:32 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:234:32:234:32 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:240:29:240:29 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:240:29:240:29 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:241:29:241:29 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:241:29:241:29 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:242:29:242:29 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:242:29:242:29 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:243:29:243:29 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:243:29:243:29 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:249:29:249:29 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:249:29:249:29 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:250:29:250:29 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:250:29:250:29 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:251:29:251:29 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:251:29:251:29 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:252:29:252:29 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:252:29:252:29 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:258:29:258:29 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:258:29:258:29 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:259:29:259:29 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:259:29:259:29 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:260:29:260:29 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:260:29:260:29 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:261:29:261:29 | remoteString | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) :  | GRDB.swift:261:29:261:29 | remoteString | This query depends on a $@. | GRDB.swift:229:26:229:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:272:53:272:53 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:272:53:272:53 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:273:53:273:53 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:273:53:273:53 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:274:53:274:53 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:274:53:274:53 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:275:53:275:53 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:275:53:275:53 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:281:50:281:50 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:281:50:281:50 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:282:50:282:50 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:282:50:282:50 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:283:50:283:50 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:283:50:283:50 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:284:50:284:50 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:284:50:284:50 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:290:50:290:50 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:290:50:290:50 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:291:50:291:50 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:291:50:291:50 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:292:50:292:50 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:292:50:292:50 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:293:50:293:50 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:293:50:293:50 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:299:50:299:50 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:299:50:299:50 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:300:50:300:50 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:300:50:300:50 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:301:50:301:50 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:301:50:301:50 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:302:50:302:50 | remoteString | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) :  | GRDB.swift:302:50:302:50 | remoteString | This query depends on a $@. | GRDB.swift:270:26:270:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:313:57:313:57 | remoteString | GRDB.swift:311:26:311:80 | call to String.init(contentsOf:) :  | GRDB.swift:313:57:313:57 | remoteString | This query depends on a $@. | GRDB.swift:311:26:311:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:314:57:314:57 | remoteString | GRDB.swift:311:26:311:80 | call to String.init(contentsOf:) :  | GRDB.swift:314:57:314:57 | remoteString | This query depends on a $@. | GRDB.swift:311:26:311:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:323:51:323:51 | remoteString | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:323:51:323:51 | remoteString | This query depends on a $@. | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:324:51:324:51 | remoteString | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:324:51:324:51 | remoteString | This query depends on a $@. | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:325:66:325:66 | remoteString | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:325:66:325:66 | remoteString | This query depends on a $@. | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:326:66:326:66 | remoteString | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:326:66:326:66 | remoteString | This query depends on a $@. | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:327:69:327:69 | remoteString | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:327:69:327:69 | remoteString | This query depends on a $@. | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:328:84:328:84 | remoteString | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:328:84:328:84 | remoteString | This query depends on a $@. | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:329:69:329:69 | remoteString | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:329:69:329:69 | remoteString | This query depends on a $@. | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) | user-provided value |
+| GRDB.swift:330:84:330:84 | remoteString | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) :  | GRDB.swift:330:84:330:84 | remoteString | This query depends on a $@. | GRDB.swift:321:26:321:80 | call to String.init(contentsOf:) | user-provided value |
 | SQLite.swift:73:17:73:17 | unsafeQuery1 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) :  | SQLite.swift:73:17:73:17 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | user-provided value |
 | SQLite.swift:74:17:74:17 | unsafeQuery2 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) :  | SQLite.swift:74:17:74:17 | unsafeQuery2 | This query depends on a $@. | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | user-provided value |
 | SQLite.swift:75:17:75:17 | unsafeQuery3 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) :  | SQLite.swift:75:17:75:17 | unsafeQuery3 | This query depends on a $@. | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | user-provided value |
