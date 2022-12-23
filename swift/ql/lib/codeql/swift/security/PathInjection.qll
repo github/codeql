@@ -104,7 +104,13 @@ private class PathInjectionSinks extends SinkModelCsv {
         ";FileManager;true;replaceItemAtURL(originalItemURL:withItemAtURL:backupItemName:options:);;;Argument[0..1];path-injection",
         ";NIOFileHandle;true;init(descriptor:);;;Argument[0];path-injection",
         ";NIOFileHandle;true;init(path:mode:flags:);;;Argument[0];path-injection",
-        ";NIOFileHandle;true;init(path:);;;Argument[0];path-injection"
+        ";NIOFileHandle;true;init(path:);;;Argument[0];path-injection",
+        // GRDB
+        ";Database;true;init(path:description:configuration:);;;Argument[0];path-injection",
+        ";DatabasePool;true;init(path:configuration:);;;Argument[0];path-injection",
+        ";DatabaseQueue;true;init(path:configuration:);;;Argument[0];path-injection",
+        ";DatabaseSnapshotPool;true;init(path:configuration:);;;Argument[0];path-injection",
+        ";SerializedDatabase;true;init(path:configuration:defaultLabel:purpose:);;;Argument[0];path-injection"
       ]
   }
 }
