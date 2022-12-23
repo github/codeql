@@ -453,10 +453,22 @@ type_decls(
     int type_id: @type ref,
     int location: @location_default ref
 );
-type_def(unique int id: @type_decl ref);
+type_def(
+    unique int id: @type_decl ref
+);
 type_decl_top(
     unique int type_decl: @type_decl ref
 );
+/*
+  case @type_decl_typedef.kind of
+    1 = c_typedef   //
+  | 2 = using_alias //
+  ;
+*/
+type_decl_typedef(
+    unique int type_decl: @type_decl ref,
+    int kind : int ref
+)
 
 namespace_decls(
     unique int id: @namespace_decl,
@@ -680,7 +692,7 @@ decltypes(
   | 2 = class
   | 3 = union
   | 4 = enum
-  | 5 = typedef                       // classic C: typedef typedef type name
+  | 5 = typedef                       // typedef type name and using name = type
   | 6 = template
   | 7 = template_parameter
   | 8 = template_template_parameter
@@ -689,7 +701,7 @@ decltypes(
 // ... 11 objc_protocol deprecated
 // ... 12 objc_category deprecated
   | 13 = scoped_enum
-  | 14 = using_alias                  // a using name = type style typedef
+// ... 14 using_alias deprecated
   ;
 */
 usertypes(

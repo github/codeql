@@ -13,10 +13,7 @@ private import semmle.code.cpp.internal.ResolveClass
  * ```
  */
 class TypedefType extends UserType {
-  TypedefType() {
-    usertypes(underlyingElement(this), _, 5) or
-    usertypes(underlyingElement(this), _, 14)
-  }
+  TypedefType() { usertypes(underlyingElement(this), _, 5) }
 
   /**
    * Gets the base type of this typedef type.
@@ -57,7 +54,12 @@ class TypedefType extends UserType {
  * ```
  */
 class CTypedefType extends TypedefType {
-  CTypedefType() { usertypes(underlyingElement(this), _, 5) }
+  CTypedefType() {
+    usertypes(underlyingElement(this), _, 5) and
+    exists(TypeDeclarationEntry entry | entry = this.getADeclarationEntry() |
+      type_decl_typedef(unresolveElement(entry), 1)
+    )
+  }
 
   override string getAPrimaryQlClass() { result = "CTypedefType" }
 
@@ -73,7 +75,12 @@ class CTypedefType extends TypedefType {
  * ```
  */
 class UsingAliasTypedefType extends TypedefType {
-  UsingAliasTypedefType() { usertypes(underlyingElement(this), _, 14) }
+  UsingAliasTypedefType() {
+    usertypes(underlyingElement(this), _, 5) and
+    exists(TypeDeclarationEntry entry | entry = this.getADeclarationEntry() |
+      type_decl_typedef(unresolveElement(entry), 2)
+    )
+  }
 
   override string getAPrimaryQlClass() { result = "UsingAliasTypedefType" }
 

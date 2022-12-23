@@ -14196,12 +14196,12 @@ ir.cpp:
 # 1862| [MemberFunction] void* missing_declaration_entries::Bar1<int>::missing_type_decl_entry(missing_declaration_entries::Bar1<int>::pointer)
 # 1862|   <params>: 
 # 1862|     getParameter(0): [Parameter] p
-# 1862|         Type = [CTypedefType,NestedTypedefType] pointer
+# 1862|         Type = [NestedTypedefType] pointer
 # 1862|   getEntryPoint(): [BlockStmt] { ... }
 # 1863|     getStmt(0): [DeclStmt] declaration
 # 1864|     getStmt(1): [ReturnStmt] return ...
 # 1864|       getExpr(): [VariableAccess] p
-# 1864|           Type = [CTypedefType,NestedTypedefType] pointer
+# 1864|           Type = [NestedTypedefType] pointer
 # 1864|           ValueCategory = prvalue(load)
 # 1864|       getExpr().getFullyConverted(): [CStyleCast] (void *)...
 # 1864|           Conversion = [PointerConversion] pointer conversion
@@ -14226,7 +14226,7 @@ ir.cpp:
 # 1870|             ValueCategory = prvalue
 # 1870|         getArgument(0).getFullyConverted(): [CStyleCast] (pointer)...
 # 1870|             Conversion = [PointerConversion] pointer conversion
-# 1870|             Type = [CTypedefType,NestedTypedefType] pointer
+# 1870|             Type = [NestedTypedefType] pointer
 # 1870|             Value = [CStyleCast] 0
 # 1870|             ValueCategory = prvalue
 # 1871|     getStmt(2): [ReturnStmt] return ...
@@ -14459,7 +14459,7 @@ smart_ptr.cpp:
 #   12|             Type = [ClassTemplateInstantiation] unique_ptr<int, default_delete<int>>
 #   12|             ValueCategory = lvalue
 #   12|           getExpr(): [ReferenceDereferenceExpr] (reference dereference)
-#   12|               Type = [CTypedefType,NestedTypedefType] type
+#   12|               Type = [NestedTypedefType] type
 #   12|               ValueCategory = prvalue(load)
 #   13|     getStmt(2): [ReturnStmt] return ...
 #   15| [TopLevelFunction] void shared_ptr_arg(std::shared_ptr<float>)
