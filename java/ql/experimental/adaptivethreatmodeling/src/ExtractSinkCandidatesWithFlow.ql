@@ -22,6 +22,7 @@ private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPath
 // private import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
 from DataFlow::PathNode sink, string message
 where
+  exists(AtmConfig::AtmConfig config | config.isSinkCandidateWithFlow(sink)) and
   // The message is the concatenation of all relevant configs
   message =
     concat(AtmConfig::AtmConfig config |
