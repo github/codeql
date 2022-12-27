@@ -5,9 +5,12 @@
 private import java as java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.QueryInjection
+import semmle.code.java.security.PathCreation
+private import semmle.code.java.dataflow.ExternalFlow
 import experimental.adaptivethreatmodeling.EndpointTypes
 private import experimental.adaptivethreatmodeling.ATMConfig
 private import experimental.adaptivethreatmodeling.SqlInjectionATM
+private import experimental.adaptivethreatmodeling.TaintedPathATM
 private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
 private import semmle.code.java.Expr as Expr
 
@@ -155,11 +158,11 @@ abstract class EndpointCharacteristic extends string {
 /*
  * Characteristics that are indicative of a sink.
  * NOTE: Initially each sink type has only one characteristic, which is that it's a sink of this type in the standard
- * JavaScript libraries.
+ * Java libraries.
  */
 
 // /**
-//  * Endpoints identified as "DomBasedXssSink" by the standard JavaScript libraries are XSS sinks with maximal confidence.
+//  * Endpoints identified as "DomBasedXssSink" by the standard Java libraries are XSS sinks with maximal confidence.
 //  */
 // private class DomBasedXssSinkCharacteristic extends EndpointCharacteristic {
 //   DomBasedXssSinkCharacteristic() { this = "DomBasedXssSink" }
@@ -172,23 +175,30 @@ abstract class EndpointCharacteristic extends string {
 //     confidence = maximalConfidence()
 //   }
 // }
-// /**
-//  * Endpoints identified as "TaintedPathSink" by the standard JavaScript libraries are path injection sinks with maximal
-//  * confidence.
-//  */
-// private class TaintedPathSinkCharacteristic extends EndpointCharacteristic {
-//   TaintedPathSinkCharacteristic() { this = "TaintedPathSink" }
-//   override predicate appliesToEndpoint(DataFlow::Node n) { n instanceof TaintedPath::Sink }
-//   override predicate hasImplications(
-//     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
-//   ) {
-//     endpointClass instanceof TaintedPathSinkType and
-//     isPositiveIndicator = true and
-//     confidence = maximalConfidence()
-//   }
-// }
 /**
- * Endpoints identified as "SqlInjectionSink" by the standard JavaScript libraries are SQL injection sinks with maximal
+ * Endpoints identified as "TaintedPathSink" by the standard Java libraries are path injection sinks with maximal
+ * confidence.
+ */
+private class TaintedPathSinkCharacteristic extends EndpointCharacteristic {
+  TaintedPathSinkCharacteristic() { this = "TaintedPathSink" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    n.asExpr() = any(PathCreation p).getAnInput()
+    or
+    sinkNode(n, "create-file")
+  }
+
+  override predicate hasImplications(
+    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
+  ) {
+    endpointClass instanceof TaintedPathSinkType and
+    isPositiveIndicator = true and
+    confidence = maximalConfidence()
+  }
+}
+
+/**
+ * Endpoints identified as "SqlInjectionSink" by the standard Java libraries are SQL injection sinks with maximal
  * confidence.
  */
 private class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
@@ -206,7 +216,7 @@ private class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
 }
 
 // /**
-//  * Endpoints identified as "NosqlInjectionSink" by the standard JavaScript libraries are NoSQL injection sinks with
+//  * Endpoints identified as "NosqlInjectionSink" by the standard Java libraries are NoSQL injection sinks with
 //  * maximal confidence.
 //  */
 // private class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {

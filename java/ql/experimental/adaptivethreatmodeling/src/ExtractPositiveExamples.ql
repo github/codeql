@@ -12,6 +12,7 @@ import semmle.code.java.dataflow.TaintTracking
 private import experimental.adaptivethreatmodeling.EndpointCharacteristics as EndpointCharacteristics
 private import experimental.adaptivethreatmodeling.ATMConfig as AtmConfig
 private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
+private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 
 from
   DataFlow::Node sink, AtmConfig::AtmConfig config,
@@ -20,4 +21,4 @@ where
   characteristic.appliesToEndpoint(sink) and
   confidence >= characteristic.maximalConfidence() and
   characteristic.hasImplications(config.getASinkEndpointType(), true, confidence)
-select sink, "Sink of type " + characteristic + " with confidence " + confidence.toString()
+select sink, characteristic.toString()
