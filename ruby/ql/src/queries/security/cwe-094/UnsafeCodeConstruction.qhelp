@@ -69,7 +69,7 @@ to define the getter method.
 <example>
 <p>
 This example dynamically registers a method on another class which
-forwards its arguments to the registering module. This approach uses
+forwards its arguments to a target class. This approach uses
 <code>module_eval</code> and string interpolation to construct class variables
 and methods.
 </p>
@@ -81,6 +81,12 @@ A safer approach is to use <code>class_variable_set</code> and
 <code>class_variable_get</code> along with <code>define_method</code>. String
 interpolation is still used to construct the class variable name, but this is
 safe because <code>class_variable_set<code> is not susceptible to code injection.
+To construct a dynamic method call we use <code>send</code>, which is ulnerable
+to code injection: if an attacker can control the first argument, they can call
+any method on the receiver. However this is less powerful than being able to run
+arbitrary Ruby code, so it is an improvement in security. We also document to
+callers that they should not pass arbitrary user data to the <code>name</code>
+parameter.
 </p>
 
 <sample src="examples/UnsafeCodeConstruction3Safe.rb" />

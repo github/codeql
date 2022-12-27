@@ -1,11 +1,10 @@
 module Invoker
-  def attach(klass, name)
-    invoker = self
+  def attach(klass, name, target)
     klass.module_eval <<-CODE
-      @@#{name} = invoker
+      @@#{name} = target
 
       def #{name}(*args)
-        @@#{name}.call(*args)
+        @@#{name}.#{name}(*args)
       end
     CODE
   end
