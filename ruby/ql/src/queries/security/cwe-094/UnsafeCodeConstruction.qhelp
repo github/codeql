@@ -66,6 +66,26 @@ to define the getter method.
 <sample src="examples/UnsafeCodeConstruction2Safe.rb" />
 </example>
 
+<example>
+<p>
+This example dynamically registers a method on another class which
+forwards its arguments to the registering module. This approach uses
+<code>module_eval</code> and string interpolation to construct class variables
+and methods.
+</p>
+
+<sample src="examples/UnsafeCodeConstruction3.rb" />
+
+<p>
+A safer approach is to use <code>class_variable_set</code> and
+<code>class_variable_get</code> along with <code>define_method</code>. String
+interpolation is still used to construct the class variable name, but this is
+safe because <code>class_variable_set<code> is not susceptible to code injection.
+</p>
+
+<sample src="examples/UnsafeCodeConstruction3Safe.rb" />
+</example>
+
 <references>
 <li>
 OWASP:
@@ -73,6 +93,12 @@ OWASP:
 </li>
 <li>
 Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_injection">Code Injection</a>.
+</li>
+<li>
+Ruby documentation: <a href="https://docs.ruby-lang.org/en/3.2/Module.html#method-i-define_method"><code>define_method</code></a>.
+</li>
+<li>
+Ruby documentation: <a href="https://docs.ruby-lang.org/en/3.2/Module.html#method-i-class_variable_set"><code>class_variable_set</code></a>.
 </li>
 </references>
 </qhelp>
