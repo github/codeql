@@ -4,15 +4,10 @@
  *
  * Note: This query does not actually classify the endpoints using the model.
  *
- * TODO: Produce CSV/JSON/SARIF output describing these endpoints (probably just a URL for each endpoint).
- *
- * @name SQL database query built from user-controlled sources (experimental)
- * @description Building a database query from user-controlled sources is vulnerable to insertion of
- *              malicious code by the user.
+ * @name Sink candidates with flow (experimental)
+ * @description Sink candidates with flow from a source
  * @kind problem
- * @problem.severity error
- * @security-severity 8.8
- * @id java/ml-powered/sql-injection
+ * @id java/ml-powered/sink-candidates-with-flow
  * @tags experimental security
  */
 
@@ -21,10 +16,19 @@ import semmle.code.java.dataflow.TaintTracking
 private import experimental.adaptivethreatmodeling.ATMConfig as AtmConfig
 // private import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
 private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
+private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 
-// private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 // private import experimental.adaptivethreatmodeling.XssATM as XssAtm
 // private import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
-from DataFlow::PathNode sink
-where exists(AtmConfig::AtmConfig queryConfig | queryConfig.isSinkCandidateWithFlow(sink))
-select sink.getNode(), "SQL injection sink candidate"
+from DataFlow::PathNode sink, string message
+where
+  // The message is the concatenation of all relevant configs
+  message =
+    concat(AtmConfig::AtmConfig config |
+      config.isSinkCandidateWithFlow(sink)
+    |
+      config.getASinkEndpointType().getDescription() + ", "
+      order by
+        config.getASinkEndpointType().getDescription()
+    )
+select sink.getNode(), message

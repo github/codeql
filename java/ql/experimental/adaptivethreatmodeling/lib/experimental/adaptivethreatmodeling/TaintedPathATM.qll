@@ -3,16 +3,18 @@
  *
  * A taint-tracking configuration for reasoning about path injection vulnerabilities.
  * Defines shared code used by the path injection boosted query.
+ * Largely copied from java/ql/src/Security/CWE/CWE-022/TaintedPath.ql.
  */
 
-import semmle.javascript.heuristics.SyntacticHeuristics
-import semmle.javascript.security.dataflow.TaintedPathCustomizations
+import java
+import semmle.code.java.security.PathSanitizer
 import AdaptiveThreatModeling
+import semmle.code.java.dataflow.FlowSources
 
 class TaintedPathAtmConfig extends AtmConfig {
   TaintedPathAtmConfig() { this = "TaintedPathAtmConfig" }
 
-  override predicate isKnownSource(DataFlow::Node source) { source instanceof TaintedPath::Source }
+  override predicate isKnownSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override EndpointType getASinkEndpointType() { result instanceof TaintedPathSinkType }
 
@@ -21,44 +23,60 @@ class TaintedPathAtmConfig extends AtmConfig {
    * query, except additional ATM sinks have been added to the `isSink` predicate.
    */
 
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    label = sink.(TaintedPath::Sink).getAFlowLabel()
-    or
-    // Allow effective sinks to have any taint label
-    isEffectiveSink(sink)
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer.getType() instanceof BoxedType or
+    sanitizer.getType() instanceof PrimitiveType or
+    sanitizer.getType() instanceof NumberType or
+    sanitizer instanceof PathInjectionSanitizer
   }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof TaintedPath::Sanitizer }
-
-  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
-    node instanceof BarrierGuardNodeAsSanitizerGuardNode
+  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    any(TaintedPathAdditionalTaintStep s).step(n1, n2)
+  }
   }
 
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
-    DataFlow::FlowLabel dstlabel
-  ) {
-    TaintedPath::isAdditionalTaintedPathFlowStep(src, dst, srclabel, dstlabel)
-  }
-}
+/*
+ * Models a very basic guard for the tainted path queries.
+ * TODO: Copied from java/ql/src/Security/CWE/CWE-022/TaintedPathCommon.qll because I couldn't figure out how to import it.
+ */
 
 /**
- * This class provides sanitizer guards for path injection.
+ * A unit class for adding additional taint steps.
  *
- * The standard library path injection query uses a data flow configuration, and therefore defines
- * barrier nodes. However we're using a taint tracking configuration for path injection to find new
- * kinds of less certain results. Since taint tracking configurations use sanitizer guards instead
- * of barrier guards, we port the barrier guards for the boosted query from the standard library to
- * sanitizer guards here.
+ * Extend this class to add additional taint steps that should apply to tainted path flow configurations.
  */
-private class BarrierGuardNodeAsSanitizerGuardNode extends TaintTracking::LabeledSanitizerGuardNode {
-  BarrierGuardNodeAsSanitizerGuardNode() { this instanceof TaintedPath::BarrierGuardNode }
+class TaintedPathAdditionalTaintStep extends Unit {
+  abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
+}
 
-  override predicate sanitizes(boolean outcome, Expr e) {
-    blocks(outcome, e) or blocks(outcome, e, _)
+private class DefaultTaintedPathAdditionalTaintStep extends TaintedPathAdditionalTaintStep {
+  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(Argument a |
+      a = n1.asExpr() and
+      a.getCall() = n2.asExpr() and
+      a = any(TaintPreservingUriCtorParam tpp).getAnArgument()
+    )
+  }
   }
 
-  override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-    sanitizes(outcome, e) and exists(label)
+private class TaintPreservingUriCtorParam extends Parameter {
+  TaintPreservingUriCtorParam() {
+    exists(Constructor ctor, int idx, int nParams |
+      ctor.getDeclaringType() instanceof TypeUri and
+      this = ctor.getParameter(idx) and
+      nParams = ctor.getNumberOfParameters()
+    |
+      // URI(String scheme, String ssp, String fragment)
+      idx = 1 and nParams = 3
+      or
+      // URI(String scheme, String host, String path, String fragment)
+      idx = [1, 2] and nParams = 4
+      or
+      // URI(String scheme, String authority, String path, String query, String fragment)
+      idx = 2 and nParams = 5
+      or
+      // URI(String scheme, String userInfo, String host, int port, String path, String query, String fragment)
+      idx = 4 and nParams = 7
+    )
   }
 }
