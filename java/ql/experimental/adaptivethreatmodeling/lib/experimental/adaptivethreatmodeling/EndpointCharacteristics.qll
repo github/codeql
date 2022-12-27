@@ -165,7 +165,7 @@ abstract class EndpointCharacteristic extends string {
 //  * Endpoints identified as "DomBasedXssSink" by the standard Java libraries are XSS sinks with maximal confidence.
 //  */
 // private class DomBasedXssSinkCharacteristic extends EndpointCharacteristic {
-//   DomBasedXssSinkCharacteristic() { this = "DomBasedXssSink" }
+//   DomBasedXssSinkCharacteristic() { this = any(XssSinkType type).getDescription() }
 //   override predicate appliesToEndpoint(DataFlow::Node n) { n instanceof DomBasedXss::Sink }
 //   override predicate hasImplications(
 //     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
@@ -180,7 +180,7 @@ abstract class EndpointCharacteristic extends string {
  * confidence.
  */
 private class TaintedPathSinkCharacteristic extends EndpointCharacteristic {
-  TaintedPathSinkCharacteristic() { this = "TaintedPathSink" }
+  TaintedPathSinkCharacteristic() { this = any(TaintedPathSinkType type).getDescription() }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
     n.asExpr() = any(PathCreation p).getAnInput()
@@ -220,7 +220,7 @@ private class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
 //  * maximal confidence.
 //  */
 // private class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
-//   NosqlInjectionSinkCharacteristic() { this = "NosqlInjectionSink" }
+//   NosqlInjectionSinkCharacteristic() { this = any(NosqlInjectionSinkType type).getDescription() }
 //   override predicate appliesToEndpoint(DataFlow::Node n) { n instanceof NosqlInjection::Sink }
 //   override predicate hasImplications(
 //     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
