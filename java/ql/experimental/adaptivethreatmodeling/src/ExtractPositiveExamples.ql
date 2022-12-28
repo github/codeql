@@ -13,6 +13,7 @@ private import experimental.adaptivethreatmodeling.EndpointCharacteristics as En
 private import experimental.adaptivethreatmodeling.ATMConfig as AtmConfig
 private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
 private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
+private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestForgeryAtm
 
 from
   DataFlow::Node sink, AtmConfig::AtmConfig config,

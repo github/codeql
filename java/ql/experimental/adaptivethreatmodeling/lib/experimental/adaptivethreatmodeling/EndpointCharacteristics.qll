@@ -6,11 +6,13 @@ private import java as java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.QueryInjection
 import semmle.code.java.security.PathCreation
+import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.ExternalFlow
 import experimental.adaptivethreatmodeling.EndpointTypes
 private import experimental.adaptivethreatmodeling.ATMConfig
 private import experimental.adaptivethreatmodeling.SqlInjectionATM
 private import experimental.adaptivethreatmodeling.TaintedPathATM
+private import experimental.adaptivethreatmodeling.RequestForgeryATM
 private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
 private import semmle.code.java.Expr as Expr
 
@@ -210,6 +212,24 @@ private class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
   ) {
     endpointClass instanceof SqlInjectionSinkType and
+    isPositiveIndicator = true and
+    confidence = maximalConfidence()
+  }
+}
+
+/**
+ * Endpoints identified as "RequestForgerySink" by the standard Java libraries are server-side request forgery sinks
+ * with maximal confidence.
+ */
+private class RequestForgerySinkCharacteristic extends EndpointCharacteristic {
+  RequestForgerySinkCharacteristic() { this = any(RequestForgerySinkType type).getDescription() }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) { n instanceof RequestForgerySink }
+
+  override predicate hasImplications(
+    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
+  ) {
+    endpointClass instanceof RequestForgerySinkType and
     isPositiveIndicator = true and
     confidence = maximalConfidence()
   }
