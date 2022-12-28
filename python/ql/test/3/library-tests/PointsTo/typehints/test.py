@@ -11,5 +11,6 @@ t2 = Optional[int][int]
 
 class baz():
     pass
+
 while True:
     baz = baz[baz]
