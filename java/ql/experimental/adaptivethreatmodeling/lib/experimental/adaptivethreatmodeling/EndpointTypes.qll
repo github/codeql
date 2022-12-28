@@ -64,7 +64,7 @@ class TaintedPathSinkType extends EndpointType, TTaintedPathSinkType {
 
 /** The `RequestForgerySinkType` class that can be predicted by endpoint scoring models. */
 class RequestForgerySinkType extends EndpointType, TRequestForgerySinkType {
-  override string getDescription() { result = "request forgery sink" }
+  override string getDescription() { result = "server-side request forgery sink" }
 
   override int getEncoding() { result = 5 }
 }

@@ -33,7 +33,7 @@ class TaintedPathAtmConfig extends AtmConfig {
   override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(TaintedPathAdditionalTaintStep s).step(n1, n2)
   }
-  }
+}
 
 /*
  * Models a very basic guard for the tainted path queries.
@@ -57,7 +57,7 @@ private class DefaultTaintedPathAdditionalTaintStep extends TaintedPathAdditiona
       a = any(TaintPreservingUriCtorParam tpp).getAnArgument()
     )
   }
-  }
+}
 
 private class TaintPreservingUriCtorParam extends Parameter {
   TaintPreservingUriCtorParam() {
