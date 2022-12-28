@@ -10,7 +10,8 @@ newtype TEndpointType =
   TXssSinkType() or
   TNosqlInjectionSinkType() or
   TSqlInjectionSinkType() or
-  TTaintedPathSinkType()
+  TTaintedPathSinkType() or
+  TRequestForgerySinkType()
 
 /** A class that can be predicted by endpoint scoring models. */
 abstract class EndpointType extends TEndpointType {
@@ -59,4 +60,11 @@ class TaintedPathSinkType extends EndpointType, TTaintedPathSinkType {
   override string getDescription() { result = "path injection sink" }
 
   override int getEncoding() { result = 4 }
+}
+
+/** The `RequestForgerySinkType` class that can be predicted by endpoint scoring models. */
+class RequestForgerySinkType extends EndpointType, TRequestForgerySinkType {
+  override string getDescription() { result = "request forgery sink" }
+
+  override int getEncoding() { result = 5 }
 }

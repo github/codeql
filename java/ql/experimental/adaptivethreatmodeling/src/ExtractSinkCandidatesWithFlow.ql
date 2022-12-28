@@ -17,6 +17,7 @@ private import experimental.adaptivethreatmodeling.ATMConfig as AtmConfig
 // private import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
 private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
 private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
+private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestForgeryAtm
 
 // private import experimental.adaptivethreatmodeling.XssATM as XssAtm
 // private import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
