@@ -64,9 +64,7 @@ class WebSettingsDisallowContentAccessSink extends DataFlow::Node {
 class WebViewDisallowContentAccessConfiguration extends TaintTracking::Configuration {
   WebViewDisallowContentAccessConfiguration() { this = "WebViewDisallowContentAccessConfiguration" }
 
-  override predicate isSource(DataFlow::Node node) {
-    node instanceof WebViewSource
-  }
+  override predicate isSource(DataFlow::Node node) { node instanceof WebViewSource }
 
   /**
    * Holds if the step from `node1` to `node2` is a dataflow step that gets the `WebSettings` object
