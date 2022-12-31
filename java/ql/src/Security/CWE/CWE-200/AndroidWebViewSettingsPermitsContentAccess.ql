@@ -5,6 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @precision medium
+ * @security-severity 6.5
  * @tags security
  *      external/cwe/cwe-200
  */
