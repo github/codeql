@@ -25,7 +25,6 @@ private class TypeWebViewOrSubclass extends RefType {
  */
 private class PrivateGetterMethodAccess extends MethodAccess {
   PrivateGetterMethodAccess() {
-    this instanceof MethodAccess and
     this.getMethod() instanceof GetterMethod and
     this.getMethod().isPrivate()
   }
@@ -34,7 +33,7 @@ private class PrivateGetterMethodAccess extends MethodAccess {
 /** A source for `android.webkit.WebView` objects. */
 class WebViewSource extends DataFlow::Node {
   WebViewSource() {
-    this.getType().(RefType) instanceof TypeWebViewOrSubclass and
+    this.getType() instanceof TypeWebViewOrSubclass and
     // To reduce duplicate results, we only consider WebView objects from
     // constructor and method calls, or method accesses which are cast to WebView.
     (
@@ -56,7 +55,7 @@ class WebSettingsDisallowContentAccessSink extends DataFlow::Node {
     exists(MethodAccess ma |
       ma.getQualifier() = this.asExpr() and
       ma.getMethod() instanceof AllowContentAccessMethod and
-      ma.getArgument(0).(BooleanLiteral).getBooleanValue() = false
+      ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = false
     )
   }
 }
@@ -64,8 +63,7 @@ class WebSettingsDisallowContentAccessSink extends DataFlow::Node {
 class WebViewDisallowContentAccessConfiguration extends TaintTracking::Configuration {
   WebViewDisallowContentAccessConfiguration() { this = "WebViewDisallowContentAccessConfiguration" }
 
-  override predicate isSource(DataFlow::Node node, DataFlow::FlowState state) {
-    state instanceof DataFlow::FlowStateEmpty and
+  override predicate isSource(DataFlow::Node node) {
     node instanceof WebViewSource
   }
 
