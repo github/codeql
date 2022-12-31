@@ -71,6 +71,9 @@ class WebViewDisallowContentAccessConfiguration extends TaintTracking::Configura
   /**
    * Holds if the step from `node1` to `node2` is a dataflow step that gets the `WebSettings` object
    * from the `getSettings` method of a `WebView` object.
+   *
+   * This step is only valid when `state1` is empty and `state2` indicates that the `WebSettings` object
+   * has been accessed.
    */
   override predicate isAdditionalTaintStep(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
