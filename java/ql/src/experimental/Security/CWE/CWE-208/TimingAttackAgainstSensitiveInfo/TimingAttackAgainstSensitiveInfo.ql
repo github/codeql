@@ -34,6 +34,7 @@ where
   (
     source.getNode().(SecretSource).includesUserInput() or
     sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()
-  )
+  ) and
+  not sink.getNode().(NonConstantTimeComparisonSink).includesIs()
 select sink.getNode(), source, sink, "timing attack against $@ validation.",
   source.getNode(), "time constant"
