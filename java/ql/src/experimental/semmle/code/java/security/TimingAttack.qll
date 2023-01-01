@@ -31,6 +31,15 @@ private string nonSuspicious() {
   result in ["%md5%", "%md2%", "%sha%"]
 }
 
+/** A variable that may hold nonsensitive information, judging by its name. * */
+class NonSensitiveExpr extends Expr {
+  NonSensitiveExpr() {
+    exists(Variable v | this = v.getAnAccess() | 
+       v.getName().toLowerCase().matches(nonSuspicious())
+    ) 
+  }
+}
+
 /** A variable that may hold sensitive information, judging by its name. * */
 class CredentialExpr extends Expr {
   CredentialExpr() {
@@ -262,6 +271,20 @@ private class UserInputInComparisonConfig extends TaintTracking2::Configuration 
   }
 }
 
+private class UserInputIs extends TaintTracking2::Configuration {
+  UserInputIs() { this = "UserInputIs" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof InSecretSource }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(NonConstantTimeEqualsCall call |
+      sink.asExpr() = [call.getAnArgument(), call.getQualifier()]
+    )
+    or
+    exists(NonConstantTimeComparisonCall call | sink.asExpr() = call.getAnArgument())
+  }
+}
+
 /** Holds if `expr` looks like a constant. */
 private predicate looksLikeConstant(Expr expr) {
   expr.isCompileTimeConstant()
@@ -342,6 +365,12 @@ class NonConstantTimeComparisonSink extends DataFlow::Node {
       config.hasFlowTo(DataFlow2::exprNode(anotherParameter))
     )
   }
+  
+  predicate includesIs() {
+    exists(UserInputIs config |
+      config.hasFlowTo(DataFlow2::exprNode(anotherParameter))
+    ) 
+  }
 }
 
 /** A data flow source of the secret obtained. */
@@ -354,6 +383,12 @@ class SecretSource extends DataFlow::Node {
   predicate includesUserInput() {
     exists(UserInputSecretConfig config | config.hasFlowTo(DataFlow2::exprNode(secret)))
   }
+}
+
+class InSecretSource extends DataFlow::Node {
+  NonSensitiveExpr insecret;
+
+  InSecretSource() { insecret = this.asExpr() }
 }
 
 /**
