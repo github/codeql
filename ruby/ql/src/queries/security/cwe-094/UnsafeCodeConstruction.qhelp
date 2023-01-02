@@ -80,7 +80,7 @@ and methods.
 A safer approach is to use <code>class_variable_set</code> and
 <code>class_variable_get</code> along with <code>define_method</code>. String
 interpolation is still used to construct the class variable name, but this is
-safe because <code>class_variable_set<code> is not susceptible to code injection.
+safe because <code>class_variable_set</code> is not susceptible to code injection.
 To construct a dynamic method call we use <code>send</code>, which is ulnerable
 to code injection: if an attacker can control the first argument, they can call
 any method on the receiver. However this is less powerful than being able to run
@@ -101,10 +101,10 @@ OWASP:
 Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_injection">Code Injection</a>.
 </li>
 <li>
-Ruby documentation: <a href="https://docs.ruby-lang.org/en/3.2/Module.html#method-i-define_method"><code>define_method</code></a>.
+Ruby documentation: <a href="https://docs.ruby-lang.org/en/3.2/Module.html#method-i-define_method">define_method</a>.
 </li>
 <li>
-Ruby documentation: <a href="https://docs.ruby-lang.org/en/3.2/Module.html#method-i-class_variable_set"><code>class_variable_set</code></a>.
+Ruby documentation: <a href="https://docs.ruby-lang.org/en/3.2/Module.html#method-i-class_variable_set">class_variable_set</a>.
 </li>
 </references>
 </qhelp>
