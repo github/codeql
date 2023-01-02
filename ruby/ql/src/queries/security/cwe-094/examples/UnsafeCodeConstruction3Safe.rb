@@ -1,5 +1,4 @@
 module Invoker
-  # Do not pass arbitrary user input to +name+.
   def attach(klass, name, target)
     var = :"@@#{name}"
     klass.class_variable_set(var, target)

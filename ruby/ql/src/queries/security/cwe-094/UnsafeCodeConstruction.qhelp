@@ -54,11 +54,11 @@ a class that has a getter method with a custom name.
 <p>
 The example dynamically constructs a string which is then executed using <code>module_eval</code>.  
 This code will break if the specified name is not a valid Ruby identifier, and 
-if the value is controlled by an attacker, then this could lead to code injection.
+if the value is controlled by an attacker, then this could lead to code-injection.
 </p>
 
 <p>
-A more robust implementation, that is also immune to code injection, 
+A more robust implementation, that is also immune to code-injection, 
 can be made by using <code>module_eval</code> with a block and using <code>define_method</code>
 to define the getter method.
 </p>
@@ -80,13 +80,14 @@ and methods.
 A safer approach is to use <code>class_variable_set</code> and
 <code>class_variable_get</code> along with <code>define_method</code>. String
 interpolation is still used to construct the class variable name, but this is
-safe because <code>class_variable_set</code> is not susceptible to code injection.
-To construct a dynamic method call we use <code>send</code>, which is ulnerable
-to code injection: if an attacker can control the first argument, they can call
-any method on the receiver. However this is less powerful than being able to run
-arbitrary Ruby code, so it is an improvement in security. We also document to
-callers that they should not pass arbitrary user data to the <code>name</code>
-parameter.
+safe because <code>class_variable_set</code> is not susceptible to code-injection.
+</p>
+
+<p>
+<code>send</code> is used to dynamically call the method specified by <code>name</code>.  
+This is a more robust alternative than the previous example, because it does not allow
+arbitrary code to be executed, but it does still allow for any method to be called
+on the target object. 
 </p>
 
 <sample src="examples/UnsafeCodeConstruction3Safe.rb" />
