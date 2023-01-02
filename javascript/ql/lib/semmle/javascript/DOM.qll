@@ -465,7 +465,11 @@ module DOM {
    */
   private DataFlow::SourceNode nonFirstLocationType(DataFlow::TypeTracker t) {
     // One step inlined in the beginning.
-    result = any(DataFlow::Node n | n.hasUnderlyingType("Location")).getALocalSource().track(_, t)
+    exists(DataFlow::TypeTracker t2 |
+      result =
+        any(DataFlow::Node n | n.hasUnderlyingType("Location")).getALocalSource().track(t2, t) and
+      t2.start()
+    )
     or
     exists(DataFlow::TypeTracker t2 | result = nonFirstLocationType(t2).track(t2, t))
   }

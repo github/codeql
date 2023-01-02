@@ -53,6 +53,6 @@ export class WeirdTracking {
     }
 
     private doRedirect2(redirectUri: string) {
-        window.location.replace(redirectUri); // NOT OK - but not flagged [INCONSISTENCY]
+        window.location.replace(redirectUri); // NOT OK - and correctly flagged
     }
 }
