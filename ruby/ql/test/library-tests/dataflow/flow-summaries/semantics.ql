@@ -11,9 +11,10 @@ private import codeql.ruby.dataflow.FlowSummary
 /**
  * A convenience class for defining value (c.f. taint) flow summaries.
  */
-bindingset[this]
 abstract private class Summary extends SimpleSummarizedCallable {
   bindingset[this]
+  Summary() { this = this }
+
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     this.propagates(input, output) and preservesValue = true
   }
