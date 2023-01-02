@@ -13,7 +13,7 @@ private import codeql.ruby.dataflow.FlowSummary
  */
 abstract private class Summary extends SimpleSummarizedCallable {
   bindingset[this]
-  Summary() { this = this }
+  Summary() { any() }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     this.propagates(input, output) and preservesValue = true
