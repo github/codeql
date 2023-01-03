@@ -103,6 +103,7 @@ extensions:
       - ["java.lang", "StringBuffer", True, "StringBuffer", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.lang", "StringBuilder", True, "StringBuilder", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.lang", "System", False, "arraycopy", "", "", "Argument[0]", "Argument[2]", "taint", "manual"]
+      - ["java.lang", "System", False, "getProperty", "(String)", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]
       - ["java.lang", "Throwable", False, "Throwable", "(Throwable)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
       - ["java.lang", "Throwable", True, "getCause", "()", "", "Argument[-1].SyntheticField[java.lang.Throwable.cause]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Throwable", True, "getMessage", "()", "", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "value", "manual"]
@@ -113,7 +114,7 @@ extensions:
     data:
       - ["java.lang", "AbstractStringBuilder", "length", "()", "manual"]
       - ["java.lang", "Boolean", "equals", "(Object)", "manual"]
-      - ["java.lang", "Class", "getClassLoader", "()", "manual"] # ! unsure if should be neutral model
+      - ["java.lang", "Class", "getClassLoader", "()", "manual"]
       - ["java.lang", "Class", "getName", "()", "manual"]
       - ["java.lang", "Class", "getSimpleName", "()", "manual"]
       - ["java.lang", "Class", "isAssignableFrom", "(Class)", "manual"]
@@ -127,16 +128,15 @@ extensions:
       - ["java.lang", "Object", "hashCode", "()", "manual"]
       - ["java.lang", "Object", "toString", "()", "manual"]
       - ["java.lang", "String", "contains", "(CharSequence)", "manual"]
-      - ["java.lang", "String", "endsWith", "(String)", "manual"] # ! unsure if should be neutral model since already modeled as a summary above
+      - ["java.lang", "String", "endsWith", "(String)", "manual"] # ! see question on line 65 above
       - ["java.lang", "String", "equals", "(Object)", "manual"]
       - ["java.lang", "String", "equalsIgnoreCase", "(String)", "manual"]
       - ["java.lang", "String", "hashCode", "()", "manual"]
-      - ["java.lang", "String", "indexOf", "(String)", "manual"] # ! unsure if should be neutral model, is flow through the param interesting in this case?
+      - ["java.lang", "String", "indexOf", "(String)", "manual"]
       - ["java.lang", "String", "isEmpty", "()", "manual"]
       - ["java.lang", "String", "length", "()", "manual"]
       - ["java.lang", "String", "startsWith", "(String)", "manual"]
       - ["java.lang", "System", "currentTimeMillis", "()", "manual"]
-      - ["java.lang", "System", "getProperty", "(String)", "manual"] # ! unsure if should be neutral model
       - ["java.lang", "System", "nanoTime", "()", "manual"]
       - ["java.lang", "Thread", "currentThread", "()", "manual"]
-      - ["java.lang", "Thread", "sleep", "(long)", "manual"] # ! unsure if should be neutral model, is flow through the param interesting in this case?
+      - ["java.lang", "Thread", "sleep", "(long)", "manual"]
