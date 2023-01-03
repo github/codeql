@@ -282,3 +282,10 @@ foos = [f, g, some_method_call]
 if foos.include? foo
     foo
 end
+
+case foo
+when g
+    foo # $ guarded
+else
+    foo
+end

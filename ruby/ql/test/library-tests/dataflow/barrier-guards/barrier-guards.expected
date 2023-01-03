@@ -1,5 +1,6 @@
 WARNING: Type BarrierGuard has been deprecated and may be removed in future (barrier-guards.ql:10,3-15)
 failures
+| barrier-guards.rb:288:9:288:19 | # $ guarded | Missing result:guarded= |
 oldStyleBarrierGuards
 | barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:4:5:4:7 | foo | barrier-guards.rb:3:4:3:6 | foo | true |
 | barrier-guards.rb:9:4:9:24 | call to include? | barrier-guards.rb:10:5:10:7 | foo | barrier-guards.rb:9:21:9:23 | foo | true |
@@ -327,6 +328,11 @@ controls
 | barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:278:5:278:7 | foo | match |
 | barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:282:1:284:3 | if ... | match |
 | barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:283:5:283:7 | foo | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:286:1:291:3 | case ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:287:1:288:19 | [match] when ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:287:1:288:19 | [no-match] when ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:288:5:288:7 | foo | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:290:5:290:7 | foo | match |
 | barrier-guards.rb:254:4:254:28 | ... == ... | barrier-guards.rb:255:5:255:7 | foo | true |
 | barrier-guards.rb:259:4:259:16 | ... == ... | barrier-guards.rb:260:5:260:7 | foo | true |
 | barrier-guards.rb:264:4:264:16 | ... == ... | barrier-guards.rb:265:5:265:7 | foo | true |
@@ -335,3 +341,9 @@ controls
 | barrier-guards.rb:271:4:271:19 | call to include? | barrier-guards.rb:272:5:272:7 | foo | true |
 | barrier-guards.rb:277:4:277:20 | call to include? | barrier-guards.rb:278:5:278:7 | foo | true |
 | barrier-guards.rb:282:4:282:20 | call to include? | barrier-guards.rb:283:5:283:7 | foo | true |
+| barrier-guards.rb:287:1:288:19 | [match] when ... | barrier-guards.rb:288:5:288:7 | foo | match |
+| barrier-guards.rb:287:1:288:19 | [no-match] when ... | barrier-guards.rb:290:5:290:7 | foo | no-match |
+| barrier-guards.rb:287:6:287:6 | g | barrier-guards.rb:287:1:288:19 | [match] when ... | match |
+| barrier-guards.rb:287:6:287:6 | g | barrier-guards.rb:287:1:288:19 | [no-match] when ... | no-match |
+| barrier-guards.rb:287:6:287:6 | g | barrier-guards.rb:288:5:288:7 | foo | match |
+| barrier-guards.rb:287:6:287:6 | g | barrier-guards.rb:290:5:290:7 | foo | no-match |
