@@ -21,12 +21,38 @@ module Ssa {
 
     class ExitBasicBlock = BasicBlocks::ExitBasicBlock;
 
-    class SourceVariable = VarDecl;
+    class SourceVariable extends Decl {
+      SourceVariable() {
+        this instanceof VarDecl
+        or
+        this instanceof CapturedDecl
+      }
+
+      DeclRefExpr getAccessInScope(CfgScope scope) {
+        if result = any(SourceVariable v).getCapturedAccessInScope(scope)
+        then result = this.getCapturedAccessInScope(scope)
+        else result = this.getUncapturedAccessInScope(scope)
+      }
+
+      private DeclRefExpr getCapturedAccessInScope(Callable scope) {
+        result = declRefInScope(scope) and
+        this = any(CapturedDecl c | c = scope.getACapture() and c.getDecl() = result.getDecl())
+      }
+
+      private DeclRefExpr getUncapturedAccessInScope(Callable scope) {
+        result = declRefInScope(scope) and
+        result = this.(VarDecl).getAnAccess()
+      }
+    }
+
+    private DeclRefExpr declRefInScope(Callable scope) {
+      any(BasicBlock bb | bb.getScope() = scope).getANode().getNode().asAstNode() = result
+    }
 
     predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       exists(AssignExpr assign |
         bb.getNode(i).getNode().asAstNode() = assign and
-        assign.getDest() = v.getAnAccess() and
+        assign.getDest() = v.getAccessInScope(bb.getScope()) and
         certain = true
       )
       or
@@ -48,6 +74,13 @@ module Ssa {
       bb.getNode(i).getNode().asAstNode() = v and
       certain = true
       or
+      // Mark the creation of a closure as a write of its captures.
+      exists(Callable c |
+        v = c.getACapture() and
+        bb.getNode(i).getNode().asAstNode() = v and
+        certain = true
+      )
+      or
       // Mark the subexpression as a write of the local variable declared in the `TapExpr`.
       exists(TapExpr tap |
         v = tap.getVar() and
@@ -60,19 +93,17 @@ module Ssa {
       exists(DeclRefExpr ref |
         not isLValue(ref) and
         bb.getNode(i).getNode().asAstNode() = ref and
-        v = ref.getDecl() and
+        ref = v.getAccessInScope(bb.getScope()) and
         certain = true
       )
       or
       exists(InOutExpr expr |
         bb.getNode(i).getNode().asAstNode() = expr and
-        expr.getSubExpr() = v.getAnAccess() and
+        expr.getSubExpr() = v.getAccessInScope(bb.getScope()) and
         certain = true
       )
       or
-      exists(ExitNode exit, AbstractFunctionDecl func |
-        func.getAParam() = v or func.getSelfParam() = v
-      |
+      exists(ExitNode exit, Callable func | func.getAParam() = v or func.getSelfParam() = v |
         bb.getNode(i) = exit and
         modifiableParam(v) and
         bb.getScope() = func and
@@ -97,7 +128,7 @@ module Ssa {
 
     cached
     ControlFlowNode getARead() {
-      exists(VarDecl v, SsaInput::BasicBlock bb, int i |
+      exists(SsaInput::SourceVariable v, SsaInput::BasicBlock bb, int i |
         SsaImpl::ssaDefReachesRead(v, this, bb, i) and
         SsaInput::variableRead(bb, i, v, true) and
         result = bb.getNode(i)
