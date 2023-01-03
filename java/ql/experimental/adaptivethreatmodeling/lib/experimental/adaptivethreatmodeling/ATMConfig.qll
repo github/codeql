@@ -52,7 +52,7 @@ abstract class AtmConfig extends TaintTracking::Configuration {
    *
    * Holds if `source` is a known source of flow.
    */
-  predicate isKnownSource(DataFlow::Node source) { none() }
+  abstract predicate isKnownSource(DataFlow::Node source);
 
   /**
    * EXPERIMENTAL. This API may change in the future.
