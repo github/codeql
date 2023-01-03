@@ -65,7 +65,7 @@
 
 private import RangeUtils as Utils
 private import SignAnalysisCommon
-private import ModulusAnalysis
+private import experimental.semmle.code.cpp.semantic.analysis.ModulusAnalysis
 import experimental.semmle.code.cpp.semantic.SemanticExpr
 import experimental.semmle.code.cpp.semantic.SemanticSSA
 import experimental.semmle.code.cpp.semantic.SemanticGuard

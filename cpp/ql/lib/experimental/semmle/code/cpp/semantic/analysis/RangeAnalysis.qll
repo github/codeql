@@ -1,6 +1,6 @@
 private import RangeAnalysisStage
 private import RangeAnalysisSpecific
-private import FloatDelta
+private import experimental.semmle.code.cpp.semantic.analysis.FloatDelta
 private import RangeUtils
 private import experimental.semmle.code.cpp.semantic.SemanticBound as SemanticBound
 

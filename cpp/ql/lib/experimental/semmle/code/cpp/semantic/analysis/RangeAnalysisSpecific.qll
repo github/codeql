@@ -4,7 +4,7 @@
 
 private import experimental.semmle.code.cpp.semantic.Semantic
 private import RangeAnalysisStage
-private import FloatDelta
+private import experimental.semmle.code.cpp.semantic.analysis.FloatDelta
 
 module CppLangImpl implements LangSig<FloatDelta> {
   /**
