@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  prepend_after_action :this_must_run_last
   before_action :set_user
   before_action :ensure_user_can_edit_comments, only: WRITE_ACTIONS
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
@@ -79,6 +80,10 @@ class CommentsController < ApplicationController
   end
 
   def this_must_run_first
+    # for whatever reason
+  end
+
+  def this_must_run_last
     # for whatever reason
   end
 

@@ -237,18 +237,23 @@ module Filters {
       action = other.getAction() and
       (
         not this.isPrepended() and
-        not other.isPrepended() and
         (
-          this.getKind() = TBeforeKind() and
-          this.registeredBefore(other)
+          not other.isPrepended() and
+          (
+            this.getKind() = TBeforeKind() and
+            this.registeredBefore(other)
+            or
+            this.getKind() = TAfterKind() and
+            other.registeredBefore(this)
+          )
           or
-          this.getKind() = TAfterKind() and
-          other.registeredBefore(this)
+          other.isPrepended() and this.getKind() = TAfterKind()
         )
         or
         this.isPrepended() and
         (
-          not other.isPrepended()
+          not other.isPrepended() and
+          this.getKind() = TBeforeKind()
           or
           other.isPrepended() and
           (
