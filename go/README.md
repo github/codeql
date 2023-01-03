@@ -9,17 +9,6 @@ It contains two major components:
   - static analysis libraries and queries written in [CodeQL](https://codeql.github.com/docs/) that can be
     used to analyze such a database to find coding mistakes or security vulnerabilities.
 
-## Installation
-
-Clone this repository.
-
-Run `scripts/install-deps.sh`. This will ensure that the necessary external CodeQL packs are
-downloaded to your machine. You will need to re-run this script whenever you pull new commits from
-the repo.
-
-If you want to use the CodeQL extension for Visual Studio Code, import this repository into your VS
-Code workspace.
-
 ## Usage
 
 To analyze a Go codebase, either use the [CodeQL command-line
