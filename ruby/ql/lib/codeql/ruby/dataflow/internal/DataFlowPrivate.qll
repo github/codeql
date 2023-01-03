@@ -1146,7 +1146,6 @@ private module OutNodes {
 }
 
 import OutNodes
-private import codeql.ruby.frameworks.ActionController
 
 predicate jumpStep(Node pred, Node succ) {
   SsaImpl::captureFlowIn(_, pred.(SsaDefinitionExtNode).getDefinitionExt(),

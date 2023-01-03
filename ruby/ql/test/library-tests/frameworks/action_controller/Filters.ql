@@ -4,4 +4,6 @@ private import codeql.ruby.DataFlow
 
 query predicate filterChain = ActionController::Filters::next/3;
 
-query predicate additionalFlowSteps = ActionController::Filters::additionalJumpStep/2;
+query predicate additionalFlowSteps(DataFlow::Node pred, DataFlow::Node succ) {
+  any(ActionController::Filters::FilterJumpStep s).step(pred, succ)
+}

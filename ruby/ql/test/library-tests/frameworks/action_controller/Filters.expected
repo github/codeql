@@ -1,3 +1,28 @@
+additionalFlowSteps
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/comments_controller.rb:68:3:71:5 | self in ensure_user_can_edit_comments |
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/comments_controller.rb:73:3:75:5 | self in set_comment |
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/comments_controller.rb:85:3:86:5 | self in foo |
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/posts_controller.rb:6:3:7:5 | self in index |
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/posts_controller.rb:17:3:19:5 | self in set_post |
+| controllers/application_controller.rb:11:53:11:59 | self | controllers/application_controller.rb:6:3:8:5 | self in set_user |
+| controllers/application_controller.rb:11:53:11:59 | self | controllers/photos_controller.rb:3:3:6:5 | self in show |
+| controllers/comments_controller.rb:47:3:48:5 | self in create | controllers/comments_controller.rb:77:3:79:5 | self in log_comment_change |
+| controllers/comments_controller.rb:59:15:59:20 | self | controllers/comments_controller.rb:77:3:79:5 | self in log_comment_change |
+| controllers/comments_controller.rb:63:12:63:18 | self | controllers/comments_controller.rb:77:3:79:5 | self in log_comment_change |
+| controllers/comments_controller.rb:70:5:70:68 | self | controllers/comments_controller.rb:73:3:75:5 | self in set_comment |
+| controllers/comments_controller.rb:70:5:70:68 | self | controllers/comments_controller.rb:85:3:86:5 | self in foo |
+| controllers/comments_controller.rb:74:5:74:12 | [post] self | controllers/comments_controller.rb:85:3:86:5 | self in foo |
+| controllers/comments_controller.rb:81:3:83:5 | self in this_must_run_first | controllers/application_controller.rb:10:3:12:5 | self in log_request |
+| controllers/comments_controller.rb:85:3:86:5 | self in foo | controllers/comments_controller.rb:88:3:89:5 | self in bar |
+| controllers/comments_controller.rb:88:3:89:5 | self in bar | controllers/comments_controller.rb:11:3:45:5 | self in index |
+| controllers/comments_controller.rb:88:3:89:5 | self in bar | controllers/comments_controller.rb:47:3:48:5 | self in create |
+| controllers/comments_controller.rb:88:3:89:5 | self in bar | controllers/comments_controller.rb:50:3:56:5 | self in show |
+| controllers/comments_controller.rb:88:3:89:5 | self in bar | controllers/comments_controller.rb:58:3:60:5 | self in photo |
+| controllers/comments_controller.rb:88:3:89:5 | self in bar | controllers/comments_controller.rb:62:3:64:5 | self in destroy |
+| controllers/photos_controller.rb:5:5:5:6 | [post] self | controllers/photos_controller.rb:8:3:9:5 | self in foo |
+| controllers/posts_controller.rb:12:3:13:5 | self in upvote | controllers/posts_controller.rb:21:3:23:5 | self in log_upvote |
+| controllers/posts_controller.rb:18:5:18:9 | [post] self | controllers/posts_controller.rb:9:3:10:5 | self in show |
+| controllers/posts_controller.rb:18:5:18:9 | [post] self | controllers/posts_controller.rb:12:3:13:5 | self in upvote |
 filterChain
 | controllers/comments_controller.rb:11:3:45:5 | index | controllers/application_controller.rb:6:3:8:5 | set_user | controllers/comments_controller.rb:85:3:86:5 | foo |
 | controllers/comments_controller.rb:11:3:45:5 | index | controllers/application_controller.rb:10:3:12:5 | log_request | controllers/application_controller.rb:6:3:8:5 | set_user |
@@ -42,28 +67,3 @@ filterChain
 | controllers/posts_controller.rb:12:3:13:5 | upvote | controllers/application_controller.rb:10:3:12:5 | log_request | controllers/application_controller.rb:6:3:8:5 | set_user |
 | controllers/posts_controller.rb:12:3:13:5 | upvote | controllers/posts_controller.rb:12:3:13:5 | upvote | controllers/posts_controller.rb:21:3:23:5 | log_upvote |
 | controllers/posts_controller.rb:12:3:13:5 | upvote | controllers/posts_controller.rb:17:3:19:5 | set_post | controllers/posts_controller.rb:12:3:13:5 | upvote |
-additionalFlowSteps
-| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/comments_controller.rb:68:3:71:5 | self in ensure_user_can_edit_comments |
-| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/comments_controller.rb:73:3:75:5 | self in set_comment |
-| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/comments_controller.rb:85:3:86:5 | self in foo |
-| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/posts_controller.rb:6:3:7:5 | self in index |
-| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/posts_controller.rb:17:3:19:5 | self in set_post |
-| controllers/application_controller.rb:11:53:11:59 | self | controllers/application_controller.rb:6:3:8:5 | self in set_user |
-| controllers/application_controller.rb:11:53:11:59 | self | controllers/photos_controller.rb:3:3:6:5 | self in show |
-| controllers/comments_controller.rb:47:3:48:5 | self in create | controllers/comments_controller.rb:77:3:79:5 | self in log_comment_change |
-| controllers/comments_controller.rb:59:15:59:20 | self | controllers/comments_controller.rb:77:3:79:5 | self in log_comment_change |
-| controllers/comments_controller.rb:63:12:63:18 | self | controllers/comments_controller.rb:77:3:79:5 | self in log_comment_change |
-| controllers/comments_controller.rb:70:5:70:68 | self | controllers/comments_controller.rb:73:3:75:5 | self in set_comment |
-| controllers/comments_controller.rb:70:5:70:68 | self | controllers/comments_controller.rb:85:3:86:5 | self in foo |
-| controllers/comments_controller.rb:74:5:74:12 | [post] self | controllers/comments_controller.rb:85:3:86:5 | self in foo |
-| controllers/comments_controller.rb:81:3:83:5 | self in this_must_run_first | controllers/application_controller.rb:10:3:12:5 | self in log_request |
-| controllers/comments_controller.rb:85:3:86:5 | self in foo | controllers/comments_controller.rb:88:3:89:5 | self in bar |
-| controllers/comments_controller.rb:88:3:89:5 | self in bar | controllers/comments_controller.rb:11:3:45:5 | self in index |
-| controllers/comments_controller.rb:88:3:89:5 | self in bar | controllers/comments_controller.rb:47:3:48:5 | self in create |
-| controllers/comments_controller.rb:88:3:89:5 | self in bar | controllers/comments_controller.rb:50:3:56:5 | self in show |
-| controllers/comments_controller.rb:88:3:89:5 | self in bar | controllers/comments_controller.rb:58:3:60:5 | self in photo |
-| controllers/comments_controller.rb:88:3:89:5 | self in bar | controllers/comments_controller.rb:62:3:64:5 | self in destroy |
-| controllers/photos_controller.rb:5:5:5:6 | [post] self | controllers/photos_controller.rb:8:3:9:5 | self in foo |
-| controllers/posts_controller.rb:12:3:13:5 | self in upvote | controllers/posts_controller.rb:21:3:23:5 | self in log_upvote |
-| controllers/posts_controller.rb:18:5:18:9 | [post] self | controllers/posts_controller.rb:9:3:10:5 | self in show |
-| controllers/posts_controller.rb:18:5:18:9 | [post] self | controllers/posts_controller.rb:12:3:13:5 | self in upvote |

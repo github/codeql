@@ -392,7 +392,7 @@ module Filters {
   /**
    * Holds if `a` is the syntactically last access of the self variable `v` in method `m`.
    */
-  predicate lastMethodSelfVarAccess(SelfVariableAccessCfgNode a, SelfVariable v, Method m) {
+  private predicate lastMethodSelfVarAccess(SelfVariableAccessCfgNode a, SelfVariable v, Method m) {
     a.getExpr().getEnclosingMethod() = m and
     v = a.getExpr().getVariable() and
     not exists(SelfVariableAccessCfgNode a2 |
@@ -404,7 +404,7 @@ module Filters {
   /**
    * Holds if there is no access to `self` in method `m`.
    */
-  predicate noSelfVarAccess(Method m) {
+  private predicate noSelfVarAccess(Method m) {
     not exists(SelfVariableAccess a | a.getEnclosingMethod() = m)
   }
 
