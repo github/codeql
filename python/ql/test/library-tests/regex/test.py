@@ -62,7 +62,7 @@ re.compile(r'x|')
 #Named group with caret and empty choice.
 re.compile(r'(?:(?P<n1>^(?:|x)))')
 
-#Misparsed on LGTM
+#Misparsed
 re.compile(r"\[(?P<txt>[^[]*)\]\((?P<uri>[^)]*)")
 
 re.compile("", re.M) # ODASA-8056
