@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -59,6 +60,9 @@ public class Test {
             // java.io
             Exception e1 = new IOException((String)source());
             sink((String)e1.getMessage()); // $hasValueFlow
+
+            File f = (File)source();
+            sink(f.getName()); // $hasTaintFlow
 
             // java.lang
             Exception e2 = new Exception((String)source());

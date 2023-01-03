@@ -63,6 +63,7 @@ extensions:
       - ["java.io", "File", True, "getAbsolutePath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getCanonicalFile", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getCanonicalPath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.io", "File", True, "getName", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toPath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toURI", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
@@ -91,4 +92,3 @@ extensions:
       extensible: neutralModel
     data:
       - ["java.io", "File", "exists", "()", "manual"]
-      - ["java.io", "File", "getName", "()", "manual"]  # ! unsure if should be neutral model
