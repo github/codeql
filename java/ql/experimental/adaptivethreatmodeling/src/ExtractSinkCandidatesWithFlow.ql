@@ -14,7 +14,6 @@
 private import java
 import semmle.code.java.dataflow.TaintTracking
 private import experimental.adaptivethreatmodeling.ATMConfig as AtmConfig
-// private import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
 private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
 private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestForgeryAtm
@@ -23,13 +22,13 @@ private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestF
 // private import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
 from DataFlow::PathNode sink, string message
 where
-  exists(AtmConfig::AtmConfig config | config.isSinkCandidateWithFlow(sink)) and
-  // The message is the concatenation of all relevant configs
+  // The message is the concatenation of all relevant configs, and we surface only sinks that have at least one relevant
+  // config.
   message =
-    concat(AtmConfig::AtmConfig config |
+    strictconcat(AtmConfig::AtmConfig config |
       config.isSinkCandidateWithFlow(sink)
     |
-      config.getASinkEndpointType().getDescription() + ", "
+      config.getASinkEndpointType().getDescription(), ", "
       order by
         config.getASinkEndpointType().getDescription()
     )
