@@ -6,7 +6,7 @@
  * Largely copied from semmle.code.java.security.SqlInjectionQuery.
  */
 
-import AdaptiveThreatModeling
+import ATMConfig
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.QueryInjection
 

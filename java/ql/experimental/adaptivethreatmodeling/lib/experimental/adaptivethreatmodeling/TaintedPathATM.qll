@@ -8,7 +8,7 @@
 
 import java
 import semmle.code.java.security.PathSanitizer
-import AdaptiveThreatModeling
+import ATMConfig
 import semmle.code.java.dataflow.FlowSources
 
 class TaintedPathAtmConfig extends AtmConfig {
