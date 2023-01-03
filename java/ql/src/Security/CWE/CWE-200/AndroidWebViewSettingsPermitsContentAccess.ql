@@ -94,7 +94,19 @@ class WebViewDisallowContentAccessConfiguration extends TaintTracking::Configura
   }
 }
 
-from WebViewSource source
-where not any(WebViewDisallowContentAccessConfiguration cfg).hasFlow(source, _)
-select source,
+from Expr e
+where
+  // explicit: setAllowContentAccess(true)
+  exists(MethodAccess ma |
+    ma = e and
+    ma.getMethod() instanceof AllowContentAccessMethod and
+    ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true
+  )
+  or
+  // implicit: no setAllowContentAccess(false)
+  exists(WebViewSource source |
+    source.asExpr() = e and
+    not any(WebViewDisallowContentAccessConfiguration cfg).hasFlow(source, _)
+  )
+select e,
   "Sensitive information may be exposed via a malicious link due to access of content:// links being permitted."
