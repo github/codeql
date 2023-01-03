@@ -240,7 +240,10 @@ signature module BoundSig<DeltaSig D> {
 }
 
 module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<D> UtilParam> {
-  private import Bounds // TODO: remove this import?
+  private import Bounds
+  private import LangParam
+  private import UtilParam
+  private import D
 
   /**
    * An expression that does conversion, boxing, or unboxing
@@ -264,8 +267,8 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
    */
   private class SafeCastExpr extends ConvertOrBoxExpr {
     SafeCastExpr() {
-      conversionCannotOverflow(UtilParam::getTrackedType(pragma[only_bind_into](getOperand())),
-        UtilParam::getTrackedType(this))
+      conversionCannotOverflow(getTrackedType(pragma[only_bind_into](getOperand())),
+        getTrackedType(this))
     }
   }
 
@@ -275,14 +278,14 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
   private class NarrowingCastExpr extends ConvertOrBoxExpr {
     NarrowingCastExpr() {
       not this instanceof SafeCastExpr and
-      typeBound(UtilParam::getTrackedType(this), _, _)
+      typeBound(getTrackedType(this), _, _)
     }
 
     /** Gets the lower bound of the resulting type. */
-    int getLowerBound() { typeBound(UtilParam::getTrackedType(this), result, _) }
+    int getLowerBound() { typeBound(getTrackedType(this), result, _) }
 
     /** Gets the upper bound of the resulting type. */
-    int getUpperBound() { typeBound(UtilParam::getTrackedType(this), _, result) }
+    int getUpperBound() { typeBound(getTrackedType(this), _, result) }
   }
 
   private module SignAnalysisInstantiated = SignAnalysis<D, UtilParam>; // TODO: will this cause reevaluation if it's instantiated with the same DeltaSig and UtilParam multiple times?
@@ -318,7 +321,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
      */
     cached
     predicate possibleReason(SemGuard guard) {
-      guard = boundFlowCond(_, _, _, _, _) or guard = UtilParam::semEqFlowCond(_, _, _, _, _)
+      guard = boundFlowCond(_, _, _, _, _) or guard = semEqFlowCond(_, _, _, _, _)
     }
   }
 
@@ -346,11 +349,11 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
   private predicate boundCondition(
     SemRelationalExpr comp, SemSsaVariable v, SemExpr e, float delta, boolean upper
   ) {
-    comp.getLesserOperand() = UtilParam::semSsaRead(v, D::fromFloat(delta)) and
+    comp.getLesserOperand() = semSsaRead(v, fromFloat(delta)) and
     e = comp.getGreaterOperand() and
     upper = true
     or
-    comp.getGreaterOperand() = UtilParam::semSsaRead(v, D::fromFloat(delta)) and
+    comp.getGreaterOperand() = semSsaRead(v, fromFloat(delta)) and
     e = comp.getLesserOperand() and
     upper = false
     or
@@ -358,7 +361,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
       // (v - d) - e < c
       comp.getLesserOperand() = sub and
       comp.getGreaterOperand() = c and
-      sub.getLeftOperand() = UtilParam::semSsaRead(v, D::fromFloat(d)) and
+      sub.getLeftOperand() = semSsaRead(v, fromFloat(d)) and
       sub.getRightOperand() = e and
       upper = true and
       delta = d + c.getIntValue()
@@ -366,7 +369,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
       // (v - d) - e > c
       comp.getGreaterOperand() = sub and
       comp.getLesserOperand() = c and
-      sub.getLeftOperand() = UtilParam::semSsaRead(v, D::fromFloat(d)) and
+      sub.getLeftOperand() = semSsaRead(v, fromFloat(d)) and
       sub.getRightOperand() = e and
       upper = false and
       delta = d + c.getIntValue()
@@ -375,7 +378,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
       comp.getLesserOperand() = sub and
       comp.getGreaterOperand() = c and
       sub.getLeftOperand() = e and
-      sub.getRightOperand() = UtilParam::semSsaRead(v, D::fromFloat(d)) and
+      sub.getRightOperand() = semSsaRead(v, fromFloat(d)) and
       upper = false and
       delta = d - c.getIntValue()
       or
@@ -383,7 +386,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
       comp.getGreaterOperand() = sub and
       comp.getLesserOperand() = c and
       sub.getLeftOperand() = e and
-      sub.getRightOperand() = UtilParam::semSsaRead(v, D::fromFloat(d)) and
+      sub.getRightOperand() = semSsaRead(v, fromFloat(d)) and
       upper = true and
       delta = d - c.getIntValue()
     )
@@ -453,8 +456,8 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
       ) and
       (
         if
-          UtilParam::getTrackedTypeForSsaVariable(v) instanceof SemIntegerType or
-          UtilParam::getTrackedTypeForSsaVariable(v) instanceof SemAddressType
+          getTrackedTypeForSsaVariable(v) instanceof SemIntegerType or
+          getTrackedTypeForSsaVariable(v) instanceof SemAddressType
         then
           upper = true and strengthen = -1
           or
@@ -479,7 +482,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
       semImplies_v2(result, testIsTrue, boundFlowCond(v, e, delta, upper, testIsTrue0), testIsTrue0)
     )
     or
-    result = UtilParam::semEqFlowCond(v, e, D::fromFloat(delta), true, testIsTrue) and
+    result = semEqFlowCond(v, e, fromFloat(delta), true, testIsTrue) and
     (upper = true or upper = false)
     or
     // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
@@ -487,9 +490,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
     exists(
       SemSsaVariable v2, SemGuard guardEq, boolean eqIsTrue, float d1, float d2, float oldDelta
     |
-      guardEq =
-        UtilParam::semEqFlowCond(v, UtilParam::semSsaRead(v2, D::fromFloat(d1)), D::fromFloat(d2),
-          true, eqIsTrue) and
+      guardEq = semEqFlowCond(v, semSsaRead(v2, fromFloat(d1)), fromFloat(d2), true, eqIsTrue) and
       result = boundFlowCond(v2, e, oldDelta, upper, testIsTrue) and
       // guardEq needs to control guard
       guardEq.directlyControls(result.getBasicBlock(), eqIsTrue) and
@@ -536,7 +537,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
     SemSsaVariable v, SemSsaReadPosition pos, SemExpr e, float delta, boolean upper,
     SemReason reason
   ) {
-    UtilParam::semSsaUpdateStep(v, e, D::fromFloat(delta)) and
+    semSsaUpdateStep(v, e, fromFloat(delta)) and
     pos.hasReadOfVar(v) and
     (upper = true or upper = false) and
     reason = TSemNoReason()
@@ -553,10 +554,10 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
   private predicate unequalFlowStepIntegralSsa(
     SemSsaVariable v, SemSsaReadPosition pos, SemExpr e, float delta, SemReason reason
   ) {
-    UtilParam::getTrackedTypeForSsaVariable(v) instanceof SemIntegerType and
+    getTrackedTypeForSsaVariable(v) instanceof SemIntegerType and
     exists(SemGuard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
-      guard = UtilParam::semEqFlowCond(v, e, D::fromFloat(delta), false, testIsTrue) and
+      guard = semEqFlowCond(v, e, fromFloat(delta), false, testIsTrue) and
       semGuardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
       reason = TSemCondReason(guard)
     )
@@ -564,12 +565,12 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
 
   /** Holds if `e >= 1` as determined by sign analysis. */
   private predicate strictlyPositiveIntegralExpr(SemExpr e) {
-    semStrictlyPositive(e) and UtilParam::getTrackedType(e) instanceof SemIntegerType
+    semStrictlyPositive(e) and getTrackedType(e) instanceof SemIntegerType
   }
 
   /** Holds if `e <= -1` as determined by sign analysis. */
   private predicate strictlyNegativeIntegralExpr(SemExpr e) {
-    semStrictlyNegative(e) and UtilParam::getTrackedType(e) instanceof SemIntegerType
+    semStrictlyNegative(e) and getTrackedType(e) instanceof SemIntegerType
   }
 
   /**
@@ -578,7 +579,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
    * - `upper = false` : `e2 >= e1 + delta`
    */
   private predicate boundFlowStep(SemExpr e2, SemExpr e1, float delta, boolean upper) {
-    UtilParam::semValueFlowStep(e2, e1, D::fromFloat(delta)) and
+    semValueFlowStep(e2, e1, fromFloat(delta)) and
     (upper = true or upper = false)
     or
     e2.(SafeCastExpr).getOperand() = e1 and
@@ -641,7 +642,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
     delta = 0 and
     upper = false
     or
-    LangParam::hasBound(e2, e1, D::fromFloat(delta), upper)
+    hasBound(e2, e1, fromFloat(delta), upper)
   }
 
   /** Holds if `e2 = e1 * factor` and `factor > 0`. */
@@ -883,13 +884,13 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
    * (for `upper = false`) bound of `b`.
    */
   private predicate baseBound(SemExpr e, float b, boolean upper) {
-    LangParam::hasConstantBound(e, D::fromFloat(b), upper)
+    hasConstantBound(e, fromFloat(b), upper)
     or
     upper = false and
     b = 0 and
     semPositive(e.(SemBitAndExpr).getAnOperand()) and
     // REVIEW: We let the language opt out here to preserve original results.
-    not LangParam::ignoreZeroLowerBound(e)
+    not ignoreZeroLowerBound(e)
   }
 
   /**
@@ -923,9 +924,9 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
     SemExpr e, SemBound b, float delta, boolean upper, boolean fromBackEdge, float origdelta,
     SemReason reason
   ) {
-    not Specific::ignoreExprBound(e) and
+    not ignoreExprBound(e) and
     (
-      e = b.getExpr(D::fromFloat(delta)) and
+      e = b.getExpr(fromFloat(delta)) and
       (upper = true or upper = false) and
       fromBackEdge = false and
       origdelta = delta and
