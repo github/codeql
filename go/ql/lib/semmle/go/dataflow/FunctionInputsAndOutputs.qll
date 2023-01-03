@@ -282,7 +282,7 @@ private class OutReceiver extends FunctionOutput, TOutReceiver {
 /**
  * A parameter of a function, viewed as an output.
  *
- * Note that slices passed to varargs parameters using `...` are not included, since in this
+ * Note that slices passed to variadic parameters using `...` are not included, since in this
  * case it is ambiguous whether the output should be the slice itself or one of its elements.
  */
 private class OutParameter extends FunctionOutput, TOutParameter {
@@ -300,9 +300,12 @@ private class OutParameter extends FunctionOutput, TOutParameter {
 
   override DataFlow::Node getExitNode(DataFlow::CallNode c) {
     exists(DataFlow::Node arg |
-      arg = getArgument(c, index) and
-      // exclude slices passed to varargs parameters using `...` calls
+      arg = c.getSyntacticArgument(index) and
+      // exclude slices followed by `...` passed to variadic parameters
       not (c.hasEllipsis() and index = c.getNumArgument() - 1)
+      or
+      arg = c.(DataFlow::MethodCallNode).getReceiver() and
+      index = -1
     |
       result.(DataFlow::PostUpdateNode).getPreUpdateNode() = arg
     )
