@@ -257,12 +257,16 @@ end
 
 F = "foo"
 if foo == "#{F}"
-    foo # $ MISSING: guarded
+    foo # $ guarded
 end
 
 f = "foo"
 if foo == "#{f}"
-    foo # $ MISSING: guarded
+    foo # $ guarded
+end
+
+if foo == "#{f}#{unknown_var}"
+    foo
 end
 
 foo == "foo" && foo # $ guarded
