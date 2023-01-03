@@ -10,6 +10,7 @@ private import codeql.ruby.frameworks.ActiveStorage
 private import codeql.ruby.frameworks.internal.Rails
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.security.OpenSSL
+private import codeql.ruby.dataflow.FlowSummary
 
 /**
  * Provides classes for working with Rails.
@@ -287,5 +288,104 @@ private class CookiesSameSiteProtectionSetting extends Settings::NillableStringl
     result = "Unsetting 'SameSite' can disable same-site cookie restrictions in some browsers."
   }
 }
+
 // TODO: initialization hooks, e.g. before_configuration, after_initialize...
 // TODO: initializers
+private string getErbFileIdentifier(ErbFile erbFile) { result = erbFile.getRelativePath() }
+
+/** A synthetic global to represent the value passed to the `locals` argument of a render call for a specific ERB file. */
+private class LocalAssignsHashSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
+  private ErbFile erbFile;
+  private string id;
+
+  LocalAssignsHashSyntheticGlobal() {
+    this = "LocalAssignsHashSyntheticGlobal+" + id and
+    id = getErbFileIdentifier(erbFile)
+  }
+
+  /** Gets the `ErbFile` which this locals hash is accessible from. */
+  ErbFile getErbFile() { result = erbFile }
+
+  /** Gets the identifier for this particular locals hash synthetic global. */
+  string getId() { result = id }
+}
+
+/** A summary for `render` calls linked to some specific ERB file. */
+private class RenderLocalsSummary extends SummarizedCallable {
+  private string id;
+  private LocalAssignsHashSyntheticGlobal glob;
+
+  RenderLocalsSummary() {
+    this = "rails_render_locals()" + id and
+    glob.getId() = id
+  }
+
+  override Rails::RenderCall getACall() { result.getTemplateFile() = glob.getErbFile() }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "Argument[locals:]" and
+    output = "SyntheticGlobal[" + glob + "]" and
+    preservesValue = true
+  }
+}
+
+/** A summary for calls to `local_assigns` in a view to access a `render` call `locals` hash. */
+private class AccessLocalsSummary extends SummarizedCallable {
+  private string id;
+  private LocalAssignsHashSyntheticGlobal glob;
+
+  AccessLocalsSummary() {
+    this = "rails_local_assigns()" + id and
+    glob.getId() = id
+  }
+
+  override MethodCall getACall() {
+    id = getErbFileIdentifier(result.getLocation().getFile()) and
+    result.getMethodName() = "local_assigns"
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "SyntheticGlobal[" + glob + "]" and
+    output = "ReturnValue" and
+    preservesValue = true
+  }
+}
+
+private string getAMethodNameFromErbFile(ErbFile f) {
+  result = any(MethodCall c | c.getLocation().getFile() = f).getMethodName()
+}
+
+private predicate renderHasLocalsKey(Rails::RenderCall c, string key) {
+  exists(DataFlow::HashLiteralNode hashLitNode, DataFlow::CallNode renderCall |
+    renderCall.asExpr().getExpr() = c and
+    hashLitNode.flowsTo(renderCall.getKeywordArgument("locals"))
+  |
+    key = hashLitNode.getAKeyValuePair().getKey().getConstantValue().getStringlikeValue()
+  )
+}
+
+private class AccessLocalsKeySummary extends SummarizedCallable {
+  private string id;
+  private LocalAssignsHashSyntheticGlobal glob;
+  private string methodName;
+
+  AccessLocalsKeySummary() {
+    this = "rails_locals_key()" + id and
+    id = glob.getId() + "#" + methodName and
+    methodName = getAMethodNameFromErbFile(glob.getErbFile())
+    // TODO: this would cut down massively on impossible flow steps, but fails due to non-monotonic recusrion problems
+    //    and
+    //    renderHasLocalsKey(any(Rails::RenderCall c | c.getTemplateFile() = erbFile), methodName))
+  }
+
+  override MethodCall getACall() {
+    result.getLocation().getFile() = glob.getErbFile() and
+    result.getMethodName() = methodName
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "SyntheticGlobal[" + glob + "].Element[:" + methodName + "]" and
+    output = "ReturnValue" and
+    preservesValue = false
+  }
+}
