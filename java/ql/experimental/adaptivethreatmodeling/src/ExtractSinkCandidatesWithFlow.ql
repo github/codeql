@@ -18,18 +18,15 @@ private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjecti
 private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestForgeryAtm
 
-// private import experimental.adaptivethreatmodeling.XssATM as XssAtm
-// private import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
-from DataFlow::PathNode sink, string message
+from DataFlow::Node sink, string message
 where
   // The message is the concatenation of all relevant configs, and we surface only sinks that have at least one relevant
   // config.
   message =
-    strictconcat(AtmConfig::AtmConfig config |
-      config.isSinkCandidateWithFlow(sink)
+    strictconcat(AtmConfig::AtmConfig config, DataFlow::PathNode sinkPathNode |
+      config.isSinkCandidateWithFlow(sinkPathNode) and
+      sinkPathNode.getNode() = sink
     |
       config.getASinkEndpointType().getDescription(), ", "
-      order by
-        config.getASinkEndpointType().getDescription()
     )
-select sink.getNode(), message
+select sink, message
