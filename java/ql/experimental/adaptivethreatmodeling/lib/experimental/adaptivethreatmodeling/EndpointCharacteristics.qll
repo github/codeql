@@ -320,8 +320,9 @@ private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
 }
 
 /**
- * An EndpointFilterCharacteristic that indicates that an endpoint is a sanitizer for some sink type. A sanitizer can
- * never be a sink.
+ * An EndpointFilterCharacteristic that indicates that an endpoint is an argument to a safe external API method.
+ *
+ * Based on java/ql/lib/semmle/code/java/security/ExternalAPIs.qll.
  *
  * TODO: Is this correct?
  */
@@ -330,7 +331,7 @@ private class SafeExternalApiMethodCharacteristic extends NotASinkCharacteristic
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
     exists(Expr::Call call |
-      n.asExpr() = call.getArgument(_) and
+      n.asExpr() = call.getAnArgument() and
       call.getCallee() instanceof ExternalAPIs::SafeExternalApiMethod
     )
   }
