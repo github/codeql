@@ -8,7 +8,6 @@ private import java as java
 private import semmle.code.java.dataflow.TaintTracking
 import EndpointTypes
 import EndpointCharacteristics as EndpointCharacteristics
-import AdaptiveThreatModeling::ATM::ResultsInfo as AtmResultsInfo
 
 /**
  * EXPERIMENTAL. This API may change in the future.
@@ -127,6 +126,11 @@ abstract class AtmConfig extends TaintTracking::Configuration {
    */
   abstract EndpointType getASinkEndpointType();
 
+  pragma[inline]
+  predicate isFlowLikelyInBaseQuery(DataFlow::Node source, DataFlow::Node sink) {
+    this.isKnownSource(source) and this.isKnownSink(sink)
+  }
+
   /**
    * Holds if if `sink` is an effective sink with flow from `source` which gets used as a sink candidate for scoring
    * with the ML model.
@@ -137,7 +141,7 @@ abstract class AtmConfig extends TaintTracking::Configuration {
       // requires an endpoint to be either a known sink or an effective sink. Known sinks are later filtered out by
       // `isFlowLikelyInBaseQuery`, leaving only effective sinks.
       this.hasFlowPath(source, sink) and
-      not AtmResultsInfo::isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
+      not this.isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
       isEffectiveSink(sink.getNode())
     )
   }

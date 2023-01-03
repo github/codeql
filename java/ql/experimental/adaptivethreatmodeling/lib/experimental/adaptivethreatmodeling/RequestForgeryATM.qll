@@ -8,7 +8,7 @@
  * accidentally.
  */
 
-import AdaptiveThreatModeling
+import ATMConfig
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.RequestForgery
 
