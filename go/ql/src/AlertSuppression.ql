@@ -5,7 +5,7 @@
  * @id go/alert-suppression
  */
 
-private import codeql.suppression.AlertSuppression as AS
+private import codeql.util.suppression.AlertSuppression as AS
 private import semmle.go.Comments as G
 
 class SingleLineComment extends G::Comment {
@@ -15,4 +15,4 @@ class SingleLineComment extends G::Comment {
   }
 }
 
-import AS::Make<SingleLineComment>
+import AS::Make<G::Locatable, SingleLineComment>

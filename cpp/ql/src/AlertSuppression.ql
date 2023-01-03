@@ -5,10 +5,18 @@
  * @id cpp/alert-suppression
  */
 
-private import codeql.suppression.AlertSuppression as AS
+private import codeql.util.suppression.AlertSuppression as AS
 private import semmle.code.cpp.Element
 
-class SingleLineComment extends Comment {
+class AstNode extends Locatable {
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}
+
+class SingleLineComment extends Comment, AstNode {
   private string text;
 
   SingleLineComment() {
@@ -26,14 +34,8 @@ class SingleLineComment extends Comment {
     not text.matches("%\n%")
   }
 
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-
   /** Gets the text in this comment, excluding the leading //. */
   string getText() { result = text }
 }
 
-import AS::Make<SingleLineComment>
+import AS::Make<AstNode, SingleLineComment>

@@ -14,3 +14,9 @@ extensions:
       - ["java.sql", "Statement", True, "executeLargeUpdate", "", "", "Argument[0]", "sql", "manual"]
       - ["java.sql", "Statement", True, "executeQuery", "", "", "Argument[0]", "sql", "manual"]
       - ["java.sql", "Statement", True, "executeUpdate", "", "", "Argument[0]", "sql", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.sql", "ResultSet", True, "getString", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
