@@ -28,4 +28,4 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.sql", "ResultSet", "next", "()", "manual"] # ! unsure if should be neutral model
+      - ["java.sql", "ResultSet", "next", "()", "manual"]

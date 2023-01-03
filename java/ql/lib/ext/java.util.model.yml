@@ -369,7 +369,7 @@ extensions:
       - ["java.util", "Collections", "emptyList", "()", "manual"]
       - ["java.util", "Collections", "emptyMap", "()", "manual"]
       - ["java.util", "Collections", "emptySet", "()", "manual"]
-      - ["java.util", "Date", "Date", "(long)", "manual"] # ! unsure if should be neutral model, is flow through the param interesting in this case?
+      - ["java.util", "Date", "Date", "(long)", "manual"]
       - ["java.util", "Date", "getTime", "()", "manual"]
       - ["java.util", "Iterator", "hasNext", "()", "manual"]
       - ["java.util", "List", "clear", "()", "manual"]
