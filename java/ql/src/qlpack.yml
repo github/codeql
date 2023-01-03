@@ -9,3 +9,4 @@ defaultSuiteFile: codeql-suites/java-code-scanning.qls
 dependencies:
   codeql/java-all: ${workspace}
   codeql/suite-helpers: ${workspace}
+  codeql/util: ${workspace}

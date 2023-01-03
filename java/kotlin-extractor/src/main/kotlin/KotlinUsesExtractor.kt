@@ -643,26 +643,6 @@ open class KotlinUsesExtractor(
         RETURN, GENERIC_ARGUMENT, OTHER
     }
 
-    private fun isOnDeclarationStackWithoutTypeParameters(f: IrFunction) =
-        this is KotlinFileExtractor && this.declarationStack.findOverriddenAttributes(f)?.typeParameters?.isEmpty() == true
-
-    private fun isStaticFunctionOnStackBeforeClass(c: IrClass) =
-        this is KotlinFileExtractor && (this.declarationStack.findFirst { it.first == c || it.second?.isStatic == true })?.second?.isStatic == true
-
-    private fun isUnavailableTypeParameter(t: IrType) =
-        t is IrSimpleType && t.classifier.owner.let { owner ->
-            owner is IrTypeParameter && owner.parent.let { parent ->
-                when (parent) {
-                    is IrFunction -> isOnDeclarationStackWithoutTypeParameters(parent)
-                    is IrClass -> isStaticFunctionOnStackBeforeClass(parent)
-                    else -> false
-                }
-            }
-        }
-
-    private fun argIsUnavailableTypeParameter(t: IrTypeArgument) =
-        t is IrTypeProjection && isUnavailableTypeParameter(t.type)
-
     private fun useSimpleType(s: IrSimpleType, context: TypeContext): TypeResults {
         if (s.abbreviation != null) {
             // TODO: Extract this information
@@ -735,13 +715,11 @@ open class KotlinUsesExtractor(
             }
 
             owner is IrClass -> {
-                val args = if (s.isRawType() || s.arguments.any { argIsUnavailableTypeParameter(it) }) null else s.arguments
+                val args = if (s.isRawType()) null else s.arguments
 
                 return useSimpleTypeClass(owner, args, s.isNullable())
             }
             owner is IrTypeParameter -> {
-                if (isUnavailableTypeParameter(s))
-                    return useType(erase(s), context)
                 val javaResult = useTypeParameter(owner)
                 val aClassId = makeClass("kotlin", "TypeParam") // TODO: Wrong
                 val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
@@ -1474,7 +1452,13 @@ open class KotlinUsesExtractor(
         param.parent.let {
             (it as? IrFunction)?.let { fn ->
                 if (this is KotlinFileExtractor)
-                    this.declarationStack.findOverriddenAttributes(fn)?.id
+                    this.declarationStack.findOverriddenAttributes(fn)?.takeUnless {
+                        // When extracting the `static fun f$default(...)` that accompanies `fun <T> f(val x: T? = defaultExpr, ...)`,
+                        // `f$default` has no type parameters, and so there is no `f$default::T` to refer to.
+                        // We have no good way to extract references to `T` in `defaultExpr`, so we just fall back on describing it
+                        // in terms of `f::T`, even though that type variable ought to be out of scope here.
+                        attribs -> attribs.typeParameters?.isEmpty() == true
+                    }?.id
                 else
                     null
             } ?:

@@ -628,19 +628,21 @@ end
 
 m38()
 
-def m39()
+def m39(x)
     hash = {
         :a => taint(39.1),
         :b => 1,
         :c => taint(39.2)
     }
+    hash[x] = taint(39.3)
+
     hash.transform_keys! {|key| key.to_s }
-    sink (hash["a"]) # $ hasValueFlow=39.1 $ hasValueFlow=39.2
-    sink (hash["b"]) # $ hasValueFlow=39.1 $ hasValueFlow=39.2
-    sink (hash["c"]) # $ hasValueFlow=39.1 $ hasValueFlow=39.2
+    sink (hash["a"]) # $ hasValueFlow=39.1 $ hasValueFlow=39.2 $ hasValueFlow=39.3
+    sink (hash["b"]) # $ hasValueFlow=39.1 $ hasValueFlow=39.2 $ hasValueFlow=39.3
+    sink (hash["c"]) # $ hasValueFlow=39.1 $ hasValueFlow=39.2 $ hasValueFlow=39.3
 end
 
-m39()
+m39(:d)
 
 def m40()
     hash = {

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.math", "BigDecimal", False, "BigDecimal", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]

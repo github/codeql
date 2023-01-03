@@ -29,3 +29,8 @@ predicate calls(Foo f) {
 newtype TPathNode =
   pragma[assume_small_delta]
   TPathNodeMid()
+
+private newtype TPathNode2 =
+  pragma[assume_small_delta]
+  TPathNodeMid2(boolean foo) { foo = true } or
+  TPathNodeSink(string bar) { bar = "bar" }
