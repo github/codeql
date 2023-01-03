@@ -15,17 +15,22 @@ private import codeql.ruby.ast.internal.Constant
  */
 module Filters {
   private newtype TFilterKind =
-    TBeforeFilterKind() or
-    TAfterFilterKind() or
-    TAroundFilterKind()
+    TBeforeKind() or
+    TAfterKind() or
+    TAroundKind()
 
+  /**
+   * Represents the kind of filter.
+   * "before" filters run before the action and "after" filters run after the
+   * action. "around" filters run around the action, `yield`ing to it at will.
+   */
   private class FilterKind extends TFilterKind {
     string toString() {
-      this = TBeforeFilterKind() and result = "before"
+      this = TBeforeKind() and result = "before"
       or
-      this = TAfterFilterKind() and result = "after"
+      this = TAfterKind() and result = "after"
       or
-      this = TAroundFilterKind() and result = "around"
+      this = TAroundKind() and result = "around"
     }
   }
 
@@ -234,10 +239,10 @@ module Filters {
         not this.isPrepended() and
         not other.isPrepended() and
         (
-          this.getKind() = TBeforeFilterKind() and
+          this.getKind() = TBeforeKind() and
           this.registeredBefore(other)
           or
-          this.getKind() = TAfterFilterKind() and
+          this.getKind() = TAfterKind() and
           other.registeredBefore(this)
         )
         or
@@ -247,9 +252,9 @@ module Filters {
           or
           other.isPrepended() and
           (
-            this.getKind() = TBeforeFilterKind() and this.registeredBefore(other)
+            this.getKind() = TBeforeKind() and this.registeredBefore(other)
             or
-            this.getKind() = TAfterFilterKind() and other.registeredBefore(this)
+            this.getKind() = TAfterKind() and other.registeredBefore(this)
           )
         )
       )
@@ -273,11 +278,11 @@ module Filters {
   }
 
   private class BeforeFilter extends Filter {
-    BeforeFilter() { this.getKind() = TBeforeFilterKind() }
+    BeforeFilter() { this.getKind() = TBeforeKind() }
   }
 
   private class AfterFilter extends Filter {
-    AfterFilter() { this.getKind() = TAfterFilterKind() }
+    AfterFilter() { this.getKind() = TAfterKind() }
   }
 
   /**
