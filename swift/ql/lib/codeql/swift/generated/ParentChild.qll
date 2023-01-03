@@ -2566,18 +2566,21 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfMethodRefExpr(
-    MethodRefExpr e, int index, string partialPredicateCall
+  private Element getImmediateChildOfMethodLookupExpr(
+    MethodLookupExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bLookupExpr, int n |
+    exists(int b, int bLookupExpr, int n, int nMethodRef |
       b = 0 and
       bLookupExpr =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLookupExpr(e, i, _)) | i) and
       n = bLookupExpr and
+      nMethodRef = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfLookupExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateMethodRef() and partialPredicateCall = "MethodRef()"
       )
     )
   }
@@ -4978,7 +4981,7 @@ private module Impl {
     or
     result = getImmediateChildOfMetatypeConversionExpr(e, index, partialAccessor)
     or
-    result = getImmediateChildOfMethodRefExpr(e, index, partialAccessor)
+    result = getImmediateChildOfMethodLookupExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfNilLiteralExpr(e, index, partialAccessor)
     or

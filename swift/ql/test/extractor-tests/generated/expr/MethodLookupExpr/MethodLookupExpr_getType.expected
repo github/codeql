@@ -1,0 +1,32 @@
+| file://:0:0:0:0 | UnownedSerialExecutor.init(_:) | (Builtin.Executor) -> UnownedSerialExecutor |
+| method_lookups.swift:7:13:7:13 | (no string representation) | (Int) -> () |
+| method_lookups.swift:7:13:7:13 | .baz(_:) | (Int) -> () |
+| method_lookups.swift:16:13:16:13 | (no string representation) | (Int) -> () |
+| method_lookups.swift:16:13:16:13 | .baz(_:) | (Int) -> () |
+| method_lookups.swift:27:13:27:13 | (no string representation) | @MainActor (Int) -> () |
+| method_lookups.swift:27:13:27:13 | .baz(_:) | (Int) -> () |
+| method_lookups.swift:32:3:32:5 | .foo(_:_:) | (Int, Int) -> () |
+| method_lookups.swift:33:3:33:5 | .bar() | () -> () |
+| method_lookups.swift:34:3:34:3 | X.init() | () -> X |
+| method_lookups.swift:34:3:34:7 | .baz(_:) | (Int) -> () |
+| method_lookups.swift:36:11:36:13 | (no string representation) | () -> () |
+| method_lookups.swift:36:13:36:13 | .bar() | () -> () |
+| method_lookups.swift:37:11:37:11 | X.init() | () -> X |
+| method_lookups.swift:37:11:37:15 | (no string representation) | (Int) -> () |
+| method_lookups.swift:37:15:37:15 | .baz(_:) | (Int) -> () |
+| method_lookups.swift:40:1:40:1 | Task<Success, Never>.init(priority:operation:) | (TaskPriority?, __owned @escaping @Sendable () async -> ()) -> Task<(), Never> |
+| method_lookups.swift:41:3:41:5 | .foo(_:_:) | (Int, Int) -> () |
+| method_lookups.swift:42:9:42:9 | Y.init() | () -> Y |
+| method_lookups.swift:42:9:42:13 | .baz(_:) | (Int) -> () |
+| method_lookups.swift:44:11:44:13 | (no string representation) | (Int, Int) -> () |
+| method_lookups.swift:44:13:44:13 | .foo(_:_:) | (Int, Int) -> () |
+| method_lookups.swift:47:1:47:1 | Task<Success, Never>.init(priority:operation:) | (TaskPriority?, __owned @escaping @Sendable () async -> ()) -> Task<(), Never> |
+| method_lookups.swift:48:9:48:11 | .foo(_:_:) | @MainActor (Int, Int) -> () |
+| method_lookups.swift:49:9:49:11 | .bar() | @MainActor () -> () |
+| method_lookups.swift:50:9:50:9 | Z.init() | @MainActor () -> Z |
+| method_lookups.swift:50:9:50:13 | .baz(_:) | @MainActor (Int) -> () |
+| method_lookups.swift:52:11:52:13 | (no string representation) | @MainActor () -> () |
+| method_lookups.swift:52:13:52:13 | .bar() | () -> () |
+| method_lookups.swift:53:11:53:23 | (no string representation) | @MainActor (Int) -> () |
+| method_lookups.swift:53:18:53:18 | Z.init() | @MainActor () -> Z |
+| method_lookups.swift:53:23:53:23 | .baz(_:) | (Int) -> () |

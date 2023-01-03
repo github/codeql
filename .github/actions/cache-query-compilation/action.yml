@@ -23,20 +23,19 @@ runs:
       run: |
         MERGE_BASE=$(git cat-file commit $GITHUB_SHA | grep '^parent ' | head -1 | cut -f 2 -d " ")
         echo "merge_base=$MERGE_BASE" >> $GITHUB_ENV
-    - name: Restore read-only cache (PR)
+    - name: Restore cache (PR)
       if: ${{ github.event_name == 'pull_request' }}
-      uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
+      uses: actions/cache/restore@v3
       with:
         path: '**/.cache'
-        read-only: true
         key: codeql-compile-${{ inputs.key }}-pr-${{ github.sha }}
         restore-keys: |
           codeql-compile-${{ inputs.key }}-${{ github.base_ref }}-${{ env.merge_base }}
           codeql-compile-${{ inputs.key }}-${{ github.base_ref }}-
           codeql-compile-${{ inputs.key }}-main-
-    - name: Fill cache (push)
+    - name: Fill cache (only branch push)
       if: ${{ github.event_name != 'pull_request' }}
-      uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
+      uses: actions/cache@v3
       with:
         path: '**/.cache'
         key: codeql-compile-${{ inputs.key }}-${{ github.ref_name }}-${{ github.sha }} # just fill on main

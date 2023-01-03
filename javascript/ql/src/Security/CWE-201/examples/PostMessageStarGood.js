@@ -1,1 +1,1 @@
-window.parent.postMessage(userName, 'https://lgtm.com');
+window.parent.postMessage(userName, 'https://github.com');

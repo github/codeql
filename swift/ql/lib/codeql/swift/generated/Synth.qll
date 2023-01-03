@@ -144,7 +144,7 @@ module Synth {
     } or
     TMemberRefExpr(Raw::MemberRefExpr id) { constructMemberRefExpr(id) } or
     TMetatypeConversionExpr(Raw::MetatypeConversionExpr id) { constructMetatypeConversionExpr(id) } or
-    TMethodRefExpr(Raw::DotSyntaxCallExpr id) { constructMethodRefExpr(id) } or
+    TMethodLookupExpr(Raw::SelfApplyExpr id) { constructMethodLookupExpr(id) } or
     TNilLiteralExpr(Raw::NilLiteralExpr id) { constructNilLiteralExpr(id) } or
     TObjCSelectorExpr(Raw::ObjCSelectorExpr id) { constructObjCSelectorExpr(id) } or
     TObjectLiteralExpr(Raw::ObjectLiteralExpr id) { constructObjectLiteralExpr(id) } or
@@ -404,7 +404,7 @@ module Synth {
     TBuiltinLiteralExpr or TInterpolatedStringLiteralExpr or TNilLiteralExpr or
         TObjectLiteralExpr or TRegexLiteralExpr;
 
-  class TLookupExpr = TDynamicLookupExpr or TMemberRefExpr or TMethodRefExpr or TSubscriptExpr;
+  class TLookupExpr = TDynamicLookupExpr or TMemberRefExpr or TMethodLookupExpr or TSubscriptExpr;
 
   class TNumberLiteralExpr = TFloatLiteralExpr or TIntegerLiteralExpr;
 
@@ -885,7 +885,7 @@ module Synth {
   }
 
   cached
-  TMethodRefExpr convertMethodRefExprFromRaw(Raw::Element e) { result = TMethodRefExpr(e) }
+  TMethodLookupExpr convertMethodLookupExprFromRaw(Raw::Element e) { result = TMethodLookupExpr(e) }
 
   cached
   TNilLiteralExpr convertNilLiteralExprFromRaw(Raw::Element e) { result = TNilLiteralExpr(e) }
@@ -1841,7 +1841,7 @@ module Synth {
     or
     result = convertMemberRefExprFromRaw(e)
     or
-    result = convertMethodRefExprFromRaw(e)
+    result = convertMethodLookupExprFromRaw(e)
     or
     result = convertSubscriptExprFromRaw(e)
   }
@@ -2523,7 +2523,7 @@ module Synth {
   }
 
   cached
-  Raw::Element convertMethodRefExprToRaw(TMethodRefExpr e) { e = TMethodRefExpr(result) }
+  Raw::Element convertMethodLookupExprToRaw(TMethodLookupExpr e) { e = TMethodLookupExpr(result) }
 
   cached
   Raw::Element convertNilLiteralExprToRaw(TNilLiteralExpr e) { e = TNilLiteralExpr(result) }
@@ -3479,7 +3479,7 @@ module Synth {
     or
     result = convertMemberRefExprToRaw(e)
     or
-    result = convertMethodRefExprToRaw(e)
+    result = convertMethodLookupExprToRaw(e)
     or
     result = convertSubscriptExprToRaw(e)
   }

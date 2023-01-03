@@ -25,4 +25,8 @@ class Test end # lgtm
 # LGTM[rb/confusing-method-name]
 #lgtm[rb/confusing-method-name] and lgtm[rb/non-short-circuit-evaluation]
 #lgtm[rb/confusing-method-name]; lgtm
+# codeql[js/debugger-statement]
+# CODEQL[js/debugger-statement]
+# codeql[js/debugger-statement] -- because I know better than codeql
+foo # codeql[js/debugger-statement]
 
