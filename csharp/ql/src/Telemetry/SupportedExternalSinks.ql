@@ -3,7 +3,7 @@
  * @description A list of 3rd party APIs detected as sinks. Excludes APIs exposed by test libraries.
  * @kind metric
  * @tags summary telemetry
- * @id csharp/telemetry/supported-external-api-sinks
+ * @id cs/telemetry/supported-external-api-sinks
  */
 
 private import csharp
