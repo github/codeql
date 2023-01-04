@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-01-04-09h30m22s.serene-pear-w17p12fc.ba245cef0c188518ce40e80a8fa4833dfdbe3887658865e38da0be43bed17455
+compiled: false
