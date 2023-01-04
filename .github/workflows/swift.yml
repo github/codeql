@@ -7,95 +7,77 @@ on:
       - "misc/bazel/**"
       - "*.bazel*"
       - .github/workflows/swift.yml
-      - .github/actions/fetch-codeql/action.yml
+      - .github/actions/**
       - codeql-workspace.yml
       - .pre-commit-config.yaml
       - "!**/*.md"
       - "!**/*.qhelp"
     branches:
       - main
+      - rc/*
+  push:
+    paths:
+      - "swift/**"
+      - "misc/bazel/**"
+      - "*.bazel*"
+      - .github/workflows/swift.yml
+      - .github/actions/**
+      - codeql-workspace.yml
+      - "!**/*.md"
+      - "!**/*.qhelp"
+    branches:
+      - main
+      - rc/*
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    outputs:
-      codegen: ${{ steps.filter.outputs.codegen }}
-      ql: ${{ steps.filter.outputs.ql }}
-    steps:
-      - uses: dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50
-        id: filter
-        with:
-          filters: |
-            codegen:
-              - '.github/workflows/swift.yml'
-              - "misc/bazel/**"
-              - "*.bazel*"
-              - 'swift/actions/setup-env/**'
-              - '.pre-commit-config.yaml'
-              - 'swift/codegen/**'
-              - 'swift/schema.py'
-              - 'swift/**/*.dbscheme'
-              - 'swift/ql/lib/codeql/swift/elements.qll'
-              - 'swift/ql/lib/codeql/swift/elements/**'
-              - 'swift/ql/lib/codeql/swift/generated/**'
-              - 'swift/ql/test/extractor-tests/generated/**'
-            ql:
-              - 'github/workflows/swift.yml'
-              - 'swift/**/*.ql'
-              - 'swift/**/*.qll'
   # not using a matrix as you cannot depend on a specific job in a matrix, and we want to start linux checks
   # without waiting for the macOS build
   build-and-test-macos:
     runs-on: macos-12-xl
     steps:
       - uses: actions/checkout@v3
-      - uses: ./swift/actions/create-extractor-pack
-      - uses: ./swift/actions/run-quick-tests
-      - uses: ./swift/actions/print-unextracted
+      - uses: ./swift/actions/build-and-test
   build-and-test-linux:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest-xl
     steps:
       - uses: actions/checkout@v3
-      - uses: ./swift/actions/create-extractor-pack
-      - uses: ./swift/actions/run-quick-tests
-      - uses: ./swift/actions/print-unextracted
+      - uses: ./swift/actions/build-and-test
   qltests-linux:
     needs: build-and-test-linux
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-xl
     steps:
       - uses: actions/checkout@v3
       - uses: ./swift/actions/run-ql-tests
   qltests-macos:
+    if : ${{ github.event_name == 'pull_request' }}
     needs: build-and-test-macos
     runs-on: macos-12-xl
-    strategy:
-      fail-fast: false
-      matrix:
-        slice: ["1/2", "2/2"]
     steps:
       - uses: actions/checkout@v3
       - uses: ./swift/actions/run-ql-tests
-        with:
-          flags: --slice ${{ matrix.slice }}
   integration-tests-linux:
     needs: build-and-test-linux
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-xl
     steps:
       - uses: actions/checkout@v3
       - uses: ./swift/actions/run-integration-tests
   integration-tests-macos:
+    if : ${{ github.event_name == 'pull_request' }}
     needs: build-and-test-macos
     runs-on: macos-12-xl
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
       - uses: ./swift/actions/run-integration-tests
   codegen:
+    if : ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
-    needs: changes
-    if: ${{ needs.changes.outputs.codegen == 'true' }}
     steps:
       - uses: actions/checkout@v3
-      - uses: ./swift/actions/setup-env
+      - uses: bazelbuild/setup-bazelisk@v2
+      - uses: actions/setup-python@v4
+        with:
+          python-version-file: 'swift/.python-version'
       - uses: pre-commit/action@v3.0.0
         name: Check that python code is properly formatted
         with:
@@ -113,6 +95,7 @@ jobs:
           name: swift-generated-cpp-files
           path: generated-cpp-files/**
   database-upgrade-scripts:
+    if : ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

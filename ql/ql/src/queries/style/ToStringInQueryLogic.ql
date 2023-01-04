@@ -2,7 +2,7 @@
  * @name Using 'toString' in query logic
  * @description A query should not depend on the output of 'toString'.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @id ql/to-string-in-logic
  * @precision medium
  * @tags maintainability

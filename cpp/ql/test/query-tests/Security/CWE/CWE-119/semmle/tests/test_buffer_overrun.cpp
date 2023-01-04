@@ -29,7 +29,7 @@ void test_buffer_overrun_in_while_loop_using_array_indexing()
     }
 }
 
-int main(int argc, char *argv[])
+int test_buffer_overrun_main(int argc, char *argv[])
 {
     test_buffer_overrun_in_for_loop();
     test_buffer_overrun_in_while_loop_using_pointer_arithmetic();

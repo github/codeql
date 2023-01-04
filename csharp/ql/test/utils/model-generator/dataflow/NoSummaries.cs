@@ -132,3 +132,14 @@ public class CollectionFlow
         return a;
     }
 }
+
+// A neutral model should not be created for a parameterless constructor.
+public class ParameterlessConstructor
+{
+    public bool IsInitialized;
+
+    public ParameterlessConstructor()
+    {
+        IsInitialized = true;
+    }
+}

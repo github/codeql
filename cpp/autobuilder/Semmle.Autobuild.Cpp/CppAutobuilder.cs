@@ -2,9 +2,26 @@
 
 namespace Semmle.Autobuild.Cpp
 {
-    public class CppAutobuilder : Autobuilder
+    /// <summary>
+    /// Encapsulates C++ build options.
+    /// </summary>
+    public class CppAutobuildOptions : AutobuildOptionsShared
     {
-        public CppAutobuilder(IBuildActions actions, AutobuildOptions options) : base(actions, options) { }
+        public override Language Language => Language.Cpp;
+
+
+        /// <summary>
+        /// Reads options from environment variables.
+        /// Throws ArgumentOutOfRangeException for invalid arguments.
+        /// </summary>
+        public CppAutobuildOptions(IBuildActions actions) : base(actions)
+        {
+        }
+    }
+
+    public class CppAutobuilder : Autobuilder<CppAutobuildOptions>
+    {
+        public CppAutobuilder(IBuildActions actions, CppAutobuildOptions options) : base(actions, options) { }
 
         public override BuildScript GetBuildScript()
         {

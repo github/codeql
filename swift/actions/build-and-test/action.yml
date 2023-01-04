@@ -1,0 +1,77 @@
+name: Build Swift CodeQL pack
+description: Builds the Swift CodeQL pack
+runs:
+  using: composite
+  steps:
+    - uses: bazelbuild/setup-bazelisk@v2
+    - uses: actions/setup-python@v4
+      with:
+        python-version-file: 'swift/.python-version'
+    # FIXME: this is copy-pasted from .github/actions/cache-query-compilation, but we cannot factor it out to a common
+    # composite action because of https://github.com/actions/runner/issues/2009 (cache fails to save in the post action
+    # phase because its inputs were lost in the meantime)
+    # calculate the merge-base with main, in a way that works both on PRs and pushes to main.
+    - name: Calculate merge-base
+      shell: bash
+      if: ${{ github.event_name == 'pull_request' }}
+      env:
+        BASE_BRANCH: ${{ github.base_ref }}
+      run: |
+        MERGE_BASE=$(git cat-file commit $GITHUB_SHA | grep '^parent ' | head -1 | cut -f 2 -d " ")
+        echo "merge_base=$MERGE_BASE" >> $GITHUB_ENV
+    - name: Restore read-only cache (PR)
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: actions/cache/restore@v3
+      with:
+        path: 'bazel-cache'
+        key: bazel-pr-${{ github.sha }}
+        restore-keys: |
+          bazel-${{ github.base_ref }}-${{ env.merge_base }}
+          bazel-${{ github.base_ref }}-
+          bazel-main-
+    - name: Fill cache (push)
+      if: ${{ github.event_name != 'pull_request' }}
+      uses: actions/cache@v3
+      with:
+        path: 'bazel-cache'
+        key: bazel-${{ github.ref_name }}-${{ github.sha }} # just fill on main
+        restore-keys: | # restore the latest cache if the exact cache is unavailable, to speed up compilation.
+          bazel-${{ github.ref_name }}-
+          bazel-main-
+    - name: Configure bazel
+      shell: bash
+      run: |
+        mkdir -p bazel-cache/{repository,disk}
+        echo build --repository_cache=bazel-cache/repository --disk_cache=bazel-cache/disk > local.bazelrc
+        echo test --test_output=errors >> local.bazelrc
+    - name: Print unextracted entities
+      shell: bash
+      run: |
+        bazel run //swift/extractor/print_unextracted
+    - uses: ./swift/actions/share-extractor-pack
+    - name: Build Swift extractor
+      shell: bash
+      run: |
+        bazel run //swift:create-extractor-pack
+    - name: Run xcode-autobuilder tests
+      if : ${{ github.event_name == 'pull_request' && runner.os == 'macOS' }}
+      shell: bash
+      run: |
+        bazel test //swift/xcode-autobuilder/tests
+    - name: Run codegen tests
+      if : ${{ github.event_name == 'pull_request' }}
+      shell: bash
+      run: |
+        bazel test //swift/codegen/test
+    - name: Run qltest tests
+      if : ${{ github.event_name == 'pull_request' }}
+      shell: bash
+      run: |
+        bazel test //swift/tools/test/qltest
+    - name: Evict bazel cache
+      if: ${{ github.event_name != 'pull_request' }}
+      shell: bash
+      run: |
+        du -sh bazel-cache/*
+        find bazel-cache -atime +0 -type f -delete
+        du -sh bazel-cache/*

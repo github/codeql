@@ -1,0 +1,44 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.util.logging", "Logger", True, "config", "", "", "Argument[0]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "entering", "(String,String)", "", "Argument[0..1]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "entering", "(String,String,Object)", "", "Argument[0..2]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "entering", "(String,String,Object[])", "", "Argument[0..2]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "exiting", "(String,String)", "", "Argument[0..1]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "exiting", "(String,String,Object)", "", "Argument[0..2]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "fine", "", "", "Argument[0]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "finer", "", "", "Argument[0]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "finest", "", "", "Argument[0]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "info", "", "", "Argument[0]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "log", "(Level,String)", "", "Argument[1]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "log", "(Level,String,Object)", "", "Argument[1..2]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "log", "(Level,String,Object[])", "", "Argument[1..2]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "log", "(Level,String,Throwable)", "", "Argument[1]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "log", "(Level,Supplier)", "", "Argument[1]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "log", "(Level,Throwable,Supplier)", "", "Argument[2]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "log", "(LogRecord)", "", "Argument[0]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logp", "(Level,String,String,String)", "", "Argument[1..3]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logp", "(Level,String,String,String,Object)", "", "Argument[1..4]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logp", "(Level,String,String,String,Object[])", "", "Argument[1..4]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logp", "(Level,String,String,String,Throwable)", "", "Argument[1..3]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logp", "(Level,String,String,Supplier)", "", "Argument[1..3]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logp", "(Level,String,String,Throwable,Supplier)", "", "Argument[1..2]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logp", "(Level,String,String,Throwable,Supplier)", "", "Argument[4]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logrb", "(Level,String,String,ResourceBundle,String,Object[])", "", "Argument[1..2]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logrb", "(Level,String,String,ResourceBundle,String,Object[])", "", "Argument[4..5]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logrb", "(Level,String,String,ResourceBundle,String,Throwable)", "", "Argument[1..2]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logrb", "(Level,String,String,ResourceBundle,String,Throwable)", "", "Argument[4]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logrb", "(Level,String,String,String,String)", "", "Argument[1..4]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logrb", "(Level,String,String,String,String,Object)", "", "Argument[1..5]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logrb", "(Level,String,String,String,String,Object[])", "", "Argument[1..5]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "logrb", "(Level,String,String,String,String,Throwable)", "", "Argument[1..4]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "severe", "", "", "Argument[0]", "logging", "manual"]
+      - ["java.util.logging", "Logger", True, "warning", "", "", "Argument[0]", "logging", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.util.logging", "LogRecord", False, "LogRecord", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]

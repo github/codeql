@@ -1,128 +1,111 @@
 edges
-| test.go:77:13:77:16 | &... : pointer type | test.go:78:13:78:29 | type conversion |
-| test.go:77:13:77:16 | &... : pointer type | test.go:79:13:79:43 | type conversion |
-| test.go:77:13:77:16 | &... : pointer type | test.go:79:20:79:33 | selection of substructs : slice type |
-| test.go:77:13:77:16 | &... : pointer type | test.go:79:20:79:36 | index expression : SubStruct |
-| test.go:79:20:79:33 | selection of substructs : slice type | test.go:79:13:79:43 | type conversion |
-| test.go:79:20:79:33 | selection of substructs : slice type | test.go:79:20:79:36 | index expression : SubStruct |
-| test.go:79:20:79:36 | index expression : SubStruct | test.go:79:13:79:43 | type conversion |
-| test.go:82:22:82:26 | &... : pointer type | test.go:83:13:83:30 | type conversion |
-| test.go:86:21:86:25 | &... : pointer type | test.go:87:13:87:30 | type conversion |
-| test.go:92:20:92:36 | call to Value : string | test.go:92:13:92:37 | type conversion |
-| test.go:93:20:93:39 | call to RawValue : basic interface type | test.go:93:13:93:49 | type conversion |
-| test.go:94:20:94:37 | call to String : string | test.go:94:13:94:38 | type conversion |
-| test.go:95:20:95:36 | call to Value : string | test.go:95:13:95:37 | type conversion |
-| test.go:96:20:96:39 | call to RawValue : basic interface type | test.go:96:13:96:49 | type conversion |
-| test.go:97:20:97:37 | call to String : string | test.go:97:13:97:38 | type conversion |
-| test.go:98:20:98:37 | call to Value : string | test.go:98:13:98:38 | type conversion |
-| test.go:99:20:99:40 | call to RawValue : basic interface type | test.go:99:13:99:50 | type conversion |
-| test.go:100:20:100:38 | call to String : string | test.go:100:13:100:39 | type conversion |
-| test.go:106:9:106:13 | &... : pointer type | test.go:107:13:107:33 | type conversion |
-| test.go:106:9:106:13 | &... : pointer type | test.go:107:20:107:26 | implicit dereference : MyStruct |
-| test.go:106:9:106:13 | &... : pointer type | test.go:107:20:107:26 | index expression : pointer type |
-| test.go:107:20:107:26 | implicit dereference : MyStruct | test.go:107:13:107:33 | type conversion |
-| test.go:107:20:107:26 | implicit dereference : MyStruct | test.go:107:20:107:26 | implicit dereference : MyStruct |
-| test.go:107:20:107:26 | implicit dereference : MyStruct | test.go:107:20:107:26 | index expression : pointer type |
-| test.go:107:20:107:26 | index expression : pointer type | test.go:107:13:107:33 | type conversion |
-| test.go:107:20:107:26 | index expression : pointer type | test.go:107:20:107:26 | implicit dereference : MyStruct |
-| test.go:107:20:107:26 | index expression : pointer type | test.go:107:20:107:26 | index expression : pointer type |
-| test.go:110:9:110:12 | &... : pointer type | test.go:111:13:111:29 | type conversion |
-| test.go:114:12:114:19 | &... : pointer type | test.go:115:13:115:48 | type conversion |
-| test.go:118:16:118:24 | &... : pointer type | test.go:119:13:119:43 | type conversion |
-| test.go:122:16:122:23 | &... : pointer type | test.go:123:13:123:39 | type conversion |
-| test.go:126:15:126:24 | &... : pointer type | test.go:127:13:127:47 | type conversion |
-| test.go:130:18:130:30 | &... : pointer type | test.go:131:13:131:38 | type conversion |
-| test.go:137:12:137:19 | &... : pointer type | test.go:138:13:138:48 | type conversion |
-| test.go:141:16:141:24 | &... : pointer type | test.go:142:13:142:43 | type conversion |
-| test.go:145:16:145:23 | &... : pointer type | test.go:146:13:146:39 | type conversion |
-| test.go:149:15:149:24 | &... : pointer type | test.go:150:13:150:47 | type conversion |
-| test.go:153:18:153:30 | &... : pointer type | test.go:154:13:154:38 | type conversion |
-| test.go:157:14:157:22 | &... : pointer type | test.go:158:13:158:28 | type conversion |
-| test.go:161:15:161:24 | &... : pointer type | test.go:162:13:162:32 | type conversion |
+| test.go:77:13:77:16 | &... | test.go:78:13:78:29 | type conversion |
+| test.go:77:13:77:16 | &... | test.go:79:13:79:43 | type conversion |
+| test.go:82:22:82:26 | &... | test.go:83:13:83:30 | type conversion |
+| test.go:86:21:86:25 | &... | test.go:87:13:87:30 | type conversion |
+| test.go:92:20:92:36 | call to Value | test.go:92:13:92:37 | type conversion |
+| test.go:93:20:93:39 | call to RawValue | test.go:93:13:93:49 | type conversion |
+| test.go:94:20:94:37 | call to String | test.go:94:13:94:38 | type conversion |
+| test.go:95:20:95:36 | call to Value | test.go:95:13:95:37 | type conversion |
+| test.go:96:20:96:39 | call to RawValue | test.go:96:13:96:49 | type conversion |
+| test.go:97:20:97:37 | call to String | test.go:97:13:97:38 | type conversion |
+| test.go:98:20:98:37 | call to Value | test.go:98:13:98:38 | type conversion |
+| test.go:99:20:99:40 | call to RawValue | test.go:99:13:99:50 | type conversion |
+| test.go:100:20:100:38 | call to String | test.go:100:13:100:39 | type conversion |
+| test.go:106:9:106:13 | &... | test.go:107:13:107:33 | type conversion |
+| test.go:110:9:110:12 | &... | test.go:111:13:111:29 | type conversion |
+| test.go:114:12:114:19 | &... | test.go:115:13:115:48 | type conversion |
+| test.go:118:16:118:24 | &... | test.go:119:13:119:43 | type conversion |
+| test.go:122:16:122:23 | &... | test.go:123:13:123:39 | type conversion |
+| test.go:126:15:126:24 | &... | test.go:127:13:127:47 | type conversion |
+| test.go:130:18:130:30 | &... | test.go:131:13:131:38 | type conversion |
+| test.go:137:12:137:19 | &... | test.go:138:13:138:48 | type conversion |
+| test.go:141:16:141:24 | &... | test.go:142:13:142:43 | type conversion |
+| test.go:145:16:145:23 | &... | test.go:146:13:146:39 | type conversion |
+| test.go:149:15:149:24 | &... | test.go:150:13:150:47 | type conversion |
+| test.go:153:18:153:30 | &... | test.go:154:13:154:38 | type conversion |
+| test.go:157:14:157:22 | &... | test.go:158:13:158:28 | type conversion |
+| test.go:161:15:161:24 | &... | test.go:162:13:162:32 | type conversion |
 nodes
-| test.go:77:13:77:16 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:77:13:77:16 | &... | semmle.label | &... |
 | test.go:78:13:78:29 | type conversion | semmle.label | type conversion |
 | test.go:79:13:79:43 | type conversion | semmle.label | type conversion |
-| test.go:79:20:79:33 | selection of substructs : slice type | semmle.label | selection of substructs : slice type |
-| test.go:79:20:79:36 | index expression : SubStruct | semmle.label | index expression : SubStruct |
-| test.go:82:22:82:26 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:82:22:82:26 | &... | semmle.label | &... |
 | test.go:83:13:83:30 | type conversion | semmle.label | type conversion |
-| test.go:86:21:86:25 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:86:21:86:25 | &... | semmle.label | &... |
 | test.go:87:13:87:30 | type conversion | semmle.label | type conversion |
 | test.go:92:13:92:37 | type conversion | semmle.label | type conversion |
-| test.go:92:20:92:36 | call to Value : string | semmle.label | call to Value : string |
+| test.go:92:20:92:36 | call to Value | semmle.label | call to Value |
 | test.go:93:13:93:49 | type conversion | semmle.label | type conversion |
-| test.go:93:20:93:39 | call to RawValue : basic interface type | semmle.label | call to RawValue : basic interface type |
+| test.go:93:20:93:39 | call to RawValue | semmle.label | call to RawValue |
 | test.go:94:13:94:38 | type conversion | semmle.label | type conversion |
-| test.go:94:20:94:37 | call to String : string | semmle.label | call to String : string |
+| test.go:94:20:94:37 | call to String | semmle.label | call to String |
 | test.go:95:13:95:37 | type conversion | semmle.label | type conversion |
-| test.go:95:20:95:36 | call to Value : string | semmle.label | call to Value : string |
+| test.go:95:20:95:36 | call to Value | semmle.label | call to Value |
 | test.go:96:13:96:49 | type conversion | semmle.label | type conversion |
-| test.go:96:20:96:39 | call to RawValue : basic interface type | semmle.label | call to RawValue : basic interface type |
+| test.go:96:20:96:39 | call to RawValue | semmle.label | call to RawValue |
 | test.go:97:13:97:38 | type conversion | semmle.label | type conversion |
-| test.go:97:20:97:37 | call to String : string | semmle.label | call to String : string |
+| test.go:97:20:97:37 | call to String | semmle.label | call to String |
 | test.go:98:13:98:38 | type conversion | semmle.label | type conversion |
-| test.go:98:20:98:37 | call to Value : string | semmle.label | call to Value : string |
+| test.go:98:20:98:37 | call to Value | semmle.label | call to Value |
 | test.go:99:13:99:50 | type conversion | semmle.label | type conversion |
-| test.go:99:20:99:40 | call to RawValue : basic interface type | semmle.label | call to RawValue : basic interface type |
+| test.go:99:20:99:40 | call to RawValue | semmle.label | call to RawValue |
 | test.go:100:13:100:39 | type conversion | semmle.label | type conversion |
-| test.go:100:20:100:38 | call to String : string | semmle.label | call to String : string |
-| test.go:106:9:106:13 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:100:20:100:38 | call to String | semmle.label | call to String |
+| test.go:106:9:106:13 | &... | semmle.label | &... |
 | test.go:107:13:107:33 | type conversion | semmle.label | type conversion |
-| test.go:107:20:107:26 | implicit dereference : MyStruct | semmle.label | implicit dereference : MyStruct |
-| test.go:107:20:107:26 | index expression : pointer type | semmle.label | index expression : pointer type |
-| test.go:110:9:110:12 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:110:9:110:12 | &... | semmle.label | &... |
 | test.go:111:13:111:29 | type conversion | semmle.label | type conversion |
-| test.go:114:12:114:19 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:114:12:114:19 | &... | semmle.label | &... |
 | test.go:115:13:115:48 | type conversion | semmle.label | type conversion |
-| test.go:118:16:118:24 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:118:16:118:24 | &... | semmle.label | &... |
 | test.go:119:13:119:43 | type conversion | semmle.label | type conversion |
-| test.go:122:16:122:23 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:122:16:122:23 | &... | semmle.label | &... |
 | test.go:123:13:123:39 | type conversion | semmle.label | type conversion |
-| test.go:126:15:126:24 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:126:15:126:24 | &... | semmle.label | &... |
 | test.go:127:13:127:47 | type conversion | semmle.label | type conversion |
-| test.go:130:18:130:30 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:130:18:130:30 | &... | semmle.label | &... |
 | test.go:131:13:131:38 | type conversion | semmle.label | type conversion |
-| test.go:137:12:137:19 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:137:12:137:19 | &... | semmle.label | &... |
 | test.go:138:13:138:48 | type conversion | semmle.label | type conversion |
-| test.go:141:16:141:24 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:141:16:141:24 | &... | semmle.label | &... |
 | test.go:142:13:142:43 | type conversion | semmle.label | type conversion |
-| test.go:145:16:145:23 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:145:16:145:23 | &... | semmle.label | &... |
 | test.go:146:13:146:39 | type conversion | semmle.label | type conversion |
-| test.go:149:15:149:24 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:149:15:149:24 | &... | semmle.label | &... |
 | test.go:150:13:150:47 | type conversion | semmle.label | type conversion |
-| test.go:153:18:153:30 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:153:18:153:30 | &... | semmle.label | &... |
 | test.go:154:13:154:38 | type conversion | semmle.label | type conversion |
-| test.go:157:14:157:22 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:157:14:157:22 | &... | semmle.label | &... |
 | test.go:158:13:158:28 | type conversion | semmle.label | type conversion |
-| test.go:161:15:161:24 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:161:15:161:24 | &... | semmle.label | &... |
 | test.go:162:13:162:32 | type conversion | semmle.label | type conversion |
 subpaths
 #select
-| test.go:78:13:78:29 | type conversion | test.go:77:13:77:16 | &... : pointer type | test.go:78:13:78:29 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:77:13:77:16 | &... | stored value |
-| test.go:79:13:79:43 | type conversion | test.go:77:13:77:16 | &... : pointer type | test.go:79:13:79:43 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:77:13:77:16 | &... | stored value |
-| test.go:83:13:83:30 | type conversion | test.go:82:22:82:26 | &... : pointer type | test.go:83:13:83:30 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:82:22:82:26 | &... | stored value |
-| test.go:87:13:87:30 | type conversion | test.go:86:21:86:25 | &... : pointer type | test.go:87:13:87:30 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:86:21:86:25 | &... | stored value |
-| test.go:92:13:92:37 | type conversion | test.go:92:20:92:36 | call to Value : string | test.go:92:13:92:37 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:92:20:92:36 | call to Value | stored value |
-| test.go:93:13:93:49 | type conversion | test.go:93:20:93:39 | call to RawValue : basic interface type | test.go:93:13:93:49 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:93:20:93:39 | call to RawValue | stored value |
-| test.go:94:13:94:38 | type conversion | test.go:94:20:94:37 | call to String : string | test.go:94:13:94:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:94:20:94:37 | call to String | stored value |
-| test.go:95:13:95:37 | type conversion | test.go:95:20:95:36 | call to Value : string | test.go:95:13:95:37 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:95:20:95:36 | call to Value | stored value |
-| test.go:96:13:96:49 | type conversion | test.go:96:20:96:39 | call to RawValue : basic interface type | test.go:96:13:96:49 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:96:20:96:39 | call to RawValue | stored value |
-| test.go:97:13:97:38 | type conversion | test.go:97:20:97:37 | call to String : string | test.go:97:13:97:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:97:20:97:37 | call to String | stored value |
-| test.go:98:13:98:38 | type conversion | test.go:98:20:98:37 | call to Value : string | test.go:98:13:98:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:98:20:98:37 | call to Value | stored value |
-| test.go:99:13:99:50 | type conversion | test.go:99:20:99:40 | call to RawValue : basic interface type | test.go:99:13:99:50 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:99:20:99:40 | call to RawValue | stored value |
-| test.go:100:13:100:39 | type conversion | test.go:100:20:100:38 | call to String : string | test.go:100:13:100:39 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:100:20:100:38 | call to String | stored value |
-| test.go:107:13:107:33 | type conversion | test.go:106:9:106:13 | &... : pointer type | test.go:107:13:107:33 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:106:9:106:13 | &... | stored value |
-| test.go:111:13:111:29 | type conversion | test.go:110:9:110:12 | &... : pointer type | test.go:111:13:111:29 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:110:9:110:12 | &... | stored value |
-| test.go:115:13:115:48 | type conversion | test.go:114:12:114:19 | &... : pointer type | test.go:115:13:115:48 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:114:12:114:19 | &... | stored value |
-| test.go:119:13:119:43 | type conversion | test.go:118:16:118:24 | &... : pointer type | test.go:119:13:119:43 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:118:16:118:24 | &... | stored value |
-| test.go:123:13:123:39 | type conversion | test.go:122:16:122:23 | &... : pointer type | test.go:123:13:123:39 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:122:16:122:23 | &... | stored value |
-| test.go:127:13:127:47 | type conversion | test.go:126:15:126:24 | &... : pointer type | test.go:127:13:127:47 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:126:15:126:24 | &... | stored value |
-| test.go:131:13:131:38 | type conversion | test.go:130:18:130:30 | &... : pointer type | test.go:131:13:131:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:130:18:130:30 | &... | stored value |
-| test.go:138:13:138:48 | type conversion | test.go:137:12:137:19 | &... : pointer type | test.go:138:13:138:48 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:137:12:137:19 | &... | stored value |
-| test.go:142:13:142:43 | type conversion | test.go:141:16:141:24 | &... : pointer type | test.go:142:13:142:43 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:141:16:141:24 | &... | stored value |
-| test.go:146:13:146:39 | type conversion | test.go:145:16:145:23 | &... : pointer type | test.go:146:13:146:39 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:145:16:145:23 | &... | stored value |
-| test.go:150:13:150:47 | type conversion | test.go:149:15:149:24 | &... : pointer type | test.go:150:13:150:47 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:149:15:149:24 | &... | stored value |
-| test.go:154:13:154:38 | type conversion | test.go:153:18:153:30 | &... : pointer type | test.go:154:13:154:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:153:18:153:30 | &... | stored value |
-| test.go:158:13:158:28 | type conversion | test.go:157:14:157:22 | &... : pointer type | test.go:158:13:158:28 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:157:14:157:22 | &... | stored value |
-| test.go:162:13:162:32 | type conversion | test.go:161:15:161:24 | &... : pointer type | test.go:162:13:162:32 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:161:15:161:24 | &... | stored value |
+| test.go:78:13:78:29 | type conversion | test.go:77:13:77:16 | &... | test.go:78:13:78:29 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:77:13:77:16 | &... | stored value |
+| test.go:79:13:79:43 | type conversion | test.go:77:13:77:16 | &... | test.go:79:13:79:43 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:77:13:77:16 | &... | stored value |
+| test.go:83:13:83:30 | type conversion | test.go:82:22:82:26 | &... | test.go:83:13:83:30 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:82:22:82:26 | &... | stored value |
+| test.go:87:13:87:30 | type conversion | test.go:86:21:86:25 | &... | test.go:87:13:87:30 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:86:21:86:25 | &... | stored value |
+| test.go:92:13:92:37 | type conversion | test.go:92:20:92:36 | call to Value | test.go:92:13:92:37 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:92:20:92:36 | call to Value | stored value |
+| test.go:93:13:93:49 | type conversion | test.go:93:20:93:39 | call to RawValue | test.go:93:13:93:49 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:93:20:93:39 | call to RawValue | stored value |
+| test.go:94:13:94:38 | type conversion | test.go:94:20:94:37 | call to String | test.go:94:13:94:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:94:20:94:37 | call to String | stored value |
+| test.go:95:13:95:37 | type conversion | test.go:95:20:95:36 | call to Value | test.go:95:13:95:37 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:95:20:95:36 | call to Value | stored value |
+| test.go:96:13:96:49 | type conversion | test.go:96:20:96:39 | call to RawValue | test.go:96:13:96:49 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:96:20:96:39 | call to RawValue | stored value |
+| test.go:97:13:97:38 | type conversion | test.go:97:20:97:37 | call to String | test.go:97:13:97:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:97:20:97:37 | call to String | stored value |
+| test.go:98:13:98:38 | type conversion | test.go:98:20:98:37 | call to Value | test.go:98:13:98:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:98:20:98:37 | call to Value | stored value |
+| test.go:99:13:99:50 | type conversion | test.go:99:20:99:40 | call to RawValue | test.go:99:13:99:50 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:99:20:99:40 | call to RawValue | stored value |
+| test.go:100:13:100:39 | type conversion | test.go:100:20:100:38 | call to String | test.go:100:13:100:39 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:100:20:100:38 | call to String | stored value |
+| test.go:107:13:107:33 | type conversion | test.go:106:9:106:13 | &... | test.go:107:13:107:33 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:106:9:106:13 | &... | stored value |
+| test.go:111:13:111:29 | type conversion | test.go:110:9:110:12 | &... | test.go:111:13:111:29 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:110:9:110:12 | &... | stored value |
+| test.go:115:13:115:48 | type conversion | test.go:114:12:114:19 | &... | test.go:115:13:115:48 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:114:12:114:19 | &... | stored value |
+| test.go:119:13:119:43 | type conversion | test.go:118:16:118:24 | &... | test.go:119:13:119:43 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:118:16:118:24 | &... | stored value |
+| test.go:123:13:123:39 | type conversion | test.go:122:16:122:23 | &... | test.go:123:13:123:39 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:122:16:122:23 | &... | stored value |
+| test.go:127:13:127:47 | type conversion | test.go:126:15:126:24 | &... | test.go:127:13:127:47 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:126:15:126:24 | &... | stored value |
+| test.go:131:13:131:38 | type conversion | test.go:130:18:130:30 | &... | test.go:131:13:131:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:130:18:130:30 | &... | stored value |
+| test.go:138:13:138:48 | type conversion | test.go:137:12:137:19 | &... | test.go:138:13:138:48 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:137:12:137:19 | &... | stored value |
+| test.go:142:13:142:43 | type conversion | test.go:141:16:141:24 | &... | test.go:142:13:142:43 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:141:16:141:24 | &... | stored value |
+| test.go:146:13:146:39 | type conversion | test.go:145:16:145:23 | &... | test.go:146:13:146:39 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:145:16:145:23 | &... | stored value |
+| test.go:150:13:150:47 | type conversion | test.go:149:15:149:24 | &... | test.go:150:13:150:47 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:149:15:149:24 | &... | stored value |
+| test.go:154:13:154:38 | type conversion | test.go:153:18:153:30 | &... | test.go:154:13:154:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:153:18:153:30 | &... | stored value |
+| test.go:158:13:158:28 | type conversion | test.go:157:14:157:22 | &... | test.go:158:13:158:28 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:157:14:157:22 | &... | stored value |
+| test.go:162:13:162:32 | type conversion | test.go:161:15:161:24 | &... | test.go:162:13:162:32 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:161:15:161:24 | &... | stored value |

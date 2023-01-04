@@ -32,6 +32,6 @@ module Generated {
     /**
      * Gets the number of argument types of this bound generic type.
      */
-    final int getNumberOfArgTypes() { result = count(getAnArgType()) }
+    final int getNumberOfArgTypes() { result = count(int i | exists(getArgType(i))) }
   }
 }

@@ -63,7 +63,7 @@ predicate isInterestingUnanchoredRegexpString(string re, string msg) {
 class Config extends DataFlow::Configuration {
   Config() { this = "MissingRegexpAnchor::Config" }
 
-  predicate isSource(DataFlow::Node source, string msg) {
+  predicate isSourceString(DataFlow::Node source, string msg) {
     exists(Expr e | e = source.asExpr() |
       isInterestingUnanchoredRegexpString(e.getStringValue(), msg)
       or
@@ -71,11 +71,11 @@ class Config extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSource(DataFlow::Node source) { isSource(source, _) }
+  override predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
 }
 
 from Config c, DataFlow::PathNode source, string msg
-where c.hasFlowPath(source, _) and c.isSource(source.getNode(), msg)
+where c.hasFlowPath(source, _) and c.isSourceString(source.getNode(), msg)
 select source.getNode(), msg

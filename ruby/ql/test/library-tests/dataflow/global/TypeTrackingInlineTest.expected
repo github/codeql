@@ -1,17 +1,19 @@
 | captured_variables.rb:9:14:9:14 | x | Fixed missing result:hasValueFlow=1.2 |
 | captured_variables.rb:16:14:16:14 | x | Fixed missing result:hasValueFlow=1.3 |
 | instance_variables.rb:20:16:20:33 | # $ hasValueFlow=7 | Missing result:hasValueFlow=7 |
-| instance_variables.rb:25:21:25:39 | # $ hasValueFlow=42 | Missing result:hasValueFlow=42 |
-| instance_variables.rb:37:22:37:40 | # $ hasValueFlow=21 | Missing result:hasValueFlow=21 |
-| instance_variables.rb:41:18:41:36 | # $ hasValueFlow=22 | Missing result:hasValueFlow=22 |
-| instance_variables.rb:49:22:49:40 | # $ hasValueFlow=24 | Missing result:hasValueFlow=24 |
-| instance_variables.rb:53:22:53:40 | # $ hasValueFlow=22 | Missing result:hasValueFlow=22 |
-| instance_variables.rb:54:22:54:40 | # $ hasValueFlow=24 | Missing result:hasValueFlow=24 |
-| instance_variables.rb:55:22:55:40 | # $ hasValueFlow=25 | Missing result:hasValueFlow=25 |
-| instance_variables.rb:60:22:60:40 | # $ hasValueFlow=26 | Missing result:hasValueFlow=26 |
-| instance_variables.rb:61:22:61:40 | # $ hasValueFlow=26 | Missing result:hasValueFlow=26 |
-| instance_variables.rb:66:22:66:40 | # $ hasValueFlow=27 | Missing result:hasValueFlow=27 |
-| instance_variables.rb:67:23:67:41 | # $ hasValueFlow=27 | Missing result:hasValueFlow=27 |
-| instance_variables.rb:75:23:75:41 | # $ hasValueFlow=28 | Missing result:hasValueFlow=28 |
-| instance_variables.rb:79:23:79:41 | # $ hasValueFlow=28 | Missing result:hasValueFlow=28 |
-| instance_variables.rb:84:23:84:41 | # $ hasValueFlow=28 | Missing result:hasValueFlow=28 |
+| instance_variables.rb:40:21:40:39 | # $ hasValueFlow=42 | Missing result:hasValueFlow=42 |
+| instance_variables.rb:52:22:52:40 | # $ hasValueFlow=21 | Missing result:hasValueFlow=21 |
+| instance_variables.rb:56:18:56:36 | # $ hasValueFlow=22 | Missing result:hasValueFlow=22 |
+| instance_variables.rb:64:22:64:40 | # $ hasValueFlow=24 | Missing result:hasValueFlow=24 |
+| instance_variables.rb:68:22:68:40 | # $ hasValueFlow=22 | Missing result:hasValueFlow=22 |
+| instance_variables.rb:69:22:69:40 | # $ hasValueFlow=24 | Missing result:hasValueFlow=24 |
+| instance_variables.rb:70:22:70:40 | # $ hasValueFlow=25 | Missing result:hasValueFlow=25 |
+| instance_variables.rb:75:22:75:40 | # $ hasValueFlow=26 | Missing result:hasValueFlow=26 |
+| instance_variables.rb:76:22:76:40 | # $ hasValueFlow=26 | Missing result:hasValueFlow=26 |
+| instance_variables.rb:81:22:81:40 | # $ hasValueFlow=27 | Missing result:hasValueFlow=27 |
+| instance_variables.rb:82:23:82:41 | # $ hasValueFlow=27 | Missing result:hasValueFlow=27 |
+| instance_variables.rb:90:23:90:41 | # $ hasValueFlow=28 | Missing result:hasValueFlow=28 |
+| instance_variables.rb:94:23:94:41 | # $ hasValueFlow=28 | Missing result:hasValueFlow=28 |
+| instance_variables.rb:99:23:99:41 | # $ hasValueFlow=28 | Missing result:hasValueFlow=28 |
+| instance_variables.rb:102:23:102:41 | # $ hasValueFlow=29 | Missing result:hasValueFlow=29 |
+| instance_variables.rb:105:23:105:41 | # $ hasValueFlow=30 | Missing result:hasValueFlow=30 |

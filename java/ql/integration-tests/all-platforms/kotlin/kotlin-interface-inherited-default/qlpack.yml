@@ -1,0 +1,5 @@
+name: integrationtest-kotlin-interface-inherited-default
+dependencies:
+  codeql/java-all: '*'
+  codeql/java-tests: '*'
+  codeql/java-queries: '*'

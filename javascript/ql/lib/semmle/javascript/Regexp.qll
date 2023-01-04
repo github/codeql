@@ -176,6 +176,13 @@ class RegExpTerm extends Locatable, @regexpterm {
    * Gets a string that is matched by this regular-expression term.
    */
   string getAMatchedString() { result = this.getConstantValue() }
+
+  /** Holds if this term has the specified location. */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 /**
@@ -359,6 +366,9 @@ class RegExpAnchor extends RegExpTerm, @regexp_anchor {
   override predicate isNullable() { any() }
 
   override string getAPrimaryQlClass() { result = "RegExpAnchor" }
+
+  /** Gets the char for this term. */
+  abstract string getChar();
 }
 
 /**
@@ -372,6 +382,8 @@ class RegExpAnchor extends RegExpTerm, @regexp_anchor {
  */
 class RegExpCaret extends RegExpAnchor, @regexp_caret {
   override string getAPrimaryQlClass() { result = "RegExpCaret" }
+
+  override string getChar() { result = "^" }
 }
 
 /**
@@ -385,6 +397,8 @@ class RegExpCaret extends RegExpAnchor, @regexp_caret {
  */
 class RegExpDollar extends RegExpAnchor, @regexp_dollar {
   override string getAPrimaryQlClass() { result = "RegExpDollar" }
+
+  override string getChar() { result = "$" }
 }
 
 /**
@@ -992,11 +1006,12 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
 /**
  * Provides utility predicates related to regular expressions.
  */
-module RegExpPatterns {
+deprecated module RegExpPatterns {
   /**
    * Gets a pattern that matches common top-level domain names in lower case.
+   * DEPRECATED: use the similarly named predicate from `HostnameRegex` from the `regex` pack instead.
    */
-  string getACommonTld() {
+  deprecated string getACommonTld() {
     // according to ranking by http://google.com/search?q=site:.<<TLD>>
     result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
   }

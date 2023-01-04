@@ -30,7 +30,7 @@ predicate loginMethod(Method m, ControlFlow::SuccessorType flowFrom) {
 /** The `System.Web.SessionState.HttpSessionState` class. */
 class SystemWebSessionStateHttpSessionStateClass extends Class {
   SystemWebSessionStateHttpSessionStateClass() {
-    this.hasQualifiedName("System.Web.SessionState.HttpSessionState")
+    this.hasQualifiedName("System.Web.SessionState", "HttpSessionState")
   }
 
   /** Gets the `Abandon` method. */

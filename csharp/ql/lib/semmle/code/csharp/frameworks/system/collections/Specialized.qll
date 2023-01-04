@@ -2,7 +2,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Collections
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Collections.Specialized` namespace. */
 class SystemCollectionsSpecializedNamespace extends Namespace {

@@ -1,49 +1,35 @@
 edges
-| UnsafeTLS.go:131:14:131:29 | selection of VersionTLS13 : uint16 | UnsafeTLS.go:136:16:136:22 | version |
-| UnsafeTLS.go:133:14:133:29 | selection of VersionSSL30 : uint16 | UnsafeTLS.go:136:16:136:22 | version |
-| UnsafeTLS.go:260:5:260:32 | selection of TLS_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:259:18:266:4 | slice literal |
-| UnsafeTLS.go:261:5:261:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:259:18:266:4 | slice literal |
-| UnsafeTLS.go:262:5:262:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:259:18:266:4 | slice literal |
-| UnsafeTLS.go:263:5:263:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:259:18:266:4 | slice literal |
-| UnsafeTLS.go:264:5:264:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:259:18:266:4 | slice literal |
-| UnsafeTLS.go:265:5:265:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:259:18:266:4 | slice literal |
-| UnsafeTLS.go:273:5:273:32 | selection of TLS_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:272:18:274:4 | slice literal |
-| UnsafeTLS.go:281:5:281:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:280:18:282:4 | slice literal |
-| UnsafeTLS.go:289:5:289:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:288:18:290:4 | slice literal |
-| UnsafeTLS.go:297:5:297:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:296:18:298:4 | slice literal |
-| UnsafeTLS.go:305:5:305:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:304:18:306:4 | slice literal |
-| UnsafeTLS.go:313:5:313:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:312:18:314:4 | slice literal |
-| UnsafeTLS.go:329:53:329:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:329:25:329:94 | call to append |
-| UnsafeTLS.go:334:13:334:38 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:336:26:336:58 | call to append |
-| UnsafeTLS.go:334:13:334:38 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:336:54:336:54 | implicit dereference : CipherSuite |
-| UnsafeTLS.go:336:54:336:54 | implicit dereference : CipherSuite | UnsafeTLS.go:336:26:336:58 | call to append |
-| UnsafeTLS.go:336:54:336:54 | implicit dereference : CipherSuite | UnsafeTLS.go:336:54:336:54 | implicit dereference : CipherSuite |
-| UnsafeTLS.go:342:13:342:38 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:344:40:344:40 | implicit dereference : CipherSuite |
-| UnsafeTLS.go:342:13:342:38 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:346:25:346:36 | cipherSuites |
-| UnsafeTLS.go:344:40:344:40 | implicit dereference : CipherSuite | UnsafeTLS.go:344:40:344:40 | implicit dereference : CipherSuite |
-| UnsafeTLS.go:344:40:344:40 | implicit dereference : CipherSuite | UnsafeTLS.go:346:25:346:36 | cipherSuites |
-| UnsafeTLS.go:351:13:351:38 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:353:40:353:48 | implicit dereference : CipherSuite |
-| UnsafeTLS.go:351:13:351:38 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:353:40:353:48 | index expression : pointer type |
-| UnsafeTLS.go:351:13:351:38 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:355:25:355:36 | cipherSuites |
-| UnsafeTLS.go:353:40:353:48 | implicit dereference : CipherSuite | UnsafeTLS.go:353:40:353:48 | implicit dereference : CipherSuite |
-| UnsafeTLS.go:353:40:353:48 | implicit dereference : CipherSuite | UnsafeTLS.go:353:40:353:48 | index expression : pointer type |
-| UnsafeTLS.go:353:40:353:48 | implicit dereference : CipherSuite | UnsafeTLS.go:355:25:355:36 | cipherSuites |
-| UnsafeTLS.go:353:40:353:48 | index expression : pointer type | UnsafeTLS.go:353:40:353:48 | implicit dereference : CipherSuite |
-| UnsafeTLS.go:353:40:353:48 | index expression : pointer type | UnsafeTLS.go:353:40:353:48 | index expression : pointer type |
-| UnsafeTLS.go:353:40:353:48 | index expression : pointer type | UnsafeTLS.go:355:25:355:36 | cipherSuites |
-| UnsafeTLS.go:363:5:363:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:362:18:364:4 | slice literal |
-| UnsafeTLS.go:371:5:371:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:370:18:372:4 | slice literal |
-| UnsafeTLS.go:379:5:379:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:378:18:380:4 | slice literal |
-| UnsafeTLS.go:387:5:387:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:386:18:388:4 | slice literal |
-| UnsafeTLS.go:395:5:395:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:394:18:396:4 | slice literal |
-| UnsafeTLS.go:403:4:403:46 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:402:33:404:3 | slice literal |
-| UnsafeTLS.go:410:4:410:46 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:409:31:411:3 | slice literal |
-| UnsafeTLS.go:419:6:419:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:418:19:420:5 | slice literal |
-| UnsafeTLS.go:426:6:426:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:425:19:427:5 | slice literal |
-| UnsafeTLS.go:433:6:433:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:432:19:434:5 | slice literal |
-| UnsafeTLS.go:443:6:443:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:442:19:444:5 | slice literal |
-| UnsafeTLS.go:450:6:450:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:449:19:451:5 | slice literal |
-| UnsafeTLS.go:457:6:457:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:456:19:458:5 | slice literal |
+| UnsafeTLS.go:131:14:131:29 | selection of VersionTLS13 | UnsafeTLS.go:136:16:136:22 | version |
+| UnsafeTLS.go:133:14:133:29 | selection of VersionSSL30 | UnsafeTLS.go:136:16:136:22 | version |
+| UnsafeTLS.go:260:5:260:32 | selection of TLS_RSA_WITH_RC4_128_SHA | UnsafeTLS.go:259:18:266:4 | slice literal |
+| UnsafeTLS.go:261:5:261:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:259:18:266:4 | slice literal |
+| UnsafeTLS.go:262:5:262:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA | UnsafeTLS.go:259:18:266:4 | slice literal |
+| UnsafeTLS.go:263:5:263:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA | UnsafeTLS.go:259:18:266:4 | slice literal |
+| UnsafeTLS.go:264:5:264:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:259:18:266:4 | slice literal |
+| UnsafeTLS.go:265:5:265:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:259:18:266:4 | slice literal |
+| UnsafeTLS.go:273:5:273:32 | selection of TLS_RSA_WITH_RC4_128_SHA | UnsafeTLS.go:272:18:274:4 | slice literal |
+| UnsafeTLS.go:281:5:281:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:280:18:282:4 | slice literal |
+| UnsafeTLS.go:289:5:289:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA | UnsafeTLS.go:288:18:290:4 | slice literal |
+| UnsafeTLS.go:297:5:297:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA | UnsafeTLS.go:296:18:298:4 | slice literal |
+| UnsafeTLS.go:305:5:305:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:304:18:306:4 | slice literal |
+| UnsafeTLS.go:313:5:313:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:312:18:314:4 | slice literal |
+| UnsafeTLS.go:329:53:329:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:329:25:329:94 | call to append |
+| UnsafeTLS.go:334:13:334:38 | call to InsecureCipherSuites | UnsafeTLS.go:336:26:336:58 | call to append |
+| UnsafeTLS.go:342:13:342:38 | call to InsecureCipherSuites | UnsafeTLS.go:346:25:346:36 | cipherSuites |
+| UnsafeTLS.go:351:13:351:38 | call to InsecureCipherSuites | UnsafeTLS.go:355:25:355:36 | cipherSuites |
+| UnsafeTLS.go:363:5:363:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:362:18:364:4 | slice literal |
+| UnsafeTLS.go:371:5:371:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:370:18:372:4 | slice literal |
+| UnsafeTLS.go:379:5:379:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:378:18:380:4 | slice literal |
+| UnsafeTLS.go:387:5:387:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:386:18:388:4 | slice literal |
+| UnsafeTLS.go:395:5:395:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:394:18:396:4 | slice literal |
+| UnsafeTLS.go:403:4:403:46 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:402:33:404:3 | slice literal |
+| UnsafeTLS.go:410:4:410:46 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:409:31:411:3 | slice literal |
+| UnsafeTLS.go:419:6:419:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:418:19:420:5 | slice literal |
+| UnsafeTLS.go:426:6:426:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:425:19:427:5 | slice literal |
+| UnsafeTLS.go:433:6:433:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:432:19:434:5 | slice literal |
+| UnsafeTLS.go:443:6:443:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:442:19:444:5 | slice literal |
+| UnsafeTLS.go:450:6:450:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:449:19:451:5 | slice literal |
+| UnsafeTLS.go:457:6:457:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:456:19:458:5 | slice literal |
 nodes
 | UnsafeTLS.go:21:23:21:23 | 0 | semmle.label | 0 |
 | UnsafeTLS.go:25:23:25:23 | 0 | semmle.label | 0 |
@@ -64,8 +50,8 @@ nodes
 | UnsafeTLS.go:111:16:111:16 | 0 | semmle.label | 0 |
 | UnsafeTLS.go:117:16:117:16 | 0 | semmle.label | 0 |
 | UnsafeTLS.go:123:16:123:16 | 0 | semmle.label | 0 |
-| UnsafeTLS.go:131:14:131:29 | selection of VersionTLS13 : uint16 | semmle.label | selection of VersionTLS13 : uint16 |
-| UnsafeTLS.go:133:14:133:29 | selection of VersionSSL30 : uint16 | semmle.label | selection of VersionSSL30 : uint16 |
+| UnsafeTLS.go:131:14:131:29 | selection of VersionTLS13 | semmle.label | selection of VersionTLS13 |
+| UnsafeTLS.go:133:14:133:29 | selection of VersionSSL30 | semmle.label | selection of VersionSSL30 |
 | UnsafeTLS.go:136:16:136:22 | version | semmle.label | version |
 | UnsafeTLS.go:144:24:144:39 | selection of VersionTLS13 | semmle.label | selection of VersionTLS13 |
 | UnsafeTLS.go:146:24:146:39 | selection of VersionSSL30 | semmle.label | selection of VersionSSL30 |
@@ -86,62 +72,58 @@ nodes
 | UnsafeTLS.go:243:16:243:16 | 0 | semmle.label | 0 |
 | UnsafeTLS.go:250:16:250:16 | 0 | semmle.label | 0 |
 | UnsafeTLS.go:259:18:266:4 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:260:5:260:32 | selection of TLS_RSA_WITH_RC4_128_SHA : uint16 | semmle.label | selection of TLS_RSA_WITH_RC4_128_SHA : uint16 |
-| UnsafeTLS.go:261:5:261:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 : uint16 |
-| UnsafeTLS.go:262:5:262:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA : uint16 |
-| UnsafeTLS.go:263:5:263:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA : uint16 | semmle.label | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA : uint16 |
-| UnsafeTLS.go:264:5:264:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
-| UnsafeTLS.go:265:5:265:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:260:5:260:32 | selection of TLS_RSA_WITH_RC4_128_SHA | semmle.label | selection of TLS_RSA_WITH_RC4_128_SHA |
+| UnsafeTLS.go:261:5:261:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 |
+| UnsafeTLS.go:262:5:262:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA |
+| UnsafeTLS.go:263:5:263:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA | semmle.label | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA |
+| UnsafeTLS.go:264:5:264:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
+| UnsafeTLS.go:265:5:265:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:272:18:274:4 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:273:5:273:32 | selection of TLS_RSA_WITH_RC4_128_SHA : uint16 | semmle.label | selection of TLS_RSA_WITH_RC4_128_SHA : uint16 |
+| UnsafeTLS.go:273:5:273:32 | selection of TLS_RSA_WITH_RC4_128_SHA | semmle.label | selection of TLS_RSA_WITH_RC4_128_SHA |
 | UnsafeTLS.go:280:18:282:4 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:281:5:281:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:281:5:281:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:288:18:290:4 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:289:5:289:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA : uint16 |
+| UnsafeTLS.go:289:5:289:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA |
 | UnsafeTLS.go:296:18:298:4 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:297:5:297:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA : uint16 | semmle.label | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA : uint16 |
+| UnsafeTLS.go:297:5:297:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA | semmle.label | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA |
 | UnsafeTLS.go:304:18:306:4 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:305:5:305:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:305:5:305:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:312:18:314:4 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:313:5:313:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:313:5:313:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:329:25:329:94 | call to append | semmle.label | call to append |
-| UnsafeTLS.go:329:53:329:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 |
-| UnsafeTLS.go:334:13:334:38 | call to InsecureCipherSuites : slice type | semmle.label | call to InsecureCipherSuites : slice type |
+| UnsafeTLS.go:329:53:329:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 |
+| UnsafeTLS.go:334:13:334:38 | call to InsecureCipherSuites | semmle.label | call to InsecureCipherSuites |
 | UnsafeTLS.go:336:26:336:58 | call to append | semmle.label | call to append |
-| UnsafeTLS.go:336:54:336:54 | implicit dereference : CipherSuite | semmle.label | implicit dereference : CipherSuite |
-| UnsafeTLS.go:342:13:342:38 | call to InsecureCipherSuites : slice type | semmle.label | call to InsecureCipherSuites : slice type |
-| UnsafeTLS.go:344:40:344:40 | implicit dereference : CipherSuite | semmle.label | implicit dereference : CipherSuite |
+| UnsafeTLS.go:342:13:342:38 | call to InsecureCipherSuites | semmle.label | call to InsecureCipherSuites |
 | UnsafeTLS.go:346:25:346:36 | cipherSuites | semmle.label | cipherSuites |
-| UnsafeTLS.go:351:13:351:38 | call to InsecureCipherSuites : slice type | semmle.label | call to InsecureCipherSuites : slice type |
-| UnsafeTLS.go:353:40:353:48 | implicit dereference : CipherSuite | semmle.label | implicit dereference : CipherSuite |
-| UnsafeTLS.go:353:40:353:48 | index expression : pointer type | semmle.label | index expression : pointer type |
+| UnsafeTLS.go:351:13:351:38 | call to InsecureCipherSuites | semmle.label | call to InsecureCipherSuites |
 | UnsafeTLS.go:355:25:355:36 | cipherSuites | semmle.label | cipherSuites |
 | UnsafeTLS.go:362:18:364:4 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:363:5:363:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:363:5:363:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:370:18:372:4 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:371:5:371:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:371:5:371:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:378:18:380:4 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:379:5:379:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:379:5:379:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:386:18:388:4 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:387:5:387:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:387:5:387:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:394:18:396:4 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:395:5:395:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:395:5:395:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:402:33:404:3 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:403:4:403:46 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:403:4:403:46 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:409:31:411:3 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:410:4:410:46 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:410:4:410:46 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:418:19:420:5 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:419:6:419:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:419:6:419:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:425:19:427:5 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:426:6:426:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:426:6:426:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:432:19:434:5 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:433:6:433:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:433:6:433:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:442:19:444:5 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:443:6:443:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:443:6:443:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:449:19:451:5 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:450:6:450:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:450:6:450:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 | UnsafeTLS.go:456:19:458:5 | slice literal | semmle.label | slice literal |
-| UnsafeTLS.go:457:6:457:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:457:6:457:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
 subpaths
 #select
 | UnsafeTLS.go:21:23:21:23 | 0 | UnsafeTLS.go:21:23:21:23 | 0 | UnsafeTLS.go:21:23:21:23 | 0 | Using lowest TLS version for MinVersion. |
@@ -159,22 +141,22 @@ subpaths
 | UnsafeTLS.go:111:16:111:16 | 0 | UnsafeTLS.go:111:16:111:16 | 0 | UnsafeTLS.go:111:16:111:16 | 0 | Using lowest TLS version for MinVersion. |
 | UnsafeTLS.go:201:17:201:17 | 0 | UnsafeTLS.go:201:17:201:17 | 0 | UnsafeTLS.go:201:17:201:17 | 0 | Using lowest TLS version for MinVersion. |
 | UnsafeTLS.go:219:17:219:17 | 0 | UnsafeTLS.go:219:17:219:17 | 0 | UnsafeTLS.go:219:17:219:17 | 0 | Using lowest TLS version for MinVersion. |
-| UnsafeTLS.go:259:18:266:4 | slice literal | UnsafeTLS.go:260:5:260:32 | selection of TLS_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:259:18:266:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_RC4_128_SHA. |
-| UnsafeTLS.go:259:18:266:4 | slice literal | UnsafeTLS.go:261:5:261:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:259:18:266:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_AES_128_CBC_SHA256. |
-| UnsafeTLS.go:259:18:266:4 | slice literal | UnsafeTLS.go:262:5:262:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:259:18:266:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_RC4_128_SHA. |
-| UnsafeTLS.go:259:18:266:4 | slice literal | UnsafeTLS.go:263:5:263:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:259:18:266:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_RC4_128_SHA. |
-| UnsafeTLS.go:259:18:266:4 | slice literal | UnsafeTLS.go:264:5:264:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:259:18:266:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256. |
-| UnsafeTLS.go:259:18:266:4 | slice literal | UnsafeTLS.go:265:5:265:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:259:18:266:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256. |
-| UnsafeTLS.go:272:18:274:4 | slice literal | UnsafeTLS.go:273:5:273:32 | selection of TLS_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:272:18:274:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_RC4_128_SHA. |
-| UnsafeTLS.go:280:18:282:4 | slice literal | UnsafeTLS.go:281:5:281:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:280:18:282:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_AES_128_CBC_SHA256. |
-| UnsafeTLS.go:288:18:290:4 | slice literal | UnsafeTLS.go:289:5:289:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:288:18:290:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_RC4_128_SHA. |
-| UnsafeTLS.go:296:18:298:4 | slice literal | UnsafeTLS.go:297:5:297:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:296:18:298:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_RC4_128_SHA. |
-| UnsafeTLS.go:304:18:306:4 | slice literal | UnsafeTLS.go:305:5:305:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:304:18:306:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256. |
-| UnsafeTLS.go:312:18:314:4 | slice literal | UnsafeTLS.go:313:5:313:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:312:18:314:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256. |
-| UnsafeTLS.go:329:25:329:94 | call to append | UnsafeTLS.go:329:53:329:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:329:25:329:94 | call to append | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256. |
-| UnsafeTLS.go:336:26:336:58 | call to append | UnsafeTLS.go:334:13:334:38 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:336:26:336:58 | call to append | Use of an insecure cipher suite. |
-| UnsafeTLS.go:346:25:346:36 | cipherSuites | UnsafeTLS.go:342:13:342:38 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:346:25:346:36 | cipherSuites | Use of an insecure cipher suite. |
-| UnsafeTLS.go:355:25:355:36 | cipherSuites | UnsafeTLS.go:351:13:351:38 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:355:25:355:36 | cipherSuites | Use of an insecure cipher suite. |
-| UnsafeTLS.go:362:18:364:4 | slice literal | UnsafeTLS.go:363:5:363:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:362:18:364:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256. |
-| UnsafeTLS.go:432:19:434:5 | slice literal | UnsafeTLS.go:433:6:433:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:432:19:434:5 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256. |
-| UnsafeTLS.go:456:19:458:5 | slice literal | UnsafeTLS.go:457:6:457:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:456:19:458:5 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:259:18:266:4 | slice literal | UnsafeTLS.go:260:5:260:32 | selection of TLS_RSA_WITH_RC4_128_SHA | UnsafeTLS.go:259:18:266:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_RC4_128_SHA. |
+| UnsafeTLS.go:259:18:266:4 | slice literal | UnsafeTLS.go:261:5:261:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:259:18:266:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:259:18:266:4 | slice literal | UnsafeTLS.go:262:5:262:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA | UnsafeTLS.go:259:18:266:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_RC4_128_SHA. |
+| UnsafeTLS.go:259:18:266:4 | slice literal | UnsafeTLS.go:263:5:263:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA | UnsafeTLS.go:259:18:266:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_RC4_128_SHA. |
+| UnsafeTLS.go:259:18:266:4 | slice literal | UnsafeTLS.go:264:5:264:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:259:18:266:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:259:18:266:4 | slice literal | UnsafeTLS.go:265:5:265:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:259:18:266:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:272:18:274:4 | slice literal | UnsafeTLS.go:273:5:273:32 | selection of TLS_RSA_WITH_RC4_128_SHA | UnsafeTLS.go:272:18:274:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_RC4_128_SHA. |
+| UnsafeTLS.go:280:18:282:4 | slice literal | UnsafeTLS.go:281:5:281:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:280:18:282:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:288:18:290:4 | slice literal | UnsafeTLS.go:289:5:289:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA | UnsafeTLS.go:288:18:290:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_RC4_128_SHA. |
+| UnsafeTLS.go:296:18:298:4 | slice literal | UnsafeTLS.go:297:5:297:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA | UnsafeTLS.go:296:18:298:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_RC4_128_SHA. |
+| UnsafeTLS.go:304:18:306:4 | slice literal | UnsafeTLS.go:305:5:305:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:304:18:306:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:312:18:314:4 | slice literal | UnsafeTLS.go:313:5:313:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:312:18:314:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:329:25:329:94 | call to append | UnsafeTLS.go:329:53:329:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:329:25:329:94 | call to append | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:336:26:336:58 | call to append | UnsafeTLS.go:334:13:334:38 | call to InsecureCipherSuites | UnsafeTLS.go:336:26:336:58 | call to append | Use of an insecure cipher suite. |
+| UnsafeTLS.go:346:25:346:36 | cipherSuites | UnsafeTLS.go:342:13:342:38 | call to InsecureCipherSuites | UnsafeTLS.go:346:25:346:36 | cipherSuites | Use of an insecure cipher suite. |
+| UnsafeTLS.go:355:25:355:36 | cipherSuites | UnsafeTLS.go:351:13:351:38 | call to InsecureCipherSuites | UnsafeTLS.go:355:25:355:36 | cipherSuites | Use of an insecure cipher suite. |
+| UnsafeTLS.go:362:18:364:4 | slice literal | UnsafeTLS.go:363:5:363:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:362:18:364:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:432:19:434:5 | slice literal | UnsafeTLS.go:433:6:433:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:432:19:434:5 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:456:19:458:5 | slice literal | UnsafeTLS.go:457:6:457:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:456:19:458:5 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256. |

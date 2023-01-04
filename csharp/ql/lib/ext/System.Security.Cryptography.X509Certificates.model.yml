@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Security.Cryptography.X509Certificates", "X509Certificate2Collection", False, "Add", "(System.Security.Cryptography.X509Certificates.X509Certificate2)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Security.Cryptography.X509Certificates", "X509Certificate2Collection", False, "AddRange", "(System.Security.Cryptography.X509Certificates.X509Certificate2Collection)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]

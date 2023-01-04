@@ -78,17 +78,13 @@ module InsecureRandomness {
    * A sensitive write, considered as a sink for random values that are not cryptographically
    * secure.
    */
-  class SensitiveWriteSink extends Sink {
-    SensitiveWriteSink() { this instanceof SensitiveWrite }
-  }
+  class SensitiveWriteSink extends Sink instanceof SensitiveWrite { }
 
   /**
    * A cryptographic key, considered as a sink for random values that are not cryptographically
    * secure.
    */
-  class CryptoKeySink extends Sink {
-    CryptoKeySink() { this instanceof CryptographicKey }
-  }
+  class CryptoKeySink extends Sink instanceof CryptographicKey { }
 
   /**
    * Holds if the step `pred` -> `succ` is an additional taint-step for random values that are not cryptographically secure.

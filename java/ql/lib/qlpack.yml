@@ -1,5 +1,5 @@
 name: codeql/java-all
-version: 0.4.5
+version: 0.5.0-dev
 groups: java
 dbscheme: config/semmlecode.dbscheme
 extractor: java
@@ -7,3 +7,9 @@ library: true
 upgrades: upgrades
 dependencies:
   codeql/regex: ${workspace}
+  codeql/typetracking: ${workspace}
+  codeql/util: ${workspace}
+dataExtensions:
+  - ext/*.model.yml
+  - ext/generated/*.model.yml
+  - ext/experimental/*.model.yml

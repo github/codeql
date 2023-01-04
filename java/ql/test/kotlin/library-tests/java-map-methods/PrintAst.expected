@@ -45,7 +45,7 @@ test.kt:
 #    9|         0: [ReturnStmt] return ...
 #    9|           0: [AddExpr] ... + ...
 #    9|             0: [VarAccess] s
-#    9|             1: [StringLiteral] 
+#    9|             1: [StringLiteral] ""
 #   10|     5: [Method] fn2
 #   10|       3: [TypeAccess] String
 #-----|       4: (Parameters)
@@ -55,7 +55,7 @@ test.kt:
 #   10|         0: [ReturnStmt] return ...
 #   10|           0: [AddExpr] ... + ...
 #   10|             0: [VarAccess] s
-#   10|             1: [StringLiteral] 
+#   10|             1: [StringLiteral] ""
 #   12|     6: [Method] fn1
 #   12|       3: [TypeAccess] int
 #-----|       4: (Parameters)

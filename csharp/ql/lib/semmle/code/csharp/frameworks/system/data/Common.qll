@@ -4,7 +4,6 @@
 
 private import csharp as CSharp
 private import semmle.code.csharp.frameworks.system.Data as Data
-private import semmle.code.csharp.dataflow.ExternalFlow as ExternalFlow
 
 /** Definitions relating to the `System.Data.Common` namespace. */
 module SystemDataCommon {

@@ -143,9 +143,18 @@ class CreateSslEngineMethod extends Method {
   }
 }
 
+/** The `setConnectionFactory` method of the class `javax.net.ssl.HttpsURLConnection`. */
 class SetConnectionFactoryMethod extends Method {
   SetConnectionFactoryMethod() {
     this.hasName("setSSLSocketFactory") and
+    this.getDeclaringType().getAnAncestor() instanceof HttpsUrlConnection
+  }
+}
+
+/** The `setDefaultConnectionFactory` method of the class `javax.net.ssl.HttpsURLConnection`. */
+class SetDefaultConnectionFactoryMethod extends Method {
+  SetDefaultConnectionFactoryMethod() {
+    this.hasName("setDefaultSSLSocketFactory") and
     this.getDeclaringType().getAnAncestor() instanceof HttpsUrlConnection
   }
 }
@@ -290,9 +299,7 @@ string getSecureAlgorithmRegex() {
  * algorithm. For example, methods returning ciphers, decryption methods,
  * constructors of cipher classes, etc.
  */
-abstract class CryptoAlgoSpec extends Top {
-  CryptoAlgoSpec() { this instanceof Call }
-
+abstract class CryptoAlgoSpec extends Top instanceof Call {
   abstract Expr getAlgoSpec();
 }
 

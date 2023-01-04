@@ -1,84 +1,12 @@
 test.kt:
 #    0| [CompilationUnit] test
 #    1|   1: [Interface] Ann
-#    1|     1: [Constructor] Ann
-#-----|       4: (Parameters)
-#    1|         0: [Parameter] arr1
-#    1|           0: [TypeAccess] String[]
-#    1|             0: [TypeAccess] String
-#    1|         1: [Parameter] arr2
-#    1|           0: [TypeAccess] int[]
-#    1|       5: [BlockStmt] { ... }
-#    1|         0: [SuperConstructorInvocationStmt] super(...)
-#    1|         1: [BlockStmt] { ... }
-#    1|           0: [ExprStmt] <Expr>;
-#    1|             0: [KtInitializerAssignExpr] ...=...
-#    1|               0: [VarAccess] arr1
-#    1|           1: [ExprStmt] <Expr>;
-#    1|             0: [KtInitializerAssignExpr] ...=...
-#    1|               0: [VarAccess] arr2
-#    1|     2: [Constructor] Ann
-#-----|       4: (Parameters)
-#    1|         0: [Parameter] p0
-#    1|           0: [TypeAccess] String[]
-#    1|         1: [Parameter] p1
-#    1|           0: [TypeAccess] int[]
-#    1|         2: [Parameter] p2
-#    1|           0: [TypeAccess] int
-#    1|         3: [Parameter] p3
-#    1|           0: [TypeAccess] DefaultConstructorMarker
-#    1|       5: [BlockStmt] { ... }
-#    1|         0: [IfStmt] if (...)
-#    1|           0: [EQExpr] ... == ...
-#    1|             0: [AndBitwiseExpr] ... & ...
-#    1|               0: [IntegerLiteral] 1
-#    1|               1: [VarAccess] p2
-#    1|             1: [IntegerLiteral] 0
-#    1|           1: [ExprStmt] <Expr>;
-#    1|             0: [AssignExpr] ...=...
-#    1|               0: [VarAccess] p0
-#    0|               1: [ArrayCreationExpr] new String[]
-#    0|                 -2: [ArrayInit] {...}
-#    0|                   0: [StringLiteral] hello
-#    0|                   1: [StringLiteral] world
-#    0|                 -1: [TypeAccess] String
-#    0|                 0: [IntegerLiteral] 2
-#    1|         1: [IfStmt] if (...)
-#    1|           0: [EQExpr] ... == ...
-#    1|             0: [AndBitwiseExpr] ... & ...
-#    1|               0: [IntegerLiteral] 2
-#    1|               1: [VarAccess] p2
-#    1|             1: [IntegerLiteral] 0
-#    1|           1: [ExprStmt] <Expr>;
-#    1|             0: [AssignExpr] ...=...
-#    1|               0: [VarAccess] p1
-#    0|               1: [ArrayCreationExpr] new int[]
-#    0|                 -2: [ArrayInit] {...}
-#    0|                   0: [IntegerLiteral] 1
-#    0|                   1: [IntegerLiteral] 2
-#    0|                   2: [IntegerLiteral] 3
-#    0|                 -1: [TypeAccess] int
-#    0|                 0: [IntegerLiteral] 3
-#    1|         2: [ThisConstructorInvocationStmt] this(...)
-#    1|           0: [VarAccess] p0
-#    1|           1: [VarAccess] p1
-#    1|     3: [FieldDeclaration] String[] arr1;
-#    1|       -1: [TypeAccess] String[]
-#    1|         0: [TypeAccess] String
-#    1|       0: [VarAccess] arr1
-#    1|     4: [Method] arr1
+#-----|     -3: (Annotations)
+#    0|       1: [Annotation] Retention
+#    0|         1: [VarAccess] RetentionPolicy.RUNTIME
+#    0|           -1: [TypeAccess] RetentionPolicy
+#    1|     1: [Method] arr1
 #    1|       3: [TypeAccess] String[]
 #    1|         0: [TypeAccess] String
-#    1|       5: [BlockStmt] { ... }
-#    1|         0: [ReturnStmt] return ...
-#    1|           0: [VarAccess] this.arr1
-#    1|             -1: [ThisAccess] this
-#    1|     5: [Method] arr2
+#    1|     2: [Method] arr2
 #    1|       3: [TypeAccess] int[]
-#    1|       5: [BlockStmt] { ... }
-#    1|         0: [ReturnStmt] return ...
-#    1|           0: [VarAccess] this.arr2
-#    1|             -1: [ThisAccess] this
-#    1|     6: [FieldDeclaration] int[] arr2;
-#    1|       -1: [TypeAccess] int[]
-#    1|       0: [VarAccess] arr2

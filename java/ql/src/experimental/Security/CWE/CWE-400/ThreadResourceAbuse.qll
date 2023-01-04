@@ -6,26 +6,8 @@ private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.controlflow.Guards
 
-/** `java.lang.Math` data model for value comparison in the new CSV format. */
-private class MathCompDataModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "java.lang;Math;false;min;;;Argument[0..1];ReturnValue;value;manual",
-        "java.lang;Math;false;max;;;Argument[0..1];ReturnValue;value;manual"
-      ]
-  }
-}
-
-/** Thread pause data model in the new CSV format. */
-private class PauseThreadDataModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "java.lang;Thread;true;sleep;;;Argument[0];thread-pause;manual",
-        "java.util.concurrent;TimeUnit;true;sleep;;;Argument[0];thread-pause;manual"
-      ]
-  }
+private class ActivateModels extends ActiveExperimentalModels {
+  ActivateModels() { this = "thread-resource-abuse" }
 }
 
 /** A sink representing methods pausing a thread. */

@@ -3,13 +3,12 @@
  */
 
 import csharp
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** Definitions relating to the `Json.NET` package. */
 module JsonNET {
   /** The namespace `Newtonsoft.Json`. */
   class JsonNETNamespace extends Namespace {
-    JsonNETNamespace() { this.hasQualifiedName("Newtonsoft.Json") }
+    JsonNETNamespace() { this.getFullName() = "Newtonsoft.Json" }
   }
 
   /** A class in `Newtonsoft.Json`. */

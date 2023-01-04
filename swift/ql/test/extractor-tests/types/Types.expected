@@ -8,23 +8,25 @@
 | types.swift:3:7:3:11 | ... .+(_:_:) ... | Int |
 | types.swift:3:7:3:11 | [...] | Any... |
 | types.swift:3:7:3:11 | [...] | Any... |
+| types.swift:3:9:3:9 | +(_:_:) | (Int.Type) -> (Int, Int) -> Int |
 | types.swift:3:9:3:9 | .+(_:_:) | (Int, Int) -> Int |
 | types.swift:3:9:3:9 | Int.Type | Int.Type |
 | types.swift:3:11:3:11 | 10 | Int |
 | types.swift:7:16:7:16 | X.Type | X.Type |
-| types.swift:7:16:7:16 | call to init() | () -> X |
-| types.swift:7:16:7:16 | init() | (X.Type) -> () -> X |
-| types.swift:7:16:7:18 | call to init() | X |
+| types.swift:7:16:7:16 | X.init() | () -> X |
+| types.swift:7:16:7:16 | X.init() | (X.Type) -> () -> X |
+| types.swift:7:16:7:18 | call to X.init() | X |
 | types.swift:13:17:13:17 | C.Type | C.Type |
-| types.swift:13:17:13:17 | call to init() | () -> C |
-| types.swift:13:17:13:17 | init() | (C.Type) -> () -> C |
-| types.swift:13:17:13:19 | call to init() | C |
+| types.swift:13:17:13:17 | C.init() | () -> C |
+| types.swift:13:17:13:17 | C.init() | (C.Type) -> () -> C |
+| types.swift:13:17:13:19 | call to C.init() | C |
 | types.swift:14:22:14:24 | C.Nested.Type | C.Nested.Type |
-| types.swift:14:22:14:24 | call to init() | () -> C.Nested |
-| types.swift:14:22:14:31 | call to init() | C.Nested |
-| types.swift:14:24:14:24 | init() | (C.Nested.Type) -> () -> C.Nested |
+| types.swift:14:22:14:24 | C.Nested.init() | () -> C.Nested |
+| types.swift:14:22:14:31 | call to C.Nested.init() | C.Nested |
+| types.swift:14:24:14:24 | C.Nested.init() | (C.Nested.Type) -> () -> C.Nested |
 | types.swift:17:10:17:10 | x | Int |
 | types.swift:17:10:17:14 | ... .+(_:_:) ... | Int |
+| types.swift:17:12:17:12 | +(_:_:) | (Int.Type) -> (Int, Int) -> Int |
 | types.swift:17:12:17:12 | .+(_:_:) | (Int, Int) -> Int |
 | types.swift:17:12:17:12 | Int.Type | Int.Type |
 | types.swift:17:14:17:14 | y | Int |

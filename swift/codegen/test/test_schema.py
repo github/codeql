@@ -669,5 +669,16 @@ def test_null_class_cannot_be_defined_multiple_times():
                 pass
 
 
+def test_uppercase_acronyms_are_rejected():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class Root:
+                pass
+
+            class ROTFLNode(Root):
+                pass
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["ratpack.core.http", "Request", True, "getBody", "", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.core.http", "Request", True, "getContentLength", "", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.core.http", "Request", True, "getCookies", "", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.core.http", "Request", True, "getHeaders", "", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.core.http", "Request", True, "getPath", "", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.core.http", "Request", True, "getQuery", "", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.core.http", "Request", True, "getQueryParams", "", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.core.http", "Request", True, "getRawUri", "", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.core.http", "Request", True, "getUri", "", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.core.http", "Request", True, "oneCookie", "", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["ratpack.core.http", "Headers", True, "asMultiValueMap", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["ratpack.core.http", "Headers", True, "get", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["ratpack.core.http", "Headers", True, "getAll", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["ratpack.core.http", "Headers", True, "getNames", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["ratpack.core.http", "TypedData", True, "getBuffer", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["ratpack.core.http", "TypedData", True, "getBytes", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["ratpack.core.http", "TypedData", True, "getContentType", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["ratpack.core.http", "TypedData", True, "getInputStream", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["ratpack.core.http", "TypedData", True, "getText", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["ratpack.core.http", "TypedData", True, "writeTo", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]

@@ -1,4 +1,4 @@
 name: codeql/typos
-version: 0.0.6
+version: 0.0.8-dev
 groups: shared
 library: true

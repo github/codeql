@@ -26,5 +26,38 @@ int main(int argc, char** argv) {
     strncat(fileName+len, fixed, FILENAME_MAX-len-1);
     fopen(fileName, "wb+");
   }
+
+  {
+    char *fileName = argv[1];
+    fopen(fileName, "wb+"); // BAD
+  }
+
+  {
+    char fileName[20];
+    scanf("%s", fileName);
+    fopen(fileName, "wb+"); // BAD
+  }
+
+  {
+    char *fileName = (char*)malloc(20 * sizeof(char));
+    scanf("%s", fileName);
+    fopen(fileName, "wb+"); // BAD
+  }
+
+  {
+    char *aNumber = getenv("A_NUMBER");
+    double number = strtod(aNumber, 0);
+    char fileName[20];
+    sprintf(fileName, "/foo/%f", number);
+    fopen(fileName, "wb+"); // GOOD
+  }
+
+  {
+    void read(const char *fileName);
+    read(argv[1]); // BAD [NOT DETECTED]
+  }
 }
 
+void read(char *fileName) {
+  fopen(fileName, "wb+");
+}

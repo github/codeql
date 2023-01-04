@@ -3,7 +3,6 @@
 import csharp
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.collections.Specialized
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Web` namespace. */
 class SystemWebNamespace extends Namespace {

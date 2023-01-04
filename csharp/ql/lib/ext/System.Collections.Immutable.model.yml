@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Collections.Immutable", "IImmutableDictionary<,>", True, "AddRange", "(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
       - ["System.Collections.Immutable", "IImmutableDictionary<,>", True, "Clear", "()", "", "Argument[this].WithoutElement", "ReturnValue", "value", "manual"]
