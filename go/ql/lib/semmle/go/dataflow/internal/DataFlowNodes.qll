@@ -732,7 +732,11 @@ module Public {
         or
         preupd = getAWrittenNode()
         or
-        preupd instanceof ArgumentNode and
+        (
+          preupd instanceof ArgumentNode and not preupd instanceof ImplicitVarargsSlice
+          or
+          preupd = any(CallNode c).getImplicitVarargsArgument(_)
+        ) and
         mutableType(preupd.getType())
       ) and
       (
