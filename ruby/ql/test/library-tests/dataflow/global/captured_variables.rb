@@ -36,3 +36,19 @@ def capture_escape_known_call x
     call_it fn
 end
 capture_escape_known_call source(1.5)
+
+def foo
+    yield [source(1), source(2)]
+end
+
+foo { |a, **k|
+   sink(a[1])  # $ hasValueFlow=2
+}
+
+-> (a, **k) {
+   sink(a[1])  # $ hasValueFlow=2
+}.call [source(1), source(2)]
+
+proc { |a, **k|
+   sink(a[1])  # $ hasValueFlow=2
+}.call [source(1), source(2)]

@@ -12,6 +12,24 @@ edges
 | captured_variables.rb:32:31:32:31 | x :  | captured_variables.rb:34:14:34:14 | x |
 | captured_variables.rb:38:27:38:37 | call to source :  | captured_variables.rb:32:31:32:31 | x :  |
 | captured_variables.rb:38:27:38:37 | call to source :  | captured_variables.rb:32:31:32:31 | x :  |
+| captured_variables.rb:41:23:41:31 | call to source :  | captured_variables.rb:44:8:44:8 | a [element 1] :  |
+| captured_variables.rb:41:23:41:31 | call to source :  | captured_variables.rb:44:8:44:8 | a [element 1] :  |
+| captured_variables.rb:44:8:44:8 | a [element 1] :  | captured_variables.rb:45:9:45:9 | a [element 1] :  |
+| captured_variables.rb:44:8:44:8 | a [element 1] :  | captured_variables.rb:45:9:45:9 | a [element 1] :  |
+| captured_variables.rb:45:9:45:9 | a [element 1] :  | captured_variables.rb:45:9:45:12 | ...[...] |
+| captured_variables.rb:45:9:45:9 | a [element 1] :  | captured_variables.rb:45:9:45:12 | ...[...] |
+| captured_variables.rb:48:5:48:5 | a [element 1] :  | captured_variables.rb:49:9:49:9 | a [element 1] :  |
+| captured_variables.rb:48:5:48:5 | a [element 1] :  | captured_variables.rb:49:9:49:9 | a [element 1] :  |
+| captured_variables.rb:49:9:49:9 | a [element 1] :  | captured_variables.rb:49:9:49:12 | ...[...] |
+| captured_variables.rb:49:9:49:9 | a [element 1] :  | captured_variables.rb:49:9:49:12 | ...[...] |
+| captured_variables.rb:50:20:50:28 | call to source :  | captured_variables.rb:48:5:48:5 | a [element 1] :  |
+| captured_variables.rb:50:20:50:28 | call to source :  | captured_variables.rb:48:5:48:5 | a [element 1] :  |
+| captured_variables.rb:52:9:52:9 | a [element 1] :  | captured_variables.rb:53:9:53:9 | a [element 1] :  |
+| captured_variables.rb:52:9:52:9 | a [element 1] :  | captured_variables.rb:53:9:53:9 | a [element 1] :  |
+| captured_variables.rb:53:9:53:9 | a [element 1] :  | captured_variables.rb:53:9:53:12 | ...[...] |
+| captured_variables.rb:53:9:53:9 | a [element 1] :  | captured_variables.rb:53:9:53:12 | ...[...] |
+| captured_variables.rb:54:20:54:28 | call to source :  | captured_variables.rb:52:9:52:9 | a [element 1] :  |
+| captured_variables.rb:54:20:54:28 | call to source :  | captured_variables.rb:52:9:52:9 | a [element 1] :  |
 | instance_variables.rb:10:19:10:19 | x :  | instance_variables.rb:11:18:11:18 | x :  |
 | instance_variables.rb:10:19:10:19 | x :  | instance_variables.rb:11:18:11:18 | x :  |
 | instance_variables.rb:11:18:11:18 | x :  | instance_variables.rb:11:9:11:14 | [post] self [@field] :  |
@@ -220,6 +238,30 @@ nodes
 | captured_variables.rb:34:14:34:14 | x | semmle.label | x |
 | captured_variables.rb:38:27:38:37 | call to source :  | semmle.label | call to source :  |
 | captured_variables.rb:38:27:38:37 | call to source :  | semmle.label | call to source :  |
+| captured_variables.rb:41:23:41:31 | call to source :  | semmle.label | call to source :  |
+| captured_variables.rb:41:23:41:31 | call to source :  | semmle.label | call to source :  |
+| captured_variables.rb:44:8:44:8 | a [element 1] :  | semmle.label | a [element 1] :  |
+| captured_variables.rb:44:8:44:8 | a [element 1] :  | semmle.label | a [element 1] :  |
+| captured_variables.rb:45:9:45:9 | a [element 1] :  | semmle.label | a [element 1] :  |
+| captured_variables.rb:45:9:45:9 | a [element 1] :  | semmle.label | a [element 1] :  |
+| captured_variables.rb:45:9:45:12 | ...[...] | semmle.label | ...[...] |
+| captured_variables.rb:45:9:45:12 | ...[...] | semmle.label | ...[...] |
+| captured_variables.rb:48:5:48:5 | a [element 1] :  | semmle.label | a [element 1] :  |
+| captured_variables.rb:48:5:48:5 | a [element 1] :  | semmle.label | a [element 1] :  |
+| captured_variables.rb:49:9:49:9 | a [element 1] :  | semmle.label | a [element 1] :  |
+| captured_variables.rb:49:9:49:9 | a [element 1] :  | semmle.label | a [element 1] :  |
+| captured_variables.rb:49:9:49:12 | ...[...] | semmle.label | ...[...] |
+| captured_variables.rb:49:9:49:12 | ...[...] | semmle.label | ...[...] |
+| captured_variables.rb:50:20:50:28 | call to source :  | semmle.label | call to source :  |
+| captured_variables.rb:50:20:50:28 | call to source :  | semmle.label | call to source :  |
+| captured_variables.rb:52:9:52:9 | a [element 1] :  | semmle.label | a [element 1] :  |
+| captured_variables.rb:52:9:52:9 | a [element 1] :  | semmle.label | a [element 1] :  |
+| captured_variables.rb:53:9:53:9 | a [element 1] :  | semmle.label | a [element 1] :  |
+| captured_variables.rb:53:9:53:9 | a [element 1] :  | semmle.label | a [element 1] :  |
+| captured_variables.rb:53:9:53:12 | ...[...] | semmle.label | ...[...] |
+| captured_variables.rb:53:9:53:12 | ...[...] | semmle.label | ...[...] |
+| captured_variables.rb:54:20:54:28 | call to source :  | semmle.label | call to source :  |
+| captured_variables.rb:54:20:54:28 | call to source :  | semmle.label | call to source :  |
 | instance_variables.rb:10:19:10:19 | x :  | semmle.label | x :  |
 | instance_variables.rb:10:19:10:19 | x :  | semmle.label | x :  |
 | instance_variables.rb:11:9:11:14 | [post] self [@field] :  | semmle.label | [post] self [@field] :  |
@@ -456,6 +498,9 @@ subpaths
 | captured_variables.rb:2:20:2:20 | x | captured_variables.rb:5:20:5:30 | call to source :  | captured_variables.rb:2:20:2:20 | x | $@ | captured_variables.rb:5:20:5:30 | call to source :  | call to source :  |
 | captured_variables.rb:23:14:23:14 | x | captured_variables.rb:27:29:27:39 | call to source :  | captured_variables.rb:23:14:23:14 | x | $@ | captured_variables.rb:27:29:27:39 | call to source :  | call to source :  |
 | captured_variables.rb:34:14:34:14 | x | captured_variables.rb:38:27:38:37 | call to source :  | captured_variables.rb:34:14:34:14 | x | $@ | captured_variables.rb:38:27:38:37 | call to source :  | call to source :  |
+| captured_variables.rb:45:9:45:12 | ...[...] | captured_variables.rb:41:23:41:31 | call to source :  | captured_variables.rb:45:9:45:12 | ...[...] | $@ | captured_variables.rb:41:23:41:31 | call to source :  | call to source :  |
+| captured_variables.rb:49:9:49:12 | ...[...] | captured_variables.rb:50:20:50:28 | call to source :  | captured_variables.rb:49:9:49:12 | ...[...] | $@ | captured_variables.rb:50:20:50:28 | call to source :  | call to source :  |
+| captured_variables.rb:53:9:53:12 | ...[...] | captured_variables.rb:54:20:54:28 | call to source :  | captured_variables.rb:53:9:53:12 | ...[...] | $@ | captured_variables.rb:54:20:54:28 | call to source :  | call to source :  |
 | instance_variables.rb:20:10:20:13 | @foo | instance_variables.rb:19:12:19:21 | call to taint :  | instance_variables.rb:20:10:20:13 | @foo | $@ | instance_variables.rb:19:12:19:21 | call to taint :  | call to taint :  |
 | instance_variables.rb:40:6:40:18 | call to get_field | instance_variables.rb:39:15:39:23 | call to taint :  | instance_variables.rb:40:6:40:18 | call to get_field | $@ | instance_variables.rb:39:15:39:23 | call to taint :  | call to taint :  |
 | instance_variables.rb:44:6:44:18 | call to inc_field | instance_variables.rb:43:15:43:22 | call to taint :  | instance_variables.rb:44:6:44:18 | call to inc_field | $@ | instance_variables.rb:43:15:43:22 | call to taint :  | call to taint :  |
