@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-12-21-09h28m58s.affable-sand-5xcpvw6s.8166e02f98f8f6d9ed93f345644e805ef0d162fc6e13d293543eef85e7964c5a
+compiled: false
