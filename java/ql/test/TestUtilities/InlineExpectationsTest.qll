@@ -28,13 +28,13 @@ private class KtExpectationComment extends J::KtComment, ExpectationComment {
 }
 
 private class XmlExpectationComment extends ExpectationComment instanceof J::XmlComment {
-  override string getContents() { result = this.(J::XmlComment).getText().trim() }
+  override string getContents() { result = super.getText().trim() }
 
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    this.(J::XmlComment).hasLocationInfo(path, sl, sc, el, ec)
+    J::XmlComment.super.hasLocationInfo(path, sl, sc, el, ec)
   }
 
-  override string toString() { result = this.(J::XmlComment).toString() }
+  override string toString() { result = J::XmlComment.super.toString() }
 }
 
 import Make<ExpectationComment>
