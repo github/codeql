@@ -20,6 +20,8 @@ import codeql.ruby.security.SecondOrderCommandInjectionQuery
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
 where cfg.hasFlowPath(source, sink) and sinkNode = sink.getNode()
 select sink.getNode(), source, sink,
-  "Command line argument that depends on $@ can execute an arbitrary command if " +
+  "'" + sinkNode.getCommand() +
+    "' arguments that depends on $@, and are used in a $@, can execute an arbitrary command if " +
     sinkNode.getVulnerableArgumentExample() + " is used with " + sinkNode.getCommand() + ".",
-  source.getNode(), source.getNode().(Source).describe()
+  source.getNode(), source.getNode().(Source).describe(), sinkNode.getCommandExecution(),
+  "shell command execution"

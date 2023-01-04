@@ -716,8 +716,8 @@ class SystemCommandExecution extends DataFlow::Node instanceof SystemCommandExec
   /**
    * Gets an argument to this command execution that specifies the argument list
    * to the command.
-   * TODO: Can also invlide the command.
-   * TODO: Look through all the `SystemCommandExecution` models. 
+   * TODO: This list could potentially include the command itself (e.g. `git` or `hg`).
+   * TODO: Look through all the `SystemCommandExecution` models.
    */
   DataFlow::Node getArgumentList() { result = super.getArgumentList() }
 

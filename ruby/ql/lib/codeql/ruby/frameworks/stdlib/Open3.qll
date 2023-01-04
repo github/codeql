@@ -20,9 +20,7 @@ module Open3 {
     Open3Call() {
       this =
         API::getTopLevelMember("Open3")
-            .getAMethodCall(["popen3", "popen2", "popen2e", "capture3", "capture2", "capture2e"]) and
-      super.getMethodName() = "capture3" and // TODO: Debugging.
-      this.getLocation().getStartLine() = 236 // TODO: Debugging.
+            .getAMethodCall(["popen3", "popen2", "popen2e", "capture3", "capture2", "capture2e"])
     }
 
     override DataFlow::Node getAnArgument() { result = super.getArgument(_) }
@@ -39,9 +37,9 @@ module Open3 {
 
     override DataFlow::Node getArgumentList() {
       // TODO: This is incomplete
-      exists(Cfg::CfgNodes::ExprNodes::UnaryOperationCfgNode un|
+      exists(Cfg::CfgNodes::ExprNodes::UnaryOperationCfgNode un |
         un = super.getArgument(_).asExpr() and // TODO: Specific arg?
-        un.getOperator()= "*" and
+        un.getOperator() = "*" and
         result.asExpr() = un.getOperand()
       )
     }

@@ -63,6 +63,9 @@ module SecondOrderCommandInjection {
      * E.g. `--upload-pack` for `git`.
      */
     abstract string getVulnerableArgumentExample();
+
+    /** Gets the node where the shell command is executed. */
+    abstract DataFlow::Node getCommandExecution();
   }
 
   /**
@@ -95,28 +98,23 @@ module SecondOrderCommandInjection {
       // step through splat expressions
       t2 = t.continue() and
       result.asExpr().getExpr() =
-        // TODO: flows-to.
         usedAsArgList(t2, exec).asExpr().getExpr().(Ast::SplatExpr).getOperand()
     )
   }
 
   /** Gets a dataflow node that ends up being used as an argument list to an invocation of `git` or `hg`. */
   private DataFlow::LocalSourceNode usedAsVersionControlArgs(
-    TypeBackTracker t, DataFlow::Node argList, VulnerableCommand cmd
+    TypeBackTracker t, DataFlow::Node argList, VulnerableCommand cmd,
+    Concepts::SystemCommandExecution exec
   ) {
     t.start() and
-    // TODO: untested.
-    exists(Concepts::SystemCommandExecution exec |
-      exec.getACommandArgument().getConstantValue().getStringlikeValue() = cmd
-    |
-      exec.getArgumentList() = argList and
-      result = argList.getALocalSource()
-    )
+    exec.getACommandArgument().getConstantValue().getStringlikeValue() = cmd and
+    exec.getArgumentList() = argList and
+    result = argList.getALocalSource()
     or
+    // TODO: This second base-case is untested.
     t.start() and
-    exists(
-      Concepts::SystemCommandExecution exec, Cfg::CfgNodes::ExprNodes::ArrayLiteralCfgNode arr
-    |
+    exists(Cfg::CfgNodes::ExprNodes::ArrayLiteralCfgNode arr |
       argList = usedAsArgList(TypeBackTracker::end(), exec) and
       arr = argList.asExpr() and
       arr.getArgument(0).getConstantValue().getStringlikeValue() = cmd
@@ -130,14 +128,14 @@ module SecondOrderCommandInjection {
     )
     or
     exists(TypeBackTracker t2 |
-      result = usedAsVersionControlArgs(t2, argList, cmd).backtrack(t2, t)
+      result = usedAsVersionControlArgs(t2, argList, cmd, exec).backtrack(t2, t)
       or
-      // step through splat expressions
+      // step through splat expressions (TODO: untested?)
       t2 = t.continue() and
       result
           .flowsTo(any(DataFlow::Node n |
               n.asExpr().getExpr() =
-                usedAsVersionControlArgs(t2, argList, cmd)
+                usedAsVersionControlArgs(t2, argList, cmd, exec)
                     .asExpr()
                     .getExpr()
                     .(Ast::SplatExpr)
@@ -148,28 +146,58 @@ module SecondOrderCommandInjection {
 
   private import codeql.ruby.dataflow.internal.DataFlowDispatch as Dispatch
 
+  class CallSink extends Sink {
+    VulnerableCommand cmd;
+    Concepts::SystemCommandExecution exec;
+
+    CallSink() {
+      exists(DataFlow::CallNode list |
+        usedAsVersionControlArgs(TypeBackTracker::end(), _, cmd, exec) = list and
+        list.getMethodName() = "[]" and
+        exists(int i, int j | i < j |
+          list.getArgument(i).getConstantValue().getStringlikeValue() =
+            cmd.getAVulnerableSubCommand() and
+          this = list.getArgument(j)
+        )
+      )
+    }
+
+    override string getCommand() { result = cmd }
+
+    override string getVulnerableArgumentExample() { result = cmd.getVulnerableArgumentExample() }
+
+    override DataFlow::Node getCommandExecution() { result = exec }
+  }
+
+  // TODO: THis indirect call is untested.
   private class IndirectVcsCall extends DataFlow::CallNode {
     VulnerableCommand cmd;
+    Concepts::SystemCommandExecution exec;
 
     IndirectVcsCall() {
+      // TODO: This entire thing is ugly.
       exists(Dispatch::DataFlowCallable calleeDis, Ast::Callable callee, DataFlow::Node list |
         calleeDis =
           Dispatch::viableCallable(any(Dispatch::DataFlowCall c | c.asCall() = this.asExpr())) and
         calleeDis.asCallable() = callee and
         list.asExpr().getExpr() = callee.getParameter(0).(Ast::SplatParameter).getDefiningAccess() and
         // TODO: multiple nodes in the same position, i need to figure that out if this makes production.
-        usedAsVersionControlArgs(TypeBackTracker::end(), _, cmd).getLocation() = list.getLocation()
+        usedAsVersionControlArgs(TypeBackTracker::end(), _, cmd, exec).getLocation() =
+          list.getLocation()
       )
     }
 
     VulnerableCommand getCommand() { result = cmd }
+
+    Concepts::SystemCommandExecution getCommandExecution() { result = exec }
   }
 
   class IndirectCallSink extends Sink {
     VulnerableCommand cmd;
+    IndirectVcsCall call;
 
     IndirectCallSink() {
-      exists(IndirectVcsCall call, int i |
+      exists(int i |
         call.getCommand() = cmd and
         call.getArgument(i).getConstantValue().getStringlikeValue() = cmd.getAVulnerableSubCommand() and
         this = call.getArgument(any(int j | j > i))
@@ -179,5 +207,7 @@ module SecondOrderCommandInjection {
     override string getCommand() { result = cmd }
 
     override string getVulnerableArgumentExample() { result = cmd.getVulnerableArgumentExample() }
+
+    override DataFlow::Node getCommandExecution() { result = call.getCommandExecution() }
   }
 }
