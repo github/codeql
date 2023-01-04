@@ -1,0 +1,12 @@
+edges
+| impl/second-order.rb:2:22:2:27 | remote :  | impl/second-order.rb:3:22:3:27 | remote |
+| impl/second-order.rb:8:11:8:16 | remote :  | impl/second-order.rb:9:22:9:27 | remote |
+nodes
+| impl/second-order.rb:2:22:2:27 | remote :  | semmle.label | remote :  |
+| impl/second-order.rb:3:22:3:27 | remote | semmle.label | remote |
+| impl/second-order.rb:8:11:8:16 | remote :  | semmle.label | remote :  |
+| impl/second-order.rb:9:22:9:27 | remote | semmle.label | remote |
+subpaths
+#select
+| impl/second-order.rb:3:22:3:27 | remote | impl/second-order.rb:2:22:2:27 | remote :  | impl/second-order.rb:3:22:3:27 | remote | 'git' arguments that depends on $@, and are used in a $@, can execute an arbitrary command if --upload-pack is used with git. | impl/second-order.rb:2:22:2:27 | remote | library input | impl/second-order.rb:5:5:5:32 | call to capture3 | shell command execution |
+| impl/second-order.rb:9:22:9:27 | remote | impl/second-order.rb:8:11:8:16 | remote :  | impl/second-order.rb:9:22:9:27 | remote | 'git' arguments that depends on $@, and are used in a $@, can execute an arbitrary command if --upload-pack is used with git. | impl/second-order.rb:8:11:8:16 | remote | library input | impl/second-order.rb:15:3:15:30 | call to capture3 | shell command execution |
