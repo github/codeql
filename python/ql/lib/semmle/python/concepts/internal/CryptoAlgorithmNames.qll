@@ -33,9 +33,9 @@
 predicate isStrongHashingAlgorithm(string name) {
   name =
     [
-      "BLAKE2", "BLAKE2b", "BLAKE2s", "DSA", "ED25519", "ES256", "ECDSA256", "ES384", "ECDSA384", "ES512", "ECDSA512", "SHA2",
-      "SHA224", "SHA256", "SHA384", "SHA512", "SHA3", "SHA3224", "SHA3256", "SHA3384", "SHA3512", 
-      "SHAKE128", "SHAKE256"
+      "BLAKE2", "BLAKE2B", "BLAKE2S", "DSA", "ED25519", "ES256", "ECDSA256", "ES384", "ECDSA384", "ES512", "ECDSA512", "SHA2",
+      "SHA224", "SHA256", "SHA384", "SHA512", "SHA512224", "SHA512256", "SHA3", "SHA3224", "SHA3256", "SHA3384", "SHA3512", 
+      "SHAKE128", "SHAKE256", "SM3", "WHIRLPOOL"
     ]
 }
 

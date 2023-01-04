@@ -2649,6 +2649,75 @@ private module StdlibPrivate {
   }
 
   // ---------------------------------------------------------------------------
+  // hmac
+  // ---------------------------------------------------------------------------
+
+  /** Gets a call to `hmac.new`, `hmac.digest` or a direct construction of an HMAC object
+   *  with `algorithmName` as 3rd/`digestmod` argument */
+  private API::CallNode baseHMACOperation(string algorithmName) {
+    (
+      result = API::moduleImport("hmac").getMember("new").getACall() or
+      result = API::moduleImport("hmac").getMember("digest").getACall() or
+      result = API::moduleImport("hmac").getMember("HMAC").getACall()
+    )
+    and
+    (
+      // handles cases where the algorithm is passed as a string on an hlib function:
+      //    e.g., hmac.new(key, msg=None, digestmod="<hash_name>") vs hmac.new(key, msg=None, digestmod=hashlib.<hash_name>)
+      algorithmName =
+      result.getParameter(2, "digestmod").getAValueReachingSink().asExpr().(StrConst).getText() or
+      result.getParameter(2, "digestmod").getAValueReachingSink() = hashlibMember(algorithmName).asSource() or
+      // also handle older library versions where digestmod could be empty, in these cases it is assumed to be md5
+      //    This default was removed in version 3.8: https://docs.python.org/3/library/hmac.html
+      (not exists(result.getParameter(2, "digestmod")) and algorithmName = "md5")
+    )
+  }
+  /**
+   * A hashing operation by constructing an hmac.HMAC object,
+   * either directly or through `hmac.new`, and supplying a `msg` argument. 
+   * Additionally includes operations for `hmac.digest` as it has the same call signature. 
+   * The `msg` parameter must be present. `HMAC.update` is handled separately for supplying 
+   * a message later. 
+   */
+  class HMACDirectHash extends Cryptography::CryptographicOperation::Range, API::CallNode {
+    string hashName;
+
+    HMACDirectHash() {
+      this = baseHMACOperation(hashName) and
+      exists(this.getParameter(1, "msg"))
+    }
+
+    override string getAlgorithmRaw() { 
+      result = hashName
+    }
+
+    override DataFlow::Node getAnInput() { result = this.getParameter(1, "msg").asSink() }
+
+    override string getBlockModeRaw() { none() }
+  }
+
+
+ /**
+   * A hashing operation by using the `HMAC.update` method on an HMAC object constructed via 
+   * `hmac.new` or direction HMAC construction.
+   */
+  class HMACUpdateCall extends Cryptography::CryptographicOperation::Range, API::CallNode {
+    string hashName;
+
+    HMACUpdateCall() {
+      this = baseHMACOperation(hashName).getReturn().getMember("update").getACall()
+    }
+
+    override string getAlgorithmRaw() { 
+      result = hashName
+    }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+
+    override string getBlockModeRaw() { none() }
+  }
+
+  // ---------------------------------------------------------------------------
   // hashlib
   // ---------------------------------------------------------------------------
 
