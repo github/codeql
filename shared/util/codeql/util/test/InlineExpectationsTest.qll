@@ -6,13 +6,12 @@
  * To add this framework to a new language, add a new file
  * (usually called `InlineExpectationsTest.qll`) with:
  * - `private import codeql.util.test.InlineExpectationsTest` (this file)
- * - An implementation of the signature in `InlineExpectationsTestSig`.
- *   Usually this is done in a mdule called `Impl`.
- *   `Impl` has to define a `Location` class, and an `ExpectationComment` class.
+ * - An implementation of the class signature in `ExpectationCommentSig`.
+ *   This class can e.g. be called `ExpectationComment`.
  *   The `ExpectationComment` class must support a `getContents` method that returns
  *   the contents of the given comment, _excluding_ the comment indicator itself.
- *   It should also define `toString` and `getLocation` as usual.
- * - `import Make<Impl>` to expose the query predicates constructed in the `Make` module.
+ *   It should also define `toString` and `hasLocationInfo` as usual.
+ * - `import Make<ExpectationComment>` to expose the query predicates constructed in the `Make` module.
  *
  * To create a new inline expectations test:
  * - Declare a class that extends `InlineExpectationsTest`. In the characteristic predicate of the
@@ -96,36 +95,67 @@
  * `tag1=expected-value tag2=expected-value`
  */
 
-/**
- * A signature specifying the required parts for
- * constructing inline expectations.
- */
-signature module InlineExpectationsTestSig {
-  /** The location of an element in the source code. */
-  class Location {
-    predicate hasLocationInfo(
-      string filename, int startLine, int startColumn, int endLine, int endColumn
-    );
-  }
+/** A comment that may contain inline expectations. */
+signature class ExpectationCommentSig {
+  /** Gets the contents of this comment, _excluding_ the comment indicator. */
+  string getContents();
 
-  /** A comment that may contain inline expectations. */
-  class ExpectationComment {
-    /** Gets the contents of this comment, _excluding_ the comment indicator. */
-    string getContents();
+  /** Gets a textual representation of this element. */
+  string toString();
 
-    /** Gets the location of this comment. */
-    Location getLocation();
-
-    /** Gets a textual representation of this element. */
-    string toString();
-  }
+  predicate hasLocationInfo(
+    string filename, int startLine, int startColumn, int endLine, int endColumn
+  );
 }
 
 /**
  * Classes and predicates implementing inline expectations.
  */
-module Make<InlineExpectationsTestSig Impl> {
-  private import Impl
+module Make<ExpectationCommentSig ExpectationComment> {
+  private newtype TTLocation =
+    TLocation(string filename, int startLine, int startColumn, int endLine, int endColumn) {
+      any(ExpectationComment c)
+          .hasLocationInfo(filename, startLine, startColumn, endLine, endColumn)
+    }
+
+  private class Location extends TLocation {
+    string filename;
+    int startLine;
+    int startColumn;
+    int endLine;
+    int endColumn;
+
+    Location() { this = TLocation(filename, startLine, startColumn, endLine, endColumn) }
+
+    string getFilename() { result = filename }
+
+    int getStartLine() { result = startLine }
+
+    int getStartColumn() { result = startColumn }
+
+    int getEndLine() { result = endLine }
+
+    int getEndColumn() { result = endColumn }
+
+    string toString() {
+      result = filename + ":" + startLine + ":" + startColumn + "-" + endLine + ":" + endColumn
+    }
+
+    predicate hasLocationInfo(string f, int sl, int sc, int el, int ec) {
+      f = filename and
+      sl = startLine and
+      sc = startColumn and
+      el = endLine and
+      ec = endColumn
+    }
+  }
+
+  private Location getLocation(ExpectationComment c) {
+    exists(string filename, int startLine, int startColumn, int endLine, int endColumn |
+      c.hasLocationInfo(filename, startLine, startColumn, endLine, endColumn) and
+      result = TLocation(filename, startLine, startColumn, endLine, endColumn)
+    )
+  }
 
   /**
    * The base class for tests with inline expectations. The test extends this class to provide the actual
@@ -372,7 +402,7 @@ module Make<InlineExpectationsTestSig Impl> {
 
     override string toString() { result = comment.toString() }
 
-    override Location getLocation() { result = comment.getLocation() }
+    override Location getLocation() { result = getLocation(comment) }
   }
 
   private predicate onSameLine(ValidExpectation a, ActualResult b) {
