@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-01-05-09h04m54s.goofy-whale-qhg9x1v0.efe8887033812fa3aa9951af47d8321a84725dbdc1186f668e6681346937e92a
+compiled: false
