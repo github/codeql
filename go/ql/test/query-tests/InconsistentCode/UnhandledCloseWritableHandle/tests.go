@@ -98,7 +98,7 @@ func deferredCloseWithSync() {
 func deferredCloseWithSyncEarlyReturn(n int) {
 	if f, err := openFileWrite("foo.txt"); err != nil {
 		// a call to `Close` is deferred
-		defer f.Close() // NOT OK - false negative
+		defer f.Close() // NOT OK
 
 		if n > 100 {
 			return

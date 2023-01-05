@@ -1,7 +1,66 @@
-| tests.go:22:8:22:8 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |
-| tests.go:22:8:22:8 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:18:9:18:69 | call to OpenFile | call to OpenFile |
-| tests.go:27:3:27:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |
-| tests.go:27:3:27:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:18:9:18:69 | call to OpenFile | call to OpenFile |
-| tests.go:53:3:53:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |
-| tests.go:63:3:63:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:18:9:18:69 | call to OpenFile | call to OpenFile |
-| tests.go:119:3:119:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |
+edges
+| tests.go:9:2:9:74 | ... := ...[0] : pointer type | tests.go:10:9:10:9 | f : pointer type |
+| tests.go:10:9:10:9 | f : pointer type | tests.go:34:5:34:38 | ... := ...[0] : pointer type |
+| tests.go:10:9:10:9 | f : pointer type | tests.go:51:5:51:38 | ... := ...[0] : pointer type |
+| tests.go:10:9:10:9 | f : pointer type | tests.go:77:5:77:38 | ... := ...[0] : pointer type |
+| tests.go:10:9:10:9 | f : pointer type | tests.go:87:5:87:38 | ... := ...[0] : pointer type |
+| tests.go:10:9:10:9 | f : pointer type | tests.go:99:5:99:38 | ... := ...[0] : pointer type |
+| tests.go:10:9:10:9 | f : pointer type | tests.go:115:5:115:38 | ... := ...[0] : pointer type |
+| tests.go:18:2:18:69 | return statement[0] : pointer type | tests.go:44:5:44:42 | ... := ...[0] : pointer type |
+| tests.go:18:2:18:69 | return statement[0] : pointer type | tests.go:61:5:61:42 | ... := ...[0] : pointer type |
+| tests.go:21:24:21:24 | definition of f : pointer type | tests.go:22:8:22:8 | f |
+| tests.go:25:32:25:32 | definition of f : pointer type | tests.go:26:13:26:13 | capture variable f : pointer type |
+| tests.go:26:13:26:13 | capture variable f : pointer type | tests.go:27:3:27:3 | f |
+| tests.go:34:5:34:38 | ... := ...[0] : pointer type | tests.go:35:21:35:21 | f : pointer type |
+| tests.go:34:5:34:38 | ... := ...[0] : pointer type | tests.go:36:29:36:29 | f : pointer type |
+| tests.go:35:21:35:21 | f : pointer type | tests.go:21:24:21:24 | definition of f : pointer type |
+| tests.go:36:29:36:29 | f : pointer type | tests.go:25:32:25:32 | definition of f : pointer type |
+| tests.go:44:5:44:42 | ... := ...[0] : pointer type | tests.go:45:21:45:21 | f : pointer type |
+| tests.go:44:5:44:42 | ... := ...[0] : pointer type | tests.go:46:29:46:29 | f : pointer type |
+| tests.go:45:21:45:21 | f : pointer type | tests.go:21:24:21:24 | definition of f : pointer type |
+| tests.go:46:29:46:29 | f : pointer type | tests.go:25:32:25:32 | definition of f : pointer type |
+| tests.go:51:5:51:38 | ... := ...[0] : pointer type | tests.go:53:3:53:3 | f |
+| tests.go:61:5:61:42 | ... := ...[0] : pointer type | tests.go:63:3:63:3 | f |
+| tests.go:77:5:77:38 | ... := ...[0] : pointer type | tests.go:80:4:80:4 | f |
+| tests.go:77:5:77:38 | ... := ...[0] : pointer type | tests.go:82:3:82:3 | f |
+| tests.go:87:5:87:38 | ... := ...[0] : pointer type | tests.go:90:9:90:9 | f |
+| tests.go:99:5:99:38 | ... := ...[0] : pointer type | tests.go:101:9:101:9 | f |
+| tests.go:115:5:115:38 | ... := ...[0] : pointer type | tests.go:119:3:119:3 | f |
+nodes
+| tests.go:9:2:9:74 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| tests.go:10:9:10:9 | f : pointer type | semmle.label | f : pointer type |
+| tests.go:18:2:18:69 | return statement[0] : pointer type | semmle.label | return statement[0] : pointer type |
+| tests.go:21:24:21:24 | definition of f : pointer type | semmle.label | definition of f : pointer type |
+| tests.go:22:8:22:8 | f | semmle.label | f |
+| tests.go:25:32:25:32 | definition of f : pointer type | semmle.label | definition of f : pointer type |
+| tests.go:26:13:26:13 | capture variable f : pointer type | semmle.label | capture variable f : pointer type |
+| tests.go:27:3:27:3 | f | semmle.label | f |
+| tests.go:34:5:34:38 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| tests.go:35:21:35:21 | f : pointer type | semmle.label | f : pointer type |
+| tests.go:36:29:36:29 | f : pointer type | semmle.label | f : pointer type |
+| tests.go:44:5:44:42 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| tests.go:45:21:45:21 | f : pointer type | semmle.label | f : pointer type |
+| tests.go:46:29:46:29 | f : pointer type | semmle.label | f : pointer type |
+| tests.go:51:5:51:38 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| tests.go:53:3:53:3 | f | semmle.label | f |
+| tests.go:61:5:61:42 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| tests.go:63:3:63:3 | f | semmle.label | f |
+| tests.go:77:5:77:38 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| tests.go:80:4:80:4 | f | semmle.label | f |
+| tests.go:82:3:82:3 | f | semmle.label | f |
+| tests.go:87:5:87:38 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| tests.go:90:9:90:9 | f | semmle.label | f |
+| tests.go:99:5:99:38 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| tests.go:101:9:101:9 | f | semmle.label | f |
+| tests.go:115:5:115:38 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| tests.go:119:3:119:3 | f | semmle.label | f |
+subpaths
+#select
+| tests.go:22:8:22:8 | f | tests.go:9:2:9:74 | ... := ...[0] : pointer type | tests.go:22:8:22:8 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |
+| tests.go:22:8:22:8 | f | tests.go:18:2:18:69 | return statement[0] : pointer type | tests.go:22:8:22:8 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:18:9:18:69 | call to OpenFile | call to OpenFile |
+| tests.go:27:3:27:3 | f | tests.go:9:2:9:74 | ... := ...[0] : pointer type | tests.go:27:3:27:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |
+| tests.go:27:3:27:3 | f | tests.go:18:2:18:69 | return statement[0] : pointer type | tests.go:27:3:27:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:18:9:18:69 | call to OpenFile | call to OpenFile |
+| tests.go:53:3:53:3 | f | tests.go:9:2:9:74 | ... := ...[0] : pointer type | tests.go:53:3:53:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |
+| tests.go:63:3:63:3 | f | tests.go:18:2:18:69 | return statement[0] : pointer type | tests.go:63:3:63:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:18:9:18:69 | call to OpenFile | call to OpenFile |
+| tests.go:101:9:101:9 | f | tests.go:9:2:9:74 | ... := ...[0] : pointer type | tests.go:101:9:101:9 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |
+| tests.go:119:3:119:3 | f | tests.go:9:2:9:74 | ... := ...[0] : pointer type | tests.go:119:3:119:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |
