@@ -342,3 +342,16 @@ void equality_barrier() {
 		int* a = (int*)malloc(size1 * sizeof(int)); // GOOD
 	}
 }
+
+// --- custom allocators ---
+ 
+void *MyMalloc1(size_t size) { return malloc(size); } // [detected here]
+void *MyMalloc2(size_t size);
+
+void customAllocatorTests()
+{
+	int size = atoi(getenv("USER"));
+
+	char *chars1 = (char *)MyMalloc1(size); // BAD [detected above]
+	char *chars2 = (char *)MyMalloc2(size); // BAD [NOT DETECTED]
+}

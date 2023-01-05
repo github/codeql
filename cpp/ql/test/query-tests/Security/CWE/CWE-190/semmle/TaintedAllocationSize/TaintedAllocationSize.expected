@@ -25,6 +25,9 @@ edges
 | test.cpp:259:20:259:25 | call to getenv | test.cpp:263:11:263:29 | ... * ... |
 | test.cpp:289:17:289:20 | size [post update] | test.cpp:291:11:291:28 | ... * ... |
 | test.cpp:305:18:305:21 | size [post update] | test.cpp:308:10:308:27 | ... * ... |
+| test.cpp:348:24:348:27 | size | test.cpp:348:46:348:49 | size |
+| test.cpp:353:18:353:23 | call to getenv | test.cpp:355:35:355:38 | size |
+| test.cpp:355:35:355:38 | size | test.cpp:348:24:348:27 | size |
 nodes
 | test.cpp:39:27:39:30 | argv | semmle.label | argv |
 | test.cpp:43:38:43:44 | tainted | semmle.label | tainted |
@@ -58,6 +61,10 @@ nodes
 | test.cpp:291:11:291:28 | ... * ... | semmle.label | ... * ... |
 | test.cpp:305:18:305:21 | size [post update] | semmle.label | size [post update] |
 | test.cpp:308:10:308:27 | ... * ... | semmle.label | ... * ... |
+| test.cpp:348:24:348:27 | size | semmle.label | size |
+| test.cpp:348:46:348:49 | size | semmle.label | size |
+| test.cpp:353:18:353:23 | call to getenv | semmle.label | call to getenv |
+| test.cpp:355:35:355:38 | size | semmle.label | size |
 subpaths
 #select
 | test.cpp:43:31:43:36 | call to malloc | test.cpp:39:27:39:30 | argv | test.cpp:43:38:43:44 | tainted | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv | user input (a command-line argument) |
@@ -76,3 +83,4 @@ subpaths
 | test.cpp:263:4:263:9 | call to malloc | test.cpp:259:20:259:25 | call to getenv | test.cpp:263:11:263:29 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:259:20:259:25 | call to getenv | user input (an environment variable) |
 | test.cpp:291:4:291:9 | call to malloc | test.cpp:251:18:251:23 | call to getenv | test.cpp:291:11:291:28 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:251:18:251:23 | call to getenv | user input (an environment variable) |
 | test.cpp:308:3:308:8 | call to malloc | test.cpp:251:18:251:23 | call to getenv | test.cpp:308:10:308:27 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:251:18:251:23 | call to getenv | user input (an environment variable) |
+| test.cpp:348:39:348:44 | call to malloc | test.cpp:353:18:353:23 | call to getenv | test.cpp:348:46:348:49 | size | This allocation size is derived from $@ and might overflow. | test.cpp:353:18:353:23 | call to getenv | user input (an environment variable) |
