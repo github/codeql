@@ -6,8 +6,8 @@
 
 ### Minor Analysis Improvements
 
-* The `AlertSuppression.ql` query has been updated to support the new `// codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy `// lgtm` and `// lgtm[query-id]` comments can now also be place on the line before an alert.
-* The extensible predicates for Models as Data have been renamed (the `ext` prefix has been removed). As an example `extSummaryModel` has been renamed to `summaryModel`.
+* The `AlertSuppression.ql` query has been updated to support the new `// codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy `// lgtm` and `// lgtm[query-id]` comments can now also be placed on the line before an alert.
+* The extensible predicates for Models as Data have been renamed (the `ext` prefix has been removed). As an example, `extSummaryModel` has been renamed to `summaryModel`.
 
 ### Bug Fixes
 

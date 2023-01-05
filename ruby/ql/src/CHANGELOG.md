@@ -6,7 +6,7 @@
 
 ### Minor Analysis Improvements
 
-* The `AlertSuppression.ql` query has been updated to support the new `# codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy `# lgtm` and `# lgtm[query-id]` comments can now also be place on the line before an alert.
+* The `AlertSuppression.ql` query has been updated to support the new `# codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy `# lgtm` and `# lgtm[query-id]` comments can now also be placed on the line before an alert.
 * Extended the `rb/kernel-open` query with following sinks: `IO.write`, `IO.binread`, `IO.binwrite`, `IO.foreach`, `IO.readlines`, and `URI.open`.
 
 ## 0.4.6
