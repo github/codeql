@@ -31,7 +31,7 @@
 | file://:0:0:0:0 | _Float64 | 8 |
 | file://:0:0:0:0 | _Float64x | 16 |
 | file://:0:0:0:0 | _Float128 | 16 |
-| file://:0:0:0:0 | _Float128x | 16 |
+| file://:0:0:0:0 | _Float128x | 32 |
 | file://:0:0:0:0 | _Imaginary double | 8 |
 | file://:0:0:0:0 | _Imaginary float | 4 |
 | file://:0:0:0:0 | _Imaginary long double | 16 |
