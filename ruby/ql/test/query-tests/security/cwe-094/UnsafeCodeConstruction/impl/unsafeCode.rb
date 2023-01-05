@@ -22,7 +22,7 @@ class Foobar
   end
 
   def named_code(code)
-    foo.send("def \n #{code} \n end") # OK - parameter is named code
+    eval("def \n #{code} \n end") # OK - parameter is named code
   end
 
   def joinStuff(my_arr)
