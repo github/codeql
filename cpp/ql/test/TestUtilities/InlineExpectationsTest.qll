@@ -10,7 +10,7 @@ private module Impl implements InlineExpectationsTestSig {
   private newtype TExpectationComment = MkExpectationComment(C::CppStyleComment c)
 
   /**
-   * Represents a line comment in the CPP style.
+   * A class representing a line comment in the CPP style.
    * Unlike the `CppStyleComment` class, however, the string returned by `getContents` does _not_
    * include the preceding comment marker (`//`).
    */

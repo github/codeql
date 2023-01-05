@@ -10,7 +10,7 @@ private module Impl implements InlineExpectationsTestSig {
   private newtype TExpectationComment = MkExpectationComment(S::SingleLineComment c)
 
   /**
-   * Represents a line comment.
+   * A clas representing a line comment.
    * Unlike the `SingleLineComment` class, however, the string returned by `getContents` does _not_
    * include the preceding comment marker (`//`).
    */
