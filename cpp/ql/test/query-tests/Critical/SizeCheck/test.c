@@ -66,6 +66,6 @@ void *MyMalloc2(size_t size);
 
 void customAllocatorTests()
 {
-    float *fptr1 = MyMalloc1(3); // BAD (too small)
-    float *fptr2 = MyMalloc2(3); // BAD (too small)
+    float *fptr1 = MyMalloc1(3); // BAD (too small) [NOT DETECTED]
+    float *fptr2 = MyMalloc2(3); // BAD (too small) [NOT DETECTED]
 }
