@@ -26,7 +26,7 @@ jobs:
         run: |
           gh api 'repos/${{github.repository}}/pulls/${{github.event.number}}/files' --paginate --jq 'any(.[].filename ; test("/change-notes/.*[.]md$"))' |
           grep true -c
-      - name: Fail if the change note filename doesn't match the expected format.
+      - name: Fail if the change note filename doesn't match the expected format. The file name must be of the form 'YYYY-MM-DD.md' or 'YYYY-MM-DD-{title}.md', where '{title}' is arbitrary text.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
