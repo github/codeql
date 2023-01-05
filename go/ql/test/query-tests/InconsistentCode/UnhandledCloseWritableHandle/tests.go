@@ -30,6 +30,15 @@ func closeFileDeferredIndirect(f *os.File) {
 	defer cont()
 }
 
+func closeFileDeferredIndirectReturn(f *os.File) {
+	var cont = func() error {
+		return f.Close() // OK, because this function returns the error
+	}
+
+	// different (more general) problem: deferred error
+	defer cont()
+}
+
 func deferredCalls() {
 	if f, err := openFileWrite("foo.txt"); err != nil {
 		closeFileDeferred(f)         // NOT OK
