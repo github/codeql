@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+            Regular expressions in Ruby can use anchors to match the beginning and end of a string. 
+            However, if the <code>^</code> and <code>$</code> anchors are not used, 
+            the regular expression can match a single line of a multi-line string.
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+            Use the <code>\A</code> and <code>\z</code> anchors to match the beginning and end of a string, 
+            as these will always match the beginning and end of the string, even if the string contains newlines.
+		</p>
+	</recommendation>
+
+	<example>
+
+		<p>
+            The following example code uses a regular expression to check that a string contains only digits.
+		</p>
+
+		<sample language="ruby">
+def bad(input) 
+    raise "Bad input" unless input =~ /[0-9]+/
+
+    # ....
+end
+        </sample>
+
+        <p>
+            The regular expression <code>[0-9]+</code> will match a single line of a multi-line string, 
+            which may not be the intended behavior. 
+            To match the entire string, the regular expression should be <code>\A[0-9]+\z</code>.
+        </p>
+        
+        <sample language="ruby">
+def good(input)
+    raise "Bad input" unless input =~ /\A[0-9]+\z/
+
+    # ....
+end
+        </sample>
+
+	</example>
+
+	<references>
+        <li>
+            RDoc Documentation: <a href="https://ruby-doc.org/3.2.0/Regexp.html#class-Regexp-label-Anchors">Anchors</a>
+        </li>
+	</references>
+</qhelp>
