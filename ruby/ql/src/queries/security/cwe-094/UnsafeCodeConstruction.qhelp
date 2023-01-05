@@ -69,7 +69,7 @@ to define the getter method.
 <example>
 <p>
 This example dynamically registers a method on another class which
-forwards its arguments to a target class. This approach uses
+forwards its arguments to a target object. This approach uses
 <code>module_eval</code> and string interpolation to construct class variables
 and methods.
 </p>

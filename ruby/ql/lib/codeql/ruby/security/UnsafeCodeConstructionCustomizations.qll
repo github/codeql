@@ -81,10 +81,10 @@ module UnsafeCodeConstruction {
    * A string constructed from a string-literal (e.g. `"foo #{sink}"`),
    * where the resulting string ends up being executed as a code.
    */
-  class StringFormatAsSink extends Sink {
+  class StringInterpolationAsSink extends Sink {
     Concepts::CodeExecution s;
 
-    StringFormatAsSink() {
+    StringInterpolationAsSink() {
       exists(Ast::StringlikeLiteral lit |
         any(DataFlow::Node n | n.asExpr().getExpr() = lit) = getANodeExecutedAsCode(s) and
         this.asExpr().getExpr() = lit.getComponent(_)
