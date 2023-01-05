@@ -3,7 +3,7 @@
  * @description Errors which occur when closing a writable file handle may result in data loss
  *              if the data could not be successfully flushed. Such errors should be handled
  *              explicitly.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision high
  * @id go/unhandled-writable-file-close
@@ -14,6 +14,7 @@
  */
 
 import go
+import DataFlow::PathGraph
 
 /**
  * Holds if a `flag` for use with `os.OpenFile` implies that the resulting
@@ -142,18 +143,18 @@ predicate precededBySync(DataFlow::Node node, DataFlow::CallNode call) {
 }
 
 from
-  UnhandledFileCloseDataFlowConfiguration cfg, DataFlow::Node source, DataFlow::CallNode openCall,
-  DataFlow::Node sink, DataFlow::CallNode closeCall
+  UnhandledFileCloseDataFlowConfiguration cfg, DataFlow::PathNode source,
+  DataFlow::CallNode openCall, DataFlow::PathNode sink, DataFlow::CallNode closeCall
 where
   // find data flow from an `os.OpenFile` call to an `os.File.Close` call
   // where the handle is writable
-  cfg.hasFlow(source, sink) and
-  isWritableFileHandle(source, openCall) and
+  cfg.hasFlowPath(source, sink) and
+  isWritableFileHandle(source.getNode(), openCall) and
   // get the `CallNode` corresponding to the sink
-  isCloseSink(sink, closeCall) and
+  isCloseSink(sink.getNode(), closeCall) and
   // check that the call to `os.File.Close` is not preceded by a checked call to
   // `os.File.Sync`
-  not precededBySync(sink, closeCall)
-select sink,
+  not precededBySync(sink.getNode(), closeCall)
+select sink, source, sink,
   "File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly.",
   openCall, openCall.toString()
