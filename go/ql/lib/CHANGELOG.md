@@ -13,7 +13,7 @@
 * The predicate `getNumParameter` on `FuncTypeExpr` has been changed to actually give the number of parameters. It previously gave the number of parameter declarations. `getNumParameterDecl` has been introduced to preserve this functionality.
 * The definition of `mayHaveSideEffects` for `ReturnStmt` was incorrect when more than one expression was being returned. Such return statements were effectively considered to never have side effects. This has now been fixed. In rare circumstances `globalValueNumber` may have incorrectly treated two values as the same when they were in fact distinct.
 * Queries that care about SQL, such as `go/sql-injection`, now recognise SQL-consuming functions belonging to the `gorqlite` and `GoFrame` packages.
- * `rsync` has been added to the list of commands which may evaluate its parameters as a shell command.
+* `rsync` has been added to the list of commands which may evaluate its parameters as a shell command.
 
 ### Bug Fixes
 
