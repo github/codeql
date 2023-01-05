@@ -42,6 +42,6 @@ void customAllocatorTests()
 	int x = getAnInt();
 	int y = getAnInt();
 
-	char *buffer1 = (char *)MyMalloc1(x * y); // BAD [NOT DETECTED]
-	char *buffer2 = (char *)MyMalloc2(x * y); // BAD [NOT DETECTED]
+	char *buffer1 = (char *)MyMalloc1(x * y); // BAD
+	char *buffer2 = (char *)MyMalloc2(x * y); // BAD
 }
