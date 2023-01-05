@@ -13,5 +13,5 @@ predicate isExprWithNewBuiltin(Expr expr) {
 from Expr expr, int kind, int kind_new, Location location
 where
   exprs(expr, kind, location) and
-  if isExprWithNewBuiltin(expr) then kind_new = 0 else kind_new = kind
+  if isExprWithNewBuiltin(expr) then kind_new = 1 else kind_new = kind
 select expr, kind_new, location
