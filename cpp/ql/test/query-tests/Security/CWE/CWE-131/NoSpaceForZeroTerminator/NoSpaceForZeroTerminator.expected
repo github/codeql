@@ -1,5 +1,7 @@
 | test2.cpp:64:34:64:39 | call to calloc | This allocation does not include space to null-terminate the string. |
 | test2.cpp:71:28:71:34 | call to realloc | This allocation does not include space to null-terminate the string. |
+| test2.cpp:84:27:84:35 | call to MyMalloc1 | This allocation does not include space to null-terminate the string. |
+| test2.cpp:89:27:89:35 | call to MyMalloc2 | This allocation does not include space to null-terminate the string. |
 | test.c:16:20:16:25 | call to malloc | This allocation does not include space to null-terminate the string. |
 | test.c:32:20:32:25 | call to malloc | This allocation does not include space to null-terminate the string. |
 | test.c:49:20:49:25 | call to malloc | This allocation does not include space to null-terminate the string. |

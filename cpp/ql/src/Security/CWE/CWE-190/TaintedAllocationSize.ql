@@ -25,9 +25,8 @@ import DataFlow::PathGraph
  * Holds if `alloc` is an allocation, and `tainted` is a child of it that is a
  * taint sink.
  */
-predicate allocSink(Expr alloc, DataFlow::Node sink) {
+predicate allocSink(HeuristicAllocationExpr alloc, DataFlow::Node sink) {
   exists(Expr e | e = sink.asConvertedExpr() |
-    isAllocationExpr(alloc) and
     e = alloc.getAChild() and
     e.getUnspecifiedType() instanceof IntegralType
   )

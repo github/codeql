@@ -16,7 +16,7 @@
 import cpp
 import semmle.code.cpp.models.Models
 
-predicate baseType(AllocationExpr alloc, Type base) {
+predicate baseType(HeuristicAllocationExpr alloc, Type base) {
   exists(PointerType pointer |
     pointer.getBaseType() = base and
     (
@@ -34,12 +34,12 @@ predicate decideOnSize(Type t, int size) {
   size = min(t.getSize())
 }
 
-from AllocationExpr alloc, Type base, int basesize, int allocated
+from HeuristicAllocationExpr alloc, Type base, int basesize, int allocated
 where
   baseType(alloc, base) and
   allocated = alloc.getSizeBytes() and
   decideOnSize(base, basesize) and
-  alloc.(FunctionCall).getTarget() instanceof AllocationFunction and // exclude `new` and similar
+  alloc.(FunctionCall).getTarget() instanceof HeuristicAllocationFunction and // exclude `new` and similar
   // If the codebase has more than one type with the same name, check if any matches
   not exists(int size | base.getSize() = size |
     size = 0 or
