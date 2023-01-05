@@ -127,18 +127,19 @@ class UnhandledFileCloseDataFlowConfiguration extends DataFlow::Configuration {
 /**
  * Holds if a `node` is preceded by a call to `os.File.Sync`.
  */
-predicate precededBySync(DataFlow::Node node, DataFlow::CallNode call) {
+predicate precededBySync(DataFlow::Node closeReceiver, DataFlow::CallNode closeCall) {
   // using the control flow graph, try to find a call to a handled call to `os.File.Sync`
   // which precedes `closeCall`.
-  exists(IR::Instruction instr, DataFlow::Node syncReceiver, DataFlow::CallNode syncCall |
-    // find a predecessor to `closeCall` in the control flow graph
-    instr = call.asInstruction().getAPredecessor*() and
+  exists(IR::Instruction syncInstr, DataFlow::Node syncReceiver, DataFlow::CallNode syncCall |
     // match the instruction corresponding to an `os.File.Sync` call with the predecessor
-    syncCall.asInstruction() = instr and
+    syncCall.asInstruction() = syncInstr and
     // check that the call to `os.File.Sync` is handled
     isHandledSync(syncReceiver, syncCall) and
+    // find a predecessor to `closeCall` in the control flow graph which dominates the call to
+    // `os.File.Close`
+    syncInstr.dominatesNode(closeCall.asInstruction()) and
     // check that `os.File.Sync` is called on the same object as `os.File.Close`
-    exists(DataFlow::SsaNode ssa | ssa.getAUse() = node and ssa.getAUse() = syncReceiver)
+    exists(DataFlow::SsaNode ssa | ssa.getAUse() = closeReceiver and ssa.getAUse() = syncReceiver)
   )
 }
 
