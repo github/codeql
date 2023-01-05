@@ -6,9 +6,8 @@
 
 ### Minor Analysis Improvements
 
-- Added `subprocess.getoutput` and `subprocess.getoutputstatus` as new command injection sinks for the StdLib.
- * The data-flow library has been rewritten to no longer rely on the points-to analysis in order to
-   resolve references to modules. Improvements in the module resolution can lead to more results.
+* Added `subprocess.getoutput` and `subprocess.getoutputstatus` as new command injection sinks for the StdLib.
+* The data-flow library has been rewritten to no longer rely on the points-to analysis in order to resolve references to modules. Improvements in the module resolution can lead to more results.
 * Deleted the deprecated `importNode` predicate from the `DataFlowUtil.qll` file.
 * Deleted the deprecated features from `PEP249.qll` that were not inside the `PEP249` module.
 * Deleted the deprecated `werkzeug` from the `Werkzeug` module in `Werkzeug.qll`.
