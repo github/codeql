@@ -610,6 +610,8 @@ case @builtintype.kind of
 | 49 = @std_float128          // _Float128
 | 50 = @float128x             // _Float128x
 | 51 = @char8_t
+| 52 = @float16               // _Float16
+| 53 = @complex_float16       // _Complex _Float16
 ;
 
 builtintypes(
