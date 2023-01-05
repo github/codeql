@@ -90,13 +90,25 @@ predicate isWritableFileHandle(DataFlow::Node source, DataFlow::CallNode call) {
 /**
  * Holds if `os.File.Close` is called on `sink`.
  */
-predicate isCloseSink(DataFlow::Node sink, DataFlow::CallNode call) {
+predicate isCloseSink(DataFlow::Node sink, DataFlow::CallNode closeCall) {
   // find calls to the os.File.Close function
-  call = any(CloseFileFun f).getACall() and
-  // that are deferred
-  unhandledCall(call) and
+  closeCall = any(CloseFileFun f).getACall() and
+  // that are unhandled
+  unhandledCall(closeCall) and
   // where the function is called on the sink
-  call.getReceiver() = sink
+  closeCall.getReceiver() = sink and
+  // and check that it is not dominated by a call to `os.File.Sync`.
+  not exists(IR::Instruction syncInstr, DataFlow::Node syncReceiver, DataFlow::CallNode syncCall |
+    // match the instruction corresponding to an `os.File.Sync` call with the predecessor
+    syncCall.asInstruction() = syncInstr and
+    // check that the call to `os.File.Sync` is handled
+    isHandledSync(syncReceiver, syncCall) and
+    // find a predecessor to `closeCall` in the control flow graph which dominates the call to
+    // `os.File.Close`
+    syncInstr.dominatesNode(closeCall.asInstruction()) and
+    // check that `os.File.Sync` is called on the same object as `os.File.Close`
+    exists(DataFlow::SsaNode ssa | ssa.getAUse() = sink and ssa.getAUse() = syncReceiver)
+  )
 }
 
 /**
@@ -124,25 +136,6 @@ class UnhandledFileCloseDataFlowConfiguration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) { isCloseSink(sink, _) }
 }
 
-/**
- * Holds if a `node` is preceded by a call to `os.File.Sync`.
- */
-predicate precededBySync(DataFlow::Node closeReceiver, DataFlow::CallNode closeCall) {
-  // using the control flow graph, try to find a call to a handled call to `os.File.Sync`
-  // which precedes `closeCall`.
-  exists(IR::Instruction syncInstr, DataFlow::Node syncReceiver, DataFlow::CallNode syncCall |
-    // match the instruction corresponding to an `os.File.Sync` call with the predecessor
-    syncCall.asInstruction() = syncInstr and
-    // check that the call to `os.File.Sync` is handled
-    isHandledSync(syncReceiver, syncCall) and
-    // find a predecessor to `closeCall` in the control flow graph which dominates the call to
-    // `os.File.Close`
-    syncInstr.dominatesNode(closeCall.asInstruction()) and
-    // check that `os.File.Sync` is called on the same object as `os.File.Close`
-    exists(DataFlow::SsaNode ssa | ssa.getAUse() = closeReceiver and ssa.getAUse() = syncReceiver)
-  )
-}
-
 from
   UnhandledFileCloseDataFlowConfiguration cfg, DataFlow::PathNode source,
   DataFlow::CallNode openCall, DataFlow::PathNode sink, DataFlow::CallNode closeCall
@@ -152,10 +145,7 @@ where
   cfg.hasFlowPath(source, sink) and
   isWritableFileHandle(source.getNode(), openCall) and
   // get the `CallNode` corresponding to the sink
-  isCloseSink(sink.getNode(), closeCall) and
-  // check that the call to `os.File.Close` is not preceded by a checked call to
-  // `os.File.Sync`
-  not precededBySync(sink.getNode(), closeCall)
+  isCloseSink(sink.getNode(), closeCall)
 select sink, source, sink,
   "File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly.",
   openCall, openCall.toString()

@@ -2,8 +2,6 @@ edges
 | tests.go:9:2:9:74 | ... := ...[0] : pointer type | tests.go:10:9:10:9 | f : pointer type |
 | tests.go:10:9:10:9 | f : pointer type | tests.go:43:5:43:38 | ... := ...[0] : pointer type |
 | tests.go:10:9:10:9 | f : pointer type | tests.go:60:5:60:38 | ... := ...[0] : pointer type |
-| tests.go:10:9:10:9 | f : pointer type | tests.go:86:5:86:38 | ... := ...[0] : pointer type |
-| tests.go:10:9:10:9 | f : pointer type | tests.go:96:5:96:38 | ... := ...[0] : pointer type |
 | tests.go:10:9:10:9 | f : pointer type | tests.go:108:5:108:38 | ... := ...[0] : pointer type |
 | tests.go:10:9:10:9 | f : pointer type | tests.go:124:5:124:38 | ... := ...[0] : pointer type |
 | tests.go:18:2:18:69 | return statement[0] : pointer type | tests.go:53:5:53:42 | ... := ...[0] : pointer type |
@@ -21,9 +19,6 @@ edges
 | tests.go:55:29:55:29 | f : pointer type | tests.go:25:32:25:32 | definition of f : pointer type |
 | tests.go:60:5:60:38 | ... := ...[0] : pointer type | tests.go:62:3:62:3 | f |
 | tests.go:70:5:70:42 | ... := ...[0] : pointer type | tests.go:72:3:72:3 | f |
-| tests.go:86:5:86:38 | ... := ...[0] : pointer type | tests.go:89:4:89:4 | f |
-| tests.go:86:5:86:38 | ... := ...[0] : pointer type | tests.go:91:3:91:3 | f |
-| tests.go:96:5:96:38 | ... := ...[0] : pointer type | tests.go:99:9:99:9 | f |
 | tests.go:108:5:108:38 | ... := ...[0] : pointer type | tests.go:110:9:110:9 | f |
 | tests.go:124:5:124:38 | ... := ...[0] : pointer type | tests.go:128:3:128:3 | f |
 nodes
@@ -45,11 +40,6 @@ nodes
 | tests.go:62:3:62:3 | f | semmle.label | f |
 | tests.go:70:5:70:42 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
 | tests.go:72:3:72:3 | f | semmle.label | f |
-| tests.go:86:5:86:38 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
-| tests.go:89:4:89:4 | f | semmle.label | f |
-| tests.go:91:3:91:3 | f | semmle.label | f |
-| tests.go:96:5:96:38 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
-| tests.go:99:9:99:9 | f | semmle.label | f |
 | tests.go:108:5:108:38 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
 | tests.go:110:9:110:9 | f | semmle.label | f |
 | tests.go:124:5:124:38 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
