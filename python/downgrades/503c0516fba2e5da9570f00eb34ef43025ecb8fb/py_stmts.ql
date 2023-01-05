@@ -26,7 +26,12 @@ class StmtList_ extends @py_stmt_list {
  */
 bindingset[new_index]
 int old_index(int new_index) {
-  if new_index < 14 then result = new_index else result + (16 - 14) = new_index
+  if new_index < 14
+  then result = new_index
+  else
+    if new_index >= 16
+    then result + (16 - 14) = new_index
+    else none()
 }
 
 // The schema for py_stmts is:

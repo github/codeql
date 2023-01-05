@@ -26,7 +26,12 @@ class ExprParent_ extends @py_expr_parent {
  */
 bindingset[new_index]
 int old_index(int new_index) {
-  if new_index < 18 then result = new_index else result + (19 - 18) = new_index
+  if new_index < 18
+  then result = new_index
+  else
+    if new_index >= 19
+    then result + (19 - 18) = new_index
+    else none()
 }
 
 // The schema for py_exprs is:
