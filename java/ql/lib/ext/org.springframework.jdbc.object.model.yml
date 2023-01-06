@@ -4,8 +4,8 @@ extensions:
       extensible: sinkModel
     data:
       - ["org.springframework.jdbc.object", "BatchSqlUpdate", False, "BatchSqlUpdate", "", "", "Argument[1]", "sql", "manual"]
-      - ["org.springframework.jdbc.object", "MappingSqlQuery", False, "BatchSqlUpdate", "", "", "Argument[1]", "sql", "manual"]
-      - ["org.springframework.jdbc.object", "MappingSqlQueryWithParameters", False, "BatchSqlUpdate", "", "", "Argument[1]", "sql", "manual"]
+      - ["org.springframework.jdbc.object", "MappingSqlQuery", False, "MappingSqlQuery", "", "", "Argument[1]", "sql", "manual"]
+      - ["org.springframework.jdbc.object", "MappingSqlQueryWithParameters", False, "MappingSqlQueryWithParameters", "", "", "Argument[1]", "sql", "manual"]
       - ["org.springframework.jdbc.object", "RdbmsOperation", True, "setSql", "", "", "Argument[0]", "sql", "manual"]
       - ["org.springframework.jdbc.object", "SqlCall", False, "SqlCall", "", "", "Argument[1]", "sql", "manual"]
       - ["org.springframework.jdbc.object", "SqlFunction", False, "SqlFunction", "", "", "Argument[1]", "sql", "manual"]
