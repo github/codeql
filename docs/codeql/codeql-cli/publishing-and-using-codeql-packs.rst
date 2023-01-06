@@ -83,6 +83,8 @@ The ``analyze`` command will run the default suite of any specified CodeQL packs
 
    The ``codeql pack download`` command stores the pack it downloads in an internal location that is not intended for local modification.  Unexpected (and hard to troubleshoot) behavior may result if the pack is modified after downloading. For more information about customizing packs, see ":ref:`Creating and working with CodeQL packs <creating-and-working-with-codeql-packs>`."
 
+.. _about-codeql-pack-compatibility: 
+
 About CodeQL pack compatibility
 -------------------------------
 
