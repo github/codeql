@@ -391,18 +391,24 @@ module ExprNode {
   }
 
   /** A left-shift operation. */
-  class LShiftExpr extends BinaryOperation {
-    override CS::LShiftExpr e;
+  class LeftShiftExpr extends BinaryOperation {
+    override CS::LeftShiftExpr e;
 
     override TLShiftOp getOp() { any() }
   }
 
+  /** DEPRECATED: Alias for LeftShiftExpr. */
+  deprecated class LShiftExpr = LeftShiftExpr;
+
   /** A right-shift operation. */
-  class RShiftExpr extends BinaryOperation {
-    override CS::RShiftExpr e;
+  class RightShiftExpr extends BinaryOperation {
+    override CS::RightShiftExpr e;
 
     override TRShiftOp getOp() { any() }
   }
+
+  /** DEPRECATED: Alias for RightShiftExpr. */
+  deprecated class RShiftExpr = RightShiftExpr;
 
   /** A conditional expression. */
   class ConditionalExpr extends ExprNode {

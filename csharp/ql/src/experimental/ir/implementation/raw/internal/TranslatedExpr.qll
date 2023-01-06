@@ -1091,9 +1091,9 @@ class TranslatedCast extends TranslatedNonConstantExpr {
 }
 
 private Opcode binaryBitwiseOpcode(BinaryBitwiseOperation expr) {
-  expr instanceof LShiftExpr and result instanceof Opcode::ShiftLeft
+  expr instanceof LeftShiftExpr and result instanceof Opcode::ShiftLeft
   or
-  expr instanceof RShiftExpr and result instanceof Opcode::ShiftRight
+  expr instanceof RightShiftExpr and result instanceof Opcode::ShiftRight
   or
   expr instanceof BitwiseAndExpr and result instanceof Opcode::BitAnd
   or
