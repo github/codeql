@@ -20,7 +20,7 @@ def normalize_then_check():
     x = source()
     y = normalize(x)  # <--- this call...
     if y.startswith("subfolder/"):
-        open(y)  # OK
+        open(y)  # $result=OK
 
 
 @app.route("/path")
@@ -29,7 +29,7 @@ def normalize_check_normalize():
     y = normalize(x)  # (...or this call...)
     if y.startswith("subfolder/"):
         z = normalize(y)  # <--- ...can jump to here, resulting in FP
-        open(z)  # OK
+        open(z)  # $result=OK
 
 
 # The problem does not manifest if we simply define an alias
@@ -42,4 +42,4 @@ def normalize_check_normalize_alias():
     y = normpath(x)
     if y.startswith("subfolder/"):
         z = normpath(y)
-        open(z)  # OK
+        open(z)  # $result=OK
