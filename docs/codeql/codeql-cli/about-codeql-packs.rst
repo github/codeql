@@ -32,7 +32,7 @@ The other files and directories within the pack should be logically organized. F
   their own top-level directories.
 
 About published packs
---------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When a pack is published for use in analyses, the ``codeql pack create`` or ``codeql pack publish`` command verifies that the content is complete and also adds some additional pieces of content to it:
 

@@ -106,6 +106,7 @@ As a user of a published query pack, you can check that the CodeQL makes use of 
 However, if they instead look like the following, then usage of the precompiled queries failed:
 
 ::
+   
    Compiling query plan for /long/path/to/query/Filename.ql.
    [42/108 comp 25s] Compiled /long/path/to/query/Filename.ql.
 
