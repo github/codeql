@@ -31,7 +31,8 @@ class ComplementExpr extends UnaryBitwiseOperation, @bit_not_expr {
  * A binary bitwise operation. Either a bitwise-and operation
  * (`BitwiseAndExpr`), a bitwise-or operation (`BitwiseOrExpr`),
  * a bitwise exclusive-or operation (`BitwiseXorExpr`), a left-shift
- * operation (`LeftShiftExpr`), or a right-shift operation (`RightShiftExpr`).
+ * operation (`LeftShiftExpr`), a right-shift operation (`RightShiftExpr`),
+ * or an unsigned right-shift operation (`UnsignedRightShiftExpr`).
  */
 class BinaryBitwiseOperation extends BitwiseOperation, BinaryOperation, @bin_bit_op_expr {
   override string getOperator() { none() }
@@ -60,6 +61,15 @@ class RightShiftExpr extends BinaryBitwiseOperation, @rshift_expr {
 
 /** DEPRECATED: Alias for RightShiftExpr. */
 deprecated class RShiftExpr = RightShiftExpr;
+
+/**
+ * An unsigned right-shift operation, for example `x >>> y`.
+ */
+class UnsignedRightShiftExpr extends BinaryBitwiseOperation, @urshift_expr {
+  override string getOperator() { result = ">>>" }
+
+  override string getAPrimaryQlClass() { result = "UnsignedRightShiftExpr" }
+}
 
 /**
  * A bitwise-and operation, for example `x & y`.

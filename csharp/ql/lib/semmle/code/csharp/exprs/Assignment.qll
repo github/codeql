@@ -151,7 +151,8 @@ class AssignRemExpr extends AssignArithmeticOperation, @assign_rem_expr {
  * operation (`AssignOrExpr`), a bitwise exclusive-or assignment
  * operation (`AssignXorExpr`), a left-shift assignment
  * operation (`AssignLeftShiftExpr`), or a right-shift assignment
- * operation (`AssignRightShiftExpr`).
+ * operation (`AssignRightShiftExpr`), or an unsigned right-shift assignment
+ * operation (`AssignUnsignedRightShiftExpr`).
  */
 class AssignBitwiseOperation extends AssignOperation, @assign_bitwise_expr { }
 
@@ -205,6 +206,15 @@ class AssignRightShiftExpr extends AssignBitwiseOperation, @assign_rshift_expr {
 
 /** DEPRECATED: Alias for AssignRightShiftExpr. */
 deprecated class AssignRShiftExpr = AssignRightShiftExpr;
+
+/**
+ * An unsigned right-shift assignment operation, for example `x >>>= y`.
+ */
+class AssignUnsighedRightShiftExpr extends AssignBitwiseOperation, @assign_urshift_expr {
+  override string getOperator() { result = ">>>=" }
+
+  override string getAPrimaryQlClass() { result = "AssignUnsighedRightShiftExpr" }
+}
 
 /**
  * An event assignment. Either an event addition (`AddEventExpr`) or an event
