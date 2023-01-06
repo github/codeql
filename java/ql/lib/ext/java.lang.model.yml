@@ -51,6 +51,7 @@ extensions:
       - ["java.lang", "Long", False, "longValue", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "Long", False, "parseLong", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "Long", False, "toString", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.lang", "Math", False, "min", "(int,int)", "", "Argument[0..1]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Object", True, "clone", "", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.lang", "Object", True, "clone", "", "", "Argument[-1].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["java.lang", "Object", True, "clone", "", "", "Argument[-1].MapValue", "ReturnValue.MapValue", "value", "manual"]
