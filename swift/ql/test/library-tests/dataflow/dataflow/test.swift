@@ -295,6 +295,35 @@ func test_optionals(y: Int?) {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 func sink(arg: (Int, Int)) {}
 func sink(arg: (Int, Int, Int)) {}
 
@@ -303,7 +332,7 @@ func testTuples() {
 
     sink(arg: t1)
     sink(arg: t1.0)
-    sink(arg: t1.1) // $ flow=302
+    sink(arg: t1.1) // $ flow=331
 
     t1.1 = 2
 
@@ -314,7 +343,7 @@ func testTuples() {
     t1.0 = source()
 
     sink(arg: t1)
-    sink(arg: t1.0) // $ flow=314
+    sink(arg: t1.0) // $ flow=343
     sink(arg: t1.1)
 }
 
@@ -324,14 +353,14 @@ func testTuples2() {
     let (a, b, c) = t1
 
     sink(arg: t1)
-    sink(arg: t1.x) // $ flow=322
-    sink(arg: t1.y) // $ flow=322
+    sink(arg: t1.x) // $ flow=351
+    sink(arg: t1.y) // $ flow=351
     sink(arg: t1.z)
     sink(arg: t2)
-    sink(arg: t2.x) // $ flow=322
-    sink(arg: t2.y) // $ flow=322
+    sink(arg: t2.x) // $ flow=351
+    sink(arg: t2.y) // $ flow=351
     sink(arg: t2.z)
-    sink(arg: a) // $ MISSING: flow=322
-    sink(arg: b) // $ MISSING: flow=322
+    sink(arg: a) // $ MISSING: flow=351
+    sink(arg: b) // $ MISSING: flow=351
     sink(arg: c)
 }
