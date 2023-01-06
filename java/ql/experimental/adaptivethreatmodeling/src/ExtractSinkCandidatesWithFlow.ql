@@ -23,14 +23,19 @@ from
   string signature, string ext, string input, string provenance
 where
   // TODO: Why does adding this info reduce the number of results?
-  package = sink.getEnclosingCallable().getDeclaringType().getPackage().getName() and
-  type = sink.getEnclosingCallable().getDeclaringType().getName() and
-  subtypes = false and // TODO
-  name = sink.getEnclosingCallable().getName() and
-  signature = sink.getEnclosingCallable().paramsString() and
-  ext = "" and // TODO
-  input = "Argument[" + sink.asParameter().getPosition() + "]" and // TODO: why are slashes added?
-  provenance = "manual" and // TODO
+  // TODO: How do I find the `kind` used by each query I want to boost? https://github.com/github/codeql/blob/44213f0144fdd54bb679ca48d68b28dcf820f7a8/java/ql/lib/semmle/code/java/dataflow/ExternalFlow.qll#LL353C11-L357C31
+  exists(Callable callee, Call call, int index |
+    sink.asExpr() = call.getArgument(index) and
+    callee = call.getCallee() and
+    package = callee.getDeclaringType().getPackage().getName() and
+    type = callee.getDeclaringType().getName() and //TODO: Will this work for inner classes? Will it produce X$Y? What about lambdas? What about enums? What about interfaces? What about annotations?
+    subtypes = true and // TODO
+    name = callee.getName() and // TODO: Will this work for constructors?
+    signature = callee.paramsString() and
+    ext = "" and // TODO
+    input = "Argument[" + index + "]" and // TODO: why are slashes added?
+    provenance = "manual" // TODO
+  ) and
   // The message is the concatenation of all relevant configs, and we surface only sinks that have at least one relevant
   // config.
   message =
