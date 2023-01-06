@@ -157,7 +157,6 @@ private module Cached {
     exists(ConditionElement ce, ConcreteVarDecl v |
       ce.getInitializer() = nodeFrom.asExpr() and
       ce.getPattern() = v.getParentPattern() and
-      //.(OptionalSomePattern).getSubPattern().(BindingPattern).getSubPattern().(NamedPattern) ?
       nodeTo.asDefinition().getSourceVariable() = v
     )
     or

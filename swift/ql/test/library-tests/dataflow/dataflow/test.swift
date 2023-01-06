@@ -432,3 +432,21 @@ func testEnums() {
         sink(arg: y) // $ MISSING: flow=415
     }
 }
+
+func testOptionals2(y: Int?) {
+    let x = optionalSource()
+
+    if let a = x, let b = y {
+        sink(arg: a) // $ flow=259
+        sink(arg: b)
+    }
+
+    let tuple1 = (x, y)
+    switch tuple1 {
+    case (.some(let a), .some(let b)):
+        sink(arg: a) // $ MISSING: flow=259
+        sink(arg: b)
+    default:
+        ()
+    }
+}
