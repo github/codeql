@@ -1377,8 +1377,8 @@ class TranslatedAssignOperation extends TranslatedAssignment {
 
   private Type getConvertedLeftOperandType() {
     if
-      expr instanceof AssignLShiftExpr or
-      expr instanceof AssignRShiftExpr
+      expr instanceof AssignLeftShiftExpr or
+      expr instanceof AssignRightShiftExpr
     then result = this.getLeftOperand().getResultType()
     else
       // The right operand has already been converted to the type of the op.
@@ -1416,9 +1416,9 @@ class TranslatedAssignOperation extends TranslatedAssignment {
     or
     expr instanceof AssignXorExpr and result instanceof Opcode::BitXor
     or
-    expr instanceof AssignLShiftExpr and result instanceof Opcode::ShiftLeft
+    expr instanceof AssignLeftShiftExpr and result instanceof Opcode::ShiftLeft
     or
-    expr instanceof AssignRShiftExpr and result instanceof Opcode::ShiftRight
+    expr instanceof AssignRightShiftExpr and result instanceof Opcode::ShiftRight
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {

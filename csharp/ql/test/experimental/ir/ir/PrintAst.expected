@@ -152,11 +152,11 @@ assignop.cs:
 #   12|           0: [LocalVariableAccess] access to local variable c
 #   12|           1: [LocalVariableAccess] access to local variable a
 #   13|       7: [ExprStmt] ...;
-#   13|         0: [AssignLShiftExpr] ... <<= ...
+#   13|         0: [AssignLeftShiftExpr] ... <<= ...
 #   13|           0: [LocalVariableAccess] access to local variable c
 #   13|           1: [IntLiteral] 2
 #   14|       8: [ExprStmt] ...;
-#   14|         0: [AssignRShiftExpr] ... >>= ...
+#   14|         0: [AssignRightShiftExpr] ... >>= ...
 #   14|           0: [LocalVariableAccess] access to local variable c
 #   14|           1: [IntLiteral] 2
 #   15|       9: [ExprStmt] ...;
