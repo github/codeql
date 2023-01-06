@@ -72,3 +72,21 @@ void bad4(char *str) {
     strcpy(buffer, str);
     free(buffer);
 }
+
+// --- custom allocators ---
+ 
+void *MyMalloc1(size_t size) { return malloc(size); }
+void *MyMalloc2(size_t size);
+
+void customAllocatorTests(char *str)
+{
+	{
+		char *buffer1 = (char *)MyMalloc1(strlen(str)); // BAD (no room for `\0` terminator)
+		strcpy(buffer1, str);
+	}
+
+	{
+		char *buffer2 = (char *)MyMalloc2(strlen(str)); // BAD (no room for `\0` terminator)
+		strcpy(buffer2, str);
+	}
+}
