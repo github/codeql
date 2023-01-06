@@ -50,7 +50,7 @@ private class SensitiveResultReceiverConf extends TaintTracking::Configuration {
   }
 }
 
-/** Holds if there is a path from sensitive data at `src`` to a result receiver at `sink`, and the receiver was obtained from an untrusted source `recSrc`. */
+/** Holds if there is a path from sensitive data at `src` to a result receiver at `sink`, and the receiver was obtained from an untrusted source `recSrc`. */
 predicate sensitiveResultReceiver(
   DataFlow::PathNode src, DataFlow::PathNode sink, DataFlow::Node recSrc
 ) {
