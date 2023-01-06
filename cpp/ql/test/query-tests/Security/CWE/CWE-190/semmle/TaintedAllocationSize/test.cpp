@@ -222,7 +222,7 @@ size_t get_bounded_size()
 }
 
 void *my_alloc(size_t s) {
-	void *ptr = malloc(s); // [additional detection here]
+	void *ptr = malloc(s);
 
 	return ptr;
 }
@@ -345,7 +345,7 @@ void equality_barrier() {
 
 // --- custom allocators ---
  
-void *MyMalloc1(size_t size) { return malloc(size); } // [additional detection here]
+void *MyMalloc1(size_t size) { return malloc(size); }
 void *MyMalloc2(size_t size);
 
 void customAllocatorTests()

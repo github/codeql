@@ -88,6 +88,10 @@ class TaintedAllocationSizeConfiguration extends TaintTracking::Configuration {
       readsVariable(access.getDef(), checkedVar) and
       nodeIsBarrierEqualityCandidate(node, access, checkedVar)
     )
+    or
+    // block flow to inside of identified allocation functions (this flow leads
+    // to duplicate results)
+    any(HeuristicAllocationFunction f).getAParameter() = node.asParameter()
   }
 }
 
