@@ -287,42 +287,42 @@ func test_optionals(y: Int?) {
     if let z = y {
         sink(arg: z)
     }
+
     if let z = x?.signum() { // $ MISSING: flow=259
         sink(arg: z)
     }
     if let z = y?.signum() {
         sink(arg: z)
     }
+
+    guard let z1 = x else { return }
+    guard let z2 = y else { return }
+    sink(arg: z1) // $ MISSING: flow=259
+    sink(arg: z2)
+
+    sink(arg: x!.signum()) // $ flow=259
+    sink(arg: y!.signum())
+
+    if case .some(let z) = x {
+        sink(arg: z) // $ MISSING: flow=259
+    }
+    if case .some(let z) = y {
+        sink(arg: z)
+    }
+
+    switch x {
+    case .some(let z):
+        sink(arg: z) // $ MISSING: flow=259
+    case .none:
+        ()
+    }
+    switch y {
+    case .some(let z):
+        sink(arg: z)
+    case .none:
+        ()
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 func sink(arg: (Int, Int)) {}
 func sink(arg: (Int, Int, Int)) {}
@@ -363,4 +363,72 @@ func testTuples2() {
     sink(arg: a) // $ MISSING: flow=351
     sink(arg: b) // $ MISSING: flow=351
     sink(arg: c)
+}
+
+enum MyEnum {
+    case myNone
+    case mySingle(Int)
+    case myPair(Int, Int)
+}
+
+func testEnums() {
+    let a : MyEnum = .myNone
+
+    switch a {
+    case .myNone:
+        ()
+    case .mySingle(let a):
+        sink(arg: a)
+    case .myPair(let a, let b):
+        sink(arg: a)
+        sink(arg: b)
+    }
+
+    if case .mySingle(let x) = a {
+        sink(arg: x)
+    }
+    if case .myPair(let x, let y) = a {
+        sink(arg: x)
+        sink(arg: y)
+    }
+
+    let b : MyEnum = .mySingle(source())
+
+    switch b {
+    case .myNone:
+        ()
+    case .mySingle(let a):
+        sink(arg: a) // $ MISSING: flow=395
+    case .myPair(let a, let b):
+        sink(arg: a)
+        sink(arg: b)
+    }
+
+    if case .mySingle(let x) = a {
+        sink(arg: x) // $ MISSING: flow=395
+    }
+    if case .myPair(let x, let y) = a {
+        sink(arg: x)
+        sink(arg: y)
+    }
+
+    let c = MyEnum.myPair(0, source())
+
+    switch c {
+    case .myNone:
+        ()
+    case .mySingle(let a):
+        sink(arg: a)
+    case .myPair(let a, let b):
+        sink(arg: a)
+        sink(arg: b) // $ MISSING: flow=415
+    }
+
+    if case .mySingle(let x) = a {
+        sink(arg: x)
+    }
+    if case .myPair(let x, let y) = a {
+        sink(arg: x)
+        sink(arg: y) // $ MISSING: flow=415
+    }
 }
