@@ -360,7 +360,7 @@ class Overridable extends Declaration, TOverridable {
 
 /**
  * A member where the `virtual` modifier is valid. That is, a method,
- * a property, an indexer, an event or an operator.
+ * a property, an indexer, an event, or an operator.
  *
  * Equivalently, these are the members that can be defined in an interface.
  *
