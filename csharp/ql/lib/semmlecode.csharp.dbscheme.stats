@@ -645,6 +645,10 @@
             <v>5127</v>
         </e>
         <e>
+            <k>@urshift_expr</k>
+            <v>0</v>
+        </e>
+        <e>
             <k>@lt_expr</k>
             <v>34251</v>
         </e>
@@ -835,6 +839,10 @@
         <e>
             <k>@assign_rshift_expr</k>
             <v>455</v>
+        </e>
+        <e>
+            <k>@assign_urshift_expr</k>
+            <v>0</v>
         </e>
         <e>
             <k>@par_expr</k>
