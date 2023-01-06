@@ -3,3 +3,9 @@
 | closures.swift:17:5:17:5 | x | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:15:7:15:7 | x | isDirect: | yes | isEscaping: | yes |
 | closures.swift:20:3:20:3 | escape | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:12:5:12:5 | escape | isDirect: | yes | isEscaping: | yes |
 | closures.swift:25:3:25:3 | escape | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:12:5:12:5 | escape | isDirect: | yes | isEscaping: | yes |
+| closures.swift:32:11:32:11 | x | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:30:7:30:7 | x | isDirect: | no | isEscaping: | no |
+| closures.swift:33:14:33:14 | f | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:29:7:29:7 | f | isDirect: | no | isEscaping: | no |
+| closures.swift:33:14:33:14 | f | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:29:7:29:7 | f | isDirect: | yes | isEscaping: | no |
+| closures.swift:33:17:33:17 | x | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:30:7:30:7 | x | isDirect: | yes | isEscaping: | no |
+| closures.swift:39:20:39:20 | callback | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:37:21:37:58 | callback | isDirect: | yes | isEscaping: | yes |
+| closures.swift:42:19:42:19 | wrapper(_:) | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:38:5:40:5 | wrapper(_:) | isDirect: | no | isEscaping: | yes |

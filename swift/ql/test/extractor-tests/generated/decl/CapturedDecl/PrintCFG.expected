@@ -1,0 +1,610 @@
+WARNING: 'this' is not bound in the body of this characteristic predicate (/Users/d10c/src/d10c-codeql/swift/ql/lib/codeql/swift/controlflow/internal/PrintCFG.ql:14,3-17)
+closures.swift:
+#    1| bar()
+#-----|  -> Hello world!
+
+#    1| enter bar()
+#-----|  -> bar()
+
+#    1| exit bar()
+
+#    1| exit bar() (normal)
+#-----|  -> exit bar()
+
+#    2| return ...
+#-----| return -> exit bar() (normal)
+
+#    2| Hello world!
+#-----|  -> return ...
+
+#    5| enter foo()
+#-----|  -> foo()
+
+#    5| exit foo()
+
+#    5| exit foo() (normal)
+#-----|  -> exit foo()
+
+#    5| foo()
+#-----|  -> y
+
+#    6| var ... = ...
+#-----|  -> y
+
+#    6| y
+#-----| match -> 123
+
+#    6| y
+#-----|  -> x
+
+#    6| 123
+#-----|  -> var ... = ...
+
+#    7| enter { ... }
+#-----|  -> { ... }
+
+#    7| exit { ... }
+
+#    7| exit { ... } (normal)
+#-----|  -> exit { ... }
+
+#    7| { ... }
+#-----|  -> { ... }
+
+#    7| { ... }
+#-----|  -> call to ...
+
+#    7| { ... }
+#-----|  -> x
+
+#    7| call to ...
+#-----|  -> exit foo() (normal)
+
+#    7| x
+#-----| match -> bar()
+
+#    7| var ... = ...
+#-----|  -> { ... }
+
+#    7| bar()
+#-----|  -> call to bar()
+
+#    7| call to bar()
+#-----|  -> var ... = ...
+
+#    8| print(_:separator:terminator:)
+#-----|  -> x
+
+#    8| call to print(_:separator:terminator:)
+#-----|  -> print(_:separator:terminator:)
+
+#    8| default separator
+#-----|  -> default terminator
+
+#    8| default terminator
+#-----|  -> call to print(_:separator:terminator:)
+
+#    8| (Any) ...
+#-----|  -> [...]
+
+#    8| [...]
+#-----|  -> [...]
+
+#    8| [...]
+#-----|  -> default separator
+
+#    8| x
+#-----|  -> (Any) ...
+
+#    8| x
+#-----|  -> y
+
+#    9| print(_:separator:terminator:)
+#-----|  -> y
+
+#    9| call to print(_:separator:terminator:)
+#-----|  -> exit { ... } (normal)
+
+#    9| default separator
+#-----|  -> default terminator
+
+#    9| default terminator
+#-----|  -> call to print(_:separator:terminator:)
+
+#    9| (Any) ...
+#-----|  -> [...]
+
+#    9| [...]
+#-----|  -> [...]
+
+#    9| [...]
+#-----|  -> default separator
+
+#    9| y
+#-----|  -> (Any) ...
+
+#    9| y
+#-----|  -> print(_:separator:terminator:)
+
+#   14| baz()
+#-----|  -> escape
+
+#   14| enter baz()
+#-----|  -> baz()
+
+#   14| exit baz()
+
+#   14| exit baz() (normal)
+#-----|  -> exit baz()
+
+#   15| var ... = ...
+#-----|  -> x
+
+#   15| x
+#-----| match -> 0
+
+#   15| x
+#-----|  -> quux()
+
+#   15| 0
+#-----|  -> var ... = ...
+
+#   16| enter quux()
+#-----|  -> quux()
+
+#   16| exit quux()
+
+#   16| exit quux() (normal)
+#-----|  -> exit quux()
+
+#   16| quux()
+#-----|  -> escape
+
+#   16| quux()
+#-----|  -> x
+
+#   17| &...
+#-----|  -> 1
+
+#   17| x
+#-----|  -> &...
+
+#   17| x
+#-----|  -> .+=(_:_:)
+
+#   17| ... .+=(_:_:) ...
+#-----|  -> print(_:separator:terminator:)
+
+#   17| .+=(_:_:)
+#-----|  -> Int.Type
+
+#   17| Int.Type
+#-----|  -> x
+
+#   17| 1
+#-----|  -> ... .+=(_:_:) ...
+
+#   18| print(_:separator:terminator:)
+#-----|  -> x
+
+#   18| call to print(_:separator:terminator:)
+#-----|  -> exit quux() (normal)
+
+#   18| default separator
+#-----|  -> default terminator
+
+#   18| default terminator
+#-----|  -> call to print(_:separator:terminator:)
+
+#   18| (Any) ...
+#-----|  -> [...]
+
+#   18| (Int) ...
+#-----|  -> (Any) ...
+
+#   18| [...]
+#-----|  -> [...]
+
+#   18| [...]
+#-----|  -> default separator
+
+#   18| x
+#-----|  -> (Int) ...
+
+#   20| escape
+#-----|  -> quux()
+
+#   20| escape
+#-----|  -> x
+
+#   20|  ... = ...
+#-----|  -> exit baz() (normal)
+
+#   20| ((() -> ())?) ...
+#-----|  ->  ... = ...
+
+#   20| quux()
+#-----|  -> ((() -> ())?) ...
+
+#   23| callEscape()
+#-----|  -> escape
+
+#   23| enter callEscape()
+#-----|  -> callEscape()
+
+#   23| exit callEscape()
+
+#   23| exit callEscape() (normal)
+#-----|  -> exit callEscape()
+
+#   24| baz()
+#-----|  -> call to baz()
+
+#   24| call to baz()
+#-----|  -> escape
+
+#   25| escape
+#-----|  -> ...?
+
+#   25| escape
+#-----|  -> baz()
+
+#   25| ((() -> ())) ...
+#-----|  -> call to ...
+
+#   25| ...?
+#-----|  -> ((() -> ())) ...
+
+#   25| (()?) ...
+#-----|  -> OptionalEvaluationExpr
+
+#   25| OptionalEvaluationExpr
+#-----|  -> exit callEscape() (normal)
+
+#   25| call to ...
+#-----|  -> (()?) ...
+
+#   28| enter logical()
+#-----|  -> logical()
+
+#   28| exit logical()
+
+#   28| exit logical() (normal)
+#-----|  -> exit logical()
+
+#   28| logical()
+#-----|  -> f
+
+#   29| var ... = ...
+#-----|  -> f
+
+#   29| f
+#-----| match -> ... as ...
+
+#   29| f
+#-----|  -> x
+
+#   29| ... as ...
+#-----| match -> { ... }
+
+#   29| (((Int) -> Int)?) ...
+#-----|  -> var ... = ...
+
+#   29| enter { ... }
+#-----|  -> { ... }
+
+#   29| exit { ... }
+
+#   29| exit { ... } (normal)
+#-----|  -> exit { ... }
+
+#   29| { ... }
+#-----|  -> (((Int) -> Int)?) ...
+
+#   29| { ... }
+#-----|  -> x
+
+#   29| x
+#-----|  -> .+(_:_:)
+
+#   29| x
+#-----|  -> 1
+
+#   29| ... .+(_:_:) ...
+#-----|  -> return ...
+
+#   29| return ...
+#-----| return -> exit { ... } (normal)
+
+#   29| .+(_:_:)
+#-----|  -> Int.Type
+
+#   29| Int.Type
+#-----|  -> x
+
+#   29| 1
+#-----|  -> ... .+(_:_:) ...
+
+#   30| var ... = ...
+#-----|  -> x
+
+#   30| x
+#-----| match -> ... as ...
+
+#   30| x
+#-----|  -> .!=(_:_:)
+
+#   30| ... as ...
+#-----| match -> 42
+
+#   30| (Int?) ...
+#-----|  -> var ... = ...
+
+#   30| 42
+#-----|  -> (Int?) ...
+
+#   31| return ...
+#-----| return -> exit logical() (normal)
+
+#   31| f
+#-----|  -> nil
+
+#   31| ... .!=(_:_:) ...
+#-----| false -> ... .&&(_:_:) ...
+#-----| true -> { ... }
+
+#   31| ... .&&(_:_:) ...
+#-----| exception -> exit logical() (normal)
+#-----|  -> return ...
+
+#   31| .!=(_:_:)
+#-----|  -> Optional<((Int) -> Int)>.Type
+
+#   31| Optional<((Int) -> Int)>.Type
+#-----|  -> f
+
+#   31| nil
+#-----|  -> ... .!=(_:_:) ...
+
+#   32| (...)
+#-----|  -> return ...
+
+#   32| return ...
+#-----|  -> ... .&&(_:_:) ...
+
+#   32| { ... }
+#-----|  -> .!=(_:_:)
+
+#   32| x
+#-----|  -> nil
+
+#   32| ... .!=(_:_:) ...
+#-----| false -> ... .&&(_:_:) ...
+#-----| true -> { ... }
+
+#   32| ... .&&(_:_:) ...
+#-----| exception -> exit logical() (normal)
+#-----|  -> (...)
+
+#   32| .!=(_:_:)
+#-----|  -> Optional<Int>.Type
+
+#   32| Optional<Int>.Type
+#-----|  -> x
+
+#   32| nil
+#-----|  -> ... .!=(_:_:) ...
+
+#   33| f
+#-----|  -> ...!
+
+#   33| ...!
+#-----|  -> x
+
+#   33| call to ...
+#-----|  -> 43
+
+#   33| ... .==(_:_:) ...
+#-----|  -> return ...
+
+#   33| return ...
+#-----|  -> ... .&&(_:_:) ...
+
+#   33| { ... }
+#-----|  -> .==(_:_:)
+
+#   33| x
+#-----|  -> ...!
+
+#   33| ...!
+#-----|  -> call to ...
+
+#   33| .==(_:_:)
+#-----|  -> Int.Type
+
+#   33| Int.Type
+#-----|  -> f
+
+#   33| 43
+#-----|  -> ... .==(_:_:) ...
+
+#   36| asyncTest()
+#-----|  -> withCallback(_:)
+
+#   36| enter asyncTest()
+#-----|  -> asyncTest()
+
+#   36| exit asyncTest()
+
+#   36| exit asyncTest() (normal)
+#-----|  -> exit asyncTest()
+
+#   37| enter withCallback(_:)
+#-----|  -> withCallback(_:)
+
+#   37| exit withCallback(_:)
+
+#   37| exit withCallback(_:) (normal)
+#-----|  -> exit withCallback(_:)
+
+#   37| withCallback(_:)
+#-----|  -> withCallback(_:)
+
+#   37| withCallback(_:)
+#-----|  -> callback
+
+#   37| callback
+#-----|  -> wrapper(_:)
+
+#   38| enter wrapper(_:)
+#-----|  -> wrapper(_:)
+
+#   38| exit wrapper(_:)
+
+#   38| exit wrapper(_:) (normal)
+#-----|  -> exit wrapper(_:)
+
+#   38| wrapper(_:)
+#-----|  -> Task<Success, Never>.init(priority:operation:)
+
+#   38| wrapper(_:)
+#-----|  -> callback
+
+#   38| x
+#-----|  -> callback
+
+#   39| return ...
+#-----| return -> exit wrapper(_:) (normal)
+
+#   39| await ...
+#-----|  -> return ...
+
+#   39| callback
+#-----|  -> .+(_:_:)
+
+#   39| callback
+#-----|  -> x
+
+#   39| call to ...
+#-----|  -> await ...
+
+#   39| x
+#-----|  -> 1
+
+#   39| ... .+(_:_:) ...
+#-----|  -> call to ...
+
+#   39| .+(_:_:)
+#-----|  -> Int.Type
+
+#   39| Int.Type
+#-----|  -> x
+
+#   39| 1
+#-----|  -> ... .+(_:_:) ...
+
+#   41| Task<(), Never>.Type
+#-----|  -> default priority
+
+#   41| Task<Success, Never>.init(priority:operation:)
+#-----|  -> Task<(), Never>.Type
+
+#   41| call to Task<Success, Never>.init(priority:operation:)
+#-----|  -> exit withCallback(_:) (normal)
+
+#   41| default priority
+#-----|  -> { ... }
+
+#   41| enter { ... }
+#-----|  -> { ... }
+
+#   41| exit { ... }
+
+#   41| exit { ... } (normal)
+#-----|  -> exit { ... }
+
+#   41| { ... }
+#-----|  -> call to Task<Success, Never>.init(priority:operation:)
+
+#   41| { ... }
+#-----|  -> wrapper(_:)
+
+#   42| print(_:separator:terminator:)
+#-----|  -> wrapper(_:)
+
+#   42| call to print(_:separator:terminator:)
+#-----|  -> return ...
+
+#   42| return ...
+#-----| return -> exit { ... } (normal)
+
+#   42| default separator
+#-----|  -> default terminator
+
+#   42| default terminator
+#-----|  -> call to print(_:separator:terminator:)
+
+#   42| (Any) ...
+#-----|  -> [...]
+
+#   42| [...]
+#-----|  -> [...]
+
+#   42| [...]
+#-----|  -> default separator
+
+#   42| await ...
+#-----|  -> (Any) ...
+
+#   42| wrapper(_:)
+#-----|  -> 42
+
+#   42| wrapper(_:)
+#-----|  -> print(_:separator:terminator:)
+
+#   42| call to wrapper(_:)
+#-----|  -> await ...
+
+#   42| 42
+#-----|  -> call to wrapper(_:)
+
+#   45| withCallback(_:)
+#-----|  -> { ... }
+
+#   45| call to withCallback(_:)
+#-----|  -> exit asyncTest() (normal)
+
+#   45| enter { ... }
+#-----|  -> { ... }
+
+#   45| exit { ... }
+
+#   45| exit { ... } (normal)
+#-----|  -> exit { ... }
+
+#   45| { ... }
+#-----|  -> call to withCallback(_:)
+
+#   45| { ... }
+#-----|  -> x
+
+#   45| x
+#-----|  -> .+(_:_:)
+
+#   46| x
+#-----|  -> 1
+
+#   46| ... .+(_:_:) ...
+#-----|  -> return ...
+
+#   46| return ...
+#-----| return -> exit { ... } (normal)
+
+#   46| .+(_:_:)
+#-----|  -> Int.Type
+
+#   46| Int.Type
+#-----|  -> x
+
+#   46| 1
+#-----|  -> ... .+(_:_:) ...
