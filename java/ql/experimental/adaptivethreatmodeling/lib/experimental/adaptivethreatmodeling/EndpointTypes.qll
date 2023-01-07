@@ -24,6 +24,13 @@ abstract class EndpointType extends TEndpointType {
    */
   abstract int getEncoding();
 
+  /**
+   * Gets the name of the sink/source kind for this endpoint type as used in Models as Data.
+   *
+   * See https://github.com/github/codeql/blob/44213f0144fdd54bb679ca48d68b28dcf820f7a8/java/ql/lib/semmle/code/java/dataflow/ExternalFlow.qll#LL353C11-L357C31
+   */
+  abstract string getKind();
+
   string toString() { result = getDescription() }
 }
 
@@ -32,6 +39,8 @@ class NegativeType extends EndpointType, TNegativeType {
   override string getDescription() { result = "non-sink" }
 
   override int getEncoding() { result = 0 }
+
+  override string getKind() { result = "" }
 }
 
 /** The `XssSink` class that can be predicted by endpoint scoring models. */
@@ -39,13 +48,8 @@ class XssSinkType extends EndpointType, TXssSinkType {
   override string getDescription() { result = "xss sink" }
 
   override int getEncoding() { result = 1 }
-}
 
-/** The `NosqlInjectionSink` class that can be predicted by endpoint scoring models. */
-class NosqlInjectionSinkType extends EndpointType, TNosqlInjectionSinkType {
-  override string getDescription() { result = "nosql injection sink" }
-
-  override int getEncoding() { result = 2 }
+  override string getKind() { result = "xss" }
 }
 
 /** The `SqlInjectionSink` class that can be predicted by endpoint scoring models. */
@@ -53,6 +57,8 @@ class SqlInjectionSinkType extends EndpointType, TSqlInjectionSinkType {
   override string getDescription() { result = "sql injection sink" }
 
   override int getEncoding() { result = 3 }
+
+  override string getKind() { result = "sql" }
 }
 
 /** The `TaintedPathSink` class that can be predicted by endpoint scoring models. */
@@ -60,6 +66,8 @@ class TaintedPathSinkType extends EndpointType, TTaintedPathSinkType {
   override string getDescription() { result = "path injection sink" }
 
   override int getEncoding() { result = 4 }
+
+  override string getKind() { result = "create-file" }
 }
 
 /** The `RequestForgerySinkType` class that can be predicted by endpoint scoring models. */
@@ -67,4 +75,6 @@ class RequestForgerySinkType extends EndpointType, TRequestForgerySinkType {
   override string getDescription() { result = "server-side request forgery sink" }
 
   override int getEncoding() { result = 5 }
+
+  override string getKind() { result = "open-url" } // TODO: is this correct, or should it be “jdbc-url”?
 }
