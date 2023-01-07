@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-01-07-14h21m05s.jolly-hair-xnvqkv6l.7f7e79733a8455fa5dd5a597626b7a5ff78da2456ec992db564b5789e853cf04
+compiled: false
