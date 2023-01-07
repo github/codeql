@@ -22,8 +22,6 @@ from
   DataFlow::Node sink, string message, string package, string type, boolean subtypes, string name,
   string signature, string ext, string input, string provenance
 where
-  // TODO: Why does adding this info reduce the number of results?
-  // TODO: How do I find the `kind` used by each query I want to boost? https://github.com/github/codeql/blob/44213f0144fdd54bb679ca48d68b28dcf820f7a8/java/ql/lib/semmle/code/java/dataflow/ExternalFlow.qll#LL353C11-L357C31
   exists(Callable callee, Call call, int index |
     sink.asExpr() = call.getArgument(index) and
     callee = call.getCallee() and
