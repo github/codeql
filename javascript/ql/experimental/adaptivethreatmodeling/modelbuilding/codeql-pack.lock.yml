@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-01-06-23h34m11s.green-chaconia-bq4spfvc.818d177477f11c595d29072325ebe8da512d81b0634482bb455e407da81b42d4
+compiled: false
