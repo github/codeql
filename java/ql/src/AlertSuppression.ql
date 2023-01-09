@@ -5,7 +5,7 @@
  * @id java/alert-suppression
  */
 
-private import codeql.suppression.AlertSuppression as AS
+private import codeql.util.suppression.AlertSuppression as AS
 private import semmle.code.java.Javadoc
 
 class SingleLineComment extends Javadoc {
@@ -18,4 +18,4 @@ class SingleLineComment extends Javadoc {
   string getText() { result = this.getChild(0).getText() }
 }
 
-import AS::Make<SingleLineComment>
+import AS::Make<Top, SingleLineComment>

@@ -639,7 +639,7 @@ Various kinds of syntax can have *annotations* applied to them. Annotations are 
                     |   "override"
                     |   "query"
 
-   argsAnnotation ::= "pragma" "[" ("inline" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
+   argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
 
@@ -691,6 +691,8 @@ The parameterized annotation ``pragma`` supplies compiler pragmas, and may be ap
 | Pragma                    | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases |
 +===========================+=========+============+===================+=======================+=========+========+=========+=========+
 | ``inline``                |         | yes        | yes               | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``inline_late``           |         |            |                   | yes                   |         |        |         |         |
 +---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 | ``noinline``              |         | yes        | yes               | yes                   |         |        |         |         |
 +---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
@@ -2069,7 +2071,7 @@ The complete grammar for QL is as follows:
                     |   "override"
                     |   "query"
 
-   argsAnnotation ::= "pragma" "[" ("inline" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
+   argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
 
