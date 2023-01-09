@@ -394,21 +394,21 @@ module ExprNode {
   class LeftShiftExpr extends BinaryOperation {
     override CS::LeftShiftExpr e;
 
-    override TLShiftOp getOp() { any() }
+    override TLeftShiftOp getOp() { any() }
   }
 
   /** A right-shift operation. */
   class RightShiftExpr extends BinaryOperation {
     override CS::RightShiftExpr e;
 
-    override TRShiftOp getOp() { any() }
+    override TRightShiftOp getOp() { any() }
   }
 
   /** An unsigned right-shift operation. */
   class UnsignedRightShiftExpr extends BinaryOperation {
     override CS::UnsignedRightShiftExpr e;
 
-    override TURShiftOp getOp() { any() }
+    override TUnsignedRightShiftOp getOp() { any() }
   }
 
   /** A conditional expression. */
