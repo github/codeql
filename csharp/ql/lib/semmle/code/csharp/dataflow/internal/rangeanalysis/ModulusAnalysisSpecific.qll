@@ -32,9 +32,6 @@ module Private {
 
   class LeftShiftExpr = RU::ExprNode::LeftShiftExpr;
 
-  /** DEPRECATED: Alias for LeftShiftExpr. */
-  deprecated class LShiftExpr = LeftShiftExpr;
-
   predicate guardDirectlyControlsSsaRead = RU::guardControlsSsaRead/3;
 
   predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
