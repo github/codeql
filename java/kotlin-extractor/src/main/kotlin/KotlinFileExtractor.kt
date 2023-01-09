@@ -1387,7 +1387,7 @@ open class KotlinFileExtractor(
 
     private fun getNullabilityAnnotation(t: IrType, declOrigin: IrDeclarationOrigin, existingAnnotations: List<IrConstructorCall>, javaAnnotations: Collection<JavaAnnotation>?) =
         getNullabilityAnnotationName(t, declOrigin, existingAnnotations, javaAnnotations)?.let {
-            pluginContext.referenceClass(it)?.let { annotationClass ->
+            getClassByFqName(pluginContext, it)?.let { annotationClass ->
                 annotationClass.owner.declarations.firstIsInstanceOrNull<IrConstructor>()?.let { annotationConstructor ->
                     IrConstructorCallImpl.fromSymbolOwner(
                         UNDEFINED_OFFSET, UNDEFINED_OFFSET, annotationConstructor.returnType, annotationConstructor.symbol, 0
