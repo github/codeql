@@ -107,10 +107,13 @@ class Configuration extends TaintTracking::Configuration {
       nodeTo = call
     )
     or
+    // To handle the case of `with closing(tarfile.open()) as file:`
+    // we add a step from the first argument of `closing` to the call to `closing`,
+    // whenever that first argument is a return of `tarfile.open()`.
     exists(API::CallNode closing |
       closing = API::moduleImport("contextlib").getMember("closing").getACall() and
       nodeFrom = closing.getArg(0) and
-      nodeFrom = tarfileOpen().getReturn().getAValueReachingSink() and
+      nodeFrom = tarfileOpen().getReturn().getAValueReachableFromSource() and
       nodeTo = closing
     )
   }
