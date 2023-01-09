@@ -770,32 +770,11 @@ class RawIndirectInstruction extends Node, TRawIndirectInstruction {
   }
 }
 
-private predicate isFullyConvertedArgument(Expr e) {
-  exists(Call call |
-    e = call.getAnArgument().getFullyConverted()
-    or
-    e = call.getQualifier().getFullyConverted()
-  )
-}
-
-private predicate isFullyConvertedCall(Expr e) { e = any(Call call).getFullyConverted() }
-
-/** Holds if `Node::asExpr` should map an some operand node to `e`. */
-private predicate convertedExprMustBeOperand(Expr e) {
-  isFullyConvertedArgument(e)
-  or
-  isFullyConvertedCall(e)
-}
-
 /** Holds if `node` is an `OperandNode` that should map `node.asExpr()` to `e`. */
 predicate exprNodeShouldBeOperand(OperandNode node, Expr e) {
-  exists(Operand operand |
-    node.getOperand() = operand and
-    e = operand.getDef().getConvertedResultExpression()
-  |
-    convertedExprMustBeOperand(e)
-    or
-    node.(IndirectOperand).isIRRepresentationOf(_, _)
+  exists(Instruction def |
+    unique( | | getAUse(def)) = node.getOperand() and
+    e = def.getConvertedResultExpression()
   )
 }
 
