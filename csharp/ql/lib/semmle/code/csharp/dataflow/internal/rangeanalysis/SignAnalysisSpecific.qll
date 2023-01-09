@@ -213,6 +213,7 @@ private module Impl {
     not e.getExpr() instanceof BitwiseXorExpr and
     not e.getExpr() instanceof LeftShiftExpr and
     not e.getExpr() instanceof RightShiftExpr and
+    not e.getExpr() instanceof UnsignedRightShiftExpr and
     not e.getExpr() instanceof ConditionalExpr and
     not e.getExpr() instanceof RefExpr and
     not e.getExpr() instanceof LocalVariableDeclAndInitExpr and

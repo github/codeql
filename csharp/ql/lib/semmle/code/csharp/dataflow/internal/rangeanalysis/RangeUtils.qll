@@ -404,6 +404,13 @@ module ExprNode {
     override TRShiftOp getOp() { any() }
   }
 
+  /** An unsigned right-shift operation. */
+  class UnsignedRightShiftExpr extends BinaryOperation {
+    override CS::UnsignedRightShiftExpr e;
+
+    override TURShiftOp getOp() { any() }
+  }
+
   /** A conditional expression. */
   class ConditionalExpr extends ExprNode {
     override CS::ConditionalExpr e;
