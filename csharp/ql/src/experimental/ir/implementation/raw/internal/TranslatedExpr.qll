@@ -1095,6 +1095,8 @@ private Opcode binaryBitwiseOpcode(BinaryBitwiseOperation expr) {
   or
   expr instanceof RightShiftExpr and result instanceof Opcode::ShiftRight
   or
+  expr instanceof UnsignedRightShiftExpr and result instanceof Opcode::UnsignedShiftRight
+  or
   expr instanceof BitwiseAndExpr and result instanceof Opcode::BitAnd
   or
   expr instanceof BitwiseOrExpr and result instanceof Opcode::BitOr
@@ -1378,7 +1380,8 @@ class TranslatedAssignOperation extends TranslatedAssignment {
   private Type getConvertedLeftOperandType() {
     if
       expr instanceof AssignLeftShiftExpr or
-      expr instanceof AssignRightShiftExpr
+      expr instanceof AssignRightShiftExpr or
+      expr instanceof AssignUnsighedRightShiftExpr
     then result = this.getLeftOperand().getResultType()
     else
       // The right operand has already been converted to the type of the op.
@@ -1419,6 +1422,8 @@ class TranslatedAssignOperation extends TranslatedAssignment {
     expr instanceof AssignLeftShiftExpr and result instanceof Opcode::ShiftLeft
     or
     expr instanceof AssignRightShiftExpr and result instanceof Opcode::ShiftRight
+    or
+    expr instanceof AssignUnsighedRightShiftExpr and result instanceof Opcode::UnsignedShiftRight
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
