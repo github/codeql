@@ -13,3 +13,8 @@ public class MyClass
         z >>>= 5;
     }
 }
+
+public class MyOperatorClass
+{
+    public static MyOperatorClass operator >>>(MyOperatorClass a, MyOperatorClass b) { return null; }
+}

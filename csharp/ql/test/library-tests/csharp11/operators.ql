@@ -19,3 +19,9 @@ query predicate assignbitwise(
   name = op.getOperator() and
   qlclass = op.getAPrimaryQlClass()
 }
+
+query predicate userdefined(Operator op, string fname, string qlclass) {
+  op.getFile().getStem() = "Operators" and
+  fname = op.getFunctionName() and
+  qlclass = op.getAPrimaryQlClass()
+}
