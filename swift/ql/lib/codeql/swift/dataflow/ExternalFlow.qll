@@ -424,7 +424,7 @@ private Element interpretElement0(
     )
     or
     // Member functions
-    exists(NominalTypeDecl nomTypeDecl, IterableDeclContext decl, MethodDecl method |
+    exists(NominalTypeDecl nomTypeDecl, Decl decl, MethodDecl method |
       method.getName() = name and
       method = decl.getAMember() and
       nomTypeDecl.getFullName() = type and
@@ -432,25 +432,25 @@ private Element interpretElement0(
       result = method
     |
       subtypes = true and
-      decl.getNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
+      decl.asNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
       or
       subtypes = false and
-      decl.getNominalTypeDecl() = nomTypeDecl
+      decl.asNominalTypeDecl() = nomTypeDecl
     )
     or
     // Fields
     signature = "" and
-    exists(NominalTypeDecl nomTypeDecl, IterableDeclContext decl, FieldDecl field |
+    exists(NominalTypeDecl nomTypeDecl, Decl decl, FieldDecl field |
       field.getName() = name and
       field = decl.getAMember() and
       nomTypeDecl.getFullName() = type and
       result = field
     |
       subtypes = true and
-      decl.getNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
+      decl.asNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
       or
       subtypes = false and
-      decl.getNominalTypeDecl() = nomTypeDecl
+      decl.asNominalTypeDecl() = nomTypeDecl
     )
   )
 }
