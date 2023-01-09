@@ -23,10 +23,17 @@ class ExprParent_ extends @py_expr_parent {
  * New kinds have been inserted such that
  * `@py_Name` which used to have index 18 now has index 19.
  * Entries with lower indices are unchanged.
+ *
+ * Note that if `18 <= new_index < 19`, it does not correspond
+ * to an old index.
  */
 bindingset[new_index]
 int old_index(int new_index) {
-  if new_index < 18 then result = new_index else result + (19 - 18) = new_index
+  // before inserted range
+  new_index < 18 and result = new_index
+  or
+  // after inserted range
+  new_index >= 19 and result + (19 - 18) = new_index
 }
 
 // The schema for py_exprs is:
