@@ -159,6 +159,27 @@ func testSqlRequest() throws {
     let _ = SQLRequest(sql: localString, cached: false) // GOOD
 }
 
+func testSql() throws {
+    let localString = "user"
+	let remoteString  = try String(contentsOf: URL(string: "http://example.com/")!)
+
+    let _ = SQL(stringLiteral: remoteString) // BAD
+    let _ = SQL(unicodeScalarLiteral: remoteString) // BAD
+    let _ = SQL(extendedGraphemeClusterLiteral: remoteString) // BAD
+    let _ = SQL(stringInterpolation: remoteString) // BAD
+    let _ = SQL(sql: remoteString) // BAD
+    let sql1 = SQL(stringLiteral: "")
+    sql1.append(sql: remoteString) // BAD
+
+    let _ = SQL(stringLiteral: localString) // GOOD
+    let _ = SQL(unicodeScalarLiteral: localString) // GOOD
+    let _ = SQL(extendedGraphemeClusterLiteral: localString) // GOOD
+    let _ = SQL(stringInterpolation: localString) // GOOD
+    let _ = SQL(sql: localString) // GOOD
+    let sql2 = SQL(stringLiteral: "")
+    sql2.append(sql: localString) // GOOD
+}
+
 func test(tableDefinition: TableDefinition) throws {
     let localString = "user"
 	let remoteString  = try String(contentsOf: URL(string: "http://example.com/")!)
