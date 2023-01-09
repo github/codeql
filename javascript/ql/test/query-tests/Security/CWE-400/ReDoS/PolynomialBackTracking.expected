@@ -126,6 +126,7 @@
 | polynomial-redos.js:124:33:124:35 | \\s+ | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding \\s+$ |
 | polynomial-redos.js:130:21:130:22 | c+ | Strings starting with 'c' and with many repetitions of 'c' can start matching anywhere after the start of the preceeding cc+D |
 | polynomial-redos.js:133:22:133:23 | f+ | Strings starting with 'f' and with many repetitions of 'f' can start matching anywhere after the start of the preceeding ff+G |
+| polynomial-redos.js:136:25:136:26 | h+ | Strings starting with 'h' and with many repetitions of 'h' can start matching anywhere after the start of the preceeding hh+I |
 | regexplib/address.js:27:3:27:5 | \\s* | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding (\\s*\\(?0\\d{4}\\)?(\\s*\|-)\\d{3}(\\s*\|-)\\d{3}\\s*) |
 | regexplib/address.js:27:48:27:50 | \\s* | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding (\\s*\\(?0\\d{3}\\)?(\\s*\|-)\\d{3}(\\s*\|-)\\d{4}\\s*) |
 | regexplib/address.js:27:93:27:95 | \\s* | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding (\\s*(7\|8)(\\d{7}\|\\d{3}(\\-\|\\s{1})\\d{4})\\s*) |

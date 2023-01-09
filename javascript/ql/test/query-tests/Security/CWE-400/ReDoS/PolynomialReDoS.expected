@@ -230,6 +230,11 @@ nodes
 | polynomial-redos.js:132:18:132:50 | tainted ... g, "e") |
 | polynomial-redos.js:133:2:133:10 | modified2 |
 | polynomial-redos.js:133:2:133:10 | modified2 |
+| polynomial-redos.js:135:9:135:47 | modified3 |
+| polynomial-redos.js:135:21:135:27 | tainted |
+| polynomial-redos.js:135:21:135:47 | tainted ... /g, "") |
+| polynomial-redos.js:136:5:136:13 | modified3 |
+| polynomial-redos.js:136:5:136:13 | modified3 |
 edges
 | lib/closure.js:3:21:3:21 | x | lib/closure.js:4:16:4:16 | x |
 | lib/closure.js:3:21:3:21 | x | lib/closure.js:4:16:4:16 | x |
@@ -435,6 +440,7 @@ edges
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:121:18:121:24 | tainted |
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:129:17:129:23 | tainted |
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:132:18:132:24 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:135:21:135:27 | tainted |
 | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:5:6:5:32 | tainted |
 | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:5:6:5:32 | tainted |
 | polynomial-redos.js:68:18:68:24 | req.url | polynomial-redos.js:68:18:68:24 | req.url |
@@ -453,6 +459,10 @@ edges
 | polynomial-redos.js:132:6:132:50 | modified2 | polynomial-redos.js:133:2:133:10 | modified2 |
 | polynomial-redos.js:132:18:132:24 | tainted | polynomial-redos.js:132:18:132:50 | tainted ... g, "e") |
 | polynomial-redos.js:132:18:132:50 | tainted ... g, "e") | polynomial-redos.js:132:6:132:50 | modified2 |
+| polynomial-redos.js:135:9:135:47 | modified3 | polynomial-redos.js:136:5:136:13 | modified3 |
+| polynomial-redos.js:135:9:135:47 | modified3 | polynomial-redos.js:136:5:136:13 | modified3 |
+| polynomial-redos.js:135:21:135:27 | tainted | polynomial-redos.js:135:21:135:47 | tainted ... /g, "") |
+| polynomial-redos.js:135:21:135:47 | tainted ... /g, "") | polynomial-redos.js:135:9:135:47 | modified3 |
 #select
 | lib/closure.js:4:5:4:17 | /u*o/.test(x) | lib/closure.js:3:21:3:21 | x | lib/closure.js:4:16:4:16 | x | This $@ that depends on $@ may run slow on strings with many repetitions of 'u'. | lib/closure.js:4:6:4:7 | u* | regular expression | lib/closure.js:3:21:3:21 | x | library input |
 | lib/indirect.js:2:5:2:17 | /k*h/.test(x) | lib/indirect.js:1:32:1:32 | x | lib/indirect.js:2:16:2:16 | x | This $@ that depends on $@ may run slow on strings with many repetitions of 'k'. | lib/indirect.js:2:6:2:7 | k* | regular expression | lib/indirect.js:1:32:1:32 | x | library input |
@@ -547,3 +557,4 @@ edges
 | polynomial-redos.js:124:12:124:43 | result. ... /g, '') | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:124:12:124:17 | result | This $@ that depends on $@ may run slow on strings with many repetitions of '\\t'. | polynomial-redos.js:124:33:124:35 | \\s+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
 | polynomial-redos.js:130:2:130:31 | modifie ... g, "b") | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:130:2:130:9 | modified | This $@ that depends on $@ may run slow on strings starting with 'c' and with many repetitions of 'c'. | polynomial-redos.js:130:21:130:22 | c+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
 | polynomial-redos.js:133:2:133:32 | modifie ... g, "b") | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:133:2:133:10 | modified2 | This $@ that depends on $@ may run slow on strings starting with 'f' and with many repetitions of 'f'. | polynomial-redos.js:133:22:133:23 | f+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:136:5:136:35 | modifie ... g, "b") | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:136:5:136:13 | modified3 | This $@ that depends on $@ may run slow on strings starting with 'h' and with many repetitions of 'h'. | polynomial-redos.js:136:25:136:26 | h+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
