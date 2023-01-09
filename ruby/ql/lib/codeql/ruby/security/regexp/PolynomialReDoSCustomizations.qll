@@ -59,7 +59,7 @@ module PolynomialReDoS {
    */
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
 
-  import codeql.ruby.frameworks.core.Gem::Gem as Gem
+  private import codeql.ruby.frameworks.core.Gem::Gem as Gem
 
   /** A library input, considered as a flow source. */
   class LibraryInputAsSource extends Source {
