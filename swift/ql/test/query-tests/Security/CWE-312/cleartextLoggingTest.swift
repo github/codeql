@@ -90,13 +90,16 @@ func test1(password: String, passwordHash : String) {
 	print(password, separator: "", terminator: "") // $ MISSING: hasCleartextLogging=90
 	print("", separator: password, terminator: "") // $ hasCleartextLogging=91
 	print("", separator: "", terminator: password) // $ hasCleartextLogging=92
+    print(passwordHash) // Safe
 
-    NSLog(password) // $ hasCleartextLogging=94
-    NSLog("%@", password as! CVarArg) // $ MISSING: hasCleartextLogging=95
-    NSLog("%@ %@", "" as! CVarArg, password as! CVarArg) // $ MISSING: hasCleartextLogging=96
-    NSLog("\(password)") // $ hasCleartextLogging=97
-    NSLogv("%@", getVaList([password as! CVarArg])) // $ MISSING: hasCleartextLogging=98
-    NSLogv("%@ %@", getVaList(["" as! CVarArg, password as! CVarArg])) // $ MISSING: hasCleartextLogging=99
+    NSLog(password) // $ hasCleartextLogging=95
+    NSLog("%@", password as! CVarArg) // $ MISSING: hasCleartextLogging=96
+    NSLog("%@ %@", "" as! CVarArg, password as! CVarArg) // $ MISSING: hasCleartextLogging=97
+    NSLog("\(password)") // $ hasCleartextLogging=98
+    NSLogv("%@", getVaList([password as! CVarArg])) // $ MISSING: hasCleartextLogging=99
+    NSLogv("%@ %@", getVaList(["" as! CVarArg, password as! CVarArg])) // $ MISSING: hasCleartextLogging=100
+    NSLog(passwordHash) // SAfe
+    NSLogv("%@", getVaList([passwordHash as! CVarArg])) // Safe
 
     let bankAccount: Int = 0
     let log = Logger()
@@ -104,22 +107,31 @@ func test1(password: String, passwordHash : String) {
     log.log("\(password)") // Safe
     log.log("\(password, privacy: .auto)") // Safe
     log.log("\(password, privacy: .private)") // Safe
-    log.log("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=107
+    log.log("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=110
+    log.log("\(passwordHash, privacy: .public)") // Safe
     log.log("\(password, privacy: .sensitive)") // Safe
-    log.log("\(bankAccount)") // $ MISSING: hasCleartextLogging=109
-    log.log("\(bankAccount, privacy: .auto)") // $ MISSING: hasCleartextLogging=110
+    log.log("\(bankAccount)") // $ MISSING: hasCleartextLogging=113
+    log.log("\(bankAccount, privacy: .auto)") // $ MISSING: hasCleartextLogging=114
     log.log("\(bankAccount, privacy: .private)") // Safe
-    log.log("\(bankAccount, privacy: .public)") // $ MISSING: hasCleartextLogging=112
+    log.log("\(bankAccount, privacy: .public)") // $ MISSING: hasCleartextLogging=116
     log.log("\(bankAccount, privacy: .sensitive)") // Safe
-    log.log(level: .default, "\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=114
-    log.trace("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=115
-    log.debug("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=116
-    log.info("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=117
-    log.notice("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=118
-    log.warning("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=119
-    log.error("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=120
-    log.critical("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=121
-    log.fault("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=122
+    log.log(level: .default, "\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=118
+    log.trace("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=119
+    log.trace("\(passwordHash, privacy: .public)") // Safe
+    log.debug("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=121
+    log.debug("\(passwordHash, privacy: .public)") // Safe
+    log.info("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=123
+    log.info("\(passwordHash, privacy: .public)") // Safe
+    log.notice("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=125
+    log.notice("\(passwordHash, privacy: .public)") // Safe
+    log.warning("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=127
+    log.warning("\(passwordHash, privacy: .public)") // Safe
+    log.error("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=129
+    log.error("\(passwordHash, privacy: .public)") // Safe
+    log.critical("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=131
+    log.critical("\(passwordHash, privacy: .public)") // Safe
+    log.fault("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=133
+    log.fault("\(passwordHash, privacy: .public)") // Safe
 }
 
 class MyClass {
@@ -133,14 +145,14 @@ func doSomething(password: String) { }
 func test3(x: String) {
 	// alternative evidence of sensitivity...
 
-	NSLog(x) // $ MISSING: hasCleartextLogging=137
+	NSLog(x) // $ MISSING: hasCleartextLogging=148
 	doSomething(password: x);
-	NSLog(x) // $ hasCleartextLogging=137
+	NSLog(x) // $ hasCleartextLogging=149
 
 	let y = getPassword();
-	NSLog(y) // $ hasCleartextLogging=140
+	NSLog(y) // $ hasCleartextLogging=152
 
 	let z = MyClass()
 	NSLog(z.harmless) // Safe
-	NSLog(z.password) // $ hasCleartextLogging=145
+	NSLog(z.password) // $ hasCleartextLogging=157
 }
