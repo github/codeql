@@ -24,6 +24,9 @@
 
     <sample src="ContentAccessEnabled.java"/>
 
+    <p>In the following (good) example, access to <code>content://</code> URLs is explicitly denied.</p>
+
+    <sample src="ContentAccessDisabled.java"/>
   </example>
 
   <references>
