@@ -15,7 +15,6 @@ sourceLocationPrefix(
   @callable
 | @file
 | @generic_context
-| @iterable_decl_context
 | @locatable
 | @location
 | @type
@@ -177,6 +176,13 @@ decls(  //dir=decl
   int module: @module_decl_or_none ref
 );
 
+#keyset[id, index]
+decl_members(  //dir=decl
+  int id: @decl ref,
+  int index: int ref,
+  int member: @decl_or_none ref
+);
+
 @generic_context =
   @abstract_function_decl
 | @extension_decl
@@ -189,18 +195,6 @@ generic_context_generic_type_params(  //dir=decl
   int id: @generic_context ref,
   int index: int ref,
   int generic_type_param: @generic_type_param_decl_or_none ref
-);
-
-@iterable_decl_context =
-  @extension_decl
-| @nominal_type_decl
-;
-
-#keyset[id, index]
-iterable_decl_context_members(  //dir=decl
-  int id: @iterable_decl_context ref,
-  int index: int ref,
-  int member: @decl_or_none ref
 );
 
 enum_case_decls(  //dir=decl
