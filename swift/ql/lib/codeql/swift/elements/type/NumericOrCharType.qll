@@ -11,7 +11,7 @@ class CharacterType extends StructType {
 class IntegerType extends Type {
   IntegerType() {
     this.getName() =
-      ["Int", "Int8", "Int16", "Int32", "Int64", "UInt", "UInt8", "Uint16", "Uint32", "UInt64"]
+      ["Int", "Int8", "Int16", "Int32", "Int64", "UInt", "UInt8", "UInt16", "UInt32", "UInt64"]
     or
     this instanceof BuiltinIntegerType
   }
