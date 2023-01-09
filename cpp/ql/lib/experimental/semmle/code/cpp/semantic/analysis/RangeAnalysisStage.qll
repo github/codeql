@@ -268,7 +268,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
   private class SafeCastExpr extends ConvertOrBoxExpr {
     SafeCastExpr() {
       conversionCannotOverflow(getTrackedType(pragma[only_bind_into](getOperand())),
-        getTrackedType(this))
+      pragma[only_bind_out](getTrackedType(this)))
     }
   }
 
