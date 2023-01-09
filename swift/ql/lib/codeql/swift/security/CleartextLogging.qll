@@ -53,7 +53,7 @@ private class OsLogPrivacyCleartextLoggingSanitizer extends CleartextLoggingSani
 /** A type that isn't redacted by default in an `OSLogMessage`. */
 private class OsLogNonRedactedType extends Type {
   OsLogNonRedactedType() {
-    this.getName() = [["", "U"] + "Int" + ["", "16", "32", "64"], "Double", "Float", "Bool"]
+    this.getName() = [["", "U"] + "Int" + ["", "8", "16", "32", "64"], "Double", "Float", "Bool"]
   }
 }
 
