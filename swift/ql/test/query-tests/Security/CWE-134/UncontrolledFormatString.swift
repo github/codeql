@@ -50,6 +50,8 @@ func NSLog(_ format: String, _ args: CVarArg...) {}
 
 func NSLogv(_ format: String, _ args: CVaListPointer) {}
 
+func getVaList(_ args: [CVarArg]) -> CVaListPointer { return (nil as CVaListPointer?)! }
+
 // --- tests ---
 
 func MyLog(_ format: String, _ args: CVarArg...) {
