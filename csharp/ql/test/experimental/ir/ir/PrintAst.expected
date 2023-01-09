@@ -171,6 +171,10 @@ assignop.cs:
 #   19|         0: [AssignOrExpr] ... |= ...
 #   19|           0: [LocalVariableAccess] access to local variable c
 #   19|           1: [IntLiteral] 2
+#   20|       12: [ExprStmt] ...;
+#   20|         0: [AssignUnsighedRightShiftExpr] ... >>>= ...
+#   20|           0: [LocalVariableAccess] access to local variable c
+#   20|           1: [IntLiteral] 2
 casts.cs:
 #    1| [Class] Casts_A
 #    5| [Class] Casts_B

@@ -210,6 +210,11 @@ assignop.cs:
 #   19|     r19_3(Int32)        = Load[c]            : &:r19_2, ~m?
 #   19|     r19_4(Int32)        = BitOr              : r19_3, r19_1
 #   19|     mu19_5(Int32)       = Store[c]           : &:r19_2, r19_4
+#   20|     r20_1(Int32)        = Constant[2]        : 
+#   20|     r20_2(glval<Int32>) = VariableAddress[c] : 
+#   20|     r20_3(Int32)        = Load[c]            : &:r20_2, ~m?
+#   20|     r20_4(Int32)        = UnsignedShiftRight : r20_3, r20_1
+#   20|     mu20_5(Int32)       = Store[c]           : &:r20_2, r20_4
 #    5|     v5_3(Void)          = ReturnVoid         : 
 #    5|     v5_4(Void)          = AliasedUse         : ~m?
 #    5|     v5_5(Void)          = ExitFunction       : 

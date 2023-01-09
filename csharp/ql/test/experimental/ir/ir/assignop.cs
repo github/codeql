@@ -17,5 +17,6 @@ class AssignOp
         c &= 2;
         c ^= 2;
         c |= 2;
+        c >>>= 2;
     }
 }
