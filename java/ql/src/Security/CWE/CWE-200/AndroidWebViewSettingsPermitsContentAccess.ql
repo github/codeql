@@ -109,4 +109,4 @@ where
     not any(WebViewDisallowContentAccessConfiguration cfg).hasFlow(source, _)
   )
 select e,
-  "Sensitive information may be exposed via a malicious link due to access of content:// links being permitted."
+  "Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView."
