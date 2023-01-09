@@ -1,7 +1,7 @@
 /**
- * @name Query built without neutralizing special characters
- * @description Building a SQL or Java Persistence query without escaping or otherwise neutralizing any special
- *              characters is vulnerable to insertion of malicious code.
+ * @name Query built by concatenation with a possibly-untrusted string
+ * @description Building a SQL or Java Persistence query by concatenating a possibly-untrusted string
+ *              is vulnerable to insertion of malicious code.
  * @kind problem
  * @problem.severity error
  * @security-severity 8.8
@@ -13,7 +13,7 @@
  */
 
 import java
-import semmle.code.java.security.SqlUnescapedLib
+import semmle.code.java.security.SqlConcatenatedLib
 import semmle.code.java.security.SqlInjectionQuery
 
 class UncontrolledStringBuilderSource extends DataFlow::ExprNode {
@@ -27,7 +27,7 @@ class UncontrolledStringBuilderSource extends DataFlow::ExprNode {
 
 class UncontrolledStringBuilderSourceFlowConfig extends TaintTracking::Configuration {
   UncontrolledStringBuilderSourceFlowConfig() {
-    this = "SqlUnescaped::UncontrolledStringBuilderSourceFlowConfig"
+    this = "SqlConcatenated::UncontrolledStringBuilderSourceFlowConfig"
   }
 
   override predicate isSource(DataFlow::Node src) { src instanceof UncontrolledStringBuilderSource }
@@ -50,5 +50,5 @@ where
     )
   ) and
   not queryTaintedBy(query, _, _)
-select query, "Query might not neutralize special characters in $@.", uncontrolled,
+select query, "Query built by concatenation with $@, which may be untrusted.", uncontrolled,
   "this expression"

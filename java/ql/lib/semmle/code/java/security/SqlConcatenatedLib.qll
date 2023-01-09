@@ -1,4 +1,4 @@
-/** Definitions used by `SqlUnescaped.ql`. */
+/** Definitions used by `SqlConcatenated.ql`. */
 
 import semmle.code.java.security.ControlledString
 import semmle.code.java.dataflow.TaintTracking
