@@ -10,7 +10,8 @@
 // std::variant would not kick in (we use std::filesystem::path in a variant used as a map key).
 namespace std {
 template <>
-struct std::hash<std::filesystem::path> {
-  std::size_t operator()(const std::filesystem::path& path) const { return hash_value(path); }
+struct hash<filesystem::path> {
+  size_t operator()(const filesystem::path& path) const { return hash_value(path); }
 };
+
 }  // namespace std
