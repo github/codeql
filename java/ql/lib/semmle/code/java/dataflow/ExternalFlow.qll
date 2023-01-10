@@ -351,7 +351,7 @@ private string paramsStringPart(Callable c, int i) {
 /**
  * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
  *
- * Returns the empty string if the callable has no parameters.
+ * Returns an empty parenthesized string if the callable has no parameters.
  * Parameter types are represented by their type erasure.
  */
 cached
