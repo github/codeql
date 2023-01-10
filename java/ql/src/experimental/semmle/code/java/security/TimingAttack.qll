@@ -2,11 +2,54 @@
  * Provides classes and predicates for queries that detect timing attacks.
  */
 
+import java
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow3
+import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.FlowSources
+
+/** A string for `match` that identifies strings that look like they represent secret data. */
+private string suspicious() {
+  result =
+    [
+      "%password", "%passwd", "%pwd%", "%refresh%token%", "%secret%token", "%secret%key",
+      "%passcode", "%passphrase", "%secret%", "%userpass%", "%digest%", "%signature%"
+    ]
+}
+
+/**
+ * A string for `match` that identifies strings that look like they represent secret data that is
+ * hashed or encrypted.
+ */
+private string nonSuspicious() {
+  result = "%hashed%" or
+  result = "%encrypted%" or
+  result = "%crypt%" or
+  result in ["%md5%", "%md2%", "%sha%"]
+}
+
+/** A variable that may hold nonsensitive information, judging by its name. * */
+class NonSensitiveExpr extends Expr {
+  NonSensitiveExpr() {
+    exists(Variable v | this = v.getAnAccess() | 
+       v.getName().toLowerCase().matches(nonSuspicious())
+    ) 
+  }
+}
+
+/** A variable that may hold sensitive information, judging by its name. * */
+class CredentialExpr extends Expr {
+  CredentialExpr() {
+    exists(Variable v | this = v.getAnAccess() |
+      v.getName().toLowerCase().matches(suspicious()) and
+      not v.getName().toLowerCase().matches(nonSuspicious())
+      not v.isFinal()      
+    )
+  }
+}
 
 /** A method call that produces cryptographic result. */
 abstract private class ProduceCryptoCall extends MethodAccess {
@@ -228,6 +271,20 @@ private class UserInputInComparisonConfig extends TaintTracking2::Configuration 
   }
 }
 
+private class UserInputIs extends TaintTracking2::Configuration {
+  UserInputIs() { this = "UserInputIs" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof InSecretSource }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(NonConstantTimeEqualsCall call |
+      sink.asExpr() = [call.getAnArgument(), call.getQualifier()]
+    )
+    or
+    exists(NonConstantTimeComparisonCall call | sink.asExpr() = call.getAnArgument())
+  }
+}
+
 /** Holds if `expr` looks like a constant. */
 private predicate looksLikeConstant(Expr expr) {
   expr.isCompileTimeConstant()
@@ -308,6 +365,30 @@ class NonConstantTimeComparisonSink extends DataFlow::Node {
       config.hasFlowTo(DataFlow2::exprNode(anotherParameter))
     )
   }
+  
+  predicate includesIs() {
+    exists(UserInputIs config |
+      config.hasFlowTo(DataFlow2::exprNode(anotherParameter))
+    ) 
+  }
+}
+
+/** A data flow source of the secret obtained. */
+class SecretSource extends DataFlow::Node {
+  CredentialExpr secret;
+
+  SecretSource() { secret = this.asExpr() }
+
+  /** Holds if the secret was deliverd by remote user. */
+  predicate includesUserInput() {
+    exists(UserInputSecretConfig config | config.hasFlowTo(DataFlow2::exprNode(secret)))
+  }
+}
+
+class InSecretSource extends DataFlow::Node {
+  NonSensitiveExpr insecret;
+
+  InSecretSource() { insecret = this.asExpr() }
 }
 
 /**
@@ -320,4 +401,15 @@ class NonConstantTimeCryptoComparisonConfig extends TaintTracking::Configuration
   override predicate isSource(DataFlow::Node source) { source instanceof CryptoOperationSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
+}
+
+/**
+ * A config that tracks data flow from remote user input to Variable that hold sensitive info
+ */
+class UserInputSecretConfig extends TaintTracking2::Configuration {
+  UserInputSecretConfig() { this = "UserInputSecretConfig" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CredentialExpr }
 }

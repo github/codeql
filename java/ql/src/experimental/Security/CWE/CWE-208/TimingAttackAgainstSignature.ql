@@ -14,7 +14,7 @@
  */
 
 import java
-import NonConstantTimeCheckOnSignatureQuery
+import experimental.semmle.code.java.security.TimingAttack
 import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, NonConstantTimeCryptoComparisonConfig conf

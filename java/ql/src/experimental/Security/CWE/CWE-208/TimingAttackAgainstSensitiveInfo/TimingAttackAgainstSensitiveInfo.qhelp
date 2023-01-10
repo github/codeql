@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+  Timing Attack is based on the leakage of information of secret parameters by studying
+how long it takes the system to respond to different inputs. 
+  it can be circumvented by using a constant-time algorithm for checking the value of sensitive info, 
+more precisely, the comparison time should not depend on the content of the input. Otherwise the attacker gains
+information that is indirectly leaked by the application. This information is then used for malicious purposes, 
+such as guessing the password of a user.
+</p>
+</overview>
+
+
+<recommendation>
+<p>
+ Two types of countermeasures can be applied against timing attacks. The first one consists 
+in eliminating timing variations whereas the second renders these variations useless for an attacker.
+The only absolute way to prevent timing attacks is to make the computation strictly constant time,
+independent of the input.
+
+ Use <code>MessageDigest.isEqual()</code> method to securely check the value of sensitive info.
+If this method is used, then the calculation time depends only on the length of input byte arrays,
+and does not depend on the contents of the arrays. 
+ Unlike <code>Arrays.equals()</code> is a fail fast method, If the first byte is not equal, it will return immediately.
+</p>
+</recommendation>
+<example>
+<p>
+  The following example uses <code>String.equals()</code> which is a fail fast method for validating a password.
+This method implements a non-constant-time algorithm:
+</p>
+<sample src="UnsafeComparison.java" />
+
+<p> 
+  The next example use a safe constant-time algorithm for validating a password:
+</p>
+<sample src="SafeComparison.java" />
+</example>
+
+<references>
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/Timing_attack">Timing attack</a>.
+</li>
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/MessageDigest.html#isEqual(byte[],byte[])">MessageDigest.isEqual() method</a>
+</li>
+</references>
+
+</qhelp>
