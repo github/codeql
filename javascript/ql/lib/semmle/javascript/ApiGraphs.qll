@@ -214,7 +214,7 @@ module API {
       result = Impl::trackDefNode(this.asSink())
       or
       // in case `asSink()` is not a `SourceNode`.
-      result = asSink()
+      result = this.asSink()
     }
 
     /** DEPRECATED. This predicate has been renamed to `asSink`. */
