@@ -1,7 +1,7 @@
 /**
  * @name Capture discarded summary models.
  * @description Finds summary models that are discarded as handwritten counterparts exist.
- * @id csharp/utils/model-generator/discarded-summary-models
+ * @id cs/utils/model-generator/discarded-summary-models
  */
 
 import semmle.code.csharp.dataflow.ExternalFlow
