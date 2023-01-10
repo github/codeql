@@ -153,9 +153,9 @@ predicate upcastToWiderType(Expr e) {
 /** Holds if the result of `exp` has certain bits filtered by a bitwise and. */
 private predicate inBitwiseAnd(Expr exp) {
   exists(AndBitwiseExpr a | a.getAnOperand() = exp) or
-  inBitwiseAnd(exp.(LShiftExpr).getAnOperand()) or
-  inBitwiseAnd(exp.(RShiftExpr).getAnOperand()) or
-  inBitwiseAnd(exp.(URShiftExpr).getAnOperand())
+  inBitwiseAnd(exp.(LeftShiftExpr).getAnOperand()) or
+  inBitwiseAnd(exp.(RightShiftExpr).getAnOperand()) or
+  inBitwiseAnd(exp.(UnsignedRightShiftExpr).getAnOperand())
 }
 
 /** Holds if overflow/underflow is irrelevant for this expression. */
