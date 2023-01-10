@@ -543,9 +543,7 @@ private predicate boundedPhiCand(
   PhiInstruction phi, boolean upper, Bound b, int delta, boolean fromBackEdge, int origdelta,
   Reason reason
 ) {
-  exists(PhiInputOperand op |
-    boundedPhiInp(phi, op, b, delta, upper, fromBackEdge, origdelta, reason)
-  )
+  boundedPhiInp(phi, _, b, delta, upper, fromBackEdge, origdelta, reason)
 }
 
 /**

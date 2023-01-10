@@ -115,9 +115,10 @@ jobs:
       - name: Build Query Pack
         run: |
           rm -rf target/packs
-          codeql pack create ../shared/ssa --output target/packs
           codeql pack create ../misc/suite-helpers --output target/packs
           codeql pack create ../shared/regex --output target/packs
+          codeql pack create ../shared/ssa --output target/packs
+          codeql pack create ../shared/tutorial --output target/packs
           codeql pack create ql/lib --output target/packs
           codeql pack create -j0 ql/src --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
           PACK_FOLDER=$(readlink -f target/packs/codeql/ruby-queries/*)

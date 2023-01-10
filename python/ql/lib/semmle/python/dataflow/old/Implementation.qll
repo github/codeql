@@ -531,8 +531,8 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
     TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path,
     TaintKind kind, string edgeLabel
   ) {
-    exists(DataFlow::Node srcnode, CallNode call, TaintKind srckind, string name |
-      src = TTaintTrackingNode_(srcnode, context, path, srckind, this) and
+    exists(CallNode call, TaintKind srckind, string name |
+      src = TTaintTrackingNode_(_, context, path, srckind, this) and
       call.getFunction().(AttrNode).getObject(name) = src.getNode().asCfgNode() and
       kind = srckind.getTaintOfMethodResult(name) and
       node.asCfgNode() = call
@@ -560,8 +560,8 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
     TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path,
     TaintKind kind, string edgeLabel
   ) {
-    exists(CallNode call, PythonFunctionObjectInternal pyfunc, int arg |
-      this.callWithTaintedArgument(src, call, _, pyfunc, arg, path, kind) and
+    exists(PythonFunctionObjectInternal pyfunc, int arg |
+      this.callWithTaintedArgument(src, _, _, pyfunc, arg, path, kind) and
       node.asCfgNode() = pyfunc.getParameter(arg) and
       context = TParamContext(kind, path, arg)
     ) and
@@ -795,11 +795,9 @@ private class EssaTaintTracking extends string instanceof TaintTracking::Configu
     TaintTrackingNode src, PyEdgeRefinement defn, TaintTrackingContext context, AttributePath path,
     TaintKind kind
   ) {
-    exists(DataFlow::Node srcnode, ControlFlowNode use |
-      src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
-      not super.isBarrierTest(defn.getTest(), defn.getSense()) and
-      defn.getSense() = this.testEvaluates(defn, defn.getTest(), use, src)
-    )
+    src = TTaintTrackingNode_(_, context, path, kind, this) and
+    not super.isBarrierTest(defn.getTest(), defn.getSense()) and
+    defn.getSense() = this.testEvaluates(defn, defn.getTest(), _, src)
   }
 
   pragma[noinline]

@@ -119,7 +119,7 @@ class CommentBlock extends Comment {
     (
       this instanceof CppStyleComment
       implies
-      not exists(CppStyleComment pred, File f | lineInFile(pred, f) + 1 = lineInFile(this, f))
+      not exists(File f | lineInFile(_, f) + 1 = lineInFile(this, f))
     ) and
     // Ignore comments on the same line as a preprocessor directive.
     not exists(Location l |
