@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-When a library function dynamically constructs code in a potentially unsafe way, then 
+When a library function dynamically constructs code in a potentially unsafe way, 
 it's important to document to clients of the library that the function should only be
 used with trusted inputs.
 
@@ -35,7 +35,7 @@ then an attacker might be able to execute arbitrary code on the system.
 
 <p>
 To avoid this problem, either properly document that the function is potentially
-unsafe, or use an alternative solution such as <code>JSON.parse</code> or another library, like in the examples below, 
+unsafe, or use an alternative solution such as <code>JSON.parse</code> or another library 
 that does not allow arbitrary code to be executed.
 </p>
 
