@@ -22,11 +22,11 @@ module RangeUtil<Range::DeltaSig D, Range::LangSig<D> Lang> implements Range::Ut
       not Lang::ignoreSsaReadArithmeticExpr(result)
     )
     or
-    exists(SemSubExpr sub, float d1, SemConstantIntegerExpr c |
+    exists(SemSubExpr sub, D::Delta d1, SemConstantIntegerExpr c |
       result = sub and
-      sub.getLeftOperand() = semSsaRead(v, D::fromFloat(d1)) and
+      sub.getLeftOperand() = semSsaRead(v, d1) and
       sub.getRightOperand() = c and
-      delta = D::fromFloat(d1 + c.getIntValue()) and
+      delta = D::fromFloat(D::toFloat(d1) + c.getIntValue()) and
       not Lang::ignoreSsaReadArithmeticExpr(result)
     )
     or
