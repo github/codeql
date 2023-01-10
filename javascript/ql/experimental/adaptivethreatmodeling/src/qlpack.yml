@@ -9,4 +9,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2022-12-19-02h56m41s.sincere-caravan-g7k9973p.53fdd1eddf2eda2ad095fa880bfcf4bc09763d2b3fd4d5c0a7deffe3002278f6
