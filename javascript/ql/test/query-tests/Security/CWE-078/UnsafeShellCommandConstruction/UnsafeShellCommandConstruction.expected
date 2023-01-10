@@ -57,6 +57,8 @@ nodes
 | lib/lib.js:64:41:64:44 | name |
 | lib/lib.js:65:22:65:25 | name |
 | lib/lib.js:65:22:65:25 | name |
+| lib/lib.js:69:27:69:30 | name |
+| lib/lib.js:69:27:69:30 | name |
 | lib/lib.js:71:28:71:31 | name |
 | lib/lib.js:71:28:71:31 | name |
 | lib/lib.js:73:21:73:24 | name |
@@ -115,6 +117,7 @@ nodes
 | lib/lib.js:181:6:181:52 | broken |
 | lib/lib.js:181:15:181:52 | "'" + n ... ) + "'" |
 | lib/lib.js:181:21:181:24 | name |
+| lib/lib.js:181:21:181:46 | name.re ... "'\\''") |
 | lib/lib.js:181:21:181:46 | name.re ... "'\\''") |
 | lib/lib.js:182:22:182:27 | broken |
 | lib/lib.js:182:22:182:27 | broken |
@@ -377,6 +380,10 @@ edges
 | lib/lib.js:64:41:64:44 | name | lib/lib.js:65:22:65:25 | name |
 | lib/lib.js:64:41:64:44 | name | lib/lib.js:65:22:65:25 | name |
 | lib/lib.js:64:41:64:44 | name | lib/lib.js:65:22:65:25 | name |
+| lib/lib.js:64:41:64:44 | name | lib/lib.js:69:27:69:30 | name |
+| lib/lib.js:64:41:64:44 | name | lib/lib.js:69:27:69:30 | name |
+| lib/lib.js:64:41:64:44 | name | lib/lib.js:69:27:69:30 | name |
+| lib/lib.js:64:41:64:44 | name | lib/lib.js:69:27:69:30 | name |
 | lib/lib.js:64:41:64:44 | name | lib/lib.js:71:28:71:31 | name |
 | lib/lib.js:64:41:64:44 | name | lib/lib.js:71:28:71:31 | name |
 | lib/lib.js:64:41:64:44 | name | lib/lib.js:71:28:71:31 | name |
@@ -454,6 +461,7 @@ edges
 | lib/lib.js:181:6:181:52 | broken | lib/lib.js:182:22:182:27 | broken |
 | lib/lib.js:181:6:181:52 | broken | lib/lib.js:182:22:182:27 | broken |
 | lib/lib.js:181:15:181:52 | "'" + n ... ) + "'" | lib/lib.js:181:6:181:52 | broken |
+| lib/lib.js:181:21:181:24 | name | lib/lib.js:181:21:181:46 | name.re ... "'\\''") |
 | lib/lib.js:181:21:181:24 | name | lib/lib.js:181:21:181:46 | name.re ... "'\\''") |
 | lib/lib.js:181:21:181:46 | name.re ... "'\\''") | lib/lib.js:181:15:181:52 | "'" + n ... ) + "'" |
 | lib/lib.js:186:34:186:37 | name | lib/lib.js:187:22:187:25 | name |
@@ -708,6 +716,7 @@ edges
 | lib/lib.js:54:13:54:28 | "rm -rf " + name | lib/lib.js:53:33:53:36 | name | lib/lib.js:54:25:54:28 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:53:33:53:36 | name | library input | lib/lib.js:55:2:55:14 | cp.exec(cmd1) | shell command |
 | lib/lib.js:57:13:57:28 | "rm -rf " + name | lib/lib.js:53:33:53:36 | name | lib/lib.js:57:25:57:28 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:53:33:53:36 | name | library input | lib/lib.js:59:3:59:14 | cp.exec(cmd) | shell command |
 | lib/lib.js:65:10:65:25 | "rm -rf " + name | lib/lib.js:64:41:64:44 | name | lib/lib.js:65:22:65:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:64:41:64:44 | name | library input | lib/lib.js:65:2:65:26 | cp.exec ... + name) | shell command |
+| lib/lib.js:69:10:69:47 | "for fo ... la end" | lib/lib.js:64:41:64:44 | name | lib/lib.js:69:27:69:30 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:64:41:64:44 | name | library input | lib/lib.js:69:2:69:48 | cp.exec ... a end") | shell command |
 | lib/lib.js:71:10:71:31 | "cat /f ...  + name | lib/lib.js:64:41:64:44 | name | lib/lib.js:71:28:71:31 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:64:41:64:44 | name | library input | lib/lib.js:71:2:71:32 | cp.exec ... + name) | shell command |
 | lib/lib.js:73:10:73:31 | "cat \\" ...  + "\\"" | lib/lib.js:64:41:64:44 | name | lib/lib.js:73:21:73:24 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:64:41:64:44 | name | library input | lib/lib.js:73:2:73:32 | cp.exec ... + "\\"") | shell command |
 | lib/lib.js:75:10:75:29 | "cat '" + name + "'" | lib/lib.js:64:41:64:44 | name | lib/lib.js:75:20:75:23 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:64:41:64:44 | name | library input | lib/lib.js:75:2:75:30 | cp.exec ...  + "'") | shell command |
@@ -726,6 +735,7 @@ edges
 | lib/lib.js:149:12:149:27 | "rm -rf " + name | lib/lib.js:148:37:148:40 | name | lib/lib.js:149:24:149:27 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:148:37:148:40 | name | library input | lib/lib.js:152:2:152:23 | cp.spaw ... gs, cb) | shell command |
 | lib/lib.js:161:13:161:28 | "rm -rf " + name | lib/lib.js:155:38:155:41 | name | lib/lib.js:161:25:161:28 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:155:38:155:41 | name | library input | lib/lib.js:163:2:167:2 | cp.spaw ... t' }\\n\\t) | shell command |
 | lib/lib.js:173:10:173:23 | "fo \| " + name | lib/lib.js:170:41:170:44 | name | lib/lib.js:173:20:173:23 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:170:41:170:44 | name | library input | lib/lib.js:173:2:173:24 | cp.exec ... + name) | shell command |
+| lib/lib.js:181:15:181:52 | "'" + n ... ) + "'" | lib/lib.js:177:38:177:41 | name | lib/lib.js:181:21:181:46 | name.re ... "'\\''") | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:177:38:177:41 | name | library input | lib/lib.js:182:2:182:28 | cp.exec ... broken) | shell command |
 | lib/lib.js:182:10:182:27 | "rm -rf " + broken | lib/lib.js:177:38:177:41 | name | lib/lib.js:182:22:182:27 | broken | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:177:38:177:41 | name | library input | lib/lib.js:182:2:182:28 | cp.exec ... broken) | shell command |
 | lib/lib.js:187:10:187:25 | "rm -rf " + name | lib/lib.js:186:34:186:37 | name | lib/lib.js:187:22:187:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:186:34:186:37 | name | library input | lib/lib.js:187:2:187:26 | cp.exec ... + name) | shell command |
 | lib/lib.js:190:11:190:26 | "rm -rf " + name | lib/lib.js:186:34:186:37 | name | lib/lib.js:190:23:190:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:186:34:186:37 | name | library input | lib/lib.js:190:3:190:27 | cp.exec ... + name) | shell command |

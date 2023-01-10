@@ -66,7 +66,7 @@ module.exports.stringConcat = function (name) {
 
 	cp.exec(name); // OK.
 
-	cp.exec("for foo in (" + name + ") do bla end"); // OK.
+	cp.exec("for foo in (" + name + ") do bla end"); // NOT OK.
 
 	cp.exec("cat /foO/BAR/" + name) // NOT OK.
 
