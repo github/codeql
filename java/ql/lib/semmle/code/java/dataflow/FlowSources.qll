@@ -300,7 +300,7 @@ class OnActivityResultIntentSource extends OnActivityResultIncomingIntent, Remot
 }
 
 /**
- * A parameter of a method annotated with the `android.webkit.JavascriptInterface` method
+ * A parameter of a method annotated with the `android.webkit.JavascriptInterface` annotation.
  */
 class AndroidJavascriptInterfaceMethodParameter extends RemoteFlowSource {
   AndroidJavascriptInterfaceMethodParameter() {
