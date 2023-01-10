@@ -30,3 +30,18 @@ void test()
 	char *buffer8 = new char[x * y]; // BAD
 	char *buffer9 = new char[x * x]; // BAD
 }
+
+
+// --- custom allocators ---
+ 
+void *MyMalloc1(size_t size) { return malloc(size); } // [additional detection here]
+void *MyMalloc2(size_t size);
+
+void customAllocatorTests()
+{
+	int x = getAnInt();
+	int y = getAnInt();
+
+	char *buffer1 = (char *)MyMalloc1(x * y); // BAD
+	char *buffer2 = (char *)MyMalloc2(x * y); // BAD
+}

@@ -12,4 +12,5 @@
 import ql
 
 from Class c
+where none()
 select c

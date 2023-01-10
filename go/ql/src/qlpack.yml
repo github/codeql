@@ -1,5 +1,5 @@
 name: codeql/go-queries
-version: 0.4.0-dev
+version: 0.4.1-dev
 groups:
   - go
   - queries
@@ -9,3 +9,4 @@ defaultSuiteFile: codeql-suites/go-code-scanning.qls
 dependencies:
   codeql/go-all: ${workspace}
   codeql/suite-helpers: ${workspace}
+  codeql/util: ${workspace}

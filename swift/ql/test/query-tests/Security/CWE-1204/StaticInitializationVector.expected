@@ -1,4 +1,5 @@
 edges
+| test.swift:53:19:53:34 | iv :  | test.swift:54:17:54:17 | iv |
 | test.swift:85:3:85:3 | this string is constant :  | test.swift:101:17:101:35 | call to getConstantString() :  |
 | test.swift:99:25:99:120 | [...] :  | test.swift:128:33:128:33 | iv |
 | test.swift:99:25:99:120 | [...] :  | test.swift:135:22:135:22 | iv |
@@ -7,6 +8,7 @@ edges
 | test.swift:99:25:99:120 | [...] :  | test.swift:145:22:145:22 | iv |
 | test.swift:99:25:99:120 | [...] :  | test.swift:146:22:146:22 | iv |
 | test.swift:99:25:99:120 | [...] :  | test.swift:147:22:147:22 | iv |
+| test.swift:99:25:99:120 | [...] :  | test.swift:147:22:147:22 | iv :  |
 | test.swift:99:25:99:120 | [...] :  | test.swift:153:22:153:22 | iv |
 | test.swift:99:25:99:120 | [...] :  | test.swift:157:24:157:24 | iv |
 | test.swift:99:25:99:120 | [...] :  | test.swift:161:22:161:22 | iv |
@@ -19,7 +21,10 @@ edges
 | test.swift:101:17:101:35 | call to getConstantString() :  | test.swift:122:41:122:41 | ivString |
 | test.swift:101:17:101:35 | call to getConstantString() :  | test.swift:123:41:123:41 | ivString |
 | test.swift:101:17:101:35 | call to getConstantString() :  | test.swift:130:39:130:39 | ivString |
+| test.swift:147:22:147:22 | iv :  | test.swift:53:19:53:34 | iv :  |
 nodes
+| test.swift:53:19:53:34 | iv :  | semmle.label | iv :  |
+| test.swift:54:17:54:17 | iv | semmle.label | iv |
 | test.swift:85:3:85:3 | this string is constant :  | semmle.label | this string is constant :  |
 | test.swift:99:25:99:120 | [...] :  | semmle.label | [...] :  |
 | test.swift:101:17:101:35 | call to getConstantString() :  | semmle.label | call to getConstantString() :  |
@@ -36,6 +41,7 @@ nodes
 | test.swift:145:22:145:22 | iv | semmle.label | iv |
 | test.swift:146:22:146:22 | iv | semmle.label | iv |
 | test.swift:147:22:147:22 | iv | semmle.label | iv |
+| test.swift:147:22:147:22 | iv :  | semmle.label | iv :  |
 | test.swift:153:22:153:22 | iv | semmle.label | iv |
 | test.swift:157:24:157:24 | iv | semmle.label | iv |
 | test.swift:161:22:161:22 | iv | semmle.label | iv |
@@ -44,6 +50,7 @@ nodes
 | test.swift:168:22:168:22 | iv | semmle.label | iv |
 subpaths
 #select
+| test.swift:54:17:54:17 | iv | test.swift:99:25:99:120 | [...] :  | test.swift:54:17:54:17 | iv | The static value '[...]' is used as an initialization vector for encryption. |
 | test.swift:112:36:112:36 | ivString | test.swift:85:3:85:3 | this string is constant :  | test.swift:112:36:112:36 | ivString | The static value 'this string is constant' is used as an initialization vector for encryption. |
 | test.swift:113:36:113:36 | ivString | test.swift:85:3:85:3 | this string is constant :  | test.swift:113:36:113:36 | ivString | The static value 'this string is constant' is used as an initialization vector for encryption. |
 | test.swift:118:41:118:41 | ivString | test.swift:85:3:85:3 | this string is constant :  | test.swift:118:41:118:41 | ivString | The static value 'this string is constant' is used as an initialization vector for encryption. |

@@ -6,7 +6,7 @@
  * @id ql/override-parameter-name
  * @tags correctness
  *       maintainability
- * @precision medium
+ * @precision low
  */
 
 import ql
@@ -19,13 +19,18 @@ private predicate getAnOverridingParameter(
   parameter = pred.getParameter(index)
 }
 
+pragma[nomagic]
+string getParameterName(ClassPredicate pred, int index) {
+  pred.getParameter(index).getName() = result
+}
+
 from ClassPredicate pred, ClassPredicate sup, VarDecl parameter, int index
 where
   getAnOverridingParameter(pred, sup, parameter, index) and
-  sup.getParameter(index).getName() != pred.getParameter(index).getName() and
+  getParameterName(sup, index) != getParameterName(pred, index) and
   // avoid duplicated alerts with `ql/override-swapped-name`
   not exists(int other | other != index |
-    sup.getParameter(other).getName() = pred.getParameter(index).getName()
+    getParameterName(sup, other) = getParameterName(pred, index)
   )
 select parameter, pred.getParameter(index).getName() + " was $@ in the super class.",
   sup.getParameter(index), "named " + sup.getParameter(index).getName()

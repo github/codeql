@@ -18,9 +18,12 @@
 #include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
 #include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/trap/TrapDomain.h"
+#include "swift/extractor/infra/file/Path.h"
+#include <swift/Basic/InitializeSwiftModules.h>
 
 using namespace std::string_literals;
 
+// must be called before processFrontendOptions modifies output paths
 static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
                                        const swift::FrontendOptions& options) {
   for (const auto& input : options.InputsAndOutputs.getAllInputs()) {
@@ -77,8 +80,9 @@ class Observer : public swift::FrontendObserver {
   explicit Observer(const codeql::SwiftExtractorConfiguration& config) : state{config} {}
 
   void parsedArgs(swift::CompilerInvocation& invocation) override {
-    lockOutputSwiftModuleTraps(state, invocation.getFrontendOptions());
-    processFrontendOptions(state, invocation.getFrontendOptions());
+    auto& options = invocation.getFrontendOptions();
+    lockOutputSwiftModuleTraps(state, options);
+    processFrontendOptions(state, options);
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {

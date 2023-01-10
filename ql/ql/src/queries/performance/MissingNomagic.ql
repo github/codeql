@@ -38,6 +38,13 @@ predicate hasNameWithNumberSuffix(Predicate p, string name, int n) {
   p.getName() = name + n.toString()
 }
 
+pragma[noinline]
+predicate isHelperPredicate(string orgName, string helperName) {
+  orgName = any(Predicate p).getName() and
+  helperName =
+    orgName.regexpCapture("(.+)" + ["0", "helper", "aux", "cand", "Helper", "Aux", "Cand"], 1)
+}
+
 /**
  * A candidate predicate for another predicate.
  *
@@ -47,15 +54,14 @@ predicate hasNameWithNumberSuffix(Predicate p, string name, int n) {
 class CandidatePredicate extends Predicate {
   Predicate pred;
 
+  pragma[nomagic]
   CandidatePredicate() {
     // This predicate "guards" the predicate `pred` (i.e., it's always evaluated before `pred`).
     guards(this, pred.getBody()) and
     (
       // The name of `pred` is "foo", and the name of this predicate is `foo0`, or `fooHelper`, or any
       // other the other cases.
-      pragma[only_bind_into](pred).getName() =
-        this.getName()
-            .regexpCapture("(.+)" + ["0", "helper", "aux", "cand", "Helper", "Aux", "Cand"], 1)
+      isHelperPredicate(this.getName(), pred.getName())
       or
       // Or this predicate is named "foo02" and `pred` is named "foo01".
       exists(int n, string name |
@@ -66,6 +72,7 @@ class CandidatePredicate extends Predicate {
   }
 
   /** Holds if this predicate is a candidate predicate for `p`. */
+  pragma[nomagic]
   predicate isCandidateFor(Predicate p) { p = pred }
 }
 

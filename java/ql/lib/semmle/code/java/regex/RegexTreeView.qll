@@ -85,6 +85,9 @@ module Impl implements RegexTreeViewSig {
 
     /** Gets the associated regex. */
     abstract Regex getRegex();
+
+    /** Gets the last child term of this element. */
+    RegExpTerm getLastChild() { result = this.getChild(this.getNumChild() - 1) }
   }
 
   /**
@@ -559,10 +562,28 @@ module Impl implements RegexTreeViewSig {
   }
 
   /**
+   * A character escape in a regular expression.
+   *
+   * Example:
+   *
+   * ```
+   * \.
+   * ```
+   */
+  class RegExpCharEscape = RegExpEscape;
+
+  /**
    * A word boundary, that is, a regular expression term of the form `\b`.
    */
   class RegExpWordBoundary extends RegExpSpecialChar {
     RegExpWordBoundary() { this.getChar() = "\\b" }
+  }
+
+  /**
+   * A non-word boundary, that is, a regular expression term of the form `\B`.
+   */
+  class RegExpNonWordBoundary extends RegExpSpecialChar {
+    RegExpNonWordBoundary() { this.getChar() = "\\B" }
   }
 
   /**
@@ -868,6 +889,9 @@ module Impl implements RegexTreeViewSig {
     predicate isNamedGroupOfLiteral(RegExpLiteral lit, string name) {
       lit = this.getLiteral() and name = this.getName()
     }
+
+    /** Holds if this is a capture group. */
+    predicate isCapture() { exists(this.getNumber()) }
   }
 
   /**
@@ -918,6 +942,21 @@ module Impl implements RegexTreeViewSig {
   }
 
   /**
+   * A term that matches a specific position between characters in the string.
+   *
+   * Example:
+   *
+   * ```
+   * ^
+   * ```
+   */
+  class RegExpAnchor extends RegExpSpecialChar {
+    RegExpAnchor() { this.getChar() = ["$", "^"] }
+
+    override string getPrimaryQLClass() { result = "RegExpAnchor" }
+  }
+
+  /**
    * A dollar assertion `$` matching the end of a line.
    *
    * Example:
@@ -926,7 +965,7 @@ module Impl implements RegexTreeViewSig {
    * $
    * ```
    */
-  class RegExpDollar extends RegExpSpecialChar {
+  class RegExpDollar extends RegExpAnchor {
     RegExpDollar() { this.getChar() = "$" }
 
     override string getPrimaryQLClass() { result = "RegExpDollar" }
@@ -941,7 +980,7 @@ module Impl implements RegexTreeViewSig {
    * ^
    * ```
    */
-  class RegExpCaret extends RegExpSpecialChar {
+  class RegExpCaret extends RegExpAnchor {
     RegExpCaret() { this.getChar() = "^" }
 
     override string getPrimaryQLClass() { result = "RegExpCaret" }

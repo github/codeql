@@ -26,3 +26,11 @@ class Dead { } // lgtm
 // LGTM[cs/unused-reftype]
 // lgtm[cs/unused-reftype] and lgtm[cs/unused-field]
 // lgtm[cs/unused-reftype]; lgtm
+// codeql[js/debugger-statement]
+// CODEQL[js/debugger-statement]
+// codeql[js/debugger-statement] -- because I know better than codeql
+/* codeql[js/debugger-statement] */
+/* codeql[js/debugger-statement] 
+*/
+class End { } // codeql[js/debugger-statement]
+

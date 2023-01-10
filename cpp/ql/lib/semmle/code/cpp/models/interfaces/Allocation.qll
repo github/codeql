@@ -133,13 +133,15 @@ abstract class HeuristicAllocationExpr extends Expr {
 
   /**
    * Gets a constant multiplier for the allocation size given by `getSizeExpr`,
-   * in bytes.
+   * in bytes. This predicate should be used with caution as it can be
+   * inaccurate for allocations identified using heuristics.
    */
   int getSizeMult() { none() }
 
   /**
    * Gets the size of this allocation in bytes, if it is a fixed size and that
-   * size can be determined.
+   * size can be determined. This predicate should be used with caution as it
+   * can be inaccurate for allocations identified using heuristics.
    */
   int getSizeBytes() { none() }
 

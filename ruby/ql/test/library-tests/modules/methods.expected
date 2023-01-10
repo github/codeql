@@ -687,7 +687,7 @@ enclosingMethod
 | calls.rb:55:9:55:19 | self | calls.rb:51:5:57:7 | baz |
 | calls.rb:56:9:56:12 | self | calls.rb:51:5:57:7 | baz |
 | calls.rb:56:9:56:24 | call to singleton_m | calls.rb:51:5:57:7 | baz |
-| calls.rb:67:9:67:13 | call to super | calls.rb:66:5:68:7 | baz |
+| calls.rb:67:9:67:13 | super call to baz | calls.rb:66:5:68:7 | baz |
 | calls.rb:76:18:76:18 | a | calls.rb:76:1:79:3 | optional_arg |
 | calls.rb:76:18:76:18 | a | calls.rb:76:1:79:3 | optional_arg |
 | calls.rb:76:22:76:22 | 4 | calls.rb:76:1:79:3 | optional_arg |
@@ -1016,7 +1016,7 @@ enclosingMethod
 | calls.rb:610:9:610:18 | self | calls.rb:609:5:611:7 | call_singleton1 |
 | calls.rb:620:9:620:12 | self | calls.rb:619:5:621:7 | foo |
 | calls.rb:620:9:620:16 | call to bar | calls.rb:619:5:621:7 | foo |
-| calls.rb:629:9:629:13 | call to super | calls.rb:628:5:630:7 | bar |
+| calls.rb:629:9:629:13 | super call to bar | calls.rb:628:5:630:7 | bar |
 | calls.rb:635:9:635:10 | C1 | calls.rb:634:5:636:7 | new |
 | calls.rb:635:9:635:14 | call to new | calls.rb:634:5:636:7 | new |
 | calls.rb:643:9:643:12 | self | calls.rb:642:5:644:7 | new |
@@ -1035,7 +1035,7 @@ enclosingMethod
 | hello.rb:14:16:14:20 | call to hello | hello.rb:13:5:15:7 | message |
 | hello.rb:14:16:14:20 | self | hello.rb:13:5:15:7 | message |
 | hello.rb:20:9:20:40 | return | hello.rb:19:5:21:7 | message |
-| hello.rb:20:16:20:20 | call to super | hello.rb:19:5:21:7 | message |
+| hello.rb:20:16:20:20 | super call to message | hello.rb:19:5:21:7 | message |
 | hello.rb:20:16:20:26 | ... + ... | hello.rb:19:5:21:7 | message |
 | hello.rb:20:16:20:34 | ... + ... | hello.rb:19:5:21:7 | message |
 | hello.rb:20:16:20:40 | ... + ... | hello.rb:19:5:21:7 | message |
