@@ -534,16 +534,11 @@ module Public {
     CallExpr getCall() { result = this.getExpr() }
 
     /**
-     * Gets the data flow node corresponding to the `i`th argument of this call.
-     *
-     * Note that the first argument in calls to the built-in function `make` is a type, which is
-     * not a data-flow node. It is skipped for the purposes of this predicate, so the (syntactically)
-     * second argument becomes the first argument in terms of data flow.
-     *
-     * For calls of the form `f(g())` where `g` has multiple results, the arguments of the call to
-     * `i` are the (implicit) element extraction nodes for the call to `g`.
+     * Gets the `i`th argument of this call, where tuple extraction has been
+     * done but arguments corresponding to a variadic parameter are still
+     * considered separate.
      */
-    Node getArgument(int i) {
+    Node getSyntacticArgument(int i) {
       if expr.getArgument(0).getType() instanceof TupleType
       then result = DataFlow::extractTupleElement(DataFlow::exprNode(expr.getArgument(0)), i)
       else
@@ -555,11 +550,61 @@ module Public {
           )
     }
 
+    /**
+     * Gets the data flow node corresponding to an argument of this call, where
+     * tuple extraction has been done but arguments corresponding to a variadic
+     * parameter are still considered separate.
+     */
+    Node getASyntacticArgument() { result = this.getSyntacticArgument(_) }
+
+    /**
+     * Gets the data flow node corresponding to the `i`th argument of this call.
+     *
+     * Note that the first argument in calls to the built-in function `make` is a type, which is
+     * not a data-flow node. It is skipped for the purposes of this predicate, so the (syntactically)
+     * second argument becomes the first argument in terms of data flow.
+     *
+     * For calls of the form `f(g())` where `g` has multiple results, the arguments of the call to
+     * `i` are the (implicit) element extraction nodes for the call to `g`.
+     *
+     * For calls to variadic functions without an ellipsis (`...`), there is a single argument of type
+     * `ImplicitVarargsSlice` corresponding to the variadic parameter. This is in contrast to the member
+     * predicate `getArgument` on `CallExpr`, which gets the syntactic arguments.
+     */
+    Node getArgument(int i) {
+      exists(SignatureType t, int lastParamIndex |
+        t = this.getACalleeIncludingExternals().getType() and
+        lastParamIndex = t.getNumParameter() - 1
+      |
+        if
+          not this.hasEllipsis() and
+          t.isVariadic() and
+          i >= lastParamIndex
+        then
+          result.(ImplicitVarargsSlice).getCallNode() = this and
+          i = lastParamIndex
+        else result = this.getSyntacticArgument(i)
+      )
+    }
+
     /** Gets the data flow node corresponding to an argument of this call. */
     Node getAnArgument() { result = this.getArgument(_) }
 
     /** Gets the number of arguments of this call, if it can be determined. */
     int getNumArgument() { result = count(this.getAnArgument()) }
+
+    /**
+     * Gets the 'i'th argument without an ellipsis after it which is passed to
+     * the varargs parameter of the target of this call (if there is one).
+     */
+    Node getImplicitVarargsArgument(int i) {
+      not this.hasEllipsis() and
+      i >= 0 and
+      exists(Function f | f = this.getTarget() |
+        f.isVariadic() and
+        result = this.getSyntacticArgument(f.getNumParameter() - 1 + i)
+      )
+    }
 
     /** Gets a function passed as the `i`th argument of this call. */
     FunctionNode getCallback(int i) { result.getASuccessor*() = this.getArgument(i) }
