@@ -201,7 +201,7 @@ private DataFlow::Node getAValueExportedByPackage() {
   // Object.assign and friends
   exists(ExtendCall assign |
     getAValueExportedByPackage() =
-      [assign, assign.getDestinationOperand(), assign.getDestinationOperand().getALocalSource()]
+      [assign, assign.getDestinationOperand().getALocalSource()]
   |
     result = assign.getASourceOperand()
   )
