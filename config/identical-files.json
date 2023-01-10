@@ -402,16 +402,6 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/ControlFlowReachability.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/ControlFlowReachability.qll"
   ],
-  "Inline Test Expectations": [
-    "cpp/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "csharp/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "java/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "python/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "ruby/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "ql/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "go/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "swift/ql/test/TestUtilities/InlineExpectationsTest.qll"
-  ],
   "C++ ExternalAPIs": [
     "cpp/ql/src/Security/CWE/CWE-020/ExternalAPIs.qll",
     "cpp/ql/src/Security/CWE/CWE-020/ir/ExternalAPIs.qll"

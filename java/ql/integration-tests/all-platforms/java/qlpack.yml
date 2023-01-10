@@ -1,0 +1,4 @@
+dependencies:
+  codeql/java-all: '*'
+  codeql/java-tests: '*'
+  codeql/java-queries: '*'

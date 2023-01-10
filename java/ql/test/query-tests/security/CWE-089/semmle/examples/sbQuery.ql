@@ -1,4 +1,4 @@
-import semmle.code.java.security.SqlUnescapedLib
+import semmle.code.java.security.SqlConcatenatedLib
 
 from StringBuilderVar sbv, Expr uncontrolled, Method method, int methodLine
 where
