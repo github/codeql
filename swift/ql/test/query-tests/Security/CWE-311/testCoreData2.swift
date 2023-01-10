@@ -38,7 +38,7 @@ func testCoreData2_1(obj: MyManagedObject2, maybeObj: MyManagedObject2?, value: 
 	obj.myBankAccountNumber = value // BAD [NOT DETECTED]
 	obj.myBankAccountNumber = bankAccountNo // BAD
 	obj.myBankAccountNumber2 = value // BAD [NOT DETECTED]
-	obj.myBankAccountNumber2 = bankAccountNo // BAD [NOT DETECTED]
+	obj.myBankAccountNumber2 = bankAccountNo // BAD
 	obj.notStoredBankAccountNumber = value // GOOD (not stored in the database)
 	obj.notStoredBankAccountNumber = bankAccountNo // GOOD (not stored in the datbase) [FALSE POSITIVE]
 
@@ -47,7 +47,7 @@ func testCoreData2_1(obj: MyManagedObject2, maybeObj: MyManagedObject2?, value: 
 	maybeObj?.myBankAccountNumber = value // BAD [NOT DETECTED]
 	maybeObj?.myBankAccountNumber = bankAccountNo // BAD
 	maybeObj?.myBankAccountNumber2 = value // BAD [NOT DETECTED]
-	maybeObj?.myBankAccountNumber2 = bankAccountNo // BAD [NOT DETECTED]
+	maybeObj?.myBankAccountNumber2 = bankAccountNo // BAD
 	maybeObj?.notStoredBankAccountNumber = value // GOOD (not stored in the database)
 	maybeObj?.notStoredBankAccountNumber = bankAccountNo // GOOD (not stored in the datbase) [FALSE POSITIVE]
 }

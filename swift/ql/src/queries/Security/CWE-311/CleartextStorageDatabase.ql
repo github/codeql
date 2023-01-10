@@ -34,7 +34,8 @@ class CoreDataStore extends Stored {
           .hasQualifiedName("NSManagedObject",
             ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"]) and
       call.getArgument(0).getExpr() = this.asExpr()
-    ) or
+    )
+    or
     // any write into a class derived from `NSManagedObject` is a sink. For
     // example in `coreDataObj.data = sensitive` the post-update node corresponding
     // with `coreDataObj.data` is a sink.
@@ -91,8 +92,10 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
     // flow out from fields of an `NSManagedObject` or `RealmSwiftObject` at the sink,
     // for example in `realmObj.data = sensitive`.
     isSink(node) and
-    exists(ClassOrStructDecl cd |
-      c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cd.getAMember() and
+    exists(ClassOrStructDecl cd, IterableDeclContext cx |
+      (cx = cd or cx.(ExtensionDecl).getExtendedTypeDecl() = cd) and
+      c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember() and
+      // TODO: add a `getAMember` version that accounts for extensions?
       cd.getABaseTypeDecl*().getName() = ["NSManagedObject", "RealmSwiftObject"]
     )
     or

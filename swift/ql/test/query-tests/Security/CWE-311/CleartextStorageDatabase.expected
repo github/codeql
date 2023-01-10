@@ -6,6 +6,8 @@ edges
 | testCoreData2.swift:37:16:37:16 | bankAccountNo :  | testCoreData2.swift:37:2:37:2 | [post] obj [myValue] :  |
 | testCoreData2.swift:39:2:39:2 | [post] obj [myBankAccountNumber] :  | testCoreData2.swift:39:2:39:2 | [post] obj |
 | testCoreData2.swift:39:28:39:28 | bankAccountNo :  | testCoreData2.swift:39:2:39:2 | [post] obj [myBankAccountNumber] :  |
+| testCoreData2.swift:41:2:41:2 | [post] obj [myBankAccountNumber2] :  | testCoreData2.swift:41:2:41:2 | [post] obj |
+| testCoreData2.swift:41:29:41:29 | bankAccountNo :  | testCoreData2.swift:41:2:41:2 | [post] obj [myBankAccountNumber2] :  |
 | testCoreData2.swift:43:2:43:2 | [post] obj [notStoredBankAccountNumber] :  | testCoreData2.swift:43:2:43:2 | [post] obj |
 | testCoreData2.swift:43:35:43:35 | bankAccountNo :  | testCoreData2.swift:23:13:23:13 | value :  |
 | testCoreData2.swift:43:35:43:35 | bankAccountNo :  | testCoreData2.swift:43:2:43:2 | [post] obj [notStoredBankAccountNumber] :  |
@@ -13,6 +15,8 @@ edges
 | testCoreData2.swift:46:22:46:22 | bankAccountNo :  | testCoreData2.swift:46:2:46:10 | [post] ...? [myValue] :  |
 | testCoreData2.swift:48:2:48:10 | [post] ...? [myBankAccountNumber] :  | testCoreData2.swift:48:2:48:10 | [post] ...? |
 | testCoreData2.swift:48:34:48:34 | bankAccountNo :  | testCoreData2.swift:48:2:48:10 | [post] ...? [myBankAccountNumber] :  |
+| testCoreData2.swift:50:2:50:10 | [post] ...? [myBankAccountNumber2] :  | testCoreData2.swift:50:2:50:10 | [post] ...? |
+| testCoreData2.swift:50:35:50:35 | bankAccountNo :  | testCoreData2.swift:50:2:50:10 | [post] ...? [myBankAccountNumber2] :  |
 | testCoreData2.swift:52:2:52:10 | [post] ...? [notStoredBankAccountNumber] :  | testCoreData2.swift:52:2:52:10 | [post] ...? |
 | testCoreData2.swift:52:41:52:41 | bankAccountNo :  | testCoreData2.swift:23:13:23:13 | value :  |
 | testCoreData2.swift:52:41:52:41 | bankAccountNo :  | testCoreData2.swift:52:2:52:10 | [post] ...? [notStoredBankAccountNumber] :  |
@@ -54,6 +58,9 @@ nodes
 | testCoreData2.swift:39:2:39:2 | [post] obj | semmle.label | [post] obj |
 | testCoreData2.swift:39:2:39:2 | [post] obj [myBankAccountNumber] :  | semmle.label | [post] obj [myBankAccountNumber] :  |
 | testCoreData2.swift:39:28:39:28 | bankAccountNo :  | semmle.label | bankAccountNo :  |
+| testCoreData2.swift:41:2:41:2 | [post] obj | semmle.label | [post] obj |
+| testCoreData2.swift:41:2:41:2 | [post] obj [myBankAccountNumber2] :  | semmle.label | [post] obj [myBankAccountNumber2] :  |
+| testCoreData2.swift:41:29:41:29 | bankAccountNo :  | semmle.label | bankAccountNo :  |
 | testCoreData2.swift:43:2:43:2 | [post] obj | semmle.label | [post] obj |
 | testCoreData2.swift:43:2:43:2 | [post] obj [notStoredBankAccountNumber] :  | semmle.label | [post] obj [notStoredBankAccountNumber] :  |
 | testCoreData2.swift:43:35:43:35 | bankAccountNo :  | semmle.label | bankAccountNo :  |
@@ -63,6 +70,9 @@ nodes
 | testCoreData2.swift:48:2:48:10 | [post] ...? | semmle.label | [post] ...? |
 | testCoreData2.swift:48:2:48:10 | [post] ...? [myBankAccountNumber] :  | semmle.label | [post] ...? [myBankAccountNumber] :  |
 | testCoreData2.swift:48:34:48:34 | bankAccountNo :  | semmle.label | bankAccountNo :  |
+| testCoreData2.swift:50:2:50:10 | [post] ...? | semmle.label | [post] ...? |
+| testCoreData2.swift:50:2:50:10 | [post] ...? [myBankAccountNumber2] :  | semmle.label | [post] ...? [myBankAccountNumber2] :  |
+| testCoreData2.swift:50:35:50:35 | bankAccountNo :  | semmle.label | bankAccountNo :  |
 | testCoreData2.swift:52:2:52:10 | [post] ...? | semmle.label | [post] ...? |
 | testCoreData2.swift:52:2:52:10 | [post] ...? [notStoredBankAccountNumber] :  | semmle.label | [post] ...? [notStoredBankAccountNumber] :  |
 | testCoreData2.swift:52:41:52:41 | bankAccountNo :  | semmle.label | bankAccountNo :  |
@@ -114,9 +124,11 @@ subpaths
 #select
 | testCoreData2.swift:37:2:37:2 | obj | testCoreData2.swift:37:16:37:16 | bankAccountNo :  | testCoreData2.swift:37:2:37:2 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:37:16:37:16 | bankAccountNo :  | bankAccountNo |
 | testCoreData2.swift:39:2:39:2 | obj | testCoreData2.swift:39:28:39:28 | bankAccountNo :  | testCoreData2.swift:39:2:39:2 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:39:28:39:28 | bankAccountNo :  | bankAccountNo |
+| testCoreData2.swift:41:2:41:2 | obj | testCoreData2.swift:41:29:41:29 | bankAccountNo :  | testCoreData2.swift:41:2:41:2 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:41:29:41:29 | bankAccountNo :  | bankAccountNo |
 | testCoreData2.swift:43:2:43:2 | obj | testCoreData2.swift:43:35:43:35 | bankAccountNo :  | testCoreData2.swift:43:2:43:2 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:43:35:43:35 | bankAccountNo :  | bankAccountNo |
 | testCoreData2.swift:46:2:46:10 | ...? | testCoreData2.swift:46:22:46:22 | bankAccountNo :  | testCoreData2.swift:46:2:46:10 | [post] ...? | This operation stores '[post] ...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:46:22:46:22 | bankAccountNo :  | bankAccountNo |
 | testCoreData2.swift:48:2:48:10 | ...? | testCoreData2.swift:48:34:48:34 | bankAccountNo :  | testCoreData2.swift:48:2:48:10 | [post] ...? | This operation stores '[post] ...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:48:34:48:34 | bankAccountNo :  | bankAccountNo |
+| testCoreData2.swift:50:2:50:10 | ...? | testCoreData2.swift:50:35:50:35 | bankAccountNo :  | testCoreData2.swift:50:2:50:10 | [post] ...? | This operation stores '[post] ...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:50:35:50:35 | bankAccountNo :  | bankAccountNo |
 | testCoreData2.swift:52:2:52:10 | ...? | testCoreData2.swift:52:41:52:41 | bankAccountNo :  | testCoreData2.swift:52:2:52:10 | [post] ...? | This operation stores '[post] ...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:52:41:52:41 | bankAccountNo :  | bankAccountNo |
 | testCoreData2.swift:57:3:57:3 | obj | testCoreData2.swift:57:29:57:29 | bankAccountNo :  | testCoreData2.swift:57:3:57:3 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:57:29:57:29 | bankAccountNo :  | bankAccountNo |
 | testCoreData.swift:19:12:19:12 | value | testCoreData.swift:61:25:61:25 | password :  | testCoreData.swift:19:12:19:12 | value | This operation stores 'value' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:61:25:61:25 | password :  | password |
