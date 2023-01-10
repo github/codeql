@@ -9,8 +9,8 @@ import semmle.code.csharp.frameworks.microsoft.AspNetCore
  * Holds if the expression is a variable with a sensitive name.
  */
 predicate isCookieWithSensitiveName(Expr cookieExpr) {
-  exists(AuthCookieNameConfiguration dataflow, DataFlow::Node source, DataFlow::Node sink |
-    dataflow.hasFlow(source, sink) and
+  exists(AuthCookieNameConfiguration dataflow, DataFlow::Node sink |
+    dataflow.hasFlowTo(sink) and
     sink.asExpr() = cookieExpr
   )
 }
@@ -61,14 +61,14 @@ class CookieOptionsTrackingConfiguration extends DataFlow::Configuration {
  * Looks for property value of `CookiePolicyOptions` passed to `app.UseCookiePolicy` in `Startup.Configure`.
  */
 Expr getAValueForCookiePolicyProp(string prop) {
-  exists(Method m, MethodCall mc, ObjectCreation oc, Assignment a, Expr val |
+  exists(Method m, MethodCall mc, ObjectCreation oc, Expr val |
     m.getName() = "Configure" and
     m.getDeclaringType().getName() = "Startup" and
     m.getBody().getAChild+() = mc and
     mc.getTarget() =
       any(MicrosoftAspNetCoreBuilderCookiePolicyAppBuilderExtensions e).getUseCookiePolicyMethod() and
     oc.getType() instanceof MicrosoftAspNetCoreBuilderCookiePolicyOptions and
-    getAValueForProp(oc, a, prop) = val and
+    getAValueForProp(oc, _, prop) = val and
     result = val
   )
 }

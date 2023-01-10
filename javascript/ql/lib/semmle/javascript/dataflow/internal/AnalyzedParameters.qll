@@ -6,7 +6,7 @@ private import VariableTypeInference
  */
 pragma[nomagic]
 predicate isAnalyzedParameter(Parameter p) {
-  exists(FunctionWithAnalyzedParameters f, int parmIdx | p = f.getParameter(parmIdx) |
+  exists(FunctionWithAnalyzedParameters f | p = f.getAParameter() |
     // we cannot track flow into rest parameters
     not p.isRestParameter()
   )

@@ -227,9 +227,9 @@ private module Shared {
 
   private predicate isFlowFromControllerInstanceVariable(DataFlow::Node node1, DataFlow::Node node2) {
     // instance variables in the controller
-    exists(ActionControllerActionMethod action, string name, ErbFile template |
+    exists(string name, ErbFile template |
       // match read to write on variable name
-      actionAssigns(action, name, node1.asExpr().getExpr(), template) and
+      actionAssigns(_, name, node1.asExpr().getExpr(), template) and
       // propagate taint from assignment RHS expr to variable read access in view
       isVariableReadAccess(node2.asExpr().getExpr(), name, template)
     )

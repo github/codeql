@@ -9,9 +9,7 @@ class CaptureTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "captured" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(DataFlow::Node source, DataFlow::Node sink |
-      exists(TestConfiguration cfg | cfg.hasFlow(source, sink))
-    |
+    exists(DataFlow::Node sink | exists(TestConfiguration cfg | cfg.hasFlowTo(sink)) |
       location = sink.getLocation() and
       tag = "captured" and
       value = "" and

@@ -368,10 +368,8 @@ predicate functionEnsuresInputIsConstant(
       ri.getReturnStmt().getAnExpr() = ret.asExpr() and
       ret.asExpr() = Builtin::nil().getAReference()
     |
-      exists(DataFlow::Node exprNode |
-        DataFlow::localFlow(inp.getExitNode(fd), exprNode) and
-        mustPassConstantCaseTestToReach(ri, inp.getExitNode(fd))
-      )
+      DataFlow::localFlow(inp.getExitNode(fd), _) and
+      mustPassConstantCaseTestToReach(ri, inp.getExitNode(fd))
     )
   )
 }

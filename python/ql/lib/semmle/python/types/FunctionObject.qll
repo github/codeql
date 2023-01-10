@@ -10,7 +10,7 @@ private import semmle.python.types.Builtins
 abstract class FunctionObject extends Object {
   CallableValue theCallable() { result.(ObjectInternal).getSource() = this }
 
-  predicate isOverridingMethod() { exists(Object f | this.overrides(f)) }
+  predicate isOverridingMethod() { this.overrides(_) }
 
   predicate isOverriddenMethod() { exists(Object f | f.overrides(this)) }
 

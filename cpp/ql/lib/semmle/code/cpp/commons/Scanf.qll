@@ -244,9 +244,7 @@ class ScanfFormatLiteral extends Expr {
   /**
    * Gets the maximum width option of the nth input (empty string if none is given).
    */
-  string getMaxWidthOpt(int n) {
-    exists(string spec, string len, string conv | this.parseConvSpec(n, spec, result, len, conv))
-  }
+  string getMaxWidthOpt(int n) { this.parseConvSpec(n, _, result, _, _) }
 
   /**
    * Gets the maximum width of the nth input.
@@ -256,18 +254,12 @@ class ScanfFormatLiteral extends Expr {
   /**
    * Gets the length flag of the nth conversion specifier.
    */
-  string getLength(int n) {
-    exists(string spec, string width, string conv |
-      this.parseConvSpec(n, spec, width, result, conv)
-    )
-  }
+  string getLength(int n) { this.parseConvSpec(n, _, _, result, _) }
 
   /**
    * Gets the conversion character of the nth conversion specifier.
    */
-  string getConversionChar(int n) {
-    exists(string spec, string width, string len | this.parseConvSpec(n, spec, width, len, result))
-  }
+  string getConversionChar(int n) { this.parseConvSpec(n, _, _, _, result) }
 
   /**
    * Gets the maximum length of the string that can be produced by the nth

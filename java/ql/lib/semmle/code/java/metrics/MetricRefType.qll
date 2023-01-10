@@ -86,10 +86,10 @@ class MetricRefType extends RefType, MetricElement {
   }
 
   /** Any method declared in this type that accesses a field declared in this type. */
-  Method getAccessingMethod() { exists(Field f | this.accessesLocalField(result, f)) }
+  Method getAccessingMethod() { this.accessesLocalField(result, _) }
 
   /** Any field declared in this type that is accessed by a method declared in this type. */
-  Field getAccessedField() { exists(Method m | this.accessesLocalField(m, result)) }
+  Field getAccessedField() { this.accessesLocalField(_, result) }
 
   /**
    * Gets the Henderson-Sellers lack of cohesion metric.

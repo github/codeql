@@ -47,7 +47,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   }
 
   /** Gets a parameter of this function. */
-  override Parameter getAParameter() { exists(int idx | result = this.getParameter(idx)) }
+  override Parameter getAParameter() { result = this.getParameter(_) }
 
   /** Gets the parameter named `name` of this function, if any. */
   SimpleParameter getParameterByName(string name) {

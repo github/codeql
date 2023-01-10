@@ -620,9 +620,7 @@ module Http {
             create.getArgument(0).asExpr() instanceof NullLiteral
           )
         ) and
-        exists(RouteHandlerCandidate candidate |
-          getAPossiblyDecoratedHandler(candidate).flowsTo(this.getAPropertyWrite().getRhs())
-        )
+        getAPossiblyDecoratedHandler(_).flowsTo(this.getAPropertyWrite().getRhs())
       }
 
       override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {

@@ -994,10 +994,8 @@ abstract class RegexString extends Expr {
       this.specialCharacter(end, y, ["$", "\\Z"])
     )
     or
-    exists(int x |
-      this.lastPart(x, end) and
-      this.item(start, end)
-    )
+    this.lastPart(_, end) and
+    this.item(start, end)
     or
     exists(int y | this.lastPart(start, y) | this.qualifiedPart(start, end, y, _, _))
     or
