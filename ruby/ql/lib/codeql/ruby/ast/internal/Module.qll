@@ -165,7 +165,7 @@ private module Cached {
    */
   cached
   Method lookupMethodInSubClasses(Module m, string name) {
-    exists(Module sub | sub.getSuperClass() = m |
+    exists(Module sub | sub.getAnImmediateAncestor() = m |
       TMethod(result) = lookupMethodOrConst0(sub, name) or
       result = lookupMethodInSubClasses(sub, name)
     )

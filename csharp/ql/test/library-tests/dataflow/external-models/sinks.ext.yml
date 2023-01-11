@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+    # "namespace", "type", "overrides", "name", "signature", "ext", "spec", "kind", "provenance"
+      - ["My.Qltest", "B", false, "Sink1", "(System.Object)", "", "Argument[0]", "code", "manual"]
+      - ["My.Qltest", "B", false, "SinkMethod", "()", "", "ReturnValue", "xss", "manual"]
+      - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "ReturnValue", "html", "manual"]
+      - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "Argument", "remote", "manual"]
+      - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "", "sql", "manual"]

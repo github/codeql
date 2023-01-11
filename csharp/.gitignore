@@ -12,3 +12,6 @@ csharp.log
 .vs
 *.user
 .vscode/launch.json
+
+extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json
+extractor-pack

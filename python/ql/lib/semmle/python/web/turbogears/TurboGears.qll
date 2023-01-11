@@ -28,10 +28,10 @@ deprecated class TurboGearsControllerMethod extends Function {
   predicate isTemplated() { exists(this.templateName()) }
 
   Dict getValidationDict() {
-    exists(Call call, Value dict |
+    exists(Call call |
       call = this.getADecorator() and
       call.getFunc().(Name).getId() = "validate" and
-      call.getArg(0).pointsTo(dict, result)
+      call.getArg(0).pointsTo(_, result)
     )
   }
 }

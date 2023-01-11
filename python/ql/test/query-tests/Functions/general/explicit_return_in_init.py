@@ -46,7 +46,7 @@ class InitCallsBadInit(ExplicitReturnInInit):
 
 # OK as procedure implicitly returns None
 #
-# this was seen in the wild: https://lgtm.com/projects/b/jjburton/cgmtools/snapshot/0d8a429b7ea17854a5e5341df98b1cbd54d7fe6c/files/mayaTools/cgm/lib/classes/AttrFactory.py?sort=name&dir=ASC&mode=heatmap#L90
+# this was seen in the wild:
 # using a pattern of `return procedure_that_logs_error()`
 
 def procedure():

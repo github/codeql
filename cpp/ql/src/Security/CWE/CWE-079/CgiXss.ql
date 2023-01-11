@@ -13,7 +13,7 @@
 
 import cpp
 import semmle.code.cpp.commons.Environment
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 import TaintedWithPath
 
 /** A call that prints its arguments to `stdout`. */

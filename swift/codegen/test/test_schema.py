@@ -340,7 +340,7 @@ def test_ipa_from_class():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}),
+        'A': schema.Class('A', derived={'B'}, ipa=True),
         'B': schema.Class('B', bases=['A'], ipa=schema.IpaInfo(from_class="A")),
     }
 
@@ -381,7 +381,7 @@ def test_ipa_class_on():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}),
+        'A': schema.Class('A', derived={'B'}, ipa=True),
         'B': schema.Class('B', bases=['A'], ipa=schema.IpaInfo(on_arguments={'a': 'A', 'i': 'int'})),
     }
 
@@ -412,6 +412,39 @@ def test_ipa_class_on_dangling():
             @defs.synth.on_arguments(s=defs.string, a="A", i=defs.int)
             class B:
                 pass
+
+
+def test_ipa_class_hierarchy():
+    @schema.load
+    class data:
+        class Root:
+            pass
+
+        class Base(Root):
+            pass
+
+        class Intermediate(Base):
+            pass
+
+        @defs.synth.on_arguments(a=Base, i=defs.int)
+        class A(Intermediate):
+            pass
+
+        @defs.synth.from_class(Base)
+        class B(Base):
+            pass
+
+        class C(Root):
+            pass
+
+    assert data.classes == {
+        'Root': schema.Class('Root', derived={'Base', 'C'}),
+        'Base': schema.Class('Base', bases=['Root'], derived={'Intermediate', 'B'}, ipa=True),
+        'Intermediate': schema.Class('Intermediate', bases=['Base'], derived={'A'}, ipa=True),
+        'A': schema.Class('A', bases=['Intermediate'], ipa=schema.IpaInfo(on_arguments={'a': 'Base', 'i': 'int'})),
+        'B': schema.Class('B', bases=['Base'], ipa=schema.IpaInfo(from_class='Base')),
+        'C': schema.Class('C', bases=['Root']),
+    }
 
 
 def test_class_docstring():
@@ -559,6 +592,22 @@ def test_property_doc_override():
     }
 
 
+def test_property_doc_override_no_newlines():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class A:
+                x: int | defs.doc("no multiple\nlines")
+
+
+def test_property_doc_override_no_trailing_dot():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class A:
+                x: int | defs.doc("no dots please.")
+
+
 def test_class_default_doc_name():
     @schema.load
     class data:
@@ -617,6 +666,17 @@ def test_null_class_cannot_be_defined_multiple_times():
 
             @defs.use_for_null
             class Null2(Root):
+                pass
+
+
+def test_uppercase_acronyms_are_rejected():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class Root:
+                pass
+
+            class ROTFLNode(Root):
                 pass
 
 

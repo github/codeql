@@ -37,15 +37,32 @@ Field getRecField(Class c) {
 }
 
 /**
+ * Holds if `source` is a use of a sensitive expression `sensitive`, or
+ * if `source` is the output argument (with a sensitive name) of a function.
+ */
+predicate isSourceImpl(DataFlow::Node source, SensitiveExpr sensitive) {
+  [source.asExpr(), source.asDefiningArgument()] = sensitive
+}
+
+/** Holds if `sink` is an argument to an Sqlite function call `c`. */
+predicate isSinkImpl(DataFlow::Node sink, SqliteFunctionCall c, Type t) {
+  exists(Expr e |
+    e = c.getASource() and
+    e = [sink.asExpr(), sink.asIndirectExpr()] and
+    t = e.getUnspecifiedType()
+  )
+}
+
+/**
  * A taint flow configuration for flow from a sensitive expression to a `SqliteFunctionCall` sink.
  */
 class FromSensitiveConfiguration extends TaintTracking::Configuration {
   FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveExpr }
+  override predicate isSource(DataFlow::Node source) { isSourceImpl(source, _) }
 
   override predicate isSink(DataFlow::Node sink) {
-    any(SqliteFunctionCall c).getASource() = sink.asExpr() and
+    isSinkImpl(sink, _, _) and
     not sqlite_encryption_used()
   }
 
@@ -55,15 +72,11 @@ class FromSensitiveConfiguration extends TaintTracking::Configuration {
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet content) {
     // flow out from fields at the sink (only).
-    this.isSink(node) and
     // constrain `content` to a field inside the node.
-    exists(Class c |
-      node.asExpr().getUnspecifiedType().stripType() = c and
-      content.(DataFlow::FieldContent).getField() = getRecField(c)
+    exists(Type t |
+      isSinkImpl(node, _, t) and
+      content.(DataFlow::FieldContent).getField() = getRecField(t.stripType())
     )
-    or
-    // any default implicit reads
-    super.allowImplicitRead(node, content)
   }
 }
 
@@ -72,8 +85,8 @@ from
   DataFlow::PathNode sink, SqliteFunctionCall sqliteCall
 where
   config.hasFlowPath(source, sink) and
-  source.getNode().asExpr() = sensitive and
-  sqliteCall.getASource() = sink.getNode().asExpr()
+  isSourceImpl(source.getNode(), sensitive) and
+  isSinkImpl(sink.getNode(), sqliteCall, _)
 select sqliteCall, source, sink,
   "This SQLite call may store $@ in a non-encrypted SQLite database.", sensitive,
   "sensitive information"

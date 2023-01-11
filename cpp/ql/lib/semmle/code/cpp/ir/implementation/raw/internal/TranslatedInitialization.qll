@@ -298,11 +298,11 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
     opcode instanceof Opcode::Store and
     resultType = getTypeForPRValue(expr.getType())
     or
-    exists(int startIndex, int elementCount |
+    exists(int elementCount |
       // If the initializer string isn't large enough to fill the target, then
       // we have to generate another instruction sequence to store a constant
       // zero into the remainder of the array.
-      zeroInitRange(startIndex, elementCount) and
+      zeroInitRange(_, elementCount) and
       (
         // Create a constant zero whose size is the size of the remaining
         // space in the target array.

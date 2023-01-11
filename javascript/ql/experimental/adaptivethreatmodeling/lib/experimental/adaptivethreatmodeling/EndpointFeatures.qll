@@ -1,4 +1,4 @@
-/*
+/**
  * For internal use only.
  *
  * Extracts data about the database for use in adaptive threat modeling (ATM).
@@ -55,8 +55,8 @@ private module FunctionNames {
   private string getApproximateNameForFunction(Function function) {
     count(DataFlow::CallNode call, int index | functionUsedAsArgumentToCall(function, call, index)) =
       1 and
-    exists(DataFlow::CallNode call, int index, string basePart |
-      functionUsedAsArgumentToCall(function, call, index) and
+    exists(DataFlow::CallNode call, string basePart |
+      functionUsedAsArgumentToCall(function, call, _) and
       (
         if count(getReceiverName(call)) = 1
         then basePart = getReceiverName(call) + "."

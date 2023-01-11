@@ -9,21 +9,11 @@ uniqueEnclosingCallable
 | misc.c:210:5:210:20 | VariableAddress indirection | Node should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
-| aggregateinitializer.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| aggregateinitializer.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | allocators.cpp:14:5:14:8 | Address | Node should have one location but has 4. |
-| allocators.cpp:14:5:14:8 | AliasedDefinition | Node should have one location but has 4. |
-| allocators.cpp:14:5:14:8 | InitializeNonLocal | Node should have one location but has 4. |
 | allocators.cpp:14:5:14:8 | Phi | Node should have one location but has 4. |
 | allocators.cpp:14:5:14:8 | VariableAddress | Node should have one location but has 4. |
 | allocators.cpp:14:5:14:8 | VariableAddress indirection | Node should have one location but has 4. |
 | allocators.cpp:14:5:14:8 | VariableAddress indirection | Node should have one location but has 4. |
-| array_delete.cpp:5:6:5:6 | AliasedDefinition | Node should have one location but has 14. |
-| array_delete.cpp:5:6:5:6 | InitializeNonLocal | Node should have one location but has 14. |
-| assignexpr.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
-| assignexpr.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
-| break_labels.c:2:5:2:5 | AliasedDefinition | Node should have one location but has 20. |
-| break_labels.c:2:5:2:5 | InitializeNonLocal | Node should have one location but has 20. |
 | break_labels.c:2:11:2:11 | Address | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | VariableAddress | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | VariableAddress indirection | Node should have one location but has 4. |
@@ -32,35 +22,11 @@ uniqueNodeLocation
 | break_labels.c:2:11:2:11 | i | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | x | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | x | Node should have one location but has 4. |
-| conditional_destructors.cpp:29:6:29:7 | AliasedDefinition | Node should have one location but has 2. |
-| conditional_destructors.cpp:29:6:29:7 | InitializeNonLocal | Node should have one location but has 2. |
-| conditional_destructors.cpp:38:6:38:7 | AliasedDefinition | Node should have one location but has 2. |
-| conditional_destructors.cpp:38:6:38:7 | InitializeNonLocal | Node should have one location but has 2. |
 | constmemberaccess.cpp:3:7:3:7 | x | Node should have one location but has 2. |
-| constmemberaccess.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
-| constmemberaccess.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | constructorinitializer.cpp:3:9:3:9 | i | Node should have one location but has 2. |
 | constructorinitializer.cpp:3:9:3:9 | x | Node should have one location but has 2. |
 | constructorinitializer.cpp:3:16:3:16 | j | Node should have one location but has 2. |
 | constructorinitializer.cpp:3:16:3:16 | y | Node should have one location but has 2. |
-| constructorinitializer.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
-| constructorinitializer.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
-| defconstructornewexpr.cpp:3:6:3:6 | AliasedDefinition | Node should have one location but has 14. |
-| defconstructornewexpr.cpp:3:6:3:6 | InitializeNonLocal | Node should have one location but has 14. |
-| defdestructordeleteexpr.cpp:3:6:3:6 | AliasedDefinition | Node should have one location but has 14. |
-| defdestructordeleteexpr.cpp:3:6:3:6 | InitializeNonLocal | Node should have one location but has 14. |
-| deleteexpr.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
-| deleteexpr.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
-| dostmt.c:8:6:8:18 | AliasedDefinition | Node should have one location but has 4. |
-| dostmt.c:8:6:8:18 | InitializeNonLocal | Node should have one location but has 4. |
-| dostmt.c:16:6:16:18 | AliasedDefinition | Node should have one location but has 4. |
-| dostmt.c:16:6:16:18 | InitializeNonLocal | Node should have one location but has 4. |
-| dostmt.c:25:6:25:18 | AliasedDefinition | Node should have one location but has 2. |
-| dostmt.c:25:6:25:18 | InitializeNonLocal | Node should have one location but has 2. |
-| dostmt.c:32:6:32:11 | AliasedDefinition | Node should have one location but has 4. |
-| dostmt.c:32:6:32:11 | InitializeNonLocal | Node should have one location but has 4. |
-| duff.c:2:6:2:6 | AliasedDefinition | Node should have one location but has 20. |
-| duff.c:2:6:2:6 | InitializeNonLocal | Node should have one location but has 20. |
 | duff.c:2:12:2:12 | Address | Node should have one location but has 4. |
 | duff.c:2:12:2:12 | VariableAddress | Node should have one location but has 4. |
 | duff.c:2:12:2:12 | VariableAddress indirection | Node should have one location but has 4. |
@@ -69,17 +35,7 @@ uniqueNodeLocation
 | duff.c:2:12:2:12 | i | Node should have one location but has 4. |
 | duff.c:2:12:2:12 | x | Node should have one location but has 4. |
 | duff.c:2:12:2:12 | x | Node should have one location but has 4. |
-| dummyblock.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| dummyblock.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
-| emptyblock.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| emptyblock.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
-| enum.c:5:5:5:5 | AliasedDefinition | Node should have one location but has 20. |
-| enum.c:5:5:5:5 | InitializeNonLocal | Node should have one location but has 20. |
-| exprstmt.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| exprstmt.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | fieldaccess.cpp:3:7:3:7 | x | Node should have one location but has 2. |
-| fieldaccess.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
-| fieldaccess.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
@@ -117,21 +73,6 @@ uniqueNodeLocation
 | file://:0:0:0:0 | VariableAddress indirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | VariableAddress indirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | VariableAddress indirection | Node should have one location but has 0. |
-| file://:0:0:0:0 | VariableAddress indirection | Node should have one location but has 0. |
-| forstmt.cpp:1:6:1:7 | AliasedDefinition | Node should have one location but has 2. |
-| forstmt.cpp:1:6:1:7 | InitializeNonLocal | Node should have one location but has 2. |
-| forstmt.cpp:8:6:8:7 | AliasedDefinition | Node should have one location but has 2. |
-| forstmt.cpp:8:6:8:7 | InitializeNonLocal | Node should have one location but has 2. |
-| ifelsestmt.c:1:6:1:19 | AliasedDefinition | Node should have one location but has 3. |
-| ifelsestmt.c:1:6:1:19 | InitializeNonLocal | Node should have one location but has 3. |
-| ifelsestmt.c:11:6:11:19 | AliasedDefinition | Node should have one location but has 3. |
-| ifelsestmt.c:11:6:11:19 | InitializeNonLocal | Node should have one location but has 3. |
-| ifelsestmt.c:19:6:19:18 | AliasedDefinition | Node should have one location but has 4. |
-| ifelsestmt.c:19:6:19:18 | InitializeNonLocal | Node should have one location but has 4. |
-| ifelsestmt.c:29:6:29:18 | AliasedDefinition | Node should have one location but has 4. |
-| ifelsestmt.c:29:6:29:18 | InitializeNonLocal | Node should have one location but has 4. |
-| ifelsestmt.c:37:6:37:11 | AliasedDefinition | Node should have one location but has 4. |
-| ifelsestmt.c:37:6:37:11 | InitializeNonLocal | Node should have one location but has 4. |
 | ifelsestmt.c:37:17:37:17 | Address | Node should have one location but has 2. |
 | ifelsestmt.c:37:17:37:17 | VariableAddress | Node should have one location but has 2. |
 | ifelsestmt.c:37:17:37:17 | VariableAddress indirection | Node should have one location but has 2. |
@@ -144,16 +85,6 @@ uniqueNodeLocation
 | ifelsestmt.c:37:24:37:24 | VariableAddress indirection | Node should have one location but has 2. |
 | ifelsestmt.c:37:24:37:24 | y | Node should have one location but has 2. |
 | ifelsestmt.c:37:24:37:24 | y | Node should have one location but has 2. |
-| ifstmt.c:1:6:1:19 | AliasedDefinition | Node should have one location but has 3. |
-| ifstmt.c:1:6:1:19 | InitializeNonLocal | Node should have one location but has 3. |
-| ifstmt.c:8:6:8:19 | AliasedDefinition | Node should have one location but has 3. |
-| ifstmt.c:8:6:8:19 | InitializeNonLocal | Node should have one location but has 3. |
-| ifstmt.c:14:6:14:18 | AliasedDefinition | Node should have one location but has 4. |
-| ifstmt.c:14:6:14:18 | InitializeNonLocal | Node should have one location but has 4. |
-| ifstmt.c:21:6:21:18 | AliasedDefinition | Node should have one location but has 4. |
-| ifstmt.c:21:6:21:18 | InitializeNonLocal | Node should have one location but has 4. |
-| ifstmt.c:27:6:27:11 | AliasedDefinition | Node should have one location but has 4. |
-| ifstmt.c:27:6:27:11 | InitializeNonLocal | Node should have one location but has 4. |
 | ifstmt.c:27:17:27:17 | Address | Node should have one location but has 2. |
 | ifstmt.c:27:17:27:17 | VariableAddress | Node should have one location but has 2. |
 | ifstmt.c:27:17:27:17 | VariableAddress indirection | Node should have one location but has 2. |
@@ -166,36 +97,18 @@ uniqueNodeLocation
 | ifstmt.c:27:24:27:24 | VariableAddress indirection | Node should have one location but has 2. |
 | ifstmt.c:27:24:27:24 | y | Node should have one location but has 2. |
 | ifstmt.c:27:24:27:24 | y | Node should have one location but has 2. |
-| initializer.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| initializer.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
-| landexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| landexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
-| lorexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| lorexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
-| ltrbinopexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| ltrbinopexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
-| membercallexpr.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
-| membercallexpr.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | membercallexpr_args.cpp:3:6:3:6 | d | Node should have one location but has 2. |
 | membercallexpr_args.cpp:4:14:4:14 | x | Node should have one location but has 2. |
 | membercallexpr_args.cpp:4:21:4:21 | y | Node should have one location but has 2. |
-| membercallexpr_args.cpp:7:6:7:6 | AliasedDefinition | Node should have one location but has 14. |
-| membercallexpr_args.cpp:7:6:7:6 | InitializeNonLocal | Node should have one location but has 14. |
 | newexpr.cpp:3:9:3:9 | i | Node should have one location but has 2. |
 | newexpr.cpp:3:9:3:9 | x | Node should have one location but has 2. |
 | newexpr.cpp:3:16:3:16 | j | Node should have one location but has 2. |
 | newexpr.cpp:3:16:3:16 | y | Node should have one location but has 2. |
-| newexpr.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
-| newexpr.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | no_dynamic_init.cpp:9:5:9:8 | Address | Node should have one location but has 4. |
-| no_dynamic_init.cpp:9:5:9:8 | AliasedDefinition | Node should have one location but has 4. |
-| no_dynamic_init.cpp:9:5:9:8 | InitializeNonLocal | Node should have one location but has 4. |
 | no_dynamic_init.cpp:9:5:9:8 | Phi | Node should have one location but has 4. |
 | no_dynamic_init.cpp:9:5:9:8 | VariableAddress | Node should have one location but has 4. |
 | no_dynamic_init.cpp:9:5:9:8 | VariableAddress indirection | Node should have one location but has 4. |
 | no_dynamic_init.cpp:9:5:9:8 | VariableAddress indirection | Node should have one location but has 4. |
-| nodefaultswitchstmt.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| nodefaultswitchstmt.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | nodefaultswitchstmt.c:1:12:1:12 | Address | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | VariableAddress | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | VariableAddress indirection | Node should have one location but has 4. |
@@ -204,45 +117,19 @@ uniqueNodeLocation
 | nodefaultswitchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
-| nonmembercallexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 2. |
-| nonmembercallexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 2. |
-| nonmembercallexpr.c:3:6:3:6 | AliasedDefinition | Node should have one location but has 20. |
-| nonmembercallexpr.c:3:6:3:6 | InitializeNonLocal | Node should have one location but has 20. |
-| nonmemberfp2callexpr.c:3:6:3:6 | AliasedDefinition | Node should have one location but has 20. |
-| nonmemberfp2callexpr.c:3:6:3:6 | InitializeNonLocal | Node should have one location but has 20. |
-| nonmemberfpcallexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| nonmemberfpcallexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | parameterinitializer.cpp:18:5:18:8 | Address | Node should have one location but has 4. |
-| parameterinitializer.cpp:18:5:18:8 | AliasedDefinition | Node should have one location but has 4. |
-| parameterinitializer.cpp:18:5:18:8 | InitializeNonLocal | Node should have one location but has 4. |
 | parameterinitializer.cpp:18:5:18:8 | Phi | Node should have one location but has 4. |
 | parameterinitializer.cpp:18:5:18:8 | VariableAddress | Node should have one location but has 4. |
 | parameterinitializer.cpp:18:5:18:8 | VariableAddress indirection | Node should have one location but has 4. |
 | parameterinitializer.cpp:18:5:18:8 | VariableAddress indirection | Node should have one location but has 4. |
-| pmcallexpr.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
-| pmcallexpr.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
-| questionexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| questionexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
-| revsubscriptexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 2. |
-| revsubscriptexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 2. |
-| staticmembercallexpr.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
-| staticmembercallexpr.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | staticmembercallexpr_args.cpp:3:6:3:6 | d | Node should have one location but has 2. |
 | staticmembercallexpr_args.cpp:4:21:4:21 | x | Node should have one location but has 2. |
 | staticmembercallexpr_args.cpp:4:28:4:28 | y | Node should have one location but has 2. |
-| staticmembercallexpr_args.cpp:7:6:7:6 | AliasedDefinition | Node should have one location but has 14. |
-| staticmembercallexpr_args.cpp:7:6:7:6 | InitializeNonLocal | Node should have one location but has 14. |
 | stream_it.cpp:16:5:16:8 | Address | Node should have one location but has 4. |
-| stream_it.cpp:16:5:16:8 | AliasedDefinition | Node should have one location but has 4. |
-| stream_it.cpp:16:5:16:8 | InitializeNonLocal | Node should have one location but has 4. |
 | stream_it.cpp:16:5:16:8 | Phi | Node should have one location but has 4. |
 | stream_it.cpp:16:5:16:8 | VariableAddress | Node should have one location but has 4. |
 | stream_it.cpp:16:5:16:8 | VariableAddress indirection | Node should have one location but has 4. |
 | stream_it.cpp:16:5:16:8 | VariableAddress indirection | Node should have one location but has 4. |
-| subscriptexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| subscriptexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
-| switchstmt.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| switchstmt.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | switchstmt.c:1:12:1:12 | Address | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | VariableAddress | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | VariableAddress indirection | Node should have one location but has 4. |
@@ -251,40 +138,22 @@ uniqueNodeLocation
 | switchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
-| tinyforstmt.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| tinyforstmt.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
-| unaryopexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
-| unaryopexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
-| whilestmt.c:1:6:1:19 | AliasedDefinition | Node should have one location but has 3. |
-| whilestmt.c:1:6:1:19 | InitializeNonLocal | Node should have one location but has 3. |
-| whilestmt.c:8:6:8:19 | AliasedDefinition | Node should have one location but has 3. |
-| whilestmt.c:8:6:8:19 | InitializeNonLocal | Node should have one location but has 3. |
-| whilestmt.c:15:6:15:18 | AliasedDefinition | Node should have one location but has 4. |
-| whilestmt.c:15:6:15:18 | InitializeNonLocal | Node should have one location but has 4. |
-| whilestmt.c:23:6:23:18 | AliasedDefinition | Node should have one location but has 4. |
-| whilestmt.c:23:6:23:18 | InitializeNonLocal | Node should have one location but has 4. |
-| whilestmt.c:32:6:32:18 | AliasedDefinition | Node should have one location but has 2. |
-| whilestmt.c:32:6:32:18 | InitializeNonLocal | Node should have one location but has 2. |
-| whilestmt.c:39:6:39:11 | AliasedDefinition | Node should have one location but has 4. |
-| whilestmt.c:39:6:39:11 | InitializeNonLocal | Node should have one location but has 4. |
 missingLocation
-| Nodes without location: 38 |
+| Nodes without location: 37 |
 uniqueNodeToString
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | x | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | x | Node should have one toString but has 2. |
 | break_labels.c:4:9:4:9 | i | Node should have one toString but has 2. |
-| break_labels.c:4:9:4:9 | i indirection | Node should have one toString but has 2. |
 | break_labels.c:4:9:4:9 | x | Node should have one toString but has 2. |
-| break_labels.c:4:9:4:9 | x indirection | Node should have one toString but has 2. |
 | break_labels.c:6:16:6:16 | i | Node should have one toString but has 2. |
-| break_labels.c:6:16:6:16 | i indirection | Node should have one toString but has 2. |
 | break_labels.c:6:16:6:16 | x | Node should have one toString but has 2. |
-| break_labels.c:6:16:6:16 | x indirection | Node should have one toString but has 2. |
 | break_labels.c:7:17:7:17 | i | Node should have one toString but has 2. |
 | break_labels.c:7:17:7:17 | i indirection | Node should have one toString but has 2. |
+| break_labels.c:7:17:7:17 | i indirection | Node should have one toString but has 2. |
 | break_labels.c:7:17:7:17 | x | Node should have one toString but has 2. |
+| break_labels.c:7:17:7:17 | x indirection | Node should have one toString but has 2. |
 | break_labels.c:7:17:7:17 | x indirection | Node should have one toString but has 2. |
 | constructorinitializer.cpp:3:9:3:9 | i | Node should have one toString but has 2. |
 | constructorinitializer.cpp:3:9:3:9 | x | Node should have one toString but has 2. |
@@ -295,13 +164,9 @@ uniqueNodeToString
 | duff.c:2:12:2:12 | x | Node should have one toString but has 2. |
 | duff.c:2:12:2:12 | x | Node should have one toString but has 2. |
 | duff.c:3:14:3:14 | i | Node should have one toString but has 2. |
-| duff.c:3:14:3:14 | i indirection | Node should have one toString but has 2. |
 | duff.c:3:14:3:14 | x | Node should have one toString but has 2. |
-| duff.c:3:14:3:14 | x indirection | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | i | Node should have one toString but has 2. |
-| duff.c:4:13:4:13 | i indirection | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | x | Node should have one toString but has 2. |
-| duff.c:4:13:4:13 | x indirection | Node should have one toString but has 2. |
 | newexpr.cpp:3:9:3:9 | i | Node should have one toString but has 2. |
 | newexpr.cpp:3:9:3:9 | x | Node should have one toString but has 2. |
 | newexpr.cpp:3:16:3:16 | j | Node should have one toString but has 2. |
@@ -311,24 +176,27 @@ uniqueNodeToString
 | nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
-| nodefaultswitchstmt.c:2:14:2:14 | i indirection | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
-| nodefaultswitchstmt.c:2:14:2:14 | x indirection | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | switchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
-| switchstmt.c:2:14:2:14 | i indirection | Node should have one toString but has 2. |
 | switchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
-| switchstmt.c:2:14:2:14 | x indirection | Node should have one toString but has 2. |
 missingToString
 parameterCallable
 localFlowIsLocal
+readStepIsLocal
+storeStepIsLocal
 compatibleTypesReflexive
 unreachableNodeCCtx
 localCallNodes
 postIsNotPre
+| condition_decls.cpp:3:13:3:22 | new indirection | PostUpdateNode should not equal its pre-update node. |
+| defdestructordeleteexpr.cpp:4:9:4:15 | new indirection | PostUpdateNode should not equal its pre-update node. |
+| deleteexpr.cpp:7:9:7:15 | new indirection | PostUpdateNode should not equal its pre-update node. |
+| ir.cpp:943:3:943:11 | new indirection | PostUpdateNode should not equal its pre-update node. |
+| ir.cpp:947:3:947:25 | new indirection | PostUpdateNode should not equal its pre-update node. |
 postHasUniquePre
 uniquePostUpdate
 | cpp11.cpp:82:17:82:17 | this indirection | Node has multiple PostUpdateNodes. |
@@ -350,41 +218,25 @@ uniquePostUpdate
 | static_init_templates.cpp:240:7:240:7 | this indirection | Node has multiple PostUpdateNodes. |
 postIsInSameCallable
 reverseRead
-| cpp11.cpp:82:17:82:17 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| cpp11.cpp:82:17:82:55 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:514:10:514:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:515:10:515:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:515:10:515:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:516:10:516:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:516:10:516:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:658:5:658:5 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:658:5:658:5 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:745:8:745:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:745:8:745:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:748:3:748:6 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:750:3:750:7 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:754:8:754:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:757:3:757:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:759:3:759:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:763:8:763:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:766:3:766:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:768:3:768:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:775:3:775:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:777:3:777:12 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:784:3:784:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:786:3:786:12 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:793:3:793:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:795:3:795:12 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| static_init_templates.cpp:240:7:240:7 | Unary | Origin of readStep is missing a PostUpdateNode. |
 argHasPostUpdate
 postWithInFlow
+| condition_decls.cpp:3:13:3:22 | new indirection | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:77:19:77:21 | call to Val | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:82:11:82:14 | call to Val | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:82:45:82:48 | call to Val | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:82:51:82:51 | call to Val | PostUpdateNode should not be the target of local flow. |
+| defdestructordeleteexpr.cpp:4:9:4:15 | new indirection | PostUpdateNode should not be the target of local flow. |
+| deleteexpr.cpp:7:9:7:15 | new indirection | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:809:7:809:13 | call to Base | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:810:7:810:26 | call to Base | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:823:7:823:13 | call to Base | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:824:7:824:26 | call to Base | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:943:3:943:11 | new indirection | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:947:3:947:25 | new indirection | PostUpdateNode should not be the target of local flow. |
 | try_catch.cpp:7:8:7:8 | call to exception | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
+uniqueParameterNodeAtPosition
+| ir.cpp:724:6:724:13 | TryCatch | 0 indirection | ir.cpp:735:22:735:22 | s indirection | Parameters with overlapping positions. |
+| ir.cpp:724:6:724:13 | TryCatch | 0 indirection | ir.cpp:738:24:738:24 | e indirection | Parameters with overlapping positions. |
+uniqueParameterNodePosition
+uniqueContentApprox

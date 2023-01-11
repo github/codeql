@@ -33,30 +33,42 @@ public interface SqlInjectionMapper {
 	@Select({"select * from test", "where id = ${name}"})
 	public Test bad9(HashMap<String, Object> map);
 
+	@Select({"select * from test where id = #{id} and name = '${ name }'"})
+	String bad10(Integer id, String name);
+
 	List<Test> good1(Integer id);
 
 	//using providers
 	@SelectProvider(
-		type = MyBatisProvider.class,
-		method = "badSelect"
+			type = MyBatisProvider.class,
+			method = "badSelect"
 	)
 	String badSelect(String input);
 
 	@DeleteProvider(
-		type = MyBatisProvider.class,
-		method = "badDelete"
+			type = MyBatisProvider.class,
+			method = "badDelete"
 	)
 	void badDelete(String input);
 
 	@UpdateProvider(
-		type = MyBatisProvider.class,
-		method = "badUpdate"
+			type = MyBatisProvider.class,
+			method = "badUpdate"
 	)
 	void badUpdate(String input);
 
 	@InsertProvider(
-		type = MyBatisProvider.class,
-		method = "badInsert"
+			type = MyBatisProvider.class,
+			method = "badInsert"
 	)
 	void badInsert(String input);
+
+	@Select("select * from user_info where name = #{name} and age = ${age}")
+	String good2(@Param("name") String name, Integer age);
+
+	@Select("select * from user_info where age = #{age}")
+	String good3(@Param("age") String age);
+
+	@Select({"select * from test where id = #{id} and name = #{name}"})
+	String good4(Integer id, String name);
 }

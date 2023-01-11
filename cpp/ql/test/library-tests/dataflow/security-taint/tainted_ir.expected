@@ -1,3 +1,5 @@
+WARNING: Module TaintedWithPath has been deprecated and may be removed in future (tainted_ir.ql:3,35-50)
+WARNING: Module TaintedWithPath has been deprecated and may be removed in future (tainted_ir.ql:9,3-18)
 | test.cpp:23:23:23:28 | call to getenv | test.cpp:23:23:23:28 | call to getenv |
 | test.cpp:23:23:23:28 | call to getenv | test.cpp:23:23:23:40 | (const char *)... |
 | test.cpp:23:23:23:28 | call to getenv | test.cpp:25:6:25:29 | ! ... |
@@ -25,10 +27,6 @@
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:15:75:18 | call to atoi |
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:20:75:25 | call to getenv |
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:20:75:45 | (const char *)... |
-| test.cpp:75:20:75:25 | call to getenv | test.cpp:76:9:76:11 | len |
-| test.cpp:75:20:75:25 | call to getenv | test.cpp:77:36:77:38 | (unsigned long)... |
-| test.cpp:75:20:75:25 | call to getenv | test.cpp:77:36:77:38 | len |
-| test.cpp:75:20:75:25 | call to getenv | test.cpp:77:36:77:55 | ... * ... |
 | test.cpp:83:28:83:33 | call to getenv | test.cpp:83:28:83:33 | call to getenv |
 | test.cpp:83:28:83:33 | call to getenv | test.cpp:83:28:83:46 | (const char *)... |
 | test.cpp:83:28:83:33 | call to getenv | test.cpp:86:15:86:22 | userName |

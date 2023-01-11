@@ -27,15 +27,3 @@ class TextFieldSource extends LocalUserInputSource {
 
   override string getSourceType() { result = "TextBox text" }
 }
-
-/** A call to any `System.Console.Read*` method. */
-private class SystemConsoleReadSourceModelCsv extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System;Console;false;ReadLine;;;ReturnValue;local;manual",
-        "System;Console;false;Read;;;ReturnValue;local;manual",
-        "System;Console;false;ReadKey;;;ReturnValue;local;manual"
-      ]
-  }
-}

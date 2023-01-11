@@ -16,11 +16,10 @@
 import DataFlow::PathGraph
 import codeql.ruby.DataFlow
 import codeql.ruby.security.regexp.PolynomialReDoSQuery
-import codeql.ruby.security.regexp.SuperlinearBackTracking
 
 from
   PolynomialReDoS::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  PolynomialReDoS::Sink sinkNode, PolynomialBackTrackingTerm regexp
+  PolynomialReDoS::Sink sinkNode, PolynomialReDoS::PolynomialBackTrackingTerm regexp
 where
   config.hasFlowPath(source, sink) and
   sinkNode = sink.getNode() and

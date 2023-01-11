@@ -54,7 +54,7 @@ public:
     B *b = new B();
     b->set(new C1());
     sink(b->get());                // $ ast ir=55:12
-    sink((new B(new C()))->get()); // $ ast ir=57:17
+    sink((new B(new C()))->get()); // $ ast ir
   }
 
   void f3()
@@ -129,7 +129,7 @@ public:
   {
     B *b = new B();
     f7(b);
-    sink(b->c); // $ ast ir=126:12
+    sink(b->c); // $ ast ir
   }
 
   class D

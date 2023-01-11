@@ -4,11 +4,11 @@
  * well as extension points for adding your own.
  */
 
+private import ruby
 private import codeql.ruby.DataFlow
 private import codeql.ruby.DataFlow2
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.core.Gem::Gem as Gem
-private import codeql.ruby.AST as Ast
 private import codeql.ruby.Concepts as Concepts
 
 /**
@@ -79,6 +79,37 @@ module UnsafeShellCommandConstruction {
     override DataFlow::Node getCommandExecution() { result = s }
 
     override DataFlow::Node getStringConstruction() { result.asExpr().getExpr() = lit }
+  }
+
+  /**
+   * A string constructed using a `.join(" ")` call, where the resulting string ends up being executed as a shell command.
+   */
+  class ArrayJoin extends Sink {
+    Concepts::SystemCommandExecution s;
+    DataFlow::CallNode call;
+
+    ArrayJoin() {
+      call.getMethodName() = "join" and
+      call.getNumberOfArguments() = 1 and
+      call.getArgument(0).getConstantValue().getString() = " " and
+      isUsedAsShellCommand(call, s) and
+      (
+        this = call.getReceiver() and
+        not call.getReceiver().asExpr() instanceof Cfg::CfgNodes::ExprNodes::ArrayLiteralCfgNode
+        or
+        this.asExpr() =
+          call.getReceiver()
+              .asExpr()
+              .(Cfg::CfgNodes::ExprNodes::ArrayLiteralCfgNode)
+              .getAnArgument()
+      )
+    }
+
+    override string describe() { result = "array" }
+
+    override DataFlow::Node getCommandExecution() { result = s }
+
+    override DataFlow::Node getStringConstruction() { result = call }
   }
 
   import codeql.ruby.security.TaintedFormatStringSpecific as TaintedFormat

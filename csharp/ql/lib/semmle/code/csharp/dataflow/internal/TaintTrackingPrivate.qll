@@ -12,6 +12,7 @@ private import dotnet
 // import `TaintedMember` definitions from other files to avoid potential reevaluation
 private import semmle.code.csharp.frameworks.JsonNET
 private import semmle.code.csharp.frameworks.WCF
+private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations

@@ -12,8 +12,8 @@ import IDEContextual
  *
  * In some cases it is preferable to modify locations (the
  * `hasLocationInfo()` predicate) so that they are short, and
- * non-overlapping with other locations that might be highlighted in
- * the LGTM interface.
+ * non-overlapping with other locations that might be reported as
+ * code scanning alerts on GitHub.
  *
  * We need to give locations that may not be in the database, so
  * we use `hasLocationInfo()` rather than `getLocation()`.
@@ -159,9 +159,9 @@ Top definitionOf(Top e, string kind) {
     // Multiple type mentions can be generated when a typedef is used, and
     // in such cases we want to exclude all but the originating typedef.
     not exists(Type secondary |
-      exists(TypeMention tm, File f, int startline, int startcol |
+      exists(File f, int startline, int startcol |
         typeMentionStartLoc(e, result, f, startline, startcol) and
-        typeMentionStartLoc(tm, secondary, f, startline, startcol) and
+        typeMentionStartLoc(_, secondary, f, startline, startcol) and
         (
           result = secondary.(TypedefType).getBaseType() or
           result = secondary.(TypedefType).getBaseType().(SpecifiedType).getBaseType()

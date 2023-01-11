@@ -224,7 +224,7 @@ predicate isSinkEncrypt(DataFlow::Node sink, Encrypted enc) {
  */
 predicate isSourceImpl(DataFlow::Node source) {
   exists(Expr e |
-    e = source.asIndirectConvertedExpr() and
+    e = source.asConvertedExpr() and
     e.getUnconverted().(VariableAccess).getTarget() instanceof SourceVariable and
     not e.hasConversion()
   )
@@ -261,8 +261,7 @@ class ToEncryptionConfiguration extends TaintTracking2::Configuration {
   ToEncryptionConfiguration() { this = "ToEncryptionConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    any(FromSensitiveConfiguration config).hasFlow(source, _) and
-    isSourceImpl(source)
+    any(FromSensitiveConfiguration config).hasFlow(source, _)
   }
 
   override predicate isSink(DataFlow::Node sink) { isSinkEncrypt(sink, _) }

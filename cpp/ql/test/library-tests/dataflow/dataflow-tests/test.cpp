@@ -89,7 +89,7 @@ void trackUninitialized() {
 void local_references(int &source1, int clean1) {
   sink(source1); // $ ast,ir
   source1 = clean1;
-  sink(source1); // $ SPURIOUS: ir
+  sink(source1); // clean
 
   // The next two test cases show that the analysis does not understand the "&"
   // on the type at all. It does not understand that the initialization creates
@@ -423,25 +423,32 @@ void intPointerSourceCaller() {
   intPointerSource(&local);
   sink(local); // $ ast,ir=422:7 ast,ir=423:20
 }
-
+// The IR results for this test _are_ equivalent to the AST ones.
+// The IR annotation is just "ir" because the sink of the unitialized source at
+// `433:7` (i.e., the declaration `int local[1];`) is value of `local`, but the sink
+// of the source from `intPointerSource` value of `*local` (i.e., the indirection node
+// of `local`). So unlike AST dataflow, each of these two sinks correspond to a unique
+// source, and thus we don't need to attach a location annotation to it.
 void intPointerSourceCaller2() {
   int local[1];
   intPointerSource(local);
-  sink(local); // $ ast,ir=428:7 ast,ir=429:20
-  sink(*local); // $ ast,ir=428:7 ast,ir=429:20
+  sink(local); // $ ast=433:7 ast=434:20 ir
+  sink(*local); // $ ast=433:7 ast=434:20 ir
 }
 
 void intArraySourceCaller() {
   int local;
   intArraySource(&local, 1);
-  sink(local); // $ ast,ir=435:7 ast,ir=436:18
+  sink(local); // $ ast,ir=440:7 ast,ir=441:18
 }
 
+// The IR results for this test _are_ equivalent to the AST ones.
+// See the comment on `intPointerSourceCaller2` for an explanation.
 void intArraySourceCaller2() {
   int local[2];
   intArraySource(local, 2);
-  sink(local); // $ ast,ir=441:7 ast,ir=442:18
-  sink(*local); // $ ast,ir=441:7 ast,ir=442:18
+  sink(local); // $ ast=448:7 ast=449:18 ir
+  sink(*local); // $ ast=448:7 ast=449:18 ir
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -504,4 +511,12 @@ void viaOutparamMissingReturn() {
   int x = 0;
   intOutparamSourceMissingReturn(&x);
   sink(x); // $ ast MISSING: ir
+}
+
+void uncertain_definition() {
+  int stackArray[2];
+  int clean = 0;
+  stackArray[0] = source();
+  stackArray[1] = clean;
+  sink(stackArray[0]); // $ ast=519:19 ir SPURIOUS: ast=517:7
 }

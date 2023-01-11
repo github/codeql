@@ -13,56 +13,45 @@ private import semmle.code.cpp.models.interfaces.DataFlow
 private import DataFlowPrivate
 private import ModelUtil
 private import SsaInternals as Ssa
+private import DataFlowImplCommon as DataFlowImplCommon
 
+/**
+ * The IR dataflow graph consists of the following nodes:
+ * - `Node0`, which injects most instructions and operands directly into the dataflow graph.
+ * - `VariableNode`, which is used to model flow through global variables.
+ * - `PostFieldUpdateNode`, which is used to model the state of a field after a value has been stored
+ * into an address after a number of loads.
+ * - `SsaPhiNode`, which represents phi nodes as computed by the shared SSA library.
+ * - `IndirectArgumentOutNode`, which represents the value of an argument (and its indirections) after
+ * it leaves a function call.
+ * - `RawIndirectOperand`, which represents the value of `operand` after loading the address a number
+ * of times.
+ * - `RawIndirectInstruction`, which represents the value of `instr` after loading the address a number
+ * of times.
+ */
 cached
-private module Cached {
-  /**
-   * The IR dataflow graph consists of the following nodes:
-   * - `InstructionNode`, which injects most instructions directly into the dataflow graph.
-   * - `OperandNode`, which similarly injects most operands directly into the dataflow graph.
-   * - `VariableNode`, which is used to model flow through global variables.
-   * - `PostFieldUpdateNode`, which is used to model the state of a field after a value has been stored
-   * into an address after a number of loads.
-   * - `SsaPhiNode`, which represents phi nodes as computed by the shared SSA library.
-   * - `IndirectArgumentOutNode`, which represents the value of an argument (and its indirections) after
-   * it leaves a function call.
-   * - `IndirectOperand`, which represents the value of `operand` after loading the address a number
-   * of times.
-   * - `IndirectInstruction`, which represents the value of `instr` after loading the address a number
-   * of times.
-   */
-  cached
-  newtype TIRDataFlowNode =
-    TInstructionNode(Instruction i) {
-      not Ssa::ignoreInstruction(i) and
-      // We exclude `void`-typed instructions because they cannot contain data.
-      // However, if the instruction is a glvalue, and their type is `void`, then the result
-      // type of the instruction is really `void*`, and thus we still want to have a dataflow
-      // node for it.
-      (not i.getResultType() instanceof VoidType or i.isGLValue())
-    } or
-    TOperandNode(Operand op) { not Ssa::ignoreOperand(op) } or
-    TVariableNode(Variable var, int indirectionIndex) {
-      indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
-    } or
-    TPostFieldUpdateNode(FieldAddress operand, int indirectionIndex) {
-      indirectionIndex =
-        [1 .. Ssa::countIndirectionsForCppType(operand.getObjectAddress().getResultLanguageType())]
-    } or
-    TSsaPhiNode(Ssa::PhiNode phi) or
-    TIndirectArgumentOutNode(ArgumentOperand operand, int indirectionIndex) {
-      Ssa::isModifiableByCall(operand) and
-      indirectionIndex = [1 .. Ssa::countIndirectionsForCppType(operand.getLanguageType())]
-    } or
-    TIndirectOperand(Operand op, int indirectionIndex) {
-      Ssa::hasIndirectOperand(op, indirectionIndex)
-    } or
-    TIndirectInstruction(Instruction instr, int indirectionIndex) {
-      Ssa::hasIndirectInstruction(instr, indirectionIndex)
-    } or
-    TFinalGlobalValue(Ssa::GlobalUse globalUse) or
-    TInitialGlobalValue(Ssa::GlobalDef globalUse)
-}
+private newtype TIRDataFlowNode =
+  TNode0(Node0Impl node) { DataFlowImplCommon::forceCachingInSameStage() } or
+  TVariableNode(Variable var, int indirectionIndex) {
+    indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
+  } or
+  TPostFieldUpdateNode(FieldAddress operand, int indirectionIndex) {
+    indirectionIndex =
+      [1 .. Ssa::countIndirectionsForCppType(operand.getObjectAddress().getResultLanguageType())]
+  } or
+  TSsaPhiNode(Ssa::PhiNode phi) or
+  TIndirectArgumentOutNode(ArgumentOperand operand, int indirectionIndex) {
+    Ssa::isModifiableByCall(operand) and
+    indirectionIndex = [1 .. Ssa::countIndirectionsForCppType(operand.getLanguageType())]
+  } or
+  TRawIndirectOperand(Operand op, int indirectionIndex) {
+    Ssa::hasRawIndirectOperand(op, indirectionIndex)
+  } or
+  TRawIndirectInstruction(Instruction instr, int indirectionIndex) {
+    Ssa::hasRawIndirectInstruction(instr, indirectionIndex)
+  } or
+  TFinalGlobalValue(Ssa::GlobalUse globalUse) or
+  TInitialGlobalValue(Ssa::GlobalDef globalUse)
 
 /**
  * An operand that is defined by a `FieldAddressInstruction`.
@@ -98,13 +87,13 @@ predicate conversionFlow(Operand opFrom, Instruction instrTo, boolean isPointerA
     instrTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
     or
     instrTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
+    or
+    Ssa::isAdditionalConversionFlow(opFrom, instrTo)
   )
   or
   isPointerArith = true and
   instrTo.(PointerArithmeticInstruction).getLeftOperand() = opFrom
 }
-
-private import Cached
 
 /**
  * A node in a data flow graph.
@@ -239,7 +228,13 @@ class Node extends TIRDataFlowNode {
   Expr asIndirectArgument() { result = this.asIndirectArgument(_) }
 
   /** Gets the positional parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.asParameter(0) }
+  Parameter asParameter() {
+    exists(int indirectionIndex | result = this.asParameter(indirectionIndex) |
+      if result.getUnspecifiedType() instanceof ReferenceType
+      then indirectionIndex = 1
+      else indirectionIndex = 0
+    )
+  }
 
   /**
    * Gets the uninitialized local variable corresponding to this node, if
@@ -258,7 +253,7 @@ class Node extends TIRDataFlowNode {
    * the value of `x`.
    * - The node `n` such that `n.asParameter(1)` is the parameter `x` represents
    * the value of `*x`.
-   * The node `n` such that `n.asParameter(2)` is the parameter `x` represents
+   * - The node `n` such that `n.asParameter(2)` is the parameter `x` represents
    * the value of `**x`.
    */
   Parameter asParameter(int index) {
@@ -341,51 +336,52 @@ private string toExprString(Node n) {
 }
 
 /**
- * An instruction, viewed as a node in a data flow graph.
+ * A class that lifts pre-SSA dataflow nodes to regular dataflow nodes.
  */
-class InstructionNode extends Node, TInstructionNode {
-  Instruction instr;
+private class Node0 extends Node, TNode0 {
+  Node0Impl node;
 
-  InstructionNode() { this = TInstructionNode(instr) }
+  Node0() { this = TNode0(node) }
 
-  /** Gets the instruction corresponding to this node. */
-  Instruction getInstruction() { result = instr }
+  override Declaration getEnclosingCallable() { result = node.getEnclosingCallable() }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override Declaration getFunction() { result = node.getFunction() }
 
-  override Declaration getFunction() { result = instr.getEnclosingFunction() }
+  override DataFlowType getType() { result = node.getType() }
 
-  override DataFlowType getType() { result = instr.getResultType() }
-
-  final override Location getLocationImpl() { result = instr.getLocation() }
+  final override Location getLocationImpl() { result = node.getLocationImpl() }
 
   override string toStringImpl() {
     // This predicate is overridden in subclasses. This default implementation
     // does not use `Instruction.toString` because that's expensive to compute.
-    result = this.getInstruction().getOpcode().toString()
+    result = node.toStringImpl()
   }
+}
+
+/**
+ * An instruction, viewed as a node in a data flow graph.
+ */
+class InstructionNode extends Node0 {
+  override InstructionNode0 node;
+  Instruction instr;
+
+  InstructionNode() { instr = node.getInstruction() }
+
+  /** Gets the instruction corresponding to this node. */
+  Instruction getInstruction() { result = instr }
 }
 
 /**
  * An operand, viewed as a node in a data flow graph.
  */
-class OperandNode extends Node, TOperandNode {
+class OperandNode extends Node, Node0 {
+  override OperandNode0 node;
   Operand op;
 
-  OperandNode() { this = TOperandNode(op) }
+  OperandNode() { op = node.getOperand() }
 
   /** Gets the operand corresponding to this node. */
-  Operand getOperand() { result = op }
-
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
-
-  override Declaration getFunction() { result = op.getUse().getEnclosingFunction() }
-
-  override DataFlowType getType() { result = op.getType() }
-
-  final override Location getLocationImpl() { result = op.getLocation() }
-
-  override string toStringImpl() { result = this.getOperand().toString() }
+  Operand getOperand() { result = node.getOperand() }
 }
 
 /**
@@ -394,11 +390,11 @@ class OperandNode extends Node, TOperandNode {
  * For example, `stripPointers(int*&)` is `int*` and `stripPointers(int*)` is `int`.
  */
 private Type stripPointer(Type t) {
-  result = t.(PointerType).getBaseType()
+  result = any(Ssa::Indirection ind | ind.getType() = t).getBaseType()
   or
+  // These types have a sensible base type, but don't receive additional
+  // dataflow nodes representing their indirections. So for now we special case them.
   result = t.(ArrayType).getBaseType()
-  or
-  result = t.(ReferenceType).getBaseType()
   or
   result = t.(PointerToMemberType).getBaseType()
   or
@@ -630,7 +626,7 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PartialDef
 
 pragma[nomagic]
 predicate indirectReturnOutNodeOperand0(CallInstruction call, Operand operand, int indirectionIndex) {
-  Ssa::hasIndirectInstruction(call, indirectionIndex) and
+  Ssa::hasRawIndirectInstruction(call, indirectionIndex) and
   operandForfullyConvertedCall(operand, call)
 }
 
@@ -638,14 +634,37 @@ pragma[nomagic]
 predicate indirectReturnOutNodeInstruction0(
   CallInstruction call, Instruction instr, int indirectionIndex
 ) {
-  Ssa::hasIndirectInstruction(call, indirectionIndex) and
+  Ssa::hasRawIndirectInstruction(call, indirectionIndex) and
   instructionForfullyConvertedCall(instr, call)
+}
+
+/**
+ * Holds if `node` is an indirect operand with columns `(operand, indirectionIndex)`, and
+ * `operand` represents a use of the fully converted value of `call`.
+ */
+private predicate hasOperand(Node node, CallInstruction call, int indirectionIndex, Operand operand) {
+  indirectReturnOutNodeOperand0(call, operand, indirectionIndex) and
+  hasOperandAndIndex(node, operand, indirectionIndex)
+}
+
+/**
+ * Holds if `node` is an indirect instruction with columns `(instr, indirectionIndex)`, and
+ * `instr` represents a use of the fully converted value of `call`.
+ *
+ * Note that `hasOperand(node, _, _, _)` implies `not hasInstruction(node, _, _, _)`.
+ */
+private predicate hasInstruction(
+  Node node, CallInstruction call, int indirectionIndex, Instruction instr
+) {
+  indirectReturnOutNodeInstruction0(call, instr, indirectionIndex) and
+  hasInstructionAndIndex(node, instr, indirectionIndex)
 }
 
 /**
  * INTERNAL: do not use.
  *
- * A node representing the value of a function call.
+ * A node representing the indirect value of a function call (i.e., a value hidden
+ * behind a number of indirections).
  */
 class IndirectReturnOutNode extends Node {
   CallInstruction call;
@@ -654,20 +673,43 @@ class IndirectReturnOutNode extends Node {
   IndirectReturnOutNode() {
     // Annoyingly, we need to pick the fully converted value as the output of the function to
     // make flow through in the shared dataflow library work correctly.
-    exists(Operand operand |
-      indirectReturnOutNodeOperand0(call, operand, indirectionIndex) and
-      hasOperandAndIndex(this, operand, indirectionIndex)
-    )
+    hasOperand(this, call, indirectionIndex, _)
     or
-    exists(Instruction instr |
-      indirectReturnOutNodeInstruction0(call, instr, indirectionIndex) and
-      hasInstructionAndIndex(this, instr, indirectionIndex)
-    )
+    hasInstruction(this, call, indirectionIndex, _)
   }
 
   CallInstruction getCallInstruction() { result = call }
 
   int getIndirectionIndex() { result = indirectionIndex }
+
+  /** Gets the operand associated with this node, if any. */
+  Operand getOperand() { hasOperand(this, call, indirectionIndex, result) }
+
+  /** Gets the instruction associated with this node, if any. */
+  Instruction getInstruction() { hasInstruction(this, call, indirectionIndex, result) }
+}
+
+/**
+ * An `IndirectReturnOutNode` which is used as a destination of a store operation.
+ * When it's used for a store operation it's useful to have this be a `PostUpdateNode` for
+ * the shared dataflow library's flow-through mechanism to detect flow in cases such as:
+ * ```cpp
+ * struct MyInt {
+ *   int i;
+ *   int& getRef() { return i; }
+ * };
+ * ...
+ * MyInt mi;
+ * mi.getRef() = source(); // this is detected as a store to `i` via flow-through.
+ * sink(mi.i);
+ * ```
+ */
+private class PostIndirectReturnOutNode extends IndirectReturnOutNode, PostUpdateNode {
+  PostIndirectReturnOutNode() {
+    any(StoreInstruction store).getDestinationAddressOperand() = this.getOperand()
+  }
+
+  override Node getPreUpdateNode() { result = this }
 }
 
 private Type getTypeImpl(Type t, int indirectionIndex) {
@@ -675,7 +717,15 @@ private Type getTypeImpl(Type t, int indirectionIndex) {
   result = t
   or
   indirectionIndex > 0 and
-  result = getTypeImpl(stripPointer(t), indirectionIndex - 1)
+  exists(Type stripped |
+    stripped = stripPointer(t) and
+    // We need to avoid the case where `stripPointer(t) = t` (which can happen on
+    // iterators that specify a `value_type` that is the iterator itself). Such a type
+    // would create an infinite loop otherwise. For these cases we simply don't produce
+    // a result for `getType`.
+    stripped.getUnspecifiedType() != t.getUnspecifiedType() and
+    result = getTypeImpl(stripPointer(t), indirectionIndex - 1)
+  )
 }
 
 /**
@@ -684,15 +734,16 @@ private Type getTypeImpl(Type t, int indirectionIndex) {
  * A node that represents the indirect value of an operand in the IR
  * after `index` number of loads.
  */
-class IndirectOperand extends Node, TIndirectOperand {
+class RawIndirectOperand extends Node, TRawIndirectOperand {
   Operand operand;
   int indirectionIndex;
 
-  IndirectOperand() { this = TIndirectOperand(operand, indirectionIndex) }
+  RawIndirectOperand() { this = TRawIndirectOperand(operand, indirectionIndex) }
 
   /** Gets the underlying instruction. */
   Operand getOperand() { result = operand }
 
+  /** Gets the underlying indirection index. */
   int getIndirectionIndex() { result = indirectionIndex }
 
   override Function getFunction() { result = this.getOperand().getDef().getEnclosingFunction() }
@@ -721,8 +772,8 @@ class UninitializedNode extends Node {
 
   UninitializedNode() {
     exists(Ssa::Def def |
-      def.getDefiningInstruction() instanceof UninitializedInstruction and
-      Ssa::nodeToDefOrUse(this, def) and
+      def.getValue().asInstruction() instanceof UninitializedInstruction and
+      Ssa::nodeToDefOrUse(this, def, _) and
       v = def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable().getAst()
     )
   }
@@ -737,15 +788,16 @@ class UninitializedNode extends Node {
  * A node that represents the indirect value of an instruction in the IR
  * after `index` number of loads.
  */
-class IndirectInstruction extends Node, TIndirectInstruction {
+class RawIndirectInstruction extends Node, TRawIndirectInstruction {
   Instruction instr;
   int indirectionIndex;
 
-  IndirectInstruction() { this = TIndirectInstruction(instr, indirectionIndex) }
+  RawIndirectInstruction() { this = TRawIndirectInstruction(instr, indirectionIndex) }
 
   /** Gets the underlying instruction. */
   Instruction getInstruction() { result = instr }
 
+  /** Gets the underlying indirection index. */
   int getIndirectionIndex() { result = indirectionIndex }
 
   override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
@@ -765,49 +817,30 @@ class IndirectInstruction extends Node, TIndirectInstruction {
   }
 }
 
-private predicate isFullyConvertedArgument(Expr e) {
-  e = any(Call call).getAnArgument().getFullyConverted()
-}
-
-private predicate isFullyConvertedCall(Expr e) { e = any(Call call).getFullyConverted() }
-
-/** Holds if `Node::asExpr` should map an some operand node to `e`. */
-private predicate convertedExprMustBeOperand(Expr e) {
-  isFullyConvertedArgument(e)
-  or
-  isFullyConvertedCall(e)
-}
-
 /** Holds if `node` is an `OperandNode` that should map `node.asExpr()` to `e`. */
-predicate exprNodeShouldBeOperand(Node node, Expr e) {
-  e = node.asOperand().getDef().getConvertedResultExpression() and
-  convertedExprMustBeOperand(e)
+predicate exprNodeShouldBeOperand(OperandNode node, Expr e) {
+  exists(Instruction def |
+    unique( | | getAUse(def)) = node.getOperand() and
+    e = def.getConvertedResultExpression()
+  )
 }
 
-/**
- * Holds if `load` is a `LoadInstruction` that is the result of evaluating `e`
- * and `node` is an `IndirectOperandNode` that should map `node.asExpr()` to `e`.
- *
- * We map `e` to `node.asExpr()` when `node` semantically represents the
- * same value as `load`. A subsequent flow step will flow `node` to
- * the `LoadInstruction`.
- */
-private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, LoadInstruction load) {
-  node.getIndirectionIndex() = 1 and
-  e = load.getConvertedResultExpression() and
-  load.getSourceAddressOperand() = node.getOperand() and
-  not convertedExprMustBeOperand(e)
+private predicate indirectExprNodeShouldBeIndirectOperand0(
+  VariableAddressInstruction instr, RawIndirectOperand node, Expr e
+) {
+  instr = node.getOperand().getDef() and
+  e = instr.getAst().(Expr).getUnconverted()
 }
 
 /** Holds if `node` should be an `IndirectOperand` that maps `node.asIndirectExpr()` to `e`. */
-private predicate indirectExprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e) {
-  exists(Instruction instr |
-    instr = node.getOperand().getDef() and
-    not node instanceof ExprNode
-  |
-    e = instr.(VariableAddressInstruction).getAst().(Expr).getFullyConverted()
+private predicate indirectExprNodeShouldBeIndirectOperand(RawIndirectOperand node, Expr e) {
+  exists(Instruction instr | instr = node.getOperand().getDef() |
+    exists(Expr e0 |
+      indirectExprNodeShouldBeIndirectOperand0(instr, node, e0) and
+      e = e0.getFullyConverted()
+    )
     or
-    not instr instanceof VariableAddressInstruction and
+    not indirectExprNodeShouldBeIndirectOperand0(_, _, e.getUnconverted()) and
     e = instr.getConvertedResultExpression()
   )
 }
@@ -822,10 +855,27 @@ private predicate exprNodeShouldBeIndirectOutNode(IndirectArgumentOutNode node, 
 
 /** Holds if `node` should be an instruction node that maps `node.asExpr()` to `e`. */
 predicate exprNodeShouldBeInstruction(Node node, Expr e) {
-  e = node.asInstruction().getConvertedResultExpression() and
   not exprNodeShouldBeOperand(_, e) and
-  not exprNodeShouldBeIndirectOperand(_, e, _) and
-  not exprNodeShouldBeIndirectOutNode(_, e)
+  not exprNodeShouldBeIndirectOutNode(_, e) and
+  (
+    e = node.asInstruction().getConvertedResultExpression()
+    or
+    // The instruction that contains the result of an `AssignOperation` is
+    // the unloaded left operand (see the comments in `TranslatedAssignOperation`).
+    // That means that for cases like
+    // ```cpp
+    // int x = ...;
+    // x += 1;
+    // ```
+    // the result of `x += 1` is the `VariableAddressInstruction` that represents `x`. But
+    // that instruction doesn't receive the flow from this `AssignOperation`. So instead we
+    // map the operation to the `AddInstruction`.
+    node.asInstruction().getAst() = e.(AssignOperation)
+    or
+    // Same story for `CrementOperation`s (cf. the comments in the subclasses
+    // of `TranslatedCrementOperation`).
+    node.asInstruction().getAst() = e.(CrementOperation)
+  )
 }
 
 /** Holds if `node` should be an `IndirectInstruction` that maps `node.asIndirectExpr()` to `e`. */
@@ -868,23 +918,6 @@ private class OperandExprNode extends ExprNodeBase, OperandNode {
 
   final override Expr getExpr() { result = this.getConvertedExpr().getUnconverted() }
 
-  final override string toStringImpl() {
-    // Avoid generating multiple `toString` results for `ArgumentNode`s
-    // since they have a better `toString`.
-    result = this.(ArgumentNode).toStringImpl()
-    or
-    not this instanceof ArgumentNode and
-    result = this.getConvertedExpr().toString()
-  }
-}
-
-private class IndirectOperandExprNode extends ExprNodeBase, IndirectOperand {
-  IndirectOperandExprNode() { exprNodeShouldBeIndirectOperand(this, _, _) }
-
-  final override Expr getConvertedExpr() { exprNodeShouldBeIndirectOperand(this, result, _) }
-
-  final override Expr getExpr() { result = this.getConvertedExpr().getUnconverted() }
-
   final override string toStringImpl() { result = this.getConvertedExpr().toString() }
 }
 
@@ -899,7 +932,7 @@ abstract private class IndirectExprNodeBase extends Node {
   abstract Expr getExpr(int indirectionIndex);
 }
 
-private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase, IndirectOperand {
+private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase, RawIndirectOperand {
   IndirectOperandIndirectExprNode() { indirectExprNodeShouldBeIndirectOperand(this, _) }
 
   final override Expr getConvertedExpr(int index) {
@@ -913,7 +946,8 @@ private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase, Indi
   }
 }
 
-private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase, IndirectInstruction {
+private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase,
+  RawIndirectInstruction {
   IndirectInstructionIndirectExprNode() { indirectExprNodeShouldBeIndirectInstruction(this, _) }
 
   final override Expr getConvertedExpr(int index) {
@@ -933,8 +967,6 @@ private class IndirectArgumentOutExprNode extends ExprNodeBase, IndirectArgument
   final override Expr getConvertedExpr() { exprNodeShouldBeIndirectOutNode(this, result) }
 
   final override Expr getExpr() { result = this.getConvertedExpr() }
-
-  final override string toStringImpl() { result = this.getConvertedExpr().toString() }
 }
 
 /**
@@ -1208,35 +1240,6 @@ VariableNode variableNode(Variable v) {
  */
 Node uninitializedNode(LocalVariable v) { none() }
 
-/**
- * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
- * (intra-procedural) step.
- */
-predicate localFlowStep = simpleLocalFlowStep/2;
-
-private predicate indirectionOperandFlow(IndirectOperand nodeFrom, Node nodeTo) {
-  // Reduce the indirection count by 1 if we're passing through a `LoadInstruction`.
-  exists(int ind, LoadInstruction load |
-    hasOperandAndIndex(nodeFrom, load.getSourceAddressOperand(), ind) and
-    nodeHasInstruction(nodeTo, load, ind - 1)
-  )
-  or
-  // If an operand flows to an instruction, then the indirection of
-  // the operand also flows to the indirction of the instruction.
-  exists(Operand operand, Instruction instr, int indirectionIndex |
-    simpleInstructionLocalFlowStep(operand, instr) and
-    hasOperandAndIndex(nodeFrom, operand, indirectionIndex) and
-    hasInstructionAndIndex(nodeTo, instr, indirectionIndex)
-  )
-  or
-  // If there's indirect flow to an operand, then there's also indirect
-  // flow to the operand after applying some pointer arithmetic.
-  exists(PointerArithmeticInstruction pointerArith, int indirectionIndex |
-    hasOperandAndIndex(nodeFrom, pointerArith.getAnOperand(), indirectionIndex) and
-    hasInstructionAndIndex(nodeTo, pointerArith, indirectionIndex)
-  )
-}
-
 pragma[noinline]
 predicate hasOperandAndIndex(IndirectOperand indirectOperand, Operand operand, int indirectionIndex) {
   indirectOperand.getOperand() = operand and
@@ -1251,115 +1254,130 @@ predicate hasInstructionAndIndex(
   indirectInstr.getIndirectionIndex() = indirectionIndex
 }
 
-private predicate indirectionInstructionFlow(IndirectInstruction nodeFrom, IndirectOperand nodeTo) {
-  // If there's flow from an instruction to an operand, then there's also flow from the
-  // indirect instruction to the indirect operand.
-  exists(Operand operand, Instruction instr, int indirectionIndex |
-    simpleOperandLocalFlowStep(pragma[only_bind_into](instr), pragma[only_bind_into](operand))
-  |
-    hasOperandAndIndex(nodeTo, operand, indirectionIndex) and
-    hasInstructionAndIndex(nodeFrom, instr, indirectionIndex)
-  )
-}
+cached
+private module Cached {
+  /**
+   * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
+   * (intra-procedural) step.
+   */
+  cached
+  predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
-/**
- * INTERNAL: do not use.
- *
- * This is the local flow predicate that's used as a building block in global
- * data flow. It may have less flow than the `localFlowStep` predicate.
- */
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  // Post update node -> Node flow
-  Ssa::ssaFlow(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
-  or
-  // Def-use/Use-use flow
-  Ssa::ssaFlow(nodeFrom, nodeTo)
-  or
-  // Operand -> Instruction flow
-  simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
-  or
-  // Instruction -> Operand flow
-  simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
-  or
-  // Phi node -> Node flow
-  Ssa::fromPhiNode(nodeFrom, nodeTo)
-  or
-  // Indirect operand -> (indirect) instruction flow
-  indirectionOperandFlow(nodeFrom, nodeTo)
-  or
-  // Indirect instruction -> indirect operand flow
-  indirectionInstructionFlow(nodeFrom, nodeTo)
-  or
-  // Flow through modeled functions
-  modelFlow(nodeFrom, nodeTo)
-  or
-  // Reverse flow: data that flows from the definition node back into the indirection returned
-  // by a function. This allows data to flow 'in' through references returned by a modeled
-  // function such as `operator[]`.
-  exists(Operand address, int indirectionIndex |
-    nodeHasOperand(nodeTo.(IndirectReturnOutNode), address, indirectionIndex)
-  |
-    exists(StoreInstruction store |
-      nodeHasInstruction(nodeFrom, store, indirectionIndex - 1) and
-      store.getDestinationAddressOperand() = address
+  private predicate indirectionOperandFlow(RawIndirectOperand nodeFrom, Node nodeTo) {
+    // Reduce the indirection count by 1 if we're passing through a `LoadInstruction`.
+    exists(int ind, LoadInstruction load |
+      hasOperandAndIndex(nodeFrom, load.getSourceAddressOperand(), ind) and
+      nodeHasInstruction(nodeTo, load, ind - 1)
     )
     or
-    Ssa::outNodeHasAddressAndIndex(nodeFrom, address, indirectionIndex)
-  )
-}
+    // If an operand flows to an instruction, then the indirection of
+    // the operand also flows to the indirction of the instruction.
+    exists(Operand operand, Instruction instr, int indirectionIndex |
+      simpleInstructionLocalFlowStep(operand, instr) and
+      hasOperandAndIndex(nodeFrom, operand, pragma[only_bind_into](indirectionIndex)) and
+      hasInstructionAndIndex(nodeTo, instr, pragma[only_bind_into](indirectionIndex))
+    )
+    or
+    // If there's indirect flow to an operand, then there's also indirect
+    // flow to the operand after applying some pointer arithmetic.
+    exists(PointerArithmeticInstruction pointerArith, int indirectionIndex |
+      hasOperandAndIndex(nodeFrom, pointerArith.getAnOperand(),
+        pragma[only_bind_into](indirectionIndex)) and
+      hasInstructionAndIndex(nodeTo, pointerArith, pragma[only_bind_into](indirectionIndex))
+    )
+  }
 
-pragma[noinline]
-private predicate getAddressType(LoadInstruction load, Type t) {
-  exists(Instruction address |
-    address = load.getSourceAddress() and
-    t = address.getResultType()
-  )
-}
+  private predicate indirectionInstructionFlow(
+    RawIndirectInstruction nodeFrom, IndirectOperand nodeTo
+  ) {
+    // If there's flow from an instruction to an operand, then there's also flow from the
+    // indirect instruction to the indirect operand.
+    exists(Operand operand, Instruction instr, int indirectionIndex |
+      simpleOperandLocalFlowStep(pragma[only_bind_into](instr), pragma[only_bind_into](operand))
+    |
+      hasOperandAndIndex(nodeTo, operand, pragma[only_bind_into](indirectionIndex)) and
+      hasInstructionAndIndex(nodeFrom, instr, pragma[only_bind_into](indirectionIndex))
+    )
+  }
 
-/**
- * Like the AST dataflow library, we want to conflate the address and value of a reference. This class
- * represents the `LoadInstruction` that is generated from a reference dereference.
- */
-private class ReferenceDereferenceInstruction extends LoadInstruction {
-  ReferenceDereferenceInstruction() {
-    exists(ReferenceType ref |
-      getAddressType(this, ref) and
-      this.getResultType() = ref.getBaseType()
+  /**
+   * INTERNAL: do not use.
+   *
+   * This is the local flow predicate that's used as a building block in global
+   * data flow. It may have less flow than the `localFlowStep` predicate.
+   */
+  cached
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+    // Post update node -> Node flow
+    Ssa::ssaFlow(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+    or
+    // Def-use/Use-use flow
+    Ssa::ssaFlow(nodeFrom, nodeTo)
+    or
+    // Operand -> Instruction flow
+    simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
+    or
+    // Instruction -> Operand flow
+    simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
+    or
+    // Phi node -> Node flow
+    Ssa::fromPhiNode(nodeFrom, nodeTo)
+    or
+    // Indirect operand -> (indirect) instruction flow
+    indirectionOperandFlow(nodeFrom, nodeTo)
+    or
+    // Indirect instruction -> indirect operand flow
+    indirectionInstructionFlow(nodeFrom, nodeTo)
+    or
+    // Flow through modeled functions
+    modelFlow(nodeFrom, nodeTo)
+    or
+    // Reverse flow: data that flows from the definition node back into the indirection returned
+    // by a function. This allows data to flow 'in' through references returned by a modeled
+    // function such as `operator[]`.
+    exists(Operand address, int indirectionIndex |
+      nodeHasOperand(nodeTo.(IndirectReturnOutNode), address, indirectionIndex)
+    |
+      exists(StoreInstruction store |
+        nodeHasInstruction(nodeFrom, store, indirectionIndex - 1) and
+        store.getDestinationAddressOperand() = address
+      )
+      or
+      Ssa::outNodeHasAddressAndIndex(nodeFrom, address, indirectionIndex)
+    )
+  }
+
+  private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
+    // Treat all conversions as flow, even conversions between different numeric types.
+    conversionFlow(opFrom, iTo, false)
+    or
+    iTo.(CopyInstruction).getSourceValueOperand() = opFrom
+  }
+
+  private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
+    not opTo instanceof MemoryOperand and
+    opTo.getDef() = iFrom
+  }
+
+  private predicate modelFlow(Node nodeFrom, Node nodeTo) {
+    exists(
+      CallInstruction call, DataFlowFunction func, FunctionInput modelIn, FunctionOutput modelOut
+    |
+      call.getStaticCallTarget() = func and
+      func.hasDataFlow(modelIn, modelOut)
+    |
+      nodeFrom = callInput(call, modelIn) and
+      nodeTo = callOutput(call, modelOut)
+      or
+      exists(int d |
+        nodeFrom = callInput(call, modelIn, d) and
+        nodeTo = callOutput(call, modelOut, d)
+      )
     )
   }
 }
 
-private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
-  // Treat all conversions as flow, even conversions between different numeric types.
-  conversionFlow(opFrom, iTo, false)
-  or
-  iTo.(CopyInstruction).getSourceValueOperand() = opFrom
-  or
-  // Conflate references and values like in AST dataflow.
-  iTo.(ReferenceDereferenceInstruction).getSourceAddressOperand() = opFrom
-}
-
-private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
-  not opTo instanceof MemoryOperand and
-  opTo.getDef() = iFrom
-}
-
-private predicate modelFlow(Node nodeFrom, Node nodeTo) {
-  exists(
-    CallInstruction call, DataFlowFunction func, FunctionInput modelIn, FunctionOutput modelOut
-  |
-    call.getStaticCallTarget() = func and
-    func.hasDataFlow(modelIn, modelOut)
-  |
-    nodeFrom = callInput(call, modelIn) and
-    nodeTo = callOutput(call, modelOut)
-    or
-    exists(int d |
-      nodeFrom = callInput(call, modelIn, d) and
-      nodeTo = callOutput(call, modelOut, d)
-    )
-  )
-}
+import Cached
 
 /**
  * Holds if data flows from `source` to `sink` in zero or more local
@@ -1377,40 +1395,81 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
   localFlow(instructionNode(e1), instructionNode(e2))
 }
 
+cached
+private module ExprFlowCached {
+  /**
+   * Holds if `n1.asExpr()` doesn't have a result and `n1` flows to `n2` in a single
+   * dataflow step.
+   */
+  private predicate localStepFromNonExpr(Node n1, Node n2) {
+    not exists(n1.asExpr()) and
+    localFlowStep(n1, n2)
+  }
+
+  /**
+   * Holds if `n1.asExpr()` doesn't have a result, `n2.asExpr() = e2` and
+   * `n2` is the first node reachable from `n1` such that `n2.asExpr()` exists.
+   */
+  pragma[nomagic]
+  private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
+    localStepFromNonExpr*(n1, n2) and
+    e2 = n2.asExpr()
+  }
+
+  /**
+   * Holds if `n1.asExpr() = e1` and `n2.asExpr() = e2` and `n2` is the first node
+   * reacahble from `n1` such that `n2.asExpr()` exists.
+   */
+  private predicate localExprFlowSingleExprStep(Node n1, Expr e1, Node n2, Expr e2) {
+    exists(Node mid |
+      localFlowStep(n1, mid) and
+      localStepsToExpr(mid, n2, e2) and
+      e1 = n1.asExpr()
+    )
+  }
+
+  /**
+   * Holds if `n1.asExpr() = e1` and `e1 != e2` and `n2` is the first reachable node from
+   * `n1` such that `n2.asExpr() = e2`.
+   */
+  private predicate localExprFlowStepImpl(Node n1, Expr e1, Node n2, Expr e2) {
+    exists(Node n, Expr e | localExprFlowSingleExprStep(n1, e1, n, e) |
+      // If `n.asExpr()` and `n1.asExpr()` both resolve to the same node (which can
+      // happen if `n2` is the node attached to a conversion of `e1`), then we recursively
+      // perform another expression step.
+      if e1 = e
+      then localExprFlowStepImpl(n, e, n2, e2)
+      else (
+        // If we manage to step to a different expression we're done.
+        e2 = e and
+        n2 = n
+      )
+    )
+  }
+
+  /** Holds if data can flow from `e1` to `e2` in one local (intra-procedural) step. */
+  cached
+  predicate localExprFlowStep(Expr e1, Expr e2) { localExprFlowStepImpl(_, e1, _, e2) }
+}
+
+import ExprFlowCached
+
+/**
+ * Holds if data can flow from `e1` to `e2` in one or more
+ * local (intra-procedural) steps.
+ */
+pragma[inline]
+private predicate localExprFlowPlus(Expr e1, Expr e2) = fastTC(localExprFlowStep/2)(e1, e2)
+
 /**
  * Holds if data can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
 pragma[inline]
-predicate localExprFlow(Expr e1, Expr e2) { localExprFlowStep*(e1, e2) }
-
-/**
- * Holds if `n1.asExpr()` doesn't have a result and `n1` flows to `n2` in a single
- * dataflow step.
- */
-private predicate localStepFromNonExpr(Node n1, Node n2) {
-  not exists(n1.asExpr()) and
-  localFlowStep(n1, n2)
-}
-
-/**
- * Holds if `n1.asExpr()` doesn't have a result, `n2.asExpr() = e2` and
- * `n2` is the first node reachable from `n1` such that `n2.asExpr()` exists.
- */
-pragma[nomagic]
-private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
-  localStepFromNonExpr*(n1, n2) and
-  e2 = n2.asExpr()
-}
-
-/** Holds if data can flow from `e1` to `e2` in one local (intra-procedural) step. */
-cached
-predicate localExprFlowStep(Expr e1, Expr e2) {
-  exists(Node mid, Node n1, Node n2 |
-    localFlowStep(n1, mid) and
-    localStepsToExpr(mid, n2, e2) and
-    e1 = n1.asExpr()
-  )
+predicate localExprFlow(Expr e1, Expr e2) {
+  e1 = e2
+  or
+  localExprFlowPlus(e1, e2)
 }
 
 cached
@@ -1530,9 +1589,9 @@ private IRBlock getBasicBlock(Node node) {
   or
   node.(SsaPhiNode).getPhiNode().getBasicBlock() = result
   or
-  node.(IndirectOperand).getOperand().getUse().getBlock() = result
+  node.(RawIndirectOperand).getOperand().getUse().getBlock() = result
   or
-  node.(IndirectInstruction).getInstruction().getBlock() = result
+  node.(RawIndirectInstruction).getInstruction().getBlock() = result
   or
   result = getBasicBlock(node.(PostUpdateNode).getPreUpdateNode())
 }
@@ -1578,10 +1637,11 @@ signature predicate instructionGuardChecksSig(IRGuardCondition g, Instruction in
 module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   ExprNode getABarrierNode() {
-    exists(IRGuardCondition g, ValueNumber value, boolean edge |
+    exists(IRGuardCondition g, ValueNumber value, boolean edge, Operand use |
       instructionGuardChecks(g, value.getAnInstruction(), edge) and
-      result.asInstruction() = value.getAnInstruction() and
-      g.controls(result.asInstruction().getBlock(), edge)
+      use = value.getAnInstruction().getAUse() and
+      result.asOperand() = use and
+      g.controls(use.getDef().getBlock(), edge)
     )
   }
 }

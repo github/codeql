@@ -55,6 +55,24 @@ class Url extends Transmitted {
 }
 
 /**
+ * An `Expr` that transmitted through the Alamofire library.
+ */
+class AlamofireTransmitted extends Transmitted {
+  AlamofireTransmitted() {
+    // sinks are the first argument containing the URL, and the `parameters`
+    // and `headers` arguments to appropriate methods of `Session`.
+    exists(CallExpr call, string fName |
+      call.getStaticTarget().(MethodDecl).hasQualifiedName("Session", fName) and
+      fName.regexpMatch("(request|streamRequest|download)\\(.*") and
+      (
+        call.getArgument(0).getExpr() = this or
+        call.getArgumentWithLabel(["headers", "parameters"]).getExpr() = this
+      )
+    )
+  }
+}
+
+/**
  * A taint configuration from sensitive information to expressions that are
  * transmitted over a network.
  */

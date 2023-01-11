@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.nio", "ByteBuffer", False, "array", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.nio", "ByteBuffer", False, "get", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.nio", "ByteBuffer", False, "wrap", "(byte[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]

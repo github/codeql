@@ -1,0 +1,35 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.nio.file", "Files", False, "copy", "", "", "Argument[1]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "createDirectories", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "createDirectory", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "createFile", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "createLink", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "createSymbolicLink", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "createTempDirectory", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "createTempFile", "(Path,String,String,FileAttribute[])", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "move", "", "", "Argument[1]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "newBufferedWriter", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "newOutputStream", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "write", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "write", "", "", "Argument[1]", "write-file", "manual"]
+      - ["java.nio.file", "Files", False, "writeString", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "writeString", "", "", "Argument[1]", "write-file", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.nio.file", "FileSystem", True, "getPath", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "FileSystem", True, "getRootDirectories", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "Path", True, "getParent", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "Path", True, "normalize", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "Path", True, "resolve", "", "", "Argument[-1..0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "Path", True, "toAbsolutePath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "Path", False, "toFile", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "Path", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "Path", True, "toUri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "Paths", True, "get", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "Paths", True, "get", "", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"]

@@ -639,7 +639,7 @@ Various kinds of syntax can have *annotations* applied to them. Annotations are 
                     |   "override"
                     |   "query"
 
-   argsAnnotation ::= "pragma" "[" ("inline" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
+   argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
 
@@ -691,6 +691,8 @@ The parameterized annotation ``pragma`` supplies compiler pragmas, and may be ap
 | Pragma                    | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases |
 +===========================+=========+============+===================+=======================+=========+========+=========+=========+
 | ``inline``                |         | yes        | yes               | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``inline_late``           |         |            |                   | yes                   |         |        |         |         |
 +---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 | ``noinline``              |         | yes        | yes               | yes                   |         |        |         |         |
 +---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
@@ -1356,9 +1358,7 @@ Set literals can be of any type, but the types within a set literal have to be c
 
 The values of a set literal expression are all the values of all the contained element expressions.
 
-Set literals are supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
-
-Since release 2.7.1 of the CodeQL CLI, and release 1.30 of LGTM Enterprise, a trailing comma is allowed in a set literal.
+Since release 2.7.1 of the CodeQL CLI, a trailing comma is allowed in a set literal.
 
 Disambiguation of expressions
 -----------------------------
@@ -2071,7 +2071,7 @@ The complete grammar for QL is as follows:
                     |   "override"
                     |   "query"
 
-   argsAnnotation ::= "pragma" "[" ("inline" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
+   argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
 

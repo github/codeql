@@ -1,12 +1,11 @@
 #include <fstream>
 #include <iomanip>
 #include <stdlib.h>
-#include <unordered_set>
 #include <vector>
-#include <string>
 #include <iostream>
 #include <regex>
 #include <unistd.h>
+#include <chrono>
 
 #include <swift/Basic/LLVMInitialize.h>
 #include <swift/FrontendTool/FrontendTool.h>
@@ -15,6 +14,9 @@
 #include "swift/extractor/TargetTrapFile.h"
 #include "swift/extractor/remapping/SwiftOutputRewrite.h"
 #include "swift/extractor/remapping/SwiftOpenInterception.h"
+#include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
+#include "swift/extractor/trap/TrapDomain.h"
+#include <swift/Basic/InitializeSwiftModules.h>
 
 using namespace std::string_literals;
 
@@ -23,7 +25,13 @@ using namespace std::string_literals;
 // semantic analysis
 class Observer : public swift::FrontendObserver {
  public:
-  explicit Observer(const codeql::SwiftExtractorConfiguration& config) : config{config} {}
+  explicit Observer(const codeql::SwiftExtractorConfiguration& config,
+                    codeql::SwiftDiagnosticsConsumer& diagConsumer)
+      : config{config}, diagConsumer{diagConsumer} {}
+
+  void configuredCompiler(swift::CompilerInstance& instance) override {
+    instance.addDiagnosticConsumer(&diagConsumer);
+  }
 
   void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
     codeql::extractSwiftFiles(config, compiler);
@@ -31,6 +39,7 @@ class Observer : public swift::FrontendObserver {
 
  private:
   const codeql::SwiftExtractorConfiguration& config;
+  codeql::SwiftDiagnosticsConsumer& diagConsumer;
 };
 
 static std::string getenv_or(const char* envvar, const std::string& def) {
@@ -96,6 +105,20 @@ static void checkWhetherToRunUnderTool(int argc, char* const* argv) {
   execvp(args[0], args.data());
 }
 
+// Creates a target file that should store per-invocation info, e.g. compilation args,
+// compilations, diagnostics, etc.
+codeql::TargetFile invocationTargetFile(codeql::SwiftExtractorConfiguration& configuration) {
+  auto timestamp = std::chrono::system_clock::now().time_since_epoch().count();
+  auto filename = std::to_string(timestamp) + '-' + std::to_string(getpid());
+  auto target = std::filesystem::path("invocations") / std::filesystem::path(filename);
+  auto maybeFile = codeql::createTargetTrapFile(configuration, target);
+  if (!maybeFile) {
+    std::cerr << "Cannot create invocation trap file: " << target << "\n";
+    abort();
+  }
+  return std::move(maybeFile.value());
+}
+
 int main(int argc, char** argv) {
   checkWhetherToRunUnderTool(argc, argv);
 
@@ -107,6 +130,7 @@ int main(int argc, char** argv) {
   // Required by Swift/LLVM
   PROGRAM_START(argc, argv);
   INITIALIZE_LLVM();
+  initializeSwiftModules();
 
   codeql::SwiftExtractorConfiguration configuration{};
   configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", ".");
@@ -131,7 +155,10 @@ int main(int argc, char** argv) {
     args.push_back(arg.c_str());
   }
 
-  Observer observer(configuration);
+  auto invocationTrapFile = invocationTargetFile(configuration);
+  codeql::TrapDomain invocationDomain(invocationTrapFile);
+  codeql::SwiftDiagnosticsConsumer diagConsumer(invocationDomain);
+  Observer observer(configuration, diagConsumer);
   int frontend_rc = swift::performFrontend(args, "swift-extractor", (void*)main, &observer);
 
   codeql::finalizeRemapping(remapping);

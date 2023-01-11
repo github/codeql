@@ -1,49 +1,77 @@
 private import java
 private import semmle.code.java.dataflow.InstanceAccess
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.TypeFlow
 private import DataFlowPrivate
+private import DataFlowUtil
 private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowImplCommon as DataFlowImplCommon
 
+/** Gets a string for approximating the name of a field. */
+string approximateFieldContent(FieldContent fc) { result = fc.getField().getName().prefix(1) }
+
 cached
-newtype TNode =
-  TExprNode(Expr e) {
-    DataFlowImplCommon::forceCachingInSameStage() and
-    not e.getType() instanceof VoidType and
-    not e.getParent*() instanceof Annotation
-  } or
-  TExplicitParameterNode(Parameter p) { exists(p.getCallable().getBody()) } or
-  TImplicitVarargsArray(Call c) {
-    c.getCallee().isVarargs() and
-    not exists(Argument arg | arg.getCall() = c and arg.isExplicitVarargsArray())
-  } or
-  TInstanceParameterNode(Callable c) { exists(c.getBody()) and not c.isStatic() } or
-  TImplicitInstanceAccess(InstanceAccessExt ia) { not ia.isExplicit(_) } or
-  TMallocNode(ClassInstanceExpr cie) or
-  TExplicitExprPostUpdate(Expr e) {
-    explicitInstanceArgument(_, e)
-    or
-    e instanceof Argument and not e.getType() instanceof ImmutableType
-    or
-    exists(FieldAccess fa | fa.getField() instanceof InstanceField and e = fa.getQualifier())
-    or
-    exists(ArrayAccess aa | e = aa.getArray())
-  } or
-  TImplicitExprPostUpdate(InstanceAccessExt ia) {
-    implicitInstanceArgument(_, ia)
-    or
-    exists(FieldAccess fa |
-      fa.getField() instanceof InstanceField and ia.isImplicitFieldQualifier(fa)
-    )
-  } or
-  TSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
-    FlowSummaryImpl::Private::summaryNodeRange(c, state)
-  } or
-  TSummaryParameterNode(SummarizedCallable c, int pos) {
-    FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
-  } or
-  TFieldValueNode(Field f)
+private module Cached {
+  cached
+  newtype TNode =
+    TExprNode(Expr e) {
+      DataFlowImplCommon::forceCachingInSameStage() and
+      not e.getType() instanceof VoidType and
+      not e.getParent*() instanceof Annotation
+    } or
+    TExplicitParameterNode(Parameter p) { exists(p.getCallable().getBody()) } or
+    TImplicitVarargsArray(Call c) {
+      c.getCallee().isVarargs() and
+      not exists(Argument arg | arg.getCall() = c and arg.isExplicitVarargsArray())
+    } or
+    TInstanceParameterNode(Callable c) { exists(c.getBody()) and not c.isStatic() } or
+    TImplicitInstanceAccess(InstanceAccessExt ia) { not ia.isExplicit(_) } or
+    TMallocNode(ClassInstanceExpr cie) or
+    TExplicitExprPostUpdate(Expr e) {
+      explicitInstanceArgument(_, e)
+      or
+      e instanceof Argument and not e.getType() instanceof ImmutableType
+      or
+      exists(FieldAccess fa | fa.getField() instanceof InstanceField and e = fa.getQualifier())
+      or
+      exists(ArrayAccess aa | e = aa.getArray())
+    } or
+    TImplicitExprPostUpdate(InstanceAccessExt ia) {
+      implicitInstanceArgument(_, ia)
+      or
+      exists(FieldAccess fa |
+        fa.getField() instanceof InstanceField and ia.isImplicitFieldQualifier(fa)
+      )
+    } or
+    TSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
+      FlowSummaryImpl::Private::summaryNodeRange(c, state)
+    } or
+    TSummaryParameterNode(SummarizedCallable c, int pos) {
+      FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
+    } or
+    TFieldValueNode(Field f)
+
+  cached
+  newtype TContent =
+    TFieldContent(InstanceField f) or
+    TArrayContent() or
+    TCollectionContent() or
+    TMapKeyContent() or
+    TMapValueContent() or
+    TSyntheticFieldContent(SyntheticField s)
+
+  cached
+  newtype TContentApprox =
+    TFieldContentApprox(string firstChar) { firstChar = approximateFieldContent(_) } or
+    TArrayContentApprox() or
+    TCollectionContentApprox() or
+    TMapKeyContentApprox() or
+    TMapValueContentApprox() or
+    TSyntheticFieldApproxContent()
+}
+
+import Cached
 
 private predicate explicitInstanceArgument(Call call, Expr instarg) {
   call instanceof MethodAccess and

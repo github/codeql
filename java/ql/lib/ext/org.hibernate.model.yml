@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.hibernate", "QueryProducer", True, "createNativeQuery", "", "", "Argument[0]", "sql", "manual"]
+      - ["org.hibernate", "QueryProducer", True, "createQuery", "", "", "Argument[0]", "sql", "manual"]
+      - ["org.hibernate", "QueryProducer", True, "createSQLQuery", "", "", "Argument[0]", "sql", "manual"]
+      - ["org.hibernate", "Session", True, "createQuery", "", "", "Argument[0]", "sql", "manual"]
+      - ["org.hibernate", "Session", True, "createSQLQuery", "", "", "Argument[0]", "sql", "manual"]
+      - ["org.hibernate", "SharedSessionContract", True, "createQuery", "", "", "Argument[0]", "sql", "manual"]
+      - ["org.hibernate", "SharedSessionContract", True, "createSQLQuery", "", "", "Argument[0]", "sql", "manual"]

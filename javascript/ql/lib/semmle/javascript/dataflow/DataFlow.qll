@@ -1580,6 +1580,8 @@ module DataFlow {
       or
       predExpr = succExpr.(TypeAssertion).getExpression()
       or
+      predExpr = succExpr.(SatisfiesExpr).getExpression()
+      or
       predExpr = succExpr.(NonNullAssertion).getExpression()
       or
       predExpr = succExpr.(ExpressionWithTypeArguments).getExpression()

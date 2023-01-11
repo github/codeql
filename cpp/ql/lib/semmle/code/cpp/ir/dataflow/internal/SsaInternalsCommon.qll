@@ -4,6 +4,7 @@ import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.ir.implementation.raw.internal.SideEffects as SideEffects
 private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowUtil
+private import DataFlowPrivate
 
 /**
  * Holds if `operand` is an operand that is not used by the dataflow library.
@@ -28,7 +29,9 @@ predicate ignoreInstruction(Instruction instr) {
     instr instanceof PhiInstruction or
     instr instanceof ReadSideEffectInstruction or
     instr instanceof ChiInstruction or
-    instr instanceof InitializeIndirectionInstruction
+    instr instanceof InitializeIndirectionInstruction or
+    instr instanceof AliasedDefinitionInstruction or
+    instr instanceof InitializeNonLocalInstruction
   )
 }
 
@@ -81,6 +84,14 @@ int getMaxIndirectionsForType(Type type) {
   result = countIndirectionsForCppType(getTypeForGLValue(type))
 }
 
+private class PointerOrReferenceType extends Cpp::DerivedType {
+  PointerOrReferenceType() {
+    this instanceof Cpp::PointerType
+    or
+    this instanceof Cpp::ReferenceType
+  }
+}
+
 /**
  * Gets the maximum number of indirections a value of type `type` can have.
  *
@@ -88,12 +99,9 @@ int getMaxIndirectionsForType(Type type) {
  * (i.e., `countIndirections(e.getUnspecifiedType())`).
  */
 private int countIndirections(Type t) {
-  result =
-    1 +
-      countIndirections([t.(Cpp::PointerType).getBaseType(), t.(Cpp::ReferenceType).getBaseType()])
+  result = any(Indirection ind | ind.getType() = t).getNumberOfIndirections()
   or
-  not t instanceof Cpp::PointerType and
-  not t instanceof Cpp::ReferenceType and
+  not exists(Indirection ind | ind.getType() = t) and
   result = 0
 }
 
@@ -120,14 +128,224 @@ class AllocationInstruction extends CallInstruction {
 }
 
 /**
- * Holds if `i` is a base instruction that starts a sequence of uses
- * of some variable that SSA can handle.
+ * An abstract class for handling indirections.
  *
- * This is either when `i` is a `VariableAddressInstruction` or when
- * `i` is a fresh allocation produced by an `AllocationInstruction`.
+ * Extend this class to make a type behave as a pointer for the
+ * purposes of dataflow.
  */
-private predicate isSourceVariableBase(Instruction i) {
-  i instanceof VariableAddressInstruction or i instanceof AllocationInstruction
+abstract class Indirection extends Type {
+  Type baseType;
+
+  /** Gets the type of this indirection. */
+  final Type getType() { result = super.getUnspecifiedType() }
+
+  /**
+   * Gets the number of indirections supported by this type.
+   *
+   * For example, the number of indirections of a variable `p` of type
+   * `int**` is `3` (i.e., `p`, `*p` and `**p`).
+   */
+  abstract int getNumberOfIndirections();
+
+  /**
+   * Holds if `deref` is an instruction that behaves as a `LoadInstruction`
+   * that loads the value computed by `address`.
+   */
+  predicate isAdditionalDereference(Instruction deref, Operand address) { none() }
+
+  /**
+   * Holds if `value` is written to the address computed by `address`.
+   *
+   * `certain` is `true` if this write is guaranteed to write to the address.
+   */
+  predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) { none() }
+
+  /**
+   * Gets the base type of this indirection, after specifiers have been deeply
+   * stripped and typedefs have been resolved.
+   *
+   * For example, the base type of `int*&` is `int*`, and the base type of `int*` is `int`.
+   */
+  final Type getBaseType() { result = baseType.getUnspecifiedType() }
+
+  /** Holds if there should be an additional taint step from `node1` to `node2`. */
+  predicate isAdditionalTaintStep(Node node1, Node node2) { none() }
+
+  /**
+   * Holds if the step from `opFrom` to `instrTo` should be considered a conversion
+   * from `opFrom` to `instrTo`.
+   */
+  predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) { none() }
+}
+
+private class PointerOrReferenceTypeIndirection extends Indirection instanceof PointerOrReferenceType {
+  PointerOrReferenceTypeIndirection() { baseType = PointerOrReferenceType.super.getBaseType() }
+
+  override int getNumberOfIndirections() { result = 1 + countIndirections(this.getBaseType()) }
+
+  override predicate isAdditionalDereference(Instruction deref, Operand address) { none() }
+
+  override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) { none() }
+}
+
+private module IteratorIndirections {
+  import semmle.code.cpp.models.interfaces.Iterator as Interfaces
+  import semmle.code.cpp.models.implementations.Iterator as Iterator
+  import semmle.code.cpp.models.implementations.StdContainer as StdContainer
+
+  class IteratorIndirection extends Indirection instanceof Interfaces::Iterator {
+    IteratorIndirection() {
+      not this instanceof PointerOrReferenceTypeIndirection and baseType = super.getValueType()
+    }
+
+    override int getNumberOfIndirections() { result = 1 + countIndirections(this.getBaseType()) }
+
+    override predicate isAdditionalDereference(Instruction deref, Operand address) {
+      exists(CallInstruction call |
+        operandForfullyConvertedCall(deref.getAUse(), call) and
+        this = call.getStaticCallTarget().getClassAndName("operator*") and
+        address = call.getThisArgumentOperand()
+      )
+    }
+
+    override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) {
+      exists(CallInstruction call | call.getArgumentOperand(0) = value.asOperand() |
+        this = call.getStaticCallTarget().getClassAndName("operator=") and
+        address = call.getThisArgumentOperand() and
+        certain = false
+      )
+    }
+
+    override predicate isAdditionalTaintStep(Node node1, Node node2) {
+      exists(CallInstruction call |
+        // Taint through `operator+=` and `operator-=` on iterators.
+        call.getStaticCallTarget() instanceof Iterator::IteratorAssignArithmeticOperator and
+        node2.(IndirectArgumentOutNode).getPreUpdateNode() = node1 and
+        node1.(IndirectOperand).getOperand() = call.getArgumentOperand(0) and
+        node1.getType().getUnspecifiedType() = this
+      )
+    }
+
+    override predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) {
+      // This is a bit annoying: Consider the following snippet:
+      // ```
+      // struct MyIterator {
+      //       ...
+      //       insert_iterator_by_trait operator*();
+      //       insert_iterator_by_trait operator=(int x);
+      //   };
+      // ...
+      // MyIterator it;
+      // ...
+      // *it = source();
+      // ```
+      // The qualifier to `operator*` will undergo prvalue-to-xvalue conversion and a
+      // temporary object will be created. Thus, the IR for the call to `operator=` will
+      // look like (simplified):
+      // ```
+      // r1(glval<MyIterator>) = VariableAddress[it]        :
+      // r2(glval<unknown>)    = FunctionAddress[operator*] :
+      // r3(MyIterator)        = Call[operator*]            : func:r2, this:r1
+      // r4(glval<MyIterator>) = VariableAddress[#temp]     :
+      // m1(MyIterator)        = Store[#temp]               : &:r4, r3
+      // r5(glval<unknown>)    = FunctionAddress[operator=] :
+      // r6(glval<unknown>)    = FunctionAddress[source]    :
+      // r7(int)               = Call[source]               : func:r6
+      // r8(MyIterator)        = Call[operator=]            : func:r5, this:r4, 0:r7
+      // ```
+      // in order to properly recognize that the qualifier to the call to `operator=` accesses
+      // `it` we look for the store that writes to the temporary object, and use the source value
+      // of that store as the "address" to continue searching for the base variable `it`.
+      exists(StoreInstruction store, VariableInstruction var |
+        var = instrTo and
+        var.getIRVariable() instanceof IRTempVariable and
+        opFrom.getType() = this and
+        store.getSourceValueOperand() = opFrom and
+        store.getDestinationAddress() = var
+      )
+      or
+      // A call to `operator++` or `operator--` is the iterator equivalent version of a
+      // pointer arithmetic instruction.
+      exists(CallInstruction call |
+        instrTo = call and
+        call.getStaticCallTarget() instanceof Iterator::IteratorCrementMemberOperator and
+        opFrom = call.getThisArgumentOperand()
+      )
+    }
+  }
+}
+
+predicate isDereference(Instruction deref, Operand address) {
+  any(Indirection ind).isAdditionalDereference(deref, address)
+  or
+  deref.(LoadInstruction).getSourceAddressOperand() = address
+}
+
+predicate isWrite(Node0Impl value, Operand address, boolean certain) {
+  any(Indirection ind).isAdditionalWrite(value, address, certain)
+  or
+  certain = true and
+  (
+    exists(StoreInstruction store |
+      value.asInstruction() = store and
+      address = store.getDestinationAddressOperand()
+    )
+    or
+    exists(InitializeParameterInstruction init |
+      value.asInstruction() = init and
+      address = init.getAnOperand()
+    )
+    or
+    exists(InitializeDynamicAllocationInstruction init |
+      value.asInstruction() = init and
+      address = init.getAllocationAddressOperand()
+    )
+    or
+    exists(UninitializedInstruction uninitialized |
+      value.asInstruction() = uninitialized and
+      address = uninitialized.getAnOperand()
+    )
+  )
+}
+
+predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) {
+  any(Indirection ind).isAdditionalConversionFlow(opFrom, instrTo)
+}
+
+newtype TBaseSourceVariable =
+  // Each IR variable gets its own source variable
+  TBaseIRVariable(IRVariable var) or
+  // Each allocation gets its own source variable
+  TBaseCallVariable(AllocationInstruction call)
+
+abstract class BaseSourceVariable extends TBaseSourceVariable {
+  abstract string toString();
+
+  abstract DataFlowType getType();
+}
+
+class BaseIRVariable extends BaseSourceVariable, TBaseIRVariable {
+  IRVariable var;
+
+  IRVariable getIRVariable() { result = var }
+
+  BaseIRVariable() { this = TBaseIRVariable(var) }
+
+  override string toString() { result = var.toString() }
+
+  override DataFlowType getType() { result = var.getType() }
+}
+
+class BaseCallVariable extends BaseSourceVariable, TBaseCallVariable {
+  AllocationInstruction call;
+
+  BaseCallVariable() { this = TBaseCallVariable(call) }
+
+  AllocationInstruction getCallInstruction() { result = call }
+
+  override string toString() { result = call.toString() }
+
+  override DataFlowType getType() { result = call.getResultType() }
 }
 
 /**
@@ -139,13 +357,189 @@ predicate isModifiableByCall(ArgumentOperand operand) {
     type = getLanguageType(operand) and
     call.getArgumentOperand(index) = operand and
     if index = -1
-    then not call.getStaticCallTarget() instanceof Cpp::ConstMemberFunction
-    else not SideEffects::isConstPointerLike(any(Type t | type.hasType(t, _)))
+    then
+      // A qualifier is "modifiable" if:
+      // 1. the member function is not const specified, or
+      // 2. the member function is `const` specified, but returns a pointer or reference
+      // type that is non-const.
+      //
+      // To see why this is necessary, consider the following function:
+      // ```
+      // struct C {
+      //   void* data_;
+      //   void* data() const { return data; }
+      // };
+      // ...
+      // C c;
+      // memcpy(c.data(), source, 16)
+      // ```
+      // the data pointed to by `c.data_` is potentially modified by the call to `memcpy` even though
+      // `C::data` has a const specifier. So we further place the restriction that the type returned
+      // by `call` should not be of the form `const T*` (for some deeply const type `T`).
+      if call.getStaticCallTarget() instanceof Cpp::ConstMemberFunction
+      then
+        exists(PointerOrReferenceType resultType |
+          resultType = call.getResultType() and
+          not resultType.isDeeplyConstBelow()
+        )
+      else any()
+    else
+      // An argument is modifiable if it's a non-const pointer or reference type.
+      exists(Type t, boolean isGLValue | type.hasType(t, isGLValue) |
+        // If t is a glvalue it means that t is always a pointer-like type.
+        isGLValue = true
+        or
+        t instanceof PointerOrReferenceType and
+        not SideEffects::isConstPointerLike(t)
+      )
   )
+}
+
+abstract class BaseSourceVariableInstruction extends Instruction {
+  abstract BaseSourceVariable getBaseSourceVariable();
+}
+
+private class BaseIRVariableInstruction extends BaseSourceVariableInstruction,
+  VariableAddressInstruction {
+  override BaseIRVariable getBaseSourceVariable() { result.getIRVariable() = this.getIRVariable() }
+}
+
+private class BaseAllocationInstruction extends BaseSourceVariableInstruction, AllocationInstruction {
+  override BaseCallVariable getBaseSourceVariable() { result.getCallInstruction() = this }
 }
 
 cached
 private module Cached {
+  private import semmle.code.cpp.models.interfaces.Iterator as Interfaces
+  private import semmle.code.cpp.models.implementations.Iterator as Iterator
+
+  /**
+   * Holds if `next` is a instruction with a memory result that potentially
+   * updates the memory produced by `prev`.
+   */
+  private predicate memorySucc(Instruction prev, Instruction next) {
+    prev = next.(ChiInstruction).getTotal()
+    or
+    // Phi inputs can be inexact.
+    prev = next.(PhiInstruction).getAnInputOperand().getAnyDef()
+    or
+    prev = next.(CopyInstruction).getSourceValue()
+    or
+    exists(ReadSideEffectInstruction read |
+      next = read.getPrimaryInstruction() and
+      isAdditionalConversionFlow(_, next) and
+      prev = read.getSideEffectOperand().getAnyDef()
+    )
+  }
+
+  /**
+   * Holds if `iteratorDerefAddress` is an address of an iterator dereference (i.e., `*it`)
+   * that is used for a write operation that writes the value `value`. The `memory` instruction
+   * represents the memory that the IR's SSA analysis determined was read by the call to `operator*`.
+   *
+   * The `numberOfLoads` integer represents the number of dereferences this write corresponds to
+   * on the underlying container that produced the iterator.
+   */
+  private predicate isChiAfterIteratorDef(
+    Instruction memory, Operand iteratorDerefAddress, Node0Impl value, int numberOfLoads
+  ) {
+    exists(
+      BaseSourceVariableInstruction iteratorBase, ReadSideEffectInstruction read,
+      Operand iteratorAddress
+    |
+      numberOfLoads >= 0 and
+      isDef(_, value, iteratorDerefAddress, iteratorBase, numberOfLoads + 2, 0) and
+      isUse(_, iteratorAddress, iteratorBase, numberOfLoads + 1, 0) and
+      iteratorBase.getResultType() instanceof Interfaces::Iterator and
+      isDereference(iteratorAddress.getDef(), read.getArgumentDef().getAUse()) and
+      memory = read.getSideEffectOperand().getAnyDef()
+    )
+  }
+
+  /**
+   * Holds if `iterator` is a `StoreInstruction` that stores the result of some function
+   * returning an iterator into an address computed started at `containerBase`.
+   *
+   * For example, given a declaration like `std::vector<int>::iterator it = v.begin()`,
+   * the `iterator` will be the `StoreInstruction` generated by the write to `it`, and
+   * `containerBase` will be the address of `v`.
+   */
+  private predicate isChiAfterBegin(
+    BaseSourceVariableInstruction containerBase, StoreInstruction iterator
+  ) {
+    exists(CallInstruction getIterator |
+      getIterator = iterator.getSourceValue() and
+      getIterator.getStaticCallTarget() instanceof Iterator::GetIteratorFunction and
+      isDef(_, any(Node0Impl n | n.asInstruction() = iterator), _, _, 1, 0) and
+      isUse(_, getIterator.getThisArgumentOperand(), containerBase, 0, 0)
+    )
+  }
+
+  /**
+   * Holds if `iteratorDerefAddress` is an address of an iterator dereference (i.e., `*it`)
+   * that is used for a read operation. The `memory` instruction represents the memory that
+   * the IR's SSA analysis determined was read by the call to `operator*`.
+   *
+   * Finally, the `numberOfLoads` integer represents the number of dereferences this read
+   * corresponds to on the underlying container that produced the iterator.
+   */
+  private predicate isChiBeforeIteratorUse(
+    Operand iteratorDerefAddress, Instruction memory, int numberOfLoads
+  ) {
+    exists(
+      BaseSourceVariableInstruction iteratorBase, LoadInstruction load,
+      ReadSideEffectInstruction read
+    |
+      numberOfLoads >= 0 and
+      isUse(_, iteratorDerefAddress, iteratorBase, numberOfLoads + 2, 0) and
+      iteratorBase.getResultType() instanceof Interfaces::Iterator and
+      read.getPrimaryInstruction() = load.getSourceAddress() and
+      memory = read.getSideEffectOperand().getAnyDef()
+    )
+  }
+
+  /**
+   * Holds if `iteratorDerefAddress` is an address of an iterator dereference (i.e., `*it`)
+   * that is used for a write operation that writes the value `value` to a container that
+   * created the iterator. `container` represents the base of the address of the container
+   * that was used to create the iterator.
+   */
+  cached
+  predicate isIteratorDef(
+    BaseSourceVariableInstruction container, Operand iteratorDerefAddress, Node0Impl value,
+    int numberOfLoads, int indirectionIndex
+  ) {
+    exists(Instruction memory, Instruction begin, int upper, int ind |
+      isChiAfterIteratorDef(memory, iteratorDerefAddress, value, numberOfLoads) and
+      memorySucc*(begin, memory) and
+      isChiAfterBegin(container, begin) and
+      upper = countIndirectionsForCppType(container.getResultLanguageType()) and
+      ind = numberOfLoads + [1 .. upper] and
+      indirectionIndex = ind - (numberOfLoads + 1)
+    )
+  }
+
+  /**
+   * Holds if `iteratorDerefAddress` is an address of an iterator dereference (i.e., `*it`)
+   * that is used for a read operation to read a value from a container that created the iterator.
+   * `container` represents the base of the address of the container that was used to create
+   * the iterator.
+   */
+  cached
+  predicate isIteratorUse(
+    BaseSourceVariableInstruction container, Operand iteratorDerefAddress, int numberOfLoads,
+    int indirectionIndex
+  ) {
+    exists(Instruction begin, Instruction memory, int upper, int ind |
+      isChiBeforeIteratorUse(iteratorDerefAddress, memory, numberOfLoads) and
+      memorySucc*(begin, memory) and
+      isChiAfterBegin(container, begin) and
+      upper = countIndirectionsForCppType(container.getResultLanguageType()) and
+      ind = numberOfLoads + [1 .. upper] and
+      indirectionIndex = ind - (numberOfLoads + 1)
+    )
+  }
+
   /**
    * Holds if `op` is a use of an SSA variable rooted at `base` with `ind` number
    * of indirections.
@@ -154,15 +548,50 @@ private module Cached {
    * `indirectionIndex` specifies the number of loads required to read the variable.
    */
   cached
-  predicate isUse(boolean certain, Operand op, Instruction base, int ind, int indirectionIndex) {
+  predicate isUse(
+    boolean certain, Operand op, BaseSourceVariableInstruction base, int ind, int indirectionIndex
+  ) {
     not ignoreOperand(op) and
     certain = true and
-    exists(LanguageType type, int m, int ind0 |
+    exists(LanguageType type, int upper, int ind0 |
       type = getLanguageType(op) and
-      m = countIndirectionsForCppType(type) and
+      upper = countIndirectionsForCppType(type) and
       isUseImpl(op, base, ind0) and
-      ind = ind0 + [0 .. m] and
+      ind = ind0 + [0 .. upper] and
       indirectionIndex = ind - ind0
+    )
+  }
+
+  /**
+   * Holds if the underlying IR has a suitable operand to represent a value
+   * that would otherwise need to be represented by a dedicated `RawIndirectOperand` value.
+   *
+   * Such operands do not create new `RawIndirectOperand` values, but are
+   * instead associated with the operand returned by this predicate.
+   */
+  cached
+  Operand getIRRepresentationOfIndirectOperand(Operand operand, int indirectionIndex) {
+    exists(Instruction load |
+      isDereference(load, operand) and
+      result = unique( | | load.getAUse()) and
+      isUseImpl(operand, _, indirectionIndex - 1)
+    )
+  }
+
+  /**
+   * Holds if the underlying IR has a suitable instruction to represent a value
+   * that would otherwise need to be represented by a dedicated `RawIndirectInstruction` value.
+   *
+   * Such instruction do not create new `RawIndirectOperand` values, but are
+   * instead associated with the instruction returned by this predicate.
+   */
+  cached
+  Instruction getIRRepresentationOfIndirectInstruction(Instruction instr, int indirectionIndex) {
+    exists(Instruction load, Operand address |
+      address.getDef() = instr and
+      isDereference(load, address) and
+      isUseImpl(address, _, indirectionIndex - 1) and
+      result = instr
     )
   }
 
@@ -170,11 +599,10 @@ private module Cached {
    * Holds if `operand` is a use of an SSA variable rooted at `base`, and the
    * path from `base` to `operand` passes through `ind` load-like instructions.
    */
-  private predicate isUseImpl(Operand operand, Instruction base, int ind) {
+  private predicate isUseImpl(Operand operand, BaseSourceVariableInstruction base, int ind) {
     DataFlowImplCommon::forceCachingInSameStage() and
     ind = 0 and
-    operand.getDef() = base and
-    isSourceVariableBase(base)
+    operand = base.getAUse()
     or
     exists(Operand mid, Instruction instr |
       isUseImpl(mid, base, ind) and
@@ -183,7 +611,10 @@ private module Cached {
     )
     or
     exists(int ind0 |
-      isUseImpl(operand.getDef().(LoadInstruction).getSourceAddressOperand(), base, ind0)
+      exists(Operand address |
+        isDereference(operand.getDef(), address) and
+        isUseImpl(address, base, ind0)
+      )
       or
       isUseImpl(operand.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0)
     |
@@ -201,25 +632,31 @@ private module Cached {
    */
   cached
   predicate isDef(
-    boolean certain, Instruction instr, Operand address, Instruction base, int ind,
+    boolean certain, Node0Impl value, Operand address, BaseSourceVariableInstruction base, int ind,
     int indirectionIndex
   ) {
-    certain = true and
-    exists(int ind0, CppType type, int m |
-      address =
-        [
-          instr.(StoreInstruction).getDestinationAddressOperand(),
-          instr.(InitializeParameterInstruction).getAnOperand(),
-          instr.(InitializeDynamicAllocationInstruction).getAllocationAddressOperand(),
-          instr.(UninitializedInstruction).getAnOperand()
-        ]
+    exists(
+      boolean writeIsCertain, boolean addressIsCertain, int ind0, CppType type, int lower, int upper
     |
-      isDefImpl(address, base, ind0) and
+      isWrite(value, address, writeIsCertain) and
+      isDefImpl(address, base, ind0, addressIsCertain) and
+      certain = writeIsCertain.booleanAnd(addressIsCertain) and
       type = getLanguageType(address) and
-      m = countIndirectionsForCppType(type) and
-      ind = ind0 + [1 .. m] and
-      indirectionIndex = ind - (ind0 + 1)
+      upper = countIndirectionsForCppType(type) and
+      ind = ind0 + [lower .. upper] and
+      indirectionIndex = ind - (ind0 + lower) and
+      (if type.hasType(any(Cpp::ArrayType arrayType), true) then lower = 0 else lower = 1)
     )
+  }
+
+  /**
+   * Holds if the address computed by `operand` is guarenteed to write
+   * to a specific address.
+   */
+  private predicate isCertainAddress(Operand operand) {
+    operand.getDef() instanceof VariableAddressInstruction
+    or
+    operand.getType() instanceof Cpp::ReferenceType
   }
 
   /**
@@ -229,25 +666,30 @@ private module Cached {
    * Note: Unlike `isUseImpl`, this predicate recurses through pointer-arithmetic
    * instructions.
    */
-  private predicate isDefImpl(Operand address, Instruction base, int ind) {
+  private predicate isDefImpl(
+    Operand operand, BaseSourceVariableInstruction base, int ind, boolean certain
+  ) {
     DataFlowImplCommon::forceCachingInSameStage() and
     ind = 0 and
-    address.getDef() = base and
-    isSourceVariableBase(base)
+    operand = base.getAUse() and
+    (if isCertainAddress(operand) then certain = true else certain = false)
     or
-    exists(Operand mid, Instruction instr |
-      isDefImpl(mid, base, ind) and
-      instr = address.getDef() and
-      conversionFlow(mid, instr, _)
+    exists(Operand mid, Instruction instr, boolean certain0, boolean isPointerArith |
+      isDefImpl(mid, base, ind, certain0) and
+      instr = operand.getDef() and
+      conversionFlow(mid, instr, isPointerArith) and
+      if isPointerArith = true then certain = false else certain = certain0
     )
     or
-    exists(int ind0 |
-      isDefImpl(address.getDef().(LoadInstruction).getSourceAddressOperand(), base, ind0)
-      or
-      isDefImpl(address.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0)
+    exists(Operand address, boolean certain0 |
+      isDereference(operand.getDef(), address) and
+      isDefImpl(address, base, ind - 1, certain0)
     |
-      ind0 = ind - 1
+      if isCertainAddress(operand) then certain = certain0 else certain = false
     )
+    or
+    isDefImpl(operand.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind - 1, _) and
+    certain = true
   }
 }
 

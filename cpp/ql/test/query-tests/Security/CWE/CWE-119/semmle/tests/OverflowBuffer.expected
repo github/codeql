@@ -42,25 +42,24 @@
 | tests.cpp:476:2:476:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:469:7:469:12 | buffer | array |
 | tests.cpp:477:2:477:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:469:7:469:12 | buffer | array |
 | tests.cpp:481:2:481:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:469:7:469:12 | buffer | array |
-| tests.cpp:485:2:485:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:469:7:469:12 | buffer | array |
 | tests.cpp:487:2:487:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:473:21:473:26 | call to malloc | array |
 | tests.cpp:491:2:491:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:474:21:474:26 | call to malloc | array |
-| tests.cpp:495:2:495:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:474:21:474:26 | call to malloc | array |
 | tests.cpp:519:3:519:8 | call to memset | This 'memset' operation accesses 20 bytes but the $@ is only 10 bytes. | tests.cpp:502:15:502:20 | call to malloc | destination buffer |
 | tests.cpp:519:3:519:8 | call to memset | This 'memset' operation accesses 20 bytes but the $@ is only 10 bytes. | tests.cpp:510:16:510:21 | call to malloc | destination buffer |
 | tests.cpp:541:6:541:10 | call to fread | This 'fread' operation may access 101 bytes but the $@ is only 100 bytes. | tests.cpp:532:7:532:16 | charBuffer | destination buffer |
 | tests.cpp:546:6:546:10 | call to fread | This 'fread' operation may access 400 bytes but the $@ is only 100 bytes. | tests.cpp:532:7:532:16 | charBuffer | destination buffer |
 | tests.cpp:569:6:569:15 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:565:7:565:12 | buffer | array |
 | tests.cpp:577:7:577:13 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:565:7:565:12 | buffer | array |
-| tests.cpp:579:6:579:12 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:565:7:565:12 | buffer | array |
-| tests.cpp:586:6:586:12 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:565:7:565:12 | buffer | array |
 | tests_restrict.c:12:2:12:7 | call to memcpy | This 'memcpy' operation accesses 2 bytes but the $@ is only 1 byte. | tests_restrict.c:7:6:7:13 | smallbuf | source buffer |
 | unions.cpp:26:2:26:7 | call to memset | This 'memset' operation accesses 200 bytes but the $@ is only 100 bytes. | unions.cpp:21:10:21:11 | mu | destination buffer |
+| unions.cpp:27:2:27:7 | call to memset | This 'memset' operation accesses 100 bytes but the $@ is only 10 bytes. | unions.cpp:15:7:15:11 | small | destination buffer |
+| unions.cpp:29:2:29:7 | call to memset | This 'memset' operation accesses 100 bytes but the $@ is only 10 bytes. | unions.cpp:15:7:15:11 | small | destination buffer |
+| unions.cpp:30:2:30:7 | call to memset | This 'memset' operation accesses 200 bytes but the $@ is only 10 bytes. | unions.cpp:15:7:15:11 | small | destination buffer |
 | unions.cpp:30:2:30:7 | call to memset | This 'memset' operation accesses 200 bytes but the $@ is only 100 bytes. | unions.cpp:15:7:15:11 | small | destination buffer |
 | unions.cpp:34:2:34:7 | call to memset | This 'memset' operation accesses 200 bytes but the $@ is only 100 bytes. | unions.cpp:16:7:16:11 | large | destination buffer |
-| var_size_struct.cpp:71:3:71:8 | call to memset | This 'memset' operation accesses 1025 bytes but the $@ is only 1024 bytes. | var_size_struct.cpp:67:35:67:40 | call to malloc | destination buffer |
-| var_size_struct.cpp:73:3:73:9 | call to strncpy | This 'strncpy' operation may access 1025 bytes but the $@ is only 1024 bytes. | var_size_struct.cpp:67:35:67:40 | call to malloc | destination buffer |
-| var_size_struct.cpp:87:3:87:19 | access to array | This array indexing operation accesses byte offset 67 but the $@ is only 64 bytes. | var_size_struct.cpp:82:35:82:40 | call to malloc | array |
+| var_size_struct.cpp:71:3:71:8 | call to memset | This 'memset' operation accesses 1025 bytes but the $@ is only 1024 bytes. | var_size_struct.cpp:63:8:63:11 | data | destination buffer |
+| var_size_struct.cpp:73:3:73:9 | call to strncpy | This 'strncpy' operation may access 1025 bytes but the $@ is only 1024 bytes. | var_size_struct.cpp:63:8:63:11 | data | destination buffer |
+| var_size_struct.cpp:87:3:87:19 | access to array | This array indexing operation accesses byte offset 67 but the $@ is only 64 bytes. | var_size_struct.cpp:78:7:78:14 | elements | array |
 | var_size_struct.cpp:99:3:99:8 | call to memset | This 'memset' operation accesses 129 bytes but the $@ is only 128 bytes. | var_size_struct.cpp:92:8:92:10 | str | destination buffer |
 | var_size_struct.cpp:101:3:101:8 | call to memset | This 'memset' operation accesses 129 bytes but the $@ is only 128 bytes. | var_size_struct.cpp:92:8:92:10 | str | destination buffer |
 | var_size_struct.cpp:103:3:103:9 | call to strncpy | This 'strncpy' operation may access 129 bytes but the $@ is only 128 bytes. | var_size_struct.cpp:92:8:92:10 | str | destination buffer |

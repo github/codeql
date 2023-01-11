@@ -12,7 +12,7 @@ namespace Semmle.Autobuild.Shared
     /// C# project files come in 2 flavours, .Net core and msbuild, but they
     /// have the same file extension.
     /// </summary>
-    public class Project : ProjectOrSolution
+    public class Project<TAutobuildOptions> : ProjectOrSolution<TAutobuildOptions> where TAutobuildOptions : AutobuildOptionsShared
     {
         /// <summary>
         /// Holds if this project is for .Net core.
@@ -23,13 +23,13 @@ namespace Semmle.Autobuild.Shared
 
         public Version ToolsVersion { get; private set; }
 
-        private readonly Lazy<List<Project>> includedProjectsLazy;
+        private readonly Lazy<List<Project<TAutobuildOptions>>> includedProjectsLazy;
         public override IEnumerable<IProjectOrSolution> IncludedProjects => includedProjectsLazy.Value;
 
-        public Project(Autobuilder builder, string path) : base(builder, path)
+        public Project(Autobuilder<TAutobuildOptions> builder, string path) : base(builder, path)
         {
             ToolsVersion = new Version();
-            includedProjectsLazy = new Lazy<List<Project>>(() => new List<Project>());
+            includedProjectsLazy = new Lazy<List<Project<TAutobuildOptions>>>(() => new List<Project<TAutobuildOptions>>());
 
             if (!builder.Actions.FileExists(FullPath))
                 return;
@@ -70,9 +70,9 @@ namespace Semmle.Autobuild.Shared
                     }
                 }
 
-                includedProjectsLazy = new Lazy<List<Project>>(() =>
+                includedProjectsLazy = new Lazy<List<Project<TAutobuildOptions>>>(() =>
                 {
-                    var ret = new List<Project>();
+                    var ret = new List<Project<TAutobuildOptions>>();
                     // The documentation on `.proj` files is very limited, but it appears that both
                     // `<ProjectFile Include="X"/>` and `<ProjectFiles Include="X"/>` is valid
                     var mgr = new XmlNamespaceManager(projFile.NameTable);
@@ -89,7 +89,7 @@ namespace Semmle.Autobuild.Shared
                         }
 
                         var includePath = builder.Actions.PathCombine(include.Value.Split('\\', StringSplitOptions.RemoveEmptyEntries));
-                        ret.Add(new Project(builder, builder.Actions.PathCombine(DirectoryName, includePath)));
+                        ret.Add(new Project<TAutobuildOptions>(builder, builder.Actions.PathCombine(DirectoryName, includePath)));
                     }
                     return ret;
                 });

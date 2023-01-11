@@ -2,6 +2,8 @@
 
 #include <swift/AST/GenericParamList.h>
 #include <swift/AST/ParameterList.h>
+#include "swift/extractor/infra/SwiftDiagnosticKind.h"
+#include "swift/AST/PropertyWrappers.h"
 
 namespace codeql {
 namespace {
@@ -84,6 +86,11 @@ std::optional<codeql::ParamDecl> DeclTranslator::translateParamDecl(const swift:
   }
   fillVarDecl(decl, *entry);
   entry->is_inout = decl.isInOut();
+  if (auto wrapped = decl.getPropertyWrapperWrappedValueVar()) {
+    entry->property_wrapper_local_wrapped_var = dispatcher.fetchLabel(wrapped);
+    entry->property_wrapper_local_wrapped_var_binding =
+        dispatcher.fetchLabel(wrapped->getParentPatternBinding());
+  }
   return entry;
 }
 
@@ -224,6 +231,18 @@ std::optional<codeql::AccessorDecl> DeclTranslator::translateAccessorDecl(
     case swift::AccessorKind::DidSet:
       entry->is_did_set = true;
       break;
+    case swift::AccessorKind::Read:
+      entry->is_read = true;
+      break;
+    case swift::AccessorKind::Modify:
+      entry->is_modify = true;
+      break;
+    case swift::AccessorKind::Address:
+      entry->is_unsafe_address = true;
+      break;
+    case swift::AccessorKind::MutableAddress:
+      entry->is_unsafe_mutable_address = true;
+      break;
   }
   fillAbstractFunctionDecl(decl, *entry);
   return entry;
@@ -354,6 +373,16 @@ void DeclTranslator::fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& en
         dispatcher.fetchOptionalLabel(decl.getPropertyWrapperBackingPropertyType());
   }
   fillAbstractStorageDecl(decl, entry);
+  if (auto backing = decl.getPropertyWrapperBackingProperty()) {
+    entry.property_wrapper_backing_var = dispatcher.fetchLabel(backing);
+    entry.property_wrapper_backing_var_binding =
+        dispatcher.fetchLabel(backing->getParentPatternBinding());
+  }
+  if (auto projection = decl.getPropertyWrapperProjectionVar()) {
+    entry.property_wrapper_projection_var = dispatcher.fetchLabel(projection);
+    entry.property_wrapper_projection_var_binding =
+        dispatcher.fetchLabel(projection->getParentPatternBinding());
+  }
 }
 
 void DeclTranslator::fillNominalTypeDecl(const swift::NominalTypeDecl& decl,
@@ -390,4 +419,29 @@ codeql::IfConfigDecl DeclTranslator::translateIfConfigDecl(const swift::IfConfig
   return entry;
 }
 
+std::optional<codeql::OpaqueTypeDecl> DeclTranslator::translateOpaqueTypeDecl(
+    const swift::OpaqueTypeDecl& decl) {
+  if (auto entry = createNamedEntry(decl)) {
+    fillTypeDecl(decl, *entry);
+    entry->naming_declaration = dispatcher.fetchLabel(decl.getNamingDecl());
+    entry->opaque_generic_params = dispatcher.fetchRepeatedLabels(decl.getOpaqueGenericParams());
+    return entry;
+  }
+  return std::nullopt;
+}
+
+codeql::PoundDiagnosticDecl DeclTranslator::translatePoundDiagnosticDecl(
+    const swift::PoundDiagnosticDecl& decl) {
+  auto entry = createEntry(decl);
+  entry.kind = translateDiagnosticsKind(decl.getKind());
+  entry.message = dispatcher.fetchLabel(decl.getMessage());
+  return entry;
+}
+
+codeql::MissingMemberDecl DeclTranslator::translateMissingMemberDecl(
+    const swift::MissingMemberDecl& decl) {
+  auto entry = createEntry(decl);
+  entry.name = decl.getName().getBaseName().userFacingName().str();
+  return entry;
+}
 }  // namespace codeql

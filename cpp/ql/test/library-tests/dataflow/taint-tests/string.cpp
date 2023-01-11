@@ -26,24 +26,24 @@ void test_string()
 	std::string b("123");
 	std::string c(source());
 
-	sink(a); // $ ir
+	sink(a); // $ ast,ir
 	sink(b);
-	sink(c); // $ MISSING: ir
+	sink(c); // $ ast,ir
 	sink(b.c_str());
-	sink(c.c_str()); // $ ir
+	sink(c.c_str()); // $ ast,ir
 }
 
 void test_strings2()
 {
 	string path1 = user_input();
-	sink(path1.c_str(), "r"); // $ ir
+	sink(path1.c_str(), "r"); // $ ast,ir
 
 	string path2;
 	path2 = user_input();
-	sink(path2.c_str(), "r"); // $ ir
+	sink(path2.c_str(), "r"); // $ ast,ir
 
 	string path3(user_input());
-	sink(path3.c_str(), "r"); // $ ir
+	sink(path3.c_str(), "r"); // $ ast,ir
 }
 
 void test_string3()
@@ -53,8 +53,8 @@ void test_string3()
 	// convert char * -> std::string
 	std::string ss(cs);
 
-	sink(cs); // $ ir
-	sink(ss); // $ MISSING: ir
+	sink(cs); // $ ast,ir
+	sink(ss); // $ ast,ir
 }
 
 void test_string4()
@@ -67,8 +67,8 @@ void test_string4()
 	// convert back std::string -> char *
 	cs = ss.c_str();
 
-	sink(cs); // $ ir
-	sink(ss); // $ MISSING: ir
+	sink(cs); // $ ast,ir
+	sink(ss); // $ ast,ir
 }
 
 void test_string_constructors_assignments()
@@ -90,9 +90,9 @@ void test_string_constructors_assignments()
 		std::string s3;
 		s3 = source();
 
-		sink(s1); // $ MISSING: ir
-		sink(s2); // $ MISSING: ir
-		sink(s3); // $ MISSING: ir
+		sink(s1); // $ ast,ir
+		sink(s2); // $ ast,ir
+		sink(s3); // $ ast,ir
 	}
 
 	{
@@ -111,28 +111,28 @@ void test_string_constructors_assignments()
 		std::string s2;
 		s2 = std::string(source());
 
-		sink(s1); // $ MISSING: ir
-		sink(s2); // $ MISSING: ir
+		sink(s1); // $ ast,ir
+		sink(s2); // $ ast,ir
 	}
 }
 
 void test_range_based_for_loop_string() {
 	std::string s(source());
 	for(char c : s) {
-		sink(c); // $ ir
+		sink(c); // $ ast,ir
 	}
 
 	for(std::string::iterator it = s.begin(); it != s.end(); ++it) {
-		sink(*it); // $ ir
+		sink(*it); // $ ast,ir
 	}
 
 	for(char& c : s) {
-		sink(c); // $ ir
+		sink(c); // $ ast,ir
 	}
 
 	const std::string const_s(source());
 	for(const char& c : const_s) {
-		sink(c); // $ ir
+		sink(c); // $ ast,ir
 	}
 }
 
@@ -142,12 +142,12 @@ void test_string_append() {
 		std::string s2(source());
 
 		sink(s1 + s1);
-		sink(s1 + s2); // $ ir
-		sink(s2 + s1); // $ ir
-		sink(s2 + s2); // $ ir
+		sink(s1 + s2); // $ ast,ir
+		sink(s2 + s1); // $ ast,ir
+		sink(s2 + s2); // $ ast,ir
 	
 		sink(s1 + " world");
-		sink(s1 + source()); // $ ir
+		sink(s1 + source()); // $ ast,ir
 	}
 
 	{
@@ -156,25 +156,25 @@ void test_string_append() {
 		std::string s5, s6, s7, s8, s9;
 
 		s5 = s3 + s4;
-		sink(s5); // $ MISSING: ir
+		sink(s5); // $ ast,ir
 
 		s6 = s3;
-		sink(s6 += s4); // $ MISSING: ir
-		sink(s6); // $ MISSING: ir
+		sink(s6 += s4); // $ ast,ir
+		sink(s6); // $ ast,ir
 
 		s7 = s3;
-		sink(s7 += source()); // $ ir
-		sink(s7 += " "); // $ MISSING: ir
-		sink(s7); // $ MISSING: ir
+		sink(s7 += source()); // $ ast,ir
+		sink(s7 += " "); // $ ast,ir
+		sink(s7); // $ ast,ir
 
 		s8 = s3;
 		s8.append(s4);
-		sink(s8); // $ MISSING: ir
+		sink(s8); // $ ast,ir
 
 		s9 = s3;
 		s9.append(source());
 		s9.append(" ");
-		sink(s9); // $ MISSING: ir
+		sink(s9); // $ ast,ir
 	}
 
 	{
@@ -182,7 +182,7 @@ void test_string_append() {
 		char c = ns_char::source();
 
 		s10.append(1, c);
-		sink(s10); // $ MISSING: ir
+		sink(s10); // $ ast,ir
 	}
 }
 
@@ -196,14 +196,14 @@ void test_string_assign() {
 	sink(s3.assign(s1));
 	sink(s3);
 
-	sink(s4.assign(s2)); // $ MISSING: ir
-	sink(s4); // $ MISSING: ir
+	sink(s4.assign(s2)); // $ ast,ir
+	sink(s4); // $ ast,ir
 
-	sink(s5.assign(10, c)); // $ MISSING: ir
-	sink(s5); // $ MISSING: ir
+	sink(s5.assign(10, c)); // $ ast,ir
+	sink(s5); // $ ast,ir
 
 	sink(s6.assign(s1));
-	sink(s6); //
+	sink(s6); // $ SPURIOUS: ast,ir
 }
 
 void test_string_insert() {
@@ -217,16 +217,16 @@ void test_string_insert() {
 	sink(s3);
 
 	s4 = s2;
-	sink(s4.insert(0, s1)); // $ MISSING: ir
-	sink(s4); // $ MISSING: ir
+	sink(s4.insert(0, s1)); // $ ast,ir
+	sink(s4); // $ ast,ir
 
 	s5 = s1;
-	sink(s5.insert(0, s2)); // $ MISSING: ir
-	sink(s5); // $ MISSING: ir
+	sink(s5.insert(0, s2)); // $ ast,ir
+	sink(s5); // $ ast,ir
 
 	s6 = s1;
-	sink(s6.insert(0, 10, c)); // $ MISSING: ir
-	sink(s6); // $ MISSING: ir
+	sink(s6.insert(0, 10, c)); // $ ast,ir
+	sink(s6); // $ ast,ir
 }
 
 void test_string_replace() {
@@ -240,16 +240,16 @@ void test_string_replace() {
 	sink(s3);
 
 	s4 = s2;
-	sink(s4.replace(1, 2, s1)); // $ MISSING: ir
-	sink(s4); // $ MISSING: ir
+	sink(s4.replace(1, 2, s1)); // $ ast,ir
+	sink(s4); // $ ast,ir
 
 	s5 = s1;
-	sink(s5.replace(1, 2, s2)); // $ MISSING: ir
-	sink(s5); // $ MISSING: ir
+	sink(s5.replace(1, 2, s2)); // $ ast,ir
+	sink(s5); // $ ast,ir
 
 	s6 = s1;
-	sink(s6.replace(1, 2, 10, c)); // $ MISSING: ir
-	sink(s6); // $ MISSING: ir
+	sink(s6.replace(1, 2, 10, c)); // $ ast,ir
+	sink(s6); // $ ast,ir
 }
 
 void test_string_copy() {
@@ -262,7 +262,7 @@ void test_string_copy() {
 	sink(b1);
 
 	s2.copy(b2, s1.length(), 0);
-	sink(b2); // $ MISSING: ir
+	sink(b2); // $ ast,ir
 }
 
 void test_string_swap() {
@@ -272,17 +272,17 @@ void test_string_swap() {
 	std::string s4(source());
 
 	sink(s1);
-	sink(s2); // $ MISSING: ir
+	sink(s2); // $ ast,ir
 	sink(s3);
-	sink(s4); // $ MISSING: ir
+	sink(s4); // $ ast,ir
 
 	s1.swap(s2);
 	s4.swap(s3);
 
-	sink(s1); // $ MISSING: ir
-	sink(s2);
-	sink(s3); // $ MISSING: ir
-	sink(s4);
+	sink(s1); // $ ast,ir
+	sink(s2); // $ SPURIOUS: ast,ir
+	sink(s3); // $ ast,ir
+	sink(s4); // $ SPURIOUS: ast,ir
 }
 
 void test_string_clear() {
@@ -290,17 +290,17 @@ void test_string_clear() {
 	std::string s2(source());
 	std::string s3(source());
 
-	sink(s1); // $ MISSING: ir
-	sink(s2); // $ MISSING: ir
-	sink(s3); // $ MISSING: ir
+	sink(s1); // $ ast,ir
+	sink(s2); // $ ast,ir
+	sink(s3); // $ ast,ir
 
 	s1.clear();
 	s2 = "";
 	s3 = s3;
 
-	sink(s1);
+	sink(s1); // $ SPURIOUS: ast,ir
 	sink(s2);
-	sink(s3); // $ MISSING: ir
+	sink(s3); // $ ast,ir
 }
 
 void test_string_data()
@@ -309,7 +309,7 @@ void test_string_data()
 	std::string b(source());
 
 	sink(a.data());
-	sink(b.data()); // $ MISSING: ir
+	sink(b.data()); // $ ast,ir
 	sink(a.length());
 	sink(b.length());
 }
@@ -320,7 +320,7 @@ void test_string_substr()
 	std::string b(source());
 
 	sink(a.substr(0, a.length()));
-	sink(b.substr(0, b.length())); // $ ir
+	sink(b.substr(0, b.length())); // $ ast,ir
 }
 
 void test_string_at()
@@ -337,9 +337,9 @@ void test_string_at()
 	b.at(0) = ns_char::source();
 	c[0] = a[0];
 
-	sink(a); // $ MISSING: ir
-	sink(b); // $ MISSING: ir
-	sink(c); // $ MISSING: ir
+	sink(a); // $ ast,ir
+	sink(b); // $ ast,ir
+	sink(c); // $ ast,ir
 }
 
 void test_string_data_more()
@@ -347,8 +347,8 @@ void test_string_data_more()
 	std::string str("123");
 
 	str.data()[1] = ns_char::source();
-	sink(str); // $ MISSING: ir
-	sink(str.data()); // $ MISSING: ir
+	sink(str); // $ ast,ir
+	sink(str.data()); // $ ast,ir
 }
 
 void test_string_iterators() {
@@ -360,8 +360,8 @@ void test_string_iterators() {
 		std::string s4("world");
 
 		sink(s1);
-		sink(s1.append(s2.begin(), s2.end())); // $ MISSING: ir
-		sink(s1); // $ MISSING: ir
+		sink(s1.append(s2.begin(), s2.end())); // $ ast,ir
+		sink(s1); // $ ast,ir
 
 		sink(s3);
 		sink(s3.append(s4.begin(), s4.end()));
@@ -379,8 +379,8 @@ void test_string_iterators() {
 		sink(iter1[1]);
 		string::iterator iter2 = s2.begin();
 
-		sink(*iter2); // $ ir
-		sink(iter2[1]); // $ ir
+		sink(*iter2); // $ ast,ir
+		sink(iter2[1]); // $ ast,ir
 	}
 
 	// arithmetic operators
@@ -393,33 +393,33 @@ void test_string_iterators() {
 		string::iterator i2 = s2.begin();
 		string::iterator i3, i4, i5, i6, i7, i8, i9, i10, i11;
 
-		sink(*(i2+1)); // $ ir
-		sink(*(i2-1)); // $ ir
+		sink(*(i2+1)); // $ ast,ir
+		sink(*(i2-1)); // $ ast,ir
 		i3 = i2;
-		sink(*(++i3)); // $ ir
+		sink(*(++i3)); // $ ast,ir
 		i4 = i2;
-		sink(*(--i4)); // $ ir
+		sink(*(--i4)); // $ ast,ir
 		i5 = i2;
 		i5++;
-		sink(*i5); // $ ir
+		sink(*i5); // $ ast,ir
 		i6 = i2;
 		i6--;
-		sink(*i6); // $ ir
+		sink(*i6); // $ ast,ir
 		i7 = i2;
-		sink(*(i7+=1)); // $ ir
+		sink(*(i7+=1)); // $ ast,ir
 		i8 = i2;
-		sink(*(i8-=1)); // $ ir
+		sink(*(i8-=1)); // $ ast,ir
 
 		i9 = s2.end();
 		--i9;
-		sink(*i9); // $ ir
+		sink(*i9); // $ ast,ir
 
 		i10 = i2;
-		sink(*(i10++)); // $ ir
-		sink(i10); // $ ir
+		sink(*(i10++)); // $ ast,ir
+		sink(i10); // $ ast,ir
 		i11 = i2;
-		sink(*(i11--)); // $ ir
-		sink(i11); // $ ir
+		sink(*(i11--)); // $ ast,ir
+		sink(i11); // $ ast,ir
 	}
 }
 
@@ -433,8 +433,8 @@ void test_string_insert_more()
 	sink(s1.insert(0, cs1));
 	sink(s1);
 
-	sink(s2.insert(0, cs2)); // $ MISSING: ir
-	sink(s2); // $ MISSING: ir
+	sink(s2.insert(0, cs2)); // $ ast,ir
+	sink(s2); // $ ast,ir
 }
 
 void test_string_iterator_methods()
@@ -446,8 +446,8 @@ void test_string_iterator_methods()
 		sink(a.insert(a.begin(), 10, 'x'));
 		sink(a);
 
-		sink(b.insert(b.begin(), 10, ns_char::source())); // $ MISSING: ir
-		sink(b); // $ MISSING: ir
+		sink(b.insert(b.begin(), 10, ns_char::source())); // $ ast,ir
+		sink(b); // $ ast,ir
 	}
 
 	{
@@ -459,11 +459,11 @@ void test_string_iterator_methods()
 		sink(c.insert(c.end(), s1.begin(), s1.end()));
 		sink(c);
 
-		sink(d.insert(d.end(), s2.begin(), s2.end())); // $ MISSING: ir
-		sink(d); // $ MISSING: ir
+		sink(d.insert(d.end(), s2.begin(), s2.end())); // $ ast,ir
+		sink(d); // $ ast,ir
 
-		sink(s2.insert(s2.end(), s1.begin(), s1.end())); // $ MISSING: ir
-		sink(s2); // $ MISSING: ir
+		sink(s2.insert(s2.end(), s1.begin(), s1.end())); // $ ast,ir
+		sink(s2); // $ ast,ir
 	}
 
 	{
@@ -475,11 +475,11 @@ void test_string_iterator_methods()
 		sink(e.append(s3.begin(), s3.end()));
 		sink(e);
 
-		sink(f.append(s4.begin(), s4.end())); // $ MISSING: ir
-		sink(f); // $ MISSING: ir
+		sink(f.append(s4.begin(), s4.end())); // $ ast,ir
+		sink(f); // $ ast,ir
 
-		sink(s4.append(s3.begin(), s3.end())); // $ MISSING: ir
-		sink(s4); // $ MISSING: ir
+		sink(s4.append(s3.begin(), s3.end())); // $ ast,ir
+		sink(s4); // $ ast,ir
 	}
 
 	{
@@ -491,11 +491,11 @@ void test_string_iterator_methods()
 		sink(g.assign(s5.cbegin(), s5.cend()));
 		sink(g);
 
-		sink(h.assign(s6.cbegin(), s6.cend())); // $ MISSING: ir
-		sink(h); // $ MISSING: ir
+		sink(h.assign(s6.cbegin(), s6.cend())); // $ ast,ir
+		sink(h); // $ ast,ir
 
 		sink(s6.assign(s5.cbegin(), s5.cend()));
-		sink(s6);
+		sink(s6); // $ SPURIOUS: ast,ir
 	}
 }
 
@@ -508,9 +508,9 @@ void test_string_constructors_more() {
 	std::string s4(s2.begin(), s2.end());
 
 	sink(s1);
-	sink(s2); // $ MISSING: ir
+	sink(s2); // $ ast,ir
 	sink(s3);
-	sink(s4); // $ MISSING: ir
+	sink(s4); // $ ast,ir
 }
 
 void test_string_front_back() {
@@ -519,8 +519,8 @@ void test_string_front_back() {
 	sink(a.front());
 	sink(a.back());
 	a.push_back(ns_char::source());
-	sink(a.front()); // $ SPURIOUS: ir
-	sink(a.back()); // $ ir
+	sink(a.front()); // $ SPURIOUS: ast,ir
+	sink(a.back()); // $ ast,ir
 }
 
 void test_string_return_assign() {
@@ -533,15 +533,15 @@ void test_string_return_assign() {
 		std::string f("ff");
 
 		sink( a += (b += "bb") );
-		sink( c += (d += source()) ); // $ MISSING: ir
-		sink( (e += "ee") += source() ); // $ ir
-		sink( (f += source()) += "ff" ); // $ MISSING: ir
+		sink( c += (d += source()) ); // $ ast,ir
+		sink( (e += "ee") += source() ); // $ ast,ir
+		sink( (f += source()) += "ff" ); // $ ast,ir
 		sink(a);
 		sink(b);
-		sink(c); // $ MISSING: ir
-		sink(d); // $ MISSING: ir
-		sink(e); // $ MISSING: ir
-		sink(f); // $ MISSING: ir
+		sink(c); // $ ast,ir
+		sink(d); // $ ast,ir
+		sink(e); // $ ast,ir
+		sink(f); // $ ast,ir
 	}
 
 	{
@@ -553,14 +553,14 @@ void test_string_return_assign() {
 		std::string f("ff");
 
 		sink( a.assign(b.assign("bb")) );
-		sink( c.assign(d.assign(source())) ); // $ MISSING: ir
-		sink( e.assign("ee").assign(source()) ); // $ MISSING: ir
+		sink( c.assign(d.assign(source())) ); // $ ast,ir
+		sink( e.assign("ee").assign(source()) ); // $ ast,ir
 		sink( f.assign(source()).assign("ff") );
 		sink(a);
 		sink(b);
-		sink(c); // $ MISSING: ir
-		sink(d); // $ MISSING: ir
-		sink(e); // $ MISSING: ir
-		sink(f);
+		sink(c); // $ ast,ir
+		sink(d); // $ ast,ir
+		sink(e); // $ ast,ir
+		sink(f); // $ SPURIOUS: ast,ir
 	}
 }

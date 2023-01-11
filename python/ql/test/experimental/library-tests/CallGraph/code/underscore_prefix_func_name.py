@@ -6,23 +6,19 @@
 # points-to information about the `open` call in
 # https://google-gruyere.appspot.com/code/gruyere.py on line 227
 
-# name:some_function
 def some_function():
     print('some_function')
 
 def _ignored():
     print('_ignored')
-    # calls:some_function
     some_function()
 
 def _works_since_called():
     print('_works_since_called')
-    # calls:some_function
-    some_function()
+    some_function() # $ pt=some_function
 
 def works_even_though_not_called():
-    # calls:some_function
-    some_function()
+    some_function() # $ pt=some_function
 
 globals()['_ignored']()
-_works_since_called()
+_works_since_called() # $ pt=_works_since_called

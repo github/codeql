@@ -140,16 +140,21 @@ module Array {
     }
   }
 
-  private class SetDifferenceSummary extends SummarizedCallable {
-    SetDifferenceSummary() { this = "-" }
-
-    override SubExpr getACallSimple() { any() }
+  abstract private class DifferenceSummaryShared extends SummarizedCallable {
+    bindingset[this]
+    DifferenceSummaryShared() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[any]" and
       output = "ReturnValue.Element[?]" and
       preservesValue = true
     }
+  }
+
+  private class SetDifferenceSummary extends DifferenceSummaryShared {
+    SetDifferenceSummary() { this = "-" }
+
+    override SubExpr getACallSimple() { any() }
   }
 
   /** Flow summary for `Array#<<`. For `Array#append`, see `PushSummary`. */
@@ -687,14 +692,8 @@ module Array {
     }
   }
 
-  private class DifferenceSummary extends SimpleSummarizedCallable {
+  private class DifferenceSummary extends DifferenceSummaryShared, SimpleSummarizedCallable {
     DifferenceSummary() { this = "difference" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      // `Array#difference` and `Array#-` do not behave exactly the same way,
-      // but we model their flow the same way.
-      any(SetDifferenceSummary s).propagatesFlowExt(input, output, preservesValue)
-    }
   }
 
   private string getDigArg(MethodCall dig, int i) {

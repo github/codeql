@@ -5,6 +5,7 @@ private import codeql_ql.ast.internal.Predicate
 import codeql_ql.ast.internal.Type
 private import codeql_ql.ast.internal.Variable
 private import codeql_ql.ast.internal.Builtins
+private import internal.AstMocks as Mocks
 
 bindingset[name]
 private string directMember(string name) { result = name + "()" }
@@ -90,7 +91,9 @@ class AstNode extends TAstNode {
   /** Gets an annotation of this AST node. */
   Annotation getAnAnnotation() {
     not this instanceof Annotation and // avoid cyclic parent-child relationship
-    toQL(this).getParent() = pragma[only_bind_out](toQL(result)).getParent()
+    toQL(this).getParent() = pragma[only_bind_out](toQL(result)).getParent() and
+    // special case that is handled in `NewTypeBranch`
+    not any(QL::DatatypeBranch branch) = pragma[only_bind_out](toQL(result)).getParent()
   }
 
   /**
@@ -156,12 +159,24 @@ class TopLevel extends TTopLevel, AstNode {
   }
 
   QLDoc getQLDocFor(ModuleMember m) {
-    exists(int i | i > 0 and result = this.getMember(i) and m = this.getMember(i + 1))
+    exists(int i | result = this.getMember(i) and m = this.getMember(i + 1)) and
+    (
+      m instanceof ClasslessPredicate
+      or
+      m instanceof Class
+      or
+      m instanceof Module
+    )
   }
 
   override string getAPrimaryQlClass() { result = "TopLevel" }
 
-  override QLDoc getQLDoc() { result = this.getMember(0) }
+  override QLDoc getQLDoc() {
+    result = this.getMember(0) and
+    // it's not the QLDoc for a module member
+    not this.getQLDocFor(_) = result and
+    result.getLocation().getStartLine() = 1 // this might not hold if there is a block comment above, and that's the point.
+  }
 }
 
 abstract class Comment extends AstNode, TComment {
@@ -192,6 +207,11 @@ class QueryDoc extends QLDoc {
   /** Gets the @kind for the query */
   string getQueryKind() {
     result = this.getContents().regexpCapture("(?s).*@kind ([\\w-]+)\\s.*", 1)
+  }
+
+  /** Gets the @name for the query */
+  string getQueryName() {
+    result = this.getContents().regexpCapture("(?s).*@name ([\\w-\\s]+)(?=\\n).*", 1)
   }
 
   /** Gets the id part (without language) of the @id */
@@ -487,11 +507,11 @@ class PredicateExpr extends TPredicateExpr, AstNode {
  * A classless predicate.
  */
 class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclaration {
-  QL::ClasslessPredicate pred;
+  Mocks::ClasslessPredicateOrMock pred;
 
   ClasslessPredicate() { this = TClasslessPredicate(pred) }
 
-  override Location getLocation() { result = pred.getName().getLocation() }
+  override Location getLocation() { result = pred.asLeft().getName().getLocation() }
 
   /**
    * Gets the aliased value if this predicate is an alias
@@ -500,25 +520,39 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
    */
   final AstNode getAlias() {
     exists(QL::PredicateAliasBody alias |
-      alias.getParent() = pred and
+      alias.getParent() = pred.asLeft() and
       toQL(result).getParent() = alias
     )
     or
-    toQL(result) = pred.getChild(_).(QL::HigherOrderTerm)
+    toQL(result) = pred.asLeft().getChild(_).(QL::HigherOrderTerm)
   }
 
   override string getAPrimaryQlClass() { result = "ClasslessPredicate" }
 
-  override Formula getBody() { toQL(result) = pred.getChild(_).(QL::Body).getChild() }
+  override Formula getBody() { toQL(result) = pred.asLeft().getChild(_).(QL::Body).getChild() }
 
-  override string getName() { result = pred.getName().getValue() }
+  override string getName() {
+    result = pred.asLeft().getName().getValue()
+    or
+    result = pred.asRight().getName()
+  }
 
   override VarDecl getParameter(int i) {
     toQL(result) =
-      rank[i + 1](QL::VarDecl decl, int index | decl = pred.getChild(index) | decl order by index)
+      rank[i + 1](QL::VarDecl decl, int index |
+        decl = pred.asLeft().getChild(index)
+      |
+        decl order by index
+      )
+    or
+    toMock(result) = pred.asRight().getParameter(i)
   }
 
-  override TypeExpr getReturnTypeExpr() { toQL(result) = pred.getReturnType() }
+  override TypeExpr getReturnTypeExpr() {
+    toQL(result) = pred.asLeft().getReturnType()
+    or
+    toMock(result) = pred.asRight().getReturnTypeExpr()
+  }
 
   override AstNode getAChild(string pred_name) {
     result = Predicate.super.getAChild(pred_name)
@@ -536,6 +570,12 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
 
   /** Holds if this classless predicate is a signature predicate with no body. */
   predicate isSignature() { not exists(this.getBody()) }
+
+  override QLDoc getQLDoc() {
+    result = any(TopLevel m).getQLDocFor(this)
+    or
+    result = any(Module m).getQLDocFor(this)
+  }
 }
 
 /**
@@ -631,11 +671,15 @@ class VarDef extends TVarDef, AstNode {
  * A variable declaration, with a type and a name.
  */
 class VarDecl extends TVarDecl, VarDef, Declaration {
-  QL::VarDecl var;
+  Mocks::VarDeclOrMock var;
 
   VarDecl() { this = TVarDecl(var) }
 
-  override string getName() { result = var.getChild(1).(QL::VarName).getChild().getValue() }
+  override string getName() {
+    result = var.asLeft().getChild(1).(QL::VarName).getChild().getValue()
+    or
+    result = var.asRight().getName()
+  }
 
   override Type getType() { result = this.getTypeExpr().getResolvedType() }
 
@@ -644,14 +688,18 @@ class VarDecl extends TVarDecl, VarDef, Declaration {
   /**
    * Gets the type part of this variable declaration.
    */
-  TypeExpr getTypeExpr() { toQL(result) = var.getChild(0) }
+  TypeExpr getTypeExpr() {
+    toQL(result) = var.asLeft().getChild(0)
+    or
+    toMock(result) = var.asRight().getType()
+  }
 
   /**
    * Holds if this variable declaration is a private field on a class.
    */
   predicate isPrivate() {
     exists(QL::ClassMember member |
-      var = member.getChild(_).(QL::Field).getChild() and
+      var.asLeft() = member.getChild(_).(QL::Field).getChild() and
       member.getAFieldOrChild().(QL::Annotation).getName().getValue() = "private"
     )
   }
@@ -705,7 +753,7 @@ class FieldDecl extends TFieldDecl, AstNode {
  * A type reference, such as `DataFlow::Node`.
  */
 class TypeExpr extends TType, TypeRef {
-  QL::TypeExpr type;
+  Mocks::TypeExprOrMock type;
 
   TypeExpr() { this = TType(type) }
 
@@ -718,28 +766,30 @@ class TypeExpr extends TType, TypeRef {
    * or db-types such as `@locateable`.
    */
   string getClassName() {
-    result = type.getName().getValue()
+    result = type.asLeft().getName().getValue()
     or
-    result = type.getChild().(QL::PrimitiveType).getValue()
+    result = type.asLeft().getChild().(QL::PrimitiveType).getValue()
     or
-    result = type.getChild().(QL::Dbtype).getValue()
+    result = type.asLeft().getChild().(QL::Dbtype).getValue()
+    or
+    result = type.asRight().getClassName()
   }
 
   /**
    * Holds if this type is a primitive such as `string` or `int`.
    */
-  predicate isPrimitive() { type.getChild() instanceof QL::PrimitiveType }
+  predicate isPrimitive() { type.asLeft().getChild() instanceof QL::PrimitiveType }
 
   /**
    * Holds if this type is a db-type.
    */
-  predicate isDBType() { type.getChild() instanceof QL::Dbtype }
+  predicate isDBType() { type.asLeft().getChild() instanceof QL::Dbtype }
 
   /**
    * Gets the module of the type, if it exists.
    * E.g. `DataFlow` in `DataFlow::Node`.
    */
-  ModuleExpr getModule() { toQL(result) = type.getQualifier() }
+  ModuleExpr getModule() { toQL(result) = type.asLeft().getQualifier() }
 
   /** Gets the type that this type reference refers to. */
   override Type getResolvedType() {
@@ -761,22 +811,30 @@ class TypeExpr extends TType, TypeRef {
  * A QL module.
  */
 class Module extends TModule, ModuleDeclaration {
-  QL::Module mod;
+  Mocks::ModuleOrMock mod;
 
   Module() { this = TModule(mod) }
 
-  override Location getLocation() { result = mod.getName().getLocation() }
+  override Location getLocation() { result = mod.asLeft().getName().getLocation() }
 
   override string getAPrimaryQlClass() { result = "Module" }
 
-  override string getName() { result = mod.getName().getChild().getValue() }
+  override string getName() {
+    result = mod.asLeft().getName().getChild().getValue()
+    or
+    result = mod.asRight().getName()
+  }
 
   /**
    * Gets a member of the module.
    */
-  AstNode getAMember() { toQL(result) = mod.getChild(_).(QL::ModuleMember).getChild(_) }
+  AstNode getAMember() { result = this.getMember(_) }
 
-  AstNode getMember(int i) { toQL(result) = mod.getChild(i).(QL::ModuleMember).getChild(_) }
+  AstNode getMember(int i) {
+    toQL(result) = mod.asLeft().getChild(i).(QL::ModuleMember).getChild(_)
+    or
+    toMock(result) = mod.asRight().getMember(i)
+  }
 
   QLDoc getQLDocFor(AstNode m) {
     exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
@@ -784,11 +842,13 @@ class Module extends TModule, ModuleDeclaration {
 
   /** Gets a ref to the module that this module implements. */
   TypeRef getImplements(int i) {
-    exists(SignatureExpr sig | sig.toQL() = mod.getImplements(i) | result = sig.asType())
+    exists(SignatureExpr sig | sig.toQL() = mod.asLeft().getImplements(i) | result = sig.asType())
   }
 
   /** Gets the module expression that this module is an alias for, if any. */
-  ModuleExpr getAlias() { toQL(result) = mod.getAFieldOrChild().(QL::ModuleAliasBody).getChild() }
+  ModuleExpr getAlias() {
+    toQL(result) = mod.asLeft().getAFieldOrChild().(QL::ModuleAliasBody).getChild()
+  }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -805,10 +865,12 @@ class Module extends TModule, ModuleDeclaration {
   /** Holds if the `i`th parameter of this module has `name` and type `sig`. */
   predicate hasParameter(int i, string name, SignatureExpr sig) {
     exists(QL::ModuleParam param |
-      param = mod.getParameter(i) and
+      param = mod.asLeft().getParameter(i) and
       name = param.getParameter().getValue() and
       sig.toQL() = param.getSignature()
     )
+    or
+    mod.asRight().hasTypeParam(i, toMock(sig), name)
   }
 }
 
@@ -846,22 +908,26 @@ class TypeDeclaration extends TTypeDeclaration, Declaration { }
  * A QL class.
  */
 class Class extends TClass, TypeDeclaration, ModuleDeclaration {
-  QL::Dataclass cls;
+  Mocks::ClassOrMock cls;
 
   Class() { this = TClass(cls) }
 
-  override Location getLocation() { result = cls.getName().getLocation() }
+  override Location getLocation() { result = cls.asLeft().getName().getLocation() }
 
   override string getAPrimaryQlClass() { result = "Class" }
 
-  override string getName() { result = cls.getName().getValue() }
+  override string getName() {
+    result = cls.asLeft().getName().getValue()
+    or
+    result = cls.asRight().getName()
+  }
 
   /**
    * Gets the characteristic predicate for this class.
    */
-  CharPred getCharPred() { toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_) }
+  CharPred getCharPred() { toQL(result) = cls.asLeft().getChild(_).(QL::ClassMember).getChild(_) }
 
-  AstNode getMember(int i) { toQL(result) = cls.getChild(i).(QL::ClassMember).getChild(_) }
+  AstNode getMember(int i) { toQL(result) = cls.asLeft().getChild(i).(QL::ClassMember).getChild(_) }
 
   QLDoc getQLDocFor(AstNode m) {
     exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
@@ -871,7 +937,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
    * Gets a predicate in this class.
    */
   ClassPredicate getAClassPredicate() {
-    toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_)
+    toQL(result) = cls.asLeft().getChild(_).(QL::ClassMember).getChild(_)
   }
 
   /**
@@ -890,18 +956,20 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   /**
    * Gets a super-type referenced in the `extends` part of the class declaration.
    */
-  TypeExpr getASuperType() { toQL(result) = cls.getExtends(_) }
+  TypeExpr getASuperType() { toQL(result) = cls.asLeft().getExtends(_) }
 
   /**
    * Gets a type referenced in the `instanceof` part of the class declaration.
    */
-  TypeExpr getAnInstanceofType() { toQL(result) = cls.getInstanceof(_) }
+  TypeExpr getAnInstanceofType() { toQL(result) = cls.asLeft().getInstanceof(_) }
 
   /** Gets the type that this class is defined to be an alias of. */
-  TypeExpr getAliasType() { toQL(result) = cls.getChild(_).(QL::TypeAliasBody).getChild() }
+  TypeExpr getAliasType() { toQL(result) = cls.asLeft().getChild(_).(QL::TypeAliasBody).getChild() }
 
   /** Gets the type of one of the members that this class is defined to be a union of. */
-  TypeExpr getUnionMember() { toQL(result) = cls.getChild(_).(QL::TypeUnionBody).getChild(_) }
+  TypeExpr getUnionMember() {
+    toQL(result) = cls.asLeft().getChild(_).(QL::TypeUnionBody).getChild(_)
+  }
 
   /** Gets the class type defined by this class declaration. */
   Type getType() { result.getDeclaration() = this }
@@ -982,6 +1050,8 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
   override Formula getBody() { toQL(result) = branch.getChild(_).(QL::Body).getChild() }
 
   override NewTypeBranchType getReturnType() { result.getDeclaration() = this }
+
+  override Annotation getAnAnnotation() { toQL(this).getAFieldOrChild() = toQL(result) }
 
   override Type getParameterType(int i) { result = this.getField(i).getType() }
 
@@ -2361,18 +2431,20 @@ class ModuleExpr extends TModuleExpr, TypeRef {
 
 /** A signature expression, either a `PredicateExpr`, a `TypeExpr`, or a `ModuleExpr`. */
 class SignatureExpr extends TSignatureExpr, AstNode {
-  QL::SignatureExpr sig;
+  Mocks::SignatureExprOrMock sig;
 
   SignatureExpr() {
-    toQL(this) = sig.getPredicate()
+    toQL(this) = sig.asLeft().getPredicate()
     or
-    toQL(this) = sig.getTypeExpr()
+    toQL(this) = sig.asLeft().getTypeExpr()
     or
-    toQL(this) = sig.getModExpr()
+    toMock(this) = sig.asRight()
+    or
+    toQL(this) = sig.asLeft().getModExpr()
   }
 
   /** Gets the generated AST node that contains this signature expression. */
-  QL::SignatureExpr toQL() { result = sig }
+  QL::SignatureExpr toQL() { result = sig.asLeft() }
 
   /** Gets this signature expression if it represents a predicate expression. */
   PredicateExpr asPredicate() { result = this }
@@ -2397,6 +2469,8 @@ private class AnnotationArg extends TAnnotationArg, AstNode {
   }
 
   override string toString() { result = this.getValue() }
+
+  override string getAPrimaryQlClass() { result = "AnnotationArg" }
 }
 
 private class NoInlineArg extends AnnotationArg {

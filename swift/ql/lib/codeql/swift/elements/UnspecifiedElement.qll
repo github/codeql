@@ -1,5 +1,6 @@
 private import codeql.swift.generated.UnspecifiedElement
 import codeql.swift.elements.Location
+import codeql.swift.elements.Locatable
 
 class UnspecifiedElement extends Generated::UnspecifiedElement {
   override string toString() {

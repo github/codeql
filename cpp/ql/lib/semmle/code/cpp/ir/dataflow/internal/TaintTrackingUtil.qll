@@ -5,6 +5,7 @@ private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.models.interfaces.SideEffect
 private import DataFlowUtil
 private import DataFlowPrivate
+private import SsaInternals as Ssa
 
 /**
  * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
@@ -46,6 +47,8 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
     nodeHasOperand(nodeFrom, pai.getAnOperand(), pragma[only_bind_into](indirectionIndex)) and
     hasInstructionAndIndex(nodeTo, pai, indirectionIndex + 1)
   )
+  or
+  any(Ssa::Indirection ind).isAdditionalTaintStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -65,10 +68,8 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
     instrTo instanceof PointerArithmeticInstruction
   )
   or
-  // The `CopyInstruction` case is also present in non-taint data flow, but
-  // that uses `getDef` rather than `getAnyDef`. For taint, we want flow
-  // from a definition of `myStruct` to a `myStruct.myField` expression.
-  instrTo.(LoadInstruction).getSourceAddressOperand() = opFrom
+  // Taint flow from an address to its dereference.
+  Ssa::isDereference(instrTo, opFrom)
   or
   // Unary instructions tend to preserve enough information in practice that we
   // want taint to flow through.

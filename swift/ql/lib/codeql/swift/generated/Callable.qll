@@ -8,6 +8,16 @@ import codeql.swift.elements.decl.ParamDecl
 module Generated {
   class Callable extends Synth::TCallable, Element {
     /**
+     * Gets the name of this Callable, if it exists.
+     */
+    string getName() { result = Synth::convertCallableToRaw(this).(Raw::Callable).getName() }
+
+    /**
+     * Holds if `getName()` exists.
+     */
+    final predicate hasName() { exists(getName()) }
+
+    /**
      * Gets the self parameter of this callable, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
@@ -56,7 +66,7 @@ module Generated {
     /**
      * Gets the number of parameters of this callable.
      */
-    final int getNumberOfParams() { result = count(getAParam()) }
+    final int getNumberOfParams() { result = count(int i | exists(getParam(i))) }
 
     /**
      * Gets the body of this callable, if it exists.

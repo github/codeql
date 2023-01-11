@@ -105,7 +105,7 @@ Now try applying ``isAllowedIn(string region)`` to a person ``p``. If ``p`` is n
 
 You know that the fire starters live in the south *and* that they must have been able to travel to the north. Write a query to find the possible suspects. You could also extend the ``select`` clause to list the age of the suspects. That way you can clearly see that all the children have been excluded from the list.
 
-➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/2551838470440192723/>`__
+➤ `Check your answer <#exercise-1>`__
 
 You can now continue to gather more clues and find out which of your suspects started the fire...
 
@@ -142,7 +142,7 @@ The predicate ``isBald`` is defined to take a ``Person``, so it can also take a 
 
 You can now write a query to select the bald southerners who are allowed into the north.
 
-➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/2572701606358725253/>`__
+➤ `Check your answer <#exercise-2>`__
 
 You have found the two fire starters! They are arrested and the villagers are once again impressed with your work.
 
@@ -150,3 +150,65 @@ Further reading
 ---------------
 
 .. include:: ../reusables/codeql-ref-tools-further-reading.rst
+
+--------------
+
+Answers
+-------
+
+In these answers, we use ``/*`` and ``*/`` to label the different parts of the query. Any text surrounded by ``/*`` and ``*/`` is not evaluated as part of the QL code, but is treated as a *comment*.
+
+Exercise 1
+~~~~~~~~~~
+
+.. code-block:: ql
+
+   import tutorial
+
+   predicate isSouthern(Person p) { p.getLocation() = "south" }
+
+   class Southerner extends Person {
+   /* the characteristic predicate */
+   Southerner() { isSouthern(this) }
+   }
+
+   class Child extends Person {
+   /* the characteristic predicate */
+   Child() { this.getAge() < 10 }
+
+   /* a member predicate */
+   override predicate isAllowedIn(string region) { region = this.getLocation() }
+   }
+
+   from Southerner s
+   where s.isAllowedIn("north")
+   select s, s.getAge()
+
+Exercise 2
+~~~~~~~~~~
+
+.. code-block:: ql
+
+   import tutorial
+
+   predicate isSouthern(Person p) { p.getLocation() = "south" }
+
+   class Southerner extends Person {
+   /* the characteristic predicate */
+   Southerner() { isSouthern(this) }
+   }
+
+   class Child extends Person {
+   /* the characteristic predicate */
+   Child() { this.getAge() < 10 }
+
+   /* a member predicate */
+   override predicate isAllowedIn(string region) { region = this.getLocation() }
+   }
+
+   predicate isBald(Person p) { not exists(string c | p.getHairColor() = c) }
+
+   from Southerner s
+   where s.isAllowedIn("north") and isBald(s)
+   select s
+

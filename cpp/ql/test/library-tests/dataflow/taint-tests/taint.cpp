@@ -5,7 +5,7 @@ void arithAssignments(int source1, int clean1) {
   sink(clean1); // clean
   clean1 += source1;
   clean1 += 1;
-  sink(clean1); // $ ir
+  sink(clean1); // $ ast,ir
 
   clean1 = source1 = 1;
   sink(clean1); // clean
@@ -13,8 +13,8 @@ void arithAssignments(int source1, int clean1) {
   source1++;
   ++source1;
   source1 += 1;
-  sink(source1); // $ ir
-  sink(++source1); // $ ir
+  sink(source1); // $ ast,ir
+  sink(++source1); // $ ast,ir
 }
 
 // --- globals ---
@@ -38,23 +38,23 @@ void do_source()
 	global10 = zero(source());
 
 	sink(global6);
-	sink(global7); // $ ir
-	sink(global8); // $ ir
-	sink(global9); // $ ir
+	sink(global7); // $ ast,ir
+	sink(global8); // $ ast,ir
+	sink(global9); // $ ast,ir
 	sink(global10);
 }
 
 void do_sink()
 {
 	sink(global1);
-	sink(global2); // $ ir 
-	sink(global3); // $ ir 
-	sink(global4); // $ ir 
+	sink(global2); // $ ir MISSING: ast
+	sink(global3); // $ ir MISSING: ast
+	sink(global4); // $ ir MISSING: ast
 	sink(global5);
 	sink(global6);
-	sink(global7); // $ ir 
-	sink(global8); // $ ir 
-	sink(global9); // $ ir 
+	sink(global7); // $ ir MISSING: ast
+	sink(global8); // $ ir MISSING: ast
+	sink(global9); // $ ir MISSING: ast
 	sink(global10);
 }
 
@@ -86,12 +86,12 @@ void class_field_test() {
 	mc1.myMethod();
 
 	sink(mc1.a);
-	sink(mc1.b); // $ ir
-	sink(mc1.c); // $ ir
-	sink(mc1.d); // $ ir
+	sink(mc1.b); // $ ast,ir
+	sink(mc1.c); // $ ast,ir
+	sink(mc1.d); // $ ast,ir
 	sink(mc2.a);
-	sink(mc2.b); // $ ir
-	sink(mc2.c); // $ ir
+	sink(mc2.b); // $ ast,ir
+	sink(mc2.c); // $ ast,ir
 	sink(mc2.d);
 }
 
@@ -106,10 +106,10 @@ void array_test(int i) {
 	arr2[i] = source();
 	arr3[5] = 0;
 
-	sink(arr1[5]); // $ ir
-	sink(arr1[i]); // $ ir
-	sink(arr2[5]); // $ ir
-	sink(arr2[i]); // $ ir
+	sink(arr1[5]); // $ ast,ir
+	sink(arr1[i]); // $ ast,ir
+	sink(arr2[5]); // $ ast,ir
+	sink(arr2[i]); // $ ast,ir
 	sink(arr3[5]);
 	sink(arr3[i]);
 }
@@ -126,15 +126,15 @@ void pointer_test() {
 
 	*p2 = source();
 
-	sink(*p1); // $ ir
-	sink(*p2); // $ ir
+	sink(*p1); // $ ast,ir
+	sink(*p2); // $ ast,ir
 	sink(*p3);
 
 	p3 = &t1;
-	sink(*p3); // $ ir
+	sink(*p3); // $ ast,ir
 
 	*p3 = 0;
-	sink(*p3); // $ SPURIOUS: ir
+	sink(*p3); // $ SPURIOUS: ast,ir
 }
 
 // --- return values ---
@@ -148,7 +148,7 @@ int select(int i, int a, int b) {
 }
 
 void fn_test(int i) {
-	sink(select(i, 1, source())); // $ ir
+	sink(select(i, 1, source())); // $ ast,ir
 }
 
 // --- strings ---
@@ -164,13 +164,13 @@ namespace strings
 		char *tainted = source();
 		char buffer[1024] = {0};
 
-		sink(source()); // $ ir
-		sink(tainted); // $ ir
+		sink(source()); // $ ast,ir
+		sink(tainted); // $ ast,ir
 
 		strcpy(buffer, "Hello, ");
 		sink(buffer);
 		strcat(buffer, tainted);
-		sink(buffer); // $ MISSING: ir
+		sink(buffer); // $ ast,ir
 	}
 }
 
@@ -178,7 +178,7 @@ namespace strings
 
 namespace refs {
 	void callee(int *p) {
-		sink(*p); // $ ir
+		sink(*p); // $ ast,ir
 	}
 
 	void caller() {
@@ -192,7 +192,7 @@ void *memcpy(void *dest, void *src, int len);
 void test_memcpy(int *source) {
 	int x;
 	memcpy(&x, source, sizeof(int));
-	sink(x); // $ ir
+	sink(x); // $ ast=192:23 ir SPURIOUS: ast=193:6
 }
 
 // --- std::swap ---
@@ -207,13 +207,13 @@ void test_swap() {
 	x = source();
 	y = 0;
 
-	sink(x); // $ ir
+	sink(x); // $ ast,ir
 	sink(y); // clean
 
 	std::swap(x, y);
 
-	sink(x); // $ SPURIOUS: ir
-	sink(y); // $ ir
+	sink(x); // $ SPURIOUS: ast,ir
+	sink(y); // $ ast,ir
 }
 
 // --- lambdas ---
@@ -226,39 +226,39 @@ void test_lambdas()
 	int w = 0;
 
 	auto a = [t, u]() -> int {
-		sink(t); // $ ir
+		sink(t); // $ ast,ir
 		sink(u); // clean
 		return t;
 	};
-	sink(a()); // $ ir
+	sink(a()); // $ ast,ir
 
 	auto b = [&] {
-		sink(t); // $ ir
+		sink(t); // $ ast,ir
 		sink(u); // clean
 		v = source(); // (v is reference captured)
 	};
 	b();
-	sink(v); // $ MISSING: ir
+	sink(v); // $ MISSING: ast,ir
 
 	auto c = [=] {
-		sink(t); // $ ir
+		sink(t); // $ ast,ir
 		sink(u); // clean
 	};
 	c();
 
 	auto d = [](int a, int b) {
-		sink(a); // $ ir
+		sink(a); // $ ast,ir
 		sink(b); // clean
 	};
 	d(t, u);
 
 	auto e = [](int &a, int &b, int &c) {
-		sink(a); // $ ir
+		sink(a); // $ ast,ir
 		sink(b); // clean
 		c = source();
 	};
 	e(t, u, w);
-	sink(w); // $ ir
+	sink(w); // $ ast,ir
 }
 
 // --- taint through return value ---
@@ -277,7 +277,7 @@ void test_return()
 	y = 0;
 	z = 0;
 
-	sink(t); // $ ir
+	sink(t); // $ ast,ir
 	sink(x);
 	sink(y);
 	sink(z);
@@ -286,9 +286,9 @@ void test_return()
 	y = id(id(t));
 	z = id(z);
 
-	sink(t); // $ ir
-	sink(x); // $ ir
-	sink(y); // $ ir
+	sink(t); // $ ast,ir
+	sink(x); // $ ast,ir
+	sink(y); // $ ast,ir
 	sink(z);
 }
 
@@ -334,7 +334,7 @@ void test_outparams()
 	d = 0;
 	e = 0;
 
-	sink(t); // $ ir
+	sink(t); // $ ast,ir
 	sink(a);
 	sink(b);
 	sink(c);
@@ -347,11 +347,11 @@ void test_outparams()
 	myAssign4(&d, t);
 	myNotAssign(e, t);
 
-	sink(t); // $ ir
-	sink(a); // $ ir
-	sink(b); // $ ir
-	sink(c); // $ ir
-	sink(d); // $ ir
+	sink(t); // $ ast,ir
+	sink(a); // $ ast,ir
+	sink(b); // $ ast,ir
+	sink(c); // $ ast,ir
+	sink(d); // $ ast,ir
 	sink(e);
 }
 
@@ -371,9 +371,9 @@ void test_strdup(char *source)
 	a = strdup(source);
 	b = strdup("hello, world");
 	c = strndup(source, 100);
-	sink(a); // $ ir
+	sink(a); // $ ast,ir
 	sink(b);
-	sink(c); // $ ir
+	sink(c); // $ ast,ir
 }
 
 void test_strndup(int source)
@@ -381,7 +381,7 @@ void test_strndup(int source)
 	char *a;
 
 	a = strndup("hello, world", source);
-	sink(a); // $ ir
+	sink(a); // $ ast,ir
 }
 
 void test_wcsdup(wchar_t *source)
@@ -390,7 +390,7 @@ void test_wcsdup(wchar_t *source)
 
 	a = wcsdup(source);
 	b = wcsdup(L"hello, world");
-	sink(a); // $ ir
+	sink(a); // $ ast,ir
 	sink(b);
 }
 
@@ -401,9 +401,9 @@ void test_strdupa(char *source)
 	a = strdupa(source);
 	b = strdupa("hello, world");
 	c = strndupa(source, 100);
-	sink(a); // $ ir
+	sink(a); // $ ast,ir
 	sink(b);
-	sink(c); // $ ir
+	sink(c); // $ ast,ir
 }
 
 void test_strndupa(int source)
@@ -411,7 +411,7 @@ void test_strndupa(int source)
 	char *a;
 
 	a = strndupa("hello, world", source);
-	sink(a); // $ ir
+	sink(a); // $ ast,ir
 }
 
 // --- qualifiers ---
@@ -442,31 +442,31 @@ void test_qualifiers()
 	sink(a);
 	sink(a.getMember());
 	a.setMember(source());
-	sink(a); // $ ir
-	sink(a.getMember()); // $ ir
+	sink(a); // $ ast,ir
+	sink(a.getMember()); // $ ast,ir
 
 	sink(b);
 	sink(b.getMember());
 	b.member = source();
-	sink(b); // $ MISSING: ir
-	sink(b.member); // $ ir
-	sink(b.getMember()); // $ MISSING: ir
+	sink(b); // $ MISSING: ast,ir
+	sink(b.member); // $ ast,ir
+	sink(b.getMember()); // $ MISSING: ast,ir
 
 	c = new MyClass2(0);
 
 	sink(c);
 	sink(c->getMember());
 	c->setMember(source());
-	sink(c); // $ ir
-	sink(c->getMember()); // $ ir
+	sink(c); // $ ast,ir
+	sink(c->getMember()); // $ ast,ir
 
 	delete c;
 
 	sink(d);
 	sink(d.getString());
 	d.setString(strings::source());
-	sink(d); // $ ir
-	sink(d.getString()); // $ ir
+	sink(d); // $ ast,ir
+	sink(d.getString()); // $ ast,ir
 }
 
 // --- non-standard swap ---
@@ -484,13 +484,13 @@ void test_swop() {
 	x = source();
 	y = 0;
 
-	sink(x); // $ ir
+	sink(x); // $ ast,ir
 	sink(y); // clean
 
 	swop(x, y);
 
-	sink(x); // $ SPURIOUS: ir
-	sink(y); // $ ir
+	sink(x); // $ SPURIOUS: ast,ir
+	sink(y); // $ ast,ir
 }
 
 // --- getdelim ---
@@ -504,7 +504,7 @@ void test_getdelim(FILE* source1) {
 	size_t n;
 	getdelim(&line, &n, '\n', source1);
 
-	sink(line); // $ ir
+	sink(line); // $ ir,ast
 }
 
 // --- strtok ---
@@ -514,7 +514,7 @@ char *strtok(char *str, const char *delim);
 void test_strtok(char *source) {
 	const char* delim = ",.-;:_";
 	char* tokenized = strtok(source, delim);
-	sink(tokenized); // $ ir
+	sink(tokenized); // $ ast,ir
 	sink(delim);
 }
 
@@ -524,13 +524,13 @@ char *_strset(char *str, int c);
 
 void test_strset_1(char* ptr, char source) {
 	_strset(ptr, source);
-	sink(ptr); // $ SPURIOUS: ir
-	sink(*ptr); // $ ir
+	sink(ptr); // $ SPURIOUS: ast,ir
+	sink(*ptr); // $ ast,ir
 }
 
 void test_strset_2(char* source) {
 	_strset(source, 0);
-	sink(source); // $ ir
+	sink(source); // $ ast,ir
 }
 
 // --- mempcpy ---
@@ -540,7 +540,7 @@ void *mempcpy(void *dest, const void *src, size_t n);
 void test_mempcpy(int *source) {
 	int x;
 	mempcpy(&x, source, sizeof(int));
-	sink(x); // $ ir
+	sink(x); // $ ast=540:24 ir SPURIOUS: ast=541:6
 }
 
 // --- memccpy ---
@@ -550,7 +550,7 @@ void *memccpy(void *dest, const void *src, int c, size_t n);
 void test_memccpy(int *source) {
 	int dest[16];
 	memccpy(dest, source, 42, sizeof(dest));
-	sink(dest); // $ MISSING: ir
+	sink(dest); // $ ast=550:24 ir SPURIOUS: ast=551:6
 }
 
 // --- strcat and related functions ---
@@ -559,7 +559,7 @@ char* strcat (char*, const char*);
 
 void test_strcat(char* dest1, char* dest2, char* clean, char* source) {
 	strcat(dest1, source);
-	sink(dest1); // $ ir
+	sink(dest1); // $ ast,ir
 
 	strcat(dest2, clean);
 	sink(dest2);
@@ -572,8 +572,8 @@ unsigned char *_mbsncat_l(unsigned char *, const unsigned char *, int, _locale_t
 void test__mbsncat_l(unsigned char* dest1, unsigned const char* ptr, unsigned char* dest3,
                      _locale_t clean, _locale_t source, int n) {
 	unsigned char* dest2 = _mbsncat_l(dest1, ptr, n, source);
-	sink(dest1); // $ SPURIOUS: ir
-	sink(*dest1); // $ ir
+	sink(dest1); // $ SPURIOUS: ast,ir
+	sink(*dest1); // $ ast,ir
 	sink(dest2); // $ SPURIOUS: ast,ir
 	sink(*dest2); // $ ast,ir
 
@@ -592,8 +592,8 @@ void test_strsep(char *source) {
   const char* delim = ",.-;:_";
   char* tokenized;
   while(tokenized = strsep(&source, delim)) {
-    sink(tokenized); // $ ir
-    sink(*tokenized); // $ ir
+    sink(tokenized); // $ ast,ir
+    sink(*tokenized); // $ ast,ir
   }
 }
 
@@ -605,8 +605,8 @@ unsigned char *_strdec(const unsigned char*, const unsigned char*);
 
 void test__strinc(char* source, char* clean, char* dest1, char* dest2, _locale_t locale) {
 	dest1 = _strinc(source, locale);
-	sink(dest1); // $ ir
-	sink(*dest1); // $ ir
+	sink(dest1); // $ ast,ir
+	sink(*dest1); // $ ast,ir
 
 	dest2 = _strinc(clean, locale);
 	sink(dest2);
@@ -615,29 +615,29 @@ void test__strinc(char* source, char* clean, char* dest1, char* dest2, _locale_t
 
 void test__mbsinc(unsigned char* source_unsigned, char* source, unsigned char* dest_unsigned, char* dest) {
 	dest_unsigned = _mbsinc(source_unsigned);
-	sink(dest_unsigned); // $ ir
-	sink(*dest_unsigned); // $ ir
+	sink(dest_unsigned); // $ ast,ir
+	sink(*dest_unsigned); // $ ast,ir
 
 	dest = (char*)_mbsinc((unsigned char*)source);
-	sink(dest); // $ ir
-	sink(*dest); // $ ir
+	sink(dest); // $ ast,ir
+	sink(*dest); // $ ast,ir
 }
 
 void test__strdec(const unsigned char* source, unsigned char* clean, unsigned char* dest1, unsigned char* dest2, unsigned char* dest3) {
 	dest1 = _strdec(source + 12, source);
-	sink(dest1); // $ ir
-	sink(*dest1); // $ ir
+	sink(dest1); // $ ast,ir
+	sink(*dest1); // $ ast,ir
 
 	// If `clean` does not precede `source` this technically breaks the precondition of _strdec.
 	// We would still like to have taint, though.
 	dest2 = _strdec(clean, source);
-	sink(dest2); // $ ir
-	sink(*dest2); // $ ir
+	sink(dest2); // $ ast,ir
+	sink(*dest2); // $ ast,ir
 
 	// Also breaks the precondition on _strdec.
 	dest3 = _strdec(source, clean);
-	sink(dest3); // $ ir
-	sink(*dest3); // $ ir
+	sink(dest3); // $ ast,ir
+	sink(*dest3); // $ ast,ir
 }
 
 // --- strnextc ---
@@ -648,7 +648,7 @@ void test__strnextc(const char* source) {
 	unsigned c = 0;
 	do {
 		c = _strnextc(source++);
-		sink(c); // $ ir
+		sink(c); // $ ast,ir
 	} while(c != '\0');
 	c = _strnextc("");
 	sink(c);
@@ -665,7 +665,7 @@ public:
 void test_no_const_member(char* source) {
   C_no_const_member_function c;
   memcpy(c.data(), source, 16);
-  sink(c.data()); // $ ir
+  sink(c.data()); // $ ast,ir
 }
 
 class C_const_member_function {
@@ -677,7 +677,7 @@ public:
 void test_with_const_member(char* source) {
   C_const_member_function c;
   memcpy(c.data(), source, 16);
-  sink(c.data()); // $ MISSING: ir
+  sink(c.data()); // $ ast,ir
 }
 
 void argument_source(void*);
@@ -690,7 +690,7 @@ void test_argument_source_field_to_obj() {
 	two_members s;
 	argument_source(s.x);
 
-	sink(s);
-	sink(s.x); // $ ir
+	sink(s); // $ SPURIOUS: ast
+	sink(s.x); // $ ast,ir
 	sink(s.y); // clean
 }

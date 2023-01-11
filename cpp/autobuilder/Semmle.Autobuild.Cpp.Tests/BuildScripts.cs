@@ -257,11 +257,11 @@ namespace Semmle.Autobuild.Cpp.Tests
             Actions.GetCurrentDirectory = cwd;
             Actions.IsWindows = isWindows;
 
-            var options = new AutobuildOptions(Actions, Language.Cpp);
+            var options = new CppAutobuildOptions(Actions);
             return new CppAutobuilder(Actions, options);
         }
 
-        void TestAutobuilderScript(Autobuilder autobuilder, int expectedOutput, int commandsRun)
+        void TestAutobuilderScript(CppAutobuilder autobuilder, int expectedOutput, int commandsRun)
         {
             Assert.Equal(expectedOutput, autobuilder.GetBuildScript().Run(Actions, StartCallback, EndCallback));
 
@@ -299,7 +299,7 @@ namespace Semmle.Autobuild.Cpp.Tests
         {
             Actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test.sln -DisableParallelProcessing"] = 1;
             Actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\test.sln -DisableParallelProcessing"] = 0;
-            Actions.RunProcess[@"cmd.exe /C CALL ^""C:\Program Files ^(x86^)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat^"" && set Platform=&& type NUL && C:\odasa\tools\odasa index --auto msbuild C:\Project\test.sln /t:rebuild /p:Platform=""x86"" /p:Configuration=""Release"" /p:MvcBuildViews=true"] = 0;
+            Actions.RunProcess[@"cmd.exe /C CALL ^""C:\Program Files ^(x86^)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat^"" && set Platform=&& type NUL && msbuild C:\Project\test.sln /t:rebuild /p:Platform=""x86"" /p:Configuration=""Release"""] = 0;
             Actions.RunProcessOut[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = "";
             Actions.RunProcess[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = 1;
             Actions.RunProcess[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationVersion"] = 0;

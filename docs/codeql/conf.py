@@ -55,7 +55,7 @@ def setup(sphinx):
     sphinx.add_lexer("ql", QLLexer())
 
 # The version of CodeQL for the current release you're documenting, acts as replacement for
-# |version| and |release|. Not currently used except in LGTM Enterprise support info.
+# |version| and |release|. Not currently used.
 
 # The short X.Y version.
 # version = u'3.0'

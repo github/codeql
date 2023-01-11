@@ -15,75 +15,15 @@ private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.internal.SsaInternalsCommon
 
 private module SourceVariables {
-  newtype TBaseSourceVariable =
-    // Each IR variable gets its own source variable
-    TBaseIRVariable(IRVariable var) or
-    // Each allocation gets its own source variable
-    TBaseCallVariable(AllocationInstruction call)
+  class SourceVariable instanceof BaseSourceVariable {
+    string toString() { result = BaseSourceVariable.super.toString() }
 
-  abstract class BaseSourceVariable extends TBaseSourceVariable {
-    abstract string toString();
-
-    abstract DataFlowType getType();
+    BaseSourceVariable getBaseVariable() { result = this }
   }
 
-  class BaseIRVariable extends BaseSourceVariable, TBaseIRVariable {
-    IRVariable var;
+  class SourceIRVariable = BaseIRVariable;
 
-    IRVariable getIRVariable() { result = var }
-
-    BaseIRVariable() { this = TBaseIRVariable(var) }
-
-    override string toString() { result = var.toString() }
-
-    override DataFlowType getType() { result = var.getType() }
-  }
-
-  class BaseCallVariable extends BaseSourceVariable, TBaseCallVariable {
-    AllocationInstruction call;
-
-    BaseCallVariable() { this = TBaseCallVariable(call) }
-
-    AllocationInstruction getCallInstruction() { result = call }
-
-    override string toString() { result = call.toString() }
-
-    override DataFlowType getType() { result = call.getResultType() }
-  }
-
-  private newtype TSourceVariable =
-    TSourceIRVariable(BaseIRVariable baseVar) or
-    TCallVariable(AllocationInstruction call)
-
-  abstract class SourceVariable extends TSourceVariable {
-    abstract string toString();
-
-    abstract BaseSourceVariable getBaseVariable();
-  }
-
-  class SourceIRVariable extends SourceVariable, TSourceIRVariable {
-    BaseIRVariable var;
-
-    SourceIRVariable() { this = TSourceIRVariable(var) }
-
-    IRVariable getIRVariable() { result = var.getIRVariable() }
-
-    override BaseIRVariable getBaseVariable() { result.getIRVariable() = this.getIRVariable() }
-
-    override string toString() { result = this.getIRVariable().toString() }
-  }
-
-  class CallVariable extends SourceVariable, TCallVariable {
-    AllocationInstruction call;
-
-    CallVariable() { this = TCallVariable(call) }
-
-    AllocationInstruction getCall() { result = call }
-
-    override BaseCallVariable getBaseVariable() { result.getCallInstruction() = call }
-
-    override string toString() { result = "Call" }
-  }
+  class CallVariable = BaseCallVariable;
 }
 
 import SourceVariables
@@ -92,7 +32,13 @@ private newtype TDefOrUseImpl =
   TDefImpl(Operand address) { isDef(_, _, address, _, _, _) } or
   TUseImpl(Operand operand) {
     isUse(_, operand, _, _, _) and
-    not isDef(_, _, operand, _, _, _)
+    not isDef(true, _, operand, _, _, _)
+  } or
+  TIteratorDef(BaseSourceVariableInstruction container, Operand iteratorAddress) {
+    isIteratorDef(container, iteratorAddress, _, _, _)
+  } or
+  TIteratorUse(BaseSourceVariableInstruction container, Operand iteratorAddress) {
+    isIteratorUse(container, iteratorAddress, _, _)
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
@@ -113,80 +59,62 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
   /** Gets the location of this element. */
   abstract Cpp::Location getLocation();
 
-  abstract Instruction getBase();
+  abstract BaseSourceVariableInstruction getBase();
 
   final BaseSourceVariable getBaseSourceVariable() {
-    exists(IRVariable var |
-      result.(BaseIRVariable).getIRVariable() = var and
-      instructionHasIRVariable(this.getBase(), var)
-    )
-    or
-    result.(BaseCallVariable).getCallInstruction() = this.getBase()
+    result = this.getBase().getBaseSourceVariable()
   }
 
   /** Gets the variable that is defined or used. */
   final SourceVariable getSourceVariable() {
-    exists(BaseSourceVariable v |
-      sourceVariableHasBaseAndIndex(result, v) and
-      defOrUseHasSourceVariable(this, v)
-    )
+    result.getBaseVariable() = this.getBaseSourceVariable()
   }
+
+  abstract predicate isCertain();
 }
 
-pragma[noinline]
-private predicate instructionHasIRVariable(VariableAddressInstruction vai, IRVariable var) {
-  vai.getIRVariable() = var
-}
-
-private predicate defOrUseHasSourceVariable(DefOrUseImpl defOrUse, BaseSourceVariable bv) {
-  defHasSourceVariable(defOrUse, bv)
-  or
-  useHasSourceVariable(defOrUse, bv)
-}
-
-pragma[noinline]
-private predicate defHasSourceVariable(DefImpl def, BaseSourceVariable bv) {
-  bv = def.getBaseSourceVariable()
-}
-
-pragma[noinline]
-private predicate useHasSourceVariable(UseImpl use, BaseSourceVariable bv) {
-  bv = use.getBaseSourceVariable()
-}
-
-pragma[noinline]
-private predicate sourceVariableHasBaseAndIndex(SourceVariable v, BaseSourceVariable bv) {
-  v.getBaseVariable() = bv
-}
-
-class DefImpl extends DefOrUseImpl, TDefImpl {
+abstract class DefImpl extends DefOrUseImpl {
   Operand address;
-
-  DefImpl() { this = TDefImpl(address) }
-
-  override Instruction getBase() { isDef(_, _, address, result, _, _) }
 
   Operand getAddressOperand() { result = address }
 
-  Instruction getDefiningInstruction() { isDef(_, result, address, _, _, _) }
+  abstract Node0Impl getValue();
 
   override string toString() { result = address.toString() }
 
-  override IRBlock getBlock() { result = this.getDefiningInstruction().getBlock() }
+  override IRBlock getBlock() { result = this.getAddressOperand().getDef().getBlock() }
 
-  override Cpp::Location getLocation() { result = this.getDefiningInstruction().getLocation() }
+  override Cpp::Location getLocation() { result = this.getAddressOperand().getLocation() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    this.getDefiningInstruction() = block.getInstruction(index)
+    this.getAddressOperand().getUse() = block.getInstruction(index)
   }
-
-  predicate isCertain() { isDef(true, _, address, _, _, _) }
 }
 
-class UseImpl extends DefOrUseImpl, TUseImpl {
-  Operand operand;
+private class DirectDef extends DefImpl, TDefImpl {
+  DirectDef() { this = TDefImpl(address) }
 
-  UseImpl() { this = TUseImpl(operand) }
+  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
+
+  override Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+
+  override predicate isCertain() { isDef(true, _, address, _, _, _) }
+}
+
+private class IteratorDef extends DefImpl, TIteratorDef {
+  BaseSourceVariableInstruction container;
+
+  IteratorDef() { this = TIteratorDef(container, address) }
+
+  override BaseSourceVariableInstruction getBase() { result = container }
+
+  override Node0Impl getValue() { isIteratorDef(_, address, result, _, _) }
+
+  override predicate isCertain() { none() }
+}
+
+abstract class UseImpl extends DefOrUseImpl {
+  Operand operand;
 
   Operand getOperand() { result = operand }
 
@@ -199,10 +127,24 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
   final override IRBlock getBlock() { result = operand.getUse().getBlock() }
 
   final override Cpp::Location getLocation() { result = operand.getLocation() }
+}
 
-  override Instruction getBase() { isUse(_, operand, result, _, _) }
+private class DirectUse extends UseImpl, TUseImpl {
+  DirectUse() { this = TUseImpl(operand) }
 
-  predicate isCertain() { isUse(true, operand, _, _, _) }
+  override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, _) }
+
+  override predicate isCertain() { isUse(true, operand, _, _, _) }
+}
+
+private class IteratorUse extends UseImpl, TIteratorUse {
+  BaseSourceVariableInstruction container;
+
+  IteratorUse() { this = TIteratorUse(container, operand) }
+
+  override BaseSourceVariableInstruction getBase() { result = container }
+
+  override predicate isCertain() { none() }
 }
 
 private module SsaInput implements SsaImplCommon::InputSig {
@@ -302,9 +244,13 @@ class Def extends DefOrUse {
 
   Instruction getAddress() { result = this.getAddressOperand().getDef() }
 
-  Instruction getDefiningInstruction() { result = defOrUse.getDefiningInstruction() }
+  Node0Impl getValue() { result = defOrUse.getValue() }
 
-  override string toString() { result = this.asDefOrUse().toString() + " (def)" }
+  override string toString() { result = this.asDefOrUse().toString() }
+
+  BaseSourceVariableInstruction getBase() { result = defOrUse.getBase() }
+
+  predicate isIteratorDef() { defOrUse instanceof IteratorDef }
 }
 
 private module SsaImpl = SsaImplCommon::Make<SsaInput>;
