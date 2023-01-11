@@ -70,8 +70,8 @@ module VirtualDispatch {
    * that is, `c` or one of its supertypes overrides `f`.
    */
   private predicate cannotInherit(Class c, MemberFunction f) {
-    exists(Class overridingType, MemberFunction override |
-      cannotInheritHelper(c, f, overridingType, override) and
+    exists(MemberFunction override |
+      cannotInheritHelper(c, f, _, override) and
       override.overrides+(f)
     )
   }

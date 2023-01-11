@@ -707,9 +707,7 @@ private predicate boundedPhiCand(
   SsaPhiNode phi, boolean upper, Bound b, int delta, boolean fromBackEdge, int origdelta,
   Reason reason
 ) {
-  exists(SsaVariable inp, SsaReadPositionPhiInputEdge edge |
-    boundedPhiInp(phi, inp, edge, b, delta, upper, fromBackEdge, origdelta, reason)
-  )
+  boundedPhiInp(phi, _, _, b, delta, upper, fromBackEdge, origdelta, reason)
 }
 
 /**

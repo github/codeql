@@ -33,7 +33,7 @@ class Commit extends @svnentry {
 
   File getAnAffectedFile(string action) { svnaffectedfiles(this, result, action) }
 
-  File getAnAffectedFile() { exists(string action | result = this.getAnAffectedFile(action)) }
+  File getAnAffectedFile() { result = this.getAnAffectedFile(_) }
 
   predicate isRecent() { recentCommit(this) }
 

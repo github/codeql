@@ -218,6 +218,16 @@ nodes
 | typed.ts:28:24:28:34 | redirectUri |
 | typed.ts:29:33:29:43 | redirectUri |
 | typed.ts:29:33:29:43 | redirectUri |
+| typed.ts:47:25:47:34 | loc.search |
+| typed.ts:47:25:47:34 | loc.search |
+| typed.ts:48:26:48:36 | loc2.search |
+| typed.ts:48:26:48:36 | loc2.search |
+| typed.ts:51:24:51:34 | redirectUri |
+| typed.ts:52:33:52:43 | redirectUri |
+| typed.ts:52:33:52:43 | redirectUri |
+| typed.ts:55:25:55:35 | redirectUri |
+| typed.ts:56:33:56:43 | redirectUri |
+| typed.ts:56:33:56:43 | redirectUri |
 edges
 | electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
 | electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
@@ -412,6 +422,14 @@ edges
 | typed.ts:25:25:25:34 | loc.search | typed.ts:28:24:28:34 | redirectUri |
 | typed.ts:28:24:28:34 | redirectUri | typed.ts:29:33:29:43 | redirectUri |
 | typed.ts:28:24:28:34 | redirectUri | typed.ts:29:33:29:43 | redirectUri |
+| typed.ts:47:25:47:34 | loc.search | typed.ts:51:24:51:34 | redirectUri |
+| typed.ts:47:25:47:34 | loc.search | typed.ts:51:24:51:34 | redirectUri |
+| typed.ts:48:26:48:36 | loc2.search | typed.ts:55:25:55:35 | redirectUri |
+| typed.ts:48:26:48:36 | loc2.search | typed.ts:55:25:55:35 | redirectUri |
+| typed.ts:51:24:51:34 | redirectUri | typed.ts:52:33:52:43 | redirectUri |
+| typed.ts:51:24:51:34 | redirectUri | typed.ts:52:33:52:43 | redirectUri |
+| typed.ts:55:25:55:35 | redirectUri | typed.ts:56:33:56:43 | redirectUri |
+| typed.ts:55:25:55:35 | redirectUri | typed.ts:56:33:56:43 | redirectUri |
 #select
 | electron.js:7:20:7:29 | getTaint() | electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() | Untrusted URL redirection depends on a $@. | electron.js:4:12:4:22 | window.name | user-provided value |
 | react.js:10:60:10:81 | documen ... on.hash | react.js:10:60:10:81 | documen ... on.hash | react.js:10:60:10:81 | documen ... on.hash | Untrusted URL redirection depends on a $@. | react.js:10:60:10:81 | documen ... on.hash | user-provided value |
@@ -475,3 +493,5 @@ edges
 | tst.js:26:22:26:82 | new Reg ... ref)[1] | tst.js:26:62:26:78 | win.location.href | tst.js:26:22:26:82 | new Reg ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:26:62:26:78 | win.location.href | user-provided value |
 | typed.ts:8:33:8:43 | redirectUri | typed.ts:4:22:4:36 | location.search | typed.ts:8:33:8:43 | redirectUri | Untrusted URL redirection depends on a $@. | typed.ts:4:22:4:36 | location.search | user-provided value |
 | typed.ts:29:33:29:43 | redirectUri | typed.ts:25:25:25:34 | loc.search | typed.ts:29:33:29:43 | redirectUri | Untrusted URL redirection depends on a $@. | typed.ts:25:25:25:34 | loc.search | user-provided value |
+| typed.ts:52:33:52:43 | redirectUri | typed.ts:47:25:47:34 | loc.search | typed.ts:52:33:52:43 | redirectUri | Untrusted URL redirection depends on a $@. | typed.ts:47:25:47:34 | loc.search | user-provided value |
+| typed.ts:56:33:56:43 | redirectUri | typed.ts:48:26:48:36 | loc2.search | typed.ts:56:33:56:43 | redirectUri | Untrusted URL redirection depends on a $@. | typed.ts:48:26:48:36 | loc2.search | user-provided value |

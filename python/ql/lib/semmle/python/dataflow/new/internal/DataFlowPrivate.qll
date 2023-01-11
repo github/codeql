@@ -819,9 +819,9 @@ predicate attributeReadStep(Node nodeFrom, AttributeContent c, AttrRead nodeTo) 
  * synthesized unpacked argument with the name indicated by `c`.
  */
 predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
-  exists(CallNode call, CallableValue callable, string name |
+  exists(CallNode call, string name |
     nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode() and
-    nodeTo = TKwUnpackedNode(call, callable, name) and
+    nodeTo = TKwUnpackedNode(call, _, name) and
     name = c.getKey()
   )
 }

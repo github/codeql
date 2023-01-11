@@ -22,8 +22,8 @@ class SinkTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location l, string element, string tag, string value) {
     tag = "taintReachesSink" and
     value = "" and
-    exists(Conf conf, DataFlow::Node source, DataFlow::Node sink |
-      conf.hasFlow(source, sink) and
+    exists(Conf conf, DataFlow::Node source |
+      conf.hasFlow(source, _) and
       l = source.getLocation() and
       element = source.toString()
     )
