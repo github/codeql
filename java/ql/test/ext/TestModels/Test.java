@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class Test {
 
@@ -127,6 +128,9 @@ public class Test {
 
             AtomicReference ar = new AtomicReference(source());
             sink(ar.get());  // $hasValueFlow
+
+            // java.util.stream
+            sink(Collectors.joining((CharSequence)source())); // $hasTaintFlow
 
             // java.util.concurrent
             CountDownLatch cdl = new CountDownLatch((int)source());
