@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.2
- * @precision mediums
+ * @precision medium
  * @id java/android/sensitive-result-receiver
  * @tags security
  *       external/cwe/cwe-927

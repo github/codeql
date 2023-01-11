@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>If a <code>ResultReceiver</code> is obtained from an untrusted source, such as being unparcled from an <code>Intent</code>, 
+    sensitive data such as passwords should not be sent to it. Otherwise, this sensitive information may be leaked to a malicious application.</p>
+  </overview>
+
+  <recommendation>
+    <p> 
+      Do not send sensitive data to an untrusted <code>ResultReceiver</code>.
+    </p>
+  </recommendation>
+
+  <example>
+    In the following (bad) example, sensitive data is sent to an untrusted <code>ResultReceiver</code>. 
+    <sample src="SensitiveResultReceiver.java" />
+  </example>
+
+  <references>
+    <li>Oversecured: <a href=https://oversecured.com/vulnerabilities#Android/Passing_data_to_a_ResultReceiver_under_the_attacker%E2%80%99s_control>Passing data to a ResultReceiver under the attacker's control</a></li>
+  </references>
+</qhelp>
