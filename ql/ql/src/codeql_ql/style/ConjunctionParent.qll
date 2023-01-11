@@ -28,6 +28,7 @@ module ConjunctionParent<checkAstNodeSig/1 checkAstNode> {
     not result instanceof Implication and
     not result instanceof Negation and
     not result instanceof Predicate and
+    not result instanceof ExprAggregate and
     not result instanceof FullAggregate and
     not result instanceof Forex and
     not result instanceof Forall

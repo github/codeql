@@ -6,6 +6,8 @@ predicate yetAnotherPredicate(int i, int y) { none() }
 
 predicate dbTypePredicate(@location l) { none() }
 
+string predicateWithResult(int i) { none() }
+
 class SmallInt extends int {
   SmallInt() { this = [0 .. 10] }
 }
@@ -22,6 +24,8 @@ predicate test() {
   exists(int i | aPredicate(i) and i.abs() = 0) // GOOD
   or
   exists(int i | aPredicate(i) and exists(int i2 | i = i2)) // GOOD
+  or
+  exists(int i | count(predicateWithResult(i)) = 0) // GOOD
   or
   exists(int i | count(int y | yetAnotherPredicate(i, y)) > 0) // GOOD
   or
