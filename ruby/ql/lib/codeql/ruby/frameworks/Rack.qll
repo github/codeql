@@ -23,6 +23,9 @@ module Rack {
       isRackResponse(call.getAReturningNode())
     }
 
+    /**
+     * Gets the environment of the request, which is the lone parameter to the `call` method.
+     */
     DataFlow::ParameterNode getEnv() { result = call.getParameter(0) }
   }
 
