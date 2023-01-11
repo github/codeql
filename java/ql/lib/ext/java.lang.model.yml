@@ -63,7 +63,6 @@ extensions:
       - ["java.lang", "String", False, "concat", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "concat", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "copyValueOf", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.lang", "String", False, "endsWith", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"] # ! why is this a summary model and not a neutral model instead? it returns a boolean
       - ["java.lang", "String", False, "format", "(Locale,String,Object[])", "", "Argument[1]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "format", "(Locale,String,Object[])", "", "Argument[2].ArrayElement", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "format", "(String,Object[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
@@ -129,7 +128,7 @@ extensions:
       - ["java.lang", "Object", "hashCode", "()", "manual"]
       - ["java.lang", "Object", "toString", "()", "manual"]
       - ["java.lang", "String", "contains", "(CharSequence)", "manual"]
-      - ["java.lang", "String", "endsWith", "(String)", "manual"] # ! see question on line 65 above
+      - ["java.lang", "String", "endsWith", "(String)", "manual"]
       - ["java.lang", "String", "equals", "(Object)", "manual"]
       - ["java.lang", "String", "equalsIgnoreCase", "(String)", "manual"]
       - ["java.lang", "String", "hashCode", "()", "manual"]
