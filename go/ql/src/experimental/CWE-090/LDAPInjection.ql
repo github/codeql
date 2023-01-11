@@ -6,6 +6,7 @@
  * @problem.severity error
  * @id go/ldap-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-90
  */
 

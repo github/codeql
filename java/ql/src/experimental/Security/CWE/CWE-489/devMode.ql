@@ -7,6 +7,7 @@
  * @precision high
  * @id java/struts-development-mode
  * @tags security
+ *       experimental
  *       external/cwe/cwe-489
  */
 
