@@ -18,8 +18,6 @@ extensions:
       - ["java.util.concurrent", "BlockingQueue", True, "put", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
       - ["java.util.concurrent", "BlockingQueue", True, "take", "()", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
       - ["java.util.concurrent", "ConcurrentHashMap", True, "elements", "()", "", "Argument[-1].MapValue", "ReturnValue.Element", "value", "manual"]
-      - ["java.util.concurrent", "CountDownLatch", False, "CountDownLatch", "(int)", "", "Argument[0]", "Argument[-1].SyntheticField[java.util.concurrent.CountDownLatch.count]", "value", "manual"]
-      - ["java.util.concurrent", "CountDownLatch", False, "getCount", "()", "", "Argument[-1].SyntheticField[java.util.concurrent.CountDownLatch.count]", "ReturnValue", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "transfer", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "tryTransfer", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "tryTransfer", "(Object,long,TimeUnit)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
@@ -29,3 +27,8 @@ extensions:
       extensible: neutralModel
     data:
       - ["java.util.concurrent", "CountDownLatch", "countDown", "()", "manual"]
+
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.util.concurrent", "CountDownLatch", "CountDownLatch", "(int)", "manual"] # value-numeric
+      - ["java.util.concurrent", "CountDownLatch", "getCount", "()", "manual"]          # value-numeric

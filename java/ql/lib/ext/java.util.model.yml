@@ -369,8 +369,6 @@ extensions:
       - ["java.util", "Collections", "emptyList", "()", "manual"]
       - ["java.util", "Collections", "emptyMap", "()", "manual"]
       - ["java.util", "Collections", "emptySet", "()", "manual"]
-      - ["java.util", "Date", "Date", "(long)", "manual"]
-      - ["java.util", "Date", "getTime", "()", "manual"]
       - ["java.util", "Iterator", "hasNext", "()", "manual"]
       - ["java.util", "List", "clear", "()", "manual"]
       - ["java.util", "List", "contains", "(Object)", "manual"]
@@ -390,3 +388,8 @@ extensions:
       - ["java.util", "Set", "size", "()", "manual"]
       - ["java.util", "UUID", "randomUUID", "()", "manual"]
       - ["java.util", "UUID", "toString", "()", "manual"]
+
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.util", "Date", "Date", "(long)", "manual"] # taint-numeric
+      - ["java.util", "Date", "getTime", "()", "manual"]  # taint-numeric

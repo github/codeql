@@ -19,9 +19,7 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.sql", "PreparedStatement", True, "setInt", "(int,int)", "", "Argument[1]", "Argument[-1]", "value", "manual"]
       - ["java.sql", "PreparedStatement", True, "setString", "(int,String)", "", "Argument[1]", "Argument[-1]", "value", "manual"]
-      - ["java.sql", "ResultSet", True, "getInt", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.sql", "ResultSet", True, "getString", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
 
   - addsTo:
@@ -29,3 +27,8 @@ extensions:
       extensible: neutralModel
     data:
       - ["java.sql", "ResultSet", "next", "()", "manual"]
+
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.sql", "PreparedStatement", "setInt", "(int,int)", "manual"] # value-numeric
+      - ["java.sql", "ResultSet", "getInt", "(String)", "manual"]          # taint-numeric

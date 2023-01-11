@@ -1,14 +1,12 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: summaryModel
-    data:
-      - ["java.math", "BigDecimal", False, "BigDecimal", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["java.math", "BigDecimal", False, "valueOf", "(double)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.math", "BigDecimal", False, "valueOf", "(long)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-
-  - addsTo:
-      pack: codeql/java-all
       extensible: neutralModel
     data:
       - ["java.math", "BigDecimal", "compareTo", "(BigDecimal)", "manual"]
+
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.math", "BigDecimal", "BigDecimal", "(String)", "manual"] # taint-numeric
+      - ["java.math", "BigDecimal", "valueOf", "(double)", "manual"]    # taint-numeric
+      - ["java.math", "BigDecimal", "valueOf", "(long)", "manual"]      # taint-numeric

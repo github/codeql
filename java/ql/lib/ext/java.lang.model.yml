@@ -41,17 +41,9 @@ extensions:
       - ["java.lang", "IllegalArgumentException", False, "IllegalArgumentException", "(String)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "IllegalStateException", False, "IllegalStateException", "(String)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "IndexOutOfBoundsException", False, "IndexOutOfBoundsException", "(String)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
-      - ["java.lang", "Integer", False, "intValue", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["java.lang", "Integer", False, "parseInt", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.lang", "Integer", False, "toString", "(int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.lang", "Integer", False, "valueOf", "(int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "Iterable", True, "forEach", "(Consumer)", "", "Argument[-1].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["java.lang", "Iterable", True, "iterator", "()", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.lang", "Iterable", True, "spliterator", "()", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]
-      - ["java.lang", "Long", False, "longValue", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["java.lang", "Long", False, "parseLong", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.lang", "Long", False, "toString", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["java.lang", "Math", False, "min", "(int,int)", "", "Argument[0..1]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Object", True, "clone", "", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.lang", "Object", True, "clone", "", "", "Argument[-1].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["java.lang", "Object", True, "clone", "", "", "Argument[-1].MapValue", "ReturnValue.MapValue", "value", "manual"]
@@ -97,8 +89,6 @@ extensions:
       - ["java.lang", "String", False, "valueOf", "(char)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "valueOf", "(char[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "valueOf", "(char[],int,int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.lang", "String", False, "valueOf", "(int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.lang", "String", False, "valueOf", "(long)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "StringBuffer", True, "StringBuffer", "(CharSequence)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.lang", "StringBuffer", True, "StringBuffer", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.lang", "StringBuilder", True, "StringBuilder", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
@@ -143,3 +133,16 @@ extensions:
       - ["java.lang", "System", "nanoTime", "()", "manual"]
       - ["java.lang", "Thread", "currentThread", "()", "manual"]
       - ["java.lang", "Thread", "sleep", "(long)", "manual"]
+
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.lang", "Integer", "intValue", "()", "manual"]       # taint-numeric
+      - ["java.lang", "Integer", "parseInt", "(String)", "manual"] # taint-numeric
+      - ["java.lang", "Integer", "toString", "(int)", "manual"]    # taint-numeric
+      - ["java.lang", "Integer", "valueOf", "(int)", "manual"]     # taint-numeric
+      - ["java.lang", "Long", "longValue", "()", "manual"]         # taint-numeric
+      - ["java.lang", "Long", "parseLong", "(String)", "manual"]   # taint-numeric
+      - ["java.lang", "Long", "toString", "()", "manual"]          # taint-numeric
+      - ["java.lang", "Math", "min", "(int,int)", "manual"]        # value-numeric
+      - ["java.lang", "String", "valueOf", "(int)", "manual"]      # taint-numeric
+      - ["java.lang", "String", "valueOf", "(long)", "manual"]     # taint-numeric
