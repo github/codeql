@@ -7,7 +7,7 @@ private string expects() {
   )
 }
 
-private string flows() { exists(TypeBasedFlowTargetApi api | result = captureFlow(api)) }
+private string flows() { result = captureFlow(_) }
 
 query predicate unexpectedSummary(string msg) {
   exists(string flow |

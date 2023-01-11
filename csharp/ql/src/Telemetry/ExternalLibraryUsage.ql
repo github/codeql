@@ -3,7 +3,7 @@
  * @description A list of external libraries used in the code given by their namespace.
  * @kind metric
  * @tags summary telemetry
- * @id csharp/telemetry/external-libs
+ * @id cs/telemetry/external-libs
  */
 
 private import csharp

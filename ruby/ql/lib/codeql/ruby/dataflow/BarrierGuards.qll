@@ -13,9 +13,8 @@ cached
 private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch) {
   exists(CfgNodes::ExprNodes::ComparisonOperationCfgNode c |
     c = guard and
-    exists(CfgNodes::ExprNodes::StringLiteralCfgNode strLitNode |
-      // Only consider strings without any interpolations
-      not strLitNode.getExpr().getComponent(_) instanceof StringInterpolationComponent and
+    exists(ExprCfgNode strNode |
+      strNode.getConstantValue().isStringlikeValue(_) and
       c.getExpr() instanceof EqExpr and
       branch = true
       or
@@ -23,9 +22,9 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedN
       or
       c.getExpr() instanceof NEExpr and branch = false
     |
-      c.getLeftOperand() = strLitNode and c.getRightOperand() = testedNode
+      c.getLeftOperand() = strNode and c.getRightOperand() = testedNode
       or
-      c.getLeftOperand() = testedNode and c.getRightOperand() = strLitNode
+      c.getLeftOperand() = testedNode and c.getRightOperand() = strNode
     )
   )
   or
@@ -116,7 +115,7 @@ private predicate stringConstArrayInclusionCall(
       isArrayConstant(t.getContainerNode().asExpr(), arr)
     |
       forall(ExprCfgNode elem | elem = arr.getAnArgument() |
-        elem instanceof ExprNodes::StringLiteralCfgNode
+        elem.getConstantValue().isStringlikeValue(_)
       )
     )
   )
@@ -193,11 +192,15 @@ private predicate stringConstCaseCompare(
       guard =
         any(CfgNodes::ExprNodes::WhenClauseCfgNode branchNode |
           branchNode = case.getBranch(_) and
-          // For simplicity, consider patterns that contain only string literals or arrays of string literals
+          // For simplicity, consider patterns that contain only string literals, string-valued variables, or arrays of the same.
           forall(ExprCfgNode pattern | pattern = branchNode.getPattern(_) |
+            // foo = "foo"
+            //
+            // when foo
+            // when foo, bar
             // when "foo"
             // when "foo", "bar"
-            pattern instanceof ExprNodes::StringLiteralCfgNode
+            pattern.getConstantValue().isStringlikeValue(_)
             or
             pattern =
               any(CfgNodes::ExprNodes::SplatExprCfgNode splat |
@@ -205,7 +208,7 @@ private predicate stringConstCaseCompare(
                 forex(ExprCfgNode elem |
                   elem = splat.getOperand().(ExprNodes::ArrayLiteralCfgNode).getAnArgument()
                 |
-                  elem instanceof ExprNodes::StringLiteralCfgNode
+                  elem.getConstantValue().isStringlikeValue(_)
                 )
                 or
                 // when *some_var
@@ -213,19 +216,21 @@ private predicate stringConstCaseCompare(
                 exists(ExprNodes::ArrayLiteralCfgNode arr |
                   isArrayConstant(splat.getOperand(), arr) and
                   forall(ExprCfgNode elem | elem = arr.getAnArgument() |
-                    elem instanceof ExprNodes::StringLiteralCfgNode
+                    elem.getConstantValue().isStringlikeValue(_)
                   )
                 )
               )
           )
         )
       or
+      // foo = "foo"
+      //
+      // in foo
       // in "foo"
-      exists(
-        CfgNodes::ExprNodes::InClauseCfgNode branchNode, ExprNodes::StringLiteralCfgNode pattern
-      |
+      exists(CfgNodes::ExprNodes::InClauseCfgNode branchNode, ExprCfgNode pattern |
         branchNode = case.getBranch(_) and
         pattern = branchNode.getPattern() and
+        pattern.getConstantValue().isStringlikeValue(_) and
         guard = pattern
       )
     )

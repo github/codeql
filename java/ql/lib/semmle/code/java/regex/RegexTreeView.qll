@@ -209,8 +209,8 @@ module Impl implements RegexTreeViewSig {
        * such as compile-time concatenation, or multi-line string literals.
        */
 
-      exists(int re_start, int re_end, int src_start, int src_end |
-        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, re_end) and
+      exists(int re_start, int src_start, int src_end |
+        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, _) and
         re.sourceCharacter(start, src_start, _) and
         re.sourceCharacter(end - 1, _, src_end) and
         startcolumn = re_start + src_start and

@@ -9,9 +9,7 @@ class OgnlInjectionTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasOgnlInjection" and
-    exists(DataFlow::Node src, DataFlow::Node sink, OgnlInjectionFlowConfig conf |
-      conf.hasFlow(src, sink)
-    |
+    exists(DataFlow::Node sink, OgnlInjectionFlowConfig conf | conf.hasFlowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

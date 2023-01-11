@@ -1,1 +1,1 @@
-| Sources/hello-world/hello_world.swift:4:12:5:5 | init() | Sources/hello-world/hello_world.swift:4:19:5:5 | { ... } |
+| Sources/hello-world/hello_world.swift:4:12:5:5 | hello_world.init() | Sources/hello-world/hello_world.swift:4:19:5:5 | { ... } |

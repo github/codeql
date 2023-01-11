@@ -202,9 +202,7 @@ private module CleverGo {
     DataFlow::Node receiverNode;
 
     HttpResponseBodyStaticContentType() {
-      exists(string package, string receiverName |
-        setsBodyAndStaticContentType(package, receiverName, this, contentTypeString, receiverNode)
-      )
+      setsBodyAndStaticContentType(_, _, this, contentTypeString, receiverNode)
     }
 
     override string getAContentType() { result = contentTypeString }
@@ -309,9 +307,7 @@ private module CleverGo {
     DataFlow::Node receiverNode;
 
     HttpResponseBodyDynamicContentType() {
-      exists(string package, string receiverName |
-        setsBodyAndDynamicContentType(package, receiverName, this, contentTypeNode, receiverNode)
-      )
+      setsBodyAndDynamicContentType(_, _, this, contentTypeNode, receiverNode)
     }
 
     override DataFlow::Node getAContentTypeNode() { result = contentTypeNode }
@@ -355,11 +351,7 @@ private module CleverGo {
   private class HttpResponseBodyNoContentType extends Http::ResponseBody::Range {
     DataFlow::Node receiverNode;
 
-    HttpResponseBodyNoContentType() {
-      exists(string package, string receiverName |
-        setsBody(package, receiverName, receiverNode, this)
-      )
-    }
+    HttpResponseBodyNoContentType() { setsBody(_, _, receiverNode, this) }
 
     override Http::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }

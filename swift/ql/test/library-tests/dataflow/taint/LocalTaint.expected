@@ -47,8 +47,7 @@
 | data.swift:37:7:37:7 | self | data.swift:37:7:37:7 | SSA def(self) |
 | data.swift:38:7:38:7 | SSA def(self) | data.swift:38:2:38:88 | self[return] |
 | data.swift:38:7:38:7 | self | data.swift:38:7:38:7 | SSA def(self) |
-| data.swift:38:79:38:79 | Data.Type | data.swift:38:79:38:79 | call to init(_:) |
-| data.swift:38:84:38:84 |  | data.swift:38:79:38:86 | call to init(_:) |
+| data.swift:38:84:38:84 |  | data.swift:38:79:38:86 | call to Data.init(_:) |
 | data.swift:39:7:39:7 | SSA def(self) | data.swift:39:2:39:86 | self[return] |
 | data.swift:39:7:39:7 | self | data.swift:39:7:39:7 | SSA def(self) |
 | data.swift:40:7:40:7 | SSA def(self) | data.swift:40:2:40:99 | self[return] |
@@ -87,12 +86,10 @@
 | data.swift:55:7:55:7 | self | data.swift:55:7:55:7 | SSA def(self) |
 | data.swift:56:7:56:7 | SSA def(self) | data.swift:56:2:56:214 | self[return] |
 | data.swift:56:7:56:7 | self | data.swift:56:7:56:7 | SSA def(self) |
-| data.swift:56:205:56:205 | Data.Type | data.swift:56:205:56:205 | call to init(_:) |
-| data.swift:56:210:56:210 |  | data.swift:56:205:56:212 | call to init(_:) |
+| data.swift:56:210:56:210 |  | data.swift:56:205:56:212 | call to Data.init(_:) |
 | data.swift:57:7:57:7 | SSA def(self) | data.swift:57:2:57:236 | self[return] |
 | data.swift:57:7:57:7 | self | data.swift:57:7:57:7 | SSA def(self) |
-| data.swift:57:227:57:227 | Data.Type | data.swift:57:227:57:227 | call to init(_:) |
-| data.swift:57:232:57:232 |  | data.swift:57:227:57:234 | call to init(_:) |
+| data.swift:57:232:57:232 |  | data.swift:57:227:57:234 | call to Data.init(_:) |
 | data.swift:58:7:58:7 | SSA def(self) | data.swift:58:2:58:39 | self[return] |
 | data.swift:58:7:58:7 | self | data.swift:58:7:58:7 | SSA def(self) |
 | data.swift:59:7:59:7 | SSA def(self) | data.swift:59:2:59:81 | self[return] |
@@ -107,94 +104,77 @@
 | data.swift:62:19:62:32 | using | data.swift:62:19:62:32 | SSA def(using) |
 | data.swift:63:7:63:7 | SSA def(self) | data.swift:63:2:63:123 | self[return] |
 | data.swift:63:7:63:7 | self | data.swift:63:7:63:7 | SSA def(self) |
-| data.swift:63:114:63:114 | Data.Type | data.swift:63:114:63:114 | call to init(_:) |
-| data.swift:63:119:63:119 |  | data.swift:63:114:63:121 | call to init(_:) |
+| data.swift:63:119:63:119 |  | data.swift:63:114:63:121 | call to Data.init(_:) |
 | data.swift:64:7:64:7 | SSA def(self) | data.swift:64:2:64:72 | self[return] |
 | data.swift:64:7:64:7 | self | data.swift:64:7:64:7 | SSA def(self) |
-| data.swift:64:63:64:63 | Data.Type | data.swift:64:63:64:63 | call to init(_:) |
-| data.swift:64:68:64:68 |  | data.swift:64:63:64:70 | call to init(_:) |
+| data.swift:64:68:64:68 |  | data.swift:64:63:64:70 | call to Data.init(_:) |
 | data.swift:69:7:69:7 | SSA def(self) | data.swift:69:7:69:7 | self[return] |
 | data.swift:69:7:69:7 | SSA def(self) | data.swift:69:7:69:7 | self[return] |
 | data.swift:69:7:69:7 | self | data.swift:69:7:69:7 | SSA def(self) |
 | data.swift:69:7:69:7 | self | data.swift:69:7:69:7 | SSA def(self) |
 | data.swift:80:6:80:6 | SSA def(dataClean) | data.swift:84:12:84:12 | dataClean |
-| data.swift:80:18:80:18 | Data.Type | data.swift:80:18:80:18 | call to init(_:) |
-| data.swift:80:18:80:36 | call to init(_:) | data.swift:80:6:80:6 | SSA def(dataClean) |
+| data.swift:80:18:80:36 | call to Data.init(_:) | data.swift:80:6:80:6 | SSA def(dataClean) |
 | data.swift:80:23:80:23 | 123456 | data.swift:80:23:80:32 | .utf8 |
-| data.swift:80:23:80:32 | .utf8 | data.swift:80:18:80:36 | call to init(_:) |
+| data.swift:80:23:80:32 | .utf8 | data.swift:80:18:80:36 | call to Data.init(_:) |
 | data.swift:81:6:81:6 | SSA def(dataTainted) | data.swift:82:26:82:26 | dataTainted |
-| data.swift:81:20:81:20 | Data.Type | data.swift:81:20:81:20 | call to init(_:) |
-| data.swift:81:20:81:51 | call to init(_:) | data.swift:81:6:81:6 | SSA def(dataTainted) |
-| data.swift:81:25:81:47 | .utf8 | data.swift:81:20:81:51 | call to init(_:) |
+| data.swift:81:20:81:51 | call to Data.init(_:) | data.swift:81:6:81:6 | SSA def(dataTainted) |
+| data.swift:81:25:81:47 | .utf8 | data.swift:81:20:81:51 | call to Data.init(_:) |
 | data.swift:81:26:81:33 | call to source() | data.swift:81:25:81:47 | .utf8 |
 | data.swift:82:6:82:6 | SSA def(dataTainted2) | data.swift:86:12:86:12 | dataTainted2 |
-| data.swift:82:21:82:21 | Data.Type | data.swift:82:21:82:21 | call to init(_:) |
-| data.swift:82:21:82:37 | call to init(_:) | data.swift:82:6:82:6 | SSA def(dataTainted2) |
+| data.swift:82:21:82:37 | call to Data.init(_:) | data.swift:82:6:82:6 | SSA def(dataTainted2) |
 | data.swift:82:26:82:26 | [post] dataTainted | data.swift:85:12:85:12 | dataTainted |
-| data.swift:82:26:82:26 | dataTainted | data.swift:82:21:82:37 | call to init(_:) |
+| data.swift:82:26:82:26 | dataTainted | data.swift:82:21:82:37 | call to Data.init(_:) |
 | data.swift:82:26:82:26 | dataTainted | data.swift:85:12:85:12 | dataTainted |
 | data.swift:89:6:89:6 | SSA def(dataTainted3) | data.swift:90:12:90:12 | dataTainted3 |
-| data.swift:89:21:89:21 | Data.Type | data.swift:89:21:89:21 | call to init(base64Encoded:options:) |
-| data.swift:89:21:89:71 | call to init(base64Encoded:options:) | data.swift:89:6:89:6 | SSA def(dataTainted3) |
-| data.swift:89:41:89:48 | call to source() | data.swift:89:21:89:71 | call to init(base64Encoded:options:) |
+| data.swift:89:21:89:71 | call to Data.init(base64Encoded:options:) | data.swift:89:6:89:6 | SSA def(dataTainted3) |
+| data.swift:89:41:89:48 | call to source() | data.swift:89:21:89:71 | call to Data.init(base64Encoded:options:) |
 | data.swift:93:6:93:6 | SSA def(dataTainted4) | data.swift:94:12:94:12 | dataTainted4 |
-| data.swift:93:21:93:21 | Data.Type | data.swift:93:21:93:21 | call to init(buffer:) |
-| data.swift:93:21:93:73 | call to init(buffer:) | data.swift:93:6:93:6 | SSA def(dataTainted4) |
-| data.swift:93:34:93:41 | call to source() | data.swift:93:21:93:73 | call to init(buffer:) |
+| data.swift:93:21:93:73 | call to Data.init(buffer:) | data.swift:93:6:93:6 | SSA def(dataTainted4) |
+| data.swift:93:34:93:41 | call to source() | data.swift:93:21:93:73 | call to Data.init(buffer:) |
 | data.swift:95:6:95:6 | SSA def(dataTainted5) | data.swift:96:12:96:12 | dataTainted5 |
-| data.swift:95:21:95:21 | Data.Type | data.swift:95:21:95:21 | call to init(buffer:) |
-| data.swift:95:21:95:74 | call to init(buffer:) | data.swift:95:6:95:6 | SSA def(dataTainted5) |
-| data.swift:95:34:95:41 | call to source() | data.swift:95:21:95:74 | call to init(buffer:) |
+| data.swift:95:21:95:74 | call to Data.init(buffer:) | data.swift:95:6:95:6 | SSA def(dataTainted5) |
+| data.swift:95:34:95:41 | call to source() | data.swift:95:21:95:74 | call to Data.init(buffer:) |
 | data.swift:99:6:99:6 | SSA def(dataTainted6) | data.swift:100:12:100:12 | dataTainted6 |
-| data.swift:99:21:99:21 | Data.Type | data.swift:99:21:99:21 | call to init(bytes:count:) |
-| data.swift:99:21:99:72 | call to init(bytes:count:) | data.swift:99:6:99:6 | SSA def(dataTainted6) |
-| data.swift:99:33:99:40 | call to source() | data.swift:99:21:99:72 | call to init(bytes:count:) |
+| data.swift:99:21:99:72 | call to Data.init(bytes:count:) | data.swift:99:6:99:6 | SSA def(dataTainted6) |
+| data.swift:99:33:99:40 | call to source() | data.swift:99:21:99:72 | call to Data.init(bytes:count:) |
 | data.swift:103:6:103:6 | SSA def(dataTainted7) | data.swift:104:12:104:12 | dataTainted7 |
-| data.swift:103:21:103:21 | Data.Type | data.swift:103:21:103:21 | call to init(bytesNoCopy:count:deallocator:) |
-| data.swift:103:21:103:114 | call to init(bytesNoCopy:count:deallocator:) | data.swift:103:6:103:6 | SSA def(dataTainted7) |
-| data.swift:103:39:103:46 | call to source() | data.swift:103:21:103:114 | call to init(bytesNoCopy:count:deallocator:) |
+| data.swift:103:21:103:114 | call to Data.init(bytesNoCopy:count:deallocator:) | data.swift:103:6:103:6 | SSA def(dataTainted7) |
+| data.swift:103:39:103:46 | call to source() | data.swift:103:21:103:114 | call to Data.init(bytesNoCopy:count:deallocator:) |
 | data.swift:107:6:107:6 | SSA def(urlTainted8) | data.swift:108:38:108:38 | urlTainted8 |
 | data.swift:107:20:107:27 | call to source() | data.swift:107:6:107:6 | SSA def(urlTainted8) |
 | data.swift:108:6:108:6 | SSA def(dataTainted8) | data.swift:109:12:109:12 | dataTainted8 |
-| data.swift:108:21:108:21 | Data.Type | data.swift:108:21:108:21 | call to init(contentsOf:options:) |
-| data.swift:108:21:108:62 | call to init(contentsOf:options:) | data.swift:108:6:108:6 | SSA def(dataTainted8) |
-| data.swift:108:38:108:38 | urlTainted8 | data.swift:108:21:108:62 | call to init(contentsOf:options:) |
+| data.swift:108:21:108:62 | call to Data.init(contentsOf:options:) | data.swift:108:6:108:6 | SSA def(dataTainted8) |
+| data.swift:108:38:108:38 | urlTainted8 | data.swift:108:21:108:62 | call to Data.init(contentsOf:options:) |
 | data.swift:112:6:112:6 | SSA def(dataTainted9) | data.swift:113:12:113:12 | dataTainted9 |
-| data.swift:112:21:112:21 | Data.Type | data.swift:112:21:112:21 | call to init(referencing:) |
-| data.swift:112:21:112:58 | call to init(referencing:) | data.swift:112:6:112:6 | SSA def(dataTainted9) |
-| data.swift:112:39:112:46 | call to source() | data.swift:112:21:112:58 | call to init(referencing:) |
+| data.swift:112:21:112:58 | call to Data.init(referencing:) | data.swift:112:6:112:6 | SSA def(dataTainted9) |
+| data.swift:112:39:112:46 | call to source() | data.swift:112:21:112:58 | call to Data.init(referencing:) |
 | data.swift:116:6:116:6 | SSA def(dataTainted10) | data.swift:117:2:117:2 | dataTainted10 |
-| data.swift:116:22:116:22 | Data.Type | data.swift:116:22:116:22 | call to init(_:) |
-| data.swift:116:22:116:29 | call to init(_:) | data.swift:116:6:116:6 | SSA def(dataTainted10) |
-| data.swift:116:27:116:27 |  | data.swift:116:22:116:29 | call to init(_:) |
+| data.swift:116:22:116:29 | call to Data.init(_:) | data.swift:116:6:116:6 | SSA def(dataTainted10) |
+| data.swift:116:27:116:27 |  | data.swift:116:22:116:29 | call to Data.init(_:) |
 | data.swift:117:2:117:2 | [post] dataTainted10 | data.swift:118:12:118:12 | dataTainted10 |
 | data.swift:117:2:117:2 | dataTainted10 | data.swift:118:12:118:12 | dataTainted10 |
 | data.swift:117:23:117:30 | call to source() | data.swift:117:2:117:2 | [post] dataTainted10 |
 | data.swift:120:6:120:6 | SSA def(dataTainted11) | data.swift:121:2:121:2 | dataTainted11 |
-| data.swift:120:22:120:22 | Data.Type | data.swift:120:22:120:22 | call to init(_:) |
-| data.swift:120:22:120:29 | call to init(_:) | data.swift:120:6:120:6 | SSA def(dataTainted11) |
-| data.swift:120:27:120:27 |  | data.swift:120:22:120:29 | call to init(_:) |
+| data.swift:120:22:120:29 | call to Data.init(_:) | data.swift:120:6:120:6 | SSA def(dataTainted11) |
+| data.swift:120:27:120:27 |  | data.swift:120:22:120:29 | call to Data.init(_:) |
 | data.swift:121:2:121:2 | [post] dataTainted11 | data.swift:122:12:122:12 | dataTainted11 |
 | data.swift:121:2:121:2 | dataTainted11 | data.swift:122:12:122:12 | dataTainted11 |
 | data.swift:121:23:121:30 | call to source() | data.swift:121:2:121:2 | [post] dataTainted11 |
 | data.swift:124:6:124:6 | SSA def(dataTainted12) | data.swift:125:2:125:2 | dataTainted12 |
-| data.swift:124:22:124:22 | Data.Type | data.swift:124:22:124:22 | call to init(_:) |
-| data.swift:124:22:124:29 | call to init(_:) | data.swift:124:6:124:6 | SSA def(dataTainted12) |
-| data.swift:124:27:124:27 |  | data.swift:124:22:124:29 | call to init(_:) |
+| data.swift:124:22:124:29 | call to Data.init(_:) | data.swift:124:6:124:6 | SSA def(dataTainted12) |
+| data.swift:124:27:124:27 |  | data.swift:124:22:124:29 | call to Data.init(_:) |
 | data.swift:125:2:125:2 | [post] dataTainted12 | data.swift:126:12:126:12 | dataTainted12 |
 | data.swift:125:2:125:2 | dataTainted12 | data.swift:126:12:126:12 | dataTainted12 |
 | data.swift:125:23:125:30 | call to source() | data.swift:125:2:125:2 | [post] dataTainted12 |
 | data.swift:129:6:129:6 | SSA def(dataTainted13) | data.swift:130:2:130:2 | dataTainted13 |
-| data.swift:129:22:129:22 | Data.Type | data.swift:129:22:129:22 | call to init(_:) |
-| data.swift:129:22:129:29 | call to init(_:) | data.swift:129:6:129:6 | SSA def(dataTainted13) |
-| data.swift:129:27:129:27 |  | data.swift:129:22:129:29 | call to init(_:) |
+| data.swift:129:22:129:29 | call to Data.init(_:) | data.swift:129:6:129:6 | SSA def(dataTainted13) |
+| data.swift:129:27:129:27 |  | data.swift:129:22:129:29 | call to Data.init(_:) |
 | data.swift:130:2:130:2 | [post] dataTainted13 | data.swift:131:12:131:12 | dataTainted13 |
 | data.swift:130:2:130:2 | dataTainted13 | data.swift:131:12:131:12 | dataTainted13 |
 | data.swift:130:23:130:30 | call to source() | data.swift:130:2:130:2 | [post] dataTainted13 |
 | data.swift:134:6:134:6 | SSA def(dataTainted14) | data.swift:135:2:135:2 | dataTainted14 |
-| data.swift:134:22:134:22 | Data.Type | data.swift:134:22:134:22 | call to init(_:) |
-| data.swift:134:22:134:29 | call to init(_:) | data.swift:134:6:134:6 | SSA def(dataTainted14) |
-| data.swift:134:27:134:27 |  | data.swift:134:22:134:29 | call to init(_:) |
+| data.swift:134:22:134:29 | call to Data.init(_:) | data.swift:134:6:134:6 | SSA def(dataTainted14) |
+| data.swift:134:27:134:27 |  | data.swift:134:22:134:29 | call to Data.init(_:) |
 | data.swift:135:2:135:2 | [post] dataTainted14 | data.swift:136:12:136:12 | dataTainted14 |
 | data.swift:135:2:135:2 | dataTainted14 | data.swift:136:12:136:12 | dataTainted14 |
 | data.swift:135:35:135:42 | call to source() | data.swift:135:2:135:2 | [post] dataTainted14 |
@@ -243,16 +223,14 @@
 | data.swift:175:44:175:44 | SSA def(str) | data.swift:175:55:175:55 | str |
 | data.swift:175:44:175:44 | str | data.swift:175:44:175:44 | SSA def(str) |
 | data.swift:179:6:179:6 | SSA def(dataTainted23) | data.swift:180:2:180:2 | dataTainted23 |
-| data.swift:179:22:179:22 | Data.Type | data.swift:179:22:179:22 | call to init(_:) |
-| data.swift:179:22:179:29 | call to init(_:) | data.swift:179:6:179:6 | SSA def(dataTainted23) |
-| data.swift:179:27:179:27 |  | data.swift:179:22:179:29 | call to init(_:) |
+| data.swift:179:22:179:29 | call to Data.init(_:) | data.swift:179:6:179:6 | SSA def(dataTainted23) |
+| data.swift:179:27:179:27 |  | data.swift:179:22:179:29 | call to Data.init(_:) |
 | data.swift:180:2:180:2 | [post] dataTainted23 | data.swift:181:12:181:12 | dataTainted23 |
 | data.swift:180:2:180:2 | dataTainted23 | data.swift:181:12:181:12 | dataTainted23 |
 | data.swift:180:23:180:30 | call to source() | data.swift:180:2:180:2 | [post] dataTainted23 |
 | data.swift:184:6:184:6 | SSA def(dataTainted24) | data.swift:185:2:185:2 | dataTainted24 |
-| data.swift:184:22:184:22 | Data.Type | data.swift:184:22:184:22 | call to init(_:) |
-| data.swift:184:22:184:29 | call to init(_:) | data.swift:184:6:184:6 | SSA def(dataTainted24) |
-| data.swift:184:27:184:27 |  | data.swift:184:22:184:29 | call to init(_:) |
+| data.swift:184:22:184:29 | call to Data.init(_:) | data.swift:184:6:184:6 | SSA def(dataTainted24) |
+| data.swift:184:27:184:27 |  | data.swift:184:22:184:29 | call to Data.init(_:) |
 | data.swift:185:2:185:2 | [post] dataTainted24 | data.swift:186:12:186:12 | dataTainted24 |
 | data.swift:185:2:185:2 | dataTainted24 | data.swift:186:12:186:12 | dataTainted24 |
 | data.swift:185:35:185:42 | call to source() | data.swift:185:2:185:2 | [post] dataTainted24 |
@@ -276,51 +254,44 @@
 | data.swift:195:58:195:58 | c | data.swift:195:58:195:58 | &... |
 | data.swift:195:58:195:73 | ...[...] | data.swift:195:58:195:73 | &... |
 | data.swift:199:6:199:6 | SSA def(dataTainted27) | data.swift:200:2:200:2 | dataTainted27 |
-| data.swift:199:22:199:22 | Data.Type | data.swift:199:22:199:22 | call to init(_:) |
-| data.swift:199:22:199:29 | call to init(_:) | data.swift:199:6:199:6 | SSA def(dataTainted27) |
-| data.swift:199:27:199:27 |  | data.swift:199:22:199:29 | call to init(_:) |
+| data.swift:199:22:199:29 | call to Data.init(_:) | data.swift:199:6:199:6 | SSA def(dataTainted27) |
+| data.swift:199:27:199:27 |  | data.swift:199:22:199:29 | call to Data.init(_:) |
 | data.swift:200:2:200:2 | [post] dataTainted27 | data.swift:201:12:201:12 | dataTainted27 |
 | data.swift:200:2:200:2 | dataTainted27 | data.swift:201:12:201:12 | dataTainted27 |
 | data.swift:200:35:200:42 | call to source() | data.swift:200:2:200:2 | [post] dataTainted27 |
 | data.swift:204:6:204:6 | SSA def(dataTainted28) | data.swift:205:2:205:2 | dataTainted28 |
-| data.swift:204:22:204:22 | Data.Type | data.swift:204:22:204:22 | call to init(_:) |
-| data.swift:204:22:204:29 | call to init(_:) | data.swift:204:6:204:6 | SSA def(dataTainted28) |
-| data.swift:204:27:204:27 |  | data.swift:204:22:204:29 | call to init(_:) |
+| data.swift:204:22:204:29 | call to Data.init(_:) | data.swift:204:6:204:6 | SSA def(dataTainted28) |
+| data.swift:204:27:204:27 |  | data.swift:204:22:204:29 | call to Data.init(_:) |
 | data.swift:205:2:205:2 | [post] dataTainted28 | data.swift:206:12:206:12 | dataTainted28 |
 | data.swift:205:2:205:2 | dataTainted28 | data.swift:206:12:206:12 | dataTainted28 |
 | data.swift:205:45:205:52 | call to source() | data.swift:205:2:205:2 | [post] dataTainted28 |
 | data.swift:208:6:208:6 | SSA def(dataTainted29) | data.swift:209:2:209:2 | dataTainted29 |
-| data.swift:208:22:208:22 | Data.Type | data.swift:208:22:208:22 | call to init(_:) |
-| data.swift:208:22:208:29 | call to init(_:) | data.swift:208:6:208:6 | SSA def(dataTainted29) |
-| data.swift:208:27:208:27 |  | data.swift:208:22:208:29 | call to init(_:) |
+| data.swift:208:22:208:29 | call to Data.init(_:) | data.swift:208:6:208:6 | SSA def(dataTainted29) |
+| data.swift:208:27:208:27 |  | data.swift:208:22:208:29 | call to Data.init(_:) |
 | data.swift:209:2:209:2 | [post] dataTainted29 | data.swift:210:12:210:12 | dataTainted29 |
 | data.swift:209:2:209:2 | dataTainted29 | data.swift:210:12:210:12 | dataTainted29 |
 | data.swift:209:45:209:52 | call to source() | data.swift:209:2:209:2 | [post] dataTainted29 |
 | data.swift:212:6:212:6 | SSA def(dataTainted30) | data.swift:213:2:213:2 | dataTainted30 |
-| data.swift:212:22:212:22 | Data.Type | data.swift:212:22:212:22 | call to init(_:) |
-| data.swift:212:22:212:29 | call to init(_:) | data.swift:212:6:212:6 | SSA def(dataTainted30) |
-| data.swift:212:27:212:27 |  | data.swift:212:22:212:29 | call to init(_:) |
+| data.swift:212:22:212:29 | call to Data.init(_:) | data.swift:212:6:212:6 | SSA def(dataTainted30) |
+| data.swift:212:27:212:27 |  | data.swift:212:22:212:29 | call to Data.init(_:) |
 | data.swift:213:2:213:2 | [post] dataTainted30 | data.swift:214:12:214:12 | dataTainted30 |
 | data.swift:213:2:213:2 | dataTainted30 | data.swift:214:12:214:12 | dataTainted30 |
 | data.swift:213:45:213:52 | call to source() | data.swift:213:2:213:2 | [post] dataTainted30 |
 | data.swift:217:6:217:6 | SSA def(dataTainted31) | data.swift:218:2:218:2 | dataTainted31 |
-| data.swift:217:22:217:22 | Data.Type | data.swift:217:22:217:22 | call to init(_:) |
-| data.swift:217:22:217:29 | call to init(_:) | data.swift:217:6:217:6 | SSA def(dataTainted31) |
-| data.swift:217:27:217:27 |  | data.swift:217:22:217:29 | call to init(_:) |
+| data.swift:217:22:217:29 | call to Data.init(_:) | data.swift:217:6:217:6 | SSA def(dataTainted31) |
+| data.swift:217:27:217:27 |  | data.swift:217:22:217:29 | call to Data.init(_:) |
 | data.swift:218:2:218:2 | [post] dataTainted31 | data.swift:219:12:219:12 | dataTainted31 |
 | data.swift:218:2:218:2 | dataTainted31 | data.swift:219:12:219:12 | dataTainted31 |
 | data.swift:218:45:218:52 | call to source() | data.swift:218:2:218:2 | [post] dataTainted31 |
 | data.swift:222:6:222:6 | SSA def(dataTainted32) | data.swift:223:10:223:10 | dataTainted32 |
-| data.swift:222:22:222:22 | Data.Type | data.swift:222:22:222:22 | call to init(_:) |
-| data.swift:222:22:222:29 | call to init(_:) | data.swift:222:6:222:6 | SSA def(dataTainted32) |
-| data.swift:222:27:222:27 |  | data.swift:222:22:222:29 | call to init(_:) |
+| data.swift:222:22:222:29 | call to Data.init(_:) | data.swift:222:6:222:6 | SSA def(dataTainted32) |
+| data.swift:222:27:222:27 |  | data.swift:222:22:222:29 | call to Data.init(_:) |
 | data.swift:223:10:223:10 | [post] dataTainted32 | data.swift:224:12:224:12 | dataTainted32 |
 | data.swift:223:10:223:10 | dataTainted32 | data.swift:224:12:224:12 | dataTainted32 |
 | data.swift:223:45:223:52 | call to source() | data.swift:223:10:223:10 | [post] dataTainted32 |
 | data.swift:227:6:227:6 | SSA def(dataTainted33) | data.swift:228:10:228:10 | dataTainted33 |
-| data.swift:227:22:227:22 | Data.Type | data.swift:227:22:227:22 | call to init(_:) |
-| data.swift:227:22:227:29 | call to init(_:) | data.swift:227:6:227:6 | SSA def(dataTainted33) |
-| data.swift:227:27:227:27 |  | data.swift:227:22:227:29 | call to init(_:) |
+| data.swift:227:22:227:29 | call to Data.init(_:) | data.swift:227:6:227:6 | SSA def(dataTainted33) |
+| data.swift:227:27:227:27 |  | data.swift:227:22:227:29 | call to Data.init(_:) |
 | data.swift:228:10:228:10 | [post] dataTainted33 | data.swift:229:12:229:12 | dataTainted33 |
 | data.swift:228:10:228:10 | dataTainted33 | data.swift:229:12:229:12 | dataTainted33 |
 | data.swift:228:45:228:52 | call to source() | data.swift:228:10:228:10 | [post] dataTainted33 |
@@ -401,8 +372,7 @@
 | nsdata.swift:36:5:36:5 | self | nsdata.swift:36:5:36:5 | SSA def(self) |
 | nsdata.swift:37:10:37:10 | SSA def(self) | nsdata.swift:37:5:37:98 | self[return] |
 | nsdata.swift:37:10:37:10 | self | nsdata.swift:37:10:37:10 | SSA def(self) |
-| nsdata.swift:37:89:37:89 | Data.Type | nsdata.swift:37:89:37:89 | call to init(_:) |
-| nsdata.swift:37:94:37:94 |  | nsdata.swift:37:89:37:96 | call to init(_:) |
+| nsdata.swift:37:94:37:94 |  | nsdata.swift:37:89:37:96 | call to Data.init(_:) |
 | nsdata.swift:38:10:38:10 | SSA def(self) | nsdata.swift:38:5:38:96 | self[return] |
 | nsdata.swift:38:10:38:10 | self | nsdata.swift:38:10:38:10 | SSA def(self) |
 | nsdata.swift:39:10:39:10 | SSA def(self) | nsdata.swift:39:5:39:49 | self[return] |
@@ -419,8 +389,7 @@
 | nsdata.swift:44:10:44:10 | self | nsdata.swift:44:10:44:10 | SSA def(self) |
 | nsdata.swift:45:10:45:10 | SSA def(self) | nsdata.swift:45:5:45:65 | self[return] |
 | nsdata.swift:45:10:45:10 | self | nsdata.swift:45:10:45:10 | SSA def(self) |
-| nsdata.swift:45:56:45:56 | Data.Type | nsdata.swift:45:56:45:56 | call to init(_:) |
-| nsdata.swift:45:61:45:61 |  | nsdata.swift:45:56:45:63 | call to init(_:) |
+| nsdata.swift:45:61:45:61 |  | nsdata.swift:45:56:45:63 | call to Data.init(_:) |
 | nsdata.swift:46:10:46:10 | SSA def(self) | nsdata.swift:46:84:46:84 | self |
 | nsdata.swift:46:10:46:10 | self | nsdata.swift:46:10:46:10 | SSA def(self) |
 | nsdata.swift:46:84:46:84 | self | nsdata.swift:46:5:46:89 | self[return] |
@@ -428,63 +397,50 @@
 | nsdata.swift:47:10:47:10 | self | nsdata.swift:47:10:47:10 | SSA def(self) |
 | nsdata.swift:47:86:47:86 | self | nsdata.swift:47:5:47:91 | self[return] |
 | nsdata.swift:57:9:57:9 | SSA def(nsDataTainted1) | nsdata.swift:58:15:58:15 | nsDataTainted1 |
-| nsdata.swift:57:26:57:26 | NSData.Type | nsdata.swift:57:26:57:26 | call to init(bytes:length:) |
-| nsdata.swift:57:26:57:80 | call to init(bytes:length:) | nsdata.swift:57:9:57:9 | SSA def(nsDataTainted1) |
-| nsdata.swift:57:40:57:47 | call to source() | nsdata.swift:57:26:57:80 | call to init(bytes:length:) |
+| nsdata.swift:57:26:57:80 | call to NSData.init(bytes:length:) | nsdata.swift:57:9:57:9 | SSA def(nsDataTainted1) |
+| nsdata.swift:57:40:57:47 | call to source() | nsdata.swift:57:26:57:80 | call to NSData.init(bytes:length:) |
 | nsdata.swift:60:9:60:9 | SSA def(nsDataTainted2) | nsdata.swift:61:15:61:15 | nsDataTainted2 |
-| nsdata.swift:60:26:60:26 | NSData.Type | nsdata.swift:60:26:60:26 | call to init(bytesNoCopy:length:) |
-| nsdata.swift:60:26:60:93 | call to init(bytesNoCopy:length:) | nsdata.swift:60:9:60:9 | SSA def(nsDataTainted2) |
-| nsdata.swift:60:46:60:53 | call to source() | nsdata.swift:60:26:60:93 | call to init(bytesNoCopy:length:) |
+| nsdata.swift:60:26:60:93 | call to NSData.init(bytesNoCopy:length:) | nsdata.swift:60:9:60:9 | SSA def(nsDataTainted2) |
+| nsdata.swift:60:46:60:53 | call to source() | nsdata.swift:60:26:60:93 | call to NSData.init(bytesNoCopy:length:) |
 | nsdata.swift:63:9:63:9 | SSA def(nsDataTainted3) | nsdata.swift:64:15:64:15 | nsDataTainted3 |
-| nsdata.swift:63:26:63:26 | NSData.Type | nsdata.swift:63:26:63:26 | call to init(bytesNoCopy:length:deallocator:) |
-| nsdata.swift:63:26:63:111 | call to init(bytesNoCopy:length:deallocator:) | nsdata.swift:63:9:63:9 | SSA def(nsDataTainted3) |
-| nsdata.swift:63:46:63:53 | call to source() | nsdata.swift:63:26:63:111 | call to init(bytesNoCopy:length:deallocator:) |
+| nsdata.swift:63:26:63:111 | call to NSData.init(bytesNoCopy:length:deallocator:) | nsdata.swift:63:9:63:9 | SSA def(nsDataTainted3) |
+| nsdata.swift:63:46:63:53 | call to source() | nsdata.swift:63:26:63:111 | call to NSData.init(bytesNoCopy:length:deallocator:) |
 | nsdata.swift:66:9:66:9 | SSA def(nsDataTainted4) | nsdata.swift:67:15:67:15 | nsDataTainted4 |
-| nsdata.swift:66:26:66:26 | NSData.Type | nsdata.swift:66:26:66:26 | call to init(bytesNoCopy:length:freeWhenDone:) |
-| nsdata.swift:66:26:66:113 | call to init(bytesNoCopy:length:freeWhenDone:) | nsdata.swift:66:9:66:9 | SSA def(nsDataTainted4) |
-| nsdata.swift:66:46:66:53 | call to source() | nsdata.swift:66:26:66:113 | call to init(bytesNoCopy:length:freeWhenDone:) |
+| nsdata.swift:66:26:66:113 | call to NSData.init(bytesNoCopy:length:freeWhenDone:) | nsdata.swift:66:9:66:9 | SSA def(nsDataTainted4) |
+| nsdata.swift:66:46:66:53 | call to source() | nsdata.swift:66:26:66:113 | call to NSData.init(bytesNoCopy:length:freeWhenDone:) |
 | nsdata.swift:69:9:69:9 | SSA def(nsDataTainted5) | nsdata.swift:70:15:70:15 | nsDataTainted5 |
-| nsdata.swift:69:26:69:26 | NSData.Type | nsdata.swift:69:26:69:26 | call to init(data:) |
-| nsdata.swift:69:26:69:56 | call to init(data:) | nsdata.swift:69:9:69:9 | SSA def(nsDataTainted5) |
-| nsdata.swift:69:39:69:46 | call to source() | nsdata.swift:69:26:69:56 | call to init(data:) |
+| nsdata.swift:69:26:69:56 | call to NSData.init(data:) | nsdata.swift:69:9:69:9 | SSA def(nsDataTainted5) |
+| nsdata.swift:69:39:69:46 | call to source() | nsdata.swift:69:26:69:56 | call to NSData.init(data:) |
 | nsdata.swift:72:9:72:9 | SSA def(nsDataTainted6) | nsdata.swift:73:15:73:15 | nsDataTainted6 |
-| nsdata.swift:72:26:72:26 | NSData.Type | nsdata.swift:72:26:72:26 | call to init(contentsOfFile:) |
-| nsdata.swift:72:26:72:68 | call to init(contentsOfFile:) | nsdata.swift:72:9:72:9 | SSA def(nsDataTainted6) |
-| nsdata.swift:72:49:72:56 | call to source() | nsdata.swift:72:26:72:68 | call to init(contentsOfFile:) |
+| nsdata.swift:72:26:72:68 | call to NSData.init(contentsOfFile:) | nsdata.swift:72:9:72:9 | SSA def(nsDataTainted6) |
+| nsdata.swift:72:49:72:56 | call to source() | nsdata.swift:72:26:72:68 | call to NSData.init(contentsOfFile:) |
 | nsdata.swift:73:15:73:15 | nsDataTainted6 | nsdata.swift:73:15:73:29 | ...! |
 | nsdata.swift:75:9:75:9 | SSA def(nsDataTainted7) | nsdata.swift:76:15:76:15 | nsDataTainted7 |
-| nsdata.swift:75:26:75:26 | NSData.Type | nsdata.swift:75:26:75:26 | call to init(contentsOfFile:options:) |
-| nsdata.swift:75:26:75:81 | call to init(contentsOfFile:options:) | nsdata.swift:75:9:75:9 | SSA def(nsDataTainted7) |
-| nsdata.swift:75:49:75:56 | call to source() | nsdata.swift:75:26:75:81 | call to init(contentsOfFile:options:) |
+| nsdata.swift:75:26:75:81 | call to NSData.init(contentsOfFile:options:) | nsdata.swift:75:9:75:9 | SSA def(nsDataTainted7) |
+| nsdata.swift:75:49:75:56 | call to source() | nsdata.swift:75:26:75:81 | call to NSData.init(contentsOfFile:options:) |
 | nsdata.swift:78:9:78:9 | SSA def(nsDataTainted8) | nsdata.swift:79:15:79:15 | nsDataTainted8 |
-| nsdata.swift:78:26:78:26 | NSData.Type | nsdata.swift:78:26:78:26 | call to init(contentsOf:) |
-| nsdata.swift:78:26:78:61 | call to init(contentsOf:) | nsdata.swift:78:9:78:9 | SSA def(nsDataTainted8) |
-| nsdata.swift:78:45:78:52 | call to source() | nsdata.swift:78:26:78:61 | call to init(contentsOf:) |
+| nsdata.swift:78:26:78:61 | call to NSData.init(contentsOf:) | nsdata.swift:78:9:78:9 | SSA def(nsDataTainted8) |
+| nsdata.swift:78:45:78:52 | call to source() | nsdata.swift:78:26:78:61 | call to NSData.init(contentsOf:) |
 | nsdata.swift:79:15:79:15 | nsDataTainted8 | nsdata.swift:79:15:79:29 | ...! |
 | nsdata.swift:81:9:81:9 | SSA def(nsDataTainted9) | nsdata.swift:82:15:82:15 | nsDataTainted9 |
-| nsdata.swift:81:26:81:26 | NSData.Type | nsdata.swift:81:26:81:26 | call to init(contentsOf:options:) |
-| nsdata.swift:81:26:81:74 | call to init(contentsOf:options:) | nsdata.swift:81:9:81:9 | SSA def(nsDataTainted9) |
-| nsdata.swift:81:45:81:52 | call to source() | nsdata.swift:81:26:81:74 | call to init(contentsOf:options:) |
+| nsdata.swift:81:26:81:74 | call to NSData.init(contentsOf:options:) | nsdata.swift:81:9:81:9 | SSA def(nsDataTainted9) |
+| nsdata.swift:81:45:81:52 | call to source() | nsdata.swift:81:26:81:74 | call to NSData.init(contentsOf:options:) |
 | nsdata.swift:82:15:82:15 | nsDataTainted9 | nsdata.swift:82:15:82:29 | ...! |
 | nsdata.swift:84:9:84:9 | SSA def(nsDataTainted10) | nsdata.swift:85:15:85:15 | nsDataTainted10 |
-| nsdata.swift:84:27:84:27 | NSData.Type | nsdata.swift:84:27:84:27 | call to init(contentsOfMappedFile:) |
-| nsdata.swift:84:27:84:75 | call to init(contentsOfMappedFile:) | nsdata.swift:84:9:84:9 | SSA def(nsDataTainted10) |
-| nsdata.swift:84:56:84:63 | call to source() | nsdata.swift:84:27:84:75 | call to init(contentsOfMappedFile:) |
+| nsdata.swift:84:27:84:75 | call to NSData.init(contentsOfMappedFile:) | nsdata.swift:84:9:84:9 | SSA def(nsDataTainted10) |
+| nsdata.swift:84:56:84:63 | call to source() | nsdata.swift:84:27:84:75 | call to NSData.init(contentsOfMappedFile:) |
 | nsdata.swift:85:15:85:15 | nsDataTainted10 | nsdata.swift:85:15:85:30 | ...! |
 | nsdata.swift:87:9:87:9 | SSA def(nsDataTainted11) | nsdata.swift:88:15:88:15 | nsDataTainted11 |
-| nsdata.swift:87:27:87:27 | NSData.Type | nsdata.swift:87:27:87:27 | call to init(base64Encoded:options:) |
-| nsdata.swift:87:27:87:79 | call to init(base64Encoded:options:) | nsdata.swift:87:9:87:9 | SSA def(nsDataTainted11) |
-| nsdata.swift:87:49:87:56 | call to source() | nsdata.swift:87:27:87:79 | call to init(base64Encoded:options:) |
+| nsdata.swift:87:27:87:79 | call to NSData.init(base64Encoded:options:) | nsdata.swift:87:9:87:9 | SSA def(nsDataTainted11) |
+| nsdata.swift:87:49:87:56 | call to source() | nsdata.swift:87:27:87:79 | call to NSData.init(base64Encoded:options:) |
 | nsdata.swift:88:15:88:15 | nsDataTainted11 | nsdata.swift:88:15:88:30 | ...! |
 | nsdata.swift:89:9:89:9 | SSA def(nsDataTainted12) | nsdata.swift:90:15:90:15 | nsDataTainted12 |
-| nsdata.swift:89:27:89:27 | NSData.Type | nsdata.swift:89:27:89:27 | call to init(base64Encoded:options:) |
-| nsdata.swift:89:27:89:81 | call to init(base64Encoded:options:) | nsdata.swift:89:9:89:9 | SSA def(nsDataTainted12) |
-| nsdata.swift:89:49:89:56 | call to source() | nsdata.swift:89:27:89:81 | call to init(base64Encoded:options:) |
+| nsdata.swift:89:27:89:81 | call to NSData.init(base64Encoded:options:) | nsdata.swift:89:9:89:9 | SSA def(nsDataTainted12) |
+| nsdata.swift:89:49:89:56 | call to source() | nsdata.swift:89:27:89:81 | call to NSData.init(base64Encoded:options:) |
 | nsdata.swift:90:15:90:15 | nsDataTainted12 | nsdata.swift:90:15:90:30 | ...! |
 | nsdata.swift:92:9:92:9 | SSA def(nsDataTainted13) | nsdata.swift:93:15:93:15 | nsDataTainted13 |
-| nsdata.swift:92:27:92:27 | NSData.Type | nsdata.swift:92:27:92:27 | call to init(base64Encoding:) |
-| nsdata.swift:92:27:92:69 | call to init(base64Encoding:) | nsdata.swift:92:9:92:9 | SSA def(nsDataTainted13) |
-| nsdata.swift:92:50:92:57 | call to source() | nsdata.swift:92:27:92:69 | call to init(base64Encoding:) |
+| nsdata.swift:92:27:92:69 | call to NSData.init(base64Encoding:) | nsdata.swift:92:9:92:9 | SSA def(nsDataTainted13) |
+| nsdata.swift:92:50:92:57 | call to source() | nsdata.swift:92:27:92:69 | call to NSData.init(base64Encoding:) |
 | nsdata.swift:93:15:93:15 | nsDataTainted13 | nsdata.swift:93:15:93:30 | ...! |
 | nsdata.swift:95:9:95:9 | SSA def(nsDataTainted14) | nsdata.swift:96:15:96:15 | nsDataTainted14 |
 | nsdata.swift:95:27:95:34 | call to source() | nsdata.swift:95:9:95:9 | SSA def(nsDataTainted14) |
@@ -510,7 +466,7 @@
 | nsdata.swift:113:9:113:9 | SSA def(nsDataTainted18) | nsdata.swift:115:5:115:5 | nsDataTainted18 |
 | nsdata.swift:113:27:113:34 | call to source() | nsdata.swift:113:9:113:9 | SSA def(nsDataTainted18) |
 | nsdata.swift:114:9:114:9 | SSA def(bufferTainted18) | nsdata.swift:115:30:115:30 | bufferTainted18 |
-| nsdata.swift:114:27:114:64 | call to init(bitPattern:) | nsdata.swift:114:27:114:65 | ...! |
+| nsdata.swift:114:27:114:64 | call to Self.init(bitPattern:) | nsdata.swift:114:27:114:65 | ...! |
 | nsdata.swift:114:27:114:65 | ...! | nsdata.swift:114:9:114:9 | SSA def(bufferTainted18) |
 | nsdata.swift:115:5:115:5 | nsDataTainted18 | nsdata.swift:115:30:115:30 | [post] bufferTainted18 |
 | nsdata.swift:115:30:115:30 | [post] bufferTainted18 | nsdata.swift:116:15:116:15 | bufferTainted18 |
@@ -518,7 +474,7 @@
 | nsdata.swift:118:9:118:9 | SSA def(nsDataTainted19) | nsdata.swift:120:5:120:5 | nsDataTainted19 |
 | nsdata.swift:118:27:118:34 | call to source() | nsdata.swift:118:9:118:9 | SSA def(nsDataTainted19) |
 | nsdata.swift:119:9:119:9 | SSA def(bufferTainted19) | nsdata.swift:120:30:120:30 | bufferTainted19 |
-| nsdata.swift:119:27:119:64 | call to init(bitPattern:) | nsdata.swift:119:27:119:65 | ...! |
+| nsdata.swift:119:27:119:64 | call to Self.init(bitPattern:) | nsdata.swift:119:27:119:65 | ...! |
 | nsdata.swift:119:27:119:65 | ...! | nsdata.swift:119:9:119:9 | SSA def(bufferTainted19) |
 | nsdata.swift:120:5:120:5 | nsDataTainted19 | nsdata.swift:120:30:120:30 | [post] bufferTainted19 |
 | nsdata.swift:120:30:120:30 | [post] bufferTainted19 | nsdata.swift:121:15:121:15 | bufferTainted19 |
@@ -526,7 +482,7 @@
 | nsdata.swift:123:9:123:9 | SSA def(nsDataTainted20) | nsdata.swift:125:5:125:5 | nsDataTainted20 |
 | nsdata.swift:123:27:123:34 | call to source() | nsdata.swift:123:9:123:9 | SSA def(nsDataTainted20) |
 | nsdata.swift:124:9:124:9 | SSA def(bufferTainted20) | nsdata.swift:125:30:125:30 | bufferTainted20 |
-| nsdata.swift:124:27:124:64 | call to init(bitPattern:) | nsdata.swift:124:27:124:65 | ...! |
+| nsdata.swift:124:27:124:64 | call to Self.init(bitPattern:) | nsdata.swift:124:27:124:65 | ...! |
 | nsdata.swift:124:27:124:65 | ...! | nsdata.swift:124:9:124:9 | SSA def(bufferTainted20) |
 | nsdata.swift:125:5:125:5 | nsDataTainted20 | nsdata.swift:125:30:125:30 | [post] bufferTainted20 |
 | nsdata.swift:125:30:125:30 | [post] bufferTainted20 | nsdata.swift:126:15:126:15 | bufferTainted20 |
@@ -573,27 +529,27 @@
 | nsmutabledata.swift:18:10:18:10 | SSA def(self) | nsmutabledata.swift:18:5:18:33 | self[return] |
 | nsmutabledata.swift:18:10:18:10 | self | nsmutabledata.swift:18:10:18:10 | SSA def(self) |
 | nsmutabledata.swift:27:9:27:9 | SSA def(nsMutableDataTainted1) | nsmutabledata.swift:28:5:28:5 | nsMutableDataTainted1 |
-| nsmutabledata.swift:27:33:27:47 | call to init() | nsmutabledata.swift:27:9:27:9 | SSA def(nsMutableDataTainted1) |
+| nsmutabledata.swift:27:33:27:47 | call to NSMutableData.init() | nsmutabledata.swift:27:9:27:9 | SSA def(nsMutableDataTainted1) |
 | nsmutabledata.swift:28:5:28:5 | [post] nsMutableDataTainted1 | nsmutabledata.swift:29:15:29:15 | nsMutableDataTainted1 |
 | nsmutabledata.swift:28:5:28:5 | nsMutableDataTainted1 | nsmutabledata.swift:29:15:29:15 | nsMutableDataTainted1 |
 | nsmutabledata.swift:28:34:28:41 | call to source() | nsmutabledata.swift:28:5:28:5 | [post] nsMutableDataTainted1 |
 | nsmutabledata.swift:31:9:31:9 | SSA def(nsMutableDataTainted2) | nsmutabledata.swift:32:5:32:5 | nsMutableDataTainted2 |
-| nsmutabledata.swift:31:33:31:47 | call to init() | nsmutabledata.swift:31:9:31:9 | SSA def(nsMutableDataTainted2) |
+| nsmutabledata.swift:31:33:31:47 | call to NSMutableData.init() | nsmutabledata.swift:31:9:31:9 | SSA def(nsMutableDataTainted2) |
 | nsmutabledata.swift:32:5:32:5 | [post] nsMutableDataTainted2 | nsmutabledata.swift:33:15:33:15 | nsMutableDataTainted2 |
 | nsmutabledata.swift:32:5:32:5 | nsMutableDataTainted2 | nsmutabledata.swift:33:15:33:15 | nsMutableDataTainted2 |
 | nsmutabledata.swift:32:34:32:41 | call to source() | nsmutabledata.swift:32:5:32:5 | [post] nsMutableDataTainted2 |
 | nsmutabledata.swift:35:9:35:9 | SSA def(nsMutableDataTainted3) | nsmutabledata.swift:36:5:36:5 | nsMutableDataTainted3 |
-| nsmutabledata.swift:35:33:35:47 | call to init() | nsmutabledata.swift:35:9:35:9 | SSA def(nsMutableDataTainted3) |
+| nsmutabledata.swift:35:33:35:47 | call to NSMutableData.init() | nsmutabledata.swift:35:9:35:9 | SSA def(nsMutableDataTainted3) |
 | nsmutabledata.swift:36:5:36:5 | [post] nsMutableDataTainted3 | nsmutabledata.swift:37:15:37:15 | nsMutableDataTainted3 |
 | nsmutabledata.swift:36:5:36:5 | nsMutableDataTainted3 | nsmutabledata.swift:37:15:37:15 | nsMutableDataTainted3 |
 | nsmutabledata.swift:36:66:36:73 | call to source() | nsmutabledata.swift:36:5:36:5 | [post] nsMutableDataTainted3 |
 | nsmutabledata.swift:39:9:39:9 | SSA def(nsMutableDataTainted4) | nsmutabledata.swift:40:5:40:5 | nsMutableDataTainted4 |
-| nsmutabledata.swift:39:33:39:47 | call to init() | nsmutabledata.swift:39:9:39:9 | SSA def(nsMutableDataTainted4) |
+| nsmutabledata.swift:39:33:39:47 | call to NSMutableData.init() | nsmutabledata.swift:39:9:39:9 | SSA def(nsMutableDataTainted4) |
 | nsmutabledata.swift:40:5:40:5 | [post] nsMutableDataTainted4 | nsmutabledata.swift:41:15:41:15 | nsMutableDataTainted4 |
 | nsmutabledata.swift:40:5:40:5 | nsMutableDataTainted4 | nsmutabledata.swift:41:15:41:15 | nsMutableDataTainted4 |
 | nsmutabledata.swift:40:66:40:73 | call to source() | nsmutabledata.swift:40:5:40:5 | [post] nsMutableDataTainted4 |
 | nsmutabledata.swift:43:9:43:9 | SSA def(nsMutableDataTainted5) | nsmutabledata.swift:44:5:44:5 | nsMutableDataTainted5 |
-| nsmutabledata.swift:43:33:43:47 | call to init() | nsmutabledata.swift:43:9:43:9 | SSA def(nsMutableDataTainted5) |
+| nsmutabledata.swift:43:33:43:47 | call to NSMutableData.init() | nsmutabledata.swift:43:9:43:9 | SSA def(nsMutableDataTainted5) |
 | nsmutabledata.swift:44:5:44:5 | [post] nsMutableDataTainted5 | nsmutabledata.swift:45:15:45:15 | nsMutableDataTainted5 |
 | nsmutabledata.swift:44:5:44:5 | nsMutableDataTainted5 | nsmutabledata.swift:45:15:45:15 | nsMutableDataTainted5 |
 | nsmutabledata.swift:44:35:44:42 | call to source() | nsmutabledata.swift:44:5:44:5 | [post] nsMutableDataTainted5 |
@@ -970,14 +926,12 @@
 | string.swift:101:42:101:42 | &... | string.swift:101:2:101:54 | self[return] |
 | string.swift:101:42:101:42 | [post] &... | string.swift:101:2:101:54 | self[return] |
 | string.swift:101:42:101:42 | self | string.swift:101:42:101:42 | &... |
-| string.swift:105:33:105:33 | Data.Type | string.swift:105:33:105:33 | call to init(_:) |
-| string.swift:105:38:105:38 |  | string.swift:105:33:105:40 | call to init(_:) |
+| string.swift:105:38:105:38 |  | string.swift:105:33:105:40 | call to Data.init(_:) |
 | string.swift:108:7:108:7 | SSA def(stringClean) | string.swift:111:12:111:12 | stringClean |
-| string.swift:108:21:108:74 | call to init(data:encoding:) | string.swift:108:7:108:7 | SSA def(stringClean) |
-| string.swift:108:34:108:34 | Data.Type | string.swift:108:34:108:34 | call to init(_:) |
-| string.swift:108:39:108:39 |  | string.swift:108:34:108:41 | call to init(_:) |
+| string.swift:108:21:108:74 | call to String.init(data:encoding:) | string.swift:108:7:108:7 | SSA def(stringClean) |
+| string.swift:108:39:108:39 |  | string.swift:108:34:108:41 | call to Data.init(_:) |
 | string.swift:109:7:109:7 | SSA def(stringTainted) | string.swift:112:12:112:12 | stringTainted |
-| string.swift:109:23:109:77 | call to init(data:encoding:) | string.swift:109:7:109:7 | SSA def(stringTainted) |
+| string.swift:109:23:109:77 | call to String.init(data:encoding:) | string.swift:109:7:109:7 | SSA def(stringTainted) |
 | string.swift:111:12:111:12 | stringClean | string.swift:111:12:111:23 | ...! |
 | string.swift:112:12:112:12 | stringTainted | string.swift:112:12:112:25 | ...! |
 | string.swift:120:7:120:7 | SSA def(clean) | string.swift:125:13:125:13 | clean |
@@ -1020,14 +974,12 @@
 | url.swift:9:2:9:2 | self | url.swift:9:2:9:2 | SSA def(self) |
 | url.swift:10:25:10:25 | SSA def(self) | url.swift:10:25:10:53 | self[return] |
 | url.swift:10:25:10:25 | self | url.swift:10:25:10:25 | SSA def(self) |
-| url.swift:10:37:10:37 | URL.Type | url.swift:10:37:10:37 | call to init(string:) |
-| url.swift:10:37:10:51 | call to init(string:) | url.swift:10:37:10:52 | ...! |
-| url.swift:10:49:10:49 |  | url.swift:10:37:10:51 | call to init(string:) |
+| url.swift:10:37:10:51 | call to URL.init(string:) | url.swift:10:37:10:52 | ...! |
+| url.swift:10:49:10:49 |  | url.swift:10:37:10:51 | call to URL.init(string:) |
 | url.swift:11:21:11:21 | SSA def(self) | url.swift:11:21:11:49 | self[return] |
 | url.swift:11:21:11:21 | self | url.swift:11:21:11:21 | SSA def(self) |
-| url.swift:11:33:11:33 | URL.Type | url.swift:11:33:11:33 | call to init(string:) |
-| url.swift:11:33:11:47 | call to init(string:) | url.swift:11:33:11:48 | ...! |
-| url.swift:11:45:11:45 |  | url.swift:11:33:11:47 | call to init(string:) |
+| url.swift:11:33:11:47 | call to URL.init(string:) | url.swift:11:33:11:48 | ...! |
+| url.swift:11:45:11:45 |  | url.swift:11:33:11:47 | call to URL.init(string:) |
 | url.swift:12:26:12:26 | SSA def(self) | url.swift:12:26:12:41 | self[return] |
 | url.swift:12:26:12:26 | self | url.swift:12:26:12:26 | SSA def(self) |
 | url.swift:13:22:13:22 | SSA def(self) | url.swift:13:22:13:37 | self[return] |
@@ -1052,14 +1004,12 @@
 | url.swift:22:24:22:24 | self | url.swift:22:24:22:24 | SSA def(self) |
 | url.swift:23:26:23:26 | SSA def(self) | url.swift:23:26:23:54 | self[return] |
 | url.swift:23:26:23:26 | self | url.swift:23:26:23:26 | SSA def(self) |
-| url.swift:23:38:23:38 | URL.Type | url.swift:23:38:23:38 | call to init(string:) |
-| url.swift:23:38:23:52 | call to init(string:) | url.swift:23:38:23:53 | ...! |
-| url.swift:23:50:23:50 |  | url.swift:23:38:23:52 | call to init(string:) |
+| url.swift:23:38:23:52 | call to URL.init(string:) | url.swift:23:38:23:53 | ...! |
+| url.swift:23:50:23:50 |  | url.swift:23:38:23:52 | call to URL.init(string:) |
 | url.swift:24:33:24:33 | SSA def(self) | url.swift:24:33:24:61 | self[return] |
 | url.swift:24:33:24:33 | self | url.swift:24:33:24:33 | SSA def(self) |
-| url.swift:24:45:24:45 | URL.Type | url.swift:24:45:24:45 | call to init(string:) |
-| url.swift:24:45:24:59 | call to init(string:) | url.swift:24:45:24:60 | ...! |
-| url.swift:24:57:24:57 |  | url.swift:24:45:24:59 | call to init(string:) |
+| url.swift:24:45:24:59 | call to URL.init(string:) | url.swift:24:45:24:60 | ...! |
+| url.swift:24:57:24:57 |  | url.swift:24:45:24:59 | call to URL.init(string:) |
 | url.swift:25:22:25:22 | SSA def(self) | url.swift:25:22:25:37 | self[return] |
 | url.swift:25:22:25:22 | self | url.swift:25:22:25:22 | SSA def(self) |
 | url.swift:26:26:26:26 | SSA def(self) | url.swift:26:26:26:41 | self[return] |
@@ -1093,18 +1043,16 @@
 | url.swift:57:6:57:6 | SSA def(tainted) | url.swift:59:31:59:31 | tainted |
 | url.swift:57:16:57:23 | call to source() | url.swift:57:6:57:6 | SSA def(tainted) |
 | url.swift:58:6:58:6 | SSA def(urlClean) | url.swift:61:12:61:12 | urlClean |
-| url.swift:58:17:58:17 | URL.Type | url.swift:58:17:58:17 | call to init(string:) |
-| url.swift:58:17:58:34 | call to init(string:) | url.swift:58:17:58:35 | ...! |
+| url.swift:58:17:58:34 | call to URL.init(string:) | url.swift:58:17:58:35 | ...! |
 | url.swift:58:17:58:35 | ...! | url.swift:58:6:58:6 | SSA def(urlClean) |
 | url.swift:58:29:58:29 | [post] clean | url.swift:82:24:82:24 | clean |
-| url.swift:58:29:58:29 | clean | url.swift:58:17:58:34 | call to init(string:) |
+| url.swift:58:29:58:29 | clean | url.swift:58:17:58:34 | call to URL.init(string:) |
 | url.swift:58:29:58:29 | clean | url.swift:82:24:82:24 | clean |
 | url.swift:59:6:59:6 | SSA def(urlTainted) | url.swift:62:12:62:12 | urlTainted |
-| url.swift:59:19:59:19 | URL.Type | url.swift:59:19:59:19 | call to init(string:) |
-| url.swift:59:19:59:38 | call to init(string:) | url.swift:59:19:59:39 | ...! |
+| url.swift:59:19:59:38 | call to URL.init(string:) | url.swift:59:19:59:39 | ...! |
 | url.swift:59:19:59:39 | ...! | url.swift:59:6:59:6 | SSA def(urlTainted) |
 | url.swift:59:31:59:31 | [post] tainted | url.swift:83:24:83:24 | tainted |
-| url.swift:59:31:59:31 | tainted | url.swift:59:19:59:38 | call to init(string:) |
+| url.swift:59:31:59:31 | tainted | url.swift:59:19:59:38 | call to URL.init(string:) |
 | url.swift:59:31:59:31 | tainted | url.swift:83:24:83:24 | tainted |
 | url.swift:61:12:61:12 | [post] urlClean | url.swift:84:43:84:43 | urlClean |
 | url.swift:61:12:61:12 | urlClean | url.swift:84:43:84:43 | urlClean |
@@ -1169,202 +1117,178 @@
 | url.swift:80:15:80:15 | urlTainted | url.swift:80:15:80:26 | .password |
 | url.swift:80:15:80:15 | urlTainted | url.swift:86:43:86:43 | urlTainted |
 | url.swift:80:15:80:26 | .password | url.swift:80:15:80:34 | ...! |
-| url.swift:82:12:82:12 | URL.Type | url.swift:82:12:82:12 | call to init(string:relativeTo:) |
-| url.swift:82:12:82:46 | call to init(string:relativeTo:) | url.swift:82:12:82:47 | ...! |
+| url.swift:82:12:82:46 | call to URL.init(string:relativeTo:) | url.swift:82:12:82:47 | ...! |
 | url.swift:82:24:82:24 | [post] clean | url.swift:84:24:84:24 | clean |
-| url.swift:82:24:82:24 | clean | url.swift:82:12:82:46 | call to init(string:relativeTo:) |
+| url.swift:82:24:82:24 | clean | url.swift:82:12:82:46 | call to URL.init(string:relativeTo:) |
 | url.swift:82:24:82:24 | clean | url.swift:84:24:84:24 | clean |
-| url.swift:82:43:82:43 | nil | url.swift:82:12:82:46 | call to init(string:relativeTo:) |
-| url.swift:83:12:83:12 | URL.Type | url.swift:83:12:83:12 | call to init(string:relativeTo:) |
-| url.swift:83:12:83:48 | call to init(string:relativeTo:) | url.swift:83:12:83:49 | ...! |
+| url.swift:82:43:82:43 | nil | url.swift:82:12:82:46 | call to URL.init(string:relativeTo:) |
+| url.swift:83:12:83:48 | call to URL.init(string:relativeTo:) | url.swift:83:12:83:49 | ...! |
 | url.swift:83:24:83:24 | [post] tainted | url.swift:108:25:108:25 | tainted |
-| url.swift:83:24:83:24 | tainted | url.swift:83:12:83:48 | call to init(string:relativeTo:) |
+| url.swift:83:24:83:24 | tainted | url.swift:83:12:83:48 | call to URL.init(string:relativeTo:) |
 | url.swift:83:24:83:24 | tainted | url.swift:108:25:108:25 | tainted |
-| url.swift:83:45:83:45 | nil | url.swift:83:12:83:48 | call to init(string:relativeTo:) |
-| url.swift:84:12:84:12 | URL.Type | url.swift:84:12:84:12 | call to init(string:relativeTo:) |
-| url.swift:84:12:84:51 | call to init(string:relativeTo:) | url.swift:84:12:84:52 | ...! |
+| url.swift:83:45:83:45 | nil | url.swift:83:12:83:48 | call to URL.init(string:relativeTo:) |
+| url.swift:84:12:84:51 | call to URL.init(string:relativeTo:) | url.swift:84:12:84:52 | ...! |
 | url.swift:84:24:84:24 | [post] clean | url.swift:86:24:86:24 | clean |
-| url.swift:84:24:84:24 | clean | url.swift:84:12:84:51 | call to init(string:relativeTo:) |
+| url.swift:84:24:84:24 | clean | url.swift:84:12:84:51 | call to URL.init(string:relativeTo:) |
 | url.swift:84:24:84:24 | clean | url.swift:86:24:86:24 | clean |
-| url.swift:84:43:84:43 | urlClean | url.swift:84:12:84:51 | call to init(string:relativeTo:) |
-| url.swift:86:12:86:12 | URL.Type | url.swift:86:12:86:12 | call to init(string:relativeTo:) |
-| url.swift:86:12:86:53 | call to init(string:relativeTo:) | url.swift:86:12:86:54 | ...! |
+| url.swift:84:43:84:43 | urlClean | url.swift:84:12:84:51 | call to URL.init(string:relativeTo:) |
+| url.swift:86:12:86:53 | call to URL.init(string:relativeTo:) | url.swift:86:12:86:54 | ...! |
 | url.swift:86:12:86:54 | ...! | url.swift:86:12:86:56 | .absoluteURL |
 | url.swift:86:24:86:24 | [post] clean | url.swift:87:24:87:24 | clean |
-| url.swift:86:24:86:24 | clean | url.swift:86:12:86:53 | call to init(string:relativeTo:) |
+| url.swift:86:24:86:24 | clean | url.swift:86:12:86:53 | call to URL.init(string:relativeTo:) |
 | url.swift:86:24:86:24 | clean | url.swift:87:24:87:24 | clean |
 | url.swift:86:43:86:43 | [post] urlTainted | url.swift:87:43:87:43 | urlTainted |
-| url.swift:86:43:86:43 | urlTainted | url.swift:86:12:86:53 | call to init(string:relativeTo:) |
+| url.swift:86:43:86:43 | urlTainted | url.swift:86:12:86:53 | call to URL.init(string:relativeTo:) |
 | url.swift:86:43:86:43 | urlTainted | url.swift:87:43:87:43 | urlTainted |
-| url.swift:87:12:87:12 | URL.Type | url.swift:87:12:87:12 | call to init(string:relativeTo:) |
-| url.swift:87:12:87:53 | call to init(string:relativeTo:) | url.swift:87:12:87:54 | ...! |
+| url.swift:87:12:87:53 | call to URL.init(string:relativeTo:) | url.swift:87:12:87:54 | ...! |
 | url.swift:87:12:87:54 | ...! | url.swift:87:12:87:56 | .baseURL |
 | url.swift:87:24:87:24 | [post] clean | url.swift:88:27:88:27 | clean |
-| url.swift:87:24:87:24 | clean | url.swift:87:12:87:53 | call to init(string:relativeTo:) |
+| url.swift:87:24:87:24 | clean | url.swift:87:12:87:53 | call to URL.init(string:relativeTo:) |
 | url.swift:87:24:87:24 | clean | url.swift:88:27:88:27 | clean |
 | url.swift:87:43:87:43 | [post] urlTainted | url.swift:88:46:88:46 | urlTainted |
-| url.swift:87:43:87:43 | urlTainted | url.swift:87:12:87:53 | call to init(string:relativeTo:) |
+| url.swift:87:43:87:43 | urlTainted | url.swift:87:12:87:53 | call to URL.init(string:relativeTo:) |
 | url.swift:87:43:87:43 | urlTainted | url.swift:88:46:88:46 | urlTainted |
-| url.swift:88:15:88:15 | URL.Type | url.swift:88:15:88:15 | call to init(string:relativeTo:) |
-| url.swift:88:15:88:56 | call to init(string:relativeTo:) | url.swift:88:15:88:57 | ...! |
+| url.swift:88:15:88:56 | call to URL.init(string:relativeTo:) | url.swift:88:15:88:57 | ...! |
 | url.swift:88:15:88:57 | ...! | url.swift:88:15:88:59 | .fragment |
 | url.swift:88:15:88:59 | .fragment | url.swift:88:15:88:67 | ...! |
 | url.swift:88:27:88:27 | [post] clean | url.swift:89:27:89:27 | clean |
-| url.swift:88:27:88:27 | clean | url.swift:88:15:88:56 | call to init(string:relativeTo:) |
+| url.swift:88:27:88:27 | clean | url.swift:88:15:88:56 | call to URL.init(string:relativeTo:) |
 | url.swift:88:27:88:27 | clean | url.swift:89:27:89:27 | clean |
 | url.swift:88:46:88:46 | [post] urlTainted | url.swift:89:46:89:46 | urlTainted |
-| url.swift:88:46:88:46 | urlTainted | url.swift:88:15:88:56 | call to init(string:relativeTo:) |
+| url.swift:88:46:88:46 | urlTainted | url.swift:88:15:88:56 | call to URL.init(string:relativeTo:) |
 | url.swift:88:46:88:46 | urlTainted | url.swift:89:46:89:46 | urlTainted |
-| url.swift:89:15:89:15 | URL.Type | url.swift:89:15:89:15 | call to init(string:relativeTo:) |
-| url.swift:89:15:89:56 | call to init(string:relativeTo:) | url.swift:89:15:89:57 | ...! |
+| url.swift:89:15:89:56 | call to URL.init(string:relativeTo:) | url.swift:89:15:89:57 | ...! |
 | url.swift:89:15:89:57 | ...! | url.swift:89:15:89:59 | .host |
 | url.swift:89:15:89:59 | .host | url.swift:89:15:89:63 | ...! |
 | url.swift:89:27:89:27 | [post] clean | url.swift:90:27:90:27 | clean |
-| url.swift:89:27:89:27 | clean | url.swift:89:15:89:56 | call to init(string:relativeTo:) |
+| url.swift:89:27:89:27 | clean | url.swift:89:15:89:56 | call to URL.init(string:relativeTo:) |
 | url.swift:89:27:89:27 | clean | url.swift:90:27:90:27 | clean |
 | url.swift:89:46:89:46 | [post] urlTainted | url.swift:90:46:90:46 | urlTainted |
-| url.swift:89:46:89:46 | urlTainted | url.swift:89:15:89:56 | call to init(string:relativeTo:) |
+| url.swift:89:46:89:46 | urlTainted | url.swift:89:15:89:56 | call to URL.init(string:relativeTo:) |
 | url.swift:89:46:89:46 | urlTainted | url.swift:90:46:90:46 | urlTainted |
-| url.swift:90:15:90:15 | URL.Type | url.swift:90:15:90:15 | call to init(string:relativeTo:) |
-| url.swift:90:15:90:56 | call to init(string:relativeTo:) | url.swift:90:15:90:57 | ...! |
+| url.swift:90:15:90:56 | call to URL.init(string:relativeTo:) | url.swift:90:15:90:57 | ...! |
 | url.swift:90:15:90:57 | ...! | url.swift:90:15:90:59 | .lastPathComponent |
 | url.swift:90:27:90:27 | [post] clean | url.swift:91:27:91:27 | clean |
-| url.swift:90:27:90:27 | clean | url.swift:90:15:90:56 | call to init(string:relativeTo:) |
+| url.swift:90:27:90:27 | clean | url.swift:90:15:90:56 | call to URL.init(string:relativeTo:) |
 | url.swift:90:27:90:27 | clean | url.swift:91:27:91:27 | clean |
 | url.swift:90:46:90:46 | [post] urlTainted | url.swift:91:46:91:46 | urlTainted |
-| url.swift:90:46:90:46 | urlTainted | url.swift:90:15:90:56 | call to init(string:relativeTo:) |
+| url.swift:90:46:90:46 | urlTainted | url.swift:90:15:90:56 | call to URL.init(string:relativeTo:) |
 | url.swift:90:46:90:46 | urlTainted | url.swift:91:46:91:46 | urlTainted |
-| url.swift:91:15:91:15 | URL.Type | url.swift:91:15:91:15 | call to init(string:relativeTo:) |
-| url.swift:91:15:91:56 | call to init(string:relativeTo:) | url.swift:91:15:91:57 | ...! |
+| url.swift:91:15:91:56 | call to URL.init(string:relativeTo:) | url.swift:91:15:91:57 | ...! |
 | url.swift:91:15:91:57 | ...! | url.swift:91:15:91:59 | .path |
 | url.swift:91:27:91:27 | [post] clean | url.swift:92:27:92:27 | clean |
-| url.swift:91:27:91:27 | clean | url.swift:91:15:91:56 | call to init(string:relativeTo:) |
+| url.swift:91:27:91:27 | clean | url.swift:91:15:91:56 | call to URL.init(string:relativeTo:) |
 | url.swift:91:27:91:27 | clean | url.swift:92:27:92:27 | clean |
 | url.swift:91:46:91:46 | [post] urlTainted | url.swift:92:46:92:46 | urlTainted |
-| url.swift:91:46:91:46 | urlTainted | url.swift:91:15:91:56 | call to init(string:relativeTo:) |
+| url.swift:91:46:91:46 | urlTainted | url.swift:91:15:91:56 | call to URL.init(string:relativeTo:) |
 | url.swift:91:46:91:46 | urlTainted | url.swift:92:46:92:46 | urlTainted |
-| url.swift:92:15:92:15 | URL.Type | url.swift:92:15:92:15 | call to init(string:relativeTo:) |
-| url.swift:92:15:92:56 | call to init(string:relativeTo:) | url.swift:92:15:92:57 | ...! |
+| url.swift:92:15:92:56 | call to URL.init(string:relativeTo:) | url.swift:92:15:92:57 | ...! |
 | url.swift:92:15:92:57 | ...! | url.swift:92:15:92:59 | .pathComponents |
 | url.swift:92:15:92:59 | .pathComponents | url.swift:92:15:92:75 | ...[...] |
 | url.swift:92:27:92:27 | [post] clean | url.swift:93:27:93:27 | clean |
-| url.swift:92:27:92:27 | clean | url.swift:92:15:92:56 | call to init(string:relativeTo:) |
+| url.swift:92:27:92:27 | clean | url.swift:92:15:92:56 | call to URL.init(string:relativeTo:) |
 | url.swift:92:27:92:27 | clean | url.swift:93:27:93:27 | clean |
 | url.swift:92:46:92:46 | [post] urlTainted | url.swift:93:46:93:46 | urlTainted |
-| url.swift:92:46:92:46 | urlTainted | url.swift:92:15:92:56 | call to init(string:relativeTo:) |
+| url.swift:92:46:92:46 | urlTainted | url.swift:92:15:92:56 | call to URL.init(string:relativeTo:) |
 | url.swift:92:46:92:46 | urlTainted | url.swift:93:46:93:46 | urlTainted |
-| url.swift:93:15:93:15 | URL.Type | url.swift:93:15:93:15 | call to init(string:relativeTo:) |
-| url.swift:93:15:93:56 | call to init(string:relativeTo:) | url.swift:93:15:93:57 | ...! |
+| url.swift:93:15:93:56 | call to URL.init(string:relativeTo:) | url.swift:93:15:93:57 | ...! |
 | url.swift:93:15:93:57 | ...! | url.swift:93:15:93:59 | .pathExtension |
 | url.swift:93:27:93:27 | [post] clean | url.swift:94:24:94:24 | clean |
-| url.swift:93:27:93:27 | clean | url.swift:93:15:93:56 | call to init(string:relativeTo:) |
+| url.swift:93:27:93:27 | clean | url.swift:93:15:93:56 | call to URL.init(string:relativeTo:) |
 | url.swift:93:27:93:27 | clean | url.swift:94:24:94:24 | clean |
 | url.swift:93:46:93:46 | [post] urlTainted | url.swift:94:43:94:43 | urlTainted |
-| url.swift:93:46:93:46 | urlTainted | url.swift:93:15:93:56 | call to init(string:relativeTo:) |
+| url.swift:93:46:93:46 | urlTainted | url.swift:93:15:93:56 | call to URL.init(string:relativeTo:) |
 | url.swift:93:46:93:46 | urlTainted | url.swift:94:43:94:43 | urlTainted |
-| url.swift:94:12:94:12 | URL.Type | url.swift:94:12:94:12 | call to init(string:relativeTo:) |
-| url.swift:94:12:94:53 | call to init(string:relativeTo:) | url.swift:94:12:94:54 | ...! |
+| url.swift:94:12:94:53 | call to URL.init(string:relativeTo:) | url.swift:94:12:94:54 | ...! |
 | url.swift:94:12:94:54 | ...! | url.swift:94:12:94:56 | .port |
 | url.swift:94:12:94:56 | .port | url.swift:94:12:94:60 | ...! |
 | url.swift:94:24:94:24 | [post] clean | url.swift:95:27:95:27 | clean |
-| url.swift:94:24:94:24 | clean | url.swift:94:12:94:53 | call to init(string:relativeTo:) |
+| url.swift:94:24:94:24 | clean | url.swift:94:12:94:53 | call to URL.init(string:relativeTo:) |
 | url.swift:94:24:94:24 | clean | url.swift:95:27:95:27 | clean |
 | url.swift:94:43:94:43 | [post] urlTainted | url.swift:95:46:95:46 | urlTainted |
-| url.swift:94:43:94:43 | urlTainted | url.swift:94:12:94:53 | call to init(string:relativeTo:) |
+| url.swift:94:43:94:43 | urlTainted | url.swift:94:12:94:53 | call to URL.init(string:relativeTo:) |
 | url.swift:94:43:94:43 | urlTainted | url.swift:95:46:95:46 | urlTainted |
-| url.swift:95:15:95:15 | URL.Type | url.swift:95:15:95:15 | call to init(string:relativeTo:) |
-| url.swift:95:15:95:56 | call to init(string:relativeTo:) | url.swift:95:15:95:57 | ...! |
+| url.swift:95:15:95:56 | call to URL.init(string:relativeTo:) | url.swift:95:15:95:57 | ...! |
 | url.swift:95:15:95:57 | ...! | url.swift:95:15:95:59 | .query |
 | url.swift:95:15:95:59 | .query | url.swift:95:15:95:64 | ...! |
 | url.swift:95:27:95:27 | [post] clean | url.swift:96:27:96:27 | clean |
-| url.swift:95:27:95:27 | clean | url.swift:95:15:95:56 | call to init(string:relativeTo:) |
+| url.swift:95:27:95:27 | clean | url.swift:95:15:95:56 | call to URL.init(string:relativeTo:) |
 | url.swift:95:27:95:27 | clean | url.swift:96:27:96:27 | clean |
 | url.swift:95:46:95:46 | [post] urlTainted | url.swift:96:46:96:46 | urlTainted |
-| url.swift:95:46:95:46 | urlTainted | url.swift:95:15:95:56 | call to init(string:relativeTo:) |
+| url.swift:95:46:95:46 | urlTainted | url.swift:95:15:95:56 | call to URL.init(string:relativeTo:) |
 | url.swift:95:46:95:46 | urlTainted | url.swift:96:46:96:46 | urlTainted |
-| url.swift:96:15:96:15 | URL.Type | url.swift:96:15:96:15 | call to init(string:relativeTo:) |
-| url.swift:96:15:96:56 | call to init(string:relativeTo:) | url.swift:96:15:96:57 | ...! |
+| url.swift:96:15:96:56 | call to URL.init(string:relativeTo:) | url.swift:96:15:96:57 | ...! |
 | url.swift:96:15:96:57 | ...! | url.swift:96:15:96:59 | .relativePath |
 | url.swift:96:27:96:27 | [post] clean | url.swift:97:27:97:27 | clean |
-| url.swift:96:27:96:27 | clean | url.swift:96:15:96:56 | call to init(string:relativeTo:) |
+| url.swift:96:27:96:27 | clean | url.swift:96:15:96:56 | call to URL.init(string:relativeTo:) |
 | url.swift:96:27:96:27 | clean | url.swift:97:27:97:27 | clean |
 | url.swift:96:46:96:46 | [post] urlTainted | url.swift:97:46:97:46 | urlTainted |
-| url.swift:96:46:96:46 | urlTainted | url.swift:96:15:96:56 | call to init(string:relativeTo:) |
+| url.swift:96:46:96:46 | urlTainted | url.swift:96:15:96:56 | call to URL.init(string:relativeTo:) |
 | url.swift:96:46:96:46 | urlTainted | url.swift:97:46:97:46 | urlTainted |
-| url.swift:97:15:97:15 | URL.Type | url.swift:97:15:97:15 | call to init(string:relativeTo:) |
-| url.swift:97:15:97:56 | call to init(string:relativeTo:) | url.swift:97:15:97:57 | ...! |
+| url.swift:97:15:97:56 | call to URL.init(string:relativeTo:) | url.swift:97:15:97:57 | ...! |
 | url.swift:97:15:97:57 | ...! | url.swift:97:15:97:59 | .relativeString |
 | url.swift:97:27:97:27 | [post] clean | url.swift:98:27:98:27 | clean |
-| url.swift:97:27:97:27 | clean | url.swift:97:15:97:56 | call to init(string:relativeTo:) |
+| url.swift:97:27:97:27 | clean | url.swift:97:15:97:56 | call to URL.init(string:relativeTo:) |
 | url.swift:97:27:97:27 | clean | url.swift:98:27:98:27 | clean |
 | url.swift:97:46:97:46 | [post] urlTainted | url.swift:98:46:98:46 | urlTainted |
-| url.swift:97:46:97:46 | urlTainted | url.swift:97:15:97:56 | call to init(string:relativeTo:) |
+| url.swift:97:46:97:46 | urlTainted | url.swift:97:15:97:56 | call to URL.init(string:relativeTo:) |
 | url.swift:97:46:97:46 | urlTainted | url.swift:98:46:98:46 | urlTainted |
-| url.swift:98:15:98:15 | URL.Type | url.swift:98:15:98:15 | call to init(string:relativeTo:) |
-| url.swift:98:15:98:56 | call to init(string:relativeTo:) | url.swift:98:15:98:57 | ...! |
+| url.swift:98:15:98:56 | call to URL.init(string:relativeTo:) | url.swift:98:15:98:57 | ...! |
 | url.swift:98:15:98:57 | ...! | url.swift:98:15:98:59 | .scheme |
 | url.swift:98:15:98:59 | .scheme | url.swift:98:15:98:65 | ...! |
 | url.swift:98:27:98:27 | [post] clean | url.swift:99:24:99:24 | clean |
-| url.swift:98:27:98:27 | clean | url.swift:98:15:98:56 | call to init(string:relativeTo:) |
+| url.swift:98:27:98:27 | clean | url.swift:98:15:98:56 | call to URL.init(string:relativeTo:) |
 | url.swift:98:27:98:27 | clean | url.swift:99:24:99:24 | clean |
 | url.swift:98:46:98:46 | [post] urlTainted | url.swift:99:43:99:43 | urlTainted |
-| url.swift:98:46:98:46 | urlTainted | url.swift:98:15:98:56 | call to init(string:relativeTo:) |
+| url.swift:98:46:98:46 | urlTainted | url.swift:98:15:98:56 | call to URL.init(string:relativeTo:) |
 | url.swift:98:46:98:46 | urlTainted | url.swift:99:43:99:43 | urlTainted |
-| url.swift:99:12:99:12 | URL.Type | url.swift:99:12:99:12 | call to init(string:relativeTo:) |
-| url.swift:99:12:99:53 | call to init(string:relativeTo:) | url.swift:99:12:99:54 | ...! |
+| url.swift:99:12:99:53 | call to URL.init(string:relativeTo:) | url.swift:99:12:99:54 | ...! |
 | url.swift:99:12:99:54 | ...! | url.swift:99:12:99:56 | .standardized |
 | url.swift:99:24:99:24 | [post] clean | url.swift:100:24:100:24 | clean |
-| url.swift:99:24:99:24 | clean | url.swift:99:12:99:53 | call to init(string:relativeTo:) |
+| url.swift:99:24:99:24 | clean | url.swift:99:12:99:53 | call to URL.init(string:relativeTo:) |
 | url.swift:99:24:99:24 | clean | url.swift:100:24:100:24 | clean |
 | url.swift:99:43:99:43 | [post] urlTainted | url.swift:100:43:100:43 | urlTainted |
-| url.swift:99:43:99:43 | urlTainted | url.swift:99:12:99:53 | call to init(string:relativeTo:) |
+| url.swift:99:43:99:43 | urlTainted | url.swift:99:12:99:53 | call to URL.init(string:relativeTo:) |
 | url.swift:99:43:99:43 | urlTainted | url.swift:100:43:100:43 | urlTainted |
-| url.swift:100:12:100:12 | URL.Type | url.swift:100:12:100:12 | call to init(string:relativeTo:) |
-| url.swift:100:12:100:53 | call to init(string:relativeTo:) | url.swift:100:12:100:54 | ...! |
+| url.swift:100:12:100:53 | call to URL.init(string:relativeTo:) | url.swift:100:12:100:54 | ...! |
 | url.swift:100:12:100:54 | ...! | url.swift:100:12:100:56 | .standardizedFileURL |
 | url.swift:100:24:100:24 | [post] clean | url.swift:101:27:101:27 | clean |
-| url.swift:100:24:100:24 | clean | url.swift:100:12:100:53 | call to init(string:relativeTo:) |
+| url.swift:100:24:100:24 | clean | url.swift:100:12:100:53 | call to URL.init(string:relativeTo:) |
 | url.swift:100:24:100:24 | clean | url.swift:101:27:101:27 | clean |
 | url.swift:100:43:100:43 | [post] urlTainted | url.swift:101:46:101:46 | urlTainted |
-| url.swift:100:43:100:43 | urlTainted | url.swift:100:12:100:53 | call to init(string:relativeTo:) |
+| url.swift:100:43:100:43 | urlTainted | url.swift:100:12:100:53 | call to URL.init(string:relativeTo:) |
 | url.swift:100:43:100:43 | urlTainted | url.swift:101:46:101:46 | urlTainted |
-| url.swift:101:15:101:15 | URL.Type | url.swift:101:15:101:15 | call to init(string:relativeTo:) |
-| url.swift:101:15:101:56 | call to init(string:relativeTo:) | url.swift:101:15:101:57 | ...! |
+| url.swift:101:15:101:56 | call to URL.init(string:relativeTo:) | url.swift:101:15:101:57 | ...! |
 | url.swift:101:15:101:57 | ...! | url.swift:101:15:101:59 | .user |
 | url.swift:101:15:101:59 | .user | url.swift:101:15:101:63 | ...! |
 | url.swift:101:27:101:27 | [post] clean | url.swift:102:27:102:27 | clean |
-| url.swift:101:27:101:27 | clean | url.swift:101:15:101:56 | call to init(string:relativeTo:) |
+| url.swift:101:27:101:27 | clean | url.swift:101:15:101:56 | call to URL.init(string:relativeTo:) |
 | url.swift:101:27:101:27 | clean | url.swift:102:27:102:27 | clean |
 | url.swift:101:46:101:46 | [post] urlTainted | url.swift:102:46:102:46 | urlTainted |
-| url.swift:101:46:101:46 | urlTainted | url.swift:101:15:101:56 | call to init(string:relativeTo:) |
+| url.swift:101:46:101:46 | urlTainted | url.swift:101:15:101:56 | call to URL.init(string:relativeTo:) |
 | url.swift:101:46:101:46 | urlTainted | url.swift:102:46:102:46 | urlTainted |
-| url.swift:102:15:102:15 | URL.Type | url.swift:102:15:102:15 | call to init(string:relativeTo:) |
-| url.swift:102:15:102:56 | call to init(string:relativeTo:) | url.swift:102:15:102:57 | ...! |
+| url.swift:102:15:102:56 | call to URL.init(string:relativeTo:) | url.swift:102:15:102:57 | ...! |
 | url.swift:102:15:102:57 | ...! | url.swift:102:15:102:59 | .password |
 | url.swift:102:15:102:59 | .password | url.swift:102:15:102:67 | ...! |
 | url.swift:102:27:102:27 | [post] clean | url.swift:104:25:104:25 | clean |
-| url.swift:102:27:102:27 | clean | url.swift:102:15:102:56 | call to init(string:relativeTo:) |
+| url.swift:102:27:102:27 | clean | url.swift:102:15:102:56 | call to URL.init(string:relativeTo:) |
 | url.swift:102:27:102:27 | clean | url.swift:104:25:104:25 | clean |
 | url.swift:102:46:102:46 | [post] urlTainted | url.swift:120:46:120:46 | urlTainted |
-| url.swift:102:46:102:46 | urlTainted | url.swift:102:15:102:56 | call to init(string:relativeTo:) |
+| url.swift:102:46:102:46 | urlTainted | url.swift:102:15:102:56 | call to URL.init(string:relativeTo:) |
 | url.swift:102:46:102:46 | urlTainted | url.swift:120:46:120:46 | urlTainted |
-| url.swift:104:13:104:13 | URL.Type | url.swift:104:13:104:13 | call to init(string:) |
 | url.swift:104:25:104:25 | [post] clean | url.swift:113:26:113:26 | clean |
-| url.swift:104:25:104:25 | clean | url.swift:104:13:104:30 | call to init(string:) |
+| url.swift:104:25:104:25 | clean | url.swift:104:13:104:30 | call to URL.init(string:) |
 | url.swift:104:25:104:25 | clean | url.swift:113:26:113:26 | clean |
-| url.swift:108:13:108:13 | URL.Type | url.swift:108:13:108:13 | call to init(string:) |
 | url.swift:108:25:108:25 | [post] tainted | url.swift:117:28:117:28 | tainted |
-| url.swift:108:25:108:25 | tainted | url.swift:108:13:108:32 | call to init(string:) |
+| url.swift:108:25:108:25 | tainted | url.swift:108:13:108:32 | call to URL.init(string:) |
 | url.swift:108:25:108:25 | tainted | url.swift:117:28:117:28 | tainted |
 | url.swift:113:2:113:31 | SSA def(urlClean2) | url.swift:114:12:114:12 | urlClean2 |
-| url.swift:113:14:113:14 | URL.Type | url.swift:113:14:113:14 | call to init(string:) |
-| url.swift:113:14:113:31 | call to init(string:) | url.swift:113:2:113:31 | SSA def(urlClean2) |
-| url.swift:113:26:113:26 | clean | url.swift:113:14:113:31 | call to init(string:) |
+| url.swift:113:14:113:31 | call to URL.init(string:) | url.swift:113:2:113:31 | SSA def(urlClean2) |
+| url.swift:113:26:113:26 | clean | url.swift:113:14:113:31 | call to URL.init(string:) |
 | url.swift:114:12:114:12 | urlClean2 | url.swift:114:12:114:12 | ...! |
 | url.swift:117:2:117:35 | SSA def(urlTainted2) | url.swift:118:12:118:12 | urlTainted2 |
-| url.swift:117:16:117:16 | URL.Type | url.swift:117:16:117:16 | call to init(string:) |
-| url.swift:117:16:117:35 | call to init(string:) | url.swift:117:2:117:35 | SSA def(urlTainted2) |
-| url.swift:117:28:117:28 | tainted | url.swift:117:16:117:35 | call to init(string:) |
+| url.swift:117:16:117:35 | call to URL.init(string:) | url.swift:117:2:117:35 | SSA def(urlTainted2) |
+| url.swift:117:28:117:28 | tainted | url.swift:117:16:117:35 | call to URL.init(string:) |
 | url.swift:118:12:118:12 | urlTainted2 | url.swift:118:12:118:12 | ...! |
 | url.swift:120:61:120:61 | SSA def(data) | url.swift:121:15:121:15 | data |
 | url.swift:120:61:120:61 | data | url.swift:120:61:120:61 | SSA def(data) |
@@ -1459,14 +1383,12 @@
 | webview.swift:50:10:50:10 | self | webview.swift:50:10:50:10 | SSA def(self) |
 | webview.swift:51:10:51:10 | SSA def(self) | webview.swift:51:5:51:84 | self[return] |
 | webview.swift:51:10:51:10 | self | webview.swift:51:10:51:10 | SSA def(self) |
-| webview.swift:51:47:51:47 | JSValue.Type | webview.swift:51:47:51:47 | call to init(object:in:) |
-| webview.swift:51:63:51:63 |  | webview.swift:51:47:51:82 | call to init(object:in:) |
+| webview.swift:51:63:51:63 |  | webview.swift:51:47:51:82 | call to JSValue.init(object:in:) |
 | webview.swift:52:10:52:10 | SSA def(self) | webview.swift:52:5:52:53 | self[return] |
 | webview.swift:52:10:52:10 | self | webview.swift:52:10:52:10 | SSA def(self) |
 | webview.swift:53:10:53:10 | SSA def(self) | webview.swift:53:5:53:89 | self[return] |
 | webview.swift:53:10:53:10 | self | webview.swift:53:10:53:10 | SSA def(self) |
-| webview.swift:53:52:53:52 | JSValue.Type | webview.swift:53:52:53:52 | call to init(object:in:) |
-| webview.swift:53:68:53:68 |  | webview.swift:53:52:53:87 | call to init(object:in:) |
+| webview.swift:53:68:53:68 |  | webview.swift:53:52:53:87 | call to JSValue.init(object:in:) |
 | webview.swift:54:10:54:10 | SSA def(self) | webview.swift:54:5:54:38 | self[return] |
 | webview.swift:54:10:54:10 | self | webview.swift:54:10:54:10 | SSA def(self) |
 | webview.swift:55:10:55:10 | SSA def(self) | webview.swift:55:5:55:48 | self[return] |
@@ -1541,56 +1463,46 @@
 | webview.swift:99:10:99:10 | source | webview.swift:100:10:100:10 | source |
 | webview.swift:100:10:100:10 | source | webview.swift:100:10:100:31 | call to forProperty(_:) |
 | webview.swift:102:9:102:9 | SSA def(context) | webview.swift:103:40:103:40 | context |
-| webview.swift:102:19:102:29 | call to init() | webview.swift:102:9:102:9 | SSA def(context) |
-| webview.swift:103:10:103:10 | JSValue.Type | webview.swift:103:10:103:10 | call to init(object:in:) |
-| webview.swift:103:26:103:26 | s | webview.swift:103:10:103:47 | call to init(object:in:) |
+| webview.swift:102:19:102:29 | call to JSContext.init() | webview.swift:102:9:102:9 | SSA def(context) |
+| webview.swift:103:26:103:26 | s | webview.swift:103:10:103:47 | call to JSValue.init(object:in:) |
 | webview.swift:103:26:103:26 | s | webview.swift:104:24:104:24 | s |
 | webview.swift:103:40:103:40 | [post] context | webview.swift:104:40:104:40 | context |
 | webview.swift:103:40:103:40 | context | webview.swift:104:40:104:40 | context |
-| webview.swift:104:10:104:10 | JSValue.Type | webview.swift:104:10:104:10 | call to init(bool:in:) |
-| webview.swift:104:24:104:24 | s | webview.swift:104:10:104:47 | call to init(bool:in:) |
+| webview.swift:104:24:104:24 | s | webview.swift:104:10:104:47 | call to JSValue.init(bool:in:) |
 | webview.swift:104:24:104:24 | s | webview.swift:105:26:105:26 | s |
 | webview.swift:104:40:104:40 | [post] context | webview.swift:105:44:105:44 | context |
 | webview.swift:104:40:104:40 | context | webview.swift:105:44:105:44 | context |
-| webview.swift:105:10:105:10 | JSValue.Type | webview.swift:105:10:105:10 | call to init(double:in:) |
-| webview.swift:105:26:105:26 | s | webview.swift:105:10:105:51 | call to init(double:in:) |
+| webview.swift:105:26:105:26 | s | webview.swift:105:10:105:51 | call to JSValue.init(double:in:) |
 | webview.swift:105:26:105:26 | s | webview.swift:106:25:106:25 | s |
 | webview.swift:105:44:105:44 | [post] context | webview.swift:106:42:106:42 | context |
 | webview.swift:105:44:105:44 | context | webview.swift:106:42:106:42 | context |
-| webview.swift:106:10:106:10 | JSValue.Type | webview.swift:106:10:106:10 | call to init(int32:in:) |
-| webview.swift:106:25:106:25 | s | webview.swift:106:10:106:49 | call to init(int32:in:) |
+| webview.swift:106:25:106:25 | s | webview.swift:106:10:106:49 | call to JSValue.init(int32:in:) |
 | webview.swift:106:25:106:25 | s | webview.swift:107:26:107:26 | s |
 | webview.swift:106:42:106:42 | [post] context | webview.swift:107:44:107:44 | context |
 | webview.swift:106:42:106:42 | context | webview.swift:107:44:107:44 | context |
-| webview.swift:107:10:107:10 | JSValue.Type | webview.swift:107:10:107:10 | call to init(uInt32:in:) |
-| webview.swift:107:26:107:26 | s | webview.swift:107:10:107:51 | call to init(uInt32:in:) |
+| webview.swift:107:26:107:26 | s | webview.swift:107:10:107:51 | call to JSValue.init(uInt32:in:) |
 | webview.swift:107:26:107:26 | s | webview.swift:108:25:108:25 | s |
 | webview.swift:107:44:107:44 | [post] context | webview.swift:108:44:108:44 | context |
 | webview.swift:107:44:107:44 | context | webview.swift:108:44:108:44 | context |
-| webview.swift:108:10:108:10 | JSValue.Type | webview.swift:108:10:108:10 | call to init(point:in:) |
-| webview.swift:108:25:108:25 | s | webview.swift:108:10:108:51 | call to init(point:in:) |
+| webview.swift:108:25:108:25 | s | webview.swift:108:10:108:51 | call to JSValue.init(point:in:) |
 | webview.swift:108:25:108:25 | s | webview.swift:109:25:109:25 | s |
 | webview.swift:108:44:108:44 | [post] context | webview.swift:109:44:109:44 | context |
 | webview.swift:108:44:108:44 | context | webview.swift:109:44:109:44 | context |
-| webview.swift:109:10:109:10 | JSValue.Type | webview.swift:109:10:109:10 | call to init(range:in:) |
-| webview.swift:109:25:109:25 | s | webview.swift:109:10:109:51 | call to init(range:in:) |
+| webview.swift:109:25:109:25 | s | webview.swift:109:10:109:51 | call to JSValue.init(range:in:) |
 | webview.swift:109:25:109:25 | s | webview.swift:110:24:110:24 | s |
 | webview.swift:109:44:109:44 | [post] context | webview.swift:110:42:110:42 | context |
 | webview.swift:109:44:109:44 | context | webview.swift:110:42:110:42 | context |
-| webview.swift:110:10:110:10 | JSValue.Type | webview.swift:110:10:110:10 | call to init(rect:in:) |
-| webview.swift:110:24:110:24 | s | webview.swift:110:10:110:49 | call to init(rect:in:) |
+| webview.swift:110:24:110:24 | s | webview.swift:110:10:110:49 | call to JSValue.init(rect:in:) |
 | webview.swift:110:24:110:24 | s | webview.swift:111:24:111:24 | s |
 | webview.swift:110:42:110:42 | [post] context | webview.swift:111:42:111:42 | context |
 | webview.swift:110:42:110:42 | context | webview.swift:111:42:111:42 | context |
-| webview.swift:111:10:111:10 | JSValue.Type | webview.swift:111:10:111:10 | call to init(size:in:) |
-| webview.swift:111:24:111:24 | s | webview.swift:111:10:111:49 | call to init(size:in:) |
+| webview.swift:111:24:111:24 | s | webview.swift:111:10:111:49 | call to JSValue.init(size:in:) |
 | webview.swift:111:24:111:24 | s | webview.swift:114:39:114:39 | s |
 | webview.swift:111:42:111:42 | [post] context | webview.swift:113:38:113:38 | context |
 | webview.swift:111:42:111:42 | context | webview.swift:113:38:113:38 | context |
 | webview.swift:113:9:113:9 | SSA def(v1) | webview.swift:114:5:114:5 | v1 |
-| webview.swift:113:14:113:14 | JSValue.Type | webview.swift:113:14:113:14 | call to init(object:in:) |
-| webview.swift:113:14:113:45 | call to init(object:in:) | webview.swift:113:9:113:9 | SSA def(v1) |
-| webview.swift:113:30:113:30 |  | webview.swift:113:14:113:45 | call to init(object:in:) |
+| webview.swift:113:14:113:45 | call to JSValue.init(object:in:) | webview.swift:113:9:113:9 | SSA def(v1) |
+| webview.swift:113:30:113:30 |  | webview.swift:113:14:113:45 | call to JSValue.init(object:in:) |
 | webview.swift:113:38:113:38 | [post] context | webview.swift:117:38:117:38 | context |
 | webview.swift:113:38:113:38 | context | webview.swift:117:38:117:38 | context |
 | webview.swift:114:5:114:5 | [post] v1 | webview.swift:115:10:115:10 | v1 |
@@ -1598,9 +1510,8 @@
 | webview.swift:114:39:114:39 | s | webview.swift:114:5:114:5 | [post] v1 |
 | webview.swift:114:39:114:39 | s | webview.swift:118:17:118:17 | s |
 | webview.swift:117:9:117:9 | SSA def(v2) | webview.swift:118:5:118:5 | v2 |
-| webview.swift:117:14:117:14 | JSValue.Type | webview.swift:117:14:117:14 | call to init(object:in:) |
-| webview.swift:117:14:117:45 | call to init(object:in:) | webview.swift:117:9:117:9 | SSA def(v2) |
-| webview.swift:117:30:117:30 |  | webview.swift:117:14:117:45 | call to init(object:in:) |
+| webview.swift:117:14:117:45 | call to JSValue.init(object:in:) | webview.swift:117:9:117:9 | SSA def(v2) |
+| webview.swift:117:30:117:30 |  | webview.swift:117:14:117:45 | call to JSValue.init(object:in:) |
 | webview.swift:117:38:117:38 | [post] context | webview.swift:121:38:121:38 | context |
 | webview.swift:117:38:117:38 | context | webview.swift:121:38:121:38 | context |
 | webview.swift:118:5:118:5 | [post] v2 | webview.swift:119:10:119:10 | v2 |
@@ -1608,38 +1519,34 @@
 | webview.swift:118:17:118:17 | s | webview.swift:118:5:118:5 | [post] v2 |
 | webview.swift:118:17:118:17 | s | webview.swift:122:17:122:17 | s |
 | webview.swift:121:9:121:9 | SSA def(v3) | webview.swift:122:5:122:5 | v3 |
-| webview.swift:121:14:121:14 | JSValue.Type | webview.swift:121:14:121:14 | call to init(object:in:) |
-| webview.swift:121:14:121:45 | call to init(object:in:) | webview.swift:121:9:121:9 | SSA def(v3) |
-| webview.swift:121:30:121:30 |  | webview.swift:121:14:121:45 | call to init(object:in:) |
+| webview.swift:121:14:121:45 | call to JSValue.init(object:in:) | webview.swift:121:9:121:9 | SSA def(v3) |
+| webview.swift:121:30:121:30 |  | webview.swift:121:14:121:45 | call to JSValue.init(object:in:) |
 | webview.swift:122:5:122:5 | [post] v3 | webview.swift:123:10:123:10 | v3 |
 | webview.swift:122:5:122:5 | v3 | webview.swift:123:10:123:10 | v3 |
 | webview.swift:122:17:122:17 | s | webview.swift:122:5:122:5 | [post] v3 |
 | webview.swift:127:9:127:9 | SSA def(atStart) | webview.swift:128:56:128:56 | atStart |
 | webview.swift:127:19:127:45 | .atDocumentStart | webview.swift:127:9:127:9 | SSA def(atStart) |
 | webview.swift:128:9:128:9 | SSA def(a) | webview.swift:129:10:129:10 | a |
-| webview.swift:128:13:128:13 | WKUserScript.Type | webview.swift:128:13:128:13 | call to init(source:injectionTime:forMainFrameOnly:) |
-| webview.swift:128:13:128:88 | call to init(source:injectionTime:forMainFrameOnly:) | webview.swift:128:9:128:9 | SSA def(a) |
-| webview.swift:128:34:128:34 | abc | webview.swift:128:13:128:88 | call to init(source:injectionTime:forMainFrameOnly:) |
+| webview.swift:128:13:128:88 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | webview.swift:128:9:128:9 | SSA def(a) |
+| webview.swift:128:34:128:34 | abc | webview.swift:128:13:128:88 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) |
 | webview.swift:128:56:128:56 | [post] atStart | webview.swift:132:70:132:70 | atStart |
 | webview.swift:128:56:128:56 | atStart | webview.swift:132:70:132:70 | atStart |
 | webview.swift:129:10:129:10 | [post] a | webview.swift:130:10:130:10 | a |
 | webview.swift:129:10:129:10 | a | webview.swift:130:10:130:10 | a |
 | webview.swift:130:10:130:10 | a | webview.swift:130:10:130:12 | .source |
 | webview.swift:132:9:132:9 | SSA def(b) | webview.swift:133:10:133:10 | b |
-| webview.swift:132:13:132:13 | WKUserScript.Type | webview.swift:132:13:132:13 | call to init(source:injectionTime:forMainFrameOnly:) |
-| webview.swift:132:13:132:102 | call to init(source:injectionTime:forMainFrameOnly:) | webview.swift:132:9:132:9 | SSA def(b) |
-| webview.swift:132:34:132:41 | call to source() | webview.swift:132:13:132:102 | call to init(source:injectionTime:forMainFrameOnly:) |
+| webview.swift:132:13:132:102 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | webview.swift:132:9:132:9 | SSA def(b) |
+| webview.swift:132:34:132:41 | call to source() | webview.swift:132:13:132:102 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) |
 | webview.swift:132:70:132:70 | [post] atStart | webview.swift:137:70:137:70 | atStart |
 | webview.swift:132:70:132:70 | atStart | webview.swift:137:70:137:70 | atStart |
 | webview.swift:133:10:133:10 | [post] b | webview.swift:134:10:134:10 | b |
 | webview.swift:133:10:133:10 | b | webview.swift:134:10:134:10 | b |
 | webview.swift:134:10:134:10 | b | webview.swift:134:10:134:12 | .source |
 | webview.swift:136:9:136:9 | SSA def(world) | webview.swift:137:108:137:108 | world |
-| webview.swift:136:17:136:32 | call to init() | webview.swift:136:9:136:9 | SSA def(world) |
+| webview.swift:136:17:136:32 | call to WKContentWorld.init() | webview.swift:136:9:136:9 | SSA def(world) |
 | webview.swift:137:9:137:9 | SSA def(c) | webview.swift:138:10:138:10 | c |
-| webview.swift:137:13:137:13 | WKUserScript.Type | webview.swift:137:13:137:13 | call to init(source:injectionTime:forMainFrameOnly:in:) |
-| webview.swift:137:13:137:113 | call to init(source:injectionTime:forMainFrameOnly:in:) | webview.swift:137:9:137:9 | SSA def(c) |
-| webview.swift:137:34:137:41 | call to source() | webview.swift:137:13:137:113 | call to init(source:injectionTime:forMainFrameOnly:in:) |
+| webview.swift:137:13:137:113 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | webview.swift:137:9:137:9 | SSA def(c) |
+| webview.swift:137:34:137:41 | call to source() | webview.swift:137:13:137:113 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) |
 | webview.swift:138:10:138:10 | [post] c | webview.swift:139:10:139:10 | c |
 | webview.swift:138:10:138:10 | c | webview.swift:139:10:139:10 | c |
 | webview.swift:139:10:139:10 | c | webview.swift:139:10:139:12 | .source |

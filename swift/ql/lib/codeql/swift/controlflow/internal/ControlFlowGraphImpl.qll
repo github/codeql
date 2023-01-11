@@ -1447,8 +1447,8 @@ module Exprs {
     }
   }
 
-  class MethodRefExprTree extends AstStandardPreOrderTree {
-    override MethodRefExpr ast;
+  class MethodLookupExprTree extends AstStandardPreOrderTree {
+    override MethodLookupExpr ast;
 
     override ControlFlowElement getChildElement(int i) {
       i = 0 and result.asAstNode() = ast.getBase().getFullyConverted()

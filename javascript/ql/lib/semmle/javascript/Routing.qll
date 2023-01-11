@@ -723,7 +723,7 @@ module Routing {
     isInstalledAt(result, router, node)
     or
     result = getMostRecentRouteSetupAt(router, node.getAPredecessor()) and
-    not exists(RouteSetup setup | isInstalledAt(setup, router, node))
+    not isInstalledAt(_, router, node)
   }
 
   /**
@@ -977,8 +977,8 @@ module Routing {
    * Holds if `pred -> succ` is a data-flow step between access paths on request input objects.
    */
   private predicate middlewareDataFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Node writer, Node reader, int n, string path |
-      potentialAccessPathStep(writer, pred, reader, succ, n, path) and
+    exists(Node writer, Node reader |
+      potentialAccessPathStep(writer, pred, reader, succ, _, _) and
       pragma[only_bind_out](reader).isGuardedByNode(pragma[only_bind_out](writer))
     )
     or

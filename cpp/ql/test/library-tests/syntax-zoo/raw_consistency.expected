@@ -31,26 +31,8 @@ instructionWithoutSuccessor
 | misc.c:174:17:174:22 | CallSideEffect: call to getInt | Instruction 'CallSideEffect: call to getInt' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
 | misc.c:174:30:174:35 | CallSideEffect: call to getInt | Instruction 'CallSideEffect: call to getInt' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
 | misc.c:174:55:174:60 | Store: (char ****)... | Instruction 'Store: (char ****)...' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
-| ms_try_except.cpp:3:9:3:9 | Uninitialized: definition of x | Instruction 'Uninitialized: definition of x' has no successors in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
-| ms_try_except.cpp:7:13:7:17 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
-| ms_try_except.cpp:9:19:9:19 | Load: j | Instruction 'Load: j' has no successors in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
-| ms_try_except.cpp:10:13:10:17 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
-| ms_try_except.cpp:14:13:14:17 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
-| ms_try_except.cpp:17:13:17:17 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
-| ms_try_except.cpp:19:17:19:21 | Sub: ... - ... | Instruction 'Sub: ... - ...' has no successors in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
-| ms_try_except.cpp:20:9:20:13 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
-| ms_try_mix.cpp:11:12:11:15 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect: call to C' has no successors in function '$@'. | ms_try_mix.cpp:10:6:10:18 | void ms_except_mix(int) | void ms_except_mix(int) |
-| ms_try_mix.cpp:16:13:16:19 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | ms_try_mix.cpp:10:6:10:18 | void ms_except_mix(int) | void ms_except_mix(int) |
-| ms_try_mix.cpp:18:16:18:19 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect: call to C' has no successors in function '$@'. | ms_try_mix.cpp:10:6:10:18 | void ms_except_mix(int) | void ms_except_mix(int) |
-| ms_try_mix.cpp:20:15:20:39 | Constant: 1 | Instruction 'Constant: 1' has no successors in function '$@'. | ms_try_mix.cpp:10:6:10:18 | void ms_except_mix(int) | void ms_except_mix(int) |
-| ms_try_mix.cpp:21:16:21:19 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect: call to C' has no successors in function '$@'. | ms_try_mix.cpp:10:6:10:18 | void ms_except_mix(int) | void ms_except_mix(int) |
-| ms_try_mix.cpp:28:12:28:15 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect: call to C' has no successors in function '$@'. | ms_try_mix.cpp:27:6:27:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
 | ms_try_mix.cpp:33:13:33:19 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | ms_try_mix.cpp:27:6:27:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
-| ms_try_mix.cpp:35:16:35:19 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect: call to C' has no successors in function '$@'. | ms_try_mix.cpp:27:6:27:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
-| ms_try_mix.cpp:38:16:38:19 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect: call to C' has no successors in function '$@'. | ms_try_mix.cpp:27:6:27:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
-| ms_try_mix.cpp:48:10:48:13 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect: call to C' has no successors in function '$@'. | ms_try_mix.cpp:47:6:47:28 | void ms_empty_finally_at_end() | void ms_empty_finally_at_end() |
 | ms_try_mix.cpp:51:5:51:11 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | ms_try_mix.cpp:47:6:47:28 | void ms_empty_finally_at_end() | void ms_empty_finally_at_end() |
-| ms_try_mix.cpp:53:13:54:3 | NoOp: { ... } | Instruction 'NoOp: { ... }' has no successors in function '$@'. | ms_try_mix.cpp:47:6:47:28 | void ms_empty_finally_at_end() | void ms_empty_finally_at_end() |
 | stmt_expr.cpp:27:5:27:15 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | stmt_expr.cpp:21:6:21:6 | void stmtexpr::g(int) | void stmtexpr::g(int) |
 | stmt_expr.cpp:29:11:32:11 | CopyValue: (statement expression) | Instruction 'CopyValue: (statement expression)' has no successors in function '$@'. | stmt_expr.cpp:21:6:21:6 | void stmtexpr::g(int) | void stmtexpr::g(int) |
 | stmt_in_type.cpp:5:53:5:53 | Constant: 1 | Instruction 'Constant: 1' has no successors in function '$@'. | stmt_in_type.cpp:2:6:2:12 | void cpp_fun() | void cpp_fun() |
@@ -135,6 +117,10 @@ backEdgeCountMismatch
 useNotDominatedByDefinition
 | VacuousDestructorCall.cpp:2:29:2:29 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | void CallDestructor<int>(int, int*) | void CallDestructor<int>(int, int*) |
 | misc.c:219:47:219:48 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | misc.c:219:5:219:26 | int assign_designated_init(someStruct*) | int assign_designated_init(someStruct*) |
+| ms_try_except.cpp:9:19:9:19 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
+| ms_try_except.cpp:9:19:9:19 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
+| ms_try_except.cpp:19:17:19:21 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
+| ms_try_except.cpp:19:17:19:21 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
 | static_init_templates.cpp:15:1:15:18 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | static_init_templates.cpp:15:1:15:18 | void MyClass::MyClass() | void MyClass::MyClass() |
 | try_catch.cpp:21:9:21:9 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | try_catch.cpp:19:6:19:23 | void throw_from_nonstmt(int) | void throw_from_nonstmt(int) |
 | vla.c:3:27:3:30 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | int main(int, char**) | int main(int, char**) |

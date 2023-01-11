@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity recommendation
  * @tags meta
- * @id csharp/meta/unsupported-external-api
+ * @id cs/meta/unsupported-external-api
  * @precision very-low
  */
 

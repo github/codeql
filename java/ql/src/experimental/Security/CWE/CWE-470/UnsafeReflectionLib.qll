@@ -31,9 +31,7 @@ class UnsafeReflectionSink extends DataFlow::ExprNode {
  * and its name contains "resolve", "load", etc.
  */
 predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(MethodAccess ma, Method m, int i, Expr arg |
-    m = ma.getMethod() and arg = ma.getArgument(i)
-  |
+  exists(MethodAccess ma, Method m, Expr arg | m = ma.getMethod() and arg = ma.getAnArgument() |
     m.getReturnType() instanceof TypeClass and
     m.getName().toLowerCase() = ["resolve", "load", "class", "type"] and
     arg.getType() instanceof TypeString and
@@ -48,9 +46,7 @@ predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNo
  * and its name contains "instantiate" or similar terms.
  */
 predicate looksLikeInstantiateClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(MethodAccess ma, Method m, int i, Expr arg |
-    m = ma.getMethod() and arg = ma.getArgument(i)
-  |
+  exists(MethodAccess ma, Method m, Expr arg | m = ma.getMethod() and arg = ma.getAnArgument() |
     m.getReturnType() instanceof TypeObject and
     m.getName().toLowerCase() = ["instantiate", "instance", "create", "make", "getbean"] and
     arg.getType() instanceof TypeClass and
