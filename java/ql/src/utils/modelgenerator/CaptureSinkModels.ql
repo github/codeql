@@ -2,11 +2,11 @@
  * @name Capture sink models.
  * @description Finds public methods that act as sinks as they flow into a known sink.
  * @kind diagnostic
- * @id cs/utils/model-generator/sink-models
- * @tags model-generator
+ * @id java/utils/modelgenerator/sink-models
+ * @tags modelgenerator
  */
 
-import utils.modelgenerator.internal.CaptureModels
+import internal.CaptureModels
 
 class Activate extends ActiveConfiguration {
   override predicate activateToSinkConfig() { any() }
