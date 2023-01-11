@@ -12,7 +12,7 @@
 #include <swift/Basic/InitializeSwiftModules.h>
 
 #include "swift/extractor/SwiftExtractor.h"
-#include "swift/extractor/infra/TargetTrapDomain.h"
+#include "swift/extractor/infra/TargetDomains.h"
 #include "swift/extractor/infra/file/Path.h"
 #include "swift/extractor/remapping/SwiftFileInterception.h"
 #include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
@@ -29,7 +29,8 @@ static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
   for (const auto& input : options.InputsAndOutputs.getAllInputs()) {
     if (const auto& module = input.getPrimarySpecificPaths().SupplementaryOutputs.ModuleOutputPath;
         !module.empty()) {
-      if (auto target = codeql::createTargetTrapDomain(state, codeql::resolvePath(module))) {
+      if (auto target = codeql::createTargetTrapDomain(state, codeql::resolvePath(module),
+                                                       codeql::TrapType::module)) {
         target->emit("// trap file deliberately empty\n"
                      "// this swiftmodule was created during the build, so its entities must have"
                      " been extracted directly from source files");
@@ -80,16 +81,19 @@ class Observer : public swift::FrontendObserver {
   explicit Observer(const codeql::SwiftExtractorConfiguration& config) : state{config} {}
 
   void parsedArgs(swift::CompilerInvocation& invocation) override {
+    invocationTrap.debug(__func__);
     auto& options = invocation.getFrontendOptions();
     lockOutputSwiftModuleTraps(state, options);
     processFrontendOptions(state, options);
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
+    invocationTrap.debug(__func__);
     instance.addDiagnosticConsumer(&diagConsumer);
   }
 
   void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
+    invocationTrap.debug(__func__);
     codeql::extractSwiftFiles(state, compiler);
     codeql::extractSwiftInvocation(state, compiler, invocationTrap);
   }
@@ -154,9 +158,8 @@ static void checkWhetherToRunUnderTool(int argc, char* const* argv) {
 // compilations, diagnostics, etc.
 codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state) {
   auto timestamp = std::chrono::system_clock::now().time_since_epoch().count();
-  auto filename = std::to_string(timestamp) + '-' + std::to_string(getpid());
-  auto target = std::filesystem::path("invocations") / std::filesystem::path(filename);
-  auto maybeDomain = codeql::createTargetTrapDomain(state, target);
+  std::filesystem::path target = std::to_string(timestamp) + '-' + std::to_string(getpid());
+  auto maybeDomain = codeql::createTargetTrapDomain(state, target, codeql::TrapType::invocation);
   if (!maybeDomain) {
     std::cerr << "Cannot create invocation trap file: " << target << "\n";
     abort();

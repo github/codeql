@@ -1,121 +1,173 @@
 #include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/remapping/SwiftFileInterception.h"
 #include "swift/extractor/infra/file/FileHash.h"
-#include "swift/extractor/infra/TargetTrapDomain.h"
+#include "swift/extractor/infra/TargetDomains.h"
 #include "swift/extractor/trap/generated/TrapTags.h"
 #include "swift/extractor/infra/file/TargetFile.h"
 #include "swift/extractor/infra/file/Path.h"
+#include "swift/extractor/trap/LinkDomain.h"
 
 namespace fs = std::filesystem;
+using namespace std::string_literals;
+
 namespace codeql {
+namespace {
+std::string getModuleId(const std::string_view& name, const std::string_view& hash) {
+  auto ret = "module:"s;
+  ret += name;
+  ret += ':';
+  ret += hash;
+  return ret;
+}
+
+std::string getModuleId(const swift::ModuleDecl* module, const std::string_view& hash) {
+  return getModuleId(module->getRealName().str(), hash);
+}
+
+fs::path getModuleTarget(const std::string_view& name, const std::string_view& hash) {
+  fs::path ret{"modules"};
+  ret /= name;
+  ret += '_';
+  ret += hash;
+  ret /= "module";
+  return ret;
+}
+
+std::optional<std::string> getModuleHash(const fs::path& moduleFile) {
+  if (auto fd = openReal(moduleFile); fd >= 0) {
+    if (auto hash = hashFile(fd); !hash.empty()) {
+      return hash;
+    }
+  }
+  return std::nullopt;
+}
+
+std::optional<std::string> getModuleHash(const swift::ModuleDecl* module) {
+  return getModuleHash(std::string_view{module->getModuleFilename()});
+}
+
+std::string getSourceId(const fs::path& file) {
+  return "source:"s + file.c_str();
+}
+
+std::string getSourceId(const swift::InputFile& input) {
+  return getSourceId(resolvePath(input.getFileName()));
+}
+
+fs::path getSourceTarget(const fs::path& file) {
+  return "sources" / file.relative_path();
+}
+
+struct ModuleInfo {
+  fs::path target;
+  std::string id;
+};
+
+std::vector<ModuleInfo> emitModuleImplementations(SwiftExtractorState& state,
+                                                  const std::string& moduleName) {
+  std::vector<ModuleInfo> ret;
+  ret.reserve(state.originalOutputModules.size());
+  for (const auto& modulePath : state.originalOutputModules) {
+    if (auto hash = getModuleHash(modulePath)) {
+      auto target = getModuleTarget(moduleName, *hash);
+      if (auto moduleTrap = createTargetTrapDomain(state, target, TrapType::linkage)) {
+        moduleTrap->createLabelWithImplementationId<ModuleDeclTag>(*hash, moduleName);
+        ret.push_back({target, getModuleId(moduleName, *hash)});
+      }
+    }
+  }
+  return ret;
+}
+
+void emitLinkFile(const SwiftExtractorState& state, const fs::path& target, const std::string& id) {
+  if (auto link = createTargetLinkDomain(state, target)) {
+    link->emitTarget(id);
+    link->emitObjectDependency(id);
+  }
+}
+
+void emitSourceObjectDependencies(const SwiftExtractorState& state,
+                                  const fs::path& target,
+                                  const std::string& id) {
+  if (auto object = createTargetObjectDomain(state, target)) {
+    object->emitObject(id);
+    for (auto encounteredModule : state.encounteredModules) {
+      if (auto depHash = getModuleHash(encounteredModule)) {
+        object->emitObjectDependency(getModuleId(encounteredModule, *depHash));
+      }
+    }
+    for (const auto& requestedTrap : state.traps) {
+      object->emitTrapDependency(requestedTrap);
+    }
+  }
+}
+
+void replaceMergedModulesImplementation(const SwiftExtractorState& state,
+                                        const std::string& name,
+                                        const fs::path& mergeTarget,
+                                        const std::string& mergedPartHash) {
+  std::error_code ec;
+  auto mergedPartTarget = getModuleTarget(name, mergedPartHash);
+  fs::copy(getTrapPath(state, mergeTarget, TrapType::linkage),
+           getTrapPath(state, mergedPartTarget, TrapType::linkage),
+           fs::copy_options::overwrite_existing, ec);
+  if (ec) {
+    std::cerr << "unable to replace merged module trap implementation id (" << ec.message() << ")";
+  }
+}
+
+void emitModuleObjectDependencies(const SwiftExtractorState& state,
+                                  const swift::FrontendOptions& options,
+                                  const fs::path& target,
+                                  const std::string& id) {
+  if (auto object = createTargetObjectDomain(state, target)) {
+    object->emitObject(id);
+    for (auto encounteredModule : state.encounteredModules) {
+      if (auto depHash = getModuleHash(encounteredModule)) {
+        object->emitObjectDependency(getModuleId(encounteredModule, *depHash));
+      }
+    }
+    if (options.RequestedAction == swift::FrontendOptions::ActionType::MergeModules) {
+      for (const auto& input : options.InputsAndOutputs.getAllInputs()) {
+        if (auto mergedHash = getModuleHash(input.getFileName())) {
+          object->emitObjectDependency(getModuleId(options.ModuleName, *mergedHash));
+          replaceMergedModulesImplementation(state, options.ModuleName, target, *mergedHash);
+        }
+      }
+    } else {
+      for (const auto& input : options.InputsAndOutputs.getAllInputs()) {
+        object->emitObjectDependency(getSourceId(input));
+      }
+    }
+    for (const auto& requestedTrap : state.traps) {
+      object->emitTrapDependency(requestedTrap);
+    }
+  }
+}
+}  // namespace
+
 void extractSwiftInvocation(SwiftExtractorState& state,
                             swift::CompilerInstance& compiler,
                             TrapDomain& trap) {
-  std::vector<std::tuple<fs::path, std::string>> targets;
-  targets.reserve(state.originalOutputModules.size());
+  const auto& options = compiler.getInvocation().getFrontendOptions();
+
   // notice that there is only one unique module name per frontend run, even when outputting
   // multiples `swiftmodule` files
-  const auto& moduleName = compiler.getInvocation().getFrontendOptions().ModuleName;
-  for (const auto& modulePath : state.originalOutputModules) {
-    if (auto fd = openReal(modulePath); fd >= 0) {
-      if (auto hash = hashFile(fd); !hash.empty()) {
-        fs::path target{"linkage-awareness"};
-        target /= "modules";
-        target /= moduleName;
-        target += '_';
-        target += hash;
-        target /= "module";
-        if (auto moduleTrap = createTargetTrapDomain(state, target)) {
-          moduleTrap->createLabelWithImplementationId<ModuleDeclTag>(hash, moduleName);
-          targets.emplace_back(std::move(target), std::move(hash));
-        }
-      }
-    }
-  }
+  // this step must be executed first so that we can capture in `state` the emitted trap files
+  // that will be used in following steps
+  auto modules = emitModuleImplementations(state, options.ModuleName);
+
   for (const auto& input : state.primaryFiles) {
     auto path = resolvePath(input);
-    fs::path target{"linkage-awareness/inputs"};
-    target /= path.relative_path();
-    target += ".odep";
-    if (auto targetFile = TargetFile::create(target, state.configuration.trapDir,
-                                             state.configuration.getTempTrapDir())) {
-      *targetFile << "TRAP dependencies 1.2\n"
-                  << "OBJECTS\n"
-                  << "input:" << path.c_str() << '\n'
-                  << "INPUT_OBJECTS\n";
-      for (auto encounteredModule : state.encounteredModules) {
-        if (auto fd = openReal(std::string_view{encounteredModule->getModuleFilename()}); fd >= 0) {
-          if (auto depHash = hashFile(fd); !depHash.empty()) {
-            *targetFile << "module:" << std::string_view{encounteredModule->getRealName().str()}
-                        << ':' << depHash << '\n';
-          }
-        }
-      }
-      *targetFile << "TRAPS\n";
-      for (const auto& requestedTrap : state.traps) {
-        *targetFile << requestedTrap.c_str() << '\n';
-      }
-    }
-    target.replace_extension(".link");
-    std::ofstream{state.configuration.trapDir / target} << "Linker invocation 1.0\n"
-                                                        << "TARGET\n"
-                                                        << "input:" << path.c_str() << '\n'
-                                                        << "OBJECTS\n"
-                                                        << "input:" << path.c_str() << '\n';
+    auto target = getSourceTarget(path);
+    auto inputId = getSourceId(path);
+    emitLinkFile(state, target, inputId);
+    emitSourceObjectDependencies(state, target, inputId);
   }
-  for (const auto& [target, hash] : targets) {
-    auto linkFile = target;
-    linkFile += ".link";
-    std::ofstream{state.configuration.trapDir / linkFile}
-        << "Linker invocation 1.0\n"
-        << "TARGET\n"
-        << "module:" << moduleName << ':' << hash << '\n'
-        << "OBJECTS\n"
-        << "module:" << moduleName << ':' << hash << '\n';
-    auto odepFile = target;
-    odepFile += ".odep";
-    std::ofstream odep{state.configuration.trapDir / odepFile};
-    odep << "TRAP dependencies 1.2\n"
-         << "OBJECTS\n"
-         << "module:" << moduleName << ':' << hash << '\n'
-         << "INPUT_OBJECTS\n";
-    for (auto encounteredModule : state.encounteredModules) {
-      if (auto fd = openReal(std::string_view{encounteredModule->getModuleFilename()}); fd >= 0) {
-        if (auto depHash = hashFile(fd); !depHash.empty()) {
-          odep << "module:" << std::string_view{encounteredModule->getRealName().str()} << ':'
-               << depHash << '\n';
-        }
-      }
-    }
-    if (compiler.getInvocation().getFrontendOptions().RequestedAction !=
-        swift::FrontendOptions::ActionType::MergeModules) {
-      for (const auto& input :
-           compiler.getInvocation().getFrontendOptions().InputsAndOutputs.getAllInputs()) {
-        odep << "input:" << resolvePath(input.getFileName()).c_str() << '\n';
-      }
-    } else {
-      for (const auto& input :
-           compiler.getInvocation().getFrontendOptions().InputsAndOutputs.getAllInputs()) {
-        if (auto fd = openReal(input.getFileName()); fd >= 0) {
-          if (auto mergedHash = hashFile(fd); !mergedHash.empty()) {
-            odep << "module:" << moduleName << ':' << mergedHash << '\n';
-            auto mergedModuleLink = state.configuration.trapDir;
-            mergedModuleLink /= "linkage-awareness";
-            mergedModuleLink /= "modules";
-            mergedModuleLink /= moduleName;
-            mergedModuleLink += '_';
-            mergedModuleLink += mergedHash;
-            mergedModuleLink /= "module.link";
-            fs::remove(mergedModuleLink);
-            fs::remove(mergedModuleLink.replace_extension(".trap"));
-          }
-        }
-      }
-    }
-    odep << "TRAPS\n";
-    for (const auto& requestedTrap : state.traps) {
-      odep << requestedTrap.c_str() << '\n';
-    }
+
+  for (const auto& [target, moduleId] : modules) {
+    emitLinkFile(state, target, moduleId);
+    emitModuleObjectDependencies(state, options, target, moduleId);
   }
 }
 }  // namespace codeql
