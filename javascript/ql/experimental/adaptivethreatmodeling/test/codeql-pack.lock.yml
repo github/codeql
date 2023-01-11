@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-01-07-22h55m52s.happy-forest-mszwbwhv.da9b8f42974447171da8d1aed2dd658e9aa424a40a637d1c1c111ab7dda4929e
+compiled: false
