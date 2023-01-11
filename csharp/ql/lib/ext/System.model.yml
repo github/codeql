@@ -1,14 +1,14 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["System", "Console", False, "Read", "", "", "ReturnValue", "local", "manual"]
       - ["System", "Console", False, "ReadKey", "", "", "ReturnValue", "local", "manual"]
       - ["System", "Console", False, "ReadLine", "", "", "ReturnValue", "local", "manual"]
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System", "Array", False, "AsReadOnly<>", "(T[])", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["System", "Array", False, "Clear", "(System.Array)", "", "Argument[0].WithoutElement", "Argument[0]", "value", "manual"]

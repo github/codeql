@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.http.entity", "BasicHttpEntity", True, "setContent", "(InputStream)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["org.apache.http.entity", "BufferedHttpEntity", True, "BufferedHttpEntity", "(HttpEntity)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

@@ -870,7 +870,8 @@ module Make<InputSig Input> {
     // Can reach another definition
     lastRefRedefExt(def, _, bb, i, _)
     or
-    exists(SourceVariable v | lastSsaRefExt(def, v, bb, i) |
+    lastSsaRefExt(def, _, bb, i) and
+    (
       // Can reach exit directly
       bb instanceof ExitBasicBlock
       or
@@ -889,7 +890,8 @@ module Make<InputSig Input> {
     // Can reach another definition
     lastRefRedef(def, bb, i, _)
     or
-    exists(SourceVariable v | lastSsaRef(def, v, bb, i) |
+    lastSsaRef(def, _, bb, i) and
+    (
       // Can reach exit directly
       bb instanceof ExitBasicBlock
       or

@@ -33,7 +33,11 @@ class Javadoc extends JavadocParent, @javadoc {
   string getAuthor() { result = this.getATag("@author").getChild(0).toString() }
 
   override string toString() {
-    result = this.toStringPrefix() + this.getChild(0) + this.toStringPostfix()
+    exists(string childStr |
+      if exists(this.getChild(0)) then childStr = this.getChild(0).toString() else childStr = ""
+    |
+      result = this.toStringPrefix() + childStr + this.toStringPostfix()
+    )
   }
 
   private string toStringPrefix() {
@@ -48,7 +52,7 @@ class Javadoc extends JavadocParent, @javadoc {
     if isEolComment(this)
     then result = ""
     else (
-      if strictcount(this.getAChild()) = 1 then result = " */" else result = " ... */"
+      if strictcount(this.getAChild()) > 1 then result = " ... */" else result = " */"
     )
   }
 

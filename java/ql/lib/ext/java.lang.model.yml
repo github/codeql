@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["java.lang", "String", False, "matches", "(String)", "", "Argument[0]", "regex-use[f-1]", "manual"]
       - ["java.lang", "String", False, "replaceAll", "(String,String)", "", "Argument[0]", "regex-use[-1]", "manual"]
@@ -18,7 +18,7 @@ extensions:
       - ["java.lang", "System$Logger", True, "log", "(Level,String,Throwable)", "", "Argument[1]", "logging", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["java.lang", "AbstractStringBuilder", True, "AbstractStringBuilder", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.lang", "AbstractStringBuilder", True, "append", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
@@ -37,12 +37,17 @@ extensions:
       - ["java.lang", "CharSequence", True, "charAt", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "CharSequence", True, "subSequence", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "CharSequence", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.lang", "IllegalArgumentException", False, "IllegalArgumentException", "(String)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
+      - ["java.lang", "IllegalStateException", False, "IllegalStateException", "(String)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
+      - ["java.lang", "Integer", False, "parseInt", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "Iterable", True, "forEach", "(Consumer)", "", "Argument[-1].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["java.lang", "Iterable", True, "iterator", "()", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.lang", "Iterable", True, "spliterator", "()", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.lang", "Object", True, "clone", "", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.lang", "Object", True, "clone", "", "", "Argument[-1].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["java.lang", "Object", True, "clone", "", "", "Argument[-1].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      - ["java.lang", "RuntimeException", False, "RuntimeException", "(String)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
+      - ["java.lang", "RuntimeException", False, "RuntimeException", "(Throwable)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
       - ["java.lang", "String", False, "String", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.lang", "String", False, "concat", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "concat", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
@@ -82,7 +87,34 @@ extensions:
       - ["java.lang", "String", False, "valueOf", "(char)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "valueOf", "(char[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "valueOf", "(char[],int,int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.lang", "String", False, "valueOf", "(int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "StringBuffer", True, "StringBuffer", "(CharSequence)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.lang", "StringBuffer", True, "StringBuffer", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.lang", "StringBuilder", True, "StringBuilder", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.lang", "System", False, "arraycopy", "", "", "Argument[0]", "Argument[2]", "taint", "manual"]
+      - ["java.lang", "Throwable", False, "Throwable", "(Throwable)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
+      - ["java.lang", "Throwable", False, "getCause", "()", "", "Argument[-1].SyntheticField[java.lang.Throwable.cause]", "ReturnValue", "value", "manual"]
+      - ["java.lang", "Throwable", False, "getMessage", "()", "", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "value", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.lang", "Class", "getName", "()", "manual"]
+      - ["java.lang", "Class", "getSimpleName", "()", "manual"]
+      - ["java.lang", "Enum", "Enum", "(String,int)", "manual"]
+      - ["java.lang", "Enum", "equals", "(Object)", "manual"]
+      - ["java.lang", "Enum", "name", "()", "manual"]
+      - ["java.lang", "Enum", "toString", "()", "manual"]
+      - ["java.lang", "Object", "equals", "(Object)", "manual"]
+      - ["java.lang", "Object", "getClass", "()", "manual"]
+      - ["java.lang", "Object", "hashCode", "()", "manual"]
+      - ["java.lang", "Object", "toString", "()", "manual"]
+      - ["java.lang", "String", "contains", "(CharSequence)", "manual"]
+      - ["java.lang", "String", "equals", "(Object)", "manual"]
+      - ["java.lang", "String", "equalsIgnoreCase", "(String)", "manual"]
+      - ["java.lang", "String", "hashCode", "()", "manual"]
+      - ["java.lang", "String", "isEmpty", "()", "manual"]
+      - ["java.lang", "String", "length", "()", "manual"]
+      - ["java.lang", "String", "startsWith", "(String)", "manual"]
+      - ["java.lang", "System", "currentTimeMillis", "()", "manual"]

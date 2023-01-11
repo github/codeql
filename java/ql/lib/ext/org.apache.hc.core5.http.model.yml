@@ -1,12 +1,12 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.apache.hc.core5.http", "HttpEntityContainer", True, "setEntity", "(HttpEntity)", "", "Argument[0]", "xss", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.hc.core5.http", "EntityDetails", True, "getContentEncoding", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["org.apache.hc.core5.http", "EntityDetails", True, "getContentType", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

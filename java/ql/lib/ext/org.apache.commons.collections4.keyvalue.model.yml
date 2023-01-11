@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       # Note that when lambdas are supported we should model the package `org.apache.commons.collections4.functors`,
       # and when more general callable flow is supported we should model the package

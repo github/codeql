@@ -39,6 +39,14 @@ class WebViewGetUrlMethod extends Method {
   }
 }
 
+/** The method `addJavascriptInterface` of the class `android.webkit.WebView` */
+class WebViewAddJavascriptInterfaceMethod extends Method {
+  WebViewAddJavascriptInterfaceMethod() {
+    this.getDeclaringType() instanceof TypeWebView and
+    this.hasName("addJavascriptInterface")
+  }
+}
+
 /**
  * A method allowing any-local-file and cross-origin access in the class `android.webkit.WebSettings`.
  */
@@ -76,4 +84,11 @@ class ShouldOverrideUrlLoading extends Method {
     this.getDeclaringType().getASupertype*() instanceof TypeWebViewClient and
     this.hasName("shouldOverrideUrlLoading")
   }
+}
+
+/**
+ * A method annotated with the `android.webkit.JavascriptInterface` annotation.
+ */
+class JavascriptInterfaceMethod extends Method {
+  JavascriptInterfaceMethod() { this.hasAnnotation("android.webkit", "JavascriptInterface") }
 }

@@ -31,7 +31,7 @@ private class XmlParserXxeSink extends XxeSink {
 /** The construction of a `XMLParser` that enables external entities. */
 private class VulnerableParser extends CallExpr {
   VulnerableParser() {
-    resolvesExternalEntities(this) and this.getFunction() instanceof ConstructorRefCallExpr
+    resolvesExternalEntities(this) and this.getFunction() instanceof InitializerLookupExpr
   }
 }
 

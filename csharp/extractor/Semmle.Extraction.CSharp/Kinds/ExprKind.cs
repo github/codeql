@@ -125,6 +125,8 @@ namespace Semmle.Extraction.Kinds
         OR_PATTERN = 128,
         FUNCTION_POINTER_INVOCATION = 129,
         WITH = 130,
-        DEFINE_SYMBOL = 999
+        LIST_PATTERN = 131,
+        SLICE_PATTERN = 132,
+        DEFINE_SYMBOL = 999,
     }
 }

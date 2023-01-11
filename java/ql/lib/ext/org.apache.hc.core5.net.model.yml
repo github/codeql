@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.hc.core5.net", "URIAuthority", True, "getHostName", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["org.apache.hc.core5.net", "URIAuthority", True, "toString", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

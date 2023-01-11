@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.springframework.web.util", "AbstractUriTemplateHandler", True, "getBaseUrl", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "AbstractUriTemplateHandler", True, "setBaseUrl", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]

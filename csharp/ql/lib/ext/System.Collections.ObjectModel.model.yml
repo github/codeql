@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Collections.ObjectModel", "KeyedCollection<,>", False, "get_Item", "(TKey)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Collections.ObjectModel", "ReadOnlyCollection<>", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]

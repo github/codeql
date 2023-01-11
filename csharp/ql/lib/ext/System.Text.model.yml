@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Text", "Encoding", True, "GetBytes", "(System.Char*,System.Int32,System.Byte*,System.Int32)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["System.Text", "Encoding", True, "GetBytes", "(System.Char[])", "", "Argument[0].Element", "ReturnValue", "taint", "manual"]

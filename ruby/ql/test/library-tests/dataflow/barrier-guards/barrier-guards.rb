@@ -257,13 +257,39 @@ end
 
 F = "foo"
 if foo == "#{F}"
-    foo # $ MISSING: guarded
+    foo # $ guarded
 end
 
 f = "foo"
 if foo == "#{f}"
-    foo # $ MISSING: guarded
+    foo # $ guarded
+end
+
+if foo == "#{f}#{unknown_var}"
+    foo
 end
 
 foo == "foo" && foo # $ guarded
 foo && foo == "foo"
+
+if [f].include? foo
+    foo # $ guarded
+end
+
+g = "g"
+foos = [f, g]
+if foos.include? foo
+    foo # $ guarded
+end
+
+foos = [f, g, some_method_call]
+if foos.include? foo
+    foo
+end
+
+case foo
+when g
+    foo # $ guarded
+else
+    foo
+end

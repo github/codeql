@@ -1155,9 +1155,9 @@ private predicate parameterPropRead(
   DataFlow::Node arg, string prop, DataFlow::Node succ, DataFlow::Configuration cfg,
   PathSummary summary
 ) {
-  exists(Function f, DataFlow::Node read, DataFlow::Node invk, DataFlow::Node parm |
+  exists(Function f, DataFlow::Node read |
     reachesReturn(f, read, cfg, summary) and
-    parameterPropReadStep(parm, read, prop, cfg, arg, invk, f, succ)
+    parameterPropReadStep(_, read, prop, cfg, arg, _, f, succ)
   )
 }
 
@@ -1764,11 +1764,8 @@ private PathNode getASuccessor(PathNode nd) {
   result = initialMidNode(nd)
   or
   // mid node to mid node
-  exists(
-    Configuration cfg, DataFlow::Node predNd, PathSummary summary, DataFlow::Node succNd,
-    PathSummary newSummary
-  |
-    midNodeStep(nd, predNd, cfg, summary, succNd, newSummary) and
+  exists(Configuration cfg, PathSummary summary, DataFlow::Node succNd, PathSummary newSummary |
+    midNodeStep(nd, _, cfg, summary, succNd, newSummary) and
     result = MkMidNode(succNd, id(cfg), summary.append(newSummary))
   )
   or

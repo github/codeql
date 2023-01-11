@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Web.UI.WebControls", "TextBox", False, "get_Text", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

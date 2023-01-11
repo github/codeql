@@ -10,12 +10,16 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.frameworks.ActiveJob
 private import codeql.ruby.frameworks.core.Module
+private import codeql.ruby.frameworks.core.Kernel
 
 module UnsafeDeserialization {
   /**
    * A data flow source for unsafe deserialization vulnerabilities.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /** Gets a string that describes the source. */
+    string describe() { result = "user-provided value" }
+  }
 
   /**
    * A data flow sink for unsafe deserialization vulnerabilities.
@@ -27,15 +31,38 @@ module UnsafeDeserialization {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * Additional taint steps for "unsafe deserialization" vulnerabilities.
-   */
-  predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    base64DecodeTaintStep(fromNode, toNode)
-  }
-
   /** A source of remote user input, considered as a flow source for unsafe deserialization. */
   class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+
+  /** A read of data from `STDIN`/`ARGV`, considered as a flow source for unsafe deserialization. */
+  class StdInSource extends UnsafeDeserialization::Source {
+    boolean stdin;
+
+    StdInSource() {
+      this = API::getTopLevelMember(["STDIN", "ARGF"]).getAMethodCall(["gets", "read"]) and
+      stdin = true
+      or
+      // > $stdin == STDIN
+      // => true
+      // but $stdin is special in that it is a global variable and not a constant. `API::getTopLevelMember` only gets constants.
+      exists(DataFlow::Node dollarStdin |
+        dollarStdin.asExpr().getExpr().(GlobalVariableReadAccess).getVariable().getName() = "$stdin" and
+        this = dollarStdin.getALocalSource().getAMethodCall(["gets", "read"])
+      ) and
+      stdin = true
+      or
+      // ARGV.
+      this.asExpr().getExpr().(GlobalVariableReadAccess).getVariable().getName() = "ARGV" and
+      stdin = false
+      or
+      this.(Kernel::KernelMethodCall).getMethodName() = ["gets", "readline", "readlines"] and
+      stdin = true
+    }
+
+    override string describe() {
+      if stdin = true then result = "value from stdin" else result = "value from ARGV"
+    }
+  }
 
   /**
    * An argument in a call to `Marshal.load` or `Marshal.restore`, considered a
@@ -179,43 +206,6 @@ module UnsafeDeserialization {
           )
         )
       )
-    }
-  }
-
-  /**
-   * `Base64.decode64` propagates taint from its argument to its return value.
-   */
-  predicate base64DecodeTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    exists(DataFlow::CallNode callNode |
-      callNode =
-        API::getTopLevelMember("Base64")
-            .getAMethodCall(["decode64", "strict_decode64", "urlsafe_decode64"])
-    |
-      fromNode = callNode.getArgument(0) and
-      toNode = callNode
-    )
-  }
-
-  /**
-   * A argument in a call to `Module.const_get`, considered as a sink for unsafe
-   * deserialization.
-   *
-   * Calls to `Module.const_get` can return arbitrary classes which can then be
-   * instantiated.
-   */
-  class ConstGetCallArgument extends Sink {
-    ConstGetCallArgument() { this = any(Module::ModuleConstGetCallCodeExecution c).getCode() }
-  }
-
-  /**
-   * A argument in a call to `ActiveJob::Serializers.deserialize`, considered as
-   * a sink for unsafe deserialization.
-   *
-   * This is roughly equivalent to a call to `Module.const_get`.
-   */
-  class ActiveJobSerializersDeserializeArgument extends Sink {
-    ActiveJobSerializersDeserializeArgument() {
-      this = any(ActiveJob::Serializers::DeserializeCall c).getCode()
     }
   }
 }

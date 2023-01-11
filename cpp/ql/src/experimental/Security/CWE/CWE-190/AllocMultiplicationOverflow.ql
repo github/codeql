@@ -30,7 +30,7 @@ class MultToAllocConfig extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node node) {
     // something that affects an allocation size
-    node.asExpr() = any(AllocationExpr ae).getSizeExpr().getAChild*()
+    node.asExpr() = any(HeuristicAllocationExpr ae).getSizeExpr().getAChild*()
   }
 }
 

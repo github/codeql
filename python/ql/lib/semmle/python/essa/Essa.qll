@@ -108,7 +108,7 @@ private string location_string(EssaVariable v) {
 
 /* Helper to compute an index for this SSA variable. */
 private int var_index(EssaVariable v) {
-  location_string(v) = rank[result](string s | exists(EssaVariable x | location_string(x) = s) | s)
+  location_string(v) = rank[result](string s | location_string(_) = s | s)
 }
 
 /* Helper for `v.getRepresentation()` */
@@ -511,12 +511,16 @@ class AssignmentDefinition extends EssaNodeDefinition {
   override string getAPrimaryQlClass() { result = "AssignmentDefinition" }
 }
 
-/** A capture of a raised exception `except ExceptionType ex:` */
+/** A capture of a raised exception `except ExceptionType as ex:` */
 class ExceptionCapture extends EssaNodeDefinition {
   ExceptionCapture() {
     SsaSource::exception_capture(this.getSourceVariable(), this.getDefiningNode())
   }
 
+  /**
+   * Gets the type handled by this exception handler
+   * `ExceptionType` in `except ExceptionType as ex:`.
+   */
   ControlFlowNode getType() {
     exists(ExceptFlowNode ex |
       ex.getName() = this.getDefiningNode() and
@@ -527,6 +531,28 @@ class ExceptionCapture extends EssaNodeDefinition {
   override string getRepresentation() { result = "except " + this.getSourceVariable().getName() }
 
   override string getAPrimaryQlClass() { result = "ExceptionCapture" }
+}
+
+/** A capture of a raised exception group `except* ExceptionType as ex:` */
+class ExceptionGroupCapture extends EssaNodeDefinition {
+  ExceptionGroupCapture() {
+    SsaSource::exception_group_capture(this.getSourceVariable(), this.getDefiningNode())
+  }
+
+  /**
+   * Gets the type handled by this exception handler
+   * `ExceptionType` in `except* ExceptionType as ex:`.
+   */
+  ControlFlowNode getType() {
+    exists(ExceptGroupFlowNode ex |
+      ex.getName() = this.getDefiningNode() and
+      result = ex.getType()
+    )
+  }
+
+  override string getRepresentation() { result = "except* " + this.getSourceVariable().getName() }
+
+  override string getAPrimaryQlClass() { result = "ExceptionGroupCapture" }
 }
 
 /** An assignment to a variable as part of a multiple assignment `..., v, ... = val` */

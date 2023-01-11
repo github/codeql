@@ -603,7 +603,7 @@ void test22(bool b, const char* source) {
   memcpy(dest, source, n); // GOOD
 }
 
-int main(int argc, char *argv[])
+int tests_main(int argc, char *argv[])
 {
 	long long arr17[19];
 

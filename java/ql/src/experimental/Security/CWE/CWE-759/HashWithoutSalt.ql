@@ -159,7 +159,7 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
       ma.getArgument(0) = node.asExpr()
     ) // System.arraycopy(password.getBytes(), ...)
     or
-    exists(AddExpr e | hasAddExprAncestor(e, node.asExpr())) // password+salt
+    hasAddExprAncestor(_, node.asExpr()) // password+salt
     or
     exists(ConditionalExpr ce | ce.getAChildExpr() = node.asExpr()) // useSalt?password+":"+salt:password
     or
