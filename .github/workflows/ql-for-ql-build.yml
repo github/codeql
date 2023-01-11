@@ -145,7 +145,7 @@ jobs:
           tools: ${{ steps.find-latest-bundle.outputs.url }}
       - name: Move pack cache
         run: |
-          cp -r ${PACK}/.cache ql/ql/src/.cache
+          cp -r ${PACK}/queries ql/ql/src
         env:
           PACK: ${{ runner.temp }}/pack
 
