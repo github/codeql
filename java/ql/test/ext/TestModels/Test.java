@@ -97,6 +97,9 @@ public class Test {
             long l3 = (long)source();
             sink(String.valueOf(l3)); // $hasTaintFlow
 
+            System.setProperty("testKey", (String)source());
+            sink(System.getProperty("testKey")); // $hasValueFlow
+
             // java.math
             long l4 = (long)source();
             sink(BigDecimal.valueOf(l4)); // $hasTaintFlow
