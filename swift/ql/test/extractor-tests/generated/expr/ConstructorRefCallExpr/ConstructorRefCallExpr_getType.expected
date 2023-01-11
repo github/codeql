@@ -1,3 +1,0 @@
-| constructor_ref_calls.swift:7:9:7:9 | call to init() | () -> X |
-| constructor_ref_calls.swift:8:10:8:10 | call to init(_:) | (Int) -> Y |
-| constructor_ref_calls.swift:9:10:9:10 | call to init() | () -> Y |

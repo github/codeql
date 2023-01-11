@@ -25,14 +25,12 @@ except re.error:
 
 re.compile("]]][[[[]") #$ charSet=3:8
 
-
-#ODASA-3985
 #Half Surrogate pairs
 re.compile(u'[\uD800-\uDBFF][\uDC00-\uDFFF]') #$ charSet=0:5 charSet=5:10
 #Outside BMP
 re.compile(u'[\U00010000-\U0010ffff]') #$ charSet=0:5
 
-#Misparsed on LGTM
+#Misparsed
 re.compile(r"\[(?P<txt>[^[]*)\]\((?P<uri>[^)]*)") #$ charSet=10:14 charSet=28:32
 
  # parses wrongly, sees this   \|/ as a char set start

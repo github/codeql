@@ -1,7 +1,7 @@
 /** Provides a module for constructing optional versions of types. */
 
 /** A type with `toString`. */
-signature class TypeWithToString {
+private signature class TypeWithToString {
   string toString();
 }
 

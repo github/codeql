@@ -50,7 +50,7 @@ You start asking some creative questions and making notes of the answers so you 
 
 There is too much information to search through by hand, so you decide to use your newly acquired QL skills to help you with your investigation...
 
-.. include:: ../reusables/setup-to-run-tutorials.rst
+.. include:: ../reusables/codespaces-template-note.rst
 
 QL libraries
 ------------

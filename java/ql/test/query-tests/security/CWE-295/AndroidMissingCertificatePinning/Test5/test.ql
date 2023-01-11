@@ -13,11 +13,7 @@ class Test extends InlineExpectationsTest {
       loc = node.getLocation() and
       el = node.toString() and
       value = "" and
-      (
-        if exists(string x | trustedDomain(x))
-        then tag = "hasUntrustedResult"
-        else tag = "hasNoTrustedResult"
-      )
+      if trustedDomain(_) then tag = "hasUntrustedResult" else tag = "hasNoTrustedResult"
     )
   }
 }

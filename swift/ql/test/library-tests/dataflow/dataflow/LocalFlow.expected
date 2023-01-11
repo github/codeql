@@ -128,7 +128,7 @@
 | test.swift:174:12:174:12 | [post] self | test.swift:173:3:175:3 | self[return] |
 | test.swift:174:12:174:12 | self | test.swift:173:3:175:3 | self[return] |
 | test.swift:179:7:179:7 | SSA def(a) | test.swift:180:3:180:3 | a |
-| test.swift:179:11:179:13 | call to init() | test.swift:179:7:179:7 | SSA def(a) |
+| test.swift:179:11:179:13 | call to A.init() | test.swift:179:7:179:7 | SSA def(a) |
 | test.swift:180:3:180:3 | [post] a | test.swift:181:13:181:13 | a |
 | test.swift:180:3:180:3 | a | test.swift:181:13:181:13 | a |
 | test.swift:184:7:184:7 | SSA def(self) | test.swift:184:7:184:7 | self[return] |
@@ -142,23 +142,23 @@
 | test.swift:188:5:188:5 | [post] self | test.swift:187:3:189:3 | self[return] |
 | test.swift:188:5:188:5 | self | test.swift:187:3:189:3 | self[return] |
 | test.swift:193:7:193:7 | SSA def(b) | test.swift:194:3:194:3 | b |
-| test.swift:193:11:193:13 | call to init() | test.swift:193:7:193:7 | SSA def(b) |
+| test.swift:193:11:193:13 | call to B.init() | test.swift:193:7:193:7 | SSA def(b) |
 | test.swift:194:3:194:3 | [post] b | test.swift:195:13:195:13 | b |
 | test.swift:194:3:194:3 | b | test.swift:195:13:195:13 | b |
 | test.swift:199:7:199:7 | SSA def(a) | test.swift:200:3:200:3 | a |
-| test.swift:199:11:199:13 | call to init() | test.swift:199:7:199:7 | SSA def(a) |
+| test.swift:199:11:199:13 | call to A.init() | test.swift:199:7:199:7 | SSA def(a) |
 | test.swift:200:3:200:3 | [post] a | test.swift:201:13:201:13 | a |
 | test.swift:200:3:200:3 | a | test.swift:201:13:201:13 | a |
 | test.swift:205:7:205:7 | SSA def(a) | test.swift:206:3:206:3 | a |
-| test.swift:205:11:205:13 | call to init() | test.swift:205:7:205:7 | SSA def(a) |
+| test.swift:205:11:205:13 | call to A.init() | test.swift:205:7:205:7 | SSA def(a) |
 | test.swift:206:3:206:3 | [post] a | test.swift:207:13:207:13 | a |
 | test.swift:206:3:206:3 | a | test.swift:207:13:207:13 | a |
 | test.swift:211:7:211:7 | SSA def(a) | test.swift:212:3:212:3 | a |
-| test.swift:211:11:211:13 | call to init() | test.swift:211:7:211:7 | SSA def(a) |
+| test.swift:211:11:211:13 | call to A.init() | test.swift:211:7:211:7 | SSA def(a) |
 | test.swift:212:3:212:3 | [post] a | test.swift:213:13:213:13 | a |
 | test.swift:212:3:212:3 | a | test.swift:213:13:213:13 | a |
 | test.swift:217:7:217:7 | SSA def(b) | test.swift:218:3:218:3 | b |
-| test.swift:217:11:217:13 | call to init() | test.swift:217:7:217:7 | SSA def(b) |
+| test.swift:217:11:217:13 | call to B.init() | test.swift:217:7:217:7 | SSA def(b) |
 | test.swift:218:3:218:3 | [post] b | test.swift:219:13:219:13 | b |
 | test.swift:218:3:218:3 | b | test.swift:219:13:219:13 | b |
 | test.swift:222:7:222:7 | SSA def(self) | test.swift:222:7:222:7 | self[return] |
@@ -171,7 +171,7 @@
 | test.swift:227:5:227:5 | SSA def(self) | test.swift:227:5:229:5 | self[return] |
 | test.swift:227:5:227:5 | self | test.swift:227:5:227:5 | SSA def(self) |
 | test.swift:234:7:234:7 | SSA def(a) | test.swift:235:13:235:13 | a |
-| test.swift:234:11:234:31 | call to init() | test.swift:234:7:234:7 | SSA def(a) |
+| test.swift:234:11:234:31 | call to HasComputedProperty.init() | test.swift:234:7:234:7 | SSA def(a) |
 | test.swift:235:13:235:13 | [post] a | test.swift:237:3:237:3 | a |
 | test.swift:235:13:235:13 | a | test.swift:237:3:237:3 | a |
 | test.swift:237:3:237:3 | [post] a | test.swift:238:13:238:13 | a |

@@ -533,7 +533,7 @@ class Method extends Callable, @method {
   string getKotlinName() {
     ktFunctionOriginalNames(this, result)
     or
-    not exists(string n | ktFunctionOriginalNames(this, n)) and
+    not ktFunctionOriginalNames(this, _) and
     result = this.getName()
   }
 

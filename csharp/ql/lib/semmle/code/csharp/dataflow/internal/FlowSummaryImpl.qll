@@ -580,10 +580,8 @@ module Private {
           head = TWithContentSummaryComponent(cont)
         )
         or
-        exists(ContentSet cont |
-          head = TWithoutContentSummaryComponent(cont) and
-          result = getNodeType(summaryNodeInputState(c, s.tail()))
-        )
+        head = TWithoutContentSummaryComponent(_) and
+        result = getNodeType(summaryNodeInputState(c, s.tail()))
         or
         exists(ReturnKind rk |
           head = TReturnSummaryComponent(rk) and
@@ -658,8 +656,8 @@ module Private {
 
   /** Holds if summary node `ret` is a return node of kind `rk`. */
   predicate summaryReturnNode(Node ret, ReturnKind rk) {
-    exists(SummarizedCallable callable, SummaryComponentStack s |
-      ret = summaryNodeOutputState(callable, s) and
+    exists(SummaryComponentStack s |
+      ret = summaryNodeOutputState(_, s) and
       s = TSingletonSummaryComponentStack(TReturnSummaryComponent(rk))
     )
   }

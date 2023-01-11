@@ -7,3 +7,5 @@
 | tests3.cpp:25:21:25:31 | call to malloc | This allocation does not include space to null-terminate the string. |
 | tests3.cpp:30:21:30:31 | call to malloc | This allocation does not include space to null-terminate the string. |
 | tests3.cpp:53:17:53:44 | new[] | This allocation does not include space to null-terminate the string. |
+| tests3.cpp:81:20:81:28 | call to MyMalloc1 | This allocation does not include space to null-terminate the string. |
+| tests3.cpp:84:20:84:28 | call to MyMalloc2 | This allocation does not include space to null-terminate the string. |
