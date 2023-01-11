@@ -27,7 +27,7 @@ jobs:
         uses: ./.github/actions/find-latest-bundle
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
+        uses: github/codeql-action/init@45955cb1830b640e2c1603ad72ad542a49d47b96
         with:
           languages: javascript # does not matter
           tools: ${{ steps.find-latest-bundle.outputs.url }}
@@ -137,7 +137,7 @@ jobs:
         env:
           CONF: ./ql-for-ql-config.yml
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
+        uses: github/codeql-action/init@45955cb1830b640e2c1603ad72ad542a49d47b96
         with:
           languages: ql
           db-location: ${{ runner.temp }}/db
@@ -150,7 +150,7 @@ jobs:
           PACK: ${{ runner.temp }}/pack
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
+        uses: github/codeql-action/analyze@45955cb1830b640e2c1603ad72ad542a49d47b96
         with:
           category: "ql-for-ql"
       - name: Copy sarif file to CWD
