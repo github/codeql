@@ -143,10 +143,12 @@ class TopJdkApi extends SummarizedCallableBase {
   predicate hasManualMadModel() { this.hasManualSummary() or this.hasManualNeutral() }
   /*
    * Note: the following top-100 APIs are not modeled with MaD:
-   * `java.util.stream.Stream#collect(Collector)`: handled separately on a case-by-case basis as it is too complex for MaD
-   * `java.util.stream.Collectors#joining(CharSequence)`: cannot be modeled completely without a model for `java.util.stream.Stream#collect(Collector)` as well
-   * `java.lang.String#valueOf(Object)`: also a complex case; an alias for `Object.toString`, except the dispatch is hidden
+   * `java.lang.String#valueOf(Object)`: a complex case; an alias for `Object.toString`, except the dispatch is hidden
    * `java.lang.Throwable#printStackTrace()`: should probably not be a general step, but there might be specialised queries that care
+   * `java.util.function.Consumer#accept(Object)`: specialized lambda flow
+   * `java.util.stream.Collectors#joining(CharSequence)`: cannot be modeled completely without a model for `java.util.stream.Stream#collect(Collector)` as well
+   * `java.util.stream.Collectors#toMap(Function,Function)`: specialized collectors flow
+   * `java.util.stream.Stream#collect(Collector)`: handled separately on a case-by-case basis as it is too complex for MaD
    */
 
   }
