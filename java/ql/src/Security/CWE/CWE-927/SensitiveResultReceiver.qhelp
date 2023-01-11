@@ -13,11 +13,11 @@
   </recommendation>
 
   <example>
-    In the following (bad) example, sensitive data is sent to an untrusted <code>ResultReceiver</code>. 
+    <p>In the following (bad) example, sensitive data is sent to an untrusted <code>ResultReceiver</code>. </p>
     <sample src="SensitiveResultReceiver.java" />
   </example>
 
   <references>
-    <li>Oversecured: <a href=https://oversecured.com/vulnerabilities#Android/Passing_data_to_a_ResultReceiver_under_the_attacker%E2%80%99s_control>Passing data to a ResultReceiver under the attacker's control</a></li>
+    <li>Oversecured: <a href="https://oversecured.com/vulnerabilities#Android/Passing_data_to_a_ResultReceiver_under_the_attacker%E2%80%99s_control">Passing data to a ResultReceiver under the attacker's control</a></li>
   </references>
 </qhelp>

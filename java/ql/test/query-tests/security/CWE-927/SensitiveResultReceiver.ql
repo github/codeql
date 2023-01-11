@@ -14,8 +14,8 @@ class ResultReceiverTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "hasSensitiveResultReceiver" }
 
   override predicate hasActualResult(Location loc, string element, string tag, string value) {
-    exists(DataFlow::PathNode src, DataFlow::PathNode sink, DataFlow::Node recSrc |
-      sensitiveResultReceiver(src, sink, recSrc) and
+    exists(DataFlow::PathNode sink |
+      sensitiveResultReceiver(_, sink, _) and
       element = sink.toString() and
       loc = sink.getNode().getLocation() and
       tag = "hasSensitiveResultReceiver" and
