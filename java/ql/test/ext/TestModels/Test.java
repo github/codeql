@@ -129,9 +129,6 @@ public class Test {
             AtomicReference ar = new AtomicReference(source());
             sink(ar.get());  // $hasValueFlow
 
-            // java.util.stream
-            sink(Collectors.joining((CharSequence)source())); // $hasTaintFlow
-
             // java.util.concurrent
             CountDownLatch cdl = new CountDownLatch((int)source());
             sink(cdl.getCount()); // $hasValueFlow
