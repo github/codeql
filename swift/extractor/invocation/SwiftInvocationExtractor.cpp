@@ -161,7 +161,6 @@ void extractSwiftInvocation(SwiftExtractorState& state,
     auto path = resolvePath(input);
     auto target = getSourceTarget(path);
     auto inputId = getSourceId(path);
-    emitLinkFile(state, target, inputId);
     emitSourceObjectDependencies(state, target, inputId);
   }
 
