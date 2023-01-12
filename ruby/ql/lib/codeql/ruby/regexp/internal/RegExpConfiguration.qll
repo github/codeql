@@ -6,6 +6,7 @@ private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.internal.DataFlowImplForRegExp
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.TaintTracking
 private import codeql.ruby.frameworks.core.String
@@ -13,18 +14,30 @@ private import codeql.ruby.frameworks.core.String
 class RegExpConfiguration extends Configuration {
   RegExpConfiguration() { this = "RegExpConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
+  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+    // track both string literals and regexp literals - the latter for finding executions of regular expressions that are used elsewhere.
+    state = "string" and
     source.asExpr() =
       any(ExprCfgNode e |
         e.getConstantValue().isString(_) and
         not e instanceof ExprNodes::VariableReadAccessCfgNode and
         not e instanceof ExprNodes::ConstantReadAccessCfgNode
       )
+    or
+    state = "reg" and
+    source.asExpr().getExpr() instanceof Ast::RegExpLiteral
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof RegExpInterpretation::Range }
+  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+    state = "string" and
+    sink instanceof RegExpInterpretation::Range
+    or
+    state = "reg" and
+    sink = any(RegexExecution exec).getRegex()
+  }
 
-  override predicate isBarrier(DataFlow::Node node) {
+  override predicate isBarrier(DataFlow::Node node, DataFlow::FlowState state) {
+    state = "string" and
     exists(DataFlow::CallNode mce | mce.getMethodName() = ["match", "match?"] |
       // receiver of https://ruby-doc.org/core-2.4.0/String.html#method-i-match
       node = mce.getReceiver() and
@@ -36,22 +49,29 @@ class RegExpConfiguration extends Configuration {
     )
   }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // include taint flow through `String` summaries
-    TaintTracking::localTaintStep(nodeFrom, nodeTo) and
-    nodeFrom.(DataFlowPrivate::SummaryNode).getSummarizedCallable() instanceof
-      String::SummarizedCallable
-    or
-    // string concatenations, and
-    exists(CfgNodes::ExprNodes::OperationCfgNode op |
-      op = nodeTo.asExpr() and
-      op.getAnOperand() = nodeFrom.asExpr() and
-      op.getExpr().(Ast::BinaryOperation).getOperator() = "+"
+  override predicate isAdditionalFlowStep(
+    DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
+    DataFlow::FlowState stateTo
+  ) {
+    stateFrom = stateTo and
+    stateFrom = "string" and
+    (
+      // include taint flow through `String` summaries
+      TaintTracking::localTaintStep(nodeFrom, nodeTo) and
+      nodeFrom.(DataFlowPrivate::SummaryNode).getSummarizedCallable() instanceof
+        String::SummarizedCallable
+      or
+      // string concatenations, and
+      exists(CfgNodes::ExprNodes::OperationCfgNode op |
+        op = nodeTo.asExpr() and
+        op.getAnOperand() = nodeFrom.asExpr() and
+        op.getExpr().(Ast::BinaryOperation).getOperator() = "+"
+      )
+      or
+      // string interpolations
+      nodeFrom.asExpr() =
+        nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
     )
-    or
-    // string interpolations
-    nodeFrom.asExpr() =
-      nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
   }
 }
 

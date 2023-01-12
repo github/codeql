@@ -10,6 +10,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.Frameworks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.Regexp as RE
 
 /**
  * A data-flow node that constructs a SQL statement.
@@ -74,6 +75,55 @@ module SqlExecution {
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the SQL statements to be executed. */
     abstract DataFlow::Node getSql();
+  }
+}
+
+/**
+ * A data-flow node that executes a regular expression.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `RegexExecution::Range` instead.
+ */
+class RegexExecution extends DataFlow::Node instanceof RegexExecution::Range {
+  /** Gets the data flow node for the regex being executed by this node. */
+  DataFlow::Node getRegex() { result = super.getRegex() }
+
+  /** Gets a dataflow node for the string to be searched or matched against. */
+  DataFlow::Node getString() { result = super.getString() }
+
+  /** Gets a parsed regular expression term that is executed at this node. */
+  RE::RegExpTerm getTerm() { result = super.getTerm() }
+
+  /**
+   * Gets the name of this regex execution, typically the name of an executing method.
+   * This is used for nice alert messages and should include the module if possible.
+   */
+  string getName() { result = super.getName() }
+}
+
+/** Provides classes for modeling new regular-expression execution APIs. */
+module RegexExecution {
+  /**
+   * A data-flow node that executes a regular expression.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `RegexExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the data flow node for the regex being executed by this node. */
+    abstract DataFlow::Node getRegex();
+
+    /** Gets a dataflow node for the string to be searched or matched against. */
+    abstract DataFlow::Node getString();
+
+    /** Gets the parsed regular expression term that is executed by this node. */
+    abstract RE::RegExpTerm getTerm();
+
+    /**
+     * Gets the name of this regex execution, typically the name of an executing method.
+     * This is used for nice alert messages and should include the module if possible.
+     */
+    abstract string getName();
   }
 }
 
