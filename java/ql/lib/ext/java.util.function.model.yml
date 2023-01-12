@@ -9,5 +9,4 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.util.function", "Function", True, "apply", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.util.function", "Supplier", False, "get", "()", "", "Argument[-1]", "ReturnValue", "value", "manual"]

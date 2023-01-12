@@ -78,12 +78,6 @@ public class Test {
             sink(ar.get());  // $hasValueFlow
 
             // java.util.function
-            Function<Object, Object> func = a -> a + "";
-            sink(func.apply(source()));  // $hasTaintFlow
-
-            Function<Integer, Double> half = a -> a / 2.0;
-            sink(half.apply((Integer)source())); // $hasTaintFlow
-
             Supplier<Double> sup = (Supplier)source();
             sink(sup.get()); // $hasValueFlow
 
