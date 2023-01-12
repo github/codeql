@@ -8,6 +8,7 @@
  * @precision high
  * @id cs/web/cookie-secure-not-set
  * @tags security
+ *       experimental
  *       external/cwe/cwe-319
  *       external/cwe/cwe-614
  */

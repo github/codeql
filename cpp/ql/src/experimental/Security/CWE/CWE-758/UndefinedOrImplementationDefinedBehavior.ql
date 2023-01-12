@@ -8,6 +8,7 @@
  * @problem.severity warning
  * @precision medium
  * @tags security
+ *       experimental
  *       external/cwe/cwe-758
  */
 

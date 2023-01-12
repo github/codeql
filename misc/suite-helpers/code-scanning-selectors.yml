@@ -30,4 +30,4 @@
       - /Diagnostics/Internal/.*/
 - exclude:
     tags contain:
-      - model-generator
+      - modelgenerator

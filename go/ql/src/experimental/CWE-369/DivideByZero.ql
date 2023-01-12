@@ -5,6 +5,7 @@
  * @problem.severity error
  * @id go/divide-by-zero
  * @tags security
+ *       experimental
  *       external/cwe/cwe-369
  */
 

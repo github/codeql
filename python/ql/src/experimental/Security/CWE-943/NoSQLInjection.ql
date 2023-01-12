@@ -6,6 +6,7 @@
  * @problem.severity error
  * @id py/nosql-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-943
  */
 
