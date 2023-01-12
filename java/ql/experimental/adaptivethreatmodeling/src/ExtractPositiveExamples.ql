@@ -21,5 +21,8 @@ from
 where
   characteristic.appliesToEndpoint(sink) and
   confidence >= characteristic.maximalConfidence() and
-  characteristic.hasImplications(config.getASinkEndpointType(), true, confidence)
+  characteristic.hasImplications(config.getASinkEndpointType(), true, confidence) and
+  // Exclude sinks that have contradictory endpoint characteristics, because we only want examples we're highly certain
+  // about in the prompt.
+  not EndpointCharacteristics::erroneousEndpoints(sink, _, _, _, _)
 select sink, characteristic.toString()

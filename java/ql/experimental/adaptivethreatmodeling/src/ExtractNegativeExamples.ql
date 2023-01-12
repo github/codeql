@@ -26,11 +26,14 @@ DataFlow::Node getSampleFromSampleRate(float rate) {
 }
 
 from
-  DataFlow::Node sink, EndpointCharacteristics::EndpointCharacteristic characteristic,
+  DataFlow::Node endpoint, EndpointCharacteristics::EndpointCharacteristic characteristic,
   float confidence
 where
-  characteristic.appliesToEndpoint(sink) and
+  characteristic.appliesToEndpoint(endpoint) and
   confidence >= characteristic.highConfidence() and
   characteristic.hasImplications(any(NegativeType negative), true, confidence) and
-  sink = getSampleFromSampleRate(0.01)
-select sink, "Non-sink of type " + characteristic + " with confidence " + confidence.toString()
+  // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
+  // certain about in the prompt.
+  not EndpointCharacteristics::erroneousEndpoints(endpoint, _, _, _, _) and
+  endpoint = getSampleFromSampleRate(0.01)
+select endpoint, "Non-sink of type " + characteristic + " with confidence " + confidence.toString()
