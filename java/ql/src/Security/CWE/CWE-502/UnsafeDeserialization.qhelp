@@ -70,7 +70,7 @@ Recommendations specific to particular frameworks supported by this query:
 <p></p>
 <p><b>XML Decoder</b> - <code>Standard Java Library</code></p>
     <ul>
-        <li><b>Secure by Defauly</b>: No</li>
+        <li><b>Secure by Default</b>: No</li>
         <li><b>Recommendation</b>: Do not use with untrusted user input.</li>
     </ul>
 <p></p>
