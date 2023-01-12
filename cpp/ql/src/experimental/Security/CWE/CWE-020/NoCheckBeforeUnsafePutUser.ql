@@ -11,6 +11,7 @@
  * @problem.severity warning
  * @security-severity 7.5
  * @tags security
+ *       experimental
  *       external/cwe/cwe-020
  */
 

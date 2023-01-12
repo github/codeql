@@ -78,11 +78,11 @@ class TopJdkApi extends SummarizedCallableBase {
   }
 
   /** Holds if this API has a manual summary model. */
-  private predicate hasManualSummary() { this.(SummarizedCallable).hasProvenance(false) }
+  private predicate hasManualSummary() { this.(SummarizedCallable).isManual() }
 
   /** Holds if this API has a manual neutral model. */
   private predicate hasManualNeutral() {
-    this.(FlowSummaryImpl::Public::NeutralCallable).hasProvenance(false)
+    this.(FlowSummaryImpl::Public::NeutralCallable).isManual()
   }
 
   /** Holds if this API has a manual MaD model. */

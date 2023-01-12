@@ -5,6 +5,7 @@
  * @problem.severity error
  * @id java/hardcoded-jwt-key
  * @tags security
+ *       experimental
  *       external/cwe/cwe-321
  */
 

@@ -53,6 +53,9 @@ To run a pack that someone else has created, you must first download it by runni
 
 This command accepts arguments for multiple packs.
 
+If you write scripts that specify a particular version number of a query pack to download, keep in mind that when you update your version of CodeQL to a newer one, you may also need to switch to a newer version of the query pack.  Newer versions of CodeQL *may* provide
+degraded performance when used with query packs that have been pinned to a very old version. For more information, see ":ref:`About CodeQL pack compatibility <about-codeql-pack-compatibility>`."
+
 Using a CodeQL pack to analyze a CodeQL database
 ------------------------------------------------
 
@@ -73,6 +76,45 @@ The ``analyze`` command will run the default suite of any specified CodeQL packs
 ::
 
    codeql <database> analyze <scope>/<pack> <scope>/<other-pack>
+
+.. pull-quote::
+
+   Note
+
+   The ``codeql pack download`` command stores the pack it downloads in an internal location that is not intended for local modification.  Unexpected (and hard to troubleshoot) behavior may result if the pack is modified after downloading. For more information about customizing packs, see ":ref:`Creating and working with CodeQL packs <creating-and-working-with-codeql-packs>`."
+
+.. _about-codeql-pack-compatibility: 
+
+About CodeQL pack compatibility
+-------------------------------
+
+When a query pack is published, it includes pre-compiled representations of all the queries in it. These pre-compiled queries are generally much faster to execute than it is to compile the QL source from scratch during the analysis. However, the pre-compiled queries also depend on certain internals of the QL evaluator, so if the version of CodeQL that performs the analysis is too different from the version that ran ``codeql pack publish``, it may be necessary to compile the queries from source instead during analysis. The recompilation happens automatically and will not affect the *results* of the analysis, but it can make the
+analysis significantly slower.
+
+It can generally be assumed that if a pack is published with one release of CodeQL, the precompiled queries in it can be used directly by *later* releases of CodeQL, as long as there is no more than 6 months between the release dates. We will make reasonable efforts to keep new releases compatible for longer than that, but make no promises.
+
+It can also be assumed that a pack published by the *latest* public release of CodeQL will be useable by the version of CodeQL that is used by code scanning and GitHub Actions, even though that is often a slightly older release.
+
+As an exception to the above, packs published with versions of CodeQL *earlier than 2.12.0* are not compatible with any earlier or later versions. These old versions did not write pre-compiled queries in a format that supported compatibility between releases. Packs published by these versions can still be *used* by newer versions, but the analysis will be slower because the queries have to be recompiled first.
+
+As a user of a published query pack, you can check that the CodeQL makes use of the precompiled queries in it by inspecting the terminal output from an analysis runs that uses the query pack. If it contains lines looking like the following, then the precompiled queries were used successfully:
+
+::
+
+   [42/108] Loaded /long/path/to/query/Filename.qlx.
+
+However, if they instead look like the following, then usage of the precompiled queries failed:
+
+::
+   
+   Compiling query plan for /long/path/to/query/Filename.ql.
+   [42/108 comp 25s] Compiled /long/path/to/query/Filename.ql.
+
+The results of the analysis will still be good in this case, but to get optimal performance you may need to upgrade to a newer version of the CodeQL CLI and/or of the query pack.
+
+If you publish query packs on the Container registry on GitHub.com for others to use, we recommend that you use a recent release of CodeQL to run ``codeql pack publish``, and that you publish a fresh version of your pack with an updated CodeQL version before the version you used turns 6 months old. That way you can ensure that users of your pack who keep *their* CodeQL up to date will benefit from the pre-compiled queries in your pack.
+
+If you publish query packs with the intention of using them on a GitHub Enterprise Server installation that uses its bundled CodeQL binaries, use the same CodeQL version to run ``codeql pack publish``. Newer versions might produce pre-compiled queries that the one in GitHub Enterprise Server may not recognize. Your GitHub Enterprise Server administrator may choose to upgrade to a newer version of CodeQL periodically. If so, follow their lead.
 
 .. _working-with-codeql-packs-on-ghes:
 

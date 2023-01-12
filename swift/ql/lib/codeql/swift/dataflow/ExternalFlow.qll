@@ -135,7 +135,7 @@ predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, boolean generated
+  string output, string kind, string provenance
 ) {
   exists(string row |
     sourceModel(row) and
@@ -149,13 +149,13 @@ predicate sourceModel(
     row.splitAt(";", 6) = output and
     row.splitAt(";", 7) = kind
   ) and
-  generated = false
+  provenance = "manual"
 }
 
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, boolean generated
+  string input, string kind, string provenance
 ) {
   exists(string row |
     sinkModel(row) and
@@ -169,13 +169,13 @@ predicate sinkModel(
     row.splitAt(";", 6) = input and
     row.splitAt(";", 7) = kind
   ) and
-  generated = false
+  provenance = "manual"
 }
 
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, boolean generated
+  string input, string output, string kind, string provenance
 ) {
   exists(string row |
     summaryModel(row) and
@@ -190,7 +190,7 @@ predicate summaryModel(
     row.splitAt(";", 7) = output and
     row.splitAt(";", 8) = kind
   ) and
-  generated = false
+  provenance = "manual"
 }
 
 private predicate relevantNamespace(string namespace) {
@@ -224,25 +224,25 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
     part = "source" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string output, boolean generated |
+        string ext, string output, string provenance |
         canonicalNamespaceLink(namespace, subns) and
-        sourceModel(subns, type, subtypes, name, signature, ext, output, kind, generated)
+        sourceModel(subns, type, subtypes, name, signature, ext, output, kind, provenance)
       )
     or
     part = "sink" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input, boolean generated |
+        string ext, string input, string provenance |
         canonicalNamespaceLink(namespace, subns) and
-        sinkModel(subns, type, subtypes, name, signature, ext, input, kind, generated)
+        sinkModel(subns, type, subtypes, name, signature, ext, input, kind, provenance)
       )
     or
     part = "summary" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, boolean generated |
+        string ext, string input, string output, string provenance |
         canonicalNamespaceLink(namespace, subns) and
-        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, generated)
+        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, provenance)
       )
   )
 }
