@@ -526,17 +526,20 @@ case.rb:
 #-----|  -> exit if_in_case (normal)
 
 #    2| call to x1
-#-----|  -> when ...
+#-----|  -> 1
 
 #    2| self
 #-----|  -> call to x1
 
-#    3| when ...
-#-----|  -> 1
+#    3| [match] when ...
+#-----| match -> self
+
+#    3| [no-match] when ...
+#-----| no-match -> 2
 
 #    3| 1
-#-----| match -> self
-#-----| no-match -> when ...
+#-----| match -> [match] when ...
+#-----| no-match -> [no-match] when ...
 
 #    3| then ...
 #-----|  -> case ...
@@ -569,12 +572,15 @@ case.rb:
 #    3| x2
 #-----|  -> "x2"
 
-#    4| when ...
-#-----|  -> 2
+#    4| [match] when ...
+#-----| match -> self
+
+#    4| [no-match] when ...
+#-----| no-match -> case ...
 
 #    4| 2
-#-----| no-match -> case ...
-#-----| match -> self
+#-----| match -> [match] when ...
+#-----| no-match -> [no-match] when ...
 
 #    4| then ...
 #-----|  -> case ...
@@ -811,7 +817,7 @@ case.rb:
 #-----|  -> [ ..., * ]
 
 #   35| [ ..., * ]
-#-----| match -> x
+#-----| false, match, true -> x
 #-----| no-match -> in ... then ...
 
 #   35| x
@@ -821,7 +827,7 @@ case.rb:
 #-----|  -> [ ..., * ]
 
 #   36| [ ..., * ]
-#-----| match -> x
+#-----| false, match, true -> x
 #-----| no-match -> in ... then ...
 
 #   36| x
@@ -836,7 +842,7 @@ case.rb:
 
 #   37| [ ..., * ]
 #-----| raise -> exit case_match_array (abnormal)
-#-----| match -> a
+#-----| false, match, true -> a
 
 #   37| a
 #-----| match -> b
@@ -881,7 +887,7 @@ case.rb:
 
 #   43| [ *,...,* ]
 #-----| raise -> exit case_match_find (abnormal)
-#-----| match -> x
+#-----| false, match, true -> x
 
 #   43| x
 #-----|  -> 1
@@ -931,7 +937,7 @@ case.rb:
 #-----| no-match -> in ... then ...
 
 #   49| { ..., ** }
-#-----| match -> 1
+#-----| false, match, true -> 1
 #-----| no-match -> in ... then ...
 
 #   49| 1
@@ -952,7 +958,7 @@ case.rb:
 #-----| no-match -> in ... then ...
 
 #   50| { ..., ** }
-#-----| match -> 1
+#-----| false, match, true -> 1
 #-----| no-match -> in ... then ...
 
 #   50| 1
@@ -968,7 +974,7 @@ case.rb:
 
 #   51| { ..., ** }
 #-----| raise -> exit case_match_hash (abnormal)
-#-----| match -> case ...
+#-----| false, match, true -> case ...
 
 #   55| case_match_variable
 #-----|  -> case_match_underscore
@@ -1372,7 +1378,7 @@ case.rb:
 
 #   91| { ..., ** }
 #-----| raise -> exit case_match_various (abnormal)
-#-----| match -> case ...
+#-----| false, match, true -> case ...
 
 #   95| case_match_guard_no_else
 #-----|  -> exit case.rb (normal)
@@ -1826,17 +1832,20 @@ cfg.rb:
 #-----|  -> call to puts
 
 #   41| case ...
-#-----|  -> when ...
+#-----|  -> b
 
 #   41| 10
-#-----|  -> when ...
-
-#   42| when ...
 #-----|  -> 1
 
-#   42| 1
+#   42| [match] when ...
 #-----| match -> self
-#-----| no-match -> when ...
+
+#   42| [no-match] when ...
+#-----| no-match -> 2
+
+#   42| 1
+#-----| match -> [match] when ...
+#-----| no-match -> [no-match] when ...
 
 #   42| then ...
 #-----|  -> case ...
@@ -1853,20 +1862,23 @@ cfg.rb:
 #   42| one
 #-----|  -> "one"
 
-#   43| when ...
-#-----|  -> 2
+#   43| [match] when ...
+#-----| match -> self
+
+#   43| [no-match] when ...
+#-----| no-match -> self
 
 #   43| 2
+#-----| match -> [match] when ...
 #-----| no-match -> 3
-#-----| match -> self
 
 #   43| 3
+#-----| match -> [match] when ...
 #-----| no-match -> 4
-#-----| match -> self
 
 #   43| 4
-#-----| match -> self
-#-----| no-match -> self
+#-----| match -> [match] when ...
+#-----| no-match -> [no-match] when ...
 
 #   43| then ...
 #-----|  -> case ...
@@ -1901,15 +1913,18 @@ cfg.rb:
 #   47| case ...
 #-----|  -> chained
 
-#   48| when ...
-#-----|  -> b
+#   48| [false] when ...
+#-----| false -> b
+
+#   48| [true] when ...
+#-----| true -> self
 
 #   48| b
 #-----|  -> 1
 
 #   48| ... == ...
-#-----| true -> self
-#-----| false -> when ...
+#-----| false -> [false] when ...
+#-----| true -> [true] when ...
 
 #   48| 1
 #-----|  -> ... == ...
@@ -1929,15 +1944,18 @@ cfg.rb:
 #   48| one
 #-----|  -> "one"
 
-#   49| when ...
-#-----|  -> b
+#   49| [false] when ...
+#-----| false -> case ...
+
+#   49| [true] when ...
+#-----| true -> self
 
 #   49| b
 #-----|  -> 0
 
 #   49| ... == ...
+#-----| true -> [true] when ...
 #-----| false -> b
-#-----| true -> self
 
 #   49| 0
 #-----|  -> ... == ...
@@ -1946,8 +1964,8 @@ cfg.rb:
 #-----|  -> 1
 
 #   49| ... > ...
-#-----| false -> case ...
-#-----| true -> self
+#-----| false -> [false] when ...
+#-----| true -> [true] when ...
 
 #   49| 1
 #-----|  -> ... > ...
@@ -2559,7 +2577,7 @@ cfg.rb:
 #-----|  -> type
 
 #  101| value
-#-----| no-match -> 42
+#-----| false, no-match, true -> 42
 #-----| match -> key
 
 #  101| 42
@@ -3031,9 +3049,9 @@ cfg.rb:
 #-----|  -> exit print (normal)
 
 #  147| self
-#-----|  -> call to super
+#-----|  -> super call to print
 
-#  147| call to super
+#  147| super call to print
 #-----|  -> call to print
 
 #  147| call to print
@@ -6535,7 +6553,7 @@ raise.rb:
 #-----|  -> m11
 
 #  121| p
-#-----| no-match -> self
+#-----| false, no-match, true -> self
 #-----| match -> self
 
 #  121| call to raise

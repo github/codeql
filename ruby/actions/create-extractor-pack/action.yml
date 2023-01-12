@@ -3,7 +3,15 @@ description: Builds the Ruby CodeQL pack
 runs:
   using: composite
   steps:
-    - uses: actions/cache@v3
+    - name: Cache entire extractor
+      id: cache-extractor
+      uses: actions/cache@v3
+      with:
+        path: ruby/extractor-pack
+        key: ${{ runner.os }}-extractor-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}-${{ hashFiles('ruby/**/*.rs') }}-${{ hashFiles('ruby/codeql-extractor.yml', 'ruby/downgrades', 'ruby/tools', 'ruby/ql/lib/ruby.dbscheme', 'ruby/ql/lib/ruby.dbscheme.stats') }}
+    - name: Cache cargo
+      uses: actions/cache@v3
+      if: steps.cache-extractor.outputs.cache-hit != 'true'
       with:
         path: |
           ~/.cargo/registry
@@ -11,6 +19,7 @@ runs:
           ruby/target
         key: ${{ runner.os }}-ruby-qltest-cargo-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}
     - name: Build Extractor
+      if: steps.cache-extractor.outputs.cache-hit != 'true'
       shell: bash
       run: scripts/create-extractor-pack.sh
       working-directory: ruby

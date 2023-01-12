@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- BAD: This password field uses the `text` input type, which allows the input to be saved to the keyboard cache. -->
+    <EditText
+        android:id="@+id/password_bad"
+        android:inputType="text"/> 
+
+    <!-- GOOD: This password field uses the `textPassword` input type, which ensures that the input is not saved to the keyboard cache. -->
+    <EditText
+        android:id="@+id/password_good"
+        android:inputType="textPassword"/>  
+</LinearLayout>

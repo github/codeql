@@ -675,6 +675,7 @@ newtype TTranslatedElement =
   } or
   // A statement
   TTranslatedStmt(Stmt stmt) { translateStmt(stmt) } or
+  TTranslatedMicrosoftTryExceptHandler(MicrosoftTryExceptStmt stmt) or
   // A function
   TTranslatedFunction(Function func) { translateFunction(func) } or
   // A constructor init list

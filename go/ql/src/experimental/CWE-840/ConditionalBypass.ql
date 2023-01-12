@@ -6,6 +6,8 @@
  * @kind problem
  * @problem.severity warning
  * @tags external/cwe/cwe-840
+ *       security
+ *       experimental
  */
 
 import go

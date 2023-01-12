@@ -3,19 +3,17 @@
  * @description A list of 3rd party APIs used in the codebase. Excludes APIs exposed by test libraries.
  * @kind metric
  * @tags summary telemetry
- * @id csharp/telemetry/unsupported-external-api
+ * @id cs/telemetry/unsupported-external-api
  */
 
 private import csharp
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-private import semmle.code.csharp.dataflow.internal.NegativeSummary
 private import ExternalApi
 
 private predicate relevant(ExternalApi api) {
-  not api.isUninteresting() and
   not api.isSupported() and
-  not api instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable
+  not api instanceof FlowSummaryImpl::Public::NeutralCallable
 }
 
 from string info, int usages

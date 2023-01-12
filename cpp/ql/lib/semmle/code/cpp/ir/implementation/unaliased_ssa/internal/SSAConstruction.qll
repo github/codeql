@@ -329,12 +329,12 @@ private module Cached {
   cached
   Instruction getChiInstructionTotalOperand(ChiInstruction chiInstr) {
     exists(
-      Alias::VirtualVariable vvar, OldInstruction oldInstr, Alias::MemoryLocation defLocation,
-      OldBlock defBlock, int defRank, int defOffset, OldBlock useBlock, int useRank
+      Alias::VirtualVariable vvar, OldInstruction oldInstr, OldBlock defBlock, int defRank,
+      int defOffset, OldBlock useBlock, int useRank
     |
       chiInstr = getChi(oldInstr) and
       vvar = Alias::getResultMemoryLocation(oldInstr).getVirtualVariable() and
-      hasDefinitionAtRank(vvar, defLocation, defBlock, defRank, defOffset) and
+      hasDefinitionAtRank(vvar, _, defBlock, defRank, defOffset) and
       hasUseAtRank(vvar, useBlock, useRank, oldInstr) and
       definitionReachesUse(vvar, defBlock, defRank, useBlock, useRank) and
       result = getDefinitionOrChiInstruction(defBlock, defOffset, vvar, _)

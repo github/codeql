@@ -97,10 +97,13 @@ class NamedElement extends Element, @dotnet_named_element {
   }
 
   /**
+   * DEPRECATED: Use `hasQualifiedName/2` instead.
    * Holds if this element has qualified name `qualifiedName`, for example
    * `System.Console.WriteLine`.
    */
-  final predicate hasQualifiedName(string qualifiedName) { qualifiedName = this.getQualifiedName() }
+  deprecated final predicate hasQualifiedName(string qualifiedName) {
+    qualifiedName = this.getQualifiedName()
+  }
 
   /** Holds if this element has the qualified name `qualifier`.`name`. */
   cached

@@ -8,6 +8,7 @@
  * @precision medium
  * @id java/insecure-ldaps-endpoint
  * @tags security
+ *       experimental
  *       external/cwe/cwe-297
  */
 

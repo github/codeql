@@ -6,6 +6,7 @@
  * @problem.severity error
  * @id go/wrong-usage-of-unsafe
  * @tags security
+ *       experimental
  *       external/cwe/cwe-119
  *       external/cwe/cwe-126
  */
@@ -41,16 +42,18 @@ class ConversionToUnsafePointer extends DataFlow::TypeCastNode {
 class UnsafeTypeCastingConf extends TaintTracking::Configuration {
   UnsafeTypeCastingConf() { this = "UnsafeTypeCastingConf" }
 
-  predicate isSource(DataFlow::Node source, ConversionToUnsafePointer conv) { source = conv }
+  predicate conversionIsSource(DataFlow::Node source, ConversionToUnsafePointer conv) {
+    source = conv
+  }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::TypeCastNode ca) {
+  predicate typeCastNodeIsSink(DataFlow::Node sink, DataFlow::TypeCastNode ca) {
     ca.getOperand().getType() instanceof UnsafePointerType and
     sink = ca
   }
 
-  override predicate isSource(DataFlow::Node source) { isSource(source, _) }
+  override predicate isSource(DataFlow::Node source) { conversionIsSource(source, _) }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { typeCastNodeIsSink(sink, _) }
 }
 
 /*
@@ -66,8 +69,8 @@ predicate castShortArrayToLongerArray(
     ArrayType arrTo, ArrayType arrFrom, int arrFromSize
   |
     cfg.hasFlowPath(source, sink) and
-    cfg.isSource(source.getNode(), castLittle) and
-    cfg.isSink(sink.getNode(), castBig) and
+    cfg.conversionIsSource(source.getNode(), castLittle) and
+    cfg.typeCastNodeIsSink(sink.getNode(), castBig) and
     arrTo = getFinalType(castBig.getResultType()) and
     (
       // Array (whole) to array:
@@ -111,8 +114,8 @@ predicate castTypeToArray(DataFlow::PathNode source, DataFlow::PathNode sink, st
     ArrayType arrTo, Type typeFrom
   |
     cfg.hasFlowPath(source, sink) and
-    cfg.isSource(source.getNode(), castLittle) and
-    cfg.isSink(sink.getNode(), castBig) and
+    cfg.conversionIsSource(source.getNode(), castLittle) and
+    cfg.typeCastNodeIsSink(sink.getNode(), castBig) and
     arrTo = getFinalType(castBig.getResultType()) and
     not typeFrom.getUnderlyingType() instanceof ArrayType and
     not typeFrom instanceof PointerType and
@@ -141,8 +144,8 @@ predicate castDifferentBitSizeNumbers(
     NumericType numTo, NumericType numFrom
   |
     cfg.hasFlowPath(source, sink) and
-    cfg.isSource(source.getNode(), castLittle) and
-    cfg.isSink(sink.getNode(), castBig) and
+    cfg.conversionIsSource(source.getNode(), castLittle) and
+    cfg.typeCastNodeIsSink(sink.getNode(), castBig) and
     numTo = getFinalType(castBig.getResultType()) and
     numFrom = getFinalType(castLittle.getOperand().getType()) and
     // TODO: also consider cast from uint to int?

@@ -12,7 +12,7 @@ import SecondOrderCommandInjectionCustomizations::SecondOrderCommandInjection
 private import semmle.javascript.security.TaintedObject
 
 /**
- * A taint-tracking configuration for reasoning about command-injection vulnerabilities.
+ * A taint-tracking configuration for reasoning about second order command-injection vulnerabilities.
  */
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "SecondOrderCommandInjection" }

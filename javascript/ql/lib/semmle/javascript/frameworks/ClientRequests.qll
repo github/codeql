@@ -762,14 +762,12 @@ module ClientRequest {
   /**
    * A shell execution of `curl` that downloads some file.
    */
-  class CurlDownload extends ClientRequest::Range {
-    SystemCommandExecution cmd;
-
+  class CurlDownload extends ClientRequest::Range instanceof SystemCommandExecution {
     CurlDownload() {
-      this = cmd and
       (
-        cmd.getACommandArgument().getStringValue() = "curl" or
-        cmd.getACommandArgument()
+        super.getACommandArgument().getStringValue() = "curl" or
+        super
+            .getACommandArgument()
             .(StringOps::ConcatenationRoot)
             .getConstantStringParts()
             .matches("curl %")
@@ -777,8 +775,8 @@ module ClientRequest {
     }
 
     override DataFlow::Node getUrl() {
-      result = cmd.getArgumentList().getALocalSource().getAPropertyWrite().getRhs() or
-      result = cmd.getACommandArgument().(StringOps::ConcatenationRoot).getALeaf()
+      result = super.getArgumentList().getALocalSource().getAPropertyWrite().getRhs() or
+      result = super.getACommandArgument().(StringOps::ConcatenationRoot).getALeaf()
     }
 
     override DataFlow::Node getHost() { none() }

@@ -8,15 +8,21 @@
  * @precision high
  * @id java/file-path-injection
  * @tags security
+ *       experimental
  *       external/cwe-073
  */
 
 import java
+import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.PathCreation
 import JFinalController
 import semmle.code.java.security.PathSanitizer
 import DataFlow::PathGraph
+
+private class ActivateModels extends ActiveExperimentalModels {
+  ActivateModels() { this = "file-path-injection" }
+}
 
 /** A complementary sanitizer that protects against path traversal using path normalization. */
 class PathNormalizeSanitizer extends MethodAccess {

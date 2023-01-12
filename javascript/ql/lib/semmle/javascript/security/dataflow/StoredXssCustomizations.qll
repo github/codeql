@@ -27,13 +27,10 @@ module StoredXss {
   }
 
   /** A file name, considered as a flow source for stored XSS. */
-  class FileNameSourceAsSource extends Source {
-    FileNameSourceAsSource() { this instanceof FileNameSource }
-  }
+  class FileNameSourceAsSource extends Source instanceof FileNameSource { }
 
   /** An instance of user-controlled torrent information, considered as a flow source for stored XSS. */
-  class UserControlledTorrentInfoAsSource extends Source {
-    UserControlledTorrentInfoAsSource() { this instanceof ParseTorrent::UserControlledTorrentInfo }
+  class UserControlledTorrentInfoAsSource extends Source instanceof ParseTorrent::UserControlledTorrentInfo {
   }
 
   /**

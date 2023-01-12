@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.ComponentModel.Design", "DesignerCollection", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Collections.IEnumerator.Current]", "value", "manual"]
+      - ["System.ComponentModel.Design", "DesignerOptionService+DesignerOptionCollection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.ComponentModel.Design", "DesignerOptionService+DesignerOptionCollection", False, "get_Item", "(System.String)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.ComponentModel.Design", "DesignerVerbCollection", False, "Add", "(System.ComponentModel.Design.DesignerVerb)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.ComponentModel.Design", "DesignerVerbCollection", False, "AddRange", "(System.ComponentModel.Design.DesignerVerbCollection)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["System.ComponentModel.Design", "DesignerVerbCollection", False, "AddRange", "(System.ComponentModel.Design.DesignerVerb[])", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["System.ComponentModel.Design", "DesignerVerbCollection", False, "CopyTo", "(System.ComponentModel.Design.DesignerVerb[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
+      - ["System.ComponentModel.Design", "DesignerVerbCollection", False, "Insert", "(System.Int32,System.ComponentModel.Design.DesignerVerb)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+      - ["System.ComponentModel.Design", "DesignerVerbCollection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.ComponentModel.Design", "DesignerVerbCollection", False, "set_Item", "(System.Int32,System.ComponentModel.Design.DesignerVerb)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]

@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["com.rabbitmq.client.impl", "Frame", True, "getInputStream", "()", "", "ReturnValue", "remote", "manual"]
+      - ["com.rabbitmq.client.impl", "Frame", True, "getPayload", "()", "", "ReturnValue", "remote", "manual"]
+      - ["com.rabbitmq.client.impl", "FrameHandler", True, "readFrame", "()", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.rabbitmq.client.impl", "Frame", False, "fromBodyFragment", "(int,byte[],int,int)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["com.rabbitmq.client.impl", "Frame", False, "readFrom", "(DataInputStream)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["com.rabbitmq.client.impl", "Frame", True, "writeTo", "(DataOutputStream)", "", "Argument[-1]", "Argument[0]", "taint", "manual"]

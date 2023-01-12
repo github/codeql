@@ -9,7 +9,6 @@ private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.frameworks.Sql
 private import semmle.code.csharp.dataflow.FlowSummary
-private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
@@ -21,7 +20,7 @@ module DataAnnotations {
   class NotMappedAttribute extends Attribute {
     NotMappedAttribute() {
       this.getType()
-          .hasQualifiedName("System.ComponentModel.DataAnnotations.Schema.NotMappedAttribute")
+          .hasQualifiedName("System.ComponentModel.DataAnnotations.Schema", "NotMappedAttribute")
     }
   }
 }
@@ -38,11 +37,7 @@ private predicate isNotMapped(Attributable a) {
 module EntityFramework {
   /** An EF6 or EFCore namespace. */
   class EFNamespace extends Namespace {
-    EFNamespace() {
-      this.getQualifiedName() = "Microsoft.EntityFrameworkCore"
-      or
-      this.getQualifiedName() = "System.Data.Entity"
-    }
+    EFNamespace() { this.getFullName() = ["Microsoft.EntityFrameworkCore", "System.Data.Entity"] }
   }
 
   /** A taint source where the data has come from a mapped property stored in the database. */
@@ -163,7 +158,7 @@ module EntityFramework {
 
   /** The struct `Microsoft.EntityFrameworkCore.RawSqlString`. */
   private class RawSqlStringStruct extends Struct {
-    RawSqlStringStruct() { this.getQualifiedName() = "Microsoft.EntityFrameworkCore.RawSqlString" }
+    RawSqlStringStruct() { this.hasQualifiedName("Microsoft.EntityFrameworkCore", "RawSqlString") }
 
     /** Gets a conversion operator from `string` to `RawSqlString`. */
     ConversionOperator getAConversionTo() {
@@ -234,55 +229,6 @@ module EntityFramework {
     EntityFrameworkCoreSqlSink() { this.getTarget().getAParameter() = sqlParam }
 
     override Expr getSql() { result = this.getArgumentForParameter(sqlParam) }
-  }
-
-  /** The sink method `System.Data.Entity.DbSet.SqlQuery`. */
-  private class SystemDataEntityDbSetSqlQuerySinkModelCsv extends SinkModelCsv {
-    override predicate row(string row) {
-      row =
-        "System.Data.Entity;DbSet;false;SqlQuery;(System.String,System.Object[]);;Argument[0];sql;manual"
-    }
-  }
-
-  /** A sink method in `System.Data.Entity.Database` that executes SQL. */
-  private class SystemDataEntityDatabaseSinkModelCsv extends SinkModelCsv {
-    override predicate row(string row) {
-      row =
-        [
-          "System.Data.Entity;Database;false;SqlQuery;(System.Type,System.String,System.Object[]);;Argument[1];sql;manual",
-          "System.Data.Entity;Database;false;SqlQuery<>;(System.String,System.Object[]);;Argument[0];sql;manual",
-          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.String,System.Object[]);;Argument[0];sql;manual",
-          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql;manual",
-          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Threading.CancellationToken,System.Object[]);;Argument[1];sql;manual",
-          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Threading.CancellationToken,System.Object[]);;Argument[0];sql;manual",
-          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Object[]);;Argument[0];sql;manual",
-          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql;manual"
-        ]
-    }
-  }
-
-  /** A sink method in `Microsoft.EntityFrameworkCore.RelationalQueryableExtensions` that executes SQL. */
-  private class MicrosoftEntityFrameworkCoreRelationalQueryableExtensionsSinkModelCsv extends SinkModelCsv {
-    override predicate row(string row) {
-      row =
-        [
-          "Microsoft.EntityFrameworkCore;RelationalQueryableExtensions;false;FromSqlRaw<>;(Microsoft.EntityFrameworkCore.DbSet<TEntity>,System.String,System.Object[]);;Argument[1];sql;manual",
-        ]
-    }
-  }
-
-  /** A sink method in `Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions` that executes SQL. */
-  private class MicrosoftEntityFrameworkCoreRelationalDatabaseFacadeExtensionsSinkModelCsv extends SinkModelCsv {
-    override predicate row(string row) {
-      row =
-        [
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRaw;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>);;Argument[1];sql;manual",
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRaw;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[]);;Argument[1];sql;manual",
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Threading.CancellationToken);;Argument[1];sql;manual",
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[]);;Argument[1];sql;manual",
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>,System.Threading.CancellationToken);;Argument[1];sql;manual",
-        ]
-    }
   }
 
   /** Holds if `t` is compatible with a DB column type. */

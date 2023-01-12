@@ -1,19 +1,15 @@
 edges
-| TaintedPath.go:13:18:13:22 | selection of URL : pointer type | TaintedPath.go:16:29:16:40 | tainted_path |
-| TaintedPath.go:13:18:13:22 | selection of URL : pointer type | TaintedPath.go:20:28:20:69 | call to Join |
-| tst.go:14:2:14:39 | ... := ...[1] : pointer type | tst.go:17:41:17:47 | implicit dereference : FileHeader |
-| tst.go:14:2:14:39 | ... := ...[1] : pointer type | tst.go:17:41:17:56 | selection of Filename |
-| tst.go:17:41:17:47 | implicit dereference : FileHeader | tst.go:17:41:17:47 | implicit dereference : FileHeader |
-| tst.go:17:41:17:47 | implicit dereference : FileHeader | tst.go:17:41:17:56 | selection of Filename |
+| TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:16:29:16:40 | tainted_path |
+| TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:20:28:20:69 | call to Join |
+| tst.go:14:2:14:39 | ... := ...[1] | tst.go:17:41:17:56 | selection of Filename |
 nodes
-| TaintedPath.go:13:18:13:22 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| TaintedPath.go:13:18:13:22 | selection of URL | semmle.label | selection of URL |
 | TaintedPath.go:16:29:16:40 | tainted_path | semmle.label | tainted_path |
 | TaintedPath.go:20:28:20:69 | call to Join | semmle.label | call to Join |
-| tst.go:14:2:14:39 | ... := ...[1] : pointer type | semmle.label | ... := ...[1] : pointer type |
-| tst.go:17:41:17:47 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
+| tst.go:14:2:14:39 | ... := ...[1] | semmle.label | ... := ...[1] |
 | tst.go:17:41:17:56 | selection of Filename | semmle.label | selection of Filename |
 subpaths
 #select
-| TaintedPath.go:16:29:16:40 | tainted_path | TaintedPath.go:13:18:13:22 | selection of URL : pointer type | TaintedPath.go:16:29:16:40 | tainted_path | This path depends on a $@. | TaintedPath.go:13:18:13:22 | selection of URL | user-provided value |
-| TaintedPath.go:20:28:20:69 | call to Join | TaintedPath.go:13:18:13:22 | selection of URL : pointer type | TaintedPath.go:20:28:20:69 | call to Join | This path depends on a $@. | TaintedPath.go:13:18:13:22 | selection of URL | user-provided value |
-| tst.go:17:41:17:56 | selection of Filename | tst.go:14:2:14:39 | ... := ...[1] : pointer type | tst.go:17:41:17:56 | selection of Filename | This path depends on a $@. | tst.go:14:2:14:39 | ... := ...[1] | user-provided value |
+| TaintedPath.go:16:29:16:40 | tainted_path | TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:16:29:16:40 | tainted_path | This path depends on a $@. | TaintedPath.go:13:18:13:22 | selection of URL | user-provided value |
+| TaintedPath.go:20:28:20:69 | call to Join | TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:20:28:20:69 | call to Join | This path depends on a $@. | TaintedPath.go:13:18:13:22 | selection of URL | user-provided value |
+| tst.go:17:41:17:56 | selection of Filename | tst.go:14:2:14:39 | ... := ...[1] | tst.go:17:41:17:56 | selection of Filename | This path depends on a $@. | tst.go:14:2:14:39 | ... := ...[1] | user-provided value |

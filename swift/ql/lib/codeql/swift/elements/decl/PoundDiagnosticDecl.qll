@@ -2,6 +2,12 @@ private import codeql.swift.generated.decl.PoundDiagnosticDecl
 
 class PoundDiagnosticDecl extends Generated::PoundDiagnosticDecl {
   override string toString() {
-    result = "#..." // TODO: Once we extract whether this is an error or a warning we can improve this.
+    this.isError() and result = "#error(...)"
+    or
+    this.isWarning() and result = "#warning(...)"
   }
+
+  predicate isError() { this.getKind() = 1 }
+
+  predicate isWarning() { this.getKind() = 2 }
 }

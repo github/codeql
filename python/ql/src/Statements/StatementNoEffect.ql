@@ -22,8 +22,8 @@ predicate understood_attribute(Attribute attr, ClassValue cls, ClassValue attr_c
 
 /* Conservative estimate of whether attribute lookup has a side effect */
 predicate side_effecting_attribute(Attribute attr) {
-  exists(ClassValue cls, ClassValue attr_cls |
-    understood_attribute(attr, cls, attr_cls) and
+  exists(ClassValue attr_cls |
+    understood_attribute(attr, _, attr_cls) and
     side_effecting_descriptor_type(attr_cls)
   )
 }

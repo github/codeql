@@ -2,11 +2,13 @@ package com.github.codeql
 
 import com.intellij.mock.MockProject
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
+import org.jetbrains.kotlin.backend.common.extensions.FirIncompatiblePluginAPI
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.backend.common.ir.createImplicitParameterDeclarationWithWrappedDescriptor
+import org.jetbrains.kotlin.backend.common.ir.addDispatchReceiver
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
@@ -30,10 +32,12 @@ import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.defaultType
 import org.jetbrains.kotlin.ir.types.typeWith
+import org.jetbrains.kotlin.ir.util.createImplicitParameterDeclarationWithWrappedDescriptor
 import org.jetbrains.kotlin.ir.util.defaultType
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
+@OptIn(ExperimentalCompilerApi::class)
 class TestComponentRegistrar : ComponentRegistrar {
     override fun registerProjectComponents(
         project: MockProject,
@@ -187,6 +191,7 @@ class IrAdder : IrGenerationExtension {
             }
 
             private fun addFunWithUnsafeCoerce(declaration: IrClass) {
+                @OptIn(FirIncompatiblePluginAPI::class)
                 val uintType = pluginContext.referenceClass(FqName("kotlin.UInt"))!!.owner.typeWith()
                 declaration.declarations.add(pluginContext.irFactory.buildFun {
                     name = Name.identifier("<fn>")
@@ -263,6 +268,7 @@ class IrAdder : IrGenerationExtension {
                         name = Name.identifier("start")
                         origin = IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
                         modality = Modality.FINAL
+                        @OptIn(FirIncompatiblePluginAPI::class)
                         returnType = pluginContext.referenceClass(FqName("java.lang.Process"))!!.owner.defaultType
                     }.apply {
                         addDispatchReceiver { type = processBuilderStubType }

@@ -75,8 +75,7 @@ module Closure {
   /**
    * A top-level call to `goog.provide`.
    */
-  class ClosureProvideCall extends ClosureNamespaceRef, DataFlow::MethodCallNode {
-    ClosureProvideCall() { this instanceof DefaultClosureProvideCall }
+  class ClosureProvideCall extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureProvideCall {
   }
 
   /**
@@ -89,8 +88,7 @@ module Closure {
   /**
    * A call to `goog.require`.
    */
-  class ClosureRequireCall extends ClosureNamespaceAccess, DataFlow::MethodCallNode {
-    ClosureRequireCall() { this instanceof DefaultClosureRequireCall }
+  class ClosureRequireCall extends ClosureNamespaceAccess, DataFlow::MethodCallNode instanceof DefaultClosureRequireCall {
   }
 
   /**
@@ -106,8 +104,7 @@ module Closure {
   /**
    * A top-level call to `goog.module` or `goog.declareModuleId`.
    */
-  class ClosureModuleDeclaration extends ClosureNamespaceRef, DataFlow::MethodCallNode {
-    ClosureModuleDeclaration() { this instanceof DefaultClosureModuleDeclaration }
+  class ClosureModuleDeclaration extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureModuleDeclaration {
   }
 
   private GlobalVariable googVariable() { variables(result, "goog", any(GlobalScope sc)) }

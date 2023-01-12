@@ -7,6 +7,7 @@
  * @problem.severity warning
  * @id go/cors-misconfiguration
  * @tags security
+ *       experimental
  *       external/cwe/cwe-942
  *       external/cwe/cwe-346
  */
@@ -61,7 +62,7 @@ class FlowsUntrustedToAllowOriginHeader extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
-  predicate isSink(DataFlow::Node sink, AllowOriginHeaderWrite hw) { sink = hw.getValue() }
+  predicate isSinkHW(DataFlow::Node sink, AllowOriginHeaderWrite hw) { sink = hw.getValue() }
 
   override predicate isSanitizer(DataFlow::Node node) {
     exists(ControlFlow::ConditionGuardNode cgn |
@@ -71,7 +72,7 @@ class FlowsUntrustedToAllowOriginHeader extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSinkHW(sink, _) }
 }
 
 /**
@@ -95,7 +96,7 @@ predicate allowCredentialsIsSetToTrue(AllowOriginHeaderWrite allowOriginHW) {
 predicate flowsFromUntrustedToAllowOrigin(AllowOriginHeaderWrite allowOriginHW, string message) {
   exists(FlowsUntrustedToAllowOriginHeader cfg, DataFlow::Node sink |
     cfg.hasFlowTo(sink) and
-    cfg.isSink(sink, allowOriginHW)
+    cfg.isSinkHW(sink, allowOriginHW)
   |
     message =
       headerAllowOrigin() + " header is set to a user-defined value, and " +
@@ -130,9 +131,9 @@ class FlowsFromUntrusted extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSinkCgn(sink, _) }
 
-  predicate isSink(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn) {
+  predicate isSinkCgn(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn) {
     exists(IfStmt ifs |
       exists(Expr operand |
         operand = ifs.getCond().getAChildExpr*() and
@@ -171,7 +172,7 @@ class FlowsFromUntrusted extends TaintTracking::Configuration {
  */
 predicate flowsToGuardedByCheckOnUntrusted(AllowOriginHeaderWrite allowOriginHW) {
   exists(FlowsFromUntrusted cfg, DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn |
-    cfg.hasFlowTo(sink) and cfg.isSink(sink, cgn)
+    cfg.hasFlowTo(sink) and cfg.isSinkCgn(sink, cgn)
   |
     cgn.dominates(allowOriginHW.getBasicBlock())
   )

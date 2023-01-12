@@ -14,9 +14,7 @@ private import semmle.code.csharp.security.Sanitizers
  */
 abstract class Source extends DataFlow::Node { }
 
-private class RemoteSource extends Source {
-  RemoteSource() { this instanceof RemoteFlowSource }
-}
+private class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /**
  * A data flow sink for untrusted user input used in XML processing.

@@ -9,6 +9,7 @@
  * @precision medium
  * @id java/server-directory-listing
  * @tags security
+ *       experimental
  *       external/cwe/cwe-548
  */
 

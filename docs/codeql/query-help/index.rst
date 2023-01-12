@@ -6,10 +6,12 @@ View the query help for the queries included in the ``code-scanning``, ``securit
 - :doc:`CodeQL query help for C and C++ <cpp>`
 - :doc:`CodeQL query help for C# <csharp>`
 - :doc:`CodeQL query help for Go <go>`
-- :doc:`CodeQL query help for Java <java>`
+- :doc:`CodeQL query help for Java and Kotlin <java>`
 - :doc:`CodeQL query help for JavaScript <javascript>`
 - :doc:`CodeQL query help for Python <python>`
 - :doc:`CodeQL query help for Ruby <ruby>`
+
+.. include:: ../reusables/kotlin-beta-note.rst
 
 .. pull-quote:: Information
 
@@ -22,8 +24,6 @@ View the query help for the queries included in the ``code-scanning``, ``securit
 
 
 For a full list of the CWEs covered by these queries, see ":doc:`CodeQL CWE coverage <codeql-cwe-coverage>`." 
-
-.. include:: ../reusables/ruby-beta-note.rst
 
 .. toctree::
    :hidden:

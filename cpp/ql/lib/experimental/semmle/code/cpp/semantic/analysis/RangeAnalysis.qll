@@ -664,9 +664,7 @@ private predicate boundedPhiCand(
   SemSsaPhiNode phi, boolean upper, SemBound b, int delta, boolean fromBackEdge, int origdelta,
   SemReason reason
 ) {
-  exists(SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge |
-    boundedPhiInp(phi, inp, edge, b, delta, upper, fromBackEdge, origdelta, reason)
-  )
+  boundedPhiInp(phi, _, _, b, delta, upper, fromBackEdge, origdelta, reason)
 }
 
 /**

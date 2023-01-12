@@ -551,6 +551,13 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) { none() }
 
+/** An approximated `Content`. */
+class ContentApprox = Unit;
+
+/** Gets an approximated value for content `c`. */
+pragma[inline]
+ContentApprox getContentApprox(Content c) { any() }
+
 private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
   override predicate argHasPostUpdateExclude(ArgumentNode n) {
     // The rules for whether an IR argument gets a post-update node are too

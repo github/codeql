@@ -1,5 +1,5 @@
-import cpp  
-   
+import cpp
+
 from IfStmt ifstmt, Block block
 where
   block = ifstmt.getThen() and

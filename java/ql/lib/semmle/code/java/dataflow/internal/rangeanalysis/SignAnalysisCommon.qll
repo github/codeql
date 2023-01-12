@@ -292,12 +292,12 @@ Sign exprSign(Expr e) {
       exists(SsaVariable v | getARead(v) = e |
         s = ssaSign(v, any(SsaReadPositionBlock bb | getAnExpression(bb) = e))
         or
-        not exists(SsaReadPositionBlock bb | getAnExpression(bb) = e) and
+        not getAnExpression(_) = e and
         s = ssaDefSign(v)
       )
       or
       exists(VarAccess access | access = e |
-        not exists(SsaVariable v | getARead(v) = access) and
+        not getARead(_) = access and
         (
           s = fieldSign(getField(access.(FieldAccess)))
           or

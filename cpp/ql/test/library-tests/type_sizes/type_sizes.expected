@@ -19,6 +19,7 @@
 | file://:0:0:0:0 | StructWithDef && | 8 |
 | file://:0:0:0:0 | UnionWithDef & | 8 |
 | file://:0:0:0:0 | UnionWithDef && | 8 |
+| file://:0:0:0:0 | _Complex _Float16 | 4 |
 | file://:0:0:0:0 | _Complex __float128 | 32 |
 | file://:0:0:0:0 | _Complex double | 16 |
 | file://:0:0:0:0 | _Complex float | 8 |
@@ -26,12 +27,13 @@
 | file://:0:0:0:0 | _Decimal32 | 4 |
 | file://:0:0:0:0 | _Decimal64 | 8 |
 | file://:0:0:0:0 | _Decimal128 | 16 |
+| file://:0:0:0:0 | _Float16 | 2 |
 | file://:0:0:0:0 | _Float32 | 4 |
 | file://:0:0:0:0 | _Float32x | 8 |
 | file://:0:0:0:0 | _Float64 | 8 |
 | file://:0:0:0:0 | _Float64x | 16 |
 | file://:0:0:0:0 | _Float128 | 16 |
-| file://:0:0:0:0 | _Float128x | 16 |
+| file://:0:0:0:0 | _Float128x | 32 |
 | file://:0:0:0:0 | _Imaginary double | 8 |
 | file://:0:0:0:0 | _Imaginary float | 4 |
 | file://:0:0:0:0 | _Imaginary long double | 16 |

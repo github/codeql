@@ -1,15 +1,15 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
-_swift_prebuilt_version = "swift-5.7-RELEASE.43809.66"
+_swift_prebuilt_version = "swift-5.7.1-RELEASE.44582.104"
 _swift_sha_map = {
-    "linux": "8c6480ed4b38bf46d2e55a97f08c38ae183bfeb68649f98193b7540b04428741",
-    "macos-x86_64": "ab103774b384a7f3f01c0d876699cae6afafe6cf2ee458b77b9aac6e08e4ca4d",
+  "Linux-X64": "8d94f2d75f2aa9ee8e5421318d2f07b27e095127c9be0156794a88d8e9a0f19a",
+  "macOS-X64": "5f0550d2924e7071d006a0c9802acbd9a11f0017073e4a1eb27b7ddc4764f3f2",
 }
 
 _swift_arch_map = {
-    "linux": "linux",
-    "macos-x86_64": "darwin_x86_64",
+    "Linux-X64": "linux",
+    "macOS-X64": "darwin_x86_64",
 }
 
 def codeql_workspace(repository_name = "codeql"):

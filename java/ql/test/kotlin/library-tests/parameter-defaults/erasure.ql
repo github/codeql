@@ -5,6 +5,8 @@ class InstantiatedType extends ParameterizedType {
 }
 
 // This checks that all type parameter references are erased in the context of a $default function.
+// Note this is currently expected to fail since for the time being we extract type variable references
+// even where they should be out of scope.
 predicate containsTypeVariables(Type t) {
   t instanceof TypeVariable or
   containsTypeVariables(t.(InstantiatedType).getATypeArgument()) or

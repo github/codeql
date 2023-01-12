@@ -1,3 +1,0 @@
-| dot_syntax_call.swift:7:13:7:13 | call to ... | getFunction: | dot_syntax_call.swift:7:13:7:13 | { ... } | getBase: | dot_syntax_call.swift:7:13:7:13 | self |
-| dot_syntax_call.swift:15:9:15:11 | call to ... | getFunction: | dot_syntax_call.swift:15:11:15:11 | { ... } | getBase: | dot_syntax_call.swift:15:9:15:9 | X.Type |
-| dot_syntax_call.swift:16:9:16:13 | call to ... | getFunction: | dot_syntax_call.swift:16:13:16:13 | { ... } | getBase: | dot_syntax_call.swift:16:9:16:11 | call to init() |

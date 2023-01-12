@@ -1016,6 +1016,14 @@ module Decls {
 module Exprs {
   module AssignExprs {
     /**
+     * The control-flow of a `DiscardAssignmentExpr`, which represents the
+     * `_` leaf expression that may appear on the left-hand side of an `AssignExpr`.
+     */
+    private class DiscardAssignmentExprTree extends AstLeafTree {
+      override DiscardAssignmentExpr ast;
+    }
+
+    /**
      * The control-flow of an assignment operation.
      *
      * There are two implementation of this base class:
@@ -1439,8 +1447,8 @@ module Exprs {
     }
   }
 
-  class MethodRefExprTree extends AstStandardPreOrderTree {
-    override MethodRefExpr ast;
+  class MethodLookupExprTree extends AstStandardPreOrderTree {
+    override MethodLookupExpr ast;
 
     override ControlFlowElement getChildElement(int i) {
       i = 0 and result.asAstNode() = ast.getBase().getFullyConverted()

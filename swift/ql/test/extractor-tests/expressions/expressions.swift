@@ -153,3 +153,12 @@ func test(a : A, keyPathInt : WritableKeyPath<A, Int>, keyPathB : WritableKeyPat
   var apply_keyPathB = a[keyPath: keyPathB]
   var nested_apply = a[keyPath: keyPathB][keyPath: \B.x]
 }
+
+func bitwise() {
+  _ = ~1
+  _ = 1 & 2
+  _ = 1 | 2
+  _ = 1 ^ 2
+  _ = 1 << 0
+  _ = 1 >> 0
+}

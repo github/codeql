@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE weblogic-web-app PUBLIC "-//BEA Systems, Inc.//DTD Web Application 8.1//EN" "http://www.bea.com/servers/wls810/dtd/weblogic810-web-jar.dtd" >
+<weblogic-web-app>
+    <jsp-descriptor>
+        <jsp-param>
+            <param-name>compileFlags</param-name>
+            <param-value>-g</param-value>
+        </jsp-param>
+        <jsp-param>
+            <param-name>keepgenerated</param-name>
+            <param-value>true</param-value>
+        </jsp-param>
+    </jsp-descriptor>
+</weblogic-web-app>

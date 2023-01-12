@@ -357,7 +357,7 @@ private module Sequelize {
   // Note: the sinks are specified directly in the MaD model
   class SequelizeSource extends ModelInput::SourceModelCsv {
     override predicate row(string row) {
-      row = "sequelize;Sequelize;Member[query].ReturnValue.Awaited;database-access-result"
+      row = "sequelize.Sequelize;Member[query].ReturnValue.Awaited;database-access-result"
     }
   }
 }
@@ -365,13 +365,13 @@ private module Sequelize {
 private module SpannerCsv {
   class SpannerSinks extends ModelInput::SinkModelCsv {
     override predicate row(string row) {
-      // package; type; path; kind
+      // type; path; kind
       row =
         [
-          "@google-cloud/spanner;~SqlExecutorDirect;Argument[0];sql-injection",
-          "@google-cloud/spanner;~SqlExecutorDirect;Argument[0].Member[sql];sql-injection",
-          "@google-cloud/spanner;Transaction;Member[batchUpdate].Argument[0];sql-injection",
-          "@google-cloud/spanner;Transaction;Member[batchUpdate].Argument[0].ArrayElement.Member[sql];sql-injection",
+          "@google-cloud/spanner.~SqlExecutorDirect;Argument[0];sql-injection",
+          "@google-cloud/spanner.~SqlExecutorDirect;Argument[0].Member[sql];sql-injection",
+          "@google-cloud/spanner.Transaction;Member[batchUpdate].Argument[0];sql-injection",
+          "@google-cloud/spanner.Transaction;Member[batchUpdate].Argument[0].ArrayElement.Member[sql];sql-injection",
         ]
     }
   }
@@ -380,10 +380,10 @@ private module SpannerCsv {
     override predicate row(string row) {
       row =
         [
-          "@google-cloud/spanner;~SpannerObject;Member[executeSql].Argument[0..].Parameter[1];database-access-result",
-          "@google-cloud/spanner;~SpannerObject;Member[executeSql].ReturnValue.Awaited.Member[0];database-access-result",
-          "@google-cloud/spanner;~SpannerObject;Member[run].ReturnValue.Awaited;database-access-result",
-          "@google-cloud/spanner;~SpannerObject;Member[run].Argument[0..].Parameter[1];database-access-result",
+          "@google-cloud/spanner.~SpannerObject;Member[executeSql].Argument[0..].Parameter[1];database-access-result",
+          "@google-cloud/spanner.~SpannerObject;Member[executeSql].ReturnValue.Awaited.Member[0];database-access-result",
+          "@google-cloud/spanner.~SpannerObject;Member[run].ReturnValue.Awaited;database-access-result",
+          "@google-cloud/spanner.~SpannerObject;Member[run].Argument[0..].Parameter[1];database-access-result",
         ]
     }
   }
