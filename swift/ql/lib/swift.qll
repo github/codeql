@@ -10,6 +10,5 @@ import codeql.swift.elements.expr.InitializerCallExpr
 import codeql.swift.elements.expr.SelfRefExpr
 import codeql.swift.elements.decl.MethodDecl
 import codeql.swift.elements.decl.ClassOrStructDecl
-import codeql.swift.elements.type.FloatingPointType
 import codeql.swift.elements.type.NumericOrCharType
 import codeql.swift.Unit
