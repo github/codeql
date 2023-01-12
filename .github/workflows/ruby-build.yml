@@ -48,6 +48,8 @@ jobs:
         run: |
           brew install gnu-tar
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
+      - uses: ./.github/actions/os-version
+        id: os_version
       - name: Cache entire extractor
         uses: actions/cache@v3
         id: cache-extractor
@@ -58,7 +60,7 @@ jobs:
             ruby/target/release/ruby-extractor
             ruby/target/release/ruby-extractor.exe
             ruby/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
-          key: ${{ runner.os }}-ruby-extractor-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}--${{ hashFiles('ruby/**/*.rs') }}
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-extractor-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}--${{ hashFiles('ruby/**/*.rs') }}
       - uses: actions/cache@v3
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         with:
@@ -66,7 +68,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             ruby/target
-          key: ${{ runner.os }}-ruby-rust-cargo-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-rust-cargo-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}
       - name: Check formatting
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cargo fmt --all -- --check
