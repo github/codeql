@@ -77,10 +77,6 @@ public class Test {
             AtomicReference ar = new AtomicReference(source());
             sink(ar.get());  // $hasValueFlow
 
-            // java.util.function
-            Supplier<Double> sup = (Supplier)source();
-            sink(sup.get()); // $hasValueFlow
-
             // java.util
             StringJoiner sj1 = new StringJoiner(",");
             sink(sj1.add((CharSequence)source())); // $hasTaintFlow

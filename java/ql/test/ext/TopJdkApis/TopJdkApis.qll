@@ -147,6 +147,7 @@ class TopJdkApi extends SummarizedCallableBase {
    * `java.lang.Throwable#printStackTrace()`: should probably not be a general step, but there might be specialised queries that care
    * `java.util.function.Consumer#accept(Object)`: specialized lambda flow
    * `java.util.function.Function#apply(Object)`: specialized lambda flow
+   * `java.util.function.Supplier#get()`: lambda flow
    * `java.util.stream.Collectors#joining(CharSequence)`: cannot be modeled completely without a model for `java.util.stream.Stream#collect(Collector)` as well
    * `java.util.stream.Collectors#toMap(Function,Function)`: specialized collectors flow
    * `java.util.stream.Stream#collect(Collector)`: handled separately on a case-by-case basis as it is too complex for MaD
