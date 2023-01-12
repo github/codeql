@@ -2,13 +2,13 @@
  * @name Capture summary models.
  * @description Finds applicable summary models to be used by other queries.
  * @kind diagnostic
- * @id cs/utils/modelgenerator/summary-models
- * @tags modelgenerator
+ * @id cs/utils/model-generator/summary-models
+ * @tags model-generator
  */
 
 import semmle.code.csharp.dataflow.ExternalFlow
-import internal.CaptureModels
-import internal.CaptureSummaryFlow
+import utils.modelgenerator.internal.CaptureModels
+import utils.modelgenerator.internal.CaptureSummaryFlow
 
 from DataFlowTargetApi api, string flow
 where flow = captureFlow(api) and not hasSummary(api, false)

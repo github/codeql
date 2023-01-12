@@ -35,7 +35,7 @@ def regenerateModel(lgtmSlug, extractedDb):
         sys.exit(1)
     modelFile = lgtmSlugToModelFile[lgtmSlug]
     codeQlRoot = findGitRoot()
-    subprocess.check_call([codeQlRoot + "/java/ql/src/utils/modelgenerator/GenerateFlowModel.py",
+    subprocess.check_call([codeQlRoot + "/java/ql/src/utils/model-generator/GenerateFlowModel.py",
                            "--with-summaries", "--with-sinks", "--with-neutrals",
                            extractedDb, modelFile])
     print("Regenerated " + modelFile)

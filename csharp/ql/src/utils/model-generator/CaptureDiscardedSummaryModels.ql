@@ -1,12 +1,12 @@
 /**
  * @name Capture discarded summary models.
  * @description Finds summary models that are discarded as handwritten counterparts exist.
- * @id cs/utils/modelgenerator/discarded-summary-models
+ * @id cs/utils/model-generator/discarded-summary-models
  */
 
 import semmle.code.csharp.dataflow.ExternalFlow
-import internal.CaptureModels
-import internal.CaptureSummaryFlow
+import utils.modelgenerator.internal.CaptureModels
+import utils.modelgenerator.internal.CaptureSummaryFlow
 
 from DataFlowTargetApi api, string flow
 where flow = captureFlow(api) and hasSummary(api, false)
