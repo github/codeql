@@ -15,6 +15,12 @@ private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjecti
 private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestForgeryAtm
 
+/*
+ * ****** WARNING: ******
+ * Before calling this query, make sure there's no codex-generated data extension file in `java/ql/lib/ext`. Otherwise,
+ * the ML-gnerarated, noisy sinks will end up poluting the positive examples used in the prompt!
+ */
+
 from
   DataFlow::Node sink, AtmConfig::AtmConfig config,
   EndpointCharacteristics::EndpointCharacteristic characteristic, float confidence
@@ -22,7 +28,7 @@ where
   characteristic.appliesToEndpoint(sink) and
   confidence >= characteristic.maximalConfidence() and
   characteristic.hasImplications(config.getASinkEndpointType(), true, confidence) and
-  // Exclude sinks that have contradictory endpoint characteristics, because we only want examples we're highly certain
-  // about in the prompt.
-  not EndpointCharacteristics::erroneousEndpoints(sink, _, _, _, _)
+  // If there are _any_ erroneous endpoints, return nothing. This will prevent us from accidentally running this query
+  // when there's a codex-generated data extension file in `java/ql/lib/ext`.
+  not EndpointCharacteristics::erroneousEndpoints(_, _, _, _, _)
 select sink, characteristic.toString()

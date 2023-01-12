@@ -36,7 +36,14 @@ query predicate erroneousEndpoints(
     characteristic.hasImplications(endpointClass, true, confidence) and
     characteristic2.hasImplications(endpointClass2, true, confidence2) and
     confidence > characteristic.mediumConfidence() and
-    confidence2 > characteristic2.mediumConfidence()
+    confidence2 > characteristic2.mediumConfidence() and
+    // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
+    // treated by the actual query as a sanitizer, since the final logic is something like
+    // `isSink(n) and not isSanitizer(n)`.
+    not (
+      characteristic instanceof IsSanitizerCharacteristic or
+      characteristic2 instanceof IsSanitizerCharacteristic
+    )
   ) and
   errorMessage = "Endpoint has high-confidence positive indicators for multiple classes"
   or
