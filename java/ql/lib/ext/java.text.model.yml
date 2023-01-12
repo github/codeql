@@ -3,5 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.text", "DateFormat", "format", "(Date)", "manual"]
-      - ["java.text", "SimpleDateFormat", "SimpleDateFormat", "(String)", "manual"]
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.text", "DateFormat", "format", "(Date)", "manual"]                   # taint-numeric
+      - ["java.text", "SimpleDateFormat", "SimpleDateFormat", "(String)", "manual"] # taint-numeric

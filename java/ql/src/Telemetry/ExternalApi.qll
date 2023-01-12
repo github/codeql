@@ -47,7 +47,6 @@ class ExternalApi extends Callable {
    * Gets information about the external API in the form expected by the CSV modeling framework.
    */
   string getApiName() {
-    this.getName() = "append" and
     result =
       this.getDeclaringType().getPackage() + "." + this.getDeclaringType().getSourceDeclaration() +
         "#" + this.getName() + paramsString(this)
