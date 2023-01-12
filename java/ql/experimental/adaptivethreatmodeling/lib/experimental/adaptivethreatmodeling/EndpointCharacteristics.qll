@@ -17,6 +17,51 @@ private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
 private import semmle.code.java.Expr as Expr
 
 /**
+ * Holds if the given endpoint has a self-contradictory combination of characteristics. Detects errors in our endpoint
+ * characteristics. Lists the problematic characterisitics and their implications for all such endpoints, together with
+ * an error message indicating why this combination is problematic.
+ *
+ * Copied from javascript/ql/experimental/adaptivethreatmodeling/test/endpoint_large_scale/ContradictoryEndpointCharacteristics.ql
+ */
+query predicate erroneousEndpoints(
+  DataFlow::Node endpoint, EndpointCharacteristic characteristic, EndpointType endpointClass,
+  float confidence, string errorMessage
+) {
+  // An endpoint's characteristics should not include positive indicators with medium/high confidence for more than one
+  // class.
+  exists(EndpointCharacteristic characteristic2, EndpointType endpointClass2, float confidence2 |
+    endpointClass.getEncoding() != endpointClass2.getEncoding() and
+    characteristic.appliesToEndpoint(endpoint) and
+    characteristic2.appliesToEndpoint(endpoint) and
+    characteristic.hasImplications(endpointClass, true, confidence) and
+    characteristic2.hasImplications(endpointClass2, true, confidence2) and
+    confidence > characteristic.mediumConfidence() and
+    confidence2 > characteristic2.mediumConfidence()
+  ) and
+  errorMessage = "Endpoint has high-confidence positive indicators for multiple classes"
+  or
+  // An enpoint's characteristics should not include positive indicators with medium/high confidence for some class and
+  // also include negative indicators with medium/high confidence for this same class.
+  exists(EndpointCharacteristic characteristic2, float confidence2 |
+    characteristic.appliesToEndpoint(endpoint) and
+    characteristic2.appliesToEndpoint(endpoint) and
+    characteristic.hasImplications(endpointClass, true, confidence) and
+    characteristic2.hasImplications(endpointClass, false, confidence2) and
+    confidence > characteristic.mediumConfidence() and
+    confidence2 > characteristic2.mediumConfidence()
+  ) and
+  errorMessage = "Endpoint has high-confidence positive and negative indicators for the same class"
+}
+
+query predicate erroneousConfidences(
+  EndpointCharacteristic characteristic, float confidence, string errorMessage
+) {
+  characteristic.hasImplications(_, _, confidence) and
+  (confidence < 0 or confidence > 1) and
+  errorMessage = "Characteristic has an indicator with confidence outside of [0, 1]"
+}
+
+/**
  * A set of characteristics that a particular endpoint might have. This set of characteristics is used to make decisions
  * about whether to include the endpoint in the training set and with what label, as well as whether to score the
  * endpoint at inference time.
