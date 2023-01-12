@@ -93,10 +93,9 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
     // for example in `realmObj.data = sensitive`.
     isSink(node) and
     exists(ClassOrStructDecl cd, IterableDeclContext cx |
-      (cx = cd or cx.(ExtensionDecl).getExtendedTypeDecl() = cd) and
-      c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember() and
-      // TODO: add a `getAMember` version that accounts for extensions?
-      cd.getABaseTypeDecl*().getName() = ["NSManagedObject", "RealmSwiftObject"]
+      cd.getABaseTypeDecl*().getName() = ["NSManagedObject", "RealmSwiftObject"] and
+      cx.getNominalTypeDecl() = cd and
+      c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember()
     )
     or
     // any default implicit reads
