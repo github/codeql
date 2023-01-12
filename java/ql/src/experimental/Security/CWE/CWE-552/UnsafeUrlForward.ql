@@ -7,6 +7,7 @@
  * @precision high
  * @id java/unsafe-url-forward-dispatch-load
  * @tags security
+ *       experimental
  *       external/cwe-552
  */
 

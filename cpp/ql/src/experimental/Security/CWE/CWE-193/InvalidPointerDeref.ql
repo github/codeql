@@ -8,6 +8,7 @@
  * @id cpp/invalid-pointer-deref
  * @tags reliability
  *       security
+ *       experimental
  *       external/cwe/cwe-119
  *       external/cwe/cwe-125
  *       external/cwe/cwe-193

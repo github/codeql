@@ -9,6 +9,7 @@
  * @precision medium
  * @id java/possible-timing-attack-against-signature
  * @tags security
+ *       experimental
  *       external/cwe/cwe-208
  */
 

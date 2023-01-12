@@ -20,9 +20,15 @@ predicate maybeMissingThis(CallExpr call, MethodDeclaration intendedTarget, Glob
   call.getCallee() = gv.getAnAccess() and
   call.getCalleeName() = intendedTarget.getName() and
   exists(MethodDefinition caller |
-    caller.getBody() = call.getContainer() and
+    caller.getBody() = getRelevantCallExprContainer(call) and
     intendedTarget.getDeclaringClass() = caller.getDeclaringClass()
   )
+}
+
+pragma[noinline]
+private StmtContainer getRelevantCallExprContainer(CallExpr c) {
+  result = c.getContainer() and
+  c.getCallee() = any(GlobalVariable v).getAnAccess()
 }
 
 from CallExpr call, MethodDeclaration intendedTarget, GlobalVariable gv
@@ -46,7 +52,7 @@ where
     exists(Variable decl |
       decl.getName() = gv.getName() and
       decl.isNamespaceExport() and
-      call.getContainer().getEnclosingContainer*() instanceof NamespaceDeclaration
+      getRelevantCallExprContainer(call).getEnclosingContainer*() instanceof NamespaceDeclaration
     )
     or
     // call to global function with additional arguments

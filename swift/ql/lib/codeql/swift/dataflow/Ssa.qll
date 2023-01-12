@@ -165,8 +165,8 @@ module Ssa {
   class PhiDefinition extends Definition, SsaImpl::PhiNode {
     cached
     override Location getLocation() {
-      exists(SsaInput::BasicBlock bb, int i |
-        this.definesAt(_, bb, i) and
+      exists(SsaInput::BasicBlock bb |
+        this.definesAt(_, bb, _) and
         result = bb.getLocation()
       )
     }

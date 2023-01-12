@@ -130,17 +130,14 @@ private module HandlebarsTaintSteps {
    * ```
    */
   private predicate isHandlebarsArgStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(
-      string helperName, DataFlow::CallNode templatingCall, DataFlow::CallNode compileCall,
-      DataFlow::FunctionNode func
-    |
+    exists(string helperName, DataFlow::CallNode templatingCall, DataFlow::CallNode compileCall |
       templatingCall = compiledTemplate(compileCall).getACall() and
       exists(string templateText, string paramName, int argIdx |
         compileCall.getArgument(0).mayHaveStringValue(templateText)
       |
         pred = templatingCall.getArgument(0).getALocalSource().getAPropertyWrite(paramName).getRhs() and
         isTemplateHelperCallArg(templateText, helperName, argIdx, paramName) and
-        succ = getRegisteredHelperParam(helperName, func, argIdx)
+        succ = getRegisteredHelperParam(helperName, _, argIdx)
       )
     )
   }

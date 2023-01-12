@@ -129,9 +129,7 @@ predicate literalIsEnumInitializer(Literal literal) {
   exists(EnumConstant ec | ec.getInitializer().getExpr() = literal)
 }
 
-predicate literalInArrayInitializer(Literal literal) {
-  exists(AggregateLiteral arrayInit | arrayInitializerChild(arrayInit, literal))
-}
+predicate literalInArrayInitializer(Literal literal) { arrayInitializerChild(_, literal) }
 
 predicate arrayInitializerChild(AggregateLiteral parent, Expr e) {
   e = parent

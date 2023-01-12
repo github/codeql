@@ -8,6 +8,7 @@
  * @precision medium
  * @id java/jxbrowser/disabled-certificate-validation
  * @tags security
+ *       experimental
  *       external/cwe/cwe-295
  */
 

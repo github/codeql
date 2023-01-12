@@ -5,6 +5,7 @@
  * @problem.severity warning
  * @precision high
  * @tags security
+ *       experimental
  * @id rb/improper-memoization
  */
 

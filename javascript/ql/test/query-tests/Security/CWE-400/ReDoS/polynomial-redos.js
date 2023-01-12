@@ -131,4 +131,7 @@ app.use(function(req, res) {
 	
 	var modified2 = tainted.replace(/a|b|c|\d/g, "e");
 	modified2.replace(/ff+G/g, "b"); // NOT OK
+
+    var modified3 = tainted.replace(/\s+/g, "");
+    modified3.replace(/hh+I/g, "b"); // NOT OK
 });

@@ -149,7 +149,7 @@ class SsaSourceField extends SsaSourceVariable {
       if f.isStatic() then result = f.getDeclaringType().getQualifiedName() else result = "this"
     )
     or
-    exists(Field f, RefType t | this = TEnclosingField(_, f, t) | result = t.toString() + ".this")
+    exists(RefType t | this = TEnclosingField(_, _, t) | result = t.toString() + ".this")
     or
     exists(SsaSourceVariable q | this = TQualifiedField(_, q, _) | result = q.toString())
   }

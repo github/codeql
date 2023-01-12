@@ -500,12 +500,21 @@ impl<'a> Visitor<'a> {
                 } => {
                     for (index, child_value) in child_values.iter().enumerate() {
                         if !*has_index && index > 0 {
-                            error!(
-                                "{}:{}: too many values for field: {}::{}",
-                                &self.path,
-                                node.start_position().row + 1,
+                            let error_message = format!(
+                                "too many values for field: {}::{}",
                                 node.kind(),
                                 table_name,
+                            );
+                            let full_error_message = format!(
+                                "{}:{}: {}",
+                                &self.path,
+                                node.start_position().row + 1,
+                                error_message
+                            );
+                            self.record_parse_error_for_node(
+                                error_message,
+                                full_error_message,
+                                *node,
                             );
                             break;
                         }
