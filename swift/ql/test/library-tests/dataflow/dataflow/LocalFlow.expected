@@ -355,18 +355,22 @@
 | test.swift:430:13:430:33 | SSA def(y) | test.swift:432:19:432:19 | y |
 | test.swift:430:37:430:37 | a | test.swift:430:13:430:33 | SSA def(x) |
 | test.swift:430:37:430:37 | a | test.swift:430:13:430:33 | SSA def(y) |
-| test.swift:436:21:436:27 | SSA def(y) | test.swift:439:27:439:27 | y |
-| test.swift:436:21:436:27 | SSA def(y) | test.swift:444:22:444:22 | y |
-| test.swift:436:21:436:27 | y | test.swift:436:21:436:27 | SSA def(y) |
-| test.swift:437:9:437:9 | SSA def(x) | test.swift:439:16:439:16 | x |
-| test.swift:437:13:437:28 | call to optionalSource() | test.swift:437:9:437:9 | SSA def(x) |
-| test.swift:439:8:439:12 | SSA def(a) | test.swift:440:19:440:19 | a |
-| test.swift:439:16:439:16 | x | test.swift:439:8:439:12 | SSA def(a) |
-| test.swift:439:16:439:16 | x | test.swift:444:19:444:19 | x |
-| test.swift:439:19:439:23 | SSA def(b) | test.swift:441:19:441:19 | b |
-| test.swift:439:27:439:27 | y | test.swift:439:19:439:23 | SSA def(b) |
-| test.swift:439:27:439:27 | y | test.swift:444:22:444:22 | y |
-| test.swift:444:9:444:9 | SSA def(tuple1) | test.swift:445:12:445:12 | tuple1 |
-| test.swift:444:18:444:23 | (...) | test.swift:444:9:444:9 | SSA def(tuple1) |
-| test.swift:446:10:446:37 | SSA def(a) | test.swift:447:19:447:19 | a |
-| test.swift:446:10:446:37 | SSA def(b) | test.swift:448:19:448:19 | b |
+| test.swift:438:21:438:27 | SSA def(y) | test.swift:441:27:441:27 | y |
+| test.swift:438:21:438:27 | SSA def(y) | test.swift:446:22:446:22 | y |
+| test.swift:438:21:438:27 | y | test.swift:438:21:438:27 | SSA def(y) |
+| test.swift:439:9:439:9 | SSA def(x) | test.swift:441:16:441:16 | x |
+| test.swift:439:13:439:28 | call to optionalSource() | test.swift:439:9:439:9 | SSA def(x) |
+| test.swift:441:8:441:12 | SSA def(a) | test.swift:442:19:442:19 | a |
+| test.swift:441:16:441:16 | x | test.swift:441:8:441:12 | SSA def(a) |
+| test.swift:441:16:441:16 | x | test.swift:446:19:446:19 | x |
+| test.swift:441:19:441:23 | SSA def(b) | test.swift:443:19:443:19 | b |
+| test.swift:441:27:441:27 | y | test.swift:441:19:441:23 | SSA def(b) |
+| test.swift:441:27:441:27 | y | test.swift:446:22:446:22 | y |
+| test.swift:446:9:446:9 | SSA def(tuple1) | test.swift:447:12:447:12 | tuple1 |
+| test.swift:446:18:446:23 | (...) | test.swift:446:9:446:9 | SSA def(tuple1) |
+| test.swift:448:10:448:37 | SSA def(a) | test.swift:449:19:449:19 | a |
+| test.swift:448:10:448:37 | SSA def(b) | test.swift:450:19:450:19 | b |
+| test.swift:455:8:455:17 | SSA def(x) | test.swift:456:19:456:19 | x |
+| test.swift:455:8:455:17 | SSA def(y) | test.swift:457:19:457:19 | y |
+| test.swift:455:21:455:29 | call to source2() | test.swift:455:8:455:17 | SSA def(x) |
+| test.swift:455:21:455:29 | call to source2() | test.swift:455:8:455:17 | SSA def(y) |

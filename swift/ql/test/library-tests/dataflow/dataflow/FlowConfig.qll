@@ -10,7 +10,7 @@ class TestConfiguration extends DataFlow::Configuration {
   TestConfiguration() { this = "TestConfiguration" }
 
   override predicate isSource(DataFlow::Node src) {
-    src.asExpr().(CallExpr).getStaticTarget().getName() = "source()"
+    src.asExpr().(CallExpr).getStaticTarget().getName().matches("source%()")
   }
 
   override predicate isSink(DataFlow::Node sink) {

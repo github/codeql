@@ -433,6 +433,8 @@ func testEnums() {
     }
 }
 
+func source2() -> (Int, Int)? { return nil }
+
 func testOptionals2(y: Int?) {
     let x = optionalSource()
 
@@ -448,5 +450,10 @@ func testOptionals2(y: Int?) {
         sink(arg: b)
     default:
         ()
+    }
+
+    if let (x, y) = source2() {
+        sink(arg: x) // $ flow=455
+        sink(arg: y) // $ flow=455
     }
 }
