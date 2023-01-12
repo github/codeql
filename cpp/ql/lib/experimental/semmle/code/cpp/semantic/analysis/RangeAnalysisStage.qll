@@ -110,7 +110,6 @@ signature module DeltaSig {
   Delta fromInt(int n);
 
   bindingset[f]
-  //bindingset[result]
   Delta fromFloat(float f);
 }
 

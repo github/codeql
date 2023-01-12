@@ -16,5 +16,14 @@ module FloatDelta implements DeltaSig {
   Delta fromInt(int n) { result = n }
 
   bindingset[f]
-  Delta fromFloat(float f) { result = min(float diff, float res | diff = (res - f).abs() and res = f.ceil() or diff = (f - res).abs() and res = f.floor() | res order by diff )}
+  Delta fromFloat(float f) {
+    result =
+      min(float diff, float res |
+        diff = (res - f) and res = f.ceil()
+        or
+        diff = (f - res) and res = f.floor()
+      |
+        res order by diff
+      )
+  }
 }
