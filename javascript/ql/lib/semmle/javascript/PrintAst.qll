@@ -30,11 +30,16 @@ private predicate shouldPrint(Locatable e, Location l) {
   exists(PrintAstConfiguration config | config.shouldPrint(e, l))
 }
 
-/** Holds if the given element does not need to be rendered in the AST, due to being the `TopLevel` for a file. */
+/**
+ * Holds if the given element does not need to be rendered in the AST.
+ * Either due to being the `TopLevel` for a file, or an internal node representing a decorator list.
+ */
 private predicate isNotNeeded(Locatable el) {
   el instanceof TopLevel and
   el.getLocation().getStartLine() = 0 and
   el.getLocation().getStartColumn() = 0
+  or
+  el instanceof @decorator_list // there is no public API for this.
   or
   // relaxing aggressive type inference.
   none()
@@ -500,9 +505,11 @@ private module PrintJavaScript {
     override Parameter element;
 
     override AstNode getChildNode(int childIndex) {
-      childIndex = 0 and result = element.getTypeAnnotation()
+      result = super.getChildNode(childIndex) // in case the parameter is a destructuring pattern
       or
-      childIndex = 1 and result = element.getDefault()
+      childIndex = -2 and result = element.getTypeAnnotation()
+      or
+      childIndex = -1 and result = element.getDefault()
     }
   }
 
