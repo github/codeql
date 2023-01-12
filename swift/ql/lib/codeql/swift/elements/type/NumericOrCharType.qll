@@ -19,8 +19,8 @@ class CharacterType extends StructType {
 /**
  * An integer-like type. For example, `Int`, `Int16`, `Uint16`, etc.
  */
-class IntegerType extends Type {
-  IntegerType() {
+class IntegralType extends Type {
+  IntegralType() {
     this.getName() =
       ["Int", "Int8", "Int16", "Int32", "Int64", "UInt", "UInt8", "UInt16", "UInt32", "UInt64"]
     or
@@ -29,18 +29,16 @@ class IntegerType extends Type {
 }
 
 /** The `Bool` type. */
-class BooleanType extends Type {
-  BooleanType() { this.getName() = "Bool" }
+class BoolType extends Type {
+  BoolType() { this.getName() = "Bool" }
 }
 
 /**
- * A numeric-like type. This includes the types `Character`, `Bool`, and all
- * the integer-like types.
+ * A numeric type. This includes the integer and floating point types.
  */
-class NumericOrCharType extends Type {
-  NumericOrCharType() {
-    this instanceof CharacterType or
-    this instanceof IntegerType or
-    this instanceof BooleanType
+class NumericType extends Type {
+  NumericType() {
+    this instanceof IntegralType or
+    this instanceof FloatingPointType
   }
 }
