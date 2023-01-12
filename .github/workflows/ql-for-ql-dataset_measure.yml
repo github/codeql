@@ -28,13 +28,15 @@ jobs:
         uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
         with:
           languages: javascript # does not matter
+      - uses: ./.github/actions/os-version
+        id: os_version
       - uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
             ql/target
-          key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-qltest-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
       - name: Build Extractor
         run: cd ql; env "PATH=$PATH:`dirname ${CODEQL}`" ./scripts/create-extractor-pack.sh
         env:
