@@ -1,0 +1,3 @@
+# Avoid checking in ML models
+# This matches the mlModels property of qlpack.yml.
+resources/*.codeqlmodel

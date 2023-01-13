@@ -1,0 +1,10 @@
+name: codeql/java-experimental-atm-model-building
+description: CodeQL libraries for building machine learning models for the experimental ML-powered queries
+extractor: java
+library: false
+groups:
+    - java
+    - experimental
+dependencies:
+    codeql/java-experimental-atm-lib: ${workspace}
+    codeql/java-experimental-atm-model: "0.0.0"

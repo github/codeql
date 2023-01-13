@@ -1,0 +1,8 @@
+name: codeql/java-experimental-atm-model
+description: Machine learning model supporting the experimental ML-powered queries
+version: 0.0.1
+groups:
+    - java
+    - experimental
+mlModels:
+    - "resources/*.codeqlmodel"

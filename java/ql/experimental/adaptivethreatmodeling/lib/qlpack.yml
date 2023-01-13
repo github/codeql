@@ -1,0 +1,10 @@
+name: codeql/java-experimental-atm-lib
+description: CodeQL libraries for the experimental ML-powered queries
+version: 0.4.5
+extractor: java
+library: true
+groups:
+    - java
+    - experimental
+dependencies:
+    codeql/java-all: ${workspace}
