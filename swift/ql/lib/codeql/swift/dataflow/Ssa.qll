@@ -165,6 +165,14 @@ module Ssa {
         // TODO: We should probably enumerate more cfg nodes here.
         value.(PropertyGetterCfgNode).getRef() = init
       )
+      or
+      exists(VarDecl var, SsaInput::BasicBlock bb, int blockIndex, ConditionElement ce, Expr init |
+        this.definesAt(var, bb, blockIndex) and
+        ce.getPattern() = bb.getNode(blockIndex).getNode().asAstNode() and
+        init = ce.getInitializer()
+      |
+        value.getNode().asAstNode() = init
+      )
     }
   }
 
