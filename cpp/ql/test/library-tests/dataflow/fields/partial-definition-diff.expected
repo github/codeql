@@ -153,6 +153,8 @@
 | by_reference.cpp:16:11:16:11 | a | AST only |
 | by_reference.cpp:32:15:32:15 | s | IR only |
 | by_reference.cpp:36:18:36:18 | this | IR only |
+| by_reference.cpp:44:26:44:29 | this | IR only |
+| by_reference.cpp:69:22:69:23 | & ... | IR only |
 | by_reference.cpp:84:10:84:10 | a | AST only |
 | by_reference.cpp:88:9:88:9 | a | AST only |
 | by_reference.cpp:92:3:92:5 | * ... | AST only |

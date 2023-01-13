@@ -520,3 +520,14 @@ void uncertain_definition() {
   stackArray[1] = clean;
   sink(stackArray[0]); // $ ast=519:19 ir SPURIOUS: ast=517:7
 }
+
+void set_through_const_pointer(int x, const int **e)
+{
+  *e = &x;
+}
+
+void test_set_through_const_pointer(int *e)
+{
+  set_through_const_pointer(source(), &e);
+  sink(*e); // $ ir MISSING: ast
+}
