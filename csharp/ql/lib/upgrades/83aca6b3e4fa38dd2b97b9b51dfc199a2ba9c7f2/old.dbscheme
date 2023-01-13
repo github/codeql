@@ -1137,8 +1137,6 @@ case @expr.kind of
 /* C# 11.0 */
 | 131 = @list_pattern_expr
 | 132 = @slice_pattern_expr
-| 133 = @urshift_expr
-| 134 = @assign_urshift_expr
 /* Preprocessor */
 | 999 = @define_symbol_expr
 ;
@@ -1162,7 +1160,7 @@ case @expr.kind of
 @assign_arith_expr = @assign_add_expr | @assign_sub_expr | @assign_mul_expr | @assign_div_expr
                    | @assign_rem_expr
 @assign_bitwise_expr = @assign_and_expr | @assign_or_expr | @assign_xor_expr
-                   | @assign_lshift_expr | @assign_rshift_expr | @assign_urshift_expr;
+                   | @assign_lshift_expr | @assign_rshift_expr;
 
 @member_access_expr = @field_access_expr | @property_access_expr | @indexer_access_expr | @event_access_expr
                     | @method_access_expr | @type_access_expr | @dynamic_member_access_expr;
@@ -1193,7 +1191,7 @@ case @expr.kind of
 @log_expr = @un_log_op_expr | @bin_log_op_expr | @ternary_log_op_expr;
 
 @bin_bit_op_expr =  @bit_and_expr | @bit_or_expr | @bit_xor_expr | @lshift_expr
-                 | @rshift_expr | @urshift_expr;
+                 | @rshift_expr;
 @un_bit_op_expr = @bit_not_expr;
 @bit_expr = @un_bit_op_expr | @bin_bit_op_expr;
 
