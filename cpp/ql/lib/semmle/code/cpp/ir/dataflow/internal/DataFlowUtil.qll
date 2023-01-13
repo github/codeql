@@ -268,14 +268,20 @@ class Node extends TIRDataFlowNode {
    * Gets the variable corresponding to this node, if any. This can be used for
    * modeling flow in and out of global variables.
    */
-  Variable asVariable() { result = this.asVariable(1) }
+  Variable asVariable() { this = TVariableNode(result, 1) }
 
-  Variable asVariable(int indirectionIndex) {
-    exists(VariableNode varNode | this = varNode |
-      varNode.getVariable() = result and
-      varNode.getIndirectionIndex() = indirectionIndex
-    )
+  /**
+   * Gets the `indirectionIndex`'th indirection of this node's underlying variable, if any.
+   *
+   * This can be used for modeling flow in and out of global variables.
+   */
+  Variable asIndirectVariable(int indirectionIndex) {
+    indirectionIndex > 1 and
+    this = TVariableNode(result, indirectionIndex)
   }
+
+  /** Gets an indirection of this node's underlying variable, if any. */
+  Variable asIndirectVariable() { result = this.asIndirectVariable(_) }
 
   /**
    * Gets the expression that is partially defined by this node, if any.
@@ -510,11 +516,16 @@ class FinalGlobalValue extends Node, TFinalGlobalValue {
 
   override Declaration getFunction() { result = globalUse.getIRFunction().getFunction() }
 
-  override DataFlowType getType() { result instanceof VoidType } // TODO
+  override DataFlowType getType() {
+    exists(int indirectionIndex |
+      indirectionIndex = globalUse.getIndirectionIndex() and
+      result = getTypeImpl(globalUse.getUnspecifiedType(), indirectionIndex - 1)
+    )
+  }
 
   final override Location getLocationImpl() { result = globalUse.getLocation() }
 
-  override string toStringImpl() { result = "FinalGlobalValue" }
+  override string toStringImpl() { result = globalUse.toString() }
 }
 
 class InitialGlobalValue extends Node, TInitialGlobalValue {
@@ -528,11 +539,16 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
 
   override Declaration getFunction() { result = globalDef.getIRFunction().getFunction() }
 
-  override DataFlowType getType() { result instanceof VoidType } // TODO
+  override DataFlowType getType() {
+    exists(int indirectionIndex |
+      indirectionIndex = globalDef.getIndirectionIndex() and
+      result = getTypeImpl(globalDef.getUnspecifiedType(), indirectionIndex)
+    )
+  }
 
   final override Location getLocationImpl() { result = globalDef.getLocation() }
 
-  override string toStringImpl() { result = "InitialGlobalValue" }
+  override string toStringImpl() { result = globalDef.toString() }
 }
 
 /**
@@ -1173,7 +1189,9 @@ class VariableNode extends Node, TVariableNode {
     result = v
   }
 
-  override DataFlowType getType() { result = v.getType() }
+  override DataFlowType getType() {
+    result = getTypeImpl(v.getUnspecifiedType(), indirectionIndex - 1)
+  }
 
   final override Location getLocationImpl() {
     // Certain variables (such as parameters) can have multiple locations.
@@ -1185,7 +1203,9 @@ class VariableNode extends Node, TVariableNode {
     result instanceof UnknownDefaultLocation
   }
 
-  override string toStringImpl() { result = v.toString() }
+  override string toStringImpl() {
+    if indirectionIndex = 1 then result = v.toString() else result = v.toString() + " indirection"
+  }
 }
 
 /**

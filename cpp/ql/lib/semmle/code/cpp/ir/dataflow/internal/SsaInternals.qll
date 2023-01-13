@@ -359,7 +359,13 @@ class GlobalUse extends TGlobalUse {
 
   final Cpp::Location getLocation() { result = f.getLocation() }
 
-  string toString() { result = global.toString() + " [final value from " + f.toString() + "]" }
+  string toString() {
+    if indirectionIndex = 1
+    then result = global.toString()
+    else result = global.toString() + " indirection"
+  }
+
+  Type getUnspecifiedType() { result = global.getUnspecifiedType() }
 }
 
 class GlobalDef extends TGlobalDef {
@@ -391,7 +397,13 @@ class GlobalDef extends TGlobalDef {
 
   final Cpp::Location getLocation() { result = f.getLocation() }
 
-  string toString() { result = global.toString() + " [initial value in " + f.toString() + "]" }
+  string toString() {
+    if indirectionIndex = 0
+    then result = global.toString()
+    else result = global.toString() + " indirection"
+  }
+
+  Type getUnspecifiedType() { result = global.getUnspecifiedType() }
 }
 
 /**

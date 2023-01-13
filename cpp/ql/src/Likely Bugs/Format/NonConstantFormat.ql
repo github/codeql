@@ -122,6 +122,9 @@ predicate isSanitizerNode(DataFlow::Node node) {
   or
   not exists(node.asIndirectExpr()) and
   not exists(node.asDefiningArgument()) and
+  not exists(node.asIndirectVariable()) and
+  not node instanceof DataFlow::InitialGlobalValue and
+  not node instanceof DataFlow::FinalGlobalValue and
   cannotContainString(node.getType(), false)
 }
 

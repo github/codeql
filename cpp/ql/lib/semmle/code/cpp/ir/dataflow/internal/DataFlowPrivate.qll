@@ -516,14 +516,22 @@ predicate jumpStep(Node n1, Node n2) {
   exists(Cpp::GlobalOrNamespaceVariable v |
     exists(Ssa::GlobalUse globalUse |
       v = globalUse.getVariable() and
-      n1.(FinalGlobalValue).getGlobalUse() = globalUse and
-      v = n2.asVariable(globalUse.getIndirectionIndex())
+      n1.(FinalGlobalValue).getGlobalUse() = globalUse
+    |
+      globalUse.getIndirectionIndex() = 1 and
+      v = n2.asVariable()
+      or
+      v = n2.asIndirectVariable(globalUse.getIndirectionIndex())
     )
     or
     exists(Ssa::GlobalDef globalDef |
       v = globalDef.getVariable() and
-      v = n1.asVariable(globalDef.getIndirectionIndex()) and
       n2.(InitialGlobalValue).getGlobalDef() = globalDef
+    |
+      globalDef.getIndirectionIndex() = 1 and
+      v = n1.asVariable()
+      or
+      v = n1.asIndirectVariable(globalDef.getIndirectionIndex())
     )
   )
 }
