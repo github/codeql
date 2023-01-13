@@ -169,7 +169,7 @@ module UnsafeShellCommandConstruction {
     or
     exists(API::Node node |
       node.asSink() = sys.getOptionsArg() and
-      node.getMember("shell").getAValueReachingSink().mayHaveBooleanValue(true)
+      node.getMember("shell").asSink().mayHaveBooleanValue(true)
     )
   }
 

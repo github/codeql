@@ -210,12 +210,7 @@ module API {
      * This is similar to `asSink()` but additionally includes nodes that transitively reach a sink by data flow.
      * See `asSink()` for examples.
      */
-    DataFlow::Node getAValueReachingSink() {
-      result = Impl::trackDefNode(this.asSink())
-      or
-      // in case `asSink()` is not a `SourceNode`.
-      result = this.asSink()
-    }
+    DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.asSink()) }
 
     /** DEPRECATED. This predicate has been renamed to `asSink`. */
     deprecated DataFlow::Node getARhs() { result = this.asSink() }
