@@ -26,5 +26,9 @@ where
   config.isKnownSink(sink) and
   // If there are _any_ erroneous endpoints, return nothing. This will prevent us from accidentally running this query
   // when there's a codex-generated data extension file in `java/ql/lib/ext`.
-  not EndpointCharacteristics::erroneousEndpoints(_, _, _, _, _)
+  not EndpointCharacteristics::erroneousEndpoints(_, _, _, _, _) and
+  // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
+  // treated by the actual query as a sanitizer, since the final logic is something like
+  // `isSink(n) and not isSanitizer(n)`. We don't want to include such nodes as positive examples in the prompt.
+  not config.isSanitizer(sink)
 select sink, config.getASinkEndpointType().getDescription()
