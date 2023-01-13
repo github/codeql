@@ -79,16 +79,10 @@ class FileInterceptor {
   int open(const char* path, int flags, mode_t mode = 0) const {
     fs::path fsPath{path};
     assert((flags & O_ACCMODE) == O_RDONLY);
+    // try to use the hash map first
     errno = 0;
-    // first, try the same path underneath the artifact store
-    if (auto ret = original::open(redirectedPath(path).c_str(), flags);
-        ret >= 0 || errno != ENOENT) {
-      return ret;
-    }
-    errno = 0;
-    // then try to use the hash map
     if (auto hashed = hashPath(path)) {
-      if (auto ret = original::open(hashed->c_str(), flags); ret >= 0 || errno != ENOENT) {
+      if (auto ret = original::open(hashed->c_str(), flags); errno != ENOENT) {
         return ret;
       }
     }
