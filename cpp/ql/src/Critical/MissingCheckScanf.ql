@@ -72,7 +72,7 @@ predicate revFlow0(Instruction instr) {
 }
 
 /**
- * Holds if `instr` is part of a path from a call `to a `scanf`-like function
+ * Holds if `instr` is part of a path from a call to a `scanf`-like function
  * that writes to a variable with value number `vn`, without passing through
  * redefinitions of the variable.
  */
@@ -91,7 +91,7 @@ private predicate fwdFlow(Instruction instr, ValueNumber vn) {
 }
 
 /**
- * Holds if `instr` is part of a path from a call `to a `scanf`-like function
+ * Holds if `instr` is part of a path from a call to a `scanf`-like function
  * that writes to a variable with value number `vn`, without passing through
  * redefinitions of the variable.
  */
