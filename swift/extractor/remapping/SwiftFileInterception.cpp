@@ -9,7 +9,8 @@
 #include <cassert>
 
 #include "swift/extractor/infra/file/FileHash.h"
-#include "swift/extractor/infra/file/FileHash.h"
+#include "swift/extractor/infra/file/PathHash.h"
+#include "swift/extractor/infra/file/Path.h"
 
 #ifdef __APPLE__
 // path is hardcoded as otherwise redirection could break when setting DYLD_FALLBACK_LIBRARY_PATH
@@ -70,9 +71,9 @@ namespace codeql {
 
 class FileInterceptor {
  public:
-  FileInterceptor(fs::path&& workingDir) : workingDir{std::move(workingDir)} {
+  FileInterceptor(fs::path&& workingDir, fs::path&& hashCacheDir)
+      : workingDir{std::move(workingDir)}, hashCacheDir{std::move(hashCacheDir)} {
     fs::create_directories(hashesPath());
-    fs::create_directories(storePath());
   }
 
   int open(const char* path, int flags, mode_t mode = 0) const {
@@ -119,17 +120,37 @@ class FileInterceptor {
   }
 
   std::optional<fs::path> hashPath(const fs::path& target) const {
-    if (auto fd = original::open(target.c_str(), O_RDONLY | O_CLOEXEC); fd >= 0) {
-      return hashesPath() / hashFile(fd);
+    if (auto hashed = getHashOfRealFile(hashCacheDir, target)) {
+      return hashesPath() / *hashed;
     }
     return std::nullopt;
   }
 
   fs::path workingDir;
+  fs::path hashCacheDir;
 };
 
-int openReal(const fs::path& path) {
-  return original::open(path.c_str(), O_RDONLY | O_CLOEXEC);
+std::optional<std::string> getHashOfRealFile(const fs::path& cacheDir,
+                                             const std::filesystem::path& path) {
+  auto resultLink = cacheDir / resolvePath(path).relative_path();
+  std::error_code ec;
+  if (auto result = read_symlink(resultLink, ec); !ec) {
+    return result.string();
+  } else if (ec == std::errc::no_such_file_or_directory) {
+    if (auto fd = original::open(path.c_str(), O_RDONLY | O_CLOEXEC); fd >= 0) {
+      if (auto hashed = hashFile(fd); !hashed.empty()) {
+        fs::create_directories(resultLink.parent_path(), ec);
+        if (!ec) {
+          fs::create_symlink(hashed, resultLink, ec);
+        }
+        if (ec) {
+          std::cerr << "Unable to cache hash result (" << ec.message() << ")";
+        }
+        return hashed;
+      }
+    }
+  }
+  return std::nullopt;
 }
 
 fs::path redirect(const fs::path& target) {
@@ -140,8 +161,10 @@ fs::path redirect(const fs::path& target) {
   }
 }
 
-std::shared_ptr<FileInterceptor> setupFileInterception(fs::path workginDir) {
-  auto ret = std::make_shared<FileInterceptor>(std::move(workginDir));
+std::shared_ptr<FileInterceptor> setupFileInterception(
+    const SwiftExtractorConfiguration& configuration) {
+  auto ret = std::make_shared<FileInterceptor>(configuration.getTempArtifactDir(),
+                                               configuration.getHashCacheDir());
   fileInterceptorInstance() = ret;
   return ret;
 }

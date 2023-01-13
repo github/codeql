@@ -5,15 +5,17 @@
 #include <filesystem>
 #include <memory>
 
-#include "swift/extractor/infra/file/PathHash.h"
+#include "swift/extractor/config/SwiftExtractorConfiguration.h"
 
 namespace codeql {
 
-int openReal(const std::filesystem::path& path);
+std::optional<std::string> getHashOfRealFile(const std::filesystem::path& cacheDir,
+                                             const std::filesystem::path& path);
 
 class FileInterceptor;
 
-std::shared_ptr<FileInterceptor> setupFileInterception(std::filesystem::path workingDir);
+std::shared_ptr<FileInterceptor> setupFileInterception(
+    const SwiftExtractorConfiguration& configuration);
 
 std::filesystem::path redirect(const std::filesystem::path& target);
 }  // namespace codeql

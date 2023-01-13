@@ -191,7 +191,7 @@ int main(int argc, char** argv) {
 
   const auto configuration = configure(argc, argv);
 
-  auto openInterception = codeql::setupFileInterception(configuration.getTempArtifactDir());
+  auto openInterception = codeql::setupFileInterception(configuration);
 
   Observer observer(configuration);
   int frontend_rc = swift::performFrontend(configuration.frontendOptions, "swift-extractor",

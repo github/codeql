@@ -28,6 +28,9 @@ struct SwiftExtractorConfiguration {
   std::filesystem::path getTempArtifactDir() const {
     return scratchDir / "swift-extraction-artifacts";
   }
+
+  // A temporary directory that contains a persistent hash cache in the form of symbolic links
+  std::filesystem::path getHashCacheDir() const { return scratchDir / "swift-hash-cache"; }
 };
 
 }  // namespace codeql

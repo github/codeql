@@ -33,17 +33,14 @@ fs::path getModuleTarget(const std::string_view& name, const std::string_view& h
   return ret;
 }
 
-std::optional<std::string> getModuleHash(const fs::path& moduleFile) {
-  if (auto fd = openReal(moduleFile); fd >= 0) {
-    if (auto hash = hashFile(fd); !hash.empty()) {
-      return hash;
-    }
-  }
-  return std::nullopt;
+std::optional<std::string> getModuleHash(const SwiftExtractorConfiguration& configuration,
+                                         const fs::path& moduleFile) {
+  return getHashOfRealFile(configuration.getHashCacheDir(), moduleFile);
 }
 
-std::optional<std::string> getModuleHash(const swift::ModuleDecl* module) {
-  return getModuleHash(std::string_view{module->getModuleFilename()});
+std::optional<std::string> getModuleHash(const SwiftExtractorConfiguration& configuration,
+                                         const swift::ModuleDecl* module) {
+  return getModuleHash(configuration, std::string_view{module->getModuleFilename()});
 }
 
 std::string getSourceId(const fs::path& file) {
@@ -68,7 +65,7 @@ std::vector<ModuleInfo> emitModuleImplementations(SwiftExtractorState& state,
   std::vector<ModuleInfo> ret;
   ret.reserve(state.originalOutputModules.size());
   for (const auto& modulePath : state.originalOutputModules) {
-    if (auto hash = getModuleHash(modulePath)) {
+    if (auto hash = getModuleHash(state.configuration, modulePath)) {
       auto target = getModuleTarget(moduleName, *hash);
       if (auto moduleTrap = createTargetTrapDomain(state, target, TrapType::linkage)) {
         moduleTrap->createLabelWithImplementationId<ModuleDeclTag>(*hash, moduleName);
@@ -92,7 +89,7 @@ void emitSourceObjectDependencies(const SwiftExtractorState& state,
   if (auto object = createTargetObjectDomain(state, target)) {
     object->emitObject(id);
     for (auto encounteredModule : state.encounteredModules) {
-      if (auto depHash = getModuleHash(encounteredModule)) {
+      if (auto depHash = getModuleHash(state.configuration, encounteredModule)) {
         object->emitObjectDependency(getModuleId(encounteredModule, *depHash));
       }
     }
@@ -123,13 +120,13 @@ void emitModuleObjectDependencies(const SwiftExtractorState& state,
   if (auto object = createTargetObjectDomain(state, target)) {
     object->emitObject(id);
     for (auto encounteredModule : state.encounteredModules) {
-      if (auto depHash = getModuleHash(encounteredModule)) {
+      if (auto depHash = getModuleHash(state.configuration, encounteredModule)) {
         object->emitObjectDependency(getModuleId(encounteredModule, *depHash));
       }
     }
     if (options.RequestedAction == swift::FrontendOptions::ActionType::MergeModules) {
       for (const auto& input : options.InputsAndOutputs.getAllInputs()) {
-        if (auto mergedHash = getModuleHash(input.getFileName())) {
+        if (auto mergedHash = getModuleHash(state.configuration, input.getFileName())) {
           object->emitObjectDependency(getModuleId(options.ModuleName, *mergedHash));
           replaceMergedModulesImplementation(state, options.ModuleName, target, *mergedHash);
         }
