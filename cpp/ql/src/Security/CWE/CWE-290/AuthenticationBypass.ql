@@ -34,7 +34,7 @@ predicate hardCodedAddressOrIP(StringLiteral txt) {
     s.matches("\"www.%\"") or
     s.matches("\"http:%\"") or
     s.matches("\"https:%\"") or
-    s.regexpMatch("\".*\\." + getATopLevelDomain() + "\"")
+    s.regexpMatch("\".*\\.(" + concat(getATopLevelDomain(), "|") + ")\"")
   )
 }
 
