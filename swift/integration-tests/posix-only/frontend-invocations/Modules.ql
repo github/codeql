@@ -1,5 +1,5 @@
 import swift
 
 from ModuleDecl m
-where not m.getName().startsWith("_")
+where m.getName().charAt(0) != "_"
 select m
