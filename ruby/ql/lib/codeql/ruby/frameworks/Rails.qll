@@ -317,9 +317,7 @@ private class LocalAssignsHashSyntheticGlobal extends SummaryComponent::Syntheti
 private class RenderLocalsSummary extends SummarizedCallable {
   private LocalAssignsHashSyntheticGlobal glob;
 
-  RenderLocalsSummary() {
-    this = "rails_render_locals()" + glob.getId()
-  }
+  RenderLocalsSummary() { this = "rails_render_locals()" + glob.getId() }
 
   override Rails::RenderCall getACall() { result.getTemplateFile() = glob.getErbFile() }
 
@@ -334,9 +332,7 @@ private class RenderLocalsSummary extends SummarizedCallable {
 private class AccessLocalsSummary extends SummarizedCallable {
   private LocalAssignsHashSyntheticGlobal glob;
 
-  AccessLocalsSummary() {
-    this = "rails_local_assigns()" + glob.getId()
-  }
+  AccessLocalsSummary() { this = "rails_local_assigns()" + glob.getId() }
 
   override MethodCall getACall() {
     glob.getId() = getErbFileIdentifier(result.getLocation().getFile()) and
@@ -354,25 +350,17 @@ private string getAMethodNameFromErbFile(ErbFile f) {
   result = any(MethodCall c | c.getLocation().getFile() = f).getMethodName()
 }
 
-private predicate renderHasLocalsKey(Rails::RenderCall c, string key) {
-  exists(DataFlow::HashLiteralNode hashLitNode, DataFlow::CallNode renderCall |
-    renderCall.asExpr().getExpr() = c and
-    hashLitNode.flowsTo(renderCall.getKeywordArgument("locals"))
-  |
-    key = hashLitNode.getAKeyValuePair().getKey().getConstantValue().getStringlikeValue()
-  )
-}
-
 private class AccessLocalsKeySummary extends SummarizedCallable {
   private LocalAssignsHashSyntheticGlobal glob;
   private string methodName;
 
   AccessLocalsKeySummary() {
     this = "rails_locals_key()" + glob.getId() + "#" + methodName and
-    methodName = getAMethodNameFromErbFile(glob.getErbFile())
-    // TODO: this would cut down massively on impossible flow steps, but fails due to non-monotonic recusrion problems
-    // and
-    // renderHasLocalsKey(glob.getARenderCall(), methodName)
+    methodName = getAMethodNameFromErbFile(glob.getErbFile()) and
+    // Limit method calls to those that could plausibly be a key in a `locals` hash argument
+    // TODO: this could be more precise but for problems using the dataflow library in this context
+    methodName =
+      any(HashLiteral l).getAKeyValuePair().getKey().getConstantValue().getStringlikeValue()
   }
 
   override MethodCall getACall() {
