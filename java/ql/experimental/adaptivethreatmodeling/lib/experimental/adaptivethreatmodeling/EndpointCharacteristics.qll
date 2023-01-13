@@ -379,12 +379,26 @@ private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
  * TODO: Is this correct?
  */
 private class SafeExternalApiMethodCharacteristic extends NotASinkCharacteristic {
-  SafeExternalApiMethodCharacteristic() { this = "safe external API method" }
+  string baseDescription;
+
+  SafeExternalApiMethodCharacteristic() {
+    baseDescription = "safe external API method " and
+    this = any(string s | s = baseDescription + ["org.junit", "other than org.junit"])
+  }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
     exists(Expr::Call call |
       n.asExpr() = call.getAnArgument() and
-      call.getCallee() instanceof ExternalAPIs::SafeExternalApiMethod
+      call.getCallee() instanceof ExternalAPIs::SafeExternalApiMethod and
+      (
+        // The vast majority of calls to safe external API methods involve junit. To get a diverse set of negative
+        // examples, we break those off into a separate characteristic.
+        call.getCallee().getDeclaringType().getPackage().getName().matches("org.junit%") and
+        this = baseDescription + "org.junit"
+        or
+        not call.getCallee().getDeclaringType().getPackage().getName().matches("org.junit%") and
+        this = baseDescription + "other than org.junit"
+      )
     )
   }
 }
