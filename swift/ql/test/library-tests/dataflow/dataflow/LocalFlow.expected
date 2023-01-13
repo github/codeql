@@ -327,8 +327,6 @@
 | test.swift:387:32:387:32 | a | test.swift:390:37:390:37 | a |
 | test.swift:390:13:390:33 | SSA def(x) | test.swift:391:19:391:19 | x |
 | test.swift:390:13:390:33 | SSA def(y) | test.swift:392:19:392:19 | y |
-| test.swift:390:37:390:37 | a | test.swift:390:13:390:33 | SSA def(x) |
-| test.swift:390:37:390:37 | a | test.swift:390:13:390:33 | SSA def(y) |
 | test.swift:390:37:390:37 | a | test.swift:407:32:407:32 | a |
 | test.swift:395:9:395:13 | SSA def(b) | test.swift:397:12:397:12 | b |
 | test.swift:395:22:395:40 | call to ... | test.swift:395:9:395:13 | SSA def(b) |
@@ -340,8 +338,6 @@
 | test.swift:407:32:407:32 | a | test.swift:410:37:410:37 | a |
 | test.swift:410:13:410:33 | SSA def(x) | test.swift:411:19:411:19 | x |
 | test.swift:410:13:410:33 | SSA def(y) | test.swift:412:19:412:19 | y |
-| test.swift:410:37:410:37 | a | test.swift:410:13:410:33 | SSA def(x) |
-| test.swift:410:37:410:37 | a | test.swift:410:13:410:33 | SSA def(y) |
 | test.swift:410:37:410:37 | a | test.swift:427:32:427:32 | a |
 | test.swift:415:9:415:9 | SSA def(c) | test.swift:417:12:417:12 | c |
 | test.swift:415:13:415:38 | call to ... | test.swift:415:9:415:9 | SSA def(c) |
@@ -353,8 +349,6 @@
 | test.swift:427:32:427:32 | a | test.swift:430:37:430:37 | a |
 | test.swift:430:13:430:33 | SSA def(x) | test.swift:431:19:431:19 | x |
 | test.swift:430:13:430:33 | SSA def(y) | test.swift:432:19:432:19 | y |
-| test.swift:430:37:430:37 | a | test.swift:430:13:430:33 | SSA def(x) |
-| test.swift:430:37:430:37 | a | test.swift:430:13:430:33 | SSA def(y) |
 | test.swift:438:21:438:27 | SSA def(y) | test.swift:441:27:441:27 | y |
 | test.swift:438:21:438:27 | SSA def(y) | test.swift:446:22:446:22 | y |
 | test.swift:438:21:438:27 | y | test.swift:438:21:438:27 | SSA def(y) |
@@ -372,5 +366,3 @@
 | test.swift:448:10:448:37 | SSA def(b) | test.swift:450:19:450:19 | b |
 | test.swift:455:8:455:17 | SSA def(x) | test.swift:456:19:456:19 | x |
 | test.swift:455:8:455:17 | SSA def(y) | test.swift:457:19:457:19 | y |
-| test.swift:455:21:455:29 | call to source2() | test.swift:455:8:455:17 | SSA def(x) |
-| test.swift:455:21:455:29 | call to source2() | test.swift:455:8:455:17 | SSA def(y) |

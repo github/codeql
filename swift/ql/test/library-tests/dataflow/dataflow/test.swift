@@ -453,7 +453,7 @@ func testOptionals2(y: Int?) {
     }
 
     if let (x, y) = source2() {
-        sink(arg: x) // $ flow=455
-        sink(arg: y) // $ flow=455
+        sink(arg: x) // (taint but not data flow)
+        sink(arg: y) // (taint but not data flow)
     }
 }
