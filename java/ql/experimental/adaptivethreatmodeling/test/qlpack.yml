@@ -1,0 +1,4 @@
+name: codeql/java-experimental-atm-tests
+extractor: java
+dependencies:
+    codeql/java-experimental-atm-model-building: ${workspace}
