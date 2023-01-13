@@ -9,4 +9,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2023-01-13-09h29m15s.brave-bridge-7w1p9smf.c8db59733348433ca99089dfe35c899c9c76d6ecf5227fed44de0824a8f691da
