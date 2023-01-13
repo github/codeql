@@ -5,4 +5,4 @@ groups:
     - javascript
     - experimental
 mlModels:
-    - "resources/*.codeqlmodel"
+    - "resources/shellcommand.codeqlmodel"
