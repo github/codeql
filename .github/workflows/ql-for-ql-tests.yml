@@ -78,12 +78,28 @@ jobs:
             ql/target
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-qltest-cargo-${{ hashFiles('ql/rust-toolchain.toml', 'ql/**/Cargo.lock') }}
       - name: Build extractor
+        if: runner.os != 'Windows'
         run: |
           cd ql;
           codeqlpath=$(dirname ${{ steps.find-codeql.outputs.codeql-path }});
           env "PATH=$PATH:$codeqlpath" ./scripts/create-extractor-pack.sh
-      - name: Run a single QL tests
+      - name: Build extractor (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          cd ql;
+          $Env:PATH += ";$(dirname ${{ steps.find-codeql.outputs.codeql-path }})"
+          pwsh ./scripts/create-extractor-pack.ps1
+      - name: Run a single QL tests - Unix
+        if: runner.os != 'Windows'
         run: |
           "${CODEQL}" test run --check-databases --search-path "${{ github.workspace }}/ql/extractor-pack" ql/ql/test/queries/style/DeadCode/DeadCode.qlref
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
+      - name: Run a single QL tests - Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $Env:PATH += ";$(dirname ${{ steps.find-codeql.outputs.codeql-path }})"
+          codeql test run --check-databases --search-path "${{ github.workspace }}/ql/extractor-pack" ql/ql/test/queries/style/DeadCode/DeadCode.qlref
+      
