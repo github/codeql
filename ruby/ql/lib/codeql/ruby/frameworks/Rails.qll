@@ -308,6 +308,9 @@ private class LocalAssignsHashSyntheticGlobal extends SummaryComponent::Syntheti
 
   /** Gets the identifier for this particular locals hash synthetic global. */
   string getId() { result = id }
+
+  /** Gets a call to render that can write to this hash. */
+  Rails::RenderCall getARenderCall() { result.getTemplateFile() = erbFile }
 }
 
 /** A summary for `render` calls linked to some specific ERB file. */
@@ -368,8 +371,8 @@ private class AccessLocalsKeySummary extends SummarizedCallable {
     this = "rails_locals_key()" + glob.getId() + "#" + methodName and
     methodName = getAMethodNameFromErbFile(glob.getErbFile())
     // TODO: this would cut down massively on impossible flow steps, but fails due to non-monotonic recusrion problems
-    //    and
-    //    renderHasLocalsKey(any(Rails::RenderCall c | c.getTemplateFile() = erbFile), methodName))
+    // and
+    // renderHasLocalsKey(glob.getARenderCall(), methodName)
   }
 
   override MethodCall getACall() {
