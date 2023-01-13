@@ -119,6 +119,13 @@ private module Cached {
       def.(Ssa::WriteDefinition).assigns(nodeFrom.getCfgNode()) and
       nodeTo.asDefinition() = def
       or
+      // flow through optional binding `if let`, similarly to assignment
+      exists(ConditionElement ce |
+        ce.getInitializer() = nodeFrom.asExpr() and
+        ce.getPattern() = def.getSourceVariable().getParentPattern() and
+        nodeTo.asDefinition() = def
+      )
+      or
       // step from def to first read
       nodeFrom.asDefinition() = def and
       nodeTo.getCfgNode() = def.getAFirstRead() and
@@ -152,13 +159,6 @@ private module Cached {
     nodeFrom.asExpr() = nodeTo.asExpr().(BindOptionalExpr).getSubExpr()
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(OptionalEvaluationExpr).getSubExpr()
-    or
-    // flow through optional binding `if let`
-    exists(ConditionElement ce, ConcreteVarDecl v |
-      ce.getInitializer() = nodeFrom.asExpr() and
-      ce.getPattern() = v.getParentPattern() and
-      nodeTo.asDefinition().getSourceVariable() = v
-    )
     or
     // flow through nil-coalescing operator `??`
     exists(BinaryExpr nco |
