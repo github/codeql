@@ -6,6 +6,7 @@
  * @precision medium
  * @id java/sensitive-query-with-get
  * @tags security
+ *       experimental
  *       external/cwe/cwe-598
  */
 

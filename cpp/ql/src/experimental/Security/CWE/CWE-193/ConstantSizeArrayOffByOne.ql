@@ -7,6 +7,7 @@
  * @id cpp/constant-array-overflow
  * @tags reliability
  *       security
+ *       experimental
  */
 
 import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysis

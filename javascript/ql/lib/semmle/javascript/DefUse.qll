@@ -302,7 +302,7 @@ deprecated private int nextDefAfter(BasicBlock bb, Variable v, int i, VarDef d) 
  * DEPRECATED: Use the `SSA.qll` library instead.
  */
 deprecated predicate localDefinitionOverwrites(LocalVariable v, VarDef earlier, VarDef later) {
-  exists(BasicBlock bb, int i, int next | next = nextDefAfter(bb, v, i, earlier) |
+  exists(BasicBlock bb, int next | next = nextDefAfter(bb, v, _, earlier) |
     bb.defAt(next, v, later)
     or
     exists(BasicBlock succ | succ = bb.getASuccessor() |

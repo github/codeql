@@ -3,7 +3,7 @@
  * @description A list of supported 3rd party APIs used in the codebase. Excludes APIs exposed by test libraries.
  * @kind metric
  * @tags summary telemetry
- * @id csharp/telemetry/supported-external-api
+ * @id cs/telemetry/supported-external-api
  */
 
 private import csharp

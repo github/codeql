@@ -8,6 +8,7 @@
  * @precision medium
  * @id java/incorrect-url-verification
  * @tags security
+ *       experimental
  *       external/cwe/cwe-939
  */
 

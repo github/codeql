@@ -7,6 +7,7 @@
  * @precision medium
  * @id rb/user-controlled-bypass
  * @tags security
+ *       experimental
  *       external/cwe/cwe-807
  *       external/cwe/cwe-290
  */

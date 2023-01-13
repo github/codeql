@@ -115,7 +115,7 @@ module Make<RegexTreeViewSig TreeImpl> {
     // The `getAnInputSymbolMatching` relation specialized to the chars that exists in strings tested by a `MatchedRegExp`.
     pragma[noinline]
     private InputSymbol specializedGetAnInputSymbolMatching(string char) {
-      exists(string s, RootTerm r | isCandidate(r, s, _, _) | char = s.charAt(_)) and
+      exists(string s | isCandidate(_, s, _, _) | char = s.charAt(_)) and
       result = getAnInputSymbolMatching(char)
     }
 

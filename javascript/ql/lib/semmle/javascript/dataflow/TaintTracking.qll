@@ -611,9 +611,9 @@ module TaintTracking {
         )
         or
         // String.fromCharCode and String.fromCodePoint
-        exists(int i, DataFlow::MethodCallNode mcn |
+        exists(DataFlow::MethodCallNode mcn |
           mcn = succ and
-          pred = mcn.getArgument(i) and
+          pred = mcn.getAnArgument() and
           mcn.getMethodName() = ["fromCharCode", "fromCodePoint"]
         )
         or

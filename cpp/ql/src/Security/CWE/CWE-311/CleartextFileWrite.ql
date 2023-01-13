@@ -54,8 +54,8 @@ predicate filenameOperation(FunctionCall op, Expr path) {
 }
 
 predicate isFileName(GVN gvn) {
-  exists(FunctionCall op, Expr path |
-    filenameOperation(op, path) and
+  exists(Expr path |
+    filenameOperation(_, path) and
     gvn = globalValueNumber(path)
   )
 }

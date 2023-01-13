@@ -859,9 +859,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
     SemSsaPhiNode phi, boolean upper, SemBound b, D::Delta delta, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason
   ) {
-    exists(SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge |
-      boundedPhiInp(phi, inp, edge, b, delta, upper, fromBackEdge, origdelta, reason)
-    )
+    boundedPhiInp(phi, _, _, b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
   /**

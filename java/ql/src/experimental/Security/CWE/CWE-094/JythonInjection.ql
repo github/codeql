@@ -7,6 +7,7 @@
  * @precision high
  * @id java/jython-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-094
  *       external/cwe/cwe-095
  */

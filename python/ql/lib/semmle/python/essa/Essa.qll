@@ -108,7 +108,7 @@ private string location_string(EssaVariable v) {
 
 /* Helper to compute an index for this SSA variable. */
 private int var_index(EssaVariable v) {
-  location_string(v) = rank[result](string s | exists(EssaVariable x | location_string(x) = s) | s)
+  location_string(v) = rank[result](string s | location_string(_) = s | s)
 }
 
 /* Helper for `v.getRepresentation()` */

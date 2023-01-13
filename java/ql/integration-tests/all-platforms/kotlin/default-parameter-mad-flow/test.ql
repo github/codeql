@@ -26,7 +26,7 @@ class InlineFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "flow" and
-    exists(DataFlow::Node src, DataFlow::Node sink, Config c | c.hasFlow(src, sink) |
+    exists(DataFlow::Node sink, Config c | c.hasFlowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""
