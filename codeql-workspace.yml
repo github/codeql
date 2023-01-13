@@ -8,16 +8,16 @@ provide:
   - "cpp/ql/test/query-tests/Security/CWE/CWE-190/semmle/tainted/qlpack.yml"
   - "go/ql/config/legacy-support/qlpack.yml"
   - "go/build/codeql-extractor-go/codeql-extractor.yml"
-  - "javascript/ql/experimental/adaptivethreatmodeling/lib/qlpack.yml"
+  - "*/ql/experimental/adaptivethreatmodeling/lib/qlpack.yml"
   # This pack is explicitly excluded from the workspace since most users
   # will want to use a version of this pack from the package cache. Internal
   # users can uncomment the following line and place a custom ML model
   # in the corresponding pack to test a custom ML model within their local
   # checkout.
-  # - "javascript/ql/experimental/adaptivethreatmodeling/model/qlpack.yml"
-  - "javascript/ql/experimental/adaptivethreatmodeling/modelbuilding/qlpack.yml"
-  - "javascript/ql/experimental/adaptivethreatmodeling/src/qlpack.yml"
-  - "javascript/ql/experimental/adaptivethreatmodeling/test/qlpack.yml"
+  - "*/ql/experimental/adaptivethreatmodeling/model/qlpack.yml"
+  - "*/ql/experimental/adaptivethreatmodeling/modelbuilding/qlpack.yml"
+  - "*/ql/experimental/adaptivethreatmodeling/src/qlpack.yml"
+  - "*/ql/experimental/adaptivethreatmodeling/test/qlpack.yml"
   - "csharp/ql/campaigns/Solorigate/lib/qlpack.yml"
   - "csharp/ql/campaigns/Solorigate/src/qlpack.yml"
   - "csharp/ql/campaigns/Solorigate/test/qlpack.yml"

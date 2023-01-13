@@ -1,0 +1,12 @@
+name: codeql/java-atm-queries
+description: Experimental ML-powered queries for Java
+language: java
+version: 0.4.5
+suites: codeql-suites
+defaultSuiteFile: codeql-suites/java-atm-code-scanning.qls
+groups:
+    - java
+    - experimental
+dependencies:
+    codeql/java-experimental-atm-lib: ${workspace}
+    codeql/java-experimental-atm-model: "0.0.1"
