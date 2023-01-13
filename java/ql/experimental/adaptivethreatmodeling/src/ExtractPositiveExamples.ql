@@ -21,14 +21,10 @@ private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestF
  * the ML-gnerarated, noisy sinks will end up poluting the positive examples used in the prompt!
  */
 
-from
-  DataFlow::Node sink, AtmConfig::AtmConfig config,
-  EndpointCharacteristics::EndpointCharacteristic characteristic, float confidence
+from DataFlow::Node sink, AtmConfig::AtmConfig config
 where
-  characteristic.appliesToEndpoint(sink) and
-  confidence >= characteristic.maximalConfidence() and
-  characteristic.hasImplications(config.getASinkEndpointType(), true, confidence) and
+  config.isKnownSink(sink) and
   // If there are _any_ erroneous endpoints, return nothing. This will prevent us from accidentally running this query
   // when there's a codex-generated data extension file in `java/ql/lib/ext`.
   not EndpointCharacteristics::erroneousEndpoints(_, _, _, _, _)
-select sink, characteristic.toString()
+select sink, config.getASinkEndpointType().getDescription()
