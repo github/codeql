@@ -33,8 +33,8 @@ predicate isSource(ScanfFunctionCall call, int index, Instruction instr, ValueNu
 }
 
 /**
- * Holds if `instr` is control-flow reachable in 0 or more steps from an a call
- * to a call to a `scanf`-like function.
+ * Holds if `instr` is control-flow reachable in 0 or more steps from
+ * a call to a `scanf`-like function.
  */
 pragma[nomagic]
 predicate fwdFlow0(Instruction instr) {
@@ -94,6 +94,9 @@ private predicate fwdFlow(Instruction instr, ValueNumber vn) {
  * Holds if `instr` is part of a path from a call to a `scanf`-like function
  * that writes to a variable with value number `vn`, without passing through
  * redefinitions of the variable.
+ *
+ * Note: This predicate only holds for the `(intr, vn)` pairs that are also
+ * control-flow reachable from an argument to a `scanf`-like function call.
  */
 pragma[nomagic]
 predicate revFlow(Instruction instr, ValueNumber vn) {
