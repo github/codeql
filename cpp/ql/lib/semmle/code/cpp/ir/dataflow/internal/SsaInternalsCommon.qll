@@ -412,7 +412,7 @@ private predicate isModifiableAtImpl(CppType cppType, int indirectionIndex) {
       not base.isConst()
       or
       // but in the case of a class type, it may be the case that
-      // one of the members were modified.
+      // one of the members was modified.
       exists(base.stripType().(Cpp::Class).getAField())
     )
     or
