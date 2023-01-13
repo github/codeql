@@ -100,4 +100,6 @@ jobs:
         with:
           name: diffs
           path: tmp-models/*.html
+          # An html file is only produced if the generated models differ.
+          if-no-files-found: ignore
           retention-days: 20
