@@ -53,6 +53,14 @@ class RegExpConfiguration extends Configuration {
     DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
     DataFlow::FlowState stateTo
   ) {
+    stateFrom = "string" and
+    stateTo = "reg" and
+    exists(DataFlow::CallNode call |
+      call = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"]) and
+      nodeFrom = call.getArgument(0) and
+      nodeTo = call
+    )
+    or
     stateFrom = stateTo and
     stateFrom = "string" and
     (

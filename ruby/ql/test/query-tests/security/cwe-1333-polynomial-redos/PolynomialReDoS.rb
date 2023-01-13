@@ -65,4 +65,15 @@ class FooController < ActionController::Base
   def as_string_indirect (reg_as_string, input)
     input.match? reg_as_string, '' # NOT GOOD
   end
+
+  def re_compile_indirect 
+    name = params[:name] # source
+
+    reg = Regexp.new '^\s+|\s+$'
+    re_compile_indirect_2 reg, name
+  end
+
+  def re_compile_indirect_2 (reg, input)
+    input.gsub reg, '' # NOT GOOD
+  end
 end
