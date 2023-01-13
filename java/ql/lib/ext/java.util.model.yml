@@ -370,11 +370,9 @@ extensions:
       - ["java.util", "Collections", "emptyMap", "()", "manual"]
       - ["java.util", "Collections", "emptySet", "()", "manual"]
       - ["java.util", "Iterator", "hasNext", "()", "manual"]
-      - ["java.util", "List", "clear", "()", "manual"]
       - ["java.util", "List", "contains", "(Object)", "manual"]
       - ["java.util", "List", "isEmpty", "()", "manual"]
       - ["java.util", "List", "size", "()", "manual"]
-      - ["java.util", "Map", "clear", "()", "manual"]
       - ["java.util", "Map", "containsKey", "(Object)", "manual"]
       - ["java.util", "Map", "isEmpty", "()", "manual"]
       - ["java.util", "Map", "size", "()", "manual"]
@@ -388,6 +386,11 @@ extensions:
       - ["java.util", "Set", "size", "()", "manual"]
       - ["java.util", "UUID", "randomUUID", "()", "manual"]
       - ["java.util", "UUID", "toString", "()", "manual"]
+
+      # The below APIs are currently being stored as neutral models since `WithoutElement` has not yet been implemented for Java.
+      # When `WithoutElement` is implemented, these should be changed to summary models of the form `Argument[-1].WithoutElement -> Argument[-1]`.
+      - ["java.util", "List", "clear", "()", "manual"]
+      - ["java.util", "Map", "clear", "()", "manual"]
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
