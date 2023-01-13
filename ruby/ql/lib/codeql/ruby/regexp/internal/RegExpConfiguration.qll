@@ -81,6 +81,8 @@ class RegExpConfiguration extends Configuration {
         nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
     )
   }
+
+  override int fieldFlowBranchLimit() { result = 1 }
 }
 
 private DataFlow::LocalSourceNode trackRegexpType(TypeTracker t) {
