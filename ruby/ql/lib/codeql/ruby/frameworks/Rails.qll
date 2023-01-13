@@ -312,12 +312,10 @@ private class LocalAssignsHashSyntheticGlobal extends SummaryComponent::Syntheti
 
 /** A summary for `render` calls linked to some specific ERB file. */
 private class RenderLocalsSummary extends SummarizedCallable {
-  private string id;
   private LocalAssignsHashSyntheticGlobal glob;
 
   RenderLocalsSummary() {
-    this = "rails_render_locals()" + id and
-    glob.getId() = id
+    this = "rails_render_locals()" + glob.getId()
   }
 
   override Rails::RenderCall getACall() { result.getTemplateFile() = glob.getErbFile() }
@@ -331,16 +329,14 @@ private class RenderLocalsSummary extends SummarizedCallable {
 
 /** A summary for calls to `local_assigns` in a view to access a `render` call `locals` hash. */
 private class AccessLocalsSummary extends SummarizedCallable {
-  private string id;
   private LocalAssignsHashSyntheticGlobal glob;
 
   AccessLocalsSummary() {
-    this = "rails_local_assigns()" + id and
-    glob.getId() = id
+    this = "rails_local_assigns()" + glob.getId()
   }
 
   override MethodCall getACall() {
-    id = getErbFileIdentifier(result.getLocation().getFile()) and
+    glob.getId() = getErbFileIdentifier(result.getLocation().getFile()) and
     result.getMethodName() = "local_assigns"
   }
 
@@ -365,13 +361,11 @@ private predicate renderHasLocalsKey(Rails::RenderCall c, string key) {
 }
 
 private class AccessLocalsKeySummary extends SummarizedCallable {
-  private string id;
   private LocalAssignsHashSyntheticGlobal glob;
   private string methodName;
 
   AccessLocalsKeySummary() {
-    this = "rails_locals_key()" + id and
-    id = glob.getId() + "#" + methodName and
+    this = "rails_locals_key()" + glob.getId() + "#" + methodName and
     methodName = getAMethodNameFromErbFile(glob.getErbFile())
     // TODO: this would cut down massively on impossible flow steps, but fails due to non-monotonic recusrion problems
     //    and
