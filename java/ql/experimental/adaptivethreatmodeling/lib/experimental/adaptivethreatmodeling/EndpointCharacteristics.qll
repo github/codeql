@@ -23,7 +23,7 @@ private import semmle.code.java.Expr as Expr
  *
  * Copied from javascript/ql/experimental/adaptivethreatmodeling/test/endpoint_large_scale/ContradictoryEndpointCharacteristics.ql
  */
-query predicate erroneousEndpoints(
+predicate erroneousEndpoints(
   DataFlow::Node endpoint, EndpointCharacteristic characteristic, EndpointType endpointClass,
   float confidence, string errorMessage
 ) {
@@ -60,13 +60,15 @@ query predicate erroneousEndpoints(
   errorMessage = "Endpoint has high-confidence positive and negative indicators for the same class"
 }
 
-query predicate erroneousConfidences(
+predicate erroneousConfidences(
   EndpointCharacteristic characteristic, float confidence, string errorMessage
 ) {
   characteristic.hasImplications(_, _, confidence) and
   (confidence < 0 or confidence > 1) and
   errorMessage = "Characteristic has an indicator with confidence outside of [0, 1]"
 }
+
+predicate isTypeAccess(DataFlow::Node n) { n.asExpr() instanceof TypeAccess }
 
 /**
  * A set of characteristics that a particular endpoint might have. This set of characteristics is used to make decisions
@@ -357,6 +359,15 @@ abstract class LikelyNotASinkCharacteristic extends EndpointCharacteristic {
     isPositiveIndicator = true and
     confidence = mediumConfidence()
   }
+}
+
+/**
+ * An EndpointFilterCharacteristic that indicates that an endpoint is a type access. Type accesses are not sinks.
+ */
+private class IsTypeAccessCharacteristic extends NotASinkCharacteristic {
+  IsTypeAccessCharacteristic() { this = "is type access" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) { isTypeAccess(n) }
 }
 
 /**
