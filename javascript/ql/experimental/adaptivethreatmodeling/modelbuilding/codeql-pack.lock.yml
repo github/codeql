@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-01-14-09h57m08s.boring-stone-kwkcnkxh.8ae816d89fe866223aab8f70da666a229a4b12f5a1b11526963e3cebbe244d48
+compiled: false
