@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-01-07-22h56m05s.serene-kettle-cm6rqsvc.5e163b38cb49843d145fa42ef0826104d017774c0ed76f6a39307a1513c17835
+compiled: false
