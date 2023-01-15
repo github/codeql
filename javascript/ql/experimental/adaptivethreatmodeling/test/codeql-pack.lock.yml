@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-01-14-09h56m29s.purple-fly-sph9315h.09f438d000c269a1d71e5b9564c6404bb80f6fb16da9611b75aa88f1a80ef338
+compiled: false
