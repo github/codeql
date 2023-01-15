@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-01-14-09h56m44s.icy-planet-djm6m3cc.d7cbebb24563d19f364e9f46f249260b84a13ba42e368ad87d79f88f097de5c2
+compiled: false
