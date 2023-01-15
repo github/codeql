@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-01-14-09h56m58s.tender-pea-btk1smgg.18318bd79c54647d4b6ecc8ccfed1eabf82b753cbaf115f3aa8d69a4641d5028
+compiled: false
