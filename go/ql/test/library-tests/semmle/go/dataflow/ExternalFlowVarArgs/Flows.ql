@@ -1,21 +1,7 @@
 import go
 import semmle.go.dataflow.ExternalFlow
-import CsvValidation
+import ModelValidation
 import TestUtilities.InlineExpectationsTest
-
-class SummaryModelTest extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        //`namespace; type; subtypes; name; signature; ext; input; output; kind`
-        "github.com/nonexistent/test;;false;FunctionWithParameter;;;Argument[0];ReturnValue;value",
-        "github.com/nonexistent/test;;false;FunctionWithSliceParameter;;;Argument[0].ArrayElement;ReturnValue;value",
-        "github.com/nonexistent/test;;false;FunctionWithVarArgsParameter;;;Argument[0].ArrayElement;ReturnValue;value",
-        "github.com/nonexistent/test;;false;FunctionWithSliceOfStructsParameter;;;Argument[0].ArrayElement.Field[github.com/nonexistent/test.A.Field];ReturnValue;value",
-        "github.com/nonexistent/test;;false;FunctionWithVarArgsOfStructsParameter;;;Argument[0].ArrayElement.Field[github.com/nonexistent/test.A.Field];ReturnValue;value"
-      ]
-  }
-}
 
 class DataConfiguration extends DataFlow::Configuration {
   DataConfiguration() { this = "data-configuration" }

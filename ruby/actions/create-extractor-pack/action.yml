@@ -3,12 +3,14 @@ description: Builds the Ruby CodeQL pack
 runs:
   using: composite
   steps:
+    - uses: ./.github/actions/os-version
+      id: os_version
     - name: Cache entire extractor
       id: cache-extractor
       uses: actions/cache@v3
       with:
         path: ruby/extractor-pack
-        key: ${{ runner.os }}-extractor-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}-${{ hashFiles('ruby/**/*.rs') }}-${{ hashFiles('ruby/codeql-extractor.yml', 'ruby/downgrades', 'ruby/tools', 'ruby/ql/lib/ruby.dbscheme', 'ruby/ql/lib/ruby.dbscheme.stats') }}
+        key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-extractor-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}-${{ hashFiles('ruby/**/*.rs') }}-${{ hashFiles('ruby/codeql-extractor.yml', 'ruby/downgrades', 'ruby/tools', 'ruby/ql/lib/ruby.dbscheme', 'ruby/ql/lib/ruby.dbscheme.stats') }}
     - name: Cache cargo
       uses: actions/cache@v3
       if: steps.cache-extractor.outputs.cache-hit != 'true'
@@ -17,7 +19,7 @@ runs:
           ~/.cargo/registry
           ~/.cargo/git
           ruby/target
-        key: ${{ runner.os }}-ruby-qltest-cargo-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}
+        key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-qltest-cargo-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}
     - name: Build Extractor
       if: steps.cache-extractor.outputs.cache-hit != 'true'
       shell: bash
