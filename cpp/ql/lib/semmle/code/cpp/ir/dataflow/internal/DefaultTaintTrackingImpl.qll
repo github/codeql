@@ -168,16 +168,18 @@ private predicate hasUpperBoundsCheck(Variable var) {
 private predicate nodeIsBarrierEqualityCandidate(
   DataFlow::Node node, Operand access, Variable checkedVar
 ) {
-  readsVariable(node.asInstruction(), checkedVar) and
-  any(IRGuardCondition guard).ensuresEq(access, _, _, node.asInstruction().getBlock(), true)
+  exists(Instruction instr | instr = node.asOperand().getDef() |
+    readsVariable(instr, checkedVar) and
+    any(IRGuardCondition guard).ensuresEq(access, _, _, instr.getBlock(), true)
+  )
 }
 
 cached
 private module Cached {
   cached
   predicate nodeIsBarrier(DataFlow::Node node) {
-    exists(Variable checkedVar |
-      node.asExpr().(VariableAccess).getTarget() = checkedVar and
+    exists(Variable checkedVar, Instruction instr | instr = node.asOperand().getDef() |
+      readsVariable(instr, checkedVar) and
       hasUpperBoundsCheck(checkedVar)
     )
     or
