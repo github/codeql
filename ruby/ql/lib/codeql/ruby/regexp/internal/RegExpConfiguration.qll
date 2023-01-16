@@ -11,80 +11,67 @@ private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.TaintTracking
 private import codeql.ruby.frameworks.core.String
 
-class RegExpConfiguration extends Configuration {
-  RegExpConfiguration() { this = "RegExpConfiguration" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
-    // track both string literals and regexp literals - the latter for finding executions of regular expressions that are used elsewhere.
-    state = "string" and
-    source.asExpr() =
-      any(ExprCfgNode e |
-        e.getConstantValue().isString(_) and
-        not e instanceof ExprNodes::VariableReadAccessCfgNode and
-        not e instanceof ExprNodes::ConstantReadAccessCfgNode
-      )
-    or
-    state = "reg" and
-    source.asExpr().getExpr() instanceof Ast::RegExpLiteral
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    state = "string" and
-    sink instanceof RE::RegExpInterpretation::Range
-    or
-    state = "reg" and
-    sink = any(RegexExecution exec).getRegex()
-  }
-
-  override predicate isBarrier(DataFlow::Node node, DataFlow::FlowState state) {
-    state = "string" and
-    exists(DataFlow::CallNode mce | mce.getMethodName() = ["match", "match?"] |
-      // receiver of https://ruby-doc.org/core-2.4.0/String.html#method-i-match
-      node = mce.getReceiver() and
-      mce.getArgument(0) = trackRegexpType()
-      or
-      // first argument of https://ruby-doc.org/core-2.4.0/Regexp.html#method-i-match
-      node = mce.getArgument(0) and
-      mce.getReceiver() = trackRegexpType()
+/**
+ * Gets a node that has been tracked from the string constant `start` to some node.
+ * This is used to figure out where `start` is evaluated as a regular expression against an input string,
+ * or where `start` is compiled into a regular expression.
+ */
+private DataFlow::LocalSourceNode strToReg(DataFlow::Node start, TypeTracker t) {
+  t.start() and
+  start = result and
+  result.asExpr() =
+    any(ExprCfgNode e |
+      e.getConstantValue().isString(_) and
+      not e instanceof ExprNodes::VariableReadAccessCfgNode and
+      not e instanceof ExprNodes::ConstantReadAccessCfgNode
     )
-  }
-
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
-    DataFlow::FlowState stateTo
-  ) {
-    stateFrom = "string" and
-    stateTo = "reg" and
-    exists(DataFlow::CallNode call |
-      call = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"]) and
-      nodeFrom = call.getArgument(0) and
-      nodeTo = call
-    )
-    or
-    stateFrom = stateTo and
-    stateFrom = "string" and
+  or
+  exists(TypeTracker t2 | result = strToReg(start, t2).track(t2, t))
+  or
+  exists(TypeTracker t2, DataFlow::Node nodeFrom | t2 = t.continue() |
+    strToReg(start, t2).flowsTo(nodeFrom) and
     (
       // include taint flow through `String` summaries
-      TaintTracking::localTaintStep(nodeFrom, nodeTo) and
+      TaintTracking::localTaintStep(nodeFrom, result) and
       nodeFrom.(DataFlowPrivate::SummaryNode).getSummarizedCallable() instanceof
         String::SummarizedCallable
       or
       // string concatenations, and
       exists(CfgNodes::ExprNodes::OperationCfgNode op |
-        op = nodeTo.asExpr() and
+        op = result.asExpr() and
         op.getAnOperand() = nodeFrom.asExpr() and
         op.getExpr().(Ast::BinaryOperation).getOperator() = "+"
       )
       or
       // string interpolations
       nodeFrom.asExpr() =
-        nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
+        result.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
     )
-  }
-
-  override int fieldFlowBranchLimit() { result = 1 }
+  )
 }
 
+/**
+ * Gets a node that has been tracked from the regular expression `start` to some node.
+ * This is used to figure out where `start` is executed against an input string.
+ */
+private DataFlow::LocalSourceNode regToReg(DataFlow::Node start, TypeTracker t) {
+  t.start() and
+  start = result and
+  result.asExpr().getExpr() instanceof Ast::RegExpLiteral
+  or
+  exists(TypeTracker t2 | result = regToReg(start, t2).track(t2, t))
+  or
+  exists(TypeTracker t2 |
+    t2 = t.continue() and
+    exists(DataFlow::CallNode call |
+      call = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"]) and
+      strToReg(start, t2).flowsTo(call.getArgument(0)) and
+      result = call
+    )
+  )
+}
+
+/** Gests a node that references a regular expression. */
 private DataFlow::LocalSourceNode trackRegexpType(TypeTracker t) {
   t.start() and
   (
@@ -95,9 +82,28 @@ private DataFlow::LocalSourceNode trackRegexpType(TypeTracker t) {
   exists(TypeTracker t2 | result = trackRegexpType(t2).track(t2, t))
 }
 
+/** Gests a node that references a regular expression. */
 DataFlow::Node trackRegexpType() { trackRegexpType(TypeTracker::end()).flowsTo(result) }
 
+/** Gets a the value for the regular expression that is evaluated at `re`. */
 cached
 DataFlow::Node regExpSource(DataFlow::Node re) {
-  exists(RegExpConfiguration c | c.hasFlow(result, re))
+  exists(DataFlow::LocalSourceNode end | end = strToReg(result, TypeTracker::end()) |
+    end.flowsTo(re) and
+    re instanceof RE::RegExpInterpretation::Range and
+    not exists(DataFlow::CallNode mce | mce.getMethodName() = ["match", "match?"] |
+      // receiver of https://ruby-doc.org/core-2.4.0/String.html#method-i-match
+      re = mce.getReceiver() and
+      mce.getArgument(0) = trackRegexpType()
+      or
+      // first argument of https://ruby-doc.org/core-2.4.0/Regexp.html#method-i-match
+      re = mce.getArgument(0) and
+      mce.getReceiver() = trackRegexpType()
+    )
+  )
+  or
+  exists(DataFlow::LocalSourceNode end | end = regToReg(result, TypeTracker::end()) |
+    end.flowsTo(re) and
+    re = any(RegexExecution exec).getRegex()
+  )
 }
