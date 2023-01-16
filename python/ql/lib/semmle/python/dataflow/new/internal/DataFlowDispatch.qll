@@ -42,13 +42,13 @@ private import semmle.python.internal.CachedStages
 newtype TParameterPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfParameterPosition() or
-  TPositionalParameterPosition(int pos) {
-    pos = any(Parameter p).getPosition()
+  TPositionalParameterPosition(int index) {
+    index = any(Parameter p).getPosition()
     or
     // since synthetic parameters are made for a synthetic summary callable, based on
     // what Argument positions they have flow for, we need to make sure we have such
     // parameter positions available.
-    FlowSummaryImplSpecific::ParsePositions::isParsedPositionalArgumentPosition(_, pos)
+    FlowSummaryImplSpecific::ParsePositions::isParsedPositionalArgumentPosition(_, index)
   } or
   TKeywordParameterPosition(string name) {
     name = any(Parameter p).getName()
@@ -56,15 +56,15 @@ newtype TParameterPosition =
     // see comment for TPositionalParameterPosition
     FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
   } or
-  TStarArgsParameterPosition(int pos) {
+  TStarArgsParameterPosition(int index) {
     // since `.getPosition` does not work for `*args`, we need *args parameter positions
     // at index 1 larger than the largest positional parameter position (and 0 must be
     // included as well). This is a bit of an over-approximation.
-    pos = 0 or
-    pos = any(Parameter p).getPosition() + 1
+    index = 0 or
+    index = any(Parameter p).getPosition() + 1
   } or
-  TSynthStarArgsElementParameterPosition(int pos) { exists(TStarArgsParameterPosition(pos)) } or
-  TSynthLateStarArgsParameterPosition(int pos) { exists(TStarArgsParameterPosition(pos)) } or
+  TSynthStarArgsElementParameterPosition(int index) { exists(TStarArgsParameterPosition(index)) } or
+  TSynthLateStarArgsParameterPosition(int index) { exists(TStarArgsParameterPosition(index)) } or
   TDictSplatParameterPosition()
 
 /** A parameter position. */
@@ -128,13 +128,13 @@ class ParameterPosition extends TParameterPosition {
 newtype TArgumentPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfArgumentPosition() or
-  TPositionalArgumentPosition(int pos) {
-    exists(any(CallNode c).getArg(pos))
+  TPositionalArgumentPosition(int index) {
+    exists(any(CallNode c).getArg(index))
     or
     // since synthetic calls within a summarized callable could use a unique argument
     // position, we need to ensure we make these available (these are specified as
     // parameters in the flow-summary spec)
-    FlowSummaryImplSpecific::ParsePositions::isParsedPositionalParameterPosition(_, pos)
+    FlowSummaryImplSpecific::ParsePositions::isParsedPositionalParameterPosition(_, index)
   } or
   TKeywordArgumentPosition(string name) {
     exists(any(CallNode c).getArgByName(name))
@@ -142,7 +142,9 @@ newtype TArgumentPosition =
     // see comment for TPositionalArgumentPosition
     FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
   } or
-  TStarArgsArgumentPosition(int pos) { exists(Call c | c.getPositionalArg(pos) instanceof Starred) } or
+  TStarArgsArgumentPosition(int index) {
+    exists(Call c | c.getPositionalArg(index) instanceof Starred)
+  } or
   TDictSplatArgumentPosition()
 
 /** An argument position. */
@@ -329,11 +331,9 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
     |
       // a `*args` parameter comes after the last positional parameter. We need to take
       // self parameter into account, so for
-      // `def func(foo, bar, *args)` it should be index 2 (1 + max-index == 1 + 1)
-      // `class A: def func(self, foo, bar, *args)` it should be index 2 (1 + max-index - 1 == 1 + 2 - 1)
-      index =
-        1 + max(int positionalIndex | exists(func.getArg(positionalIndex)) | positionalIndex) -
-          this.positionalOffset()
+      // `def func(foo, bar, *args)` it should be index 2 (pos-param-count == 2)
+      // `class A: def func(self, foo, bar, *args)` it should be index 2 (pos-param-count - 1 == 3 - 1)
+      index = func.getPositionalParameterCount() - this.positionalOffset()
       or
       // no positional argument
       not exists(func.getArg(_)) and index = 0
@@ -579,8 +579,8 @@ Node clsTracker(Class classWithMethod) {
  * call happened in the method `func` (either a method or a classmethod).
  */
 private TypeTrackingNode superCallNoArgumentTracker(TypeTracker t, Function func) {
-  not isStaticmethod(func) and
   t.start() and
+  not isStaticmethod(func) and
   exists(CallCfgNode call | result = call |
     call = getSuperCall() and
     not exists(call.getArg(_)) and
