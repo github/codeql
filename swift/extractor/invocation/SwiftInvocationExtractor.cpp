@@ -1,6 +1,5 @@
 #include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/remapping/SwiftFileInterception.h"
-#include "swift/extractor/infra/file/FileHash.h"
 #include "swift/extractor/infra/TargetDomains.h"
 #include "swift/extractor/trap/generated/TrapTags.h"
 #include "swift/extractor/infra/file/TargetFile.h"

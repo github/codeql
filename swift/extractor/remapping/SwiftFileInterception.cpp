@@ -4,11 +4,14 @@
 #include <filesystem>
 
 #include <dlfcn.h>
+#include <unistd.h>
 #include <mutex>
 #include <optional>
 #include <cassert>
+#include <iostream>
 
-#include "swift/extractor/infra/file/FileHash.h"
+#include <picosha2.h>
+
 #include "swift/extractor/infra/file/PathHash.h"
 #include "swift/extractor/infra/file/Path.h"
 
@@ -63,6 +66,28 @@ auto& fileInterceptorInstance() {
 bool mayBeRedirected(const char* path, int flags = O_RDONLY) {
   return (!fileInterceptorInstance().expired() && (flags & O_ACCMODE) == O_RDONLY &&
           endsWith(path, ".swiftmodule"));
+}
+
+std::optional<std::string> hashFile(const fs::path& path) {
+  auto fd = original::open(path.c_str(), O_RDONLY | O_CLOEXEC);
+  if (fd < 0) {
+    auto ec = std::make_error_code(static_cast<std::errc>(errno));
+    std::cerr << "unable to open " << path << " for reading (" << ec.message() << ")\n";
+    return std::nullopt;
+  }
+  auto hasher = picosha2::hash256_one_by_one();
+  constexpr size_t bufferSize = 16 * 1024;
+  char buffer[bufferSize];
+  ssize_t bytesRead = 0;
+  while ((bytesRead = ::read(fd, buffer, bufferSize)) > 0) {
+    hasher.process(buffer, buffer + bytesRead);
+  }
+  ::close(fd);
+  if (bytesRead < 0) {
+    return std::nullopt;
+  }
+  hasher.finish();
+  return get_hash_hex_string(hasher);
 }
 
 }  // namespace
@@ -124,24 +149,21 @@ class FileInterceptor {
   fs::path hashCacheDir;
 };
 
-std::optional<std::string> getHashOfRealFile(const fs::path& cacheDir,
-                                             const std::filesystem::path& path) {
+std::optional<std::string> getHashOfRealFile(const fs::path& cacheDir, const fs::path& path) {
   auto resultLink = cacheDir / resolvePath(path).relative_path();
   std::error_code ec;
   if (auto result = read_symlink(resultLink, ec); !ec) {
     return result.string();
   } else if (ec == std::errc::no_such_file_or_directory) {
-    if (auto fd = original::open(path.c_str(), O_RDONLY | O_CLOEXEC); fd >= 0) {
-      if (auto hashed = hashFile(fd); !hashed.empty()) {
-        fs::create_directories(resultLink.parent_path(), ec);
-        if (!ec) {
-          fs::create_symlink(hashed, resultLink, ec);
-        }
-        if (ec) {
-          std::cerr << "Unable to cache hash result (" << ec.message() << ")";
-        }
-        return hashed;
+    if (auto hashed = hashFile(path)) {
+      fs::create_directories(resultLink.parent_path(), ec);
+      if (!ec) {
+        fs::create_symlink(*hashed, resultLink, ec);
       }
+      if (ec) {
+        std::cerr << "Unable to cache hash result (" << ec.message() << ")";
+      }
+      return hashed;
     }
   }
   return std::nullopt;
