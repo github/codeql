@@ -1,6 +1,6 @@
 /**
  * @name Clear-text logging of sensitive information
- * @description Logging sensitive information without encryption or hashing can
+ * @description Logging sensitive information in plaintext can
  *              expose it to an attacker.
  * @kind path-problem
  * @problem.severity error

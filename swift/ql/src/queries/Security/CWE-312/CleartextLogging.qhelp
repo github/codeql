@@ -5,37 +5,33 @@
 
 <overview>
 <p>
-Sensitive information that is logged unencrypted is accessible to an attacker
-who gains access to the logs.
+Attackers could gain access to sensitive information that is logged unencrypted.
 </p>
 </overview>
 
 <recommendation>
 <p>
-Ensure that sensitive information is always encrypted or obfuscated before being
-logged.
+Always make sure to encrypt or obfuscate sensitive information before you log it.
 </p>
 
 <p>
-In general, decrypt sensitive information only at the point where it is
-necessary for it to be used in cleartext.
+Generally, you should decrypt sensitive information only at the point where it is necessary for it to be used in cleartext.
 </p>
 
 <p>
-Be aware that external processes often store the standard out and
-standard error streams of the application, causing logged sensitive
-information to be stored.
+Be aware that external processes often store the standard output and
+standard error streams of the application. This will include logged sensitive information.
 </p>
 </recommendation>
 
 <example>
 <p>
 The following example code logs user credentials (in this case, their password)
-in plain text:
+in plaintext:
 </p>
 <sample src="CleartextLoggingBad.swift"/>
 <p>
-Instead, the credentials should be encrypted, obfuscated, or omitted entirely:
+Instead, you should encrypt or obfuscate the credentials, or omit them entirely:
 </p>
 <sample src="CleartextLoggingGood.swift"/>
 </example>
