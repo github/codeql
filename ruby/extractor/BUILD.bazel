@@ -1,0 +1,13 @@
+load("@crate_index_cargo_local//:defs.bzl", "aliases", "all_crate_deps")
+load("@rules_rust//rust:defs.bzl", "rust_binary")
+
+package(default_visibility = ["//visibility:public"])
+
+rust_binary(
+    name = "extractor",
+    srcs = glob(["**/*.rs"]),
+    aliases = aliases(),
+    edition = "2018",
+    deps = [ "//ruby/node-types" ] + all_crate_deps(normal = True),
+)
+
