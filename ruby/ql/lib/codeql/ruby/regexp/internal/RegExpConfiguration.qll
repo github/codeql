@@ -1,4 +1,4 @@
-private import codeql.ruby.Regexp
+private import codeql.ruby.Regexp as RE
 private import codeql.ruby.AST as Ast
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
@@ -30,7 +30,7 @@ class RegExpConfiguration extends Configuration {
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
     state = "string" and
-    sink instanceof RegExpInterpretation::Range
+    sink instanceof RE::RegExpInterpretation::Range
     or
     state = "reg" and
     sink = any(RegexExecution exec).getRegex()
@@ -96,3 +96,8 @@ private DataFlow::LocalSourceNode trackRegexpType(TypeTracker t) {
 }
 
 DataFlow::Node trackRegexpType() { trackRegexpType(TypeTracker::end()).flowsTo(result) }
+
+cached
+DataFlow::Node regExpSource(DataFlow::Node re) {
+  exists(RegExpConfiguration c | c.hasFlow(result, re))
+}

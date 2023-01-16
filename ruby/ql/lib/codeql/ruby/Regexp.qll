@@ -7,7 +7,7 @@
 
 import regexp.RegExpTreeView // re-export
 private import regexp.internal.ParseRegExp
-private import regexp.internal.RegExpConfiguration
+private import regexp.internal.RegExpConfiguration as RegExpConfiguration // TODO: other name?
 private import codeql.ruby.AST as Ast
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
@@ -122,7 +122,7 @@ class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
       mce.getMethodName() = ["match", "match?"] and
       this = mce.getArgument(0) and
       // exclude https://ruby-doc.org/core-2.4.0/Regexp.html#method-i-match
-      not mce.getReceiver() = trackRegexpType()
+      not mce.getReceiver() = RegExpConfiguration::trackRegexpType()
     )
   }
 }
@@ -132,9 +132,7 @@ class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
  * as a part of a regular expression.
  */
 cached
-DataFlow::Node regExpSource(DataFlow::Node re) {
-  exists(RegExpConfiguration c | c.hasFlow(result, re))
-}
+DataFlow::Node regExpSource(DataFlow::Node re) { result = RegExpConfiguration::regExpSource(re) }
 
 /**
  * Holds if `exec` is a node where `regexp` is interpreted as a regular expression and
@@ -173,7 +171,7 @@ private predicate regexExecution(
     // also see `StdLibRegExpInterpretation`
     not (
       call.getMethodName() = ["match", "match?"] and
-      call.getReceiver() = trackRegexpType()
+      call.getReceiver() = RegExpConfiguration::trackRegexpType()
     )
   )
   or
