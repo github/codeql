@@ -12,7 +12,7 @@ function invoke() {
   $FRONTEND -frontend "$@" $SDK
 }
 
-rm -rf *.o *.swiftmodule
+rm -rf *.swiftmodule *.o
 
 invoke -c A.swift
 invoke -c B.swift -o B.o

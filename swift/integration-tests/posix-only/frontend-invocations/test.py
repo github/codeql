@@ -13,7 +13,7 @@ with open('hashes.expected', 'w') as expected:
             print(f.name, sha256(module.read()).hexdigest(), file=expected)
 
 with open('hashes.actual', 'w') as actual:
-    hashes = [(s.resolve().name, s.name) for s in Path("db/working/swift-extraction-artifacts/hashes").iterdir()]
+    hashes = [(s.name, s.resolve().name) for s in Path("db/working/swift-extraction-artifacts/store").iterdir()]
     hashes.sort()
     for module, hash in hashes:
         print(module, hash, file=actual)

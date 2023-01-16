@@ -115,17 +115,18 @@ class FileInterceptor {
 
   fs::path redirect(const fs::path& target) const {
     assert(mayBeRedirected(target.c_str()));
-    auto ret = redirectedPath(target);
-    fs::create_directories(ret.parent_path());
+    auto redirected = redirectedPath(target);
+    fs::create_directories(redirected.parent_path());
     if (auto hashed = hashPath(target)) {
       std::error_code ec;
-      fs::create_symlink(ret, *hashed, ec);
+      fs::create_symlink(*hashed, redirected, ec);
       if (ec) {
-        std::cerr << "Cannot remap file " << ret << " -> " << *hashed << ": " << ec.message()
+        std::cerr << "Cannot remap file " << *hashed << " -> " << redirected << ": " << ec.message()
                   << "\n";
       }
+      return *hashed;
     }
-    return ret;
+    return redirected;
   }
 
  private:
