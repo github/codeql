@@ -636,8 +636,9 @@ class TrueOperator extends UnaryOperator {
  * (`SubOperator`), a multiplication operator (`MulOperator`), a division
  * operator (`DivOperator`), a remainder operator (`RemOperator`), an and
  * operator (`AndOperator`), an or operator (`OrOperator`), an xor
- * operator (`XorOperator`), a left shift operator (`LShiftOperator`),
- * a right shift operator (`RShiftOperator`), an equals operator (`EQOperator`),
+ * operator (`XorOperator`), a left shift operator (`LeftShiftOperator`),
+ * a right shift operator (`RightShiftOperator`), an unsigned right shift
+ * operator(`UnsignedRightShiftOperator`), an equals operator (`EQOperator`),
  * a not equals operator (`NEOperator`), a lesser than operator (`LTOperator`),
  * a greater than operator (`GTOperator`), a less than or equals operator
  * (`LEOperator`), or a greater than or equals operator (`GEOperator`).
@@ -791,13 +792,16 @@ class XorOperator extends BinaryOperator {
  * }
  * ```
  */
-class LShiftOperator extends BinaryOperator {
-  LShiftOperator() { this.getName() = "<<" }
+class LeftShiftOperator extends BinaryOperator {
+  LeftShiftOperator() { this.getName() = "<<" }
 
   override string getFunctionName() { result = "op_LeftShift" }
 
-  override string getAPrimaryQlClass() { result = "LShiftOperator" }
+  override string getAPrimaryQlClass() { result = "LeftShiftOperator" }
 }
+
+/** DEPRECATED: Alias for LeftShiftOperator. */
+deprecated class LShiftOperator = LeftShiftOperator;
 
 /**
  * A user-defined right shift operator (`>>`), for example
@@ -808,12 +812,32 @@ class LShiftOperator extends BinaryOperator {
  * }
  * ```
  */
-class RShiftOperator extends BinaryOperator {
-  RShiftOperator() { this.getName() = ">>" }
+class RightShiftOperator extends BinaryOperator {
+  RightShiftOperator() { this.getName() = ">>" }
 
   override string getFunctionName() { result = "op_RightShift" }
 
-  override string getAPrimaryQlClass() { result = "RShiftOperator" }
+  override string getAPrimaryQlClass() { result = "RightShiftOperator" }
+}
+
+/** DEPRECATED: Alias for RightShiftOperator. */
+deprecated class RShiftOperator = RightShiftOperator;
+
+/**
+ * A user-defined unsigned right shift operator (`>>>`), for example
+ *
+ * ```csharp
+ * public static Widget operator >>>(Widget lhs, Widget rhs) {
+ *   ...
+ * }
+ * ```
+ */
+class UnsignedRightShiftOperator extends BinaryOperator {
+  UnsignedRightShiftOperator() { this.getName() = ">>>" }
+
+  override string getFunctionName() { result = "op_UnsignedRightShift" }
+
+  override string getAPrimaryQlClass() { result = "UnsignedRightShiftOperator" }
 }
 
 /**

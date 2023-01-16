@@ -65,11 +65,9 @@ DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any(
 predicate summaryElement(
   SummarizedCallableBase c, string input, string output, string kind, string provenance
 ) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
-  |
-    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) and
-    c.asFunction() = interpretElement(namespace, type, subtypes, name, signature, ext).asEntity()
+  exists(string package, string type, boolean subtypes, string name, string signature, string ext |
+    summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance) and
+    c.asFunction() = interpretElement(package, type, subtypes, name, signature, ext).asEntity()
   )
 }
 
@@ -154,11 +152,9 @@ class SourceOrSinkElement extends TSourceOrSinkElement {
  * `output`, kind `kind`, and provenance `provenance`.
  */
 predicate sourceElement(SourceOrSinkElement e, string output, string kind, string provenance) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
-  |
-    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance) and
-    e = interpretElement(namespace, type, subtypes, name, signature, ext)
+  exists(string package, string type, boolean subtypes, string name, string signature, string ext |
+    sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance) and
+    e = interpretElement(package, type, subtypes, name, signature, ext)
   )
 }
 
@@ -167,11 +163,9 @@ predicate sourceElement(SourceOrSinkElement e, string output, string kind, strin
  * `input`, kind `kind` and provenance `provenance`.
  */
 predicate sinkElement(SourceOrSinkElement e, string input, string kind, string provenance) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
-  |
-    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance) and
-    e = interpretElement(namespace, type, subtypes, name, signature, ext)
+  exists(string package, string type, boolean subtypes, string name, string signature, string ext |
+    sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance) and
+    e = interpretElement(package, type, subtypes, name, signature, ext)
   )
 }
 

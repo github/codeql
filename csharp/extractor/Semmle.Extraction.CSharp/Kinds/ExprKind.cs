@@ -127,6 +127,8 @@ namespace Semmle.Extraction.Kinds
         WITH = 130,
         LIST_PATTERN = 131,
         SLICE_PATTERN = 132,
+        URSHIFT = 133,
+        ASSIGN_URSHIFT = 134,
         DEFINE_SYMBOL = 999,
     }
 }

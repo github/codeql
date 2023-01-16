@@ -30,6 +30,7 @@ private newtype TOpcode =
   TNegate() or
   TShiftLeft() or
   TShiftRight() or
+  TUnsignedShiftRight() or
   TBitAnd() or
   TBitOr() or
   TBitXor() or
@@ -650,6 +651,15 @@ module Opcode {
    */
   class ShiftRight extends BinaryBitwiseOpcode, TShiftRight {
     final override string toString() { result = "ShiftRight" }
+  }
+
+  /**
+   * The `Opcode` for a `UnsignedShiftRightInstruction`.
+   *
+   * See the `UnsignedShiftRightInstruction` documentation for more details.
+   */
+  class UnsignedShiftRight extends BinaryBitwiseOpcode, TUnsignedShiftRight {
+    final override string toString() { result = "UnsignedShiftRight" }
   }
 
   /**
