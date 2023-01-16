@@ -181,7 +181,7 @@ int main(int argc, char** argv) {
 
   const auto configuration = configure(argc, argv);
 
-  auto openInterception = codeql::setupFileInterception(configuration.getTempArtifactDir());
+  auto openInterception = codeql::setupFileInterception(configuration);
 
   auto invocationTrapFile = invocationTargetFile(configuration);
   codeql::TrapDomain invocationDomain(invocationTrapFile);

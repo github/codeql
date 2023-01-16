@@ -4,12 +4,16 @@
 #include <filesystem>
 
 #include <dlfcn.h>
+#include <unistd.h>
 #include <mutex>
 #include <optional>
 #include <cassert>
+#include <iostream>
 
-#include "swift/extractor/infra/file/FileHash.h"
-#include "swift/extractor/infra/file/FileHash.h"
+#include <picosha2.h>
+
+#include "swift/extractor/infra/file/PathHash.h"
+#include "swift/extractor/infra/file/Path.h"
 
 #ifdef __APPLE__
 // path is hardcoded as otherwise redirection could break when setting DYLD_FALLBACK_LIBRARY_PATH
@@ -64,6 +68,28 @@ bool mayBeRedirected(const char* path, int flags = O_RDONLY) {
           endsWith(path, ".swiftmodule"));
 }
 
+std::optional<std::string> hashFile(const fs::path& path) {
+  auto fd = original::open(path.c_str(), O_RDONLY | O_CLOEXEC);
+  if (fd < 0) {
+    auto ec = std::make_error_code(static_cast<std::errc>(errno));
+    std::cerr << "unable to open " << path << " for reading (" << ec.message() << ")\n";
+    return std::nullopt;
+  }
+  auto hasher = picosha2::hash256_one_by_one();
+  constexpr size_t bufferSize = 16 * 1024;
+  char buffer[bufferSize];
+  ssize_t bytesRead = 0;
+  while ((bytesRead = ::read(fd, buffer, bufferSize)) > 0) {
+    hasher.process(buffer, buffer + bytesRead);
+  }
+  ::close(fd);
+  if (bytesRead < 0) {
+    return std::nullopt;
+  }
+  hasher.finish();
+  return get_hash_hex_string(hasher);
+}
+
 }  // namespace
 
 namespace codeql {
@@ -72,22 +98,15 @@ class FileInterceptor {
  public:
   FileInterceptor(fs::path&& workingDir) : workingDir{std::move(workingDir)} {
     fs::create_directories(hashesPath());
-    fs::create_directories(storePath());
   }
 
   int open(const char* path, int flags, mode_t mode = 0) const {
     fs::path fsPath{path};
     assert((flags & O_ACCMODE) == O_RDONLY);
+    // try to use the hash map first
     errno = 0;
-    // first, try the same path underneath the artifact store
-    if (auto ret = original::open(redirectedPath(path).c_str(), flags);
-        ret >= 0 || errno != ENOENT) {
-      return ret;
-    }
-    errno = 0;
-    // then try to use the hash map
     if (auto hashed = hashPath(path)) {
-      if (auto ret = original::open(hashed->c_str(), flags); ret >= 0 || errno != ENOENT) {
+      if (auto ret = original::open(hashed->c_str(), flags); errno != ENOENT) {
         return ret;
       }
     }
@@ -96,17 +115,18 @@ class FileInterceptor {
 
   fs::path redirect(const fs::path& target) const {
     assert(mayBeRedirected(target.c_str()));
-    auto ret = redirectedPath(target);
-    fs::create_directories(ret.parent_path());
+    auto redirected = redirectedPath(target);
+    fs::create_directories(redirected.parent_path());
     if (auto hashed = hashPath(target)) {
       std::error_code ec;
-      fs::create_symlink(ret, *hashed, ec);
+      fs::create_symlink(*hashed, redirected, ec);
       if (ec) {
-        std::cerr << "Cannot remap file " << ret << " -> " << *hashed << ": " << ec.message()
+        std::cerr << "Cannot remap file " << *hashed << " -> " << redirected << ": " << ec.message()
                   << "\n";
       }
+      return *hashed;
     }
-    return ret;
+    return redirected;
   }
 
  private:
@@ -119,8 +139,8 @@ class FileInterceptor {
   }
 
   std::optional<fs::path> hashPath(const fs::path& target) const {
-    if (auto fd = original::open(target.c_str(), O_RDONLY | O_CLOEXEC); fd >= 0) {
-      return hashesPath() / hashFile(fd);
+    if (auto hashed = getHashOfRealFile(target)) {
+      return hashesPath() / *hashed;
     }
     return std::nullopt;
   }
@@ -128,8 +148,18 @@ class FileInterceptor {
   fs::path workingDir;
 };
 
-int openReal(const fs::path& path) {
-  return original::open(path.c_str(), O_RDONLY | O_CLOEXEC);
+std::optional<std::string> getHashOfRealFile(const fs::path& path) {
+  static std::unordered_map<fs::path, std::string> cache;
+  auto resolved = resolvePath(path);
+  if (auto found = cache.find(resolved); found != cache.end()) {
+    return found->second;
+  }
+
+  if (auto hashed = hashFile(resolved)) {
+    cache.emplace(resolved, *hashed);
+    return hashed;
+  }
+  return std::nullopt;
 }
 
 fs::path redirect(const fs::path& target) {
@@ -140,8 +170,9 @@ fs::path redirect(const fs::path& target) {
   }
 }
 
-std::shared_ptr<FileInterceptor> setupFileInterception(fs::path workginDir) {
-  auto ret = std::make_shared<FileInterceptor>(std::move(workginDir));
+std::shared_ptr<FileInterceptor> setupFileInterception(
+    const SwiftExtractorConfiguration& configuration) {
+  auto ret = std::make_shared<FileInterceptor>(configuration.getTempArtifactDir());
   fileInterceptorInstance() = ret;
   return ret;
 }

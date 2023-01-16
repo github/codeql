@@ -8,6 +8,8 @@ else
   FRONTEND="swift-frontend"
 fi
 
+rm -rf *.swiftmodule *.o
+
 $FRONTEND -frontend -c A.swift $SDK
 $FRONTEND -frontend -c B.swift -o B.o $SDK
 $FRONTEND -frontend -c -primary-file C.swift $SDK
