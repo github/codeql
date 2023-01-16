@@ -279,3 +279,30 @@ private class ModuleAttributeImportAsAttrRead extends AttrRead, CfgNode {
 
   override string getAttributeName() { exists(node.getModule(result)) }
 }
+
+/**
+ * A data flow node that refers to the name of a property obtained by enumerating
+ * the properties of some object.
+ */
+abstract class EnumeratedAttributeName extends Node {
+  /**
+   * Gets the data flow node holding the object whose properties are being enumerated.
+   *
+   * For example, gets `src` in `for x,y in src.items()`.
+   */
+  abstract Node getSourceObject();
+}
+
+/** Property enumeration through a for loop through `items()` or similar. */
+private class ForInEnumeratedAttributeName extends EnumeratedAttributeName {
+  Node iterable;
+
+  ForInEnumeratedAttributeName() {
+    exists(For stmt |
+      this.asExpr() = stmt.getTarget() and
+      iterable.asExpr() = stmt.getIter()
+    )
+  }
+
+  override Node getSourceObject() { result = iterable }
+}
