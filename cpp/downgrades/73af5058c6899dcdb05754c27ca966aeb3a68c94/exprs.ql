@@ -9,5 +9,5 @@ class Location extends @location_expr {
 from Expr expr, int kind, int kind_new, Location location
 where
   exprs(expr, kind, location) and
-  if expr instanceof @blockassignexpr then kind_new = 0 else kind_new = kind
+  if expr instanceof @blockassignexpr then kind_new = 1 else kind_new = kind
 select expr, kind_new, location

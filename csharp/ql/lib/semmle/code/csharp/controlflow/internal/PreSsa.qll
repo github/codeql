@@ -115,11 +115,9 @@ module PreSsa {
         if def.getTargetAccess().isRefArgument() then certain = false else certain = true
       )
       or
-      exists(Callable c |
-        implicitEntryDef(c, bb, v) and
-        i = -1 and
-        certain = true
-      )
+      implicitEntryDef(_, bb, v) and
+      i = -1 and
+      certain = true
     }
 
     predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {

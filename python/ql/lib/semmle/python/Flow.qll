@@ -385,9 +385,9 @@ class CallNode extends ControlFlowNode {
 
   /** Gets the flow node corresponding to an argument of the call corresponding to this flow node */
   ControlFlowNode getAnArg() {
-    exists(int n | result = this.getArg(n))
+    result = this.getArg(_)
     or
-    exists(string name | result = this.getArgByName(name))
+    result = this.getArgByName(_)
   }
 
   override Call getNode() { result = super.getNode() }

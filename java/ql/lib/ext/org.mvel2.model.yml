@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.mvel2", "MVEL", False, "eval", "", "", "Argument[0]", "mvel", "manual"]
       - ["org.mvel2", "MVEL", False, "evalToBoolean", "", "", "Argument[0]", "mvel", "manual"]

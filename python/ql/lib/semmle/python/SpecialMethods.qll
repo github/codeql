@@ -11,9 +11,7 @@
 private import python
 
 /** A control flow node which might correspond to a special method call. */
-class PotentialSpecialMethodCallNode extends ControlFlowNode {
-  PotentialSpecialMethodCallNode() { this instanceof SpecialMethod::Potential }
-}
+class PotentialSpecialMethodCallNode extends ControlFlowNode instanceof SpecialMethod::Potential { }
 
 /**
  * Machinery for detecting special method calls.

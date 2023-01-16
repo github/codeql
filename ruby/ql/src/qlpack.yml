@@ -1,5 +1,5 @@
 name: codeql/ruby-queries
-version: 0.4.5-dev
+version: 0.5.1-dev
 groups: 
   - ruby
   - queries
@@ -8,3 +8,4 @@ defaultSuiteFile: codeql-suites/ruby-code-scanning.qls
 dependencies:
   codeql/ruby-all: ${workspace}
   codeql/suite-helpers: ${workspace}
+  codeql/util: ${workspace}

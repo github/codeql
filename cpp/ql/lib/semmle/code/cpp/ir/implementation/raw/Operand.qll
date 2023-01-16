@@ -45,7 +45,7 @@ class Operand extends TStageOperand {
       this = reusedPhiOperand(use, def, predecessorBlock, _)
     )
     or
-    exists(Instruction use | this = chiOperand(use, _))
+    this = chiOperand(_, _)
   }
 
   /** Gets a textual representation of this element. */

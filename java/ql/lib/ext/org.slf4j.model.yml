@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.slf4j", "Logger", True, "debug", "(Marker,String)", "", "Argument[1]", "logging", "manual"]
       - ["org.slf4j", "Logger", True, "debug", "(Marker,String,Object)", "", "Argument[1..2]", "logging", "manual"]

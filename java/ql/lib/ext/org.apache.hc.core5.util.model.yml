@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.hc.core5.util", "Args", True, "containsNoBlanks", "(CharSequence,String)", "", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["org.apache.hc.core5.util", "Args", True, "notBlank", "(CharSequence,String)", "", "Argument[0]", "ReturnValue", "value", "manual"]

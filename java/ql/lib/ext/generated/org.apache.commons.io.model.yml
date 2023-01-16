@@ -4,7 +4,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.apache.commons.io.file", "PathFilter", true, "accept", "(Path,BasicFileAttributes)", "", "Argument[0]", "create-file", "generated"]
       - ["org.apache.commons.io.file", "PathUtils", false, "copyFile", "(URL,Path,CopyOption[])", "", "Argument[0]", "open-url", "generated"]
@@ -116,7 +116,7 @@ extensions:
 
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.commons.io.charset", "CharsetDecoders", true, "toCharsetDecoder", "(CharsetDecoder)", "", "Argument[0]", "ReturnValue", "taint", "generated"]
       - ["org.apache.commons.io.charset", "CharsetEncoders", true, "toCharsetEncoder", "(CharsetEncoder)", "", "Argument[0]", "ReturnValue", "taint", "generated"]
@@ -676,7 +676,7 @@ extensions:
 
   - addsTo:
       pack: codeql/java-all
-      extensible: extNegativeSummaryModel
+      extensible: neutralModel
     data:
       - ["org.apache.commons.io.charset", "CharsetDecoders", "CharsetDecoders", "()", "generated"]
       - ["org.apache.commons.io.charset", "CharsetEncoders", "CharsetEncoders", "()", "generated"]

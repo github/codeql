@@ -3049,9 +3049,9 @@ cfg.rb:
 #-----|  -> exit print (normal)
 
 #  147| self
-#-----|  -> call to super
+#-----|  -> super call to print
 
-#  147| call to super
+#  147| super call to print
 #-----|  -> call to print
 
 #  147| call to print

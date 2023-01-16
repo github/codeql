@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["java.util.stream", "BaseStream", True, "iterator", "()", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util.stream", "BaseStream", True, "onClose", "(Runnable)", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]
@@ -87,3 +87,9 @@ extensions:
       - ["java.util.stream", "Stream", True, "takeWhile", "(Predicate)", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util.stream", "Stream", True, "toArray", "", "", "Argument[-1].Element", "ReturnValue.ArrayElement", "value", "manual"]
       - ["java.util.stream", "Stream", True, "toList", "()", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.util.stream", "Collectors", "toList", "()", "manual"]

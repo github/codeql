@@ -1,3 +1,3 @@
-| Sources/cross-references/lib.swift:4:5:4:13 | init() |
-| Sources/cross-references/lib.swift:14:8:14:8 | init() |
-| Sources/cross-references/main.swift:11:8:11:8 | init() |
+| Sources/cross-references/lib.swift:4:5:4:13 | C.init() |
+| Sources/cross-references/lib.swift:14:8:14:8 | S.init() |
+| Sources/cross-references/main.swift:11:8:11:8 | s.init() |

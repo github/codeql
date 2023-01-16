@@ -1521,7 +1521,7 @@ class With_await:
     def __await__(self):
         SINK1(self)
         OK()  # Call not found
-        return (yield from asyncio.coroutine(lambda: "")())
+        return (yield from [])
 
 
 async def atest_await():

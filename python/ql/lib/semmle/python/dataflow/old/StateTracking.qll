@@ -99,9 +99,7 @@ module StateTracking {
         exists(int n |
           f = b.getNode(n) and
           appliesToNode(state, b.getNode(n - 1), ctx, sense) and
-          not exists(PythonFunctionObjectInternal func, Context callee |
-            callee.fromCall(f, func, ctx)
-          )
+          not exists(Context callee | callee.fromCall(f, _, ctx))
         )
       )
       or

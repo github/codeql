@@ -92,9 +92,9 @@ private predicate maybeCredentialName(string name) {
 
 // Positional parameter
 private DataFlow::Node credentialParameter() {
-  exists(Method m, NamedParameter p, int idx |
+  exists(Method m, NamedParameter p |
     result.asParameter() = p and
-    p = m.getParameter(idx) and
+    p = m.getAParameter() and
     maybeCredentialName(p.getName())
   )
 }

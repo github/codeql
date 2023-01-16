@@ -385,13 +385,10 @@ module Tornado {
    *
    * Needs this subclass to be considered a RegexString.
    */
-  private class TornadoRouteRegex extends RegexString {
+  private class TornadoRouteRegex extends RegexString instanceof StrConst {
     TornadoRouteSetup setup;
 
-    TornadoRouteRegex() {
-      this instanceof StrConst and
-      setup.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this)
-    }
+    TornadoRouteRegex() { setup.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this) }
 
     TornadoRouteSetup getRouteSetup() { result = setup }
   }

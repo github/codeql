@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["javax.json", "Json", False, "createArrayBuilder", "(Collection)", "", "Argument[0].Element", "ReturnValue", "taint", "manual"]
       - ["javax.json", "Json", False, "createArrayBuilder", "(JsonArray)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

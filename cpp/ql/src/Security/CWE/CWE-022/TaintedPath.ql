@@ -16,7 +16,7 @@
 
 import cpp
 import semmle.code.cpp.security.FunctionWithWrappers
-import semmle.code.cpp.security.Security
+import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import DataFlow::PathGraph
@@ -45,12 +45,6 @@ class FileFunction extends FunctionWithWrappers {
 
   // conveniently, all of these functions take the path as the first parameter!
   override predicate interestingArg(int arg) { arg = 0 }
-}
-
-Expr asSourceExpr(DataFlow::Node node) {
-  result = node.asConvertedExpr()
-  or
-  result = node.asDefiningArgument()
 }
 
 Expr asSinkExpr(DataFlow::Node node) {
@@ -89,15 +83,13 @@ predicate hasUpperBoundsCheck(Variable var) {
 class TaintedPathConfiguration extends TaintTracking::Configuration {
   TaintedPathConfiguration() { this = "TaintedPathConfiguration" }
 
-  override predicate isSource(DataFlow::Node node) { isUserInput(asSourceExpr(node), _) }
+  override predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
 
   override predicate isSink(DataFlow::Node node) {
     exists(FileFunction fileFunction |
       fileFunction.outermostWrapperFunctionCall(asSinkExpr(node), _)
     )
   }
-
-  override predicate isSanitizerIn(DataFlow::Node node) { this.isSource(node) }
 
   override predicate isSanitizer(DataFlow::Node node) {
     node.asExpr().(Call).getTarget().getUnspecifiedType() instanceof ArithmeticType
@@ -108,31 +100,16 @@ class TaintedPathConfiguration extends TaintTracking::Configuration {
       hasUpperBoundsCheck(checkedVar)
     )
   }
-
-  predicate hasFilteredFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
-    this.hasFlowPath(source, sink) and
-    // The use of `isUserInput` in `isSink` in combination with `asSourceExpr` causes
-    // duplicate results. Filter these duplicates. The proper solution is to switch to
-    // using `LocalFlowSource` and `RemoteFlowSource`, but this currently only supports
-    // a subset of the cases supported by `isUserInput`.
-    not exists(DataFlow::PathNode source2 |
-      this.hasFlowPath(source2, sink) and
-      asSourceExpr(source.getNode()) = asSourceExpr(source2.getNode())
-    |
-      not exists(source.getNode().asConvertedExpr()) and exists(source2.getNode().asConvertedExpr())
-    )
-  }
 }
 
 from
-  FileFunction fileFunction, Expr taintedArg, Expr taintSource, TaintedPathConfiguration cfg,
-  DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode, string taintCause, string callChain
+  FileFunction fileFunction, Expr taintedArg, FlowSource taintSource, TaintedPathConfiguration cfg,
+  DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode, string callChain
 where
   taintedArg = asSinkExpr(sinkNode.getNode()) and
   fileFunction.outermostWrapperFunctionCall(taintedArg, callChain) and
-  cfg.hasFilteredFlowPath(sourceNode, sinkNode) and
-  taintSource = asSourceExpr(sourceNode.getNode()) and
-  isUserInput(taintSource, taintCause)
+  cfg.hasFlowPath(sourceNode, sinkNode) and
+  taintSource = sourceNode.getNode()
 select taintedArg, sourceNode, sinkNode,
   "This argument to a file access function is derived from $@ and then passed to " + callChain + ".",
-  taintSource, "user input (" + taintCause + ")"
+  taintSource, "user input (" + taintSource.getSourceType() + ")"

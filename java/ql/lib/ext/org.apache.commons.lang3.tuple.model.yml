@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.commons.lang3.tuple", "ImmutablePair", False, "ImmutablePair", "(java.lang.Object,java.lang.Object)", "", "Argument[0]", "Argument[-1].Field[org.apache.commons.lang3.tuple.ImmutablePair.left]", "value", "manual"]
       - ["org.apache.commons.lang3.tuple", "ImmutablePair", False, "ImmutablePair", "(java.lang.Object,java.lang.Object)", "", "Argument[1]", "Argument[-1].Field[org.apache.commons.lang3.tuple.ImmutablePair.right]", "value", "manual"]

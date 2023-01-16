@@ -8,6 +8,7 @@
  * @precision high
  * @id cpp/wordexp-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-078
  */
 

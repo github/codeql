@@ -1,3 +1,20 @@
+## 0.5.0
+
+### Minor Analysis Improvements
+
+* C# 11: Added support for list- and slice patterns in the extractor.
+* Deleted the deprecated `getNameWithoutBrackets` predicate from the `ValueOrRefType` class in `Type.qll`.
+* `Element::hasQualifiedName/1` has been deprecated. Use `hasQualifiedName/2` or `hasQualifiedName/3` instead.
+* Added TCP/UDP sockets as taint sources.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+No user-facing changes.
+
 ## 0.4.4
 
 ### Minor Analysis Improvements

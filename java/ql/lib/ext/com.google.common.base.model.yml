@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["com.google.common.base", "Splitter", False, "onPattern", "(String)", "", "Argument[0]", "regex-use[]", "manual"]
       - ["com.google.common.base", "Splitter", False, "split", "(CharSequence)", "", "Argument[-1]", "regex-use[0]", "manual"]
@@ -9,7 +9,7 @@ extensions:
       - ["com.google.common.base", "Splitter$MapSplitter", False, "split", "(CharSequence)", "", "Argument[-1]", "regex-use[0]", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["com.google.common.base", "Ascii", False, "toLowerCase", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["com.google.common.base", "Ascii", False, "toLowerCase", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

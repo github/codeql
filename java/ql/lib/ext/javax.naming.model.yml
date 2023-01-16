@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["javax.naming", "Context", True, "list", "", "", "Argument[0]", "jndi-injection", "manual"]
       - ["javax.naming", "Context", True, "listBindings", "", "", "Argument[0]", "jndi-injection", "manual"]

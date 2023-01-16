@@ -48,7 +48,7 @@ apply_lambda(MY_LAMBDA2, taint(9))
 
 class A
   def method1 x
-    sink x # $ hasValueFlow=10 $ hasValueFlow=11 $ hasValueFlow=12 $ hasValueFlow=13 $ hasValueFlow=26 $ SPURIOUS: hasValueFlow=27
+    sink x # $ hasValueFlow=10 $ hasValueFlow=11 $ hasValueFlow=12 $ hasValueFlow=13 $ hasValueFlow=26 $ hasValueFlow=28 $ hasValueFlow=30 $ SPURIOUS: hasValueFlow=27
   end
 
   def method2 x
@@ -92,9 +92,14 @@ class A
   def self.call_singleton_method3 x
     self.singleton_method3(self, x)
   end
+
+  def initialize(x)
+    sink x # $ hasValueFlow=28 $ hasValueFlow=30 $ hasValueFlow=32
+    method1 x
+  end
 end
 
-a = A.new
+a = A.new (taint 30)
 a.method2(taint 10)
 a.call_method2(taint 11)
 a.method3(a, taint(12))
@@ -130,9 +135,13 @@ class B < A
   def self.call_singleton_method3 x
     self.singleton_method3(self, x)
   end
+
+  def initialize(x)
+    puts "NON SINK: #{x}"
+  end
 end
 
-b = B.new
+b = B.new (taint 31)
 b.method2(taint 18)
 b.call_method2(taint 19)
 b.method3(b, taint(20))
@@ -143,3 +152,18 @@ B.singleton_method2(taint 22)
 B.call_singleton_method2(taint 23)
 B.singleton_method3(B, taint(24))
 B.call_singleton_method3(taint 25)
+
+def create (type, x)
+  type.new x
+end
+
+create(A, taint(28))
+create(B, taint(29))
+
+class C < A
+  def method1 x
+    puts "NON SINK: #{x}"
+  end
+end
+
+c = C.new (taint 32)

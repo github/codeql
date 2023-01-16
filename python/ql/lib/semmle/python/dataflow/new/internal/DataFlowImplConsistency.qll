@@ -101,9 +101,7 @@ module Consistency {
     exists(int c |
       c =
         strictcount(Node n |
-          not exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-            n.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-          ) and
+          not n.hasLocationInfo(_, _, _, _, _) and
           not any(ConsistencyConfiguration conf).missingLocationExclude(n)
         ) and
       msg = "Nodes without location: " + c
@@ -259,5 +257,10 @@ module Consistency {
     isParameterNode(p, c, pos) and
     not exists(unique(ParameterPosition pos0 | isParameterNode(p, c, pos0))) and
     msg = "Parameter node with multiple positions."
+  }
+
+  query predicate uniqueContentApprox(Content c, string msg) {
+    not exists(unique(ContentApprox approx | approx = getContentApprox(c))) and
+    msg = "Non-unique content approximation."
   }
 }

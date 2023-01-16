@@ -9,8 +9,8 @@ CodeQL packs are used to create, share, depend on, and run CodeQL queries and li
 
 There are two types of CodeQL packs: query packs and library packs.
 
-* Query packs are designed to be run. When a query pack is published, the bundle includes all the transitive dependencies and a compilation cache. This ensures consistent and efficient execution of the queries in the pack.
-* Library packs are designed to be used by query packs (or other library packs) and do not contain queries themselves. The libraries are not compiled and there is no compilation cache included when the pack is published.
+* Query packs are designed to be run. When a query pack is published, the bundle includes all the transitive dependencies and pre-compiled representations of each query, in addition to the query sources. This ensures consistent and efficient execution of the queries in the pack.
+* Library packs are designed to be used by query packs (or other library packs) and do not contain queries themselves. The libraries are not compiled separately.
 
 You can use the package management commands in the CodeQL CLI to create CodeQL packs, add dependencies to packs, and install or update dependencies. For more information, see ":ref:`Creating and working with CodeQL packs <creating-and-working-with-codeql-packs>`." You can also publish and download CodeQL packs using the CodeQL CLI. For more information, see ":doc:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`."
 
@@ -30,6 +30,16 @@ The other files and directories within the pack should be logically organized. F
 - Queries are organized into directories for specific categories.
 - Queries for specific products, libraries, and frameworks are organized into
   their own top-level directories.
+
+About published packs
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When a pack is published for use in analyses, the ``codeql pack create`` or ``codeql pack publish`` command verifies that the content is complete and also adds some additional pieces of content to it:
+
+* For query packs, a copy of each of the library packs it depends on, in the precise versions it has been developed with. Users of the query pack won't need to download these library packs separately.
+* For query packs, precompiled representations of each of the queries. These are faster to execute than it would be to compile the QL source for the query at each analysis.
+
+Most of this data is located in a directory named ``.codeql`` in the published pack, but precompiled queries are in files with a ``.qlx`` suffix next to the ``.ql`` source for each query. When analyzing a database with a query from a published pack, CodeQL will load these files instead of the ``.ql`` source. If you need to modify the content of a *published* pack, be sure to remove all of the ``.qlx`` files, since they may prevent modifications in the ``.ql`` files from taking effect.
 
 About ``qlpack.yml`` files
 --------------------------

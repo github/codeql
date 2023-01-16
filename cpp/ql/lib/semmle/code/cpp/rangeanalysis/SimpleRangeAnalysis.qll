@@ -296,7 +296,7 @@ private predicate analyzableExpr(Expr e) {
     or
     // Also allow variable accesses, provided that they have SSA
     // information.
-    exists(RangeSsaDefinition def, StackVariable v | e = def.getAUse(v))
+    exists(RangeSsaDefinition def | e = def.getAUse(_))
     or
     e instanceof UnsignedBitwiseAndExpr
     or

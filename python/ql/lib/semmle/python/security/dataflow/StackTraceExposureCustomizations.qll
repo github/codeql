@@ -41,9 +41,8 @@ module StackTraceExposure {
   /**
    * A source of exception info, considered as a flow source.
    */
-  class ExceptionInfoAsSource extends Source {
+  class ExceptionInfoAsSource extends Source instanceof ExceptionInfo {
     ExceptionInfoAsSource() {
-      this instanceof ExceptionInfo and
       // since `traceback.format_exc()` in Python 2 is internally implemented as
       // ```py
       // def format_exc(limit=None):

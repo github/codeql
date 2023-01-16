@@ -38,7 +38,9 @@ private predicate isRelevantForModels(CS::Callable api) {
   api.getDeclaringType().getNamespace().getFullName() != "" and
   not api instanceof CS::ConversionOperator and
   not api instanceof Util::MainMethod and
-  not api instanceof CS::Destructor
+  not api instanceof CS::Destructor and
+  not api instanceof CS::AnonymousFunctionExpr and
+  not api.(CS::Constructor).isParameterless()
 }
 
 /**
@@ -68,7 +70,7 @@ class TargetApiSpecific extends DotNet::Callable {
 
 predicate asPartialModel = DataFlowPrivate::Csv::asPartialModel/1;
 
-predicate asPartialNegativeModel = DataFlowPrivate::Csv::asPartialNegativeModel/1;
+predicate asPartialNeutralModel = DataFlowPrivate::Csv::asPartialNeutralModel/1;
 
 /**
  * Holds if `t` is a type that is generally used for bulk data in collection types.

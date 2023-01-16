@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Net.Mail", "MailAddressCollection", False, "Add", "(System.String)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]

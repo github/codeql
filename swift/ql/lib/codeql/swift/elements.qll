@@ -137,7 +137,7 @@ import codeql.swift.elements.expr.MagicIdentifierLiteralExpr
 import codeql.swift.elements.expr.MakeTemporarilyEscapableExpr
 import codeql.swift.elements.expr.MemberRefExpr
 import codeql.swift.elements.expr.MetatypeConversionExpr
-import codeql.swift.elements.expr.MethodRefExpr
+import codeql.swift.elements.expr.MethodLookupExpr
 import codeql.swift.elements.expr.NilLiteralExpr
 import codeql.swift.elements.expr.NumberLiteralExpr
 import codeql.swift.elements.expr.ObjCSelectorExpr
