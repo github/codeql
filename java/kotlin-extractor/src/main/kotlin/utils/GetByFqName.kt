@@ -18,7 +18,7 @@ fun getFunctionsByFqName(pluginContext: IrPluginContext, fqName: String): Collec
     return getFunctionsByFqName(pluginContext, FqName(fqName))
 }
 
-fun getFunctionsByFqName(pluginContext: IrPluginContext, fqName: FqName): Collection<IrSimpleFunctionSymbol> {
+private fun getFunctionsByFqName(pluginContext: IrPluginContext, fqName: FqName): Collection<IrSimpleFunctionSymbol> {
     @OptIn(FirIncompatiblePluginAPI::class)
     return pluginContext.referenceFunctions(fqName)
 }
@@ -27,7 +27,7 @@ fun getPropertiesByFqName(pluginContext: IrPluginContext, fqName: String): Colle
     return getPropertiesByFqName(pluginContext, FqName(fqName))
 }
 
-fun getPropertiesByFqName(pluginContext: IrPluginContext, fqName: FqName): Collection<IrPropertySymbol> {
+private fun getPropertiesByFqName(pluginContext: IrPluginContext, fqName: FqName): Collection<IrPropertySymbol> {
     @OptIn(FirIncompatiblePluginAPI::class)
     return pluginContext.referenceProperties(fqName)
 }
