@@ -1090,6 +1090,9 @@ predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
   exists(int index |
     apos.isStarArgs(index) and
     arg.asCfgNode() = call.getStarArg() and
+    // since `CallNode.getArg` doesn't include `*args`, we need to drop to the AST level
+    // to get the index. Notice that we only use the AST for getting the index, so we
+    // don't need to check for dominance in regards to splitting.
     call.getStarArg().getNode() = call.getNode().getPositionalArg(index).(Starred).getValue()
   )
   or
