@@ -350,7 +350,7 @@ class DataFlowPlainFunction extends DataFlowFunction {
   DataFlowPlainFunction() { not this instanceof DataFlowMethod }
 }
 
-/** A method, except staticmethods. */
+/** A method. */
 class DataFlowMethod extends DataFlowFunction {
   Class cls;
 
