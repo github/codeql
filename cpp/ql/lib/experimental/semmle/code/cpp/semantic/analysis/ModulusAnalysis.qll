@@ -232,7 +232,8 @@ private predicate ssaModulus(SemSsaVariable v, SemSsaReadPosition pos, SemBound 
     val = remainder(val0 + delta, mod)
   )
   or
-  moduloGuardedRead(v, pos, val, mod) and b instanceof SemZeroBound
+  moduloGuardedRead(v, pos, val, mod) and
+  b = zeroBound(pos.getEnclosingCallable())
 }
 
 /**
@@ -250,7 +251,7 @@ predicate semExprModulus(SemExpr e, SemBound b, int val, int mod) {
     or
     evenlyDivisibleExpr(e, mod) and
     val = 0 and
-    b instanceof SemZeroBound
+    b = zeroBound(e.getEnclosingCallable())
     or
     exists(SemSsaVariable v, SemSsaReadPositionBlock bb |
       ssaModulus(v, bb, b, val, mod) and
@@ -280,9 +281,9 @@ predicate semExprModulus(SemExpr e, SemBound b, int val, int mod) {
       mod != 1 and
       val = remainder(v1 + v2, mod)
     |
-      b = b1 and b2 instanceof SemZeroBound
+      b = b1 and b2 = zeroBound(e.getEnclosingCallable())
       or
-      b = b2 and b1 instanceof SemZeroBound
+      b = b2 and b1 = zeroBound(e.getEnclosingCallable())
     )
     or
     exists(int v1, int v2, int m1, int m2 |

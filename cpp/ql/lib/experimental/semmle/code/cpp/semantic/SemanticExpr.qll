@@ -5,6 +5,10 @@
 private import Semantic
 private import SemanticExprSpecific::SemanticExprConfig as Specific
 
+class SemCallable instanceof Specific::Callable {
+  final string toString() { result = super.toString() }
+}
+
 /**
  * An language-neutral expression.
  *
@@ -21,6 +25,8 @@ class SemExpr instanceof Specific::Expr {
   SemType getSemType() { result = Specific::getUnknownExprType(this) }
 
   final SemBasicBlock getBasicBlock() { result = Specific::getExprBasicBlock(this) }
+
+  final SemCallable getEnclosingCallable() { result = Specific::getExprEnclosingCallable(this) }
 }
 
 /** An expression with an opcode other than `Unknown`. */

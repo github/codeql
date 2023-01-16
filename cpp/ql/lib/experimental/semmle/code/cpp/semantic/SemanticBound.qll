@@ -15,14 +15,19 @@ class SemBound instanceof Specific::Bound {
   final string toString() { result = super.toString() }
 
   final SemExpr getExpr(int delta) { result = Specific::getBoundExpr(this, delta) }
+
+  final SemCallable getEnclosingCallable() { result = super.getEnclosingCallable() }
 }
 
 /**
  * A bound that is a constant zero.
  */
 class SemZeroBound extends SemBound {
-  SemZeroBound() { Specific::zeroBound(this) }
+  SemZeroBound() { Specific::zeroBound(this, _) }
 }
+
+pragma[nomagic]
+SemZeroBound zeroBound(SemCallable callable) { Specific::zeroBound(result, callable) }
 
 /**
  * A bound that is an SSA definition.
