@@ -2,7 +2,7 @@
  * @name New call graph edge from using type-tracking instead of points-to
  * @kind problem
  * @problem.severity recommendation
- * @id py/meta/call-graph-new
+ * @id py/meta/type-tracking-call-graph
  * @tags meta
  * @precision very-low
  */
