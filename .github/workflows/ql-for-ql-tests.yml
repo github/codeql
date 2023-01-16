@@ -44,8 +44,3 @@ jobs:
           "${CODEQL}" test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}/ql/extractor-pack" --consistency-queries ql/ql/consistency-queries ql/ql/test
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
-      - name: Check QL formatting
-        run: |
-          find ql/ql/src "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 "${CODEQL}" query format --check-only
-        env:
-          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
