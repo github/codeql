@@ -114,7 +114,7 @@ class Attribute extends TopLevelExprParent, @attribute {
  * ```
  */
 class GenericAttribute extends Attribute {
-  private ConstructedGeneric type;
+  private ConstructedClass type;
 
   GenericAttribute() { type = this.getType() }
 
