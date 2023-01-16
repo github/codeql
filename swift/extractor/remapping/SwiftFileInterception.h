@@ -9,8 +9,7 @@
 
 namespace codeql {
 
-std::optional<std::string> getHashOfRealFile(const std::filesystem::path& cacheDir,
-                                             const std::filesystem::path& path);
+std::optional<std::string> getHashOfRealFile(const std::filesystem::path& path);
 
 class FileInterceptor;
 

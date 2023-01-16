@@ -96,8 +96,7 @@ namespace codeql {
 
 class FileInterceptor {
  public:
-  FileInterceptor(fs::path&& workingDir, fs::path&& hashCacheDir)
-      : workingDir{std::move(workingDir)}, hashCacheDir{std::move(hashCacheDir)} {
+  FileInterceptor(fs::path&& workingDir) : workingDir{std::move(workingDir)} {
     fs::create_directories(hashesPath());
   }
 
@@ -139,32 +138,25 @@ class FileInterceptor {
   }
 
   std::optional<fs::path> hashPath(const fs::path& target) const {
-    if (auto hashed = getHashOfRealFile(hashCacheDir, target)) {
+    if (auto hashed = getHashOfRealFile(target)) {
       return hashesPath() / *hashed;
     }
     return std::nullopt;
   }
 
   fs::path workingDir;
-  fs::path hashCacheDir;
 };
 
-std::optional<std::string> getHashOfRealFile(const fs::path& cacheDir, const fs::path& path) {
-  auto resultLink = cacheDir / resolvePath(path).relative_path();
-  std::error_code ec;
-  if (auto result = read_symlink(resultLink, ec); !ec) {
-    return result.string();
-  } else if (ec == std::errc::no_such_file_or_directory) {
-    if (auto hashed = hashFile(path)) {
-      fs::create_directories(resultLink.parent_path(), ec);
-      if (!ec) {
-        fs::create_symlink(*hashed, resultLink, ec);
-      }
-      if (ec) {
-        std::cerr << "Unable to cache hash result (" << ec.message() << ")";
-      }
-      return hashed;
-    }
+std::optional<std::string> getHashOfRealFile(const fs::path& path) {
+  static std::unordered_map<fs::path, std::string> cache;
+  auto resolved = resolvePath(path);
+  if (auto found = cache.find(resolved); found != cache.end()) {
+    return found->second;
+  }
+
+  if (auto hashed = hashFile(resolved)) {
+    cache.emplace(resolved, *hashed);
+    return hashed;
   }
   return std::nullopt;
 }
@@ -179,8 +171,7 @@ fs::path redirect(const fs::path& target) {
 
 std::shared_ptr<FileInterceptor> setupFileInterception(
     const SwiftExtractorConfiguration& configuration) {
-  auto ret = std::make_shared<FileInterceptor>(configuration.getTempArtifactDir(),
-                                               configuration.getHashCacheDir());
+  auto ret = std::make_shared<FileInterceptor>(configuration.getTempArtifactDir());
   fileInterceptorInstance() = ret;
   return ret;
 }
