@@ -1,5 +1,5 @@
 /**
- * @name Clear-text logging of sensitive information
+ * @name Cleartext logging of sensitive information
  * @description Logging sensitive information in plaintext can
  *              expose it to an attacker.
  * @kind path-problem
