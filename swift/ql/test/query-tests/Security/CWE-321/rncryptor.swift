@@ -62,21 +62,21 @@ func test(cond: Bool) {
 	let myHandler = {}
 	let myIV = Data(0)
 
-	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey, handler: myHandler) // BAD [NOT DETECTED]
-	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey, handler: myHandler) // BAD [NOT DETECTED]
-	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey, iv: myIV, handler: myHandler) // BAD [NOT DETECTED]
-	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey, IV: myIV, handler: myHandler) // BAD [NOT DETECTED]
+	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey, handler: myHandler) // BAD
+	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey, handler: myHandler) // BAD
+	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey, iv: myIV, handler: myHandler) // BAD
+	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey, IV: myIV, handler: myHandler) // BAD
 
-	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey) // BAD [NOT DETECTED]
-	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey) // BAD [NOT DETECTED]
-	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey, iv: myIV) // BAD [NOT DETECTED]
-	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey, IV: myIV) // BAD [NOT DETECTED]
+	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey) // BAD
+	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey) // BAD
+	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey, iv: myIV) // BAD
+	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey, IV: myIV) // BAD
 
-	let _ = RNDecryptor(encryptionKey: myConstKey, hmacKey: myHMACKey, handler: myHandler) // BAD [NOT DETECTED]
-	let _ = RNDecryptor(encryptionKey: myConstKey, HMACKey: myHMACKey, handler: myHandler) // BAD [NOT DETECTED]
+	let _ = RNDecryptor(encryptionKey: myConstKey, hmacKey: myHMACKey, handler: myHandler) // BAD
+	let _ = RNDecryptor(encryptionKey: myConstKey, HMACKey: myHMACKey, handler: myHandler) // BAD
 
 	let _ = try? myDecryptor.decryptData(myData, withEncryptionKey: myConstKey, hmacKey: myHMACKey) // BAD [NOT DETECTED]
 	let _ = try? myDecryptor.decryptData(myData, withEncryptionKey: myConstKey, HMACKey: myHMACKey) // BAD [NOT DETECTED]
-	let _ = try? myDecryptor.decryptData(myData, with: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey) // BAD [NOT DETECTED]
-	let _ = try? myDecryptor.decryptData(myData, withSettings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey) // BAD [NOT DETECTED]
+	let _ = try? myDecryptor.decryptData(myData, with: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey) // BAD
+	let _ = try? myDecryptor.decryptData(myData, withSettings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey) // BAD
 }
