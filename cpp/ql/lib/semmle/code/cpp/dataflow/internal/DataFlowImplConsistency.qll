@@ -45,6 +45,11 @@ module Consistency {
     ) {
       none()
     }
+
+    /** Holds if `(c, pos, p)` should be excluded from the consistency test `uniqueParameterNodeAtPosition`. */
+    predicate uniqueParameterNodeAtPositionExclude(DataFlowCallable c, ParameterPosition pos, Node p) {
+      none()
+    }
   }
 
   private class RelevantNode extends Node {
@@ -246,6 +251,7 @@ module Consistency {
   query predicate uniqueParameterNodeAtPosition(
     DataFlowCallable c, ParameterPosition pos, Node p, string msg
   ) {
+    not any(ConsistencyConfiguration conf).uniqueParameterNodeAtPositionExclude(c, pos, p) and
     isParameterNode(p, c, pos) and
     not exists(unique(Node p0 | isParameterNode(p0, c, pos))) and
     msg = "Parameters with overlapping positions."
