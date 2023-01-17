@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.time", "Instant", "now", "()", "manual"]
+      - ["java.time", "ZonedDateTime", "now", "()", "manual"]
+
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.time", "LocalDate", "of", "(int,int,int)", "manual"] # taint-numeric
