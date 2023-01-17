@@ -1,6 +1,6 @@
 #pragma once
 
-#include "swift/extractor/SwiftExtractorConfiguration.h"
+#include "swift/extractor/config/SwiftExtractorConfiguration.h"
 #include <swift/AST/SourceFile.h>
 #include <swift/Frontend/Frontend.h>
 #include <memory>

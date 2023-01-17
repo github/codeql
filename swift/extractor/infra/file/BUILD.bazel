@@ -5,7 +5,6 @@ swift_cc_library(
     srcs = glob(["*.cpp"]),
     hdrs = glob(["*.h"]) + [":path_hash_workaround"],
     visibility = ["//swift:__subpackages__"],
-    deps = ["@picosha2"],
 )
 
 genrule(
