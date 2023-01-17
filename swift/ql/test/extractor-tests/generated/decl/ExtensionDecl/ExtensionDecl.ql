@@ -4,13 +4,15 @@ import TestUtils
 
 from
   ExtensionDecl x, ModuleDecl getModule, int getNumberOfGenericTypeParams, int getNumberOfMembers,
-  NominalTypeDecl getExtendedTypeDecl
+  NominalTypeDecl getExtendedTypeDecl, int getNumberOfProtocols
 where
   toBeTested(x) and
   not x.isUnknown() and
   getModule = x.getModule() and
   getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
   getNumberOfMembers = x.getNumberOfMembers() and
-  getExtendedTypeDecl = x.getExtendedTypeDecl()
+  getExtendedTypeDecl = x.getExtendedTypeDecl() and
+  getNumberOfProtocols = x.getNumberOfProtocols()
 select x, "getModule:", getModule, "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams,
-  "getNumberOfMembers:", getNumberOfMembers, "getExtendedTypeDecl:", getExtendedTypeDecl
+  "getNumberOfMembers:", getNumberOfMembers, "getExtendedTypeDecl:", getExtendedTypeDecl,
+  "getNumberOfProtocols:", getNumberOfProtocols

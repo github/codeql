@@ -219,6 +219,13 @@ extension_decls(  //dir=decl
   int extended_type_decl: @nominal_type_decl_or_none ref
 );
 
+#keyset[id, index]
+extension_decl_protocols(  //dir=decl
+  int id: @extension_decl ref,
+  int index: int ref,
+  int protocol: @protocol_decl_or_none ref
+);
+
 if_config_decls(  //dir=decl
   unique int id: @if_config_decl
 );
