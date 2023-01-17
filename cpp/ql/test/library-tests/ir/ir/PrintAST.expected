@@ -207,34 +207,35 @@ bad_asts.cpp:
 #   27|                 Type = [SpecifiedType] const Point
 #   27|                 ValueCategory = lvalue
 #   28|     getStmt(1): [ReturnStmt] return ...
-#   30| [TopLevelFunction] void Bad::errorExpr()
-#   30|   <params>: 
-#   30|   getEntryPoint(): [BlockStmt] { ... }
-#   31|     getStmt(0): [DeclStmt] declaration
-#   31|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of intref
-#   31|           Type = [LValueReferenceType] int &
-#   31|         getVariable().getInitializer(): [Initializer] initializer for intref
-#   31|           getExpr(): [ErrorExpr] <error expr>
-#   31|               Type = [ErroneousType] error
-#   31|               ValueCategory = prvalue
-#   32|     getStmt(1): [DeclStmt] declaration
-#   32|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
-#   32|           Type = [IntType] int
-#   32|         getVariable().getInitializer(): [Initializer] initializer for x
-#   32|           getExpr(): [ErrorExpr] <error expr>
-#   32|               Type = [ErroneousType] error
-#   32|               ValueCategory = prvalue
-#   33|     getStmt(2): [ExprStmt] ExprStmt
-#   33|       getExpr(): [AssignExpr] ... = ...
-#   33|           Type = [IntType] int
-#   33|           ValueCategory = lvalue
-#   33|         getLValue(): [VariableAccess] x
-#   33|             Type = [IntType] int
-#   33|             ValueCategory = lvalue
-#   33|         getRValue(): [ErrorExpr] <error expr>
-#   33|             Type = [ErroneousType] error
-#   33|             ValueCategory = prvalue(load)
-#   34|     getStmt(3): [ReturnStmt] return ...
+bad_stmts.cpp:
+#    5| [TopLevelFunction] void Bad::errorExpr()
+#    5|   <params>: 
+#    5|   getEntryPoint(): [BlockStmt] { ... }
+#    6|     getStmt(0): [DeclStmt] declaration
+#    6|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of intref
+#    6|           Type = [LValueReferenceType] int &
+#    6|         getVariable().getInitializer(): [Initializer] initializer for intref
+#    6|           getExpr(): [ErrorExpr] <error expr>
+#    6|               Type = [ErroneousType] error
+#    6|               ValueCategory = prvalue
+#    7|     getStmt(1): [DeclStmt] declaration
+#    7|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#    7|           Type = [IntType] int
+#    7|         getVariable().getInitializer(): [Initializer] initializer for x
+#    7|           getExpr(): [ErrorExpr] <error expr>
+#    7|               Type = [ErroneousType] error
+#    7|               ValueCategory = prvalue
+#    8|     getStmt(2): [ExprStmt] ExprStmt
+#    8|       getExpr(): [AssignExpr] ... = ...
+#    8|           Type = [IntType] int
+#    8|           ValueCategory = lvalue
+#    8|         getLValue(): [VariableAccess] x
+#    8|             Type = [IntType] int
+#    8|             ValueCategory = lvalue
+#    8|         getRValue(): [ErrorExpr] <error expr>
+#    8|             Type = [ErroneousType] error
+#    8|             ValueCategory = prvalue(load)
+#    9|     getStmt(3): [ReturnStmt] return ...
 clang.cpp:
 #    5| [TopLevelFunction] int* globalIntAddress()
 #    5|   <params>: 
