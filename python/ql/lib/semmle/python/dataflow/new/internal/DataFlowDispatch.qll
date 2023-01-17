@@ -24,7 +24,7 @@
  * any special logic that requires an AST call to be made before we care to figure out
  * what callable this call might end up targeting.
  *
- * Specifically this means that we cannot use type-backtrackes from the function of a
+ * Specifically this means that we cannot use type-backtrackers from the function of a
  * `CallNode`, since there is no `CallNode` to backtrack from for `func` in the example
  * above.
  *
