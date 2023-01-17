@@ -38,6 +38,14 @@ class ConstantSaltSink extends Expr {
       call.getStaticTarget() = f and
       call.getArgumentWithLabel("salt").getExpr() = this
     )
+    or
+    // RNCryptor
+    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
+      c.getFullName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+      c.getAMember() = f and
+      call.getStaticTarget() = f and
+      call.getArgumentWithLabel(["salt", "encryptionSalt", "hmacSalt", "HMACSalt"]).getExpr() = this
+    )
   }
 }
 
