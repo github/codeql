@@ -1,8 +1,13 @@
 /**
+ * @id java/android/arbitrary-apk-installation
  * @name Android APK installation
  * @description Installing an APK from an untrusted source.
  * @kind path-problem
+ * @security-severity 9.3
+ * @problem.severity warning
+ * @precision medium
  * @tags security
+ *       external/cwe/cwe-094
  */
 
 import java
