@@ -111,27 +111,6 @@ abstract class InterestingExternalApiCall extends TInterestingExternalApiCall {
   abstract string getApiName();
 }
 
-class ResolvedCall extends InterestingExternalApiCall, TResolvedCall {
-  DataFlowPrivate::DataFlowCall dfCall;
-
-  ResolvedCall() { this = TResolvedCall(dfCall) }
-
-  override DataFlow::Node getArgument(DataFlowPrivate::ArgumentPosition apos) {
-    result = dfCall.getArgument(apos)
-  }
-
-  override string toString() {
-    result = "ExternalAPI:ResolvedCall: " + dfCall.getNode().getNode().toString()
-  }
-
-  override string getApiName() {
-    exists(DataFlow::CallCfgNode call, API::Node apiNode | dfCall.getNode() = call.getNode() |
-      result = apiNodeToStringRepr(apiNode) and
-      apiNode.getACall() = call
-    )
-  }
-}
-
 class UnresolvedCall extends InterestingExternalApiCall, TUnresolvedCall {
   DataFlow::CallCfgNode call;
 
@@ -149,6 +128,27 @@ class UnresolvedCall extends InterestingExternalApiCall, TUnresolvedCall {
 
   override string getApiName() {
     exists(API::Node apiNode |
+      result = apiNodeToStringRepr(apiNode) and
+      apiNode.getACall() = call
+    )
+  }
+}
+
+class ResolvedCall extends InterestingExternalApiCall, TResolvedCall {
+  DataFlowPrivate::DataFlowCall dfCall;
+
+  ResolvedCall() { this = TResolvedCall(dfCall) }
+
+  override DataFlow::Node getArgument(DataFlowPrivate::ArgumentPosition apos) {
+    result = dfCall.getArgument(apos)
+  }
+
+  override string toString() {
+    result = "ExternalAPI:ResolvedCall: " + dfCall.getNode().getNode().toString()
+  }
+
+  override string getApiName() {
+    exists(DataFlow::CallCfgNode call, API::Node apiNode | dfCall.getNode() = call.getNode() |
       result = apiNodeToStringRepr(apiNode) and
       apiNode.getACall() = call
     )
