@@ -166,8 +166,8 @@ module Ssa {
         value.(PropertyGetterCfgNode).getRef() = init
       )
       or
-      exists(VarDecl var, SsaInput::BasicBlock bb, int blockIndex, ConditionElement ce, Expr init |
-        this.definesAt(var, bb, blockIndex) and
+      exists(SsaInput::BasicBlock bb, int blockIndex, ConditionElement ce, Expr init |
+        this.definesAt(_, bb, blockIndex) and
         ce.getPattern() = bb.getNode(blockIndex).getNode().asAstNode() and
         init = ce.getInitializer() and
         strictcount(Ssa::WriteDefinition alt | alt.definesAt(_, bb, blockIndex)) = 1 // exclude cases where there are multiple writes from the same pattern, this is at best taint flow.
