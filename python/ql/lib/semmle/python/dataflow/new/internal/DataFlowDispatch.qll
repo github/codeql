@@ -702,7 +702,7 @@ Function findFunctionAccordingToMro(Class cls, string name) {
   result = cls.getAMethod() and
   result.getName() = name
   or
-  not exists(Function f | f.getName() = name and f = cls.getAMethod()) and
+  not cls.getAMethod().getName() = name and
   result = findFunctionAccordingToMro(getNextClassInMro(cls), name)
 }
 
@@ -733,7 +733,7 @@ private Function findFunctionAccordingToMroKnownStartingClass(
   result.getName() = name and
   cls = getADirectSuperclass*(startingClass)
   or
-  not exists(Function f | f.getName() = name and f = cls.getAMethod()) and
+  not cls.getAMethod().getName() = name and
   result =
     findFunctionAccordingToMroKnownStartingClass(getNextClassInMroKnownStartingClass(cls,
         startingClass), startingClass, name)
