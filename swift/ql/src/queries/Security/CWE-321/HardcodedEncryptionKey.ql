@@ -46,6 +46,14 @@ class EncryptionKeySink extends Expr {
       fName.matches("init(key:%") and
       call.getArgument(0).getExpr() = this
     )
+    or
+    // RNCryptor
+    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
+      c.getFullName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+      c.getAMember() = f and
+      call.getStaticTarget() = f and
+      call.getArgumentWithLabel("encryptionKey").getExpr() = this
+    )
   }
 }
 
