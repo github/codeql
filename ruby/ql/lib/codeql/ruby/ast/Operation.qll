@@ -169,12 +169,12 @@ class AddExprRoot extends AddExpr {
   private AstNode getALeafOrAdd() {
     result = this.getAChild()
     or
-    result = getALeafOrAdd().(AddExpr).getAChild()
+    result = this.getALeafOrAdd().(AddExpr).getAChild()
   }
 
   /** Gets a leaf node of this add expression. */
   AstNode getALeaf() {
-    result = getALeafOrAdd() and
+    result = this.getALeafOrAdd() and
     not result instanceof AddExpr
   }
 }
