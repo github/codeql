@@ -19,7 +19,7 @@ class ParameterPosition extends int {
 
 /** An argument position represented by an integer. */
 class ArgumentPosition extends int {
-  ArgumentPosition() { this in [-2, -1] or exists(any(Call c).getArg(this)) }
+  ArgumentPosition() { this in [-3, -2, -1] or exists(any(Call c).getArg(this)) }
 
   /** Holds if this position represents a positional argument at position `pos`. */
   predicate isPositional(int pos) { this = pos } // with the current representation, all arguments are positional
@@ -109,6 +109,8 @@ module ArgumentPassing {
     )
   }
 
+  private import semmle.python.essa.SsaCompute
+
   /**
    * Gets the `n`th parameter of `callable`.
    * If the callable has a starred parameter, say `*tuple`, that is matched with `n=-1`.
@@ -132,6 +134,15 @@ module ArgumentPassing {
       f = callable.getScope() and
       n = -2 and
       result = f.getKwarg().getAFlowNode()
+    )
+    or
+    // captured variable
+    exists(string name, ScopeEntryDefinition def |
+      captures_variable(callable, name, def) and
+      // TODO: handle more than one captured variable
+      n = -3 and
+      result.getId() = name and
+      AdjacentUses::firstUse(def.(EssaVariable).getDefinition(), result)
     )
   }
 
@@ -220,6 +231,16 @@ module ArgumentPassing {
         call_unpacks(call, mapping, callable, name, paramN) and
         result = TKwUnpackedNode(call, callable, name)
       )
+      or
+      // captured variable
+      exists(string name, ScopeEntryDefinition def, NameNode var |
+        captures_variable(callable, name, def) and
+        // TODO: handle more than one captured variable
+        paramN = -3 and
+        var.getId() = name and
+        result = TCfgNode(var) and
+        var.getBasicBlock() = call.getBasicBlock()
+      )
     )
   }
 
@@ -270,6 +291,13 @@ module ArgumentPassing {
       paramN < f.getPositionalParameterCount() + f.getKeywordOnlyParameterCount() and
       exists(call.getNode().getKwargs()) // dict argument available
     )
+  }
+
+  predicate captures_variable(CallableValue callable, string name, ScopeEntryDefinition def) {
+    def.(EssaVariable).getSourceVariable().getName() = name and
+    def.getScope() = callable.getScope() and
+    not def instanceof GlobalSsaVariable and
+    not def.(EssaVariable).isMetaVariable()
   }
 }
 
@@ -684,6 +712,24 @@ abstract class ParameterNodeImpl extends Node {
    * (zero-based) index `i`.
    */
   abstract predicate isParameterOf(DataFlowCallable c, int i);
+}
+
+class CapturedParameterNode extends ParameterNodeImpl, TCapturedParameterNode {
+  CallableValue callable;
+  string name;
+  ScopeEntryDefinition def;
+
+  CapturedParameterNode() { this = TCapturedParameterNode(callable, name, def) }
+
+  override Parameter getParameter() { none() }
+
+  override predicate isParameterOf(DataFlowCallable c, int i) {
+    c = TCallableValue(callable) and i = -3
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result = TCallableValue(callable) }
+
+  override string toString() { result = "captured parameter " + name + " of " + callable }
 }
 
 /** A parameter for a library callable with a flow summary. */

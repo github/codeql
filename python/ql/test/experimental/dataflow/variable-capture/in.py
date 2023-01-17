@@ -34,12 +34,12 @@ def SINK_F(x):
 def inParam(tainted):
     def captureIn1(): #$ entry=tainted
         sinkI1 = tainted
-        SINK(sinkI1) #$ MISSING:captured
+        SINK(sinkI1) #$ captured
     captureIn1()
 
     def captureIn1a(): #$ entry=tainted
         sinkI1 = tainted
-        SINK(sinkI1) #$ MISSING:captured
+        SINK(sinkI1) #$ captured
     a = captureIn1a
     a()
 

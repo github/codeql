@@ -109,9 +109,12 @@ newtype TNode =
   } or
   TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
     FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
+  } or
+  TCapturedParameterNode(CallableValue callable, string name, ScopeEntryDefinition def) {
+    captures_variable(callable, name, def)
   }
 
-class TParameterNode = TCfgNode or TSummaryParameterNode;
+class TParameterNode = TCfgNode or TSummaryParameterNode or TCapturedParameterNode;
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
