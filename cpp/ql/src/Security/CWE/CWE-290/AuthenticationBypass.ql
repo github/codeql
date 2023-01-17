@@ -32,7 +32,7 @@ predicate hardCodedAddressOrIP(StringLiteral txt) {
     s.regexpMatch("\"[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+\"") or
     // Hard-coded addresses such as www.mycompany.com
     s.regexpMatch("\"(www\\.|http:|https:).*\"") or
-    s.regexpMatch("\".*\\.(" + concat(getATopLevelDomain(), "|") + ")\"")
+    s.regexpMatch("\".*\\.(" + strictconcat(getATopLevelDomain(), "|") + ")\"")
   )
 }
 
