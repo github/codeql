@@ -53,7 +53,7 @@ class EncryptionKeySink extends Expr {
       c.getFullName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
-      call.getArgumentWithLabel("encryptionKey").getExpr() = this
+      call.getArgumentWithLabel(["encryptionKey", "withEncryptionKey"]).getExpr() = this
     )
   }
 }

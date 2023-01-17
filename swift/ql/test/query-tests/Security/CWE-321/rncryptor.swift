@@ -75,8 +75,8 @@ func test(cond: Bool) {
 	let _ = RNDecryptor(encryptionKey: myConstKey, hmacKey: myHMACKey, handler: myHandler) // BAD
 	let _ = RNDecryptor(encryptionKey: myConstKey, HMACKey: myHMACKey, handler: myHandler) // BAD
 
-	let _ = try? myDecryptor.decryptData(myData, withEncryptionKey: myConstKey, hmacKey: myHMACKey) // BAD [NOT DETECTED]
-	let _ = try? myDecryptor.decryptData(myData, withEncryptionKey: myConstKey, HMACKey: myHMACKey) // BAD [NOT DETECTED]
+	let _ = try? myDecryptor.decryptData(myData, withEncryptionKey: myConstKey, hmacKey: myHMACKey) // BAD
+	let _ = try? myDecryptor.decryptData(myData, withEncryptionKey: myConstKey, HMACKey: myHMACKey) // BAD
 	let _ = try? myDecryptor.decryptData(myData, with: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey) // BAD
 	let _ = try? myDecryptor.decryptData(myData, withSettings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey) // BAD
 }
