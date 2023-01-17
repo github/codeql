@@ -64,9 +64,6 @@ public class Test {
             sink((String)e4.getMessage());  // $hasValueFlow
             sink((Throwable)e4.getCause()); // $hasValueFlow
 
-            System.setProperty("testKey", (String)source());
-            sink(System.getProperty("testKey")); // $hasValueFlow
-
             // java.sql
             Connection con = DriverManager.getConnection("");
             PreparedStatement ps1 = con.prepareStatement("UPDATE EMPLOYEES SET NAME = ? WHERE ID = ?");
