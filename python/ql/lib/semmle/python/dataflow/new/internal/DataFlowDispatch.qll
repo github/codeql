@@ -256,6 +256,10 @@ abstract class LibraryCallable extends string {
 }
 
 newtype TDataFlowCallable =
+  /**
+   * Is used as the target for all calls: plain functions, lambdas, methods on classes,
+   * class instantiations, and (in the future) special methods.
+   */
   TFunction(Function func) {
     // For generators/list-comprehensions we create a synthetic function. In the
     // points-to call-graph these were not considered callable, and instead we added
