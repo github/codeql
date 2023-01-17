@@ -33,7 +33,7 @@ module FloatOverflow implements OverflowSig<FloatDelta> {
   predicate semExprDoesntOverflow(boolean positively, SemExpr expr) {
     exists(float lb, float ub, float delta |
       typeBounds(expr.getSemType(), lb, ub) and 
-      ConstantStage::initialBounded(expr, any(ConstantBounds::SemZeroBound b), delta, positively.booleanNot(), _, _, _)
+      ConstantStage::initialBounded(expr, any(ConstantBounds::SemZeroBound b), delta, positively, _, _, _)
     |
       positively = true and delta < ub
       or

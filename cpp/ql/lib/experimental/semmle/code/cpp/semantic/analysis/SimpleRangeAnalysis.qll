@@ -7,7 +7,7 @@ private import cpp
 private import semmle.code.cpp.ir.IR
 private import experimental.semmle.code.cpp.semantic.SemanticBound
 private import experimental.semmle.code.cpp.semantic.SemanticExprSpecific
-private import RangeAnalysis
+private import RangeAnalysisImpl
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
 /**
@@ -23,8 +23,10 @@ private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
  *    `lowerBound(expr.getFullyConverted())`
  */
 float lowerBound(Expr expr) {
-  exists(Instruction i, SemBound b | i.getAst() = expr and b instanceof SemZeroBound |
-    semBounded(getSemanticExpr(i), b, result, false, _)
+  exists(Instruction i, ConstantBounds::SemBound b |
+    i.getAst() = expr and b instanceof ConstantBounds::SemZeroBound
+  |
+    ConstantStage::semBounded(getSemanticExpr(i), b, result, false, _)
   )
 }
 
@@ -41,8 +43,10 @@ float lowerBound(Expr expr) {
  *    `upperBound(expr.getFullyConverted())`
  */
 float upperBound(Expr expr) {
-  exists(Instruction i, SemBound b | i.getAst() = expr and b instanceof SemZeroBound |
-    semBounded(getSemanticExpr(i), b, result, true, _)
+  exists(Instruction i, ConstantBounds::SemBound b |
+    i.getAst() = expr and b instanceof ConstantBounds::SemZeroBound
+  |
+    ConstantStage::semBounded(getSemanticExpr(i), b, result, true, _)
   )
 }
 
