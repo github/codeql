@@ -1,0 +1,4 @@
+| extensions.swift:5:1:9:1 | extension | getModule: | file://:0:0:0:0 | extensions | getNumberOfGenericTypeParams: | 0 | getNumberOfMembers: | 3 | getExtendedTypeDecl: | extensions.swift:1:1:1:11 | S | getNumberOfProtocols: | 0 |
+| extensions.swift:11:1:15:1 | extension | getModule: | file://:0:0:0:0 | extensions | getNumberOfGenericTypeParams: | 0 | getNumberOfMembers: | 3 | getExtendedTypeDecl: | extensions.swift:3:1:3:10 | C | getNumberOfProtocols: | 0 |
+| extensions.swift:21:1:23:1 | extension | getModule: | file://:0:0:0:0 | extensions | getNumberOfGenericTypeParams: | 0 | getNumberOfMembers: | 1 | getExtendedTypeDecl: | extensions.swift:1:1:1:11 | S | getNumberOfProtocols: | 1 |
+| extensions.swift:27:1:29:1 | extension | getModule: | file://:0:0:0:0 | extensions | getNumberOfGenericTypeParams: | 0 | getNumberOfMembers: | 1 | getExtendedTypeDecl: | extensions.swift:3:1:3:10 | C | getNumberOfProtocols: | 2 |

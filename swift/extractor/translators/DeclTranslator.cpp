@@ -265,6 +265,7 @@ std::optional<codeql::SubscriptDecl> DeclTranslator::translateSubscriptDecl(
 codeql::ExtensionDecl DeclTranslator::translateExtensionDecl(const swift::ExtensionDecl& decl) {
   auto entry = createEntry(decl);
   entry.extended_type_decl = dispatcher.fetchLabel(decl.getExtendedNominal());
+  entry.protocols = dispatcher.fetchRepeatedLabels(decl.getLocalProtocols());
   fillGenericContext(decl, entry);
   fillIterableDeclContext(decl, entry);
   return entry;
