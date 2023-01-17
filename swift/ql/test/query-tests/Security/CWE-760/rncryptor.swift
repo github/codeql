@@ -62,19 +62,19 @@ func test(myPassword: String) {
 	let _ = myEncryptor.key(forPassword: myPassword, salt: myRandomSalt1, settings: myKeyDerivationSettings) // GOOD
 	let _ = myEncryptor.key(forPassword: myPassword, salt: myConstantSalt1, settings: myKeyDerivationSettings) // BAD
 	let _ = myEncryptor.keyForPassword(myPassword, salt: myRandomSalt2, settings: myKeyDerivationSettings) // GOOD
-	let _ = myEncryptor.keyForPassword(myPassword, salt: myConstantSalt2, settings: myKeyDerivationSettings) // BAD [NOT DETECTED]
+	let _ = myEncryptor.keyForPassword(myPassword, salt: myConstantSalt2, settings: myKeyDerivationSettings) // BAD
 
 	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, iv: myIV, encryptionSalt: myRandomSalt1, hmacSalt: myRandomSalt2, handler: myHandler) // GOOD
 	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, iv: myIV, encryptionSalt: myConstantSalt1, hmacSalt: myRandomSalt2, handler: myHandler) // BAD
-	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, iv: myIV, encryptionSalt: myRandomSalt1, hmacSalt: myConstantSalt2, handler: myHandler) // BAD [NOT DETECTED]
+	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, iv: myIV, encryptionSalt: myRandomSalt1, hmacSalt: myConstantSalt2, handler: myHandler) // BAD
 	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, IV: myIV, encryptionSalt: myRandomSalt1, HMACSalt: myRandomSalt2, handler: myHandler) // GOOD
 	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, IV: myIV, encryptionSalt: myConstantSalt1, HMACSalt: myRandomSalt2, handler: myHandler) // BAD
-	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, IV: myIV, encryptionSalt: myRandomSalt1, HMACSalt: myConstantSalt2, handler: myHandler) // BAD [NOT DETECTED]
+	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, IV: myIV, encryptionSalt: myRandomSalt1, HMACSalt: myConstantSalt2, handler: myHandler) // BAD
 
 	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, password: myPassword, iv: myIV, encryptionSalt: myRandomSalt1, hmacSalt: myRandomSalt2) // GOOD
 	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, password: myPassword, iv: myIV, encryptionSalt: myConstantSalt1, hmacSalt: myRandomSalt2) // BAD
-	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, password: myPassword, iv: myIV, encryptionSalt: myRandomSalt1, hmacSalt: myConstantSalt2) // BAD [NOT DETECTED]
+	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, password: myPassword, iv: myIV, encryptionSalt: myRandomSalt1, hmacSalt: myConstantSalt2) // BAD
 	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, password: myPassword, IV: myIV, encryptionSalt: myRandomSalt1, HMACSalt: myRandomSalt2) // GOOD
 	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, password: myPassword, IV: myIV, encryptionSalt: myConstantSalt1, HMACSalt: myRandomSalt2) // BAD
-	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, password: myPassword, IV: myIV, encryptionSalt: myRandomSalt1, HMACSalt: myConstantSalt2) // BAD [NOT DETECTED]
+	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, password: myPassword, IV: myIV, encryptionSalt: myRandomSalt1, HMACSalt: myConstantSalt2) // BAD
 }
