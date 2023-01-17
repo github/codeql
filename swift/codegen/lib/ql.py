@@ -131,7 +131,7 @@ class Class:
 
     @property
     def has_doc(self) -> bool:
-        return bool(self.doc)
+        return bool(self.doc) or self.ql_internal
 
 
 @dataclass
