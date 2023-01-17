@@ -327,7 +327,8 @@ def generate(opts, renderer):
                 renderer.render(stub, stub_file)
 
         # for example path/to/elements -> path/to/elements.qll
-        renderer.render(ql.ImportList(list(imports.values())), include_file)
+        renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].ql_internal]),
+                        include_file)
 
         renderer.render(ql.GetParentImplementation(list(classes.values())), out / 'ParentChild.qll')
 
