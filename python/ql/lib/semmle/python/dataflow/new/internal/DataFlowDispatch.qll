@@ -552,7 +552,7 @@ Node selfTracker(Class classWithMethod) {
 /**
  * Gets a reference to the `cls` argument of a classmethod on class `classWithMethod`.
  */
-private TypeTrackingNode clsTracker(TypeTracker t, Class classWithMethod) {
+private TypeTrackingNode clsArgumentTracker(TypeTracker t, Class classWithMethod) {
   t.start() and
   (
     exists(Function func |
@@ -567,15 +567,15 @@ private TypeTrackingNode clsTracker(TypeTracker t, Class classWithMethod) {
     result.(CallCfgNode).getArg(0) = selfTracker(classWithMethod)
   )
   or
-  exists(TypeTracker t2 | result = clsTracker(t2, classWithMethod).track(t2, t)) and
+  exists(TypeTracker t2 | result = clsArgumentTracker(t2, classWithMethod).track(t2, t)) and
   not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
 
 /**
  * Gets a reference to the `cls` argument of a classmethod on class `classWithMethod`.
  */
-Node clsTracker(Class classWithMethod) {
-  clsTracker(TypeTracker::end(), classWithMethod).flowsTo(result)
+Node clsArgumentTracker(Class classWithMethod) {
+  clsArgumentTracker(TypeTracker::end(), classWithMethod).flowsTo(result)
 }
 
 /**
@@ -763,7 +763,7 @@ private TypeTrackingNode attrReadTracker(TypeTracker t, AttrRead attr) {
   t.start() and
   result = attr and
   attr.getObject() in [
-      classTracker(_), classInstanceTracker(_), selfTracker(_), clsTracker(_),
+      classTracker(_), classInstanceTracker(_), selfTracker(_), clsArgumentTracker(_),
       superCallNoArgumentTracker(_), superCallTwoArgumentTracker(_, _)
     ]
   or
@@ -887,7 +887,7 @@ private module MethodCalls {
   ) {
     call.getFunction() = attrReadTracker(attr).asCfgNode() and
     attr.accesses(self, functionName) and
-    self in [clsTracker(classWithMethod), selfTracker(classWithMethod)]
+    self in [clsArgumentTracker(classWithMethod), selfTracker(classWithMethod)]
   }
 
   /**
@@ -897,7 +897,7 @@ private module MethodCalls {
    */
   predicate fromSuperNewCall(CallNode call, Class classUsedInSuper, AttrRead attr, Node self) {
     fromSuper_join(call, "__new__", classUsedInSuper, attr, self) and
-    self in [classTracker(_), clsTracker(_)]
+    self in [classTracker(_), clsArgumentTracker(_)]
   }
 
   /**
@@ -998,7 +998,7 @@ predicate resolveClassCall(CallNode call, Class cls) {
   or
   // `cls()` inside a classmethod (which also contains `type(self)()` inside a method)
   exists(Class classWithMethod |
-    call.getFunction() = clsTracker(classWithMethod).asCfgNode() and
+    call.getFunction() = clsArgumentTracker(classWithMethod).asCfgNode() and
     getADirectSuperclass*(cls) = classWithMethod
   )
 }
@@ -1149,7 +1149,7 @@ predicate getCallArg(
       type instanceof CallTypeClassMethod and
       apos.isSelf() and
       resolveMethodCall(call, target, type, arg) and
-      (arg = classTracker(_) or arg = clsTracker(_)) and
+      (arg = classTracker(_) or arg = clsArgumentTracker(_)) and
       // dataflow lib has requirement that arguments and calls are in same enclosing callable.
       exists(CfgNode cfgNode | cfgNode.getNode() = call |
         cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
