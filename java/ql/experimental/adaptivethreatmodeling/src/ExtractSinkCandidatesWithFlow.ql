@@ -27,10 +27,10 @@ where
     callee = call.getCallee() and
     package = callee.getDeclaringType().getPackage().getName() and
     type = callee.getDeclaringType().getName() and //TODO: Will this work for inner classes? Will it produce X$Y? What about lambdas? What about enums? What about interfaces? What about annotations?
-    subtypes = true and // TODO
+    subtypes = true and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
     name = callee.getName() and // TODO: Will this work for constructors?
     signature = callee.paramsString() and
-    ext = "" and // TODO
+    ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
     input = "Argument[" + index + "]" and // TODO: why are slashes added?
     provenance = "manual" // TODO
   ) and
