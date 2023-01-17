@@ -134,6 +134,7 @@ _Pragma("qltest_collapse_hierarchy")
 _Pragma("qltest_uncollapse_hierarchy")
 
 ql.default_doc_name = lambda doc: _annotate(doc_name=doc)
+_Pragma("ql_internal")
 
 _Pragma("cpp_skip")
 
