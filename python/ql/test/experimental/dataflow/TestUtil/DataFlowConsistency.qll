@@ -20,6 +20,15 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
     n instanceof SynthDictSplatParameterNode
   }
 
+  override predicate uniqueParameterNodeAtPositionExclude(
+    DataFlowCallable c, ParameterPosition pos, Node p
+  ) {
+    // TODO: This can be removed once we solve the overlap of dictionary splat parameters
+    c.getParameter(pos) = p and
+    pos.isDictSplat() and
+    not exists(p.getLocation().getFile().getRelativePath())
+  }
+
   override predicate uniqueParameterNodePositionExclude(
     DataFlowCallable c, ParameterPosition pos, Node p
   ) {
