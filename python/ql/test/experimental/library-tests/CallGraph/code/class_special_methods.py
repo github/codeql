@@ -38,9 +38,9 @@ b.__call__(44) # $ pt,tt=Base.__call__
 print("\n! b2")
 b2 = Base(2) # $ tt=Base.__init__
 
-# __add__ is called
-b + b2
-b + 100
+
+b + b2 # $ MISSING: tt=Base.__add__
+b + 100 # $ MISSING: tt=Base.__add__
 
 
 # ========
