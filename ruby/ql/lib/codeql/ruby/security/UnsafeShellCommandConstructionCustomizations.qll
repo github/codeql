@@ -82,6 +82,26 @@ module UnsafeShellCommandConstruction {
   }
 
   /**
+   * A string constructed from a string-concatenation (e.g. `"foo " + sink`),
+   * where the resulting string ends up being executed as a shell command.
+   */
+  class StringConcatAsSink extends Sink {
+    Concepts::SystemCommandExecution s;
+    Ast::AddExprRoot add;
+
+    StringConcatAsSink() {
+      isUsedAsShellCommand(any(DataFlow::Node n | n.asExpr().getExpr() = add), s) and
+      this.asExpr().getExpr() = add.getALeaf()
+    }
+
+    override DataFlow::Node getCommandExecution() { result = s }
+
+    override string describe() { result = "string concatenation" }
+
+    override DataFlow::Node getStringConstruction() { result.asExpr().getExpr() = add }
+  }
+
+  /**
    * A string constructed using a `.join(" ")` call, where the resulting string ends up being executed as a shell command.
    */
   class ArrayJoin extends Sink {
