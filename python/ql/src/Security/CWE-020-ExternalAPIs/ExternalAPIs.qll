@@ -12,7 +12,7 @@ private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPr
 private import semmle.python.dataflow.new.internal.TaintTrackingPrivate as TaintTrackingPrivate
 
 /**
- * An external API that is considered a "safe" from a security perspective.
+ * An external API that is considered "safe" from a security perspective.
  */
 class SafeExternalApi extends Unit {
   /**
