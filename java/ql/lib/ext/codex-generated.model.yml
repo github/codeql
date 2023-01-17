@@ -1,0 +1,1353 @@
+extensions:
+- addsTo: {extensible: sinkModel, pack: codeql/java-all}
+  data:
+  - [org.apache.solr.api, AnnotatedApi, true, AnnotatedApi, '(SpecProvider, EndPoint,
+      Map<String,Cmd>, Api)', '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.common.util, PathTrie, true, getPathSegments, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.common.util, PathTrie<Api>, true, remove, (List<String>), '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.util, PathTrie<Api>, true, lookup, '(String, Map<String,String>)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.api, ApiBag, true, unregister, '(METHOD, String)', '', 'Argument[1]',
+    create-file, manual]
+  - [org.apache.solr.api, ApiInfo, true, get, (EndPoint), '', 'Argument[0]', open-url,
+    manual]
+  - [java.lang, String, true, replaceAll, '(String, String)', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.api, V2HttpCall, true, getApiInfo, '(PluginBag<SolrRequestHandler>,
+      String, String, String, Map<String,String>)', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.api, V2HttpCall, true, initAdminRequest, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.api, V2HttpCall, true, getApiInfo, '(PluginBag<SolrRequestHandler>,
+      String, String, String, Map<String,String>)', '', 'Argument[3]', create-file,
+    manual]
+  - [java.util, 'Map<Object,Object>', true, put, '(Object, Object)', '', 'Argument[1]',
+    create-file, manual]
+  - [org.apache.solr.servlet, SolrRequestParsers, true, parse, '(SolrCore, String,
+      HttpServletRequest)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core, PluginBag<SolrRequestHandler>, true, v2lookup, '(String,
+      String, Map<String,String>)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, SolrCore, true, getRequestHandler, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.slf4j, Logger, true, debug, '(String, Object, Object)', '', 'Argument[2]',
+    open-url, manual]
+  - [org.apache.commons.io.file, PathUtils, true, deleteDirectory, (Path), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, create, '(String, byte[], CreateMode,
+      boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, delete, '(String, int, boolean)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, exists, '(String, boolean)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, getData, '(String, Watcher,
+      Stat, boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.zookeeper, BadVersionException, true, BadVersionException, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.slf4j, Logger, true, debug, '(String, Object)', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, clean, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, setData, '(String, byte[],
+      int, boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, makePath, '(String, byte[],
+      CreateMode, Watcher, boolean, boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, getChildren, '(String, Watcher,
+      boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.cloud, Stats, true, time, (String), '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.cloud, OverseerTaskQueue, true, createData, '(String, byte[],
+      CreateMode)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.client.solrj.impl, SolrClientBuilder<Builder>, true, withHttpClient,
+    (HttpClient), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, get, '(String, DirContext, String)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.slf4j, Logger, true, debug, '(String, Object[])', '', 'Argument[5]', create-file,
+    manual]
+  - [org.slf4j, Logger, true, debug, '(String, Object[])', '', 'Argument[6]', create-file,
+    manual]
+  - [org.slf4j, Logger, true, debug, '(String, Object[])', '', 'Argument[7]', create-file,
+    manual]
+  - [org.apache.solr.core, DirectoryFactory, true, release, (Directory), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.common.cloud, ZkCoreNodeProps, true, getCoreUrl, '(String, String)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.slf4j, Logger, true, info, '(String, Object[])', '', 'Argument[3]', open-url,
+    manual]
+  - [org.apache.solr.cloud, RecoveryStrategy, true, pingLeader, '(String, CoreDescriptor,
+      boolean)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.common.cloud, ZkMaintenanceUtils, true, getZkParent, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.cloud, ElectionContext, true, ElectionContext, '(String, String,
+      String, ZkNodeProps, SolrZkClient)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.cloud, ElectionContext, true, ElectionContext, '(String, String,
+      String, ZkNodeProps, SolrZkClient)', '', 'Argument[2]', create-file, manual]
+  - [org.slf4j, Logger, true, debug, '(String, Object, Object)', '', 'Argument[1]',
+    create-file, manual]
+  - [org.apache.zookeeper, Op, true, delete, '(String, int)', '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, exists, '(String, Watcher,
+      boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.slf4j, Logger, true, info, '(String, Object)', '', 'Argument[1]', open-url,
+    manual]
+  - [java.util, List<String>, true, add, (String), '', 'Argument[0]', open-url, manual]
+  - [org.slf4j, Logger, true, info, '(String, Object, Object)', '', 'Argument[1]',
+    open-url, manual]
+  - [org.slf4j, Logger, true, info, '(String, Object, Object)', '', 'Argument[2]',
+    open-url, manual]
+  - [org.apache.solr.cloud, SyncStrategy, true, requestSync, '(String, String, String,
+      String, int)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.cloud, SyncStrategy, true, requestSync, '(String, String, String,
+      String, int)', '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.cloud, SyncStrategy, true, requestSync, '(String, String, String,
+      String, int)', '', 'Argument[2]', open-url, manual]
+  - [org.apache.solr.common.params, ModifiableSolrParams, true, set, '(String, String[])',
+    '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.cloud, ZkSolrResourceLoader, true, ZkSolrResourceLoader, '(Path,
+      String, ClassLoader, ZkController)', '', 'Argument[0]', create-file, manual]
+  - [org.slf4j, Logger, true, warn, '(String, Object, Object)', '', 'Argument[1]',
+    create-file, manual]
+  - [org.slf4j, Logger, true, info, '(String, Object)', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.cloud, ZkController, true, getLeader, '(CloudDescriptor, int)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.slf4j, Logger, true, debug, '(String, Object, Object)', '', 'Argument[1]',
+    open-url, manual]
+  - [org.apache.solr.common, EntryWriter, true, put, '(CharSequence, CharSequence)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.common.cloud, PerReplicaStatesFetcher, true, fetch, '(String,
+      SolrZkClient, PerReplicaStates)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, PerReplicaStatesOps, true, persist, '(String, SolrZkClient)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.slf4j, Logger, true, warn, '(String, Object, Object)', '', 'Argument[2]',
+    create-file, manual]
+  - [org.apache.solr.common.cloud, ZkNodeProps, true, ZkNodeProps, '(String[])', '',
+    'Argument[7]', open-url, manual]
+  - [org.slf4j, Logger, true, info, '(String, Object[])', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, makePath, '(String, byte[],
+      CreateMode, boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, SolrResourceLoader, true, SolrResourceLoader, '(Path, ClassLoader)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.util, 'Pair<String,Integer>', true, 'Pair<String,Integer>',
+    '(String, Integer)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.cloud, ZkController, true, pathExists, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.cloud, ZkByteArrayInputStream, true, ZkByteArrayInputStream,
+    '(byte[], String, Stat)', '', 'Argument[1]', create-file, manual]
+  - [java.io, IOException, true, IOException, '(String, Throwable)', '', 'Argument[0]',
+    create-file, manual]
+  - [java.net, URLClassLoader, true, getResourceAsStream, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.client.solrj.cloud, DistribStateManager, true, removeRecursively,
+    '(String, boolean, boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.client.solrj.cloud, DistribStateManager, true, hasData, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.cloud.api.collections, CreateCollectionCmd, true, getConfName,
+    '(DistribStateManager, String, String, Map<String,Object>, ConfigSetService)',
+    '', 'Argument[2]', create-file, manual]
+  - [org.apache.solr.client.solrj.cloud, DistribStateManager, true, makePath, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.client.solrj.cloud, DistribStateManager, true, getData, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.util, Utils, true, getBaseUrlForNodeName, '(String, String)',
+    '', 'Argument[1]', open-url, manual]
+  - [java.util, 'Map<String,Object>', true, put, '(String, Object)', '', 'Argument[1]',
+    open-url, manual]
+  - [org.apache.solr.common.util, Utils, true, makeMap, '(Object[])', '', 'Argument[7]',
+    open-url, manual]
+  - [java.util, 'IdentityHashMap<Directory,CacheValue>', true, remove, (Object), '',
+    'Argument[0]', create-file, manual]
+  - [java.util, 'Map<String,CacheValue>', true, remove, (Object), '', 'Argument[0]',
+    create-file, manual]
+  - [java.util, 'Map<Directory,List<CloseListener>>', true, remove, (Object), '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.util, ObjectReleaseTracker, true, release, (Object), '',
+    'Argument[0]', create-file, manual]
+  - [java.lang, String, true, startsWith, (String), '', 'Argument[0]', create-file,
+    manual]
+  - [java.nio.file, Path, true, of, '(String, String[])', '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.core, CachingDirectoryFactory, true, normalize, (String), '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, create, '(String, LockFactory,
+      DirContext)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, CacheValue, true, CacheValue, '(String, Directory)', '',
+    'Argument[0]', create-file, manual]
+  - [java.util, 'Map<String,CacheValue>', true, put, '(String, CacheValue)', '', 'Argument[0]',
+    create-file, manual]
+  - [java.nio.file, Paths, true, get, '(String, String[])', '', 'Argument[0]', create-file,
+    manual]
+  - [org.slf4j, Logger, true, info, '(String, Object, Object)', '', 'Argument[2]',
+    create-file, manual]
+  - [java.util, 'IdentityHashMap<Directory,CacheValue>', true, get, (Object), '',
+    'Argument[0]', create-file, manual]
+  - [org.slf4j, Logger, true, debug, '(String, Object[])', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.core, CachingDirectoryFactory, true, remove, '(String, boolean)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, CachingDirectoryFactory, true, remove, '(Directory, boolean)',
+    '', 'Argument[0]', create-file, manual]
+  - [java.util, 'Map<String,CacheValue>', true, get, (Object), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, CachingDirectoryFactory, true, stripTrailingSlash, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, ConfigOverlay, true, isEditable, '(boolean, List<String>,
+      List<String>)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.solr.core, ConfigSet, true, ConfigSet, '(String, SolrConfig, SchemaSupplier,
+      NamedList<?>, boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.schema, IndexSchemaFactory, true, create, '(String, SolrConfig,
+      ConfigSetService)', '', 'Argument[0]', sql, manual]
+  - [org.apache.solr.core, ConfigSetProperties, true, readFromResourceLoader, '(SolrResourceLoader,
+      String)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.security, AuthorizationPlugin, true, init, '(Map<String,Object>)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, CoreDescriptor, true, CoreDescriptor, '(String, Path, Map<String,String>,
+      Properties, ZkController)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core, SolrPaths, true, assertPathAllowed, '(Path, Set<Path>)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, SolrPaths, true, assertPathAllowed, '(Path, Set<Path>)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core, SolrCore, true, modifyIndexProps, '(DirectoryFactory, String,
+      SolrConfig, String)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core, CorePropertiesLocator, true, buildCoreDescriptor, '(Path,
+      CoreContainer)', '', 'Argument[0]', create-file, manual]
+  - [java.nio.file, Path, true, resolve, (String), '', 'Argument[0]', create-file,
+    manual]
+  - [java.nio.file, Files, true, exists, '(Path, LinkOption[])', '', 'Argument[0]',
+    create-file, manual]
+  - [java.nio.file, Files, true, newInputStream, '(Path, OpenOption[])', '', 'Argument[0]',
+    create-file, manual]
+  - [java.lang, String, true, format, '(Locale, String, Object[])', '', 'Argument[2]',
+    create-file, manual]
+  - [java.util, Properties, true, setProperty, '(String, String)', '', 'Argument[1]',
+    create-file, manual]
+  - [org.apache.solr.core, CorePropertiesLocator, true, writePropertiesFile, '(CoreDescriptor,
+      Path)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core, CorePropertiesLocator, true, buildCoreProperties, (CoreDescriptor),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.util, FileUtils, true, createDirectories, (Path), '', 'Argument[0]',
+    create-file, manual]
+  - [java.nio.file, Files, true, newOutputStream, '(Path, OpenOption[])', '', 'Argument[0]',
+    create-file, manual]
+  - [org.slf4j, Logger, true, error, '(String, Object, Object)', '', 'Argument[1]',
+    create-file, manual]
+  - [org.apache.solr.common, SolrException, true, SolrException, '(ErrorCode, String)',
+    '', 'Argument[1]', create-file, manual]
+  - [java.nio.file, Files, true, deleteIfExists, (Path), '', 'Argument[0]', create-file,
+    manual]
+  - [java.nio.file, Files, true, notExists, '(Path, LinkOption[])', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, CorePropertiesLocator, true, createName, '(Properties,
+      Path)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, sizeOfDirectory, (Directory), '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.lucene.store, Directory, true, copyFrom, '(Directory, String, String,
+      IOContext)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.lucene.store, Directory, true, copyFrom, '(Directory, String, String,
+      IOContext)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.lucene.store, Directory, true, copyFrom, '(Directory, String, String,
+      IOContext)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.lucene.store, Directory, true, deleteFile, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, sizeOf, '(Directory, String)',
+    '', 'Argument[0]', create-file, manual]
+  - [java.io, File, true, File, (String), '', 'Argument[0]', create-file, manual]
+  - [org.slf4j, Logger, true, info, '(String, Object[])', '', 'Argument[2]', create-file,
+    manual]
+  - [org.apache.solr.core, FileSystemConfigSetService, true, locateInstanceDir, (CoreDescriptor),
+    '', 'Argument[0]', create-file, manual]
+  - [java.nio.file, Files, true, list, (Path), '', 'Argument[0]', create-file, manual]
+  - [java.nio.file, Files, true, isDirectory, '(Path, LinkOption[])', '', 'Argument[0]',
+    create-file, manual]
+  - [java.nio.file, Files, true, getLastModifiedTime, '(Path, LinkOption[])', '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, ConfigOverlay, true, getXPathProperty, (List<String>),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.api, ApiBag, true, lookup, '(String, String, Map<String,String>)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, SolrResourceLoader, true, getURLs, (Path), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, SolrResourceLoader, true, getFilteredURLs, '(Path, String)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.slf4j, Logger, true, warn, '(String, Object[])', '', 'Argument[1]', create-file,
+    manual]
+  - [java.util, List<URL>, true, add, (URL), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.core, SolrResourceLoader, true, addToClassLoader, (List<URL>),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.core, SolrCore, true, getIndexPropertyFromPropFile, (Directory),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, exists, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core.snapshots, SolrSnapshotMetaDataManager, true, SolrSnapshotMetaDataManager,
+    '(SolrCore, Directory)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core.snapshots, SolrSnapshotMetaDataManager, true, listSnapshotsInIndexDir,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [org.slf4j, Logger, true, info, '(String, Object, Object)', '', 'Argument[1]',
+    create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, remove, (Directory), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core.snapshots, SolrSnapshotManager, true, deleteNonSnapshotIndexFiles,
+    '(SolrCore, Directory, Collection<SnapshotMetaData>)', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.core, SolrCore, true, SolrCore, '(CoreContainer, CoreDescriptor,
+      ConfigSet, String, UpdateHandler, IndexDeletionPolicyWrapper, SolrCore, boolean)',
+    '', 'Argument[3]', create-file, manual]
+  - [java.util, Set<String>, true, add, (String), '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.core, DirectoryFactory, true, normalize, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, SolrCore, true, isWriterLocked, (Directory), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.lucene.store, LockObtainFailedException, true, LockObtainFailedException,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.update, SolrIndexWriter, true, create, '(SolrCore, String, String,
+      DirectoryFactory, boolean, IndexSchema, SolrIndexConfig, IndexDeletionPolicy,
+      Codec)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.solr.update, SolrIndexWriter, true, create, '(SolrCore, String, String,
+      DirectoryFactory, boolean, IndexSchema, SolrIndexConfig, IndexDeletionPolicy,
+      Codec)', '', 'Argument[3]', create-file, manual]
+  - [org.apache.solr.core, SolrCore, true, initDataDir, '(String, SolrConfig, CoreDescriptor)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, SolrCore, true, findDataDir, '(DirectoryFactory, String,
+      SolrConfig, CoreDescriptor)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, SolrCore, true, findDataDir, '(DirectoryFactory, String,
+      SolrConfig, CoreDescriptor)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core, SolrCore, true, findDataDir, '(DirectoryFactory, String,
+      SolrConfig, CoreDescriptor)', '', 'Argument[3]', create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, isAbsolute, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, SolrPaths, true, normalizeDir, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, SolrCore, true, modifyIndexProps, '(DirectoryFactory, String,
+      SolrConfig, String)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, SolrCore, true, modifyIndexProps, '(DirectoryFactory, String,
+      SolrConfig, String)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.solr.core, SolrCore, true, writeNewIndexProps, '(Directory, String,
+      String)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, renameWithOverwrite, '(Directory,
+      String, String)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.search, SolrIndexSearcher, true, SolrIndexSearcher, '(SolrCore,
+      String, IndexSchema, String, DirectoryReader, boolean, boolean, boolean, DirectoryFactory)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, remove, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, remove, '(String, boolean)', '',
+    'Argument[0]', create-file, manual]
+  - [org.slf4j, Logger, true, error, '(String, Object[])', '', 'Argument[2]', create-file,
+    manual]
+  - [org.apache.solr.core, SolrCore, true, checkStale, '(SolrZkClient, String, int)',
+    '', 'Argument[1]', create-file, manual]
+  - [java.lang, Thread, true, Thread, '(Runnable, String)', '', 'Argument[1]', create-file,
+    manual]
+  - [org.slf4j, Logger, true, debug, '(String, Object, Object)', '', 'Argument[2]',
+    create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, cleanupOldIndexDirectories, '(String,
+      String, boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, cleanupOldIndexDirectories, '(String,
+      String, boolean)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core, SolrPaths, true, assertNotUnc, (Path), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, AllowPathBuilder, true, addPath, (Path), '', 'Argument[0]',
+    create-file, manual]
+  - [java.util, Set<Path>, true, add, (Path), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, SolrResourceLoader, true, addURLsToClassLoader, '(URLClassLoader,
+      List<URL>)', '', 'Argument[1]', open-url, manual]
+  - [java.util, List<URL>, true, addAll, '(Collection<? extends URL>)', '', 'Argument[0]',
+    open-url, manual]
+  - [org.slf4j, Logger, true, debug, '(String, Object)', '', 'Argument[1]', open-url,
+    manual]
+  - [java.nio.file, Files, true, newDirectoryStream, '(Path, Filter<? super Path>)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, SolrResourceLoader, true, getURLs, '(Path, Filter<Path>)',
+    '', 'Argument[0]', create-file, manual]
+  - [java.nio.file, FileSystem, true, getPathMatcher, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, SolrResourceNotFoundException, true, SolrResourceNotFoundException,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [java.nio.file, Path, true, startsWith, (Path), '', 'Argument[0]', create-file,
+    manual]
+  - [java.nio.file, Files, true, isReadable, (Path), '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.core, SolrResourceLoader, true, openResource, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, NodeConfigBuilder, true, setConfigSetServiceClass, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, NodeConfigBuilder, true, setCoreRootDirectory, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, NodeConfigBuilder, true, setAllowPaths, (Set<Path>), '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, SolrXmlConfig, true, separatePaths, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, AllowPathBuilder, true, addPath, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, getBaseDir, (Directory), '', 'Argument[0]',
+    create-file, manual]
+  - [java.nio.file, Files, true, move, '(Path, Path, CopyOption[])', '', 'Argument[0]',
+    create-file, manual]
+  - [java.nio.file, Files, true, move, '(Path, Path, CopyOption[])', '', 'Argument[1]',
+    create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, move, '(Directory, Directory, String,
+      IOContext)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, move, '(Directory, Directory, String,
+      IOContext)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, move, '(Directory, Directory, String,
+      IOContext)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.solr.util, SafeXMLParsing, true, parseConfigXML, '(Logger, ResourceLoader,
+      String)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, createURI, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, resolve, '(URI,
+      String[])', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, copyIndexFileFrom,
+    '(Directory, String, URI, String)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, copyIndexFileTo,
+    '(URI, String, Directory, String)', '', 'Argument[2]', create-file, manual]
+  - [java.util, Objects, true, requireNonNull, (T), '', 'Argument[0]', open-url, manual]
+  - [java.net, URI, true, URI, (String), '', 'Argument[0]', open-url, manual]
+  - [java.nio.file, Path, true, of, '(String, String[])', '', 'Argument[0]', open-url,
+    manual]
+  - [java.nio.file, Path, true, of, (URI), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core.backup.repository, LocalFileSystemRepository, true, exists,
+    (URI), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, copyIndexFileFrom,
+    '(Directory, String, Directory, String)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core.snapshots, SolrSnapshotManager, true, getSnapshotMetaDataZkPath,
+    '(String, Optional<String>)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core.snapshots, SolrSnapshotManager, true, deleteSnapshotIndexFiles,
+    '(SolrCore, Directory, IndexDeletionPolicy)', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.update, SolrIndexWriter, true, SolrIndexWriter, '(String, Directory,
+      IndexWriterConfig)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core.snapshots, SolrSnapshotMetaDataManager, true, SolrSnapshotMetaDataManager,
+    '(SolrCore, Directory, OpenMode)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core.snapshots, SnapshotMetaData, true, SnapshotMetaData, '(String,
+      String, long)', '', 'Argument[1]', create-file, manual]
+  - [org.slf4j, Logger, true, info, '(String, Object[])', '', 'Argument[4]', create-file,
+    manual]
+  - [org.apache.lucene.store, DataOutput, true, writeString, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.lucene.util, IOUtils, true, deleteFilesIgnoringExceptions, '(Directory,
+      String[])', '', 'Argument[0]', create-file, manual]
+  - [java.lang, IllegalStateException, true, IllegalStateException, (String), '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.client.solrj.io.stream.expr, StreamExpression, true, addParameter,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [org.apache.commons.io, FileUtils, true, lineIterator, '(File, String)', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.client.solrj.io, Tuple, true, Tuple, '(String, Object, String,
+      Object)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.handler, CrawlFile, true, CrawlFile, '(String, Path)', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.client.solrj.io.stream.expr, StreamFactory, true, withCollectionZkHost,
+    '(String, String)', '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.stream.expr, StreamFactory, true, withDefaultZkHost,
+    (String), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.io, ModelCache, true, ModelCache, '(int, String,
+      SolrClientCache)', '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.handler.export, ExportWriter, true, ExportWriter, '(SolrQueryRequest,
+      SolrQueryResponse, String, StreamContext, SolrMetricsContext, String)', '',
+    'Argument[5]', create-file, manual]
+  - [org.apache.solr.handler, IncrementalShardBackup, true, incrementalCopy, '(Collection<String>,
+      Directory)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, checksum, '(Directory,
+      String)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, getUsableSpace, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, setLeaderUrl, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.solr.security, AllowListUrlChecker, true, checkAllowList, '(List<String>,
+      ClusterState)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.security, AllowListUrlChecker, true, checkAllowList, '(List<String>,
+      ClusterState)', '', 'Argument[1]', open-url, manual]
+  - [java.util, Collections, true, singletonList, (T), '', 'Argument[0]', open-url,
+    manual]
+  - [org.apache.solr.common, SolrException, true, SolrException, '(ErrorCode, String)',
+    '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, Builder, true, Builder, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [org.slf4j, Logger, true, warn, '(String, Object, Object)', '', 'Argument[1]',
+    open-url, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, isIndexStale, (Directory), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, hasUnusedFiles, '(Directory, IndexCommit)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, downloadIndexFiles, '(boolean, Directory,
+      Directory, String, String, long)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, downloadIndexFiles, '(boolean, Directory,
+      Directory, String, String, long)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, downloadIndexFiles, '(boolean, Directory,
+      Directory, String, String, long)', '', 'Argument[3]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, downloadIndexFiles, '(boolean, Directory,
+      Directory, String, String, long)', '', 'Argument[4]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, downloadConfFiles, '(List<Map<String,Object>>,
+      long)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, moveIndexFiles, '(Directory, Directory)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, moveIndexFiles, '(Directory, Directory)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core, DirectoryFactory, true, doneWithDirectory, (Directory),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, SolrCore, true, deleteNonSnapshotIndexFiles, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, cleanup, '(SolrCore, Directory,
+      Directory, boolean, File, boolean)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, cleanup, '(SolrCore, Directory,
+      Directory, boolean, File, boolean)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.lucene.index, SegmentInfos, true, readCommit, '(Directory, String)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, LocalFsFileFetcher, true, LocalFsFileFetcher, '(File,
+      Map<String,Object>, String, String, long)', '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.handler, LocalFsFileFetcher, true, LocalFsFileFetcher, '(File,
+      Map<String,Object>, String, String, long)', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.handler, LocalFsFileFetcher, true, LocalFsFileFetcher, '(File,
+      Map<String,Object>, String, String, long)', '', 'Argument[2]', create-file,
+    manual]
+  - [java.util, 'HashMap<String,Object>', true, 'HashMap<String,Object>', '(Map<?
+      extends String,? extends Object>)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, copyTmpConfFiles2Conf, (Path), '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, delTree, (File), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.lucene.store, FilterDirectory, true, unwrap, (Directory), '', 'Argument[0]',
+    create-file, manual]
+  - [java.util.function, 'Function<String,Long>', true, apply, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, deleteFilesInAdvance, '(Directory,
+      String, long, long)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, deleteFilesInAdvance, '(Directory,
+      String, long, long)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, compareFile, '(Directory, String,
+      Long, Long)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, compareFile, '(Directory, String,
+      Long, Long)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, filesToAlwaysDownloadIfNoChecksums,
+    '(String, long, CompareResult)', '', 'Argument[0]', create-file, manual]
+  - [java.io, File, true, File, '(String, String)', '', 'Argument[0]', create-file,
+    manual]
+  - [java.io, File, true, File, '(String, String)', '', 'Argument[1]', create-file,
+    manual]
+  - [java.nio.file, Files, true, createLink, '(Path, Path)', '', 'Argument[1]', create-file,
+    manual]
+  - [java.nio.file, Path, true, of, '(String, String[])', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.handler, DirectoryFileFetcher, true, DirectoryFileFetcher, '(Directory,
+      Map<String,Object>, String, String, long)', '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.handler, DirectoryFileFetcher, true, DirectoryFileFetcher, '(Directory,
+      Map<String,Object>, String, String, long)', '', 'Argument[1]', create-file,
+    manual]
+  - [java.nio.file, Files, true, getFileStore, (Path), '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.lucene.store, Directory, true, openInput, '(String, IOContext)', '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, slowFileExists, '(Directory, String)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, slowFileExists, '(Directory, String)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.lucene.store, Directory, true, fileLength, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.slf4j, Logger, true, warn, '(String, Object)', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.handler, IndexFetcher, true, moveAFile, '(Directory, Directory,
+      String)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, moveAFile, '(Directory, Directory,
+      String)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, moveAFile, '(Directory, Directory,
+      String)', '', 'Argument[2]', create-file, manual]
+  - [java.nio.file, Files, true, walk, '(Path, FileVisitOption[])', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.handler, IndexFetcher, true, makeTmpConfDirFileList, (Path),
+    '', 'Argument[0]', create-file, manual]
+  - [java.nio.file, Files, true, createDirectories, '(Path, FileAttribute<?>[])',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common, SolrException, true, SolrException, '(ErrorCode, String,
+      Throwable)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.lucene.util, IOUtils, true, rm, '(Path[])', '', 'Argument[0]', create-file,
+    manual]
+  - [org.slf4j, Logger, true, error, '(String, Object)', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.common.params, ModifiableSolrParams, true, set, '(String, String[])',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.lucene.store, Directory, true, createOutput, '(String, IOContext)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, DirectoryFile, true, DirectoryFile, '(Directory, String)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, DirectoryFile, true, DirectoryFile, '(Directory, String)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.handler, FileFetcher, true, FileFetcher, '(FileInterface, Map<String,Object>,
+      String, String, long)', '', 'Argument[2]', create-file, manual]
+  - [java.io, File, true, File, '(File, String)', '', 'Argument[0]', create-file,
+    manual]
+  - [java.io, File, true, File, '(File, String)', '', 'Argument[1]', create-file,
+    manual]
+  - [java.io, FileOutputStream, true, FileOutputStream, (File), '', 'Argument[0]',
+    create-file, manual]
+  - [java.nio.file, Files, true, delete, (Path), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, LocalFsFile, true, LocalFsFile, '(File, String)', '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, LocalFsFile, true, LocalFsFile, '(File, String)', '',
+    'Argument[1]', create-file, manual]
+  - [java.util, Objects, true, requireNonNull, (T), '', 'Argument[0]', create-file,
+    manual]
+  - [java.nio.file, Files, true, write, '(Path, byte[], OpenOption[])', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.handler, SnapShooter, true, SnapShooter, '(SolrCore, String,
+      String)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, createDirectoryURI,
+    (String), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.handler, RestoreCore, true, create, '(BackupRepository, SolrCore,
+      URI, String)', '', 'Argument[2]', open-url, manual]
+  - [org.apache.solr.core, CoreContainer, true, assertPathAllowed, (Path), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, listAll, (URI),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.handler, OldBackupDirectory, true, OldBackupDirectory, '(URI,
+      String)', '', 'Argument[0]', open-url, manual]
+  - [org.slf4j, MDC, true, put, '(String, String)', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, createDirectoryURI,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, SnapShooter, true, SnapShooter, '(BackupRepository,
+      SolrCore, URI, String, String)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.solr.handler, ReplicationHandler, true, getConfFileInfoFromCache,
+    '(NamedList<String>, Map<String,FileInfo>)', '', 'Argument[0]', create-file, manual]
+  - [java.util, 'Map<String,FileInfo>', true, get, (Object), '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.common.util, NamedList<Object>, true, add, '(String, Object)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.common.util, NamedList<Object>, true, add, '(String, Object)',
+    '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, resolveDirectory,
+    '(URI, String[])', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, RestoreRepository, true, repoCopy, '(String, Directory)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.handler, RestoreRepository, true, localCopy, '(Directory, String,
+      Directory)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler, RestoreRepository, true, localCopy, '(Directory, String,
+      Directory)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, copyFileTo, '(URI,
+      String, Directory)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.solr.handler, SnapShooter, true, initialize, '(BackupRepository, SolrCore,
+      URI, String, String)', '', 'Argument[2]', create-file, manual]
+  - [java.nio.file, Paths, true, get, (URI), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, listAll, (URI),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, exists, (URI),
+    '', 'Argument[0]', create-file, manual]
+  - [org.slf4j, Logger, true, debug, '(String, Object[])', '', 'Argument[2]', create-file,
+    manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, copyFileFrom,
+    '(Directory, String, URI)', '', 'Argument[0]', create-file, manual]
+  - [java.util, Set<String>, true, contains, (Object), '', 'Argument[0]', create-file,
+    manual]
+  - [java.net, URL, true, URL, (String), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.common.cloud, ZkStateReader, true, getBaseUrlForNodeName, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.io, SolrClientCache, true, getHttpSolrClient, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.common.util, PropertiesUtil, true, substituteProperty, '(String,
+      Properties)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.core, CoreContainer, true, create, '(String, Path, Map<String,String>,
+      boolean)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.common.util, NamedList<String>, true, add, '(String, String)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.handler.admin, CoreAdminHandler, true, normalizePath, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core.snapshots, SolrSnapshotMetaDataManager, true, snapshot,
+    '(String, String, long)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.response, SolrQueryResponse, true, add, '(String, Object)', '',
+    'Argument[1]', create-file, manual]
+  - [java.util, 'Map<Directory,Boolean>', true, put, '(Directory, Boolean)', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.lucene.index, DirectoryReader, true, open, (Directory), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.handler.admin, ZookeeperStatusHandler, true, getZkStatus, '(String,
+      ZkDynamicConfig)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.common.cloud, ZkDynamicConfig, true, fromZkConnectString, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.handler.admin, ZookeeperStatusHandler, true, monitorZookeeper,
+    (String), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.handler.admin, ZookeeperStatusHandler, true, getZkRawResponse,
+    '(String, String)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.handler.admin, ZookeeperStatusHandler, true, validateZkRawResponse,
+    '(List<String>, String, String)', '', 'Argument[1]', open-url, manual]
+  - [java.net, Socket, true, Socket, '(String, int)', '', 'Argument[0]', open-url,
+    manual]
+  - [org.slf4j, Logger, true, debug, '(String, Object[])', '', 'Argument[1]', open-url,
+    manual]
+  - [org.apache.solr.common, SolrException, true, SolrException, '(ErrorCode, String)',
+    '', 'Argument[1]', sql, manual]
+  - [org.apache.solr.handler.admin.api, ReplaceNodeAPI, true, createRemoteMessage,
+    '(String, ReplaceNodeRequestBody)', '', 'Argument[1]', sql, manual]
+  - [java.util, 'Map<String,List<String>>', true, put, '(String, List<String>)', '',
+    'Argument[1]', open-url, manual]
+  - [org.apache.solr.handler.component, HttpShardHandlerFactory, true, newLBHttpSolrClientReq,
+    '(QueryRequest, List<String>)', '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, Req, true, Req, '(SolrRequest<?>, List<String>,
+      Integer)', '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.common.util, StrUtils, true, splitSmart, '(String, String, boolean)',
+    '', 'Argument[0]', open-url, manual]
+  - [java.util, List<String>, true, set, '(int, String)', '', 'Argument[1]', open-url,
+    manual]
+  - [org.apache.solr.handler.component, HttpShardHandlerFactory, true, buildUrl, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.common.util, URLUtil, true, hasScheme, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.commons.lang3, StringUtils, true, defaultIfEmpty, '(T, T)', '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.solr.common.util, URLUtil, true, removeScheme, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.solr.util, SafeXMLParsing, true, parseConfigXML, '(Logger, ResourceLoader,
+      String)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.http.client.methods, HttpEntityEnclosingRequestBase, true, setEntity,
+    (HttpEntity), '', 'Argument[0]', open-url, manual]
+  - [org.apache.http.entity, ByteArrayEntity, true, ByteArrayEntity, '(byte[])', '',
+    'Argument[0]', open-url, manual]
+  - [org.apache.solr.handler.designer, SchemaDesignerConfigSetHelper, true, isMatchingLangOrNonLangFile,
+    '(String, Set<String>)', '', 'Argument[0]', create-file, manual]
+  - [org.glassfish.jersey.server, ContainerRequest, true, ContainerRequest, '(URI,
+      URI, String, SecurityContext, PropertiesDelegate, Configuration)', '', 'Argument[1]',
+    open-url, manual]
+  - [java.util, Arrays, true, asList, '(T[])', '', 'Argument[0]', create-file, manual]
+  - [java.lang, String, true, format, '(Locale, String, Object[])', '', 'Argument[6]',
+    open-url, manual]
+  - [java.net, URL, true, URL, '(URL, String)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.util, SolrCLI, true, postJsonToSolr, '(SolrClient, String, String)',
+    '', 'Argument[2]', open-url, manual]
+  - [com.fasterxml.jackson.databind, ObjectMapper, true, writeValueAsString, (Object),
+    '', 'Argument[0]', sql, manual]
+  - [org.apache.solr.util, SolrCLI, true, postJsonToSolr, '(SolrClient, String, String)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.packagemanager, PackageUtils, true, resolve, '(String, Map<String,String>,
+      Map<String,String>, Map<String,String>)', '', 'Argument[2]', open-url, manual]
+  - [org.apache.solr.packagemanager, PackageUtils, true, printGreen, (Object), '',
+    'Argument[0]', open-url, manual]
+  - [org.apache.solr.packagemanager, PackageUtils, true, getJsonStringFromUrl, '(HttpClient,
+      String)', '', 'Argument[1]', open-url, manual]
+  - [com.jayway.jsonpath, ReadContext, true, read, '(String, Predicate[])', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.client.solrj.request, Builder, true, Builder, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [com.fasterxml.jackson.databind, ObjectMapper, true, readValue, '(String, Class<T>)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.http.client.methods, HttpGet, true, HttpGet, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.commons.io, IOUtils, true, toString, '(InputStream, String)', '',
+    'Argument[0]', open-url, manual]
+  - [com.fasterxml.jackson.databind, ObjectMapper, true, readValue, '(String, Class<T>)',
+    '', 'Argument[0]', create-file, manual]
+  - [com.fasterxml.jackson.databind, ObjectMapper, true, writeValueAsString, (Object),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.packagemanager, PackageUtils, true, postFile, '(SolrClient, ByteBuffer,
+      String, String)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.solr.packagemanager, PackageUtils, true, postFile, '(SolrClient, ByteBuffer,
+      String, String)', '', 'Argument[2]', open-url, manual]
+  - [org.apache.solr.packagemanager, PackageRepository, true, download, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.response.transform, SubQueryAugmenterFactory, true, retainAndShiftPrefix,
+    '(SolrParams, String)', '', 'Argument[1]', create-file, manual]
+  - [java.nio.file, Files, true, isWritable, (Path), '', 'Argument[0]', create-file,
+    manual]
+  - [java.io, FileInputStream, true, FileInputStream, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, SolrResourceLoader, true, resourceLocation, (String), '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.schema, IndexSchema, true, IndexSchema, '(String, ConfigResource,
+      Version, SolrResourceLoader, Properties)', '', 'Argument[0]', create-file, manual]
+  - [java.nio.file, Files, true, newBufferedWriter, '(Path, Charset, OpenOption[])',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.lucene.util, IOUtils, true, fsync, '(Path, boolean)', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.schema, ManagedIndexSchema, true, ManagedIndexSchema, '(Version,
+      SolrResourceLoader, boolean, String, int, Object, Properties)', '', 'Argument[3]',
+    create-file, manual]
+  - [org.apache.solr.schema, ManagedIndexSchemaFactory, true, locateConfigFile, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [java.io, File, true, renameTo, (File), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, ZkCmdExecutor, true, ensureExists, '(String, SolrZkClient)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, setData, '(String, byte[],
+      boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.lucene.util, ResourceLoader, true, openResource, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.util, VersionedFile, true, getLatestFile, '(String, String)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.security, AllowListUrlChecker, true, parseHostPort, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [java.util.regex, Pattern, true, matcher, (CharSequence), '', 'Argument[0]', open-url,
+    manual]
+  - [java.net, MalformedURLException, true, MalformedURLException, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.solr.servlet, SolrRequestParsers, true, parseQueryString, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.security, AuthenticationProvider, true, authenticate, '(String,
+      String)', '', 'Argument[0]', sql, manual]
+  - [java.util, Set<String>, true, contains, (Object), '', 'Argument[0]', open-url,
+    manual]
+  - [org.slf4j, Logger, true, error, '(String, Object, Object)', '', 'Argument[1]',
+    open-url, manual]
+  - [org.apache.solr.security, WildCardSupportMap, true, get, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.security, WildCardSupportMap, true, put, '(String, List<Permission>)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, CoreContainer, true, getRequestHandler, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.servlet, HttpSolrCall, true, remoteQuery, '(String, HttpServletResponse)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.http.client.methods, HttpHead, true, HttpHead, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.http.client.methods, HttpPost, true, HttpPost, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.http.client.methods, HttpPut, true, HttpPut, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.http.client.methods, HttpDelete, true, HttpDelete, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.http.client.methods, HttpOptions, true, HttpOptions, (String), '',
+    'Argument[0]', open-url, manual]
+  - [org.apache.solr.security, AuthorizationUtils, true, getCollectionRequests, '(String,
+      List<String>, SolrParams)', '', 'Argument[0]', create-file, manual]
+  - [io.opentracing, SpanBuilder, true, withTag, '(Tag<T>, T)', '', 'Argument[1]',
+    open-url, manual]
+  - [javax.servlet, ServletRequest, true, getRequestDispatcher, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.servlet, HttpSolrCallFactory, true, createInstance, '(SolrDispatchFilter,
+      String, CoreContainer, HttpServletRequest, HttpServletResponse, boolean)', '',
+    'Argument[1]', create-file, manual]
+  - [org.apache.solr.core, RequestHandlers, true, normalize, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.core, SolrResourceLoader, true, getLines, '(String, String)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.lucene.search.suggest, Lookup, true, build, (Dictionary), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.lucene.store, FSDirectory, true, open, (Path), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.client.solrj, SolrRequest<UpdateResponse>, true, setBasePath,
+    (String), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj, SolrClient, true, request, '(SolrRequest<?>)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.lucene.misc.store, HardlinkCopyDirectoryWrapper, true, HardlinkCopyDirectoryWrapper,
+    (Directory), '', 'Argument[0]', create-file, manual]
+  - [org.slf4j, Logger, true, error, '(String, Object[])', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.solr.update, SolrIndexWriter, true, SolrIndexWriter, '(SolrCore, String,
+      String, Directory, boolean, IndexSchema, SolrIndexConfig, IndexDeletionPolicy,
+      Codec)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.lucene.index, IndexWriter, true, IndexWriter, '(Directory, IndexWriterConfig)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.update, StreamingSolrClients, true, getFullUrl, (String), '',
+    'Argument[0]', open-url, manual]
+  - [java.util, 'Map<String,ConcurrentUpdateHttp2SolrClient>', true, get, (Object),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.update, Builder, true, Builder, '(String, Http2SolrClient, Req,
+      List<SolrError>)', '', 'Argument[0]', open-url, manual]
+  - [java.util, 'Map<String,ConcurrentUpdateHttp2SolrClient>', true, put, '(String,
+      ConcurrentUpdateHttp2SolrClient)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, Builder, true, Builder, '(String, Http2SolrClient)',
+    '', 'Argument[0]', open-url, manual]
+  - [java.nio.channels, FileChannel, true, open, '(Path, OpenOption[])', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.update, TransactionLog, true, TransactionLog, '(Path, Collection<String>,
+      boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.update, UpdateLog, true, newTransactionLog, '(Path, Collection<String>,
+      boolean)', '', 'Argument[0]', create-file, manual]
+  - [java.nio.file, Files, true, walk, '(Path, int, FileVisitOption[])', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.client.solrj, SolrRequest<SimpleSolrResponse>, true, setBasePath,
+    (String), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.common, SolrInputDocument, true, setField, '(String, Object)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.update.processor, NestedUpdateProcessor, true, setPathField,
+    '(SolrInputDocument, String)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.update.processor, NestedUpdateProcessor, true, processDocChildren,
+    '(SolrInputDocument, String)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.common, SolrInputDocument, true, containsKey, (Object), '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.solr.common, SolrInputDocument, true, getFieldValue, (String), '',
+    'Argument[0]', open-url, manual]
+  - [org.apache.solr.update.processor, URLClassifyProcessor, true, getNormalizedURL,
+    (String), '', 'Argument[0]', open-url, manual]
+  - [java.nio.file, Files, true, isSymbolicLink, (Path), '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.commons.io, FileExistsException, true, FileExistsException, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.util, SystemIdResolver, true, createSystemIdFromResourceName,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.util, SimplePostTool, true, postDirectory, '(File, OutputStream,
+      String)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.util, SimplePostTool, true, postData, '(InputStream, Long, OutputStream,
+      String, URL)', '', 'Argument[2]', open-url, manual]
+  - [java.util.zip, GZIPInputStream, true, GZIPInputStream, (InputStream), '', 'Argument[0]',
+    open-url, manual]
+  - [java.util.zip, InflaterInputStream, true, InflaterInputStream, '(InputStream,
+      Inflater)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.request, ContentStreamUpdateRequest, true, ContentStreamUpdateRequest,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [java.net, URI, true, URI, '(String, String, String, String, String)', '', 'Argument[2]',
+    open-url, manual]
+  - [java.util, List<Path>, true, add, (Path), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.handler.clustering, PathResourceLookup, true, PathResourceLookup,
+    (List<Path>), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.gcs, GCSBackupRepository, true, createURI, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [java.lang, StringBuilder, true, StringBuilder, (String), '', 'Argument[0]', open-url,
+    manual]
+  - [java.net, URI, true, create, (String), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.gcs, GCSBackupRepository, true, resolve, '(URI, String[])', '',
+    'Argument[0]', open-url, manual]
+  - [org.apache.solr.gcs, GCSBackupRepository, true, exists, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [com.google.cloud.storage, Storage, true, get, '(String, String, BlobGetOption[])',
+    '', 'Argument[1]', create-file, manual]
+  - [com.google.cloud.storage, Storage, true, get, '(String, String, BlobGetOption[])',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.gcs, GCSBackupRepository, true, appendTrailingSeparatorIfNecessary,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [com.google.cloud.storage, BlobListOption, true, prefix, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.gcs, GCSConfig, true, GCSConfig, '(String, String, int, int,
+      Builder)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.gcs, GCSConfig, true, GCSConfig, '(String, String, int, int,
+      Builder)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.hadoop.fs, Path, true, Path, (String), '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.hdfs.store.blockcache, BlockDirectoryCache, true, BlockDirectoryCache,
+    '(BlockCache, String, Metrics, boolean)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.hdfs.store.blockcache, BlockDirectory, true, BlockDirectory,
+    '(String, Directory, Cache, Set<String>, boolean, boolean, boolean, boolean)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.hdfs, HdfsDirectoryFactory, true, getCachedFileSystem, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.hdfs.util, HdfsUtil, true, addHdfsResources, '(Configuration,
+      String)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.cloud, ZkController, true, trimLeadingAndTrailingSlashes, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.core, CachingDirectoryFactory, true, getPath, (Directory), '',
+    'Argument[0]', create-file, manual]
+  - [com.google.common.cache, 'Cache<String,FileSystem>', true, get, '(String, Callable<?
+      extends FileSystem>)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.hadoop.security, UserGroupInformation, true, loginUserFromKeytab,
+    '(String, String)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.hadoop.fs, Path, true, Path, '(String, String)', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.hadoop.fs, Path, true, Path, '(Path, String)', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.hadoop.fs, Path, true, Path, '(Path, String)', '', 'Argument[1]',
+    create-file, manual]
+  - [org.apache.solr.hdfs, HdfsDirectoryFactory, true, getConf, (Path), '', 'Argument[0]',
+    create-file, manual]
+  - [java.util, Objects, true, requireNonNull, '(T, String)', '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.hdfs, HdfsDirectoryFactory, true, init, '(NamedList<?>)', '',
+    'Argument[0]', create-file, manual]
+  - [java.net, URI, true, URI, (String), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.hdfs.backup.repository, HdfsBackupRepository, true, resolve,
+    '(URI, String[])', '', 'Argument[1]', create-file, manual]
+  - [org.apache.hadoop.fs, Path, true, Path, (URI), '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.hdfs.store, HdfsFileWriter, true, HdfsFileWriter, '(FileSystem,
+      Path, String)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.hdfs.store, HdfsFileWriter, true, HdfsFileWriter, '(FileSystem,
+      Path, String)', '', 'Argument[2]', create-file, manual]
+  - [org.apache.solr.hdfs.store, HdfsIndexInput, true, HdfsIndexInput, '(String, FileSystem,
+      Path, int)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.hadoop.fs, FileSystem, true, listStatus, (Path), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.lucene.store, OutputStreamIndexOutput, true, OutputStreamIndexOutput,
+    '(String, String, OutputStream, int)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.hdfs.store.blockcache, CachedIndexInput, true, CachedIndexInput,
+    '(IndexInput, int, String, String, Cache, int)', '', 'Argument[3]', create-file,
+    manual]
+  - [org.apache.solr.hdfs.store.blockcache, BlockDirectory, true, getFileCacheLocation,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.hdfs.store.blockcache, Cache, true, delete, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.hdfs.store.blockcache, BlockCacheKey, true, setPath, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [com.github.benmanes.caffeine.cache, 'Cache<String,Integer>', true, getIfPresent,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [com.github.benmanes.caffeine.cache, 'Cache<String,Integer>', true, invalidate,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.hdfs.store.blockcache, Cache, true, renameCacheFile, '(String,
+      String)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.hdfs.store.blockcache, Cache, true, renameCacheFile, '(String,
+      String)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.hadoop.fs, FileSystem, true, open, (Path), '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.hadoop.fs, FileSystem, true, delete, '(Path, boolean)', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.hadoop.fs, FileSystem, true, listStatus, '(Path, PathFilter)', '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.hdfs.update, HdfsUpdateLog, true, getBufferLogList, '(FileSystem,
+      Path)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.hadoop.fs, FileSystem, true, checkPath, (Path), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.hadoop.fs, Path, true, Path, '(Path, Path)', '', 'Argument[1]', create-file,
+    manual]
+  - [org.apache.hadoop.fs, RawLocalFileSystem, true, pathToFile, (Path), '', 'Argument[0]',
+    create-file, manual]
+  - [java.io, FileNotFoundException, true, FileNotFoundException, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.hadoop.fs, RawLocalFileSystem, true, getFileLinkStatusInternal, '(Path,
+      boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.security.jwt, JWTIssuerConfig, true, setWellKnownUrl, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.security.jwt, JWTIssuerConfig, true, setAuthorizationEndpoint,
+    (String), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.security.jwt, JWTIssuerConfig, true, setJwksUrl, (Object), '',
+    'Argument[0]', open-url, manual]
+  - [org.apache.solr.security.jwt, JWTIssuerConfig, true, fetchWellKnown, (URL), '',
+    'Argument[0]', open-url, manual]
+  - [org.apache.solr.security.jwt, WellKnownDiscoveryConfig, true, parse, '(URL, Collection<X509Certificate>)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.security.jwt, JWTIssuerConfig, true, checkAllowOutboundHttpConnections,
+    '(String, URL)', '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.common, StringUtils, true, isEmpty, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [java.net, URI, true, URI, '(String, String, String, String)', '', 'Argument[2]',
+    open-url, manual]
+  - [java.net, URI, true, URI, '(String, String, String, String)', '', 'Argument[2]',
+    create-file, manual]
+  - [org.apache.solr.s3, S3BackupRepository, true, createURI, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [java.net, URI, true, create, (String), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.s3, S3BackupRepository, true, resolve, '(URI, String[])', '',
+    'Argument[0]', open-url, manual]
+  - [org.apache.solr.s3, S3BackupRepository, true, getS3Path, (URI), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.s3, S3StorageClient, true, S3StorageClient, '(String, String,
+      String, String, boolean, String, boolean)', '', 'Argument[3]', open-url, manual]
+  - [org.apache.solr.s3, S3StorageClient, true, S3StorageClient, '(String, String,
+      String, String, boolean, String, boolean)', '', 'Argument[5]', open-url, manual]
+  - [org.apache.solr.s3, S3StorageClient, true, createInternalClient, '(String, String,
+      String, boolean, String, boolean)', '', 'Argument[2]', open-url, manual]
+  - [org.apache.solr.s3, S3StorageClient, true, createInternalClient, '(String, String,
+      String, boolean, String, boolean)', '', 'Argument[4]', open-url, manual]
+  - [software.amazon.awssdk.http.apache, Builder, true, endpoint, (URI), '', 'Argument[0]',
+    open-url, manual]
+  - [software.amazon.awssdk.core.client.builder, 'SdkClientBuilder<S3ClientBuilder,S3Client>',
+    true, endpointOverride, (URI), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.scripting.update, EngineInfo, true, EngineInfo, '(Invocable,
+      ScriptFile)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.commons.io, FilenameUtils, true, getExtension, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.calcite.avatica, UnregisteredDriver, true, connect, '(String, Properties)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.calcite.avatica, UnregisteredDriver, true, acceptsURL, (String), '',
+    'Argument[0]', open-url, manual]
+  - [org.apache.solr.common.params, SolrParams, true, get, '(String, String)', '',
+    'Argument[1]', open-url, manual]
+  - [java.util, Properties, true, setProperty, '(String, String)', '', 'Argument[1]',
+    open-url, manual]
+  - [org.apache.solr.client.solrj.impl, BaseHttpClusterStateProvider, true, getSolrClient,
+    (String), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.common.util, Utils, true, getBaseUrlForNodeName, '(String, String)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, ClusterStateProvider, true, newZkClusterStateProvider,
+    '(Collection<String>, String)', '', 'Argument[0]', open-url, manual]
+  - [org.slf4j, MDC, true, put, '(String, String)', '', 'Argument[1]', open-url, manual]
+  - [java.util, 'Map<String,Future<NamedList<?>>>', true, put, '(String, Future<NamedList<?>>)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.common.util, 'NamedList<NamedList<?>>', true, add, '(String,
+      NamedList<?>)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.common.util, NamedList<Throwable>, true, add, '(String, Throwable)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, LBSolrClient, true, request, (Req), '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.solr.client.solrj.impl, Req, true, Req, '(SolrRequest<?>, List<String>)',
+    '', 'Argument[1]', open-url, manual]
+  - [java.util, Collections, true, shuffle, '(List<?>, Random)', '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.solr.common, SolrException, true, SolrException, '(ErrorCode, String,
+      Throwable)', '', 'Argument[1]', open-url, manual]
+  - [java.lang.reflect, 'Constructor<? extends ClusterStateProvider>', true, newInstance,
+    '(Object[])', '', 'Argument[0]', open-url, manual]
+  - [java.lang, String, true, valueOf, (Object), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj, 'SolrRequest<?>', true, setBasePath, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.client.solrj, SolrRequest<UpdateResponse>, true, setBasePath,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.client.solrj.impl, Builder, true, Builder, '(String, Http2SolrClient,
+      boolean)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, Http2SolrClient, true, makeRequest, '(SolrRequest<?>,
+      String)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj, SolrServerException, true, SolrServerException,
+    '(String, Throwable)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, Http2SolrClient, true, createRequest, '(SolrRequest<?>,
+      String)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, Http2SolrClient, true, setBasicAuthHeader,
+    '(SolrRequest<?>, Request)', '', 'Argument[0]', open-url, manual]
+  - [java.net, URL, true, URL, (String), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.client.solrj.request, RequestWriter, true, getPath, '(SolrRequest<?>)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, Http2SolrClient, true, changeV2RequestEndpoint,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [org.eclipse.jetty.client, HttpClient, true, newRequest, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.eclipse.jetty.client, HttpClient, true, newRequest, (String), '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.solr.client.solrj.impl, Http2SolrClient, true, calculateQueryParams,
+    '(Set<String>, ModifiableSolrParams)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj, SolrServerException, true, SolrServerException,
+    (String), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, RemoteSolrException, true, RemoteSolrException,
+    '(String, int, String, Throwable)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, RemoteExecutionException, true, create, '(String,
+      NamedList<?>)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, Http2SolrClient, true, Http2SolrClient, '(String,
+      Builder)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, Builder, true, withBaseSolrUrl, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.http.message, BasicHeader, true, BasicHeader, '(String, String)',
+    '', 'Argument[1]', sql, manual]
+  - [org.apache.http.client.methods, HttpDelete, true, HttpDelete, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.client.solrj.impl, HttpSolrClient, true, fillContentStream, '(SolrRequest<?>,
+      Collection<ContentStream>, ModifiableSolrParams, boolean, List<NameValuePair>,
+      String)', '', 'Argument[5]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, HttpSolrClient, true, calculateQueryParams,
+    '(Set<String>, ModifiableSolrParams)', '', 'Argument[0]', open-url, manual]
+  - [java.util.concurrent, 'ConcurrentHashMap<String,HttpSolrClient>', true, get,
+    (Object), '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, LBHttpSolrClient, true, makeSolrClient, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [java.util, 'Map<String,ServerWrapper>', true, put, '(String, ServerWrapper)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj, 'SolrRequest<?>', true, setBasePath, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, LBSolrClient, true, getClient, (String), '',
+    'Argument[0]', open-url, manual]
+  - [java.util, 'Map<String,ServerWrapper>', true, containsKey, (Object), '', 'Argument[0]',
+    open-url, manual]
+  - [java.util, 'Map<String,ServerWrapper>', true, remove, (Object), '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.solr.client.solrj.impl, LBSolrClient, true, removeFromAlive, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj, SolrRequest, true, SolrRequest, '(METHOD, String)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.common.params, ModifiableSolrParams, true, add, '(String, String[])',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.common.params, ModifiableSolrParams, true, setNonNull, '(String,
+      Object)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.client.solrj.request, AbstractUpdateRequest, true, AbstractUpdateRequest,
+    '(METHOD, String)', '', 'Argument[1]', open-url, manual]
+  - [java.util, 'Map<String,T>', true, get, (Object), '', 'Argument[0]', open-url,
+    manual]
+  - [org.apache.solr.client.solrj, SolrRequest<UpdateResponse>, true, setPath, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.client.solrj.request, ReqSupplier<T>, true, get, '(UpdateRequest,
+      List<String>)', '', 'Argument[1]', open-url, manual]
+  - [java.util, 'Map<String,T>', true, put, '(String, T)', '', 'Argument[0]', open-url,
+    manual]
+  - [org.apache.solr.client.solrj.request, UpdateRequest, true, getRoutes, '(DocRouter,
+      DocCollection, Map<String,List<String>>, ModifiableSolrParams, String, ReqSupplier<T>)',
+    '', 'Argument[2]', open-url, manual]
+  - [java.util.regex, Pattern, true, matcher, (CharSequence), '', 'Argument[0]', create-file,
+    manual]
+  - [java.lang, StringBuilder, true, append, (String), '', 'Argument[0]', create-file,
+    manual]
+  - [java.util, Objects, true, requireNonNull, '(T, String)', '', 'Argument[0]', open-url,
+    manual]
+  - [java.lang, StringBuilder, true, append, (String), '', 'Argument[0]', open-url,
+    manual]
+  - [org.apache.solr.common.util, JavaBinCodec, true, writeStr, (CharSequence), '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.util, JsonRecordReader, true, addField, '(String, String,
+      boolean, boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.util, JsonRecordReader, true, splitEscapeQuote, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.util, Node, true, build, '(List<String>, String, boolean,
+      boolean, String)', '', 'Argument[4]', create-file, manual]
+  - [org.apache.solr.common.util, Node, true, build, '(List<String>, String, boolean,
+      boolean, String)', '', 'Argument[0]', create-file, manual]
+  - [java.util, 'Map<String,Node>', true, get, (Object), '', 'Argument[0]', create-file,
+    manual]
+  - [java.util, 'Map<String,Node>', true, put, '(String, Node)', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.common.util, Node, true, Node, '(String, Node)', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.common.util, StrUtils, true, splitSmart, '(String, char, List<String>)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.util, Node, true, lookupNode, '(List<String>, int, Map<String,String>,
+      Set<String>)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.util, Node, true, lookup, '(List<String>, int, Map<String,String>)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.util, Node, true, findAvailableChildren, '(String, Set<String>)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.util, TextWriter, true, writeStrRaw, '(String, String)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.common.util, TextWriter, true, writeStr, '(String, String, boolean)',
+    '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.client.solrj.io, ModelCache, true, getModel, '(String, String,
+      String, long)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.stream, CloudSolrStream, true, CloudSolrStream,
+    '(String, String, SolrParams)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.common.params, ModifiableSolrParams, true, set, '(String, String[])',
+    '', 'Argument[1]', sql, manual]
+  - [java.util, 'Map<String,SolrClient>', true, containsKey, (Object), '', 'Argument[0]',
+    open-url, manual]
+  - [java.util, 'Map<String,SolrClient>', true, get, (Object), '', 'Argument[0]',
+    open-url, manual]
+  - [java.util, 'Map<String,SolrClient>', true, put, '(String, SolrClient)', '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.solr.client.solrj.io.stream.expr, StreamExpressionNamedParameter,
+    true, StreamExpressionNamedParameter, '(String, String)', '', 'Argument[1]', open-url,
+    manual]
+  - [java.util, List<String>, true, add, (String), '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.common.params, ModifiableSolrParams, true, ModifiableSolrParams,
+    (SolrParams), '', 'Argument[0]', sql, manual]
+  - [org.apache.solr.client.solrj.io.sql, DriverImpl, true, processUrl, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.sql, DriverImpl, true, acceptsURL, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.sql, DriverImpl, true, loadParams, '(URI, Properties)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.sql, DriverImpl, true, loadParams, '(URI, Properties)',
+    '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.sql, ConnectionImpl, true, ConnectionImpl, '(String,
+      String, String, Properties)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.http.client.utils, URLEncodedUtils, true, parse, '(URI, String)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.sql, StatementImpl, true, containsLimit, (String),
+    '', 'Argument[0]', sql, manual]
+  - [org.apache.solr.client.solrj.io.sql, StatementImpl, true, constructStream, (String),
+    '', 'Argument[0]', sql, manual]
+  - [org.apache.solr.client.solrj.io.stream, SolrStream, true, SolrStream, '(String,
+      SolrParams)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.sql, StatementImpl, true, executeQueryImpl, (String),
+    '', 'Argument[0]', sql, manual]
+  - [org.apache.solr.client.solrj.io.stream, CloudSolrStream, true, init, '(String,
+      String, SolrParams)', '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.stream.expr, StreamExpression, true, addParameter,
+    (String), '', 'Argument[0]', sql, manual]
+  - [org.apache.solr.client.solrj.io.stream, TupleStream, true, getShards, '(String,
+      String, StreamContext, SolrParams)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.stream, TupleStream, true, getReplicas, '(String,
+      String, StreamContext, SolrParams)', '', 'Argument[0]', open-url, manual]
+  - [java.util, 'Map<String,Tuple>', true, put, '(String, Tuple)', '', 'Argument[0]',
+    open-url, manual]
+  - [org.apache.solr.client.solrj.io, SolrClientCache, true, getCloudSolrClient, (String),
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.impl, Builder, true, Builder, '(List<String>, Optional<String>)',
+    '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj, SolrRequest<QueryResponse>, true, setPath, (String),
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.client.solrj.io.stream, FeaturesSelectionCall, true, FeaturesSelectionCall,
+    '(String, Map<String,String>, String, String)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.stream, FeaturesSelectionCall, true, FeaturesSelectionCall,
+    '(String, Map<String,String>, String, String)', '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.stream, FeaturesSelectionStream, true, callShards,
+    (List<String>), '', 'Argument[0]', open-url, manual]
+  - [java.sql, DriverManager, true, getDriver, (String), '', 'Argument[0]', sql, manual]
+  - [java.io, IOException, true, IOException, '(String, Throwable)', '', 'Argument[0]',
+    sql, manual]
+  - [java.lang, String, true, format, '(Locale, String, Object[])', '', 'Argument[2]',
+    sql, manual]
+  - [java.sql, Driver, true, connect, '(String, Properties)', '', 'Argument[0]', sql,
+    manual]
+  - [java.sql, Driver, true, connect, '(String, Properties)', '', 'Argument[1]', sql,
+    manual]
+  - [java.sql, Statement, true, executeQuery, (String), '', 'Argument[0]', sql, manual]
+  - [java.lang, String, true, format, '(Locale, String, Object[])', '', 'Argument[3]',
+    sql, manual]
+  - [org.apache.solr.client.solrj.io.stream.expr, StreamExpressionNamedParameter,
+    true, StreamExpressionNamedParameter, '(String, String)', '', 'Argument[1]', sql,
+    manual]
+  - [org.apache.solr.client.solrj.io.stream, TupleStream, true, getShards, '(String,
+      String, StreamContext)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.stream, SignificantTermsCall, true, SignificantTermsCall,
+    '(String, Map<String,String>, String, float, float, int, int)', '', 'Argument[0]',
+    open-url, manual]
+  - [java.io, IOException, true, IOException, (String), '', 'Argument[0]', open-url,
+    manual]
+  - [org.apache.solr.client.solrj.io.stream, StatsStream, true, init, '(String, SolrParams,
+      Metric[], String)', '', 'Argument[3]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.stream, StatsStream, true, StatsStream, '(String,
+      String, SolrParams, Metric[])', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.stream, LogitCall, true, LogitCall, '(String,
+      Map<String,String>, String, List<String>, List<Double>, String, int, double,
+      int)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.stream, LogitCall, true, LogitCall, '(String,
+      Map<String,String>, String, List<String>, List<Double>, String, int, double,
+      int)', '', 'Argument[1]', open-url, manual]
+  - [org.apache.solr.client.solrj.io.stream, TextLogitStream, true, callShards, (List<String>),
+    '', 'Argument[0]', open-url, manual]
+  - [java.util, 'HashMap<String,String>', true, put, '(String, String)', '', 'Argument[1]',
+    open-url, manual]
+  - [java.lang, Exception, true, Exception, (String), '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.client.solrj.cloud, DistribStateManager, true, getData, '(String,
+      Watcher)', '', 'Argument[0]', create-file, manual]
+  - [java.util, Deque<String>, true, add, (String), '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.common.cloud, ZkStateReader, true, ZkStateReader, '(String, int,
+      int)', '', 'Argument[0]', open-url, manual]
+  - [java.util, NoSuchElementException, true, NoSuchElementException, (String), '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.client.solrj.impl, ZkDistribStateManager, true, listData, '(String,
+      Watcher)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, makePath, '(String, boolean)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.client.solrj.cloud, AlreadyExistsException, true, AlreadyExistsException,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.client.solrj.cloud, NotEmptyException, true, NotEmptyException,
+    (String), '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.client.solrj.cloud, BadVersionException, true, BadVersionException,
+    '(int, String)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.common.cloud, ZkClientConnectionStrategy, true, createZooKeeper,
+    '(String, int, Watcher)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, getChildren, '(String, Watcher,
+      Stat, boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, PerReplicaStates, true, PerReplicaStates, '(String,
+      int, List<String>)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.zookeeper, Op, true, create, '(String, byte[], List<ACL>, CreateMode)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, ZkACLProvider, true, getACLsToAdd, (String), '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, SolrZkClient, '(String, int,
+      int, ZkClientConnectionStrategy, OnReconnect, BeforeReconnect, ZkACLProvider,
+      IsClosed)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.common.cloud, ConnectionManager, true, ConnectionManager, '(String,
+      SolrZkClient, String, ZkClientConnectionStrategy, OnReconnect, BeforeReconnect,
+      IsClosed)', '', 'Argument[2]', open-url, manual]
+  - [org.apache.solr.common.cloud, ZkClientConnectionStrategy, true, connect, '(String,
+      int, Watcher, ZkUpdate)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.zookeeper, ZooKeeper, true, exists, '(String, Watcher)', '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.zookeeper, ZooKeeper, true, setData, '(String, byte[], int)', '',
+    'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, makePath, '(String, byte[],
+      CreateMode, Watcher, boolean, boolean, int)', '', 'Argument[0]', create-file,
+    manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, makePath, '(String, byte[],
+      CreateMode, Watcher, boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.zookeeper, ZooKeeper, true, create, '(String, byte[], List<ACL>, CreateMode)',
+    '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, setACL, '(String, List<ACL>,
+      boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, ZkMaintenanceUtils, true, clean, '(SolrZkClient,
+      String)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.common.cloud, ZkClientConnectionStrategy, true, newZooKeeperInstance,
+    '(String, int, Watcher)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.zookeeper, ZooKeeper, true, ZooKeeper, '(String, int, Watcher)', '',
+    'Argument[0]', open-url, manual]
+  - [org.apache.solr.common.cloud, ZkCmdExecutor, true, ensureExists, '(String, byte[],
+      CreateMode, SolrZkClient, int)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, ZkMaintenanceUtils, true, traverseZkTree, '(SolrZkClient,
+      String, VISIT_ORDER, ZkVisitor)', '', 'Argument[1]', create-file, manual]
+  - [org.apache.solr.common.cloud, ZkVisitor, true, visit, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.common, StringUtils, true, isEmpty, (String), '', 'Argument[0]',
+    create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, makePath, '(String, boolean,
+      boolean)', '', 'Argument[0]', create-file, manual]
+  - [org.apache.solr.common.cloud, SolrZkClient, true, SolrZkClient, '(String, int,
+      int, OnReconnect)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.zookeeper, TestableZooKeeper, true, TestableZooKeeper, '(String, int,
+      Watcher)', '', 'Argument[0]', open-url, manual]
+  - [org.apache.solr.core.backup.repository, BackupRepository, true, resolveDirectory,
+    '(URI, String[])', '', 'Argument[0]', open-url, manual]
