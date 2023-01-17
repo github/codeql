@@ -100,6 +100,7 @@ class Class:
     qltest_skip: bool = False
     qltest_collapse_hierarchy: bool = False
     qltest_uncollapse_hierarchy: bool = False
+    ql_internal: bool = False
     ipa: bool = False
     doc: List[str] = field(default_factory=list)
 
