@@ -20,5 +20,15 @@ argHasPostUpdate
 postWithInFlow
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
+| argumentPassing.py:50:1:60:2 | Function argument_passing | ** | argumentPassing.py:50:1:60:2 | SynthDictSplatParameterNode | Parameters with overlapping positions. |
+| argumentPassing.py:50:1:60:2 | Function argument_passing | ** | argumentPassing.py:59:7:59:7 | ControlFlowNode for g | Parameters with overlapping positions. |
+| argumentPassing.py:185:1:185:23 | Function mixed | ** | argumentPassing.py:185:1:185:23 | SynthDictSplatParameterNode | Parameters with overlapping positions. |
+| argumentPassing.py:185:1:185:23 | Function mixed | ** | argumentPassing.py:185:16:185:21 | ControlFlowNode for kwargs | Parameters with overlapping positions. |
+| classes.py:441:5:441:41 | Function __prepare__ | ** | classes.py:441:5:441:41 | SynthDictSplatParameterNode | Parameters with overlapping positions. |
+| classes.py:441:5:441:41 | Function __prepare__ | ** | classes.py:441:36:441:39 | ControlFlowNode for kwds | Parameters with overlapping positions. |
+| test.py:407:1:407:28 | Function f_extra_keyword | ** | test.py:407:1:407:28 | SynthDictSplatParameterNode | Parameters with overlapping positions. |
+| test.py:407:1:407:28 | Function f_extra_keyword | ** | test.py:407:26:407:26 | ControlFlowNode for b | Parameters with overlapping positions. |
+| test.py:521:23:521:43 | Function lambda | ** | test.py:521:23:521:43 | SynthDictSplatParameterNode | Parameters with overlapping positions. |
+| test.py:521:23:521:43 | Function lambda | ** | test.py:521:35:521:35 | ControlFlowNode for b | Parameters with overlapping positions. |
 uniqueParameterNodePosition
 uniqueContentApprox
