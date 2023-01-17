@@ -1,0 +1,32 @@
+edges
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:70:28:70:28 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:73:28:73:28 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:74:28:74:28 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:76:28:76:28 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:77:28:77:28 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:78:28:78:28 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:79:46:79:46 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:88:11:88:11 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:91:61:91:61 | tainted |
+nodes
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| UncontrolledFormatString.swift:70:28:70:28 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:73:28:73:28 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:74:28:74:28 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:76:28:76:28 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:77:28:77:28 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:78:28:78:28 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:79:46:79:46 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:88:11:88:11 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:91:61:91:61 | tainted | semmle.label | tainted |
+subpaths
+#select
+| UncontrolledFormatString.swift:70:28:70:28 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:70:28:70:28 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:73:28:73:28 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:73:28:73:28 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:74:28:74:28 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:74:28:74:28 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:76:28:76:28 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:76:28:76:28 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:77:28:77:28 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:77:28:77:28 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:78:28:78:28 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:78:28:78:28 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:79:46:79:46 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:79:46:79:46 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:88:11:88:11 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:88:11:88:11 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:91:61:91:61 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:91:61:91:61 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
