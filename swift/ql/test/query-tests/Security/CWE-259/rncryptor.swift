@@ -88,7 +88,7 @@ func test(cond: Bool) {
 	let mySalt = Data(0)
 	let mySalt2 = Data(0)
 
-	let _ = myEncryptor.key(forPassword: myConstPassword, salt: mySalt, settings: myKeyDerivationSettings) // BADx
+	let _ = myEncryptor.key(forPassword: myConstPassword, salt: mySalt, settings: myKeyDerivationSettings) // BAD
 	let _ = myEncryptor.keyForPassword(myConstPassword, salt: mySalt, settings: myKeyDerivationSettings) // BAD
 	let _ = myDecryptor.key(forPassword: myConstPassword, salt: mySalt, settings: myKeyDerivationSettings) // BAD
 	let _ = myDecryptor.keyForPassword(myConstPassword, salt: mySalt, settings: myKeyDerivationSettings) // BAD
