@@ -158,9 +158,7 @@ class UnresolvedCall extends InterestingExternalApiCall, TUnresolvedCall {
 /** A node representing data being passed to an external API through a call. */
 class ExternalApiDataNode extends DataFlow::Node {
   ExternalApiDataNode() {
-    exists(InterestingExternalApiCall call, DataFlowPrivate::ArgumentPosition apos |
-      this = call.getArgument(apos)
-    ) and
+    exists(InterestingExternalApiCall call | this = call.getArgument(_)) and
     // Not already modeled as a taint step
     not TaintTrackingPrivate::defaultAdditionalTaintStep(this, _) and
     // for `list.append(x)`, we have a additional taint step from x -> [post] list.
