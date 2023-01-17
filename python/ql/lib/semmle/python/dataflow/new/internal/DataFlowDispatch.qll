@@ -854,14 +854,9 @@ private module MethodCalls {
   private predicate directCall_join(
     CallNode call, string functionName, Class cls, AttrRead attr, Node self
   ) {
-    (
-      call.getFunction() = attrReadTracker(attr).asCfgNode() and
-      attr.accesses(classTracker(cls), functionName)
-      or
-      call.getFunction() = attrReadTracker(attr).asCfgNode() and
-      attr.accesses(classInstanceTracker(cls), functionName)
-    ) and
-    attr.accesses(self, functionName)
+    call.getFunction() = attrReadTracker(attr).asCfgNode() and
+    attr.accesses(self, functionName) and
+    self in [classTracker(cls), classInstanceTracker(cls)]
   }
 
   /**
@@ -886,14 +881,9 @@ private module MethodCalls {
   private predicate callWithinMethodImplicitSelfOrCls_join(
     CallNode call, string functionName, Class classWithMethod, AttrRead attr, Node self
   ) {
-    (
-      call.getFunction() = attrReadTracker(attr).asCfgNode() and
-      attr.accesses(clsTracker(classWithMethod), functionName)
-      or
-      call.getFunction() = attrReadTracker(attr).asCfgNode() and
-      attr.accesses(selfTracker(classWithMethod), functionName)
-    ) and
-    attr.accesses(self, functionName)
+    call.getFunction() = attrReadTracker(attr).asCfgNode() and
+    attr.accesses(self, functionName) and
+    self in [clsTracker(classWithMethod), selfTracker(classWithMethod)]
   }
 
   /**
