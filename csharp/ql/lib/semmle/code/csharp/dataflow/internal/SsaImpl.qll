@@ -776,11 +776,11 @@ private module CapturedVariableImpl {
     Callable c, CapturedWrittenLocalScopeVariable v,
     CapturedWrittenLocalScopeVariableDefinition vdef
   ) {
-    exists(ControlFlow::BasicBlock bb, int i, CapturedWrittenLocalScopeSourceVariable sv |
+    exists(ControlFlow::BasicBlock bb, CapturedWrittenLocalScopeSourceVariable sv |
       vdef.getTarget() = v and
       vdef.getEnclosingCallable() = c and
       sv.getAssignable() = v and
-      bb.getNode(i) = vdef.getAControlFlowNode() and
+      bb.getNode(_) = vdef.getAControlFlowNode() and
       c != v.getCallable()
     )
   }
@@ -1307,9 +1307,9 @@ private module Cached {
   predicate isCapturedVariableDefinitionFlowOut(
     Ssa::ExplicitDefinition def, Ssa::ImplicitCallDefinition cdef, boolean additionalCalls
   ) {
-    exists(Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
+    exists(Ssa::Definition def0 |
       def = def0.getAnUltimateDefinition() and
-      capturedReadOut(bb, i, def0.getSourceVariable(), cdef.getSourceVariable(), cdef.getCall(),
+      capturedReadOut(_, _, def0.getSourceVariable(), cdef.getSourceVariable(), cdef.getCall(),
         additionalCalls)
     )
   }

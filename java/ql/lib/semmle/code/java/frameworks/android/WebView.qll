@@ -85,3 +85,10 @@ class ShouldOverrideUrlLoading extends Method {
     this.hasName("shouldOverrideUrlLoading")
   }
 }
+
+/**
+ * A method annotated with the `android.webkit.JavascriptInterface` annotation.
+ */
+class JavascriptInterfaceMethod extends Method {
+  JavascriptInterfaceMethod() { this.hasAnnotation("android.webkit", "JavascriptInterface") }
+}

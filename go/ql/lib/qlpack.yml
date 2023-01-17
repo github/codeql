@@ -1,5 +1,5 @@
 name: codeql/go-all
-version: 0.4.0-dev
+version: 0.4.1-dev
 groups: go
 dbscheme: go.dbscheme
 extractor: go
@@ -7,4 +7,5 @@ library: true
 upgrades: upgrades
 dependencies:
   codeql/tutorial: ${workspace}
-
+dataExtensions:
+  - ext/*.model.yml

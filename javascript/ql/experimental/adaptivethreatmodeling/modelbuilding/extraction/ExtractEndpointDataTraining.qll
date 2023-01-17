@@ -30,7 +30,7 @@ predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string feat
     or
     // Performance note: this creates a Cartesian product between `endpoint` and `featureName`.
     featureName = EndpointFeatures::getASupportedFeatureName() and
-    not exists(string value | EndpointFeatures::tokenFeatures(endpoint, featureName, value)) and
+    not EndpointFeatures::tokenFeatures(endpoint, featureName, _) and
     featureValue = ""
   )
 }

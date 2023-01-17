@@ -14,10 +14,12 @@ With CodeQL packs and the package management commands in the CodeQL CLI, you can
 
 There are two types of CodeQL packs: query packs and library packs.
 
-* Query packs are designed to be run. When a query pack is published, the bundle includes all the transitive dependencies and a compilation cache. This ensures consistent and efficient execution of the queries in the pack.
-* Library packs are designed to be used by query packs (or other library packs) and do not contain queries themselves. The libraries are not compiled and there is no compilation cache included when the pack is published.
+* Query packs are designed to be run. When a query pack is published, the bundle includes all the transitive dependencies and pre-compiled representations of each query, in addition to the query sources. This ensures consistent and efficient execution of the queries in the pack.
+* Library packs are designed to be used by query packs (or other library packs) and do not contain queries themselves. The libraries are not compiled separately.
 
 You can use the ``pack`` command in the CodeQL CLI to create CodeQL packs, add dependencies to packs, and install or update dependencies. You can also publish and download CodeQL packs using the ``pack`` command. For more information, see ":doc:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`."
+
+For more information about compatibility between published query packs and different CodeQL releases, see ":ref:`About CodeQL pack compatibility <about-codeql-pack-compatibility>`."
 
 Creating a CodeQL pack
 ----------------------
@@ -81,3 +83,13 @@ This command downloads all dependencies to the shared cache on the local disk.
    By default ``codeql pack install`` will install dependencies from the Container registry on GitHub.com.
    You can install dependencies from a GitHub Enterprise Server Container registry by creating a ``qlconfig.yml`` file.
    For more information, see ":doc:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`."
+
+Customizing a downloaded CodeQL pack
+---------------------------------------------------
+
+The recommended way to experiment with changes to a pack is to clone the repository containing its source code.
+
+If no source respository is available and you need to base modifications on a pack downloaded from the Container registry, be aware that these packs are not intended to be modified or customized after downloading, and their format may change in the future without much notice.  We recommend taking the following steps after downloading a pack if you need to modify the content:
+
+- Change the pack *name* in ``qlpack.yml`` so you avoid confusion with results from the unmodified pack.
+- Remove all files named ``*.qlx`` anywhere in the unpacked directory structure. These files contain precompiled versions of the queries, and in some situations CodeQL will use them in preference to the QL source you have modified.

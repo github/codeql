@@ -3,13 +3,6 @@
  */
 
 import go
-private import semmle.go.dataflow.ExternalFlow
-
-private class FlowSummaries extends SummaryModelCsv {
-  override predicate row(string row) {
-    row = ["archive/tar;;true;FileInfoHeader;;;Argument[0];ReturnValue[0];taint"]
-  }
-}
 
 /** Provides models of commonly used functions in the `archive/tar` package. */
 module ArchiveTar {

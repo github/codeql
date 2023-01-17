@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @id cs/backdoor/potential-time-bomb
  * @tags security
+ *       experimental
  *       solorigate
  */
 

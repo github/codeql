@@ -876,9 +876,9 @@ private module Stage1 implements StageSig {
 
   pragma[nomagic]
   private predicate revFlowOut(ReturnPosition pos, Configuration config) {
-    exists(DataFlowCall call, NodeEx out |
+    exists(NodeEx out |
       revFlow(out, _, config) and
-      viableReturnPosOutNodeCandFwd1(call, pos, out, config)
+      viableReturnPosOutNodeCandFwd1(_, pos, out, config)
     )
   }
 
@@ -1731,8 +1731,8 @@ private module MkStage<StageSig PrevStage> {
       )
       or
       // flow through a callable
-      exists(DataFlowCall call, ParamNodeEx p, ReturnPosition pos, Ap innerReturnAp |
-        revFlowThrough(call, returnCtx, p, state, pos, returnAp, ap, innerReturnAp, config) and
+      exists(DataFlowCall call, ParamNodeEx p, Ap innerReturnAp |
+        revFlowThrough(call, returnCtx, p, state, _, returnAp, ap, innerReturnAp, config) and
         flowThroughIntoCall(call, node, p, _, ap, innerReturnAp, config)
       )
       or
@@ -1901,8 +1901,8 @@ private module MkStage<StageSig PrevStage> {
 
     pragma[nomagic]
     predicate parameterMayFlowThrough(ParamNodeEx p, Ap ap, Configuration config) {
-      exists(RetNodeEx ret, ReturnPosition pos |
-        returnFlowsThrough(ret, pos, _, _, p, ap, _, config) and
+      exists(ReturnPosition pos |
+        returnFlowsThrough(_, pos, _, _, p, ap, _, config) and
         parameterFlowsThroughRev(p, ap, pos, _, config)
       )
     }
@@ -1923,8 +1923,8 @@ private module MkStage<StageSig PrevStage> {
       DataFlowCall call, ArgNodeEx arg, FlowState state, ReturnCtx returnCtx, ApOption returnAp,
       Ap ap, Configuration config
     ) {
-      exists(ParamNodeEx p, ReturnPosition pos, Ap innerReturnAp |
-        revFlowThrough(call, returnCtx, p, state, pos, returnAp, ap, innerReturnAp, config) and
+      exists(ParamNodeEx p, Ap innerReturnAp |
+        revFlowThrough(call, returnCtx, p, state, _, returnAp, ap, innerReturnAp, config) and
         flowThroughIntoCall(call, arg, p, _, ap, innerReturnAp, config)
       )
     }
@@ -3749,8 +3749,8 @@ private predicate paramFlowsThrough(
   ReturnKindExt kind, FlowState state, CallContextCall cc, SummaryCtxSome sc, AccessPath ap,
   AccessPathApprox apa, Configuration config
 ) {
-  exists(PathNodeMid mid, RetNodeEx ret |
-    pathNode(mid, ret, state, cc, sc, ap, config, _) and
+  exists(RetNodeEx ret |
+    pathNode(_, ret, state, cc, sc, ap, config, _) and
     kind = ret.getKind() and
     apa = ap.getApprox() and
     parameterFlowThroughAllowed(sc.getParamNode(), kind)
@@ -4212,17 +4212,15 @@ private module FlowExploration {
       ap = TRevPartialNil() and
       exists(config.explorationLimit())
       or
-      exists(PartialPathNodeRev mid |
-        revPartialPathStep(mid, node, state, sc1, sc2, sc3, ap, config) and
-        not clearsContentEx(node, ap.getHead()) and
-        (
-          notExpectsContent(node) or
-          expectsContentEx(node, ap.getHead())
-        ) and
-        not fullBarrier(node, config) and
-        not stateBarrier(node, state, config) and
-        distSink(node.getEnclosingCallable(), config) <= config.explorationLimit()
-      )
+      revPartialPathStep(_, node, state, sc1, sc2, sc3, ap, config) and
+      not clearsContentEx(node, ap.getHead()) and
+      (
+        notExpectsContent(node) or
+        expectsContentEx(node, ap.getHead())
+      ) and
+      not fullBarrier(node, config) and
+      not stateBarrier(node, state, config) and
+      distSink(node.getEnclosingCallable(), config) <= config.explorationLimit()
     }
 
   pragma[nomagic]
@@ -4230,19 +4228,17 @@ private module FlowExploration {
     NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
     TSummaryCtx3 sc3, PartialAccessPath ap, Configuration config
   ) {
-    exists(PartialPathNodeFwd mid |
-      partialPathStep(mid, node, state, cc, sc1, sc2, sc3, ap, config) and
-      not fullBarrier(node, config) and
-      not stateBarrier(node, state, config) and
-      not clearsContentEx(node, ap.getHead().getContent()) and
-      (
-        notExpectsContent(node) or
-        expectsContentEx(node, ap.getHead().getContent())
-      ) and
-      if node.asNode() instanceof CastingNode
-      then compatibleTypes(node.getDataFlowType(), ap.getType())
-      else any()
-    )
+    partialPathStep(_, node, state, cc, sc1, sc2, sc3, ap, config) and
+    not fullBarrier(node, config) and
+    not stateBarrier(node, state, config) and
+    not clearsContentEx(node, ap.getHead().getContent()) and
+    (
+      notExpectsContent(node) or
+      expectsContentEx(node, ap.getHead().getContent())
+    ) and
+    if node.asNode() instanceof CastingNode
+    then compatibleTypes(node.getDataFlowType(), ap.getType())
+    else any()
   }
 
   /**

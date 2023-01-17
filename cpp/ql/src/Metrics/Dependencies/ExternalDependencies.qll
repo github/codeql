@@ -28,8 +28,8 @@ private newtype LibraryT =
     lib.getVersion() = version
   } or
   LibraryTExternalPackage(@external_package ep, string name, string version) {
-    exists(string namespace, string package_name |
-      external_packages(ep, namespace, package_name, version) and
+    exists(string package_name |
+      external_packages(ep, _, package_name, version) and
       name = package_name
     )
   }
@@ -42,8 +42,8 @@ class Library extends LibraryT {
   string version;
 
   Library() {
-    exists(LibraryElement lib | this = LibraryTElement(lib, name, version)) or
-    exists(@external_package ep | this = LibraryTExternalPackage(ep, name, version))
+    this = LibraryTElement(_, name, version) or
+    this = LibraryTExternalPackage(_, name, version)
   }
 
   string getName() { result = name }

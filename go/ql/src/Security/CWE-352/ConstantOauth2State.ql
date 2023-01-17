@@ -147,8 +147,8 @@ class FlowToPrint extends DataFlow::Configuration {
 
 /** Holds if the provided `CallNode`'s result flows to an argument of a printer call. */
 predicate resultFlowsToPrinter(DataFlow::CallNode authCodeUrlCall) {
-  exists(FlowToPrint cfg, DataFlow::PathNode source, DataFlow::PathNode sink |
-    cfg.hasFlowPath(source, sink) and
+  exists(FlowToPrint cfg, DataFlow::PathNode source |
+    cfg.hasFlowPath(source, _) and
     authCodeUrlCall.getResult() = source.getNode()
   )
 }

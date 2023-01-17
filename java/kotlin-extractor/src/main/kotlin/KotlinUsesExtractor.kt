@@ -41,7 +41,7 @@ open class KotlinUsesExtractor(
     val globalExtensionState: KotlinExtractorGlobalState
 ) {
     fun referenceExternalClass(name: String) =
-        pluginContext.referenceClass(FqName(name))?.owner.also {
+        getClassByFqName(pluginContext, FqName(name))?.owner.also {
             if (it == null)
                 logger.warn("Unable to resolve external class $name")
             else
@@ -118,7 +118,7 @@ open class KotlinUsesExtractor(
     }
 
     fun getJavaEquivalentClass(c: IrClass) =
-        getJavaEquivalentClassId(c)?.let { pluginContext.referenceClass(it.asSingleFqName()) }?.owner
+        getJavaEquivalentClassId(c)?.let { getClassByFqName(pluginContext, it.asSingleFqName()) }?.owner
 
     /**
      * Gets a KotlinFileExtractor based on this one, except it attributes locations to the file that declares the given class.
@@ -328,7 +328,7 @@ open class KotlinUsesExtractor(
                 return@getOrPut null
             }
 
-            val result = pluginContext.referenceClass(qualifiedName)?.owner
+            val result = getClassByFqName(pluginContext, qualifiedName)?.owner
             if (result != null) {
                 logger.info("Replaced synthetic class ${c.name} with its real equivalent")
                 return@getOrPut result
@@ -337,7 +337,7 @@ open class KotlinUsesExtractor(
             // The above doesn't work for (some) generated nested classes, such as R$id, which should be R.id
             val fqn = qualifiedName.asString()
             if (fqn.indexOf('$') >= 0) {
-                val nested = pluginContext.referenceClass(FqName(fqn.replace('$', '.')))?.owner
+                val nested = getClassByFqName(pluginContext, fqn.replace('$', '.'))?.owner
                 if (nested != null) {
                     logger.info("Replaced synthetic nested class ${c.name} with its real equivalent")
                     return@getOrPut nested
@@ -454,7 +454,7 @@ open class KotlinUsesExtractor(
         }
 
         fun tryGetPair(arity: Int): Pair<IrClass, List<IrTypeArgument>?>? {
-            val replaced = pluginContext.referenceClass(fqName)?.owner ?: return null
+            val replaced = getClassByFqName(pluginContext, fqName)?.owner ?: return null
             return Pair(replaced, List(arity) { makeTypeProjection(pluginContext.irBuiltIns.anyNType, Variance.INVARIANT) })
         }
 

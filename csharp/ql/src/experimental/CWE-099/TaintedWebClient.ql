@@ -7,6 +7,7 @@
  * @precision high
  * @id cs/webclient-path-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-099
  *       external/cwe/cwe-023
  *       external/cwe/cwe-036

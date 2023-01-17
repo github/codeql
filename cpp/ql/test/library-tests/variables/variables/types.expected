@@ -1,5 +1,6 @@
 | ..()(..) | RoutineType |  |  |  |  |
 | ..(*)(..) | FunctionPointerType |  | ..()(..) |  |  |
+| _Complex _Float16 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
 | _Complex __float128 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
 | _Complex double | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
 | _Complex float | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
@@ -7,6 +8,7 @@
 | _Decimal32 | Decimal32Type |  |  |  |  |
 | _Decimal64 | Decimal64Type |  |  |  |  |
 | _Decimal128 | Decimal128Type |  |  |  |  |
+| _Float16 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | _Float32 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | _Float32x | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | _Float64 | BinaryFloatingPointType, RealNumberType |  |  |  |  |

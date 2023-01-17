@@ -528,11 +528,11 @@ private predicate boundFlowStepMul(Expr e2, Expr e1, int factor) {
     or
     exists(AssignMulExpr e | e = e2 and e.getDest() = c and e.getRhs() = e1 and factor = k)
     or
-    exists(LShiftExpr e |
+    exists(LeftShiftExpr e |
       e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)
     )
     or
-    exists(AssignLShiftExpr e |
+    exists(AssignLeftShiftExpr e |
       e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k)
     )
   )
@@ -552,19 +552,19 @@ private predicate boundFlowStepDiv(Expr e2, Expr e1, int factor) {
     or
     exists(AssignDivExpr e | e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = k)
     or
-    exists(RShiftExpr e |
+    exists(RightShiftExpr e |
       e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)
     )
     or
-    exists(AssignRShiftExpr e |
+    exists(AssignRightShiftExpr e |
       e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k)
     )
     or
-    exists(URShiftExpr e |
+    exists(UnsignedRightShiftExpr e |
       e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)
     )
     or
-    exists(AssignURShiftExpr e |
+    exists(AssignUnsignedRightShiftExpr e |
       e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k)
     )
   )
@@ -707,9 +707,7 @@ private predicate boundedPhiCand(
   SsaPhiNode phi, boolean upper, Bound b, int delta, boolean fromBackEdge, int origdelta,
   Reason reason
 ) {
-  exists(SsaVariable inp, SsaReadPositionPhiInputEdge edge |
-    boundedPhiInp(phi, inp, edge, b, delta, upper, fromBackEdge, origdelta, reason)
-  )
+  boundedPhiInp(phi, _, _, b, delta, upper, fromBackEdge, origdelta, reason)
 }
 
 /**

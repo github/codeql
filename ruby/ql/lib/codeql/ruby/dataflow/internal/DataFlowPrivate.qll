@@ -364,8 +364,8 @@ private module Cached {
     not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
     or
     // Flow into phi node from read
-    exists(SsaImpl::DefinitionExt def, CfgNodes::ExprCfgNode exprFrom |
-      LocalFlow::localFlowSsaInputFromRead(exprFrom, def, nodeTo)
+    exists(CfgNodes::ExprCfgNode exprFrom |
+      LocalFlow::localFlowSsaInputFromRead(exprFrom, _, nodeTo)
     |
       exprFrom = nodeFrom.asExpr() and
       not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
@@ -410,8 +410,8 @@ private module Cached {
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
     or
     // Flow into phi node from read
-    exists(SsaImpl::DefinitionExt def, CfgNodes::ExprCfgNode exprFrom |
-      LocalFlow::localFlowSsaInputFromRead(exprFrom, def, nodeTo) and
+    exists(CfgNodes::ExprCfgNode exprFrom |
+      LocalFlow::localFlowSsaInputFromRead(exprFrom, _, nodeTo) and
       exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr()]
     )
   }
@@ -893,8 +893,8 @@ private module ArgumentNodes {
       (
         this.asExpr() = call.getBlock()
         or
-        exists(CfgNodes::ExprCfgNode arg, int n |
-          arg = call.getArgument(n) and
+        exists(CfgNodes::ExprCfgNode arg |
+          arg = call.getAnArgument() and
           this.asExpr() = arg and
           arg.getExpr() instanceof BlockArgument
         )

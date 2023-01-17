@@ -281,10 +281,8 @@ signature predicate guardChecksSig(Node g, Expr e, boolean branch);
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
-    exists(Node g, ControlFlow::ConditionGuardNode guard, Node nd, SsaWithFields var |
-      result = var.getAUse()
-    |
-      guards(g, guard, nd, var) and
+    exists(ControlFlow::ConditionGuardNode guard, SsaWithFields var | result = var.getAUse() |
+      guards(_, guard, _, var) and
       guard.dominates(result.getBasicBlock())
     )
   }
@@ -293,10 +291,8 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    * Gets a node that is safely guarded by the given guard check.
    */
   Node getABarrierNodeForGuard(Node guardCheck) {
-    exists(ControlFlow::ConditionGuardNode guard, Node nd, SsaWithFields var |
-      result = var.getAUse()
-    |
-      guards(guardCheck, guard, nd, var) and
+    exists(ControlFlow::ConditionGuardNode guard, SsaWithFields var | result = var.getAUse() |
+      guards(guardCheck, guard, _, var) and
       guard.dominates(result.getBasicBlock())
     )
   }
@@ -322,11 +318,8 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       guard.ensures(g, branch)
     )
     or
-    exists(
-      Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p, CallNode c,
-      Node resNode, Node check, boolean outcome
-    |
-      guardingCall(g, f, inp, outp, p, c, nd, resNode) and
+    exists(DataFlow::Property p, Node resNode, Node check, boolean outcome |
+      guardingCall(g, _, _, _, p, _, nd, resNode) and
       p.checkOn(check, outcome, resNode) and
       guard.ensures(pragma[only_bind_into](check), outcome)
     )
