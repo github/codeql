@@ -550,7 +550,9 @@ Node selfTracker(Class classWithMethod) {
 }
 
 /**
- * Gets a reference to the `cls` argument of a classmethod on class `classWithMethod`.
+ * Gets a reference to the enclosing class `classWithMethod` from within one of its
+ * methods, either through the `cls` argument from a `classmethod` or from `type(self)`
+ * from a normal method.
  */
 private TypeTrackingNode clsArgumentTracker(TypeTracker t, Class classWithMethod) {
   t.start() and
@@ -572,7 +574,9 @@ private TypeTrackingNode clsArgumentTracker(TypeTracker t, Class classWithMethod
 }
 
 /**
- * Gets a reference to the `cls` argument of a classmethod on class `classWithMethod`.
+ * Gets a reference to the enclosing class `classWithMethod` from within one of its
+ * methods, either through the `cls` argument from a `classmethod` or from `type(self)`
+ * from a normal method.
  */
 Node clsArgumentTracker(Class classWithMethod) {
   clsArgumentTracker(TypeTracker::end(), classWithMethod).flowsTo(result)
