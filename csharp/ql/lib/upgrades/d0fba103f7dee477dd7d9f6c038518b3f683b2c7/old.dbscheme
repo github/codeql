@@ -670,7 +670,7 @@ compiler_generated(unique int id: @modifiable ref);
 
 @named_exprorstmt = @goto_stmt | @labeled_stmt | @expr;
 
-@virtualizable = @method | @property | @indexer | @event | @operator;
+@virtualizable = @method | @property | @indexer | @event;
 
 exprorstmt_name(
   unique int parent_id: @named_exprorstmt ref,
