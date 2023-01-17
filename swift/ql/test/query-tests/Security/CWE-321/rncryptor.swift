@@ -52,7 +52,7 @@ class RNDecryptor : RNCryptor
 
 // --- tests ---
 
-func test(cond: Bool) {
+func test() {
 	// RNCryptor
 	let myEncryptor = RNEncryptor()
 	let myDecryptor = RNDecryptor()
