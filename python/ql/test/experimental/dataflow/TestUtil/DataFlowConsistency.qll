@@ -1,3 +1,4 @@
+import python
 import semmle.python.dataflow.new.DataFlow::DataFlow
 import semmle.python.dataflow.new.internal.DataFlowPrivate
 import semmle.python.dataflow.new.internal.DataFlowImplConsistency::Consistency
@@ -17,5 +18,21 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
     // parameter, but dataflow-consistency queries should _not_ complain about there not
     // being a post-update node for the synthetic `**kwargs` parameter.
     n instanceof SynthDictSplatParameterNode
+  }
+
+  override predicate uniqueParameterNodePositionExclude(
+    DataFlowCallable c, ParameterPosition pos, Node p
+  ) {
+    // For normal parameters that can both be passed as positional arguments or keyword
+    // arguments, we currently have parameter positions for both cases..
+    //
+    // TODO: Figure out how bad breaking this consistency check is
+    exists(Function func, Parameter param |
+      c.getScope() = func and
+      p = parameterNode(param) and
+      c.getParameter(pos) = p and
+      param = func.getArg(_) and
+      param = func.getArgByName(_)
+    )
   }
 }
