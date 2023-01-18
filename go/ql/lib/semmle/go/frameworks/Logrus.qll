@@ -66,14 +66,16 @@ module Logrus {
     LoggerFormatter() { this.hasQualifiedName(packagePath(), "Logger", "Formatter") }
   }
 
-  private class JsonFormatter extends Type {
+  private class JsonFormatter extends SanitizingFormatter {
     JsonFormatter() { this.hasQualifiedName(packagePath(), "JSONFormatter") }
   }
 
   /**
-   * Gets the types corresponding to sanitizing formatters.
+   * A type which represents a sanitizing formatter for Logrus.
+   *
+   * Extend this class to add support for additional, sanitizing formatters.
    */
-  private Type sanitizingFormatter() { result instanceof JsonFormatter }
+  abstract class SanitizingFormatter extends Type { }
 
   /**
    * An assignment statement that assigns a value to the `Formatter` property of a `Logger` object.
@@ -94,7 +96,7 @@ module Logrus {
       // this is a slight approximation since a variable could be set to a
       // sanitizing formatter and then replaced with another one that isn't
       DataFlow::localFlow(source, node) and
-      source.getType() = sanitizingFormatter().getPointerType()
+      source.getType() = any(SanitizingFormatter f).getPointerType()
     )
   }
 
