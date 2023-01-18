@@ -35,7 +35,7 @@ pub struct Visibility {
     pub telemetry: bool,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Location {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -176,7 +176,7 @@ impl DiagnosticLoggers {
             source: Source {
                 id: id.to_owned(),
                 name: name.to_owned(),
-                extractor_name: Some(self.extractor),
+                extractor_name: Some(self.extractor.to_owned()),
             },
             markdown_message: String::new(),
             plaintext_message: String::new(),
@@ -233,23 +233,31 @@ impl DiagnosticMessage {
         self
     }
     pub fn file<'a>(&'a mut self, path: &str) -> &'a mut Self {
-        self.location.get_or_insert(EMPTY_LOCATION).file = Some(path.to_owned());
+        self.location.get_or_insert(EMPTY_LOCATION.to_owned()).file = Some(path.to_owned());
         self
     }
     pub fn start_line<'a>(&'a mut self, start_line: i32) -> &'a mut Self {
-        self.location.get_or_insert(EMPTY_LOCATION).start_line = Some(start_line);
+        self.location
+            .get_or_insert(EMPTY_LOCATION.to_owned())
+            .start_line = Some(start_line);
         self
     }
     pub fn start_column<'a>(&'a mut self, start_column: i32) -> &'a mut Self {
-        self.location.get_or_insert(EMPTY_LOCATION).start_column = Some(start_column);
+        self.location
+            .get_or_insert(EMPTY_LOCATION.to_owned())
+            .start_column = Some(start_column);
         self
     }
     pub fn end_line<'a>(&'a mut self, end_line: i32) -> &'a mut Self {
-        self.location.get_or_insert(EMPTY_LOCATION).end_line = Some(end_line);
+        self.location
+            .get_or_insert(EMPTY_LOCATION.to_owned())
+            .end_line = Some(end_line);
         self
     }
     pub fn end_column<'a>(&'a mut self, end_column: i32) -> &'a mut Self {
-        self.location.get_or_insert(EMPTY_LOCATION).end_column = Some(end_column);
+        self.location
+            .get_or_insert(EMPTY_LOCATION.to_owned())
+            .end_column = Some(end_column);
         self
     }
 }

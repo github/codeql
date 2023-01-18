@@ -1,3 +1,4 @@
+mod diagnostics;
 mod extractor;
 mod trap;
 
@@ -59,6 +60,7 @@ fn encoding_from_name(encoding_name: &str) -> Option<&(dyn encoding::Encoding + 
 }
 
 fn main() -> std::io::Result<()> {
+    let diagnostics = diagnostics::DiagnosticLoggers::new("ruby");
     tracing_subscriber::fmt()
         .with_target(false)
         .without_time()
@@ -119,6 +121,7 @@ fn main() -> std::io::Result<()> {
     lines
         .par_iter()
         .try_for_each(|line| {
+            let mut diagnostics_writer = diagnostics.logger();
             let path = PathBuf::from(line).canonicalize()?;
             let src_archive_file = path_for(&src_archive_dir, &path, "");
             let mut source = std::fs::read(&path)?;
@@ -131,6 +134,7 @@ fn main() -> std::io::Result<()> {
                     erb,
                     "erb",
                     &erb_schema,
+                    &mut diagnostics_writer,
                     &mut trap_writer,
                     &path,
                     &source,
@@ -194,6 +198,7 @@ fn main() -> std::io::Result<()> {
                 language,
                 "ruby",
                 &schema,
+                &mut diagnostics_writer,
                 &mut trap_writer,
                 &path,
                 &source,

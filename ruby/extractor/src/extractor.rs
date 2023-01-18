@@ -1,3 +1,4 @@
+use crate::diagnostics;
 use crate::trap;
 use node_types::{EntryKind, Field, NodeTypeMap, Storage, TypeName};
 use std::collections::BTreeMap as Map;
@@ -114,6 +115,7 @@ pub fn extract(
     language: Language,
     language_prefix: &str,
     schema: &NodeTypeMap,
+    diagnostics_writer: &mut diagnostics::LogWriter,
     trap_writer: &mut trap::Writer,
     path: &Path,
     source: &[u8],
@@ -138,6 +140,7 @@ pub fn extract(
     let file_label = populate_file(trap_writer, path);
     let mut visitor = Visitor::new(
         source,
+        diagnostics_writer,
         trap_writer,
         // TODO: should we handle path strings that are not valid UTF8 better?
         &path_str,
@@ -204,6 +207,8 @@ struct Visitor<'a> {
     file_label: trap::Label,
     /// The source code as a UTF-8 byte array
     source: &'a [u8],
+    /// A diagnostics::LogWriter to write diagnostic messages
+    diagnostics_writer: &'a mut diagnostics::LogWriter,
     /// A trap::Writer to accumulate trap entries
     trap_writer: &'a mut trap::Writer,
     /// A counter for top-level child nodes
@@ -226,6 +231,7 @@ struct Visitor<'a> {
 impl<'a> Visitor<'a> {
     fn new(
         source: &'a [u8],
+        diagnostics_writer: &'a mut diagnostics::LogWriter,
         trap_writer: &'a mut trap::Writer,
         path: &'a str,
         file_label: trap::Label,
@@ -236,6 +242,7 @@ impl<'a> Visitor<'a> {
             path,
             file_label,
             source,
+            diagnostics_writer,
             trap_writer,
             toplevel_child_counter: 0,
             ast_node_info_table_name: format!("{}_ast_node_info", language_prefix),
