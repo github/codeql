@@ -35,7 +35,8 @@ static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
   }
 }
 
-static void processFrontendOptions(swift::FrontendOptions& options) {
+static void processFrontendOptions(codeql::SwiftExtractorState& state,
+                                   swift::FrontendOptions& options) {
   auto& inOuts = options.InputsAndOutputs;
   std::vector<swift::InputFile> inputs;
   inOuts.forEachInput([&](const swift::InputFile& input) {
@@ -53,6 +54,7 @@ static void processFrontendOptions(swift::FrontendOptions& options) {
             input.getPrimarySpecificPaths().SupplementaryOutputs.ModuleOutputPath;
         !module.empty()) {
       psp.SupplementaryOutputs.ModuleOutputPath = codeql::redirect(module);
+      state.originalOutputModules.push_back(module);
     }
     auto inputCopy = input;
     inputCopy.setPrimarySpecificPaths(std::move(psp));
@@ -77,7 +79,7 @@ class Observer : public swift::FrontendObserver {
   void parsedArgs(swift::CompilerInvocation& invocation) override {
     auto& options = invocation.getFrontendOptions();
     lockOutputSwiftModuleTraps(state, options);
-    processFrontendOptions(options);
+    processFrontendOptions(state, options);
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {

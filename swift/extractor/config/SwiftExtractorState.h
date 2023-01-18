@@ -21,6 +21,9 @@ struct SwiftExtractorState {
   std::unordered_set<const swift::ModuleDecl*> encounteredModules;
 
   std::vector<std::filesystem::path> sourceFiles;
+
+  // The path for the modules outputted by the underlying frontend run, ignoring path redirection
+  std::vector<std::filesystem::path> originalOutputModules;
 };
 
 }  // namespace codeql
