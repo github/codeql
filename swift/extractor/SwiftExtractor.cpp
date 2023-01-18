@@ -9,7 +9,7 @@
 #include <swift/AST/Builtins.h>
 
 #include "swift/extractor/translators/SwiftVisitor.h"
-#include "swift/extractor/TargetTrapDomain.h"
+#include "swift/extractor/infra/TargetDomains.h"
 #include "swift/extractor/SwiftBuiltinSymbols.h"
 #include "swift/extractor/infra/file/Path.h"
 

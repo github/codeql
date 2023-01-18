@@ -11,7 +11,7 @@
 #include <swift/FrontendTool/FrontendTool.h>
 
 #include "swift/extractor/SwiftExtractor.h"
-#include "swift/extractor/TargetTrapDomain.h"
+#include "swift/extractor/infra/TargetDomains.h"
 #include "swift/extractor/remapping/SwiftFileInterception.h"
 #include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
 #include "swift/extractor/trap/TrapDomain.h"

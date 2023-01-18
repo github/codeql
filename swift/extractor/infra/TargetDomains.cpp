@@ -1,4 +1,4 @@
-#include "swift/extractor/TargetTrapDomain.h"
+#include "swift/extractor/infra/TargetDomains.h"
 #include <iomanip>
 namespace codeql {
 static const char* typeToStr(TrapType type) {
