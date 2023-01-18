@@ -160,10 +160,7 @@ module Ssa {
         pbd.getAPattern() = bb.getNode(blockIndex).getNode().asAstNode() and
         init = var.getParentInitializer()
       |
-        value.getNode().asAstNode() = init
-        or
-        // TODO: We should probably enumerate more cfg nodes here.
-        value.(PropertyGetterCfgNode).getRef() = init
+        value.getAst() = init
       )
       or
       exists(SsaInput::BasicBlock bb, int blockIndex, ConditionElement ce, Expr init |
@@ -172,7 +169,7 @@ module Ssa {
         init = ce.getInitializer() and
         strictcount(Ssa::WriteDefinition alt | alt.definesAt(_, bb, blockIndex)) = 1 // exclude cases where there are multiple writes from the same pattern, this is at best taint flow.
       |
-        value.getNode().asAstNode() = init
+        value.getAst() = init
       )
     }
   }

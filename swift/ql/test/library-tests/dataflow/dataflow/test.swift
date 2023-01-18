@@ -457,3 +457,20 @@ func testOptionals2(y: Int?) {
         sink(arg: y) // (taint but not data flow)
     }
 }
+
+class C {
+    var x: Int?
+}
+
+func testOptionalPropertyAccess(y: Int?) {
+    let x = optionalSource()
+    let cx = C()
+    cx.x = x
+    let cy = C()
+    cy.x = y
+
+    guard let z1 = cx.x else { return }
+    sink(arg: z1) // $ flow=259
+    guard let z2 = cy.x else { return }
+    sink(arg: z2)
+}
