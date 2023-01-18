@@ -355,19 +355,6 @@ class SwiftDispatcher {
     return false;
   }
 
-  static std::filesystem::path getFilePath(std::string_view path) {
-    // TODO: this needs more testing
-    // TODO: check canonicalization of names on a case insensitive filesystems
-    // TODO: make symlink resolution conditional on CODEQL_PRESERVE_SYMLINKS=true
-    std::error_code ec;
-    auto ret = std::filesystem::canonical(path, ec);
-    if (ec) {
-      std::cerr << "Cannot get real path: " << std::quoted(path) << ": " << ec.message() << "\n";
-      return {};
-    }
-    return ret;
-  }
-
   virtual void visit(const swift::Decl* decl) = 0;
   virtual void visit(const swift::Stmt* stmt) = 0;
   virtual void visit(const swift::StmtCondition* cond) = 0;
