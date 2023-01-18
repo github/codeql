@@ -62,10 +62,6 @@ module Logrus {
     }
   }
 
-  private class LoggerFormatter extends Field {
-    LoggerFormatter() { this.hasQualifiedName(packagePath(), "Logger", "Formatter") }
-  }
-
   private class JsonFormatter extends SanitizingFormatter {
     JsonFormatter() { this.hasQualifiedName(packagePath(), "JSONFormatter") }
   }
@@ -82,7 +78,10 @@ module Logrus {
    */
   private class SetFormatterAssignment extends AssignStmt {
     SetFormatterAssignment() {
-      exists(LoggerFormatter field | this.getAnLhs().(SelectorExpr).uses(field))
+      exists(Field field |
+        this.getAnLhs().(SelectorExpr).uses(field) and
+        field.hasQualifiedName(packagePath(), "Logger", "Formatter")
+      )
     }
   }
 
