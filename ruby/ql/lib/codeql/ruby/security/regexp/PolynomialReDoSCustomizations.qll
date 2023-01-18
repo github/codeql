@@ -64,7 +64,7 @@ module PolynomialReDoS {
     RegexExecution exec;
 
     PolynomialBackTrackingTermMatch() {
-      term.getRootTerm() = exec.getTerm() and
+      term.getRootTerm() = RE::getTermForExecution(exec) and
       this = exec.getString()
     }
 

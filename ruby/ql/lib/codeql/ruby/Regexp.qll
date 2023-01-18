@@ -128,13 +128,6 @@ class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
 }
 
 /**
- * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
- * as a part of a regular expression.
- */
-cached
-DataFlow::Node regExpSource(DataFlow::Node re) { result = RegExpTracking::regExpSource(re) }
-
-/**
  * Holds if `exec` is a node where `regexp` is interpreted as a regular expression and
  * tested against the string value of `input`.
  * `name` describes the regexp execution, typically the name of the method being called.
@@ -209,11 +202,19 @@ private class StdRegexpExecution extends RegexExecution::Range {
 
   override DataFlow::Node getString() { result = input }
 
-  override RegExpTerm getTerm() { result = getTermForNode(regexp) }
-
   override string getName() { result = name }
 }
 
-private RegExpTerm getTermForNode(DataFlow::Node node) {
-  exists(RegExpPatternSource source | source = regExpSource(node) | result = source.getRegExpTerm())
+/**
+ * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
+ * as a part of a regular expression.
+ */
+cached
+DataFlow::Node regExpSource(DataFlow::Node re) { result = RegExpTracking::regExpSource(re) }
+
+/** Gets a parsed regular expression term that is executed at `exec`. */
+RegExpTerm getTermForExecution(RegexExecution exec) {
+  exists(RegExpPatternSource source | source = regExpSource(exec.getRegex()) |
+    result = source.getRegExpTerm()
+  )
 }

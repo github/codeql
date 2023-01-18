@@ -91,9 +91,6 @@ class RegexExecution extends DataFlow::Node instanceof RegexExecution::Range {
   /** Gets a dataflow node for the string to be searched or matched against. */
   DataFlow::Node getString() { result = super.getString() }
 
-  /** Gets a parsed regular expression term that is executed at this node. */
-  RE::RegExpTerm getTerm() { result = super.getTerm() }
-
   /**
    * Gets the name of this regex execution, typically the name of an executing method.
    * This is used for nice alert messages and should include the module if possible.
@@ -115,9 +112,6 @@ module RegexExecution {
 
     /** Gets a dataflow node for the string to be searched or matched against. */
     abstract DataFlow::Node getString();
-
-    /** Gets the parsed regular expression term that is executed by this node. */
-    abstract RE::RegExpTerm getTerm();
 
     /**
      * Gets the name of this regex execution, typically the name of an executing method.
