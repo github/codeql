@@ -26,7 +26,8 @@ static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
   for (const auto& input : options.InputsAndOutputs.getAllInputs()) {
     if (const auto& module = input.getPrimarySpecificPaths().SupplementaryOutputs.ModuleOutputPath;
         !module.empty()) {
-      if (auto target = codeql::createTargetTrapDomain(state, codeql::resolvePath(module))) {
+      if (auto target = codeql::createTargetTrapDomain(state, codeql::resolvePath(module),
+                                                       codeql::TrapType::module)) {
         target->emit("// trap file deliberately empty\n"
                      "// this swiftmodule was created during the build, so its entities must have"
                      " been extracted directly from source files");
@@ -152,7 +153,7 @@ codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state) {
   auto timestamp = std::chrono::system_clock::now().time_since_epoch().count();
   auto filename = std::to_string(timestamp) + '-' + std::to_string(getpid());
   auto target = std::filesystem::path("invocations") / std::filesystem::path(filename);
-  auto maybeDomain = codeql::createTargetTrapDomain(state, target);
+  auto maybeDomain = codeql::createTargetTrapDomain(state, target, codeql::TrapType::invocation);
   if (!maybeDomain) {
     std::cerr << "Cannot create invocation trap file: " << target << "\n";
     abort();

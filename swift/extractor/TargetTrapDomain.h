@@ -5,7 +5,14 @@
 
 namespace codeql {
 
+enum class TrapType {
+  source,
+  module,
+  invocation,
+};
+
 std::optional<TrapDomain> createTargetTrapDomain(SwiftExtractorState& state,
-                                                 const std::filesystem::path& target);
+                                                 const std::filesystem::path& target,
+                                                 TrapType type);
 
 }  // namespace codeql
