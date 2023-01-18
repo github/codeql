@@ -366,3 +366,27 @@
 | test.swift:448:10:448:37 | SSA def(b) | test.swift:450:19:450:19 | b |
 | test.swift:455:8:455:17 | SSA def(x) | test.swift:456:19:456:19 | x |
 | test.swift:455:8:455:17 | SSA def(y) | test.swift:457:19:457:19 | y |
+| test.swift:461:7:461:7 | SSA def(self) | test.swift:461:7:461:7 | self[return] |
+| test.swift:461:7:461:7 | SSA def(self) | test.swift:461:7:461:7 | self[return] |
+| test.swift:461:7:461:7 | self | test.swift:461:7:461:7 | SSA def(self) |
+| test.swift:461:7:461:7 | self | test.swift:461:7:461:7 | SSA def(self) |
+| test.swift:462:9:462:9 | self | test.swift:462:9:462:9 | SSA def(self) |
+| test.swift:462:9:462:9 | self | test.swift:462:9:462:9 | SSA def(self) |
+| test.swift:462:9:462:9 | self | test.swift:462:9:462:9 | SSA def(self) |
+| test.swift:462:9:462:9 | value | test.swift:462:9:462:9 | SSA def(value) |
+| test.swift:465:33:465:39 | SSA def(y) | test.swift:470:12:470:12 | y |
+| test.swift:465:33:465:39 | y | test.swift:465:33:465:39 | SSA def(y) |
+| test.swift:466:9:466:9 | SSA def(x) | test.swift:468:12:468:12 | x |
+| test.swift:466:13:466:28 | call to optionalSource() | test.swift:466:9:466:9 | SSA def(x) |
+| test.swift:467:9:467:9 | SSA def(cx) | test.swift:468:5:468:5 | cx |
+| test.swift:467:14:467:16 | call to C.init() | test.swift:467:9:467:9 | SSA def(cx) |
+| test.swift:468:5:468:5 | [post] cx | test.swift:472:20:472:20 | cx |
+| test.swift:468:5:468:5 | cx | test.swift:472:20:472:20 | cx |
+| test.swift:469:9:469:9 | SSA def(cy) | test.swift:470:5:470:5 | cy |
+| test.swift:469:14:469:16 | call to C.init() | test.swift:469:9:469:9 | SSA def(cy) |
+| test.swift:470:5:470:5 | [post] cy | test.swift:474:20:474:20 | cy |
+| test.swift:470:5:470:5 | cy | test.swift:474:20:474:20 | cy |
+| test.swift:472:11:472:15 | SSA def(z1) | test.swift:473:15:473:15 | z1 |
+| test.swift:472:20:472:23 | .x | test.swift:472:11:472:15 | SSA def(z1) |
+| test.swift:474:11:474:15 | SSA def(z2) | test.swift:475:15:475:15 | z2 |
+| test.swift:474:20:474:23 | .x | test.swift:474:11:474:15 | SSA def(z2) |
