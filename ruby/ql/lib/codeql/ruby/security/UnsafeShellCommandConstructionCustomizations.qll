@@ -82,7 +82,7 @@ module UnsafeShellCommandConstruction {
   }
 
   /**
-   * A string constructed from a string-concatenation (e.g. `"foo " + sink`),
+   * A component of a string-concatenation (e.g. `"foo " + sink`),
    * where the resulting string ends up being executed as a shell command.
    */
   class StringConcatAsSink extends Sink {
