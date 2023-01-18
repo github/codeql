@@ -111,8 +111,8 @@ extension MyImpl2 : MyProtocol2 {
 func useProtocol2(proto: MyProtocol2, impl: MyImpl2<Int>, impl2: MyImpl2<Any>) {
     _ = proto.source1 // SOURCE
     _ = proto.source2 // SOURCE
-    _ = impl.source1 // SOURCE [NOT DETECTED]
-    _ = impl.source2 // SOURCE [NOT DETECTED]
-    _ = impl2.source1 // SOURCE [NOT DETECTED]
-    _ = impl2.source2 // SOURCE [NOT DETECTED]
+    _ = impl.source1 // SOURCE
+    _ = impl.source2 // SOURCE
+    _ = impl2.source1 // SOURCE
+    _ = impl2.source2 // SOURCE
 }

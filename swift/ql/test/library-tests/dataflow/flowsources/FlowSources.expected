@@ -63,6 +63,10 @@
 | generics.swift:93:9:93:15 | .source2 | external |
 | generics.swift:112:9:112:15 | .source1 | external |
 | generics.swift:113:9:113:15 | .source2 | external |
+| generics.swift:114:9:114:14 | .source1 | external |
+| generics.swift:115:9:115:14 | .source2 | external |
+| generics.swift:116:9:116:15 | .source1 | external |
+| generics.swift:117:9:117:15 | .source2 | external |
 | nsdata.swift:18:17:18:40 | call to NSData.init(contentsOf:) | external |
 | nsdata.swift:19:17:19:53 | call to NSData.init(contentsOf:options:) | external |
 | string.swift:56:21:56:44 | call to String.init(contentsOf:) | external |

@@ -434,6 +434,11 @@ private Element interpretElement0(
       subtypes = true and
       decl.getNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
       or
+      exists(ExtensionDecl e | e.getExtendedTypeDecl() = decl.getNominalTypeDecl() |
+        subtypes = true and
+        e.getAProtocol() = nomTypeDecl.getADerivedTypeDecl*()
+      )
+      or
       subtypes = false and
       decl.getNominalTypeDecl() = nomTypeDecl
     )
@@ -448,6 +453,11 @@ private Element interpretElement0(
     |
       subtypes = true and
       decl.getNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
+      or
+      exists(ExtensionDecl e | e.getExtendedTypeDecl() = decl.getNominalTypeDecl() |
+        subtypes = true and
+        e.getAProtocol() = nomTypeDecl.getADerivedTypeDecl*()
+      )
       or
       subtypes = false and
       decl.getNominalTypeDecl() = nomTypeDecl
