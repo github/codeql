@@ -17,7 +17,6 @@ private import codeql.ruby.AST as Ast
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.controlflow.CfgNodes
-private import codeql.ruby.dataflow.internal.DataFlowImplForRegExp
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts

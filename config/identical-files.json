@@ -35,7 +35,6 @@
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl4.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl2.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForRegExp.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForHttpClientLibraries.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForPathname.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImpl.qll"
