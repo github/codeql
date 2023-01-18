@@ -950,7 +950,7 @@ private module MethodCalls {
     )
   }
 
-  predicate resolveMethodCall(ControlFlowNode call, Function target, CallType type, Node self) {
+  predicate resolveMethodCall(CallNode call, Function target, CallType type, Node self) {
     (
       directCall(call, target, _, _, _, self)
       or
@@ -1046,11 +1046,11 @@ predicate resolveClassInstanceCall(CallNode call, Function target, Node self) {
  * Holds if `call` is a call to the `target`, with call-type `type`.
  */
 cached
-predicate resolveCall(ControlFlowNode call, Function target, CallType type) {
+predicate resolveCall(CallNode call, Function target, CallType type) {
   Stages::DataFlow::ref() and
   (
     type instanceof CallTypePlainFunction and
-    call.(CallNode).getFunction() = functionTracker(target).asCfgNode() and
+    call.getFunction() = functionTracker(target).asCfgNode() and
     not exists(Class cls | cls.getAMethod() = target)
     or
     resolveMethodCall(call, target, type, _)
@@ -1128,83 +1128,77 @@ predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
  * sending both `self` arguments to that function, which is by definition the right thing to do.
  */
 cached
-predicate getCallArg(
-  ControlFlowNode call, Function target, CallType type, Node arg, ArgumentPosition apos
-) {
+predicate getCallArg(CallNode call, Function target, CallType type, Node arg, ArgumentPosition apos) {
   Stages::DataFlow::ref() and
+  resolveCall(call, target, type) and
   (
-    // normal calls with a real call node
-    resolveCall(call, target, type) and
-    call instanceof CallNode and
+    type instanceof CallTypePlainFunction and
+    normalCallArg(call, arg, apos)
+    or
+    // self argument for normal method calls
+    type instanceof CallTypeNormalMethod and
+    apos.isSelf() and
+    resolveMethodCall(call, target, type, arg) and
+    // dataflow lib has requirement that arguments and calls are in same enclosing callable.
+    exists(CfgNode cfgNode | cfgNode.getNode() = call |
+      cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
+    )
+    or
+    // cls argument for classmethod calls
+    type instanceof CallTypeClassMethod and
+    apos.isSelf() and
+    resolveMethodCall(call, target, type, arg) and
+    (arg = classTracker(_) or arg = clsArgumentTracker(_)) and
+    // dataflow lib has requirement that arguments and calls are in same enclosing callable.
+    exists(CfgNode cfgNode | cfgNode.getNode() = call |
+      cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
+    )
+    or
+    // normal arguments for method calls
     (
-      type instanceof CallTypePlainFunction and
-      normalCallArg(call, arg, apos)
+      type instanceof CallTypeNormalMethod or
+      type instanceof CallTypeStaticMethod or
+      type instanceof CallTypeClassMethod
+    ) and
+    normalCallArg(call, arg, apos)
+    or
+    // method as plain function call.
+    //
+    // argument index 0 of call has position self (and MUST be given as positional
+    // argument in call). This also means that call-arguments are shifted by 1, such
+    // that argument index 1 of call has argument position 0
+    type instanceof CallTypeMethodAsPlainFunction and
+    (
+      apos.isSelf() and arg.asCfgNode() = call.(CallNode).getArg(0)
       or
-      // self argument for normal method calls
-      type instanceof CallTypeNormalMethod and
+      not apos.isPositional(_) and normalCallArg(call, arg, apos)
+      or
+      exists(ArgumentPosition normalPos, int index |
+        apos.isPositional(index - 1) and
+        normalPos.isPositional(index) and
+        normalCallArg(call, arg, normalPos)
+      )
+    )
+    or
+    // class call
+    type instanceof CallTypeClass and
+    (
+      // only pass synthetic node for created object to __init__, and not __new__ since
+      // __new__ is a classmethod.
+      target = invokedFunctionFromClassConstruction(_, "__init__") and
       apos.isSelf() and
-      resolveMethodCall(call, target, type, arg) and
-      // dataflow lib has requirement that arguments and calls are in same enclosing callable.
-      exists(CfgNode cfgNode | cfgNode.getNode() = call |
-        cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
-      )
+      arg = TSyntheticPreUpdateNode(call)
       or
-      // cls argument for classmethod calls
-      type instanceof CallTypeClassMethod and
-      apos.isSelf() and
-      resolveMethodCall(call, target, type, arg) and
-      (arg = classTracker(_) or arg = clsArgumentTracker(_)) and
-      // dataflow lib has requirement that arguments and calls are in same enclosing callable.
-      exists(CfgNode cfgNode | cfgNode.getNode() = call |
-        cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
-      )
-      or
-      // normal arguments for method calls
-      (
-        type instanceof CallTypeNormalMethod or
-        type instanceof CallTypeStaticMethod or
-        type instanceof CallTypeClassMethod
-      ) and
       normalCallArg(call, arg, apos)
+    )
+    or
+    // call on class instance, which goes to `__call__` method
+    type instanceof CallTypeClassInstanceCall and
+    (
+      apos.isSelf() and
+      resolveClassInstanceCall(call, target, arg)
       or
-      // method as plain function call.
-      //
-      // argument index 0 of call has position self (and MUST be given as positional
-      // argument in call). This also means that call-arguments are shifted by 1, such
-      // that argument index 1 of call has argument position 0
-      type instanceof CallTypeMethodAsPlainFunction and
-      (
-        apos.isSelf() and arg.asCfgNode() = call.(CallNode).getArg(0)
-        or
-        not apos.isPositional(_) and normalCallArg(call, arg, apos)
-        or
-        exists(ArgumentPosition normalPos, int index |
-          apos.isPositional(index - 1) and
-          normalPos.isPositional(index) and
-          normalCallArg(call, arg, normalPos)
-        )
-      )
-      or
-      // class call
-      type instanceof CallTypeClass and
-      (
-        // only pass synthetic node for created object to __init__, and not __new__ since
-        // __new__ is a classmethod.
-        target = invokedFunctionFromClassConstruction(_, "__init__") and
-        apos.isSelf() and
-        arg = TSyntheticPreUpdateNode(call)
-        or
-        normalCallArg(call, arg, apos)
-      )
-      or
-      // call on class instance, which goes to `__call__` method
-      type instanceof CallTypeClassInstanceCall and
-      (
-        apos.isSelf() and
-        resolveClassInstanceCall(call, target, arg)
-        or
-        normalCallArg(call, arg, apos)
-      )
+      normalCallArg(call, arg, apos)
     )
   )
 }
