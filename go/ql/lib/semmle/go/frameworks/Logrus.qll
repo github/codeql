@@ -80,7 +80,7 @@ module Logrus {
    */
   private class SetFormatterAssignment extends AssignStmt {
     SetFormatterAssignment() {
-      exists(LoggerFormatter field | this.getAnLhs().(SelectorExpr).getSelector().refersTo(field))
+      exists(LoggerFormatter field | this.getAnLhs().(SelectorExpr).uses(field))
     }
   }
 
