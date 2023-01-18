@@ -21,3 +21,14 @@ extensions:
       - ["java.util.concurrent", "TransferQueue", True, "transfer", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "tryTransfer", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "tryTransfer", "(Object,long,TimeUnit)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.util.concurrent", "CountDownLatch", "countDown", "()", "manual"]
+
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.util.concurrent", "CountDownLatch", "CountDownLatch", "(int)", "manual"] # value-numeric
+      - ["java.util.concurrent", "CountDownLatch", "getCount", "()", "manual"]          # value-numeric

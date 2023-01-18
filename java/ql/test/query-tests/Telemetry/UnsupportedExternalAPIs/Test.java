@@ -18,7 +18,7 @@ class ExternalApiUsage {
 		AtomicReference<String> ref = new AtomicReference<>(); // not supported
 		ref.set("foo");
 
-		String.class.isAssignableFrom(Object.class); // parameter with generic type
+		String.class.isAssignableFrom(Object.class); // parameter with generic type, supported as a neutral model
 
 		System.out.println(d);
 		System.out.println(map);

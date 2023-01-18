@@ -67,7 +67,7 @@ module UnsafeShellCommandConstruction {
    */
   class StringInterpolationAsSink extends Sink {
     Concepts::SystemCommandExecution s;
-    Ast::StringLiteral lit;
+    Ast::StringlikeLiteral lit;
 
     StringInterpolationAsSink() {
       isUsedAsShellCommand(any(DataFlow::Node n | n.asExpr().getExpr() = lit), s) and
