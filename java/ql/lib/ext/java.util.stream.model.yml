@@ -93,3 +93,4 @@ extensions:
       extensible: neutralModel
     data:
       - ["java.util.stream", "Collectors", "toList", "()", "manual"]
+      - ["java.util.stream", "Collectors", "toSet", "()", "manual"]

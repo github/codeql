@@ -166,6 +166,11 @@ module UnsafeShellCommandConstruction {
         .asExpr()
         .(BooleanLiteral)
         .getValue() = "true"
+    or
+    exists(API::Node node |
+      node.asSink() = sys.getOptionsArg() and
+      node.getMember("shell").asSink().mayHaveBooleanValue(true)
+    )
   }
 
   /**
