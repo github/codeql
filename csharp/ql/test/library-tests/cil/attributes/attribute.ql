@@ -6,7 +6,8 @@ private predicate isOsSpecific(Declaration d) {
       .matches("%" +
           [
             "libobjc", "libproc", "System.Diagnostics.Tracing.XplatEventLogger",
-            "System.Threading.AutoreleasePool"
+            "System.Threading.AutoreleasePool",
+            "System.Diagnostics.Tracing.EventSource.<WriteEventString>"
           ] + "%")
 }
 
