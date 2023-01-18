@@ -1,14 +1,14 @@
 package main
 
+//go:generate depstubber -vendor github.com/sirupsen/logrus Fields,Logger,JSONFormatter,TextFormatter SetFormatter,StandardLogger,WithFields
+//go:generate depstubber -vendor github.com/elazarl/goproxy ProxyCtx ""
+
 import (
 	"net/http"
 
 	"github.com/elazarl/goproxy"
 	"github.com/sirupsen/logrus"
 )
-
-//go:generate depstubber -vendor github.com/sirupsen/logrus Fields,Logger,JSONFormatter,TextFormatter SetFormatter,StandardLogger,WithFields
-//go:generate depstubber -vendor github.com/elazarl/goproxy ProxyCtx ""
 
 func main() {
 	logrus.SetFormatter(&logrus.JSONFormatter{})
