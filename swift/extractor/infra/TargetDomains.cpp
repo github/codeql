@@ -26,6 +26,12 @@ static std::filesystem::path getRelativeTrapPath(const std::filesystem::path& ta
   return trap;
 }
 
+std::filesystem::path getTrapPath(const SwiftExtractorState& state,
+                                  const std::filesystem::path& target,
+                                  TrapType type) {
+  return state.configuration.trapDir / getRelativeTrapPath(target, type);
+}
+
 std::optional<TrapDomain> createTargetTrapDomain(SwiftExtractorState& state,
                                                  const std::filesystem::path& target,
                                                  TrapType type) {

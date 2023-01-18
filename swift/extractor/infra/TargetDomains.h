@@ -14,6 +14,10 @@ enum class TrapType {
   linkage,
 };
 
+std::filesystem::path getTrapPath(const SwiftExtractorState& state,
+                                  const std::filesystem::path& target,
+                                  TrapType type);
+
 std::optional<TrapDomain> createTargetTrapDomain(SwiftExtractorState& state,
                                                  const std::filesystem::path& target,
                                                  TrapType type);
