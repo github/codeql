@@ -87,7 +87,7 @@ module StringBreak {
    * An expression that is equivalent to `strings.ReplaceAll(s, old, new)`,
    * considered as a sanitizer for unsafe quoting.
    */
-  class ReplaceSanitizer extends Sanitizer, StringOps::ReplaceAll {
+  class ReplaceSanitizer extends StringOps::ReplaceAll, Sanitizer {
     Quote quote;
 
     ReplaceSanitizer() { this.getReplacedString().matches("%" + quote + "%") }

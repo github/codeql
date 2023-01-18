@@ -206,6 +206,68 @@ module StringOps {
 
       override string getReplacedString() { result = this.getArgument(1).getStringValue() }
     }
+
+    /**
+     * A call to `strings.NewReplacer`.
+     */
+    private class StringsNewReplacerCall extends DataFlow::CallNode {
+      StringsNewReplacerCall() { this.getTarget().hasQualifiedName("strings", "NewReplacer") }
+
+      /**
+       * Gets an argument to this call corresponding to a string that will be
+       * replaced.
+       */
+      DataFlow::Node getAReplacedArgument() {
+        exists(int n | n % 2 = 0 and result = this.getArgument(n))
+      }
+    }
+
+    /**
+     * A configuration for tracking flow from a call to `strings.NewReplacer` to
+     * the receiver of a call to `strings.Replacer.Replace` or
+     * `strings.Replacer.WriteString`.
+     */
+    private class StringsNewReplacerConfiguration extends DataFlow2::Configuration {
+      StringsNewReplacerConfiguration() { this = "StringsNewReplacerConfiguration" }
+
+      override predicate isSource(DataFlow::Node source) {
+        source instanceof StringsNewReplacerCall
+      }
+
+      override predicate isSink(DataFlow::Node sink) {
+        exists(DataFlow::MethodCallNode call |
+          sink = call.getReceiver() and
+          call.getTarget().hasQualifiedName("strings", "Replacer", ["Replace", "WriteString"])
+        )
+      }
+    }
+
+    /**
+     * A call to `strings.Replacer.Replace` or `strings.Replacer.WriteString`.
+     */
+    private class StringsReplacerReplaceOrWriteString extends Range {
+      string replacedString;
+
+      StringsReplacerReplaceOrWriteString() {
+        exists(
+          StringsNewReplacerConfiguration config, StringsNewReplacerCall source,
+          DataFlow::Node sink, DataFlow::MethodCallNode call
+        |
+          config.hasFlow(source, sink) and
+          sink = call.getReceiver() and
+          replacedString = source.getAReplacedArgument().getStringValue() and
+          (
+            call.getTarget().hasQualifiedName("strings", "Replacer", "Replace") and
+            this = call.getResult()
+            or
+            call.getTarget().hasQualifiedName("strings", "Replacer", "WriteString") and
+            this = call.getArgument(1)
+          )
+        )
+      }
+
+      override string getReplacedString() { result = replacedString }
+    }
   }
 
   /** Provides predicates and classes for working with Printf-style formatters. */
