@@ -109,7 +109,7 @@ static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& modul
 }
 
 static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
-    const SwiftExtractorConfiguration& config,
+    SwiftExtractorState& state,
     swift::CompilerInstance& compiler,
     swift::ModuleDecl& module,
     swift::SourceFile* primaryFile = nullptr) {
@@ -118,7 +118,7 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
   // The extractor can be called several times from different processes with
   // the same input file(s). Using `TargetFile` the first process will win, and the following
   // will just skip the work
-  auto trap = createTargetTrapDomain(config, filename);
+  auto trap = createTargetTrapDomain(state, filename);
   if (!trap) {
     // another process arrived first, nothing to do for us
     return {};
@@ -170,8 +170,7 @@ static std::vector<swift::ModuleDecl*> collectLoadedModules(swift::CompilerInsta
   return ret;
 }
 
-void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
-                               swift::CompilerInstance& compiler) {
+void codeql::extractSwiftFiles(SwiftExtractorState& state, swift::CompilerInstance& compiler) {
   auto inputFiles = collectInputFilenames(compiler);
   std::vector<swift::ModuleDecl*> todo = collectLoadedModules(compiler);
   std::unordered_set<swift::ModuleDecl*> seen{todo.begin(), todo.end()};
@@ -190,11 +189,11 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
       if (inputFiles.count(sourceFile->getFilename().str()) == 0) {
         continue;
       }
-      archiveFile(config, *sourceFile);
-      encounteredModules = extractDeclarations(config, compiler, *module, sourceFile);
+      archiveFile(state.configuration, *sourceFile);
+      encounteredModules = extractDeclarations(state, compiler, *module, sourceFile);
     }
     if (!isFromSourceFile) {
-      encounteredModules = extractDeclarations(config, compiler, *module);
+      encounteredModules = extractDeclarations(state, compiler, *module);
     }
     for (auto encountered : encounteredModules) {
       if (seen.count(encountered) == 0) {

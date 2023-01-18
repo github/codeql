@@ -1,13 +1,15 @@
 #include "swift/extractor/TargetTrapDomain.h"
 #include <iomanip>
 namespace codeql {
-std::optional<TrapDomain> createTargetTrapDomain(const SwiftExtractorConfiguration& configuration,
+std::optional<TrapDomain> createTargetTrapDomain(SwiftExtractorState& state,
                                                  const std::filesystem::path& target) {
   auto trap = target;
   trap += ".trap";
-  if (auto ret = TargetFile::create(trap, configuration.trapDir, configuration.getTempTrapDir())) {
+  state.traps.push_back(trap.relative_path());
+  if (auto ret = TargetFile::create(trap, state.configuration.trapDir,
+                                    state.configuration.getTempTrapDir())) {
     *ret << "/* extractor-args:\n";
-    for (const auto& opt : configuration.frontendOptions) {
+    for (const auto& opt : state.configuration.frontendOptions) {
       *ret << "  " << std::quoted(opt) << " \\\n";
     }
     *ret << "\n*/\n";
