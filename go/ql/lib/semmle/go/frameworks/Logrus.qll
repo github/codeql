@@ -35,8 +35,8 @@ module Logrus {
     LogCall() {
       // find calls to logrus logging functions
       this = any(LogFunction f).getACall() and
-      // unless all formatters that get assigned are sanitizing formatters
-      not allFormattersSanitizing()
+      // unless all formatters that get assigned may be sanitizing formatters
+      not allFormattersMayBeSanitizing()
     }
 
     override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
@@ -89,7 +89,7 @@ module Logrus {
    * Holds if there is local data flow to `node` that, at some point, has a sanitizing formatter
    * type.
    */
-  private predicate isSanitizingFormatter(DataFlow::Node node) {
+  private predicate mayBeSanitizingFormatter(DataFlow::Node node) {
     // is there data flow from something of a sanitizing formatter type to the node?
     exists(DataFlow::Node source |
       // this is a slight approximation since a variable could be set to a
@@ -115,7 +115,7 @@ module Logrus {
    * Also holds if there are not any calls to `SetFormatter` or assignments to the `Formatter`
    * property in the codebase.
    */
-  private predicate allFormattersSanitizing() {
-    forex(DataFlow::Node node | isFormatter(node) | isSanitizingFormatter(node))
+  private predicate allFormattersMayBeSanitizing() {
+    forex(DataFlow::Node node | isFormatter(node) | mayBeSanitizingFormatter(node))
   }
 }
