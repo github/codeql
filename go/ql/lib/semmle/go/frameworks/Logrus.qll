@@ -103,7 +103,7 @@ module Logrus {
    * Holds if `node` is the first argument to a call to the `SetFormatter` function or if `node`
    * is the value being assigned to the `Formatter` property of a `Logger` object.
    */
-  private predicate isSanitizerNode(DataFlow::Node node) {
+  private predicate isFormatter(DataFlow::Node node) {
     node = any(SetFormatterFunction f).getACall().getArgument(0)
     or
     node.asExpr() = any(SetFormatterAssignment stmt).getRhs()
@@ -116,6 +116,6 @@ module Logrus {
    * property in the codebase.
    */
   private predicate allFormattersSanitizing() {
-    forex(DataFlow::Node node | isSanitizerNode(node) | isSanitizingFormatter(node))
+    forex(DataFlow::Node node | isFormatter(node) | isSanitizingFormatter(node))
   }
 }
