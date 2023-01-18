@@ -162,6 +162,52 @@ module StringOps {
     }
   }
 
+  /**
+   * An expression that is equivalent to `strings.ReplaceAll(s, old, new)`.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `StringOps::ReplaceAll::Range` instead.
+   */
+  class ReplaceAll extends DataFlow::Node instanceof ReplaceAll::Range {
+    /**
+     * Gets the `old` in `strings.ReplaceAll(s, old, new)`.
+     */
+    string getReplacedString() { result = super.getReplacedString() }
+  }
+
+  /** Provides predicates and classes for working with prefix checks. */
+  module ReplaceAll {
+    /**
+     * An expression that is equivalent to `strings.ReplaceAll(s, old, new)`.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models, extend
+     * `StringOps::ReplaceAll` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /**
+       * Gets the `old` in `strings.ReplaceAll(s, old, new)`.
+       */
+      abstract string getReplacedString();
+    }
+
+    /**
+     * A call to `strings.ReplaceAll`  or `strings.Replace` with a negative `n`
+     * so that all instances are replaced.
+     */
+    private class StringsReplaceAll extends Range, DataFlow::CallNode {
+      StringsReplaceAll() {
+        exists(string name | this.getTarget().hasQualifiedName("strings", name) |
+          name = "ReplaceAll"
+          or
+          name = "Replace" and
+          this.getArgument(3).getNumericValue() < 0
+        )
+      }
+
+      override string getReplacedString() { result = this.getArgument(1).getStringValue() }
+    }
+  }
+
   /** Provides predicates and classes for working with Printf-style formatters. */
   module Formatting {
     /**
