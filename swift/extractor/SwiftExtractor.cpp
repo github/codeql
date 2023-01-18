@@ -114,6 +114,9 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
     swift::ModuleDecl& module,
     swift::SourceFile* primaryFile = nullptr) {
   auto filename = getFilename(module, primaryFile);
+  if (primaryFile) {
+    state.sourceFiles.push_back(filename);
+  }
 
   // The extractor can be called several times from different processes with
   // the same input file(s). Using `TargetFile` the first process will win, and the following

@@ -19,6 +19,8 @@ struct SwiftExtractorState {
   // All modules encountered during this extractor run, which therefore are dependencies of the
   // outcomes of this run
   std::unordered_set<const swift::ModuleDecl*> encounteredModules;
+
+  std::vector<std::filesystem::path> sourceFiles;
 };
 
 }  // namespace codeql
