@@ -3,7 +3,7 @@
  */
 
 import go
-import semmle.go.dataflow.DataFlowForStringsNewReplacer
+private import semmle.go.dataflow.DataFlowForStringsNewReplacer
 
 /** Provides predicates and classes for working with string operations. */
 module StringOps {
