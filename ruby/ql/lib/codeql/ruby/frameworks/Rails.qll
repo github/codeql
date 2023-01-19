@@ -12,6 +12,7 @@ private import codeql.ruby.ApiGraphs
 private import codeql.ruby.security.OpenSSL
 private import codeql.ruby.dataflow.FlowSummary
 
+/** Provides utility predicates for extracting information from calls to `render`. */
 private module RenderCallUtils {
   private Expr getTemplatePathArgument(MethodCall renderCall) {
     // TODO: support other ways of specifying paths (e.g. `file`)
@@ -33,11 +34,17 @@ private module RenderCallUtils {
     result = getTemplatePathValue(renderCall).regexpCapture("^/?(?:.*/)?([^/]*?)$", 1)
   }
 
+  /**
+   * Gets the template file to be rendered by this render call, if any.
+   */
   ErbFile getTemplateFile(MethodCall renderCall) {
     result.getTemplateName() = getBaseName(renderCall) and
     result.getRelativePath().matches("%app/views/" + getSubPath(renderCall) + "%")
   }
 
+  /**
+   * Gets the local variables passed as context to the renderer.
+   */
   HashLiteral getLocals(MethodCall renderCall) { result = renderCall.getKeywordArgument("locals") }
 }
 
@@ -74,7 +81,7 @@ module Rails {
     ErbFile getTemplateFile() { result = RenderCallUtils::getTemplateFile(this) }
 
     /**
-     * Get the local variables passed as context to the renderer
+     * Gets the local variables passed as context to the renderer.
      */
     HashLiteral getLocals() { result = RenderCallUtils::getLocals(this) }
     // TODO: implicit renders in controller actions
