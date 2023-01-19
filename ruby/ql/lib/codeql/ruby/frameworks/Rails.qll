@@ -298,16 +298,18 @@ private class CookiesSameSiteProtectionSetting extends Settings::NillableStringl
 
 // TODO: initialization hooks, e.g. before_configuration, after_initialize...
 // TODO: initializers
-private string getErbFileIdentifier(ErbFile erbFile) { result = erbFile.getRelativePath() }
-
 /** A synthetic global to represent the value passed to the `locals` argument of a render call for a specific ERB file. */
 private class LocalAssignsHashSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
   private ErbFile erbFile;
   private string id;
+  // Note that we can't use an actual `Rails::RenderCall` here due to problems with non-monotonic recursion
+  private MethodCall renderCall;
 
   LocalAssignsHashSyntheticGlobal() {
     this = "LocalAssignsHashSyntheticGlobal+" + id and
-    id = getErbFileIdentifier(erbFile)
+    id = erbFile.getRelativePath() + "+" + renderCall.getLocation() and
+    renderCall.getMethodName() = "render" and
+    RenderCallUtils::getTemplateFile(renderCall) = erbFile
   }
 
   /** Gets the `ErbFile` which this locals hash is accessible from. */
@@ -317,7 +319,7 @@ private class LocalAssignsHashSyntheticGlobal extends SummaryComponent::Syntheti
   string getId() { result = id }
 
   /** Gets a call to render that can write to this hash. */
-  Rails::RenderCall getARenderCall() { result.getTemplateFile() = erbFile }
+  Rails::RenderCall getARenderCall() { result = renderCall }
 }
 
 /** A summary for `render` calls linked to some specific ERB file. */
@@ -326,7 +328,7 @@ private class RenderLocalsSummary extends SummarizedCallable {
 
   RenderLocalsSummary() { this = "rails_render_locals()" + glob.getId() }
 
-  override Rails::RenderCall getACall() { result.getTemplateFile() = glob.getErbFile() }
+  override Rails::RenderCall getACall() { result = glob.getARenderCall() }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[locals:]" and
@@ -342,7 +344,7 @@ private class AccessLocalsSummary extends SummarizedCallable {
   AccessLocalsSummary() { this = "rails_local_assigns()" + glob.getId() }
 
   override MethodCall getACall() {
-    glob.getId() = getErbFileIdentifier(result.getLocation().getFile()) and
+    glob.getErbFile() = result.getLocation().getFile() and
     result.getMethodName() = "local_assigns"
   }
 
