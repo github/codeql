@@ -60,6 +60,7 @@ abbreviations = {
     "param": "parameter",
     "int": "integer",
     "var": "variable",
+    "ref": "reference",
 }
 
 abbreviations.update({f"{k}s": f"{v}s" for k, v in abbreviations.items()})
