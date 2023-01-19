@@ -424,43 +424,43 @@ private Element interpretElement0(
     )
     or
     // Member functions
-    exists(NominalTypeDecl nomTypeDecl, IterableDeclContext decl, MethodDecl method |
+    exists(NominalTypeDecl namedTypeDecl, IterableDeclContext declWithMethod, MethodDecl method |
       method.getName() = name and
-      method = decl.getAMember() and
-      nomTypeDecl.getFullName() = type and
+      method = declWithMethod.getAMember() and
+      namedTypeDecl.getFullName() = type and
       matchesSignature(method, signature) and
       result = method
     |
       subtypes = true and
-      decl.getNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
+      declWithMethod.getNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
       or
-      exists(ExtensionDecl e | e.getExtendedTypeDecl() = decl.getNominalTypeDecl() |
+      exists(ExtensionDecl e | e.getExtendedTypeDecl() = declWithMethod.getNominalTypeDecl() |
         subtypes = true and
-        e.getAProtocol() = nomTypeDecl.getADerivedTypeDecl*()
+        e.getAProtocol() = namedTypeDecl.getADerivedTypeDecl*()
       )
       or
       subtypes = false and
-      decl.getNominalTypeDecl() = nomTypeDecl
+      declWithMethod.getNominalTypeDecl() = namedTypeDecl
     )
     or
     // Fields
     signature = "" and
-    exists(NominalTypeDecl nomTypeDecl, IterableDeclContext decl, FieldDecl field |
+    exists(NominalTypeDecl namedTypeDecl, IterableDeclContext declWithField, FieldDecl field |
       field.getName() = name and
-      field = decl.getAMember() and
-      nomTypeDecl.getFullName() = type and
+      field = declWithField.getAMember() and
+      namedTypeDecl.getFullName() = type and
       result = field
     |
       subtypes = true and
-      decl.getNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
+      declWithField.getNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
       or
-      exists(ExtensionDecl e | e.getExtendedTypeDecl() = decl.getNominalTypeDecl() |
+      exists(ExtensionDecl e | e.getExtendedTypeDecl() = declWithField.getNominalTypeDecl() |
         subtypes = true and
-        e.getAProtocol() = nomTypeDecl.getADerivedTypeDecl*()
+        e.getAProtocol() = namedTypeDecl.getADerivedTypeDecl*()
       )
       or
       subtypes = false and
-      decl.getNominalTypeDecl() = nomTypeDecl
+      declWithField.getNominalTypeDecl() = namedTypeDecl
     )
   )
 }
