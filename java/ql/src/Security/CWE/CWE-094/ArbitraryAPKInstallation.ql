@@ -15,6 +15,7 @@ import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking2
 private import semmle.code.java.dataflow.ExternalFlow
+import DataFlow::PathGraph
 
 class PackageArchiveMimeTypeLiteral extends StringLiteral {
   PackageArchiveMimeTypeLiteral() { this.getValue() = "application/vnd.android.package-archive" }
