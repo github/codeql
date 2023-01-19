@@ -1,0 +1,12 @@
+edges
+nodes
+| APKInstallation.java:13:31:13:58 | fromFile(...) | semmle.label | fromFile(...) |
+| APKInstallation.java:20:31:20:44 | parse(...) | semmle.label | parse(...) |
+| APKInstallation.java:28:24:28:38 | parse(...) | semmle.label | parse(...) |
+| APKInstallation.java:35:24:35:51 | fromFile(...) | semmle.label | fromFile(...) |
+subpaths
+#select
+| APKInstallation.java:13:31:13:58 | fromFile(...) | APKInstallation.java:13:31:13:58 | fromFile(...) | APKInstallation.java:13:31:13:58 | fromFile(...) | Arbitrary Android APK installation. |
+| APKInstallation.java:20:31:20:44 | parse(...) | APKInstallation.java:20:31:20:44 | parse(...) | APKInstallation.java:20:31:20:44 | parse(...) | Arbitrary Android APK installation. |
+| APKInstallation.java:28:24:28:38 | parse(...) | APKInstallation.java:28:24:28:38 | parse(...) | APKInstallation.java:28:24:28:38 | parse(...) | Arbitrary Android APK installation. |
+| APKInstallation.java:35:24:35:51 | fromFile(...) | APKInstallation.java:35:24:35:51 | fromFile(...) | APKInstallation.java:35:24:35:51 | fromFile(...) | Arbitrary Android APK installation. |
