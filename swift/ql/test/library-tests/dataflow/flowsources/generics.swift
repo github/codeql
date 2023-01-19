@@ -160,5 +160,5 @@ class MyChildClass3: MyClass3 {
 func useProtocol3(impl: MyChildClass3) {
     _ = impl.source1() // not a source (`MyProtocol3.source1` is the declared source and `MyParentClass3` doesn't extend it)
     _ = impl.source2() // SOURCE
-    _ = impl.source3() // SOURCE [NOT DETECTED]
+    _ = impl.source3() // SOURCE
 }
