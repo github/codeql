@@ -472,6 +472,12 @@
 | Parameter 0 of System.Collections.Generic.GenericArraySortHelper.LessThan | parameter | 32 |
 | Parameter 0 of System.Collections.Generic.GenericArraySortHelper.Swap | parameter | 32 |
 | Parameter 0 of System.Collections.Generic.GenericArraySortHelper.SwapIfGreater | parameter | 32 |
+| Parameter 0 of System.Collections.Generic.GenericArraySortHelper<!0,!1>.GreaterThan | parameter | 32 |
+| Parameter 0 of System.Collections.Generic.GenericArraySortHelper<!0,!1>.LessThan | parameter | 32 |
+| Parameter 0 of System.Collections.Generic.GenericArraySortHelper<!0>.GreaterThan | parameter | 32 |
+| Parameter 0 of System.Collections.Generic.GenericArraySortHelper<!0>.LessThan | parameter | 32 |
+| Parameter 0 of System.Collections.Generic.GenericArraySortHelper<!0>.Swap | parameter | 32 |
+| Parameter 0 of System.Collections.Generic.GenericArraySortHelper<!0>.SwapIfGreater | parameter | 32 |
 | Parameter 0 of System.ConsolePal.<UpdatedCachedCursorPosition>g__IncrementX\|113_1 | parameter | 32 |
 | Parameter 0 of System.ConsolePal.<UpdatedCachedCursorPosition>g__IncrementY\|113_0 | parameter | 32 |
 | Parameter 0 of System.ConsolePal.GetWindowSize | parameter | 32 |
@@ -661,6 +667,10 @@
 | Parameter 0 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder.AwaitOnCompleted | parameter | 32 |
 | Parameter 0 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder.AwaitUnsafeOnCompleted | parameter | 32 |
 | Parameter 0 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder.GetStateMachineBox | parameter | 32 |
+| Parameter 0 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<!0>.AwaitOnCompleted | parameter | 32 |
+| Parameter 0 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<!0>.GetStateMachineBox | parameter | 32 |
+| Parameter 0 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<VoidTaskResult>.AwaitOnCompleted | parameter | 32 |
+| Parameter 0 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<VoidTaskResult>.AwaitUnsafeOnCompleted | parameter | 32 |
 | Parameter 0 of System.Runtime.CompilerServices.CastHelpers.Element | parameter | 32 |
 | Parameter 0 of System.Runtime.CompilerServices.CastHelpers.HashShift | parameter | 32 |
 | Parameter 0 of System.Runtime.CompilerServices.CastHelpers.KeyToBucket | parameter | 32 |
@@ -672,6 +682,9 @@
 | Parameter 0 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder.AwaitOnCompleted | parameter | 32 |
 | Parameter 0 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder.AwaitUnsafeOnCompleted | parameter | 32 |
 | Parameter 0 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder.GetStateMachineBox | parameter | 32 |
+| Parameter 0 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<!0>.AwaitOnCompleted | parameter | 32 |
+| Parameter 0 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<!0>.GetStateMachineBox | parameter | 32 |
+| Parameter 0 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<VoidTaskResult>.AwaitOnCompleted | parameter | 32 |
 | Parameter 0 of System.Runtime.InteropServices.ComWrappers.GetIUnknownImpl | parameter | 32 |
 | Parameter 0 of System.Runtime.InteropServices.ComWrappers.GetIUnknownImplInternal | parameter | 32 |
 | Parameter 0 of System.Runtime.InteropServices.MemoryMarshal.CreateReadOnlySpan | parameter | 32 |
@@ -737,6 +750,7 @@
 | Parameter 0 of System.Threading.Thread.VolatileRead | parameter | 32 |
 | Parameter 0 of System.Threading.Thread.VolatileWrite | parameter | 32 |
 | Parameter 0 of System.Threading.ThreadLocal.GrowTable | parameter | 32 |
+| Parameter 0 of System.Threading.ThreadLocal<!0>.GrowTable | parameter | 32 |
 | Parameter 0 of System.Threading.ThreadPool.GetAvailableThreads | parameter | 32 |
 | Parameter 0 of System.Threading.ThreadPool.GetAvailableThreadsNative | parameter | 32 |
 | Parameter 0 of System.Threading.ThreadPool.GetMaxThreads | parameter | 32 |
@@ -789,6 +803,7 @@
 | Parameter 1 of System.Buffers.Binary.BinaryPrimitives.TryReadUInt64BigEndian | parameter | 32 |
 | Parameter 1 of System.Buffers.Binary.BinaryPrimitives.TryReadUInt64LittleEndian | parameter | 32 |
 | Parameter 1 of System.Buffers.MemoryManager.TryGetArray | parameter | 32 |
+| Parameter 1 of System.Buffers.MemoryManager<!0>.TryGetArray | parameter | 32 |
 | Parameter 1 of System.Buffers.StandardFormat.ParseHelper | parameter | 32 |
 | Parameter 1 of System.Buffers.StandardFormat.TryParse | parameter | 32 |
 | Parameter 1 of System.Buffers.Text.FormattingHelpers.CountDecimalTrailingZeros | parameter | 32 |
@@ -835,20 +850,36 @@
 | Parameter 1 of System.Collections.Concurrent.ConcurrentQueue.TryDequeueSlow | parameter | 32 |
 | Parameter 1 of System.Collections.Concurrent.ConcurrentQueue.TryPeek | parameter | 32 |
 | Parameter 1 of System.Collections.Concurrent.ConcurrentQueue.TryTake | parameter | 32 |
+| Parameter 1 of System.Collections.Concurrent.ConcurrentQueue<!0>.SnapForObservation | parameter | 32 |
+| Parameter 1 of System.Collections.Concurrent.ConcurrentQueue<!0>.TryDequeue | parameter | 32 |
+| Parameter 1 of System.Collections.Concurrent.ConcurrentQueue<!0>.TryDequeueSlow | parameter | 32 |
+| Parameter 1 of System.Collections.Concurrent.ConcurrentQueue<!0>.TryPeek | parameter | 32 |
+| Parameter 1 of System.Collections.Concurrent.ConcurrentQueue<Object>.TryDequeue | parameter | 32 |
 | Parameter 1 of System.Collections.Concurrent.ConcurrentQueueSegment.TryDequeue | parameter | 32 |
 | Parameter 1 of System.Collections.Concurrent.ConcurrentQueueSegment.TryPeek | parameter | 32 |
+| Parameter 1 of System.Collections.Concurrent.ConcurrentQueueSegment<!0>.TryDequeue | parameter | 32 |
+| Parameter 1 of System.Collections.Concurrent.ConcurrentQueueSegment<!0>.TryPeek | parameter | 32 |
 | Parameter 1 of System.Collections.Concurrent.IProducerConsumerCollection.TryTake | parameter | 32 |
+| Parameter 1 of System.Collections.Concurrent.IProducerConsumerCollection<!0>.TryTake | parameter | 32 |
 | Parameter 1 of System.Collections.DictionaryEntry.Deconstruct | parameter | 32 |
 | Parameter 1 of System.Collections.Generic.EnumerableHelpers.ToArray | parameter | 32 |
 | Parameter 1 of System.Collections.Generic.GenericArraySortHelper.GreaterThan | parameter | 32 |
 | Parameter 1 of System.Collections.Generic.GenericArraySortHelper.LessThan | parameter | 32 |
 | Parameter 1 of System.Collections.Generic.GenericArraySortHelper.Swap | parameter | 32 |
 | Parameter 1 of System.Collections.Generic.GenericArraySortHelper.SwapIfGreater | parameter | 32 |
+| Parameter 1 of System.Collections.Generic.GenericArraySortHelper<!0,!1>.GreaterThan | parameter | 32 |
+| Parameter 1 of System.Collections.Generic.GenericArraySortHelper<!0,!1>.LessThan | parameter | 32 |
+| Parameter 1 of System.Collections.Generic.GenericArraySortHelper<!0>.GreaterThan | parameter | 32 |
+| Parameter 1 of System.Collections.Generic.GenericArraySortHelper<!0>.LessThan | parameter | 32 |
+| Parameter 1 of System.Collections.Generic.GenericArraySortHelper<!0>.Swap | parameter | 32 |
+| Parameter 1 of System.Collections.Generic.GenericArraySortHelper<!0>.SwapIfGreater | parameter | 32 |
 | Parameter 1 of System.Collections.Generic.KeyValuePair.Deconstruct | parameter | 32 |
+| Parameter 1 of System.Collections.Generic.KeyValuePair<String,ResourceSet>.Deconstruct | parameter | 32 |
 | Parameter 1 of System.Collections.Generic.Queue.MoveNext | parameter | 32 |
 | Parameter 1 of System.Collections.Generic.Queue.TryDequeue | parameter | 32 |
 | Parameter 1 of System.Collections.Generic.Queue.TryPeek | parameter | 32 |
-| Parameter 1 of System.Collections.Generic.Stack.TryPop | parameter | 32 |
+| Parameter 1 of System.Collections.Generic.Queue<!0>.MoveNext | parameter | 32 |
+| Parameter 1 of System.Collections.Generic.Stack<ConsoleKeyInfo>.TryPop | parameter | 32 |
 | Parameter 1 of System.ConsolePal.GetWindowSize | parameter | 32 |
 | Parameter 1 of System.ConsolePal.TryGetCachedCursorPosition | parameter | 32 |
 | Parameter 1 of System.ConsolePal.TryGetCursorPosition | parameter | 32 |
@@ -974,6 +1005,21 @@
 | Parameter 1 of System.Half.TryParse | parameter | 32 |
 | Parameter 1 of System.HashCode.Initialize | parameter | 32 |
 | Parameter 1 of System.INumber.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<Byte>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<Char>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<Decimal>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<Double>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<Half>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<Int16>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<Int32>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<Int64>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<IntPtr>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<SByte>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<Single>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<UInt16>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<UInt32>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<UInt64>.TryCreate | parameter | 32 |
+| Parameter 1 of System.INumber<UIntPtr>.TryCreate | parameter | 32 |
 | Parameter 1 of System.IO.Enumeration.FileSystemEnumerable.DelegateEnumerator.ShouldIncludeEntry | parameter | 32 |
 | Parameter 1 of System.IO.Enumeration.FileSystemEnumerable.DelegateEnumerator.ShouldRecurseIntoEntry | parameter | 32 |
 | Parameter 1 of System.IO.Enumeration.FileSystemEnumerable.DelegateEnumerator.TransformEntry | parameter | 32 |
@@ -983,6 +1029,8 @@
 | Parameter 1 of System.IO.Enumeration.FileSystemEnumerable.FindTransform.BeginInvoke | parameter | 32 |
 | Parameter 1 of System.IO.Enumeration.FileSystemEnumerable.FindTransform.EndInvoke | parameter | 32 |
 | Parameter 1 of System.IO.Enumeration.FileSystemEnumerable.FindTransform.Invoke | parameter | 32 |
+| Parameter 1 of System.IO.Enumeration.FileSystemEnumerable<!0>.FindPredicate.Invoke | parameter | 32 |
+| Parameter 1 of System.IO.Enumeration.FileSystemEnumerable<!0>.FindTransform.Invoke | parameter | 32 |
 | Parameter 1 of System.IO.Enumeration.FileSystemEnumerableFactory.<>c.<DirectoryInfos>b__7_0 | parameter | 32 |
 | Parameter 1 of System.IO.Enumeration.FileSystemEnumerableFactory.<>c.<FileInfos>b__6_0 | parameter | 32 |
 | Parameter 1 of System.IO.Enumeration.FileSystemEnumerableFactory.<>c.<FileSystemInfos>b__8_0 | parameter | 32 |
@@ -999,6 +1047,9 @@
 | Parameter 1 of System.IO.Enumeration.FileSystemEnumerator.ShouldIncludeEntry | parameter | 32 |
 | Parameter 1 of System.IO.Enumeration.FileSystemEnumerator.ShouldRecurseIntoEntry | parameter | 32 |
 | Parameter 1 of System.IO.Enumeration.FileSystemEnumerator.TransformEntry | parameter | 32 |
+| Parameter 1 of System.IO.Enumeration.FileSystemEnumerator<!0>.ShouldIncludeEntry | parameter | 32 |
+| Parameter 1 of System.IO.Enumeration.FileSystemEnumerator<!0>.ShouldRecurseIntoEntry | parameter | 32 |
+| Parameter 1 of System.IO.Enumeration.FileSystemEnumerator<!0>.TransformEntry | parameter | 32 |
 | Parameter 1 of System.IO.FileSystem.DirectoryExists | parameter | 32 |
 | Parameter 1 of System.IO.FileSystem.FileExists | parameter | 32 |
 | Parameter 1 of System.IO.FileSystemInfo.Init | parameter | 32 |
@@ -1073,7 +1124,14 @@
 | Parameter 1 of System.OrdinalComparer.IsWellKnownOrdinalComparerCore | parameter | 32 |
 | Parameter 1 of System.ParseNumbers.EatWhiteSpace | parameter | 32 |
 | Parameter 1 of System.ReadOnlyMemory.GetObjectStartLength | parameter | 32 |
+| Parameter 1 of System.ReadOnlyMemory<!0>.GetObjectStartLength | parameter | 32 |
+| Parameter 1 of System.ReadOnlyMemory<Char>.GetObjectStartLength | parameter | 32 |
 | Parameter 1 of System.ReadOnlySpan..ctor | parameter | 32 |
+| Parameter 1 of System.ReadOnlySpan<!0>..ctor | parameter | 32 |
+| Parameter 1 of System.ReadOnlySpan<Byte>..ctor | parameter | 32 |
+| Parameter 1 of System.ReadOnlySpan<Char>..ctor | parameter | 32 |
+| Parameter 1 of System.ReadOnlySpan<Int32>..ctor | parameter | 32 |
+| Parameter 1 of System.ReadOnlySpan<Object>..ctor | parameter | 32 |
 | Parameter 1 of System.Reflection.Binder.ReorderArgumentArray | parameter | 32 |
 | Parameter 1 of System.Reflection.CustomAttribute.FilterCustomAttributeRecord | parameter | 32 |
 | Parameter 1 of System.Reflection.CustomAttribute.GetPropertyOrFieldData | parameter | 32 |
@@ -1107,9 +1165,27 @@
 | Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder.SetException | parameter | 32 |
 | Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder.SetNotificationForWaitCompletion | parameter | 32 |
 | Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<!0>.AwaitOnCompleted | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<!0>.GetStateMachineBox | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<!0>.SetException | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<!0>.SetNotificationForWaitCompletion | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<Boolean>.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<Boolean>.Start | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<Byte[]>.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<Byte[]>.Start | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<String>.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<String>.Start | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<String[]>.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<String[]>.Start | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<VoidTaskResult>.AwaitOnCompleted | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<VoidTaskResult>.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<VoidTaskResult>.SetException | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<VoidTaskResult>.SetNotificationForWaitCompletion | parameter | 32 |
 | Parameter 1 of System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder.AwaitOnCompleted | parameter | 32 |
 | Parameter 1 of System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder.AwaitUnsafeOnCompleted | parameter | 32 |
 | Parameter 1 of System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder.Start | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder<Int32>.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder<Int32>.Start | parameter | 32 |
 | Parameter 1 of System.Runtime.CompilerServices.AsyncVoidMethodBuilder.AwaitOnCompleted | parameter | 32 |
 | Parameter 1 of System.Runtime.CompilerServices.AsyncVoidMethodBuilder.AwaitUnsafeOnCompleted | parameter | 32 |
 | Parameter 1 of System.Runtime.CompilerServices.AsyncVoidMethodBuilder.Start | parameter | 32 |
@@ -1120,6 +1196,13 @@
 | Parameter 1 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder.GetStateMachineBox | parameter | 32 |
 | Parameter 1 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder.SetException | parameter | 32 |
 | Parameter 1 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder.Start | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<!0>.AwaitOnCompleted | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<!0>.GetStateMachineBox | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<!0>.SetException | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<Int32>.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<Int32>.Start | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<VoidTaskResult>.AwaitOnCompleted | parameter | 32 |
+| Parameter 1 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<VoidTaskResult>.SetException | parameter | 32 |
 | Parameter 1 of System.Runtime.CompilerServices.QCallAssembly..ctor | parameter | 32 |
 | Parameter 1 of System.Runtime.CompilerServices.QCallModule..ctor | parameter | 32 |
 | Parameter 1 of System.Runtime.CompilerServices.QCallTypeHandle..ctor | parameter | 32 |
@@ -1195,6 +1278,8 @@
 | Parameter 1 of System.RuntimeType.RuntimeTypeCache.GetMemberList | parameter | 32 |
 | Parameter 1 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache.AddSpecialInterface | parameter | 32 |
 | Parameter 1 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache.Insert | parameter | 32 |
+| Parameter 1 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache<!0>.AddSpecialInterface | parameter | 32 |
+| Parameter 1 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache<!0>.Insert | parameter | 32 |
 | Parameter 1 of System.RuntimeType.SplitName | parameter | 32 |
 | Parameter 1 of System.RuntimeTypeHandle.CopyRuntimeTypeHandles | parameter | 32 |
 | Parameter 1 of System.RuntimeTypeHandle.GetActivationInfo | parameter | 32 |
@@ -1204,6 +1289,13 @@
 | Parameter 1 of System.Single.TryCreate | parameter | 32 |
 | Parameter 1 of System.Single.TryParse | parameter | 32 |
 | Parameter 1 of System.Span..ctor | parameter | 32 |
+| Parameter 1 of System.Span<!0>..ctor | parameter | 32 |
+| Parameter 1 of System.Span<!1>..ctor | parameter | 32 |
+| Parameter 1 of System.Span<Byte>..ctor | parameter | 32 |
+| Parameter 1 of System.Span<Char>..ctor | parameter | 32 |
+| Parameter 1 of System.Span<GuidResult>..ctor | parameter | 32 |
+| Parameter 1 of System.Span<Int32>..ctor | parameter | 32 |
+| Parameter 1 of System.Span<Object>..ctor | parameter | 32 |
 | Parameter 1 of System.SpanHelpers.SequenceEqual | parameter | 32 |
 | Parameter 1 of System.String.Create | parameter | 32 |
 | Parameter 1 of System.String.IndexOfNewlineChar | parameter | 32 |
@@ -1260,9 +1352,13 @@
 | Parameter 1 of System.Threading.SpinLock.Enter | parameter | 32 |
 | Parameter 1 of System.Threading.SpinLock.TryEnter | parameter | 32 |
 | Parameter 1 of System.Threading.Tasks.IProducerConsumerQueue.TryDequeue | parameter | 32 |
+| Parameter 1 of System.Threading.Tasks.IProducerConsumerQueue<!0>.TryDequeue | parameter | 32 |
+| Parameter 1 of System.Threading.Tasks.IProducerConsumerQueue<Task>.TryDequeue | parameter | 32 |
 | Parameter 1 of System.Threading.Tasks.MultiProducerMultiConsumerQueue.TryDequeue | parameter | 32 |
 | Parameter 1 of System.Threading.Tasks.SingleProducerSingleConsumerQueue.TryDequeue | parameter | 32 |
 | Parameter 1 of System.Threading.Tasks.SingleProducerSingleConsumerQueue.TryDequeueSlow | parameter | 32 |
+| Parameter 1 of System.Threading.Tasks.SingleProducerSingleConsumerQueue<!0>.TryDequeue | parameter | 32 |
+| Parameter 1 of System.Threading.Tasks.SingleProducerSingleConsumerQueue<!0>.TryDequeueSlow | parameter | 32 |
 | Parameter 1 of System.Threading.Tasks.Task.AddToList | parameter | 32 |
 | Parameter 1 of System.Threading.Tasks.Task.CreationOptionsFromContinuationOptions | parameter | 32 |
 | Parameter 1 of System.Threading.Tasks.Task.ExecuteWithThreadLocal | parameter | 32 |
@@ -1310,6 +1406,9 @@
 | Parameter 1 of System.UIntPtr.TryParse | parameter | 32 |
 | Parameter 1 of System.Version.TryParse | parameter | 32 |
 | Parameter 1 of System.WeakReference.TryGetTarget | parameter | 32 |
+| Parameter 1 of System.WeakReference<AssemblyLoadContext>.TryGetTarget | parameter | 32 |
+| Parameter 1 of System.WeakReference<CounterGroup>.TryGetTarget | parameter | 32 |
+| Parameter 1 of System.WeakReference<EventSource>.TryGetTarget | parameter | 32 |
 | Parameter 1 of System.__DTString.GetRegularToken | parameter | 32 |
 | Parameter 2 of Internal.Runtime.InteropServices.IClassFactory.CreateInstance | parameter | 32 |
 | Parameter 2 of Interop.Globalization.GetJapaneseEraStartDate | parameter | 32 |
@@ -1370,15 +1469,49 @@
 | Parameter 2 of System.Char.TryFormat | parameter | 32 |
 | Parameter 2 of System.Char.TryParse | parameter | 32 |
 | Parameter 2 of System.Collections.Concurrent.ConcurrentQueue.SnapForObservation | parameter | 32 |
+| Parameter 2 of System.Collections.Concurrent.ConcurrentQueue<!0>.SnapForObservation | parameter | 32 |
 | Parameter 2 of System.Collections.DictionaryEntry.Deconstruct | parameter | 32 |
 | Parameter 2 of System.Collections.Generic.Dictionary.CollectionsMarshalHelper.GetValueRefOrAddDefault | parameter | 32 |
 | Parameter 2 of System.Collections.Generic.Dictionary.Remove | parameter | 32 |
 | Parameter 2 of System.Collections.Generic.Dictionary.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<!0,!1>.CollectionsMarshalHelper.GetValueRefOrAddDefault | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<Int32,ChannelInfo>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<Int32,CultureInfo>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<Int32,HashSet<Token>>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<Int32,String>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<Int32,Task>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<MemberInfo,NullabilityState>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<Module,NotAnnotatedStatus>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<Object,Object>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<ReadOnlyMemory<Char>,ConsoleKeyInfo>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,Assembly>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,Boolean>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,CultureData>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,CultureInfo>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,Int32>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,IntPtr>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,IsolatedComponentLoadContext>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,List<Int32>>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,List<RuntimePropertyInfo>>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,LocalDataStoreSlot>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,Object>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,ResourceLocator>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,ResourceSet>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,String>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,TimeZoneInfo>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<String,Type>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<Type,AttributeUsageAttribute>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<Type,TraceLoggingTypeInfo>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<UInt64,Char>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.Dictionary<UInt64,String>.TryGetValue | parameter | 32 |
 | Parameter 2 of System.Collections.Generic.HashSet.AddIfNotPresent | parameter | 32 |
 | Parameter 2 of System.Collections.Generic.HashSet.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.HashSet<!0>.AddIfNotPresent | parameter | 32 |
 | Parameter 2 of System.Collections.Generic.IDictionary.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.IDictionary<String,String>.TryGetValue | parameter | 32 |
 | Parameter 2 of System.Collections.Generic.IReadOnlyDictionary.TryGetValue | parameter | 32 |
 | Parameter 2 of System.Collections.Generic.KeyValuePair.Deconstruct | parameter | 32 |
+| Parameter 2 of System.Collections.Generic.KeyValuePair<String,ResourceSet>.Deconstruct | parameter | 32 |
 | Parameter 2 of System.ComponentModel.DefaultValueAttribute.ctor>g__TryConvertFromInvariantString\|2_0 | parameter | 32 |
 | Parameter 2 of System.ConsolePal.<TryGetCursorPosition>g__BufferUntil\|83_1 | parameter | 32 |
 | Parameter 2 of System.Convert.CopyToTempBufferWithoutWhiteSpace | parameter | 32 |
@@ -1509,8 +1642,50 @@
 | Parameter 2 of System.IO.UnmanagedMemoryAccessor.Read | parameter | 32 |
 | Parameter 2 of System.IO.UnmanagedMemoryAccessor.Write | parameter | 32 |
 | Parameter 2 of System.IParseable.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<Byte>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<Char>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<DateOnly>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<DateTime>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<DateTimeOffset>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<Decimal>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<Double>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<Guid>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<Half>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<Int16>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<Int32>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<Int64>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<IntPtr>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<SByte>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<Single>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<TimeOnly>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<TimeSpan>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<UInt16>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<UInt32>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<UInt64>.TryParse | parameter | 32 |
+| Parameter 2 of System.IParseable<UIntPtr>.TryParse | parameter | 32 |
 | Parameter 2 of System.ISpanFormattable.TryFormat | parameter | 32 |
 | Parameter 2 of System.ISpanParseable.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<Byte>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<Char>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<DateOnly>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<DateTime>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<DateTimeOffset>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<Decimal>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<Double>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<Guid>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<Half>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<Int16>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<Int32>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<Int64>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<IntPtr>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<SByte>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<Single>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<TimeOnly>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<TimeSpan>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<UInt16>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<UInt32>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<UInt64>.TryParse | parameter | 32 |
+| Parameter 2 of System.ISpanParseable<UIntPtr>.TryParse | parameter | 32 |
 | Parameter 2 of System.Int16.TryFormat | parameter | 32 |
 | Parameter 2 of System.Int16.TryParse | parameter | 32 |
 | Parameter 2 of System.Int32.TryFormat | parameter | 32 |
@@ -1550,6 +1725,8 @@
 | Parameter 2 of System.ParseNumbers.GrabLongs | parameter | 32 |
 | Parameter 2 of System.ParseNumbers.IsDigit | parameter | 32 |
 | Parameter 2 of System.ReadOnlyMemory.GetObjectStartLength | parameter | 32 |
+| Parameter 2 of System.ReadOnlyMemory<!0>.GetObjectStartLength | parameter | 32 |
+| Parameter 2 of System.ReadOnlyMemory<Char>.GetObjectStartLength | parameter | 32 |
 | Parameter 2 of System.Reflection.AssemblyName.EscapeAsciiChar | parameter | 32 |
 | Parameter 2 of System.Reflection.CustomAttribute.AttributeUsageCheck | parameter | 32 |
 | Parameter 2 of System.Reflection.CustomAttribute.ParseAttributeUsageAttribute | parameter | 32 |
@@ -1610,18 +1787,35 @@
 | Parameter 2 of System.Runtime.CompilerServices.AsyncIteratorMethodBuilder.AwaitUnsafeOnCompleted | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder.AwaitOnCompleted | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<!0>.AwaitOnCompleted | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<Boolean>.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<Byte[]>.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<String>.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<String[]>.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<VoidTaskResult>.AwaitOnCompleted | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.AsyncTaskMethodBuilder<VoidTaskResult>.AwaitUnsafeOnCompleted | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder.AwaitOnCompleted | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder<Int32>.AwaitUnsafeOnCompleted | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.AsyncVoidMethodBuilder.AwaitOnCompleted | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.AsyncVoidMethodBuilder.AwaitUnsafeOnCompleted | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.ConditionalWeakTable.Container.FindEntry | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.ConditionalWeakTable.Container.TryGetEntry | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.ConditionalWeakTable.Container.TryGetValueWorker | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.ConditionalWeakTable.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.ConditionalWeakTable<!0,!1>.Container.FindEntry | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.ConditionalWeakTable<!0,!1>.Container.TryGetEntry | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.ConditionalWeakTable<!0,!1>.Container.TryGetValueWorker | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.ConditionalWeakTable<!0,!1>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.ConditionalWeakTable<Assembly,DllImportResolver>.TryGetValue | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.ConditionalWeakTable<Object,SerializationInfo>.TryGetValue | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.ICastable.IsInstanceOfInterface | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.ICastableHelpers.IsInstanceOfInterface | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder.AwaitOnCompleted | parameter | 32 |
 | Parameter 2 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<!0>.AwaitOnCompleted | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<Int32>.AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 2 of System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<VoidTaskResult>.AwaitOnCompleted | parameter | 32 |
 | Parameter 2 of System.Runtime.InteropServices.CollectionsMarshal.GetValueRefOrAddDefault | parameter | 32 |
 | Parameter 2 of System.Runtime.InteropServices.ComTypes.IBindCtx.GetObjectParam | parameter | 32 |
 | Parameter 2 of System.Runtime.InteropServices.ComTypes.IConnectionPoint.Advise | parameter | 32 |
@@ -1724,6 +1918,7 @@
 | Parameter 2 of System.Text.UTF8Encoding.DecodeFirstRune | parameter | 32 |
 | Parameter 2 of System.Text.UTF8Encoding.TryGetByteCount | parameter | 32 |
 | Parameter 2 of System.Text.Unicode.TextSegmentationUtility.DecodeFirstRune.Invoke | parameter | 32 |
+| Parameter 2 of System.Text.Unicode.TextSegmentationUtility.DecodeFirstRune<!0>.Invoke | parameter | 32 |
 | Parameter 2 of System.Text.Unicode.Utf8.FromUtf16 | parameter | 32 |
 | Parameter 2 of System.Text.Unicode.Utf8.ToUtf16 | parameter | 32 |
 | Parameter 2 of System.Text.Unicode.Utf8Utility.GetPointerToFirstInvalidByte | parameter | 32 |
@@ -1748,6 +1943,8 @@
 | Parameter 2 of System.Threading.SpinLock.TryEnter | parameter | 32 |
 | Parameter 2 of System.Threading.Tasks.SingleProducerSingleConsumerQueue.EnqueueSlow | parameter | 32 |
 | Parameter 2 of System.Threading.Tasks.SingleProducerSingleConsumerQueue.TryDequeueSlow | parameter | 32 |
+| Parameter 2 of System.Threading.Tasks.SingleProducerSingleConsumerQueue<!0>.EnqueueSlow | parameter | 32 |
+| Parameter 2 of System.Threading.Tasks.SingleProducerSingleConsumerQueue<!0>.TryDequeueSlow | parameter | 32 |
 | Parameter 2 of System.Threading.Tasks.Task.CreationOptionsFromContinuationOptions | parameter | 32 |
 | Parameter 2 of System.Threading.ThreadPool.GetNextConfigUInt32Value | parameter | 32 |
 | Parameter 2 of System.Threading.ThreadPoolWorkQueue.Dequeue | parameter | 32 |
@@ -1810,6 +2007,7 @@
 | Parameter 3 of System.Byte.TryParse | parameter | 32 |
 | Parameter 3 of System.Char.TryParse | parameter | 32 |
 | Parameter 3 of System.Collections.Concurrent.ConcurrentQueue.SnapForObservation | parameter | 32 |
+| Parameter 3 of System.Collections.Concurrent.ConcurrentQueue<!0>.SnapForObservation | parameter | 32 |
 | Parameter 3 of System.Collections.Hashtable.InitHash | parameter | 32 |
 | Parameter 3 of System.ConsolePal.<TryGetCursorPosition>g__AppendToStdInReaderUntil\|83_2 | parameter | 32 |
 | Parameter 3 of System.ConsolePal.<TryGetCursorPosition>g__BufferUntil\|83_1 | parameter | 32 |
@@ -1868,6 +2066,21 @@
 | Parameter 3 of System.Half.TryParse | parameter | 32 |
 | Parameter 3 of System.HashCode.Initialize | parameter | 32 |
 | Parameter 3 of System.INumber.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<Byte>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<Char>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<Decimal>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<Double>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<Half>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<Int16>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<Int32>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<Int64>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<IntPtr>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<SByte>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<Single>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<UInt16>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<UInt32>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<UInt64>.TryParse | parameter | 32 |
+| Parameter 3 of System.INumber<UIntPtr>.TryParse | parameter | 32 |
 | Parameter 3 of System.IO.BufferedStream.WriteToBuffer | parameter | 32 |
 | Parameter 3 of System.IO.Path.TryJoin | parameter | 32 |
 | Parameter 3 of System.IO.StdInReader.GetKeyFromCharValue | parameter | 32 |
@@ -1947,6 +2160,7 @@
 | Parameter 3 of System.Resources.ResourceReader.GetResourceData | parameter | 32 |
 | Parameter 3 of System.Resources.RuntimeResourceSet.ReadValue | parameter | 32 |
 | Parameter 3 of System.Runtime.CompilerServices.ConditionalWeakTable.Container.TryGetEntry | parameter | 32 |
+| Parameter 3 of System.Runtime.CompilerServices.ConditionalWeakTable<!0,!1>.Container.TryGetEntry | parameter | 32 |
 | Parameter 3 of System.Runtime.InteropServices.ComTypes.IMoniker.BindToObject | parameter | 32 |
 | Parameter 3 of System.Runtime.InteropServices.ComTypes.IMoniker.BindToStorage | parameter | 32 |
 | Parameter 3 of System.Runtime.InteropServices.ComTypes.IMoniker.ComposeWith | parameter | 32 |
@@ -1981,6 +2195,8 @@
 | Parameter 3 of System.RuntimeType.GetType | parameter | 32 |
 | Parameter 3 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache.PopulateLiteralFields | parameter | 32 |
 | Parameter 3 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache.PopulateRtFields | parameter | 32 |
+| Parameter 3 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache<!0>.PopulateLiteralFields | parameter | 32 |
+| Parameter 3 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache<!0>.PopulateRtFields | parameter | 32 |
 | Parameter 3 of System.RuntimeTypeHandle.GetActivationInfo | parameter | 32 |
 | Parameter 3 of System.RuntimeTypeHandle.GetTypeByName | parameter | 32 |
 | Parameter 3 of System.SByte.TryParse | parameter | 32 |
@@ -2005,6 +2221,7 @@
 | Parameter 3 of System.Text.UTF8Encoding.DecodeFirstRune | parameter | 32 |
 | Parameter 3 of System.Text.UTF8Encoding.EncodeRune | parameter | 32 |
 | Parameter 3 of System.Text.Unicode.TextSegmentationUtility.DecodeFirstRune.Invoke | parameter | 32 |
+| Parameter 3 of System.Text.Unicode.TextSegmentationUtility.DecodeFirstRune<!0>.Invoke | parameter | 32 |
 | Parameter 3 of System.Text.Unicode.Utf8.FromUtf16 | parameter | 32 |
 | Parameter 3 of System.Text.Unicode.Utf8.ToUtf16 | parameter | 32 |
 | Parameter 3 of System.Text.Unicode.Utf8Utility.GetPointerToFirstInvalidByte | parameter | 32 |
@@ -2015,6 +2232,7 @@
 | Parameter 3 of System.Threading.SpinLock.ContinueTryEnterWithThreadTracking | parameter | 32 |
 | Parameter 3 of System.Threading.Tasks.AwaitTaskContinuation.RunCallback | parameter | 32 |
 | Parameter 3 of System.Threading.Tasks.SingleProducerSingleConsumerQueue.TryDequeueSlow | parameter | 32 |
+| Parameter 3 of System.Threading.Tasks.SingleProducerSingleConsumerQueue<!0>.TryDequeueSlow | parameter | 32 |
 | Parameter 3 of System.Threading.Tasks.Task.AtomicStateUpdate | parameter | 32 |
 | Parameter 3 of System.Threading.ThreadPool.GetNextConfigUInt32Value | parameter | 32 |
 | Parameter 3 of System.TimeOnly.TryParse | parameter | 32 |
@@ -2052,6 +2270,7 @@
 | Parameter 4 of System.Buffers.Text.Utf8Parser.TryParseAsSpecialFloatingPoint | parameter | 32 |
 | Parameter 4 of System.Buffers.Text.Utf8Parser.TryParseNumber | parameter | 32 |
 | Parameter 4 of System.Collections.Concurrent.ConcurrentQueue.SnapForObservation | parameter | 32 |
+| Parameter 4 of System.Collections.Concurrent.ConcurrentQueue<!0>.SnapForObservation | parameter | 32 |
 | Parameter 4 of System.Collections.Hashtable.InitHash | parameter | 32 |
 | Parameter 4 of System.ConsolePal.<TryGetCursorPosition>g__AppendToStdInReaderUntil\|83_2 | parameter | 32 |
 | Parameter 4 of System.ConsolePal.<TryGetCursorPosition>g__BufferUntil\|83_1 | parameter | 32 |
@@ -2163,6 +2382,7 @@
 | Parameter 4 of System.RuntimeFieldHandle.GetValue | parameter | 32 |
 | Parameter 4 of System.RuntimeType.FilterHelper | parameter | 32 |
 | Parameter 4 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache.PopulateEvents | parameter | 32 |
+| Parameter 4 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache<!0>.PopulateEvents | parameter | 32 |
 | Parameter 4 of System.RuntimeTypeHandle.GetActivationInfo | parameter | 32 |
 | Parameter 4 of System.TermInfo.ParameterizedStrings.EvaluateInternal | parameter | 32 |
 | Parameter 4 of System.Text.ASCIIEncoding.GetByteCountFast | parameter | 32 |
@@ -2228,6 +2448,8 @@
 | Parameter 5 of System.RuntimeType.FilterHelper | parameter | 32 |
 | Parameter 5 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache.PopulateProperties | parameter | 32 |
 | Parameter 5 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache.PopulateRtFields | parameter | 32 |
+| Parameter 5 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache<!0>.PopulateProperties | parameter | 32 |
+| Parameter 5 of System.RuntimeType.RuntimeTypeCache.MemberInfoCache<!0>.PopulateRtFields | parameter | 32 |
 | Parameter 5 of System.TermInfo.ParameterizedStrings.EvaluateInternal | parameter | 32 |
 | Parameter 5 of System.Text.ASCIIEncoding.GetBytesFast | parameter | 32 |
 | Parameter 5 of System.Text.ASCIIEncoding.GetCharsFast | parameter | 32 |
@@ -2336,10 +2558,16 @@
 | Parameter 21 of System.TupleExtensions.Deconstruct | parameter | 32 |
 | System.ByReference.Value | property | 32 |
 | System.ByReference.get_Value | method | 32 |
+| System.ByReference<!0>.get_Value | method | 32 |
+| System.ByReference<Byte>.get_Value | method | 32 |
 | System.Collections.Generic.Dictionary.CollectionsMarshalHelper.GetValueRefOrAddDefault | method | 32 |
 | System.Collections.Generic.Dictionary.FindValue | method | 32 |
 | System.Collections.Generic.Dictionary.GetBucket | method | 32 |
+| System.Collections.Generic.Dictionary<!0,!1>.CollectionsMarshalHelper.GetValueRefOrAddDefault | method | 32 |
+| System.Collections.Generic.Dictionary<!0,!1>.FindValue | method | 32 |
+| System.Collections.Generic.Dictionary<!0,!1>.GetBucket | method | 32 |
 | System.Collections.Generic.HashSet.GetBucketRef | method | 32 |
+| System.Collections.Generic.HashSet<!0>.GetBucketRef | method | 32 |
 | System.Decimal.AsMutable | method | 32 |
 | System.Decimal.Max | method | 32 |
 | System.Decimal.Min | method | 32 |
@@ -2350,6 +2578,16 @@
 | System.ReadOnlySpan.GetPinnableReference | method | 32 |
 | System.ReadOnlySpan.Item | property | 32 |
 | System.ReadOnlySpan.get_Item | method | 32 |
+| System.ReadOnlySpan<!0>.get_Item | method | 32 |
+| System.ReadOnlySpan<Boolean>.get_Item | method | 32 |
+| System.ReadOnlySpan<Byte>.GetPinnableReference | method | 32 |
+| System.ReadOnlySpan<Byte>.get_Item | method | 32 |
+| System.ReadOnlySpan<Char>.get_Item | method | 32 |
+| System.ReadOnlySpan<Int32>.get_Item | method | 32 |
+| System.ReadOnlySpan<Object>.get_Item | method | 32 |
+| System.ReadOnlySpan<SafeWaitHandle>.get_Item | method | 32 |
+| System.ReadOnlySpan<String>.get_Item | method | 32 |
+| System.ReadOnlySpan<WaitHandle>.get_Item | method | 32 |
 | System.Runtime.CompilerServices.CastHelpers.Element | method | 32 |
 | System.Runtime.CompilerServices.CastHelpers.LdelemaRef | method | 32 |
 | System.Runtime.CompilerServices.CastHelpers.TableData | method | 32 |
@@ -2371,6 +2609,19 @@
 | System.Span.GetPinnableReference | method | 32 |
 | System.Span.Item | property | 32 |
 | System.Span.get_Item | method | 32 |
+| System.Span<!0>.get_Item | method | 32 |
+| System.Span<!1>.get_Item | method | 32 |
+| System.Span<Byte>.GetPinnableReference | method | 32 |
+| System.Span<Byte>.get_Item | method | 32 |
+| System.Span<Char>.GetPinnableReference | method | 32 |
+| System.Span<Char>.get_Item | method | 32 |
+| System.Span<EventPipeProviderConfigurationNative>.GetPinnableReference | method | 32 |
+| System.Span<EventPipeProviderConfigurationNative>.get_Item | method | 32 |
+| System.Span<IOVector>.get_Item | method | 32 |
+| System.Span<Int32>.get_Item | method | 32 |
+| System.Span<IntPtr>.get_Item | method | 32 |
+| System.Span<Object>.get_Item | method | 32 |
+| System.Span<SafeWaitHandle>.get_Item | method | 32 |
 | System.SpanHelpers.Add | method | 32 |
 | System.String.GetPinnableReference | method | 32 |
 | System.String.GetRawStringData | method | 32 |
