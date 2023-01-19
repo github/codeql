@@ -365,7 +365,8 @@ private class AccessLocalsKeySummary extends SummarizedCallable {
 
   override MethodCall getACall() {
     result.getLocation().getFile() = glob.getErbFile() and
-    result.getMethodName() = methodName
+    result.getMethodName() = methodName and
+    result.getReceiver() instanceof SelfVariableReadAccess
   }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
