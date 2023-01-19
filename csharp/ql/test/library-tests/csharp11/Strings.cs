@@ -35,4 +35,14 @@ public class MyTestClass
         Show matching set of curly braces: {{{message2}}}
         """;
     }
+
+
+    public void M3()
+    {
+        // UTF-8 encoded.
+        var x = "AUTH8: "u8;
+
+        // UTF-16 encoded.
+        var y = "AUTH16: ";
+    }
 }
