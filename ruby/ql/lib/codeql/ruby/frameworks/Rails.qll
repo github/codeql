@@ -371,6 +371,6 @@ private class AccessLocalsKeySummary extends SummarizedCallable {
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "SyntheticGlobal[" + glob + "].Element[:" + methodName + "]" and
     output = "ReturnValue" and
-    preservesValue = false
+    preservesValue = true
   }
 }
