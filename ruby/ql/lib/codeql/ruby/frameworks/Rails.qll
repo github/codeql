@@ -12,6 +12,35 @@ private import codeql.ruby.ApiGraphs
 private import codeql.ruby.security.OpenSSL
 private import codeql.ruby.dataflow.FlowSummary
 
+private module RenderCallUtils {
+  private Expr getTemplatePathArgument(MethodCall renderCall) {
+    // TODO: support other ways of specifying paths (e.g. `file`)
+    result =
+      [renderCall.getKeywordArgument(["partial", "template", "action"]), renderCall.getArgument(0)]
+  }
+
+  private string getTemplatePathValue(MethodCall renderCall) {
+    result = getTemplatePathArgument(renderCall).getConstantValue().getStringlikeValue()
+  }
+
+  // everything up to and including the final slash, but ignoring any leading slash
+  private string getSubPath(MethodCall renderCall) {
+    result = getTemplatePathValue(renderCall).regexpCapture("^/?(.*/)?(?:[^/]*?)$", 1)
+  }
+
+  // everything after the final slash, or the whole string if there is no slash
+  private string getBaseName(MethodCall renderCall) {
+    result = getTemplatePathValue(renderCall).regexpCapture("^/?(?:.*/)?([^/]*?)$", 1)
+  }
+
+  ErbFile getTemplateFile(MethodCall renderCall) {
+    result.getTemplateName() = getBaseName(renderCall) and
+    result.getRelativePath().matches("%app/views/" + getSubPath(renderCall) + "%")
+  }
+
+  HashLiteral getLocals(MethodCall renderCall) { result = renderCall.getKeywordArgument("locals") }
+}
+
 /**
  * Provides classes for working with Rails.
  */
@@ -39,37 +68,15 @@ module Rails {
    * rendered content.
    */
   class RenderCall extends MethodCall instanceof RenderCallImpl {
-    private Expr getTemplatePathArgument() {
-      // TODO: support other ways of specifying paths (e.g. `file`)
-      result = [this.getKeywordArgument(["partial", "template", "action"]), this.getArgument(0)]
-    }
-
-    private string getTemplatePathValue() {
-      result = this.getTemplatePathArgument().getConstantValue().getStringlikeValue()
-    }
-
-    // everything up to and including the final slash, but ignoring any leading slash
-    private string getSubPath() {
-      result = this.getTemplatePathValue().regexpCapture("^/?(.*/)?(?:[^/]*?)$", 1)
-    }
-
-    // everything after the final slash, or the whole string if there is no slash
-    private string getBaseName() {
-      result = this.getTemplatePathValue().regexpCapture("^/?(?:.*/)?([^/]*?)$", 1)
-    }
-
     /**
      * Gets the template file to be rendered by this call, if any.
      */
-    ErbFile getTemplateFile() {
-      result.getTemplateName() = this.getBaseName() and
-      result.getRelativePath().matches("%app/views/" + this.getSubPath() + "%")
-    }
+    ErbFile getTemplateFile() { result = RenderCallUtils::getTemplateFile(this) }
 
     /**
      * Get the local variables passed as context to the renderer
      */
-    HashLiteral getLocals() { result = this.getKeywordArgument("locals") }
+    HashLiteral getLocals() { result = RenderCallUtils::getLocals(this) }
     // TODO: implicit renders in controller actions
   }
 
