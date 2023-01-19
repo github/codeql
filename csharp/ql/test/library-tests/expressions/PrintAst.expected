@@ -508,7 +508,7 @@ expressions.cs:
 #   32|         20: [ExprStmt] ...;
 #   32|           0: [AssignExpr] ... = ...
 #   32|             0: [LocalVariableAccess] access to local variable s
-#   32|             1: [StringLiteral] "test"
+#   32|             1: [StringLiteralUtf16] "test"
 #   33|         21: [LocalVariableDeclStmt] ... ...;
 #   33|           0: [LocalVariableDeclExpr] Object o
 #   33|             0: [TypeMention] object
@@ -552,7 +552,7 @@ expressions.cs:
 #   44|       -1: [TypeMention] string
 #   44|       1: [AssignExpr] ... = ...
 #   44|         0: [MemberConstantAccess] access to constant constant
-#   44|         1: [StringLiteral] "constant"
+#   44|         1: [StringLiteralUtf16] "constant"
 #   45|     7: [Field] f
 #   45|       -1: [TypeMention] int
 #   45|       1: [AssignExpr] ... = ...
@@ -567,7 +567,7 @@ expressions.cs:
 #   51|             0: [FieldAccess] access to field name
 #   51|               -1: [TypeAccess] access to type Class
 #   51|                 0: [TypeMention] Class
-#   51|             1: [StringLiteral] ""
+#   51|             1: [StringLiteralUtf16] ""
 #   52|         1: [ExprStmt] ...;
 #   52|           0: [MethodCall] call to method Foo
 #   52|             -1: [TypeAccess] access to type Class
@@ -632,7 +632,7 @@ expressions.cs:
 #   75|                 1: [IntLiteral] 2
 #   75|               1: [MethodCall] call to method Equals
 #   75|                 -1: [ParameterAccess] access to parameter s
-#   75|                 0: [StringLiteral] ""
+#   75|                 0: [StringLiteralUtf16] ""
 #   76|       4: [Setter] set_Item
 #-----|         2: (Parameters)
 #   73|           0: [Parameter] i
@@ -656,7 +656,7 @@ expressions.cs:
 #   81|         0: [ExprStmt] ...;
 #   81|           0: [AssignExpr] ... = ...
 #   81|             0: [PropertyCall] access to property Name
-#   81|             1: [StringLiteral] "aName"
+#   81|             1: [StringLiteralUtf16] "aName"
 #   82|         1: [LocalVariableDeclStmt] ... ...;
 #   82|           0: [LocalVariableDeclAndInitExpr] String n = ...
 #   82|             -1: [TypeMention] string
@@ -690,7 +690,7 @@ expressions.cs:
 #   85|             1: [IndexerCall] access to indexer
 #   85|               -1: [ThisAccess] this access
 #   85|               0: [IntLiteral] 0
-#   85|               1: [StringLiteral] ""
+#   85|               1: [StringLiteralUtf16] ""
 #   86|         5: [LocalVariableDeclStmt] ... ...;
 #   86|           0: [LocalVariableDeclAndInitExpr] Int32[] array = ...
 #   86|             -1: [TypeMention] Int32[]
@@ -771,7 +771,7 @@ expressions.cs:
 #  100|             1: [AddExpr] ... + ...
 #  100|               0: [AddExpr] ... + ...
 #  100|                 0: [ParameterAccess] access to parameter s
-#  100|                 1: [StringLiteral] " "
+#  100|                 1: [StringLiteralUtf16] " "
 #  100|               1: [CastExpr] (...) ...
 #  100|                 1: [LocalVariableAccess] access to local variable i
 #  103|     18: [Class] Y<,>
@@ -873,7 +873,7 @@ expressions.cs:
 #  138|                 1: [IntLiteral] 3
 #  138|               4: [CastExpr] (...) ...
 #  138|                 1: [IntLiteral] 4
-#  138|               5: [StringLiteral] ""
+#  138|               5: [StringLiteralUtf16] ""
 #  143|     22: [Method] MainLocalVarDecl
 #  143|       -1: [TypeMention] Void
 #  144|       4: [BlockStmt] {...}
@@ -911,7 +911,7 @@ expressions.cs:
 #  150|           0: [LocalVariableDeclAndInitExpr] String y = ...
 #  150|             -1: [TypeMention] string
 #  150|             0: [LocalVariableAccess] access to local variable y
-#  150|             1: [StringLiteral] "test"
+#  150|             1: [StringLiteralUtf16] "test"
 #  153|     23: [Method] MainLocalConstDecl
 #  153|       -1: [TypeMention] Void
 #  154|       4: [BlockStmt] {...}
@@ -1088,7 +1088,7 @@ expressions.cs:
 #  192|                 0: [IntLiteral] 3
 #  192|               1: [DelegateCall] delegate call
 #  192|                 -1: [LocalVariableAccess] access to local variable ps
-#  192|                 0: [StringLiteral] ""
+#  192|                 0: [StringLiteralUtf16] ""
 #  194|         16: [LocalVariableDeclStmt] ... ...;
 #  194|           0: [LocalVariableDeclExpr] ContextCallback d
 #  194|             0: [TypeMention] ContextCallback
@@ -1648,26 +1648,26 @@ expressions.cs:
 #  400|                     -1: [ObjectInitializer] { ..., ... }
 #  401|                       0: [MemberInitializer] ... = ...
 #  401|                         0: [PropertyCall] access to property Name
-#  401|                         1: [StringLiteral] "Chris Smith"
+#  401|                         1: [StringLiteralUtf16] "Chris Smith"
 #  402|                       1: [MemberInitializer] ... = ...
 #  402|                         0: [PropertyCall] access to property PhoneNumbers
 #  402|                         1: [CollectionInitializer] { ..., ... }
 #  402|                           0: [ElementInitializer] call to method Add
-#  402|                             0: [StringLiteral] "206-555-0101"
+#  402|                             0: [StringLiteralUtf16] "206-555-0101"
 #  402|                           1: [ElementInitializer] call to method Add
-#  402|                             0: [StringLiteral] "425-882-8080"
+#  402|                             0: [StringLiteralUtf16] "425-882-8080"
 #  404|                 1: [ElementInitializer] call to method Add
 #  404|                   0: [ObjectCreation] object creation of type Contact
 #  404|                     -2: [TypeMention] Contact
 #  404|                     -1: [ObjectInitializer] { ..., ... }
 #  405|                       0: [MemberInitializer] ... = ...
 #  405|                         0: [PropertyCall] access to property Name
-#  405|                         1: [StringLiteral] "Bob Harris"
+#  405|                         1: [StringLiteralUtf16] "Bob Harris"
 #  406|                       1: [MemberInitializer] ... = ...
 #  406|                         0: [PropertyCall] access to property PhoneNumbers
 #  406|                         1: [CollectionInitializer] { ..., ... }
 #  406|                           0: [ElementInitializer] call to method Add
-#  406|                             0: [StringLiteral] "650-555-0199"
+#  406|                             0: [StringLiteralUtf16] "650-555-0199"
 #  409|         5: [LocalVariableDeclStmt] ... ...;
 #  409|           0: [LocalVariableDeclAndInitExpr] Int32[,] is1 = ...
 #  409|             -1: [TypeMention] Int32[,]
@@ -1752,11 +1752,11 @@ expressions.cs:
 #  415|             1: [ArrayCreation] array creation of type String[,]
 #  415|               -1: [ArrayInitializer] { ..., ... }
 #  415|                 0: [ArrayInitializer] { ..., ... }
-#  415|                   0: [StringLiteral] "hello"
+#  415|                   0: [StringLiteralUtf16] "hello"
 #  415|                   1: [NullLiteral] null
 #  415|                 1: [ArrayInitializer] { ..., ... }
-#  415|                   0: [StringLiteral] "world"
-#  415|                   1: [StringLiteral] "!"
+#  415|                   0: [StringLiteralUtf16] "world"
+#  415|                   1: [StringLiteralUtf16] "!"
 #  416|         12: [LocalVariableDeclStmt] ... ...;
 #  416|           0: [LocalVariableDeclAndInitExpr] <>__AnonType0<String,String[]>[] contacts2 = ...
 #  416|             -1: [TypeMention] <>__AnonType0<String,String[]>[]
@@ -1767,23 +1767,23 @@ expressions.cs:
 #  417|                   -1: [ObjectInitializer] { ..., ... }
 #  418|                     0: [MemberInitializer] ... = ...
 #  418|                       0: [PropertyCall] access to property Name
-#  418|                       1: [StringLiteral] "Chris Smith"
+#  418|                       1: [StringLiteralUtf16] "Chris Smith"
 #  419|                     1: [MemberInitializer] ... = ...
 #  419|                       0: [PropertyCall] access to property PhoneNumbers
 #  419|                       1: [ArrayCreation] array creation of type String[]
 #  419|                         -1: [ArrayInitializer] { ..., ... }
-#  419|                           0: [StringLiteral] "206-555-0101"
-#  419|                           1: [StringLiteral] "425-882-8080"
+#  419|                           0: [StringLiteralUtf16] "206-555-0101"
+#  419|                           1: [StringLiteralUtf16] "425-882-8080"
 #  421|                 1: [AnonymousObjectCreation] object creation of type <>__AnonType0<String,String[]>
 #  421|                   -1: [ObjectInitializer] { ..., ... }
 #  422|                     0: [MemberInitializer] ... = ...
 #  422|                       0: [PropertyCall] access to property Name
-#  422|                       1: [StringLiteral] "Bob Harris"
+#  422|                       1: [StringLiteralUtf16] "Bob Harris"
 #  423|                     1: [MemberInitializer] ... = ...
 #  423|                       0: [PropertyCall] access to property PhoneNumbers
 #  423|                       1: [ArrayCreation] array creation of type String[]
 #  423|                         -1: [ArrayInitializer] { ..., ... }
-#  423|                           0: [StringLiteral] "650-555-0199"
+#  423|                           0: [StringLiteralUtf16] "650-555-0199"
 #  426|         13: [LocalVariableDeclStmt] ... ...;
 #  426|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
 #  426|             -1: [TypeMention] int
@@ -2056,7 +2056,7 @@ expressions.cs:
 #  452|                   0: [AddExpr] ... + ...
 #  452|                     0: [CastExpr] (...) ...
 #  452|                       1: [ParameterAccess] access to parameter x
-#  452|                     1: [StringLiteral] ""
+#  452|                     1: [StringLiteralUtf16] ""
 #  453|         4: [LocalVariableDeclStmt] ... ...;
 #  453|           0: [LocalVariableDeclAndInitExpr] S f5 = ...
 #  453|             -1: [TypeMention] S

@@ -65,7 +65,7 @@ fields.cs:
 #   37|       -1: [TypeMention] string
 #   37|       1: [AssignExpr] ... = ...
 #   37|         0: [FieldAccess] access to field s
-#   37|         1: [StringLiteral] "Hello"
+#   37|         1: [StringLiteralUtf16] "Hello"
 #   39|     10: [Method] Main
 #   39|       -1: [TypeMention] Void
 #   40|       4: [BlockStmt] {...}
