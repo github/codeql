@@ -431,9 +431,11 @@ private Element interpretElement0(
       matchesSignature(method, signature) and
       result = method
     |
+      // member declared in the named type or a subtype of it (or an extension of any)
       subtypes = true and
       declWithMethod.getNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
       or
+      // member declared in a type that's extended with a protocol that is the named type
       exists(ExtensionDecl e |
         e.getExtendedTypeDecl().getADerivedTypeDecl*() = declWithMethod.getNominalTypeDecl()
       |
@@ -441,6 +443,7 @@ private Element interpretElement0(
         e.getAProtocol() = namedTypeDecl.getADerivedTypeDecl*()
       )
       or
+      // member declared directly in the named type (or an extension of it)
       subtypes = false and
       declWithMethod.getNominalTypeDecl() = namedTypeDecl
     )
@@ -453,9 +456,11 @@ private Element interpretElement0(
       namedTypeDecl.getFullName() = type and
       result = field
     |
+      // field declared in the named type or a subtype of it (or an extension of any)
       subtypes = true and
       declWithField.getNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
       or
+      // field declared in a type that's extended with a protocol that is the named type
       exists(ExtensionDecl e |
         e.getExtendedTypeDecl().getADerivedTypeDecl*() = declWithField.getNominalTypeDecl()
       |
@@ -463,6 +468,7 @@ private Element interpretElement0(
         e.getAProtocol() = namedTypeDecl.getADerivedTypeDecl*()
       )
       or
+      // field declared directly in the named type (or an extension of it)
       subtypes = false and
       declWithField.getNominalTypeDecl() = namedTypeDecl
     )
