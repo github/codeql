@@ -106,4 +106,4 @@ private class PackageArchiveMimeTypeConfiguration extends TaintTracking2::Config
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, ExternalSourceConfiguration config
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Android APK installation"
+select sink.getNode(), source, sink, "Arbitrary Android APK installation."
