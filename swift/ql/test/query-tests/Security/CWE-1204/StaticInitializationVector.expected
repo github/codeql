@@ -1,4 +1,9 @@
 edges
+| rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  |
+| rncryptor.swift:63:19:63:28 | call to Data.init(_:) :  | rncryptor.swift:74:84:74:84 | myConstIV4 |
+| rncryptor.swift:63:19:63:28 | call to Data.init(_:) :  | rncryptor.swift:83:113:83:113 | myConstIV4 |
+| rncryptor.swift:63:24:63:24 | iv :  | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  |
+| rncryptor.swift:63:24:63:24 | iv :  | rncryptor.swift:63:19:63:28 | call to Data.init(_:) :  |
 | test.swift:53:19:53:34 | iv :  | test.swift:54:17:54:17 | iv |
 | test.swift:85:3:85:3 | this string is constant :  | test.swift:101:17:101:35 | call to getConstantString() :  |
 | test.swift:99:25:99:120 | [...] :  | test.swift:128:33:128:33 | iv |
@@ -23,6 +28,12 @@ edges
 | test.swift:101:17:101:35 | call to getConstantString() :  | test.swift:130:39:130:39 | ivString |
 | test.swift:147:22:147:22 | iv :  | test.swift:53:19:53:34 | iv :  |
 nodes
+| file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | semmle.label | [summary] to write: return (return) in Data.init(_:) :  |
+| rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | semmle.label | [summary param] 0 in Data.init(_:) :  |
+| rncryptor.swift:63:19:63:28 | call to Data.init(_:) :  | semmle.label | call to Data.init(_:) :  |
+| rncryptor.swift:63:24:63:24 | iv :  | semmle.label | iv :  |
+| rncryptor.swift:74:84:74:84 | myConstIV4 | semmle.label | myConstIV4 |
+| rncryptor.swift:83:113:83:113 | myConstIV4 | semmle.label | myConstIV4 |
 | test.swift:53:19:53:34 | iv :  | semmle.label | iv :  |
 | test.swift:54:17:54:17 | iv | semmle.label | iv |
 | test.swift:85:3:85:3 | this string is constant :  | semmle.label | this string is constant :  |
@@ -49,7 +60,10 @@ nodes
 | test.swift:167:22:167:22 | iv | semmle.label | iv |
 | test.swift:168:22:168:22 | iv | semmle.label | iv |
 subpaths
+| rncryptor.swift:63:24:63:24 | iv :  | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | rncryptor.swift:63:19:63:28 | call to Data.init(_:) :  |
 #select
+| rncryptor.swift:74:84:74:84 | myConstIV4 | rncryptor.swift:63:24:63:24 | iv :  | rncryptor.swift:74:84:74:84 | myConstIV4 | The static value 'iv' is used as an initialization vector for encryption. |
+| rncryptor.swift:83:113:83:113 | myConstIV4 | rncryptor.swift:63:24:63:24 | iv :  | rncryptor.swift:83:113:83:113 | myConstIV4 | The static value 'iv' is used as an initialization vector for encryption. |
 | test.swift:54:17:54:17 | iv | test.swift:99:25:99:120 | [...] :  | test.swift:54:17:54:17 | iv | The static value '[...]' is used as an initialization vector for encryption. |
 | test.swift:112:36:112:36 | ivString | test.swift:85:3:85:3 | this string is constant :  | test.swift:112:36:112:36 | ivString | The static value 'this string is constant' is used as an initialization vector for encryption. |
 | test.swift:113:36:113:36 | ivString | test.swift:85:3:85:3 | this string is constant :  | test.swift:113:36:113:36 | ivString | The static value 'this string is constant' is used as an initialization vector for encryption. |
