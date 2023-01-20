@@ -233,9 +233,9 @@ private predicate dictSplatParameterNodeClearStep(ParameterNode n, DictionaryEle
  * and a read step to the `p1` parameter.
  *
  * ```py
- * def foo(p1): ...
+ * def foo(p1, p2): ...
  *
- * kwargs = {"p1": 42}
+ * kwargs = {"p1": 42, "p2": 43}
  * foo(**kwargs)
  * ```
  *
