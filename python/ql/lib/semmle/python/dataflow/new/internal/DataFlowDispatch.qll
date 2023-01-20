@@ -1085,6 +1085,7 @@ predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
     arg.asCfgNode() = call.getArgByName(name)
   )
   or
+  // the first `*args`
   exists(int index |
     apos.isStarArgs(index) and
     arg.asCfgNode() = call.getStarArg() and

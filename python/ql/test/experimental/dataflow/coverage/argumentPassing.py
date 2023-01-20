@@ -217,6 +217,10 @@ def test_only_starargs():
     args = (arg1, arg2, "safe") # $ arg1 arg2 func=starargs_only
     starargs_only(*args)
 
+    args = (arg1, arg2) # $ arg1 arg2 func=starargs_only
+    more_args = (arg3, arg4)
+    starargs_only(*args, *more_args)
+
 
 def starargs_mixed(a, *args):
     SINK1(a)
