@@ -39,6 +39,11 @@ module Public {
       )
       or
       exists(ReturnKind rk | this = TReturnSummaryComponent(rk) and result = "return (" + rk + ")")
+      or
+      exists(SummaryComponent::SyntheticGlobal sg |
+        this = TSyntheticGlobalSummaryComponent(sg) and
+        result = "synthetic global (" + sg + ")"
+      )
     }
   }
 
