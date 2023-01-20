@@ -1,0 +1,1 @@
+{"timestamp":1674235729,"source":{"id":"java/autobuilder/no-build-command","name":"No build command found","extractorName":"java"},"markdownMessage":"Could not find a Gradle, Maven or Ant top-level project to build. Please [TODO](supply a manual build command)","severity":"error","visibility":{"statusPage":true,"cliSummaryTable":true,"telemetry":true}}
