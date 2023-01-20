@@ -8,6 +8,34 @@
 | testAlamofire.swift:195:64:195:64 | password | label:password, type:credential |
 | testAlamofire.swift:205:62:205:62 | password | label:password, type:credential |
 | testAlamofire.swift:213:65:213:65 | password | label:password, type:credential |
+| testCoreData2.swift:37:16:37:16 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:38:2:38:6 | .myBankAccountNumber | label:myBankAccountNumber, type:private information |
+| testCoreData2.swift:39:2:39:6 | .myBankAccountNumber | label:myBankAccountNumber, type:private information |
+| testCoreData2.swift:39:28:39:28 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:40:2:40:6 | .myBankAccountNumber2 | label:myBankAccountNumber2, type:private information |
+| testCoreData2.swift:41:2:41:6 | .myBankAccountNumber2 | label:myBankAccountNumber2, type:private information |
+| testCoreData2.swift:41:29:41:29 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:42:2:42:6 | .notStoredBankAccountNumber | label:notStoredBankAccountNumber, type:private information |
+| testCoreData2.swift:43:2:43:6 | .notStoredBankAccountNumber | label:notStoredBankAccountNumber, type:private information |
+| testCoreData2.swift:43:35:43:35 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:46:22:46:22 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:47:2:47:12 | .myBankAccountNumber | label:myBankAccountNumber, type:private information |
+| testCoreData2.swift:48:2:48:12 | .myBankAccountNumber | label:myBankAccountNumber, type:private information |
+| testCoreData2.swift:48:34:48:34 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:49:2:49:12 | .myBankAccountNumber2 | label:myBankAccountNumber2, type:private information |
+| testCoreData2.swift:50:2:50:12 | .myBankAccountNumber2 | label:myBankAccountNumber2, type:private information |
+| testCoreData2.swift:50:35:50:35 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:51:2:51:12 | .notStoredBankAccountNumber | label:notStoredBankAccountNumber, type:private information |
+| testCoreData2.swift:52:2:52:12 | .notStoredBankAccountNumber | label:notStoredBankAccountNumber, type:private information |
+| testCoreData2.swift:52:41:52:41 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:57:3:57:7 | .myBankAccountNumber | label:myBankAccountNumber, type:private information |
+| testCoreData2.swift:57:29:57:29 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:60:4:60:8 | .myBankAccountNumber | label:myBankAccountNumber, type:private information |
+| testCoreData2.swift:60:30:60:30 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:62:4:62:8 | .myBankAccountNumber | label:myBankAccountNumber, type:private information |
+| testCoreData2.swift:62:30:62:30 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:65:3:65:7 | .myBankAccountNumber | label:myBankAccountNumber, type:private information |
+| testCoreData2.swift:65:29:65:29 | bankAccountNo | label:bankAccountNo, type:private information |
 | testCoreData.swift:48:15:48:15 | password | label:password, type:credential |
 | testCoreData.swift:51:24:51:24 | password | label:password, type:credential |
 | testCoreData.swift:58:15:58:15 | password | label:password, type:credential |
