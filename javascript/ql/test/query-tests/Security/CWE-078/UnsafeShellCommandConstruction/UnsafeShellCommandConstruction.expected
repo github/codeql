@@ -282,6 +282,14 @@ nodes
 | lib/lib.js:543:23:543:26 | name |
 | lib/lib.js:545:23:545:26 | name |
 | lib/lib.js:545:23:545:26 | name |
+| lib/lib.js:550:39:550:42 | name |
+| lib/lib.js:550:39:550:42 | name |
+| lib/lib.js:551:33:551:36 | args |
+| lib/lib.js:552:23:552:26 | args |
+| lib/lib.js:552:23:552:26 | args |
+| lib/lib.js:555:25:555:37 | ["-rf", name] |
+| lib/lib.js:555:33:555:36 | name |
+| lib/lib.js:555:33:555:36 | name |
 | lib/subLib2/compiled-file.ts:3:26:3:29 | name |
 | lib/subLib2/compiled-file.ts:3:26:3:29 | name |
 | lib/subLib2/compiled-file.ts:4:25:4:28 | name |
@@ -659,6 +667,14 @@ edges
 | lib/lib.js:509:39:509:42 | name | lib/lib.js:545:23:545:26 | name |
 | lib/lib.js:509:39:509:42 | name | lib/lib.js:545:23:545:26 | name |
 | lib/lib.js:509:39:509:42 | name | lib/lib.js:545:23:545:26 | name |
+| lib/lib.js:550:39:550:42 | name | lib/lib.js:555:33:555:36 | name |
+| lib/lib.js:550:39:550:42 | name | lib/lib.js:555:33:555:36 | name |
+| lib/lib.js:550:39:550:42 | name | lib/lib.js:555:33:555:36 | name |
+| lib/lib.js:550:39:550:42 | name | lib/lib.js:555:33:555:36 | name |
+| lib/lib.js:551:33:551:36 | args | lib/lib.js:552:23:552:26 | args |
+| lib/lib.js:551:33:551:36 | args | lib/lib.js:552:23:552:26 | args |
+| lib/lib.js:555:25:555:37 | ["-rf", name] | lib/lib.js:551:33:551:36 | args |
+| lib/lib.js:555:33:555:36 | name | lib/lib.js:555:25:555:37 | ["-rf", name] |
 | lib/subLib2/compiled-file.ts:3:26:3:29 | name | lib/subLib2/compiled-file.ts:4:25:4:28 | name |
 | lib/subLib2/compiled-file.ts:3:26:3:29 | name | lib/subLib2/compiled-file.ts:4:25:4:28 | name |
 | lib/subLib2/compiled-file.ts:3:26:3:29 | name | lib/subLib2/compiled-file.ts:4:25:4:28 | name |
@@ -775,6 +791,8 @@ edges
 | lib/lib.js:537:11:537:26 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:537:23:537:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:537:3:537:27 | cp.exec ... + name) | shell command |
 | lib/lib.js:543:11:543:26 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:543:23:543:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:543:3:543:27 | cp.exec ... + name) | shell command |
 | lib/lib.js:545:11:545:26 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:545:23:545:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:545:3:545:27 | cp.exec ... + name) | shell command |
+| lib/lib.js:552:23:552:26 | args | lib/lib.js:550:39:550:42 | name | lib/lib.js:552:23:552:26 | args | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:550:39:550:42 | name | library input | lib/lib.js:552:9:552:38 | cp.spaw ... wnOpts) | shell command |
+| lib/lib.js:555:33:555:36 | name | lib/lib.js:550:39:550:42 | name | lib/lib.js:555:33:555:36 | name | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:550:39:550:42 | name | library input | lib/lib.js:552:9:552:38 | cp.spaw ... wnOpts) | shell command |
 | lib/subLib2/compiled-file.ts:4:13:4:28 | "rm -rf " + name | lib/subLib2/compiled-file.ts:3:26:3:29 | name | lib/subLib2/compiled-file.ts:4:25:4:28 | name | This string concatenation which depends on $@ is later used in a $@. | lib/subLib2/compiled-file.ts:3:26:3:29 | name | library input | lib/subLib2/compiled-file.ts:4:5:4:29 | cp.exec ... + name) | shell command |
 | lib/subLib2/special-file.js:4:10:4:25 | "rm -rf " + name | lib/subLib2/special-file.js:3:28:3:31 | name | lib/subLib2/special-file.js:4:22:4:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/subLib2/special-file.js:3:28:3:31 | name | library input | lib/subLib2/special-file.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/subLib3/my-file.ts:4:10:4:25 | "rm -rf " + name | lib/subLib3/my-file.ts:3:28:3:31 | name | lib/subLib3/my-file.ts:4:22:4:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/subLib3/my-file.ts:3:28:3:31 | name | library input | lib/subLib3/my-file.ts:4:2:4:26 | cp.exec ... + name) | shell command |

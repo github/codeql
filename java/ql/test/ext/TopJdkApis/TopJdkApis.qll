@@ -57,7 +57,61 @@ predicate topJdkApiName(string apiName) {
       "java.nio.file.Path#resolve(String)", "java.lang.Enum#toString()",
       "java.lang.RuntimeException#RuntimeException(Throwable)", "java.util.Collection#size()",
       "java.lang.String#charAt(int)", "java.util.stream.Stream#forEach(Consumer)",
-      "java.util.Map#isEmpty()", "java.lang.String#valueOf(int)"
+      "java.util.Map#isEmpty()", "java.lang.String#valueOf(int)",
+      // top 200 JDK APIs
+      "java.lang.Integer#intValue()", "java.util.ArrayList#size()",
+      "java.util.ArrayList#ArrayList(int)", "java.util.function.Function#apply(Object)",
+      "java.util.stream.Stream#forEach(Consumer)", "java.util.ArrayList#get(int)",
+      "java.util.Set#iterator()", "java.util.stream.Collectors#toSet()",
+      "java.lang.String#replaceAll(String,String)", "java.lang.String#getBytes(Charset)",
+      "java.util.Objects#requireNonNull(Object)", "java.util.Objects#nonNull(Object)",
+      "java.lang.String#endsWith(String)", "java.lang.AbstractStringBuilder#length()",
+      "java.sql.PreparedStatement#setString(int,String)",
+      "java.util.regex.Pattern#matcher(CharSequence)", "java.nio.file.Path#toString()",
+      "java.time.Instant#now()", "java.io.File#getAbsolutePath()",
+      "java.util.Set#addAll(Collection)", "java.lang.Integer#valueOf(int)",
+      "java.util.HashSet#HashSet(Collection)", "java.lang.Integer#toString(int)",
+      "java.lang.StringBuilder#StringBuilder(String)", "java.lang.Thread#sleep(long)",
+      "java.lang.Thread#currentThread()", "java.util.Date#getTime()",
+      "java.io.Writer#write(String)", "java.lang.String#getBytes()", "java.io.File#exists()",
+      "java.lang.String#toUpperCase()", "java.lang.Long#parseLong(String)",
+      "java.util.Collections#emptyMap()", "java.util.Optional#orElseThrow(Supplier)",
+      "java.util.List#of(Object,Object)", "java.util.concurrent.CountDownLatch#countDown()",
+      "java.lang.Class#isAssignableFrom(Class)",
+      "java.lang.IndexOutOfBoundsException#IndexOutOfBoundsException(String)",
+      "java.lang.Throwable#getCause()", "java.util.Arrays#stream(Object[])",
+      "java.util.function.Supplier#get()", "java.lang.Exception#Exception(String)",
+      "java.util.function.Consumer#accept(Object)", "java.util.stream.Stream#anyMatch(Predicate)",
+      "java.util.List#clear()", "java.io.File#File(File,String)",
+      "java.lang.String#indexOf(String)", "java.util.List#iterator()",
+      "java.util.concurrent.CountDownLatch#CountDownLatch(int)", "java.sql.ResultSet#next()",
+      "java.sql.PreparedStatement#setInt(int,int)",
+      "java.util.concurrent.atomic.AtomicInteger#get()",
+      "java.util.stream.Collectors#toMap(Function,Function)", "java.lang.Math#min(int,int)",
+      "java.lang.Long#equals(Object)", "java.util.Properties#setProperty(String,String)",
+      "java.util.Map#getOrDefault(Object,Object)", "java.lang.System#getProperty(String)",
+      "java.util.stream.Stream#of(Object[])", "java.nio.file.Paths#get(String,String[])",
+      "java.math.BigDecimal#compareTo(BigDecimal)", "java.math.BigDecimal#valueOf(long)",
+      "java.lang.RuntimeException#RuntimeException(String,Throwable)",
+      "java.util.Collection#add(Object)", "java.util.Collections#emptySet()",
+      "java.util.stream.Stream#flatMap(Function)",
+      "java.util.concurrent.atomic.AtomicReference#get()", "java.util.Collection#isEmpty()",
+      "java.lang.StringBuffer#toString()", "java.util.Collections#singleton(Object)",
+      "java.io.File#getName()", "java.time.ZonedDateTime#now()",
+      "java.io.ByteArrayInputStream#ByteArrayInputStream(byte[])", "java.nio.file.Path#toFile()",
+      "java.util.Date#Date(long)", "java.lang.System#nanoTime()",
+      "java.util.Hashtable#put(Object,Object)", "java.util.Map#putAll(Map)",
+      "java.lang.Long#toString()", "java.util.List#toArray(Object[])", "java.io.File#toPath()",
+      "java.util.regex.Matcher#group(int)", "java.time.LocalDate#of(int,int,int)",
+      "java.lang.String#valueOf(long)", "java.math.BigDecimal#valueOf(double)",
+      "java.io.IOException#IOException(String)", "java.text.DateFormat#format(Date)",
+      "java.sql.ResultSet#getInt(String)", "java.util.Map#clear()", "java.util.HashSet#add(Object)",
+      "java.lang.Class#getClassLoader()", "java.lang.Boolean#equals(Object)",
+      "java.lang.String#concat(String)", "java.util.Collections#singletonMap(Object,Object)",
+      "java.util.Collection#iterator()", "java.util.Map#computeIfAbsent(Object,Function)",
+      "java.text.SimpleDateFormat#SimpleDateFormat(String)",
+      "java.util.StringJoiner#add(CharSequence)", "java.lang.Long#longValue()",
+      "java.util.stream.Collectors#joining(CharSequence)"
     ]
 }
 
@@ -88,10 +142,16 @@ class TopJdkApi extends SummarizedCallableBase {
   /** Holds if this API has a manual MaD model. */
   predicate hasManualMadModel() { this.hasManualSummary() or this.hasManualNeutral() }
   /*
-   * Note: the following top-100 APIs are not modeled with MaD:
-   * java.util.stream.Stream#collect(Collector) : handled separately on a case-by-case basis as it is too complex for MaD
-   * java.lang.String#valueOf(Object) : also a complex case; an alias for `Object.toString`, except the dispatch is hidden
-   * java.lang.Throwable#printStackTrace() : should probably not be a general step, but there might be specialised queries that care
+   * Note: the following top JDK APIs are not modeled with MaD:
+   * `java.lang.String#valueOf(Object)`: a complex case; an alias for `Object.toString`, except the dispatch is hidden
+   * `java.lang.System#getProperty(String)`: needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+   * `java.lang.Throwable#printStackTrace()`: should probably not be a general step, but there might be specialised queries that care
+   * `java.util.function.Consumer#accept(Object)`: specialized lambda flow
+   * `java.util.function.Function#apply(Object)`: specialized lambda flow
+   * `java.util.function.Supplier#get()`: lambda flow
+   * `java.util.stream.Collectors#joining(CharSequence)`: cannot be modeled completely without a model for `java.util.stream.Stream#collect(Collector)` as well
+   * `java.util.stream.Collectors#toMap(Function,Function)`: specialized collectors flow
+   * `java.util.stream.Stream#collect(Collector)`: handled separately on a case-by-case basis as it is too complex for MaD
    */
 
   }

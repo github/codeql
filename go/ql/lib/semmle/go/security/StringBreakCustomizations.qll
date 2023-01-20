@@ -84,24 +84,13 @@ module StringBreak {
   }
 
   /**
-   * A call to `strings.Replace` or `strings.ReplaceAll`, considered as a sanitizer
-   * for unsafe quoting.
+   * An expression that is equivalent to `strings.ReplaceAll(s, old, new)`,
+   * considered as a sanitizer for unsafe quoting.
    */
-  class ReplaceSanitizer extends Sanitizer {
+  class ReplaceSanitizer extends StringOps::ReplaceAll, Sanitizer {
     Quote quote;
 
-    ReplaceSanitizer() {
-      exists(string name, DataFlow::CallNode call |
-        this = call and
-        call.getTarget().hasQualifiedName("strings", name) and
-        call.getArgument(1).getStringValue().matches("%" + quote + "%")
-      |
-        name = "Replace" and
-        call.getArgument(3).getNumericValue() < 0
-        or
-        name = "ReplaceAll"
-      )
-    }
+    ReplaceSanitizer() { this.getReplacedString().matches("%" + quote + "%") }
 
     override Quote getQuote() { result = quote }
   }

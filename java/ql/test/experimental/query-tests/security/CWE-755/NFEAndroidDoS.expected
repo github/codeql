@@ -3,12 +3,8 @@ edges
 | NFEAndroidDoS.java:13:24:13:61 | getStringExtra(...) : Object | NFEAndroidDoS.java:14:21:14:51 | parseDouble(...) |
 | NFEAndroidDoS.java:22:21:22:31 | getIntent(...) : Intent | NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : Object |
 | NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : Object | NFEAndroidDoS.java:23:15:23:40 | parseInt(...) |
-| NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : Object | NFEAndroidDoS.java:23:32:23:39 | widthStr : Object |
-| NFEAndroidDoS.java:23:32:23:39 | widthStr : Object | NFEAndroidDoS.java:23:15:23:40 | parseInt(...) |
 | NFEAndroidDoS.java:25:22:25:32 | getIntent(...) : Intent | NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : Object |
 | NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : Object | NFEAndroidDoS.java:26:16:26:42 | parseInt(...) |
-| NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : Object | NFEAndroidDoS.java:26:33:26:41 | heightStr : Object |
-| NFEAndroidDoS.java:26:33:26:41 | heightStr : Object | NFEAndroidDoS.java:26:16:26:42 | parseInt(...) |
 | NFEAndroidDoS.java:43:24:43:34 | getIntent(...) : Intent | NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : Object |
 | NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : Object | NFEAndroidDoS.java:44:21:44:43 | new Double(...) |
 | NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : Object | NFEAndroidDoS.java:47:21:47:47 | valueOf(...) |
@@ -19,11 +15,9 @@ nodes
 | NFEAndroidDoS.java:22:21:22:31 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
 | NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : Object | semmle.label | getStringExtra(...) : Object |
 | NFEAndroidDoS.java:23:15:23:40 | parseInt(...) | semmle.label | parseInt(...) |
-| NFEAndroidDoS.java:23:32:23:39 | widthStr : Object | semmle.label | widthStr : Object |
 | NFEAndroidDoS.java:25:22:25:32 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
 | NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : Object | semmle.label | getStringExtra(...) : Object |
 | NFEAndroidDoS.java:26:16:26:42 | parseInt(...) | semmle.label | parseInt(...) |
-| NFEAndroidDoS.java:26:33:26:41 | heightStr : Object | semmle.label | heightStr : Object |
 | NFEAndroidDoS.java:43:24:43:34 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
 | NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : Object | semmle.label | getStringExtra(...) : Object |
 | NFEAndroidDoS.java:44:21:44:43 | new Double(...) | semmle.label | new Double(...) |

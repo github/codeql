@@ -10,7 +10,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "DeclRefExpr" }
 
     /**
-     * Gets the declaration of this declaration ref expression.
+     * Gets the declaration of this declaration reference expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
@@ -21,12 +21,12 @@ module Generated {
     }
 
     /**
-     * Gets the declaration of this declaration ref expression.
+     * Gets the declaration of this declaration reference expression.
      */
     final Decl getDecl() { result = getImmediateDecl().resolve() }
 
     /**
-     * Gets the `index`th replacement type of this declaration ref expression (0-based).
+     * Gets the `index`th replacement type of this declaration reference expression (0-based).
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
@@ -39,47 +39,47 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th replacement type of this declaration ref expression (0-based).
+     * Gets the `index`th replacement type of this declaration reference expression (0-based).
      */
     final Type getReplacementType(int index) {
       result = getImmediateReplacementType(index).resolve()
     }
 
     /**
-     * Gets any of the replacement types of this declaration ref expression.
+     * Gets any of the replacement types of this declaration reference expression.
      */
     final Type getAReplacementType() { result = getReplacementType(_) }
 
     /**
-     * Gets the number of replacement types of this declaration ref expression.
+     * Gets the number of replacement types of this declaration reference expression.
      */
     final int getNumberOfReplacementTypes() {
       result = count(int i | exists(getReplacementType(i)))
     }
 
     /**
-     * Holds if this declaration ref expression has direct to storage semantics.
+     * Holds if this declaration reference expression has direct to storage semantics.
      */
     predicate hasDirectToStorageSemantics() {
       Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDirectToStorageSemantics()
     }
 
     /**
-     * Holds if this declaration ref expression has direct to implementation semantics.
+     * Holds if this declaration reference expression has direct to implementation semantics.
      */
     predicate hasDirectToImplementationSemantics() {
       Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDirectToImplementationSemantics()
     }
 
     /**
-     * Holds if this declaration ref expression has ordinary semantics.
+     * Holds if this declaration reference expression has ordinary semantics.
      */
     predicate hasOrdinarySemantics() {
       Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasOrdinarySemantics()
     }
 
     /**
-     * Holds if this declaration ref expression has distributed thunk semantics.
+     * Holds if this declaration reference expression has distributed thunk semantics.
      */
     predicate hasDistributedThunkSemantics() {
       Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDistributedThunkSemantics()

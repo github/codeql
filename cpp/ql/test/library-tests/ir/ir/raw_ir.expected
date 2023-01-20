@@ -120,25 +120,26 @@ bad_asts.cpp:
 #   26|     v26_10(void)          = AliasedUse               : ~m?
 #   26|     v26_11(void)          = ExitFunction             : 
 
-#   30| void Bad::errorExpr()
-#   30|   Block 0
-#   30|     v30_1(void)         = EnterFunction           : 
-#   30|     mu30_2(unknown)     = AliasedDefinition       : 
-#   30|     mu30_3(unknown)     = InitializeNonLocal      : 
-#   31|     r31_1(glval<int &>) = VariableAddress[intref] : 
-#   31|     r31_2(error)        = Error                   : 
-#   31|     mu31_3(int &)       = Store[intref]           : &:r31_1, r31_2
-#   32|     r32_1(glval<int>)   = VariableAddress[x]      : 
-#   32|     r32_2(error)        = Error                   : 
-#   32|     mu32_3(int)         = Store[x]                : &:r32_1, r32_2
-#   33|     r33_1(glval<error>) = Error                   : 
-#   33|     r33_2(error)        = Load[?]                 : &:r33_1, ~m?
-#   33|     r33_3(glval<int>)   = VariableAddress[x]      : 
-#   33|     mu33_4(int)         = Store[x]                : &:r33_3, r33_2
-#   34|     v34_1(void)         = NoOp                    : 
-#   30|     v30_4(void)         = ReturnVoid              : 
-#   30|     v30_5(void)         = AliasedUse              : ~m?
-#   30|     v30_6(void)         = ExitFunction            : 
+bad_stmts.cpp:
+#    5| void Bad::errorExpr()
+#    5|   Block 0
+#    5|     v5_1(void)         = EnterFunction           : 
+#    5|     mu5_2(unknown)     = AliasedDefinition       : 
+#    5|     mu5_3(unknown)     = InitializeNonLocal      : 
+#    6|     r6_1(glval<int &>) = VariableAddress[intref] : 
+#    6|     r6_2(error)        = Error                   : 
+#    6|     mu6_3(int &)       = Store[intref]           : &:r6_1, r6_2
+#    7|     r7_1(glval<int>)   = VariableAddress[x]      : 
+#    7|     r7_2(error)        = Error                   : 
+#    7|     mu7_3(int)         = Store[x]                : &:r7_1, r7_2
+#    8|     r8_1(glval<error>) = Error                   : 
+#    8|     r8_2(error)        = Load[?]                 : &:r8_1, ~m?
+#    8|     r8_3(glval<int>)   = VariableAddress[x]      : 
+#    8|     mu8_4(int)         = Store[x]                : &:r8_3, r8_2
+#    9|     v9_1(void)         = NoOp                    : 
+#    5|     v5_4(void)         = ReturnVoid              : 
+#    5|     v5_5(void)         = AliasedUse              : ~m?
+#    5|     v5_6(void)         = ExitFunction            : 
 
 clang.cpp:
 #    5| int* globalIntAddress()
