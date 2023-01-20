@@ -146,7 +146,6 @@ private module Cached {
   cached
   predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     localAdditionalTaintStep(src, sink) or
-    entrypointFieldStep(src, sink) or
     any(AdditionalTaintStep a).step(src, sink)
   }
 
@@ -616,17 +615,27 @@ private MethodAccess callReturningSameType(Expr ref) {
 
 pragma[assume_small_delta]
 private SrcRefType entrypointType() {
-  exists(RemoteFlowSource s, RefType t |
-    s instanceof DataFlow::ExplicitParameterNode and
-    t = pragma[only_bind_out](s).getType() and
-    not t instanceof TypeObject and
-    result = t.getADescendant().getSourceDeclaration()
+  not result instanceof Array and
+  not result instanceof BoxedType and
+  not result instanceof NumberType and
+  (
+    exists(RemoteFlowSource s, RefType t |
+      s instanceof DataFlow::ExplicitParameterNode and
+      t = pragma[only_bind_out](s).getType() and
+      not t instanceof TypeObject and
+      result.getASourceSupertype*() = t.getSourceDeclaration()
+    )
+    or
+    exists(RefType fieldType |
+      fieldType = entrypointType().getAField().getType() and
+      not fieldType instanceof TypeObject and
+      result.getASourceSupertype*() = fieldType.getSourceDeclaration()
+    )
   )
-  or
-  result = entrypointType().getAField().getType().(RefType).getSourceDeclaration()
 }
 
-private predicate entrypointFieldStep(DataFlow::Node src, DataFlow::Node sink) {
-  src = DataFlow::getFieldQualifier(sink.asExpr().(FieldRead)) and
-  src.getType().(RefType).getSourceDeclaration() = entrypointType()
+private class EntrypointTypeInheritTaint extends DataFlow::FieldContent, TaintInheritingContent {
+  EntrypointTypeInheritTaint() {
+    this.getField().getDeclaringType().getSourceDeclaration() = entrypointType()
+  }
 }
