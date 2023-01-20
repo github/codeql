@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-01-13-01h30m20s.witty-evening-lpxcnz6l.bdd06d4bf3b603e772b8831f7fc8e09d4c5cdd5f3a8cd1559b5b83e6e7ec0d55
+compiled: false
