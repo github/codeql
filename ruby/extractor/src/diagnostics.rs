@@ -6,6 +6,7 @@ use std::path::PathBuf;
 pub enum Severity {
     Error,
     Warning,
+    #[allow(unused)]
     Note,
 }
 
@@ -42,13 +43,13 @@ pub struct Location {
     /** Path to the affected file if appropriate, relative to the source root */
     pub file: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub start_line: Option<i32>,
+    pub start_line: Option<usize>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub start_column: Option<i32>,
+    pub start_column: Option<usize>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub end_line: Option<i32>,
+    pub end_line: Option<usize>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub end_column: Option<i32>,
+    pub end_column: Option<usize>,
 }
 
 #[derive(Serialize)]
@@ -81,12 +82,45 @@ fn is_default_visibility(v: &Visibility) -> bool {
 }
 
 pub struct LogWriter {
+    extractor: String,
     path: Option<PathBuf>,
     inner: Option<std::io::BufWriter<std::fs::File>>,
 }
 
 impl LogWriter {
-    pub fn write(&mut self, mesg: &DiagnosticMessage) -> std::io::Result<()> {
+    pub fn message(&self, id: &str, name: &str) -> DiagnosticMessage {
+        DiagnosticMessage {
+            timestamp: std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .expect("")
+                .as_millis() as u64,
+            source: Source {
+                id: format!("{}/{}", self.extractor, id),
+                name: name.to_owned(),
+                extractor_name: Some(self.extractor.to_owned()),
+            },
+            markdown_message: String::new(),
+            plaintext_message: String::new(),
+            help_links: vec![],
+            severity: None,
+            internal: false,
+            visibility: Visibility {
+                cli_summary_table: false,
+                status_page: false,
+                telemetry: false,
+            },
+            location: None,
+        }
+    }
+    pub fn write(&mut self, mesg: &DiagnosticMessage) {
+        let full_error_message = mesg.full_error_message();
+
+        match mesg.severity {
+            Some(Severity::Error) => tracing::error!("{}", full_error_message),
+            Some(Severity::Warning) => tracing::warn!("{}", full_error_message),
+            Some(Severity::Note) => tracing::info!("{}", full_error_message),
+            None => tracing::debug!("{}", full_error_message),
+        }
         if self.inner.is_none() {
             let mut open_failed = false;
             self.inner = self.path.as_ref().and_then(|path| {
@@ -113,10 +147,12 @@ impl LogWriter {
             }
         }
         if let Some(mut writer) = self.inner.as_mut() {
-            serde_json::to_writer(&mut writer, mesg)?;
-            &mut writer.write_all(b"\n")?;
+            serde_json::to_writer(&mut writer, mesg)
+                .unwrap_or_else(|e| tracing::debug!("Failed to write log entry: {}", e));
+            &mut writer
+                .write_all(b"\n")
+                .unwrap_or_else(|e| tracing::debug!("Failed to write log entry: {}", e));
         }
-        Ok(())
     }
 }
 
@@ -134,7 +170,7 @@ impl DiagnosticLoggers {
 
         let root = match std::env::var(&env_var) {
             Err(e) => {
-                tracing::error!("{}: {}", &env_var, e);
+                tracing::error!("{}: {}", e, &env_var);
                 None
             }
             Ok(dir) => {
@@ -160,36 +196,13 @@ impl DiagnosticLoggers {
             };
         }
         THREAD_NUM.with(|n| LogWriter {
+            extractor: self.extractor.to_owned(),
             inner: None,
             path: self
                 .root
                 .as_ref()
                 .map(|root| root.to_owned().join(format!("extractor_{}.jsonl", n))),
         })
-    }
-    pub fn message(&self, id: &str, name: &str) -> DiagnosticMessage {
-        DiagnosticMessage {
-            timestamp: std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .expect("")
-                .as_millis() as u64,
-            source: Source {
-                id: id.to_owned(),
-                name: name.to_owned(),
-                extractor_name: Some(self.extractor.to_owned()),
-            },
-            markdown_message: String::new(),
-            plaintext_message: String::new(),
-            help_links: vec![],
-            severity: None,
-            internal: false,
-            visibility: Visibility {
-                cli_summary_table: false,
-                status_page: false,
-                telemetry: false,
-            },
-            location: None,
-        }
     }
 }
 static EMPTY_LOCATION: Location = Location {
@@ -200,10 +213,23 @@ static EMPTY_LOCATION: Location = Location {
     end_column: None,
 };
 impl DiagnosticMessage {
+    pub fn full_error_message(&self) -> String {
+        match &self.location {
+            Some(Location {
+                file: Some(path),
+                start_line: Some(line),
+                ..
+            }) => format!("{}:{}: {}", path, line, self.plaintext_message),
+            _ => self.plaintext_message.to_owned(),
+        }
+    }
+
     pub fn text<'a>(&'a mut self, text: &str) -> &'a mut Self {
         self.plaintext_message = text.to_owned();
         self
     }
+
+    #[allow(unused)]
     pub fn markdown<'a>(&'a mut self, text: &str) -> &'a mut Self {
         self.markdown_message = text.to_owned();
         self
@@ -212,14 +238,17 @@ impl DiagnosticMessage {
         self.severity = Some(severity);
         self
     }
+    #[allow(unused)]
     pub fn help_link<'a>(&'a mut self, link: &str) -> &'a mut Self {
         self.help_links.push(link.to_owned());
         self
     }
+    #[allow(unused)]
     pub fn internal<'a>(&'a mut self) -> &'a mut Self {
         self.internal = true;
         self
     }
+    #[allow(unused)]
     pub fn cli_summary_table<'a>(&'a mut self) -> &'a mut Self {
         self.visibility.cli_summary_table = true;
         self
@@ -228,36 +257,25 @@ impl DiagnosticMessage {
         self.visibility.status_page = true;
         self
     }
+    #[allow(unused)]
     pub fn telemetry<'a>(&'a mut self) -> &'a mut Self {
         self.visibility.telemetry = true;
         self
     }
-    pub fn file<'a>(&'a mut self, path: &str) -> &'a mut Self {
-        self.location.get_or_insert(EMPTY_LOCATION.to_owned()).file = Some(path.to_owned());
-        self
-    }
-    pub fn start_line<'a>(&'a mut self, start_line: i32) -> &'a mut Self {
-        self.location
-            .get_or_insert(EMPTY_LOCATION.to_owned())
-            .start_line = Some(start_line);
-        self
-    }
-    pub fn start_column<'a>(&'a mut self, start_column: i32) -> &'a mut Self {
-        self.location
-            .get_or_insert(EMPTY_LOCATION.to_owned())
-            .start_column = Some(start_column);
-        self
-    }
-    pub fn end_line<'a>(&'a mut self, end_line: i32) -> &'a mut Self {
-        self.location
-            .get_or_insert(EMPTY_LOCATION.to_owned())
-            .end_line = Some(end_line);
-        self
-    }
-    pub fn end_column<'a>(&'a mut self, end_column: i32) -> &'a mut Self {
-        self.location
-            .get_or_insert(EMPTY_LOCATION.to_owned())
-            .end_column = Some(end_column);
+    pub fn location<'a>(
+        &'a mut self,
+        path: &str,
+        start_line: usize,
+        start_column: usize,
+        end_line: usize,
+        end_column: usize,
+    ) -> &'a mut Self {
+        let loc = self.location.get_or_insert(EMPTY_LOCATION.to_owned());
+        loc.file = Some(path.to_owned());
+        loc.start_line = Some(start_line);
+        loc.start_column = Some(start_column);
+        loc.end_line = Some(end_line);
+        loc.end_column = Some(end_column);
         self
     }
 }

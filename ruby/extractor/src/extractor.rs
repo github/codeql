@@ -6,7 +6,6 @@ use std::collections::BTreeSet as Set;
 use std::fmt;
 use std::path::Path;
 
-use tracing::{error, info, span, Level};
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
 pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::Label {
@@ -122,15 +121,15 @@ pub fn extract(
     ranges: &[Range],
 ) -> std::io::Result<()> {
     let path_str = format!("{}", path.display());
-    let span = span!(
-        Level::TRACE,
+    let span = tracing::span!(
+        tracing::Level::TRACE,
         "extract",
         file = %path_str
     );
 
     let _enter = span.enter();
 
-    info!("extracting: {}", path_str);
+    tracing::info!("extracting: {}", path_str);
 
     let mut parser = Parser::new();
     parser.set_language(language).unwrap();
@@ -252,34 +251,31 @@ impl<'a> Visitor<'a> {
         }
     }
 
-    fn record_parse_error(
-        &mut self,
-        error_message: String,
-        full_error_message: String,
-        loc: trap::Label,
-    ) {
-        error!("{}", full_error_message);
+    fn record_parse_error(&mut self, loc: trap::Label, mesg: &diagnostics::DiagnosticMessage) {
+        self.diagnostics_writer.write(mesg);
         let id = self.trap_writer.fresh_id();
+        let full_error_message = mesg.full_error_message();
+        let severity_code = match mesg.severity {
+            Some(diagnostics::Severity::Error) => 40,
+            Some(diagnostics::Severity::Warning) => 30,
+            Some(diagnostics::Severity::Note) => 20,
+            None => 10,
+        };
         self.trap_writer.add_tuple(
             "diagnostics",
             vec![
                 trap::Arg::Label(id),
-                trap::Arg::Int(40), // severity 40 = error
+                trap::Arg::Int(severity_code),
                 trap::Arg::String("parse_error".to_string()),
-                trap::Arg::String(error_message),
+                trap::Arg::String(mesg.plaintext_message.to_owned()),
                 trap::Arg::String(full_error_message),
                 trap::Arg::Label(loc),
             ],
         );
     }
 
-    fn record_parse_error_for_node(
-        &mut self,
-        error_message: String,
-        full_error_message: String,
-        node: Node,
-    ) {
-        let (start_line, start_column, end_line, end_column) = location_for(self.source, node);
+    fn record_parse_error_for_node(&mut self, error_message: String, node: Node) {
+        let (start_line, start_column, end_line, end_column) = location_for(self, node);
         let loc = location(
             self.trap_writer,
             self.file_label,
@@ -288,7 +284,14 @@ impl<'a> Visitor<'a> {
             end_line,
             end_column,
         );
-        self.record_parse_error(error_message, full_error_message, loc);
+        self.record_parse_error(
+            loc,
+            self.diagnostics_writer
+                .message("parse-error", "Parse error")
+                .severity(diagnostics::Severity::Error)
+                .location(self.path, start_line, start_column, end_line, end_column)
+                .text(&error_message),
+        );
     }
 
     fn enter_node(&mut self, node: Node) -> bool {
@@ -298,13 +301,7 @@ impl<'a> Visitor<'a> {
             } else {
                 "parse error".to_string()
             };
-            let full_error_message = format!(
-                "{}:{}: {}",
-                &self.path,
-                node.start_position().row + 1,
-                error_message
-            );
-            self.record_parse_error_for_node(error_message, full_error_message, node);
+            self.record_parse_error_for_node(error_message, node);
             return false;
         }
 
@@ -319,7 +316,7 @@ impl<'a> Visitor<'a> {
             return;
         }
         let (id, _, child_nodes) = self.stack.pop().expect("Vistor: empty stack");
-        let (start_line, start_column, end_line, end_column) = location_for(self.source, node);
+        let (start_line, start_column, end_line, end_column) = location_for(self, node);
         let loc = location(
             self.trap_writer,
             self.file_label,
@@ -387,13 +384,15 @@ impl<'a> Visitor<'a> {
             }
             _ => {
                 let error_message = format!("unknown table type: '{}'", node.kind());
-                let full_error_message = format!(
-                    "{}:{}: {}",
-                    &self.path,
-                    node.start_position().row + 1,
-                    error_message
+                self.record_parse_error(
+                    loc,
+                    self.diagnostics_writer
+                        .message("parse-error", "Parse error")
+                        .severity(diagnostics::Severity::Error)
+                        .location(self.path, start_line, start_column, end_line, end_column)
+                        .text(&error_message)
+                        .status_page(),
                 );
-                self.record_parse_error(error_message, full_error_message, loc);
 
                 valid = false;
             }
@@ -447,13 +446,7 @@ impl<'a> Visitor<'a> {
                         child_node.type_name,
                         field.type_info
                     );
-                    let full_error_message = format!(
-                        "{}:{}: {}",
-                        &self.path,
-                        node.start_position().row + 1,
-                        error_message
-                    );
-                    self.record_parse_error_for_node(error_message, full_error_message, *node);
+                    self.record_parse_error_for_node(error_message, *node);
                 }
             } else if child_node.field_name.is_some() || child_node.type_name.named {
                 let error_message = format!(
@@ -462,13 +455,7 @@ impl<'a> Visitor<'a> {
                     &child_node.field_name.unwrap_or("child"),
                     &child_node.type_name
                 );
-                let full_error_message = format!(
-                    "{}:{}: {}",
-                    &self.path,
-                    node.start_position().row + 1,
-                    error_message
-                );
-                self.record_parse_error_for_node(error_message, full_error_message, *node);
+                self.record_parse_error_for_node(error_message, *node);
             }
         }
         let mut args = Vec::new();
@@ -491,13 +478,7 @@ impl<'a> Visitor<'a> {
                             node.kind(),
                             column_name
                         );
-                        let full_error_message = format!(
-                            "{}:{}: {}",
-                            &self.path,
-                            node.start_position().row + 1,
-                            error_message
-                        );
-                        self.record_parse_error_for_node(error_message, full_error_message, *node);
+                        self.record_parse_error_for_node(error_message, *node);
                     }
                 }
                 Storage::Table {
@@ -512,17 +493,8 @@ impl<'a> Visitor<'a> {
                                 node.kind(),
                                 table_name,
                             );
-                            let full_error_message = format!(
-                                "{}:{}: {}",
-                                &self.path,
-                                node.start_position().row + 1,
-                                error_message
-                            );
-                            self.record_parse_error_for_node(
-                                error_message,
-                                full_error_message,
-                                *node,
-                            );
+
+                            self.record_parse_error_for_node(error_message, *node);
                             break;
                         }
                         let mut args = vec![trap::Arg::Label(parent_id)];
@@ -589,7 +561,7 @@ fn sliced_source_arg(source: &[u8], n: Node) -> trap::Arg {
 // Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
 // The first is the location and label definition, and the second is the
 // 'Located' entry.
-fn location_for(source: &[u8], n: Node) -> (usize, usize, usize, usize) {
+fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) {
     // Tree-sitter row, column values are 0-based while CodeQL starts
     // counting at 1. In addition Tree-sitter's row and column for the
     // end position are exclusive while CodeQL's end positions are inclusive.
@@ -607,6 +579,7 @@ fn location_for(source: &[u8], n: Node) -> (usize, usize, usize, usize) {
         end_line = start_line;
         end_col = start_col - 1;
     } else if end_col == 0 {
+        let source = visitor.source;
         // end_col = 0 means that we are at the start of a line
         // unfortunately 0 is invalid as column number, therefore
         // we should update the end location to be the end of the
@@ -615,7 +588,14 @@ fn location_for(source: &[u8], n: Node) -> (usize, usize, usize, usize) {
         if index > 0 && index <= source.len() {
             index -= 1;
             if source[index] != b'\n' {
-                error!("expecting a line break symbol, but none found while correcting end column value");
+                &visitor.diagnostics_writer.write(
+                    &visitor
+                        .diagnostics_writer
+                        .message("internal-error", "Internal error")
+                        .text("expecting a line break symbol, but none found while correcting end column value")
+                        .status_page()
+                        .severity(diagnostics::Severity::Error),
+                );
             }
             end_line -= 1;
             end_col = 1;
@@ -624,10 +604,17 @@ fn location_for(source: &[u8], n: Node) -> (usize, usize, usize, usize) {
                 end_col += 1;
             }
         } else {
-            error!(
-                "cannot correct end column value: end_byte index {} is not in range [1,{}]",
-                index,
-                source.len()
+            &visitor.diagnostics_writer.write(
+                &visitor
+                    .diagnostics_writer
+                    .message("internal-error", "Internal error")
+                    .text(&format!(
+                        "cannot correct end column value: end_byte index {} is not in range [1,{}]",
+                        index,
+                        source.len()
+                    ))
+                    .status_page()
+                    .severity(diagnostics::Severity::Error),
             );
         }
     }
