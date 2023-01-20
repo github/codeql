@@ -96,6 +96,12 @@ class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
  * nodes. My gut feeling at that this simple approach will be good enough, but if we need to get it more
  * precise, it should be possible to do it like this.
  *
+ * In PR review, @yoff suggested an alternative approach for more precise handling:
+ *
+ * - At the call site, all positional arguments are stored into a synthetic starArgs argument, always tarting at index 0
+ * - This is sent to a synthetic star parameter
+ * - At the receiving end, we know the offset of a potential real star parameter, so we can define read steps accordingly: In foo, we read from the synthetic star parameter at index 1 and store to the real star parameter at index 0.
+ *
  * ```py
  * def foo(one, *args): ...
  * def bar(*args): ...
