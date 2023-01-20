@@ -199,7 +199,7 @@ The namespaces containing all the built-in entities are called **global namespac
 and are automatically available in any module.
 In particular: 
 
-    - The **global module namespace** is empty.
+    - The **global module namespace** has a single entry ``QlBuiltins``.
     - The **global type namespace** has entries for the :ref:`primitive types <primitive-types>` ``int``, ``float``, 
       ``string``, ``boolean``, and ``date``, as well as any :ref:`database types <database-types>` defined in the database schema.
     - The **global predicate namespace** includes all the `built-in predicates <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins>`_,

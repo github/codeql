@@ -120,7 +120,7 @@ A *definite* environment has at most one entry for each key. Resolution is uniqu
 Global environments
 ~~~~~~~~~~~~~~~~~~~
 
-The global module environment is empty.
+The global module environment has a single entry ``QlBuiltins``.
 
 The global type environment has entries for the primitive types ``int``, ``float``, ``string``, ``boolean``, and ``date``, as well as any types defined in the database schema.
 
