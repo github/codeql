@@ -42,7 +42,7 @@ where
         sinkPathNode.getNode() = sink
       |
         config.getASinkEndpointType().getDescription(), ", "
-      ) + "\n{'package': '" + package + "', 'type': '" + type + "', 'subtypes': " + subtypes +
-      ", 'name': '" + name + "', 'signature': '" + signature + "', 'ext': '" + ext + "', 'input': '"
-      + input + "', 'provenance': '" + provenance + "'}" // TODO: Why are the curly braces added twice?
+      ) + "\n{'Package': '" + package + "', 'Type': '" + type + "', 'Subtypes': " + subtypes +
+      ", 'Name': '" + name + "', 'Signature': '" + signature + "', 'Ext': '" + ext +
+      "', 'Argument index': '" + input + "', 'Provenance': '" + provenance + "'}" // TODO: Why are the curly braces added twice?
 select sink, message
