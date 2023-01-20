@@ -1,6 +1,7 @@
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 
 import java.io.File;
 
@@ -33,6 +34,13 @@ public class APKInstallation extends Activity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setType(APK_MIMETYPE);
         intent.setData(Uri.fromFile(new File(path)));
+        startActivity(intent);
+    }
+
+    public void installAPK4(String path) {
+        File file = new File(Environment.getExternalStorageDirectory(), path);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(file), APK_MIMETYPE);
         startActivity(intent);
     }
 }
