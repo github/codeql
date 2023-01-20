@@ -161,6 +161,7 @@ class GetParentImplementation:
     template: ClassVar = 'ql_parent'
 
     classes: List[Class] = field(default_factory=list)
+    additional_imports: List[str] = field(default_factory=list)
 
 
 @dataclass
