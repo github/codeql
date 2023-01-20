@@ -17,10 +17,12 @@ import semmle.code.java.dataflow.TaintTracking2
 private import semmle.code.java.dataflow.ExternalFlow
 import DataFlow::PathGraph
 
+/** A string literal that represents the MIME type for Android APKs. */
 class PackageArchiveMimeTypeLiteral extends StringLiteral {
   PackageArchiveMimeTypeLiteral() { this.getValue() = "application/vnd.android.package-archive" }
 }
 
+/** A method that sets the MIME type of an intent. */
 class SetTypeMethod extends Method {
   SetTypeMethod() {
     this.hasName(["setType", "setTypeAndNormalize"]) and
@@ -28,6 +30,7 @@ class SetTypeMethod extends Method {
   }
 }
 
+/** A method that sets the data URI and the MIME type of an intent. */
 class SetDataAndTypeMethod extends Method {
   SetDataAndTypeMethod() {
     this.hasName(["setDataAndType", "setDataAndTypeAndNormalize"]) and
@@ -35,6 +38,7 @@ class SetDataAndTypeMethod extends Method {
   }
 }
 
+/** A method that sets the data URI of an intent. */
 class SetDataMethod extends Method {
   SetDataMethod() {
     this.hasName(["setData", "setDataAndNormalize", "setDataAndType", "setDataAndTypeAndNormalize"]) and
@@ -42,28 +46,39 @@ class SetDataMethod extends Method {
   }
 }
 
+/** A dataflow sink for the URI of an intent. */
 class SetDataSink extends DataFlow::ExprNode {
   SetDataSink() { this.getExpr().(MethodAccess).getMethod() instanceof SetDataMethod }
 }
 
+/** A method that generates a URI. */
 class UriConstructorMethod extends Method {
   UriConstructorMethod() {
-    this.hasQualifiedName("android.net", "Uri", ["parse", "fromFile", "fromParts"])
+    this.hasQualifiedName("android.net", "Uri", ["parse", "fromFile", "fromParts"]) or
+    this.hasQualifiedName("androidx.core.content", "FileProvider", "getUriForFile")
   }
 }
 
-class ExternalSource extends DataFlow::Node {
-  ExternalSource() {
+/**
+ * A dataflow source representing the URIs which an APK not controlled by the
+ * application may come from. Incuding external storage and web URLs.
+ */
+class ExternalAPKSource extends DataFlow::Node {
+  ExternalAPKSource() {
     sourceNode(this, "android-external-storage-dir") or
     this.asExpr().(MethodAccess).getMethod() instanceof UriConstructorMethod or
     this.asExpr().(StringLiteral).getValue().matches(["file://%", "http://%", "https://%"])
   }
 }
 
-class ExternalSourceConfiguration extends DataFlow::Configuration {
-  ExternalSourceConfiguration() { this = "ExternalSourceConfiguration" }
+/**
+ * A dataflow configuration for flow from an external source of an APK to the
+ * `setData[AndType][AndNormalize]` method of an intent.
+ */
+class APKConfiguration extends DataFlow::Configuration {
+  APKConfiguration() { this = "APKConfiguration" }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof ExternalSource }
+  override predicate isSource(DataFlow::Node node) { node instanceof ExternalAPKSource }
 
   override predicate isSink(DataFlow::Node node) {
     exists(MethodAccess ma |
@@ -74,6 +89,10 @@ class ExternalSourceConfiguration extends DataFlow::Configuration {
   }
 }
 
+/**
+ * A dataflow configuration tracking the flow of the Android APK MIME type to
+ * the `setType` or `setTypeAndNormalize` method of an intent.
+ */
 private class PackageArchiveMimeTypeConfiguration extends TaintTracking2::Configuration {
   PackageArchiveMimeTypeConfiguration() { this = "PackageArchiveMimeTypeConfiguration" }
 
@@ -105,6 +124,6 @@ private class PackageArchiveMimeTypeConfiguration extends TaintTracking2::Config
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ExternalSourceConfiguration config
+from DataFlow::PathNode source, DataFlow::PathNode sink, APKConfiguration config
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Arbitrary Android APK installation."
