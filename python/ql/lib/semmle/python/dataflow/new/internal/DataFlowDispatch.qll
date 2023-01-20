@@ -1169,7 +1169,7 @@ predicate getCallArg(CallNode call, Function target, CallType type, Node arg, Ar
     // that argument index 1 of call has argument position 0
     type instanceof CallTypeMethodAsPlainFunction and
     (
-      apos.isSelf() and arg.asCfgNode() = call.(CallNode).getArg(0)
+      apos.isSelf() and arg.asCfgNode() = call.getArg(0)
       or
       not apos.isPositional(_) and normalCallArg(call, arg, apos)
       or
