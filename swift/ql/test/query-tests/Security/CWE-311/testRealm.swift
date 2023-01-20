@@ -10,12 +10,6 @@ class RealmSwiftObject {
 
 typealias Object = RealmSwiftObject
 
-class MyRealmSwiftObject : RealmSwiftObject {
-	override init() { data = "" }
-
-	var data: String
-}
-
 class Realm {
 	func add(_ object: Object, update: UpdatePolicy = .error) {}
 
@@ -26,6 +20,19 @@ class Realm {
 }
 
 // --- tests ---
+
+class MyRealmSwiftObject : RealmSwiftObject {
+	override init() { data = "" }
+
+	var data: String
+}
+
+
+
+
+
+
+
 
 func test1(realm : Realm, myPassword : String, myHashedPassword : String) {
 	// add objects (within a transaction) ...
