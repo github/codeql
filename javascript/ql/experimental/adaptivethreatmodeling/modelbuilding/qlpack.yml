@@ -7,4 +7,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2023-01-19-12h55m41s.upbeat-zebra-pljfpwf9.8d11ad71a3af54f8b28a27d1e67fcfcf2eadc192b6e5505217d7e424831afbca
