@@ -29,6 +29,10 @@ In summary, the kinds of expressions are:
       - These refer to predicates.
       - They can be simple :ref:`names <names>` or names with arities (for example in an :ref:`alias <aliases>`
         definition), or :ref:`selections <selections>`.
+  - **signature expressions**
+      - These refer to module signatures, type signatures, or predicate signatures.
+      - They can be simple :ref:`names <names>`, names with arities, :ref:`selections <selections>`,
+        or :ref:`instantiations <parameterized-modules>`.
 
 .. _names:
 
@@ -164,14 +168,27 @@ As in many other programming languages, a namespace is a mapping from **keys** t
 **entities**. A key is a kind of identifier, for example a name, and a QL entity is
 a :ref:`module <modules>`, a :ref:`type <types>`, or a :ref:`predicate <predicates>`.
 
-Each module in QL has three namespaces:
+Each module in QL has six namespaces:
 
     - The **module namespace**, where the keys are module names and the entities are modules.
     - The **type namespace**, where the keys are type names and the entities are types.
     - The **predicate namespace**, where the keys are pairs of predicate names and arities, 
       and the entities are predicates.
+    - The **module signature namespace**, where the keys are module signature names and the entities are module signatures.
+    - The **type signature namespace**, where the keys are type signature names and the entities are type signatures.
+    - The **predicate signature namespace**, where the keys are pairs of predicate signature names and arities,
+      and the entities are predicate signatures.
 
-It's important to know that there is no relation between names in different namespaces. 
+The six namespaces of any module are not completely independent of each other:
+
+    - No keys may be shared between **module namespace** and **module signature namespace**.
+    - No keys may be shared between **type namespace** and **type signature namespace**.
+    - No keys may be shared between **module namespace** and **type signature namespace**.
+    - No keys may be shared between **type namespace** and **module signature namespace**.
+    - No keys may be shared between **predicate namespace** and **predicate signature namespace**.
+    - No keys may be shared between **module signature namespace** and **type signature namespace**.
+
+There is no relation between names in namespaces of different modules.
 For example, two different modules can define a predicate ``getLocation()`` without confusion. As long as 
 it's clear which namespace you are in, the QL compiler resolves the name to the correct predicate.
 
@@ -187,6 +204,7 @@ In particular:
       ``string``, ``boolean``, and ``date``, as well as any :ref:`database types <database-types>` defined in the database schema.
     - The **global predicate namespace** includes all the `built-in predicates <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins>`_,
       as well as any :ref:`database predicates <database-predicates>`.
+    - The **global signature namespaces** are empty.
 
 In practice, this means that you can use the built-in types and predicates directly in a QL module (without
 importing any libraries). You can also use any database predicates and types directly—these depend on the

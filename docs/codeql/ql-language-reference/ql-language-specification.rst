@@ -86,13 +86,25 @@ use information from the database.
 Name resolution
 ---------------
 
-All modules have three environments that dictate name resolution. These are multimaps of keys to declarations.
+All modules have six environments that dictate name resolution. These are multimaps of keys to declarations.
 
 The environments are:
 
 -  The *module environment*, whose keys are module names and whose values are modules.
 -  The *type environment*, whose keys are type names and whose values are types.
 -  The *predicate environment*, whose keys are pairs of predicate names and arities and whose values are predicates.
+-  The *module signature environment*, whose keys are module signature names and whose values are module signatures.
+-  The *type signature environment*, whose keys are type signature names and whose values are type signatures.
+-  The *predicate signature environment*, whose keys are pairs of predicate signature names and arities and whose values are predicate signatures.
+
+For each module, some namespaces are enforced to be disjoint:
+
+-  No keys may be shared between **module namespace** and **module signature namespace**.
+-  No keys may be shared between **type namespace** and **type signature namespace**.
+-  No keys may be shared between **module namespace** and **type signature namespace**.
+-  No keys may be shared between **type namespace** and **module signature namespace**.
+-  No keys may be shared between **predicate namespace** and **predicate signature namespace**.
+-  No keys may be shared between **module signature namespace** and **type signature namespace**.
 
 If not otherwise specified, then the environment for a piece of syntax is the same as the environment of its enclosing syntax.
 
@@ -113,6 +125,8 @@ The global module environment is empty.
 The global type environment has entries for the primitive types ``int``, ``float``, ``string``, ``boolean``, and ``date``, as well as any types defined in the database schema.
 
 The global predicate environment includes all the built-in classless predicates, as well as any extensional predicates declared in the database schema.
+
+The three global signature environments are empty.
 
 The program is invalid if any of these environments is not definite.
 
