@@ -21,7 +21,7 @@ import DataFlow::PathGraph
  */
 class StaticInitializationVectorSource extends Expr {
   StaticInitializationVectorSource() {
-    this = any(ArrayExpr arr | arr.getType().getName() = "Array<UInt8>") or
+    this instanceof ArrayExpr or
     this instanceof StringLiteralExpr or
     this instanceof NumberLiteralExpr
   }
