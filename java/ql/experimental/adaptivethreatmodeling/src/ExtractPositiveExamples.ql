@@ -21,7 +21,9 @@ private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestF
  * the ML-gnerarated, noisy sinks will end up poluting the positive examples used in the prompt!
  */
 
-from DataFlow::Node sink, AtmConfig::AtmConfig config
+from
+  DataFlow::Node sink, AtmConfig::AtmConfig config, string message, string package, string type,
+  boolean subtypes, string name, string signature, string ext, string input, string provenance
 where
   config.isKnownSink(sink) and
   // If there are _any_ erroneous endpoints, return nothing. This will prevent us from accidentally running this query
@@ -30,5 +32,22 @@ where
   // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
   // treated by the actual query as a sanitizer, since the final logic is something like
   // `isSink(n) and not isSanitizer(n)`. We don't want to include such nodes as positive examples in the prompt.
-  not config.isSanitizer(sink)
-select sink, config.getASinkEndpointType().getDescription()
+  not config.isSanitizer(sink) and
+  exists(Callable callee, Call call, int index |
+    sink.asExpr() = call.getArgument(index) and
+    callee = call.getCallee() and
+    package = callee.getDeclaringType().getPackage().getName() and
+    type = callee.getDeclaringType().getName() and //TODO: Will this work for inner classes? Will it produce X$Y? What about lambdas? What about enums? What about interfaces? What about annotations?
+    subtypes = true and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
+    name = callee.getName() and // TODO: Will this work for constructors?
+    signature = callee.paramsString() and
+    ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
+    input = "Argument[" + index + "]" and // TODO: why are slashes added?
+    provenance = "manual" // TODO
+  ) and
+  message =
+    config.getASinkEndpointType().getDescription() + "\n{'Package': '" + package + "', 'Type': '" +
+      type + "', 'Subtypes': " + subtypes + ", 'Name': '" + name + "', 'Signature': '" + signature +
+      "', 'Ext': '" + ext + "', 'Argument index': '" + input + "', 'Provenance': '" + provenance +
+      "'}" // TODO: Why are the curly braces added twice?
+select sink, message
