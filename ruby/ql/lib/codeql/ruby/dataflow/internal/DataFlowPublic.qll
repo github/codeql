@@ -1002,7 +1002,7 @@ class CallableNode extends ExprNode {
   /** Gets the `n`th positional parameter. */
   ParameterNode getParameter(int n) { this.getParameterPosition(result).isPositional(n) }
 
-  /** Gets the number of parameters of this callable. */
+  /** Gets the number of positional parameters of this callable. */
   final int getNumberOfParameters() { result = count(this.getParameter(_)) }
 
   /** Gets the keyword parameter of the given name. */
