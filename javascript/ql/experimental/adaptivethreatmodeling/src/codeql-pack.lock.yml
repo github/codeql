@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-01-13-01h30m10s.witty-guava-kzgd8g6v.9e2d48d6f71e3a8abfdb5730d5da755830ce8616c323d40439a5b41e13d26bde
+compiled: false
