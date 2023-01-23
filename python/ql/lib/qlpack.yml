@@ -6,6 +6,7 @@ extractor: python
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/ssa: ${workspace}
   codeql/regex: ${workspace}
   codeql/tutorial: ${workspace}
 dataExtensions:
