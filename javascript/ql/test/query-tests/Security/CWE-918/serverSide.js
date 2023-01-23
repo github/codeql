@@ -131,5 +131,5 @@ var server2 = http.createServer(function(req, res) {
     axios.get(myUrl); // NOT OK
 
     var myEncodedUrl = `${something}/bla/${encodeURIComponent(tainted)}`; 
-    axios.get(myEncodedUrl); // OK - but still flagged [INCONSISTENCY]
+    axios.get(myEncodedUrl); // OK
 })
