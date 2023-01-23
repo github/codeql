@@ -10,8 +10,6 @@ private import codeql.ruby.typetracking.TypeTracker
  * Provides modeling for the Rack library.
  */
 module Rack {
-  
-
   /**
    * A class that may be a rack application.
    * This is a class that has a `call` method that takes a single argument
@@ -34,11 +32,7 @@ module Rack {
 
   private predicate isRackResponse(DataFlow::Node r) {
     // [status, headers, body]
-    exists(ArrayLiteralCfgNode arr | arr.getNumberOfArguments() = 3 |
-      r.asExpr() = arr
-      or
-      exists(DataFlow::LocalSourceNode n | n.asExpr() = arr | n.flowsTo(r))
-    )
+    r.asExpr().(ArrayLiteralCfgNode).getNumberOfArguments() = 3
   }
 
   private DataFlow::LocalSourceNode trackRackResponse(TypeTracker t) {
