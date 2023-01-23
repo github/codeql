@@ -1,7 +1,7 @@
-struct Foo {
-  ~Foo();
+struct ArrayDelete {
+  ~ArrayDelete();
 };
 
 void f() {
-  delete[] (Foo*)nullptr;
+  delete[] (ArrayDelete*)nullptr;
 }

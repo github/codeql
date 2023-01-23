@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Passing untrusted format strings to functions that use <code>printf</code> style formatting can lead to buffer overflows and data representation problems. An attacker may be able to exploit this weakness to crash the program or obtain sensitive information from its internal state.</p>
+
+</overview>
+<recommendation>
+
+<p>Use a constant string literal for the format string to prevent the possibility of data flow from
+an untrusted source. This also helps to prevent errors where the format arguments do not match the format string.</p>
+
+<p>If the format string cannot be constant, ensure that it comes from a secure data source or is compiled into the source code. If you need to include a string value from the user, use an appropriate specifier (such as <code>%@</code>) in the format string and include the user provided value as a format argument.
+</p>
+
+</recommendation>
+<example>
+
+<p>In this example, the format string includes a user-controlled <code>inputString</code>:</p>
+
+<sample src="UncontrolledFormatStringBad.swift" />
+
+<p>To fix it, make <code>inputString</code> a format argument rather than part of the format string, as in the following code:</p>
+
+<sample src="UncontrolledFormatStringGood.swift" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/attacks/Format_string_attack">Format string attack</a>.
+</li>
+
+</references>
+</qhelp>

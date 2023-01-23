@@ -104,6 +104,7 @@ class EnumCaseDecl(Decl):
 
 class ExtensionDecl(GenericContext, IterableDeclContext, Decl):
     extended_type_decl: "NominalTypeDecl"
+    protocols: list["ProtocolDecl"]
 
 class IfConfigDecl(Decl):
     active_elements: list[AstNode]

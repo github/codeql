@@ -178,7 +178,7 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
 }
 
 /** Gets the textual representation of the content in the format used for flow summaries. */
-private string getContentSpecificCsv(Content c) {
+private string getContentSpecific(Content c) {
   c = TElementContent() and result = "Element"
   or
   exists(Field f | c = TFieldContent(f) and result = "Field[" + f.getQualifiedName() + "]")
@@ -189,8 +189,8 @@ private string getContentSpecificCsv(Content c) {
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecificCsv(SummaryComponent sc) {
-  exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
+string getComponentSpecific(SummaryComponent sc) {
+  exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
   sc = TWithoutContentSummaryComponent(_) and result = "WithoutElement"
   or
@@ -204,7 +204,7 @@ string getComponentSpecificCsv(SummaryComponent sc) {
 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
-string getParameterPositionCsv(ParameterPosition pos) {
+string getParameterPosition(ParameterPosition pos) {
   result = pos.getPosition().toString()
   or
   pos.isThisParameter() and
@@ -212,7 +212,7 @@ string getParameterPositionCsv(ParameterPosition pos) {
 }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
-string getArgumentPositionCsv(ArgumentPosition pos) {
+string getArgumentPosition(ArgumentPosition pos) {
   result = pos.getPosition().toString()
   or
   pos.isQualifier() and

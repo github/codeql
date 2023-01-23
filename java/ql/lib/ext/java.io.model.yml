@@ -63,6 +63,7 @@ extensions:
       - ["java.io", "File", True, "getAbsolutePath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getCanonicalFile", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getCanonicalPath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.io", "File", True, "getName", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toPath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toURI", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
@@ -74,6 +75,7 @@ extensions:
       - ["java.io", "InputStream", True, "readNBytes", "(int)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "InputStream", True, "transferTo", "(OutputStream)", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
       - ["java.io", "InputStreamReader", False, "InputStreamReader", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["java.io", "IOException", False, "IOException", "(String)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.io", "ObjectInput", True, "read", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
       - ["java.io", "ObjectInputStream", False, "ObjectInputStream", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.io", "OutputStream", True, "write", "(byte[])", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
@@ -84,3 +86,9 @@ extensions:
       - ["java.io", "StringReader", False, "StringReader", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.io", "Writer", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "Writer", True, "write", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.io", "File", "exists", "()", "manual"]

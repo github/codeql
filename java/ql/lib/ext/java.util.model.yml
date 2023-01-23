@@ -335,6 +335,8 @@ extensions:
       - ["java.util", "Stack", True, "peek", "()", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
       - ["java.util", "Stack", True, "pop", "()", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
       - ["java.util", "Stack", True, "push", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+      - ["java.util", "StringJoiner", False, "add", "(CharSequence)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.util", "StringJoiner", False, "add", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.util", "StringTokenizer", False, "StringTokenizer", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.util", "StringTokenizer", False, "nextElement", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.util", "StringTokenizer", False, "nextToken", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
@@ -360,8 +362,13 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.util", "Collections", "emptyList", "()", "manual"]
+      - ["java.util", "ArrayList", "ArrayList", "(int)", "manual"]
+      - ["java.util", "ArrayList", "size", "()", "manual"]
+      - ["java.util", "Collection", "isEmpty", "()", "manual"]
       - ["java.util", "Collection", "size", "()", "manual"]
+      - ["java.util", "Collections", "emptyList", "()", "manual"]
+      - ["java.util", "Collections", "emptyMap", "()", "manual"]
+      - ["java.util", "Collections", "emptySet", "()", "manual"]
       - ["java.util", "Iterator", "hasNext", "()", "manual"]
       - ["java.util", "List", "contains", "(Object)", "manual"]
       - ["java.util", "List", "isEmpty", "()", "manual"]
@@ -371,6 +378,7 @@ extensions:
       - ["java.util", "Map", "size", "()", "manual"]
       - ["java.util", "Objects", "equals", "(Object,Object)", "manual"]
       - ["java.util", "Objects", "hash", "(Object[])", "manual"]
+      - ["java.util", "Objects", "nonNull", "(Object)", "manual"]
       - ["java.util", "Optional", "empty", "()", "manual"]
       - ["java.util", "Optional", "isPresent", "()", "manual"]
       - ["java.util", "Set", "contains", "(Object)", "manual"]
@@ -378,3 +386,13 @@ extensions:
       - ["java.util", "Set", "size", "()", "manual"]
       - ["java.util", "UUID", "randomUUID", "()", "manual"]
       - ["java.util", "UUID", "toString", "()", "manual"]
+
+      # The below APIs are currently being stored as neutral models since `WithoutElement` has not yet been implemented for Java.
+      # When `WithoutElement` is implemented, these should be changed to summary models of the form `Argument[-1].WithoutElement -> Argument[-1]`.
+      - ["java.util", "List", "clear", "()", "manual"]
+      - ["java.util", "Map", "clear", "()", "manual"]
+
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.util", "Date", "Date", "(long)", "manual"] # taint-numeric
+      - ["java.util", "Date", "getTime", "()", "manual"]  # taint-numeric
