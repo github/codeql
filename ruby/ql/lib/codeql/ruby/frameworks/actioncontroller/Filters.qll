@@ -356,7 +356,5 @@ module Filters {
    * `pred` and `succ` may be methods bound to callbacks or controller actions.
    */
   cached
-  predicate next(Method pred, Method succ) {
-    exists(ActionControllerActionMethod action | next(action, pred, succ))
-  }
+  predicate next(Method pred, Method succ) { next(_, pred, succ) }
 }
