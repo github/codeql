@@ -243,11 +243,18 @@ signature module BoundSig<DeltaSig D> {
   }
 }
 
-module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<D> UtilParam> {
+signature module OverflowSig<DeltaSig D> {
+  predicate semExprDoesntOverflow(boolean positively, SemExpr expr);
+}
+
+module RangeStage<
+DeltaSig D, BoundSig<D> Bounds, OverflowSig<D> OverflowParam, LangSig<D> LangParam,
+UtilSig<D> UtilParam> {
   private import Bounds
   private import LangParam
   private import UtilParam
   private import D
+  private import OverflowParam
 
   /**
    * An expression that does conversion, boxing, or unboxing
@@ -941,6 +948,41 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
     bounded(cast.getOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
+  predicate bounded(
+    SemExpr e, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge, D::Delta origdelta,
+    SemReason reason) {
+      initialBounded(e, b, delta, upper, fromBackEdge, origdelta, reason) and
+      (
+        semExprDoesntOverflow(upper.booleanNot(), e)
+        or
+        not potentiallyOverflowingExpr(upper.booleanNot(), e)
+      )
+  }
+
+  predicate potentiallyOverflowingExpr(boolean positively, SemExpr expr) {
+    positively in [true, false] and
+    (
+      expr.getOpcode() instanceof Opcode::Add or
+      expr.getOpcode() instanceof Opcode::PointerAdd or
+      expr.getOpcode() instanceof Opcode::Sub or
+      expr.getOpcode() instanceof Opcode::PointerSub or
+      expr.getOpcode() instanceof Opcode::Mul or
+      expr.getOpcode() instanceof Opcode::ShiftLeft
+    )
+    or
+    positively = false and
+    (
+      expr.getOpcode() instanceof Opcode::Negate or
+      expr.getOpcode() instanceof Opcode::SubOne
+    )
+    or
+    positively = false and
+    expr.(SemDivExpr).getSemType() instanceof SemFloatingPointType
+    or
+    positively = true and
+    expr.getOpcode() instanceof Opcode::AddOne
+  }
+
   /**
    * Computes a normal form of `x` where -0.0 has changed to +0.0. This can be
    * needed on the lesser side of a floating-point comparison or on both sides of
@@ -955,7 +997,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
    * - `upper = true`  : `e <= b + delta`
    * - `upper = false` : `e >= b + delta`
    */
-  private predicate bounded(
+  predicate initialBounded(
     SemExpr e, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge, D::Delta origdelta,
     SemReason reason
   ) {

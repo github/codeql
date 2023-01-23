@@ -1,4 +1,4 @@
-private import RangeAnalysisStage
+private import RangeAnalysisStage 
 private import RangeAnalysisSpecific
 private import experimental.semmle.code.cpp.semantic.analysis.FloatDelta
 private import RangeUtils
@@ -46,11 +46,11 @@ private module RelativeBounds implements BoundSig<FloatDelta> {
   }
 }
 
-private module ConstantStage =
-  RangeStage<FloatDelta, ConstantBounds, CppLangImpl, RangeUtil<FloatDelta, CppLangImpl>>;
+module ConstantStage =
+  RangeStage<FloatDelta, ConstantBounds, FloatOverflow, CppLangImpl, RangeUtil<FloatDelta, CppLangImpl>>;
 
-private module RelativeStage =
-  RangeStage<FloatDelta, RelativeBounds, CppLangImpl, RangeUtil<FloatDelta, CppLangImpl>>;
+module RelativeStage =
+  RangeStage<FloatDelta, RelativeBounds, FloatOverflow, CppLangImpl, RangeUtil<FloatDelta, CppLangImpl>>;
 
 private newtype TSemReason =
   TSemNoReason() or
