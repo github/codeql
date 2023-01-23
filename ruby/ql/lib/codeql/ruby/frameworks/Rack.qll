@@ -9,6 +9,8 @@ private import codeql.ruby.DataFlow
  * Provides modeling for the Rack library.
  */
 module Rack {
+  import codeql.ruby.typetracking.TypeTracker
+
   /**
    * A class that may be a rack application.
    * This is a class that has a `call` method that takes a single argument
@@ -20,7 +22,7 @@ module Rack {
     AppCandidate() {
       call = this.getInstanceMethod("call") and
       call.getNumberOfParameters() = 1 and
-      exists(DataFlow::LocalSourceNode resp | isRackResponse(resp) | resp.flowsTo(call.getReturn()))
+      call.getReturn() = trackRackResponse()
     }
 
     /**
@@ -36,5 +38,16 @@ module Rack {
       or
       exists(DataFlow::LocalSourceNode n | n.asExpr() = arr | n.flowsTo(r))
     )
+  }
+
+  private DataFlow::LocalSourceNode trackRackResponse(TypeTracker t) {
+    t.start() and
+    isRackResponse(result)
+    or
+    exists(TypeTracker t2 | result = trackRackResponse(t2).track(t2, t))
+  }
+
+  private DataFlow::Node trackRackResponse() {
+    trackRackResponse(TypeTracker::end()).flowsTo(result)
   }
 }

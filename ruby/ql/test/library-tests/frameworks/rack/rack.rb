@@ -41,3 +41,21 @@ class Bar
     nil
   end
 end
+
+class Baz
+  def call(env)
+    run(env)
+  end
+
+  def run(env)
+    if env[:foo] == "foo"
+      [200, {}, "foo"]
+    else
+      error
+    end
+  end
+
+  def error
+    [400, {}, "nope"]
+  end
+end
