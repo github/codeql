@@ -1,5 +1,5 @@
 name: codeql/javascript-experimental-atm-lib
-version: 0.4.5
+version: 0.4.6
 extractor: javascript
 library: true
 groups:
