@@ -46,6 +46,12 @@ private newtype TIRDataFlowNode =
   } or
   TRawIndirectInstruction(Instruction instr, int indirectionIndex) {
     Ssa::hasRawIndirectInstruction(instr, indirectionIndex)
+  } or
+  TFinalParameterNode(Parameter p, int indirectionIndex) {
+    exists(Ssa::FinalParameterUse use |
+      use.getParameter() = p and
+      use.getIndirectionIndex() = indirectionIndex
+    )
   }
 
 /**
@@ -526,16 +532,35 @@ class IndirectParameterNode extends Node, IndirectInstruction {
  * A node representing the indirection of a value that is
  * about to be returned from a function.
  */
-class IndirectReturnNode extends IndirectOperand {
+class IndirectReturnNode extends Node {
   IndirectReturnNode() {
-    this.getOperand() = any(ReturnIndirectionInstruction ret).getSourceAddressOperand()
+    this instanceof FinalParameterNode
     or
-    this.getOperand() = any(ReturnValueInstruction ret).getReturnAddressOperand()
+    this.(IndirectOperand).getOperand() = any(ReturnValueInstruction ret).getReturnAddressOperand()
   }
 
-  Operand getAddressOperand() { result = operand }
-
   override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  /**
+   * Holds if this node represents the value that is returned to the caller
+   * through a `return` statement.
+   */
+  predicate isNormalReturn() { this instanceof IndirectOperand }
+
+  /**
+   * Holds if this node represents the value that is returned to the caller
+   * by writing to the `argumentIndex`'th argument of the call.
+   */
+  predicate isParameterReturn(int argumentIndex) {
+    this.(FinalParameterNode).getArgumentIndex() = argumentIndex
+  }
+
+  /** Gets the indirection index of this indirect return node. */
+  int getIndirectionIndex() {
+    result = this.(FinalParameterNode).getIndirectionIndex()
+    or
+    result = this.(IndirectOperand).getIndirectionIndex()
+  }
 }
 
 /**
@@ -723,6 +748,47 @@ class RawIndirectOperand extends Node, TRawIndirectOperand {
 
   override string toStringImpl() {
     result = instructionNode(this.getOperand().getDef()).toStringImpl() + " indirection"
+  }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing the value of an update parameter
+ * just before reaching the end of a function.
+ */
+class FinalParameterNode extends Node, TFinalParameterNode {
+  Parameter p;
+  int indirectionIndex;
+
+  FinalParameterNode() { this = TFinalParameterNode(p, indirectionIndex) }
+
+  /** Gets the parameter associated with this final use. */
+  Parameter getParameter() { result = p }
+
+  /** Gets the underlying indirection index. */
+  int getIndirectionIndex() { result = indirectionIndex }
+
+  /** Gets the argument index associated with this final use. */
+  final int getArgumentIndex() { result = p.getIndex() }
+
+  override Function getFunction() { result = p.getFunction() }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override DataFlowType getType() { result = getTypeImpl(p.getUnspecifiedType(), indirectionIndex) }
+
+  final override Location getLocationImpl() {
+    // Parameters can have multiple locations. When there's a unique location we use
+    // that one, but if multiple locations exist we default to an unknown location.
+    result = unique( | | p.getLocation())
+    or
+    not exists(unique( | | p.getLocation())) and
+    result instanceof UnknownDefaultLocation
+  }
+
+  override string toStringImpl() {
+    if indirectionIndex > 1 then result = p.toString() + " indirection" else result = p.toString()
   }
 }
 

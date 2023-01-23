@@ -130,6 +130,31 @@ private newtype TDefOrUseImpl =
     Operand iteratorAddress, BaseSourceVariableInstruction container, int indirectionIndex
   ) {
     isIteratorUse(container, iteratorAddress, _, indirectionIndex)
+  } or
+  TFinalParameterUse(Parameter p, int indirectionIndex) {
+    // Avoid creating parameter nodes if there is no definitions of the variable other than the initializaion.
+    exists(SsaInternals0::Def def |
+      def.getSourceVariable().getBaseVariable().(BaseIRVariable).getIRVariable().getAst() = p and
+      not def.getValue().asInstruction() instanceof InitializeParameterInstruction
+    ) and
+    // If the type is modifiable
+    exists(CppType cppType |
+      cppType.hasUnspecifiedType(p.getUnspecifiedType(), _) and
+      isModifiableAt(cppType, indirectionIndex + 1)
+    ) and
+    (
+      exists(Indirection indirection |
+        indirection.getType() = p.getUnspecifiedType() and
+        indirectionIndex = [1 .. indirection.getNumberOfIndirections()]
+      )
+      or
+      // Array types don't have indirections. So we need to special case them here.
+      exists(Cpp::ArrayType arrayType, CppType cppType |
+        arrayType = p.getUnspecifiedType() and
+        cppType.hasUnspecifiedType(arrayType, _) and
+        indirectionIndex = [1 .. countIndirectionsForCppType(cppType)]
+      )
+    )
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
@@ -137,7 +162,7 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
   abstract string toString();
 
   /** Gets the block of this definition or use. */
-  abstract IRBlock getBlock();
+  final IRBlock getBlock() { this.hasIndexInBlock(result, _) }
 
   /** Holds if this definition or use has index `index` in block `block`. */
   abstract predicate hasIndexInBlock(IRBlock block, int index);
@@ -222,8 +247,6 @@ abstract class DefImpl extends DefOrUseImpl {
 
   override string toString() { result = "DefImpl" }
 
-  override IRBlock getBlock() { result = this.getAddressOperand().getUse().getBlock() }
-
   override Cpp::Location getLocation() { result = this.getAddressOperand().getUse().getLocation() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
@@ -258,32 +281,43 @@ private class IteratorDef extends DefImpl, TIteratorDef {
 }
 
 abstract class UseImpl extends DefOrUseImpl {
-  Operand operand;
   int ind;
 
   bindingset[ind]
   UseImpl() { any() }
 
-  Operand getOperand() { result = operand }
+  /** Gets the node associated with this use. */
+  abstract Node getNode();
 
   override string toString() { result = "UseImpl" }
+
+  /** Gets the indirection index of this use. */
+  final override int getIndirectionIndex() { result = ind }
+
+  /** Gets the number of loads that precedence this use. */
+  abstract int getIndirection();
+
+  /**
+   * Holds if this use is guaranteed to read the
+   * associated variable.
+   */
+  abstract predicate isCertain();
+}
+
+abstract private class OperandBasedUse extends UseImpl {
+  Operand operand;
+
+  bindingset[ind]
+  OperandBasedUse() { any() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
     operand.getUse() = block.getInstruction(index)
   }
 
-  final override IRBlock getBlock() { result = operand.getUse().getBlock() }
-
   final override Cpp::Location getLocation() { result = operand.getLocation() }
-
-  override int getIndirectionIndex() { result = ind }
-
-  abstract int getIndirection();
-
-  abstract predicate isCertain();
 }
 
-private class DirectUse extends UseImpl, TUseImpl {
+private class DirectUse extends OperandBasedUse, TUseImpl {
   DirectUse() { this = TUseImpl(operand, ind) }
 
   override int getIndirection() { isUse(_, operand, _, result, ind) }
@@ -291,9 +325,11 @@ private class DirectUse extends UseImpl, TUseImpl {
   override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, ind) }
 
   override predicate isCertain() { isUse(true, operand, _, _, ind) }
+
+  override Node getNode() { nodeHasOperand(result, operand, ind) }
 }
 
-private class IteratorUse extends UseImpl, TIteratorUse {
+private class IteratorUse extends OperandBasedUse, TIteratorUse {
   BaseSourceVariableInstruction container;
 
   IteratorUse() { this = TIteratorUse(operand, container, ind) }
@@ -303,6 +339,49 @@ private class IteratorUse extends UseImpl, TIteratorUse {
   override BaseSourceVariableInstruction getBase() { result = container }
 
   override predicate isCertain() { none() }
+
+  override Node getNode() { nodeHasOperand(result, operand, ind) }
+}
+
+class FinalParameterUse extends UseImpl, TFinalParameterUse {
+  Parameter p;
+
+  FinalParameterUse() { this = TFinalParameterUse(p, ind) }
+
+  Parameter getParameter() { result = p }
+
+  override Node getNode() {
+    result.(FinalParameterNode).getParameter() = p and
+    result.(FinalParameterNode).getIndirectionIndex() = ind
+  }
+
+  override int getIndirection() { result = ind + 1 }
+
+  override predicate isCertain() { any() }
+
+  override predicate hasIndexInBlock(IRBlock block, int index) {
+    exists(ReturnInstruction return |
+      block.getInstruction(index) = return and
+      return.getEnclosingFunction() = p.getFunction()
+    )
+  }
+
+  override Cpp::Location getLocation() {
+    // Parameters can have multiple locations. When there's a unique location we use
+    // that one, but if multiple locations exist we default to an unknown location.
+    result = unique( | | p.getLocation())
+    or
+    not exists(unique( | | p.getLocation())) and
+    result instanceof UnknownDefaultLocation
+  }
+
+  override BaseSourceVariableInstruction getBase() {
+    exists(InitializeParameterInstruction init |
+      init.getParameter() = p and
+      // This is always a `VariableAddressInstruction`
+      result = init.getAnOperand().getDef()
+    )
+  }
 }
 
 /**
@@ -331,14 +410,7 @@ predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
   )
 }
 
-private predicate useToNode(UseOrPhi use, Node nodeTo) {
-  exists(UseImpl useImpl |
-    useImpl = use.asDefOrUse() and
-    nodeHasOperand(nodeTo, useImpl.getOperand(), useImpl.getIndirectionIndex())
-  )
-  or
-  nodeTo.(SsaPhiNode).getPhiNode() = use.asPhi()
-}
+private predicate useToNode(UseOrPhi use, Node nodeTo) { nodeTo = use.getNode() }
 
 pragma[noinline]
 predicate outNodeHasAddressAndIndex(
@@ -609,6 +681,8 @@ class Phi extends TPhi, SsaDefOrUse {
   final override Location getLocation() { result = phi.getBasicBlock().getLocation() }
 
   override string toString() { result = "Phi" }
+
+  SsaPhiNode getNode() { result.getPhiNode() = phi }
 }
 
 class UseOrPhi extends SsaDefOrUse {
@@ -620,6 +694,12 @@ class UseOrPhi extends SsaDefOrUse {
 
   final override Location getLocation() {
     result = this.asDefOrUse().getLocation() or result = this.(Phi).getLocation()
+  }
+
+  final Node getNode() {
+    result = this.(Phi).getNode()
+    or
+    result = this.asDefOrUse().(UseImpl).getNode()
   }
 }
 

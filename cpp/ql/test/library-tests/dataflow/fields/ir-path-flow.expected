@@ -311,17 +311,17 @@ edges
 | aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:98:3:98:21 | ... = ... |
 | aliasing.cpp:101:13:101:22 | & ... indirection | aliasing.cpp:102:8:102:10 | * ... |
 | aliasing.cpp:101:14:101:19 | s_copy indirection [m1] | aliasing.cpp:101:13:101:22 | & ... indirection |
-| aliasing.cpp:105:23:105:24 | pa indirection | aliasing.cpp:121:15:121:16 | taint_a_ptr output argument |
-| aliasing.cpp:105:23:105:24 | pa indirection | aliasing.cpp:126:15:126:20 | taint_a_ptr output argument |
-| aliasing.cpp:105:23:105:24 | pa indirection | aliasing.cpp:131:15:131:16 | taint_a_ptr output argument |
-| aliasing.cpp:105:23:105:24 | pa indirection | aliasing.cpp:136:15:136:17 | taint_a_ptr output argument |
-| aliasing.cpp:105:23:105:24 | pa indirection | aliasing.cpp:141:17:141:20 | taint_a_ptr output argument |
-| aliasing.cpp:105:23:105:24 | pa indirection | aliasing.cpp:158:15:158:20 | taint_a_ptr output argument |
-| aliasing.cpp:105:23:105:24 | pa indirection | aliasing.cpp:164:15:164:20 | taint_a_ptr output argument |
-| aliasing.cpp:105:23:105:24 | pa indirection | aliasing.cpp:175:15:175:22 | taint_a_ptr output argument |
-| aliasing.cpp:105:23:105:24 | pa indirection | aliasing.cpp:187:15:187:22 | taint_a_ptr output argument |
-| aliasing.cpp:105:23:105:24 | pa indirection | aliasing.cpp:200:15:200:24 | taint_a_ptr output argument |
-| aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:105:23:105:24 | pa indirection |
+| aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:121:15:121:16 | taint_a_ptr output argument |
+| aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:126:15:126:20 | taint_a_ptr output argument |
+| aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:131:15:131:16 | taint_a_ptr output argument |
+| aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:136:15:136:17 | taint_a_ptr output argument |
+| aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:141:17:141:20 | taint_a_ptr output argument |
+| aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:158:15:158:20 | taint_a_ptr output argument |
+| aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:164:15:164:20 | taint_a_ptr output argument |
+| aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:175:15:175:22 | taint_a_ptr output argument |
+| aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:187:15:187:22 | taint_a_ptr output argument |
+| aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:200:15:200:24 | taint_a_ptr output argument |
+| aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:105:23:105:24 | pa |
 | aliasing.cpp:121:15:121:16 | taint_a_ptr output argument | aliasing.cpp:122:8:122:12 | access to array |
 | aliasing.cpp:126:15:126:20 | taint_a_ptr output argument | aliasing.cpp:127:8:127:16 | * ... |
 | aliasing.cpp:131:15:131:16 | taint_a_ptr output argument | aliasing.cpp:132:8:132:14 | * ... |
@@ -486,12 +486,12 @@ edges
 | by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] |
 | by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] | by_reference.cpp:127:21:127:38 | taint_inner_a_ref output argument [a] |
 | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:88:3:88:24 | ... = ... |
-| by_reference.cpp:91:25:91:26 | pa indirection | by_reference.cpp:104:15:104:22 | taint_a_ptr output argument |
-| by_reference.cpp:91:25:91:26 | pa indirection | by_reference.cpp:108:15:108:24 | taint_a_ptr output argument |
-| by_reference.cpp:92:9:92:18 | call to user_input | by_reference.cpp:91:25:91:26 | pa indirection |
-| by_reference.cpp:95:25:95:26 | pa indirection | by_reference.cpp:124:15:124:21 | taint_a_ref output argument |
-| by_reference.cpp:95:25:95:26 | pa indirection | by_reference.cpp:128:15:128:23 | taint_a_ref output argument |
-| by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:95:25:95:26 | pa indirection |
+| by_reference.cpp:91:25:91:26 | pa | by_reference.cpp:104:15:104:22 | taint_a_ptr output argument |
+| by_reference.cpp:91:25:91:26 | pa | by_reference.cpp:108:15:108:24 | taint_a_ptr output argument |
+| by_reference.cpp:92:9:92:18 | call to user_input | by_reference.cpp:91:25:91:26 | pa |
+| by_reference.cpp:95:25:95:26 | pa | by_reference.cpp:124:15:124:21 | taint_a_ref output argument |
+| by_reference.cpp:95:25:95:26 | pa | by_reference.cpp:128:15:128:23 | taint_a_ref output argument |
+| by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:95:25:95:26 | pa |
 | by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] | by_reference.cpp:102:28:102:39 | outer indirection [post update] [inner_nested, a] |
 | by_reference.cpp:102:28:102:39 | outer indirection [post update] [inner_nested, a] | by_reference.cpp:110:8:110:12 | outer indirection [inner_nested, a] |
 | by_reference.cpp:103:27:103:35 | outer indirection [post update] [inner_ptr indirection, a] | by_reference.cpp:111:8:111:12 | outer indirection [inner_ptr indirection, a] |
@@ -1185,7 +1185,7 @@ nodes
 | aliasing.cpp:101:13:101:22 | & ... indirection | semmle.label | & ... indirection |
 | aliasing.cpp:101:14:101:19 | s_copy indirection [m1] | semmle.label | s_copy indirection [m1] |
 | aliasing.cpp:102:8:102:10 | * ... | semmle.label | * ... |
-| aliasing.cpp:105:23:105:24 | pa indirection | semmle.label | pa indirection |
+| aliasing.cpp:105:23:105:24 | pa | semmle.label | pa |
 | aliasing.cpp:106:9:106:18 | call to user_input | semmle.label | call to user_input |
 | aliasing.cpp:121:15:121:16 | taint_a_ptr output argument | semmle.label | taint_a_ptr output argument |
 | aliasing.cpp:122:8:122:12 | access to array | semmle.label | access to array |
@@ -1339,9 +1339,9 @@ nodes
 | by_reference.cpp:88:3:88:24 | ... = ... | semmle.label | ... = ... |
 | by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] | semmle.label | (reference dereference) indirection [post update] [a] |
 | by_reference.cpp:88:13:88:22 | call to user_input | semmle.label | call to user_input |
-| by_reference.cpp:91:25:91:26 | pa indirection | semmle.label | pa indirection |
+| by_reference.cpp:91:25:91:26 | pa | semmle.label | pa |
 | by_reference.cpp:92:9:92:18 | call to user_input | semmle.label | call to user_input |
-| by_reference.cpp:95:25:95:26 | pa indirection | semmle.label | pa indirection |
+| by_reference.cpp:95:25:95:26 | pa | semmle.label | pa |
 | by_reference.cpp:96:8:96:17 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] | semmle.label | taint_inner_a_ptr output argument [a] |
 | by_reference.cpp:102:28:102:39 | outer indirection [post update] [inner_nested, a] | semmle.label | outer indirection [post update] [inner_nested, a] |

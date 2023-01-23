@@ -298,14 +298,13 @@ newtype TPosition =
 private newtype TReturnKind =
   TNormalReturnKind(int index) {
     exists(IndirectReturnNode return |
-      return.getAddressOperand() = any(ReturnValueInstruction r).getReturnAddressOperand() and
+      return.isNormalReturn() and
       index = return.getIndirectionIndex() - 1 // We subtract one because the return loads the value.
     )
   } or
   TIndirectReturnKind(int argumentIndex, int indirectionIndex) {
-    exists(IndirectReturnNode return, ReturnIndirectionInstruction returnInd |
-      returnInd.hasIndex(argumentIndex) and
-      return.getAddressOperand() = returnInd.getSourceAddressOperand() and
+    exists(IndirectReturnNode return |
+      return.isParameterReturn(argumentIndex) and
       indirectionIndex = return.getIndirectionIndex()
     )
   }
@@ -342,41 +341,28 @@ class ReturnNode extends Node instanceof IndirectReturnNode {
   abstract ReturnKind getKind();
 }
 
-/**
- * This predicate represents an annoying hack that we have to do. We use the
- * `ReturnIndirectionInstruction` to determine which variables need flow back
- * out of a function. However, the IR will unconditionally create those for a
- * variable passed to a function even though the variable was never updated by
- * the function. And if a function has too many `ReturnNode`s the dataflow
- * library lowers its precision for that function by disabling field flow.
- *
- * So we those eliminate `ReturnNode`s that would have otherwise been created
- * by this unconditional `ReturnIndirectionInstruction` by requiring that there
- * must exist an SSA definition of the IR variable in the function.
- */
-private predicate hasNonInitializeParameterDef(IRVariable v) {
-  exists(Ssa::Def def |
-    not def.getValue().asInstruction() instanceof InitializeParameterInstruction and
-    v = def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable()
-  )
+pragma[nomagic]
+private predicate finalParameterNodeHasArgumentAndIndex(
+  FinalParameterNode node, int argumentIndex, int indirectionIndex
+) {
+  node.getArgumentIndex() = argumentIndex and
+  node.getIndirectionIndex() = indirectionIndex
 }
 
 class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
   override ReturnKind getKind() {
-    exists(Operand op, int i |
-      hasOperandAndIndex(this, pragma[only_bind_into](op), pragma[only_bind_into](i))
+    exists(Operand op, int indirectionIndex |
+      hasOperandAndIndex(this, pragma[only_bind_into](op), pragma[only_bind_into](indirectionIndex))
     |
-      exists(int argumentIndex, ReturnIndirectionInstruction returnInd |
-        op = returnInd.getSourceAddressOperand() and
-        returnInd.hasIndex(argumentIndex) and
-        hasNonInitializeParameterDef(returnInd.getIRVariable()) and
-        result = TIndirectReturnKind(argumentIndex, pragma[only_bind_into](i))
-      )
-      or
       exists(ReturnValueInstruction return |
         op = return.getReturnAddressOperand() and
-        result = TNormalReturnKind(i - 1)
+        result = TNormalReturnKind(indirectionIndex - 1)
       )
+    )
+    or
+    exists(int argumentIndex, int indirectionIndex |
+      finalParameterNodeHasArgumentAndIndex(this, argumentIndex, indirectionIndex) and
+      result = TIndirectReturnKind(argumentIndex, indirectionIndex)
     )
   }
 }
