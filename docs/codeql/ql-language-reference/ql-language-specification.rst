@@ -99,12 +99,12 @@ The environments are:
 
 For each module, some namespaces are enforced to be disjoint:
 
--  No keys may be shared between **module namespace** and **module signature namespace**.
--  No keys may be shared between **type namespace** and **type signature namespace**.
--  No keys may be shared between **module namespace** and **type signature namespace**.
--  No keys may be shared between **type namespace** and **module signature namespace**.
--  No keys may be shared between **predicate namespace** and **predicate signature namespace**.
--  No keys may be shared between **module signature namespace** and **type signature namespace**.
+-  No keys may be shared between the **module namespace** and the **module signature namespace**.
+-  No keys may be shared between the **type namespace** and the **type signature namespace**.
+-  No keys may be shared between the **module namespace** and the **type signature namespace**.
+-  No keys may be shared between the **type namespace** and the **module signature namespace**.
+-  No keys may be shared between the **predicate namespace** and the **predicate signature namespace**.
+-  No keys may be shared between the **module signature namespace** and the **type signature namespace**.
 
 If not otherwise specified, then the environment for a piece of syntax is the same as the environment of its enclosing syntax.
 

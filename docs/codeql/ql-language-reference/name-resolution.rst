@@ -181,12 +181,12 @@ Each module in QL has six namespaces:
 
 The six namespaces of any module are not completely independent of each other:
 
-    - No keys may be shared between **module namespace** and **module signature namespace**.
-    - No keys may be shared between **type namespace** and **type signature namespace**.
-    - No keys may be shared between **module namespace** and **type signature namespace**.
-    - No keys may be shared between **type namespace** and **module signature namespace**.
-    - No keys may be shared between **predicate namespace** and **predicate signature namespace**.
-    - No keys may be shared between **module signature namespace** and **type signature namespace**.
+    - No keys may be shared between the **module namespace** and the **module signature namespace**.
+    - No keys may be shared between the **type namespace** and the **type signature namespace**.
+    - No keys may be shared between the **module namespace** and the **type signature namespace**.
+    - No keys may be shared between the **type namespace** and the **module signature namespace**.
+    - No keys may be shared between the **predicate namespace** and the **predicate signature namespace**.
+    - No keys may be shared between the **module signature namespace** and the **type signature namespace**.
 
 There is no relation between names in namespaces of different modules.
 For example, two different modules can define a predicate ``getLocation()`` without confusion. As long as 
