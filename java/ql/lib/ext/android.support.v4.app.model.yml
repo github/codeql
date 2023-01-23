@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["android.support.v4.app", "FragmentTransaction", True, "add", "(Class,Bundle,String)", "", "Argument[0]", "fragment-injection", "manual"]
+      - ["android.support.v4.app", "FragmentTransaction", True, "add", "(Fragment,String)", "", "Argument[0]", "fragment-injection", "manual"]
+      - ["android.support.v4.app", "FragmentTransaction", True, "add", "(int,Class,Bundle)", "", "Argument[1]", "fragment-injection", "manual"]
+      - ["android.support.v4.app", "FragmentTransaction", True, "add", "(int,Class,Bundle,String)", "", "Argument[1]", "fragment-injection", "manual"]
+      - ["android.support.v4.app", "FragmentTransaction", True, "add", "(int,Fragment)", "", "Argument[1]", "fragment-injection", "manual"]
+      - ["android.support.v4.app", "FragmentTransaction", True, "add", "(int,Fragment,String)", "", "Argument[1]", "fragment-injection", "manual"]
+      - ["android.support.v4.app", "FragmentTransaction", True, "attach", "(Fragment)", "", "Argument[0]", "fragment-injection", "manual"]
+      - ["android.support.v4.app", "FragmentTransaction", True, "replace", "(int,Class,Bundle)", "", "Argument[1]", "fragment-injection", "manual"]
+      - ["android.support.v4.app", "FragmentTransaction", True, "replace", "(int,Class,Bundle,String)", "", "Argument[1]", "fragment-injection", "manual"]
+      - ["android.support.v4.app", "FragmentTransaction", True, "replace", "(int,Fragment)", "", "Argument[1]", "fragment-injection", "manual"]
+      - ["android.support.v4.app", "FragmentTransaction", True, "replace", "(int,Fragment,String)", "", "Argument[1]", "fragment-injection", "manual"]

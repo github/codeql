@@ -16,7 +16,7 @@ if any(s == "--help" for s in sys.argv):
 GenerateFlowTestCase.py specsToTest.csv projectPom.xml outdir [--force]
 
 This generates test cases exercising function model specifications found in specsToTest.csv
-producing files Test.java, test.ql and test.expected in outdir.
+producing files Test.java, test.ql, test.ext.yml and test.expected in outdir.
 
 projectPom.xml should be a Maven pom sufficient to resolve the classes named in specsToTest.csv.
 Typically this means supplying a skeleton POM <dependencies> section that retrieves whatever jars
@@ -24,7 +24,9 @@ contain the needed classes.
 
 If --force is present, existing files may be overwritten.
 
-Requirements: `mvn` and `codeql` should both appear on your path.
+Requirements:
+ - `mvn` and `codeql` should both appear on your path.
+ - `--additional-packs /path/to/semmle-code/ql` should be added to your `.config/codeql/config` file.
 
 After test generation completes, any lines in specsToTest.csv that didn't produce tests are output.
 If this happens, check the spelling of class and method names, and the syntax of input and output specifications.
@@ -52,10 +54,11 @@ except Exception as e:
 
 resultJava = os.path.join(sys.argv[3], "Test.java")
 resultQl = os.path.join(sys.argv[3], "test.ql")
+resultYml = os.path.join(sys.argv[3], "test.ext.yml")
 
-if not force and (os.path.exists(resultJava) or os.path.exists(resultQl)):
-    print("Won't overwrite existing files '%s' or '%s'" %
-          (resultJava, resultQl), file=sys.stderr)
+if not force and (os.path.exists(resultJava) or os.path.exists(resultQl) or os.path.exists(resultYml)):
+    print("Won't overwrite existing files '%s', '%s' or '%s'." %
+          (resultJava, resultQl, resultYml), file=sys.stderr)
     sys.exit(1)
 
 workDir = tempfile.mkdtemp()
@@ -127,7 +130,13 @@ queryDir = os.path.join(workDir, "query")
 os.makedirs(queryDir)
 qlFile = os.path.join(queryDir, "gen.ql")
 with open(os.path.join(queryDir, "qlpack.yml"), "w") as f:
-    f.write("name: test-generation-query\nversion: 0.0.0\nlibraryPathDependencies: codeql/java-queries")
+    f.write("""name: test-generation-query
+version: 0.0.0
+dependencies:
+  codeql/java-all: '*'
+  codeql/java-queries: '*'
+""")
+
 with open(qlFile, "w") as f:
     f.write(
         "import java\nimport utils.flowtestcasegenerator.GenerateFlowTestCase\n\nclass GenRow extends TargetSummaryModelCsv {\n\n\toverride predicate row(string r) {\n\t\tr = [\n")
@@ -163,9 +172,9 @@ def getTuples(queryName, jsonResult, fname):
 with open(generatedJson, "r") as f:
     generateOutput = json.load(f)
     expectedTables = ("getTestCase", "getASupportMethodModel",
-                      "missingSummaryModelCsv", "getAParseFailure", "noTestCaseGenerated")
+                      "missingSummaryModel", "getAParseFailure", "noTestCaseGenerated")
 
-    testCaseRows, supportModelRows, missingSummaryModelCsvRows, parseFailureRows, noTestCaseGeneratedRows = \
+    testCaseRows, supportModelRows, missingSummaryModelRows, parseFailureRows, noTestCaseGeneratedRows = \
         tuple([getTuples(k, generateOutput, generatedJson)
                for k in expectedTables])
 
@@ -182,9 +191,9 @@ with open(generatedJson, "r") as f:
         print("Expected exactly one column in noTestCaseGenerated relation (got: %s)" %
               json.dumps(noTestCaseGeneratedRows), file=sys.stderr)
 
-    if len(missingSummaryModelCsvRows) != 0:
-        print("Tests for some CSV rows were requested that were not in scope (SummaryModelCsv.row does not hold):\n" +
-              "\n".join(r[0] for r in missingSummaryModelCsvRows))
+    if len(missingSummaryModelRows) != 0:
+        print("Tests for some CSV rows were requested that were not in scope (a summary doesn't already exist):\n" +
+              "\n".join(r[0] for r in missingSummaryModelRows))
         sys.exit(1)
     if len(parseFailureRows) != 0:
         print("The following rows failed to generate any test case. Check package, class and method name spelling, and argument and result specifications:\n%s" %
@@ -207,11 +216,20 @@ def copyfile(fromName, toFileHandle):
 
 with open(resultQl, "w") as f:
     copyfile("testHeader.qlfrag", f)
-    if len(supportModelRows) != 0:
-        copyfile("testModelsHeader.qlfrag", f)
-        f.write(", ".join('"%s"' %
-                          modelSpecRow[0].strip() for modelSpecRow in supportModelRows))
-        copyfile("testModelsFooter.qlfrag", f)
+
+if len(supportModelRows) != 0:
+    # Make a test extension file
+    with open(resultYml, "w") as f:
+        models = "\n".join('      - [%s]' %
+                          modelSpecRow[0].strip() for modelSpecRow in supportModelRows)
+        dataextensions = f"""extensions:
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+{models}
+"""
+        f.write(dataextensions)
 
 # Make an empty .expected file, since this is an inline-exectations test
 with open(os.path.join(sys.argv[3], "test.expected"), "w"):

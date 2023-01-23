@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.springframework.validation", "Errors", True, "addAllErrors", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["org.springframework.validation", "Errors", True, "getAllErrors", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.validation", "Errors", True, "getFieldError", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.validation", "Errors", True, "getFieldErrors", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.validation", "Errors", True, "getGlobalError", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.validation", "Errors", True, "getGlobalErrors", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.validation", "Errors", True, "reject", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["org.springframework.validation", "Errors", True, "reject", "", "", "Argument[1].ArrayElement", "Argument[-1]", "taint", "manual"]
+      - ["org.springframework.validation", "Errors", True, "reject", "", "", "Argument[2]", "Argument[-1]", "taint", "manual"]
+      - ["org.springframework.validation", "Errors", True, "rejectValue", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["org.springframework.validation", "Errors", True, "rejectValue", "", "", "Argument[3]", "Argument[-1]", "taint", "manual"]
+      - ["org.springframework.validation", "Errors", True, "rejectValue", "(java.lang.String,java.lang.String,java.lang.Object[],java.lang.String)", "", "Argument[2].ArrayElement", "Argument[-1]", "taint", "manual"]
+      - ["org.springframework.validation", "Errors", True, "rejectValue", "(java.lang.String,java.lang.String,java.lang.String)", "", "Argument[2]", "Argument[-1]", "taint", "manual"]

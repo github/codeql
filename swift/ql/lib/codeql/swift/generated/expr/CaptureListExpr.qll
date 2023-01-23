@@ -37,7 +37,7 @@ module Generated {
     /**
      * Gets the number of binding declarations of this capture list expression.
      */
-    final int getNumberOfBindingDecls() { result = count(getABindingDecl()) }
+    final int getNumberOfBindingDecls() { result = count(int i | exists(getBindingDecl(i))) }
 
     /**
      * Gets the closure body of this capture list expression.

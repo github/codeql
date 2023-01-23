@@ -15,7 +15,7 @@
 import cpp
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.FunctionWithWrappers
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 import TaintedWithPath
 
 class SqlLikeFunction extends FunctionWithWrappers {

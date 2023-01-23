@@ -1,0 +1,10 @@
+| WebViewContentAccess.java:15:9:15:57 | setAllowContentAccess(...) | Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView. |
+| WebViewContentAccess.java:38:9:38:55 | setAllowContentAccess(...) | Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView. |
+| WebViewContentAccess.java:41:25:41:49 | (...)... | Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView. |
+| WebViewContentAccess.java:43:9:43:44 | setAllowContentAccess(...) | Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView. |
+| WebViewContentAccess.java:46:25:46:41 | new WebView(...) | Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView. |
+| WebViewContentAccess.java:48:9:48:44 | setAllowContentAccess(...) | Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView. |
+| WebViewContentAccess.java:51:25:51:44 | getAWebView(...) | Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView. |
+| WebViewContentAccess.java:53:9:53:44 | setAllowContentAccess(...) | Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView. |
+| WebViewContentAccess.java:55:29:55:48 | getAWebView(...) | Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView. |
+| WebViewContentAccess.java:57:25:57:44 | getAWebView(...) | Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView. |

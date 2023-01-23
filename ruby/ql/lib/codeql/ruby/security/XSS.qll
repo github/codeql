@@ -180,11 +180,10 @@ private module Shared {
   private predicate isFlowFromLocals0(
     CfgNodes::ExprNodes::ElementReferenceCfgNode refNode, string hashKey, ErbFile erb
   ) {
-    exists(DataFlow::Node argNode, CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
+    exists(DataFlow::Node argNode |
       argNode.asExpr() = refNode.getArgument(0) and
       refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "local_assigns" and
-      argNode.getALocalSource() = DataFlow::exprNode(strNode) and
-      strNode.getExpr().getConstantValue().isStringlikeValue(hashKey) and
+      argNode.getALocalSource().getConstantValue().isStringlikeValue(hashKey) and
       erb = refNode.getFile()
     )
   }
@@ -228,9 +227,9 @@ private module Shared {
 
   private predicate isFlowFromControllerInstanceVariable(DataFlow::Node node1, DataFlow::Node node2) {
     // instance variables in the controller
-    exists(ActionControllerActionMethod action, string name, ErbFile template |
+    exists(string name, ErbFile template |
       // match read to write on variable name
-      actionAssigns(action, name, node1.asExpr().getExpr(), template) and
+      actionAssigns(_, name, node1.asExpr().getExpr(), template) and
       // propagate taint from assignment RHS expr to variable read access in view
       isVariableReadAccess(node2.asExpr().getExpr(), name, template)
     )

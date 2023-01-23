@@ -9,6 +9,3 @@ class B<T> {
         val b1 = B<Any>()
     }
 }
-
-// Diagnostic Matches: Incomplete annotation: @kotlin.Metadata(%)
-// Diagnostic Matches: Unknown location for kotlin.Metadata

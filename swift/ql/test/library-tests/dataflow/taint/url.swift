@@ -106,7 +106,7 @@ func taintThroughURL() {
 	}
 
 	if let y = URL(string: tainted) {
-		sink(arg: y) // $ MISSING: tainted=57
+		sink(arg: y) // $ tainted=57
 	}
 
 	var urlClean2 : URL!

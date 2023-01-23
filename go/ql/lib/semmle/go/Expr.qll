@@ -980,18 +980,36 @@ class StructTypeExpr extends @structtypeexpr, TypeExpr, FieldParent {
  * Examples:
  *
  * ```go
- * func(a, b int, c float32) (float32, bool)
+ * func(a int, b, c float32) (float32, bool)
  * ```
  */
 class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode, FieldParent {
   /** Gets the `i`th parameter of this function type (0-based). */
   ParameterDecl getParameterDecl(int i) { result = this.getField(i) and i >= 0 }
 
-  /** Gets a parameter of this function type. */
+  /**
+   * Gets a parameter declaration of this function type.
+   *
+   * For example, for `func(a int, b, c float32) (float32, bool)` the result is
+   * `a int` or `b, c float32`.
+   */
   ParameterDecl getAParameterDecl() { result = this.getParameterDecl(_) }
 
-  /** Gets the number of parameters of this function type. */
-  int getNumParameter() { result = count(this.getAParameterDecl()) }
+  /**
+   * Gets the number of parameter declarations of this function type.
+   *
+   * For example, for `func(a int, b, c float32) (float32, bool)` the result is 2:
+   * `a int` and `b, c float32`.
+   */
+  int getNumParameterDecl() { result = count(this.getAParameterDecl()) }
+
+  /**
+   * Gets the number of parameters of this function type.
+   *
+   * For example, for `func(a int, b, c float32) (float32, bool)` the result is 3:
+   * `a`, `b` and `c`.
+   */
+  int getNumParameter() { result = count(this.getAParameterDecl().getANameExpr()) }
 
   /** Gets the `i`th result of this function type (0-based). */
   ResultVariableDecl getResultDecl(int i) { result = this.getField(-(i + 1)) }
@@ -1011,9 +1029,9 @@ class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode, FieldParent {
 
   /** Gets the `i`th child of this node, parameters first followed by results. */
   override AstNode getUniquelyNumberedChild(int i) {
-    if i < this.getNumParameter()
+    if i < this.getNumParameterDecl()
     then result = this.getParameterDecl(i)
-    else result = this.getResultDecl(i - this.getNumParameter())
+    else result = this.getResultDecl(i - this.getNumParameterDecl())
   }
 }
 
@@ -2193,7 +2211,7 @@ class ReferenceExpr extends Expr {
       this = rs.getValue()
     )
     or
-    exists(ValueSpec spec, int i | this = spec.getNameExpr(i))
+    exists(ValueSpec spec | this = spec.getNameExpr(_))
     or
     exists(FuncDecl fd | this = fd.getNameExpr())
   }

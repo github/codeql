@@ -27,13 +27,24 @@ abstract class Stored extends DataFlow::Node { }
  */
 class CoreDataStore extends Stored {
   CoreDataStore() {
-    // values written into Core Data objects are a sink
+    // values written into Core Data objects through `set*Value` methods are a sink.
     exists(CallExpr call |
       call.getStaticTarget()
           .(MethodDecl)
           .hasQualifiedName("NSManagedObject",
             ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"]) and
       call.getArgument(0).getExpr() = this.asExpr()
+    )
+    or
+    // any write into a class derived from `NSManagedObject` is a sink. For
+    // example in `coreDataObj.data = sensitive` the post-update node corresponding
+    // with `coreDataObj.data` is a sink.
+    // (ideally this would be only members with the `@NSManaged` attribute)
+    exists(ClassOrStructDecl cd, Expr e |
+      cd.getABaseTypeDecl*().getName() = "NSManagedObject" and
+      this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = e and
+      e.getFullyConverted().getType() = cd.getType() and
+      not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
     )
   }
 }
@@ -52,6 +63,61 @@ class RealmStore extends Stored instanceof DataFlow::PostUpdateNode {
       this.getPreUpdateNode().asExpr() = e and
       e.getFullyConverted().getType() = cd.getType() and
       not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
+    )
+  }
+}
+
+/**
+ * A `DataFlow::Node` that is an expression stored with the GRDB library.
+ */
+class GrdbStore extends Stored {
+  GrdbStore() {
+    exists(CallExpr call, MethodDecl method |
+      call.getStaticTarget() = method and
+      call.getArgumentWithLabel("arguments").getExpr() = this.asExpr()
+    |
+      method
+          .hasQualifiedName("Database",
+            ["allStatements(sql:arguments:)", "execute(sql:arguments:)",])
+      or
+      method.hasQualifiedName("SQLRequest", "init(sql:arguments:adapter:cached:)")
+      or
+      method.hasQualifiedName("SQL", ["init(sql:arguments:)", "append(sql:arguments:)"])
+      or
+      method.hasQualifiedName("SQLStatementCursor", "init(database:sql:arguments:prepFlags:)")
+      or
+      method
+          .hasQualifiedName("TableRecord",
+            [
+              "select(sql:arguments:)", "select(sql:arguments:as:)", "filter(sql:arguments:)",
+              "order(sql:arguments:)"
+            ])
+      or
+      method
+          .hasQualifiedName(["Row", "DatabaseValueConvertible", "FetchableRecord"],
+            [
+              "fetchCursor(_:sql:arguments:adapter:)", "fetchAll(_:sql:arguments:adapter:)",
+              "fetchSet(_:sql:arguments:adapter:)", "fetchOne(_:sql:arguments:adapter:)"
+            ])
+      or
+      method
+          .hasQualifiedName("FetchableRecord",
+            [
+              "fetchCursor(_:arguments:adapter:)", "fetchAll(_:arguments:adapter:)",
+              "fetchSet(_:arguments:adapter:)", "fetchOne(_:arguments:adapter:)",
+            ])
+      or
+      method.hasQualifiedName("Statement", ["execute(arguments:)"])
+      or
+      method
+          .hasQualifiedName("CommonTableExpression", "init(recursive:named:columns:sql:arguments:)")
+    )
+    or
+    exists(CallExpr call, MethodDecl method |
+      call.getStaticTarget() = method and
+      call.getArgument(0).getExpr() = this.asExpr()
+    |
+      method.hasQualifiedName("Statement", "setArguments(_:)")
     )
   }
 }
@@ -77,13 +143,22 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
     node.asExpr() instanceof EncryptedExpr
   }
 
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    // Needed until we have proper content flow through arrays
+    exists(ArrayExpr arr |
+      node1.asExpr() = arr.getAnElement() and
+      node2.asExpr() = arr
+    )
+  }
+
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
-    // flow out from fields of a `RealmSwiftObject` at the sink, for example in
-    // `realmObj.data = sensitive`.
+    // flow out from fields of an `NSManagedObject` or `RealmSwiftObject` at the sink,
+    // for example in `realmObj.data = sensitive`.
     isSink(node) and
-    exists(ClassOrStructDecl cd |
-      c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cd.getAMember() and
-      cd.getABaseTypeDecl*().getName() = "RealmSwiftObject"
+    exists(ClassOrStructDecl cd, IterableDeclContext cx |
+      cd.getABaseTypeDecl*().getName() = ["NSManagedObject", "RealmSwiftObject"] and
+      cx.getNominalTypeDecl() = cd and
+      c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember()
     )
     or
     // any default implicit reads

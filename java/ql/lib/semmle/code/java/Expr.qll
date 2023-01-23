@@ -366,11 +366,11 @@ class CompileTimeConstantExpr extends Expr {
         or
         b instanceof SubExpr and result = v1 - v2
         or
-        b instanceof LShiftExpr and result = v1.bitShiftLeft(v2)
+        b instanceof LeftShiftExpr and result = v1.bitShiftLeft(v2)
         or
-        b instanceof RShiftExpr and result = v1.bitShiftRightSigned(v2)
+        b instanceof RightShiftExpr and result = v1.bitShiftRightSigned(v2)
         or
-        b instanceof URShiftExpr and result = v1.bitShiftRight(v2)
+        b instanceof UnsignedRightShiftExpr and result = v1.bitShiftRight(v2)
         or
         b instanceof AndBitwiseExpr and result = v1.bitAnd(v2)
         or
@@ -623,25 +623,34 @@ class AssignXorExpr extends AssignOp, @assignxorexpr {
 }
 
 /** A compound assignment expression using the `<<=` operator. */
-class AssignLShiftExpr extends AssignOp, @assignlshiftexpr {
+class AssignLeftShiftExpr extends AssignOp, @assignlshiftexpr {
   override string getOp() { result = "<<=" }
 
-  override string getAPrimaryQlClass() { result = "AssignLShiftExpr" }
+  override string getAPrimaryQlClass() { result = "AssignLeftShiftExpr" }
 }
+
+/** DEPRECATED: Alias for AssignLeftShiftExpr. */
+deprecated class AssignLShiftExpr = AssignLeftShiftExpr;
 
 /** A compound assignment expression using the `>>=` operator. */
-class AssignRShiftExpr extends AssignOp, @assignrshiftexpr {
+class AssignRightShiftExpr extends AssignOp, @assignrshiftexpr {
   override string getOp() { result = ">>=" }
 
-  override string getAPrimaryQlClass() { result = "AssignRShiftExpr" }
+  override string getAPrimaryQlClass() { result = "AssignRightShiftExpr" }
 }
+
+/** DEPRECATED: Alias for AssignRightShiftExpr. */
+deprecated class AssignRShiftExpr = AssignRightShiftExpr;
 
 /** A compound assignment expression using the `>>>=` operator. */
-class AssignURShiftExpr extends AssignOp, @assignurshiftexpr {
+class AssignUnsignedRightShiftExpr extends AssignOp, @assignurshiftexpr {
   override string getOp() { result = ">>>=" }
 
-  override string getAPrimaryQlClass() { result = "AssignURShiftExpr" }
+  override string getAPrimaryQlClass() { result = "AssignUnsignedRightShiftExpr" }
 }
+
+/** DEPRECATED: Alias for AssignUnsignedRightShiftExpr. */
+deprecated class AssignURShiftExpr = AssignUnsignedRightShiftExpr;
 
 /** A common super-class to represent constant literals. */
 class Literal extends Expr, @literal {
@@ -904,25 +913,34 @@ class SubExpr extends BinaryExpr, @subexpr {
 }
 
 /** A binary expression using the `<<` operator. */
-class LShiftExpr extends BinaryExpr, @lshiftexpr {
+class LeftShiftExpr extends BinaryExpr, @lshiftexpr {
   override string getOp() { result = " << " }
 
-  override string getAPrimaryQlClass() { result = "LShiftExpr" }
+  override string getAPrimaryQlClass() { result = "LeftShiftExpr" }
 }
+
+/** DEPRECATED: Alias for LeftShiftExpr. */
+deprecated class LShiftExpr = LeftShiftExpr;
 
 /** A binary expression using the `>>` operator. */
-class RShiftExpr extends BinaryExpr, @rshiftexpr {
+class RightShiftExpr extends BinaryExpr, @rshiftexpr {
   override string getOp() { result = " >> " }
 
-  override string getAPrimaryQlClass() { result = "RShiftExpr" }
+  override string getAPrimaryQlClass() { result = "RightShiftExpr" }
 }
+
+/** DEPRECATED: Alias for RightShiftExpr. */
+deprecated class RShiftExpr = RightShiftExpr;
 
 /** A binary expression using the `>>>` operator. */
-class URShiftExpr extends BinaryExpr, @urshiftexpr {
+class UnsignedRightShiftExpr extends BinaryExpr, @urshiftexpr {
   override string getOp() { result = " >>> " }
 
-  override string getAPrimaryQlClass() { result = "URShiftExpr" }
+  override string getAPrimaryQlClass() { result = "UnsignedRightShiftExpr" }
 }
+
+/** DEPRECATED: Alias for UnsignedRightShiftExpr. */
+deprecated class URShiftExpr = UnsignedRightShiftExpr;
 
 /** A binary expression using the `&` operator. */
 class AndBitwiseExpr extends BinaryExpr, @andbitexpr {
@@ -1896,7 +1914,8 @@ class VarAccess extends Expr, @varaccess {
 class ExtensionReceiverAccess extends VarAccess {
   ExtensionReceiverAccess() {
     exists(Parameter p |
-      this.getVariable() = p and p.getPosition() = 0 and p.getCallable() instanceof ExtensionMethod
+      this.getVariable() = p and
+      p.isExtensionParameter()
     )
   }
 

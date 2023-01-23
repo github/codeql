@@ -127,7 +127,7 @@ def decorated_inner_function():
 
 
 
-#FP observed https://lgtm.com/projects/g/torchbox/wagtail/alerts/ 
+#FP observed
 def test_dict_unpacking(queryset, field_name, value):
     #True positive
     for tag in value.split(','):

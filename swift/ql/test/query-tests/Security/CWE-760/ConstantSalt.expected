@@ -1,0 +1,17 @@
+edges
+| test.swift:43:35:43:130 | [...] :  | test.swift:51:49:51:49 | constantSalt |
+| test.swift:43:35:43:130 | [...] :  | test.swift:56:59:56:59 | constantSalt |
+| test.swift:43:35:43:130 | [...] :  | test.swift:62:59:62:59 | constantSalt |
+| test.swift:43:35:43:130 | [...] :  | test.swift:67:53:67:53 | constantSalt |
+nodes
+| test.swift:43:35:43:130 | [...] :  | semmle.label | [...] :  |
+| test.swift:51:49:51:49 | constantSalt | semmle.label | constantSalt |
+| test.swift:56:59:56:59 | constantSalt | semmle.label | constantSalt |
+| test.swift:62:59:62:59 | constantSalt | semmle.label | constantSalt |
+| test.swift:67:53:67:53 | constantSalt | semmle.label | constantSalt |
+subpaths
+#select
+| test.swift:51:49:51:49 | constantSalt | test.swift:43:35:43:130 | [...] :  | test.swift:51:49:51:49 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
+| test.swift:56:59:56:59 | constantSalt | test.swift:43:35:43:130 | [...] :  | test.swift:56:59:56:59 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
+| test.swift:62:59:62:59 | constantSalt | test.swift:43:35:43:130 | [...] :  | test.swift:62:59:62:59 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
+| test.swift:67:53:67:53 | constantSalt | test.swift:43:35:43:130 | [...] :  | test.swift:67:53:67:53 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |

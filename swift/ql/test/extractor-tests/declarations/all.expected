@@ -1,11 +1,11 @@
 | declarations.swift:1:1:7:1 | Foo |
-| declarations.swift:1:8:1:8 | init() |
-| declarations.swift:1:8:1:8 | init(x:) |
+| declarations.swift:1:8:1:8 | Foo.init() |
+| declarations.swift:1:8:1:8 | Foo.init(x:) |
 | declarations.swift:1:8:1:8 | self |
 | declarations.swift:1:8:1:8 | self |
 | declarations.swift:1:8:1:8 | x |
 | declarations.swift:2:3:2:11 | var ... = ... |
-| declarations.swift:2:7:2:7 | (unnamed function decl) |
+| declarations.swift:2:7:2:7 | _modify |
 | declarations.swift:2:7:2:7 | get |
 | declarations.swift:2:7:2:7 | self |
 | declarations.swift:2:7:2:7 | self |
@@ -14,7 +14,7 @@
 | declarations.swift:2:7:2:7 | value |
 | declarations.swift:2:7:2:7 | x |
 | declarations.swift:3:3:6:3 | var ... = ... |
-| declarations.swift:3:7:3:7 | (unnamed function decl) |
+| declarations.swift:3:7:3:7 | _modify |
 | declarations.swift:3:7:3:7 | next |
 | declarations.swift:3:7:3:7 | self |
 | declarations.swift:4:5:4:5 | self |
@@ -23,12 +23,12 @@
 | declarations.swift:5:5:5:38 | set |
 | declarations.swift:5:9:5:9 | newValue |
 | declarations.swift:9:1:9:34 | Bar |
-| declarations.swift:9:7:9:7 | deinit() |
-| declarations.swift:9:7:9:7 | init() |
+| declarations.swift:9:7:9:7 | Bar.deinit() |
+| declarations.swift:9:7:9:7 | Bar.init() |
 | declarations.swift:9:7:9:7 | self |
 | declarations.swift:9:7:9:7 | self |
 | declarations.swift:9:13:9:30 | var ... = ... |
-| declarations.swift:9:17:9:17 | (unnamed function decl) |
+| declarations.swift:9:17:9:17 | _modify |
 | declarations.swift:9:17:9:17 | get |
 | declarations.swift:9:17:9:17 | self |
 | declarations.swift:9:17:9:17 | self |
@@ -58,7 +58,7 @@
 | declarations.swift:19:29:19:29 | _ |
 | declarations.swift:22:1:26:1 | MyProtocol |
 | declarations.swift:23:5:23:39 | var ... = ... |
-| declarations.swift:23:9:23:9 | (unnamed function decl) |
+| declarations.swift:23:9:23:9 | _modify |
 | declarations.swift:23:9:23:9 | mustBeSettable |
 | declarations.swift:23:9:23:9 | self |
 | declarations.swift:23:31:23:31 | get |
@@ -86,7 +86,7 @@
 | declarations.swift:38:1:38:33 | { ... } |
 | declarations.swift:40:1:53:1 | Baz |
 | declarations.swift:41:3:41:14 | var ... = ... |
-| declarations.swift:41:7:41:7 | (unnamed function decl) |
+| declarations.swift:41:7:41:7 | _modify |
 | declarations.swift:41:7:41:7 | field |
 | declarations.swift:41:7:41:7 | get |
 | declarations.swift:41:7:41:7 | self |
@@ -95,9 +95,9 @@
 | declarations.swift:41:7:41:7 | set |
 | declarations.swift:41:7:41:7 | value |
 | declarations.swift:42:3:42:3 | self |
-| declarations.swift:42:3:44:3 | init() |
+| declarations.swift:42:3:44:3 | Baz.init() |
 | declarations.swift:46:3:46:3 | self |
-| declarations.swift:46:3:48:3 | deinit() |
+| declarations.swift:46:3:48:3 | Baz.deinit() |
 | declarations.swift:50:3:52:3 | +-(_:) |
 | declarations.swift:50:22:50:22 | self |
 | declarations.swift:50:26:50:33 | other |
@@ -106,7 +106,7 @@
 | declarations.swift:64:7:64:16 | +++ |
 | declarations.swift:66:7:66:21 | *** |
 | declarations.swift:68:18:74:1 | ZeroWrapper |
-| declarations.swift:68:25:68:25 | init() |
+| declarations.swift:68:25:68:25 | ZeroWrapper.init() |
 | declarations.swift:68:25:68:25 | self |
 | declarations.swift:69:3:73:3 | var ... = ... |
 | declarations.swift:69:7:69:7 | wrappedValue |
@@ -118,16 +118,16 @@
 | declarations.swift:77:20:77:20 | get |
 | declarations.swift:77:20:77:20 | x |
 | declarations.swift:81:1:136:1 | HasPropertyAndObserver |
+| declarations.swift:81:8:81:8 | HasPropertyAndObserver.init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:) |
 | declarations.swift:81:8:81:8 | hasBoth |
 | declarations.swift:81:8:81:8 | hasDidSet1 |
 | declarations.swift:81:8:81:8 | hasDidSet2 |
 | declarations.swift:81:8:81:8 | hasWillSet1 |
 | declarations.swift:81:8:81:8 | hasWillSet2 |
-| declarations.swift:81:8:81:8 | init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:) |
 | declarations.swift:81:8:81:8 | normalField |
 | declarations.swift:81:8:81:8 | self |
 | declarations.swift:82:3:87:3 | var ... = ... |
-| declarations.swift:82:7:82:7 | (unnamed function decl) |
+| declarations.swift:82:7:82:7 | _modify |
 | declarations.swift:82:7:82:7 | self |
 | declarations.swift:82:7:82:7 | settableField |
 | declarations.swift:83:5:83:5 | newValue |
@@ -144,7 +144,7 @@
 | declarations.swift:97:5:97:5 | self |
 | declarations.swift:97:5:99:5 | get |
 | declarations.swift:102:3:102:21 | var ... = ... |
-| declarations.swift:102:7:102:7 | (unnamed function decl) |
+| declarations.swift:102:7:102:7 | _modify |
 | declarations.swift:102:7:102:7 | get |
 | declarations.swift:102:7:102:7 | normalField |
 | declarations.swift:102:7:102:7 | self |
@@ -152,7 +152,7 @@
 | declarations.swift:102:7:102:7 | self |
 | declarations.swift:102:7:102:7 | set |
 | declarations.swift:102:7:102:7 | value |
-| declarations.swift:104:3:104:3 | (unnamed function decl) |
+| declarations.swift:104:3:104:3 | _modify |
 | declarations.swift:104:3:104:3 | self |
 | declarations.swift:104:3:109:3 | subscript ... |
 | declarations.swift:104:13:104:13 | x |
@@ -171,7 +171,7 @@
 | declarations.swift:111:37:111:37 | self |
 | declarations.swift:111:37:113:3 | get |
 | declarations.swift:115:3:117:3 | var ... = ... |
-| declarations.swift:115:7:115:7 | (unnamed function decl) |
+| declarations.swift:115:7:115:7 | _modify |
 | declarations.swift:115:7:115:7 | get |
 | declarations.swift:115:7:115:7 | hasWillSet1 |
 | declarations.swift:115:7:115:7 | self |
@@ -183,7 +183,7 @@
 | declarations.swift:116:5:116:25 | willSet |
 | declarations.swift:116:13:116:13 | newValue |
 | declarations.swift:119:3:121:3 | var ... = ... |
-| declarations.swift:119:7:119:7 | (unnamed function decl) |
+| declarations.swift:119:7:119:7 | _modify |
 | declarations.swift:119:7:119:7 | get |
 | declarations.swift:119:7:119:7 | hasWillSet2 |
 | declarations.swift:119:7:119:7 | self |
@@ -195,7 +195,7 @@
 | declarations.swift:120:5:120:5 | self |
 | declarations.swift:120:5:120:15 | willSet |
 | declarations.swift:123:3:125:3 | var ... = ... |
-| declarations.swift:123:7:123:7 | (unnamed function decl) |
+| declarations.swift:123:7:123:7 | _modify |
 | declarations.swift:123:7:123:7 | get |
 | declarations.swift:123:7:123:7 | hasDidSet1 |
 | declarations.swift:123:7:123:7 | self |
@@ -207,7 +207,7 @@
 | declarations.swift:124:5:124:24 | didSet |
 | declarations.swift:124:12:124:12 | oldValue |
 | declarations.swift:127:3:129:3 | var ... = ... |
-| declarations.swift:127:7:127:7 | (unnamed function decl) |
+| declarations.swift:127:7:127:7 | _modify |
 | declarations.swift:127:7:127:7 | get |
 | declarations.swift:127:7:127:7 | hasDidSet2 |
 | declarations.swift:127:7:127:7 | self |
@@ -218,7 +218,7 @@
 | declarations.swift:128:5:128:5 | self |
 | declarations.swift:128:5:128:14 | didSet |
 | declarations.swift:131:3:135:3 | var ... = ... |
-| declarations.swift:131:7:131:7 | (unnamed function decl) |
+| declarations.swift:131:7:131:7 | _modify |
 | declarations.swift:131:7:131:7 | get |
 | declarations.swift:131:7:131:7 | hasBoth |
 | declarations.swift:131:7:131:7 | self |
@@ -236,8 +236,8 @@
 | declarations.swift:139:8:139:8 | self |
 | declarations.swift:144:1:144:7 | { ... } |
 | declarations.swift:146:1:148:1 | GenericClass |
-| declarations.swift:146:7:146:7 | deinit() |
-| declarations.swift:146:7:146:7 | init() |
+| declarations.swift:146:7:146:7 | GenericClass<A, B, C>.deinit() |
+| declarations.swift:146:7:146:7 | GenericClass<A, B, C>.init() |
 | declarations.swift:146:7:146:7 | self |
 | declarations.swift:146:7:146:7 | self |
 | declarations.swift:146:20:146:20 | A |
@@ -256,9 +256,9 @@
 | declarations.swift:150:50:150:53 | _ |
 | declarations.swift:150:56:150:59 | _ |
 | declarations.swift:152:1:152:22 | Derived |
-| declarations.swift:152:7:152:7 | deinit() |
+| declarations.swift:152:7:152:7 | Derived.deinit() |
 | declarations.swift:152:7:152:7 | self |
-| declarations.swift:152:21:152:21 | init() |
+| declarations.swift:152:21:152:21 | Derived.init() |
 | declarations.swift:152:21:152:21 | self |
 | declarations.swift:155:1:155:28 | var ... = ... |
 | declarations.swift:155:1:155:28 | { ... } |

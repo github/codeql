@@ -35,8 +35,8 @@ module PkgCloud {
     string kind;
 
     Credentials() {
-      exists(string propertyName, DataFlow::InvokeNode invk, int i |
-        takesConfigurationObject(invk, i) and
+      exists(string propertyName, DataFlow::InvokeNode invk |
+        takesConfigurationObject(invk, _) and
         this = invk.getOptionArgument(0, propertyName)
       |
         /*

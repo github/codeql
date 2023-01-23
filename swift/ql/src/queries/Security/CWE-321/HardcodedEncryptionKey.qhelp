@@ -14,4 +14,8 @@
     <p>The following example shows a few cases of instantiating a cipher with various encryption keys. In the 'BAD' cases, the key material is hardcoded, making the encrypted data vulnerable to recovery.  In the 'GOOD' cases, the key material is randomly generated and not hardcoded, which protects the encrypted data against recovery.</p>
     <sample src="HardcodedEncryptionKey.swift" />
   </example>
+
+  <references>
+    <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Key_Management_Cheat_Sheet.html">Key Management Cheat Sheet</a></li>
+  </references>
 </qhelp>

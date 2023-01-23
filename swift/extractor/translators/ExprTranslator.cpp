@@ -16,6 +16,9 @@ void ExprTranslator::fillAccessorSemantics(const T& ast, TrapClassOf<T>& entry) 
     case swift::AccessSemantics::Ordinary:
       entry.has_ordinary_semantics = true;
       break;
+    case swift::AccessSemantics::DistributedThunk:
+      entry.has_distributed_thunk_semantics = true;
+      break;
   }
 }
 
@@ -79,6 +82,13 @@ codeql::CallExpr ExprTranslator::translateCallExpr(const swift::CallExpr& expr) 
 
 codeql::PrefixUnaryExpr ExprTranslator::translatePrefixUnaryExpr(
     const swift::PrefixUnaryExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillApplyExpr(expr, entry);
+  return entry;
+}
+
+codeql::PostfixUnaryExpr ExprTranslator::translatePostfixUnaryExpr(
+    const swift::PostfixUnaryExpr& expr) {
   auto entry = createExprEntry(expr);
   fillApplyExpr(expr, entry);
   return entry;
@@ -518,4 +528,74 @@ codeql::UnresolvedPatternExpr ExprTranslator::translateUnresolvedPatternExpr(
   entry.sub_pattern = dispatcher.fetchLabel(expr.getSubPattern());
   return entry;
 }
+
+codeql::ObjectLiteralExpr ExprTranslator::translateObjectLiteralExpr(
+    const swift::ObjectLiteralExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.kind = static_cast<int>(expr.getLiteralKind());
+  if (auto args = expr.getArgs()) {
+    for (const auto& arg : *args) {
+      entry.arguments.push_back(emitArgument(arg));
+    }
+  }
+  return entry;
+}
+codeql::OverloadedDeclRefExpr ExprTranslator::translateOverloadedDeclRefExpr(
+    const swift::OverloadedDeclRefExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.possible_declarations = dispatcher.fetchRepeatedLabels(expr.getDecls());
+  return entry;
+}
+
+codeql::DynamicMemberRefExpr ExprTranslator::translateDynamicMemberRefExpr(
+    const swift::DynamicMemberRefExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillLookupExpr(expr, entry);
+  return entry;
+}
+
+codeql::DynamicSubscriptExpr ExprTranslator::translateDynamicSubscriptExpr(
+    const swift::DynamicSubscriptExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillLookupExpr(expr, entry);
+  return entry;
+}
+codeql::UnresolvedSpecializeExpr ExprTranslator::translateUnresolvedSpecializeExpr(
+    const swift::UnresolvedSpecializeExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher.fetchLabel(expr.getSubExpr());
+  return entry;
+}
+
+codeql::PropertyWrapperValuePlaceholderExpr
+ExprTranslator::translatePropertyWrapperValuePlaceholderExpr(
+    const swift::PropertyWrapperValuePlaceholderExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.wrapped_value = dispatcher.fetchOptionalLabel(expr.getOriginalWrappedValue());
+  entry.placeholder = dispatcher.fetchLabel(expr.getOpaqueValuePlaceholder());
+  return entry;
+}
+
+static int translatePropertyWrapperValueKind(swift::AppliedPropertyWrapperExpr::ValueKind kind) {
+  using K = swift::AppliedPropertyWrapperExpr::ValueKind;
+  switch (kind) {
+    case K::WrappedValue:
+      return 1;
+    case K::ProjectedValue:
+      return 2;
+    default:
+      return 0;
+  }
+}
+
+codeql::AppliedPropertyWrapperExpr ExprTranslator::translateAppliedPropertyWrapperExpr(
+    const swift::AppliedPropertyWrapperExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.kind = translatePropertyWrapperValueKind(expr.getValueKind());
+  entry.value =
+      dispatcher.fetchLabel(const_cast<swift::AppliedPropertyWrapperExpr&>(expr).getValue());
+  entry.param = dispatcher.fetchLabel(expr.getParamDecl());
+  return entry;
+}
+
 }  // namespace codeql

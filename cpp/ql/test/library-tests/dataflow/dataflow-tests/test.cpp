@@ -494,3 +494,24 @@ void regression_with_phi_flow(int clean1) {
     x = source();
   }
 }
+
+int intOutparamSourceMissingReturn(int *p) {
+  *p = source();
+  // return deliberately omitted to test IR dataflow behavior
+}
+
+void viaOutparamMissingReturn() {
+  int x = 0;
+  intOutparamSourceMissingReturn(&x);
+  sink(x); // $ ast,ir
+}
+
+void sink_then_source(int* p) {
+    sink(*p);
+    *p = source(); // clean
+}
+
+void test_sink_then_source() {
+    int x;
+    sink_then_source(&x);
+}

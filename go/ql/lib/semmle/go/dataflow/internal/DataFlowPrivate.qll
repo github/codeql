@@ -126,6 +126,8 @@ predicate jumpStep(Node n1, Node n2) {
     n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = sendRead and
     n2 = recvRead
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1, n2)
 }
 
 /**
@@ -188,22 +190,26 @@ predicate clearsContent(Node n, Content c) {
   // FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
 
-/** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(Node n) {
-  result = n.getType()
-  or
-  result = FlowSummaryImpl::Private::summaryNodeType(n)
+/**
+ * Holds if the value that is being tracked is expected to be stored inside content `c`
+ * at node `n`.
+ */
+predicate expectsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n, c)
 }
 
+/** Gets the type of `n` used for type pruning. */
+DataFlowType getNodeType(Node n) { result = TTodoDataFlowType() and exists(n) }
+
 /** Gets a string representation of a type returned by `getNodeType()`. */
-string ppReprType(Type t) { result = t.toString() }
+string ppReprType(DataFlowType t) { none() }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(Type t1, Type t2) {
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   any() // stub implementation
 }
 
@@ -217,7 +223,14 @@ class CastNode extends ExprNode {
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = Type;
+private newtype TDataFlowType =
+  TTodoDataFlowType() or
+  TTodoDataFlowType2() // Add a dummy value to prevent bad functionality-induced joins arising from a type of size 1.
+
+class DataFlowType extends TDataFlowType {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "" }
+}
 
 class DataFlowLocation = Location;
 
@@ -370,3 +383,10 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
 }
+
+/** An approximated `Content`. */
+class ContentApprox = Unit;
+
+/** Gets an approximated value for content `c`. */
+pragma[inline]
+ContentApprox getContentApprox(Content c) { any() }

@@ -16,6 +16,8 @@ class _DocModifier(_schema.PropertyModifier):
     doc: str
 
     def modify(self, prop: _schema.Property):
+        if "\n" in self.doc or self.doc[-1] == ".":
+            raise _schema.Error("No newlines or trailing dots are allowed in doc, did you intend to use desc?")
         prop.doc = self.doc
 
 
@@ -33,6 +35,19 @@ def include(source: str):
         "__includes", []).append(source)
 
 
+class _Namespace:
+    """ simple namespacing mechanism """
+
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+
+qltest = _Namespace()
+ql = _Namespace()
+cpp = _Namespace()
+synth = _Namespace()
+
+
 @_dataclass
 class _Pragma(_schema.PropertyModifier):
     """ A class or property pragma.
@@ -40,6 +55,10 @@ class _Pragma(_schema.PropertyModifier):
     For schema classes it acts as a python decorator with `@`.
     """
     pragma: str
+
+    def __post_init__(self):
+        namespace, _, name = self.pragma.partition('_')
+        setattr(globals()[namespace], name, self)
 
     def modify(self, prop: _schema.Property):
         prop.pragmas.append(self.pragma)
@@ -84,13 +103,6 @@ class _TypeModifier:
         return item | self.modifier
 
 
-class _Namespace:
-    """ simple namespacing mechanism """
-
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
-
-
 _ClassDecorator = _Callable[[type], type]
 
 
@@ -115,28 +127,23 @@ child = _ChildModifier()
 doc = _DocModifier
 desc = _DescModifier
 
-qltest = _Namespace(
-    skip=_Pragma("qltest_skip"),
-    collapse_hierarchy=_Pragma("qltest_collapse_hierarchy"),
-    uncollapse_hierarchy=_Pragma("qltest_uncollapse_hierarchy"),
-)
+use_for_null = _annotate(null=True)
 
-ql = _Namespace(
-    default_doc_name=lambda doc: _annotate(doc_name=doc)
-)
+_Pragma("qltest_skip")
+_Pragma("qltest_collapse_hierarchy")
+_Pragma("qltest_uncollapse_hierarchy")
 
-cpp = _Namespace(
-    skip=_Pragma("cpp_skip"),
-)
+ql.default_doc_name = lambda doc: _annotate(doc_name=doc)
+_Pragma("ql_internal")
+
+_Pragma("cpp_skip")
 
 
 def group(name: str = "") -> _ClassDecorator:
     return _annotate(group=name)
 
 
-synth = _Namespace(
-    from_class=lambda ref: _annotate(ipa=_schema.IpaInfo(
-        from_class=_schema.get_type_name(ref))),
-    on_arguments=lambda **kwargs: _annotate(
-        ipa=_schema.IpaInfo(on_arguments={k: _schema.get_type_name(t) for k, t in kwargs.items()}))
-)
+synth.from_class = lambda ref: _annotate(ipa=_schema.IpaInfo(
+    from_class=_schema.get_type_name(ref)))
+synth.on_arguments = lambda **kwargs: _annotate(
+    ipa=_schema.IpaInfo(on_arguments={k: _schema.get_type_name(t) for k, t in kwargs.items()}))

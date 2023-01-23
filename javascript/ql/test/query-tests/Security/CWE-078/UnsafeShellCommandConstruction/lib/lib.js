@@ -278,7 +278,7 @@ module.exports.Foo = class Foo {
 		this.opts = {};
 		this.opts.bla = opts.bla
 
-		cp.exec("rm -rf " + this.opts.bla); // NOT OK - but FN [INCONSISTENCY]
+		cp.exec("rm -rf " + this.opts.bla); // NOT OK
 	}
 }
 
@@ -544,4 +544,13 @@ module.exports.sanitizer4 = function (name) {
 	} else {
 		cp.exec("rm -rf " + name); // NOT OK
 	}
+}
+
+
+module.exports.shellThing = function (name) {
+    function indirectShell(cmd, args, spawnOpts) {
+        cp.spawn(cmd, args, spawnOpts); // NOT OK
+    }
+    
+    indirectShell("rm", ["-rf", name], {shell: true});
 }

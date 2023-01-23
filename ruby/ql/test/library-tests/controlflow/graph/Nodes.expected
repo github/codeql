@@ -31,7 +31,7 @@ callsWithNoArguments
 | cfg.rb:138:17:138:23 | * ... |
 | cfg.rb:141:1:141:8 | call to itself |
 | cfg.rb:143:10:143:21 | call to itself |
-| cfg.rb:147:10:147:14 | call to super |
+| cfg.rb:147:10:147:14 | super call to print |
 | cfg.rb:147:10:147:22 | call to print |
 | cfg.rb:151:9:151:17 | call to new |
 | cfg.rb:158:16:158:21 | * ... |

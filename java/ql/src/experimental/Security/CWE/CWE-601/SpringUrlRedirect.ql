@@ -7,6 +7,7 @@
  * @precision high
  * @id java/spring-unvalidated-url-redirection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-601
  */
 

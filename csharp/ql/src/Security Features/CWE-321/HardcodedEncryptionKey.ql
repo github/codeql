@@ -1,7 +1,7 @@
 /**
  * @name Hard-coded encryption key
  * @description The .Key property or rgbKey parameter of a SymmetricAlgorithm should never be a hard-coded value.
- * @kind problem
+ * @kind path-problem
  * @id cs/hardcoded-key
  * @problem.severity error
  * @security-severity 8.1
@@ -15,6 +15,7 @@
 
 import csharp
 import semmle.code.csharp.security.cryptography.EncryptionKeyDataFlowQuery
+import DataFlow::PathGraph
 
 /**
  * The creation of a literal byte array.
@@ -36,7 +37,13 @@ class StringLiteralSource extends KeySource {
   StringLiteralSource() { this.asExpr() instanceof StringLiteral }
 }
 
-from SymmetricKeyTaintTrackingConfiguration keyFlow, KeySource src, SymmetricEncryptionKeySink sink
-where keyFlow.hasFlow(src, sink)
-select sink, "This hard-coded $@ is used in symmetric algorithm in " + sink.getDescription(), src,
+from
+  SymmetricKeyTaintTrackingConfiguration keyFlow, DataFlow::PathNode source,
+  DataFlow::PathNode sink, KeySource srcNode, SymmetricEncryptionKeySink sinkNode
+where
+  keyFlow.hasFlowPath(source, sink) and
+  source.getNode() = srcNode and
+  sink.getNode() = sinkNode
+select sink.getNode(), source, sink,
+  "This hard-coded $@ is used in symmetric algorithm in " + sinkNode.getDescription(), srcNode,
   "symmetric key"

@@ -47,6 +47,12 @@ The query history **Format** setting controls how the extension lists queries in
 
 To override the default label, you can specify a different format for the query history items.
 
+
+Changing the retention period for query history items
+-----------------------------------------------------
+
+By default, items in the query history view are retained for 30 days. You can set a different time to live (TTL) by changing the "Code QL > Query History: TTL" setting. To retain items indefinitely, set the value to 0.
+
 .. _configuring-settings-for-running-queries:
 
 Configuring settings for running queries

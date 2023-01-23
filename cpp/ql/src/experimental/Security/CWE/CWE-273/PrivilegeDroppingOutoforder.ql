@@ -8,6 +8,7 @@
  * @problem.severity recommendation
  * @id cpp/drop-linux-privileges-outoforder
  * @tags security
+ *       experimental
  *       external/cwe/cwe-273
  * @precision medium
  */

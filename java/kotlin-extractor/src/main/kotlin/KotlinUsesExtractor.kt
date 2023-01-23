@@ -40,11 +40,15 @@ open class KotlinUsesExtractor(
     val pluginContext: IrPluginContext,
     val globalExtensionState: KotlinExtractorGlobalState
 ) {
-    val javaLangObject by lazy {
-        val result = pluginContext.referenceClass(FqName("java.lang.Object"))?.owner
-        result?.let { extractExternalClassLater(it) }
-        result
-    }
+    fun referenceExternalClass(name: String) =
+        getClassByFqName(pluginContext, FqName(name))?.owner.also {
+            if (it == null)
+                logger.warn("Unable to resolve external class $name")
+            else
+                extractExternalClassLater(it)
+        }
+
+    val javaLangObject by lazy { referenceExternalClass("java.lang.Object") }
 
     val javaLangObjectType by lazy {
         javaLangObject?.typeWith()
@@ -67,15 +71,12 @@ open class KotlinUsesExtractor(
         TypeResult(fakeKotlinType(), "", "")
     )
 
-    @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
     fun extractFileClass(f: IrFile): Label<out DbClass> {
-        val fileName = f.fileEntry.name
         val pkg = f.fqName.asString()
-        val defaultName = fileName.replaceFirst(Regex(""".*[/\\]"""), "").replaceFirst(Regex("""\.kt$"""), "").replaceFirstChar({ it.uppercase() }) + "Kt"
-        var jvmName = getJvmName(f) ?: defaultName
+        val jvmName = getFileClassName(f)
         val qualClassName = if (pkg.isEmpty()) jvmName else "$pkg.$jvmName"
         val label = "@\"class;$qualClassName\""
-        val id: Label<DbClass> = tw.getLabelFor(label, {
+        val id: Label<DbClass> = tw.getLabelFor(label) {
             val fileId = tw.mkFileId(f.path, false)
             val locId = tw.getWholeFileLocation(fileId)
             val pkgId = extractPackage(pkg)
@@ -84,7 +85,7 @@ open class KotlinUsesExtractor(
             tw.writeHasLocation(it, locId)
 
             addModifiers(it, "public", "final")
-        })
+        }
         return id
     }
 
@@ -117,7 +118,7 @@ open class KotlinUsesExtractor(
     }
 
     fun getJavaEquivalentClass(c: IrClass) =
-        getJavaEquivalentClassId(c)?.let { pluginContext.referenceClass(it.asSingleFqName()) }?.owner
+        getJavaEquivalentClassId(c)?.let { getClassByFqName(pluginContext, it.asSingleFqName()) }?.owner
 
     /**
      * Gets a KotlinFileExtractor based on this one, except it attributes locations to the file that declares the given class.
@@ -258,10 +259,26 @@ open class KotlinUsesExtractor(
     private fun propertySignature(p: IrProperty) =
         ((p.getter ?: p.setter)?.extensionReceiverParameter?.let { useType(erase(it.type)).javaResult.signature } ?: "")
 
+    fun getTrapFileSignature(d: IrDeclaration) =
+        when(d) {
+            is IrFunction ->
+                // Note we erase the parameter types before calling useType even though the signature should be the same
+                // in order to prevent an infinite loop through useTypeParameter -> useDeclarationParent -> useFunction
+                // -> extractFunctionLaterIfExternalFileMember, which would result for `fun <T> f(t: T) { ... }` for example.
+                (listOfNotNull(d.extensionReceiverParameter) + d.valueParameters)
+                    .map { useType(erase(it.type)).javaResult.signature }
+                    .joinToString(separator = ",", prefix = "(", postfix = ")")
+            is IrProperty -> propertySignature(d) + externalClassExtractor.propertySignature
+            is IrField -> (d.correspondingPropertySymbol?.let { propertySignature(it.owner) } ?: "") + externalClassExtractor.fieldSignature
+            else -> "unknown signature".also {
+                logger.warn("Trap file signature requested for unexpected element $d")
+            }
+        }
+
     private fun extractPropertyLaterIfExternalFileMember(p: IrProperty) {
         if (isExternalFileClassMember(p)) {
             extractExternalClassLater(p.parentAsClass)
-            val signature = propertySignature(p) + externalClassExtractor.propertySignature
+            val signature = getTrapFileSignature(p)
             dependencyCollector?.addDependency(p, signature)
             externalClassExtractor.extractLater(p, signature)
         }
@@ -270,7 +287,7 @@ open class KotlinUsesExtractor(
     private fun extractFieldLaterIfExternalFileMember(f: IrField) {
         if (isExternalFileClassMember(f)) {
             extractExternalClassLater(f.parentAsClass)
-            val signature = (f.correspondingPropertySymbol?.let { propertySignature(it.owner) } ?: "") + externalClassExtractor.fieldSignature
+            val signature = getTrapFileSignature(f)
             dependencyCollector?.addDependency(f, signature)
             externalClassExtractor.extractLater(f, signature)
         }
@@ -285,18 +302,7 @@ open class KotlinUsesExtractor(
                 // getters and setters are extracted alongside it
                 return
             }
-            // Note we erase the parameter types before calling useType even though the signature should be the same
-            // in order to prevent an infinite loop through useTypeParameter -> useDeclarationParent -> useFunction
-            // -> extractFunctionLaterIfExternalFileMember, which would result for `fun <T> f(t: T) { ... }` for example.
-            val ext = f.extensionReceiverParameter
-            val parameters = if (ext != null) {
-                listOf(ext) + f.valueParameters
-            } else {
-                f.valueParameters
-            }
-
-            val paramSigs = parameters.map { useType(erase(it.type)).javaResult.signature }
-            val signature = paramSigs.joinToString(separator = ",", prefix = "(", postfix = ")")
+            val signature = getTrapFileSignature(f)
             dependencyCollector?.addDependency(f, signature)
             externalClassExtractor.extractLater(f, signature)
         }
@@ -322,7 +328,7 @@ open class KotlinUsesExtractor(
                 return@getOrPut null
             }
 
-            val result = pluginContext.referenceClass(qualifiedName)?.owner
+            val result = getClassByFqName(pluginContext, qualifiedName)?.owner
             if (result != null) {
                 logger.info("Replaced synthetic class ${c.name} with its real equivalent")
                 return@getOrPut result
@@ -331,7 +337,7 @@ open class KotlinUsesExtractor(
             // The above doesn't work for (some) generated nested classes, such as R$id, which should be R.id
             val fqn = qualifiedName.asString()
             if (fqn.indexOf('$') >= 0) {
-                val nested = pluginContext.referenceClass(FqName(fqn.replace('$', '.')))?.owner
+                val nested = getClassByFqName(pluginContext, fqn.replace('$', '.'))?.owner
                 if (nested != null) {
                     logger.info("Replaced synthetic nested class ${c.name} with its real equivalent")
                     return@getOrPut nested
@@ -448,7 +454,7 @@ open class KotlinUsesExtractor(
         }
 
         fun tryGetPair(arity: Int): Pair<IrClass, List<IrTypeArgument>?>? {
-            val replaced = pluginContext.referenceClass(fqName)?.owner ?: return null
+            val replaced = getClassByFqName(pluginContext, fqName)?.owner ?: return null
             return Pair(replaced, List(arity) { makeTypeProjection(pluginContext.irBuiltIns.anyNType, Variance.INVARIANT) })
         }
 
@@ -637,26 +643,6 @@ open class KotlinUsesExtractor(
         RETURN, GENERIC_ARGUMENT, OTHER
     }
 
-    private fun isOnDeclarationStackWithoutTypeParameters(f: IrFunction) =
-        this is KotlinFileExtractor && this.declarationStack.findOverriddenAttributes(f)?.typeParameters?.isEmpty() == true
-
-    private fun isStaticFunctionOnStackBeforeClass(c: IrClass) =
-        this is KotlinFileExtractor && (this.declarationStack.findFirst { it.first == c || it.second?.isStatic == true })?.second?.isStatic == true
-
-    private fun isUnavailableTypeParameter(t: IrType) =
-        t is IrSimpleType && t.classifier.owner.let { owner ->
-            owner is IrTypeParameter && owner.parent.let { parent ->
-                when (parent) {
-                    is IrFunction -> isOnDeclarationStackWithoutTypeParameters(parent)
-                    is IrClass -> isStaticFunctionOnStackBeforeClass(parent)
-                    else -> false
-                }
-            }
-        }
-
-    private fun argIsUnavailableTypeParameter(t: IrTypeArgument) =
-        t is IrTypeProjection && isUnavailableTypeParameter(t.type)
-
     private fun useSimpleType(s: IrSimpleType, context: TypeContext): TypeResults {
         if (s.abbreviation != null) {
             // TODO: Extract this information
@@ -729,13 +715,11 @@ open class KotlinUsesExtractor(
             }
 
             owner is IrClass -> {
-                val args = if (s.isRawType() || s.arguments.any { argIsUnavailableTypeParameter(it) }) null else s.arguments
+                val args = if (s.isRawType()) null else s.arguments
 
                 return useSimpleTypeClass(owner, args, s.isNullable())
             }
             owner is IrTypeParameter -> {
-                if (isUnavailableTypeParameter(s))
-                    return useType(erase(s), context)
                 val javaResult = useTypeParameter(owner)
                 val aClassId = makeClass("kotlin", "TypeParam") // TODO: Wrong
                 val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
@@ -821,7 +805,7 @@ open class KotlinUsesExtractor(
                 OperatorNameConventions.INVOKE.asString())
 
         fun getSuffixIfInternal() =
-            if (f.visibility == DescriptorVisibilities.INTERNAL && f !is IrConstructor) {
+            if (f.visibility == DescriptorVisibilities.INTERNAL && f !is IrConstructor && !(f.parent is IrFile || isExternalFileClassMember(f))) {
                 "\$" + getJvmModuleName(f)
             } else {
                 ""
@@ -883,11 +867,7 @@ open class KotlinUsesExtractor(
             else -> null
         }
 
-    val javaUtilCollection by lazy {
-        val result = pluginContext.referenceClass(FqName("java.util.Collection"))?.owner
-        result?.let { extractExternalClassLater(it) }
-        result
-    }
+    val javaUtilCollection by lazy { referenceExternalClass("java.util.Collection") }
 
     val wildcardCollectionType by lazy {
         javaUtilCollection?.let {
@@ -1150,11 +1130,7 @@ open class KotlinUsesExtractor(
         return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
     }
 
-    val javaLangClass by lazy {
-        val result = pluginContext.referenceClass(FqName("java.lang.Class"))?.owner
-        result?.let { extractExternalClassLater(it) }
-        result
-    }
+    val javaLangClass by lazy { referenceExternalClass("java.lang.Class") }
 
     fun kClassToJavaClass(t: IrType): IrType {
         when(t) {
@@ -1476,7 +1452,13 @@ open class KotlinUsesExtractor(
         param.parent.let {
             (it as? IrFunction)?.let { fn ->
                 if (this is KotlinFileExtractor)
-                    this.declarationStack.findOverriddenAttributes(fn)?.id
+                    this.declarationStack.findOverriddenAttributes(fn)?.takeUnless {
+                        // When extracting the `static fun f$default(...)` that accompanies `fun <T> f(val x: T? = defaultExpr, ...)`,
+                        // `f$default` has no type parameters, and so there is no `f$default::T` to refer to.
+                        // We have no good way to extract references to `T` in `defaultExpr`, so we just fall back on describing it
+                        // in terms of `f::T`, even though that type variable ought to be out of scope here.
+                        attribs -> attribs.typeParameters?.isEmpty() == true
+                    }?.id
                 else
                     null
             } ?:
@@ -1647,7 +1629,7 @@ open class KotlinUsesExtractor(
     fun useValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>?): Label<out DbParam> =
         tw.getLabelFor(getValueParameterLabel(vp, parent))
 
-    private fun isDirectlyExposedCompanionObjectField(f: IrField) =
+    private fun isDirectlyExposableCompanionObjectField(f: IrField) =
         f.hasAnnotation(FqName("kotlin.jvm.JvmField")) ||
         f.correspondingPropertySymbol?.owner?.let {
             it.isConst || it.isLateinit
@@ -1655,11 +1637,13 @@ open class KotlinUsesExtractor(
 
     fun getFieldParent(f: IrField) =
         f.parentClassOrNull?.let {
-            if (it.isCompanion && isDirectlyExposedCompanionObjectField(f))
+            if (it.isCompanion && isDirectlyExposableCompanionObjectField(f))
                 it.parent
             else
                 null
         } ?: f.parent
+
+    fun isDirectlyExposedCompanionObjectField(f: IrField) = getFieldParent(f) != f.parent
 
     // Gets a field's corresponding property's extension receiver type, if any
     fun getExtensionReceiverType(f: IrField) =

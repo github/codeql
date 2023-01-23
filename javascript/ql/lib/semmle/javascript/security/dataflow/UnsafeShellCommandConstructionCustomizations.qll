@@ -156,14 +156,9 @@ module UnsafeShellCommandConstruction {
   }
 
   /**
-   * Gets a node that ends up in an array that is ultimately executed as a shell script by `sys`.
+   * Holds if the arguments array given to `sys` is joined as a string because `shell` is set to true.
    */
-  private DataFlow::SourceNode endsInShellExecutedArray(
-    DataFlow::TypeBackTracker t, SystemCommandExecution sys
-  ) {
-    t.start() and
-    result = sys.getArgumentList().getALocalSource() and
-    // the array gets joined to a string when `shell` is set to true.
+  predicate executesArrayAsShell(SystemCommandExecution sys) {
     sys.getOptionsArg()
         .getALocalSource()
         .getAPropertyWrite("shell")
@@ -171,6 +166,22 @@ module UnsafeShellCommandConstruction {
         .asExpr()
         .(BooleanLiteral)
         .getValue() = "true"
+    or
+    exists(API::Node node |
+      node.asSink() = sys.getOptionsArg() and
+      node.getMember("shell").asSink().mayHaveBooleanValue(true)
+    )
+  }
+
+  /**
+   * Gets a node that ends up in an array that is ultimately executed as a shell script by `sys`.
+   */
+  private DataFlow::SourceNode endsInShellExecutedArray(
+    DataFlow::TypeBackTracker t, SystemCommandExecution sys
+  ) {
+    t.start() and
+    result = sys.getArgumentList().getALocalSource() and
+    executesArrayAsShell(sys)
     or
     exists(DataFlow::TypeBackTracker t2 |
       result = endsInShellExecutedArray(t2, sys).backtrack(t2, t)
@@ -193,6 +204,10 @@ module UnsafeShellCommandConstruction {
         or
         this = arr.getAMethodCall(["push", "unshift"]).getAnArgument()
       )
+      or
+      this = sys.getArgumentList() and
+      not this instanceof DataFlow::ArrayCreationNode and
+      executesArrayAsShell(sys)
     }
 
     override string getSinkType() { result = "shell argument" }

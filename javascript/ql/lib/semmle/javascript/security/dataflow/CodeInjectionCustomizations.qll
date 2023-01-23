@@ -34,9 +34,7 @@ module CodeInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of remote user input, considered as a flow source for code injection. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * An expression which may be interpreted as an AngularJS expression.
@@ -410,4 +408,8 @@ module CodeInjection {
 
   /** DEPRECATED: Alias for JsonStringifySanitizer */
   deprecated class JSONStringifySanitizer = JsonStringifySanitizer;
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("code-injection").asSink() }
+  }
 }

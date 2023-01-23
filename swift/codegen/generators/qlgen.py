@@ -43,10 +43,6 @@ class FormatError(Error):
     pass
 
 
-class ModifiedStubMarkedAsGeneratedError(Error):
-    pass
-
-
 class RootElementHasChildren(Error):
     pass
 
@@ -63,6 +59,8 @@ abbreviations = {
     "repr": "representation",
     "param": "parameter",
     "int": "integer",
+    "var": "variable",
+    "ref": "reference",
 }
 
 abbreviations.update({f"{k}s": f"{v}s" for k, v in abbreviations.items()})
@@ -147,7 +145,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
     return ql.Property(**args)
 
 
-def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
+def get_ql_class(cls: schema.Class):
     pragmas = {k: True for k in cls.pragmas if k.startswith("ql")}
     prev_child = ""
     properties = []
@@ -215,32 +213,11 @@ def get_classes_used_by(cls: ql.Class) -> typing.List[str]:
     return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper() and t != cls.name))
 
 
-_generated_stub_re = re.compile(r"\n*private import .*\n+class \w+ extends Generated::\w+ \{[ \n]?\}", re.MULTILINE)
-
-
-def _is_generated_stub(file: pathlib.Path) -> bool:
-    with open(file) as contents:
-        for line in contents:
-            if not line.startswith("// generated"):
-                return False
-            break
-        else:
-            # no lines
-            return False
-        # we still do not detect modified synth constructors
-        if not file.name.endswith("Constructor.qll"):
-            # one line already read, if we can read 5 other we are past the normal stub generation
-            line_threshold = 5
-            first_lines = list(itertools.islice(contents, line_threshold))
-            if len(first_lines) == line_threshold or not _generated_stub_re.match("".join(first_lines)):
-                raise ModifiedStubMarkedAsGeneratedError(
-                    f"{file.name} stub was modified but is still marked as generated")
-        return True
-
-
 def format(codeql, files):
-    format_cmd = [codeql, "query", "format", "--in-place", "--"]
-    format_cmd.extend(str(f) for f in files if f.suffix in (".qll", ".ql"))
+    ql_files = [str(f) for f in files if f.suffix in (".qll", ".ql")]
+    if not ql_files:
+        return
+    format_cmd = [codeql, "query", "format", "--in-place", "--"] + ql_files
     res = subprocess.run(format_cmd, stderr=subprocess.PIPE, text=True)
     if res.returncode:
         for line in res.stderr.splitlines():
@@ -272,7 +249,12 @@ def _get_all_properties_to_be_tested(cls: schema.Class, lookup: typing.Dict[str,
         if not ("qltest_skip" in c.pragmas or "qltest_skip" in p.pragmas):
             # TODO here operations are duplicated, but should be better if we split ql and qltest generation
             p = get_ql_property(c, p)
-            yield ql.PropertyForTest(p.getter, p.type, p.is_single, p.is_predicate, p.is_repeated)
+            yield ql.PropertyForTest(p.getter, is_total=p.is_single or p.is_predicate,
+                                     type=p.type if not p.is_predicate else None, is_repeated=p.is_repeated)
+            if p.is_repeated and not p.is_optional:
+                yield ql.PropertyForTest(f"getNumberOf{p.plural}", type="int")
+            elif p.is_optional and not p.is_repeated:
+                yield ql.PropertyForTest(f"has{p.singular}")
 
 
 def _partition_iter(x, pred):
@@ -306,15 +288,18 @@ def generate(opts, renderer):
     stub_out = opts.ql_stub_output
     test_out = opts.ql_test_output
     missing_test_source_filename = "MISSING_SOURCE.txt"
+    include_file = stub_out.with_suffix(".qll")
 
-    existing = {q for q in out.rglob("*.qll")}
-    existing |= {q for q in stub_out.rglob("*.qll") if _is_generated_stub(q)}
-    existing |= {q for q in test_out.rglob("*.ql")}
-    existing |= {q for q in test_out.rglob(missing_test_source_filename)}
+    generated = {q for q in out.rglob("*.qll")}
+    generated.add(include_file)
+    generated.update(q for q in test_out.rglob("*.ql"))
+    generated.update(q for q in test_out.rglob(missing_test_source_filename))
+
+    stubs = {q for q in stub_out.rglob("*.qll")}
 
     data = schema.load_file(input)
 
-    classes = {name: get_ql_class(cls, data.classes) for name, cls in data.classes.items()}
+    classes = {name: get_ql_class(cls) for name, cls in data.classes.items()}
     if not classes:
         raise NoClasses
     root = next(iter(classes.values()))
@@ -323,77 +308,77 @@ def generate(opts, renderer):
 
     imports = {}
 
-    db_classes = [cls for cls in classes.values() if not cls.ipa]
-    renderer.render(ql.DbClasses(db_classes), out / "Raw.qll")
+    with renderer.manage(generated=generated, stubs=stubs, registry=opts.generated_registry,
+                         force=opts.force) as renderer:
 
-    classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
-    for c in classes_by_dir_and_name:
-        imports[c.name] = get_import(stub_out / c.path, opts.swift_dir)
+        db_classes = [cls for cls in classes.values() if not cls.ipa]
+        renderer.render(ql.DbClasses(db_classes), out / "Raw.qll")
 
-    for c in classes.values():
-        qll = out / c.path.with_suffix(".qll")
-        c.imports = [imports[t] for t in get_classes_used_by(c)]
-        renderer.render(c, qll)
-        stub_file = stub_out / c.path.with_suffix(".qll")
-        if not stub_file.is_file() or _is_generated_stub(stub_file):
-            stub = ql.Stub(
-                name=c.name, base_import=get_import(qll, opts.swift_dir))
-            renderer.render(stub, stub_file)
+        classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
+        for c in classes_by_dir_and_name:
+            imports[c.name] = get_import(stub_out / c.path, opts.swift_dir)
 
-    # for example path/to/elements -> path/to/elements.qll
-    include_file = stub_out.with_suffix(".qll")
-    renderer.render(ql.ImportList(list(imports.values())), include_file)
+        for c in classes.values():
+            qll = out / c.path.with_suffix(".qll")
+            c.imports = [imports[t] for t in get_classes_used_by(c)]
+            renderer.render(c, qll)
+            stub_file = stub_out / c.path.with_suffix(".qll")
+            if not renderer.is_customized_stub(stub_file):
+                stub = ql.Stub(name=c.name, base_import=get_import(qll, opts.swift_dir))
+                renderer.render(stub, stub_file)
 
-    renderer.render(ql.GetParentImplementation(list(classes.values())), out / 'ParentChild.qll')
+        # for example path/to/elements -> path/to/elements.qll
+        renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].ql_internal]),
+                        include_file)
 
-    for c in data.classes.values():
-        if _should_skip_qltest(c, data.classes):
-            continue
-        test_dir = test_out / c.group / c.name
-        test_dir.mkdir(parents=True, exist_ok=True)
-        if not any(test_dir.glob("*.swift")):
-            log.warning(f"no test source in {test_dir.relative_to(test_out)}")
-            renderer.render(ql.MissingTestInstructions(),
-                            test_dir / missing_test_source_filename)
-            continue
-        total_props, partial_props = _partition(_get_all_properties_to_be_tested(c, data.classes),
-                                                lambda p: p.is_single or p.is_predicate)
-        renderer.render(ql.ClassTester(class_name=c.name,
-                                       properties=total_props,
-                                       # in case of collapsed hierarchies we want to see the actual QL class in results
-                                       show_ql_class="qltest_collapse_hierarchy" in c.pragmas),
-                        test_dir / f"{c.name}.ql")
-        for p in partial_props:
-            renderer.render(ql.PropertyTester(class_name=c.name,
-                                              property=p), test_dir / f"{c.name}_{p.getter}.ql")
+        renderer.render(ql.GetParentImplementation(list(classes.values())), out / 'ParentChild.qll')
 
-    final_ipa_types = []
-    non_final_ipa_types = []
-    constructor_imports = []
-    ipa_constructor_imports = []
-    stubs = {}
-    for cls in sorted(data.classes.values(), key=lambda cls: (cls.group, cls.name)):
-        ipa_type = get_ql_ipa_class(cls)
-        if ipa_type.is_final:
-            final_ipa_types.append(ipa_type)
-            if ipa_type.has_params:
-                stub_file = stub_out / cls.group / f"{cls.name}Constructor.qll"
-                if not stub_file.is_file() or _is_generated_stub(stub_file):
-                    # stub rendering must be postponed as we might not have yet all subtracted ipa types in `ipa_type`
-                    stubs[stub_file] = ql.Synth.ConstructorStub(ipa_type)
-                constructor_import = get_import(stub_file, opts.swift_dir)
-                constructor_imports.append(constructor_import)
-                if ipa_type.is_ipa:
-                    ipa_constructor_imports.append(constructor_import)
-        else:
-            non_final_ipa_types.append(ipa_type)
+        for c in data.classes.values():
+            if _should_skip_qltest(c, data.classes):
+                continue
+            test_dir = test_out / c.group / c.name
+            test_dir.mkdir(parents=True, exist_ok=True)
+            if not any(test_dir.glob("*.swift")):
+                log.warning(f"no test source in {test_dir.relative_to(test_out)}")
+                renderer.render(ql.MissingTestInstructions(),
+                                test_dir / missing_test_source_filename)
+                continue
+            total_props, partial_props = _partition(_get_all_properties_to_be_tested(c, data.classes),
+                                                    lambda p: p.is_total)
+            renderer.render(ql.ClassTester(class_name=c.name,
+                                           properties=total_props,
+                                           # in case of collapsed hierarchies we want to see the actual QL class in results
+                                           show_ql_class="qltest_collapse_hierarchy" in c.pragmas),
+                            test_dir / f"{c.name}.ql")
+            for p in partial_props:
+                renderer.render(ql.PropertyTester(class_name=c.name,
+                                                  property=p), test_dir / f"{c.name}_{p.getter}.ql")
 
-    for stub_file, data in stubs.items():
-        renderer.render(data, stub_file)
-    renderer.render(ql.Synth.Types(root.name, final_ipa_types, non_final_ipa_types), out / "Synth.qll")
-    renderer.render(ql.ImportList(constructor_imports), out / "SynthConstructors.qll")
-    renderer.render(ql.ImportList(ipa_constructor_imports), out / "PureSynthConstructors.qll")
+        final_ipa_types = []
+        non_final_ipa_types = []
+        constructor_imports = []
+        ipa_constructor_imports = []
+        stubs = {}
+        for cls in sorted(data.classes.values(), key=lambda cls: (cls.group, cls.name)):
+            ipa_type = get_ql_ipa_class(cls)
+            if ipa_type.is_final:
+                final_ipa_types.append(ipa_type)
+                if ipa_type.has_params:
+                    stub_file = stub_out / cls.group / f"{cls.name}Constructor.qll"
+                    if not renderer.is_customized_stub(stub_file):
+                        # stub rendering must be postponed as we might not have yet all subtracted ipa types in `ipa_type`
+                        stubs[stub_file] = ql.Synth.ConstructorStub(ipa_type)
+                    constructor_import = get_import(stub_file, opts.swift_dir)
+                    constructor_imports.append(constructor_import)
+                    if ipa_type.is_ipa:
+                        ipa_constructor_imports.append(constructor_import)
+            else:
+                non_final_ipa_types.append(ipa_type)
 
-    renderer.cleanup(existing)
-    if opts.ql_format:
-        format(opts.codeql_binary, renderer.written)
+        for stub_file, data in stubs.items():
+            renderer.render(data, stub_file)
+        renderer.render(ql.Synth.Types(root.name, final_ipa_types, non_final_ipa_types), out / "Synth.qll")
+        renderer.render(ql.ImportList(constructor_imports), out / "SynthConstructors.qll")
+        renderer.render(ql.ImportList(ipa_constructor_imports), out / "PureSynthConstructors.qll")
+        if opts.ql_format:
+            format(opts.codeql_binary, renderer.written)

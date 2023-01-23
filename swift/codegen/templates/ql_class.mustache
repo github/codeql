@@ -11,6 +11,9 @@ module Generated {
   {{#doc}}
    * {{.}}
   {{/doc}}
+  {{#ql_internal}}
+   * INTERNAL: Do not use.
+  {{/ql_internal}}
    */
   {{/has_doc}}
   class {{name}} extends Synth::T{{name}}{{#bases}}, {{.}}{{/bases}} {
@@ -126,7 +129,7 @@ module Generated {
      * Gets the number of {{doc_plural}}.
      */
     final int getNumberOf{{plural}}() {
-      result = count({{indefinite_getter}}())
+      result = count(int i | exists({{getter}}(i)))
     }
     {{/is_optional}}
     {{/is_repeated}}

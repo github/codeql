@@ -41,10 +41,10 @@ def get_cpp_type(schema_type: str):
 def get_field(c: dbscheme.Column):
     args = {
         "field_name": c.schema_name,
-        "type": c.type,
+        "base_type": c.type,
     }
     args.update(cpp.get_field_override(c.schema_name))
-    args["type"] = get_cpp_type(args["type"])
+    args["base_type"] = get_cpp_type(args["base_type"])
     return cpp.Field(**args)
 
 

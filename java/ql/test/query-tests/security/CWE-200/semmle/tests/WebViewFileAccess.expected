@@ -1,0 +1,3 @@
+| WebViewFileAccess.java:8:9:8:41 | setAllowFileAccess(...) | WebView setting setAllowFileAccess may allow for unauthorized access of sensitive information. |
+| WebViewFileAccess.java:10:9:10:53 | setAllowFileAccessFromFileURLs(...) | WebView setting setAllowFileAccessFromFileURLs may allow for unauthorized access of sensitive information. |
+| WebViewFileAccess.java:12:9:12:58 | setAllowUniversalAccessFromFileURLs(...) | WebView setting setAllowUniversalAccessFromFileURLs may allow for unauthorized access of sensitive information. |

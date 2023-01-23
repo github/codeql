@@ -5,7 +5,6 @@
  */
 
 private import cpp
-import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.IR
 
 /**
@@ -25,18 +24,18 @@ abstract class MustFlowConfiguration extends string {
   /**
    * Holds if `source` is a relevant data flow source.
    */
-  abstract predicate isSource(DataFlow::Node source);
+  abstract predicate isSource(Instruction source);
 
   /**
    * Holds if `sink` is a relevant data flow sink.
    */
-  abstract predicate isSink(DataFlow::Node sink);
+  abstract predicate isSink(Operand sink);
 
   /**
    * Holds if the additional flow step from `node1` to `node2` must be taken
    * into account in the analysis.
    */
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
+  predicate isAdditionalFlowStep(Operand node1, Instruction node2) { none() }
 
   /** Holds if this configuration allows flow from arguments to parameters. */
   predicate allowInterproceduralFlow() { any() }
@@ -48,17 +47,17 @@ abstract class MustFlowConfiguration extends string {
    * included in the module `PathGraph`.
    */
   final predicate hasFlowPath(MustFlowPathNode source, MustFlowPathSink sink) {
-    this.isSource(source.getNode()) and
+    this.isSource(source.getInstruction()) and
     source.getASuccessor+() = sink
   }
 }
 
 /** Holds if `node` flows from a source. */
 pragma[nomagic]
-private predicate flowsFromSource(DataFlow::Node node, MustFlowConfiguration config) {
+private predicate flowsFromSource(Instruction node, MustFlowConfiguration config) {
   config.isSource(node)
   or
-  exists(DataFlow::Node mid |
+  exists(Instruction mid |
     step(mid, node, config) and
     flowsFromSource(mid, pragma[only_bind_into](config))
   )
@@ -66,12 +65,12 @@ private predicate flowsFromSource(DataFlow::Node node, MustFlowConfiguration con
 
 /** Holds if `node` flows to a sink. */
 pragma[nomagic]
-private predicate flowsToSink(DataFlow::Node node, MustFlowConfiguration config) {
+private predicate flowsToSink(Instruction node, MustFlowConfiguration config) {
   flowsFromSource(node, pragma[only_bind_into](config)) and
   (
-    config.isSink(node)
+    config.isSink(node.getAUse())
     or
-    exists(DataFlow::Node mid |
+    exists(Instruction mid |
       step(node, mid, config) and
       flowsToSink(mid, pragma[only_bind_into](config))
     )
@@ -198,12 +197,13 @@ private module Cached {
   }
 
   cached
-  predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    instructionToOperandStep(nodeFrom.asInstruction(), nodeTo.asOperand())
+  predicate step(Instruction nodeFrom, Instruction nodeTo) {
+    exists(Operand mid |
+      instructionToOperandStep(nodeFrom, mid) and
+      operandToInstructionStep(mid, nodeTo)
+    )
     or
-    flowThroughCallable(nodeFrom.asInstruction(), nodeTo.asInstruction())
-    or
-    operandToInstructionStep(nodeFrom.asOperand(), nodeTo.asInstruction())
+    flowThroughCallable(nodeFrom, nodeTo)
   }
 }
 
@@ -213,12 +213,12 @@ private module Cached {
  * way around.
  */
 pragma[inline]
-private Declaration getEnclosingCallable(DataFlow::Node n) {
-  pragma[only_bind_into](result) = pragma[only_bind_out](n).getEnclosingCallable()
+private IRFunction getEnclosingCallable(Instruction n) {
+  pragma[only_bind_into](result) = pragma[only_bind_out](n).getEnclosingIRFunction()
 }
 
 /** Holds if `nodeFrom` flows to `nodeTo`. */
-private predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, MustFlowConfiguration config) {
+private predicate step(Instruction nodeFrom, Instruction nodeTo, MustFlowConfiguration config) {
   exists(config) and
   Cached::step(pragma[only_bind_into](nodeFrom), pragma[only_bind_into](nodeTo)) and
   (
@@ -227,37 +227,37 @@ private predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, MustFlowC
     getEnclosingCallable(nodeFrom) = getEnclosingCallable(nodeTo)
   )
   or
-  config.isAdditionalFlowStep(nodeFrom, nodeTo)
+  config.isAdditionalFlowStep(nodeFrom.getAUse(), nodeTo)
 }
 
 private newtype TLocalPathNode =
-  MkLocalPathNode(DataFlow::Node n, MustFlowConfiguration config) {
+  MkLocalPathNode(Instruction n, MustFlowConfiguration config) {
     flowsToSink(n, config) and
     (
       config.isSource(n)
       or
-      exists(MustFlowPathNode mid | step(mid.getNode(), n, config))
+      exists(MustFlowPathNode mid | step(mid.getInstruction(), n, config))
     )
   }
 
 /** A `Node` that is in a path from a source to a sink. */
 class MustFlowPathNode extends TLocalPathNode {
-  DataFlow::Node n;
+  Instruction n;
 
   MustFlowPathNode() { this = MkLocalPathNode(n, _) }
 
   /** Gets the underlying node. */
-  DataFlow::Node getNode() { result = n }
+  Instruction getInstruction() { result = n }
 
   /** Gets a textual representation of this node. */
-  string toString() { result = n.toString() }
+  string toString() { result = n.getAst().toString() }
 
   /** Gets the location of this element. */
   Location getLocation() { result = n.getLocation() }
 
   /** Gets a successor node, if any. */
   MustFlowPathNode getASuccessor() {
-    step(this.getNode(), result.getNode(), this.getConfiguration())
+    step(this.getInstruction(), result.getInstruction(), this.getConfiguration())
   }
 
   /** Gets the associated configuration. */
@@ -265,7 +265,7 @@ class MustFlowPathNode extends TLocalPathNode {
 }
 
 private class MustFlowPathSink extends MustFlowPathNode {
-  MustFlowPathSink() { this.getConfiguration().isSink(this.getNode()) }
+  MustFlowPathSink() { this.getConfiguration().isSink(this.getInstruction().getAUse()) }
 }
 
 /**

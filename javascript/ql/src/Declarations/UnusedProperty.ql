@@ -45,6 +45,11 @@ predicate flowsToTypeRestrictedExpression(LocalObject obj) {
       restricted = assertion.getExpression()
     )
     or
+    exists(SatisfiesExpr assertion |
+      type = assertion.getTypeAnnotation() and
+      restricted = assertion.getExpression()
+    )
+    or
     exists(BindingPattern v |
       type = v.getTypeAnnotation() and
       restricted = v.getAVariable().getAnAssignedExpr()

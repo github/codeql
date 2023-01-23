@@ -1,49 +1,52 @@
 edges
-| CommandInjection.go:9:13:9:19 | selection of URL : pointer type | CommandInjection.go:10:22:10:28 | cmdName |
-| GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:12:31:12:37 | tainted |
-| GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:13:31:13:37 | tainted |
-| GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:14:30:14:36 | tainted |
-| GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:15:35:15:41 | tainted |
-| GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:16:36:16:42 | tainted |
-| SanitizingDoubleDash.go:9:13:9:19 | selection of URL : pointer type | SanitizingDoubleDash.go:14:23:14:33 | slice expression |
-| SanitizingDoubleDash.go:9:13:9:19 | selection of URL : pointer type | SanitizingDoubleDash.go:40:23:40:30 | arrayLit |
-| SanitizingDoubleDash.go:9:13:9:19 | selection of URL : pointer type | SanitizingDoubleDash.go:54:23:54:30 | arrayLit |
-| SanitizingDoubleDash.go:9:13:9:19 | selection of URL : pointer type | SanitizingDoubleDash.go:70:23:70:30 | arrayLit |
-| SanitizingDoubleDash.go:9:13:9:19 | selection of URL : pointer type | SanitizingDoubleDash.go:80:23:80:29 | tainted |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:96:24:96:34 | slice expression |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:101:24:101:34 | slice expression |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:105:30:105:36 | tainted : string |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:106:24:106:31 | arrayLit |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:112:24:112:31 | arrayLit |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:118:24:118:31 | arrayLit |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:124:24:124:31 | arrayLit |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:130:24:130:31 | arrayLit |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:137:24:137:31 | arrayLit |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:144:24:144:31 | arrayLit |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:148:30:148:36 | tainted |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:152:24:152:30 | tainted |
-| SanitizingDoubleDash.go:105:15:105:37 | slice literal [array] : string | SanitizingDoubleDash.go:106:24:106:31 | arrayLit |
-| SanitizingDoubleDash.go:105:30:105:36 | tainted : string | SanitizingDoubleDash.go:105:15:105:37 | slice literal [array] : string |
+| ArgumentInjection.go:9:10:9:16 | selection of URL | ArgumentInjection.go:10:31:10:34 | path |
+| CommandInjection.go:9:13:9:19 | selection of URL | CommandInjection.go:10:22:10:28 | cmdName |
+| GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:12:31:12:37 | tainted |
+| GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:13:31:13:37 | tainted |
+| GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:14:30:14:36 | tainted |
+| GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:15:35:15:41 | tainted |
+| GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:16:36:16:42 | tainted |
+| SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:14:23:14:33 | slice expression |
+| SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:40:23:40:30 | arrayLit |
+| SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:54:23:54:30 | arrayLit |
+| SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:70:23:70:30 | arrayLit |
+| SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:80:23:80:29 | tainted |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:96:24:96:34 | slice expression |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:101:24:101:34 | slice expression |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:105:30:105:36 | tainted |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:106:24:106:31 | arrayLit |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:112:24:112:31 | arrayLit |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:118:24:118:31 | arrayLit |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:124:24:124:31 | arrayLit |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:130:24:130:31 | arrayLit |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:137:24:137:31 | arrayLit |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:144:24:144:31 | arrayLit |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:148:30:148:36 | tainted |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:152:24:152:30 | tainted |
+| SanitizingDoubleDash.go:105:15:105:37 | slice literal [array] | SanitizingDoubleDash.go:106:24:106:31 | arrayLit |
+| SanitizingDoubleDash.go:105:30:105:36 | tainted | SanitizingDoubleDash.go:105:15:105:37 | slice literal [array] |
 nodes
-| CommandInjection.go:9:13:9:19 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| ArgumentInjection.go:9:10:9:16 | selection of URL | semmle.label | selection of URL |
+| ArgumentInjection.go:10:31:10:34 | path | semmle.label | path |
+| CommandInjection.go:9:13:9:19 | selection of URL | semmle.label | selection of URL |
 | CommandInjection.go:10:22:10:28 | cmdName | semmle.label | cmdName |
-| GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| GitSubcommands.go:10:13:10:19 | selection of URL | semmle.label | selection of URL |
 | GitSubcommands.go:12:31:12:37 | tainted | semmle.label | tainted |
 | GitSubcommands.go:13:31:13:37 | tainted | semmle.label | tainted |
 | GitSubcommands.go:14:30:14:36 | tainted | semmle.label | tainted |
 | GitSubcommands.go:15:35:15:41 | tainted | semmle.label | tainted |
 | GitSubcommands.go:16:36:16:42 | tainted | semmle.label | tainted |
-| SanitizingDoubleDash.go:9:13:9:19 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| SanitizingDoubleDash.go:9:13:9:19 | selection of URL | semmle.label | selection of URL |
 | SanitizingDoubleDash.go:14:23:14:33 | slice expression | semmle.label | slice expression |
 | SanitizingDoubleDash.go:40:23:40:30 | arrayLit | semmle.label | arrayLit |
 | SanitizingDoubleDash.go:54:23:54:30 | arrayLit | semmle.label | arrayLit |
 | SanitizingDoubleDash.go:70:23:70:30 | arrayLit | semmle.label | arrayLit |
 | SanitizingDoubleDash.go:80:23:80:29 | tainted | semmle.label | tainted |
-| SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| SanitizingDoubleDash.go:92:13:92:19 | selection of URL | semmle.label | selection of URL |
 | SanitizingDoubleDash.go:96:24:96:34 | slice expression | semmle.label | slice expression |
 | SanitizingDoubleDash.go:101:24:101:34 | slice expression | semmle.label | slice expression |
-| SanitizingDoubleDash.go:105:15:105:37 | slice literal [array] : string | semmle.label | slice literal [array] : string |
-| SanitizingDoubleDash.go:105:30:105:36 | tainted : string | semmle.label | tainted : string |
+| SanitizingDoubleDash.go:105:15:105:37 | slice literal [array] | semmle.label | slice literal [array] |
+| SanitizingDoubleDash.go:105:30:105:36 | tainted | semmle.label | tainted |
 | SanitizingDoubleDash.go:106:24:106:31 | arrayLit | semmle.label | arrayLit |
 | SanitizingDoubleDash.go:112:24:112:31 | arrayLit | semmle.label | arrayLit |
 | SanitizingDoubleDash.go:118:24:118:31 | arrayLit | semmle.label | arrayLit |
@@ -55,25 +58,26 @@ nodes
 | SanitizingDoubleDash.go:152:24:152:30 | tainted | semmle.label | tainted |
 subpaths
 #select
-| CommandInjection.go:10:22:10:28 | cmdName | CommandInjection.go:9:13:9:19 | selection of URL : pointer type | CommandInjection.go:10:22:10:28 | cmdName | This command depends on a $@. | CommandInjection.go:9:13:9:19 | selection of URL | user-provided value |
-| GitSubcommands.go:12:31:12:37 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:12:31:12:37 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
-| GitSubcommands.go:13:31:13:37 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:13:31:13:37 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
-| GitSubcommands.go:14:30:14:36 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:14:30:14:36 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
-| GitSubcommands.go:15:35:15:41 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:15:35:15:41 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
-| GitSubcommands.go:16:36:16:42 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:16:36:16:42 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:14:23:14:33 | slice expression | SanitizingDoubleDash.go:9:13:9:19 | selection of URL : pointer type | SanitizingDoubleDash.go:14:23:14:33 | slice expression | This command depends on a $@. | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:40:23:40:30 | arrayLit | SanitizingDoubleDash.go:9:13:9:19 | selection of URL : pointer type | SanitizingDoubleDash.go:40:23:40:30 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:54:23:54:30 | arrayLit | SanitizingDoubleDash.go:9:13:9:19 | selection of URL : pointer type | SanitizingDoubleDash.go:54:23:54:30 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:70:23:70:30 | arrayLit | SanitizingDoubleDash.go:9:13:9:19 | selection of URL : pointer type | SanitizingDoubleDash.go:70:23:70:30 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:80:23:80:29 | tainted | SanitizingDoubleDash.go:9:13:9:19 | selection of URL : pointer type | SanitizingDoubleDash.go:80:23:80:29 | tainted | This command depends on a $@. | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:96:24:96:34 | slice expression | SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:96:24:96:34 | slice expression | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:101:24:101:34 | slice expression | SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:101:24:101:34 | slice expression | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:106:24:106:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:106:24:106:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:112:24:112:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:112:24:112:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:118:24:118:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:118:24:118:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:124:24:124:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:124:24:124:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:130:24:130:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:130:24:130:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:137:24:137:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:137:24:137:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:144:24:144:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:144:24:144:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:148:30:148:36 | tainted | SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:148:30:148:36 | tainted | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
-| SanitizingDoubleDash.go:152:24:152:30 | tainted | SanitizingDoubleDash.go:92:13:92:19 | selection of URL : pointer type | SanitizingDoubleDash.go:152:24:152:30 | tainted | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
+| ArgumentInjection.go:10:31:10:34 | path | ArgumentInjection.go:9:10:9:16 | selection of URL | ArgumentInjection.go:10:31:10:34 | path | This command depends on a $@. | ArgumentInjection.go:9:10:9:16 | selection of URL | user-provided value |
+| CommandInjection.go:10:22:10:28 | cmdName | CommandInjection.go:9:13:9:19 | selection of URL | CommandInjection.go:10:22:10:28 | cmdName | This command depends on a $@. | CommandInjection.go:9:13:9:19 | selection of URL | user-provided value |
+| GitSubcommands.go:12:31:12:37 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:12:31:12:37 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
+| GitSubcommands.go:13:31:13:37 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:13:31:13:37 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
+| GitSubcommands.go:14:30:14:36 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:14:30:14:36 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
+| GitSubcommands.go:15:35:15:41 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:15:35:15:41 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
+| GitSubcommands.go:16:36:16:42 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL | GitSubcommands.go:16:36:16:42 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:14:23:14:33 | slice expression | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:14:23:14:33 | slice expression | This command depends on a $@. | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:40:23:40:30 | arrayLit | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:40:23:40:30 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:54:23:54:30 | arrayLit | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:54:23:54:30 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:70:23:70:30 | arrayLit | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:70:23:70:30 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:80:23:80:29 | tainted | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:80:23:80:29 | tainted | This command depends on a $@. | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:96:24:96:34 | slice expression | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:96:24:96:34 | slice expression | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:101:24:101:34 | slice expression | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:101:24:101:34 | slice expression | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:106:24:106:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:106:24:106:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:112:24:112:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:112:24:112:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:118:24:118:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:118:24:118:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:124:24:124:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:124:24:124:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:130:24:130:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:130:24:130:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:137:24:137:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:137:24:137:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:144:24:144:31 | arrayLit | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:144:24:144:31 | arrayLit | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:148:30:148:36 | tainted | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:148:30:148:36 | tainted | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |
+| SanitizingDoubleDash.go:152:24:152:30 | tainted | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:152:24:152:30 | tainted | This command depends on a $@. | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | user-provided value |

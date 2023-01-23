@@ -156,19 +156,14 @@ module Http {
   /**
    * An expression that sets the `Set-Cookie` header of an HTTP response.
    */
-  class SetCookieHeader extends CookieDefinition {
-    HeaderDefinition header;
-
-    SetCookieHeader() {
-      this = header and
-      header.getAHeaderName() = "set-cookie"
-    }
+  class SetCookieHeader extends CookieDefinition instanceof HeaderDefinition {
+    SetCookieHeader() { super.getAHeaderName() = "set-cookie" }
 
     override DataFlow::Node getHeaderArgument() {
-      header.(ExplicitHeaderDefinition).definesHeaderValue("set-cookie", result)
+      this.(ExplicitHeaderDefinition).definesHeaderValue("set-cookie", result)
     }
 
-    override RouteHandler getRouteHandler() { result = header.getRouteHandler() }
+    override RouteHandler getRouteHandler() { result = HeaderDefinition.super.getRouteHandler() }
   }
 
   /**
@@ -625,9 +620,7 @@ module Http {
             create.getArgument(0).asExpr() instanceof NullLiteral
           )
         ) and
-        exists(RouteHandlerCandidate candidate |
-          getAPossiblyDecoratedHandler(candidate).flowsTo(this.getAPropertyWrite().getRhs())
-        )
+        getAPossiblyDecoratedHandler(_).flowsTo(this.getAPropertyWrite().getRhs())
       }
 
       override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {

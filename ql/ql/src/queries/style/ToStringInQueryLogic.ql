@@ -2,7 +2,7 @@
  * @name Using 'toString' in query logic
  * @description A query should not depend on the output of 'toString'.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @id ql/to-string-in-logic
  * @precision medium
  * @tags maintainability
@@ -202,9 +202,9 @@ module DataFlow {
       varaccesValue(e2, v, scope)
     )
     or
-    exists(VarDecl v, Formula f, Select sel |
+    exists(Formula f, Select sel |
       getParentFormula*(f) = sel.getWhere() and
-      varaccesValue(e1, v, f) and
+      varaccesValue(e1, _, f) and
       sel.getExpr(_) = e2
     )
     or

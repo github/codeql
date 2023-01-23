@@ -76,7 +76,7 @@ module ImportStar {
     exists(ImportStar i, DataFlow::CfgNode imported_module |
       imported_module.getNode().getNode() = i.getModule() and
       i.getScope() = m and
-      result = ImportResolution::getModule(imported_module)
+      result = ImportResolution::getModuleImportedByImportStar(i)
     )
   }
 

@@ -194,6 +194,8 @@ private module Cached {
       TModule(Module m)
   }
 
+  private import codeql_ql.ast.internal.Builtins as Builtins
+
   /** Holds if module expression `me` resolves to `m`. */
   cached
   predicate resolveModuleRef(TypeRef me, FileOrModule m) {
@@ -223,6 +225,12 @@ private module Cached {
       resolveModuleRef(me.(ModuleExpr).getQualifier(), mid) and
       definesModule(mid, me.(ModuleExpr).getName(), m, true)
     )
+    or
+    // The buildin `QlBuiltins` module, implemented as a mock AST node.
+    me instanceof ModuleExpr and
+    not exists(me.(ModuleExpr).getQualifier()) and
+    me.(ModuleExpr).getName() = "QlBuiltins" and
+    AstNodes::toMock(m.asModule()).getId() instanceof Builtins::QlBuiltinsMocks::QlBuiltinsModule
   }
 
   /**

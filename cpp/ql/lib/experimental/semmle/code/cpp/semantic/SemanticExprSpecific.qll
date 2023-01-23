@@ -292,12 +292,8 @@ module SemanticExprConfig {
     final Location getLocation() { result = super.getLocation() }
   }
 
-  private class ValueNumberBound extends Bound {
-    IRBound::ValueNumberBound bound;
-
-    ValueNumberBound() { bound = this }
-
-    override string toString() { result = bound.toString() }
+  private class ValueNumberBound extends Bound instanceof IRBound::ValueNumberBound {
+    override string toString() { result = IRBound::ValueNumberBound.super.toString() }
   }
 
   predicate zeroBound(Bound bound) { bound instanceof IRBound::ZeroBound }

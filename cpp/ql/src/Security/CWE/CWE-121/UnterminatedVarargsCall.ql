@@ -64,7 +64,7 @@ class VarargsFunction extends Function {
     totalCount = this.totalCount() and
     100 * cnt / totalCount >= 80 and
     // terminator value is not used in a non-terminating position
-    not exists(FunctionCall fc, int index | this.nonTrailingVarArgValue(fc, index) = result)
+    not this.nonTrailingVarArgValue(_, _) = result
   }
 
   predicate isWhitelisted() { this.hasGlobalName(["open", "fcntl", "ptrace", "mremap"]) }

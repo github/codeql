@@ -29,6 +29,7 @@ For more language-specific information on analyzing data flow, see:
 - ":ref:`Analyzing data flow in Java <analyzing-data-flow-in-java>`"
 - ":ref:`Analyzing data flow in JavaScript/TypeScript <analyzing-data-flow-in-javascript-and-typescript>`"
 - ":ref:`Analyzing data flow in Python <analyzing-data-flow-in-python>`"
+- ":ref:`Analyzing data flow in Ruby <analyzing-data-flow-in-ruby>`"
 
 
 Path query examples

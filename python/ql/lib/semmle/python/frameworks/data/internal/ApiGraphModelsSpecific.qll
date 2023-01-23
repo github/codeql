@@ -31,19 +31,22 @@ import semmle.python.dataflow.new.DataFlow::DataFlow as DataFlow
 private import AccessPathSyntax
 
 /**
- * Holds if models describing `package` may be relevant for the analysis of this database.
+ * Holds if models describing `type` may be relevant for the analysis of this database.
  */
-predicate isPackageUsed(string package) { API::moduleImportExists(package) }
+predicate isTypeUsed(string type) { API::moduleImportExists(type) }
 
-/** Gets a Python-specific interpretation of the `(package, type, path)` tuple after resolving the first `n` access path tokens. */
-bindingset[package, type, path]
-API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int n) { none() }
+/**
+ * Holds if `type` can be obtained from an instance of `otherType` due to
+ * language semantics modeled by `getExtraNodeFromType`.
+ */
+predicate hasImplicitTypeModel(string type, string otherType) { none() }
 
-/** Gets a Python-specific interpretation of the `(package, type)` tuple. */
-API::Node getExtraNodeFromType(string package, string type) {
-  type = "" and
-  result = API::moduleImport(package)
-}
+/** Gets a Python-specific interpretation of the `(type, path)` tuple after resolving the first `n` access path tokens. */
+bindingset[type, path]
+API::Node getExtraNodeFromPath(string type, AccessPath path, int n) { none() }
+
+/** Gets a Python-specific interpretation of the given `type`. */
+API::Node getExtraNodeFromType(string type) { result = API::moduleImport(type) }
 
 /**
  * Gets a Python-specific API graph successor of `node` reachable by resolving `token`.
@@ -121,9 +124,9 @@ predicate invocationMatchesExtraCallSiteFilter(API::CallNode invoke, AccessPathT
  */
 pragma[nomagic]
 private predicate relevantInputOutputPath(API::CallNode base, AccessPath inputOrOutput) {
-  exists(string package, string type, string input, string output, string path |
-    ModelOutput::relevantSummaryModel(package, type, path, input, output, _) and
-    ModelOutput::resolvedSummaryBase(package, type, path, base) and
+  exists(string type, string input, string output, string path |
+    ModelOutput::relevantSummaryModel(type, path, input, output, _) and
+    ModelOutput::resolvedSummaryBase(type, path, base) and
     inputOrOutput = [input, output]
   )
 }
@@ -153,12 +156,9 @@ private API::Node getNodeFromInputOutputPath(API::CallNode baseNode, AccessPath 
  * Holds if a CSV summary contributed the step `pred -> succ` of the given `kind`.
  */
 predicate summaryStep(API::Node pred, API::Node succ, string kind) {
-  exists(
-    string package, string type, string path, API::CallNode base, AccessPath input,
-    AccessPath output
-  |
-    ModelOutput::relevantSummaryModel(package, type, path, input, output, kind) and
-    ModelOutput::resolvedSummaryBase(package, type, path, base) and
+  exists(string type, string path, API::CallNode base, AccessPath input, AccessPath output |
+    ModelOutput::relevantSummaryModel(type, path, input, output, kind) and
+    ModelOutput::resolvedSummaryBase(type, path, base) and
     pred = getNodeFromInputOutputPath(base, input) and
     succ = getNodeFromInputOutputPath(base, output)
   )
@@ -201,3 +201,5 @@ predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string a
     argument.regexpMatch("\\w+:") // keyword argument
   )
 }
+
+module ModelOutputSpecific { }

@@ -1376,6 +1376,27 @@ class AsTypeAssertion extends TypeAssertion, @as_type_assertion { }
 class PrefixTypeAssertion extends TypeAssertion, @prefix_type_assertion { }
 
 /**
+ * A satisfies type asserion of the form `E satisfies T` where `E` is an expression and `T` is a type.
+ */
+class SatisfiesExpr extends Expr, @satisfies_expr {
+  /** Gets the expression whose type to assert, that is, the `E` in `E as T` or `<T> E`. */
+  Expr getExpression() { result = this.getChildExpr(0) }
+
+  /** Gets the type to cast to, that is, the `T` in `E as T` or `<T> E`. */
+  TypeExpr getTypeAnnotation() { result = this.getChildTypeExpr(1) }
+
+  override ControlFlowNode getFirstControlFlowNode() {
+    result = this.getExpression().getFirstControlFlowNode()
+  }
+
+  override Expr getUnderlyingValue() { result = this.getExpression().getUnderlyingValue() }
+
+  override Expr getUnderlyingReference() { result = this.getExpression().getUnderlyingReference() }
+
+  override string getAPrimaryQlClass() { result = "SatisfiesExpr" }
+}
+
+/**
  * A TypeScript expression of form `E!`, asserting that `E` is not null.
  */
 class NonNullAssertion extends Expr, @non_null_assertion {
