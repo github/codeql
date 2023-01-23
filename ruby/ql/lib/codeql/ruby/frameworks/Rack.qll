@@ -4,12 +4,13 @@
 
 private import codeql.ruby.controlflow.CfgNodes::ExprNodes
 private import codeql.ruby.DataFlow
+private import codeql.ruby.typetracking.TypeTracker
 
 /**
  * Provides modeling for the Rack library.
  */
 module Rack {
-  import codeql.ruby.typetracking.TypeTracker
+  
 
   /**
    * A class that may be a rack application.
