@@ -6,6 +6,7 @@
  * @precision high
  * @id cs/request-forgery
  * @tags security
+ *       experimental
  *       external/cwe/cwe-918
  */
 

@@ -1,8 +1,11 @@
 #!/bin/bash
 set -eux
-
+CARGO=cargo
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   platform="linux64"
+  if which cross; then
+    CARGO=cross
+  fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   platform="osx64"
 else
@@ -10,9 +13,9 @@ else
   exit 1
 fi
 
-cargo build --release
+"$CARGO" build --release
 
-cargo run --release -p ruby-generator -- --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+"$CARGO" run --release -p ruby-generator -- --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
 codeql query format -i ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
 
 rm -rf extractor-pack

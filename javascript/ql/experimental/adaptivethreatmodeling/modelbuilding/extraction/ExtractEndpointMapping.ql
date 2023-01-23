@@ -9,6 +9,7 @@ import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAt
 import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 import experimental.adaptivethreatmodeling.XssATM as XssAtm
 import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
+import experimental.adaptivethreatmodeling.ShellCommandInjectionFromEnvironmentATM as ShellCommandInjectionFromEnvironmentAtm
 import experimental.adaptivethreatmodeling.AdaptiveThreatModeling
 
 from string queryName, AtmConfig c, EndpointType e
@@ -26,6 +27,10 @@ where
     queryName = "Xss" and c instanceof XssAtm::DomBasedXssAtmConfig
     or
     queryName = "XssThroughDom" and c instanceof XssThroughDomAtm::XssThroughDomAtmConfig
+    or
+    queryName = "ShellCommandInjectionFromEnvironment" and
+    c instanceof
+      ShellCommandInjectionFromEnvironmentAtm::ShellCommandInjectionFromEnvironmentAtmConfig
   ) and
   e = c.getASinkEndpointType()
 select queryName, e.getEncoding() as label

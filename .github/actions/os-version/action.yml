@@ -1,0 +1,32 @@
+name: OS Version
+description: Get OS version.
+
+outputs:
+  version:
+    description: "OS version"
+    value: ${{ steps.version.outputs.version }}
+
+runs:
+  using: composite
+  steps:
+    - if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        . /etc/os-release
+        echo "VERSION=${NAME} ${VERSION}" >> $GITHUB_ENV
+    - if: runner.os == 'Windows'
+      shell: powershell
+      run: |
+        $objects = systeminfo.exe /FO CSV | ConvertFrom-Csv
+        "VERSION=$($objects.'OS Name') $($objects.'OS Version')" >> $env:GITHUB_ENV
+    - if: runner.os == 'macOS'
+      shell: bash
+      run: |
+        echo "VERSION=$(sw_vers -productName) $(sw_vers -productVersion)" >> $GITHUB_ENV
+    - name: Emit OS version
+      id: version
+      shell: bash
+      run: |
+        echo "$VERSION"
+        echo "version=${VERSION}" >> $GITHUB_OUTPUT
+

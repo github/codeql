@@ -29,6 +29,7 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplForContentDataFlow.qll",
     "go/ql/lib/semmle/go/dataflow/internal/DataFlowImpl.qll",
     "go/ql/lib/semmle/go/dataflow/internal/DataFlowImpl2.qll",
+    "go/ql/lib/semmle/go/dataflow/internal/DataFlowImplForStringsNewReplacer.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl2.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl3.qll",

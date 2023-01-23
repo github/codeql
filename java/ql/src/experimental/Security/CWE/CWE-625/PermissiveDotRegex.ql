@@ -7,6 +7,7 @@
  * @precision high
  * @id java/permissive-dot-regex
  * @tags security
+ *       experimental
  *       external/cwe-625
  *       external/cwe-863
  */

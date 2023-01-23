@@ -170,6 +170,15 @@ def test_hierarchy_imports(generate_import_list):
     ]) == ql.ImportList([stub_import_prefix + cls for cls in "ABCD"])
 
 
+def test_internal_not_in_import_list(generate_import_list):
+    assert generate_import_list([
+        schema.Class("D", bases=["B", "C"]),
+        schema.Class("C", bases=["A"], derived={"D"}, pragmas=["ql_internal"]),
+        schema.Class("B", bases=["A"], derived={"D"}),
+        schema.Class("A", derived={"B", "C"}, pragmas=["ql_internal"]),
+    ]) == ql.ImportList([stub_import_prefix + cls for cls in "BD"])
+
+
 def test_hierarchy_children(generate_children_implementations):
     assert generate_children_implementations([
         schema.Class("A", derived={"B", "C"}),

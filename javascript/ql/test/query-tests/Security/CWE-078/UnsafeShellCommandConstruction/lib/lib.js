@@ -545,3 +545,12 @@ module.exports.sanitizer4 = function (name) {
 		cp.exec("rm -rf " + name); // NOT OK
 	}
 }
+
+
+module.exports.shellThing = function (name) {
+    function indirectShell(cmd, args, spawnOpts) {
+        cp.spawn(cmd, args, spawnOpts); // NOT OK
+    }
+    
+    indirectShell("rm", ["-rf", name], {shell: true});
+}

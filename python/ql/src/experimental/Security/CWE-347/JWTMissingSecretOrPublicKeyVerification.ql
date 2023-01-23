@@ -5,6 +5,7 @@
  * @problem.severity warning
  * @id py/jwt-missing-verification
  * @tags security
+ *       experimental
  *       external/cwe/cwe-347
  */
 

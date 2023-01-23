@@ -602,9 +602,9 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter"
-version = "0.19.5"
+version = "0.20.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ad726ec26496bf4c083fff0f43d4eb3a2ad1bba305323af5ff91383c0b6ecac0"
+checksum = "d4423c784fe11398ca91e505cdc71356b07b1a924fc8735cfab5333afe3e18bc"
 dependencies = [
  "cc",
  "regex",
@@ -612,8 +612,8 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter-embedded-template"
-version = "0.19.0"
-source = "git+https://github.com/tree-sitter/tree-sitter-embedded-template.git?rev=1a538da253d73f896b9f6c0c7d79cda58791ac5c#1a538da253d73f896b9f6c0c7d79cda58791ac5c"
+version = "0.20.0"
+source = "git+https://github.com/tree-sitter/tree-sitter-embedded-template.git?rev=a13085849cf69e2401ec44e38cffc3d73f22f3df#a13085849cf69e2401ec44e38cffc3d73f22f3df"
 dependencies = [
  "cc",
  "tree-sitter",
@@ -621,8 +621,8 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter-ruby"
-version = "0.19.0"
-source = "git+https://github.com/tree-sitter/tree-sitter-ruby.git?rev=ad1043283b1f9daf4aad381b6a81f18a5a27fe7e#ad1043283b1f9daf4aad381b6a81f18a5a27fe7e"
+version = "0.20.0"
+source = "git+https://github.com/tree-sitter/tree-sitter-ruby.git?rev=7a1921bcfd90e3a04c1ad011059087aaf0168dd4#7a1921bcfd90e3a04c1ad011059087aaf0168dd4"
 dependencies = [
  "cc",
  "tree-sitter",

@@ -8,6 +8,7 @@
  * @precision high
  * @id java/log4j-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-020
  *       external/cwe/cwe-074
  *       external/cwe/cwe-400

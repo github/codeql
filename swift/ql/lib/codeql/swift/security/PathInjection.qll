@@ -104,7 +104,22 @@ private class PathInjectionSinks extends SinkModelCsv {
         ";FileManager;true;replaceItemAtURL(originalItemURL:withItemAtURL:backupItemName:options:);;;Argument[0..1];path-injection",
         ";NIOFileHandle;true;init(descriptor:);;;Argument[0];path-injection",
         ";NIOFileHandle;true;init(path:mode:flags:);;;Argument[0];path-injection",
-        ";NIOFileHandle;true;init(path:);;;Argument[0];path-injection"
+        ";NIOFileHandle;true;init(path:);;;Argument[0];path-injection",
+        ";NSString;true;write(to:atomically:encoding:);;;Argument[0];path-injection",
+        ";NSString;true;write(toFile:atomically:encoding:);;;Argument[0];path-injection",
+        ";NSKeyedUnarchiver;true;unarchiveObject(withFile:);;;Argument[0];path-injection",
+        ";ArchiveByteStream;true;fileStream(fd:automaticClose:);;;Argument[0];path-injection",
+        ";ArchiveByteStream;true;withFileStream(fd:automaticClose:_:);;;Argument[0];path-injection",
+        ";ArchiveByteStream;true;fileStream(path:mode:options:permissions:);;;Argument[0];path-injection",
+        ";ArchiveByteStream;true;withFileStream(path:mode:options:permissions:_:);;;Argument[0];path-injection",
+        ";Bundle;true;init(url:);;;Argument[0];path-injection",
+        ";Bundle;true;init(path:);;;Argument[0];path-injection",
+        // GRDB
+        ";Database;true;init(path:description:configuration:);;;Argument[0];path-injection",
+        ";DatabasePool;true;init(path:configuration:);;;Argument[0];path-injection",
+        ";DatabaseQueue;true;init(path:configuration:);;;Argument[0];path-injection",
+        ";DatabaseSnapshotPool;true;init(path:configuration:);;;Argument[0];path-injection",
+        ";SerializedDatabase;true;init(path:configuration:defaultLabel:purpose:);;;Argument[0];path-injection"
       ]
   }
 }

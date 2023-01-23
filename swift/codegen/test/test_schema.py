@@ -265,6 +265,7 @@ _pragmas = [(defs.qltest.skip, "qltest_skip"),
             (defs.qltest.collapse_hierarchy, "qltest_collapse_hierarchy"),
             (defs.qltest.uncollapse_hierarchy, "qltest_uncollapse_hierarchy"),
             (defs.cpp.skip, "cpp_skip"),
+            (defs.ql.internal, "ql_internal"),
             ]
 
 

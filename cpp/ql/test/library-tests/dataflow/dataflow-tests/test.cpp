@@ -531,3 +531,13 @@ void test_set_through_const_pointer(int *e)
   set_through_const_pointer(source(), &e);
   sink(*e); // $ ir MISSING: ast
 }
+
+void sink_then_source(int* p) {
+    sink(*p);
+    *p = source(); // $ SPURIOUS: ir=537:10 ir=541:9
+}
+
+void test_sink_then_source() {
+    int x;
+    sink_then_source(&x);
+}
