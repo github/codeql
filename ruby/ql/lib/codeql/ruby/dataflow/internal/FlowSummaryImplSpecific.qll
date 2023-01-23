@@ -139,10 +139,10 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecificCsv(SummaryComponent sc) { none() }
+string getComponentSpecific(SummaryComponent sc) { none() }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
-string getParameterPositionCsv(ParameterPosition pos) {
+string getParameterPosition(ParameterPosition pos) {
   exists(int i |
     pos.isPositional(i) and
     result = i.toString()
@@ -172,7 +172,7 @@ string getParameterPositionCsv(ParameterPosition pos) {
 }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
-string getArgumentPositionCsv(ArgumentPosition pos) {
+string getArgumentPosition(ArgumentPosition pos) {
   pos.isSelf() and result = "self"
   or
   pos.isBlock() and result = "block"

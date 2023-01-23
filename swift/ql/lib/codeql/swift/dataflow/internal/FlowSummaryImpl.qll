@@ -159,24 +159,24 @@ module Public {
     SummaryComponentStack return(ReturnKind rk) { result = singleton(SummaryComponent::return(rk)) }
   }
 
-  private predicate noComponentSpecificCsv(SummaryComponent sc) {
-    not exists(getComponentSpecificCsv(sc))
+  private predicate noComponentSpecific(SummaryComponent sc) {
+    not exists(getComponentSpecific(sc))
   }
 
   /** Gets a textual representation of this component used for flow summaries. */
-  private string getComponentCsv(SummaryComponent sc) {
-    result = getComponentSpecificCsv(sc)
+  private string getComponent(SummaryComponent sc) {
+    result = getComponentSpecific(sc)
     or
-    noComponentSpecificCsv(sc) and
+    noComponentSpecific(sc) and
     (
       exists(ArgumentPosition pos |
         sc = TParameterSummaryComponent(pos) and
-        result = "Parameter[" + getArgumentPositionCsv(pos) + "]"
+        result = "Parameter[" + getArgumentPosition(pos) + "]"
       )
       or
       exists(ParameterPosition pos |
         sc = TArgumentSummaryComponent(pos) and
-        result = "Argument[" + getParameterPositionCsv(pos) + "]"
+        result = "Argument[" + getParameterPosition(pos) + "]"
       )
       or
       sc = TReturnSummaryComponent(getReturnValueKind()) and result = "ReturnValue"
@@ -184,16 +184,16 @@ module Public {
   }
 
   /** Gets a textual representation of this stack used for flow summaries. */
-  string getComponentStackCsv(SummaryComponentStack stack) {
+  string getComponentStack(SummaryComponentStack stack) {
     exists(SummaryComponent head, SummaryComponentStack tail |
       head = stack.head() and
       tail = stack.tail() and
-      result = getComponentStackCsv(tail) + "." + getComponentCsv(head)
+      result = getComponentStack(tail) + "." + getComponent(head)
     )
     or
     exists(SummaryComponent c |
       stack = TSingletonSummaryComponentStack(c) and
-      result = getComponentCsv(c)
+      result = getComponent(c)
     )
   }
 
@@ -1217,8 +1217,8 @@ module Private {
         c.relevantSummary(input, output, preservesValue) and
         csv =
           c.getCallableCsv() // Callable information
-            + getComponentStackCsv(input) + ";" // input
-            + getComponentStackCsv(output) + ";" // output
+            + getComponentStack(input) + ";" // input
+            + getComponentStack(output) + ";" // output
             + renderKind(preservesValue) + ";" // kind
             + renderProvenance(c) // provenance
       )
