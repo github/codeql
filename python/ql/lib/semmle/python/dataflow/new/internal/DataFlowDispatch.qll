@@ -679,6 +679,7 @@ Class getADirectSubclass(Class cls) { cls = getADirectSuperclass(result) }
  * For more info on the C3 MRO used in Python see:
  * - https://docs.python.org/3/glossary.html#term-method-resolution-order
  * - https://www.python.org/download/releases/2.3/mro/
+ * - https://opendylan.org/_static/c3-linearization.pdf
  */
 private Class getNextClassInMro(Class cls) {
   // class A(B, ...):
@@ -693,13 +694,21 @@ private Class getNextClassInMro(Class cls) {
     sub.getBase(i + 1) = classTracker(result).asExpr() and
     not result = cls
   )
-  // There are two important properties for MRO computed with C3 in Python:
+  // There are three important properties for MRO computed with C3 in Python:
   //
   // 1) monotonicity: if C1 precedes C2 in the MRO of C, then C1 precedes C2 in the MRO
   //    of any subclass of C.
   // 2) local precedence ordering: if C1 precedes C2 in the list of superclasses for C,
   //    they will keep the same order in the MRO for C (and due to monotonicity, any
   //    subclass).
+  // 3) consistency with the extended precedence graph: if A and B (that are part of the
+  //    class hierarchy of C) do not have a subclass/superclass relationship on their
+  //    own, the ordering of A and B in the MRO of C will be determined by the local
+  //    precedence ordering in the classes that use both A and B, either directly or
+  //    through a subclass. (see paper for more details)
+  //
+  // Note that not all class hierarchies are allowed with C3, see the Python 2.3 article
+  // for examples.
 }
 
 /**
