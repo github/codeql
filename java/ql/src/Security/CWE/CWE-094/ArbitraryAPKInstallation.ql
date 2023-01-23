@@ -61,10 +61,10 @@ class UriConstructorMethod extends Method {
 
 /**
  * A dataflow source representing the URIs which an APK not controlled by the
- * application may come from. Incuding external storage and web URLs.
+ * application may come from. Including external storage and web URLs.
  */
-class ExternalAPKSource extends DataFlow::Node {
-  ExternalAPKSource() {
+class ExternalApkSource extends DataFlow::Node {
+  ExternalApkSource() {
     sourceNode(this, "android-external-storage-dir") or
     this.asExpr().(MethodAccess).getMethod() instanceof UriConstructorMethod or
     this.asExpr().(StringLiteral).getValue().matches(["file://%", "http://%", "https://%"])
@@ -75,10 +75,10 @@ class ExternalAPKSource extends DataFlow::Node {
  * A dataflow configuration for flow from an external source of an APK to the
  * `setData[AndType][AndNormalize]` method of an intent.
  */
-class APKConfiguration extends DataFlow::Configuration {
-  APKConfiguration() { this = "APKConfiguration" }
+class ApkConfiguration extends DataFlow::Configuration {
+  ApkConfiguration() { this = "ApkConfiguration" }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof ExternalAPKSource }
+  override predicate isSource(DataFlow::Node node) { node instanceof ExternalApkSource }
 
   override predicate isSink(DataFlow::Node node) {
     exists(MethodAccess ma |
@@ -124,6 +124,6 @@ private class PackageArchiveMimeTypeConfiguration extends TaintTracking2::Config
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, APKConfiguration config
+from DataFlow::PathNode source, DataFlow::PathNode sink, ApkConfiguration config
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Arbitrary Android APK installation."
