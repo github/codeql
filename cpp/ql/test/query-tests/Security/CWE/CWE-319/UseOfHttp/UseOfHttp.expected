@@ -1,10 +1,10 @@
 edges
 | test.cpp:11:26:11:28 | url | test.cpp:15:30:15:32 | url |
 | test.cpp:11:26:11:28 | url indirection | test.cpp:15:30:15:32 | url |
-| test.cpp:24:13:24:17 | url_g | test.cpp:38:11:38:15 | Load |
-| test.cpp:24:21:24:40 | Store | test.cpp:24:13:24:17 | url_g |
-| test.cpp:24:21:24:40 | http://example.com | test.cpp:24:21:24:40 | Store |
-| test.cpp:24:21:24:40 | http://example.com | test.cpp:24:21:24:40 | Store |
+| test.cpp:24:13:24:17 | url_g | test.cpp:38:11:38:15 | url_g |
+| test.cpp:24:21:24:40 | array to pointer conversion | test.cpp:24:13:24:17 | url_g |
+| test.cpp:24:21:24:40 | http://example.com | test.cpp:24:21:24:40 | array to pointer conversion |
+| test.cpp:24:21:24:40 | http://example.com | test.cpp:24:21:24:40 | array to pointer conversion |
 | test.cpp:28:10:28:29 | http://example.com | test.cpp:11:26:11:28 | url |
 | test.cpp:28:10:28:29 | http://example.com | test.cpp:28:10:28:29 | http://example.com |
 | test.cpp:35:23:35:42 | http://example.com | test.cpp:39:11:39:15 | url_l |
@@ -13,31 +13,31 @@ edges
 | test.cpp:36:26:36:45 | http://example.com | test.cpp:40:11:40:17 | access to array |
 | test.cpp:36:26:36:45 | http://example.com | test.cpp:40:11:40:17 | access to array indirection |
 | test.cpp:36:26:36:45 | http://example.com | test.cpp:40:11:40:17 | access to array indirection |
-| test.cpp:38:11:38:15 | Load | test.cpp:38:11:38:15 | url_g |
 | test.cpp:38:11:38:15 | url_g | test.cpp:11:26:11:28 | url |
+| test.cpp:38:11:38:15 | url_g | test.cpp:38:11:38:15 | url_g |
 | test.cpp:39:11:39:15 | url_l | test.cpp:11:26:11:28 | url |
 | test.cpp:40:11:40:17 | access to array | test.cpp:11:26:11:28 | url |
 | test.cpp:40:11:40:17 | access to array indirection | test.cpp:11:26:11:28 | url indirection |
-| test.cpp:46:18:46:26 | http:// | test.cpp:49:11:49:16 | Convert indirection |
-| test.cpp:46:18:46:26 | http:// | test.cpp:49:11:49:16 | Convert indirection |
+| test.cpp:46:18:46:26 | http:// | test.cpp:49:11:49:16 | (const char *)... indirection |
+| test.cpp:46:18:46:26 | http:// | test.cpp:49:11:49:16 | (const char *)... indirection |
 | test.cpp:46:18:46:26 | http:// | test.cpp:49:11:49:16 | buffer |
 | test.cpp:46:18:46:26 | http:// | test.cpp:49:11:49:16 | buffer |
-| test.cpp:49:11:49:16 | Convert indirection | test.cpp:11:26:11:28 | url indirection |
+| test.cpp:49:11:49:16 | (const char *)... indirection | test.cpp:11:26:11:28 | url indirection |
 | test.cpp:49:11:49:16 | buffer | test.cpp:11:26:11:28 | url |
-| test.cpp:110:21:110:40 | http://example.com | test.cpp:121:11:121:13 | Convert indirection |
-| test.cpp:110:21:110:40 | http://example.com | test.cpp:121:11:121:13 | Convert indirection |
-| test.cpp:110:21:110:40 | http://example.com | test.cpp:121:11:121:13 | Convert indirection |
+| test.cpp:110:21:110:40 | http://example.com | test.cpp:121:11:121:13 | (const char *)... indirection |
+| test.cpp:110:21:110:40 | http://example.com | test.cpp:121:11:121:13 | (const char *)... indirection |
+| test.cpp:110:21:110:40 | http://example.com | test.cpp:121:11:121:13 | (const char *)... indirection |
 | test.cpp:110:21:110:40 | http://example.com | test.cpp:121:11:121:13 | ptr |
 | test.cpp:110:21:110:40 | http://example.com | test.cpp:121:11:121:13 | ptr |
 | test.cpp:110:21:110:40 | http://example.com | test.cpp:121:11:121:13 | ptr |
-| test.cpp:121:11:121:13 | Convert indirection | test.cpp:11:26:11:28 | url indirection |
+| test.cpp:121:11:121:13 | (const char *)... indirection | test.cpp:11:26:11:28 | url indirection |
 | test.cpp:121:11:121:13 | ptr | test.cpp:11:26:11:28 | url |
 nodes
 | test.cpp:11:26:11:28 | url | semmle.label | url |
 | test.cpp:11:26:11:28 | url indirection | semmle.label | url indirection |
 | test.cpp:15:30:15:32 | url | semmle.label | url |
 | test.cpp:24:13:24:17 | url_g | semmle.label | url_g |
-| test.cpp:24:21:24:40 | Store | semmle.label | Store |
+| test.cpp:24:21:24:40 | array to pointer conversion | semmle.label | array to pointer conversion |
 | test.cpp:24:21:24:40 | http://example.com | semmle.label | http://example.com |
 | test.cpp:24:21:24:40 | http://example.com | semmle.label | http://example.com |
 | test.cpp:28:10:28:29 | http://example.com | semmle.label | http://example.com |
@@ -46,19 +46,19 @@ nodes
 | test.cpp:35:23:35:42 | http://example.com | semmle.label | http://example.com |
 | test.cpp:36:26:36:45 | http://example.com | semmle.label | http://example.com |
 | test.cpp:36:26:36:45 | http://example.com | semmle.label | http://example.com |
-| test.cpp:38:11:38:15 | Load | semmle.label | Load |
+| test.cpp:38:11:38:15 | url_g | semmle.label | url_g |
 | test.cpp:38:11:38:15 | url_g | semmle.label | url_g |
 | test.cpp:39:11:39:15 | url_l | semmle.label | url_l |
 | test.cpp:40:11:40:17 | access to array | semmle.label | access to array |
 | test.cpp:40:11:40:17 | access to array indirection | semmle.label | access to array indirection |
 | test.cpp:46:18:46:26 | http:// | semmle.label | http:// |
 | test.cpp:46:18:46:26 | http:// | semmle.label | http:// |
-| test.cpp:49:11:49:16 | Convert indirection | semmle.label | Convert indirection |
+| test.cpp:49:11:49:16 | (const char *)... indirection | semmle.label | (const char *)... indirection |
 | test.cpp:49:11:49:16 | buffer | semmle.label | buffer |
 | test.cpp:110:21:110:40 | http://example.com | semmle.label | http://example.com |
 | test.cpp:110:21:110:40 | http://example.com | semmle.label | http://example.com |
 | test.cpp:110:21:110:40 | http://example.com | semmle.label | http://example.com |
-| test.cpp:121:11:121:13 | Convert indirection | semmle.label | Convert indirection |
+| test.cpp:121:11:121:13 | (const char *)... indirection | semmle.label | (const char *)... indirection |
 | test.cpp:121:11:121:13 | ptr | semmle.label | ptr |
 subpaths
 #select
