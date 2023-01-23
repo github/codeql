@@ -661,13 +661,9 @@ ruby_hash_pattern_def(
   unique int id: @ruby_hash_pattern
 );
 
-ruby_hash_splat_argument_child(
-  unique int ruby_hash_splat_argument: @ruby_hash_splat_argument ref,
-  unique int child: @ruby_underscore_arg ref
-);
-
 ruby_hash_splat_argument_def(
-  unique int id: @ruby_hash_splat_argument
+  unique int id: @ruby_hash_splat_argument,
+  int child: @ruby_underscore_arg ref
 );
 
 ruby_hash_splat_parameter_name(
@@ -1116,13 +1112,9 @@ ruby_singleton_method_def(
   int object: @ruby_singleton_method_object_type ref
 );
 
-ruby_splat_argument_child(
-  unique int ruby_splat_argument: @ruby_splat_argument ref,
-  unique int child: @ruby_underscore_arg ref
-);
-
 ruby_splat_argument_def(
-  unique int id: @ruby_splat_argument
+  unique int id: @ruby_splat_argument,
+  int child: @ruby_underscore_arg ref
 );
 
 ruby_splat_parameter_name(

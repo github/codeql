@@ -875,10 +875,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "HashSplatArgument" }
 
     /** Gets the child of this node. */
-    final UnderscoreArg getChild() { ruby_hash_splat_argument_def(this, result) }
+    final UnderscoreArg getChild() { ruby_hash_splat_argument_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_hash_splat_argument_def(this, result) }
+    final override AstNode getAFieldOrChild() { ruby_hash_splat_argument_child(this, result) }
   }
 
   /** A class representing `hash_splat_nil` tokens. */
@@ -1572,10 +1572,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "SplatArgument" }
 
     /** Gets the child of this node. */
-    final UnderscoreArg getChild() { ruby_splat_argument_def(this, result) }
+    final UnderscoreArg getChild() { ruby_splat_argument_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_splat_argument_def(this, result) }
+    final override AstNode getAFieldOrChild() { ruby_splat_argument_child(this, result) }
   }
 
   /** A class representing `splat_parameter` nodes. */
