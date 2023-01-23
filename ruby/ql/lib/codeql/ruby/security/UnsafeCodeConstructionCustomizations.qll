@@ -96,6 +96,25 @@ module UnsafeCodeConstruction {
     override string getSinkType() { result = "string interpolation" }
   }
 
+  /**
+   * A component of a string-concatenation (e.g. `"foo " + sink`),
+   * where the resulting string ends up being executed as a code.
+   */
+  class StringConcatAsSink extends Sink {
+    Concepts::CodeExecution s;
+
+    StringConcatAsSink() {
+      exists(Ast::AddExprRoot add |
+        any(DataFlow::Node n | n.asExpr().getExpr() = add) = getANodeExecutedAsCode(s) and
+        this.asExpr().getExpr() = add.getALeaf()
+      )
+    }
+
+    override DataFlow::Node getCodeSink() { result = s }
+
+    override string getSinkType() { result = "string concatenation" }
+  }
+
   import codeql.ruby.security.TaintedFormatStringSpecific as TaintedFormat
 
   /**

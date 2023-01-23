@@ -50,4 +50,9 @@ class Foobar
     HERE
     eval(foo) # NOT OK
   end
+
+  def string_concat(x)
+    foo = "foo = " + x
+    eval(foo) # NOT OK
+  end
 end
