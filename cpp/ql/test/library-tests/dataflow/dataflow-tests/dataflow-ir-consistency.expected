@@ -591,6 +591,12 @@ postWithInFlow
 | test.cpp:505:34:505:35 | & ... [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:505:34:505:35 | & ... [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:505:35:505:35 | x [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:511:5:511:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:511:6:511:6 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:511:6:511:6 | p [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:516:22:516:23 | & ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:516:22:516:23 | & ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:516:23:516:23 | x [post update] | PostUpdateNode should not be the target of local flow. |
 | true_upon_entry.cpp:9:7:9:7 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | true_upon_entry.cpp:10:12:10:12 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | true_upon_entry.cpp:10:27:10:27 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |

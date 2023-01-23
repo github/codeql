@@ -505,3 +505,13 @@ void viaOutparamMissingReturn() {
   intOutparamSourceMissingReturn(&x);
   sink(x); // $ ast,ir
 }
+
+void sink_then_source(int* p) {
+    sink(*p);
+    *p = source(); // clean
+}
+
+void test_sink_then_source() {
+    int x;
+    sink_then_source(&x);
+}
