@@ -12,7 +12,7 @@ node-types = { path = "../node-types" }
 tree-sitter = "0.20"
 tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template.git", rev = "a13085849cf69e2401ec44e38cffc3d73f22f3df" }
 tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "7a1921bcfd90e3a04c1ad011059087aaf0168dd4" }
-clap = "3.0"
+clap = "4.1"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
 rayon = "1.5.0"
