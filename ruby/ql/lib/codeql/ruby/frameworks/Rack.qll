@@ -20,7 +20,7 @@ module Rack {
     AppCandidate() {
       call = this.getInstanceMethod("call") and
       call.getNumberOfParameters() = 1 and
-      isRackResponse(call.getAReturningNode())
+      exists(DataFlow::LocalSourceNode resp | isRackResponse(resp) | resp.flowsTo(call.getReturn()))
     }
 
     /**
