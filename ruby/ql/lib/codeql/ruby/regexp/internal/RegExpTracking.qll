@@ -9,7 +9,7 @@
  *
  * 2: A precise type tracking analysis that tracks
  * strings and regular expressions to the places where they are used.
- * This phase keeps track of which strings and regular expressions ends up in which places.
+ * This phase keeps track of which strings and regular expressions end up in which places.
  */
 
 private import codeql.ruby.Regexp as RE
@@ -156,7 +156,7 @@ private DataFlow::LocalSourceNode trackRegs(DataFlow::Node start, TypeTracker t)
   )
 }
 
-/** Gests a node that references a regular expression. */
+/** Gets a node that references a regular expression. */
 private DataFlow::LocalSourceNode trackRegexpType(TypeTracker t) {
   t.start() and
   (
@@ -167,7 +167,7 @@ private DataFlow::LocalSourceNode trackRegexpType(TypeTracker t) {
   exists(TypeTracker t2 | result = trackRegexpType(t2).track(t2, t))
 }
 
-/** Gests a node that references a regular expression. */
+/** Gets a node that references a regular expression. */
 DataFlow::Node trackRegexpType() { trackRegexpType(TypeTracker::end()).flowsTo(result) }
 
 /** Gets a node holding a value for the regular expression that is evaluated at `re`. */

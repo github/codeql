@@ -177,14 +177,15 @@ private predicate regexExecution(
   )
   or
   // a case-when statement
-  exists(CfgNodes::ExprNodes::CaseExprCfgNode caseWhen |
-    name = "case-when" and
-    exec.asExpr() = caseWhen and
-    input.asExpr() = caseWhen.getValue()
+  exists(CfgNodes::ExprNodes::CaseExprCfgNode caseExpr |
+    exec.asExpr() = caseExpr and
+    input.asExpr() = caseExpr.getValue()
   |
-    regexp.asExpr() = caseWhen.getBranch(_).(CfgNodes::ExprNodes::WhenClauseCfgNode).getPattern(_)
+    name = "case-when" and
+    regexp.asExpr() = caseExpr.getBranch(_).(CfgNodes::ExprNodes::WhenClauseCfgNode).getPattern(_)
     or
-    regexp.asExpr() = caseWhen.getBranch(_).(CfgNodes::ExprNodes::InClauseCfgNode).getPattern()
+    name = "case-in" and
+    regexp.asExpr() = caseExpr.getBranch(_).(CfgNodes::ExprNodes::InClauseCfgNode).getPattern()
   )
 }
 
