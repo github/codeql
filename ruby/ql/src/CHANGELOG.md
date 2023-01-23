@@ -1,3 +1,13 @@
+## 0.5.1
+
+### New Queries
+
+* Added a new query, `rb/unsafe-code-construction`, to detect libraries that unsafely construct code from their inputs.
+
+### Minor Analysis Improvements
+
+* The `rb/unsafe-deserialization` query now recognizes input from STDIN as a source.
+
 ## 0.5.0
 
 ### New Queries

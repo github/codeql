@@ -139,7 +139,7 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
   DataFlow::ParameterNode getParameter(string s) {
     exists(ParameterPosition pos |
       DataFlowImplCommon::parameterNode(result, TLibraryCallable(this), pos) and
-      s = getParameterPositionCsv(pos)
+      s = getParameterPosition(pos)
     )
   }
 }

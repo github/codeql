@@ -269,10 +269,12 @@ foo(&)
 # splat argument
 foo(*bar)
 foo(*X::bar)
+foo(*)
 
 # hash-splat argument
 foo(**bar)
 foo(**X::bar)
+foo(**)
 
 # the value in a keyword argument
 foo(blah: bar)
