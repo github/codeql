@@ -724,43 +724,7 @@ module API {
         exists(DataFlow::Node def, DataFlow::SourceNode pred |
           rhs(base, def) and pred = trackDefNode(def)
         |
-          // from `x` to a definition of `x.prop`
-          exists(DataFlow::PropWrite pw | pw = pred.getAPropertyWrite() |
-            lbl = Label::memberFromRef(pw) and
-            rhs = pw.getRhs()
-          )
-          or
-          // special case: from `require('m')` to an export of `prop` in `m`
-          exists(Import imp, Module m, string prop |
-            pred = imp.getImportedModuleNode() and
-            m = imp.getImportedModule() and
-            lbl = Label::member(prop) and
-            rhs = m.getAnExportedValue(prop)
-          )
-          or
-          exists(DataFlow::FunctionNode fn |
-            fn = pred and
-            lbl = Label::return()
-          |
-            if fn.getFunction().isAsync() then rhs = fn.getReturnNode() else rhs = fn.getAReturn()
-          )
-          or
-          lbl = Label::promised() and
-          PromiseFlow::storeStep(rhs, pred, Promises::valueProp())
-          or
-          lbl = Label::promisedError() and
-          PromiseFlow::storeStep(rhs, pred, Promises::errorProp())
-          or
-          // The return-value of a getter G counts as a definition of property G
-          // (Ordinary methods and properties are handled as PropWrite nodes)
-          exists(string name | lbl = Label::member(name) |
-            rhs = pred.(DataFlow::ObjectLiteralNode).getPropertyGetter(name).getAReturn()
-            or
-            rhs =
-              pred.(DataFlow::ClassNode)
-                  .getStaticMember(name, DataFlow::MemberKind::getter())
-                  .getAReturn()
-          )
+          hasRhs(pred, lbl, rhs)
         )
         or
         exists(DataFlow::ClassNode cls, string name |
@@ -803,6 +767,47 @@ module API {
       exists(DataFlow::PropWrite write |
         decoratorPropEdge(base, lbl, write) and
         rhs = write.getRhs()
+      )
+    }
+
+    pragma[noinline]
+    private predicate hasRhs(DataFlow::SourceNode pred, Label::ApiLabel lbl, DataFlow::Node rhs) {
+      // from `x` to a definition of `x.prop`
+      exists(DataFlow::PropWrite pw | pw = pred.getAPropertyWrite() |
+        lbl = Label::memberFromRef(pw) and
+        rhs = pw.getRhs()
+      )
+      or
+      // special case: from `require('m')` to an export of `prop` in `m`
+      exists(Import imp, Module m, string prop |
+        pred = imp.getImportedModuleNode() and
+        m = imp.getImportedModule() and
+        lbl = Label::member(prop) and
+        rhs = m.getAnExportedValue(prop)
+      )
+      or
+      exists(DataFlow::FunctionNode fn |
+        fn = pred and
+        lbl = Label::return()
+      |
+        if fn.getFunction().isAsync() then rhs = fn.getReturnNode() else rhs = fn.getAReturn()
+      )
+      or
+      lbl = Label::promised() and
+      PromiseFlow::storeStep(rhs, pred, Promises::valueProp())
+      or
+      lbl = Label::promisedError() and
+      PromiseFlow::storeStep(rhs, pred, Promises::errorProp())
+      or
+      // The return-value of a getter G counts as a definition of property G
+      // (Ordinary methods and properties are handled as PropWrite nodes)
+      exists(string name | lbl = Label::member(name) |
+        rhs = pred.(DataFlow::ObjectLiteralNode).getPropertyGetter(name).getAReturn()
+        or
+        rhs =
+          pred.(DataFlow::ClassNode)
+              .getStaticMember(name, DataFlow::MemberKind::getter())
+              .getAReturn()
       )
     }
 
