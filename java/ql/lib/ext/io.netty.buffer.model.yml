@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.netty.buffer", "ByteBuf", True, "getBuffer", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "getByte", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "getBytes", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "getChar", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "getCharSequence", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "getCharSequence", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "readBytes", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "readChar", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "readCharSequence", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "readSlice", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBufHolder", True, "content", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "readBytes", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "setByte", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "setBytes", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "setChar", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "setCharSequence", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "writeByte", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "writeBytes", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "writeChar", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["io.netty.buffer", "ByteBuf", True, "writeCharSequence", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
