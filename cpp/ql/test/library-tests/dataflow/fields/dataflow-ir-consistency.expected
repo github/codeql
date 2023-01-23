@@ -33,10 +33,10 @@ postIsNotPre
 | D.cpp:56:15:56:24 | new indirection | PostUpdateNode should not equal its pre-update node. |
 postHasUniquePre
 uniquePostUpdate
-| aliasing.cpp:70:11:70:11 | VariableAddress indirection | Node has multiple PostUpdateNodes. |
-| aliasing.cpp:77:11:77:11 | VariableAddress indirection | Node has multiple PostUpdateNodes. |
-| aliasing.cpp:84:11:84:11 | VariableAddress indirection | Node has multiple PostUpdateNodes. |
-| aliasing.cpp:91:11:91:11 | VariableAddress indirection | Node has multiple PostUpdateNodes. |
+| aliasing.cpp:70:11:70:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
+| aliasing.cpp:77:11:77:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
+| aliasing.cpp:84:11:84:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
+| aliasing.cpp:91:11:91:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
 | complex.cpp:22:3:22:5 | this indirection | Node has multiple PostUpdateNodes. |
 | complex.cpp:25:7:25:7 | this indirection | Node has multiple PostUpdateNodes. |
 | complex.cpp:42:10:42:14 | inner indirection | Node has multiple PostUpdateNodes. |
@@ -45,8 +45,8 @@ uniquePostUpdate
 | complex.cpp:54:6:54:10 | inner indirection | Node has multiple PostUpdateNodes. |
 | complex.cpp:55:6:55:10 | inner indirection | Node has multiple PostUpdateNodes. |
 | complex.cpp:56:6:56:10 | inner indirection | Node has multiple PostUpdateNodes. |
-| struct_init.c:26:16:26:20 | VariableAddress indirection | Node has multiple PostUpdateNodes. |
-| struct_init.c:41:16:41:20 | VariableAddress indirection | Node has multiple PostUpdateNodes. |
+| struct_init.c:26:16:26:20 | definition of outer indirection | Node has multiple PostUpdateNodes. |
+| struct_init.c:41:16:41:20 | definition of outer indirection | Node has multiple PostUpdateNodes. |
 postIsInSameCallable
 reverseRead
 argHasPostUpdate

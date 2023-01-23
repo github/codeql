@@ -8,28 +8,28 @@ edges
 | tests5.cpp:27:25:27:38 | call to createLSParser indirection | tests5.cpp:29:2:29:2 | p indirection |
 | tests5.cpp:40:25:40:38 | call to createLSParser indirection | tests5.cpp:43:2:43:2 | p indirection |
 | tests5.cpp:55:25:55:38 | call to createLSParser indirection | tests5.cpp:59:2:59:2 | p indirection |
-| tests5.cpp:81:25:81:38 | call to createLSParser indirection | tests5.cpp:83:2:83:2 | Load indirection |
 | tests5.cpp:81:25:81:38 | call to createLSParser indirection | tests5.cpp:83:2:83:2 | p indirection |
-| tests5.cpp:83:2:83:2 | Load indirection | tests5.cpp:85:2:85:2 | p indirection |
-| tests5.cpp:85:2:85:2 | p indirection | tests5.cpp:86:2:86:2 | Load indirection |
-| tests5.cpp:86:2:86:2 | Load indirection | tests5.cpp:88:2:88:2 | p indirection |
+| tests5.cpp:81:25:81:38 | call to createLSParser indirection | tests5.cpp:83:2:83:2 | p indirection |
+| tests5.cpp:83:2:83:2 | p indirection | tests5.cpp:85:2:85:2 | p indirection |
+| tests5.cpp:85:2:85:2 | p indirection | tests5.cpp:86:2:86:2 | p indirection |
+| tests5.cpp:86:2:86:2 | p indirection | tests5.cpp:88:2:88:2 | p indirection |
 | tests5.cpp:88:2:88:2 | p indirection | tests5.cpp:89:2:89:2 | p indirection |
 | tests.cpp:15:23:15:43 | call to XercesDOMParser | tests.cpp:17:2:17:2 | p indirection |
 | tests.cpp:28:23:28:43 | call to XercesDOMParser | tests.cpp:31:2:31:2 | p indirection |
-| tests.cpp:35:23:35:43 | Store indirection | tests.cpp:37:2:37:2 | p indirection |
-| tests.cpp:35:23:35:43 | call to XercesDOMParser | tests.cpp:35:23:35:43 | Store indirection |
-| tests.cpp:37:2:37:2 | ConvertToNonVirtualBase indirection | tests.cpp:38:2:38:2 | p indirection |
-| tests.cpp:37:2:37:2 | p indirection | tests.cpp:37:2:37:2 | ConvertToNonVirtualBase indirection |
+| tests.cpp:35:23:35:43 | call to XercesDOMParser | tests.cpp:35:23:35:43 | new indirection |
+| tests.cpp:35:23:35:43 | new indirection | tests.cpp:37:2:37:2 | p indirection |
+| tests.cpp:37:2:37:2 | (AbstractDOMParser *)... indirection | tests.cpp:38:2:38:2 | p indirection |
+| tests.cpp:37:2:37:2 | p indirection | tests.cpp:37:2:37:2 | (AbstractDOMParser *)... indirection |
 | tests.cpp:38:2:38:2 | p indirection | tests.cpp:39:2:39:2 | p indirection |
-| tests.cpp:51:23:51:43 | Store indirection | tests.cpp:53:2:53:2 | p indirection |
-| tests.cpp:51:23:51:43 | call to XercesDOMParser | tests.cpp:51:23:51:43 | Store indirection |
-| tests.cpp:53:2:53:2 | p indirection | tests.cpp:54:2:54:2 | ConvertToNonVirtualBase indirection |
-| tests.cpp:54:2:54:2 | ConvertToNonVirtualBase indirection | tests.cpp:55:2:55:2 | p indirection |
-| tests.cpp:55:2:55:2 | p indirection | tests.cpp:56:2:56:2 | ConvertToNonVirtualBase indirection |
+| tests.cpp:51:23:51:43 | call to XercesDOMParser | tests.cpp:51:23:51:43 | new indirection |
+| tests.cpp:51:23:51:43 | new indirection | tests.cpp:53:2:53:2 | p indirection |
+| tests.cpp:53:2:53:2 | p indirection | tests.cpp:54:2:54:2 | (AbstractDOMParser *)... indirection |
+| tests.cpp:54:2:54:2 | (AbstractDOMParser *)... indirection | tests.cpp:55:2:55:2 | p indirection |
+| tests.cpp:55:2:55:2 | p indirection | tests.cpp:56:2:56:2 | (AbstractDOMParser *)... indirection |
 | tests.cpp:55:2:55:2 | p indirection | tests.cpp:56:2:56:2 | p indirection |
-| tests.cpp:56:2:56:2 | ConvertToNonVirtualBase indirection | tests.cpp:57:2:57:2 | p indirection |
-| tests.cpp:57:2:57:2 | p indirection | tests.cpp:58:2:58:2 | ConvertToNonVirtualBase indirection |
-| tests.cpp:58:2:58:2 | ConvertToNonVirtualBase indirection | tests.cpp:59:2:59:2 | p indirection |
+| tests.cpp:56:2:56:2 | (AbstractDOMParser *)... indirection | tests.cpp:57:2:57:2 | p indirection |
+| tests.cpp:57:2:57:2 | p indirection | tests.cpp:58:2:58:2 | (AbstractDOMParser *)... indirection |
+| tests.cpp:58:2:58:2 | (AbstractDOMParser *)... indirection | tests.cpp:59:2:59:2 | p indirection |
 | tests.cpp:59:2:59:2 | p indirection | tests.cpp:60:2:60:2 | p indirection |
 | tests.cpp:66:23:66:43 | call to XercesDOMParser | tests.cpp:69:2:69:2 | p indirection |
 | tests.cpp:73:23:73:43 | call to XercesDOMParser | tests.cpp:80:2:80:2 | p indirection |
@@ -37,10 +37,10 @@ edges
 | tests.cpp:100:24:100:44 | call to XercesDOMParser | tests.cpp:104:3:104:3 | q indirection |
 | tests.cpp:112:39:112:39 | p indirection | tests.cpp:113:2:113:2 | p indirection |
 | tests.cpp:116:39:116:39 | p indirection | tests.cpp:117:2:117:2 | p indirection |
-| tests.cpp:122:23:122:43 | call to XercesDOMParser | tests.cpp:126:18:126:18 | Load indirection |
-| tests.cpp:122:23:122:43 | call to XercesDOMParser | tests.cpp:128:18:128:18 | Load indirection |
-| tests.cpp:126:18:126:18 | Load indirection | tests.cpp:112:39:112:39 | p indirection |
-| tests.cpp:128:18:128:18 | Load indirection | tests.cpp:116:39:116:39 | p indirection |
+| tests.cpp:122:23:122:43 | call to XercesDOMParser | tests.cpp:126:18:126:18 | q indirection |
+| tests.cpp:122:23:122:43 | call to XercesDOMParser | tests.cpp:128:18:128:18 | q indirection |
+| tests.cpp:126:18:126:18 | q indirection | tests.cpp:112:39:112:39 | p indirection |
+| tests.cpp:128:18:128:18 | q indirection | tests.cpp:116:39:116:39 | p indirection |
 nodes
 | tests2.cpp:20:17:20:31 | call to SAXParser | semmle.label | call to SAXParser |
 | tests2.cpp:22:2:22:2 | p indirection | semmle.label | p indirection |
@@ -66,31 +66,31 @@ nodes
 | tests5.cpp:55:25:55:38 | call to createLSParser indirection | semmle.label | call to createLSParser indirection |
 | tests5.cpp:59:2:59:2 | p indirection | semmle.label | p indirection |
 | tests5.cpp:81:25:81:38 | call to createLSParser indirection | semmle.label | call to createLSParser indirection |
-| tests5.cpp:83:2:83:2 | Load indirection | semmle.label | Load indirection |
+| tests5.cpp:83:2:83:2 | p indirection | semmle.label | p indirection |
 | tests5.cpp:83:2:83:2 | p indirection | semmle.label | p indirection |
 | tests5.cpp:85:2:85:2 | p indirection | semmle.label | p indirection |
-| tests5.cpp:86:2:86:2 | Load indirection | semmle.label | Load indirection |
+| tests5.cpp:86:2:86:2 | p indirection | semmle.label | p indirection |
 | tests5.cpp:88:2:88:2 | p indirection | semmle.label | p indirection |
 | tests5.cpp:89:2:89:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:15:23:15:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:17:2:17:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:28:23:28:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:31:2:31:2 | p indirection | semmle.label | p indirection |
-| tests.cpp:35:23:35:43 | Store indirection | semmle.label | Store indirection |
 | tests.cpp:35:23:35:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
-| tests.cpp:37:2:37:2 | ConvertToNonVirtualBase indirection | semmle.label | ConvertToNonVirtualBase indirection |
+| tests.cpp:35:23:35:43 | new indirection | semmle.label | new indirection |
+| tests.cpp:37:2:37:2 | (AbstractDOMParser *)... indirection | semmle.label | (AbstractDOMParser *)... indirection |
 | tests.cpp:37:2:37:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:38:2:38:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:39:2:39:2 | p indirection | semmle.label | p indirection |
-| tests.cpp:51:23:51:43 | Store indirection | semmle.label | Store indirection |
 | tests.cpp:51:23:51:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
+| tests.cpp:51:23:51:43 | new indirection | semmle.label | new indirection |
 | tests.cpp:53:2:53:2 | p indirection | semmle.label | p indirection |
-| tests.cpp:54:2:54:2 | ConvertToNonVirtualBase indirection | semmle.label | ConvertToNonVirtualBase indirection |
+| tests.cpp:54:2:54:2 | (AbstractDOMParser *)... indirection | semmle.label | (AbstractDOMParser *)... indirection |
 | tests.cpp:55:2:55:2 | p indirection | semmle.label | p indirection |
-| tests.cpp:56:2:56:2 | ConvertToNonVirtualBase indirection | semmle.label | ConvertToNonVirtualBase indirection |
+| tests.cpp:56:2:56:2 | (AbstractDOMParser *)... indirection | semmle.label | (AbstractDOMParser *)... indirection |
 | tests.cpp:56:2:56:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:57:2:57:2 | p indirection | semmle.label | p indirection |
-| tests.cpp:58:2:58:2 | ConvertToNonVirtualBase indirection | semmle.label | ConvertToNonVirtualBase indirection |
+| tests.cpp:58:2:58:2 | (AbstractDOMParser *)... indirection | semmle.label | (AbstractDOMParser *)... indirection |
 | tests.cpp:59:2:59:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:60:2:60:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:66:23:66:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
@@ -106,8 +106,8 @@ nodes
 | tests.cpp:116:39:116:39 | p indirection | semmle.label | p indirection |
 | tests.cpp:117:2:117:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:122:23:122:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
-| tests.cpp:126:18:126:18 | Load indirection | semmle.label | Load indirection |
-| tests.cpp:128:18:128:18 | Load indirection | semmle.label | Load indirection |
+| tests.cpp:126:18:126:18 | q indirection | semmle.label | q indirection |
+| tests.cpp:128:18:128:18 | q indirection | semmle.label | q indirection |
 subpaths
 #select
 | tests2.cpp:22:2:22:2 | p indirection | tests2.cpp:20:17:20:31 | call to SAXParser | tests2.cpp:22:2:22:2 | p indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests2.cpp:20:17:20:31 | call to SAXParser | XML parser |

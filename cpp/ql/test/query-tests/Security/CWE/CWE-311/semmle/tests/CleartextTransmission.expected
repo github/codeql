@@ -2,8 +2,8 @@ edges
 | test3.cpp:74:21:74:29 | password1 | test3.cpp:76:15:76:17 | ptr |
 | test3.cpp:81:15:81:22 | password | test3.cpp:83:15:83:17 | ptr |
 | test3.cpp:112:20:112:25 | buffer | test3.cpp:114:14:114:19 | buffer |
-| test3.cpp:124:7:124:20 | VariableAddress indirection | test3.cpp:146:15:146:18 | data |
-| test3.cpp:126:9:126:23 | global_password | test3.cpp:124:7:124:20 | VariableAddress indirection |
+| test3.cpp:124:7:124:20 | get_global_str indirection | test3.cpp:146:15:146:18 | data |
+| test3.cpp:126:9:126:23 | global_password | test3.cpp:124:7:124:20 | get_global_str indirection |
 | test3.cpp:134:11:134:18 | password | test3.cpp:112:20:112:25 | buffer |
 | test3.cpp:138:24:138:32 | password1 | test3.cpp:140:15:140:17 | ptr |
 | test3.cpp:157:19:157:26 | password | test3.cpp:159:15:159:20 | buffer |
@@ -40,7 +40,7 @@ nodes
 | test3.cpp:101:12:101:19 | password | semmle.label | password |
 | test3.cpp:112:20:112:25 | buffer | semmle.label | buffer |
 | test3.cpp:114:14:114:19 | buffer | semmle.label | buffer |
-| test3.cpp:124:7:124:20 | VariableAddress indirection | semmle.label | VariableAddress indirection |
+| test3.cpp:124:7:124:20 | get_global_str indirection | semmle.label | get_global_str indirection |
 | test3.cpp:126:9:126:23 | global_password | semmle.label | global_password |
 | test3.cpp:134:11:134:18 | password | semmle.label | password |
 | test3.cpp:138:24:138:32 | password1 | semmle.label | password1 |

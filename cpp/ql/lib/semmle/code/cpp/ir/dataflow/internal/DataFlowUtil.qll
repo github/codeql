@@ -357,6 +357,8 @@ class InstructionNode extends Node0 {
 
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
+
+  override string toStringImpl() { result = instr.getAst().toString() }
 }
 
 /**
@@ -370,6 +372,8 @@ class OperandNode extends Node, Node0 {
 
   /** Gets the operand corresponding to this node. */
   Operand getOperand() { result = node.getOperand() }
+
+  override string toStringImpl() { result = op.getDef().getAst().toString() }
 }
 
 /**
