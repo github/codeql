@@ -30,20 +30,4 @@ class Configuration extends TaintTracking::Configuration {
   override DataFlow::FlowFeature getAFeature() {
     result instanceof DataFlow::FeatureHasSourceCallContext
   }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    // if an array element gets tainted, then we treat the entire array as tainted
-    exists(DataFlow::CallNode call |
-      call.getMethodName() = ["<<", "push", "append"] and
-      call.getReceiver() = succ and
-      pred = call.getArgument(0) and
-      call.getNumberOfArguments() = 1
-    )
-    or
-    exists(DataFlow::CallNode call |
-      call.getMethodName() = "[]" and
-      succ = call and
-      pred = call.getArgument(_)
-    )
-  }
 }
