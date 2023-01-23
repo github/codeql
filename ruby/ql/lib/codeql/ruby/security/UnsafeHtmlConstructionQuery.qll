@@ -15,7 +15,7 @@ private import codeql.ruby.dataflow.BarrierGuards
  * A taint-tracking configuration for detecting unsafe HTML construction.
  */
 class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnsafeShellCommandConstruction" }
+  Configuration() { this = "UnsafeHtmlConstruction" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
 

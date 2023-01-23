@@ -36,7 +36,7 @@ module UnsafeHtmlConstruction {
   private import codeql.ruby.security.XSS::ReflectedXss as ReflectedXss
 
   /** Gets a node that eventually ends up in the XSS `sink`. */
-  DataFlow::Node getANodeThatEndsInXssSink(ReflectedXss::Sink sink) {
+  private DataFlow::Node getANodeThatEndsInXssSink(ReflectedXss::Sink sink) {
     result = getANodeThatEndsInXssSink(TypeTracker::TypeBackTracker::end(), sink)
   }
 
@@ -55,10 +55,10 @@ module UnsafeHtmlConstruction {
   }
 
   /**
-   * A string constructed from a string-literal (e.g. `"foo #{sink}"`),
+   * A component of a string-literal (e.g. `"foo #{sink}"`),
    * where the resulting string ends up being used in an XSS sink.
    */
-  class StringFormatAsSink extends Sink {
+  private class StringFormatAsSink extends Sink {
     ReflectedXss::Sink s;
 
     StringFormatAsSink() {
@@ -73,13 +73,13 @@ module UnsafeHtmlConstruction {
     override string getSinkType() { result = "string interpolation" }
   }
 
-  import codeql.ruby.security.TaintedFormatStringSpecific as TaintedFormat
+  private import codeql.ruby.security.TaintedFormatStringSpecific as TaintedFormat
 
   /**
-   * A string constructed from a printf-style call,
+   * An argument to a printf-style call,
    * where the resulting string ends up being used in an XSS sink.
    */
-  class TaintedFormatStringAsSink extends Sink {
+  private class TaintedFormatStringAsSink extends Sink {
     ReflectedXss::Sink s;
 
     TaintedFormatStringAsSink() {
