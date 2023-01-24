@@ -48,7 +48,6 @@
 | Local variable 0 of method System.Threading.Tasks.AwaitTaskContinuation.RunOrScheduleAction | local | 32 |
 | Local variable 0 of method System.Threading.TimerQueue.LinkTimer | local | 32 |
 | Local variable 1 of method Interop.Sys.GetControlCharacters | local | 32 |
-| Local variable 1 of method Interop.libobjc.NSOperatingSystemVersion_objc_msgSend_stret | local | 32 |
 | Local variable 1 of method System.Array.Fill | local | 32 |
 | Local variable 1 of method System.Array.GetUpperBound | local | 32 |
 | Local variable 1 of method System.Buffer.Memmove | local | 32 |
@@ -279,7 +278,6 @@
 | Local variable 2 of method System.Reflection.Emit.TypeBuilder.SetParamInfo | local | 32 |
 | Local variable 2 of method System.Reflection.RuntimeAssembly.GetManifestResourceInfo | local | 32 |
 | Local variable 2 of method System.Reflection.RuntimeAssembly.GetResource | local | 32 |
-| Local variable 2 of method System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.CreateReferenceTrackingHandleInternal | local | 32 |
 | Local variable 2 of method System.String.CompareOrdinalHelper | local | 32 |
 | Local variable 2 of method System.String.MakeSeparatorListVectorized | local | 32 |
 | Local variable 2 of method System.StubHelpers.AnsiCharMarshaler.DoAnsiConversion | local | 32 |
@@ -409,7 +407,6 @@
 | Local variable 4 of method Interop.Kernel32.SetEnvironmentVariable | local | 32 |
 | Local variable 4 of method Interop.Sys.IsMemberOfGroup | local | 32 |
 | Local variable 4 of method System.Array.Copy | local | 32 |
-| Local variable 4 of method System.CLRConfig.GetConfigBoolValue | local | 32 |
 | Local variable 4 of method System.Collections.Generic.Dictionary.CollectionsMarshalHelper.GetValueRefOrAddDefault | local | 32 |
 | Local variable 4 of method System.Collections.Generic.Dictionary.CopyEntries | local | 32 |
 | Local variable 4 of method System.Collections.Generic.Dictionary.Resize | local | 32 |
@@ -448,7 +445,6 @@
 | Local variable 4 of method System.Reflection.RuntimeAssembly.GetResource | local | 32 |
 | Local variable 4 of method System.Reflection.RuntimeAssembly.InternalLoad | local | 32 |
 | Local variable 4 of method System.Runtime.InteropServices.NativeLibrary.LoadByName | local | 32 |
-| Local variable 4 of method System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.CreateReferenceTrackingHandleInternal | local | 32 |
 | Local variable 4 of method System.Runtime.Loader.AssemblyLoadContext.InternalLoad | local | 32 |
 | Local variable 4 of method System.Runtime.Loader.AssemblyLoadContext.TraceAssemblyLoadFromResolveHandlerInvoked | local | 32 |
 | Local variable 4 of method System.SpanHelpers.IndexOf | local | 32 |
