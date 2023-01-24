@@ -18,7 +18,8 @@ import codeql.swift.security.UnsafeJsEvalQuery
 import DataFlow::PathGraph
 
 from
-  UnsafeJsEvalConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode, UnsafeJsEvalSink sink
+  UnsafeJsEvalConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode,
+  UnsafeJsEvalSink sink
 where
   config.hasFlowPath(sourceNode, sinkNode) and
   sink = sinkNode.getNode()
