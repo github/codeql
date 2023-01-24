@@ -53,32 +53,33 @@ std::optional<TrapDomain> createTargetTrapDomain(SwiftExtractorState& state,
   return std::nullopt;
 }
 
-std::optional<LinkDomain> createTargetLinkDomain(const SwiftExtractorState& state,
-                                                 const std::filesystem::path& target) {
+namespace {
+template <typename Domain>
+std::optional<Domain> createTarget(const SwiftExtractorState& state,
+                                   const std::filesystem::path& target,
+                                   const char* extension) {
   if (target.empty()) {
     return std::nullopt;
   }
-  auto file = getRelativeTrapPath(target, TrapType::linkage, ".link");
+  auto file = getRelativeTrapPath(target, TrapType::linkage, extension);
   auto ret =
       TargetFile::create(file, state.configuration.trapDir, state.configuration.getTempTrapDir());
   if (ret) {
-    return LinkDomain{*std::move(ret)};
+    return Domain{*std::move(ret)};
   }
   return std::nullopt;
 }
 
+}  // namespace
+
+std::optional<LinkDomain> createTargetLinkDomain(const SwiftExtractorState& state,
+                                                 const std::filesystem::path& target) {
+  return createTarget<LinkDomain>(state, target, ".link");
+}
+
 std::optional<ObjectDomain> createTargetObjectDomain(const SwiftExtractorState& state,
                                                      const std::filesystem::path& target) {
-  if (target.empty()) {
-    return std::nullopt;
-  }
-  auto file = getRelativeTrapPath(target, TrapType::linkage, ".odep");
-  auto ret =
-      TargetFile::create(file, state.configuration.trapDir, state.configuration.getTempTrapDir());
-  if (ret) {
-    return ObjectDomain{*std::move(ret)};
-  }
-  return std::nullopt;
+  return createTarget<ObjectDomain>(state, target, ".odep");
 }
 
 }  // namespace codeql
