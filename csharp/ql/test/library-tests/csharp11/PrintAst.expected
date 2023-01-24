@@ -599,6 +599,19 @@ Strings.cs:
 #   46|           -1: [TypeMention] string
 #   46|           0: [LocalVariableAccess] access to local variable y
 #   46|           1: [StringLiteralUtf16] "AUTH16: "
+#   49|       2: [LocalVariableDeclStmt] ... ...;
+#   49|         0: [LocalVariableDeclAndInitExpr] ReadOnlySpan<Byte> z = ...
+#   49|           -1: [TypeMention] ReadOnlySpan<byte>
+#   49|           0: [LocalVariableAccess] access to local variable z
+#   49|           1: [StringLiteralUtf8] "AUTH8: 
+#   49|                   <username> "
+#   53|       3: [LocalVariableDeclStmt] ... ...;
+#   53|         0: [LocalVariableDeclAndInitExpr] ReadOnlySpan<Byte> w = ...
+#   53|           -1: [TypeMention] ReadOnlySpan<byte>
+#   53|           0: [LocalVariableAccess] access to local variable w
+#   53|           1: [StringLiteralUtf8] "The nested message
+#   53|             is UTF-8 encoded and
+#   53|           spans multiple lines."
 cil/class1.cs:
 #    4| [Class] Class1
 #    6|   5: [Method] Main

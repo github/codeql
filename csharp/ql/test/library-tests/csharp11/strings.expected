@@ -19,3 +19,5 @@ stringliterals
 | Strings.cs:35:57:35:57 | "}" | StringLiteralUtf16 | String |
 | Strings.cs:43:17:43:27 | "AUTH8: " | StringLiteralUtf8 | ReadOnlySpan<Byte> |
 | Strings.cs:46:17:46:26 | "AUTH16: " | StringLiteralUtf16 | String |
+| Strings.cs:49:17:50:22 | "AUTH8: \n        <username> " | StringLiteralUtf8 | ReadOnlySpan<Byte> |
+| Strings.cs:53:17:57:13 | "The nested message\n  is UTF-8 encoded and\nspans multiple lines." | StringLiteralUtf8 | ReadOnlySpan<Byte> |
