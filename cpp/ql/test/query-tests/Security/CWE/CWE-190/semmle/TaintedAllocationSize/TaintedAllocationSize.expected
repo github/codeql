@@ -34,10 +34,10 @@ edges
 | test.cpp:237:24:237:37 | call to getenv indirection | test.cpp:245:11:245:20 | local_size |
 | test.cpp:237:24:237:37 | call to getenv indirection | test.cpp:247:10:247:19 | local_size |
 | test.cpp:247:10:247:19 | local_size | test.cpp:230:21:230:21 | s |
-| test.cpp:250:20:250:27 | out_size indirection | test.cpp:289:17:289:20 | get_size output argument |
-| test.cpp:250:20:250:27 | out_size indirection | test.cpp:305:18:305:21 | get_size output argument |
-| test.cpp:251:18:251:23 | call to getenv | test.cpp:250:20:250:27 | out_size indirection |
-| test.cpp:251:18:251:31 | call to getenv indirection | test.cpp:250:20:250:27 | out_size indirection |
+| test.cpp:250:20:250:27 | out_size | test.cpp:289:17:289:20 | get_size output argument |
+| test.cpp:250:20:250:27 | out_size | test.cpp:305:18:305:21 | get_size output argument |
+| test.cpp:251:18:251:23 | call to getenv | test.cpp:250:20:250:27 | out_size |
+| test.cpp:251:18:251:31 | call to getenv indirection | test.cpp:250:20:250:27 | out_size |
 | test.cpp:259:20:259:25 | call to getenv | test.cpp:263:11:263:29 | ... * ... |
 | test.cpp:259:20:259:33 | call to getenv indirection | test.cpp:263:11:263:29 | ... * ... |
 | test.cpp:289:17:289:20 | get_size output argument | test.cpp:291:11:291:28 | ... * ... |
@@ -76,7 +76,7 @@ nodes
 | test.cpp:241:9:241:24 | call to get_tainted_size | semmle.label | call to get_tainted_size |
 | test.cpp:245:11:245:20 | local_size | semmle.label | local_size |
 | test.cpp:247:10:247:19 | local_size | semmle.label | local_size |
-| test.cpp:250:20:250:27 | out_size indirection | semmle.label | out_size indirection |
+| test.cpp:250:20:250:27 | out_size | semmle.label | out_size |
 | test.cpp:251:18:251:23 | call to getenv | semmle.label | call to getenv |
 | test.cpp:251:18:251:31 | call to getenv indirection | semmle.label | call to getenv indirection |
 | test.cpp:259:20:259:25 | call to getenv | semmle.label | call to getenv |

@@ -169,7 +169,7 @@ int main(int argc, char **argv) {
 	printf((char *) i10);
 	printWrapper((char *) i10);
 
-	// BAD: b value comes from argv
+	// BAD: b value comes from argv [NOT DETECTED]
 	{
 		char b[64];
 		char *bp = &b[0];
@@ -184,7 +184,7 @@ int main(int argc, char **argv) {
 		printWrapper(bp);
 	}
 
-	// BAD: b value comes from argv
+	// BAD: b value comes from argv [NOT DETECTED]
 	{
 		char b[64];
 		char *bp = &b[0];
