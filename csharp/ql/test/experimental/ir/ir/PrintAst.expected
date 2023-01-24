@@ -232,10 +232,10 @@ collections.cs:
 #   15|                   -1: [ObjectInitializer] { ..., ... }
 #   15|                     0: [MemberInitializer] ... = ...
 #   15|                       0: [FieldAccess] access to field a
-#   15|                       1: [StringLiteral] "Hello"
+#   15|                       1: [StringLiteralUtf16] "Hello"
 #   15|                     1: [MemberInitializer] ... = ...
 #   15|                       0: [FieldAccess] access to field b
-#   15|                       1: [StringLiteral] "World"
+#   15|                       1: [StringLiteralUtf16] "World"
 #   16|               1: [ElementInitializer] call to method Add
 #   16|                 0: [IntLiteral] 1
 #   16|                 1: [ObjectCreation] object creation of type MyClass
@@ -243,10 +243,10 @@ collections.cs:
 #   16|                   -1: [ObjectInitializer] { ..., ... }
 #   16|                     0: [MemberInitializer] ... = ...
 #   16|                       0: [FieldAccess] access to field a
-#   16|                       1: [StringLiteral] "Foo"
+#   16|                       1: [StringLiteralUtf16] "Foo"
 #   16|                     1: [MemberInitializer] ... = ...
 #   16|                       0: [FieldAccess] access to field b
-#   16|                       1: [StringLiteral] "Bar"
+#   16|                       1: [StringLiteralUtf16] "Bar"
 constructor_init.cs:
 #    1| [Class] BaseClass
 #    3|   4: [Field] num
@@ -443,7 +443,7 @@ events.cs:
 #   32|           0: [LocalVariableAccess] access to local variable result
 #   32|           1: [DelegateCall] delegate call
 #   32|             -1: [LocalVariableAccess] access to local variable obj
-#   32|             0: [StringLiteral] "string"
+#   32|             0: [StringLiteralUtf16] "string"
 #   33|       3: [ExprStmt] ...;
 #   33|         0: [MethodCall] call to method RemoveEvent
 #   33|           -1: [LocalVariableAccess] access to local variable obj
@@ -549,13 +549,13 @@ indexers.cs:
 #   22|           0: [IndexerCall] access to indexer
 #   22|             -1: [LocalVariableAccess] access to local variable inst
 #   22|             0: [IntLiteral] 0
-#   22|           1: [StringLiteral] "str1"
+#   22|           1: [StringLiteralUtf16] "str1"
 #   23|       2: [ExprStmt] ...;
 #   23|         0: [AssignExpr] ... = ...
 #   23|           0: [IndexerCall] access to indexer
 #   23|             -1: [LocalVariableAccess] access to local variable inst
 #   23|             0: [IntLiteral] 1
-#   23|           1: [StringLiteral] "str1"
+#   23|           1: [StringLiteralUtf16] "str1"
 #   24|       3: [ExprStmt] ...;
 #   24|         0: [AssignExpr] ... = ...
 #   24|           0: [IndexerCall] access to indexer
@@ -775,7 +775,7 @@ jumps.cs:
 #   13|             0: [MethodCall] call to method WriteLine
 #   13|               -1: [TypeAccess] access to type Console
 #   13|                 0: [TypeMention] Console
-#   13|               0: [StringLiteral] "BreakAndContinue"
+#   13|               0: [StringLiteralUtf16] "BreakAndContinue"
 #   16|       1: [ForStmt] for (...;...;...) ...
 #   16|         -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
 #   16|           -1: [TypeMention] int
@@ -831,7 +831,7 @@ jumps.cs:
 #   38|         0: [MethodCall] call to method WriteLine
 #   38|           -1: [TypeAccess] access to type Console
 #   38|             0: [TypeMention] Console
-#   38|           0: [StringLiteral] "Done"
+#   38|           0: [StringLiteralUtf16] "Done"
 lock.cs:
 #    3| [Class] LockTest
 #    5|   5: [Method] A
@@ -1152,9 +1152,9 @@ stmts.cs:
 #   31|         2: [ConstCase] case ...:
 #   31|           0: [ConstantPatternExpr,IntLiteral] 0
 #   32|         3: [GotoCaseStmt] goto case ...;
-#   32|           0: [StringLiteral] "123"
+#   32|           0: [StringLiteralUtf16] "123"
 #   33|         4: [ConstCase] case ...:
-#   33|           0: [ConstantPatternExpr,StringLiteral] "123"
+#   33|           0: [ConstantPatternExpr,StringLiteralUtf16] "123"
 #   34|         5: [ExprStmt] ...;
 #   34|           0: [AssignExpr] ... = ...
 #   34|             0: [LocalVariableAccess] access to local variable select

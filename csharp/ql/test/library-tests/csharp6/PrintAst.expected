@@ -34,12 +34,12 @@ csharp6.cs:
 #   25|               0: [InterpolatedStringExpr] $"..."
 #   25|                 0: [NameOfExpr] nameof(...)
 #   25|                   0: [LocalVariableAccess] access to local variable foo
-#   25|                 1: [StringLiteral] " is "
+#   25|                 1: [StringLiteralUtf16] " is "
 #   25|                 2: [LocalVariableAccess] access to local variable foo
-#   25|                 3: [StringLiteral] ", and "
+#   25|                 3: [StringLiteralUtf16] ", and "
 #   25|                 4: [NameOfExpr] nameof(...)
 #   25|                   0: [LocalVariableAccess] access to local variable bar
-#   25|                 5: [StringLiteral] " has length "
+#   25|                 5: [StringLiteralUtf16] " has length "
 #   25|                 6: [NullCoalescingExpr] ... ?? ...
 #   25|                   0: [PropertyCall] access to property Length
 #   25|                     -1: [LocalVariableAccess] access to local variable bar
@@ -49,12 +49,12 @@ csharp6.cs:
 #   27|               0: [InterpolatedStringExpr] $"..."
 #   27|                 0: [NameOfExpr] nameof(...)
 #   27|                   0: [LocalVariableAccess] access to local variable foo
-#   27|                 1: [StringLiteral] " is "
+#   27|                 1: [StringLiteralUtf16] " is "
 #   27|                 2: [LocalVariableAccess] access to local variable foo
-#   27|                 3: [StringLiteral] ", and "
+#   27|                 3: [StringLiteralUtf16] ", and "
 #   27|                 4: [NameOfExpr] nameof(...)
 #   27|                   0: [LocalVariableAccess] access to local variable bar
-#   27|                 5: [StringLiteral] " has length "
+#   27|                 5: [StringLiteralUtf16] " has length "
 #   27|                 6: [NullCoalescingExpr] ... ?? ...
 #   27|                   0: [PropertyCall] access to property Length
 #   27|                     -1: [LocalVariableAccess] access to local variable bar
@@ -184,15 +184,15 @@ csharp6.cs:
 #   68|               0: [MemberInitializer] ... = ...
 #   68|                 0: [IndexerCall] access to indexer
 #   68|                   0: [IntLiteral] 0
-#   68|                 1: [StringLiteral] "Zero"
+#   68|                 1: [StringLiteralUtf16] "Zero"
 #   68|               1: [MemberInitializer] ... = ...
 #   68|                 0: [IndexerCall] access to indexer
 #   68|                   0: [IntLiteral] 1
-#   68|                 1: [StringLiteral] "One"
+#   68|                 1: [StringLiteralUtf16] "One"
 #   68|               2: [MemberInitializer] ... = ...
 #   68|                 0: [IndexerCall] access to indexer
 #   68|                   0: [IntLiteral] 2
-#   68|                 1: [StringLiteral] "Two"
+#   68|                 1: [StringLiteralUtf16] "Two"
 #   71|       1: [LocalVariableDeclStmt] ... ...;
 #   71|         0: [LocalVariableDeclAndInitExpr] Compound compound = ...
 #   71|           -1: [TypeMention] Compound
@@ -206,41 +206,41 @@ csharp6.cs:
 #   73|                   0: [MemberInitializer] ... = ...
 #   73|                     0: [IndexerCall] access to indexer
 #   73|                       0: [IntLiteral] 0
-#   73|                     1: [StringLiteral] "Zero"
+#   73|                     1: [StringLiteralUtf16] "Zero"
 #   73|                   1: [MemberInitializer] ... = ...
 #   73|                     0: [IndexerCall] access to indexer
 #   73|                       0: [IntLiteral] 1
-#   73|                     1: [StringLiteral] "One"
+#   73|                     1: [StringLiteralUtf16] "One"
 #   73|                   2: [MemberInitializer] ... = ...
 #   73|                     0: [IndexerCall] access to indexer
 #   73|                       0: [IntLiteral] 2
-#   73|                     1: [StringLiteral] "Two"
+#   73|                     1: [StringLiteralUtf16] "Two"
 #   74|               1: [MemberInitializer] ... = ...
 #   74|                 0: [PropertyCall] access to property DictionaryProperty
 #   74|                 1: [ObjectInitializer] { ..., ... }
 #   74|                   0: [MemberInitializer] ... = ...
 #   74|                     0: [IndexerCall] access to indexer
 #   74|                       0: [IntLiteral] 3
-#   74|                     1: [StringLiteral] "Three"
+#   74|                     1: [StringLiteralUtf16] "Three"
 #   74|                   1: [MemberInitializer] ... = ...
 #   74|                     0: [IndexerCall] access to indexer
 #   74|                       0: [IntLiteral] 2
-#   74|                     1: [StringLiteral] "Two"
+#   74|                     1: [StringLiteralUtf16] "Two"
 #   74|                   2: [MemberInitializer] ... = ...
 #   74|                     0: [IndexerCall] access to indexer
 #   74|                       0: [IntLiteral] 1
-#   74|                     1: [StringLiteral] "One"
+#   74|                     1: [StringLiteralUtf16] "One"
 #   75|               2: [MemberInitializer] ... = ...
 #   75|                 0: [FieldAccess] access to field ArrayField
 #   75|                 1: [ObjectInitializer] { ..., ... }
 #   75|                   0: [MemberInitializer] ... = ...
 #   75|                     0: [ArrayAccess] access to array element
 #   75|                       0: [IntLiteral] 0
-#   75|                     1: [StringLiteral] "Zero"
+#   75|                     1: [StringLiteralUtf16] "Zero"
 #   75|                   1: [MemberInitializer] ... = ...
 #   75|                     0: [ArrayAccess] access to array element
 #   75|                       0: [IntLiteral] 1
-#   75|                     1: [StringLiteral] "One"
+#   75|                     1: [StringLiteralUtf16] "One"
 #   76|               3: [MemberInitializer] ... = ...
 #   76|                 0: [FieldAccess] access to field ArrayField2
 #   76|                 1: [ObjectInitializer] { ..., ... }
@@ -248,23 +248,23 @@ csharp6.cs:
 #   76|                     0: [ArrayAccess] access to array element
 #   76|                       0: [IntLiteral] 0
 #   76|                       1: [IntLiteral] 1
-#   76|                     1: [StringLiteral] "i"
+#   76|                     1: [StringLiteralUtf16] "i"
 #   76|                   1: [MemberInitializer] ... = ...
 #   76|                     0: [ArrayAccess] access to array element
 #   76|                       0: [IntLiteral] 1
 #   76|                       1: [IntLiteral] 0
-#   76|                     1: [StringLiteral] "1"
+#   76|                     1: [StringLiteralUtf16] "1"
 #   77|               4: [MemberInitializer] ... = ...
 #   77|                 0: [PropertyCall] access to property ArrayProperty
 #   77|                 1: [ObjectInitializer] { ..., ... }
 #   77|                   0: [MemberInitializer] ... = ...
 #   77|                     0: [ArrayAccess] access to array element
 #   77|                       0: [IntLiteral] 1
-#   77|                     1: [StringLiteral] "One"
+#   77|                     1: [StringLiteralUtf16] "One"
 #   77|                   1: [MemberInitializer] ... = ...
 #   77|                     0: [ArrayAccess] access to array element
 #   77|                       0: [IntLiteral] 2
-#   77|                     1: [StringLiteral] "Two"
+#   77|                     1: [StringLiteralUtf16] "Two"
 #   78|               5: [MemberInitializer] ... = ...
 #   78|                 0: [PropertyCall] access to property ArrayProperty2
 #   78|                 1: [ObjectInitializer] { ..., ... }
@@ -272,9 +272,9 @@ csharp6.cs:
 #   78|                     0: [ArrayAccess] access to array element
 #   78|                       0: [IntLiteral] 0
 #   78|                       1: [IntLiteral] 1
-#   78|                     1: [StringLiteral] "i"
+#   78|                     1: [StringLiteralUtf16] "i"
 #   78|                   1: [MemberInitializer] ... = ...
 #   78|                     0: [ArrayAccess] access to array element
 #   78|                       0: [IntLiteral] 1
 #   78|                       1: [IntLiteral] 0
-#   78|                     1: [StringLiteral] "1"
+#   78|                     1: [StringLiteralUtf16] "1"
