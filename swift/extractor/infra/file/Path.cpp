@@ -21,7 +21,7 @@ std::filesystem::path resolvePath(const std::filesystem::path& path) {
   std::filesystem::path ret = {};
   static const auto canonicalize = shouldCanonicalize();
   if (canonicalize) {
-    ret = std::filesystem::canonical(path, ec);
+    ret = std::filesystem::weakly_canonical(path, ec);
   } else {
     ret = std::filesystem::absolute(path, ec);
   }
