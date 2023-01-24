@@ -103,7 +103,6 @@ attrNoArg
 | !1 System.Runtime.CompilerServices.Unsafe.As`2(!0) | [NonVersionableAttribute(...)] |
 | <PrivateImplementationDetails> | [CompilerGeneratedAttribute(...)] |
 | Internal.Runtime.InteropServices.ComponentActivator.<IsSupported>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| Interop.Error Interop.Sys.ConvertErrorPlatformToPal(System.Int32) | [SuppressGCTransitionAttribute(...)] |
 | Interop.ErrorInfo InteropErrorExtensions.Info(Interop.Error) | [ExtensionAttribute(...)] |
 | Interop.Globalization.ResultCode Interop.Globalization.<GetCalendarInfo>g____PInvoke\|1_0(System.UInt16*,System.Globalization.CalendarId,System.Globalization.CalendarDataType,System.Char*,System.Int32) | [CompilerGeneratedAttribute(...)] |
 | Interop.Globalization.ResultCode Interop.Globalization.<GetSortHandle>g____PInvoke\|10_0(System.Byte*,System.IntPtr*) | [CompilerGeneratedAttribute(...)] |
@@ -112,12 +111,9 @@ attrNoArg
 | Interop.Globalization.ResultCode Interop.Globalization.GetSortHandle(System.String,System.IntPtr) | [LibraryImportAttribute(...)] |
 | Interop.Globalization.ResultCode Interop.Globalization.GetTimeZoneDisplayName(System.String,System.String,Interop.Globalization.TimeZoneDisplayNameType,System.Char*,System.Int32) | [LibraryImportAttribute(...)] |
 | Interop.PollEvents | [FlagsAttribute(...)] |
-| Interop.Sys.FileStatusFlags | [FlagsAttribute(...)] |
-| Interop.Sys.OpenFlags | [FlagsAttribute(...)] |
 | InteropErrorExtensions | [ExtensionAttribute(...)] |
 | Microsoft.CodeAnalysis.EmbeddedAttribute | [CompilerGeneratedAttribute(...)] |
 | Microsoft.CodeAnalysis.EmbeddedAttribute | [EmbeddedAttribute(...)] |
-| Microsoft.Win32.SafeHandles.SafeFileHandle Interop.Sys.Open(System.String,Interop.Sys.OpenFlags,System.Int32) | [LibraryImportAttribute(...)] |
 | Microsoft.Win32.SafeHandles.SafeFileHandle.<DisableFileLocking>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | Microsoft.Win32.SafeHandles.SafeFileHandle.<IsAsync>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | Microsoft.Win32.SafeHandles.SafeFileHandle.ThreadPoolValueTaskSource.<>c | [CompilerGeneratedAttribute(...)] |
@@ -178,7 +174,6 @@ attrNoArg
 | System.Boolean System.Buffers.Text.ParserHelpers.TryParseThrowFormatException`1(System.ReadOnlySpan<System.Byte>,!0,System.Int32) | [DoesNotReturnAttribute(...)] |
 | System.Boolean System.Buffers.Text.ParserHelpers.TryParseThrowFormatException`1(System.ReadOnlySpan<System.Byte>,!0,System.Int32) | [StackTraceHiddenAttribute(...)] |
 | System.Boolean System.Byte.Equals(System.Byte) | [NonVersionableAttribute(...)] |
-| System.Boolean System.CLRConfig.GetConfigBoolValue(System.String,System.Boolean) | [LibraryImportAttribute(...)] |
 | System.Boolean System.Char.Equals(System.Char) | [NonVersionableAttribute(...)] |
 | System.Boolean System.ComponentModel.DefaultValueAttribute.ctor>g__TryConvertFromInvariantString\|2_0(System.Type,System.String,System.Object) | [CompilerGeneratedAttribute(...)] |
 | System.Boolean System.ConsoleCancelEventArgs.get_Cancel() | [CompilerGeneratedAttribute(...)] |
@@ -523,9 +518,6 @@ attrNoArg
 | System.Byte System.Runtime.InteropServices.NFloat.op_Explicit(System.Runtime.InteropServices.NFloat) | [NonVersionableAttribute(...)] |
 | System.Byte System.Threading.Volatile.Read(System.Byte) | [IntrinsicAttribute(...)] |
 | System.Byte System.Threading.Volatile.Read(System.Byte) | [NonVersionableAttribute(...)] |
-| System.Byte* Interop.Sys.<GetCwd>g____PInvoke\|31_0(System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Byte* Interop.Sys.<GetProcessPath>g____PInvoke\|37_0() | [CompilerGeneratedAttribute(...)] |
-| System.Byte* Interop.Sys.<MkdTemp>g____PInvoke\|76_0(System.Byte*) | [CompilerGeneratedAttribute(...)] |
 | System.Byte* System.Reflection.RuntimeAssembly.<GetResource>g____PInvoke\|35_0(System.Runtime.CompilerServices.QCallAssembly,System.UInt16*,System.UInt32*) | [CompilerGeneratedAttribute(...)] |
 | System.Byte* System.Reflection.RuntimeAssembly.GetResource(System.Runtime.CompilerServices.QCallAssembly,System.String,System.UInt32) | [LibraryImportAttribute(...)] |
 | System.Byte[] System.Security.PermissionSet.ConvertPermissionSet(System.String,System.Byte[],System.String) | [ObsoleteAttribute(...)] |
@@ -842,7 +834,6 @@ attrNoArg
 | System.Diagnostics.Tracing.TraceLoggingMetadataCollector.<Tags>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.Tracing.TraceLoggingTypeInfo.threadCache | [ThreadStaticAttribute(...)] |
 | System.Diagnostics.Tracing.TraceLoggingTypeInfo[] | [ParamArrayAttribute(...)] |
-| System.Double Interop.Sys.<GetCpuUtilization>g____PInvoke\|30_0(Interop.Sys.ProcessCpuInformation*) | [CompilerGeneratedAttribute(...)] |
 | System.Double System.BitConverter.Int64BitsToDouble(System.Int64) | [IntrinsicAttribute(...)] |
 | System.Double System.BitConverter.UInt64BitsToDouble(System.UInt64) | [IntrinsicAttribute(...)] |
 | System.Double System.Diagnostics.Tracing.CounterPayload.get_Max() | [CompilerGeneratedAttribute(...)] |
@@ -1078,84 +1069,6 @@ attrNoArg
 | System.Int32 Interop.Kernel32.<ResetEvent>g____PInvoke\|58_0(System.IntPtr) | [CompilerGeneratedAttribute(...)] |
 | System.Int32 Interop.Kernel32.<SetEnvironmentVariable>g____PInvoke\|81_0(System.UInt16*,System.UInt16*) | [CompilerGeneratedAttribute(...)] |
 | System.Int32 Interop.Kernel32.<SetEvent>g____PInvoke\|57_0(System.IntPtr) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<Access>g____PInvoke\|7_0(System.Byte*,Interop.Sys.AccessMode) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<ChDir>g____PInvoke\|8_0(System.Byte*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<ChMod>g____PInvoke\|9_0(System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<Close>g____PInvoke\|11_0(System.IntPtr) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<CloseDir>g____PInvoke\|99_0(System.IntPtr) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<CopyFile>g____PInvoke\|12_0(System.IntPtr,System.IntPtr,System.Int64) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<EnablePosixSignalHandling>g____PInvoke\|140_0(System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<FAllocate>g____PInvoke\|88_0(System.IntPtr,System.Int64,System.Int64) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<FChMod>g____PInvoke\|10_0(System.IntPtr,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<FChflags>g____PInvoke\|48_0(System.IntPtr,System.UInt32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<FLock>g____PInvoke\|25_0(System.IntPtr,Interop.Sys.LockOperations) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<FLock>g____PInvoke\|26_0(System.IntPtr,Interop.Sys.LockOperations) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<FStat>g____PInvoke\|109_0(System.IntPtr,Interop.Sys.FileStatus*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<FSync>g____PInvoke\|27_0(System.IntPtr) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<FTruncate>g____PInvoke\|28_0(System.IntPtr,System.Int64) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<FUTimens>g____PInvoke\|124_0(System.IntPtr,Interop.Sys.TimeSpec*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<GetGroups>g____PInvoke\|130_0(System.Int32,System.UInt32*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<GetHostName>g____PInvoke\|34_0(System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<GetPwUidR>g____PInvoke\|23_0(System.UInt32,Interop.Sys.Passwd*,System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<GetPwUidR>g____PInvoke\|134_0(System.UInt32,Interop.Sys.Passwd*,System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<GetUnixVersion>g____PInvoke\|42_0(System.Byte*,System.Int32*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<GetWindowSize>g____PInvoke\|40_0(Interop.Sys.WinSize*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<InitializeTerminalAndSignalHandling>g____PInvoke\|41_0() | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<InitializeTerminalAndSignalHandling>g____PInvoke\|137_0() | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<IsATty>g____PInvoke\|14_0(System.IntPtr) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<LChflags>g____PInvoke\|47_0(System.Byte*,System.UInt32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<LStat>g____PInvoke\|111_0(System.Byte*,Interop.Sys.FileStatus*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<LStat>g____PInvoke\|114_0(System.Byte*,Interop.Sys.FileStatus*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<Link>g____PInvoke\|53_0(System.Byte*,System.Byte*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<MkDir>g____PInvoke\|74_0(System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<PRead>g____PInvoke\|89_0(System.IntPtr,System.Byte*,System.Int32,System.Int64) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<PWrite>g____PInvoke\|91_0(System.IntPtr,System.Byte*,System.Int32,System.Int64) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<PosixFAdvise>g____PInvoke\|87_0(System.IntPtr,System.Int64,System.Int64,Interop.Sys.FileAdvice) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<Read>g____PInvoke\|36_0(System.IntPtr,System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<Read>g____PInvoke\|93_0(System.IntPtr,System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<ReadLink>g____PInvoke\|100_0(System.Byte*,System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<ReadStdin>g____PInvoke\|43_0(System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<Rename>g____PInvoke\|102_0(System.Byte*,System.Byte*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<Rename>g____PInvoke\|103_0(System.Byte*,System.Byte*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<RmDir>g____PInvoke\|105_0(System.Byte*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<SNPrintF>g____PInvoke\|28_0(System.Byte*,System.Int32,System.Byte*,System.Byte*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<SNPrintF>g____PInvoke\|29_0(System.Byte*,System.Int32,System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<SetSignalForBreak>g____PInvoke\|27_0(System.Int32,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<Stat>g____PInvoke\|110_0(System.Byte*,Interop.Sys.FileStatus*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<Stat>g____PInvoke\|112_0(System.Byte*,Interop.Sys.FileStatus*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<StdinReady>g____PInvoke\|46_0(System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<SymLink>g____PInvoke\|116_0(System.Byte*,System.Byte*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<UTimensat>g____PInvoke\|123_0(System.Byte*,Interop.Sys.TimeSpec*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<Unlink>g____PInvoke\|121_0(System.Byte*) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<Write>g____PInvoke\|37_0(System.IntPtr,System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<Write>g____PInvoke\|125_0(System.IntPtr,System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.<Write>g____PInvoke\|126_0(System.IntPtr,System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.Sys.Access(System.String,Interop.Sys.AccessMode) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.CanGetHiddenFlag() | [SuppressGCTransitionAttribute(...)] |
-| System.Int32 Interop.Sys.ChDir(System.String) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.ChMod(System.String,System.Int32) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.ConvertErrorPalToPlatform(Interop.Error) | [SuppressGCTransitionAttribute(...)] |
-| System.Int32 Interop.Sys.GetErrNo() | [SuppressGCTransitionAttribute(...)] |
-| System.Int32 Interop.Sys.GetOSArchitecture() | [SuppressGCTransitionAttribute(...)] |
-| System.Int32 Interop.Sys.GetPlatformSignalNumber(System.Runtime.InteropServices.PosixSignal) | [SuppressGCTransitionAttribute(...)] |
-| System.Int32 Interop.Sys.GetReadDirRBufferSize() | [SuppressGCTransitionAttribute(...)] |
-| System.Int32 Interop.Sys.GetSignalForBreak() | [SuppressGCTransitionAttribute(...)] |
-| System.Int32 Interop.Sys.GetUnixVersion(System.Byte[],System.Int32) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.LChflags(System.String,System.UInt32) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.LChflagsCanSetHiddenFlag() | [SuppressGCTransitionAttribute(...)] |
-| System.Int32 Interop.Sys.LStat(System.String,Interop.Sys.FileStatus) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.Link(System.String,System.String) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.Rename(System.String,System.String) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.RmDir(System.String) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.SNPrintF(System.Byte*,System.Int32,System.String,System.Int32) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.SNPrintF(System.Byte*,System.Int32,System.String,System.String) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.Stat(System.String,Interop.Sys.FileStatus) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.SymLink(System.String,System.String) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.UTimensat(System.String,Interop.Sys.TimeSpec*) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.Sys.Unlink(System.String) | [LibraryImportAttribute(...)] |
-| System.Int32 Interop.libc.<fsetattrlist>g____PInvoke\|3_0(System.Int32,Interop.libc.AttrList*,System.Void*,System.IntPtr,System.Runtime.InteropServices.CULong) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.libc.<setattrlist>g____PInvoke\|1_0(System.Byte*,Interop.libc.AttrList*,System.Void*,System.IntPtr,System.Runtime.InteropServices.CULong) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 Interop.libc.setattrlist(System.String,Interop.libc.AttrList*,System.Void*,System.IntPtr,System.Runtime.InteropServices.CULong) | [LibraryImportAttribute(...)] |
 | System.Int32 System.Array.<BinarySearch>g__GenericBinarySearch\|84_0`1(System.Array,System.Int32,System.Int32,System.Object) | [CompilerGeneratedAttribute(...)] |
 | System.Int32 System.Array.<IndexOf>g__GenericIndexOf\|109_0`1(System.Array,System.Object,System.Int32,System.Int32) | [CompilerGeneratedAttribute(...)] |
 | System.Int32 System.Array.<LastIndexOf>g__GenericLastIndexOf\|115_0`1(System.Array,System.Object,System.Int32,System.Int32) | [CompilerGeneratedAttribute(...)] |
@@ -1164,7 +1077,6 @@ attrNoArg
 | System.Int32 System.Array.GetUpperBound(System.Int32) | [IntrinsicAttribute(...)] |
 | System.Int32 System.BitConverter.SingleToInt32Bits(System.Single) | [IntrinsicAttribute(...)] |
 | System.Int32 System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.Int32) | [IntrinsicAttribute(...)] |
-| System.Int32 System.CLRConfig.<GetConfigBoolValue>g____PInvoke\|1_0(System.UInt16*,System.Int32*) | [CompilerGeneratedAttribute(...)] |
 | System.Int32 System.ComponentModel.Win32Exception.get_NativeErrorCode() | [CompilerGeneratedAttribute(...)] |
 | System.Int32 System.Diagnostics.Debugger.<LaunchInternal>g____PInvoke\|6_0() | [CompilerGeneratedAttribute(...)] |
 | System.Int32 System.Diagnostics.Tracing.CounterPayload.get_Count() | [CompilerGeneratedAttribute(...)] |
@@ -1321,8 +1233,6 @@ attrNoArg
 | System.Int32 System.Runtime.InteropServices.NFloat.get_Size() | [NonVersionableAttribute(...)] |
 | System.Int32 System.Runtime.InteropServices.NFloat.op_CheckedExplicit(System.Runtime.InteropServices.NFloat) | [NonVersionableAttribute(...)] |
 | System.Int32 System.Runtime.InteropServices.NFloat.op_Explicit(System.Runtime.InteropServices.NFloat) | [NonVersionableAttribute(...)] |
-| System.Int32 System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.<TryInitializeReferenceTracker>g____PInvoke\|2_0(delegate* unmanaged<Void>,delegate* unmanaged<IntPtr,Int32>,delegate* unmanaged<IntPtr,Void>) | [CompilerGeneratedAttribute(...)] |
-| System.Int32 System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.<TrySetGlobalMessageSendCallback>g____PInvoke\|1_0(System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.MessageSendFunction,System.IntPtr) | [CompilerGeneratedAttribute(...)] |
 | System.Int32 System.Runtime.InteropServices.PosixSignalRegistration.OnPosixSignal(System.Int32,System.Runtime.InteropServices.PosixSignal) | [UnmanagedCallersOnlyAttribute(...)] |
 | System.Int32 System.Runtime.InteropServices.PosixSignalRegistration.Token.get_SigNo() | [CompilerGeneratedAttribute(...)] |
 | System.Int32 System.Runtime.Intrinsics.Vector64`1.get_Count() | [IntrinsicAttribute(...)] |
@@ -1354,11 +1264,6 @@ attrNoArg
 | System.Int32 System.Threading.Volatile.Read(System.Int32) | [IntrinsicAttribute(...)] |
 | System.Int32 System.Threading.Volatile.Read(System.Int32) | [NonVersionableAttribute(...)] |
 | System.Int32 System.UIntPtr.get_Size() | [NonVersionableAttribute(...)] |
-| System.Int64 Interop.Sys.<LSeek>g____PInvoke\|66_0(System.IntPtr,System.Int64,Interop.Sys.SeekWhence) | [CompilerGeneratedAttribute(...)] |
-| System.Int64 Interop.Sys.<PReadV>g____PInvoke\|90_0(System.IntPtr,Interop.Sys.IOVector*,System.Int32,System.Int64) | [CompilerGeneratedAttribute(...)] |
-| System.Int64 Interop.Sys.<PWriteV>g____PInvoke\|92_0(System.IntPtr,Interop.Sys.IOVector*,System.Int32,System.Int64) | [CompilerGeneratedAttribute(...)] |
-| System.Int64 Interop.Sys.<SysConf>g____PInvoke\|118_0(Interop.Sys.SysConfName) | [CompilerGeneratedAttribute(...)] |
-| System.Int64 Interop.Sys.GetSystemTimeAsTicks() | [SuppressGCTransitionAttribute(...)] |
 | System.Int64 System.BitConverter.DoubleToInt64Bits(System.Double) | [IntrinsicAttribute(...)] |
 | System.Int64 System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.Int64) | [IntrinsicAttribute(...)] |
 | System.Int64 System.GCGenerationInfo.get_FragmentationAfterBytes() | [CompilerGeneratedAttribute(...)] |
@@ -1388,13 +1293,6 @@ attrNoArg
 | System.IntPtr Interop.Kernel32.<CreateMutexEx>g____PInvoke\|76_0(System.IntPtr,System.UInt16*,System.UInt32,System.UInt32) | [CompilerGeneratedAttribute(...)] |
 | System.IntPtr Interop.Kernel32.<CreateSemaphoreEx>g____PInvoke\|79_0(System.IntPtr,System.Int32,System.Int32,System.UInt16*,System.UInt32,System.UInt32) | [CompilerGeneratedAttribute(...)] |
 | System.IntPtr Interop.Kernel32.<OpenMutex>g____PInvoke\|75_0(System.UInt32,System.Int32,System.UInt16*) | [CompilerGeneratedAttribute(...)] |
-| System.IntPtr Interop.Sys.<Dup>g____PInvoke\|7_0(System.IntPtr) | [CompilerGeneratedAttribute(...)] |
-| System.IntPtr Interop.Sys.<GetDefaultSearchOrderPseudoHandle>g____PInvoke\|18_0() | [CompilerGeneratedAttribute(...)] |
-| System.IntPtr Interop.Sys.<MksTemps>g____PInvoke\|77_0(System.Byte*,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.IntPtr Interop.Sys.<Open>g____PInvoke\|15_0(System.Byte*,Interop.Sys.OpenFlags,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.IntPtr Interop.Sys.<Open>g____PInvoke\|82_0(System.Byte*,Interop.Sys.OpenFlags,System.Int32) | [CompilerGeneratedAttribute(...)] |
-| System.IntPtr Interop.Sys.<OpenDir>g____PInvoke\|96_0(System.Byte*) | [CompilerGeneratedAttribute(...)] |
-| System.IntPtr Interop.Sys.OpenDir(System.String) | [LibraryImportAttribute(...)] |
 | System.IntPtr System.Diagnostics.StackFrameExtensions.GetNativeIP(System.Diagnostics.StackFrame) | [ExtensionAttribute(...)] |
 | System.IntPtr System.Diagnostics.StackFrameExtensions.GetNativeImageBase(System.Diagnostics.StackFrame) | [ExtensionAttribute(...)] |
 | System.IntPtr System.Diagnostics.Tracing.EventPipeInternal.<CreateProvider>g____PInvoke\|2_0(System.UInt16*,System.IntPtr) | [CompilerGeneratedAttribute(...)] |
@@ -1422,7 +1320,6 @@ attrNoArg
 | System.IntPtr System.Runtime.InteropServices.NativeLibrary.GetSymbol(System.IntPtr,System.String,System.Boolean) | [LibraryImportAttribute(...)] |
 | System.IntPtr System.Runtime.InteropServices.NativeLibrary.LoadByName(System.String,System.Runtime.CompilerServices.QCallAssembly,System.Boolean,System.UInt32,System.Boolean) | [LibraryImportAttribute(...)] |
 | System.IntPtr System.Runtime.InteropServices.NativeLibrary.LoadFromPath(System.String,System.Boolean) | [LibraryImportAttribute(...)] |
-| System.IntPtr System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.<CreateReferenceTrackingHandleInternal>g____PInvoke\|3_0(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int32*,System.IntPtr*) | [CompilerGeneratedAttribute(...)] |
 | System.IntPtr System.Runtime.Loader.AssemblyLoadContext.<InitializeAssemblyLoadContext>g____PInvoke\|0_0(System.IntPtr,System.Int32,System.Int32) | [CompilerGeneratedAttribute(...)] |
 | System.IntPtr System.RuntimeTypeHandle.GetValueInternal(System.RuntimeTypeHandle) | [IntrinsicAttribute(...)] |
 | System.IntPtr System.StubHelpers.StubHelpers.GetStubContext() | [IntrinsicAttribute(...)] |
@@ -3039,7 +2936,6 @@ attrNoArg
 | System.Span`1 | [IsReadOnlyAttribute(...)] |
 | System.Span`1 | [NonVersionableAttribute(...)] |
 | System.Span`1.Enumerator | [IsByRefLikeAttribute(...)] |
-| System.String Interop.Sys.GetProcessPath() | [LibraryImportAttribute(...)] |
 | System.String System.ApplicationId.get_Culture() | [CompilerGeneratedAttribute(...)] |
 | System.String System.ApplicationId.get_Name() | [CompilerGeneratedAttribute(...)] |
 | System.String System.ApplicationId.get_ProcessorArchitecture() | [CompilerGeneratedAttribute(...)] |
@@ -3453,7 +3349,6 @@ attrNoArg
 | System.UInt16 System.Threading.Volatile.Read(System.UInt16) | [NonVersionableAttribute(...)] |
 | System.UInt32 Interop.Kernel32.<GetEnvironmentVariable>g____PInvoke\|61_0(System.UInt16*,System.Char*,System.UInt32) | [CompilerGeneratedAttribute(...)] |
 | System.UInt32 Interop.Kernel32.GetEnvironmentVariable(System.String,System.Char,System.UInt32) | [LibraryImportAttribute(...)] |
-| System.UInt32 Interop.Sys.<GetFileSystemType>g____PInvoke\|22_0(System.IntPtr) | [CompilerGeneratedAttribute(...)] |
 | System.UInt32 System.BitConverter.SingleToUInt32Bits(System.Single) | [IntrinsicAttribute(...)] |
 | System.UInt32 System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.UInt32) | [IntrinsicAttribute(...)] |
 | System.UInt32 System.Math.Max(System.UInt32,System.UInt32) | [NonVersionableAttribute(...)] |
@@ -3475,7 +3370,6 @@ attrNoArg
 | System.UInt32 System.UInt128.<op_Division>g__SubtractDivisor\|108_3(System.Span<System.UInt32>,System.ReadOnlySpan<System.UInt32>,System.UInt64) | [CompilerGeneratedAttribute(...)] |
 | System.UInt32 System.UIntPtr.ToUInt32() | [NonVersionableAttribute(...)] |
 | System.UInt32 System.UIntPtr.op_Explicit(System.UIntPtr) | [NonVersionableAttribute(...)] |
-| System.UInt64 Interop.Sys.GetTimestamp() | [SuppressGCTransitionAttribute(...)] |
 | System.UInt64 System.BitConverter.DoubleToUInt64Bits(System.Double) | [IntrinsicAttribute(...)] |
 | System.UInt64 System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.UInt64) | [IntrinsicAttribute(...)] |
 | System.UInt64 System.Marvin.get_DefaultSeed() | [CompilerGeneratedAttribute(...)] |
@@ -3558,15 +3452,6 @@ attrNoArg
 | System.Void Interop.Globalization.ChangeCaseTurkish(System.Char*,System.Int32,System.Char*,System.Int32,System.Boolean) | [LibraryImportAttribute(...)] |
 | System.Void Interop.Globalization.InitICUFunctions(System.IntPtr,System.IntPtr,System.String,System.String) | [LibraryImportAttribute(...)] |
 | System.Void Interop.Globalization.InitOrdinalCasingPage(System.Int32,System.Char*) | [LibraryImportAttribute(...)] |
-| System.Void Interop.Sys.<GetControlCharacters>g____PInvoke\|12_0(Interop.Sys.ControlCharacterNames*,System.Byte*,System.Int32,System.Byte*) | [CompilerGeneratedAttribute(...)] |
-| System.Void Interop.Sys.<InitializeConsoleBeforeRead>g____PInvoke\|44_0(System.Int32,System.Byte,System.Byte) | [CompilerGeneratedAttribute(...)] |
-| System.Void Interop.Sys.<SetKeypadXmit>g____PInvoke\|42_0(System.Byte*) | [CompilerGeneratedAttribute(...)] |
-| System.Void Interop.Sys.<SysLog>g____PInvoke\|120_0(Interop.Sys.SysLogPriority,System.Byte*,System.Byte*) | [CompilerGeneratedAttribute(...)] |
-| System.Void Interop.Sys.AddMountPoint(System.Void*,System.Byte*) | [UnmanagedCallersOnlyAttribute(...)] |
-| System.Void Interop.Sys.SetErrNo(System.Int32) | [SuppressGCTransitionAttribute(...)] |
-| System.Void Interop.Sys.SetKeypadXmit(System.String) | [LibraryImportAttribute(...)] |
-| System.Void Interop.Sys.SetPosixSignalHandler(delegate* unmanaged<Int32,PosixSignal,Int32>) | [SuppressGCTransitionAttribute(...)] |
-| System.Void Interop.Sys.SysLog(Interop.Sys.SysLogPriority,System.String,System.String) | [LibraryImportAttribute(...)] |
 | System.Void Microsoft.Win32.SafeHandles.SafeFileHandle.set_IsAsync(System.Boolean) | [CompilerGeneratedAttribute(...)] |
 | System.Void System.AppContext.<LogSwitchValues>g__LogDataStore\|23_0(System.Diagnostics.Tracing.RuntimeEventSource,System.Collections.Generic.Dictionary<System.Boolean,System.String>) | [CompilerGeneratedAttribute(...)] |
 | System.Void System.AppContext.add_FirstChanceException(System.EventHandler<System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs>) | [CompilerGeneratedAttribute(...)] |
@@ -4565,10 +4450,6 @@ attrArgNamed
 | Interop.BOOL System.Threading.Thread.YieldInternal() | [LibraryImportAttribute(...)] | EntryPoint | ThreadNative_YieldThread |
 | Interop.BOOL System.Threading.ThreadPool.PerformRuntimeSpecificGateActivitiesNative(System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | ThreadPool_PerformGateActivities |
 | Interop.BOOL System.Threading.ThreadPool.RequestWorkerThreadNative() | [LibraryImportAttribute(...)] | EntryPoint | ThreadPool_RequestWorkerThread |
-| Interop.Error Interop.Sys.ConvertErrorPlatformToPal(System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_ConvertErrorPlatformToPal |
-| Interop.Error Interop.Sys.Poll(Interop.PollEvent*,System.UInt32,System.Int32,System.UInt32*) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_Poll |
-| Microsoft.Win32.SafeHandles.SafeFileHandle Interop.Sys.Dup(Microsoft.Win32.SafeHandles.SafeFileHandle) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_Dup |
-| Microsoft.Win32.SafeHandles.SafeFileHandle Interop.Sys.Dup(Microsoft.Win32.SafeHandles.SafeFileHandle) | [LibraryImportAttribute(...)] | SetLastError | True |
 | System.AppDomain System.AppDomain.CreateDomain(System.String) | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0024 |
 | System.AppDomain System.AppDomain.CreateDomain(System.String) | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
 | System.Array System.Array.CreateInstance(System.Type,System.Int32,System.Int32) | [UnconditionalSuppressMessageAttribute(...)] | Justification | MDArrays of Rank != 1 can be created because they don't implement generic interfaces. |
@@ -4584,13 +4465,6 @@ attrArgNamed
 | System.Boolean Interop.Kernel32.ReleaseSemaphore(Microsoft.Win32.SafeHandles.SafeWaitHandle,System.Int32,System.Int32) | [LibraryImportAttribute(...)] | SetLastError | True |
 | System.Boolean Interop.Kernel32.ResetEvent(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [LibraryImportAttribute(...)] | SetLastError | True |
 | System.Boolean Interop.Kernel32.SetEvent(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Boolean Interop.Sys.EnablePosixSignalHandling(System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_EnablePosixSignalHandling |
-| System.Boolean Interop.Sys.EnablePosixSignalHandling(System.Int32) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Boolean Interop.Sys.InitializeTerminalAndSignalHandling() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_InitializeTerminalAndSignalHandling |
-| System.Boolean Interop.Sys.InitializeTerminalAndSignalHandling() | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Boolean Interop.Sys.IsATty(Microsoft.Win32.SafeHandles.SafeFileHandle) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_IsATty |
-| System.Boolean Interop.Sys.IsATty(Microsoft.Win32.SafeHandles.SafeFileHandle) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Boolean Interop.Sys.StdinReady(System.Boolean) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_StdinReady |
 | System.Boolean System.Attribute.Equals(System.Object) | [UnconditionalSuppressMessageAttribute(...)] | Justification | Unused fields don't make a difference for equality |
 | System.Boolean System.Diagnostics.Debugger.LaunchInternal() | [LibraryImportAttribute(...)] | EntryPoint | DebugDebugger_Launch |
 | System.Boolean System.Diagnostics.StackFrameExtensions.HasMethod(System.Diagnostics.StackFrame) | [UnconditionalSuppressMessageAttribute(...)] | Justification | StackFrame.GetMethod is used to establish if method is available. |
@@ -4608,18 +4482,11 @@ attrArgNamed
 | System.Boolean System.Runtime.CompilerServices.RuntimeHelpers.AreTypesEquivalent(System.Runtime.CompilerServices.MethodTable*,System.Runtime.CompilerServices.MethodTable*) | [LibraryImportAttribute(...)] | EntryPoint | MethodTable_AreTypesEquivalent |
 | System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetOrCreateComInterfaceForObjectInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.InteropServices.CreateComInterfaceFlags,System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | ComWrappers_TryGetOrCreateComInterfaceForObject |
 | System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetOrCreateObjectForComInstanceInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64,System.IntPtr,System.IntPtr,System.Runtime.InteropServices.CreateObjectFlags,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.ObjectHandleOnStack) | [LibraryImportAttribute(...)] | EntryPoint | ComWrappers_TryGetOrCreateObjectForComInstance |
-| System.Boolean System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.TryInitializeReferenceTracker(delegate* unmanaged<Void>,delegate* unmanaged<IntPtr,Int32>,delegate* unmanaged<IntPtr,Void>) | [LibraryImportAttribute(...)] | EntryPoint | ObjCMarshal_TryInitializeReferenceTracker |
-| System.Boolean System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.TrySetGlobalMessageSendCallback(System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.MessageSendFunction,System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | ObjCMarshal_TrySetGlobalMessageSendCallback |
 | System.Boolean System.RuntimeTypeHandle._IsVisible(System.Runtime.CompilerServices.QCallTypeHandle) | [LibraryImportAttribute(...)] | EntryPoint | RuntimeTypeHandle_IsVisible |
 | System.Boolean System.Type.ImplementInterface(System.Type) | [UnconditionalSuppressMessageAttribute(...)] | Justification | The GetInterfaces technically requires all interfaces to be preservedBut this method only compares the result against the passed in ifaceType.So if ifaceType exists, then trimming should have kept it implemented on any type. |
 | System.Boolean System.ValueType.Equals(System.Object) | [UnconditionalSuppressMessageAttribute(...)] | Justification | Trimmed fields don't make a difference for equality |
 | System.Buffers.ArrayPoolEventSource | [EventSourceAttribute(...)] | Guid | 0866B2B8-5CEF-5DB9-2612-0C0FFD814A44 |
 | System.Buffers.ArrayPoolEventSource | [EventSourceAttribute(...)] | Name | System.Buffers.ArrayPoolEventSource |
-| System.Byte* Interop.Sys.GetCwd(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetCwd |
-| System.Byte* Interop.Sys.GetCwd(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Byte* Interop.Sys.MkdTemp(System.Byte*) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_MkdTemp |
-| System.Byte* Interop.Sys.MkdTemp(System.Byte*) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Byte* Interop.Sys.StrErrorR(System.Int32,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_StrErrorR |
 | System.Byte[] System.Diagnostics.Tracing.EventSource.CreateManifestAndDescriptors(System.Type,System.String,System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventManifestOptions) | [UnconditionalSuppressMessageAttribute(...)] | Justification | EnsureDescriptorsInitialized's use of GetType preserves this method which has dynamically accessed members requirements, but its use of this method satisfies these requirements because it passes in the result of GetType with the same annotations. |
 | System.CLSCompliantAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.CLSCompliantAttribute | [AttributeUsageAttribute(...)] | Inherited | True |
@@ -4702,7 +4569,6 @@ attrArgNamed
 | System.Diagnostics.Tracing.RuntimeEventSource | [EventSourceAttribute(...)] | Guid | 49592C0F-5A05-516D-AA4B-A64E02026C89 |
 | System.Diagnostics.Tracing.RuntimeEventSource | [EventSourceAttribute(...)] | Name | System.Runtime |
 | System.Diagnostics.Tracing.TraceLoggingEventTypes System.Diagnostics.Tracing.EventSource.EventMetadata.get_TraceLoggingEventTypes() | [UnconditionalSuppressMessageAttribute(...)] | Justification | EnsureDescriptorsInitialized's use of GetType preserves this method which requires unreferenced code, but EnsureDescriptorsInitialized does not access this member and is safe to call. |
-| System.Double Interop.Sys.GetCpuUtilization(Interop.Sys.ProcessCpuInformation) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetCpuUtilization |
 | System.Exception.SerializeObjectState | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0011 |
 | System.Exception.SerializeObjectState | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
 | System.FlagsAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
@@ -4718,78 +4584,6 @@ attrArgNamed
 | System.Int32 Interop.HostPolicy.corehost_resolve_component_dependencies(System.String,Interop.HostPolicy.corehost_resolve_component_dependencies_result_fn) | [UnmanagedCallConvAttribute(...)] | CallConvs | [System.Runtime.CompilerServices.CallConvCdecl] |
 | System.Int32 Interop.Kernel32.FormatMessage(System.Int32,System.IntPtr,System.UInt32,System.Int32,System.Void*,System.Int32,System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | FormatMessageW |
 | System.Int32 Interop.Kernel32.FormatMessage(System.Int32,System.IntPtr,System.UInt32,System.Int32,System.Void*,System.Int32,System.IntPtr) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.CanGetHiddenFlag() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_CanGetHiddenFlag |
-| System.Int32 Interop.Sys.Close(System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_Close |
-| System.Int32 Interop.Sys.Close(System.IntPtr) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.CloseDir(System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_CloseDir |
-| System.Int32 Interop.Sys.CloseDir(System.IntPtr) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.ConvertErrorPalToPlatform(Interop.Error) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_ConvertErrorPalToPlatform |
-| System.Int32 Interop.Sys.CopyFile(Microsoft.Win32.SafeHandles.SafeFileHandle,Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_CopyFile |
-| System.Int32 Interop.Sys.CopyFile(Microsoft.Win32.SafeHandles.SafeFileHandle,Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.FAllocate(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,System.Int64) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_FAllocate |
-| System.Int32 Interop.Sys.FAllocate(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,System.Int64) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.FChMod(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_FChMod |
-| System.Int32 Interop.Sys.FChMod(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int32) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.FChflags(System.Runtime.InteropServices.SafeHandle,System.UInt32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_FChflags |
-| System.Int32 Interop.Sys.FChflags(System.Runtime.InteropServices.SafeHandle,System.UInt32) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.FLock(Microsoft.Win32.SafeHandles.SafeFileHandle,Interop.Sys.LockOperations) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_FLock |
-| System.Int32 Interop.Sys.FLock(Microsoft.Win32.SafeHandles.SafeFileHandle,Interop.Sys.LockOperations) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.FLock(System.IntPtr,Interop.Sys.LockOperations) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_FLock |
-| System.Int32 Interop.Sys.FLock(System.IntPtr,Interop.Sys.LockOperations) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.FStat(System.Runtime.InteropServices.SafeHandle,Interop.Sys.FileStatus) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_FStat |
-| System.Int32 Interop.Sys.FStat(System.Runtime.InteropServices.SafeHandle,Interop.Sys.FileStatus) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.FSync(Microsoft.Win32.SafeHandles.SafeFileHandle) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_FSync |
-| System.Int32 Interop.Sys.FSync(Microsoft.Win32.SafeHandles.SafeFileHandle) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.FTruncate(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_FTruncate |
-| System.Int32 Interop.Sys.FTruncate(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.FUTimens(System.Runtime.InteropServices.SafeHandle,Interop.Sys.TimeSpec*) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_FUTimens |
-| System.Int32 Interop.Sys.FUTimens(System.Runtime.InteropServices.SafeHandle,Interop.Sys.TimeSpec*) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.GetAllMountPoints(delegate* unmanaged<Void*,Byte*,Void>,System.Void*) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetAllMountPoints |
-| System.Int32 Interop.Sys.GetCryptographicallySecureRandomBytes(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetCryptographicallySecureRandomBytes |
-| System.Int32 Interop.Sys.GetErrNo() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetErrNo |
-| System.Int32 Interop.Sys.GetGroups(System.Int32,System.UInt32*) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetGroups |
-| System.Int32 Interop.Sys.GetGroups(System.Int32,System.UInt32*) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.GetHostName(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetHostName |
-| System.Int32 Interop.Sys.GetHostName(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.GetOSArchitecture() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetOSArchitecture |
-| System.Int32 Interop.Sys.GetPid() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetPid |
-| System.Int32 Interop.Sys.GetPlatformSignalNumber(System.Runtime.InteropServices.PosixSignal) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetPlatformSignalNumber |
-| System.Int32 Interop.Sys.GetPwUidR(System.UInt32,Interop.Sys.Passwd,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetPwUidR |
-| System.Int32 Interop.Sys.GetPwUidR(System.UInt32,Interop.Sys.Passwd,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | SetLastError | False |
-| System.Int32 Interop.Sys.GetReadDirRBufferSize() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetReadDirRBufferSize |
-| System.Int32 Interop.Sys.GetReadDirRBufferSize() | [LibraryImportAttribute(...)] | SetLastError | False |
-| System.Int32 Interop.Sys.GetSignalForBreak() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetSignalForBreak |
-| System.Int32 Interop.Sys.GetWindowSize(Interop.Sys.WinSize) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetWindowSize |
-| System.Int32 Interop.Sys.GetWindowSize(Interop.Sys.WinSize) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.LChflagsCanSetHiddenFlag() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_LChflagsCanSetHiddenFlag |
-| System.Int32 Interop.Sys.LStat(System.Byte,Interop.Sys.FileStatus) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_LStat |
-| System.Int32 Interop.Sys.LStat(System.Byte,Interop.Sys.FileStatus) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.MkDir(System.Byte,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_MkDir |
-| System.Int32 Interop.Sys.MkDir(System.Byte,System.Int32) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.PRead(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32,System.Int64) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_PRead |
-| System.Int32 Interop.Sys.PRead(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32,System.Int64) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.PWrite(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32,System.Int64) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_PWrite |
-| System.Int32 Interop.Sys.PWrite(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32,System.Int64) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.PosixFAdvise(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,System.Int64,Interop.Sys.FileAdvice) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_PosixFAdvise |
-| System.Int32 Interop.Sys.PosixFAdvise(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,System.Int64,Interop.Sys.FileAdvice) | [LibraryImportAttribute(...)] | SetLastError | False |
-| System.Int32 Interop.Sys.Read(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_Read |
-| System.Int32 Interop.Sys.Read(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.ReadDirR(System.IntPtr,System.Byte*,System.Int32,Interop.Sys.DirectoryEntry*) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_ReadDirR |
-| System.Int32 Interop.Sys.ReadLink(System.Byte,System.Byte,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_ReadLink |
-| System.Int32 Interop.Sys.ReadLink(System.Byte,System.Byte,System.Int32) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.ReadStdin(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_ReadStdin |
-| System.Int32 Interop.Sys.ReadStdin(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.Rename(System.Byte,System.Byte) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_Rename |
-| System.Int32 Interop.Sys.Rename(System.Byte,System.Byte) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.SetSignalForBreak(System.Int32,System.Boolean) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_SetSignalForBreak |
-| System.Int32 Interop.Sys.Stat(System.Byte,Interop.Sys.FileStatus) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_Stat |
-| System.Int32 Interop.Sys.Stat(System.Byte,Interop.Sys.FileStatus) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.Write(System.IntPtr,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_Write |
-| System.Int32 Interop.Sys.Write(System.IntPtr,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.Sys.Write(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_Write |
-| System.Int32 Interop.Sys.Write(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int32 Interop.libc.fsetattrlist(System.Int32,Interop.libc.AttrList*,System.Void*,System.IntPtr,System.Runtime.InteropServices.CULong) | [LibraryImportAttribute(...)] | EntryPoint | fsetattrlist |
-| System.Int32 Interop.libc.fsetattrlist(System.Int32,Interop.libc.AttrList*,System.Void*,System.IntPtr,System.Runtime.InteropServices.CULong) | [LibraryImportAttribute(...)] | SetLastError | True |
 | System.Int32 System.AppDomain.ExecuteAssembly(System.String,System.String[],System.Byte[],System.Configuration.Assemblies.AssemblyHashAlgorithm) | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0003 |
 | System.Int32 System.AppDomain.ExecuteAssembly(System.String,System.String[],System.Byte[],System.Configuration.Assemblies.AssemblyHashAlgorithm) | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
 | System.Int32 System.Attribute.GetHashCode() | [UnconditionalSuppressMessageAttribute(...)] | Justification | Unused fields don't make a difference for hashcode quality |
@@ -4805,32 +4599,16 @@ attrArgNamed
 | System.Int32 System.Reflection.Emit.TypeBuilder.DefineMethodSpec(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Byte[],System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | TypeBuilder_DefineMethodSpec |
 | System.Int32 System.Reflection.Emit.TypeBuilder.GetTokenFromSig(System.Runtime.CompilerServices.QCallModule,System.Byte[],System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | TypeBuilder_GetTokenFromSig |
 | System.Int32 System.Threading.LowLevelLifoSemaphore.WaitNative(Microsoft.Win32.SafeHandles.SafeWaitHandle,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | WaitHandle_CorWaitOnePrioritizedNative |
-| System.Int64 Interop.Sys.GetSystemTimeAsTicks() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetSystemTimeAsTicks |
-| System.Int64 Interop.Sys.LSeek(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,Interop.Sys.SeekWhence) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_LSeek |
-| System.Int64 Interop.Sys.LSeek(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,Interop.Sys.SeekWhence) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int64 Interop.Sys.PReadV(System.Runtime.InteropServices.SafeHandle,Interop.Sys.IOVector*,System.Int32,System.Int64) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_PReadV |
-| System.Int64 Interop.Sys.PReadV(System.Runtime.InteropServices.SafeHandle,Interop.Sys.IOVector*,System.Int32,System.Int64) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int64 Interop.Sys.PWriteV(System.Runtime.InteropServices.SafeHandle,Interop.Sys.IOVector*,System.Int32,System.Int64) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_PWriteV |
-| System.Int64 Interop.Sys.PWriteV(System.Runtime.InteropServices.SafeHandle,Interop.Sys.IOVector*,System.Int32,System.Int64) | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.Int64 Interop.Sys.SysConf(Interop.Sys.SysConfName) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_SysConf |
-| System.Int64 Interop.Sys.SysConf(Interop.Sys.SysConfName) | [LibraryImportAttribute(...)] | SetLastError | True |
 | System.Int64 System.GC.GetTotalMemory() | [LibraryImportAttribute(...)] | EntryPoint | GCInterface_GetTotalMemory |
 | System.Int64 System.Threading.Monitor.GetLockContentionCount() | [LibraryImportAttribute(...)] | EntryPoint | ObjectNative_GetMonitorLockContentionCount |
 | System.Int64 System.Threading.ThreadPool.GetCompletedWorkItemCount() | [LibraryImportAttribute(...)] | EntryPoint | ThreadPool_GetCompletedWorkItemCount |
 | System.IntPtr Internal.Runtime.InteropServices.ComponentActivator.InternalGetFunctionPointer(System.Runtime.Loader.AssemblyLoadContext,System.String,System.String,System.IntPtr) | [RequiresUnreferencedCodeAttribute(...)] | Url | https://aka.ms/dotnet-illink/nativehost |
 | System.IntPtr Interop.HostPolicy.corehost_set_error_writer(System.IntPtr) | [UnmanagedCallConvAttribute(...)] | CallConvs | [System.Runtime.CompilerServices.CallConvCdecl] |
-| System.IntPtr Interop.Sys.CreateAutoreleasePool() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_CreateAutoreleasePool |
-| System.IntPtr Interop.Sys.GetDefaultSearchOrderPseudoHandle() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetDefaultSearchOrderPseudoHandle |
-| System.IntPtr Interop.Sys.GetDefaultSearchOrderPseudoHandle() | [LibraryImportAttribute(...)] | SetLastError | True |
-| System.IntPtr Interop.Sys.LowLevelMonitor_Create() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_LowLevelMonitor_Create |
-| System.IntPtr Interop.Sys.MksTemps(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_MksTemps |
-| System.IntPtr Interop.Sys.MksTemps(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | SetLastError | True |
 | System.IntPtr System.Diagnostics.Tracing.EventPipeInternal.DefineEvent(System.IntPtr,System.UInt32,System.Int64,System.UInt32,System.UInt32,System.Void*,System.UInt32) | [LibraryImportAttribute(...)] | EntryPoint | EventPipeInternal_DefineEvent |
 | System.IntPtr System.GC._RegisterFrozenSegment(System.IntPtr,System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | GCInterface_RegisterFrozenSegment |
 | System.IntPtr System.Runtime.CompilerServices.RuntimeHelpers.AllocateTypeAssociatedMemory(System.Runtime.CompilerServices.QCallTypeHandle,System.UInt32) | [LibraryImportAttribute(...)] | EntryPoint | RuntimeTypeHandle_AllocateTypeAssociatedMemory |
 | System.IntPtr System.Runtime.InteropServices.Marshal.GetFunctionPointerForDelegate`1(!0) | [UnconditionalSuppressMessageAttribute(...)] | Justification | AOT compilers can see the T. |
 | System.IntPtr System.Runtime.InteropServices.Marshal.OffsetOf(System.Type,System.String) | [UnconditionalSuppressMessageAttribute(...)] | Justification | Trimming doesn't affect types eligible for marshalling. Different exception for invalid inputs doesn't matter. |
-| System.IntPtr System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.CreateReferenceTrackingHandleInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int32,System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | ObjCMarshal_CreateReferenceTrackingHandle |
 | System.IntPtr System.Runtime.Loader.AssemblyLoadContext.GetLoadContextForAssembly(System.Runtime.CompilerServices.QCallAssembly) | [LibraryImportAttribute(...)] | EntryPoint | AssemblyNative_GetLoadContextForAssembly |
 | System.IntPtr System.Runtime.Loader.AssemblyLoadContext.InitializeAssemblyLoadContext(System.IntPtr,System.Boolean,System.Boolean) | [LibraryImportAttribute(...)] | EntryPoint | AssemblyNative_InitializeAssemblyLoadContext |
 | System.IntPtr System.RuntimeMethodHandle.GetFunctionPointer(System.RuntimeMethodHandleInternal) | [LibraryImportAttribute(...)] | EntryPoint | RuntimeMethodHandle_GetFunctionPointer |
@@ -5152,36 +4930,13 @@ attrArgNamed
 | System.Type System.Type.ReflectionOnlyGetType(System.String,System.Boolean,System.Boolean) | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0018 |
 | System.Type System.Type.ReflectionOnlyGetType(System.String,System.Boolean,System.Boolean) | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
 | System.Type[] System.Reflection.TypeInfo.<get_DeclaredNestedTypes>g__GetDeclaredOnlyNestedTypes\|22_0(System.Type) | [UnconditionalSuppressMessageAttribute(...)] | Justification | The yield return state machine doesn't propagate annotations |
-| System.UInt32 Interop.Sys.GetEGid() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetEGid |
-| System.UInt32 Interop.Sys.GetEUid() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetEUid |
-| System.UInt32 Interop.Sys.GetFileSystemType(Microsoft.Win32.SafeHandles.SafeFileHandle) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetFileSystemType |
 | System.UInt32 System.MdUtf8String.HashCaseInsensitive(System.Void*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | MdUtf8String_HashCaseInsensitive |
 | System.UInt32 System.Reflection.Assembly.GetAssemblyCount() | [LibraryImportAttribute(...)] | EntryPoint | AssemblyNative_GetAssemblyCount |
-| System.UInt64 Interop.Sys.GetTimestamp() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetTimestamp |
 | System.UInt64 System.Diagnostics.Tracing.EventPipeInternal.Enable(System.Char*,System.Diagnostics.Tracing.EventPipeSerializationFormat,System.UInt32,System.Diagnostics.Tracing.EventPipeInternal.EventPipeProviderConfigurationNative*,System.UInt32) | [LibraryImportAttribute(...)] | EntryPoint | EventPipeInternal_Enable |
 | System.UInt64 System.Threading.Thread.GetCurrentOSThreadId() | [LibraryImportAttribute(...)] | EntryPoint | ThreadNative_GetCurrentOSThreadId |
 | System.Void Internal.Runtime.InteropServices.IClassFactory.CreateInstance(System.Object,System.Guid,System.IntPtr) | [RequiresUnreferencedCodeAttribute(...)] | Url | https://aka.ms/dotnet-illink/com |
 | System.Void Internal.Runtime.InteropServices.IsolatedComponentLoadContext..ctor(System.String) | [RequiresUnreferencedCodeAttribute(...)] | Url | https://aka.ms/dotnet-illink/nativehost |
 | System.Void Interop.Globalization.CloseSortHandle(System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | GlobalizationNative_CloseSortHandle |
-| System.Void Interop.Sys.AlignedFree(System.Void*) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_AlignedFree |
-| System.Void Interop.Sys.DisablePosixSignalHandling(System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_DisablePosixSignalHandling |
-| System.Void Interop.Sys.DrainAutoreleasePool(System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_DrainAutoreleasePool |
-| System.Void Interop.Sys.Free(System.Void*) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_Free |
-| System.Void Interop.Sys.GetControlCharacters(Interop.Sys.ControlCharacterNames[],System.Byte[],System.Int32,System.Byte) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetControlCharacters |
-| System.Void Interop.Sys.GetNonCryptographicallySecureRandomBytes(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_GetNonCryptographicallySecureRandomBytes |
-| System.Void Interop.Sys.HandleNonCanceledPosixSignal(System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_HandleNonCanceledPosixSignal |
-| System.Void Interop.Sys.InitializeConsoleBeforeRead(System.Boolean,System.Byte,System.Byte) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_InitializeConsoleBeforeRead |
-| System.Void Interop.Sys.Log(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_Log |
-| System.Void Interop.Sys.LogError(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_LogError |
-| System.Void Interop.Sys.LowLevelMonitor_Acquire(System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_LowLevelMonitor_Acquire |
-| System.Void Interop.Sys.LowLevelMonitor_Destroy(System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_LowLevelMonitor_Destroy |
-| System.Void Interop.Sys.LowLevelMonitor_Release(System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_LowLevelMonitor_Release |
-| System.Void Interop.Sys.LowLevelMonitor_Signal_Release(System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_LowLevelMonitor_Signal_Release |
-| System.Void Interop.Sys.LowLevelMonitor_Wait(System.IntPtr) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_LowLevelMonitor_Wait |
-| System.Void Interop.Sys.SetErrNo(System.Int32) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_SetErrNo |
-| System.Void Interop.Sys.SetPosixSignalHandler(delegate* unmanaged<Int32,PosixSignal,Int32>) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_SetPosixSignalHandler |
-| System.Void Interop.Sys.SetTerminalInvalidationHandler(delegate* unmanaged<Void>) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_SetTerminalInvalidationHandler |
-| System.Void Interop.Sys.UninitializeConsoleAfterRead() | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_UninitializeConsoleAfterRead |
 | System.Void System.AppDomain.Unload(System.AppDomain) | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0024 |
 | System.Void System.AppDomain.Unload(System.AppDomain) | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
 | System.Void System.Buffer.__Memmove(System.Byte*,System.Byte*,System.UIntPtr) | [LibraryImportAttribute(...)] | EntryPoint | Buffer_MemMove |
@@ -5356,11 +5111,6 @@ attrArgNamed
 | System.Void System.TypeNameParser._GetModifiers(System.SafeTypeNameParserHandle,System.Runtime.CompilerServices.ObjectHandleOnStack) | [LibraryImportAttribute(...)] | EntryPoint | TypeName_GetModifiers |
 | System.Void System.TypeNameParser._GetNames(System.SafeTypeNameParserHandle,System.Runtime.CompilerServices.ObjectHandleOnStack) | [LibraryImportAttribute(...)] | EntryPoint | TypeName_GetNames |
 | System.Void System.TypeNameParser._GetTypeArguments(System.SafeTypeNameParserHandle,System.Runtime.CompilerServices.ObjectHandleOnStack) | [LibraryImportAttribute(...)] | EntryPoint | TypeName_GetTypeArguments |
-| System.Void* Interop.Sys.AlignedAlloc(System.UIntPtr,System.UIntPtr) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_AlignedAlloc |
-| System.Void* Interop.Sys.AlignedRealloc(System.Void*,System.UIntPtr,System.UIntPtr) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_AlignedRealloc |
-| System.Void* Interop.Sys.Calloc(System.UIntPtr,System.UIntPtr) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_Calloc |
-| System.Void* Interop.Sys.Malloc(System.UIntPtr) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_Malloc |
-| System.Void* Interop.Sys.Realloc(System.Void*,System.UIntPtr) | [LibraryImportAttribute(...)] | EntryPoint | SystemNative_Realloc |
 | bool System.Reflection.Assembly.GlobalAssemblyCache | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0005 |
 | bool System.Reflection.Assembly.GlobalAssemblyCache | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
 | bool System.Reflection.RuntimeAssembly.GlobalAssemblyCache | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0005 |
@@ -5546,8 +5296,6 @@ attrArgPositional
 | Interop.BOOL System.Threading.Thread.YieldInternal() | [LibraryImportAttribute(...)] | 0 | QCall |
 | Interop.BOOL System.Threading.ThreadPool.PerformRuntimeSpecificGateActivitiesNative(System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | Interop.BOOL System.Threading.ThreadPool.RequestWorkerThreadNative() | [LibraryImportAttribute(...)] | 0 | QCall |
-| Interop.Error Interop.Sys.ConvertErrorPlatformToPal(System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| Interop.Error Interop.Sys.Poll(Interop.PollEvent*,System.UInt32,System.Int32,System.UInt32*) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
 | Interop.Globalization.ResultCode Interop.Globalization.GetCalendarInfo(System.String,System.Globalization.CalendarId,System.Globalization.CalendarDataType,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
 | Interop.Globalization.ResultCode Interop.Globalization.GetCalendarInfo(System.String,System.Globalization.CalendarId,System.Globalization.CalendarDataType,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
 | Interop.Globalization.ResultCode Interop.Globalization.GetSortHandle(System.String,System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
@@ -5559,11 +5307,6 @@ attrArgPositional
 | Microsoft.Win32.SafeHandles.SafeFileHandle | [NullableAttribute(...)] | 0 | 0 |
 | Microsoft.Win32.SafeHandles.SafeFileHandle | [NullableAttribute(...)] | 0 | 1 |
 | Microsoft.Win32.SafeHandles.SafeFileHandle | [NullableContextAttribute(...)] | 0 | 2 |
-| Microsoft.Win32.SafeHandles.SafeFileHandle Interop.Sys.Dup(Microsoft.Win32.SafeHandles.SafeFileHandle) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| Microsoft.Win32.SafeHandles.SafeFileHandle Interop.Sys.Dup(Microsoft.Win32.SafeHandles.SafeFileHandle) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| Microsoft.Win32.SafeHandles.SafeFileHandle Interop.Sys.Dup(Microsoft.Win32.SafeHandles.SafeFileHandle) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| Microsoft.Win32.SafeHandles.SafeFileHandle Interop.Sys.Open(System.String,Interop.Sys.OpenFlags,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| Microsoft.Win32.SafeHandles.SafeFileHandle Interop.Sys.Open(System.String,Interop.Sys.OpenFlags,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
 | Microsoft.Win32.SafeHandles.SafeWaitHandle | [NullableAttribute(...)] | 0 | 2 |
 | Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.CreateEventEx(System.IntPtr,System.String,System.UInt32,System.UInt32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
 | Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.CreateEventEx(System.IntPtr,System.String,System.UInt32,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
@@ -5752,18 +5495,6 @@ attrArgPositional
 | System.Boolean Interop.Kernel32.SetEvent(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
 | System.Boolean Interop.Kernel32.SetEvent(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
 | System.Boolean Interop.Kernel32.SetEvent(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [LibraryImportAttribute(...)] | 0 | QCall |
-| System.Boolean Interop.Sys.EnablePosixSignalHandling(System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Sys.EnablePosixSignalHandling(System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Boolean Interop.Sys.EnablePosixSignalHandling(System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Boolean Interop.Sys.InitializeTerminalAndSignalHandling() | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Sys.InitializeTerminalAndSignalHandling() | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Boolean Interop.Sys.InitializeTerminalAndSignalHandling() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Boolean Interop.Sys.IsATty(Microsoft.Win32.SafeHandles.SafeFileHandle) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Sys.IsATty(Microsoft.Win32.SafeHandles.SafeFileHandle) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Boolean Interop.Sys.IsATty(Microsoft.Win32.SafeHandles.SafeFileHandle) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Boolean Interop.Sys.StdinReady(System.Boolean) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Sys.StdinReady(System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Boolean Interop.Sys.StdinReady(System.Boolean) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
 | System.Boolean System.AppContext.TryGetSwitch(System.String,System.Boolean) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Boolean System.ApplicationId.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.ArgIterator.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
@@ -5815,8 +5546,6 @@ attrArgPositional
 | System.Boolean System.Byte.TryParse(System.String,System.Byte) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Byte.TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Byte) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Byte.TryParse(System.String,System.IFormatProvider,System.Byte) | [NullableContextAttribute(...)] | 0 | 2 |
-| System.Boolean System.CLRConfig.GetConfigBoolValue(System.String,System.Boolean) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.CLRConfig.GetConfigBoolValue(System.String,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
 | System.Boolean System.Char.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Char.IsControl(System.String,System.Int32) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Boolean System.Char.IsDigit(System.String,System.Int32) | [NullableContextAttribute(...)] | 0 | 1 |
@@ -6111,12 +5840,6 @@ attrArgPositional
 | System.Boolean System.Runtime.InteropServices.NFloat.TryParse(System.String,System.IFormatProvider,System.Runtime.InteropServices.NFloat) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Runtime.InteropServices.NFloat.TryParse(System.String,System.Runtime.InteropServices.NFloat) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Runtime.InteropServices.OSPlatform.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
-| System.Boolean System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.TryInitializeReferenceTracker(delegate* unmanaged<Void>,delegate* unmanaged<IntPtr,Int32>,delegate* unmanaged<IntPtr,Void>) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.TryInitializeReferenceTracker(delegate* unmanaged<Void>,delegate* unmanaged<IntPtr,Int32>,delegate* unmanaged<IntPtr,Void>) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Boolean System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.TryInitializeReferenceTracker(delegate* unmanaged<Void>,delegate* unmanaged<IntPtr,Int32>,delegate* unmanaged<IntPtr,Void>) | [LibraryImportAttribute(...)] | 0 | QCall |
-| System.Boolean System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.TrySetGlobalMessageSendCallback(System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.MessageSendFunction,System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.TrySetGlobalMessageSendCallback(System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.MessageSendFunction,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Boolean System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.TrySetGlobalMessageSendCallback(System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.MessageSendFunction,System.IntPtr) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Runtime.Intrinsics.Vector64`1.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Runtime.Intrinsics.Vector128`1.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Runtime.Intrinsics.Vector256`1.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
@@ -6316,13 +6039,6 @@ attrArgPositional
 | System.Byte System.Runtime.InteropServices.Marshal.ReadByte(System.Object,System.Int32) | [ObsoleteAttribute(...)] | 0 | ReadByte(Object, Int32) may be unavailable in future releases. |
 | System.Byte System.Runtime.InteropServices.Marshal.ReadByte(System.Object,System.Int32) | [RequiresDynamicCodeAttribute(...)] | 0 | Marshalling code for the object might not be available |
 | System.Byte System.Runtime.InteropServices.MemoryMarshal.GetArrayDataReference(System.Array) | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Byte* Interop.Sys.GetCwd(System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Byte* Interop.Sys.GetCwd(System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Byte* Interop.Sys.GetCwd(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Byte* Interop.Sys.MkdTemp(System.Byte*) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Byte* Interop.Sys.MkdTemp(System.Byte*) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Byte* Interop.Sys.MkdTemp(System.Byte*) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Byte* Interop.Sys.StrErrorR(System.Int32,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
 | System.Byte* System.Reflection.RuntimeAssembly.GetResource(System.Runtime.CompilerServices.QCallAssembly,System.String,System.UInt32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
 | System.Byte* System.Reflection.RuntimeAssembly.GetResource(System.Runtime.CompilerServices.QCallAssembly,System.String,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
 | System.Byte[] System.BitConverter.GetBytes(System.UInt16) | [CLSCompliantAttribute(...)] | 0 | False |
@@ -6937,9 +6653,6 @@ attrArgPositional
 | System.DllNotFoundException | [NullableAttribute(...)] | 0 | 0 |
 | System.DllNotFoundException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.DllNotFoundException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Double Interop.Sys.GetCpuUtilization(Interop.Sys.ProcessCpuInformation) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Double Interop.Sys.GetCpuUtilization(Interop.Sys.ProcessCpuInformation) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Double Interop.Sys.GetCpuUtilization(Interop.Sys.ProcessCpuInformation) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
 | System.Double System.BitConverter.ToDouble(System.ReadOnlySpan<System.Byte>) | [NullableContextAttribute(...)] | 0 | 0 |
 | System.Double System.BitConverter.UInt64BitsToDouble(System.UInt64) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.Double System.Char.GetNumericValue(System.String,System.Int32) | [NullableContextAttribute(...)] | 0 | 1 |
@@ -7344,140 +7057,6 @@ attrArgPositional
 | System.Int32 Interop.Kernel32.FormatMessage(System.Int32,System.IntPtr,System.UInt32,System.Int32,System.Void*,System.Int32,System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
 | System.Int32 Interop.Kernel32.FormatMessage(System.Int32,System.IntPtr,System.UInt32,System.Int32,System.Void*,System.Int32,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
 | System.Int32 Interop.Kernel32.FormatMessage(System.Int32,System.IntPtr,System.UInt32,System.Int32,System.Void*,System.Int32,System.IntPtr) | [LibraryImportAttribute(...)] | 0 | QCall |
-| System.Int32 Interop.Sys.Access(System.String,Interop.Sys.AccessMode) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.Access(System.String,Interop.Sys.AccessMode) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.CanGetHiddenFlag() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.ChDir(System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.ChDir(System.String) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.ChMod(System.String,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.ChMod(System.String,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.Close(System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.Close(System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.Close(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.CloseDir(System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.CloseDir(System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.CloseDir(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.ConvertErrorPalToPlatform(Interop.Error) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.CopyFile(Microsoft.Win32.SafeHandles.SafeFileHandle,Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.CopyFile(Microsoft.Win32.SafeHandles.SafeFileHandle,Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.CopyFile(Microsoft.Win32.SafeHandles.SafeFileHandle,Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.FAllocate(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,System.Int64) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.FAllocate(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,System.Int64) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.FAllocate(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,System.Int64) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.FChMod(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.FChMod(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.FChMod(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.FChflags(System.Runtime.InteropServices.SafeHandle,System.UInt32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.FChflags(System.Runtime.InteropServices.SafeHandle,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.FChflags(System.Runtime.InteropServices.SafeHandle,System.UInt32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.FLock(Microsoft.Win32.SafeHandles.SafeFileHandle,Interop.Sys.LockOperations) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.FLock(Microsoft.Win32.SafeHandles.SafeFileHandle,Interop.Sys.LockOperations) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.FLock(Microsoft.Win32.SafeHandles.SafeFileHandle,Interop.Sys.LockOperations) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.FLock(System.IntPtr,Interop.Sys.LockOperations) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.FLock(System.IntPtr,Interop.Sys.LockOperations) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.FLock(System.IntPtr,Interop.Sys.LockOperations) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.FStat(System.Runtime.InteropServices.SafeHandle,Interop.Sys.FileStatus) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.FStat(System.Runtime.InteropServices.SafeHandle,Interop.Sys.FileStatus) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.FStat(System.Runtime.InteropServices.SafeHandle,Interop.Sys.FileStatus) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.FSync(Microsoft.Win32.SafeHandles.SafeFileHandle) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.FSync(Microsoft.Win32.SafeHandles.SafeFileHandle) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.FSync(Microsoft.Win32.SafeHandles.SafeFileHandle) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.FTruncate(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.FTruncate(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.FTruncate(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.FUTimens(System.Runtime.InteropServices.SafeHandle,Interop.Sys.TimeSpec*) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.FUTimens(System.Runtime.InteropServices.SafeHandle,Interop.Sys.TimeSpec*) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.FUTimens(System.Runtime.InteropServices.SafeHandle,Interop.Sys.TimeSpec*) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.GetAllMountPoints(delegate* unmanaged<Void*,Byte*,Void>,System.Void*) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.GetCryptographicallySecureRandomBytes(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.GetErrNo() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.GetGroups(System.Int32,System.UInt32*) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.GetGroups(System.Int32,System.UInt32*) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.GetGroups(System.Int32,System.UInt32*) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.GetHostName(System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.GetHostName(System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.GetHostName(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.GetOSArchitecture() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.GetPid() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.GetPlatformSignalNumber(System.Runtime.InteropServices.PosixSignal) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.GetPwUidR(System.UInt32,Interop.Sys.Passwd,System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.GetPwUidR(System.UInt32,Interop.Sys.Passwd,System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.GetPwUidR(System.UInt32,Interop.Sys.Passwd,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.GetReadDirRBufferSize() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.GetSignalForBreak() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.GetUnixVersion(System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.GetUnixVersion(System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.GetWindowSize(Interop.Sys.WinSize) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.GetWindowSize(Interop.Sys.WinSize) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.GetWindowSize(Interop.Sys.WinSize) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.LChflags(System.String,System.UInt32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.LChflags(System.String,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.LChflagsCanSetHiddenFlag() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.LStat(System.Byte,Interop.Sys.FileStatus) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.LStat(System.Byte,Interop.Sys.FileStatus) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.LStat(System.Byte,Interop.Sys.FileStatus) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.LStat(System.String,Interop.Sys.FileStatus) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.LStat(System.String,Interop.Sys.FileStatus) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.Link(System.String,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.Link(System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.MkDir(System.Byte,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.MkDir(System.Byte,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.MkDir(System.Byte,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.PRead(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32,System.Int64) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.PRead(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32,System.Int64) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.PRead(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32,System.Int64) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.PWrite(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32,System.Int64) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.PWrite(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32,System.Int64) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.PWrite(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32,System.Int64) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.PosixFAdvise(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,System.Int64,Interop.Sys.FileAdvice) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.PosixFAdvise(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,System.Int64,Interop.Sys.FileAdvice) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.PosixFAdvise(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,System.Int64,Interop.Sys.FileAdvice) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.Read(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.Read(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.Read(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.ReadDirR(System.IntPtr,System.Byte*,System.Int32,Interop.Sys.DirectoryEntry*) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.ReadLink(System.Byte,System.Byte,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.ReadLink(System.Byte,System.Byte,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.ReadLink(System.Byte,System.Byte,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.ReadStdin(System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.ReadStdin(System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.ReadStdin(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.Rename(System.Byte,System.Byte) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.Rename(System.Byte,System.Byte) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.Rename(System.Byte,System.Byte) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.Rename(System.String,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.Rename(System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.RmDir(System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.RmDir(System.String) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.SNPrintF(System.Byte*,System.Int32,System.String,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.SNPrintF(System.Byte*,System.Int32,System.String,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.SNPrintF(System.Byte*,System.Int32,System.String,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.SNPrintF(System.Byte*,System.Int32,System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.SetSignalForBreak(System.Int32,System.Boolean) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.SetSignalForBreak(System.Int32,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.SetSignalForBreak(System.Int32,System.Boolean) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.Stat(System.Byte,Interop.Sys.FileStatus) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.Stat(System.Byte,Interop.Sys.FileStatus) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.Stat(System.Byte,Interop.Sys.FileStatus) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.Stat(System.String,Interop.Sys.FileStatus) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.Stat(System.String,Interop.Sys.FileStatus) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.SymLink(System.String,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.SymLink(System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.UTimensat(System.String,Interop.Sys.TimeSpec*) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.UTimensat(System.String,Interop.Sys.TimeSpec*) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.Unlink(System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.Unlink(System.String) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.Write(System.IntPtr,System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.Write(System.IntPtr,System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.Write(System.IntPtr,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.Sys.Write(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Sys.Write(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.Sys.Write(System.Runtime.InteropServices.SafeHandle,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int32 Interop.libc.fsetattrlist(System.Int32,Interop.libc.AttrList*,System.Void*,System.IntPtr,System.Runtime.InteropServices.CULong) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.libc.fsetattrlist(System.Int32,Interop.libc.AttrList*,System.Void*,System.IntPtr,System.Runtime.InteropServices.CULong) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int32 Interop.libc.fsetattrlist(System.Int32,Interop.libc.AttrList*,System.Void*,System.IntPtr,System.Runtime.InteropServices.CULong) | [LibraryImportAttribute(...)] | 0 | libc |
-| System.Int32 Interop.libc.setattrlist(System.String,Interop.libc.AttrList*,System.Void*,System.IntPtr,System.Runtime.InteropServices.CULong) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.libc.setattrlist(System.String,Interop.libc.AttrList*,System.Void*,System.IntPtr,System.Runtime.InteropServices.CULong) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
 | System.Int32 System.AppDomain.ExecuteAssembly(System.String) | [RequiresUnreferencedCodeAttribute(...)] | 0 | Types and members the loaded assembly depends on might be removed |
 | System.Int32 System.AppDomain.ExecuteAssembly(System.String,System.String[]) | [RequiresUnreferencedCodeAttribute(...)] | 0 | Types and members the loaded assembly depends on might be removed |
 | System.Int32 System.AppDomain.ExecuteAssembly(System.String,System.String[],System.Byte[],System.Configuration.Assemblies.AssemblyHashAlgorithm) | [NullableContextAttribute(...)] | 0 | 2 |
@@ -7812,19 +7391,6 @@ attrArgPositional
 | System.Int32 System.UIntPtr.CompareTo(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Int32[] System.Decimal.GetBits(System.Decimal) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Int32[] System.Globalization.HebrewCalendar.get_Eras() | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Int64 Interop.Sys.GetSystemTimeAsTicks() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int64 Interop.Sys.LSeek(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,Interop.Sys.SeekWhence) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int64 Interop.Sys.LSeek(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,Interop.Sys.SeekWhence) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int64 Interop.Sys.LSeek(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int64,Interop.Sys.SeekWhence) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int64 Interop.Sys.PReadV(System.Runtime.InteropServices.SafeHandle,Interop.Sys.IOVector*,System.Int32,System.Int64) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int64 Interop.Sys.PReadV(System.Runtime.InteropServices.SafeHandle,Interop.Sys.IOVector*,System.Int32,System.Int64) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int64 Interop.Sys.PReadV(System.Runtime.InteropServices.SafeHandle,Interop.Sys.IOVector*,System.Int32,System.Int64) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int64 Interop.Sys.PWriteV(System.Runtime.InteropServices.SafeHandle,Interop.Sys.IOVector*,System.Int32,System.Int64) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int64 Interop.Sys.PWriteV(System.Runtime.InteropServices.SafeHandle,Interop.Sys.IOVector*,System.Int32,System.Int64) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int64 Interop.Sys.PWriteV(System.Runtime.InteropServices.SafeHandle,Interop.Sys.IOVector*,System.Int32,System.Int64) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Int64 Interop.Sys.SysConf(Interop.Sys.SysConfName) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int64 Interop.Sys.SysConf(Interop.Sys.SysConfName) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Int64 Interop.Sys.SysConf(Interop.Sys.SysConfName) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
 | System.Int64 System.BitConverter.ToInt64(System.ReadOnlySpan<System.Byte>) | [NullableContextAttribute(...)] | 0 | 0 |
 | System.Int64 System.Convert.ToInt64(System.SByte) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.Int64 System.Convert.ToInt64(System.UInt16) | [CLSCompliantAttribute(...)] | 0 | False |
@@ -7863,16 +7429,6 @@ attrArgPositional
 | System.IntPtr Internal.Runtime.InteropServices.ComponentActivator.InternalGetFunctionPointer(System.Runtime.Loader.AssemblyLoadContext,System.String,System.String,System.IntPtr) | [RequiresDynamicCodeAttribute(...)] | 0 | The native code for the method requested might not be available at runtime. |
 | System.IntPtr Internal.Runtime.InteropServices.ComponentActivator.InternalGetFunctionPointer(System.Runtime.Loader.AssemblyLoadContext,System.String,System.String,System.IntPtr) | [RequiresUnreferencedCodeAttribute(...)] | 0 | Native hosting is not trim compatible and this warning will be seen if trimming is enabled. |
 | System.IntPtr Interop.HostPolicy.corehost_set_error_writer(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | libhostpolicy |
-| System.IntPtr Interop.Sys.CreateAutoreleasePool() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.IntPtr Interop.Sys.GetDefaultSearchOrderPseudoHandle() | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.IntPtr Interop.Sys.GetDefaultSearchOrderPseudoHandle() | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.IntPtr Interop.Sys.GetDefaultSearchOrderPseudoHandle() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.IntPtr Interop.Sys.LowLevelMonitor_Create() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.IntPtr Interop.Sys.MksTemps(System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.IntPtr Interop.Sys.MksTemps(System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.IntPtr Interop.Sys.MksTemps(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.IntPtr Interop.Sys.OpenDir(System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.IntPtr Interop.Sys.OpenDir(System.String) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
 | System.IntPtr System.Diagnostics.Tracing.EventPipeInternal.CreateProvider(System.String,Interop.Advapi32.EtwEnableCallback) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
 | System.IntPtr System.Diagnostics.Tracing.EventPipeInternal.CreateProvider(System.String,Interop.Advapi32.EtwEnableCallback) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
 | System.IntPtr System.Diagnostics.Tracing.EventPipeInternal.DefineEvent(System.IntPtr,System.UInt32,System.Int64,System.UInt32,System.UInt32,System.Void*,System.UInt32) | [LibraryImportAttribute(...)] | 0 | QCall |
@@ -7927,9 +7483,6 @@ attrArgPositional
 | System.IntPtr System.Runtime.InteropServices.NativeLibrary.LoadByName(System.String,System.Runtime.CompilerServices.QCallAssembly,System.Boolean,System.UInt32,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
 | System.IntPtr System.Runtime.InteropServices.NativeLibrary.LoadFromPath(System.String,System.Boolean) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
 | System.IntPtr System.Runtime.InteropServices.NativeLibrary.LoadFromPath(System.String,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.IntPtr System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.CreateReferenceTrackingHandleInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int32,System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.IntPtr System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.CreateReferenceTrackingHandleInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int32,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.IntPtr System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.CreateReferenceTrackingHandleInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int32,System.IntPtr) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.IntPtr System.Runtime.Loader.AssemblyLoadContext.GetLoadContextForAssembly(System.Runtime.CompilerServices.QCallAssembly) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.IntPtr System.Runtime.Loader.AssemblyLoadContext.InitializeAssemblyLoadContext(System.IntPtr,System.Boolean,System.Boolean) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
 | System.IntPtr System.Runtime.Loader.AssemblyLoadContext.InitializeAssemblyLoadContext(System.IntPtr,System.Boolean,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
@@ -9439,8 +8992,6 @@ attrArgPositional
 | System.Runtime.InteropServices.NativeLibrary | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.InteropServices.OSPlatform | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.InteropServices.OSPlatform | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal | [CLSCompliantAttribute(...)] | 0 | False |
-| System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal | [SupportedOSPlatformAttribute(...)] | 0 | macos |
 | System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.UnhandledExceptionPropagationHandler | [NullableAttribute(...)] | 0 | 1 |
 | System.Runtime.InteropServices.ObjectiveC.ObjectiveCTrackedTypeAttribute | [AttributeUsageAttribute(...)] | 0 | 4 |
 | System.Runtime.InteropServices.ObjectiveC.ObjectiveCTrackedTypeAttribute | [SupportedOSPlatformAttribute(...)] | 0 | macos |
@@ -9969,8 +9520,6 @@ attrArgPositional
 | System.StackOverflowException | [NullableAttribute(...)] | 0 | 0 |
 | System.StackOverflowException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.StackOverflowException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.String Interop.Sys.GetProcessPath() | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.String Interop.Sys.GetProcessPath() | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
 | System.String System.AppContext.GetBaseDirectoryCore() | [UnconditionalSuppressMessageAttribute(...)] | 0 | SingleFile |
 | System.String System.AppContext.GetBaseDirectoryCore() | [UnconditionalSuppressMessageAttribute(...)] | 1 | IL3000: Avoid accessing Assembly file path when publishing as a single file |
 | System.String System.AppContext.get_BaseDirectory() | [NullableContextAttribute(...)] | 0 | 1 |
@@ -11118,11 +10667,6 @@ attrArgPositional
 | System.UInt16 System.UInt128.op_Explicit(System.UInt128) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.UInt32 Interop.Kernel32.GetEnvironmentVariable(System.String,System.Char,System.UInt32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
 | System.UInt32 Interop.Kernel32.GetEnvironmentVariable(System.String,System.Char,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.UInt32 Interop.Sys.GetEGid() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.UInt32 Interop.Sys.GetEUid() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.UInt32 Interop.Sys.GetFileSystemType(Microsoft.Win32.SafeHandles.SafeFileHandle) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.UInt32 Interop.Sys.GetFileSystemType(Microsoft.Win32.SafeHandles.SafeFileHandle) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.UInt32 Interop.Sys.GetFileSystemType(Microsoft.Win32.SafeHandles.SafeFileHandle) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
 | System.UInt32 System.BitConverter.SingleToUInt32Bits(System.Single) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.UInt32 System.BitConverter.ToUInt32(System.Byte[],System.Int32) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.UInt32 System.BitConverter.ToUInt32(System.ReadOnlySpan<System.Byte>) | [CLSCompliantAttribute(...)] | 0 | False |
@@ -11189,7 +10733,6 @@ attrArgPositional
 | System.UInt32 System.UInt32.Parse(System.String,System.IFormatProvider) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.UInt32 System.UInt128.op_CheckedExplicit(System.UInt128) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.UInt32 System.UInt128.op_Explicit(System.UInt128) | [CLSCompliantAttribute(...)] | 0 | False |
-| System.UInt64 Interop.Sys.GetTimestamp() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
 | System.UInt64 System.BitConverter.DoubleToUInt64Bits(System.Double) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.UInt64 System.BitConverter.ToUInt64(System.Byte[],System.Int32) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.UInt64 System.BitConverter.ToUInt64(System.ReadOnlySpan<System.Byte>) | [CLSCompliantAttribute(...)] | 0 | False |
@@ -11415,33 +10958,6 @@ attrArgPositional
 | System.Void Interop.Globalization.CloseSortHandle(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Globalization.Native |
 | System.Void Interop.Globalization.InitICUFunctions(System.IntPtr,System.IntPtr,System.String,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
 | System.Void Interop.Globalization.InitICUFunctions(System.IntPtr,System.IntPtr,System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Void Interop.Sys.AlignedFree(System.Void*) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.DisablePosixSignalHandling(System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.DrainAutoreleasePool(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.Free(System.Void*) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.GetControlCharacters(Interop.Sys.ControlCharacterNames[],System.Byte[],System.Int32,System.Byte) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void Interop.Sys.GetControlCharacters(Interop.Sys.ControlCharacterNames[],System.Byte[],System.Int32,System.Byte) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Void Interop.Sys.GetControlCharacters(Interop.Sys.ControlCharacterNames[],System.Byte[],System.Int32,System.Byte) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.GetNonCryptographicallySecureRandomBytes(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.HandleNonCanceledPosixSignal(System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.InitializeConsoleBeforeRead(System.Boolean,System.Byte,System.Byte) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void Interop.Sys.InitializeConsoleBeforeRead(System.Boolean,System.Byte,System.Byte) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Void Interop.Sys.InitializeConsoleBeforeRead(System.Boolean,System.Byte,System.Byte) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.Log(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.LogError(System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.LowLevelMonitor_Acquire(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.LowLevelMonitor_Destroy(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.LowLevelMonitor_Release(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.LowLevelMonitor_Signal_Release(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.LowLevelMonitor_Wait(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.SetErrNo(System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.SetKeypadXmit(System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void Interop.Sys.SetKeypadXmit(System.String) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Void Interop.Sys.SetPosixSignalHandler(delegate* unmanaged<Int32,PosixSignal,Int32>) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.SetTerminalInvalidationHandler(delegate* unmanaged<Void>) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void Interop.Sys.SysLog(Interop.Sys.SysLogPriority,System.String,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void Interop.Sys.SysLog(Interop.Sys.SysLogPriority,System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 7.0.7.10605 |
-| System.Void Interop.Sys.UninitializeConsoleAfterRead() | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
 | System.Void System.AccessViolationException..ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Void System.Action`1.Invoke(!0) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Void System.Action`2.Invoke(!0,!1) | [NullableContextAttribute(...)] | 0 | 1 |
@@ -12381,7 +11897,6 @@ attrArgPositional
 | System.Void System.Runtime.InteropServices.NativeMemory.Copy(System.Void*,System.Void*,System.UIntPtr) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.Void System.Runtime.InteropServices.NativeMemory.Fill(System.Void*,System.UIntPtr,System.Byte) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.Void System.Runtime.InteropServices.NativeMemory.Free(System.Void*) | [CLSCompliantAttribute(...)] | 0 | False |
-| System.Void System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.SetMessageSendPendingException(System.Exception) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Void System.Runtime.InteropServices.SEHException..ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Void System.Runtime.InteropServices.SafeArrayRankMismatchException..ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Void System.Runtime.InteropServices.SafeArrayTypeMismatchException..ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext) | [NullableContextAttribute(...)] | 0 | 1 |
@@ -12712,11 +12227,6 @@ attrArgPositional
 | System.Void System.Version..ctor(System.String) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Void System.WeakReference..ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Void System.WeakReference.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext) | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Void* Interop.Sys.AlignedAlloc(System.UIntPtr,System.UIntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void* Interop.Sys.AlignedRealloc(System.Void*,System.UIntPtr,System.UIntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void* Interop.Sys.Calloc(System.UIntPtr,System.UIntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void* Interop.Sys.Malloc(System.UIntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
-| System.Void* Interop.Sys.Realloc(System.Void*,System.UIntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Native |
 | System.Void* System.IntPtr.ToPointer() | [CLSCompliantAttribute(...)] | 0 | False |
 | System.Void* System.IntPtr.op_Explicit(System.IntPtr) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.Void* System.Runtime.CompilerServices.Unsafe.Add`1(System.Void*,System.Int32) | [CLSCompliantAttribute(...)] | 0 | False |
