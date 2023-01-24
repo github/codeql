@@ -44,5 +44,16 @@ public class MyTestClass
 
         // UTF-16 encoded.
         var y = "AUTH16: ";
+
+        // UTF-8 encoded vertabim.
+        var z = @"AUTH8: 
+        <username> "u8;
+
+        // UTF-8 encoded raw literal.
+        var w = """
+        The nested message
+          is UTF-8 encoded and
+        spans multiple lines.
+        """u8;
     }
 }
