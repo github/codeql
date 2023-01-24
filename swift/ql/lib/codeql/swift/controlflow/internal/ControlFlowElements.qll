@@ -5,6 +5,7 @@ newtype TControlFlowElement =
   TAstElement(AstNode n) or
   TFuncDeclElement(AbstractFunctionDecl func) { func.hasBody() } or
   TClosureElement(ClosureExpr clos) or
+  TCaptureElement(CapturedDecl capture) or
   TPropertyGetterElement(Decl accessor, Expr ref) { isPropertyGetterElement(accessor, ref) } or
   TPropertySetterElement(AccessorDecl accessor, AssignExpr assign) {
     isPropertySetterElement(accessor, assign)
@@ -205,4 +206,16 @@ class ClosureElement extends ControlFlowElement, TClosureElement {
   ClosureExpr getAst() { result = expr }
 
   override string toString() { result = expr.toString() }
+}
+
+class CaptureElement extends ControlFlowElement, TCaptureElement {
+  CapturedDecl capture;
+
+  CaptureElement() { this = TCaptureElement(capture) }
+
+  override Location getLocation() { result = capture.getLocation() }
+
+  CapturedDecl getAst() { result = capture }
+
+  override string toString() { result = capture.toString() }
 }

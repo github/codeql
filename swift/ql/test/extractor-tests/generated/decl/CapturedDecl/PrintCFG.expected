@@ -49,13 +49,13 @@ closures.swift:
 #-----|  -> exit { ... }
 
 #    7| { ... }
-#-----|  -> { ... }
+#-----|  -> x
 
 #    7| { ... }
 #-----|  -> call to ...
 
 #    7| { ... }
-#-----|  -> x
+#-----|  -> print(_:separator:terminator:)
 
 #    7| call to ...
 #-----|  -> exit foo() (normal)
@@ -94,10 +94,10 @@ closures.swift:
 #-----|  -> default separator
 
 #    8| x
-#-----|  -> (Any) ...
+#-----|  -> y
 
 #    8| x
-#-----|  -> y
+#-----|  -> (Any) ...
 
 #    9| print(_:separator:terminator:)
 #-----|  -> y
@@ -121,13 +121,13 @@ closures.swift:
 #-----|  -> default separator
 
 #    9| y
-#-----|  -> (Any) ...
+#-----|  -> { ... }
 
 #    9| y
-#-----|  -> print(_:separator:terminator:)
+#-----|  -> (Any) ...
 
 #   14| baz()
-#-----|  -> escape
+#-----|  -> x
 
 #   14| enter baz()
 #-----|  -> baz()
@@ -158,19 +158,20 @@ closures.swift:
 #-----|  -> exit quux()
 
 #   16| quux()
+#-----|  -> x
 #-----|  -> escape
 
 #   16| quux()
-#-----|  -> x
+#-----|  -> .+=(_:_:)
 
 #   17| &...
 #-----|  -> 1
 
 #   17| x
-#-----|  -> &...
+#-----|  -> escape
 
 #   17| x
-#-----|  -> .+=(_:_:)
+#-----|  -> &...
 
 #   17| ... .+=(_:_:) ...
 #-----|  -> print(_:separator:terminator:)
@@ -214,9 +215,6 @@ closures.swift:
 #   20| escape
 #-----|  -> quux()
 
-#   20| escape
-#-----|  -> x
-
 #   20|  ... = ...
 #-----|  -> exit baz() (normal)
 
@@ -227,7 +225,7 @@ closures.swift:
 #-----|  -> ((() -> ())?) ...
 
 #   23| callEscape()
-#-----|  -> escape
+#-----|  -> baz()
 
 #   23| enter callEscape()
 #-----|  -> callEscape()
@@ -245,9 +243,6 @@ closures.swift:
 
 #   25| escape
 #-----|  -> ...?
-
-#   25| escape
-#-----|  -> baz()
 
 #   25| ((() -> ())) ...
 #-----|  -> call to ...
@@ -373,10 +368,13 @@ closures.swift:
 #-----|  -> ... .&&(_:_:) ...
 
 #   32| { ... }
-#-----|  -> .!=(_:_:)
+#-----|  -> x
 
 #   32| x
 #-----|  -> nil
+
+#   32| x
+#-----|  -> f
 
 #   32| ... .!=(_:_:) ...
 #-----| false -> ... .&&(_:_:) ...
@@ -398,6 +396,12 @@ closures.swift:
 #   33| f
 #-----|  -> ...!
 
+#   33| f
+#-----|  -> x
+
+#   33| f
+#-----|  -> .!=(_:_:)
+
 #   33| ...!
 #-----|  -> x
 
@@ -411,10 +415,13 @@ closures.swift:
 #-----|  -> ... .&&(_:_:) ...
 
 #   33| { ... }
-#-----|  -> .==(_:_:)
+#-----|  -> f
 
 #   33| x
 #-----|  -> ...!
+
+#   33| x
+#-----|  -> .==(_:_:)
 
 #   33| ...!
 #-----|  -> call to ...
@@ -465,10 +472,11 @@ closures.swift:
 #-----|  -> exit wrapper(_:)
 
 #   38| wrapper(_:)
+#-----|  -> callback
 #-----|  -> Task<Success, Never>.init(priority:operation:)
 
 #   38| wrapper(_:)
-#-----|  -> callback
+#-----|  -> x
 
 #   38| x
 #-----|  -> callback
@@ -480,10 +488,10 @@ closures.swift:
 #-----|  -> return ...
 
 #   39| callback
-#-----|  -> .+(_:_:)
+#-----|  -> Task<Success, Never>.init(priority:operation:)
 
 #   39| callback
-#-----|  -> x
+#-----|  -> .+(_:_:)
 
 #   39| call to ...
 #-----|  -> await ...
@@ -524,10 +532,10 @@ closures.swift:
 #-----|  -> exit { ... }
 
 #   41| { ... }
-#-----|  -> call to Task<Success, Never>.init(priority:operation:)
+#-----|  -> wrapper(_:)
 
 #   41| { ... }
-#-----|  -> wrapper(_:)
+#-----|  -> print(_:separator:terminator:)
 
 #   42| print(_:separator:terminator:)
 #-----|  -> wrapper(_:)
@@ -557,10 +565,10 @@ closures.swift:
 #-----|  -> (Any) ...
 
 #   42| wrapper(_:)
-#-----|  -> 42
+#-----|  -> call to Task<Success, Never>.init(priority:operation:)
 
 #   42| wrapper(_:)
-#-----|  -> print(_:separator:terminator:)
+#-----|  -> 42
 
 #   42| call to wrapper(_:)
 #-----|  -> await ...

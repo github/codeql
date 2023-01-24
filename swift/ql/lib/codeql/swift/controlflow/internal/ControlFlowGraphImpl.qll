@@ -1001,7 +1001,7 @@ module Decls {
     AbstractFunctionDecl getAst() { result = ast }
 
     final override ControlFlowElement getChildElement(int i) {
-      result.asAstNode() = ast.getCapture(i + ast.getNumberOfCaptures() + 1)
+      result.(CaptureElement).asAstNode() = ast.getCapture(i + ast.getNumberOfCaptures() + 1)
       or
       i = -1 and
       result.asAstNode() = ast.getSelfParam()
@@ -1133,7 +1133,7 @@ module Exprs {
     ClosureExpr getAst() { result = expr }
 
     final override ControlFlowElement getChildElement(int i) {
-      result.asAstNode() = expr.getCapture(i)
+      result.(CaptureElement).asAstNode() = expr.getCapture(i)
       or
       result.asAstNode() = expr.getParam(i - expr.getNumberOfCaptures())
       or
@@ -1166,11 +1166,14 @@ module Exprs {
   }
 
   module Closures {
-    class Closure = @auto_closure_expr or @closure_expr;
+    private class CallableTree extends AstStandardPreOrderTree {
+      override Callable ast;
 
-    // TODO: Traverse the expressions in the capture list once we extract it.
-    private class ClosureTree extends AstLeafTree {
-      override ClosureExpr ast;
+      CallableTree() { not this instanceof LogicalAutoClosureTree }
+
+      final override ControlFlowElement getChildElement(int i) {
+        result.(AstElement).asAstNode() = ast.getCapture(i)
+      }
     }
 
     /**
@@ -1202,17 +1205,22 @@ module Exprs {
 
       override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
         // Pre order: Flow from this to the uniquely wrapped expr
-        pred.asAstNode() = ast and
-        astFirst(ast.getReturn(), succ) and
-        c instanceof SimpleCompletion
+        c instanceof SimpleCompletion and
+        exists(ControlFlowElement first, ControlFlowElement last |
+          first.asAstNode() = ast and
+          astFirst(ast.getReturn(), last)
+        |
+          pred = first and succ.(AstElement).asAstNode() = ast.getCapture(0)
+          or
+          exists(int i | pred.(AstElement).asAstNode() = ast.getCapture(i) |
+            succ.(AstElement).asAstNode() = ast.getCapture(i + 1)
+            or
+            not exists(ast.getCapture(i + 1)) and succ = last
+          )
+          or
+          not exists(ast.getCapture(0)) and pred = first and succ = last
+        )
       }
-    }
-
-    /** An autoclosure expression that is _not_ part of a logical operation. */
-    private class AutoClosureTree extends AstLeafTree {
-      override AutoClosureExpr ast;
-
-      AutoClosureTree() { not this instanceof LogicalAutoClosureTree }
     }
   }
 
