@@ -24,6 +24,7 @@ edges
 | PolynomialReDoS.rb:31:9:31:14 | call to params :  | PolynomialReDoS.rb:31:9:31:18 | ...[...] :  |
 | PolynomialReDoS.rb:31:9:31:18 | ...[...] :  | PolynomialReDoS.rb:32:5:32:5 | c |
 | lib/index.rb:2:11:2:11 | x :  | lib/index.rb:4:13:4:13 | x |
+| lib/index.rb:8:13:8:13 | x :  | lib/index.rb:9:15:9:15 | x |
 nodes
 | PolynomialReDoS.rb:4:12:4:17 | call to params :  | semmle.label | call to params :  |
 | PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | semmle.label | ...[...] :  |
@@ -55,6 +56,8 @@ nodes
 | PolynomialReDoS.rb:47:10:47:13 | name | semmle.label | name |
 | lib/index.rb:2:11:2:11 | x :  | semmle.label | x :  |
 | lib/index.rb:4:13:4:13 | x | semmle.label | x |
+| lib/index.rb:8:13:8:13 | x :  | semmle.label | x :  |
+| lib/index.rb:9:15:9:15 | x | semmle.label | x |
 subpaths
 #select
 | PolynomialReDoS.rb:10:5:10:17 | ... =~ ... | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:10:5:10:8 | name | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | user-provided value |
@@ -78,3 +81,4 @@ subpaths
 | PolynomialReDoS.rb:42:5:45:7 | case ... | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:42:10:42:13 | name | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | user-provided value |
 | PolynomialReDoS.rb:47:5:50:7 | case ... | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:47:10:47:13 | name | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:48:14:48:16 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | user-provided value |
 | lib/index.rb:4:13:4:26 | call to match | lib/index.rb:2:11:2:11 | x :  | lib/index.rb:4:13:4:13 | x | This $@ that depends on a $@ may run slow on strings with many repetitions of 'a'. | lib/index.rb:4:22:4:23 | a+ | regular expression | lib/index.rb:2:11:2:11 | x | library input |
+| lib/index.rb:9:15:9:28 | call to match | lib/index.rb:8:13:8:13 | x :  | lib/index.rb:9:15:9:15 | x | This $@ that depends on a $@ may run slow on strings with many repetitions of 'a'. | lib/index.rb:9:24:9:25 | a+ | regular expression | lib/index.rb:8:13:8:13 | x | library input |
