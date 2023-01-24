@@ -1,6 +1,7 @@
 private import python
 private import DataFlowPublic
 private import semmle.python.essa.SsaCompute
+private import semmle.python.BaseSSA
 private import semmle.python.dataflow.new.internal.ImportResolution
 private import FlowSummaryImpl as FlowSummaryImpl
 // Since we allow extra data-flow steps from modeled frameworks, we import these
@@ -289,6 +290,116 @@ module EssaFlow {
 
   predicate defToFirstUse(EssaVariable var, NameNode nodeTo) {
     AdjacentUses::firstUse(var.getDefinition(), nodeTo)
+  }
+
+  predicate essaDefStep(Node nodeFrom, Node nodeTo) {
+    // Definition
+    //   `x = f(42)`
+    //   nodeFrom is `f(42)`, cfg node
+    //   nodeTo is `x`, essa var
+    nodeFrom.(CfgNode).getNode() =
+      nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue()
+    or
+    // With definition
+    //   `with f(42) as x:`
+    //   nodeFrom is `f(42)`, cfg node
+    //   nodeTo is `x`, essa var
+    exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
+      nodeFrom.(CfgNode).getNode() = contextManager and
+      nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
+      // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
+      with.getContextExpr() = contextManager.getNode() and
+      with.getOptionalVars() = var.getNode() and
+      not with.isAsync() and
+      contextManager.strictlyDominates(var)
+    )
+    or
+    // Async with var definition
+    //  `async with f(42) as x:`
+    //  nodeFrom is `x`, cfg node
+    //  nodeTo is `x`, essa var
+    //
+    // This makes the cfg node the local source of the awaited value.
+    exists(With with, ControlFlowNode var |
+      nodeFrom.(CfgNode).getNode() = var and
+      nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
+      with.getOptionalVars() = var.getNode() and
+      with.isAsync()
+    )
+    or
+    // Parameter definition
+    //   `def foo(x):`
+    //   nodeFrom is `x`, cfgNode
+    //   nodeTo is `x`, essa var
+    exists(ParameterDefinition pd |
+      nodeFrom.asCfgNode() = pd.getDefiningNode() and
+      nodeTo.asVar() = pd.getVariable()
+    )
+  }
+
+  predicate classicDefToUse(Node nodeFrom, Node nodeTo) {
+    // exists(Node mid |
+    //   essaDefStep(nodeFrom, mid) and
+    //   defToFirstUse(mid.asVar(), nodeTo.asCfgNode())
+    // )
+    exists(EssaVariable var |
+      defToFirstUse(var, nodeTo.asCfgNode()) and
+      nodeFrom.asCfgNode() = var.getDefinition().(EssaNodeDefinition).getDefiningNode()
+    )
+  }
+
+  predicate essaFlowStepBase(Node nodeFrom, Node nodeTo) {
+    // First use after definition
+    //   `y = 42`
+    //   `x = f(y)`
+    //   nodeFrom is `y` on first line, cfg node
+    //   nodeTo is `y` on second line, cfg node
+    BaseSsa::defToUse(nodeFrom.asCfgNode(), nodeTo.asCfgNode())
+    or
+    // Next use after use
+    //   `x = f(y)`
+    //   `z = y + 1`
+    //   nodeFrom is 'y' on first line, cfg node
+    //   nodeTo is `y` on second line, cfg node
+    BaseSsa::useToUse(nodeFrom.asCfgNode(), nodeTo.asCfgNode())
+    or
+    // If expressions
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
+    or
+    // boolean inline expressions such as `x or y` or `x and y`
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(BoolExprNode).getAnOperand()
+    or
+    // Flow inside an unpacking assignment
+    iterableUnpackingFlowStep(nodeFrom, nodeTo)
+    or
+    matchFlowStep(nodeFrom, nodeTo)
+    or
+    // Overflow keyword argument
+    exists(CallNode call, CallableValue callable |
+      call = callable.getACall() and
+      nodeTo = TKwOverflowNode(call, callable) and
+      nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode()
+    )
+  }
+
+  predicate defToUseDiff(Node nodeFrom, Node nodeTo, string kind) {
+    classicDefToUse(nodeFrom, nodeTo) and
+    not BaseSsa::defToUse(nodeFrom.asCfgNode(), nodeTo.asCfgNode()) and
+    kind = "Not in base"
+    or
+    not classicDefToUse(nodeFrom, nodeTo) and
+    BaseSsa::defToUse(nodeFrom.asCfgNode(), nodeTo.asCfgNode()) and
+    kind = "Only in base"
+  }
+
+  predicate essaFlowDiff(Node nodeFrom, Node nodeTo, string kind) {
+    essaFlowStep(nodeFrom, nodeTo) and
+    not essaFlowStepBase(nodeFrom, nodeTo) and
+    kind = "Not in base"
+    or
+    not essaFlowStep(nodeFrom, nodeTo) and
+    essaFlowStepBase(nodeFrom, nodeTo) and
+    kind = "Only in base"
   }
 }
 

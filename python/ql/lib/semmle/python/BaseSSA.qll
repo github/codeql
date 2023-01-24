@@ -21,6 +21,7 @@ module BaseSsa {
       def = bb.getNode(j) and
       i = j * 2 + 1
     )
+    // def = bb.getNode(i)
   }
 
   /**
@@ -37,6 +38,7 @@ module BaseSsa {
       bb.getNode(j) = read and
       i = 2 * j
     )
+    // bb.getNode(i) = read
   }
 
   private module SsaInput implements SsaImplCommon::InputSig {
@@ -53,7 +55,11 @@ module BaseSsa {
      * the exit node of a callable.
      */
     class ExitBasicBlock extends BasicBlock {
-      ExitBasicBlock() { this.getLastNode().isNormalExit() }
+      ExitBasicBlock() {
+        this.getLastNode().isNormalExit()
+        or
+        this.getLastNode().isExceptionalExit(_)
+      }
     }
 
     class SourceVariable = Flow::SsaSourceVariable;
@@ -78,7 +84,8 @@ module BaseSsa {
   class Definition extends SsaImpl::Definition {
     final PY::ControlFlowNode getARead() {
       exists(SsaInput::BasicBlock bb, int i, SsaInput::SourceVariable v |
-        SsaImpl::ssaDefReachesRead(v, this, bb, i) and
+        // SsaImpl::ssaDefReachesRead(v, this, bb, i) and
+        SsaImpl::ssaDefReachesReadExt(v, this, bb, i) and
         readAt(result, bb, i, v)
       )
     }
@@ -92,17 +99,19 @@ module BaseSsa {
 
     final PY::ControlFlowNode firstUse() {
       exists(SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2 |
-        this.definesAt(_, bb1, i1) and
-        SsaImpl::adjacentDefRead(this, bb1, i1, bb2, i2) and
-        readAt(result, bb2, i2, _)
+        this.definesAt(this.getSourceVariable(), bb1, i1) and
+        // SsaImpl::adjacentDefRead(this, bb1, i1, bb2, i2) and
+        SsaImpl::adjacentDefReadExt(this, this.getSourceVariable(), bb1, i1, bb2, i2) and
+        readAt(result, bb2, i2, this.getSourceVariable())
       )
     }
 
     final PY::ControlFlowNode nextUse(PY::ControlFlowNode use) {
       exists(SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2 |
-        readAt(use, bb1, i1, _) and
-        SsaImpl::adjacentDefRead(this, bb1, i1, bb2, i2) and
-        readAt(result, bb2, i2, _)
+        readAt(use, bb1, i1, this.getSourceVariable()) and
+        // SsaImpl::adjacentDefRead(this, bb1, i1, bb2, i2) and
+        SsaImpl::adjacentDefReadExt(this, this.getSourceVariable(), bb1, i1, bb2, i2) and
+        readAt(result, bb2, i2, this.getSourceVariable())
       )
     }
 
