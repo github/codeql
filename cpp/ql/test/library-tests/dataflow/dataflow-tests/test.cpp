@@ -506,12 +506,23 @@ void viaOutparamMissingReturn() {
   sink(x); // $ ast,ir
 }
 
-void sink_then_source(int* p) {
-    sink(*p);
-    *p = source(); // clean
+void sink_then_source_1(int* p) {
+    sink(*p); // clean
+    *p = source();
+}
+
+void sink_then_source_2(int* p, int y) {
+    sink(y); // $ SPURIOUS: ast
+    *p = source();
 }
 
 void test_sink_then_source() {
+  {
     int x;
-    sink_then_source(&x);
+    sink_then_source_1(&x);
+  }
+  {
+    int y;
+    sink_then_source_2(&y, y);
+  }
 }
