@@ -6,6 +6,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+private import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for SQL injection vulnerabilities.
@@ -140,4 +141,11 @@ class GrdbDefaultSqlInjectionSink extends SqlInjectionSink {
           .hasQualifiedName("CommonTableExpression", "init(recursive:named:columns:sql:arguments:)")
     )
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultSqlInjectionSink extends SqlInjectionSink {
+  DefaultSqlInjectionSink() { sinkNode(this, "sql") }
 }

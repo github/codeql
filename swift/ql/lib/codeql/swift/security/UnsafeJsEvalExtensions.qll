@@ -6,6 +6,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.FlowSources
+private import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for javascript evaluation vulnerabilities.
@@ -140,4 +141,11 @@ class DefaultUnsafeJsEvalAdditionalTaintStep extends UnsafeJsEvalAdditionalTaint
       nodeTo.asExpr() = e
     )
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
+  DefaultUnsafeJsEvalSink() { sinkNode(this, "js-eval") }
 }

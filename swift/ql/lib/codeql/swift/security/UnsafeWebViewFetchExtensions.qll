@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+private import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for unsafe webview fetch vulnerabilities.
@@ -33,10 +34,10 @@ class UnsafeWebViewFetchAdditionalTaintStep extends Unit {
  * A default uncontrolled format string sink, such as certain arguments
  * to `UIWebView.loadHTMLString`.
  */
-class DefaultUnsafeWebViewFetchSink extends UnsafeWebViewFetchSink {
+class UIKitWebKitWebViewFetchSink extends UnsafeWebViewFetchSink {
   Expr baseUrl;
 
-  DefaultUnsafeWebViewFetchSink() {
+  UIKitWebKitWebViewFetchSink() {
     exists(
       MethodDecl funcDecl, CallExpr call, string className, string funcName, int arg, int baseArg
     |
@@ -70,4 +71,14 @@ class DefaultUnsafeWebViewFetchSink extends UnsafeWebViewFetchSink {
   }
 
   override Expr getBaseUrl() { result = baseUrl }
+}
+
+/**
+ * A sink defined in a CSV model.
+ *
+ * Note that sinks defined in this way never have a recognized `baseURL`
+ * argument, which may limit the accuracy of results.
+ */
+private class DefaultUnsafeWebViewFetchSink extends UnsafeWebViewFetchSink {
+  DefaultUnsafeWebViewFetchSink() { sinkNode(this, "webview-fetch") }
 }
