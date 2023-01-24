@@ -71,8 +71,6 @@ uniqueNodeLocation
 | file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
@@ -155,7 +153,7 @@ uniqueNodeLocation
 | switchstmt.c:1:12:1:12 | x indirection | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | x indirection | Node should have one location but has 4. |
 missingLocation
-| Nodes without location: 37 |
+| Nodes without location: 35 |
 uniqueNodeToString
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
