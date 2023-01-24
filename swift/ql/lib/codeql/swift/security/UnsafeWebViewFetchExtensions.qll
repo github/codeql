@@ -7,13 +7,36 @@ import swift
 import codeql.swift.dataflow.DataFlow
 
 /**
- * A sink that is a candidate result for this query, such as certain arguments
+ * A dataflow sink for unsafe webview fetch vulnerabilities.
+ */
+abstract class UnsafeWebViewFetchSink extends DataFlow::Node {
+  /**
+   * Gets the `baseURL` argument associated with this sink (if any). These arguments affect
+   * the way sinks are reported and are also sinks themselves.
+   */
+  Expr getBaseUrl() { none() }
+}
+
+/**
+ * A sanitizer for unsafe webview fetch vulnerabilities.
+ */
+abstract class UnsafeWebViewFetchSanitizer extends DataFlow::Node { }
+
+/**
+ * A unit class for adding additional taint steps.
+ */
+class UnsafeWebViewFetchAdditionalTaintStep extends Unit {
+  abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
+}
+
+/**
+ * A default uncontrolled format string sink, such as certain arguments
  * to `UIWebView.loadHTMLString`.
  */
-class Sink extends DataFlow::Node {
+class DefaultUnsafeWebViewFetchSink extends UnsafeWebViewFetchSink {
   Expr baseUrl;
 
-  Sink() {
+  DefaultUnsafeWebViewFetchSink() {
     exists(
       MethodDecl funcDecl, CallExpr call, string className, string funcName, int arg, int baseArg
     |
@@ -38,16 +61,13 @@ class Sink extends DataFlow::Node {
         baseArg = 3
       ) and
       call.getStaticTarget() = funcDecl and
-      // match up `funcName`, `paramName`, `arg`, `node`.
+      // match up `className`, `funcName`.
       funcDecl.hasQualifiedName(className, funcName) and
-      call.getArgument(arg).getExpr() = this.asExpr() and
-      // match up `baseURLArg`
-      call.getArgument(baseArg).getExpr() = baseUrl
+      // match up `this`, `baseURL`
+      this.asExpr() = call.getArgument(arg).getExpr() and // URL
+      baseUrl = call.getArgument(baseArg).getExpr() // baseURL
     )
   }
 
-  /**
-   * Gets the `baseURL` argument associated with this sink.
-   */
-  Expr getBaseUrl() { result = baseUrl }
+  override Expr getBaseUrl() { result = baseUrl }
 }

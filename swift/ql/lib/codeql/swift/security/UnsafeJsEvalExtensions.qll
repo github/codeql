@@ -8,17 +8,27 @@ import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.FlowSources
 
 /**
- * A source of untrusted, user-controlled data.
+ * A dataflow sink for javascript evaluation vulnerabilities.
  */
-class Source = FlowSource;
+abstract class UnsafeJsEvalSink extends DataFlow::Node { }
 
 /**
- * A sink that evaluates a string of JavaScript code.
+ * A sanitizer for javascript evaluation vulnerabilities.
  */
-abstract class Sink extends DataFlow::Node { }
+abstract class UnsafeJsEvalSanitizer extends DataFlow::Node { }
 
-class WKWebView extends Sink {
-  WKWebView() {
+/**
+ * A unit class for adding additional taint steps.
+ */
+class UnsafeJsEvalAdditionalTaintStep extends Unit {
+  abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
+}
+
+/**
+ * A default SQL injection sink for the `WKWebView` interface.
+ */
+class WKWebViewDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
+  WKWebViewDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
       ce.getStaticTarget()
           .(MethodDecl)
@@ -34,8 +44,11 @@ class WKWebView extends Sink {
   }
 }
 
-class WKUserContentController extends Sink {
-  WKUserContentController() {
+/**
+ * A default SQL injection sink for the `WKUserContentController` interface.
+ */
+class WKUserContentControllerDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
+  WKUserContentControllerDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
       ce.getStaticTarget()
           .(MethodDecl)
@@ -44,8 +57,11 @@ class WKUserContentController extends Sink {
   }
 }
 
-class UIWebView extends Sink {
-  UIWebView() {
+/**
+ * A default SQL injection sink for the `UIWebView` and `WebView` interfaces.
+ */
+class UIWebViewDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
+  UIWebViewDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
       ce.getStaticTarget()
           .(MethodDecl)
@@ -54,8 +70,11 @@ class UIWebView extends Sink {
   }
 }
 
-class JSContext extends Sink {
-  JSContext() {
+/**
+ * A default SQL injection sink for the `JSContext` interface.
+ */
+class JSContextDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
+  JSContextDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
       ce.getStaticTarget()
           .(MethodDecl)
@@ -64,10 +83,61 @@ class JSContext extends Sink {
   }
 }
 
-class JSEvaluateScript extends Sink {
-  JSEvaluateScript() {
+/**
+ * A default SQL injection sink for the `JSEvaluateScript` function.
+ */
+class JSEvaluateScriptDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
+  JSEvaluateScriptDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
       ce.getStaticTarget().(FreeFunctionDecl).hasName("JSEvaluateScript(_:_:_:_:_:_:)")
     ).getArgument(1).getExpr() = this.asExpr()
+  }
+}
+
+/**
+ * A default SQL injection sanitrizer.
+ */
+class DefaultUnsafeJsEvalAdditionalTaintStep extends UnsafeJsEvalAdditionalTaintStep {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    exists(Argument arg |
+      arg =
+        any(CallExpr ce |
+          ce.getStaticTarget().(MethodDecl).hasQualifiedName("String", "init(decoding:as:)")
+        ).getArgument(0)
+      or
+      arg =
+        any(CallExpr ce |
+          ce.getStaticTarget()
+              .(FreeFunctionDecl)
+              .hasName([
+                  "JSStringCreateWithUTF8CString(_:)", "JSStringCreateWithCharacters(_:_:)",
+                  "JSStringRetain(_:)"
+                ])
+        ).getArgument(0)
+    |
+      nodeFrom.asExpr() = arg.getExpr() and
+      nodeTo.asExpr() = arg.getApplyExpr()
+    )
+    or
+    exists(CallExpr ce, Expr self, AbstractClosureExpr closure |
+      ce.getStaticTarget()
+          .getName()
+          .matches(["withContiguousStorageIfAvailable(%)", "withUnsafeBufferPointer(%)"]) and
+      self = ce.getQualifier() and
+      ce.getArgument(0).getExpr() = closure
+    |
+      nodeFrom.asExpr() = self and
+      nodeTo.(DataFlow::ParameterNode).getParameter() = closure.getParam(0)
+    )
+    or
+    exists(MemberRefExpr e, Expr self, VarDecl member |
+      self.getType().getName().matches(["Unsafe%Buffer%", "Unsafe%Pointer%"]) and
+      member.getName() = "baseAddress"
+    |
+      e.getBase() = self and
+      e.getMember() = member and
+      nodeFrom.asExpr() = self and
+      nodeTo.asExpr() = e
+    )
   }
 }

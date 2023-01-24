@@ -19,7 +19,17 @@ class UnsafeWebViewFetchConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node node) {
-    node instanceof Sink or
-    node.asExpr() = any(Sink s).getBaseUrl()
+    exists(UnsafeWebViewFetchSink sink |
+      node = sink or
+      node.asExpr() = sink.getBaseUrl()
+    )
+  }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer instanceof UnsafeWebViewFetchSanitizer
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(UnsafeWebViewFetchAdditionalTaintStep s).step(nodeFrom, nodeTo)
   }
 }

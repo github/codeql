@@ -8,15 +8,27 @@ import swift
 import codeql.swift.dataflow.DataFlow
 
 /**
- * A `DataFlow::Node` that is a sink for a SQL string to be executed.
+ * A dataflow sink for SQL injection vulnerabilities.
  */
-abstract class SqlSink extends DataFlow::Node { }
+abstract class SqlInjectionSink extends DataFlow::Node { }
 
 /**
- * A sink for the sqlite3 C API.
+ * A sanitizer for SQL injection vulnerabilities.
  */
-class CApiSqlSink extends SqlSink {
-  CApiSqlSink() {
+abstract class SqlInjectionSanitizer extends DataFlow::Node { }
+
+/**
+ * A unit class for adding additional taint steps.
+ */
+class SqlInjectionAdditionalTaintStep extends Unit {
+  abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
+}
+
+/**
+ * A default SQL injection sink for the sqlite3 C API.
+ */
+class CApiDefaultSqlInjectionSink extends SqlInjectionSink {
+  CApiDefaultSqlInjectionSink() {
     // `sqlite3_exec` and variants of `sqlite3_prepare`.
     exists(CallExpr call |
       call.getStaticTarget()
@@ -33,10 +45,10 @@ class CApiSqlSink extends SqlSink {
 }
 
 /**
- * A sink for the SQLite.swift library.
+ * A default SQL injection sink for the `SQLite.swift` library.
  */
-class SQLiteSwiftSqlSink extends SqlSink {
-  SQLiteSwiftSqlSink() {
+class SQLiteSwiftDefaultSqlInjectionSink extends SqlInjectionSink {
+  SQLiteSwiftDefaultSqlInjectionSink() {
     // Variants of `Connection.execute`, `connection.prepare` and `connection.scalar`.
     exists(CallExpr call |
       call.getStaticTarget()
@@ -54,9 +66,11 @@ class SQLiteSwiftSqlSink extends SqlSink {
   }
 }
 
-/** A sink for the GRDB library. */
-class GrdbSqlSink extends SqlSink {
-  GrdbSqlSink() {
+/**
+ * A default SQL injection sink for the GRDB library.
+ */
+class GrdbDefaultSqlInjectionSink extends SqlInjectionSink {
+  GrdbDefaultSqlInjectionSink() {
     exists(CallExpr call, MethodDecl method |
       call.getStaticTarget() = method and
       call.getArgument(0).getExpr() = this.asExpr()

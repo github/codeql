@@ -19,16 +19,20 @@ import DataFlow::PathGraph
 
 from
   UnsafeWebViewFetchConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode,
-  Sink sink, string message
+  UnsafeWebViewFetchSink sink, string message
 where
   config.hasFlowPath(sourceNode, sinkNode) and
   sink = sinkNode.getNode() and
   (
+    // no base URL
+    not exists(sink.getBaseUrl()) and
+    message = "Tainted data is used in a WebView fetch."
+    or
     // base URL is nil
     sink.getBaseUrl() instanceof NilLiteralExpr and
     message = "Tainted data is used in a WebView fetch without restricting the base URL."
     or
-    // base URL is tainted
+    // base URL is also tainted
     config.hasFlowToExpr(sink.getBaseUrl()) and
     message = "Tainted data is used in a WebView fetch with a tainted base URL."
   )

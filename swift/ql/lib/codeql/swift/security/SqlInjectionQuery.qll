@@ -18,5 +18,13 @@ class SqlInjectionConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
 
-  override predicate isSink(DataFlow::Node node) { node instanceof SqlSink }
+  override predicate isSink(DataFlow::Node node) { node instanceof SqlInjectionSink }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer instanceof SqlInjectionSanitizer
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(SqlInjectionAdditionalTaintStep s).step(nodeFrom, nodeTo)
+  }
 }
