@@ -106,7 +106,8 @@ void replaceMergedModulesImplementation(const SwiftExtractorState& state,
            getTrapPath(state, mergedPartTarget, TrapType::linkage),
            fs::copy_options::overwrite_existing, ec);
   if (ec) {
-    std::cerr << "unable to replace merged module trap implementation id (" << ec.message() << ")";
+    std::cerr << "unable to replace trap implementation id for merged module '" << name << "' ("
+              << ec.message() << ")";
   }
 }
 
