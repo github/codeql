@@ -147,30 +147,6 @@ edges
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
-| argvLocal.c:182:13:182:16 | argv | argvLocal.c:183:10:183:11 | (const char *)... |
-| argvLocal.c:182:13:182:16 | argv | argvLocal.c:183:10:183:11 | (const char *)... |
-| argvLocal.c:182:13:182:16 | argv | argvLocal.c:183:10:183:11 | bp |
-| argvLocal.c:182:13:182:16 | argv | argvLocal.c:183:10:183:11 | bp |
-| argvLocal.c:182:13:182:16 | argv | argvLocal.c:183:10:183:11 | bp indirection |
-| argvLocal.c:182:13:182:16 | argv | argvLocal.c:183:10:183:11 | bp indirection |
-| argvLocal.c:182:13:182:16 | argv | argvLocal.c:184:16:184:17 | bp |
-| argvLocal.c:182:13:182:16 | argv | argvLocal.c:184:16:184:17 | bp |
-| argvLocal.c:182:13:182:16 | argv | argvLocal.c:184:16:184:17 | bp |
-| argvLocal.c:182:13:182:16 | argv | argvLocal.c:184:16:184:17 | bp |
-| argvLocal.c:182:13:182:16 | argv | argvLocal.c:184:16:184:17 | bp indirection |
-| argvLocal.c:182:13:182:16 | argv | argvLocal.c:184:16:184:17 | bp indirection |
-| argvLocal.c:197:13:197:16 | argv | argvLocal.c:198:10:198:11 | (const char *)... |
-| argvLocal.c:197:13:197:16 | argv | argvLocal.c:198:10:198:11 | (const char *)... |
-| argvLocal.c:197:13:197:16 | argv | argvLocal.c:198:10:198:11 | bp |
-| argvLocal.c:197:13:197:16 | argv | argvLocal.c:198:10:198:11 | bp |
-| argvLocal.c:197:13:197:16 | argv | argvLocal.c:198:10:198:11 | bp indirection |
-| argvLocal.c:197:13:197:16 | argv | argvLocal.c:198:10:198:11 | bp indirection |
-| argvLocal.c:197:13:197:16 | argv | argvLocal.c:199:16:199:17 | bp |
-| argvLocal.c:197:13:197:16 | argv | argvLocal.c:199:16:199:17 | bp |
-| argvLocal.c:197:13:197:16 | argv | argvLocal.c:199:16:199:17 | bp |
-| argvLocal.c:197:13:197:16 | argv | argvLocal.c:199:16:199:17 | bp |
-| argvLocal.c:197:13:197:16 | argv | argvLocal.c:199:16:199:17 | bp indirection |
-| argvLocal.c:197:13:197:16 | argv | argvLocal.c:199:16:199:17 | bp indirection |
 subpaths
 nodes
 | argvLocal.c:95:9:95:12 | argv | semmle.label | argv |
@@ -263,22 +239,6 @@ nodes
 | argvLocal.c:170:15:170:26 | i10 | semmle.label | i10 |
 | argvLocal.c:170:24:170:26 | i10 | semmle.label | i10 |
 | argvLocal.c:170:24:170:26 | i10 | semmle.label | i10 |
-| argvLocal.c:182:13:182:16 | argv | semmle.label | argv |
-| argvLocal.c:182:13:182:16 | argv | semmle.label | argv |
-| argvLocal.c:183:10:183:11 | (const char *)... | semmle.label | (const char *)... |
-| argvLocal.c:183:10:183:11 | bp | semmle.label | bp |
-| argvLocal.c:183:10:183:11 | bp indirection | semmle.label | bp indirection |
-| argvLocal.c:184:16:184:17 | bp | semmle.label | bp |
-| argvLocal.c:184:16:184:17 | bp | semmle.label | bp |
-| argvLocal.c:184:16:184:17 | bp indirection | semmle.label | bp indirection |
-| argvLocal.c:197:13:197:16 | argv | semmle.label | argv |
-| argvLocal.c:197:13:197:16 | argv | semmle.label | argv |
-| argvLocal.c:198:10:198:11 | (const char *)... | semmle.label | (const char *)... |
-| argvLocal.c:198:10:198:11 | bp | semmle.label | bp |
-| argvLocal.c:198:10:198:11 | bp indirection | semmle.label | bp indirection |
-| argvLocal.c:199:16:199:17 | bp | semmle.label | bp |
-| argvLocal.c:199:16:199:17 | bp | semmle.label | bp |
-| argvLocal.c:199:16:199:17 | bp indirection | semmle.label | bp indirection |
 #select
 | argvLocal.c:95:9:95:15 | access to array | argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:95:9:95:12 | argv | argv |
 | argvLocal.c:96:15:96:21 | access to array | argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:96:15:96:18 | argv | argv |
@@ -306,7 +266,3 @@ nodes
 | argvLocal.c:151:15:151:16 | i8 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:149:11:149:14 | argv | argv |
 | argvLocal.c:169:18:169:20 | i10 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:18:169:20 | i10 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:168:18:168:21 | argv | argv |
 | argvLocal.c:170:24:170:26 | i10 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:168:18:168:21 | argv | argv |
-| argvLocal.c:183:10:183:11 | bp | argvLocal.c:182:13:182:16 | argv | argvLocal.c:183:10:183:11 | bp | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:182:13:182:16 | argv | argv |
-| argvLocal.c:184:16:184:17 | bp | argvLocal.c:182:13:182:16 | argv | argvLocal.c:184:16:184:17 | bp | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:182:13:182:16 | argv | argv |
-| argvLocal.c:198:10:198:11 | bp | argvLocal.c:197:13:197:16 | argv | argvLocal.c:198:10:198:11 | bp | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:197:13:197:16 | argv | argv |
-| argvLocal.c:199:16:199:17 | bp | argvLocal.c:197:13:197:16 | argv | argvLocal.c:199:16:199:17 | bp | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:197:13:197:16 | argv | argv |

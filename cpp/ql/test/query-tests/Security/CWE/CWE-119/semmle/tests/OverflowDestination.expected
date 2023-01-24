@@ -24,6 +24,8 @@ edges
 | overflowdestination.cpp:52:9:52:12 | memcpy output argument | overflowdestination.cpp:54:9:54:12 | memcpy output argument |
 | overflowdestination.cpp:53:9:53:12 | memcpy output argument | overflowdestination.cpp:54:9:54:12 | memcpy output argument |
 | overflowdestination.cpp:53:9:53:12 | memcpy output argument | overflowdestination.cpp:54:9:54:12 | memcpy output argument |
+| overflowdestination.cpp:54:9:54:12 | memcpy output argument | overflowdestination.cpp:54:9:54:12 | memcpy output argument |
+| overflowdestination.cpp:54:9:54:12 | memcpy output argument | overflowdestination.cpp:54:9:54:12 | memcpy output argument |
 | overflowdestination.cpp:57:40:57:43 | dest | overflowdestination.cpp:65:9:65:13 | memcpy output argument |
 | overflowdestination.cpp:57:40:57:43 | dest indirection | overflowdestination.cpp:65:9:65:13 | memcpy output argument |
 | overflowdestination.cpp:57:52:57:54 | src | overflowdestination.cpp:63:9:63:13 | memcpy output argument |
