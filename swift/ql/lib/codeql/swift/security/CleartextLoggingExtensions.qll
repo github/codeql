@@ -25,6 +25,9 @@ class CleartextLoggingAdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
 }
 
+/**
+ * A sink defined in a CSV model.
+ */
 private class DefaultCleartextLoggingSink extends CleartextLoggingSink {
   DefaultCleartextLoggingSink() { sinkNode(this, "logging") }
 }
