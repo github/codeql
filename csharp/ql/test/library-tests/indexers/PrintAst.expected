@@ -206,7 +206,7 @@ indexers.cs:
 #   76|           0: [MethodCall] call to method WriteLine
 #   76|             -1: [TypeAccess] access to type Console
 #   76|               0: [TypeMention] Console
-#   76|             0: [StringLiteral] "Found {0} primes between 1 and {1}"
+#   76|             0: [StringLiteralUtf16] "Found {0} primes between 1 and {1}"
 #   76|             1: [CastExpr] (...) ...
 #   76|               1: [LocalVariableAccess] access to local variable count
 #   76|             2: [CastExpr] (...) ...

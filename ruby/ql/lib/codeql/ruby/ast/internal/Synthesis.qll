@@ -1317,46 +1317,62 @@ private module ImplicitHashValueSynthesis {
 
 /**
  * ```rb
- * def foo(&)
- *   bar(&)
+ * def foo(*, **, &)
+ *   bar(*, **, &)
  * end
  * ```
  * desugars to,
  * ```rb
- * def foo(&__synth_0)
- *   bar(&__synth_0)
+ * def foo(*__synth_0, **__synth_1, &__synth_2)
+ *   bar(*__synth_0, **__synth_1, &__synth_2)
  * end
  * ```
  */
-private module AnonymousBlockParameterSynth {
-  private BlockParameter anonymousBlockParameter() {
+private module AnonymousParameterSynth {
+  private class AnonymousParameter = TBlockParameter or THashSplatParameter or TSplatParameter;
+
+  private class AnonymousArgument = TBlockArgument or THashSplatExpr or TSplatExpr;
+
+  private AnonymousParameter anonymousParameter() {
     exists(Ruby::BlockParameter p | not exists(p.getName()) and toGenerated(result) = p)
+    or
+    exists(Ruby::SplatParameter p | not exists(p.getName()) and toGenerated(result) = p)
+    or
+    exists(Ruby::HashSplatParameter p | not exists(p.getName()) and toGenerated(result) = p)
   }
 
-  private BlockArgument anonymousBlockArgument() {
+  private AnonymousArgument anonymousArgument() {
     exists(Ruby::BlockArgument p | not exists(p.getChild()) and toGenerated(result) = p)
+    or
+    exists(Ruby::SplatArgument p | not exists(p.getChild()) and toGenerated(result) = p)
+    or
+    exists(Ruby::HashSplatArgument p | not exists(p.getChild()) and toGenerated(result) = p)
   }
 
-  private class AnonymousBlockParameterSynthesis extends Synthesis {
+  private class AnonymousParameterSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       i = 0 and
-      parent = anonymousBlockParameter() and
+      parent = anonymousParameter() and
       child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(parent, 0)))
     }
 
-    final override predicate localVariable(AstNode n, int i) {
-      n = anonymousBlockParameter() and i = 0
-    }
+    final override predicate localVariable(AstNode n, int i) { n = anonymousParameter() and i = 0 }
   }
 
-  private class AnonymousBlockArgumentSynthesis extends Synthesis {
+  private class AnonymousArgumentSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       i = 0 and
-      parent = anonymousBlockArgument() and
-      exists(BlockParameter param |
-        param = anonymousBlockParameter() and
+      parent = anonymousArgument() and
+      exists(AnonymousParameter param |
+        param = anonymousParameter() and
         scopeOf(toGenerated(parent)).getEnclosingMethod() = scopeOf(toGenerated(param)) and
         child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+      |
+        param instanceof TBlockParameter and parent instanceof TBlockArgument
+        or
+        param instanceof TSplatParameter and parent instanceof TSplatExpr
+        or
+        param instanceof THashSplatParameter and parent instanceof THashSplatExpr
       )
     }
   }

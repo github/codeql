@@ -84,3 +84,13 @@ def anonymous_block_parameter(array, &)
 end
 
 run_block { |x; y, z | puts x }
+
+# Anonymous splat parameter
+def anonymous_splat_parameter(array, *)
+  array.concat(*)
+end
+
+# Anonymous hash splat parameter
+def anonymous_hash_splat_parameter(hash, **)
+  hash.merge(**)
+end

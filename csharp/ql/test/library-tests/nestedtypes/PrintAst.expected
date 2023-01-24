@@ -14,7 +14,7 @@ nestedtypes.cs:
 #   19|           0: [MethodCall] call to method WriteLine
 #   19|             -1: [TypeAccess] access to type Console
 #   19|               0: [TypeMention] Console
-#   19|             0: [StringLiteral] "Base.F"
+#   19|             0: [StringLiteralUtf16] "Base.F"
 #   22|     9: [Class] C
 #   26|   2: [Class] Derived
 #-----|     3: (Base types)
@@ -76,7 +76,7 @@ nestedtypes.cs:
 #   65|                 0: [TypeMention] Outer<T>
 #   65|                   1: [TypeMention] T
 #   65|             0: [ParameterAccess] access to parameter t
-#   65|             1: [StringLiteral] "abc"
+#   65|             1: [StringLiteralUtf16] "abc"
 #   68|         1: [ExprStmt] ...;
 #   68|           0: [MethodCall] call to method F
 #   68|             -1: [TypeAccess] access to type Inner<String>
@@ -86,7 +86,7 @@ nestedtypes.cs:
 #   68|                 0: [TypeMention] Outer<int>
 #   68|                   1: [TypeMention] int
 #   68|             0: [IntLiteral] 3
-#   68|             1: [StringLiteral] "abc"
+#   68|             1: [StringLiteralUtf16] "abc"
 #   69|         2: [LocalVariableDeclStmt] ... ...;
 #   69|           0: [LocalVariableDeclAndInitExpr] Type type = ...
 #   69|             -1: [TypeMention] Type

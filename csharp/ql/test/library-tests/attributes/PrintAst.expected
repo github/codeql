@@ -1,40 +1,40 @@
 attributes.cs:
 #   10| [AssemblyAttribute] [assembly: AssemblyTitle(...)]
 #   10|   -1: [TypeMention] AssemblyTitleAttribute
-#   10|   0: [StringLiteral] "C# attributes test"
+#   10|   0: [StringLiteralUtf16] "C# attributes test"
 #   11| [AssemblyAttribute] [assembly: AssemblyDescription(...)]
 #   11|   -1: [TypeMention] AssemblyDescriptionAttribute
-#   11|   0: [StringLiteral] "A test of C# attributes"
+#   11|   0: [StringLiteralUtf16] "A test of C# attributes"
 #   12| [AssemblyAttribute] [assembly: AssemblyConfiguration(...)]
 #   12|   -1: [TypeMention] AssemblyConfigurationAttribute
-#   12|   0: [StringLiteral] ""
+#   12|   0: [StringLiteralUtf16] ""
 #   13| [AssemblyAttribute] [assembly: AssemblyCompany(...)]
 #   13|   -1: [TypeMention] AssemblyCompanyAttribute
-#   13|   0: [StringLiteral] "Semmle Plc"
+#   13|   0: [StringLiteralUtf16] "Semmle Plc"
 #   14| [AssemblyAttribute] [assembly: AssemblyProduct(...)]
 #   14|   -1: [TypeMention] AssemblyProductAttribute
-#   14|   0: [StringLiteral] "Odasa"
+#   14|   0: [StringLiteralUtf16] "Odasa"
 #   15| [AssemblyAttribute] [assembly: AssemblyCopyright(...)]
 #   15|   -1: [TypeMention] AssemblyCopyrightAttribute
-#   15|   0: [StringLiteral] "Copyright © Semmle 2018"
+#   15|   0: [StringLiteralUtf16] "Copyright © Semmle 2018"
 #   16| [AssemblyAttribute] [assembly: AssemblyTrademark(...)]
 #   16|   -1: [TypeMention] AssemblyTrademarkAttribute
-#   16|   0: [StringLiteral] ""
+#   16|   0: [StringLiteralUtf16] ""
 #   17| [AssemblyAttribute] [assembly: AssemblyCulture(...)]
 #   17|   -1: [TypeMention] AssemblyCultureAttribute
-#   17|   0: [StringLiteral] ""
+#   17|   0: [StringLiteralUtf16] ""
 #   22| [AssemblyAttribute] [assembly: ComVisible(...)]
 #   22|   -1: [TypeMention] ComVisibleAttribute
 #   22|   0: [BoolLiteral] false
 #   25| [AssemblyAttribute] [assembly: Guid(...)]
 #   25|   -1: [TypeMention] GuidAttribute
-#   25|   0: [StringLiteral] "2f70fdd6-14aa-4850-b053-d547adb1f476"
+#   25|   0: [StringLiteralUtf16] "2f70fdd6-14aa-4850-b053-d547adb1f476"
 #   37| [AssemblyAttribute] [assembly: AssemblyVersion(...)]
 #   37|   -1: [TypeMention] AssemblyVersionAttribute
-#   37|   0: [StringLiteral] "1.0.0.0"
+#   37|   0: [StringLiteralUtf16] "1.0.0.0"
 #   38| [AssemblyAttribute] [assembly: AssemblyFileVersion(...)]
 #   38|   -1: [TypeMention] AssemblyFileVersionAttribute
-#   38|   0: [StringLiteral] "1.0.0.0"
+#   38|   0: [StringLiteralUtf16] "1.0.0.0"
 #   40| [AssemblyAttribute] [assembly: Args(...)]
 #   40|   -1: [TypeMention] ArgsAttribute
 #   40|   0: [IntLiteral] 0
@@ -107,7 +107,7 @@ attributes.cs:
 #-----|     0: (Attributes)
 #   46|       1: [DefaultAttribute] [Conditional(...)]
 #   46|         -1: [TypeMention] ConditionalAttribute
-#   46|         0: [StringLiteral] "DEBUG2"
+#   46|         0: [StringLiteralUtf16] "DEBUG2"
 #   47|     4: [BlockStmt] {...}
 #   50| [Class] Bar
 #   52|   5: [Method] inc
@@ -136,7 +136,7 @@ attributes.cs:
 #   57|       1: [DefaultAttribute] [My(...)]
 #   57|         -1: [TypeMention] MyAttribute
 #   57|         0: [BoolLiteral] true
-#   57|         1: [StringLiteral] ""
+#   57|         1: [StringLiteralUtf16] ""
 #   57|         2: [IntLiteral] 0
 #   58|       2: [DefaultAttribute] [My2(...)]
 #   58|         -1: [TypeMention] My2Attribute
