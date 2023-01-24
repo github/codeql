@@ -1005,7 +1005,7 @@ case @expr.kind of
 |  7 = @ulong_literal_expr
 |  8 = @float_literal_expr
 |  9 = @double_literal_expr
-| 10 = @utf16_string_literal_expr
+| 10 = @string_literal_expr
 | 11 = @null_literal_expr
 /* primary & unary */
 | 12 = @this_access_expr
@@ -1139,7 +1139,6 @@ case @expr.kind of
 | 132 = @slice_pattern_expr
 | 133 = @urshift_expr
 | 134 = @assign_urshift_expr
-| 135 = @utf8_string_literal_expr
 /* Preprocessor */
 | 999 = @define_symbol_expr
 ;
@@ -1153,7 +1152,6 @@ case @expr.kind of
 
 @integer_literal_expr = @int_literal_expr | @long_literal_expr | @uint_literal_expr | @ulong_literal_expr;
 @real_literal_expr = @float_literal_expr | @double_literal_expr | @decimal_literal_expr;
-@string_literal_expr = @utf16_string_literal_expr | @utf8_string_literal_expr;
 @literal_expr = @bool_literal_expr | @char_literal_expr | @integer_literal_expr | @real_literal_expr
               | @string_literal_expr | @null_literal_expr;
 
