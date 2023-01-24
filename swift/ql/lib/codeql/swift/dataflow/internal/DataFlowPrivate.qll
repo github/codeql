@@ -148,10 +148,28 @@ private module Cached {
     // flow through `!`
     nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
     or
-    // flow through `?`
+    // flow through `?` and `?.`
     nodeFrom.asExpr() = nodeTo.asExpr().(BindOptionalExpr).getSubExpr()
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(OptionalEvaluationExpr).getSubExpr()
+    or
+    // flow through nil-coalescing operator `??`
+    exists(BinaryExpr nco |
+      nco.getOperator().(FreeFunctionDecl).getName() = "??(_:_:)" and
+      nodeTo.asExpr() = nco
+    |
+      // value argument
+      nodeFrom.asExpr() = nco.getAnOperand()
+      or
+      // unpack closure (the second argument is an `AutoClosureExpr` argument)
+      nodeFrom.asExpr() = nco.getAnOperand().(AutoClosureExpr).getExpr()
+    )
+    or
+    // flow through ternary operator `? :`
+    exists(IfExpr ie |
+      nodeTo.asExpr() = ie and
+      nodeFrom.asExpr() = ie.getBranch(_)
+    )
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
@@ -668,3 +686,10 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) { none() }
+
+/** An approximated `Content`. */
+class ContentApprox = Unit;
+
+/** Gets an approximated value for content `c`. */
+pragma[inline]
+ContentApprox getContentApprox(Content c) { any() }

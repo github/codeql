@@ -86,7 +86,7 @@ bindingset[unsafeExpression]
 predicate isMybatisCollectionTypeSqlInjection(
   DataFlow::Node node, MethodAccess ma, string unsafeExpression
 ) {
-  not unsafeExpression.regexpMatch("\\$\\{" + getAMybatisConfigurationVariableKey() + "\\}") and
+  not unsafeExpression.regexpMatch("\\$\\{\\s*" + getAMybatisConfigurationVariableKey() + "\\s*\\}") and
   // The parameter type of the MyBatis method parameter is Map or List or Array.
   // SQL injection vulnerability caused by improper use of this parameter.
   // e.g.
@@ -120,7 +120,7 @@ bindingset[unsafeExpression]
 predicate isMybatisXmlOrAnnotationSqlInjection(
   DataFlow::Node node, MethodAccess ma, string unsafeExpression
 ) {
-  not unsafeExpression.regexpMatch("\\$\\{" + getAMybatisConfigurationVariableKey() + "\\}") and
+  not unsafeExpression.regexpMatch("\\$\\{\\s*" + getAMybatisConfigurationVariableKey() + "\\s*\\}") and
   (
     // The method parameters use `@Param` annotation. Due to improper use of this parameter, SQL injection vulnerabilities are caused.
     // e.g.
@@ -128,16 +128,23 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
     // ```java
     //    @Select(select id,name from test order by ${orderby,jdbcType=VARCHAR})
     //    void test(@Param("orderby") String name);
+    //
+    //    @Select(select id,name from test where name = ${ user . name })
+    //    void test(@Param("user") User u);
     // ```
     exists(Annotation annotation |
       unsafeExpression
-          .matches("${" + annotation.getValue("value").(CompileTimeConstantExpr).getStringValue() +
-              "%}") and
+          .regexpMatch("\\$\\{\\s*" +
+              annotation.getValue("value").(CompileTimeConstantExpr).getStringValue() +
+              "\\b[^}]*\\}") and
       annotation.getType() instanceof TypeParam and
-      ma.getAnArgument() = node.asExpr()
+      ma.getAnArgument() = node.asExpr() and
+      annotation.getTarget() =
+        ma.getMethod().getParameter(node.asExpr().(Argument).getParameterPos())
     )
     or
     // MyBatis default parameter sql injection vulnerabilities.the default parameter form of the method is arg[0...n] or param[1...n].
+    // When compiled with '-parameters' compiler option, the parameter can be reflected in SQL statement as named in method signature.
     // e.g.
     //
     // ```java
@@ -147,9 +154,12 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
     exists(int i |
       not ma.getMethod().getParameter(i).getAnAnnotation().getType() instanceof TypeParam and
       (
-        unsafeExpression.matches("${param" + (i + 1) + "%}")
+        unsafeExpression.regexpMatch("\\$\\{\\s*param" + (i + 1) + "\\b[^}]*\\}")
         or
-        unsafeExpression.matches("${arg" + i + "%}")
+        unsafeExpression.regexpMatch("\\$\\{\\s*arg" + i + "\\b[^}]*\\}")
+        or
+        unsafeExpression
+            .regexpMatch("\\$\\{\\s*" + ma.getMethod().getParameter(i).getName() + "\\b[^}]*\\}")
       ) and
       ma.getArgument(i) = node.asExpr()
     )
@@ -164,7 +174,7 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
     exists(int i, RefType t |
       not ma.getMethod().getParameter(i).getAnAnnotation().getType() instanceof TypeParam and
       ma.getMethod().getParameterType(i).getName() = t.getName() and
-      unsafeExpression.matches("${" + t.getAField().getName() + "%}") and
+      unsafeExpression.regexpMatch("\\$\\{\\s*" + t.getAField().getName() + "\\b[^}]*\\}") and
       ma.getArgument(i) = node.asExpr()
     )
     or

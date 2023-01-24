@@ -1,8 +1,11 @@
 edges
-| testSend.swift:5:5:5:29 | [summary param] 0 in init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(_:) :  |
-| testSend.swift:33:14:33:32 | call to init(_:) :  | testSend.swift:37:19:37:19 | data2 |
-| testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:5:5:5:29 | [summary param] 0 in init(_:) :  |
-| testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:33:14:33:32 | call to init(_:) :  |
+| testAlamofire.swift:150:45:150:45 | password :  | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... |
+| testAlamofire.swift:152:51:152:51 | password :  | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... |
+| testAlamofire.swift:154:38:154:38 | email :  | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... |
+| testSend.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  |
+| testSend.swift:33:14:33:32 | call to Data.init(_:) :  | testSend.swift:37:19:37:19 | data2 |
+| testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  |
+| testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:33:14:33:32 | call to Data.init(_:) :  |
 | testSend.swift:41:10:41:18 | data :  | testSend.swift:41:45:41:45 | data :  |
 | testSend.swift:45:13:45:13 | password :  | testSend.swift:52:27:52:27 | str1 |
 | testSend.swift:46:13:46:13 | password :  | testSend.swift:53:27:53:27 | str2 |
@@ -12,10 +15,16 @@ edges
 | testURL.swift:13:54:13:54 | passwd :  | testURL.swift:13:22:13:54 | ... .+(_:_:) ... |
 | testURL.swift:16:55:16:55 | credit_card_no :  | testURL.swift:16:22:16:55 | ... .+(_:_:) ... |
 nodes
-| file://:0:0:0:0 | [summary] to write: return (return) in init(_:) :  | semmle.label | [summary] to write: return (return) in init(_:) :  |
-| testSend.swift:5:5:5:29 | [summary param] 0 in init(_:) :  | semmle.label | [summary param] 0 in init(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | semmle.label | [summary] to write: return (return) in Data.init(_:) :  |
+| testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testAlamofire.swift:150:45:150:45 | password :  | semmle.label | password :  |
+| testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testAlamofire.swift:152:51:152:51 | password :  | semmle.label | password :  |
+| testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testAlamofire.swift:154:38:154:38 | email :  | semmle.label | email :  |
+| testSend.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | semmle.label | [summary param] 0 in Data.init(_:) :  |
 | testSend.swift:29:19:29:19 | passwordPlain | semmle.label | passwordPlain |
-| testSend.swift:33:14:33:32 | call to init(_:) :  | semmle.label | call to init(_:) :  |
+| testSend.swift:33:14:33:32 | call to Data.init(_:) :  | semmle.label | call to Data.init(_:) :  |
 | testSend.swift:33:19:33:19 | passwordPlain :  | semmle.label | passwordPlain :  |
 | testSend.swift:37:19:37:19 | data2 | semmle.label | data2 |
 | testSend.swift:41:10:41:18 | data :  | semmle.label | data :  |
@@ -33,9 +42,12 @@ nodes
 | testURL.swift:16:55:16:55 | credit_card_no :  | semmle.label | credit_card_no :  |
 | testURL.swift:20:22:20:22 | passwd | semmle.label | passwd |
 subpaths
-| testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:5:5:5:29 | [summary param] 0 in init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(_:) :  | testSend.swift:33:14:33:32 | call to init(_:) :  |
+| testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | testSend.swift:33:14:33:32 | call to Data.init(_:) :  |
 | testSend.swift:47:17:47:17 | password :  | testSend.swift:41:10:41:18 | data :  | testSend.swift:41:45:41:45 | data :  | testSend.swift:47:13:47:25 | call to pad(_:) :  |
 #select
+| testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | testAlamofire.swift:150:45:150:45 | password :  | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:150:45:150:45 | password :  | password |
+| testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | testAlamofire.swift:152:51:152:51 | password :  | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:152:51:152:51 | password :  | password |
+| testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | testAlamofire.swift:154:38:154:38 | email :  | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:154:38:154:38 | email :  | email |
 | testSend.swift:29:19:29:19 | passwordPlain | testSend.swift:29:19:29:19 | passwordPlain | testSend.swift:29:19:29:19 | passwordPlain | This operation transmits 'passwordPlain', which may contain unencrypted sensitive data from $@. | testSend.swift:29:19:29:19 | passwordPlain | passwordPlain |
 | testSend.swift:37:19:37:19 | data2 | testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:37:19:37:19 | data2 | This operation transmits 'data2', which may contain unencrypted sensitive data from $@. | testSend.swift:33:19:33:19 | passwordPlain :  | passwordPlain |
 | testSend.swift:52:27:52:27 | str1 | testSend.swift:45:13:45:13 | password :  | testSend.swift:52:27:52:27 | str1 | This operation transmits 'str1', which may contain unencrypted sensitive data from $@. | testSend.swift:45:13:45:13 | password :  | password |

@@ -63,13 +63,87 @@ class SQLiteSwiftSqlSink extends SqlSink {
   }
 }
 
+/** A sink for the GRDB library. */
+class GrdbSqlSink extends SqlSink {
+  GrdbSqlSink() {
+    exists(CallExpr call, MethodDecl method |
+      call.getStaticTarget() = method and
+      call.getArgument(0).getExpr() = this.asExpr()
+    |
+      method
+          .hasQualifiedName("Database",
+            [
+              "allStatements(sql:arguments:)", "cachedStatement(sql:)",
+              "internalCachedStatement(sql:)", "execute(sql:arguments:)", "makeStatement(sql:)",
+              "makeStatement(sql:prepFlags:)"
+            ])
+      or
+      method
+          .hasQualifiedName("SQLRequest",
+            [
+              "init(stringLiteral:)", "init(unicodeScalarLiteral:)",
+              "init(extendedGraphemeClusterLiteral:)", "init(stringInterpolation:)",
+              "init(sql:arguments:adapter:cached:)"
+            ])
+      or
+      method
+          .hasQualifiedName("SQL",
+            [
+              "init(stringLiteral:)", "init(unicodeScalarLiteral:)",
+              "init(extendedGraphemeClusterLiteral:)", "init(stringInterpolation:)",
+              "init(sql:arguments:)", "append(sql:arguments:)"
+            ])
+      or
+      method
+          .hasQualifiedName("TableDefinition", ["column(sql:)", "check(sql:)", "constraint(sql:)"])
+      or
+      method.hasQualifiedName("TableAlteration", "addColumn(sql:)")
+      or
+      method
+          .hasQualifiedName("ColumnDefinition",
+            ["check(sql:)", "defaults(sql:)", "generatedAs(sql:_:)"])
+      or
+      method
+          .hasQualifiedName("TableRecord",
+            [
+              "select(sql:arguments:)", "select(sql:arguments:as:)", "filter(sql:arguments:)",
+              "order(sql:arguments:)"
+            ])
+      or
+      method.hasQualifiedName("StatementCache", "statement(_:)")
+    )
+    or
+    exists(CallExpr call, MethodDecl method |
+      call.getStaticTarget() = method and
+      call.getArgument(1).getExpr() = this.asExpr()
+    |
+      method
+          .hasQualifiedName(["Row", "DatabaseValueConvertible"],
+            [
+              "fetchCursor(_:sql:arguments:adapter:)", "fetchAll(_:sql:arguments:adapter:)",
+              "fetchSet(_:sql:arguments:adapter:)", "fetchOne(_:sql:arguments:adapter:)"
+            ])
+      or
+      method.hasQualifiedName("SQLStatementCursor", "init(database:sql:arguments:prepFlags:)")
+    )
+    or
+    exists(CallExpr call, MethodDecl method |
+      call.getStaticTarget() = method and
+      call.getArgument(3).getExpr() = this.asExpr()
+    |
+      method
+          .hasQualifiedName("CommonTableExpression", "init(recursive:named:columns:sql:arguments:)")
+    )
+  }
+}
+
 /**
  * A taint configuration for tainted data that reaches a SQL sink.
  */
 class SqlInjectionConfig extends TaintTracking::Configuration {
   SqlInjectionConfig() { this = "SqlInjectionConfig" }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
 
   override predicate isSink(DataFlow::Node node) { node instanceof SqlSink }
 }

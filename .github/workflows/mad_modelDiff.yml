@@ -11,7 +11,7 @@ on:
     branches:
       - main
     paths:
-      - "java/ql/src/utils/model-generator/**/*.*"
+      - "java/ql/src/utils/modelgenerator/**/*.*"
       - ".github/workflows/mad_modelDiff.yml"
 
 permissions:
@@ -40,12 +40,12 @@ jobs:
       - name: Download database
         env:
           SLUG: ${{ matrix.slug }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -x
           mkdir lib-dbs
           SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
-          projectId=`curl -s https://lgtm.com/api/v1.0/projects/g/${SLUG} | jq .id`
-          curl -L "https://lgtm.com/api/v1.0/snapshots/$projectId/java" -o "$SHORTNAME.zip"
+          gh api -H "Accept: application/zip" "/repos/${SLUG}/code-scanning/codeql/databases/java" > "$SHORTNAME.zip"
           unzip -q -d "${SHORTNAME}-db" "${SHORTNAME}.zip"
           mkdir "lib-dbs/$SHORTNAME/"
           mv "${SHORTNAME}-db/"$(ls -1 "${SHORTNAME}"-db)/* "lib-dbs/${SHORTNAME}/"
@@ -61,8 +61,8 @@ jobs:
             DATABASE=$2
             cd codeql-$QL_VARIANT
             SHORTNAME=`basename $DATABASE`
-            python java/ql/src/utils/model-generator/GenerateFlowModel.py --with-summaries --with-sinks $DATABASE $MODELS/${SHORTNAME}.qll
-            mv $MODELS/${SHORTNAME}.qll $MODELS/${SHORTNAME}Generated_${QL_VARIANT}.qll
+            python java/ql/src/utils/modelgenerator/GenerateFlowModel.py --with-summaries --with-sinks $DATABASE ${SHORTNAME}.temp.model.yml
+            mv java/ql/lib/ext/generated/${SHORTNAME}.temp.model.yml $MODELS/${SHORTNAME}Generated_${QL_VARIANT}.model.yml
             cd ..
           }
 
@@ -85,19 +85,21 @@ jobs:
           set -x
           MODELS=`pwd`/tmp-models
           ls -1 tmp-models/
-          for m in $MODELS/*_main.qll ; do
+          for m in $MODELS/*_main.model.yml ; do
             t="${m/main/"pr"}"
             basename=`basename $m`
-            name="diff_${basename/_main.qll/""}"
+            name="diff_${basename/_main.model.yml/""}"
             (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
           done
       - uses: actions/upload-artifact@v3
         with:
           name: models
-          path: tmp-models/*.qll
+          path: tmp-models/*.model.yml
           retention-days: 20
       - uses: actions/upload-artifact@v3
         with:
           name: diffs
           path: tmp-models/*.html
+          # An html file is only produced if the generated models differ.
+          if-no-files-found: ignore
           retention-days: 20

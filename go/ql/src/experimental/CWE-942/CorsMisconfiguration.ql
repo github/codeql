@@ -7,6 +7,7 @@
  * @problem.severity warning
  * @id go/cors-misconfiguration
  * @tags security
+ *       experimental
  *       external/cwe/cwe-942
  *       external/cwe/cwe-346
  */

@@ -1,3 +1,24 @@
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* Replacing "\r" or "\n" using the functions `strings.ReplaceAll`, `strings.Replace`, `strings.Replacer.Replace` and `strings.Replacer.WriteString` has been added as a sanitizer for the queries "Log entries created from user input".
+* The functions `strings.Replacer.Replace` and `strings.Replacer.WriteString` have been added as sanitizers for the query "Potentially unsafe quoting".
+
+## 0.4.0
+
+### Minor Analysis Improvements
+
+* The `AlertSuppression.ql` query has been updated to support the new `// codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy `// lgtm` and `// lgtm[query-id]` comments can now also be placed on the line before an alert.
+
+## 0.3.6
+
+No user-facing changes.
+
+## 0.3.5
+
+No user-facing changes.
+
 ## 0.3.4
 
 No user-facing changes.

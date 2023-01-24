@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If an XPath expression is built using string concatenation, and the components of the concatenation
+include user input, it makes it very easy for a user to create a malicious XPath expression.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If user input must be included in an XPath expression, either sanitize the data or use variable
+references to safely embed it without altering the structure of the expression.
+</p>
+</recommendation>
+
+<example>
+<p>
+In this example, the code accepts a user name specified by the user, and uses this
+unvalidated and unsanitized value in an XPath expression constructed using the <code>xpath</code>
+package. This is vulnerable to the user providing special characters or string sequences
+that change the meaning of the XPath expression to search for different values.
+</p>
+<sample src="examples/XpathInjectionBad.js" />
+
+<p>
+Instead, embed the user input using the variable replacement mechanism offered
+by <code>xpath</code>:
+</p>
+<sample src="examples/XpathInjectionGood.js" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/09-Testing_for_XPath_Injection">Testing for XPath Injection</a>.</li>
+<li>OWASP: <a href="https://www.owasp.org/index.php/XPATH_Injection">XPath Injection</a>.</li>
+<li>npm: <a href="https://www.npmjs.com/package/xpath">xpath</a>.</li>
+</references>
+</qhelp>

@@ -92,9 +92,7 @@ module UnsafeShellCommandConstruction {
     StringConcatEndingInCommandExecutionSink() {
       this = root.getALeaf() and
       root = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys) and
-      exists(string prev | prev = this.getPreviousLeaf().getStringValue() |
-        prev.regexpMatch(".* ('|\")?[0-9a-zA-Z/:_-]*")
-      )
+      exists(this.getPreviousLeaf().getStringValue()) // looks like a shell command construction that could be done safer, it has a known prefix
     }
 
     override string getSinkType() { result = "string concatenation" }
@@ -166,6 +164,11 @@ module UnsafeShellCommandConstruction {
         .asExpr()
         .(BooleanLiteral)
         .getValue() = "true"
+    or
+    exists(API::Node node |
+      node.asSink() = sys.getOptionsArg() and
+      node.getMember("shell").asSink().mayHaveBooleanValue(true)
+    )
   }
 
   /**

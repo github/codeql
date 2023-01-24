@@ -20,6 +20,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 case SyntaxKind.DefaultLiteralExpression:
                     return ExprKind.DEFAULT;
+                case SyntaxKind.Utf8StringLiteralExpression:
+                    return ExprKind.UTF8_STRING_LITERAL;
                 case SyntaxKind.NullLiteralExpression:
                     info.SetType(null);  // Don't use converted type.
                     return ExprKind.NULL_LITERAL;
@@ -63,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return ExprKind.FLOAT_LITERAL;
 
                 case SpecialType.System_String:
-                    return ExprKind.STRING_LITERAL;
+                    return ExprKind.UTF16_STRING_LITERAL;
 
                 case SpecialType.System_UInt16:
                 case SpecialType.System_UInt32:

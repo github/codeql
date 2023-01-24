@@ -54,8 +54,6 @@ The ``global`` statement in Python declares a variable with a global (module-lev
    where g.getScope() instanceof Module
    select g
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/686330052/>`__. None of the demo projects on LGTM.com has a global statement that matches this pattern.
-
 The line: ``g.getScope() instanceof Module`` ensures that the ``Scope`` of ``Global g`` is a ``Module``, rather than a class or function.
 
 Example finding 'if' statements with redundant branches
@@ -81,7 +79,7 @@ To find statements like this that could be simplified we can write a query.
      and forall(Stmt p | p = l.getAnItem() | p instanceof Pass)
    select i
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/672230053/>`__. Many projects have some ``if`` statements that match this pattern.
+Many codebases have some ``if`` statements that match this pattern.
 
 The line: ``(l = i.getBody() or l = i.getOrelse())`` restricts the ``StmtList l`` to branches of the ``if`` statement.
 
@@ -150,8 +148,6 @@ We can check for these using a query.
      and cmp.getOp(0) instanceof Is and cmp.getComparator(0) = literal
    select cmp
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/688180010/>`__. Two of the demo projects on LGTM.com use this pattern: *saltstack/salt* and *openstack/nova*.
-
 The clause ``cmp.getOp(0) instanceof Is and cmp.getComparator(0) = literal`` checks that the first comparison operator is "is" and that the first comparator is a literal.
 
 .. pull-quote::
@@ -180,7 +176,7 @@ If there are duplicate keys in a Python dictionary, then the second key will ove
      and k1 != k2 and same_key(k1, k2)
    select k1, "Duplicate key in dict literal"
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/663330305/>`__. When we ran this query on LGTM.com, the source code of the *saltstack/salt* project contained an example of duplicate dictionary keys. The results were also highlighted as alerts by the standard "Duplicate key in dict literal" query. Two of the other demo projects on LGTM.com refer to duplicate dictionary keys in library files. For more information, see `Duplicate key in dict literal <https://lgtm.com/rules/3980087>`__ on LGTM.com.
+When we ran this query on some test codebases, we found examples of duplicate dictionary keys. The results were also highlighted as alerts by the standard "Duplicate key in dict literal" query. For more information, see `Duplicate key in dict literal <https://codeql.github.com/codeql-query-help/python/py-duplicate-key-dict-literal/>`__.
 
 The supporting predicate ``same_key`` checks that the keys have the same identifier. Separating this part of the logic into a supporting predicate, instead of directly including it in the query, makes it easier to understand the query as a whole. The casts defined in the predicate restrict the expression to the type specified and allow predicates to be called on the type that is cast-to. For example:
 
@@ -221,8 +217,6 @@ This basic query can be improved by checking that the one line of code is a Java
        and ret = f.getStmt(0) and ret.getValue() = attr
        and attr.getObject() = self and self.getId() = "self"
    select f, "This function is a Java-style getter."
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/669220054/>`__. Of the demo projects on LGTM.com, only the *openstack/nova* project has examples of functions that appear to be Java-style getters.
 
 .. code-block:: ql
 

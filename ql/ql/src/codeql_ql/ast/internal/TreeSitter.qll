@@ -1,4 +1,4 @@
-/*
+/**
  * CodeQL library for QL
  * Automatically generated from the tree-sitter grammar; do not edit
  */

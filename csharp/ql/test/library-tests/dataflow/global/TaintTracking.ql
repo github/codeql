@@ -1,14 +1,10 @@
 import csharp
 import Common
 
-class TTConfig extends TaintTracking::Configuration {
-  Config c;
+class TTConfig extends TaintTracking::Configuration instanceof Config {
+  override predicate isSource(DataFlow::Node source) { Config.super.isSource(source) }
 
-  TTConfig() { this = c }
-
-  override predicate isSource(DataFlow::Node source) { c.isSource(source) }
-
-  override predicate isSink(DataFlow::Node sink) { c.isSink(sink) }
+  override predicate isSink(DataFlow::Node sink) { Config.super.isSink(sink) }
 }
 
 from TTConfig c, DataFlow::Node source, DataFlow::Node sink

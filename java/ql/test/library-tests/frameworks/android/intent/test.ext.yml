@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["generatedtest", "Test", False, "newBundleWithMapValue", "(Object)", "", "Argument[0]", "ReturnValue.MapValue", "value", "manual"]
+      - ["generatedtest", "Test", False, "newPersistableBundleWithMapValue", "(Object)", "", "Argument[0]", "ReturnValue.MapValue", "value", "manual"]
+      - ["generatedtest", "Test", False, "getMapValue", "(BaseBundle)", "", "Argument[0].MapValue", "ReturnValue", "value", "manual"]
+      - ["generatedtest", "Test", False, "newWithIntent_extras", "(Bundle)", "", "Argument[0]", "ReturnValue.SyntheticField[android.content.Intent.extras]", "value", "manual"]

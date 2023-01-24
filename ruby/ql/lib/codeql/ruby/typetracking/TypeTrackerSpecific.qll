@@ -79,10 +79,15 @@ predicate jumpStep = DataFlowPrivate::jumpStep/2;
 /** Holds if there is direct flow from `param` to a return. */
 pragma[nomagic]
 private predicate flowThrough(DataFlowPublic::ParameterNode param) {
-  exists(DataFlowPrivate::ReturningNode returnNode |
+  exists(DataFlowPrivate::ReturningNode returnNode, DataFlowDispatch::ReturnKind rk |
     DataFlowPrivate::LocalFlow::getParameterDefNode(param.getParameter())
         .(TypeTrackingNode)
-        .flowsTo(returnNode)
+        .flowsTo(returnNode) and
+    rk = returnNode.getKind()
+  |
+    rk instanceof DataFlowDispatch::NormalReturnKind
+    or
+    rk instanceof DataFlowDispatch::BreakReturnKind
   )
 }
 
@@ -184,7 +189,9 @@ private predicate viableParam(
   DataFlowDispatch::ParameterPosition ppos
 ) {
   exists(Cfg::CfgScope callable |
-    DataFlowDispatch::getTarget(call) = callable and
+    DataFlowDispatch::getTarget(call) = callable or
+    DataFlowDispatch::getInitializeTarget(call) = callable
+  |
     p.isSourceParameterOf(callable, ppos)
   )
 }
@@ -226,6 +233,9 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
   exists(ExprNodes::CallCfgNode call |
     nodeFrom instanceof DataFlowPrivate::ReturnNode and
     nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() = DataFlowDispatch::getTarget(call) and
+    // deliberately do not include `getInitializeTarget`, since calls to `new` should not
+    // get the return value from `initialize`. Any fields being set in the initializer
+    // will reach all reads via `callStep` and `localFieldStep`.
     nodeTo.asExpr().getNode() = call.getNode()
   )
   or
@@ -233,7 +243,8 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
   // we model it as a returning flow step, in order to avoid computing a potential
   // self-cross product of all calls to a function that returns one of its parameters
   // (only to later filter that flow out using `TypeTracker::append`).
-  nodeTo.(DataFlowPrivate::SynthReturnNode).getAnInput() = nodeFrom
+  nodeTo.(DataFlowPrivate::SynthReturnNode).getAnInput() = nodeFrom and
+  not nodeFrom instanceof DataFlowPrivate::InitializeReturnNode
 }
 
 /**

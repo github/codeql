@@ -1,8 +1,6 @@
 import cpp
 
-predicate isEmpty(Block block) {
-  block.isEmpty()
-}
+predicate isEmpty(Block block) { block.isEmpty() }
 
 from IfStmt ifstmt
 where isEmpty(ifstmt.getThen())

@@ -41,6 +41,7 @@ module Synth {
     TSubscriptDecl(Raw::SubscriptDecl id) { constructSubscriptDecl(id) } or
     TTopLevelCodeDecl(Raw::TopLevelCodeDecl id) { constructTopLevelCodeDecl(id) } or
     TTypeAliasDecl(Raw::TypeAliasDecl id) { constructTypeAliasDecl(id) } or
+    TAbiSafeConversionExpr(Raw::AbiSafeConversionExpr id) { constructAbiSafeConversionExpr(id) } or
     TAnyHashableErasureExpr(Raw::AnyHashableErasureExpr id) { constructAnyHashableErasureExpr(id) } or
     TAppliedPropertyWrapperExpr(Raw::AppliedPropertyWrapperExpr id) {
       constructAppliedPropertyWrapperExpr(id)
@@ -143,7 +144,7 @@ module Synth {
     } or
     TMemberRefExpr(Raw::MemberRefExpr id) { constructMemberRefExpr(id) } or
     TMetatypeConversionExpr(Raw::MetatypeConversionExpr id) { constructMetatypeConversionExpr(id) } or
-    TMethodRefExpr(Raw::DotSyntaxCallExpr id) { constructMethodRefExpr(id) } or
+    TMethodLookupExpr(Raw::SelfApplyExpr id) { constructMethodLookupExpr(id) } or
     TNilLiteralExpr(Raw::NilLiteralExpr id) { constructNilLiteralExpr(id) } or
     TObjCSelectorExpr(Raw::ObjCSelectorExpr id) { constructObjCSelectorExpr(id) } or
     TObjectLiteralExpr(Raw::ObjectLiteralExpr id) { constructObjectLiteralExpr(id) } or
@@ -386,12 +387,12 @@ module Synth {
     TAwaitExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr;
 
   class TImplicitConversionExpr =
-    TAnyHashableErasureExpr or TArchetypeToSuperExpr or TArrayToPointerExpr or
-        TBridgeFromObjCExpr or TBridgeToObjCExpr or TClassMetatypeToObjectExpr or
-        TCollectionUpcastConversionExpr or TConditionalBridgeFromObjCExpr or
-        TCovariantFunctionConversionExpr or TCovariantReturnConversionExpr or TDerivedToBaseExpr or
-        TDestructureTupleExpr or TDifferentiableFunctionExpr or
-        TDifferentiableFunctionExtractOriginalExpr or TErasureExpr or
+    TAbiSafeConversionExpr or TAnyHashableErasureExpr or TArchetypeToSuperExpr or
+        TArrayToPointerExpr or TBridgeFromObjCExpr or TBridgeToObjCExpr or
+        TClassMetatypeToObjectExpr or TCollectionUpcastConversionExpr or
+        TConditionalBridgeFromObjCExpr or TCovariantFunctionConversionExpr or
+        TCovariantReturnConversionExpr or TDerivedToBaseExpr or TDestructureTupleExpr or
+        TDifferentiableFunctionExpr or TDifferentiableFunctionExtractOriginalExpr or TErasureExpr or
         TExistentialMetatypeToObjectExpr or TForeignObjectConversionExpr or
         TFunctionConversionExpr or TInOutToPointerExpr or TInjectIntoOptionalExpr or
         TLinearFunctionExpr or TLinearFunctionExtractOriginalExpr or
@@ -403,7 +404,7 @@ module Synth {
     TBuiltinLiteralExpr or TInterpolatedStringLiteralExpr or TNilLiteralExpr or
         TObjectLiteralExpr or TRegexLiteralExpr;
 
-  class TLookupExpr = TDynamicLookupExpr or TMemberRefExpr or TMethodRefExpr or TSubscriptExpr;
+  class TLookupExpr = TDynamicLookupExpr or TMemberRefExpr or TMethodLookupExpr or TSubscriptExpr;
 
   class TNumberLiteralExpr = TFloatLiteralExpr or TIntegerLiteralExpr;
 
@@ -591,6 +592,11 @@ module Synth {
 
   cached
   TTypeAliasDecl convertTypeAliasDeclFromRaw(Raw::Element e) { result = TTypeAliasDecl(e) }
+
+  cached
+  TAbiSafeConversionExpr convertAbiSafeConversionExprFromRaw(Raw::Element e) {
+    result = TAbiSafeConversionExpr(e)
+  }
 
   cached
   TAnyHashableErasureExpr convertAnyHashableErasureExprFromRaw(Raw::Element e) {
@@ -879,7 +885,7 @@ module Synth {
   }
 
   cached
-  TMethodRefExpr convertMethodRefExprFromRaw(Raw::Element e) { result = TMethodRefExpr(e) }
+  TMethodLookupExpr convertMethodLookupExprFromRaw(Raw::Element e) { result = TMethodLookupExpr(e) }
 
   cached
   TNilLiteralExpr convertNilLiteralExprFromRaw(Raw::Element e) { result = TNilLiteralExpr(e) }
@@ -1751,6 +1757,8 @@ module Synth {
 
   cached
   TImplicitConversionExpr convertImplicitConversionExprFromRaw(Raw::Element e) {
+    result = convertAbiSafeConversionExprFromRaw(e)
+    or
     result = convertAnyHashableErasureExprFromRaw(e)
     or
     result = convertArchetypeToSuperExprFromRaw(e)
@@ -1833,7 +1841,7 @@ module Synth {
     or
     result = convertMemberRefExprFromRaw(e)
     or
-    result = convertMethodRefExprFromRaw(e)
+    result = convertMethodLookupExprFromRaw(e)
     or
     result = convertSubscriptExprFromRaw(e)
   }
@@ -2226,6 +2234,11 @@ module Synth {
   Raw::Element convertTypeAliasDeclToRaw(TTypeAliasDecl e) { e = TTypeAliasDecl(result) }
 
   cached
+  Raw::Element convertAbiSafeConversionExprToRaw(TAbiSafeConversionExpr e) {
+    e = TAbiSafeConversionExpr(result)
+  }
+
+  cached
   Raw::Element convertAnyHashableErasureExprToRaw(TAnyHashableErasureExpr e) {
     e = TAnyHashableErasureExpr(result)
   }
@@ -2510,7 +2523,7 @@ module Synth {
   }
 
   cached
-  Raw::Element convertMethodRefExprToRaw(TMethodRefExpr e) { e = TMethodRefExpr(result) }
+  Raw::Element convertMethodLookupExprToRaw(TMethodLookupExpr e) { e = TMethodLookupExpr(result) }
 
   cached
   Raw::Element convertNilLiteralExprToRaw(TNilLiteralExpr e) { e = TNilLiteralExpr(result) }
@@ -3382,6 +3395,8 @@ module Synth {
 
   cached
   Raw::Element convertImplicitConversionExprToRaw(TImplicitConversionExpr e) {
+    result = convertAbiSafeConversionExprToRaw(e)
+    or
     result = convertAnyHashableErasureExprToRaw(e)
     or
     result = convertArchetypeToSuperExprToRaw(e)
@@ -3464,7 +3479,7 @@ module Synth {
     or
     result = convertMemberRefExprToRaw(e)
     or
-    result = convertMethodRefExprToRaw(e)
+    result = convertMethodLookupExprToRaw(e)
     or
     result = convertSubscriptExprToRaw(e)
   }

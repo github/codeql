@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["androidx.slice", "SliceProvider", True, "onBindSlice", "", "", "Parameter[0]", "contentprovider", "manual"]
+      - ["androidx.slice", "SliceProvider", True, "onCreatePermissionRequest", "", "", "Parameter[0]", "contentprovider", "manual"]
+      - ["androidx.slice", "SliceProvider", True, "onMapIntentToUri", "", "", "Parameter[0]", "contentprovider", "manual"]
+      - ["androidx.slice", "SliceProvider", True, "onSlicePinned", "", "", "Parameter[0]", "contentprovider", "manual"]
+      - ["androidx.slice", "SliceProvider", True, "onSliceUnpinned", "", "", "Parameter[0]", "contentprovider", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.slice", "SliceProvider", True, "onBindSlice", "", "", "ReturnValue", "pending-intent-sent", "manual"]
+      - ["androidx.slice", "SliceProvider", True, "onCreatePermissionRequest", "", "", "ReturnValue", "pending-intent-sent", "manual"]

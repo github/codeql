@@ -121,13 +121,15 @@ private predicate moveToDependingOnSide(Expr src, Expr dest) {
  *   (this is done to avoid false positives). Because of this we need to track if the tainted element came from an argument
  *   or not, and for that we use destFromArg
  */
-private predicate betweenFunctionsValueMoveTo(Element src, Element dest, boolean destFromArg) {
+deprecated private predicate betweenFunctionsValueMoveTo(
+  Element src, Element dest, boolean destFromArg
+) {
   not unreachable(src) and
   not unreachable(dest) and
   (
-    exists(Call call, Function called, int i |
+    exists(Call call, int i |
       src = call.getArgument(i) and
-      resolveCallWithParam(call, called, i, dest) and
+      resolveCallWithParam(call, _, i, dest) and
       destFromArg = true
     )
     or
@@ -149,8 +151,8 @@ private predicate betweenFunctionsValueMoveTo(Element src, Element dest, boolean
     )
     or
     // If a parameter of type reference is tainted inside a function, taint the argument too
-    exists(Call call, Function f, int pi, Parameter p |
-      resolveCallWithParam(call, f, pi, p) and
+    exists(Call call, int pi, Parameter p |
+      resolveCallWithParam(call, _, pi, p) and
       p.getType() instanceof ReferenceType and
       src = p and
       dest = call.getArgument(pi) and
@@ -162,13 +164,13 @@ private predicate betweenFunctionsValueMoveTo(Element src, Element dest, boolean
 // predicate folding for proper join-order
 // bad magic: pushes down predicate that ruins join-order
 pragma[nomagic]
-private predicate resolveCallWithParam(Call call, Function called, int i, Parameter p) {
+deprecated private predicate resolveCallWithParam(Call call, Function called, int i, Parameter p) {
   called = resolveCall(call) and
   p = called.getParameter(i)
 }
 
 /** A variable for which flow through is allowed. */
-library class FlowVariable extends Variable {
+deprecated library class FlowVariable extends Variable {
   FlowVariable() {
     (
       this instanceof LocalScopeVariable or
@@ -179,11 +181,11 @@ library class FlowVariable extends Variable {
 }
 
 /** A local scope variable for which flow through is allowed. */
-library class FlowLocalScopeVariable extends Variable {
+deprecated library class FlowLocalScopeVariable extends Variable {
   FlowLocalScopeVariable() { this instanceof LocalScopeVariable }
 }
 
-private predicate insideFunctionValueMoveTo(Element src, Element dest) {
+deprecated private predicate insideFunctionValueMoveTo(Element src, Element dest) {
   not unreachable(src) and
   not unreachable(dest) and
   (
@@ -324,7 +326,7 @@ private predicate unionAccess(Variable v, Field f, FieldAccess a) {
   a.getQualifier() = v.getAnAccess()
 }
 
-GlobalOrNamespaceVariable globalVarFromId(string id) {
+deprecated GlobalOrNamespaceVariable globalVarFromId(string id) {
   if result instanceof NamespaceVariable
   then id = result.getNamespace() + "::" + result.getName()
   else id = result.getName()
@@ -353,7 +355,7 @@ private predicate hasUpperBoundsCheck(Variable var) {
 }
 
 cached
-private predicate taintedWithArgsAndGlobalVars(
+deprecated private predicate taintedWithArgsAndGlobalVars(
   Element src, Element dest, boolean destFromArg, string globalVar
 ) {
   isUserInput(src, _) and
@@ -395,7 +397,7 @@ private predicate taintedWithArgsAndGlobalVars(
  * This doesn't include data flow through global variables.
  * If you need that you must call taintedIncludingGlobalVars.
  */
-predicate tainted(Expr source, Element tainted) {
+deprecated predicate tainted(Expr source, Element tainted) {
   taintedWithArgsAndGlobalVars(source, tainted, _, "")
 }
 
@@ -410,7 +412,7 @@ predicate tainted(Expr source, Element tainted) {
  * The parameter `globalVar` is the name of the last global variable used to move the
  * value from source to tainted.
  */
-predicate taintedIncludingGlobalVars(Expr source, Element tainted, string globalVar) {
+deprecated predicate taintedIncludingGlobalVars(Expr source, Element tainted, string globalVar) {
   taintedWithArgsAndGlobalVars(source, tainted, _, globalVar)
 }
 
@@ -541,14 +543,14 @@ private predicate returnArgument(Function f, int sourceArg) {
  * targets a virtual method, simple data flow analysis is performed
  * in order to identify target(s).
  */
-Function resolveCall(Call call) {
+deprecated Function resolveCall(Call call) {
   result = call.getTarget()
   or
   result = call.(DataSensitiveCallExpr).resolve()
 }
 
 /** A data sensitive call expression. */
-abstract library class DataSensitiveCallExpr extends Expr {
+abstract deprecated library class DataSensitiveCallExpr extends Expr {
   DataSensitiveCallExpr() { not unreachable(this) }
 
   abstract Expr getSrc();
@@ -579,7 +581,7 @@ abstract library class DataSensitiveCallExpr extends Expr {
 }
 
 /** Call through a function pointer. */
-library class DataSensitiveExprCall extends DataSensitiveCallExpr, ExprCall {
+deprecated library class DataSensitiveExprCall extends DataSensitiveCallExpr, ExprCall {
   override Expr getSrc() { result = getExpr() }
 
   override Function resolve() {
@@ -588,7 +590,8 @@ library class DataSensitiveExprCall extends DataSensitiveCallExpr, ExprCall {
 }
 
 /** Call to a virtual function. */
-library class DataSensitiveOverriddenFunctionCall extends DataSensitiveCallExpr, FunctionCall {
+deprecated library class DataSensitiveOverriddenFunctionCall extends DataSensitiveCallExpr,
+  FunctionCall {
   DataSensitiveOverriddenFunctionCall() {
     exists(getTarget().(VirtualFunction).getAnOverridingFunction())
   }

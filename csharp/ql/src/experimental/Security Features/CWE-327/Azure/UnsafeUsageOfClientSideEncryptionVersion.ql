@@ -4,6 +4,7 @@
  * @kind problem
  * @tags security
  *       cryptography
+ *       experimental
  *       external/cwe/cwe-327
  * @id cs/azure-storage/unsafe-usage-of-client-side-encryption-version
  * @problem.severity error
@@ -18,7 +19,7 @@ import csharp
  */
 predicate isCreatingAzureClientSideEncryptionObject(ObjectCreation oc, Class c, Expr e) {
   exists(Parameter p | p.hasName("version") |
-    c.hasQualifiedName("Azure.Storage.ClientSideEncryptionOptions") and
+    c.hasQualifiedName("Azure.Storage", "ClientSideEncryptionOptions") and
     oc.getTarget() = c.getAConstructor() and
     e = oc.getArgumentForParameter(p)
   )
@@ -28,7 +29,7 @@ predicate isCreatingAzureClientSideEncryptionObject(ObjectCreation oc, Class c, 
  * Holds if `oc` is an object creation of the outdated type `c` = `Microsoft.Azure.Storage.Blob.BlobEncryptionPolicy`
  */
 predicate isCreatingOutdatedAzureClientSideEncryptionObject(ObjectCreation oc, Class c) {
-  c.hasQualifiedName("Microsoft.Azure.Storage.Blob.BlobEncryptionPolicy") and
+  c.hasQualifiedName("Microsoft.Azure.Storage.Blob", "BlobEncryptionPolicy") and
   oc.getTarget() = c.getAConstructor()
 }
 
@@ -62,7 +63,7 @@ predicate isObjectCreationArgumentSafeAndUsingSafeVersionOfAssembly(Expr version
  */
 predicate isExprAnAccessToSafeClientSideEncryptionVersionValue(Expr e) {
   exists(EnumConstant ec |
-    ec.hasQualifiedName("Azure.Storage.ClientSideEncryptionVersion.V2_0") and
+    ec.hasQualifiedName("Azure.Storage.ClientSideEncryptionVersion", "V2_0") and
     ec.getAnAccess() = e
   )
 }

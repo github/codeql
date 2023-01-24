@@ -4,9 +4,10 @@ import shutil
 import subprocess
 
 # Shared strings.
-summaryModelPredicate = "extSummaryModel"
-sinkModelPredicate = "extSinkModel"
-sourceModelPredicate = "extSourceModel"
+summaryModelPredicate = "summaryModel"
+sinkModelPredicate = "sinkModel"
+sourceModelPredicate = "sourceModel"
+neutralModelPredicate = "neutralModel"
 addsToTemplate = """  - addsTo:
       pack: {0}
       extensible: {1}

@@ -158,3 +158,6 @@ postWithInFlow
 | struct_init.c:24:11:24:12 | ab [inner post update] | PostUpdateNode should not be the target of local flow. |
 | struct_init.c:36:17:36:24 | nestedAB [inner post update] | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
+uniqueParameterNodeAtPosition
+uniqueParameterNodePosition
+uniqueContentApprox

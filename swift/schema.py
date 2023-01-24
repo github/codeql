@@ -104,6 +104,7 @@ class EnumCaseDecl(Decl):
 
 class ExtensionDecl(GenericContext, IterableDeclContext, Decl):
     extended_type_decl: "NominalTypeDecl"
+    protocols: list["ProtocolDecl"]
 
 class IfConfigDecl(Decl):
     active_elements: list[AstNode]
@@ -177,12 +178,13 @@ class ParamDecl(VarDecl):
     """)
 
 class Callable(Element):
+    name: optional[string] | doc("name of this Callable")
     self_param: optional[ParamDecl] | child
     params: list[ParamDecl] | child
     body: optional["BraceStmt"] | child | desc("The body is absent within protocol declarations.")
 
 class AbstractFunctionDecl(GenericContext, ValueDecl, Callable):
-    name: string | doc("name of this function")
+    pass
 
 class EnumElementDecl(ValueDecl):
     name: string
@@ -232,6 +234,10 @@ class AccessorDecl(FuncDecl):
     is_setter: predicate | doc('this accessor is a setter')
     is_will_set: predicate | doc('this accessor is a `willSet`, called before the property is set')
     is_did_set: predicate | doc('this accessor is a `didSet`, called after the property is set')
+    is_read: predicate | doc('this accessor is a `_read` coroutine, yielding a borrowed value of the property')
+    is_modify: predicate | doc('this accessor is a `_modify` coroutine, yielding an inout value of the property')
+    is_unsafe_address: predicate | doc('this accessor is an `unsafeAddress` immutable addressor')
+    is_unsafe_mutable_address: predicate | doc('this accessor is an `unsafeMutableAddress` mutable addressor')
 
 class AssociatedTypeDecl(AbstractTypeParamDecl):
     pass
@@ -322,6 +328,7 @@ class DeclRefExpr(Expr):
     has_direct_to_storage_semantics: predicate
     has_direct_to_implementation_semantics: predicate
     has_ordinary_semantics: predicate
+    has_distributed_thunk_semantics: predicate
 
 class DefaultArgumentExpr(Expr):
     param_decl: ParamDecl
@@ -589,6 +596,7 @@ class MemberRefExpr(LookupExpr):
     has_direct_to_storage_semantics: predicate
     has_direct_to_implementation_semantics: predicate
     has_ordinary_semantics: predicate
+    has_distributed_thunk_semantics: predicate
 
 class MetatypeConversionExpr(ImplicitConversionExpr):
     pass
@@ -642,6 +650,7 @@ class SubscriptExpr(LookupExpr):
     has_direct_to_storage_semantics: predicate
     has_direct_to_implementation_semantics: predicate
     has_ordinary_semantics: predicate
+    has_distributed_thunk_semantics: predicate
 
 class TryExpr(AnyTryExpr):
     pass
@@ -667,9 +676,9 @@ class ConstructorRefCallExpr(SelfApplyExpr):
 class DotSyntaxCallExpr(SelfApplyExpr):
     pass
 
-@synth.from_class(DotSyntaxCallExpr)
-class MethodRefExpr(LookupExpr):
-    pass
+@synth.from_class(SelfApplyExpr)
+class MethodLookupExpr(LookupExpr):
+    method_ref: Expr | child | doc("the underlying method declaration reference expression")
 
 class DynamicMemberRefExpr(DynamicLookupExpr):
     pass
@@ -1033,3 +1042,6 @@ class ParameterizedProtocolType(Type):
     """
     base: ProtocolType
     args: list[Type]
+
+class AbiSafeConversionExpr(ImplicitConversionExpr):
+    pass

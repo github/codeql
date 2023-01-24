@@ -12,8 +12,8 @@ import IDEContextual
  *
  * In some cases it is preferable to modify locations (the
  * `hasLocationInfo()` predicate) so that they are short, and
- * non-overlapping with other locations that might be highlighted in
- * the LGTM interface.
+ * non-overlapping with other locations that might be reported as
+ * code scanning alerts on GitHub.
  *
  * We need to give locations that may not be in the database, so
  * we use `hasLocationInfo()` rather than `getLocation()`.
@@ -123,6 +123,13 @@ private predicate constructorCallTypeMention(ConstructorCall cc, TypeMention tm)
   )
 }
 
+/** Holds if `loc` has the container `container` and is on the line starting at `startLine`. */
+pragma[nomagic]
+private predicate hasContainerAndStartLine(Location loc, Container container, int startLine) {
+  loc.getStartLine() = startLine and
+  loc.getContainer() = container
+}
+
 /**
  * Gets an element, of kind `kind`, that element `e` uses, if any.
  * Attention: This predicate yields multiple definitions for a single location.
@@ -159,9 +166,9 @@ Top definitionOf(Top e, string kind) {
     // Multiple type mentions can be generated when a typedef is used, and
     // in such cases we want to exclude all but the originating typedef.
     not exists(Type secondary |
-      exists(TypeMention tm, File f, int startline, int startcol |
+      exists(File f, int startline, int startcol |
         typeMentionStartLoc(e, result, f, startline, startcol) and
-        typeMentionStartLoc(tm, secondary, f, startline, startcol) and
+        typeMentionStartLoc(_, secondary, f, startline, startcol) and
         (
           result = secondary.(TypedefType).getBaseType() or
           result = secondary.(TypedefType).getBaseType().(SpecifiedType).getBaseType()
@@ -184,11 +191,9 @@ Top definitionOf(Top e, string kind) {
     kind = "I" and
     result = e.(Include).getIncludedFile() and
     // exclude `#include` directives containing macros
-    not exists(MacroInvocation mi, Location l1, Location l2 |
-      l1 = e.(Include).getLocation() and
-      l2 = mi.getLocation() and
-      l1.getContainer() = l2.getContainer() and
-      l1.getStartLine() = l2.getStartLine()
+    not exists(MacroInvocation mi, Container container, int startLine |
+      hasContainerAndStartLine(e.(Include).getLocation(), container, startLine) and
+      hasContainerAndStartLine(mi.getLocation(), container, startLine)
       // (an #include directive must be always on it's own line)
     )
   ) and

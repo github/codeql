@@ -12,7 +12,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    codeql-library-for-csharp
    analyzing-data-flow-in-csharp
 
--  :doc:`Basic query for C# code <basic-query-for-csharp-code>`: Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for C# code <basic-query-for-csharp-code>`: Learn to write and run a simple CodeQL query.
 
 -  :doc:`CodeQL library for C# <codeql-library-for-csharp>`: When you're analyzing a C# program, you can make use of the large collection of classes in the CodeQL library for C#.
 

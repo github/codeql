@@ -33,6 +33,7 @@ import codeql.swift.elements.decl.StructDeclConstructor
 import codeql.swift.elements.decl.SubscriptDeclConstructor
 import codeql.swift.elements.decl.TopLevelCodeDeclConstructor
 import codeql.swift.elements.decl.TypeAliasDeclConstructor
+import codeql.swift.elements.expr.AbiSafeConversionExprConstructor
 import codeql.swift.elements.expr.AnyHashableErasureExprConstructor
 import codeql.swift.elements.expr.AppliedPropertyWrapperExprConstructor
 import codeql.swift.elements.expr.ArchetypeToSuperExprConstructor
@@ -101,7 +102,7 @@ import codeql.swift.elements.expr.MagicIdentifierLiteralExprConstructor
 import codeql.swift.elements.expr.MakeTemporarilyEscapableExprConstructor
 import codeql.swift.elements.expr.MemberRefExprConstructor
 import codeql.swift.elements.expr.MetatypeConversionExprConstructor
-import codeql.swift.elements.expr.MethodRefExprConstructor
+import codeql.swift.elements.expr.MethodLookupExprConstructor
 import codeql.swift.elements.expr.NilLiteralExprConstructor
 import codeql.swift.elements.expr.ObjCSelectorExprConstructor
 import codeql.swift.elements.expr.ObjectLiteralExprConstructor

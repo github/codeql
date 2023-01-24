@@ -9,21 +9,21 @@ namespace Semmle.Autobuild.Shared
     /// <summary>
     /// A build rule analyses the files in "builder" and outputs a build script.
     /// </summary>
-    public interface IBuildRule
+    public interface IBuildRule<TAutobuildOptions> where TAutobuildOptions : AutobuildOptionsShared
     {
         /// <summary>
         /// Analyse the files and produce a build script.
         /// </summary>
         /// <param name="builder">The files and options relating to the build.</param>
         /// <param name="auto">Whether this build rule is being automatically applied.</param>
-        BuildScript Analyse(Autobuilder builder, bool auto);
+        BuildScript Analyse(IAutobuilder<TAutobuildOptions> builder, bool auto);
     }
 
     /// <summary>
     /// A delegate used to wrap a build script in an environment where an appropriate
     /// version of .NET Core is automatically installed.
     /// </summary>
-    public delegate BuildScript WithDotNet(Autobuilder builder, Func<IDictionary<string, string>?, BuildScript> f);
+    public delegate BuildScript WithDotNet<TAutobuildOptions>(IAutobuilder<TAutobuildOptions> builder, Func<IDictionary<string, string>?, BuildScript> f) where TAutobuildOptions : AutobuildOptionsShared;
 
     /// <summary>
     /// Exception indicating that environment variables are missing or invalid.
@@ -33,6 +33,59 @@ namespace Semmle.Autobuild.Shared
         public InvalidEnvironmentException(string m) : base(m) { }
     }
 
+    public interface IAutobuilder<out TAutobuildOptions> where TAutobuildOptions : AutobuildOptionsShared
+    {
+        /// <summary>
+        /// Full file paths of files found in the project directory, as well as
+        /// their distance from the project root folder. The list is sorted
+        /// by distance in ascending order.
+        /// </summary>
+        IEnumerable<(string, int)> Paths { get; }
+
+        /// <summary>
+        /// Gets all paths matching a particular filename, as well as
+        /// their distance from the project root folder. The list is sorted
+        /// by distance in ascending order.
+        /// </summary>
+        /// <param name="name">The filename to find.</param>
+        /// <returns>Possibly empty sequence of paths with the given filename.</returns>
+        IEnumerable<(string, int)> GetFilename(string name) =>
+           Paths.Where(p => Actions.GetFileName(p.Item1) == name);
+
+        /// <summary>
+        /// List of project/solution files to build.
+        /// </summary>
+        IList<IProjectOrSolution> ProjectsOrSolutionsToBuild { get; }
+
+        /// <summary>
+        /// Gets the supplied build configuration.
+        /// </summary>
+        TAutobuildOptions Options { get; }
+
+        /// <summary>
+        /// The set of build actions used during the autobuilder.
+        /// Could be real system operations, or a stub for testing.
+        /// </summary>
+        IBuildActions Actions { get; }
+
+        /// <summary>
+        /// Log a given build event to the console.
+        /// </summary>
+        /// <param name="format">The format string.</param>
+        /// <param name="args">Inserts to the format string.</param>
+        void Log(Severity severity, string format, params object[] args);
+
+        /// <summary>
+        /// Value of CODEQL_EXTRACTOR_<LANG>_ROOT environment variable.
+        /// </summary>
+        string? CodeQLExtractorLangRoot { get; }
+
+        /// <summary>
+        /// Value of CODEQL_PLATFORM environment variable.
+        /// </summary>
+        string? CodeQlPlatform { get; }
+    }
+
     /// <summary>
     /// Main application logic, containing all data
     /// gathered from the project and filesystem.
@@ -40,7 +93,7 @@ namespace Semmle.Autobuild.Shared
     /// The overall design is intended to be extensible so that in theory,
     /// it should be possible to add new build rules without touching this code.
     /// </summary>
-    public abstract class Autobuilder
+    public abstract class Autobuilder<TAutobuildOptions> : IAutobuilder<TAutobuildOptions> where TAutobuildOptions : AutobuildOptionsShared
     {
         /// <summary>
         /// Full file paths of files found in the project directory, as well as
@@ -59,16 +112,6 @@ namespace Semmle.Autobuild.Shared
         /// <returns>The files matching the extension.</returns>
         public IEnumerable<(string, int)> GetExtensions(params string[] extensions) =>
             Paths.Where(p => extensions.Contains(Path.GetExtension(p.Item1)));
-
-        /// <summary>
-        /// Gets all paths matching a particular filename, as well as
-        /// their distance from the project root folder. The list is sorted
-        /// by distance in ascending order.
-        /// </summary>
-        /// <param name="name">The filename to find.</param>
-        /// <returns>Possibly empty sequence of paths with the given filename.</returns>
-        public IEnumerable<(string, int)> GetFilename(string name) =>
-            Paths.Where(p => Actions.GetFileName(p.Item1) == name);
 
         /// <summary>
         /// Holds if a given path, relative to the root of the source directory
@@ -115,7 +158,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// Gets the supplied build configuration.
         /// </summary>
-        public AutobuildOptions Options { get; }
+        public TAutobuildOptions Options { get; }
 
         /// <summary>
         /// The set of build actions used during the autobuilder.
@@ -123,7 +166,7 @@ namespace Semmle.Autobuild.Shared
         /// </summary>
         public IBuildActions Actions { get; }
 
-        private IEnumerable<IProjectOrSolution>? FindFiles(string extension, Func<string, ProjectOrSolution> create)
+        private IEnumerable<IProjectOrSolution>? FindFiles(string extension, Func<string, ProjectOrSolution<TAutobuildOptions>> create)
         {
             var matchingFiles = GetExtensions(extension)
                 .Select(p => (ProjectOrSolution: create(p.Item1), DistanceFromRoot: p.Item2))
@@ -146,7 +189,7 @@ namespace Semmle.Autobuild.Shared
         /// solution file and tools.
         /// </summary>
         /// <param name="options">The command line options.</param>
-        protected Autobuilder(IBuildActions actions, AutobuildOptions options)
+        protected Autobuilder(IBuildActions actions, TAutobuildOptions options)
         {
             Actions = actions;
             Options = options;
@@ -167,7 +210,7 @@ namespace Semmle.Autobuild.Shared
                     foreach (var solution in options.Solution)
                     {
                         if (actions.FileExists(solution))
-                            ret.Add(new Solution(this, solution, true));
+                            ret.Add(new Solution<TAutobuildOptions>(this, solution, true));
                         else
                             Log(Severity.Error, $"The specified project or solution file {solution} was not found");
                     }
@@ -175,17 +218,17 @@ namespace Semmle.Autobuild.Shared
                 }
 
                 // First look for `.proj` files
-                ret = FindFiles(".proj", f => new Project(this, f))?.ToList();
+                ret = FindFiles(".proj", f => new Project<TAutobuildOptions>(this, f))?.ToList();
                 if (ret is not null)
                     return ret;
 
                 // Then look for `.sln` files
-                ret = FindFiles(".sln", f => new Solution(this, f, false))?.ToList();
+                ret = FindFiles(".sln", f => new Solution<TAutobuildOptions>(this, f, false))?.ToList();
                 if (ret is not null)
                     return ret;
 
                 // Finally look for language specific project files, e.g. `.csproj` files
-                ret = FindFiles(this.Options.Language.ProjectExtension, f => new Project(this, f))?.ToList();
+                ret = FindFiles(this.Options.Language.ProjectExtension, f => new Project<TAutobuildOptions>(this, f))?.ToList();
                 return ret ?? new List<IProjectOrSolution>();
             });
 

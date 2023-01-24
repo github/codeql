@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Text.RegularExpressions", "CaptureCollection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Text.RegularExpressions", "GroupCollection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]

@@ -130,8 +130,8 @@ AndroidEditableXmlElement getASensitiveCachedInput() {
   result.getId().regexpMatch(getInputSensitiveInfoRegex()) and
   (
     not inputTypeNotCached(result.getInputType()) and
-    not exists(GoodInputTypeConf conf, DataFlow::Node src, DataFlow::Node sink |
-      conf.hasFlow(src, sink) and
+    not exists(GoodInputTypeConf conf, DataFlow::Node sink |
+      conf.hasFlowTo(sink) and
       sink.asExpr() = setInputTypeForId(result.getId())
     )
   )

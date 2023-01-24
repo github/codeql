@@ -6,6 +6,8 @@ module Raw {
   }
 
   class Callable extends @callable, Element {
+    string getName() { callable_names(this, result) }
+
     ParamDecl getSelfParam() { callable_self_params(this, result) }
 
     ParamDecl getParam(int index) { callable_params(this, index, result) }
@@ -95,6 +97,8 @@ module Raw {
     override string toString() { result = "ExtensionDecl" }
 
     NominalTypeDecl getExtendedTypeDecl() { extension_decls(this, result) }
+
+    ProtocolDecl getProtocol(int index) { extension_decl_protocols(this, index, result) }
   }
 
   class IfConfigDecl extends @if_config_decl, Decl {
@@ -154,7 +158,6 @@ module Raw {
   }
 
   class AbstractFunctionDecl extends @abstract_function_decl, GenericContext, ValueDecl, Callable {
-    string getName() { abstract_function_decls(this, result) }
   }
 
   class AbstractStorageDecl extends @abstract_storage_decl, ValueDecl {
@@ -261,6 +264,14 @@ module Raw {
     predicate isWillSet() { accessor_decl_is_will_set(this) }
 
     predicate isDidSet() { accessor_decl_is_did_set(this) }
+
+    predicate isRead() { accessor_decl_is_read(this) }
+
+    predicate isModify() { accessor_decl_is_modify(this) }
+
+    predicate isUnsafeAddress() { accessor_decl_is_unsafe_address(this) }
+
+    predicate isUnsafeMutableAddress() { accessor_decl_is_unsafe_mutable_address(this) }
   }
 
   class AssociatedTypeDecl extends @associated_type_decl, AbstractTypeParamDecl {
@@ -403,6 +414,8 @@ module Raw {
     }
 
     predicate hasOrdinarySemantics() { decl_ref_expr_has_ordinary_semantics(this) }
+
+    predicate hasDistributedThunkSemantics() { decl_ref_expr_has_distributed_thunk_semantics(this) }
   }
 
   class DefaultArgumentExpr extends @default_argument_expr, Expr {
@@ -667,6 +680,10 @@ module Raw {
     Expr getSubExpr() { vararg_expansion_exprs(this, result) }
   }
 
+  class AbiSafeConversionExpr extends @abi_safe_conversion_expr, ImplicitConversionExpr {
+    override string toString() { result = "AbiSafeConversionExpr" }
+  }
+
   class AnyHashableErasureExpr extends @any_hashable_erasure_expr, ImplicitConversionExpr {
     override string toString() { result = "AnyHashableErasureExpr" }
   }
@@ -851,6 +868,10 @@ module Raw {
     }
 
     predicate hasOrdinarySemantics() { member_ref_expr_has_ordinary_semantics(this) }
+
+    predicate hasDistributedThunkSemantics() {
+      member_ref_expr_has_distributed_thunk_semantics(this)
+    }
   }
 
   class MetatypeConversionExpr extends @metatype_conversion_expr, ImplicitConversionExpr {
@@ -918,6 +939,10 @@ module Raw {
     }
 
     predicate hasOrdinarySemantics() { subscript_expr_has_ordinary_semantics(this) }
+
+    predicate hasDistributedThunkSemantics() {
+      subscript_expr_has_distributed_thunk_semantics(this)
+    }
   }
 
   class TryExpr extends @try_expr, AnyTryExpr {

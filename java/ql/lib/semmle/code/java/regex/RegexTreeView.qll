@@ -85,6 +85,9 @@ module Impl implements RegexTreeViewSig {
 
     /** Gets the associated regex. */
     abstract Regex getRegex();
+
+    /** Gets the last child term of this element. */
+    RegExpTerm getLastChild() { result = this.getChild(this.getNumChild() - 1) }
   }
 
   /**
@@ -206,8 +209,8 @@ module Impl implements RegexTreeViewSig {
        * such as compile-time concatenation, or multi-line string literals.
        */
 
-      exists(int re_start, int re_end, int src_start, int src_end |
-        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, re_end) and
+      exists(int re_start, int src_start, int src_end |
+        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, _) and
         re.sourceCharacter(start, src_start, _) and
         re.sourceCharacter(end - 1, _, src_end) and
         startcolumn = re_start + src_start and
@@ -559,10 +562,28 @@ module Impl implements RegexTreeViewSig {
   }
 
   /**
+   * A character escape in a regular expression.
+   *
+   * Example:
+   *
+   * ```
+   * \.
+   * ```
+   */
+  class RegExpCharEscape = RegExpEscape;
+
+  /**
    * A word boundary, that is, a regular expression term of the form `\b`.
    */
   class RegExpWordBoundary extends RegExpSpecialChar {
     RegExpWordBoundary() { this.getChar() = "\\b" }
+  }
+
+  /**
+   * A non-word boundary, that is, a regular expression term of the form `\B`.
+   */
+  class RegExpNonWordBoundary extends RegExpSpecialChar {
+    RegExpNonWordBoundary() { this.getChar() = "\\B" }
   }
 
   /**
@@ -615,7 +636,7 @@ module Impl implements RegexTreeViewSig {
    * \p{Digit}
    * \p{IsLowerCase}
    */
-  class RegExpNamedProperty extends RegExpCharacterClassEscape {
+  additional class RegExpNamedProperty extends RegExpCharacterClassEscape {
     boolean inverted;
     string name;
 
@@ -745,7 +766,7 @@ module Impl implements RegexTreeViewSig {
    * \t
    * ```
    */
-  class RegExpNormalChar extends RegExpTerm, TRegExpNormalChar {
+  additional class RegExpNormalChar extends RegExpTerm, TRegExpNormalChar {
     RegExpNormalChar() { this = TRegExpNormalChar(re, start, end) }
 
     /**
@@ -770,7 +791,7 @@ module Impl implements RegexTreeViewSig {
    * \Qabc\E
    * ```
    */
-  class RegExpQuote extends RegExpTerm, TRegExpQuote {
+  additional class RegExpQuote extends RegExpTerm, TRegExpQuote {
     string value;
 
     RegExpQuote() {
@@ -868,6 +889,9 @@ module Impl implements RegexTreeViewSig {
     predicate isNamedGroupOfLiteral(RegExpLiteral lit, string name) {
       lit = this.getLiteral() and name = this.getName()
     }
+
+    /** Holds if this is a capture group. */
+    predicate isCapture() { exists(this.getNumber()) }
   }
 
   /**
@@ -880,7 +904,7 @@ module Impl implements RegexTreeViewSig {
    * .
    * ```
    */
-  class RegExpSpecialChar extends RegExpTerm, TRegExpSpecialChar {
+  additional class RegExpSpecialChar extends RegExpTerm, TRegExpSpecialChar {
     string char;
 
     RegExpSpecialChar() {
@@ -918,6 +942,21 @@ module Impl implements RegexTreeViewSig {
   }
 
   /**
+   * A term that matches a specific position between characters in the string.
+   *
+   * Example:
+   *
+   * ```
+   * ^
+   * ```
+   */
+  class RegExpAnchor extends RegExpSpecialChar {
+    RegExpAnchor() { this.getChar() = ["$", "^"] }
+
+    override string getPrimaryQLClass() { result = "RegExpAnchor" }
+  }
+
+  /**
    * A dollar assertion `$` matching the end of a line.
    *
    * Example:
@@ -926,7 +965,7 @@ module Impl implements RegexTreeViewSig {
    * $
    * ```
    */
-  class RegExpDollar extends RegExpSpecialChar {
+  class RegExpDollar extends RegExpAnchor {
     RegExpDollar() { this.getChar() = "$" }
 
     override string getPrimaryQLClass() { result = "RegExpDollar" }
@@ -941,7 +980,7 @@ module Impl implements RegexTreeViewSig {
    * ^
    * ```
    */
-  class RegExpCaret extends RegExpSpecialChar {
+  class RegExpCaret extends RegExpAnchor {
     RegExpCaret() { this.getChar() = "^" }
 
     override string getPrimaryQLClass() { result = "RegExpCaret" }
@@ -956,7 +995,7 @@ module Impl implements RegexTreeViewSig {
    * (?=\w)
    * ```
    */
-  class RegExpZeroWidthMatch extends RegExpGroup {
+  additional class RegExpZeroWidthMatch extends RegExpGroup {
     RegExpZeroWidthMatch() { re.zeroWidthMatch(start, end) }
 
     override RegExpTerm getChild(int i) { none() }
@@ -1023,7 +1062,7 @@ module Impl implements RegexTreeViewSig {
    * (?!\n)
    * ```
    */
-  class RegExpNegativeLookahead extends RegExpLookahead {
+  additional class RegExpNegativeLookahead extends RegExpLookahead {
     RegExpNegativeLookahead() { re.negativeLookaheadAssertionGroup(start, end) }
 
     override string getPrimaryQLClass() { result = "RegExpNegativeLookahead" }
@@ -1065,7 +1104,7 @@ module Impl implements RegexTreeViewSig {
    * (?<!\\)
    * ```
    */
-  class RegExpNegativeLookbehind extends RegExpLookbehind {
+  additional class RegExpNegativeLookbehind extends RegExpLookbehind {
     RegExpNegativeLookbehind() { re.negativeLookbehindAssertionGroup(start, end) }
 
     override string getPrimaryQLClass() { result = "RegExpNegativeLookbehind" }
@@ -1159,7 +1198,7 @@ module Impl implements RegexTreeViewSig {
   /**
    * Gets the flags for `root`, or the empty string if `root` has no flags.
    */
-  deprecated string getFlags(RegExpTerm root) {
+  additional deprecated string getFlags(RegExpTerm root) {
     root.isRootTerm() and
     result = root.getLiteral().getFlags()
   }

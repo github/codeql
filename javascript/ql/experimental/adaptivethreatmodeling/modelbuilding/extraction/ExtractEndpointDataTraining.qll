@@ -1,4 +1,4 @@
-/*
+/**
  * For internal use only.
  *
  * Extracts training data we can use to train ML models for ML-powered queries.
@@ -10,10 +10,12 @@ import experimental.adaptivethreatmodeling.EndpointFeatures as EndpointFeatures
 import NoFeaturizationRestrictionsConfig
 private import Exclusions as Exclusions
 import Queries
-import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
-import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
-import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
-import experimental.adaptivethreatmodeling.XssATM as XssAtm
+private import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
+private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
+private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
+private import experimental.adaptivethreatmodeling.XssATM as XssAtm
+private import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
+private import experimental.adaptivethreatmodeling.ShellCommandInjectionFromEnvironmentATM as ShellCommandInjectionFromEnvironmentAtm
 
 /**
  * Gets the set of featureName-featureValue pairs for each endpoint in the training set.
@@ -29,7 +31,7 @@ predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string feat
     or
     // Performance note: this creates a Cartesian product between `endpoint` and `featureName`.
     featureName = EndpointFeatures::getASupportedFeatureName() and
-    not exists(string value | EndpointFeatures::tokenFeatures(endpoint, featureName, value)) and
+    not EndpointFeatures::tokenFeatures(endpoint, featureName, _) and
     featureValue = ""
   )
 }
@@ -53,7 +55,7 @@ predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string feat
 query predicate trainingEndpoints(
   DataFlow::Node endpoint, EndpointType endpointClass, EndpointCharacteristic characteristic
 ) {
-  characteristic.getEndpoints(endpoint) and
+  characteristic.appliesToEndpoint(endpoint) and
   // Only consider the source code for the project being analyzed.
   exists(endpoint.getFile().getRelativePath()) and
   // Only select endpoints that can be part of a tainted flow: Constant expressions always evaluate to a constant
@@ -69,16 +71,20 @@ query predicate trainingEndpoints(
   not (
     endpointClass instanceof NegativeType and
     exists(EndpointCharacteristic c |
-      c.getEndpoints(endpoint) and
+      c.appliesToEndpoint(endpoint) and
       c instanceof LikelyNotASinkCharacteristic
     )
   ) and
+  // Don't surface endpoint filters as characteristics, because they were previously not surfaced.
+  // TODO: Experiment with surfacing these to the modeling code by removing the following line (and then make
+  // EndpointFilterCharacteristic private).
+  not characteristic instanceof EndpointFilterCharacteristic and
   (
     // If the list of characteristics includes positive indicators with high confidence for this class, select this as a
     // training sample belonging to the class.
     exists(EndpointCharacteristic characteristic2, float confidence |
-      characteristic2.getEndpoints(endpoint) and
-      characteristic2.getImplications(endpointClass, true, confidence) and
+      characteristic2.appliesToEndpoint(endpoint) and
+      characteristic2.hasImplications(endpointClass, true, confidence) and
       confidence >= characteristic2.getHighConfidenceThreshold()
     ) and
     (
@@ -89,8 +95,8 @@ query predicate trainingEndpoints(
       not endpointClass instanceof NegativeType
       or
       not exists(EndpointCharacteristic characteristic3, float confidence3, EndpointType posClass |
-        characteristic3.getEndpoints(endpoint) and
-        characteristic3.getImplications(posClass, true, confidence3) and
+        characteristic3.appliesToEndpoint(endpoint) and
+        characteristic3.hasImplications(posClass, true, confidence3) and
         confidence3 >= characteristic3.getHighConfidenceThreshold() and
         not posClass instanceof NegativeType
       )
@@ -102,8 +108,8 @@ query predicate trainingEndpoints(
     endpointClass instanceof NegativeType and
     forall(EndpointType otherClass | not otherClass instanceof NegativeType |
       exists(EndpointCharacteristic characteristic2, float confidence |
-        characteristic2.getEndpoints(endpoint) and
-        characteristic2.getImplications(otherClass, false, confidence) and
+        characteristic2.appliesToEndpoint(endpoint) and
+        characteristic2.hasImplications(otherClass, false, confidence) and
         confidence >= characteristic2.getHighConfidenceThreshold()
       )
     )
@@ -176,18 +182,22 @@ query predicate reformattedTrainingEndpoints(
       // The reason, or reasons, why the endpoint was labeled NotASink for this query, only for negative examples.
       key = "notASinkReason" and
       exists(EndpointCharacteristic characteristic, EndpointType endpointClass |
-        characteristic.getEndpoints(endpoint) and
-        characteristic.getImplications(endpointClass, true, _) and
+        characteristic.appliesToEndpoint(endpoint) and
+        characteristic.hasImplications(endpointClass, true, _) and
         endpointClass instanceof NegativeType and
         value = characteristic
       ) and
       // Don't include a notASinkReason for endpoints that are also known sinks.
       not exists(EndpointCharacteristic characteristic3, float confidence3, EndpointType posClass |
-        characteristic3.getEndpoints(endpoint) and
-        characteristic3.getImplications(posClass, true, confidence3) and
+        characteristic3.appliesToEndpoint(endpoint) and
+        characteristic3.hasImplications(posClass, true, confidence3) and
         confidence3 >= characteristic3.getHighConfidenceThreshold() and
         not posClass instanceof NegativeType
       ) and
+      // Don't surface endpoint filters as notASinkReasons, because they were previously not surfaced.
+      // TODO: Experiment with surfacing these to the modeling code by removing the following line (and then make
+      // EndpointFilterCharacteristic private).
+      not value instanceof EndpointFilterCharacteristic and
       valueType = "string"
     )
   )
@@ -198,13 +208,20 @@ query predicate reformattedTrainingEndpoints(
  * TODO: Delete this once we are no longer surfacing `hasFlowFromSource`.
  */
 DataFlow::Configuration getDataFlowCfg(Query query) {
-  query instanceof NosqlInjectionQuery and result instanceof NosqlInjectionAtm::Configuration
+  query instanceof NosqlInjectionQuery and
+  result instanceof NosqlInjectionAtm::NosqlInjectionAtmConfig
   or
-  query instanceof SqlInjectionQuery and result instanceof SqlInjectionAtm::Configuration
+  query instanceof SqlInjectionQuery and result instanceof SqlInjectionAtm::SqlInjectionAtmConfig
   or
-  query instanceof TaintedPathQuery and result instanceof TaintedPathAtm::Configuration
+  query instanceof TaintedPathQuery and result instanceof TaintedPathAtm::TaintedPathAtmConfig
   or
-  query instanceof XssQuery and result instanceof XssAtm::Configuration
+  query instanceof XssQuery and result instanceof XssAtm::DomBasedXssAtmConfig
+  or
+  query instanceof XssThroughDomQuery and result instanceof XssThroughDomAtm::XssThroughDomAtmConfig
+  or
+  query instanceof ShellCommandInjectionFromEnvironmentQuery and
+  result instanceof
+    ShellCommandInjectionFromEnvironmentAtm::ShellCommandInjectionFromEnvironmentAtmConfig
 }
 
 // TODO: Delete this once we are no longer surfacing `hasFlowFromSource`.

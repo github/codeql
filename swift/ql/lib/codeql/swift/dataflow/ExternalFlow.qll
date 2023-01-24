@@ -80,11 +80,18 @@ private import internal.FlowSummaryImplSpecific
 private module Frameworks {
   private import codeql.swift.frameworks.StandardLibrary.CustomUrlSchemes
   private import codeql.swift.frameworks.StandardLibrary.Data
+  private import codeql.swift.frameworks.StandardLibrary.FilePath
   private import codeql.swift.frameworks.StandardLibrary.InputStream
+  private import codeql.swift.frameworks.StandardLibrary.NsData
+  private import codeql.swift.frameworks.StandardLibrary.NsUrl
   private import codeql.swift.frameworks.StandardLibrary.String
   private import codeql.swift.frameworks.StandardLibrary.Url
   private import codeql.swift.frameworks.StandardLibrary.UrlSession
   private import codeql.swift.frameworks.StandardLibrary.WebView
+  private import codeql.swift.frameworks.Alamofire.Alamofire
+  private import codeql.swift.security.CleartextLogging
+  private import codeql.swift.security.PathInjection
+  private import codeql.swift.security.PredicateInjection
 }
 
 /**
@@ -129,7 +136,7 @@ predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, boolean generated
+  string output, string kind, string provenance
 ) {
   exists(string row |
     sourceModel(row) and
@@ -143,13 +150,13 @@ predicate sourceModel(
     row.splitAt(";", 6) = output and
     row.splitAt(";", 7) = kind
   ) and
-  generated = false
+  provenance = "manual"
 }
 
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, boolean generated
+  string input, string kind, string provenance
 ) {
   exists(string row |
     sinkModel(row) and
@@ -163,13 +170,13 @@ predicate sinkModel(
     row.splitAt(";", 6) = input and
     row.splitAt(";", 7) = kind
   ) and
-  generated = false
+  provenance = "manual"
 }
 
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, boolean generated
+  string input, string output, string kind, string provenance
 ) {
   exists(string row |
     summaryModel(row) and
@@ -184,7 +191,7 @@ predicate summaryModel(
     row.splitAt(";", 7) = output and
     row.splitAt(";", 8) = kind
   ) and
-  generated = false
+  provenance = "manual"
 }
 
 private predicate relevantNamespace(string namespace) {
@@ -218,25 +225,25 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
     part = "source" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string output, boolean generated |
+        string ext, string output, string provenance |
         canonicalNamespaceLink(namespace, subns) and
-        sourceModel(subns, type, subtypes, name, signature, ext, output, kind, generated)
+        sourceModel(subns, type, subtypes, name, signature, ext, output, kind, provenance)
       )
     or
     part = "sink" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input, boolean generated |
+        string ext, string input, string provenance |
         canonicalNamespaceLink(namespace, subns) and
-        sinkModel(subns, type, subtypes, name, signature, ext, input, kind, generated)
+        sinkModel(subns, type, subtypes, name, signature, ext, input, kind, provenance)
       )
     or
     part = "summary" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, boolean generated |
+        string ext, string input, string output, string provenance |
         canonicalNamespaceLink(namespace, subns) and
-        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, generated)
+        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, provenance)
       )
   )
 }
@@ -389,18 +396,6 @@ predicate matchesSignature(AbstractFunctionDecl func, string signature) {
   paramsString(func) = signature
 }
 
-private NominalType getDeclType(IterableDeclContext decl) {
-  result = decl.(ClassDecl).getType()
-  or
-  result = decl.(StructDecl).getType()
-  or
-  result = getDeclType(decl.(ExtensionDecl).getExtendedTypeDecl())
-  or
-  result = decl.(EnumDecl).getType()
-  or
-  result = decl.(ProtocolDecl).getType()
-}
-
 /**
  * Gets the element in module `namespace` that satisfies the following properties:
  * 1. If the element is a member of a class-like type, then the class-like type has name `type`
@@ -429,32 +424,33 @@ private Element interpretElement0(
     )
     or
     // Member functions
-    exists(NominalType nomType, IterableDeclContext decl, MethodDecl method |
+    exists(NominalTypeDecl nomTypeDecl, IterableDeclContext decl, MethodDecl method |
       method.getName() = name and
       method = decl.getAMember() and
-      nomType.getFullName() = type and
+      nomTypeDecl.getFullName() = type and
       matchesSignature(method, signature) and
       result = method
     |
       subtypes = true and
-      getDeclType(decl) = nomType.getADerivedType*()
+      decl.getNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
       or
       subtypes = false and
-      getDeclType(decl) = nomType
+      decl.getNominalTypeDecl() = nomTypeDecl
     )
     or
+    // Fields
     signature = "" and
-    exists(NominalType nomType, IterableDeclContext decl, FieldDecl field |
+    exists(NominalTypeDecl nomTypeDecl, IterableDeclContext decl, FieldDecl field |
       field.getName() = name and
       field = decl.getAMember() and
-      nomType.getFullName() = type and
+      nomTypeDecl.getFullName() = type and
       result = field
     |
       subtypes = true and
-      getDeclType(decl) = nomType.getADerivedType*()
+      decl.getNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
       or
       subtypes = false and
-      getDeclType(decl) = nomType
+      decl.getNominalTypeDecl() = nomTypeDecl
     )
   )
 }

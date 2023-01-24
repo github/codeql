@@ -265,6 +265,7 @@ _pragmas = [(defs.qltest.skip, "qltest_skip"),
             (defs.qltest.collapse_hierarchy, "qltest_collapse_hierarchy"),
             (defs.qltest.uncollapse_hierarchy, "qltest_uncollapse_hierarchy"),
             (defs.cpp.skip, "cpp_skip"),
+            (defs.ql.internal, "ql_internal"),
             ]
 
 
@@ -666,6 +667,17 @@ def test_null_class_cannot_be_defined_multiple_times():
 
             @defs.use_for_null
             class Null2(Root):
+                pass
+
+
+def test_uppercase_acronyms_are_rejected():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class Root:
+                pass
+
+            class ROTFLNode(Root):
                 pass
 
 

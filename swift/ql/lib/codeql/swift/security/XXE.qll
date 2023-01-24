@@ -3,6 +3,7 @@
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.frameworks.AEXML
+private import codeql.swift.frameworks.Libxml2
 
 /** A data flow sink for XML external entities (XXE) vulnerabilities. */
 abstract class XxeSink extends DataFlow::Node { }
@@ -30,7 +31,7 @@ private class XmlParserXxeSink extends XxeSink {
 /** The construction of a `XMLParser` that enables external entities. */
 private class VulnerableParser extends CallExpr {
   VulnerableParser() {
-    resolvesExternalEntities(this) and this.getFunction() instanceof ConstructorRefCallExpr
+    resolvesExternalEntities(this) and this.getFunction() instanceof InitializerLookupExpr
   }
 }
 
@@ -162,4 +163,41 @@ private class AexmlOptions extends Expr {
     this.getType() = any(OptionalType t | t.getBaseType() instanceof AexmlOptionsType) or
     this.getType() = any(LValueType t | t.getObjectType() instanceof AexmlOptionsType)
   }
+}
+
+/** The XML argument of a `libxml2` parsing call vulnerable to XXE. */
+private class Libxml2XxeSink extends XxeSink {
+  Libxml2XxeSink() {
+    exists(Libxml2ParseCall c, Libxml2BadOption opt |
+      this.asExpr() = c.getXml() and
+      lib2xmlOptionLocalTaintStep*(DataFlow::exprNode(opt.getAnAccess()),
+        DataFlow::exprNode(c.getOptions()))
+    )
+  }
+}
+
+/**
+ * Holds if taint can flow from `source` to `sink` in one local step,
+ * including bitwise operations, accesses to `.rawValue`, and casts to `Int32`.
+ */
+private predicate lib2xmlOptionLocalTaintStep(DataFlow::Node source, DataFlow::Node sink) {
+  DataFlow::localFlowStep(source, sink)
+  or
+  source.asExpr() = sink.asExpr().(BitwiseOperation).getAnOperand()
+  or
+  exists(MemberRefExpr rawValue | rawValue.getMember().(VarDecl).getName() = "rawValue" |
+    source.asExpr() = rawValue.getBase() and sink.asExpr() = rawValue
+  )
+  or
+  exists(ApplyExpr int32Init |
+    int32Init
+        .getStaticTarget()
+        .(ConstructorDecl)
+        .getEnclosingDecl()
+        .(ExtensionDecl)
+        .getExtendedTypeDecl()
+        .getName() = "SignedInteger"
+  |
+    source.asExpr() = int32Init.getAnArgument().getExpr() and sink.asExpr() = int32Init
+  )
 }

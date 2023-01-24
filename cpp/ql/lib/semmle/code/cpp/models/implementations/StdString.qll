@@ -17,6 +17,15 @@ private class StdBasicString extends ClassTemplateInstantiation {
 
 /**
  * The `std::basic_string::iterator` declaration.
+ *
+ * Intuitively, this class shouldn't be necessary as it's already captured
+ * by the `StdIterator` class. However, this class ensures that the typedef inside the
+ * body of the `std::string` class is also seen as an iterator.
+ *
+ * Eventually, we should be consistent about which of the following should be recognized as iterators:
+ * 1. The typedef type.
+ * 2. The template class of the resolved type.
+ * 3. Any instantiation of the resolved type.
  */
 private class StdBasicStringIterator extends Iterator, Type {
   StdBasicStringIterator() {
@@ -29,8 +38,7 @@ private class StdBasicStringIterator extends Iterator, Type {
  */
 abstract private class StdStringTaintFunction extends TaintFunction {
   /**
-   * Gets the index of a parameter to this function that is a string (or
-   * character).
+   * Gets the index of a parameter to this function that is a string.
    */
   final int getAStringParameterIndex() {
     exists(Type paramType | paramType = this.getParameter(result).getUnspecifiedType() |
@@ -41,7 +49,14 @@ abstract private class StdStringTaintFunction extends TaintFunction {
       paramType instanceof ReferenceType and
       not paramType.(ReferenceType).getBaseType() =
         this.getDeclaringType().getTemplateArgument(2).(Type).getUnspecifiedType()
-      or
+    )
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is a character.
+   */
+  final int getACharParameterIndex() {
+    exists(Type paramType | paramType = this.getParameter(result).getUnspecifiedType() |
       // i.e. `std::basic_string::CharT`
       paramType = this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType()
     )
@@ -70,6 +85,7 @@ private class StdStringConstructor extends Constructor, StdStringTaintFunction {
     // taint flow from any parameter of the value type to the returned object
     (
       input.isParameterDeref(this.getAStringParameterIndex()) or
+      input.isParameter(this.getACharParameterIndex()) or
       input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     (
@@ -119,7 +135,7 @@ private class StdStringPush extends StdStringTaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to qualifier
-    input.isParameterDeref(0) and
+    input.isParameter(0) and
     output.isQualifierObject()
   }
 }
@@ -171,6 +187,7 @@ private class StdStringAppend extends StdStringTaintFunction {
     (
       input.isQualifierObject() or
       input.isParameterDeref(this.getAStringParameterIndex()) or
+      input.isParameter(this.getACharParameterIndex()) or
       input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     (
@@ -201,6 +218,7 @@ private class StdStringInsert extends StdStringTaintFunction {
     (
       input.isQualifierObject() or
       input.isParameterDeref(this.getAStringParameterIndex()) or
+      input.isParameter(this.getACharParameterIndex()) or
       input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     (
@@ -227,6 +245,7 @@ private class StdStringAssign extends StdStringTaintFunction {
     // flow from parameter to string itself (qualifier) and return value
     (
       input.isParameterDeref(this.getAStringParameterIndex()) or
+      input.isParameter(this.getACharParameterIndex()) or
       input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     (

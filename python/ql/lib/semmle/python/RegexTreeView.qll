@@ -102,6 +102,9 @@ module Impl implements RegexTreeViewSig {
     /** Gets the number of child terms. */
     int getNumChild() { result = count(this.getAChild()) }
 
+    /** Gets the last child term of this element. */
+    RegExpTerm getLastChild() { result = this.getChild(this.getNumChild() - 1) }
+
     /** Gets the associated regex. */
     abstract Regex getRegex();
   }
@@ -224,8 +227,8 @@ module Impl implements RegexTreeViewSig {
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      exists(int re_start, int re_end |
-        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, re_end) and
+      exists(int re_start |
+        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, _) and
         startcolumn = re_start + start + 4 and
         endcolumn = re_start + end + 3
       )
@@ -454,6 +457,15 @@ module Impl implements RegexTreeViewSig {
     override string getPrimaryQLClass() { result = "RegExpAlt" }
   }
 
+  /**
+   * A character escape in a regular expression.
+   *
+   * Example:
+   *
+   * ```
+   * \.
+   * ```
+   */
   class RegExpCharEscape = RegExpEscape;
 
   /**
@@ -559,6 +571,13 @@ module Impl implements RegexTreeViewSig {
    */
   class RegExpWordBoundary extends RegExpSpecialChar {
     RegExpWordBoundary() { this.getChar() = "\\b" }
+  }
+
+  /**
+   * A non-word boundary, that is, a regular expression term of the form `\B`.
+   */
+  class RegExpNonWordBoundary extends RegExpSpecialChar {
+    RegExpNonWordBoundary() { this.getChar() = "\\B" }
   }
 
   /**
@@ -684,7 +703,7 @@ module Impl implements RegexTreeViewSig {
    * \t
    * ```
    */
-  class RegExpNormalChar extends RegExpTerm, TRegExpNormalChar {
+  additional class RegExpNormalChar extends RegExpTerm, TRegExpNormalChar {
     RegExpNormalChar() { this = TRegExpNormalChar(re, start, end) }
 
     /**
@@ -792,7 +811,7 @@ module Impl implements RegexTreeViewSig {
    * .
    * ```
    */
-  class RegExpSpecialChar extends RegExpTerm, TRegExpSpecialChar {
+  additional class RegExpSpecialChar extends RegExpTerm, TRegExpSpecialChar {
     string char;
 
     RegExpSpecialChar() {
@@ -830,6 +849,19 @@ module Impl implements RegexTreeViewSig {
   }
 
   /**
+   * A term that matches a specific position between characters in the string.
+   *
+   * Example:
+   *
+   * ```
+   * \A
+   * ```
+   */
+  class RegExpAnchor extends RegExpSpecialChar {
+    RegExpAnchor() { this.getChar() = ["\\A", "^", "$", "\\Z"] }
+  }
+
+  /**
    * A dollar assertion `$` or `\Z` matching the end of a line.
    *
    * Example:
@@ -838,7 +870,7 @@ module Impl implements RegexTreeViewSig {
    * $
    * ```
    */
-  class RegExpDollar extends RegExpSpecialChar {
+  class RegExpDollar extends RegExpAnchor {
     RegExpDollar() { this.getChar() = ["$", "\\Z"] }
 
     override string getPrimaryQLClass() { result = "RegExpDollar" }
@@ -853,7 +885,7 @@ module Impl implements RegexTreeViewSig {
    * ^
    * ```
    */
-  class RegExpCaret extends RegExpSpecialChar {
+  class RegExpCaret extends RegExpAnchor {
     RegExpCaret() { this.getChar() = ["^", "\\A"] }
 
     override string getPrimaryQLClass() { result = "RegExpCaret" }
@@ -868,7 +900,7 @@ module Impl implements RegexTreeViewSig {
    * (?=\w)
    * ```
    */
-  class RegExpZeroWidthMatch extends RegExpGroup {
+  additional class RegExpZeroWidthMatch extends RegExpGroup {
     RegExpZeroWidthMatch() { re.zeroWidthMatch(start, end) }
 
     override RegExpTerm getChild(int i) { none() }
@@ -937,7 +969,7 @@ module Impl implements RegexTreeViewSig {
    * (?!\n)
    * ```
    */
-  class RegExpNegativeLookahead extends RegExpLookahead {
+  additional class RegExpNegativeLookahead extends RegExpLookahead {
     RegExpNegativeLookahead() { re.negativeLookaheadAssertionGroup(start, end) }
 
     override string getPrimaryQLClass() { result = "RegExpNegativeLookahead" }
@@ -979,7 +1011,7 @@ module Impl implements RegexTreeViewSig {
    * (?<!\\)
    * ```
    */
-  class RegExpNegativeLookbehind extends RegExpLookbehind {
+  additional class RegExpNegativeLookbehind extends RegExpLookbehind {
     RegExpNegativeLookbehind() { re.negativeLookbehindAssertionGroup(start, end) }
 
     override string getPrimaryQLClass() { result = "RegExpNegativeLookbehind" }

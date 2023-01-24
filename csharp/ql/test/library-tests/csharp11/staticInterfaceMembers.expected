@@ -1,0 +1,20 @@
+interfacemembers
+| INumber<> | StaticInterfaceMembers.cs:3:32:3:33 | ++ | abstract |
+| INumber<> | StaticInterfaceMembers.cs:3:32:3:33 | ++ | public |
+| INumber<> | StaticInterfaceMembers.cs:3:32:3:33 | ++ | static |
+| INumber<> | StaticInterfaceMembers.cs:5:31:5:32 | -- | public |
+| INumber<> | StaticInterfaceMembers.cs:5:31:5:32 | -- | static |
+| INumber<> | StaticInterfaceMembers.cs:5:31:5:32 | -- | virtual |
+| INumber<> | StaticInterfaceMembers.cs:7:23:7:25 | Add | abstract |
+| INumber<> | StaticInterfaceMembers.cs:7:23:7:25 | Add | public |
+| INumber<> | StaticInterfaceMembers.cs:7:23:7:25 | Add | static |
+| INumber<> | StaticInterfaceMembers.cs:9:22:9:29 | Subtract | public |
+| INumber<> | StaticInterfaceMembers.cs:9:22:9:29 | Subtract | static |
+| INumber<> | StaticInterfaceMembers.cs:9:22:9:29 | Subtract | virtual |
+| INumber<> | StaticInterfaceMembers.cs:11:14:11:17 | Zero | public |
+| INumber<> | StaticInterfaceMembers.cs:11:14:11:17 | Zero | static |
+implements
+| StaticInterfaceMembers.cs:23:36:23:37 | ++ | StaticInterfaceMembers.cs:3:32:3:33 | ++ |
+| StaticInterfaceMembers.cs:26:36:26:37 | -- | StaticInterfaceMembers.cs:5:31:5:32 | -- |
+| StaticInterfaceMembers.cs:29:27:29:29 | Add | StaticInterfaceMembers.cs:7:23:7:25 | Add |
+| StaticInterfaceMembers.cs:32:27:32:34 | Subtract | StaticInterfaceMembers.cs:9:22:9:29 | Subtract |

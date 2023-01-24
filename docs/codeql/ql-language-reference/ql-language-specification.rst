@@ -86,13 +86,25 @@ use information from the database.
 Name resolution
 ---------------
 
-All modules have three environments that dictate name resolution. These are multimaps of keys to declarations.
+All modules have six environments that dictate name resolution. These are multimaps of keys to declarations.
 
 The environments are:
 
 -  The *module environment*, whose keys are module names and whose values are modules.
 -  The *type environment*, whose keys are type names and whose values are types.
 -  The *predicate environment*, whose keys are pairs of predicate names and arities and whose values are predicates.
+-  The *module signature environment*, whose keys are module signature names and whose values are module signatures.
+-  The *type signature environment*, whose keys are type signature names and whose values are type signatures.
+-  The *predicate signature environment*, whose keys are pairs of predicate signature names and arities and whose values are predicate signatures.
+
+For each module, some namespaces are enforced to be disjoint:
+
+-  No keys may be shared between the **module namespace** and the **module signature namespace**.
+-  No keys may be shared between the **type namespace** and the **type signature namespace**.
+-  No keys may be shared between the **module namespace** and the **type signature namespace**.
+-  No keys may be shared between the **type namespace** and the **module signature namespace**.
+-  No keys may be shared between the **predicate namespace** and the **predicate signature namespace**.
+-  No keys may be shared between the **module signature namespace** and the **type signature namespace**.
 
 If not otherwise specified, then the environment for a piece of syntax is the same as the environment of its enclosing syntax.
 
@@ -108,11 +120,13 @@ A *definite* environment has at most one entry for each key. Resolution is uniqu
 Global environments
 ~~~~~~~~~~~~~~~~~~~
 
-The global module environment is empty.
+The global module environment has a single entry ``QlBuiltins``.
 
 The global type environment has entries for the primitive types ``int``, ``float``, ``string``, ``boolean``, and ``date``, as well as any types defined in the database schema.
 
 The global predicate environment includes all the built-in classless predicates, as well as any extensional predicates declared in the database schema.
+
+The three global signature environments are empty.
 
 The program is invalid if any of these environments is not definite.
 
@@ -639,7 +653,7 @@ Various kinds of syntax can have *annotations* applied to them. Annotations are 
                     |   "override"
                     |   "query"
 
-   argsAnnotation ::= "pragma" "[" ("inline" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
+   argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
 
@@ -691,6 +705,8 @@ The parameterized annotation ``pragma`` supplies compiler pragmas, and may be ap
 | Pragma                    | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases |
 +===========================+=========+============+===================+=======================+=========+========+=========+=========+
 | ``inline``                |         | yes        | yes               | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``inline_late``           |         |            |                   | yes                   |         |        |         |         |
 +---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 | ``noinline``              |         | yes        | yes               | yes                   |         |        |         |         |
 +---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
@@ -1356,9 +1372,7 @@ Set literals can be of any type, but the types within a set literal have to be c
 
 The values of a set literal expression are all the values of all the contained element expressions.
 
-Set literals are supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
-
-Since release 2.7.1 of the CodeQL CLI, and release 1.30 of LGTM Enterprise, a trailing comma is allowed in a set literal.
+Since release 2.7.1 of the CodeQL CLI, a trailing comma is allowed in a set literal.
 
 Disambiguation of expressions
 -----------------------------
@@ -2071,7 +2085,7 @@ The complete grammar for QL is as follows:
                     |   "override"
                     |   "query"
 
-   argsAnnotation ::= "pragma" "[" ("inline" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
+   argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
 

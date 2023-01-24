@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.util.concurrent.atomic", "AtomicReference", False, "AtomicReference", "(Object)", "", "Argument[0]", "Argument[-1].SyntheticField[java.util.concurrent.atomic.AtomicReference.value]", "value", "manual"]
+      - ["java.util.concurrent.atomic", "AtomicReference", False, "get", "()", "", "Argument[-1].SyntheticField[java.util.concurrent.atomic.AtomicReference.value]", "ReturnValue", "value", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.util.concurrent.atomic", "AtomicInteger", "AtomicInteger", "(int)", "manual"] # value-numeric
+      - ["java.util.concurrent.atomic", "AtomicInteger", "get", "()", "manual"]              # value-numeric

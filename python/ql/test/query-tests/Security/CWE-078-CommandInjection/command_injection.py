@@ -10,27 +10,27 @@ app = Flask(__name__)
 def command_injection1():
     files = request.args.get('files', '')
     # Don't let files be `; rm -rf /`
-    os.system("ls " + files)
+    os.system("ls " + files) # $result=BAD
 
 
 @app.route("/command2")
 def command_injection2():
     files = request.args.get('files', '')
     # Don't let files be `; rm -rf /`
-    subprocess.Popen("ls " + files, shell=True)
+    subprocess.Popen("ls " + files, shell=True) # $result=BAD
 
 
 @app.route("/command3")
 def first_arg_injection():
     cmd = request.args.get('cmd', '')
-    subprocess.Popen([cmd, "param1"])
+    subprocess.Popen([cmd, "param1"]) # $result=BAD
 
 
 @app.route("/other_cases")
 def others():
     files = request.args.get('files', '')
     # Don't let files be `; rm -rf /`
-    os.popen("ls " + files)
+    os.popen("ls " + files) # $result=BAD
 
 
 @app.route("/multiple")
@@ -38,8 +38,8 @@ def multiple():
     command = request.args.get('command', '')
     # We should mark flow to both calls here, which conflicts with removing flow out of
     # a sink due to use-use flow.
-    os.system(command)
-    os.system(command)
+    os.system(command) # $result=BAD
+    os.system(command) # $result=BAD
 
 
 @app.route("/not-into-sink-impl")
@@ -52,11 +52,11 @@ def not_into_sink_impl():
     subprocess.call implementation: https://github.com/python/cpython/blob/fa7ce080175f65d678a7d5756c94f82887fc9803/Lib/subprocess.py#L341
     """
     command = request.args.get('command', '')
-    os.system(command)
-    os.popen(command)
-    subprocess.call(command)
-    subprocess.check_call(command)
-    subprocess.run(command)
+    os.system(command) # $result=BAD
+    os.popen(command) # $result=BAD
+    subprocess.call(command) # $result=BAD
+    subprocess.check_call(command) # $result=BAD
+    subprocess.run(command) # $result=BAD
 
 
 @app.route("/path-exists-not-sanitizer")
@@ -70,11 +70,11 @@ def path_exists_not_sanitizer():
     """
     path = request.args.get('path', '')
     if os.path.exists(path):
-        os.system("ls " + path) # NOT OK
+        os.system("ls " + path) # $result=BAD
 
 
 @app.route("/restricted-characters")
 def restricted_characters():
     path = request.args.get('path', '')
     if re.match(r'^[a-zA-Z0-9_-]+$', path):
-        os.system("ls " + path) # OK (TODO: Currently FP)
+        os.system("ls " + path) # $SPURIOUS: result=BAD

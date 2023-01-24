@@ -1,6 +1,7 @@
 | file://:0:0:0:0 | ..()(..) | ..()(..) |
 | file://:0:0:0:0 | ..(*)(..) | ..(*)(..) |
 | file://:0:0:0:0 | Tmpl<T> | Tmpl<T> |
+| file://:0:0:0:0 | _Complex _Float16 | _Complex _Float16 |
 | file://:0:0:0:0 | _Complex __float128 | _Complex __float128 |
 | file://:0:0:0:0 | _Complex double | _Complex double |
 | file://:0:0:0:0 | _Complex float | _Complex float |
@@ -8,6 +9,7 @@
 | file://:0:0:0:0 | _Decimal32 | _Decimal32 |
 | file://:0:0:0:0 | _Decimal64 | _Decimal64 |
 | file://:0:0:0:0 | _Decimal128 | _Decimal128 |
+| file://:0:0:0:0 | _Float16 | _Float16 |
 | file://:0:0:0:0 | _Float32 | _Float32 |
 | file://:0:0:0:0 | _Float32x | _Float32x |
 | file://:0:0:0:0 | _Float64 | _Float64 |

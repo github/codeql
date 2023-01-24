@@ -776,11 +776,11 @@ private module CapturedVariableImpl {
     Callable c, CapturedWrittenLocalScopeVariable v,
     CapturedWrittenLocalScopeVariableDefinition vdef
   ) {
-    exists(ControlFlow::BasicBlock bb, int i, CapturedWrittenLocalScopeSourceVariable sv |
+    exists(ControlFlow::BasicBlock bb, CapturedWrittenLocalScopeSourceVariable sv |
       vdef.getTarget() = v and
       vdef.getEnclosingCallable() = c and
       sv.getAssignable() = v and
-      bb.getNode(i) = vdef.getAControlFlowNode() and
+      bb.getNode(_) = vdef.getAControlFlowNode() and
       c != v.getCallable()
     )
   }
@@ -1093,18 +1093,38 @@ private predicate adjacentDefRead(
 }
 
 private predicate adjacentDefReachesRead(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+  Definition def, SsaInput::SourceVariable v, SsaInput::BasicBlock bb1, int i1,
+  SsaInput::BasicBlock bb2, int i2
 ) {
-  exists(SsaInput::SourceVariable v | adjacentDefRead(def, bb1, i1, bb2, i2, v) |
+  adjacentDefRead(def, bb1, i1, bb2, i2, v) and
+  (
     def.definesAt(v, bb1, i1)
     or
     SsaInput::variableRead(bb1, i1, v, true)
   )
   or
   exists(SsaInput::BasicBlock bb3, int i3 |
-    adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
+    adjacentDefReachesRead(def, v, bb1, i1, bb3, i3) and
     SsaInput::variableRead(bb3, i3, _, false) and
     Impl::adjacentDefRead(def, bb3, i3, bb2, i2)
+  )
+}
+
+private predicate adjacentDefReachesReadExt(
+  DefinitionExt def, SsaInput::SourceVariable v, SsaInput::BasicBlock bb1, int i1,
+  SsaInput::BasicBlock bb2, int i2
+) {
+  Impl::adjacentDefReadExt(def, v, bb1, i1, bb2, i2) and
+  (
+    def.definesAt(v, bb1, i1, _)
+    or
+    SsaInput::variableRead(bb1, i1, v, true)
+  )
+  or
+  exists(SsaInput::BasicBlock bb3, int i3 |
+    adjacentDefReachesReadExt(def, v, bb1, i1, bb3, i3) and
+    SsaInput::variableRead(bb3, i3, v, false) and
+    Impl::adjacentDefReadExt(def, v, bb3, i3, bb2, i2)
   )
 }
 
@@ -1113,15 +1133,39 @@ pragma[nomagic]
 private predicate adjacentDefSkipUncertainReads(
   Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
-  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, true)
+  exists(SsaInput::SourceVariable v |
+    adjacentDefReachesRead(def, v, bb1, i1, bb2, i2) and
+    SsaInput::variableRead(bb2, i2, v, true)
+  )
+}
+
+/** Same as `adjacentDefReadExt`, but skips uncertain reads. */
+pragma[nomagic]
+private predicate adjacentDefSkipUncertainReadsExt(
+  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+) {
+  exists(SsaInput::SourceVariable v |
+    adjacentDefReachesReadExt(def, v, bb1, i1, bb2, i2) and
+    SsaInput::variableRead(bb2, i2, v, true)
+  )
 }
 
 private predicate adjacentDefReachesUncertainRead(
   Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
-  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, false)
+  exists(SsaInput::SourceVariable v |
+    adjacentDefReachesRead(def, v, bb1, i1, bb2, i2) and
+    SsaInput::variableRead(bb2, i2, v, false)
+  )
+}
+
+private predicate adjacentDefReachesUncertainReadExt(
+  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+) {
+  exists(SsaInput::SourceVariable v |
+    adjacentDefReachesReadExt(def, v, bb1, i1, bb2, i2) and
+    SsaInput::variableRead(bb2, i2, v, false)
+  )
 }
 
 /** Same as `lastRefRedef`, but skips uncertain reads. */
@@ -1263,9 +1307,9 @@ private module Cached {
   predicate isCapturedVariableDefinitionFlowOut(
     Ssa::ExplicitDefinition def, Ssa::ImplicitCallDefinition cdef, boolean additionalCalls
   ) {
-    exists(Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
+    exists(Ssa::Definition def0 |
       def = def0.getAnUltimateDefinition() and
-      capturedReadOut(bb, i, def0.getSourceVariable(), cdef.getSourceVariable(), cdef.getCall(),
+      capturedReadOut(_, _, def0.getSourceVariable(), cdef.getSourceVariable(), cdef.getCall(),
         additionalCalls)
     )
   }
@@ -1312,6 +1356,19 @@ private module Cached {
   }
 
   /**
+   * Holds if the value defined at SSA definition `def` can reach a read at `cfn`,
+   * without passing through any other read.
+   */
+  cached
+  predicate firstReadSameVarExt(DefinitionExt def, ControlFlow::Node cfn) {
+    exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
+      def.definesAt(_, bb1, i1, _) and
+      adjacentDefSkipUncertainReadsExt(def, bb1, i1, bb2, i2) and
+      cfn = bb2.getNode(i2)
+    )
+  }
+
+  /**
    * Holds if the read at `cfn2` is a read of the same SSA definition `def`
    * as the read at `cfn1`, and `cfn2` can be reached from `cfn1` without
    * passing through another read.
@@ -1326,7 +1383,23 @@ private module Cached {
     )
   }
 
-  /** Same as `lastRefRedef`, but skips uncertain reads. */
+  /**
+   * Holds if the read at `cfn2` is a read of the same SSA definition `def`
+   * as the read at `cfn1`, and `cfn2` can be reached from `cfn1` without
+   * passing through another read.
+   */
+  cached
+  predicate adjacentReadPairSameVarExt(
+    DefinitionExt def, ControlFlow::Node cfn1, ControlFlow::Node cfn2
+  ) {
+    exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
+      cfn1 = bb1.getNode(i1) and
+      variableReadActual(bb1, i1, _) and
+      adjacentDefSkipUncertainReadsExt(def, bb1, i1, bb2, i2) and
+      cfn2 = bb2.getNode(i2)
+    )
+  }
+
   cached
   predicate lastRefBeforeRedef(Definition def, ControlFlow::BasicBlock bb, int i, Definition next) {
     Impl::lastRefRedef(def, bb, i, next) and
@@ -1335,6 +1408,21 @@ private module Cached {
     exists(SsaInput::BasicBlock bb0, int i0 |
       Impl::lastRefRedef(def, bb0, i0, next) and
       adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
+    )
+  }
+
+  cached
+  predicate lastRefBeforeRedefExt(
+    DefinitionExt def, ControlFlow::BasicBlock bb, int i, DefinitionExt next
+  ) {
+    exists(SsaInput::SourceVariable v |
+      Impl::lastRefRedefExt(def, v, bb, i, next) and
+      not SsaInput::variableRead(bb, i, v, false)
+    )
+    or
+    exists(SsaInput::BasicBlock bb0, int i0 |
+      Impl::lastRefRedefExt(def, _, bb0, i0, next) and
+      adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
     )
   }
 
@@ -1399,6 +1487,9 @@ class DefinitionExt extends Impl::DefinitionExt {
 
   /** Gets the location of this definition. */
   Location getLocation() { result = this.(Ssa::Definition).getLocation() }
+
+  /** Gets the enclosing callable of this definition. */
+  Callable getEnclosingCallable() { result = this.(Ssa::Definition).getEnclosingCallable() }
 }
 
 /**
@@ -1412,4 +1503,8 @@ class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
   }
 
   override Location getLocation() { result = this.getBasicBlock().getLocation() }
+
+  override Callable getEnclosingCallable() {
+    result = this.getSourceVariable().getEnclosingCallable()
+  }
 }

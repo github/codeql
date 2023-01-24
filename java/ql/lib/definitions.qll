@@ -127,9 +127,7 @@ private class LocationOverridingFieldAccess extends FieldAccess {
  */
 private class LocationOverridingImportType extends ImportType {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    exists(int slSuper, int scSuper, int elSuper, int ecSuper |
-      super.hasLocationInfo(path, slSuper, scSuper, elSuper, ecSuper)
-    |
+    exists(int elSuper, int ecSuper | super.hasLocationInfo(path, _, _, elSuper, ecSuper) |
       el = elSuper and
       ec = ecSuper - 1 and
       sl = el and
@@ -144,9 +142,7 @@ private class LocationOverridingImportType extends ImportType {
  */
 private class LocationOverridingImportStaticTypeMember extends ImportStaticTypeMember {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    exists(int slSuper, int scSuper, int elSuper, int ecSuper |
-      super.hasLocationInfo(path, slSuper, scSuper, elSuper, ecSuper)
-    |
+    exists(int elSuper, int ecSuper | super.hasLocationInfo(path, _, _, elSuper, ecSuper) |
       el = elSuper and
       ec = ecSuper - 1 and
       sl = el and

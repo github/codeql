@@ -41,9 +41,7 @@ module StackTraceExposure {
   /**
    * A source of exception info, considered as a flow source.
    */
-  class ExceptionInfoAsSource extends Source {
-    ExceptionInfoAsSource() { this instanceof ExceptionInfo }
-  }
+  class ExceptionInfoAsSource extends Source instanceof ExceptionInfo { }
 
   /**
    * The body of a HTTP response that will be returned from a server, considered as a flow sink.

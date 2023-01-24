@@ -83,10 +83,10 @@ private module Impl {
    */
   predicate containerSizeAccess(ExprNode e) {
     exists(Property p | p = e.getExpr().(PropertyAccess).getTarget() |
-      propertyOverrides(p, "System.Collections.Generic.IEnumerable<>", "Count") or
-      propertyOverrides(p, "System.Collections.ICollection", "Count") or
-      propertyOverrides(p, "System.String", "Length") or
-      propertyOverrides(p, "System.Array", "Length")
+      propertyOverrides(p, "System.Collections.Generic", "IEnumerable<>", "Count") or
+      propertyOverrides(p, "System.Collections", "ICollection", "Count") or
+      propertyOverrides(p, "System", "String", "Length") or
+      propertyOverrides(p, "System", "Array", "Length")
     )
     or
     e.getExpr() instanceof CountCall
@@ -211,8 +211,9 @@ private module Impl {
     not e.getExpr() instanceof BitwiseAndExpr and
     not e.getExpr() instanceof BitwiseOrExpr and
     not e.getExpr() instanceof BitwiseXorExpr and
-    not e.getExpr() instanceof LShiftExpr and
-    not e.getExpr() instanceof RShiftExpr and
+    not e.getExpr() instanceof LeftShiftExpr and
+    not e.getExpr() instanceof RightShiftExpr and
+    not e.getExpr() instanceof UnsignedRightShiftExpr and
     not e.getExpr() instanceof ConditionalExpr and
     not e.getExpr() instanceof RefExpr and
     not e.getExpr() instanceof LocalVariableDeclAndInitExpr and

@@ -1,3 +1,23 @@
+## 0.6.1
+
+No user-facing changes.
+
+## 0.6.0
+
+### Minor Analysis Improvements
+
+* The `analysis/AlertSuppression.ql` query has moved to the root folder. Users that refer to this query by path should update their configurations. The query has been updated to support the new `# codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy `# lgtm` and `# lgtm[query-id]` comments can now also be placed on the line before an alert.
+* Bumped the minimum keysize we consider secure for elliptic curve cryptography from 224 to 256 bits, following current best practices. This might effect results from the _Use of weak cryptographic key_ (`py/weak-crypto-key`) query.
+* Added modeling of `getpass.getpass` as a source of passwords, which will be an additional source for `py/clear-text-logging-sensitive-data`, `py/clear-text-storage-sensitive-data`, and `py/weak-sensitive-data-hashing`.
+
+## 0.5.6
+
+No user-facing changes.
+
+## 0.5.5
+
+No user-facing changes.
+
 ## 0.5.4
 
 No user-facing changes.

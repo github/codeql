@@ -25,16 +25,18 @@ jobs:
 
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
+        uses: github/codeql-action/init@45955cb1830b640e2c1603ad72ad542a49d47b96
         with:
           languages: javascript # does not matter
+      - uses: ./.github/actions/os-version
+        id: os_version
       - uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
             ql/target
-          key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-qltest-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
       - name: Build Extractor
         run: cd ql; env "PATH=$PATH:`dirname ${CODEQL}`" ./scripts/create-extractor-pack.sh
         env:

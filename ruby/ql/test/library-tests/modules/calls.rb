@@ -614,3 +614,38 @@ end
 SingletonA.call_call_singleton1
 SingletonB.call_call_singleton1
 SingletonC.call_call_singleton1
+
+module Included
+    def foo
+        self.bar
+    end
+    def bar
+    end
+end
+
+class IncludesIncluded
+    include Included
+    def bar
+        super
+    end
+end
+
+class CustomNew1
+    def self.new
+        C1.new
+    end     
+end
+
+CustomNew1.new.instance
+
+class CustomNew2
+    def self.new
+        self.allocate
+    end
+
+    def instance
+        puts "CustomNew2#instance"
+    end
+end
+
+CustomNew2.new.instance

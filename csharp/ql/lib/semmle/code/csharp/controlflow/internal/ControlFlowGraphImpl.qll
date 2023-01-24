@@ -768,7 +768,7 @@ module Expressions {
             nc.getOuterCompletion()
                 .(ThrowCompletion)
                 .getExceptionClass()
-                .hasQualifiedName("System.InvalidOperationException")
+                .hasQualifiedName("System", "InvalidOperationException")
           )
       )
     }

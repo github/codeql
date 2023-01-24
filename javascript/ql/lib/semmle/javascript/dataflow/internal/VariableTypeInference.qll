@@ -144,9 +144,7 @@ class AnalyzedVarDef extends VarDef {
 /**
  * Flow analysis for simple parameters of selected functions.
  */
-private class AnalyzedParameterAsVarDef extends AnalyzedVarDef, @var_decl {
-  AnalyzedParameterAsVarDef() { this instanceof Parameter }
-
+private class AnalyzedParameterAsVarDef extends AnalyzedVarDef, @var_decl instanceof Parameter {
   override AbstractValue getAnRhsValue() {
     result = DataFlow::valueNode(this).(AnalyzedValueNode).getALocalValue()
   }
@@ -692,25 +690,20 @@ abstract private class CallWithAnalyzedParameters extends FunctionWithAnalyzedPa
 /**
  * Flow analysis for simple parameters of IIFEs.
  */
-private class IifeWithAnalyzedParameters extends CallWithAnalyzedParameters {
-  ImmediatelyInvokedFunctionExpr iife;
+private class IifeWithAnalyzedParameters extends CallWithAnalyzedParameters instanceof ImmediatelyInvokedFunctionExpr {
+  IifeWithAnalyzedParameters() { super.getInvocationKind() = "direct" }
 
-  IifeWithAnalyzedParameters() {
-    this = iife and
-    iife.getInvocationKind() = "direct"
-  }
-
-  override DataFlow::InvokeNode getAnInvocation() { result = iife.getInvocation().flow() }
+  override DataFlow::InvokeNode getAnInvocation() { result = super.getInvocation().flow() }
 
   override predicate isIncomplete(DataFlow::Incompleteness cause) {
     // if the IIFE has a name and that name is referenced, we conservatively
     // assume that there may be other calls than the direct one
-    exists(iife.getVariable().getAnAccess()) and cause = "call"
+    exists(ImmediatelyInvokedFunctionExpr.super.getVariable().getAnAccess()) and cause = "call"
     or
     // if the IIFE is non-strict and its `arguments` object is accessed, we
     // also assume that there may be other calls (through `arguments.callee`)
-    not iife.isStrict() and
-    exists(iife.getArgumentsVariable().getAnAccess()) and
+    not ImmediatelyInvokedFunctionExpr.super.isStrict() and
+    exists(ImmediatelyInvokedFunctionExpr.super.getArgumentsVariable().getAnAccess()) and
     cause = "call"
   }
 }
@@ -718,12 +711,8 @@ private class IifeWithAnalyzedParameters extends CallWithAnalyzedParameters {
 /**
  * Enables inter-procedural type inference for `LocalFunction`.
  */
-private class LocalFunctionWithAnalyzedParameters extends CallWithAnalyzedParameters {
-  LocalFunction local;
-
-  LocalFunctionWithAnalyzedParameters() { this = local }
-
-  override DataFlow::InvokeNode getAnInvocation() { result = local.getAnInvocation() }
+private class LocalFunctionWithAnalyzedParameters extends CallWithAnalyzedParameters instanceof LocalFunction {
+  override DataFlow::InvokeNode getAnInvocation() { result = LocalFunction.super.getAnInvocation() }
 
   override predicate isIncomplete(DataFlow::Incompleteness cause) { none() }
 }

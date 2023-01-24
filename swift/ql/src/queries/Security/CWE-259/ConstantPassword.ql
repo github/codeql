@@ -32,13 +32,26 @@ class ConstantPasswordSource extends Expr {
 class ConstantPasswordSink extends Expr {
   ConstantPasswordSink() {
     // `password` arg in `init` is a sink
-    exists(ClassOrStructDecl c, AbstractFunctionDecl f, CallExpr call, int arg |
+    exists(ClassOrStructDecl c, ConstructorDecl f, CallExpr call |
       c.getFullName() = ["HKDF", "PBKDF1", "PBKDF2", "Scrypt"] and
       c.getAMember() = f and
-      f.getName().matches("%init(%password:%") and
       call.getStaticTarget() = f and
-      f.getParam(pragma[only_bind_into](arg)).getName() = "password" and
-      call.getArgument(pragma[only_bind_into](arg)).getExpr() = this
+      call.getArgumentWithLabel("password").getExpr() = this
+    )
+    or
+    // RNCryptor (labelled arguments)
+    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
+      c.getFullName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+      c.getAMember() = f and
+      call.getStaticTarget() = f and
+      call.getArgumentWithLabel(["password", "withPassword", "forPassword"]).getExpr() = this
+    )
+    or
+    // RNCryptor (unlabelled arguments)
+    exists(MethodDecl f, CallExpr call |
+      f.hasQualifiedName("RNCryptor", "keyForPassword(_:salt:settings:)") and
+      call.getStaticTarget() = f and
+      call.getArgument(0).getExpr() = this
     )
   }
 }

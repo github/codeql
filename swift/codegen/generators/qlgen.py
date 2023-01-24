@@ -60,6 +60,7 @@ abbreviations = {
     "param": "parameter",
     "int": "integer",
     "var": "variable",
+    "ref": "reference",
 }
 
 abbreviations.update({f"{k}s": f"{v}s" for k, v in abbreviations.items()})
@@ -248,7 +249,12 @@ def _get_all_properties_to_be_tested(cls: schema.Class, lookup: typing.Dict[str,
         if not ("qltest_skip" in c.pragmas or "qltest_skip" in p.pragmas):
             # TODO here operations are duplicated, but should be better if we split ql and qltest generation
             p = get_ql_property(c, p)
-            yield ql.PropertyForTest(p.getter, p.type, p.is_single, p.is_predicate, p.is_repeated)
+            yield ql.PropertyForTest(p.getter, is_total=p.is_single or p.is_predicate,
+                                     type=p.type if not p.is_predicate else None, is_repeated=p.is_repeated)
+            if p.is_repeated and not p.is_optional:
+                yield ql.PropertyForTest(f"getNumberOf{p.plural}", type="int")
+            elif p.is_optional and not p.is_repeated:
+                yield ql.PropertyForTest(f"has{p.singular}")
 
 
 def _partition_iter(x, pred):
@@ -302,7 +308,8 @@ def generate(opts, renderer):
 
     imports = {}
 
-    with renderer.manage(generated=generated, stubs=stubs, registry=opts.generated_registry) as renderer:
+    with renderer.manage(generated=generated, stubs=stubs, registry=opts.generated_registry,
+                         force=opts.force) as renderer:
 
         db_classes = [cls for cls in classes.values() if not cls.ipa]
         renderer.render(ql.DbClasses(db_classes), out / "Raw.qll")
@@ -321,7 +328,8 @@ def generate(opts, renderer):
                 renderer.render(stub, stub_file)
 
         # for example path/to/elements -> path/to/elements.qll
-        renderer.render(ql.ImportList(list(imports.values())), include_file)
+        renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].ql_internal]),
+                        include_file)
 
         renderer.render(ql.GetParentImplementation(list(classes.values())), out / 'ParentChild.qll')
 
@@ -336,7 +344,7 @@ def generate(opts, renderer):
                                 test_dir / missing_test_source_filename)
                 continue
             total_props, partial_props = _partition(_get_all_properties_to_be_tested(c, data.classes),
-                                                    lambda p: p.is_single or p.is_predicate)
+                                                    lambda p: p.is_total)
             renderer.render(ql.ClassTester(class_name=c.name,
                                            properties=total_props,
                                            # in case of collapsed hierarchies we want to see the actual QL class in results

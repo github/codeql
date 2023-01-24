@@ -179,16 +179,16 @@ class SwiftDispatcher {
   // it actually gets emitted to handle recursive cases such as recursive calls, or recursive type
   // declarations
   template <typename E, typename... Args, std::enable_if_t<IsStorable<E>>* = nullptr>
-  TrapLabelOf<E> assignNewLabel(const E& e, Args&&... args) {
+  TrapLabel<ConcreteTrapTagOf<E>> assignNewLabel(const E& e, Args&&... args) {
     assert(waitingForNewLabel == Store::Handle{e} && "assignNewLabel called on wrong entity");
-    auto label = trap.createLabel<TrapTagOf<E>>(std::forward<Args>(args)...);
+    auto label = trap.createLabel<ConcreteTrapTagOf<E>>(std::forward<Args>(args)...);
     store.insert(e, label);
     waitingForNewLabel = std::monostate{};
     return label;
   }
 
   template <typename E, typename... Args, std::enable_if_t<IsStorable<E*>>* = nullptr>
-  TrapLabelOf<E> assignNewLabel(const E& e, Args&&... args) {
+  TrapLabel<ConcreteTrapTagOf<E>> assignNewLabel(const E& e, Args&&... args) {
     return assignNewLabel(&e, std::forward<Args>(args)...);
   }
 
@@ -353,19 +353,6 @@ class SwiftDispatcher {
       }
     }
     return false;
-  }
-
-  static std::filesystem::path getFilePath(std::string_view path) {
-    // TODO: this needs more testing
-    // TODO: check canonicalization of names on a case insensitive filesystems
-    // TODO: make symlink resolution conditional on CODEQL_PRESERVE_SYMLINKS=true
-    std::error_code ec;
-    auto ret = std::filesystem::canonical(path, ec);
-    if (ec) {
-      std::cerr << "Cannot get real path: " << std::quoted(path) << ": " << ec.message() << "\n";
-      return {};
-    }
-    return ret;
   }
 
   virtual void visit(const swift::Decl* decl) = 0;

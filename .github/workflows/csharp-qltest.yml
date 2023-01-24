@@ -67,6 +67,20 @@ jobs:
           mv "$CODEQL_PATH/csharp/tools/extractor-asp.jar" "${{ github.workspace }}/csharp/extractor-pack/tools"
           # Safe guard against using the bundled extractor
           rm -rf "$CODEQL_PATH/csharp"
-          codeql test run --threads=0 --ram 52000 --slice ${{ matrix.slice }} --search-path "${{ github.workspace }}/csharp/extractor-pack" --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+          codeql test run --threads=0 --ram 50000 --slice ${{ matrix.slice }} --search-path "${{ github.workspace }}/csharp/extractor-pack" --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
         env:
           GITHUB_TOKEN: ${{ github.token }}
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.202
+      - name: Extractor unit tests
+        run: |
+          dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/csharp/extractor/Semmle.Util.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/csharp/extractor/Semmle.Extraction.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/csharp/autobuilder/Semmle.Autobuild.CSharp.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"

@@ -6,6 +6,7 @@
  * @precision low
  * @tags security
  *       correctness
+ *       experimental
  *       external/cwe/cwe-190
  *       external/cwe/cwe-128
  * @id cpp/multiplication-overflow-in-alloc
@@ -29,7 +30,7 @@ class MultToAllocConfig extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node node) {
     // something that affects an allocation size
-    node.asExpr() = any(AllocationExpr ae).getSizeExpr().getAChild*()
+    node.asExpr() = any(HeuristicAllocationExpr ae).getSizeExpr().getAChild*()
   }
 }
 

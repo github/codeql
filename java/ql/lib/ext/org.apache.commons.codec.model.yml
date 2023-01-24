@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.commons.codec", "BinaryDecoder", True, "decode", "(byte[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.codec", "BinaryEncoder", True, "encode", "(byte[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.codec", "Decoder", True, "decode", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.codec", "Encoder", True, "encode", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.codec", "StringDecoder", True, "decode", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.codec", "StringEncoder", True, "encode", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

@@ -10,7 +10,7 @@ import java.util.Stack
 import org.jetbrains.kotlin.ir.IrElement
 
 class LogCounter() {
-    public val diagnosticCounts = mutableMapOf<String, Int>()
+    public val diagnosticInfo = mutableMapOf<String, Pair<Severity, Int>>()
     public val diagnosticLimit: Int
     init {
         diagnosticLimit = System.getenv("CODEQL_EXTRACTOR_KOTLIN_DIAGNOSTIC_LIMIT")?.toIntOrNull() ?: 100
@@ -114,12 +114,23 @@ open class LoggerBase(val logCounter: LogCounter) {
             if(diagnosticLoc == null) {
                 "    Missing caller information.\n"
             } else {
-                val count = logCounter.diagnosticCounts.getOrDefault(diagnosticLoc, 0) + 1
-                logCounter.diagnosticCounts[diagnosticLoc] = count
+                val oldInfo = logCounter.diagnosticInfo.getOrDefault(diagnosticLoc, Pair(severity, 0))
+                if(severity != oldInfo.first) {
+                    // We don't want to get in a loop, so just emit this
+                    // directly without going through the diagnostic
+                    // counting machinery
+                    if (verbosity >= 1) {
+                        val message = "Severity mismatch ($severity vs ${oldInfo.first}) at $diagnosticLoc"
+                        emitDiagnostic(tw, Severity.Error, "Inconsistency", message, message)
+                    }
+                }
+                val newCount = oldInfo.second + 1
+                val newInfo = Pair(severity, newCount)
+                logCounter.diagnosticInfo[diagnosticLoc] = newInfo
                 when {
                     logCounter.diagnosticLimit <= 0 -> ""
-                    count == logCounter.diagnosticLimit -> "    Limit reached for diagnostics from $diagnosticLoc.\n"
-                    count > logCounter.diagnosticLimit -> return
+                    newCount == logCounter.diagnosticLimit -> "    Limit reached for diagnostics from $diagnosticLoc.\n"
+                    newCount > logCounter.diagnosticLimit -> return
                     else -> ""
                 }
             }
@@ -189,14 +200,16 @@ open class LoggerBase(val logCounter: LogCounter) {
     }
 
     fun printLimitedDiagnosticCounts(tw: TrapWriter) {
-        for((caller, count) in logCounter.diagnosticCounts) {
+        for((caller, info) in logCounter.diagnosticInfo) {
+            val severity = info.first
+            val count = info.second
             if(count >= logCounter.diagnosticLimit) {
                 // We don't know if this location relates to an error
                 // or a warning, so we just declare hitting the limit
                 // to be an error regardless.
                 val message = "Total of $count diagnostics (reached limit of ${logCounter.diagnosticLimit}) from $caller."
                 if (verbosity >= 1) {
-                    emitDiagnostic(tw, Severity.Error, "Limit", message, message)
+                    emitDiagnostic(tw, severity, "Limit", message, message)
                 }
             }
         }
