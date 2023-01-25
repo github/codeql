@@ -322,6 +322,8 @@ module Raw {
 
   class TypeAliasDecl extends @type_alias_decl, GenericTypeDecl {
     override string toString() { result = "TypeAliasDecl" }
+
+    Type getAliasedType() { type_alias_decls(this, result) }
   }
 
   class ClassDecl extends @class_decl, NominalTypeDecl {

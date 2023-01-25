@@ -323,7 +323,7 @@ class OpaqueTypeDecl(GenericTypeDecl):
     opaque_generic_params: list["GenericTypeParamType"]
 
 class TypeAliasDecl(GenericTypeDecl):
-    pass
+    aliased_type: Type
 
 class ClassDecl(NominalTypeDecl):
     pass

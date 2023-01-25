@@ -615,7 +615,8 @@ param_decl_property_wrapper_local_wrapped_vars(  //dir=decl
 );
 
 type_alias_decls(  //dir=decl
-  unique int id: @type_alias_decl
+  unique int id: @type_alias_decl,
+  int aliased_type: @type_or_none ref
 );
 
 class_decls(  //dir=decl

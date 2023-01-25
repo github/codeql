@@ -206,6 +206,7 @@ std::optional<codeql::AssociatedTypeDecl> DeclTranslator::translateAssociatedTyp
 std::optional<codeql::TypeAliasDecl> DeclTranslator::translateTypeAliasDecl(
     const swift::TypeAliasDecl& decl) {
   if (auto entry = createNamedEntry(decl)) {
+    entry->aliased_type = dispatcher.fetchLabel(decl.getUnderlyingType());
     fillTypeDecl(decl, *entry);
     return entry;
   }
