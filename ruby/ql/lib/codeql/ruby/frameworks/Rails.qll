@@ -10,6 +10,43 @@ private import codeql.ruby.frameworks.ActiveStorage
 private import codeql.ruby.frameworks.internal.Rails
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.security.OpenSSL
+private import codeql.ruby.dataflow.FlowSummary
+
+/** Provides utility predicates for extracting information from calls to `render`. */
+private module RenderCallUtils {
+  private Expr getTemplatePathArgument(MethodCall renderCall) {
+    // TODO: support other ways of specifying paths (e.g. `file`)
+    result =
+      [renderCall.getKeywordArgument(["partial", "template", "action"]), renderCall.getArgument(0)]
+  }
+
+  private string getTemplatePathValue(MethodCall renderCall) {
+    result = getTemplatePathArgument(renderCall).getConstantValue().getStringlikeValue()
+  }
+
+  // everything up to and including the final slash, but ignoring any leading slash
+  private string getSubPath(MethodCall renderCall) {
+    result = getTemplatePathValue(renderCall).regexpCapture("^/?(.*/)?(?:[^/]*?)$", 1)
+  }
+
+  // everything after the final slash, or the whole string if there is no slash
+  private string getBaseName(MethodCall renderCall) {
+    result = getTemplatePathValue(renderCall).regexpCapture("^/?(?:.*/)?([^/]*?)$", 1)
+  }
+
+  /**
+   * Gets the template file to be rendered by this render call, if any.
+   */
+  ErbFile getTemplateFile(MethodCall renderCall) {
+    result.getTemplateName() = getBaseName(renderCall) and
+    result.getRelativePath().matches("%app/views/" + getSubPath(renderCall) + "%")
+  }
+
+  /**
+   * Gets the local variables passed as context to the renderer.
+   */
+  HashLiteral getLocals(MethodCall renderCall) { result = renderCall.getKeywordArgument("locals") }
+}
 
 /**
  * Provides classes for working with Rails.
@@ -38,37 +75,15 @@ module Rails {
    * rendered content.
    */
   class RenderCall extends MethodCall instanceof RenderCallImpl {
-    private Expr getTemplatePathArgument() {
-      // TODO: support other ways of specifying paths (e.g. `file`)
-      result = [this.getKeywordArgument(["partial", "template", "action"]), this.getArgument(0)]
-    }
-
-    private string getTemplatePathValue() {
-      result = this.getTemplatePathArgument().getConstantValue().getStringlikeValue()
-    }
-
-    // everything up to and including the final slash, but ignoring any leading slash
-    private string getSubPath() {
-      result = this.getTemplatePathValue().regexpCapture("^/?(.*/)?(?:[^/]*?)$", 1)
-    }
-
-    // everything after the final slash, or the whole string if there is no slash
-    private string getBaseName() {
-      result = this.getTemplatePathValue().regexpCapture("^/?(?:.*/)?([^/]*?)$", 1)
-    }
-
     /**
      * Gets the template file to be rendered by this call, if any.
      */
-    ErbFile getTemplateFile() {
-      result.getTemplateName() = this.getBaseName() and
-      result.getRelativePath().matches("%app/views/" + this.getSubPath() + "%")
-    }
+    ErbFile getTemplateFile() { result = RenderCallUtils::getTemplateFile(this) }
 
     /**
-     * Get the local variables passed as context to the renderer
+     * Gets the local variables passed as context to the renderer.
      */
-    HashLiteral getLocals() { result = this.getKeywordArgument("locals") }
+    HashLiteral getLocals() { result = RenderCallUtils::getLocals(this) }
     // TODO: implicit renders in controller actions
   }
 
@@ -287,5 +302,92 @@ private class CookiesSameSiteProtectionSetting extends Settings::NillableStringl
     result = "Unsetting 'SameSite' can disable same-site cookie restrictions in some browsers."
   }
 }
+
 // TODO: initialization hooks, e.g. before_configuration, after_initialize...
 // TODO: initializers
+/** A synthetic global to represent the value passed to the `locals` argument of a render call for a specific ERB file. */
+private class LocalAssignsHashSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
+  private ErbFile erbFile;
+  private string id;
+  // Note that we can't use an actual `Rails::RenderCall` here due to problems with non-monotonic recursion
+  private MethodCall renderCall;
+
+  LocalAssignsHashSyntheticGlobal() {
+    this = "LocalAssignsHashSyntheticGlobal+" + id and
+    id = erbFile.getRelativePath() + "+" + renderCall.getLocation() and
+    renderCall.getMethodName() = "render" and
+    RenderCallUtils::getTemplateFile(renderCall) = erbFile
+  }
+
+  /** Gets the `ErbFile` which this locals hash is accessible from. */
+  ErbFile getErbFile() { result = erbFile }
+
+  /** Gets the identifier for this particular locals hash synthetic global. */
+  string getId() { result = id }
+
+  /** Gets a call to render that can write to this hash. */
+  Rails::RenderCall getARenderCall() { result = renderCall }
+}
+
+/** A summary for `render` calls linked to some specific ERB file. */
+private class RenderLocalsSummary extends SummarizedCallable {
+  private LocalAssignsHashSyntheticGlobal glob;
+
+  RenderLocalsSummary() { this = "rails_render_locals()" + glob.getId() }
+
+  override Rails::RenderCall getACall() { result = glob.getARenderCall() }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "Argument[locals:]" and
+    output = "SyntheticGlobal[" + glob + "]" and
+    preservesValue = true
+  }
+}
+
+/** A summary for calls to `local_assigns` in a view to access a `render` call `locals` hash. */
+private class AccessLocalsSummary extends SummarizedCallable {
+  private LocalAssignsHashSyntheticGlobal glob;
+
+  AccessLocalsSummary() { this = "rails_local_assigns()" + glob.getId() }
+
+  override MethodCall getACall() {
+    glob.getErbFile() = result.getLocation().getFile() and
+    result.getMethodName() = "local_assigns"
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "SyntheticGlobal[" + glob + "]" and
+    output = "ReturnValue" and
+    preservesValue = true
+  }
+}
+
+private string getAMethodNameFromErbFile(ErbFile f) {
+  result = any(MethodCall c | c.getLocation().getFile() = f).getMethodName()
+}
+
+private class AccessLocalsKeySummary extends SummarizedCallable {
+  private LocalAssignsHashSyntheticGlobal glob;
+  private string methodName;
+
+  AccessLocalsKeySummary() {
+    this = "rails_locals_key()" + glob.getId() + "#" + methodName and
+    methodName = getAMethodNameFromErbFile(glob.getErbFile()) and
+    // Limit method calls to those that could plausibly be a key in a `locals` hash argument
+    // TODO: this could be more precise but for problems using the dataflow library in this context
+    methodName =
+      any(HashLiteral l).getAKeyValuePair().getKey().getConstantValue().getStringlikeValue()
+  }
+
+  override MethodCall getACall() {
+    result.getLocation().getFile() = glob.getErbFile() and
+    result.getMethodName() = methodName and
+    result.getReceiver() instanceof SelfVariableReadAccess
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "SyntheticGlobal[" + glob + "].Element[:" + methodName + "]" and
+    output = "ReturnValue" and
+    preservesValue = true
+  }
+}
