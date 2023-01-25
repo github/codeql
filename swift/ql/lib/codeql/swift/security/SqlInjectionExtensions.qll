@@ -28,7 +28,7 @@ class SqlInjectionAdditionalTaintStep extends Unit {
 /**
  * A default SQL injection sink for the sqlite3 C API.
  */
-class CApiDefaultSqlInjectionSink extends SqlInjectionSink {
+private class CApiDefaultSqlInjectionSink extends SqlInjectionSink {
   CApiDefaultSqlInjectionSink() {
     // `sqlite3_exec` and variants of `sqlite3_prepare`.
     exists(CallExpr call |
@@ -48,7 +48,7 @@ class CApiDefaultSqlInjectionSink extends SqlInjectionSink {
 /**
  * A default SQL injection sink for the `SQLite.swift` library.
  */
-class SQLiteSwiftDefaultSqlInjectionSink extends SqlInjectionSink {
+private class SQLiteSwiftDefaultSqlInjectionSink extends SqlInjectionSink {
   SQLiteSwiftDefaultSqlInjectionSink() {
     // Variants of `Connection.execute`, `connection.prepare` and `connection.scalar`.
     exists(CallExpr call |
@@ -70,7 +70,7 @@ class SQLiteSwiftDefaultSqlInjectionSink extends SqlInjectionSink {
 /**
  * A default SQL injection sink for the GRDB library.
  */
-class GrdbDefaultSqlInjectionSink extends SqlInjectionSink {
+private class GrdbDefaultSqlInjectionSink extends SqlInjectionSink {
   GrdbDefaultSqlInjectionSink() {
     exists(CallExpr call, MethodDecl method |
       call.getStaticTarget() = method and

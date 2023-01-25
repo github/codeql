@@ -28,7 +28,7 @@ class UnsafeJsEvalAdditionalTaintStep extends Unit {
 /**
  * A default SQL injection sink for the `WKWebView` interface.
  */
-class WKWebViewDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
+private class WKWebViewDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
   WKWebViewDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
       ce.getStaticTarget()
@@ -48,7 +48,7 @@ class WKWebViewDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
 /**
  * A default SQL injection sink for the `WKUserContentController` interface.
  */
-class WKUserContentControllerDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
+private class WKUserContentControllerDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
   WKUserContentControllerDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
       ce.getStaticTarget()
@@ -61,7 +61,7 @@ class WKUserContentControllerDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
 /**
  * A default SQL injection sink for the `UIWebView` and `WebView` interfaces.
  */
-class UIWebViewDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
+private class UIWebViewDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
   UIWebViewDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
       ce.getStaticTarget()
@@ -74,7 +74,7 @@ class UIWebViewDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
 /**
  * A default SQL injection sink for the `JSContext` interface.
  */
-class JSContextDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
+private class JSContextDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
   JSContextDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
       ce.getStaticTarget()
@@ -87,7 +87,7 @@ class JSContextDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
 /**
  * A default SQL injection sink for the `JSEvaluateScript` function.
  */
-class JSEvaluateScriptDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
+private class JSEvaluateScriptDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
   JSEvaluateScriptDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
       ce.getStaticTarget().(FreeFunctionDecl).hasName("JSEvaluateScript(_:_:_:_:_:_:)")
@@ -98,7 +98,7 @@ class JSEvaluateScriptDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
 /**
  * A default SQL injection sanitrizer.
  */
-class DefaultUnsafeJsEvalAdditionalTaintStep extends UnsafeJsEvalAdditionalTaintStep {
+private class DefaultUnsafeJsEvalAdditionalTaintStep extends UnsafeJsEvalAdditionalTaintStep {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(Argument arg |
       arg =

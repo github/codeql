@@ -34,7 +34,7 @@ class UnsafeWebViewFetchAdditionalTaintStep extends Unit {
  * A default uncontrolled format string sink, such as certain arguments
  * to `UIWebView.loadHTMLString`.
  */
-class UIKitWebKitWebViewFetchSink extends UnsafeWebViewFetchSink {
+private class UIKitWebKitWebViewFetchSink extends UnsafeWebViewFetchSink {
   Expr baseUrl;
 
   UIKitWebKitWebViewFetchSink() {
