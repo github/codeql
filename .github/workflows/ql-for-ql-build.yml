@@ -22,11 +22,15 @@ jobs:
     steps:
       ### Build the queries ###
       - uses: actions/checkout@v3
+      - name: Find latest bundle
+        id: find-latest-bundle
+        uses: ./.github/actions/find-latest-bundle
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
+        uses: github/codeql-action/init@45955cb1830b640e2c1603ad72ad542a49d47b96
         with:
           languages: javascript # does not matter
+          tools: ${{ steps.find-latest-bundle.outputs.url }}
       - name: Get CodeQL version
         id: get-codeql-version
         run: |
@@ -34,12 +38,14 @@ jobs:
         shell: bash
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
+      - uses: ./.github/actions/os-version
+        id: os_version
       - name: Cache entire pack
         id: cache-pack
         uses: actions/cache@v3
         with:
           path: ${{ runner.temp }}/pack
-          key: ${{ runner.os }}-pack-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('ql/**/*.rs') }}-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/**/qlpack.yml') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}--${{ hashFiles('.github/workflows/ql-for-ql-build.yml') }}
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-pack-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('ql/**/*.rs') }}-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/**/qlpack.yml') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}--${{ hashFiles('.github/workflows/ql-for-ql-build.yml') }}
       - name: Cache queries
         if: steps.cache-pack.outputs.cache-hit != 'true'
         id: cache-queries
@@ -73,7 +79,7 @@ jobs:
             ql/target/release/ql-autobuilder.exe
             ql/target/release/ql-extractor
             ql/target/release/ql-extractor.exe
-          key: ${{ runner.os }}-extractor-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('ql/**/*.rs') }}
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-extractor-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('ql/**/*.rs') }}
       - name: Cache cargo
         if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         uses: actions/cache@v3
@@ -82,7 +88,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             ql/target
-          key: ${{ runner.os }}-rust-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-rust-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
       - name: Check formatting
         if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         run: cd ql; cargo fmt --all -- --check
@@ -133,19 +139,20 @@ jobs:
         env:
           CONF: ./ql-for-ql-config.yml
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
+        uses: github/codeql-action/init@45955cb1830b640e2c1603ad72ad542a49d47b96
         with:
           languages: ql
           db-location: ${{ runner.temp }}/db
           config-file: ./ql-for-ql-config.yml
-      - name: Move pack cache
+          tools: ${{ steps.find-latest-bundle.outputs.url }}
+      - name: Move pack queries
         run: |
-          cp -r ${PACK}/.cache ql/ql/src/.cache
+          cp -r ${PACK}/queries ql/ql/src
         env:
           PACK: ${{ runner.temp }}/pack
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
+        uses: github/codeql-action/analyze@45955cb1830b640e2c1603ad72ad542a49d47b96
         with:
           category: "ql-for-ql"
       - name: Copy sarif file to CWD

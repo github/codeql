@@ -78,7 +78,7 @@ class C(object):
         '''
         return self is other
 
-#Was FP -- https://github.com/lgtmhq/lgtm-queries/issues/13
+#Was FP
 def both_sides_known(zero_based="auto", query_id=False):
     if query_id and zero_based == "auto":
         zero_based = True

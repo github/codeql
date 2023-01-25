@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.hc.core5.http.message", "RequestLine", True, "RequestLine", "(HttpRequest)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["org.apache.hc.core5.http.message", "RequestLine", True, "RequestLine", "(String,String,ProtocolVersion)", "", "Argument[1]", "Argument[-1]", "taint", "manual"]

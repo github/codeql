@@ -1,1 +1,1 @@
-| if_config.swift:1:1:10:1 | #if ... | getModule: | file://:0:0:0:0 | if_config |
+| if_config.swift:1:1:10:1 | #if ... | getModule: | file://:0:0:0:0 | if_config | getNumberOfActiveElements: | 3 |

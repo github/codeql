@@ -1,5 +1,4 @@
 import java
-private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 
 /** The class `com.jfinal.core.Controller`. */

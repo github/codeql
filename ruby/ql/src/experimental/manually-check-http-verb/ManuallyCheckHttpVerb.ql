@@ -7,6 +7,7 @@
  * @precision low
  * @id rb/manually-checking-http-verb
  * @tags security
+ *       experimental
  */
 
 import codeql.ruby.AST

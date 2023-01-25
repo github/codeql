@@ -46,9 +46,7 @@ class HasFlowTest extends InlineExpectationsTest {
     )
     or
     tag = "numValueFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink, ValueFlowConf vconf, int num |
-      vconf.hasFlow(src, sink)
-    |
+    exists(DataFlow::Node sink, ValueFlowConf vconf, int num | vconf.hasFlowTo(sink) |
       value = num.toString() and
       sink.getLocation() = location and
       element = sink.toString() and

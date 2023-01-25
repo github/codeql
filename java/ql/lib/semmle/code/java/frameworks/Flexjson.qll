@@ -3,7 +3,6 @@
  */
 
 import java
-private import semmle.code.java.dataflow.ExternalFlow
 
 /** The class `flexjson.JSONDeserializer`. */
 class FlexjsonDeserializer extends RefType {

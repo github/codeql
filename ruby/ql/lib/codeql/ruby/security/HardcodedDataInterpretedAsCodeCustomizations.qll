@@ -87,9 +87,7 @@ module HardcodedDataInterpretedAsCode {
   /**
    * A code injection sink; hard-coded data should not flow here.
    */
-  private class DefaultCodeInjectionSink extends Sink {
-    DefaultCodeInjectionSink() { this instanceof CodeInjection::Sink }
-
+  private class DefaultCodeInjectionSink extends Sink instanceof CodeInjection::Sink {
     override string getKind() { result = "code" }
   }
 

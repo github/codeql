@@ -1,0 +1,6 @@
+| GenericAttribute.cs:3:12:3:34 | [assembly: MyGeneric<Int32>(...)] | MyGenericAttribute<Int32> | 1 | (Int32) | GenericAssemblyAttribute |
+| GenericAttribute.cs:4:10:4:35 | [module: MyGeneric2<Object,Object>(...)] | MyGeneric2Attribute<Object,Object> | 2 | (Object) | GenericModuleAttribute |
+| GenericAttribute.cs:12:6:12:28 | [MyGeneric<Int32>(...)] | MyGenericAttribute<Int32> | 1 | (Int32) | GenericDefaultAttribute |
+| GenericAttribute.cs:15:6:15:22 | [MyGeneric<String>(...)] | MyGenericAttribute<String> | 1 | (String) | GenericDefaultAttribute |
+| GenericAttribute.cs:18:6:18:28 | [MyGeneric2<Int32,String>(...)] | MyGeneric2Attribute<Int32,String> | 2 | (Int32,String) | GenericDefaultAttribute |
+| GenericAttribute.cs:21:14:21:30 | [return: MyGeneric<Object>(...)] | MyGenericAttribute<Object> | 1 | (Object) | GenericReturnAttribute |

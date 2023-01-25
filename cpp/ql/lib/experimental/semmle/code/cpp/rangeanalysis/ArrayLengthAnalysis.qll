@@ -218,7 +218,7 @@ private predicate allocation(Instruction array, Length length, int delta) {
           length.(VNLength).getInstruction().getConvertedResultExpression() = lengthExpr
         )
         or
-        not exists(int d | deconstructMallocSizeExpr(alloc.getSizeExpr(), _, d)) and
+        not deconstructMallocSizeExpr(alloc.getSizeExpr(), _, _) and
         length.(VNLength).getInstruction().getConvertedResultExpression() = alloc.getSizeExpr() and
         delta = 0
       )

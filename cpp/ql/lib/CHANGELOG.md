@@ -1,3 +1,36 @@
+## 0.5.1
+
+No user-facing changes.
+
+## 0.5.0
+
+### Breaking Changes
+
+The predicates in the `MustFlow::Configuration` class used by the `MustFlow` library (`semmle.code.cpp.ir.dataflow.MustFlow`) have changed to be defined directly in terms of the C++ IR instead of IR dataflow nodes.
+
+### Deprecated APIs
+
+* Deprecated `semmle.code.cpp.ir.dataflow.DefaultTaintTracking`. Use `semmle.code.cpp.ir.dataflow.TaintTracking`.
+* Deprecated `semmle.code.cpp.security.TaintTrackingImpl`. Use `semmle.code.cpp.ir.dataflow.TaintTracking`.
+* Deprecated `semmle.code.cpp.valuenumbering.GlobalValueNumberingImpl`. Use `semmle.code.cpp.valuenumbering.GlobalValueNumbering`, which exposes the same API.
+
+### Minor Analysis Improvements
+
+* The `ArgvSource` flow source now uses the second parameter of `main` as its source instead of the uses of this parameter.
+* The `ArgvSource` flow source has been generalized to handle cases where the argument vector of `main` is not named `argv`.
+* The `getaddrinfo` function is now recognized as a flow source.
+* The `secure_getenv` and `_wgetenv` functions are now recognized as local flow sources.
+* The `scanf` and `fscanf` functions and their variants are now recognized as flow sources.
+* Deleted the deprecated `getName` and `getShortName` predicates from the `Folder` class.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+No user-facing changes.
+
 ## 0.4.4
 
 No user-facing changes.

@@ -3,6 +3,7 @@
  * @description Using version v1 of Azure Storage client-side encryption is insecure, and may enable an attacker to decrypt encrypted data
  * @kind problem
  * @tags security
+ *       experimental
  *       cryptography
  *       external/cwe/cwe-327
  * @id py/azure-storage/unsafe-client-side-encryption-in-use

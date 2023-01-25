@@ -26,8 +26,8 @@ class MethodDecl extends AbstractFunctionDecl {
   }
 
   /**
-   * Holds if this function is called `funcName` and its a member of a
-   * class, struct, extension, enum or protocol call `typeName`.
+   * Holds if this function is called `funcName` and is a member of a
+   * class, struct, extension, enum or protocol called `typeName`.
    */
   cached
   predicate hasQualifiedName(string typeName, string funcName) {
@@ -46,12 +46,22 @@ class MethodDecl extends AbstractFunctionDecl {
   }
 
   /**
-   * Holds if this function is called `funcName` and its a member of a
-   * class, struct, extension, enum or protocol call `typeName` in a module
+   * Holds if this function is called `funcName` and is a member of a
+   * class, struct, extension, enum or protocol called `typeName` in a module
    * called `moduleName`.
    */
   predicate hasQualifiedName(string moduleName, string typeName, string funcName) {
     this.hasQualifiedName(typeName, funcName) and
     this.getModule().getFullName() = moduleName
   }
+
+  /**
+   * Holds if this function is a `static` or `class` method, as opposed to an instance method.
+   */
+  predicate isStaticOrClassMethod() { this.getSelfParam().getType() instanceof MetatypeType }
+
+  /**
+   * Holds if this function is an instance method, as opposed to a `static` or `class` method.
+   */
+  predicate isInstanceMethod() { not this.isStaticOrClassMethod() }
 }

@@ -10,27 +10,28 @@ namespace codeql {
 
 // Abstracts a given trap output file, with its own universe of trap labels
 class TrapDomain {
-  TargetFile& out_;
+  TargetFile out;
 
  public:
-  explicit TrapDomain(TargetFile& out) : out_{out} {}
+  explicit TrapDomain(TargetFile&& out) : out{std::move(out)} {}
 
   template <typename Entry>
   void emit(const Entry& e) {
-    print(e);
+    out << e << '\n';
   }
 
   template <typename... Args>
   void debug(const Args&... args) {
-    print("/* DEBUG:");
-    print(args...);
-    print("*/");
+    out << "/* DEBUG:\n";
+    (out << ... << args);
+    out << "\n*/\n";
   }
 
   template <typename Tag>
   TrapLabel<Tag> createLabel() {
     auto ret = allocateLabel<Tag>();
     assignStar(ret);
+    out << '\n';
     return ret;
   }
 
@@ -38,6 +39,16 @@ class TrapDomain {
   TrapLabel<Tag> createLabel(Args&&... args) {
     auto ret = allocateLabel<Tag>();
     assignKey(ret, std::forward<Args>(args)...);
+    out << '\n';
+    return ret;
+  }
+
+  template <typename Tag, typename... Args>
+  TrapLabel<Tag> createLabelWithImplementationId(const std::string_view& implementationId,
+                                                 Args&&... args) {
+    auto ret = allocateLabel<Tag>();
+    assignKey(ret, std::forward<Args>(args)...);
+    out << " .implementation " << trapQuoted(implementationId) << '\n';
     return ret;
   }
 
@@ -49,21 +60,16 @@ class TrapDomain {
     return TrapLabel<Tag>::unsafeCreateFromExplicitId(id_++);
   }
 
-  template <typename... Args>
-  void print(const Args&... args) {
-    (out_ << ... << args) << '\n';
-  }
-
   template <typename Tag>
   void assignStar(TrapLabel<Tag> label) {
-    print(label, "=*");
+    out << label << "=*";
   }
 
   template <typename Tag>
   void assignKey(TrapLabel<Tag> label, const std::string& key) {
     // prefix the key with the id to guarantee the same key is not used wrongly with different tags
     auto prefixed = std::string(Tag::prefix) + '_' + key;
-    print(label, "=@", trapQuoted(prefixed));
+    out << label << "=@" << trapQuoted(prefixed);
   }
 
   template <typename Tag, typename... Args>

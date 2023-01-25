@@ -5,5 +5,3 @@ dependencies:
     codeql/java-queries: ${workspace}
 extractor: java
 tests: .
-dataExtensions:
-  - ext/*.model.yml

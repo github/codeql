@@ -30,15 +30,11 @@ module TemplateObjectInjection {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  private class TaintedObjectSourceAsSource extends Source {
-    TaintedObjectSourceAsSource() { this instanceof TaintedObject::Source }
-
+  private class TaintedObjectSourceAsSource extends Source instanceof TaintedObject::Source {
     override DataFlow::FlowLabel getAFlowLabel() { result = TaintedObject::label() }
   }
 
-  private class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-
+  private class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
     override DataFlow::FlowLabel getAFlowLabel() { result.isTaint() }
   }
 

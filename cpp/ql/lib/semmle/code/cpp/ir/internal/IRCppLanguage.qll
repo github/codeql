@@ -67,9 +67,7 @@ class Class = Cpp::Class; // Used for inheritance conversions
 
 predicate getIdentityString = Print::getIdentityString/1;
 
-predicate hasCaseEdge(string minValue, string maxValue) {
-  exists(Cpp::SwitchCase switchCase | hasCaseEdge(switchCase, minValue, maxValue))
-}
+predicate hasCaseEdge(string minValue, string maxValue) { hasCaseEdge(_, minValue, maxValue) }
 
 predicate hasPositionalArgIndex(int argIndex) {
   exists(Cpp::FunctionCall call | exists(call.getArgument(argIndex))) or

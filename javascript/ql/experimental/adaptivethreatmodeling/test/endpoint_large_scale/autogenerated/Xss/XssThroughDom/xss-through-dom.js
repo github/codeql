@@ -89,4 +89,54 @@
 	$("section h1").each(function(){
 		$("nav ul").append("<a href='#" + $(this).text().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g,'') + "'>Section</a>"); // OK
 	});
+
+	$("#id").html($("#foo").find(".bla")[0].value); // NOT OK.
+
+	for (var i = 0; i < foo.length; i++) {
+		$("#id").html($("#foo").find(".bla")[i].value); // NOT OK.
+	}
+})();
+
+class Super {
+	constructor() {
+		this.el = $("#id").get(0);
+	}
+}
+
+class Sub extends Super {
+	constructor() {
+		super();
+		$("#id").get(0).innerHTML = "<a src=\"" + this.el.src + "\">foo</a>"; // NOT OK. Attack: `<mytag id="id" src="x:&quot;&gt;&lt;img src=1 onerror=&quot;alert(1)&quot;&gt;" />`
+	}
+}
+
+(function () {
+    const src = document.getElementById("#link").src;
+	$("#id").html(src); // NOT OK.
+
+    $("#id").attr("src", src); // OK
+
+    $("input.foo")[0].onchange = function (ev) {
+        $("#id").html(ev.target.files[0].name); // NOT OK.
+
+        $("img#id").attr("src", URL.createObjectURL(ev.target.files[0])); // NOT OK
+    }
+})();
+
+(function () {
+	let elem = document.createElement('a');
+	const wSelection = getSelection();
+	const dSelection = document.getSelection();
+	let linkText = wSelection.toString() || dSelection.toString() || '';
+	elem.innerHTML = linkText; // NOT OK
+	$("#id").html(linkText); // NOT OK
+	elem.innerText = linkText; // OK
+})();
+
+const cashDom = require("cash-dom");
+
+(function () {
+    const src = document.getElementById("#link").src;
+	cash("#id").html(src); // NOT OK.
+    cashDom("#id").html(src); // NOT OK
 })();

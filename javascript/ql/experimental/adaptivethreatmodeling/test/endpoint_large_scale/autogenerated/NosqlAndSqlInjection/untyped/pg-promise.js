@@ -5,7 +5,7 @@ require('express')().get('/foo', (req, res) => {
 
   var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
              + req.params.category + "' ORDER BY PRICE";
-  
+
   db.any(query); // NOT OK
   db.many(query); // NOT OK
   db.manyOrNone(query); // NOT OK
@@ -17,7 +17,7 @@ require('express')().get('/foo', (req, res) => {
   db.oneOrNone(query); // NOT OK
   db.query(query); // NOT OK
   db.result(query); // NOT OK
-  
+
   db.one({
     text: query // NOT OK
   });
@@ -59,7 +59,7 @@ require('express')().get('/foo', (req, res) => {
   db.task(t => {
       return t.one(query); // NOT OK
   });
-  db.task(
+  db.taskIf(
     { cnd: t => t.one(query) }, // NOT OK
     t => t.one(query) // NOT OK
   );

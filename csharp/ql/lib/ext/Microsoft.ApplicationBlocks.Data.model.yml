@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["Microsoft.ApplicationBlocks.Data", "SqlHelper", False, "ExecuteDataset", "(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String)", "", "Argument[2]", "sql", "manual"]
       - ["Microsoft.ApplicationBlocks.Data", "SqlHelper", False, "ExecuteDataset", "(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql", "manual"]

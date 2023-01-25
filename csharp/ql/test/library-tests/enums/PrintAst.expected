@@ -84,7 +84,7 @@ enums.cs:
 #   58|             0: [MethodCall] call to method Format
 #   58|               -1: [TypeAccess] access to type String
 #   58|                 0: [TypeMention] string
-#   58|               0: [StringLiteral] "Red = {0}"
+#   58|               0: [StringLiteralUtf16] "Red = {0}"
 #   58|               1: [CastExpr] (...) ...
 #   58|                 1: [CastExpr] (...) ...
 #   58|                   0: [TypeAccess] access to type Int32
@@ -98,7 +98,7 @@ enums.cs:
 #   59|             0: [MethodCall] call to method Format
 #   59|               -1: [TypeAccess] access to type String
 #   59|                 0: [TypeMention] string
-#   59|               0: [StringLiteral] "Green = {0}"
+#   59|               0: [StringLiteralUtf16] "Green = {0}"
 #   59|               1: [CastExpr] (...) ...
 #   59|                 1: [CastExpr] (...) ...
 #   59|                   0: [TypeAccess] access to type Int32
@@ -112,7 +112,7 @@ enums.cs:
 #   60|             0: [MethodCall] call to method Format
 #   60|               -1: [TypeAccess] access to type String
 #   60|                 0: [TypeMention] string
-#   60|               0: [StringLiteral] "Blue = {0}"
+#   60|               0: [StringLiteralUtf16] "Blue = {0}"
 #   60|               1: [CastExpr] (...) ...
 #   60|                 1: [CastExpr] (...) ...
 #   60|                   0: [TypeAccess] access to type Int32
@@ -120,4 +120,4 @@ enums.cs:
 #   60|                   1: [ParameterAccess] access to parameter c
 #   61|           6: [DefaultCase] default:
 #   61|           7: [ReturnStmt] return ...;
-#   61|             0: [StringLiteral] "Invalid color"
+#   61|             0: [StringLiteralUtf16] "Invalid color"

@@ -1,3 +1,35 @@
+## 0.5.1
+
+### Major Analysis Improvements
+
+* Added library support for generic attributes (also for CIL extracted attributes).
+* `cil.ConstructedType::getName` was changed to include printing of the type arguments.
+
+### Minor Analysis Improvements
+
+* Attributes on methods in CIL are now extracted (Bugfix).
+* Support for `static virtual` and `static abstract` interface members.
+* Support for *operators* in interface definitions. 
+* C# 11: Added support for the unsigned right shift `>>>` and unsigned right shift assignment `>>>=` operators.
+* Query id's have been aligned such that they are prefixed with `cs` instead of `csharp`.
+
+## 0.5.0
+
+### Minor Analysis Improvements
+
+* C# 11: Added support for list- and slice patterns in the extractor.
+* Deleted the deprecated `getNameWithoutBrackets` predicate from the `ValueOrRefType` class in `Type.qll`.
+* `Element::hasQualifiedName/1` has been deprecated. Use `hasQualifiedName/2` or `hasQualifiedName/3` instead.
+* Added TCP/UDP sockets as taint sources.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+No user-facing changes.
+
 ## 0.4.4
 
 ### Minor Analysis Improvements

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.apache.log4j", "Category", True, "assertLog", "", "", "Argument[1]", "logging", "manual"]
       - ["org.apache.log4j", "Category", True, "debug", "", "", "Argument[0]", "logging", "manual"]

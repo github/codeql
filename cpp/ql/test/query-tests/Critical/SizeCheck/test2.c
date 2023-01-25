@@ -43,5 +43,13 @@ void good1(void) {
     free(dptr);
 }
 
+// --- custom allocators ---
+ 
+void *MyMalloc1(size_t size) { return malloc(size); }
+void *MyMalloc2(size_t size);
 
-
+void customAllocatorTests()
+{
+    double *dptr1 = MyMalloc1(33); // BAD -- Not a multiple of sizeof(double) [NOT DETECTED]
+    double *dptr2 = MyMalloc2(33); // BAD -- Not a multiple of sizeof(double) [NOT DETECTED]
+}

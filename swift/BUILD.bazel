@@ -39,9 +39,9 @@ pkg_filegroup(
     visibility = ["//visibility:public"],
 )
 
-pkg_runfiles(
+pkg_filegroup(
     name = "extractor",
-    srcs = ["//swift/extractor"],
+    srcs = ["//swift/extractor:pkg"],
     prefix = "tools/" + codeql_platform,
 )
 

@@ -206,7 +206,7 @@ private class IteratorAssignArithmeticOperatorModel extends IteratorAssignArithm
     input.isReturnValueDeref() and
     output.isParameterDeref(0)
     or
-    input.isParameterDeref(1) and
+    (input.isParameter(1) or input.isParameterDeref(1)) and
     output.isParameterDeref(0)
   }
 }
@@ -305,7 +305,7 @@ private class IteratorAssignArithmeticMemberOperator extends MemberFunction, Dat
     input.isReturnValueDeref() and
     output.isQualifierObject()
     or
-    input.isParameterDeref(0) and
+    (input.isParameter(0) or input.isParameterDeref(0)) and
     output.isQualifierObject()
   }
 }

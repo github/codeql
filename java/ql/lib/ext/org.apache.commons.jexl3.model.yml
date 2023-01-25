@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.apache.commons.jexl3", "Expression", False, "callable", "", "", "Argument[-1]", "jexl", "manual"]
       - ["org.apache.commons.jexl3", "Expression", False, "evaluate", "", "", "Argument[-1]", "jexl", "manual"]

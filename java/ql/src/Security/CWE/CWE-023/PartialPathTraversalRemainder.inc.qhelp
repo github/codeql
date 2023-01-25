@@ -27,7 +27,7 @@ and not just children of <code>parent</code>, which is a security issue.
 <p>
 
 In this example, the <code>if</code> statement checks if <code>parent.getCanonicalPath() + File.separator </code> 
-is a prefix of <code>dir.getCanonicalPath()</code>. Because <code>parent.getCanonicalPath().toPath()</code> is 
+is a prefix of <code>dir.getCanonicalPath()</code>. Because <code>parent.getCanonicalPath() + File.separator</code> is
 indeed slash-terminated, the user supplying <code>dir</code> can only access children of 
 <code>parent</code>, as desired.
 

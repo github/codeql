@@ -17,3 +17,19 @@ query predicate constructors(RefType declType, Constructor c, string signature) 
 }
 
 query predicate extensions(ExtensionMethod m, Type t) { m.getExtendedType() = t and m.fromSource() }
+
+query predicate extensionsMismatch(Method src, Method def) {
+  src.getKotlinParameterDefaultsProxy() = def and
+  (
+    src instanceof ExtensionMethod and not def instanceof ExtensionMethod
+    or
+    def instanceof ExtensionMethod and not src instanceof ExtensionMethod
+  )
+}
+
+query predicate extensionIndex(ExtensionMethod m, int i, Type t) {
+  m.fromSource() and
+  m.getExtensionReceiverParameterIndex() = i and
+  m.getExtendedType() = t and
+  m.getParameter(i).getType() = t
+}

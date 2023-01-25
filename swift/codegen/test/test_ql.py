@@ -127,14 +127,16 @@ def test_class_with_children():
     assert cls.has_children is True
 
 
-def test_class_with_doc():
-    cls = ql.Class("Class", doc=["foo", "bar"])
-    assert cls.has_doc is True
-
-
-def test_class_without_doc():
-    cls = ql.Class("Class", doc=[])
-    assert cls.has_doc is False
+@pytest.mark.parametrize("doc,ql_internal,expected",
+                         [
+                             (["foo", "bar"], False, True),
+                             (["foo", "bar"], True, True),
+                             ([], False, False),
+                             ([], True, True),
+                         ])
+def test_has_doc(doc, ql_internal, expected):
+    cls = ql.Class("Class", doc=doc, ql_internal=ql_internal)
+    assert cls.has_doc is expected
 
 
 def test_property_with_description():

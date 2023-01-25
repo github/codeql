@@ -72,7 +72,19 @@ newtype TInstructionTag =
   AsmInputTag(int elementIndex) { exists(AsmStmt asm | exists(asm.getChild(elementIndex))) } or
   ThisAddressTag() or
   ThisLoadTag() or
-  StructuredBindingAccessTag()
+  StructuredBindingAccessTag() or
+  // The next three cases handle generation of the constants -1, 0 and 1 for __except handling.
+  TryExceptGenerateNegativeOne() or
+  TryExceptGenerateZero() or
+  TryExceptGenerateOne() or
+  // The next three cases handle generation of comparisons for __except handling.
+  TryExceptCompareNegativeOne() or
+  TryExceptCompareZero() or
+  TryExceptCompareOne() or
+  // The next three cases handle generation of branching for __except handling.
+  TryExceptCompareNegativeOneBranch() or
+  TryExceptCompareZeroBranch() or
+  TryExceptCompareOneBranch()
 
 class InstructionTag extends TInstructionTag {
   final string toString() { result = "Tag" }
@@ -224,4 +236,22 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = ThisLoadTag() and result = "ThisLoad"
   or
   tag = StructuredBindingAccessTag() and result = "StructuredBindingAccess"
+  or
+  tag = TryExceptCompareNegativeOne() and result = "TryExceptCompareNegativeOne"
+  or
+  tag = TryExceptCompareZero() and result = "TryExceptCompareZero"
+  or
+  tag = TryExceptCompareOne() and result = "TryExceptCompareOne"
+  or
+  tag = TryExceptGenerateNegativeOne() and result = "TryExceptGenerateNegativeOne"
+  or
+  tag = TryExceptGenerateZero() and result = "TryExceptGenerateNegativeOne"
+  or
+  tag = TryExceptGenerateOne() and result = "TryExceptGenerateOne"
+  or
+  tag = TryExceptCompareNegativeOneBranch() and result = "TryExceptCompareNegativeOneBranch"
+  or
+  tag = TryExceptCompareZeroBranch() and result = "TryExceptCompareZeroBranch"
+  or
+  tag = TryExceptCompareOneBranch() and result = "TryExceptCompareOneBranch"
 }

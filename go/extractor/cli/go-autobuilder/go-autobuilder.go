@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -56,9 +57,21 @@ func getEnvGoVersion() string {
 		if err != nil {
 			log.Fatalf("Unable to run the go command, is it installed?\nError: %s", err.Error())
 		}
-		goVersion = strings.Fields(string(gover))[2]
+		goVersion = parseGoVersion(string(gover))
 	}
 	return goVersion
+}
+
+// The 'go version' command may output warnings on separate lines before
+// the actual version string is printed. This function parses the output
+// to retrieve just the version string.
+func parseGoVersion(data string) string {
+	var lastLine string
+	sc := bufio.NewScanner(strings.NewReader(data))
+	for sc.Scan() {
+		lastLine = sc.Text()
+	}
+	return strings.Fields(lastLine)[2]
 }
 
 // Returns the current Go version in semver format, e.g. v1.14.4

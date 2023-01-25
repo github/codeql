@@ -44,14 +44,11 @@ predicate eraDate(int year, int month, int day) {
 }
 
 predicate badStructInitialization(Element target, string message) {
-  exists(
-    StructLikeClass s, YearFieldAccess year, MonthFieldAccess month, DayFieldAccess day,
-    int yearValue, int monthValue, int dayValue
-  |
+  exists(StructLikeClass s, YearFieldAccess year, int yearValue, int monthValue, int dayValue |
     eraDate(yearValue, monthValue, dayValue) and
     assignedYear(s, year, yearValue) and
-    assignedMonth(s, month, monthValue) and
-    assignedDay(s, day, dayValue) and
+    assignedMonth(s, _, monthValue) and
+    assignedDay(s, _, dayValue) and
     target = year and
     message = "A time struct that is initialized with exact Japanese calendar era start date."
   )

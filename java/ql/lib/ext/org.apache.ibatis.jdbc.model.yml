@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.apache.ibatis.jdbc", "SqlRunner", False, "delete", "(String,Object[])", "", "Argument[0]", "sql", "manual"]
       - ["org.apache.ibatis.jdbc", "SqlRunner", False, "insert", "(String,Object[])", "", "Argument[0]", "sql", "manual"]
@@ -11,7 +11,7 @@ extensions:
       - ["org.apache.ibatis.jdbc", "SqlRunner", False, "update", "(String,Object[])", "", "Argument[0]", "sql", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.ibatis.jdbc", "AbstractSQL", True, "DELETE_FROM", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["org.apache.ibatis.jdbc", "AbstractSQL", True, "FETCH_FIRST_ROWS_ONLY", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]

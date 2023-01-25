@@ -1326,3 +1326,6 @@ postWithInFlow
 | struct_init.c:46:16:46:24 | pointerAB [post update] | PostUpdateNode should not be the target of local flow. |
 | struct_init.c:46:16:46:24 | pointerAB [post update] | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
+uniqueParameterNodeAtPosition
+uniqueParameterNodePosition
+uniqueContentApprox

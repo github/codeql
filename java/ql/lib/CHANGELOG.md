@@ -1,3 +1,41 @@
+## 0.5.1
+
+### Minor Analysis Improvements
+
+* Added sink models for the constructors of `org.springframework.jdbc.object.MappingSqlQuery` and `org.springframework.jdbc.object.MappingSqlQueryWithParameters`.
+* Added more dataflow models for frequently-used JDK APIs.
+* Removed summary model for `java.lang.String#endsWith(String)` and added neutral model for this API.
+* Added additional taint step for `java.lang.String#endsWith(String)` to `ConditionalBypassFlowConfig`.
+* Added `AllowContentAccessMethod` to represent the `setAllowContentAccess` method of the `android.webkit.WebSettings` class.
+* Added an external flow source for the parameters of methods annotated with `android.webkit.JavascriptInterface`.
+
+## 0.5.0
+
+### Minor Analysis Improvements
+
+* Added more dataflow models for frequently-used JDK APIs.
+* The extraction of Kotlin extension methods has been improved when default parameter values are present. The dispatch and extension receiver parameters are extracted in the correct order. The `ExtensionMethod::getExtensionReceiverParameterIndex` predicate has been introduced to facilitate getting the correct extension parameter index.
+* The query `java/insecure-cookie` now uses global dataflow to track secure cookies being set to the HTTP response object.
+* The library `PathSanitizer.qll` has been improved to detect more path validation patterns in Kotlin.
+* Models as Data models for Java are defined as data extensions instead of being inlined in the code. New models should be added in the `lib/ext` folder.
+* Added a taint model for the method `java.nio.file.Path.getParent`.
+* Fixed a problem in the taint model for the method `java.nio.file.Paths.get`.
+* Deleted the deprecated `LocalClassDeclStmtNode` and `LocalClassDeclStmt` classes from `PrintAst.qll` and `Statement.qll` respectively.
+* Deleted the deprecated `getLocalClass` predicate from `LocalTypeDeclStmt`, and the deprecated `getLocalClassDeclStmt` predicate from `LocalClassOrInterface`.
+* Added support for Android Manifest `<activity-aliases>` elements in data flow sources. 
+
+### Bug Fixes
+
+* We now correctly handle empty block comments, like `/**/`. Previously these could be mistaken for Javadoc comments and led to attribution of Javadoc tags to the wrong declaration.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+No user-facing changes.
+
 ## 0.4.4
 
 ### New Features

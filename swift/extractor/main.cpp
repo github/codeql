@@ -9,36 +9,95 @@
 
 #include <swift/Basic/LLVMInitialize.h>
 #include <swift/FrontendTool/FrontendTool.h>
+#include <swift/Basic/InitializeSwiftModules.h>
 
 #include "swift/extractor/SwiftExtractor.h"
-#include "swift/extractor/TargetTrapFile.h"
-#include "swift/extractor/remapping/SwiftOutputRewrite.h"
-#include "swift/extractor/remapping/SwiftOpenInterception.h"
+#include "swift/extractor/infra/TargetDomains.h"
+#include "swift/extractor/remapping/SwiftFileInterception.h"
 #include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
+#include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/trap/TrapDomain.h"
+#include "swift/extractor/infra/file/Path.h"
+#include <swift/Basic/InitializeSwiftModules.h>
 
 using namespace std::string_literals;
+
+// must be called before processFrontendOptions modifies output paths
+static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
+                                       const swift::FrontendOptions& options) {
+  for (const auto& input : options.InputsAndOutputs.getAllInputs()) {
+    if (const auto& module = input.getPrimarySpecificPaths().SupplementaryOutputs.ModuleOutputPath;
+        !module.empty()) {
+      if (auto target = codeql::createTargetTrapDomain(state, codeql::resolvePath(module),
+                                                       codeql::TrapType::module)) {
+        target->emit("// trap file deliberately empty\n"
+                     "// this swiftmodule was created during the build, so its entities must have"
+                     " been extracted directly from source files");
+      }
+    }
+  }
+}
+
+static void processFrontendOptions(codeql::SwiftExtractorState& state,
+                                   swift::FrontendOptions& options) {
+  auto& inOuts = options.InputsAndOutputs;
+  std::vector<swift::InputFile> inputs;
+  inOuts.forEachInput([&](const swift::InputFile& input) {
+    std::cerr << input.getFileName() << ":\n";
+    swift::PrimarySpecificPaths psp{};
+    if (std::filesystem::path output = input.getPrimarySpecificPaths().OutputFilename;
+        !output.empty()) {
+      if (output.extension() == ".swiftmodule") {
+        psp.OutputFilename = codeql::redirect(output);
+      } else {
+        psp.OutputFilename = "/dev/null";
+      }
+    }
+    if (std::filesystem::path module =
+            input.getPrimarySpecificPaths().SupplementaryOutputs.ModuleOutputPath;
+        !module.empty()) {
+      psp.SupplementaryOutputs.ModuleOutputPath = codeql::redirect(module);
+      state.originalOutputModules.push_back(module);
+    }
+    auto inputCopy = input;
+    inputCopy.setPrimarySpecificPaths(std::move(psp));
+    inputs.push_back(std::move(inputCopy));
+    return false;
+  });
+  inOuts.clearInputs();
+  for (const auto& i : inputs) {
+    inOuts.addInput(i);
+  }
+}
+
+codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state);
 
 // This is part of the swiftFrontendTool interface, we hook into the
 // compilation pipeline and extract files after the Swift frontend performed
 // semantic analysis
 class Observer : public swift::FrontendObserver {
  public:
-  explicit Observer(const codeql::SwiftExtractorConfiguration& config,
-                    codeql::SwiftDiagnosticsConsumer& diagConsumer)
-      : config{config}, diagConsumer{diagConsumer} {}
+  explicit Observer(const codeql::SwiftExtractorConfiguration& config) : state{config} {}
+
+  void parsedArgs(swift::CompilerInvocation& invocation) override {
+    auto& options = invocation.getFrontendOptions();
+    lockOutputSwiftModuleTraps(state, options);
+    processFrontendOptions(state, options);
+  }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
     instance.addDiagnosticConsumer(&diagConsumer);
   }
 
   void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
-    codeql::extractSwiftFiles(config, compiler);
+    codeql::extractSwiftFiles(state, compiler);
+    codeql::extractSwiftInvocation(state, compiler, invocationTrap);
   }
 
  private:
-  const codeql::SwiftExtractorConfiguration& config;
-  codeql::SwiftDiagnosticsConsumer& diagConsumer;
+  codeql::SwiftExtractorState state;
+  codeql::TrapDomain invocationTrap{invocationTrapDomain(state)};
+  codeql::SwiftDiagnosticsConsumer diagConsumer{invocationTrap};
 };
 
 static std::string getenv_or(const char* envvar, const std::string& def) {
@@ -46,19 +105,6 @@ static std::string getenv_or(const char* envvar, const std::string& def) {
     return var;
   }
   return def;
-}
-
-static void lockOutputSwiftModuleTraps(const codeql::SwiftExtractorConfiguration& config,
-                                       const codeql::PathRemapping& remapping) {
-  for (const auto& [oldPath, newPath] : remapping) {
-    if (oldPath.extension() == ".swiftmodule") {
-      if (auto target = codeql::createTargetTrapFile(config, oldPath)) {
-        *target << "// trap file deliberately empty\n"
-                   "// this swiftmodule was created during the build, so its entities must have"
-                   " been extracted directly from source files";
-      }
-    }
-  }
 }
 
 static bool checkRunUnderFilter(int argc, char* const* argv) {
@@ -106,16 +152,25 @@ static void checkWhetherToRunUnderTool(int argc, char* const* argv) {
 
 // Creates a target file that should store per-invocation info, e.g. compilation args,
 // compilations, diagnostics, etc.
-codeql::TargetFile invocationTargetFile(codeql::SwiftExtractorConfiguration& configuration) {
+codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state) {
   auto timestamp = std::chrono::system_clock::now().time_since_epoch().count();
   auto filename = std::to_string(timestamp) + '-' + std::to_string(getpid());
   auto target = std::filesystem::path("invocations") / std::filesystem::path(filename);
-  auto maybeFile = codeql::createTargetTrapFile(configuration, target);
-  if (!maybeFile) {
+  auto maybeDomain = codeql::createTargetTrapDomain(state, target, codeql::TrapType::invocation);
+  if (!maybeDomain) {
     std::cerr << "Cannot create invocation trap file: " << target << "\n";
     abort();
   }
-  return std::move(maybeFile.value());
+  return std::move(maybeDomain.value());
+}
+
+codeql::SwiftExtractorConfiguration configure(int argc, char** argv) {
+  codeql::SwiftExtractorConfiguration configuration{};
+  configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", ".");
+  configuration.sourceArchiveDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", ".");
+  configuration.scratchDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", ".");
+  configuration.frontendOptions.assign(argv + 1, argv + argc);
+  return configuration;
 }
 
 int main(int argc, char** argv) {
@@ -129,37 +184,15 @@ int main(int argc, char** argv) {
   // Required by Swift/LLVM
   PROGRAM_START(argc, argv);
   INITIALIZE_LLVM();
+  initializeSwiftModules();
 
-  codeql::SwiftExtractorConfiguration configuration{};
-  configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", ".");
-  configuration.sourceArchiveDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", ".");
-  configuration.scratchDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", ".");
+  const auto configuration = configure(argc, argv);
 
-  codeql::initRemapping(configuration.getTempArtifactDir());
+  auto openInterception = codeql::setupFileInterception(configuration);
 
-  configuration.frontendOptions.reserve(argc - 1);
-  for (int i = 1; i < argc; i++) {
-    configuration.frontendOptions.push_back(argv[i]);
-  }
-  configuration.patchedFrontendOptions = configuration.frontendOptions;
-
-  auto remapping = codeql::rewriteOutputsInPlace(configuration.getTempArtifactDir(),
-                                                 configuration.patchedFrontendOptions);
-  codeql::ensureDirectoriesForNewPathsExist(remapping);
-  lockOutputSwiftModuleTraps(configuration, remapping);
-
-  std::vector<const char*> args;
-  for (auto& arg : configuration.patchedFrontendOptions) {
-    args.push_back(arg.c_str());
-  }
-
-  auto invocationTrapFile = invocationTargetFile(configuration);
-  codeql::TrapDomain invocationDomain(invocationTrapFile);
-  codeql::SwiftDiagnosticsConsumer diagConsumer(invocationDomain);
-  Observer observer(configuration, diagConsumer);
-  int frontend_rc = swift::performFrontend(args, "swift-extractor", (void*)main, &observer);
-
-  codeql::finalizeRemapping(remapping);
+  Observer observer(configuration);
+  int frontend_rc = swift::performFrontend(configuration.frontendOptions, "swift-extractor",
+                                           (void*)main, &observer);
 
   return frontend_rc;
 }

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       # Note that when lambdas are supported we should have more models for TransformedBag, TransformedSortedBag
       - ["org.apache.commons.collections.bag", "AbstractBagDecorator", True, "AbstractBagDecorator", "", "", "Argument[0].Element", "Argument[-1].Element", "value", "manual"]

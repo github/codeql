@@ -19,12 +19,10 @@ class Node extends TNode {
   Parameter asParameter() { result = this.(ParameterNode).getParameter() }
 
   /** Gets a textual representation of this node. */
-  cached
-  final string toString() { result = this.(NodeImpl).toStringImpl() }
+  final string toString() { result = toString(this) }
 
   /** Gets the location of this node. */
-  cached
-  final Location getLocation() { result = this.(NodeImpl).getLocationImpl() }
+  final Location getLocation() { result = getLocation(this) }
 
   /**
    * Holds if this element is at the specified location.
@@ -373,7 +371,7 @@ private module Cached {
   LocalSourceNode getConstantAccessNode(ConstantAccess access) {
     // Namespaces don't evaluate to the constant being accessed, they return the value of their last statement.
     // Use the definition of 'self' in the namespace as the representative in this case.
-    result.(SsaDefinitionNode).getDefinition().(Ssa::SelfDefinition).getSourceVariable() =
+    result.(SsaDefinitionExtNode).getDefinitionExt().(Ssa::SelfDefinition).getSourceVariable() =
       access.(Namespace).getModuleSelfVariable()
     or
     not access instanceof Namespace and
@@ -819,7 +817,7 @@ class ModuleNode instanceof Module {
    * This only gets `self` at the module level, not inside any (singleton) method.
    */
   LocalSourceNode getModuleLevelSelf() {
-    result.(SsaDefinitionNode).getVariable() = super.getADeclaration().getModuleSelfVariable()
+    result.(SsaDefinitionExtNode).getVariable() = super.getADeclaration().getModuleSelfVariable()
   }
 
   /**

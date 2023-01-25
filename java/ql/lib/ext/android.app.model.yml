@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["android.app", "Activity", True, "bindService", "", "", "Argument[0]", "intent-start", "manual"]
       - ["android.app", "Activity", True, "bindServiceAsUser", "", "", "Argument[0]", "intent-start", "manual"]
@@ -40,7 +40,7 @@ extensions:
       - ["android.app", "PendingIntent", False, "send", "(Context,int,Intent,OnFinished,Handler,String,Bundle)", "", "Argument[2]", "pending-intent-sent", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["android.app", "Notification$Action", True, "Action", "(int,CharSequence,PendingIntent)", "", "Argument[2]", "Argument[-1]", "taint", "manual"]
       - ["android.app", "Notification$Action", True, "getExtras", "", "", "Argument[-1].SyntheticField[android.content.Intent.extras]", "ReturnValue", "value", "manual"]

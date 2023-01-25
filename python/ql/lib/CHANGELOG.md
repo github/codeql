@@ -1,3 +1,35 @@
+## 0.7.1
+
+No user-facing changes.
+
+## 0.7.0
+
+### Major Analysis Improvements
+
+* The _PAM authorization bypass due to incorrect usage_ (`py/pam-auth-bypass`) query has been converted to a taint-tracking query, resulting in significantly fewer false positives.
+
+### Minor Analysis Improvements
+
+* Added `subprocess.getoutput` and `subprocess.getoutputstatus` as new command injection sinks for the StdLib.
+* The data-flow library has been rewritten to no longer rely on the points-to analysis in order to resolve references to modules. Improvements in the module resolution can lead to more results.
+* Deleted the deprecated `importNode` predicate from the `DataFlowUtil.qll` file.
+* Deleted the deprecated features from `PEP249.qll` that were not inside the `PEP249` module.
+* Deleted the deprecated `werkzeug` from the `Werkzeug` module in `Werkzeug.qll`.
+* Deleted the deprecated `methodResult` predicate from `PEP249::Cursor`.
+
+### Bug Fixes
+
+* `except*` is now supported.
+* The result of `Try.getAHandler` and `Try.getHandler(<index>)` is no longer of type `ExceptStmt`, as handlers may also be `ExceptGroupStmt`s (After Python 3.11 introduced PEP 654). Instead, it is of the new type `ExceptionHandler` of which `ExceptStmt` and `ExceptGroupStmt` are subtypes. To support selecting only one type of handler, `Try.getANormalHandler` and `Try.getAGroupHandler` have been added. Existing uses of `Try.getAHandler` for which it is important to select only normal handlers, will need to be updated to `Try.getANormalHandler`.
+
+## 0.6.6
+
+No user-facing changes.
+
+## 0.6.5
+
+No user-facing changes.
+
 ## 0.6.4
 
 ### Minor Analysis Improvements

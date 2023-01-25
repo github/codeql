@@ -30,19 +30,15 @@ module DifferentKindsComparisonBypass {
   /**
    * A HTTP request input that is suspicious to compare with another HTTP request input of a different kind.
    */
-  class RequestInputComparisonSource extends Source {
-    Http::RequestInputAccess input;
-
-    RequestInputComparisonSource() { input = this }
-
+  class RequestInputComparisonSource extends Source instanceof Http::RequestInputAccess {
     override predicate isSuspiciousToCompareWith(Source other) {
-      input.getKind() != other.(RequestInputComparisonSource).getInput().getKind()
+      super.getKind() != other.(RequestInputComparisonSource).getInput().getKind()
     }
 
     /**
      * Gets the HTTP request input of this source.
      */
-    private Http::RequestInputAccess getInput() { result = input }
+    private Http::RequestInputAccess getInput() { result = this }
   }
 
   /**

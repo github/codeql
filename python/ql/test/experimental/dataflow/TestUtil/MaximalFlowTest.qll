@@ -29,7 +29,7 @@ class MaximalFlowsConfig extends DataFlow::Configuration {
     not node instanceof DataFlow::PostUpdateNode and
     // not node.asExpr() instanceof FunctionExpr and
     // not node.asExpr() instanceof ClassExpr and
-    not exists(DataFlow::Node pred | DataFlow::localFlowStep(pred, node))
+    not DataFlow::localFlowStep(_, node)
   }
 
   override predicate isSink(DataFlow::Node node) {
@@ -37,6 +37,6 @@ class MaximalFlowsConfig extends DataFlow::Configuration {
     not any(CallNode c).getArg(_) = node.asCfgNode() and
     not node instanceof DataFlow::ArgumentNode and
     not node.asCfgNode().(NameNode).getId().matches("SINK%") and
-    not exists(DataFlow::Node succ | DataFlow::localFlowStep(node, succ))
+    not DataFlow::localFlowStep(node, _)
   }
 }

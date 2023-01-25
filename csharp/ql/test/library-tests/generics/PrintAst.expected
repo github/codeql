@@ -99,7 +99,7 @@ Nesting.cs:
 #   28|         0: [MethodCall] call to method MA2<String>
 #   28|           -1: [LocalVariableAccess] access to local variable a1
 #   28|           0: [IntLiteral] 0
-#   28|           1: [StringLiteral] ""
+#   28|           1: [StringLiteralUtf16] ""
 #   30|       3: [LocalVariableDeclStmt] ... ...;
 #   30|         0: [LocalVariableDeclAndInitExpr] A<String> a2 = ...
 #   30|           -1: [TypeMention] A<string>
@@ -110,11 +110,11 @@ Nesting.cs:
 #   31|       4: [ExprStmt] ...;
 #   31|         0: [MethodCall] call to method MA1
 #   31|           -1: [LocalVariableAccess] access to local variable a2
-#   31|           0: [StringLiteral] ""
+#   31|           0: [StringLiteralUtf16] ""
 #   32|       5: [ExprStmt] ...;
 #   32|         0: [MethodCall] call to method MA2<Int32>
 #   32|           -1: [LocalVariableAccess] access to local variable a2
-#   32|           0: [StringLiteral] ""
+#   32|           0: [StringLiteralUtf16] ""
 #   32|           1: [IntLiteral] 0
 #   34|       6: [LocalVariableDeclStmt] ... ...;
 #   34|         0: [LocalVariableDeclAndInitExpr] B<String> b1 = ...
@@ -129,12 +129,12 @@ Nesting.cs:
 #   35|         0: [MethodCall] call to method MB1
 #   35|           -1: [LocalVariableAccess] access to local variable b1
 #   35|           0: [IntLiteral] 0
-#   35|           1: [StringLiteral] ""
+#   35|           1: [StringLiteralUtf16] ""
 #   36|       8: [ExprStmt] ...;
 #   36|         0: [MethodCall] call to method MB2<Boolean>
 #   36|           -1: [LocalVariableAccess] access to local variable b1
 #   36|           0: [IntLiteral] 0
-#   36|           1: [StringLiteral] ""
+#   36|           1: [StringLiteralUtf16] ""
 #   36|           2: [BoolLiteral] false
 #   38|       9: [LocalVariableDeclStmt] ... ...;
 #   38|         0: [LocalVariableDeclAndInitExpr] B<Int32> b2 = ...
@@ -148,12 +148,12 @@ Nesting.cs:
 #   39|       10: [ExprStmt] ...;
 #   39|         0: [MethodCall] call to method MB1
 #   39|           -1: [LocalVariableAccess] access to local variable b2
-#   39|           0: [StringLiteral] ""
+#   39|           0: [StringLiteralUtf16] ""
 #   39|           1: [IntLiteral] 0
 #   40|       11: [ExprStmt] ...;
 #   40|         0: [MethodCall] call to method MB2<Boolean>
 #   40|           -1: [LocalVariableAccess] access to local variable b2
-#   40|           0: [StringLiteral] ""
+#   40|           0: [StringLiteralUtf16] ""
 #   40|           1: [IntLiteral] 0
 #   40|           2: [BoolLiteral] false
 #   42|       12: [LocalVariableDeclStmt] ... ...;
@@ -184,11 +184,11 @@ Nesting.cs:
 #   47|       16: [ExprStmt] ...;
 #   47|         0: [MethodCall] call to method MC1
 #   47|           -1: [LocalVariableAccess] access to local variable c2
-#   47|           0: [StringLiteral] ""
+#   47|           0: [StringLiteralUtf16] ""
 #   48|       17: [ExprStmt] ...;
 #   48|         0: [MethodCall] call to method MC2<Boolean>
 #   48|           -1: [LocalVariableAccess] access to local variable c2
-#   48|           0: [StringLiteral] ""
+#   48|           0: [StringLiteralUtf16] ""
 #   48|           1: [BoolLiteral] false
 #   50|       18: [LocalVariableDeclStmt] ... ...;
 #   50|         0: [LocalVariableDeclAndInitExpr] D<Boolean> d1 = ...
@@ -210,7 +210,7 @@ Nesting.cs:
 #   52|           -1: [LocalVariableAccess] access to local variable d1
 #   52|           0: [IntLiteral] 0
 #   52|           1: [BoolLiteral] false
-#   52|           2: [StringLiteral] ""
+#   52|           2: [StringLiteralUtf16] ""
 #   54|       21: [LocalVariableDeclStmt] ... ...;
 #   54|         0: [LocalVariableDeclAndInitExpr] D<Decimal> d2 = ...
 #   54|           -1: [TypeMention] D<decimal>
@@ -224,12 +224,12 @@ Nesting.cs:
 #   55|       22: [ExprStmt] ...;
 #   55|         0: [MethodCall] call to method MD1
 #   55|           -1: [LocalVariableAccess] access to local variable d2
-#   55|           0: [StringLiteral] ""
+#   55|           0: [StringLiteralUtf16] ""
 #   55|           1: [DecimalLiteral] 0
 #   56|       23: [ExprStmt] ...;
 #   56|         0: [MethodCall] call to method MD2<Boolean>
 #   56|           -1: [LocalVariableAccess] access to local variable d2
-#   56|           0: [StringLiteral] ""
+#   56|           0: [StringLiteralUtf16] ""
 #   56|           1: [DecimalLiteral] 0
 #   56|           2: [BoolLiteral] false
 generics.cs:
@@ -532,8 +532,8 @@ generics.cs:
 #  113|         3: [ExprStmt] ...;
 #  113|           0: [MethodCall] call to method fooParams
 #  113|             -1: [LocalVariableAccess] access to local variable bs
-#  113|             0: [StringLiteral] "a"
-#  113|             1: [StringLiteral] "b"
+#  113|             0: [StringLiteralUtf16] "a"
+#  113|             1: [StringLiteralUtf16] "b"
 #  115|         4: [ExprStmt] ...;
 #  115|           0: [MethodCall] call to method staticFoo
 #  115|             -1: [TypeAccess] access to type B<Object>
@@ -543,7 +543,7 @@ generics.cs:
 #  117|           0: [AssignExpr] ... = ...
 #  117|             0: [PropertyCall] access to property Name
 #  117|               -1: [LocalVariableAccess] access to local variable bs
-#  117|             1: [StringLiteral] ""
+#  117|             1: [StringLiteralUtf16] ""
 #  118|         6: [ExprStmt] ...;
 #  118|           0: [AddEventExpr] ... += ...
 #  118|             0: [EventAccess,EventCall] access to event myEvent
@@ -594,7 +594,7 @@ generics.cs:
 #  125|                 3: [TypeMention] string
 #  125|             0: [DoubleLiteral] 1
 #  125|             1: [IntLiteral] 2
-#  125|             2: [StringLiteral] "3"
+#  125|             2: [StringLiteralUtf16] "3"
 #  125|             3: [BoolLiteral] true
 #  127|         12: [ExprStmt] ...;
 #  127|           0: [MethodCall] call to method bar<Int32>
@@ -602,7 +602,7 @@ generics.cs:
 #  127|               0: [TypeMention] A<string>
 #  127|                 1: [TypeMention] string
 #  127|             0: [IntLiteral] 2
-#  127|             1: [StringLiteral] ""
+#  127|             1: [StringLiteralUtf16] ""
 #  128|         13: [ExprStmt] ...;
 #  128|           0: [MethodCall] call to method bar<Test>
 #  128|             -1: [ObjectCreation] object creation of type A<Int32>

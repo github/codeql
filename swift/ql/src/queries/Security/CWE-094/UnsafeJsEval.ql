@@ -127,9 +127,6 @@ class UnsafeJsEvalConfig extends TaintTracking::Configuration {
     )
     or
     exists(MemberRefExpr e, Expr self, VarDecl member |
-      self.getType().getName() = "String" and
-      member.getName() = ["utf8", "utf16", "utf8CString"]
-      or
       self.getType().getName().matches(["Unsafe%Buffer%", "Unsafe%Pointer%"]) and
       member.getName() = "baseAddress"
     |

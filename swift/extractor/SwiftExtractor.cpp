@@ -8,11 +8,10 @@
 #include <swift/AST/SourceFile.h>
 #include <swift/AST/Builtins.h>
 
-#include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/translators/SwiftVisitor.h"
-#include "swift/extractor/TargetTrapFile.h"
+#include "swift/extractor/infra/TargetDomains.h"
 #include "swift/extractor/SwiftBuiltinSymbols.h"
-#include "swift/extractor/infra/Path.h"
+#include "swift/extractor/infra/file/Path.h"
 
 using namespace codeql;
 using namespace std::string_literals;
@@ -28,27 +27,23 @@ static void ensureDirectory(const char* label, const fs::path& dir) {
 }
 
 static void archiveFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
-  ensureDirectory("TRAP", config.trapDir);
-  ensureDirectory("source archive", config.sourceArchiveDir);
+  auto source = codeql::resolvePath(file.getFilename());
+  auto destination = config.sourceArchiveDir / source.relative_path();
 
-  fs::path srcFilePath = codeql::getCodeQLPath(file.getFilename());
-  auto dstFilePath = config.sourceArchiveDir;
-  dstFilePath += srcFilePath;
-
-  ensureDirectory("source archive destination", dstFilePath.parent_path());
+  ensureDirectory("source archive destination", destination.parent_path());
 
   std::error_code ec;
-  fs::copy(srcFilePath, dstFilePath, fs::copy_options::overwrite_existing, ec);
+  fs::copy(source, destination, fs::copy_options::overwrite_existing, ec);
 
   if (ec) {
-    std::cerr << "Cannot archive source file " << srcFilePath << " -> " << dstFilePath << ": "
+    std::cerr << "Cannot archive source file " << source << " -> " << destination << ": "
               << ec.message() << "\n";
   }
 }
 
 static fs::path getFilename(swift::ModuleDecl& module, swift::SourceFile* primaryFile) {
   if (primaryFile) {
-    return primaryFile->getFilename().str();
+    return resolvePath(primaryFile->getFilename());
   }
   // PCM clang module
   if (module.isNonSwiftModule()) {
@@ -57,7 +52,7 @@ static fs::path getFilename(swift::ModuleDecl& module, swift::SourceFile* primar
     // Moreover, pcm files may come from caches located in different directories, but are
     // unambiguously identified by the base file name, so we can discard the absolute directory
     fs::path filename = "/pcms";
-    filename /= getCodeQLPath(module.getModuleFilename()).filename();
+    filename /= fs::path{std::string_view{module.getModuleFilename()}}.filename();
     filename += "-";
     filename += module.getName().str();
     return filename;
@@ -66,13 +61,13 @@ static fs::path getFilename(swift::ModuleDecl& module, swift::SourceFile* primar
     // The Builtin module has an empty filename, let's fix that
     return "/__Builtin__";
   }
-  auto filename = getCodeQLPath(module.getModuleFilename());
+  std::string_view filename = module.getModuleFilename();
   // there is a special case of a module without an actual filename reporting `<imports>`: in this
   // case we want to avoid the `<>` characters, in case a dirty DB is imported on Windows
   if (filename == "<imports>") {
     return "/__imports__";
   }
-  return filename;
+  return resolvePath(filename);
 }
 
 /* The builtin module is special, as it does not publish any top-level declaration
@@ -113,21 +108,24 @@ static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& modul
 }
 
 static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
-    const SwiftExtractorConfiguration& config,
+    SwiftExtractorState& state,
     swift::CompilerInstance& compiler,
     swift::ModuleDecl& module,
     swift::SourceFile* primaryFile = nullptr) {
   auto filename = getFilename(module, primaryFile);
+  if (primaryFile) {
+    state.sourceFiles.push_back(filename);
+  }
 
   // The extractor can be called several times from different processes with
   // the same input file(s). Using `TargetFile` the first process will win, and the following
   // will just skip the work
-  auto trapTarget = createTargetTrapFile(config, filename);
-  if (!trapTarget) {
+  const auto trapType = primaryFile ? TrapType::source : TrapType::module;
+  auto trap = createTargetTrapDomain(state, filename, trapType);
+  if (!trap) {
     // another process arrived first, nothing to do for us
     return {};
   }
-  TrapDomain trap{*trapTarget};
 
   std::vector<swift::Token> comments;
   if (primaryFile && primaryFile->getBufferID().hasValue()) {
@@ -141,7 +139,7 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
     }
   }
 
-  SwiftVisitor visitor(compiler.getSourceMgr(), trap, module, primaryFile);
+  SwiftVisitor visitor(compiler.getSourceMgr(), *trap, module, primaryFile);
   auto topLevelDecls = getTopLevelDecls(module, primaryFile);
   for (auto decl : topLevelDecls) {
     visitor.extract(decl);
@@ -175,11 +173,10 @@ static std::vector<swift::ModuleDecl*> collectLoadedModules(swift::CompilerInsta
   return ret;
 }
 
-void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
-                               swift::CompilerInstance& compiler) {
+void codeql::extractSwiftFiles(SwiftExtractorState& state, swift::CompilerInstance& compiler) {
   auto inputFiles = collectInputFilenames(compiler);
   std::vector<swift::ModuleDecl*> todo = collectLoadedModules(compiler);
-  std::unordered_set<swift::ModuleDecl*> seen{todo.begin(), todo.end()};
+  state.encounteredModules.insert(todo.begin(), todo.end());
 
   while (!todo.empty()) {
     auto module = todo.back();
@@ -195,16 +192,16 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
       if (inputFiles.count(sourceFile->getFilename().str()) == 0) {
         continue;
       }
-      archiveFile(config, *sourceFile);
-      encounteredModules = extractDeclarations(config, compiler, *module, sourceFile);
+      archiveFile(state.configuration, *sourceFile);
+      encounteredModules = extractDeclarations(state, compiler, *module, sourceFile);
     }
     if (!isFromSourceFile) {
-      encounteredModules = extractDeclarations(config, compiler, *module);
+      encounteredModules = extractDeclarations(state, compiler, *module);
     }
     for (auto encountered : encounteredModules) {
-      if (seen.count(encountered) == 0) {
+      if (state.encounteredModules.count(encountered) == 0) {
         todo.push_back(encountered);
-        seen.insert(encountered);
+        state.encounteredModules.insert(encountered);
       }
     }
   }

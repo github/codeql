@@ -102,12 +102,12 @@ module Private {
       this instanceof J::AssignOrExpr or
       this instanceof J::XorBitwiseExpr or
       this instanceof J::AssignXorExpr or
-      this instanceof J::LShiftExpr or
-      this instanceof J::AssignLShiftExpr or
-      this instanceof J::RShiftExpr or
-      this instanceof J::AssignRShiftExpr or
-      this instanceof J::URShiftExpr or
-      this instanceof J::AssignURShiftExpr
+      this instanceof J::LeftShiftExpr or
+      this instanceof J::AssignLeftShiftExpr or
+      this instanceof J::RightShiftExpr or
+      this instanceof J::AssignRightShiftExpr or
+      this instanceof J::UnsignedRightShiftExpr or
+      this instanceof J::AssignUnsignedRightShiftExpr
     }
 
     /** Returns the operation representing this expression. */
@@ -144,17 +144,17 @@ module Private {
       or
       this instanceof J::AssignXorExpr and result = TBitXorOp()
       or
-      this instanceof J::LShiftExpr and result = TLShiftOp()
+      this instanceof J::LeftShiftExpr and result = TLeftShiftOp()
       or
-      this instanceof J::AssignLShiftExpr and result = TLShiftOp()
+      this instanceof J::AssignLeftShiftExpr and result = TLeftShiftOp()
       or
-      this instanceof J::RShiftExpr and result = TRShiftOp()
+      this instanceof J::RightShiftExpr and result = TRightShiftOp()
       or
-      this instanceof J::AssignRShiftExpr and result = TRShiftOp()
+      this instanceof J::AssignRightShiftExpr and result = TRightShiftOp()
       or
-      this instanceof J::URShiftExpr and result = TURShiftOp()
+      this instanceof J::UnsignedRightShiftExpr and result = TUnsignedRightShiftOp()
       or
-      this instanceof J::AssignURShiftExpr and result = TURShiftOp()
+      this instanceof J::AssignUnsignedRightShiftExpr and result = TUnsignedRightShiftOp()
     }
 
     Expr getLeftOperand() {
@@ -257,9 +257,7 @@ private module Impl {
   }
 
   /** Holds if the variable underlying the implicit SSA variable `v` is not a field. */
-  predicate nonFieldImplicitSsaDefinition(SsaImplicitInit v) {
-    exists(Parameter p | v.isParameterDefinition(p))
-  }
+  predicate nonFieldImplicitSsaDefinition(SsaImplicitInit v) { v.isParameterDefinition(_) }
 
   /** Returned an expression that is assigned to `f`. */
   Expr getAssignedValueToField(Field f) {

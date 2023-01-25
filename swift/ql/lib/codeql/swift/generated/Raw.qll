@@ -6,6 +6,8 @@ module Raw {
   }
 
   class Callable extends @callable, Element {
+    string getName() { callable_names(this, result) }
+
     ParamDecl getSelfParam() { callable_self_params(this, result) }
 
     ParamDecl getParam(int index) { callable_params(this, index, result) }
@@ -95,6 +97,8 @@ module Raw {
     override string toString() { result = "ExtensionDecl" }
 
     NominalTypeDecl getExtendedTypeDecl() { extension_decls(this, result) }
+
+    ProtocolDecl getProtocol(int index) { extension_decl_protocols(this, index, result) }
   }
 
   class IfConfigDecl extends @if_config_decl, Decl {
@@ -154,7 +158,6 @@ module Raw {
   }
 
   class AbstractFunctionDecl extends @abstract_function_decl, GenericContext, ValueDecl, Callable {
-    string getName() { abstract_function_decls(this, result) }
   }
 
   class AbstractStorageDecl extends @abstract_storage_decl, ValueDecl {

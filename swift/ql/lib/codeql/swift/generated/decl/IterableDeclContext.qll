@@ -32,6 +32,6 @@ module Generated {
     /**
      * Gets the number of members of this iterable declaration context.
      */
-    final int getNumberOfMembers() { result = count(getAMember()) }
+    final int getNumberOfMembers() { result = count(int i | exists(getMember(i))) }
   }
 }

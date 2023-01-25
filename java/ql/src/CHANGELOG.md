@@ -1,3 +1,44 @@
+## 0.5.1
+
+### New Queries
+
+* Added a new query `java/android/websettings-allow-content-access` to detect Android WebViews which do not disable access to `content://` urls.
+
+### Minor Analysis Improvements
+
+* The name, description and alert message for the query `java/concatenated-sql-query` have been altered to emphasize that the query flags the use of string concatenation to construct SQL queries, not the lack of appropriate escaping. The query's files have been renamed from `SqlUnescaped.ql` and `SqlUnescapedLib.qll` to `SqlConcatenated.ql` and `SqlConcatenatedLib.qll` respectively; in the unlikely event your custom configuration or queries refer to either of these files by name, those references will need to be adjusted. The query id remains `java/concatenated-sql-query`, so alerts should not be re-raised as a result of this change.
+
+## 0.5.0
+
+### New Queries
+
+* Added a new query, `java/summary/generated-vs-manual-coverage`, to expose metrics for the number of API endpoints covered by generated versus manual MaD models.
+* Added a new query, `java/telemetry/supported-external-api`, to detect supported 3rd party APIs used in a codebase.
+* Added a new query, `java/android/missing-certificate-pinning`, to find network calls where certificate pinning is not implemented.
+* Added a new query, `java/android-webview-addjavascriptinterface`, to detect the use of `addJavascriptInterface`, which can lead to cross-site scripting.
+* Added a new query, `java/android-websettings-file-access`, to detect configurations that enable file system access in Android WebViews.
+* Added a new query, `java/android-websettings-javascript-enabled`, to detect if JavaScript execution is enabled in an Android WebView.
+* The query `java/regex-injection` has been promoted from experimental to the main query pack. Its results will now appear by default. This query was originally [submitted as an experimental query by @edvraa](https://github.com/github/codeql/pull/5704).
+
+### Minor Analysis Improvements
+
+* The `AlertSuppression.ql` query has been updated to support the new `// codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy `// lgtm` and `// lgtm[query-id]` comments can now also be placed on the line before an alert.
+* The extensible predicates for Models as Data have been renamed (the `ext` prefix has been removed). As an example, `extSummaryModel` has been renamed to `summaryModel`.
+* The query `java/misnamed-type` is now enabled for Kotlin.
+* The query `java/non-serializable-field` is now enabled for Kotlin.
+* Fixed an issue in the query `java/android/implicit-pendingintents` by which an implicit Pending Intent marked as immutable was not correctly recognized as such.
+* The query `java/maven/non-https-url` no longer alerts about disabled repositories.
+
+## 0.4.6
+
+### Minor Analysis Improvements
+
+* Kotlin extraction will now fail if the Kotlin version in use is at least 1.7.30. This is to ensure using an as-yet-unsupported version is noticable, rather than silently failing to extract Kotlin code and therefore producing false-negative results.
+
+## 0.4.5
+
+No user-facing changes.
+
 ## 0.4.4
 
 ### New Queries

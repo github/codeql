@@ -1,6 +1,6 @@
 name: codeql/javascript-experimental-atm-lib
 description: CodeQL libraries for the experimental ML-powered queries
-version: 0.4.3
+version: 0.4.7
 extractor: javascript
 library: true
 groups:

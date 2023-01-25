@@ -6,6 +6,7 @@
  * @problem.severity error
  * @id py/csv-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-1236
  */
 

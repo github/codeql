@@ -9,6 +9,8 @@
  */
 
 import ql
+import codeql_ql.style.ConjunctionParent
+import codeql.GlobalValueNumbering as GVN
 
 /**
  * A variable that is set equal to (assigned) a value one or more times.
@@ -40,8 +42,6 @@ class AssignedVariable extends VarDecl {
   }
 }
 
-import codeql.GlobalValueNumbering as GVN
-
 /**
  * Holds if `assigned1` and `assigned2` assigns the same value to `var`.
  * The assignments may be on different branches of a disjunction.
@@ -58,47 +58,14 @@ predicate candidateRedundantAssignment(AssignedVariable var, Expr assigned1, Exp
   assigned1 != assigned2
 }
 
-/**
- * Gets a (transitive) parent of `p`, where the parent is not a disjunction, and `p` is a candidate assignment from `candidateRedundantAssignment`.
- */
-AstNode getConjunctionParentRec(AstNode p) {
-  candidateRedundantAssignment(_, p, _) and
-  result = p
-  or
-  result = getConjunctionParentRec(p).getParent() and
-  not result instanceof Disjunction and
-  not result instanceof IfFormula and
-  not result instanceof Implication and
-  not result instanceof Negation and
-  not result instanceof Predicate
-}
-
-/**
- * Gets which level in the AST `p` is at.
- * E.g. the top-level is 0, the next level is 1, etc.
- */
-int level(AstNode p) {
-  p instanceof TopLevel and result = 0
-  or
-  result = level(p.getParent()) + 1
-}
-
-/**
- * Gets the top-most parent of `p` that is not a disjunction.
- */
-AstNode getConjunctionParent(AstNode p) {
-  result =
-    min(int level, AstNode parent |
-      parent = getConjunctionParentRec(p) and level = level(parent)
-    |
-      parent order by level
-    )
-}
+/** Holds if `p` is a candidate node for redundant assignment. */
+predicate candidateNode(AstNode p) { candidateRedundantAssignment(_, p, _) }
 
 from AssignedVariable var, Expr assigned1, Expr assigned2
 where
   candidateRedundantAssignment(var, assigned1, assigned2) and
-  getConjunctionParent(assigned1) = getConjunctionParent(assigned2) and
+  ConjunctionParent<candidateNode/1>::getConjunctionParent(assigned1) =
+    ConjunctionParent<candidateNode/1>::getConjunctionParent(assigned2) and
   // de-duplcation:
   (
     assigned1.getLocation().getStartLine() < assigned2.getLocation().getStartLine()

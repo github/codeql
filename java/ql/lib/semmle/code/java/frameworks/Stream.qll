@@ -1,6 +1,5 @@
 /** Definitions related to `java.util.stream`. */
 
-private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSummary
 
 private class CollectCall extends MethodAccess {

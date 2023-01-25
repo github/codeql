@@ -17,14 +17,10 @@ module EmailInjection {
   abstract class Sink extends DataFlow::Node { }
 
   /** A source of untrusted data, considered as a taint source for email injection. */
-  class UntrustedFlowSourceAsSource extends Source {
-    UntrustedFlowSourceAsSource() { this instanceof UntrustedFlowSource }
-  }
+  class UntrustedFlowSourceAsSource extends Source instanceof UntrustedFlowSource { }
 
   /**
    * A data-flow node that becomes part of an email considered as a taint sink for email injection.
    */
-  class MailDataAsSink extends Sink {
-    MailDataAsSink() { this instanceof EmailData }
-  }
+  class MailDataAsSink extends Sink instanceof EmailData { }
 }

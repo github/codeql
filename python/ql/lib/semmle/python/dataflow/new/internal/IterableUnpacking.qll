@@ -207,16 +207,13 @@ class AssignmentTarget extends ControlFlowNode {
 }
 
 /** A direct (or top-level) target of an unpacking assignment. */
-class UnpackingAssignmentDirectTarget extends ControlFlowNode {
+class UnpackingAssignmentDirectTarget extends ControlFlowNode instanceof SequenceNode {
   Expr value;
 
   UnpackingAssignmentDirectTarget() {
-    this instanceof SequenceNode and
-    (
-      value = this.(AssignmentTarget).getValue()
-      or
-      value = this.(ForTarget).getSource()
-    )
+    value = this.(AssignmentTarget).getValue()
+    or
+    value = this.(ForTarget).getSource()
   }
 
   Expr getValue() { result = value }

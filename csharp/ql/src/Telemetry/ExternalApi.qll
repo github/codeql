@@ -17,11 +17,17 @@ private import semmle.code.csharp.security.dataflow.flowsources.Remote
 class TestLibrary extends RefType {
   TestLibrary() {
     this.getNamespace()
-        .getQualifiedName()
+        .getFullName()
         .matches([
             "NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%", "Moq%"
           ])
   }
+}
+
+/** Holds if the given callable is not worth supporting. */
+private predicate isUninteresting(DotNet::Callable c) {
+  c.getDeclaringType() instanceof TestLibrary or
+  c.(Constructor).isParameterless()
 }
 
 /**
@@ -31,7 +37,8 @@ class ExternalApi extends DotNet::Callable {
   ExternalApi() {
     this.isUnboundDeclaration() and
     this.fromLibrary() and
-    this.(Modifiable).isEffectivelyPublic()
+    this.(Modifiable).isEffectivelyPublic() and
+    not isUninteresting(this)
   }
 
   /**
@@ -83,17 +90,6 @@ class ExternalApi extends DotNet::Callable {
     or
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }
-
-  /** Holds if this API is a constructor without parameters. */
-  private predicate isParameterlessConstructor() {
-    this instanceof Constructor and this.getNumberOfParameters() = 0
-  }
-
-  /** Holds if this API is part of a common testing library or framework. */
-  private predicate isTestLibrary() { this.getDeclaringType() instanceof TestLibrary }
-
-  /** Holds if this API is not worth supporting. */
-  predicate isUninteresting() { this.isTestLibrary() or this.isParameterlessConstructor() }
 
   /** Holds if this API is a known source. */
   predicate isSource() {

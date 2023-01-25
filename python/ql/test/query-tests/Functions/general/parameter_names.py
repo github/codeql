@@ -127,7 +127,7 @@ Z().meth(0)
 # makes it such. As a consequence, the query `py/not-named-self` and other
 # relevant queries need to account for this.
 #
-# This has come up in the wild via LGTM as a false positive. For example,
+# This has come up in the wild as a false positive. For example,
 # `__init_subclass__`:
 #   https://docs.python.org/3/reference/datamodel.html#customizing-class-creation
 # `__class_getitem__`:
