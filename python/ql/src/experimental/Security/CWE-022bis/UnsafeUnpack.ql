@@ -69,7 +69,7 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     // Writing the response data to the archive
     exists(Stdlib::FileLikeObject::InstanceSource is, Node f, MethodCallNode mc |
       is.flowsTo(f) and
-      mc.calls(f, "write")
+      mc.calls(f, "write") and
       nodeFrom = mc.getArg(0) and
       nodeTo = is.(CallCfgNode).getArg(0)
     )
