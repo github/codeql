@@ -323,7 +323,13 @@ class OpaqueTypeDecl(GenericTypeDecl):
     opaque_generic_params: list["GenericTypeParamType"]
 
 class TypeAliasDecl(GenericTypeDecl):
-    aliased_type: Type
+    """
+    A declaration of a type alias to another type. For example:
+    ```
+    typealias MyInt = Int
+    ```
+    """
+    aliased_type: Type | doc("the aliased type on the right-hand side of this type alias declaration")
 
 class ClassDecl(NominalTypeDecl):
     pass
