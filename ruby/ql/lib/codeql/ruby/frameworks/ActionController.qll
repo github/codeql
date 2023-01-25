@@ -301,27 +301,39 @@ private module Request {
     override Http::Server::RequestInputKind getKind() { result = Http::Server::bodyInputKind() }
   }
 
-  /**
-   * A method call on `request` which returns the rack env.
-   * This is a hash containing all the information about the request. Values
-   * under keys starting with `HTTP_` are user-controlled.
-   */
-  private class EnvCall extends RequestMethodCall {
-    EnvCall() { this.getMethodName() = ["env", "filtered_env"] }
-  }
+  private module Env {
+    abstract private class Env extends DataFlow::LocalSourceNode { }
 
-  /**
-   * A read of a user-controlled parameter from the request env.
-   */
-  private class EnvHttpAccess extends DataFlow::CallNode, Http::Server::RequestInputAccess::Range {
-    EnvHttpAccess() {
-      this = any(EnvCall c).getAMethodCall("[]") and
-      this.getArgument(0).getConstantValue().getString().regexpMatch("^HTTP_.+")
+    /**
+     * A method call on `request` which returns the rack env.
+     * This is a hash containing all the information about the request. Values
+     * under keys starting with `HTTP_` are user-controlled.
+     */
+    private class RequestEnvCall extends DataFlow::CallNode, Env {
+      RequestEnvCall() { this.getMethodName() = ["env", "filtered_env"] }
     }
 
-    override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
+    private import codeql.ruby.frameworks.Rack
 
-    override string getSourceType() { result = "ActionDispatch::Request#env[]" }
+    private class RackEnv extends Env {
+      RackEnv() { this = any(Rack::AppCandidate app).getEnv().getALocalUse() }
+    }
+
+    /**
+     * A read of a user-controlled parameter from the request env.
+     */
+    private class EnvHttpAccess extends DataFlow::CallNode, Http::Server::RequestInputAccess::Range {
+      EnvHttpAccess() {
+        this = any(Env c).getAMethodCall("[]") and
+        exists(string key | key = this.getArgument(0).getConstantValue().getString() |
+          key.regexpMatch("^HTTP_.+") or key = "PATH_INFO"
+        )
+      }
+
+      override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
+
+      override string getSourceType() { result = "ActionDispatch::Request#env[]" }
+    }
   }
 }
 
