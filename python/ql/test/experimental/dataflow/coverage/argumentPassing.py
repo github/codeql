@@ -207,7 +207,7 @@ def starargs_only(*args):
     SINK2(args[1])
     SINK3_F(args[2])
 
-@expects(3*3)
+@expects(5*3)
 def test_only_starargs():
     starargs_only(arg1, arg2, "safe") # $ arg1 arg2 SPURIOUS: bad2,bad3="arg1" bad1,bad3="arg2"
 
@@ -217,9 +217,12 @@ def test_only_starargs():
     args = (arg1, arg2, "safe") # $ arg1 arg2 func=starargs_only
     starargs_only(*args)
 
-    args = (arg1, arg2) # $ arg1 arg2 func=starargs_only
-    more_args = (arg3, arg4)
-    starargs_only(*args, *more_args)
+    empty_args = ()
+
+    args = (arg1, arg2, "safe") # $ arg1 arg2 func=starargs_only
+    starargs_only(*args, *empty_args)
+    args = (arg1, arg2, "safe") # $ MISSING: arg1 arg2 func=starargs_only
+    starargs_only(*empty_args, *args)
 
 
 def starargs_mixed(a, *args):
