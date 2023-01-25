@@ -1,6 +1,6 @@
 import swift
 
-string describe(Decl decl) { result = decl.(TypeAliasDecl).getAliasedType().toString() }
+string describe(Decl decl) { result = "getAliasedType:" + decl.(TypeAliasDecl).getAliasedType().toString() }
 
 from Decl decl
 where decl.getLocation().getFile().getName().matches("%swift/ql/test%")
