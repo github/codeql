@@ -2,3 +2,6 @@ missingAnnotationOnSink
 failures
 | UnsafeUnpack.py:12:46:12:58 | Comment # $result=BAD | Missing result:result=BAD |
 | UnsafeUnpack.py:55:53:55:65 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:71:51:71:63 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:85:50:85:62 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:89:50:89:62 | Comment # $result=BAD | Missing result:result=BAD |
