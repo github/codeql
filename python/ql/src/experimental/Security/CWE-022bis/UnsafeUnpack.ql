@@ -46,8 +46,14 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     )
     or
     // A source download a file using wget
-    exists(MethodCallNode mcn |
-      mcn = API::moduleImport("wget").getMember("download").getACall() and source = mcn.getArg(1)
+    // see wget: https://pypi.org/project/wget/
+    exists(API::CallNode mcn |
+      mcn = API::moduleImport("wget").getMember("download").getACall() and
+      (
+        source = mcn.getArg(1)
+        or
+        source = mcn.getReturn().asSource() and not exists(Node arg | arg = mcn.getArg(1))
+      )
     )
     or
     // catch the uploaded files as a source

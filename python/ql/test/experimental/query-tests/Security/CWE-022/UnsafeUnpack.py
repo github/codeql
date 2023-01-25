@@ -59,6 +59,7 @@ with tempfile.TemporaryDirectory() as temp_dir:
 # A source catching an S3 filename download
 # see boto3: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.download_file
 import boto3
+import os
 
 remote_ziped_name = "remote_name.tar.gz"
 base_dir = "/tmp/basedir"
@@ -68,3 +69,21 @@ bucket_name = "mybucket"
 s3 = boto3.client('s3')
 s3.download_file(bucket_name, remote_ziped_name, local_ziped_path)
 shutil.unpack_archive(local_ziped_path, base_dir) # $result=BAD
+
+
+# wget
+# see wget: https://pypi.org/project/wget/
+import wget
+import os
+
+url = "https://some.remote/location/remote_name.tar.xz"
+compressed_file = "/tmp/basedir/local_name.tar.xz"
+base_dir = "/tmp/basedir"
+
+# download(url, out, bar) contains out parameter
+wget.download(url, compressed_file)
+shutil.unpack_archive(compressed_file, base_dir) # $result=BAD
+
+# download(url) returns filename
+compressed_file = wget.download(url)
+shutil.unpack_archive(compressed_file, base_dir) # $result=BAD
