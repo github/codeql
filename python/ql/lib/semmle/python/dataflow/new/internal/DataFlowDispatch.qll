@@ -673,8 +673,9 @@ Class getADirectSubclass(Class cls) { cls = getADirectSuperclass(result) }
  *
  * NOTE for debugging the results of this predicate: Since a class can be part of
  * multiple MROs, results from this predicate might only be valid in some, but not all,
- * inheritance chains (such as the result `C` for `cls=B` in the first example -- this
- * might make it difficult to see if the definition of `D` is located in an other file)
+ * inheritance chains: This is the case with the result `C` for `cls=B` in the first
+ * example -- if `B` and `C` are defined in the same file, but `D` in a different file,
+ * this might make the results from this predicate difficult to comprehend at first.
  *
  * For more info on the C3 MRO used in Python see:
  * - https://docs.python.org/3/glossary.html#term-method-resolution-order
