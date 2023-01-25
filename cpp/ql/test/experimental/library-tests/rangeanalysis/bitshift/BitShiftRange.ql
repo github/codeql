@@ -1,7 +1,6 @@
 import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
-import experimental.semmle.code.cpp.rangeanalysis.extensions.ConstantLShiftExprRange
-import experimental.semmle.code.cpp.rangeanalysis.extensions.ConstantRShiftExprRange
+import experimental.semmle.code.cpp.rangeanalysis.extensions.ConstantShiftExprRange
 
 Expr getLOp(Operation o) {
   result = o.(BinaryOperation).getLeftOperand() or
