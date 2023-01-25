@@ -1,0 +1,4 @@
+missingAnnotationOnSink
+failures
+| UnsafeUnpack.py:12:46:12:58 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:55:53:55:65 | Comment # $result=BAD | Missing result:result=BAD |

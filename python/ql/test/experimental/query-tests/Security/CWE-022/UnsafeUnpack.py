@@ -9,7 +9,7 @@ with open(tarpath, "wb") as f:
       f.write(response.raw.read())
 
 untarredpath = "/tmp/tmp123"
-shutil.unpack_archive(tarpath, untarredpath)
+shutil.unpack_archive(tarpath, untarredpath) # $result=BAD
 
 
 import tempfile
@@ -52,5 +52,5 @@ with tempfile.TemporaryDirectory() as temp_dir:
             )
         fs.get(uri, to_path, recursive=True)
     if unpack_path:
-        shutil.unpack_archive(to_path, unpack_path)
+        shutil.unpack_archive(to_path, unpack_path) # $result=BAD
         to_path = unpack_path
