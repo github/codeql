@@ -8,12 +8,12 @@ import {{.}}
 module Generated {
   {{#has_doc}}
   /**
-  {{#doc}}
-   * {{.}}
-  {{/doc}}
   {{#ql_internal}}
    * INTERNAL: Do not use.
   {{/ql_internal}}
+  {{#doc}}
+   * {{.}}
+  {{/doc}}
    */
   {{/has_doc}}
   class {{name}} extends Synth::T{{name}}{{#bases}}, {{.}}{{/bases}} {
