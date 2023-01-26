@@ -6,6 +6,7 @@
  * @id java/insecure-webview-resource-response
  * @problem.severity error
  * @tags security
+ *       experimental
  *       external/cwe/cwe-200
  */
 

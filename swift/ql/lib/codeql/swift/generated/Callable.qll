@@ -8,7 +8,7 @@ import codeql.swift.elements.decl.ParamDecl
 module Generated {
   class Callable extends Synth::TCallable, Element {
     /**
-     * Gets the name of this Callable, if it exists.
+     * Gets the name of this callable, if it exists.
      */
     string getName() { result = Synth::convertCallableToRaw(this).(Raw::Callable).getName() }
 

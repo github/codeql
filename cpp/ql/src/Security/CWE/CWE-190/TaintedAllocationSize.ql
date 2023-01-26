@@ -46,8 +46,10 @@ predicate hasUpperBoundsCheck(Variable var) {
 }
 
 predicate nodeIsBarrierEqualityCandidate(DataFlow::Node node, Operand access, Variable checkedVar) {
-  readsVariable(node.asInstruction(), checkedVar) and
-  any(IRGuardCondition guard).ensuresEq(access, _, _, node.asInstruction().getBlock(), true)
+  exists(Instruction instr | instr = node.asOperand().getDef() |
+    readsVariable(instr, checkedVar) and
+    any(IRGuardCondition guard).ensuresEq(access, _, _, instr.getBlock(), true)
+  )
 }
 
 predicate isFlowSource(FlowSource source, string sourceType) { sourceType = source.getSourceType() }
@@ -79,8 +81,8 @@ class TaintedAllocationSizeConfiguration extends TaintTracking::Configuration {
       e = any(PointerDiffExpr diff).getAnOperand()
     )
     or
-    exists(Variable checkedVar |
-      node.asExpr().(VariableAccess).getTarget() = checkedVar and
+    exists(Variable checkedVar, Instruction instr | instr = node.asOperand().getDef() |
+      readsVariable(instr, checkedVar) and
       hasUpperBoundsCheck(checkedVar)
     )
     or

@@ -66,7 +66,7 @@ module.exports.stringConcat = function (name) {
 
 	cp.exec(name); // OK.
 
-	cp.exec("for foo in (" + name + ") do bla end"); // OK.
+	cp.exec("for foo in (" + name + ") do bla end"); // NOT OK.
 
 	cp.exec("cat /foO/BAR/" + name) // NOT OK.
 
@@ -544,4 +544,13 @@ module.exports.sanitizer4 = function (name) {
 	} else {
 		cp.exec("rm -rf " + name); // NOT OK
 	}
+}
+
+
+module.exports.shellThing = function (name) {
+    function indirectShell(cmd, args, spawnOpts) {
+        cp.spawn(cmd, args, spawnOpts); // NOT OK
+    }
+    
+    indirectShell("rm", ["-rf", name], {shell: true});
 }

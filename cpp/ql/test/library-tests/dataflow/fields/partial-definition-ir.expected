@@ -333,6 +333,7 @@
 | by_reference.cpp:32:12:32:12 | s |
 | by_reference.cpp:36:12:36:15 | this |
 | by_reference.cpp:40:12:40:15 | this |
+| by_reference.cpp:44:26:44:29 | this |
 | by_reference.cpp:50:3:50:3 | s |
 | by_reference.cpp:50:17:50:26 | call to user_input |
 | by_reference.cpp:51:8:51:8 | s |
@@ -348,6 +349,7 @@
 | by_reference.cpp:68:17:68:18 | & ... |
 | by_reference.cpp:68:21:68:30 | call to user_input |
 | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
+| by_reference.cpp:69:22:69:23 | & ... |
 | by_reference.cpp:84:3:84:7 | inner |
 | by_reference.cpp:88:3:88:7 | inner |
 | by_reference.cpp:102:21:102:39 | & ... |

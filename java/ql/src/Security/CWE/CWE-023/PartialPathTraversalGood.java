@@ -1,6 +1,6 @@
 public class PartialPathTraversalGood {
     public void example(File dir, File parent) throws IOException {
-        if (!dir.getCanonicalPath().toPath().startsWith(parent.getCanonicalPath().toPath())) {
+        if (!dir.getCanonicalPath().startsWith(parent.getCanonicalPath() + File.separator)) {
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
     }

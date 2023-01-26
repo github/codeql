@@ -12,6 +12,7 @@ import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
 import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 import experimental.adaptivethreatmodeling.XssATM as XssAtm
 import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
+import experimental.adaptivethreatmodeling.ShellCommandInjectionFromEnvironmentATM as ShellCommandInjectionFromEnvironmentAtm
 import experimental.adaptivethreatmodeling.EndpointFeatures as EndpointFeatures
 import extraction.NoFeaturizationRestrictionsConfig
 private import experimental.adaptivethreatmodeling.EndpointCharacteristics as EndpointCharacteristics
@@ -23,6 +24,10 @@ query predicate tokenFeatures(DataFlow::Node endpoint, string featureName, strin
     not exists(any(TaintedPathAtm::TaintedPathAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
     not exists(any(XssAtm::DomBasedXssAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
     not exists(any(XssThroughDomAtm::XssThroughDomAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
+    not exists(
+      any(ShellCommandInjectionFromEnvironmentAtm::ShellCommandInjectionFromEnvironmentAtmConfig cfg)
+          .getAReasonSinkExcluded(endpoint)
+    ) or
     any(EndpointCharacteristics::IsArgumentToModeledFunctionCharacteristic characteristic)
         .appliesToEndpoint(endpoint)
   ) and

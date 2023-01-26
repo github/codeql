@@ -99,7 +99,7 @@ Expr overFlowCand() {
   |
     bin instanceof AddExpr or
     bin instanceof MulExpr or
-    bin instanceof LShiftExpr
+    bin instanceof LeftShiftExpr
   )
   or
   exists(AssignOp op |
@@ -109,7 +109,7 @@ Expr overFlowCand() {
   |
     op instanceof AssignAddExpr or
     op instanceof AssignMulExpr or
-    op instanceof AssignLShiftExpr
+    op instanceof AssignLeftShiftExpr
   )
   or
   exists(AddExpr add, CompileTimeConstantExpr c |

@@ -1,14 +1,10 @@
 edges
 | Test.java:76:27:76:60 | getProperty(...) : String | Test.java:78:37:78:48 | userProperty : String |
-| Test.java:78:20:78:56 | parseInt(...) : Number | Test.java:80:31:80:34 | size |
-| Test.java:78:20:78:56 | parseInt(...) : Number | Test.java:86:34:86:37 | size |
 | Test.java:78:37:78:48 | userProperty : String | Test.java:78:37:78:55 | trim(...) : String |
-| Test.java:78:37:78:55 | trim(...) : String | Test.java:78:20:78:56 | parseInt(...) : Number |
 | Test.java:78:37:78:55 | trim(...) : String | Test.java:80:31:80:34 | size |
 | Test.java:78:37:78:55 | trim(...) : String | Test.java:86:34:86:37 | size |
 nodes
 | Test.java:76:27:76:60 | getProperty(...) : String | semmle.label | getProperty(...) : String |
-| Test.java:78:20:78:56 | parseInt(...) : Number | semmle.label | parseInt(...) : Number |
 | Test.java:78:37:78:48 | userProperty : String | semmle.label | userProperty : String |
 | Test.java:78:37:78:55 | trim(...) : String | semmle.label | trim(...) : String |
 | Test.java:80:31:80:34 | size | semmle.label | size |

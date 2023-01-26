@@ -8,6 +8,7 @@
  * @precision ???
  * @id py/insecure-cookie
  * @tags security
+ *       experimental
  *       external/cwe/cwe-614
  */
 

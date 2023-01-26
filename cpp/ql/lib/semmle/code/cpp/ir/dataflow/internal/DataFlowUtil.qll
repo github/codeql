@@ -41,14 +41,19 @@ private newtype TIRDataFlowNode =
   } or
   TSsaPhiNode(Ssa::PhiNode phi) or
   TIndirectArgumentOutNode(ArgumentOperand operand, int indirectionIndex) {
-    Ssa::isModifiableByCall(operand) and
-    indirectionIndex = [1 .. Ssa::countIndirectionsForCppType(operand.getLanguageType())]
+    Ssa::isModifiableByCall(operand, indirectionIndex)
   } or
   TRawIndirectOperand(Operand op, int indirectionIndex) {
     Ssa::hasRawIndirectOperand(op, indirectionIndex)
   } or
   TRawIndirectInstruction(Instruction instr, int indirectionIndex) {
     Ssa::hasRawIndirectInstruction(instr, indirectionIndex)
+  } or
+  TFinalParameterNode(Parameter p, int indirectionIndex) {
+    exists(Ssa::FinalParameterUse use |
+      use.getParameter() = p and
+      use.getIndirectionIndex() = indirectionIndex
+    )
   } or
   TFinalGlobalValue(Ssa::GlobalUse globalUse) or
   TInitialGlobalValue(Ssa::GlobalDef globalUse)
@@ -375,6 +380,8 @@ class InstructionNode extends Node0 {
 
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
+
+  override string toStringImpl() { result = instr.getAst().toString() }
 }
 
 /**
@@ -388,14 +395,18 @@ class OperandNode extends Node, Node0 {
 
   /** Gets the operand corresponding to this node. */
   Operand getOperand() { result = node.getOperand() }
+
+  override string toStringImpl() { result = op.getDef().getAst().toString() }
 }
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Returns `t`, but stripped of the outermost pointer, reference, etc.
  *
  * For example, `stripPointers(int*&)` is `int*` and `stripPointers(int*)` is `int`.
  */
-private Type stripPointer(Type t) {
+Type stripPointer(Type t) {
   result = any(Ssa::Indirection ind | ind.getType() = t).getBaseType()
   or
   // These types have a sensible base type, but don't receive additional
@@ -584,16 +595,35 @@ class IndirectParameterNode extends Node, IndirectInstruction {
  * A node representing the indirection of a value that is
  * about to be returned from a function.
  */
-class IndirectReturnNode extends IndirectOperand {
+class IndirectReturnNode extends Node {
   IndirectReturnNode() {
-    this.getOperand() = any(ReturnIndirectionInstruction ret).getSourceAddressOperand()
+    this instanceof FinalParameterNode
     or
-    this.getOperand() = any(ReturnValueInstruction ret).getReturnAddressOperand()
+    this.(IndirectOperand).getOperand() = any(ReturnValueInstruction ret).getReturnAddressOperand()
   }
 
-  Operand getAddressOperand() { result = operand }
-
   override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  /**
+   * Holds if this node represents the value that is returned to the caller
+   * through a `return` statement.
+   */
+  predicate isNormalReturn() { this instanceof IndirectOperand }
+
+  /**
+   * Holds if this node represents the value that is returned to the caller
+   * by writing to the `argumentIndex`'th argument of the call.
+   */
+  predicate isParameterReturn(int argumentIndex) {
+    this.(FinalParameterNode).getArgumentIndex() = argumentIndex
+  }
+
+  /** Gets the indirection index of this indirect return node. */
+  int getIndirectionIndex() {
+    result = this.(FinalParameterNode).getIndirectionIndex()
+    or
+    result = this.(IndirectOperand).getIndirectionIndex()
+  }
 }
 
 /**
@@ -728,19 +758,24 @@ private class PostIndirectReturnOutNode extends IndirectReturnOutNode, PostUpdat
   override Node getPreUpdateNode() { result = this }
 }
 
-private Type getTypeImpl(Type t, int indirectionIndex) {
+/**
+ * INTERNAL: Do not use.
+ *
+ * Returns `t`, but stripped of the outer-most `indirectionIndex` number of indirections.
+ */
+Type getTypeImpl(Type t, int indirectionIndex) {
   indirectionIndex = 0 and
   result = t
   or
   indirectionIndex > 0 and
   exists(Type stripped |
-    stripped = stripPointer(t) and
+    stripped = stripPointer(t.stripTopLevelSpecifiers()) and
     // We need to avoid the case where `stripPointer(t) = t` (which can happen on
     // iterators that specify a `value_type` that is the iterator itself). Such a type
     // would create an infinite loop otherwise. For these cases we simply don't produce
     // a result for `getType`.
     stripped.getUnspecifiedType() != t.getUnspecifiedType() and
-    result = getTypeImpl(stripPointer(t), indirectionIndex - 1)
+    result = getTypeImpl(stripped, indirectionIndex - 1)
   )
 }
 
@@ -776,6 +811,47 @@ class RawIndirectOperand extends Node, TRawIndirectOperand {
 
   override string toStringImpl() {
     result = instructionNode(this.getOperand().getDef()).toStringImpl() + " indirection"
+  }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing the value of an update parameter
+ * just before reaching the end of a function.
+ */
+class FinalParameterNode extends Node, TFinalParameterNode {
+  Parameter p;
+  int indirectionIndex;
+
+  FinalParameterNode() { this = TFinalParameterNode(p, indirectionIndex) }
+
+  /** Gets the parameter associated with this final use. */
+  Parameter getParameter() { result = p }
+
+  /** Gets the underlying indirection index. */
+  int getIndirectionIndex() { result = indirectionIndex }
+
+  /** Gets the argument index associated with this final use. */
+  final int getArgumentIndex() { result = p.getIndex() }
+
+  override Function getFunction() { result = p.getFunction() }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override DataFlowType getType() { result = getTypeImpl(p.getUnspecifiedType(), indirectionIndex) }
+
+  final override Location getLocationImpl() {
+    // Parameters can have multiple locations. When there's a unique location we use
+    // that one, but if multiple locations exist we default to an unknown location.
+    result = unique( | | p.getLocation())
+    or
+    not exists(unique( | | p.getLocation())) and
+    result instanceof UnknownDefaultLocation
+  }
+
+  override string toStringImpl() {
+    if indirectionIndex > 1 then result = p.toString() + " indirection" else result = p.toString()
   }
 }
 

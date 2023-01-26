@@ -158,11 +158,10 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     exists(int arg |
-      (
-        arg = getFormatParameterIndex() or
-        arg >= getFirstFormatArgumentIndex()
-      ) and
-      input.isParameterDeref(arg) and
+      arg = getFormatParameterIndex() or
+      arg >= getFirstFormatArgumentIndex()
+    |
+      (input.isParameterDeref(arg) or input.isParameter(arg)) and
       output.isParameterDeref(getOutputParameterIndex(_))
     )
   }

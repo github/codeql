@@ -1,8 +1,8 @@
 uniqueEnclosingCallable
-| globals.cpp:9:5:9:19 | VariableAddress indirection | Node should have one enclosing callable but has 0. |
-| globals.cpp:9:5:9:19 | VariableAddress indirection | Node should have one enclosing callable but has 0. |
-| globals.cpp:16:12:16:26 | VariableAddress indirection | Node should have one enclosing callable but has 0. |
-| globals.cpp:16:12:16:26 | VariableAddress indirection | Node should have one enclosing callable but has 0. |
+| globals.cpp:9:5:9:19 | flowTestGlobal1 indirection | Node should have one enclosing callable but has 0. |
+| globals.cpp:9:5:9:19 | flowTestGlobal1 indirection | Node should have one enclosing callable but has 0. |
+| globals.cpp:16:12:16:26 | flowTestGlobal2 indirection | Node should have one enclosing callable but has 0. |
+| globals.cpp:16:12:16:26 | flowTestGlobal2 indirection | Node should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation

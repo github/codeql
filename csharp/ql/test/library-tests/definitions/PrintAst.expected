@@ -198,7 +198,7 @@ definitions.cs:
 #   84|                   -1: [PropertyCall] access to property Now
 #   84|                     -1: [TypeAccess] access to type DateTime
 #   84|                       0: [TypeMention] DateTime
-#   84|                   0: [StringLiteral] "HH:mm:ss"
+#   84|                   0: [StringLiteralUtf16] "HH:mm:ss"
 #   86|           1: [SpecificCatchClause] catch (...) {...}
 #   86|             0: [LocalVariableDeclExpr] Exception e
 #   86|               0: [TypeMention] Exception

@@ -168,4 +168,34 @@ int main(int argc, char **argv) {
 	int i10 = (int) argv[1];
 	printf((char *) i10);
 	printWrapper((char *) i10);
+
+	// BAD: b value comes from argv [NOT DETECTED]
+	{
+		char b[64];
+		char *bp = &b[0];
+		char *t;
+		if (0) {
+			t = 0;
+		} else {
+			t = bp;
+		}
+		memcpy(t, argv[1] + 1, 1);
+		printf(bp);
+		printWrapper(bp);
+	}
+
+	// BAD: b value comes from argv [NOT DETECTED]
+	{
+		char b[64];
+		char *bp = &b[0];
+		char *t;
+		if (1) {
+			t = ++bp;
+		} else {
+			t = 0;
+		}
+		memcpy(t, argv[1] + 1, 1);
+		printf(bp);
+		printWrapper(bp);
+	}
 }

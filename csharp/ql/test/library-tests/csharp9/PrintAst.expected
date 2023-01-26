@@ -118,10 +118,10 @@ BinaryPattern.cs:
 #   18|             0: [OrPatternExpr] ... or ...
 #   18|               0: [ConstantPatternExpr,IntLiteral] 1
 #   18|               1: [ConstantPatternExpr,IntLiteral] 2
-#   18|             2: [StringLiteral] "1 or 2"
+#   18|             2: [StringLiteralUtf16] "1 or 2"
 #   19|           1: [SwitchCaseExpr] ... => ...
 #   19|             0: [DiscardPatternExpr] _
-#   19|             2: [StringLiteral] "other"
+#   19|             2: [StringLiteralUtf16] "other"
 CovariantReturn.cs:
 #    1| [Class] A
 #    3|   5: [Method] M1
@@ -967,7 +967,7 @@ Record.cs:
 #   38|     4: [MethodCall] call to method WriteLine
 #   38|       -1: [TypeAccess] access to type Console
 #   38|         0: [TypeMention] Console
-#   38|       0: [StringLiteral] "Shredding furniture"
+#   38|       0: [StringLiteralUtf16] "Shredding furniture"
 #   41| [RecordClass] Dog
 #   41|   12: [NEOperator] !=
 #-----|     2: (Parameters)
@@ -988,7 +988,7 @@ Record.cs:
 #   44|     4: [MethodCall] call to method WriteLine
 #   44|       -1: [TypeAccess] access to type Console
 #   44|         0: [TypeMention] Console
-#   44|       0: [StringLiteral] "It's tail wagging time"
+#   44|       0: [StringLiteralUtf16] "It's tail wagging time"
 #   46|   17: [Method] ToString
 #   46|     -1: [TypeMention] string
 #   47|     4: [BlockStmt] {...}
@@ -1006,7 +1006,7 @@ Record.cs:
 #   50|         0: [InterpolatedStringExpr] $"..."
 #   50|           0: [MethodCall] call to method ToString
 #   50|             -1: [LocalVariableAccess] access to local variable s
-#   50|           1: [StringLiteral] " is a dog"
+#   50|           1: [StringLiteralUtf16] " is a dog"
 #   54| [RecordClass] R1
 #   54|   12: [NEOperator] !=
 #-----|     2: (Parameters)
@@ -1059,16 +1059,16 @@ Record.cs:
 #   62|           0: [LocalVariableAccess] access to local variable person
 #   62|           1: [ObjectCreation] object creation of type Person
 #   62|             -1: [TypeMention] Person
-#   62|             0: [StringLiteral] "Bill"
-#   62|             1: [StringLiteral] "Wagner"
+#   62|             0: [StringLiteralUtf16] "Bill"
+#   62|             1: [StringLiteralUtf16] "Wagner"
 #   63|       1: [LocalVariableDeclStmt] ... ...;
 #   63|         0: [LocalVariableDeclAndInitExpr] Student student = ...
 #   63|           -1: [TypeMention] Student
 #   63|           0: [LocalVariableAccess] access to local variable student
 #   63|           1: [ObjectCreation] object creation of type Student
 #   63|             -1: [TypeMention] Student
-#   63|             0: [StringLiteral] "Bill"
-#   63|             1: [StringLiteral] "Wagner"
+#   63|             0: [StringLiteralUtf16] "Bill"
+#   63|             1: [StringLiteralUtf16] "Wagner"
 #   63|             2: [IntLiteral] 11
 #   65|       2: [ExprStmt] ...;
 #   65|         0: [MethodCall] call to method WriteLine
@@ -1086,9 +1086,9 @@ Record.cs:
 #   70|           0: [LocalVariableAccess] access to local variable p1
 #   70|           1: [ObjectCreation] object creation of type Teacher1
 #   70|             -1: [TypeMention] Teacher1
-#   70|             0: [StringLiteral] "Bill"
-#   70|             1: [StringLiteral] "Wagner"
-#   70|             2: [StringLiteral] "Math"
+#   70|             0: [StringLiteralUtf16] "Bill"
+#   70|             1: [StringLiteralUtf16] "Wagner"
+#   70|             2: [StringLiteralUtf16] "Math"
 #   72|       1: [ExprStmt] ...;
 #   72|         0: [AssignExpr] ... = ...
 #   72|           0: [TupleExpr] (..., ...)
@@ -1109,7 +1109,7 @@ Record.cs:
 #   75|             1: [ObjectInitializer] { ..., ... }
 #   75|               0: [MemberInitializer] ... = ...
 #   75|                 0: [PropertyCall] access to property FirstName
-#   75|                 1: [StringLiteral] "Paul"
+#   75|                 1: [StringLiteralUtf16] "Paul"
 #   76|       4: [LocalVariableDeclStmt] ... ...;
 #   76|         0: [LocalVariableDeclAndInitExpr] Teacher1 p3 = ...
 #   76|           -1: [TypeMention] Teacher1
@@ -1122,10 +1122,10 @@ Record.cs:
 #   76|             1: [ObjectInitializer] { ..., ... }
 #   76|               0: [MemberInitializer] ... = ...
 #   76|                 0: [PropertyCall] access to property FirstName
-#   76|                 1: [StringLiteral] "Paul"
+#   76|                 1: [StringLiteralUtf16] "Paul"
 #   76|               1: [MemberInitializer] ... = ...
 #   76|                 0: [PropertyCall] access to property Subject
-#   76|                 1: [StringLiteral] "Literature"
+#   76|                 1: [StringLiteralUtf16] "Literature"
 #   77|       5: [LocalVariableDeclStmt] ... ...;
 #   77|         0: [LocalVariableDeclAndInitExpr] Person1 clone = ...
 #   77|           -1: [TypeMention] Person1
@@ -1142,8 +1142,8 @@ Record.cs:
 #   82|           0: [LocalVariableAccess] access to local variable a
 #   82|           1: [ObjectCreation] object creation of type R2
 #   82|             -1: [TypeMention] R2
-#   82|             0: [StringLiteral] "A"
-#   82|             1: [StringLiteral] "B"
+#   82|             0: [StringLiteralUtf16] "A"
+#   82|             1: [StringLiteralUtf16] "B"
 #   83|       1: [LocalVariableDeclStmt] ... ...;
 #   83|         0: [LocalVariableDeclAndInitExpr] R1 b = ...
 #   83|           -1: [TypeMention] R1
@@ -1158,7 +1158,7 @@ Record.cs:
 #   84|             1: [ObjectInitializer] { ..., ... }
 #   84|               0: [MemberInitializer] ... = ...
 #   84|                 0: [PropertyCall] access to property A
-#   84|                 1: [StringLiteral] "C"
+#   84|                 1: [StringLiteralUtf16] "C"
 RelationalPattern.cs:
 #    3| [Class] RelationalPattern
 #    5|   5: [Method] M1
@@ -1208,14 +1208,14 @@ RelationalPattern.cs:
 #   16|           -1: [ParameterAccess] access to parameter i
 #   18|           0: [SwitchCaseExpr] ... => ...
 #   18|             0: [ConstantPatternExpr,IntLiteral] 1
-#   18|             2: [StringLiteral] "1"
+#   18|             2: [StringLiteralUtf16] "1"
 #   19|           1: [SwitchCaseExpr] ... => ...
 #   19|             0: [GTPattern] > ...
 #   19|               0: [IntLiteral] 1
-#   19|             2: [StringLiteral] ">1"
+#   19|             2: [StringLiteralUtf16] ">1"
 #   20|           2: [SwitchCaseExpr] ... => ...
 #   20|             0: [DiscardPatternExpr] _
-#   20|             2: [StringLiteral] "other"
+#   20|             2: [StringLiteralUtf16] "other"
 TargetType.cs:
 #    5| [Class] TargetType
 #    7|   5: [Method] M2
@@ -1559,7 +1559,7 @@ UnaryPattern.cs:
 #   18|           0: [SwitchCaseExpr] ... => ...
 #   18|             0: [NotPatternExpr] not ...
 #   18|               0: [ConstantPatternExpr,IntLiteral] 1
-#   18|             2: [StringLiteral] "not 1"
+#   18|             2: [StringLiteralUtf16] "not 1"
 #   19|           1: [SwitchCaseExpr] ... => ...
 #   19|             0: [DiscardPatternExpr] _
-#   19|             2: [StringLiteral] "other"
+#   19|             2: [StringLiteralUtf16] "other"

@@ -39,6 +39,10 @@ private newtype TDefOrUseImpl =
   } or
   TIteratorUse(BaseSourceVariableInstruction container, Operand iteratorAddress) {
     isIteratorUse(container, iteratorAddress, _, _)
+  } or
+  TFinalParameterUse(Parameter p) {
+    any(Indirection indirection).getType() = p.getUnspecifiedType() or
+    p.getUnspecifiedType() instanceof Cpp::ArrayType
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
@@ -46,7 +50,7 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
   abstract string toString();
 
   /** Gets the block of this definition or use. */
-  abstract IRBlock getBlock();
+  final IRBlock getBlock() { this.hasIndexInBlock(result, _) }
 
   /** Holds if this definition or use has index `index` in block `block`. */
   abstract predicate hasIndexInBlock(IRBlock block, int index);
@@ -82,8 +86,6 @@ abstract class DefImpl extends DefOrUseImpl {
 
   override string toString() { result = address.toString() }
 
-  override IRBlock getBlock() { result = this.getAddressOperand().getDef().getBlock() }
-
   override Cpp::Location getLocation() { result = this.getAddressOperand().getLocation() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
@@ -113,10 +115,10 @@ private class IteratorDef extends DefImpl, TIteratorDef {
   override predicate isCertain() { none() }
 }
 
-abstract class UseImpl extends DefOrUseImpl {
-  Operand operand;
+abstract class UseImpl extends DefOrUseImpl { }
 
-  Operand getOperand() { result = operand }
+abstract private class OperandBasedUse extends UseImpl {
+  Operand operand;
 
   override string toString() { result = operand.toString() }
 
@@ -124,12 +126,10 @@ abstract class UseImpl extends DefOrUseImpl {
     operand.getUse() = block.getInstruction(index)
   }
 
-  final override IRBlock getBlock() { result = operand.getUse().getBlock() }
-
   final override Cpp::Location getLocation() { result = operand.getLocation() }
 }
 
-private class DirectUse extends UseImpl, TUseImpl {
+private class DirectUse extends OperandBasedUse, TUseImpl {
   DirectUse() { this = TUseImpl(operand) }
 
   override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, _) }
@@ -137,7 +137,7 @@ private class DirectUse extends UseImpl, TUseImpl {
   override predicate isCertain() { isUse(true, operand, _, _, _) }
 }
 
-private class IteratorUse extends UseImpl, TIteratorUse {
+private class IteratorUse extends OperandBasedUse, TIteratorUse {
   BaseSourceVariableInstruction container;
 
   IteratorUse() { this = TIteratorUse(container, operand) }
@@ -145,6 +145,40 @@ private class IteratorUse extends UseImpl, TIteratorUse {
   override BaseSourceVariableInstruction getBase() { result = container }
 
   override predicate isCertain() { none() }
+}
+
+private class FinalParameterUse extends UseImpl, TFinalParameterUse {
+  Parameter p;
+
+  FinalParameterUse() { this = TFinalParameterUse(p) }
+
+  override string toString() { result = p.toString() }
+
+  final override predicate hasIndexInBlock(IRBlock block, int index) {
+    exists(ReturnInstruction return |
+      block.getInstruction(index + 1) = return and
+      return.getEnclosingFunction() = p.getFunction()
+    )
+  }
+
+  final override Cpp::Location getLocation() {
+    // Parameters can have multiple locations. When there's a unique location we use
+    // that one, but if multiple locations exist we default to an unknown location.
+    result = unique( | | p.getLocation())
+    or
+    not exists(unique( | | p.getLocation())) and
+    result instanceof UnknownDefaultLocation
+  }
+
+  override BaseSourceVariableInstruction getBase() {
+    exists(InitializeParameterInstruction init |
+      init.getParameter() = p and
+      // This is always a `VariableAddressInstruction`
+      result = init.getAnOperand().getDef()
+    )
+  }
+
+  override predicate isCertain() { any() }
 }
 
 private module SsaInput implements SsaImplCommon::InputSig {

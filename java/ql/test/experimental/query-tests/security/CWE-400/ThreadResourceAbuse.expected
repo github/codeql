@@ -12,14 +12,8 @@ edges
 | ThreadResourceAbuse.java:71:15:71:17 | parameter this [waitTime] : Number | ThreadResourceAbuse.java:74:18:74:25 | this <.field> [waitTime] : Number |
 | ThreadResourceAbuse.java:74:18:74:25 | this <.field> [waitTime] : Number | ThreadResourceAbuse.java:74:18:74:25 | waitTime |
 | ThreadResourceAbuse.java:141:27:141:43 | getValue(...) : String | ThreadResourceAbuse.java:144:34:144:42 | delayTime |
-| ThreadResourceAbuse.java:172:19:172:50 | getHeader(...) : String | ThreadResourceAbuse.java:173:37:173:42 | header : String |
 | ThreadResourceAbuse.java:172:19:172:50 | getHeader(...) : String | ThreadResourceAbuse.java:176:17:176:26 | retryAfter |
-| ThreadResourceAbuse.java:173:20:173:43 | parseInt(...) : Number | ThreadResourceAbuse.java:176:17:176:26 | retryAfter |
-| ThreadResourceAbuse.java:173:37:173:42 | header : String | ThreadResourceAbuse.java:173:20:173:43 | parseInt(...) : Number |
-| ThreadResourceAbuse.java:206:28:206:56 | getParameter(...) : String | ThreadResourceAbuse.java:207:39:207:52 | uploadDelayStr : String |
 | ThreadResourceAbuse.java:206:28:206:56 | getParameter(...) : String | ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number |
-| ThreadResourceAbuse.java:207:22:207:53 | parseInt(...) : Number | ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number |
-| ThreadResourceAbuse.java:207:39:207:52 | uploadDelayStr : String | ThreadResourceAbuse.java:207:22:207:53 | parseInt(...) : Number |
 | ThreadResourceAbuse.java:209:30:209:87 | new UploadListener(...) [slowUploads] : Number | UploadListener.java:28:14:28:19 | parameter this [slowUploads] : Number |
 | ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number | ThreadResourceAbuse.java:209:30:209:87 | new UploadListener(...) [slowUploads] : Number |
 | ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number | UploadListener.java:15:24:15:44 | sleepMilliseconds : Number |
@@ -48,12 +42,8 @@ nodes
 | ThreadResourceAbuse.java:141:27:141:43 | getValue(...) : String | semmle.label | getValue(...) : String |
 | ThreadResourceAbuse.java:144:34:144:42 | delayTime | semmle.label | delayTime |
 | ThreadResourceAbuse.java:172:19:172:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |
-| ThreadResourceAbuse.java:173:20:173:43 | parseInt(...) : Number | semmle.label | parseInt(...) : Number |
-| ThreadResourceAbuse.java:173:37:173:42 | header : String | semmle.label | header : String |
 | ThreadResourceAbuse.java:176:17:176:26 | retryAfter | semmle.label | retryAfter |
 | ThreadResourceAbuse.java:206:28:206:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| ThreadResourceAbuse.java:207:22:207:53 | parseInt(...) : Number | semmle.label | parseInt(...) : Number |
-| ThreadResourceAbuse.java:207:39:207:52 | uploadDelayStr : String | semmle.label | uploadDelayStr : String |
 | ThreadResourceAbuse.java:209:30:209:87 | new UploadListener(...) [slowUploads] : Number | semmle.label | new UploadListener(...) [slowUploads] : Number |
 | ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number | semmle.label | uploadDelay : Number |
 | UploadListener.java:15:24:15:44 | sleepMilliseconds : Number | semmle.label | sleepMilliseconds : Number |

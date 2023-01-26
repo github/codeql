@@ -5,6 +5,7 @@
  * @problem.severity error
  * @id py/cookie-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-614
  */
 

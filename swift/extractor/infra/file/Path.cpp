@@ -16,18 +16,18 @@ static bool shouldCanonicalize() {
   return true;
 }
 
-std::filesystem::path resolvePath(std::string_view path) {
+std::filesystem::path resolvePath(const std::filesystem::path& path) {
   std::error_code ec;
   std::filesystem::path ret = {};
   static const auto canonicalize = shouldCanonicalize();
   if (canonicalize) {
-    ret = std::filesystem::canonical(path, ec);
+    ret = std::filesystem::weakly_canonical(path, ec);
   } else {
     ret = std::filesystem::absolute(path, ec);
   }
   if (ec) {
-    std::cerr << "Cannot get " << (canonicalize ? "canonical" : "absolute")
-              << " path: " << std::quoted(path) << ": " << ec.message() << "\n";
+    std::cerr << "Cannot get " << (canonicalize ? "canonical" : "absolute") << " path: " << path
+              << ": " << ec.message() << "\n";
     return path;
   }
   return ret;

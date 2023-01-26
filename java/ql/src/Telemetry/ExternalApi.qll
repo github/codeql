@@ -44,7 +44,7 @@ class ExternalApi extends Callable {
   ExternalApi() { not this.fromSource() and not isUninteresting(this) }
 
   /**
-   * Gets information about the external API in the form expected by the CSV modeling framework.
+   * Gets information about the external API in the form expected by the MaD modeling framework.
    */
   string getApiName() {
     result =

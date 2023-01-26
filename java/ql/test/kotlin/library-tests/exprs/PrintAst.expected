@@ -1944,17 +1944,17 @@ exprs.kt:
 #   15|               1: [VarAccess] y
 #   16|         5: [LocalVariableDeclStmt] var ...;
 #   16|           1: [LocalVariableDeclExpr] i6
-#   16|             0: [LShiftExpr] ... << ...
+#   16|             0: [LeftShiftExpr] ... << ...
 #   16|               0: [VarAccess] x
 #   16|               1: [VarAccess] y
 #   17|         6: [LocalVariableDeclStmt] var ...;
 #   17|           1: [LocalVariableDeclExpr] i7
-#   17|             0: [RShiftExpr] ... >> ...
+#   17|             0: [RightShiftExpr] ... >> ...
 #   17|               0: [VarAccess] x
 #   17|               1: [VarAccess] y
 #   18|         7: [LocalVariableDeclStmt] var ...;
 #   18|           1: [LocalVariableDeclExpr] i8
-#   18|             0: [URShiftExpr] ... >>> ...
+#   18|             0: [UnsignedRightShiftExpr] ... >>> ...
 #   18|               0: [VarAccess] x
 #   18|               1: [VarAccess] y
 #   19|         8: [LocalVariableDeclStmt] var ...;
@@ -2236,17 +2236,17 @@ exprs.kt:
 #   72|               1: [VarAccess] ly
 #   73|         59: [LocalVariableDeclStmt] var ...;
 #   73|           1: [LocalVariableDeclExpr] l6
-#   73|             0: [LShiftExpr] ... << ...
+#   73|             0: [LeftShiftExpr] ... << ...
 #   73|               0: [VarAccess] lx
 #   73|               1: [VarAccess] y
 #   74|         60: [LocalVariableDeclStmt] var ...;
 #   74|           1: [LocalVariableDeclExpr] l7
-#   74|             0: [RShiftExpr] ... >> ...
+#   74|             0: [RightShiftExpr] ... >> ...
 #   74|               0: [VarAccess] lx
 #   74|               1: [VarAccess] y
 #   75|         61: [LocalVariableDeclStmt] var ...;
 #   75|           1: [LocalVariableDeclExpr] l8
-#   75|             0: [URShiftExpr] ... >>> ...
+#   75|             0: [UnsignedRightShiftExpr] ... >>> ...
 #   75|               0: [VarAccess] lx
 #   75|               1: [VarAccess] y
 #   76|         62: [LocalVariableDeclStmt] var ...;

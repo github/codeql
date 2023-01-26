@@ -8,6 +8,24 @@ import codeql.swift.elements.decl.PatternBindingDecl
 import codeql.swift.elements.type.Type
 
 module Generated {
+  /**
+   * A declaration of a variable such as
+   * * a local variable in a function:
+   * ```
+   * func foo() {
+   *   var x = 42  // <-
+   *   let y = "hello"  // <-
+   *   ...
+   * }
+   * ```
+   * * a member of a `struct` or `class`:
+   * ```
+   * struct S {
+   *   var size : Int  // <-
+   * }
+   * ```
+   * * ...
+   */
   class VarDecl extends Synth::TVarDecl, AbstractStorageDecl {
     /**
      * Gets the name of this variable declaration.
@@ -117,7 +135,7 @@ module Generated {
      * Gets the property wrapper backing variable binding of this variable declaration, if it exists.
      *
      * This is the synthesized binding introducing the property wrapper backing variable for this
-     * variable, if any.
+     * variable, if any. See `getPropertyWrapperBackingVar`.
      */
     final PatternBindingDecl getPropertyWrapperBackingVarBinding() {
       result = getImmediatePropertyWrapperBackingVarBinding().resolve()
@@ -146,7 +164,21 @@ module Generated {
     /**
      * Gets the property wrapper backing variable of this variable declaration, if it exists.
      *
-     * This is the synthesized variable holding the property wrapper for this variable, if any.
+     * This is the compiler synthesized variable holding the property wrapper for this variable, if any.
+     *
+     * For a property wrapper like
+     * ```
+     * @propertyWrapper struct MyWrapper { ... }
+     *
+     * struct S {
+     *   @MyWrapper var x : Int = 42
+     * }
+     * ```
+     * the compiler synthesizes a variable in `S` along the lines of
+     * ```
+     *   var _x = MyWrapper(wrappedValue: 42)
+     * ```
+     * This predicate returns such variable declaration.
      */
     final VarDecl getPropertyWrapperBackingVar() {
       result = getImmediatePropertyWrapperBackingVar().resolve()
@@ -174,7 +206,7 @@ module Generated {
      * Gets the property wrapper projection variable binding of this variable declaration, if it exists.
      *
      * This is the synthesized binding introducing the property wrapper projection variable for this
-     * variable, if any.
+     * variable, if any. See `getPropertyWrapperProjectionVar`.
      */
     final PatternBindingDecl getPropertyWrapperProjectionVarBinding() {
       result = getImmediatePropertyWrapperProjectionVarBinding().resolve()
@@ -206,6 +238,24 @@ module Generated {
      * If this variable has a property wrapper with a projected value, this is the corresponding
      * synthesized variable holding that projected value, accessible with this variable's name
      * prefixed with `$`.
+     *
+     * For a property wrapper like
+     * ```
+     * @propertyWrapper struct MyWrapper {
+     *   var projectedValue : Bool
+     *   ...
+     * }
+     *
+     * struct S {
+     *   @MyWrapper var x : Int = 42
+     * }
+     * ```
+     * ```
+     * the compiler synthesizes a variable in `S` along the lines of
+     * ```
+     *   var $x : Bool { ... }
+     * ```
+     * This predicate returns such variable declaration.
      */
     final VarDecl getPropertyWrapperProjectionVar() {
       result = getImmediatePropertyWrapperProjectionVar().resolve()

@@ -4,13 +4,13 @@ edges
 | test2.cpp:25:22:25:23 | & ... | test2.cpp:27:13:27:13 | v |
 | test2.cpp:25:22:25:23 | fscanf output argument | test2.cpp:27:13:27:13 | v |
 | test2.cpp:27:13:27:13 | v | test2.cpp:12:21:12:21 | v |
-| test5.cpp:5:5:5:17 | VariableAddress indirection | test5.cpp:17:6:17:18 | call to getTaintedInt |
-| test5.cpp:5:5:5:17 | VariableAddress indirection | test5.cpp:17:6:17:18 | call to getTaintedInt |
-| test5.cpp:5:5:5:17 | VariableAddress indirection | test5.cpp:19:6:19:6 | y |
-| test5.cpp:5:5:5:17 | VariableAddress indirection | test5.cpp:19:6:19:6 | y |
-| test5.cpp:9:7:9:9 | buf | test5.cpp:5:5:5:17 | VariableAddress indirection |
-| test5.cpp:9:7:9:9 | buf | test5.cpp:5:5:5:17 | VariableAddress indirection |
-| test5.cpp:9:7:9:9 | gets output argument | test5.cpp:5:5:5:17 | VariableAddress indirection |
+| test5.cpp:5:5:5:17 | getTaintedInt indirection | test5.cpp:17:6:17:18 | call to getTaintedInt |
+| test5.cpp:5:5:5:17 | getTaintedInt indirection | test5.cpp:17:6:17:18 | call to getTaintedInt |
+| test5.cpp:5:5:5:17 | getTaintedInt indirection | test5.cpp:19:6:19:6 | y |
+| test5.cpp:5:5:5:17 | getTaintedInt indirection | test5.cpp:19:6:19:6 | y |
+| test5.cpp:9:7:9:9 | buf | test5.cpp:5:5:5:17 | getTaintedInt indirection |
+| test5.cpp:9:7:9:9 | buf | test5.cpp:5:5:5:17 | getTaintedInt indirection |
+| test5.cpp:9:7:9:9 | gets output argument | test5.cpp:5:5:5:17 | getTaintedInt indirection |
 | test.c:11:29:11:32 | argv | test.c:14:15:14:28 | maxConnections |
 | test.c:11:29:11:32 | argv | test.c:14:15:14:28 | maxConnections |
 | test.c:11:29:11:32 | argv | test.c:14:15:14:28 | maxConnections |
@@ -23,10 +23,6 @@ edges
 | test.c:51:17:51:20 | argv | test.c:54:7:54:10 | len3 |
 | test.c:51:17:51:20 | argv | test.c:54:7:54:10 | len3 |
 | test.c:51:17:51:20 | argv | test.c:54:7:54:10 | len3 |
-| test.c:99:30:99:33 | argv | test.c:102:17:102:31 | maxConnections3 |
-| test.c:99:30:99:33 | argv | test.c:102:17:102:31 | maxConnections3 |
-| test.c:99:30:99:33 | argv | test.c:102:17:102:31 | maxConnections3 |
-| test.c:99:30:99:33 | argv | test.c:102:17:102:31 | maxConnections3 |
 subpaths
 nodes
 | test2.cpp:12:21:12:21 | v | semmle.label | v |
@@ -35,7 +31,7 @@ nodes
 | test2.cpp:25:22:25:23 | & ... | semmle.label | & ... |
 | test2.cpp:25:22:25:23 | fscanf output argument | semmle.label | fscanf output argument |
 | test2.cpp:27:13:27:13 | v | semmle.label | v |
-| test5.cpp:5:5:5:17 | VariableAddress indirection | semmle.label | VariableAddress indirection |
+| test5.cpp:5:5:5:17 | getTaintedInt indirection | semmle.label | getTaintedInt indirection |
 | test5.cpp:9:7:9:9 | buf | semmle.label | buf |
 | test5.cpp:9:7:9:9 | buf | semmle.label | buf |
 | test5.cpp:9:7:9:9 | gets output argument | semmle.label | gets output argument |
@@ -55,10 +51,6 @@ nodes
 | test.c:51:17:51:20 | argv | semmle.label | argv |
 | test.c:54:7:54:10 | len3 | semmle.label | len3 |
 | test.c:54:7:54:10 | len3 | semmle.label | len3 |
-| test.c:99:30:99:33 | argv | semmle.label | argv |
-| test.c:99:30:99:33 | argv | semmle.label | argv |
-| test.c:102:17:102:31 | maxConnections3 | semmle.label | maxConnections3 |
-| test.c:102:17:102:31 | maxConnections3 | semmle.label | maxConnections3 |
 #select
 | test2.cpp:14:11:14:11 | v | test2.cpp:25:22:25:23 | & ... | test2.cpp:14:11:14:11 | v | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | test2.cpp:25:22:25:23 | & ... | User-provided value |
 | test2.cpp:14:11:14:11 | v | test2.cpp:25:22:25:23 | & ... | test2.cpp:14:11:14:11 | v | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test2.cpp:25:22:25:23 | & ... | User-provided value |
@@ -69,5 +61,3 @@ nodes
 | test.c:14:15:14:28 | maxConnections | test.c:11:29:11:32 | argv | test.c:14:15:14:28 | maxConnections | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test.c:11:29:11:32 | argv | User-provided value |
 | test.c:44:7:44:10 | len2 | test.c:41:17:41:20 | argv | test.c:44:7:44:10 | len2 | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test.c:41:17:41:20 | argv | User-provided value |
 | test.c:54:7:54:10 | len3 | test.c:51:17:51:20 | argv | test.c:54:7:54:10 | len3 | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test.c:51:17:51:20 | argv | User-provided value |
-| test.c:102:17:102:31 | maxConnections3 | test.c:99:30:99:33 | argv | test.c:102:17:102:31 | maxConnections3 | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | test.c:99:30:99:33 | argv | User-provided value |
-| test.c:102:17:102:31 | maxConnections3 | test.c:99:30:99:33 | argv | test.c:102:17:102:31 | maxConnections3 | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test.c:99:30:99:33 | argv | User-provided value |

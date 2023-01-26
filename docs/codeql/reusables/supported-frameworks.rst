@@ -148,6 +148,7 @@ and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://githu
    EJS, templating language
    electron, Runtime environment
    express, Server
+   Fastify, Server
    handlebars, templating language
    hapi, Server
    hogan, templating language
@@ -166,6 +167,7 @@ and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://githu
    react, HTML framework
    react native, HTML framework
    request, Network communicator
+   restify, Server
    sequelize, Database
    socket.io, Network communicator
    sqlite3, Database

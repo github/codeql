@@ -96,6 +96,15 @@ postWithInFlow
 | test.cpp:519:3:519:15 | access to array [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:520:3:520:12 | stackArray [inner post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:520:3:520:15 | access to array [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:526:3:526:4 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:526:4:526:4 | e [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:531:40:531:40 | e [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:537:5:537:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:537:6:537:6 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:542:5:542:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:542:6:542:6 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:548:25:548:25 | x [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:552:25:552:25 | y [inner post update] | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition
