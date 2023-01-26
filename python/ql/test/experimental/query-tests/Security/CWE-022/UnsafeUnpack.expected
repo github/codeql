@@ -1,30 +1,40 @@
 edges
-| UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | UnsafeUnpack.py:9:15:9:26 | ControlFlowNode for Attribute |
-| UnsafeUnpack.py:9:15:9:26 | ControlFlowNode for Attribute | UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath |
-| UnsafeUnpack.py:36:24:36:43 | ControlFlowNode for Attribute() | UnsafeUnpack.py:55:31:55:37 | ControlFlowNode for to_path |
-| UnsafeUnpack.py:70:50:70:65 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:71:23:71:38 | ControlFlowNode for local_ziped_path |
-| UnsafeUnpack.py:84:20:84:34 | ControlFlowNode for compressed_file | UnsafeUnpack.py:85:23:85:37 | ControlFlowNode for compressed_file |
-| UnsafeUnpack.py:88:19:88:36 | ControlFlowNode for Attribute() | UnsafeUnpack.py:89:23:89:37 | ControlFlowNode for compressed_file |
-| UnsafeUnpack.py:102:19:102:31 | ControlFlowNode for Attribute | UnsafeUnpack.py:103:23:103:37 | ControlFlowNode for compressed_file |
+| UnsafeUnpack.py:0:0:0:0 | ModuleVariableNode for UnsafeUnpack.request | UnsafeUnpack.py:11:16:11:22 | ControlFlowNode for request |
+| UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for ImportMember | UnsafeUnpack.py:5:26:5:32 | GSSA Variable request |
+| UnsafeUnpack.py:5:26:5:32 | GSSA Variable request | UnsafeUnpack.py:0:0:0:0 | ModuleVariableNode for UnsafeUnpack.request |
+| UnsafeUnpack.py:11:16:11:22 | ControlFlowNode for request | UnsafeUnpack.py:11:16:11:27 | ControlFlowNode for Attribute |
+| UnsafeUnpack.py:11:16:11:27 | ControlFlowNode for Attribute | UnsafeUnpack.py:17:23:17:34 | ControlFlowNode for Attribute |
+| UnsafeUnpack.py:17:23:17:34 | ControlFlowNode for Attribute | UnsafeUnpack.py:20:31:20:37 | ControlFlowNode for tarpath |
+| UnsafeUnpack.py:34:50:34:65 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:35:23:35:38 | ControlFlowNode for local_ziped_path |
+| UnsafeUnpack.py:48:20:48:34 | ControlFlowNode for compressed_file | UnsafeUnpack.py:49:23:49:37 | ControlFlowNode for compressed_file |
+| UnsafeUnpack.py:52:19:52:36 | ControlFlowNode for Attribute() | UnsafeUnpack.py:53:23:53:37 | ControlFlowNode for compressed_file |
+| UnsafeUnpack.py:66:19:66:31 | ControlFlowNode for Attribute | UnsafeUnpack.py:67:23:67:37 | ControlFlowNode for compressed_file |
+| UnsafeUnpack.py:80:16:80:28 | ControlFlowNode for Attribute | UnsafeUnpack.py:86:15:86:26 | ControlFlowNode for Attribute |
+| UnsafeUnpack.py:86:15:86:26 | ControlFlowNode for Attribute | UnsafeUnpack.py:88:23:88:29 | ControlFlowNode for tarpath |
 nodes
-| UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| UnsafeUnpack.py:9:15:9:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath | semmle.label | ControlFlowNode for tarpath |
-| UnsafeUnpack.py:36:24:36:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| UnsafeUnpack.py:55:31:55:37 | ControlFlowNode for to_path | semmle.label | ControlFlowNode for to_path |
-| UnsafeUnpack.py:70:50:70:65 | ControlFlowNode for local_ziped_path | semmle.label | ControlFlowNode for local_ziped_path |
-| UnsafeUnpack.py:71:23:71:38 | ControlFlowNode for local_ziped_path | semmle.label | ControlFlowNode for local_ziped_path |
-| UnsafeUnpack.py:84:20:84:34 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
-| UnsafeUnpack.py:85:23:85:37 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
-| UnsafeUnpack.py:88:19:88:36 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| UnsafeUnpack.py:89:23:89:37 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
-| UnsafeUnpack.py:102:19:102:31 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| UnsafeUnpack.py:103:23:103:37 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
+| UnsafeUnpack.py:0:0:0:0 | ModuleVariableNode for UnsafeUnpack.request | semmle.label | ModuleVariableNode for UnsafeUnpack.request |
+| UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| UnsafeUnpack.py:5:26:5:32 | GSSA Variable request | semmle.label | GSSA Variable request |
+| UnsafeUnpack.py:11:16:11:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| UnsafeUnpack.py:11:16:11:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| UnsafeUnpack.py:17:23:17:34 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| UnsafeUnpack.py:20:31:20:37 | ControlFlowNode for tarpath | semmle.label | ControlFlowNode for tarpath |
+| UnsafeUnpack.py:34:50:34:65 | ControlFlowNode for local_ziped_path | semmle.label | ControlFlowNode for local_ziped_path |
+| UnsafeUnpack.py:35:23:35:38 | ControlFlowNode for local_ziped_path | semmle.label | ControlFlowNode for local_ziped_path |
+| UnsafeUnpack.py:48:20:48:34 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
+| UnsafeUnpack.py:49:23:49:37 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
+| UnsafeUnpack.py:52:19:52:36 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| UnsafeUnpack.py:53:23:53:37 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
+| UnsafeUnpack.py:66:19:66:31 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| UnsafeUnpack.py:67:23:67:37 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
+| UnsafeUnpack.py:80:16:80:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| UnsafeUnpack.py:86:15:86:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| UnsafeUnpack.py:88:23:88:29 | ControlFlowNode for tarpath | semmle.label | ControlFlowNode for tarpath |
 subpaths
 #select
-| UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath | UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:55:31:55:37 | ControlFlowNode for to_path | UnsafeUnpack.py:36:24:36:43 | ControlFlowNode for Attribute() | UnsafeUnpack.py:55:31:55:37 | ControlFlowNode for to_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:71:23:71:38 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:70:50:70:65 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:71:23:71:38 | ControlFlowNode for local_ziped_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:85:23:85:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:84:20:84:34 | ControlFlowNode for compressed_file | UnsafeUnpack.py:85:23:85:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:89:23:89:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:88:19:88:36 | ControlFlowNode for Attribute() | UnsafeUnpack.py:89:23:89:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:103:23:103:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:102:19:102:31 | ControlFlowNode for Attribute | UnsafeUnpack.py:103:23:103:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:20:31:20:37 | ControlFlowNode for tarpath | UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for ImportMember | UnsafeUnpack.py:20:31:20:37 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:35:23:35:38 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:34:50:34:65 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:35:23:35:38 | ControlFlowNode for local_ziped_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:49:23:49:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:48:20:48:34 | ControlFlowNode for compressed_file | UnsafeUnpack.py:49:23:49:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:53:23:53:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:52:19:52:36 | ControlFlowNode for Attribute() | UnsafeUnpack.py:53:23:53:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:67:23:67:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:66:19:66:31 | ControlFlowNode for Attribute | UnsafeUnpack.py:67:23:67:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:88:23:88:29 | ControlFlowNode for tarpath | UnsafeUnpack.py:80:16:80:28 | ControlFlowNode for Attribute | UnsafeUnpack.py:88:23:88:29 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball retrieved from a remote location. |

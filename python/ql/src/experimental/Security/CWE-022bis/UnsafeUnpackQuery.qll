@@ -1,7 +1,5 @@
 /**
- * 
  *  Provides a taint-tracking configuration for detecting "UnsafeUnpacking" vulnerabilities.
- * 
  */
 
 import python
@@ -10,13 +8,14 @@ import semmle.python.dataflow.new.internal.DataFlowPublic
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.frameworks.Stdlib
+import semmle.python.dataflow.new.RemoteFlowSources
 
 class UnsafeUnpackingConfig extends TaintTracking::Configuration {
   UnsafeUnpackingConfig() { this = "UnsafeUnpackingConfig" }
 
   override predicate isSource(DataFlow::Node source) {
     // A source coming from a remote location
-    exists(Http::Client::Request request | source = request)
+    source instanceof RemoteFlowSource
     or
     // A source coming from a CLI argparse module
     // see argparse: https://docs.python.org/3/library/argparse.html
