@@ -329,7 +329,12 @@ class TypeAliasDecl(GenericTypeDecl):
     typealias MyInt = Int
     ```
     """
-    aliased_type: Type | doc("the aliased type on the right-hand side of this type alias declaration")
+    aliased_type: Type | doc("aliased type on the right-hand side of this type alias declaration") | desc("""
+        For example the aliased type of `MyInt` in the following code is `Int`:
+        ```
+        typealias MyInt = Int
+        ```
+    """)
 
 class ClassDecl(NominalTypeDecl):
     pass

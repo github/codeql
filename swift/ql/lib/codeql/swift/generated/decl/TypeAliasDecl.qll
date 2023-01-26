@@ -15,7 +15,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TypeAliasDecl" }
 
     /**
-     * Gets the the aliased type on the right-hand side of this type alias declaration.
+     * Gets the aliased type on the right-hand side of this type alias declaration.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
@@ -28,7 +28,12 @@ module Generated {
     }
 
     /**
-     * Gets the the aliased type on the right-hand side of this type alias declaration.
+     * Gets the aliased type on the right-hand side of this type alias declaration.
+     *
+     * For example the aliased type of `MyInt` in the following code is `Int`:
+     * ```
+     * typealias MyInt = Int
+     * ```
      */
     final Type getAliasedType() { result = getImmediateAliasedType().resolve() }
   }
