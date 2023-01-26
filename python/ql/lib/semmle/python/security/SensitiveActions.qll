@@ -9,25 +9,11 @@
  * can control. This includes authorization methods such as logins, and sending of data, etc.
  */
 
-import javascript
-import semmle.javascript.security.internal.SensitiveDataHeuristics
+import python
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.security.internal.SensitiveDataHeuristics
+import semmle.python.essa.Essa
 private import HeuristicNames
-
-/**
- * DEPRECATED: Use `SensitiveNode` instead.
- * An expression that might contain sensitive data.
- */
-deprecated class SensitiveExpr extends Expr {
-  SensitiveNode node;
-
-  SensitiveExpr() { node.asExpr() = this }
-
-  /** Gets a human-readable description of this expression for use in alert messages. */
-  deprecated string describe() { result = node.describe() }
-
-  /** Gets a classification of the kind of sensitive data this expression might contain. */
-  deprecated SensitiveDataClassification getClassification() { result = node.getClassification() }
-}
 
 /** An expression that might contain sensitive data. */
 cached
@@ -42,35 +28,32 @@ abstract class SensitiveNode extends DataFlow::Node {
 }
 
 /** A function call that might produce sensitive data. */
-class SensitiveCall extends SensitiveNode instanceof DataFlow::InvokeNode {
+class SensitiveCall extends SensitiveNode instanceof DataFlow::MethodCallNode {
   SensitiveDataClassification classification;
 
   SensitiveCall() {
-    classification = super.getCalleeName().(SensitiveDataFunctionName).getClassification()
+    classification = super.getMethodName().(SensitiveDataFunctionName).getClassification()
     or
     // This is particularly to pick up methods with an argument like "password", which
     // may indicate a lookup.
-    exists(string s | super.getAnArgument().mayHaveStringValue(s) |
+    exists(string s | super.getArg(_).asExpr().(StrConst).getText() = s |
       nameIndicatesSensitiveData(s, classification)
     )
   }
 
-  override string describe() { result = "a call to " + super.getCalleeName() }
+  override string describe() { result = "a call to " + super.getMethodName() }
 
   override SensitiveDataClassification getClassification() { result = classification }
 }
 
-/** An access to a variable or property that might contain sensitive data. */
+/** An access to a variable or key-value pair that might contain sensitive data. */
 abstract class SensitiveVariableAccess extends SensitiveNode {
   string name;
 
   SensitiveVariableAccess() {
-    this.asExpr().(VarAccess).getName() = name
+    this.asCfgNode() = any(NameNode n | n.uses(_) and n.getId() = name)
     or
-    exists(DataFlow::PropRead pr |
-      this = pr and
-      pr.getPropertyName() = name
-    )
+    this.asExpr() = any(Subscript s | s.getIndex().(StrConst).getText() = name)
   }
 
   override string describe() { result = "an access to " + name }
@@ -80,7 +63,7 @@ abstract class SensitiveVariableAccess extends SensitiveNode {
 abstract class SensitiveWrite extends DataFlow::Node { }
 
 /**
- * Holds if `node` is a write to a variable or property named `name`.
+ * Holds if `node` is a write to a variable or key-value pair named `name`.
  *
  * Helper predicate factored out for performance,
  * to filter `name` as much as possible before using it in
@@ -88,19 +71,18 @@ abstract class SensitiveWrite extends DataFlow::Node { }
  */
 pragma[nomagic]
 private predicate writesProperty(DataFlow::Node node, string name) {
-  exists(DataFlow::PropWrite pwn |
-    pwn.getPropertyName() = name and
-    pwn.getRhs() = node
+  exists(KeyValuePair kvp | kvp.getKey().(StrConst).getText() = name |
+    node.asExpr() = kvp.getValue()
   )
   or
-  exists(VarDef v | v.getAVariable().getName() = name |
-    if exists(v.getSource())
-    then v.getSource() = node.asExpr()
-    else node = DataFlow::ssaDefinitionNode(Ssa::definition(v))
+  exists(EssaDefinition d | d.getVariable().getName() = name |
+    exists(DefinitionNode def | d.getSourceVariable().hasDefiningNode(def) |
+      node.asCfgNode() = def.getValue()
+    )
   )
 }
 
-/** A write to a variable or property that might contain sensitive data. */
+/** A write to a variable or key-value pair that might contain sensitive data. */
 private class BasicSensitiveWrite extends SensitiveWrite {
   SensitiveDataClassification classification;
 
@@ -128,7 +110,7 @@ private class BasicSensitiveWrite extends SensitiveWrite {
   SensitiveDataClassification getClassification() { result = classification }
 }
 
-/** An access to a variable or property that might contain sensitive data. */
+/** An access to a variable or key-value pair that might contain sensitive data. */
 private class BasicSensitiveVariableAccess extends SensitiveVariableAccess {
   SensitiveDataClassification classification;
 
@@ -141,8 +123,7 @@ private class BasicSensitiveVariableAccess extends SensitiveVariableAccess {
 abstract class SensitiveFunctionName extends string {
   SensitiveFunctionName() {
     this = any(Function f).getName() or
-    this = any(Property p).getName() or
-    this = any(PropAccess pacc).getPropertyName()
+    this = any(KeyValuePair kvp).getKey().(StrConst).getText()
   }
 }
 
@@ -167,9 +148,9 @@ class CredentialsFunctionName extends SensitiveDataFunctionName {
 abstract class SensitiveAction extends DataFlow::Node { }
 
 /** A call that may perform authorization. */
-class AuthorizationCall extends SensitiveAction, DataFlow::CallNode {
+class AuthorizationCall extends SensitiveAction, DataFlow::MethodCallNode {
   AuthorizationCall() {
-    exists(string s | s = this.getCalleeName() |
+    exists(string s | s = this.getMethodName() |
       // name contains `login` or `auth`, but not as part of `loginfo` or `unauth`;
       // also exclude `author` and words followed by `err` (as in `error`)
       s.regexpMatch("(?i).*(login(?!fo)|(?<!un)auth(?!or\\b)|verify)(?!err).*") and
@@ -180,9 +161,9 @@ class AuthorizationCall extends SensitiveAction, DataFlow::CallNode {
 }
 
 /** A call to a function whose name suggests that it encodes or encrypts its arguments. */
-class ProtectCall extends DataFlow::CallNode {
+class ProtectCall extends DataFlow::MethodCallNode {
   ProtectCall() {
-    exists(string s | this.getCalleeName().regexpMatch("(?i).*" + s + ".*") |
+    exists(string s | this.getMethodName().regexpMatch("(?i).*" + s + ".*") |
       s = "protect" or s = "encode" or s = "encrypt"
     )
   }
