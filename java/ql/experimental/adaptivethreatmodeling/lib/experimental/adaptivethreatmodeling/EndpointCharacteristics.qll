@@ -488,12 +488,19 @@ private class IsExternalCharacteristic extends StandardEndpointFilterCharacteris
   }
 }
 
+/**
+ * An EndpointFilterCharacteristic that indicates that an endpoint is and argument to a method call is not the final
+ * step in a taint propagation. This prevents us from detecting expresssions near sinks that are not the sink itself.
+ *
+ * WARNING: These endpoints should not be used as negative samples for training, because a there are rare situations
+ * where a node is both a sink and the `from` node of a flow step: when the called API uses the given value dangerously
+ * and then returns the given value. Example: `stillTainted = dangerous(tainted)`, assuming that the implementation of
+ * `dangerous(x)` eventually returns `x`.
+ */
 private class IsFlowStep extends StandardEndpointFilterCharacteristic {
   IsFlowStep() { this = "flow step" }
 
-  override predicate appliesToEndpoint(DataFlow::Node n) {
-    exists(Call call | n.asExpr() = call.getAnArgument() | isKnownStepSrc(n))
-  }
+  override predicate appliesToEndpoint(DataFlow::Node n) { isKnownStepSrc(n) }
 
   /**
    * Holds if the node `n` is known as the predecessor in a modeled flow step.
