@@ -399,6 +399,12 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
   /** Holds if this field is `volatile`. */
   predicate isVolatile() { this.hasModifier("volatile") }
 
+  /** Holds if this is a `ref` field. */
+  predicate isRef() { this.getAnnotatedType().isRef() }
+
+  /** Holds if this is a `ref readonly` field. */
+  predicate isReadonlyRef() { this.getAnnotatedType().isReadonlyRef() }
+
   /** Holds if this field is `readonly`. */
   predicate isReadOnly() { this.hasModifier("readonly") }
 
