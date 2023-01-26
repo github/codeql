@@ -86,3 +86,41 @@ with open(tarpath, "wb") as f:
       f.write(response.raw.read())
       
 shutil.unpack_archive(tarpath, base_dir) # $result=BAD
+
+# the django upload functionality
+# see HttpRequest.FILES: https://docs.djangoproject.com/en/4.1/ref/request-response/#django.http.HttpRequest.FILES
+from django.shortcuts import render
+from django.core.files.storage import FileSystemStorage
+import shutil
+
+def simple_upload(request):
+
+      base_dir = "/tmp/baase_dir"
+      if request.method == 'POST':
+            # Read uploaded files by chunks of data
+            # see chunks(): https://docs.djangoproject.com/en/4.1/ref/files/uploads/#django.core.files.uploadedfile.UploadedFile.chunks 
+            savepath = os.path.join(base_dir, "tarball_compressed.tar.gz")
+            with open(savepath, 'wb+') as wfile:
+                  for chunk in request.FILES["ufile1"].chunks():
+                        wfile.write(chunk)
+            shutil.unpack_archive(savepath, base_dir) # $result=BAD
+
+            # Write in binary the uploaded tarball
+            myfile = request.FILES.get("ufile1")
+            file_path = os.path.join(base_dir, "tarball.tar")
+            with file_path.open('wb') as f:
+                  f.write(myfile.read())
+            shutil.unpack_archive(file_path, base_dir) # $result=BAD
+
+            # Save uploaded files using FileSystemStorage Django API
+            # see FileSystemStorage: https://docs.djangoproject.com/en/4.1/ref/files/storage/#django.core.files.storage.FileSystemStorage
+            for ufile in  request.FILES.getlist():
+                  fs = FileSystemStorage()
+                  filename = fs.save(ufile.name, ufile)
+                  uploaded_file_path = fs.path(filename)
+                  shutil.unpack_archive(uploaded_file_path, base_dir) # $result=BAD
+            
+            return render(request, 'simple_upload.html')
+
+      elif request.method == 'GET':
+            return render(request, 'simple_upload.html')

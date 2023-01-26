@@ -55,13 +55,10 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
       at = s.getObject() and at.getAttr() = "FILES" and source.asExpr() = s
     )
     or
+    // Retrieve Django uploaded files
+    // see HttpRequest.FILES: https://docs.djangoproject.com/en/4.1/ref/request-response/#django.http.HttpRequest.FILES
     exists(Node obj, AttrRead ar |
-      ar.getAMethodCall("get").flowsTo(source) and
-      ar.accesses(obj, "FILES")
-    )
-    or
-    exists(Node obj, AttrRead ar |
-      ar.getAMethodCall("getlist").flowsTo(source) and
+      ar.getAMethodCall(["getlist", "get"]).flowsTo(source) and
       ar.accesses(obj, "FILES")
     )
   }
@@ -93,7 +90,21 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     exists(MethodCallNode mc |
       nodeFrom = mc.getObject() and
       mc.getMethodName() = "read" and
-      mc.flowsTo(nodeTo)
+      nodeTo = mc
+    )
+    or
+    // Open for access
+    exists(MethodCallNode cn |
+      nodeTo = cn.getObject() and
+      cn.getMethodName() = "open" and
+      cn.flowsTo(nodeFrom)
+    )
+    or
+    // Write for access
+    exists(MethodCallNode cn |
+      nodeTo = cn.getObject() and
+      cn.getMethodName() = "write" and
+      nodeFrom = cn.getArg(0)
     )
     or
     // Accessing the name or raw content
