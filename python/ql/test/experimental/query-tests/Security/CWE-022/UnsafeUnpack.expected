@@ -5,6 +5,7 @@ edges
 | UnsafeUnpack.py:70:50:70:65 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:71:23:71:38 | ControlFlowNode for local_ziped_path |
 | UnsafeUnpack.py:84:20:84:34 | ControlFlowNode for compressed_file | UnsafeUnpack.py:85:23:85:37 | ControlFlowNode for compressed_file |
 | UnsafeUnpack.py:88:19:88:36 | ControlFlowNode for Attribute() | UnsafeUnpack.py:89:23:89:37 | ControlFlowNode for compressed_file |
+| UnsafeUnpack.py:102:19:102:31 | ControlFlowNode for Attribute | UnsafeUnpack.py:103:23:103:37 | ControlFlowNode for compressed_file |
 nodes
 | UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | UnsafeUnpack.py:9:15:9:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
@@ -17,6 +18,8 @@ nodes
 | UnsafeUnpack.py:85:23:85:37 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
 | UnsafeUnpack.py:88:19:88:36 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | UnsafeUnpack.py:89:23:89:37 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
+| UnsafeUnpack.py:102:19:102:31 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| UnsafeUnpack.py:103:23:103:37 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
 subpaths
 #select
 | UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath | UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball retrieved from a remote location. |
@@ -24,3 +27,4 @@ subpaths
 | UnsafeUnpack.py:71:23:71:38 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:70:50:70:65 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:71:23:71:38 | ControlFlowNode for local_ziped_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
 | UnsafeUnpack.py:85:23:85:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:84:20:84:34 | ControlFlowNode for compressed_file | UnsafeUnpack.py:85:23:85:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
 | UnsafeUnpack.py:89:23:89:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:88:19:88:36 | ControlFlowNode for Attribute() | UnsafeUnpack.py:89:23:89:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:103:23:103:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:102:19:102:31 | ControlFlowNode for Attribute | UnsafeUnpack.py:103:23:103:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
