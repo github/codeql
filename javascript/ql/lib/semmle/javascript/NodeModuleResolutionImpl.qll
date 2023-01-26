@@ -87,7 +87,13 @@ File tryExtensions(Folder dir, string basename, int priority) {
  * Or `name`, if `name` has no file extension.
  */
 bindingset[name]
-private string getStem(string name) { result = name.regexpCapture("(.+?)(?:\\.([^.]+))?", 1) }
+private string getStem(string name) {
+  // everything before the last dot
+  result = name.regexpCapture("(.+?)(?:\\.([^.]+))?", 1)
+  or
+  // everything before the first dot
+  result = name.regexpCapture("^([^.]*)\\..*$", 1)
+}
 
 /**
  * Gets a file that a main module from `pkg` exported as `mainPath` with the given `priority`.

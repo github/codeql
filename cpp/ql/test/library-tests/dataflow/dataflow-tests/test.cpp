@@ -532,12 +532,23 @@ void test_set_through_const_pointer(int *e)
   sink(*e); // $ ir MISSING: ast
 }
 
-void sink_then_source(int* p) {
-    sink(*p);
-    *p = source(); // $ SPURIOUS: ir=537:10 ir=541:9
+void sink_then_source_1(int* p) {
+    sink(*p); // $ SPURIOUS: ir=537:10 ir=547:9
+    *p = source();
+}
+
+void sink_then_source_2(int* p, int y) {
+    sink(y); // $ SPURIOUS: ast ir=542:10 ir=551:9
+    *p = source();
 }
 
 void test_sink_then_source() {
+  {
     int x;
-    sink_then_source(&x);
+    sink_then_source_1(&x);
+  }
+  {
+    int y;
+    sink_then_source_2(&y, y);
+  }
 }

@@ -20,6 +20,12 @@
       automaton about 1000 times slower.
     </p>
     <p>
+      Note that Ruby 3.2 and later have implemented a caching mechanism that
+      completely eliminates the worst-case time complexity for the regular
+      expressions flagged by this query. The regular expressions flagged by this
+      query are therefore only problematic for Ruby versions prior to 3.2.
+    </p>
+    <p>
       Typically, a regular expression is affected by this problem if it contains
       a repetition of the form <code>r*</code> or <code>r+</code> where the
       sub-expression <code>r</code> is ambiguous in the sense that it can match

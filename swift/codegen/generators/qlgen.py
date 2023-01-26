@@ -331,7 +331,12 @@ def generate(opts, renderer):
         renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].ql_internal]),
                         include_file)
 
-        renderer.render(ql.GetParentImplementation(list(classes.values())), out / 'ParentChild.qll')
+        renderer.render(
+            ql.GetParentImplementation(
+                classes=list(classes.values()),
+                additional_imports=[i for name, i in imports.items() if classes[name].ql_internal],
+            ),
+            out / 'ParentChild.qll')
 
         for c in data.classes.values():
             if _should_skip_qltest(c, data.classes):

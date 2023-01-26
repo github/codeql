@@ -27,6 +27,10 @@ public:
 template<>
 struct std::iterator_traits<int_iterator_by_trait> {
     typedef input_iterator_tag iterator_category;
+    typedef int value_type;
+    typedef size_t difference_type;
+    typedef int* pointer;
+    typedef int& reference;
 };
 
 class non_iterator {
@@ -69,6 +73,10 @@ public:
 template<>
 struct std::iterator_traits<insert_iterator_by_trait> {
     typedef output_iterator_tag iterator_category;
+    typedef int value_type;
+    typedef size_t difference_type;
+    typedef int* pointer;
+    typedef int& reference;
 };
 
 class container {
@@ -84,7 +92,7 @@ void test_insert_iterator() {
 
     insert_iterator_by_trait i1 = c1.begin();
     *i1-- = source();
-    sink(c1); // $ ast MISSING: ir
+    sink(c1); // $ ast,ir
 
     insert_iterator_by_trait i2 = c2.begin();
     *i2-- = 0;
@@ -101,12 +109,12 @@ void test_assign_through_iterator() {
 	a = c1.begin();
 	b = c1.begin();
 	*a = source();
-	sink(a); // $ ast MISSING: ir
+	sink(a); // $ ast,ir
 
 	c = c1.begin();
 	sink(b); // MISSING: ast,ir
-	sink(c); // $ ast MISSING: ir
-	sink(c1); // $ ast MISSING: ir
+	sink(c); // $ ast,ir
+	sink(c1); // $ ast,ir
 }
 
 void test_nonmember_iterator() {
