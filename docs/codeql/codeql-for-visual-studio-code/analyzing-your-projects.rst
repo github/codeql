@@ -118,13 +118,13 @@ To see the queries that you have run in the current session, open the Query Hist
       :alt: See a list of previous queries
 
 The Query History contains information including the date and time when the query was run, the name of the query, the database on which it was run, and how long it took to run the query.
-To customize the information that is displayed, right-click an entry and select **Set Label**.
+To customize the information that is displayed, right-click an entry and select **Rename**.
 
 Click an entry to display the corresponding results in the Query Results view, and double-click
-to display the query itself in the editor (or right-click and select **Open Query**).
-To display the exact text that produced the results for a particular entry, right-click it and select **Show Query Text**. This can differ from **Open Query** as the query file may have been modified since you last ran it.
+to display the query itself in the editor (or right-click and select **View Query**).
+To display the exact text that produced the results for a particular entry, right-click it and select **View Query Text**. This can differ from **View Query** as the query file may have been modified since you last ran it.
 
-To remove queries from the Query History view, select all the queries you want to remove, then right-click and select **Remove History Item**.
+To remove queries from the Query History view, select all the queries you want to remove, then right-click and select **Delete**.
 
 .. _viewing-query-results:
 
