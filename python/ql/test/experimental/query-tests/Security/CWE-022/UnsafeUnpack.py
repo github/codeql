@@ -87,3 +87,17 @@ shutil.unpack_archive(compressed_file, base_dir) # $result=BAD
 # download(url) returns filename
 compressed_file = wget.download(url)
 shutil.unpack_archive(compressed_file, base_dir) # $result=BAD
+
+
+# A source coming from a CLI argparse module
+# see argparse: https://docs.python.org/3/library/argparse.html
+import argparse
+
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('integers', metavar='N', type=int, nargs='+',
+                    help='an integer for the accumulator')
+parser.add_argument('filename', help='filename to be provided')
+
+args = parser.parse_args()
+compressed_file = args.filename
+shutil.unpack_archive(compressed_file, base_dir) # $result=BAD

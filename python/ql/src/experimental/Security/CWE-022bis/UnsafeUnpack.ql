@@ -28,12 +28,17 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     // A source coming from a remote location
     exists(Http::Client::Request request | source = request)
     or
-    //A source coming from a CLI argparse module
-    exists(Node o, API::Node ap, MethodCallNode args |
-      ap = API::moduleImport("argparse").getMember("ArgumentParser").getACall().getReturn() and
-      args = ap.getMember("parse_args").getACall() and
-      args.flowsTo(o) and
-      source.(AttrRead).accesses(o, any(string s))
+    // A source coming from a CLI argparse module
+    // see argparse: https://docs.python.org/3/library/argparse.html
+    exists(MethodCallNode args |
+      args = source.(AttrRead).getObject().getALocalSource() and
+      args =
+        API::moduleImport("argparse")
+            .getMember("ArgumentParser")
+            .getACall()
+            .getReturn()
+            .getMember("parse_args")
+            .getACall()
     )
     or
     // A source catching an S3 filename download
