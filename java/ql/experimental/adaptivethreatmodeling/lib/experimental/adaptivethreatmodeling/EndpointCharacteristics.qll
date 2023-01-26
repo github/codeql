@@ -487,6 +487,22 @@ private class IsExternalCharacteristic extends StandardEndpointFilterCharacteris
     not exists(n.getLocation().getFile().getRelativePath())
   }
 }
+
+private class IsFlowStep extends StandardEndpointFilterCharacteristic {
+  IsFlowStep() { this = "flow step" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    exists(Call call | n.asExpr() = call.getAnArgument() | isKnownStepSrc(n))
+  }
+
+  /**
+   * Holds if the node `n` is known as the predecessor in a modeled flow step.
+   */
+  private predicate isKnownStepSrc(DataFlow::Node n) {
+    any(TaintTracking::Configuration c).isAdditionalFlowStep(n, _) or
+    TaintTracking::localTaintStep(n, _)
+  }
+}
 // class IsArgumentToModeledFunctionCharacteristic extends StandardEndpointFilterCharacteristic {
 //   IsArgumentToModeledFunctionCharacteristic() { this = "argument to modeled function" }
 //   override predicate appliesToEndpoint(DataFlow::Node n) {
