@@ -8,16 +8,15 @@ app = Flask(__name__)
 # Consider any RemoteFlowSource as a source
 @app.route("/download_from_url")
 def download_from_url():
-    filename = request.args.get('filename', '')
-    if not filename:
-        response = requests.get(filename, stream=True)
-    
-        tarpath = "/tmp/tmp456/tarball.tar.gz"
-        with open(tarpath, "wb") as f:
-              f.write(response.raw.read())
+      filename = request.args.get('filename', '')
+      if not filename:
+            response = requests.get(filename, stream=True)
 
-        untarredpath = "/tmp/tmp123"
-        shutil.unpack_archive(tarpath, untarredpath) # $result=BAD
+            tarpath = "/tmp/tmp456/tarball.tar.gz"
+            with open(tarpath, "wb") as f:
+                  f.write(response.raw.read())
+            untarredpath = "/tmp/tmp123"
+            shutil.unpack_archive(tarpath, untarredpath) # $result=BAD
         
 
 # A source catching an S3 filename download
