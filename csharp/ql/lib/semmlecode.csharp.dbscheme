@@ -1868,7 +1868,7 @@ cil_field(
 @cil_member = @cil_method | @cil_type | @cil_field | @cil_property | @cil_event;
 @cil_custom_modifier_receiver = @cil_method | @cil_property | @cil_parameter | @cil_field | @cil_function_pointer_type;
 @cil_parameterizable = @cil_method | @cil_function_pointer_type;
-@cil_has_type_annotation = @cil_stack_variable | @cil_property | @cil_method | @cil_function_pointer_type;
+@cil_has_type_annotation = @cil_stack_variable | @cil_property | @cil_field | @cil_method | @cil_function_pointer_type;
 
 #keyset[parameterizable, index]
 cil_parameter(
