@@ -50,17 +50,9 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
       )
     )
     or
-    // catch the uploaded files as a source
-    exists(Subscript s, Attribute at |
-      at = s.getObject() and at.getAttr() = "FILES" and source.asExpr() = s
-    )
-    or
-    // Retrieve Django uploaded files
+    // catch the Django uploaded files as a source
     // see HttpRequest.FILES: https://docs.djangoproject.com/en/4.1/ref/request-response/#django.http.HttpRequest.FILES
-    exists(Node obj, AttrRead ar |
-      ar.getAMethodCall(["getlist", "get"]).flowsTo(source) and
-      ar.accesses(obj, "FILES")
-    )
+    source.(AttrRead).getAttributeName() = "FILES"
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -105,6 +97,12 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
       nodeTo = cn.getObject() and
       cn.getMethodName() = "write" and
       nodeFrom = cn.getArg(0)
+    )
+    or
+    // Retrieve Django uploaded files
+    // see HttpRequest.FILES.getlist(): https://docs.djangoproject.com/en/4.1/ref/request-response/#django.http.QueryDict.getlist
+    exists(MethodCallNode mc |
+      nodeFrom = mc.getObject() and mc.getMethodName() = ["getlist", "get"] and nodeTo = mc
     )
     or
     // Accessing the name or raw content
