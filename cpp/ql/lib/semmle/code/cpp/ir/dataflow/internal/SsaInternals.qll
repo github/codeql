@@ -339,6 +339,10 @@ abstract private class OperandBasedUse extends UseImpl {
     operand.getUse() = block.getInstruction(index)
   }
 
+  final Operand getOperand() {
+    result = operand
+  }
+
   final override Cpp::Location getLocation() { result = operand.getLocation() }
 }
 
@@ -538,7 +542,7 @@ private predicate globalDefToUse(GlobalDef globalDef, UseOrPhi useOrPhi) {
 }
 
 private predicate useToNode(UseOrPhi use, Node nodeTo) {
-  exists(UseImpl useImpl |
+  exists(OperandBasedUse useImpl |
     useImpl = use.asDefOrUse() and
     nodeHasOperand(nodeTo, useImpl.getOperand(), useImpl.getIndirectionIndex())
   )
