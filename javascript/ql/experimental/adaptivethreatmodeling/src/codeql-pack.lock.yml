@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-01-25-13h12m16s.dreamy-airport-nrt78np3.35bc7d92c551087e8f8fb856fcdf426d50b6a5d28ef78f6bcd8c2a009595fb62
+compiled: false
