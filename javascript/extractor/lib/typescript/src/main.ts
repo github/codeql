@@ -242,7 +242,6 @@ const astProperties: string[] = [
     "constructor",
     "declarationList",
     "declarations",
-    "illegalDecorators",
     "default",
     "delete",
     "dotDotDotToken",
