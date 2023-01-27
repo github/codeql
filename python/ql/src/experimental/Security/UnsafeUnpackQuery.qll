@@ -32,12 +32,13 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     or
     // A source catching an S3 filename download
     // see boto3: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.download_file
-    exists(MethodCallNode mcn, Node s3, Node bc |
-      bc = API::moduleImport("boto3").getMember("client").getACall() and
-      bc = s3.getALocalSource() and
-      mcn.calls(s3, "download_file") and
-      source = mcn.getArg(2)
-    )
+    source =
+      API::moduleImport("boto3")
+          .getMember("client")
+          .getReturn()
+          .getMember("download_file")
+          .getACall()
+          .getArg(2)
     or
     // A source download a file using wget
     // see wget: https://pypi.org/project/wget/
