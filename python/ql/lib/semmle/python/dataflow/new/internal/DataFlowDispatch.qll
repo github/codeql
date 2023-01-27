@@ -321,6 +321,7 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
     or
     exists(string name | ppos.isKeyword(name) | result.getParameter() = func.getArgByName(name))
     or
+    // `*args`
     exists(int index |
       (
         ppos.isStarArgs(index) and
@@ -343,9 +344,22 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
       not exists(func.getArg(_)) and index = 0
     )
     or
-    ppos.isDictSplat() and result.getParameter() = func.getKwarg()
-    or
-    ppos.isDictSplat() and result = TSynthDictSplatParameterNode(this)
+    // `**kwargs`
+    // since dataflow library has restriction that we can only have ONE result per
+    // parameter position, if there is both a synthetic **kwargs and a real **kwargs
+    // parameter, we only give the result for the synthetic, and add local flow from the
+    // synthetic to the real. It might seem more natural to do it in the other
+    // direction, but since we have a clearStep on the real **kwargs parameter, we that
+    // content-clearing would also affect the synthetic parameter, which we don't want.
+    (
+      not exists(func.getArgByName(_)) and
+      ppos.isDictSplat() and
+      result.getParameter() = func.getKwarg()
+      or
+      exists(func.getArgByName(_)) and
+      ppos.isDictSplat() and
+      result = TSynthDictSplatParameterNode(this)
+    )
   }
 }
 
@@ -1400,7 +1414,16 @@ class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
   override Parameter getParameter() { none() }
 
   override predicate isParameterOf(DataFlowCallable c, ParameterPosition ppos) {
-    sc = c.asLibraryCallable() and ppos = pos
+    sc = c.asLibraryCallable() and
+    ppos = pos and
+    // avoid overlap with `SynthDictSplatParameterNode`
+    not (
+      pos.isDictSplat() and
+      exists(ParameterPosition keywordPos |
+        FlowSummaryImpl::Private::summaryParameterNodeRange(sc, keywordPos) and
+        keywordPos.isKeyword(_)
+      )
+    )
   }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = sc }

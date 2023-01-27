@@ -224,8 +224,11 @@ private predicate synthDictSplatArgumentNodeStoreStep(
 private predicate dictSplatParameterNodeClearStep(ParameterNode n, DictionaryElementContent c) {
   exists(DataFlowCallable callable, ParameterPosition dictSplatPos, ParameterPosition keywordPos |
     dictSplatPos.isDictSplat() and
-    n = callable.getParameter(dictSplatPos) and
-    not n instanceof SynthDictSplatParameterNode and
+    (
+      n.getParameter() = callable.(DataFlowFunction).getScope().getKwarg()
+      or
+      n = TSummaryParameterNode(callable.asLibraryCallable(), dictSplatPos)
+    ) and
     exists(callable.getParameter(keywordPos)) and
     keywordPos.isKeyword(c.getKey())
   )
@@ -276,6 +279,31 @@ class SynthDictSplatParameterNode extends ParameterNodeImpl, TSynthDictSplatPara
   override Parameter getParameter() { none() }
 }
 
+/**
+ * Flow step from the synthetic `**kwargs` parameter to the real `**kwargs` parameter.
+ * Due to restriction in dataflow library, we can only give one of them as result for
+ * `DataFlowCallable.getParameter`, so this is a workaround to ensure there is flow to
+ * _both_ of them.
+ */
+private predicate dictSplatParameterNodeFlowStep(
+  ParameterNodeImpl nodeFrom, ParameterNodeImpl nodeTo
+) {
+  exists(DataFlowCallable callable |
+    nodeFrom = TSynthDictSplatParameterNode(callable) and
+    (
+      nodeTo.getParameter() = callable.(DataFlowFunction).getScope().getKwarg()
+      or
+      exists(ParameterPosition pos |
+        nodeTo = TSummaryParameterNode(callable.asLibraryCallable(), pos) and
+        pos.isDictSplat()
+      )
+    )
+  )
+}
+
+/**
+ * Reads from the synthetic **kwargs parameter to each keyword parameter.
+ */
 predicate synthDictSplatParameterNodeReadStep(
   SynthDictSplatParameterNode nodeFrom, DictionaryElementContent c, ParameterNode nodeTo
 ) {
@@ -418,6 +446,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo)
   or
   summaryFlowSteps(nodeFrom, nodeTo)
+  or
+  dictSplatParameterNodeFlowStep(nodeFrom, nodeTo)
 }
 
 /**

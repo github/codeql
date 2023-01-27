@@ -20,7 +20,5 @@ argHasPostUpdate
 postWithInFlow
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
-| test.py:239:1:239:42 | Function overflowCallee | ** | test.py:239:1:239:42 | SynthDictSplatParameterNode | Parameters with overlapping positions. |
-| test.py:239:1:239:42 | Function overflowCallee | ** | test.py:239:35:239:40 | ControlFlowNode for kwargs | Parameters with overlapping positions. |
 uniqueParameterNodePosition
 uniqueContentApprox
