@@ -720,6 +720,18 @@ private module Cached {
   }
 
   /**
+   * Holds if the underlying IR has a suitable instruction to represent a value
+   * that would otherwise need to be represented by a dedicated `OperandNode` value.
+   *
+   * Such operands do not create new `OperandNode` values, but are
+   * instead associated with the instruction returned by this predicate.
+   */
+  cached
+  Instruction getIRRepresentationOfOperand(Operand operand) {
+    operand = unique( | | result.getAUse())
+  }
+
+  /**
    * Holds if the underlying IR has a suitable operand to represent a value
    * that would otherwise need to be represented by a dedicated `RawIndirectOperand` value.
    *
