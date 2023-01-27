@@ -510,7 +510,7 @@ int intOutparamSourceMissingReturn(int *p) {
 void viaOutparamMissingReturn() {
   int x = 0;
   intOutparamSourceMissingReturn(&x);
-  sink(x); // $ ast MISSING: ir
+  sink(x); // $ ast,ir
 }
 
 void uncertain_definition() {
