@@ -4,6 +4,8 @@ string describe(Type t) {
   result = "getAliasedType:" + t.(TypeAliasType).getAliasedType()
   or
   result = "getABaseType:" + t.(NominalType).getABaseType()
+  or
+  result = "getABaseOrAliasedType:" + t.getABaseOrAliasedType()
 }
 
 from VarDecl v, Type t
