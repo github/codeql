@@ -1151,6 +1151,40 @@ predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
  *
  * Note: If `Bar.meth` and `Foo.meth` resolves to the same function, we will end up
  * sending both `self` arguments to that function, which is by definition the right thing to do.
+ *
+ * ### Bound methods
+ *
+ * For bound methods, such as `bm = x.m; bm()`, it's a little unclear whether we should
+ * still use the object in the attribute lookup (`x.m`) as the self argument in the
+ * call (`bm()`). We currently do this, but there might also be cases where we don't
+ * want to do this.
+ *
+ * In the example below, we want to clear taint from the list before it reaches the
+ * sink, but because we don't have a use of `l` in the `clear()` call, we currently
+ * don't have any way to achieve our goal. (Note that this is a contrived example)
+ *
+ * ```py
+ * l = list()
+ * clear = l.clear
+ * l.append(tainted)
+ * clear()
+ * sink(l)
+ * ```
+ *
+ * To make the above even worse, bound-methods have a `__self__` property that refers to
+ * the object of the bound-method, so we can re-write the code as:
+ *
+ * ```py
+ * l = list()
+ * clear = l.clear
+ * clear.__self__.append(tainted)
+ * clear()
+ * sink(l)
+ * ```
+ *
+ * One idea to solve this is to track the object in a synthetic data-flow node every
+ * time the bound method is used, such that the `clear()` call would essentially be
+ * translated into `l.clear()`, and we can still have use-use flow.
  */
 cached
 predicate getCallArg(CallNode call, Function target, CallType type, Node arg, ArgumentPosition apos) {
@@ -1160,16 +1194,24 @@ predicate getCallArg(CallNode call, Function target, CallType type, Node arg, Ar
     type instanceof CallTypePlainFunction and
     normalCallArg(call, arg, apos)
     or
-    // self argument for normal method calls
+    // self argument for normal method calls -- see note above about bound methods
     type instanceof CallTypeNormalMethod and
     apos.isSelf() and
     resolveMethodCall(call, target, type, arg) and
-    // dataflow lib has requirement that arguments and calls are in same enclosing callable.
+    // dataflow lib has requirement that arguments and calls are in same enclosing
+    // callable. This requirement would be broken if we used `my_obj` as the self
+    // argument in the `f()` call in the example below:
+    // ```py
+    // def call_func(f):
+    //    f()
+    //
+    // call_func(my_obj.some_method)
+    // ```
     exists(CfgNode cfgNode | cfgNode.getNode() = call |
       cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
     )
     or
-    // cls argument for classmethod calls
+    // cls argument for classmethod calls -- see ntoe above about bound methods
     type instanceof CallTypeClassMethod and
     apos.isSelf() and
     resolveMethodCall(call, target, type, arg) and
