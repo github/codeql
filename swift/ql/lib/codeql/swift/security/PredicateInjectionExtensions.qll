@@ -24,6 +24,9 @@ class PredicateInjectionAdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
 }
 
+/**
+ * A sink defined in a CSV model.
+ */
 private class DefaultPredicateInjectionSink extends PredicateInjectionSink {
   DefaultPredicateInjectionSink() { sinkNode(this, "predicate-injection") }
 }
