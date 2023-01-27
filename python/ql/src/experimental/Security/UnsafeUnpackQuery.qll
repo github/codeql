@@ -61,11 +61,20 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // Reading the response
+    nodeTo.(MethodCallNode).calls(nodeFrom, "read")
+    or
     // Open a file for access
     exists(MethodCallNode cn |
       nodeTo = cn.getObject() and
       cn.getMethodName() = "open" and
       cn.flowsTo(nodeFrom)
+    )
+    or
+    // Write access
+    exists(MethodCallNode cn |
+      cn.calls(nodeTo, "write") and
+      nodeFrom = cn.getArg(0)
     )
     or
     // Open a file for access using builtin
@@ -76,11 +85,13 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     // see chunks(): https://docs.djangoproject.com/en/4.1/ref/files/uploads/#django.core.files.uploadedfile.UploadedFile.chunks
     nodeTo.(MethodCallNode).calls(nodeFrom, ["getlist", "get", "chunks"])
     or
-    // Reading the response
-    nodeTo.(MethodCallNode).calls(nodeFrom, "read")
-    or
-    // Accessing the name or raw content
-    nodeTo.(AttrRead).accesses(nodeFrom, ["name", "raw"])
+    // Writing the response data to the archive
+    exists(Stdlib::FileLikeObject::InstanceSource is, Node f, MethodCallNode mc |
+      is.flowsTo(f) and
+      mc.calls(f, "write") and
+      nodeFrom = mc.getArg(0) and
+      nodeTo = is.(CallCfgNode).getArg(0)
+    )
     or
     // Considering the use of "fs"
     exists(API::CallNode fs, MethodCallNode mcn |
@@ -97,22 +108,11 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
       nodeTo = mcn
     )
     or
+    // Accessing the name or raw content
+    nodeTo.(AttrRead).accesses(nodeFrom, ["name", "raw"])
+    or
     // Join the base_dir to the filename
     nodeTo = API::moduleImport("os").getMember("path").getMember("join").getACall() and
     nodeFrom = nodeTo.(API::CallNode).getArg(1)
-    or
-    // Write access
-    exists(MethodCallNode cn |
-      cn.calls(nodeTo, "write") and
-      nodeFrom = cn.getArg(0)
-    )
-    or
-    // Writing the response data to the archive
-    exists(Stdlib::FileLikeObject::InstanceSource is, Node f, MethodCallNode mc |
-      is.flowsTo(f) and
-      mc.calls(f, "write") and
-      nodeFrom = mc.getArg(0) and
-      nodeTo = is.(CallCfgNode).getArg(0)
-    )
   }
 }
