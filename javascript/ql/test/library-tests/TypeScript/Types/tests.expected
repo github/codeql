@@ -560,6 +560,66 @@ getExprType
 | tst.ts:423:7:423:22 | this.name = name | string |
 | tst.ts:423:12:423:15 | name | string |
 | tst.ts:423:19:423:22 | name | string |
+| tst.ts:430:8:430:11 | TS50 | typeof TS50 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:432:33:432:36 | args | Args |
+| tst.ts:433:68:433:71 | args | Args |
+| tst.ts:435:15:435:24 | methodName | string |
+| tst.ts:435:28:435:33 | String | StringConstructor |
+| tst.ts:435:28:435:47 | String(context.name) | string |
+| tst.ts:435:35:435:46 | context.name | string \| symbol |
+| tst.ts:435:43:435:46 | name | string \| symbol |
+| tst.ts:437:51:437:54 | args | Args |
+| tst.ts:438:13:438:19 | console | Console |
+| tst.ts:438:13:438:23 | console.log | (...data: any[]) => void |
+| tst.ts:438:13:438:64 | console ... me}'.`) | void |
+| tst.ts:438:21:438:23 | log | (...data: any[]) => void |
+| tst.ts:438:25:438:63 | `LOG: E ... ame}'.` | string |
+| tst.ts:438:26:438:47 | LOG: En ... ethod ' | any |
+| tst.ts:438:50:438:59 | methodName | string |
+| tst.ts:438:61:438:62 | '. | any |
+| tst.ts:439:19:439:24 | result | any |
+| tst.ts:439:28:439:38 | target.call | (this: Function, thisArg: any, ...argArray: any... |
+| tst.ts:439:28:439:53 | target. ... ..args) | any |
+| tst.ts:439:35:439:38 | call | (this: Function, thisArg: any, ...argArray: any... |
+| tst.ts:439:49:439:52 | args | Args |
+| tst.ts:440:13:440:19 | console | Console |
+| tst.ts:440:13:440:23 | console.log | (...data: any[]) => void |
+| tst.ts:440:13:440:63 | console ... me}'.`) | void |
+| tst.ts:440:21:440:23 | log | (...data: any[]) => void |
+| tst.ts:440:25:440:62 | `LOG: E ... ame}'.` | string |
+| tst.ts:440:26:440:46 | LOG: Ex ... ethod ' | any |
+| tst.ts:440:49:440:58 | methodName | string |
+| tst.ts:440:60:440:61 | '. | any |
+| tst.ts:441:20:441:25 | result | any |
+| tst.ts:447:11:447:16 | Person | Person |
+| tst.ts:448:9:448:12 | name | string |
+| tst.ts:449:9:451:9 | constru ...       } | any |
+| tst.ts:449:21:449:24 | name | string |
+| tst.ts:450:13:450:21 | this.name | string |
+| tst.ts:450:13:450:28 | this.name = name | string |
+| tst.ts:450:18:450:21 | name | string |
+| tst.ts:450:25:450:28 | name | string |
+| tst.ts:453:10:453:25 | loggedMethod("") | (this: unknown, args_0: () => number, args_1: C... |
+| tst.ts:453:23:453:24 | "" | "" |
+| tst.ts:454:9:454:13 | greet | () => number |
+| tst.ts:454:9:457:9 | greet() ...       } | () => number |
+| tst.ts:455:13:455:19 | console | Console |
+| tst.ts:455:13:455:23 | console.log | (...data: any[]) => void |
+| tst.ts:455:13:455:58 | console ... ame}.`) | void |
+| tst.ts:455:21:455:23 | log | (...data: any[]) => void |
+| tst.ts:455:25:455:57 | `Hello, ... name}.` | string |
+| tst.ts:455:26:455:43 | Hello, my name is  | any |
+| tst.ts:455:46:455:54 | this.name | string |
+| tst.ts:455:51:455:54 | name | string |
+| tst.ts:455:56:455:56 | . | any |
+| tst.ts:456:20:456:20 | 2 | 2 |
+| tst.ts:460:11:460:11 | p | number |
+| tst.ts:460:15:460:32 | new Person("John") | Person |
+| tst.ts:460:15:460:38 | new Per ... ).greet | () => number |
+| tst.ts:460:15:460:40 | new Per ... greet() | number |
+| tst.ts:460:19:460:24 | Person | typeof Person in tst.ts:430 |
+| tst.ts:460:26:460:31 | "John" | "John" |
+| tst.ts:460:34:460:38 | greet | () => number |
 | tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
 | tstModuleCJS.cts:2:12:2:15 | Math | Math |
 | tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
@@ -670,6 +730,7 @@ getTypeDefinitionType
 | tst.ts:404:3:406:3 | interfa ... er;\\n  } | RGBObj |
 | tst.ts:408:3:410:3 | interfa ... er;\\n  } | HSVObj |
 | tst.ts:419:3:425:3 | class P ...   }\\n  } | Person |
+| tst.ts:447:5:458:5 | class P ... }\\n    } | Person |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -995,6 +1056,24 @@ getTypeExprType
 | tst.ts:412:37:412:42 | HSVObj | HSVObj |
 | tst.ts:420:20:420:25 | string | string |
 | tst.ts:422:23:422:28 | string | string |
+| tst.ts:431:27:431:30 | This | This |
+| tst.ts:431:33:431:36 | Args | Args |
+| tst.ts:431:46:431:48 | any | any |
+| tst.ts:431:46:431:50 | any[] | any[] |
+| tst.ts:431:53:431:58 | Return | Return |
+| tst.ts:432:24:432:27 | This | This |
+| tst.ts:432:39:432:42 | Args | Args |
+| tst.ts:432:48:432:53 | Return | Return |
+| tst.ts:433:18:433:44 | ClassMe ... Context | ClassMethodDecoratorContext<This, Value> |
+| tst.ts:433:46:433:49 | This | This |
+| tst.ts:433:59:433:62 | This | This |
+| tst.ts:433:74:433:77 | Args | Args |
+| tst.ts:433:83:433:88 | Return | Return |
+| tst.ts:437:42:437:45 | This | This |
+| tst.ts:437:57:437:60 | Args | Args |
+| tst.ts:437:64:437:69 | Return | Return |
+| tst.ts:448:15:448:20 | string | string |
+| tst.ts:449:27:449:32 | string | string |
 | tstModuleCJS.cts:1:33:1:35 | 'a' | "a" |
 | tstModuleCJS.cts:1:33:1:41 | 'a' \| 'b' | "a" \| "b" |
 | tstModuleCJS.cts:1:39:1:41 | 'b' | "b" |
@@ -1100,6 +1179,7 @@ referenceDefinition
 | NonAbstractDummy | tst.ts:54:1:56:1 | interfa ... mber;\\n} |
 | Person | tst.ts:222:3:234:3 | class P ...   }\\n  } |
 | Person | tst.ts:419:3:425:3 | class P ...   }\\n  } |
+| Person | tst.ts:447:5:458:5 | class P ... }\\n    } |
 | RGB | tst.ts:393:3:393:56 | type RG ... umber]; |
 | RGBObj | tst.ts:404:3:406:3 | interfa ... er;\\n  } |
 | Shape | tst.ts:140:3:142:47 | type Sh ... mber }; |
@@ -1204,6 +1284,9 @@ unionIndex
 | "string" | 0 | keyof TypeMap |
 | "symbol" | 4 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "undefined" | 5 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| () => number | 0 | (() => number) \| (ClassMethodDecoratorContext<P... |
+| () => number | 1 | void \| (() => number) |
+| ClassMethodDecoratorContext<Person, () => numbe... | 1 | (() => number) \| (ClassMethodDecoratorContext<P... |
 | Error | 1 | Success \| Error |
 | Error | 1 | string \| Error |
 | HSVObj | 1 | RGBObj \| HSVObj |
@@ -1257,6 +1340,7 @@ unionIndex
 | true | 2 | string \| number \| true |
 | true | 3 | string \| number \| boolean |
 | true | 3 | string \| number \| boolean \| { [property: string... |
+| void | 0 | void \| (() => number) |
 | { [key: string]: any; } | 1 | string \| { [key: string]: any; } |
 | { [key: string]: any; } | 2 | VirtualNode \| { [key: string]: any; } |
 | { [property: string]: Json; } | 4 | string \| number \| boolean \| { [property: string... |
