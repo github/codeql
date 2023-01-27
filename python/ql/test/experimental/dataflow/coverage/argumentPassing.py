@@ -174,6 +174,7 @@ def test_kw_doublestar():
 def only_kwargs(**kwargs):
     SINK1(kwargs["a"])
     SINK2(kwargs["b"])
+    # testing precise content tracking, that content from `a` or `b` does not end up here.
     SINK3_F(kwargs["c"])
 
 @expects(3)
@@ -189,6 +190,7 @@ def mixed(a, **kwargs):
     except KeyError:
         print("OK")
     SINK2(kwargs["b"])
+    # testing precise content tracking, that content from `a` or `b` does not end up here.
     SINK3_F(kwargs["c"])
 
 @expects(4*3)
