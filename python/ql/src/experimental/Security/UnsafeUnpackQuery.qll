@@ -61,18 +61,15 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // Open for access
+    // Open a file for access
     exists(MethodCallNode cn |
       nodeTo = cn.getObject() and
       cn.getMethodName() = "open" and
       cn.flowsTo(nodeFrom)
     )
     or
-    // Write for access
-    exists(MethodCallNode cn |
-      cn.calls(nodeFrom, "write") and
-      nodeTo = cn.getArg(0)
-    )
+    // Open a file for access using builtin
+    nodeFrom = API::builtin("open").getACall() and nodeTo = nodeFrom.(API::CallNode).getArg(0)
     or
     // Retrieve Django uploaded files
     // see getlist(): https://docs.djangoproject.com/en/4.1/ref/request-response/#django.http.QueryDict.getlist
@@ -100,7 +97,7 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
       nodeTo = mcn
     )
     or
-    //Use of join of filename
+    // Join the base_dir to the filename
     nodeTo = API::moduleImport("os").getMember("path").getMember("join").getACall() and
     nodeFrom = nodeTo.(API::CallNode).getArg(1)
     or
