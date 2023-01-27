@@ -15,7 +15,7 @@
  */
 
 import python
-import UnsafeUnpackQuery
+import experimental.Security.UnsafeUnpackQuery
 import DataFlow::PathGraph
 
 from UnsafeUnpackingConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
