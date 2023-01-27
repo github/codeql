@@ -620,6 +620,19 @@ getExprType
 | tst.ts:460:19:460:24 | Person | typeof Person in tst.ts:430 |
 | tst.ts:460:26:460:31 | "John" | "John" |
 | tst.ts:460:34:460:38 | greet | () => number |
+| tst.ts:462:22:462:38 | myConstIdFunction | <const T extends readonly string[]>(args: T) => T |
+| tst.ts:462:75:462:78 | args | T |
+| tst.ts:465:11:465:13 | foo | readonly ["a", "b", "c"] |
+| tst.ts:465:17:465:33 | myConstIdFunction | <const T extends readonly string[]>(args: T) => T |
+| tst.ts:465:17:465:50 | myConst ...  ,"c"]) | readonly ["a", "b", "c"] |
+| tst.ts:465:35:465:49 | ["a", "b" ,"c"] | readonly ["a", "b", "c"] |
+| tst.ts:465:36:465:38 | "a" | "a" |
+| tst.ts:465:41:465:43 | "b" | "b" |
+| tst.ts:465:46:465:48 | "c" | "c" |
+| tst.ts:467:11:467:11 | b | "b" |
+| tst.ts:467:15:467:17 | foo | readonly ["a", "b", "c"] |
+| tst.ts:467:15:467:20 | foo[1] | "b" |
+| tst.ts:467:19:467:19 | 1 | 1 |
 | tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
 | tstModuleCJS.cts:2:12:2:15 | Math | Math |
 | tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
@@ -1074,6 +1087,12 @@ getTypeExprType
 | tst.ts:437:64:437:69 | Return | Return |
 | tst.ts:448:15:448:20 | string | string |
 | tst.ts:449:27:449:32 | string | string |
+| tst.ts:462:46:462:46 | T | T |
+| tst.ts:462:56:462:72 | readonly string[] | readonly string[] |
+| tst.ts:462:65:462:70 | string | string |
+| tst.ts:462:65:462:72 | string[] | readonly string[] |
+| tst.ts:462:81:462:81 | T | T |
+| tst.ts:462:85:462:85 | T | T |
 | tstModuleCJS.cts:1:33:1:35 | 'a' | "a" |
 | tstModuleCJS.cts:1:33:1:41 | 'a' \| 'b' | "a" \| "b" |
 | tstModuleCJS.cts:1:39:1:41 | 'b' | "b" |
@@ -1244,6 +1263,18 @@ tupleTypes
 | tst.ts:402:32:402:34 | red | [red: number, green: number, blue: number] | 0 | number | 3 | no-rest |
 | tst.ts:402:32:402:34 | red | [red: number, green: number, blue: number] | 1 | number | 3 | no-rest |
 | tst.ts:402:32:402:34 | red | [red: number, green: number, blue: number] | 2 | number | 3 | no-rest |
+| tst.ts:465:11:465:13 | foo | readonly ["a", "b", "c"] | 0 | "a" | 3 | no-rest |
+| tst.ts:465:11:465:13 | foo | readonly ["a", "b", "c"] | 1 | "b" | 3 | no-rest |
+| tst.ts:465:11:465:13 | foo | readonly ["a", "b", "c"] | 2 | "c" | 3 | no-rest |
+| tst.ts:465:17:465:50 | myConst ...  ,"c"]) | readonly ["a", "b", "c"] | 0 | "a" | 3 | no-rest |
+| tst.ts:465:17:465:50 | myConst ...  ,"c"]) | readonly ["a", "b", "c"] | 1 | "b" | 3 | no-rest |
+| tst.ts:465:17:465:50 | myConst ...  ,"c"]) | readonly ["a", "b", "c"] | 2 | "c" | 3 | no-rest |
+| tst.ts:465:35:465:49 | ["a", "b" ,"c"] | readonly ["a", "b", "c"] | 0 | "a" | 3 | no-rest |
+| tst.ts:465:35:465:49 | ["a", "b" ,"c"] | readonly ["a", "b", "c"] | 1 | "b" | 3 | no-rest |
+| tst.ts:465:35:465:49 | ["a", "b" ,"c"] | readonly ["a", "b", "c"] | 2 | "c" | 3 | no-rest |
+| tst.ts:467:15:467:17 | foo | readonly ["a", "b", "c"] | 0 | "a" | 3 | no-rest |
+| tst.ts:467:15:467:17 | foo | readonly ["a", "b", "c"] | 1 | "b" | 3 | no-rest |
+| tst.ts:467:15:467:17 | foo | readonly ["a", "b", "c"] | 2 | "c" | 3 | no-rest |
 unknownType
 | tst.ts:40:5:40:15 | unknownType | unknown |
 | tst.ts:47:8:47:8 | e | unknown |
@@ -1263,14 +1294,17 @@ unionIndex
 | "NumberContents" | 0 | "NumberContents" \| "StringContents" |
 | "StringContents" | 1 | "NumberContents" \| "StringContents" |
 | "a" | 0 | "a" \| "b" |
+| "a" | 0 | "a" \| "b" \| "c" |
 | "a" | 1 | number \| "a" |
 | "a" | 3 | number \| boolean \| "a" \| "b" |
 | "b" | 1 | "a" \| "b" |
+| "b" | 1 | "a" \| "b" \| "c" |
 | "b" | 4 | number \| boolean \| "a" \| "b" |
 | "bigint" | 2 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "blue" | 2 | "red" \| "green" \| "blue" |
 | "boolean" | 2 | keyof TypeMap |
 | "boolean" | 3 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "c" | 2 | "a" \| "b" \| "c" |
 | "circle" | 0 | "circle" \| "square" |
 | "function" | 7 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "green" | 1 | "red" \| "green" \| "blue" |

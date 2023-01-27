@@ -458,4 +458,11 @@ module TS50 {
     }
 
     const p = new Person("John").greet(); // <- number, part of well-typed decorators in TS 5.0.
+
+    declare function myConstIdFunction<const T extends readonly string[]>(args: T): T;
+
+    // foo is readonly ["a", "b", "c"]
+    const foo = myConstIdFunction(["a", "b" ,"c"]);
+    
+    const b = foo[1]; // <- "b"
 }
