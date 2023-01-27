@@ -41,7 +41,7 @@ in the GitHub documentation.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The CodeQL CLI download package is a zip archive containing tools, scripts, and
-various CodeQL-specific files. If you don't have an Enterprise license then, by
+various CodeQL-specific files. If you don't have a GitHub Advanced Security license then, by
 downloading this archive, you are agreeing to the `GitHub CodeQL Terms and
 Conditions <https://securitylab.github.com/tools/codeql/license>`__.
 
