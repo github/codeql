@@ -208,7 +208,7 @@ private module IteratorIndirections {
 
     override predicate isAdditionalDereference(Instruction deref, Operand address) {
       exists(CallInstruction call |
-        operandForfullyConvertedCall(deref.getAUse(), call) and
+        operandForfullyConvertedCall(getAUse(deref), call) and
         this = call.getStaticCallTarget().getClassAndName("operator*") and
         address = call.getThisArgumentOperand()
       )
@@ -585,6 +585,15 @@ private module Cached {
     )
   }
 
+  /** Holds if `op` is the only use of its defining instruction, and that op is used in a conversation */
+  private predicate isConversion(Operand op) {
+    exists(Instruction def, Operand use |
+      def = op.getDef() and
+      use = unique( | | getAUse(def)) and
+      conversionFlow(use, _, false, false)
+    )
+  }
+
   /**
    * Holds if `op` is a use of an SSA variable rooted at `base` with `ind` number
    * of indirections.
@@ -602,6 +611,9 @@ private module Cached {
       type = getLanguageType(op) and
       upper = countIndirectionsForCppType(type) and
       isUseImpl(op, base, ind0) and
+      // Don't count every conversion as their own use. Instead, only the first
+      // use (i.e., before any conversions are applied) will count as a use.
+      not isConversion(op) and
       ind = ind0 + [0 .. upper] and
       indirectionIndex = ind - ind0
     )
