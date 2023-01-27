@@ -13,8 +13,6 @@ edges
 | A.cpp:31:20:31:20 | c | A.cpp:31:14:31:21 | call to B [c] |
 | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection |
 | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection |
-| A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection |
-| A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection |
 | A.cpp:47:12:47:18 | new | A.cpp:48:20:48:20 | c |
 | A.cpp:48:12:48:18 | call to make indirection [c] | A.cpp:49:10:49:10 | b indirection [c] |
 | A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c |
@@ -907,7 +905,6 @@ nodes
 | A.cpp:41:15:41:21 | new | semmle.label | new |
 | A.cpp:41:15:41:21 | new | semmle.label | new |
 | A.cpp:43:10:43:12 | & ... indirection | semmle.label | & ... indirection |
-| A.cpp:43:10:43:12 | & ... indirection | semmle.label | & ... indirection |
 | A.cpp:47:12:47:18 | new | semmle.label | new |
 | A.cpp:48:12:48:18 | call to make indirection [c] | semmle.label | call to make indirection [c] |
 | A.cpp:48:20:48:20 | c | semmle.label | c |
@@ -1763,8 +1760,6 @@ subpaths
 | simple.cpp:42:12:42:21 | call to user_input | simple.cpp:21:19:21:19 | b | simple.cpp:21:24:21:25 | this indirection [post update] [b_] | simple.cpp:42:5:42:5 | setB output argument [b_] |
 | simple.cpp:84:14:84:20 | this indirection [f2, f1] | simple.cpp:78:9:78:15 | this indirection [f2, f1] | simple.cpp:78:9:78:15 | getf2f1 indirection | simple.cpp:84:14:84:20 | call to getf2f1 |
 #select
-| A.cpp:43:10:43:12 | & ... indirection | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection | & ... indirection flows from $@ | A.cpp:41:15:41:21 | new | new |
-| A.cpp:43:10:43:12 | & ... indirection | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection | & ... indirection flows from $@ | A.cpp:41:15:41:21 | new | new |
 | A.cpp:43:10:43:12 | & ... indirection | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection | & ... indirection flows from $@ | A.cpp:41:15:41:21 | new | new |
 | A.cpp:43:10:43:12 | & ... indirection | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection | & ... indirection flows from $@ | A.cpp:41:15:41:21 | new | new |
 | A.cpp:49:10:49:13 | c | A.cpp:47:12:47:18 | new | A.cpp:49:10:49:13 | c | c flows from $@ | A.cpp:47:12:47:18 | new | new |
