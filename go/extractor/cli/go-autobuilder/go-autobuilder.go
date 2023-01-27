@@ -272,6 +272,11 @@ func main() {
 		} else if util.DirExists("vendor") {
 			modMode = ModMod
 		}
+		if util.FileExists("go.work") {
+			// if a go.work file exists, we assume that the user has set up a
+			// workspace, and we need to use -mod=readonly or default value
+			modMode = ModReadonly
+		}
 	}
 
 	if modMode == ModVendor {
