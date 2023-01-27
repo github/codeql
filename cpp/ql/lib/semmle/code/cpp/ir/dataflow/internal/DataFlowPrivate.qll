@@ -370,7 +370,7 @@ class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
 private Operand fullyConvertedCallStep(Operand op) {
   not exists(getANonConversionUse(op)) and
   exists(Instruction instr |
-    conversionFlow(op, instr, _) and
+    conversionFlow(op, instr, _, _) and
     result = getAUse(instr)
   )
 }
@@ -397,7 +397,7 @@ Operand getAUse(Instruction instr) {
  */
 private Instruction getANonConversionUse(Operand operand) {
   result = getUse(operand) and
-  not conversionFlow(_, result, _)
+  not conversionFlow(_, result, _, _)
 }
 
 /**
@@ -555,7 +555,7 @@ private predicate numberOfLoadsFromOperandRec(Operand operandFrom, Operand opera
   or
   exists(Operand op, Instruction instr |
     instr = op.getDef() and
-    conversionFlow(operandFrom, instr, _) and
+    conversionFlow(operandFrom, instr, _, _) and
     numberOfLoadsFromOperand(op, operandTo, ind)
   )
 }
@@ -568,7 +568,7 @@ private predicate numberOfLoadsFromOperand(Operand operandFrom, Operand operandT
   numberOfLoadsFromOperandRec(operandFrom, operandTo, n)
   or
   not Ssa::isDereference(_, operandFrom) and
-  not conversionFlow(operandFrom, _, _) and
+  not conversionFlow(operandFrom, _, _, _) and
   operandFrom = operandTo and
   n = 0
 }

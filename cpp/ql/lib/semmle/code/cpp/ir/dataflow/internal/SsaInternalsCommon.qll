@@ -652,7 +652,7 @@ private module Cached {
     exists(Operand mid, Instruction instr |
       isUseImpl(mid, base, ind) and
       instr = operand.getDef() and
-      conversionFlow(mid, instr, false)
+      conversionFlow(mid, instr, false, _)
     )
     or
     exists(int ind0 |
@@ -722,7 +722,7 @@ private module Cached {
     exists(Operand mid, Instruction instr, boolean certain0, boolean isPointerArith |
       isDefImpl(mid, base, ind, certain0) and
       instr = operand.getDef() and
-      conversionFlow(mid, instr, isPointerArith) and
+      conversionFlow(mid, instr, isPointerArith, _) and
       if isPointerArith = true then certain = false else certain = certain0
     )
     or
