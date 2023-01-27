@@ -24,7 +24,6 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
       args =
         API::moduleImport("argparse")
             .getMember("ArgumentParser")
-            .getACall()
             .getReturn()
             .getMember("parse_args")
             .getACall()
