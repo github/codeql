@@ -1,40 +1,5 @@
-edges
-| UnsafeUnpack.py:0:0:0:0 | ModuleVariableNode for UnsafeUnpack.request | UnsafeUnpack.py:11:16:11:22 | ControlFlowNode for request |
-| UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for ImportMember | UnsafeUnpack.py:5:26:5:32 | GSSA Variable request |
-| UnsafeUnpack.py:5:26:5:32 | GSSA Variable request | UnsafeUnpack.py:0:0:0:0 | ModuleVariableNode for UnsafeUnpack.request |
-| UnsafeUnpack.py:11:16:11:22 | ControlFlowNode for request | UnsafeUnpack.py:11:16:11:27 | ControlFlowNode for Attribute |
-| UnsafeUnpack.py:11:16:11:27 | ControlFlowNode for Attribute | UnsafeUnpack.py:17:23:17:34 | ControlFlowNode for Attribute |
-| UnsafeUnpack.py:17:23:17:34 | ControlFlowNode for Attribute | UnsafeUnpack.py:20:31:20:37 | ControlFlowNode for tarpath |
-| UnsafeUnpack.py:34:50:34:65 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:35:23:35:38 | ControlFlowNode for local_ziped_path |
-| UnsafeUnpack.py:48:20:48:34 | ControlFlowNode for compressed_file | UnsafeUnpack.py:49:23:49:37 | ControlFlowNode for compressed_file |
-| UnsafeUnpack.py:52:19:52:36 | ControlFlowNode for Attribute() | UnsafeUnpack.py:53:23:53:37 | ControlFlowNode for compressed_file |
-| UnsafeUnpack.py:66:19:66:31 | ControlFlowNode for Attribute | UnsafeUnpack.py:67:23:67:37 | ControlFlowNode for compressed_file |
-| UnsafeUnpack.py:80:16:80:28 | ControlFlowNode for Attribute | UnsafeUnpack.py:86:15:86:26 | ControlFlowNode for Attribute |
-| UnsafeUnpack.py:86:15:86:26 | ControlFlowNode for Attribute | UnsafeUnpack.py:88:23:88:29 | ControlFlowNode for tarpath |
-nodes
-| UnsafeUnpack.py:0:0:0:0 | ModuleVariableNode for UnsafeUnpack.request | semmle.label | ModuleVariableNode for UnsafeUnpack.request |
-| UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| UnsafeUnpack.py:5:26:5:32 | GSSA Variable request | semmle.label | GSSA Variable request |
-| UnsafeUnpack.py:11:16:11:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| UnsafeUnpack.py:11:16:11:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| UnsafeUnpack.py:17:23:17:34 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| UnsafeUnpack.py:20:31:20:37 | ControlFlowNode for tarpath | semmle.label | ControlFlowNode for tarpath |
-| UnsafeUnpack.py:34:50:34:65 | ControlFlowNode for local_ziped_path | semmle.label | ControlFlowNode for local_ziped_path |
-| UnsafeUnpack.py:35:23:35:38 | ControlFlowNode for local_ziped_path | semmle.label | ControlFlowNode for local_ziped_path |
-| UnsafeUnpack.py:48:20:48:34 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
-| UnsafeUnpack.py:49:23:49:37 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
-| UnsafeUnpack.py:52:19:52:36 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| UnsafeUnpack.py:53:23:53:37 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
-| UnsafeUnpack.py:66:19:66:31 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| UnsafeUnpack.py:67:23:67:37 | ControlFlowNode for compressed_file | semmle.label | ControlFlowNode for compressed_file |
-| UnsafeUnpack.py:80:16:80:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| UnsafeUnpack.py:86:15:86:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| UnsafeUnpack.py:88:23:88:29 | ControlFlowNode for tarpath | semmle.label | ControlFlowNode for tarpath |
-subpaths
-#select
-| UnsafeUnpack.py:20:31:20:37 | ControlFlowNode for tarpath | UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for ImportMember | UnsafeUnpack.py:20:31:20:37 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:35:23:35:38 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:34:50:34:65 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:35:23:35:38 | ControlFlowNode for local_ziped_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:49:23:49:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:48:20:48:34 | ControlFlowNode for compressed_file | UnsafeUnpack.py:49:23:49:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:53:23:53:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:52:19:52:36 | ControlFlowNode for Attribute() | UnsafeUnpack.py:53:23:53:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:67:23:67:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:66:19:66:31 | ControlFlowNode for Attribute | UnsafeUnpack.py:67:23:67:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:88:23:88:29 | ControlFlowNode for tarpath | UnsafeUnpack.py:80:16:80:28 | ControlFlowNode for Attribute | UnsafeUnpack.py:88:23:88:29 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+ERROR: Could not resolve module DataFlow (/home/sim4n6/Desktop/Ghsecuritylab/my-codeql-PR-3/python/ql/src/experimental/Security/CWE-022bis/UnsafeUnpack.ql:19,8-16)
+ERROR: Could not resolve module DataFlow (/home/sim4n6/Desktop/Ghsecuritylab/my-codeql-PR-3/python/ql/src/experimental/Security/CWE-022bis/UnsafeUnpack.ql:21,36-44)
+ERROR: Could not resolve module DataFlow (/home/sim4n6/Desktop/Ghsecuritylab/my-codeql-PR-3/python/ql/src/experimental/Security/CWE-022bis/UnsafeUnpack.ql:21,63-71)
+ERROR: Could not resolve module UnsafeUnpackQuery (/home/sim4n6/Desktop/Ghsecuritylab/my-codeql-PR-3/python/ql/src/experimental/Security/CWE-022bis/UnsafeUnpack.ql:18,8-25)
+ERROR: Could not resolve type UnsafeUnpackingConfig (/home/sim4n6/Desktop/Ghsecuritylab/my-codeql-PR-3/python/ql/src/experimental/Security/CWE-022bis/UnsafeUnpack.ql:21,6-27)
