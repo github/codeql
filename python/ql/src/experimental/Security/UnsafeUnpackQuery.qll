@@ -89,19 +89,17 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     nodeTo.(MethodCallNode).calls(nodeFrom, ["getlist", "get", "chunks"])
     or
     // Considering the use of "fs"
-    exists(API::CallNode fs, MethodCallNode mcn |
-      fs =
-        API::moduleImport("django")
-            .getMember("core")
-            .getMember("files")
-            .getMember("storage")
-            .getMember("FileSystemStorage")
-            .getACall() and
-      fs.flowsTo(mcn.getObject()) and
-      mcn.getMethodName() = ["save", "path"] and
-      nodeFrom = mcn.getArg(0) and
-      nodeTo = mcn
-    )
+    // see fs: https://docs.djangoproject.com/en/4.1/ref/files/storage/#the-filesystemstorage-class
+    nodeTo =
+      API::moduleImport("django")
+          .getMember("core")
+          .getMember("files")
+          .getMember("storage")
+          .getMember("FileSystemStorage")
+          .getReturn()
+          .getMember(["save", "path"])
+          .getACall() and
+    nodeFrom = nodeTo.(MethodCallNode).getArg(0)
     or
     // Accessing the name or raw content
     nodeTo.(AttrRead).accesses(nodeFrom, ["name", "raw"])
