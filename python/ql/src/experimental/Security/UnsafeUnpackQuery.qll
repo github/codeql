@@ -66,8 +66,14 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     or
     // Open a file for access
     exists(MethodCallNode cn |
-      nodeTo = cn.getObject() and
-      cn.getMethodName() = "open" and
+      cn.calls(nodeTo, "open") and
+      cn.flowsTo(nodeFrom)
+    )
+    or
+    // Open a file for access using builtin
+    exists(API::CallNode cn |
+      cn = API::builtin("open").getACall() and
+      nodeTo = cn.(API::CallNode).getArg(0) and
       cn.flowsTo(nodeFrom)
     )
     or
@@ -77,21 +83,10 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
       nodeFrom = cn.getArg(0)
     )
     or
-    // Open a file for access using builtin
-    nodeFrom = API::builtin("open").getACall() and nodeTo = nodeFrom.(API::CallNode).getArg(0)
-    or
     // Retrieve Django uploaded files
     // see getlist(): https://docs.djangoproject.com/en/4.1/ref/request-response/#django.http.QueryDict.getlist
     // see chunks(): https://docs.djangoproject.com/en/4.1/ref/files/uploads/#django.core.files.uploadedfile.UploadedFile.chunks
     nodeTo.(MethodCallNode).calls(nodeFrom, ["getlist", "get", "chunks"])
-    or
-    // Writing the response data to the archive
-    exists(Stdlib::FileLikeObject::InstanceSource is, Node f, MethodCallNode mc |
-      is.flowsTo(f) and
-      mc.calls(f, "write") and
-      nodeFrom = mc.getArg(0) and
-      nodeTo = is.(CallCfgNode).getArg(0)
-    )
     or
     // Considering the use of "fs"
     exists(API::CallNode fs, MethodCallNode mcn |
