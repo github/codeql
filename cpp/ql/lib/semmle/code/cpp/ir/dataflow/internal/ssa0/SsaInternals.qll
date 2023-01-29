@@ -155,8 +155,21 @@ private class FinalParameterUse extends UseImpl, TFinalParameterUse {
   override string toString() { result = p.toString() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    exists(ReturnInstruction return |
-      block.getInstruction(index + 1) = return and
+    // Ideally, this should always be a `ReturnInstruction`, but if
+    // someone forgets to write a `return` statement in a function
+    // with a non-void return type we generate an `UnreachedInstruction`.
+    // In this case we still want to generate flow out of such functions
+    // if they write to a parameter. So we pick the index of the
+    // `UnreachedInstruction` as the index of this use.
+    // Note that a function may have both a `ReturnInstruction` and an
+    // `UnreachedInstruction`. If that's the case this predicate will
+    // return multiple results. I don't think this is detrimental to
+    // performance, however.
+    exists(Instruction return |
+      return instanceof ReturnInstruction or
+      return instanceof UnreachedInstruction
+    |
+      block.getInstruction(index) = return and
       return.getEnclosingFunction() = p.getFunction()
     )
   }
