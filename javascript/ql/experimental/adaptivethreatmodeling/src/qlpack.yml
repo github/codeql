@@ -9,4 +9,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2023-01-29-02h29m55s.goofy-card-1qmffl6l.eadc9148064ff4f2880a63ab81db7920e1cb91a2ceadd46a422ad590e5e2b6e4
