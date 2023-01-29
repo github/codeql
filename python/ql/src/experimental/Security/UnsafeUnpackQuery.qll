@@ -29,13 +29,25 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
             .getACall()
     )
     or
-    // A source catching an S3 filename download
+    // A source catching an S3 file download
     // see boto3: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.download_file
     source =
       API::moduleImport("boto3")
           .getMember("client")
           .getReturn()
-          .getMember("download_file")
+          .getMember(["download_file", "download_fileobj"])
+          .getACall()
+          .getArg(2)
+    or
+    // A source catching an S3 file download
+    // see boto3: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/core/session.html
+    source =
+      API::moduleImport("boto3")
+          .getMember("Session")
+          .getReturn()
+          .getMember("client")
+          .getReturn()
+          .getMember(["download_file", "download_fileobj"])
           .getACall()
           .getArg(2)
     or
