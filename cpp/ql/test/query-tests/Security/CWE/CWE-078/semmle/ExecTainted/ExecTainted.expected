@@ -41,57 +41,22 @@ edges
 | test.cpp:178:22:178:26 | (const char *)... indirection | test.cpp:178:13:178:19 | strncat output argument |
 | test.cpp:180:13:180:19 | strncat output argument | test.cpp:183:32:183:38 | array to pointer conversion indirection |
 | test.cpp:180:22:180:29 | (const char *)... indirection | test.cpp:180:13:180:19 | strncat output argument |
-| test.cpp:186:34:186:38 | flags | test.cpp:187:11:187:15 | strncat output argument |
-| test.cpp:186:34:186:38 | flags | test.cpp:187:11:187:15 | strncat output argument |
-| test.cpp:186:34:186:38 | flags | test.cpp:188:11:188:17 | strncat output argument |
-| test.cpp:186:34:186:38 | flags | test.cpp:188:20:188:24 | (const char *)... indirection |
-| test.cpp:186:34:186:38 | flags indirection | test.cpp:187:11:187:15 | strncat output argument |
-| test.cpp:186:34:186:38 | flags indirection | test.cpp:187:11:187:15 | strncat output argument |
-| test.cpp:186:34:186:38 | flags indirection | test.cpp:188:11:188:17 | strncat output argument |
-| test.cpp:186:34:186:38 | flags indirection | test.cpp:188:20:188:24 | (const char *)... indirection |
-| test.cpp:186:47:186:54 | filename | test.cpp:187:11:187:15 | strncat output argument |
 | test.cpp:186:47:186:54 | filename | test.cpp:188:20:188:24 | (const char *)... indirection |
-| test.cpp:186:47:186:54 | filename indirection | test.cpp:187:11:187:15 | strncat output argument |
 | test.cpp:186:47:186:54 | filename indirection | test.cpp:187:18:187:25 | (const char *)... indirection |
 | test.cpp:186:47:186:54 | filename indirection | test.cpp:188:20:188:24 | (const char *)... indirection |
 | test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:11:188:17 | strncat output argument |
-| test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:11:188:17 | strncat output argument |
-| test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:11:188:17 | strncat output argument |
-| test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:20:188:24 | (const char *)... indirection |
-| test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:20:188:24 | (const char *)... indirection |
-| test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:20:188:24 | (const char *)... indirection |
-| test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:20:188:24 | (const char *)... indirection |
 | test.cpp:187:18:187:25 | (const char *)... indirection | test.cpp:187:11:187:15 | strncat output argument |
-| test.cpp:188:20:188:24 | (const char *)... indirection | test.cpp:188:11:188:17 | strncat output argument |
-| test.cpp:188:20:188:24 | (const char *)... indirection | test.cpp:188:11:188:17 | strncat output argument |
 | test.cpp:188:20:188:24 | (const char *)... indirection | test.cpp:188:11:188:17 | strncat output argument |
 | test.cpp:188:20:188:24 | (const char *)... indirection | test.cpp:188:11:188:17 | strncat output argument |
 | test.cpp:194:9:194:16 | fread output argument | test.cpp:196:26:196:33 | array to pointer conversion indirection |
 | test.cpp:194:9:194:16 | fread output argument | test.cpp:196:26:196:33 | filename |
 | test.cpp:196:10:196:16 | concat output argument | test.cpp:198:32:198:38 | array to pointer conversion indirection |
 | test.cpp:196:10:196:16 | concat output argument | test.cpp:198:32:198:38 | array to pointer conversion indirection |
-| test.cpp:196:19:196:23 | array to pointer conversion indirection | test.cpp:186:34:186:38 | flags indirection |
-| test.cpp:196:19:196:23 | array to pointer conversion indirection | test.cpp:186:34:186:38 | flags indirection |
-| test.cpp:196:19:196:23 | array to pointer conversion indirection | test.cpp:196:10:196:16 | concat output argument |
-| test.cpp:196:19:196:23 | array to pointer conversion indirection | test.cpp:196:10:196:16 | concat output argument |
-| test.cpp:196:19:196:23 | concat output argument | test.cpp:196:19:196:23 | array to pointer conversion indirection |
-| test.cpp:196:19:196:23 | concat output argument | test.cpp:196:19:196:23 | array to pointer conversion indirection |
-| test.cpp:196:19:196:23 | concat output argument | test.cpp:196:19:196:23 | flags |
-| test.cpp:196:19:196:23 | concat output argument | test.cpp:196:19:196:23 | flags |
-| test.cpp:196:19:196:23 | flags | test.cpp:186:34:186:38 | flags |
-| test.cpp:196:19:196:23 | flags | test.cpp:186:34:186:38 | flags |
-| test.cpp:196:19:196:23 | flags | test.cpp:196:10:196:16 | concat output argument |
-| test.cpp:196:19:196:23 | flags | test.cpp:196:10:196:16 | concat output argument |
-| test.cpp:196:19:196:23 | flags | test.cpp:196:19:196:23 | concat output argument |
-| test.cpp:196:19:196:23 | flags | test.cpp:196:19:196:23 | concat output argument |
 | test.cpp:196:26:196:33 | array to pointer conversion indirection | test.cpp:186:47:186:54 | filename indirection |
 | test.cpp:196:26:196:33 | array to pointer conversion indirection | test.cpp:196:10:196:16 | concat output argument |
 | test.cpp:196:26:196:33 | array to pointer conversion indirection | test.cpp:196:10:196:16 | concat output argument |
-| test.cpp:196:26:196:33 | array to pointer conversion indirection | test.cpp:196:19:196:23 | concat output argument |
-| test.cpp:196:26:196:33 | array to pointer conversion indirection | test.cpp:196:19:196:23 | concat output argument |
 | test.cpp:196:26:196:33 | filename | test.cpp:186:47:186:54 | filename |
 | test.cpp:196:26:196:33 | filename | test.cpp:196:10:196:16 | concat output argument |
-| test.cpp:196:26:196:33 | filename | test.cpp:196:19:196:23 | concat output argument |
 | test.cpp:218:9:218:16 | fread output argument | test.cpp:220:19:220:26 | (const char *)... indirection |
 | test.cpp:218:9:218:16 | fread output argument | test.cpp:220:19:220:26 | (const char *)... indirection |
 | test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | array to pointer conversion indirection |
@@ -153,40 +118,18 @@ nodes
 | test.cpp:183:32:183:38 | array to pointer conversion indirection | semmle.label | array to pointer conversion indirection |
 | test.cpp:183:32:183:38 | array to pointer conversion indirection | semmle.label | array to pointer conversion indirection |
 | test.cpp:183:32:183:38 | array to pointer conversion indirection | semmle.label | array to pointer conversion indirection |
-| test.cpp:186:34:186:38 | flags | semmle.label | flags |
-| test.cpp:186:34:186:38 | flags | semmle.label | flags |
-| test.cpp:186:34:186:38 | flags indirection | semmle.label | flags indirection |
-| test.cpp:186:34:186:38 | flags indirection | semmle.label | flags indirection |
 | test.cpp:186:47:186:54 | filename | semmle.label | filename |
 | test.cpp:186:47:186:54 | filename indirection | semmle.label | filename indirection |
-| test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
-| test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
-| test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
-| test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
-| test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
-| test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:187:18:187:25 | (const char *)... indirection | semmle.label | (const char *)... indirection |
 | test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
-| test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
-| test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
-| test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
-| test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
-| test.cpp:188:20:188:24 | (const char *)... indirection | semmle.label | (const char *)... indirection |
-| test.cpp:188:20:188:24 | (const char *)... indirection | semmle.label | (const char *)... indirection |
 | test.cpp:188:20:188:24 | (const char *)... indirection | semmle.label | (const char *)... indirection |
 | test.cpp:188:20:188:24 | (const char *)... indirection | semmle.label | (const char *)... indirection |
 | test.cpp:194:9:194:16 | fread output argument | semmle.label | fread output argument |
 | test.cpp:196:10:196:16 | concat output argument | semmle.label | concat output argument |
 | test.cpp:196:10:196:16 | concat output argument | semmle.label | concat output argument |
-| test.cpp:196:19:196:23 | array to pointer conversion indirection | semmle.label | array to pointer conversion indirection |
-| test.cpp:196:19:196:23 | array to pointer conversion indirection | semmle.label | array to pointer conversion indirection |
-| test.cpp:196:19:196:23 | concat output argument | semmle.label | concat output argument |
-| test.cpp:196:19:196:23 | concat output argument | semmle.label | concat output argument |
-| test.cpp:196:19:196:23 | flags | semmle.label | flags |
-| test.cpp:196:19:196:23 | flags | semmle.label | flags |
 | test.cpp:196:26:196:33 | array to pointer conversion indirection | semmle.label | array to pointer conversion indirection |
 | test.cpp:196:26:196:33 | filename | semmle.label | filename |
 | test.cpp:198:32:198:38 | array to pointer conversion indirection | semmle.label | array to pointer conversion indirection |
@@ -198,17 +141,8 @@ nodes
 | test.cpp:220:19:220:26 | (const char *)... indirection | semmle.label | (const char *)... indirection |
 | test.cpp:222:32:222:38 | array to pointer conversion indirection | semmle.label | array to pointer conversion indirection |
 subpaths
-| test.cpp:196:19:196:23 | array to pointer conversion indirection | test.cpp:186:34:186:38 | flags indirection | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
-| test.cpp:196:19:196:23 | array to pointer conversion indirection | test.cpp:186:34:186:38 | flags indirection | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
-| test.cpp:196:19:196:23 | flags | test.cpp:186:34:186:38 | flags | test.cpp:187:11:187:15 | strncat output argument | test.cpp:196:19:196:23 | concat output argument |
-| test.cpp:196:19:196:23 | flags | test.cpp:186:34:186:38 | flags | test.cpp:187:11:187:15 | strncat output argument | test.cpp:196:19:196:23 | concat output argument |
-| test.cpp:196:19:196:23 | flags | test.cpp:186:34:186:38 | flags | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
-| test.cpp:196:19:196:23 | flags | test.cpp:186:34:186:38 | flags | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
-| test.cpp:196:26:196:33 | array to pointer conversion indirection | test.cpp:186:47:186:54 | filename indirection | test.cpp:187:11:187:15 | strncat output argument | test.cpp:196:19:196:23 | concat output argument |
-| test.cpp:196:26:196:33 | array to pointer conversion indirection | test.cpp:186:47:186:54 | filename indirection | test.cpp:187:11:187:15 | strncat output argument | test.cpp:196:19:196:23 | concat output argument |
 | test.cpp:196:26:196:33 | array to pointer conversion indirection | test.cpp:186:47:186:54 | filename indirection | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
 | test.cpp:196:26:196:33 | array to pointer conversion indirection | test.cpp:186:47:186:54 | filename indirection | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
-| test.cpp:196:26:196:33 | filename | test.cpp:186:47:186:54 | filename | test.cpp:187:11:187:15 | strncat output argument | test.cpp:196:19:196:23 | concat output argument |
 | test.cpp:196:26:196:33 | filename | test.cpp:186:47:186:54 | filename | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
 #select
 | test.cpp:23:12:23:19 | command1 | test.cpp:15:27:15:30 | argv indirection | test.cpp:23:12:23:19 | (const char *)... indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string). | test.cpp:15:27:15:30 | argv indirection | user input (a command-line argument) | test.cpp:22:13:22:20 | sprintf output argument | sprintf output argument |
