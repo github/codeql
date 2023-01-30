@@ -12,6 +12,8 @@ edges
 | impl/unsafeShell.rb:51:17:51:17 | x :  | impl/unsafeShell.rb:52:14:52:14 | x |
 | impl/unsafeShell.rb:51:17:51:17 | x :  | impl/unsafeShell.rb:54:29:54:29 | x |
 | impl/unsafeShell.rb:57:21:57:21 | x :  | impl/unsafeShell.rb:58:23:58:23 | x |
+| impl/unsafeShell.rb:61:20:61:20 | x :  | impl/unsafeShell.rb:64:14:64:16 | arr |
+| impl/unsafeShell.rb:61:20:61:20 | x :  | impl/unsafeShell.rb:68:14:68:16 | arr |
 nodes
 | impl/sub/notImported.rb:2:12:2:17 | target :  | semmle.label | target :  |
 | impl/sub/notImported.rb:3:19:3:27 | #{...} | semmle.label | #{...} |
@@ -38,6 +40,9 @@ nodes
 | impl/unsafeShell.rb:54:29:54:29 | x | semmle.label | x |
 | impl/unsafeShell.rb:57:21:57:21 | x :  | semmle.label | x :  |
 | impl/unsafeShell.rb:58:23:58:23 | x | semmle.label | x |
+| impl/unsafeShell.rb:61:20:61:20 | x :  | semmle.label | x :  |
+| impl/unsafeShell.rb:64:14:64:16 | arr | semmle.label | arr |
+| impl/unsafeShell.rb:68:14:68:16 | arr | semmle.label | arr |
 subpaths
 #select
 | impl/sub/notImported.rb:3:14:3:28 | "cat #{...}" | impl/sub/notImported.rb:2:12:2:17 | target :  | impl/sub/notImported.rb:3:19:3:27 | #{...} | This string construction which depends on $@ is later used in a $@. | impl/sub/notImported.rb:2:12:2:17 | target | library input | impl/sub/notImported.rb:3:5:3:34 | call to popen | shell command |
@@ -53,3 +58,5 @@ subpaths
 | impl/unsafeShell.rb:52:14:52:24 | call to join | impl/unsafeShell.rb:51:17:51:17 | x :  | impl/unsafeShell.rb:52:14:52:14 | x | This array which depends on $@ is later used in a $@. | impl/unsafeShell.rb:51:17:51:17 | x | library input | impl/unsafeShell.rb:52:5:52:30 | call to popen | shell command |
 | impl/unsafeShell.rb:54:14:54:40 | call to join | impl/unsafeShell.rb:51:17:51:17 | x :  | impl/unsafeShell.rb:54:29:54:29 | x | This array which depends on $@ is later used in a $@. | impl/unsafeShell.rb:51:17:51:17 | x | library input | impl/unsafeShell.rb:54:5:54:46 | call to popen | shell command |
 | impl/unsafeShell.rb:58:14:58:23 | ... + ... | impl/unsafeShell.rb:57:21:57:21 | x :  | impl/unsafeShell.rb:58:23:58:23 | x | This string concatenation which depends on $@ is later used in a $@. | impl/unsafeShell.rb:57:21:57:21 | x | library input | impl/unsafeShell.rb:58:5:58:29 | call to popen | shell command |
+| impl/unsafeShell.rb:64:14:64:26 | call to join | impl/unsafeShell.rb:61:20:61:20 | x :  | impl/unsafeShell.rb:64:14:64:16 | arr | This array which depends on $@ is later used in a $@. | impl/unsafeShell.rb:61:20:61:20 | x | library input | impl/unsafeShell.rb:64:5:64:32 | call to popen | shell command |
+| impl/unsafeShell.rb:68:14:68:26 | call to join | impl/unsafeShell.rb:61:20:61:20 | x :  | impl/unsafeShell.rb:68:14:68:16 | arr | This array which depends on $@ is later used in a $@. | impl/unsafeShell.rb:61:20:61:20 | x | library input | impl/unsafeShell.rb:68:5:68:32 | call to popen | shell command |
