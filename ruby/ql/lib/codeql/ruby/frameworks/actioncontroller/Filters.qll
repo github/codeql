@@ -188,8 +188,11 @@ module Filters {
      * with the same name is registered later one, overriding this one.
      */
     predicate skipped(ActionControllerActionMethod action) {
-      this = any(SkipFilter f).getSkippedFilter(action) or
-      this.overridden()
+      action = this.getAnAction() and
+      (
+        this = any(SkipFilter f).getSkippedFilter(action) or
+        this.overridden()
+      )
     }
 
     /**
@@ -239,7 +242,7 @@ module Filters {
   }
 
   /**
-   * Behaviour that is common to filters and `skip_*` calls.
+   * Behavior that is common to filters and `skip_*` calls.
    * This is separated just because when we don't want `Filter` to include `skip_*` calls.
    */
   private class FilterImpl extends StringlikeLiteralCfgNode {
