@@ -345,11 +345,11 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
     )
     or
     // `**kwargs`
-    // since dataflow library has restriction that we can only have ONE result per
+    // since the dataflow library has the restriction that we can only have ONE result per
     // parameter position, if there is both a synthetic **kwargs and a real **kwargs
     // parameter, we only give the result for the synthetic, and add local flow from the
     // synthetic to the real. It might seem more natural to do it in the other
-    // direction, but since we have a clearStep on the real **kwargs parameter, we that
+    // direction, but since we have a clearStep on the real **kwargs parameter, we would have that
     // content-clearing would also affect the synthetic parameter, which we don't want.
     ppos.isDictSplat() and
     if exists(func.getArgByName(_))
@@ -1193,7 +1193,7 @@ predicate getCallArg(CallNode call, Function target, CallType type, Node arg, Ar
     type instanceof CallTypeNormalMethod and
     apos.isSelf() and
     resolveMethodCall(call, target, type, arg) and
-    // dataflow lib has requirement that arguments and calls are in same enclosing
+    // the dataflow library has a requirement that arguments and calls are in same enclosing
     // callable. This requirement would be broken if we used `my_obj` as the self
     // argument in the `f()` call in the example below:
     // ```py
@@ -1206,7 +1206,7 @@ predicate getCallArg(CallNode call, Function target, CallType type, Node arg, Ar
       cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
     )
     or
-    // cls argument for classmethod calls -- see ntoe above about bound methods
+    // cls argument for classmethod calls -- see note above about bound methods
     type instanceof CallTypeClassMethod and
     apos.isSelf() and
     resolveMethodCall(call, target, type, arg) and
