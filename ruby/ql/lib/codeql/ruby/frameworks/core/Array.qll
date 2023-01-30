@@ -1833,6 +1833,16 @@ module Array {
       succ = call and
       pred = call.getArgument(_)
     )
+    or
+    exists(DataFlow::CallNode call | call.getMethodName() = "join" |
+      pred = call.getReceiver() and
+      succ = call
+    )
+    or
+    exists(DataFlow::CallNode call | call.getMethodName() = "Array" |
+      pred = call.getArgument(_) and
+      succ = call
+    )
   }
 }
 
