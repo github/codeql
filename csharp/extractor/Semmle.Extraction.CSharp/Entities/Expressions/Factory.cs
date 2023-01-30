@@ -47,6 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.FalseLiteralExpression:
                     case SyntaxKind.TrueLiteralExpression:
                     case SyntaxKind.StringLiteralExpression:
+                    case SyntaxKind.Utf8StringLiteralExpression:
                     case SyntaxKind.NullLiteralExpression:
                     case SyntaxKind.NumericLiteralExpression:
                     case SyntaxKind.CharacterLiteralExpression:

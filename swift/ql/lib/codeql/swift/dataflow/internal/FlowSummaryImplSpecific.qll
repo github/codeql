@@ -112,7 +112,7 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
 }
 
 /** Gets the textual representation of the content in the format used for flow summaries. */
-private string getContentSpecificCsv(ContentSet cs) {
+private string getContentSpecific(ContentSet cs) {
   exists(Content::FieldContent c |
     cs.isSingleton(c) and
     result = "Field[" + c.getField().getName() + "]"
@@ -120,8 +120,8 @@ private string getContentSpecificCsv(ContentSet cs) {
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecificCsv(SummaryComponent sc) {
-  exists(ContentSet c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
+string getComponentSpecific(SummaryComponent sc) {
+  exists(ContentSet c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
   exists(ReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
@@ -131,10 +131,10 @@ string getComponentSpecificCsv(SummaryComponent sc) {
 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
-string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
+string getParameterPosition(ParameterPosition pos) { result = pos.toString() }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
-string getArgumentPositionCsv(ArgumentPosition pos) { result = pos.toString() }
+string getArgumentPosition(ArgumentPosition pos) { result = pos.toString() }
 
 /** Holds if input specification component `c` needs a reference. */
 predicate inputNeedsReferenceSpecific(string c) { none() }

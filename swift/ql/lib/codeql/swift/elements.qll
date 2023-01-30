@@ -157,7 +157,6 @@ import codeql.swift.elements.expr.PropertyWrapperValuePlaceholderExpr
 import codeql.swift.elements.expr.ProtocolMetatypeToObjectExpr
 import codeql.swift.elements.expr.RebindSelfInConstructorExpr
 import codeql.swift.elements.expr.RegexLiteralExpr
-import codeql.swift.elements.expr.SelfApplyExpr
 import codeql.swift.elements.expr.SequenceExpr
 import codeql.swift.elements.expr.StringLiteralExpr
 import codeql.swift.elements.expr.StringToPointerExpr

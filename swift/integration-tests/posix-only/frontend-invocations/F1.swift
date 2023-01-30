@@ -1,1 +1,1 @@
-func foo() {}
+public func foo() {}

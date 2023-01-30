@@ -12,7 +12,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "PoundDiagnosticDecl" }
 
     /**
-     * Gets the This is 1 for `#error` and 2 for `#warning`.
+     * Gets the kind of this pound diagnostic declaration.
+     *
+     * This is 1 for `#error` and 2 for `#warning`.
      */
     int getKind() {
       result = Synth::convertPoundDiagnosticDeclToRaw(this).(Raw::PoundDiagnosticDecl).getKind()
