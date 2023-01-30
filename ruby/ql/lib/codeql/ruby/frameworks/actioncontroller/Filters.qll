@@ -174,38 +174,28 @@ module Filters {
    *   def trace_request
    *     start = Time.now
    *     yield
-   *     Logger.info("Request took #{Time.now = start} seconds")
+   *     Logger.info("Request took #{Time.now - start} seconds")
    *   end
    * end
    * ```
    */
-  private class Filter extends StringlikeLiteralCfgNode {
-    private FilterCall call;
-    private FilterKind kind;
-
-    Filter() {
-      this = call.getFilterArgument() and
-      kind = call.getKind() and
-      call.getMethodName() = ["", "prepend_", "append_"] + kind + "_action"
-    }
-
-    predicate isPrepended() { call.getMethodName().regexpMatch("^prepend.+$") }
-
-    MethodCallCfgNode getCall() { result = call }
-
-    FilterKind getKind() { result = kind }
+  private class Filter extends FilterImpl {
+    Filter() { not this.isSkipFilter() }
 
     /**
-     * Holds if this callback is registered before `other`. This does not
-     * guarantee that the callback will be executed before `other`. For example,
-     * `after_action` callbacks are executed in reverse order.
+     * Holds if this callback does not run for `action`. This is either because
+     * it has been explicitly skipped by a `SkipFilter` or because a callback
+     * with the same name is registered later one, overriding this one.
      */
-    predicate registeredBefore(Filter other) { callbackRegisteredBefore(call, _, this, other) }
+    predicate skipped(ActionControllerActionMethod action) {
+      this = any(SkipFilter f).getSkippedFilter(action) or
+      this.overridden()
+    }
 
     /**
      * Holds if this callback runs before `other`.
      */
-    private predicate runsBefore(Filter other, ActionControllerActionMethod action) {
+    predicate runsBefore(Filter other, ActionControllerActionMethod action) {
       other.getKind() = this.getKind() and
       not this.skipped(action) and
       not other.skipped(action) and
@@ -246,17 +236,64 @@ module Filters {
       this.runsBefore(result, action) and
       not exists(Filter mid | this.runsBefore(mid, action) | mid.runsBefore(result, action))
     }
+  }
+
+  /**
+   * Behaviour that is common to filters and `skip_*` calls.
+   * This is separated just because when we don't want `Filter` to include `skip_*` calls.
+   */
+  private class FilterImpl extends StringlikeLiteralCfgNode {
+    private FilterCall call;
+    private FilterKind kind;
+
+    FilterImpl() {
+      this = call.getFilterArgument() and
+      kind = call.getKind() and
+      call.getMethodName() = ["", "prepend_", "append_", "skip_"] + kind + "_action"
+    }
+
+    predicate isSkipFilter() { call.getMethodName().regexpMatch("^skip_.+$") }
+
+    predicate isPrepended() { call.getMethodName().regexpMatch("^prepend.+$") }
+
+    MethodCallCfgNode getCall() { result = call }
+
+    FilterKind getKind() { result = kind }
 
     /**
-     * Holds if this callback does not run for `action`. This is either because
-     * it has been explicitly skipped by a `SkipFilter` or because a callback
-     * with the same name is registered later one, overriding this one.
+     * Holds if this callback is registered before `other`. This does not
+     * guarantee that the callback will be executed before `other`. For example,
+     * `after_action` callbacks are executed in reverse order.
      */
-    predicate skipped(ActionControllerActionMethod action) {
-      this =
-        any(SkipFilter f | f.getKind() = this.getKind() and this.registeredBefore(f))
-            .getSkippedFilter(action) or
-      this.overridden()
+    predicate registeredBefore(FilterImpl other) {
+      exists(FilterCall otherCall |
+        // predCall -> call
+        // pred -> this
+        // succ -> other
+        other = otherCall.getFilterArgument() and
+        (
+          // before_action :this, :other
+          //
+          // before_action :this
+          // before_action :other
+          this.getBasicBlock() = other.getBasicBlock() and
+          this.getASuccessor+() = other
+          or
+          call.getExpr().getEnclosingModule() = otherCall.getExpr().getEnclosingModule() and
+          this.getBasicBlock().strictlyDominates(other.getBasicBlock()) and
+          this != other
+          or
+          // This callback is in a superclass of `other`'s class.
+          //
+          // class A
+          //   before_action :this
+          //
+          // class B < A
+          //   before_action :other
+          otherCall.getExpr().getEnclosingModule().getModule() =
+            call.getExpr().getEnclosingModule().getModule().getASubClass+()
+        )
+      )
     }
 
     /**
@@ -269,8 +306,8 @@ module Filters {
      * end
      * ```
      */
-    private predicate overridden() {
-      exists(Filter f |
+    predicate overridden() {
+      exists(FilterImpl f |
         f != this and
         f.getFilterCallable() = this.getFilterCallable() and
         f.getFilterName() = this.getFilterName() and
@@ -279,7 +316,7 @@ module Filters {
       )
     }
 
-    private string getFilterName() { result = this.getConstantValue().getStringlikeValue() }
+    string getFilterName() { result = this.getConstantValue().getStringlikeValue() }
 
     Callable getFilterCallable() { result = call.getFilterCallable(this.getFilterName()) }
 
@@ -300,75 +337,16 @@ module Filters {
    * Like other filter calls, the `except` and `only` keyword arguments can be
    * passed to restrict the actions that the callback is skipped for.
    */
-  private class SkipFilter extends StringlikeLiteralCfgNode {
-    private FilterCall call;
-    private FilterKind kind;
-
-    SkipFilter() {
-      this = call.getFilterArgument() and
-      call.getMethodName() = "skip_" + kind + "_action"
-    }
-
-    FilterKind getKind() { result = kind }
-
-    private string getFilterName() { result = this.getConstantValue().getStringlikeValue() }
-
-    Callable getFilterCallable() { result = call.getFilterCallable(this.getFilterName()) }
-
-    ActionControllerActionMethod getAnAction() { result = call.getAnAction() }
-
-    predicate registeredBefore(StringlikeLiteralCfgNode other) {
-      (other instanceof SkipFilter or other instanceof Filter) and
-      callbackRegisteredBefore(call, _, this, other)
-    }
+  private class SkipFilter extends FilterImpl {
+    SkipFilter() { this.isSkipFilter() }
 
     Filter getSkippedFilter(ActionControllerActionMethod action) {
-      not result instanceof SkipFilter and
       action = this.getAnAction() and
       action = result.getAnAction() and
+      result.getKind() = this.getKind() and
+      result.registeredBefore(this) and
       result.getFilterCallable() = this.getFilterCallable()
     }
-  }
-
-  /**
-   * Holds if `predCall` (resp. `succCall`) registers or skips the callback referred to by `pred` (`succ`) and `predCall` is evaluated called before `succCall`.
-   * Typically this means that `pred` is registered before `succ`, or `pred` is skipped before `succ`, depending on the nature of the call.
-   * `pred` and `succ` are expected to be arguments. In the examples below, `pred` is `:foo` and `succ` is `:bar`.
-   * ```rb
-   * before_action :foo, :bar
-   * skip_before_action :foo, :bar
-   * ```
-   * This does not guarantee that the callback referred to by `pred` will be executed before
-   * `succ`. For example, `after_action` callbacks are executed in reverse order.
-   */
-  private predicate callbackRegisteredBefore(
-    FilterCall predCall, FilterCall succCall, StringlikeLiteralCfgNode pred,
-    StringlikeLiteralCfgNode succ
-  ) {
-    pred = predCall.getFilterArgument() and
-    succ = succCall.getFilterArgument() and
-    (
-      // before_action :this, :other
-      //
-      // before_action :this
-      // before_action :other
-      pred.getBasicBlock() = succ.getBasicBlock() and
-      pred.getASuccessor+() = succ
-      or
-      predCall.getExpr().getEnclosingModule() = succCall.getExpr().getEnclosingModule() and
-      pred.getBasicBlock().strictlyDominates(succ.getBasicBlock()) and
-      pred != succ
-      or
-      // This callback is in a superclass of `other`'s class.
-      //
-      // class A
-      //   before_action :this
-      //
-      // class B < A
-      //   before_action :other
-      succCall.getExpr().getEnclosingModule().getModule() =
-        predCall.getExpr().getEnclosingModule().getModule().getASubClass+()
-    )
   }
 
   /**
