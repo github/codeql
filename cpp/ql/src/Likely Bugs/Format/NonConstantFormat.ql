@@ -134,8 +134,8 @@ class NonConstFlow extends TaintTracking::Configuration {
 from FormattingFunctionCall call, Expr formatString
 where
   call.getArgument(call.getFormatParameterIndex()) = formatString and
-  exists(NonConstFlow cf, DataFlow::Node source, DataFlow::Node sink |
-    cf.hasFlow(source, sink) and
+  exists(NonConstFlow cf, DataFlow::Node sink |
+    cf.hasFlowTo(sink) and
     sink.asExpr() = formatString
   )
 select formatString,

@@ -8,6 +8,7 @@
  * @precision high
  * @id java/file-path-injection
  * @tags security
+ *       experimental
  *       external/cwe-073
  */
 

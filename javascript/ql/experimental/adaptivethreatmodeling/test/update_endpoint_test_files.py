@@ -21,11 +21,16 @@ file_extensions_to_copy = ['.js', '.ts']
 # Maps each security query to the test root path for that security query. Each test root path is the
 # path of that test relative to a checkout of github/codeql.
 test_root_relative_paths = {
-    'NosqlAndSqlInjection': 'javascript/ql/test/query-tests/Security/CWE-089',
+    'NosqlAndSqlInjection':
+    'javascript/ql/test/query-tests/Security/CWE-089',
     'TaintedPath':
     'javascript/ql/test/query-tests/Security/CWE-022/TaintedPath',
-    'Xss': 'javascript/ql/test/query-tests/Security/CWE-079',
-    'XssThroughDom': 'javascript/ql/test/query-tests/Security/CWE-116'
+    'Xss':
+    'javascript/ql/test/query-tests/Security/CWE-079',
+    'XssThroughDom':
+    'javascript/ql/test/query-tests/Security/CWE-116',
+    'ShellCommandInjectionFromEnvironment':
+    'javascript/ql/test/query-tests/Security/CWE-078',
 }
 
 logging.basicConfig(level=logging.INFO)

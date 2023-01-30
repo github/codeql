@@ -87,12 +87,12 @@ class ExternalApiDataNode extends DataFlow::Node {
       not exists(cv.(CallableValue).getScope().getLocation().getFile().getRelativePath())
     ) and
     // Not already modeled as a taint step
-    not exists(DataFlow::Node next | TaintTrackingPrivate::defaultAdditionalTaintStep(this, next)) and
+    not TaintTrackingPrivate::defaultAdditionalTaintStep(this, _) and
     // for `list.append(x)`, we have a additional taint step from x -> [post] list.
     // Since we have modeled this explicitly, I don't see any cases where we would want to report this.
-    not exists(DataFlow::Node prev, DataFlow::PostUpdateNode post |
+    not exists(DataFlow::PostUpdateNode post |
       post.getPreUpdateNode() = this and
-      TaintTrackingPrivate::defaultAdditionalTaintStep(prev, post)
+      TaintTrackingPrivate::defaultAdditionalTaintStep(_, post)
     )
   }
 

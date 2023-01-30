@@ -2211,7 +2211,7 @@ class ReferenceExpr extends Expr {
       this = rs.getValue()
     )
     or
-    exists(ValueSpec spec, int i | this = spec.getNameExpr(i))
+    exists(ValueSpec spec | this = spec.getNameExpr(_))
     or
     exists(FuncDecl fd | this = fd.getNameExpr())
   }

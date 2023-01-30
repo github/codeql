@@ -9,7 +9,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "OtherConstructorDeclRefExpr" }
 
     /**
-     * Gets the constructor declaration of this other constructor declaration ref expression.
+     * Gets the constructor declaration of this other constructor declaration reference expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
@@ -22,7 +22,7 @@ module Generated {
     }
 
     /**
-     * Gets the constructor declaration of this other constructor declaration ref expression.
+     * Gets the constructor declaration of this other constructor declaration reference expression.
      */
     final ConstructorDecl getConstructorDecl() { result = getImmediateConstructorDecl().resolve() }
   }

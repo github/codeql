@@ -18,9 +18,9 @@ class IRGlobalDefaultTaintTrackingTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "ir" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(Expr source, Element tainted |
+    exists(Element tainted |
       tag = "ir" and
-      irTaint(source, tainted, value) and
+      irTaint(_, tainted, value) and
       location = tainted.getLocation() and
       element = tainted.toString()
     )
@@ -33,9 +33,9 @@ class AstGlobalDefaultTaintTrackingTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "ast" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(Expr source, Element tainted |
+    exists(Element tainted |
       tag = "ast" and
-      astTaint(source, tainted, value) and
+      astTaint(_, tainted, value) and
       location = tainted.getLocation() and
       element = tainted.toString()
     )

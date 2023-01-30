@@ -6,6 +6,7 @@
  * @precision low
  * @id cs/backdoor/dangerous-native-functions
  * @tags security
+ *       experimental
  *       solorigate
  */
 

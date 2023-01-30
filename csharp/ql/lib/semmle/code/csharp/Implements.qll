@@ -129,7 +129,7 @@ pragma[nomagic]
 private Virtualizable getACompatibleInterfaceMemberAux(Virtualizable m) {
   result = getACompatibleInterfaceAccessor(m) or
   result = getACompatibleInterfaceIndexer(m) or
-  result = getACompatibleInterfaceMethod(m)
+  result = getACompatibleRelevantInterfaceMember(m)
 }
 
 /**
@@ -210,11 +210,13 @@ private predicate getACompatibleInterfaceIndexerAux(Indexer i, ValueOrRefType t)
   t = getAPossibleImplementor(i.getDeclaringType())
 }
 
-private Method getACompatibleInterfaceMethod0(Method m, int i) {
-  result = getAnInterfaceMethodCandidate(m) and
+private RelevantInterfaceMember getACompatibleRelevantInterfaceMember0(
+  RelevantInterfaceMember m, int i
+) {
+  result = getARelevantInterfaceMemberCandidate(m) and
   i = -1
   or
-  result = getACompatibleInterfaceMethod0(m, i - 1) and
+  result = getACompatibleRelevantInterfaceMember0(m, i - 1) and
   exists(Type t1, Type t2 |
     t1 = getArgumentOrReturnType(m, i) and
     t2 = getArgumentOrReturnType(result, i)
@@ -223,32 +225,47 @@ private Method getACompatibleInterfaceMethod0(Method m, int i) {
   )
 }
 
-private Method getACompatibleInterfaceMethod(Method m) {
-  result = getACompatibleInterfaceMethod0(m, m.getNumberOfParameters())
+/**
+ * A class of callables relevant for interface member compatibility.
+ */
+private class RelevantInterfaceMember extends Callable {
+  RelevantInterfaceMember() {
+    this instanceof Method or
+    this instanceof Operator
+  }
+
+  predicate isPublic() {
+    this.(Method).isPublic() or
+    this.(Operator).isPublic()
+  }
+}
+
+private RelevantInterfaceMember getACompatibleRelevantInterfaceMember(RelevantInterfaceMember m) {
+  result = getACompatibleRelevantInterfaceMember0(m, m.getNumberOfParameters())
 }
 
 /**
- * Gets an interface method that may potentially be implemented by `m`.
+ * Gets an interface method or operator that may potentially be implemented by `m`.
  *
  * That is, a method with the same name, same number of parameters, and declared
  * in a type that is a possible implementor type for the interface type.
  */
-private Method getAnInterfaceMethodCandidate(Method m) {
-  getAPotentialInterfaceMethodAux(result, m.getDeclaringType(), m.getUndecoratedName(),
+private RelevantInterfaceMember getARelevantInterfaceMemberCandidate(RelevantInterfaceMember m) {
+  getAPotentialRelevantInterfaceMemberAux(result, m.getDeclaringType(), m.getUndecoratedName(),
     m.getNumberOfParameters()) and
   m.isPublic()
 }
 
 pragma[nomagic]
-private predicate getAPotentialInterfaceMethodAux(
-  Method m, ValueOrRefType t, string name, int params
+private predicate getAPotentialRelevantInterfaceMemberAux(
+  RelevantInterfaceMember m, ValueOrRefType t, string name, int params
 ) {
   t = getAPossibleImplementor(m.getDeclaringType()) and
   name = m.getUndecoratedName() and
   params = m.getNumberOfParameters()
 }
 
-private Type getArgumentOrReturnType(Method m, int i) {
+private Type getArgumentOrReturnType(RelevantInterfaceMember m, int i) {
   i = 0 and result = m.getReturnType()
   or
   result = m.getParameter(i - 1).getType()

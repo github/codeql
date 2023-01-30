@@ -11,19 +11,8 @@ edges
 | ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String |
 | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:21:29:21:40 | stringNumber : String |
 | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:21:29:21:40 | stringNumber : String |
-| ArithmeticTainted.java:21:12:21:48 | parseInt(...) : Number | ArithmeticTainted.java:32:17:32:20 | data |
-| ArithmeticTainted.java:21:12:21:48 | parseInt(...) : Number | ArithmeticTainted.java:40:17:40:20 | data |
-| ArithmeticTainted.java:21:12:21:48 | parseInt(...) : Number | ArithmeticTainted.java:50:17:50:20 | data |
-| ArithmeticTainted.java:21:12:21:48 | parseInt(...) : Number | ArithmeticTainted.java:64:20:64:23 | data : Number |
-| ArithmeticTainted.java:21:12:21:48 | parseInt(...) : Number | ArithmeticTainted.java:95:37:95:40 | data |
-| ArithmeticTainted.java:21:12:21:48 | parseInt(...) : Number | ArithmeticTainted.java:118:9:118:12 | data : Number |
-| ArithmeticTainted.java:21:12:21:48 | parseInt(...) : Number | ArithmeticTainted.java:119:10:119:13 | data : Number |
-| ArithmeticTainted.java:21:12:21:48 | parseInt(...) : Number | ArithmeticTainted.java:120:10:120:13 | data : Number |
-| ArithmeticTainted.java:21:12:21:48 | parseInt(...) : Number | ArithmeticTainted.java:121:10:121:13 | data : Number |
 | ArithmeticTainted.java:21:29:21:40 | stringNumber : String | ArithmeticTainted.java:21:29:21:47 | trim(...) : String |
 | ArithmeticTainted.java:21:29:21:40 | stringNumber : String | ArithmeticTainted.java:21:29:21:47 | trim(...) : String |
-| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:21:12:21:48 | parseInt(...) : Number |
-| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:21:12:21:48 | parseInt(...) : Number |
 | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:32:17:32:20 | data |
 | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:40:17:40:20 | data |
 | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:50:17:50:20 | data |
@@ -64,8 +53,6 @@ nodes
 | ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | semmle.label | readerBuffered : BufferedReader |
 | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | semmle.label | readLine(...) : String |
 | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | semmle.label | readLine(...) : String |
-| ArithmeticTainted.java:21:12:21:48 | parseInt(...) : Number | semmle.label | parseInt(...) : Number |
-| ArithmeticTainted.java:21:12:21:48 | parseInt(...) : Number | semmle.label | parseInt(...) : Number |
 | ArithmeticTainted.java:21:29:21:40 | stringNumber : String | semmle.label | stringNumber : String |
 | ArithmeticTainted.java:21:29:21:40 | stringNumber : String | semmle.label | stringNumber : String |
 | ArithmeticTainted.java:21:29:21:47 | trim(...) : String | semmle.label | trim(...) : String |

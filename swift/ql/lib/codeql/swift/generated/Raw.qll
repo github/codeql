@@ -97,6 +97,8 @@ module Raw {
     override string toString() { result = "ExtensionDecl" }
 
     NominalTypeDecl getExtendedTypeDecl() { extension_decls(this, result) }
+
+    ProtocolDecl getProtocol(int index) { extension_decl_protocols(this, index, result) }
   }
 
   class IfConfigDecl extends @if_config_decl, Decl {

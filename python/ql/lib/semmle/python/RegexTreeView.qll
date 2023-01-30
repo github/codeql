@@ -227,8 +227,8 @@ module Impl implements RegexTreeViewSig {
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      exists(int re_start, int re_end |
-        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, re_end) and
+      exists(int re_start |
+        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, _) and
         startcolumn = re_start + start + 4 and
         endcolumn = re_start + end + 3
       )

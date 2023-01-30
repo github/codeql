@@ -104,6 +104,7 @@ class EnumCaseDecl(Decl):
 
 class ExtensionDecl(GenericContext, IterableDeclContext, Decl):
     extended_type_decl: "NominalTypeDecl"
+    protocols: list["ProtocolDecl"]
 
 class IfConfigDecl(Decl):
     active_elements: list[AstNode]
@@ -127,7 +128,7 @@ class PatternBindingDecl(Decl):
 
 class PoundDiagnosticDecl(Decl):
     """ A diagnostic directive, which is either `#error` or `#warning`."""
-    kind: int | doc("""This is 1 for `#error` and 2 for `#warning`""")
+    kind: int | desc("""This is 1 for `#error` and 2 for `#warning`.""")
     message: "StringLiteralExpr" | child
 
 class PrecedenceGroupDecl(Decl):
@@ -143,6 +144,24 @@ class AbstractStorageDecl(ValueDecl):
     accessor_decls: list["AccessorDecl"] | child
 
 class VarDecl(AbstractStorageDecl):
+    """
+    A declaration of a variable such as
+    * a local variable in a function:
+    ```
+    func foo() {
+      var x = 42  // <-
+      let y = "hello"  // <-
+      ...
+    }
+    ```
+    * a member of a `struct` or `class`:
+    ```
+    struct S {
+      var size : Int  // <-
+    }
+    ```
+    * ...
+    """
     name: string
     type: Type
     attached_property_wrapper_type: optional[Type]
@@ -150,19 +169,51 @@ class VarDecl(AbstractStorageDecl):
     parent_initializer: optional[Expr]
     property_wrapper_backing_var_binding: optional[PatternBindingDecl] | child | desc("""
         This is the synthesized binding introducing the property wrapper backing variable for this
-        variable, if any.
+        variable, if any. See `getPropertyWrapperBackingVar`.
     """)
     property_wrapper_backing_var: optional["VarDecl"] | child | desc("""
-        This is the synthesized variable holding the property wrapper for this variable, if any.
+        This is the compiler synthesized variable holding the property wrapper for this variable, if any.
+
+        For a property wrapper like
+        ```
+        @propertyWrapper struct MyWrapper { ... }
+
+        struct S {
+          @MyWrapper var x : Int = 42
+        }
+        ```
+        the compiler synthesizes a variable in `S` along the lines of
+        ```
+          var _x = MyWrapper(wrappedValue: 42)
+        ```
+        This predicate returns such variable declaration.
     """)
     property_wrapper_projection_var_binding: optional[PatternBindingDecl] | child | desc("""
         This is the synthesized binding introducing the property wrapper projection variable for this
-        variable, if any.
+        variable, if any. See `getPropertyWrapperProjectionVar`.
     """)
     property_wrapper_projection_var: optional["VarDecl"] | child | desc("""
         If this variable has a property wrapper with a projected value, this is the corresponding
         synthesized variable holding that projected value, accessible with this variable's name
         prefixed with `$`.
+
+        For a property wrapper like
+        ```
+        @propertyWrapper struct MyWrapper {
+          var projectedValue : Bool
+          ...
+        }
+
+        struct S {
+          @MyWrapper var x : Int = 42
+        }
+        ```
+        ```
+        the compiler synthesizes a variable in `S` along the lines of
+        ```
+          var $x : Bool { ... }
+        ```
+        This predicate returns such variable declaration.
     """)
 
 class ParamDecl(VarDecl):
@@ -177,7 +228,7 @@ class ParamDecl(VarDecl):
     """)
 
 class Callable(Element):
-    name: optional[string] | doc("name of this Callable")
+    name: optional[string] | doc("name of this callable")
     self_param: optional[ParamDecl] | child
     params: list[ParamDecl] | child
     body: optional["BraceStmt"] | child | desc("The body is absent within protocol declarations.")
@@ -638,7 +689,12 @@ class ProtocolMetatypeToObjectExpr(ImplicitConversionExpr):
 class RegexLiteralExpr(LiteralExpr):
     pass
 
+@ql.internal
 class SelfApplyExpr(ApplyExpr):
+    """
+    An internal raw instance of method lookups like `x.foo` in `x.foo()`.
+    This is completely replaced by the synthesized type `MethodLookupExpr`.
+    """
     base: Expr
 
 class StringToPointerExpr(ImplicitConversionExpr):

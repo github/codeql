@@ -78,10 +78,25 @@ class WebViewSetWebViewClientMethod extends Method {
   }
 }
 
+/** The method `setAllowContentAccess` of the class `android.webkit.WebSettings` */
+class AllowContentAccessMethod extends Method {
+  AllowContentAccessMethod() {
+    this.getDeclaringType() instanceof TypeWebSettings and
+    this.hasName("setAllowContentAccess")
+  }
+}
+
 /** The method `shouldOverrideUrlLoading` of the class `android.webkit.WebViewClient`. */
 class ShouldOverrideUrlLoading extends Method {
   ShouldOverrideUrlLoading() {
     this.getDeclaringType().getASupertype*() instanceof TypeWebViewClient and
     this.hasName("shouldOverrideUrlLoading")
   }
+}
+
+/**
+ * A method annotated with the `android.webkit.JavascriptInterface` annotation.
+ */
+class JavascriptInterfaceMethod extends Method {
+  JavascriptInterfaceMethod() { this.hasAnnotation("android.webkit", "JavascriptInterface") }
 }

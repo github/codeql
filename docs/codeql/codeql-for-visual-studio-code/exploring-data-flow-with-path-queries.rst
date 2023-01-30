@@ -24,7 +24,7 @@ Running path queries in VS Code
 -----------------------------------
 
 #. Open a path query in the editor.
-#. Right-click in the query window and select **CodeQL: Run Query**. (Alternatively, run the command from the Command Palette.)
+#. Right-click in the query window and select **CodeQL: Run Query on Selected Database**. (Alternatively, run the command from the Command Palette.)
 #. Once the query has finished running, you can see the results in the Results view as usual (under ``alerts`` in the dropdown menu). Each query result describes the flow of information between a source and a sink.
 #. Expand the result to see the individual steps that the data follows. 
 #. Click each step to jump to it in the source code and investigate the problem further.
