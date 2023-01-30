@@ -6,6 +6,8 @@ class PostsController < ApplicationController
   # these calls override the earlier ones
   after_action :log_upvote, only: :upvote
   before_action :set_user
+  skip_before_action :set_user
+  before_action :set_user
 
   def index
   end

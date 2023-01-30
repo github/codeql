@@ -198,33 +198,12 @@ module Filters {
 
     FilterKind getKind() { result = kind }
 
-    private ModuleBase getEnclosingModule() { result = call.getExpr().getEnclosingModule() }
-
     /**
      * Holds if this callback is registered before `other`. This does not
      * guarantee that the callback will be executed before `other`. For example,
      * `after_action` callbacks are executed in reverse order.
      */
-    predicate registeredBefore(Filter other) {
-      // before_action :this, :other
-      //
-      // before_action :this
-      // before_action :other
-      this.getBasicBlock() = other.getBasicBlock() and this.getASuccessor+() = other
-      or
-      this.getEnclosingModule() = other.getEnclosingModule() and
-      this.getBasicBlock().strictlyDominates(other.getBasicBlock()) and
-      this != other
-      or
-      // This callback is in a superclass of `other`'s class.
-      //
-      // class A
-      //   before_action :this
-      //
-      // class B < A
-      //   before_action :other
-      other.getEnclosingModule().getModule() = this.getEnclosingModule().getModule().getASubClass+()
-    }
+    predicate registeredBefore(Filter other) { callbackRegisteredBefore(call, _, this, other) }
 
     /**
      * Holds if this callback runs before `other`.
@@ -277,7 +256,9 @@ module Filters {
      * with the same name is registered later one, overriding this one.
      */
     predicate skipped(ActionControllerActionMethod action) {
-      this = any(SkipFilter f | f.getKind() = this.getKind()).getSkippedFilter(action) or
+      this =
+        any(SkipFilter f | f.getKind() = this.getKind() and this.registeredBefore(f))
+            .getSkippedFilter(action) or
       this.overridden()
     }
 
@@ -339,12 +320,58 @@ module Filters {
 
     ActionControllerActionMethod getAction() { result = call.getAction() }
 
+    predicate registeredBefore(StringlikeLiteralCfgNode other) {
+      (other instanceof SkipFilter or other instanceof Filter) and
+      callbackRegisteredBefore(call, _, this, other)
+    }
+
     Filter getSkippedFilter(ActionControllerActionMethod action) {
       not result instanceof SkipFilter and
       action = this.getAction() and
       action = result.getAction() and
       result.getFilterCallable() = this.getFilterCallable()
     }
+  }
+
+  /**
+   * Holds if `predCall` (resp. `succCall`) registers or skips the callback referred to by `pred` (`succ`) and `predCall` is evaluated called before `succCall`.
+   * Typically this means that `pred` is registered before `succ`, or `pred` is skipped before `succ`, depending on the nature of the call.
+   * `pred` and `succ` are expected to be arguments. In the examples below, `pred` is `:foo` and `succ` is `:bar`.
+   * ```rb
+   * before_action :foo, :bar
+   * skip_before_action :foo, :bar
+   * ```
+   * This does not guarantee that the callback referred to by `pred` will be executed before
+   * `succ`. For example, `after_action` callbacks are executed in reverse order.
+   */
+  private predicate callbackRegisteredBefore(
+    FilterCall predCall, FilterCall succCall, StringlikeLiteralCfgNode pred,
+    StringlikeLiteralCfgNode succ
+  ) {
+    pred = predCall.getFilterArgument() and
+    succ = succCall.getFilterArgument() and
+    (
+      // before_action :this, :other
+      //
+      // before_action :this
+      // before_action :other
+      pred.getBasicBlock() = succ.getBasicBlock() and
+      pred.getASuccessor+() = succ
+      or
+      predCall.getExpr().getEnclosingModule() = succCall.getExpr().getEnclosingModule() and
+      pred.getBasicBlock().strictlyDominates(succ.getBasicBlock()) and
+      pred != succ
+      or
+      // This callback is in a superclass of `other`'s class.
+      //
+      // class A
+      //   before_action :this
+      //
+      // class B < A
+      //   before_action :other
+      succCall.getExpr().getEnclosingModule().getModule() =
+        predCall.getExpr().getEnclosingModule().getModule().getASubClass+()
+    )
   }
 
   /**
@@ -381,6 +408,5 @@ module Filters {
    * Holds if `pred` is called before `succ` in the callback chain for some action.
    * `pred` and `succ` may be methods bound to callbacks or controller actions.
    */
-  cached
   predicate next(Method pred, Method succ) { next(_, pred, succ) }
 }
