@@ -124,14 +124,8 @@ module Filters {
      */
     Callable getFilterCallable(string name) {
       result.(MethodBase).getName() = name and
-      // Method in same class
-      (
-        result.getEnclosingModule() = this.getExpr().getEnclosingModule()
-        or
-        // Method in superclass
-        result.getEnclosingModule().getModule() =
-          this.getExpr().getEnclosingModule().getModule().getSuperClass()
-      )
+      result.getEnclosingModule().getModule() =
+        this.getExpr().getEnclosingModule().getModule().getAnAncestor()
     }
   }
 
