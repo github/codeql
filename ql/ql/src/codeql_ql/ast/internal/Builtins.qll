@@ -115,6 +115,12 @@ module QlBuiltinsMocks {
       or
       i = 2 and
       result instanceof EquivalenceRelation::EquivalenceRelationModule
+      or
+      i = 3 and
+      result instanceof NewEntity::EntityKeySigClass
+      or
+      i = 4 and
+      result instanceof NewEntity::NewEntityModule
     }
   }
 
@@ -123,15 +129,16 @@ module QlBuiltinsMocks {
    * The equivalent to the following is implemented:
    * ```CodeQL
    * module QlBuiltins {
-   *  signature class T;
-   *  module EdgeSig<T MyT> { // This might not be needed.
-   *    signature predicate edgeSig(MyT a, MyT b);
-   *  }
-   *  module EquivalenceRelation<T MyT, EdgeSig<MyT>::edgeSig/2 edge> { // the `edge` parameter is not modeled
-   *    class EquivalenceClass;
-   *    EquivalenceClass getEquivalenceClass(MyT a);
-   *  }
-   *}
+   *   signature class T;
+   *   module EdgeSig<T MyT> { // This might not be needed.
+   *     signature predicate edgeSig(MyT a, MyT b);
+   *   }
+   *   module EquivalenceRelation<T MyT, EdgeSig<MyT>::edgeSig/2 edge> { // the `edge` parameter is not modeled
+   *     class EquivalenceClass;
+   *     EquivalenceClass getEquivalenceClass(MyT a);
+   *   }
+   * }
+   * ```
    */
   module EquivalenceRelation {
     class SigClass extends MockClass::Range {
@@ -257,6 +264,94 @@ module QlBuiltinsMocks {
       }
 
       override string getClassName() { result = "EquivalenceClass" }
+    }
+  }
+
+  /**
+   * A mock that implements the `NewEntity` module.
+   * The equivalent to the following is implemented:
+   * ```CodeQL
+   * class EntityKeySig;
+   * module NewEntity<EntityKeySig EntityKey> {
+   *   class EntityId;
+   *
+   *   EntityId map(EntityKey key) { none() }
+   * }
+   * ```
+   */
+  module NewEntity {
+    class EntityKeySigClass extends MockClass::Range {
+      EntityKeySigClass() { this = "Mock: QlBuiltins::NewEntity::EntityKeySig" }
+
+      override string getName() { result = "EntityKeySig" }
+    }
+
+    class NewEntityModule extends MockModule::Range {
+      NewEntityModule() { this = "Mock: QlBuiltins::NewEntity" }
+
+      override string getName() { result = "NewEntity" }
+
+      override string getMember(int i) {
+        i = 0 and result instanceof EntityIdClass
+        or
+        i = 1 and result instanceof NewEntityMapPredicate
+      }
+
+      ///  Holds if the `i`th type parameter has `type` (the ID of the mocked node) with `name`.
+      override predicate hasTypeParam(int i, string type, string name) {
+        i = 0 and
+        name = "EntityKey" and
+        type instanceof EntityKeySigTypeExpr
+      }
+    }
+
+    class EntityKeySigTypeExpr extends MockTypeExpr::Range {
+      EntityKeySigTypeExpr() { this = "Mock: QlBuiltins::NewEntity::EntityKey" }
+
+      override string getClassName() { result = "EntityKeySig" }
+    }
+
+    class EntityIdClass extends MockClass::Range {
+      EntityIdClass() { this = "Mock: QlBuiltins::NewEntity::EntityId" }
+
+      override string getName() { result = "EntityId" }
+    }
+
+    class NewEntityMapPredicate extends MockClasslessPredicate::Range {
+      NewEntityMapPredicate() { this = "Mock: QlBuiltins::NewEntity::map" }
+
+      override string getName() { result = "map" }
+
+      override string getParameter(int i) {
+        i = 0 and
+        result instanceof NewEntityMapPredicateParam
+      }
+
+      override MockTypeExpr::Range getReturnTypeExpr() {
+        result.(NewEntityMapPredicateTypes).getClassName() = "EntityId"
+      }
+    }
+
+    // both the TypeExprs used in the `map` predicate.
+    class NewEntityMapPredicateTypes extends MockTypeExpr::Range {
+      string type;
+
+      NewEntityMapPredicateTypes() {
+        type = ["EntityId", "EntityKey"] and
+        this = "Mock: QlBuiltins::NewEntity::map::T#" + type
+      }
+
+      override string getClassName() { result = type }
+    }
+
+    class NewEntityMapPredicateParam extends MockVarDecl::Range {
+      NewEntityMapPredicateParam() { this = "Mock: QlBuiltins::NewEntity::map::#0" }
+
+      override string getName() { result = "key" }
+
+      override MockTypeExpr::Range getType() {
+        result.(NewEntityMapPredicateTypes).getClassName() = "EntityKey"
+      }
     }
   }
 }
