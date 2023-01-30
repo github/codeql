@@ -256,7 +256,7 @@ module Filters {
 
     predicate isPrepended() { call.getMethodName().regexpMatch("^prepend.+$") }
 
-    MethodCallCfgNode getCall() { result = call }
+    FilterCall getCall() { result = call }
 
     FilterKind getKind() { result = kind }
 
