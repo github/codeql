@@ -35,7 +35,6 @@ import codeql.swift.elements.decl.GenericTypeParamDecl
 import codeql.swift.elements.decl.IfConfigDecl
 import codeql.swift.elements.decl.ImportDecl
 import codeql.swift.elements.decl.InfixOperatorDecl
-import codeql.swift.elements.decl.IterableDeclContext
 import codeql.swift.elements.decl.MissingMemberDecl
 import codeql.swift.elements.decl.ModuleDecl
 import codeql.swift.elements.decl.NominalTypeDecl

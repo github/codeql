@@ -155,9 +155,9 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
     // flow out from fields of an `NSManagedObject` or `RealmSwiftObject` at the sink,
     // for example in `realmObj.data = sensitive`.
     isSink(node) and
-    exists(ClassOrStructDecl cd, IterableDeclContext cx |
+    exists(ClassOrStructDecl cd, Decl cx |
       cd.getABaseTypeDecl*().getName() = ["NSManagedObject", "RealmSwiftObject"] and
-      cx.getNominalTypeDecl() = cd and
+      cx.asNominalTypeDecl() = cd and
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember()
     )
     or
