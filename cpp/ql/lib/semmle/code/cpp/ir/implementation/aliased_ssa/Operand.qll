@@ -412,6 +412,9 @@ class CallTargetOperand extends RegisterOperand {
  */
 class ArgumentOperand extends RegisterOperand {
   override ArgumentOperandTag tag;
+
+  /** Gets the `CallInstruction` for which this is an argument. */
+  CallInstruction getCall() { result.getAnArgumentOperand() = this }
 }
 
 /**
