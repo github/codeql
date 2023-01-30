@@ -9,4 +9,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2023-01-30-08h12m31s.maroon-rabbit-br8h5sn9.1d06cc2edfe9782a94efb56ae66fff5445d3b28891e7096698bc445eea3b3058
