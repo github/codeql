@@ -146,16 +146,16 @@ and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://githu
    axios, Network communicator
    browser, Runtime environment
    connect, Utility library
-   EJS, templating language
+   ejs, templating language
    electron, Runtime environment
    express, Server
-   Fastify, Server
+   fastify, Server
    handlebars, templating language
    hapi, Server
    hogan, templating language
    jquery, Utility library
    koa, Server
-   LiveServer, Utility library
+   liveserver, Utility library
    lodash, Utility library
    micro, HTML framework
    mongodb, Database
