@@ -16,13 +16,13 @@ public class HardcodedJwtKey {
 
     // BAD: Get secret from hardcoded string then sign a JWT token
     public String accessTokenBad(String username) {
-        Algorithm algorithm = Algorithm.HMAC256(SECRET);
+        Algorithm algorithm = Algorithm.HMAC256(SECRET); // $ HardcodedCredentialsApiCall
 
         return JWT.create()
                 .withExpiresAt(new Date(new Date().getTime() + ACCESS_EXPIRE_TIME))
                 .withIssuer(ISSUER)
                 .withClaim("username", username)
-                .sign(algorithm); // $ HardcodedCredentialsApiCall
+                .sign(algorithm);
     }
 
     // GOOD: Get secret from system configuration then sign a token
@@ -39,11 +39,11 @@ public class HardcodedJwtKey {
 
     // BAD: Get secret from hardcoded string then verify a JWT token
     public boolean verifyTokenBad(String token) {
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET))
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET)) // $ HardcodedCredentialsApiCall
                 .withIssuer(ISSUER)
                 .build();
         try {
-            verifier.verify(token); // $ HardcodedCredentialsApiCall
+            verifier.verify(token);
             return true;
         } catch (JWTVerificationException e) {
             return false;
