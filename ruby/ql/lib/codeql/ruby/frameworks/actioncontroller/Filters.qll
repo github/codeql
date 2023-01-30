@@ -53,7 +53,7 @@ module Filters {
     /**
      * Gets an action which this filter is applied to.
      */
-    ActionControllerActionMethod getAction() {
+    ActionControllerActionMethod getAnAction() {
       // A filter cannot apply to another filter
       result != any(Filter f).getFilterCallable() and
       // Only include routable actions. This can exclude valid actions if we can't parse the `routes.rb` file fully.
@@ -212,8 +212,8 @@ module Filters {
       other.getKind() = this.getKind() and
       not this.skipped(action) and
       not other.skipped(action) and
-      action = this.getAction() and
-      action = other.getAction() and
+      action = this.getAnAction() and
+      action = other.getAnAction() and
       (
         not this.isPrepended() and
         (
@@ -286,7 +286,7 @@ module Filters {
 
     Callable getFilterCallable() { result = call.getFilterCallable(this.getFilterName()) }
 
-    ActionControllerActionMethod getAction() { result = call.getAction() }
+    ActionControllerActionMethod getAnAction() { result = call.getAnAction() }
   }
 
   private class BeforeFilter extends Filter {
@@ -318,7 +318,7 @@ module Filters {
 
     Callable getFilterCallable() { result = call.getFilterCallable(this.getFilterName()) }
 
-    ActionControllerActionMethod getAction() { result = call.getAction() }
+    ActionControllerActionMethod getAnAction() { result = call.getAnAction() }
 
     predicate registeredBefore(StringlikeLiteralCfgNode other) {
       (other instanceof SkipFilter or other instanceof Filter) and
@@ -327,8 +327,8 @@ module Filters {
 
     Filter getSkippedFilter(ActionControllerActionMethod action) {
       not result instanceof SkipFilter and
-      action = this.getAction() and
-      action = result.getAction() and
+      action = this.getAnAction() and
+      action = result.getAnAction() and
       result.getFilterCallable() = this.getFilterCallable()
     }
   }
@@ -386,13 +386,13 @@ module Filters {
       // Final before filter
       not exists(f.getNextFilter(action)) and
       not f.skipped(action) and
-      action = f.getAction() and
+      action = f.getAnAction() and
       succ = action
     )
     or
     exists(AfterFilter f |
       // First after filter
-      action = f.getAction() and
+      action = f.getAnAction() and
       not f.skipped(action) and
       pred = action and
       succ = f.getFilterCallable() and
