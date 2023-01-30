@@ -94,8 +94,11 @@ module Filters {
         result = except.getConstantValue().getStringlikeValue()
         or
         // except: [:create, :update]
-        result =
-          except.(ArrayLiteralCfgNode).getAnArgument().getConstantValue().getStringlikeValue()
+        // except: SOME_CONST_ARRAY
+        exists(ArrayLiteralCfgNode n |
+          isArrayConstant(except, n) and
+          result = n.getAnArgument().getConstantValue().getStringlikeValue()
+        )
       )
     }
 

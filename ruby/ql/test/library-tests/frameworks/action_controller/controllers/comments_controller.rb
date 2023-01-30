@@ -7,11 +7,12 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
   before_action :foo, :bar
 
-  # this overrides the earlier callback on L2
-  after_action :log_comment_change, except: [:index, :show, :new]
+  # this overrides the earlier callback on L3
+  after_action :log_comment_change, except: READ_ACTIONS
   prepend_before_action :this_must_run_first
 
   WRITE_ACTIONS = %i[create update destroy]
+  READ_ACTIONS = %i[index show new]
 
   def index
     request.params
