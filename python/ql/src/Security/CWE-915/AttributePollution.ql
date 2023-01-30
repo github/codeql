@@ -18,11 +18,12 @@
  */
 
 import python
-import semmle.python.security.dataflow.PollutionQuery
+import semmle.python.security.dataflow.AttributePollutionQuery
 import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink, source, sink,
   "This assignment may alter $@ if a malicious string is injected from $@.",
-  sink.getNode().(Sink).getObject(), "this object", source.getNode(), "a user-provided value"
+  sink.getNode().(Sink).getPollutedObject(), "this object", source.getNode(),
+  "a user-provided value"
