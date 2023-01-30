@@ -271,8 +271,34 @@ module Filters {
       not exists(Filter mid | this.runsBefore(mid, action) | mid.runsBefore(result, action))
     }
 
+    /**
+     * Holds if this callback does not run for `action`. This is either because
+     * it has been explicitly skipped by a `SkipFilter` or because a callback
+     * with the same name is registered later one, overriding this one.
+     */
     predicate skipped(ActionControllerActionMethod action) {
-      this = any(SkipFilter f | f.getKind() = this.getKind()).getSkippedFilter(action)
+      this = any(SkipFilter f | f.getKind() = this.getKind()).getSkippedFilter(action) or
+      this.overridden()
+    }
+
+    /**
+     * Holds if this callback is overridden by a callback with the same name. For example:
+     * ```rb
+     * class UsersController
+     *   before_action :foo # this filter is override by the subsequent `before_action :foo` call below.
+     *   before_action :bar
+     *   before_action :foo
+     * end
+     * ```
+     */
+    private predicate overridden() {
+      exists(Filter f |
+        f != this and
+        f.getFilterCallable() = this.getFilterCallable() and
+        f.getFilterName() = this.getFilterName() and
+        f.getKind() = this.getKind() and
+        this.registeredBefore(f)
+      )
     }
 
     private string getFilterName() { result = this.getConstantValue().getStringlikeValue() }

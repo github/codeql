@@ -1,7 +1,11 @@
 class PostsController < ApplicationController
   before_action :set_user
   append_before_action :set_post, only: [:show, :upvote]
+  after_action :log_upvote
+
+  # these calls override the earlier ones
   after_action :log_upvote, only: :upvote
+  before_action :set_user
 
   def index
   end

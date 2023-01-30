@@ -1,9 +1,13 @@
 class CommentsController < ApplicationController
+  after_action :check_feature_flags
+  after_action :log_comment_change
   prepend_after_action :this_must_run_last
   before_action :set_user
   before_action :ensure_user_can_edit_comments, only: WRITE_ACTIONS
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
   before_action :foo, :bar
+
+  # this overrides the earlier callback on L2
   after_action :log_comment_change, except: [:index, :show, :new]
   prepend_before_action :this_must_run_first
 
@@ -77,6 +81,10 @@ class CommentsController < ApplicationController
 
   def log_comment_change
     AuditLog.create!(:comment_change, user: @user, comment: @comment)
+  end
+  
+  def check_feature_flags
+    raise CommentsNotEnabled unless FeatureFlag.enabled?(:comments)
   end
 
   def this_must_run_first
