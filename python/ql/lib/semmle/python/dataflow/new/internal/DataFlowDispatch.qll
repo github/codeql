@@ -351,15 +351,10 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
     // synthetic to the real. It might seem more natural to do it in the other
     // direction, but since we have a clearStep on the real **kwargs parameter, we that
     // content-clearing would also affect the synthetic parameter, which we don't want.
-    (
-      not exists(func.getArgByName(_)) and
-      ppos.isDictSplat() and
-      result.getParameter() = func.getKwarg()
-      or
-      exists(func.getArgByName(_)) and
-      ppos.isDictSplat() and
-      result = TSynthDictSplatParameterNode(this)
-    )
+    ppos.isDictSplat() and
+    if exists(func.getArgByName(_))
+    then result = TSynthDictSplatParameterNode(this)
+    else result.getParameter() = func.getKwarg()
   }
 }
 
