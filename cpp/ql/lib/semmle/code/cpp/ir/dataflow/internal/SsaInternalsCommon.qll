@@ -538,6 +538,7 @@ private module Cached {
       numberOfLoads >= 0 and
       isUse(_, iteratorDerefAddress, iteratorBase, numberOfLoads + 2, 0) and
       iteratorBase.getResultType() instanceof Interfaces::Iterator and
+      load.getSourceAddressOperand() = iteratorDerefAddress and
       read.getPrimaryInstruction() = load.getSourceAddress() and
       memory = read.getSideEffectOperand().getAnyDef()
     )
