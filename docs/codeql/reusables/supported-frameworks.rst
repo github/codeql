@@ -145,6 +145,7 @@ and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://githu
    angular.js (legacy version), HTML framework
    axios, Network communicator
    browser, Runtime environment
+   connect, Utility library
    EJS, templating language
    electron, Runtime environment
    express, Server
@@ -154,7 +155,9 @@ and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://githu
    hogan, templating language
    jquery, Utility library
    koa, Server
+   LiveServer, Utility library
    lodash, Utility library
+   micro, HTML framework
    mongodb, Database
    mssql, Database
    mustache, templating language
@@ -170,6 +173,7 @@ and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://githu
    restify, Server
    sequelize, Database
    socket.io, Network communicator
+   spife, Utility library
    sqlite3, Database
    superagent, Network communicator
    swig, templating language
