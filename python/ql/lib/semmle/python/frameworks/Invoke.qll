@@ -81,5 +81,7 @@ private module Invoke {
     override DataFlow::Node getCommand() {
       result in [this.getArg(0), this.getArgByName("command")]
     }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
   }
 }

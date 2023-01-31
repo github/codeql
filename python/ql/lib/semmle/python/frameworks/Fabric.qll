@@ -43,12 +43,18 @@ private module FabricV1 {
        * - https://docs.fabfile.org/en/1.14/api/core/operations.html#fabric.operations.run
        * - https://docs.fabfile.org/en/1.14/api/core/operations.html#fabric.operations.sudo
        */
-      private class FabricApiLocalRunSudoCall extends SystemCommandExecution::Range,
-        DataFlow::CallCfgNode {
+      private class FabricApiLocalRunSudoCall extends SystemCommandExecution::Range, API::CallNode {
         FabricApiLocalRunSudoCall() { this = api().getMember(["local", "run", "sudo"]).getACall() }
 
         override DataFlow::Node getCommand() {
           result = [this.getArg(0), this.getArgByName("command")]
+        }
+
+        override predicate isShellInterpreted(DataFlow::Node arg) {
+          arg = this.getCommand() and
+          // defaults to running in a shell
+          not this.getParameter(1, "shell").asSink().asExpr().(ImmutableLiteral).booleanValue() =
+            false // TODO: Test this in unsafe-shell-command-construction - and add tracking as a separate step.
         }
       }
     }
@@ -161,6 +167,8 @@ private module FabricV2 {
       override DataFlow::Node getCommand() {
         result = [this.getArg(0), this.getArgByName("command")]
       }
+
+      override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
     }
 
     // -------------------------------------------------------------------------
@@ -243,6 +251,8 @@ private module FabricV2 {
         override DataFlow::Node getCommand() {
           result = [this.getArg(0), this.getArgByName("command")]
         }
+
+        override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
       }
 
       /**

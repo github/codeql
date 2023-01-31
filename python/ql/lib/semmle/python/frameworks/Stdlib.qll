@@ -1060,7 +1060,11 @@ private module StdlibPrivate {
   private class OsSystemCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     OsSystemCall() { this = os().getMember("system").getACall() }
 
-    override DataFlow::Node getCommand() { result = this.getArg(0) }
+    override DataFlow::Node getCommand() {
+      result in [this.getArg(0), this.getArgByName("command")]
+    }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
   }
 
   /**
@@ -1071,7 +1075,7 @@ private module StdlibPrivate {
    * Although deprecated since version 2.6, they still work in 2.7.
    * See https://docs.python.org/2.7/library/os.html#os.popen2
    */
-  private class OsPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class OsPopenCall extends SystemCommandExecution::Range, API::CallNode {
     string name;
 
     OsPopenCall() {
@@ -1085,6 +1089,8 @@ private module StdlibPrivate {
       not name = "popen" and
       result = this.getArgByName("cmd")
     }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
   }
 
   /**
@@ -1103,6 +1109,10 @@ private module StdlibPrivate {
     override DataFlow::Node getCommand() { result = this.getArg(0) }
 
     override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) {
+      none() // this is a safe API.
+    }
   }
 
   /**
@@ -1129,6 +1139,10 @@ private module StdlibPrivate {
     }
 
     override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) {
+      none() // this is a safe API.
+    }
   }
 
   /**
@@ -1142,6 +1156,10 @@ private module StdlibPrivate {
     override DataFlow::Node getCommand() { result in [this.getArg(0), this.getArgByName("path")] }
 
     override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) {
+      none() // this is a safe API.
+    }
   }
 
   /** An additional taint step for calls to `os.path.join` */
@@ -1186,6 +1204,7 @@ private module StdlibPrivate {
     }
 
     private boolean get_shell_arg_value() {
+      // TODO: API-node this thing - with added tests for unsafe-shell-command-construction
       not exists(this.get_shell_arg()) and
       result = false
       or
@@ -1238,6 +1257,11 @@ private module StdlibPrivate {
           result = arg_args
         )
       )
+    }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) {
+      arg = this.get_executable_arg() and
+      this.get_shell_arg_value() = true
     }
   }
 
@@ -1385,6 +1409,8 @@ private module StdlibPrivate {
     }
 
     override DataFlow::Node getCommand() { result in [this.getArg(0), this.getArgByName("cmd")] }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
   }
 
   // ---------------------------------------------------------------------------
@@ -1401,6 +1427,8 @@ private module StdlibPrivate {
     PlatformPopenCall() { this = platform().getMember("popen").getACall() }
 
     override DataFlow::Node getCommand() { result in [this.getArg(0), this.getArgByName("cmd")] }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
   }
 
   // ---------------------------------------------------------------------------

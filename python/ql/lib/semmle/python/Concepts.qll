@@ -19,6 +19,9 @@ private import semmle.python.security.internal.EncryptionKeySizes
  * extend `SystemCommandExecution::Range` instead.
  */
 class SystemCommandExecution extends DataFlow::Node instanceof SystemCommandExecution::Range {
+  /** Holds if a shell interprets `arg`. */
+  predicate isShellInterpreted(DataFlow::Node arg) { super.isShellInterpreted(arg) }
+
   /** Gets the argument that specifies the command to be executed. */
   DataFlow::Node getCommand() { result = super.getCommand() }
 }
@@ -35,6 +38,9 @@ module SystemCommandExecution {
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the command to be executed. */
     abstract DataFlow::Node getCommand();
+
+    /** Holds if a shell interprets `arg`. */
+    predicate isShellInterpreted(DataFlow::Node arg) { none() }
   }
 }
 
