@@ -77,6 +77,7 @@ class Type(Element):
 @group("decl")
 class Decl(AstNode):
     module: "ModuleDecl"
+    members: list["Decl"] | child
 
 @group("expr")
 class Expr(AstNode):
@@ -95,14 +96,10 @@ class Stmt(AstNode):
 class GenericContext(Element):
     generic_type_params: list["GenericTypeParamDecl"] | child
 
-@group("decl")
-class IterableDeclContext(Element):
-    members: list[Decl] | child
-
 class EnumCaseDecl(Decl):
     elements: list["EnumElementDecl"]
 
-class ExtensionDecl(GenericContext, IterableDeclContext, Decl):
+class ExtensionDecl(GenericContext, Decl):
     extended_type_decl: "NominalTypeDecl"
     protocols: list["ProtocolDecl"]
 
@@ -303,7 +300,7 @@ class ConcreteVarDecl(VarDecl):
 class GenericTypeParamDecl(AbstractTypeParamDecl):
     pass
 
-class NominalTypeDecl(GenericTypeDecl, IterableDeclContext):
+class NominalTypeDecl(GenericTypeDecl):
     type: Type
 
 class OpaqueTypeDecl(GenericTypeDecl):

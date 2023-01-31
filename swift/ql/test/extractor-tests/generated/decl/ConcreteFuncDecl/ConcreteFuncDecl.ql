@@ -4,7 +4,8 @@ import TestUtils
 
 from
   ConcreteFuncDecl x, string hasName, string hasSelfParam, int getNumberOfParams, string hasBody,
-  int getNumberOfGenericTypeParams, ModuleDecl getModule, Type getInterfaceType
+  int getNumberOfGenericTypeParams, ModuleDecl getModule, int getNumberOfMembers,
+  Type getInterfaceType
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -14,7 +15,9 @@ where
   (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
   getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
   getModule = x.getModule() and
+  getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType = x.getInterfaceType()
 select x, "hasName:", hasName, "hasSelfParam:", hasSelfParam, "getNumberOfParams:",
   getNumberOfParams, "hasBody:", hasBody, "getNumberOfGenericTypeParams:",
-  getNumberOfGenericTypeParams, "getModule:", getModule, "getInterfaceType:", getInterfaceType
+  getNumberOfGenericTypeParams, "getModule:", getModule, "getNumberOfMembers:", getNumberOfMembers,
+  "getInterfaceType:", getInterfaceType

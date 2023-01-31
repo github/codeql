@@ -3,12 +3,11 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.decl.GenericContext
-import codeql.swift.elements.decl.IterableDeclContext
 import codeql.swift.elements.decl.NominalTypeDecl
 import codeql.swift.elements.decl.ProtocolDecl
 
 module Generated {
-  class ExtensionDecl extends Synth::TExtensionDecl, GenericContext, IterableDeclContext, Decl {
+  class ExtensionDecl extends Synth::TExtensionDecl, GenericContext, Decl {
     override string getAPrimaryQlClass() { result = "ExtensionDecl" }
 
     /**

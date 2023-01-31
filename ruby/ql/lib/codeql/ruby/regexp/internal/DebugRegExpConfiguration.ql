@@ -1,12 +1,11 @@
 /**
  * @description Used to debug the discovery of regexp literals.
- * @kind path-problem
+ * @kind problem
  */
 
-import RegExpConfiguration
-import codeql.ruby.dataflow.internal.DataFlowImplForRegExp
-import PathGraph
+import codeql.ruby.regexp.internal.RegExpTracking
+import ruby
 
-from RegExpConfiguration c, PathNode source, PathNode sink
-where c.hasFlowPath(source, sink)
-select source.getNode(), source, sink, source.toString()
+from DataFlow::Node source, DataFlow::Node sink
+where source = regExpSource(sink)
+select sink, "Regexp from $@ is used.", source, "this source"

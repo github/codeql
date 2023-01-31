@@ -354,7 +354,7 @@ void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl&
 }
 
 void DeclTranslator::fillIterableDeclContext(const swift::IterableDeclContext& decl,
-                                             codeql::IterableDeclContext& entry) {
+                                             codeql::Decl& entry) {
   entry.members = dispatcher.fetchRepeatedLabels(decl.getAllMembers());
 }
 
