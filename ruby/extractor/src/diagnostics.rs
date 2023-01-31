@@ -56,7 +56,7 @@ pub struct Location {
 #[serde(rename_all = "camelCase")]
 pub struct DiagnosticMessage {
     /** Unix timestamp */
-    pub timestamp: u64,
+    pub timestamp: chrono::DateTime<chrono::Utc>,
     pub source: Source,
     #[serde(skip_serializing_if = "String::is_empty")]
     /** GitHub flavored Markdown formatted message. Should include inline links to any help pages. */
@@ -90,10 +90,7 @@ pub struct LogWriter {
 impl LogWriter {
     pub fn message(&self, id: &str, name: &str) -> DiagnosticMessage {
         DiagnosticMessage {
-            timestamp: std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .expect("")
-                .as_millis() as u64,
+            timestamp: chrono::Utc::now(),
             source: Source {
                 id: format!("{}/{}", self.extractor, id),
                 name: name.to_owned(),
