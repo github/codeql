@@ -1,0 +1,8 @@
+extensions:
+- addsTo:
+    pack: codeql/java-all
+    extensible: summaryModel
+  data:
+    - ["io.netty.handler.codec.http.websocketx", "CloseWebSocketFrame", True, "reasonText", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "ContinuationWebSocketFrame", True, "text", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "TextWebSocketFrame", True, "text", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
