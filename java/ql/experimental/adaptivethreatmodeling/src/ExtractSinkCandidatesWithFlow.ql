@@ -13,27 +13,14 @@
 
 private import java
 import semmle.code.java.dataflow.TaintTracking
+private import experimental.adaptivethreatmodeling.EndpointCharacteristics as EndpointCharacteristics
 private import experimental.adaptivethreatmodeling.ATMConfig as AtmConfig
 private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
 private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestForgeryAtm
 
-from
-  DataFlow::Node sink, string message, string package, string type, boolean subtypes, string name,
-  string signature, string ext, string input, string provenance
+from DataFlow::Node sink, string message
 where
-  exists(Callable callee, Call call, int index |
-    sink.asExpr() = call.getArgument(index) and
-    callee = call.getCallee() and
-    package = callee.getDeclaringType().getPackage().getName() and
-    type = callee.getDeclaringType().getName() and //TODO: Will this work for inner classes? Will it produce X$Y? What about lambdas? What about enums? What about interfaces? What about annotations?
-    subtypes = true and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
-    name = callee.getName() and // TODO: Will this work for constructors?
-    signature = callee.paramsString() and
-    ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
-    input = "Argument[" + index + "]" and // TODO: why are slashes added?
-    provenance = "manual" // TODO
-  ) and
   // The message is the concatenation of all relevant configs, and we surface only sinks that have at least one relevant
   // config.
   message =
@@ -42,7 +29,9 @@ where
         sinkPathNode.getNode() = sink
       |
         config.getASinkEndpointType().getDescription(), ", "
-      ) + "\n{'Package': '" + package + "', 'Type': '" + type + "', 'Subtypes': " + subtypes +
-      ", 'Name': '" + name + "', 'Signature': '" + signature + "', 'Ext': '" + ext +
-      "', 'Argument index': '" + input + "', 'Provenance': '" + provenance + "'}" // TODO: Why are the curly braces added twice?
+      ) + "\n" +
+      // Extract the needed metadata for this endpoint.
+      any(string concatenatedMetadata |
+        EndpointCharacteristics::hasMetaData(sink, concatenatedMetadata)
+      )
 select sink, message

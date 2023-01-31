@@ -27,8 +27,7 @@ DataFlow::Node getSampleFromSampleRate(float rate) {
 
 from
   DataFlow::Node endpoint, EndpointCharacteristics::EndpointCharacteristic characteristic,
-  float confidence, string message, string package, string type, boolean subtypes, string name,
-  string signature, string ext, string input, string provenance
+  float confidence, string message
 where
   characteristic.appliesToEndpoint(endpoint) and
   confidence >= characteristic.highConfidence() and
@@ -52,21 +51,10 @@ where
     characteristic2.hasImplications(positiveType, true, confidence2)
   ) and
   endpoint = getSampleFromSampleRate(0.01) and
-  exists(Callable callee, Call call, int index |
-    endpoint.asExpr() = call.getArgument(index) and
-    callee = call.getCallee() and
-    package = callee.getDeclaringType().getPackage().getName() and
-    type = callee.getDeclaringType().getName() and //TODO: Will this work for inner classes? Will it produce X$Y? What about lambdas? What about enums? What about interfaces? What about annotations?
-    subtypes = true and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
-    name = callee.getName() and // TODO: Will this work for constructors?
-    signature = callee.paramsString() and
-    ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
-    input = "Argument[" + index + "]" and // TODO: why are slashes added?
-    provenance = "manual" // TODO
-  ) and
   message =
-    "Non-sink of type " + characteristic + " with confidence " + confidence.toString() +
-      "\n{'Package': '" + package + "', 'Type': '" + type + "', 'Subtypes': " + subtypes +
-      ", 'Name': '" + name + "', 'Signature': '" + signature + "', 'Ext': '" + ext +
-      "', 'Argument index': '" + input + "', 'Provenance': '" + provenance + "'}" // TODO: Why are the curly braces added twice?
+    "Non-sink of type " + characteristic + " with confidence " + confidence.toString() + "\n" +
+      // Extract the needed metadata for this endpoint.
+      any(string concatenatedMetadata |
+        EndpointCharacteristics::hasMetaData(endpoint, concatenatedMetadata)
+      )
 select endpoint, message
