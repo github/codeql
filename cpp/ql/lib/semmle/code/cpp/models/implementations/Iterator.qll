@@ -214,15 +214,20 @@ private class IteratorBinaryArithmeticMemberOperatorModel extends IteratorBinary
 /**
  * A (member or non-member) `operator+` or `operator-` function for an iterator type.
  */
-class IteratorBinaryAddOperator extends Function {
-  IteratorBinaryAddOperator() {
+class IteratorBinaryArithmeticOperator extends Function {
+  IteratorBinaryArithmeticOperator() {
     this instanceof IteratorAddNonMemberOperator or
+    this instanceof IteratorSubNonMemberOperator or
     this instanceof IteratorBinaryArithmeticMemberOperator
   }
 }
 
 /**
  * A non-member `operator-` function that takes a pointer difference type as its second argument.
+ *
+ * Note that this class _only_ matches non-member functions. To find both
+ * non-member and member versions, use `IteratorBinaryArithmeticOperator` (which also
+ * includes `operator+` versions).
  */
 class IteratorSubNonMemberOperator extends Operator {
   IteratorSubNonMemberOperator() {
