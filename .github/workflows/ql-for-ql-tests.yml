@@ -6,11 +6,13 @@ on:
     paths:
       - "ql/**"
       - codeql-workspace.yml
+      - .github/workflows/ql-for-ql-tests.yml
   pull_request:
     branches: [main]
     paths:
       - "ql/**"
       - codeql-workspace.yml
+      - .github/workflows/ql-for-ql-tests.yml
 
 env:
   CARGO_TERM_COLOR: always
