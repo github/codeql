@@ -4,3 +4,31 @@ extensions:
       extensible: sinkModel
     data:
       - ["io.netty.handler.codec.http.multipart", "HttpPostRequestEncoder", True, "addBodyFileUpload", "(String,File,String,boolean)", "", "Argument[1]", "read-file", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.netty.handler.codec.http.multipart", "InterfaceHttpPostRequestDecoder", True, "getBodyHttpData", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "InterfaceHttpPostRequestDecoder", True, "getBodyHttpDatas", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "InterfaceHttpPostRequestDecoder", True, "getBodyHttpDatas", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "InterfaceHttpPostRequestDecoder", True, "next", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "InterfaceHttpPostRequestDecoder", True, "offer", "(HttpContent)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpPostRequestDecoder", True, "HttpPostRequestDecoder", "(HttpRequest)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpPostRequestDecoder", True, "HttpPostRequestDecoder", "(HttpDataFactory,HttpRequest)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpPostRequestDecoder", True, "HttpPostRequestDecoder", "(HttpDataFactory,HttpRequest,Charset)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpPostStandardRequestDecoder", True, "HttpPostStandardRequestDecoder", "(HttpRequest)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpPostStandardRequestDecoder", True, "HttpPostStandardRequestDecoder", "(HttpDataFactory,HttpRequest)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpPostStandardRequestDecoder", True, "HttpPostStandardRequestDecoder", "(HttpDataFactory,HttpRequest,Charset)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpPostMultipartRequestDecoder", True, "HttpPostMultipartRequestDecoder", "(HttpRequest)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpPostMultipartRequestDecoder", True, "HttpPostMultipartRequestDecoder", "(HttpDataFactory,HttpRequest)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpPostMultipartRequestDecoder", True, "HttpPostMultipartRequestDecoder", "(HttpDataFactory,HttpRequest,Charset)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "InterfaceHttpData", True, "getName", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpData", True, "get", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpData", True, "getByteBuf", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpData", True, "getChunk", "(int)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpData", True, "getString", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "HttpData", True, "getString", "(Charset)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "Attribute", True, "getValue", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "FileUpload", True, "getContentTransferEncoding", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "FileUpload", True, "getContentType", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "FileUpload", True, "getFilename", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

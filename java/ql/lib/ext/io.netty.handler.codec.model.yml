@@ -6,3 +6,11 @@ extensions:
       - ["io.netty.handler.codec", "ByteToMessageDecoder", True, "callDecode", "", "", "Parameter[1]", "remote", "manual"]
       - ["io.netty.handler.codec", "ByteToMessageDecoder", True, "decode", "", "", "Parameter[1]", "remote", "manual"]
       - ["io.netty.handler.codec", "ByteToMessageDecoder", True, "decodeLast", "", "", "Parameter[1]", "remote", "manual"]
+      - ["io.netty.handler.codec", "ByteToMessageCodec", True, "decode", "", "", "Parameter[1]", "remote", "manual"]
+      - ["io.netty.handler.codec", "ByteToMessageCodec", True, "decodeLast", "", "", "Parameter[1]", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel 
+    data:
+      - ["io.netty.handler.codec, "HeadersUtils", False, "iteratorAsString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec, "HeadersUtils", False, "toString", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]

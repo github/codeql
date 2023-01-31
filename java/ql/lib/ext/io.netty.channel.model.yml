@@ -17,3 +17,4 @@ extensions:
       extensible: sourceModel
     data:
       - ["io.netty.channel", "ChannelInboundHandler", True, "channelRead", "", "", "Parameter[1]", "remote", "manual"]
+      - ["io.netty.channel", "SimpleChannelInboundHandler", True, "channelRead0", "", "", "Parameter[1]", "remote", "manual"]
