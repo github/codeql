@@ -137,7 +137,7 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
   }
 
   override predicate dependsOnChild(Expr child) {
-    child = getLeftOperand() or child = getLeftOperand()
+    child = getLeftOperand() or child = getRightOperand()
   }
 }
 
@@ -258,6 +258,6 @@ class ConstantLShiftExprRange extends SimpleRangeAnalysisExpr {
   }
 
   override predicate dependsOnChild(Expr child) {
-    child = getLeftOperand() or child = getLeftOperand()
+    child = getLeftOperand() or child = getRightOperand()
   }
 }
