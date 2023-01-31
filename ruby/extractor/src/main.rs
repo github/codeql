@@ -67,12 +67,12 @@ fn main() -> std::io::Result<()> {
         )
         .init();
     let diagnostics = diagnostics::DiagnosticLoggers::new("ruby");
-    let logger = &mut diagnostics.logger();
+    let main_thread_logger = &mut diagnostics.logger();
     let num_threads = match num_codeql_threads() {
         Ok(num) => num,
         Err(e) => {
-            logger.write(
-                &logger
+            main_thread_logger.write(
+                &main_thread_logger
                     .message("configuration-error", "Configuration error")
                     .text(&format!("{}; defaulting to 1 thread.", e))
                     .status_page()
@@ -93,8 +93,8 @@ fn main() -> std::io::Result<()> {
     let trap_compression = match trap::Compression::from_env("CODEQL_RUBY_TRAP_COMPRESSION") {
         Ok(x) => x,
         Err(e) => {
-            logger.write(
-                &logger
+            main_thread_logger.write(
+                &main_thread_logger
                     .message("configuration-error", "Configuration error")
                     .text(&format!("{}; using gzip.", e))
                     .status_page()
@@ -103,7 +103,7 @@ fn main() -> std::io::Result<()> {
             trap::Compression::Gzip
         }
     };
-
+    drop(main_thread_logger);
     rayon::ThreadPoolBuilder::new()
         .num_threads(num_threads)
         .build_global()
@@ -198,7 +198,7 @@ fn main() -> std::io::Result<()> {
                                     Err(msg) => {
                                         needs_conversion = false;
                                         diagnostics_writer.write(
-                                            &logger
+                                            &diagnostics_writer
                                                 .message(
                                                     "character-encoding-error",
                                                     "Character encoding error",
@@ -217,7 +217,7 @@ fn main() -> std::io::Result<()> {
                             }
                         } else {
                             diagnostics_writer.write(
-                                &logger
+                                &diagnostics_writer
                                     .message("character-encoding-error", "Character encoding error")
                                     .text(&format!(
                                         "{}: unknown character encoding: '{}'",

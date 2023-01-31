@@ -36,7 +36,7 @@ pub struct Visibility {
     pub telemetry: bool,
 }
 
-#[derive(Serialize, Clone)]
+#[derive(Serialize, Clone, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Location {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -205,13 +205,7 @@ impl DiagnosticLoggers {
         })
     }
 }
-static EMPTY_LOCATION: Location = Location {
-    file: None,
-    start_line: None,
-    start_column: None,
-    end_line: None,
-    end_column: None,
-};
+
 impl DiagnosticMessage {
     pub fn full_error_message(&self) -> String {
         match &self.location {
@@ -270,7 +264,7 @@ impl DiagnosticMessage {
         end_line: usize,
         end_column: usize,
     ) -> &'a mut Self {
-        let loc = self.location.get_or_insert(EMPTY_LOCATION.to_owned());
+        let loc = self.location.get_or_insert(Default::default());
         loc.file = Some(path.to_owned());
         loc.start_line = Some(start_line);
         loc.start_column = Some(start_column);
