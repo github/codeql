@@ -109,6 +109,9 @@ private FunctionInput getIteratorArgumentInput(Operator op, int index) {
 
 /**
  * A non-member `operator++` or `operator--` function for an iterator type.
+ *
+ * Note that this class _only_ matches non-member functions. To find both
+ * non-member and versions, use `IteratorCrementOperator`.
  */
 class IteratorCrementNonMemberOperator extends Operator {
   IteratorCrementNonMemberOperator() {
@@ -129,6 +132,9 @@ private class IteratorCrementNonMemberOperatorModel extends IteratorCrementNonMe
 
 /**
  * An `operator++` or `operator--` member function for an iterator type.
+ *
+ * Note that this class _only_ matches member functions. To find both
+ * non-member and member versions, use `IteratorCrementOperator`.
  */
 class IteratorCrementMemberOperator extends MemberFunction {
   IteratorCrementMemberOperator() {
@@ -167,6 +173,9 @@ class IteratorCrementOperator extends Function {
 
 /**
  * A non-member `operator+` function for an iterator type.
+ *
+ * Note that this class _only_ matches non-member functions. To find both
+ * non-member and member versions, use `IteratorBinaryAddOperator`.
  */
 class IteratorAddNonMemberOperator extends Operator {
   IteratorAddNonMemberOperator() {
@@ -184,6 +193,9 @@ private class IteratorAddNonMemberOperatorModel extends IteratorAddNonMemberOper
 
 /**
  * An `operator+` or `operator-` member function of an iterator class.
+ *
+ * Note that this class _only_ matches member functions. To find both
+ * non-member and member versions, use `IteratorBinaryAddOperator`.
  */
 class IteratorBinaryArithmeticMemberOperator extends MemberFunction {
   IteratorBinaryArithmeticMemberOperator() {
@@ -229,6 +241,9 @@ private class IteratorSubOperatorModel extends IteratorSubNonMemberOperator, Tai
 
 /**
  * A non-member `operator+=` or `operator-=` function for an iterator type.
+ *
+ * Note that this class _only_ matches non-member functions. To find both
+ * non-member and member versions, use `IteratorAssignArithmeticOperator`.
  */
 class IteratorAssignArithmeticNonMemberOperator extends Operator {
   IteratorAssignArithmeticNonMemberOperator() {
@@ -258,6 +273,9 @@ private class IteratorAssignArithmeticNonMemberOperatorModel extends IteratorAss
 
 /**
  * An `operator+=` or `operator-=` member function of an iterator class.
+ *
+ * Note that this class _only_ matches member functions. To find both
+ * non-member and member versions, use `IteratorAssignArithmeticOperator`.
  */
 class IteratorAssignArithmeticMemberOperator extends MemberFunction {
   IteratorAssignArithmeticMemberOperator() {
@@ -297,6 +315,9 @@ class IteratorAssignArithmeticOperator extends Function {
 
 /**
  * A prefix `operator*` member function for an iterator type.
+ *
+ * Note that this class _only_ matches member functions. To find both
+ * non-member and member versions, use `IteratorPointerDereferenceOperator`.
  */
 class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunction,
   IteratorReferenceFunction {
@@ -315,6 +336,9 @@ class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunc
 
 /**
  * A non-member prefix `operator*` function for an iterator type.
+ *
+ * Note that this class _only_ matches non-member functions. To find both
+ * non-member and member versions, use `IteratorPointerDereferenceOperator`.
  */
 class IteratorPointerDereferenceNonMemberOperator extends Operator, IteratorReferenceFunction {
   IteratorPointerDereferenceNonMemberOperator() {
