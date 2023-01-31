@@ -148,9 +148,9 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
  * values unconstrained. From the C++ standard: "The behavior is undefined if the right
  * operand is negative, or greater than or equal to the length in bits of the promoted left operand.
  * The value of E1 << E2 is E1 left-shifted E2 bit positions; vacated bits are zero-filled. If E1
- * has an unsigned type, the value of the result is E1 × 2 E2, reduced modulo one more than the
+ * has an unsigned type, the value of the result is E1 x 2 E2, reduced modulo one more than the
  * maximum value representable in the result type. Otherwise, if E1 has a signed type and
- * non-negative value, and E1 × 2 E2 is representable in the corresponding unsigned type of the
+ * non-negative value, and E1 x 2 E2 is representable in the corresponding unsigned type of the
  * result type, then that value, converted to the result type, is the resulting value; otherwise,
  * the behavior is undefined."
  */
