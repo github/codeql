@@ -17,11 +17,19 @@
 | alamofire.swift:448:20:448:49 | call to String.init(contentsOfFile:) | external |
 | alamofire.swift:455:23:455:32 | .data | external |
 | alamofire.swift:461:23:461:32 | .data | external |
-| customurlschemes.swift:30:44:30:54 | url | external |
-| customurlschemes.swift:34:52:34:68 | url | external |
-| customurlschemes.swift:38:52:38:62 | url | external |
-| customurlschemes.swift:43:9:43:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
-| customurlschemes.swift:48:9:48:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
+| customurlschemes.swift:53:44:53:54 | url | external |
+| customurlschemes.swift:57:52:57:68 | url | external |
+| customurlschemes.swift:61:52:61:62 | url | external |
+| customurlschemes.swift:66:9:66:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
+| customurlschemes.swift:71:9:71:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
+| customurlschemes.swift:77:59:77:76 | options | Remote data in UIWindowSceneDelegate.scene |
+| customurlschemes.swift:78:28:78:38 | continue | Remote data in UIWindowSceneDelegate.scene |
+| customurlschemes.swift:79:28:79:39 | didUpdate | Remote data in UIWindowSceneDelegate.scene |
+| customurlschemes.swift:80:28:80:65 | openURLContexts | Remote data in UIWindowSceneDelegate.scene |
+| customurlschemes.swift:86:59:86:76 | options | Remote data in UIWindowSceneDelegate.scene |
+| customurlschemes.swift:87:28:87:38 | continue | Remote data in UIWindowSceneDelegate.scene |
+| customurlschemes.swift:88:28:88:39 | didUpdate | Remote data in UIWindowSceneDelegate.scene |
+| customurlschemes.swift:89:28:89:65 | openURLContexts | Remote data in UIWindowSceneDelegate.scene |
 | data.swift:18:20:18:54 | call to Data.init(contentsOf:options:) | external |
 | file://:0:0:0:0 | .data | external |
 | file://:0:0:0:0 | .result | external |

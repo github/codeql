@@ -964,6 +964,128 @@
 | try.swift:17:18:17:24 | call to clean() | try.swift:17:13:17:24 | try? ... |
 | try.swift:18:13:18:25 | try? ... | try.swift:18:12:18:27 | ...! |
 | try.swift:18:18:18:25 | call to source() | try.swift:18:13:18:25 | try? ... |
+| ui.swift:3:8:3:8 | SSA def(self) | ui.swift:3:8:3:8 | self[return] |
+| ui.swift:3:8:3:8 | self | ui.swift:3:8:3:8 | SSA def(self) |
+| ui.swift:5:7:5:7 | SSA def(self) | ui.swift:5:7:5:7 | self[return] |
+| ui.swift:5:7:5:7 | SSA def(self) | ui.swift:5:7:5:7 | self[return] |
+| ui.swift:5:7:5:7 | self | ui.swift:5:7:5:7 | SSA def(self) |
+| ui.swift:5:7:5:7 | self | ui.swift:5:7:5:7 | SSA def(self) |
+| ui.swift:6:17:6:17 | SSA def(self) | ui.swift:6:5:8:5 | self[return] |
+| ui.swift:6:17:6:17 | self | ui.swift:6:17:6:17 | SSA def(self) |
+| ui.swift:10:10:10:10 | SSA def(self) | ui.swift:10:5:10:43 | self[return] |
+| ui.swift:10:10:10:10 | self | ui.swift:10:10:10:10 | SSA def(self) |
+| ui.swift:10:15:10:34 | SSA def(hasher) | ui.swift:10:5:10:43 | hasher[return] |
+| ui.swift:10:15:10:34 | hasher | ui.swift:10:15:10:34 | SSA def(hasher) |
+| ui.swift:13:7:13:7 | SSA def(self) | ui.swift:13:7:13:7 | self[return] |
+| ui.swift:13:7:13:7 | SSA def(self) | ui.swift:13:7:13:7 | self[return] |
+| ui.swift:13:7:13:7 | self | ui.swift:13:7:13:7 | SSA def(self) |
+| ui.swift:13:7:13:7 | self | ui.swift:13:7:13:7 | SSA def(self) |
+| ui.swift:15:7:15:7 | SSA def(self) | ui.swift:15:7:15:7 | self[return] |
+| ui.swift:15:7:15:7 | SSA def(self) | ui.swift:15:7:15:7 | self[return] |
+| ui.swift:15:7:15:7 | self | ui.swift:15:7:15:7 | SSA def(self) |
+| ui.swift:15:7:15:7 | self | ui.swift:15:7:15:7 | SSA def(self) |
+| ui.swift:16:9:16:9 | self | ui.swift:16:9:16:9 | SSA def(self) |
+| ui.swift:16:9:16:9 | self | ui.swift:16:9:16:9 | SSA def(self) |
+| ui.swift:16:9:16:9 | self | ui.swift:16:9:16:9 | SSA def(self) |
+| ui.swift:16:9:16:9 | value | ui.swift:16:9:16:9 | SSA def(value) |
+| ui.swift:17:9:17:9 | self | ui.swift:17:9:17:9 | SSA def(self) |
+| ui.swift:17:9:17:9 | self | ui.swift:17:9:17:9 | SSA def(self) |
+| ui.swift:17:9:17:9 | self | ui.swift:17:9:17:9 | SSA def(self) |
+| ui.swift:17:9:17:9 | value | ui.swift:17:9:17:9 | SSA def(value) |
+| ui.swift:19:17:19:17 | SSA def(self) | ui.swift:19:5:21:5 | self[return] |
+| ui.swift:19:17:19:17 | self | ui.swift:19:17:19:17 | SSA def(self) |
+| ui.swift:23:10:23:10 | SSA def(self) | ui.swift:23:5:23:43 | self[return] |
+| ui.swift:23:10:23:10 | self | ui.swift:23:10:23:10 | SSA def(self) |
+| ui.swift:23:15:23:34 | SSA def(hasher) | ui.swift:23:5:23:43 | hasher[return] |
+| ui.swift:23:15:23:34 | hasher | ui.swift:23:15:23:34 | SSA def(hasher) |
+| ui.swift:26:8:26:8 | SSA def(self) | ui.swift:26:8:26:8 | self[return] |
+| ui.swift:26:8:26:8 | self | ui.swift:26:8:26:8 | SSA def(self) |
+| ui.swift:28:7:28:7 | SSA def(self) | ui.swift:28:7:28:7 | self[return] |
+| ui.swift:28:7:28:7 | SSA def(self) | ui.swift:28:7:28:7 | self[return] |
+| ui.swift:28:7:28:7 | self | ui.swift:28:7:28:7 | SSA def(self) |
+| ui.swift:28:7:28:7 | self | ui.swift:28:7:28:7 | SSA def(self) |
+| ui.swift:30:7:30:7 | SSA def(self) | ui.swift:30:7:30:7 | self[return] |
+| ui.swift:30:7:30:7 | SSA def(self) | ui.swift:30:7:30:7 | self[return] |
+| ui.swift:30:7:30:7 | self | ui.swift:30:7:30:7 | SSA def(self) |
+| ui.swift:30:7:30:7 | self | ui.swift:30:7:30:7 | SSA def(self) |
+| ui.swift:31:11:31:11 | SSA def(self) | ui.swift:31:11:31:11 | self[return] |
+| ui.swift:31:11:31:11 | SSA def(self) | ui.swift:31:11:31:11 | self[return] |
+| ui.swift:31:11:31:11 | self | ui.swift:31:11:31:11 | SSA def(self) |
+| ui.swift:31:11:31:11 | self | ui.swift:31:11:31:11 | SSA def(self) |
+| ui.swift:32:13:32:13 | self | ui.swift:32:13:32:13 | SSA def(self) |
+| ui.swift:32:13:32:13 | self | ui.swift:32:13:32:13 | SSA def(self) |
+| ui.swift:32:13:32:13 | self | ui.swift:32:13:32:13 | SSA def(self) |
+| ui.swift:32:13:32:13 | value | ui.swift:32:13:32:13 | SSA def(value) |
+| ui.swift:33:13:33:13 | self | ui.swift:33:13:33:13 | SSA def(self) |
+| ui.swift:33:13:33:13 | self | ui.swift:33:13:33:13 | SSA def(self) |
+| ui.swift:33:13:33:13 | self | ui.swift:33:13:33:13 | SSA def(self) |
+| ui.swift:33:13:33:13 | value | ui.swift:33:13:33:13 | SSA def(value) |
+| ui.swift:34:13:34:13 | self | ui.swift:34:13:34:13 | SSA def(self) |
+| ui.swift:34:13:34:13 | self | ui.swift:34:13:34:13 | SSA def(self) |
+| ui.swift:34:13:34:13 | self | ui.swift:34:13:34:13 | SSA def(self) |
+| ui.swift:34:13:34:13 | value | ui.swift:34:13:34:13 | SSA def(value) |
+| ui.swift:35:13:35:13 | self | ui.swift:35:13:35:13 | SSA def(self) |
+| ui.swift:35:13:35:13 | self | ui.swift:35:13:35:13 | SSA def(self) |
+| ui.swift:35:13:35:13 | self | ui.swift:35:13:35:13 | SSA def(self) |
+| ui.swift:35:13:35:13 | value | ui.swift:35:13:35:13 | SSA def(value) |
+| ui.swift:36:13:36:13 | self | ui.swift:36:13:36:13 | SSA def(self) |
+| ui.swift:36:13:36:13 | self | ui.swift:36:13:36:13 | SSA def(self) |
+| ui.swift:36:13:36:13 | self | ui.swift:36:13:36:13 | SSA def(self) |
+| ui.swift:36:13:36:13 | value | ui.swift:36:13:36:13 | SSA def(value) |
+| ui.swift:37:13:37:13 | self | ui.swift:37:13:37:13 | SSA def(self) |
+| ui.swift:37:13:37:13 | self | ui.swift:37:13:37:13 | SSA def(self) |
+| ui.swift:37:13:37:13 | self | ui.swift:37:13:37:13 | SSA def(self) |
+| ui.swift:37:13:37:13 | value | ui.swift:37:13:37:13 | SSA def(value) |
+| ui.swift:38:13:38:13 | self | ui.swift:38:13:38:13 | SSA def(self) |
+| ui.swift:38:13:38:13 | self | ui.swift:38:13:38:13 | SSA def(self) |
+| ui.swift:38:13:38:13 | self | ui.swift:38:13:38:13 | SSA def(self) |
+| ui.swift:38:13:38:13 | value | ui.swift:38:13:38:13 | SSA def(value) |
+| ui.swift:41:11:41:11 | SSA def(self) | ui.swift:41:11:41:11 | self[return] |
+| ui.swift:41:11:41:11 | SSA def(self) | ui.swift:41:11:41:11 | self[return] |
+| ui.swift:41:11:41:11 | self | ui.swift:41:11:41:11 | SSA def(self) |
+| ui.swift:41:11:41:11 | self | ui.swift:41:11:41:11 | SSA def(self) |
+| ui.swift:50:9:50:9 | SSA def(safe) | ui.swift:53:10:53:10 | safe |
+| ui.swift:50:16:50:33 | call to UIOpenURLContext.init() | ui.swift:50:9:50:9 | SSA def(safe) |
+| ui.swift:51:9:51:9 | SSA def(tainted) | ui.swift:55:10:55:10 | tainted |
+| ui.swift:51:19:51:26 | call to source() | ui.swift:51:9:51:9 | SSA def(tainted) |
+| ui.swift:53:10:53:10 | [post] safe | ui.swift:54:10:54:10 | safe |
+| ui.swift:53:10:53:10 | safe | ui.swift:53:10:53:15 | .url |
+| ui.swift:53:10:53:10 | safe | ui.swift:54:10:54:10 | safe |
+| ui.swift:55:10:55:10 | [post] tainted | ui.swift:56:10:56:10 | tainted |
+| ui.swift:55:10:55:10 | tainted | ui.swift:55:10:55:18 | .url |
+| ui.swift:55:10:55:10 | tainted | ui.swift:56:10:56:10 | tainted |
+| ui.swift:60:9:60:9 | SSA def(safe) | ui.swift:63:10:63:10 | safe |
+| ui.swift:60:16:60:42 | call to UIScene.ConnectionOptions.init() | ui.swift:60:9:60:9 | SSA def(safe) |
+| ui.swift:61:9:61:9 | SSA def(tainted) | ui.swift:64:10:64:10 | tainted |
+| ui.swift:61:19:61:26 | call to source() | ui.swift:61:9:61:9 | SSA def(tainted) |
+| ui.swift:63:10:63:10 | [post] safe | ui.swift:65:10:65:10 | safe |
+| ui.swift:63:10:63:10 | safe | ui.swift:63:10:63:15 | .userActivities |
+| ui.swift:63:10:63:10 | safe | ui.swift:65:10:65:10 | safe |
+| ui.swift:64:10:64:10 | [post] tainted | ui.swift:66:10:66:10 | tainted |
+| ui.swift:64:10:64:10 | tainted | ui.swift:64:10:64:18 | .userActivities |
+| ui.swift:64:10:64:10 | tainted | ui.swift:66:10:66:10 | tainted |
+| ui.swift:65:10:65:10 | [post] safe | ui.swift:67:10:67:10 | safe |
+| ui.swift:65:10:65:10 | safe | ui.swift:67:10:67:10 | safe |
+| ui.swift:66:10:66:10 | [post] tainted | ui.swift:68:10:68:10 | tainted |
+| ui.swift:66:10:66:10 | tainted | ui.swift:68:10:68:10 | tainted |
+| ui.swift:67:10:67:10 | [post] safe | ui.swift:69:10:69:10 | safe |
+| ui.swift:67:10:67:10 | safe | ui.swift:67:10:67:15 | .urlContexts |
+| ui.swift:67:10:67:10 | safe | ui.swift:69:10:69:10 | safe |
+| ui.swift:68:10:68:10 | [post] tainted | ui.swift:70:10:70:10 | tainted |
+| ui.swift:68:10:68:10 | tainted | ui.swift:68:10:68:18 | .urlContexts |
+| ui.swift:68:10:68:10 | tainted | ui.swift:70:10:70:10 | tainted |
+| ui.swift:69:10:69:10 | [post] safe | ui.swift:71:10:71:10 | safe |
+| ui.swift:69:10:69:10 | safe | ui.swift:71:10:71:10 | safe |
+| ui.swift:70:10:70:10 | [post] tainted | ui.swift:72:10:72:10 | tainted |
+| ui.swift:70:10:70:10 | tainted | ui.swift:72:10:72:10 | tainted |
+| ui.swift:71:10:71:10 | [post] safe | ui.swift:73:10:73:10 | safe |
+| ui.swift:71:10:71:10 | safe | ui.swift:73:10:73:10 | safe |
+| ui.swift:72:10:72:10 | [post] tainted | ui.swift:74:10:74:10 | tainted |
+| ui.swift:72:10:72:10 | tainted | ui.swift:74:10:74:10 | tainted |
+| ui.swift:73:10:73:10 | [post] safe | ui.swift:75:10:75:10 | safe |
+| ui.swift:73:10:73:10 | safe | ui.swift:75:10:75:10 | safe |
+| ui.swift:74:10:74:10 | [post] tainted | ui.swift:76:10:76:10 | tainted |
+| ui.swift:74:10:74:10 | tainted | ui.swift:76:10:76:10 | tainted |
 | url.swift:2:7:2:7 | SSA def(self) | url.swift:2:7:2:7 | self[return] |
 | url.swift:2:7:2:7 | SSA def(self) | url.swift:2:7:2:7 | self[return] |
 | url.swift:2:7:2:7 | self | url.swift:2:7:2:7 | SSA def(self) |
