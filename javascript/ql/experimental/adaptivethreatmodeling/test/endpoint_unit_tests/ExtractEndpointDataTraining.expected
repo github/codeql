@@ -8,6 +8,11 @@ endpoints
 | index.js:15:17:15:32 | req.body.isAdmin | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:15:17:15:32 | req.body.isAdmin | NosqlInjection | notASinkReason | LoggerMethod | string |
 | index.js:15:17:15:32 | req.body.isAdmin | NosqlInjection | sinkLabel | NotASink | string |
+| index.js:15:17:15:32 | req.body.isAdmin | ShellCommandInjectionFromEnvironment | hasFlowFromSource | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | ShellCommandInjectionFromEnvironment | isConstantExpression | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | ShellCommandInjectionFromEnvironment | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | ShellCommandInjectionFromEnvironment | notASinkReason | LoggerMethod | string |
+| index.js:15:17:15:32 | req.body.isAdmin | ShellCommandInjectionFromEnvironment | sinkLabel | NotASink | string |
 | index.js:15:17:15:32 | req.body.isAdmin | SqlInjection | hasFlowFromSource | true | boolean |
 | index.js:15:17:15:32 | req.body.isAdmin | SqlInjection | isConstantExpression | false | boolean |
 | index.js:15:17:15:32 | req.body.isAdmin | SqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
@@ -42,6 +47,12 @@ endpoints
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | notASinkReason | ClientRequest | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | notASinkReason | JQueryArgument | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | sinkLabel | NotASink | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | ShellCommandInjectionFromEnvironment | hasFlowFromSource | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | ShellCommandInjectionFromEnvironment | isConstantExpression | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | ShellCommandInjectionFromEnvironment | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | ShellCommandInjectionFromEnvironment | notASinkReason | ClientRequest | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | ShellCommandInjectionFromEnvironment | notASinkReason | JQueryArgument | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | ShellCommandInjectionFromEnvironment | sinkLabel | NotASink | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | hasFlowFromSource | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | isConstantExpression | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
@@ -71,6 +82,11 @@ endpoints
 | index.js:84:12:84:18 | foo.bar | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:84:12:84:18 | foo.bar | NosqlInjection | notASinkReason | ClientRequest | string |
 | index.js:84:12:84:18 | foo.bar | NosqlInjection | sinkLabel | NotASink | string |
+| index.js:84:12:84:18 | foo.bar | ShellCommandInjectionFromEnvironment | hasFlowFromSource | false | boolean |
+| index.js:84:12:84:18 | foo.bar | ShellCommandInjectionFromEnvironment | isConstantExpression | false | boolean |
+| index.js:84:12:84:18 | foo.bar | ShellCommandInjectionFromEnvironment | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:84:12:84:18 | foo.bar | ShellCommandInjectionFromEnvironment | notASinkReason | ClientRequest | string |
+| index.js:84:12:84:18 | foo.bar | ShellCommandInjectionFromEnvironment | sinkLabel | NotASink | string |
 | index.js:84:12:84:18 | foo.bar | SqlInjection | hasFlowFromSource | false | boolean |
 | index.js:84:12:84:18 | foo.bar | SqlInjection | isConstantExpression | false | boolean |
 | index.js:84:12:84:18 | foo.bar | SqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |

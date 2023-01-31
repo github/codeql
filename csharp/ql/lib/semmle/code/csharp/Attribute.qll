@@ -37,8 +37,14 @@ class Attributable extends @attributable {
 }
 
 private string getAttributeName(Attribute a) {
-  exists(string type | type = a.getType().getName() |
-    if type.matches("%Attribute") then result = type.prefix(type.length() - 9) else result = type
+  exists(string type, string pattern |
+    type = a.getType().getName() and pattern = "(.*)Attribute(<.*>)?"
+  |
+    type.regexpMatch(pattern) and
+    result = concat(int i | i = [1, 2] | type.regexpCapture(pattern, i) order by i)
+    or
+    not type.regexpMatch(pattern) and
+    result = type
   )
 }
 
@@ -100,6 +106,31 @@ class Attribute extends TopLevelExprParent, @attribute {
 }
 
 /**
+ * A generic attribute, for example `[...]` on line 1 in
+ *
+ * ```csharp
+ * [MyGenericAttribute<int>(0)]
+ * public void SomeMethod(string s) { }
+ * ```
+ */
+class GenericAttribute extends Attribute {
+  private ConstructedClass type;
+
+  GenericAttribute() { type = this.getType() }
+
+  /** Gets the total number of type arguments. */
+  int getNumberOfTypeArguments() { result = count(int i | type_arguments(_, i, type)) }
+
+  /** Gets the `i`th type argument, if any. */
+  Type getTypeArgument(int i) { result = type.getTypeArgument(i) }
+
+  /** Get a type argument. */
+  Type getATypeArgument() { result = this.getTypeArgument(_) }
+
+  override string getAPrimaryQlClass() { result = "GenericAttribute" }
+}
+
+/**
  * An attribute with default kind, for example `[...]` on line 1 in
  * ```csharp
  * [MyAttribute(0)]
@@ -108,6 +139,17 @@ class Attribute extends TopLevelExprParent, @attribute {
  */
 class DefaultAttribute extends Attribute, @attribute_default {
   override string getAPrimaryQlClass() { result = "DefaultAttribute" }
+}
+
+/**
+ * A generic attribute with default kind, for example `[...]` on line 1 in
+ * ```csharp
+ * [MyAttribute<string>(0)]
+ * int SomeMethod() { return 1; }
+ * ```
+ */
+class GenericDefaultAttribute extends GenericAttribute, DefaultAttribute {
+  override string getAPrimaryQlClass() { result = "GenericDefaultAttribute" }
 }
 
 /**
@@ -124,6 +166,17 @@ class ReturnAttribute extends Attribute, @attribute_return {
 }
 
 /**
+ * A generic attribute with return kind, for example `[...]` on line 1 in
+ * ```csharp
+ * [return: MyAttribute<object>(0)]
+ * int SomeMethod() { return 1; }
+ * ```
+ */
+class GenericReturnAttribute extends GenericAttribute, ReturnAttribute {
+  override string getAPrimaryQlClass() { result = "GenericReturnAttribute" }
+}
+
+/**
  * An attribute with assembly kind, for example `[...]` on line 1 in
  * ```csharp
  * [assembly: MyAttribute(0)]
@@ -136,6 +189,16 @@ class AssemblyAttribute extends Attribute, @attribute_assembly {
 }
 
 /**
+ * A generic attribute with assembly kind, for example `[...]` on line 1 in
+ * ```csharp
+ * [assembly: MyAttribute<string>(0)]
+ * ```
+ */
+class GenericAssemblyAttribute extends GenericAttribute, AssemblyAttribute {
+  override string getAPrimaryQlClass() { result = "GenericAssemblyAttribute" }
+}
+
+/**
  * An attribute with module kind, for example `[...]` on line 1 in
  * ```csharp
  * [module: MyAttribute(0)]
@@ -145,4 +208,14 @@ class ModuleAttribute extends Attribute, @attribute_module {
   override string toString() { result = "[module: " + getAttributeName(this) + "(...)]" }
 
   override string getAPrimaryQlClass() { result = "ModuleAttribute" }
+}
+
+/**
+ * A generic attribute with module kind, for example `[...]` on line 1 in
+ * ```csharp
+ * [module: MyAttribute<string>(0)]
+ * ```
+ */
+class GenericModuleAttribute extends GenericAttribute, ModuleAttribute {
+  override string getAPrimaryQlClass() { result = "GenericModuleAttribute" }
 }

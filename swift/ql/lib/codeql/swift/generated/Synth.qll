@@ -338,8 +338,6 @@ module Synth {
 
   class TGenericTypeDecl = TNominalTypeDecl or TOpaqueTypeDecl or TTypeAliasDecl;
 
-  class TIterableDeclContext = TExtensionDecl or TNominalTypeDecl;
-
   class TNominalTypeDecl = TClassDecl or TEnumDecl or TProtocolDecl or TStructDecl;
 
   class TOperatorDecl = TInfixOperatorDecl or TPostfixOperatorDecl or TPrefixOperatorDecl;
@@ -1381,8 +1379,6 @@ module Synth {
     or
     result = convertGenericContextFromRaw(e)
     or
-    result = convertIterableDeclContextFromRaw(e)
-    or
     result = convertLocatableFromRaw(e)
     or
     result = convertLocationFromRaw(e)
@@ -1517,13 +1513,6 @@ module Synth {
     result = convertOpaqueTypeDeclFromRaw(e)
     or
     result = convertTypeAliasDeclFromRaw(e)
-  }
-
-  cached
-  TIterableDeclContext convertIterableDeclContextFromRaw(Raw::Element e) {
-    result = convertExtensionDeclFromRaw(e)
-    or
-    result = convertNominalTypeDeclFromRaw(e)
   }
 
   cached
@@ -3019,8 +3008,6 @@ module Synth {
     or
     result = convertGenericContextToRaw(e)
     or
-    result = convertIterableDeclContextToRaw(e)
-    or
     result = convertLocatableToRaw(e)
     or
     result = convertLocationToRaw(e)
@@ -3155,13 +3142,6 @@ module Synth {
     result = convertOpaqueTypeDeclToRaw(e)
     or
     result = convertTypeAliasDeclToRaw(e)
-  }
-
-  cached
-  Raw::Element convertIterableDeclContextToRaw(TIterableDeclContext e) {
-    result = convertExtensionDeclToRaw(e)
-    or
-    result = convertNominalTypeDeclToRaw(e)
   }
 
   cached

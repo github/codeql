@@ -6,11 +6,13 @@ on:
     paths:
       - "ql/**"
       - codeql-workspace.yml
+      - .github/workflows/ql-for-ql-tests.yml
   pull_request:
     branches: [main]
     paths:
       - "ql/**"
       - codeql-workspace.yml
+      - .github/workflows/ql-for-ql-tests.yml
 
 env:
   CARGO_TERM_COLOR: always
@@ -22,7 +24,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@45955cb1830b640e2c1603ad72ad542a49d47b96
+        uses: github/codeql-action/init@beae46e6b1da530ed5e9fc6a756f92433ca47ae1
         with:
           languages: javascript # does not matter
       - uses: ./.github/actions/os-version
@@ -65,7 +67,7 @@ jobs:
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
+        uses: github/codeql-action/init@beae46e6b1da530ed5e9fc6a756f92433ca47ae1
         with:
           languages: javascript # does not matter
       - uses: ./.github/actions/os-version

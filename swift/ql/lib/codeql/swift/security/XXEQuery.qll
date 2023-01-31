@@ -7,7 +7,7 @@ import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.FlowSources
 import codeql.swift.dataflow.TaintTracking
-import codeql.swift.security.XXE
+import codeql.swift.security.XXEExtensions
 
 /**
  * A taint-tracking configuration for XML external entities (XXE) vulnerabilities.

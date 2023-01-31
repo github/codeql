@@ -230,7 +230,7 @@ exceptions.cs:
 #  193|             0: [LocalVariableDeclAndInitExpr] String v = ...
 #  193|               -1: [TypeMention] string
 #  193|               0: [LocalVariableAccess] access to local variable v
-#  193|               1: [StringLiteral] ""
+#  193|               1: [StringLiteralUtf16] ""
 #  195|         1: [SpecificCatchClause] catch (...) {...}
 #  195|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #  195|             0: [TypeMention] NullReferenceException
@@ -265,7 +265,7 @@ exceptions.cs:
 #  221|             0: [LocalVariableDeclAndInitExpr] String s = ...
 #  221|               -1: [TypeMention] string
 #  221|               0: [LocalVariableAccess] access to local variable s
-#  221|               1: [StringLiteral] ""
+#  221|               1: [StringLiteralUtf16] ""
 #  222|           1: [EmptyStmt] ;
 #  223|           2: [LocalVariableDeclStmt] ... ...;
 #  223|             0: [LocalVariableDeclAndInitExpr] String v = ...

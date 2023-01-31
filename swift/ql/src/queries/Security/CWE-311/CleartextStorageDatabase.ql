@@ -27,13 +27,24 @@ abstract class Stored extends DataFlow::Node { }
  */
 class CoreDataStore extends Stored {
   CoreDataStore() {
-    // values written into Core Data objects are a sink
+    // values written into Core Data objects through `set*Value` methods are a sink.
     exists(CallExpr call |
       call.getStaticTarget()
           .(MethodDecl)
           .hasQualifiedName("NSManagedObject",
             ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"]) and
       call.getArgument(0).getExpr() = this.asExpr()
+    )
+    or
+    // any write into a class derived from `NSManagedObject` is a sink. For
+    // example in `coreDataObj.data = sensitive` the post-update node corresponding
+    // with `coreDataObj.data` is a sink.
+    // (ideally this would be only members with the `@NSManaged` attribute)
+    exists(ClassOrStructDecl cd, Expr e |
+      cd.getABaseTypeDecl*().getName() = "NSManagedObject" and
+      this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = e and
+      e.getFullyConverted().getType() = cd.getType() and
+      not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
     )
   }
 }
@@ -141,12 +152,13 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
   }
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
-    // flow out from fields of a `RealmSwiftObject` at the sink, for example in
-    // `realmObj.data = sensitive`.
+    // flow out from fields of an `NSManagedObject` or `RealmSwiftObject` at the sink,
+    // for example in `realmObj.data = sensitive`.
     isSink(node) and
-    exists(ClassOrStructDecl cd |
-      c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cd.getAMember() and
-      cd.getABaseTypeDecl*().getName() = "RealmSwiftObject"
+    exists(ClassOrStructDecl cd, Decl cx |
+      cd.getABaseTypeDecl*().getName() = ["NSManagedObject", "RealmSwiftObject"] and
+      cx.asNominalTypeDecl() = cd and
+      c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember()
     )
     or
     // any default implicit reads

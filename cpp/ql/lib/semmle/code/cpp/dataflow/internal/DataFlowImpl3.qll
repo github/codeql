@@ -1487,6 +1487,10 @@ private module MkStage<StageSig PrevStage> {
       PrevStage::readStepCand(node1, _, _, config)
     }
 
+    bindingset[ap, c]
+    pragma[inline_late]
+    private predicate hasHeadContent(Ap ap, Content c) { getHeadContent(ap) = c }
+
     pragma[nomagic]
     private predicate fwdFlowRead(
       Ap ap, Content c, NodeEx node1, NodeEx node2, FlowState state, Cc cc,
@@ -1494,7 +1498,7 @@ private module MkStage<StageSig PrevStage> {
     ) {
       fwdFlowRead0(node1, state, cc, summaryCtx, argAp, ap, config) and
       PrevStage::readStepCand(node1, c, node2, config) and
-      getHeadContent(ap) = c
+      hasHeadContent(ap, c)
     }
 
     pragma[nomagic]

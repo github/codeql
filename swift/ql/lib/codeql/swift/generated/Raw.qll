@@ -75,6 +75,8 @@ module Raw {
 
   class Decl extends @decl, AstNode {
     ModuleDecl getModule() { decls(this, result) }
+
+    Decl getMember(int index) { decl_members(this, index, result) }
   }
 
   class GenericContext extends @generic_context, Element {
@@ -83,17 +85,13 @@ module Raw {
     }
   }
 
-  class IterableDeclContext extends @iterable_decl_context, Element {
-    Decl getMember(int index) { iterable_decl_context_members(this, index, result) }
-  }
-
   class EnumCaseDecl extends @enum_case_decl, Decl {
     override string toString() { result = "EnumCaseDecl" }
 
     EnumElementDecl getElement(int index) { enum_case_decl_elements(this, index, result) }
   }
 
-  class ExtensionDecl extends @extension_decl, GenericContext, IterableDeclContext, Decl {
+  class ExtensionDecl extends @extension_decl, GenericContext, Decl {
     override string toString() { result = "ExtensionDecl" }
 
     NominalTypeDecl getExtendedTypeDecl() { extension_decls(this, result) }
@@ -292,7 +290,7 @@ module Raw {
     override string toString() { result = "GenericTypeParamDecl" }
   }
 
-  class NominalTypeDecl extends @nominal_type_decl, GenericTypeDecl, IterableDeclContext {
+  class NominalTypeDecl extends @nominal_type_decl, GenericTypeDecl {
     Type getType() { nominal_type_decls(this, result) }
   }
 

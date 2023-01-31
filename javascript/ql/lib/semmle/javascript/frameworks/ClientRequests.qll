@@ -197,6 +197,20 @@ module ClientRequest {
   /** Gets the string `url` or `uri`. */
   private string urlPropertyName() { result = "url" or result = "uri" }
 
+  /** An API entry-point for the global variable `axios`. */
+  private class AxiosGlobalEntryPoint extends API::EntryPoint {
+    AxiosGlobalEntryPoint() { this = "axiosGlobal" }
+
+    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("axios") }
+  }
+
+  /** Gets a reference to the `axios` library. */
+  private API::Node axios() {
+    result = API::moduleImport("axios")
+    or
+    result = API::root().getASuccessor(API::Label::entryPoint(any(AxiosGlobalEntryPoint entry)))
+  }
+
   /**
    * A model of a URL request made using the `axios` library.
    */
@@ -204,9 +218,10 @@ module ClientRequest {
     string method;
 
     AxiosUrlRequest() {
-      this = API::moduleImport("axios").getACall() and method = "request"
+      this = axios().getACall() and
+      method = "request"
       or
-      this = API::moduleImport("axios").getMember(method).getACall() and
+      this = axios().getMember(method).getACall() and
       method = [httpMethodName(), "request"]
     }
 
