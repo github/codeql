@@ -108,139 +108,22 @@ private FunctionInput getIteratorArgumentInput(Operator op, int index) {
 }
 
 /**
- * A non-member prefix `operator*` function for an iterator type.
- */
-private class IteratorPointerDereferenceOperator extends Operator, TaintFunction,
-  IteratorReferenceFunction {
-  FunctionInput iteratorInput;
-
-  IteratorPointerDereferenceOperator() {
-    this.hasName("operator*") and
-    iteratorInput = getIteratorArgumentInput(this, 0)
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input = iteratorInput and
-    output.isReturnValue()
-    or
-    input.isReturnValueDeref() and
-    output.isParameterDeref(0)
-  }
-}
-
-/**
  * A non-member `operator++` or `operator--` function for an iterator type.
  */
-class IteratorCrementOperator extends Operator {
-  FunctionInput iteratorInput;
-
-  IteratorCrementOperator() {
+class IteratorCrementNonMemberOperator extends Operator {
+  IteratorCrementNonMemberOperator() {
     this.hasName(["operator++", "operator--"]) and
-    iteratorInput = getIteratorArgumentInput(this, 0)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  FunctionInput getIteratorInput() { result = iteratorInput }
-}
-
-private class IteratorCrementOperatorModel extends IteratorCrementOperator, DataFlowFunction {
-  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input = this.getIteratorInput() and
-    output.isReturnValue()
-    or
-    input.isParameterDeref(0) and output.isReturnValueDeref()
-  }
-}
-
-/**
- * A non-member `operator+` function for an iterator type.
- */
-class IteratorAddOperator extends Operator {
-  FunctionInput iteratorInput;
-
-  IteratorAddOperator() {
-    this.hasName("operator+") and
-    iteratorInput = getIteratorArgumentInput(this, [0, 1])
-  }
-
-  FunctionInput getIteratorInput() { result = iteratorInput }
-}
-
-private class IteratorAddOperatorModel extends IteratorAddOperator, TaintFunction {
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input = this.getIteratorInput() and
-    output.isReturnValue()
-  }
-}
-
-/**
- * A non-member `operator-` function that takes a pointer difference type as its second argument.
- */
-class IteratorSubOperator extends Operator {
-  FunctionInput iteratorInput;
-
-  IteratorSubOperator() {
-    this.hasName("operator-") and
-    iteratorInput = getIteratorArgumentInput(this, 0) and
-    this.getParameter(1).getUnspecifiedType() instanceof IntegralType // not an iterator difference
-  }
-
-  FunctionInput getIteratorInput() { result = iteratorInput }
-}
-
-private class IteratorSubOperatorModel extends IteratorSubOperator, TaintFunction {
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input = this.getIteratorInput() and
-    output.isReturnValue()
-  }
-}
-
-/**
- * A non-member `operator+=` or `operator-=` function for an iterator type.
- */
-class IteratorAssignArithmeticOperator extends Operator {
-  IteratorAssignArithmeticOperator() {
-    this.hasName(["operator+=", "operator-="]) and
     exists(getIteratorArgumentInput(this, 0))
   }
 }
 
-private class IteratorAssignArithmeticOperatorModel extends IteratorAssignArithmeticOperator,
-  DataFlowFunction, TaintFunction {
+private class IteratorCrementNonMemberOperatorModel extends IteratorCrementNonMemberOperator,
+  DataFlowFunction {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(0) and
+    input = getIteratorArgumentInput(this, 0) and
     output.isReturnValue()
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    or
     input.isParameterDeref(0) and output.isReturnValueDeref()
-    or
-    // reverse flow from returned reference to the object referenced by the first parameter
-    input.isReturnValueDeref() and
-    output.isParameterDeref(0)
-    or
-    (input.isParameter(1) or input.isParameterDeref(1)) and
-    output.isParameterDeref(0)
-  }
-}
-
-/**
- * A prefix `operator*` member function for an iterator type.
- */
-class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunction,
-  IteratorReferenceFunction {
-  IteratorPointerDereferenceMemberOperator() {
-    this.getClassAndName("operator*") instanceof Iterator
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
-    or
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
   }
 }
 
@@ -273,13 +156,28 @@ private class IteratorCrementMemberOperatorModel extends IteratorCrementMemberOp
 }
 
 /**
- * A member `operator->` function for an iterator type.
+ * A (member or non-member) `operator++` or `operator--` function for an iterator type.
  */
-private class IteratorFieldMemberOperator extends Operator, TaintFunction {
-  IteratorFieldMemberOperator() { this.getClassAndName("operator->") instanceof Iterator }
+class IteratorCrementOperator extends Function {
+  IteratorCrementOperator() {
+    this instanceof IteratorCrementNonMemberOperator or
+    this instanceof IteratorCrementMemberOperator
+  }
+}
 
+/**
+ * A non-member `operator+` function for an iterator type.
+ */
+class IteratorAddNonMemberOperator extends Operator {
+  IteratorAddNonMemberOperator() {
+    this.hasName("operator+") and
+    exists(getIteratorArgumentInput(this, [0, 1]))
+  }
+}
+
+private class IteratorAddNonMemberOperatorModel extends IteratorAddNonMemberOperator, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
+    input = getIteratorArgumentInput(this, [0, 1]) and
     output.isReturnValue()
   }
 }
@@ -298,6 +196,63 @@ private class IteratorBinaryArithmeticMemberOperatorModel extends IteratorBinary
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
     output.isReturnValue()
+  }
+}
+
+/**
+ * A (member or non-member) `operator+` or `operator-` function for an iterator type.
+ */
+class IteratorBinaryAddOperator extends Function {
+  IteratorBinaryAddOperator() {
+    this instanceof IteratorAddNonMemberOperator or
+    this instanceof IteratorBinaryArithmeticMemberOperator
+  }
+}
+
+/**
+ * A non-member `operator-` function that takes a pointer difference type as its second argument.
+ */
+class IteratorSubNonMemberOperator extends Operator {
+  IteratorSubNonMemberOperator() {
+    this.hasName("operator-") and
+    exists(getIteratorArgumentInput(this, 0)) and
+    this.getParameter(1).getUnspecifiedType() instanceof IntegralType // not an iterator difference
+  }
+}
+
+private class IteratorSubOperatorModel extends IteratorSubNonMemberOperator, TaintFunction {
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input = getIteratorArgumentInput(this, 0) and
+    output.isReturnValue()
+  }
+}
+
+/**
+ * A non-member `operator+=` or `operator-=` function for an iterator type.
+ */
+class IteratorAssignArithmeticNonMemberOperator extends Operator {
+  IteratorAssignArithmeticNonMemberOperator() {
+    this.hasName(["operator+=", "operator-="]) and
+    exists(getIteratorArgumentInput(this, 0))
+  }
+}
+
+private class IteratorAssignArithmeticNonMemberOperatorModel extends IteratorAssignArithmeticNonMemberOperator,
+  DataFlowFunction, TaintFunction {
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameter(0) and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameterDeref(0) and output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the object referenced by the first parameter
+    input.isReturnValueDeref() and
+    output.isParameterDeref(0)
+    or
+    (input.isParameter(1) or input.isParameterDeref(1)) and
+    output.isParameterDeref(0)
   }
 }
 
@@ -327,6 +282,77 @@ private class IteratorAssignArithmeticMemberOperatorModel extends IteratorAssign
     or
     (input.isParameter(0) or input.isParameterDeref(0)) and
     output.isQualifierObject()
+  }
+}
+
+/**
+ * A (member or non-member) `operator+=` or `operator-=` function for an iterator type.
+ */
+class IteratorAssignArithmeticOperator extends Function {
+  IteratorAssignArithmeticOperator() {
+    this instanceof IteratorAssignArithmeticNonMemberOperator or
+    this instanceof IteratorAssignArithmeticMemberOperator
+  }
+}
+
+/**
+ * A prefix `operator*` member function for an iterator type.
+ */
+class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunction,
+  IteratorReferenceFunction {
+  IteratorPointerDereferenceMemberOperator() {
+    this.getClassAndName("operator*") instanceof Iterator
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and
+    output.isReturnValue()
+    or
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * A non-member prefix `operator*` function for an iterator type.
+ */
+class IteratorPointerDereferenceNonMemberOperator extends Operator, IteratorReferenceFunction {
+  IteratorPointerDereferenceNonMemberOperator() {
+    this.hasName("operator*") and
+    exists(getIteratorArgumentInput(this, 0))
+  }
+}
+
+private class IteratorPointerDereferenceNonMemberOperatorModel extends IteratorPointerDereferenceNonMemberOperator,
+  TaintFunction {
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input = getIteratorArgumentInput(this, 0) and
+    output.isReturnValue()
+    or
+    input.isReturnValueDeref() and
+    output.isParameterDeref(0)
+  }
+}
+
+/**
+ * A (member or non-member) prefix `operator*` function for an iterator type.
+ */
+class IteratorPointerDereferenceOperator extends Function {
+  IteratorPointerDereferenceOperator() {
+    this instanceof IteratorPointerDereferenceNonMemberOperator or
+    this instanceof IteratorPointerDereferenceMemberOperator
+  }
+}
+
+/**
+ * A member `operator->` function for an iterator type.
+ */
+private class IteratorFieldMemberOperator extends Operator, TaintFunction {
+  IteratorFieldMemberOperator() { this.getClassAndName("operator->") instanceof Iterator }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and
+    output.isReturnValue()
   }
 }
 
