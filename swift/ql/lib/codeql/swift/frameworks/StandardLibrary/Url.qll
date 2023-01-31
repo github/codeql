@@ -16,6 +16,19 @@ private class UriFieldsInheritTaint extends TaintInheritingContent, DataFlow::Co
 }
 
 /**
+ * A content implying that, if a `URLRequest` is tainted, then its fields `url`, `httpBody`,
+ * `httpBodyStream`, `mainDocument` and `allHTTPHeaderFields` are tainted.
+ */
+private class UrlRequestFieldsInheritTaint extends TaintInheritingContent,
+  DataFlow::Content::FieldContent {
+  UrlRequestFieldsInheritTaint() {
+    this.getField().getEnclosingDecl().(NominalTypeDecl).getName() = "URLRequest" and
+    this.getField().getName() =
+      ["url", "httpBody", "httpBodyStream", "mainDocument", "allHTTPHeaderFields"]
+  }
+}
+
+/**
  * A model for `URL` members that are sources of remote flow.
  */
 private class UrlRemoteFlowSource extends SourceModelCsv {
