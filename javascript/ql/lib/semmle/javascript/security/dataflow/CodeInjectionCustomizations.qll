@@ -294,6 +294,27 @@ module CodeInjection {
     }
   }
 
+  /**
+   * An execution of a terminal command via the `node-pty` library, seen as a code injection sink.
+   * Example:
+   * ```JS
+   * var pty = require('node-pty');
+   * var ptyProcess = pty.spawn("bash", [], {...});
+   * ptyProcess.write('ls\r');
+   * ```
+   */
+  class NodePty extends Sink {
+    NodePty() {
+      this =
+        API::moduleImport("node-pty")
+            .getMember("spawn")
+            .getReturn()
+            .getMember("write")
+            .getACall()
+            .getArgument(0)
+    }
+  }
+
   /** A sink for code injection via template injection. */
   abstract private class TemplateSink extends Sink {
     deprecated override string getMessageSuffix() {
