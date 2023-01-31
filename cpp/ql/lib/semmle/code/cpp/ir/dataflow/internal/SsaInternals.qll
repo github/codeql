@@ -121,10 +121,10 @@ private newtype TDefOrUseImpl =
     not isDef(_, _, operand, _, _, _)
   } or
   TIteratorDef(
-    Operand iteratorAddress, BaseSourceVariableInstruction container, int indirectionIndex
+    Operand iteratorDerefAddress, BaseSourceVariableInstruction container, int indirectionIndex
   ) {
-    isIteratorDef(container, iteratorAddress, _, _, indirectionIndex) and
-    any(SsaInternals0::Def def | def.isIteratorDef()).getAddressOperand() = iteratorAddress
+    isIteratorDef(container, iteratorDerefAddress, _, _, indirectionIndex) and
+    any(SsaInternals0::Def def | def.isIteratorDef()).getAddressOperand() = iteratorDerefAddress
   } or
   TIteratorUse(
     Operand iteratorAddress, BaseSourceVariableInstruction container, int indirectionIndex
@@ -465,11 +465,20 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
     nodeToDefOrUse(nTo, defOrUse, _) and
     adjacentDefRead(defOrUse, _)
   ) and
-  exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
-    hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
-    hasOperandAndIndex(nTo, op2, pragma[only_bind_into](indirectionIndex)) and
-    instr = op2.getDef() and
-    conversionFlow(op1, instr, _, _)
+  (
+    exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
+      hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
+      hasOperandAndIndex(nTo, op2, pragma[only_bind_into](indirectionIndex)) and
+      instr = op2.getDef() and
+      conversionFlow(op1, instr, _, _)
+    )
+    or
+    exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
+      hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
+      hasOperandAndIndex(nTo, op2, indirectionIndex - 1) and
+      instr = op2.getDef() and
+      isDereference(instr, op1)
+    )
   )
 }
 
