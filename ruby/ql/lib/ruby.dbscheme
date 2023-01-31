@@ -54,7 +54,7 @@ case @diagnostic.severity of
 
 @ruby_underscore_call_operator = @ruby_reserved_word
 
-@ruby_underscore_expression = @ruby_assignment | @ruby_binary | @ruby_break | @ruby_call | @ruby_next | @ruby_operator_assignment | @ruby_return | @ruby_unary | @ruby_underscore_arg | @ruby_yield
+@ruby_underscore_expression = @ruby_assignment | @ruby_binary | @ruby_break | @ruby_call | @ruby_match_pattern | @ruby_next | @ruby_operator_assignment | @ruby_return | @ruby_test_pattern | @ruby_unary | @ruby_underscore_arg | @ruby_yield
 
 @ruby_underscore_lhs = @ruby_call | @ruby_element_reference | @ruby_scope_resolution | @ruby_token_false | @ruby_token_nil | @ruby_token_true | @ruby_underscore_variable
 
@@ -815,6 +815,12 @@ ruby_left_assignment_list_def(
   unique int id: @ruby_left_assignment_list
 );
 
+ruby_match_pattern_def(
+  unique int id: @ruby_match_pattern,
+  int pattern: @ruby_underscore_pattern_top_expr_body ref,
+  int value: @ruby_underscore_arg ref
+);
+
 @ruby_method_body_type = @ruby_body_statement | @ruby_rescue_modifier | @ruby_underscore_arg
 
 ruby_method_body(
@@ -1187,6 +1193,12 @@ ruby_symbol_array_def(
   unique int id: @ruby_symbol_array
 );
 
+ruby_test_pattern_def(
+  unique int id: @ruby_test_pattern,
+  int pattern: @ruby_underscore_pattern_top_expr_body ref,
+  int value: @ruby_underscore_arg ref
+);
+
 @ruby_then_child_type = @ruby_token_empty_statement | @ruby_underscore_statement
 
 #keyset[ruby_then, index]
@@ -1354,7 +1366,7 @@ case @ruby_token.kind of
 ;
 
 
-@ruby_ast_node = @ruby_alias | @ruby_alternative_pattern | @ruby_argument_list | @ruby_array | @ruby_array_pattern | @ruby_as_pattern | @ruby_assignment | @ruby_bare_string | @ruby_bare_symbol | @ruby_begin | @ruby_begin_block | @ruby_binary | @ruby_block | @ruby_block_argument | @ruby_block_body | @ruby_block_parameter | @ruby_block_parameters | @ruby_body_statement | @ruby_break | @ruby_call | @ruby_case__ | @ruby_case_match | @ruby_chained_string | @ruby_class | @ruby_complex | @ruby_conditional | @ruby_delimited_symbol | @ruby_destructured_left_assignment | @ruby_destructured_parameter | @ruby_do | @ruby_do_block | @ruby_element_reference | @ruby_else | @ruby_elsif | @ruby_end_block | @ruby_ensure | @ruby_exception_variable | @ruby_exceptions | @ruby_expression_reference_pattern | @ruby_find_pattern | @ruby_for | @ruby_hash | @ruby_hash_pattern | @ruby_hash_splat_argument | @ruby_hash_splat_parameter | @ruby_heredoc_body | @ruby_if | @ruby_if_guard | @ruby_if_modifier | @ruby_in | @ruby_in_clause | @ruby_interpolation | @ruby_keyword_parameter | @ruby_keyword_pattern | @ruby_lambda | @ruby_lambda_parameters | @ruby_left_assignment_list | @ruby_method | @ruby_method_parameters | @ruby_module | @ruby_next | @ruby_operator_assignment | @ruby_optional_parameter | @ruby_pair | @ruby_parenthesized_pattern | @ruby_parenthesized_statements | @ruby_pattern | @ruby_program | @ruby_range | @ruby_rational | @ruby_redo | @ruby_regex | @ruby_rescue | @ruby_rescue_modifier | @ruby_rest_assignment | @ruby_retry | @ruby_return | @ruby_right_assignment_list | @ruby_scope_resolution | @ruby_setter | @ruby_singleton_class | @ruby_singleton_method | @ruby_splat_argument | @ruby_splat_parameter | @ruby_string__ | @ruby_string_array | @ruby_subshell | @ruby_superclass | @ruby_symbol_array | @ruby_then | @ruby_token | @ruby_unary | @ruby_undef | @ruby_unless | @ruby_unless_guard | @ruby_unless_modifier | @ruby_until | @ruby_until_modifier | @ruby_variable_reference_pattern | @ruby_when | @ruby_while | @ruby_while_modifier | @ruby_yield
+@ruby_ast_node = @ruby_alias | @ruby_alternative_pattern | @ruby_argument_list | @ruby_array | @ruby_array_pattern | @ruby_as_pattern | @ruby_assignment | @ruby_bare_string | @ruby_bare_symbol | @ruby_begin | @ruby_begin_block | @ruby_binary | @ruby_block | @ruby_block_argument | @ruby_block_body | @ruby_block_parameter | @ruby_block_parameters | @ruby_body_statement | @ruby_break | @ruby_call | @ruby_case__ | @ruby_case_match | @ruby_chained_string | @ruby_class | @ruby_complex | @ruby_conditional | @ruby_delimited_symbol | @ruby_destructured_left_assignment | @ruby_destructured_parameter | @ruby_do | @ruby_do_block | @ruby_element_reference | @ruby_else | @ruby_elsif | @ruby_end_block | @ruby_ensure | @ruby_exception_variable | @ruby_exceptions | @ruby_expression_reference_pattern | @ruby_find_pattern | @ruby_for | @ruby_hash | @ruby_hash_pattern | @ruby_hash_splat_argument | @ruby_hash_splat_parameter | @ruby_heredoc_body | @ruby_if | @ruby_if_guard | @ruby_if_modifier | @ruby_in | @ruby_in_clause | @ruby_interpolation | @ruby_keyword_parameter | @ruby_keyword_pattern | @ruby_lambda | @ruby_lambda_parameters | @ruby_left_assignment_list | @ruby_match_pattern | @ruby_method | @ruby_method_parameters | @ruby_module | @ruby_next | @ruby_operator_assignment | @ruby_optional_parameter | @ruby_pair | @ruby_parenthesized_pattern | @ruby_parenthesized_statements | @ruby_pattern | @ruby_program | @ruby_range | @ruby_rational | @ruby_redo | @ruby_regex | @ruby_rescue | @ruby_rescue_modifier | @ruby_rest_assignment | @ruby_retry | @ruby_return | @ruby_right_assignment_list | @ruby_scope_resolution | @ruby_setter | @ruby_singleton_class | @ruby_singleton_method | @ruby_splat_argument | @ruby_splat_parameter | @ruby_string__ | @ruby_string_array | @ruby_subshell | @ruby_superclass | @ruby_symbol_array | @ruby_test_pattern | @ruby_then | @ruby_token | @ruby_unary | @ruby_undef | @ruby_unless | @ruby_unless_guard | @ruby_unless_modifier | @ruby_until | @ruby_until_modifier | @ruby_variable_reference_pattern | @ruby_when | @ruby_while | @ruby_while_modifier | @ruby_yield
 
 @ruby_ast_node_parent = @file | @ruby_ast_node
 
