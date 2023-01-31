@@ -295,7 +295,7 @@ module CodeInjection {
   }
 
   /**
-   * Writing to a terminal via the `node-pty` library, seen as a code injection sink.
+   * An execution of a terminal command via the `node-pty` library, seen as a code injection sink.
    * Example:
    * ```JS
    * var pty = require('node-pty');
@@ -303,8 +303,8 @@ module CodeInjection {
    * ptyProcess.write('ls\r');
    * ```
    */
-  class NodePTY extends Sink {
-    NodePTY() {
+  class NodePty extends Sink {
+    NodePty() {
       this =
         API::moduleImport("node-pty")
             .getMember("spawn")
