@@ -364,6 +364,21 @@ private class ActionControllerRenderToCall extends RenderToCallImpl {
   }
 }
 
+/** A call to `ActionController::Renderer#render`. */
+private class RendererRenderCall extends RenderCallImpl {
+  RendererRenderCall() {
+    this =
+      [
+        // ActionController#render is an alias for ActionController::Renderer#render
+        any(ActionControllerClass c).getAnImmediateReference().getAMethodCall("render"),
+        any(ActionControllerClass c)
+            .getAnImmediateReference()
+            .getAMethodCall("renderer")
+            .getAMethodCall("render")
+      ].asExpr().getExpr()
+  }
+}
+
 /** A call to `html_escape` from within a controller. */
 private class ActionControllerHtmlEscapeCall extends HtmlEscapeCallImpl {
   ActionControllerHtmlEscapeCall() {
