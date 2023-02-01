@@ -588,8 +588,8 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
         if index > 0 && index <= source.len() {
             index -= 1;
             if source[index] != b'\n' {
-                &visitor.diagnostics_writer.write(
-                    &visitor
+                visitor.diagnostics_writer.write(
+                    visitor
                         .diagnostics_writer
                         .message("internal-error", "Internal error")
                         .text("expecting a line break symbol, but none found while correcting end column value")
@@ -604,8 +604,8 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
                 end_col += 1;
             }
         } else {
-            &visitor.diagnostics_writer.write(
-                &visitor
+            visitor.diagnostics_writer.write(
+                visitor
                     .diagnostics_writer
                     .message("internal-error", "Internal error")
                     .text(&format!(

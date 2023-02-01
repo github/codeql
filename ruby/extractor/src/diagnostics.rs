@@ -215,52 +215,52 @@ impl DiagnosticMessage {
         }
     }
 
-    pub fn text<'a>(&'a mut self, text: &str) -> &'a mut Self {
+    pub fn text(&mut self, text: &str) -> &mut Self {
         self.plaintext_message = text.to_owned();
         self
     }
 
     #[allow(unused)]
-    pub fn markdown<'a>(&'a mut self, text: &str) -> &'a mut Self {
+    pub fn markdown(&mut self, text: &str) -> &mut Self {
         self.markdown_message = text.to_owned();
         self
     }
-    pub fn severity<'a>(&'a mut self, severity: Severity) -> &'a mut Self {
+    pub fn severity(&mut self, severity: Severity) -> &mut Self {
         self.severity = Some(severity);
         self
     }
     #[allow(unused)]
-    pub fn help_link<'a>(&'a mut self, link: &str) -> &'a mut Self {
+    pub fn help_link(&mut self, link: &str) -> &mut Self {
         self.help_links.push(link.to_owned());
         self
     }
     #[allow(unused)]
-    pub fn internal<'a>(&'a mut self) -> &'a mut Self {
+    pub fn internal(&mut self) -> &mut Self {
         self.internal = true;
         self
     }
     #[allow(unused)]
-    pub fn cli_summary_table<'a>(&'a mut self) -> &'a mut Self {
+    pub fn cli_summary_table(&mut self) -> &mut Self {
         self.visibility.cli_summary_table = true;
         self
     }
-    pub fn status_page<'a>(&'a mut self) -> &'a mut Self {
+    pub fn status_page(&mut self) -> &mut Self {
         self.visibility.status_page = true;
         self
     }
     #[allow(unused)]
-    pub fn telemetry<'a>(&'a mut self) -> &'a mut Self {
+    pub fn telemetry(&mut self) -> &mut Self {
         self.visibility.telemetry = true;
         self
     }
-    pub fn location<'a>(
-        &'a mut self,
+    pub fn location(
+        &mut self,
         path: &str,
         start_line: usize,
         start_column: usize,
         end_line: usize,
         end_column: usize,
-    ) -> &'a mut Self {
+    ) -> &mut Self {
         let loc = self.location.get_or_insert(Default::default());
         loc.file = Some(path.to_owned());
         loc.start_line = Some(start_line);

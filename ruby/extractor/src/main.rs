@@ -67,12 +67,12 @@ fn main() -> std::io::Result<()> {
         )
         .init();
     let diagnostics = diagnostics::DiagnosticLoggers::new("ruby");
-    let main_thread_logger = &mut diagnostics.logger();
+    let mut main_thread_logger = diagnostics.logger();
     let num_threads = match num_codeql_threads() {
         Ok(num) => num,
         Err(e) => {
             main_thread_logger.write(
-                &main_thread_logger
+                main_thread_logger
                     .message("configuration-error", "Configuration error")
                     .text(&format!("{}; defaulting to 1 thread.", e))
                     .status_page()
@@ -94,7 +94,7 @@ fn main() -> std::io::Result<()> {
         Ok(x) => x,
         Err(e) => {
             main_thread_logger.write(
-                &main_thread_logger
+                main_thread_logger
                     .message("configuration-error", "Configuration error")
                     .text(&format!("{}; using gzip.", e))
                     .status_page()
@@ -198,7 +198,7 @@ fn main() -> std::io::Result<()> {
                                     Err(msg) => {
                                         needs_conversion = false;
                                         diagnostics_writer.write(
-                                            &diagnostics_writer
+                                            diagnostics_writer
                                                 .message(
                                                     "character-encoding-error",
                                                     "Character encoding error",
@@ -217,7 +217,7 @@ fn main() -> std::io::Result<()> {
                             }
                         } else {
                             diagnostics_writer.write(
-                                &diagnostics_writer
+                                diagnostics_writer
                                     .message("character-encoding-error", "Character encoding error")
                                     .text(&format!(
                                         "{}: unknown character encoding: '{}'",
