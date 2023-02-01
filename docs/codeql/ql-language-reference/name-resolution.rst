@@ -216,15 +216,21 @@ Local namespaces
 In addition to the global module, type, and predicate namespaces, each module defines a number of local 
 module, type, and predicate namespaces.
 
-For a module ``M``, it's useful to distinguish between its **declared**, **exported**, and **imported** namespaces. 
-(These are described generically, but remember that there is always one for each of modules, types, and predicates.)
+For a module ``M``, it is useful to distinguish between its **privately declared**, **publically declared**, **exported**, and **visible** namespaces.
+(These are described generically, but remember that there is always one for each of modules, module signatures, types, type signatures, predicates, and predicate signatures.)
 
-    - The **declared** namespaces contain any names that are declared—that is, defined—in ``M``.
-    - The **imported** namespaces contain any names exported by the modules that are imported into ``M`` using an 
-      :ref:`import statement <import-statements>`.
-    - The **exported** namespaces contain any names declared in ``M``, or exported from a module imported into ``M``, 
-      except names annotated with ``private``. This includes everything in the imported namespaces that was not introduced
-      by a private import.
+- The **privately declared** namespaces of ``M`` contain all entities that are declared—that is, defined—in ``M`` and that are annotated as ``private``.
+- The **publically declared** namespaces of ``M`` contain all entities that are declared—that is, defined—in ``M`` and that are not annotated as ``private``.
+- The **exported** namespaces of ``M`` contain
+    1. all entries from the **publically declared** namespaces of ``M``, and
+    2. for each module ``N`` that is imported into ``M`` with an import statement that is not annotated as ``private``: all entries from the **exported** namespaces of ``N`` that do not have the same name as any of the entries in the **publically declared** namespaces of ``M``.
+- The **visible** namespaces of ``M`` contain
+    1. all entries from the **exported** namespaces of ``M``, and
+    2. all entries from the **global** namespaces, and
+    3. all entries from the **privately declared** namespace of ``M``, and
+    4. if ``M`` is nested within a module ``N``: all entries from the **visible** namespaces of ``N`` that do not have the same name as any of the entries in the **publically declared** namespaces of ``M``, and
+    5. all parameters of ``M``.
+
 
 This is easiest to understand in an example: 
 
@@ -248,12 +254,13 @@ This is easiest to understand in an example:
       }
     }
 
-The module ``OneTwoThreeLib`` **imports** anything that is exported by the module ``MyFavoriteNumbers``.
+The module ``OneTwoThreeLib`` **publically declares** the class ``OneTwoThree`` and **privately declares** the module ``P``.
 
-It **declares** the class ``OneTwoThree`` and the module ``P``.
+It **exports** the class ``OneTwoThree`` and anything that is exported by ``MyFavoriteNumbers``
+(assuming ``MyFavoriteNumbers`` does not export a type ``OneTwoThree``, which would not be **exported** by ``OneTwoThreeLib``).
 
-It **exports** the class ``OneTwoThree`` and anything that is exported by ``MyFavoriteNumbers``. 
-It does not export ``P``, since it is annotated with ``private``.
+Within it, the class ``OneTwoThree`` and the module ``P`` are **visible**, as well as anything exported by `MyFavoriteNumbers``
+(assuming ``MyFavoriteNumbers`` does not export a type ``OneTwoThree``, which would not be **visible** within ``OneTwoThreeLib``).
 
 Example
 =======
