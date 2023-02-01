@@ -29,6 +29,9 @@ class PathInjectionAdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
+/**
+ * A sink defined in a CSV model.
+ */
 private class DefaultPathInjectionSink extends PathInjectionSink {
   DefaultPathInjectionSink() { sinkNode(this, "path-injection") }
 }

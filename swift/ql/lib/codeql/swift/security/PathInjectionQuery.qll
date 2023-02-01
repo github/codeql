@@ -8,7 +8,7 @@ private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSources
 private import codeql.swift.dataflow.TaintTracking
-private import codeql.swift.security.PathInjection
+private import codeql.swift.security.PathInjectionExtensions
 
 /**
  * A taint-tracking configuration for path injection vulnerabilities.

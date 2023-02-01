@@ -120,11 +120,7 @@ pragma[noinline]
 predicate isSanitizerNode(DataFlow::Node node) {
   underscoreMacro(node.asExpr())
   or
-  not exists(node.asIndirectExpr()) and
-  not exists(node.asDefiningArgument()) and
-  not exists(node.asIndirectVariable()) and
-  not node instanceof DataFlow::InitialGlobalValue and
-  not node instanceof DataFlow::FinalGlobalValue and
+  exists(node.asExpr()) and
   cannotContainString(node.getType(), false)
 }
 

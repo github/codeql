@@ -81,22 +81,32 @@ class FieldAddress extends Operand {
  *
  * `isPointerArith` is `true` if `instrTo` is a `PointerArithmeticInstruction` and `opFrom`
  * is the left operand.
+ *
+ * `additional` is `true` if the conversion is supplied by an implementation of the
+ * `Indirection` class. It is sometimes useful to exclude such conversions.
  */
-predicate conversionFlow(Operand opFrom, Instruction instrTo, boolean isPointerArith) {
+predicate conversionFlow(
+  Operand opFrom, Instruction instrTo, boolean isPointerArith, boolean additional
+) {
   isPointerArith = false and
   (
-    instrTo.(CopyValueInstruction).getSourceValueOperand() = opFrom
+    additional = false and
+    (
+      instrTo.(CopyValueInstruction).getSourceValueOperand() = opFrom
+      or
+      instrTo.(ConvertInstruction).getUnaryOperand() = opFrom
+      or
+      instrTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
+      or
+      instrTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
+    )
     or
-    instrTo.(ConvertInstruction).getUnaryOperand() = opFrom
-    or
-    instrTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
-    or
-    instrTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
-    or
+    additional = true and
     Ssa::isAdditionalConversionFlow(opFrom, instrTo)
   )
   or
   isPointerArith = true and
+  additional = false and
   instrTo.(PointerArithmeticInstruction).getLeftOperand() = opFrom
 }
 
@@ -1445,7 +1455,7 @@ private module Cached {
 
   private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
     // Treat all conversions as flow, even conversions between different numeric types.
-    conversionFlow(opFrom, iTo, false)
+    conversionFlow(opFrom, iTo, false, _)
     or
     iTo.(CopyInstruction).getSourceValueOperand() = opFrom
   }

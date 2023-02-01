@@ -6,7 +6,7 @@
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.TaintTracking
-private import codeql.swift.security.CleartextLogging
+private import codeql.swift.security.CleartextLoggingExtensions
 private import codeql.swift.security.SensitiveExprs
 
 /**
