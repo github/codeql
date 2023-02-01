@@ -101,7 +101,6 @@ module UnsafeShellCommandConstruction {
    * A string constructed using a `.join(" ")` call, where the resulting string ends up being executed as a shell command.
    */
   class ArrayJoin extends Sink {
-    // TODO: Add test.
     Concepts::SystemCommandExecution s;
     DataFlow::MethodCallNode call;
 
@@ -110,10 +109,10 @@ module UnsafeShellCommandConstruction {
       unique( | | call.getArg(_)).asExpr().(Str).getText() = " " and
       isUsedAsShellCommand(call, s) and
       (
-        this = call.getObject() and
-        not call.getObject().asExpr() instanceof List
+        this = call.getArg(0) and
+        not call.getArg(0).asExpr() instanceof List
         or
-        this.asExpr() = call.getObject().asExpr().(List).getASubExpression()
+        this.asExpr() = call.getArg(0).asExpr().(List).getASubExpression()
       )
     }
 

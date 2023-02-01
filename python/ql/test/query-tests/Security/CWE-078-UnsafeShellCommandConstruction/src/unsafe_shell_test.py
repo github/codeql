@@ -6,3 +6,6 @@ def unsafe_shell_one(name):
 
     # f-strings
     os.system(f"ping {name}") # $result=BAD
+
+    # array.join
+    os.system("ping " + " ".join(name)) # $result=BAD
