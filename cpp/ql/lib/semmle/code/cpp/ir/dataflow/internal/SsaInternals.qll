@@ -221,7 +221,7 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
   }
 
   /** Gets the variable that is defined or used. */
-  final SourceVariable getSourceVariable() {
+  SourceVariable getSourceVariable() {
     exists(BaseSourceVariable v, int ind |
       sourceVariableHasBaseAndIndex(result, v, ind) and
       defOrUseHasSourceVariable(this, v, ind)
@@ -339,9 +339,7 @@ abstract private class OperandBasedUse extends UseImpl {
     operand.getUse() = block.getInstruction(index)
   }
 
-  final Operand getOperand() {
-    result = operand
-  }
+  final Operand getOperand() { result = operand }
 
   final override Cpp::Location getLocation() { result = operand.getLocation() }
 }
@@ -372,6 +370,14 @@ private class IteratorUse extends OperandBasedUse, TIteratorUse {
   override Node getNode() { nodeHasOperand(result, operand, ind) }
 }
 
+pragma[nomagic]
+private predicate finalParameterNodeHasParameterAndIndex(
+  FinalParameterNode n, Parameter p, int indirectionIndex
+) {
+  n.getParameter() = p and
+  n.getIndirectionIndex() = indirectionIndex
+}
+
 class FinalParameterUse extends UseImpl, TFinalParameterUse {
   Parameter p;
 
@@ -379,10 +385,7 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
 
   Parameter getParameter() { result = p }
 
-  override Node getNode() {
-    result.(FinalParameterNode).getParameter() = p and
-    result.(FinalParameterNode).getIndirectionIndex() = ind
-  }
+  override Node getNode() { finalParameterNodeHasParameterAndIndex(result, p, ind) }
 
   override int getIndirection() { result = ind + 1 }
 
@@ -413,42 +416,36 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
   }
 }
 
-class GlobalUse extends TGlobalUse {
+class GlobalUse extends UseImpl, TGlobalUse {
   Cpp::GlobalOrNamespaceVariable global;
   IRFunction f;
-  int indirectionIndex;
 
-  GlobalUse() { this = TGlobalUse(global, f, indirectionIndex) }
+  GlobalUse() { this = TGlobalUse(global, f, ind) }
+
+  override FinalGlobalValue getNode() { result.getGlobalUse() = this }
+
+  override int getIndirection() { result = ind + 1 } // TODO
 
   Cpp::GlobalOrNamespaceVariable getVariable() { result = global }
 
   IRFunction getIRFunction() { result = f }
 
-  final predicate hasIndexInBlock(IRBlock block, int index) {
+  final override predicate hasIndexInBlock(IRBlock block, int index) {
     exists(ExitFunctionInstruction exit |
       exit = f.getExitFunctionInstruction() and
       block.getInstruction(index) = exit
     )
   }
 
-  int getIndirectionIndex() { result = indirectionIndex }
+  override SourceVariable getSourceVariable() { sourceVariableIsGlobal(result, global, f, ind) }
 
-  SourceVariable getSourceVariable() { sourceVariableIsGlobal(result, global, f, indirectionIndex) }
-
-  final predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
-    this.hasIndexInBlock(block, index) and
-    sv = this.getSourceVariable()
-  }
-
-  final Cpp::Location getLocation() { result = f.getLocation() }
-
-  string toString() {
-    if indirectionIndex = 1
-    then result = global.toString()
-    else result = global.toString() + " indirection"
-  }
+  final override Cpp::Location getLocation() { result = f.getLocation() }
 
   Type getUnspecifiedType() { result = global.getUnspecifiedType() }
+
+  override predicate isCertain() { any() }
+
+  override BaseSourceVariableInstruction getBase() { none() }
 }
 
 class GlobalDef extends TGlobalDef {
@@ -516,19 +513,6 @@ predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
 }
 
 /**
- * Holds if `defOrUse` should flow to the final use of the
- * global variable use represetned by `globalUse`.
- */
-private predicate defOrUseToGlobalUse(DefOrUse defOrUse, GlobalUse globalUse) {
-  exists(IRBlock bb1, int i1, IRBlock bb2, int i2, SourceVariable v |
-    defOrUse.asDefOrUse().hasIndexInBlock(bb1, i1, v) and
-    globalUse.hasIndexInBlock(bb2, i2, v) and
-    adjacentDefRead(_, pragma[only_bind_into](bb1), pragma[only_bind_into](i1),
-      pragma[only_bind_into](bb2), pragma[only_bind_into](i2))
-  )
-}
-
-/**
  * Holds if `globalDef` represents the initial definition of a global variable that
  * flows to `useOrPhi`.
  */
@@ -541,14 +525,7 @@ private predicate globalDefToUse(GlobalDef globalDef, UseOrPhi useOrPhi) {
   )
 }
 
-private predicate useToNode(UseOrPhi use, Node nodeTo) {
-  exists(OperandBasedUse useImpl |
-    useImpl = use.asDefOrUse() and
-    nodeHasOperand(nodeTo, useImpl.getOperand(), useImpl.getIndirectionIndex())
-  )
-  or
-  nodeTo.(SsaPhiNode).getPhiNode() = use.asPhi()
-}
+private predicate useToNode(UseOrPhi use, Node nodeTo) { use.getNode() = nodeTo }
 
 pragma[noinline]
 predicate outNodeHasAddressAndIndex(
@@ -634,13 +611,6 @@ private predicate ssaFlowImpl(Node nodeFrom, Node nodeTo, boolean uncertain) {
     nodeToDefOrUse(nodeFrom, defOrUse1, uncertain) and
     adjacentDefRead(defOrUse1, use) and
     useToNode(use, nodeTo)
-  )
-  or
-  // Def/use to final value of global vairable
-  exists(DefOrUse defOrUse, GlobalUse globalUse |
-    nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
-    defOrUseToGlobalUse(defOrUse, globalUse) and
-    nodeTo.(FinalGlobalValue).getGlobalUse() = globalUse
   )
   or
   // Initial global variable value to a first use
