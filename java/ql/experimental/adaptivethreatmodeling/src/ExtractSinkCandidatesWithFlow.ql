@@ -31,7 +31,5 @@ where
         config.getASinkEndpointType().getDescription(), ", "
       ) + "\n" +
       // Extract the needed metadata for this endpoint.
-      any(string concatenatedMetadata |
-        EndpointCharacteristics::hasMetaData(sink, concatenatedMetadata)
-      )
+      any(string metadata | EndpointCharacteristics::hasMetadata(sink, metadata))
 select sink, message
