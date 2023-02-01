@@ -43,4 +43,18 @@ public class APKInstallation extends Activity {
         intent.setDataAndType(Uri.fromFile(file), APK_MIMETYPE);
         startActivity(intent);
     }
+
+    public void installAPK5(String path) {
+        File file = new File(Environment.getExternalStorageDirectory(), path);
+        Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+        intent.setData(Uri.fromFile(file));
+        startActivity(intent);
+    }
+
+    public void installAPK6(String path) {
+        File file = new File(Environment.getExternalStorageDirectory(), path);
+        Intent intent = new Intent("android.intent.action.INSTALL_PACKAGE");
+        intent.setData(Uri.fromFile(file));
+        startActivity(intent);
+    }
 }

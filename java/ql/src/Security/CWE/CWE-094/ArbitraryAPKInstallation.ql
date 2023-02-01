@@ -14,12 +14,24 @@ import java
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.TaintTracking3
 private import semmle.code.java.dataflow.ExternalFlow
 import DataFlow::PathGraph
 
 /** A string literal that represents the MIME type for Android APKs. */
 class PackageArchiveMimeTypeLiteral extends StringLiteral {
   PackageArchiveMimeTypeLiteral() { this.getValue() = "application/vnd.android.package-archive" }
+}
+
+class InstallPackageAction extends Expr {
+  InstallPackageAction() {
+    this.(StringLiteral).getValue() = "android.intent.action.INSTALL_PACKAGE"
+    or
+    exists(VarAccess va |
+      va.getVariable().hasName("ACTION_INSTALL_PACKAGE") and
+      va.getQualifier().getType() instanceof TypeIntent
+    )
+  }
 }
 
 /** A method that sets the MIME type of an intent. */
@@ -48,7 +60,12 @@ class SetDataMethod extends Method {
 
 /** A dataflow sink for the URI of an intent. */
 class SetDataSink extends DataFlow::ExprNode {
-  SetDataSink() { this.getExpr().(MethodAccess).getMethod() instanceof SetDataMethod }
+  SetDataSink() {
+    exists(MethodAccess ma |
+      this.getExpr() = ma.getQualifier() and
+      ma.getMethod() instanceof SetDataMethod
+    )
+  }
 }
 
 /** A method that generates a URI. */
@@ -84,14 +101,44 @@ class ApkConfiguration extends DataFlow::Configuration {
     exists(MethodAccess ma |
       ma.getMethod() instanceof SetDataMethod and
       ma.getArgument(0) = node.asExpr() and
-      any(PackageArchiveMimeTypeConfiguration c).hasFlowToExpr(ma)
+      (
+        any(PackageArchiveMimeTypeConfiguration c).hasFlowToExpr(ma.getQualifier())
+        or
+        any(InstallPackageActionConfiguration c).hasFlowToExpr(ma.getQualifier())
+      )
     )
+  }
+}
+
+private class InstallPackageActionConfiguration extends TaintTracking3::Configuration {
+  InstallPackageActionConfiguration() { this = "InstallPackageActionConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr() instanceof InstallPackageAction
+  }
+
+  override predicate isAdditionalTaintStep(
+    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
+    DataFlow::FlowState state2
+  ) {
+    state1 instanceof DataFlow::FlowStateEmpty and
+    state2 = "hasPackageInstallAction" and
+    exists(ConstructorCall cc |
+      cc.getConstructedType() instanceof TypeIntent and
+      node1.asExpr() = cc.getArgument(0) and
+      node2.asExpr() = cc
+    )
+  }
+
+  override predicate isSink(DataFlow::Node node, DataFlow::FlowState state) {
+    state = "hasPackageInstallAction" and node.asExpr().getType() instanceof TypeIntent
   }
 }
 
 /**
  * A dataflow configuration tracking the flow of the Android APK MIME type to
- * the `setType` or `setTypeAndNormalize` method of an intent.
+ * the `setType` or `setTypeAndNormalize` method of an intent, followed by a call
+ * to `setData[AndType][AndNormalize]`.
  */
 private class PackageArchiveMimeTypeConfiguration extends TaintTracking2::Configuration {
   PackageArchiveMimeTypeConfiguration() { this = "PackageArchiveMimeTypeConfiguration" }
