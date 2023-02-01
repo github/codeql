@@ -100,7 +100,7 @@ private predicate fwdFlow(Instruction instr, ValueNumber vn) {
  */
 pragma[nomagic]
 predicate revFlow(Instruction instr, ValueNumber vn) {
-  fwdFlow(instr, vn) and
+  fwdFlow(instr, pragma[only_bind_out](vn)) and
   (
     isSink(instr, _, vn)
     or
@@ -126,7 +126,7 @@ class Node extends MkNode {
 
   final string toString() { result = instr.toString() }
 
-  final Node getASuccessor() { result = MkNode(instr.getASuccessor(), vn) }
+  final Node getASuccessor() { result = MkNode(pragma[only_bind_out](instr.getASuccessor()), vn) }
 
   final Location getLocation() { result = instr.getLocation() }
 }
@@ -167,7 +167,7 @@ predicate hasFlow(
 ) {
   exists(ValueNumber vn |
     isSource(call, index, source, vn, _) and
-    hasFlow(getNode(source, vn), getNode(sink, vn)) and
+    hasFlow(getNode(source, pragma[only_bind_into](vn)), getNode(sink, pragma[only_bind_into](vn))) and
     isSink(sink, access, vn)
   )
 }
