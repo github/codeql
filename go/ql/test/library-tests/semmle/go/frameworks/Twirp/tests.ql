@@ -52,7 +52,7 @@ query predicate passingPositiveTests(string res, string expectation, InlineTest 
     exists(Twirp::ProtobufMessage n | t.inType(n))
     or
     expectation = "serviceInterface" and
-    exists(Twirp::ServiceInterface n | t.inType(n))
+    exists(Twirp::ServiceInterface n | t.inType(n.getNamedType()))
     or
     expectation = "serviceClient" and
     exists(Twirp::ServiceClient n | t.inType(n))
@@ -85,7 +85,7 @@ query predicate failingPositiveTests(string res, string expectation, InlineTest 
     not exists(Twirp::ProtobufMessage n | t.inType(n))
     or
     expectation = "serviceInterface" and
-    not exists(Twirp::ServiceInterface n | t.inType(n))
+    not exists(Twirp::ServiceInterface n | t.inType(n.getNamedType()))
     or
     expectation = "serviceClient" and
     not exists(Twirp::ServiceClient n | t.inType(n))
