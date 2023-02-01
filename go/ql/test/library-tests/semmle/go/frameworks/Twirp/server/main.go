@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -35,6 +36,7 @@ func (s *notesService) CreateNote(ctx context.Context, params *notes.CreateNoteP
 func (s *notesService) GetAllNotes(ctx context.Context, params *notes.GetAllNotesParams) (*notes.GetAllNotesResult, error) { // test: routeHandler, request
 	allNotes := make([]*notes.Note, 0)
 
+	fmt.Println(params)
 	for _, note := range s.Notes {
 		n := note
 		allNotes = append(allNotes, &n)
