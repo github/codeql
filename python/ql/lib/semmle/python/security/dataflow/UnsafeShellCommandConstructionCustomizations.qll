@@ -129,7 +129,6 @@ module UnsafeShellCommandConstruction {
    * Either a call to `.format(..)` or a string-interpolation with a `%` operator.
    */
   class TaintedFormatStringAsSink extends Sink {
-    // TODO: Test
     Concepts::SystemCommandExecution s;
     DataFlow::Node formatCall;
 
