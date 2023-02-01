@@ -71,6 +71,35 @@ predicate erroneousConfidences(
 predicate isTypeAccess(DataFlow::Node n) { n.asExpr() instanceof TypeAccess }
 
 /**
+ * Holds if `n` has the given metadata.
+ *
+ * This is a helper function to extract and export needed information about each endpoint in the sink candidate query as
+ * well as the queries that exatract positive and negative examples for the prompt / training set. The metadata is
+ * extracted as a string in the format of a Python dictionary.
+ */
+predicate hasMetadata(DataFlow::Node n, string metadata) {
+  exists(
+    Callable callee, Call call, int index, string package, string type, boolean subtypes,
+    string name, string signature, string ext, string input, string provenance
+  |
+    n.asExpr() = call.getArgument(index) and
+    callee = call.getCallee() and
+    package = callee.getDeclaringType().getPackage().getName() and
+    type = callee.getDeclaringType().getName() and //TODO: Will this work for inner classes? Will it produce X$Y? What about lambdas? What about enums? What about interfaces? What about annotations?
+    subtypes = true and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
+    name = callee.getName() and // TODO: Will this work for constructors?
+    signature = callee.paramsString() and
+    ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
+    input = "Argument[" + index + "]" and // TODO: why are slashes added?
+    provenance = "manual" and // TODO
+    metadata =
+      "{'Package': '" + package + "', 'Type': '" + type + "', 'Subtypes': " + subtypes +
+        ", 'Name': '" + name + "', 'Signature': '" + signature + "', 'Ext': '" + ext +
+        "', 'Argument index': '" + input + "', 'Provenance': '" + provenance + "'}" // TODO: Why are the curly braces added twice?
+  )
+}
+
+/**
  * A set of characteristics that a particular endpoint might have. This set of characteristics is used to make decisions
  * about whether to include the endpoint in the training set and with what label, as well as whether to score the
  * endpoint at inference time.

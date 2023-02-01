@@ -54,7 +54,5 @@ where
   message =
     "Non-sink of type " + characteristic + " with confidence " + confidence.toString() + "\n" +
       // Extract the needed metadata for this endpoint.
-      any(string concatenatedMetadata |
-        EndpointCharacteristics::hasMetaData(endpoint, concatenatedMetadata)
-      )
+      any(string metadata | EndpointCharacteristics::hasMetadata(endpoint, metadata))
 select endpoint, message
