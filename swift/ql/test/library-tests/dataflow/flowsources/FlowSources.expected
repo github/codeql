@@ -22,14 +22,14 @@
 | customurlschemes.swift:61:52:61:62 | url | external |
 | customurlschemes.swift:66:9:66:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
 | customurlschemes.swift:71:9:71:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
-| customurlschemes.swift:77:59:77:76 | options | Remote data in UIWindowSceneDelegate.scene |
-| customurlschemes.swift:78:28:78:38 | continue | Remote data in UIWindowSceneDelegate.scene |
-| customurlschemes.swift:79:28:79:39 | didUpdate | Remote data in UIWindowSceneDelegate.scene |
-| customurlschemes.swift:80:28:80:65 | openURLContexts | Remote data in UIWindowSceneDelegate.scene |
-| customurlschemes.swift:86:59:86:76 | options | Remote data in UIWindowSceneDelegate.scene |
-| customurlschemes.swift:87:28:87:38 | continue | Remote data in UIWindowSceneDelegate.scene |
-| customurlschemes.swift:88:28:88:39 | didUpdate | Remote data in UIWindowSceneDelegate.scene |
-| customurlschemes.swift:89:28:89:65 | openURLContexts | Remote data in UIWindowSceneDelegate.scene |
+| customurlschemes.swift:77:59:77:76 | options | external |
+| customurlschemes.swift:78:28:78:38 | continue | external |
+| customurlschemes.swift:79:28:79:39 | didUpdate | external |
+| customurlschemes.swift:80:28:80:65 | openURLContexts | external |
+| customurlschemes.swift:86:59:86:76 | options | external |
+| customurlschemes.swift:87:28:87:38 | continue | external |
+| customurlschemes.swift:88:28:88:39 | didUpdate | external |
+| customurlschemes.swift:89:28:89:65 | openURLContexts | external |
 | data.swift:18:20:18:54 | call to Data.init(contentsOf:options:) | external |
 | file://:0:0:0:0 | .data | external |
 | file://:0:0:0:0 | .result | external |
