@@ -2,8 +2,8 @@
 <qhelp>
 
   <overview>
-    <p>If a <code>ResultReceiver</code> is obtained from an untrusted source, such as being unparcelled from an <code>Intent</code> that was received by an exported component, 
-    sensitive data such as passwords should not be sent to it. Otherwise, this sensitive information may be leaked to a malicious application.</p>
+    <p>If a <code>ResultReceiver</code> is obtained from an untrusted source, such as an <code>Intent</code> received by an exported component, 
+    do not send it sensitive data. Otherwise, the information may be leaked to a malicious application.</p>
   </overview>
 
   <recommendation>

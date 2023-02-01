@@ -1,7 +1,7 @@
 /**
  * @name Leaking sensitive information through a ResultReceiver
- * @description An Android application obtains a ResultReceiver from a
- *              third-party component and uses it to send sensitive data
+ * @description Sending sensitive data to a 'ResultReceiver' from an untrusted source
+ *              can allow malicious actors access to your information.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.2
