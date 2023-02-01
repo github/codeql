@@ -17,15 +17,17 @@ module UnsafeShellCommandConstruction {
   /** A source for shell command constructed from library input vulnerabilities. */
   abstract class Source extends DataFlow::Node { }
 
+  private import semmle.python.frameworks.Setuptools
+
   /** An input parameter to a gem seen as a source. */
   private class LibraryInputAsSource extends Source instanceof DataFlow::ParameterNode {
-    LibraryInputAsSource() {
-      none() // TODO: Do something here, put it in a shared library.
-    }
+    LibraryInputAsSource() { this = Setuptools::getALibraryInput() }
   }
 
   /** A sink for shell command constructed from library input vulnerabilities. */
   abstract class Sink extends DataFlow::Node {
+    Sink() { not this.asExpr() instanceof StrConst } // filter out string constants, makes testing easier
+
     /** Gets a description of how the string in this sink was constructed. */
     abstract string describe();
 
@@ -80,7 +82,6 @@ module UnsafeShellCommandConstruction {
    * where the resulting string ends up being executed as a shell command.
    */
   class StringConcatAsSink extends Sink {
-    // TODO: Add test.
     Concepts::SystemCommandExecution s;
     BinaryExpr add;
 

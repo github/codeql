@@ -51,6 +51,7 @@ private import semmle.python.frameworks.Simplejson
 private import semmle.python.frameworks.SqlAlchemy
 private import semmle.python.frameworks.Starlette
 private import semmle.python.frameworks.Stdlib
+private import semmle.python.frameworks.Setuptools
 private import semmle.python.frameworks.Toml
 private import semmle.python.frameworks.Tornado
 private import semmle.python.frameworks.Twisted
