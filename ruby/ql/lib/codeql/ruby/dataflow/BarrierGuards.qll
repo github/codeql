@@ -15,12 +15,14 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedN
     c = guard and
     exists(ExprCfgNode strNode |
       strNode.getConstantValue().isStringlikeValue(_) and
-      c.getExpr() instanceof EqExpr and
-      branch = true
-      or
-      c.getExpr() instanceof CaseEqExpr and branch = true
-      or
-      c.getExpr() instanceof NEExpr and branch = false
+      (
+        c.getExpr() instanceof EqExpr and
+        branch = true
+        or
+        c.getExpr() instanceof CaseEqExpr and branch = true
+        or
+        c.getExpr() instanceof NEExpr and branch = false
+      )
     |
       c.getLeftOperand() = strNode and c.getRightOperand() = testedNode
       or
