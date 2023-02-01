@@ -61,7 +61,6 @@ module UnsafeShellCommandConstruction {
    * where the resulting string ends up being executed as a shell command.
    */
   class StringInterpolationAsSink extends Sink {
-    // TODO: Add test.
     Concepts::SystemCommandExecution s;
     Fstring fstring;
 

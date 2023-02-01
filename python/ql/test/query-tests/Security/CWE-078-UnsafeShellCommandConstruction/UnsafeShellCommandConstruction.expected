@@ -1,8 +1,11 @@
 edges
 | src/unsafe_shell_test.py:4:22:4:25 | ControlFlowNode for name | src/unsafe_shell_test.py:5:25:5:28 | ControlFlowNode for name |
+| src/unsafe_shell_test.py:4:22:4:25 | ControlFlowNode for name | src/unsafe_shell_test.py:8:23:8:26 | ControlFlowNode for name |
 nodes
 | src/unsafe_shell_test.py:4:22:4:25 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
 | src/unsafe_shell_test.py:5:25:5:28 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| src/unsafe_shell_test.py:8:23:8:26 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
 subpaths
 #select
 | src/unsafe_shell_test.py:5:15:5:28 | ControlFlowNode for BinaryExpr | src/unsafe_shell_test.py:4:22:4:25 | ControlFlowNode for name | src/unsafe_shell_test.py:5:25:5:28 | ControlFlowNode for name | This string concatenation which depends on $@ is later used in a $@. | src/unsafe_shell_test.py:4:22:4:25 | ControlFlowNode for name | library input | src/unsafe_shell_test.py:5:5:5:29 | ControlFlowNode for Attribute() | shell command |
+| src/unsafe_shell_test.py:8:15:8:28 | ControlFlowNode for Fstring | src/unsafe_shell_test.py:4:22:4:25 | ControlFlowNode for name | src/unsafe_shell_test.py:8:23:8:26 | ControlFlowNode for name | This string construction which depends on $@ is later used in a $@. | src/unsafe_shell_test.py:4:22:4:25 | ControlFlowNode for name | library input | src/unsafe_shell_test.py:8:5:8:29 | ControlFlowNode for Attribute() | shell command |
