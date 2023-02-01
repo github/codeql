@@ -53,7 +53,7 @@ private class AdoptsWkNavigationDelegate extends Decl {
 private class WKNavigationDelegateSource extends RemoteFlowSource {
   WKNavigationDelegateSource() {
     exists(ParamDecl p, FuncDecl f, AdoptsWkNavigationDelegate t |
-      f.getEnclosingDecl() = t and
+      t.getAMember() = f and
       f.getName() =
         [
           "webView(_:decidePolicyFor:preferences:decisionHandler:)",
