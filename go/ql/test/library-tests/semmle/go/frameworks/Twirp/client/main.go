@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-  client := notes.NewNotesServiceProtobufClient("http://localhost:8000", &http.Client{}) // test: ssrfSink
+	client := notes.NewNotesServiceProtobufClient("http://localhost:8000", &http.Client{}) // test: ssrfSink
 
 	ctx := context.Background()
 
