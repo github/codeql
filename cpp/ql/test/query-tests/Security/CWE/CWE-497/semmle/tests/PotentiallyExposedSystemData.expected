@@ -5,12 +5,9 @@ edges
 | tests.cpp:57:18:57:23 | call to getenv | tests.cpp:57:18:57:39 | call to getenv |
 | tests.cpp:58:41:58:46 | call to getenv | tests.cpp:58:41:58:62 | call to getenv |
 | tests.cpp:59:43:59:48 | call to getenv | tests.cpp:59:43:59:64 | call to getenv |
-| tests.cpp:62:7:62:18 | global_token | tests.cpp:69:17:69:28 | global_token |
 | tests.cpp:62:7:62:18 | global_token | tests.cpp:71:27:71:38 | global_token |
+| tests.cpp:62:7:62:18 | global_token | tests.cpp:73:27:73:31 | maybe |
 | tests.cpp:62:22:62:27 | call to getenv | tests.cpp:62:7:62:18 | global_token |
-| tests.cpp:62:22:62:27 | call to getenv | tests.cpp:62:22:62:27 | call to getenv |
-| tests.cpp:69:17:69:28 | global_token | tests.cpp:73:27:73:31 | maybe |
-| tests.cpp:71:27:71:38 | global_token | tests.cpp:71:27:71:38 | global_token |
 | tests.cpp:86:29:86:31 | msg | tests.cpp:88:15:88:17 | msg |
 | tests.cpp:97:13:97:18 | call to getenv | tests.cpp:97:13:97:34 | call to getenv |
 | tests.cpp:97:13:97:18 | call to getenv | tests.cpp:97:13:97:34 | call to getenv |
@@ -50,9 +47,6 @@ nodes
 | tests.cpp:59:43:59:64 | call to getenv | semmle.label | call to getenv |
 | tests.cpp:62:7:62:18 | global_token | semmle.label | global_token |
 | tests.cpp:62:22:62:27 | call to getenv | semmle.label | call to getenv |
-| tests.cpp:62:22:62:27 | call to getenv | semmle.label | call to getenv |
-| tests.cpp:69:17:69:28 | global_token | semmle.label | global_token |
-| tests.cpp:71:27:71:38 | global_token | semmle.label | global_token |
 | tests.cpp:71:27:71:38 | global_token | semmle.label | global_token |
 | tests.cpp:73:27:73:31 | maybe | semmle.label | maybe |
 | tests.cpp:86:29:86:31 | msg | semmle.label | msg |
