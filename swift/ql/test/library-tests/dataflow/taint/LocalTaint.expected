@@ -1019,284 +1019,474 @@
 | url.swift:31:5:31:5 | SSA def(self) | url.swift:31:5:31:29 | self[return] |
 | url.swift:31:5:31:5 | self | url.swift:31:5:31:5 | SSA def(self) |
 | url.swift:34:7:34:7 | SSA def(self) | url.swift:34:7:34:7 | self[return] |
+| url.swift:34:7:34:7 | SSA def(self) | url.swift:34:7:34:7 | self[return] |
 | url.swift:34:7:34:7 | self | url.swift:34:7:34:7 | SSA def(self) |
-| url.swift:34:30:34:30 | SSA def(self) | url.swift:34:30:34:30 | self[return] |
-| url.swift:34:30:34:30 | self | url.swift:34:30:34:30 | SSA def(self) |
-| url.swift:36:7:36:7 | SSA def(self) | url.swift:36:7:36:7 | self[return] |
-| url.swift:36:7:36:7 | self | url.swift:36:7:36:7 | SSA def(self) |
-| url.swift:36:33:36:33 | SSA def(self) | url.swift:36:33:36:33 | self[return] |
-| url.swift:36:33:36:33 | self | url.swift:36:33:36:33 | SSA def(self) |
-| url.swift:38:7:38:7 | SSA def(self) | url.swift:38:7:38:7 | self[return] |
-| url.swift:38:7:38:7 | self | url.swift:38:7:38:7 | SSA def(self) |
-| url.swift:38:43:38:43 | SSA def(self) | url.swift:38:43:38:43 | self[return] |
-| url.swift:38:43:38:43 | self | url.swift:38:43:38:43 | SSA def(self) |
-| url.swift:40:7:40:7 | SSA def(self) | url.swift:40:7:40:7 | self[return] |
-| url.swift:40:7:40:7 | SSA def(self) | url.swift:40:7:40:7 | self[return] |
-| url.swift:40:7:40:7 | self | url.swift:40:7:40:7 | SSA def(self) |
-| url.swift:40:7:40:7 | self | url.swift:40:7:40:7 | SSA def(self) |
-| url.swift:41:33:41:33 | SSA def(self) | url.swift:41:33:41:59 | self[return] |
-| url.swift:41:33:41:33 | self | url.swift:41:33:41:33 | SSA def(self) |
-| url.swift:43:7:43:7 | SSA def(self) | url.swift:43:2:46:55 | self[return] |
-| url.swift:43:7:43:7 | self | url.swift:43:7:43:7 | SSA def(self) |
-| url.swift:56:6:56:6 | SSA def(clean) | url.swift:58:29:58:29 | clean |
-| url.swift:56:14:56:14 | http://example.com/ | url.swift:56:6:56:6 | SSA def(clean) |
-| url.swift:57:6:57:6 | SSA def(tainted) | url.swift:59:31:59:31 | tainted |
-| url.swift:57:16:57:23 | call to source() | url.swift:57:6:57:6 | SSA def(tainted) |
-| url.swift:58:6:58:6 | SSA def(urlClean) | url.swift:61:12:61:12 | urlClean |
-| url.swift:58:17:58:34 | call to URL.init(string:) | url.swift:58:17:58:35 | ...! |
-| url.swift:58:17:58:35 | ...! | url.swift:58:6:58:6 | SSA def(urlClean) |
-| url.swift:58:29:58:29 | [post] clean | url.swift:82:24:82:24 | clean |
-| url.swift:58:29:58:29 | clean | url.swift:58:17:58:34 | call to URL.init(string:) |
-| url.swift:58:29:58:29 | clean | url.swift:82:24:82:24 | clean |
-| url.swift:59:6:59:6 | SSA def(urlTainted) | url.swift:62:12:62:12 | urlTainted |
-| url.swift:59:19:59:38 | call to URL.init(string:) | url.swift:59:19:59:39 | ...! |
-| url.swift:59:19:59:39 | ...! | url.swift:59:6:59:6 | SSA def(urlTainted) |
-| url.swift:59:31:59:31 | [post] tainted | url.swift:83:24:83:24 | tainted |
-| url.swift:59:31:59:31 | tainted | url.swift:59:19:59:38 | call to URL.init(string:) |
-| url.swift:59:31:59:31 | tainted | url.swift:83:24:83:24 | tainted |
-| url.swift:61:12:61:12 | [post] urlClean | url.swift:84:43:84:43 | urlClean |
-| url.swift:61:12:61:12 | urlClean | url.swift:84:43:84:43 | urlClean |
-| url.swift:62:12:62:12 | [post] urlTainted | url.swift:64:12:64:12 | urlTainted |
-| url.swift:62:12:62:12 | urlTainted | url.swift:64:12:64:12 | urlTainted |
-| url.swift:64:12:64:12 | [post] urlTainted | url.swift:65:12:65:12 | urlTainted |
-| url.swift:64:12:64:12 | urlTainted | url.swift:64:12:64:23 | .absoluteURL |
-| url.swift:64:12:64:12 | urlTainted | url.swift:65:12:65:12 | urlTainted |
-| url.swift:65:12:65:12 | [post] urlTainted | url.swift:66:15:66:15 | urlTainted |
-| url.swift:65:12:65:12 | urlTainted | url.swift:65:12:65:23 | .baseURL |
-| url.swift:65:12:65:12 | urlTainted | url.swift:66:15:66:15 | urlTainted |
-| url.swift:66:15:66:15 | [post] urlTainted | url.swift:67:15:67:15 | urlTainted |
-| url.swift:66:15:66:15 | urlTainted | url.swift:66:15:66:26 | .fragment |
-| url.swift:66:15:66:15 | urlTainted | url.swift:67:15:67:15 | urlTainted |
-| url.swift:66:15:66:26 | .fragment | url.swift:66:15:66:34 | ...! |
-| url.swift:67:15:67:15 | [post] urlTainted | url.swift:68:15:68:15 | urlTainted |
-| url.swift:67:15:67:15 | urlTainted | url.swift:67:15:67:26 | .host |
-| url.swift:67:15:67:15 | urlTainted | url.swift:68:15:68:15 | urlTainted |
-| url.swift:67:15:67:26 | .host | url.swift:67:15:67:30 | ...! |
-| url.swift:68:15:68:15 | [post] urlTainted | url.swift:69:15:69:15 | urlTainted |
-| url.swift:68:15:68:15 | urlTainted | url.swift:68:15:68:26 | .lastPathComponent |
-| url.swift:68:15:68:15 | urlTainted | url.swift:69:15:69:15 | urlTainted |
-| url.swift:69:15:69:15 | [post] urlTainted | url.swift:70:15:70:15 | urlTainted |
-| url.swift:69:15:69:15 | urlTainted | url.swift:69:15:69:26 | .path |
-| url.swift:69:15:69:15 | urlTainted | url.swift:70:15:70:15 | urlTainted |
-| url.swift:70:15:70:15 | [post] urlTainted | url.swift:71:15:71:15 | urlTainted |
-| url.swift:70:15:70:15 | urlTainted | url.swift:70:15:70:26 | .pathComponents |
-| url.swift:70:15:70:15 | urlTainted | url.swift:71:15:71:15 | urlTainted |
-| url.swift:70:15:70:26 | .pathComponents | url.swift:70:15:70:42 | ...[...] |
-| url.swift:71:15:71:15 | [post] urlTainted | url.swift:72:12:72:12 | urlTainted |
-| url.swift:71:15:71:15 | urlTainted | url.swift:71:15:71:26 | .pathExtension |
-| url.swift:71:15:71:15 | urlTainted | url.swift:72:12:72:12 | urlTainted |
-| url.swift:72:12:72:12 | [post] urlTainted | url.swift:73:15:73:15 | urlTainted |
-| url.swift:72:12:72:12 | urlTainted | url.swift:72:12:72:23 | .port |
-| url.swift:72:12:72:12 | urlTainted | url.swift:73:15:73:15 | urlTainted |
-| url.swift:72:12:72:23 | .port | url.swift:72:12:72:27 | ...! |
-| url.swift:73:15:73:15 | [post] urlTainted | url.swift:74:15:74:15 | urlTainted |
-| url.swift:73:15:73:15 | urlTainted | url.swift:73:15:73:26 | .query |
-| url.swift:73:15:73:15 | urlTainted | url.swift:74:15:74:15 | urlTainted |
-| url.swift:73:15:73:26 | .query | url.swift:73:15:73:31 | ...! |
-| url.swift:74:15:74:15 | [post] urlTainted | url.swift:75:15:75:15 | urlTainted |
-| url.swift:74:15:74:15 | urlTainted | url.swift:74:15:74:26 | .relativePath |
-| url.swift:74:15:74:15 | urlTainted | url.swift:75:15:75:15 | urlTainted |
-| url.swift:75:15:75:15 | [post] urlTainted | url.swift:76:15:76:15 | urlTainted |
-| url.swift:75:15:75:15 | urlTainted | url.swift:75:15:75:26 | .relativeString |
-| url.swift:75:15:75:15 | urlTainted | url.swift:76:15:76:15 | urlTainted |
-| url.swift:76:15:76:15 | [post] urlTainted | url.swift:77:12:77:12 | urlTainted |
-| url.swift:76:15:76:15 | urlTainted | url.swift:76:15:76:26 | .scheme |
-| url.swift:76:15:76:15 | urlTainted | url.swift:77:12:77:12 | urlTainted |
-| url.swift:76:15:76:26 | .scheme | url.swift:76:15:76:32 | ...! |
-| url.swift:77:12:77:12 | [post] urlTainted | url.swift:78:12:78:12 | urlTainted |
-| url.swift:77:12:77:12 | urlTainted | url.swift:77:12:77:23 | .standardized |
-| url.swift:77:12:77:12 | urlTainted | url.swift:78:12:78:12 | urlTainted |
-| url.swift:78:12:78:12 | [post] urlTainted | url.swift:79:15:79:15 | urlTainted |
-| url.swift:78:12:78:12 | urlTainted | url.swift:78:12:78:23 | .standardizedFileURL |
-| url.swift:78:12:78:12 | urlTainted | url.swift:79:15:79:15 | urlTainted |
-| url.swift:79:15:79:15 | [post] urlTainted | url.swift:80:15:80:15 | urlTainted |
-| url.swift:79:15:79:15 | urlTainted | url.swift:79:15:79:26 | .user |
-| url.swift:79:15:79:15 | urlTainted | url.swift:80:15:80:15 | urlTainted |
-| url.swift:79:15:79:26 | .user | url.swift:79:15:79:30 | ...! |
-| url.swift:80:15:80:15 | [post] urlTainted | url.swift:86:43:86:43 | urlTainted |
-| url.swift:80:15:80:15 | urlTainted | url.swift:80:15:80:26 | .password |
-| url.swift:80:15:80:15 | urlTainted | url.swift:86:43:86:43 | urlTainted |
-| url.swift:80:15:80:26 | .password | url.swift:80:15:80:34 | ...! |
-| url.swift:82:12:82:46 | call to URL.init(string:relativeTo:) | url.swift:82:12:82:47 | ...! |
-| url.swift:82:24:82:24 | [post] clean | url.swift:84:24:84:24 | clean |
-| url.swift:82:24:82:24 | clean | url.swift:82:12:82:46 | call to URL.init(string:relativeTo:) |
-| url.swift:82:24:82:24 | clean | url.swift:84:24:84:24 | clean |
-| url.swift:82:43:82:43 | nil | url.swift:82:12:82:46 | call to URL.init(string:relativeTo:) |
-| url.swift:83:12:83:48 | call to URL.init(string:relativeTo:) | url.swift:83:12:83:49 | ...! |
-| url.swift:83:24:83:24 | [post] tainted | url.swift:108:25:108:25 | tainted |
-| url.swift:83:24:83:24 | tainted | url.swift:83:12:83:48 | call to URL.init(string:relativeTo:) |
-| url.swift:83:24:83:24 | tainted | url.swift:108:25:108:25 | tainted |
-| url.swift:83:45:83:45 | nil | url.swift:83:12:83:48 | call to URL.init(string:relativeTo:) |
-| url.swift:84:12:84:51 | call to URL.init(string:relativeTo:) | url.swift:84:12:84:52 | ...! |
-| url.swift:84:24:84:24 | [post] clean | url.swift:86:24:86:24 | clean |
-| url.swift:84:24:84:24 | clean | url.swift:84:12:84:51 | call to URL.init(string:relativeTo:) |
-| url.swift:84:24:84:24 | clean | url.swift:86:24:86:24 | clean |
-| url.swift:84:43:84:43 | urlClean | url.swift:84:12:84:51 | call to URL.init(string:relativeTo:) |
-| url.swift:86:12:86:53 | call to URL.init(string:relativeTo:) | url.swift:86:12:86:54 | ...! |
-| url.swift:86:12:86:54 | ...! | url.swift:86:12:86:56 | .absoluteURL |
-| url.swift:86:24:86:24 | [post] clean | url.swift:87:24:87:24 | clean |
-| url.swift:86:24:86:24 | clean | url.swift:86:12:86:53 | call to URL.init(string:relativeTo:) |
-| url.swift:86:24:86:24 | clean | url.swift:87:24:87:24 | clean |
-| url.swift:86:43:86:43 | [post] urlTainted | url.swift:87:43:87:43 | urlTainted |
-| url.swift:86:43:86:43 | urlTainted | url.swift:86:12:86:53 | call to URL.init(string:relativeTo:) |
-| url.swift:86:43:86:43 | urlTainted | url.swift:87:43:87:43 | urlTainted |
-| url.swift:87:12:87:53 | call to URL.init(string:relativeTo:) | url.swift:87:12:87:54 | ...! |
-| url.swift:87:12:87:54 | ...! | url.swift:87:12:87:56 | .baseURL |
-| url.swift:87:24:87:24 | [post] clean | url.swift:88:27:88:27 | clean |
-| url.swift:87:24:87:24 | clean | url.swift:87:12:87:53 | call to URL.init(string:relativeTo:) |
-| url.swift:87:24:87:24 | clean | url.swift:88:27:88:27 | clean |
-| url.swift:87:43:87:43 | [post] urlTainted | url.swift:88:46:88:46 | urlTainted |
-| url.swift:87:43:87:43 | urlTainted | url.swift:87:12:87:53 | call to URL.init(string:relativeTo:) |
-| url.swift:87:43:87:43 | urlTainted | url.swift:88:46:88:46 | urlTainted |
-| url.swift:88:15:88:56 | call to URL.init(string:relativeTo:) | url.swift:88:15:88:57 | ...! |
-| url.swift:88:15:88:57 | ...! | url.swift:88:15:88:59 | .fragment |
-| url.swift:88:15:88:59 | .fragment | url.swift:88:15:88:67 | ...! |
-| url.swift:88:27:88:27 | [post] clean | url.swift:89:27:89:27 | clean |
-| url.swift:88:27:88:27 | clean | url.swift:88:15:88:56 | call to URL.init(string:relativeTo:) |
-| url.swift:88:27:88:27 | clean | url.swift:89:27:89:27 | clean |
-| url.swift:88:46:88:46 | [post] urlTainted | url.swift:89:46:89:46 | urlTainted |
-| url.swift:88:46:88:46 | urlTainted | url.swift:88:15:88:56 | call to URL.init(string:relativeTo:) |
-| url.swift:88:46:88:46 | urlTainted | url.swift:89:46:89:46 | urlTainted |
-| url.swift:89:15:89:56 | call to URL.init(string:relativeTo:) | url.swift:89:15:89:57 | ...! |
-| url.swift:89:15:89:57 | ...! | url.swift:89:15:89:59 | .host |
-| url.swift:89:15:89:59 | .host | url.swift:89:15:89:63 | ...! |
-| url.swift:89:27:89:27 | [post] clean | url.swift:90:27:90:27 | clean |
-| url.swift:89:27:89:27 | clean | url.swift:89:15:89:56 | call to URL.init(string:relativeTo:) |
-| url.swift:89:27:89:27 | clean | url.swift:90:27:90:27 | clean |
-| url.swift:89:46:89:46 | [post] urlTainted | url.swift:90:46:90:46 | urlTainted |
-| url.swift:89:46:89:46 | urlTainted | url.swift:89:15:89:56 | call to URL.init(string:relativeTo:) |
-| url.swift:89:46:89:46 | urlTainted | url.swift:90:46:90:46 | urlTainted |
-| url.swift:90:15:90:56 | call to URL.init(string:relativeTo:) | url.swift:90:15:90:57 | ...! |
-| url.swift:90:15:90:57 | ...! | url.swift:90:15:90:59 | .lastPathComponent |
-| url.swift:90:27:90:27 | [post] clean | url.swift:91:27:91:27 | clean |
-| url.swift:90:27:90:27 | clean | url.swift:90:15:90:56 | call to URL.init(string:relativeTo:) |
-| url.swift:90:27:90:27 | clean | url.swift:91:27:91:27 | clean |
-| url.swift:90:46:90:46 | [post] urlTainted | url.swift:91:46:91:46 | urlTainted |
-| url.swift:90:46:90:46 | urlTainted | url.swift:90:15:90:56 | call to URL.init(string:relativeTo:) |
-| url.swift:90:46:90:46 | urlTainted | url.swift:91:46:91:46 | urlTainted |
-| url.swift:91:15:91:56 | call to URL.init(string:relativeTo:) | url.swift:91:15:91:57 | ...! |
-| url.swift:91:15:91:57 | ...! | url.swift:91:15:91:59 | .path |
-| url.swift:91:27:91:27 | [post] clean | url.swift:92:27:92:27 | clean |
-| url.swift:91:27:91:27 | clean | url.swift:91:15:91:56 | call to URL.init(string:relativeTo:) |
-| url.swift:91:27:91:27 | clean | url.swift:92:27:92:27 | clean |
-| url.swift:91:46:91:46 | [post] urlTainted | url.swift:92:46:92:46 | urlTainted |
-| url.swift:91:46:91:46 | urlTainted | url.swift:91:15:91:56 | call to URL.init(string:relativeTo:) |
-| url.swift:91:46:91:46 | urlTainted | url.swift:92:46:92:46 | urlTainted |
-| url.swift:92:15:92:56 | call to URL.init(string:relativeTo:) | url.swift:92:15:92:57 | ...! |
-| url.swift:92:15:92:57 | ...! | url.swift:92:15:92:59 | .pathComponents |
-| url.swift:92:15:92:59 | .pathComponents | url.swift:92:15:92:75 | ...[...] |
-| url.swift:92:27:92:27 | [post] clean | url.swift:93:27:93:27 | clean |
-| url.swift:92:27:92:27 | clean | url.swift:92:15:92:56 | call to URL.init(string:relativeTo:) |
-| url.swift:92:27:92:27 | clean | url.swift:93:27:93:27 | clean |
-| url.swift:92:46:92:46 | [post] urlTainted | url.swift:93:46:93:46 | urlTainted |
-| url.swift:92:46:92:46 | urlTainted | url.swift:92:15:92:56 | call to URL.init(string:relativeTo:) |
-| url.swift:92:46:92:46 | urlTainted | url.swift:93:46:93:46 | urlTainted |
-| url.swift:93:15:93:56 | call to URL.init(string:relativeTo:) | url.swift:93:15:93:57 | ...! |
-| url.swift:93:15:93:57 | ...! | url.swift:93:15:93:59 | .pathExtension |
-| url.swift:93:27:93:27 | [post] clean | url.swift:94:24:94:24 | clean |
-| url.swift:93:27:93:27 | clean | url.swift:93:15:93:56 | call to URL.init(string:relativeTo:) |
-| url.swift:93:27:93:27 | clean | url.swift:94:24:94:24 | clean |
-| url.swift:93:46:93:46 | [post] urlTainted | url.swift:94:43:94:43 | urlTainted |
-| url.swift:93:46:93:46 | urlTainted | url.swift:93:15:93:56 | call to URL.init(string:relativeTo:) |
-| url.swift:93:46:93:46 | urlTainted | url.swift:94:43:94:43 | urlTainted |
-| url.swift:94:12:94:53 | call to URL.init(string:relativeTo:) | url.swift:94:12:94:54 | ...! |
-| url.swift:94:12:94:54 | ...! | url.swift:94:12:94:56 | .port |
-| url.swift:94:12:94:56 | .port | url.swift:94:12:94:60 | ...! |
-| url.swift:94:24:94:24 | [post] clean | url.swift:95:27:95:27 | clean |
-| url.swift:94:24:94:24 | clean | url.swift:94:12:94:53 | call to URL.init(string:relativeTo:) |
-| url.swift:94:24:94:24 | clean | url.swift:95:27:95:27 | clean |
-| url.swift:94:43:94:43 | [post] urlTainted | url.swift:95:46:95:46 | urlTainted |
-| url.swift:94:43:94:43 | urlTainted | url.swift:94:12:94:53 | call to URL.init(string:relativeTo:) |
-| url.swift:94:43:94:43 | urlTainted | url.swift:95:46:95:46 | urlTainted |
-| url.swift:95:15:95:56 | call to URL.init(string:relativeTo:) | url.swift:95:15:95:57 | ...! |
-| url.swift:95:15:95:57 | ...! | url.swift:95:15:95:59 | .query |
-| url.swift:95:15:95:59 | .query | url.swift:95:15:95:64 | ...! |
-| url.swift:95:27:95:27 | [post] clean | url.swift:96:27:96:27 | clean |
-| url.swift:95:27:95:27 | clean | url.swift:95:15:95:56 | call to URL.init(string:relativeTo:) |
-| url.swift:95:27:95:27 | clean | url.swift:96:27:96:27 | clean |
-| url.swift:95:46:95:46 | [post] urlTainted | url.swift:96:46:96:46 | urlTainted |
-| url.swift:95:46:95:46 | urlTainted | url.swift:95:15:95:56 | call to URL.init(string:relativeTo:) |
-| url.swift:95:46:95:46 | urlTainted | url.swift:96:46:96:46 | urlTainted |
-| url.swift:96:15:96:56 | call to URL.init(string:relativeTo:) | url.swift:96:15:96:57 | ...! |
-| url.swift:96:15:96:57 | ...! | url.swift:96:15:96:59 | .relativePath |
-| url.swift:96:27:96:27 | [post] clean | url.swift:97:27:97:27 | clean |
-| url.swift:96:27:96:27 | clean | url.swift:96:15:96:56 | call to URL.init(string:relativeTo:) |
-| url.swift:96:27:96:27 | clean | url.swift:97:27:97:27 | clean |
-| url.swift:96:46:96:46 | [post] urlTainted | url.swift:97:46:97:46 | urlTainted |
-| url.swift:96:46:96:46 | urlTainted | url.swift:96:15:96:56 | call to URL.init(string:relativeTo:) |
-| url.swift:96:46:96:46 | urlTainted | url.swift:97:46:97:46 | urlTainted |
-| url.swift:97:15:97:56 | call to URL.init(string:relativeTo:) | url.swift:97:15:97:57 | ...! |
-| url.swift:97:15:97:57 | ...! | url.swift:97:15:97:59 | .relativeString |
-| url.swift:97:27:97:27 | [post] clean | url.swift:98:27:98:27 | clean |
-| url.swift:97:27:97:27 | clean | url.swift:97:15:97:56 | call to URL.init(string:relativeTo:) |
-| url.swift:97:27:97:27 | clean | url.swift:98:27:98:27 | clean |
-| url.swift:97:46:97:46 | [post] urlTainted | url.swift:98:46:98:46 | urlTainted |
-| url.swift:97:46:97:46 | urlTainted | url.swift:97:15:97:56 | call to URL.init(string:relativeTo:) |
-| url.swift:97:46:97:46 | urlTainted | url.swift:98:46:98:46 | urlTainted |
-| url.swift:98:15:98:56 | call to URL.init(string:relativeTo:) | url.swift:98:15:98:57 | ...! |
-| url.swift:98:15:98:57 | ...! | url.swift:98:15:98:59 | .scheme |
-| url.swift:98:15:98:59 | .scheme | url.swift:98:15:98:65 | ...! |
-| url.swift:98:27:98:27 | [post] clean | url.swift:99:24:99:24 | clean |
-| url.swift:98:27:98:27 | clean | url.swift:98:15:98:56 | call to URL.init(string:relativeTo:) |
-| url.swift:98:27:98:27 | clean | url.swift:99:24:99:24 | clean |
-| url.swift:98:46:98:46 | [post] urlTainted | url.swift:99:43:99:43 | urlTainted |
-| url.swift:98:46:98:46 | urlTainted | url.swift:98:15:98:56 | call to URL.init(string:relativeTo:) |
-| url.swift:98:46:98:46 | urlTainted | url.swift:99:43:99:43 | urlTainted |
-| url.swift:99:12:99:53 | call to URL.init(string:relativeTo:) | url.swift:99:12:99:54 | ...! |
-| url.swift:99:12:99:54 | ...! | url.swift:99:12:99:56 | .standardized |
-| url.swift:99:24:99:24 | [post] clean | url.swift:100:24:100:24 | clean |
-| url.swift:99:24:99:24 | clean | url.swift:99:12:99:53 | call to URL.init(string:relativeTo:) |
-| url.swift:99:24:99:24 | clean | url.swift:100:24:100:24 | clean |
-| url.swift:99:43:99:43 | [post] urlTainted | url.swift:100:43:100:43 | urlTainted |
-| url.swift:99:43:99:43 | urlTainted | url.swift:99:12:99:53 | call to URL.init(string:relativeTo:) |
-| url.swift:99:43:99:43 | urlTainted | url.swift:100:43:100:43 | urlTainted |
-| url.swift:100:12:100:53 | call to URL.init(string:relativeTo:) | url.swift:100:12:100:54 | ...! |
-| url.swift:100:12:100:54 | ...! | url.swift:100:12:100:56 | .standardizedFileURL |
-| url.swift:100:24:100:24 | [post] clean | url.swift:101:27:101:27 | clean |
-| url.swift:100:24:100:24 | clean | url.swift:100:12:100:53 | call to URL.init(string:relativeTo:) |
-| url.swift:100:24:100:24 | clean | url.swift:101:27:101:27 | clean |
-| url.swift:100:43:100:43 | [post] urlTainted | url.swift:101:46:101:46 | urlTainted |
-| url.swift:100:43:100:43 | urlTainted | url.swift:100:12:100:53 | call to URL.init(string:relativeTo:) |
-| url.swift:100:43:100:43 | urlTainted | url.swift:101:46:101:46 | urlTainted |
-| url.swift:101:15:101:56 | call to URL.init(string:relativeTo:) | url.swift:101:15:101:57 | ...! |
-| url.swift:101:15:101:57 | ...! | url.swift:101:15:101:59 | .user |
-| url.swift:101:15:101:59 | .user | url.swift:101:15:101:63 | ...! |
-| url.swift:101:27:101:27 | [post] clean | url.swift:102:27:102:27 | clean |
-| url.swift:101:27:101:27 | clean | url.swift:101:15:101:56 | call to URL.init(string:relativeTo:) |
-| url.swift:101:27:101:27 | clean | url.swift:102:27:102:27 | clean |
-| url.swift:101:46:101:46 | [post] urlTainted | url.swift:102:46:102:46 | urlTainted |
-| url.swift:101:46:101:46 | urlTainted | url.swift:101:15:101:56 | call to URL.init(string:relativeTo:) |
-| url.swift:101:46:101:46 | urlTainted | url.swift:102:46:102:46 | urlTainted |
-| url.swift:102:15:102:56 | call to URL.init(string:relativeTo:) | url.swift:102:15:102:57 | ...! |
-| url.swift:102:15:102:57 | ...! | url.swift:102:15:102:59 | .password |
-| url.swift:102:15:102:59 | .password | url.swift:102:15:102:67 | ...! |
-| url.swift:102:27:102:27 | [post] clean | url.swift:104:25:104:25 | clean |
-| url.swift:102:27:102:27 | clean | url.swift:102:15:102:56 | call to URL.init(string:relativeTo:) |
-| url.swift:102:27:102:27 | clean | url.swift:104:25:104:25 | clean |
-| url.swift:102:46:102:46 | [post] urlTainted | url.swift:120:46:120:46 | urlTainted |
-| url.swift:102:46:102:46 | urlTainted | url.swift:102:15:102:56 | call to URL.init(string:relativeTo:) |
-| url.swift:102:46:102:46 | urlTainted | url.swift:120:46:120:46 | urlTainted |
-| url.swift:104:5:104:9 | SSA def(x) | url.swift:105:13:105:13 | x |
-| url.swift:104:13:104:30 | call to URL.init(string:) | url.swift:104:5:104:9 | SSA def(x) |
-| url.swift:104:25:104:25 | [post] clean | url.swift:113:26:113:26 | clean |
-| url.swift:104:25:104:25 | clean | url.swift:104:13:104:30 | call to URL.init(string:) |
-| url.swift:104:25:104:25 | clean | url.swift:113:26:113:26 | clean |
-| url.swift:108:5:108:9 | SSA def(y) | url.swift:109:13:109:13 | y |
-| url.swift:108:13:108:32 | call to URL.init(string:) | url.swift:108:5:108:9 | SSA def(y) |
-| url.swift:108:25:108:25 | [post] tainted | url.swift:117:28:117:28 | tainted |
-| url.swift:108:25:108:25 | tainted | url.swift:108:13:108:32 | call to URL.init(string:) |
-| url.swift:108:25:108:25 | tainted | url.swift:117:28:117:28 | tainted |
-| url.swift:113:2:113:31 | SSA def(urlClean2) | url.swift:114:12:114:12 | urlClean2 |
-| url.swift:113:14:113:31 | call to URL.init(string:) | url.swift:113:2:113:31 | SSA def(urlClean2) |
-| url.swift:113:26:113:26 | clean | url.swift:113:14:113:31 | call to URL.init(string:) |
-| url.swift:114:12:114:12 | urlClean2 | url.swift:114:12:114:12 | ...! |
-| url.swift:117:2:117:35 | SSA def(urlTainted2) | url.swift:118:12:118:12 | urlTainted2 |
-| url.swift:117:16:117:35 | call to URL.init(string:) | url.swift:117:2:117:35 | SSA def(urlTainted2) |
-| url.swift:117:28:117:28 | tainted | url.swift:117:16:117:35 | call to URL.init(string:) |
-| url.swift:118:12:118:12 | urlTainted2 | url.swift:118:12:118:12 | ...! |
-| url.swift:120:61:120:61 | SSA def(data) | url.swift:121:15:121:15 | data |
-| url.swift:120:61:120:61 | data | url.swift:120:61:120:61 | SSA def(data) |
-| url.swift:121:15:121:15 | data | url.swift:121:15:121:19 | ...! |
+| url.swift:34:7:34:7 | self | url.swift:34:7:34:7 | SSA def(self) |
+| url.swift:36:8:36:8 | SSA def(self) | url.swift:36:8:36:8 | self[return] |
+| url.swift:36:8:36:8 | self | url.swift:36:8:36:8 | SSA def(self) |
+| url.swift:40:8:40:8 | SSA def(self) | url.swift:40:8:40:8 | self[return] |
+| url.swift:40:8:40:8 | self | url.swift:40:8:40:8 | SSA def(self) |
+| url.swift:44:6:44:6 | self | url.swift:44:6:44:6 | SSA def(self) |
+| url.swift:44:6:44:6 | self | url.swift:44:6:44:6 | SSA def(self) |
+| url.swift:44:6:44:6 | self | url.swift:44:6:44:6 | SSA def(self) |
+| url.swift:44:6:44:6 | value | url.swift:44:6:44:6 | SSA def(value) |
+| url.swift:45:6:45:6 | self | url.swift:45:6:45:6 | SSA def(self) |
+| url.swift:45:6:45:6 | self | url.swift:45:6:45:6 | SSA def(self) |
+| url.swift:45:6:45:6 | self | url.swift:45:6:45:6 | SSA def(self) |
+| url.swift:45:6:45:6 | value | url.swift:45:6:45:6 | SSA def(value) |
+| url.swift:46:6:46:6 | self | url.swift:46:6:46:6 | SSA def(self) |
+| url.swift:46:6:46:6 | self | url.swift:46:6:46:6 | SSA def(self) |
+| url.swift:46:6:46:6 | self | url.swift:46:6:46:6 | SSA def(self) |
+| url.swift:46:6:46:6 | value | url.swift:46:6:46:6 | SSA def(value) |
+| url.swift:47:6:47:6 | self | url.swift:47:6:47:6 | SSA def(self) |
+| url.swift:47:6:47:6 | self | url.swift:47:6:47:6 | SSA def(self) |
+| url.swift:47:6:47:6 | self | url.swift:47:6:47:6 | SSA def(self) |
+| url.swift:47:6:47:6 | value | url.swift:47:6:47:6 | SSA def(value) |
+| url.swift:48:6:48:6 | self | url.swift:48:6:48:6 | SSA def(self) |
+| url.swift:48:6:48:6 | self | url.swift:48:6:48:6 | SSA def(self) |
+| url.swift:48:6:48:6 | self | url.swift:48:6:48:6 | SSA def(self) |
+| url.swift:48:6:48:6 | value | url.swift:48:6:48:6 | SSA def(value) |
+| url.swift:49:6:49:6 | self | url.swift:49:6:49:6 | SSA def(self) |
+| url.swift:49:6:49:6 | self | url.swift:49:6:49:6 | SSA def(self) |
+| url.swift:49:6:49:6 | self | url.swift:49:6:49:6 | SSA def(self) |
+| url.swift:49:6:49:6 | value | url.swift:49:6:49:6 | SSA def(value) |
+| url.swift:50:6:50:6 | self | url.swift:50:6:50:6 | SSA def(self) |
+| url.swift:50:6:50:6 | self | url.swift:50:6:50:6 | SSA def(self) |
+| url.swift:50:6:50:6 | self | url.swift:50:6:50:6 | SSA def(self) |
+| url.swift:50:6:50:6 | value | url.swift:50:6:50:6 | SSA def(value) |
+| url.swift:51:6:51:6 | self | url.swift:51:6:51:6 | SSA def(self) |
+| url.swift:51:6:51:6 | self | url.swift:51:6:51:6 | SSA def(self) |
+| url.swift:51:6:51:6 | self | url.swift:51:6:51:6 | SSA def(self) |
+| url.swift:51:6:51:6 | value | url.swift:51:6:51:6 | SSA def(value) |
+| url.swift:52:6:52:6 | self | url.swift:52:6:52:6 | SSA def(self) |
+| url.swift:52:6:52:6 | self | url.swift:52:6:52:6 | SSA def(self) |
+| url.swift:52:6:52:6 | self | url.swift:52:6:52:6 | SSA def(self) |
+| url.swift:52:6:52:6 | value | url.swift:52:6:52:6 | SSA def(value) |
+| url.swift:53:6:53:6 | self | url.swift:53:6:53:6 | SSA def(self) |
+| url.swift:53:6:53:6 | self | url.swift:53:6:53:6 | SSA def(self) |
+| url.swift:53:6:53:6 | self | url.swift:53:6:53:6 | SSA def(self) |
+| url.swift:53:6:53:6 | value | url.swift:53:6:53:6 | SSA def(value) |
+| url.swift:54:6:54:6 | self | url.swift:54:6:54:6 | SSA def(self) |
+| url.swift:54:6:54:6 | self | url.swift:54:6:54:6 | SSA def(self) |
+| url.swift:54:6:54:6 | self | url.swift:54:6:54:6 | SSA def(self) |
+| url.swift:54:6:54:6 | value | url.swift:54:6:54:6 | SSA def(value) |
+| url.swift:55:6:55:6 | self | url.swift:55:6:55:6 | SSA def(self) |
+| url.swift:55:6:55:6 | self | url.swift:55:6:55:6 | SSA def(self) |
+| url.swift:55:6:55:6 | self | url.swift:55:6:55:6 | SSA def(self) |
+| url.swift:55:6:55:6 | value | url.swift:55:6:55:6 | SSA def(value) |
+| url.swift:56:6:56:6 | self | url.swift:56:6:56:6 | SSA def(self) |
+| url.swift:56:6:56:6 | self | url.swift:56:6:56:6 | SSA def(self) |
+| url.swift:56:6:56:6 | self | url.swift:56:6:56:6 | SSA def(self) |
+| url.swift:56:6:56:6 | value | url.swift:56:6:56:6 | SSA def(value) |
+| url.swift:57:6:57:6 | self | url.swift:57:6:57:6 | SSA def(self) |
+| url.swift:57:6:57:6 | self | url.swift:57:6:57:6 | SSA def(self) |
+| url.swift:57:6:57:6 | self | url.swift:57:6:57:6 | SSA def(self) |
+| url.swift:57:6:57:6 | value | url.swift:57:6:57:6 | SSA def(value) |
+| url.swift:58:6:58:6 | self | url.swift:58:6:58:6 | SSA def(self) |
+| url.swift:58:6:58:6 | self | url.swift:58:6:58:6 | SSA def(self) |
+| url.swift:58:6:58:6 | self | url.swift:58:6:58:6 | SSA def(self) |
+| url.swift:58:6:58:6 | value | url.swift:58:6:58:6 | SSA def(value) |
+| url.swift:59:6:59:6 | self | url.swift:59:6:59:6 | SSA def(self) |
+| url.swift:59:6:59:6 | self | url.swift:59:6:59:6 | SSA def(self) |
+| url.swift:59:6:59:6 | self | url.swift:59:6:59:6 | SSA def(self) |
+| url.swift:59:6:59:6 | value | url.swift:59:6:59:6 | SSA def(value) |
+| url.swift:60:6:60:6 | self | url.swift:60:6:60:6 | SSA def(self) |
+| url.swift:60:6:60:6 | self | url.swift:60:6:60:6 | SSA def(self) |
+| url.swift:60:6:60:6 | self | url.swift:60:6:60:6 | SSA def(self) |
+| url.swift:60:6:60:6 | value | url.swift:60:6:60:6 | SSA def(value) |
+| url.swift:61:6:61:6 | self | url.swift:61:6:61:6 | SSA def(self) |
+| url.swift:61:6:61:6 | self | url.swift:61:6:61:6 | SSA def(self) |
+| url.swift:61:6:61:6 | self | url.swift:61:6:61:6 | SSA def(self) |
+| url.swift:61:6:61:6 | value | url.swift:61:6:61:6 | SSA def(value) |
+| url.swift:62:6:62:6 | self | url.swift:62:6:62:6 | SSA def(self) |
+| url.swift:62:6:62:6 | self | url.swift:62:6:62:6 | SSA def(self) |
+| url.swift:62:6:62:6 | self | url.swift:62:6:62:6 | SSA def(self) |
+| url.swift:62:6:62:6 | value | url.swift:62:6:62:6 | SSA def(value) |
+| url.swift:63:6:63:6 | self | url.swift:63:6:63:6 | SSA def(self) |
+| url.swift:63:6:63:6 | self | url.swift:63:6:63:6 | SSA def(self) |
+| url.swift:63:6:63:6 | self | url.swift:63:6:63:6 | SSA def(self) |
+| url.swift:63:6:63:6 | value | url.swift:63:6:63:6 | SSA def(value) |
+| url.swift:64:6:64:6 | self | url.swift:64:6:64:6 | SSA def(self) |
+| url.swift:64:6:64:6 | self | url.swift:64:6:64:6 | SSA def(self) |
+| url.swift:64:6:64:6 | self | url.swift:64:6:64:6 | SSA def(self) |
+| url.swift:64:6:64:6 | value | url.swift:64:6:64:6 | SSA def(value) |
+| url.swift:67:7:67:7 | SSA def(self) | url.swift:67:7:67:7 | self[return] |
+| url.swift:67:7:67:7 | self | url.swift:67:7:67:7 | SSA def(self) |
+| url.swift:67:30:67:30 | SSA def(self) | url.swift:67:30:67:30 | self[return] |
+| url.swift:67:30:67:30 | self | url.swift:67:30:67:30 | SSA def(self) |
+| url.swift:69:7:69:7 | SSA def(self) | url.swift:69:7:69:7 | self[return] |
+| url.swift:69:7:69:7 | self | url.swift:69:7:69:7 | SSA def(self) |
+| url.swift:69:33:69:33 | SSA def(self) | url.swift:69:33:69:33 | self[return] |
+| url.swift:69:33:69:33 | self | url.swift:69:33:69:33 | SSA def(self) |
+| url.swift:71:7:71:7 | SSA def(self) | url.swift:71:7:71:7 | self[return] |
+| url.swift:71:7:71:7 | self | url.swift:71:7:71:7 | SSA def(self) |
+| url.swift:71:43:71:43 | SSA def(self) | url.swift:71:43:71:43 | self[return] |
+| url.swift:71:43:71:43 | self | url.swift:71:43:71:43 | SSA def(self) |
+| url.swift:73:7:73:7 | SSA def(self) | url.swift:73:7:73:7 | self[return] |
+| url.swift:73:7:73:7 | SSA def(self) | url.swift:73:7:73:7 | self[return] |
+| url.swift:73:7:73:7 | self | url.swift:73:7:73:7 | SSA def(self) |
+| url.swift:73:7:73:7 | self | url.swift:73:7:73:7 | SSA def(self) |
+| url.swift:74:33:74:33 | SSA def(self) | url.swift:74:33:74:59 | self[return] |
+| url.swift:74:33:74:33 | self | url.swift:74:33:74:33 | SSA def(self) |
+| url.swift:76:7:76:7 | SSA def(self) | url.swift:76:2:79:55 | self[return] |
+| url.swift:76:7:76:7 | self | url.swift:76:7:76:7 | SSA def(self) |
+| url.swift:90:6:90:6 | SSA def(clean) | url.swift:92:29:92:29 | clean |
+| url.swift:90:14:90:14 | http://example.com/ | url.swift:90:6:90:6 | SSA def(clean) |
+| url.swift:91:6:91:6 | SSA def(tainted) | url.swift:93:31:93:31 | tainted |
+| url.swift:91:16:91:23 | call to source() | url.swift:91:6:91:6 | SSA def(tainted) |
+| url.swift:92:6:92:6 | SSA def(urlClean) | url.swift:95:12:95:12 | urlClean |
+| url.swift:92:17:92:34 | call to URL.init(string:) | url.swift:92:17:92:35 | ...! |
+| url.swift:92:17:92:35 | ...! | url.swift:92:6:92:6 | SSA def(urlClean) |
+| url.swift:92:29:92:29 | [post] clean | url.swift:116:24:116:24 | clean |
+| url.swift:92:29:92:29 | clean | url.swift:92:17:92:34 | call to URL.init(string:) |
+| url.swift:92:29:92:29 | clean | url.swift:116:24:116:24 | clean |
+| url.swift:93:6:93:6 | SSA def(urlTainted) | url.swift:96:12:96:12 | urlTainted |
+| url.swift:93:19:93:38 | call to URL.init(string:) | url.swift:93:19:93:39 | ...! |
+| url.swift:93:19:93:39 | ...! | url.swift:93:6:93:6 | SSA def(urlTainted) |
+| url.swift:93:31:93:31 | [post] tainted | url.swift:117:24:117:24 | tainted |
+| url.swift:93:31:93:31 | tainted | url.swift:93:19:93:38 | call to URL.init(string:) |
+| url.swift:93:31:93:31 | tainted | url.swift:117:24:117:24 | tainted |
+| url.swift:95:12:95:12 | [post] urlClean | url.swift:118:43:118:43 | urlClean |
+| url.swift:95:12:95:12 | urlClean | url.swift:118:43:118:43 | urlClean |
+| url.swift:96:12:96:12 | [post] urlTainted | url.swift:98:12:98:12 | urlTainted |
+| url.swift:96:12:96:12 | urlTainted | url.swift:98:12:98:12 | urlTainted |
+| url.swift:98:12:98:12 | [post] urlTainted | url.swift:99:12:99:12 | urlTainted |
+| url.swift:98:12:98:12 | urlTainted | url.swift:98:12:98:23 | .absoluteURL |
+| url.swift:98:12:98:12 | urlTainted | url.swift:99:12:99:12 | urlTainted |
+| url.swift:99:12:99:12 | [post] urlTainted | url.swift:100:15:100:15 | urlTainted |
+| url.swift:99:12:99:12 | urlTainted | url.swift:99:12:99:23 | .baseURL |
+| url.swift:99:12:99:12 | urlTainted | url.swift:100:15:100:15 | urlTainted |
+| url.swift:100:15:100:15 | [post] urlTainted | url.swift:101:15:101:15 | urlTainted |
+| url.swift:100:15:100:15 | urlTainted | url.swift:100:15:100:26 | .fragment |
+| url.swift:100:15:100:15 | urlTainted | url.swift:101:15:101:15 | urlTainted |
+| url.swift:100:15:100:26 | .fragment | url.swift:100:15:100:34 | ...! |
+| url.swift:101:15:101:15 | [post] urlTainted | url.swift:102:15:102:15 | urlTainted |
+| url.swift:101:15:101:15 | urlTainted | url.swift:101:15:101:26 | .host |
+| url.swift:101:15:101:15 | urlTainted | url.swift:102:15:102:15 | urlTainted |
+| url.swift:101:15:101:26 | .host | url.swift:101:15:101:30 | ...! |
+| url.swift:102:15:102:15 | [post] urlTainted | url.swift:103:15:103:15 | urlTainted |
+| url.swift:102:15:102:15 | urlTainted | url.swift:102:15:102:26 | .lastPathComponent |
+| url.swift:102:15:102:15 | urlTainted | url.swift:103:15:103:15 | urlTainted |
+| url.swift:103:15:103:15 | [post] urlTainted | url.swift:104:15:104:15 | urlTainted |
+| url.swift:103:15:103:15 | urlTainted | url.swift:103:15:103:26 | .path |
+| url.swift:103:15:103:15 | urlTainted | url.swift:104:15:104:15 | urlTainted |
+| url.swift:104:15:104:15 | [post] urlTainted | url.swift:105:15:105:15 | urlTainted |
+| url.swift:104:15:104:15 | urlTainted | url.swift:104:15:104:26 | .pathComponents |
+| url.swift:104:15:104:15 | urlTainted | url.swift:105:15:105:15 | urlTainted |
+| url.swift:104:15:104:26 | .pathComponents | url.swift:104:15:104:42 | ...[...] |
+| url.swift:105:15:105:15 | [post] urlTainted | url.swift:106:12:106:12 | urlTainted |
+| url.swift:105:15:105:15 | urlTainted | url.swift:105:15:105:26 | .pathExtension |
+| url.swift:105:15:105:15 | urlTainted | url.swift:106:12:106:12 | urlTainted |
+| url.swift:106:12:106:12 | [post] urlTainted | url.swift:107:15:107:15 | urlTainted |
+| url.swift:106:12:106:12 | urlTainted | url.swift:106:12:106:23 | .port |
+| url.swift:106:12:106:12 | urlTainted | url.swift:107:15:107:15 | urlTainted |
+| url.swift:106:12:106:23 | .port | url.swift:106:12:106:27 | ...! |
+| url.swift:107:15:107:15 | [post] urlTainted | url.swift:108:15:108:15 | urlTainted |
+| url.swift:107:15:107:15 | urlTainted | url.swift:107:15:107:26 | .query |
+| url.swift:107:15:107:15 | urlTainted | url.swift:108:15:108:15 | urlTainted |
+| url.swift:107:15:107:26 | .query | url.swift:107:15:107:31 | ...! |
+| url.swift:108:15:108:15 | [post] urlTainted | url.swift:109:15:109:15 | urlTainted |
+| url.swift:108:15:108:15 | urlTainted | url.swift:108:15:108:26 | .relativePath |
+| url.swift:108:15:108:15 | urlTainted | url.swift:109:15:109:15 | urlTainted |
+| url.swift:109:15:109:15 | [post] urlTainted | url.swift:110:15:110:15 | urlTainted |
+| url.swift:109:15:109:15 | urlTainted | url.swift:109:15:109:26 | .relativeString |
+| url.swift:109:15:109:15 | urlTainted | url.swift:110:15:110:15 | urlTainted |
+| url.swift:110:15:110:15 | [post] urlTainted | url.swift:111:12:111:12 | urlTainted |
+| url.swift:110:15:110:15 | urlTainted | url.swift:110:15:110:26 | .scheme |
+| url.swift:110:15:110:15 | urlTainted | url.swift:111:12:111:12 | urlTainted |
+| url.swift:110:15:110:26 | .scheme | url.swift:110:15:110:32 | ...! |
+| url.swift:111:12:111:12 | [post] urlTainted | url.swift:112:12:112:12 | urlTainted |
+| url.swift:111:12:111:12 | urlTainted | url.swift:111:12:111:23 | .standardized |
+| url.swift:111:12:111:12 | urlTainted | url.swift:112:12:112:12 | urlTainted |
+| url.swift:112:12:112:12 | [post] urlTainted | url.swift:113:15:113:15 | urlTainted |
+| url.swift:112:12:112:12 | urlTainted | url.swift:112:12:112:23 | .standardizedFileURL |
+| url.swift:112:12:112:12 | urlTainted | url.swift:113:15:113:15 | urlTainted |
+| url.swift:113:15:113:15 | [post] urlTainted | url.swift:114:15:114:15 | urlTainted |
+| url.swift:113:15:113:15 | urlTainted | url.swift:113:15:113:26 | .user |
+| url.swift:113:15:113:15 | urlTainted | url.swift:114:15:114:15 | urlTainted |
+| url.swift:113:15:113:26 | .user | url.swift:113:15:113:30 | ...! |
+| url.swift:114:15:114:15 | [post] urlTainted | url.swift:120:43:120:43 | urlTainted |
+| url.swift:114:15:114:15 | urlTainted | url.swift:114:15:114:26 | .password |
+| url.swift:114:15:114:15 | urlTainted | url.swift:120:43:120:43 | urlTainted |
+| url.swift:114:15:114:26 | .password | url.swift:114:15:114:34 | ...! |
+| url.swift:116:12:116:46 | call to URL.init(string:relativeTo:) | url.swift:116:12:116:47 | ...! |
+| url.swift:116:24:116:24 | [post] clean | url.swift:118:24:118:24 | clean |
+| url.swift:116:24:116:24 | clean | url.swift:116:12:116:46 | call to URL.init(string:relativeTo:) |
+| url.swift:116:24:116:24 | clean | url.swift:118:24:118:24 | clean |
+| url.swift:116:43:116:43 | nil | url.swift:116:12:116:46 | call to URL.init(string:relativeTo:) |
+| url.swift:117:12:117:48 | call to URL.init(string:relativeTo:) | url.swift:117:12:117:49 | ...! |
+| url.swift:117:24:117:24 | [post] tainted | url.swift:142:25:142:25 | tainted |
+| url.swift:117:24:117:24 | tainted | url.swift:117:12:117:48 | call to URL.init(string:relativeTo:) |
+| url.swift:117:24:117:24 | tainted | url.swift:142:25:142:25 | tainted |
+| url.swift:117:45:117:45 | nil | url.swift:117:12:117:48 | call to URL.init(string:relativeTo:) |
+| url.swift:118:12:118:51 | call to URL.init(string:relativeTo:) | url.swift:118:12:118:52 | ...! |
+| url.swift:118:24:118:24 | [post] clean | url.swift:120:24:120:24 | clean |
+| url.swift:118:24:118:24 | clean | url.swift:118:12:118:51 | call to URL.init(string:relativeTo:) |
+| url.swift:118:24:118:24 | clean | url.swift:120:24:120:24 | clean |
+| url.swift:118:43:118:43 | urlClean | url.swift:118:12:118:51 | call to URL.init(string:relativeTo:) |
+| url.swift:120:12:120:53 | call to URL.init(string:relativeTo:) | url.swift:120:12:120:54 | ...! |
+| url.swift:120:12:120:54 | ...! | url.swift:120:12:120:56 | .absoluteURL |
+| url.swift:120:24:120:24 | [post] clean | url.swift:121:24:121:24 | clean |
+| url.swift:120:24:120:24 | clean | url.swift:120:12:120:53 | call to URL.init(string:relativeTo:) |
+| url.swift:120:24:120:24 | clean | url.swift:121:24:121:24 | clean |
+| url.swift:120:43:120:43 | [post] urlTainted | url.swift:121:43:121:43 | urlTainted |
+| url.swift:120:43:120:43 | urlTainted | url.swift:120:12:120:53 | call to URL.init(string:relativeTo:) |
+| url.swift:120:43:120:43 | urlTainted | url.swift:121:43:121:43 | urlTainted |
+| url.swift:121:12:121:53 | call to URL.init(string:relativeTo:) | url.swift:121:12:121:54 | ...! |
+| url.swift:121:12:121:54 | ...! | url.swift:121:12:121:56 | .baseURL |
+| url.swift:121:24:121:24 | [post] clean | url.swift:122:27:122:27 | clean |
+| url.swift:121:24:121:24 | clean | url.swift:121:12:121:53 | call to URL.init(string:relativeTo:) |
+| url.swift:121:24:121:24 | clean | url.swift:122:27:122:27 | clean |
+| url.swift:121:43:121:43 | [post] urlTainted | url.swift:122:46:122:46 | urlTainted |
+| url.swift:121:43:121:43 | urlTainted | url.swift:121:12:121:53 | call to URL.init(string:relativeTo:) |
+| url.swift:121:43:121:43 | urlTainted | url.swift:122:46:122:46 | urlTainted |
+| url.swift:122:15:122:56 | call to URL.init(string:relativeTo:) | url.swift:122:15:122:57 | ...! |
+| url.swift:122:15:122:57 | ...! | url.swift:122:15:122:59 | .fragment |
+| url.swift:122:15:122:59 | .fragment | url.swift:122:15:122:67 | ...! |
+| url.swift:122:27:122:27 | [post] clean | url.swift:123:27:123:27 | clean |
+| url.swift:122:27:122:27 | clean | url.swift:122:15:122:56 | call to URL.init(string:relativeTo:) |
+| url.swift:122:27:122:27 | clean | url.swift:123:27:123:27 | clean |
+| url.swift:122:46:122:46 | [post] urlTainted | url.swift:123:46:123:46 | urlTainted |
+| url.swift:122:46:122:46 | urlTainted | url.swift:122:15:122:56 | call to URL.init(string:relativeTo:) |
+| url.swift:122:46:122:46 | urlTainted | url.swift:123:46:123:46 | urlTainted |
+| url.swift:123:15:123:56 | call to URL.init(string:relativeTo:) | url.swift:123:15:123:57 | ...! |
+| url.swift:123:15:123:57 | ...! | url.swift:123:15:123:59 | .host |
+| url.swift:123:15:123:59 | .host | url.swift:123:15:123:63 | ...! |
+| url.swift:123:27:123:27 | [post] clean | url.swift:124:27:124:27 | clean |
+| url.swift:123:27:123:27 | clean | url.swift:123:15:123:56 | call to URL.init(string:relativeTo:) |
+| url.swift:123:27:123:27 | clean | url.swift:124:27:124:27 | clean |
+| url.swift:123:46:123:46 | [post] urlTainted | url.swift:124:46:124:46 | urlTainted |
+| url.swift:123:46:123:46 | urlTainted | url.swift:123:15:123:56 | call to URL.init(string:relativeTo:) |
+| url.swift:123:46:123:46 | urlTainted | url.swift:124:46:124:46 | urlTainted |
+| url.swift:124:15:124:56 | call to URL.init(string:relativeTo:) | url.swift:124:15:124:57 | ...! |
+| url.swift:124:15:124:57 | ...! | url.swift:124:15:124:59 | .lastPathComponent |
+| url.swift:124:27:124:27 | [post] clean | url.swift:125:27:125:27 | clean |
+| url.swift:124:27:124:27 | clean | url.swift:124:15:124:56 | call to URL.init(string:relativeTo:) |
+| url.swift:124:27:124:27 | clean | url.swift:125:27:125:27 | clean |
+| url.swift:124:46:124:46 | [post] urlTainted | url.swift:125:46:125:46 | urlTainted |
+| url.swift:124:46:124:46 | urlTainted | url.swift:124:15:124:56 | call to URL.init(string:relativeTo:) |
+| url.swift:124:46:124:46 | urlTainted | url.swift:125:46:125:46 | urlTainted |
+| url.swift:125:15:125:56 | call to URL.init(string:relativeTo:) | url.swift:125:15:125:57 | ...! |
+| url.swift:125:15:125:57 | ...! | url.swift:125:15:125:59 | .path |
+| url.swift:125:27:125:27 | [post] clean | url.swift:126:27:126:27 | clean |
+| url.swift:125:27:125:27 | clean | url.swift:125:15:125:56 | call to URL.init(string:relativeTo:) |
+| url.swift:125:27:125:27 | clean | url.swift:126:27:126:27 | clean |
+| url.swift:125:46:125:46 | [post] urlTainted | url.swift:126:46:126:46 | urlTainted |
+| url.swift:125:46:125:46 | urlTainted | url.swift:125:15:125:56 | call to URL.init(string:relativeTo:) |
+| url.swift:125:46:125:46 | urlTainted | url.swift:126:46:126:46 | urlTainted |
+| url.swift:126:15:126:56 | call to URL.init(string:relativeTo:) | url.swift:126:15:126:57 | ...! |
+| url.swift:126:15:126:57 | ...! | url.swift:126:15:126:59 | .pathComponents |
+| url.swift:126:15:126:59 | .pathComponents | url.swift:126:15:126:75 | ...[...] |
+| url.swift:126:27:126:27 | [post] clean | url.swift:127:27:127:27 | clean |
+| url.swift:126:27:126:27 | clean | url.swift:126:15:126:56 | call to URL.init(string:relativeTo:) |
+| url.swift:126:27:126:27 | clean | url.swift:127:27:127:27 | clean |
+| url.swift:126:46:126:46 | [post] urlTainted | url.swift:127:46:127:46 | urlTainted |
+| url.swift:126:46:126:46 | urlTainted | url.swift:126:15:126:56 | call to URL.init(string:relativeTo:) |
+| url.swift:126:46:126:46 | urlTainted | url.swift:127:46:127:46 | urlTainted |
+| url.swift:127:15:127:56 | call to URL.init(string:relativeTo:) | url.swift:127:15:127:57 | ...! |
+| url.swift:127:15:127:57 | ...! | url.swift:127:15:127:59 | .pathExtension |
+| url.swift:127:27:127:27 | [post] clean | url.swift:128:24:128:24 | clean |
+| url.swift:127:27:127:27 | clean | url.swift:127:15:127:56 | call to URL.init(string:relativeTo:) |
+| url.swift:127:27:127:27 | clean | url.swift:128:24:128:24 | clean |
+| url.swift:127:46:127:46 | [post] urlTainted | url.swift:128:43:128:43 | urlTainted |
+| url.swift:127:46:127:46 | urlTainted | url.swift:127:15:127:56 | call to URL.init(string:relativeTo:) |
+| url.swift:127:46:127:46 | urlTainted | url.swift:128:43:128:43 | urlTainted |
+| url.swift:128:12:128:53 | call to URL.init(string:relativeTo:) | url.swift:128:12:128:54 | ...! |
+| url.swift:128:12:128:54 | ...! | url.swift:128:12:128:56 | .port |
+| url.swift:128:12:128:56 | .port | url.swift:128:12:128:60 | ...! |
+| url.swift:128:24:128:24 | [post] clean | url.swift:129:27:129:27 | clean |
+| url.swift:128:24:128:24 | clean | url.swift:128:12:128:53 | call to URL.init(string:relativeTo:) |
+| url.swift:128:24:128:24 | clean | url.swift:129:27:129:27 | clean |
+| url.swift:128:43:128:43 | [post] urlTainted | url.swift:129:46:129:46 | urlTainted |
+| url.swift:128:43:128:43 | urlTainted | url.swift:128:12:128:53 | call to URL.init(string:relativeTo:) |
+| url.swift:128:43:128:43 | urlTainted | url.swift:129:46:129:46 | urlTainted |
+| url.swift:129:15:129:56 | call to URL.init(string:relativeTo:) | url.swift:129:15:129:57 | ...! |
+| url.swift:129:15:129:57 | ...! | url.swift:129:15:129:59 | .query |
+| url.swift:129:15:129:59 | .query | url.swift:129:15:129:64 | ...! |
+| url.swift:129:27:129:27 | [post] clean | url.swift:130:27:130:27 | clean |
+| url.swift:129:27:129:27 | clean | url.swift:129:15:129:56 | call to URL.init(string:relativeTo:) |
+| url.swift:129:27:129:27 | clean | url.swift:130:27:130:27 | clean |
+| url.swift:129:46:129:46 | [post] urlTainted | url.swift:130:46:130:46 | urlTainted |
+| url.swift:129:46:129:46 | urlTainted | url.swift:129:15:129:56 | call to URL.init(string:relativeTo:) |
+| url.swift:129:46:129:46 | urlTainted | url.swift:130:46:130:46 | urlTainted |
+| url.swift:130:15:130:56 | call to URL.init(string:relativeTo:) | url.swift:130:15:130:57 | ...! |
+| url.swift:130:15:130:57 | ...! | url.swift:130:15:130:59 | .relativePath |
+| url.swift:130:27:130:27 | [post] clean | url.swift:131:27:131:27 | clean |
+| url.swift:130:27:130:27 | clean | url.swift:130:15:130:56 | call to URL.init(string:relativeTo:) |
+| url.swift:130:27:130:27 | clean | url.swift:131:27:131:27 | clean |
+| url.swift:130:46:130:46 | [post] urlTainted | url.swift:131:46:131:46 | urlTainted |
+| url.swift:130:46:130:46 | urlTainted | url.swift:130:15:130:56 | call to URL.init(string:relativeTo:) |
+| url.swift:130:46:130:46 | urlTainted | url.swift:131:46:131:46 | urlTainted |
+| url.swift:131:15:131:56 | call to URL.init(string:relativeTo:) | url.swift:131:15:131:57 | ...! |
+| url.swift:131:15:131:57 | ...! | url.swift:131:15:131:59 | .relativeString |
+| url.swift:131:27:131:27 | [post] clean | url.swift:132:27:132:27 | clean |
+| url.swift:131:27:131:27 | clean | url.swift:131:15:131:56 | call to URL.init(string:relativeTo:) |
+| url.swift:131:27:131:27 | clean | url.swift:132:27:132:27 | clean |
+| url.swift:131:46:131:46 | [post] urlTainted | url.swift:132:46:132:46 | urlTainted |
+| url.swift:131:46:131:46 | urlTainted | url.swift:131:15:131:56 | call to URL.init(string:relativeTo:) |
+| url.swift:131:46:131:46 | urlTainted | url.swift:132:46:132:46 | urlTainted |
+| url.swift:132:15:132:56 | call to URL.init(string:relativeTo:) | url.swift:132:15:132:57 | ...! |
+| url.swift:132:15:132:57 | ...! | url.swift:132:15:132:59 | .scheme |
+| url.swift:132:15:132:59 | .scheme | url.swift:132:15:132:65 | ...! |
+| url.swift:132:27:132:27 | [post] clean | url.swift:133:24:133:24 | clean |
+| url.swift:132:27:132:27 | clean | url.swift:132:15:132:56 | call to URL.init(string:relativeTo:) |
+| url.swift:132:27:132:27 | clean | url.swift:133:24:133:24 | clean |
+| url.swift:132:46:132:46 | [post] urlTainted | url.swift:133:43:133:43 | urlTainted |
+| url.swift:132:46:132:46 | urlTainted | url.swift:132:15:132:56 | call to URL.init(string:relativeTo:) |
+| url.swift:132:46:132:46 | urlTainted | url.swift:133:43:133:43 | urlTainted |
+| url.swift:133:12:133:53 | call to URL.init(string:relativeTo:) | url.swift:133:12:133:54 | ...! |
+| url.swift:133:12:133:54 | ...! | url.swift:133:12:133:56 | .standardized |
+| url.swift:133:24:133:24 | [post] clean | url.swift:134:24:134:24 | clean |
+| url.swift:133:24:133:24 | clean | url.swift:133:12:133:53 | call to URL.init(string:relativeTo:) |
+| url.swift:133:24:133:24 | clean | url.swift:134:24:134:24 | clean |
+| url.swift:133:43:133:43 | [post] urlTainted | url.swift:134:43:134:43 | urlTainted |
+| url.swift:133:43:133:43 | urlTainted | url.swift:133:12:133:53 | call to URL.init(string:relativeTo:) |
+| url.swift:133:43:133:43 | urlTainted | url.swift:134:43:134:43 | urlTainted |
+| url.swift:134:12:134:53 | call to URL.init(string:relativeTo:) | url.swift:134:12:134:54 | ...! |
+| url.swift:134:12:134:54 | ...! | url.swift:134:12:134:56 | .standardizedFileURL |
+| url.swift:134:24:134:24 | [post] clean | url.swift:135:27:135:27 | clean |
+| url.swift:134:24:134:24 | clean | url.swift:134:12:134:53 | call to URL.init(string:relativeTo:) |
+| url.swift:134:24:134:24 | clean | url.swift:135:27:135:27 | clean |
+| url.swift:134:43:134:43 | [post] urlTainted | url.swift:135:46:135:46 | urlTainted |
+| url.swift:134:43:134:43 | urlTainted | url.swift:134:12:134:53 | call to URL.init(string:relativeTo:) |
+| url.swift:134:43:134:43 | urlTainted | url.swift:135:46:135:46 | urlTainted |
+| url.swift:135:15:135:56 | call to URL.init(string:relativeTo:) | url.swift:135:15:135:57 | ...! |
+| url.swift:135:15:135:57 | ...! | url.swift:135:15:135:59 | .user |
+| url.swift:135:15:135:59 | .user | url.swift:135:15:135:63 | ...! |
+| url.swift:135:27:135:27 | [post] clean | url.swift:136:27:136:27 | clean |
+| url.swift:135:27:135:27 | clean | url.swift:135:15:135:56 | call to URL.init(string:relativeTo:) |
+| url.swift:135:27:135:27 | clean | url.swift:136:27:136:27 | clean |
+| url.swift:135:46:135:46 | [post] urlTainted | url.swift:136:46:136:46 | urlTainted |
+| url.swift:135:46:135:46 | urlTainted | url.swift:135:15:135:56 | call to URL.init(string:relativeTo:) |
+| url.swift:135:46:135:46 | urlTainted | url.swift:136:46:136:46 | urlTainted |
+| url.swift:136:15:136:56 | call to URL.init(string:relativeTo:) | url.swift:136:15:136:57 | ...! |
+| url.swift:136:15:136:57 | ...! | url.swift:136:15:136:59 | .password |
+| url.swift:136:15:136:59 | .password | url.swift:136:15:136:67 | ...! |
+| url.swift:136:27:136:27 | [post] clean | url.swift:138:25:138:25 | clean |
+| url.swift:136:27:136:27 | clean | url.swift:136:15:136:56 | call to URL.init(string:relativeTo:) |
+| url.swift:136:27:136:27 | clean | url.swift:138:25:138:25 | clean |
+| url.swift:136:46:136:46 | [post] urlTainted | url.swift:154:46:154:46 | urlTainted |
+| url.swift:136:46:136:46 | urlTainted | url.swift:136:15:136:56 | call to URL.init(string:relativeTo:) |
+| url.swift:136:46:136:46 | urlTainted | url.swift:154:46:154:46 | urlTainted |
+| url.swift:138:5:138:9 | SSA def(x) | url.swift:139:13:139:13 | x |
+| url.swift:138:13:138:30 | call to URL.init(string:) | url.swift:138:5:138:9 | SSA def(x) |
+| url.swift:138:25:138:25 | [post] clean | url.swift:147:26:147:26 | clean |
+| url.swift:138:25:138:25 | clean | url.swift:138:13:138:30 | call to URL.init(string:) |
+| url.swift:138:25:138:25 | clean | url.swift:147:26:147:26 | clean |
+| url.swift:142:5:142:9 | SSA def(y) | url.swift:143:13:143:13 | y |
+| url.swift:142:13:142:32 | call to URL.init(string:) | url.swift:142:5:142:9 | SSA def(y) |
+| url.swift:142:25:142:25 | [post] tainted | url.swift:151:28:151:28 | tainted |
+| url.swift:142:25:142:25 | tainted | url.swift:142:13:142:32 | call to URL.init(string:) |
+| url.swift:142:25:142:25 | tainted | url.swift:151:28:151:28 | tainted |
+| url.swift:147:2:147:31 | SSA def(urlClean2) | url.swift:148:12:148:12 | urlClean2 |
+| url.swift:147:14:147:31 | call to URL.init(string:) | url.swift:147:2:147:31 | SSA def(urlClean2) |
+| url.swift:147:26:147:26 | clean | url.swift:147:14:147:31 | call to URL.init(string:) |
+| url.swift:148:12:148:12 | urlClean2 | url.swift:148:12:148:12 | ...! |
+| url.swift:151:2:151:35 | SSA def(urlTainted2) | url.swift:152:12:152:12 | urlTainted2 |
+| url.swift:151:16:151:35 | call to URL.init(string:) | url.swift:151:2:151:35 | SSA def(urlTainted2) |
+| url.swift:151:28:151:28 | tainted | url.swift:151:16:151:35 | call to URL.init(string:) |
+| url.swift:152:12:152:12 | urlTainted2 | url.swift:152:12:152:12 | ...! |
+| url.swift:154:61:154:61 | SSA def(data) | url.swift:155:15:155:15 | data |
+| url.swift:154:61:154:61 | data | url.swift:154:61:154:61 | SSA def(data) |
+| url.swift:155:15:155:15 | data | url.swift:155:15:155:19 | ...! |
+| url.swift:160:6:160:6 | SSA def(clean) | url.swift:163:12:163:12 | clean |
+| url.swift:160:14:160:25 | call to URLRequest.init() | url.swift:160:6:160:6 | SSA def(clean) |
+| url.swift:161:6:161:6 | SSA def(tainted) | url.swift:164:12:164:12 | tainted |
+| url.swift:161:16:161:23 | call to source() | url.swift:161:6:161:6 | SSA def(tainted) |
+| url.swift:163:12:163:12 | [post] clean | url.swift:165:12:165:12 | clean |
+| url.swift:163:12:163:12 | clean | url.swift:165:12:165:12 | clean |
+| url.swift:164:12:164:12 | [post] tainted | url.swift:166:12:166:12 | tainted |
+| url.swift:164:12:164:12 | tainted | url.swift:166:12:166:12 | tainted |
+| url.swift:165:12:165:12 | [post] clean | url.swift:167:12:167:12 | clean |
+| url.swift:165:12:165:12 | clean | url.swift:167:12:167:12 | clean |
+| url.swift:166:12:166:12 | [post] tainted | url.swift:168:12:168:12 | tainted |
+| url.swift:166:12:166:12 | tainted | url.swift:168:12:168:12 | tainted |
+| url.swift:167:12:167:12 | [post] clean | url.swift:169:12:169:12 | clean |
+| url.swift:167:12:167:12 | clean | url.swift:169:12:169:12 | clean |
+| url.swift:168:12:168:12 | [post] tainted | url.swift:170:12:170:12 | tainted |
+| url.swift:168:12:168:12 | tainted | url.swift:170:12:170:12 | tainted |
+| url.swift:169:12:169:12 | [post] clean | url.swift:171:12:171:12 | clean |
+| url.swift:169:12:169:12 | clean | url.swift:169:12:169:18 | .url |
+| url.swift:169:12:169:12 | clean | url.swift:171:12:171:12 | clean |
+| url.swift:170:12:170:12 | [post] tainted | url.swift:172:12:172:12 | tainted |
+| url.swift:170:12:170:12 | tainted | url.swift:170:12:170:20 | .url |
+| url.swift:170:12:170:12 | tainted | url.swift:172:12:172:12 | tainted |
+| url.swift:171:12:171:12 | [post] clean | url.swift:173:12:173:12 | clean |
+| url.swift:171:12:171:12 | clean | url.swift:171:12:171:18 | .httpBody |
+| url.swift:171:12:171:12 | clean | url.swift:173:12:173:12 | clean |
+| url.swift:172:12:172:12 | [post] tainted | url.swift:174:12:174:12 | tainted |
+| url.swift:172:12:172:12 | tainted | url.swift:172:12:172:20 | .httpBody |
+| url.swift:172:12:172:12 | tainted | url.swift:174:12:174:12 | tainted |
+| url.swift:173:12:173:12 | [post] clean | url.swift:175:12:175:12 | clean |
+| url.swift:173:12:173:12 | clean | url.swift:173:12:173:18 | .httpBodyStream |
+| url.swift:173:12:173:12 | clean | url.swift:175:12:175:12 | clean |
+| url.swift:174:12:174:12 | [post] tainted | url.swift:176:12:176:12 | tainted |
+| url.swift:174:12:174:12 | tainted | url.swift:174:12:174:20 | .httpBodyStream |
+| url.swift:174:12:174:12 | tainted | url.swift:176:12:176:12 | tainted |
+| url.swift:175:12:175:12 | [post] clean | url.swift:177:12:177:12 | clean |
+| url.swift:175:12:175:12 | clean | url.swift:175:12:175:18 | .mainDocument |
+| url.swift:175:12:175:12 | clean | url.swift:177:12:177:12 | clean |
+| url.swift:176:12:176:12 | [post] tainted | url.swift:178:12:178:12 | tainted |
+| url.swift:176:12:176:12 | tainted | url.swift:176:12:176:20 | .mainDocument |
+| url.swift:176:12:176:12 | tainted | url.swift:178:12:178:12 | tainted |
+| url.swift:177:12:177:12 | [post] clean | url.swift:179:12:179:12 | clean |
+| url.swift:177:12:177:12 | clean | url.swift:177:12:177:18 | .allHTTPHeaderFields |
+| url.swift:177:12:177:12 | clean | url.swift:179:12:179:12 | clean |
+| url.swift:178:12:178:12 | [post] tainted | url.swift:180:12:180:12 | tainted |
+| url.swift:178:12:178:12 | tainted | url.swift:178:12:178:20 | .allHTTPHeaderFields |
+| url.swift:178:12:178:12 | tainted | url.swift:180:12:180:12 | tainted |
+| url.swift:179:12:179:12 | [post] clean | url.swift:181:12:181:12 | clean |
+| url.swift:179:12:179:12 | clean | url.swift:181:12:181:12 | clean |
+| url.swift:180:12:180:12 | [post] tainted | url.swift:182:12:182:12 | tainted |
+| url.swift:180:12:180:12 | tainted | url.swift:182:12:182:12 | tainted |
+| url.swift:181:12:181:12 | [post] clean | url.swift:183:12:183:12 | clean |
+| url.swift:181:12:181:12 | clean | url.swift:183:12:183:12 | clean |
+| url.swift:182:12:182:12 | [post] tainted | url.swift:184:12:184:12 | tainted |
+| url.swift:182:12:182:12 | tainted | url.swift:184:12:184:12 | tainted |
+| url.swift:183:12:183:12 | [post] clean | url.swift:185:12:185:12 | clean |
+| url.swift:183:12:183:12 | clean | url.swift:185:12:185:12 | clean |
+| url.swift:184:12:184:12 | [post] tainted | url.swift:186:12:186:12 | tainted |
+| url.swift:184:12:184:12 | tainted | url.swift:186:12:186:12 | tainted |
+| url.swift:185:12:185:12 | [post] clean | url.swift:187:12:187:12 | clean |
+| url.swift:185:12:185:12 | clean | url.swift:187:12:187:12 | clean |
+| url.swift:186:12:186:12 | [post] tainted | url.swift:188:12:188:12 | tainted |
+| url.swift:186:12:186:12 | tainted | url.swift:188:12:188:12 | tainted |
+| url.swift:187:12:187:12 | [post] clean | url.swift:189:12:189:12 | clean |
+| url.swift:187:12:187:12 | clean | url.swift:189:12:189:12 | clean |
+| url.swift:188:12:188:12 | [post] tainted | url.swift:190:12:190:12 | tainted |
+| url.swift:188:12:188:12 | tainted | url.swift:190:12:190:12 | tainted |
+| url.swift:189:12:189:12 | [post] clean | url.swift:191:12:191:12 | clean |
+| url.swift:189:12:189:12 | clean | url.swift:191:12:191:12 | clean |
+| url.swift:190:12:190:12 | [post] tainted | url.swift:192:12:192:12 | tainted |
+| url.swift:190:12:190:12 | tainted | url.swift:192:12:192:12 | tainted |
+| url.swift:191:12:191:12 | [post] clean | url.swift:193:12:193:12 | clean |
+| url.swift:191:12:191:12 | clean | url.swift:193:12:193:12 | clean |
+| url.swift:192:12:192:12 | [post] tainted | url.swift:194:12:194:12 | tainted |
+| url.swift:192:12:192:12 | tainted | url.swift:194:12:194:12 | tainted |
+| url.swift:193:12:193:12 | [post] clean | url.swift:195:12:195:12 | clean |
+| url.swift:193:12:193:12 | clean | url.swift:195:12:195:12 | clean |
+| url.swift:194:12:194:12 | [post] tainted | url.swift:196:12:196:12 | tainted |
+| url.swift:194:12:194:12 | tainted | url.swift:196:12:196:12 | tainted |
+| url.swift:195:12:195:12 | [post] clean | url.swift:197:12:197:12 | clean |
+| url.swift:195:12:195:12 | clean | url.swift:197:12:197:12 | clean |
+| url.swift:196:12:196:12 | [post] tainted | url.swift:198:12:198:12 | tainted |
+| url.swift:196:12:196:12 | tainted | url.swift:198:12:198:12 | tainted |
+| url.swift:197:12:197:12 | [post] clean | url.swift:199:12:199:12 | clean |
+| url.swift:197:12:197:12 | clean | url.swift:199:12:199:12 | clean |
+| url.swift:198:12:198:12 | [post] tainted | url.swift:200:12:200:12 | tainted |
+| url.swift:198:12:198:12 | tainted | url.swift:200:12:200:12 | tainted |
+| url.swift:199:12:199:12 | [post] clean | url.swift:201:12:201:12 | clean |
+| url.swift:199:12:199:12 | clean | url.swift:201:12:201:12 | clean |
+| url.swift:200:12:200:12 | [post] tainted | url.swift:202:12:202:12 | tainted |
+| url.swift:200:12:200:12 | tainted | url.swift:202:12:202:12 | tainted |
+| url.swift:201:12:201:12 | [post] clean | url.swift:203:12:203:12 | clean |
+| url.swift:201:12:201:12 | clean | url.swift:203:12:203:12 | clean |
+| url.swift:202:12:202:12 | [post] tainted | url.swift:204:12:204:12 | tainted |
+| url.swift:202:12:202:12 | tainted | url.swift:204:12:204:12 | tainted |
+| url.swift:203:12:203:12 | [post] clean | url.swift:205:12:205:12 | clean |
+| url.swift:203:12:203:12 | clean | url.swift:205:12:205:12 | clean |
+| url.swift:204:12:204:12 | [post] tainted | url.swift:206:12:206:12 | tainted |
+| url.swift:204:12:204:12 | tainted | url.swift:206:12:206:12 | tainted |
 | webview.swift:4:7:4:7 | SSA def(self) | webview.swift:4:7:4:7 | self[return] |
 | webview.swift:4:7:4:7 | SSA def(self) | webview.swift:4:7:4:7 | self[return] |
 | webview.swift:4:7:4:7 | self | webview.swift:4:7:4:7 | SSA def(self) |
