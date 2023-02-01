@@ -22,9 +22,15 @@ class CustomTestSourcesCsv extends SourceModelCsv {
         ";MyDerived2;true;source11();;;ReturnValue;remote", ";MyDerived2;true;source12;;;;remote",
         ";MyDerived2;true;source13();;;ReturnValue;remote",
         // ---
-        ";MyProtocol;true;source1;;;;remote", ";MyProtocol;true;source2;;;;remote",
+        ";MyParentProtocol;true;source0;;;;remote", ";MyProtocol;true;source1;;;;remote",
+        ";MyProtocol;true;source2;;;;remote",
         // ---
-        ";MyProtocol2;true;source1;;;;remote", ";MyProtocol2;true;source2;;;;remote",
+        ";MyParentProtocol2;true;source0;;;;remote", ";MyProtocol2;true;source1;;;;remote",
+        ";MyProtocol2;true;source2;;;;remote",
+        // ---
+        ";MyProtocol3;true;source1();;;ReturnValue;remote",
+        ";MyProtocol3;true;source2();;;ReturnValue;remote",
+        ";MyProtocol3;true;source3();;;ReturnValue;remote"
       ]
   }
 }
