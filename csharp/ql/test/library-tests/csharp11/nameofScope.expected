@@ -1,0 +1,4 @@
+| NameofScope.cs:11:18:11:26 | nameof(...) | [My(...)] | T |
+| NameofScope.cs:14:26:14:34 | nameof(...) | [return: My(...)] | y |
+| NameofScope.cs:17:35:17:43 | nameof(...) | [My(...)] | z |
+| NameofScope.cs:19:38:19:46 | nameof(...) | [My(...)] | S |

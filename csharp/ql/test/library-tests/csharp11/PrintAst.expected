@@ -165,6 +165,70 @@ ListPattern.cs:
 #   33|         13: [BreakStmt] break;
 #   34|         14: [DefaultCase] default:
 #   35|         15: [BreakStmt] break;
+NameofScope.cs:
+#    3| [Class] MyAttributeTestClass
+#    5|   5: [Class] MyAttribute
+#-----|     3: (Base types)
+#    5|       0: [TypeMention] Attribute
+#    7|     4: [Field] S
+#    7|       -1: [TypeMention] string
+#    8|     5: [InstanceConstructor] MyAttribute
+#-----|       2: (Parameters)
+#    8|         0: [Parameter] s
+#    8|           -1: [TypeMention] string
+#    8|       4: [AssignExpr] ... = ...
+#    8|         0: [FieldAccess] access to field S
+#    8|         1: [ParameterAccess] access to parameter s
+#   12|   6: [Method] M1<>
+#   12|     -1: [TypeMention] Void
+#-----|     0: (Attributes)
+#   11|       1: [DefaultAttribute] [My(...)]
+#   11|         -1: [TypeMention] MyAttribute
+#   11|         0: [NameOfExpr] nameof(...)
+#   11|           0: [TypeAccess] access to type T
+#   11|             0: [TypeMention] T
+#-----|     1: (Type parameters)
+#   12|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   12|       0: [Parameter] x
+#   12|         -1: [TypeMention] string
+#   12|     4: [BlockStmt] {...}
+#   15|   7: [Method] M2
+#   15|     -1: [TypeMention] string
+#-----|     0: (Attributes)
+#   14|       1: [ReturnAttribute] [return: My(...)]
+#   14|         -1: [TypeMention] MyAttribute
+#   14|         0: [NameOfExpr] nameof(...)
+#   14|           0: [ParameterAccess] access to parameter y
+#-----|     2: (Parameters)
+#   15|       0: [Parameter] y
+#   15|         -1: [TypeMention] string
+#   15|     4: [ParameterAccess] access to parameter y
+#   17|   8: [Method] M3
+#   17|     -1: [TypeMention] object
+#-----|     2: (Parameters)
+#   17|       0: [Parameter] z
+#   17|         -1: [TypeMention] string
+#-----|         0: (Attributes)
+#   17|           1: [DefaultAttribute] [My(...)]
+#   17|             -1: [TypeMention] MyAttribute
+#   17|             0: [NameOfExpr] nameof(...)
+#   17|               0: [ParameterAccess] access to parameter z
+#   17|     4: [ParameterAccess] access to parameter z
+#   19|   9: [Method] M4<>
+#   19|     -1: [TypeMention] object
+#-----|     1: (Type parameters)
+#   19|       0: [TypeParameter] S
+#-----|     2: (Parameters)
+#   19|       0: [Parameter] z
+#   19|         -1: [TypeMention] string
+#-----|         0: (Attributes)
+#   19|           1: [DefaultAttribute] [My(...)]
+#   19|             -1: [TypeMention] MyAttribute
+#   19|             0: [NameOfExpr] nameof(...)
+#   19|               0: [TypeAccess] access to type S
+#   19|                 0: [TypeMention] S
+#   19|     4: [ParameterAccess] access to parameter z
 NativeInt.cs:
 #    1| [Class] NativeInt
 #    3|   5: [Method] M1
