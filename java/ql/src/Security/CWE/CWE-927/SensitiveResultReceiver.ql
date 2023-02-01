@@ -1,6 +1,6 @@
 /**
  * @name Leaking sensitive information through a ResultReceiver
- * @description Sending sensitive data to a 'ResultReceiver' from an untrusted source
+ * @description Sending sensitive data to a 'ResultReceiver' obtained from an untrusted source
  *              can allow malicious actors access to your information.
  * @kind path-problem
  * @problem.severity error
