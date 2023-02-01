@@ -119,8 +119,7 @@ impl LogWriter {
             None => tracing::debug!("{}", full_error_message),
         }
         if self.inner.is_none() {
-            let mut open_failed = false;
-            self.inner = self.path.as_ref().and_then(|path| {
+            if let Some(path) = self.path.as_ref() {
                 match std::fs::OpenOptions::new()
                     .create(true)
                     .append(true)
@@ -133,14 +132,11 @@ impl LogWriter {
                             &path.to_string_lossy(),
                             e
                         );
-                        open_failed = true;
-                        None
+                        self.path = None;
+                        self.inner = None
                     }
-                    Ok(file) => Some(std::io::BufWriter::new(file)),
+                    Ok(file) => self.inner = Some(std::io::BufWriter::new(file)),
                 }
-            });
-            if open_failed {
-                self.path = None
             }
         }
         if let Some(mut writer) = self.inner.as_mut() {
