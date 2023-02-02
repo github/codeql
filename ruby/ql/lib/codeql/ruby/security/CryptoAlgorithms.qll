@@ -40,12 +40,12 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
 
   /**
    * Holds if the name of this algorithm matches `name` modulo case,
-   * white space, dashes, underscores, and anything after a dash in the name
+   * white space, dashes, underscores, and anything after a dash or underscore in the name
    * (to ignore modes of operation, such as CBC or ECB).
    */
   bindingset[name]
   predicate matchesName(string name) {
-    [name.toUpperCase(), name.toUpperCase().regexpCapture("^(\\w+)(?:-.*)?$", 1)]
+    [name.toUpperCase(), name.toUpperCase().regexpCapture("^([A-Z0-9]+)(?:(-|_).*)?$", 1)]
         .regexpReplaceAll("[-_ ]", "") = getName()
   }
 
