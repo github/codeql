@@ -26,9 +26,20 @@ private class StringSource extends SourceModelCsv {
 private class StringFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent {
   StringFieldsInheritTaint() {
-    this.getField().getEnclosingDecl().(NominalTypeDecl).getFullName() =
-      ["String", "StringProtocol"] or
-    this.getField().getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getFullName() =
-      ["String", "StringProtocol"]
+    exists(FieldDecl f | this.getField() = f |
+      (
+        f.getEnclosingDecl().(NominalTypeDecl).getName() = ["String", "StringProtocol"] or
+        f.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getName() =
+          ["String", "StringProtocol"]
+      ) and
+      f.getName() =
+        [
+          "first", "last", "unicodeScalars", "utf8", "utf16", "lazy", "utf8CString", "description",
+          "debugDescription", "dataValue", "identifierValue", "capitalized", "localizedCapitalized",
+          "localizedLowercase", "localizedUppercase", "decomposedStringWithCanonicalMapping",
+          "decomposedStringWithCompatibilityMapping", "precomposedStringWithCanonicalMapping",
+          "precomposedStringWithCompatibilityMapping", "removingPercentEncoding"
+        ]
+    )
   }
 }

@@ -634,5 +634,5 @@ func untaintedFields() {
 
   sink(arg: String.availableStringEncodings)
   sink(arg: String.defaultCStringEncoding)
-  sink(arg: tainted.isContiguousUTF8) // $ SPURIOUS: tainted=633
+  sink(arg: tainted.isContiguousUTF8)
 }
