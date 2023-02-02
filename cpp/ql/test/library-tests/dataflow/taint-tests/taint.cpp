@@ -448,9 +448,9 @@ void test_qualifiers()
 	sink(b);
 	sink(b.getMember());
 	b.member = source();
-	sink(b); // $ MISSING: ast,ir
+	sink(b); // $ ir MISSING: ast
 	sink(b.member); // $ ast,ir
-	sink(b.getMember()); // $ MISSING: ast,ir
+	sink(b.getMember()); // $ ir MISSING: ast
 
 	c = new MyClass2(0);
 
@@ -690,7 +690,7 @@ void test_argument_source_field_to_obj() {
 	two_members s;
 	argument_source(s.x);
 
-	sink(s); // $ SPURIOUS: ast
+	sink(s); // $ SPURIOUS: ast,ir
 	sink(s.x); // $ ast,ir
 	sink(s.y); // clean
 }

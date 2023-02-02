@@ -53,7 +53,7 @@ void test_myint_member_assignment()
 
 	mi.i = source();
 
-	sink(mi); // $ MISSING: ast,ir
+	sink(mi); // $ ir MISSING: ast
 	sink(mi.get()); // $ ast,ir
 }
 
@@ -63,7 +63,7 @@ void test_myint_method_assignment()
 
 	mi.get() = source();
 
-	sink(mi); // $ MISSING: ast,ir
+	sink(mi); // $ ir MISSING: ast
 	sink(mi.get()); // $ ast,ir
 }
 
