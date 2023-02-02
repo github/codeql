@@ -266,9 +266,6 @@ Within it, the class ``OneTwoThree`` and the module ``P`` are **visible**, as we
 Example
 =======
 
-The namespaces of a general QL module are a union of the local namespaces, the namespaces of any enclosing modules, 
-and the global namespaces. (You can think of global namespaces as the enclosing namespaces of a top-level module.)
-
 Let's see what the module, type, and predicate namespaces look like in a concrete example:
 
 For example, you could define a library module ``Villagers`` containing some of the classes and predicates that 
