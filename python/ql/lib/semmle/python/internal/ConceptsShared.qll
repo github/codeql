@@ -91,6 +91,10 @@ module Cryptography {
 
     /** Holds if this block mode is considered to be insecure. */
     predicate isWeak() { this = "ECB" }
+
+    /** Holds if the given string appears to match this block mode. */
+    bindingset[s]
+    predicate matchesString(string s) { s.toUpperCase().matches("%" + this + "%") }
   }
 }
 
