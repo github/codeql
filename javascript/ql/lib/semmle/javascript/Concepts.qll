@@ -110,3 +110,10 @@ abstract class PersistentWriteAccess extends DataFlow::Node {
    */
   abstract DataFlow::Node getValue();
 }
+
+/**
+ * Provides models for cryptographic things.
+ */
+module Cryptography {
+  import semmle.javascript.internal.ConceptsShared::Cryptography
+}
