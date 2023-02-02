@@ -1185,7 +1185,7 @@ private module StdlibPrivate {
    * See https://docs.python.org/3.8/library/subprocess.html#subprocess.Popen
    * ref: https://docs.python.org/3/library/subprocess.html#legacy-shell-invocation-functions
    */
-  private class SubprocessPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class SubprocessPopenCall extends SystemCommandExecution::Range, API::CallNode {
     SubprocessPopenCall() {
       exists(string name |
         name in [
@@ -1195,44 +1195,33 @@ private module StdlibPrivate {
       )
     }
 
-    /** Gets the ControlFlowNode for the `args` argument, if any. */
-    private DataFlow::Node get_args_arg() { result in [this.getArg(0), this.getArgByName("args")] }
+    /** Gets the API-node for the `args` argument, if any. */
+    private API::Node get_args_arg() { result = this.getParameter(0, "args") }
 
-    /** Gets the ControlFlowNode for the `shell` argument, if any. */
-    private DataFlow::Node get_shell_arg() {
-      result in [this.getArg(8), this.getArgByName("shell")]
-    }
+    /** Gets the API-node for the `shell` argument, if any. */
+    private API::Node get_shell_arg() { result = this.getParameter(8, "shell") }
 
     private boolean get_shell_arg_value() {
-      // TODO: API-node this thing - with added tests for unsafe-shell-command-construction
       not exists(this.get_shell_arg()) and
       result = false
       or
-      exists(DataFlow::Node shell_arg | shell_arg = this.get_shell_arg() |
-        result = shell_arg.asCfgNode().getNode().(ImmutableLiteral).booleanValue()
-        or
-        // TODO: Track the "shell" argument to determine possible values
-        not shell_arg.asCfgNode().getNode() instanceof ImmutableLiteral and
-        (
-          result = true
-          or
-          result = false
-        )
-      )
+      result =
+        this.get_shell_arg().getAValueReachingSink().asExpr().(ImmutableLiteral).booleanValue()
+      or
+      not this.get_shell_arg().getAValueReachingSink().asExpr() instanceof ImmutableLiteral and
+      result = [true, false]
     }
 
-    /** Gets the ControlFlowNode for the `executable` argument, if any. */
-    private DataFlow::Node get_executable_arg() {
-      result in [this.getArg(2), this.getArgByName("executable")]
-    }
+    /** Gets the API-node for the `executable` argument, if any. */
+    private API::Node get_executable_arg() { result = this.getParameter(2, "executable") }
 
     override DataFlow::Node getCommand() {
       // TODO: Track arguments ("args" and "shell")
       // TODO: Handle using `args=["sh", "-c", <user-input>]`
-      result = this.get_executable_arg()
+      result = this.get_executable_arg().asSink()
       or
       exists(DataFlow::Node arg_args, boolean shell |
-        arg_args = this.get_args_arg() and
+        arg_args = this.get_args_arg().asSink() and
         shell = this.get_shell_arg_value()
       |
         // When "executable" argument is set, and "shell" argument is `False`, the
@@ -1260,7 +1249,7 @@ private module StdlibPrivate {
     }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
-      arg = [this.get_executable_arg(), this.get_args_arg()] and
+      arg = [this.get_executable_arg(), this.get_args_arg()].asSink() and
       this.get_shell_arg_value() = true
     }
   }

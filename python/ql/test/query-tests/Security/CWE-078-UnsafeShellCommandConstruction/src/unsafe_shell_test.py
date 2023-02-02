@@ -38,7 +38,7 @@ def subprocess_flag (name):
 
     subprocess.run("ping " + name, shell=True) # $result=BAD
 
-    def indirect(flag): 
-        subprocess.run("ping " + name, shell=flag) # $ MISSING: result=BAD
+    def indirect(flag, x): 
+        subprocess.run("ping " + x, shell=flag) # $result=BAD
 
-    indirect(True)
+    indirect(True, name)
