@@ -344,7 +344,7 @@ func taintThroughData() {
 	sink(arg: stringTainted!) // $ MISSING: tainted=341
 
   sink(arg: String(decoding: Data(""), as: UTF8.self))
-  sink(arg: String(decoding: source3(), as: UTF8.self)) // $ MISSING: tainted=347
+  sink(arg: String(decoding: source3(), as: UTF8.self)) // $ tainted=347
 }
 
 func taintThroughEncodings() {
@@ -456,7 +456,7 @@ func taintFromUInt8Array() {
   sink(arg: String(bytes: taintedUInt8Values, encoding: String.Encoding.utf8)!) // $ MISSING: tainted=436
 
   sink(arg: String(cString: cleanUInt8Values))
-  sink(arg: String(cString: taintedUInt8Values)) // $ MISSING: tainted=436
+  sink(arg: String(cString: taintedUInt8Values)) // $ tainted=436
 
   try! cleanUInt8Values.withUnsafeBufferPointer({
     (buffer: UnsafeBufferPointer<UInt8>) throws in
@@ -509,7 +509,7 @@ func taintThroughCCharArray() {
   })
 
   sink(arg: String(cString: cleanCCharValues))
-  sink(arg: String(cString: taintedCCharValues)) // $ MISSING: tainted=492
+  sink(arg: String(cString: taintedCCharValues)) // $ tainted=492
 }
 
 func source6() -> [unichar] { return [] }

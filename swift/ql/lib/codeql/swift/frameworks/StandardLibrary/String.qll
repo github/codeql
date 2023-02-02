@@ -3,6 +3,9 @@ private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSteps
 
+/**
+ * A model for `String` members that are sources of remote flow.
+ */
 private class StringSource extends SourceModelCsv {
   override predicate row(string row) {
     row =
@@ -15,6 +18,20 @@ private class StringSource extends SourceModelCsv {
         ";String;true;init(contentsOfFile:);(String);;ReturnValue;local",
         ";String;true;init(contentsOfFile:encoding:);(String,String.Encoding);;ReturnValue;local",
         ";String;true;init(contentsOfFile:usedEncoding:);(String,String.Encoding);;ReturnValue;local"
+      ]
+  }
+}
+
+/**
+ * A model for `String` and `StringProtocol` members that permit taint flow.
+ */
+private class StringSummaries extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        ";StringProtocol;true;init(cString:);;;Argument[0];ReturnValue;taint",
+        ";StringProtocol;true;init(decoding:as:);;;Argument[0];ReturnValue;taint",
+        ";StringProtocol;true;init(decodingCString:as:);;;Argument[0];ReturnValue;taint",
       ]
   }
 }

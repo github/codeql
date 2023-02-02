@@ -158,6 +158,9 @@ edges
 | data.swift:261:22:261:29 | call to source() :  | data.swift:262:12:262:12 | dataTainted41 :  |
 | data.swift:262:12:262:12 | dataTainted41 :  | data.swift:64:2:64:72 | [summary param] this in trimmingPrefix(while:) :  |
 | data.swift:262:12:262:12 | dataTainted41 :  | data.swift:262:12:262:54 | call to trimmingPrefix(while:) |
+| file://:0:0:0:0 | [summary param] 0 in String.init(cString:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(cString:) :  |
+| file://:0:0:0:0 | [summary param] 0 in String.init(cString:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(cString:) :  |
+| file://:0:0:0:0 | [summary param] 0 in String.init(decoding:as:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(decoding:as:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0.parameter 0 in enumerateBytes(_:) :  | nsdata.swift:110:9:110:9 | bytes :  |
 | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  | url.swift:154:61:154:61 | data :  |
 | nsdata.swift:22:9:22:9 | self :  | file://:0:0:0:0 | .bytes :  |
@@ -606,6 +609,14 @@ edges
 | string.swift:326:14:326:22 | call to source2() :  | string.swift:329:13:329:13 | str5 |
 | string.swift:331:14:331:22 | call to source2() :  | string.swift:332:13:332:13 | str6 |
 | string.swift:331:14:331:22 | call to source2() :  | string.swift:334:13:334:13 | str6 |
+| string.swift:347:30:347:38 | call to source3() :  | file://:0:0:0:0 | [summary param] 0 in String.init(decoding:as:) :  |
+| string.swift:347:30:347:38 | call to source3() :  | string.swift:347:13:347:54 | call to String.init(decoding:as:) |
+| string.swift:436:28:436:36 | call to source4() :  | string.swift:459:29:459:29 | taintedUInt8Values :  |
+| string.swift:459:29:459:29 | taintedUInt8Values :  | file://:0:0:0:0 | [summary param] 0 in String.init(cString:) :  |
+| string.swift:459:29:459:29 | taintedUInt8Values :  | string.swift:459:13:459:47 | call to String.init(cString:) |
+| string.swift:492:37:492:45 | call to source5() :  | string.swift:512:29:512:29 | taintedCCharValues :  |
+| string.swift:512:29:512:29 | taintedCCharValues :  | file://:0:0:0:0 | [summary param] 0 in String.init(cString:) :  |
+| string.swift:512:29:512:29 | taintedCCharValues :  | string.swift:512:13:512:47 | call to String.init(cString:) |
 | string.swift:540:17:540:25 | call to source2() :  | string.swift:545:13:545:13 | sub1 |
 | subscript.swift:13:15:13:22 | call to source() :  | subscript.swift:13:15:13:25 | ...[...] |
 | subscript.swift:14:15:14:23 | call to source2() :  | subscript.swift:14:15:14:26 | ...[...] |
@@ -1067,6 +1078,9 @@ nodes
 | file://:0:0:0:0 | .url :  | semmle.label | .url :  |
 | file://:0:0:0:0 | .urlContexts :  | semmle.label | .urlContexts :  |
 | file://:0:0:0:0 | .userActivities :  | semmle.label | .userActivities :  |
+| file://:0:0:0:0 | [summary param] 0 in String.init(cString:) :  | semmle.label | [summary param] 0 in String.init(cString:) :  |
+| file://:0:0:0:0 | [summary param] 0 in String.init(cString:) :  | semmle.label | [summary param] 0 in String.init(cString:) :  |
+| file://:0:0:0:0 | [summary param] 0 in String.init(decoding:as:) :  | semmle.label | [summary param] 0 in String.init(decoding:as:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0 in copyBytes(to:) :  | semmle.label | [summary] to write: argument 0 in copyBytes(to:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:) :  | semmle.label | [summary] to write: argument 0 in getBytes(_:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:length:) :  | semmle.label | [summary] to write: argument 0 in getBytes(_:length:) :  |
@@ -1124,6 +1138,9 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in NSData.init(contentsOfFile:options:) :  | semmle.label | [summary] to write: return (return) in NSData.init(contentsOfFile:options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in NSData.init(contentsOfMappedFile:) :  | semmle.label | [summary] to write: return (return) in NSData.init(contentsOfMappedFile:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in NSData.init(data:) :  | semmle.label | [summary] to write: return (return) in NSData.init(data:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in String.init(cString:) :  | semmle.label | [summary] to write: return (return) in String.init(cString:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in String.init(cString:) :  | semmle.label | [summary] to write: return (return) in String.init(cString:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in String.init(decoding:as:) :  | semmle.label | [summary] to write: return (return) in String.init(decoding:as:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:) :  | semmle.label | [summary] to write: return (return) in URL.init(string:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in URL.init(string:relativeTo:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in URL.init(string:relativeTo:) :  |
@@ -1393,6 +1410,14 @@ nodes
 | string.swift:331:14:331:22 | call to source2() :  | semmle.label | call to source2() :  |
 | string.swift:332:13:332:13 | str6 | semmle.label | str6 |
 | string.swift:334:13:334:13 | str6 | semmle.label | str6 |
+| string.swift:347:13:347:54 | call to String.init(decoding:as:) | semmle.label | call to String.init(decoding:as:) |
+| string.swift:347:30:347:38 | call to source3() :  | semmle.label | call to source3() :  |
+| string.swift:436:28:436:36 | call to source4() :  | semmle.label | call to source4() :  |
+| string.swift:459:13:459:47 | call to String.init(cString:) | semmle.label | call to String.init(cString:) |
+| string.swift:459:29:459:29 | taintedUInt8Values :  | semmle.label | taintedUInt8Values :  |
+| string.swift:492:37:492:45 | call to source5() :  | semmle.label | call to source5() :  |
+| string.swift:512:13:512:47 | call to String.init(cString:) | semmle.label | call to String.init(cString:) |
+| string.swift:512:29:512:29 | taintedCCharValues :  | semmle.label | taintedCCharValues :  |
 | string.swift:540:17:540:25 | call to source2() :  | semmle.label | call to source2() :  |
 | string.swift:542:13:542:21 | call to source7() | semmle.label | call to source7() |
 | string.swift:545:13:545:13 | sub1 | semmle.label | sub1 |
@@ -1713,6 +1738,9 @@ subpaths
 | string.swift:250:13:250:13 | tainted :  | string.swift:107:8:107:8 | self :  | string.swift:107:3:107:78 | self[return] :  | string.swift:250:13:250:13 | [post] tainted :  |
 | string.swift:251:13:251:13 | tainted :  | string.swift:107:8:107:8 | self :  | string.swift:107:3:107:78 | self[return] :  | string.swift:251:13:251:13 | [post] tainted :  |
 | string.swift:258:13:258:13 | tainted :  | string.swift:109:8:109:8 | self :  | string.swift:109:3:109:79 | self[return] :  | string.swift:258:13:258:13 | [post] tainted :  |
+| string.swift:347:30:347:38 | call to source3() :  | file://:0:0:0:0 | [summary param] 0 in String.init(decoding:as:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(decoding:as:) :  | string.swift:347:13:347:54 | call to String.init(decoding:as:) |
+| string.swift:459:29:459:29 | taintedUInt8Values :  | file://:0:0:0:0 | [summary param] 0 in String.init(cString:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(cString:) :  | string.swift:459:13:459:47 | call to String.init(cString:) |
+| string.swift:512:29:512:29 | taintedCCharValues :  | file://:0:0:0:0 | [summary param] 0 in String.init(cString:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(cString:) :  | string.swift:512:13:512:47 | call to String.init(cString:) |
 | ui.swift:55:10:55:10 | tainted :  | ui.swift:16:9:16:9 | self :  | file://:0:0:0:0 | .url :  | ui.swift:55:10:55:18 | .url |
 | ui.swift:64:10:64:10 | tainted :  | ui.swift:32:13:32:13 | self :  | file://:0:0:0:0 | .userActivities :  | ui.swift:64:10:64:18 | .userActivities |
 | ui.swift:68:10:68:10 | tainted :  | ui.swift:34:13:34:13 | self :  | file://:0:0:0:0 | .urlContexts :  | ui.swift:68:10:68:18 | .urlContexts |
@@ -1885,6 +1913,9 @@ subpaths
 | string.swift:329:13:329:13 | str5 | string.swift:326:14:326:22 | call to source2() :  | string.swift:329:13:329:13 | str5 | result |
 | string.swift:332:13:332:13 | str6 | string.swift:331:14:331:22 | call to source2() :  | string.swift:332:13:332:13 | str6 | result |
 | string.swift:334:13:334:13 | str6 | string.swift:331:14:331:22 | call to source2() :  | string.swift:334:13:334:13 | str6 | result |
+| string.swift:347:13:347:54 | call to String.init(decoding:as:) | string.swift:347:30:347:38 | call to source3() :  | string.swift:347:13:347:54 | call to String.init(decoding:as:) | result |
+| string.swift:459:13:459:47 | call to String.init(cString:) | string.swift:436:28:436:36 | call to source4() :  | string.swift:459:13:459:47 | call to String.init(cString:) | result |
+| string.swift:512:13:512:47 | call to String.init(cString:) | string.swift:492:37:492:45 | call to source5() :  | string.swift:512:13:512:47 | call to String.init(cString:) | result |
 | string.swift:542:13:542:21 | call to source7() | string.swift:542:13:542:21 | call to source7() | string.swift:542:13:542:21 | call to source7() | result |
 | string.swift:545:13:545:13 | sub1 | string.swift:540:17:540:25 | call to source2() :  | string.swift:545:13:545:13 | sub1 | result |
 | subscript.swift:13:15:13:25 | ...[...] | subscript.swift:13:15:13:22 | call to source() :  | subscript.swift:13:15:13:25 | ...[...] | result |
