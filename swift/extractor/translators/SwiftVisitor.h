@@ -39,6 +39,10 @@ class SwiftVisitor : private SwiftDispatcher {
     typeTranslator.translateAndEmit(*typeRepr, type);
   }
 
+  void visit(const swift::CapturedValue* capture) override {
+    declTranslator.translateAndEmit(*capture);
+  }
+
   DeclTranslator declTranslator{*this};
   ExprTranslator exprTranslator{*this};
   StmtTranslator stmtTranslator{*this};

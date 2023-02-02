@@ -14,6 +14,7 @@ module Synth {
     TUnspecifiedElement(Raw::UnspecifiedElement id) { constructUnspecifiedElement(id) } or
     TAccessorDecl(Raw::AccessorDecl id) { constructAccessorDecl(id) } or
     TAssociatedTypeDecl(Raw::AssociatedTypeDecl id) { constructAssociatedTypeDecl(id) } or
+    TCapturedDecl(Raw::CapturedDecl id) { constructCapturedDecl(id) } or
     TClassDecl(Raw::ClassDecl id) { constructClassDecl(id) } or
     TConcreteFuncDecl(Raw::ConcreteFuncDecl id) { constructConcreteFuncDecl(id) } or
     TConcreteVarDecl(Raw::ConcreteVarDecl id) { constructConcreteVarDecl(id) } or
@@ -327,9 +328,9 @@ module Synth {
   class TAbstractTypeParamDecl = TAssociatedTypeDecl or TGenericTypeParamDecl;
 
   class TDecl =
-    TEnumCaseDecl or TExtensionDecl or TIfConfigDecl or TImportDecl or TMissingMemberDecl or
-        TOperatorDecl or TPatternBindingDecl or TPoundDiagnosticDecl or TPrecedenceGroupDecl or
-        TTopLevelCodeDecl or TValueDecl;
+    TCapturedDecl or TEnumCaseDecl or TExtensionDecl or TIfConfigDecl or TImportDecl or
+        TMissingMemberDecl or TOperatorDecl or TPatternBindingDecl or TPoundDiagnosticDecl or
+        TPrecedenceGroupDecl or TTopLevelCodeDecl or TValueDecl;
 
   class TFuncDecl = TAccessorDecl or TConcreteFuncDecl;
 
@@ -493,6 +494,9 @@ module Synth {
   TAssociatedTypeDecl convertAssociatedTypeDeclFromRaw(Raw::Element e) {
     result = TAssociatedTypeDecl(e)
   }
+
+  cached
+  TCapturedDecl convertCapturedDeclFromRaw(Raw::Element e) { result = TCapturedDecl(e) }
 
   cached
   TClassDecl convertClassDeclFromRaw(Raw::Element e) { result = TClassDecl(e) }
@@ -1465,6 +1469,8 @@ module Synth {
 
   cached
   TDecl convertDeclFromRaw(Raw::Element e) {
+    result = convertCapturedDeclFromRaw(e)
+    or
     result = convertEnumCaseDeclFromRaw(e)
     or
     result = convertExtensionDeclFromRaw(e)
@@ -2124,6 +2130,9 @@ module Synth {
   Raw::Element convertAssociatedTypeDeclToRaw(TAssociatedTypeDecl e) {
     e = TAssociatedTypeDecl(result)
   }
+
+  cached
+  Raw::Element convertCapturedDeclToRaw(TCapturedDecl e) { e = TCapturedDecl(result) }
 
   cached
   Raw::Element convertClassDeclToRaw(TClassDecl e) { e = TClassDecl(result) }
@@ -3094,6 +3103,8 @@ module Synth {
 
   cached
   Raw::Element convertDeclToRaw(TDecl e) {
+    result = convertCapturedDeclToRaw(e)
+    or
     result = convertEnumCaseDeclToRaw(e)
     or
     result = convertExtensionDeclToRaw(e)

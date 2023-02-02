@@ -55,13 +55,6 @@ callable_bodies(
   int body: @brace_stmt_or_none ref
 );
 
-#keyset[id, index]
-callable_captures(
-  int id: @callable ref,
-  int index: int ref,
-  int capture: @captured_decl_or_none ref
-);
-
 @file =
   @db_file
 ;
@@ -164,8 +157,7 @@ unspecified_element_indices(
 );
 
 @decl =
-  @captured_decl
-| @enum_case_decl
+  @enum_case_decl
 | @extension_decl
 | @if_config_decl
 | @import_decl
@@ -203,21 +195,6 @@ generic_context_generic_type_params(  //dir=decl
   int id: @generic_context ref,
   int index: int ref,
   int generic_type_param: @generic_type_param_decl_or_none ref
-);
-
-captured_decls(  //dir=decl
-  unique int id: @captured_decl,
-  int decl: @value_decl_or_none ref
-);
-
-#keyset[id]
-captured_decl_is_direct(  //dir=decl
-  int id: @captured_decl ref
-);
-
-#keyset[id]
-captured_decl_is_escaping(  //dir=decl
-  int id: @captured_decl ref
 );
 
 enum_case_decls(  //dir=decl
@@ -2383,11 +2360,6 @@ variadic_sequence_types(  //dir=type
 
 @brace_stmt_or_none =
   @brace_stmt
-| @unspecified_element
-;
-
-@captured_decl_or_none =
-  @captured_decl
 | @unspecified_element
 ;
 

@@ -13,6 +13,8 @@ module Raw {
     ParamDecl getParam(int index) { callable_params(this, index, result) }
 
     BraceStmt getBody() { callable_bodies(this, result) }
+
+    CapturedDecl getCapture(int index) { callable_captures(this, index, result) }
   }
 
   class File extends @file, Element {
@@ -83,6 +85,16 @@ module Raw {
     GenericTypeParamDecl getGenericTypeParam(int index) {
       generic_context_generic_type_params(this, index, result)
     }
+  }
+
+  class CapturedDecl extends @captured_decl, Decl {
+    override string toString() { result = "CapturedDecl" }
+
+    ValueDecl getDecl() { captured_decls(this, result) }
+
+    predicate isDirect() { captured_decl_is_direct(this) }
+
+    predicate isEscaping() { captured_decl_is_escaping(this) }
   }
 
   class EnumCaseDecl extends @enum_case_decl, Decl {
