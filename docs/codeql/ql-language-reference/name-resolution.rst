@@ -228,8 +228,9 @@ For a module ``M``, it is useful to distinguish between its **privately declared
     1. all entries from the **exported** namespaces of ``M``, and
     2. all entries from the **global** namespaces, and
     3. all entries from the **privately declared** namespace of ``M``, and
-    4. if ``M`` is nested within a module ``N``: all entries from the **visible** namespaces of ``N`` that do not have the same name as any of the entries in the **publically declared** namespaces of ``M``, and
-    5. all parameters of ``M``.
+    4. for each module ``N`` that is imported into ``M`` with an import statement that is annotated as ``private``: all entries from the **exported** namespaces of ``N`` that do not have the same name as any of the entries in the **publically declared** namespaces of ``M``.
+    5. if ``M`` is nested within a module ``N``: all entries from the **visible** namespaces of ``N`` that do not have the same name as any of the entries in the **publically declared** namespaces of ``M``, and
+    6. all parameters of ``M``.
 
 
 This is easiest to understand in an example: 
