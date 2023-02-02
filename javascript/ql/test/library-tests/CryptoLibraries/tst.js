@@ -1,5 +1,7 @@
 asmCrypto.SHA256.hex(input);
 
+
+
 var jwcrypto = require("browserid-crypto");
 jwcrypto.generateKeypair({algorithm: 'DSA'}, function(err, keypair) {
     jwcrypto.sign(input, keypair.secretKey);
@@ -25,6 +27,11 @@ const sign = crypto.createSign('SHA256');
 sign.update('input1');
 sign.write('input2');
 
+
+
+
+
+
 var CryptoJS = require("crypto-js");
 CryptoJS.AES.encrypt('my message', 'secret key 123');
 
@@ -37,6 +44,10 @@ CryptoJS.HmacSHA1("Message", "Key");
 require("crypto-js/aes").encrypt('my message', 'secret key 123');
 
 require("crypto-js/sha1")("Message", "Key");
+
+
+
+
 
 require("nacl").sign('my message');
 
