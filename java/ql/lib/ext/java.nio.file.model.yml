@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["java.nio.file", "Files", False, "copy", "", "", "Argument[1]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "copy", "", "", "Argument[0..1]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "createDirectories", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "createDirectory", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "createFile", "", "", "Argument[0]", "create-file", "manual"]
