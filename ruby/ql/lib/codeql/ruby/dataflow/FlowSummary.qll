@@ -30,6 +30,8 @@ module SummaryComponent {
 
   predicate withContent = SC::withContent/1;
 
+  class SyntheticGlobal = SC::SyntheticGlobal;
+
   /** Gets a summary component that represents a receiver. */
   SummaryComponent receiver() { result = argument(any(ParameterPosition pos | pos.isSelf())) }
 

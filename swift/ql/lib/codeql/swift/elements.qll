@@ -35,7 +35,6 @@ import codeql.swift.elements.decl.GenericTypeParamDecl
 import codeql.swift.elements.decl.IfConfigDecl
 import codeql.swift.elements.decl.ImportDecl
 import codeql.swift.elements.decl.InfixOperatorDecl
-import codeql.swift.elements.decl.IterableDeclContext
 import codeql.swift.elements.decl.MissingMemberDecl
 import codeql.swift.elements.decl.ModuleDecl
 import codeql.swift.elements.decl.NominalTypeDecl
@@ -157,7 +156,6 @@ import codeql.swift.elements.expr.PropertyWrapperValuePlaceholderExpr
 import codeql.swift.elements.expr.ProtocolMetatypeToObjectExpr
 import codeql.swift.elements.expr.RebindSelfInConstructorExpr
 import codeql.swift.elements.expr.RegexLiteralExpr
-import codeql.swift.elements.expr.SelfApplyExpr
 import codeql.swift.elements.expr.SequenceExpr
 import codeql.swift.elements.expr.StringLiteralExpr
 import codeql.swift.elements.expr.StringToPointerExpr

@@ -86,7 +86,7 @@ struct TrapLabelVectorWrapper {
   }
 };
 
-inline auto trapQuoted(const std::string& s) {
+inline auto trapQuoted(const std::string_view& s) {
   return std::quoted(s, '"', '"');
 }
 
