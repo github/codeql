@@ -20,13 +20,15 @@ private class StringSource extends SourceModelCsv {
 }
 
 /**
- * A content implying that, if a `String` is tainted, then all its fields are tainted.
+ * A content implying that, if a `String` is tainted, then all its fields are
+ * tainted. This also includes fields declared in `StringProtocol`.
  */
 private class StringFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent {
   StringFieldsInheritTaint() {
-    this.getField().getEnclosingDecl().(ClassOrStructDecl).getFullName() = "String" or
+    this.getField().getEnclosingDecl().(NominalTypeDecl).getFullName() =
+      ["String", "StringProtocol"] or
     this.getField().getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getFullName() =
-      "String"
+      ["String", "StringProtocol"]
   }
 }

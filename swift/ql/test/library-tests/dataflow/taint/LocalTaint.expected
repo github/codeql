@@ -1264,30 +1264,44 @@
 | string.swift:282:13:282:13 | [post] tainted | string.swift:284:13:284:13 | tainted |
 | string.swift:282:13:282:13 | tainted | string.swift:284:13:284:13 | tainted |
 | string.swift:283:13:283:13 | [post] clean | string.swift:285:13:285:13 | clean |
+| string.swift:283:13:283:13 | clean | string.swift:283:13:283:19 | .capitalized |
 | string.swift:283:13:283:13 | clean | string.swift:285:13:285:13 | clean |
 | string.swift:284:13:284:13 | [post] tainted | string.swift:286:13:286:13 | tainted |
+| string.swift:284:13:284:13 | tainted | string.swift:284:13:284:21 | .capitalized |
 | string.swift:284:13:284:13 | tainted | string.swift:286:13:286:13 | tainted |
 | string.swift:285:13:285:13 | [post] clean | string.swift:287:13:287:13 | clean |
+| string.swift:285:13:285:13 | clean | string.swift:285:13:285:19 | .localizedCapitalized |
 | string.swift:285:13:285:13 | clean | string.swift:287:13:287:13 | clean |
 | string.swift:286:13:286:13 | [post] tainted | string.swift:288:13:288:13 | tainted |
+| string.swift:286:13:286:13 | tainted | string.swift:286:13:286:21 | .localizedCapitalized |
 | string.swift:286:13:286:13 | tainted | string.swift:288:13:288:13 | tainted |
 | string.swift:287:13:287:13 | [post] clean | string.swift:289:13:289:13 | clean |
+| string.swift:287:13:287:13 | clean | string.swift:287:13:287:19 | .localizedLowercase |
 | string.swift:287:13:287:13 | clean | string.swift:289:13:289:13 | clean |
 | string.swift:288:13:288:13 | [post] tainted | string.swift:290:13:290:13 | tainted |
+| string.swift:288:13:288:13 | tainted | string.swift:288:13:288:21 | .localizedLowercase |
 | string.swift:288:13:288:13 | tainted | string.swift:290:13:290:13 | tainted |
 | string.swift:289:13:289:13 | [post] clean | string.swift:291:13:291:13 | clean |
+| string.swift:289:13:289:13 | clean | string.swift:289:13:289:19 | .localizedUppercase |
 | string.swift:289:13:289:13 | clean | string.swift:291:13:291:13 | clean |
 | string.swift:290:13:290:13 | [post] tainted | string.swift:292:13:292:13 | tainted |
+| string.swift:290:13:290:13 | tainted | string.swift:290:13:290:21 | .localizedUppercase |
 | string.swift:290:13:290:13 | tainted | string.swift:292:13:292:13 | tainted |
 | string.swift:291:13:291:13 | [post] clean | string.swift:293:13:293:13 | clean |
+| string.swift:291:13:291:13 | clean | string.swift:291:13:291:19 | .decomposedStringWithCanonicalMapping |
 | string.swift:291:13:291:13 | clean | string.swift:293:13:293:13 | clean |
 | string.swift:292:13:292:13 | [post] tainted | string.swift:294:13:294:13 | tainted |
+| string.swift:292:13:292:13 | tainted | string.swift:292:13:292:21 | .decomposedStringWithCanonicalMapping |
 | string.swift:292:13:292:13 | tainted | string.swift:294:13:294:13 | tainted |
 | string.swift:293:13:293:13 | [post] clean | string.swift:295:13:295:13 | clean |
+| string.swift:293:13:293:13 | clean | string.swift:293:13:293:19 | .precomposedStringWithCompatibilityMapping |
 | string.swift:293:13:293:13 | clean | string.swift:295:13:295:13 | clean |
 | string.swift:294:13:294:13 | [post] tainted | string.swift:296:13:296:13 | tainted |
+| string.swift:294:13:294:13 | tainted | string.swift:294:13:294:21 | .precomposedStringWithCompatibilityMapping |
 | string.swift:294:13:294:13 | tainted | string.swift:296:13:296:13 | tainted |
+| string.swift:295:13:295:13 | clean | string.swift:295:13:295:19 | .removingPercentEncoding |
 | string.swift:295:13:295:19 | .removingPercentEncoding | string.swift:295:13:295:42 | ...! |
+| string.swift:296:13:296:13 | tainted | string.swift:296:13:296:21 | .removingPercentEncoding |
 | string.swift:296:13:296:21 | .removingPercentEncoding | string.swift:296:13:296:44 | ...! |
 | string.swift:300:7:300:7 | SSA def(str1) | string.swift:301:13:301:13 | str1 |
 | string.swift:300:14:300:22 | call to source2() | string.swift:300:7:300:7 | SSA def(str1) |

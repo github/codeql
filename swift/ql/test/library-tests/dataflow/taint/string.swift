@@ -281,19 +281,19 @@ func taintThroughSimpleStringOperations() {
   sink(arg: clean.lazy)
   sink(arg: tainted.lazy) // $ MISSING: tainted=212
   sink(arg: clean.capitalized)
-  sink(arg: tainted.capitalized) // $ MISSING: tainted=212
+  sink(arg: tainted.capitalized) // $ tainted=212
   sink(arg: clean.localizedCapitalized)
-  sink(arg: tainted.localizedCapitalized) // $ MISSING: tainted=212
+  sink(arg: tainted.localizedCapitalized) // $ tainted=212
   sink(arg: clean.localizedLowercase)
-  sink(arg: tainted.localizedLowercase) // $ MISSING: tainted=212
+  sink(arg: tainted.localizedLowercase) // $ tainted=212
   sink(arg: clean.localizedUppercase)
-  sink(arg: tainted.localizedUppercase) // $ MISSING: tainted=212
+  sink(arg: tainted.localizedUppercase) // $ tainted=212
   sink(arg: clean.decomposedStringWithCanonicalMapping)
-  sink(arg: tainted.decomposedStringWithCanonicalMapping) // $ MISSING: tainted=212
+  sink(arg: tainted.decomposedStringWithCanonicalMapping) // $ tainted=212
   sink(arg: clean.precomposedStringWithCompatibilityMapping)
-  sink(arg: tainted.precomposedStringWithCompatibilityMapping) // $ MISSING: tainted=212
+  sink(arg: tainted.precomposedStringWithCompatibilityMapping) // $ tainted=212
   sink(arg: clean.removingPercentEncoding!)
-  sink(arg: tainted.removingPercentEncoding!) // $ MISSING: tainted=212
+  sink(arg: tainted.removingPercentEncoding!) // $ tainted=212
 }
 
 func taintThroughMutatingStringOperations() {
