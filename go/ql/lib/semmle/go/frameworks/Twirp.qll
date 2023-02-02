@@ -56,7 +56,6 @@ module Twirp {
     ServiceInterface() {
       exists(TypeEntity te |
         te.getType() = serviceInterface and
-        this instanceof InterfaceType and
         serviceInterface.getUnderlyingType() = this and
         te.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
       )
