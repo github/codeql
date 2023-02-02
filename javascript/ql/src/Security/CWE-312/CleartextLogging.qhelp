@@ -5,7 +5,8 @@
 
 <overview>
 
-<p>If sensitive data is written to a log entry it is exposed. Sensitive data should not be exposed.</p>
+<p>If sensitive data is written to a log entry it could be exposed to an attacker
+who gains access to the logs.</p>
 
 <p>Potential attackers can obtain sensitive user data when the log output is displayed. Additionally that data may
 expose system information such as full path names, system information, and sometimes usernames and passwords.</p>
