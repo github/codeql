@@ -1,4 +1,4 @@
 name: codeql/ssa
-version: 0.0.10-dev
+version: 0.0.10
 groups: shared
 library: true
