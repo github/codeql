@@ -5,9 +5,10 @@ private predicate isOsSpecific(Declaration d) {
   d.getQualifiedName()
       .matches("%" +
           [
-            "libobjc", "libproc", "System.Diagnostics.Tracing.XplatEventLogger",
-            "System.Threading.AutoreleasePool",
-            "System.Diagnostics.Tracing.EventSource.<WriteEventString>"
+            "libobjc", "libproc", "libc", "Interop.Sys",
+            "System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal",
+            "System.Diagnostics.Tracing.XplatEventLogger", "System.Threading.AutoreleasePool",
+            "System.CLRConfig", "System.Diagnostics.Tracing.EventSource.<WriteEventString>",
           ] + "%")
 }
 

@@ -612,6 +612,24 @@ Strings.cs:
 #   53|           1: [StringLiteralUtf8] "The nested message
 #   53|             is UTF-8 encoded and
 #   53|           spans multiple lines."
+Struct.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [Class] MyEmptyClass
+#    5|   2: [Struct] RefStruct
+#    7|     5: [Field] MyInt
+#    7|       -1: [TypeMention] int
+#    8|     6: [Field] MyByte
+#    8|       -1: [TypeMention] byte
+#    9|     7: [Field] MyObject
+#    9|       -1: [TypeMention] object
+#   10|     8: [Field] MyEmptyClass
+#   10|       -1: [TypeMention] MyEmptyClass
+#   11|     9: [Field] MyReadonlyByte
+#   11|       -1: [TypeMention] byte
+#   12|     10: [Field] MyReadonlyObject
+#   12|       -1: [TypeMention] object
+#   13|     11: [Field] MyReadonlyString
+#   13|       -1: [TypeMention] string
 cil/class1.cs:
 #    4| [Class] Class1
 #    6|   5: [Method] Main
