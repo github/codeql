@@ -44,3 +44,6 @@ def subprocess_flag (name):
     indirect(True, name)
 
     subprocess.Popen("ping " + name, shell=unknownValue) # OK - shell assumed to be False
+
+def intentional(command): 
+    os.system("fish -ic " + command) # $result=OK - intentional

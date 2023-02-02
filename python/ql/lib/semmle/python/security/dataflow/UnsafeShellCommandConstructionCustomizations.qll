@@ -21,7 +21,10 @@ module UnsafeShellCommandConstruction {
 
   /** An input parameter to a gem seen as a source. */
   private class LibraryInputAsSource extends Source instanceof DataFlow::ParameterNode {
-    LibraryInputAsSource() { this = Setuptools::getALibraryInput() }
+    LibraryInputAsSource() {
+      this = Setuptools::getALibraryInput() and
+      not this.getParameter().getName().matches(["cmd%", "command%", "%_command", "%_cmd"])
+    }
   }
 
   /** A sink for shell command constructed from library input vulnerabilities. */
