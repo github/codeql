@@ -227,8 +227,8 @@ func taintThroughSimpleStringOperations() {
   sink(arg: String(repeating: clean, count: 2))
   sink(arg: String(repeating: tainted, count: 2)) // $ tainted=212
 
-  sink(arg: tainted.dropFirst(10)) // $ MISSING: tainted=212
-  sink(arg: tainted.dropLast(10)) // $ MISSING: tainted=212
+  sink(arg: tainted.dropFirst(10)) // $ tainted=212
+  sink(arg: tainted.dropLast(10)) // $ tainted=212
   sink(arg: tainted.substring(from: tainted.startIndex)) // $ tainted=212
 
   sink(arg: tainted.lowercased()) // $ tainted=212
@@ -236,7 +236,7 @@ func taintThroughSimpleStringOperations() {
   sink(arg: tainted.lowercased(with: nil)) // $ tainted=212
   sink(arg: tainted.uppercased(with: nil)) // $ tainted=212
   sink(arg: tainted.capitalized(with: nil)) // $ tainted=212
-  sink(arg: tainted.reversed()) // $ MISSING: tainted=212
+  sink(arg: tainted.reversed()) // $ tainted=212
 
   sink(arg: tainted.split(separator: ",")) // $ MISSING: tainted=212
   sink(arg: tainted.split(whereSeparator: { // $ MISSING: tainted=212
@@ -279,7 +279,7 @@ func taintThroughSimpleStringOperations() {
   sink(arg: clean.utf8CString)
   sink(arg: tainted.utf8CString) // $ tainted=212
   sink(arg: clean.lazy)
-  sink(arg: tainted.lazy) // $ MISSING: tainted=212
+  sink(arg: tainted.lazy) // $ tainted=212
   sink(arg: clean.capitalized)
   sink(arg: tainted.capitalized) // $ tainted=212
   sink(arg: clean.localizedCapitalized)

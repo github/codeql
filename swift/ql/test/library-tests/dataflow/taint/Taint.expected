@@ -137,6 +137,9 @@ edges
 | data.swift:228:10:228:10 | [post] dataTainted33 :  | data.swift:229:12:229:12 | dataTainted33 |
 | data.swift:228:45:228:52 | call to source() :  | data.swift:57:2:57:236 | [summary param] 1 in replacing(_:with:subrange:maxReplacements:) :  |
 | data.swift:228:45:228:52 | call to source() :  | data.swift:228:10:228:10 | [post] dataTainted33 :  |
+| data.swift:232:22:232:29 | call to source() :  | data.swift:233:12:233:12 | dataTainted34 :  |
+| data.swift:233:12:233:12 | dataTainted34 :  | data.swift:233:12:233:35 | call to reversed() |
+| data.swift:233:12:233:12 | dataTainted34 :  | file://:0:0:0:0 | [summary param] this in reversed() :  |
 | data.swift:236:22:236:29 | call to source() :  | data.swift:237:12:237:12 | dataTainted35 :  |
 | data.swift:237:12:237:12 | dataTainted35 :  | data.swift:58:2:58:39 | [summary param] this in sorted() :  |
 | data.swift:237:12:237:12 | dataTainted35 :  | data.swift:237:12:237:33 | call to sorted() |
@@ -171,6 +174,7 @@ edges
 | file://:0:0:0:0 | [summary param] 0 in insert(contentsOf:at:) :  | file://:0:0:0:0 | [summary] to write: argument this in insert(contentsOf:at:) :  |
 | file://:0:0:0:0 | [summary param] 0 in write(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in write(_:) :  |
 | file://:0:0:0:0 | [summary param] this in lowercased() :  | file://:0:0:0:0 | [summary] to write: return (return) in lowercased() :  |
+| file://:0:0:0:0 | [summary param] this in reversed() :  | file://:0:0:0:0 | [summary] to write: return (return) in reversed() :  |
 | file://:0:0:0:0 | [summary param] this in uppercased() :  | file://:0:0:0:0 | [summary] to write: return (return) in uppercased() :  |
 | file://:0:0:0:0 | [summary] to write: argument 0.parameter 0 in enumerateBytes(_:) :  | nsdata.swift:110:9:110:9 | bytes :  |
 | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  | url.swift:154:61:154:61 | data :  |
@@ -381,6 +385,7 @@ edges
 | string.swift:212:17:212:25 | call to source2() :  | string.swift:236:13:236:13 | tainted :  |
 | string.swift:212:17:212:25 | call to source2() :  | string.swift:237:13:237:13 | tainted :  |
 | string.swift:212:17:212:25 | call to source2() :  | string.swift:238:13:238:13 | tainted :  |
+| string.swift:212:17:212:25 | call to source2() :  | string.swift:239:13:239:13 | tainted :  |
 | string.swift:212:17:212:25 | call to source2() :  | string.swift:245:13:245:13 | tainted :  |
 | string.swift:212:17:212:25 | call to source2() :  | string.swift:246:13:246:13 | tainted :  |
 | string.swift:212:17:212:25 | call to source2() :  | string.swift:247:13:247:13 | tainted :  |
@@ -395,6 +400,7 @@ edges
 | string.swift:212:17:212:25 | call to source2() :  | string.swift:276:13:276:21 | .utf16 |
 | string.swift:212:17:212:25 | call to source2() :  | string.swift:278:13:278:21 | .unicodeScalars |
 | string.swift:212:17:212:25 | call to source2() :  | string.swift:280:13:280:21 | .utf8CString |
+| string.swift:212:17:212:25 | call to source2() :  | string.swift:282:13:282:21 | .lazy |
 | string.swift:212:17:212:25 | call to source2() :  | string.swift:284:13:284:21 | .capitalized |
 | string.swift:212:17:212:25 | call to source2() :  | string.swift:286:13:286:21 | .localizedCapitalized |
 | string.swift:212:17:212:25 | call to source2() :  | string.swift:288:13:288:21 | .localizedLowercase |
@@ -431,6 +437,8 @@ edges
 | string.swift:237:13:237:13 | tainted :  | string.swift:237:13:237:41 | call to uppercased(with:) |
 | string.swift:238:13:238:13 | tainted :  | string.swift:100:3:100:64 | [summary param] this in capitalized(with:) :  |
 | string.swift:238:13:238:13 | tainted :  | string.swift:238:13:238:42 | call to capitalized(with:) |
+| string.swift:239:13:239:13 | tainted :  | file://:0:0:0:0 | [summary param] this in reversed() :  |
+| string.swift:239:13:239:13 | tainted :  | string.swift:239:13:239:30 | call to reversed() |
 | string.swift:245:13:245:13 | tainted :  | string.swift:102:3:102:71 | [summary param] this in trimmingCharacters(in:) :  |
 | string.swift:245:13:245:13 | tainted :  | string.swift:245:13:245:68 | call to trimmingCharacters(in:) |
 | string.swift:246:13:246:13 | tainted :  | string.swift:104:3:104:138 | [summary param] this in padding(toLength:withPad:startingAt:) :  |
@@ -453,6 +461,7 @@ edges
 | string.swift:258:13:258:13 | [post] tainted :  | string.swift:276:13:276:21 | .utf16 |
 | string.swift:258:13:258:13 | [post] tainted :  | string.swift:278:13:278:21 | .unicodeScalars |
 | string.swift:258:13:258:13 | [post] tainted :  | string.swift:280:13:280:21 | .utf8CString |
+| string.swift:258:13:258:13 | [post] tainted :  | string.swift:282:13:282:21 | .lazy |
 | string.swift:258:13:258:13 | [post] tainted :  | string.swift:284:13:284:21 | .capitalized |
 | string.swift:258:13:258:13 | [post] tainted :  | string.swift:286:13:286:21 | .localizedCapitalized |
 | string.swift:258:13:258:13 | [post] tainted :  | string.swift:288:13:288:21 | .localizedLowercase |
@@ -931,6 +940,9 @@ nodes
 | data.swift:228:10:228:10 | [post] dataTainted33 :  | semmle.label | [post] dataTainted33 :  |
 | data.swift:228:45:228:52 | call to source() :  | semmle.label | call to source() :  |
 | data.swift:229:12:229:12 | dataTainted33 | semmle.label | dataTainted33 |
+| data.swift:232:22:232:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:233:12:233:12 | dataTainted34 :  | semmle.label | dataTainted34 :  |
+| data.swift:233:12:233:35 | call to reversed() | semmle.label | call to reversed() |
 | data.swift:236:22:236:29 | call to source() :  | semmle.label | call to source() :  |
 | data.swift:237:12:237:12 | dataTainted35 :  | semmle.label | dataTainted35 :  |
 | data.swift:237:12:237:33 | call to sorted() | semmle.label | call to sorted() |
@@ -977,6 +989,7 @@ nodes
 | file://:0:0:0:0 | [summary param] 0 in insert(contentsOf:at:) :  | semmle.label | [summary param] 0 in insert(contentsOf:at:) :  |
 | file://:0:0:0:0 | [summary param] 0 in write(_:) :  | semmle.label | [summary param] 0 in write(_:) :  |
 | file://:0:0:0:0 | [summary param] this in lowercased() :  | semmle.label | [summary param] this in lowercased() :  |
+| file://:0:0:0:0 | [summary param] this in reversed() :  | semmle.label | [summary param] this in reversed() :  |
 | file://:0:0:0:0 | [summary param] this in uppercased() :  | semmle.label | [summary param] this in uppercased() :  |
 | file://:0:0:0:0 | [summary] to write: argument 0 in copyBytes(to:) :  | semmle.label | [summary] to write: argument 0 in copyBytes(to:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:) :  | semmle.label | [summary] to write: argument 0 in getBytes(_:) :  |
@@ -1084,6 +1097,7 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  | semmle.label | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in propertyListFromStringsFileFormat() :  | semmle.label | [summary] to write: return (return) in propertyListFromStringsFileFormat() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in reduce(into:_:) :  | semmle.label | [summary] to write: return (return) in reduce(into:_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in reversed() :  | semmle.label | [summary] to write: return (return) in reversed() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in shuffled() :  | semmle.label | [summary] to write: return (return) in shuffled() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in shuffled(using:) :  | semmle.label | [summary] to write: return (return) in shuffled(using:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in sorted() :  | semmle.label | [summary] to write: return (return) in sorted() :  |
@@ -1328,6 +1342,8 @@ nodes
 | string.swift:237:13:237:41 | call to uppercased(with:) | semmle.label | call to uppercased(with:) |
 | string.swift:238:13:238:13 | tainted :  | semmle.label | tainted :  |
 | string.swift:238:13:238:42 | call to capitalized(with:) | semmle.label | call to capitalized(with:) |
+| string.swift:239:13:239:13 | tainted :  | semmle.label | tainted :  |
+| string.swift:239:13:239:30 | call to reversed() | semmle.label | call to reversed() |
 | string.swift:245:13:245:13 | tainted :  | semmle.label | tainted :  |
 | string.swift:245:13:245:68 | call to trimmingCharacters(in:) | semmle.label | call to trimmingCharacters(in:) |
 | string.swift:246:13:246:13 | tainted :  | semmle.label | tainted :  |
@@ -1352,6 +1368,7 @@ nodes
 | string.swift:276:13:276:21 | .utf16 | semmle.label | .utf16 |
 | string.swift:278:13:278:21 | .unicodeScalars | semmle.label | .unicodeScalars |
 | string.swift:280:13:280:21 | .utf8CString | semmle.label | .utf8CString |
+| string.swift:282:13:282:21 | .lazy | semmle.label | .lazy |
 | string.swift:284:13:284:21 | .capitalized | semmle.label | .capitalized |
 | string.swift:286:13:286:21 | .localizedCapitalized | semmle.label | .localizedCapitalized |
 | string.swift:288:13:288:21 | .localizedLowercase | semmle.label | .localizedLowercase |
@@ -1672,6 +1689,7 @@ subpaths
 | data.swift:218:45:218:52 | call to source() :  | data.swift:54:2:54:82 | [summary param] 1 in replaceSubrange(_:with:count:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:count:) :  | data.swift:218:2:218:2 | [post] dataTainted31 :  |
 | data.swift:223:45:223:52 | call to source() :  | data.swift:56:2:56:214 | [summary param] 1 in replacing(_:with:maxReplacements:) :  | file://:0:0:0:0 | [summary] to write: argument this in replacing(_:with:maxReplacements:) :  | data.swift:223:10:223:10 | [post] dataTainted32 :  |
 | data.swift:228:45:228:52 | call to source() :  | data.swift:57:2:57:236 | [summary param] 1 in replacing(_:with:subrange:maxReplacements:) :  | file://:0:0:0:0 | [summary] to write: argument this in replacing(_:with:subrange:maxReplacements:) :  | data.swift:228:10:228:10 | [post] dataTainted33 :  |
+| data.swift:233:12:233:12 | dataTainted34 :  | file://:0:0:0:0 | [summary param] this in reversed() :  | file://:0:0:0:0 | [summary] to write: return (return) in reversed() :  | data.swift:233:12:233:35 | call to reversed() |
 | data.swift:237:12:237:12 | dataTainted35 :  | data.swift:58:2:58:39 | [summary param] this in sorted() :  | file://:0:0:0:0 | [summary] to write: return (return) in sorted() :  | data.swift:237:12:237:33 | call to sorted() |
 | data.swift:241:12:241:12 | dataTainted36 :  | data.swift:59:2:59:81 | [summary param] this in sorted(by:) :  | file://:0:0:0:0 | [summary] to write: return (return) in sorted(by:) :  | data.swift:241:12:241:54 | call to sorted(by:) |
 | data.swift:245:12:245:12 | dataTainted37 :  | data.swift:60:2:60:132 | [summary param] this in sorted(using:) :  | file://:0:0:0:0 | [summary] to write: return (return) in sorted(using:) :  | data.swift:245:12:245:46 | call to sorted(using:) |
@@ -1734,6 +1752,7 @@ subpaths
 | string.swift:236:13:236:13 | tainted :  | string.swift:98:3:98:63 | [summary param] this in lowercased(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in lowercased(with:) :  | string.swift:236:13:236:41 | call to lowercased(with:) |
 | string.swift:237:13:237:13 | tainted :  | string.swift:99:3:99:63 | [summary param] this in uppercased(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in uppercased(with:) :  | string.swift:237:13:237:41 | call to uppercased(with:) |
 | string.swift:238:13:238:13 | tainted :  | string.swift:100:3:100:64 | [summary param] this in capitalized(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in capitalized(with:) :  | string.swift:238:13:238:42 | call to capitalized(with:) |
+| string.swift:239:13:239:13 | tainted :  | file://:0:0:0:0 | [summary param] this in reversed() :  | file://:0:0:0:0 | [summary] to write: return (return) in reversed() :  | string.swift:239:13:239:30 | call to reversed() |
 | string.swift:245:13:245:13 | tainted :  | string.swift:102:3:102:71 | [summary param] this in trimmingCharacters(in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in trimmingCharacters(in:) :  | string.swift:245:13:245:68 | call to trimmingCharacters(in:) |
 | string.swift:246:13:246:13 | tainted :  | string.swift:104:3:104:138 | [summary param] this in padding(toLength:withPad:startingAt:) :  | file://:0:0:0:0 | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  | string.swift:246:13:246:70 | call to padding(toLength:withPad:startingAt:) |
 | string.swift:247:13:247:13 | tainted :  | string.swift:105:3:105:80 | [summary param] this in components(separatedBy:) :  | file://:0:0:0:0 | [summary] to write: return (return) in components(separatedBy:) :  | string.swift:247:13:247:69 | call to components(separatedBy:) |
@@ -1844,6 +1863,7 @@ subpaths
 | data.swift:219:12:219:12 | dataTainted31 | data.swift:218:45:218:52 | call to source() :  | data.swift:219:12:219:12 | dataTainted31 | result |
 | data.swift:224:12:224:12 | dataTainted32 | data.swift:223:45:223:52 | call to source() :  | data.swift:224:12:224:12 | dataTainted32 | result |
 | data.swift:229:12:229:12 | dataTainted33 | data.swift:228:45:228:52 | call to source() :  | data.swift:229:12:229:12 | dataTainted33 | result |
+| data.swift:233:12:233:35 | call to reversed() | data.swift:232:22:232:29 | call to source() :  | data.swift:233:12:233:35 | call to reversed() | result |
 | data.swift:237:12:237:33 | call to sorted() | data.swift:236:22:236:29 | call to source() :  | data.swift:237:12:237:33 | call to sorted() | result |
 | data.swift:241:12:241:54 | call to sorted(by:) | data.swift:240:22:240:29 | call to source() :  | data.swift:241:12:241:54 | call to sorted(by:) | result |
 | data.swift:245:12:245:46 | call to sorted(using:) | data.swift:244:22:244:29 | call to source() :  | data.swift:245:12:245:46 | call to sorted(using:) | result |
@@ -1916,6 +1936,7 @@ subpaths
 | string.swift:236:13:236:41 | call to lowercased(with:) | string.swift:212:17:212:25 | call to source2() :  | string.swift:236:13:236:41 | call to lowercased(with:) | result |
 | string.swift:237:13:237:41 | call to uppercased(with:) | string.swift:212:17:212:25 | call to source2() :  | string.swift:237:13:237:41 | call to uppercased(with:) | result |
 | string.swift:238:13:238:42 | call to capitalized(with:) | string.swift:212:17:212:25 | call to source2() :  | string.swift:238:13:238:42 | call to capitalized(with:) | result |
+| string.swift:239:13:239:30 | call to reversed() | string.swift:212:17:212:25 | call to source2() :  | string.swift:239:13:239:30 | call to reversed() | result |
 | string.swift:245:13:245:68 | call to trimmingCharacters(in:) | string.swift:212:17:212:25 | call to source2() :  | string.swift:245:13:245:68 | call to trimmingCharacters(in:) | result |
 | string.swift:246:13:246:70 | call to padding(toLength:withPad:startingAt:) | string.swift:212:17:212:25 | call to source2() :  | string.swift:246:13:246:70 | call to padding(toLength:withPad:startingAt:) | result |
 | string.swift:247:13:247:69 | call to components(separatedBy:) | string.swift:212:17:212:25 | call to source2() :  | string.swift:247:13:247:69 | call to components(separatedBy:) | result |
@@ -1929,6 +1950,7 @@ subpaths
 | string.swift:276:13:276:21 | .utf16 | string.swift:212:17:212:25 | call to source2() :  | string.swift:276:13:276:21 | .utf16 | result |
 | string.swift:278:13:278:21 | .unicodeScalars | string.swift:212:17:212:25 | call to source2() :  | string.swift:278:13:278:21 | .unicodeScalars | result |
 | string.swift:280:13:280:21 | .utf8CString | string.swift:212:17:212:25 | call to source2() :  | string.swift:280:13:280:21 | .utf8CString | result |
+| string.swift:282:13:282:21 | .lazy | string.swift:212:17:212:25 | call to source2() :  | string.swift:282:13:282:21 | .lazy | result |
 | string.swift:284:13:284:21 | .capitalized | string.swift:212:17:212:25 | call to source2() :  | string.swift:284:13:284:21 | .capitalized | result |
 | string.swift:286:13:286:21 | .localizedCapitalized | string.swift:212:17:212:25 | call to source2() :  | string.swift:286:13:286:21 | .localizedCapitalized | result |
 | string.swift:288:13:288:21 | .localizedLowercase | string.swift:212:17:212:25 | call to source2() :  | string.swift:288:13:288:21 | .localizedLowercase | result |

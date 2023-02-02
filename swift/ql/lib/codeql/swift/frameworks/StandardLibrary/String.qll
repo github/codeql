@@ -57,7 +57,6 @@ private class StringSummaries extends SummaryModelCsv {
         ";StringProtocol;true;replacingOccurrences(of:with:options:range);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;replacingOccurrences(of:with:options:range);;;Argument[1];ReturnValue;taint",
         ";StringProtocol;true;replacingPercentEscapes(using:);;;Argument[-1];ReturnValue;taint",
-        ";StringProtocol;true;split(separator:maxSplits:omittingEmptySubsequences:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;substring(from:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;substring(with:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;trimmingCharacters(in:);;;Argument[-1];ReturnValue;taint",
@@ -120,7 +119,6 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;randomElement();;;Argument[-1];ReturnValue;taint",
         ";String;true;randomElement(using:);;;Argument[-1];ReturnValue;taint",
         ";String;true;enumerated();;;Argument[-1];ReturnValue;taint",
-        ";String;true;reversed();;;Argument[-1];ReturnValue;taint",
         ";String;true;encode(to:);;;Argument[-1];Argument[0];taint"
       ]
   }

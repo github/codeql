@@ -84,6 +84,7 @@ private module Frameworks {
   private import codeql.swift.frameworks.StandardLibrary.InputStream
   private import codeql.swift.frameworks.StandardLibrary.NsData
   private import codeql.swift.frameworks.StandardLibrary.NsUrl
+  private import codeql.swift.frameworks.StandardLibrary.Sequence
   private import codeql.swift.frameworks.StandardLibrary.String
   private import codeql.swift.frameworks.StandardLibrary.Url
   private import codeql.swift.frameworks.StandardLibrary.UrlSession
