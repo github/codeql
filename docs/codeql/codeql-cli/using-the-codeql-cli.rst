@@ -8,3 +8,19 @@ Using the CodeQL CLI
   
   .. include:: ../reusables/codeql-cli-articles-migration-note.rst
 
+.. toctree::
+   :titlesonly:
+   :hidden:
+
+   about-the-codeql-cli
+   getting-started-with-the-codeql-cli
+   creating-codeql-databases
+   extractor-options
+   analyzing-databases-with-the-codeql-cli
+   using-custom-queries-with-the-codeql-cli
+   creating-codeql-query-suites
+   testing-custom-queries
+   testing-query-help-files
+   creating-and-working-with-codeql-packs
+   publishing-and-using-codeql-packs
+   Specifying command options <specifying-command-options-in-a-codeql-configuration-file>
