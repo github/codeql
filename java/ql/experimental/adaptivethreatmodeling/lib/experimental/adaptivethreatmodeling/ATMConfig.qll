@@ -57,15 +57,23 @@ abstract class AtmConfig extends TaintTracking::Configuration {
   /**
    * EXPERIMENTAL. This API may change in the future.
    *
-   * Holds if `sink` is a known sink of flow.
+   * Holds if `sink` is a known sink of for this query
    */
   final predicate isKnownSink(DataFlow::Node sink) {
     // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
     // known sink for the class.
+    isKnownSink(sink, this.getASinkEndpointType())
+  }
+
+  /**
+   * Holds if `sink` is a known sink for this query of type `sinkType`.
+   */
+  final predicate isKnownSink(DataFlow::Node sink, EndpointType sinkType) {
+    // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
+    // known sink for the class.
     exists(EndpointCharacteristics::EndpointCharacteristic characteristic |
       characteristic.appliesToEndpoint(sink) and
-      characteristic
-          .hasImplications(this.getASinkEndpointType(), true, characteristic.maximalConfidence())
+      characteristic.hasImplications(sinkType, true, characteristic.maximalConfidence())
     )
   }
 
@@ -121,7 +129,7 @@ abstract class AtmConfig extends TaintTracking::Configuration {
   /**
    * EXPERIMENTAL. This API may change in the future.
    *
-   * Get an endpoint type for the sinks of this query. A query may have multiple applicable
+   * Get all sink types that can be sinks for this query. A query may have multiple applicable
    * endpoint types for its sinks.
    */
   abstract EndpointType getASinkEndpointType();

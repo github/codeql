@@ -10,6 +10,7 @@
 private import java
 import semmle.code.java.dataflow.TaintTracking
 private import experimental.adaptivethreatmodeling.EndpointCharacteristics as EndpointCharacteristics
+private import experimental.adaptivethreatmodeling.EndpointTypes
 private import experimental.adaptivethreatmodeling.ATMConfig as AtmConfig
 private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
 private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
@@ -21,9 +22,9 @@ private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestF
  * the ML-gnerarated, noisy sinks will end up poluting the positive examples used in the prompt!
  */
 
-from DataFlow::Node sink, AtmConfig::AtmConfig config, string message
+from DataFlow::Node sink, AtmConfig::AtmConfig config, EndpointType sinkType, string message
 where
-  config.isKnownSink(sink) and
+  config.isKnownSink(sink, sinkType) and
   // If there are _any_ erroneous endpoints, return nothing. This will prevent us from accidentally running this query
   // when there's a codex-generated data extension file in `java/ql/lib/ext`.
   not EndpointCharacteristics::erroneousEndpoints(_, _, _, _, _) and
@@ -32,7 +33,7 @@ where
   // `isSink(n) and not isSanitizer(n)`. We don't want to include such nodes as positive examples in the prompt.
   not config.isSanitizer(sink) and
   message =
-    config.getASinkEndpointType().getDescription() + "\n" +
+    sinkType.getDescription() + "\n" +
       // Extract the needed metadata for this endpoint.
       any(string metadata | EndpointCharacteristics::hasMetadata(sink, metadata))
 select sink, message
