@@ -1,6 +1,6 @@
 asmCrypto.SHA256.hex(input);
 
-
+asmCrypto.AES_OFB.encrypt(input, key, iv)
 
 var jwcrypto = require("browserid-crypto");
 jwcrypto.generateKeypair({algorithm: 'DSA'}, function(err, keypair) {
@@ -27,10 +27,10 @@ const sign = crypto.createSign('SHA256');
 sign.update('input1');
 sign.write('input2');
 
-
-
-
-
+var crypto = require('crypto');
+var cipher = crypto.createCipher('aes-192-ecb', 'a password');
+cipher.update('input1', 'utf8', 'hex');
+cipher.write('input2', 'utf8', 'hex');
 
 var CryptoJS = require("crypto-js");
 CryptoJS.AES.encrypt('my message', 'secret key 123');
@@ -45,9 +45,9 @@ require("crypto-js/aes").encrypt('my message', 'secret key 123');
 
 require("crypto-js/sha1")("Message", "Key");
 
-
-
-
+var CryptoJS = require("crypto-js");
+var opts = { mode: CryptoJS.mode.CFB }
+CryptoJS.AES.encrypt("msg", "key", opts)
 
 require("nacl").sign('my message');
 
