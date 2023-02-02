@@ -1,5 +1,4 @@
-﻿// TODO: Test needs to be enabled when .NET 7 is used as the runtime.
-namespace structassembly;
+﻿namespace structassembly;
 
 public class MyEmptyClass { }
 

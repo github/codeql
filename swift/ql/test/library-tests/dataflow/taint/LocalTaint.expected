@@ -1723,146 +1723,159 @@
 | webview.swift:66:5:66:5 | self | webview.swift:66:5:66:5 | SSA def(self) |
 | webview.swift:68:26:68:26 | SSA def(self) | webview.swift:68:26:68:42 | self[return] |
 | webview.swift:68:26:68:26 | self | webview.swift:68:26:68:26 | SSA def(self) |
-| webview.swift:77:11:77:18 | call to source() | webview.swift:77:10:77:41 | .body |
-| webview.swift:81:9:81:9 | SSA def(s) | webview.swift:83:18:83:18 | s |
-| webview.swift:81:13:81:20 | call to source() | webview.swift:81:9:81:9 | SSA def(s) |
-| webview.swift:83:9:83:9 | SSA def(source) | webview.swift:84:10:84:10 | source |
-| webview.swift:83:18:83:18 | s | webview.swift:83:9:83:9 | SSA def(source) |
-| webview.swift:83:18:83:18 | s | webview.swift:103:26:103:26 | s |
-| webview.swift:84:10:84:10 | [post] source | webview.swift:85:10:85:10 | source |
-| webview.swift:84:10:84:10 | source | webview.swift:84:10:84:26 | call to toObject() |
-| webview.swift:84:10:84:10 | source | webview.swift:85:10:85:10 | source |
-| webview.swift:85:10:85:10 | [post] source | webview.swift:86:10:86:10 | source |
-| webview.swift:85:10:85:10 | source | webview.swift:85:10:85:41 | call to toObjectOf(_:) |
-| webview.swift:85:10:85:10 | source | webview.swift:86:10:86:10 | source |
-| webview.swift:86:10:86:10 | [post] source | webview.swift:87:10:87:10 | source |
-| webview.swift:86:10:86:10 | source | webview.swift:86:10:86:24 | call to toBool() |
-| webview.swift:86:10:86:10 | source | webview.swift:87:10:87:10 | source |
-| webview.swift:87:10:87:10 | [post] source | webview.swift:88:10:88:10 | source |
-| webview.swift:87:10:87:10 | source | webview.swift:87:10:87:26 | call to toDouble() |
-| webview.swift:87:10:87:10 | source | webview.swift:88:10:88:10 | source |
-| webview.swift:88:10:88:10 | [post] source | webview.swift:89:10:89:10 | source |
-| webview.swift:88:10:88:10 | source | webview.swift:88:10:88:25 | call to toInt32() |
-| webview.swift:88:10:88:10 | source | webview.swift:89:10:89:10 | source |
-| webview.swift:89:10:89:10 | [post] source | webview.swift:90:10:90:10 | source |
-| webview.swift:89:10:89:10 | source | webview.swift:89:10:89:26 | call to toUInt32() |
-| webview.swift:89:10:89:10 | source | webview.swift:90:10:90:10 | source |
+| webview.swift:71:7:71:7 | SSA def(self) | webview.swift:71:7:71:7 | self[return] |
+| webview.swift:71:7:71:7 | self | webview.swift:71:7:71:7 | SSA def(self) |
+| webview.swift:71:37:71:37 | SSA def(self) | webview.swift:71:37:71:37 | self[return] |
+| webview.swift:71:37:71:37 | self | webview.swift:71:37:71:37 | SSA def(self) |
+| webview.swift:72:9:72:9 | self | webview.swift:72:9:72:9 | SSA def(self) |
+| webview.swift:72:9:72:9 | self | webview.swift:72:9:72:9 | SSA def(self) |
+| webview.swift:72:9:72:9 | self | webview.swift:72:9:72:9 | SSA def(self) |
+| webview.swift:72:9:72:9 | value | webview.swift:72:9:72:9 | SSA def(value) |
+| webview.swift:75:8:75:8 | SSA def(self) | webview.swift:75:8:75:8 | self[return] |
+| webview.swift:75:8:75:8 | self | webview.swift:75:8:75:8 | SSA def(self) |
+| webview.swift:83:11:83:18 | call to source() | webview.swift:83:10:83:41 | .body |
+| webview.swift:87:9:87:9 | SSA def(s) | webview.swift:89:18:89:18 | s |
+| webview.swift:87:13:87:20 | call to source() | webview.swift:87:9:87:9 | SSA def(s) |
+| webview.swift:89:9:89:9 | SSA def(source) | webview.swift:90:10:90:10 | source |
+| webview.swift:89:18:89:18 | s | webview.swift:89:9:89:9 | SSA def(source) |
+| webview.swift:89:18:89:18 | s | webview.swift:109:26:109:26 | s |
 | webview.swift:90:10:90:10 | [post] source | webview.swift:91:10:91:10 | source |
-| webview.swift:90:10:90:10 | source | webview.swift:90:10:90:26 | call to toNumber() |
+| webview.swift:90:10:90:10 | source | webview.swift:90:10:90:26 | call to toObject() |
 | webview.swift:90:10:90:10 | source | webview.swift:91:10:91:10 | source |
 | webview.swift:91:10:91:10 | [post] source | webview.swift:92:10:92:10 | source |
-| webview.swift:91:10:91:10 | source | webview.swift:91:10:91:26 | call to toString() |
+| webview.swift:91:10:91:10 | source | webview.swift:91:10:91:41 | call to toObjectOf(_:) |
 | webview.swift:91:10:91:10 | source | webview.swift:92:10:92:10 | source |
 | webview.swift:92:10:92:10 | [post] source | webview.swift:93:10:93:10 | source |
-| webview.swift:92:10:92:10 | source | webview.swift:92:10:92:24 | call to toDate() |
+| webview.swift:92:10:92:10 | source | webview.swift:92:10:92:24 | call to toBool() |
 | webview.swift:92:10:92:10 | source | webview.swift:93:10:93:10 | source |
 | webview.swift:93:10:93:10 | [post] source | webview.swift:94:10:94:10 | source |
-| webview.swift:93:10:93:10 | source | webview.swift:93:10:93:25 | call to toArray() |
+| webview.swift:93:10:93:10 | source | webview.swift:93:10:93:26 | call to toDouble() |
 | webview.swift:93:10:93:10 | source | webview.swift:94:10:94:10 | source |
 | webview.swift:94:10:94:10 | [post] source | webview.swift:95:10:95:10 | source |
-| webview.swift:94:10:94:10 | source | webview.swift:94:10:94:30 | call to toDictionary() |
+| webview.swift:94:10:94:10 | source | webview.swift:94:10:94:25 | call to toInt32() |
 | webview.swift:94:10:94:10 | source | webview.swift:95:10:95:10 | source |
 | webview.swift:95:10:95:10 | [post] source | webview.swift:96:10:96:10 | source |
-| webview.swift:95:10:95:10 | source | webview.swift:95:10:95:25 | call to toPoint() |
+| webview.swift:95:10:95:10 | source | webview.swift:95:10:95:26 | call to toUInt32() |
 | webview.swift:95:10:95:10 | source | webview.swift:96:10:96:10 | source |
 | webview.swift:96:10:96:10 | [post] source | webview.swift:97:10:97:10 | source |
-| webview.swift:96:10:96:10 | source | webview.swift:96:10:96:25 | call to toRange() |
+| webview.swift:96:10:96:10 | source | webview.swift:96:10:96:26 | call to toNumber() |
 | webview.swift:96:10:96:10 | source | webview.swift:97:10:97:10 | source |
 | webview.swift:97:10:97:10 | [post] source | webview.swift:98:10:98:10 | source |
-| webview.swift:97:10:97:10 | source | webview.swift:97:10:97:24 | call to toRect() |
+| webview.swift:97:10:97:10 | source | webview.swift:97:10:97:26 | call to toString() |
 | webview.swift:97:10:97:10 | source | webview.swift:98:10:98:10 | source |
 | webview.swift:98:10:98:10 | [post] source | webview.swift:99:10:99:10 | source |
-| webview.swift:98:10:98:10 | source | webview.swift:98:10:98:24 | call to toSize() |
+| webview.swift:98:10:98:10 | source | webview.swift:98:10:98:24 | call to toDate() |
 | webview.swift:98:10:98:10 | source | webview.swift:99:10:99:10 | source |
 | webview.swift:99:10:99:10 | [post] source | webview.swift:100:10:100:10 | source |
-| webview.swift:99:10:99:10 | source | webview.swift:99:10:99:26 | call to atIndex(_:) |
+| webview.swift:99:10:99:10 | source | webview.swift:99:10:99:25 | call to toArray() |
 | webview.swift:99:10:99:10 | source | webview.swift:100:10:100:10 | source |
-| webview.swift:100:10:100:10 | source | webview.swift:100:10:100:31 | call to forProperty(_:) |
-| webview.swift:102:9:102:9 | SSA def(context) | webview.swift:103:40:103:40 | context |
-| webview.swift:102:19:102:29 | call to JSContext.init() | webview.swift:102:9:102:9 | SSA def(context) |
-| webview.swift:103:26:103:26 | s | webview.swift:103:10:103:47 | call to JSValue.init(object:in:) |
-| webview.swift:103:26:103:26 | s | webview.swift:104:24:104:24 | s |
-| webview.swift:103:40:103:40 | [post] context | webview.swift:104:40:104:40 | context |
-| webview.swift:103:40:103:40 | context | webview.swift:104:40:104:40 | context |
-| webview.swift:104:24:104:24 | s | webview.swift:104:10:104:47 | call to JSValue.init(bool:in:) |
-| webview.swift:104:24:104:24 | s | webview.swift:105:26:105:26 | s |
-| webview.swift:104:40:104:40 | [post] context | webview.swift:105:44:105:44 | context |
-| webview.swift:104:40:104:40 | context | webview.swift:105:44:105:44 | context |
-| webview.swift:105:26:105:26 | s | webview.swift:105:10:105:51 | call to JSValue.init(double:in:) |
-| webview.swift:105:26:105:26 | s | webview.swift:106:25:106:25 | s |
-| webview.swift:105:44:105:44 | [post] context | webview.swift:106:42:106:42 | context |
-| webview.swift:105:44:105:44 | context | webview.swift:106:42:106:42 | context |
-| webview.swift:106:25:106:25 | s | webview.swift:106:10:106:49 | call to JSValue.init(int32:in:) |
-| webview.swift:106:25:106:25 | s | webview.swift:107:26:107:26 | s |
-| webview.swift:106:42:106:42 | [post] context | webview.swift:107:44:107:44 | context |
-| webview.swift:106:42:106:42 | context | webview.swift:107:44:107:44 | context |
-| webview.swift:107:26:107:26 | s | webview.swift:107:10:107:51 | call to JSValue.init(uInt32:in:) |
-| webview.swift:107:26:107:26 | s | webview.swift:108:25:108:25 | s |
-| webview.swift:107:44:107:44 | [post] context | webview.swift:108:44:108:44 | context |
-| webview.swift:107:44:107:44 | context | webview.swift:108:44:108:44 | context |
-| webview.swift:108:25:108:25 | s | webview.swift:108:10:108:51 | call to JSValue.init(point:in:) |
-| webview.swift:108:25:108:25 | s | webview.swift:109:25:109:25 | s |
-| webview.swift:108:44:108:44 | [post] context | webview.swift:109:44:109:44 | context |
-| webview.swift:108:44:108:44 | context | webview.swift:109:44:109:44 | context |
-| webview.swift:109:25:109:25 | s | webview.swift:109:10:109:51 | call to JSValue.init(range:in:) |
-| webview.swift:109:25:109:25 | s | webview.swift:110:24:110:24 | s |
-| webview.swift:109:44:109:44 | [post] context | webview.swift:110:42:110:42 | context |
-| webview.swift:109:44:109:44 | context | webview.swift:110:42:110:42 | context |
-| webview.swift:110:24:110:24 | s | webview.swift:110:10:110:49 | call to JSValue.init(rect:in:) |
-| webview.swift:110:24:110:24 | s | webview.swift:111:24:111:24 | s |
-| webview.swift:110:42:110:42 | [post] context | webview.swift:111:42:111:42 | context |
-| webview.swift:110:42:110:42 | context | webview.swift:111:42:111:42 | context |
-| webview.swift:111:24:111:24 | s | webview.swift:111:10:111:49 | call to JSValue.init(size:in:) |
-| webview.swift:111:24:111:24 | s | webview.swift:114:39:114:39 | s |
-| webview.swift:111:42:111:42 | [post] context | webview.swift:113:38:113:38 | context |
-| webview.swift:111:42:111:42 | context | webview.swift:113:38:113:38 | context |
-| webview.swift:113:9:113:9 | SSA def(v1) | webview.swift:114:5:114:5 | v1 |
-| webview.swift:113:14:113:45 | call to JSValue.init(object:in:) | webview.swift:113:9:113:9 | SSA def(v1) |
-| webview.swift:113:30:113:30 |  | webview.swift:113:14:113:45 | call to JSValue.init(object:in:) |
-| webview.swift:113:38:113:38 | [post] context | webview.swift:117:38:117:38 | context |
-| webview.swift:113:38:113:38 | context | webview.swift:117:38:117:38 | context |
-| webview.swift:114:5:114:5 | [post] v1 | webview.swift:115:10:115:10 | v1 |
-| webview.swift:114:5:114:5 | v1 | webview.swift:115:10:115:10 | v1 |
-| webview.swift:114:39:114:39 | s | webview.swift:114:5:114:5 | [post] v1 |
-| webview.swift:114:39:114:39 | s | webview.swift:118:17:118:17 | s |
-| webview.swift:117:9:117:9 | SSA def(v2) | webview.swift:118:5:118:5 | v2 |
-| webview.swift:117:14:117:45 | call to JSValue.init(object:in:) | webview.swift:117:9:117:9 | SSA def(v2) |
-| webview.swift:117:30:117:30 |  | webview.swift:117:14:117:45 | call to JSValue.init(object:in:) |
-| webview.swift:117:38:117:38 | [post] context | webview.swift:121:38:121:38 | context |
-| webview.swift:117:38:117:38 | context | webview.swift:121:38:121:38 | context |
-| webview.swift:118:5:118:5 | [post] v2 | webview.swift:119:10:119:10 | v2 |
-| webview.swift:118:5:118:5 | v2 | webview.swift:119:10:119:10 | v2 |
-| webview.swift:118:17:118:17 | s | webview.swift:118:5:118:5 | [post] v2 |
-| webview.swift:118:17:118:17 | s | webview.swift:122:17:122:17 | s |
-| webview.swift:121:9:121:9 | SSA def(v3) | webview.swift:122:5:122:5 | v3 |
-| webview.swift:121:14:121:45 | call to JSValue.init(object:in:) | webview.swift:121:9:121:9 | SSA def(v3) |
-| webview.swift:121:30:121:30 |  | webview.swift:121:14:121:45 | call to JSValue.init(object:in:) |
-| webview.swift:122:5:122:5 | [post] v3 | webview.swift:123:10:123:10 | v3 |
-| webview.swift:122:5:122:5 | v3 | webview.swift:123:10:123:10 | v3 |
-| webview.swift:122:17:122:17 | s | webview.swift:122:5:122:5 | [post] v3 |
-| webview.swift:127:9:127:9 | SSA def(atStart) | webview.swift:128:56:128:56 | atStart |
-| webview.swift:127:19:127:45 | .atDocumentStart | webview.swift:127:9:127:9 | SSA def(atStart) |
-| webview.swift:128:9:128:9 | SSA def(a) | webview.swift:129:10:129:10 | a |
-| webview.swift:128:13:128:88 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | webview.swift:128:9:128:9 | SSA def(a) |
-| webview.swift:128:34:128:34 | abc | webview.swift:128:13:128:88 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) |
-| webview.swift:128:56:128:56 | [post] atStart | webview.swift:132:70:132:70 | atStart |
-| webview.swift:128:56:128:56 | atStart | webview.swift:132:70:132:70 | atStart |
-| webview.swift:129:10:129:10 | [post] a | webview.swift:130:10:130:10 | a |
-| webview.swift:129:10:129:10 | a | webview.swift:130:10:130:10 | a |
-| webview.swift:130:10:130:10 | a | webview.swift:130:10:130:12 | .source |
-| webview.swift:132:9:132:9 | SSA def(b) | webview.swift:133:10:133:10 | b |
-| webview.swift:132:13:132:102 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | webview.swift:132:9:132:9 | SSA def(b) |
-| webview.swift:132:34:132:41 | call to source() | webview.swift:132:13:132:102 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) |
-| webview.swift:132:70:132:70 | [post] atStart | webview.swift:137:70:137:70 | atStart |
-| webview.swift:132:70:132:70 | atStart | webview.swift:137:70:137:70 | atStart |
-| webview.swift:133:10:133:10 | [post] b | webview.swift:134:10:134:10 | b |
-| webview.swift:133:10:133:10 | b | webview.swift:134:10:134:10 | b |
-| webview.swift:134:10:134:10 | b | webview.swift:134:10:134:12 | .source |
-| webview.swift:136:9:136:9 | SSA def(world) | webview.swift:137:108:137:108 | world |
-| webview.swift:136:17:136:32 | call to WKContentWorld.init() | webview.swift:136:9:136:9 | SSA def(world) |
-| webview.swift:137:9:137:9 | SSA def(c) | webview.swift:138:10:138:10 | c |
-| webview.swift:137:13:137:113 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | webview.swift:137:9:137:9 | SSA def(c) |
-| webview.swift:137:34:137:41 | call to source() | webview.swift:137:13:137:113 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) |
-| webview.swift:138:10:138:10 | [post] c | webview.swift:139:10:139:10 | c |
-| webview.swift:138:10:138:10 | c | webview.swift:139:10:139:10 | c |
-| webview.swift:139:10:139:10 | c | webview.swift:139:10:139:12 | .source |
+| webview.swift:100:10:100:10 | [post] source | webview.swift:101:10:101:10 | source |
+| webview.swift:100:10:100:10 | source | webview.swift:100:10:100:30 | call to toDictionary() |
+| webview.swift:100:10:100:10 | source | webview.swift:101:10:101:10 | source |
+| webview.swift:101:10:101:10 | [post] source | webview.swift:102:10:102:10 | source |
+| webview.swift:101:10:101:10 | source | webview.swift:101:10:101:25 | call to toPoint() |
+| webview.swift:101:10:101:10 | source | webview.swift:102:10:102:10 | source |
+| webview.swift:102:10:102:10 | [post] source | webview.swift:103:10:103:10 | source |
+| webview.swift:102:10:102:10 | source | webview.swift:102:10:102:25 | call to toRange() |
+| webview.swift:102:10:102:10 | source | webview.swift:103:10:103:10 | source |
+| webview.swift:103:10:103:10 | [post] source | webview.swift:104:10:104:10 | source |
+| webview.swift:103:10:103:10 | source | webview.swift:103:10:103:24 | call to toRect() |
+| webview.swift:103:10:103:10 | source | webview.swift:104:10:104:10 | source |
+| webview.swift:104:10:104:10 | [post] source | webview.swift:105:10:105:10 | source |
+| webview.swift:104:10:104:10 | source | webview.swift:104:10:104:24 | call to toSize() |
+| webview.swift:104:10:104:10 | source | webview.swift:105:10:105:10 | source |
+| webview.swift:105:10:105:10 | [post] source | webview.swift:106:10:106:10 | source |
+| webview.swift:105:10:105:10 | source | webview.swift:105:10:105:26 | call to atIndex(_:) |
+| webview.swift:105:10:105:10 | source | webview.swift:106:10:106:10 | source |
+| webview.swift:106:10:106:10 | source | webview.swift:106:10:106:31 | call to forProperty(_:) |
+| webview.swift:108:9:108:9 | SSA def(context) | webview.swift:109:40:109:40 | context |
+| webview.swift:108:19:108:29 | call to JSContext.init() | webview.swift:108:9:108:9 | SSA def(context) |
+| webview.swift:109:26:109:26 | s | webview.swift:109:10:109:47 | call to JSValue.init(object:in:) |
+| webview.swift:109:26:109:26 | s | webview.swift:110:24:110:24 | s |
+| webview.swift:109:40:109:40 | [post] context | webview.swift:110:40:110:40 | context |
+| webview.swift:109:40:109:40 | context | webview.swift:110:40:110:40 | context |
+| webview.swift:110:24:110:24 | s | webview.swift:110:10:110:47 | call to JSValue.init(bool:in:) |
+| webview.swift:110:24:110:24 | s | webview.swift:111:26:111:26 | s |
+| webview.swift:110:40:110:40 | [post] context | webview.swift:111:44:111:44 | context |
+| webview.swift:110:40:110:40 | context | webview.swift:111:44:111:44 | context |
+| webview.swift:111:26:111:26 | s | webview.swift:111:10:111:51 | call to JSValue.init(double:in:) |
+| webview.swift:111:26:111:26 | s | webview.swift:112:25:112:25 | s |
+| webview.swift:111:44:111:44 | [post] context | webview.swift:112:42:112:42 | context |
+| webview.swift:111:44:111:44 | context | webview.swift:112:42:112:42 | context |
+| webview.swift:112:25:112:25 | s | webview.swift:112:10:112:49 | call to JSValue.init(int32:in:) |
+| webview.swift:112:25:112:25 | s | webview.swift:113:26:113:26 | s |
+| webview.swift:112:42:112:42 | [post] context | webview.swift:113:44:113:44 | context |
+| webview.swift:112:42:112:42 | context | webview.swift:113:44:113:44 | context |
+| webview.swift:113:26:113:26 | s | webview.swift:113:10:113:51 | call to JSValue.init(uInt32:in:) |
+| webview.swift:113:26:113:26 | s | webview.swift:114:25:114:25 | s |
+| webview.swift:113:44:113:44 | [post] context | webview.swift:114:44:114:44 | context |
+| webview.swift:113:44:113:44 | context | webview.swift:114:44:114:44 | context |
+| webview.swift:114:25:114:25 | s | webview.swift:114:10:114:51 | call to JSValue.init(point:in:) |
+| webview.swift:114:25:114:25 | s | webview.swift:115:25:115:25 | s |
+| webview.swift:114:44:114:44 | [post] context | webview.swift:115:44:115:44 | context |
+| webview.swift:114:44:114:44 | context | webview.swift:115:44:115:44 | context |
+| webview.swift:115:25:115:25 | s | webview.swift:115:10:115:51 | call to JSValue.init(range:in:) |
+| webview.swift:115:25:115:25 | s | webview.swift:116:24:116:24 | s |
+| webview.swift:115:44:115:44 | [post] context | webview.swift:116:42:116:42 | context |
+| webview.swift:115:44:115:44 | context | webview.swift:116:42:116:42 | context |
+| webview.swift:116:24:116:24 | s | webview.swift:116:10:116:49 | call to JSValue.init(rect:in:) |
+| webview.swift:116:24:116:24 | s | webview.swift:117:24:117:24 | s |
+| webview.swift:116:42:116:42 | [post] context | webview.swift:117:42:117:42 | context |
+| webview.swift:116:42:116:42 | context | webview.swift:117:42:117:42 | context |
+| webview.swift:117:24:117:24 | s | webview.swift:117:10:117:49 | call to JSValue.init(size:in:) |
+| webview.swift:117:24:117:24 | s | webview.swift:120:39:120:39 | s |
+| webview.swift:117:42:117:42 | [post] context | webview.swift:119:38:119:38 | context |
+| webview.swift:117:42:117:42 | context | webview.swift:119:38:119:38 | context |
+| webview.swift:119:9:119:9 | SSA def(v1) | webview.swift:120:5:120:5 | v1 |
+| webview.swift:119:14:119:45 | call to JSValue.init(object:in:) | webview.swift:119:9:119:9 | SSA def(v1) |
+| webview.swift:119:30:119:30 |  | webview.swift:119:14:119:45 | call to JSValue.init(object:in:) |
+| webview.swift:119:38:119:38 | [post] context | webview.swift:123:38:123:38 | context |
+| webview.swift:119:38:119:38 | context | webview.swift:123:38:123:38 | context |
+| webview.swift:120:5:120:5 | [post] v1 | webview.swift:121:10:121:10 | v1 |
+| webview.swift:120:5:120:5 | v1 | webview.swift:121:10:121:10 | v1 |
+| webview.swift:120:39:120:39 | s | webview.swift:120:5:120:5 | [post] v1 |
+| webview.swift:120:39:120:39 | s | webview.swift:124:17:124:17 | s |
+| webview.swift:123:9:123:9 | SSA def(v2) | webview.swift:124:5:124:5 | v2 |
+| webview.swift:123:14:123:45 | call to JSValue.init(object:in:) | webview.swift:123:9:123:9 | SSA def(v2) |
+| webview.swift:123:30:123:30 |  | webview.swift:123:14:123:45 | call to JSValue.init(object:in:) |
+| webview.swift:123:38:123:38 | [post] context | webview.swift:127:38:127:38 | context |
+| webview.swift:123:38:123:38 | context | webview.swift:127:38:127:38 | context |
+| webview.swift:124:5:124:5 | [post] v2 | webview.swift:125:10:125:10 | v2 |
+| webview.swift:124:5:124:5 | v2 | webview.swift:125:10:125:10 | v2 |
+| webview.swift:124:17:124:17 | s | webview.swift:124:5:124:5 | [post] v2 |
+| webview.swift:124:17:124:17 | s | webview.swift:128:17:128:17 | s |
+| webview.swift:127:9:127:9 | SSA def(v3) | webview.swift:128:5:128:5 | v3 |
+| webview.swift:127:14:127:45 | call to JSValue.init(object:in:) | webview.swift:127:9:127:9 | SSA def(v3) |
+| webview.swift:127:30:127:30 |  | webview.swift:127:14:127:45 | call to JSValue.init(object:in:) |
+| webview.swift:128:5:128:5 | [post] v3 | webview.swift:129:10:129:10 | v3 |
+| webview.swift:128:5:128:5 | v3 | webview.swift:129:10:129:10 | v3 |
+| webview.swift:128:17:128:17 | s | webview.swift:128:5:128:5 | [post] v3 |
+| webview.swift:133:9:133:9 | SSA def(atStart) | webview.swift:134:56:134:56 | atStart |
+| webview.swift:133:19:133:45 | .atDocumentStart | webview.swift:133:9:133:9 | SSA def(atStart) |
+| webview.swift:134:9:134:9 | SSA def(a) | webview.swift:135:10:135:10 | a |
+| webview.swift:134:13:134:88 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | webview.swift:134:9:134:9 | SSA def(a) |
+| webview.swift:134:34:134:34 | abc | webview.swift:134:13:134:88 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) |
+| webview.swift:134:56:134:56 | [post] atStart | webview.swift:138:70:138:70 | atStart |
+| webview.swift:134:56:134:56 | atStart | webview.swift:138:70:138:70 | atStart |
+| webview.swift:135:10:135:10 | [post] a | webview.swift:136:10:136:10 | a |
+| webview.swift:135:10:135:10 | a | webview.swift:136:10:136:10 | a |
+| webview.swift:136:10:136:10 | a | webview.swift:136:10:136:12 | .source |
+| webview.swift:138:9:138:9 | SSA def(b) | webview.swift:139:10:139:10 | b |
+| webview.swift:138:13:138:102 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | webview.swift:138:9:138:9 | SSA def(b) |
+| webview.swift:138:34:138:41 | call to source() | webview.swift:138:13:138:102 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) |
+| webview.swift:138:70:138:70 | [post] atStart | webview.swift:143:70:143:70 | atStart |
+| webview.swift:138:70:138:70 | atStart | webview.swift:143:70:143:70 | atStart |
+| webview.swift:139:10:139:10 | [post] b | webview.swift:140:10:140:10 | b |
+| webview.swift:139:10:139:10 | b | webview.swift:140:10:140:10 | b |
+| webview.swift:140:10:140:10 | b | webview.swift:140:10:140:12 | .source |
+| webview.swift:142:9:142:9 | SSA def(world) | webview.swift:143:108:143:108 | world |
+| webview.swift:142:17:142:32 | call to WKContentWorld.init() | webview.swift:142:9:142:9 | SSA def(world) |
+| webview.swift:143:9:143:9 | SSA def(c) | webview.swift:144:10:144:10 | c |
+| webview.swift:143:13:143:113 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | webview.swift:143:9:143:9 | SSA def(c) |
+| webview.swift:143:34:143:41 | call to source() | webview.swift:143:13:143:113 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) |
+| webview.swift:144:10:144:10 | [post] c | webview.swift:145:10:145:10 | c |
+| webview.swift:144:10:144:10 | c | webview.swift:145:10:145:10 | c |
+| webview.swift:145:10:145:10 | c | webview.swift:145:10:145:12 | .source |
+| webview.swift:149:9:149:9 | SSA def(src) | webview.swift:150:10:150:10 | src |
+| webview.swift:149:15:149:22 | call to source() | webview.swift:149:9:149:9 | SSA def(src) |
+| webview.swift:150:10:150:10 | src | webview.swift:150:10:150:14 | .request |
