@@ -692,7 +692,11 @@ class Unit extends TUnit {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof OperandNode and not n instanceof ArgumentNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof OperandNode and
+  not n instanceof ArgumentNode and
+  not n.asOperand() instanceof StoreValueOperand
+}
 
 class LambdaCallKind = Unit;
 

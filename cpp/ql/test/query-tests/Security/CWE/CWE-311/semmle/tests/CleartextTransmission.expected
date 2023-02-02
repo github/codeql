@@ -2,10 +2,14 @@ edges
 | test3.cpp:74:21:74:29 | password1 | test3.cpp:76:15:76:17 | ptr |
 | test3.cpp:81:15:81:22 | password | test3.cpp:83:15:83:17 | ptr |
 | test3.cpp:112:20:112:25 | buffer | test3.cpp:114:14:114:19 | buffer |
-| test3.cpp:124:7:124:20 | get_global_str indirection | test3.cpp:146:15:146:18 | data |
+| test3.cpp:117:28:117:33 | buffer | test3.cpp:117:13:117:14 | id indirection |
+| test3.cpp:124:7:124:20 | get_global_str indirection | test3.cpp:144:16:144:29 | call to get_global_str |
 | test3.cpp:126:9:126:23 | global_password | test3.cpp:124:7:124:20 | get_global_str indirection |
 | test3.cpp:134:11:134:18 | password | test3.cpp:112:20:112:25 | buffer |
-| test3.cpp:138:24:138:32 | password1 | test3.cpp:140:15:140:17 | ptr |
+| test3.cpp:138:21:138:22 | call to id | test3.cpp:140:15:140:17 | ptr |
+| test3.cpp:138:24:138:32 | password1 | test3.cpp:117:28:117:33 | buffer |
+| test3.cpp:138:24:138:32 | password1 | test3.cpp:138:21:138:22 | call to id |
+| test3.cpp:144:16:144:29 | call to get_global_str | test3.cpp:146:15:146:18 | data |
 | test3.cpp:157:19:157:26 | password | test3.cpp:159:15:159:20 | buffer |
 | test3.cpp:270:16:270:23 | password | test3.cpp:272:15:272:18 | data |
 | test3.cpp:278:20:278:23 | data | test3.cpp:280:14:280:17 | data |
@@ -40,11 +44,15 @@ nodes
 | test3.cpp:101:12:101:19 | password | semmle.label | password |
 | test3.cpp:112:20:112:25 | buffer | semmle.label | buffer |
 | test3.cpp:114:14:114:19 | buffer | semmle.label | buffer |
+| test3.cpp:117:13:117:14 | id indirection | semmle.label | id indirection |
+| test3.cpp:117:28:117:33 | buffer | semmle.label | buffer |
 | test3.cpp:124:7:124:20 | get_global_str indirection | semmle.label | get_global_str indirection |
 | test3.cpp:126:9:126:23 | global_password | semmle.label | global_password |
 | test3.cpp:134:11:134:18 | password | semmle.label | password |
+| test3.cpp:138:21:138:22 | call to id | semmle.label | call to id |
 | test3.cpp:138:24:138:32 | password1 | semmle.label | password1 |
 | test3.cpp:140:15:140:17 | ptr | semmle.label | ptr |
+| test3.cpp:144:16:144:29 | call to get_global_str | semmle.label | call to get_global_str |
 | test3.cpp:146:15:146:18 | data | semmle.label | data |
 | test3.cpp:157:19:157:26 | password | semmle.label | password |
 | test3.cpp:159:15:159:20 | buffer | semmle.label | buffer |
@@ -111,6 +119,7 @@ nodes
 | test3.cpp:577:8:577:23 | call to get_home_address | semmle.label | call to get_home_address |
 | test3.cpp:578:14:578:16 | str | semmle.label | str |
 subpaths
+| test3.cpp:138:24:138:32 | password1 | test3.cpp:117:28:117:33 | buffer | test3.cpp:117:13:117:14 | id indirection | test3.cpp:138:21:138:22 | call to id |
 #select
 | test3.cpp:22:3:22:6 | call to send | test3.cpp:22:15:22:23 | password1 | test3.cpp:22:15:22:23 | password1 | This operation transmits 'password1', which may contain unencrypted sensitive data from $@. | test3.cpp:22:15:22:23 | password1 | password1 |
 | test3.cpp:26:3:26:6 | call to send | test3.cpp:26:15:26:23 | password2 | test3.cpp:26:15:26:23 | password2 | This operation transmits 'password2', which may contain unencrypted sensitive data from $@. | test3.cpp:26:15:26:23 | password2 | password2 |
