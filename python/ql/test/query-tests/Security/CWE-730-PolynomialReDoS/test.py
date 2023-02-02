@@ -11,9 +11,9 @@ def code_execution():
     reg = re.compile(r"^\s+|\s+$")
     reg.sub("", text) # NOT OK
 
-    def indirect(input_reg_str):
+    def indirect(input_reg_str, my_text):
         my_reg = re.compile(input_reg_str)
-        my_reg.sub("", text) # NOT OK - but not found
+        my_reg.sub("", my_text) # NOT OK
 
-    indirect(r"^\s+|\s+$")
+    indirect(r"^\s+|\s+$", text)
 
