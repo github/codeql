@@ -10,6 +10,35 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.frameworks.Stdlib
 import semmle.python.dataflow.new.RemoteFlowSources
 
+/**
+ * Handle those three cases of Tarfile opens:
+ *  - `tarfile.open()`
+ *  - `tarfile.TarFile()`
+ *  - `MKtarfile.Tarfile.open()`
+ */
+API::Node tarfileOpen() {
+  result in [
+      API::moduleImport("tarfile").getMember(["open", "TarFile"]),
+      API::moduleImport("tarfile").getMember("TarFile").getASubclass().getMember("open")
+    ]
+}
+
+/**
+ * Handle the previous three cases, plus the use of `closing` in the previous cases
+ */
+class AllTarfileOpens extends API::CallNode {
+  AllTarfileOpens() {
+    this = tarfileOpen().getACall()
+    or
+    exists(API::Node closing, Node arg |
+      closing = API::moduleImport("contextlib").getMember("closing") and
+      this = closing.getACall() and
+      arg = this.getArg(0) and
+      arg = tarfileOpen().getACall()
+    )
+  }
+}
+
 class UnsafeUnpackingConfig extends TaintTracking::Configuration {
   UnsafeUnpackingConfig() { this = "UnsafeUnpackingConfig" }
 
@@ -68,8 +97,47 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    // A sink capturing method calls to `unpack_archive`.
-    sink = API::moduleImport("shutil").getMember("unpack_archive").getACall().getArg(0)
+    (
+      // A sink capturing method calls to `unpack_archive`.
+      sink = API::moduleImport("shutil").getMember("unpack_archive").getACall().getArg(0)
+      or
+      // A sink capturing method calls to `extractall` without `members` argument.
+      // For a call to `file.extractall` without `members` argument, `file` is considered a sink.
+      exists(MethodCallNode call, AllTarfileOpens atfo |
+        call = atfo.getReturn().getMember("extractall").getACall() and
+        not exists(Node arg | arg = call.getArgByName("members")) and
+        sink = call.getObject()
+      )
+      or
+      // A sink capturing method calls to `extractall` with `members` argument.
+      // For a call to `file.extractall` with `members` argument, `file` is considered a sink if not
+      // a the `members` argument contains a NameConstant as None, a List or call to the method `getmembers`.
+      // Otherwise, the argument of `members` is considered a sink.
+      exists(MethodCallNode call, Node arg, AllTarfileOpens atfo |
+        call = atfo.getReturn().getMember("extractall").getACall() and
+        arg = call.getArgByName("members") and
+        if
+          arg.asCfgNode() instanceof NameConstantNode or
+          arg.asCfgNode() instanceof ListNode
+        then sink = call.getObject()
+        else
+          if arg.(MethodCallNode).getMethodName() = "getmembers"
+          then sink = arg.(MethodCallNode).getObject()
+          else sink = call.getArgByName("members")
+      )
+      or
+      // An argument to `extract` is considered a sink.
+      exists(AllTarfileOpens atfo |
+        sink = atfo.getReturn().getMember("extract").getACall().getArg(0)
+      )
+      or
+      //An argument to `_extract_member` is considered a sink.
+      exists(MethodCallNode call, AllTarfileOpens atfo |
+        call = atfo.getReturn().getMember("_extract_member").getACall() and
+        call.getArg(1).(AttrRead).accesses(sink, "name")
+      )
+    ) and
+    not sink.getScope().getLocation().getFile().inStdlib()
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -119,5 +187,19 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     // Join the base_dir to the filename
     nodeTo = API::moduleImport("os").getMember("path").getMember("join").getACall() and
     nodeFrom = nodeTo.(API::CallNode).getArg(1)
+    or
+    // Go through an Open for a Tarfile
+    nodeTo = tarfileOpen().getACall() and nodeFrom = nodeTo.(MethodCallNode).getArg(0)
+    or 
+    // Handle the case where the getmembers is used.
+    nodeTo.(MethodCallNode).calls(nodeFrom, "getmembers") and
+    nodeFrom instanceof AllTarfileOpens
+    or
+    // To handle the case of `with closing(tarfile.open()) as file:`
+    // we add a step from the first argument of `closing` to the call to `closing`,
+    // whenever that first argument is a return of `tarfile.open()`.
+    nodeTo = API::moduleImport("contextlib").getMember("closing").getACall() and
+    nodeFrom = nodeTo.(API::CallNode).getArg(0) and
+    nodeFrom = tarfileOpen().getReturn().getAValueReachableFromSource()
   }
 }

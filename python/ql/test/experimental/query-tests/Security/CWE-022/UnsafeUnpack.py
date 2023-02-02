@@ -123,3 +123,79 @@ def simple_upload(request):
 
       elif request.method == 'GET':
             return render(request, 'simple_upload.html')
+
+
+import shutil
+import os 
+import tarfile
+import tempfile
+import argparse
+
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('integers', metavar='N', type=int, nargs='+',
+                    help='an integer for the accumulator')
+parser.add_argument('filename', help='filename to be provided')
+
+args = parser.parse_args()
+unsafe_filename_tar = args.filename
+with tarfile.TarFile(unsafe_filename_tar, mode="r") as tar:
+    tar.extractall(path="/tmp/unpack/", members=tar) # $result=BAD
+tar = tarfile.open(unsafe_filename_tar)   
+
+
+from django.shortcuts import render
+from django.core.files.storage import FileSystemStorage
+import shutil
+
+def simple_upload(request):
+
+      base_dir = "/tmp/baase_dir"
+      if request.method == 'POST':
+            # Read uploaded files by chunks of data
+            # see chunks(): https://docs.djangoproject.com/en/4.1/ref/files/uploads/#django.core.files.uploadedfile.UploadedFile.chunks 
+            savepath = os.path.join(base_dir, "tarball_compressed.tar.gz")
+            with open(savepath, 'wb+') as wfile:
+                  for chunk in request.FILES["ufile1"].chunks():
+                        wfile.write(chunk)
+
+                  tar = tarfile.open(savepath)
+                  result = []
+                  for member in tar:      
+                      if member.issym():  
+                          raise ValueError("But it is a symlink")       
+                      result.append(member)     
+                  tar.extractall(path=tempfile.mkdtemp(), members=result) # $result=BAD   
+                  tar.close()
+
+
+response = requests.get(url_filename, stream=True)
+tarpath = "/tmp/tmp456/tarball.tar.gz"
+with open(tarpath, "wb") as f:
+      f.write(response.raw.read())
+target_dir = "/tmp/unpack"
+tarfile.TarFile(tarpath, mode="r").extractall(path=target_dir) # $result=BAD
+
+
+from pathlib import Path
+import tempfile
+import boto3
+
+def default_session() -> boto3.Session:
+    _SESSION = None
+    if _SESSION is None:
+        _SESSION = boto3.Session() 
+    return _SESSION
+
+cache = False
+cache_dir = "/tmp/artifacts"
+object_path = "/objects/obj1"
+s3 = default_session().client("s3")
+with tempfile.NamedTemporaryFile(suffix=".tar.gz") as tmp:
+      s3.download_fileobj(bucket_name, object_path, tmp)
+      tmp.seek(0)
+      if cache:
+          cache_dir.mkdir(exist_ok=True, parents=True)
+          target = cache_dir
+      else:
+          target = Path(tempfile.mkdtemp())
+      shutil.unpack_archive(tmp.name, target) # $result=BAD
