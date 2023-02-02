@@ -53,8 +53,11 @@ private module FabricV1 {
         override predicate isShellInterpreted(DataFlow::Node arg) {
           arg = this.getCommand() and
           // defaults to running in a shell
-          not this.getParameter(1, "shell").asSink().asExpr().(ImmutableLiteral).booleanValue() =
-            false // TODO: Test this in unsafe-shell-command-construction - and add tracking as a separate step.
+          not this.getParameter(1, "shell")
+              .getAValueReachingSink()
+              .asExpr()
+              .(ImmutableLiteral)
+              .booleanValue() = false
         }
       }
     }
