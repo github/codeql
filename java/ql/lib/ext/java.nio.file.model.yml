@@ -9,7 +9,7 @@ extensions:
       - ["java.nio.file", "Files", False, "createFile", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "createLink", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "createSymbolicLink", "", "", "Argument[0]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "createTempDirectory", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "createTempDirectory", "(Path,String,FileAttribute[]])", "", "Argument[0]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "createTempFile", "(Path,String,String,FileAttribute[])", "", "Argument[0]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "move", "", "", "Argument[1]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "newBufferedWriter", "", "", "Argument[0]", "create-file", "manual"]
