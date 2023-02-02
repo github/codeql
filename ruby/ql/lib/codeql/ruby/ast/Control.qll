@@ -546,6 +546,88 @@ class InClause extends AstNode, TInClause {
 }
 
 /**
+ * A one-line pattern match using the `=>` operator. For example:
+ * ```rb
+ * foo => Point{ x:, y: }
+ * ```
+ */
+class MatchPattern extends Expr, TMatchPattern {
+  private Ruby::MatchPattern g;
+
+  MatchPattern() { this = TMatchPattern(g) }
+
+  final override string getAPrimaryQlClass() { result = "MatchPattern" }
+
+  /**
+   * Gets the expression being compared, if any. For example, `foo` in the following example.
+   * ```rb
+   * case foo => Point{ x:, y: }
+   * ```
+   */
+  final Expr getValue() { toGenerated(result) = g.getValue() }
+
+  /**
+   * Gets the pattern in this `=>` expression. In the
+   * following example, the pattern is `Point{ x:, y: }`.
+   * ```rb
+   * foo => Point{ x:, y: }
+   * ```
+   */
+  final CasePattern getPattern() { toGenerated(result) = g.getPattern() }
+
+  final override string toString() { result = "... => ..." }
+
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getPattern" and result = this.getPattern()
+    or
+    pred = "getValue" and result = this.getValue()
+  }
+}
+
+/**
+ * A one-line pattern match using the `in` operator. For example:
+ * ```rb
+ * foo in Point{ x:, y: }
+ * ```
+ */
+class TestPattern extends Expr, TTestPattern {
+  private Ruby::TestPattern g;
+
+  TestPattern() { this = TTestPattern(g) }
+
+  final override string getAPrimaryQlClass() { result = "TestPattern" }
+
+  /**
+   * Gets the expression being compared, if any. For example, `foo` in the following example.
+   * ```rb
+   * case foo in Point{ x:, y: }
+   * ```
+   */
+  final Expr getValue() { toGenerated(result) = g.getValue() }
+
+  /**
+   * Gets the pattern in this `=>` expression. In the
+   * following example, the pattern is `Point{ x:, y: }`.
+   * ```rb
+   * foo in Point{ x:, y: }
+   * ```
+   */
+  final CasePattern getPattern() { toGenerated(result) = g.getPattern() }
+
+  final override string toString() { result = "... in ..." }
+
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getPattern" and result = this.getPattern()
+    or
+    pred = "getValue" and result = this.getValue()
+  }
+}
+
+/**
  * A loop. That is, a `for` loop, a `while` or `until` loop, or their
  * expression-modifier variants.
  */
