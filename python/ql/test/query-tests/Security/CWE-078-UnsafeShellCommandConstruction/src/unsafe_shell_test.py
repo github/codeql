@@ -42,3 +42,5 @@ def subprocess_flag (name):
         subprocess.run("ping " + x, shell=flag) # $result=BAD
 
     indirect(True, name)
+
+    subprocess.Popen("ping " + name, shell=unknownValue) # OK - shell assumed to be False

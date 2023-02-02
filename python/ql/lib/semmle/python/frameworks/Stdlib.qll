@@ -1209,7 +1209,7 @@ private module StdlibPrivate {
         this.get_shell_arg().getAValueReachingSink().asExpr().(ImmutableLiteral).booleanValue()
       or
       not this.get_shell_arg().getAValueReachingSink().asExpr() instanceof ImmutableLiteral and
-      result = [true, false]
+      result = false // defaults to `False`
     }
 
     /** Gets the API-node for the `executable` argument, if any. */
