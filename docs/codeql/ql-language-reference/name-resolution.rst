@@ -219,8 +219,8 @@ module, type, and predicate namespaces.
 For a module ``M``, it is useful to distinguish between its **privately declared**, **publically declared**, **exported**, and **visible** namespaces.
 (These are described generically, but remember that there is always one for each of modules, module signatures, types, type signatures, predicates, and predicate signatures.)
 
-- The **privately declared** namespaces of ``M`` contain all entities that are declared—that is, defined—in ``M`` and that are annotated as ``private``.
-- The **publically declared** namespaces of ``M`` contain all entities that are declared—that is, defined—in ``M`` and that are not annotated as ``private``.
+- The **privately declared** namespaces of ``M`` contain all entities and aliases that are declared—that is, defined—in ``M`` and that are annotated as ``private``.
+- The **publically declared** namespaces of ``M`` contain all entities and aliases that are declared—that is, defined—in ``M`` and that are not annotated as ``private``.
 - The **exported** namespaces of ``M`` contain
     1. all entries from the **publically declared** namespaces of ``M``, and
     2. for each module ``N`` that is imported into ``M`` with an import statement that is not annotated as ``private``: all entries from the **exported** namespaces of ``N`` that do not have the same name as any of the entries in the **publically declared** namespaces of ``M``.
