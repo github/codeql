@@ -32,3 +32,13 @@ def facbric_stuff (name):
         fabric.api.run("ping " + name, shell=flag) # OK
 
     indirect(False)
+
+def subprocess_flag (name): 
+    subprocess.run("ping " + name, shell=False) # OK - and nonsensical
+
+    subprocess.run("ping " + name, shell=True) # $result=BAD
+
+    def indirect(flag): 
+        subprocess.run("ping " + name, shell=flag) # $ MISSING: result=BAD
+
+    indirect(True)

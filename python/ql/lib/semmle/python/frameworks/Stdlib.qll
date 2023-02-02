@@ -1260,7 +1260,7 @@ private module StdlibPrivate {
     }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
-      arg = this.get_executable_arg() and
+      arg = [this.get_executable_arg(), this.get_args_arg()] and
       this.get_shell_arg_value() = true
     }
   }
