@@ -16,6 +16,7 @@ private import Telemetry.ExternalApi
 from Call c, ExternalApi api
 where
   c.getTarget().getUnboundDeclaration() = api and
+  not api.isUninteresting() and
   not api.isSupported() and
   not api instanceof FlowSummaryImpl::Public::NeutralCallable
 select c, "Call to unsupported external API $@.", api, api.toString()

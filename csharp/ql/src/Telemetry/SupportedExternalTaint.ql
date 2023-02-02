@@ -10,7 +10,10 @@ private import csharp
 private import semmle.code.csharp.dispatch.Dispatch
 private import ExternalApi
 
-private predicate relevant(ExternalApi api) { api.hasSummary() }
+private predicate relevant(ExternalApi api) {
+  not api.isUninteresting() and
+  api.hasSummary()
+}
 
 from string info, int usages
 where Results<relevant/1>::restrict(info, usages)
