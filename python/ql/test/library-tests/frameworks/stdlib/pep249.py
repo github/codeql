@@ -6,3 +6,8 @@ db.execute("some sql", (42,))  # $ getSql="some sql"
 
 cursor = db.cursor()
 cursor.execute("some sql", (42,))  # $ getSql="some sql"
+
+import sqlite3.dbapi2
+conn = sqlite3.dbapi2.connect()
+cursor = conn.cursor()
+cursor.execute("some sql") # $ getSql="some sql"
