@@ -34,10 +34,19 @@ private module SourceVariables {
     bindingset[ind]
     SourceVariable() { any() }
 
+    /** Gets a textual representation of this element. */
     abstract string toString();
 
+    /**
+     * Gets the number of loads performed on the base source variable
+     * to reach the value of this source variable.
+     */
     int getIndirection() { result = ind }
 
+    /**
+     * Gets the base source variable (i.e., the variable without any
+     * indirections) of this source variable.
+     */
     abstract BaseSourceVariable getBaseVariable();
   }
 
@@ -192,6 +201,10 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
   /** Holds if this definition or use has index `index` in block `block`. */
   abstract predicate hasIndexInBlock(IRBlock block, int index);
 
+  /**
+   * Holds if this definition (or use) has index `index` in block `block`,
+   * and is a definition (or use) of the variable `sv`
+   */
   final predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
     this.hasIndexInBlock(block, index) and
     sv = this.getSourceVariable()
@@ -216,6 +229,10 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
    */
   abstract BaseSourceVariableInstruction getBase();
 
+  /**
+   * Gets the base source variable (i.e., the variable without
+   * any indirection) of this definition or use.
+   */
   final BaseSourceVariable getBaseSourceVariable() {
     this.getBase().getBaseSourceVariable() = result
   }
@@ -437,10 +454,12 @@ class GlobalUse extends UseImpl, TGlobalUse {
 
   override FinalGlobalValue getNode() { result.getGlobalUse() = this }
 
-  override int getIndirection() { result = ind + 1 } // TODO
+  override int getIndirection() { result = ind + 1 }
 
+  /** Gets the global variable associated with this use. */
   Cpp::GlobalOrNamespaceVariable getVariable() { result = global }
 
+  /** Gets the `IRFunction` whose body is exited from after this use. */
   IRFunction getIRFunction() { result = f }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
@@ -454,6 +473,10 @@ class GlobalUse extends UseImpl, TGlobalUse {
 
   final override Cpp::Location getLocation() { result = f.getLocation() }
 
+  /**
+   * Gets the type of this use after specifiers have been deeply stripped
+   * and typedefs have been resolved.
+   */
   Type getUnspecifiedType() { result = global.getUnspecifiedType() }
 
   override predicate isCertain() { any() }
@@ -468,12 +491,16 @@ class GlobalDef extends TGlobalDef {
 
   GlobalDef() { this = TGlobalDef(global, f, indirectionIndex) }
 
+  /** Gets the global variable associated with this definition. */
   Cpp::GlobalOrNamespaceVariable getVariable() { result = global }
 
+  /** Gets the `IRFunction` whose body is evaluated after this definition. */
   IRFunction getIRFunction() { result = f }
 
+  /** Gets the global variable associated with this definition. */
   int getIndirectionIndex() { result = indirectionIndex }
 
+  /** Holds if this definition or use has index `index` in block `block`. */
   final predicate hasIndexInBlock(IRBlock block, int index) {
     exists(EnterFunctionInstruction enter |
       enter = f.getEnterFunctionInstruction() and
@@ -481,21 +508,32 @@ class GlobalDef extends TGlobalDef {
     )
   }
 
+  /** Gets the global variable associated with this definition. */
   SourceVariable getSourceVariable() { sourceVariableIsGlobal(result, global, f, indirectionIndex) }
 
+  /**
+   * Holds if this definition has index `index` in block `block`, and
+   * is a definition of the variable `sv`
+   */
   final predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
     this.hasIndexInBlock(block, index) and
     sv = this.getSourceVariable()
   }
 
+  /** Gets the location of this element. */
   final Cpp::Location getLocation() { result = f.getLocation() }
 
+  /** Gets a textual representation of this element. */
   string toString() {
     if indirectionIndex = 0
     then result = global.toString()
     else result = global.toString() + " indirection"
   }
 
+  /**
+   * Gets the type of this use after specifiers have been deeply stripped
+   * and typedefs have been resolved.
+   */
   Type getUnspecifiedType() { result = global.getUnspecifiedType() }
 }
 

@@ -526,11 +526,18 @@ class SideEffectOperandNode extends Node, IndirectOperand {
   Expr getArgument() { result = call.getArgument(argumentIndex).getUnconvertedResultExpression() }
 }
 
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing the value of a global variable just before returning
+ * from a function body.
+ */
 class FinalGlobalValue extends Node, TFinalGlobalValue {
   Ssa::GlobalUse globalUse;
 
   FinalGlobalValue() { this = TFinalGlobalValue(globalUse) }
 
+  /** Gets the underlying SSA use. */
   Ssa::GlobalUse getGlobalUse() { result = globalUse }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
@@ -549,11 +556,18 @@ class FinalGlobalValue extends Node, TFinalGlobalValue {
   override string toStringImpl() { result = globalUse.toString() }
 }
 
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing the value of a global variable just after entering
+ * a function body.
+ */
 class InitialGlobalValue extends Node, TInitialGlobalValue {
   Ssa::GlobalDef globalDef;
 
   InitialGlobalValue() { this = TInitialGlobalValue(globalDef) }
 
+  /** Gets the underlying SSA definition. */
   Ssa::GlobalDef getGlobalDef() { result = globalDef }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
@@ -1262,6 +1276,7 @@ class VariableNode extends Node, TVariableNode {
   /** Gets the variable corresponding to this node. */
   Variable getVariable() { result = v }
 
+  /** Gets the indirection index of this node. */
   int getIndirectionIndex() { result = indirectionIndex }
 
   override Declaration getFunction() { none() }
