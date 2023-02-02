@@ -55,7 +55,7 @@ There are two ways to do this:
 
 .. pull-quote:: Note
 
-   For CLI users there is a third option: If you have followed the instructions in ":ref:`Getting started with the CodeQL CLI <getting-started-with-the-codeql-cli>`" to create a CodeQL directory (for example ``codeql-home``) containing the CodeQL libraries, you can open this directory in VS Code. This also gives the extension access to the CodeQL libraries.
+   For CLI users there is a third option: If you have followed the instructions in "`Getting started with the CodeQL CLI <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/getting-started-with-the-codeql-cli>`__" to create a CodeQL directory (for example ``codeql-home``) containing the CodeQL libraries, you can open this directory in VS Code. This also gives the extension access to the CodeQL libraries.
 
 .. _starter-workspace:
 
@@ -96,7 +96,7 @@ For example, to make a custom CodeQL folder called ``my-custom-cpp-pack`` depend
     version: 0.0.0
     libraryPathDependencies: codeql/cpp-all
 
-For more information about why you need to add a ``qlpack.yml`` file, see ":ref:`About CodeQL packs <about-codeql-packs>`."
+For more information about why you need to add a ``qlpack.yml`` file, see "`About CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs>`__."
 
 Further reading
 ----------------

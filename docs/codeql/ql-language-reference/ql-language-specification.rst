@@ -62,7 +62,7 @@ where such a file is found is the query directory. If there is no such
 directory, the directory of the ``.ql`` file itself is the query
 directory.
 
-A ``qlpack.yml`` file defines a :ref:`CodeQL pack <about-codeql-packs>`.
+A ``qlpack.yml`` file defines a `CodeQL pack <https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs>`__.
 The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation.
 ``codeql-pack.yml`` is an alias for ``qlpack.yml``.
 
