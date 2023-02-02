@@ -28,7 +28,7 @@ where
         config.isSinkCandidateWithFlow(sinkPathNode) and
         sinkPathNode.getNode() = sink
       |
-        config.getASinkEndpointType().getDescription(), ", "
+        config, ", "
       ) + "\n" +
       // Extract the needed metadata for this endpoint.
       any(string metadata | EndpointCharacteristics::hasMetadata(sink, metadata))
