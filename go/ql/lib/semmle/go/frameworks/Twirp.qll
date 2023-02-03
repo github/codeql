@@ -40,7 +40,7 @@ module Twirp {
    * A type representing a protobuf message.
    */
   class ProtobufMessageType extends Type {
-    ProtobufMessage() {
+    ProtobufMessageType() {
       exists(TypeEntity te |
         te.getType() = this and
         te.getDeclaration().getLocation().getFile() instanceof ProtobufGeneratedFile
@@ -51,13 +51,13 @@ module Twirp {
   /**
    * An interface type representing a Twirp service.
    */
-  class ServiceInterface extends InterfaceType {
+  class ServiceInterfaceType extends InterfaceType {
     NamedType namedType;
 
-    ServiceInterface() {
+    ServiceInterfaceType() {
       exists(TypeEntity te |
-        te.getType() = serviceInterface and
-        serviceInterface.getUnderlyingType() = this and
+        te.getType() = namedType and
+        namedType.getUnderlyingType() = this and
         te.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
       )
     }
@@ -65,20 +65,20 @@ module Twirp {
     /**
      * Gets the name of the interface.
      */
-    override string getName() { result = serviceInterface.getName() }
+    override string getName() { result = namedType.getName() }
 
     /**
      * Returns the named type on top of this interface type
      */
-    NamedType getNamedType() { result = serviceInterface }
+    NamedType getNamedType() { result = namedType }
   }
 
   /**
    * A Twirp client.
    */
-  class ServiceClient extends NamedType {
-    ServiceClient() {
-      exists(ServiceInterface i, PointerType p |
+  class ServiceClientType extends NamedType {
+    ServiceClientType() {
+      exists(ServiceInterfaceType i, PointerType p |
         p.implements(i) and
         this = p.getBaseType() and
         this.getName().toLowerCase() = i.getName().toLowerCase() + ["protobuf", "json"] + "client"
@@ -89,9 +89,9 @@ module Twirp {
   /**
    * A Twirp server
    */
-  class ServiceServer extends NamedType {
-    ServiceServer() {
-      exists(ServiceInterface i |
+  class ServiceServerType extends NamedType {
+    ServiceServerType() {
+      exists(ServiceInterfaceType i |
         this.implements(i) and
         this.getName().toLowerCase() = i.getName().toLowerCase() + "server"
       )
@@ -103,7 +103,7 @@ module Twirp {
    */
   class ClientConstructor extends Function {
     ClientConstructor() {
-      exists(ServiceClient c |
+      exists(ServiceClientType c |
         this.getName().toLowerCase() = "new" + c.getName().toLowerCase() and
         this.getParameter(0).getType() instanceof StringType and
         this.getParameterType(1).getName() = "HTTPClient"
@@ -117,7 +117,7 @@ module Twirp {
    */
   class ServerConstructor extends Function {
     ServerConstructor() {
-      exists(ServiceServer c, ServiceInterface i |
+      exists(ServiceServerType c, ServiceInterfaceType i |
         this.getName().toLowerCase() = "new" + c.getName().toLowerCase() and
         this.getParameter(0).getType() = i.getNamedType()
       )
@@ -145,10 +145,9 @@ module Twirp {
    */
   class ServiceHandler extends Method {
     ServiceHandler() {
-      exists(DataFlow::CallNode call, Type handlerType, ServiceInterface i |
+      exists(DataFlow::CallNode call, Type handlerType, ServiceInterfaceType i |
         call.getTarget() instanceof ServerConstructor and
         call.getArgument(0).getType() = handlerType and
-        handlerType.implements(i) and
         this = handlerType.getMethod(_) and
         this.implements(i.getNamedType().getMethod(_))
       )
@@ -164,7 +163,7 @@ module Twirp {
     Request() {
       handler.getParameter(0).getType().hasQualifiedName("context", "Context") and
       handler.getParameter(_) = this.asParameter() and
-      this.getType().(PointerType).getBaseType() instanceof ProtobufMessage
+      this.getType().(PointerType).getBaseType() instanceof ProtobufMessageType
     }
 
     override predicate isParameterOf(Callable c, int i) {

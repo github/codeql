@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+  "strconv"
 	"fmt"
 	"net/http"
 	"time"
@@ -25,6 +26,9 @@ func (s *notesService) CreateNote(ctx context.Context, params *notes.CreateNoteP
 		Text:      params.Text,
 		CreatedAt: time.Now().UnixMilli(),
 	}
+
+	notes.NewNotesServiceProtobufClient(params.Text, &http.Client{}) // test: ssrfSink, ssrf
+	notes.NewNotesServiceProtobufClient(strconv.FormatInt(int64(s.CurrentId), 10), &http.Client{}) // test: ssrfSink, !ssrf
 
 	s.Notes = append(s.Notes, note)
 

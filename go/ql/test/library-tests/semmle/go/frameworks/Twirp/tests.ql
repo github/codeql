@@ -1,5 +1,6 @@
 import go
 import semmle.go.frameworks.Twirp
+import semmle.go.security.RequestForgery //.dataflow.ReflectedXssQuery as XssConfig
 
 class InlineTest extends LineComment {
   string tests;
@@ -49,22 +50,27 @@ query predicate passingPositiveTests(string res, string expectation, InlineTest 
     exists(RequestForgery::Sink n | t.inNode(n))
     or
     expectation = "message" and
-    exists(Twirp::ProtobufMessage n | t.inType(n))
+    exists(Twirp::ProtobufMessageType n | t.inType(n))
     or
     expectation = "serviceInterface" and
-    exists(Twirp::ServiceInterface n | t.inType(n.getNamedType()))
+    exists(Twirp::ServiceInterfaceType n | t.inType(n.getNamedType()))
     or
     expectation = "serviceClient" and
-    exists(Twirp::ServiceClient n | t.inType(n))
+    exists(Twirp::ServiceClientType n | t.inType(n))
     or
     expectation = "serviceServer" and
-    exists(Twirp::ServiceServer n | t.inType(n))
+    exists(Twirp::ServiceServerType n | t.inType(n))
     or
     expectation = "clientConstructor" and
     exists(Twirp::ClientConstructor n | t.inEntity(n))
     or
     expectation = "serverConstructor" and
     exists(Twirp::ServerConstructor n | t.inEntity(n))
+    or
+    expectation = "ssrf" and
+    exists(RequestForgery::Configuration cfg, DataFlow::Node sink |
+      cfg.hasFlow(_, sink) and t.inNode(sink)
+    )
   )
 }
 
@@ -82,22 +88,27 @@ query predicate failingPositiveTests(string res, string expectation, InlineTest 
     not exists(RequestForgery::Sink n | t.inNode(n))
     or
     expectation = "message" and
-    not exists(Twirp::ProtobufMessage n | t.inType(n))
+    not exists(Twirp::ProtobufMessageType n | t.inType(n))
     or
     expectation = "serviceInterface" and
-    not exists(Twirp::ServiceInterface n | t.inType(n.getNamedType()))
+    not exists(Twirp::ServiceInterfaceType n | t.inType(n.getNamedType()))
     or
     expectation = "serviceClient" and
-    not exists(Twirp::ServiceClient n | t.inType(n))
+    not exists(Twirp::ServiceClientType n | t.inType(n))
     or
     expectation = "serviceServer" and
-    not exists(Twirp::ServiceServer n | t.inType(n))
+    not exists(Twirp::ServiceServerType n | t.inType(n))
     or
     expectation = "clientConstructor" and
     not exists(Twirp::ClientConstructor n | t.inEntity(n))
     or
     expectation = "serverConstructor" and
     not exists(Twirp::ServerConstructor n | t.inEntity(n))
+    or
+    expectation = "ssrf" and
+    not exists(RequestForgery::Configuration cfg, DataFlow::Node sink |
+      cfg.hasFlow(_, sink) and t.inNode(sink)
+    )
   )
 }
 
@@ -115,22 +126,27 @@ query predicate passingNegativeTests(string res, string expectation, InlineTest 
     not exists(RequestForgery::Sink n | t.inNode(n))
     or
     expectation = "!message" and
-    not exists(Twirp::ProtobufMessage n | t.inType(n))
+    not exists(Twirp::ProtobufMessageType n | t.inType(n))
     or
     expectation = "!serviceInterface" and
-    not exists(Twirp::ServiceInterface n | t.inType(n))
+    not exists(Twirp::ServiceInterfaceType n | t.inType(n))
     or
     expectation = "!serviceClient" and
-    not exists(Twirp::ServiceClient n | t.inType(n))
+    not exists(Twirp::ServiceClientType n | t.inType(n))
     or
     expectation = "!serviceServer" and
-    not exists(Twirp::ServiceServer n | t.inType(n))
+    not exists(Twirp::ServiceServerType n | t.inType(n))
     or
     expectation = "!clientConstructor" and
     not exists(Twirp::ClientConstructor n | t.inEntity(n))
     or
     expectation = "!serverConstructor" and
     not exists(Twirp::ServerConstructor n | t.inEntity(n))
+    or
+    expectation = "!ssrf" and
+    not exists(RequestForgery::Configuration cfg, DataFlow::Node sink |
+      cfg.hasFlow(_, sink) and t.inNode(sink)
+    )
   )
 }
 
@@ -148,21 +164,26 @@ query predicate failingNegativeTests(string res, string expectation, InlineTest 
     exists(RequestForgery::Sink n | t.inNode(n))
     or
     expectation = "!message" and
-    exists(Twirp::ProtobufMessage n | t.inType(n))
+    exists(Twirp::ProtobufMessageType n | t.inType(n))
     or
     expectation = "!serviceInterface" and
-    exists(Twirp::ServiceInterface n | t.inType(n))
+    exists(Twirp::ServiceInterfaceType n | t.inType(n))
     or
     expectation = "!serviceClient" and
-    exists(Twirp::ServiceClient n | t.inType(n))
+    exists(Twirp::ServiceClientType n | t.inType(n))
     or
     expectation = "!serviceServer" and
-    exists(Twirp::ServiceServer n | t.inType(n))
+    exists(Twirp::ServiceServerType n | t.inType(n))
     or
     expectation = "!clientConstructor" and
     exists(Twirp::ClientConstructor n | t.inEntity(n))
     or
     expectation = "!serverConstructor" and
     exists(Twirp::ServerConstructor n | t.inEntity(n))
+    or
+    expectation = "!ssrf" and
+    exists(RequestForgery::Configuration cfg, DataFlow::Node sink |
+      cfg.hasFlow(_, sink) and t.inNode(sink)
+    )
   )
 }
