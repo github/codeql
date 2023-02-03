@@ -515,7 +515,11 @@ private module Cached {
 
   private predicate isSink(Instruction instr, CallInstruction call) {
     getAUse(instr).(ArgumentOperand).getCall() = call and
-    // Don't include various operations that don't modify what the iterator points to.
+    // Only include operations that may modify the object that the iterator points to.
+    // The following is a non-exhaustive list of things that may modify the value of the
+    // iterator, but never the value of what the iterator points to.
+    // The more things we can exclude here, the faster the small dataflow-like analysis
+    // done by `convertsIntoArgument` will converge.
     not exists(Function f | f = call.getStaticCallTarget() |
       f instanceof Iterator::IteratorCrementOperator or
       f instanceof Iterator::IteratorBinaryArithmeticOperator or
