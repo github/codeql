@@ -2,9 +2,9 @@ passingPositiveTests
 | PASSED | clientConstructor | rpc/notes/service.twirp.go:53:114:53:139 | comment |
 | PASSED | clientConstructor | rpc/notes/service.twirp.go:192:110:192:135 | comment |
 | PASSED | message | rpc/notes/service.pb.go:23:20:23:35 | comment |
-| PASSED | message | rpc/notes/service.pb.go:86:32:86:49 | comment |
-| PASSED | message | rpc/notes/service.pb.go:133:33:133:50 | comment |
-| PASSED | message | rpc/notes/service.pb.go:171:33:171:50 | comment |
+| PASSED | message | rpc/notes/service.pb.go:86:32:86:47 | comment |
+| PASSED | message | rpc/notes/service.pb.go:133:33:133:48 | comment |
+| PASSED | message | rpc/notes/service.pb.go:171:33:171:48 | comment |
 | PASSED | request | server/main.go:19:111:19:140 | comment |
 | PASSED | request | server/main.go:40:126:40:155 | comment |
 | PASSED | serverConstructor | rpc/notes/service.twirp.go:334:81:334:106 | comment |

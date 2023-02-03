@@ -124,7 +124,7 @@ module Twirp {
     ServerConstructor() {
       exists(ServiceServerType c, ServiceInterfaceType i |
         this.getName().toLowerCase() = "new" + c.getName().toLowerCase() and
-        this.getParameter(0).getType() = i.getNamedType() and
+        this.getParameterType(0) = i.getNamedType() and
         this.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
       )
     }
