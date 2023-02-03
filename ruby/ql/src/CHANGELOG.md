@@ -1,3 +1,9 @@
+## 0.5.2
+
+### New Queries
+
+* Added a new query, `rb/html-constructed-from-input`, to detect libraries that unsafely construct HTML from their inputs.
+
 ## 0.5.1
 
 ### New Queries

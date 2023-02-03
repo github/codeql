@@ -1,3 +1,9 @@
+## 0.5.2
+
+### Minor Analysis Improvements
+
+* Added sink models for the `createQuery`, `createNativeQuery`, and `createSQLQuery` methods of the `org.hibernate.query.QueryProducer` interface.
+
 ## 0.5.1
 
 ### Minor Analysis Improvements
