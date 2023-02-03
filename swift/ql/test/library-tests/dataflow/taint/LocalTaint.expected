@@ -1055,17 +1055,25 @@
 | string.swift:167:19:167:19 | tainted | string.swift:170:29:170:29 | tainted |
 | string.swift:167:29:167:29 | < | string.swift:167:13:167:29 | ... .+(_:_:) ... |
 | string.swift:169:13:169:13 | [post] clean | string.swift:169:29:169:29 | clean |
+| string.swift:169:13:169:13 | clean | string.swift:169:13:169:34 | call to appending(_:) |
 | string.swift:169:13:169:13 | clean | string.swift:169:29:169:29 | clean |
 | string.swift:169:29:169:29 | [post] clean | string.swift:170:13:170:13 | clean |
+| string.swift:169:29:169:29 | clean | string.swift:169:13:169:34 | call to appending(_:) |
 | string.swift:169:29:169:29 | clean | string.swift:170:13:170:13 | clean |
 | string.swift:170:13:170:13 | [post] clean | string.swift:171:31:171:31 | clean |
+| string.swift:170:13:170:13 | clean | string.swift:170:13:170:36 | call to appending(_:) |
 | string.swift:170:13:170:13 | clean | string.swift:171:31:171:31 | clean |
 | string.swift:170:29:170:29 | [post] tainted | string.swift:171:13:171:13 | tainted |
+| string.swift:170:29:170:29 | tainted | string.swift:170:13:170:36 | call to appending(_:) |
 | string.swift:170:29:170:29 | tainted | string.swift:171:13:171:13 | tainted |
 | string.swift:171:13:171:13 | [post] tainted | string.swift:172:13:172:13 | tainted |
+| string.swift:171:13:171:13 | tainted | string.swift:171:13:171:36 | call to appending(_:) |
 | string.swift:171:13:171:13 | tainted | string.swift:172:13:172:13 | tainted |
+| string.swift:171:31:171:31 | clean | string.swift:171:13:171:36 | call to appending(_:) |
 | string.swift:172:13:172:13 | [post] tainted | string.swift:172:31:172:31 | tainted |
+| string.swift:172:13:172:13 | tainted | string.swift:172:13:172:38 | call to appending(_:) |
 | string.swift:172:13:172:13 | tainted | string.swift:172:31:172:31 | tainted |
+| string.swift:172:31:172:31 | tainted | string.swift:172:13:172:38 | call to appending(_:) |
 | string.swift:174:7:174:7 | SSA def(str) | string.swift:175:13:175:13 | str |
 | string.swift:174:13:174:13 | abc | string.swift:174:7:174:7 | SSA def(str) |
 | string.swift:175:13:175:13 | [post] str | string.swift:176:3:176:3 | str |
@@ -1184,6 +1192,7 @@
 | string.swift:231:13:231:13 | [post] tainted | string.swift:232:13:232:13 | tainted |
 | string.swift:231:13:231:13 | tainted | string.swift:232:13:232:13 | tainted |
 | string.swift:232:13:232:13 | [post] tainted | string.swift:232:37:232:37 | tainted |
+| string.swift:232:13:232:13 | tainted | string.swift:232:13:232:55 | call to substring(from:) |
 | string.swift:232:13:232:13 | tainted | string.swift:232:37:232:37 | tainted |
 | string.swift:232:37:232:37 | [post] tainted | string.swift:234:13:234:13 | tainted |
 | string.swift:232:37:232:37 | tainted | string.swift:234:13:234:13 | tainted |
@@ -1194,10 +1203,13 @@
 | string.swift:235:13:235:13 | tainted | string.swift:235:13:235:32 | call to uppercased() |
 | string.swift:235:13:235:13 | tainted | string.swift:236:13:236:13 | tainted |
 | string.swift:236:13:236:13 | [post] tainted | string.swift:237:13:237:13 | tainted |
+| string.swift:236:13:236:13 | tainted | string.swift:236:13:236:41 | call to lowercased(with:) |
 | string.swift:236:13:236:13 | tainted | string.swift:237:13:237:13 | tainted |
 | string.swift:237:13:237:13 | [post] tainted | string.swift:238:13:238:13 | tainted |
+| string.swift:237:13:237:13 | tainted | string.swift:237:13:237:41 | call to uppercased(with:) |
 | string.swift:237:13:237:13 | tainted | string.swift:238:13:238:13 | tainted |
 | string.swift:238:13:238:13 | [post] tainted | string.swift:239:13:239:13 | tainted |
+| string.swift:238:13:238:13 | tainted | string.swift:238:13:238:42 | call to capitalized(with:) |
 | string.swift:238:13:238:13 | tainted | string.swift:239:13:239:13 | tainted |
 | string.swift:239:13:239:13 | [post] tainted | string.swift:241:13:241:13 | tainted |
 | string.swift:239:13:239:13 | tainted | string.swift:241:13:241:13 | tainted |
@@ -1208,19 +1220,27 @@
 | string.swift:243:5:243:5 | SSA def(c) | string.swift:243:18:243:18 | c |
 | string.swift:243:5:243:5 | c | string.swift:243:5:243:5 | SSA def(c) |
 | string.swift:245:13:245:13 | [post] tainted | string.swift:246:13:246:13 | tainted |
+| string.swift:245:13:245:13 | tainted | string.swift:245:13:245:68 | call to trimmingCharacters(in:) |
 | string.swift:245:13:245:13 | tainted | string.swift:246:13:246:13 | tainted |
 | string.swift:246:13:246:13 | [post] tainted | string.swift:247:13:247:13 | tainted |
+| string.swift:246:13:246:13 | tainted | string.swift:246:13:246:70 | call to padding(toLength:withPad:startingAt:) |
 | string.swift:246:13:246:13 | tainted | string.swift:247:13:247:13 | tainted |
+| string.swift:246:52:246:52 |   | string.swift:246:13:246:70 | call to padding(toLength:withPad:startingAt:) |
 | string.swift:247:13:247:13 | [post] tainted | string.swift:248:13:248:13 | tainted |
+| string.swift:247:13:247:13 | tainted | string.swift:247:13:247:69 | call to components(separatedBy:) |
 | string.swift:247:13:247:13 | tainted | string.swift:248:13:248:13 | tainted |
 | string.swift:248:13:248:13 | [post] tainted | string.swift:249:13:249:13 | tainted |
+| string.swift:248:13:248:13 | tainted | string.swift:248:13:248:69 | call to components(separatedBy:) |
 | string.swift:248:13:248:13 | tainted | string.swift:249:13:249:13 | tainted |
 | string.swift:248:13:248:69 | call to components(separatedBy:) | string.swift:248:13:248:72 | ...[...] |
 | string.swift:249:13:249:13 | [post] tainted | string.swift:250:13:250:13 | tainted |
+| string.swift:249:13:249:13 | tainted | string.swift:249:13:249:40 | call to folding(options:locale:) |
 | string.swift:249:13:249:13 | tainted | string.swift:250:13:250:13 | tainted |
 | string.swift:250:13:250:13 | [post] tainted | string.swift:251:13:251:13 | tainted |
+| string.swift:250:13:250:13 | tainted | string.swift:250:13:250:55 | call to propertyListFromStringsFileFormat() |
 | string.swift:250:13:250:13 | tainted | string.swift:251:13:251:13 | tainted |
 | string.swift:251:13:251:13 | [post] tainted | string.swift:258:13:258:13 | tainted |
+| string.swift:251:13:251:13 | tainted | string.swift:251:13:251:55 | call to propertyListFromStringsFileFormat() |
 | string.swift:251:13:251:13 | tainted | string.swift:258:13:258:13 | tainted |
 | string.swift:251:13:251:55 | call to propertyListFromStringsFileFormat() | string.swift:251:13:251:62 | ...[...] |
 | string.swift:251:13:251:62 | ...[...] | string.swift:251:13:251:63 | ...! |
@@ -1438,6 +1458,7 @@
 | string.swift:378:5:378:5 | ptr | string.swift:378:5:378:5 | SSA def(ptr) |
 | string.swift:382:7:382:7 | SSA def(arrayString1) | string.swift:383:13:383:13 | arrayString1 |
 | string.swift:382:22:382:22 | [post] clean | string.swift:397:3:397:3 | clean |
+| string.swift:382:22:382:22 | clean | string.swift:382:22:382:63 | call to cString(using:) |
 | string.swift:382:22:382:22 | clean | string.swift:397:3:397:3 | clean |
 | string.swift:382:22:382:63 | call to cString(using:) | string.swift:382:22:382:64 | ...! |
 | string.swift:382:22:382:64 | ...! | string.swift:382:7:382:7 | SSA def(arrayString1) |
@@ -1451,6 +1472,7 @@
 | string.swift:387:31:387:49 | ...! | string.swift:387:15:387:50 | call to String.init(cString:) |
 | string.swift:389:7:389:7 | SSA def(arrayString2) | string.swift:390:13:390:13 | arrayString2 |
 | string.swift:389:22:389:22 | [post] tainted | string.swift:408:3:408:3 | tainted |
+| string.swift:389:22:389:22 | tainted | string.swift:389:22:389:65 | call to cString(using:) |
 | string.swift:389:22:389:22 | tainted | string.swift:408:3:408:3 | tainted |
 | string.swift:389:22:389:65 | call to cString(using:) | string.swift:389:22:389:66 | ...! |
 | string.swift:389:22:389:66 | ...! | string.swift:389:7:389:7 | SSA def(arrayString2) |

@@ -167,9 +167,9 @@ func taintThroughStringConcatenation() {
   sink(arg: ">" + tainted + "<") // $ tainted=156
 
   sink(arg: clean.appending(clean))
-  sink(arg: clean.appending(tainted)) // $ MISSING: tainted=156
-  sink(arg: tainted.appending(clean)) // $ MISSING: tainted=156
-  sink(arg: tainted.appending(tainted)) // $ MISSING: tainted=156
+  sink(arg: clean.appending(tainted)) // $ tainted=156
+  sink(arg: tainted.appending(clean)) // $ tainted=156
+  sink(arg: tainted.appending(tainted)) // $ tainted=156
 
   var str = "abc"
   sink(arg: str)
@@ -229,26 +229,26 @@ func taintThroughSimpleStringOperations() {
 
   sink(arg: tainted.dropFirst(10)) // $ MISSING: tainted=212
   sink(arg: tainted.dropLast(10)) // $ MISSING: tainted=212
-  sink(arg: tainted.substring(from: tainted.startIndex)) // $ MISSING: tainted=212
+  sink(arg: tainted.substring(from: tainted.startIndex)) // $ tainted=212
 
   sink(arg: tainted.lowercased()) // $ tainted=212
   sink(arg: tainted.uppercased()) // $ tainted=212
-  sink(arg: tainted.lowercased(with: nil)) // $ MISSING: tainted=212
-  sink(arg: tainted.uppercased(with: nil)) // $ MISSING: tainted=212
-  sink(arg: tainted.capitalized(with: nil)) // $ MISSING: tainted=212
+  sink(arg: tainted.lowercased(with: nil)) // $ tainted=212
+  sink(arg: tainted.uppercased(with: nil)) // $ tainted=212
+  sink(arg: tainted.capitalized(with: nil)) // $ tainted=212
   sink(arg: tainted.reversed()) // $ MISSING: tainted=212
 
   sink(arg: tainted.split(separator: ",")) // $ MISSING: tainted=212
   sink(arg: tainted.split(whereSeparator: { // $ MISSING: tainted=212
     c in return (c == ",")
   }))
-  sink(arg: tainted.trimmingCharacters(in: CharacterSet.whitespaces)) // $ MISSING: tainted=212
-  sink(arg: tainted.padding(toLength: 20, withPad: " ", startingAt: 0)) // $ MISSING: tainted=212
-  sink(arg: tainted.components(separatedBy: CharacterSet.whitespaces)) // $ MISSING: tainted=212
-  sink(arg: tainted.components(separatedBy: CharacterSet.whitespaces)[0]) // $ MISSING: tainted=212
-  sink(arg: tainted.folding(locale: nil)) // $ MISSING: tainted=212
-  sink(arg: tainted.propertyListFromStringsFileFormat()) // $ MISSING: tainted=212
-  sink(arg: tainted.propertyListFromStringsFileFormat()["key"]!) // $ MISSING: tainted=212
+  sink(arg: tainted.trimmingCharacters(in: CharacterSet.whitespaces)) // $ tainted=212
+  sink(arg: tainted.padding(toLength: 20, withPad: " ", startingAt: 0)) // $ tainted=212
+  sink(arg: tainted.components(separatedBy: CharacterSet.whitespaces)) // $ tainted=212
+  sink(arg: tainted.components(separatedBy: CharacterSet.whitespaces)[0]) // $ tainted=212
+  sink(arg: tainted.folding(locale: nil)) // $ tainted=212
+  sink(arg: tainted.propertyListFromStringsFileFormat()) // $ tainted=212
+  sink(arg: tainted.propertyListFromStringsFileFormat()["key"]!) // $ tainted=212
 
   sink(arg: clean.enumerateLines(invoking: {
     line, stop in
@@ -387,7 +387,7 @@ func taintThroughEncodings() {
     sink(arg: String(cString: buffer.baseAddress!))
   })
   let arrayString2 = tainted.cString(using: String.Encoding.utf8)!
-  sink(arg: arrayString2) // $ MISSING: tainted=352
+  sink(arg: arrayString2) // $ tainted=352
   arrayString1.withUnsafeBufferPointer({
     buffer in
     sink(arg: buffer) // $ MISSING: tainted=352
