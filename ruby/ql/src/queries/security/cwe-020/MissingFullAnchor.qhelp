@@ -6,7 +6,7 @@
 	<overview>
 		<p>
             Regular expressions in Ruby can use anchors to match the beginning and end of a string. 
-            However, if the <code>^</code> and <code>$</code> anchors are not used, 
+            However, if the <code>^</code> and <code>$</code> anchors are used, 
             the regular expression can match a single line of a multi-line string.
 		</p>
 	</overview>
@@ -26,14 +26,14 @@
 
 		<sample language="ruby">
 def bad(input) 
-    raise "Bad input" unless input =~ /[0-9]+/
+    raise "Bad input" unless input =~ /^[0-9]+$/
 
     # ....
 end
         </sample>
 
         <p>
-            The regular expression <code>[0-9]+</code> will match a single line of a multi-line string, 
+            The regular expression <code>/^[0-9]+$/</code> will match a single line of a multi-line string, 
             which may not be the intended behavior. 
             To match the entire string, the regular expression should be <code>\A[0-9]+\z</code>.
         </p>
