@@ -481,10 +481,9 @@ private module Cached {
   }
 
   /**
-   * Holds if `iteratorAddress` is an address of an iterator (i.e., `it`)
-   * that is dereferenced and then used for a write operation that writes the value `value`.
-   * The `memory` instruction represents the memory that the IR's SSA analysis determined was
-   * read by the call to `operator*`.
+   * Holds if `iteratorDerefAddress` is an address of an iterator dereference (i.e., `*it`)
+   * that is used for a write operation that writes the value `value`. The `memory` instruction
+   * represents the memory that the IR's SSA analysis determined was read by the call to `operator*`.
    *
    * The `numberOfLoads` integer represents the number of dereferences this write corresponds to
    * on the underlying container that produced the iterator.
