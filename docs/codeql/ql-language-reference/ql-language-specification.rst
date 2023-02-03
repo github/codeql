@@ -144,7 +144,9 @@ These are defined as follows (with X denoting the type of entity we are currentl
 
     1.  its *publically declared X environment*, and
 
-    2.  for each module which the current module directly imports (excluding ``private`` imports - see "`Import directives <#import-directives>`__"): all entries from the *exported X environment* that have a key not present in the *publically declared X environment* of the current module.
+    2.  for each module which the current module directly imports (excluding ``private`` imports - see "`Import directives <#import-directives>`__"): all entries from the *exported X environment* that have a key not present in the *publically declared X environment* of the current module, and
+
+    3.  if X is ``predicates``, then for each module signature ``S`` that is implemented by the current module: an entry for each module signature default predicate in ``S`` that does not have the same name and arity as any of the entries in the **publically declared predicate environment** of the current module.
 
 -  The *visible X environment* of a module is the union of
 

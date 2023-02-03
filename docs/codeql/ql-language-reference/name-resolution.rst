@@ -223,7 +223,8 @@ For a module ``M``, it is useful to distinguish between its **privately declared
 - The **publically declared** namespaces of ``M`` contain all entities and aliases that are declared—that is, defined—in ``M`` and that are not annotated as ``private``.
 - The **exported** namespaces of ``M`` contain
     1. all entries from the **publically declared** namespaces of ``M``, and
-    2. for each module ``N`` that is imported into ``M`` with an import statement that is not annotated as ``private``: all entries from the **exported** namespaces of ``N`` that do not have the same name as any of the entries in the **publically declared** namespaces of ``M``.
+    2. for each module ``N`` that is imported into ``M`` with an import statement that is not annotated as ``private``: all entries from the **exported** namespaces of ``N`` that do not have the same name as any of the entries in the **publically declared** namespaces of ``M``, and
+    3. for each module signature ``S`` that is implemented by ``M``: an entry for each module signature default predicate in ``S`` that does not have the same name and arity as any of the entries in the **publically declared** predicate namespace of ``M``.
 - The **visible** namespaces of ``M`` contain
     1. all entries from the **exported** namespaces of ``M``, and
     2. all entries from the **global** namespaces, and
