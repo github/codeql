@@ -523,12 +523,19 @@ void test_vector_iterator() {
 		sink(vs[1]);
 		sink(vs[source()]); // $ MISSING: ast,ir
 
-		it = vs.begin();
+		it = vs.begin(); // (1)
 		sink(*it);
 		it += 1;
 		sink(*it);
-		it += source();
-		sink(*it); // $ ast,ir
-		sink(vs[1]); // $ SPURIOUS: ir
+		it += source(); // (2)
+		sink(*it); // $ ast,ir // (3)
+		// This FP happens because of the following flows:
+		// 1. There's a write to the iterator at (2)
+		// 2. This write propagates to `it` on the next line at (3)
+		// 3. There's a taint step from `it` to `*it` at (3)
+		// 4. The `*it` is seen as a use of `vs` because of (1).
+		// 5. There's use-use flow from `*it` at (3) (which is a use of `vs`) to `vs` at (4)
+		// 6. There's a taint step from vs to vs[1]
+		sink(vs[1]); // $ SPURIOUS: ir // (4)
 	}
 }
