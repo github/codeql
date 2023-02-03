@@ -1,16 +1,7 @@
 uniqueEnclosingCallable
 uniqueType
 uniqueNodeLocation
-| E.cpp:15:31:15:33 | buf | Node should have one location but has 2. |
-| aliasing.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 2. |
-| conflated.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 2. |
-| conflated.cpp:14:22:14:25 | buf | Node should have one location but has 2. |
-| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
 missingLocation
-| Nodes without location: 4 |
 uniqueNodeToString
 missingToString
 parameterCallable

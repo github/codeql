@@ -325,8 +325,10 @@ newtype TBaseSourceVariable =
   TBaseCallVariable(AllocationInstruction call)
 
 abstract class BaseSourceVariable extends TBaseSourceVariable {
+  /** Gets a textual representation of this element. */
   abstract string toString();
 
+  /** Gets the type of this base source variable. */
   abstract DataFlowType getType();
 }
 
@@ -441,6 +443,7 @@ predicate isModifiableAt(CppType cppType, int indirectionIndex) {
 }
 
 abstract class BaseSourceVariableInstruction extends Instruction {
+  /** Gets the base source variable accessed by this instruction. */
   abstract BaseSourceVariable getBaseSourceVariable();
 }
 

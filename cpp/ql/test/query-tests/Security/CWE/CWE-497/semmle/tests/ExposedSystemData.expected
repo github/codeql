@@ -1,13 +1,11 @@
 edges
 | tests2.cpp:50:13:50:19 | global1 | tests2.cpp:82:14:82:20 | global1 |
 | tests2.cpp:50:23:50:43 | call to mysql_get_client_info | tests2.cpp:50:13:50:19 | global1 |
-| tests2.cpp:50:23:50:43 | call to mysql_get_client_info | tests2.cpp:50:23:50:43 | call to mysql_get_client_info |
 | tests2.cpp:63:13:63:18 | call to getenv | tests2.cpp:63:13:63:26 | call to getenv |
 | tests2.cpp:64:13:64:18 | call to getenv | tests2.cpp:64:13:64:26 | call to getenv |
 | tests2.cpp:65:13:65:18 | call to getenv | tests2.cpp:65:13:65:30 | call to getenv |
 | tests2.cpp:66:13:66:18 | call to getenv | tests2.cpp:66:13:66:34 | call to getenv |
 | tests2.cpp:78:18:78:38 | call to mysql_get_client_info | tests2.cpp:81:14:81:19 | buffer |
-| tests2.cpp:82:14:82:20 | global1 | tests2.cpp:82:14:82:20 | global1 |
 | tests2.cpp:91:42:91:45 | str1 | tests2.cpp:93:14:93:17 | str1 |
 | tests2.cpp:101:8:101:15 | call to getpwuid | tests2.cpp:102:14:102:15 | pw |
 | tests2.cpp:109:3:109:36 | ... = ... | tests2.cpp:109:6:109:8 | c1 indirection [post update] [ptr] |
@@ -30,7 +28,6 @@ edges
 nodes
 | tests2.cpp:50:13:50:19 | global1 | semmle.label | global1 |
 | tests2.cpp:50:23:50:43 | call to mysql_get_client_info | semmle.label | call to mysql_get_client_info |
-| tests2.cpp:50:23:50:43 | call to mysql_get_client_info | semmle.label | call to mysql_get_client_info |
 | tests2.cpp:63:13:63:18 | call to getenv | semmle.label | call to getenv |
 | tests2.cpp:63:13:63:18 | call to getenv | semmle.label | call to getenv |
 | tests2.cpp:63:13:63:26 | call to getenv | semmle.label | call to getenv |
@@ -46,7 +43,6 @@ nodes
 | tests2.cpp:78:18:78:38 | call to mysql_get_client_info | semmle.label | call to mysql_get_client_info |
 | tests2.cpp:80:14:80:34 | call to mysql_get_client_info | semmle.label | call to mysql_get_client_info |
 | tests2.cpp:81:14:81:19 | buffer | semmle.label | buffer |
-| tests2.cpp:82:14:82:20 | global1 | semmle.label | global1 |
 | tests2.cpp:82:14:82:20 | global1 | semmle.label | global1 |
 | tests2.cpp:91:42:91:45 | str1 | semmle.label | str1 |
 | tests2.cpp:93:14:93:17 | str1 | semmle.label | str1 |

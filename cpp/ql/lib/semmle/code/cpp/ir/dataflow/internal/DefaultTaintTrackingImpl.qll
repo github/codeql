@@ -624,6 +624,8 @@ module TaintedWithPath {
 
   private predicate isGlobalVariablePathNode(WrapPathNode n) {
     n.inner().getNode().asVariable() instanceof GlobalOrNamespaceVariable
+    or
+    n.inner().getNode().asIndirectVariable() instanceof GlobalOrNamespaceVariable
   }
 
   private predicate edgesWithoutGlobals(PathNode a, PathNode b) {

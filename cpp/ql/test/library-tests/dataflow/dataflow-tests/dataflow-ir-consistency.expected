@@ -5,22 +5,7 @@ uniqueEnclosingCallable
 | globals.cpp:16:12:16:26 | flowTestGlobal2 indirection | Node should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
-| BarrierGuard.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 6. |
-| acrossLinkTargets.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 6. |
-| clang.cpp:4:11:4:13 | (unnamed parameter 0) | Node should have one location but has 6. |
-| clang.cpp:4:27:4:35 | (unnamed parameter 0) | Node should have one location but has 2. |
-| clang.cpp:4:51:4:53 | (unnamed parameter 0) | Node should have one location but has 2. |
-| dispatch.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 6. |
-| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
-| globals.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 6. |
-| test.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 6. |
-| test.cpp:2:27:2:35 | (unnamed parameter 0) | Node should have one location but has 2. |
-| test.cpp:2:51:2:53 | (unnamed parameter 0) | Node should have one location but has 2. |
 missingLocation
-| Nodes without location: 4 |
 uniqueNodeToString
 missingToString
 parameterCallable

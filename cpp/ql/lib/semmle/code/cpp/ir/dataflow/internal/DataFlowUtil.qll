@@ -32,7 +32,9 @@ private import DataFlowImplCommon as DataFlowImplCommon
 cached
 private newtype TIRDataFlowNode =
   TNode0(Node0Impl node) { DataFlowImplCommon::forceCachingInSameStage() } or
-  TVariableNode(Variable var) or
+  TVariableNode(Variable var, int indirectionIndex) {
+    indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
+  } or
   TPostFieldUpdateNode(FieldAddress operand, int indirectionIndex) {
     indirectionIndex =
       [1 .. Ssa::countIndirectionsForCppType(operand.getObjectAddress().getResultLanguageType())]
@@ -52,7 +54,9 @@ private newtype TIRDataFlowNode =
       use.getParameter() = p and
       use.getIndirectionIndex() = indirectionIndex
     )
-  }
+  } or
+  TFinalGlobalValue(Ssa::GlobalUse globalUse) or
+  TInitialGlobalValue(Ssa::GlobalDef globalUse)
 
 /**
  * An operand that is defined by a `FieldAddressInstruction`.
@@ -279,7 +283,20 @@ class Node extends TIRDataFlowNode {
    * Gets the variable corresponding to this node, if any. This can be used for
    * modeling flow in and out of global variables.
    */
-  Variable asVariable() { result = this.(VariableNode).getVariable() }
+  Variable asVariable() { this = TVariableNode(result, 1) }
+
+  /**
+   * Gets the `indirectionIndex`'th indirection of this node's underlying variable, if any.
+   *
+   * This can be used for modeling flow in and out of global variables.
+   */
+  Variable asIndirectVariable(int indirectionIndex) {
+    indirectionIndex > 1 and
+    this = TVariableNode(result, indirectionIndex)
+  }
+
+  /** Gets an indirection of this node's underlying variable, if any. */
+  Variable asIndirectVariable() { result = this.asIndirectVariable(_) }
 
   /**
    * Gets the expression that is partially defined by this node, if any.
@@ -507,6 +524,66 @@ class SideEffectOperandNode extends Node, IndirectOperand {
   override Function getFunction() { result = call.getEnclosingFunction() }
 
   Expr getArgument() { result = call.getArgument(argumentIndex).getUnconvertedResultExpression() }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing the value of a global variable just before returning
+ * from a function body.
+ */
+class FinalGlobalValue extends Node, TFinalGlobalValue {
+  Ssa::GlobalUse globalUse;
+
+  FinalGlobalValue() { this = TFinalGlobalValue(globalUse) }
+
+  /** Gets the underlying SSA use. */
+  Ssa::GlobalUse getGlobalUse() { result = globalUse }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Declaration getFunction() { result = globalUse.getIRFunction().getFunction() }
+
+  override DataFlowType getType() {
+    exists(int indirectionIndex |
+      indirectionIndex = globalUse.getIndirectionIndex() and
+      result = getTypeImpl(globalUse.getUnspecifiedType(), indirectionIndex - 1)
+    )
+  }
+
+  final override Location getLocationImpl() { result = globalUse.getLocation() }
+
+  override string toStringImpl() { result = globalUse.toString() }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing the value of a global variable just after entering
+ * a function body.
+ */
+class InitialGlobalValue extends Node, TInitialGlobalValue {
+  Ssa::GlobalDef globalDef;
+
+  InitialGlobalValue() { this = TInitialGlobalValue(globalDef) }
+
+  /** Gets the underlying SSA definition. */
+  Ssa::GlobalDef getGlobalDef() { result = globalDef }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Declaration getFunction() { result = globalDef.getIRFunction().getFunction() }
+
+  override DataFlowType getType() {
+    exists(int indirectionIndex |
+      indirectionIndex = globalDef.getIndirectionIndex() and
+      result = getTypeImpl(globalDef.getUnspecifiedType(), indirectionIndex)
+    )
+  }
+
+  final override Location getLocationImpl() { result = globalDef.getLocation() }
+
+  override string toStringImpl() { result = globalDef.toString() }
 }
 
 /**
@@ -1192,11 +1269,15 @@ class DefinitionByReferenceNode extends IndirectArgumentOutNode {
  */
 class VariableNode extends Node, TVariableNode {
   Variable v;
+  int indirectionIndex;
 
-  VariableNode() { this = TVariableNode(v) }
+  VariableNode() { this = TVariableNode(v, indirectionIndex) }
 
   /** Gets the variable corresponding to this node. */
   Variable getVariable() { result = v }
+
+  /** Gets the indirection index of this node. */
+  int getIndirectionIndex() { result = indirectionIndex }
 
   override Declaration getFunction() { none() }
 
@@ -1209,11 +1290,23 @@ class VariableNode extends Node, TVariableNode {
     result = v
   }
 
-  override DataFlowType getType() { result = v.getType() }
+  override DataFlowType getType() {
+    result = getTypeImpl(v.getUnspecifiedType(), indirectionIndex - 1)
+  }
 
-  final override Location getLocationImpl() { result = v.getLocation() }
+  final override Location getLocationImpl() {
+    // Certain variables (such as parameters) can have multiple locations.
+    // When there's a unique location we use that one, but if multiple locations
+    // exist we default to an unknown location.
+    result = unique( | | v.getLocation())
+    or
+    not exists(unique( | | v.getLocation())) and
+    result instanceof UnknownDefaultLocation
+  }
 
-  override string toStringImpl() { result = v.toString() }
+  override string toStringImpl() {
+    if indirectionIndex = 1 then result = v.toString() else result = v.toString() + " indirection"
+  }
 }
 
 /**
@@ -1256,7 +1349,9 @@ DefinitionByReferenceNode definitionByReferenceNodeFromArgument(Expr argument) {
 }
 
 /** Gets the `VariableNode` corresponding to the variable `v`. */
-VariableNode variableNode(Variable v) { result.getVariable() = v }
+VariableNode variableNode(Variable v) {
+  result.getVariable() = v and result.getIndirectionIndex() = 1
+}
 
 /**
  * DEPRECATED: See UninitializedNode.

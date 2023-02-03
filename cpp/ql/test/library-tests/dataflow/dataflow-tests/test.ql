@@ -24,6 +24,8 @@ module AstTest {
       or
       source.asParameter().getName().matches("source%")
       or
+      source.asExpr().(FunctionCall).getTarget().getName() = "indirect_source"
+      or
       source.(DataFlow::DefinitionByReferenceNode).getParameter().getName().matches("ref_source%")
       or
       // Track uninitialized variables
@@ -66,6 +68,8 @@ module IRTest {
 
     override predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
+      or
+      source.asIndirectExpr(1).(FunctionCall).getTarget().getName() = "indirect_source"
       or
       source.asParameter().getName().matches("source%")
       or
