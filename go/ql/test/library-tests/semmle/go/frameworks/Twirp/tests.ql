@@ -1,4 +1,5 @@
 import go
+import semmle.go.security.RequestForgery
 
 class InlineTest extends LineComment {
   string tests;
