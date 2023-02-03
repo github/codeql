@@ -1,3 +1,7 @@
+/**
+ * Provides models for the AEXML library.
+ */
+
 import swift
 
 /** The creation of an `AEXMLParser`. */
