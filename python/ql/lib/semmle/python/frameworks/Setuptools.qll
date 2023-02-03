@@ -19,7 +19,12 @@ module Setuptools {
    * Gets a file or folder that is exported by a library.
    */
   private Container getALibraryExportedContainer() {
-    result = setupFile().getParent()
+    // a child folder of the root that has a setup.py file
+    result = setupFile().getParent().(Folder).getAFolder() and
+    // where the folder has __init__.py file
+    exists(result.(Folder).getFile("__init__.py")) and
+    // and is not a test folder
+    not result.(Folder).getBaseName() = ["test", "tests", "testing"]
     or
     // child of a library exported container
     result = getALibraryExportedContainer().getAChildContainer() and
@@ -29,9 +34,7 @@ module Setuptools {
       or
       // or a folder with an __init__.py file
       exists(result.(Folder).getFile("__init__.py"))
-    ) and
-    // that is not a test folder
-    not result.(Folder).getBaseName() = ["test", "tests", "testing"]
+    )
   }
 
   /**
