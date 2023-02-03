@@ -463,6 +463,7 @@ cached
 private module Cached {
   private import semmle.code.cpp.models.interfaces.Iterator as Interfaces
   private import semmle.code.cpp.models.implementations.Iterator as Iterator
+  private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs as IO
 
   /**
    * Holds if `next` is a instruction with a memory result that potentially
@@ -593,11 +594,16 @@ private module Cached {
   private predicate isChiAfterBegin(
     BaseSourceVariableInstruction containerBase, StoreInstruction iterator
   ) {
-    exists(CallInstruction getIterator |
+    exists(
+      CallInstruction getIterator, Iterator::GetIteratorFunction getIteratorFunction,
+      IO::FunctionInput input, int i
+    |
       getIterator = iterator.getSourceValue() and
-      getIterator.getStaticCallTarget() instanceof Iterator::GetIteratorFunction and
+      getIteratorFunction = getIterator.getStaticCallTarget() and
+      getIteratorFunction.getsIterator(input, _) and
       isDef(_, any(Node0Impl n | n.asInstruction() = iterator), _, _, 1, 0) and
-      isUse(_, getIterator.getThisArgumentOperand(), containerBase, 0, 0)
+      input.isParameterDerefOrQualifierObject(i) and
+      isUse(_, getIterator.getArgumentOperand(i), containerBase, 0, 0)
     )
   }
 

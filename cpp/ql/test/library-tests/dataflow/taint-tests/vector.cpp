@@ -426,14 +426,14 @@ void test_vector_inserter(char *source_string) {
 		std::vector<std::string> out;
 		auto it = std::back_inserter(out);
 		*it++ = std::string(source_string);
-		sink(out); // $ ast MISSING: ir
+		sink(out); // $ ast,ir
 	}
 
 	{
 		std::vector<int> out;
 		auto it = std::back_inserter(out);
 		*it++ = source();
-		sink(out); // $ ast MISSING: ir
+		sink(out); // $ ast,ir
 	}
 
 	{
