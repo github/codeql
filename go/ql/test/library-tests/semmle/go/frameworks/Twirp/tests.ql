@@ -1,5 +1,4 @@
 import go
-import semmle.go.frameworks.Twirp
 
 class InlineTest extends LineComment {
   string tests;
