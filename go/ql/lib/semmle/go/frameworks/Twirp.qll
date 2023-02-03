@@ -139,7 +139,7 @@ module Twirp {
       )
     }
 
-    override DataFlow::Node getARequest() { none() }
+    override DataFlow::Node getARequest() { result = this }
 
     override string getKind() { result = "URL" }
   }
