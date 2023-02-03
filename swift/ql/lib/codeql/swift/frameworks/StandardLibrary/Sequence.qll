@@ -7,7 +7,6 @@ private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSteps
 
-
 /**
  * A model for `Sequence` members that permit taint flow.
  */

@@ -1,12 +1,11 @@
 /**
- * Provides models for the `Collection` and related Swift class.
+ * Provides models for `Collection` and related Swift classes.
  */
 
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSteps
-
 
 /**
  * A model for `Collection` members that permit taint flow.

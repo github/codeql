@@ -35,7 +35,7 @@ private class StringSummaries extends SummaryModelCsv {
         ";StringProtocol;true;addingPercentEncoding(withAllowedCharacter:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;addingPercentEscapes(using:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;appending(_:);;;Argument[-1..0];ReturnValue;taint",
-        ";StringProtocol;true;appendingFormat(_:_:);;;Argument[-1..0];ReturnValue;taint",//-1..
+        ";StringProtocol;true;appendingFormat(_:_:);;;Argument[-1..0];ReturnValue;taint", //-1..
         ";StringProtocol;true;applyingTransform(_:reverse:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;cString(using:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;capitalized(with:);;;Argument[-1];ReturnValue;taint",
@@ -119,7 +119,7 @@ private class StringSummaries extends SummaryModelCsv {
 }
 
 /**
- * A content implying that, if a `String` is tainted, then all its fields are
+ * A content implying that, if a `String` is tainted, then many of its fields are
  * tainted. This also includes fields declared in `StringProtocol`.
  */
 private class StringFieldsInheritTaint extends TaintInheritingContent,
