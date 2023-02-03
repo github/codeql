@@ -1,3 +1,14 @@
+## 0.4.2
+
+No user-facing changes.
+
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* Replacing "\r" or "\n" using the functions `strings.ReplaceAll`, `strings.Replace`, `strings.Replacer.Replace` and `strings.Replacer.WriteString` has been added as a sanitizer for the queries "Log entries created from user input".
+* The functions `strings.Replacer.Replace` and `strings.Replacer.WriteString` have been added as sanitizers for the query "Potentially unsafe quoting".
+
 ## 0.4.0
 
 ### Minor Analysis Improvements

@@ -32,6 +32,7 @@ MAP(std::filesystem::path, DbFileTag)
 MAP(swift::StmtCondition, StmtConditionTag)
 MAP(swift::StmtConditionElement, ConditionElementTag)
 MAP(swift::CaseLabelItem, CaseLabelItemTag)
+MAP(swift::CapturedValue, CapturedDeclTag)
 
 MAP(swift::Stmt, StmtTag)
   MAP(swift::BraceStmt, BraceStmtTag)

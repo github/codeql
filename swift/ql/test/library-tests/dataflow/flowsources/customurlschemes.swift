@@ -24,6 +24,29 @@ protocol UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool
 }
 
+class UIScene {
+    class ConnectionOptions {}
+}
+
+class UISceneSession {}
+
+class NSUserActivity {}
+
+class UIOpenURLContext: Hashable {
+    static func == (lhs: UIOpenURLContext, rhs: UIOpenURLContext) -> Bool {
+        return true;
+    }
+
+    func hash(into hasher: inout Hasher) {}
+}
+
+protocol UISceneDelegate {
+    func scene(_: UIScene, willConnectTo: UISceneSession, options: UIScene.ConnectionOptions)
+    func scene(_: UIScene, continue: NSUserActivity)
+    func scene(_: UIScene, didUpdate: NSUserActivity)
+    func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>)
+}
+
 // --- tests ---
 
 class AppDelegate: UIApplicationDelegate {
@@ -48,5 +71,20 @@ class AppDelegate: UIApplicationDelegate {
         launchOptions?[.url] // SOURCE
         return true
     }
+}
 
+class SceneDelegate : UISceneDelegate {
+    func scene(_: UIScene, willConnectTo: UISceneSession, options: UIScene.ConnectionOptions) {} // SOURCE
+    func scene(_: UIScene, continue: NSUserActivity) {} // SOURCE
+    func scene(_: UIScene, didUpdate: NSUserActivity) {} // SOURCE
+    func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>) {} // SOURCE
+}
+
+class Extended {}
+
+extension Extended : UISceneDelegate {
+    func scene(_: UIScene, willConnectTo: UISceneSession, options: UIScene.ConnectionOptions) {} // SOURCE
+    func scene(_: UIScene, continue: NSUserActivity) {} // SOURCE
+    func scene(_: UIScene, didUpdate: NSUserActivity) {} // SOURCE
+    func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>) {} // SOURCE
 }

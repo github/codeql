@@ -53,4 +53,8 @@ class Foobar2
 
     IO.popen(["foo", "bar", x].join(' '), "w") # NOT OK
   end
+
+  def string_concat(x) 
+    IO.popen("cat " + x, "w") # NOT OK
+  end
 end

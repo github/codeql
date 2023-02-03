@@ -397,6 +397,15 @@ For example, ``x = pragma[only_bind_into](y)`` is semantically equivalent to ``x
 
 For more information, see ":ref:`Binding <binding>`."
 
+``pragma[assume_small_delta]``
+------------------------------
+
+**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
+
+The ``pragma[assume_small_delta]`` annotation changes the compilation of the annotated recursive predicate.
+If the compiler normally generates the join orders ``order_<1>``, ``order_<2>``, ``order_<3>``, and ``standard_order``,
+applying this annotation makes ``standard_order`` the same as ``order_<3>`` and removes the (now redundant) ``order_<3>`` join order.
+
 .. _language:
 
 Language pragmas

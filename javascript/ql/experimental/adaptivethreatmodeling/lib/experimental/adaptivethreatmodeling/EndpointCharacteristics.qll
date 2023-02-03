@@ -278,6 +278,28 @@ private class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
   }
 }
 
+/**
+ * Endpoints identified as "ShellCommandInjectionFromEnvironmentSink" by the standard JavaScript libraries are
+ * ShellCommandInjectionFromEnvironment sinks with maximal confidence.
+ */
+private class ShellCommandInjectionFromEnvironmentSinkCharacteristic extends EndpointCharacteristic {
+  ShellCommandInjectionFromEnvironmentSinkCharacteristic() {
+    this = "ShellCommandInjectionFromEnvironmentSink"
+  }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    n instanceof ShellCommandInjectionFromEnvironment::Sink
+  }
+
+  override predicate hasImplications(
+    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
+  ) {
+    endpointClass instanceof ShellCommandInjectionFromEnvironmentSinkType and
+    isPositiveIndicator = true and
+    confidence = maximalConfidence()
+  }
+}
+
 /*
  * Characteristics that are indicative of not being a sink of any type, and have historically been used to select
  * negative samples for training.

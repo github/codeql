@@ -30,6 +30,8 @@ module SummaryComponent {
 
   predicate withContent = SC::withContent/1;
 
+  class SyntheticGlobal = SC::SyntheticGlobal;
+
   /** Gets a summary component that represents a receiver. */
   SummaryComponent receiver() { result = argument(any(ParameterPosition pos | pos.isSelf())) }
 
@@ -137,7 +139,7 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
   DataFlow::ParameterNode getParameter(string s) {
     exists(ParameterPosition pos |
       DataFlowImplCommon::parameterNode(result, TLibraryCallable(this), pos) and
-      s = getParameterPositionCsv(pos)
+      s = getParameterPosition(pos)
     )
   }
 }

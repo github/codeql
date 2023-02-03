@@ -23,10 +23,10 @@ DataFlowCallable inject(SummarizedCallable c) { result.asCallable() = c }
 ArgumentPosition instanceParameterPosition() { result = -1 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
-string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
+string getParameterPosition(ParameterPosition pos) { result = pos.toString() }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
-string getArgumentPositionCsv(ArgumentPosition pos) { result = pos.toString() }
+string getArgumentPosition(ArgumentPosition pos) { result = pos.toString() }
 
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSummaryNode(c, state) }
 
@@ -87,7 +87,7 @@ SummaryComponent interpretComponentSpecific(string c) {
 }
 
 /** Gets the summary component for specification component `c`, if any. */
-private string getContentSpecificCsv(Content c) {
+private string getContentSpecific(Content c) {
   exists(Field f, string package, string className, string fieldName |
     f = c.(FieldContent).getField() and
     f.hasQualifiedName(package, className, fieldName) and
@@ -108,8 +108,8 @@ private string getContentSpecificCsv(Content c) {
 }
 
 /** Gets the textual representation of the content in the format used for flow summaries. */
-string getComponentSpecificCsv(SummaryComponent sc) {
-  exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
+string getComponentSpecific(SummaryComponent sc) {
+  exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
   exists(ReturnKind rk, int n | n = rk.getIndex() |
     sc = TReturnSummaryComponent(rk) and

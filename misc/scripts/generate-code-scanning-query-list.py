@@ -28,8 +28,8 @@ arguments = parser.parse_args()
 assert hasattr(arguments, "ignore_missing_query_packs")
 
 # Define which languages and query packs to consider
-languages = [ "cpp", "csharp", "go", "java", "javascript", "python", "ruby"]
-packs = [ "code-scanning", "security-and-quality", "security-extended" ]
+languages = [ "cpp", "csharp", "go", "java", "javascript", "python", "ruby", "swift" ]
+packs = [ "code-scanning", "security-and-quality", "security-extended", "security-experimental" ]
 
 class CodeQL:
     def __init__(self):

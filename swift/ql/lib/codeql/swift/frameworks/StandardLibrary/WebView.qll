@@ -34,6 +34,58 @@ private class WKScriptMessageBodyInheritsTaint extends TaintInheritingContent,
 }
 
 /**
+ * A type or extension delcaration that adopts the protocol `WKNavigationDelegate`.
+ */
+private class AdoptsWkNavigationDelegate extends Decl {
+  AdoptsWkNavigationDelegate() {
+    exists(ProtocolDecl delegate |
+      this.(ExtensionDecl).getAProtocol().getABaseTypeDecl*() = delegate or
+      this.(NominalTypeDecl).getABaseTypeDecl*() = delegate
+    |
+      delegate.getName() = "WKNavigationDelegate"
+    )
+  }
+}
+
+/**
+ * A source for the `decidePolicyFor` parameter of the `webView` method of a type adopting `WKNavigationDelegate`.
+ */
+private class WKNavigationDelegateSource extends RemoteFlowSource {
+  WKNavigationDelegateSource() {
+    exists(ParamDecl p, FuncDecl f, AdoptsWkNavigationDelegate t |
+      t.getAMember() = f and
+      f.getName() =
+        [
+          "webView(_:decidePolicyFor:preferences:decisionHandler:)",
+          "webView(_:decidePolicyFor:decisionHandler:)"
+        ] and
+      p.getDeclaringFunction() = f and
+      p.getIndex() = 1 and
+      this.(DataFlow::ParameterNode).getParameter() = p
+    )
+  }
+
+  override string getSourceType() { result = "Navigation action of a WebView" }
+}
+
+/**
+ * A taint step implying that, if a `WKNavigationAction` is tainted, its `request` field is also tainted.
+ */
+private class WKNavigationActionTaintStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(MemberRefExpr e, Expr self, VarDecl member |
+      self.getType().getName() = "WKNavigationAction" and
+      member.getName() = "request"
+    |
+      e.getBase() = self and
+      e.getMember() = member and
+      n1.asExpr() = self and
+      n2.asExpr() = e
+    )
+  }
+}
+
+/**
  * A model for `JSContext` sources. `JSContext` acts as a bridge between JavaScript and
  * native code, so any object obtained from it has the potential of being tainted by a malicious
  * website visited in the WebView.

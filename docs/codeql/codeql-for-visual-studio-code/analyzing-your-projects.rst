@@ -46,7 +46,7 @@ The `CodeQL repository <https://github.com/github/codeql>`__ on GitHub contains 
 If you have that folder (or a different CodeQL pack) available in your workspace, you can access existing queries under ``<language>/ql/src/<category>``, for example ``java/ql/src/Likely Bugs``.
 
 #. Open a query (``.ql``) file. It is displayed in the editor, with IntelliSense features such as syntax highlighting and autocomplete suggestions.
-#. Right-click in the query window and select **CodeQL: Run Query**. (Alternatively, run the command from the Command Palette.)
+#. Right-click in the query window and select **CodeQL: Run Query on Selected Database**. (Alternatively, run the command from the Command Palette.)
 
 The CodeQL extension runs the query on the current database and reports progress in the bottom right corner of the application.
 When the results are ready, they're displayed in the Results view.
@@ -73,7 +73,7 @@ Running a quick query
 
 When working on a new query, you can open a "quick query" tab to easily execute your code and view the results, without having to save a ``.ql`` file in your workspace.
 Open a quick query editing tab by selecting **CodeQL: Quick Query** from the Command Palette.
-To run the query, use **CodeQL: Run Query**.
+To run the query, use **CodeQL: Run Query on Selected Database**.
 
 You can see all quick queries that you've run in the current session in the Query History view. Click an entry to see the exact text of the quick query that produced the results.
 
@@ -85,7 +85,7 @@ Running a specific part of a query or library
 ----------------------------------------------
 
 This is helpful if you're debugging a query or library and you want to locate the part that is wrong.
-Instead of using **CodeQL: Run Query** to run the whole query (the :ref:`select clause <select-clauses>` and any :ref:`query predicates <query-predicates>`), you can use **CodeQL: Quick Evaluation** to run a specific part of a ``.ql`` or ``.qll`` file.
+Instead of using **CodeQL: Run Query on Selected Database** to run the whole query (the :ref:`select clause <select-clauses>` and any :ref:`query predicates <query-predicates>`), you can use **CodeQL: Quick Evaluation** to run a specific part of a ``.ql`` or ``.qll`` file.
 
 **CodeQL: Quick Evaluation** evaluates a code snippet (instead of the whole query) and displays results of that selection in the Results view.
 Possible targets for quick evaluation include:

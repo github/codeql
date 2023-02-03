@@ -14,6 +14,7 @@ module Synth {
     TUnspecifiedElement(Raw::UnspecifiedElement id) { constructUnspecifiedElement(id) } or
     TAccessorDecl(Raw::AccessorDecl id) { constructAccessorDecl(id) } or
     TAssociatedTypeDecl(Raw::AssociatedTypeDecl id) { constructAssociatedTypeDecl(id) } or
+    TCapturedDecl(Raw::CapturedDecl id) { constructCapturedDecl(id) } or
     TClassDecl(Raw::ClassDecl id) { constructClassDecl(id) } or
     TConcreteFuncDecl(Raw::ConcreteFuncDecl id) { constructConcreteFuncDecl(id) } or
     TConcreteVarDecl(Raw::ConcreteVarDecl id) { constructConcreteVarDecl(id) } or
@@ -327,9 +328,9 @@ module Synth {
   class TAbstractTypeParamDecl = TAssociatedTypeDecl or TGenericTypeParamDecl;
 
   class TDecl =
-    TEnumCaseDecl or TExtensionDecl or TIfConfigDecl or TImportDecl or TMissingMemberDecl or
-        TOperatorDecl or TPatternBindingDecl or TPoundDiagnosticDecl or TPrecedenceGroupDecl or
-        TTopLevelCodeDecl or TValueDecl;
+    TCapturedDecl or TEnumCaseDecl or TExtensionDecl or TIfConfigDecl or TImportDecl or
+        TMissingMemberDecl or TOperatorDecl or TPatternBindingDecl or TPoundDiagnosticDecl or
+        TPrecedenceGroupDecl or TTopLevelCodeDecl or TValueDecl;
 
   class TFuncDecl = TAccessorDecl or TConcreteFuncDecl;
 
@@ -337,8 +338,6 @@ module Synth {
     TAbstractFunctionDecl or TExtensionDecl or TGenericTypeDecl or TSubscriptDecl;
 
   class TGenericTypeDecl = TNominalTypeDecl or TOpaqueTypeDecl or TTypeAliasDecl;
-
-  class TIterableDeclContext = TExtensionDecl or TNominalTypeDecl;
 
   class TNominalTypeDecl = TClassDecl or TEnumDecl or TProtocolDecl or TStructDecl;
 
@@ -495,6 +494,9 @@ module Synth {
   TAssociatedTypeDecl convertAssociatedTypeDeclFromRaw(Raw::Element e) {
     result = TAssociatedTypeDecl(e)
   }
+
+  cached
+  TCapturedDecl convertCapturedDeclFromRaw(Raw::Element e) { result = TCapturedDecl(e) }
 
   cached
   TClassDecl convertClassDeclFromRaw(Raw::Element e) { result = TClassDecl(e) }
@@ -1381,8 +1383,6 @@ module Synth {
     or
     result = convertGenericContextFromRaw(e)
     or
-    result = convertIterableDeclContextFromRaw(e)
-    or
     result = convertLocatableFromRaw(e)
     or
     result = convertLocationFromRaw(e)
@@ -1469,6 +1469,8 @@ module Synth {
 
   cached
   TDecl convertDeclFromRaw(Raw::Element e) {
+    result = convertCapturedDeclFromRaw(e)
+    or
     result = convertEnumCaseDeclFromRaw(e)
     or
     result = convertExtensionDeclFromRaw(e)
@@ -1517,13 +1519,6 @@ module Synth {
     result = convertOpaqueTypeDeclFromRaw(e)
     or
     result = convertTypeAliasDeclFromRaw(e)
-  }
-
-  cached
-  TIterableDeclContext convertIterableDeclContextFromRaw(Raw::Element e) {
-    result = convertExtensionDeclFromRaw(e)
-    or
-    result = convertNominalTypeDeclFromRaw(e)
   }
 
   cached
@@ -2135,6 +2130,9 @@ module Synth {
   Raw::Element convertAssociatedTypeDeclToRaw(TAssociatedTypeDecl e) {
     e = TAssociatedTypeDecl(result)
   }
+
+  cached
+  Raw::Element convertCapturedDeclToRaw(TCapturedDecl e) { e = TCapturedDecl(result) }
 
   cached
   Raw::Element convertClassDeclToRaw(TClassDecl e) { e = TClassDecl(result) }
@@ -3019,8 +3017,6 @@ module Synth {
     or
     result = convertGenericContextToRaw(e)
     or
-    result = convertIterableDeclContextToRaw(e)
-    or
     result = convertLocatableToRaw(e)
     or
     result = convertLocationToRaw(e)
@@ -3107,6 +3103,8 @@ module Synth {
 
   cached
   Raw::Element convertDeclToRaw(TDecl e) {
+    result = convertCapturedDeclToRaw(e)
+    or
     result = convertEnumCaseDeclToRaw(e)
     or
     result = convertExtensionDeclToRaw(e)
@@ -3155,13 +3153,6 @@ module Synth {
     result = convertOpaqueTypeDeclToRaw(e)
     or
     result = convertTypeAliasDeclToRaw(e)
-  }
-
-  cached
-  Raw::Element convertIterableDeclContextToRaw(TIterableDeclContext e) {
-    result = convertExtensionDeclToRaw(e)
-    or
-    result = convertNominalTypeDeclToRaw(e)
   }
 
   cached

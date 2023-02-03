@@ -86,13 +86,25 @@ use information from the database.
 Name resolution
 ---------------
 
-All modules have three environments that dictate name resolution. These are multimaps of keys to declarations.
+All modules have six environments that dictate name resolution. These are multimaps of keys to declarations.
 
 The environments are:
 
 -  The *module environment*, whose keys are module names and whose values are modules.
 -  The *type environment*, whose keys are type names and whose values are types.
 -  The *predicate environment*, whose keys are pairs of predicate names and arities and whose values are predicates.
+-  The *module signature environment*, whose keys are module signature names and whose values are module signatures.
+-  The *type signature environment*, whose keys are type signature names and whose values are type signatures.
+-  The *predicate signature environment*, whose keys are pairs of predicate signature names and arities and whose values are predicate signatures.
+
+For each module, some namespaces are enforced to be disjoint:
+
+-  No keys may be shared between the **module namespace** and the **module signature namespace**.
+-  No keys may be shared between the **type namespace** and the **type signature namespace**.
+-  No keys may be shared between the **module namespace** and the **type signature namespace**.
+-  No keys may be shared between the **type namespace** and the **module signature namespace**.
+-  No keys may be shared between the **predicate namespace** and the **predicate signature namespace**.
+-  No keys may be shared between the **module signature namespace** and the **type signature namespace**.
 
 If not otherwise specified, then the environment for a piece of syntax is the same as the environment of its enclosing syntax.
 
@@ -108,28 +120,45 @@ A *definite* environment has at most one entry for each key. Resolution is uniqu
 Global environments
 ~~~~~~~~~~~~~~~~~~~
 
-The global module environment is empty.
+The global module environment has a single entry ``QlBuiltins``.
 
 The global type environment has entries for the primitive types ``int``, ``float``, ``string``, ``boolean``, and ``date``, as well as any types defined in the database schema.
 
 The global predicate environment includes all the built-in classless predicates, as well as any extensional predicates declared in the database schema.
+
+The three global signature environments are empty.
 
 The program is invalid if any of these environments is not definite.
 
 Module environments
 ~~~~~~~~~~~~~~~~~~~
 
-For each of modules, types, and predicates, a module *imports*, *declares*, and *exports* an environment. These are defined as follows (with X denoting the type of entity we are currently considering):
+For each of modules, types, predicates, module signatures, type signatures, and predicates signatures, we distinguish four environments: *publically declared*, *privately declared*, *exported*, and *visible*.
+These are defined as follows (with X denoting the type of entity we are currently considering):
 
--  The *imported X environment* of a module is defined to be the union of the exported X environments of all the modules which the current module directly imports (see "`Import directives <#import-directives>`__").
+-  The *privately declared X environment* of a module is the multimap of X declarations and aliases in the module itself that are annotated as ``private``.
 
--  The *declared X environment* of a module is the multimap of X declarations in the module itself.
+-  The *publically declared X environment* of a module is the multimap of X declarations and aliases in the module itself that are not annotated as ``private``.
 
--  The *exported X environment* of a module is the union of the exported X environments of the modules which the current module directly imports (excluding ``private`` imports), and the declared X environment of the current module (excluding ``private`` declarations).
+-  The *exported X environment* of a module is the union of
 
--  The *external X environment* of a module is the visible X environment of the enclosing module, if there is one, and otherwise the global X environment.
+    1.  its *publically declared X environment*, and
 
--  The *visible X environment* is the union of the imported X environment, the declared X environment, and the external X environment.
+    2.  for each module which the current module directly imports (excluding ``private`` imports - see "`Import directives <#import-directives>`__"): all entries from the *exported X environment* that have a key not present in the *publically declared X environment* of the current module.
+
+-  The *visible X environment* of a module is the union of
+
+    1. its *exported X environment*, and
+
+    2. its *privately declared X environment*, and
+
+    3. the *global X environment*, and
+
+    4. for each module which the current module privately imports: all entries from the *exported X environment* that have a key not present in the *publically declared X environment* of the current module, and
+
+    5. if there is an enclosing module: all entries from the *visible X environment* of the enclosing module that have a key not present in the *publically declared X environment* of the current module, and
+
+    6. all parameters of the current module that are of type X.
 
 The program is invalid if any of these environments is not definite.
 

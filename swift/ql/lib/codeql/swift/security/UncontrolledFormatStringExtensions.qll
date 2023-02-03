@@ -34,7 +34,7 @@ private class DefaultUncontrolledFormatStringSink extends UncontrolledFormatStri
     // the format argument to a `FormattingFunctionCall`.
     this.asExpr() = any(FormattingFunctionCall fc).getFormat()
     or
-    // a sink defined in a Csv model.
+    // a sink defined in a CSV model.
     sinkNode(this, "uncontrolled-format-string")
   }
 }

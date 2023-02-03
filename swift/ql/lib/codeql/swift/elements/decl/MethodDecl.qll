@@ -1,6 +1,6 @@
 private import swift
 
-private Decl getAMember(IterableDeclContext ctx) {
+private Decl getAMember(Decl ctx) {
   ctx.getAMember() = result
   or
   exists(VarDecl var |

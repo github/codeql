@@ -1,3 +1,13 @@
+## 0.4.2
+
+### Minor Analysis Improvements
+
+* Added sinks from the [`node-pty`](https://www.npmjs.com/package/node-pty) library to the `js/code-injection` query.
+
+## 0.4.1
+
+No user-facing changes.
+
 ## 0.4.0
 
 ### New Features

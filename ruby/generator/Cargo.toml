@@ -11,5 +11,5 @@ clap = "3.0"
 node-types = { path = "../node-types" }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
-tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template.git", rev = "1a538da253d73f896b9f6c0c7d79cda58791ac5c" }
-tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "ad1043283b1f9daf4aad381b6a81f18a5a27fe7e" }
+tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template.git", rev = "a13085849cf69e2401ec44e38cffc3d73f22f3df" }
+tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "7a1921bcfd90e3a04c1ad011059087aaf0168dd4" }
