@@ -160,21 +160,17 @@ module Twirp {
     }
   }
 
+
   /**
-   * A request coming to the service handler
+   * A request coming to the service handler.
    */
-  class Request extends UntrustedFlowSource::Range, DataFlow::ParameterNode {
-    ServiceHandler handler;
-
+  class Request extends UntrustedFlowSource::Range instanceof DataFlow::ParameterNode {
     Request() {
-      handler.getParameter(0).getType().hasQualifiedName("context", "Context") and
-      handler.getParameter(_) = this.asParameter() and
-      this.getType().(PointerType).getBaseType() instanceof ProtobufMessageType
-    }
-
-    override predicate isParameterOf(Callable c, int i) {
-      c.asFunction() = handler and
-      i = 1
+      exists(Callable c, ServiceHandler handler | c.asFunction() = handler |
+        this.isParameterOf(c, 1) and
+        handler.getParameterType(0).hasQualifiedName("context", "Context") and
+        this.getType().(PointerType).getBaseType() instanceof ProtobufMessageType
+      )
     }
   }
 }
