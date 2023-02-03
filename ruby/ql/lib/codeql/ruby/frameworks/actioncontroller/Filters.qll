@@ -104,6 +104,10 @@ module Filters {
 
     StringlikeLiteralCfgNode getFilterArgument() { result = this.getPositionalArgument(_) }
 
+    string getFilterArgumentName() {
+      result = this.getFilterArgument().getConstantValue().getStringlikeValue()
+    }
+
     /**
      * Gets the callable that implements the filter with name `name`.
      * This currently only finds methods in the local class or superclass.
@@ -122,8 +126,8 @@ module Filters {
      * end
      * ```
      */
-    Callable getFilterCallable(string name) {
-      result.(MethodBase).getName() = name and
+    Callable getAFilterCallable() {
+      this.getFilterArgumentName() = result.(MethodBase).getName() and
       result.getEnclosingModule().getModule() =
         this.getExpr().getEnclosingModule().getModule().getAnAncestor()
     }
@@ -321,7 +325,9 @@ module Filters {
 
     string getFilterName() { result = this.getConstantValue().getStringlikeValue() }
 
-    Callable getFilterCallable() { result = call.getFilterCallable(this.getFilterName()) }
+    Callable getFilterCallable() {
+      result = call.getAFilterCallable() and result.(MethodBase).getName() = this.getFilterName()
+    }
 
     ActionControllerActionMethod getAnAction() { result = call.getAnAction() }
   }
