@@ -103,8 +103,6 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;insert(contentsOf:at:);;;Argument[0];Argument[-1];taint",
         ";String;true;replaceSubrange(_:with::);;;Argument[1];Argument[-1];taint",
         ";String;true;popLast();;;Argument[-1];ReturnValue;taint",
-        ";String;true;lowercased();;;Argument[-1];ReturnValue;taint",//?
-        ";String;true;uppercased();;;Argument[-1];ReturnValue;taint",//?
         ";String;true;first(where:);;;Argument[-1];ReturnValue;taint",
         ";String;true;last(where:);;;Argument[-1];ReturnValue;taint",
         ";String;true;max();;;Argument[-1];ReturnValue;taint",
@@ -118,7 +116,6 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;prefix(while:);;;Argument[-1];ReturnValue;taint",
         ";String;true;suffix(_:);;;Argument[-1];ReturnValue;taint",
         ";String;true;suffix(from:);;;Argument[-1];ReturnValue;taint",
-        ";String;true;split(separator:maxSplits:omittingEmptySubsequences:);;;Argument[-1];ReturnValue;taint",//?
         ";String;true;split(maxSplits:omittingEmptySubsequences:whereSeparator:);;;Argument[-1];ReturnValue;taint",
         ";String;true;randomElement();;;Argument[-1];ReturnValue;taint",
         ";String;true;randomElement(using:);;;Argument[-1];ReturnValue;taint",
