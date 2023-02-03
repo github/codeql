@@ -32,7 +32,7 @@ If you have a CodeQL database saved locally, as an unarchived folder or as a ZIP
 - To create a database with the CodeQL CLI, see "`Creating CodeQL databases <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/creating-codeql-databases>`__."
 
 - To analyze a test database, add a ``.testproj`` folder to the Databases view.
-  Test databases (that is, folders with a ``.testproj`` extension) are generated when you run regression tests on custom queries using the :ref:`CodeQL CLI <codeql-cli>`.
+  Test databases (that is, folders with a ``.testproj`` extension) are generated when you run regression tests on custom queries using the CodeQL CLI.
   If a query fails a regression test, you may want to analyze the test database in Visual Studio Code to debug the failure.
 
   For more information about running query tests, see "`Testing custom queries <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/testing-custom-queries>`__" in the CodeQL CLI help.

@@ -28,7 +28,7 @@ Configuring access to the CodeQL CLI
 
 The extension uses the CodeQL CLI to compile and run queries.
 
-If you already have the CLI installed and added to your ``PATH``, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from GitHub.com. For more information, see ":ref:`CodeQL CLI <codeql-cli>`."
+If you already have the CLI installed and added to your ``PATH``, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from GitHub.com. For more information, see `CodeQL CLI <https://docs.github.com/en/code-security/codeql-cli>`__."
 
 Otherwise, the extension automatically manages access to the executable of the CLI for you. This ensures that the CLI is compatible with the CodeQL extension. You can also check for updates with the **CodeQL: Check for CLI Updates** command.
 
@@ -102,4 +102,4 @@ Further reading
 ----------------
 
 * ":doc:`Analyzing your projects <analyzing-your-projects>`"
-* ":ref:`CodeQL CLI <codeql-cli>`"
+* "`CodeQL CLI <https://docs.github.com/en/code-security/codeql-cli>`__"

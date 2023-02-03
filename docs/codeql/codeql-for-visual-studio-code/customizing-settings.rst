@@ -80,4 +80,4 @@ Further reading
 ----------------
 
 - `User and workspace settings <https://code.visualstudio.com/docs/getstarted/settings>`__ in the Visual Studio Code help
-- ":ref:`CodeQL CLI <codeql-cli>`"
+- "`CodeQL CLI <https://docs.github.com/en/code-security/codeql-cli>`__"
