@@ -1085,13 +1085,13 @@
 | string.swift:183:3:183:3 | &... | string.swift:184:13:184:13 | str2 |
 | string.swift:183:3:183:3 | [post] &... | string.swift:184:13:184:13 | str2 |
 | string.swift:183:3:183:3 | str2 | string.swift:183:3:183:3 | &... |
+| string.swift:183:15:183:15 | def | string.swift:183:3:183:3 | [post] &... |
 | string.swift:184:13:184:13 | [post] str2 | string.swift:185:3:185:3 | str2 |
 | string.swift:184:13:184:13 | str2 | string.swift:185:3:185:3 | str2 |
 | string.swift:185:3:185:3 | &... | string.swift:186:13:186:13 | str2 |
 | string.swift:185:3:185:3 | [post] &... | string.swift:186:13:186:13 | str2 |
 | string.swift:185:3:185:3 | str2 | string.swift:185:3:185:3 | &... |
-| string.swift:186:13:186:13 | [post] str2 | string.swift:193:13:193:13 | str2 |
-| string.swift:186:13:186:13 | str2 | string.swift:193:13:193:13 | str2 |
+| string.swift:185:15:185:23 | call to source2() | string.swift:185:3:185:3 | [post] &... |
 | string.swift:188:7:188:7 | SSA def(str3) | string.swift:189:13:189:13 | str3 |
 | string.swift:188:14:188:14 | abc | string.swift:188:7:188:7 | SSA def(str3) |
 | string.swift:189:13:189:13 | [post] str3 | string.swift:190:3:190:3 | str3 |
@@ -1099,9 +1099,13 @@
 | string.swift:190:3:190:3 | &... | string.swift:191:13:191:13 | str3 |
 | string.swift:190:3:190:3 | [post] &... | string.swift:191:13:191:13 | str3 |
 | string.swift:190:3:190:3 | str3 | string.swift:190:3:190:3 | &... |
+| string.swift:190:27:190:27 | def | string.swift:190:3:190:3 | [post] &... |
 | string.swift:191:13:191:13 | [post] str3 | string.swift:192:3:192:3 | str3 |
 | string.swift:191:13:191:13 | str3 | string.swift:192:3:192:3 | str3 |
+| string.swift:192:3:192:3 | &... | string.swift:193:13:193:13 | str3 |
+| string.swift:192:3:192:3 | [post] &... | string.swift:193:13:193:13 | str3 |
 | string.swift:192:3:192:3 | str3 | string.swift:192:3:192:3 | &... |
+| string.swift:192:27:192:35 | call to source2() | string.swift:192:3:192:3 | [post] &... |
 | string.swift:195:7:195:7 | SSA def(str4) | string.swift:196:13:196:13 | str4 |
 | string.swift:195:14:195:14 | abc | string.swift:195:7:195:7 | SSA def(str4) |
 | string.swift:196:13:196:13 | [post] str4 | string.swift:197:3:197:3 | str4 |
@@ -1109,11 +1113,13 @@
 | string.swift:197:3:197:3 | &... | string.swift:198:13:198:13 | str4 |
 | string.swift:197:3:197:3 | [post] &... | string.swift:198:13:198:13 | str4 |
 | string.swift:197:3:197:3 | str4 | string.swift:197:3:197:3 | &... |
+| string.swift:197:14:197:14 | def | string.swift:197:3:197:3 | [post] &... |
 | string.swift:198:13:198:13 | [post] str4 | string.swift:199:3:199:3 | str4 |
 | string.swift:198:13:198:13 | str4 | string.swift:199:3:199:3 | str4 |
 | string.swift:199:3:199:3 | &... | string.swift:200:13:200:13 | str4 |
 | string.swift:199:3:199:3 | [post] &... | string.swift:200:13:200:13 | str4 |
 | string.swift:199:3:199:3 | str4 | string.swift:199:3:199:3 | &... |
+| string.swift:199:14:199:22 | call to source2() | string.swift:199:3:199:3 | [post] &... |
 | string.swift:202:7:202:7 | SSA def(str5) | string.swift:203:13:203:13 | str5 |
 | string.swift:202:14:202:14 | abc | string.swift:202:7:202:7 | SSA def(str5) |
 | string.swift:203:13:203:13 | [post] str5 | string.swift:204:3:204:3 | str5 |
@@ -1121,6 +1127,7 @@
 | string.swift:204:3:204:3 | &... | string.swift:204:38:204:38 | str5 |
 | string.swift:204:3:204:3 | [post] &... | string.swift:204:38:204:38 | str5 |
 | string.swift:204:3:204:3 | str5 | string.swift:204:3:204:3 | &... |
+| string.swift:204:27:204:27 | abc | string.swift:204:3:204:3 | [post] &... |
 | string.swift:204:38:204:38 | [post] str5 | string.swift:205:13:205:13 | str5 |
 | string.swift:204:38:204:38 | str5 | string.swift:205:13:205:13 | str5 |
 | string.swift:205:13:205:13 | [post] str5 | string.swift:206:3:206:3 | str5 |
@@ -1128,6 +1135,7 @@
 | string.swift:206:3:206:3 | &... | string.swift:206:42:206:42 | str5 |
 | string.swift:206:3:206:3 | [post] &... | string.swift:206:42:206:42 | str5 |
 | string.swift:206:3:206:3 | str5 | string.swift:206:3:206:3 | &... |
+| string.swift:206:27:206:35 | call to source2() | string.swift:206:3:206:3 | [post] &... |
 | string.swift:206:42:206:42 | [post] str5 | string.swift:207:13:207:13 | str5 |
 | string.swift:206:42:206:42 | str5 | string.swift:207:13:207:13 | str5 |
 | string.swift:211:7:211:7 | SSA def(clean) | string.swift:215:20:215:20 | clean |
@@ -1159,7 +1167,9 @@
 | string.swift:222:28:222:28 | tainted | string.swift:222:13:222:63 | call to String.init(format:locale:arguments:) |
 | string.swift:222:28:222:28 | tainted | string.swift:223:46:223:46 | tainted |
 | string.swift:223:46:223:46 | [post] tainted | string.swift:224:34:224:34 | tainted |
+| string.swift:223:46:223:46 | tainted | string.swift:223:13:223:62 | call to localizedStringWithFormat(_:_:) |
 | string.swift:223:46:223:46 | tainted | string.swift:224:34:224:34 | tainted |
+| string.swift:223:55:223:61 | [...] | string.swift:223:13:223:62 | call to localizedStringWithFormat(_:_:) |
 | string.swift:224:28:224:28 | %s | string.swift:224:13:224:41 | call to String.init(format:_:) |
 | string.swift:224:34:224:34 | tainted | string.swift:228:31:228:31 | tainted |
 | string.swift:225:28:225:28 | %i %i %i | string.swift:225:13:225:56 | call to String.init(format:_:) |
@@ -1178,8 +1188,10 @@
 | string.swift:232:37:232:37 | [post] tainted | string.swift:234:13:234:13 | tainted |
 | string.swift:232:37:232:37 | tainted | string.swift:234:13:234:13 | tainted |
 | string.swift:234:13:234:13 | [post] tainted | string.swift:235:13:235:13 | tainted |
+| string.swift:234:13:234:13 | tainted | string.swift:234:13:234:32 | call to lowercased() |
 | string.swift:234:13:234:13 | tainted | string.swift:235:13:235:13 | tainted |
 | string.swift:235:13:235:13 | [post] tainted | string.swift:236:13:236:13 | tainted |
+| string.swift:235:13:235:13 | tainted | string.swift:235:13:235:32 | call to uppercased() |
 | string.swift:235:13:235:13 | tainted | string.swift:236:13:236:13 | tainted |
 | string.swift:236:13:236:13 | [post] tainted | string.swift:237:13:237:13 | tainted |
 | string.swift:236:13:236:13 | tainted | string.swift:237:13:237:13 | tainted |

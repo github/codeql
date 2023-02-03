@@ -183,28 +183,28 @@ func taintThroughStringConcatenation() {
   str2.append("def")
   sink(arg: str2)
   str2.append(source2())
-  sink(arg: str2) // $ MISSING: tainted=185
+  sink(arg: str2) // $ tainted=185
 
   var str3 = "abc"
   sink(arg: str3)
   str3.append(contentsOf: "def")
   sink(arg: str3)
   str3.append(contentsOf: source2())
-  sink(arg: str2) // $ MISSING: tainted=192
+  sink(arg: str3) // $ tainted=192
 
   var str4 = "abc"
   sink(arg: str4)
   str4.write("def")
   sink(arg: str4)
   str4.write(source2())
-  sink(arg: str4) // $ MISSING: tainted=200
+  sink(arg: str4) // $ tainted=199
 
   var str5 = "abc"
   sink(arg: str5)
   str5.insert(contentsOf: "abc", at: str5.startIndex)
   sink(arg: str5)
   str5.insert(contentsOf: source2(), at: str5.startIndex)
-  sink(arg: str5) // $ MISSING: tainted=206
+  sink(arg: str5) // $ tainted=206
 }
 
 func taintThroughSimpleStringOperations() {
@@ -220,7 +220,7 @@ func taintThroughSimpleStringOperations() {
   sink(arg: String(format: tainted, arguments: [])) // $ tainted=212
   sink(arg: String(format: tainted, locale: nil, 1, 2, 3)) // $ tainted=212
   sink(arg: String(format: tainted, locale: nil, arguments: [])) // $ tainted=212
-  sink(arg: String.localizedStringWithFormat(tainted, 1, 2, 3)) // $ MISSING: tainted=212
+  sink(arg: String.localizedStringWithFormat(tainted, 1, 2, 3)) // $ tainted=212
   sink(arg: String(format: "%s", tainted)) // $ MISSING: tainted=212
   sink(arg: String(format: "%i %i %i", 1, 2, taintedInt)) // $ MISSING: tainted=213
 
@@ -231,8 +231,8 @@ func taintThroughSimpleStringOperations() {
   sink(arg: tainted.dropLast(10)) // $ MISSING: tainted=212
   sink(arg: tainted.substring(from: tainted.startIndex)) // $ MISSING: tainted=212
 
-  sink(arg: tainted.lowercased()) // $ MISSING: tainted=212
-  sink(arg: tainted.uppercased()) // $ MISSING: tainted=212
+  sink(arg: tainted.lowercased()) // $ tainted=212
+  sink(arg: tainted.uppercased()) // $ tainted=212
   sink(arg: tainted.lowercased(with: nil)) // $ MISSING: tainted=212
   sink(arg: tainted.uppercased(with: nil)) // $ MISSING: tainted=212
   sink(arg: tainted.capitalized(with: nil)) // $ MISSING: tainted=212
