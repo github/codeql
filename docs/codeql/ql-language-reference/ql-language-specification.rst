@@ -133,7 +133,7 @@ The program is invalid if any of these environments is not definite.
 Module environments
 ~~~~~~~~~~~~~~~~~~~
 
-For each of modules, types, predicates, module signatures, type signatures, and predicates signatures, we distinguish five environments: *publically declared*, *privately declared*, *exported*, and *visible*.
+For each of modules, types, predicates, module signatures, type signatures, and predicates signatures, we distinguish four environments: *publically declared*, *privately declared*, *exported*, and *visible*.
 These are defined as follows (with X denoting the type of entity we are currently considering):
 
 -  The *privately declared X environment* of a module is the multimap of X declarations and aliases in the module itself that are annotated as ``private``.
