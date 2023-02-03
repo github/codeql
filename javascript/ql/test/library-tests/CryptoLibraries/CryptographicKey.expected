@@ -1,3 +1,4 @@
+| tst.js:3:34:3:36 | key |
 | tst.js:7:26:7:42 | keypair.secretKey |
 | tst.js:21:42:21:51 | 'a secret' |
 | tst.js:36:36:36:51 | 'secret key 123' |

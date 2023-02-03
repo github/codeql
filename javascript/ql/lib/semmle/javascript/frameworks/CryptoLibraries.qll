@@ -51,6 +51,7 @@ private module AsmCrypto {
     DataFlow::Node input;
     CryptographicAlgorithm algorithm; // non-functional
     private string algorithmName;
+    private string methodName;
 
     Apply() {
       /*
@@ -66,7 +67,7 @@ private module AsmCrypto {
       exists(DataFlow::SourceNode asmCrypto |
         asmCrypto = DataFlow::globalVarRef("asmCrypto") and
         algorithm.matchesName(algorithmName) and
-        this = asmCrypto.getAPropertyRead(algorithmName).getAMemberCall(_) and
+        this = asmCrypto.getAPropertyRead(algorithmName).getAMemberCall(methodName) and
         input = this.getArgument(0)
       )
     }
@@ -79,6 +80,15 @@ private module AsmCrypto {
       isBlockEncryptionAlgorithm(this.getAlgorithm()) and
       result.matchesString(algorithmName)
     }
+
+    DataFlow::Node getKey() {
+      methodName = ["encrypt", "decrypt"] and
+      result = super.getArgument(1)
+    }
+  }
+
+  private class Key extends CryptographicKey {
+    Key() { this = any(Apply apply).getKey() }
   }
 }
 
