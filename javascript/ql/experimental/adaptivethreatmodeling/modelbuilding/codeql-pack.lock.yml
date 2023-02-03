@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-02-03-05h42m44s.loving-dolphin-4zz5p2bm.cd909438302559d9111315171e996b890936be0d0761242f93feb08328daa313
+compiled: false

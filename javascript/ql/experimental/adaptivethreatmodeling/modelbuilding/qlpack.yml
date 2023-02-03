@@ -7,4 +7,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2023-02-03-05h42m44s.loving-dolphin-4zz5p2bm.cd909438302559d9111315171e996b890936be0d0761242f93feb08328daa313
