@@ -12,10 +12,10 @@ module Twirp {
    */
   class ProtobufGeneratedFile extends File {
     ProtobufGeneratedFile() {
-      exists(string name, File t |
-        this.getBaseName() = name + ".pb.go" and
-        this.getParentContainer() = t.getParentContainer() and
-        t.getBaseName() = name + ".twirp.go"
+      exists(string prefix, File f |
+        prefix = this.getBaseName().regexpCapture("^(.*)\\.pb\\.go$", 1) and
+        this.getParentContainer() = f.getParentContainer() and
+        f.getBaseName() = prefix + ".twirp.go"
       )
     }
   }
@@ -27,10 +27,10 @@ module Twirp {
    */
   class ServicesGeneratedFile extends File {
     ServicesGeneratedFile() {
-      exists(string name, File t |
-        this.getBaseName() = name + ".twirp.go" and
-        this.getParentContainer() = t.getParentContainer() and
-        t.getBaseName() = name + ".pb.go"
+      exists(string prefix, File f |
+        prefix = this.getBaseName().regexpCapture("^(.*)\\.twirp\\.go$", 1) and
+        this.getParentContainer() = f.getParentContainer() and
+        f.getBaseName() = prefix + ".pb.go"
       )
     }
   }
@@ -159,7 +159,6 @@ module Twirp {
       )
     }
   }
-
 
   /**
    * A request coming to the service handler.
