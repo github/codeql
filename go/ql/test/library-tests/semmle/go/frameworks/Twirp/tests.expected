@@ -12,9 +12,9 @@ passingPositiveTests
 | PASSED | serviceClient | rpc/notes/service.twirp.go:183:38:183:59 | comment |
 | PASSED | serviceInterface | rpc/notes/service.twirp.go:34:31:34:55 | comment |
 | PASSED | serviceServer | rpc/notes/service.twirp.go:322:34:322:55 | comment |
-| PASSED | ssrf | server/main.go:30:67:30:89 | comment |
+| PASSED | ssrf | server/main.go:30:97:30:119 | comment |
 | PASSED | ssrfSink | client/main.go:12:89:12:105 | comment |
-| PASSED | ssrfSink | server/main.go:30:67:30:89 | comment |
+| PASSED | ssrfSink | server/main.go:30:97:30:119 | comment |
 | PASSED | ssrfSink | server/main.go:31:97:31:120 | comment |
 failingPositiveTests
 passingNegativeTests
