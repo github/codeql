@@ -1,7 +1,7 @@
 /** Provides models of commonly used functions and types in the twirp packages. */
 
 import go
-import semmle.go.security.RequestForgery
+private import semmle.go.security.RequestForgery
 
 /** Provides models of commonly used functions and types in the twirp packages. */
 module Twirp {
