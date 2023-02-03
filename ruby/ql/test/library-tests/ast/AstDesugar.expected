@@ -326,6 +326,30 @@ control/cases.rb:
 #   91|       getComponent: [StringTextComponent] foo
 #   91|     getArgument: [SymbolLiteral] :"bar"
 #   91|       getComponent: [StringTextComponent] bar
+#  160| [TestPattern] ... in ...
+#  160|   getDesugared: [CaseExpr] case ...
+#  160|     getValue: [MethodCall] call to expr
+#  160|       getReceiver: [SelfVariableAccess] self
+#  160|     getBranch: [InClause] in ... then ...
+#  160|       getBody: [BooleanLiteral] true
+#  160|       getPattern: [ArrayPattern] [ ..., * ]
+#  160|         getPrefixElement: [IntegerLiteral] 1
+#  160|         getPrefixElement: [IntegerLiteral] 2
+#  160|     getBranch/getElseBranch: [StmtSequence] else ...
+#  160|       getStmt: [BooleanLiteral] false
+#  162| [MatchPattern] ... => ...
+#  162|   getDesugared: [CaseExpr] case ...
+#  162|     getValue: [MethodCall] call to expr
+#  162|       getReceiver: [SelfVariableAccess] self
+#  162|     getBranch: [InClause] in ... then ...
+#  162|       getBody: [NilLiteral] nil
+#  162|       getPattern: [HashPattern] { ..., ** }
+#  162|         getKey: [SymbolLiteral] :x
+#  162|           getComponent: [StringTextComponent] x
+#  162|         getValue: [LocalVariableAccess] v
+#  162|         getKey: [SymbolLiteral] :y
+#  162|           getComponent: [StringTextComponent] y
+#  162|         getValue: [IntegerLiteral] 1
 constants/constants.rb:
 #   20| [ArrayLiteral] [...]
 #   20|   getDesugared: [MethodCall] call to []
