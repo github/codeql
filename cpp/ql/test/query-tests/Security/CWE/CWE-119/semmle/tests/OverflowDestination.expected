@@ -17,6 +17,7 @@ edges
 | overflowdestination.cpp:50:52:50:54 | src | overflowdestination.cpp:54:9:54:12 | memcpy output argument |
 | overflowdestination.cpp:50:52:50:54 | src indirection | overflowdestination.cpp:53:15:53:17 | src |
 | overflowdestination.cpp:53:9:53:12 | memcpy output argument | overflowdestination.cpp:54:9:54:12 | memcpy output argument |
+| overflowdestination.cpp:54:9:54:12 | memcpy output argument | overflowdestination.cpp:54:9:54:12 | memcpy output argument |
 | overflowdestination.cpp:57:52:57:54 | src | overflowdestination.cpp:64:16:64:19 | src2 |
 | overflowdestination.cpp:57:52:57:54 | src indirection | overflowdestination.cpp:64:16:64:19 | src2 |
 | overflowdestination.cpp:73:8:73:10 | fgets output argument | overflowdestination.cpp:75:30:75:32 | array to pointer conversion indirection |

@@ -381,7 +381,7 @@ private Operand fullyConvertedCallStep(Operand op) {
  */
 private Instruction getUse(Operand op) {
   result = op.getUse() and
-  not Ssa::ignoreOperand(op)
+  not Ssa::ignoreInstruction(result)
 }
 
 /** Gets a use of the instruction `instr` that is not ignored for dataflow purposes. */

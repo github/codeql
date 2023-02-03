@@ -46,6 +46,9 @@ edges
 | test.cpp:186:47:186:54 | filename indirection | test.cpp:188:20:188:24 | (const char *)... indirection |
 | test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:11:188:17 | strncat output argument |
 | test.cpp:187:18:187:25 | (const char *)... indirection | test.cpp:187:11:187:15 | strncat output argument |
+| test.cpp:188:11:188:17 | strncat output argument | test.cpp:188:11:188:17 | strncat output argument |
+| test.cpp:188:11:188:17 | strncat output argument | test.cpp:188:11:188:17 | strncat output argument |
+| test.cpp:188:11:188:17 | strncat output argument | test.cpp:188:11:188:17 | strncat output argument |
 | test.cpp:188:20:188:24 | (const char *)... indirection | test.cpp:188:11:188:17 | strncat output argument |
 | test.cpp:188:20:188:24 | (const char *)... indirection | test.cpp:188:11:188:17 | strncat output argument |
 | test.cpp:194:9:194:16 | fread output argument | test.cpp:196:26:196:33 | array to pointer conversion indirection |

@@ -354,7 +354,7 @@ void test_vector_output_iterator(int b) {
 	for(std::vector<int>::iterator it = v4.begin(); it != v4.end(); ++it) {
 		taint_vector_output_iterator(it);
 	}
-	sink(v4); // $ ast MISSING: ir
+	sink(v4); // $ ast,ir
 	
 	std::vector<int>::iterator i5 = v5.begin();
 	*i5 = source();
@@ -389,7 +389,7 @@ void test_vector_output_iterator(int b) {
 	*i9 = source();
 	taint_vector_output_iterator(i9);
 
-	sink(v9); // $ ast=330:10 ir SPURIOUS: ast=389:8
+	sink(v9); // $ ast=330:10 ir=330:10 SPURIOUS: ast=389:8 ir=389:8
 
 	std::vector<int>::iterator i10 = v10.begin();
 	vector_iterator_assign_wrapper(i10, 10);
@@ -397,7 +397,7 @@ void test_vector_output_iterator(int b) {
 
 	std::vector<int>::iterator i11 = v11.begin();
 	vector_iterator_assign_wrapper(i11, source());
-	sink(v11); // $ ast MISSING: ir
+	sink(v11); // $ ast,ir
 
 	std::vector<int>::iterator i12 = v12.begin();
 	*i12++ = 0;
@@ -523,12 +523,19 @@ void test_vector_iterator() {
 		sink(vs[1]);
 		sink(vs[source()]); // $ MISSING: ast,ir
 
-		it = vs.begin();
+		it = vs.begin(); // (1)
 		sink(*it);
 		it += 1;
 		sink(*it);
-		it += source();
-		sink(*it); // $ ast,ir
-		sink(vs[1]);
+		it += source(); // (2)
+		sink(*it); // $ ast,ir // (3)
+		// This FP happens because of the following flows:
+		// 1. There's a write to the iterator at (2)
+		// 2. This write propagates to `it` on the next line at (3)
+		// 3. There's a taint step from `it` to `*it` at (3)
+		// 4. The `*it` is seen as a use of `vs` because of (1).
+		// 5. There's use-use flow from `*it` at (3) (which is a use of `vs`) to `vs` at (4)
+		// 6. There's a taint step from vs to vs[1]
+		sink(vs[1]); // $ SPURIOUS: ir // (4)
 	}
 }

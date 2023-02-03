@@ -408,7 +408,10 @@ private predicate isModifiableAtImpl(CppType cppType, int indirectionIndex) {
   (
     exists(Type pointerType, Type base, Type t |
       pointerType = t.getUnderlyingType() and
-      (pointerType instanceof PointerOrReferenceType or pointerType instanceof Cpp::ArrayType) and
+      (
+        pointerType = any(Indirection ind).getUnderlyingType() or
+        pointerType instanceof Cpp::ArrayType
+      ) and
       cppType.hasType(t, _) and
       base = getTypeImpl(pointerType, indirectionIndex)
     |
@@ -504,6 +507,81 @@ private module Cached {
     )
   }
 
+  private predicate isSource(Instruction instr, Operand iteratorAddress, int numberOfLoads) {
+    getAUse(instr) = iteratorAddress and
+    exists(BaseSourceVariableInstruction iteratorBase |
+      iteratorBase.getResultType() instanceof Interfaces::Iterator and
+      not iteratorBase.getResultType() instanceof Cpp::PointerType and
+      isUse(_, iteratorAddress, iteratorBase, numberOfLoads - 1, 0)
+    )
+  }
+
+  private predicate isSink(Instruction instr, CallInstruction call) {
+    getAUse(instr).(ArgumentOperand).getCall() = call and
+    // Only include operations that may modify the object that the iterator points to.
+    // The following is a non-exhaustive list of things that may modify the value of the
+    // iterator, but never the value of what the iterator points to.
+    // The more things we can exclude here, the faster the small dataflow-like analysis
+    // done by `convertsIntoArgument` will converge.
+    not exists(Function f | f = call.getStaticCallTarget() |
+      f instanceof Iterator::IteratorCrementOperator or
+      f instanceof Iterator::IteratorBinaryArithmeticOperator or
+      f instanceof Iterator::IteratorAssignArithmeticOperator or
+      f instanceof Iterator::IteratorCrementMemberOperator or
+      f instanceof Iterator::IteratorBinaryArithmeticMemberOperator or
+      f instanceof Iterator::IteratorAssignArithmeticMemberOperator or
+      f instanceof Iterator::IteratorAssignmentMemberOperator
+    )
+  }
+
+  private predicate convertsIntoArgumentFwd(Instruction instr) {
+    isSource(instr, _, _)
+    or
+    exists(Instruction prev | convertsIntoArgumentFwd(prev) |
+      conversionFlow(unique( | | getAUse(prev)), instr, false, _)
+    )
+  }
+
+  private predicate convertsIntoArgumentRev(Instruction instr) {
+    convertsIntoArgumentFwd(instr) and
+    (
+      isSink(instr, _)
+      or
+      exists(Instruction next | convertsIntoArgumentRev(next) |
+        conversionFlow(unique( | | getAUse(instr)), next, false, _)
+      )
+    )
+  }
+
+  private predicate convertsIntoArgument(
+    Operand iteratorAddress, CallInstruction call, int numberOfLoads
+  ) {
+    exists(Instruction iteratorAddressDef |
+      isSource(iteratorAddressDef, iteratorAddress, numberOfLoads) and
+      isSink(iteratorAddressDef, call) and
+      convertsIntoArgumentRev(pragma[only_bind_into](iteratorAddressDef))
+    )
+  }
+
+  private predicate isChiAfterIteratorArgument(
+    Instruction memory, Operand iteratorAddress, int numberOfLoads
+  ) {
+    // Ideally, `iteratorAddress` would be an `ArgumentOperand`, but there might be
+    // various conversions applied to it before it becomes an argument.
+    // So we do a small amount of flow to find the call that the iterator is passed to.
+    exists(CallInstruction call | convertsIntoArgument(iteratorAddress, call, numberOfLoads) |
+      exists(ReadSideEffectInstruction read |
+        read.getPrimaryInstruction() = call and
+        read.getSideEffectOperand().getAnyDef() = memory
+      )
+      or
+      exists(LoadInstruction load |
+        iteratorAddress.getDef() = load and
+        memory = load.getSourceValueOperand().getAnyDef()
+      )
+    )
+  }
+
   /**
    * Holds if `iterator` is a `StoreInstruction` that stores the result of some function
    * returning an iterator into an address computed started at `containerBase`.
@@ -524,21 +602,22 @@ private module Cached {
   }
 
   /**
-   * Holds if `iteratorDerefAddress` is an address of an iterator dereference (i.e., `*it`)
-   * that is used for a read operation. The `memory` instruction represents the memory that
+   * Holds if `iteratorAddress` is an address of an iterator that is used for
+   * a read operation. The `memory` instruction represents the memory that
    * the IR's SSA analysis determined was read by the call to `operator*`.
    *
-   * Finally, the `numberOfLoads` integer represents the number of dereferences this read
-   * corresponds to on the underlying container that produced the iterator.
+   * Finally, the `numberOfLoads` integer represents the number of dereferences
+   * this read corresponds to on the underlying container that produced the iterator.
    */
   private predicate isChiBeforeIteratorUse(
-    Operand iteratorDerefAddress, Instruction memory, int numberOfLoads
+    Operand iteratorAddress, Instruction memory, int numberOfLoads
   ) {
     exists(
       BaseSourceVariableInstruction iteratorBase, LoadInstruction load,
-      ReadSideEffectInstruction read
+      ReadSideEffectInstruction read, Operand iteratorDerefAddress
     |
       numberOfLoads >= 0 and
+      isUse(_, iteratorAddress, iteratorBase, numberOfLoads + 1, 0) and
       isUse(_, iteratorDerefAddress, iteratorBase, numberOfLoads + 2, 0) and
       iteratorBase.getResultType() instanceof Interfaces::Iterator and
       load.getSourceAddressOperand() = iteratorDerefAddress and
@@ -569,23 +648,34 @@ private module Cached {
   }
 
   /**
-   * Holds if `iteratorDerefAddress` is an address of an iterator dereference (i.e., `*it`)
-   * that is used for a read operation to read a value from a container that created the iterator.
-   * `container` represents the base of the address of the container that was used to create
-   * the iterator.
+   * Holds if `iteratorAddress` is an address of an iterator that is used for a
+   * read operation to read a value from a container that created the iterator.
+   * `container` represents the base of the address of the container that was used
+   * to create the iterator.
    */
   cached
   predicate isIteratorUse(
-    BaseSourceVariableInstruction container, Operand iteratorDerefAddress, int numberOfLoads,
+    BaseSourceVariableInstruction container, Operand iteratorAddress, int numberOfLoads,
     int indirectionIndex
   ) {
+    // Direct use
     exists(Instruction begin, Instruction memory, int upper, int ind |
-      isChiBeforeIteratorUse(iteratorDerefAddress, memory, numberOfLoads) and
+      isChiBeforeIteratorUse(iteratorAddress, memory, numberOfLoads) and
       memorySucc*(begin, memory) and
       isChiAfterBegin(container, begin) and
       upper = countIndirectionsForCppType(getResultLanguageType(container)) and
       ind = numberOfLoads + [1 .. upper] and
       indirectionIndex = ind - (numberOfLoads + 1)
+    )
+    or
+    // Use through function output
+    exists(Instruction memory, Instruction begin, int upper, int ind |
+      isChiAfterIteratorArgument(memory, iteratorAddress, numberOfLoads) and
+      memorySucc*(begin, memory) and
+      isChiAfterBegin(container, begin) and
+      upper = countIndirectionsForCppType(getResultLanguageType(container)) and
+      ind = numberOfLoads + [1 .. upper] and
+      indirectionIndex = ind - (numberOfLoads - 1)
     )
   }
 
