@@ -16,7 +16,9 @@ class TaintedPathAtmConfig extends AtmConfig {
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override EndpointType getASinkEndpointType() { result instanceof TaintedPathSinkType }
+  override EndpointType getASinkEndpointType() {
+    result instanceof TaintedPathOtherSinkType or result instanceof CreateFileSinkType
+  }
 
   /*
    * This is largely a copy of the taint tracking configuration for the standard path injection

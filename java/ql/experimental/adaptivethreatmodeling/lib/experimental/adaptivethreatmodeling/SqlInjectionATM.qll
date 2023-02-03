@@ -15,7 +15,9 @@ class SqlInjectionAtmConfig extends AtmConfig {
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override EndpointType getASinkEndpointType() { result instanceof SqlInjectionSinkType }
+  override EndpointType getASinkEndpointType() {
+    result instanceof SqlInjectionOtherSinkType or result instanceof SqlSinkType
+  }
 
   /*
    * This is largely a copy of the taint tracking configuration for the standard SQL injection

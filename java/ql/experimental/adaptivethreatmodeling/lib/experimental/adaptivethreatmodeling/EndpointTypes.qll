@@ -9,9 +9,13 @@ newtype TEndpointType =
   TNegativeType() or
   TXssSinkType() or
   TNosqlInjectionSinkType() or
-  TSqlInjectionSinkType() or
-  TTaintedPathSinkType() or
-  TRequestForgerySinkType()
+  TSqlInjectionOtherSinkType() or
+  TTaintedPathOtherSinkType() or
+  TRequestForgeryOtherSinkType() or
+  TUrlOpenSinkType() or
+  TJdbcUrlSinkType() or
+  TCreateFileSinkType() or
+  TSqlSinkType()
 
 /** A class that can be predicted by endpoint scoring models. */
 abstract class EndpointType extends TEndpointType {
@@ -34,7 +38,7 @@ abstract class EndpointType extends TEndpointType {
   string toString() { result = getDescription() }
 }
 
-/** The `Negative` class that can be predicted by endpoint scoring models. */
+/** The `Negative` class for non-sinks. */
 class NegativeType extends EndpointType, TNegativeType {
   override string getDescription() { result = "non-sink" }
 
@@ -43,38 +47,69 @@ class NegativeType extends EndpointType, TNegativeType {
   override string getKind() { result = "" }
 }
 
-/** The `XssSink` class that can be predicted by endpoint scoring models. */
-class XssSinkType extends EndpointType, TXssSinkType {
-  override string getDescription() { result = "xss sink" }
-
-  override int getEncoding() { result = 1 }
-
-  override string getKind() { result = "xss" }
-}
-
-/** The `SqlInjectionSink` class that can be predicted by endpoint scoring models. */
-class SqlInjectionSinkType extends EndpointType, TSqlInjectionSinkType {
+/** Sinks of MaD kind `sql` */
+class SqlSinkType extends EndpointType, TSqlSinkType {
   override string getDescription() { result = "sql injection sink" }
 
-  override int getEncoding() { result = 3 }
+  override int getEncoding() { result = 1 }
 
   override string getKind() { result = "sql" }
 }
 
-/** The `TaintedPathSink` class that can be predicted by endpoint scoring models. */
-class TaintedPathSinkType extends EndpointType, TTaintedPathSinkType {
-  override string getDescription() { result = "path injection sink" }
+/** Other SQL injection sinks that are not yet included in the MaD sink kinds. */
+class SqlInjectionOtherSinkType extends EndpointType, TSqlInjectionOtherSinkType {
+  override string getDescription() {
+    result = "java persistence or mongodb or other query injection sink"
+  }
 
-  override int getEncoding() { result = 4 }
+  override int getEncoding() { result = 2 }
+
+  override string getKind() { result = "sql-other" }
+}
+
+/** Sinks of MaD kind `create-file` */
+class CreateFileSinkType extends EndpointType, TCreateFileSinkType {
+  override string getDescription() { result = "file creation sink" }
+
+  override int getEncoding() { result = 3 }
 
   override string getKind() { result = "create-file" }
 }
 
-/** The `RequestForgerySinkType` class that can be predicted by endpoint scoring models. */
-class RequestForgerySinkType extends EndpointType, TRequestForgerySinkType {
-  override string getDescription() { result = "server-side request forgery sink" }
+/** Other tainted path injection sinks that are not yet included in the MaD sink kinds. */
+class TaintedPathOtherSinkType extends EndpointType, TTaintedPathOtherSinkType {
+  override string getDescription() { result = "other path injection sink" }
+
+  override int getEncoding() { result = 4 }
+
+  override string getKind() { result = "tainted-path-other" }
+}
+
+/** Sinks of MaD kind `open-url`. */
+class UrlOpenSinkType extends EndpointType, TUrlOpenSinkType {
+  override string getDescription() { result = "url opening sink" }
 
   override int getEncoding() { result = 5 }
 
-  override string getKind() { result = "open-url" } // TODO: is this correct, or should it be “jdbc-url”?
+  override string getKind() { result = "open-url" }
+}
+
+/** Sinks of MaD kind `jdbc-url`. */
+class JdbcUrlSinkType extends EndpointType, TJdbcUrlSinkType {
+  override string getDescription() { result = "jdbc url sink" } // TODO: What's a good description of this sink type?
+
+  override int getEncoding() { result = 6 }
+
+  override string getKind() { result = "jdbc-url" }
+}
+
+/**
+ * Other SSRF sinks that are not yet included in the MaD sink kinds.
+ */
+class RequestForgeryOtherSinkType extends EndpointType, TRequestForgeryOtherSinkType {
+  override string getDescription() { result = "other server-side request forgery sink" }
+
+  override int getEncoding() { result = 7 }
+
+  override string getKind() { result = "ssrf-other" }
 }
