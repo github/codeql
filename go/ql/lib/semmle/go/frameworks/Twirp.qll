@@ -12,11 +12,10 @@ module Twirp {
    */
   class ProtobufGeneratedFile extends File {
     ProtobufGeneratedFile() {
-      this.getBaseName().matches("%.pb.go") and
-      exists(File f |
-        this.getParentContainer() = f.getParentContainer() and
-        this.getBaseName().splitAt(".", 0) = f.getBaseName().splitAt(".", 0) and
-        f.getBaseName().matches("%.twirp.go")
+      exists(string name, File t |
+        this.getBaseName() = name + ".pb.go" and
+        this.getParentContainer() = t.getParentContainer() and
+        t.getBaseName() = name + ".twirp.go"
       )
     }
   }
@@ -27,11 +26,10 @@ module Twirp {
    */
   class ServicesGeneratedFile extends File {
     ServicesGeneratedFile() {
-      this.getBaseName().matches("%.twirp.go") and
-      exists(File f |
-        this.getParentContainer() = f.getParentContainer() and
-        this.getBaseName().splitAt(".", 0) = f.getBaseName().splitAt(".", 0) and
-        f.getBaseName().matches("%.pb.go")
+      exists(string name, File t |
+        this.getBaseName() = name + ".twirp.go" and
+        this.getParentContainer() = t.getParentContainer() and
+        t.getBaseName() = name + ".pb.go"
       )
     }
   }
@@ -78,10 +76,12 @@ module Twirp {
    */
   class ServiceClientType extends NamedType {
     ServiceClientType() {
-      exists(ServiceInterfaceType i, PointerType p |
+      exists(ServiceInterfaceType i, PointerType p, TypeEntity te |
         p.implements(i) and
         this = p.getBaseType() and
-        this.getName().toLowerCase() = i.getName().toLowerCase() + ["protobuf", "json"] + "client"
+        this.getName().toLowerCase() = i.getName().toLowerCase() + ["protobuf", "json"] + "client" and
+        te.getType() = this and
+        te.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
       )
     }
   }
@@ -91,9 +91,11 @@ module Twirp {
    */
   class ServiceServerType extends NamedType {
     ServiceServerType() {
-      exists(ServiceInterfaceType i |
+      exists(ServiceInterfaceType i, TypeEntity te |
         this.implements(i) and
-        this.getName().toLowerCase() = i.getName().toLowerCase() + "server"
+        this.getName().toLowerCase() = i.getName().toLowerCase() + "server" and
+        te.getType() = this and
+        te.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
       )
     }
   }
@@ -106,7 +108,8 @@ module Twirp {
       exists(ServiceClientType c |
         this.getName().toLowerCase() = "new" + c.getName().toLowerCase() and
         this.getParameter(0).getType() instanceof StringType and
-        this.getParameterType(1).getName() = "HTTPClient"
+        this.getParameterType(1).getName() = "HTTPClient" and
+        this.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
       )
     }
   }
@@ -119,7 +122,8 @@ module Twirp {
     ServerConstructor() {
       exists(ServiceServerType c, ServiceInterfaceType i |
         this.getName().toLowerCase() = "new" + c.getName().toLowerCase() and
-        this.getParameter(0).getType() = i.getNamedType()
+        this.getParameter(0).getType() = i.getNamedType() and
+        this.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
       )
     }
   }
