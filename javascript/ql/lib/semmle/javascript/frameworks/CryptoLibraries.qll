@@ -279,23 +279,18 @@ private module CryptoJS {
   /**
    *  Matches `CryptoJS.<algorithmName>` and `require("crypto-js/<algorithmName>")`
    */
-  private DataFlow::SourceNode getAlgorithmNode(CryptographicAlgorithm algorithm) {
+  private API::Node getAlgorithmNode(CryptographicAlgorithm algorithm) {
     exists(string algorithmName | algorithm.matchesName(algorithmName) |
-      exists(DataFlow::SourceNode mod | mod = DataFlow::moduleImport("crypto-js") |
-        result = mod.getAPropertyRead(algorithmName) or
-        result = mod.getAPropertyRead("Hmac" + algorithmName) // they prefix Hmac
+      exists(API::Node mod | mod = API::moduleImport("crypto-js") |
+        result = mod.getMember(algorithmName) or
+        result = mod.getMember("Hmac" + algorithmName) // they prefix Hmac
       )
       or
-      exists(DataFlow::SourceNode mod |
-        mod = DataFlow::moduleImport("crypto-js/" + algorithmName) and
-        result = mod
-      )
+      result = API::moduleImport("crypto-js/" + algorithmName)
     )
   }
 
-  private DataFlow::CallNode getEncryptionApplication(
-    DataFlow::Node input, CryptographicAlgorithm algorithm
-  ) {
+  private API::CallNode getEncryptionApplication(API::Node input, CryptographicAlgorithm algorithm) {
     /*
      *    ```
      *    var CryptoJS = require("crypto-js");
@@ -309,13 +304,11 @@ private module CryptoJS {
      *    Also matches where `CryptoJS.<algorithmName>` has been replaced by `require("crypto-js/<algorithmName>")`
      */
 
-    result = getAlgorithmNode(algorithm).getAMemberCall("encrypt") and
-    input = result.getArgument(0)
+    result = getAlgorithmNode(algorithm).getMember("encrypt").getACall() and
+    input = result.getParameter(0)
   }
 
-  private DataFlow::CallNode getDirectApplication(
-    DataFlow::Node input, CryptographicAlgorithm algorithm
-  ) {
+  private API::CallNode getDirectApplication(API::Node input, CryptographicAlgorithm algorithm) {
     /*
      *    ```
      *    var CryptoJS = require("crypto-js");
@@ -331,11 +324,11 @@ private module CryptoJS {
      */
 
     result = getAlgorithmNode(algorithm).getACall() and
-    input = result.getArgument(0)
+    input = result.getParameter(0)
   }
 
-  private class Apply extends CryptographicOperation::Range, DataFlow::CallNode {
-    DataFlow::Node input;
+  private class Apply extends CryptographicOperation::Range instanceof API::CallNode {
+    API::Node input;
     CryptographicAlgorithm algorithm; // non-functional
 
     Apply() {
@@ -343,16 +336,15 @@ private module CryptoJS {
       this = getDirectApplication(input, algorithm)
     }
 
-    override DataFlow::Node getAnInput() { result = input }
+    override DataFlow::Node getAnInput() { result = input.asSink() }
 
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
 
     // e.g. CryptoJS.AES.encrypt("msg", "key", { mode: CryptoJS.mode.<modeString> })
     private BlockMode getExplicitBlockMode() {
-      exists(DataFlow::ObjectLiteralNode o, DataFlow::SourceNode modeNode, string modeString |
-        modeNode = API::moduleImport("crypto-js").getMember("mode").getMember(modeString).asSource() and
-        o.flowsTo(this.getArgument(2)) and
-        modeNode = o.getAPropertySource("mode")
+      exists(string modeString |
+        API::moduleImport("crypto-js").getMember("mode").getMember(modeString).asSource() =
+          super.getParameter(2).getMember("mode").asSink()
       |
         result.matchesString(modeString)
       )
@@ -372,15 +364,13 @@ private module CryptoJS {
 
   private class Key extends CryptographicKey {
     Key() {
-      exists(DataFlow::SourceNode e, CryptographicAlgorithm algorithm |
-        e = getAlgorithmNode(algorithm)
-      |
+      exists(API::Node e, CryptographicAlgorithm algorithm | e = getAlgorithmNode(algorithm) |
         exists(string name |
           name = "encrypt" or
           name = "decrypt"
         |
           algorithm instanceof EncryptionAlgorithm and
-          this = e.getAMemberCall(name).getArgument(1)
+          this = e.getMember(name).getACall().getArgument(1)
         )
         or
         algorithm instanceof HashingAlgorithm and
