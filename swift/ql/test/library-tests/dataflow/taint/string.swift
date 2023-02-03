@@ -238,8 +238,8 @@ func taintThroughSimpleStringOperations() {
   sink(arg: tainted.capitalized(with: nil)) // $ tainted=212
   sink(arg: tainted.reversed()) // $ tainted=212
 
-  sink(arg: tainted.split(separator: ",")) // $ MISSING: tainted=212
-  sink(arg: tainted.split(whereSeparator: { // $ MISSING: tainted=212
+  sink(arg: tainted.split(separator: ",")) // $ tainted=212
+  sink(arg: tainted.split(whereSeparator: { // $ tainted=212
     c in return (c == ",")
   }))
   sink(arg: tainted.trimmingCharacters(in: CharacterSet.whitespaces)) // $ tainted=212
@@ -299,7 +299,7 @@ func taintThroughSimpleStringOperations() {
 func taintThroughMutatingStringOperations() {
   var str1 = source2()
   sink(arg: str1) // $ tainted=300
-  sink(arg: str1.remove(at: str1.startIndex)) // $ MISSING: tainted=300
+  sink(arg: str1.remove(at: str1.startIndex)) // $ tainted=300
   sink(arg: str1) // $ tainted=300
 
   var str2 = source2()
@@ -314,11 +314,11 @@ func taintThroughMutatingStringOperations() {
 
   var str4 = source2()
   sink(arg: str4) // $ tainted=315
-  sink(arg: str4.removeFirst()) // $ MISSING: tainted=315
+  sink(arg: str4.removeFirst()) // $ tainted=315
   sink(arg: str4) // $ tainted=315
   str4.removeFirst(5)
   sink(arg: str4) // $ tainted=315
-  sink(arg: str4.removeLast()) // $ MISSING: tainted=315
+  sink(arg: str4.removeLast()) // $ tainted=315
   sink(arg: str4) // $ tainted=315
   str4.removeLast(5)
   sink(arg: str4) // $ tainted=315
@@ -546,24 +546,24 @@ func taintThroughSubstring() {
   sink(arg: String(sub1)) // $ tainted=540
 
   let sub2 = tainted.prefix(10)
-  sink(arg: sub2) // $ MISSING: tainted=540
-  sink(arg: String(sub2)) // $ MISSING: tainted=540
+  sink(arg: sub2) // $ tainted=540
+  sink(arg: String(sub2)) // $ tainted=540
 
   let sub3 = tainted.prefix(through: tainted.endIndex)
-  sink(arg: sub3) // $ MISSING: tainted=540
-  sink(arg: String(sub3)) // $ MISSING: tainted=540
+  sink(arg: sub3) // $ tainted=540
+  sink(arg: String(sub3)) // $ tainted=540
 
   let sub4 = tainted.prefix(upTo: tainted.endIndex)
-  sink(arg: sub4) // $ MISSING: tainted=540
-  sink(arg: String(sub4)) // $ MISSING: tainted=540
+  sink(arg: sub4) // $ tainted=540
+  sink(arg: String(sub4)) // $ tainted=540
 
   let sub5 = tainted.suffix(10)
-  sink(arg: sub5) // $ MISSING: tainted=540
-  sink(arg: String(sub5)) // $ MISSING: tainted=540
+  sink(arg: sub5) // $ tainted=540
+  sink(arg: String(sub5)) // $ tainted=540
 
   let sub6 = tainted.suffix(from: tainted.startIndex)
-  sink(arg: sub6) // $ MISSING: tainted=540
-  sink(arg: String(sub6)) // $ MISSING: tainted=540
+  sink(arg: sub6) // $ tainted=540
+  sink(arg: String(sub6)) // $ tainted=540
 }
 
 func taintedThroughFilePath() {
