@@ -1,6 +1,5 @@
 import go
 import semmle.go.frameworks.Twirp
-import semmle.go.security.RequestForgery //.dataflow.ReflectedXssQuery as XssConfig
 
 class InlineTest extends LineComment {
   string tests;
