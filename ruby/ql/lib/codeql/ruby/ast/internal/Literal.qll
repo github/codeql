@@ -149,6 +149,12 @@ class FalseLiteral extends BooleanLiteralImpl, TFalseLiteral {
   final override boolean getValue() { result = false }
 }
 
+class BooleanLiteralSynth extends BooleanLiteralImpl, TBooleanLiteralSynth {
+  final override string toString() { result = this.getValue().toString() }
+
+  final override boolean getValue() { this = TBooleanLiteralSynth(_, _, result) }
+}
+
 class EncodingLiteralImpl extends Expr, TEncoding {
   private Ruby::Encoding g;
 

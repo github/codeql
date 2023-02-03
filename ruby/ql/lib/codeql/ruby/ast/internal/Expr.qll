@@ -29,6 +29,14 @@ class Else extends StmtSequence, TElse {
   final override string toString() { result = "else ..." }
 }
 
+class ElseSynth extends StmtSequence, TElseSynth {
+  ElseSynth() { this = TElseSynth(_, _) }
+
+  override Stmt getStmt(int n) { synthChild(this, n, result) }
+
+  final override string toString() { result = "else ..." }
+}
+
 class Do extends StmtSequence, TDo {
   private Ruby::Do g;
 

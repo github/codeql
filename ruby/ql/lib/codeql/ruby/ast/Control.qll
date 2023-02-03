@@ -478,15 +478,11 @@ class WhenClause extends AstNode, TWhenClause {
  * end
  * ```
  */
-class InClause extends AstNode, TInClause {
-  private Ruby::InClause g;
-
-  InClause() { this = TInClause(g) }
-
+class InClause extends AstNode instanceof InClauseImpl {
   final override string getAPrimaryQlClass() { result = "InClause" }
 
   /** Gets the body of this case-in expression. */
-  final Stmt getBody() { toGenerated(result) = g.getBody() }
+  final Stmt getBody() { result = super.getBody() }
 
   /**
    * Gets the pattern in this case-in expression. In the
@@ -498,7 +494,7 @@ class InClause extends AstNode, TInClause {
    * end
    * ```
    */
-  final CasePattern getPattern() { toGenerated(result) = g.getPattern() }
+  final CasePattern getPattern() { result = super.getPattern() }
 
   /**
    * Gets the pattern guard condition in this case-in expression. In the
@@ -510,7 +506,7 @@ class InClause extends AstNode, TInClause {
    * end
    * ```
    */
-  final Expr getCondition() { toGenerated(result) = g.getGuard().getAFieldOrChild() }
+  final Expr getCondition() { result = super.getCondition() }
 
   /**
    * Holds if the pattern guard in this case-in expression is an `if` condition. For example:
@@ -520,7 +516,7 @@ class InClause extends AstNode, TInClause {
    * end
    * ```
    */
-  predicate hasIfCondition() { g.getGuard() instanceof Ruby::IfGuard }
+  predicate hasIfCondition() { super.hasIfCondition() }
 
   /**
    * Holds if the pattern guard in this case-in expression is an `unless` condition. For example:
@@ -530,12 +526,12 @@ class InClause extends AstNode, TInClause {
    * end
    * ```
    */
-  predicate hasUnlessCondition() { g.getGuard() instanceof Ruby::UnlessGuard }
+  predicate hasUnlessCondition() { super.hasUnlessCondition() }
 
   final override string toString() { result = "in ... then ..." }
 
   final override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
+    result = AstNode.super.getAChild(pred)
     or
     pred = "getBody" and result = this.getBody()
     or
