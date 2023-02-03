@@ -179,7 +179,7 @@ without ``external``, the compiler will report an error.
 ``final``
 =========
 
-**Available for**: |classes|, |type aliases|, |member predicates|, |fields|
+**Available for**: |classes|, |type-aliases|, |member predicates|, |fields|
 
 The ``final`` annotation is applied to names that can't be overridden or extended.
 In other words, a final class or a final type alias can't act as a base type for any other types,
@@ -453,5 +453,6 @@ The ``bindingset`` annotation takes a comma-separated list of variables.
 .. |fields|                    replace:: :ref:`fields <fields>`
 .. |modules|                   replace:: :ref:`modules <modules>`
 .. |aliases|                   replace:: :ref:`aliases <aliases>`
+.. |type-aliases|              replace:: :ref:`type aliases <type-aliases>`
 .. |algebraic datatypes|       replace:: :ref:`algebraic datatypes <algebraic-datatypes>`
 .. |expressions|               replace:: :ref:`expressions <expressions>`
