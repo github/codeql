@@ -5,9 +5,9 @@
  */
 
 private import python
-import semmle.python.dataflow.new.DataFlow
-import semmle.python.dataflow.new.TaintTracking
-import CommandInjectionCustomizations::CommandInjection as CommandInjection
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.TaintTracking
+private import CommandInjectionCustomizations::CommandInjection as CommandInjection
 private import semmle.python.Concepts as Concepts
 
 /**

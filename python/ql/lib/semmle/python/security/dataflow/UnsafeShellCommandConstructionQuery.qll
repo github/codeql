@@ -7,11 +7,11 @@
  */
 
 import python
-import UnsafeShellCommandConstructionCustomizations::UnsafeShellCommandConstruction
 import semmle.python.dataflow.new.DataFlow
-import semmle.python.dataflow.new.TaintTracking
-import CommandInjectionCustomizations::CommandInjection as CommandInjection
-import semmle.python.dataflow.new.BarrierGuards
+import UnsafeShellCommandConstructionCustomizations::UnsafeShellCommandConstruction
+private import semmle.python.dataflow.new.TaintTracking
+private import CommandInjectionCustomizations::CommandInjection as CommandInjection
+private import semmle.python.dataflow.new.BarrierGuards
 
 /**
  * A taint-tracking configuration for detecting shell command constructed from library input vulnerabilities.
