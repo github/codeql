@@ -83,7 +83,7 @@ func (x *Note) GetCreatedAt() int64 {
 	return 0
 }
 
-type CreateNoteParams struct { // test: message  
+type CreateNoteParams struct { // test: message
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -130,7 +130,7 @@ func (x *CreateNoteParams) GetText() string {
 	return ""
 }
 
-type GetAllNotesParams struct { // test: message  
+type GetAllNotesParams struct { // test: message
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -168,7 +168,7 @@ func (*GetAllNotesParams) Descriptor() ([]byte, []int) {
 	return file_rpc_notes_service_proto_rawDescGZIP(), []int{2}
 }
 
-type GetAllNotesResult struct { // test: message  
+type GetAllNotesResult struct { // test: message
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
