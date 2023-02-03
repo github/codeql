@@ -1137,25 +1137,37 @@
 | string.swift:213:7:213:7 | SSA def(taintedInt) | string.swift:217:20:217:20 | taintedInt |
 | string.swift:213:20:213:27 | call to source() | string.swift:213:7:213:7 | SSA def(taintedInt) |
 | string.swift:215:20:215:20 | [post] clean | string.swift:227:31:227:31 | clean |
+| string.swift:215:20:215:20 | clean | string.swift:215:13:215:25 | call to String.init(_:) |
 | string.swift:215:20:215:20 | clean | string.swift:227:31:227:31 | clean |
 | string.swift:216:20:216:20 | [post] tainted | string.swift:219:28:219:28 | tainted |
+| string.swift:216:20:216:20 | tainted | string.swift:216:13:216:27 | call to String.init(_:) |
 | string.swift:216:20:216:20 | tainted | string.swift:219:28:219:28 | tainted |
 | string.swift:217:20:217:20 | [post] taintedInt | string.swift:225:46:225:46 | taintedInt |
+| string.swift:217:20:217:20 | taintedInt | string.swift:217:13:217:30 | call to String.init(_:) |
 | string.swift:217:20:217:20 | taintedInt | string.swift:225:46:225:46 | taintedInt |
 | string.swift:219:28:219:28 | [post] tainted | string.swift:220:28:220:28 | tainted |
+| string.swift:219:28:219:28 | tainted | string.swift:219:13:219:44 | call to String.init(format:_:) |
 | string.swift:219:28:219:28 | tainted | string.swift:220:28:220:28 | tainted |
 | string.swift:220:28:220:28 | [post] tainted | string.swift:221:28:221:28 | tainted |
+| string.swift:220:28:220:28 | tainted | string.swift:220:13:220:50 | call to String.init(format:arguments:) |
 | string.swift:220:28:220:28 | tainted | string.swift:221:28:221:28 | tainted |
+| string.swift:220:48:220:49 | [...] | string.swift:220:13:220:50 | call to String.init(format:arguments:) |
 | string.swift:221:28:221:28 | [post] tainted | string.swift:222:28:222:28 | tainted |
+| string.swift:221:28:221:28 | tainted | string.swift:221:13:221:57 | call to String.init(format:locale:_:) |
 | string.swift:221:28:221:28 | tainted | string.swift:222:28:222:28 | tainted |
 | string.swift:222:28:222:28 | [post] tainted | string.swift:223:46:223:46 | tainted |
+| string.swift:222:28:222:28 | tainted | string.swift:222:13:222:63 | call to String.init(format:locale:arguments:) |
 | string.swift:222:28:222:28 | tainted | string.swift:223:46:223:46 | tainted |
 | string.swift:223:46:223:46 | [post] tainted | string.swift:224:34:224:34 | tainted |
 | string.swift:223:46:223:46 | tainted | string.swift:224:34:224:34 | tainted |
+| string.swift:224:28:224:28 | %s | string.swift:224:13:224:41 | call to String.init(format:_:) |
 | string.swift:224:34:224:34 | tainted | string.swift:228:31:228:31 | tainted |
+| string.swift:225:28:225:28 | %i %i %i | string.swift:225:13:225:56 | call to String.init(format:_:) |
 | string.swift:227:31:227:31 | [post] clean | string.swift:253:13:253:13 | clean |
+| string.swift:227:31:227:31 | clean | string.swift:227:13:227:46 | call to String.init(repeating:count:) |
 | string.swift:227:31:227:31 | clean | string.swift:253:13:253:13 | clean |
 | string.swift:228:31:228:31 | [post] tainted | string.swift:230:13:230:13 | tainted |
+| string.swift:228:31:228:31 | tainted | string.swift:228:13:228:48 | call to String.init(repeating:count:) |
 | string.swift:228:31:228:31 | tainted | string.swift:230:13:230:13 | tainted |
 | string.swift:230:13:230:13 | [post] tainted | string.swift:231:13:231:13 | tainted |
 | string.swift:230:13:230:13 | tainted | string.swift:231:13:231:13 | tainted |
@@ -1368,9 +1380,11 @@
 | string.swift:337:38:337:38 |  | string.swift:337:33:337:40 | call to Data.init(_:) |
 | string.swift:340:7:340:7 | SSA def(stringClean) | string.swift:343:12:343:12 | stringClean |
 | string.swift:340:21:340:74 | call to String.init(data:encoding:) | string.swift:340:7:340:7 | SSA def(stringClean) |
+| string.swift:340:34:340:41 | call to Data.init(_:) | string.swift:340:21:340:74 | call to String.init(data:encoding:) |
 | string.swift:340:39:340:39 |  | string.swift:340:34:340:41 | call to Data.init(_:) |
 | string.swift:341:7:341:7 | SSA def(stringTainted) | string.swift:344:12:344:12 | stringTainted |
 | string.swift:341:23:341:77 | call to String.init(data:encoding:) | string.swift:341:7:341:7 | SSA def(stringTainted) |
+| string.swift:341:36:341:44 | call to source3() | string.swift:341:23:341:77 | call to String.init(data:encoding:) |
 | string.swift:343:12:343:12 | stringClean | string.swift:343:12:343:23 | ...! |
 | string.swift:344:12:344:12 | stringTainted | string.swift:344:12:344:25 | ...! |
 | string.swift:346:30:346:37 | call to Data.init(_:) | string.swift:346:13:346:53 | call to String.init(decoding:as:) |
@@ -1438,6 +1452,7 @@
 | string.swift:398:5:398:5 | SSA def(ptr) | string.swift:399:15:399:15 | ptr |
 | string.swift:398:5:398:5 | ptr | string.swift:398:5:398:5 | SSA def(ptr) |
 | string.swift:399:15:399:15 | ptr | string.swift:400:38:400:38 | ptr |
+| string.swift:400:38:400:38 | ptr | string.swift:400:15:400:41 | call to String.init(platformString:) |
 | string.swift:400:38:400:38 | ptr | string.swift:402:45:402:45 | ptr |
 | string.swift:402:9:402:9 | SSA def(buffer) | string.swift:403:29:403:29 | buffer |
 | string.swift:402:18:402:59 | call to UnsafeBufferPointer<Element>.init(start:count:) | string.swift:402:9:402:9 | SSA def(buffer) |
@@ -1445,11 +1460,13 @@
 | string.swift:403:23:403:35 | call to Array<Element>.init(_:) | string.swift:403:9:403:9 | SSA def(arrayString) |
 | string.swift:403:29:403:29 | buffer | string.swift:404:15:404:15 | buffer |
 | string.swift:405:15:405:15 | arrayString | string.swift:406:38:406:38 | arrayString |
+| string.swift:406:38:406:38 | arrayString | string.swift:406:15:406:49 | call to String.init(platformString:) |
 | string.swift:408:3:408:3 | [post] tainted | string.swift:425:3:425:3 | tainted |
 | string.swift:408:3:408:3 | tainted | string.swift:425:3:425:3 | tainted |
 | string.swift:409:5:409:5 | SSA def(ptr) | string.swift:410:15:410:15 | ptr |
 | string.swift:409:5:409:5 | ptr | string.swift:409:5:409:5 | SSA def(ptr) |
 | string.swift:410:15:410:15 | ptr | string.swift:411:38:411:38 | ptr |
+| string.swift:411:38:411:38 | ptr | string.swift:411:15:411:41 | call to String.init(platformString:) |
 | string.swift:411:38:411:38 | ptr | string.swift:413:45:413:45 | ptr |
 | string.swift:413:9:413:9 | SSA def(buffer) | string.swift:414:29:414:29 | buffer |
 | string.swift:413:18:413:59 | call to UnsafeBufferPointer<Element>.init(start:count:) | string.swift:413:9:413:9 | SSA def(buffer) |
@@ -1457,6 +1474,7 @@
 | string.swift:414:23:414:35 | call to Array<Element>.init(_:) | string.swift:414:9:414:9 | SSA def(arrayString) |
 | string.swift:414:29:414:29 | buffer | string.swift:415:15:415:15 | buffer |
 | string.swift:416:15:416:15 | arrayString | string.swift:417:38:417:38 | arrayString |
+| string.swift:417:38:417:38 | arrayString | string.swift:417:15:417:49 | call to String.init(platformString:) |
 | string.swift:421:5:421:5 | SSA def(ptr) | string.swift:422:15:422:15 | ptr |
 | string.swift:421:5:421:5 | ptr | string.swift:421:5:421:5 | SSA def(ptr) |
 | string.swift:422:15:422:15 | ptr | string.swift:423:15:423:15 | ptr |
@@ -1480,8 +1498,10 @@
 | string.swift:449:15:449:15 | [post] buffer | string.swift:450:17:450:17 | buffer |
 | string.swift:449:15:449:15 | buffer | string.swift:450:17:450:17 | buffer |
 | string.swift:455:13:455:75 | call to String.init(bytes:encoding:) | string.swift:455:13:455:76 | ...! |
+| string.swift:455:27:455:27 | cleanUInt8Values | string.swift:455:13:455:75 | call to String.init(bytes:encoding:) |
 | string.swift:455:27:455:27 | cleanUInt8Values | string.swift:458:29:458:29 | cleanUInt8Values |
 | string.swift:456:13:456:77 | call to String.init(bytes:encoding:) | string.swift:456:13:456:78 | ...! |
+| string.swift:456:27:456:27 | taintedUInt8Values | string.swift:456:13:456:77 | call to String.init(bytes:encoding:) |
 | string.swift:456:27:456:27 | taintedUInt8Values | string.swift:459:29:459:29 | taintedUInt8Values |
 | string.swift:458:29:458:29 | cleanUInt8Values | string.swift:458:13:458:45 | call to String.init(cString:) |
 | string.swift:458:29:458:29 | cleanUInt8Values | string.swift:461:8:461:8 | cleanUInt8Values |
@@ -1551,10 +1571,12 @@
 | string.swift:498:34:498:34 | [post] ptr | string.swift:499:38:499:38 | ptr |
 | string.swift:498:34:498:34 | ptr | string.swift:499:38:499:38 | ptr |
 | string.swift:498:34:498:38 | .baseAddress | string.swift:498:34:498:49 | ...! |
+| string.swift:498:34:498:49 | ...! | string.swift:498:15:498:50 | call to String.init(utf8String:) |
 | string.swift:499:15:499:54 | call to String.init(validatingUTF8:) | string.swift:499:15:499:55 | ...! |
 | string.swift:499:38:499:38 | [post] ptr | string.swift:500:31:500:31 | ptr |
 | string.swift:499:38:499:38 | ptr | string.swift:500:31:500:31 | ptr |
 | string.swift:499:38:499:42 | .baseAddress | string.swift:499:38:499:53 | ...! |
+| string.swift:499:38:499:53 | ...! | string.swift:499:15:499:54 | call to String.init(validatingUTF8:) |
 | string.swift:500:31:500:35 | .baseAddress | string.swift:500:31:500:46 | ...! |
 | string.swift:500:31:500:46 | ...! | string.swift:500:15:500:47 | call to String.init(cString:) |
 | string.swift:502:3:502:3 | [post] taintedCCharValues | string.swift:512:29:512:29 | taintedCCharValues |
@@ -1569,10 +1591,12 @@
 | string.swift:506:34:506:34 | [post] ptr | string.swift:507:38:507:38 | ptr |
 | string.swift:506:34:506:34 | ptr | string.swift:507:38:507:38 | ptr |
 | string.swift:506:34:506:38 | .baseAddress | string.swift:506:34:506:49 | ...! |
+| string.swift:506:34:506:49 | ...! | string.swift:506:15:506:50 | call to String.init(utf8String:) |
 | string.swift:507:15:507:54 | call to String.init(validatingUTF8:) | string.swift:507:15:507:55 | ...! |
 | string.swift:507:38:507:38 | [post] ptr | string.swift:508:31:508:31 | ptr |
 | string.swift:507:38:507:38 | ptr | string.swift:508:31:508:31 | ptr |
 | string.swift:507:38:507:42 | .baseAddress | string.swift:507:38:507:53 | ...! |
+| string.swift:507:38:507:53 | ...! | string.swift:507:15:507:54 | call to String.init(validatingUTF8:) |
 | string.swift:508:31:508:35 | .baseAddress | string.swift:508:31:508:46 | ...! |
 | string.swift:508:31:508:46 | ...! | string.swift:508:15:508:47 | call to String.init(cString:) |
 | string.swift:511:29:511:29 | cleanCCharValues | string.swift:511:13:511:45 | call to String.init(cString:) |
@@ -1590,11 +1614,13 @@
 | string.swift:525:38:525:38 | [post] ptr | string.swift:525:63:525:63 | ptr |
 | string.swift:525:38:525:38 | ptr | string.swift:525:63:525:63 | ptr |
 | string.swift:525:38:525:42 | .baseAddress | string.swift:525:38:525:53 | ...! |
+| string.swift:525:38:525:53 | ...! | string.swift:525:15:525:72 | call to String.init(utf16CodeUnits:count:) |
 | string.swift:525:63:525:63 | [post] ptr | string.swift:526:44:526:44 | ptr |
 | string.swift:525:63:525:63 | ptr | string.swift:526:44:526:44 | ptr |
 | string.swift:526:44:526:44 | [post] ptr | string.swift:526:69:526:69 | ptr |
 | string.swift:526:44:526:44 | ptr | string.swift:526:69:526:69 | ptr |
 | string.swift:526:44:526:48 | .baseAddress | string.swift:526:44:526:59 | ...! |
+| string.swift:526:44:526:59 | ...! | string.swift:526:15:526:99 | call to String.init(utf16CodeUnitsNoCopy:count:freeWhenDone:) |
 | string.swift:529:5:529:5 | SSA def(ptr) | string.swift:530:15:530:15 | ptr |
 | string.swift:529:5:529:5 | ptr | string.swift:529:5:529:5 | SSA def(ptr) |
 | string.swift:530:15:530:15 | ptr | string.swift:531:15:531:15 | ptr |
@@ -1604,11 +1630,13 @@
 | string.swift:532:38:532:38 | [post] ptr | string.swift:532:63:532:63 | ptr |
 | string.swift:532:38:532:38 | ptr | string.swift:532:63:532:63 | ptr |
 | string.swift:532:38:532:42 | .baseAddress | string.swift:532:38:532:53 | ...! |
+| string.swift:532:38:532:53 | ...! | string.swift:532:15:532:72 | call to String.init(utf16CodeUnits:count:) |
 | string.swift:532:63:532:63 | [post] ptr | string.swift:533:44:533:44 | ptr |
 | string.swift:532:63:532:63 | ptr | string.swift:533:44:533:44 | ptr |
 | string.swift:533:44:533:44 | [post] ptr | string.swift:533:69:533:69 | ptr |
 | string.swift:533:44:533:44 | ptr | string.swift:533:69:533:69 | ptr |
 | string.swift:533:44:533:48 | .baseAddress | string.swift:533:44:533:59 | ...! |
+| string.swift:533:44:533:59 | ...! | string.swift:533:15:533:99 | call to String.init(utf16CodeUnitsNoCopy:count:freeWhenDone:) |
 | string.swift:540:7:540:7 | SSA def(tainted) | string.swift:544:14:544:14 | tainted |
 | string.swift:540:17:540:25 | call to source2() | string.swift:540:7:540:7 | SSA def(tainted) |
 | string.swift:544:7:544:7 | SSA def(sub1) | string.swift:545:13:545:13 | sub1 |
@@ -1622,11 +1650,13 @@
 | string.swift:544:45:544:45 | tainted | string.swift:548:14:548:14 | tainted |
 | string.swift:545:13:545:13 | [post] sub1 | string.swift:546:20:546:20 | sub1 |
 | string.swift:545:13:545:13 | sub1 | string.swift:546:20:546:20 | sub1 |
+| string.swift:546:20:546:20 | sub1 | string.swift:546:13:546:24 | call to String.init(_:) |
 | string.swift:548:7:548:7 | SSA def(sub2) | string.swift:549:13:549:13 | sub2 |
 | string.swift:548:14:548:14 | [post] tainted | string.swift:552:14:552:14 | tainted |
 | string.swift:548:14:548:14 | tainted | string.swift:552:14:552:14 | tainted |
 | string.swift:548:14:548:31 | call to prefix(_:) | string.swift:548:7:548:7 | SSA def(sub2) |
 | string.swift:549:13:549:13 | sub2 | string.swift:550:20:550:20 | sub2 |
+| string.swift:550:20:550:20 | sub2 | string.swift:550:13:550:24 | call to String.init(_:) |
 | string.swift:552:7:552:7 | SSA def(sub3) | string.swift:553:13:553:13 | sub3 |
 | string.swift:552:14:552:14 | [post] tainted | string.swift:552:38:552:38 | tainted |
 | string.swift:552:14:552:14 | tainted | string.swift:552:38:552:38 | tainted |
@@ -1634,6 +1664,7 @@
 | string.swift:552:38:552:38 | [post] tainted | string.swift:556:14:556:14 | tainted |
 | string.swift:552:38:552:38 | tainted | string.swift:556:14:556:14 | tainted |
 | string.swift:553:13:553:13 | sub3 | string.swift:554:20:554:20 | sub3 |
+| string.swift:554:20:554:20 | sub3 | string.swift:554:13:554:24 | call to String.init(_:) |
 | string.swift:556:7:556:7 | SSA def(sub4) | string.swift:557:13:557:13 | sub4 |
 | string.swift:556:14:556:14 | [post] tainted | string.swift:556:35:556:35 | tainted |
 | string.swift:556:14:556:14 | tainted | string.swift:556:35:556:35 | tainted |
@@ -1641,16 +1672,19 @@
 | string.swift:556:35:556:35 | [post] tainted | string.swift:560:14:560:14 | tainted |
 | string.swift:556:35:556:35 | tainted | string.swift:560:14:560:14 | tainted |
 | string.swift:557:13:557:13 | sub4 | string.swift:558:20:558:20 | sub4 |
+| string.swift:558:20:558:20 | sub4 | string.swift:558:13:558:24 | call to String.init(_:) |
 | string.swift:560:7:560:7 | SSA def(sub5) | string.swift:561:13:561:13 | sub5 |
 | string.swift:560:14:560:14 | [post] tainted | string.swift:564:14:564:14 | tainted |
 | string.swift:560:14:560:14 | tainted | string.swift:564:14:564:14 | tainted |
 | string.swift:560:14:560:31 | call to suffix(_:) | string.swift:560:7:560:7 | SSA def(sub5) |
 | string.swift:561:13:561:13 | sub5 | string.swift:562:20:562:20 | sub5 |
+| string.swift:562:20:562:20 | sub5 | string.swift:562:13:562:24 | call to String.init(_:) |
 | string.swift:564:7:564:7 | SSA def(sub6) | string.swift:565:13:565:13 | sub6 |
 | string.swift:564:14:564:14 | [post] tainted | string.swift:564:35:564:35 | tainted |
 | string.swift:564:14:564:14 | tainted | string.swift:564:35:564:35 | tainted |
 | string.swift:564:14:564:53 | call to suffix(from:) | string.swift:564:7:564:7 | SSA def(sub6) |
 | string.swift:565:13:565:13 | sub6 | string.swift:566:20:566:20 | sub6 |
+| string.swift:566:20:566:20 | sub6 | string.swift:566:13:566:24 | call to String.init(_:) |
 | string.swift:570:7:570:7 | SSA def(clean) | string.swift:573:13:573:13 | clean |
 | string.swift:570:15:570:26 | call to FilePath.init(_:) | string.swift:570:7:570:7 | SSA def(clean) |
 | string.swift:571:7:571:7 | SSA def(tainted) | string.swift:574:13:574:13 | tainted |
@@ -1672,9 +1706,11 @@
 | string.swift:580:13:580:13 | [post] tainted | string.swift:582:30:582:30 | tainted |
 | string.swift:580:13:580:13 | tainted | string.swift:582:30:582:30 | tainted |
 | string.swift:582:30:582:30 | [post] tainted | string.swift:583:32:583:32 | tainted |
+| string.swift:582:30:582:30 | tainted | string.swift:582:13:582:37 | call to String.init(decoding:) |
 | string.swift:582:30:582:30 | tainted | string.swift:583:32:583:32 | tainted |
 | string.swift:583:13:583:39 | call to String.init(validating:) | string.swift:583:13:583:40 | ...! |
 | string.swift:583:32:583:32 | [post] tainted | string.swift:589:11:589:11 | tainted |
+| string.swift:583:32:583:32 | tainted | string.swift:583:13:583:39 | call to String.init(validating:) |
 | string.swift:583:32:583:32 | tainted | string.swift:589:11:589:11 | tainted |
 | string.swift:585:11:585:11 | [post] clean | string.swift:594:11:594:11 | clean |
 | string.swift:585:11:585:11 | clean | string.swift:594:11:594:11 | clean |
@@ -1689,15 +1725,19 @@
 | string.swift:595:5:595:5 | SSA def(ptr) | string.swift:596:15:596:15 | ptr |
 | string.swift:595:5:595:5 | ptr | string.swift:595:5:595:5 | SSA def(ptr) |
 | string.swift:596:15:596:15 | ptr | string.swift:597:38:597:38 | ptr |
+| string.swift:597:38:597:38 | ptr | string.swift:597:15:597:41 | call to String.init(platformString:) |
 | string.swift:597:38:597:38 | ptr | string.swift:598:48:598:48 | ptr |
 | string.swift:598:15:598:51 | call to String.init(validatingPlatformString:) | string.swift:598:15:598:52 | ...! |
+| string.swift:598:48:598:48 | ptr | string.swift:598:15:598:51 | call to String.init(validatingPlatformString:) |
 | string.swift:600:11:600:11 | [post] tainted | string.swift:616:13:616:13 | tainted |
 | string.swift:600:11:600:11 | tainted | string.swift:616:13:616:13 | tainted |
 | string.swift:601:5:601:5 | SSA def(ptr) | string.swift:602:15:602:15 | ptr |
 | string.swift:601:5:601:5 | ptr | string.swift:601:5:601:5 | SSA def(ptr) |
 | string.swift:602:15:602:15 | ptr | string.swift:603:38:603:38 | ptr |
+| string.swift:603:38:603:38 | ptr | string.swift:603:15:603:41 | call to String.init(platformString:) |
 | string.swift:603:38:603:38 | ptr | string.swift:604:48:604:48 | ptr |
 | string.swift:604:15:604:51 | call to String.init(validatingPlatformString:) | string.swift:604:15:604:52 | ...! |
+| string.swift:604:48:604:48 | ptr | string.swift:604:15:604:51 | call to String.init(validatingPlatformString:) |
 | string.swift:607:7:607:7 | SSA def(fp1) | string.swift:608:13:608:13 | fp1 |
 | string.swift:607:13:607:24 | call to FilePath.init(_:) | string.swift:607:7:607:7 | SSA def(fp1) |
 | string.swift:608:13:608:13 | [post] fp1 | string.swift:609:3:609:3 | fp1 |
@@ -1714,6 +1754,10 @@
 | string.swift:614:13:614:13 | clean | string.swift:615:13:615:13 | clean |
 | string.swift:616:13:616:13 | [post] tainted | string.swift:617:13:617:13 | tainted |
 | string.swift:616:13:616:13 | tainted | string.swift:617:13:617:13 | tainted |
+| string.swift:621:20:621:20 | 0 | string.swift:621:13:621:21 | call to String.init(_:) |
+| string.swift:622:20:622:27 | call to source() | string.swift:622:13:622:28 | call to String.init(_:) |
+| string.swift:625:32:625:32 | 0 | string.swift:625:13:625:33 | call to String.init(describing:) |
+| string.swift:626:32:626:39 | call to source() | string.swift:626:13:626:40 | call to String.init(describing:) |
 | string.swift:628:13:628:22 | call to Self.init(_:) | string.swift:628:13:628:23 | ...! |
 | string.swift:629:13:629:26 | call to Self.init(_:) | string.swift:629:13:629:27 | ...! |
 | string.swift:633:7:633:7 | SSA def(tainted) | string.swift:637:13:637:13 | tainted |

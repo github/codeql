@@ -213,19 +213,19 @@ func taintThroughSimpleStringOperations() {
   let taintedInt = source()
 
   sink(arg: String(clean))
-  sink(arg: String(tainted)) // $ MISSING: tainted=212
-  sink(arg: String(taintedInt)) // $ MISSING: tainted=213
+  sink(arg: String(tainted)) // $ tainted=212
+  sink(arg: String(taintedInt)) // $ tainted=213
 
-  sink(arg: String(format: tainted, 1, 2, 3)) // $ MISSING: tainted=212
-  sink(arg: String(format: tainted, arguments: [])) // $ MISSING: tainted=212
-  sink(arg: String(format: tainted, locale: nil, 1, 2, 3)) // $ MISSING: tainted=212
-  sink(arg: String(format: tainted, locale: nil, arguments: [])) // $ MISSING: tainted=212
+  sink(arg: String(format: tainted, 1, 2, 3)) // $ tainted=212
+  sink(arg: String(format: tainted, arguments: [])) // $ tainted=212
+  sink(arg: String(format: tainted, locale: nil, 1, 2, 3)) // $ tainted=212
+  sink(arg: String(format: tainted, locale: nil, arguments: [])) // $ tainted=212
   sink(arg: String.localizedStringWithFormat(tainted, 1, 2, 3)) // $ MISSING: tainted=212
   sink(arg: String(format: "%s", tainted)) // $ MISSING: tainted=212
   sink(arg: String(format: "%i %i %i", 1, 2, taintedInt)) // $ MISSING: tainted=213
 
   sink(arg: String(repeating: clean, count: 2))
-  sink(arg: String(repeating: tainted, count: 2)) // $ MISSING: tainted=212
+  sink(arg: String(repeating: tainted, count: 2)) // $ tainted=212
 
   sink(arg: tainted.dropFirst(10)) // $ MISSING: tainted=212
   sink(arg: tainted.dropLast(10)) // $ MISSING: tainted=212
@@ -341,7 +341,7 @@ func taintThroughData() {
   let stringTainted = String(data: source3(), encoding: String.Encoding.utf8)
 
 	sink(arg: stringClean!)
-	sink(arg: stringTainted!) // $ MISSING: tainted=341
+	sink(arg: stringTainted!) // $ tainted=341
 
   sink(arg: String(decoding: Data(""), as: UTF8.self))
   sink(arg: String(decoding: source3(), as: UTF8.self)) // $ tainted=347
@@ -453,7 +453,7 @@ func taintFromUInt8Array() {
   ))
 
   sink(arg: String(bytes: cleanUInt8Values, encoding: String.Encoding.utf8)!)
-  sink(arg: String(bytes: taintedUInt8Values, encoding: String.Encoding.utf8)!) // $ MISSING: tainted=436
+  sink(arg: String(bytes: taintedUInt8Values, encoding: String.Encoding.utf8)!) // $ tainted=436
 
   sink(arg: String(cString: cleanUInt8Values))
   sink(arg: String(cString: taintedUInt8Values)) // $ tainted=436
@@ -543,7 +543,7 @@ func taintThroughSubstring() {
 
   let sub1 = tainted[tainted.startIndex ..< tainted.endIndex]
   sink(arg: sub1) // $ tainted=540
-  sink(arg: String(sub1)) // $ MISSING: tainted=540
+  sink(arg: String(sub1)) // $ tainted=540
 
   let sub2 = tainted.prefix(10)
   sink(arg: sub2) // $ MISSING: tainted=540
@@ -619,11 +619,11 @@ func taintedThroughFilePath() {
 
 func taintedThroughConversion() {
   sink(arg: String(0))
-  sink(arg: String(source())) // $ MISSING: tainted=622
+  sink(arg: String(source())) // $ tainted=622
   sink(arg: Int(0).description)
   sink(arg: source().description) // $ MISSING: tainted=624
   sink(arg: String(describing: 0))
-  sink(arg: String(describing: source())) // $ MISSING: tainted=626
+  sink(arg: String(describing: source())) // $ tainted=626
 
   sink(arg: Int("123")!)
   sink(arg: Int(source2())!) // $ MISSING: tainted=629
