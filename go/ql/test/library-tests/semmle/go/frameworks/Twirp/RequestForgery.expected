@@ -1,0 +1,26 @@
+edges
+| client/main.go:16:35:16:78 | &... | client/main.go:16:35:16:78 | &... |
+| client/main.go:16:35:16:78 | &... | server/main.go:19:56:19:61 | definition of params |
+| rpc/notes/service.twirp.go:473:6:473:13 | definition of typedReq | rpc/notes/service.twirp.go:477:44:477:51 | typedReq |
+| rpc/notes/service.twirp.go:477:44:477:51 | typedReq | server/main.go:19:56:19:61 | definition of params |
+| rpc/notes/service.twirp.go:554:6:554:13 | definition of typedReq | rpc/notes/service.twirp.go:558:44:558:51 | typedReq |
+| rpc/notes/service.twirp.go:558:44:558:51 | typedReq | server/main.go:19:56:19:61 | definition of params |
+| server/main.go:19:56:19:61 | definition of params | client/main.go:16:35:16:78 | &... |
+| server/main.go:19:56:19:61 | definition of params | rpc/notes/service.twirp.go:473:6:473:13 | definition of typedReq |
+| server/main.go:19:56:19:61 | definition of params | rpc/notes/service.twirp.go:554:6:554:13 | definition of typedReq |
+| server/main.go:19:56:19:61 | definition of params | server/main.go:19:56:19:61 | definition of params |
+| server/main.go:19:56:19:61 | definition of params | server/main.go:19:56:19:61 | definition of params |
+| server/main.go:19:56:19:61 | definition of params | server/main.go:30:38:30:48 | selection of Text |
+| server/main.go:19:56:19:61 | definition of params | server/main.go:30:38:30:48 | selection of Text |
+nodes
+| client/main.go:16:35:16:78 | &... | semmle.label | &... |
+| rpc/notes/service.twirp.go:473:6:473:13 | definition of typedReq | semmle.label | definition of typedReq |
+| rpc/notes/service.twirp.go:477:44:477:51 | typedReq | semmle.label | typedReq |
+| rpc/notes/service.twirp.go:554:6:554:13 | definition of typedReq | semmle.label | definition of typedReq |
+| rpc/notes/service.twirp.go:558:44:558:51 | typedReq | semmle.label | typedReq |
+| server/main.go:19:56:19:61 | definition of params | semmle.label | definition of params |
+| server/main.go:19:56:19:61 | definition of params | semmle.label | definition of params |
+| server/main.go:30:38:30:48 | selection of Text | semmle.label | selection of Text |
+subpaths
+#select
+| server/main.go:30:38:30:48 | selection of Text | server/main.go:19:56:19:61 | definition of params | server/main.go:30:38:30:48 | selection of Text | The $@ of this request depends on a $@. | server/main.go:30:38:30:48 | selection of Text | URL | server/main.go:19:56:19:61 | definition of params | user-provided value |
