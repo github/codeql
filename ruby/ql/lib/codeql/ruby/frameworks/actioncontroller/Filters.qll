@@ -9,6 +9,7 @@ private import codeql.ruby.controlflow.CfgNodes::ExprNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.ast.internal.Constant
+private import codeql.ruby.ast.internal.Module
 
 /**
  * Provides modeling for ActionController filters.
@@ -109,7 +110,7 @@ module Filters {
     }
 
     /**
-     * Gets the callable that implements the filter with name `name`.
+     * Gets the callable that implements a filter registered by this call.
      * This currently only finds methods in the local class or superclass.
      * It doesn't handle:
      * - lambdas
@@ -127,9 +128,8 @@ module Filters {
      * ```
      */
     Callable getAFilterCallable() {
-      this.getFilterArgumentName() = result.(MethodBase).getName() and
-      result.getEnclosingModule().getModule() =
-        this.getExpr().getEnclosingModule().getModule().getAnAncestor()
+      result =
+        lookupMethod(this.getExpr().getEnclosingModule().getModule(), this.getFilterArgumentName())
     }
   }
 
