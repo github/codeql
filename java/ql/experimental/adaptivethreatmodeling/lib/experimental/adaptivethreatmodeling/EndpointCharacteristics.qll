@@ -104,7 +104,7 @@ predicate hasMetadata(DataFlow::Node n, string metadata) {
     type = callee.getDeclaringType().getName() and //TODO: Will this work for inner classes? Will it produce X$Y? What about lambdas? What about enums? What about interfaces? What about annotations?
     subtypes = true and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
     name = callee.getName() and // TODO: Will this work for constructors?
-    signature = callee.paramsString() and
+    signature = paramsString(callee) and
     ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
     input = "Argument[" + index + "]" and // TODO: why are slashes added?
     provenance = "manual" and // TODO
