@@ -43,7 +43,7 @@ The following sections explain additional elements that you may include in your 
    query help for custom queries in the code scanning UI you must convert the ``.qhelp`` files to markdown 
    and then include the markdown-rendered query help in SARIF files generated during an analysis.
    For more information, see 
-   ":ref:`Analyzing databases with the CodeQL CLI <including-query-help-for-custom-codeql-queries-in-sarif-files>`." 
+   "`Analyzing databases with the CodeQL CLI <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/analyzing-databases-with-the-codeql-cli#including-query-help-for-custom-codeql-queries-in-sarif-files>`__." 
 
 Section-level elements
 ======================

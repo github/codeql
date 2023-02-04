@@ -62,7 +62,7 @@ where such a file is found is the query directory. If there is no such
 directory, the directory of the ``.ql`` file itself is the query
 directory.
 
-A ``qlpack.yml`` file defines a :ref:`CodeQL pack <about-codeql-packs>`.
+A ``qlpack.yml`` file defines a `CodeQL pack <https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs>`__.
 The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation.
 ``codeql-pack.yml`` is an alias for ``qlpack.yml``.
 
@@ -74,7 +74,7 @@ added to the library path, the CodeQL packs named in its
 path, and the process continues until all packs have been
 resolved. The actual library path consists of the root directories of
 the selected CodeQL packs. This process depends on a mechanism for finding
-CodeQL packs by pack name and version, as described in the :ref:`CodeQL CLI documentation <codeql-cli>`.
+CodeQL packs by pack name and version, as described in the `CodeQL CLI documentation <https://docs.github.com/en/code-security/codeql-cli>`__.
 
 When the query directory contains neither a ``qlpack.yml`` nor
 ``codeql-pack.yml`` file, it is considered to be a CodeQL pack with no name and
