@@ -190,7 +190,7 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     or
     // Go through an Open for a Tarfile
     nodeTo = tarfileOpen().getACall() and nodeFrom = nodeTo.(MethodCallNode).getArg(0)
-    or 
+    or
     // Handle the case where the getmembers is used.
     nodeTo.(MethodCallNode).calls(nodeFrom, "getmembers") and
     nodeFrom instanceof AllTarfileOpens
@@ -201,5 +201,17 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     nodeTo = API::moduleImport("contextlib").getMember("closing").getACall() and
     nodeFrom = nodeTo.(API::CallNode).getArg(0) and
     nodeFrom = tarfileOpen().getReturn().getAValueReachableFromSource()
+    or
+    // see Path : https://docs.python.org/3/library/pathlib.html#pathlib.Path
+    nodeTo = API::moduleImport("pathlib").getMember("Path").getACall() and
+    nodeFrom = nodeTo.(API::CallNode).getArg(0)
+    or
+    // Use of absolutepath
+    // see absolute : https://docs.python.org/3/library/pathlib.html#pathlib.Path.absolute
+    exists(API::CallNode mcn |
+      mcn = API::moduleImport("pathlib").getMember("Path").getACall() and
+      nodeTo = mcn.getAMethodCall("absolute") and
+      nodeFrom = mcn.getArg(0)
+    )
   }
 }
