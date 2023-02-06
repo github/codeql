@@ -27,9 +27,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (Symbol is ILocalSymbol local)
             {
-                var @const = local.IsRef ? 3 : local.IsConst ? 2 : 1;
+                var kind = local.IsRef ? Kinds.VariableKind.Ref : local.IsConst ? Kinds.VariableKind.Const : Kinds.VariableKind.None;
                 var type = local.GetAnnotatedType();
-                trapFile.localvars(this, @const, Symbol.Name, @var, Type.Create(Context, type).TypeRef, parent);
+                trapFile.localvars(this, kind, Symbol.Name, @var, Type.Create(Context, type).TypeRef, parent);
 
                 PopulateNullability(trapFile, local.GetAnnotatedType());
                 if (local.IsRef)
@@ -37,7 +37,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
             else
             {
-                trapFile.localvars(this, 1, Symbol.Name, @var, Type.Create(Context, parent.Type).TypeRef, parent);
+                trapFile.localvars(this, Kinds.VariableKind.None, Symbol.Name, @var, Type.Create(Context, parent.Type).TypeRef, parent);
             }
 
             trapFile.localvar_location(this, Location);
