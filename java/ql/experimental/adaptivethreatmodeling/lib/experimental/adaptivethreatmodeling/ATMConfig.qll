@@ -69,6 +69,7 @@ abstract class AtmConfig extends TaintTracking::Configuration {
    * Holds if `sink` is a known sink for this query of type `sinkType`.
    */
   final predicate isKnownSink(DataFlow::Node sink, EndpointType sinkType) {
+    sinkType = this.getASinkEndpointType() and
     // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
     // known sink for the class.
     exists(EndpointCharacteristics::EndpointCharacteristic characteristic |
