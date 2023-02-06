@@ -1,0 +1,22 @@
+extensions:
+- addsTo:
+    pack: codeql/java-all
+    extensible: sourceModel
+  data:
+    - ["io.netty.handler.codec.http2", "Http2FrameListener", True, "onDataRead", "", "", "Parameter[2]", "remote", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2FrameListener", True, "onHeadersRead", "", "", "Parameter[2]", "remote", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2FrameListener", True, "onPushPromiseRead", "", "", "Parameter[3]", "remote", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2FrameListener", True, "onUnknownFrame", "", "", "Parameter[4]", "remote", "manual"]
+- addsTo:
+    pack: codeql/java-all
+    extensible: summaryModel
+  data:
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "authority", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "iterator", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "method", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "path", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "scheme", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "status", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "valueIterator", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2HeadersFrame", True, "headers", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2PushPromiseFrame", True, "http2Headers", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

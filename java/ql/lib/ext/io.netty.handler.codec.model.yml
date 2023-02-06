@@ -12,5 +12,18 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel 
     data:
-      - ["io.netty.handler.codec", "HeadersUtils", False, "iteratorAsString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec", "HeadersUtils", False, "toString", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec", "HeadersUtils", False, "getAsString", "(Headers,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec", "HeadersUtils", False, "getAllAsString", "(Headers,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec", "HeadersUtils", False, "namesAsString", "(Headers)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec", "HeadersUtils", False, "iteratorAsString", "(Iterable)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec", "HeadersUtils", False, "toString", "(Class,Iterator,int)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec", "Headers", True, "get", "(Object)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec", "Headers", True, "get", "(Object,Object)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec", "Headers", True, "get", "(Object,Object)", "", "Argument[1]", "ReturnValue", "value", "manual"]
+      - ["io.netty.handler.codec", "Headers", True, "getAll", "(Object)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec", "Headers", True, "getAllAndRemove", "(Object)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec", "Headers", True, "getAndRemove", "(Object)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec", "Headers", True, "getAndRemove", "(Object)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec", "Headers", True, "getAndRemove", "(Object,Object)", "", "Argument[1]", "ReturnValue", "value", "manual"]
+      - ["io.netty.handler.codec", "Headers", True, "iterator", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec", "Headers", True, "names", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
