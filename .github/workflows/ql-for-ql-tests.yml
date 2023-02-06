@@ -36,6 +36,8 @@ jobs:
             ~/.cargo/git
             ql/target
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-qltest-cargo-${{ hashFiles('ql/rust-toolchain.toml', 'ql/**/Cargo.lock') }}
+      - name: Check formatting
+        run: cd ql; cargo fmt --all -- --check
       - name: Build extractor
         run: |
           cd ql;
