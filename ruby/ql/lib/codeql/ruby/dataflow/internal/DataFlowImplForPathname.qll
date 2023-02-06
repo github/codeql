@@ -1033,6 +1033,122 @@ private module Stage1 implements StageSig {
     )
   }
 
+  pragma[nomagic]
+  private predicate viableReturnPosOutNodeCand1(
+    DataFlowCall call, ReturnPosition pos, NodeEx out, Configuration config
+  ) {
+    Stage1::revFlow(out, config) and
+    Stage1::viableReturnPosOutNodeCandFwd1(call, pos, out, config)
+  }
+
+  /**
+   * Holds if data can flow out of `call` from `ret` to `out`, either
+   * through a `ReturnNode` or through an argument that has been mutated, and
+   * that this step is part of a path from a source to a sink.
+   */
+  pragma[nomagic]
+  private predicate flowOutOfCallNodeCand1(
+    DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, NodeEx out, Configuration config
+  ) {
+    exists(ReturnPosition pos |
+      viableReturnPosOutNodeCand1(call, pos, out, config) and
+      pos = ret.getReturnPosition() and
+      kind = pos.getKind() and
+      Stage1::revFlow(ret, config) and
+      not outBarrier(ret, config) and
+      not inBarrier(out, config)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate viableParamArgNodeCand1(
+    DataFlowCall call, ParamNodeEx p, ArgNodeEx arg, Configuration config
+  ) {
+    Stage1::viableParamArgNodeCandFwd1(call, p, arg, config) and
+    Stage1::revFlow(arg, config)
+  }
+
+  /**
+   * Holds if data can flow into `call` and that this step is part of a
+   * path from a source to a sink.
+   */
+  pragma[nomagic]
+  private predicate flowIntoCallNodeCand1(
+    DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, Configuration config
+  ) {
+    viableParamArgNodeCand1(call, p, arg, config) and
+    Stage1::revFlow(p, config) and
+    not outBarrier(arg, config) and
+    not inBarrier(p, config)
+  }
+
+  /**
+   * Gets the amount of forward branching on the origin of a cross-call path
+   * edge in the graph of paths between sources and sinks that ignores call
+   * contexts.
+   */
+  pragma[nomagic]
+  private int branch(NodeEx n1, Configuration conf) {
+    result =
+      strictcount(NodeEx n |
+        flowOutOfCallNodeCand1(_, n1, _, n, conf) or flowIntoCallNodeCand1(_, n1, n, conf)
+      )
+  }
+
+  /**
+   * Gets the amount of backward branching on the target of a cross-call path
+   * edge in the graph of paths between sources and sinks that ignores call
+   * contexts.
+   */
+  pragma[nomagic]
+  private int join(NodeEx n2, Configuration conf) {
+    result =
+      strictcount(NodeEx n |
+        flowOutOfCallNodeCand1(_, n, _, n2, conf) or flowIntoCallNodeCand1(_, n, n2, conf)
+      )
+  }
+
+  /**
+   * Holds if data can flow into `call` and that this step is part of a
+   * path from a source to a sink. The `allowsFieldFlow` flag indicates whether
+   * the branching is within the limit specified by the configuration.
+   */
+  pragma[nomagic]
+  predicate flowIntoCall(
+    DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, Configuration config
+  ) {
+    flowIntoCallNodeCand1(call, arg, p, pragma[only_bind_into](config)) and
+    exists(int b, int j |
+      b = branch(arg, pragma[only_bind_into](config)) and
+      j = join(p, pragma[only_bind_into](config)) and
+      if b.minimum(j) <= config.fieldFlowBranchLimit()
+      then allowsFieldFlow = true
+      else allowsFieldFlow = false
+    )
+  }
+
+  /**
+   * Holds if data can flow out of `call` from `ret` to `out`, either
+   * through a `ReturnNode` or through an argument that has been mutated, and
+   * that this step is part of a path from a source to a sink. The
+   * `allowsFieldFlow` flag indicates whether the branching is within the limit
+   * specified by the configuration.
+   */
+  pragma[nomagic]
+  predicate flowOutOfCall(
+    DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, NodeEx out, boolean allowsFieldFlow,
+    Configuration config
+  ) {
+    flowOutOfCallNodeCand1(call, ret, kind, out, pragma[only_bind_into](config)) and
+    exists(int b, int j |
+      b = branch(ret, pragma[only_bind_into](config)) and
+      j = join(out, pragma[only_bind_into](config)) and
+      if b.minimum(j) <= config.fieldFlowBranchLimit()
+      then allowsFieldFlow = true
+      else allowsFieldFlow = false
+    )
+  }
+
   additional predicate stats(
     boolean fwd, int nodes, int fields, int conscand, int states, int tuples, Configuration config
   ) {
@@ -1065,122 +1181,6 @@ private predicate additionalLocalFlowStepNodeCand1(NodeEx node1, NodeEx node2, C
   additionalLocalFlowStep(node1, node2, config)
 }
 
-pragma[nomagic]
-private predicate viableReturnPosOutNodeCand1(
-  DataFlowCall call, ReturnPosition pos, NodeEx out, Configuration config
-) {
-  Stage1::revFlow(out, config) and
-  Stage1::viableReturnPosOutNodeCandFwd1(call, pos, out, config)
-}
-
-/**
- * Holds if data can flow out of `call` from `ret` to `out`, either
- * through a `ReturnNode` or through an argument that has been mutated, and
- * that this step is part of a path from a source to a sink.
- */
-pragma[nomagic]
-private predicate flowOutOfCallNodeCand1(
-  DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, NodeEx out, Configuration config
-) {
-  exists(ReturnPosition pos |
-    viableReturnPosOutNodeCand1(call, pos, out, config) and
-    pos = ret.getReturnPosition() and
-    kind = pos.getKind() and
-    Stage1::revFlow(ret, config) and
-    not outBarrier(ret, config) and
-    not inBarrier(out, config)
-  )
-}
-
-pragma[nomagic]
-private predicate viableParamArgNodeCand1(
-  DataFlowCall call, ParamNodeEx p, ArgNodeEx arg, Configuration config
-) {
-  Stage1::viableParamArgNodeCandFwd1(call, p, arg, config) and
-  Stage1::revFlow(arg, config)
-}
-
-/**
- * Holds if data can flow into `call` and that this step is part of a
- * path from a source to a sink.
- */
-pragma[nomagic]
-private predicate flowIntoCallNodeCand1(
-  DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, Configuration config
-) {
-  viableParamArgNodeCand1(call, p, arg, config) and
-  Stage1::revFlow(p, config) and
-  not outBarrier(arg, config) and
-  not inBarrier(p, config)
-}
-
-/**
- * Gets the amount of forward branching on the origin of a cross-call path
- * edge in the graph of paths between sources and sinks that ignores call
- * contexts.
- */
-pragma[nomagic]
-private int branch(NodeEx n1, Configuration conf) {
-  result =
-    strictcount(NodeEx n |
-      flowOutOfCallNodeCand1(_, n1, _, n, conf) or flowIntoCallNodeCand1(_, n1, n, conf)
-    )
-}
-
-/**
- * Gets the amount of backward branching on the target of a cross-call path
- * edge in the graph of paths between sources and sinks that ignores call
- * contexts.
- */
-pragma[nomagic]
-private int join(NodeEx n2, Configuration conf) {
-  result =
-    strictcount(NodeEx n |
-      flowOutOfCallNodeCand1(_, n, _, n2, conf) or flowIntoCallNodeCand1(_, n, n2, conf)
-    )
-}
-
-/**
- * Holds if data can flow out of `call` from `ret` to `out`, either
- * through a `ReturnNode` or through an argument that has been mutated, and
- * that this step is part of a path from a source to a sink. The
- * `allowsFieldFlow` flag indicates whether the branching is within the limit
- * specified by the configuration.
- */
-pragma[nomagic]
-private predicate flowOutOfCallNodeCand1(
-  DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, NodeEx out, boolean allowsFieldFlow,
-  Configuration config
-) {
-  flowOutOfCallNodeCand1(call, ret, kind, out, pragma[only_bind_into](config)) and
-  exists(int b, int j |
-    b = branch(ret, pragma[only_bind_into](config)) and
-    j = join(out, pragma[only_bind_into](config)) and
-    if b.minimum(j) <= config.fieldFlowBranchLimit()
-    then allowsFieldFlow = true
-    else allowsFieldFlow = false
-  )
-}
-
-/**
- * Holds if data can flow into `call` and that this step is part of a
- * path from a source to a sink. The `allowsFieldFlow` flag indicates whether
- * the branching is within the limit specified by the configuration.
- */
-pragma[nomagic]
-private predicate flowIntoCallNodeCand1(
-  DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, Configuration config
-) {
-  flowIntoCallNodeCand1(call, arg, p, pragma[only_bind_into](config)) and
-  exists(int b, int j |
-    b = branch(arg, pragma[only_bind_into](config)) and
-    j = join(p, pragma[only_bind_into](config)) and
-    if b.minimum(j) <= config.fieldFlowBranchLimit()
-    then allowsFieldFlow = true
-    else allowsFieldFlow = false
-  )
-}
-
 private signature module StageSig {
   class Ap;
 
@@ -1205,6 +1205,15 @@ private signature module StageSig {
   );
 
   predicate readStepCand(NodeEx n1, Content c, NodeEx n2, Configuration config);
+
+  predicate flowIntoCall(
+    DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, Configuration config
+  );
+
+  predicate flowOutOfCall(
+    DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, NodeEx out, boolean allowsFieldFlow,
+    Configuration config
+  );
 }
 
 private module MkStage<StageSig PrevStage> {
@@ -1262,15 +1271,6 @@ private module MkStage<StageSig PrevStage> {
       ApNil ap, Configuration config, LocalCc lcc
     );
 
-    predicate flowOutOfCall(
-      DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, NodeEx out, boolean allowsFieldFlow,
-      Configuration config
-    );
-
-    predicate flowIntoCall(
-      DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, Configuration config
-    );
-
     bindingset[node, state, ap, config]
     predicate filter(NodeEx node, FlowState state, Ap ap, Configuration config);
 
@@ -1293,7 +1293,7 @@ private module MkStage<StageSig PrevStage> {
       DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, ApApprox apa,
       Configuration config
     ) {
-      flowIntoCall(call, arg, p, allowsFieldFlow, config) and
+      PrevStage::flowIntoCall(call, arg, p, allowsFieldFlow, config) and
       PrevStage::revFlowAp(p, pragma[only_bind_into](apa), pragma[only_bind_into](config)) and
       revFlowApAlias(arg, pragma[only_bind_into](apa), pragma[only_bind_into](config))
     }
@@ -1303,7 +1303,7 @@ private module MkStage<StageSig PrevStage> {
       DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, NodeEx out, boolean allowsFieldFlow,
       ApApprox apa, Configuration config
     ) {
-      flowOutOfCall(call, ret, kind, out, allowsFieldFlow, config) and
+      PrevStage::flowOutOfCall(call, ret, kind, out, allowsFieldFlow, config) and
       PrevStage::revFlowAp(out, pragma[only_bind_into](apa), pragma[only_bind_into](config)) and
       revFlowApAlias(ret, pragma[only_bind_into](apa), pragma[only_bind_into](config))
     }
@@ -1501,17 +1501,24 @@ private module MkStage<StageSig PrevStage> {
       hasHeadContent(ap, c)
     }
 
+    pragma[inline]
+    private predicate fwdFlowIn(
+      DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, FlowState state,
+      Cc outercc, CcCall innercc, ParamNodeOption summaryCtx, ApOption argAp, Ap ap, ApApprox apa,
+      Configuration config
+    ) {
+      fwdFlow(arg, state, outercc, summaryCtx, argAp, ap, apa, config) and
+      flowIntoCallApa(call, arg, p, allowsFieldFlow, apa, config) and
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
+    }
+
     pragma[nomagic]
     private predicate fwdFlowIn(
       DataFlowCall call, ParamNodeEx p, FlowState state, Cc outercc, CcCall innercc,
       ParamNodeOption summaryCtx, ApOption argAp, Ap ap, ApApprox apa, Configuration config
     ) {
-      exists(ArgNodeEx arg, boolean allowsFieldFlow |
-        fwdFlow(arg, state, outercc, summaryCtx, argAp, ap, apa, config) and
-        flowIntoCallApa(call, arg, p, allowsFieldFlow, apa, config) and
-        innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc) and
-        if allowsFieldFlow = false then ap instanceof ApNil else any()
-      )
+      fwdFlowIn(call, _, p, _, state, outercc, innercc, summaryCtx, argAp, ap, apa, config)
     }
 
     pragma[nomagic]
@@ -1941,6 +1948,48 @@ private module MkStage<StageSig PrevStage> {
       )
     }
 
+    /** Holds if there is flow from argument `arg` into parameter `p` via the call `call`. */
+    pragma[nomagic]
+    predicate flowIntoCall(
+      DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, Configuration config
+    ) {
+      exists(FlowState state, Ap ap |
+        fwdFlowIn(call, pragma[only_bind_into](arg), pragma[only_bind_into](p), allowsFieldFlow,
+          pragma[only_bind_into](state), _, _, _, _, ap, _, pragma[only_bind_into](config)) and
+        revFlow(p, state, _, _, ap, pragma[only_bind_into](config)) and
+        revFlowAlias(arg, state, ap, pragma[only_bind_into](config))
+      )
+    }
+
+    /** Holds if there is flow out of the call `call` to `out` via the return node `ret`. */
+    pragma[nomagic]
+    predicate flowOutOfCall(
+      DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, NodeEx out, boolean allowsFieldFlow,
+      Configuration config
+    ) {
+      exists(
+        FlowState state, Ap ap, Cc innercc, ParamNodeOption summaryCtx, DataFlowCallable inner
+      |
+        flowOutOfCallApa(pragma[only_bind_into](call), pragma[only_bind_into](ret), kind,
+          pragma[only_bind_into](out), pragma[only_bind_into](allowsFieldFlow), _,
+          pragma[only_bind_into](config)) and
+        fwdFlow(ret, state, innercc, summaryCtx, _, ap, pragma[only_bind_into](config)) and
+        inner = ret.getEnclosingCallable() and
+        (if allowsFieldFlow = false then ap instanceof ApNil else any()) and
+        revFlow(ret, pragma[only_bind_into](state), _, _, pragma[only_bind_into](ap),
+          pragma[only_bind_into](config)) and
+        revFlowAlias(out, pragma[only_bind_into](state), pragma[only_bind_into](ap),
+          pragma[only_bind_into](config))
+      |
+        exists(ParamNodeEx p |
+          flowIntoCall(call, _, p, _, pragma[only_bind_into](config)) and
+          summaryCtx = TParamNodeSome(p.asNode())
+        )
+        or
+        exists(getCallContextReturn(inner, call, innercc))
+      )
+    }
+
     additional predicate stats(
       boolean fwd, int nodes, int fields, int conscand, int states, int tuples, Configuration config
     ) {
@@ -2106,10 +2155,6 @@ private module Stage2Param implements MkStage<Stage1>::StageParam {
     exists(lcc)
   }
 
-  predicate flowOutOfCall = flowOutOfCallNodeCand1/6;
-
-  predicate flowIntoCall = flowIntoCallNodeCand1/5;
-
   pragma[nomagic]
   private predicate expectsContentCand(NodeEx node, Configuration config) {
     exists(Content c |
@@ -2138,26 +2183,6 @@ private module Stage2Param implements MkStage<Stage1>::StageParam {
 
 private module Stage2 implements StageSig {
   import MkStage<Stage1>::Stage<Stage2Param>
-}
-
-pragma[nomagic]
-private predicate flowOutOfCallNodeCand2(
-  DataFlowCall call, RetNodeEx node1, ReturnKindExt kind, NodeEx node2, boolean allowsFieldFlow,
-  Configuration config
-) {
-  flowOutOfCallNodeCand1(call, node1, kind, node2, allowsFieldFlow, config) and
-  Stage2::revFlow(node2, pragma[only_bind_into](config)) and
-  Stage2::revFlowAlias(node1, pragma[only_bind_into](config))
-}
-
-pragma[nomagic]
-private predicate flowIntoCallNodeCand2(
-  DataFlowCall call, ArgNodeEx node1, ParamNodeEx node2, boolean allowsFieldFlow,
-  Configuration config
-) {
-  flowIntoCallNodeCand1(call, node1, node2, allowsFieldFlow, config) and
-  Stage2::revFlow(node2, pragma[only_bind_into](config)) and
-  Stage2::revFlowAlias(node1, pragma[only_bind_into](config))
 }
 
 private module LocalFlowBigStep {
@@ -2213,8 +2238,8 @@ private module LocalFlowBigStep {
     exists(NodeEx next | Stage2::revFlow(next, state, config) |
       jumpStep(node, next, config) or
       additionalJumpStep(node, next, config) or
-      flowIntoCallNodeCand2(_, node, next, _, config) or
-      flowOutOfCallNodeCand2(_, node, _, next, _, config) or
+      Stage2::flowIntoCall(_, node, next, _, config) or
+      Stage2::flowOutOfCall(_, node, _, next, _, config) or
       Stage2::storeStepCand(node, _, _, next, _, config) or
       Stage2::readStepCand(node, _, next, config)
     )
@@ -2356,10 +2381,6 @@ private module Stage3Param implements MkStage<Stage2>::StageParam {
     exists(lcc)
   }
 
-  predicate flowOutOfCall = flowOutOfCallNodeCand2/6;
-
-  predicate flowIntoCall = flowIntoCallNodeCand2/5;
-
   pragma[nomagic]
   private predicate expectsContentCand(NodeEx node, Ap ap, Configuration config) {
     exists(Content c |
@@ -2433,32 +2454,6 @@ private module Stage4Param implements MkStage<Stage3>::StageParam {
     PrevStage::revFlow(node1, pragma[only_bind_into](state1), _, pragma[only_bind_into](config)) and
     PrevStage::revFlowAlias(node2, pragma[only_bind_into](state2), _, pragma[only_bind_into](config)) and
     exists(lcc)
-  }
-
-  pragma[nomagic]
-  predicate flowOutOfCall(
-    DataFlowCall call, RetNodeEx node1, ReturnKindExt kind, NodeEx node2, boolean allowsFieldFlow,
-    Configuration config
-  ) {
-    exists(FlowState state |
-      flowOutOfCallNodeCand2(call, node1, kind, node2, allowsFieldFlow, config) and
-      PrevStage::revFlow(node2, pragma[only_bind_into](state), _, pragma[only_bind_into](config)) and
-      PrevStage::revFlowAlias(node1, pragma[only_bind_into](state), _,
-        pragma[only_bind_into](config))
-    )
-  }
-
-  pragma[nomagic]
-  predicate flowIntoCall(
-    DataFlowCall call, ArgNodeEx node1, ParamNodeEx node2, boolean allowsFieldFlow,
-    Configuration config
-  ) {
-    exists(FlowState state |
-      flowIntoCallNodeCand2(call, node1, node2, allowsFieldFlow, config) and
-      PrevStage::revFlow(node2, pragma[only_bind_into](state), _, pragma[only_bind_into](config)) and
-      PrevStage::revFlowAlias(node1, pragma[only_bind_into](state), _,
-        pragma[only_bind_into](config))
-    )
   }
 
   pragma[nomagic]
@@ -2762,32 +2757,6 @@ private module Stage5Param implements MkStage<Stage4>::StageParam {
     localFlowBigStep(node1, state1, node2, state2, preservesValue, ap.getType(), config, lcc) and
     PrevStage::revFlow(node1, pragma[only_bind_into](state1), _, pragma[only_bind_into](config)) and
     PrevStage::revFlowAlias(node2, pragma[only_bind_into](state2), _, pragma[only_bind_into](config))
-  }
-
-  pragma[nomagic]
-  predicate flowOutOfCall(
-    DataFlowCall call, RetNodeEx node1, ReturnKindExt kind, NodeEx node2, boolean allowsFieldFlow,
-    Configuration config
-  ) {
-    exists(FlowState state |
-      flowOutOfCallNodeCand2(call, node1, kind, node2, allowsFieldFlow, config) and
-      PrevStage::revFlow(node2, pragma[only_bind_into](state), _, pragma[only_bind_into](config)) and
-      PrevStage::revFlowAlias(node1, pragma[only_bind_into](state), _,
-        pragma[only_bind_into](config))
-    )
-  }
-
-  pragma[nomagic]
-  predicate flowIntoCall(
-    DataFlowCall call, ArgNodeEx node1, ParamNodeEx node2, boolean allowsFieldFlow,
-    Configuration config
-  ) {
-    exists(FlowState state |
-      flowIntoCallNodeCand2(call, node1, node2, allowsFieldFlow, config) and
-      PrevStage::revFlow(node2, pragma[only_bind_into](state), _, pragma[only_bind_into](config)) and
-      PrevStage::revFlowAlias(node1, pragma[only_bind_into](state), _,
-        pragma[only_bind_into](config))
-    )
   }
 
   bindingset[node, state, ap, config]
