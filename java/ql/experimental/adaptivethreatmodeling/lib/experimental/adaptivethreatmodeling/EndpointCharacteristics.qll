@@ -95,10 +95,10 @@ predicate isTypeAccess(DataFlow::Node n) { n.asExpr() instanceof TypeAccess }
  */
 predicate hasMetadata(DataFlow::Node n, string metadata) {
   exists(
-    Callable callee, Call call, int index, string package, string type, boolean subtypes,
-    string name, string signature, string ext, string input, string provenance, boolean isPublic
+    Callable callee, Call call, string package, string type, boolean subtypes, string name,
+    string signature, string ext, int input, string provenance, boolean isPublic
   |
-    n.asExpr() = call.getArgument(index) and
+    n.asExpr() = call.getArgument(input) and
     callee = call.getCallee() and
     package = callee.getDeclaringType().getPackage().getName() and
     type = callee.getDeclaringType().getName() and //TODO: Will this work for inner classes? Will it produce X$Y? What about lambdas? What about enums? What about interfaces? What about annotations?
@@ -106,13 +106,12 @@ predicate hasMetadata(DataFlow::Node n, string metadata) {
     name = callee.getName() and // TODO: Will this work for constructors?
     signature = paramsString(callee) and
     ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
-    input = "Argument[" + index + "]" and // TODO: why are slashes added?
     provenance = "manual" and // TODO
     (if callee.isPublic() then isPublic = true else isPublic = false) and
     metadata =
       "{'Package': '" + package + "', 'Type': '" + type + "', 'Subtypes': " + subtypes +
         ", 'Name': '" + name + "', 'Signature': '" + signature + "', 'Ext': '" + ext +
-        "', 'Argument index': '" + input + "', 'Provenance': '" + provenance + "', 'Is public': " +
+        "', 'Argument index': " + input + ", 'Provenance': '" + provenance + "', 'Is public': " +
         isPublic + "}" // TODO: Why are the curly braces added twice?
   )
 }
