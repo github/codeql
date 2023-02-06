@@ -62,6 +62,7 @@ predicate mayBeReturnZero(Function fn) {
 }
 
 /** Gets the Guard which compares the expression `bound` */
+pragma[inline]
 GuardCondition checkByValue(Expr bound, Expr val) {
   exists(GuardCondition gc |
     (
@@ -122,8 +123,8 @@ pragma[inline]
 predicate checkConditions1(Expr div, Function fn, float changeInt) {
   exists(Expr val |
     (
-      val.getEnclosingFunction() = fn or
-      val.getEnclosingFunction() = div.getEnclosingFunction()
+      val.getEnclosingFunction() = fn //or
+      //val.getEnclosingFunction() = div.getEnclosingFunction()
     ) and
     val.getValue().toFloat() = changeInt and
     compareFunctionWithValue(div, fn, val)
