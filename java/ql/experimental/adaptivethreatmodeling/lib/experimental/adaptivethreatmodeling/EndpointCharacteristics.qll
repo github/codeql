@@ -410,21 +410,30 @@ private class RequestForgeryOtherSinkCharacteristic extends EndpointCharacterist
   }
 }
 
-// /**
-//  * Endpoints identified as "NosqlInjectionSink" by the standard Java libraries are NoSQL injection sinks with
-//  * maximal confidence.
-//  */
-// private class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
-//   NosqlInjectionSinkCharacteristic() { this = any(NosqlInjectionSinkType type).getDescription() }
-//   override predicate appliesToEndpoint(DataFlow::Node n) { n instanceof NosqlInjection::Sink }
-//   override predicate hasImplications(
-//     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
-//   ) {
-//     endpointClass instanceof NosqlInjectionSinkType and
-//     isPositiveIndicator = true and
-//     confidence = maximalConfidence()
-//   }
-// }
+/**
+ * Endpoints identified by one of the MaD `kind`s that don't belong to any of the existing endpoint types.
+ */
+class OtherMaDSinkCharacteristic extends EndpointCharacteristic {
+  OtherMaDSinkCharacteristic() { this = any(OtherMaDSinkType type).getDescription() }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    exists(string kind | sinkNode(n, kind) | not kind = any(EndpointType type).getKind())
+  }
+
+  override predicate hasImplications(
+    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
+  ) {
+    endpointClass instanceof OtherMaDSinkType and
+    isPositiveIndicator = true and
+    confidence = maximalConfidence()
+  }
+
+  predicate appliesToEndpoint(DataFlow::Node n, string kind) {
+    sinkNode(n, kind) and
+    not kind = any(EndpointType type).getKind()
+  }
+}
+
 /*
  * Characteristics that are indicative of not being a sink of any type, and have historically been used to select
  * negative samples for training.
