@@ -697,7 +697,7 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PartialDef
 pragma[nomagic]
 predicate indirectReturnOutNodeOperand0(CallInstruction call, Operand operand, int indirectionIndex) {
   Ssa::hasRawIndirectInstruction(call, indirectionIndex) and
-  operandForfullyConvertedCall(operand, call)
+  operandForFullyConvertedCall(operand, call)
 }
 
 pragma[nomagic]
@@ -705,7 +705,7 @@ predicate indirectReturnOutNodeInstruction0(
   CallInstruction call, Instruction instr, int indirectionIndex
 ) {
   Ssa::hasRawIndirectInstruction(call, indirectionIndex) and
-  instructionForfullyConvertedCall(instr, call)
+  instructionForFullyConvertedCall(instr, call)
 }
 
 /**
@@ -1392,7 +1392,7 @@ private module Cached {
     )
     or
     // If an operand flows to an instruction, then the indirection of
-    // the operand also flows to the indirction of the instruction.
+    // the operand also flows to the indirection of the instruction.
     exists(Operand operand, Instruction instr, int indirectionIndex |
       simpleInstructionLocalFlowStep(operand, instr) and
       hasOperandAndIndex(nodeFrom, operand, pragma[only_bind_into](indirectionIndex)) and
@@ -1539,7 +1539,7 @@ private module ExprFlowCached {
 
   /**
    * Holds if `n1.asExpr() = e1` and `n2.asExpr() = e2` and `n2` is the first node
-   * reacahble from `n1` such that `n2.asExpr()` exists.
+   * reachable from `n1` such that `n2.asExpr()` exists.
    */
   private predicate localExprFlowSingleExprStep(Node n1, Expr e1, Node n2, Expr e2) {
     exists(Node mid |
