@@ -42,8 +42,11 @@ nodes
 | lib/index.js:112:17:112:21 | taint |
 | lib/index.js:112:17:112:21 | taint |
 | lib/index.js:113:20:113:24 | taint |
+| lib/index.js:115:38:115:42 | taint |
 | lib/index.js:121:34:121:38 | taint |
 | lib/index.js:129:32:129:36 | taint |
+| lib/index.js:135:23:135:49 | this.op ... dOption |
+| lib/index.js:135:23:135:49 | this.op ... dOption |
 | lib/index.js:136:23:136:49 | this.op ... dOption |
 | lib/index.js:136:23:136:49 | this.op ... dOption |
 | lib/index.js:137:23:137:49 | this.op ... dOption |
@@ -94,12 +97,16 @@ edges
 | lib/index.js:98:30:98:34 | taint | lib/index.js:105:21:105:47 | this.op ... dOption |
 | lib/index.js:112:17:112:21 | taint | lib/index.js:113:20:113:24 | taint |
 | lib/index.js:112:17:112:21 | taint | lib/index.js:113:20:113:24 | taint |
+| lib/index.js:112:17:112:21 | taint | lib/index.js:115:38:115:42 | taint |
+| lib/index.js:112:17:112:21 | taint | lib/index.js:115:38:115:42 | taint |
 | lib/index.js:112:17:112:21 | taint | lib/index.js:121:34:121:38 | taint |
 | lib/index.js:112:17:112:21 | taint | lib/index.js:121:34:121:38 | taint |
 | lib/index.js:112:17:112:21 | taint | lib/index.js:129:32:129:36 | taint |
 | lib/index.js:112:17:112:21 | taint | lib/index.js:129:32:129:36 | taint |
 | lib/index.js:113:20:113:24 | taint | lib/index.js:138:23:138:32 | this.taint |
 | lib/index.js:113:20:113:24 | taint | lib/index.js:138:23:138:32 | this.taint |
+| lib/index.js:115:38:115:42 | taint | lib/index.js:135:23:135:49 | this.op ... dOption |
+| lib/index.js:115:38:115:42 | taint | lib/index.js:135:23:135:49 | this.op ... dOption |
 | lib/index.js:121:34:121:38 | taint | lib/index.js:136:23:136:49 | this.op ... dOption |
 | lib/index.js:121:34:121:38 | taint | lib/index.js:136:23:136:49 | this.op ... dOption |
 | lib/index.js:129:32:129:36 | taint | lib/index.js:137:23:137:49 | this.op ... dOption |
@@ -114,6 +121,7 @@ edges
 | lib/index.js:104:21:104:47 | this.op ... dOption | lib/index.js:86:15:86:19 | taint | lib/index.js:104:21:104:47 | this.op ... dOption | This string concatenation which depends on $@ is later $@. | lib/index.js:86:15:86:19 | taint | library input | lib/index.js:104:10:104:67 | "  var  ... ing();" | interpreted as code |
 | lib/index.js:105:21:105:47 | this.op ... dOption | lib/index.js:86:15:86:19 | taint | lib/index.js:105:21:105:47 | this.op ... dOption | This string concatenation which depends on $@ is later $@. | lib/index.js:86:15:86:19 | taint | library input | lib/index.js:105:10:105:67 | "  var  ... ing();" | interpreted as code |
 | lib/index.js:106:21:106:30 | this.taint | lib/index.js:86:15:86:19 | taint | lib/index.js:106:21:106:30 | this.taint | This string concatenation which depends on $@ is later $@. | lib/index.js:86:15:86:19 | taint | library input | lib/index.js:106:10:106:50 | "  var  ... ing();" | interpreted as code |
+| lib/index.js:135:23:135:49 | this.op ... dOption | lib/index.js:112:17:112:21 | taint | lib/index.js:135:23:135:49 | this.op ... dOption | This string concatenation which depends on $@ is later $@. | lib/index.js:112:17:112:21 | taint | library input | lib/index.js:135:12:135:69 | "  var  ... ing();" | interpreted as code |
 | lib/index.js:136:23:136:49 | this.op ... dOption | lib/index.js:112:17:112:21 | taint | lib/index.js:136:23:136:49 | this.op ... dOption | This string concatenation which depends on $@ is later $@. | lib/index.js:112:17:112:21 | taint | library input | lib/index.js:136:12:136:69 | "  var  ... ing();" | interpreted as code |
 | lib/index.js:137:23:137:49 | this.op ... dOption | lib/index.js:112:17:112:21 | taint | lib/index.js:137:23:137:49 | this.op ... dOption | This string concatenation which depends on $@ is later $@. | lib/index.js:112:17:112:21 | taint | library input | lib/index.js:137:12:137:69 | "  var  ... ing();" | interpreted as code |
 | lib/index.js:138:23:138:32 | this.taint | lib/index.js:112:17:112:21 | taint | lib/index.js:138:23:138:32 | this.taint | This string concatenation which depends on $@ is later $@. | lib/index.js:112:17:112:21 | taint | library input | lib/index.js:138:12:138:52 | "  var  ... ing();" | interpreted as code |
