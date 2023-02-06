@@ -64,7 +64,7 @@ predicate isInsecureEncryption(string name) { name.regexpMatch(getInsecureAlgori
  */
 bindingset[name]
 predicate isEncryptionAdditionalEvidence(string name) {
-  name.regexpMatch("(?i).*" + ["crypt", "code", "coding", "cbc", "key", "cipher", "mac"] + ".*")
+  name.regexpMatch("(?i).*(crypt|code|coding|cbc|key|cipher|mac).*")
 }
 
 /**
