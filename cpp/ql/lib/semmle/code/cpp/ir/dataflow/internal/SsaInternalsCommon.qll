@@ -9,7 +9,7 @@ private import DataFlowPrivate
 
 /**
  * Holds if `operand` is an operand that is not used by the dataflow library.
- * Ignored operands are not recognizd as uses by SSA, and they don't have a
+ * Ignored operands are not recognized as uses by SSA, and they don't have a
  * corresponding `(Indirect)OperandNode`.
  */
 predicate ignoreOperand(Operand operand) {
@@ -208,7 +208,7 @@ private module IteratorIndirections {
 
     override predicate isAdditionalDereference(Instruction deref, Operand address) {
       exists(CallInstruction call |
-        operandForfullyConvertedCall(getAUse(deref), call) and
+        operandForFullyConvertedCall(getAUse(deref), call) and
         this = call.getStaticCallTarget().getClassAndName("operator*") and
         address = call.getThisArgumentOperand()
       )
@@ -640,7 +640,7 @@ private module Cached {
    * Holds if the underlying IR has a suitable instruction to represent a value
    * that would otherwise need to be represented by a dedicated `RawIndirectInstruction` value.
    *
-   * Such instruction do not create new `RawIndirectOperand` values, but are
+   * Such instructions do not create new `RawIndirectOperand` values, but are
    * instead associated with the instruction returned by this predicate.
    */
   cached
@@ -708,7 +708,7 @@ private module Cached {
   }
 
   /**
-   * Holds if the address computed by `operand` is guarenteed to write
+   * Holds if the address computed by `operand` is guaranteed to write
    * to a specific address.
    */
   private predicate isCertainAddress(Operand operand) {

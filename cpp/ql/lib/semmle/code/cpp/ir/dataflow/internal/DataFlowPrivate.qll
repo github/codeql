@@ -404,7 +404,7 @@ private Instruction getANonConversionUse(Operand operand) {
  * Gets the operand that represents the first use of the value of `call` following
  * a sequence of conversion-like instructions.
  */
-predicate operandForfullyConvertedCall(Operand operand, CallInstruction call) {
+predicate operandForFullyConvertedCall(Operand operand, CallInstruction call) {
   exists(getANonConversionUse(operand)) and
   (
     operand = getAUse(call)
@@ -420,8 +420,8 @@ predicate operandForfullyConvertedCall(Operand operand, CallInstruction call) {
  * This predicate only holds if there is no suitable operand (i.e., no operand of a non-
  * conversion instruction) to use to represent the value of `call` after conversions.
  */
-predicate instructionForfullyConvertedCall(Instruction instr, CallInstruction call) {
-  not operandForfullyConvertedCall(_, call) and
+predicate instructionForFullyConvertedCall(Instruction instr, CallInstruction call) {
+  not operandForFullyConvertedCall(_, call) and
   (
     // If there is no use of the call then we pick the call instruction
     not exists(getAUse(call)) and
@@ -436,9 +436,9 @@ predicate instructionForfullyConvertedCall(Instruction instr, CallInstruction ca
 
 /** Holds if `node` represents the output node for `call`. */
 private predicate simpleOutNode(Node node, CallInstruction call) {
-  operandForfullyConvertedCall(node.asOperand(), call)
+  operandForFullyConvertedCall(node.asOperand(), call)
   or
-  instructionForfullyConvertedCall(node.asInstruction(), call)
+  instructionForFullyConvertedCall(node.asInstruction(), call)
 }
 
 /** A data flow node that represents the output of a call. */
