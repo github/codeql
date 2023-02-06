@@ -21,11 +21,21 @@ Always check whether <code>os.File.Close</code> returned an error and handle it 
 </recommendation>
 
 <example>
+
 <p>
-In the following example, a call to <code>os.File.Close</code> is deferred with the intention of
-closing the file after all work on it has been done. However, while errors that may arise during
+In this first example, two calls to <code>os.File.Close</code> are made with the intention of
+closing the file after all work on it has been done or if writing to it fails. However, while
+errors that may arise during the call to <code>os.File.WriteString</code> are handled, any
+errors arising from the calls to <code>os.File.Close</code> are discarded silently:
+</p>
+
+<sample src="UnhandledCloseWritableHandleNotDeferred.go" />
+
+<p>
+In the second example, a call to <code>os.File.Close</code> is deferred in order to accomplish
+the same behaviour as in the first example. However, while errors that may arise during
 the call to <code>os.File.WriteString</code> are handled, any errors arising from
-<code>os.File.Close</code> are discarded silently:
+<code>os.File.Close</code> are again discarded silently:
 </p>
 
 <sample src="UnhandledCloseWritableHandle.go" />
