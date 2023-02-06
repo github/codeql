@@ -21,14 +21,14 @@ You can install the CodeQL extension using any of the normal methods for install
 
 * Go to the `Visual Studio Code Marketplace <https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-codeql>`__ in your browser and click **Install**.
 * In the Extensions view (**Ctrl+Shift+X** or **Cmd+Shift+X**), search for ``CodeQL``, then select **Install**.
-* Download the `CodeQL VSIX file <https://github.com/github/vscode-codeql/releases>`__. Then, in the Extensions view, click **More actions** > **Install from VSIX**, and select the CodeQL VSIX file.
+* Download the `CodeQL VSIX file <https://github.com/github/vscode-codeql/releases>`__. Then, in the Extensions view, click the ellipsis representing the **Views and More Actions...** menu, select **Install from VSIX**, then select the CodeQL VSIX file.
 
 Configuring access to the CodeQL CLI
 ------------------------------------
 
 The extension uses the CodeQL CLI to compile and run queries.
 
-If you already have the CLI installed and added to your ``PATH``, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from LGTM.com. For more information, see ":ref:`CodeQL CLI <codeql-cli>`."
+If you already have the CLI installed and added to your ``PATH``, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from GitHub.com. For more information, see `CodeQL CLI <https://docs.github.com/en/code-security/codeql-cli>`__."
 
 Otherwise, the extension automatically manages access to the executable of the CLI for you. This ensures that the CLI is compatible with the CodeQL extension. You can also check for updates with the **CodeQL: Check for CLI Updates** command.
 
@@ -55,22 +55,7 @@ There are two ways to do this:
 
 .. pull-quote:: Note
 
-   For CLI users there is a third option: If you have followed the instructions in ":ref:`Getting started with the CodeQL CLI <getting-started-with-the-codeql-cli>`" to create a CodeQL directory (for example ``codeql-home``) containing the CodeQL libraries, you can open this directory in VS Code. This also gives the extension access to the CodeQL libraries.
-
-.. container:: toggle
-
-   .. container:: name
-
-      **Click to show information for LGTM Enterprise users**
-
-   Your local version of the CodeQL queries and libraries should match your version of LGTM Enterprise. For example, if you
-   use LGTM Enterprise 1.27, then you should clone the ``1.27.0`` branch of the `starter workspace <https://github.com/github/vscode-codeql-starter/>`__ (or the appropriate ``1.27.x`` branch, corresponding to each maintenance release).
-
-   This ensures that the queries and libraries you write in VS Code also work in the query console on LGTM Enterprise.
-
-   If you prefer to add the CodeQL queries and libraries to an :ref:`existing workspace <existing-workspace>` instead of the starter workspace, then you should
-   clone the appropriate branch of the `general CodeQL repository <https://github.com/github/codeql>`__ and the
-   `CodeQL repository for Go <https://github.com/github/codeql-go>`__ and add them to your workspace.
+   For CLI users there is a third option: If you have followed the instructions in "`Getting started with the CodeQL CLI <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/getting-started-with-the-codeql-cli>`__" to create a CodeQL directory (for example ``codeql-home``) containing the CodeQL libraries, you can open this directory in VS Code. This also gives the extension access to the CodeQL libraries.
 
 .. _starter-workspace:
 
@@ -78,8 +63,7 @@ Using the starter workspace
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The starter workspace is a Git repository. It contains:
 
-* The `repository of CodeQL libraries and queries <https://github.com/github/codeql>`__ for C/C++, C#, Java, JavaScript, Python, and Ruby. This is included as a submodule, so it can be updated without affecting your custom queries.
-* The `repository of CodeQL libraries and queries <https://github.com/github/codeql-go>`__ for Go. This is also included as a submodule.
+* The `repository of CodeQL libraries and queries <https://github.com/github/codeql>`__ for all supported languages. This is included as a submodule, so it can be updated without affecting your custom queries.
 * A series of folders named ``codeql-custom-queries-<language>``. These are ready for you to start developing your own custom queries for each language, using the standard libraries. There are some example queries to get you started.
 
 To use the starter workspace:
@@ -112,14 +96,10 @@ For example, to make a custom CodeQL folder called ``my-custom-cpp-pack`` depend
     version: 0.0.0
     libraryPathDependencies: codeql/cpp-all
 
-For more information about why you need to add a ``qlpack.yml`` file, see ":ref:`About QL packs <about-ql-packs>`."
-
-.. pull-quote:: Note
-
-   The CodeQL libraries for Go are not included in the ``github/codeql`` repository, but are stored separately. To analyze Go projects, clone the repository at https://github.com/github/codeql-go and add it to your workspace as above.
+For more information about why you need to add a ``qlpack.yml`` file, see "`About CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs>`__."
 
 Further reading
 ----------------
 
 * ":doc:`Analyzing your projects <analyzing-your-projects>`"
-* ":ref:`CodeQL CLI <codeql-cli>`"
+* "`CodeQL CLI <https://docs.github.com/en/code-security/codeql-cli>`__"

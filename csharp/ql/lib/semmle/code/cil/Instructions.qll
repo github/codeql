@@ -491,7 +491,7 @@ module Opcodes {
 
     override Callable getTarget() { none() }
 
-    /** Gets the function pointer type targetted by this instruction. */
+    /** Gets the function pointer type targeted by this instruction. */
     FunctionPointerType getTargetType() { cil_access(this, result) }
 
     // The number of items popped/pushed from the stack depends on the target of
@@ -766,7 +766,7 @@ module Opcodes {
   }
 
   /** A `newobj` instruction. */
-  class Newobj extends Call, @cil_newobj {
+  class NewObj extends Call, @cil_newobj {
     override string getOpcodeName() { result = "newobj" }
 
     override int getPushCount() { result = 1 }
@@ -787,6 +787,9 @@ module Opcodes {
       )
     }
   }
+
+  /** DEPRECATED: Alias for NewObj */
+  deprecated class Newobj = NewObj;
 
   /** An `initobj` instruction. */
   class Initobj extends Instruction, @cil_initobj {
@@ -847,9 +850,12 @@ module Opcodes {
   }
 
   /** A `rethrow` instruction. */
-  class Rethrow extends Throw, @cil_rethrow {
+  class ReThrow extends Throw, @cil_rethrow {
     override string getOpcodeName() { result = "rethrow" }
   }
+
+  /** DEPRECATED: Alias for ReThrow */
+  deprecated class Rethrow = ReThrow;
 
   /** A `ldlen` instruction. */
   class Ldlen extends UnaryExpr, @cil_ldlen {

@@ -30,7 +30,7 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			char[] in = (char[]) source();
 			JsonFactory instance = null;
@@ -38,7 +38,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			char[] in = (char[]) source();
 			JsonFactory instance = null;
@@ -46,7 +46,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			byte[] in = (byte[]) source();
 			JsonFactory instance = null;
@@ -54,7 +54,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			byte[] in = (byte[]) source();
 			JsonFactory instance = null;
@@ -62,7 +62,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			URL in = (URL) source();
 			JsonFactory instance = null;
@@ -70,7 +70,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			String in = (String) source();
 			JsonFactory instance = null;
@@ -78,7 +78,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			Reader in = (Reader) source();
 			JsonFactory instance = null;
@@ -86,7 +86,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			InputStream in = (InputStream) source();
 			JsonFactory instance = null;
@@ -94,7 +94,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			File in = (File) source();
 			JsonFactory instance = null;
@@ -102,7 +102,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			DataInput in = (DataInput) source();
 			JsonFactory instance = null;
@@ -110,7 +110,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			char[] in = (char[]) source();
 			ObjectMapper instance = null;
@@ -118,7 +118,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			char[] in = (char[]) source();
 			ObjectMapper instance = null;
@@ -126,7 +126,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			byte[] in = (byte[]) source();
 			ObjectMapper instance = null;
@@ -134,7 +134,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			byte[] in = (byte[]) source();
 			ObjectMapper instance = null;
@@ -142,7 +142,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			URL in = (URL) source();
 			ObjectMapper instance = null;
@@ -150,7 +150,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			String in = (String) source();
 			ObjectMapper instance = null;
@@ -158,7 +158,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			Reader in = (Reader) source();
 			ObjectMapper instance = null;
@@ -166,7 +166,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			InputStream in = (InputStream) source();
 			ObjectMapper instance = null;
@@ -174,7 +174,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			File in = (File) source();
 			ObjectMapper instance = null;
@@ -182,7 +182,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			DataInput in = (DataInput) source();
 			ObjectMapper instance = null;
@@ -190,7 +190,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint;manual"
 			Object out = null;
 			Object in = (Object) source();
 			ObjectMapper instance = null;
@@ -198,7 +198,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint;manual"
 			Object out = null;
 			Object in = (Object) source();
 			ObjectMapper instance = null;
@@ -206,7 +206,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint;manual"
 			Object out = null;
 			Object in = (Object) source();
 			ObjectMapper instance = null;
@@ -214,7 +214,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0];ReturnValue;taint;manual"
 			JsonNode out = null;
 			Object in = (Object) source();
 			ObjectMapper instance = null;
@@ -223,7 +223,7 @@ public class Test {
 		}
 		{
 			// "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;MapValue of
-			// Argument[0];ReturnValue;taint"
+			// Argument[0];ReturnValue;taint;manual"
 			JsonNode out = null;
 			Object in = (Object) newWithMapValue(source());
 			ObjectMapper instance = null;
@@ -231,7 +231,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			char[] in = (char[]) source();
 			ObjectReader instance = null;
@@ -239,7 +239,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			char[] in = (char[]) source();
 			ObjectReader instance = null;
@@ -247,7 +247,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			byte[] in = (byte[]) source();
 			ObjectReader instance = null;
@@ -255,7 +255,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			byte[] in = (byte[]) source();
 			ObjectReader instance = null;
@@ -263,7 +263,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			URL in = (URL) source();
 			ObjectReader instance = null;
@@ -271,7 +271,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			String in = (String) source();
 			ObjectReader instance = null;
@@ -279,7 +279,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			Reader in = (Reader) source();
 			ObjectReader instance = null;
@@ -287,7 +287,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			InputStream in = (InputStream) source();
 			ObjectReader instance = null;
@@ -295,7 +295,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			File in = (File) source();
 			ObjectReader instance = null;
@@ -303,7 +303,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint"
+			// "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint;manual"
 			JsonParser out = null;
 			DataInput in = (DataInput) source();
 			ObjectReader instance = null;

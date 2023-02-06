@@ -39,11 +39,8 @@ module ClientSideUrlRedirect {
   }
 
   /** A source of remote user input, considered as a flow source for unvalidated URL redirects. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() {
-      this instanceof RemoteFlowSource and
-      not this.(ClientSideRemoteFlowSource).getKind().isPath()
-    }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
+    RemoteFlowSourceAsSource() { not this.(ClientSideRemoteFlowSource).getKind().isPath() }
 
     override DataFlow::FlowLabel getAFlowLabel() {
       if this.(ClientSideRemoteFlowSource).getKind().isUrl()
@@ -53,34 +50,27 @@ module ClientSideUrlRedirect {
   }
 
   /**
-   * DEPRECATED. Can usually be replaced with `untrustedUrlSubstring`.
-   * Query accesses via `location.hash` or `location.search` are now independent
-   * `RemoteFlowSource` instances, and only substrings of `location` need to be handled via steps.
-   */
-  deprecated predicate queryAccess = untrustedUrlSubstring/2;
-
-  /**
    * Holds if `substring` refers to a substring of `base` which is considered untrusted
    * when `base` is the current URL.
    */
   predicate untrustedUrlSubstring(DataFlow::Node base, DataFlow::Node substring) {
-    exists(MethodCallExpr mce, string methodName |
-      mce = substring.asExpr() and mce.calls(base.asExpr(), methodName)
+    exists(DataFlow::MethodCallNode mcn, string methodName |
+      mcn = substring and mcn.calls(base, methodName)
     |
       methodName = "split" and
       // exclude all splits where only the prefix is accessed, which is safe for url-redirects.
-      not exists(PropAccess pacc | mce = pacc.getBase() | pacc.getPropertyName() = "0")
+      not exists(DataFlow::PropRead pacc | mcn = pacc.getBase() | pacc.getPropertyName() = "0")
       or
       methodName = StringOps::substringMethodName() and
       // exclude `location.href.substring(0, ...)` and similar, which can
       // never refer to the query string
-      not mce.getArgument(0).(NumberLiteral).getIntValue() = 0
+      not mcn.getArgument(0).getIntValue() = 0
     )
     or
-    exists(MethodCallExpr mce |
-      substring.asExpr() = mce and
-      mce = any(DataFlow::RegExpCreationNode re).getAMethodCall("exec").asExpr() and
-      base.asExpr() = mce.getArgument(0)
+    exists(DataFlow::MethodCallNode mcn |
+      substring = mcn and
+      mcn = any(DataFlow::RegExpCreationNode re).getAMethodCall("exec") and
+      base = mcn.getArgument(0)
     )
   }
 
@@ -106,8 +96,14 @@ module ClientSideUrlRedirect {
       ) and
       xss = true
       or
+      // A call to `navigation.navigate`
+      this = DataFlow::globalVarRef("navigation").getAMethodCall("navigate").getArgument(0) and
+      xss = true
+      or
       // An assignment to `location`
-      exists(Assignment assgn | isLocation(assgn.getTarget()) and astNode = assgn.getRhs()) and
+      exists(Assignment assgn |
+        isLocationNode(assgn.getTarget().flow()) and astNode = assgn.getRhs()
+      ) and
       xss = true
       or
       // An assignment to `location.href`, `location.protocol` or `location.hostname`
@@ -122,7 +118,7 @@ module ClientSideUrlRedirect {
       // A redirection using the AngularJS `$location` service
       exists(AngularJS::ServiceReference service |
         service.getName() = "$location" and
-        this.asExpr() = service.getAMethodCall("url").getArgument(0)
+        this = service.getAMethodCall("url").getArgument(0)
       ) and
       xss = false
     }
@@ -180,7 +176,7 @@ module ClientSideUrlRedirect {
       )
       or
       // e.g. node.setAttribute("href", sink)
-      any(DomMethodCallExpr call).interpretsArgumentsAsURL(this.asExpr())
+      any(DomMethodCallNode call).interpretsArgumentsAsUrl(this)
     }
 
     override predicate isXssSink() { any() }
@@ -192,9 +188,9 @@ module ClientSideUrlRedirect {
    */
   class AttributeWriteUrlSink extends ScriptUrlSink, DataFlow::ValueNode {
     AttributeWriteUrlSink() {
-      exists(DomPropWriteNode pw |
+      exists(DomPropertyWrite pw |
         pw.interpretsValueAsJavaScriptUrl() and
-        this = DataFlow::valueNode(pw.getRhs())
+        this = pw.getRhs()
       )
     }
 
@@ -235,5 +231,9 @@ module ClientSideUrlRedirect {
     NextRoutePushUrlSink() {
       this = NextJS::nextRouter().getAMemberCall(["push", "replace"]).getArgument(0)
     }
+  }
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
   }
 }

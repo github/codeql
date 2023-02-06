@@ -1,25 +1,27 @@
 import codeql_ql.ast.Ast as AST
 import TreeSitter
 private import Builtins
+private import AstMocks as Mocks
 
 cached
 newtype TAstNode =
   TTopLevel(QL::Ql file) or
   TQLDoc(QL::Qldoc qldoc) or
   TBlockComment(QL::BlockComment comment) or
-  TClasslessPredicate(QL::ClasslessPredicate pred) or
-  TVarDecl(QL::VarDecl decl) or
+  TLineComment(QL::LineComment comment) or
+  TClasslessPredicate(Mocks::ClasslessPredicateOrMock pred) or
+  TVarDecl(Mocks::VarDeclOrMock decl) or
   TFieldDecl(QL::Field field) or
-  TClass(QL::Dataclass dc) or
+  TClass(Mocks::ClassOrMock cls) or
   TCharPred(QL::Charpred pred) or
   TClassPredicate(QL::MemberPredicate pred) or
-  TDBRelation(QL::DbTable table) or
+  TDBRelation(Dbscheme::Table table) or
   TSelect(QL::Select sel) or
-  TModule(QL::Module mod) or
+  TModule(Mocks::ModuleOrMock mod) or
   TNewType(QL::Datatype dt) or
   TNewTypeBranch(QL::DatatypeBranch branch) or
   TImport(QL::ImportDirective imp) or
-  TType(QL::TypeExpr type) or
+  TType(Mocks::TypeExprOrMock type) or
   TDisjunction(QL::Disjunction disj) or
   TConjunction(QL::Conjunction conj) or
   TComparisonFormula(QL::CompTerm comp) or
@@ -59,11 +61,11 @@ newtype TAstNode =
   TPredicateExpr(QL::PredicateExpr pe) or
   TAnnotation(QL::Annotation annot) or
   TAnnotationArg(QL::AnnotArg arg) or
-  TYamlCommemt(QL::YamlComment yc) or
-  TYamlEntry(QL::YamlEntry ye) or
-  TYamlKey(QL::YamlKey yk) or
-  TYamlListitem(QL::YamlListitem yli) or
-  TYamlValue(QL::YamlValue yv) or
+  TYamlComment(Yaml::Comment yc) or
+  TYamlEntry(Yaml::Entry ye) or
+  TYamlKey(Yaml::Key yk) or
+  TYamlListitem(Yaml::Listitem yli) or
+  TYamlValue(Yaml::Value yv) or
   TBuiltinClassless(string ret, string name, string args) { isBuiltinClassless(ret, name, args) } or
   TBuiltinMember(string qual, string ret, string name, string args) {
     isBuiltinMember(qual, ret, name, args)
@@ -83,9 +85,13 @@ class TExpr =
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
-class TModuleRef = TImport or TModuleExpr;
+class TTypeRef = TImport or TModuleExpr or TType;
 
-class TYamlNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
+class TYamlNode = TYamlComment or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
+
+class TSignatureExpr = TPredicateExpr or TType or TModuleExpr;
+
+class TComment = TQLDoc or TBlockComment or TLineComment;
 
 /** DEPRECATED: Alias for TYamlNode */
 deprecated class TYAMLNode = TYamlNode;
@@ -119,13 +125,15 @@ private QL::AstNode toQLExpr(AST::AstNode n) {
   n = TDontCare(result)
 }
 
-private QL::AstNode toGenerateYaml(AST::AstNode n) {
-  n = TYamlCommemt(result) or
+Yaml::AstNode toGenerateYaml(AST::AstNode n) {
+  n = TYamlComment(result) or
   n = TYamlEntry(result) or
   n = TYamlKey(result) or
   n = TYamlListitem(result) or
   n = TYamlValue(result)
 }
+
+Dbscheme::AstNode toDbscheme(AST::AstNode n) { n = TDBRelation(result) }
 
 /**
  * Gets the underlying TreeSitter entity for a given AST node.
@@ -135,8 +143,6 @@ QL::AstNode toQL(AST::AstNode n) {
   result = toQLExpr(n)
   or
   result = toQLFormula(n)
-  or
-  result = toGenerateYaml(n)
   or
   result.(QL::ParExpr).getChild() = toQL(n)
   or
@@ -152,23 +158,23 @@ QL::AstNode toQL(AST::AstNode n) {
   or
   n = TBlockComment(result)
   or
-  n = TClasslessPredicate(result)
+  n = TLineComment(result)
   or
-  n = TVarDecl(result)
+  n = TClasslessPredicate(any(Mocks::ClasslessPredicateOrMock m | m.asLeft() = result))
+  or
+  n = TVarDecl(any(Mocks::VarDeclOrMock m | m.asLeft() = result))
   or
   n = TFieldDecl(result)
   or
-  n = TClass(result)
+  n = TClass(any(Mocks::ClassOrMock m | m.asLeft() = result))
   or
   n = TCharPred(result)
   or
   n = TClassPredicate(result)
   or
-  n = TDBRelation(result)
-  or
   n = TSelect(result)
   or
-  n = TModule(result)
+  n = TModule(any(Mocks::ModuleOrMock m | m.asLeft() = result))
   or
   n = TNewType(result)
   or
@@ -176,7 +182,7 @@ QL::AstNode toQL(AST::AstNode n) {
   or
   n = TImport(result)
   or
-  n = TType(result)
+  n = TType(any(Mocks::TypeExprOrMock m | m.asLeft() = result))
   or
   n = TAsExpr(result)
   or
@@ -201,6 +207,18 @@ QL::AstNode toQL(AST::AstNode n) {
   n = TAnnotationArg(result)
 }
 
+Mocks::MockAst toMock(AST::AstNode n) {
+  n = TModule(any(Mocks::ModuleOrMock m | m.asRight() = result))
+  or
+  n = TClass(any(Mocks::ClassOrMock m | m.asRight() = result))
+  or
+  n = TType(any(Mocks::TypeExprOrMock m | m.asRight() = result))
+  or
+  n = TClasslessPredicate(any(Mocks::ClasslessPredicateOrMock m | m.asRight() = result))
+  or
+  n = TVarDecl(any(Mocks::VarDeclOrMock m | m.asRight() = result))
+}
+
 class TPredicate =
   TCharPred or TClasslessPredicate or TClassPredicate or TDBRelation or TNewTypeBranch;
 
@@ -220,13 +238,15 @@ class TVarDef = TVarDecl or TAsExpr;
 
 module AstConsistency {
   import ql
+  import codeql_ql.ast.internal.AstNodes as AstNodes
 
   query predicate nonTotalGetParent(AstNode node) {
     exists(toQL(node).getParent()) and
     not exists(node.getParent()) and
     not node.getLocation().getStartColumn() = 1 and // startcolumn = 1 <=> top level in file <=> fine to have no parent
     exists(node.toString()) and // <- there are a few parse errors in "global-data-flow-java-1.ql", this way we filter them out.
-    not node instanceof YAML::YAMLNode and // parents for YAML doens't work
     not (node instanceof QLDoc and node.getLocation().getFile().getExtension() = "dbscheme") // qldoc in dbschemes are not hooked up
   }
+
+  query predicate nonUniqueParent(AstNode node) { count(node.getParent()) >= 2 }
 }

@@ -1,0 +1,3 @@
+[pep8]
+ignore = E302
+max_line_length = 120

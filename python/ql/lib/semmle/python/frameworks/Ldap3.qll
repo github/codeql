@@ -15,7 +15,7 @@ private import semmle.python.ApiGraphs
  */
 private module Ldap3 {
   /** The execution of an `ldap` query. */
-  private class LdapQueryExecution extends DataFlow::CallCfgNode, LDAP::LdapExecution::Range {
+  private class LdapQueryExecution extends DataFlow::CallCfgNode, Ldap::LdapExecution::Range {
     LdapQueryExecution() {
       this =
         API::moduleImport("ldap3")

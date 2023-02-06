@@ -12,6 +12,7 @@ on:
       - main
     paths:
       - ".github/workflows/csv-coverage-metrics.yml"
+      - ".github/actions/fetch-codeql/action.yml"
 
 jobs:
   publish-java:
@@ -54,7 +55,7 @@ jobs:
           DATABASE="${{ runner.temp }}/csharp-database"
           PROJECT="${{ runner.temp }}/csharp-project"
           dotnet new classlib --language=C# --output="$PROJECT"
-          codeql database create "$DATABASE" --language=csharp --source-root="$PROJECT" --command 'dotnet build /t:rebuild csharp-project.csproj /p:UseSharedCompilation=false'
+          codeql database create "$DATABASE" --language=csharp --source-root="$PROJECT" --command 'dotnet build /t:rebuild csharp-project.csproj'
       - name: Capture coverage information
         run: |
           DATABASE="${{ runner.temp }}/csharp-database"

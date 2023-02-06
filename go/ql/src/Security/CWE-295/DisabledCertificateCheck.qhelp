@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The field <code>InsecureSkipVerify</code> controls whether a TLS client verifies the server's
+certificate chain and host name. If set to <code>true</code>, the client will accept any certificate
+and any host name in that certificate, making it susceptible to man-in-the-middle attacks.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do not set <code>InsecureSkipVerify</code> to <code>true</code> except in tests.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following code snippet shows a function that performs an HTTP request over TLS with
+certificate verification disabled:
+</p>
+<sample src="DisabledCertificateCheck.go"/>
+<p>
+While this is acceptable in a test, it should not be used in production code. Instead, certificates
+should be configured such that verification can be performed.
+</p>
+</example>
+<references>
+<li>
+Package tls: <a href="https://golang.org/pkg/crypto/tls/#Config">Config</a>.
+</li>
+<li>
+SSL.com: <a href="https://www.ssl.com/article/browsers-and-certificate-validation/">Browsers and Certificate Validation</a>.
+</li>
+</references>
+</qhelp>

@@ -3,4 +3,4 @@ groups:
   - cpp
   - examples
 dependencies:
-  codeql/cpp-all: "*"
+  codeql/cpp-all: ${workspace}

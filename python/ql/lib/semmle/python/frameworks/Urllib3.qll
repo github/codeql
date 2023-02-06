@@ -42,9 +42,6 @@ private module Urllib3 {
             .getASubclass+()
     }
 
-    /** Gets a reference to an instance of a `urllib3.request.RequestMethods` subclass. */
-    private API::Node instance() { result = classRef().getReturn() }
-
     /**
      * A call to a method making an outgoing request.
      *
@@ -52,10 +49,11 @@ private module Urllib3 {
      * - https://urllib3.readthedocs.io/en/stable/reference/urllib3.request.html#urllib3.request.RequestMethods
      * - https://urllib3.readthedocs.io/en/stable/reference/urllib3.connectionpool.html#urllib3.HTTPConnectionPool.urlopen
      */
-    private class RequestCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
+    private class RequestCall extends Http::Client::Request::Range, API::CallNode {
       RequestCall() {
         this =
-          instance()
+          classRef()
+              .getReturn()
               .getMember(["request", "request_encode_url", "request_encode_body", "urlopen"])
               .getACall()
       }
@@ -67,8 +65,23 @@ private module Urllib3 {
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
-        // TODO: Look into disabling certificate validation
-        none()
+        exists(API::CallNode constructor |
+          constructor = classRef().getACall() and
+          this = constructor.getReturn().getAMember().getACall()
+        |
+          // cert_reqs
+          // see https://urllib3.readthedocs.io/en/stable/user-guide.html?highlight=cert_reqs#certificate-verification
+          disablingNode = constructor.getKeywordParameter("cert_reqs").asSink() and
+          argumentOrigin = constructor.getKeywordParameter("cert_reqs").getAValueReachingSink() and
+          argumentOrigin.asExpr().(StrConst).getText() = "CERT_NONE"
+          or
+          // assert_hostname
+          // see https://urllib3.readthedocs.io/en/stable/reference/urllib3.connectionpool.html?highlight=assert_hostname#urllib3.HTTPSConnectionPool
+          disablingNode = constructor.getKeywordParameter("assert_hostname").asSink() and
+          argumentOrigin =
+            constructor.getKeywordParameter("assert_hostname").getAValueReachingSink() and
+          argumentOrigin.asExpr().(BooleanLiteral).booleanValue() = false
+        )
       }
     }
   }

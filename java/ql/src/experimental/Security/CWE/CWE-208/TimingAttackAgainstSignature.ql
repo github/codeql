@@ -10,6 +10,7 @@
  * @precision high
  * @id java/timing-attack-against-signature
  * @tags security
+ *       experimental
  *       external/cwe/cwe-208
  */
 

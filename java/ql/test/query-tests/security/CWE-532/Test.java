@@ -5,12 +5,18 @@ class Test {
         Logger logger = null;
 
         logger.info("User's password is: " + password); // $ hasTaintFlow
-    }   
+    }
 
     void test2(String authToken) {
         Logger logger = null;
 
-        logger.error("Auth failed for: " + authToken); // $ hasTaintFlow 
+        logger.error("Auth failed for: " + authToken); // $ hasTaintFlow
+    }
+
+    void test3(String username) {
+        Logger logger = null;
+
+        logger.error("Auth failed for: " + username); // Safe
     }
 
 }

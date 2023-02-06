@@ -15,13 +15,25 @@ class BoolCompare extends EqualityTest {
 
   predicate simplify(string pattern, string rewrite) {
     exists(boolean b | b = this.getAnOperand().(BooleanLiteral).getBooleanValue() |
-      this instanceof EQExpr and b = true and pattern = "A == true" and rewrite = "A"
+      this instanceof ValueOrReferenceEqualsExpr and
+      b = true and
+      pattern = "A == true" and
+      rewrite = "A"
       or
-      this instanceof NEExpr and b = false and pattern = "A != false" and rewrite = "A"
+      this instanceof ValueOrReferenceNotEqualsExpr and
+      b = false and
+      pattern = "A != false" and
+      rewrite = "A"
       or
-      this instanceof EQExpr and b = false and pattern = "A == false" and rewrite = "!A"
+      this instanceof ValueOrReferenceEqualsExpr and
+      b = false and
+      pattern = "A == false" and
+      rewrite = "!A"
       or
-      this instanceof NEExpr and b = true and pattern = "A != true" and rewrite = "!A"
+      this instanceof ValueOrReferenceNotEqualsExpr and
+      b = true and
+      pattern = "A != true" and
+      rewrite = "!A"
     )
   }
 }
@@ -80,13 +92,16 @@ class ComparisonOrEquality extends BinaryExpr {
 
 from Expr e, string pattern, string rewrite
 where
-  e.(BoolCompare).simplify(pattern, rewrite)
-  or
-  conditionalWithBool(e, pattern, rewrite)
-  or
-  e.(LogNotExpr).getExpr().(ComparisonOrEquality).negate(pattern, rewrite)
-  or
-  e.(LogNotExpr).getExpr() instanceof LogNotExpr and
-  pattern = "!!A" and
-  rewrite = "A"
+  e.getFile().isJavaSourceFile() and
+  (
+    e.(BoolCompare).simplify(pattern, rewrite)
+    or
+    conditionalWithBool(e, pattern, rewrite)
+    or
+    e.(LogNotExpr).getExpr().(ComparisonOrEquality).negate(pattern, rewrite)
+    or
+    e.(LogNotExpr).getExpr() instanceof LogNotExpr and
+    pattern = "!!A" and
+    rewrite = "A"
+  )
 select e, "Expressions of the form \"" + pattern + "\" can be simplified to \"" + rewrite + "\"."

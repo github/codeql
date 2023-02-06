@@ -1,5 +1,5 @@
 /**
- * Symbols for crosss-project jump-to-definition resolution.
+ * Symbols for cross-project jump-to-definition resolution.
  */
 
 import python

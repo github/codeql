@@ -11,8 +11,9 @@
 
 import java
 
-from CastExpr redundant, Type type
+from CastingExpr redundant, Type type
 where
+  (redundant instanceof CastExpr or redundant instanceof SafeCastExpr) and
   redundant.getType() = type and
   type = redundant.getExpr().getType()
 select redundant, "This cast is redundant - the expression is already of type '" + type + "'."

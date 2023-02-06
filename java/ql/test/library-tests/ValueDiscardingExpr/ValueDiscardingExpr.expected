@@ -1,0 +1,16 @@
+| ValueDiscardingExpr.java:9:9:9:18 | toString(...) |
+| ValueDiscardingExpr.java:18:9:18:13 | ...=... |
+| ValueDiscardingExpr.java:19:9:19:11 | ...++ |
+| ValueDiscardingExpr.java:20:9:20:11 | ++... |
+| ValueDiscardingExpr.java:21:9:21:11 | ...-- |
+| ValueDiscardingExpr.java:22:9:22:11 | --... |
+| ValueDiscardingExpr.java:24:9:24:20 | new Object(...) |
+| ValueDiscardingExpr.java:27:9:27:28 | clone(...) |
+| ValueDiscardingExpr.java:30:14:30:38 | append(...) |
+| ValueDiscardingExpr.java:35:17:35:43 | append(...) |
+| ValueDiscardingExpr.java:55:24:55:33 | toString(...) |
+| ValueDiscardingExpr.java:74:29:74:38 | toString(...) |
+| ValueDiscardingExpr.java:76:13:76:22 | toString(...) |
+| ValueDiscardingExpr.java:90:23:90:35 | new StmtExpr(...) |
+| ValueDiscardingExpr.java:91:23:91:36 | toString(...) |
+| ValueDiscardingExpr.java:95:25:95:37 | new String[] |

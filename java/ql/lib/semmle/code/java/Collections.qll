@@ -6,8 +6,8 @@
 import java
 
 /**
- * The type `t` is a parameterization of `g`, where the `i`-th type parameter of
- * `g` is instantiated to `a`?
+ * Holds if the type `t` is a parameterization of `g`, where the `i`-th type parameter of
+ * `g` is instantiated to `arg`.
  *
  * For example, `List<Integer>` parameterizes `List<T>`, instantiating its `0`-th
  * type parameter to `Integer`, while the raw type `List` also parameterizes
@@ -76,7 +76,9 @@ class CollectionSizeMethod extends CollectionMethod {
 
 /** A method that mutates the collection it belongs to. */
 class CollectionMutator extends CollectionMethod {
-  CollectionMutator() { this.getName().regexpMatch("add.*|remove.*|push|pop|clear") }
+  CollectionMutator() {
+    pragma[only_bind_into](this).getName().regexpMatch("add.*|remove.*|push|pop|clear")
+  }
 }
 
 /** A method call that mutates a collection. */
@@ -84,12 +86,14 @@ class CollectionMutation extends MethodAccess {
   CollectionMutation() { this.getMethod() instanceof CollectionMutator }
 
   /** Holds if the result of this call is not immediately discarded. */
-  predicate resultIsChecked() { not this.getParent() instanceof ExprStmt }
+  predicate resultIsChecked() { not this instanceof ValueDiscardingExpr }
 }
 
 /** A method that queries the contents of a collection without mutating it. */
 class CollectionQueryMethod extends CollectionMethod {
-  CollectionQueryMethod() { this.getName().regexpMatch("contains|containsAll|get|size|peek") }
+  CollectionQueryMethod() {
+    pragma[only_bind_into](this).getName() = ["contains", "containsAll", "get", "size", "peek"]
+  }
 }
 
 /** A `new` expression that allocates a fresh, empty collection. */

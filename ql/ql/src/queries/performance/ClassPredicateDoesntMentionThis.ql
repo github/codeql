@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @id ql/class-predicate-doesnt-use-this
  * @tags performance
- * @precision medium
+ * @precision low
  */
 
 import ql
@@ -40,7 +40,7 @@ predicate isLiteralComparison(ComparisonFormula eq) {
       or
       exists(NewTypeBranch nt |
         rhs.(Call).getTarget() = nt and
-        count(nt.getField(_)) = 0
+        not exists(nt.getField(_))
       )
     )
   )
@@ -69,7 +69,7 @@ predicate isSingleton(Type ty) {
   or
   isSingleton(ty.getASuperType())
   or
-  exists(NewTypeBranch br | count(br.getField(_)) = 0 |
+  exists(NewTypeBranch br | not exists(br.getField(_)) |
     ty.(NewTypeBranchType).getDeclaration() = br
     or
     br = unique(NewTypeBranch br2 | br2 = ty.(NewTypeType).getDeclaration().getABranch())

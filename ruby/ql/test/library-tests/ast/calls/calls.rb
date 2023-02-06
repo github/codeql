@@ -269,10 +269,12 @@ foo(&)
 # splat argument
 foo(*bar)
 foo(*X::bar)
+foo(*)
 
 # hash-splat argument
 foo(**bar)
 foo(**X::bar)
+foo(**)
 
 # the value in a keyword argument
 foo(blah: bar)
@@ -356,3 +358,9 @@ h = -> (x) do
   y
   unknown_call
 end
+
+# calls with various call operators
+list.empty?
+list&.empty?
+list::empty?
+foo&.bar(1,2) { |x| x }

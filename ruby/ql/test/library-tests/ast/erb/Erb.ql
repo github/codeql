@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 query predicate erbFiles(ErbFile f) { any() }
 

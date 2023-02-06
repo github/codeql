@@ -19,7 +19,7 @@ import javascript
  */
 pragma[inline]
 predicate isLoginSetup(Express::RouteSetup setup) {
-  // either some path that contains "login" with a write to `req.session`
+  // some path that contains "login" with a write to `req.session`
   setup.getPath().matches("%login%") and
   exists(
     setup
@@ -30,13 +30,11 @@ predicate isLoginSetup(Express::RouteSetup setup) {
         .getAPropertyRead("session")
         .getAPropertyWrite()
   )
-  or
-  // or an authentication method is used (e.g. `passport.authenticate`)
-  setup.getARouteHandler().(DataFlow::CallNode).getCalleeName() = "authenticate"
+  // passport used to be recognized, but they have since added built-in protection against session fixation
 }
 
 /**
- * Holds if `handler` regenerates its session using `req.session.regenerate`.
+ * Holds if `setup` regenerates its session using `req.session.regenerate`.
  */
 pragma[inline]
 predicate regeneratesSession(Express::RouteSetup setup) {
@@ -55,4 +53,4 @@ from Express::RouteSetup setup
 where
   isLoginSetup(setup) and
   not regeneratesSession(setup)
-select setup, "Route handler does not invalidate session following login"
+select setup, "Route handler does not invalidate session following login."

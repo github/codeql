@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Nested expressions where the spacing around operators suggests a different
+grouping than that imposed by the Go operator precedence rules are problematic:
+they could indicate a bug where the author of the code misunderstood the precedence
+rules. Even if there is no a bug, the spacing could be confusing to people who
+read the code.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Make sure that the spacing around operators reflects operator precedence, or use parentheses to
+clarify grouping.
+</p>
+</recommendation>
+
+<example>
+<p>
+Consider the following function intended for checking whether the bit at position `pos` of the variable `x`
+is set:
+</p>
+<sample src="WhitespaceContradictsPrecedence.go" />
+<p>
+Here, the spacing around <code>&amp;</code> and <code>&lt;&lt;</code> suggests the grouping
+<code>x &amp; (1&lt;&lt;pos)</code>. However, in Go <code>&amp;</code> and <code>&lt;&lt;</code> have
+the same precedence and hence are evaluated left to right, so the expression is actually equivalent to
+<code>(x &amp; 1) &lt;&lt; pos</code>.
+</p>
+<p>
+To fix this issue and give the expression its intended semantics, parentheses should be used like this:
+</p>
+<sample src="WhitespaceContradictsPrecedenceGood.go" />
+</example>
+
+<references>
+<li>The Go Programming Language Specification: <a href="https://golang.org/ref/spec#Operator_precedence">Operator precedence</a>.</li>
+</references>
+</qhelp>

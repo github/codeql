@@ -1,0 +1,15 @@
+| Edge | EdgeConstraint |
+| Edge | interface { } |
+| K | comparable |
+| Node | NodeConstraint |
+| Node | interface { } |
+| S | interface { } |
+| SF2 | interface { } |
+| SG2 | interface { } |
+| T | interface { } |
+| TF1 | interface { } |
+| TF2 | interface { } |
+| TG1 | interface { } |
+| TG2 | interface { } |
+| U | interface { } |
+| V | interface { int64 \| float64 } |

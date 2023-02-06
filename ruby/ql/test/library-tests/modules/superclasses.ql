@@ -3,7 +3,7 @@
  * @id rb/test/supertypes
  */
 
-import ruby
+import codeql.ruby.AST
 
 query predicate nodes(Module node, string key, string value) {
   key = "semmle.label" and value = node.toString()

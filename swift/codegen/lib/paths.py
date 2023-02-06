@@ -15,7 +15,4 @@ except KeyError:
 lib_dir = swift_dir / 'codegen' / 'lib'
 templates_dir = swift_dir / 'codegen' / 'templates'
 
-try:
-    exe_file = pathlib.Path(sys.argv[0]).resolve().relative_to(swift_dir)
-except ValueError:
-    exe_file = pathlib.Path(sys.argv[0]).name
+exe_file = pathlib.Path(sys.argv[0]).resolve()

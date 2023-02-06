@@ -1,6 +1,7 @@
 /**
- * @name Use of `Kernel.open` or `IO.read`
- * @description Using `Kernel.open` or `IO.read` may allow a malicious
+ * @name Use of `Kernel.open`, `IO.read` or similar sinks with user-controlled input
+ * @description Using `Kernel.open`, `IO.read`, `IO.write`, `IO.binread`, `IO.binwrite`,
+ *              `IO.foreach`, `IO.readlines`, or `URI.open` may allow a malicious
  *              user to execute arbitrary system commands.
  * @kind path-problem
  * @problem.severity error
@@ -14,39 +15,12 @@
  *       external/cwe/cwe-073
  */
 
-import ruby
-import codeql.ruby.ApiGraphs
-import codeql.ruby.frameworks.core.Kernel::Kernel
-import codeql.ruby.TaintTracking
-import codeql.ruby.dataflow.BarrierGuards
-import codeql.ruby.dataflow.RemoteFlowSources
 import codeql.ruby.DataFlow
+import codeql.ruby.TaintTracking
+import codeql.ruby.dataflow.RemoteFlowSources
+import codeql.ruby.dataflow.BarrierGuards
 import DataFlow::PathGraph
-
-/**
- * A method call that has a suggested replacement.
- */
-abstract class Replacement extends DataFlow::CallNode {
-  abstract string getFrom();
-
-  abstract string getTo();
-}
-
-class KernelOpenCall extends KernelMethodCall, Replacement {
-  KernelOpenCall() { this.getMethodName() = "open" }
-
-  override string getFrom() { result = "Kernel.open" }
-
-  override string getTo() { result = "File.open" }
-}
-
-class IOReadCall extends DataFlow::CallNode, Replacement {
-  IOReadCall() { this = API::getTopLevelMember("IO").getAMethodCall("read") }
-
-  override string getFrom() { result = "IO.read" }
-
-  override string getTo() { result = "File.read" }
-}
+import codeql.ruby.security.KernelOpenQuery
 
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "KernelOpen" }
@@ -54,14 +28,13 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(KernelOpenCall c | c.getArgument(0) = sink)
-    or
-    exists(IOReadCall c | c.getArgument(0) = sink)
+    sink = any(AmbiguousPathCall r).getPathArgument()
   }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StringConstCompare or
-    guard instanceof StringConstArrayInclusionCall
+  override predicate isSanitizer(DataFlow::Node node) {
+    node instanceof StringConstCompareBarrier or
+    node instanceof StringConstArrayInclusionCallBarrier or
+    node instanceof Sanitizer
   }
 }
 
@@ -71,7 +44,8 @@ from
 where
   config.hasFlowPath(source, sink) and
   sourceNode = source.getNode() and
-  call.asExpr().getExpr().(MethodCall).getArgument(0) = sink.getNode().asExpr().getExpr()
+  call.getArgument(0) = sink.getNode()
 select sink.getNode(), source, sink,
-  "This call to " + call.(Replacement).getFrom() +
-    " depends on a user-provided value. Replace it with " + call.(Replacement).getTo() + "."
+  "This call to " + call.(AmbiguousPathCall).getName() +
+    " depends on a $@. Consider replacing it with " + call.(AmbiguousPathCall).getReplacement() +
+    ".", source.getNode(), "user-provided value"

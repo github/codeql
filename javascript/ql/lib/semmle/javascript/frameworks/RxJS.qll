@@ -45,7 +45,7 @@ private DataFlow::Node pipeOutput(DataFlow::CallNode pipe) {
 /**
  * Holds if `pipe` acts as the identity function for success values.
  *
- * We currently lack a data-flow node to represent its input/ouput so it must
+ * We currently lack a data-flow node to represent its input/output so it must
  * be special-cased.
  */
 private predicate isIdentityPipe(DataFlow::CallNode pipe) {

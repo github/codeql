@@ -88,10 +88,16 @@ namespace Microsoft.EntityFrameworkCore
         }
     }
 
-    public static class RelationalDatabaseFacaseExtensions
+    public static class RelationalDatabaseFacadeExtensions
     {
         public static void ExecuteSqlCommand(this Infrastructure.DatabaseFacade db, string sql, params object[] parameters) { }
         public static Task ExecuteSqlCommandAsync(this Infrastructure.DatabaseFacade db, string sql, params object[] parameters) => throw null;
+
+        public static int ExecuteSqlRaw(this Infrastructure.DatabaseFacade db, string sql, IEnumerable<object> args) => throw null;
+        public static int ExecuteSqlRaw(this Infrastructure.DatabaseFacade db, string sql, params object[] args) => throw null;
+        public static Task<int> ExecuteSqlRawAsync(this Infrastructure.DatabaseFacade db, string sql, System.Threading.CancellationToken token) => throw null;
+        public static Task<int> ExecuteSqlRawAsync(this Infrastructure.DatabaseFacade db, string sql, params object[] args) => throw null;
+        public static Task<int> ExecuteSqlRawAsync(this Infrastructure.DatabaseFacade db, string sql, IEnumerable<object> args, System.Threading.CancellationToken token) => throw null;
     }
 
     struct RawSqlString
@@ -99,6 +105,11 @@ namespace Microsoft.EntityFrameworkCore
         public RawSqlString(string str) { }
         public static implicit operator Microsoft.EntityFrameworkCore.RawSqlString(FormattableString fs) => throw null;
         public static implicit operator Microsoft.EntityFrameworkCore.RawSqlString(string s) => throw null;
+    }
+
+    public static class RelationalQueryableExtensions
+    {
+        public static void FromSqlRaw<TEntity>(this DbSet<TEntity> set, string sql, params object[] args) => throw null;
     }
 }
 

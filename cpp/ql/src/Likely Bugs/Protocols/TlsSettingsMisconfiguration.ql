@@ -48,9 +48,7 @@ predicate isOptionSet(ConstructorCall cc, int flag, FunctionCall fcSetOptions) {
 }
 
 bindingset[flag]
-predicate isOptionNotSet(ConstructorCall cc, int flag) {
-  not exists(FunctionCall fcSetOptions | isOptionSet(cc, flag, fcSetOptions))
-}
+predicate isOptionNotSet(ConstructorCall cc, int flag) { not isOptionSet(cc, flag, _) }
 
 from
   BoostorgAsio::SslContextCallTlsProtocolConfig configConstructor, Expr protocolSource,
@@ -92,5 +90,6 @@ where
     isOptionSet(cc, BoostorgAsio::getShiftedSslOptionsNoTls1_2(), e) and
     msg = "no_tlsv1_2 was set"
   )
-select cc, "Usage of $@ with protocol $@ is not configured correctly: The option $@.", cc,
-  "boost::asio::ssl::context::context", protocolSource, protocolSource.toString(), e, msg
+select cc,
+  "This usage of 'boost::asio::ssl::context::context' with protocol $@ is not configured correctly: The option $@.",
+  protocolSource, protocolSource.toString(), e, msg

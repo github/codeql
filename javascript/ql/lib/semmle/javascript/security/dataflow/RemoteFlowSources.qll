@@ -164,9 +164,7 @@ private class ExternalRemoteFlowSourceSpecEntryPoint extends API::EntryPoint {
 
   string getName() { result = name }
 
-  override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef(name) }
-
-  override DataFlow::Node getARhs() { none() }
+  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef(name) }
 }
 
 /**
@@ -175,7 +173,7 @@ private class ExternalRemoteFlowSourceSpecEntryPoint extends API::EntryPoint {
 private class ExternalRemoteFlowSource extends RemoteFlowSource {
   RemoteFlowSourceAccessPath ap;
 
-  ExternalRemoteFlowSource() { Stages::Taint::ref() and this = ap.resolve().getAnImmediateUse() }
+  ExternalRemoteFlowSource() { Stages::Taint::ref() and this = ap.resolve().asSource() }
 
   override string getSourceType() { result = ap.getSourceType() }
 }

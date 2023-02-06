@@ -16,7 +16,7 @@ class Struts2ActionClass extends Class {
   Struts2ActionClass() {
     // If there are no XML files present, then we assume we any class that extends a struts 2
     // action must be reflectively constructed, as we have no better indication.
-    not exists(XMLFile xmlFile) and
+    not exists(XmlFile xmlFile) and
     this.getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Action")
     or
     // If there is a struts.xml file, then any class that is specified as an action is considered
@@ -72,7 +72,7 @@ class Struts2ActionClass extends Class {
           result = this.(Struts2ConventionActionClass).getAnActionMethod()
           or
           // In the fall-back case, use both the "execute" and any annotated methods
-          not exists(XMLFile xmlFile) and
+          not exists(XmlFile xmlFile) and
           (
             result.hasName("executes") or
             exists(StrutsActionAnnotation actionAnnotation |

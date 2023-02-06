@@ -172,7 +172,7 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
   /** Gets the expression denoting the super class of the defined class, if any. */
   override Expr getSuperClass() { result = this.getChildExpr(1) }
 
-  /** Gets the `n`th type from the `implements` clause of this class, starting at 0. */
+  /** Gets the `i`th type from the `implements` clause of this class, starting at 0. */
   override TypeExpr getSuperInterface(int i) {
     // AST indices for super interfaces: -1, -4, -7, ...
     exists(int astIndex | typeexprs(result, _, this, astIndex, _) |
@@ -493,6 +493,9 @@ class MemberDeclaration extends @property, Documentable {
    */
   predicate isStatic() { is_static(this) }
 
+  /** Gets a boolean indicating if this member is static. */
+  boolean getStaticAsBool() { if this.isStatic() then result = true else result = false }
+
   /**
    * Holds if this member is abstract.
    *
@@ -694,10 +697,10 @@ class MethodDeclaration extends MemberDeclaration {
    * the overload index is defined as if only one of them was concrete.
    */
   int getOverloadIndex() {
-    exists(ClassOrInterface type, string name |
+    exists(ClassOrInterface type, string name, boolean static |
       this =
         rank[result + 1](MethodDeclaration method, int i |
-          methodDeclaredInType(type, name, i, method)
+          methodDeclaredInType(type, name, static, i, method)
         |
           method order by i
         )
@@ -718,10 +721,11 @@ class MethodDeclaration extends MemberDeclaration {
  * Holds if the `index`th member of `type` is `method`, which has the given `name`.
  */
 private predicate methodDeclaredInType(
-  ClassOrInterface type, string name, int index, MethodDeclaration method
+  ClassOrInterface type, string name, boolean static, int index, MethodDeclaration method
 ) {
   not method instanceof ConstructorDeclaration and // distinguish methods named "constructor" from the constructor
   type.getMemberByIndex(index) = method and
+  static = method.getStaticAsBool() and
   method.getName() = name
 }
 

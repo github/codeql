@@ -10,6 +10,7 @@
  * @precision medium
  * @tags correctness
  *       security
+ *       experimental
  *       external/cwe/cwe-691
  */
 
@@ -116,4 +117,4 @@ where
   exp.(UsingArithmeticInComparison).compareWithOutZero()
   or
   exists(WhileStmt wst | wst instanceof UsingWhileAfterWhile and exp = wst.getCondition())
-select exp, "this expression needs your attention"
+select exp, "This expression needs your attention."

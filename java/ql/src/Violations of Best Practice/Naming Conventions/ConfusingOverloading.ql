@@ -57,16 +57,48 @@ private predicate candidateMethod(RefType t, Method m, string name, int numParam
   m.getNumberOfParameters() = numParam and
   m = m.getSourceDeclaration() and
   not m.getAnAnnotation() instanceof DeprecatedAnnotation and
+  // Exclude compiler generated methods, such as Kotlin `$default` methods:
+  not m.isCompilerGenerated() and
   not whitelist(name)
 }
 
-pragma[inline]
-private predicate potentiallyConfusingTypes(Type a, Type b) {
-  exists(RefType commonSubtype | hasSubtypeOrInstantiation*(a, commonSubtype) |
-    hasSubtypeOrInstantiation*(b, commonSubtype)
+predicate paramTypePair(Type t1, Type t2) {
+  exists(Method n, Method m, int i |
+    overloadedMethodsMostSpecific(n, m) and
+    t1 = n.getParameterType(i) and
+    t2 = m.getParameterType(i)
   )
+}
+
+// handle simple cases separately
+predicate potentiallyConfusingTypesSimple(Type t1, Type t2) {
+  paramTypePair(t1, t2) and
+  (
+    t1 = t2
+    or
+    t1 instanceof TypeObject and t2 instanceof RefType
+    or
+    t2 instanceof TypeObject and t1 instanceof RefType
+    or
+    confusingPrimitiveBoxedTypes(t1, t2)
+  )
+}
+
+// check erased types first
+predicate potentiallyConfusingTypesRefTypes(RefType t1, RefType t2) {
+  paramTypePair(t1, t2) and
+  not potentiallyConfusingTypesSimple(t1, t2) and
+  haveIntersection(t1, t2)
+}
+
+// then check hasSubtypeOrInstantiation
+predicate potentiallyConfusingTypes(Type t1, Type t2) {
+  potentiallyConfusingTypesSimple(t1, t2)
   or
-  confusingPrimitiveBoxedTypes(a, b)
+  potentiallyConfusingTypesRefTypes(t1, t2) and
+  exists(RefType commonSubtype | hasSubtypeOrInstantiation*(t1, commonSubtype) |
+    hasSubtypeOrInstantiation*(t2, commonSubtype)
+  )
 }
 
 private predicate hasSubtypeOrInstantiation(RefType t, RefType sub) {
@@ -85,7 +117,7 @@ private predicate confusinglyOverloaded(Method m, Method n) {
 
 private predicate wrappedAccess(Expr e, MethodAccess ma) {
   e = ma or
-  wrappedAccess(e.(CastExpr).getExpr(), ma)
+  wrappedAccess(e.(CastingExpr).getExpr(), ma)
 }
 
 private predicate delegate(Method caller, Method callee) {
@@ -99,7 +131,7 @@ private predicate delegate(Method caller, Method callee) {
       arg = p.getAnAccess()
       or
       // The parameter is cast to a supertype.
-      arg.(CastExpr).getExpr() = p.getAnAccess() and
+      arg.(CastingExpr).getExpr() = p.getAnAccess() and
       arg.getType().(RefType).getASubtype() = p.getType()
     )
   )

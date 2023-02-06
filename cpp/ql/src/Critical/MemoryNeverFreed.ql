@@ -16,4 +16,4 @@ from AllocationExpr alloc
 where
   alloc.requiresDealloc() and
   not allocMayBeFreed(alloc)
-select alloc, "This memory is never freed"
+select alloc, "This memory is never freed."

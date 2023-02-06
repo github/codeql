@@ -6,12 +6,16 @@ path_classifiers:
   test:
   - csharp/ql/src
   - csharp/ql/test
+  - go/ql/test
   - javascript/extractor/parser-tests
   - javascript/extractor/tests
   - javascript/ql/src
   - javascript/ql/test
   - python/ql/src
   - python/ql/test
+
+  example:
+  - go/ql/src
 
 queries:
   - include: "*"

@@ -57,13 +57,6 @@ private predicate isObjectClass(Class c) { c instanceof ObjectType }
  */
 class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_or_ref_type {
   /**
-   * DEPRECATED: use `getUndecoratedName()` instead.
-   *
-   * Gets the name of this type without `<...>` brackets, in case it is a generic type.
-   */
-  deprecated string getNameWithoutBrackets() { types(this, _, result) }
-
-  /**
    * Holds if this type has the qualified name `qualifier`.`name`.
    *
    * For example the class `System.IO.IOException` has
@@ -76,7 +69,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     )
     or
     not exists(this.getDeclaringType()) and
-    qualifier = this.getNamespace().getQualifiedName() and
+    qualifier = this.getNamespace().getFullName() and
     name = this.getUndecoratedName()
   }
 
@@ -824,13 +817,15 @@ class RecordClass extends RecordType, Class {
  */
 class AnonymousClass extends Class {
   AnonymousClass() { anonymous_types(this) }
+
+  override string getAPrimaryQlClass() { result = "AnonymousClass" }
 }
 
 /**
  * The `object` type, `System.Object`.
  */
 class ObjectType extends Class {
-  ObjectType() { this.hasQualifiedName("System.Object") }
+  ObjectType() { this.hasQualifiedName("System", "Object") }
 
   override string toStringWithTypes() { result = "object" }
 
@@ -841,7 +836,7 @@ class ObjectType extends Class {
  * The `string` type, `System.String`.
  */
 class StringType extends Class {
-  StringType() { this.hasQualifiedName("System.String") }
+  StringType() { this.hasQualifiedName("System", "String") }
 
   override string toStringWithTypes() { result = "string" }
 
@@ -882,7 +877,7 @@ private newtype TCallingConvention =
   MkCallingConvention(int i) { function_pointer_calling_conventions(_, i) }
 
 /**
- * Represents a signature calling convention. Specifies how arguments in a given
+ * A signature representing a calling convention. Specifies how arguments in a given
  * signature are passed from the caller to the callee.
  */
 class CallingConvention extends TCallingConvention {
@@ -890,21 +885,21 @@ class CallingConvention extends TCallingConvention {
   string toString() { result = "CallingConvention" }
 }
 
-/** Managed calling convention with fixed-length argument list. */
+/** A managed calling convention with fixed-length argument list. */
 class DefaultCallingConvention extends CallingConvention {
   DefaultCallingConvention() { this = MkCallingConvention(0) }
 
   override string toString() { result = "DefaultCallingConvention" }
 }
 
-/** Unmanaged C/C++-style calling convention where the call stack is cleaned by the caller. */
+/** An unmanaged C/C++-style calling convention where the call stack is cleaned by the caller. */
 class CDeclCallingConvention extends CallingConvention {
   CDeclCallingConvention() { this = MkCallingConvention(1) }
 
   override string toString() { result = "CDeclCallingConvention" }
 }
 
-/** Unmanaged calling convention where call stack is cleaned up by the callee. */
+/** An unmanaged calling convention where call stack is cleaned up by the callee. */
 class StdCallCallingConvention extends CallingConvention {
   StdCallCallingConvention() { this = MkCallingConvention(2) }
 
@@ -912,7 +907,7 @@ class StdCallCallingConvention extends CallingConvention {
 }
 
 /**
- * Unmanaged C++-style calling convention for calling instance member functions
+ * An unmanaged C++-style calling convention for calling instance member functions
  * with a fixed argument list.
  */
 class ThisCallCallingConvention extends CallingConvention {
@@ -921,18 +916,28 @@ class ThisCallCallingConvention extends CallingConvention {
   override string toString() { result = "ThisCallCallingConvention" }
 }
 
-/** Unmanaged calling convention where arguments are passed in registers when possible. */
+/** An unmanaged calling convention where arguments are passed in registers when possible. */
 class FastCallCallingConvention extends CallingConvention {
   FastCallCallingConvention() { this = MkCallingConvention(4) }
 
   override string toString() { result = "FastCallCallingConvention" }
 }
 
-/** Managed calling convention for passing extra arguments. */
+/** A managed calling convention for passing extra arguments. */
 class VarArgsCallingConvention extends CallingConvention {
   VarArgsCallingConvention() { this = MkCallingConvention(5) }
 
   override string toString() { result = "VarArgsCallingConvention" }
+}
+
+/**
+ * An unmanaged calling convention that indicates that the specifics
+ * are encoded as modopts.
+ */
+class UnmanagedCallingConvention extends CallingConvention {
+  UnmanagedCallingConvention() { this = MkCallingConvention(9) }
+
+  override string toString() { result = "UnmanagedCallingConvention" }
 }
 
 /**

@@ -911,7 +911,7 @@ module BooleanSplitting {
      * ```
      *
      * the branch taken in the condition on line 2 can be recorded, and the
-     * recorded value will detmine the branch taken in the condition on line 4.
+     * recorded value will determine the branch taken in the condition on line 4.
      */
     abstract predicate correlatesConditions(ConditionBlock cb1, ConditionBlock cb2, boolean inverted);
 

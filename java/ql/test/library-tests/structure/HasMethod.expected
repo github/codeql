@@ -1,4 +1,6 @@
 | structure/A.java:5:14:5:14 | A | structure/A.java:9:7:9:7 | m | structure/A.java:5:14:5:14 | A |
+| structure/A.java:10:9:10:18 | LocalClass | structure/A.java:10:34:10:49 | localClassMethod | structure/A.java:10:9:10:18 | LocalClass |
+| structure/A.java:10:61:10:76 | DoublyLocalClass | structure/A.java:10:85:10:106 | doublyLocalClassMethod | structure/A.java:10:61:10:76 | DoublyLocalClass |
 | structure/A.java:15:7:15:7 | B | structure/A.java:9:7:9:7 | m | structure/A.java:5:14:5:14 | A |
 | structure/A.java:24:7:24:7 | D | structure/A.java:9:7:9:7 | m | structure/A.java:5:14:5:14 | A |
 | structure/A.java:24:7:24:7 | D | structure/A.java:24:7:24:7 | <obinit> | structure/A.java:24:7:24:7 | D |

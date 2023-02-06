@@ -192,7 +192,7 @@ class Operation extends Expr, @op_expr {
 }
 
 /**
- * A unary operation. Either a unary arithemtic operation
+ * A unary operation. Either a unary arithmetic operation
  * (`UnaryArithmeticOperation`), a unary bitwise operation
  * (`UnaryBitwiseOperation`), a `sizeof` operation (`SizeofExpr`), a pointer
  * indirection operation (`PointerIndirectionExpr`), an address-of operation
@@ -206,7 +206,7 @@ class UnaryOperation extends Operation, @un_op {
 }
 
 /**
- * A binary operation. Either a binary arithemtic operation
+ * A binary operation. Either a binary arithmetic operation
  * (`BinaryArithmeticOperation`), a binary bitwise operation
  * (`BinaryBitwiseOperation`), a comparison operation (`ComparisonOperation`),
  * or a binary logical operation (`BinaryLogicalOperation`).
@@ -319,6 +319,18 @@ private predicate hasChildPattern(ControlFlowElement pm, Expr child) {
   exists(Expr mid |
     hasChildPattern(pm, mid) and
     mid instanceof @tuple_expr and
+    child = mid.getAChildExpr()
+  )
+  or
+  exists(Expr mid |
+    hasChildPattern(pm, mid) and
+    mid instanceof @list_pattern_expr and
+    child = mid.getAChildExpr()
+  )
+  or
+  exists(Expr mid |
+    hasChildPattern(pm, mid) and
+    mid instanceof @slice_pattern_expr and
     child = mid.getAChildExpr()
   )
 }
@@ -504,6 +516,26 @@ class PositionalPatternExpr extends PatternExpr, @positional_pattern_expr {
   PatternExpr getPattern(int n) { result = this.getChild(n) }
 
   override string getAPrimaryQlClass() { result = "PositionalPatternExpr" }
+}
+
+/** A list pattern. For example `[1, 2, int y]` in `x is [1, 2, int y]`. */
+class ListPatternExpr extends PatternExpr, @list_pattern_expr {
+  override string toString() { result = "[ ... ]" }
+
+  /** Gets the `n`th pattern. */
+  PatternExpr getPattern(int n) { result = this.getChild(n) }
+
+  override string getAPrimaryQlClass() { result = "ListPatternExpr" }
+}
+
+/** A slice pattern. For example `..` in `x is [1, .., 2]. */
+class SlicePatternExpr extends PatternExpr, @slice_pattern_expr {
+  override string toString() { result = ".." }
+
+  /** Gets the subpattern, if any. */
+  PatternExpr getPattern() { result = this.getChild(0) }
+
+  override string getAPrimaryQlClass() { result = "SlicePatternExpr" }
 }
 
 /** A unary pattern. For example, `not 1`. */
@@ -776,7 +808,7 @@ class SizeofExpr extends UnaryOperation, @sizeof_expr {
  * struct A {
  *   public void M() { }
  *
- *   unsafe int DirectDerefence() {
+ *   unsafe int DirectDereference() {
  *     int n = 10;
  *     int *pn = &n;
  *     return *pn;
@@ -788,7 +820,7 @@ class SizeofExpr extends UnaryOperation, @sizeof_expr {
  *     pa->M();
  *   }
  *
- *   unsafe void ArrayDerefence() {
+ *   unsafe void ArrayDereference() {
  *     char* cp = stackalloc char[10];
  *     cp[1] = 'a';
  *   }
@@ -813,7 +845,7 @@ class PointerIndirectionExpr extends UnaryOperation, @pointer_indirection_expr {
  *
  * ```csharp
  * class A {
- *   unsafe int DirectDerefence() {
+ *   unsafe int DirectDereference() {
  *     int n = 10;
  *     int *pn = &n;
  *     return *pn;
@@ -937,7 +969,7 @@ class ThrowExpr extends Expr, ThrowElement, @throw_expr {
    * For example, `new ArgumentException("i")` in
    * `return i != 0 ? 1 / i : throw new ArgumentException("i");`.
    */
-  // overriden for more precise qldoc
+  // overridden for more precise qldoc
   override Expr getExpr() { result = ThrowElement.super.getExpr() }
 
   override string getAPrimaryQlClass() { result = "ThrowExpr" }
@@ -1035,9 +1067,6 @@ class TupleExpr extends Expr, @tuple_expr {
 
   /** Gets an argument of this tuple. */
   Expr getAnArgument() { result = this.getArgument(_) }
-
-  /** Holds if this tuple is a read access. */
-  deprecated predicate isReadAccess() { not this = getAnAssignOrForeachChild() }
 
   /** Holds if this expression is a tuple construction. */
   predicate isConstruction() {
@@ -1173,7 +1202,7 @@ class WithExpr extends Expr, @with_expr {
   /** Gets the expression on which this `with` is called. */
   Expr getExpr() { result = this.getChild(0) }
 
-  /** Gets the clone method of the `record` that is targetted by this `with` expression. */
+  /** Gets the clone method of the `record` that is targeted by this `with` expression. */
   RecordCloneMethod getCloneMethod() {
     result = this.getExpr().getType().(RecordClass).getCloneMethod()
   }

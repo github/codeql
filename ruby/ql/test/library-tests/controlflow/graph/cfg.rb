@@ -197,6 +197,24 @@ def forward_param(a, b, ...)
   bar(b, ...)
 end
 
+1.times { |a; b| Kernel.puts a }
+
+2.times do |c; d| Kernel.puts c end
+
+# A call with a safe navigation operator
+foo&.bar(1,2) { |x| x }
+
+def filter_nil list
+  list.reject do |elem, *, **|
+    elem.nil?
+  end
+end
+
+do_something do
+  self.something
+  something_else
+end
+
 __END__
 
 Some ignored nonsense

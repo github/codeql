@@ -8,6 +8,7 @@
  * @precision medium
  * @tags correctness
  *       security
+ *       experimental
  *       external/cwe/cwe-561
  *       external/cwe/cwe-691
  *       external/cwe/cwe-478
@@ -84,7 +85,7 @@ predicate isConditionBig(SwitchStmt swtmp) {
 }
 
 /** Holds if there are labels inside the block with names similar to `default` or `case`. */
-predicate isWrongLableName(SwitchStmt swtmp) {
+predicate isWrongLabelName(SwitchStmt swtmp) {
   not swtmp.hasDefaultCase() and
   exists(LabelStmt lb |
     (
@@ -147,7 +148,7 @@ where
     isConditionBig(sw) and msg = "The range of condition values is wider than the choices."
   )
   or
-  isWrongLableName(sw) and msg = "Possibly erroneous label name."
+  isWrongLabelName(sw) and msg = "Possibly erroneous label name."
   or
   isCodeBeforeCase(sw) and msg = "Code before case will not be executed."
 select sw, msg

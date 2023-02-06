@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Interface values in Go are type tagged, that is, they are essentially pairs of the form
+<code>(value, type)</code>, where <code>value</code> is a non-interface value with the given
+<code>type</code>. Such a pair is never <code>nil</code>, even if <code>value</code> is
+<code>nil</code>.
+</p>
+<p>
+In particular, if a non-interface value <code>v</code> is assigned to a variable <code>x</code>
+whose type is an interface, then <code>x</code> will never be <code>nil</code>, regardless of
+<code>v</code>. Comparing <code>x</code> to <code>nil</code> is pointless, and may indicate
+a misunderstanding of Go interface values or some other underlying bug.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Carefully inspect the comparison to ensure it is not a symptom of a bug.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a declaration of a function <code>fetch</code> which fetches the
+contents of a URL, returning either the contents or an error value, which is a pointer to a custom
+error type <code>RequestError</code> (not shown). The function <code>niceFetch</code> wraps this
+function, printing out either the URL contents or an error message.
+</p>
+<sample src="ImpossibleInterfaceNilCheck.go"/>
+<p>
+However, because <code>e</code> is declared to be of type <code>error</code>, which is an
+interface, the <code>nil</code> check will never succeed, since <code>e</code> can never be
+<code>nil</code>.
+</p>
+<p>
+In this case, the problem can be solved by using a short variable declaration using operator
+<code>:=</code>, which will automatically infer the more precise non-interface type
+<code>*ResourceError</code> for <code>e</code>, making the <code>nil</code> check behave as
+expected.
+</p>
+<sample src="ImpossibleInterfaceNilCheckGood.go" />
+</example>
+
+<references>
+<li>Jordan Orelli: <a href="https://jordanorelli.com/post/32665860244/how-to-use-interfaces-in-go">How to use interfaces in Go</a>.</li>
+<li>Go Frequently Asked Questions: <a href="https://golang.org/doc/faq#nil_error">Why is my nil error value not equal to nil?</a>.</li>
+</references>
+</qhelp>

@@ -1,0 +1,9 @@
+# github.com/go-stack/stack v1.8.0
+## explicit
+github.com/go-stack/stack
+# github.com/revel/modules v1.0.0
+## explicit
+github.com/revel/modules
+# github.com/revel/revel v1.0.0
+## explicit
+github.com/revel/revel

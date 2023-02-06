@@ -27,9 +27,7 @@ private class RemoteFlowPassword extends HeuristicSource, RemoteFlowSource {
  * since it does not properly escape single quotes and dollar symbols.
  */
 private class JsonStringifyAsCommandInjectionSource extends HeuristicSource,
-  CommandInjection::Source {
-  JsonStringifyAsCommandInjectionSource() { this instanceof JsonStringifyCall }
-
+  CommandInjection::Source instanceof JsonStringifyCall {
   override string getSourceType() { result = "a string from JSON.stringify" }
 }
 
@@ -58,7 +56,7 @@ class RemoteServerResponse extends HeuristicSource, RemoteFlowSource {
  */
 private class RemoteFlowSourceFromDBAccess extends RemoteFlowSource, HeuristicSource {
   RemoteFlowSourceFromDBAccess() {
-    this = ModelOutput::getASourceNode("database-access-result").getAUse() or
+    this = ModelOutput::getASourceNode("database-access-result").getAValueReachableFromSource() or
     exists(DatabaseAccess dba | this = dba.getAResult())
   }
 

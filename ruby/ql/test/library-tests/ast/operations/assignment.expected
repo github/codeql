@@ -52,6 +52,19 @@ assignments
 | operations.rb:95:1:95:15 | ... = ... | = | operations.rb:95:1:95:11 | $global_var | operations.rb:95:15:95:15 | 5 | AssignExpr |
 | operations.rb:96:1:96:16 | ... *= ... | *= | operations.rb:96:1:96:11 | $global_var | operations.rb:96:16:96:16 | 6 | AssignMulExpr |
 | operations.rb:96:1:96:16 | ... = ... | = | operations.rb:96:1:96:11 | $global_var | operations.rb:96:13:96:14 | ... * ... | AssignExpr |
+| operations.rb:98:1:98:13 | ... = ... | = | operations.rb:98:1:98:9 | CONSTANT1 | operations.rb:98:13:98:13 | 5 | AssignExpr |
+| operations.rb:99:1:99:14 | ... += ... | += | operations.rb:99:1:99:9 | CONSTANT2 | operations.rb:99:14:99:14 | 6 | AssignAddExpr |
+| operations.rb:99:1:99:14 | ... = ... | = | operations.rb:99:1:99:9 | CONSTANT2 | operations.rb:99:11:99:12 | ... + ... | AssignExpr |
+| operations.rb:100:1:100:15 | ... = ... | = | operations.rb:100:1:100:9 | CONSTANT3 | operations.rb:100:11:100:13 | ... \|\| ... | AssignExpr |
+| operations.rb:100:1:100:15 | ... \|\|= ... | \|\|= | operations.rb:100:1:100:9 | CONSTANT3 | operations.rb:100:15:100:15 | 7 | AssignLogicalOrExpr |
+| operations.rb:101:1:101:3 | ... = ... | = | operations.rb:101:1:101:3 | __synth__0 | operations.rb:101:1:101:3 | Foo | AssignExpr |
+| operations.rb:101:1:101:25 | ... = ... | = | operations.rb:101:1:101:19 | MemberConstant | operations.rb:101:21:101:23 | ... \|\| ... | AssignExpr |
+| operations.rb:101:1:101:25 | ... \|\|= ... | \|\|= | operations.rb:101:1:101:19 | MemberConstant | operations.rb:101:25:101:25 | 8 | AssignLogicalOrExpr |
+| operations.rb:102:1:102:10 | ... = ... | = | operations.rb:102:1:102:10 | __synth__0 | operations.rb:102:1:102:10 | call to bar | AssignExpr |
+| operations.rb:102:1:102:31 | ... = ... | = | operations.rb:102:1:102:25 | OtherConstant | operations.rb:102:27:102:29 | ... \|\| ... | AssignExpr |
+| operations.rb:102:1:102:31 | ... \|\|= ... | \|\|= | operations.rb:102:1:102:25 | OtherConstant | operations.rb:102:31:102:31 | 7 | AssignLogicalOrExpr |
+| operations.rb:103:1:103:17 | ... = ... | = | operations.rb:103:1:103:11 | CONSTANT4 | operations.rb:103:13:103:15 | ... \|\| ... | AssignExpr |
+| operations.rb:103:1:103:17 | ... \|\|= ... | \|\|= | operations.rb:103:1:103:11 | CONSTANT4 | operations.rb:103:17:103:17 | 7 | AssignLogicalOrExpr |
 assignOperations
 | operations.rb:69:1:69:8 | ... += ... | += | operations.rb:69:1:69:1 | x | operations.rb:69:6:69:8 | 128 | AssignAddExpr |
 | operations.rb:70:1:70:7 | ... -= ... | -= | operations.rb:70:1:70:1 | y | operations.rb:70:6:70:7 | 32 | AssignSubExpr |
@@ -69,6 +82,11 @@ assignOperations
 | operations.rb:89:3:89:9 | ... += ... | += | operations.rb:89:3:89:4 | @x | operations.rb:89:9:89:9 | 2 | AssignAddExpr |
 | operations.rb:92:3:92:10 | ... /= ... | /= | operations.rb:92:3:92:5 | @@y | operations.rb:92:10:92:10 | 4 | AssignDivExpr |
 | operations.rb:96:1:96:16 | ... *= ... | *= | operations.rb:96:1:96:11 | $global_var | operations.rb:96:16:96:16 | 6 | AssignMulExpr |
+| operations.rb:99:1:99:14 | ... += ... | += | operations.rb:99:1:99:9 | CONSTANT2 | operations.rb:99:14:99:14 | 6 | AssignAddExpr |
+| operations.rb:100:1:100:15 | ... \|\|= ... | \|\|= | operations.rb:100:1:100:9 | CONSTANT3 | operations.rb:100:15:100:15 | 7 | AssignLogicalOrExpr |
+| operations.rb:101:1:101:25 | ... \|\|= ... | \|\|= | operations.rb:101:1:101:19 | MemberConstant | operations.rb:101:25:101:25 | 8 | AssignLogicalOrExpr |
+| operations.rb:102:1:102:31 | ... \|\|= ... | \|\|= | operations.rb:102:1:102:25 | OtherConstant | operations.rb:102:31:102:31 | 7 | AssignLogicalOrExpr |
+| operations.rb:103:1:103:17 | ... \|\|= ... | \|\|= | operations.rb:103:1:103:11 | CONSTANT4 | operations.rb:103:17:103:17 | 7 | AssignLogicalOrExpr |
 assignArithmeticOperations
 | operations.rb:69:1:69:8 | ... += ... | += | operations.rb:69:1:69:1 | x | operations.rb:69:6:69:8 | 128 | AssignAddExpr |
 | operations.rb:70:1:70:7 | ... -= ... | -= | operations.rb:70:1:70:1 | y | operations.rb:70:6:70:7 | 32 | AssignSubExpr |
@@ -79,9 +97,14 @@ assignArithmeticOperations
 | operations.rb:89:3:89:9 | ... += ... | += | operations.rb:89:3:89:4 | @x | operations.rb:89:9:89:9 | 2 | AssignAddExpr |
 | operations.rb:92:3:92:10 | ... /= ... | /= | operations.rb:92:3:92:5 | @@y | operations.rb:92:10:92:10 | 4 | AssignDivExpr |
 | operations.rb:96:1:96:16 | ... *= ... | *= | operations.rb:96:1:96:11 | $global_var | operations.rb:96:16:96:16 | 6 | AssignMulExpr |
+| operations.rb:99:1:99:14 | ... += ... | += | operations.rb:99:1:99:9 | CONSTANT2 | operations.rb:99:14:99:14 | 6 | AssignAddExpr |
 assignLogicalOperations
 | operations.rb:77:2:77:8 | ... &&= ... | &&= | operations.rb:77:2:77:2 | x | operations.rb:77:8:77:8 | y | AssignLogicalAndExpr |
 | operations.rb:78:2:78:8 | ... \|\|= ... | \|\|= | operations.rb:78:2:78:2 | a | operations.rb:78:8:78:8 | b | AssignLogicalOrExpr |
+| operations.rb:100:1:100:15 | ... \|\|= ... | \|\|= | operations.rb:100:1:100:9 | CONSTANT3 | operations.rb:100:15:100:15 | 7 | AssignLogicalOrExpr |
+| operations.rb:101:1:101:25 | ... \|\|= ... | \|\|= | operations.rb:101:1:101:19 | MemberConstant | operations.rb:101:25:101:25 | 8 | AssignLogicalOrExpr |
+| operations.rb:102:1:102:31 | ... \|\|= ... | \|\|= | operations.rb:102:1:102:25 | OtherConstant | operations.rb:102:31:102:31 | 7 | AssignLogicalOrExpr |
+| operations.rb:103:1:103:17 | ... \|\|= ... | \|\|= | operations.rb:103:1:103:11 | CONSTANT4 | operations.rb:103:17:103:17 | 7 | AssignLogicalOrExpr |
 assignBitwiseOperations
 | operations.rb:81:2:81:8 | ... <<= ... | <<= | operations.rb:81:2:81:2 | x | operations.rb:81:8:81:8 | 2 | AssignLShiftExpr |
 | operations.rb:82:2:82:8 | ... >>= ... | >>= | operations.rb:82:2:82:2 | y | operations.rb:82:8:82:8 | 3 | AssignRShiftExpr |

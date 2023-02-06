@@ -239,7 +239,7 @@ class HttpServerRouteSetupTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(HTTP::Server::RouteSetup setup |
+    exists(Http::Server::RouteSetup setup |
       location = setup.getLocation() and
       element = setup.toString() and
       (
@@ -261,14 +261,14 @@ class HttpServerRequestHandlerTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     (
-      exists(HTTP::Server::RequestHandler handler |
+      exists(Http::Server::RequestHandler handler |
         location = handler.getLocation() and
         element = handler.toString() and
         value = "" and
         tag = "requestHandler"
       )
       or
-      exists(HTTP::Server::RequestHandler handler, Parameter param |
+      exists(Http::Server::RequestHandler handler, Parameter param |
         param = handler.getARoutedParameter() and
         location = param.getLocation() and
         element = param.toString() and
@@ -299,21 +299,21 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
     // we need to do this step since we expect subclasses could override getARelevantTag
     tag = getARelevantTag() and
     (
-      exists(HTTP::Server::HttpResponse response |
+      exists(Http::Server::HttpResponse response |
         location = response.getLocation() and
         element = response.toString() and
         value = "" and
         tag = "HttpResponse"
       )
       or
-      exists(HTTP::Server::HttpResponse response |
+      exists(Http::Server::HttpResponse response |
         location = response.getLocation() and
         element = response.toString() and
         value = prettyNodeForInlineTest(response.getBody()) and
         tag = "responseBody"
       )
       or
-      exists(HTTP::Server::HttpResponse response |
+      exists(Http::Server::HttpResponse response |
         location = response.getLocation() and
         element = response.toString() and
         // Ensure that an expectation value such as "mimetype=text/html; charset=utf-8" is parsed as a
@@ -338,14 +338,14 @@ class HttpServerHttpRedirectResponseTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     (
-      exists(HTTP::Server::HttpRedirectResponse redirect |
+      exists(Http::Server::HttpRedirectResponse redirect |
         location = redirect.getLocation() and
         element = redirect.toString() and
         value = "" and
         tag = "HttpRedirectResponse"
       )
       or
-      exists(HTTP::Server::HttpRedirectResponse redirect |
+      exists(Http::Server::HttpRedirectResponse redirect |
         location = redirect.getLocation() and
         element = redirect.toString() and
         value = prettyNodeForInlineTest(redirect.getRedirectLocation()) and
@@ -364,7 +364,7 @@ class HttpServerCookieWriteTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(HTTP::Server::CookieWrite cookieWrite |
+    exists(Http::Server::CookieWrite cookieWrite |
       location = cookieWrite.getLocation() and
       (
         element = cookieWrite.toString() and
@@ -440,22 +440,15 @@ class PathNormalizationTest extends InlineExpectationsTest {
 class SafeAccessCheckTest extends InlineExpectationsTest {
   SafeAccessCheckTest() { this = "SafeAccessCheckTest" }
 
-  override string getARelevantTag() { result in ["checks", "branch"] }
+  override string getARelevantTag() { result = "SafeAccessCheck" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(Path::SafeAccessCheck c, DataFlow::Node checks, boolean branch |
-      c.checks(checks.asCfgNode(), branch) and
+    exists(Path::SafeAccessCheck c |
       location = c.getLocation() and
-      (
-        element = checks.toString() and
-        value = prettyNodeForInlineTest(checks) and
-        tag = "checks"
-        or
-        element = branch.toString() and
-        value = branch.toString() and
-        tag = "branch"
-      )
+      element = c.toString() and
+      value = prettyNodeForInlineTest(c) and
+      tag = "SafeAccessCheck"
     )
   }
 }
@@ -487,7 +480,8 @@ class CryptographicOperationTest extends InlineExpectationsTest {
 
   override string getARelevantTag() {
     result in [
-        "CryptographicOperation", "CryptographicOperationInput", "CryptographicOperationAlgorithm"
+        "CryptographicOperation", "CryptographicOperationInput", "CryptographicOperationAlgorithm",
+        "CryptographicOperationBlockMode"
       ]
   }
 
@@ -507,6 +501,10 @@ class CryptographicOperationTest extends InlineExpectationsTest {
         element = cryptoOperation.toString() and
         value = cryptoOperation.getAlgorithm().getName() and
         tag = "CryptographicOperationAlgorithm"
+        or
+        element = cryptoOperation.toString() and
+        value = cryptoOperation.getBlockMode() and
+        tag = "CryptographicOperationBlockMode"
       )
     )
   }
@@ -521,7 +519,7 @@ class HttpClientRequestTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(HTTP::Client::Request req, DataFlow::Node url |
+    exists(Http::Client::Request req, DataFlow::Node url |
       url = req.getAUrlPart() and
       location = url.getLocation() and
       element = url.toString() and
@@ -530,12 +528,63 @@ class HttpClientRequestTest extends InlineExpectationsTest {
     )
     or
     exists(location.getFile().getRelativePath()) and
-    exists(HTTP::Client::Request req |
+    exists(Http::Client::Request req |
       req.disablesCertificateValidation(_, _) and
       location = req.getLocation() and
       element = req.toString() and
       value = "" and
       tag = "clientRequestCertValidationDisabled"
+    )
+  }
+}
+
+class CsrfProtectionSettingTest extends InlineExpectationsTest {
+  CsrfProtectionSettingTest() { this = "CsrfProtectionSettingTest" }
+
+  override string getARelevantTag() { result = "CsrfProtectionSetting" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Http::Server::CsrfProtectionSetting setting |
+      location = setting.getLocation() and
+      element = setting.toString() and
+      value = setting.getVerificationSetting().toString() and
+      tag = "CsrfProtectionSetting"
+    )
+  }
+}
+
+class CsrfLocalProtectionSettingTest extends InlineExpectationsTest {
+  CsrfLocalProtectionSettingTest() { this = "CsrfLocalProtectionSettingTest" }
+
+  override string getARelevantTag() { result = "CsrfLocalProtection" + ["Enabled", "Disabled"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Http::Server::CsrfLocalProtectionSetting p |
+      location = p.getLocation() and
+      element = p.toString() and
+      value = p.getRequestHandler().getName().toString() and
+      if p.csrfEnabled()
+      then tag = "CsrfLocalProtectionEnabled"
+      else tag = "CsrfLocalProtectionDisabled"
+    )
+  }
+}
+
+class XmlParsingTest extends InlineExpectationsTest {
+  XmlParsingTest() { this = "XmlParsingTest" }
+
+  override string getARelevantTag() { result = "xmlVuln" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(XML::XmlParsing parsing, XML::XmlParsingVulnerabilityKind kind |
+      parsing.vulnerableTo(kind) and
+      location = parsing.getLocation() and
+      element = parsing.toString() and
+      value = "'" + kind + "'" and
+      tag = "xmlVuln"
     )
   }
 }

@@ -192,8 +192,7 @@ class BasicBlock extends TBasicBlockStart {
    * Gets the basic block that immediately dominates this basic block, if any.
    *
    * That is, all paths reaching this basic block from some entry point
-   * basic block must go through the result, which is an immediate basic block
-   * predecessor of this basic block.
+   * basic block must go through the result.
    *
    * Example:
    *
@@ -207,8 +206,7 @@ class BasicBlock extends TBasicBlockStart {
    *
    * The basic block starting on line 2 is an immediate dominator of
    * the basic block online 4 (all paths from the entry point of `M`
-   * to `return s.Length;` must go through the null check, and the null check
-   * is an immediate predecessor of `return s.Length;`).
+   * to `return s.Length;` must go through the null check.
    */
   BasicBlock getImmediateDominator() { bbIDominates(result, this) }
 

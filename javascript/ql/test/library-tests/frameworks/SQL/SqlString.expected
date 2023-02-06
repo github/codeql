@@ -41,7 +41,11 @@
 | sequelize-types.ts:7:24:7:35 | 'SELECT 123' |
 | sequelize.js:8:17:8:118 | 'SELECT ... Y name' |
 | sequelizeImport.js:3:17:3:118 | 'SELECT ... Y name' |
+| spanner2.js:4:19:4:59 | "not SQ ... anyway" |
+| spanner2.js:5:19:5:37 | { sql: "SQL code" } |
 | spanner2.js:5:26:5:35 | "SQL code" |
+| spanner2.js:6:28:6:68 | "not SQ ... anyway" |
+| spanner2.js:7:28:7:46 | { sql: "SQL code" } |
 | spanner2.js:7:35:7:44 | "SQL code" |
 | spanner-types.ts:4:12:4:23 | 'SELECT 123' |
 | spanner.js:6:8:6:17 | "SQL code" |

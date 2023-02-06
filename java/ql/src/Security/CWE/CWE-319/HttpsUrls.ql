@@ -14,10 +14,7 @@ import java
 import semmle.code.java.security.HttpsUrlsQuery
 import DataFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess m, HttpStringLiteral s
-where
-  source.getNode().asExpr() = s and
-  sink.getNode().asExpr() = m.getQualifier() and
-  any(HttpStringToUrlOpenMethodFlowConfig c).hasFlowPath(source, sink)
-select m, source, sink, "URL may have been constructed with HTTP protocol, using $@.", s,
-  "this source"
+from DataFlow::PathNode source, DataFlow::PathNode sink
+where any(HttpStringToUrlOpenMethodFlowConfig c).hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "URL may have been constructed with HTTP protocol, using $@.",
+  source.getNode(), "this HTTP URL"

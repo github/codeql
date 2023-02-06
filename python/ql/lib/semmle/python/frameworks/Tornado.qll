@@ -14,10 +14,12 @@ private import semmle.python.frameworks.Stdlib
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `tornado` PyPI package.
  * See https://www.tornadoweb.org/en/stable/.
  */
-private module Tornado {
+module Tornado {
   /**
    * Provides models for the `tornado.httputil.HTTPHeaders` class
    *
@@ -92,14 +94,14 @@ private module Tornado {
 
         /** A RequestHandler class (most likely in project code). */
         class RequestHandlerClass extends Class {
-          RequestHandlerClass() { this.getParent() = subclassRef().getAnImmediateUse().asExpr() }
+          RequestHandlerClass() { this.getParent() = subclassRef().asSource().asExpr() }
 
           /** Gets a function that could handle incoming requests, if any. */
           Function getARequestHandler() {
             // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
             // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
             result = this.getAMethod() and
-            result.getName() = HTTP::httpVerbLower()
+            result.getName() = Http::httpVerbLower()
           }
 
           /** Gets a reference to this class. */
@@ -126,8 +128,7 @@ private module Tornado {
         abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
         /** The `self` parameter in a method on the `tornado.web.RequestHandler` class or any subclass. */
-        private class SelfParam extends InstanceSource, RemoteFlowSource::Range,
-          DataFlow::ParameterNode {
+        class SelfParam extends InstanceSource, RemoteFlowSource::Range, DataFlow::ParameterNode {
           SelfParam() {
             exists(RequestHandlerClass cls | cls.getAMethod().getArg(0) = this.getParameter())
           }
@@ -375,7 +376,7 @@ private module Tornado {
   }
 
   /** A tornado route setup. */
-  abstract class TornadoRouteSetup extends HTTP::Server::RouteSetup::Range {
+  abstract class TornadoRouteSetup extends Http::Server::RouteSetup::Range {
     override string getFramework() { result = "Tornado" }
   }
 
@@ -384,13 +385,10 @@ private module Tornado {
    *
    * Needs this subclass to be considered a RegexString.
    */
-  private class TornadoRouteRegex extends RegexString {
+  private class TornadoRouteRegex extends RegexString instanceof StrConst {
     TornadoRouteSetup setup;
 
-    TornadoRouteRegex() {
-      this instanceof StrConst and
-      setup.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this)
-    }
+    TornadoRouteRegex() { setup.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this) }
 
     TornadoRouteSetup getRouteSetup() { result = setup }
   }
@@ -437,7 +435,7 @@ private module Tornado {
   }
 
   /** A request handler defined in a tornado RequestHandler class, that has no known route. */
-  private class TornadoRequestHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range {
+  private class TornadoRequestHandlerWithoutKnownRoute extends Http::Server::RequestHandler::Range {
     TornadoRequestHandlerWithoutKnownRoute() {
       exists(TornadoModule::Web::RequestHandler::RequestHandlerClass cls |
         cls.getARequestHandler() = this
@@ -464,7 +462,7 @@ private module Tornado {
    *
    * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.redirect
    */
-  private class TornadoRequestHandlerRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
+  private class TornadoRequestHandlerRedirectCall extends Http::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
     TornadoRequestHandlerRedirectCall() {
       this.getFunction() = TornadoModule::Web::RequestHandler::redirectMethod()
@@ -486,7 +484,7 @@ private module Tornado {
    *
    * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.write
    */
-  private class TornadoRequestHandlerWriteCall extends HTTP::Server::HttpResponse::Range,
+  private class TornadoRequestHandlerWriteCall extends Http::Server::HttpResponse::Range,
     DataFlow::CallCfgNode {
     TornadoRequestHandlerWriteCall() {
       this.getFunction() = TornadoModule::Web::RequestHandler::writeMethod()
@@ -504,7 +502,7 @@ private module Tornado {
    *
    * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.set_cookie
    */
-  class TornadoRequestHandlerSetCookieCall extends HTTP::Server::CookieWrite::Range,
+  class TornadoRequestHandlerSetCookieCall extends Http::Server::CookieWrite::Range,
     DataFlow::MethodCallNode {
     TornadoRequestHandlerSetCookieCall() {
       this.calls(TornadoModule::Web::RequestHandler::instance(), "set_cookie")

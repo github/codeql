@@ -10,11 +10,11 @@ public class CredentialsTest {
 		String url = "jdbc:mysql://localhost/test";
 		String u = "admin"; // hard-coded credential (flow source)
 
-		DriverManager.getConnection(url, u, p); // sensitive call (flow target)
+		DriverManager.getConnection(url, u, p); // $ HardcodedCredentialsApiCall
 		test(url, u, p);
 	}
 
 	public static void test(String url, String v, String q) throws SQLException {
-		DriverManager.getConnection(url, v, q); // sensitive call (flow target)
+		DriverManager.getConnection(url, v, q); // $ HardcodedCredentialsApiCall
 	}
 }

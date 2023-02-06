@@ -111,16 +111,28 @@ class IfExpr extends ConditionalExpr, TIfExpr {
   }
 }
 
-private class If extends IfExpr, TIf {
+private class IfReal extends IfExpr, TIfReal {
   private Ruby::If g;
 
-  If() { this = TIf(g) }
+  IfReal() { this = TIfReal(g) }
 
   final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
   final override Stmt getThen() { toGenerated(result) = g.getConsequence() }
 
   final override Stmt getElse() { toGenerated(result) = g.getAlternative() }
+
+  final override string toString() { result = "if ..." }
+}
+
+private class IfSynth extends IfExpr, TIfSynth {
+  IfSynth() { this = TIfSynth(_, _) }
+
+  final override Expr getCondition() { synthChild(this, 0, result) }
+
+  final override Stmt getThen() { synthChild(this, 1, result) }
+
+  final override Stmt getElse() { synthChild(this, 2, result) }
 
   final override string toString() { result = "if ..." }
 }

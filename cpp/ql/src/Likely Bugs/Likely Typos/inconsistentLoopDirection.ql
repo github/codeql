@@ -7,7 +7,6 @@
  * @id cpp/inconsistent-loop-direction
  * @tags correctness
  *       external/cwe/cwe-835
- *       external/microsoft/6293
  * @msrc.severity important
  */
 
@@ -52,7 +51,7 @@ predicate illDefinedDecrForStmt(
     (
       upperBound(initialCondition) < lowerBound(terminalCondition) and
       (
-        // exclude cases where the loop counter is `unsigned` (where wrapping behaviour can be used deliberately)
+        // exclude cases where the loop counter is `unsigned` (where wrapping behavior can be used deliberately)
         v.getUnspecifiedType().(IntegralType).isSigned() or
         initialCondition.getValue().toInt() = 0
       )

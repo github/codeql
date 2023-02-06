@@ -27,7 +27,12 @@ private class StdSetConstructor extends Constructor, TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of an iterator type to the qualifier
-    input.isParameterDeref(this.getAnIteratorParameterIndex()) and
+    (
+      // AST dataflow doesn't have indirection for iterators.
+      // Once we deprecate AST dataflow we can delete this first disjunct.
+      input.isParameter(this.getAnIteratorParameterIndex()) or
+      input.isParameterDeref(this.getAnIteratorParameterIndex())
+    ) and
     (
       output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
       or
@@ -45,7 +50,12 @@ private class StdSetInsert extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from last parameter to qualifier and return value
     // (where the return value is a pair, this should really flow just to the first part of it)
-    input.isParameterDeref(this.getNumberOfParameters() - 1) and
+    (
+      // AST dataflow doesn't have indirection for iterators.
+      // Once we deprecate AST dataflow we can delete this first disjunct.
+      input.isParameter(this.getNumberOfParameters() - 1) or
+      input.isParameterDeref(this.getNumberOfParameters() - 1)
+    ) and
     (
       output.isQualifierObject() or
       output.isReturnValue()

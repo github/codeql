@@ -50,7 +50,7 @@ The second recommended approach in the example verifies the parameters before us
 
 <references>
 <li>
-InfosecWriters: <a href="http://www.infosecwriters.com/Papers/DCrab_HTTP_Response.pdf">HTTP response splitting</a>.
+SecLists.org: <a href="https://seclists.org/bugtraq/2005/Apr/187">HTTP response splitting</a>.
 </li>
 <li>
 OWASP:

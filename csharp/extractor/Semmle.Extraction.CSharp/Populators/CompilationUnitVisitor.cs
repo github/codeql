@@ -3,7 +3,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Util.Logging;
 using Semmle.Extraction.CSharp.Entities;
-using Semmle.Extraction.CSharp.Entities.Statements;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Populators
@@ -60,23 +59,14 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             var entryPoint = Cx.Compilation.GetEntryPoint(System.Threading.CancellationToken.None);
-            var entryMethod = Method.Create(Cx, entryPoint);
-            if (entryMethod is null)
+            if (entryPoint is null)
             {
                 Cx.ExtractionError("No entry method found. Skipping the extraction of global statements.",
                     null, Cx.CreateLocation(globalStatements[0].GetLocation()), null, Severity.Info);
                 return;
             }
 
-            var block = GlobalStatementsBlock.Create(Cx, entryMethod);
-
-            for (var i = 0; i < globalStatements.Count; i++)
-            {
-                if (globalStatements[i].Statement is not null)
-                {
-                    Statement.Create(Cx, globalStatements[i].Statement, block, i);
-                }
-            }
+            ImplicitMainMethod.Create(Cx, entryPoint, globalStatements);
         }
     }
 }

@@ -34,7 +34,7 @@ class Stmt extends StmtParent, @stmt {
   }
 
   /** Gets a child of this statement. */
-  Element getAChild() { exists(int n | result = this.getChild(n)) }
+  Element getAChild() { result = this.getChild(_) }
 
   /** Gets the parent of this statement, if any. */
   StmtParent getParent() { stmtparents(underlyingElement(this), _, unresolveElement(result)) }
@@ -214,6 +214,26 @@ class IfStmt extends ConditionalStmt, @stmt_if {
   override string getAPrimaryQlClass() { result = "IfStmt" }
 
   /**
+   * Gets the initialization statement of this 'if' statement, if any.
+   *
+   * For example, for
+   * ```
+   * if (int x = y; b) { f(); }
+   * ```
+   * the result is `int x = y;`.
+   *
+   * Does not hold if the initialization statement is missing or an empty statement, as in
+   * ```
+   * if (b) { f(); }
+   * ```
+   * or
+   * ```
+   * if (; b) { f(); }
+   * ```
+   */
+  Stmt getInitialization() { if_initialization(underlyingElement(this), unresolveElement(result)) }
+
+  /**
    * Gets the condition expression of this 'if' statement.
    *
    * For example, for
@@ -222,7 +242,7 @@ class IfStmt extends ConditionalStmt, @stmt_if {
    * ```
    * the result is `b`.
    */
-  Expr getCondition() { result = this.getChild(0) }
+  Expr getCondition() { result = this.getChild(1) }
 
   override Expr getControllingExpr() { result = this.getCondition() }
 
@@ -300,6 +320,28 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
   override string getAPrimaryQlClass() { result = "ConstexprIfStmt" }
 
   /**
+   * Gets the initialization statement of this 'constexpr if' statement, if any.
+   *
+   * For example, for
+   * ```
+   * if constexpr (int x = y; b) { f(); }
+   * ```
+   * the result is `int x = y;`.
+   *
+   * Does not hold if the initialization statement is missing or an empty statement, as in
+   * ```
+   * if constexpr (b) { f(); }
+   * ```
+   * or
+   * ```
+   * if constexpr (; b) { f(); }
+   * ```
+   */
+  Stmt getInitialization() {
+    constexpr_if_initialization(underlyingElement(this), unresolveElement(result))
+  }
+
+  /**
    * Gets the condition expression of this 'constexpr if' statement.
    *
    * For example, for
@@ -308,7 +350,7 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
    * ```
    * the result is `b`.
    */
-  Expr getCondition() { result = this.getChild(0) }
+  Expr getCondition() { result = this.getChild(1) }
 
   override Expr getControllingExpr() { result = this.getCondition() }
 
@@ -926,7 +968,7 @@ class ForStmt extends Loop, @stmt_for {
    *
    * Does not hold if the initialization statement is an empty statement, as in
    * ```
-   * for (; i < 10; i++) { j++ }
+   * for (; i < 10; i++) { j++; }
    * ```
    */
   Stmt getInitialization() { for_initialization(underlyingElement(this), unresolveElement(result)) }
@@ -1471,6 +1513,28 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
   override string getAPrimaryQlClass() { result = "SwitchStmt" }
 
   /**
+   * Gets the initialization statement of this 'switch' statement, if any.
+   *
+   * For example, for
+   * ```
+   * switch (int x = y; b) { }
+   * ```
+   * the result is `int x = y;`.
+   *
+   * Does not hold if the initialization statement is missing or an empty statement, as in
+   * ```
+   * switch (b) { }
+   * ```
+   * or
+   * ```
+   * switch (; b) { }
+   * ```
+   */
+  Stmt getInitialization() {
+    switch_initialization(underlyingElement(this), unresolveElement(result))
+  }
+
+  /**
    * Gets the expression that this 'switch' statement switches on.
    *
    * For example, for
@@ -1485,7 +1549,7 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
    * ```
    * the result is `i`.
    */
-  Expr getExpr() { result = this.getChild(0) }
+  Expr getExpr() { result = this.getChild(1) }
 
   override Expr getControllingExpr() { result = this.getExpr() }
 

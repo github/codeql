@@ -55,7 +55,7 @@ predicate exitFunctionGuardedEdge(EssaVariable pred, EssaVariable succ) {
 }
 
 class UninitializedConfig extends TaintTracking::Configuration {
-  UninitializedConfig() { this = "Unitialized local config" }
+  UninitializedConfig() { this = "Uninitialized local config" }
 
   override predicate isSource(DataFlow::Node source, TaintKind kind) {
     kind instanceof Uninitialized and

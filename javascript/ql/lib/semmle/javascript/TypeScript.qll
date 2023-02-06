@@ -751,7 +751,7 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
 }
 
 /**
- * Gets a suitable name for the library imported by `import`.
+ * Gets a suitable name for the library imported by `imprt`.
  *
  * For relative imports, this is the snapshot-relative path to the imported module.
  * For non-relative imports, it is the import path itself.
@@ -896,21 +896,28 @@ class ArrayTypeExpr extends @array_typeexpr, TypeExpr {
   override string getAPrimaryQlClass() { result = "ArrayTypeExpr" }
 }
 
+private class RawUnionOrIntersectionTypeExpr = @union_typeexpr or @intersection_typeexpr;
+
 /**
- * A union type, such as `string|number|boolean`.
+ * A union or intersection type, such as `string|number|boolean` or `A & B`.
  */
-class UnionTypeExpr extends @union_typeexpr, TypeExpr {
-  /** Gets the `n`th type in the union, starting at 0. */
+class UnionOrIntersectionTypeExpr extends RawUnionOrIntersectionTypeExpr, TypeExpr {
+  /** Gets the `n`th type in the union or intersection, starting at 0. */
   TypeExpr getElementType(int n) { result = this.getChildTypeExpr(n) }
 
-  /** Gets any of the types in the union. */
+  /** Gets any of the types in the union or intersection. */
   TypeExpr getAnElementType() { result = this.getElementType(_) }
 
-  /** Gets the number of types in the union. This is always at least two. */
+  /** Gets the number of types in the union or intersection. This is always at least two. */
   int getNumElementType() { result = count(this.getAnElementType()) }
 
   override TypeExpr getAnUnderlyingType() { result = this.getAnElementType().getAnUnderlyingType() }
+}
 
+/**
+ * A union type, such as `string|number|boolean`.
+ */
+class UnionTypeExpr extends @union_typeexpr, UnionOrIntersectionTypeExpr {
   override string getAPrimaryQlClass() { result = "UnionTypeExpr" }
 }
 
@@ -932,18 +939,7 @@ class IndexedAccessTypeExpr extends @indexed_access_typeexpr, TypeExpr {
  *
  * In general, there are can more than two operands to an intersection type.
  */
-class IntersectionTypeExpr extends @intersection_typeexpr, TypeExpr {
-  /** Gets the `n`th operand of the intersection type, starting at 0. */
-  TypeExpr getElementType(int n) { result = this.getChildTypeExpr(n) }
-
-  /** Gets any of the operands to the intersection type. */
-  TypeExpr getAnElementType() { result = this.getElementType(_) }
-
-  /** Gets the number of operands to the intersection type. This is always at least two. */
-  int getNumElementType() { result = count(this.getAnElementType()) }
-
-  override TypeExpr getAnUnderlyingType() { result = this.getAnElementType().getAnUnderlyingType() }
-
+class IntersectionTypeExpr extends @intersection_typeexpr, UnionOrIntersectionTypeExpr {
   override string getAPrimaryQlClass() { result = "IntersectionTypeExpr" }
 }
 
@@ -1286,6 +1282,8 @@ class ExpressionWithTypeArguments extends @expression_with_type_arguments, Expr 
   override ControlFlowNode getFirstControlFlowNode() {
     result = this.getExpression().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "ExpressionWithTypeArguments" }
 }
 
 /**
@@ -1376,6 +1374,27 @@ class AsTypeAssertion extends TypeAssertion, @as_type_assertion { }
  * A type assertion specifically of the form `<T> E` (as opposed to the `E as T` syntax).
  */
 class PrefixTypeAssertion extends TypeAssertion, @prefix_type_assertion { }
+
+/**
+ * A satisfies type asserion of the form `E satisfies T` where `E` is an expression and `T` is a type.
+ */
+class SatisfiesExpr extends Expr, @satisfies_expr {
+  /** Gets the expression whose type to assert, that is, the `E` in `E as T` or `<T> E`. */
+  Expr getExpression() { result = this.getChildExpr(0) }
+
+  /** Gets the type to cast to, that is, the `T` in `E as T` or `<T> E`. */
+  TypeExpr getTypeAnnotation() { result = this.getChildTypeExpr(1) }
+
+  override ControlFlowNode getFirstControlFlowNode() {
+    result = this.getExpression().getFirstControlFlowNode()
+  }
+
+  override Expr getUnderlyingValue() { result = this.getExpression().getUnderlyingValue() }
+
+  override Expr getUnderlyingReference() { result = this.getExpression().getUnderlyingReference() }
+
+  override string getAPrimaryQlClass() { result = "SatisfiesExpr" }
+}
 
 /**
  * A TypeScript expression of form `E!`, asserting that `E` is not null.

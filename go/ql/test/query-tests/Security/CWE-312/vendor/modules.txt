@@ -1,0 +1,15 @@
+# github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
+## explicit
+github.com/golang/glog
+# github.com/sirupsen/logrus v1.5.0
+## explicit
+github.com/sirupsen/logrus
+# k8s.io/klog v1.0.0
+## explicit
+k8s.io/klog
+# github.com/golang/protobuf v1.4.2
+## explicit
+github.com/golang/protobuf
+# google.golang.org/protobuf v1.23.0
+## explicit
+google.golang.org/protobuf

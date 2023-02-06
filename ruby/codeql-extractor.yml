@@ -3,6 +3,10 @@ display_name: "Ruby"
 version: 0.1.0
 column_kind: "utf8"
 legacy_qltest_extraction: true
+github_api_languages:
+  - Ruby
+scc_languages:
+  - Ruby
 file_types:
   - name: ruby
     display_name: Ruby files

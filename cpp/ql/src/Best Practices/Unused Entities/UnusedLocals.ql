@@ -57,6 +57,5 @@ where
   not declarationHasSideEffects(v) and
   not exists(AsmStmt s | f = s.getEnclosingFunction()) and
   not v.getAnAttribute().getName() = "unused" and
-  not any(ErrorExpr e).getEnclosingFunction() = f and // unextracted expr may use `v`
-  not any(ConditionDeclExpr cde).getEnclosingFunction() = f // this case can be removed when the `if (a = b; a)` and `switch (a = b; a)` test cases don't depend on this exclusion
-select v, "Variable " + v.getName() + " is not used"
+  not any(ErrorExpr e).getEnclosingFunction() = f // unextracted expr may use `v`
+select v, "Variable " + v.getName() + " is not used."

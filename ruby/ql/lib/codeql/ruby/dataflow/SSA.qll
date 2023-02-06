@@ -6,15 +6,13 @@
  * Provides classes for working with static single assignment (SSA) form.
  */
 module Ssa {
-  private import codeql.Locations
   private import codeql.ruby.CFG
   private import codeql.ruby.ast.Variable
-  private import internal.SsaImplCommon as SsaImplCommon
   private import internal.SsaImpl as SsaImpl
   private import CfgNodes::ExprNodes
 
   /** A static single assignment (SSA) definition. */
-  class Definition extends SsaImplCommon::Definition {
+  class Definition extends SsaImpl::Definition {
     /**
      * Gets the control flow node of this SSA definition, if any. Phi nodes are
      * examples of SSA definitions without a control flow node, as they are
@@ -190,7 +188,7 @@ module Ssa {
    * puts x
    * ```
    */
-  class WriteDefinition extends Definition, SsaImplCommon::WriteDefinition {
+  class WriteDefinition extends Definition, SsaImpl::WriteDefinition {
     private VariableWriteAccess write;
 
     WriteDefinition() {
@@ -223,7 +221,7 @@ module Ssa {
   /**
    * An SSA definition that corresponds to the value of `self` upon entry to a method, class or module.
    */
-  class SelfDefinition extends Definition, SsaImplCommon::WriteDefinition {
+  class SelfDefinition extends Definition, SsaImpl::WriteDefinition {
     private SelfVariable v;
 
     SelfDefinition() {
@@ -254,7 +252,7 @@ module Ssa {
    * since the assignment to `x` is conditional, an unitialized definition for
    * `x` is inserted at the start of `m`.
    */
-  class UninitializedDefinition extends Definition, SsaImplCommon::WriteDefinition {
+  class UninitializedDefinition extends Definition, SsaImpl::WriteDefinition {
     UninitializedDefinition() {
       exists(BasicBlock bb, int i, Variable v |
         this.definesAt(v, bb, i) and
@@ -283,7 +281,7 @@ module Ssa {
    *
    * an entry definition for `y` is inserted at the start of the `do` block.
    */
-  class CapturedEntryDefinition extends Definition, SsaImplCommon::WriteDefinition {
+  class CapturedEntryDefinition extends Definition, SsaImpl::WriteDefinition {
     CapturedEntryDefinition() {
       exists(BasicBlock bb, int i, Variable v |
         this.definesAt(v, bb, i) and
@@ -291,7 +289,7 @@ module Ssa {
       )
     }
 
-    final override string toString() { result = "<captured>" }
+    final override string toString() { result = "<captured> " + this.getSourceVariable() }
 
     override Location getLocation() { result = this.getBasicBlock().getLocation() }
   }
@@ -312,7 +310,7 @@ module Ssa {
    *
    * a definition for `y` is inserted at the call to `times`.
    */
-  class CapturedCallDefinition extends Definition, SsaImplCommon::UncertainWriteDefinition {
+  class CapturedCallDefinition extends Definition, SsaImpl::UncertainWriteDefinition {
     CapturedCallDefinition() {
       exists(Variable v, BasicBlock bb, int i |
         this.definesAt(v, bb, i) and
@@ -343,7 +341,7 @@ module Ssa {
    *
    * a phi node for `x` is inserted just before the call `puts x`.
    */
-  class PhiNode extends Definition, SsaImplCommon::PhiNode {
+  class PhiNode extends Definition, SsaImpl::PhiNode {
     /**
      * Gets an input of this phi node.
      *

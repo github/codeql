@@ -73,5 +73,11 @@ function g() {
 	Object.defineProperty(o, "nonTrivialGetter2", unknownGetterDef());
 	o.nonTrivialGetter2; // OK
 	
-	(o: empty); // OK.
+	(o: empty); // OK
+
+	testSomeCondition() ? o : // NOT OK
+		doSomethingDangerous();
+
+	consume(testSomeCondition() ? o : // OK
+		doSomethingDangerous());
 };

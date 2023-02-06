@@ -38,7 +38,7 @@ predicate dead(RefType dead) {
   // Exclude results that have a `main` method.
   not dead.getAMethod().hasName("main") and
   // Exclude results that are referenced in XML files.
-  not exists(XMLAttribute xla | xla.getValue() = dead.getQualifiedName()) and
+  not exists(XmlAttribute xla | xla.getValue() = dead.getQualifiedName()) and
   // Exclude type variables.
   not dead instanceof BoundedType and
   // Exclude JUnit tests.
@@ -50,7 +50,9 @@ predicate dead(RefType dead) {
   // Exclude classes that look like they may be reflectively constructed.
   not dead.getAnAnnotation() instanceof ReflectiveAccessAnnotation and
   // Insist all source ancestors are dead as well.
-  forall(RefType t | t.fromSource() and t = getASuperTypePlus(dead) | dead(t))
+  forall(RefType t | t.fromSource() and t = getASuperTypePlus(dead) | dead(t)) and
+  // Exclude compiler generated classes (e.g. declaring type of adapter functions in Kotlin)
+  not dead.isCompilerGenerated()
 }
 
 from RefType t, string kind

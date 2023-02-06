@@ -2775,7 +2775,7 @@ Assert.cs:
 #-----| true -> access to parameter b2
 
 #  140| [assertion failure] access to parameter b2
-#-----| false -> [assertion failure] access to parameter b3
+#-----| false, true -> [assertion failure] access to parameter b3
 
 #  140| access to parameter b2
 #-----| false -> [assertion success] access to parameter b3
@@ -4924,7 +4924,7 @@ ExitMethods.cs:
 #-----|  -> ...;
 
 #   22| call to method ErrorAlways
-#-----| exception(Exception) -> exit M3 (abnormal)
+#-----| exception(ArgumentException), exception(Exception) -> exit M3 (abnormal)
 
 #   22| ...;
 #-----|  -> true

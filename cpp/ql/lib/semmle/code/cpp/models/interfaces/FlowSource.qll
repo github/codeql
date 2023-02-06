@@ -28,13 +28,6 @@ abstract class RemoteFlowSourceFunction extends Function {
 }
 
 /**
- * DEPRECATED: Use `RemoteFlowSourceFunction` instead.
- *
- * A library function that returns data that may be read from a network connection.
- */
-deprecated class RemoteFlowFunction = RemoteFlowSourceFunction;
-
-/**
  * A library function that returns data that is directly controlled by a user.
  */
 abstract class LocalFlowSourceFunction extends Function {
@@ -43,13 +36,6 @@ abstract class LocalFlowSourceFunction extends Function {
    */
   abstract predicate hasLocalFlowSource(FunctionOutput output, string description);
 }
-
-/**
- * DEPRECATED: Use `LocalFlowSourceFunction` instead.
- *
- * A library function that returns data that is directly controlled by a user.
- */
-deprecated class LocalFlowFunction = LocalFlowSourceFunction;
 
 /** A library function that sends data over a network connection. */
 abstract class RemoteFlowSinkFunction extends Function {

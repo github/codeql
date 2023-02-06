@@ -10,7 +10,7 @@ private import AbstractPropertiesImpl
 private import AbstractValuesImpl
 
 /**
- * Flow analysis for property reads, either explicitly (`x.p` or `x[e]`) or
+ * An analyzed property read, either explicitly (`x.p` or `x[e]`) or
  * implicitly.
  */
 abstract class AnalyzedPropertyRead extends DataFlow::AnalyzedNode {
@@ -86,7 +86,7 @@ pragma[noinline]
 private predicate isTrackedPropertyName(string prop) { exists(MkAbstractProperty(_, prop)) }
 
 /**
- * Flow analysis for property writes, including exports (which are
+ * An analyzed property write, including exports (which are
  * modeled as assignments to `module.exports`).
  */
 abstract class AnalyzedPropertyWrite extends DataFlow::Node {
@@ -120,15 +120,13 @@ abstract class AnalyzedPropertyWrite extends DataFlow::Node {
 /**
  * Flow analysis for property writes.
  */
-private class AnalyzedExplicitPropertyWrite extends AnalyzedPropertyWrite {
-  AnalyzedExplicitPropertyWrite() { this instanceof DataFlow::PropWrite }
-
+private class AnalyzedExplicitPropertyWrite extends AnalyzedPropertyWrite instanceof DataFlow::PropWrite {
   override predicate writes(AbstractValue base, string prop, DataFlow::AnalyzedNode source) {
     explicitPropertyWrite(this, base, prop, source)
   }
 
   override predicate baseIsIncomplete(DataFlow::Incompleteness reason) {
-    this.(DataFlow::PropWrite).getBase().isIncomplete(reason)
+    super.getBase().isIncomplete(reason)
   }
 }
 

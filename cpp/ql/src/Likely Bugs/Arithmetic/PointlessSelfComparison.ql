@@ -22,4 +22,4 @@ where
   not overflowTest(cmp) and
   not cmp.isFromTemplateInstantiation(_) and
   not isFromMacroDefinition(cmp)
-select cmp, "Self comparison."
+select cmp, "This expression compares an $@ to itself.", cmp.getLeftOperand(), "expression"

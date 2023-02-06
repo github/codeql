@@ -1,0 +1,4 @@
+| file://:0:0:0:0 | fake.kotlin | FakeKotlinClass |
+| file://:0:0:0:0 | java.lang | Object |
+| file://:0:0:0:0 | kotlin | Any |
+| file://:0:0:0:0 | kotlin | TypeParam |

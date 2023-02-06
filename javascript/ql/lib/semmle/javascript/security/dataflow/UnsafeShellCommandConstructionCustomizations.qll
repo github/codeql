@@ -49,7 +49,7 @@ module UnsafeShellCommandConstruction {
   /**
    * A parameter of an exported function, seen as a source for shell command constructed from library input.
    */
-  class ExternalInputSource extends Source, DataFlow::SourceNode {
+  class ExternalInputSource extends Source {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
       not (
@@ -92,12 +92,10 @@ module UnsafeShellCommandConstruction {
     StringConcatEndingInCommandExecutionSink() {
       this = root.getALeaf() and
       root = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys) and
-      exists(string prev | prev = this.getPreviousLeaf().getStringValue() |
-        prev.regexpMatch(".* ('|\")?[0-9a-zA-Z/:_-]*")
-      )
+      exists(this.getPreviousLeaf().getStringValue()) // looks like a shell command construction that could be done safer, it has a known prefix
     }
 
-    override string getSinkType() { result = "String concatenation" }
+    override string getSinkType() { result = "string concatenation" }
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 
@@ -125,7 +123,7 @@ module UnsafeShellCommandConstruction {
       )
     }
 
-    override string getSinkType() { result = "Array element" }
+    override string getSinkType() { result = "array element" }
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 
@@ -148,11 +146,29 @@ module UnsafeShellCommandConstruction {
       )
     }
 
-    override string getSinkType() { result = "Formatted string" }
+    override string getSinkType() { result = "formatted string" }
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 
     override DataFlow::Node getAlertLocation() { result = this }
+  }
+
+  /**
+   * Holds if the arguments array given to `sys` is joined as a string because `shell` is set to true.
+   */
+  predicate executesArrayAsShell(SystemCommandExecution sys) {
+    sys.getOptionsArg()
+        .getALocalSource()
+        .getAPropertyWrite("shell")
+        .getRhs()
+        .asExpr()
+        .(BooleanLiteral)
+        .getValue() = "true"
+    or
+    exists(API::Node node |
+      node.asSink() = sys.getOptionsArg() and
+      node.getMember("shell").asSink().mayHaveBooleanValue(true)
+    )
   }
 
   /**
@@ -163,14 +179,7 @@ module UnsafeShellCommandConstruction {
   ) {
     t.start() and
     result = sys.getArgumentList().getALocalSource() and
-    // the array gets joined to a string when `shell` is set to true.
-    sys.getOptionsArg()
-        .getALocalSource()
-        .getAPropertyWrite("shell")
-        .getRhs()
-        .asExpr()
-        .(BooleanLiteral)
-        .getValue() = "true"
+    executesArrayAsShell(sys)
     or
     exists(DataFlow::TypeBackTracker t2 |
       result = endsInShellExecutedArray(t2, sys).backtrack(t2, t)
@@ -193,9 +202,13 @@ module UnsafeShellCommandConstruction {
         or
         this = arr.getAMethodCall(["push", "unshift"]).getAnArgument()
       )
+      or
+      this = sys.getArgumentList() and
+      not this instanceof DataFlow::ArrayCreationNode and
+      executesArrayAsShell(sys)
     }
 
-    override string getSinkType() { result = "Shell argument" }
+    override string getSinkType() { result = "shell argument" }
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 
@@ -217,7 +230,7 @@ module UnsafeShellCommandConstruction {
       )
     }
 
-    override string getSinkType() { result = "Path concatenation" }
+    override string getSinkType() { result = "path concatenation" }
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 

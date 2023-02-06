@@ -88,6 +88,11 @@ nodes
 | express.js:26:17:26:35 | req.param("wobble") |
 | express.js:27:34:27:38 | taint |
 | express.js:27:34:27:38 | taint |
+| express.js:34:9:34:35 | taint |
+| express.js:34:17:34:35 | req.param("wobble") |
+| express.js:34:17:34:35 | req.param("wobble") |
+| express.js:43:15:43:19 | taint |
+| express.js:43:15:43:19 | taint |
 | module.js:9:16:9:29 | req.query.code |
 | module.js:9:16:9:29 | req.query.code |
 | module.js:9:16:9:29 | req.query.code |
@@ -161,6 +166,18 @@ nodes
 | tst.js:26:26:26:40 | location.search |
 | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:53 | locatio ... ring(1) |
+| tst.js:29:9:29:82 | source |
+| tst.js:29:18:29:41 | documen ... .search |
+| tst.js:29:18:29:41 | documen ... .search |
+| tst.js:29:18:29:82 | documen ... , "$1") |
+| tst.js:31:18:31:23 | source |
+| tst.js:31:18:31:23 | source |
+| tst.js:33:14:33:19 | source |
+| tst.js:33:14:33:19 | source |
+| tst.js:35:28:35:33 | source |
+| tst.js:35:28:35:33 | source |
+| tst.js:37:33:37:38 | source |
+| tst.js:37:33:37:38 | source |
 edges
 | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
 | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
@@ -212,6 +229,10 @@ edges
 | express.js:26:9:26:35 | taint | express.js:27:34:27:38 | taint |
 | express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint |
 | express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint |
+| express.js:34:9:34:35 | taint | express.js:43:15:43:19 | taint |
+| express.js:34:9:34:35 | taint | express.js:43:15:43:19 | taint |
+| express.js:34:17:34:35 | req.param("wobble") | express.js:34:9:34:35 | taint |
+| express.js:34:17:34:35 | req.param("wobble") | express.js:34:9:34:35 | taint |
 | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code |
 | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
@@ -270,5 +291,16 @@ edges
 | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
+| tst.js:29:9:29:82 | source | tst.js:31:18:31:23 | source |
+| tst.js:29:9:29:82 | source | tst.js:31:18:31:23 | source |
+| tst.js:29:9:29:82 | source | tst.js:33:14:33:19 | source |
+| tst.js:29:9:29:82 | source | tst.js:33:14:33:19 | source |
+| tst.js:29:9:29:82 | source | tst.js:35:28:35:33 | source |
+| tst.js:29:9:29:82 | source | tst.js:35:28:35:33 | source |
+| tst.js:29:9:29:82 | source | tst.js:37:33:37:38 | source |
+| tst.js:29:9:29:82 | source | tst.js:37:33:37:38 | source |
+| tst.js:29:18:29:41 | documen ... .search | tst.js:29:18:29:82 | documen ... , "$1") |
+| tst.js:29:18:29:41 | documen ... .search | tst.js:29:18:29:82 | documen ... , "$1") |
+| tst.js:29:18:29:82 | documen ... , "$1") | tst.js:29:9:29:82 | source |
 #select
 | eslint-escope-build.js:21:16:21:16 | c | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c | $@ flows to here and is interpreted as code. | eslint-escope-build.js:20:22:20:22 | c | User-provided value |

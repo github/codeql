@@ -103,7 +103,7 @@ module RangeAnalysis {
    * the given increment/decrement expression.
    */
   private DataFlow::Node updateExprResult(UpdateExpr expr) {
-    result = DataFlow::ssaDefinitionNode(SSA::definition(expr))
+    result = DataFlow::ssaDefinitionNode(Ssa::definition(expr))
     or
     expr.isPrefix() and
     result = expr.flow()
@@ -113,7 +113,7 @@ module RangeAnalysis {
    * Gets a data flow node holding the result of the given componund assignment.
    */
   private DataFlow::Node compoundAssignResult(CompoundAssignExpr expr) {
-    result = DataFlow::ssaDefinitionNode(SSA::definition(expr))
+    result = DataFlow::ssaDefinitionNode(Ssa::definition(expr))
     or
     result = expr.flow()
   }
@@ -260,7 +260,7 @@ module RangeAnalysis {
   }
 
   /**
-   * Holds if the given comparison can be modeled as `A <op> B + bias` where `<op>` is the comparison operator,
+   * Holds if the given `comparison` can be modeled as `A <op> B + bias` where `<op>` is the comparison operator,
    * and `A` is `a * asign` and likewise `B` is `b * bsign`.
    */
   predicate linearComparison(
@@ -310,18 +310,18 @@ module RangeAnalysis {
    * Holds if `guard` asserts that the outcome of `A <op> B + bias` is true, where `<op>` is a comparison operator.
    */
   predicate linearComparisonGuard(
-    ConditionGuardNode guard, DataFlow::Node a, int asign, string operator, DataFlow::Node b,
-    int bsign, Bias bias
+    ConditionGuardNode guard, DataFlow::Node a, int asign, string op, DataFlow::Node b, int bsign,
+    Bias bias
   ) {
     exists(Comparison compare |
       compare = guard.getTest().flow().getImmediatePredecessor*().asExpr() and
       linearComparison(compare, a, asign, b, bsign, bias) and
       (
-        guard.getOutcome() = true and operator = compare.getOperator()
+        guard.getOutcome() = true and op = compare.getOperator()
         or
         not hasNaNIndicator(guard.getContainer()) and
         guard.getOutcome() = false and
-        operator = negateOperator(compare.getOperator())
+        op = negateOperator(compare.getOperator())
       )
     )
   }
@@ -657,13 +657,13 @@ module RangeAnalysis {
    */
   pragma[noopt]
   private predicate reachableByNegativeEdges(
-    DataFlow::Node a, int asign, DataFlow::Node b, int bsign, ControlFlowNode cfg
+    DataFlow::Node src, int asign, DataFlow::Node dst, int bsign, ControlFlowNode cfg
   ) {
-    negativeEdge(a, asign, b, bsign, cfg)
+    negativeEdge(src, asign, dst, bsign, cfg)
     or
     exists(DataFlow::Node mid, int midx, ControlFlowNode midcfg |
-      reachableByNegativeEdges(a, asign, mid, midx, cfg) and
-      negativeEdge(mid, midx, b, bsign, midcfg) and
+      reachableByNegativeEdges(src, asign, mid, midx, cfg) and
+      negativeEdge(mid, midx, dst, bsign, midcfg) and
       exists(BasicBlock bb, int i, int j |
         bb.getNode(i) = midcfg and
         bb.getNode(j) = cfg and
@@ -676,8 +676,8 @@ module RangeAnalysis {
       DataFlow::Node mid, int midx, ControlFlowNode midcfg, BasicBlock midBB,
       ReachableBasicBlock midRBB, BasicBlock cfgBB
     |
-      reachableByNegativeEdges(a, asign, mid, midx, cfg) and
-      negativeEdge(mid, midx, b, bsign, midcfg) and
+      reachableByNegativeEdges(src, asign, mid, midx, cfg) and
+      negativeEdge(mid, midx, dst, bsign, midcfg) and
       midBB = midcfg.getBasicBlock() and
       midRBB = midBB.(ReachableBasicBlock) and
       cfgBB = cfg.getBasicBlock() and

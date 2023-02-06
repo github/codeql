@@ -15,8 +15,6 @@ import com.semmle.extractor.html.HtmlPopulator;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.extractor.FileExtractor.FileType;
-import com.semmle.js.extractor.trapcache.DefaultTrapCache;
-import com.semmle.js.extractor.trapcache.DummyTrapCache;
 import com.semmle.js.extractor.trapcache.ITrapCache;
 import com.semmle.js.parser.ParsedProject;
 import com.semmle.ts.extractor.TypeExtractor;
@@ -43,7 +41,7 @@ public class Main {
    * A version identifier that should be updated every time the extractor changes in such a way that
    * it may produce different tuples for the same file under the same {@link ExtractorConfig}.
    */
-  public static final String EXTRACTOR_VERSION = "2022-02-22";
+  public static final String EXTRACTOR_VERSION = "2022-11-29";
 
   public static final Pattern NEWLINE = Pattern.compile("\n");
 
@@ -61,8 +59,6 @@ public class Main {
   private static final String P_PLATFORM = "--platform";
   private static final String P_QUIET = "--quiet";
   private static final String P_SOURCE_TYPE = "--source-type";
-  private static final String P_TRAP_CACHE = "--trap-cache";
-  private static final String P_TRAP_CACHE_BOUND = "--trap-cache-bound";
   private static final String P_TYPESCRIPT = "--typescript";
   private static final String P_TYPESCRIPT_FULL = "--typescript-full";
   private static final String P_TYPESCRIPT_RAM = "--typescript-ram";
@@ -112,22 +108,7 @@ public class Main {
     ap.parse();
 
     extractorConfig = parseJSOptions(ap);
-    ITrapCache trapCache;
-    if (ap.has(P_TRAP_CACHE)) {
-      Long sizeBound = null;
-      if (ap.has(P_TRAP_CACHE_BOUND)) {
-        String tcb = ap.getString(P_TRAP_CACHE_BOUND);
-        sizeBound = DefaultTrapCache.asFileSize(tcb);
-        if (sizeBound == null) ap.error("Invalid TRAP cache size bound: " + tcb);
-      }
-      trapCache = new DefaultTrapCache(ap.getString(P_TRAP_CACHE), sizeBound, EXTRACTOR_VERSION);
-    } else {
-      if (ap.has(P_TRAP_CACHE_BOUND))
-        ap.error(
-            P_TRAP_CACHE_BOUND + " should only be specified together with " + P_TRAP_CACHE + ".");
-      trapCache = new DummyTrapCache();
-    }
-    fileExtractor = new FileExtractor(extractorConfig, extractorOutputConfig, trapCache);
+    fileExtractor = new FileExtractor(extractorConfig, extractorOutputConfig, ITrapCache.fromExtractorOptions());
 
     setupMatchers(ap);
 
@@ -153,7 +134,7 @@ public class Main {
         ensureFileIsExtracted(file, ap);
       }
     }
-    
+
     TypeScriptParser tsParser = extractorState.getTypeScriptParser();
     tsParser.setTypescriptRam(extractorConfig.getTypeScriptRam());
     if (containsTypeScriptFiles()) {
@@ -432,12 +413,6 @@ public class Main {
     argsParser.addToleratedFlag(P_TOLERATE_PARSE_ERRORS, 0);
     argsParser.addFlag(
         P_ABORT_ON_PARSE_ERRORS, 0, "Abort extraction if a parse error is encountered.");
-    argsParser.addFlag(P_TRAP_CACHE, 1, "Use the given directory as the TRAP cache.");
-    argsParser.addFlag(
-        P_TRAP_CACHE_BOUND,
-        1,
-        "A (soft) upper limit on the size of the TRAP cache, "
-            + "in standard size units (e.g., 'g' for gigabytes).");
     argsParser.addFlag(P_DEFAULT_ENCODING, 1, "The encoding to use; default is UTF-8.");
     argsParser.addFlag(P_TYPESCRIPT, 0, "Enable basic TypesScript support.");
     argsParser.addFlag(
@@ -460,7 +435,7 @@ public class Main {
     if (ap.has(P_TYPESCRIPT)) return TypeScriptMode.BASIC;
     return TypeScriptMode.NONE;
   }
-  
+
   private Path inferSourceRoot(ArgsParser ap) {
     List<File> files = getFilesArg(ap);
     Path sourceRoot = files.iterator().next().toPath().toAbsolutePath().getParent();

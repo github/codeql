@@ -29,7 +29,7 @@ private class PlainJsonParserCall extends JsonParserCall {
       callee =
         DataFlow::moduleMember(["json3", "json5", "flatted", "teleport-javascript", "json-cycle"],
           "parse") or
-      callee = API::moduleImport("replicator").getInstance().getMember("decode").getAnImmediateUse() or
+      callee = API::moduleImport("replicator").getInstance().getMember("decode").asSource() or
       callee = DataFlow::moduleImport("parse-json") or
       callee = DataFlow::moduleImport("json-parse-better-errors") or
       callee = DataFlow::moduleImport("json-safe-parse") or

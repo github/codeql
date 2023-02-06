@@ -21,7 +21,7 @@ import semmle.code.cpp.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * Taint flow from a sensitive expression to a `FileWrite` sink.
+ * A taint flow configuration for flow from a sensitive expression to a `FileWrite` sink.
  */
 class FromSensitiveConfiguration extends TaintTracking::Configuration {
   FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
@@ -29,6 +29,10 @@ class FromSensitiveConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveExpr }
 
   override predicate isSink(DataFlow::Node sink) { any(FileWrite w).getASource() = sink.asExpr() }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.asExpr().getUnspecifiedType() instanceof IntegralType
+  }
 }
 
 /**
@@ -50,8 +54,8 @@ predicate filenameOperation(FunctionCall op, Expr path) {
 }
 
 predicate isFileName(GVN gvn) {
-  exists(FunctionCall op, Expr path |
-    filenameOperation(op, path) and
+  exists(Expr path |
+    filenameOperation(_, path) and
     gvn = globalValueNumber(path)
   )
 }
@@ -69,5 +73,5 @@ where
   not isFileName(globalValueNumber(source)) and // file names are not passwords
   not exists(string convChar | convChar = w.getSourceConvChar(mid) | not convChar = ["s", "S"]) // ignore things written with other conversion characters
 select w, sourceNode, midNode,
-  "This write into file '" + dest.toString() + "' may contain unencrypted data from $@", source,
+  "This write into file '" + dest.toString() + "' may contain unencrypted data from $@.", source,
   "this source."

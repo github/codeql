@@ -81,4 +81,4 @@ from UninitialisedLocalReachability r, LocalVariable v, VariableAccess va
 where
   r.reaches(_, v, va) and
   not va = commonException()
-select va, "The variable $@ may not be initialized here.", v, v.getName()
+select va, "The variable $@ may not be initialized at this access.", v, v.getName()

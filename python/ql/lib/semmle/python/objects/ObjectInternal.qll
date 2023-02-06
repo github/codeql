@@ -49,7 +49,7 @@ class ObjectInternal extends TObject {
   abstract ObjectInternal getClass();
 
   /**
-   * True if this "object" can be meaningfully analysed to determine the boolean value of
+   * True if this "object" can be meaningfully analyzed to determine the boolean value of
    * equality tests on it.
    * For example, `None` or `int` can be, but `int()` or an unknown string cannot.
    */

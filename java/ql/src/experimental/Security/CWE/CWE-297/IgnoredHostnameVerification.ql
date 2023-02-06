@@ -7,6 +7,7 @@
  * @precision high
  * @id java/ignored-hostname-verification
  * @tags security
+ *       experimental
  *       external/cwe/cwe-297
  */
 
@@ -21,7 +22,7 @@ private class HostnameVerificationCall extends MethodAccess {
   }
 
   /** Holds if the result of the call is not used. */
-  predicate isIgnored() { this = any(ExprStmt es).getExpr() }
+  predicate isIgnored() { this instanceof ValueDiscardingExpr }
 }
 
 from HostnameVerificationCall verification

@@ -8,6 +8,7 @@
  * @precision medium
  * @tags maintainability
  *       readability
+ *       experimental
  *       external/cwe/cwe-783
  *       external/cwe/cwe-480
  */
@@ -190,5 +191,5 @@ where
     exp.(BinaryBitwiseOperation).getRightOperand().(BinaryBitwiseOperation).getLeftOperand(),
     exp.(BinaryBitwiseOperation).getRightOperand().(BinaryBitwiseOperation).getRightOperand(), exp,
     exp.(BinaryBitwiseOperation).getRightOperand()) and
-  msg = "specify the priority with parentheses."
+  msg = "Specify the priority with parentheses."
 select exp, msg

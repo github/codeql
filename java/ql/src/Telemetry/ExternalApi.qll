@@ -31,14 +31,20 @@ private string containerAsJar(Container container) {
   if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
 }
 
+/** Holds if the given callable is not worth supporting. */
+private predicate isUninteresting(Callable c) {
+  c.getDeclaringType() instanceof TestLibrary or
+  c.(Constructor).isParameterless()
+}
+
 /**
  * An external API from either the Standard Library or a 3rd party library.
  */
 class ExternalApi extends Callable {
-  ExternalApi() { not this.fromSource() }
+  ExternalApi() { not this.fromSource() and not isUninteresting(this) }
 
   /**
-   * Gets information about the external API in the form expected by the CSV modeling framework.
+   * Gets information about the external API in the form expected by the MaD modeling framework.
    */
   string getApiName() {
     result =
@@ -73,18 +79,6 @@ class ExternalApi extends Callable {
     TaintTracking::localAdditionalTaintStep(this.getAnInput(), _)
   }
 
-  /** Holds if this API is is a constructor without parameters. */
-  private predicate isParameterlessConstructor() {
-    this instanceof Constructor and this.getNumberOfParameters() = 0
-  }
-
-  /** Holds if this API is part of a common testing library or framework. */
-  private predicate isTestLibrary() { this.getDeclaringType() instanceof TestLibrary }
-
-  /** Holds if this API is not worth supporting. */
-  predicate isUninteresting() { this.isTestLibrary() or this.isParameterlessConstructor() }
-
-  /** Holds if this API is a known source. */
   predicate isSource() {
     this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
   }
@@ -98,3 +92,47 @@ class ExternalApi extends Callable {
 
 /** DEPRECATED: Alias for ExternalApi */
 deprecated class ExternalAPI = ExternalApi;
+
+/**
+ * Gets the limit for the number of results produced by a telemetry query.
+ */
+int resultLimit() { result = 1000 }
+
+/**
+ * Holds if it is relevant to count usages of `api`.
+ */
+signature predicate relevantApi(ExternalApi api);
+
+/**
+ * Given a predicate to count relevant API usages, this module provides a predicate
+ * for restricting the number or returned results based on a certain limit.
+ */
+module Results<relevantApi/1 getRelevantUsages> {
+  private int getUsages(string apiName) {
+    result =
+      strictcount(Call c, ExternalApi api |
+        c.getCallee().getSourceDeclaration() = api and
+        not c.getFile() instanceof GeneratedFile and
+        apiName = api.getApiName() and
+        getRelevantUsages(api)
+      )
+  }
+
+  private int getOrder(string apiInfo) {
+    apiInfo =
+      rank[result](string info, int usages |
+        usages = getUsages(info)
+      |
+        info order by usages desc, info
+      )
+  }
+
+  /**
+   * Holds if there exists an API with `apiName` that is being used `usages` times
+   * and if it is in the top results (guarded by resultLimit).
+   */
+  predicate restrict(string apiName, int usages) {
+    usages = getUsages(apiName) and
+    getOrder(apiName) <= resultLimit()
+  }
+}

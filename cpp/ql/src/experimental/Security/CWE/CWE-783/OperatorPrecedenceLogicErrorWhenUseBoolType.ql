@@ -8,6 +8,7 @@
  * @precision medium
  * @tags correctness
  *       security
+ *       experimental
  *       external/cwe/cwe-783
  *       external/cwe/cwe-480
  */
@@ -51,4 +52,4 @@ where
   incrementBoolType(exp) or
   revertSignBoolType(exp) or
   assignBoolType(exp)
-select exp, "this expression needs attention"
+select exp, "This expression needs attention."

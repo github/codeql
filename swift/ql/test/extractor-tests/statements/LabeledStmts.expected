@@ -1,0 +1,12 @@
+| statements.swift:2:3:8:3 | for ... in ... { ... } |
+| statements.swift:3:5:7:5 | if ... then { ... } else { ... } |
+| statements.swift:10:3:12:3 | while ... { ... } |
+| statements.swift:15:3:17:18 | repeat { ... } while ...  |
+| statements.swift:19:3:23:3 | do { ... } catch { ... } |
+| statements.swift:25:3:31:3 | do { ... } catch { ... } |
+| statements.swift:39:3:41:3 | guard ... else { ... } |
+| statements.swift:48:1:50:1 | do { ... } |
+| statements.swift:53:1:62:1 | switch index { ... } |
+| statements.swift:65:1:66:1 | if ... then { ... } |
+| statements.swift:67:1:68:1 | if ... then { ... } |
+| statements.swift:71:1:72:1 | for ... in ... where ... { ... } |

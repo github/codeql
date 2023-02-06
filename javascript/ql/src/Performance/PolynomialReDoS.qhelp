@@ -71,7 +71,7 @@
 		</p>
 
 		<sample language="javascript">
-			^0\.\d+E?\d+$ // BAD
+			/^0\.\d+E?\d+$/.test(str) // BAD
 		</sample>
 
 		<p>

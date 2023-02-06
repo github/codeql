@@ -1,0 +1,4 @@
+| equals | Test |
+| hashCode | Test |
+| toString | Test |
+| toString | java.lang.CharSequence |

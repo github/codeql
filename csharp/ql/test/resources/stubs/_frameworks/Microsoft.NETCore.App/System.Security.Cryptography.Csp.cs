@@ -6,7 +6,7 @@ namespace System
     {
         namespace Cryptography
         {
-            // Generated from `System.Security.Cryptography.AesCryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.AesCryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AesCryptoServiceProvider : System.Security.Cryptography.Aes
             {
                 public AesCryptoServiceProvider() => throw null;
@@ -28,7 +28,7 @@ namespace System
                 public override System.Security.Cryptography.PaddingMode Padding { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.CspKeyContainerInfo` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.CspKeyContainerInfo` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CspKeyContainerInfo
             {
                 public bool Accessible { get => throw null; }
@@ -46,7 +46,7 @@ namespace System
                 public string UniqueKeyContainerName { get => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.CspParameters` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.CspParameters` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CspParameters
             {
                 public CspParameters() => throw null;
@@ -62,22 +62,22 @@ namespace System
                 public int ProviderType;
             }
 
-            // Generated from `System.Security.Cryptography.CspProviderFlags` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.CspProviderFlags` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CspProviderFlags
+            public enum CspProviderFlags : int
             {
-                CreateEphemeralKey,
-                NoFlags,
-                NoPrompt,
-                UseArchivableKey,
-                UseDefaultKeyContainer,
-                UseExistingKey,
-                UseMachineKeyStore,
-                UseNonExportableKey,
-                UseUserProtectedKey,
+                CreateEphemeralKey = 128,
+                NoFlags = 0,
+                NoPrompt = 64,
+                UseArchivableKey = 16,
+                UseDefaultKeyContainer = 2,
+                UseExistingKey = 8,
+                UseMachineKeyStore = 1,
+                UseNonExportableKey = 4,
+                UseUserProtectedKey = 32,
             }
 
-            // Generated from `System.Security.Cryptography.DESCryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.DESCryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DESCryptoServiceProvider : System.Security.Cryptography.DES
             {
                 public override System.Security.Cryptography.ICryptoTransform CreateDecryptor() => throw null;
@@ -89,7 +89,7 @@ namespace System
                 public override void GenerateKey() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.DSACryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.DSACryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DSACryptoServiceProvider : System.Security.Cryptography.DSA, System.Security.Cryptography.ICspAsymmetricAlgorithm
             {
                 public override System.Byte[] CreateSignature(System.Byte[] rgbHash) => throw null;
@@ -121,7 +121,7 @@ namespace System
                 public override bool VerifySignature(System.Byte[] rgbHash, System.Byte[] rgbSignature) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.ICspAsymmetricAlgorithm` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.ICspAsymmetricAlgorithm` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ICspAsymmetricAlgorithm
             {
                 System.Security.Cryptography.CspKeyContainerInfo CspKeyContainerInfo { get; }
@@ -129,14 +129,14 @@ namespace System
                 void ImportCspBlob(System.Byte[] rawData);
             }
 
-            // Generated from `System.Security.Cryptography.KeyNumber` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum KeyNumber
+            // Generated from `System.Security.Cryptography.KeyNumber` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum KeyNumber : int
             {
-                Exchange,
-                Signature,
+                Exchange = 1,
+                Signature = 2,
             }
 
-            // Generated from `System.Security.Cryptography.MD5CryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.MD5CryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MD5CryptoServiceProvider : System.Security.Cryptography.MD5
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -148,7 +148,7 @@ namespace System
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.PasswordDeriveBytes` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.PasswordDeriveBytes` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PasswordDeriveBytes : System.Security.Cryptography.DeriveBytes
             {
                 public System.Byte[] CryptDeriveKey(string algname, string alghashname, int keySize, System.Byte[] rgbIV) => throw null;
@@ -168,7 +168,7 @@ namespace System
                 public System.Byte[] Salt { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.RC2CryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RC2CryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RC2CryptoServiceProvider : System.Security.Cryptography.RC2
             {
                 public override System.Security.Cryptography.ICryptoTransform CreateDecryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
@@ -180,7 +180,7 @@ namespace System
                 public bool UseSalt { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.RNGCryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RNGCryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RNGCryptoServiceProvider : System.Security.Cryptography.RandomNumberGenerator
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -195,7 +195,7 @@ namespace System
                 public RNGCryptoServiceProvider(string str) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.RSACryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RSACryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RSACryptoServiceProvider : System.Security.Cryptography.RSA, System.Security.Cryptography.ICspAsymmetricAlgorithm
             {
                 public System.Security.Cryptography.CspKeyContainerInfo CspKeyContainerInfo { get => throw null; }
@@ -233,7 +233,7 @@ namespace System
                 public bool VerifyHash(System.Byte[] rgbHash, string str, System.Byte[] rgbSignature) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SHA1CryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SHA1CryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SHA1CryptoServiceProvider : System.Security.Cryptography.SHA1
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -245,7 +245,7 @@ namespace System
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SHA256CryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SHA256CryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SHA256CryptoServiceProvider : System.Security.Cryptography.SHA256
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -257,7 +257,7 @@ namespace System
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SHA384CryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SHA384CryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SHA384CryptoServiceProvider : System.Security.Cryptography.SHA384
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -269,7 +269,7 @@ namespace System
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SHA512CryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SHA512CryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SHA512CryptoServiceProvider : System.Security.Cryptography.SHA512
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -281,7 +281,7 @@ namespace System
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.TripleDESCryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.TripleDESCryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TripleDESCryptoServiceProvider : System.Security.Cryptography.TripleDES
             {
                 public override int BlockSize { get => throw null; set => throw null; }

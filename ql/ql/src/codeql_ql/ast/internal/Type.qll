@@ -14,7 +14,9 @@ private newtype TType =
   TDontCare() or
   TClassChar(Class c) { isActualClass(c) } or
   TClassDomain(Class c) { isActualClass(c) } or
-  TDatabase(string s) { exists(TypeExpr t | t.isDBType() and s = t.getClassName()) }
+  TDatabase(string s) { exists(TypeExpr t | t.isDBType() and s = t.getClassName()) } or
+  TFile(TopLevel t) or
+  TModule(Module m)
 
 private predicate primTypeName(string s) { s = ["int", "float", "string", "boolean", "date"] }
 
@@ -32,13 +34,13 @@ class Type extends TType {
   string getName() { result = "???" }
 
   /**
-   * Gets a supertype of this type. This follows the user-visible type heirarchy,
+   * Gets a supertype of this type. This follows the user-visible type hierarchy,
    * and doesn't include internal types like the characteristic and domain types of classes.
    */
   Type getASuperType() { none() }
 
   /**
-   * Gets a supertype of this type in the internal heirarchy,
+   * Gets a supertype of this type in the internal hierarchy,
    * which includes the characteristic and domain types of classes.
    */
   Type getAnInternalSuperType() { result = TDontCare() }
@@ -108,6 +110,26 @@ class ClassType extends Type, TClass {
       other.getDeclaringType().getASuperType+() = result.getDeclaringType()
     )
   }
+}
+
+class FileType extends Type, TFile {
+  TopLevel decl;
+
+  FileType() { this = TFile(decl) }
+
+  override string getName() { result = decl.getLocation().getFile().getBaseName() }
+
+  override TopLevel getDeclaration() { result = decl }
+}
+
+class ModuleType extends Type, TModule {
+  Module decl;
+
+  ModuleType() { this = TModule(decl) }
+
+  override string getName() { result = decl.getName() }
+
+  override Module getDeclaration() { result = decl }
 }
 
 private PredicateOrBuiltin declaredPred(Type ty, string name, int arity) {
@@ -267,10 +289,44 @@ predicate resolveTypeExpr(TypeExpr te, Type t) {
   else
     if primTypeName(te.getClassName())
     then t = TPrimitive(te.getClassName())
-    else
-      exists(FileOrModule m, boolean public, string clName | qualifier(te, m, public, clName) |
-        defines(m, clName, t, public)
+    else resolveTypeExpr2(te, t)
+}
+
+pragma[noopt]
+predicate resolveTypeExpr2(TypeExpr te, Type t) {
+  exists(FileOrModule m, boolean public, string clName |
+    qualifier(te, m, public, clName) and
+    defines(m, clName, t, public) and
+    // there can be some cross-talk between modules due to collapsing parameterized modules. This should remove the worst.
+    // require that the Type is contained in the same pack or a dependency.
+    (
+      exists(YAML::QLPack base, YAML::QLPack sup |
+        te.getFile() = base.getAFileInPack() and
+        exists(AstNode decl, File f |
+          decl = t.getDeclaration() and
+          f = decl.getFile() and
+          f = sup.getAFileInPack()
+        ) and
+        (
+          base.getADependency*() = sup
+          or
+          // only interested in blocking language -> language flow, so we include if one of the packs is shared (has no dbscheme).
+          not exists(YAML::QLPack dep | dep = base.getADependency*() | exists(dep.getDBScheme()))
+          or
+          not exists(YAML::QLPack dep | dep = sup.getADependency*() | exists(dep.getDBScheme()))
+        )
       )
+      or
+      // for tests, and other cases where no qlpack exists.
+      not exists(YAML::QLPack base | te.getFile() = base.getAFileInPack())
+      or
+      // e.g. alias for primitives.
+      not exists(t.getDeclaration())
+      or
+      // mocks are fine.
+      exists(AstNode decl | decl = t.getDeclaration() | exists(AstNodes::toMock(decl)))
+    )
+  )
 }
 
 pragma[noinline]
@@ -305,6 +361,12 @@ private predicate defines(FileOrModule m, string name, Type t, boolean public) {
     public = getPublicBool(ty.getParent())
   )
   or
+  exists(Module mod | t = TModule(mod) |
+    getEnclosingModule(mod) = m and
+    mod.getName() = name and
+    public = getPublicBool(mod)
+  )
+  or
   exists(Class ty | t = TUnion(ty) |
     getEnclosingModule(ty) = m and
     ty.getName() = name and
@@ -323,22 +385,42 @@ private predicate defines(FileOrModule m, string name, Type t, boolean public) {
     public = getPublicBool(im) and
     defines(im.getResolvedModule(), name, t, true)
   )
+  or
+  // classes in parameterized modules.
+  exists(Module mod, SignatureExpr param, int i |
+    m.asModule() = mod and
+    mod.hasParameter(i, name, param) and
+    public = false
+  |
+    // resolve to the signature class
+    t = param.asType().getResolvedType()
+    or
+    // resolve to the instantiations
+    exists(ModuleExpr inst, SignatureExpr arg |
+      inst.getArgument(i) = arg and
+      inst.getResolvedModule() = m and
+      t = arg.asType().getResolvedType()
+    )
+  )
 }
 
 module TyConsistency {
-  query predicate noResolve(TypeExpr te) {
-    not resolveTypeExpr(te, _) and
+  query predicate noResolve(TypeRef te) {
+    not exists(te.getResolvedType()) and
     not te.getLocation()
         .getFile()
         .getAbsolutePath()
         .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
-  query predicate multipleResolve(TypeExpr te, int c, Type t) {
-    c = strictcount(Type t0 | resolveTypeExpr(te, t0)) and
-    c > 1 and
-    resolveTypeExpr(te, t)
-  }
+  // This can happen with parameterized modules.
+  /*
+   * query predicate multipleResolve(TypeExpr te, int c, Type t) {
+   *    c = strictcount(Type t0 | resolveTypeExpr(te, t0)) and
+   *    c > 1 and
+   *    resolveTypeExpr(te, t)
+   *  }
+   */
 
   query predicate multiplePrimitives(TypeExpr te, int c, PrimitiveType t) {
     c = strictcount(PrimitiveType t0 | resolveTypeExpr(te, t0)) and

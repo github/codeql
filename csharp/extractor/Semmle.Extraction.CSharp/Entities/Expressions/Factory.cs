@@ -38,6 +38,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.IsExpression:
                     case SyntaxKind.AsExpression:
                     case SyntaxKind.RightShiftExpression:
+                    case SyntaxKind.UnsignedRightShiftExpression:
                     case SyntaxKind.LeftShiftExpression:
                     case SyntaxKind.ExclusiveOrExpression:
                     case SyntaxKind.CoalesceExpression:
@@ -46,6 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.FalseLiteralExpression:
                     case SyntaxKind.TrueLiteralExpression:
                     case SyntaxKind.StringLiteralExpression:
+                    case SyntaxKind.Utf8StringLiteralExpression:
                     case SyntaxKind.NullLiteralExpression:
                     case SyntaxKind.NumericLiteralExpression:
                     case SyntaxKind.CharacterLiteralExpression:
@@ -76,6 +78,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.ExclusiveOrAssignmentExpression:
                     case SyntaxKind.LeftShiftAssignmentExpression:
                     case SyntaxKind.RightShiftAssignmentExpression:
+                    case SyntaxKind.UnsignedRightShiftAssignmentExpression:
                     case SyntaxKind.DivideAssignmentExpression:
                     case SyntaxKind.ModuloAssignmentExpression:
                     case SyntaxKind.CoalesceAssignmentExpression:

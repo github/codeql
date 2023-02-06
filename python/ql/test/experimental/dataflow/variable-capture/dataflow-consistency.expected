@@ -6,6 +6,8 @@ uniqueNodeToString
 missingToString
 parameterCallable
 localFlowIsLocal
+readStepIsLocal
+storeStepIsLocal
 compatibleTypesReflexive
 unreachableNodeCCtx
 localCallNodes
@@ -16,3 +18,7 @@ postIsInSameCallable
 reverseRead
 argHasPostUpdate
 postWithInFlow
+viableImplInCallContextTooLarge
+uniqueParameterNodeAtPosition
+uniqueParameterNodePosition
+uniqueContentApprox

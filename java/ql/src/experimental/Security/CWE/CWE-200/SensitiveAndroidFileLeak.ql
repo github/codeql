@@ -6,6 +6,7 @@
  * @id java/sensitive-android-file-leak
  * @problem.severity warning
  * @tags security
+ *       experimental
  *       external/cwe/cwe-200
  */
 
@@ -15,17 +16,13 @@ import AndroidFileIntentSink
 import AndroidFileIntentSource
 import DataFlow::PathGraph
 
-private class StartsWithSanitizer extends DataFlow::BarrierGuard {
-  StartsWithSanitizer() { this.(MethodAccess).getMethod().hasName("startsWith") }
-
-  override predicate checks(Expr e, boolean branch) {
-    e =
-      [
-        this.(MethodAccess).getQualifier(),
-        this.(MethodAccess).getQualifier().(MethodAccess).getQualifier()
-      ] and
+private predicate startsWithSanitizer(Guard g, Expr e, boolean branch) {
+  exists(MethodAccess ma |
+    g = ma and
+    ma.getMethod().hasName("startsWith") and
+    e = [ma.getQualifier(), ma.getQualifier().(MethodAccess).getQualifier()] and
     branch = false
-  }
+  )
 }
 
 class AndroidFileLeakConfig extends TaintTracking::Configuration {
@@ -42,7 +39,9 @@ class AndroidFileLeakConfig extends TaintTracking::Configuration {
       OnActivityForResultMethod oafr, ConditionBlock cb, CompileTimeConstantExpr cc,
       VarAccess intentVar
     |
-      cb.getCondition().(EQExpr).hasOperands(oafr.getParameter(0).getAnAccess(), cc) and
+      cb.getCondition()
+          .(ValueOrReferenceEqualsExpr)
+          .hasOperands(oafr.getParameter(0).getAnAccess(), cc) and
       cc.getIntValue() = any(AndroidFileIntentInput fi).getRequestCode() and
       intentVar.getType() instanceof TypeIntent and
       cb.controls(intentVar.getBasicBlock(), true) and
@@ -73,8 +72,8 @@ class AndroidFileLeakConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StartsWithSanitizer
+  override predicate isSanitizer(DataFlow::Node node) {
+    node = DataFlow::BarrierGuard<startsWithSanitizer/3>::getABarrierNode()
   }
 }
 

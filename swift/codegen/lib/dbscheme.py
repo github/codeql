@@ -1,6 +1,7 @@
 """ dbscheme format representation """
 
 import logging
+import pathlib
 import re
 from dataclasses import dataclass
 from typing import ClassVar, List
@@ -64,6 +65,7 @@ class Table(Decl):
     name: str
     columns: List[Column]
     keyset: KeySet = None
+    dir: pathlib.Path = None
 
     def __post_init__(self):
         if self.columns:
@@ -108,13 +110,15 @@ class Scheme:
 class Re:
     entity = re.compile(
         "(?m)"
-        r"(?:^#keyset\[(?P<tablekeys>[\w\s,]+)\][\s\n]*)?^(?P<table>\w+)\((?P<tablebody>[^\)]*)\);?"
+        r"(?:^#keyset\[(?P<tablekeys>[\w\s,]+)\][\s\n]*)?^(?P<table>\w+)\("
+        r"(?:\s*//dir=(?P<tabledir>\S*))?(?P<tablebody>[^\)]*)"
+        r"\);?"
         "|"
         r"^(?P<union>@\w+)\s*=\s*(?P<unionbody>@\w+(?:\s*\|\s*@\w+)*)\s*;?"
     )
     field = re.compile(r"(?m)[\w\s]*\s(?P<field>\w+)\s*:\s*(?P<type>@?\w+)(?P<ref>\s+ref)?")
     key = re.compile(r"@\w+")
-    comment = re.compile(r"(?m)(?s)/\*.*?\*/|//[^\n]*$")
+    comment = re.compile(r"(?m)(?s)/\*.*?\*/|//(?!dir=)[^\n]*$")  # lookahead avoid ignoring metadata like //dir=foo
 
 
 def get_column(match):
@@ -133,6 +137,7 @@ def get_table(match):
         name=match["table"],
         columns=[get_column(f) for f in Re.field.finditer(match["tablebody"])],
         keyset=keyset,
+        dir=pathlib.PosixPath(match["tabledir"]) if match["tabledir"] else None,
     )
 
 

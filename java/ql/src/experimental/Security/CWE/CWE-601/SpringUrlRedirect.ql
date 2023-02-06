@@ -7,24 +7,22 @@
  * @precision high
  * @id java/spring-unvalidated-url-redirection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-601
  */
 
 import java
-import SpringUrlRedirect
+import experimental.semmle.code.java.security.SpringUrlRedirect
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.controlflow.Guards
 import DataFlow::PathGraph
 
-private class StartsWithSanitizer extends DataFlow::BarrierGuard {
-  StartsWithSanitizer() {
-    this.(MethodAccess).getMethod().hasName("startsWith") and
-    this.(MethodAccess).getMethod().getDeclaringType() instanceof TypeString and
-    this.(MethodAccess).getMethod().getNumberOfParameters() = 1
-  }
-
-  override predicate checks(Expr e, boolean branch) {
-    e = this.(MethodAccess).getQualifier() and branch = true
-  }
+private predicate startsWithSanitizer(Guard g, Expr e, boolean branch) {
+  g.(MethodAccess).getMethod().hasName("startsWith") and
+  g.(MethodAccess).getMethod().getDeclaringType() instanceof TypeString and
+  g.(MethodAccess).getMethod().getNumberOfParameters() = 1 and
+  e = g.(MethodAccess).getQualifier() and
+  branch = true
 }
 
 class SpringUrlRedirectFlowConfig extends TaintTracking::Configuration {
@@ -36,10 +34,6 @@ class SpringUrlRedirectFlowConfig extends TaintTracking::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     springUrlRedirectTaintStep(fromNode, toNode)
-  }
-
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StartsWithSanitizer
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -63,6 +57,8 @@ class SpringUrlRedirectFlowConfig extends TaintTracking::Configuration {
     )
     or
     nonLocationHeaderSanitizer(node)
+    or
+    node = DataFlow::BarrierGuard<startsWithSanitizer/3>::getABarrierNode()
   }
 }
 

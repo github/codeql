@@ -21,10 +21,10 @@ import javascript
 
 private DataFlow::Node getNode(API::Node nd, string kind) {
   kind = "def" and
-  result = nd.getARhs()
+  result = nd.asSink()
   or
   kind = "use" and
-  result = nd.getAUse()
+  result = nd.getAValueReachableFromSource()
 }
 
 private string getLoc(DataFlow::Node nd) {
@@ -84,8 +84,8 @@ class Assertion extends Comment {
   string tryExplainFailure() {
     exists(int i, API::Node nd, string prefix, string suffix |
       nd = this.lookup(i) and
-      i < getPathLength() and
-      not exists(this.lookup([i + 1 .. getPathLength()])) and
+      i < this.getPathLength() and
+      not exists(this.lookup([i + 1 .. this.getPathLength()])) and
       prefix = nd + " has no outgoing edge labelled " + this.getEdgeLabel(i) + ";" and
       if exists(nd.getASuccessor())
       then

@@ -106,4 +106,4 @@ predicate mayNotBeDisposed(LocalScopeDisposableCreation disposable) {
 
 from LocalScopeDisposableCreation disposable
 where mayNotBeDisposed(disposable)
-select disposable, "Disposable '" + disposable.getType() + "' is created here but is not disposed."
+select disposable, "Disposable '" + disposable.getType() + "' is created but not disposed."

@@ -69,7 +69,7 @@ predicate mixed1(Big good, Small small) {
   good =
     any(Big bad |
       small.toString().matches("%foo") and
-      // the use of good is fine, the comparison futher up binds it.
+      // the use of good is fine, the comparison further up binds it.
       // the same is not true for bad.
       (bad.toString().matches("%foo") or good.toString().regexpMatch("foo.*")) and
       small.toString().regexpMatch(".*foo")
@@ -157,11 +157,12 @@ predicate good7() {
   )
 }
 
-// TOOD: Next test, this one is
-string good8(int bitSize) {
-  if bitSize != 0
-  then bitSize = 1 and result = bitSize.toString()
-  else (
-    if 1 = 0 then result = "foo" else result = "bar"
-  )
+class HasField extends Big {
+  Big field;
+
+  HasField() {
+    field = this
+    or
+    this.toString().matches("%foo") // <- field only defined here.
+  }
 }

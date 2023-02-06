@@ -17,5 +17,5 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows here and is used in an XPath expression.",
-  source.getNode(), "User-provided value"
+select sink.getNode(), source, sink, "XPath expression depends on a $@.", source.getNode(),
+  "user-provided value"

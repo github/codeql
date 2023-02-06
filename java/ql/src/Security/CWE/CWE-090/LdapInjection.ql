@@ -18,5 +18,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, LdapInjectionFlowConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "LDAP query might include code from $@.", source.getNode(),
-  "this user input"
+select sink.getNode(), source, sink, "This LDAP query depends on a $@.", source.getNode(),
+  "user-provided value"

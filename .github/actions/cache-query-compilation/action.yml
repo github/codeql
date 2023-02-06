@@ -1,0 +1,54 @@
+name: Cache query compilation
+description: Caches CodeQL compilation caches - should be run both on PRs and pushes to main.
+
+inputs:
+  key:
+    description: 'The cache key to use - should be unique to the workflow'
+    required: true
+
+outputs:
+  cache-dir:
+    description: "The directory where the cache was stored"
+    value: ${{ steps.fill-compilation-dir.outputs.compdir }}
+
+runs:
+  using: composite
+  steps:
+    # calculate the merge-base with main, in a way that works both on PRs and pushes to main.
+    - name: Calculate merge-base
+      shell: bash
+      if: ${{ github.event_name == 'pull_request' }}
+      env:
+        BASE_BRANCH: ${{ github.base_ref }}
+      run: |
+        MERGE_BASE=$(git cat-file commit $GITHUB_SHA | grep '^parent ' | head -1 | cut -f 2 -d " ")
+        echo "merge_base=$MERGE_BASE" >> $GITHUB_ENV
+    - name: Restore cache (PR)
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: actions/cache/restore@v3
+      with:
+        path: '**/.cache'
+        key: codeql-compile-${{ inputs.key }}-pr-${{ github.sha }}
+        restore-keys: |
+          codeql-compile-${{ inputs.key }}-${{ github.base_ref }}-${{ env.merge_base }}
+          codeql-compile-${{ inputs.key }}-${{ github.base_ref }}-
+          codeql-compile-${{ inputs.key }}-main-
+    - name: Fill cache (only branch push)
+      if: ${{ github.event_name != 'pull_request' }}
+      uses: actions/cache@v3
+      with:
+        path: '**/.cache'
+        key: codeql-compile-${{ inputs.key }}-${{ github.ref_name }}-${{ github.sha }} # just fill on main
+        restore-keys: | # restore the latest cache if the exact cache is unavailable, to speed up compilation.
+          codeql-compile-${{ inputs.key }}-${{ github.ref_name }}-
+          codeql-compile-${{ inputs.key }}-main-
+    - name: Fill compilation cache directory
+      id: fill-compilation-dir
+      shell: bash
+      run: |
+        # Move all the existing cache into another folder, so we only preserve the cache for the current queries.
+        node $GITHUB_WORKSPACE/.github/actions/cache-query-compilation/move-caches.js ${COMBINED_CACHE_DIR}
+
+        echo "compdir=${COMBINED_CACHE_DIR}" >> $GITHUB_OUTPUT
+      env:
+        COMBINED_CACHE_DIR: ${{ runner.temp }}/compilation-dir

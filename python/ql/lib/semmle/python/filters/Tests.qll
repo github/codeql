@@ -1,14 +1,15 @@
 import python
+private import semmle.python.ApiGraphs
 
 abstract class TestScope extends Scope { }
 
-// don't extend Class directly to avoid ambiguous method warnings
-class UnitTestClass extends TestScope {
+class UnitTestClass extends TestScope, Class {
   UnitTestClass() {
-    exists(ClassValue cls | this = cls.getScope() |
-      cls.getABaseType+() = Module::named("unittest").attr(_)
-      or
-      cls.getABaseType+().getName().toLowerCase() = "testcase"
+    exists(API::Node testCaseClass, string testCaseString |
+      testCaseString.matches("%TestCase") and
+      testCaseClass = any(API::Node mod).getMember(testCaseString)
+    |
+      this.getParent() = testCaseClass.getASubclass*().asSource().asExpr()
     )
   }
 }

@@ -3,7 +3,7 @@
  * @description Using user input directly to control a thread's sleep time could lead to
  *              performance problems or even resource exhaustion.
  * @kind path-problem
- * @id java/thread-resource-abuse
+ * @id java/local-thread-resource-abuse
  * @problem.severity recommendation
  * @tags security
  *       external/cwe/cwe-400
@@ -59,10 +59,8 @@ class ThreadResourceAbuse extends TaintTracking::Configuration {
       ma.getMethod().hasQualifiedName("java.lang", "Math", "min") and
       node.asExpr() = ma.getAnArgument()
     )
-  }
-
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof LessThanSanitizer // if (sleepTime > 0 && sleepTime < 5000) { ... }
+    or
+    node instanceof LessThanSanitizer // if (sleepTime > 0 && sleepTime < 5000) { ... }
   }
 }
 

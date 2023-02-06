@@ -14,4 +14,4 @@ where
   n.fromSource() and
   c = n.getMetrics().getInstability() and
   c > 0.8
-select n as Package, c as Instability order by Instability desc
+select n as package, c as instability order by instability desc

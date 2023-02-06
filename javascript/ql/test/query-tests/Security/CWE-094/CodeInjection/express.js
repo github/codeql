@@ -28,3 +28,18 @@ app.get('/other/path', function(req, res) {
 
   cp.execFileSync('node', ['-e', `console.log(${JSON.stringify(taint)})`]); // OK
 });
+
+const pty = require('node-pty');
+app.get('/terminal', function(req, res) {
+  const taint = req.param("wobble");
+  const shell = pty.spawn('bash', [], {
+    name: 'xterm-color',
+    cols: 80,
+    rows: 30,
+    cwd: process.env.HOME,
+    env: process.env
+  });
+
+  shell.write(taint); // NOT OK
+});
+  

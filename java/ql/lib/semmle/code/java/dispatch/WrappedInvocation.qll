@@ -19,8 +19,9 @@ private predicate runner(Method m, int n, Method runmethod) {
     exists(Parameter p, MethodAccess ma, int j |
       p = m.getParameter(n) and
       ma.getEnclosingCallable() = m and
-      runner(ma.getMethod().getSourceDeclaration(), j, _) and
-      ma.getArgument(j) = p.getAnAccess()
+      runner(pragma[only_bind_into](ma.getMethod().getSourceDeclaration()),
+        pragma[only_bind_into](j), _) and
+      ma.getArgument(pragma[only_bind_into](j)) = p.getAnAccess()
     )
   )
 }
@@ -37,7 +38,7 @@ private Expr getRunnerArgument(MethodAccess ma, Method runmethod) {
     result = ma.getArgument(param)
   )
   or
-  getRunnerArgument(ma, runmethod).(CastExpr).getExpr() = result
+  getRunnerArgument(ma, runmethod).(CastingExpr).getExpr() = result
   or
   pragma[only_bind_out](getRunnerArgument(ma, runmethod))
       .(VarAccess)

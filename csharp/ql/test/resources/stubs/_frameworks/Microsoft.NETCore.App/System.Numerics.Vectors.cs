@@ -4,7 +4,7 @@ namespace System
 {
     namespace Numerics
     {
-        // Generated from `System.Numerics.Matrix3x2` in `System.Numerics.Vectors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Numerics.Matrix3x2` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Matrix3x2 : System.IEquatable<System.Numerics.Matrix3x2>
         {
             public static bool operator !=(System.Numerics.Matrix3x2 value1, System.Numerics.Matrix3x2 value2) => throw null;
@@ -51,7 +51,7 @@ namespace System
             public System.Numerics.Vector2 Translation { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Numerics.Matrix4x4` in `System.Numerics.Vectors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Numerics.Matrix4x4` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Matrix4x4 : System.IEquatable<System.Numerics.Matrix4x4>
         {
             public static bool operator !=(System.Numerics.Matrix4x4 value1, System.Numerics.Matrix4x4 value2) => throw null;
@@ -128,7 +128,7 @@ namespace System
             public static System.Numerics.Matrix4x4 Transpose(System.Numerics.Matrix4x4 matrix) => throw null;
         }
 
-        // Generated from `System.Numerics.Plane` in `System.Numerics.Vectors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Numerics.Plane` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Plane : System.IEquatable<System.Numerics.Plane>
         {
             public static bool operator !=(System.Numerics.Plane value1, System.Numerics.Plane value2) => throw null;
@@ -152,7 +152,7 @@ namespace System
             public static System.Numerics.Plane Transform(System.Numerics.Plane plane, System.Numerics.Quaternion rotation) => throw null;
         }
 
-        // Generated from `System.Numerics.Quaternion` in `System.Numerics.Vectors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Numerics.Quaternion` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Quaternion : System.IEquatable<System.Numerics.Quaternion>
         {
             public static bool operator !=(System.Numerics.Quaternion value1, System.Numerics.Quaternion value2) => throw null;
@@ -196,17 +196,20 @@ namespace System
             public float Z;
         }
 
-        // Generated from `System.Numerics.Vector` in `System.Numerics.Vectors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Numerics.Vector` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Vector
         {
             public static System.Numerics.Vector<T> Abs<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
             public static System.Numerics.Vector<T> Add<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
             public static System.Numerics.Vector<T> AndNot<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
+            public static System.Numerics.Vector<TTo> As<TFrom, TTo>(this System.Numerics.Vector<TFrom> vector) where TFrom : struct where TTo : struct => throw null;
             public static System.Numerics.Vector<System.Byte> AsVectorByte<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
             public static System.Numerics.Vector<double> AsVectorDouble<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
             public static System.Numerics.Vector<System.Int16> AsVectorInt16<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
             public static System.Numerics.Vector<int> AsVectorInt32<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
             public static System.Numerics.Vector<System.Int64> AsVectorInt64<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
+            public static System.Numerics.Vector<System.IntPtr> AsVectorNInt<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
+            public static System.Numerics.Vector<System.UIntPtr> AsVectorNUInt<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
             public static System.Numerics.Vector<System.SByte> AsVectorSByte<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
             public static System.Numerics.Vector<float> AsVectorSingle<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
             public static System.Numerics.Vector<System.UInt16> AsVectorUInt16<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
@@ -272,28 +275,29 @@ namespace System
             public static System.Numerics.Vector<T> Multiply<T>(T left, System.Numerics.Vector<T> right) where T : struct => throw null;
             public static System.Numerics.Vector<T> Multiply<T>(System.Numerics.Vector<T> left, T right) where T : struct => throw null;
             public static System.Numerics.Vector<T> Multiply<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static System.Numerics.Vector<float> Narrow(System.Numerics.Vector<double> source1, System.Numerics.Vector<double> source2) => throw null;
-            public static System.Numerics.Vector<System.Int16> Narrow(System.Numerics.Vector<int> source1, System.Numerics.Vector<int> source2) => throw null;
-            public static System.Numerics.Vector<int> Narrow(System.Numerics.Vector<System.Int64> source1, System.Numerics.Vector<System.Int64> source2) => throw null;
-            public static System.Numerics.Vector<System.SByte> Narrow(System.Numerics.Vector<System.Int16> source1, System.Numerics.Vector<System.Int16> source2) => throw null;
-            public static System.Numerics.Vector<System.UInt16> Narrow(System.Numerics.Vector<System.UInt32> source1, System.Numerics.Vector<System.UInt32> source2) => throw null;
-            public static System.Numerics.Vector<System.UInt32> Narrow(System.Numerics.Vector<System.UInt64> source1, System.Numerics.Vector<System.UInt64> source2) => throw null;
-            public static System.Numerics.Vector<System.Byte> Narrow(System.Numerics.Vector<System.UInt16> source1, System.Numerics.Vector<System.UInt16> source2) => throw null;
+            public static System.Numerics.Vector<float> Narrow(System.Numerics.Vector<double> low, System.Numerics.Vector<double> high) => throw null;
+            public static System.Numerics.Vector<System.Int16> Narrow(System.Numerics.Vector<int> low, System.Numerics.Vector<int> high) => throw null;
+            public static System.Numerics.Vector<int> Narrow(System.Numerics.Vector<System.Int64> low, System.Numerics.Vector<System.Int64> high) => throw null;
+            public static System.Numerics.Vector<System.SByte> Narrow(System.Numerics.Vector<System.Int16> low, System.Numerics.Vector<System.Int16> high) => throw null;
+            public static System.Numerics.Vector<System.UInt16> Narrow(System.Numerics.Vector<System.UInt32> low, System.Numerics.Vector<System.UInt32> high) => throw null;
+            public static System.Numerics.Vector<System.UInt32> Narrow(System.Numerics.Vector<System.UInt64> low, System.Numerics.Vector<System.UInt64> high) => throw null;
+            public static System.Numerics.Vector<System.Byte> Narrow(System.Numerics.Vector<System.UInt16> low, System.Numerics.Vector<System.UInt16> high) => throw null;
             public static System.Numerics.Vector<T> Negate<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
             public static System.Numerics.Vector<T> OnesComplement<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
             public static System.Numerics.Vector<T> SquareRoot<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
             public static System.Numerics.Vector<T> Subtract<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static void Widen(System.Numerics.Vector<System.Byte> source, out System.Numerics.Vector<System.UInt16> dest1, out System.Numerics.Vector<System.UInt16> dest2) => throw null;
-            public static void Widen(System.Numerics.Vector<float> source, out System.Numerics.Vector<double> dest1, out System.Numerics.Vector<double> dest2) => throw null;
-            public static void Widen(System.Numerics.Vector<int> source, out System.Numerics.Vector<System.Int64> dest1, out System.Numerics.Vector<System.Int64> dest2) => throw null;
-            public static void Widen(System.Numerics.Vector<System.SByte> source, out System.Numerics.Vector<System.Int16> dest1, out System.Numerics.Vector<System.Int16> dest2) => throw null;
-            public static void Widen(System.Numerics.Vector<System.Int16> source, out System.Numerics.Vector<int> dest1, out System.Numerics.Vector<int> dest2) => throw null;
-            public static void Widen(System.Numerics.Vector<System.UInt32> source, out System.Numerics.Vector<System.UInt64> dest1, out System.Numerics.Vector<System.UInt64> dest2) => throw null;
-            public static void Widen(System.Numerics.Vector<System.UInt16> source, out System.Numerics.Vector<System.UInt32> dest1, out System.Numerics.Vector<System.UInt32> dest2) => throw null;
+            public static T Sum<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
+            public static void Widen(System.Numerics.Vector<System.Byte> source, out System.Numerics.Vector<System.UInt16> low, out System.Numerics.Vector<System.UInt16> high) => throw null;
+            public static void Widen(System.Numerics.Vector<float> source, out System.Numerics.Vector<double> low, out System.Numerics.Vector<double> high) => throw null;
+            public static void Widen(System.Numerics.Vector<int> source, out System.Numerics.Vector<System.Int64> low, out System.Numerics.Vector<System.Int64> high) => throw null;
+            public static void Widen(System.Numerics.Vector<System.SByte> source, out System.Numerics.Vector<System.Int16> low, out System.Numerics.Vector<System.Int16> high) => throw null;
+            public static void Widen(System.Numerics.Vector<System.Int16> source, out System.Numerics.Vector<int> low, out System.Numerics.Vector<int> high) => throw null;
+            public static void Widen(System.Numerics.Vector<System.UInt32> source, out System.Numerics.Vector<System.UInt64> low, out System.Numerics.Vector<System.UInt64> high) => throw null;
+            public static void Widen(System.Numerics.Vector<System.UInt16> source, out System.Numerics.Vector<System.UInt32> low, out System.Numerics.Vector<System.UInt32> high) => throw null;
             public static System.Numerics.Vector<T> Xor<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
         }
 
-        // Generated from `System.Numerics.Vector2` in `System.Numerics.Vectors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Numerics.Vector2` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Vector2 : System.IEquatable<System.Numerics.Vector2>, System.IFormattable
         {
             public static bool operator !=(System.Numerics.Vector2 left, System.Numerics.Vector2 right) => throw null;
@@ -311,6 +315,7 @@ namespace System
             public static System.Numerics.Vector2 Clamp(System.Numerics.Vector2 value1, System.Numerics.Vector2 min, System.Numerics.Vector2 max) => throw null;
             public void CopyTo(float[] array) => throw null;
             public void CopyTo(float[] array, int index) => throw null;
+            public void CopyTo(System.Span<float> destination) => throw null;
             public static float Distance(System.Numerics.Vector2 value1, System.Numerics.Vector2 value2) => throw null;
             public static float DistanceSquared(System.Numerics.Vector2 value1, System.Numerics.Vector2 value2) => throw null;
             public static System.Numerics.Vector2 Divide(System.Numerics.Vector2 left, System.Numerics.Vector2 right) => throw null;
@@ -341,9 +346,11 @@ namespace System
             public static System.Numerics.Vector2 Transform(System.Numerics.Vector2 value, System.Numerics.Quaternion rotation) => throw null;
             public static System.Numerics.Vector2 TransformNormal(System.Numerics.Vector2 normal, System.Numerics.Matrix3x2 matrix) => throw null;
             public static System.Numerics.Vector2 TransformNormal(System.Numerics.Vector2 normal, System.Numerics.Matrix4x4 matrix) => throw null;
+            public bool TryCopyTo(System.Span<float> destination) => throw null;
             public static System.Numerics.Vector2 UnitX { get => throw null; }
             public static System.Numerics.Vector2 UnitY { get => throw null; }
             // Stub generator skipped constructor 
+            public Vector2(System.ReadOnlySpan<float> values) => throw null;
             public Vector2(float value) => throw null;
             public Vector2(float x, float y) => throw null;
             public float X;
@@ -351,7 +358,7 @@ namespace System
             public static System.Numerics.Vector2 Zero { get => throw null; }
         }
 
-        // Generated from `System.Numerics.Vector3` in `System.Numerics.Vectors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Numerics.Vector3` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Vector3 : System.IEquatable<System.Numerics.Vector3>, System.IFormattable
         {
             public static bool operator !=(System.Numerics.Vector3 left, System.Numerics.Vector3 right) => throw null;
@@ -369,6 +376,7 @@ namespace System
             public static System.Numerics.Vector3 Clamp(System.Numerics.Vector3 value1, System.Numerics.Vector3 min, System.Numerics.Vector3 max) => throw null;
             public void CopyTo(float[] array) => throw null;
             public void CopyTo(float[] array, int index) => throw null;
+            public void CopyTo(System.Span<float> destination) => throw null;
             public static System.Numerics.Vector3 Cross(System.Numerics.Vector3 vector1, System.Numerics.Vector3 vector2) => throw null;
             public static float Distance(System.Numerics.Vector3 value1, System.Numerics.Vector3 value2) => throw null;
             public static float DistanceSquared(System.Numerics.Vector3 value1, System.Numerics.Vector3 value2) => throw null;
@@ -398,10 +406,12 @@ namespace System
             public static System.Numerics.Vector3 Transform(System.Numerics.Vector3 position, System.Numerics.Matrix4x4 matrix) => throw null;
             public static System.Numerics.Vector3 Transform(System.Numerics.Vector3 value, System.Numerics.Quaternion rotation) => throw null;
             public static System.Numerics.Vector3 TransformNormal(System.Numerics.Vector3 normal, System.Numerics.Matrix4x4 matrix) => throw null;
+            public bool TryCopyTo(System.Span<float> destination) => throw null;
             public static System.Numerics.Vector3 UnitX { get => throw null; }
             public static System.Numerics.Vector3 UnitY { get => throw null; }
             public static System.Numerics.Vector3 UnitZ { get => throw null; }
             // Stub generator skipped constructor 
+            public Vector3(System.ReadOnlySpan<float> values) => throw null;
             public Vector3(System.Numerics.Vector2 value, float z) => throw null;
             public Vector3(float value) => throw null;
             public Vector3(float x, float y, float z) => throw null;
@@ -411,7 +421,7 @@ namespace System
             public static System.Numerics.Vector3 Zero { get => throw null; }
         }
 
-        // Generated from `System.Numerics.Vector4` in `System.Numerics.Vectors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Numerics.Vector4` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Vector4 : System.IEquatable<System.Numerics.Vector4>, System.IFormattable
         {
             public static bool operator !=(System.Numerics.Vector4 left, System.Numerics.Vector4 right) => throw null;
@@ -429,6 +439,7 @@ namespace System
             public static System.Numerics.Vector4 Clamp(System.Numerics.Vector4 value1, System.Numerics.Vector4 min, System.Numerics.Vector4 max) => throw null;
             public void CopyTo(float[] array) => throw null;
             public void CopyTo(float[] array, int index) => throw null;
+            public void CopyTo(System.Span<float> destination) => throw null;
             public static float Distance(System.Numerics.Vector4 value1, System.Numerics.Vector4 value2) => throw null;
             public static float DistanceSquared(System.Numerics.Vector4 value1, System.Numerics.Vector4 value2) => throw null;
             public static System.Numerics.Vector4 Divide(System.Numerics.Vector4 left, System.Numerics.Vector4 right) => throw null;
@@ -459,11 +470,13 @@ namespace System
             public static System.Numerics.Vector4 Transform(System.Numerics.Vector3 value, System.Numerics.Quaternion rotation) => throw null;
             public static System.Numerics.Vector4 Transform(System.Numerics.Vector4 vector, System.Numerics.Matrix4x4 matrix) => throw null;
             public static System.Numerics.Vector4 Transform(System.Numerics.Vector4 value, System.Numerics.Quaternion rotation) => throw null;
+            public bool TryCopyTo(System.Span<float> destination) => throw null;
             public static System.Numerics.Vector4 UnitW { get => throw null; }
             public static System.Numerics.Vector4 UnitX { get => throw null; }
             public static System.Numerics.Vector4 UnitY { get => throw null; }
             public static System.Numerics.Vector4 UnitZ { get => throw null; }
             // Stub generator skipped constructor 
+            public Vector4(System.ReadOnlySpan<float> values) => throw null;
             public Vector4(System.Numerics.Vector2 value, float z, float w) => throw null;
             public Vector4(System.Numerics.Vector3 value, float w) => throw null;
             public Vector4(float value) => throw null;
@@ -475,7 +488,7 @@ namespace System
             public static System.Numerics.Vector4 Zero { get => throw null; }
         }
 
-        // Generated from `System.Numerics.Vector<>` in `System.Numerics.Vectors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Numerics.Vector<>` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Vector<T> : System.IEquatable<System.Numerics.Vector<T>>, System.IFormattable where T : struct
         {
             public static bool operator !=(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
@@ -515,10 +528,12 @@ namespace System
             public static explicit operator System.Numerics.Vector<System.Byte>(System.Numerics.Vector<T> value) => throw null;
             public static explicit operator System.Numerics.Vector<System.Int16>(System.Numerics.Vector<T> value) => throw null;
             public static explicit operator System.Numerics.Vector<System.Int64>(System.Numerics.Vector<T> value) => throw null;
+            public static explicit operator System.Numerics.Vector<System.IntPtr>(System.Numerics.Vector<T> value) => throw null;
             public static explicit operator System.Numerics.Vector<System.SByte>(System.Numerics.Vector<T> value) => throw null;
             public static explicit operator System.Numerics.Vector<System.UInt16>(System.Numerics.Vector<T> value) => throw null;
             public static explicit operator System.Numerics.Vector<System.UInt32>(System.Numerics.Vector<T> value) => throw null;
             public static explicit operator System.Numerics.Vector<System.UInt64>(System.Numerics.Vector<T> value) => throw null;
+            public static explicit operator System.Numerics.Vector<System.UIntPtr>(System.Numerics.Vector<T> value) => throw null;
             public static explicit operator System.Numerics.Vector<double>(System.Numerics.Vector<T> value) => throw null;
             public static explicit operator System.Numerics.Vector<float>(System.Numerics.Vector<T> value) => throw null;
             public static explicit operator System.Numerics.Vector<int>(System.Numerics.Vector<T> value) => throw null;

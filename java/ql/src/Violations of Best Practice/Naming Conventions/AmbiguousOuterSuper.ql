@@ -27,7 +27,7 @@ predicate callToInheritedMethod(RefType lexicalScope, MethodAccess ma, string si
   not ma.getMethod().isStatic() and
   not ma.hasQualifier() and
   ma.getEnclosingCallable().getDeclaringType() = lexicalScope and
-  nestedSupertypePlus(lexicalScope).getAMethod() = ma.getMethod() and
+  nestedSupertypePlus(lexicalScope).getAMethod() = ma.getMethod().getSourceDeclaration() and
   signature = ma.getMethod().getSignature()
 }
 

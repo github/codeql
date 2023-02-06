@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Many arithmetic or logical operators yield a trivial result when applied to
+identical operands: for instance, <code>x-x</code> is zero if <code>x</code>
+is a number, and <code>NaN</code> otherwise; <code>x&amp;x</code> is always
+equal to <code>x</code>. Code like this is often the result of a typo, such as
+misspelling a variable name.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Carefully inspect the expression to ensure it is not a symptom of a bug.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the example below, the function <code>avg</code> is intended to compute the
+average of two numbers <code>x</code> and <code>y</code>. However, the programmer
+accidentally used <code>x</code> twice, so the function just returns
+<code>x</code>:
+</p>
+<sample src="RedundantExpr.go" />
+<p>
+This problem can be fixed by correcting the typo:
+</p>
+<sample src="RedundantExprGood.go" />
+</example>
+
+</qhelp>

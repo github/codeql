@@ -6,6 +6,7 @@
  * @id java/thread-resource-abuse
  * @problem.severity warning
  * @tags security
+ *       experimental
  *       external/cwe/cwe-400
  */
 
@@ -33,10 +34,8 @@ class ThreadResourceAbuse extends TaintTracking::Configuration {
       ma.getMethod().hasQualifiedName("java.lang", "Math", "min") and
       node.asExpr() = ma.getAnArgument()
     )
-  }
-
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof LessThanSanitizer // if (sleepTime > 0 && sleepTime < 5000) { ... }
+    or
+    node instanceof LessThanSanitizer // if (sleepTime > 0 && sleepTime < 5000) { ... }
   }
 }
 

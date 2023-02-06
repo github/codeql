@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If two cases in a 'switch' statement are identical, the second case will never be executed.
+This most likely indicates a copy-paste error where the first case was copied and then not properly
+adjusted.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Examine the two cases to find out what they were meant to check. If both the conditions
+and the bodies are identical, then the second case is duplicate code that can be deleted. Otherwise,
+the second case needs to be adjusted.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the example below, the function <code>controller</code> checks its parameter <code>msg</code>
+to determine what operation it is meant to perform. However, the condition of the second case is
+identical to that of the first, so this case will never be executed.
+</p>
+<sample src="DuplicateSwitchCase.go" />
+<p>
+Most likely, the second case should compare <code>msg</code> to <code>"stop"</code>:
+</p>
+<sample src="DuplicateSwitchCaseGood.go" />
+</example>
+
+<references>
+<li>The Go Programming Language Specification: <a href="https://golang.org/ref/spec#Switch_statements">Switch statements</a>.</li>
+</references>
+</qhelp>

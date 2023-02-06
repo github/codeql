@@ -15,7 +15,7 @@
 import cpp
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.FunctionWithWrappers
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 import TaintedWithPath
 
 class SqlLikeFunction extends FunctionWithWrappers {
@@ -50,5 +50,5 @@ where
   taintedWithPath(taintSource, taintedArg, sourceNode, sinkNode) and
   isUserInput(taintSource, taintCause)
 select taintedArg, sourceNode, sinkNode,
-  "This argument to a SQL query function is derived from $@ and then passed to " + callChain,
+  "This argument to a SQL query function is derived from $@ and then passed to " + callChain + ".",
   taintSource, "user input (" + taintCause + ")"

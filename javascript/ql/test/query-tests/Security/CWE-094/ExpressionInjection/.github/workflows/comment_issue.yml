@@ -1,0 +1,14 @@
+on: issue_comment
+
+jobs:
+  echo-chamber:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo '${{ github.event.comment.body }}'
+
+  echo-chamber2:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo '${{ github.event.comment.body }}'

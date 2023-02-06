@@ -25,4 +25,4 @@ where
   op instanceof BinaryArithmeticOperation and
   isUnsignedOperand(op.getChild(0)) and
   isUnsignedOperand(op.getChild(1))
-select op, "AV Rule 163: unsigned arithmetic shall not be used"
+select op, "AV Rule 163: unsigned arithmetic shall not be used."

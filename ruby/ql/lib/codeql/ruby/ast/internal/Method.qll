@@ -7,11 +7,15 @@ class BraceBlockReal extends BraceBlock, TBraceBlockReal {
 
   BraceBlockReal() { this = TBraceBlockReal(g) }
 
+  final override LocalVariableWriteAccess getLocalVariable(int n) {
+    toGenerated(result) = g.getParameters().getLocals(n)
+  }
+
   final override Parameter getParameter(int n) {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
-  final override Stmt getStmt(int i) { toGenerated(result) = g.getChild(i) }
+  final override Stmt getStmt(int i) { toGenerated(result) = g.getBody().getChild(i) }
 }
 
 /**

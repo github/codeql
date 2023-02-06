@@ -1,0 +1,4 @@
+| tst.go:8:8:8:10 | selection of f | tst.go:8:8:8:8 | implicit dereference | tst.go:4:2:4:2 | f |
+| tst.go:8:8:8:10 | selection of f | tst.go:8:8:8:8 | t | tst.go:4:2:4:2 | f |
+| tst.go:13:9:13:11 | selection of f | tst.go:13:9:13:9 | t | tst.go:4:2:4:2 | f |
+| tst.go:17:8:17:10 | selection of f | tst.go:17:8:17:8 | x | tst.go:4:2:4:2 | f |

@@ -1754,4 +1754,136 @@ int implicit_copy_constructor_test(
     CopyConstructorTestVirtualClass cy = y;
 }
 
+void if_initialization(int x) {
+    if (int y = x; x + 1) {
+        x = x + y;
+    }
+
+    int w;
+    if (w = x; x + 1) {
+        x = x + w;
+    }
+
+    if (w = x; int w2 = w) {
+        x = x + w;
+    }
+
+    if (int v = x; int v2 = v) {
+        x = x + v;
+    }
+
+    int z = x;
+    if (z) {
+        x = x + z;
+    }
+
+    if (int z2 = z) {
+        x += z2;
+    }
+}
+
+void switch_initialization(int x) {
+    switch (int y = x; x + 1) {
+    default:
+        x = x + y;
+    }
+
+    int w;
+    switch (w = x; x + 1) {
+    default:
+        x = x + w;
+    }
+
+    switch (w = x; int w2 = w) {
+    default:
+        x = x + w;
+    }
+
+    switch (int v = x; int v2 = v) {
+    default:
+        x = x + v;
+    }
+
+    int z = x;
+    switch (z) {
+    default:
+        x = x + z;
+    }
+
+    switch (int z2 = z) {
+    default:
+        x += z2;
+    }
+}
+
+int global_1;
+
+int global_2 = 1;
+
+const int global_3 = 2;
+
+constructor_only global_4(1);
+
+constructor_only global_5 = constructor_only(2);
+
+char *global_string = "global string";
+
+int global_6 = global_2;
+
+namespace block_assignment {
+    class A {
+        enum {} e[1];
+        virtual void f();
+    };
+    
+    struct B : A {
+        B(A *);
+    };
+
+    void foo() {
+        B v(0);
+        v = 0;
+    }
+}
+
+void magicvars() {
+    const char *pf = __PRETTY_FUNCTION__;
+    const char *strfunc = __func__;
+}
+
+namespace missing_declaration_entries {
+    struct S {};
+
+    template<typename A, typename B> struct pair{};
+
+    template<typename T> struct Bar1 {
+        typedef S* pointer;
+
+        void* missing_type_decl_entry(pointer p) {
+            typedef pair<pointer, bool> _Res;
+            return p;
+        }
+    };
+
+    void test1() {
+        Bar1<int> b;
+        b.missing_type_decl_entry(nullptr);
+    }
+
+    template<typename T> struct Bar2 {
+
+        int two_missing_variable_declaration_entries() {
+            int x[10], y[10];
+            *x = 10;
+            *y = 10;
+            return *x + *y;
+        }
+    };
+
+    void test2() {
+        Bar2<int> b;
+        b.two_missing_variable_declaration_entries();
+    }
+}
+
 // semmle-extractor-options: -std=c++17 --clang

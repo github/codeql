@@ -112,6 +112,14 @@ namespace My.Qltest
             Sink(f.MyProp);
         }
 
+        void M17()
+        {
+            var a = new object[] { new object() };
+            var b = Reverse(a);
+            Sink(b); // No flow
+            Sink(b[0]); // Flow
+        }
+
         object StepArgRes(object x) { return null; }
 
         void StepArgArg(object @in, object @out) { }
@@ -146,6 +154,8 @@ namespace My.Qltest
         static void Apply2<S>(Action<S> f, S s1, S s2) => throw null;
 
         static void Parse(string s, out int i) => throw null;
+
+        static object[] Reverse(object[] elements) => throw null;
 
         static void Sink(object o) { }
     }

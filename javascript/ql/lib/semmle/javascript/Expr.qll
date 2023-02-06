@@ -167,7 +167,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   /**
    * Holds if this expression may refer to the initial value of parameter `p`.
    */
-  predicate mayReferToParameter(Parameter p) { this.flow().mayReferToParameter(p) }
+  predicate mayReferToParameter(Parameter p) { DataFlow::parameterNode(p).flowsToExpr(this) }
 
   /**
    * Gets the static type of this expression, as determined by the TypeScript type system.
@@ -571,7 +571,7 @@ class ObjectExpr extends @obj_expr, Expr {
   Property getProperty(int i) { properties(result, this, i, _, _) }
 
   /** Gets a property in this object literal. */
-  Property getAProperty() { exists(int i | result = this.getProperty(i)) }
+  Property getAProperty() { result = this.getProperty(_) }
 
   /** Gets the number of properties in this object literal. */
   int getNumProperty() { result = count(this.getAProperty()) }
@@ -2286,9 +2286,7 @@ class ComprehensionExpr extends @comprehension_expr, Expr {
 
   /** Holds if this is a legacy postfix comprehension expression. */
   predicate isPostfix() {
-    exists(Token tk | tk = this.getFirstToken().getNextToken() |
-      not tk.getValue().regexpMatch("if|for")
-    )
+    exists(Token tk | tk = this.getFirstToken().getNextToken() | not tk.getValue() = ["if", "for"])
   }
 
   override string getAPrimaryQlClass() { result = "ComprehensionExpr" }
@@ -2904,7 +2902,7 @@ class ImportMetaExpr extends @import_meta_expr, Expr {
  * let data2 = {{{ user_data2 }}};
  * ```
  *
- * Note that templating placeholders occuring inside strings literals are not parsed,
+ * Note that templating placeholders occurring inside strings literals are not parsed,
  * and are simply seen as being part of the string literal.
  * For example, following snippet does not contain any `GeneratedCodeExpr` nodes:
  * ```js

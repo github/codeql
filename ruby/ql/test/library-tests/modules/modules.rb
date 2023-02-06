@@ -115,7 +115,15 @@ end
 module XX
       class YY < YY
       end
+
+      class << self
+      end
 end
 
 module Test::Foo1::Bar::Baz
+end
+
+xx = XX.new
+
+class << xx
 end

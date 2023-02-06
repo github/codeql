@@ -27,6 +27,8 @@ predicate hasUnknownPropertyRead(LocalObject obj) {
   or
   exists(obj.getAPropertyRead("hasOwnProperty"))
   or
+  obj.flowsTo(DataFlow::globalVarRef("Object").getAMemberCall("hasOwn").getArgument(0))
+  or
   exists(obj.getAPropertyRead("propertyIsEnumerable"))
 }
 
@@ -39,6 +41,11 @@ predicate flowsToTypeRestrictedExpression(LocalObject obj) {
     not type.isAny()
   |
     exists(TypeAssertion assertion |
+      type = assertion.getTypeAnnotation() and
+      restricted = assertion.getExpression()
+    )
+    or
+    exists(SatisfiesExpr assertion |
       type = assertion.getTypeAnnotation() and
       restricted = assertion.getExpression()
     )

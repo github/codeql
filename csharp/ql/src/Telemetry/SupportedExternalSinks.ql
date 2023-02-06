@@ -2,17 +2,16 @@
  * @name Supported sinks in external libraries
  * @description A list of 3rd party APIs detected as sinks. Excludes APIs exposed by test libraries.
  * @kind metric
- * @tags summary
- * @id csharp/telemetry/supported-external-api-sinks
+ * @tags summary telemetry
+ * @id cs/telemetry/supported-external-api-sinks
  */
 
 private import csharp
 private import semmle.code.csharp.dispatch.Dispatch
 private import ExternalApi
 
-from ExternalApi api, int usages
-where
-  not api.isUninteresting() and
-  api.isSink() and
-  usages = strictcount(DispatchCall c | c = api.getACall())
-select api.getInfo() as info, usages order by usages desc
+private predicate relevant(ExternalApi api) { api.isSink() }
+
+from string info, int usages
+where Results<relevant/1>::restrict(info, usages)
+select info, usages order by usages desc

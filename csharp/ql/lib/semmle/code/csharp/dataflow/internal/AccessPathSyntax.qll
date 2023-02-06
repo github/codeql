@@ -1,5 +1,5 @@
 /**
- * Module for parsing access paths from CSV models, both the identifying access path used
+ * Module for parsing access paths from MaD models, both the identifying access path used
  * by dynamic languages, and the input/output specifications for summary steps.
  *
  * This file is used by the shared data flow library and by the JavaScript libraries
@@ -167,8 +167,15 @@ class AccessPathToken extends string {
   /** Gets the `n`th argument to this token, such as `x` or `y` from `Member[x,y]`. */
   string getArgument(int n) { result = this.getArgumentList().splitAt(",", n).trim() }
 
+  /** Gets the `n`th argument to this `name` token, such as `x` or `y` from `Member[x,y]`. */
+  pragma[nomagic]
+  string getArgument(string name, int n) { name = this.getName() and result = this.getArgument(n) }
+
   /** Gets an argument to this token, such as `x` or `y` from `Member[x,y]`. */
   string getAnArgument() { result = this.getArgument(_) }
+
+  /** Gets an argument to this `name` token, such as `x` or `y` from `Member[x,y]`. */
+  string getAnArgument(string name) { result = this.getArgument(name, _) }
 
   /** Gets the number of arguments to this token, such as 2 for `Member[x,y]` or zero for `ReturnValue`. */
   int getNumArgument() { result = count(int n | exists(this.getArgument(n))) }

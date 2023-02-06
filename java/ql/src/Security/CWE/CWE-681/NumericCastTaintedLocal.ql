@@ -46,5 +46,5 @@ where
   conf.hasFlowPath(source, sink) and
   not exists(RightShiftOp e | e.getShiftedVariable() = tainted.getVariable())
 select exp, source, sink,
-  "$@ flows to here and is cast to a narrower type, potentially causing truncation.",
-  source.getNode(), "User-provided value"
+  "This cast to a narrower type depends on a $@, potentially causing truncation.", source.getNode(),
+  "user-provided value"

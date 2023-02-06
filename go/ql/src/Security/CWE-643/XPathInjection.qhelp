@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If an XPath expression is built using string concatenation, and the components of the concatenation
+include user input, a user is likely to be able to create a malicious XPath expression.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If user input must be included in an XPath expression, pre-compile the query and use variable
+references to include the user input.
+</p>
+<p>
+For example, when using the <code>github.com/ChrisTrenkamp/goxpath</code> API, you can do this by creating a function that takes an <code>*goxpath.Opts</code> structure.
+In this structure you can then set the values of the variable references.
+This function can then be specified when calling <code>Exec()</code>, <code>Exec{Bool|Num|Node}()</code>, <code>ParseExec()</code>, or <code>MustExec()</code>.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In the first example, the code accepts a username specified by the user, and uses this
+unvalidated and unsanitized value in an XPath expression. This is vulnerable to the user providing
+special characters or string sequences that change the meaning of the XPath expression to search
+for different values.
+</p>
+
+<p>
+In the second example, the XPath expression is a hard-coded string that specifies some variables,
+which are safely resolved at runtime using the <code>goxpath.Opts</code> structure.
+</p>
+<sample src="XPathInjection.go" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/09-Testing_for_XPath_Injection">Testing for XPath Injection</a>.</li>
+<li>OWASP: <a href="https://www.owasp.org/index.php/XPATH_Injection">XPath Injection</a>.</li>
+</references>
+</qhelp>

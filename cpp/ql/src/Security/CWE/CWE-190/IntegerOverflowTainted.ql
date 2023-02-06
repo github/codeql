@@ -15,7 +15,7 @@
 
 import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 
 /** Holds if `expr` might overflow. */
 predicate outOfBoundsExpr(Expr expr, string kind) {
@@ -36,5 +36,4 @@ where
   not inSystemMacroExpansion(use) and
   // Avoid double-counting: don't include all the conversions of `use`.
   not use instanceof Conversion
-select use, "$@ flows to here and is used in an expression which might " + kind + ".", origin,
-  "User-provided value"
+select use, "$@ flows an expression which might " + kind + ".", origin, "User-provided value"

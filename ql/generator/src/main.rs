@@ -564,10 +564,20 @@ fn main() -> std::io::Result<()> {
     let ql_library_path = matches.value_of("library").expect("missing --library");
     let ql_library_path = PathBuf::from(ql_library_path);
 
-    let languages = vec![Language {
-        name: "QL".to_owned(),
-        node_types: tree_sitter_ql::NODE_TYPES,
-    }];
+    let languages = vec![
+        Language {
+            name: "QL".to_owned(),
+            node_types: tree_sitter_ql::NODE_TYPES,
+        },
+        Language {
+            name: "Dbscheme".to_owned(),
+            node_types: tree_sitter_ql_dbscheme::NODE_TYPES,
+        },
+        Language {
+            name: "Yaml".to_owned(),
+            node_types: tree_sitter_ql_yaml::NODE_TYPES,
+        },
+    ];
     let mut dbscheme_writer = LineWriter::new(File::create(dbscheme_path)?);
     write!(
         dbscheme_writer,
@@ -594,7 +604,7 @@ fn main() -> std::io::Result<()> {
     let mut ql_writer = LineWriter::new(File::create(ql_library_path)?);
     write!(
         ql_writer,
-        "/*\n\
+        "/**\n\
           * CodeQL library for {}
           * Automatically generated from the tree-sitter grammar; do not edit\n\
           */\n\n",

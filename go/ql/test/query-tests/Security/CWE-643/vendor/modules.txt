@@ -1,0 +1,24 @@
+# github.com/ChrisTrenkamp/goxpath v0.0.0-20190607011252-c5096ec8773d
+## explicit
+github.com/ChrisTrenkamp/goxpath
+# github.com/antchfx/htmlquery v1.2.2
+## explicit
+github.com/antchfx/htmlquery
+# github.com/antchfx/jsonquery v1.1.2
+## explicit
+github.com/antchfx/jsonquery
+# github.com/antchfx/xmlquery v1.2.3
+## explicit
+github.com/antchfx/xmlquery
+# github.com/antchfx/xpath v1.1.5
+## explicit
+github.com/antchfx/xpath
+# github.com/go-xmlpath/xmlpath v0.0.0-20150820204837-860cbeca3ebc
+## explicit
+github.com/go-xmlpath/xmlpath
+# github.com/jbowtie/gokogiri v0.0.0-20190301021639-37f655d3078f
+## explicit
+github.com/jbowtie/gokogiri
+# github.com/santhosh-tekuri/xpathparser v1.0.0
+## explicit
+github.com/santhosh-tekuri/xpathparser

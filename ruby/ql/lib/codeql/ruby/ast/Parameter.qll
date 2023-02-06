@@ -109,7 +109,7 @@ class NamedParameter extends Parameter, TNamedParameter {
   final VariableAccess getDefiningAccess() {
     result = this.getVariable().getDefiningAccess()
     or
-    result = this.(SimpleParameterSynthImpl).getDefininingAccess()
+    result = this.(SimpleParameterSynthImpl).getDefiningAccess()
   }
 
   override AstNode getAChild(string pred) {
@@ -181,9 +181,16 @@ class HashSplatParameter extends NamedParameter, THashSplatParameter {
 
   final override string getAPrimaryQlClass() { result = "HashSplatParameter" }
 
-  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g.getName()) }
+  final override LocalVariable getVariable() {
+    result = TLocalVariableReal(_, _, g.getName()) or
+    result = TLocalVariableSynth(this, 0)
+  }
 
-  final override string toString() { result = "**" + this.getName() }
+  final override string toString() {
+    result = "**" + this.getName()
+    or
+    not exists(g.getName()) and result = "**"
+  }
 
   final override string getName() { result = g.getName().getValue() }
 }
@@ -303,9 +310,16 @@ class SplatParameter extends NamedParameter, TSplatParameter {
 
   final override string getAPrimaryQlClass() { result = "SplatParameter" }
 
-  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g.getName()) }
+  final override LocalVariable getVariable() {
+    result = TLocalVariableReal(_, _, g.getName()) or
+    result = TLocalVariableSynth(this, 0)
+  }
 
-  final override string toString() { result = "*" + this.getName() }
+  final override string toString() {
+    result = "*" + this.getName()
+    or
+    not exists(g.getName()) and result = "*"
+  }
 
   final override string getName() { result = g.getName().getValue() }
 }

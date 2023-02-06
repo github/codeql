@@ -49,8 +49,11 @@ class Expr extends StmtParent, @expr {
   /** Gets the enclosing variable of this expression, if any. */
   Variable getEnclosingVariable() { result = exprEnclosingElement(this) }
 
+  /** Gets the enclosing variable or function of this expression. */
+  Declaration getEnclosingDeclaration() { result = exprEnclosingElement(this) }
+
   /** Gets a child of this expression. */
-  Expr getAChild() { exists(int n | result = this.getChild(n)) }
+  Expr getAChild() { result = this.getChild(_) }
 
   /** Gets the parent of this expression, if any. */
   Element getParent() { exprparents(underlyingElement(this), _, unresolveElement(result)) }
@@ -448,7 +451,7 @@ class Expr extends StmtParent, @expr {
     // For performance, we avoid a full transitive closure over `getConversion`.
     // Since there can be several implicit conversions before and after an
     // explicit conversion, use `getImplicitlyConverted` to step over them
-    // cheaply. Then, if there is an explicit conversion following the implict
+    // cheaply. Then, if there is an explicit conversion following the implicit
     // conversion sequence, recurse to handle multiple explicit conversions.
     if this.getImplicitlyConverted().hasExplicitConversion()
     then result = this.getImplicitlyConverted().getConversion().getExplicitlyConverted()
@@ -593,9 +596,12 @@ class ParenthesisExpr extends Conversion, @parexpr {
 }
 
 /**
- * A C/C++ expression that has not been resolved.
+ * A C/C++ expression that could not be resolved, or that can no longer be
+ * represented due to a database upgrade or downgrade.
  *
- * It is assigned `ErroneousType` as its type.
+ * If the expression could not be resolved, it has type `ErroneousType`. In the
+ * case of a database upgrade or downgrade, the original type from before the
+ * upgrade or downgrade is kept if that type can be represented.
  */
 class ErrorExpr extends Expr, @errorexpr {
   override string toString() { result = "<error expr>" }

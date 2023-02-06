@@ -50,10 +50,10 @@ TRUE
 
 # imaginary/complex numbers
 2i
-#3.14i # BAD: parse error
+3.14i
 
 # imaginary & rational
-#1.2ri # BAD: parse error
+1.2ri
 
 # strings
 ""
@@ -137,7 +137,7 @@ BAR = "bar"
 (start..2+3)
 (1..) # 1 to infinity
 (..1) # -infinity to 1
-(0..-1) # BAD: parsed as binary with minus endless range on the LHS
+(0..-1)
 
 # subshell
 `ls -l`
@@ -197,3 +197,5 @@ SCRIPT
 x = 42
 {x:, y:5}
 {y: , Z:}
+
+"@foo: #@foo @@bar: #@@bar $_: #$_"

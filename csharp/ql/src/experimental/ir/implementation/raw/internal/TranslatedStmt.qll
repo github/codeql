@@ -403,7 +403,7 @@ class TranslatedGeneralCatchClause extends TranslatedClause {
 
 /**
  * The IR translation of a throw statement that throws an exception,
- * as oposed to just rethrowing one.
+ * as opposed to just rethrowing one.
  */
 class TranslatedThrowExceptionStmt extends TranslatedStmt, InitializationContext {
   override ThrowStmt stmt;

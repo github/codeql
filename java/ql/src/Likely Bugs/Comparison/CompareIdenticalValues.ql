@@ -70,7 +70,7 @@ predicate specialCase(EqualityTest comparison, string msg) {
     // Name of boxed type corresponding to `fptp`.
     (if fptp.getName().toLowerCase() = "float" then boxedName = "Float" else boxedName = "Double") and
     // Equality tests are tests for not-`NaN`, inequality tests for `NaN`.
-    (if comparison instanceof EQExpr then neg = "!" else neg = "") and
+    (if comparison instanceof ValueOrReferenceEqualsExpr then neg = "!" else neg = "") and
     msg = "equivalent to " + neg + boxedName + ".isNaN(" + comparison.getLeftOperand() + ")"
   )
 }

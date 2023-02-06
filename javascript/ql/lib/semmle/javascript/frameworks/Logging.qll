@@ -35,9 +35,7 @@ private module Console {
   private class ConsoleGlobalEntry extends API::EntryPoint {
     ConsoleGlobalEntry() { this = "ConsoleGlobalEntry" }
 
-    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("console") }
-
-    override DataFlow::Node getARhs() { none() }
+    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("console") }
   }
 
   /**
@@ -351,8 +349,8 @@ private module Pino {
     or
     // `pino` is installed as the "log" property on the request object in `Express` and similar libraries.
     // in `Hapi` the property is "logger".
-    exists(HTTP::RequestExpr req, API::Node reqNode |
-      reqNode.getAnImmediateUse() = req.flow().getALocalSource() and
+    exists(Http::RequestNode req, API::Node reqNode |
+      reqNode.asSource() = req.getALocalSource() and
       result = reqNode.getMember(["log", "logger"])
     )
   }

@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If a database query (such as an SQL or NoSQL query) is built from user-provided data without
+sufficient sanitization, a malicious user may be able to run commands that exfiltrate, tamper with,
+or destroy data stored in the database.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Most database connector libraries offer a way of safely embedding untrusted data into a query by
+means of query parameters or prepared statements. Use these features rather than building queries
+by string concatenation.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, assume the function <code>handler</code> is an HTTP request handler in a
+web application, whose parameter <code>req</code> contains the request object:
+</p>
+<sample src="SqlInjection.go"/>
+<p>
+The handler constructs an SQL query involving user input taken from the request object unsafely
+using <code>fmt.Sprintf</code> to embed a request parameter directly into the query string
+<code>q</code>. The parameter may include quote characters, allowing a malicious user to terminate
+the string literal into which the parameter is embedded and add arbitrary SQL code after it.
+</p>
+<p>
+Instead, the untrusted query parameter should be safely embedded using placeholder parameters:
+</p>
+<sample src="SqlInjectionGood.go" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection</a>.</li>
+</references>
+</qhelp>

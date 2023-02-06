@@ -30,13 +30,18 @@ private predicate shouldPrint(Locatable e, Location l) {
   exists(PrintAstConfiguration config | config.shouldPrint(e, l))
 }
 
-/** Holds if the given element does not need to be rendered in the AST, due to being the `TopLevel` for a file. */
+/**
+ * Holds if the given element does not need to be rendered in the AST.
+ * Either due to being the `TopLevel` for a file, or an internal node representing a decorator list.
+ */
 private predicate isNotNeeded(Locatable el) {
   el instanceof TopLevel and
   el.getLocation().getStartLine() = 0 and
   el.getLocation().getStartColumn() = 0
   or
-  // relaxing aggresive type inference.
+  el instanceof @decorator_list // there is no public API for this.
+  or
+  // relaxing aggressive type inference.
   none()
 }
 
@@ -64,8 +69,8 @@ private newtype TPrintAstNode =
   // JSON
   TJsonNode(JsonValue value) { shouldPrint(value, _) and not isNotNeeded(value) } or
   // YAML
-  TYamlNode(YAMLNode n) { shouldPrint(n, _) and not isNotNeeded(n) } or
-  TYamlMappingNode(YAMLMapping mapping, int i) {
+  TYamlNode(YamlNode n) { shouldPrint(n, _) and not isNotNeeded(n) } or
+  TYamlMappingNode(YamlMapping mapping, int i) {
     shouldPrint(mapping, _) and not isNotNeeded(mapping) and exists(mapping.getKeyNode(i))
   } or
   // HTML
@@ -161,7 +166,7 @@ private module PrintJavaScript {
   /**
    * A print node representing an `ASTNode`.
    *
-   * Provides a default implemention that works for some (but not all) ASTNode's.
+   * Provides a default implementation that works for some (but not all) ASTNode's.
    * More specific subclasses can override this class to get more specific behavior.
    *
    * The more specific subclasses are mostly used aggregate the children of the `ASTNode`.
@@ -193,9 +198,9 @@ private module PrintJavaScript {
 
     /**
      * Gets the `i`th child of `element`.
-     * Can be overriden in subclasses to get more specific behavior for `getChild()`.
+     * Can be overridden in subclasses to get more specific behavior for `getChild()`.
      */
-    AstNode getChildNode(int childIndex) { result = getLocationSortedChild(element, childIndex) }
+    AstNode getChildNode(int i) { result = getLocationSortedChild(element, i) }
   }
 
   /** Provides predicates for pretty printing `AstNode`s. */
@@ -500,9 +505,11 @@ private module PrintJavaScript {
     override Parameter element;
 
     override AstNode getChildNode(int childIndex) {
-      childIndex = 0 and result = element.getTypeAnnotation()
+      result = super.getChildNode(childIndex) // in case the parameter is a destructuring pattern
       or
-      childIndex = 1 and result = element.getDefault()
+      childIndex = -2 and result = element.getTypeAnnotation()
+      or
+      childIndex = -1 and result = element.getDefault()
     }
   }
 
@@ -628,7 +635,7 @@ module PrintYaml {
    * A print node representing a YAML value in a .yml file.
    */
   class YamlNodeNode extends PrintAstNode, TYamlNode {
-    YAMLNode node;
+    YamlNode node;
 
     YamlNodeNode() { this = TYamlNode(node) }
 
@@ -639,10 +646,10 @@ module PrintYaml {
     /**
      * Gets the `YAMLNode` represented by this node.
      */
-    final YAMLNode getValue() { result = node }
+    final YamlNode getValue() { result = node }
 
     override PrintAstNode getChild(int childIndex) {
-      exists(YAMLNode child | result.(YamlNodeNode).getValue() = child |
+      exists(YamlNode child | result.(YamlNodeNode).getValue() = child |
         child = node.getChildNode(childIndex)
       )
     }
@@ -657,7 +664,7 @@ module PrintYaml {
    * Each child of this node aggregates the key and value of a mapping.
    */
   class YamlMappingNode extends YamlNodeNode {
-    override YAMLMapping node;
+    override YamlMapping node;
 
     override PrintAstNode getChild(int childIndex) {
       exists(YamlMappingMapNode map | map = result | map.maps(node, childIndex))
@@ -671,21 +678,21 @@ module PrintYaml {
    * A print node representing the `i`th mapping in `mapping`.
    */
   class YamlMappingMapNode extends PrintAstNode, TYamlMappingNode {
-    YAMLMapping mapping;
+    YamlMapping mapping;
     int i;
 
     YamlMappingMapNode() { this = TYamlMappingNode(mapping, i) }
 
     override string toString() {
-      result = "(Mapping " + i + ")" and not exists(mapping.getKeyNode(i).(YAMLScalar).getValue())
+      result = "(Mapping " + i + ")" and not exists(mapping.getKeyNode(i).(YamlScalar).getValue())
       or
-      result = "(Mapping " + i + ") " + mapping.getKeyNode(i).(YAMLScalar).getValue() + ":"
+      result = "(Mapping " + i + ") " + mapping.getKeyNode(i).(YamlScalar).getValue() + ":"
     }
 
     /**
      * Holds if this print node represents the `index`th mapping of `m`.
      */
-    predicate maps(YAMLMapping m, int index) {
+    predicate maps(YamlMapping m, int index) {
       m = mapping and
       index = i
     }

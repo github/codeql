@@ -1,5 +1,5 @@
 import java.io.FileOutputStream;
-
+import android.os.IBinder;
 import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
@@ -52,13 +52,18 @@ public class FileService extends Service {
         @Override
         protected void onPostExecute(String result) {
         }
-    
+
         @Override
         protected void onPreExecute() {
         }
 
         @Override
         protected void onProgressUpdate(Void... values) {
-        }    
+        }
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 }

@@ -55,6 +55,17 @@ taintFlow
 | test.js:182:12:182:19 | source() | test.js:182:12:182:19 | source() |
 | test.js:187:31:187:31 | x | test.js:189:10:189:10 | x |
 | test.js:203:32:203:39 | source() | test.js:203:32:203:39 | source() |
+| test.js:207:24:207:31 | source() | test.js:207:24:207:31 | source() |
+| test.js:208:24:208:31 | source() | test.js:208:24:208:31 | source() |
+| test.js:211:34:211:41 | source() | test.js:211:34:211:41 | source() |
+| test.js:214:34:214:41 | source() | test.js:214:34:214:41 | source() |
+| test.js:223:45:223:52 | source() | test.js:223:45:223:52 | source() |
+| test.js:225:39:225:46 | source() | test.js:225:39:225:46 | source() |
+| test.js:226:50:226:57 | source() | test.js:226:50:226:57 | source() |
+| test.js:230:59:230:66 | source() | test.js:230:59:230:66 | source() |
+| test.js:231:59:231:66 | source() | test.js:231:59:231:66 | source() |
+| test.js:232:59:232:66 | source() | test.js:232:59:232:66 | source() |
+| test.js:233:59:233:66 | source() | test.js:233:59:233:66 | source() |
 isSink
 | test.js:54:18:54:25 | source() | test-sink |
 | test.js:55:22:55:29 | source() | test-sink |
@@ -113,6 +124,18 @@ isSink
 | test.js:182:12:182:19 | source() | test-sink |
 | test.js:196:12:196:29 | this._wrappedField | test-sink |
 | test.js:203:32:203:39 | source() | test-sink |
+| test.js:207:24:207:31 | source() | test-sink |
+| test.js:208:24:208:31 | source() | test-sink |
+| test.js:211:34:211:41 | source() | test-sink |
+| test.js:214:34:214:41 | source() | test-sink |
+| test.js:222:52:222:52 | 0 | test-sink |
+| test.js:223:45:223:52 | source() | test-sink |
+| test.js:225:39:225:46 | source() | test-sink |
+| test.js:226:50:226:57 | source() | test-sink |
+| test.js:230:59:230:66 | source() | test-sink |
+| test.js:231:59:231:66 | source() | test-sink |
+| test.js:232:59:232:66 | source() | test-sink |
+| test.js:233:59:233:66 | source() | test-sink |
 syntaxErrors
 | Member[foo |
 | Member[foo] .Member[bar] |
@@ -124,3 +147,4 @@ syntaxErrors
 | Member[foo]Member[bar] |
 | Member[foo]] |
 | Member[foo]].Member[bar] |
+warning

@@ -17,5 +17,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, GroovyInjectionConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Groovy Injection from $@.", source.getNode(),
-  "this user input"
+select sink.getNode(), source, sink, "Groovy script depends on a $@.", source.getNode(),
+  "user-provided value"

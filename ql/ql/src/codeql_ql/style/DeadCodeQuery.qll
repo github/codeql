@@ -75,14 +75,28 @@ private AstNode alive() {
   or
   result instanceof TopLevel // toplevel is always alive.
   or
-  // recurisve cases
+  // recursive cases
   result = aliveStep(alive())
+  or
+  // cached predicates inside a cached module, because they can group cached predicate.
+  // this is deliberately not part of `aliveStep`, as it only means the predicate is live, but not if it's queryable.
+  exists(Module mod, ClasslessPredicate pred | pred = alive() |
+    not pred.isPrivate() and
+    not result.(ClasslessPredicate).isPrivate() and
+    pred.hasAnnotation("cached") and
+    result.hasAnnotation("cached") and
+    pred.getParent() = mod and
+    result.getParent() = mod and
+    mod.hasAnnotation("cached")
+  )
 }
 
 private AstNode aliveStep(AstNode prev) {
   //
   // The recursive cases.
   //
+  result = prev.(Import).getModuleExpr()
+  or
   result.getEnclosingPredicate() = prev
   or
   result = prev.(Call).getTarget()
@@ -164,6 +178,14 @@ private AstNode aliveStep(AstNode prev) {
   result = prev.(Annotation).getAChild()
   or
   result = prev.(Predicate).getReturnType().getDeclaration()
+  or
+  // a module parameter is alive is the module is alive
+  prev.(Module).hasParameter(_, _, result)
+  or
+  // the implements of a module
+  result = prev.(Module).getImplements(_)
+  or
+  result = prev.(PredicateExpr).getQualifier()
 }
 
 private AstNode deprecated() {
@@ -197,7 +219,7 @@ private AstNode classUnion() {
 
 private AstNode benign() {
   not result.getLocation().getFile().getExtension() = ["ql", "qll"] or // ignore dbscheme files
-  result instanceof BlockComment or
+  result instanceof Comment or
   not exists(result.toString()) or // <- invalid code
   // cached-stages pattern
   result.(Module).getAMember().(ClasslessPredicate).getName() = "forceStage" or
@@ -235,13 +257,13 @@ private AstNode queryable() {
   or
   result instanceof TopLevel // toplevel is always alive.
   or
-  // recurisve cases
+  // recursive cases
   result = aliveStep(queryable())
 }
 
 /**
  * Gets an AstNode that does not affect any query result.
- * Is interresting as an quick-eval target to investigate dead code.
+ * Is interesting as an quick-eval target to investigate dead code.
  * (It is intentional that this predicate is a result of this predicate).
  */
 AstNode unQueryable(string msg) {

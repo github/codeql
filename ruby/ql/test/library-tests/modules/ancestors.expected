@@ -1,7 +1,15 @@
-#-----| BasicObject
-
 #-----| Class
 #-----| super -> Module
+
+#-----| EsotericInstanceMethods
+
+#-----| MyStruct
+
+#-----| Struct
+
+#-----| UnresolvedNamespace
+
+#-----| BasicObject
 
 #-----| Complex
 #-----| super -> Numeric
@@ -29,47 +37,116 @@
 #-----| super -> Object
 
 calls.rb:
-#   15| M
+#   21| M
 
-#   29| C
+#   43| C
 #-----| include -> M
 #-----| super -> Object
 
-#   51| D
+#   65| D
 #-----| super -> C
 
-#   77| Integer
+#   91| Integer
 #-----| super -> Numeric
 
-#   82| String
+#   96| String
 #-----| super -> Object
 
-#   86| Kernel
+#  100| Kernel
 
-#   90| Module
+#  105| Module
 #-----| super -> Object
 
-#   97| Object
+#  115| Object
 #-----| super -> BasicObject
 #-----| include -> Kernel
 #-----| prepend -> A
 
-#  102| Hash
+#  120| Hash
 #-----| super -> Object
 
-#  106| Array
+#  125| Array
 #-----| super -> Object
 
-#  144| S
+#  165| S
 #-----| super -> Object
 
-#  150| A
+#  171| A
 #-----| super -> S
 #-----| super -> B
 #-----| prepend -> A::B
 
-#  155| B
+#  176| B
 #-----| super -> S
+
+#  190| Singletons
+#-----| super -> Object
+
+#  310| SelfNew
+#-----| super -> Object
+
+#  325| C1
+#-----| super -> Object
+
+#  331| C2
+#-----| super -> C1
+
+#  337| C3
+#-----| super -> C2
+
+#  377| SingletonOverride1
+#-----| super -> Object
+
+#  412| SingletonOverride2
+#-----| super -> SingletonOverride1
+
+#  433| ConditionalInstanceMethods
+#-----| super -> Object
+
+#  496| ExtendSingletonMethod
+
+#  506| ExtendSingletonMethod2
+
+#  512| ExtendSingletonMethod3
+
+#  525| ProtectedMethodInModule
+
+#  531| ProtectedMethods
+#-----| super -> Object
+#-----| include -> ProtectedMethodInModule
+
+#  550| ProtectedMethodsSub
+#-----| super -> ProtectedMethods
+
+#  564| SingletonUpCall_Base
+#-----| super -> Object
+
+#  568| SingletonUpCall_Sub
+#-----| super -> SingletonUpCall_Base
+
+#  576| SingletonUpCall_SubSub
+#-----| super -> SingletonUpCall_Sub
+
+#  583| SingletonA
+#-----| super -> Object
+
+#  596| SingletonB
+#-----| super -> SingletonA
+
+#  605| SingletonC
+#-----| super -> SingletonA
+
+#  618| Included
+
+#  626| IncludesIncluded
+#-----| super -> Object
+#-----| include -> Included
+
+#  633| CustomNew1
+#-----| super -> Object
+
+#  641| CustomNew2
+#-----| super -> Object
 
 hello.rb:
 #    1| EnglishWords
@@ -80,6 +157,13 @@ hello.rb:
 
 #   18| HelloWorld
 #-----| super -> Greeting
+
+instance_fields.rb:
+#   11| A_target
+#-----| super -> Object
+
+#   26| B_target
+#-----| super -> Object
 
 modules.rb:
 #    1| Empty
@@ -152,17 +236,39 @@ modules.rb:
 #  116| XX::YY
 #-----| super -> YY
 
-#  120| Test::Foo1::Bar::Baz
+#  123| Test::Foo1::Bar::Baz
 
 modules_rec.rb:
 #    1| B::A
-#-----| super -> Object
-
-#    4| A::B
 #-----| super -> Object
 
 private.rb:
 #    1| E
 #-----| super -> Object
 
-#   42| F
+#   62| F
+
+#   82| PrivateOverride1
+#-----| super -> Object
+
+#   96| PrivateOverride2
+#-----| super -> PrivateOverride1
+
+toplevel_self_singleton.rb:
+#    2| A::B
+#-----| super -> Object
+
+#   24| Good
+
+unresolved_subclass.rb:
+#    1| ResolvableBaseClass
+#-----| super -> Object
+
+#    4| UnresolvedNamespace::Subclass1
+#-----| super -> ResolvableBaseClass
+
+#    7| UnresolvedNamespace::Subclass2
+#-----| super -> UnresolvedNamespace::Subclass1
+
+#   11| UnresolvedNamespace::A
+#-----| super -> Object

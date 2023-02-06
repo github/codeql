@@ -1,4 +1,4 @@
-/*
+/**
  * Common functions for implementing naming conventions
  *
  * Naming rules are the following:
@@ -44,7 +44,7 @@ class Name extends string {
   /**
    * Gets a word in this identifier. Words are just portions separated by underscores.
    */
-  Word getAWord() { exists(int index | result = this.splitAt("_", index)) }
+  Word getAWord() { result = this.splitAt("_", _) }
 
   /**
    * Gets the `index`th word (starting at zero) in an identifier. Words are

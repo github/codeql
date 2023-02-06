@@ -4,15 +4,24 @@ import java
 private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.SensitiveActions
+import semmle.code.java.frameworks.android.Compose
 import DataFlow
 
-/** A variable that may hold sensitive information, judging by its name. * */
+/** A variable that may hold sensitive information, judging by its name. */
 class CredentialExpr extends Expr {
   CredentialExpr() {
     exists(Variable v | this = v.getAnAccess() |
-      v.getName().regexpMatch([getCommonSensitiveInfoRegex(), "(?i).*(username).*"]) and
-      not v.isFinal()
+      v.getName().regexpMatch(getCommonSensitiveInfoRegex()) and
+      not this instanceof CompileTimeConstantExpr
     )
+  }
+}
+
+/** An instantiation of a (reflexive, transitive) subtype of `java.lang.reflect.Type`. */
+private class TypeType extends RefType {
+  pragma[nomagic]
+  TypeType() {
+    this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.lang.reflect", "Type")
   }
 }
 
@@ -23,4 +32,14 @@ class SensitiveLoggerConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
 
   override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "logging") }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer.asExpr() instanceof LiveLiteral or
+    sanitizer.getType() instanceof PrimitiveType or
+    sanitizer.getType() instanceof BoxedType or
+    sanitizer.getType() instanceof NumberType or
+    sanitizer.getType() instanceof TypeType
+  }
+
+  override predicate isSanitizerIn(Node node) { this.isSource(node) }
 }

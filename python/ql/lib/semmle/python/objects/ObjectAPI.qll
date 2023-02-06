@@ -324,7 +324,7 @@ module Value {
   Value none_() { result = ObjectInternal::none_() }
 
   /**
-   * Shorcuts added by the `site` module to exit your interactive session.
+   * Shortcuts added by the `site` module to exit your interactive session.
    *
    * see https://docs.python.org/3/library/constants.html#constants-added-by-the-site-module
    */
@@ -674,7 +674,7 @@ abstract class FunctionValue extends CallableValue {
   /** Gets the maximum number of parameters that can be correctly passed to this function */
   abstract int maxParameters();
 
-  predicate isOverridingMethod() { exists(Value f | this.overrides(f)) }
+  predicate isOverridingMethod() { this.overrides(_) }
 
   predicate isOverriddenMethod() { exists(Value f | f.overrides(this)) }
 

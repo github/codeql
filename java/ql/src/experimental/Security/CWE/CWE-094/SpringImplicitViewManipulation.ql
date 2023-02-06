@@ -6,6 +6,7 @@
  * @precision high
  * @id java/spring-view-manipulation-implicit
  * @tags security
+ *       experimental
  *       external/cwe/cwe-094
  */
 
@@ -61,4 +62,4 @@ where
   not m.getAnAnnotation().getType() instanceof SpringResponseBodyAnnotationType and
   // `@RestController` inherits `@ResponseBody` internally so it should be ignored.
   not m.getDeclaringType() instanceof SpringRestController
-select m, "This method may be vulnerable to spring view manipulation vulnerabilities"
+select m, "This method may be vulnerable to spring view manipulation vulnerabilities."

@@ -137,7 +137,10 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
 
   final override string toString() { result = "init: " + expr.toString() }
 
-  final override Function getFunction() { result = expr.getEnclosingFunction() }
+  final override Declaration getFunction() {
+    result = expr.getEnclosingFunction() or
+    result = expr.getEnclosingVariable().(GlobalOrNamespaceVariable)
+  }
 
   final override Locatable getAst() { result = expr }
 
@@ -295,11 +298,11 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
     opcode instanceof Opcode::Store and
     resultType = getTypeForPRValue(expr.getType())
     or
-    exists(int startIndex, int elementCount |
+    exists(int elementCount |
       // If the initializer string isn't large enough to fill the target, then
       // we have to generate another instruction sequence to store a constant
       // zero into the remainder of the array.
-      zeroInitRange(startIndex, elementCount) and
+      zeroInitRange(_, elementCount) and
       (
         // Create a constant zero whose size is the size of the remaining
         // space in the target array.
@@ -486,7 +489,10 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = getAst() }
 
-  final override Function getFunction() { result = ast.getEnclosingFunction() }
+  final override Declaration getFunction() {
+    result = ast.getEnclosingFunction() or
+    result = ast.getEnclosingVariable().(GlobalOrNamespaceVariable)
+  }
 
   final override Instruction getFirstInstruction() { result = getInstruction(getFieldAddressTag()) }
 
@@ -633,7 +639,11 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = getAst() }
 
-  final override Function getFunction() { result = initList.getEnclosingFunction() }
+  final override Declaration getFunction() {
+    result = initList.getEnclosingFunction()
+    or
+    result = initList.getEnclosingVariable().(GlobalOrNamespaceVariable)
+  }
 
   final override Instruction getFirstInstruction() { result = getInstruction(getElementIndexTag()) }
 

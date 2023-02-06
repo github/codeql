@@ -19,26 +19,47 @@ import semmle.code.cpp.ir.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * Taint flow from user input to a buffer write.
+ * A buffer write into a sensitive expression.
+ */
+class SensitiveBufferWrite extends Expr instanceof BufferWrite::BufferWrite {
+  SensitiveBufferWrite() { super.getDest() instanceof SensitiveExpr }
+
+  /**
+   * Gets a data source of this operation.
+   */
+  Expr getASource() { result = super.getASource() }
+
+  /**
+   * Gets the destination buffer of this operation.
+   */
+  Expr getDest() { result = super.getDest() }
+}
+
+/**
+ * A taint flow configuration for flow from user input to a buffer write
+ * into a sensitive expression.
  */
 class ToBufferConfiguration extends TaintTracking::Configuration {
   ToBufferConfiguration() { this = "ToBufferConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.asExpr().getUnspecifiedType() instanceof IntegralType
+  }
+
   override predicate isSink(DataFlow::Node sink) {
-    exists(BufferWrite::BufferWrite w | w.getASource() = sink.asExpr())
+    exists(SensitiveBufferWrite w | w.getASource() = sink.asExpr())
   }
 }
 
 from
-  ToBufferConfiguration config, BufferWrite::BufferWrite w, DataFlow::PathNode sourceNode,
-  DataFlow::PathNode sinkNode, FlowSource source, SensitiveExpr dest
+  ToBufferConfiguration config, SensitiveBufferWrite w, DataFlow::PathNode sourceNode,
+  DataFlow::PathNode sinkNode, FlowSource source
 where
   config.hasFlowPath(sourceNode, sinkNode) and
   sourceNode.getNode() = source and
-  w.getASource() = sinkNode.getNode().asExpr() and
-  dest = w.getDest()
+  w.getASource() = sinkNode.getNode().asExpr()
 select w, sourceNode, sinkNode,
-  "This write into buffer '" + dest.toString() + "' may contain unencrypted data from $@", source,
-  "user input (" + source.getSourceType() + ")"
+  "This write into buffer '" + w.getDest().toString() + "' may contain unencrypted data from $@.",
+  source, "user input (" + source.getSourceType() + ")"

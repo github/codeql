@@ -1,3 +1,105 @@
+## 0.5.2
+
+No user-facing changes.
+
+## 0.5.1
+
+### Minor Analysis Improvements
+
+* The `cpp/no-space-for-terminator` and `cpp/uncontrolled-allocation-size` queries have been enhanced with heuristic detection of allocations. These queries now find more results.
+
+## 0.5.0
+
+### Minor Analysis Improvements
+
+* The `AlertSuppression.ql` query has been updated to support the new `// codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy `// lgtm` and `// lgtm[query-id]` comments can now also be placed on the line before an alert.
+* The `cpp/missing-check-scanf` query no longer reports the free'ing of `scanf` output variables as potential reads.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+No user-facing changes.
+
+## 0.4.3
+
+### Minor Analysis Improvements
+
+* Fixed a bug in `cpp/jsf/av-rule-76` that caused the query to miss results when an implicitly-defined copy constructor or copy assignment operator was generated.
+
+## 0.4.2
+
+### New Queries
+
+* Added a new medium-precision query, `cpp/comma-before-misleading-indentation`, which detects instances of whitespace that have readability issues.
+
+### Minor Analysis Improvements
+
+* The "Unterminated variadic call" (`cpp/unterminated-variadic-call`) query has been tuned to produce fewer false positive results.
+* Fixed false positives from the "Unused static function" (`cpp/unused-static-function`) query in files that had errors during compilation.
+
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* The alert message of many queries have been changed to better follow the style guide and make the message consistent with other languages.
+
+## 0.4.0
+
+### New Queries
+
+* Added a new medium-precision query, `cpp/missing-check-scanf`, which detects `scanf` output variables that are used without a proper return-value check to see that they were actually written. A variation of this query was originally contributed as an [experimental query by @ihsinme](https://github.com/github/codeql/pull/8246).
+
+### Minor Analysis Improvements
+
+* Modernizations from "Cleartext storage of sensitive information in buffer" (`cpp/cleartext-storage-buffer`) have been ported to the "Cleartext storage of sensitive information in file" (`cpp/cleartext-storage-file`), "Cleartext transmission of sensitive information" (`cpp/cleartext-transmission`) and "Cleartext storage of sensitive information in an SQLite database" (`cpp/cleartext-storage-database`) queries. These changes may result in more correct results and fewer false positive results from these queries.
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
+## 0.3.4
+
+## 0.3.3
+
+### Minor Analysis Improvements
+
+* The "Cleartext storage of sensitive information in buffer" (`cpp/cleartext-storage-buffer`) query has been improved to produce fewer false positives.
+
+## 0.3.2
+
+### Minor Analysis Improvements
+
+* The query `cpp/bad-strncpy-size` now covers more `strncpy`-like functions than before, including `strxfrm`(`_l`), `wcsxfrm`(`_l`), and `stpncpy`. Users of this query may see an increase in results.
+
+## 0.3.1
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/cpp-all` package.
+
+## 0.2.0
+
+## 0.1.4
+
+## 0.1.3
+
+### Minor Analysis Improvements
+
+* The "XML external entity expansion" (`cpp/external-entity-expansion`) query precision has been increased to `high`.
+* The `cpp/unused-local-variable` no longer ignores functions that include `if` and `switch` statements with C++17-style initializers.
+
+## 0.1.2
+
+### Minor Analysis Improvements
+
+* The "XML external entity expansion" (`cpp/external-entity-expansion`) query has been extended to support a broader selection of XML libraries and interfaces.
+
 ## 0.1.1
 
 ### New Queries
@@ -69,7 +171,7 @@
 
 * The `security` tag has been added to the `cpp/return-stack-allocated-memory` query. As a result, its results will now appear by default.
 * The "Uncontrolled data in arithmetic expression" (cpp/uncontrolled-arithmetic) query has been enhanced to reduce false positive results and its @precision increased to high.
-* A new `cpp/very-likely-overruning-write` query has been added to the default query suite for C/C++. The query reports some results that were formerly flagged by `cpp/overruning-write`.
+* A new `cpp/very-likely-overrunning-write` query has been added to the default query suite for C/C++. The query reports some results that were formerly flagged by `cpp/overrunning-write`.
 
 ### Minor Analysis Improvements
 

@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - ".github/workflows/mad_regenerate-models.yml"
+      - ".github/actions/fetch-codeql/action.yml"
 
 jobs:
   regenerate-models:
@@ -20,7 +21,7 @@ jobs:
         ref: ["placeholder"]
         include:
           - slug: "apache/commons-io"
-            ref: "8985de8fe74f6622a419b37a6eed0dbc484dc128"
+            ref: "13258ce2d07aa0e764bbaa8020af4dcd3a02a620"
         exclude:
           - slug: "placeholder"
             ref: "placeholder"
@@ -49,10 +50,10 @@ jobs:
           SLUG: ${{ matrix.slug }}
         run: |
           SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
-          java/ql/src/utils/model-generator/RegenerateModels.py "${SLUG}" dbs/${SHORTNAME}
+          java/ql/src/utils/modelgenerator/RegenerateModels.py "${SLUG}" dbs/${SHORTNAME}
       - name: Stage changes
         run: |
-          find java -name "*.qll" -print0 | xargs -0 git add
+          find java -name "*.model.yml" -print0 | xargs -0 git add
           git status
           git diff --cached > models.patch
       - uses: actions/upload-artifact@v3

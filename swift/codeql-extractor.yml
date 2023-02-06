@@ -3,6 +3,10 @@ display_name: "Swift"
 version: 0.0.1
 column_kind: "utf8"
 legacy_qltest_extraction: true
+github_api_languages:
+  - Swift
+scc_languages:
+  - Swift
 file_types:
   - name: swift
     display_name: Swift files

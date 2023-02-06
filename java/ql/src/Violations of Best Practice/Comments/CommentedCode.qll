@@ -67,7 +67,7 @@ private predicate javadocLines(Javadoc j, File f, int start, int end) {
 }
 
 private class JavadocFirst extends Javadoc {
-  JavadocFirst() { not exists(Javadoc prev | this = getNextComment(prev)) }
+  JavadocFirst() { not this = getNextComment(_) }
 }
 
 /**
@@ -107,8 +107,8 @@ class CommentedOutCode extends JavadocFirst {
   CommentedOutCode() {
     anyCount(this) > 0 and
     codeCount(this).(float) / anyCount(this).(float) > 0.5 and
-    not this instanceof JSNIComment and
-    not this instanceof OCNIComment
+    not this instanceof JsniComment and
+    not this instanceof OcniComment
   }
 
   /**

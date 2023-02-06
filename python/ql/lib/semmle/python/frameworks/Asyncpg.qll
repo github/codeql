@@ -7,91 +7,43 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.ModelsAsData
 
 /** Provides models for the `asyncpg` PyPI package. */
 private module Asyncpg {
-  private import semmle.python.internal.Awaited
-
-  /** Gets a `ConnectionPool` that is created when the result of `asyncpg.create_pool()` is awaited. */
-  API::Node connectionPool() {
-    result = API::moduleImport("asyncpg").getMember("create_pool").getReturn().getAwaited()
-  }
-
-  /**
-   * Gets a `Connection` that is created when
-   * - the result of `asyncpg.connect()` is awaited.
-   * - the result of calling `aquire` on a `ConnectionPool` is awaited.
-   */
-  API::Node connection() {
-    result = API::moduleImport("asyncpg").getMember("connect").getReturn().getAwaited()
-    or
-    result = connectionPool().getMember("acquire").getReturn().getAwaited()
-  }
-
-  /** `Connection`s and `ConnectionPool`s provide some methods that execute SQL. */
-  class SqlExecutionOnConnection extends SqlExecution::Range, DataFlow::MethodCallNode {
-    string methodName;
-
-    SqlExecutionOnConnection() {
-      this = [connectionPool(), connection()].getMember(methodName).getACall() and
-      methodName in ["copy_from_query", "execute", "fetch", "fetchrow", "fetchval", "executemany"]
-    }
-
-    override DataFlow::Node getSql() {
-      methodName in ["copy_from_query", "execute", "fetch", "fetchrow", "fetchval"] and
-      result in [this.getArg(0), this.getArgByName("query")]
-      or
-      methodName = "executemany" and
-      result in [this.getArg(0), this.getArgByName("command")]
+  class AsyncpgModel extends ModelInput::TypeModelCsv {
+    override predicate row(string row) {
+      // type1;type2;path
+      row =
+        [
+          // a `ConnectionPool` that is created when the result of `asyncpg.create_pool()` is awaited.
+          "asyncpg.ConnectionPool;asyncpg;Member[create_pool].ReturnValue.Awaited",
+          // a `Connection` that is created when
+          // * - the result of `asyncpg.connect()` is awaited.
+          // * - the result of calling `acquire` on a `ConnectionPool` is awaited.
+          "asyncpg.Connection;asyncpg;Member[connect].ReturnValue.Awaited",
+          "asyncpg.Connection;asyncpg.ConnectionPool;Member[acquire].ReturnValue.Awaited",
+          // Creating an internal `~Connection` type that contains both `Connection` and `ConnectionPool`.
+          "asyncpg.~Connection;asyncpg.Connection;", //
+          "asyncpg.~Connection;asyncpg.ConnectionPool;"
+        ]
     }
   }
 
-  /** A model of `Connection` and `ConnectionPool`, which provide some methods that access the file system. */
-  class FileAccessOnConnection extends FileSystemAccess::Range, DataFlow::MethodCallNode {
-    string methodName;
-
-    FileAccessOnConnection() {
-      this = [connectionPool(), connection()].getMember(methodName).getACall() and
-      methodName in ["copy_from_query", "copy_from_table", "copy_to_table"]
-    }
-
-    // The path argument is keyword only.
-    override DataFlow::Node getAPathArgument() {
-      methodName in ["copy_from_query", "copy_from_table"] and
-      result = this.getArgByName("output")
-      or
-      methodName = "copy_to_table" and
-      result = this.getArgByName("source")
-    }
-  }
-
-  /**
-   * Provides models of the `PreparedStatement` class in `asyncpg`.
-   * `PreparedStatement`s are created when the result of calling `prepare(query)` on a connection is awaited.
-   * The result of calling `prepare(query)` is a `PreparedStatementFactory` and the argument, `query` needs to
-   * be tracked to the place where a `PreparedStatement` is created and then futher to any executing methods.
-   * Hence the two type trackers.
-   */
-  module PreparedStatement {
-    class PreparedStatementConstruction extends SqlConstruction::Range, API::CallNode {
-      PreparedStatementConstruction() { this = connection().getMember("prepare").getACall() }
-
-      override DataFlow::Node getSql() { result = this.getParameter(0, "query").getARhs() }
-    }
-
-    class PreparedStatementExecution extends SqlExecution::Range, API::CallNode {
-      PreparedStatementConstruction prepareCall;
-
-      PreparedStatementExecution() {
-        this =
-          prepareCall
-              .getReturn()
-              .getAwaited()
-              .getMember(["executemany", "fetch", "fetchrow", "fetchval"])
-              .getACall()
-      }
-
-      override DataFlow::Node getSql() { result = prepareCall.getSql() }
+  class AsyncpgSink extends ModelInput::SinkModelCsv {
+    // type;path;kind
+    override predicate row(string row) {
+      row =
+        [
+          // `Connection`s and `ConnectionPool`s provide some methods that execute SQL.
+          "asyncpg.~Connection;Member[copy_from_query,execute,fetch,fetchrow,fetchval].Argument[0,query:];sql-injection",
+          "asyncpg.~Connection;Member[executemany].Argument[0,command:];sql-injection",
+          // A model of `Connection` and `ConnectionPool`, which provide some methods that access the file system.
+          "asyncpg.~Connection;Member[copy_from_query,copy_from_table].Argument[output:];path-injection",
+          "asyncpg.~Connection;Member[copy_to_table].Argument[source:];path-injection",
+          // the `PreparedStatement` class in `asyncpg`.
+          "asyncpg.Connection;Member[prepare].Argument[0,query:];sql-injection",
+        ]
     }
   }
 
@@ -106,9 +58,11 @@ private module Asyncpg {
    */
   module Cursor {
     class CursorConstruction extends SqlConstruction::Range, API::CallNode {
-      CursorConstruction() { this = connection().getMember("cursor").getACall() }
+      CursorConstruction() {
+        this = ModelOutput::getATypeNode("asyncpg.Connection").getMember("cursor").getACall()
+      }
 
-      override DataFlow::Node getSql() { result = this.getParameter(0, "query").getARhs() }
+      override DataFlow::Node getSql() { result = this.getParameter(0, "query").asSink() }
     }
 
     /** The creation of a `Cursor` executes the associated query. */
@@ -118,11 +72,14 @@ private module Asyncpg {
       CursorCreation() {
         exists(CursorConstruction c |
           sql = c.getSql() and
-          this = c.getReturn().getAwaited().getAnImmediateUse()
+          this = c.getReturn().getAwaited().asSource()
         )
         or
-        exists(PreparedStatement::PreparedStatementConstruction prepareCall |
-          sql = prepareCall.getSql() and
+        exists(API::CallNode prepareCall |
+          prepareCall =
+            ModelOutput::getATypeNode("asyncpg.Connection").getMember("prepare").getACall()
+        |
+          sql = prepareCall.getParameter(0, "query").asSink() and
           this =
             prepareCall
                 .getReturn()
@@ -130,7 +87,7 @@ private module Asyncpg {
                 .getMember("cursor")
                 .getReturn()
                 .getAwaited()
-                .getAnImmediateUse()
+                .asSource()
         )
       }
 

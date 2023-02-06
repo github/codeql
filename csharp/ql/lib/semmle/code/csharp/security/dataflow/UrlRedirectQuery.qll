@@ -26,9 +26,11 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
+ * DEPRECATED: Use `Sanitizer` instead.
+ *
  * A guard for unvalidated URL redirect vulnerabilities.
  */
-abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
 /**
  * A taint-tracking configuration for reasoning about unvalidated URL redirect vulnerabilities.
@@ -42,15 +44,13 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof SanitizerGuard
   }
 }
 
 /** A source of remote user input. */
-class RemoteSource extends Source {
-  RemoteSource() { this instanceof RemoteFlowSource }
-}
+class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /**
  * A URL argument to a call to `HttpResponse.Redirect()` or `Controller.Redirect()`, that is a
@@ -102,16 +102,17 @@ class HttpServerTransferSink extends Sink {
   }
 }
 
+private predicate isLocalUrlSanitizer(Guard g, Expr e, AbstractValue v) {
+  g.(MethodCall).getTarget().hasName("IsLocalUrl") and
+  e = g.(MethodCall).getArgument(0) and
+  v.(AbstractValues::BooleanValue).getValue() = true
+}
+
 /**
  * A URL argument to a call to `UrlHelper.isLocalUrl()` that is a sanitizer for URL redirects.
  */
-class IsLocalUrlSanitizer extends SanitizerGuard, MethodCall {
-  IsLocalUrlSanitizer() { this.getTarget().hasName("IsLocalUrl") }
-
-  override predicate checks(Expr e, AbstractValue v) {
-    e = this.getArgument(0) and
-    v.(AbstractValues::BooleanValue).getValue() = true
-  }
+class LocalUrlSanitizer extends Sanitizer {
+  LocalUrlSanitizer() { this = DataFlow::BarrierGuard<isLocalUrlSanitizer/3>::getABarrierNode() }
 }
 
 /**

@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import TestUtilities.InlineExpectationsTest
 import codeql.ruby.ApiGraphs
@@ -12,7 +12,7 @@ class CustomEntryPointCall extends API::EntryPoint {
 class CustomEntryPointUse extends API::EntryPoint {
   CustomEntryPointUse() { this = "CustomEntryPointUse" }
 
-  override DataFlow::LocalSourceNode getAUse() {
+  override DataFlow::LocalSourceNode getASource() {
     result.(DataFlow::CallNode).getMethodName() = "customEntryPointUse"
   }
 }
@@ -20,16 +20,16 @@ class CustomEntryPointUse extends API::EntryPoint {
 class ApiUseTest extends InlineExpectationsTest {
   ApiUseTest() { this = "ApiUseTest" }
 
-  override string getARelevantTag() { result = ["use", "def"] }
+  override string getARelevantTag() { result = ["use", "def", "call"] }
 
   private predicate relevantNode(API::Node a, DataFlow::Node n, Location l, string tag) {
     l = n.getLocation() and
     (
       tag = "use" and
-      n = a.getAUse()
+      n = a.getAValueReachableFromSource()
       or
       tag = "def" and
-      n = a.getARhs()
+      n = a.asSink()
       or
       tag = "call" and
       n = a.(API::MethodAccessNode).getCallNode()
@@ -38,7 +38,7 @@ class ApiUseTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "use" and // def tags are always optional
-    exists(API::Node a, DataFlow::Node n | relevantNode(a, n, location, tag) |
+    exists(DataFlow::Node n | relevantNode(_, n, location, tag) |
       // Only report the longest path on this line:
       value =
         max(API::Node a2, Location l2, DataFlow::Node n2 |

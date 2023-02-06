@@ -10,7 +10,6 @@ private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.frameworks.Networking
-private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.FlowSteps
@@ -33,6 +32,57 @@ predicate localExprTaint(Expr src, Expr sink) {
   localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))
 }
 
+/** Holds if `node` is an endpoint for local taint flow. */
+signature predicate nodeSig(DataFlow::Node node);
+
+/** Provides local taint flow restricted to a given set of sources and sinks. */
+module LocalTaintFlow<nodeSig/1 source, nodeSig/1 sink> {
+  private predicate reachRev(DataFlow::Node n) {
+    sink(n)
+    or
+    exists(DataFlow::Node mid |
+      localTaintStep(n, mid) and
+      reachRev(mid)
+    )
+  }
+
+  private predicate reachFwd(DataFlow::Node n) {
+    reachRev(n) and
+    (
+      source(n)
+      or
+      exists(DataFlow::Node mid |
+        localTaintStep(mid, n) and
+        reachFwd(mid)
+      )
+    )
+  }
+
+  private predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+    localTaintStep(n1, n2) and
+    reachFwd(n1) and
+    reachFwd(n2)
+  }
+
+  /**
+   * Holds if taint can flow from `n1` to `n2` in zero or more local
+   * (intra-procedural) steps that are restricted to be part of a path between
+   * `source` and `sink`.
+   */
+  pragma[inline]
+  predicate hasFlow(DataFlow::Node n1, DataFlow::Node n2) { step*(n1, n2) }
+
+  /**
+   * Holds if taint can flow from `n1` to `n2` in zero or more local
+   * (intra-procedural) steps that are restricted to be part of a path between
+   * `source` and `sink`.
+   */
+  pragma[inline]
+  predicate hasExprFlow(Expr n1, Expr n2) {
+    hasFlow(DataFlow::exprNode(n1), DataFlow::exprNode(n2))
+  }
+}
+
 cached
 private module Cached {
   private import DataFlowImplCommon as DataFlowImplCommon
@@ -51,14 +101,14 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
     or
     // Treat container flow as taint for the local taint flow relation
     exists(DataFlow::Content c | containerContent(c) |
       readStep(src, c, sink) or
       storeStep(src, c, sink) or
-      FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink) or
-      FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink)
+      FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink, _) or
+      FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink, _)
     )
   }
 
@@ -112,12 +162,6 @@ private module Cached {
   }
 }
 
-/**
- * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
- * but not in local taint.
- */
-predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
-
 import Cached
 
 private RefType getElementType(RefType container) {
@@ -157,6 +201,8 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   or
   sink.(AssignAddExpr).getSource() = src and sink.getType() instanceof TypeString
   or
+  sink.(StringTemplateExpr).getComponent(_) = src
+  or
   sink.(LogicExpr).getAnOperand() = src
   or
   constructorStep(src, sink)
@@ -188,7 +234,7 @@ private predicate localAdditionalTaintUpdateStep(Expr src, Expr sink) {
 
 private class BulkData extends RefType {
   BulkData() {
-    this.(Array).getElementType().(PrimitiveType).getName().regexpMatch("byte|char")
+    this.(Array).getElementType().(PrimitiveType).hasName(["byte", "char"])
     or
     exists(RefType t | this.getASourceSupertype*() = t |
       t.hasQualifiedName("java.io", "InputStream") or
@@ -235,13 +281,8 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
  * Converts an argument index to a formal parameter index.
  * This is relevant for varadic methods.
  */
-private int argToParam(Call call, int arg) {
-  exists(call.getArgument(arg)) and
-  exists(Callable c | c = call.getCallee() |
-    if c.isVarargs() and arg >= c.getNumberOfParameters()
-    then result = c.getNumberOfParameters() - 1
-    else result = arg
-  )
+private int argToParam(Call call, int argIdx) {
+  result = call.getArgument(argIdx).(Argument).getParameterPos()
 }
 
 /** Access to a method that passes taint from qualifier to argument. */
@@ -255,7 +296,7 @@ private predicate qualifierToArgumentStep(Expr tracked, Expr sink) {
 
 /** Access to a method that passes taint from the qualifier. */
 private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
-  (taintPreservingQualifierToMethod(sink.getMethod()) or unsafeEscape(sink)) and
+  taintPreservingQualifierToMethod(sink.getMethod()) and
   tracked = sink.getQualifier()
 }
 
@@ -286,28 +327,6 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   )
 }
 
-private class StringReplaceMethod extends TaintPreservingCallable {
-  StringReplaceMethod() {
-    this.getDeclaringType() instanceof TypeString and
-    (
-      this.hasName("replace") or
-      this.hasName("replaceAll") or
-      this.hasName("replaceFirst")
-    )
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = 1 }
-}
-
-private predicate unsafeEscape(MethodAccess ma) {
-  // Removing `<script>` tags using a string-replace method is
-  // unsafe if such a tag is embedded inside another one (e.g. `<scr<script>ipt>`).
-  exists(StringReplaceMethod m | ma.getMethod() = m |
-    ma.getArgument(0).(StringLiteral).getValue() = "(<script>)" and
-    ma.getArgument(1).(StringLiteral).getValue() = ""
-  )
-}
-
 /** Access to a method that passes taint from an argument. */
 private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
   exists(Method m, int i |
@@ -319,7 +338,7 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
   exists(Method springResponseEntityOfOk |
     sink.getMethod() = springResponseEntityOfOk and
     springResponseEntityOfOk.getDeclaringType() instanceof SpringResponseEntity and
-    springResponseEntityOfOk.getName().regexpMatch("ok|of") and
+    springResponseEntityOfOk.hasName(["ok", "of"]) and
     tracked = sink.getArgument(0) and
     tracked.getType() instanceof TypeString
   )
@@ -327,7 +346,7 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
   exists(Method springResponseEntityBody |
     sink.getMethod() = springResponseEntityBody and
     springResponseEntityBody.getDeclaringType() instanceof SpringResponseEntityBodyBuilder and
-    springResponseEntityBody.getName().regexpMatch("body") and
+    springResponseEntityBody.hasName("body") and
     tracked = sink.getArgument(0) and
     tracked.getType() instanceof TypeString
   )
@@ -595,6 +614,7 @@ private MethodAccess callReturningSameType(Expr ref) {
   result.getMethod().getReturnType() = ref.getType()
 }
 
+pragma[assume_small_delta]
 private SrcRefType entrypointType() {
   exists(RemoteFlowSource s, RefType t |
     s instanceof DataFlow::ExplicitParameterNode and

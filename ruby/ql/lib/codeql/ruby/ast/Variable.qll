@@ -36,7 +36,7 @@ class LocalVariable extends Variable, TLocalVariable {
   /** Gets the access where this local variable is first introduced. */
   VariableAccess getDefiningAccess() {
     result = this.(LocalVariableReal).getDefiningAccessImpl() or
-    synthChild(any(BlockParameter p | this = p.getVariable()), 0, result)
+    synthChild(any(NamedParameter p | this = p.getVariable()), 0, result)
   }
 
   /**
@@ -63,7 +63,7 @@ class GlobalVariable extends Variable instanceof GlobalVariableImpl {
 
 /** An instance variable. */
 class InstanceVariable extends Variable instanceof InstanceVariableImpl {
-  /** Holds is this variable is a class instance variable. */
+  /** Holds if this variable is a class instance variable. */
   final predicate isClassInstanceVariable() { super.isClassInstanceVariable() }
 
   final override InstanceVariableAccess getAnAccess() { result.getVariable() = this }
@@ -116,14 +116,12 @@ class VariableAccess extends Expr instanceof VariableAccessImpl {
   predicate isImplicitWrite() {
     implicitWriteAccess(toGenerated(this))
     or
-    this = any(SimpleParameterSynthImpl p).getDefininingAccess()
+    this = any(SimpleParameterSynthImpl p).getDefiningAccess()
     or
     this = any(HashPattern p).getValue(_)
     or
-    synthChild(any(BlockParameter p), 0, this)
+    synthChild(any(NamedParameter p), 0, this)
   }
-
-  final override string toString() { result = VariableAccessImpl.super.toString() }
 }
 
 /** An access to a variable where the value is updated. */
@@ -181,6 +179,17 @@ class GlobalVariableReadAccess extends GlobalVariableAccess, VariableReadAccess 
 /** An access to an instance variable. */
 class InstanceVariableAccess extends VariableAccess instanceof InstanceVariableAccessImpl {
   final override string getAPrimaryQlClass() { result = "InstanceVariableAccess" }
+
+  /**
+   * Gets the synthetic receiver (`self`) of this instance variable access.
+   */
+  final SelfVariableAccess getReceiver() { synthChild(this, 0, result) }
+
+  final override AstNode getAChild(string pred) {
+    result = VariableAccess.super.getAChild(pred)
+    or
+    pred = "getReceiver" and result = this.getReceiver()
+  }
 }
 
 /** An access to an instance variable where the value is updated. */

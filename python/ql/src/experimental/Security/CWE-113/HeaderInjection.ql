@@ -6,6 +6,7 @@
  * @problem.severity error
  * @id py/header-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-113
  *       external/cwe/cwe-079
  */
@@ -17,5 +18,5 @@ import DataFlow::PathGraph
 
 from HeaderInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ HTTP header is constructed from a $@.", sink.getNode(),
-  "This", source.getNode(), "user-provided value"
+select sink.getNode(), source, sink, "This HTTP header is constructed from a $@.", source.getNode(),
+  "user-provided value"

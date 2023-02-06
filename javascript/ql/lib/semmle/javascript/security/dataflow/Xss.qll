@@ -14,7 +14,7 @@ module Shared {
     /**
      * Gets the kind of vulnerability to report in the alert message.
      *
-     * Defaults to `Cross-site scripting`, but may be overriden for sinks
+     * Defaults to `Cross-site scripting`, but may be overridden for sinks
      * that do not allow script injection, but injection of other undesirable HTML elements.
      */
     string getVulnerabilityKind() { result = "Cross-site scripting" }
@@ -62,17 +62,17 @@ module Shared {
     }
   }
 
-  private import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization as IncompleteHTML
+  private import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization as IncompleteHtml
 
   /**
-   * A guard that checks if a string can contain quotes, which is a guard for strings that are inside a HTML attribute.
+   * A guard that checks if a string can contain quotes, which is a guard for strings that are inside an HTML attribute.
    */
   abstract class QuoteGuard extends TaintTracking::SanitizerGuardNode, StringOps::Includes {
     QuoteGuard() {
       this.getSubstring().mayHaveStringValue("\"") and
       this.getBaseString()
           .getALocalSource()
-          .flowsTo(any(IncompleteHTML::HtmlAttributeConcatenation attributeConcat))
+          .flowsTo(any(IncompleteHtml::HtmlAttributeConcatenation attributeConcat))
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {

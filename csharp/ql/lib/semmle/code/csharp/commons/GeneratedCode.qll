@@ -39,12 +39,12 @@ class GeneratedAttributeFile extends GeneratedCodeFile {
 class GeneratedNamespaceFile extends GeneratedCodeFile {
   GeneratedNamespaceFile() {
     exists(Namespace n | n.getATypeDeclaration().getFile() = this |
-      n.getQualifiedName() = "Microsoft.Xml.Serialization.GeneratedAssembly"
+      n.getFullName() = "Microsoft.Xml.Serialization.GeneratedAssembly"
     )
   }
 }
 
-/** A file contining comments suggesting it contains generated code. */
+/** A file continuing comments suggesting it contains generated code. */
 class GeneratedCommentFile extends GeneratedCodeFile {
   GeneratedCommentFile() { this = any(GeneratedCodeComment c).getLocation().getFile() }
 }

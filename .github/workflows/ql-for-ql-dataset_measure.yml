@@ -19,25 +19,26 @@ jobs:
       matrix:
         repo:
           - github/codeql
-          - github/codeql-go
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
+        uses: github/codeql-action/init@v2
         with:
           languages: javascript # does not matter
+      - uses: ./.github/actions/os-version
+        id: os_version
       - uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
             ql/target
-          key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-qltest-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
       - name: Build Extractor
-        run: cd ql; env "PATH=$PATH:`dirname ${CODEQL}`" ./create-extractor-pack.sh
+        run: cd ql; env "PATH=$PATH:`dirname ${CODEQL}`" ./scripts/create-extractor-pack.sh
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Checkout ${{ matrix.repo }}
@@ -77,7 +78,7 @@ jobs:
           path: stats
       - run: |
           python -m pip install --user lxml
-          find stats -name 'stats.xml' -print0 | sort -z | xargs -0 python ql/scripts/merge_stats.py --output ql/ql/src/ql.dbscheme.stats --normalise ql_tokeninfo
+          find stats -name 'stats.xml' -print0 | sort -z | xargs -0 python ruby/scripts/merge_stats.py --output ql/ql/src/ql.dbscheme.stats --normalise ql_tokeninfo
       - uses: actions/upload-artifact@v3
         with:
           name: ql.dbscheme.stats

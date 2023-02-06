@@ -64,5 +64,7 @@
 | Test.java:213:21:213:24 | main | 5 | Test.java:218:14:218:17 | args |
 | Validation.java:6:21:6:35 | checkIdentifier | 1 | Validation.java:7:23:7:24 | id |
 | Validation.java:6:21:6:35 | checkIdentifier | 2 | Validation.java:8:13:8:14 | id |
+| Validation.java:6:21:6:35 | checkIdentifier | 2 | Validation.java:8:13:8:24 | charAt(...) |
+| Validation.java:6:21:6:35 | checkIdentifier | 3 | Validation.java:9:28:9:28 | c |
 | Validation.java:6:21:6:35 | checkIdentifier | 4 | Validation.java:10:32:10:58 | ... + ... |
 | Validation.java:6:21:6:35 | checkIdentifier | 4 | Validation.java:10:57:10:58 | id |

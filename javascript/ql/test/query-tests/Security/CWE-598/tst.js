@@ -33,3 +33,23 @@ app.get("/login2", (req, res) => {
         res.send(result);
     });
 });
+
+app.get("/login", ({query}, res) => {
+    const username = query.username; // OK - usernames are fine
+    const currentPassword = query.current; // NOT OK - password read
+    checkUser(username, currentPassword, (result) => {
+        res.send(result);
+    });
+});
+
+app.get('/rest/user/change-password', mkHandler());
+
+function mkHandler() {
+    return (req, res) => {
+        const username = req.param('username'); // OK - usernames are fine
+        const currentPassword = req.param('current'); // NOT OK - password read
+        checkUser(username, currentPassword, (result) => {
+            res.send(result);
+        });
+    }
+}

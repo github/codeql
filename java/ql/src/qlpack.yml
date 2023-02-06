@@ -1,5 +1,5 @@
 name: codeql/java-queries
-version: 0.1.2-dev
+version: 0.5.3-dev
 groups: 
   - java
   - queries
@@ -7,5 +7,6 @@ suites: codeql-suites
 extractor: java
 defaultSuiteFile: codeql-suites/java-code-scanning.qls
 dependencies:
-  codeql/java-all: "*"
-  codeql/suite-helpers: "*"
+  codeql/java-all: ${workspace}
+  codeql/suite-helpers: ${workspace}
+  codeql/util: ${workspace}

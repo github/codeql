@@ -1,0 +1,1 @@
+| A.kt:4:19:4:29 | someFun(...) | file:///!unknown-binary-location/OC$C.class:0:0:0:0 | someFun | file:///!unknown-binary-location/OC$C.class:0:0:0:0 | C<D1,D2,E1,E2> | file:///!unknown-binary-location/OC.class:0:0:0:0 | OC<F1,F2> |

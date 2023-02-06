@@ -73,6 +73,11 @@ jdk/StringMatch.java:
 #    5|           0: [MethodAccess] matches(...)
 #    5|             -1: [VarAccess] STR
 #    5|             0: [StringLiteral] "[a-z]+"
+#    5|               0: [RegExpPlus] [a-z]+
+#    5|                 0: [RegExpCharacterClass] [a-z]
+#    5|                   0: [RegExpCharacterRange] a-z
+#    5|                     0: [RegExpConstant | RegExpNormalChar] a
+#    5|                     1: [RegExpConstant | RegExpNormalChar] z
 #    8|     5: [Method] b
 #    8|       3: [TypeAccess] void
 #    8|       5: [BlockStmt] { ... }

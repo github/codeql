@@ -51,4 +51,7 @@ class Initializer extends ControlFlowNode, @initialiser {
   override Function getControlFlowScope() { result = this.getExpr().getEnclosingFunction() }
 
   override Stmt getEnclosingStmt() { result = this.getExpr().getEnclosingStmt() }
+
+  /** Holds if the initializer used the C++ braced initializer notation. */
+  predicate isBraced() { braced_initialisers(underlyingElement(this)) }
 }

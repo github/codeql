@@ -76,7 +76,7 @@ class TypeBoundsAnalysis extends BufferWriteEstimationReason, TTypeBoundsAnalysi
 
 /**
  * The estimation comes from non trivial bounds found via actual flow analysis,
- * but a widening aproximation might have been used for variables in loops.
+ * but a widening approximation might have been used for variables in loops.
  * For example
  * ```
  * for (int i = 0; i < 10; ++i) {
@@ -141,7 +141,7 @@ class AttributeFormattingFunction extends FormattingFunction {
  *  - `""` is a `vprintf` variant, `outputParamIndex` is `-1`.
  *  - `"f"` is a `vfprintf` variant, `outputParamIndex` indicates the output stream parameter.
  *  - `"s"` is a `vsprintf` variant, `outputParamIndex` indicates the output buffer parameter.
- *  - `"?"` if the type cannot be deteremined.  `outputParamIndex` is `-1`.
+ *  - `"?"` if the type cannot be determined.  `outputParamIndex` is `-1`.
  */
 predicate primitiveVariadicFormatter(
   TopLevelFunction f, string type, int formatParamIndex, int outputParamIndex
@@ -168,7 +168,7 @@ private predicate callsVariadicFormatter(
 ) {
   // calls a variadic formatter with `formatParamIndex`, `outputParamIndex` linked
   exists(FunctionCall fc, int format, int output |
-    variadicFormatter(fc.getTarget(), type, format, output) and
+    variadicFormatter(pragma[only_bind_into](fc.getTarget()), type, format, output) and
     fc.getEnclosingFunction() = f and
     fc.getArgument(format) = f.getParameter(formatParamIndex).getAnAccess() and
     fc.getArgument(output) = f.getParameter(outputParamIndex).getAnAccess()
@@ -176,7 +176,7 @@ private predicate callsVariadicFormatter(
   or
   // calls a variadic formatter with only `formatParamIndex` linked
   exists(FunctionCall fc, string calledType, int format, int output |
-    variadicFormatter(fc.getTarget(), calledType, format, output) and
+    variadicFormatter(pragma[only_bind_into](fc.getTarget()), calledType, format, output) and
     fc.getEnclosingFunction() = f and
     fc.getArgument(format) = f.getParameter(formatParamIndex).getAnAccess() and
     not fc.getArgument(output) = f.getParameter(_).getAnAccess() and
@@ -198,7 +198,7 @@ private predicate callsVariadicFormatter(
  *  - `""` is a `vprintf` variant, `outputParamIndex` is `-1`.
  *  - `"f"` is a `vfprintf` variant, `outputParamIndex` indicates the output stream parameter.
  *  - `"s"` is a `vsprintf` variant, `outputParamIndex` indicates the output buffer parameter.
- *  - `"?"` if the type cannot be deteremined.  `outputParamIndex` is `-1`.
+ *  - `"?"` if the type cannot be determined.  `outputParamIndex` is `-1`.
  */
 predicate variadicFormatter(Function f, string type, int formatParamIndex, int outputParamIndex) {
   primitiveVariadicFormatter(f, type, formatParamIndex, outputParamIndex)
@@ -397,11 +397,8 @@ private int lengthInBase16(float f) {
 /**
  * A class to represent format strings that occur as arguments to invocations of formatting functions.
  */
-class FormatLiteral extends Literal {
-  FormatLiteral() {
-    exists(FormattingFunctionCall ffc | ffc.getFormat() = this) and
-    this instanceof StringLiteral
-  }
+class FormatLiteral extends Literal instanceof StringLiteral {
+  FormatLiteral() { exists(FormattingFunctionCall ffc | ffc.getFormat() = this) }
 
   /**
    * Gets the function call where this format string is used.
@@ -872,7 +869,7 @@ class FormatLiteral extends Literal {
 
   private Type getConversionType1(int n) {
     exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv.regexpMatch("d|i") and
+      cnv = ["d", "i"] and
       result = this.getIntegralConversion(n) and
       not result.getUnderlyingType().(IntegralType).isExplicitlySigned() and
       not result.getUnderlyingType().(IntegralType).isExplicitlyUnsigned()
@@ -912,7 +909,7 @@ class FormatLiteral extends Literal {
 
   private Type getConversionType2(int n) {
     exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv.regexpMatch("o|u|x|X") and
+      cnv = ["o", "u", "x", "X"] and
       result = this.getIntegralConversion(n) and
       result.getUnderlyingType().(IntegralType).isUnsigned()
     )
@@ -920,7 +917,7 @@ class FormatLiteral extends Literal {
 
   private Type getConversionType3(int n) {
     exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv.regexpMatch("a|A|e|E|f|F|g|G") and result = this.getFloatingPointConversion(n)
+      cnv = ["a", "A", "e", "E", "f", "F", "g", "G"] and result = this.getFloatingPointConversion(n)
     )
   }
 
@@ -1125,12 +1122,12 @@ class FormatLiteral extends Literal {
         exists(int dot, int afterdot |
           (if this.getPrecision(n) = 0 then dot = 0 else dot = 1) and
           (
-            (
-              if this.hasExplicitPrecision(n)
-              then afterdot = this.getPrecision(n)
-              else not this.hasImplicitPrecision(n)
-            ) and
-            afterdot = 6
+            if this.hasExplicitPrecision(n)
+            then afterdot = this.getPrecision(n)
+            else (
+              not this.hasImplicitPrecision(n) and
+              afterdot = 6
+            )
           ) and
           len = 1 + 309 + dot + afterdot
         ) and
@@ -1140,12 +1137,12 @@ class FormatLiteral extends Literal {
         exists(int dot, int afterdot |
           (if this.getPrecision(n) = 0 then dot = 0 else dot = 1) and
           (
-            (
-              if this.hasExplicitPrecision(n)
-              then afterdot = this.getPrecision(n)
-              else not this.hasImplicitPrecision(n)
-            ) and
-            afterdot = 6
+            if this.hasExplicitPrecision(n)
+            then afterdot = this.getPrecision(n)
+            else (
+              not this.hasImplicitPrecision(n) and
+              afterdot = 6
+            )
           ) and
           len = 1 + 1 + dot + afterdot + 1 + 1 + 3
         ) and
@@ -1155,12 +1152,12 @@ class FormatLiteral extends Literal {
         exists(int dot, int afterdot |
           (if this.getPrecision(n) = 0 then dot = 0 else dot = 1) and
           (
-            (
-              if this.hasExplicitPrecision(n)
-              then afterdot = this.getPrecision(n)
-              else not this.hasImplicitPrecision(n)
-            ) and
-            afterdot = 6
+            if this.hasExplicitPrecision(n)
+            then afterdot = this.getPrecision(n)
+            else (
+              not this.hasImplicitPrecision(n) and
+              afterdot = 6
+            )
           ) and
           // note: this could be displayed in the style %e or %f;
           //       however %f is only used when 'P > X >= -4'
@@ -1312,7 +1309,7 @@ class FormatLiteral extends Literal {
         len =
           min(int v |
             v = this.getPrecision(n) or
-            v = this.getUse().getFormatArgument(n).(AnalysedString).getMaxLength() - 1 // (don't count null terminator)
+            v = this.getUse().getFormatArgument(n).(AnalyzedString).getMaxLength() - 1 // (don't count null terminator)
           ) and
         reason = TValueFlowAnalysis()
       )

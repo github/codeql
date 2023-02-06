@@ -57,16 +57,6 @@ module AliasModels {
     predicate isParameterDeref(ParameterIndex index) { none() }
 
     /**
-     * Holds if this is the input value pointed to by a pointer parameter to a function, or the input
-     * value referred to by a reference parameter to a function, where the parameter has index
-     * `index`.
-     * DEPRECATED: Use `isParameterDeref(index)` instead.
-     */
-    deprecated final predicate isInParameterPointer(ParameterIndex index) {
-      this.isParameterDeref(index)
-    }
-
-    /**
      * Holds if this is the input value pointed to by the `this` pointer of an instance member
      * function.
      *
@@ -175,17 +165,7 @@ module AliasModels {
      * - There is no `FunctionOutput` for which `isParameterDeref(0)` holds, because `n` is neither a
      *   pointer nor a reference.
      */
-    predicate isParameterDeref(ParameterIndex i) { none() }
-
-    /**
-     * Holds if this is the output value pointed to by a pointer parameter to a function, or the
-     * output value referred to by a reference parameter to a function, where the parameter has
-     * index `index`.
-     * DEPRECATED: Use `isParameterDeref(index)` instead.
-     */
-    deprecated final predicate isOutParameterPointer(ParameterIndex index) {
-      this.isParameterDeref(index)
-    }
+    predicate isParameterDeref(ParameterIndex index) { none() }
 
     /**
      * Holds if this is the output value pointed to by the `this` pointer of an instance member

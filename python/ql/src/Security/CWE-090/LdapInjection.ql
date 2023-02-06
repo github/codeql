@@ -24,5 +24,5 @@ where
   any(FilterConfiguration filterConfig).hasFlowPath(source, sink) and
   parameterName = "filter"
 select sink.getNode(), source, sink,
-  "$@ LDAP query parameter (" + parameterName + ") comes from $@.", sink.getNode(), "This",
-  source.getNode(), "a user-provided value"
+  "LDAP query parameter (" + parameterName + ") depends on a $@.", source.getNode(),
+  "user-provided value"

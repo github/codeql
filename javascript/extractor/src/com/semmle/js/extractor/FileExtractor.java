@@ -104,7 +104,7 @@ public class FileExtractor {
 
   /** Information about supported file types. */
   public static enum FileType {
-    HTML(".htm", ".html", ".xhtm", ".xhtml", ".vue", ".hbs", ".ejs", ".njk") {
+    HTML(".htm", ".html", ".xhtm", ".xhtml", ".vue", ".hbs", ".ejs", ".njk", ".html.erb") {
       @Override
       public IExtractor mkExtractor(ExtractorConfig config, ExtractorState state) {
         return new HTMLExtractor(config, state);
@@ -203,7 +203,7 @@ public class FileExtractor {
       }
     },
 
-    TYPESCRIPT(".ts", ".tsx") {
+    TYPESCRIPT(".ts", ".tsx", ".mts", ".cts") {
       @Override
       protected boolean contains(File f, String lcExt, ExtractorConfig config) {
         if (config.getTypeScriptMode() == TypeScriptMode.NONE) return false;
@@ -217,9 +217,6 @@ public class FileExtractor {
       }
 
       private boolean hasBadFileHeader(File f, String lcExt, ExtractorConfig config) {
-        if (!".ts".equals(lcExt)) {
-          return false;
-        }
         try (FileInputStream fis = new FileInputStream(f)) {
           byte[] bytes = new byte[fileHeaderSize];
           int length = fis.read(bytes);

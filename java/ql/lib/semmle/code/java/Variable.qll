@@ -9,6 +9,9 @@ class Variable extends @variable, Annotatable, Element, Modifiable {
   /** Gets the type of this variable. */
   /*abstract*/ Type getType() { none() }
 
+  /** Gets the Kotlin type of this variable. */
+  /*abstract*/ KotlinType getKotlinType() { none() }
+
   /** Gets an access to this variable. */
   VarAccess getAnAccess() { variableBinding(result, this) }
 
@@ -37,6 +40,9 @@ class LocalVariableDecl extends @localvar, LocalScopeVariable {
   /** Gets the type of this local variable. */
   override Type getType() { localvars(this, _, result, _) }
 
+  /** Gets the Kotlin type of this local variable. */
+  override KotlinType getKotlinType() { localvarsKotlinType(this, result) }
+
   /** Gets the expression declaring this variable. */
   LocalVariableDeclExpr getDeclExpr() { localvars(this, _, _, result) }
 
@@ -62,6 +68,9 @@ class Parameter extends Element, @param, LocalScopeVariable {
   /** Gets the type of this formal parameter. */
   override Type getType() { params(this, result, _, _, _) }
 
+  /** Gets the Kotlin type of this formal parameter. */
+  override KotlinType getKotlinType() { paramsKotlinType(this, result) }
+
   /** Holds if the parameter is never assigned a value in the body of the callable. */
   predicate isEffectivelyFinal() { not exists(this.getAnAssignedValue()) }
 
@@ -79,6 +88,11 @@ class Parameter extends Element, @param, LocalScopeVariable {
 
   /** Holds if this formal parameter is a variable arity parameter. */
   predicate isVarargs() { isVarargsParam(this) }
+
+  /** Holds if this formal parameter is a parameter representing the dispatch receiver in an extension method. */
+  predicate isExtensionParameter() {
+    this.getPosition() = this.getCallable().(ExtensionMethod).getExtensionReceiverParameterIndex()
+  }
 
   /**
    * Gets an argument for this parameter in any call to the callable that declares this formal

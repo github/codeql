@@ -3,17 +3,23 @@
  * deserialization, as well as extension points for adding your own.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
+private import codeql.ruby.frameworks.ActiveJob
+private import codeql.ruby.frameworks.core.Module
+private import codeql.ruby.frameworks.core.Kernel
 
 module UnsafeDeserialization {
   /**
    * A data flow source for unsafe deserialization vulnerabilities.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /** Gets a string that describes the source. */
+    string describe() { result = "user-provided value" }
+  }
 
   /**
    * A data flow sink for unsafe deserialization vulnerabilities.
@@ -25,16 +31,37 @@ module UnsafeDeserialization {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * Additional taint steps for "unsafe deserialization" vulnerabilities.
-   */
-  predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    base64DecodeTaintStep(fromNode, toNode)
-  }
-
   /** A source of remote user input, considered as a flow source for unsafe deserialization. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+
+  /** A read of data from `STDIN`/`ARGV`, considered as a flow source for unsafe deserialization. */
+  class StdInSource extends UnsafeDeserialization::Source {
+    boolean stdin;
+
+    StdInSource() {
+      this = API::getTopLevelMember(["STDIN", "ARGF"]).getAMethodCall(["gets", "read"]) and
+      stdin = true
+      or
+      // > $stdin == STDIN
+      // => true
+      // but $stdin is special in that it is a global variable and not a constant. `API::getTopLevelMember` only gets constants.
+      exists(DataFlow::Node dollarStdin |
+        dollarStdin.asExpr().getExpr().(GlobalVariableReadAccess).getVariable().getName() = "$stdin" and
+        this = dollarStdin.getALocalSource().getAMethodCall(["gets", "read"])
+      ) and
+      stdin = true
+      or
+      // ARGV.
+      this.asExpr().getExpr().(GlobalVariableReadAccess).getVariable().getName() = "ARGV" and
+      stdin = false
+      or
+      this.(Kernel::KernelMethodCall).getMethodName() = ["gets", "readline", "readlines"] and
+      stdin = true
+    }
+
+    override string describe() {
+      if stdin = true then result = "value from stdin" else result = "value from ARGV"
+    }
   }
 
   /**
@@ -48,12 +75,13 @@ module UnsafeDeserialization {
   }
 
   /**
-   * An argument in a call to `YAML.load`, considered a sink for unsafe
-   * deserialization.
+   * An argument in a call to `YAML.load`, considered a sink
+   * for unsafe deserialization. The `YAML` module is an alias of `Psych` in
+   * recent versions of Ruby.
    */
   class YamlLoadArgument extends Sink {
     YamlLoadArgument() {
-      this = API::getTopLevelMember("YAML").getAMethodCall("load").getArgument(0)
+      this = API::getTopLevelMember(["YAML", "Psych"]).getAMethodCall("load").getArgument(0)
     }
   }
 
@@ -67,6 +95,16 @@ module UnsafeDeserialization {
     }
   }
 
+  /**
+   * The first argument in a call to `Hash.from_trusted_xml`, considered as a
+   * sink for unsafe deserialization.
+   */
+  class HashFromTrustedXmlArgument extends Sink {
+    HashFromTrustedXmlArgument() {
+      this = API::getTopLevelMember("Hash").getAMethodCall("from_trusted_xml").getArgument(0)
+    }
+  }
+
   private string getAKnownOjModeName(boolean isSafe) {
     result = ["compat", "custom", "json", "null", "rails", "strict", "wab"] and isSafe = true
     or
@@ -75,11 +113,7 @@ module UnsafeDeserialization {
 
   private predicate isOjModePair(CfgNodes::ExprNodes::PairCfgNode p, string modeValue) {
     p.getKey().getConstantValue().isStringlikeValue("mode") and
-    exists(DataFlow::LocalSourceNode symbolLiteral, DataFlow::Node value |
-      symbolLiteral.asExpr().getExpr().getConstantValue().isSymbol(modeValue) and
-      symbolLiteral.flowsTo(value) and
-      value.asExpr() = p.getValue()
-    )
+    DataFlow::exprNode(p.getValue()).getALocalSource().getConstantValue().isSymbol(modeValue)
   }
 
   /**
@@ -173,19 +207,5 @@ module UnsafeDeserialization {
         )
       )
     }
-  }
-
-  /**
-   * `Base64.decode64` propagates taint from its argument to its return value.
-   */
-  predicate base64DecodeTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    exists(DataFlow::CallNode callNode |
-      callNode =
-        API::getTopLevelMember("Base64")
-            .getAMethodCall(["decode64", "strict_decode64", "urlsafe_decode64"])
-    |
-      fromNode = callNode.getArgument(0) and
-      toNode = callNode
-    )
   }
 }

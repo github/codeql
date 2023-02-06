@@ -9,11 +9,11 @@ class ApiUseTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "use" }
 
   private predicate relevant_node(API::Node a, DataFlow::Node n, Location l) {
-    n = a.getAUse() and l = n.getLocation()
+    n = a.getAValueReachableFromSource() and l = n.getLocation()
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(API::Node a, DataFlow::Node n | relevant_node(a, n, location) |
+    exists(DataFlow::Node n | relevant_node(_, n, location) |
       tag = "use" and
       // Only report the longest path on this line:
       value =

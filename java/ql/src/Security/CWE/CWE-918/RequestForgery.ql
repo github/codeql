@@ -17,5 +17,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, RequestForgeryConfiguration conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Potential server-side request forgery due to $@.",
-  source.getNode(), "a user-provided value"
+select sink.getNode(), source, sink, "Potential server-side request forgery due to a $@.",
+  source.getNode(), "user-provided value"

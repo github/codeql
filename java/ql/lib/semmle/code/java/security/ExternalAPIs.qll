@@ -20,11 +20,11 @@ private class DefaultSafeExternalApiMethod extends SafeExternalApiMethod {
   DefaultSafeExternalApiMethod() {
     this instanceof EqualsMethod
     or
-    this.getName().regexpMatch("size|length|compareTo|getClass|lastIndexOf")
+    this.hasName(["size", "length", "compareTo", "getClass", "lastIndexOf"])
     or
     this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "Validate")
     or
-    this.getQualifiedName() = "Objects.equals"
+    this.hasQualifiedName("java.util", "Objects", "equals")
     or
     this.getDeclaringType() instanceof TypeString and this.getName() = "equals"
     or
@@ -42,7 +42,7 @@ private class DefaultSafeExternalApiMethod extends SafeExternalApiMethod {
     this.getName() = "isDigit"
     or
     this.getDeclaringType().hasQualifiedName("java.lang", "String") and
-    this.getName().regexpMatch("equalsIgnoreCase|regionMatches")
+    this.hasName(["equalsIgnoreCase", "regionMatches"])
     or
     this.getDeclaringType().hasQualifiedName("java.lang", "Boolean") and
     this.getName() = "parseBoolean"
@@ -51,7 +51,7 @@ private class DefaultSafeExternalApiMethod extends SafeExternalApiMethod {
     this.getName() = "closeQuietly"
     or
     this.getDeclaringType().hasQualifiedName("org.springframework.util", "StringUtils") and
-    this.getName().regexpMatch("hasText|isEmpty")
+    this.hasName(["hasText", "isEmpty"])
   }
 }
 
@@ -79,8 +79,8 @@ class ExternalApiDataNode extends DataFlow::Node {
       m.fromSource()
     ) and
     // Not already modeled as a taint step (we need both of these to handle `AdditionalTaintStep` subclasses as well)
-    not exists(DataFlow::Node next | TaintTracking::localTaintStep(this, next)) and
-    not exists(DataFlow::Node next | TaintTracking::defaultAdditionalTaintStep(this, next)) and
+    not TaintTracking::localTaintStep(this, _) and
+    not TaintTracking::defaultAdditionalTaintStep(this, _) and
     // Not a call to a known safe external API
     not call.getCallee() instanceof SafeExternalApiMethod
   }
@@ -92,10 +92,7 @@ class ExternalApiDataNode extends DataFlow::Node {
   int getIndex() { result = i }
 
   /** Gets the description of the method being called. */
-  string getMethodDescription() {
-    result =
-      this.getMethod().getDeclaringType().getPackage() + "." + this.getMethod().getQualifiedName()
-  }
+  string getMethodDescription() { result = this.getMethod().getQualifiedName() }
 }
 
 /** DEPRECATED: Alias for ExternalApiDataNode */
@@ -126,7 +123,9 @@ class UntrustedExternalApiDataNode extends ExternalApiDataNode {
 /** DEPRECATED: Alias for UntrustedExternalApiDataNode */
 deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
 
+/** An external API which is used with untrusted data. */
 private newtype TExternalApi =
+  /** An untrusted API method `m` where untrusted data is passed at `index`. */
   TExternalApiParameter(Method m, int index) {
     exists(UntrustedExternalApiDataNode n |
       m = n.getMethod() and

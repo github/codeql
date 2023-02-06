@@ -163,7 +163,8 @@ private module ControlFlowGraphImpl {
    * Bind `t` to an exception type that may be thrown during execution of `n`,
    * either because `n` is a `throw` statement, or because it is a call
    * that may throw an exception, or because it is a cast and a
-   * `ClassCastException` is expected.
+   * `ClassCastException` is expected, or because it is a Kotlin not-null check
+   * and a `NullPointerException` is expected.
    */
   private predicate mayThrow(ControlFlowNode n, ThrowableType t) {
     t = n.(ThrowStmt).getThrownExceptionType()
@@ -177,6 +178,11 @@ private module ControlFlowGraphImpl {
     or
     exists(CastExpr c | c = n |
       t instanceof TypeClassCastException and
+      uncheckedExceptionFromCatch(n, t)
+    )
+    or
+    exists(NotNullExpr nn | nn = n |
+      t instanceof TypeNullPointerException and
       uncheckedExceptionFromCatch(n, t)
     )
   }
@@ -280,7 +286,7 @@ private module ControlFlowGraphImpl {
    * That is, contexts where the control-flow edges depend on `value` given that `b` ends
    * with a `booleanCompletion(value, _)`.
    */
-  private predicate inBooleanContext(Expr b) {
+  private predicate inBooleanContext(ControlFlowNode b) {
     exists(LogicExpr logexpr |
       logexpr.(BinaryExpr).getLeftOperand() = b
       or
@@ -303,6 +309,17 @@ private module ControlFlowGraphImpl {
     )
     or
     exists(ConditionalStmt condstmt | condstmt.getCondition() = b)
+    or
+    exists(WhenBranch whenbranch | whenbranch.getCondition() = b)
+    or
+    exists(WhenExpr whenexpr |
+      inBooleanContext(whenexpr) and
+      whenexpr.getBranch(_).getAResult() = b
+    )
+    or
+    inBooleanContext(b.(ExprStmt).getExpr())
+    or
+    inBooleanContext(b.(StmtExpr).getStmt())
   }
 
   /**
@@ -383,10 +400,11 @@ private module ControlFlowGraphImpl {
   /**
    * Gets a statement that always throws an exception or calls `exit`.
    */
+  pragma[assume_small_delta]
   private Stmt nonReturningStmt() {
     result instanceof ThrowStmt
     or
-    result.(ExprStmt).getExpr() = nonReturningMethodAccess()
+    result.(ExprStmt).getExpr() = nonReturningExpr()
     or
     result.(BlockStmt).getLastStmt() = nonReturningStmt()
     or
@@ -398,6 +416,23 @@ private module ControlFlowGraphImpl {
     exists(TryStmt try | try = result |
       try.getBlock() = nonReturningStmt() and
       forall(CatchClause cc | cc = try.getACatchClause() | cc.getBlock() = nonReturningStmt())
+    )
+  }
+
+  /**
+   * Gets an expression that always throws an exception or calls `exit`.
+   */
+  pragma[assume_small_delta]
+  private Expr nonReturningExpr() {
+    result = nonReturningMethodAccess()
+    or
+    result.(StmtExpr).getStmt() = nonReturningStmt()
+    or
+    exists(WhenExpr whenexpr | whenexpr = result |
+      whenexpr.getBranch(_).isElseBranch() and
+      forex(WhenBranch whenbranch | whenbranch = whenexpr.getBranch(_) |
+        whenbranch.getRhs() = nonReturningStmt()
+      )
     )
   }
 
@@ -427,12 +462,18 @@ private module ControlFlowGraphImpl {
       or
       this instanceof UnaryExpr and not this instanceof LogNotExpr
       or
-      this instanceof CastExpr
+      this instanceof CastingExpr
       or
       this instanceof InstanceOfExpr and not this.(InstanceOfExpr).isPattern()
       or
+      this instanceof NotInstanceOfExpr
+      or
       this instanceof LocalVariableDeclExpr and
       not this = any(InstanceOfExpr ioe).getLocalVariableDeclExpr()
+      or
+      this instanceof StringTemplateExpr
+      or
+      this instanceof ClassExpr
       or
       this instanceof RValue
       or
@@ -505,9 +546,11 @@ private module ControlFlowGraphImpl {
       or
       index = 0 and result = this.(UnaryExpr).getExpr()
       or
-      index = 0 and result = this.(CastExpr).getExpr()
+      index = 0 and result = this.(CastingExpr).getExpr()
       or
       index = 0 and result = this.(InstanceOfExpr).getExpr()
+      or
+      index = 0 and result = this.(NotInstanceOfExpr).getExpr()
       or
       index = 0 and result = this.(LocalVariableDeclExpr).getInit()
       or
@@ -518,6 +561,10 @@ private module ControlFlowGraphImpl {
         or
         result = e.getArgument(index)
       )
+      or
+      exists(StringTemplateExpr e | e = this | result = e.getComponent(index))
+      or
+      index = 0 and result = this.(ClassExpr).getExpr()
       or
       index = 0 and result = this.(ReturnStmt).getResult()
       or
@@ -569,6 +616,12 @@ private module ControlFlowGraphImpl {
     result = n and n instanceof LogicExpr
     or
     result = n and n instanceof ConditionalExpr
+    or
+    result = n and n instanceof WhenExpr
+    or
+    result = n and n instanceof WhenBranch
+    or
+    result = n and n instanceof StmtExpr
     or
     result = n and n.(PostOrderNode).isLeafNode()
     or
@@ -860,7 +913,11 @@ private module ControlFlowGraphImpl {
     )
     or
     // the last node in an `ExprStmt` is the last node in the expression
-    last(n.(ExprStmt).getExpr(), last, completion) and completion = NormalCompletion()
+    last(n.(ExprStmt).getExpr(), last, completion) and
+    completion instanceof NormalOrBooleanCompletion
+    or
+    // the last node in a `StmtExpr` is the last node in the statement
+    last(n.(StmtExpr).getStmt(), last, completion)
     or
     // the last statement of a labeled statement is the last statement of its body...
     exists(LabeledStmt lbl, Completion bodyCompletion |
@@ -879,6 +936,54 @@ private module ControlFlowGraphImpl {
     exists(LocalVariableDeclStmt s | s = n |
       last(s.getVariable(count(s.getAVariable())), last, completion) and
       completion = NormalCompletion()
+    )
+    or
+    // The last node in a `when` expression is the last node in any of its branches or
+    // the last node of the condition of the last branch in the absence of an else-branch.
+    exists(WhenExpr whenexpr | whenexpr = n |
+      // If we have no branches then we are the last node
+      last = n and
+      completion = NormalCompletion() and
+      not exists(whenexpr.getBranch(_))
+      or
+      // If our last branch condition is false then we are done
+      exists(int i |
+        last(whenexpr.getBranch(i), last, BooleanCompletion(false, _)) and
+        completion = NormalCompletion() and
+        not exists(whenexpr.getBranch(i + 1))
+      )
+      or
+      // Any branch getting an abnormal completion is propagated
+      last(whenexpr.getBranch(_), last, completion) and
+      not completion instanceof YieldCompletion and
+      not completion instanceof NormalOrBooleanCompletion
+      or
+      // The last node in any branch. This will be wrapped up as a
+      // YieldCompletion, so we need to unwrap it here.
+      last(whenexpr.getBranch(_), last, YieldCompletion(completion))
+    )
+    or
+    exists(WhenBranch whenbranch | whenbranch = n |
+      // If the condition completes with anything other than true
+      // (or "normal", which we will also see if we don't know how
+      // to make specific true/false edges for the condition)
+      // (e.g. false or an exception), then the branch is done.
+      last(whenbranch.getCondition(), last, completion) and
+      not completion = BooleanCompletion(true, _) and
+      not completion = NormalCompletion()
+      or
+      // Similarly any non-normal completion of the RHS
+      // should propagate outwards:
+      last(whenbranch.getRhs(), last, completion) and
+      not completion instanceof NormalOrBooleanCompletion
+      or
+      // Otherwise we wrap the completion up in a YieldCompletion
+      // so that the `when` expression can tell that we have finished,
+      // and it shouldn't go on to the next branch.
+      exists(Completion branchCompletion |
+        last(whenbranch.getRhs(), last, branchCompletion) and
+        completion = YieldCompletion(branchCompletion)
+      )
     )
   }
 
@@ -1134,6 +1239,8 @@ private module ControlFlowGraphImpl {
     or
     result = first(n.(ExprStmt).getExpr()) and completion = NormalCompletion()
     or
+    result = first(n.(StmtExpr).getStmt()) and completion = NormalCompletion()
+    or
     result = first(n.(LabeledStmt).getStmt()) and completion = NormalCompletion()
     or
     // Variable declarations in a variable declaration statement are executed sequentially.
@@ -1141,6 +1248,30 @@ private module ControlFlowGraphImpl {
       n = s and result = first(s.getVariable(1))
       or
       exists(int i | last(s.getVariable(i), n, completion) and result = first(s.getVariable(i + 1)))
+    )
+    or
+    // When expressions:
+    exists(WhenExpr whenexpr |
+      n = whenexpr and
+      result = first(whenexpr.getBranch(0)) and
+      completion = NormalCompletion()
+      or
+      exists(int i |
+        last(whenexpr.getBranch(i), n, completion) and
+        completion = BooleanCompletion(false, _) and
+        result = first(whenexpr.getBranch(i + 1))
+      )
+    )
+    or
+    // When branches:
+    exists(WhenBranch whenbranch |
+      n = whenbranch and
+      completion = NormalCompletion() and
+      result = first(whenbranch.getCondition())
+      or
+      last(whenbranch.getCondition(), n, completion) and
+      completion = BooleanCompletion(true, _) and
+      result = first(whenbranch.getRhs())
     )
   }
 

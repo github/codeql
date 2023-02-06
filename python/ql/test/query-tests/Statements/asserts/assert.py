@@ -61,8 +61,8 @@ def ok_assert_false(x):
     if x:
         assert 0==1, "Ok"
 
-class TestCase:
-    pass
+from unittest import TestCase
+
 
 class MyTest(TestCase):
     def test_ok_assert_in_test(self, x):

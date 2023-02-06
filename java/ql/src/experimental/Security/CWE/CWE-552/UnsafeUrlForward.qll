@@ -4,6 +4,11 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
+private import experimental.semmle.code.java.frameworks.SpringResource
+
+private class ActiveModels extends ActiveExperimentalModels {
+  ActiveModels() { this = "unsafe-url-forward" }
+}
 
 /** A sink for unsafe URL forward vulnerabilities. */
 abstract class UnsafeUrlForwardSink extends DataFlow::Node { }
@@ -86,6 +91,8 @@ private class GetResourceSink extends UnsafeUrlForwardSink {
   GetResourceSink() {
     sinkNode(this, "open-url")
     or
+    sinkNode(this, "get-resource")
+    or
     exists(MethodAccess ma |
       (
         ma.getMethod() instanceof GetServletResourceAsStreamMethod or
@@ -94,6 +101,16 @@ private class GetResourceSink extends UnsafeUrlForwardSink {
         ma.getMethod() instanceof GetClassLoaderResourceAsStreamMethod or
         ma.getMethod() instanceof GetVirtualFileChildMethod
       ) and
+      ma.getArgument(0) = this.asExpr()
+    )
+  }
+}
+
+/** A sink for methods that load Spring resources. */
+private class SpringResourceSink extends UnsafeUrlForwardSink {
+  SpringResourceSink() {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof GetResourceUtilsMethod and
       ma.getArgument(0) = this.asExpr()
     )
   }
@@ -146,32 +163,5 @@ private class SpringUrlForwardSink extends UnsafeUrlForwardSink {
   SpringUrlForwardSink() {
     any(SpringRequestMappingMethod sqmm).polyCalls*(this.getEnclosingCallable()) and
     this.asExpr() = any(ForwardPrefix fp).getAnAppendedExpression()
-  }
-}
-
-/** Source model of remote flow source from `getServletPath`. */
-private class ServletGetPathSource extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "javax.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote",
-        "jakarta.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote"
-      ]
-  }
-}
-
-/** Taint model related to `java.nio.file.Path` and `io.undertow.server.handlers.resource.Resource`. */
-private class FilePathFlowStep extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint",
-        "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint",
-        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint",
-        "java.nio.file;Path;true;toString;;;Argument[-1];ReturnValue;taint",
-        "io.undertow.server.handlers.resource;Resource;true;getFile;;;Argument[-1];ReturnValue;taint",
-        "io.undertow.server.handlers.resource;Resource;true;getFilePath;;;Argument[-1];ReturnValue;taint",
-        "io.undertow.server.handlers.resource;Resource;true;getPath;;;Argument[-1];ReturnValue;taint"
-      ]
   }
 }

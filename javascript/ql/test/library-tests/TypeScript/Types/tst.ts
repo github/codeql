@@ -294,3 +294,133 @@ module TS46 {
     }
   };
 }
+
+const key = Symbol();
+
+const numberOrString = Math.random() < 0.5 ? 42 : "hello";
+
+let obj = {
+  [key]: numberOrString,
+};
+
+if (typeof obj[key] === "string") {
+  let str = obj[key]; // <- string
+  str.toUpperCase();
+}
+
+//////////
+
+function f<T>(arg: {
+  produce: (n: string) => T,
+  consume: (x: T) => void }
+): void {};
+
+f({
+  produce: n => n, // <- (n: string) => string
+  consume: x => x.toLowerCase()
+});
+
+///////////
+
+const ErrorMap = Map<string, Error>;
+
+const errorMap = new ErrorMap(); // <- Map<string, Error>
+
+////////////
+
+type FirstString<T> =
+  T extends [infer S extends string, ...unknown[]]
+      ? S
+      : never;
+
+type F = FirstString<['a' | 'b', number, boolean]>;
+
+const a: F = 'a'; // <- 'a' | 'b'
+
+////////////
+
+interface State<in out T> {
+  get: () => T;
+  set: (value: T) => void;
+}
+
+const state: State<number> = {
+  get: () => 42,
+  set: (value) => { }
+}
+
+const fortyTwo = state.get(); // <- number
+
+/////////////////
+
+import tstModuleES from './tstModuleES.mjs';
+
+console.log(tstModuleES());
+
+import { tstModuleCJS } from './tstModuleCJS.cjs';
+
+console.log(tstModuleCJS());
+
+/////////////////
+
+// test file resolution order (see tsconfig: moduleSuffixes setting)
+
+import * as A from './tstSuffixA';
+
+console.log(A.resolvedFile()); // <- 'tstSuffixA.ts'
+
+import * as B from './tstSuffixB';
+
+console.log(B.resolvedFile()); // <- 'tstSuffixB.ios.ts'
+
+
+/////////////////
+
+module TS48 {
+    // SomeNum used to be 'number'; now it's '100'.
+    type SomeNum = "100" extends `${infer U extends number}` ? U : never;
+
+    declare function chooseRandomly<T>(x: T, y: T): T;
+
+    let [a, b, c] = chooseRandomly([42, true, "hi!"], [0, false, "bye!"]);    
+}
+
+/////////////////
+
+module TS49 {
+  type Colors = "red" | "green" | "blue";
+
+  type RGB = [red: number, green: number, blue: number];
+
+  const palette = {
+    red: [255, 0, 0],
+    green: "#00ff00",
+    bleu: [0, 0, 255],
+  } satisfies Record<Colors, string | RGB>;
+
+  // Both of these methods are still accessible!
+  const redComponent = palette.red.at(0);
+
+  interface RGBObj {
+    red: number;
+  }
+
+  interface HSVObj {
+    hue: number;
+  }
+
+  function setColor(color: RGBObj | HSVObj) {
+    if ("hue" in color) {
+      let h = color; // <- HSVObj
+    }
+  }
+
+  // auto-accessors
+  class Person {
+    accessor name: string; // behaves as a normal field for our purposes
+
+    constructor(name: string) {
+      this.name = name;
+    }
+  }
+}

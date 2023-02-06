@@ -14,7 +14,7 @@ private import semmle.code.java.controlflow.internal.GuardsLogic
 predicate narrowerThanOrEqualTo(ArithExpr exp, NumType numType) {
   exp.getType().(NumType).widerThan(numType)
   implies
-  exists(CastExpr cast | cast.getAChildExpr() = exp | numType.widerThanOrEqualTo(cast.getType()))
+  exists(CastingExpr cast | cast.getAChildExpr() = exp | numType.widerThanOrEqualTo(cast.getType()))
 }
 
 private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
@@ -140,7 +140,7 @@ predicate upcastToWiderType(Expr e) {
   |
     exists(Variable v | v.getAnAssignedValue() = e and t2 = v.getType())
     or
-    exists(CastExpr c | c.getExpr() = e and t2 = c.getType())
+    exists(CastingExpr c | c.getExpr() = e and t2 = c.getType())
     or
     exists(ReturnStmt ret | ret.getResult() = e and t2 = ret.getEnclosingCallable().getReturnType())
     or
@@ -153,9 +153,9 @@ predicate upcastToWiderType(Expr e) {
 /** Holds if the result of `exp` has certain bits filtered by a bitwise and. */
 private predicate inBitwiseAnd(Expr exp) {
   exists(AndBitwiseExpr a | a.getAnOperand() = exp) or
-  inBitwiseAnd(exp.(LShiftExpr).getAnOperand()) or
-  inBitwiseAnd(exp.(RShiftExpr).getAnOperand()) or
-  inBitwiseAnd(exp.(URShiftExpr).getAnOperand())
+  inBitwiseAnd(exp.(LeftShiftExpr).getAnOperand()) or
+  inBitwiseAnd(exp.(RightShiftExpr).getAnOperand()) or
+  inBitwiseAnd(exp.(UnsignedRightShiftExpr).getAnOperand())
 }
 
 /** Holds if overflow/underflow is irrelevant for this expression. */
@@ -170,7 +170,7 @@ predicate overflowIrrelevant(Expr exp) {
  */
 private predicate unlikelyNode(DataFlow::Node n) {
   n.getTypeBound() instanceof TypeObject and
-  not exists(CastExpr cast |
+  not exists(CastingExpr cast |
     DataFlow::localFlow(n, DataFlow::exprNode(cast.getExpr())) and
     cast.getType() instanceof NumericOrCharType
   )

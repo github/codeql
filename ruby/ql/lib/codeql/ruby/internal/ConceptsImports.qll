@@ -4,3 +4,4 @@
  */
 
 import codeql.ruby.DataFlow
+import codeql.ruby.security.CryptoAlgorithms as CryptoAlgorithms

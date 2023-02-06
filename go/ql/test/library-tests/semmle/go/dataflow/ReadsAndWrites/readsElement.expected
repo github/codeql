@@ -1,0 +1,3 @@
+| tst.go:19:10:19:14 | index expression | tst.go:19:10:19:11 | xs | tst.go:19:13:19:13 | 1 |
+| tst.go:20:10:20:14 | index expression | tst.go:20:10:20:11 | implicit dereference | tst.go:20:13:20:13 | 1 |
+| tst.go:20:10:20:14 | index expression | tst.go:20:10:20:11 | ps | tst.go:20:13:20:13 | 1 |

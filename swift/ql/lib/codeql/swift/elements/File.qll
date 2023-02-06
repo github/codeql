@@ -1,17 +1,14 @@
 private import codeql.swift.generated.File
 
-class File extends FileBase {
+class File extends Generated::File {
   /** toString */
-  override string toString() { result = getAbsolutePath() }
-
-  /** Gets the name of this file. */
-  override string getName() { files(this, result) }
+  override string toString() { result = this.getAbsolutePath() }
 
   /** Gets the absolute path of this file. */
-  string getAbsolutePath() { result = getName() }
+  string getAbsolutePath() { result = this.getName() }
 
   /** Gets the full name of this file. */
-  string getFullName() { result = getAbsolutePath() }
+  string getFullName() { result = this.getAbsolutePath() }
 
   /** Gets the URL of this file. */
   string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }

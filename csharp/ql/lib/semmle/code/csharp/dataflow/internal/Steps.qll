@@ -52,13 +52,13 @@ module Steps {
   private predicate isEffectivelyInternalOrPrivate(Modifiable m) { not m.isEffectivelyPublic() }
 
   private predicate flowIn(Parameter p, Expr pred, AssignableRead succ) {
-    exists(AssignableDefinitions::ImplicitParameterDefinition def, Call c | succ = getARead(def) |
-      pred = getArgumentForOverridderParameter(c, p) and
+    exists(AssignableDefinitions::ImplicitParameterDefinition def | succ = getARead(def) |
+      pred = getArgumentForOverriderParameter(_, p) and
       p.getUnboundDeclaration() = def.getParameter()
     )
   }
 
-  private Expr getArgumentForOverridderParameter(Call call, Parameter p) {
+  private Expr getArgumentForOverriderParameter(Call call, Parameter p) {
     exists(Parameter base, Callable callable | result = call.getArgumentForParameter(base) |
       base = callable.getAParameter() and
       isOverriderParameter(callable, p, base.getPosition())

@@ -30,7 +30,7 @@ module Private {
 
   class MulExpr = RU::ExprNode::MulExpr;
 
-  class LShiftExpr = RU::ExprNode::LShiftExpr;
+  class LeftShiftExpr = RU::ExprNode::LeftShiftExpr;
 
   predicate guardDirectlyControlsSsaRead = RU::guardControlsSsaRead/3;
 

@@ -1,12 +1,13 @@
 /**
- * @name Unsafe URL forward or dispatch from remote source
- * @description URL forward or dispatch based on unvalidated user-input
+ * @name Unsafe URL forward, dispatch, or load from remote source
+ * @description URL forward, dispatch, or load based on unvalidated user-input
  *              may cause file information disclosure.
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id java/unsafe-url-forward-dispatch
+ * @id java/unsafe-url-forward-dispatch-load
  * @tags security
+ *       experimental
  *       external/cwe-552
  */
 
@@ -15,7 +16,7 @@ import UnsafeUrlForward
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import experimental.semmle.code.java.frameworks.Jsf
-import experimental.semmle.code.java.PathSanitizer
+import semmle.code.java.security.PathSanitizer
 import DataFlow::PathGraph
 
 class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
@@ -25,7 +26,7 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
     source instanceof RemoteFlowSource and
     not exists(MethodAccess ma, Method m | ma.getMethod() = m |
       (
-        m instanceof HttpServletRequestGetRequestURIMethod or
+        m instanceof HttpServletRequestGetRequestUriMethod or
         m instanceof HttpServletRequestGetRequestUrlMethod or
         m instanceof HttpServletRequestGetPathMethod
       ) and
@@ -35,10 +36,9 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeUrlForwardSink }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof UnsafeUrlForwardSanitizer }
-
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof PathTraversalBarrierGuard
+  override predicate isSanitizer(DataFlow::Node node) {
+    node instanceof UnsafeUrlForwardSanitizer or
+    node instanceof PathInjectionSanitizer
   }
 
   override DataFlow::FlowFeature getAFeature() {

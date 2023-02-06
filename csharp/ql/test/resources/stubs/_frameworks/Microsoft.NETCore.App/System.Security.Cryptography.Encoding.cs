@@ -6,7 +6,7 @@ namespace System
     {
         namespace Cryptography
         {
-            // Generated from `System.Security.Cryptography.AsnEncodedData` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.AsnEncodedData` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AsnEncodedData
             {
                 protected AsnEncodedData() => throw null;
@@ -23,7 +23,7 @@ namespace System
                 public System.Byte[] RawData { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.AsnEncodedDataCollection` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.AsnEncodedDataCollection` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AsnEncodedDataCollection : System.Collections.ICollection, System.Collections.IEnumerable
             {
                 public int Add(System.Security.Cryptography.AsnEncodedData asnEncodedData) => throw null;
@@ -40,7 +40,7 @@ namespace System
                 public object SyncRoot { get => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.AsnEncodedDataEnumerator` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.AsnEncodedDataEnumerator` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AsnEncodedDataEnumerator : System.Collections.IEnumerator
             {
                 public System.Security.Cryptography.AsnEncodedData Current { get => throw null; }
@@ -49,7 +49,7 @@ namespace System
                 public void Reset() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.FromBase64Transform` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.FromBase64Transform` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FromBase64Transform : System.IDisposable, System.Security.Cryptography.ICryptoTransform
             {
                 public virtual bool CanReuseTransform { get => throw null; }
@@ -66,14 +66,14 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~FromBase64Transform
             }
 
-            // Generated from `System.Security.Cryptography.FromBase64TransformMode` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum FromBase64TransformMode
+            // Generated from `System.Security.Cryptography.FromBase64TransformMode` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum FromBase64TransformMode : int
             {
-                DoNotIgnoreWhiteSpaces,
-                IgnoreWhiteSpaces,
+                DoNotIgnoreWhiteSpaces = 1,
+                IgnoreWhiteSpaces = 0,
             }
 
-            // Generated from `System.Security.Cryptography.Oid` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.Oid` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Oid
             {
                 public string FriendlyName { get => throw null; set => throw null; }
@@ -86,7 +86,7 @@ namespace System
                 public string Value { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.OidCollection` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.OidCollection` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class OidCollection : System.Collections.ICollection, System.Collections.IEnumerable
             {
                 public int Add(System.Security.Cryptography.Oid oid) => throw null;
@@ -102,7 +102,7 @@ namespace System
                 public object SyncRoot { get => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.OidEnumerator` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.OidEnumerator` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class OidEnumerator : System.Collections.IEnumerator
             {
                 public System.Security.Cryptography.Oid Current { get => throw null; }
@@ -111,23 +111,23 @@ namespace System
                 public void Reset() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.OidGroup` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum OidGroup
+            // Generated from `System.Security.Cryptography.OidGroup` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum OidGroup : int
             {
-                All,
-                Attribute,
-                EncryptionAlgorithm,
-                EnhancedKeyUsage,
-                ExtensionOrAttribute,
-                HashAlgorithm,
-                KeyDerivationFunction,
-                Policy,
-                PublicKeyAlgorithm,
-                SignatureAlgorithm,
-                Template,
+                All = 0,
+                Attribute = 5,
+                EncryptionAlgorithm = 2,
+                EnhancedKeyUsage = 7,
+                ExtensionOrAttribute = 6,
+                HashAlgorithm = 1,
+                KeyDerivationFunction = 10,
+                Policy = 8,
+                PublicKeyAlgorithm = 3,
+                SignatureAlgorithm = 4,
+                Template = 9,
             }
 
-            // Generated from `System.Security.Cryptography.PemEncoding` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.PemEncoding` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class PemEncoding
             {
                 public static System.Security.Cryptography.PemFields Find(System.ReadOnlySpan<System.Char> pemData) => throw null;
@@ -137,7 +137,7 @@ namespace System
                 public static System.Char[] Write(System.ReadOnlySpan<System.Char> label, System.ReadOnlySpan<System.Byte> data) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.PemFields` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.PemFields` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct PemFields
             {
                 public System.Range Base64Data { get => throw null; }
@@ -147,7 +147,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Security.Cryptography.ToBase64Transform` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.ToBase64Transform` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ToBase64Transform : System.IDisposable, System.Security.Cryptography.ICryptoTransform
             {
                 public virtual bool CanReuseTransform { get => throw null; }

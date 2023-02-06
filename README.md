@@ -1,15 +1,16 @@
 # CodeQL
 
-This open source repository contains the standard CodeQL libraries and queries that power [GitHub Advanced Security](https://github.com/features/security/code) and the other application security products that [GitHub](https://github.com/features/security/) makes available to its customers worldwide. For the queries, libraries, and extractor that power Go analysis, visit the [CodeQL for Go repository](https://github.com/github/codeql-go).
+This open source repository contains the standard CodeQL libraries and queries that power [GitHub Advanced Security](https://github.com/features/security/code) and the other application security products that [GitHub](https://github.com/features/security/) makes available to its customers worldwide.
 
 ## How do I learn CodeQL and run queries?
 
-There is [extensive documentation](https://codeql.github.com/docs/) on getting started with writing CodeQL.
-You can use the [CodeQL for Visual Studio Code](https://codeql.github.com/docs/codeql-for-visual-studio-code/) extension or the [interactive query console](https://lgtm.com/help/lgtm/using-query-console) on LGTM.com (Semmle Legacy product) to try out your queries on any open source project that's currently being analyzed.
+There is [extensive documentation](https://codeql.github.com/docs/) on getting started with writing CodeQL using the [CodeQL extension for Visual Studio Code](https://codeql.github.com/docs/codeql-for-visual-studio-code/) and the [CodeQL CLI](https://codeql.github.com/docs/codeql-cli/).
 
 ## Contributing
 
 We welcome contributions to our standard library and standard checks. Do you have an idea for a new check, or how to improve an existing query? Then please go ahead and open a pull request! Before you do, though, please take the time to read our [contributing guidelines](CONTRIBUTING.md). You can also consult our [style guides](https://github.com/github/codeql/tree/main/docs) to learn how to format your code for consistency and clarity, how to write query metadata, and how to write query help documentation for your query.
+
+For information on contributing to CodeQL documentation, see the "[contributing guide](docs/codeql/CONTRIBUTING.md)" for docs.
 
 ## License
 

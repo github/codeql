@@ -37,14 +37,14 @@ predicate isKeyNext(Expr e, KeySetIterator it) {
     ma.getQualifier().(VarAccess).getVariable() = it
   )
   or
-  isKeyNext(e.(CastExpr).getExpr(), it)
+  isKeyNext(e.(CastingExpr).getExpr(), it)
 }
 
 class Key extends LocalVariableDecl {
   Key() {
-    exists(LocalVariableDeclExpr lvde, KeySetIterator it |
+    exists(LocalVariableDeclExpr lvde |
       lvde.getVariable() = this and
-      isKeyNext(lvde.getInit(), it)
+      isKeyNext(lvde.getInit(), _)
     )
   }
 

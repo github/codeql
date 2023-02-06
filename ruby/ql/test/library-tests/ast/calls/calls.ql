@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 private string getMethodName(Call c) {
   result = c.(MethodCall).getMethodName()
@@ -31,3 +31,5 @@ query predicate superCallsWithArguments(SuperCall c, int n, Expr argN) { argN = 
 query predicate superCallsWithBlock(SuperCall c, Block b) { b = c.getBlock() }
 
 query predicate setterCalls(SetterMethodCall c) { any() }
+
+query predicate callsWithSafeNavigationOperator(MethodCall c) { c.isSafeNavigation() }

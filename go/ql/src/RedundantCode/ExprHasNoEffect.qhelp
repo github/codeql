@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+An expression that has no effects (such as changing variable values or producing output) and
+occurs in a context where its value is ignored possibly indicates missing code or a latent bug.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Carefully inspect the expression to ensure it is not a symptom of a bug.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a named type <code>Timestamp</code> that is an alias for
+<code>int</code>, representing time stamps expressed as the number of seconds elapsed since some
+epoch. The <code>addDays</code> method returns a time stamp that is a given number of days after
+another time stamp, without modifying that time stamp.
+</p>
+<p>
+However, when <code>addDays</code> is used in function <code>test</code>, its result is discarded,
+perhaps because the programmer mistakenly assumed that <code>addDays</code> updates the time stamp
+in place.
+</p>
+<sample src="ExprHasNoEffect.go"/>
+<p>
+Instead, the result of <code>addDays</code> should be assigned back into <code>t</code>:
+</p>
+<sample src="ExprHasNoEffectGood.go" />
+</example>
+</qhelp>

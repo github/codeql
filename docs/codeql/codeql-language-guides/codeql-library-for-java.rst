@@ -70,7 +70,7 @@ For example, the following query finds all variables of type ``int`` in the prog
        pt.hasName("int")
    select v
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/860076406167044435/>`__. You're likely to get many results when you run this query because most projects contain many variables of type ``int``.
+You're likely to get many results when you run this query because most projects contain many variables of type ``int``.
 
 Reference types are also categorized according to their declaration scope:
 
@@ -87,7 +87,7 @@ For instance, this query finds all top-level types whose name is not the same as
    where tl.getName() != tl.getCompilationUnit().getName()
    select tl
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/4340983612585284460/>`__. This pattern is seen in many projects. When we ran it on the LGTM.com demo projects, most of the projects had at least one instance of this problem in the source code. There were many more instances in the files referenced by the source code.
+You will typically see this pattern in the source code of a repository, with many more instances in the files referenced by the source code.
 
 Several more specialized classes are available as well:
 
@@ -109,7 +109,7 @@ As an example, we can write a query that finds all nested classes that directly 
    where nc.getASupertype() instanceof TypeObject
    select nc
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8482509736206423238/>`__. You're likely to get many results when you run this query because many projects include nested classes that extend ``Object`` directly.
+You're likely to get many results when you run this query because many projects include nested classes that extend ``Object`` directly.
 
 Generics
 ~~~~~~~~
@@ -143,8 +143,6 @@ For instance, we could use the following query to find all parameterized instanc
        pt.getSourceDeclaration() = map
    select pt
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/7863873821043873550/>`__. None of the LGTM.com demo projects contain parameterized instances of ``java.util.Map`` in their source code, but they all have results in reference files.
-
 In general, generic types may restrict which types a type parameter can be bound to. For instance, a type of maps from strings to numbers could be declared as follows:
 
 .. code-block:: java
@@ -166,8 +164,6 @@ As an example, the following query finds all type variables with type bound ``Nu
        tb.getType().hasQualifiedName("java.lang", "Number")
    select tv
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/6740696080876162817/>`__. When we ran it on the LGTM.com demo projects, the *neo4j/neo4j*, *hibernate/hibernate-orm* and *apache/hadoop* projects all contained examples of this pattern.
-
 For dealing with legacy code that is unaware of generics, every generic type has a "raw" version without any type parameters. In the CodeQL libraries, raw types are represented using class ``RawType``, which has the expected subclasses ``RawClass`` and ``RawInterface``. Again, there is a predicate ``getSourceDeclaration`` for obtaining the corresponding generic type. As an example, we can find variables of (raw) type ``Map``:
 
 .. code-block:: ql
@@ -178,8 +174,6 @@ For dealing with legacy code that is unaware of generics, every generic type has
    where rt = v.getType() and
        rt.getSourceDeclaration().hasQualifiedName("java.util", "Map")
    select v
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/4032913402499547882/>`__. Many projects have variables of raw type ``Map``.
 
 For example, in the following code snippet this query would find ``m1``, but not ``m2``:
 
@@ -230,7 +224,7 @@ For example, the following query finds all expressions whose parents are ``retur
    where e.getParent() instanceof ReturnStmt
    select e
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1947757851560375919/>`__. Many projects have examples of ``return`` statements with child expressions.
+Many projects have examples of ``return`` statements with child expressions.
 
 Therefore, if the program contains a return statement ``return x + y;``, this query will return ``x + y``.
 
@@ -244,7 +238,7 @@ As another example, the following query finds statements whose parent is an ``if
    where s.getParent() instanceof IfStmt
    select s
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1989464153689219612/>`__. Many projects have examples of ``if`` statements with child statements.
+Many projects have examples of ``if`` statements with child statements.
 
 This query will find both ``then`` branches and ``else`` branches of all ``if`` statements in the program.
 
@@ -257,8 +251,6 @@ Finally, here is a query that finds method bodies:
    from Stmt s
    where s.getParent() instanceof Method
    select s
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1016821702972128245/>`__. Most projects have many method bodies.
 
 As these examples show, the parent node of an expression is not always an expression: it may also be a statement, for example, an ``IfStmt``. Similarly, the parent node of a statement is not always a statement: it may also be a method or a constructor. To capture this, the QL Java library provides two abstract class ``ExprParent`` and ``StmtParent``, the former representing any node that may be the parent node of an expression, and the latter any node that may be the parent node of a statement.
 
@@ -278,7 +270,7 @@ For annotations, class ``Annotatable`` is a superclass of all program elements t
    from Constructor c
    select c.getAnAnnotation()
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/3206112561297137365/>`__. The LGTM.com demo projects all use annotations, you can see examples where they are used to suppress warnings and mark code as deprecated.
+You may see examples where annotations are used to suppress warnings or to mark code as deprecated.
 
 These annotations are represented by class ``Annotation``. An annotation is simply an expression whose type is an ``AnnotationType``. For example, you can amend this query so that it only reports deprecated constructors:
 
@@ -292,7 +284,7 @@ These annotations are represented by class ``Annotation``. An annotation is simp
        anntp.hasQualifiedName("java.lang", "Deprecated")
    select ann
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/5393027107459215059/>`__. Only constructors with the ``@Deprecated`` annotation are reported this time.
+Only constructors with the ``@Deprecated`` annotation are reported this time.
 
 For more information on working with annotations, see the :doc:`article on annotations <annotations-in-java>`.
 
@@ -307,7 +299,7 @@ For Javadoc, class ``Element`` has a member predicate ``getDoc`` that returns a 
        jdoc = f.getDoc().getJavadoc()
    select jdoc
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/6022769142134600659/>`__. You can see this pattern in many projects.
+You can see this pattern in many projects.
 
 Class ``Javadoc`` represents an entire Javadoc comment as a tree of ``JavadocElement`` nodes, which can be traversed using member predicates ``getAChild`` and ``getParent``. For instance, you could edit the query so that it finds all ``@author`` tags in Javadoc comments on private fields:
 
@@ -320,8 +312,6 @@ Class ``Javadoc`` represents an entire Javadoc comment as a tree of ``JavadocEle
        jdoc = f.getDoc().getJavadoc() and
        at.getParent+() = jdoc
    select at
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2510220694395289111/>`__. None of the LGTM.com demo projects uses the ``@author`` tag on private fields.
 
 .. pull-quote::
 
@@ -349,7 +339,7 @@ For example, the following query finds methods with a `cyclomatic complexity <ht
        mc.getCyclomaticComplexity() > 40
    select m
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/6566950741051181919/>`__. Most large projects include some methods with a very high cyclomatic complexity. These methods are likely to be difficult to understand and test.
+Most large projects include some methods with a very high cyclomatic complexity. These methods are likely to be difficult to understand and test.
 
 Call graph
 ----------
@@ -369,8 +359,6 @@ We can use predicate ``Call.getCallee`` to find out which method or constructor 
        m.hasName("println")
    select c
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/5861255162551917595/>`__. The LGTM.com demo projects all include many calls to methods of this name.
-
 Conversely, ``Callable.getAReference`` returns a ``Call`` that refers to it. So we can find methods and constructors that are never called using this query:
 
 .. code-block:: ql
@@ -381,7 +369,7 @@ Conversely, ``Callable.getAReference`` returns a ``Call`` that refers to it. So 
    where not exists(c.getAReference())
    select c
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/7261739919657747703/>`__. The LGTM.com demo projects all appear to have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see ":doc:`Navigating the call graph <navigating-the-call-graph>`."
+Codebases often have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see ":doc:`Navigating the call graph <navigating-the-call-graph>`."
 
 For more information about callables and calls, see the :doc:`article on the call graph <navigating-the-call-graph>`.
 

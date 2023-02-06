@@ -42,14 +42,18 @@ module LdapInjection {
   abstract class FilterSanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `DnSanitizer` instead.
+   *
    * A sanitizer guard for "ldap injection" vulnerabilities.
    */
-  abstract class DnSanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class DnSanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
+   * DEPRECATED: Use `FilterSanitizer` instead.
+   *
    * A sanitizer guard for "ldap injection" vulnerabilities.
    */
-  abstract class FilterSanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class FilterSanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A source of remote user input, considered as a flow source.
@@ -60,25 +64,25 @@ module LdapInjection {
    * A logging operation, considered as a flow sink.
    */
   class LdapExecutionAsDnSink extends DnSink {
-    LdapExecutionAsDnSink() { this = any(LDAP::LdapExecution ldap).getBaseDn() }
+    LdapExecutionAsDnSink() { this = any(Ldap::LdapExecution ldap).getBaseDn() }
   }
 
   /**
    * A logging operation, considered as a flow sink.
    */
   class LdapExecutionAsFilterSink extends FilterSink {
-    LdapExecutionAsFilterSink() { this = any(LDAP::LdapExecution ldap).getFilter() }
+    LdapExecutionAsFilterSink() { this = any(Ldap::LdapExecution ldap).getFilter() }
   }
 
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsDnSanitizerGuard extends DnSanitizerGuard, StringConstCompare { }
+  class StringConstCompareAsDnSanitizerGuard extends DnSanitizer, StringConstCompareBarrier { }
 
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsFilterSanitizerGuard extends FilterSanitizerGuard, StringConstCompare {
+  class StringConstCompareAsFilterSanitizerGuard extends FilterSanitizer, StringConstCompareBarrier {
   }
 
   /**

@@ -45,14 +45,14 @@ abstract class TrackableState extends string {
   /**
    * Holds if state starts at `f`.
    * Either this predicate or `startsAt(ControlFlowNode f, Context ctx)`
-   * should be overriden by sub-classes.
+   * should be overridden by sub-classes.
    */
   predicate startsAt(ControlFlowNode f) { none() }
 
   /**
    * Holds if state starts at `f` given context `ctx`.
    * Either this predicate or `startsAt(ControlFlowNode f)`
-   * should be overriden by sub-classes.
+   * should be overridden by sub-classes.
    */
   pragma[noinline]
   predicate startsAt(ControlFlowNode f, Context ctx) { ctx.appliesTo(f) and this.startsAt(f) }
@@ -60,14 +60,14 @@ abstract class TrackableState extends string {
   /**
    * Holds if state ends at `f`.
    * Either this predicate or `endsAt(ControlFlowNode f, Context ctx)`
-   * may be overriden by sub-classes.
+   * may be overridden by sub-classes.
    */
   predicate endsAt(ControlFlowNode f) { none() }
 
   /**
    * Holds if state ends at `f` given context `ctx`.
    * Either this predicate or `endsAt(ControlFlowNode f)`
-   * may be overriden by sub-classes.
+   * may be overridden by sub-classes.
    */
   pragma[noinline]
   predicate endsAt(ControlFlowNode f, Context ctx) { ctx.appliesTo(f) and this.endsAt(f) }
@@ -99,9 +99,7 @@ module StateTracking {
         exists(int n |
           f = b.getNode(n) and
           appliesToNode(state, b.getNode(n - 1), ctx, sense) and
-          not exists(PythonFunctionObjectInternal func, Context callee |
-            callee.fromCall(f, func, ctx)
-          )
+          not exists(Context callee | callee.fromCall(f, _, ctx))
         )
       )
       or

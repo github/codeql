@@ -45,7 +45,7 @@ module AiohttpWebModel {
   }
 
   /** Gets a reference to an `aiohttp.web.UrlDispatcher` instance. */
-  API::Node urlDispathcerInstance() {
+  API::Node urlDispatcherInstance() {
     result = API::moduleImport("aiohttp").getMember("web").getMember("UrlDispatcher").getReturn()
     or
     result = applicationInstance().getMember("router")
@@ -59,24 +59,24 @@ module AiohttpWebModel {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `AiohttpRouteSetup::Range` instead.
    */
-  class AiohttpRouteSetup extends HTTP::Server::RouteSetup::Range {
-    AiohttpRouteSetup::Range range;
-
-    AiohttpRouteSetup() { this = range }
-
+  class AiohttpRouteSetup extends Http::Server::RouteSetup::Range instanceof AiohttpRouteSetup::Range {
     override Parameter getARoutedParameter() { none() }
 
     override string getFramework() { result = "aiohttp.web" }
 
     /** Gets the argument specifying the handler (either a coroutine or a view-class). */
-    DataFlow::Node getHandlerArg() { result = range.getHandlerArg() }
+    DataFlow::Node getHandlerArg() { result = super.getHandlerArg() }
 
-    override DataFlow::Node getUrlPatternArg() { result = range.getUrlPatternArg() }
+    override DataFlow::Node getUrlPatternArg() {
+      result = AiohttpRouteSetup::Range.super.getUrlPatternArg()
+    }
 
     /** Gets the view-class that is referenced in the view-class handler argument, if any. */
-    Class getViewClass() { result = range.getViewClass() }
+    Class getViewClass() { result = super.getViewClass() }
 
-    override Function getARequestHandler() { result = range.getARequestHandler() }
+    override Function getARequestHandler() {
+      result = AiohttpRouteSetup::Range.super.getARequestHandler()
+    }
   }
 
   /** Provides a class for modeling new aiohttp.web route setups. */
@@ -161,7 +161,7 @@ module AiohttpWebModel {
 
     AiohttpAddRouteCall() {
       exists(string funcName |
-        funcName = HTTP::httpVerbLower() and
+        funcName = Http::httpVerbLower() and
         routeArgsStart = 0
         or
         funcName = "view" and
@@ -170,7 +170,7 @@ module AiohttpWebModel {
         funcName = "route" and
         routeArgsStart = 1
       |
-        this = urlDispathcerInstance().getMember("add_" + funcName).getACall()
+        this = urlDispatcherInstance().getMember("add_" + funcName).getACall()
         or
         this = API::moduleImport("aiohttp").getMember("web").getMember(funcName).getACall()
       )
@@ -192,7 +192,7 @@ module AiohttpWebModel {
 
     AiohttpDecoratorRouteSetup() {
       exists(string decoratorName |
-        decoratorName = HTTP::httpVerbLower() and
+        decoratorName = Http::httpVerbLower() and
         routeArgsStart = 0
         or
         decoratorName = "view" and
@@ -237,15 +237,13 @@ module AiohttpWebModel {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
       // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
       result = this.getAMethod() and
-      result.getName() = HTTP::httpVerbLower()
+      result.getName() = Http::httpVerbLower()
     }
   }
 
   /** A class that has a super-type which is an aiohttp.web View class. */
   class AiohttpViewClassFromSuperClass extends AiohttpViewClass {
-    AiohttpViewClassFromSuperClass() {
-      this.getParent() = View::subclassRef().getAnImmediateUse().asExpr()
-    }
+    AiohttpViewClassFromSuperClass() { this.getParent() = View::subclassRef().asSource().asExpr() }
   }
 
   /** A class that is used in a route-setup, therefore being considered an aiohttp.web View class. */
@@ -254,7 +252,7 @@ module AiohttpWebModel {
   }
 
   /** A request handler defined in an `aiohttp.web` view class, that has no known route. */
-  private class AiohttpViewClassRequestHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range {
+  private class AiohttpViewClassRequestHandlerWithoutKnownRoute extends Http::Server::RequestHandler::Range {
     AiohttpViewClassRequestHandlerWithoutKnownRoute() {
       exists(AiohttpViewClass vc | vc.getARequestHandler() = this) and
       not exists(AiohttpRouteSetup setup | setup.getARequestHandler() = this)
@@ -495,7 +493,7 @@ module AiohttpWebModel {
    * - https://docs.aiohttp.org/en/stable/web_reference.html#aiohttp.web.Response
    * - https://docs.aiohttp.org/en/stable/web_quickstart.html#aiohttp-web-exceptions
    */
-  class AiohttpWebResponseInstantiation extends HTTP::Server::HttpResponse::Range,
+  class AiohttpWebResponseInstantiation extends Http::Server::HttpResponse::Range,
     Response::InstanceSource, DataFlow::CallCfgNode {
     API::Node apiNode;
 
@@ -564,7 +562,7 @@ module AiohttpWebModel {
    * See the part about redirects at https://docs.aiohttp.org/en/stable/web_quickstart.html#aiohttp-web-exceptions
    */
   class AiohttpRedirectExceptionInstantiation extends AiohttpWebResponseInstantiation,
-    HTTP::Server::HttpRedirectResponse::Range {
+    Http::Server::HttpRedirectResponse::Range {
     AiohttpRedirectExceptionInstantiation() {
       exists(string httpRedirectExceptionClassName |
         httpRedirectExceptionClassName in [
@@ -587,7 +585,7 @@ module AiohttpWebModel {
   /**
    * A call to `set_cookie` on a HTTP Response.
    */
-  class AiohttpResponseSetCookieCall extends HTTP::Server::CookieWrite::Range, DataFlow::CallCfgNode {
+  class AiohttpResponseSetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::CallCfgNode {
     AiohttpResponseSetCookieCall() {
       this = aiohttpResponseInstance().getMember("set_cookie").getACall()
     }
@@ -602,7 +600,7 @@ module AiohttpWebModel {
   /**
    * A call to `del_cookie` on a HTTP Response.
    */
-  class AiohttpResponseDelCookieCall extends HTTP::Server::CookieWrite::Range, DataFlow::CallCfgNode {
+  class AiohttpResponseDelCookieCall extends Http::Server::CookieWrite::Range, DataFlow::CallCfgNode {
     AiohttpResponseDelCookieCall() {
       this = aiohttpResponseInstance().getMember("del_cookie").getACall()
     }
@@ -618,19 +616,17 @@ module AiohttpWebModel {
    * A dict-like write to an item of the `cookies` attribute on a HTTP response, such as
    * `response.cookies[name] = value`.
    */
-  class AiohttpResponseCookieSubscriptWrite extends HTTP::Server::CookieWrite::Range {
+  class AiohttpResponseCookieSubscriptWrite extends Http::Server::CookieWrite::Range {
     DataFlow::Node index;
     DataFlow::Node value;
 
     AiohttpResponseCookieSubscriptWrite() {
-      exists(SubscriptNode subscript |
+      exists(API::Node i |
+        value = aiohttpResponseInstance().getMember("cookies").getSubscriptAt(i).asSink() and
+        index = i.asSink() and
         // To give `this` a value, we need to choose between either LHS or RHS,
-        // and just go with the LHS
-        this.asCfgNode() = subscript
-      |
-        subscript.getObject() = aiohttpResponseInstance().getMember("cookies").getAUse().asCfgNode() and
-        value.asCfgNode() = subscript.(DefinitionNode).getValue() and
-        index.asCfgNode() = subscript.getIndex()
+        // and just go with the RHS as it is readily available
+        this = value
       )
     }
 
@@ -662,11 +658,11 @@ private module AiohttpClientModel {
     private API::Node instance() { result = classRef().getReturn() }
 
     /** A method call on a ClientSession that sends off a request */
-    private class OutgoingRequestCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
+    private class OutgoingRequestCall extends Http::Client::Request::Range, API::CallNode {
       string methodName;
 
       OutgoingRequestCall() {
-        methodName in [HTTP::httpVerbLower(), "request"] and
+        methodName in [Http::httpVerbLower(), "request"] and
         this = instance().getMember(methodName).getACall()
       }
 
@@ -685,8 +681,14 @@ private module AiohttpClientModel {
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
-        // TODO: Look into disabling certificate validation
-        none()
+        exists(API::Node param | param = this.getKeywordParameter(["ssl", "verify_ssl"]) |
+          disablingNode = param.asSink() and
+          argumentOrigin = param.getAValueReachingSink() and
+          // aiohttp.client treats `None` as the default and all other "falsey" values as `False`.
+          argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
+          not argumentOrigin.asExpr() instanceof None
+        )
+        // TODO: Handling of SSLContext passed as ssl/ssl_context arguments
       }
     }
   }

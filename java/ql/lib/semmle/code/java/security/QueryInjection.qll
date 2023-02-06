@@ -50,7 +50,7 @@ private class MongoDbInjectionSink extends QueryInjectionSink {
       this.asExpr() = call.getArgument(0)
     )
     or
-    exists(CastExpr c |
+    exists(CastingExpr c |
       c.getExpr() = this.asExpr() and
       c.getTypeExpr().getType().(RefType).hasQualifiedName("com.mongodb", "DBObject")
     )

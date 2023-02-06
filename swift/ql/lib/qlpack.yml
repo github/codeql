@@ -1,5 +1,10 @@
 name: codeql/swift-all
 version: 0.0.0
-dbscheme: swift.dbscheme
+groups: swift
 extractor: swift
+dbscheme: swift.dbscheme
+upgrades: upgrades
 library: true
+dependencies:
+  codeql/ssa: ${workspace}
+  codeql/tutorial: ${workspace}

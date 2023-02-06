@@ -7,11 +7,12 @@
  * @precision medium
  * @id rb/user-controlled-bypass
  * @tags security
+ *       experimental
  *       external/cwe/cwe-807
  *       external/cwe/cwe-290
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.internal.DataFlowPublic
 import codeql.ruby.security.ConditionalBypassQuery
@@ -78,5 +79,5 @@ predicate isTaintedGuardForSensitiveAction(
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, SensitiveAction action
 where isTaintedGuardForSensitiveAction(sink, source, action)
-select sink.getNode(), source, sink, "This condition guards a sensitive $@, but $@ controls it.",
-  action, "action", source.getNode(), "a user-provided value"
+select sink.getNode(), source, sink, "This condition guards a sensitive $@, but a $@ controls it.",
+  action, "action", source.getNode(), "user-provided value"

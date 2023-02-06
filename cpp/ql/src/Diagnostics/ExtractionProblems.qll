@@ -57,10 +57,10 @@ class ExtractionProblem extends TExtractionProblem {
   /** Gets the problem message for this problem. */
   string getProblemMessage() { none() }
 
-  /** Gets the file this problem occured in. */
+  /** Gets the file this problem occurred in. */
   File getFile() { none() }
 
-  /** Gets the location this problem occured in. */
+  /** Gets the location this problem occurred in. */
   Location getLocation() { none() }
 
   /** Gets the SARIF severity of this problem. */

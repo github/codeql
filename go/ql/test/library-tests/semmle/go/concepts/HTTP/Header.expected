@@ -1,0 +1,10 @@
+| main.go:30:2:30:19 | call to WriteHeader | n/a | 418 | status | 418 |
+| main.go:32:2:32:51 | call to Set | "Authorization" | "Basic example:example" | authorization | Basic example:example |
+| main.go:33:2:33:26 | call to Add | "Age" | "342232" | age | 342232 |
+| main.go:35:2:35:55 | call to Add | server | call to Sprintf | n/a | n/a |
+| main.go:36:2:36:45 | call to Set | LOC_HEADER | ...+... | n/a | n/a |
+| main.go:37:2:37:5 | head | "Unknown-Header" | slice literal | n/a | n/a |
+| main.go:49:2:49:43 | call to Add | "Not-A-Response" | "Header" | not-a-response | Header |
+| main.go:50:2:50:42 | call to Set | "Accept" | "nota/response" | accept | nota/response |
+| main.go:51:2:51:11 | selection of Header | "Accept-Charset" | slice literal | n/a | n/a |
+| main.go:58:2:58:42 | call to Set | "This-Makes" | "No sense" | this-makes | No sense |

@@ -21,6 +21,8 @@ from VarAccess access, SsaSourceVariable var, string msg, Expr reason
 where
   nullDeref(var, access, msg, reason) and
   // Exclude definite nulls here, as these are covered by `NullAlways.ql`.
-  not alwaysNullDeref(var, access)
-select access, "Variable $@ may be null here " + msg + ".", var.getVariable(),
+  not alwaysNullDeref(var, access) and
+  // Kotlin enforces this already:
+  not access.getLocation().getFile().isKotlinSourceFile()
+select access, "Variable $@ may be null at this access " + msg + ".", var.getVariable(),
   var.getVariable().getName(), reason, "this"

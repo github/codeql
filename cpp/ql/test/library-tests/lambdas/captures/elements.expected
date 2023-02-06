@@ -156,10 +156,10 @@
 | captures.cpp:23:12:23:16 | x |
 | captures.cpp:23:12:23:16 | y |
 | captures.cpp:23:12:23:20 | ... + ... |
+| captures.cpp:23:16:23:16 | (reference dereference) |
 | captures.cpp:23:16:23:16 | definition of y |
 | captures.cpp:23:16:23:16 | y |
 | captures.cpp:23:16:23:16 | y |
-| captures.cpp:23:18:23:18 | (reference dereference) |
 | captures.cpp:23:20:23:20 | z |
 | captures.cpp:26:3:26:24 | return ... |
 | captures.cpp:26:10:26:17 | (const lambda [] type at line 22, col. 19)... |

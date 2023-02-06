@@ -39,7 +39,7 @@
   }
 
   for (const e of new Set([source])) {
-	sink(e); // NOT OK (not caught by type-tracking, as it doesn't include array steps).
+	sink(e); // NOT OK
   }
 
   for (const e of new Set(set)) {

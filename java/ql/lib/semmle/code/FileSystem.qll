@@ -181,6 +181,15 @@ class File extends Container, @file {
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   override string getAPrimaryQlClass() { result = "File" }
+
+  /** Holds if this is a (Java or Kotlin) source file. */
+  predicate isSourceFile() { this.isJavaSourceFile() or this.isKotlinSourceFile() }
+
+  /** Holds if this is a Java source file. */
+  predicate isJavaSourceFile() { this.getExtension() = "java" }
+
+  /** Holds if this is a Kotlin source file. */
+  predicate isKotlinSourceFile() { this.getExtension() = "kt" }
 }
 
 /**

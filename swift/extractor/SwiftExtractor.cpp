@@ -1,111 +1,208 @@
 #include "SwiftExtractor.h"
 
-#include <filesystem>
-#include <fstream>
 #include <iostream>
-#include <sstream>
 #include <memory>
-#include <unistd.h>
+#include <unordered_set>
+#include <queue>
 
 #include <swift/AST/SourceFile.h>
-#include <llvm/ADT/SmallString.h>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/Path.h>
+#include <swift/AST/Builtins.h>
 
-#include "swift/extractor/trap/TrapEntries.h"
+#include "swift/extractor/translators/SwiftVisitor.h"
+#include "swift/extractor/infra/TargetDomains.h"
+#include "swift/extractor/SwiftBuiltinSymbols.h"
+#include "swift/extractor/infra/file/Path.h"
 
 using namespace codeql;
+using namespace std::string_literals;
+namespace fs = std::filesystem;
 
-static void extractFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
-  if (std::error_code ec = llvm::sys::fs::create_directories(config.trapDir)) {
-    std::cerr << "Cannot create TRAP directory: " << ec.message() << "\n";
-    return;
-  }
-
-  if (std::error_code ec = llvm::sys::fs::create_directories(config.sourceArchiveDir)) {
-    std::cerr << "Cannot create source archive directory: " << ec.message() << "\n";
-    return;
-  }
-
-  llvm::SmallString<PATH_MAX> srcFilePath(file.getFilename());
-  llvm::sys::fs::make_absolute(srcFilePath);
-
-  llvm::SmallString<PATH_MAX> dstFilePath(config.sourceArchiveDir);
-  llvm::sys::path::append(dstFilePath, srcFilePath);
-
-  llvm::StringRef parent = llvm::sys::path::parent_path(dstFilePath);
-  if (std::error_code ec = llvm::sys::fs::create_directories(parent)) {
-    std::cerr << "Cannot create source archive destination directory '" << parent.str()
-              << "': " << ec.message() << "\n";
-    return;
-  }
-
-  if (std::error_code ec = llvm::sys::fs::copy_file(srcFilePath, dstFilePath)) {
-    std::cerr << "Cannot archive source file '" << srcFilePath.str().str() << "' -> '"
-              << dstFilePath.str().str() << "': " << ec.message() << "\n";
-    return;
-  }
-
-  // The extractor can be called several times from different processes with
-  // the same input file(s)
-  // We are using PID to avoid concurrent access
-  // TODO: find a more robust approach to avoid collisions?
-  std::string tempTrapName = file.getFilename().str() + '.' + std::to_string(getpid()) + ".trap";
-  llvm::SmallString<PATH_MAX> tempTrapPath(config.trapDir);
-  llvm::sys::path::append(tempTrapPath, tempTrapName);
-
-  llvm::StringRef trapParent = llvm::sys::path::parent_path(tempTrapPath);
-  if (std::error_code ec = llvm::sys::fs::create_directories(trapParent)) {
-    std::cerr << "Cannot create trap directory '" << trapParent.str() << "': " << ec.message()
-              << "\n";
-    return;
-  }
-
-  std::ofstream trap(tempTrapPath.str().str());
-  if (!trap) {
-    std::error_code ec;
-    ec.assign(errno, std::generic_category());
-    std::cerr << "Cannot create temp trap file '" << tempTrapPath.str().str()
-              << "': " << ec.message() << "\n";
-    return;
-  }
-  trap << "// extractor-args: ";
-  for (auto opt : config.frontendOptions) {
-    trap << std::quoted(opt) << " ";
-  }
-  trap << "\n\n";
-
-  TrapLabel<FileTag> label{};
-  trap << label << "=*\n";
-  trap << FilesTrap{label, srcFilePath.str().str()} << "\n";
-
-  // TODO: Pick a better name to avoid collisions
-  std::string trapName = file.getFilename().str() + ".trap";
-  llvm::SmallString<PATH_MAX> trapPath(config.trapDir);
-  llvm::sys::path::append(trapPath, trapName);
-
-  // TODO: The last process wins. Should we do better than that?
-  if (std::error_code ec = llvm::sys::fs::rename(tempTrapPath, trapPath)) {
-    std::cerr << "Cannot rename temp trap file '" << tempTrapPath.str().str() << "' -> '"
-              << trapPath.str().str() << "': " << ec.message() << "\n";
+static void ensureDirectory(const char* label, const fs::path& dir) {
+  std::error_code ec;
+  fs::create_directories(dir, ec);
+  if (ec) {
+    std::cerr << "Cannot create " << label << " directory: " << ec.message() << "\n";
+    std::abort();
   }
 }
 
-void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
-                               swift::CompilerInstance& compiler) {
-  // Swift frontend can be called in several different modes, we are interested
-  // only in the cases when either a primary or a main source file is present
-  if (compiler.getPrimarySourceFiles().empty()) {
-    swift::ModuleDecl* module = compiler.getMainModule();
-    if (!module->getFiles().empty() &&
-        module->getFiles().front()->getKind() == swift::FileUnitKind::Source) {
-      // We can only call getMainSourceFile if the first file is of a Source kind
-      swift::SourceFile& file = module->getMainSourceFile();
-      extractFile(config, file);
-    }
+static void archiveFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
+  auto source = codeql::resolvePath(file.getFilename());
+  auto destination = config.sourceArchiveDir / source.relative_path();
+
+  ensureDirectory("source archive destination", destination.parent_path());
+
+  std::error_code ec;
+  fs::copy(source, destination, fs::copy_options::overwrite_existing, ec);
+
+  if (ec) {
+    std::cerr << "Cannot archive source file " << source << " -> " << destination << ": "
+              << ec.message() << "\n";
+  }
+}
+
+static fs::path getFilename(swift::ModuleDecl& module, swift::SourceFile* primaryFile) {
+  if (primaryFile) {
+    return resolvePath(primaryFile->getFilename());
+  }
+  // PCM clang module
+  if (module.isNonSwiftModule()) {
+    // Several modules with different names might come from .pcm (clang module) files
+    // In this case we want to differentiate them
+    // Moreover, pcm files may come from caches located in different directories, but are
+    // unambiguously identified by the base file name, so we can discard the absolute directory
+    fs::path filename = "/pcms";
+    filename /= fs::path{std::string_view{module.getModuleFilename()}}.filename();
+    filename += "-";
+    filename += module.getName().str();
+    return filename;
+  }
+  if (module.isBuiltinModule()) {
+    // The Builtin module has an empty filename, let's fix that
+    return "/__Builtin__";
+  }
+  std::string_view filename = module.getModuleFilename();
+  // there is a special case of a module without an actual filename reporting `<imports>`: in this
+  // case we want to avoid the `<>` characters, in case a dirty DB is imported on Windows
+  if (filename == "<imports>") {
+    return "/__imports__";
+  }
+  return resolvePath(filename);
+}
+
+/* The builtin module is special, as it does not publish any top-level declaration
+ * It creates (and caches) declarations on demand when a lookup is carried out
+ * (see BuiltinUnit in swift/AST/FileUnit.h for the cache details, and getBuiltinValueDecl in
+ * swift/AST/Builtins.h for the creation details)
+ * As we want to create the Builtin trap file once and for all so that it works for other
+ * extraction runs, rather than collecting what we need we pre-populate the builtin trap with
+ * what we expect. This list might need thus to be expanded.
+ * Notice, that while swift/AST/Builtins.def has a list of builtin symbols, it does not contain
+ * all information required to instantiate builtin variants.
+ * Other possible approaches:
+ * * create one trap per builtin declaration when encountered
+ * * expand the list to all possible builtins (of which there are a lot)
+ */
+static void getBuiltinDecls(swift::ModuleDecl& builtinModule,
+                            llvm::SmallVector<swift::Decl*>& decls) {
+  llvm::SmallVector<swift::ValueDecl*> values;
+  for (auto symbol : swiftBuiltins) {
+    builtinModule.lookupValue(builtinModule.getASTContext().getIdentifier(symbol),
+                              swift::NLKind::QualifiedLookup, values);
+  }
+  decls.insert(decls.end(), values.begin(), values.end());
+}
+
+static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& module,
+                                                        swift::SourceFile* primaryFile = nullptr) {
+  llvm::SmallVector<swift::Decl*> ret;
+  ret.push_back(&module);
+  if (primaryFile) {
+    primaryFile->getTopLevelDecls(ret);
+  } else if (module.isBuiltinModule()) {
+    getBuiltinDecls(module, ret);
   } else {
-    for (auto s : compiler.getPrimarySourceFiles()) {
-      extractFile(config, *s);
+    module.getTopLevelDecls(ret);
+  }
+  return ret;
+}
+
+static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
+    SwiftExtractorState& state,
+    swift::CompilerInstance& compiler,
+    swift::ModuleDecl& module,
+    swift::SourceFile* primaryFile = nullptr) {
+  auto filename = getFilename(module, primaryFile);
+  if (primaryFile) {
+    state.sourceFiles.push_back(filename);
+  }
+
+  // The extractor can be called several times from different processes with
+  // the same input file(s). Using `TargetFile` the first process will win, and the following
+  // will just skip the work
+  const auto trapType = primaryFile ? TrapType::source : TrapType::module;
+  auto trap = createTargetTrapDomain(state, filename, trapType);
+  if (!trap) {
+    // another process arrived first, nothing to do for us
+    return {};
+  }
+
+  std::vector<swift::Token> comments;
+  if (primaryFile && primaryFile->getBufferID().hasValue()) {
+    auto& sourceManager = compiler.getSourceMgr();
+    auto tokens = swift::tokenize(compiler.getInvocation().getLangOptions(), sourceManager,
+                                  primaryFile->getBufferID().getValue());
+    for (auto& token : tokens) {
+      if (token.getKind() == swift::tok::comment) {
+        comments.push_back(token);
+      }
+    }
+  }
+
+  SwiftVisitor visitor(compiler.getSourceMgr(), *trap, module, primaryFile);
+  auto topLevelDecls = getTopLevelDecls(module, primaryFile);
+  for (auto decl : topLevelDecls) {
+    visitor.extract(decl);
+  }
+  for (auto& comment : comments) {
+    visitor.extract(comment);
+  }
+  return std::move(visitor).getEncounteredModules();
+}
+
+static std::unordered_set<std::string> collectInputFilenames(swift::CompilerInstance& compiler) {
+  // The frontend can be called in many different ways.
+  // At each invocation we only extract system and builtin modules and any input source files that
+  // have an output associated with them.
+  std::unordered_set<std::string> sourceFiles;
+  auto inputFiles = compiler.getInvocation().getFrontendOptions().InputsAndOutputs.getAllInputs();
+  for (auto& input : inputFiles) {
+    if (input.getType() == swift::file_types::TY_Swift && !input.outputFilename().empty()) {
+      sourceFiles.insert(input.getFileName());
+    }
+  }
+  return sourceFiles;
+}
+
+static std::vector<swift::ModuleDecl*> collectLoadedModules(swift::CompilerInstance& compiler) {
+  std::vector<swift::ModuleDecl*> ret;
+  for (const auto& [id, module] : compiler.getASTContext().getLoadedModules()) {
+    std::ignore = id;
+    ret.push_back(module);
+  }
+  return ret;
+}
+
+void codeql::extractSwiftFiles(SwiftExtractorState& state, swift::CompilerInstance& compiler) {
+  auto inputFiles = collectInputFilenames(compiler);
+  std::vector<swift::ModuleDecl*> todo = collectLoadedModules(compiler);
+  state.encounteredModules.insert(todo.begin(), todo.end());
+
+  while (!todo.empty()) {
+    auto module = todo.back();
+    todo.pop_back();
+    bool isFromSourceFile = false;
+    std::unordered_set<swift::ModuleDecl*> encounteredModules;
+    for (auto file : module->getFiles()) {
+      auto sourceFile = llvm::dyn_cast<swift::SourceFile>(file);
+      if (!sourceFile) {
+        continue;
+      }
+      isFromSourceFile = true;
+      if (inputFiles.count(sourceFile->getFilename().str()) == 0) {
+        continue;
+      }
+      archiveFile(state.configuration, *sourceFile);
+      encounteredModules = extractDeclarations(state, compiler, *module, sourceFile);
+    }
+    if (!isFromSourceFile) {
+      encounteredModules = extractDeclarations(state, compiler, *module);
+    }
+    for (auto encountered : encounteredModules) {
+      if (state.encounteredModules.count(encountered) == 0) {
+        todo.push_back(encountered);
+        state.encounteredModules.insert(encountered);
+      }
     }
   }
 }

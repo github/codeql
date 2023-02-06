@@ -1,0 +1,7 @@
+load("//swift:rules.bzl", "swift_cc_binary")
+
+swift_cc_binary(
+    name = "print_unextracted",
+    srcs = glob(["*.cpp"]),
+    deps = ["//swift/extractor/translators"],
+)

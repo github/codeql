@@ -32,9 +32,11 @@ module UrlRedirect {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for "URL redirection" vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A source of remote user input, considered as a flow source.
@@ -46,7 +48,7 @@ module UrlRedirect {
    */
   class RedirectLocationAsSink extends Sink {
     RedirectLocationAsSink() {
-      this = any(HTTP::Server::HttpRedirectResponse e).getRedirectLocation()
+      this = any(Http::Server::HttpRedirectResponse e).getRedirectLocation()
     }
   }
 
@@ -67,5 +69,5 @@ module UrlRedirect {
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
+  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
 }

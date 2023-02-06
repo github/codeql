@@ -337,15 +337,15 @@ private predicate safeCast(Type fromtyp, Type totyp) {
   exists(PrimitiveType pfrom, PrimitiveType pto | pfrom = fromtyp and pto = totyp |
     pfrom = pto
     or
-    pfrom.hasName("char") and pto.getName().regexpMatch("int|long|float|double")
+    pfrom.hasName("char") and pto.hasName(["int", "long", "float", "double"])
     or
-    pfrom.hasName("byte") and pto.getName().regexpMatch("short|int|long|float|double")
+    pfrom.hasName("byte") and pto.hasName(["short", "int", "long", "float", "double"])
     or
-    pfrom.hasName("short") and pto.getName().regexpMatch("int|long|float|double")
+    pfrom.hasName("short") and pto.hasName(["int", "long", "float", "double"])
     or
-    pfrom.hasName("int") and pto.getName().regexpMatch("long|float|double")
+    pfrom.hasName("int") and pto.hasName(["long", "float", "double"])
     or
-    pfrom.hasName("long") and pto.getName().regexpMatch("float|double")
+    pfrom.hasName("long") and pto.hasName(["float", "double"])
     or
     pfrom.hasName("float") and pto.hasName("double")
     or
@@ -360,8 +360,13 @@ private predicate safeCast(Type fromtyp, Type totyp) {
 /**
  * A cast that can be ignored for the purpose of range analysis.
  */
-private class SafeCastExpr extends CastExpr {
-  SafeCastExpr() { safeCast(getExpr().getType(), getType()) }
+private class RangeAnalysisSafeCastingExpr extends CastingExpr {
+  RangeAnalysisSafeCastingExpr() {
+    safeCast(getExpr().getType(), getType()) or
+    this instanceof ImplicitCastExpr or
+    this instanceof ImplicitNotNullExpr or
+    this instanceof ImplicitCoercionToUnitExpr
+  }
 }
 
 /**
@@ -380,9 +385,9 @@ private predicate typeBound(Type typ, int lowerbound, int upperbound) {
 /**
  * A cast to a small integral type that may overflow or underflow.
  */
-private class NarrowingCastExpr extends CastExpr {
-  NarrowingCastExpr() {
-    not this instanceof SafeCastExpr and
+private class NarrowingCastingExpr extends CastingExpr {
+  NarrowingCastingExpr() {
+    not this instanceof RangeAnalysisSafeCastingExpr and
     typeBound(getType(), _, _)
   }
 
@@ -412,7 +417,7 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
   valueFlowStep(e2, e1, delta) and
   (upper = true or upper = false)
   or
-  e2.(SafeCastExpr).getExpr() = e1 and
+  e2.(RangeAnalysisSafeCastingExpr).getExpr() = e1 and
   delta = 0 and
   (upper = true or upper = false)
   or
@@ -523,11 +528,11 @@ private predicate boundFlowStepMul(Expr e2, Expr e1, int factor) {
     or
     exists(AssignMulExpr e | e = e2 and e.getDest() = c and e.getRhs() = e1 and factor = k)
     or
-    exists(LShiftExpr e |
+    exists(LeftShiftExpr e |
       e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)
     )
     or
-    exists(AssignLShiftExpr e |
+    exists(AssignLeftShiftExpr e |
       e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k)
     )
   )
@@ -547,19 +552,19 @@ private predicate boundFlowStepDiv(Expr e2, Expr e1, int factor) {
     or
     exists(AssignDivExpr e | e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = k)
     or
-    exists(RShiftExpr e |
+    exists(RightShiftExpr e |
       e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)
     )
     or
-    exists(AssignRShiftExpr e |
+    exists(AssignRightShiftExpr e |
       e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k)
     )
     or
-    exists(URShiftExpr e |
+    exists(UnsignedRightShiftExpr e |
       e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)
     )
     or
-    exists(AssignURShiftExpr e |
+    exists(AssignUnsignedRightShiftExpr e |
       e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k)
     )
   )
@@ -702,9 +707,7 @@ private predicate boundedPhiCand(
   SsaPhiNode phi, boolean upper, Bound b, int delta, boolean fromBackEdge, int origdelta,
   Reason reason
 ) {
-  exists(SsaVariable inp, SsaReadPositionPhiInputEdge edge |
-    boundedPhiInp(phi, inp, edge, b, delta, upper, fromBackEdge, origdelta, reason)
-  )
+  boundedPhiInp(phi, _, _, b, delta, upper, fromBackEdge, origdelta, reason)
 }
 
 /**
@@ -796,7 +799,7 @@ private predicate baseBound(Expr e, int b, boolean upper) {
  * For `upper = true` this means that the cast will not overflow and for
  * `upper = false` this means that the cast will not underflow.
  */
-private predicate safeNarrowingCast(NarrowingCastExpr cast, boolean upper) {
+private predicate safeNarrowingCast(NarrowingCastingExpr cast, boolean upper) {
   exists(int bound | bounded(cast.getExpr(), any(ZeroBound zb), bound, upper, _, _, _) |
     upper = true and bound <= cast.getUpperBound()
     or
@@ -806,7 +809,7 @@ private predicate safeNarrowingCast(NarrowingCastExpr cast, boolean upper) {
 
 pragma[noinline]
 private predicate boundedCastExpr(
-  NarrowingCastExpr cast, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
+  NarrowingCastingExpr cast, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
   Reason reason
 ) {
   bounded(cast.getExpr(), b, delta, upper, fromBackEdge, origdelta, reason)
@@ -870,7 +873,7 @@ private predicate bounded(
     delta = d / factor
   )
   or
-  exists(NarrowingCastExpr cast |
+  exists(NarrowingCastingExpr cast |
     cast = e and
     safeNarrowingCast(cast, upper.booleanNot()) and
     boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)

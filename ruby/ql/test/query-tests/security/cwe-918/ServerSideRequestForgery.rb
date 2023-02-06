@@ -1,4 +1,5 @@
 require "excon"
+require "faraday"
 require "json"
 
 class PostsController < ActionController::Base
@@ -9,6 +10,16 @@ class PostsController < ActionController::Base
         users_service_domain = params[:users_service_domain]
         response = Excon.post("#{users_service_domain}/logins", body: {user_id: user}).body
         token = JSON.parse(response)["token"]
+
+        # BAD - user can control the entire URL for the request using Faraday library
+        conn = Faraday.new(url: params[:url])
+        resp = conn.post
+        token = JSON.parse(resp)["token"]
+
+        # BAD - user can control the entire URL for the request using Faraday::Connection library
+        conn = Faraday::Connection.new(url: params[:url])
+        resp = conn.post
+        token = JSON.parse(resp)["token"]
 
         # GOOD - user can only control the suffix of the URL
         users_service_path = params[:users_service_path]

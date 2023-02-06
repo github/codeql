@@ -11,12 +11,43 @@
  * @problem.severity warning
  * @security-severity 7.5
  * @tags security
+ *       experimental
  *       external/cwe/cwe-020
  */
 
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
 
+/**
+ * A Linux system call.
+ */
+class SystemCallFunction extends Function {
+  SystemCallFunction() {
+    exists(MacroInvocation m |
+      m.getMacro().getName().matches("SYSCALL\\_DEFINE%") and
+      this = m.getEnclosingFunction()
+    )
+  }
+}
+
+/**
+ * A value that comes from a Linux system call (sources).
+ */
+class SystemCallSource extends DataFlow::Node {
+  SystemCallSource() {
+    exists(FunctionCall fc |
+      fc.getTarget() instanceof SystemCallFunction and
+      (
+        this.asDefiningArgument() = fc.getAnArgument().getAChild*() or
+        this.asExpr() = fc
+      )
+    )
+  }
+}
+
+/**
+ * Macros used to check the value (barriers).
+ */
 class WriteAccessCheckMacro extends Macro {
   VariableAccess va;
 
@@ -28,6 +59,9 @@ class WriteAccessCheckMacro extends Macro {
   VariableAccess getArgument() { result = va }
 }
 
+/**
+ * The `unsafe_put_user` macro and its uses (sinks).
+ */
 class UnSafePutUserMacro extends Macro {
   PointerDereferenceExpr writeUserPtr;
 
@@ -42,18 +76,16 @@ class UnSafePutUserMacro extends Macro {
   }
 }
 
-class ExploitableUserModePtrParam extends Parameter {
+class ExploitableUserModePtrParam extends SystemCallSource {
   ExploitableUserModePtrParam() {
-    not exists(WriteAccessCheckMacro writeAccessCheck |
-      DataFlow::localFlow(DataFlow::parameterNode(this),
-        DataFlow::exprNode(writeAccessCheck.getArgument()))
-    ) and
     exists(UnSafePutUserMacro unsafePutUser |
-      DataFlow::localFlow(DataFlow::parameterNode(this),
-        DataFlow::exprNode(unsafePutUser.getUserModePtr()))
+      DataFlow::localFlow(this, DataFlow::exprNode(unsafePutUser.getUserModePtr()))
+    ) and
+    not exists(WriteAccessCheckMacro writeAccessCheck |
+      DataFlow::localFlow(this, DataFlow::exprNode(writeAccessCheck.getArgument()))
     )
   }
 }
 
 from ExploitableUserModePtrParam p
-select p, "unsafe_put_user write user-mode pointer $@ without check.", p, p.toString()
+select p, "This 'unsafe_put_user' writes a user-mode pointer without a security check."

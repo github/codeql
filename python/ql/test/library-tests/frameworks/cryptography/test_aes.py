@@ -22,8 +22,8 @@ padding = b"\0"*padding_len
 
 encryptor = cipher.encryptor()
 print(padding_len)
-encrypted = encryptor.update(secret_message) # $ CryptographicOperation CryptographicOperationAlgorithm=AES CryptographicOperationInput=secret_message
-encrypted += encryptor.update(padding) # $ CryptographicOperation CryptographicOperationAlgorithm=AES CryptographicOperationInput=padding
+encrypted = encryptor.update(secret_message) # $ CryptographicOperation CryptographicOperationAlgorithm=AES CryptographicOperationInput=secret_message CryptographicOperationBlockMode=CBC
+encrypted += encryptor.update(padding) # $ CryptographicOperation CryptographicOperationAlgorithm=AES CryptographicOperationInput=padding CryptographicOperationBlockMode=CBC
 encrypted += encryptor.finalize()
 
 print("encrypted={}".format(encrypted))
@@ -31,7 +31,7 @@ print("encrypted={}".format(encrypted))
 print()
 
 decryptor = cipher.decryptor()
-decrypted = decryptor.update(encrypted) # $ CryptographicOperation CryptographicOperationAlgorithm=AES CryptographicOperationInput=encrypted
+decrypted = decryptor.update(encrypted) # $ CryptographicOperation CryptographicOperationAlgorithm=AES CryptographicOperationInput=encrypted CryptographicOperationBlockMode=CBC
 decrypted += decryptor.finalize()
 
 decrypted = decrypted[:-padding_len]

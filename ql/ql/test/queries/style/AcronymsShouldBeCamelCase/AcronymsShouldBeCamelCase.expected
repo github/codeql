@@ -1,3 +1,3 @@
-| Test.qll:2:1:2:27 | ClasslessPredicate isXML | Acronyms in isXML should be PascalCase/camelCase |
-| Test.qll:8:1:10:15 | NewType TXMLElements | Acronyms in TXMLElements should be PascalCase/camelCase |
-| Test.qll:10:3:10:15 | NewTypeBranch TXMLElement | Acronyms in TXMLElement should be PascalCase/camelCase |
+| Test.qll:2:11:2:15 | ClasslessPredicate isXML | Acronyms in isXML should be PascalCase/camelCase. |
+| Test.qll:8:9:8:20 | NewType TXMLElements | Acronyms in TXMLElements should be PascalCase/camelCase. |
+| Test.qll:10:3:10:13 | NewTypeBranch TXMLElement | Acronyms in TXMLElement should be PascalCase/camelCase. |

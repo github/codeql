@@ -6,6 +6,7 @@
  * @precision medium
  * @id cs/dataset-serialization/unsafe-type-used-data-contract-serializer
  * @tags security
+ *       experimental
  */
 
 import csharp
@@ -14,7 +15,9 @@ import DataSetSerialization
 predicate xmlSerializerConstructorArgument(Expr e) {
   exists(ObjectCreation oc, Constructor c | e = oc.getArgument(0) |
     c = oc.getTarget() and
-    c.getDeclaringType().getABaseType*().hasQualifiedName("System.Xml.Serialization.XmlSerializer")
+    c.getDeclaringType()
+        .getABaseType*()
+        .hasQualifiedName("System.Xml.Serialization", "XmlSerializer")
   )
 }
 

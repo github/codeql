@@ -4,7 +4,7 @@
  * your own sources and sanitizers.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking::TaintTracking
 private import codeql.ruby.dataflow.RemoteFlowSources
@@ -36,7 +36,7 @@ module CleartextSources {
    * sensitive data with a call to `sub`.
    */
   private predicate effectiveSubRegExp(CfgNodes::ExprNodes::RegExpLiteralCfgNode re) {
-    re.getConstantValue().getStringlikeValue().matches([".*", ".+"])
+    re.getConstantValue().getStringlikeValue() = [".*", ".+"]
   }
 
   /**
@@ -44,7 +44,7 @@ module CleartextSources {
    * sensitive data with a call to `gsub`.
    */
   private predicate effectiveGsubRegExp(CfgNodes::ExprNodes::RegExpLiteralCfgNode re) {
-    re.getConstantValue().getStringlikeValue().matches(".")
+    re.getConstantValue().getStringlikeValue() = "."
   }
 
   /**

@@ -16,4 +16,4 @@ where
   e.isStrict() and
   e.getGreaterOperand() instanceof BitwiseExpr and
   e.getLesserOperand().(IntegerLiteral).getIntValue() = 0
-select e, "Sign check of a bitwise operation."
+select e, "Potentially unsafe sign check of a bitwise operation."

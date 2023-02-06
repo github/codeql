@@ -19,7 +19,7 @@ predicate whitelist(Function f) {
       "nearbyintl", "rint", "rintf", "rintl", "round", "roundf", "roundl", "trunc", "truncf",
       "truncl"
     ] or
-  f.getName().matches("__builtin_%")
+  f.getName().matches("\\_\\_builtin\\_%")
 }
 
 predicate whitelistPow(FunctionCall fc) {
@@ -44,10 +44,9 @@ predicate whiteListWrapped(FunctionCall fc) {
 
 from FunctionCall c, FloatingPointType t1, IntegralType t2
 where
-  t1 = c.getTarget().getType().getUnderlyingType() and
+  pragma[only_bind_into](t1) = c.getTarget().getType().getUnderlyingType() and
   t2 = c.getActualType() and
   c.hasImplicitConversion() and
   not whiteListWrapped(c)
 select c,
-  "Return value of type " + t1.toString() + " is implicitly converted to " + t2.toString() +
-    " here."
+  "Return value of type " + t1.toString() + " is implicitly converted to " + t2.toString() + "."

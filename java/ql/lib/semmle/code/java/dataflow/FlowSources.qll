@@ -17,6 +17,7 @@ import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.javase.WebSocket
 import semmle.code.java.frameworks.android.Android
+import semmle.code.java.frameworks.android.ExternalStorage
 import semmle.code.java.frameworks.android.OnActivityResultSource
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.play.Play
@@ -33,6 +34,13 @@ private import semmle.code.java.dataflow.ExternalFlow
 abstract class RemoteFlowSource extends DataFlow::Node {
   /** Gets a string that describes the type of this remote flow source. */
   abstract string getSourceType();
+}
+
+/**
+ * A module for importing frameworks that define remote flow sources.
+ */
+private module RemoteFlowSources {
+  private import semmle.code.java.frameworks.android.Widget
 }
 
 private class ExternalRemoteFlowSource extends RemoteFlowSource {
@@ -87,7 +95,7 @@ private class ReverseDnsSource extends RemoteFlowSource {
   ReverseDnsSource() {
     // Try not to trigger on `localhost`.
     exists(MethodAccess m | m = this.asExpr() |
-      m.getMethod() instanceof ReverseDNSMethod and
+      m.getMethod() instanceof ReverseDnsMethod and
       not exists(MethodAccess l |
         (variableStep(l, m.getQualifier()) or l = m.getQualifier()) and
         l.getMethod().getName() = "getLocalHost"
@@ -152,15 +160,19 @@ private class ThriftIfaceParameterSource extends RemoteFlowSource {
   override string getSourceType() { result = "Thrift Iface parameter" }
 }
 
+private class AndroidExternalStorageSource extends RemoteFlowSource {
+  AndroidExternalStorageSource() { androidExternalStorageSource(this) }
+
+  override string getSourceType() { result = "Android external storage" }
+}
+
 /** Class for `tainted` user input. */
 abstract class UserInput extends DataFlow::Node { }
 
 /**
  * Input that may be controlled by a remote user.
  */
-private class RemoteUserInput extends UserInput {
-  RemoteUserInput() { this instanceof RemoteFlowSource }
-}
+private class RemoteUserInput extends UserInput instanceof RemoteFlowSource { }
 
 /** A node with input that may be controlled by a local user. */
 abstract class LocalUserInput extends UserInput { }
@@ -214,8 +226,8 @@ class TypeInetAddr extends RefType {
 }
 
 /** A reverse DNS method. */
-class ReverseDNSMethod extends Method {
-  ReverseDNSMethod() {
+class ReverseDnsMethod extends Method {
+  ReverseDnsMethod() {
     this.getDeclaringType() instanceof TypeInetAddr and
     (
       this.getName() = "getHostName" or
@@ -223,6 +235,9 @@ class ReverseDNSMethod extends Method {
     )
   }
 }
+
+/** DEPRECATED: Alias for ReverseDnsMethod */
+deprecated class ReverseDNSMethod = ReverseDnsMethod;
 
 /** Android `Intent` that may have come from a hostile application. */
 class AndroidIntentInput extends DataFlow::Node {
@@ -238,6 +253,12 @@ class AndroidIntentInput extends DataFlow::Node {
     exists(Method m, AndroidReceiveIntentMethod rI |
       m.overrides*(rI) and
       this.asParameter() = m.getParameter(1) and
+      receiverType = m.getDeclaringType()
+    )
+    or
+    exists(Method m, AndroidServiceIntentMethod sI |
+      m.overrides*(sI) and
+      this.asParameter() = m.getParameter(0) and
       receiverType = m.getDeclaringType()
     )
   }
@@ -272,7 +293,21 @@ class ExportedAndroidContentProviderInput extends RemoteFlowSource, AndroidConte
  * calls `startActivityForResult` with an implicit Intent.
  */
 class OnActivityResultIntentSource extends OnActivityResultIncomingIntent, RemoteFlowSource {
+  cached
   OnActivityResultIntentSource() { this.isRemoteSource() }
 
   override string getSourceType() { result = "Android onActivityResult incoming Intent" }
+}
+
+/**
+ * A parameter of a method annotated with the `android.webkit.JavascriptInterface` annotation.
+ */
+class AndroidJavascriptInterfaceMethodParameter extends RemoteFlowSource {
+  AndroidJavascriptInterfaceMethodParameter() {
+    exists(JavascriptInterfaceMethod m | this.asParameter() = m.getAParameter())
+  }
+
+  override string getSourceType() {
+    result = "Parameter of method with JavascriptInterface annotation"
+  }
 }

@@ -8,7 +8,7 @@ import javascript
  * Gets a source node to which `cand` may flow inter-procedurally, with `t` tracking
  * the state of flow.
  */
-DataFlow::SourceNode track(HTTP::RouteHandlerCandidate cand, DataFlow::TypeTracker t) {
+DataFlow::SourceNode track(Http::RouteHandlerCandidate cand, DataFlow::TypeTracker t) {
   t.start() and
   result = cand
   or

@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Net", "Cookie", False, "get_Value", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["System.Net", "CookieCollection", False, "Add", "(System.Net.CookieCollection)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Net", "HttpListenerPrefixCollection", False, "CopyTo", "(System.Array,System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
+      - ["System.Net", "IPHostEntry", False, "get_Aliases", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["System.Net", "IPHostEntry", False, "get_HostName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["System.Net", "WebHeaderCollection", False, "Add", "(System.String)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Net", "WebUtility", False, "HtmlEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["System.Net", "WebUtility", False, "HtmlEncode", "(System.String,System.IO.TextWriter)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["System.Net", "WebUtility", False, "UrlEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

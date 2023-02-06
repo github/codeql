@@ -8,7 +8,7 @@ import semmle.code.java.Type
  * The interface `javax.servlet.ServletRequest` or
  * `javax.servlet.http.HttpServletRequest`.
  */
-library class ServletRequest extends RefType {
+class ServletRequest extends RefType {
   ServletRequest() {
     this.hasQualifiedName("javax.servlet", "ServletRequest") or
     this instanceof HttpServletRequest
@@ -18,7 +18,7 @@ library class ServletRequest extends RefType {
 /**
  * The interface `javax.servlet.http.HttpServletRequest`.
  */
-library class HttpServletRequest extends RefType {
+class HttpServletRequest extends RefType {
   HttpServletRequest() { this.hasQualifiedName("javax.servlet.http", "HttpServletRequest") }
 }
 
@@ -26,7 +26,7 @@ library class HttpServletRequest extends RefType {
  * The method `getParameter(String)` or `getParameterValues(String)`
  * declared in `javax.servlet.ServletRequest`.
  */
-library class ServletRequestGetParameterMethod extends Method {
+class ServletRequestGetParameterMethod extends Method {
   ServletRequestGetParameterMethod() {
     this.getDeclaringType() instanceof ServletRequest and
     (
@@ -41,7 +41,7 @@ library class ServletRequestGetParameterMethod extends Method {
 /**
  * The method `getParameterNames()` declared in `javax.servlet.ServletRequest`.
  */
-library class ServletRequestGetParameterNamesMethod extends Method {
+class ServletRequestGetParameterNamesMethod extends Method {
   ServletRequestGetParameterNamesMethod() {
     this.getDeclaringType() instanceof ServletRequest and
     this.hasName("getParameterNames") and
@@ -52,7 +52,7 @@ library class ServletRequestGetParameterNamesMethod extends Method {
 /**
  * The method `getParameterMap()` declared in `javax.servlet.ServletRequest`.
  */
-library class ServletRequestGetParameterMapMethod extends Method {
+class ServletRequestGetParameterMapMethod extends Method {
   ServletRequestGetParameterMapMethod() {
     this.getDeclaringType() instanceof ServletRequest and
     this.hasName("getParameterMap") and
@@ -63,7 +63,7 @@ library class ServletRequestGetParameterMapMethod extends Method {
 /**
  * The method `getQueryString()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library class HttpServletRequestGetQueryStringMethod extends Method {
+class HttpServletRequestGetQueryStringMethod extends Method {
   HttpServletRequestGetQueryStringMethod() {
     this.getDeclaringType() instanceof HttpServletRequest and
     this.hasName("getQueryString") and
@@ -85,7 +85,7 @@ class HttpServletRequestGetPathMethod extends Method {
 /**
  * The method `getHeader(String)` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library class HttpServletRequestGetHeaderMethod extends Method {
+class HttpServletRequestGetHeaderMethod extends Method {
   HttpServletRequestGetHeaderMethod() {
     this.getDeclaringType() instanceof HttpServletRequest and
     this.hasName("getHeader") and
@@ -97,7 +97,7 @@ library class HttpServletRequestGetHeaderMethod extends Method {
 /**
  * The method `getHeaders(String)` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library class HttpServletRequestGetHeadersMethod extends Method {
+class HttpServletRequestGetHeadersMethod extends Method {
   HttpServletRequestGetHeadersMethod() {
     this.getDeclaringType() instanceof HttpServletRequest and
     this.hasName("getHeaders") and
@@ -109,7 +109,7 @@ library class HttpServletRequestGetHeadersMethod extends Method {
 /**
  * The method `getHeaderNames()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library class HttpServletRequestGetHeaderNamesMethod extends Method {
+class HttpServletRequestGetHeaderNamesMethod extends Method {
   HttpServletRequestGetHeaderNamesMethod() {
     this.getDeclaringType() instanceof HttpServletRequest and
     this.hasName("getHeaderNames") and
@@ -134,18 +134,21 @@ deprecated class HttpServletRequestGetRequestURLMethod = HttpServletRequestGetRe
 /**
  * The method `getRequestURI()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-class HttpServletRequestGetRequestURIMethod extends Method {
-  HttpServletRequestGetRequestURIMethod() {
+class HttpServletRequestGetRequestUriMethod extends Method {
+  HttpServletRequestGetRequestUriMethod() {
     this.getDeclaringType() instanceof HttpServletRequest and
     this.hasName("getRequestURI") and
     this.getNumberOfParameters() = 0
   }
 }
 
+/** DEPRECATED: Alias for HttpServletRequestGetRequestUriMethod */
+deprecated class HttpServletRequestGetRequestURIMethod = HttpServletRequestGetRequestUriMethod;
+
 /**
  * The method `getRemoteUser()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library class HttpServletRequestGetRemoteUserMethod extends Method {
+class HttpServletRequestGetRemoteUserMethod extends Method {
   HttpServletRequestGetRemoteUserMethod() {
     this.getDeclaringType() instanceof HttpServletRequest and
     this.hasName("getRemoteUser") and
@@ -156,7 +159,7 @@ library class HttpServletRequestGetRemoteUserMethod extends Method {
 /**
  * The method `getInputStream()` or `getReader()` declared in `javax.servlet.ServletRequest`.
  */
-library class ServletRequestGetBodyMethod extends Method {
+class ServletRequestGetBodyMethod extends Method {
   ServletRequestGetBodyMethod() {
     this.getDeclaringType() instanceof ServletRequest and
     (this.hasName("getInputStream") or this.hasName("getReader"))
@@ -239,14 +242,14 @@ class ServletResponseGetOutputStreamMethod extends Method {
 }
 
 /** The class `javax.servlet.http.Cookie`. */
-library class TypeCookie extends Class {
+class TypeCookie extends Class {
   TypeCookie() { this.hasQualifiedName("javax.servlet.http", "Cookie") }
 }
 
 /**
  * The method `getValue(String)` declared in `javax.servlet.http.Cookie`.
  */
-library class CookieGetValueMethod extends Method {
+class CookieGetValueMethod extends Method {
   CookieGetValueMethod() {
     this.getDeclaringType() instanceof TypeCookie and
     this.hasName("getValue") and
@@ -257,7 +260,7 @@ library class CookieGetValueMethod extends Method {
 /**
  * The method `getName()` declared in `javax.servlet.http.Cookie`.
  */
-library class CookieGetNameMethod extends Method {
+class CookieGetNameMethod extends Method {
   CookieGetNameMethod() {
     this.getDeclaringType() instanceof TypeCookie and
     this.hasName("getName") and
@@ -269,7 +272,7 @@ library class CookieGetNameMethod extends Method {
 /**
  * The method `getComment()` declared in `javax.servlet.http.Cookie`.
  */
-library class CookieGetCommentMethod extends Method {
+class CookieGetCommentMethod extends Method {
   CookieGetCommentMethod() {
     this.getDeclaringType() instanceof TypeCookie and
     this.hasName("getComment") and

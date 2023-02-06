@@ -154,6 +154,7 @@ import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
+import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.ts.ast.TypeExpression;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
@@ -590,7 +591,7 @@ public class ASTExtractor {
       trapwriter.addTuple("literals", valueString, source, key);
       Position start = nd.getLoc().getStart();
       com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn() + 1 /* Convert from 0-based to 1-based. */, start.getOffset());
-      
+
       if (nd.isRegExp()) {
         OffsetTranslation offsets = new OffsetTranslation();
         offsets.set(0, 1); // skip the initial '/'
@@ -622,7 +623,7 @@ public class ASTExtractor {
     /**
      * Constant-folds simple string concatenations in `exp` while keeping an offset translation
      * that tracks back to the original source.
-     */ 
+     */
     private Pair<String, OffsetTranslation> getStringConcatResult(Expression exp) {
       if (exp instanceof BinaryExpression) {
         BinaryExpression be = (BinaryExpression) exp;
@@ -636,7 +637,7 @@ public class ASTExtractor {
           if (str.length() > 1000) {
             return null;
           }
-            
+
           int delta = be.getRight().getLoc().getStart().getOffset() - be.getLeft().getLoc().getStart().getOffset();
           int offset = left.fst().length();
           return Pair.make(str, left.snd().append(right.snd(), offset, delta));
@@ -747,7 +748,7 @@ public class ASTExtractor {
         visit(nd.getProperty(), key, 1, IdContext.TYPE_LABEL);
       } else {
         IdContext baseIdContext =
-            c.idcontext == IdContext.EXPORT ? IdContext.EXPORT_BASE : IdContext.VAR_BIND;
+            (c.idcontext == IdContext.EXPORT || c.idcontext == IdContext.EXPORT_BASE) ? IdContext.EXPORT_BASE : IdContext.VAR_BIND;
         visit(nd.getObject(), key, 0, baseIdContext);
         visit(nd.getProperty(), key, 1, nd.isComputed() ? IdContext.VAR_BIND : IdContext.LABEL);
       }
@@ -848,14 +849,14 @@ public class ASTExtractor {
     public Label visit(BinaryExpression nd, Context c) {
       Label key = super.visit(nd, c);
       if (nd.getOperator().equals("in") && nd.getLeft() instanceof Identifier && ((Identifier)nd.getLeft()).getName().startsWith("#")) {
-        // this happens with Ergonomic brand checks for Private Fields (see https://github.com/tc39/proposal-private-fields-in-in). 
+        // this happens with Ergonomic brand checks for Private Fields (see https://github.com/tc39/proposal-private-fields-in-in).
         // it's the only case where private field identifiers are used not as a field.
         visit(nd.getLeft(), key, 0, IdContext.LABEL, true);
       } else {
         visit(nd.getLeft(), key, 0, true);
       }
       visit(nd.getRight(), key, 1, true);
-      
+
       extractRegxpFromBinop(nd, c);
       return key;
     }
@@ -1815,7 +1816,7 @@ public class ASTExtractor {
       visit(nd.getLocal(), lbl, 1, nd.hasTypeKeyword() ? IdContext.TYPE_ONLY_IMPORT : c.idcontext);
       if (nd.hasTypeKeyword()) {
         trapwriter.addTuple("has_type_keyword", lbl);
-      } 
+      }
       return lbl;
     }
 
@@ -2112,6 +2113,14 @@ public class ASTExtractor {
     }
 
     @Override
+    public Label visit(SatisfiesExpr nd, Context c) {
+      Label key = super.visit(nd, c);
+      visit(nd.getExpression(), key, 0);
+      visit(nd.getTypeAnnotation(), key, 1, IdContext.TYPE_BIND);
+      return key;
+    }
+
+    @Override
     public Label visit(MappedTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
       scopeManager.enterScope(nd);
@@ -2191,6 +2200,7 @@ public class ASTExtractor {
       visitAll(nd.getBody(), key);
       contextManager.leaveContainer();
       scopeManager.leaveScope();
+      emitNodeSymbol(nd, key);
       return key;
     }
 

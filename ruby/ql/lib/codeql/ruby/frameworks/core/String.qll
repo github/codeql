@@ -3,7 +3,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.dataflow.FlowSummary
+private import codeql.ruby.dataflow.FlowSummary as FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.Regexp as RE
@@ -20,6 +20,8 @@ class StringSubstitutionCall extends DataFlow::CallNode {
     this.getMethodName() = ["sub", "sub!", "gsub", "gsub!"] and
     exists(this.getReceiver()) and
     this.getNumberOfArguments() = 2
+    or
+    this.getNumberOfArguments() = 1 and exists(this.getBlock())
   }
 
   /**
@@ -45,9 +47,10 @@ class StringSubstitutionCall extends DataFlow::CallNode {
    * call, if any.
    */
   RE::RegExpPatternSource getPatternRegExp() {
-    // TODO: using local flow means we miss regexps defined as constants outside
-    // of the function scope.
     result.(DataFlow::LocalSourceNode).flowsTo(this.getPatternArgument())
+    or
+    result.asExpr().getExpr() =
+      this.getPatternArgument().asExpr().getExpr().(ConstantReadAccess).getValue()
   }
 
   /**
@@ -59,11 +62,19 @@ class StringSubstitutionCall extends DataFlow::CallNode {
   }
 
   /**
-   * Gets the string value passed as the second (replacement) argument in this
-   * call, if any.
+   * Gets the string value used to replace instances of the pattern, if any.
+   * This includes values passed explicitly as the second argument and values
+   * returned from the block, if one is given.
    */
   string getReplacementString() {
     result = this.getReplacementArgument().asExpr().getConstantValue().getString()
+    or
+    exists(DataFlow::Node blockReturnNode, DataFlow::LocalSourceNode stringNode |
+      exprNodeReturnedFrom(blockReturnNode, this.getBlock().asExpr().getExpr())
+    |
+      stringNode.flowsTo(blockReturnNode) and
+      result = stringNode.asExpr().getConstantValue().getString()
+    )
   }
 
   /** Gets a string that is being replaced by this call. */
@@ -77,7 +88,6 @@ class StringSubstitutionCall extends DataFlow::CallNode {
   predicate replaces(string old, string new) {
     old = this.getAReplacedString() and
     new = this.getReplacementString()
-    // TODO: handle block-variant of the call
   }
 }
 
@@ -95,6 +105,18 @@ module String {
     input = "Argument[self]" and
     output = "ReturnValue" and
     preservesValue = false
+  }
+
+  /** A `String` callable with a flow summary. */
+  abstract class SummarizedCallable extends FlowSummary::SummarizedCallable {
+    bindingset[this]
+    SummarizedCallable() { any() }
+  }
+
+  abstract private class SimpleSummarizedCallable extends SummarizedCallable,
+    FlowSummary::SimpleSummarizedCallable {
+    bindingset[this]
+    SimpleSummarizedCallable() { any() }
   }
 
   private class NewSummary extends SummarizedCallable {
@@ -415,7 +437,7 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
-      output = "ReturnValue.Element[" + [0, 1, 2] + "]" and
+      output = "ReturnValue.Element[0,1,2]" and
       preservesValue = false
     }
   }

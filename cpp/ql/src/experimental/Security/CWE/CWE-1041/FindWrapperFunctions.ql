@@ -8,6 +8,7 @@
  * @tags correctness
  *       maintainability
  *       security
+ *       experimental
  *       external/cwe/cwe-1041
  */
 
@@ -138,4 +139,4 @@ where
     fc.getEnclosingFunction() != fn and
     fc.getEnclosingFunction().getMetrics().getNumberOfCalls() > fn.getMetrics().getNumberOfCalls()
   )
-select fc, "Consider changing the call to $@", fn, fn.getName()
+select fc, "Consider changing the call to $@.", fn, fn.getName()

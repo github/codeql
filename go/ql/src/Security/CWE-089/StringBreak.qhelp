@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Code that constructs a string containing a quoted substring needs to ensure that any user-provided
+data embedded in between the quotes does not itself contain a quote. Otherwise the embedded data
+could (accidentally or intentionally) change the structure of the overall string by terminating
+the quoted substring early, with potentially severe consequences. If, for example, the string is
+later interpreted as an operating-system command or database query, a malicious attacker may be
+able to craft input data that enables a command injection or SQL injection attack.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Sanitize the embedded data appropriately to ensure quotes are escaped, or use an API that does
+not rely on manually constructing quoted substrings.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, assume that <code>version</code> is an object from an untrusted source.
+The code snippet first uses <code>json.Marshal</code> to serialize this object into a string, and
+then embeds it into a SQL query built using the Squirrel library.
+</p>
+<sample src="StringBreak.go"/>
+<p>
+Note that while Squirrel provides a structured API for building SQL queries that mitigates against
+common causes of SQL injection vulnerabilities, this code is still vulnerable: if the JSON-encoded
+representation of <code>version</code> contains a single quote, this will prematurely close the
+surrounding string, changing the structure of the SQL expression being constructed. This could be
+exploited to mount a SQL injection attack.
+</p>
+<p>
+To fix this vulnerability, use Squirrel's placeholder syntax, which avoids the need to explicitly
+construct a quoted string.
+</p>
+<sample src="StringBreakGood.go"/>
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection</a>.</li>
+<li>OWASP: <a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.</li>
+</references>
+</qhelp>

@@ -6,7 +6,7 @@
 <p>
 This metric provides an indication of the lack of cohesion of a class, 
 using a method proposed by Chidamber and Kemerer in 1994. The idea
-behind measuring a class's cohesion is that most funcions in well-designed
+behind measuring a class's cohesion is that most functions in well-designed
 classes will access the same fields. Types that exhibit a lack of cohesion
 are often trying to take on multiple responsibilities, and should be split
 into several smaller classes.

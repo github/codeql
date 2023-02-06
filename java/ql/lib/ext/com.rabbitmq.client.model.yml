@@ -1,0 +1,31 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["com.rabbitmq.client", "Command", True, "getContentBody", "()", "", "ReturnValue", "remote", "manual"]
+      - ["com.rabbitmq.client", "Command", True, "getContentHeader", "()", "", "ReturnValue", "remote", "manual"]
+      - ["com.rabbitmq.client", "Consumer", True, "handleDelivery", "(String,Envelope,BasicProperties,byte[])", "", "Parameter[3]", "remote", "manual"]
+      - ["com.rabbitmq.client", "QueueingConsumer", True, "nextDelivery", "", "", "ReturnValue", "remote", "manual"]
+      - ["com.rabbitmq.client", "RpcClient", True, "doCall", "", "", "ReturnValue", "remote", "manual"]
+      - ["com.rabbitmq.client", "RpcClient", True, "mapCall", "", "", "ReturnValue", "remote", "manual"]
+      - ["com.rabbitmq.client", "RpcClient", True, "primitiveCall", "", "", "ReturnValue", "remote", "manual"]
+      - ["com.rabbitmq.client", "RpcClient", True, "responseCall", "", "", "ReturnValue", "remote", "manual"]
+      - ["com.rabbitmq.client", "RpcClient", True, "stringCall", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["com.rabbitmq.client", "RpcServer", True, "handleCall", "(BasicProperties,byte[],BasicProperties)", "", "Parameter[1]", "remote", "manual"]
+      - ["com.rabbitmq.client", "RpcServer", True, "handleCall", "(Delivery,BasicProperties)", "", "Parameter[0]", "remote", "manual"]
+      - ["com.rabbitmq.client", "RpcServer", True, "handleCall", "(byte[],BasicProperties)", "", "Parameter[0]", "remote", "manual"]
+      - ["com.rabbitmq.client", "RpcServer", True, "handleCast", "(BasicProperties,byte[])", "", "Parameter[1]", "remote", "manual"]
+      - ["com.rabbitmq.client", "RpcServer", True, "handleCast", "(Delivery)", "", "Parameter[0]", "remote", "manual"]
+      - ["com.rabbitmq.client", "RpcServer", True, "handleCast", "(byte[])", "", "Parameter[0]", "remote", "manual"]
+      - ["com.rabbitmq.client", "RpcServer", True, "postprocessReplyProperties", "(Delivery,Builder)", "", "Parameter[0]", "remote", "manual"]
+      - ["com.rabbitmq.client", "RpcServer", True, "preprocessReplyProperties", "(Delivery,Builder)", "", "Parameter[0]", "remote", "manual"]
+      - ["com.rabbitmq.client", "StringRpcServer", True, "handleStringCall", "", "", "Parameter[0]", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.rabbitmq.client", "GetResponse", True, "GetResponse", "", "", "Argument[2]", "Argument[-1]", "taint", "manual"]
+      - ["com.rabbitmq.client", "GetResponse", True, "getBody", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["com.rabbitmq.client", "QueueingConsumer$Delivery", True, "getBody", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["com.rabbitmq.client", "RpcClient$Response", True, "getBody", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

@@ -26,5 +26,5 @@ class UrlRedirectConfig extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, UrlRedirectConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Potentially untrusted URL redirection due to $@.",
-  source.getNode(), "user-provided value"
+select sink.getNode(), source, sink, "Untrusted URL redirection depends on a $@.", source.getNode(),
+  "user-provided value"

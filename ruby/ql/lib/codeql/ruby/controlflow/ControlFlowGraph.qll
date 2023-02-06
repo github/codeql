@@ -1,6 +1,5 @@
 /** Provides classes representing the control flow graph. */
 
-private import codeql.Locations
 private import codeql.ruby.AST
 private import codeql.ruby.controlflow.BasicBlocks
 private import SuccessorTypes
@@ -8,8 +7,15 @@ private import internal.ControlFlowGraphImpl
 private import internal.Splitting
 private import internal.Completion
 
-/** An AST node with an associated control-flow graph. */
-class CfgScope extends Scope instanceof CfgScope::Range_ {
+/**
+ * An AST node with an associated control-flow graph.
+ *
+ * Top-levels, methods, blocks, and lambdas are all CFG scopes.
+ *
+ * Note that module declarations are not themselves CFG scopes, as they are part of
+ * the CFG of the enclosing top-level or callable.
+ */
+class CfgScope extends Scope instanceof CfgScopeImpl {
   /** Gets the CFG scope that this scope is nested under, if any. */
   final CfgScope getOuterCfgScope() {
     exists(AstNode parent |
@@ -28,6 +34,9 @@ class CfgScope extends Scope instanceof CfgScope::Range_ {
  * Only nodes that can be reached from an entry point are included in the CFG.
  */
 class CfgNode extends TCfgNode {
+  /** Gets the name of the primary QL class for this node. */
+  string getAPrimaryQlClass() { none() }
+
   /** Gets a textual representation of this control flow node. */
   string toString() { none() }
 
@@ -41,7 +50,7 @@ class CfgNode extends TCfgNode {
   final File getFile() { result = this.getLocation().getFile() }
 
   /** Holds if this control flow node has conditional successors. */
-  final predicate isCondition() { exists(this.getASuccessor(any(BooleanSuccessor bs))) }
+  final predicate isCondition() { exists(this.getASuccessor(any(ConditionalSuccessor bs))) }
 
   /** Gets the scope of this node. */
   final CfgScope getScope() { result = getNodeCfgScope(this) }

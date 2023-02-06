@@ -1,0 +1,66 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+
+      When a character in a string literal or regular expression
+      literal is preceded by a backslash, it is interpreted as part of an
+      escape sequence. For example, the escape sequence <code>\n</code> in a
+      string literal corresponds to a single <code>newline</code> character,
+      and not the <code>\</code> and <code>n</code> characters.
+
+      There are two Go escape sequences that could produce surprising results.
+      First, <code>regexp.Compile("\a")</code> matches the bell character, whereas
+      <code>regexp.Compile("\\A")</code> matches the start of text and
+      <code>regexp.Compile("\\a")</code> is a Vim (but not Go) regular expression
+      matching any alphabetic character. Second, <code>regexp.Compile("\b")</code>
+      matches a backspace, whereas <code>regexp.Compile("\\b")</code> matches the
+      start of a word. Confusing one for the other could lead to a regular expression
+      passing or failing much more often than expected, with potential security
+      consequences.
+
+      Note this is less of a problem than in some other languages because in Go,
+      only valid escape sequences are accepted, both in an ordinary string
+      (for example, <code>s := "\k"</code> will not compile as there is no such
+      escape sequence) and in regular expressions (for example,
+      <code>regexp.MustCompile("\\k")</code> will panic as <code>\k</code> does not
+      refer to a character class or other special token according to Go's regular
+      expression grammar).
+
+    </p>
+
+  </overview>
+
+  <recommendation>
+    <p>
+
+      Ensure that the right number of backslashes is used when
+      escaping characters in strings and regular
+      expressions.
+
+    </p>
+  </recommendation>
+
+  <example>
+
+    <p>The following example code fails to check for a forbidden word in an input string:</p>
+    <sample src="SuspiciousCharacterInRegexp.go"/>
+    <p>The check does not work, but can be fixed by escaping the backslash:</p>
+    <sample src="SuspiciousCharacterInRegexpGood.go"/>
+    <p>
+    Alternatively, you can use backtick-delimited raw string literals. 
+    For example, the <code>\b</code> in <code>regexp.Compile(`hello\bworld`)</code>
+    matches a word boundary, not a backspace character, as within backticks <code>\b</code> is not an
+    escape sequence.
+    </p>
+
+  </example>
+
+  <references>
+    <li>golang.org: <a href="https://golang.org/pkg/regexp/">Overview of the Regexp package</a>.</li>
+    <li>Google: <a href="https://github.com/google/re2/wiki/Syntax">Syntax of regular expressions accepted by RE2</a>.</li>
+  </references>
+</qhelp>

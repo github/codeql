@@ -1,0 +1,17 @@
+| A | A | tst.go:4:2:4:2 | m |
+| AA | AA | tst.go:4:2:4:2 | m |
+| AB | AB | tst.go:4:2:4:2 | m |
+| AB | AB | tst.go:9:2:9:2 | n |
+| ABC | ABC | tst.go:4:2:4:2 | m |
+| ABC | ABC | tst.go:9:2:9:2 | n |
+| ABC | ABC | tst.go:14:2:14:2 | o |
+| AC | AC | tst.go:4:2:4:2 | m |
+| AC | AC | tst.go:13:2:13:2 | n |
+| AC | AC | tst.go:14:2:14:2 | o |
+| B | B | tst.go:8:2:8:2 | m |
+| B | B | tst.go:9:2:9:2 | n |
+| BC | BC | tst.go:8:2:8:2 | m |
+| BC | BC | tst.go:9:2:9:2 | n |
+| BC | BC | tst.go:14:2:14:2 | o |
+| C | C | tst.go:13:2:13:2 | n |
+| C | C | tst.go:14:2:14:2 | o |

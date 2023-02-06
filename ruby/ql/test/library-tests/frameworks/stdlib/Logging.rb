@@ -74,3 +74,9 @@ class LoggerTest
     @@cls_logger.log(Logger::WARN, "message2", "progname2") { "not logged" }
   end
 end
+
+logger_1 = ActiveSupport::Logger.new(STDOUT)
+logger_2 = ActiveSupport::TaggedLogging.new(ActiveSupport::Logger.new(STDOUT))
+
+logger_1.debug("msg")
+logger_2.debug("msg")

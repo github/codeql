@@ -26,91 +26,91 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "org.springframework.web.multipart;MultipartFile;true;getBytes;;;Argument[-1];ReturnValue;taint"
+			// "org.springframework.web.multipart;MultipartFile;true;getBytes;;;Argument[-1];ReturnValue;taint;manual"
 			byte[] out = null;
 			MultipartFile in = (MultipartFile)source();
 			out = in.getBytes();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.multipart;MultipartFile;true;getInputStream;;;Argument[-1];ReturnValue;taint"
+			// "org.springframework.web.multipart;MultipartFile;true;getInputStream;;;Argument[-1];ReturnValue;taint;manual"
 			InputStream out = null;
 			MultipartFile in = (MultipartFile)source();
 			out = in.getInputStream();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.multipart;MultipartFile;true;getName;;;Argument[-1];ReturnValue;taint"
+			// "org.springframework.web.multipart;MultipartFile;true;getName;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			MultipartFile in = (MultipartFile)source();
 			out = in.getName();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.multipart;MultipartFile;true;getOriginalFilename;;;Argument[-1];ReturnValue;taint"
+			// "org.springframework.web.multipart;MultipartFile;true;getOriginalFilename;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			MultipartFile in = (MultipartFile)source();
 			out = in.getOriginalFilename();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.multipart;MultipartFile;true;getResource;;;Argument[-1];ReturnValue;taint"
+			// "org.springframework.web.multipart;MultipartFile;true;getResource;;;Argument[-1];ReturnValue;taint;manual"
 			Resource out = null;
 			MultipartFile in = (MultipartFile)source();
 			out = in.getResource();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.multipart;MultipartHttpServletRequest;true;getMultipartHeaders;;;Argument[-1];ReturnValue;taint"
+			// "org.springframework.web.multipart;MultipartHttpServletRequest;true;getMultipartHeaders;;;Argument[-1];ReturnValue;taint;manual"
 			HttpHeaders out = null;
 			MultipartHttpServletRequest in = (MultipartHttpServletRequest)source();
 			out = in.getMultipartHeaders(null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.multipart;MultipartHttpServletRequest;true;getRequestHeaders;;;Argument[-1];ReturnValue;taint"
+			// "org.springframework.web.multipart;MultipartHttpServletRequest;true;getRequestHeaders;;;Argument[-1];ReturnValue;taint;manual"
 			HttpHeaders out = null;
 			MultipartHttpServletRequest in = (MultipartHttpServletRequest)source();
 			out = in.getRequestHeaders();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.multipart;MultipartRequest;true;getFile;;;Argument[-1];ReturnValue;taint"
+			// "org.springframework.web.multipart;MultipartRequest;true;getFile;;;Argument[-1];ReturnValue;taint;manual"
 			MultipartFile out = null;
 			MultipartRequest in = (MultipartRequest)source();
 			out = in.getFile(null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.multipart;MultipartRequest;true;getFileMap;;;Argument[-1];MapValue of ReturnValue;taint"
+			// "org.springframework.web.multipart;MultipartRequest;true;getFileMap;;;Argument[-1];MapValue of ReturnValue;taint;manual"
 			Map out = null;
 			MultipartRequest in = (MultipartRequest)source();
 			out = in.getFileMap();
 			sink(getMapValue(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.multipart;MultipartRequest;true;getFileNames;;;Argument[-1];Element of ReturnValue;taint"
+			// "org.springframework.web.multipart;MultipartRequest;true;getFileNames;;;Argument[-1];Element of ReturnValue;taint;manual"
 			Iterator out = null;
 			MultipartRequest in = (MultipartRequest)source();
 			out = in.getFileNames();
 			sink(getElement(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.multipart;MultipartRequest;true;getFiles;;;Argument[-1];Element of ReturnValue;taint"
+			// "org.springframework.web.multipart;MultipartRequest;true;getFiles;;;Argument[-1];Element of ReturnValue;taint;manual"
 			List out = null;
 			MultipartRequest in = (MultipartRequest)source();
 			out = in.getFiles(null);
 			sink(getElement(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.multipart;MultipartRequest;true;getMultiFileMap;;;Argument[-1];MapValue of ReturnValue;taint"
+			// "org.springframework.web.multipart;MultipartRequest;true;getMultiFileMap;;;Argument[-1];MapValue of ReturnValue;taint;manual"
 			MultiValueMap out = null;
 			MultipartRequest in = (MultipartRequest)source();
 			out = in.getMultiFileMap();
 			sink(getMapValue(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.multipart;MultipartResolver;true;resolveMultipart;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.web.multipart;MultipartResolver;true;resolveMultipart;;;Argument[0];ReturnValue;taint;manual"
 			MultipartHttpServletRequest out = null;
 			HttpServletRequest in = (HttpServletRequest)source();
 			MultipartResolver instance = null;

@@ -6,24 +6,24 @@ namespace System
     {
         namespace NetworkInformation
         {
-            // Generated from `System.Net.NetworkInformation.DuplicateAddressDetectionState` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum DuplicateAddressDetectionState
+            // Generated from `System.Net.NetworkInformation.DuplicateAddressDetectionState` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum DuplicateAddressDetectionState : int
             {
-                Deprecated,
-                Duplicate,
-                Invalid,
-                Preferred,
-                Tentative,
+                Deprecated = 3,
+                Duplicate = 2,
+                Invalid = 0,
+                Preferred = 4,
+                Tentative = 1,
             }
 
-            // Generated from `System.Net.NetworkInformation.GatewayIPAddressInformation` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.GatewayIPAddressInformation` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class GatewayIPAddressInformation
             {
                 public abstract System.Net.IPAddress Address { get; }
                 protected GatewayIPAddressInformation() => throw null;
             }
 
-            // Generated from `System.Net.NetworkInformation.GatewayIPAddressInformationCollection` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.GatewayIPAddressInformationCollection` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class GatewayIPAddressInformationCollection : System.Collections.Generic.ICollection<System.Net.NetworkInformation.GatewayIPAddressInformation>, System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.GatewayIPAddressInformation>, System.Collections.IEnumerable
             {
                 public virtual void Add(System.Net.NetworkInformation.GatewayIPAddressInformation address) => throw null;
@@ -39,7 +39,7 @@ namespace System
                 public virtual bool Remove(System.Net.NetworkInformation.GatewayIPAddressInformation address) => throw null;
             }
 
-            // Generated from `System.Net.NetworkInformation.IPAddressInformation` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.IPAddressInformation` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class IPAddressInformation
             {
                 public abstract System.Net.IPAddress Address { get; }
@@ -48,7 +48,7 @@ namespace System
                 public abstract bool IsTransient { get; }
             }
 
-            // Generated from `System.Net.NetworkInformation.IPAddressInformationCollection` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.IPAddressInformationCollection` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IPAddressInformationCollection : System.Collections.Generic.ICollection<System.Net.NetworkInformation.IPAddressInformation>, System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.IPAddressInformation>, System.Collections.IEnumerable
             {
                 public virtual void Add(System.Net.NetworkInformation.IPAddressInformation address) => throw null;
@@ -63,7 +63,7 @@ namespace System
                 public virtual bool Remove(System.Net.NetworkInformation.IPAddressInformation address) => throw null;
             }
 
-            // Generated from `System.Net.NetworkInformation.IPGlobalProperties` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.IPGlobalProperties` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class IPGlobalProperties
             {
                 public virtual System.IAsyncResult BeginGetUnicastAddresses(System.AsyncCallback callback, object state) => throw null;
@@ -90,7 +90,7 @@ namespace System
                 public abstract System.Net.NetworkInformation.NetBiosNodeType NodeType { get; }
             }
 
-            // Generated from `System.Net.NetworkInformation.IPGlobalStatistics` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.IPGlobalStatistics` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class IPGlobalStatistics
             {
                 public abstract int DefaultTtl { get; }
@@ -118,7 +118,7 @@ namespace System
                 public abstract System.Int64 ReceivedPacketsWithUnknownProtocol { get; }
             }
 
-            // Generated from `System.Net.NetworkInformation.IPInterfaceProperties` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.IPInterfaceProperties` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class IPInterfaceProperties
             {
                 public abstract System.Net.NetworkInformation.IPAddressInformationCollection AnycastAddresses { get; }
@@ -136,7 +136,7 @@ namespace System
                 public abstract System.Net.NetworkInformation.IPAddressCollection WinsServersAddresses { get; }
             }
 
-            // Generated from `System.Net.NetworkInformation.IPInterfaceStatistics` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.IPInterfaceStatistics` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class IPInterfaceStatistics
             {
                 public abstract System.Int64 BytesReceived { get; }
@@ -154,7 +154,7 @@ namespace System
                 public abstract System.Int64 UnicastPacketsSent { get; }
             }
 
-            // Generated from `System.Net.NetworkInformation.IPv4InterfaceProperties` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.IPv4InterfaceProperties` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class IPv4InterfaceProperties
             {
                 protected IPv4InterfaceProperties() => throw null;
@@ -167,7 +167,7 @@ namespace System
                 public abstract bool UsesWins { get; }
             }
 
-            // Generated from `System.Net.NetworkInformation.IPv4InterfaceStatistics` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.IPv4InterfaceStatistics` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class IPv4InterfaceStatistics
             {
                 public abstract System.Int64 BytesReceived { get; }
@@ -185,7 +185,7 @@ namespace System
                 public abstract System.Int64 UnicastPacketsSent { get; }
             }
 
-            // Generated from `System.Net.NetworkInformation.IPv6InterfaceProperties` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.IPv6InterfaceProperties` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class IPv6InterfaceProperties
             {
                 public virtual System.Int64 GetScopeId(System.Net.NetworkInformation.ScopeLevel scopeLevel) => throw null;
@@ -194,7 +194,7 @@ namespace System
                 public abstract int Mtu { get; }
             }
 
-            // Generated from `System.Net.NetworkInformation.IcmpV4Statistics` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.IcmpV4Statistics` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class IcmpV4Statistics
             {
                 public abstract System.Int64 AddressMaskRepliesReceived { get; }
@@ -226,7 +226,7 @@ namespace System
                 public abstract System.Int64 TimestampRequestsSent { get; }
             }
 
-            // Generated from `System.Net.NetworkInformation.IcmpV6Statistics` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.IcmpV6Statistics` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class IcmpV6Statistics
             {
                 public abstract System.Int64 DestinationUnreachableMessagesReceived { get; }
@@ -264,7 +264,7 @@ namespace System
                 public abstract System.Int64 TimeExceededMessagesSent { get; }
             }
 
-            // Generated from `System.Net.NetworkInformation.MulticastIPAddressInformation` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.MulticastIPAddressInformation` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class MulticastIPAddressInformation : System.Net.NetworkInformation.IPAddressInformation
             {
                 public abstract System.Int64 AddressPreferredLifetime { get; }
@@ -276,7 +276,7 @@ namespace System
                 public abstract System.Net.NetworkInformation.SuffixOrigin SuffixOrigin { get; }
             }
 
-            // Generated from `System.Net.NetworkInformation.MulticastIPAddressInformationCollection` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.MulticastIPAddressInformationCollection` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MulticastIPAddressInformationCollection : System.Collections.Generic.ICollection<System.Net.NetworkInformation.MulticastIPAddressInformation>, System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.MulticastIPAddressInformation>, System.Collections.IEnumerable
             {
                 public virtual void Add(System.Net.NetworkInformation.MulticastIPAddressInformation address) => throw null;
@@ -292,29 +292,29 @@ namespace System
                 public virtual bool Remove(System.Net.NetworkInformation.MulticastIPAddressInformation address) => throw null;
             }
 
-            // Generated from `System.Net.NetworkInformation.NetBiosNodeType` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum NetBiosNodeType
+            // Generated from `System.Net.NetworkInformation.NetBiosNodeType` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum NetBiosNodeType : int
             {
-                Broadcast,
-                Hybrid,
-                Mixed,
-                Peer2Peer,
-                Unknown,
+                Broadcast = 1,
+                Hybrid = 8,
+                Mixed = 4,
+                Peer2Peer = 2,
+                Unknown = 0,
             }
 
-            // Generated from `System.Net.NetworkInformation.NetworkAddressChangedEventHandler` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.NetworkAddressChangedEventHandler` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void NetworkAddressChangedEventHandler(object sender, System.EventArgs e);
 
-            // Generated from `System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void NetworkAvailabilityChangedEventHandler(object sender, System.Net.NetworkInformation.NetworkAvailabilityEventArgs e);
 
-            // Generated from `System.Net.NetworkInformation.NetworkAvailabilityEventArgs` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.NetworkAvailabilityEventArgs` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NetworkAvailabilityEventArgs : System.EventArgs
             {
                 public bool IsAvailable { get => throw null; }
             }
 
-            // Generated from `System.Net.NetworkInformation.NetworkChange` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.NetworkChange` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NetworkChange
             {
                 public static event System.Net.NetworkInformation.NetworkAddressChangedEventHandler NetworkAddressChanged;
@@ -323,7 +323,7 @@ namespace System
                 public static void RegisterNetworkChange(System.Net.NetworkInformation.NetworkChange nc) => throw null;
             }
 
-            // Generated from `System.Net.NetworkInformation.NetworkInformationException` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.NetworkInformationException` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NetworkInformationException : System.ComponentModel.Win32Exception
             {
                 public override int ErrorCode { get => throw null; }
@@ -332,7 +332,7 @@ namespace System
                 public NetworkInformationException(int errorCode) => throw null;
             }
 
-            // Generated from `System.Net.NetworkInformation.NetworkInterface` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.NetworkInterface` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class NetworkInterface
             {
                 public virtual string Description { get => throw null; }
@@ -355,59 +355,59 @@ namespace System
                 public virtual bool SupportsMulticast { get => throw null; }
             }
 
-            // Generated from `System.Net.NetworkInformation.NetworkInterfaceComponent` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum NetworkInterfaceComponent
+            // Generated from `System.Net.NetworkInformation.NetworkInterfaceComponent` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum NetworkInterfaceComponent : int
             {
-                IPv4,
-                IPv6,
+                IPv4 = 0,
+                IPv6 = 1,
             }
 
-            // Generated from `System.Net.NetworkInformation.NetworkInterfaceType` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum NetworkInterfaceType
+            // Generated from `System.Net.NetworkInformation.NetworkInterfaceType` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum NetworkInterfaceType : int
             {
-                AsymmetricDsl,
-                Atm,
-                BasicIsdn,
-                Ethernet,
-                Ethernet3Megabit,
-                FastEthernetFx,
-                FastEthernetT,
-                Fddi,
-                GenericModem,
-                GigabitEthernet,
-                HighPerformanceSerialBus,
-                IPOverAtm,
-                Isdn,
-                Loopback,
-                MultiRateSymmetricDsl,
-                Ppp,
-                PrimaryIsdn,
-                RateAdaptDsl,
-                Slip,
-                SymmetricDsl,
-                TokenRing,
-                Tunnel,
-                Unknown,
-                VeryHighSpeedDsl,
-                Wireless80211,
-                Wman,
-                Wwanpp,
-                Wwanpp2,
+                AsymmetricDsl = 94,
+                Atm = 37,
+                BasicIsdn = 20,
+                Ethernet = 6,
+                Ethernet3Megabit = 26,
+                FastEthernetFx = 69,
+                FastEthernetT = 62,
+                Fddi = 15,
+                GenericModem = 48,
+                GigabitEthernet = 117,
+                HighPerformanceSerialBus = 144,
+                IPOverAtm = 114,
+                Isdn = 63,
+                Loopback = 24,
+                MultiRateSymmetricDsl = 143,
+                Ppp = 23,
+                PrimaryIsdn = 21,
+                RateAdaptDsl = 95,
+                Slip = 28,
+                SymmetricDsl = 96,
+                TokenRing = 9,
+                Tunnel = 131,
+                Unknown = 1,
+                VeryHighSpeedDsl = 97,
+                Wireless80211 = 71,
+                Wman = 237,
+                Wwanpp = 243,
+                Wwanpp2 = 244,
             }
 
-            // Generated from `System.Net.NetworkInformation.OperationalStatus` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum OperationalStatus
+            // Generated from `System.Net.NetworkInformation.OperationalStatus` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum OperationalStatus : int
             {
-                Dormant,
-                Down,
-                LowerLayerDown,
-                NotPresent,
-                Testing,
-                Unknown,
-                Up,
+                Dormant = 5,
+                Down = 2,
+                LowerLayerDown = 7,
+                NotPresent = 6,
+                Testing = 3,
+                Unknown = 4,
+                Up = 1,
             }
 
-            // Generated from `System.Net.NetworkInformation.PhysicalAddress` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.PhysicalAddress` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PhysicalAddress
             {
                 public override bool Equals(object comparand) => throw null;
@@ -422,41 +422,41 @@ namespace System
                 public static bool TryParse(string address, out System.Net.NetworkInformation.PhysicalAddress value) => throw null;
             }
 
-            // Generated from `System.Net.NetworkInformation.PrefixOrigin` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PrefixOrigin
+            // Generated from `System.Net.NetworkInformation.PrefixOrigin` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum PrefixOrigin : int
             {
-                Dhcp,
-                Manual,
-                Other,
-                RouterAdvertisement,
-                WellKnown,
+                Dhcp = 3,
+                Manual = 1,
+                Other = 0,
+                RouterAdvertisement = 4,
+                WellKnown = 2,
             }
 
-            // Generated from `System.Net.NetworkInformation.ScopeLevel` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ScopeLevel
+            // Generated from `System.Net.NetworkInformation.ScopeLevel` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum ScopeLevel : int
             {
-                Admin,
-                Global,
-                Interface,
-                Link,
-                None,
-                Organization,
-                Site,
-                Subnet,
+                Admin = 4,
+                Global = 14,
+                Interface = 1,
+                Link = 2,
+                None = 0,
+                Organization = 8,
+                Site = 5,
+                Subnet = 3,
             }
 
-            // Generated from `System.Net.NetworkInformation.SuffixOrigin` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SuffixOrigin
+            // Generated from `System.Net.NetworkInformation.SuffixOrigin` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum SuffixOrigin : int
             {
-                LinkLayerAddress,
-                Manual,
-                OriginDhcp,
-                Other,
-                Random,
-                WellKnown,
+                LinkLayerAddress = 4,
+                Manual = 1,
+                OriginDhcp = 3,
+                Other = 0,
+                Random = 5,
+                WellKnown = 2,
             }
 
-            // Generated from `System.Net.NetworkInformation.TcpConnectionInformation` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.TcpConnectionInformation` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class TcpConnectionInformation
             {
                 public abstract System.Net.IPEndPoint LocalEndPoint { get; }
@@ -465,25 +465,25 @@ namespace System
                 protected TcpConnectionInformation() => throw null;
             }
 
-            // Generated from `System.Net.NetworkInformation.TcpState` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum TcpState
+            // Generated from `System.Net.NetworkInformation.TcpState` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum TcpState : int
             {
-                CloseWait,
-                Closed,
-                Closing,
-                DeleteTcb,
-                Established,
-                FinWait1,
-                FinWait2,
-                LastAck,
-                Listen,
-                SynReceived,
-                SynSent,
-                TimeWait,
-                Unknown,
+                CloseWait = 8,
+                Closed = 1,
+                Closing = 9,
+                DeleteTcb = 12,
+                Established = 5,
+                FinWait1 = 6,
+                FinWait2 = 7,
+                LastAck = 10,
+                Listen = 2,
+                SynReceived = 4,
+                SynSent = 3,
+                TimeWait = 11,
+                Unknown = 0,
             }
 
-            // Generated from `System.Net.NetworkInformation.TcpStatistics` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.TcpStatistics` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class TcpStatistics
             {
                 public abstract System.Int64 ConnectionsAccepted { get; }
@@ -503,7 +503,7 @@ namespace System
                 protected TcpStatistics() => throw null;
             }
 
-            // Generated from `System.Net.NetworkInformation.UdpStatistics` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.UdpStatistics` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class UdpStatistics
             {
                 public abstract System.Int64 DatagramsReceived { get; }
@@ -514,7 +514,7 @@ namespace System
                 protected UdpStatistics() => throw null;
             }
 
-            // Generated from `System.Net.NetworkInformation.UnicastIPAddressInformation` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.UnicastIPAddressInformation` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class UnicastIPAddressInformation : System.Net.NetworkInformation.IPAddressInformation
             {
                 public abstract System.Int64 AddressPreferredLifetime { get; }
@@ -528,7 +528,7 @@ namespace System
                 protected UnicastIPAddressInformation() => throw null;
             }
 
-            // Generated from `System.Net.NetworkInformation.UnicastIPAddressInformationCollection` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.UnicastIPAddressInformationCollection` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UnicastIPAddressInformationCollection : System.Collections.Generic.ICollection<System.Net.NetworkInformation.UnicastIPAddressInformation>, System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.UnicastIPAddressInformation>, System.Collections.IEnumerable
             {
                 public virtual void Add(System.Net.NetworkInformation.UnicastIPAddressInformation address) => throw null;

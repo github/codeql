@@ -19,6 +19,7 @@ import semmle.code.cpp.security.Security
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.TaintTracking
+import semmle.code.cpp.ir.dataflow.TaintTracking2
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.models.implementations.Strcat
 import DataFlow::PathGraph
@@ -77,12 +78,38 @@ class ExecState extends DataFlow::FlowState {
   ExecState() {
     this =
       "ExecState (" + fst.getLocation() + " | " + fst + ", " + snd.getLocation() + " | " + snd + ")" and
-    interestingConcatenation(fst, snd)
+    interestingConcatenation(pragma[only_bind_into](fst), pragma[only_bind_into](snd))
   }
 
   DataFlow::Node getFstNode() { result = fst }
 
   DataFlow::Node getSndNode() { result = snd }
+
+  /** Holds if this is a possible `ExecState` for `sink`. */
+  predicate isFeasibleForSink(DataFlow::Node sink) {
+    any(ExecStateConfiguration conf).hasFlow(snd, sink)
+  }
+}
+
+/**
+ * A `TaintTracking` configuration that's used to find the relevant `ExecState`s for a
+ * given sink. This avoids a cartesian product between all sinks and all `ExecState`s in
+ * `ExecTaintConfiguration::isSink`.
+ */
+class ExecStateConfiguration extends TaintTracking2::Configuration {
+  ExecStateConfiguration() { this = "ExecStateConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) {
+    exists(ExecState state | state.getSndNode() = source)
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    shellCommand(sinkAsArgumentIndirection(sink), _)
+  }
+
+  override predicate isSanitizerOut(DataFlow::Node node) {
+    isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
+  }
 }
 
 class ExecTaintConfiguration extends TaintTracking::Configuration {
@@ -94,8 +121,8 @@ class ExecTaintConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    shellCommand(sinkAsArgumentIndirection(sink), _) and
-    state instanceof ExecState
+    any(ExecStateConfiguration conf).isSink(sink) and
+    state.(ExecState).isFeasibleForSink(sink)
   }
 
   override predicate isAdditionalTaintStep(
@@ -131,5 +158,5 @@ where
   concatResult = sinkNode.getState().(ExecState).getSndNode()
 select sinkAsArgumentIndirection(sinkNode.getNode()), sourceNode, sinkNode,
   "This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to "
-    + callChain, sourceNode, "user input (" + taintCause + ")", concatResult,
+    + callChain + ".", sourceNode, "user input (" + taintCause + ")", concatResult,
   concatResult.toString()

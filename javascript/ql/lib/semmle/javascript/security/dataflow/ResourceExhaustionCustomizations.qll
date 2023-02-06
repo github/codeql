@@ -78,14 +78,8 @@ module ResourceExhaustion {
       exists(DataFlow::SourceNode clazz, DataFlow::InvokeNode invk, int index |
         clazz = DataFlow::globalVarRef("Buffer") and this = invk.getArgument(index)
       |
-        exists(string name |
-          invk = clazz.getAMemberCall(name) and
-          (
-            name = "from" and index = 2 // the length argument
-            or
-            name = ["alloc", "allocUnsafe", "allocUnsafeSlow"] and index = 0 // the buffer size
-          )
-        )
+        invk = clazz.getAMemberCall(["alloc", "allocUnsafe", "allocUnsafeSlow"]) and
+        index = 0 // the buffer size
         or
         invk = clazz.getAnInvocation() and
         (

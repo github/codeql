@@ -1,0 +1,5 @@
+| ginkgo.go:0:0:0:0 | ginkgo.go | test |
+| hello2.go:0:0:0:0 | hello2.go | generated |
+| hello.go:0:0:0:0 | hello.go | generated |
+| httptest.go:0:0:0:0 | httptest.go | test |
+| test1.go:0:0:0:0 | test1.go | test |

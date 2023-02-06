@@ -6,7 +6,7 @@ import csharp
 private import Email::Email
 private import ExternalLocationSink
 private import Html
-private import semmle.code.csharp.security.dataflow.XSSSinks as XSSSinks
+private import semmle.code.csharp.security.dataflow.XSSSinks as XssSinks
 private import semmle.code.csharp.frameworks.system.web.UI
 
 /** A data flow sink of remote user output. */

@@ -25,8 +25,7 @@ module IndirectCommandInjection {
   /**
    * A source of user input from the command-line, considered as a flow source for command injection.
    */
-  private class CommandLineArgumentsArrayAsSource extends Source {
-    CommandLineArgumentsArrayAsSource() { this instanceof CommandLineArgumentsArray }
+  private class CommandLineArgumentsArrayAsSource extends Source instanceof CommandLineArgumentsArray {
   }
 
   /**
@@ -74,7 +73,7 @@ module IndirectCommandInjection {
         ].getMember("parse").getACall()
       or
       // `require('commander').myCmdArgumentName`
-      this = commander().getAMember().getAnImmediateUse()
+      this = commander().getAMember().asSource()
       or
       // `require('commander').opt()` => `{a: ..., b: ...}`
       this = commander().getMember("opts").getACall()
@@ -132,7 +131,7 @@ module IndirectCommandInjection {
   }
 
   /**
-   * An array of command line arguments (`argv`) parsed by the `yargs` libary.
+   * An array of command line arguments (`argv`) parsed by the `yargs` library.
    */
   class YargsArgv extends Source {
     YargsArgv() {

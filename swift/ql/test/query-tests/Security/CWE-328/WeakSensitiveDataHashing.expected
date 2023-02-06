@@ -1,0 +1,42 @@
+edges
+| testCrypto.swift:56:47:56:47 | passwd :  | testCrypto.swift:63:44:63:44 | passwd |
+| testCrypto.swift:60:43:60:43 | credit_card_no :  | testCrypto.swift:61:43:61:43 | credit_card_no |
+| testCrypto.swift:60:43:60:43 | credit_card_no :  | testCrypto.swift:61:43:61:43 | credit_card_no :  |
+| testCrypto.swift:60:43:60:43 | credit_card_no :  | testCrypto.swift:67:44:67:44 | credit_card_no |
+| testCrypto.swift:61:43:61:43 | credit_card_no :  | testCrypto.swift:67:44:67:44 | credit_card_no |
+nodes
+| testCrypto.swift:56:47:56:47 | passwd | semmle.label | passwd |
+| testCrypto.swift:56:47:56:47 | passwd :  | semmle.label | passwd :  |
+| testCrypto.swift:60:43:60:43 | credit_card_no | semmle.label | credit_card_no |
+| testCrypto.swift:60:43:60:43 | credit_card_no :  | semmle.label | credit_card_no :  |
+| testCrypto.swift:61:43:61:43 | credit_card_no | semmle.label | credit_card_no |
+| testCrypto.swift:61:43:61:43 | credit_card_no :  | semmle.label | credit_card_no :  |
+| testCrypto.swift:63:44:63:44 | passwd | semmle.label | passwd |
+| testCrypto.swift:67:44:67:44 | credit_card_no | semmle.label | credit_card_no |
+| testCrypto.swift:90:23:90:23 | passwd | semmle.label | passwd |
+| testCrypto.swift:94:23:94:23 | credit_card_no | semmle.label | credit_card_no |
+| testCrypto.swift:99:23:99:23 | passwd | semmle.label | passwd |
+| testCrypto.swift:103:23:103:23 | credit_card_no | semmle.label | credit_card_no |
+| testCrypto.swift:132:32:132:32 | passwd | semmle.label | passwd |
+| testCrypto.swift:136:32:136:32 | credit_card_no | semmle.label | credit_card_no |
+| testCrypto.swift:141:32:141:32 | passwd | semmle.label | passwd |
+| testCrypto.swift:145:32:145:32 | credit_card_no | semmle.label | credit_card_no |
+subpaths
+#select
+| testCrypto.swift:56:47:56:47 | passwd | testCrypto.swift:56:47:56:47 | passwd | testCrypto.swift:56:47:56:47 | passwd | Insecure hashing algorithm (MD5) depends on $@. | testCrypto.swift:56:47:56:47 | passwd | sensitive data (credential passwd) |
+| testCrypto.swift:60:43:60:43 | credit_card_no | testCrypto.swift:60:43:60:43 | credit_card_no | testCrypto.swift:60:43:60:43 | credit_card_no | Insecure hashing algorithm (MD5) depends on $@. | testCrypto.swift:60:43:60:43 | credit_card_no | sensitive data (private information credit_card_no) |
+| testCrypto.swift:61:43:61:43 | credit_card_no | testCrypto.swift:60:43:60:43 | credit_card_no :  | testCrypto.swift:61:43:61:43 | credit_card_no | Insecure hashing algorithm (MD5) depends on $@. | testCrypto.swift:60:43:60:43 | credit_card_no | sensitive data (private information credit_card_no) |
+| testCrypto.swift:61:43:61:43 | credit_card_no | testCrypto.swift:61:43:61:43 | credit_card_no | testCrypto.swift:61:43:61:43 | credit_card_no | Insecure hashing algorithm (MD5) depends on $@. | testCrypto.swift:61:43:61:43 | credit_card_no | sensitive data (private information credit_card_no) |
+| testCrypto.swift:63:44:63:44 | passwd | testCrypto.swift:56:47:56:47 | passwd :  | testCrypto.swift:63:44:63:44 | passwd | Insecure hashing algorithm (SHA1) depends on $@. | testCrypto.swift:56:47:56:47 | passwd | sensitive data (credential passwd) |
+| testCrypto.swift:63:44:63:44 | passwd | testCrypto.swift:63:44:63:44 | passwd | testCrypto.swift:63:44:63:44 | passwd | Insecure hashing algorithm (SHA1) depends on $@. | testCrypto.swift:63:44:63:44 | passwd | sensitive data (credential passwd) |
+| testCrypto.swift:67:44:67:44 | credit_card_no | testCrypto.swift:60:43:60:43 | credit_card_no :  | testCrypto.swift:67:44:67:44 | credit_card_no | Insecure hashing algorithm (SHA1) depends on $@. | testCrypto.swift:60:43:60:43 | credit_card_no | sensitive data (private information credit_card_no) |
+| testCrypto.swift:67:44:67:44 | credit_card_no | testCrypto.swift:61:43:61:43 | credit_card_no :  | testCrypto.swift:67:44:67:44 | credit_card_no | Insecure hashing algorithm (SHA1) depends on $@. | testCrypto.swift:61:43:61:43 | credit_card_no | sensitive data (private information credit_card_no) |
+| testCrypto.swift:67:44:67:44 | credit_card_no | testCrypto.swift:67:44:67:44 | credit_card_no | testCrypto.swift:67:44:67:44 | credit_card_no | Insecure hashing algorithm (SHA1) depends on $@. | testCrypto.swift:67:44:67:44 | credit_card_no | sensitive data (private information credit_card_no) |
+| testCrypto.swift:90:23:90:23 | passwd | testCrypto.swift:90:23:90:23 | passwd | testCrypto.swift:90:23:90:23 | passwd | Insecure hashing algorithm (MD5) depends on $@. | testCrypto.swift:90:23:90:23 | passwd | sensitive data (credential passwd) |
+| testCrypto.swift:94:23:94:23 | credit_card_no | testCrypto.swift:94:23:94:23 | credit_card_no | testCrypto.swift:94:23:94:23 | credit_card_no | Insecure hashing algorithm (MD5) depends on $@. | testCrypto.swift:94:23:94:23 | credit_card_no | sensitive data (private information credit_card_no) |
+| testCrypto.swift:99:23:99:23 | passwd | testCrypto.swift:99:23:99:23 | passwd | testCrypto.swift:99:23:99:23 | passwd | Insecure hashing algorithm (SHA1) depends on $@. | testCrypto.swift:99:23:99:23 | passwd | sensitive data (credential passwd) |
+| testCrypto.swift:103:23:103:23 | credit_card_no | testCrypto.swift:103:23:103:23 | credit_card_no | testCrypto.swift:103:23:103:23 | credit_card_no | Insecure hashing algorithm (SHA1) depends on $@. | testCrypto.swift:103:23:103:23 | credit_card_no | sensitive data (private information credit_card_no) |
+| testCrypto.swift:132:32:132:32 | passwd | testCrypto.swift:132:32:132:32 | passwd | testCrypto.swift:132:32:132:32 | passwd | Insecure hashing algorithm (MD5) depends on $@. | testCrypto.swift:132:32:132:32 | passwd | sensitive data (credential passwd) |
+| testCrypto.swift:136:32:136:32 | credit_card_no | testCrypto.swift:136:32:136:32 | credit_card_no | testCrypto.swift:136:32:136:32 | credit_card_no | Insecure hashing algorithm (MD5) depends on $@. | testCrypto.swift:136:32:136:32 | credit_card_no | sensitive data (private information credit_card_no) |
+| testCrypto.swift:141:32:141:32 | passwd | testCrypto.swift:141:32:141:32 | passwd | testCrypto.swift:141:32:141:32 | passwd | Insecure hashing algorithm (SHA1) depends on $@. | testCrypto.swift:141:32:141:32 | passwd | sensitive data (credential passwd) |
+| testCrypto.swift:145:32:145:32 | credit_card_no | testCrypto.swift:145:32:145:32 | credit_card_no | testCrypto.swift:145:32:145:32 | credit_card_no | Insecure hashing algorithm (SHA1) depends on $@. | testCrypto.swift:145:32:145:32 | credit_card_no | sensitive data (private information credit_card_no) |

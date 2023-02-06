@@ -35,16 +35,15 @@ module NextJS {
    */
   Module getAModuleWithFallbackPaths() {
     result = getAPagesModule() and
-    exists(DataFlow::FunctionNode staticPaths, Expr fallback |
+    exists(DataFlow::FunctionNode staticPaths, DataFlow::Node fallback |
       staticPaths = result.getAnExportedValue("getStaticPaths").getAFunctionValue() and
-      fallback =
-        staticPaths.getAReturn().getALocalSource().getAPropertyWrite("fallback").getRhs().asExpr() and
-      not fallback.(BooleanLiteral).getValue() = "false"
+      fallback = staticPaths.getAReturn().getALocalSource().getAPropertyWrite("fallback").getRhs() and
+      not fallback.mayHaveBooleanValue(false)
     )
   }
 
   /**
-   * A user defined path parameter in `Next.js`.
+   * A user defined path or query parameter in `Next.js`.
    */
   class NextParams extends RemoteFlowSource {
     NextParams() {
@@ -54,6 +53,10 @@ module NextJS {
             .getAFunctionValue()
             .getParameter(0)
             .getAPropertyRead("params")
+      or
+      this = getServerSidePropsFunction(_).getParameter(0).getAPropertyRead(["params", "query"])
+      or
+      this = nextRouter().getAPropertyRead("query")
     }
 
     override string getSourceType() { result = "Next request parameter" }
@@ -154,30 +157,57 @@ module NextJS {
   /**
    * A Next.js function that is exected on the server for every request, seen as a routehandler.
    */
-  class NextHttpRouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+  class NextHttpRouteHandler extends Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     NextHttpRouteHandler() { this = getServerSidePropsFunction(_) or this = getInitialProps(_) }
+  }
+
+  /**
+   * A function that handles both a request and response from Next.js, seen as a routehandler.
+   */
+  class NextReqResHandler extends Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    DataFlow::ParameterNode req;
+    DataFlow::ParameterNode res;
+
+    NextReqResHandler() {
+      res = this.getAParameter() and
+      req = this.getAParameter() and
+      req.hasUnderlyingType("next", "NextApiRequest") and
+      res.hasUnderlyingType("next", "NextApiResponse")
+    }
+
+    /** Gets the request parameter */
+    DataFlow::ParameterNode getRequest() { result = req }
+
+    /** Gets the response parameter */
+    DataFlow::ParameterNode getResponse() { result = res }
   }
 
   /**
    * A NodeJS HTTP request object in a Next.js page.
    */
   class NextHttpRequestSource extends NodeJSLib::RequestSource {
-    NextHttpRouteHandler rh;
+    Http::RouteHandler rh;
 
-    NextHttpRequestSource() { this = rh.getParameter(0).getAPropertyRead("req") }
+    NextHttpRequestSource() {
+      this = rh.(NextHttpRouteHandler).getParameter(0).getAPropertyRead("req") or
+      this = rh.(NextReqResHandler).getRequest()
+    }
 
-    override HTTP::RouteHandler getRouteHandler() { result = rh }
+    override Http::RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
    * A NodeJS HTTP response object in a Next.js page.
    */
   class NextHttpResponseSource extends NodeJSLib::ResponseSource {
-    NextHttpRouteHandler rh;
+    Http::RouteHandler rh;
 
-    NextHttpResponseSource() { this = rh.getParameter(0).getAPropertyRead("res") }
+    NextHttpResponseSource() {
+      this = rh.(NextHttpRouteHandler).getParameter(0).getAPropertyRead("res") or
+      this = rh.(NextReqResHandler).getResponse()
+    }
 
-    override HTTP::RouteHandler getRouteHandler() { result = rh }
+    override Http::RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
@@ -196,17 +226,17 @@ module NextJS {
    * and we therefore model the routehandler as an Express.js routehandler.
    */
   class NextApiRouteHandler extends DataFlow::FunctionNode, Express::RouteHandler,
-    HTTP::Servers::StandardRouteHandler {
+    Http::Servers::StandardRouteHandler {
     NextApiRouteHandler() {
       exists(Module mod | mod.getFile().getParentContainer() = apiFolder() |
         this = mod.getAnExportedValue("default").getAFunctionValue()
       )
     }
 
-    override Parameter getRouteHandlerParameter(string kind) {
-      kind = "request" and result = getFunction().getParameter(0)
+    override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
+      kind = "request" and result = this.getParameter(0)
       or
-      kind = "response" and result = getFunction().getParameter(1)
+      kind = "response" and result = this.getParameter(1)
     }
   }
 
@@ -225,6 +255,6 @@ module NextJS {
           .getParameter(0)
           .getParameter(0)
           .getMember("router")
-          .getAnImmediateUse()
+          .asSource()
   }
 }

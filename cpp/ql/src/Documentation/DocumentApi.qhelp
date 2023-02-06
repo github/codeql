@@ -15,7 +15,7 @@ As an exception, because their purpose is usually obvious, it is not necessary t
 </overview>
 <recommendation>
 <p>
-Add comments to document the purpose of the function. In particular, ensure that the public API of the function is carefully documented. This reduces the chance that a future change to the function will introduce a defect by changing the API and breaking the expections of the calling functions.
+Add comments to document the purpose of the function. In particular, ensure that the public API of the function is carefully documented. This reduces the chance that a future change to the function will introduce a defect by changing the API and breaking the expectations of the calling functions.
 </p>
 
 </recommendation>

@@ -744,7 +744,7 @@ cached
 private module Cached {
   /**
    * If needed, call this predicate from `ControlFlowGraphImplSpecific.qll` in order to
-   * force a stage-dependency on the `ControlFlowGraphImplShared.qll` stage and therby
+   * force a stage-dependency on the `ControlFlowGraphImplShared.qll` stage and thereby
    * collapsing the two stages.
    */
   cached
@@ -881,7 +881,12 @@ import Cached
  * graph is restricted to nodes from `RelevantNode`.
  */
 module TestOutput {
-  abstract class RelevantNode extends Node { }
+  abstract class RelevantNode extends Node {
+    /**
+     * Gets a string used to resolve ties in node and edge ordering.
+     */
+    string getOrderDisambiguation() { result = "" }
+  }
 
   query predicate nodes(RelevantNode n, string attr, string val) {
     attr = "semmle.order" and
@@ -894,16 +899,21 @@ module TestOutput {
             p
             order by
               l.getFile().getBaseName(), l.getFile().getAbsolutePath(), l.getStartLine(),
-              l.getStartColumn(), l.getEndLine(), l.getEndColumn(), p.toString()
+              l.getStartColumn(), l.getEndLine(), l.getEndColumn(), p.toString(),
+              p.getOrderDisambiguation()
           )
       ).toString()
   }
 
   query predicate edges(RelevantNode pred, RelevantNode succ, string attr, string val) {
     attr = "semmle.label" and
-    exists(SuccessorType t | succ = getASuccessor(pred, t) |
-      if successorTypeIsSimple(t) then val = "" else val = t.toString()
-    )
+    val =
+      strictconcat(SuccessorType t, string s |
+        succ = getASuccessor(pred, t) and
+        if successorTypeIsSimple(t) then s = "" else s = t.toString()
+      |
+        s, ", " order by s
+      )
     or
     attr = "semmle.order" and
     val =
@@ -916,7 +926,8 @@ module TestOutput {
             s
             order by
               l.getFile().getBaseName(), l.getFile().getAbsolutePath(), l.getStartLine(),
-              l.getStartColumn(), l.getEndLine(), l.getEndColumn(), t.toString()
+              l.getStartColumn(), l.getEndLine(), l.getEndColumn(), t.toString(), s.toString(),
+              s.getOrderDisambiguation()
           )
       ).toString()
   }

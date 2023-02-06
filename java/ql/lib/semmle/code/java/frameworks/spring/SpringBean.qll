@@ -16,7 +16,7 @@ class SpringBean extends SpringXmlElement {
   SpringBean() {
     this.getName() = "bean" and
     // Do not capture Camel beans, which are different
-    not this.getNamespace().getURI() = "http://camel.apache.org/schema/spring"
+    not this.getNamespace().getUri() = "http://camel.apache.org/schema/spring"
   }
 
   override string toString() { result = this.getBeanIdentifier() }
@@ -57,7 +57,7 @@ class SpringBean extends SpringXmlElement {
 
   /** Holds if the bean is abstract. */
   predicate isAbstract() {
-    exists(XMLAttribute a |
+    exists(XmlAttribute a |
       a = this.getAttribute("abstract") and
       a.getValue() = "true"
     )
@@ -151,11 +151,9 @@ class SpringBean extends SpringXmlElement {
 
   /** Gets the Java method that corresponds to the bean's `destroy-method`. */
   Method getDestroyMethod() {
-    exists(RefType superType |
-      this.getClass().hasMethod(result, superType) and
-      result.getName() = this.getDestroyMethodName() and
-      result.getNumberOfParameters() = 0
-    )
+    this.getClass().hasMethod(result, _) and
+    result.getName() = this.getDestroyMethodName() and
+    result.getNumberOfParameters() = 0
   }
 
   /** Holds if the bean has a `factory-bean` attribute. */
@@ -216,11 +214,9 @@ class SpringBean extends SpringXmlElement {
 
   /** Gets the Java method that the `init-method` corresponds to. */
   Method getInitMethod() {
-    exists(RefType superType |
-      this.getClass().hasMethod(result, superType) and
-      result.getName() = this.getInitMethodName() and
-      result.getNumberOfParameters() = 0
-    )
+    this.getClass().hasMethod(result, _) and
+    result.getName() = this.getInitMethodName() and
+    result.getNumberOfParameters() = 0
   }
 
   /** Gets the name of the bean's parent bean. */
@@ -255,7 +251,7 @@ class SpringBean extends SpringXmlElement {
 
   /** Holds if the bean has been declared to be a `primary` bean for autowiring. */
   predicate isPrimary() {
-    exists(XMLAttribute a | a = this.getAttribute("primary") and a.getValue() = "true")
+    exists(XmlAttribute a | a = this.getAttribute("primary") and a.getValue() = "true")
   }
 
   /** Gets the scope of the bean. */

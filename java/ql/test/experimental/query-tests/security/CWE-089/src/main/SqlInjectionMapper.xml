@@ -12,7 +12,7 @@
   <sql id="Update_By_Example_Where_Clause">
     <where>
       <if test="test.name != null">
-        and name = ${test.name,jdbcType=VARCHAR}
+        and name = ${ test . name , jdbcType = VARCHAR }
       </if>
       <if test="test.id != null">
         and id = #{test.id}

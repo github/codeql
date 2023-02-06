@@ -18,5 +18,5 @@ import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Untrusted URL redirection due to $@.", source.getNode(),
-  "A user-provided value"
+select sink.getNode(), source, sink, "Untrusted URL redirection depends on a $@.", source.getNode(),
+  "user-provided value"

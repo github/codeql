@@ -57,44 +57,27 @@ construction of the library path.
 First, determine the *query directory* of the ``.ql`` file being
 compiled. Starting with the directory containing the ``.ql`` file, and
 walking up the directory structure, each directory is checked for a
-file called ``queries.xml`` or ``qlpack.yml``. The first directory
+file called ``qlpack.yml`` or ``codeql-pack.yml``. The first directory
 where such a file is found is the query directory. If there is no such
 directory, the directory of the ``.ql`` file itself is the query
 directory.
 
-A ``queries.xml`` file that defines a query directory must always
-contain a single top-level tag named
-``queries``, which has a ``language`` attribute set to the identifier
-of the active database schema (for example, ``<queries
-language="java"/>``).
-
-A ``qlpack.yml`` file defines a :ref:`QL pack <about-ql-packs>`.
+A ``qlpack.yml`` file defines a `CodeQL pack <https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs>`__.
 The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation.
+``codeql-pack.yml`` is an alias for ``qlpack.yml``.
 
-If both a ``queries.xml`` and a ``qlpack.yml`` exist in the same
-directory, the latter takes precedence (and the former is assumed to
-exist for compatibility with older tooling).
-
-The CodeQL CLI and newer tools based on it (such as,
+The CodeQL CLI and tools based on it (such as,
 GitHub code scanning and the CodeQL extension for Visual Studio Code)
-construct a library path using QL packs. For each QL pack
-added to the library path, the QL packs named in its
-``libraryPathDependencies`` will be subsequently added to the library
+construct a library path using CodeQL packs. For each CodeQL pack
+added to the library path, the CodeQL packs named in its
+``dependencies`` will be subsequently added to the library
 path, and the process continues until all packs have been
 resolved. The actual library path consists of the root directories of
-the selected QL packs. This process depends on a mechanism for finding
-QL packs by pack name, as described in the :ref:`CodeQL CLI documentation <codeql-cli>`.
+the selected CodeQL packs. This process depends on a mechanism for finding
+CodeQL packs by pack name and version, as described in the `CodeQL CLI documentation <https://docs.github.com/en/code-security/codeql-cli>`__.
 
-When the query directory contains a ``queries.xml`` file but no
-``qlpack.yml``, the QL pack resolution behaves as if it defines a QL
-pack with no name and a single library path dependency named
-``legacy-libraries-LANGUAGE`` where ``LANGUAGE`` is taken from
-``queries.xml``. The ``github/codeql`` repository provides packs with
-names following this pattern, which themselves depend on the actual
-CodeQL libraries for each language.
-
-When the query directory contains neither a ``queries.xml`` nor
-``qlpack.yml`` file, it is considered to be a QL pack with no name and
+When the query directory contains neither a ``qlpack.yml`` nor
+``codeql-pack.yml`` file, it is considered to be a CodeQL pack with no name and
 no library dependencies. This causes the library path to consist of
 *only* the query directory itself. This is not generally useful,
 but it suffices for running toy examples of QL code that don't
@@ -103,13 +86,25 @@ use information from the database.
 Name resolution
 ---------------
 
-All modules have three environments that dictate name resolution. These are multimaps of keys to declarations.
+All modules have six environments that dictate name resolution. These are multimaps of keys to declarations.
 
 The environments are:
 
 -  The *module environment*, whose keys are module names and whose values are modules.
 -  The *type environment*, whose keys are type names and whose values are types.
 -  The *predicate environment*, whose keys are pairs of predicate names and arities and whose values are predicates.
+-  The *module signature environment*, whose keys are module signature names and whose values are module signatures.
+-  The *type signature environment*, whose keys are type signature names and whose values are type signatures.
+-  The *predicate signature environment*, whose keys are pairs of predicate signature names and arities and whose values are predicate signatures.
+
+For each module, some namespaces are enforced to be disjoint:
+
+-  No keys may be shared between the **module namespace** and the **module signature namespace**.
+-  No keys may be shared between the **type namespace** and the **type signature namespace**.
+-  No keys may be shared between the **module namespace** and the **type signature namespace**.
+-  No keys may be shared between the **type namespace** and the **module signature namespace**.
+-  No keys may be shared between the **predicate namespace** and the **predicate signature namespace**.
+-  No keys may be shared between the **module signature namespace** and the **type signature namespace**.
 
 If not otherwise specified, then the environment for a piece of syntax is the same as the environment of its enclosing syntax.
 
@@ -125,28 +120,47 @@ A *definite* environment has at most one entry for each key. Resolution is uniqu
 Global environments
 ~~~~~~~~~~~~~~~~~~~
 
-The global module environment is empty.
+The global module environment has a single entry ``QlBuiltins``.
 
 The global type environment has entries for the primitive types ``int``, ``float``, ``string``, ``boolean``, and ``date``, as well as any types defined in the database schema.
 
 The global predicate environment includes all the built-in classless predicates, as well as any extensional predicates declared in the database schema.
+
+The three global signature environments are empty.
 
 The program is invalid if any of these environments is not definite.
 
 Module environments
 ~~~~~~~~~~~~~~~~~~~
 
-For each of modules, types, and predicates, a module *imports*, *declares*, and *exports* an environment. These are defined as follows (with X denoting the type of entity we are currently considering):
+For each of modules, types, predicates, module signatures, type signatures, and predicates signatures, we distinguish four environments: *publically declared*, *privately declared*, *exported*, and *visible*.
+These are defined as follows (with X denoting the type of entity we are currently considering):
 
--  The *imported X environment* of a module is defined to be the union of the exported X environments of all the modules which the current module directly imports (see "`Import directives <#import-directives>`__").
+-  The *privately declared X environment* of a module is the multimap of X declarations and aliases in the module itself that are annotated as ``private``.
 
--  The *declared X environment* of a module is the multimap of X declarations in the module itself.
+-  The *publically declared X environment* of a module is the multimap of X declarations and aliases in the module itself that are not annotated as ``private``.
 
--  The *exported X environment* of a module is the union of the exported X environments of the modules which the current module directly imports (excluding ``private`` imports), and the declared X environment of the current module (excluding ``private`` declarations).
+-  The *exported X environment* of a module is the union of
 
--  The *external X environment* of a module is the visible X environment of the enclosing module, if there is one, and otherwise the global X environment.
+    1.  its *publically declared X environment*, and
 
--  The *visible X environment* is the union of the imported X environment, the declared X environment, and the external X environment.
+    2.  for each module which the current module directly imports (excluding ``private`` imports - see "`Import directives <#import-directives>`__"): all entries from the *exported X environment* that have a key not present in the *publically declared X environment* of the current module, and
+
+    3.  if X is ``predicates``, then for each module signature ``S`` that is implemented by the current module: an entry for each module signature default predicate in ``S`` that does not have the same name and arity as any of the entries in the **publically declared predicate environment** of the current module.
+
+-  The *visible X environment* of a module is the union of
+
+    1. its *exported X environment*, and
+
+    2. its *privately declared X environment*, and
+
+    3. the *global X environment*, and
+
+    4. for each module which the current module privately imports: all entries from the *exported X environment* that have a key not present in the *publically declared X environment* of the current module, and
+
+    5. if there is an enclosing module: all entries from the *visible X environment* of the enclosing module that have a key not present in the *publically declared X environment* of the current module, and
+
+    6. all parameters of the current module that are of type X.
 
 The program is invalid if any of these environments is not definite.
 
@@ -160,7 +174,7 @@ Module definitions
 
 A QL module definition has the following syntax:
 
-:: 
+::
 
    module ::= annotation* "module" modulename "{" moduleBody "}"
 
@@ -196,7 +210,7 @@ An import directive refers to a module identifier:
 
    import ::= annotations "import" importModuleId ("as" modulename)?
 
-   qualId ::= simpleId | qualId "." simpleId 
+   qualId ::= simpleId | qualId "." simpleId
 
    importModuleId ::= qualId
                   | importModuleId "::" simpleId
@@ -268,7 +282,7 @@ With the exception of class domain types and character types (which cannot be re
 
    type ::= (moduleId "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
 
-   moduleId ::= simpleId | moduleId "::" simpleId 
+   moduleId ::= simpleId | moduleId "::" simpleId
 
 A type reference is resolved to a type as follows:
 
@@ -598,7 +612,7 @@ An integer literal is a possibly negated sequence of decimal digits (``0`` throu
    0
    42
    123
-   -2147483648 
+   -2147483648
 
 Float literals (float)
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -656,7 +670,7 @@ Various kinds of syntax can have *annotations* applied to them. Annotations are 
                     |   "override"
                     |   "query"
 
-   argsAnnotation ::= "pragma" "[" ("inline" | "noinline" | "nomagic" | "noopt") "]"
+   argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
 
@@ -678,7 +692,7 @@ The following table summarizes the syntactic constructs which can be marked with
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 | ``external``   |         |            |                   | yes                   |         |        |         |         |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``final``      | yes     |            | yes               |                       |         | yes    |         |         |
+| ``final``      | yes     |            | yes               |                       |         | yes    |         | yes     |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 | ``transient``  |         |            |                   | yes                   |         |        |         |         |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
@@ -704,17 +718,21 @@ Parameterized annotations take some additional arguments.
 
 The parameterized annotation ``pragma`` supplies compiler pragmas, and may be applied in various contexts depending on the pragma in question.
 
-+--------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| Pragma       | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases |
-+==============+=========+============+===================+=======================+=========+========+=========+=========+
-| ``inline``   |         | yes        | yes               | yes                   |         |        |         |         |
-+--------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``noinline`` |         | yes        | yes               | yes                   |         |        |         |         |
-+--------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``nomagic``  |         | yes        | yes               | yes                   |         |        |         |         |
-+--------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``noopt``    |         | yes        | yes               | yes                   |         |        |         |         |
-+--------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| Pragma                    | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases |
++===========================+=========+============+===================+=======================+=========+========+=========+=========+
+| ``inline``                |         | yes        | yes               | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``inline_late``           |         |            |                   | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``noinline``              |         | yes        | yes               | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``nomagic``               |         | yes        | yes               | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``noopt``                 |         | yes        | yes               | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``assume_small_delta``    |         | yes        | yes               | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 
 The parameterized annotation ``language`` supplies language pragmas which change the behavior of the language. Language pragmas apply at the scope level, and are inherited by nested scopes.
 
@@ -760,7 +778,7 @@ it is parsed as part of the first declaration.
 Inheriting QLDoc
 ~~~~~~~~~~~~~~~~
 
-If no QLDoc is provided then it may be inherited. 
+If no QLDoc is provided then it may be inherited.
 
 In the case of an alias then it may be inherited from the right-hand side of the alias.
 
@@ -818,7 +836,7 @@ The body of a predicate is of one of three forms:
 ::
 
    optbody ::= ";"
-           |  "{" formula "}" 
+           |  "{" formula "}"
            |  "=" literalId "(" (predicateRef "/" int ("," predicateRef "/" int)*)? ")" "(" (exprs)? ")"
 
 In the first form, with just a semicolon, the predicate is said to not have a body. In the second form, the body of the predicate is the given formula (see "`Formulas <#formulas>`__"). In the third form, the body is a higher-order relation.
@@ -834,19 +852,35 @@ A class definition has the following syntax:
 
 ::
 
-   class ::= qldoc? annotations "class" classname "extends" type ("," type)* "{" member* "}"
+   class ::= qldoc? annotations "class" classname ("extends" type ("," type)*)? ("instanceof" type ("," type)*)? "{" member* "}"
 
 The identifier following the ``class`` keyword is the name of the class.
 
 The types specified after the ``extends`` keyword are the *base types* of the class.
 
-A class domain type is said to *inherit* from the base types of the associated class type, a character type is said to *inherit* from its associated class domain type and a class type is said to *inherit* from its associated character type. In addition, inheritance is transitive: If a type ``A`` inherits from a type ``B``, and ``B`` inherits from a type ``C``, then ``A`` inherits from ``C``.
+The types specified after the ``instanceof`` keyword are the *instanceof types* of the class.
+
+A class type is said to *inherit* from the base types. In addition, inheritance is transitive: If a type ``A`` inherits from a type ``B``, and ``B`` inherits from a type ``C``, then ``A`` inherits from ``C``.
 
 A class adds a mapping from the class name to the class declaration to the current module's declared type environment.
 
 A valid class can be annotated with ``abstract``, ``final``, ``library``, and ``private``. Any other annotation renders the class invalid.
 
 A valid class may not inherit from a final class, from itself, or from more than one primitive type.
+
+A valid class must have at least one base type or instanceof type.
+
+Class dependencies
+~~~~~~~~~~~~~~~~~~
+
+The program is invalid if there is a cycle of class dependencies.
+
+The following are class dependencies:
+- ``C`` depends on ``C.C``
+- ``C.C`` depends on ``C.extends``
+- If ``C`` is abstract then it depends on all classes ``D`` such that ``C`` is a base type of ``D``.
+- ``C.extends`` depends on ``D.D`` for each base type ``D`` of ``C``.
+- ``C.extends`` depends on ``D`` for each instanceof type ``D`` of ``C``.
 
 Class environments
 ~~~~~~~~~~~~~~~~~~
@@ -863,7 +897,9 @@ For each of member predicates and fields a class *inherits* and *declares*, and 
 
 The program is invalid if any of these environments is not definite.
 
-For each of member predicates and fields a domain type *exports* an environment. This is the union of the exported ``X`` environments of types the class inherits from, excluding any elements that are ``overridden`` by another element.
+For each of member predicates and fields a domain type *exports* an environment. We say the *exported X extends environment* is the union of the exported ``X`` environments of types the class inherits from, excluding any elements that are ``overridden`` by another element.
+We say the *exported X instanceof environement* is the union of the exported ``X`` environments of types that a instanceof type inherits from, excluding any elements that are ``overridden`` by another element.
+The *exported X environment* of the domain type is the union of the exported ``X`` extends environment and the exported ``X`` instanceof environement.
 
 Members
 ~~~~~~~
@@ -873,7 +909,7 @@ Each member of a class is either a *character*, a predicate, or a field:
 ::
 
    member ::= character | predicate | field
-   character ::= qldoc? annotations classname "(" ")" "{" formula "}" 
+   character ::= qldoc? annotations classname "(" ")" "{" formula "}"
    field ::= qldoc? annotations var_decl ";"
 
 Characters
@@ -924,7 +960,7 @@ A valid class may not inherit from two different classes that include a field wi
 
 A valid field must override another field if it is annotated ``override``.
 
-When field ``f`` overrides field ``g`` the type of ``f`` must be a subtype of the type of ``g``. ``f`` may not be a final field. 
+When field ``f`` overrides field ``g`` the type of ``f`` must be a subtype of the type of ``g``. ``f`` may not be a final field.
 
 Select clauses
 ~~~~~~~~~~~~~~
@@ -993,8 +1029,8 @@ There are several kinds of expressions:
         |   binop
         |   cast
         |   primary
-        
-   primary ::= eparen 
+
+   primary ::= eparen
            |   literal
            |   variable
            |   super_expr
@@ -1103,13 +1139,9 @@ A super expression has the following syntax:
 
 ::
 
-   super_expr ::= "super" | type "." "super" 
+   super_expr ::= "super" | type "." "super"
 
-For a super expression to be valid, the ``this`` keyword must have a type and value in the typing environment. The type of the expression is the same as the type of ``this`` in the typing environment.
-
-A super expression may only occur in a QL program as the receiver expression for a predicate call.
-
-If a super expression includes a ``type``, then that type must be a class that the enclosing class inherits from.
+For a super expression to be valid, the ``this`` keyword must have a type and value in the typing environment. The type of the expression is the same as the domain type of the type of ``this`` in the typing environment.
 
 The value of a super expression is the same as the value of ``this`` in the named tuple.
 
@@ -1162,13 +1194,6 @@ A valid call with results *resolves* to a set of predicates. The ways a call can
 
 -  If the call has no receiver and the predicate name is a selection identifier, then the qualifier is resolved as a module (see "`Module resolution <#module-resolution>`__"). The identifier is then resolved in the exported predicate environment of the qualifier module.
 
--  If the call has a super expression as the receiver, then it resolves to a member predicate in a class that the enclosing class inherits from:
-    -  If the super expression is unqualified and there is a single class that the current class inherits from, then the super-class is that class. 
-    -  If the super expression is unqualified and there are multiple classes that the current class inherits from, then the super-class is the domain type.
-    -  Otherwise, the super-class is the class named by the qualifier of the super expression. 
-
-   The predicate is resolved by looking up its name and arity in the exported predicate environment of the super-class. 
-
 -  If the type of the receiver is the same as the enclosing class, the predicate is resolved by looking up its name and arity in the visible predicate environment of the class.
 
 -  If the type of the receiver is not the same as the enclosing class, the predicate is resolved by looking up its name and arity in the exported predicate environment of the class or domain type.
@@ -1192,11 +1217,20 @@ If the resolved predicate is built in, then the call may not include a closure. 
 
 If the call includes a closure, then all declared predicate arguments, the enclosing type of the declaration (if it exists), and the result type of the declaration (if it exists) must be compatible. If one of those types is a subtype of ``int``, then all the other arguments must be a subtype of ``int``.
 
+A call to a member predicate may  be a *direct* call:
+ - If the receiver is not a super expression it is not direct.
+ - If the receiver is ``A.super`` and ``A`` is an instanceof type and not a base type then it is not direct.
+ - If the receiver is ``A.super`` and ``A`` is a base type type and not an instanceof type then it is direct.
+ - If the receiver is ``A.super`` and ``A`` is a base type and an instanceof type then the call is not valid.
+ - If the receiver is ``super`` and the member predicate is in the exported member predicate environment of an instanceof type and not in the exported member predicate environment of a base type then it isn't direct.
+ - If the receiver is ``super`` and the member predicate is in the exported member predicate environment of a base type and not in the exported member predicate environment of an instanceof type then it is direct.
+ - If the receiver is ``super`` and the member predicate is in the exported member predicate environment of a base type and in the exported member predicate environment of an instanceof type then the call is not valid.
+
 If the call resolves to a member predicate, then the *receiver values* are as follows. If the call has a receiver, then the receiver values are the values of that receiver. If the call does not have a receiver, then the single receiver value is the value of ``this`` in the contextual named tuple.
 
 The *tuple prefixes* of a call with results include one value from each of the argument expressions' values, in the same order as the order of the arguments. If the call resolves to a non-member predicate, then those values are exactly the tuple prefixes of the call. If the call instead resolves to a member predicate, then the tuple prefixes additionally include a receiver value, ordered before the argument values.
 
-The *matching tuples* of a call with results are all ordered tuples that are one of the tuple prefixes followed by any value of the same type as the call. If the call has no closure, then all matching tuples must additionally satisfy the resolved predicate of the call, unless the receiver is a super expression, in which case they must *directly* satisfy the resolved predicate of the call. If the call has a ``*`` or ``+`` closure, then the matching tuples must satisfy or directly satisfy the associated closure of the resolved predicate.
+The *matching tuples* of a call with results are all ordered tuples that are one of the tuple prefixes followed by any value of the same type as the call. If the call has no closure, then all matching tuples must additionally satisfy the resolved predicate of the call, unless the call is direct in which case they must *directly* satisfy the resolved predicate of the call. If the call has a ``*`` or ``+`` closure, then the matching tuples must satisfy or directly satisfy the associated closure of the resolved predicate.
 
 The values of a call with results are the final elements of each of the call's matching tuples.
 
@@ -1226,15 +1260,15 @@ The rank expression must be present if the aggregate id is ``rank``; otherwise i
 Apart from the presence or absence of the rank variable, all other reduced forms of an aggregation are equivalent to a full form using the following steps:
 
 -  If the formula is omitted, then it is taken to be ``any()``.
--  If there are no aggregation expressions, then either: 
+-  If there are no aggregation expressions, then either:
 
-   - The aggregation id is ``count`` or ``strictcount`` and the expression is taken to be ``1``. 
+   - The aggregation id is ``count`` or ``strictcount`` and the expression is taken to be ``1``.
    - There must be precisely one variable declaration, and the aggregation expression is taken to be a reference to that variable.
 
 -  If the aggregation id is ``concat`` or ``strictconcat`` and it has a single expression then the second expression is taken to be ``""``.
--  If the ``monotonicAggregates`` language pragma is not enabled, or the original formula and variable declarations are both omitted, then the aggregate is transformed as follows: 
+-  If the ``monotonicAggregates`` language pragma is not enabled, or the original formula and variable declarations are both omitted, then the aggregate is transformed as follows:
 
-   - For each aggregation expression ``expr_i``, a fresh variable ``v_i`` is declared with the same type as the expression in addition to the original variable declarations. 
+   - For each aggregation expression ``expr_i``, a fresh variable ``v_i`` is declared with the same type as the expression in addition to the original variable declarations.
    - The new range is the conjunction of the original range and a term ``v_i = expr_i`` for each aggregation expression ``expr_i``.
    - Each original aggregation expression ``expr_i`` is replaced by a new aggregation expression ``v_i``.
 
@@ -1320,11 +1354,11 @@ Expression pragmas can be used to guide optimization.
 The values of an expression pragma are the values of the contained expression.
 
 The type `only_bind_out` hints that uses of the result of the expression pragma should not be used to guide the evaluation of the result of the contained expression.
-When checking to see that all values are bound the compiler does not assume that if the result of the expression pragma is bound then the result of the contained 
+When checking to see that all values are bound the compiler does not assume that if the result of the expression pragma is bound then the result of the contained
 expression is bound.
 
 The type `only_bind_into` hints that uses of the contained expression should not be used to guide the evaluation of the result of the expression pragma.
-When checking to see that all values are bound the compiler does not assume that if the result of the contained expression is bound then the result of the 
+When checking to see that all values are bound the compiler does not assume that if the result of the contained expression is bound then the result of the
 expression pragma is bound.
 
 Ranges
@@ -1355,9 +1389,7 @@ Set literals can be of any type, but the types within a set literal have to be c
 
 The values of a set literal expression are all the values of all the contained element expressions.
 
-Set literals are supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
-
-Since release 2.7.1 of the CodeQL CLI, and release 1.30 of LGTM Enterprise, a trailing comma is allowed in a set literal.
+Since release 2.7.1 of the CodeQL CLI, a trailing comma is allowed in a set literal.
 
 Disambiguation of expressions
 -----------------------------
@@ -1498,7 +1530,7 @@ A comparison formula is two expressions separated by a comparison operator:
 ::
 
    comparison ::= expr compop expr
-   compop ::= "=" | "!=" | "<" | ">" | "<=" | ">="      
+   compop ::= "=" | "!=" | "<" | ">" | "<=" | ">="
 
 A comparison formula matches if there is one value of the left expression that is in the given ordering with one of the values of the right expression. The ordering used is specified in "`Ordering <#ordering>`__." If one of the values is an integer and the other is a float value, then the integer is converted to a float value before the comparison.
 
@@ -1549,13 +1581,15 @@ The identifier is called the *predicate name* of the call.
 
 A call must resolve to a predicate, using the same definition of resolve as for calls with results (see "`Calls with results <#calls-with-results>`__").
 
+A call may be direct using the same definition of direct as for calls with results (see "`Calls with results <#calls-with-results>`__").
+
 The resolved predicate must not have a result type.
 
 If the resolved predicate is a built-in member predicate of a primitive type, then the call may not include a closure. If the call does have a closure, then the call must resolve to a predicate with relational arity of 2.
 
 The *candidate tuples* of a call are the ordered tuples formed by selecting a value from each of the arguments of the call.
 
-If the call has no closure, then it matches whenever one of the candidate tuples satisfies the resolved predicate of the call, unless the call has a super expression as a receiver, in which case the candidate tuple must *directly* satisfy the resolved predicate. If the call has ``*`` or ``+`` closure, then the call matches whenever one of the candidate tuples satisfies or directly satisfies the associated closure of the resolved predicate.
+If the call has no closure, then it matches whenever one of the candidate tuples satisfies the resolved predicate of the call, unless the call is direct, in which case the candidate tuple must *directly* satisfy the resolved predicate. If the call has ``*`` or ``+`` closure, then the call matches whenever one of the candidate tuples satisfies or directly satisfies the associated closure of the resolved predicate.
 
 Disambiguation of formulas
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1582,7 +1616,7 @@ Aliases define new names for existing QL entities.
    alias ::= qldoc? annotations "predicate" literalId "=" predicateRef "/" int ";"
          |   qldoc? annotations "class" classname "=" type ";"
          |   qldoc? annotations "module" modulename "=" moduleId ";"
-       
+
 
 An alias introduces a binding from the new name to the entity referred to by the right-hand side in the current module's declared predicate, type, or module environment respectively.
 
@@ -1941,9 +1975,11 @@ Predicates, and types can *depend* and *strictly depend* on each other. Such dep
 
 -  A predicate containing a predicate call depends on the predicate to which the call resolves. If the call has negative or zero polarity then the dependency is strict.
 
--  A predicate containing a predicate call, which resolves to a member predicate and does not have a ``super`` expression as a qualifier, depends on the dispatch dependencies of the root definitions of the target of the call. If the call has negative or zero polarity then the dependencies are strict. The predicate strictly depends on the strict dispatch dependencies of the root definitions.
+-  A predicate containing a predicate call, which resolves to a member predicate, where the call is not direct, depends on the dispatch dependencies of the root definitions of the target of the call. If the call has negative or zero polarity then the dependencies are strict. The predicate strictly depends on the strict dispatch dependencies of the root definitions.
 
 -  For each class ``C`` in the program, for each base class ``B`` of ``C``, ``C.extends`` depends on ``B.B``.
+
+-  For each class ``C`` in the program, for each instanceof type ``B`` of ``C``, ``C.extends`` depends on ``B``.
 
 -  For each class ``C`` in the program, for each base type ``B`` of ``C`` that is not a class type, ``C.extends`` depends on ``B``.
 
@@ -1973,13 +2009,13 @@ Each layer of the stratification is *populated* in order. To populate a layer, e
 -  To populate a predicate that has a formula as a body, find each named tuple ``t`` that has the following properties:
 
      - The tuple matches the body formula.
-     - The variables should be the predicate's arguments.  
+     - The variables should be the predicate's arguments.
      - If the predicate has a result, then the tuples should additionally have a value for ``result``.
      - If the predicate is a member predicate or characteristic predicate of a class ``C`` then the tuples should additionally have a value for ``this`` and each visible field on the class.
      - The values corresponding to the arguments should all be a member of the declared types of the arguments.
      - The values corresponding to ``result`` should all be a member of the result type.
      - The values corresponding to the fields should all be a member of the declared types of the fields.
-     - If the predicate is a member predicate of a class ``C`` and not a characteristic predicate, then the tuples should additionally extend some tuple in ``C.class``. 
+     - If the predicate is a member predicate of a class ``C`` and not a characteristic predicate, then the tuples should additionally extend some tuple in ``C.class``.
      - If the predicate is a characteristic predicate of a class ``C``, then there should be a tuple ``t'`` in ``C.extends`` such that for each visible field in ``C``, any field that is equal to or overrides a field in ``t'`` should have the same value in ``t``. ``this`` should also map to the same value in ``t`` and ``t'``.
 
    For each such tuple remove any components that correspond to fields and add it to the predicate in the store.
@@ -1991,6 +2027,7 @@ Each layer of the stratification is *populated* in order. To populate a layer, e
 -  To populate the type ``C.extends`` for a class ``C``, identify each named tuple that has the following properties:
 
      - The value of ``this`` is in all non-class base types of ``C``.
+     - The value of ``this`` is in all instanceof types of ``C``.
      - The keys of the tuple are ``this`` and the union of the public fields from each base type.
      - For each class base type ``B`` of ``C`` there is a named tuple with variables from the public fields of ``B`` and ``this`` that the given tuple and some tuple in ``B.B`` both extend.
 
@@ -1998,7 +2035,7 @@ Each layer of the stratification is *populated* in order. To populate a layer, e
 
 -  To populate the type ``C.C`` for a class ``C``, if ``C`` has a characteristic predicate, then add all tuples from that predicate to the store. Otherwise add all tuples ``t`` such that:
 
-     - The variables of ``t`` should be ``this`` and the visible fields of ``C``.  
+     - The variables of ``t`` should be ``this`` and the visible fields of ``C``.
      - The values corresponding to the fields should all be a member of the declared types of the fields.
      - If the predicate is a characteristic predicate of a class ``C``, then there should be a tuple ``t'`` in ``C.extends`` such that for each visible field in ``C``, any field that is equal to or overrides a field in ``t'`` should have the same value in ``t``. ``this`` should also map to the same value in ``t`` and ``t'``.
 
@@ -2033,7 +2070,7 @@ The complete grammar for QL is as follows:
 
    import ::= annotations "import" importModuleId ("as" modulename)?
 
-   qualId ::= simpleId | qualId "." simpleId 
+   qualId ::= simpleId | qualId "." simpleId
 
    importModuleId ::= qualId
                   | importModuleId "::" simpleId
@@ -2065,25 +2102,25 @@ The complete grammar for QL is as follows:
                     |   "override"
                     |   "query"
 
-   argsAnnotation ::= "pragma" "[" ("noinline" | "nomagic" | "noopt") "]"
+   argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
 
    head ::= ("predicate" | type) predicateName "(" var_decls ")"
 
    optbody ::= ";"
-           |  "{" formula "}" 
+           |  "{" formula "}"
            |  "=" literalId "(" (predicateRef "/" int ("," predicateRef "/" int)*)? ")" "(" (exprs)? ")"
 
-   class ::= qldoc? annotations "class" classname "extends" type ("," type)* "{" member* "}"
+   class ::= qldoc? annotations "class" classname ("extends" type ("," type)*)? ("instanceof" type ("," type)*)?  "{" member* "}"
 
    member ::= character | predicate | field
 
-   character ::= qldoc? annotations classname "(" ")" "{" formula "}" 
+   character ::= qldoc? annotations classname "(" ")" "{" formula "}"
 
    field ::= qldoc? annotations var_decl ";"
 
-   moduleId ::= simpleId | moduleId "::" simpleId 
+   moduleId ::= simpleId | moduleId "::" simpleId
 
    type ::= (moduleId "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
 
@@ -2092,7 +2129,7 @@ The complete grammar for QL is as follows:
    alias ::= qldoc? annotations "predicate" literalId "=" predicateRef "/" int ";"
          |  qldoc? annotations "class" classname "=" type ";"
          |  qldoc? annotations "module" modulename "=" moduleId ";"
-         
+
    var_decls ::= (var_decl ("," var_decl)*)?
 
    var_decl ::= type lowerId
@@ -2108,7 +2145,7 @@ The complete grammar for QL is as follows:
            |   instanceof
            |   inrange
            |   call
-           
+
    fparen ::= "(" formula ")"
 
    disjunction ::= formula "or" formula
@@ -2128,7 +2165,7 @@ The complete grammar for QL is as follows:
 
    comparison ::= expr compop expr
 
-   compop ::= "=" | "!=" | "<" | ">" | "<=" | ">="      
+   compop ::= "=" | "!=" | "<" | ">" | "<=" | ">="
 
    instanceof ::= expr "instanceof" type
 
@@ -2146,7 +2183,7 @@ The complete grammar for QL is as follows:
         |   primary
 
 
-   primary ::= eparen 
+   primary ::= eparen
            |   literal
            |   variable
            |   super_expr
@@ -2175,7 +2212,7 @@ The complete grammar for QL is as follows:
 
    variable ::= varname | "this" | "result"
 
-   super_expr ::= "super" | type "." "super" 
+   super_expr ::= "super" | type "." "super"
 
    cast ::= "(" type ")" expr
 
@@ -2184,7 +2221,7 @@ The complete grammar for QL is as follows:
    aggregation ::= aggid ("[" expr "]")? "(" var_decls ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
                |   aggid ("[" expr "]")? "(" as_exprs ("order" "by" aggorderbys)? ")"
                |   "unique" "(" var_decls "|" (formula)? ("|" as_exprs)? ")"
- 
+
    expression_pragma ::= "pragma" "[" expression_pragma_type "]" "(" expr ")"
 
    expression_pragma_type ::= "only_bind_out" | "only_bind_into"
@@ -2199,9 +2236,9 @@ The complete grammar for QL is as follows:
 
    callwithresults ::= predicateRef (closure)? "(" (exprs)? ")"
                    |   primary "." predicateName (closure)? "(" (exprs)? ")"
-                   
+
    range ::= "[" expr ".." expr "]"
-   
+
    setliteral ::= "[" expr ("," expr)* ","? "]"
 
    simpleId ::= lowerId | upperId

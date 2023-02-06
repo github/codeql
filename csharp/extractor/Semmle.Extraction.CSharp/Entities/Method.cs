@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // so there's nothing to extract.
         }
 
-        private void PopulateMethodBody(TextWriter trapFile)
+        protected virtual void PopulateMethodBody(TextWriter trapFile)
         {
             if (!IsSourceDeclaration)
                 return;

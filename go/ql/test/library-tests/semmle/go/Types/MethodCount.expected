@@ -1,0 +1,35 @@
+| * Foo | 1 |
+| * base | 2 |
+| * embedder | 2 |
+| * embedder2 | 2 |
+| * embedder3 | 2 |
+| * embedder4 | 1 |
+| * ptrembedder | 2 |
+| A | 1 |
+| A2 | 1 |
+| AC | 3 |
+| AEmbedded | 1 |
+| AExtended | 2 |
+| B | 2 |
+| C | 2 |
+| Foo | 1 |
+| GenericInterface | 1 |
+| MyInterface | 17 |
+| T | 1 |
+| T3 | 1 |
+| T4 | 1 |
+| base | 1 |
+| embedder | 1 |
+| embedder2 | 1 |
+| embedder3 | 1 |
+| i6 | 1 |
+| i7 | 1 |
+| i8 | 2 |
+| i9 | 2 |
+| i14 | 2 |
+| i15 | 2 |
+| i17 | 1 |
+| i18 | 1 |
+| i19 | 1 |
+| i20 | 1 |
+| ptrembedder | 2 |

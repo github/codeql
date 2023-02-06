@@ -16,7 +16,7 @@ A bean definition is considered to be used if one or more of the following is tr
 <li>The bean is injected in to a constructor or method of a live bean due to autowiring. This includes
 autowiring by annotation (<code>@Autowired</code> or <code>@Inject</code>), and autowiring configured
 by the autowired attribute within bean configuration files.</li>
-<li>The bean is explictly loaded from a factory bean. It is not always possible to determine when
+<li>The bean is explicitly loaded from a factory bean. It is not always possible to determine when
 this occurs, because factory beans are loaded using a <code>String</code> value, which may contain
 arbitrary values.</li>
 <li>The bean is called reflectively by the Spring framework. For example, if the class is a Spring

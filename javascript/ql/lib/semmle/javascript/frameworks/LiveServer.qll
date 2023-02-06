@@ -9,10 +9,10 @@ private module LiveServer {
   /**
    * An expression that imports the live-server package, seen as a server-definition.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition {
-    ServerDefinition() { this = DataFlow::moduleImport("live-server").asExpr() }
+  class ServerDefinition extends Http::Servers::StandardServerDefinition {
+    ServerDefinition() { this = DataFlow::moduleImport("live-server") }
 
-    API::Node getImportNode() { result.getAnImmediateUse().asExpr() = this }
+    API::Node getImportNode() { result.asSource() = this }
   }
 
   /**
@@ -22,26 +22,22 @@ private module LiveServer {
   class RouteHandler extends Connect::RouteHandler, DataFlow::FunctionNode {
     RouteHandler() { this = any(RouteSetup setup).getARouteHandler() }
 
-    override Parameter getRouteHandlerParameter(string kind) {
-      result = ConnectExpressShared::getRouteHandlerParameter(astNode, kind)
+    override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
+      result = ConnectExpressShared::getRouteHandlerParameter(this, kind)
     }
   }
 
   /**
    * The call to `require("live-server").start()`, seen as a route setup.
    */
-  class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends Http::Servers::StandardRouteSetup instanceof API::CallNode {
     ServerDefinition server;
-    API::CallNode call;
 
-    RouteSetup() {
-      call = server.getImportNode().getMember("start").getACall() and
-      this = call.asExpr()
-    }
+    RouteSetup() { this = server.getImportNode().getMember("start").getACall() }
 
     override DataFlow::SourceNode getARouteHandler() {
       exists(DataFlow::SourceNode middleware |
-        middleware = call.getParameter(0).getMember("middleware").getAValueReachingRhs()
+        middleware = super.getParameter(0).getMember("middleware").getAValueReachingSink()
       |
         result = middleware.getAMemberCall(["push", "unshift"]).getArgument(0).getAFunctionValue()
         or
@@ -49,6 +45,6 @@ private module LiveServer {
       )
     }
 
-    override Expr getServer() { result = server }
+    override DataFlow::Node getServer() { result = server }
   }
 }

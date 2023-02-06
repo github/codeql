@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.opensymphony.xwork2.ognl", "OgnlUtil", False, "callMethod", "", "", "Argument[0]", "ognl-injection", "manual"]
+      - ["com.opensymphony.xwork2.ognl", "OgnlUtil", False, "getValue", "", "", "Argument[0]", "ognl-injection", "manual"]
+      - ["com.opensymphony.xwork2.ognl", "OgnlUtil", False, "setValue", "", "", "Argument[0]", "ognl-injection", "manual"]

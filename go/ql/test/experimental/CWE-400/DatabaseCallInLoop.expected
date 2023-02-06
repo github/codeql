@@ -1,0 +1,13 @@
+edges
+| DatabaseCallInLoop.go:7:2:11:2 | range statement | DatabaseCallInLoop.go:9:3:9:41 | call to First |
+| test.go:10:1:12:1 | function declaration | test.go:11:2:11:13 | call to Take |
+| test.go:14:1:16:1 | function declaration | test.go:15:2:15:13 | call to runQuery |
+| test.go:15:2:15:13 | call to runQuery | test.go:10:1:12:1 | function declaration |
+| test.go:20:2:22:2 | for statement | test.go:21:3:21:14 | call to runQuery |
+| test.go:21:3:21:14 | call to runQuery | test.go:10:1:12:1 | function declaration |
+| test.go:24:2:26:2 | for statement | test.go:25:3:25:17 | call to runRunQuery |
+| test.go:25:3:25:17 | call to runRunQuery | test.go:14:1:16:1 | function declaration |
+#select
+| DatabaseCallInLoop.go:9:3:9:41 | call to First | DatabaseCallInLoop.go:7:2:11:2 | range statement | DatabaseCallInLoop.go:9:3:9:41 | call to First | This calls call to First in a $@. | DatabaseCallInLoop.go:7:2:11:2 | range statement | loop |
+| test.go:11:2:11:13 | call to Take | test.go:20:2:22:2 | for statement | test.go:11:2:11:13 | call to Take | This calls call to Take in a $@. | test.go:20:2:22:2 | for statement | loop |
+| test.go:11:2:11:13 | call to Take | test.go:24:2:26:2 | for statement | test.go:11:2:11:13 | call to Take | This calls call to Take in a $@. | test.go:24:2:26:2 | for statement | loop |

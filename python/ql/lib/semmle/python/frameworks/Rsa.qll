@@ -41,6 +41,8 @@ private module Rsa {
     override DataFlow::Node getAnInput() {
       result in [this.getArg(0), this.getArgByName("message")]
     }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 
   /**
@@ -54,6 +56,8 @@ private module Rsa {
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.getName() = "RSA" }
 
     override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("crypto")] }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 
   /**
@@ -79,6 +83,8 @@ private module Rsa {
     override DataFlow::Node getAnInput() {
       result in [this.getArg(0), this.getArgByName("message")]
     }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 
   /**
@@ -100,6 +106,8 @@ private module Rsa {
       or
       result in [this.getArg(1), this.getArgByName("signature")]
     }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 
   /**
@@ -122,6 +130,8 @@ private module Rsa {
     override DataFlow::Node getAnInput() {
       result in [this.getArg(0), this.getArgByName("message")]
     }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 
   /**
@@ -137,5 +147,7 @@ private module Rsa {
     override DataFlow::Node getAnInput() {
       result in [this.getArg(0), this.getArgByName("hash_value")]
     }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 }

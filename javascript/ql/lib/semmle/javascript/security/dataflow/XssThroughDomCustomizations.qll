@@ -67,10 +67,10 @@ module XssThroughDom {
   /**
    * A source for text from a DOM property read by jQuery.
    */
-  class JQueryDOMPropertySource extends DomPropertySource instanceof JQuery::MethodCall {
+  class JQueryDomPropertySource extends DomPropertySource instanceof JQuery::MethodCall {
     string prop;
 
-    JQueryDOMPropertySource() {
+    JQueryDomPropertySource() {
       exists(string methodName |
         this.getMethodName() = methodName and
         this.getNumArgument() = 1 and
@@ -86,6 +86,9 @@ module XssThroughDom {
 
     override string getPropertyName() { result = prop }
   }
+
+  /** DEPRECATED: Alias for JQueryDomPropertySource */
+  deprecated class JQueryDOMPropertySource = JQueryDomPropertySource;
 
   /**
    * A source for text from the DOM from a `d3` method call.
@@ -208,8 +211,7 @@ module XssThroughDom {
         exists(API::Node useForm |
           useForm = API::moduleImport("react-hook-form").getMember("useForm").getReturn()
         |
-          this =
-            useForm.getMember("handleSubmit").getParameter(0).getParameter(0).getAnImmediateUse()
+          this = useForm.getMember("handleSubmit").getParameter(0).getParameter(0).asSource()
           or
           this = useForm.getMember("getValues").getACall()
         )

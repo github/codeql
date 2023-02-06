@@ -226,7 +226,7 @@ class ArgumentsVariable extends Variable {
  */
 class VarRef extends @varref, Identifier, BindingPattern, LexicalRef {
   /** Gets the variable this identifier refers to. */
-  override Variable getVariable() { none() } // Overriden in VarAccess and VarDecl
+  override Variable getVariable() { none() } // Overridden in VarAccess and VarDecl
 
   override string getName() { result = Identifier.super.getName() }
 
@@ -871,6 +871,18 @@ class FieldParameter extends SimpleParameter {
  */
 class DeclarationSpace extends string {
   DeclarationSpace() { this = "variable" or this = "type" or this = "namespace" }
+}
+
+/** Module containing the `DeclarationSpace` constants. */
+module DeclarationSpace {
+  /** Gets the declaration space for variables/values. */
+  DeclarationSpace variable() { result = "variable" }
+
+  /** Gets the declaration space for types. */
+  DeclarationSpace type() { result = "type" }
+
+  /** Gets the declaration space for namespaces. */
+  DeclarationSpace namespace() { result = "namespace" }
 }
 
 /**

@@ -1,50 +1,19 @@
+mod diagnostics;
 mod extractor;
+mod trap;
 
+#[macro_use]
+extern crate lazy_static;
 extern crate num_cpus;
 
 use clap::arg;
-use flate2::write::GzEncoder;
+use encoding::{self};
 use rayon::prelude::*;
+use std::borrow::Cow;
 use std::fs;
-use std::io::{BufRead, BufWriter};
+use std::io::BufRead;
 use std::path::{Path, PathBuf};
 use tree_sitter::{Language, Parser, Range};
-
-enum TrapCompression {
-    None,
-    Gzip,
-}
-
-impl TrapCompression {
-    fn from_env() -> TrapCompression {
-        match std::env::var("CODEQL_RUBY_TRAP_COMPRESSION") {
-            Ok(method) => match TrapCompression::from_string(&method) {
-                Some(c) => c,
-                None => {
-                    tracing::error!("Unknown compression method '{}'; using gzip.", &method);
-                    TrapCompression::Gzip
-                }
-            },
-            // Default compression method if the env var isn't set:
-            Err(_) => TrapCompression::Gzip,
-        }
-    }
-
-    fn from_string(s: &str) -> Option<TrapCompression> {
-        match s.to_lowercase().as_ref() {
-            "none" => Some(TrapCompression::None),
-            "gzip" => Some(TrapCompression::Gzip),
-            _ => None,
-        }
-    }
-
-    fn extension(&self) -> &str {
-        match self {
-            TrapCompression::None => "trap",
-            TrapCompression::Gzip => "trap.gz",
-        }
-    }
-}
 
 /**
  * Gets the number of threads the extractor should use, by reading the
@@ -56,22 +25,34 @@ impl TrapCompression {
  * of cores available on the machine to determine how many threads to use
  * (minimum of 1). If unspecified, should be considered as set to -1."
  */
-fn num_codeql_threads() -> usize {
+fn num_codeql_threads() -> Result<usize, String> {
     let threads_str = std::env::var("CODEQL_THREADS").unwrap_or_else(|_| "-1".to_owned());
     match threads_str.parse::<i32>() {
         Ok(num) if num <= 0 => {
             let reduction = -num as usize;
-            std::cmp::max(1, num_cpus::get() - reduction)
+            Ok(std::cmp::max(1, num_cpus::get() - reduction))
         }
-        Ok(num) => num as usize,
+        Ok(num) => Ok(num as usize),
 
-        Err(_) => {
-            tracing::error!(
-                "Unable to parse CODEQL_THREADS value '{}'; defaulting to 1 thread.",
-                &threads_str
-            );
-            1
-        }
+        Err(_) => Err(format!(
+            "Unable to parse CODEQL_THREADS value '{}'",
+            &threads_str
+        )),
+    }
+}
+
+lazy_static! {
+    static ref CP_NUMBER: regex::Regex = regex::Regex::new("cp([0-9]+)").unwrap();
+}
+
+fn encoding_from_name(encoding_name: &str) -> Option<&(dyn encoding::Encoding + Send + Sync)> {
+    match encoding::label::encoding_from_whatwg_label(encoding_name) {
+        s @ Some(_) => s,
+        None => CP_NUMBER.captures(encoding_name).and_then(|cap| {
+            encoding::label::encoding_from_windows_code_page(
+                str::parse(cap.get(1).unwrap().as_str()).unwrap(),
+            )
+        }),
     }
 }
 
@@ -85,8 +66,21 @@ fn main() -> std::io::Result<()> {
                 .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new("ruby_extractor=warn")),
         )
         .init();
-    tracing::warn!("Support for Ruby is currently in Beta: https://codeql.github.com/docs/codeql-overview/supported-languages-and-frameworks/");
-    let num_threads = num_codeql_threads();
+    let diagnostics = diagnostics::DiagnosticLoggers::new("ruby");
+    let mut main_thread_logger = diagnostics.logger();
+    let num_threads = match num_codeql_threads() {
+        Ok(num) => num,
+        Err(e) => {
+            main_thread_logger.write(
+                main_thread_logger
+                    .message("configuration-error", "Configuration error")
+                    .text(&format!("{}; defaulting to 1 thread.", e))
+                    .status_page()
+                    .severity(diagnostics::Severity::Warning),
+            );
+            1
+        }
+    };
     tracing::info!(
         "Using {} {}",
         num_threads,
@@ -96,6 +90,20 @@ fn main() -> std::io::Result<()> {
             "threads"
         }
     );
+    let trap_compression = match trap::Compression::from_env("CODEQL_RUBY_TRAP_COMPRESSION") {
+        Ok(x) => x,
+        Err(e) => {
+            main_thread_logger.write(
+                main_thread_logger
+                    .message("configuration-error", "Configuration error")
+                    .text(&format!("{}; using gzip.", e))
+                    .status_page()
+                    .severity(diagnostics::Severity::Warning),
+            );
+            trap::Compression::Gzip
+        }
+    };
+    drop(main_thread_logger);
     rayon::ThreadPoolBuilder::new()
         .num_threads(num_threads)
         .build_global()
@@ -118,7 +126,6 @@ fn main() -> std::io::Result<()> {
         .value_of("output-dir")
         .expect("missing --output-dir");
     let trap_dir = PathBuf::from(trap_dir);
-    let trap_compression = TrapCompression::from_env();
 
     let file_list = matches.value_of("file-list").expect("missing --file-list");
     let file_list = fs::File::open(file_list)?;
@@ -137,17 +144,20 @@ fn main() -> std::io::Result<()> {
     lines
         .par_iter()
         .try_for_each(|line| {
+            let mut diagnostics_writer = diagnostics.logger();
             let path = PathBuf::from(line).canonicalize()?;
             let src_archive_file = path_for(&src_archive_dir, &path, "");
             let mut source = std::fs::read(&path)?;
+            let mut needs_conversion = false;
             let code_ranges;
-            let mut trap_writer = extractor::new_trap_writer();
+            let mut trap_writer = trap::Writer::new();
             if path.extension().map_or(false, |x| x == "erb") {
                 tracing::info!("scanning: {}", path.display());
                 extractor::extract(
                     erb,
                     "erb",
                     &erb_schema,
+                    &mut diagnostics_writer,
                     &mut trap_writer,
                     &path,
                     &source,
@@ -168,46 +178,95 @@ fn main() -> std::io::Result<()> {
                 }
                 code_ranges = ranges;
             } else {
+                if let Some(encoding_name) = scan_coding_comment(&source) {
+                    // If the input is already UTF-8 then there is no need to recode the source
+                    // If the declared encoding is 'binary' or 'ascii-8bit' then it is not clear how
+                    // to interpret characters. In this case it is probably best to leave the input
+                    // unchanged.
+                    if !encoding_name.eq_ignore_ascii_case("utf-8")
+                        && !encoding_name.eq_ignore_ascii_case("ascii-8bit")
+                        && !encoding_name.eq_ignore_ascii_case("binary")
+                    {
+                        if let Some(encoding) = encoding_from_name(&encoding_name) {
+                            needs_conversion =
+                                encoding.whatwg_name().unwrap_or_default() != "utf-8";
+                            if needs_conversion {
+                                match encoding
+                                    .decode(&source, encoding::types::DecoderTrap::Replace)
+                                {
+                                    Ok(str) => source = str.as_bytes().to_owned(),
+                                    Err(msg) => {
+                                        needs_conversion = false;
+                                        diagnostics_writer.write(
+                                            diagnostics_writer
+                                                .message(
+                                                    "character-encoding-error",
+                                                    "Character encoding error",
+                                                )
+                                                .text(&format!(
+                                                    "{}: character decoding failure: {} ({})",
+                                                    &path.to_string_lossy(),
+                                                    msg,
+                                                    &encoding_name
+                                                ))
+                                                .status_page()
+                                                .severity(diagnostics::Severity::Warning),
+                                        );
+                                    }
+                                }
+                            }
+                        } else {
+                            diagnostics_writer.write(
+                                diagnostics_writer
+                                    .message("character-encoding-error", "Character encoding error")
+                                    .text(&format!(
+                                        "{}: unknown character encoding: '{}'",
+                                        &path.to_string_lossy(),
+                                        &encoding_name
+                                    ))
+                                    .status_page()
+                                    .severity(diagnostics::Severity::Warning),
+                            );
+                        }
+                    }
+                }
                 code_ranges = vec![];
             }
             extractor::extract(
                 language,
                 "ruby",
                 &schema,
+                &mut diagnostics_writer,
                 &mut trap_writer,
                 &path,
                 &source,
                 &code_ranges,
             )?;
             std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
-            std::fs::copy(&path, &src_archive_file)?;
-            write_trap(&trap_dir, path, trap_writer, &trap_compression)
+            if needs_conversion {
+                std::fs::write(&src_archive_file, &source)?;
+            } else {
+                std::fs::copy(&path, &src_archive_file)?;
+            }
+            write_trap(&trap_dir, path, &trap_writer, trap_compression)
         })
         .expect("failed to extract files");
 
     let path = PathBuf::from("extras");
-    let mut trap_writer = extractor::new_trap_writer();
-    trap_writer.populate_empty_location();
-    write_trap(&trap_dir, path, trap_writer, &trap_compression)
+    let mut trap_writer = trap::Writer::new();
+    extractor::populate_empty_location(&mut trap_writer);
+    write_trap(&trap_dir, path, &trap_writer, trap_compression)
 }
 
 fn write_trap(
     trap_dir: &Path,
     path: PathBuf,
-    trap_writer: extractor::TrapWriter,
-    trap_compression: &TrapCompression,
+    trap_writer: &trap::Writer,
+    trap_compression: trap::Compression,
 ) -> std::io::Result<()> {
     let trap_file = path_for(trap_dir, &path, trap_compression.extension());
     std::fs::create_dir_all(&trap_file.parent().unwrap())?;
-    let trap_file = std::fs::File::create(&trap_file)?;
-    let mut trap_file = BufWriter::new(trap_file);
-    match trap_compression {
-        TrapCompression::None => trap_writer.output(&mut trap_file),
-        TrapCompression::Gzip => {
-            let mut compressed_writer = GzEncoder::new(trap_file, flate2::Compression::fast());
-            trap_writer.output(&mut compressed_writer)
-        }
-    }
+    trap_writer.write_to_file(&trap_file, trap_compression)
 }
 
 fn scan_erb(
@@ -298,4 +357,144 @@ fn path_for(dir: &Path, path: &Path, ext: &str) -> PathBuf {
         }
     }
     result
+}
+
+fn skip_space(content: &[u8], index: usize) -> usize {
+    let mut index = index;
+    while index < content.len() {
+        let c = content[index] as char;
+        // white space except \n
+        let is_space = c == ' ' || ('\t'..='\r').contains(&c) && c != '\n';
+        if !is_space {
+            break;
+        }
+        index += 1;
+    }
+    index
+}
+
+fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<str>> {
+    let mut index = 0;
+    // skip UTF-8 BOM marker if there is one
+    if content.len() >= 3 && content[0] == 0xef && content[1] == 0xbb && content[2] == 0xbf {
+        index += 3;
+    }
+    // skip #! line if there is one
+    if index + 1 < content.len()
+        && content[index] as char == '#'
+        && content[index + 1] as char == '!'
+    {
+        index += 2;
+        while index < content.len() && content[index] as char != '\n' {
+            index += 1
+        }
+        index += 1
+    }
+    index = skip_space(content, index);
+
+    if index >= content.len() || content[index] as char != '#' {
+        return None;
+    }
+    index += 1;
+
+    const CODING: [char; 12] = ['C', 'c', 'O', 'o', 'D', 'd', 'I', 'i', 'N', 'n', 'G', 'g'];
+    let mut word_index = 0;
+    while index < content.len() && word_index < CODING.len() && content[index] as char != '\n' {
+        if content[index] as char == CODING[word_index]
+            || content[index] as char == CODING[word_index + 1]
+        {
+            word_index += 2
+        } else {
+            word_index = 0;
+        }
+        index += 1;
+    }
+    if word_index < CODING.len() {
+        return None;
+    }
+    index = skip_space(content, index);
+
+    if index < content.len() && content[index] as char != ':' && content[index] as char != '=' {
+        return None;
+    }
+    index += 1;
+    index = skip_space(content, index);
+
+    let start = index;
+    while index < content.len() {
+        let c = content[index] as char;
+        if c == '-' || c == '_' || c.is_ascii_alphanumeric() {
+            index += 1;
+        } else {
+            break;
+        }
+    }
+    if index > start {
+        return Some(String::from_utf8_lossy(&content[start..index]));
+    }
+    None
+}
+
+#[test]
+fn test_scan_coding_comment() {
+    let text = "# encoding: utf-8";
+    let result = scan_coding_comment(text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "#coding:utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "# foo\n# encoding: utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, None);
+
+    let text = "# encoding: latin1 encoding: utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("latin1".into()));
+
+    let text = "# encoding: nonsense";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("nonsense".into()));
+
+    let text = "# coding = utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "# CODING = utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "# CoDiNg = utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "# blah blahblahcoding = utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    // unicode BOM is ignored
+    let text = "\u{FEFF}# encoding: utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "\u{FEFF} # encoding: utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "#! /usr/bin/env ruby\n # encoding: utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "\u{FEFF}#! /usr/bin/env ruby\n # encoding: utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    // A #! must be the first thing on a line, otherwise it's a normal comment
+    let text = " #! /usr/bin/env ruby encoding = utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+    let text = " #! /usr/bin/env ruby \n # encoding = utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, None);
 }

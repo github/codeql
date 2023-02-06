@@ -6,14 +6,14 @@ namespace Semmle.Autobuild.Shared
     /// <summary>
     /// A build rule using msbuild.
     /// </summary>
-    public class MsBuildRule : IBuildRule
+    public class MsBuildRule : IBuildRule<AutobuildOptionsShared>
     {
         /// <summary>
         /// The name of the msbuild command.
         /// </summary>
         private const string msBuild = "msbuild";
 
-        public BuildScript Analyse(Autobuilder builder, bool auto)
+        public BuildScript Analyse(IAutobuilder<AutobuildOptionsShared> builder, bool auto)
         {
             if (!builder.ProjectsOrSolutionsToBuild.Any())
                 return BuildScript.Failure;
@@ -27,8 +27,8 @@ namespace Semmle.Autobuild.Shared
             {
                 var firstSolution = builder.ProjectsOrSolutionsToBuild.OfType<ISolution>().FirstOrDefault();
                 vsTools = firstSolution is not null
-                                ? BuildTools.FindCompatibleVcVars(builder.Actions, firstSolution)
-                                : BuildTools.VcVarsAllBatFiles(builder.Actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault();
+                                        ? BuildTools.FindCompatibleVcVars(builder.Actions, firstSolution)
+                                        : BuildTools.VcVarsAllBatFiles(builder.Actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault();
             }
 
             if (vsTools is null && builder.Actions.IsWindows())
@@ -98,8 +98,6 @@ namespace Semmle.Autobuild.Shared
                 command.RunCommand(msBuild);
                 command.QuoteArgument(projectOrSolution.FullPath);
 
-                command.Argument("/p:UseSharedCompilation=false");
-
                 var target = builder.Options.MsBuildTarget ?? "rebuild";
                 var platform = builder.Options.MsBuildPlatform ?? (projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null);
                 var configuration = builder.Options.MsBuildConfiguration ?? (projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null);
@@ -109,7 +107,6 @@ namespace Semmle.Autobuild.Shared
                     command.Argument(string.Format("/p:Platform=\"{0}\"", platform));
                 if (configuration is not null)
                     command.Argument(string.Format("/p:Configuration=\"{0}\"", configuration));
-                command.Argument("/p:MvcBuildViews=true");
 
                 command.Argument(builder.Options.MsBuildArguments);
 
@@ -126,7 +123,7 @@ namespace Semmle.Autobuild.Shared
         ///
         /// Returns <code>null</code> when no version is specified.
         /// </summary>
-        public static VcVarsBatFile? GetVcVarsBatFile(Autobuilder builder)
+        public static VcVarsBatFile? GetVcVarsBatFile<TAutobuildOptions>(IAutobuilder<TAutobuildOptions> builder) where TAutobuildOptions : AutobuildOptionsShared
         {
             VcVarsBatFile? vsTools = null;
 
@@ -157,7 +154,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// Returns a script for downloading `nuget.exe` from nuget.org.
         /// </summary>
-        private static BuildScript DownloadNugetExe(Autobuilder builder, string path) =>
+        private static BuildScript DownloadNugetExe<TAutobuildOptions>(IAutobuilder<TAutobuildOptions> builder, string path) where TAutobuildOptions : AutobuildOptionsShared =>
             BuildScript.Create(_ =>
             {
                 builder.Log(Severity.Info, "Attempting to download nuget.exe");

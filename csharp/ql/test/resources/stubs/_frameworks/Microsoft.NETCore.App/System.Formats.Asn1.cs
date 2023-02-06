@@ -2,39 +2,11 @@
 
 namespace System
 {
-    namespace Diagnostics
-    {
-        namespace CodeAnalysis
-        {
-            /* Duplicate type 'AllowNullAttribute' is not stubbed in this assembly 'System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. */
-
-            /* Duplicate type 'DisallowNullAttribute' is not stubbed in this assembly 'System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. */
-
-            /* Duplicate type 'DoesNotReturnAttribute' is not stubbed in this assembly 'System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. */
-
-            /* Duplicate type 'DoesNotReturnIfAttribute' is not stubbed in this assembly 'System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. */
-
-            /* Duplicate type 'MaybeNullAttribute' is not stubbed in this assembly 'System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. */
-
-            /* Duplicate type 'MaybeNullWhenAttribute' is not stubbed in this assembly 'System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. */
-
-            /* Duplicate type 'MemberNotNullAttribute' is not stubbed in this assembly 'System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. */
-
-            /* Duplicate type 'MemberNotNullWhenAttribute' is not stubbed in this assembly 'System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. */
-
-            /* Duplicate type 'NotNullAttribute' is not stubbed in this assembly 'System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. */
-
-            /* Duplicate type 'NotNullIfNotNullAttribute' is not stubbed in this assembly 'System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. */
-
-            /* Duplicate type 'NotNullWhenAttribute' is not stubbed in this assembly 'System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. */
-
-        }
-    }
     namespace Formats
     {
         namespace Asn1
         {
-            // Generated from `System.Formats.Asn1.Asn1Tag` in `System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Formats.Asn1.Asn1Tag` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct Asn1Tag : System.IEquatable<System.Formats.Asn1.Asn1Tag>
             {
                 public static bool operator !=(System.Formats.Asn1.Asn1Tag left, System.Formats.Asn1.Asn1Tag right) => throw null;
@@ -72,7 +44,7 @@ namespace System
                 public static System.Formats.Asn1.Asn1Tag UtcTime;
             }
 
-            // Generated from `System.Formats.Asn1.AsnContentException` in `System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Formats.Asn1.AsnContentException` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class AsnContentException : System.Exception
             {
                 public AsnContentException() => throw null;
@@ -81,7 +53,7 @@ namespace System
                 public AsnContentException(string message, System.Exception inner) => throw null;
             }
 
-            // Generated from `System.Formats.Asn1.AsnDecoder` in `System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Formats.Asn1.AsnDecoder` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class AsnDecoder
             {
                 public static System.Byte[] ReadBitString(System.ReadOnlySpan<System.Byte> source, System.Formats.Asn1.AsnEncodingRules ruleSet, out int unusedBitCount, out int bytesConsumed, System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
@@ -117,15 +89,15 @@ namespace System
                 public static bool TryReadUInt64(System.ReadOnlySpan<System.Byte> source, System.Formats.Asn1.AsnEncodingRules ruleSet, out System.UInt64 value, out int bytesConsumed, System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
             }
 
-            // Generated from `System.Formats.Asn1.AsnEncodingRules` in `System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum AsnEncodingRules
+            // Generated from `System.Formats.Asn1.AsnEncodingRules` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            public enum AsnEncodingRules : int
             {
-                BER,
-                CER,
-                DER,
+                BER = 0,
+                CER = 1,
+                DER = 2,
             }
 
-            // Generated from `System.Formats.Asn1.AsnReader` in `System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Formats.Asn1.AsnReader` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class AsnReader
             {
                 public AsnReader(System.ReadOnlyMemory<System.Byte> data, System.Formats.Asn1.AsnEncodingRules ruleSet, System.Formats.Asn1.AsnReaderOptions options = default(System.Formats.Asn1.AsnReaderOptions)) => throw null;
@@ -169,7 +141,7 @@ namespace System
                 public bool TryReadUInt64(out System.UInt64 value, System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
             }
 
-            // Generated from `System.Formats.Asn1.AsnReaderOptions` in `System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Formats.Asn1.AsnReaderOptions` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct AsnReaderOptions
             {
                 // Stub generator skipped constructor 
@@ -177,10 +149,10 @@ namespace System
                 public int UtcTimeTwoDigitYearMax { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Formats.Asn1.AsnWriter` in `System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Formats.Asn1.AsnWriter` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class AsnWriter
             {
-                // Generated from `System.Formats.Asn1.AsnWriter+Scope` in `System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                // Generated from `System.Formats.Asn1.AsnWriter+Scope` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public struct Scope : System.IDisposable
                 {
                     public void Dispose() => throw null;
@@ -228,68 +200,60 @@ namespace System
                 public void WriteUtcTime(System.DateTimeOffset value, int twoDigitYearMax, System.Formats.Asn1.Asn1Tag? tag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
             }
 
-            // Generated from `System.Formats.Asn1.TagClass` in `System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum TagClass
+            // Generated from `System.Formats.Asn1.TagClass` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            public enum TagClass : int
             {
-                Application,
-                ContextSpecific,
-                Private,
-                Universal,
+                Application = 64,
+                ContextSpecific = 128,
+                Private = 192,
+                Universal = 0,
             }
 
-            // Generated from `System.Formats.Asn1.UniversalTagNumber` in `System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum UniversalTagNumber
+            // Generated from `System.Formats.Asn1.UniversalTagNumber` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            public enum UniversalTagNumber : int
             {
-                BMPString,
-                BitString,
-                Boolean,
-                Date,
-                DateTime,
-                Duration,
-                Embedded,
-                EndOfContents,
-                Enumerated,
-                External,
-                GeneralString,
-                GeneralizedTime,
-                GraphicString,
-                IA5String,
-                ISO646String,
-                InstanceOf,
-                Integer,
-                Null,
-                NumericString,
-                ObjectDescriptor,
-                ObjectIdentifier,
-                ObjectIdentifierIRI,
-                OctetString,
-                PrintableString,
-                Real,
-                RelativeObjectIdentifier,
-                RelativeObjectIdentifierIRI,
-                Sequence,
-                SequenceOf,
-                Set,
-                SetOf,
-                T61String,
-                TeletexString,
-                Time,
-                TimeOfDay,
-                UTF8String,
-                UniversalString,
-                UnrestrictedCharacterString,
-                UtcTime,
-                VideotexString,
-                VisibleString,
+                BMPString = 30,
+                BitString = 3,
+                Boolean = 1,
+                Date = 31,
+                DateTime = 33,
+                Duration = 34,
+                Embedded = 11,
+                EndOfContents = 0,
+                Enumerated = 10,
+                External = 8,
+                GeneralString = 27,
+                GeneralizedTime = 24,
+                GraphicString = 25,
+                IA5String = 22,
+                ISO646String = 26,
+                InstanceOf = 8,
+                Integer = 2,
+                Null = 5,
+                NumericString = 18,
+                ObjectDescriptor = 7,
+                ObjectIdentifier = 6,
+                ObjectIdentifierIRI = 35,
+                OctetString = 4,
+                PrintableString = 19,
+                Real = 9,
+                RelativeObjectIdentifier = 13,
+                RelativeObjectIdentifierIRI = 36,
+                Sequence = 16,
+                SequenceOf = 16,
+                Set = 17,
+                SetOf = 17,
+                T61String = 20,
+                TeletexString = 20,
+                Time = 14,
+                TimeOfDay = 32,
+                UTF8String = 12,
+                UniversalString = 28,
+                UnrestrictedCharacterString = 29,
+                UtcTime = 23,
+                VideotexString = 21,
+                VisibleString = 26,
             }
-
-        }
-    }
-    namespace Runtime
-    {
-        namespace CompilerServices
-        {
-            /* Duplicate type 'IsReadOnlyAttribute' is not stubbed in this assembly 'System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. */
 
         }
     }

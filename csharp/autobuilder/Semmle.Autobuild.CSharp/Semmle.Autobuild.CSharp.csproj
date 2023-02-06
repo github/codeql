@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<AssemblyName>Semmle.Autobuild.CSharp</AssemblyName>
 		<RootNamespace>Semmle.Autobuild.CSharp</RootNamespace>
 		<ApplicationIcon/>
@@ -11,15 +11,15 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<Folder Include="Properties\"/>
+		<Folder Include="Properties\" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Build" Version="16.11.0"/>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+		<PackageReference Include="Microsoft.Build" Version="17.3.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\extractor\Semmle.Util\Semmle.Util.csproj"/>
-		<ProjectReference Include="..\..\extractor\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj"/>
-		<ProjectReference Include="..\Semmle.Autobuild.Shared\Semmle.Autobuild.Shared.csproj"/>
+		<ProjectReference Include="..\..\extractor\Semmle.Util\Semmle.Util.csproj" />
+		<ProjectReference Include="..\..\extractor\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj" />
+		<ProjectReference Include="..\Semmle.Autobuild.Shared\Semmle.Autobuild.Shared.csproj" />
 	</ItemGroup>
 </Project>

@@ -36,6 +36,9 @@ idParams
 | params.rb:73:27:73:32 | wibble | wibble |
 | params.rb:77:16:77:18 | val | val |
 | params.rb:81:31:81:35 | array | array |
+| params.rb:86:14:86:14 | x | x |
+| params.rb:89:31:89:35 | array | array |
+| params.rb:94:36:94:39 | hash | hash |
 blockParams
 | params.rb:46:28:46:33 | &block | block |
 | params.rb:62:29:62:34 | &block | block |
@@ -90,6 +93,10 @@ paramsInMethods
 | params.rb:73:1:74:3 | method_with_nil_splat | 1 | params.rb:73:35:73:39 | **nil | HashSplatNilParameter |
 | params.rb:81:1:84:3 | anonymous_block_parameter | 0 | params.rb:81:31:81:35 | array | SimpleParameter |
 | params.rb:81:1:84:3 | anonymous_block_parameter | 1 | params.rb:81:38:81:38 | & | BlockParameter |
+| params.rb:89:1:91:3 | anonymous_splat_parameter | 0 | params.rb:89:31:89:35 | array | SimpleParameter |
+| params.rb:89:1:91:3 | anonymous_splat_parameter | 1 | params.rb:89:38:89:38 | * | SplatParameter |
+| params.rb:94:1:96:3 | anonymous_hash_splat_parameter | 0 | params.rb:94:36:94:39 | hash | SimpleParameter |
+| params.rb:94:1:96:3 | anonymous_hash_splat_parameter | 1 | params.rb:94:42:94:43 | ** | HashSplatParameter |
 paramsInBlocks
 | params.rb:9:11:11:3 | do ... end | 0 | params.rb:9:15:9:17 | key | SimpleParameter |
 | params.rb:9:11:11:3 | do ... end | 1 | params.rb:9:20:9:24 | value | SimpleParameter |
@@ -103,6 +110,7 @@ paramsInBlocks
 | params.rb:65:25:67:3 | do ... end | 1 | params.rb:65:35:65:37 | age | OptionalParameter |
 | params.rb:77:12:78:3 | do ... end | 0 | params.rb:77:16:77:18 | val | SimpleParameter |
 | params.rb:77:12:78:3 | do ... end | 1 | params.rb:77:21:77:25 | **nil | HashSplatNilParameter |
+| params.rb:86:11:86:31 | { ... } | 0 | params.rb:86:14:86:14 | x | SimpleParameter |
 paramsInLambdas
 | params.rb:14:7:14:33 | -> { ... } | 0 | params.rb:14:11:14:13 | foo | SimpleParameter |
 | params.rb:14:7:14:33 | -> { ... } | 1 | params.rb:14:16:14:18 | bar | SimpleParameter |
@@ -162,3 +170,8 @@ params
 | params.rb:77:21:77:25 | **nil | 1 | HashSplatNilParameter |
 | params.rb:81:31:81:35 | array | 0 | SimpleParameter |
 | params.rb:81:38:81:38 | & | 1 | BlockParameter |
+| params.rb:86:14:86:14 | x | 0 | SimpleParameter |
+| params.rb:89:31:89:35 | array | 0 | SimpleParameter |
+| params.rb:89:38:89:38 | * | 1 | SplatParameter |
+| params.rb:94:36:94:39 | hash | 0 | SimpleParameter |
+| params.rb:94:42:94:43 | ** | 1 | HashSplatParameter |

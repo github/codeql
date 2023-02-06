@@ -10,6 +10,9 @@
 
 import ql
 
-from AstNode n
-where n.hasAnnotation("library") and not n.hasAnnotation("deprecated")
+from AstNode n, Annotation library
+where
+  library = n.getAnAnnotation() and
+  library.getName() = "library" and
+  not n.hasAnnotation("deprecated")
 select n, "Don't use the library annotation."

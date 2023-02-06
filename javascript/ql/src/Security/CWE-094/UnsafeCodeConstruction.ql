@@ -1,5 +1,5 @@
 /**
- * @name Unsafe code constructed from libary input
+ * @name Unsafe code constructed from library input
  * @description Using externally controlled strings to construct code may allow a malicious
  *              user to execute arbitrary code.
  * @kind path-problem
@@ -17,7 +17,8 @@ import javascript
 import DataFlow::PathGraph
 import semmle.javascript.security.dataflow.UnsafeCodeConstruction::UnsafeCodeConstruction
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and is later $@.", source.getNode(),
-  "Library input", sink.getNode().(Sink).getCodeSink(), "interpreted as code"
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
+where cfg.hasFlowPath(source, sink) and sinkNode = sink.getNode()
+select sink.getNode(), source, sink,
+  "This " + sinkNode.getSinkType() + " which depends on $@ is later $@.", source.getNode(),
+  "library input", sinkNode.getCodeSink(), "interpreted as code"

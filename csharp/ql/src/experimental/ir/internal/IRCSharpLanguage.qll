@@ -8,6 +8,12 @@ class OpaqueTypeTag = CSharp::ValueOrRefType;
 
 class Function = CSharp::Callable;
 
+class GlobalVariable extends CSharp::Field {
+  GlobalVariable() { this.isStatic() }
+}
+
+class Declaration = CSharp::Declaration;
+
 class Location = CSharp::Location;
 
 class UnknownLocation = CSharp::EmptyLocation;
@@ -115,7 +121,7 @@ string getIdentityString(Function func) { result = func.getLabel() }
 
 predicate hasCaseEdge(string minValue, string maxValue) {
   // TODO: Need to handle pattern matching
-  exists(CSharp::CaseStmt cst | hasCaseEdge(cst, minValue, maxValue))
+  hasCaseEdge(_, minValue, maxValue)
 }
 
 predicate hasPositionalArgIndex(int argIndex) {

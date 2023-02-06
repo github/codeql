@@ -14,12 +14,15 @@ import codeql_ql.bugs.PathProblemQueryQuery
 
 from Query query, string msg, AstNode pred
 where
-  query.isPathProblem() and
-  not query.hasEdgesRelation(_) and
-  pred = any(TopLevel top | top.getLocation().getFile() = query) and // <- dummy value
-  msg = "A path-problem query should have a edges relation."
-  or
-  query.isProblem() and
-  query.hasEdgesRelation(pred) and
-  msg = "A problem query should not have a $@."
+  (
+    query.isPathProblem() and
+    not query.hasEdgesRelation(_) and
+    pred = any(TopLevel top | top.getLocation().getFile() = query) and // <- dummy value
+    msg = "A path-problem query should have a edges relation."
+    or
+    query.isProblem() and
+    query.hasEdgesRelation(pred) and
+    msg = "A problem query should not have a $@."
+  ) and
+  not query.getAbsolutePath().matches("%/test/%")
 select query, msg, pred, "edges relation"

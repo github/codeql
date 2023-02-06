@@ -243,7 +243,7 @@ predicate class_method(
  * Holds if the literal corresponding to the control flow node `n` has class `cls`.
  *
  * Helper predicate for `literal_instantiation`. Prevents a bad join with
- * `PointsToContext::appliesTo` from occuring.
+ * `PointsToContext::appliesTo` from occurring.
  */
 pragma[nomagic]
 private predicate literal_node_class(ControlFlowNode n, ClassObjectInternal cls) {
@@ -334,7 +334,7 @@ predicate call3(
 }
 
 bindingset[self, function]
-predicate method_binding(
+deprecated predicate method_binding(
   AttrNode instantiation, ObjectInternal self, CallableObjectInternal function,
   PointsToContext context
 ) {
@@ -357,7 +357,9 @@ predicate method_binding(
 
 /** Helper for method_binding */
 pragma[noinline]
-predicate receiver(AttrNode instantiation, PointsToContext context, ObjectInternal obj, string name) {
+deprecated predicate receiver(
+  AttrNode instantiation, PointsToContext context, ObjectInternal obj, string name
+) {
   PointsToInternal::pointsTo(instantiation.getObject(name), context, obj, _)
 }
 

@@ -1,0 +1,18 @@
+name: "go"
+display_name: "Go"
+version: 0.1.0
+pull_request_triggers:
+  - "**/go.mod"
+  - "**/glide.yaml"
+  - "**/Gopkg.toml"
+column_kind: "utf8"
+github_api_languages:
+  - Go
+scc_languages:
+  - Go
+file_types:
+  - name: go
+    display_name: Go
+    extensions:
+      - .go
+legacy_qltest_extraction: true

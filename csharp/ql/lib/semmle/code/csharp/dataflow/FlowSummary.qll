@@ -1,6 +1,7 @@
 /** Provides classes and predicates for defining flow summaries. */
 
 import csharp
+private import dotnet
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch as DataFlowDispatch
 
@@ -96,7 +97,7 @@ module SummaryComponentStack {
     result = push(SummaryComponent::element(), container)
   }
 
-  /** Gets a stack representing a propery `p` of `object`. */
+  /** Gets a stack representing a property `p` of `object`. */
   SummaryComponentStack propertyOf(Property p, SummaryComponentStack object) {
     result = push(SummaryComponent::property(p), object)
   }
@@ -134,28 +135,6 @@ private class RecordConstructorFlow extends SummarizedCallable {
       input = SummaryComponentStack::argument(i) and
       output = SummaryComponentStack::propertyOf(p, SummaryComponentStack::return()) and
       preservesValue = true
-    )
-  }
-}
-
-private class SummarizedCallableDefaultClearsContent extends Impl::Public::SummarizedCallable {
-  SummarizedCallableDefaultClearsContent() {
-    this instanceof Impl::Public::SummarizedCallable or none()
-  }
-
-  // By default, we assume that all stores into arguments are definite
-  override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
-    exists(SummaryComponentStack output, SummaryComponent target |
-      this.propagatesFlow(_, output, _) and
-      output.drop(_) =
-        SummaryComponentStack::push(SummaryComponent::content(content),
-          SummaryComponentStack::singleton(target)) and
-      not content instanceof DataFlow::ElementContent
-    |
-      target = SummaryComponent::argument(pos.getPosition())
-      or
-      target = SummaryComponent::qualifier() and
-      pos.isThisParameter()
     )
   }
 }

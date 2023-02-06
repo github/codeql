@@ -4,11 +4,12 @@
  * extension points for adding your own.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.Concepts
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.frameworks.Files
+private import codeql.ruby.frameworks.core.IO
 
 /**
  * Classes and predicates for reasoning about download of sensitive file through insecure connection vulnerabilities.
@@ -134,7 +135,7 @@ module InsecureDownload {
    * In other words, if the URL is HTTP and the extension is in `unsafeExtension()`.
    */
   private class HttpResponseAsSink extends Sink {
-    private HTTP::Client::Request req;
+    private Http::Client::Request req;
 
     HttpResponseAsSink() {
       this = req.getAUrlPart() and
@@ -142,7 +143,7 @@ module InsecureDownload {
       hasUnsafeExtension(req.getAUrlPart().asExpr().getConstantValue().getString())
     }
 
-    override DataFlow::Node getDownloadCall() { result.asExpr().getExpr() = req }
+    override DataFlow::Node getDownloadCall() { result = req }
 
     override DataFlow::FlowState getALabel() {
       result instanceof Label::SensitiveInsecure
@@ -154,7 +155,7 @@ module InsecureDownload {
   /**
    * Gets a node for the response from `request`, type-tracked using `t`.
    */
-  DataFlow::LocalSourceNode clientRequestResponse(TypeTracker t, HTTP::Client::Request request) {
+  DataFlow::LocalSourceNode clientRequestResponse(TypeTracker t, Http::Client::Request request) {
     t.start() and
     result = request.getResponseBody()
     or
@@ -165,7 +166,7 @@ module InsecureDownload {
    * A url that is downloaded through an insecure connection, where the result ends up being saved to a sensitive location.
    */
   class FileWriteSink extends Sink {
-    HTTP::Client::Request request;
+    Http::Client::Request request;
 
     FileWriteSink() {
       // For example, in:
@@ -192,6 +193,6 @@ module InsecureDownload {
 
     override DataFlow::FlowState getALabel() { result instanceof Label::Insecure }
 
-    override DataFlow::Node getDownloadCall() { result.asExpr().getExpr() = request }
+    override DataFlow::Node getDownloadCall() { result = request }
   }
 }

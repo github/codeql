@@ -9,6 +9,7 @@ private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowImplConsistency
+private import DataFlowNodes
 import DataFlowNodes::Private
 
 private newtype TReturnKind = TNormalReturnKind()
@@ -83,6 +84,8 @@ predicate jumpStep(Node node1, Node node2) {
   or
   any(AdditionalValueStep a).step(node1, node2) and
   node1.getEnclosingCallable() != node2.getEnclosingCallable()
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(node1, node2)
 }
 
 /**
@@ -164,7 +167,9 @@ predicate clearsContent(Node n, Content c) {
  * Holds if the value that is being tracked is expected to be stored inside content `c`
  * at node `n`.
  */
-predicate expectsContent(Node n, ContentSet c) { none() }
+predicate expectsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n, c)
+}
 
 /**
  * Gets a representative (boxed) type for `t` for the purpose of pruning
@@ -224,30 +229,30 @@ predicate compatibleTypes(Type t1, Type t2) {
 
 /** A node that performs a type cast. */
 class CastNode extends ExprNode {
-  CastNode() { this.getExpr() instanceof CastExpr }
+  CastNode() { this.getExpr() instanceof CastingExpr }
 }
 
 private newtype TDataFlowCallable =
-  TCallable(Callable c) or
+  TSrcCallable(Callable c) or
+  TSummarizedCallable(SummarizedCallable c) or
   TFieldScope(Field f)
 
 class DataFlowCallable extends TDataFlowCallable {
-  Callable asCallable() { this = TCallable(result) }
+  Callable asCallable() { this = TSrcCallable(result) }
+
+  SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
   Field asFieldScope() { this = TFieldScope(result) }
 
-  RefType getDeclaringType() {
-    result = this.asCallable().getDeclaringType() or
-    result = this.asFieldScope().getDeclaringType()
-  }
-
   string toString() {
     result = this.asCallable().toString() or
+    result = "Synthetic: " + this.asSummarizedCallable().toString() or
     result = "Field scope: " + this.asFieldScope().toString()
   }
 
   Location getLocation() {
     result = this.asCallable().getLocation() or
+    result = this.asSummarizedCallable().getLocation() or
     result = this.asFieldScope().getLocation()
   }
 }
@@ -315,7 +320,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   /** Gets the data flow node that this call targets. */
   Node getReceiver() { result = receiver }
 
-  override DataFlowCallable getEnclosingCallable() { result = c }
+  override DataFlowCallable getEnclosingCallable() { result.asSummarizedCallable() = c }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
@@ -374,9 +379,8 @@ predicate forceHighPrecision(Content c) {
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
-  n instanceof SummaryNode
-  or
-  n.(ParameterNode).isParameterOf(any(SummarizedCallable c).asCallable(), _)
+  n instanceof SummaryNode or
+  n instanceof SummaryParameterNode
 }
 
 class LambdaCallKind = Method; // the "apply" method in the functional interface
@@ -415,6 +419,48 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+}
+
+/** An approximated `Content`. */
+class ContentApprox extends TContentApprox {
+  /** Gets a textual representation of this approximated `Content`. */
+  string toString() {
+    exists(string firstChar |
+      this = TFieldContentApprox(firstChar) and
+      result = "approximated field " + firstChar
+    )
+    or
+    this = TArrayContentApprox() and
+    result = "[]"
+    or
+    this = TCollectionContentApprox() and
+    result = "<element>"
+    or
+    this = TMapKeyContentApprox() and
+    result = "<map.key>"
+    or
+    this = TMapValueContentApprox() and
+    result = "<map.value>"
+    or
+    this = TSyntheticFieldApproxContent() and
+    result = "approximated synthetic field"
+  }
+}
+
+/** Gets an approximated value for content `c`. */
+pragma[nomagic]
+ContentApprox getContentApprox(Content c) {
+  result = TFieldContentApprox(approximateFieldContent(c))
+  or
+  c instanceof ArrayContent and result = TArrayContentApprox()
+  or
+  c instanceof CollectionContent and result = TCollectionContentApprox()
+  or
+  c instanceof MapKeyContent and result = TMapKeyContentApprox()
+  or
+  c instanceof MapValueContent and result = TMapValueContentApprox()
+  or
+  c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
 }
 
 private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {

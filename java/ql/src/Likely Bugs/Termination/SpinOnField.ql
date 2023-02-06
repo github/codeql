@@ -17,7 +17,7 @@ import java
 class ComparisonOrEqTestExpr extends Expr {
   ComparisonOrEqTestExpr() {
     this instanceof ComparisonExpr or
-    this instanceof EqualityTest
+    this instanceof ReferenceEqualityTest
   }
 }
 

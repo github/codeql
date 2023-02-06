@@ -133,12 +133,12 @@ class ConstantExpr extends Expr {
       )
       or
       (
-        b instanceof EQExpr and
+        b instanceof ValueOrReferenceEqualsExpr and
         if left = right then result = true else result = false
       )
       or
       (
-        b instanceof NEExpr and
+        b instanceof ValueOrReferenceNotEqualsExpr and
         if left != right then result = true else result = false
       )
     )

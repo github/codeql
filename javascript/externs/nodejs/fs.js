@@ -1696,4 +1696,3 @@ module.exports.R_OK = fs.R_OK;
 module.exports.W_OK = fs.W_OK;
 
 module.exports.X_OK = fs.X_OK;
-

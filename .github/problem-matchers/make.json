@@ -1,0 +1,13 @@
+{
+    "problemMatcher": [
+        {
+            "owner": "make",
+            "pattern": [
+                {
+                    "regexp": "^(make: \\*\\*\\* .*)$",
+                    "message": 1
+                }
+            ]
+        }
+    ]
+}

@@ -24,3 +24,15 @@ eval(atob(document.location.hash.substring(1)));
 
 // NOT OK
 $('<a>').attr("onclick", location.search.substring(1));
+
+(function test() {
+    var source = document.location.search.replace(/.*\bfoo\s*=\s*([^;]*).*/, "$1"); 
+
+    new Function(source); // NOT OK
+
+    Function(source); // NOT OK
+
+    new Function("a", "b", source); // NOT OK
+
+    new Function(...["a", "b"], source); // NOT OK
+})();

@@ -37,6 +37,6 @@ edges
 | typedClient.ts:23:33:23:33 | v | typedClient.ts:23:27:23:35 | { id: v } |
 | typedClient.ts:23:33:23:33 | v | typedClient.ts:23:27:23:35 | { id: v } |
 #select
-| typedClient.ts:14:24:14:32 | { id: v } | typedClient.ts:13:22:13:29 | req.body | typedClient.ts:14:24:14:32 | { id: v } | This query depends on $@. | typedClient.ts:13:22:13:29 | req.body | a user-provided value |
-| typedClient.ts:22:27:22:35 | { id: v } | typedClient.ts:21:22:21:29 | req.body | typedClient.ts:22:27:22:35 | { id: v } | This query depends on $@. | typedClient.ts:21:22:21:29 | req.body | a user-provided value |
-| typedClient.ts:23:27:23:35 | { id: v } | typedClient.ts:21:22:21:29 | req.body | typedClient.ts:23:27:23:35 | { id: v } | This query depends on $@. | typedClient.ts:21:22:21:29 | req.body | a user-provided value |
+| typedClient.ts:14:24:14:32 | { id: v } | typedClient.ts:13:22:13:29 | req.body | typedClient.ts:14:24:14:32 | { id: v } | This query depends on a $@. | typedClient.ts:13:22:13:29 | req.body | user-provided value |
+| typedClient.ts:22:27:22:35 | { id: v } | typedClient.ts:21:22:21:29 | req.body | typedClient.ts:22:27:22:35 | { id: v } | This query depends on a $@. | typedClient.ts:21:22:21:29 | req.body | user-provided value |
+| typedClient.ts:23:27:23:35 | { id: v } | typedClient.ts:21:22:21:29 | req.body | typedClient.ts:23:27:23:35 | { id: v } | This query depends on a $@. | typedClient.ts:21:22:21:29 | req.body | user-provided value |

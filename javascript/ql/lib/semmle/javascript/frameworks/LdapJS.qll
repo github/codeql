@@ -61,10 +61,10 @@ module LdapJS {
 
     SearchFilter() {
       options = ldapClient().getMember("search").getACall().getParameter(1) and
-      this = options.getARhs()
+      this = options.asSink()
     }
 
-    override DataFlow::Node getInput() { result = options.getMember("filter").getARhs() }
+    override DataFlow::Node getInput() { result = options.getMember("filter").asSink() }
 
     override DataFlow::Node getOutput() { result = this }
   }

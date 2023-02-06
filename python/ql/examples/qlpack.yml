@@ -3,4 +3,4 @@ groups:
   - python
   - examples
 dependencies:
-  codeql/python-all: "*"
+  codeql/python-all: ${workspace}

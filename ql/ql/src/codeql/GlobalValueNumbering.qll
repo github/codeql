@@ -129,6 +129,7 @@ private predicate classPredicateCallValueNumber(
 
 private predicate literalValueNumber(Literal lit, string value, Type t) {
   lit.(String).getValue() = value and
+  value.length() <= 50 and
   t instanceof StringClass
   or
   lit.(Integer).getValue().toString() = value and
@@ -236,7 +237,7 @@ private TValueNumber nonUniqueValueNumber(Expr e) {
 
 /** Gets the value number of an expression `e`. */
 cached
-TValueNumber valueNumber(Expr e) {
+ValueNumber valueNumber(Expr e) {
   result = nonUniqueValueNumber(e)
   or
   uniqueValueNumber(e) and

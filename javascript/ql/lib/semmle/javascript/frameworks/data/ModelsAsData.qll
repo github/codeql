@@ -23,10 +23,10 @@ import Shared::ModelInput as ModelInput
 import Shared::ModelOutput as ModelOutput
 
 /**
- * A remote flow source originating from a CSV source row.
+ * A remote flow source originating from a MaD source row.
  */
-private class RemoteFlowSourceFromCsv extends RemoteFlowSource {
-  RemoteFlowSourceFromCsv() { this = ModelOutput::getASourceNode("remote").getAnImmediateUse() }
+private class RemoteFlowSourceFromMaD extends RemoteFlowSource {
+  RemoteFlowSourceFromMaD() { this = ModelOutput::getASourceNode("remote").asSource() }
 
   override string getSourceType() { result = "Remote flow" }
 }
@@ -37,8 +37,8 @@ private class RemoteFlowSourceFromCsv extends RemoteFlowSource {
 private predicate summaryStepNodes(DataFlow::Node pred, DataFlow::Node succ, string kind) {
   exists(API::Node predNode, API::Node succNode |
     Specific::summaryStep(predNode, succNode, kind) and
-    pred = predNode.getARhs() and
-    succ = succNode.getAnImmediateUse()
+    pred = predNode.asSink() and
+    succ = succNode.asSource()
   )
 }
 

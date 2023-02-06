@@ -58,7 +58,7 @@ predicate hasReturnValue(Function func) { not func.getUnspecifiedType() instance
  * Represents the IR translation of a function. This is the root elements for
  * all other elements associated with this function.
  */
-class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
+class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
   Function func;
 
   TranslatedFunction() { this = TTranslatedFunction(func) }

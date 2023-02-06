@@ -151,7 +151,7 @@ module Templating {
 
     /** Gets the data flow node representing the initialization of the given variable in this scope. */
     DataFlow::Node getVariableInit(string name) {
-      result = DataFlow::ssaDefinitionNode(SSA::implicitInit(this.getScope().getVariable(name)))
+      result = DataFlow::ssaDefinitionNode(Ssa::implicitInit(this.getScope().getVariable(name)))
     }
 
     /** Gets a data flow node corresponding to a use of the given template variable within this top-level. */
@@ -174,23 +174,19 @@ module Templating {
   /**
    * A place where a template is instantiated or rendered.
    */
-  class TemplateInstantiation extends DataFlow::Node {
-    TemplateInstantiation::Range range;
-
-    TemplateInstantiation() { this = range }
-
+  class TemplateInstantiation extends DataFlow::Node instanceof TemplateInstantiation::Range {
     /** Gets a data flow node that refers to the instantiated template string, if any. */
-    DataFlow::SourceNode getOutput() { result = range.getOutput() }
+    DataFlow::SourceNode getOutput() { result = super.getOutput() }
 
     /** Gets a data flow node that refers a template file to be instantiated, if any. */
-    DataFlow::Node getTemplateFileNode() { result = range.getTemplateFileNode() }
+    DataFlow::Node getTemplateFileNode() { result = super.getTemplateFileNode() }
 
     /** Gets a data flow node that refers to an object whose properties become variables in the template. */
-    DataFlow::Node getTemplateParamsNode() { result = range.getTemplateParamsNode() }
+    DataFlow::Node getTemplateParamsNode() { result = super.getTemplateParamsNode() }
 
     /** Gets a data flow node that provides the value for the template variable at the given access path. */
     DataFlow::Node getTemplateParamForValue(string accessPath) {
-      result = range.getTemplateParamForValue(accessPath)
+      result = super.getTemplateParamForValue(accessPath)
     }
 
     /** Gets the template file instantiated here, if any. */
@@ -203,7 +199,7 @@ module Templating {
      *
      * If not known, the relevant syntax will be determined by a heuristic.
      */
-    TemplateSyntax getTemplateSyntax() { result = range.getTemplateSyntax() }
+    TemplateSyntax getTemplateSyntax() { result = super.getTemplateSyntax() }
   }
 
   /** Companion module to the `TemplateInstantiation` class. */
@@ -233,7 +229,7 @@ module Templating {
   /** Gets an API node that may flow to `succ` through a template instantiation. */
   private API::Node getTemplateInput(DataFlow::SourceNode succ) {
     exists(TemplateInstantiation inst, API::Node base, string name |
-      base.getARhs() = inst.getTemplateParamsNode() and
+      base.asSink() = inst.getTemplateParamsNode() and
       result = base.getMember(name) and
       succ =
         inst.getTemplateFile()
@@ -244,7 +240,7 @@ module Templating {
     )
     or
     exists(TemplateInstantiation inst, string accessPath |
-      result.getARhs() = inst.getTemplateParamForValue(accessPath) and
+      result.asSink() = inst.getTemplateParamForValue(accessPath) and
       succ =
         inst.getTemplateFile()
             .getAnImportedFile*()
@@ -261,7 +257,7 @@ module Templating {
 
   private class TemplateInputStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      getTemplateInput(succ).getARhs() = pred
+      getTemplateInput(succ).asSink() = pred
     }
   }
 
@@ -321,8 +317,8 @@ module Templating {
       result = this.getStringValue()
       or
       exists(API::Node node |
-        this = node.getARhs() and
-        result = node.getAValueReachingRhs().getStringValue()
+        this = node.asSink() and
+        result = node.getAValueReachingSink().getStringValue()
       )
     }
 
@@ -657,11 +653,9 @@ module Templating {
   private class IncludeFunctionAsEntryPoint extends API::EntryPoint {
     IncludeFunctionAsEntryPoint() { this = "IncludeFunctionAsEntryPoint" }
 
-    override DataFlow::SourceNode getAUse() {
+    override DataFlow::SourceNode getASource() {
       result = any(TemplatePlaceholderTag tag).getInnerTopLevel().getAVariableUse("include")
     }
-
-    override DataFlow::Node getARhs() { none() }
   }
 
   /**
@@ -718,7 +712,7 @@ module Templating {
     override TemplateSyntax getTemplateSyntax() { result.getAPackageName() = engine }
 
     override DataFlow::SourceNode getOutput() {
-      result = this.getParameter([1, 2]).getParameter(1).getAnImmediateUse()
+      result = this.getParameter([1, 2]).getParameter(1).asSource()
       or
       not exists(this.getParameter([1, 2]).getParameter(1)) and
       result = this

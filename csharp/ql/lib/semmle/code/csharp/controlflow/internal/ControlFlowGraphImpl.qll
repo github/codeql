@@ -335,7 +335,7 @@ module Expressions {
       // ```csharp
       // new Dictionary<int, string>() { [0] = "Zero", [1] = "One", [2] = "Two" }
       // ```
-      // need special treatment, because the the accesses `[0]`, `[1]`, and `[2]`
+      // need special treatment, because the accesses `[0]`, `[1]`, and `[2]`
       // have no qualifier.
       this = any(MemberInitializer mi).getLValue()
     }
@@ -768,7 +768,7 @@ module Expressions {
             nc.getOuterCompletion()
                 .(ThrowCompletion)
                 .getExceptionClass()
-                .hasQualifiedName("System.InvalidOperationException")
+                .hasQualifiedName("System", "InvalidOperationException")
           )
       )
     }
@@ -1288,7 +1288,7 @@ module Statements {
     }
 
     final override predicate first(ControlFlowElement first) {
-      // Unlike most other statements, `foreach` statements are not modelled in
+      // Unlike most other statements, `foreach` statements are not modeled in
       // pre-order, because we use the `foreach` node itself to represent the
       // emptiness test that determines whether to execute the loop body
       first(this.getIterableExpr(), first)

@@ -35,5 +35,5 @@ where
   uselessIsBeforeAs(ae, ie) and
   not exists(MethodCall mc | ae = mc.getAnArgument().getAChildExpr*())
 select ae,
-  "This 'as' expression performs a type test - it should be directly compared against null, rendering the 'is' $@ potentially redundant.",
-  ie, "here"
+  "This 'as' expression performs a type test - it should be directly compared against null, rendering the $@ potentially redundant.",
+  ie, "is"

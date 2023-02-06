@@ -8,7 +8,7 @@ import semmle.code.xml.XML
 predicate isGwtXmlIncluded() { exists(GwtXmlFile webXml) }
 
 /** A GWT module XML file with a `.gwt.xml` suffix. */
-class GwtXmlFile extends XMLFile {
+class GwtXmlFile extends XmlFile {
   GwtXmlFile() { this.getBaseName().matches("%.gwt.xml") }
 
   /** Gets the top-level module element of a GWT module XML file. */
@@ -57,7 +57,7 @@ class GwtXmlFile extends XMLFile {
 }
 
 /** The top-level `<module>` element of a GWT module XML file. */
-class GwtModuleElement extends XMLElement {
+class GwtModuleElement extends XmlElement {
   GwtModuleElement() {
     this.getParent() instanceof GwtXmlFile and
     this.getName() = "module"
@@ -74,7 +74,7 @@ class GwtModuleElement extends XMLElement {
 }
 
 /** An `<inherits>` element within a GWT module XML file. */
-class GwtInheritsElement extends XMLElement {
+class GwtInheritsElement extends XmlElement {
   GwtInheritsElement() {
     this.getParent() instanceof GwtModuleElement and
     this.getName() = "inherits"
@@ -85,7 +85,7 @@ class GwtInheritsElement extends XMLElement {
 }
 
 /** An `<entry-point>` element within a GWT module XML file. */
-class GwtEntryPointElement extends XMLElement {
+class GwtEntryPointElement extends XmlElement {
   GwtEntryPointElement() {
     this.getParent() instanceof GwtModuleElement and
     this.getName() = "entry-point"
@@ -96,7 +96,7 @@ class GwtEntryPointElement extends XMLElement {
 }
 
 /** A `<source>` element within a GWT module XML file. */
-class GwtSourceElement extends XMLElement {
+class GwtSourceElement extends XmlElement {
   GwtSourceElement() {
     this.getParent() instanceof GwtModuleElement and
     this.getName() = "source"
@@ -113,7 +113,7 @@ class GwtSourceElement extends XMLElement {
 }
 
 /** A `<servlet>` element within a GWT module XML file. */
-class GwtServletElement extends XMLElement {
+class GwtServletElement extends XmlElement {
   GwtServletElement() {
     this.getParent() instanceof GwtModuleElement and
     this.getName() = "servlet"

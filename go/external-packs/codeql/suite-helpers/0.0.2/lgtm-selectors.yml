@@ -1,0 +1,25 @@
+- description: Selectors for selecting the LGTM-relevant queries for a language
+- include:
+    kind:
+    - problem
+    - path-problem
+    precision:
+    - high
+    - very-high
+- include:
+    kind:
+    - problem
+    - path-problem
+    precision: medium
+    problem.severity:
+      - error
+      - warning
+- include:
+    kind:
+      - definitions
+      - alert-suppression
+      - file-classifier
+- exclude:
+    deprecated: //
+- exclude:
+    query path: /^experimental\/.*/

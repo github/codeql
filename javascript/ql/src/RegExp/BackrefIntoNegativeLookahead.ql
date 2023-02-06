@@ -20,5 +20,5 @@ where
   not back.getParent+() = neg and
   neg.isPartOfRegExpLiteral()
 select back,
-  "This back reference always matches the empty string, since it refers to $@, which is contained in $@.",
-  grp, "this capture group", neg, "a negative lookahead assertion"
+  "This back reference always matches the empty string, since it refers to $@, which is contained in a $@.",
+  grp, "this capture group", neg, "negative lookahead assertion"

@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -60,8 +61,7 @@ namespace Semmle.Extraction.CSharp.Entities
             containingType = Symbol.ContainingType;
             if (containingType is not null)
             {
-                var containingNamedType = containingType as INamedTypeSymbol;
-                return containingNamedType is null ||
+                return containingType is not INamedTypeSymbol containingNamedType ||
                     !containingNamedType.GetMembers(Symbol.Name).Contains(Symbol);
             }
 
@@ -82,7 +82,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         /// <param name="methodName">The method name.</param>
         /// <param name="operatorName">The converted operator name.</param>
-        public static bool OperatorSymbol(string methodName, out string operatorName)
+        public static bool TryGetOperatorSymbol(string methodName, out string operatorName)
         {
             var success = true;
             switch (methodName)
@@ -146,6 +146,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 case "op_RightShift":
                     operatorName = ">>";
                     break;
+                case "op_UnsignedRightShift":
+                    operatorName = ">>>";
+                    break;
                 case "op_LeftShift":
                     operatorName = "<<";
                     break;
@@ -162,6 +165,13 @@ namespace Semmle.Extraction.CSharp.Entities
                     operatorName = "false";
                     break;
                 default:
+                    var match = Regex.Match(methodName, "^op_Checked(.*)$");
+                    if (match.Success)
+                    {
+                        TryGetOperatorSymbol("op_" + match.Groups[1], out var uncheckedName);
+                        operatorName = "checked " + uncheckedName;
+                        break;
+                    }
                     operatorName = methodName;
                     success = false;
                     break;
@@ -182,7 +192,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 return OperatorSymbol(cx, method.ExplicitInterfaceImplementations.First());
 
             var methodName = method.Name;
-            if (!OperatorSymbol(methodName, out var result))
+            if (!TryGetOperatorSymbol(methodName, out var result))
                 cx.ModelError(method, $"Unhandled operator name in OperatorSymbol(): '{methodName}'");
             return result;
         }

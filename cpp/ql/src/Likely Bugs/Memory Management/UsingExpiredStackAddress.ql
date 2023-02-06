@@ -106,6 +106,26 @@ predicate inheritanceConversionTypes(
   toType = convert.getResultType()
 }
 
+private signature class ConversionInstruction extends UnaryInstruction;
+
+module Conversion<ConversionInstruction I> {
+  signature predicate hasTypes(I instr, Type fromType, Type toType);
+
+  module Using<hasTypes/3 project> {
+    pragma[nomagic]
+    predicate hasOperandAndTypes(I convert, Instruction unary, Type fromType, Type toType) {
+      project(convert, fromType, toType) and
+      unary = convert.getUnary()
+    }
+  }
+}
+
+pragma[nomagic]
+predicate hasObjectAndField(FieldAddressInstruction fai, Instruction object, Field f) {
+  fai.getObjectAddress() = object and
+  fai.getField() = f
+}
+
 /** Gets the HashCons value of an address computed by `instr`, if any. */
 TGlobalAddress globalAddress(Instruction instr) {
   result = TGlobalVariable(instr.(VariableAddressInstruction).getAstVariable())
@@ -117,41 +137,72 @@ TGlobalAddress globalAddress(Instruction instr) {
     result = TLoad(globalAddress(load.getSourceAddress()))
   )
   or
-  exists(ConvertInstruction convert, Type fromType, Type toType | instr = convert |
-    uncheckedConversionTypes(convert, fromType, toType) and
-    result = TConversion("unchecked", globalAddress(convert.getUnary()), fromType, toType)
+  exists(Type fromType, Type toType, Instruction unary |
+    Conversion<ConvertInstruction>::Using<uncheckedConversionTypes/3>::hasOperandAndTypes(instr,
+      unary, fromType, toType) and
+    result = TConversion("unchecked", globalAddress(unary), fromType, toType)
   )
   or
-  exists(CheckedConvertOrNullInstruction convert, Type fromType, Type toType | instr = convert |
-    checkedConversionTypes(convert, fromType, toType) and
-    result = TConversion("checked", globalAddress(convert.getUnary()), fromType, toType)
+  exists(Type fromType, Type toType, Instruction unary |
+    Conversion<CheckedConvertOrNullInstruction>::Using<checkedConversionTypes/3>::hasOperandAndTypes(instr,
+      unary, fromType, toType) and
+    result = TConversion("checked", globalAddress(unary), fromType, toType)
   )
   or
-  exists(InheritanceConversionInstruction convert, Type fromType, Type toType | instr = convert |
-    inheritanceConversionTypes(convert, fromType, toType) and
-    result = TConversion("inheritance", globalAddress(convert.getUnary()), fromType, toType)
+  exists(Type fromType, Type toType, Instruction unary |
+    Conversion<InheritanceConversionInstruction>::Using<inheritanceConversionTypes/3>::hasOperandAndTypes(instr,
+      unary, fromType, toType) and
+    result = TConversion("inheritance", globalAddress(unary), fromType, toType)
   )
   or
-  exists(FieldAddressInstruction fai | instr = fai |
-    result = TFieldAddress(globalAddress(fai.getObjectAddress()), fai.getField())
+  exists(FieldAddressInstruction fai, Instruction object, Field f | instr = fai |
+    hasObjectAndField(fai, object, f) and
+    result = TFieldAddress(globalAddress(object), f)
   )
   or
   result = globalAddress(instr.(PointerOffsetInstruction).getLeft())
 }
 
-/** Gets a `StoreInstruction` that may be executed after executing `store`. */
-pragma[inline]
-StoreInstruction getAStoreStrictlyAfter(StoreInstruction store) {
-  exists(IRBlock block, int index1, int index2 |
-    block.getInstruction(index1) = store and
-    block.getInstruction(index2) = result and
-    index2 > index1
+/**
+ * Gets a first `StoreInstruction` that writes to address `globalAddress` reachable
+ * from `block`.
+ */
+StoreInstruction getFirstStore(IRBlock block, TGlobalAddress globalAddress) {
+  1 = getStoreRank(result, block, globalAddress)
+  or
+  not exists(getStoreRank(_, block, globalAddress)) and
+  result = getFirstStore(block.getASuccessor(), globalAddress)
+}
+
+/**
+ * Gets the rank of `store` in block `block` (i.e., a rank of `1` means that it is the
+ * first `store` to write to `globalAddress`, a rank of `2` means it's the second, etc.)
+ */
+int getStoreRank(StoreInstruction store, IRBlock block, TGlobalAddress globalAddress) {
+  blockStoresToAddress(block, _, store, globalAddress) and
+  store =
+    rank[result](StoreInstruction anotherStore, int i |
+      blockStoresToAddress(_, i, anotherStore, globalAddress)
+    |
+      anotherStore order by i
+    )
+}
+
+/**
+ * Gets a next subsequent `StoreInstruction` to write to `globalAddress`
+ * after `store` has done so.
+ */
+StoreInstruction getANextStoreTo(StoreInstruction store, TGlobalAddress globalAddress) {
+  exists(IRBlock block, int rnk |
+    rnk = getStoreRank(store, block, globalAddress) and
+    rnk + 1 = getStoreRank(result, block, globalAddress)
   )
   or
-  exists(IRBlock block1, IRBlock block2 |
-    store.getBlock() = block1 and
-    result.getBlock() = block2 and
-    block1.getASuccessor+() = block2
+  exists(IRBlock block, int rnk, IRBlock succ |
+    rnk = getStoreRank(store, block, globalAddress) and
+    not rnk + 1 = getStoreRank(_, block, globalAddress) and
+    succ = block.getASuccessor() and
+    result = getFirstStore(succ, globalAddress)
   )
 }
 
@@ -168,7 +219,7 @@ predicate stackAddressEscapes(
     stackPointerFlowsToUse(store.getSourceValue(), vai)
   ) and
   // Ensure there's no subsequent store that overrides the global address.
-  not globalAddress = globalAddress(getAStoreStrictlyAfter(store).getDestinationAddress())
+  not exists(getANextStoreTo(store, globalAddress))
 }
 
 predicate blockStoresToAddress(
@@ -266,7 +317,11 @@ class PathElement extends TPathElement {
   predicate isSink(IRBlock block) { exists(this.asSink(block)) }
 
   string toString() {
-    result = [asStore().toString(), asCall(_).toString(), asMid().toString(), asSink(_).toString()]
+    result =
+      [
+        this.asStore().toString(), this.asCall(_).toString(), this.asMid().toString(),
+        this.asSink(_).toString()
+      ]
   }
 
   predicate hasLocationInfo(
@@ -344,5 +399,5 @@ where
   ) and
   source.asStore() = store and
   sink.asSink(_) = load
-select sink, source, sink, "Stack variable $@ escapes $@ and is used after it has expired.", var,
-  var.toString(), store, "here"
+select sink, source, sink, "Stack variable $@ escapes at $@ and is used after it has expired.", var,
+  var.toString(), store, "this store"

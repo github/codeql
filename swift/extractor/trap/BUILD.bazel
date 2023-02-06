@@ -1,16 +1,49 @@
+load("//swift:rules.bzl", "swift_cc_library")
+
+_dirs = ("", "decl/", "expr/", "pattern/", "stmt/", "type/")
+
 genrule(
-    name = "gen",
-    srcs = ["//swift:dbscheme"],
+    name = "cppgen",
     outs = [
-        "TrapEntries.h",
-        "TrapTags.h",
+        "generated/swift.dbscheme",
+        "generated/TrapTags.h",
+    ] + [
+        "generated/%s%s.%s" % (dir, name, ext)
+        for dir in _dirs
+        for name in ("TrapEntries", "TrapClasses")
+        for ext in ("h", "cpp")
     ],
-    cmd = "$(location //swift/codegen:trapgen) --dbscheme $< --trap-output $(RULEDIR)",
-    exec_tools = ["//swift/codegen:trapgen"],
+    cmd = " ".join([
+        "$(location //swift/codegen)",
+        "--generate=dbscheme,trap,cpp",
+        "--dbscheme $(RULEDIR)/generated/swift.dbscheme",
+        "--cpp-output $(RULEDIR)/generated",
+    ]),
+    exec_tools = ["//swift/codegen"],
 )
 
-cc_library(
-    name = "trap",
-    hdrs = glob(["*.h"]) + [":gen"],
+filegroup(
+    name = "generated_dbscheme",
+    srcs = [":generated/swift.dbscheme"],
     visibility = ["//visibility:public"],
+)
+
+swift_cc_library(
+    name = "trap",
+    srcs = glob(["*.cpp"]) + [
+        "generated/%s%s.cpp" % (dir, name)
+        for dir in _dirs
+        for name in ("TrapEntries", "TrapClasses")
+    ],
+    hdrs = glob(["*.h"]) + [
+        "generated/TrapTags.h",
+    ] + [
+        "generated/%s%s.h" % (dir, name)
+        for dir in _dirs
+        for name in ("TrapEntries", "TrapClasses")
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//swift/extractor/infra/file",
+    ],
 )

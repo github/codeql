@@ -18,14 +18,16 @@ class OverrideAnnotation extends Annotation {
 class SuppressWarningsAnnotation extends Annotation {
   SuppressWarningsAnnotation() { this.getType().hasQualifiedName("java.lang", "SuppressWarnings") }
 
-  /** Gets the `StringLiteral` of a warning suppressed by this annotation. */
-  StringLiteral getASuppressedWarningLiteral() {
-    result = this.getAValue() or
-    result = this.getAValue().(ArrayInit).getAnInit()
-  }
+  /**
+   * DEPRECATED: This predicate restricts the results to `StringLiteral`; prefer `getASuppressedWarning()`
+   * to get the name of a suppressed warning.
+   *
+   * Gets the `StringLiteral` of a warning suppressed by this annotation.
+   */
+  deprecated StringLiteral getASuppressedWarningLiteral() { result = this.getAnArrayValue("value") }
 
   /** Gets the name of a warning suppressed by this annotation. */
-  string getASuppressedWarning() { result = this.getASuppressedWarningLiteral().getValue() }
+  string getASuppressedWarning() { result = this.getAStringArrayValue("value") }
 }
 
 /** A `@Target` annotation. */
@@ -33,18 +35,15 @@ class TargetAnnotation extends Annotation {
   TargetAnnotation() { this.getType().hasQualifiedName("java.lang.annotation", "Target") }
 
   /**
+   * DEPRECATED: Getting the field access expression is rarely useful. Use `getATargetElementType()`
+   * to get the name of the target element.
+   *
    * Gets a target expression within this annotation.
    *
    * For example, the field access `ElementType.FIELD` is a target expression in
    * `@Target({ElementType.FIELD, ElementType.METHOD})`.
    */
-  Expr getATargetExpression() {
-    not result instanceof ArrayInit and
-    (
-      result = this.getAValue() or
-      result = this.getAValue().(ArrayInit).getAnInit()
-    )
-  }
+  deprecated Expr getATargetExpression() { result = this.getAnArrayValue("value") }
 
   /**
    * Gets the name of a target element type.
@@ -52,14 +51,7 @@ class TargetAnnotation extends Annotation {
    * For example, `METHOD` is the name of a target element type in
    * `@Target({ElementType.FIELD, ElementType.METHOD})`.
    */
-  string getATargetElementType() {
-    exists(EnumConstant ec |
-      ec = this.getATargetExpression().(VarAccess).getVariable() and
-      ec.getDeclaringType().hasQualifiedName("java.lang.annotation", "ElementType")
-    |
-      result = ec.getName()
-    )
-  }
+  string getATargetElementType() { result = this.getAnEnumConstantArrayValue("value").getName() }
 }
 
 /** A `@Retention` annotation. */
@@ -67,12 +59,15 @@ class RetentionAnnotation extends Annotation {
   RetentionAnnotation() { this.getType().hasQualifiedName("java.lang.annotation", "Retention") }
 
   /**
+   * DEPRECATED: Getting the field access expression is rarely useful. Use `getRetentionPolicy()`
+   * to get the name of the retention policy.
+   *
    * Gets the retention policy expression within this annotation.
    *
    * For example, the field access `RetentionPolicy.RUNTIME` is the
    * retention policy expression in `@Retention(RetentionPolicy.RUNTIME)`.
    */
-  Expr getRetentionPolicyExpression() { result = this.getValue("value") }
+  deprecated Expr getRetentionPolicyExpression() { result = this.getValue("value") }
 
   /**
    * Gets the name of the retention policy of this annotation.
@@ -80,14 +75,18 @@ class RetentionAnnotation extends Annotation {
    * For example, `RUNTIME` is the name of the retention policy
    * in `@Retention(RetentionPolicy.RUNTIME)`.
    */
-  string getRetentionPolicy() {
-    exists(EnumConstant ec |
-      ec = this.getRetentionPolicyExpression().(VarAccess).getVariable() and
-      ec.getDeclaringType().hasQualifiedName("java.lang.annotation", "RetentionPolicy")
-    |
-      result = ec.getName()
-    )
-  }
+  string getRetentionPolicy() { result = this.getEnumConstantValue("value").getName() }
+}
+
+/** A `@Repeatable` annotation. */
+class RepeatableAnnotation extends Annotation {
+  RepeatableAnnotation() { this.getType().hasQualifiedName("java.lang.annotation", "Repeatable") }
+
+  /**
+   * Gets the annotation type which acts as _containing type_, grouping multiple
+   * repeatable annotations together.
+   */
+  AnnotationType getContainingType() { result = this.getTypeValue("value") }
 }
 
 /**
@@ -119,11 +118,7 @@ abstract class NonReflectiveAnnotation extends Annotation { }
 
 library class StandardNonReflectiveAnnotation extends NonReflectiveAnnotation {
   StandardNonReflectiveAnnotation() {
-    exists(AnnotationType anntp | anntp = this.getType() |
-      anntp.hasQualifiedName("java.lang", "Override") or
-      anntp.hasQualifiedName("java.lang", "Deprecated") or
-      anntp.hasQualifiedName("java.lang", "SuppressWarnings") or
-      anntp.hasQualifiedName("java.lang", "SafeVarargs")
-    )
+    this.getType()
+        .hasQualifiedName("java.lang", ["Override", "Deprecated", "SuppressWarnings", "SafeVarargs"])
   }
 }

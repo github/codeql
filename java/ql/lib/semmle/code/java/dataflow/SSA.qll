@@ -61,6 +61,7 @@ class SsaSourceVariable extends TSsaSourceVariable {
    * accessed from nested callables are therefore associated with several
    * `SsaSourceVariable`s.
    */
+  pragma[assume_small_delta]
   cached
   VarAccess getAnAccess() {
     exists(LocalScopeVariable v, Callable c |
@@ -148,7 +149,7 @@ class SsaSourceField extends SsaSourceVariable {
       if f.isStatic() then result = f.getDeclaringType().getQualifiedName() else result = "this"
     )
     or
-    exists(Field f, RefType t | this = TEnclosingField(_, f, t) | result = t.toString() + ".this")
+    exists(RefType t | this = TEnclosingField(_, _, t) | result = t.toString() + ".this")
     or
     exists(SsaSourceVariable q | this = TQualifiedField(_, q, _) | result = q.toString())
   }
@@ -1114,8 +1115,11 @@ class SsaPhiNode extends SsaVariable, TSsaPhiNode {
   }
 }
 
-private class RefTypeCastExpr extends CastExpr {
-  RefTypeCastExpr() { this.getType() instanceof RefType }
+private class RefTypeCastingExpr extends CastingExpr {
+  RefTypeCastingExpr() {
+    this.getType() instanceof RefType and
+    not this instanceof SafeCastExpr
+  }
 }
 
 /**
@@ -1130,5 +1134,5 @@ Expr sameValue(SsaVariable v, VarAccess va) {
   or
   result.(AssignExpr).getSource() = sameValue(v, va)
   or
-  result.(RefTypeCastExpr).getExpr() = sameValue(v, va)
+  result.(RefTypeCastingExpr).getExpr() = sameValue(v, va)
 }

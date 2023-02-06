@@ -23,9 +23,7 @@ module UnsafeDeserialization {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of remote user input, considered as a flow source for unsafe deserialization. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * An expression passed to one of the unsafe load functions of the `js-yaml` package.
@@ -48,5 +46,9 @@ module UnsafeDeserialization {
         )
       )
     }
+  }
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("unsafe-deserialization").asSink() }
   }
 }

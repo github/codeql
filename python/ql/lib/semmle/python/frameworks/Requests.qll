@@ -20,14 +20,19 @@ private import semmle.python.frameworks.Stdlib
  *
  * See
  * - https://pypi.org/project/requests/
- * - https://docs.python-requests.org/en/latest/
+ * - https://requests.readthedocs.io/en/latest/
  */
 private module Requests {
-  private class OutgoingRequestCall extends HTTP::Client::Request::Range, API::CallNode {
+  /**
+   * An outgoing HTTP request, from the `requests` library.
+   *
+   * See https://requests.readthedocs.io/en/latest/api/#requests.request
+   */
+  private class OutgoingRequestCall extends Http::Client::Request::Range, API::CallNode {
     string methodName;
 
     OutgoingRequestCall() {
-      methodName in [HTTP::httpVerbLower(), "request"] and
+      methodName in [Http::httpVerbLower(), "request"] and
       (
         this = API::moduleImport("requests").getMember(methodName).getACall()
         or
@@ -56,8 +61,9 @@ private module Requests {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      disablingNode = this.getKeywordParameter("verify").getARhs() and
-      argumentOrigin = this.getKeywordParameter("verify").getAValueReachingRhs() and
+      disablingNode = this.getKeywordParameter("verify").asSink() and
+      argumentOrigin = this.getKeywordParameter("verify").getAValueReachingSink() and
+      // requests treats `None` as the default and all other "falsey" values as `False`.
       argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
       not argumentOrigin.asExpr() instanceof None
     }
@@ -81,7 +87,7 @@ private module Requests {
   /**
    * Provides models for the `requests.models.Response` class
    *
-   * See https://docs.python-requests.org/en/latest/api/#requests.Response.
+   * See https://requests.readthedocs.io/en/latest/api/#requests.Response.
    */
   module Response {
     /** Gets a reference to the `requests.models.Response` class. */
@@ -107,7 +113,7 @@ private module Requests {
       ClassInstantiation() { this = classRef().getACall() }
     }
 
-    /** Return value from making a reuqest. */
+    /** Return value from making a request. */
     private class RequestReturnValue extends InstanceSource, DataFlow::Node {
       RequestReturnValue() { this = any(OutgoingRequestCall c) }
     }

@@ -44,7 +44,7 @@
 	<sample src="examples/unsafe-html-construction_safe.js" />
 	
 	<p>
-		Alternatively, a HTML sanitizer can be used to remove unsafe content.
+		Alternatively, an HTML sanitizer can be used to remove unsafe content.
 	</p>
 
 	<sample src="examples/unsafe-html-construction_sanitizer.js" />

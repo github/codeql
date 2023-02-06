@@ -6,20 +6,15 @@
  * @precision high
  * @id py/simple-xml-rpc-server-dos
  * @tags security
+ *       experimental
  *       external/cwe/cwe-776
  */
 
 private import python
-private import experimental.semmle.python.Concepts
+private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
-from DataFlow::CallCfgNode call, string kinds
+from DataFlow::CallCfgNode call
 where
-  call = API::moduleImport("xmlrpc").getMember("server").getMember("SimpleXMLRPCServer").getACall() and
-  kinds =
-    strictconcat(ExperimentalXML::XMLVulnerabilityKind kind |
-      kind.isBillionLaughs() or kind.isQuadraticBlowup()
-    |
-      kind, ", "
-    )
-select call, "SimpleXMLRPCServer is vulnerable to: " + kinds + "."
+  call = API::moduleImport("xmlrpc").getMember("server").getMember("SimpleXMLRPCServer").getACall()
+select call, "SimpleXMLRPCServer is vulnerable to XML bombs."

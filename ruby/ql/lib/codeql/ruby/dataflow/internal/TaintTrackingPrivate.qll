@@ -1,21 +1,16 @@
-private import ruby
+private import codeql.ruby.AST
 private import DataFlowPrivate
 private import TaintTrackingPublic
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import FlowSummaryImpl as FlowSummaryImpl
+private import codeql.ruby.dataflow.SSA
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
-
-/**
- * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
- * but not in local taint.
- */
-predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
 /**
  * Holds if default `TaintTracking::Configuration`s should allow implicit reads
@@ -68,6 +63,11 @@ private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
 
 cached
 private module Cached {
+  private import codeql.ruby.dataflow.FlowSteps as FlowSteps
+
+  cached
+  predicate forceCachingInSameStage() { any() }
+
   /**
    * Holds if the additional step from `nodeFrom` to `nodeTo` should be included
    * in all global taint flow configurations.
@@ -78,7 +78,7 @@ private module Cached {
     exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprNodes::InClauseCfgNode clause |
       nodeFrom.asExpr() = case.getValue() and
       clause = case.getBranch(_) and
-      nodeTo.(SsaDefinitionNode).getDefinition().getControlFlowNode() =
+      nodeTo.(SsaDefinitionExtNode).getDefinitionExt().(Ssa::Definition).getControlFlowNode() =
         variablesInPattern(clause.getPattern())
     )
     or
@@ -88,22 +88,25 @@ private module Cached {
       op.getAnOperand() = nodeFrom.asExpr() and
       not op.getExpr() =
         any(Expr e |
+          // included in normal data-flow
           e instanceof AssignExpr or
+          e instanceof BinaryLogicalOperation or
+          // has flow summary
           e instanceof SplatExpr
         )
     )
     or
-    // string interpolation of `nodeFrom` into `nodeTo`
-    nodeFrom.asExpr() =
-      nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
-    or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
     or
-    // Although flow through collections is modelled precisely using stores/reads, we still
+    any(FlowSteps::AdditionalTaintStep s).step(nodeFrom, nodeTo)
+    or
+    // Although flow through collections is modeled precisely using stores/reads, we still
     // allow flow out of a _tainted_ collection. This is needed in order to support taint-
     // tracking configurations where the source is a collection.
     exists(DataFlow::ContentSet c | readStep(nodeFrom, c, nodeTo) |
       c.isSingleton(any(DataFlow::Content::ElementContent ec))
+      or
+      c.isKnownOrUnknownElement(_)
       or
       c.isAnyElement()
     )
@@ -115,11 +118,11 @@ private module Cached {
    */
   cached
   predicate localTaintStepCached(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    defaultAdditionalTaintStep(nodeFrom, nodeTo)
-    or
+    DataFlow::localFlowStep(nodeFrom, nodeTo) or
+    defaultAdditionalTaintStep(nodeFrom, nodeTo) or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStep(nodeFrom, nodeTo, false)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
   }
 }
 

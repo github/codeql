@@ -1,4 +1,4 @@
-template<typename T> void range(T value);
+#include "test_util.h"
   int f1(int x, int y) {
     if (x < 500) {
       if (x > 400) {

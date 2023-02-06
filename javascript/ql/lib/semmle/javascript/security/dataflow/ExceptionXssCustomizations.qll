@@ -5,7 +5,6 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
 
 /**
  * Provides sources, sinks, and sanitizers for reasoning about
@@ -43,9 +42,7 @@ module ExceptionXss {
     NotYetThrown() { this = "NotYetThrown" }
   }
 
-  private class XssSourceAsSource extends Source {
-    XssSourceAsSource() { this instanceof Shared::Source }
-
+  private class XssSourceAsSource extends Source instanceof Shared::Source {
     override DataFlow::FlowLabel getAFlowLabel() { result instanceof NotYetThrown }
 
     override string getDescription() { result = "Exception text" }
@@ -62,7 +59,7 @@ module ExceptionXss {
    */
   private class JsonSchemaValidationError extends Source {
     JsonSchemaValidationError() {
-      this = any(JsonSchema::Ajv::Instance i).getAValidationError().getAnImmediateUse()
+      this = any(JsonSchema::Ajv::Instance i).getAValidationError().asSource()
       or
       this = any(JsonSchema::Joi::JoiValidationErrorRead r).getAValidationResultAccess(_)
     }

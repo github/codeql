@@ -1,7 +1,7 @@
 def m0(i)
     a = *source(0.1)
     sink(a[0]) # $ hasValueFlow=0.1
-    sink(a[1]) # $ hasTaintFlow=0.1 
+    sink(a[1])
     sink(a[i]) # $ hasValueFlow=0.1
 end
 
@@ -176,8 +176,8 @@ def m19
     b = ["b", 1]
     c = ["c", source(19)]
     d = [a, b, c]
-    sink (d.assoc("a")[0]) # $ hasValueFlow=19
-    sink (d.assoc("c")[0]) # $ hasValueFlow=19
+    sink (d.assoc("a")[1]) # $ hasValueFlow=19
+    sink (d.assoc("c")[1]) # $ hasValueFlow=19
 end
 
 def m20(i)
@@ -316,9 +316,9 @@ def m36
     a = [0, 1, source(36.1)]
     b = a.delete(2) { source(36.2) }
     sink b # $ hasValueFlow=36.1 $ hasValueFlow=36.2
-    sink a[0] # $ hasValueFlow=36.1
-    sink a[1] # $ hasValueFlow=36.1
-    sink a[2] # $ hasValueFlow=36.1
+    sink a[0]
+    sink a[1]
+    sink a[2]
 end
 
 def m37(i)
@@ -1610,4 +1610,23 @@ def m136(i)
     a[i][0] = source(136.1)
     sink(a[0][0]) # $ hasValueFlow=136.1
     sink(a[0][1])
+    a[1][0] = source(136.2)
+    sink(a[1][0]) # $ hasValueFlow=136.2 $ SPURIOUS hasValueFlow=136.1
+    sink(a[2][0]) # $ hasValueFlow=136.1
+end
+
+def m137
+    a = Array.new
+    a[0] = source(137.1)
+    # unknown store (we only track indices 0..10)
+    a[10000] = source(137.2)
+    # unknown store (we don't track floats)
+    a[1.0] = source(137.3)
+    # unknown store (we don't track complex numbers)
+    a[1.0+i] = source(137.4)
+    sink(a[2]) # $ hasValueFlow=137.2 $ hasValueFlow=137.3 $ hasValueFlow=137.4
+    # unknown read
+    sink(a[10001]) # $ hasValueFlow=137.1 $ hasValueFlow=137.2 $ hasValueFlow=137.3 $ hasValueFlow=137.4
+    # unknown read
+    sink(a[1.0]) # $ hasValueFlow=137.1 $ hasValueFlow=137.2 $ hasValueFlow=137.3 $ hasValueFlow=137.4
 end

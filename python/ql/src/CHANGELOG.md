@@ -1,3 +1,111 @@
+## 0.6.2
+
+No user-facing changes.
+
+## 0.6.1
+
+No user-facing changes.
+
+## 0.6.0
+
+### Minor Analysis Improvements
+
+* The `analysis/AlertSuppression.ql` query has moved to the root folder. Users that refer to this query by path should update their configurations. The query has been updated to support the new `# codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy `# lgtm` and `# lgtm[query-id]` comments can now also be placed on the line before an alert.
+* Bumped the minimum keysize we consider secure for elliptic curve cryptography from 224 to 256 bits, following current best practices. This might effect results from the _Use of weak cryptographic key_ (`py/weak-crypto-key`) query.
+* Added modeling of `getpass.getpass` as a source of passwords, which will be an additional source for `py/clear-text-logging-sensitive-data`, `py/clear-text-storage-sensitive-data`, and `py/weak-sensitive-data-hashing`.
+
+## 0.5.6
+
+No user-facing changes.
+
+## 0.5.5
+
+No user-facing changes.
+
+## 0.5.4
+
+No user-facing changes.
+
+## 0.5.3
+
+No user-facing changes.
+
+## 0.5.2
+
+### Minor Analysis Improvements
+
+* Added model of `cx_Oracle`, `oracledb`, `phonenixdb` and `pyodbc` PyPI packages as a SQL interface following PEP249, resulting in additional sinks for `py/sql-injection`.
+* Added model of `executemany` calls on PEP-249 compliant database APIs, resulting in additional sinks for `py/sql-injection`.
+* Added model of `pymssql` PyPI package as a SQL interface following PEP249, resulting in additional sinks for `py/sql-injection`.
+* The alert messages of many queries were changed to better follow the style guide and make the messages consistent with other languages.
+
+### Bug Fixes
+
+* Fixed how `flask.request` is modeled as a RemoteFlowSource, such that we show fewer duplicated alert messages for Code Scanning alerts. The import, such as `from flask import request`, will now be shown as the first step in a path explanation.
+
+## 0.5.1
+
+No user-facing changes.
+
+## 0.5.0
+
+### Query Metadata Changes
+
+* Added the `security-severity` tag the `py/redos`, `py/polynomial-redos`, and `py/regex-injection` queries.
+
+### Minor Analysis Improvements
+
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
+## 0.4.3
+
+## 0.4.2
+
+### New Queries
+
+* Added a new query, `py/suspicious-regexp-range`, to detect character ranges in regular expressions that seem to match 
+  too many characters.
+
+## 0.4.1
+
+## 0.4.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/python-all` package.
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/python-all` package.
+
+## 0.2.0
+
+### Major Analysis Improvements
+
+* Improved library modeling for the query "Request without certificate validation" (`py/request-without-cert-validation`), so it now also covers `httpx`, `aiohttp.client`, and `urllib3`.
+
+### Minor Analysis Improvements
+
+* The query "Use of a broken or weak cryptographic algorithm" (`py/weak-cryptographic-algorithm`) now reports if a cryptographic operation is potentially insecure due to use of a weak block mode.
+
+## 0.1.4
+
+## 0.1.3
+
+### New Queries
+
+* The query "PAM authorization bypass due to incorrect usage" (`py/pam-auth-bypass`) has been promoted from experimental to the main query pack. Its results will now appear by default. This query was originally [submitted as an experimental query by @porcupineyhairs](https://github.com/github/codeql/pull/8595).
+
+## 0.1.2
+
+### New Queries
+
+* "XML external entity expansion" (`py/xxe`). Results will appear by default. This query was based on [an experimental query by @jorgectf](https://github.com/github/codeql/pull/6112).
+* "XML internal entity expansion" (`py/xml-bomb`). Results will appear by default. This query was based on [an experimental query by @jorgectf](https://github.com/github/codeql/pull/6112).
+* The query "CSRF protection weakened or disabled" (`py/csrf-protection-disabled`) has been implemented. Its results will now appear by default.
+
 ## 0.1.1
 
 ## 0.1.0

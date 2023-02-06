@@ -1,3 +1,200 @@
+## 0.5.2
+
+### Minor Analysis Improvements
+
+* Data flowing from the `locals` argument of a Rails `render` call is now tracked to uses of that data in an associated view.
+* Access to headers stored in the `env` of Rack requests is now recognized as a source of remote input.
+* Ruby 3.2: anonymous rest and keyword rest arguments can now be passed as arguments, instead of just used in method parameters.
+
+## 0.5.1
+
+No user-facing changes.
+
+## 0.5.0
+
+### Major Analysis Improvements
+
+* Flow through `initialize` constructors is now taken into account. For example, in
+  ```rb
+  class C
+    def initialize(x)
+      @field = x
+    end
+  end
+
+  C.new(y)
+  ```
+  there will be flow from `y` to the field `@field` on the constructed `C` object.
+
+### Minor Analysis Improvements
+
+* Calls to `Kernel.load`, `Kernel.require`, `Kernel.autoload` are now modeled as sinks for path injection.
+* Calls to `mail` and `inbound_mail` in `ActionMailbox` controllers are now considered sources of remote input.
+* Calls to `GlobalID::Locator.locate` and its variants are now recognized as instances of `OrmInstantiation`.
+* Data flow through the `ActiveSupport` extensions `Enumerable#index_with`, `Enumerable#pick`, `Enumerable#pluck` and `Enumerable#sole`  are now modeled.
+* When resolving a method call, the analysis now also searches in sub-classes of the receiver's type.
+* Taint flow is now tracked through many common JSON parsing and generation methods.
+* The ReDoS libraries in `codeql.ruby.security.regexp` has been moved to a shared pack inside the `shared/` folder, and the previous location has been deprecated.
+* String literals and arrays of string literals in case expression patterns are now recognised as barrier guards.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+### Minor Analysis Improvements
+
+* Data flow through the `ActiveSupport` extension `Enumerable#index_by` is now modeled.
+* The `codeql.ruby.Concepts` library now has a `SqlConstruction` class, in addition to the existing `SqlExecution` class.
+* Calls to `Arel.sql` are now modeled as instances of the new `SqlConstruction` concept.
+* Arguments to RPC endpoints (public methods) on subclasses of `ActionCable::Channel::Base` are now recognized as sources of remote user input.
+* Taint flow through the `ActiveSupport` extensions `Hash#reverse_merge` and `Hash:reverse_merge!`, and their aliases, is now modeled more generally, where previously it was only modeled in the context of `ActionController` parameters.
+* Calls to `logger` in `ActiveSupport` actions are now recognised as logger instances.
+* Calls to `send_data` in `ActiveSupport` actions are recognised as HTTP responses.
+* Calls to `body_stream` in `ActiveSupport` actions are recognised as HTTP request accesses.
+* The `ActiveSupport` extensions `Object#try` and `Object#try!` are now recognised as code executions.
+
+## 0.4.3
+
+### Minor Analysis Improvements
+
+* There was a bug in `TaintTracking::localTaint` and `TaintTracking::localTaintStep` such that they only tracked non-value-preserving flow steps. They have been fixed and now also include value-preserving steps.
+* Instantiations using `Faraday::Connection.new` are now recognized as part of `FaradayHttpRequest`s, meaning they will be considered as sinks for queries such as `rb/request-forgery`.
+* Taint flow is now tracked through extension methods on `Hash`, `String` and
+  `Object` provided by `ActiveSupport`.
+
+## 0.4.2
+
+### Minor Analysis Improvements
+
+* The hashing algorithms from `Digest` and `OpenSSL::Digest` are now recognized and can be flagged by the `rb/weak-cryptographic-algorithm` query.
+* More sources of remote input arising from methods on `ActionDispatch::Request` are now recognized.
+* The response value returned by the `Faraday#run_request` method is now also considered a source of remote input.
+* `ActiveJob::Serializers.deserialize` is considered to be a code execution sink.
+* Calls to `params` in `ActionMailer` classes are now treated as sources of remote user input.
+* Taint flow through `ActionController::Parameters` is tracked more accurately.
+
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* The following classes have been moved from `codeql.ruby.frameworks.ActionController` to `codeql.ruby.frameworks.Rails`:
+    * `ParamsCall`, now accessed as `Rails::ParamsCall`.
+    * `CookieCall`, now accessed as `Rails::CookieCall`.
+* The following classes have been moved from `codeql.ruby.frameworks.ActionView` to `codeql.ruby.frameworks.Rails`:
+    * `HtmlSafeCall`, now accessed as `Rails::HtmlSafeCall`.
+    * `HtmlEscapeCall`, now accessed as `Rails::HtmlEscapeCall`.
+    * `RenderCall`, now accessed as `Rails::RenderCall`.
+    * `RenderToCall`, now accessed as `Rails::RenderToCall`.
+* Subclasses of `ActionController::Metal` are now recognised as controllers.
+* `ActionController::DataStreaming::send_file` is now recognized as a
+  `FileSystemAccess`.
+* Various XSS sinks in the ActionView library are now recognized.
+* Calls to `ActiveRecord::Base.create` are now recognized as model
+  instantiations.
+* Various code executions, command executions and HTTP requests in the
+  ActiveStorage library are now recognized.
+* `MethodBase` now has two new predicates related to visibility: `isPublic` and
+  `isProtected`. These hold, respectively, if the method is public or protected.
+
+## 0.4.0
+
+### Breaking Changes
+
+* `import ruby` no longer brings the standard Ruby AST library into scope; it instead brings a module `Ast` into scope, which must be imported. Alternatively, it is also possible to import `codeql.ruby.AST`.
+* Changed the `HTTP::Client::Request` concept from using `MethodCall` as base class, to using `DataFlow::Node` as base class. Any class that extends `HTTP::Client::Request::Range` must be changed, but if you only use the member predicates of `HTTP::Client::Request`, no changes are required.
+
+### Deprecated APIs
+
+* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+### Minor Analysis Improvements
+
+* Uses of `ActionView::FileSystemResolver` are now recognized as filesystem accesses.
+* Accesses of ActiveResource models are now recognized as HTTP requests.
+
+### Bug Fixes
+
+* Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.
+
+## 0.3.5
+
+## 0.3.4
+
+### Deprecated APIs
+
+* The utility files previously in the `codeql.ruby.security.performance` package have been moved to the `codeql.ruby.security.regexp` package.  
+  The previous files still exist as deprecated aliases.
+
+### Minor Analysis Improvements
+
+* Most deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
+* Calls to `render` in Rails controllers and views are now recognized as HTTP
+  response bodies.
+
+## 0.3.3
+
+### Minor Analysis Improvements
+
+* Calls to methods generated by ActiveRecord associations are now recognised as
+  instantiations of ActiveRecord objects. This increases the sensitivity of
+  queries such as `rb/sql-injection` and `rb/stored-xss`.
+* Calls to `ActiveRecord::Base.create` and `ActiveRecord::Base.update` are now
+  recognised as write accesses.
+* Arguments to `Mime::Type#match?` and `Mime::Type#=~` are now recognised as
+  regular expression sources.
+
+## 0.3.2
+
+### Minor Analysis Improvements
+
+* Calls to `Arel.sql` are now recognised as propagating taint from their argument.
+* Calls to `ActiveRecord::Relation#annotate` are now recognized as `SqlExecution`s so that it will be considered as a sink for queries like rb/sql-injection.
+
+## 0.3.1
+
+### Minor Analysis Improvements
+
+* Fixed a bug causing every expression in the database to be considered a system-command execution sink when calls to any of the following methods exist:
+  * The `spawn`, `fspawn`, `popen4`, `pspawn`, `system`, `_pspawn` methods and the backtick operator from the `POSIX::spawn` gem.
+  * The `execute_command`, `rake`, `rails_command`, and `git` methods in `Rails::Generation::Actions`.
+* Improved modeling of sensitive data sources, so common words like `certain` and `secretary` are no longer considered a certificate and a secret (respectively).
+
+## 0.3.0
+
+### Deprecated APIs
+
+* The `BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new `BarrierGuard` parameterized module.
+
+## 0.2.3
+
+### Minor Analysis Improvements
+
+- Calls to `Zip::File.open` and `Zip::File.new` have been added as `FileSystemAccess` sinks. As a result queries like `rb/path-injection` now flag up cases where users may access arbitrary archive files.
+
+## 0.2.2
+
+### Major Analysis Improvements
+
+* Added data-flow support for [hashes](https://docs.ruby-lang.org/en/3.1/Hash.html).
+
+### Minor Analysis Improvements
+
+* Support for data flow through instance variables has been added.
+* Support of the safe navigation operator (`&.`) has been added; there is a new predicate `MethodCall.isSafeNavigation()`.
+
+## 0.2.1
+
+### Bug Fixes
+
+* The Tree-sitter Ruby grammar has been updated; this fixes several issues where Ruby code was parsed incorrectly.
+
 ## 0.2.0
 
 ### Breaking Changes

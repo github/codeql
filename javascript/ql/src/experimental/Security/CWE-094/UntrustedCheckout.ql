@@ -9,11 +9,12 @@
  * @id js/actions/pull-request-target
  * @tags actions
  *       security
+ *       experimental
  *       external/cwe/cwe-094
  */
 
 import javascript
-import experimental.semmle.javascript.Actions
+import semmle.javascript.Actions
 
 /**
  * An action step that doesn't contain `actor` or `label` check in `if:` or
@@ -78,9 +79,9 @@ class ProbableJob extends Actions::Job {
 /**
  * An action step that doesn't contain `actor` or `label` check in `if:` or
  */
-class ProbablePullRequestTarget extends Actions::On, Actions::MappingOrSequenceOrScalar {
+class ProbablePullRequestTarget extends Actions::On, YamlMappingLikeNode {
   ProbablePullRequestTarget() {
-    exists(YAMLNode prtNode |
+    exists(YamlNode prtNode |
       // The `on:` is triggered on `pull_request_target`
       this.getNode("pull_request_target") = prtNode and
       (
@@ -88,7 +89,7 @@ class ProbablePullRequestTarget extends Actions::On, Actions::MappingOrSequenceO
         not exists(prtNode.getAChild())
         or
         // or has the filter, that is something else than just [labeled]
-        exists(Actions::MappingOrSequenceOrScalar prt, Actions::MappingOrSequenceOrScalar types |
+        exists(YamlMappingLikeNode prt, YamlMappingLikeNode types |
           types = prt.getNode("types") and
           prtNode = prt and
           (
@@ -110,13 +111,11 @@ where
   ref.getWith().getStep() = step and
   step.getJob() = job and
   uses.getGitHubRepository() = "actions/checkout" and
-  (
-    ref.getValue().matches("%github.event.pull_request.head.ref%") or
-    ref.getValue().matches("%github.event.pull_request.head.sha%") or
-    ref.getValue().matches("%github.event.pull_request.number%") or
-    ref.getValue().matches("%github.event.number%") or
-    ref.getValue().matches("%github.head_ref%")
-  ) and
+  ref.getValue()
+      .matches([
+          "%github.event.pull_request.head.ref%", "%github.event.pull_request.head.sha%",
+          "%github.event.pull_request.number%", "%github.event.number%", "%github.head_ref%"
+        ]) and
   step instanceof ProbableStep and
   job instanceof ProbableJob
-select step, "Potential unsafe checkout of untrusted pull request on `pull_request_target`"
+select step, "Potential unsafe checkout of untrusted pull request on 'pull_request_target'."

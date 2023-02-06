@@ -9,6 +9,7 @@
 # qltest projects and artifacts
 */ql/test/**/*.testproj
 */ql/test/**/*.actual
+*/ql/test/**/go.sum
 
 # Visual studio temporaries, except a file used by QL4VS
 .vs/*
@@ -26,8 +27,6 @@
 # It's useful (though not required) to be able to unpack codeql in the ql checkout itself
 /codeql/
 
-csharp/extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json
-
 # Avoid committing cached package components
 .codeql
 
@@ -42,3 +41,21 @@ csharp/extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json
 
 # CLion project files
 /.clwb
+
+# Go build artifacts
+go/build/*
+
+# Go binaries
+go/tools/bin
+go/tools/linux64
+go/tools/osx64
+go/tools/win64
+go/tools/tokenizer.jar
+go/main
+
+# node_modules folders except in the JS test suite
+node_modules/
+!/javascript/ql/test/**/node_modules/
+
+# Temporary folders for working with generated models
+.model-temp

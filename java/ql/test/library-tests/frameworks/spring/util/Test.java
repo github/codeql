@@ -61,21 +61,21 @@ public class Test {
 
 		public void test() throws Exception {
 			{
-				// "org.springframework.util;AntPathMatcher;false;doMatch;;;Argument[1];MapValue of Argument[3];taint"
+				// "org.springframework.util;AntPathMatcher;false;doMatch;;;Argument[1];MapValue of Argument[3];taint;manual"
 				Map<String, String> out = new HashMap<>();
 				String in = (String)source();
 				this.doMatch("somePattern", in, true, out);
 				sink(out.get("someKey")); // $hasTaintFlow
 			}
 			{
-				// "org.springframework.util;AntPathMatcher;false;tokenizePath;;;Argument[0];ArrayValue of ReturnValue;taint",
+				// "org.springframework.util;AntPathMatcher;false;tokenizePath;;;Argument[0];ArrayValue of ReturnValue;taint;manual",
 				String[] out = null;
 				String in = (String)source();
 				out = this.tokenizePath(in);
 				sink(out[0]); // $hasTaintFlow
 			}
 			{
-				// "org.springframework.util;AntPathMatcher;false;tokenizePattern;;;Argument[0];ArrayValue of ReturnValue;taint",
+				// "org.springframework.util;AntPathMatcher;false;tokenizePattern;;;Argument[0];ArrayValue of ReturnValue;taint;manual",
 				String[] out = null;
 				String in = (String)source();
 				out = this.tokenizePattern(in);
@@ -88,7 +88,7 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "org.springframework.util;AntPathMatcher;false;combine;;;Argument[0..1];ReturnValue;taint"
+			// "org.springframework.util;AntPathMatcher;false;combine;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			AntPathMatcher instance = null;
@@ -96,7 +96,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;AntPathMatcher;false;combine;;;Argument[0..1];ReturnValue;taint"
+			// "org.springframework.util;AntPathMatcher;false;combine;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			AntPathMatcher instance = null;
@@ -104,7 +104,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;AntPathMatcher;false;extractPathWithinPattern;;;Argument[1];ReturnValue;taint"
+			// "org.springframework.util;AntPathMatcher;false;extractPathWithinPattern;;;Argument[1];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			AntPathMatcher instance = null;
@@ -112,7 +112,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;AntPathMatcher;false;extractUriTemplateVariables;;;Argument[1];MapValue of ReturnValue;taint"
+			// "org.springframework.util;AntPathMatcher;false;extractUriTemplateVariables;;;Argument[1];MapValue of ReturnValue;taint;manual"
 			Map out = null;
 			String in = (String)source();
 			AntPathMatcher instance = null;
@@ -120,182 +120,182 @@ public class Test {
 			sink(getMapValue(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;AutoPopulatingList;false;AutoPopulatingList;(java.util.List,java.lang.Class);;Element of Argument[0];Element of Argument[-1];value"
+			// "org.springframework.util;AutoPopulatingList;false;AutoPopulatingList;(java.util.List,java.lang.Class);;Element of Argument[0];Element of Argument[-1];value;manual"
 			AutoPopulatingList out = null;
 			List in = List.of(source());
 			out = new AutoPopulatingList(in, (Class)null);
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;AutoPopulatingList;false;AutoPopulatingList;(java.util.List,org.springframework.util.AutoPopulatingList.ElementFactory);;Element of Argument[0];Element of Argument[-1];value"
+			// "org.springframework.util;AutoPopulatingList;false;AutoPopulatingList;(java.util.List,org.springframework.util.AutoPopulatingList.ElementFactory);;Element of Argument[0];Element of Argument[-1];value;manual"
 			AutoPopulatingList out = null;
 			List in = List.of(source());
 			out = new AutoPopulatingList(in, (AutoPopulatingList.ElementFactory)null);
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;Base64Utils;false;decode;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;Base64Utils;false;decode;;;Argument[0];ReturnValue;taint;manual"
 			byte[] out = null;
 			byte[] in = (byte[])source();
 			out = Base64Utils.decode(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;Base64Utils;false;decodeFromString;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;Base64Utils;false;decodeFromString;;;Argument[0];ReturnValue;taint;manual"
 			byte[] out = null;
 			String in = (String)source();
 			out = Base64Utils.decodeFromString(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;Base64Utils;false;decodeFromUrlSafeString;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;Base64Utils;false;decodeFromUrlSafeString;;;Argument[0];ReturnValue;taint;manual"
 			byte[] out = null;
 			String in = (String)source();
 			out = Base64Utils.decodeFromUrlSafeString(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;Base64Utils;false;decodeUrlSafe;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;Base64Utils;false;decodeUrlSafe;;;Argument[0];ReturnValue;taint;manual"
 			byte[] out = null;
 			byte[] in = (byte[])source();
 			out = Base64Utils.decodeUrlSafe(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;Base64Utils;false;encode;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;Base64Utils;false;encode;;;Argument[0];ReturnValue;taint;manual"
 			byte[] out = null;
 			byte[] in = (byte[])source();
 			out = Base64Utils.encode(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;Base64Utils;false;encodeToString;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;Base64Utils;false;encodeToString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			byte[] in = (byte[])source();
 			out = Base64Utils.encodeToString(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;Base64Utils;false;encodeToUrlSafeString;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;Base64Utils;false;encodeToUrlSafeString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			byte[] in = (byte[])source();
 			out = Base64Utils.encodeToUrlSafeString(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;Base64Utils;false;encodeUrlSafe;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;Base64Utils;false;encodeUrlSafe;;;Argument[0];ReturnValue;taint;manual"
 			byte[] out = null;
 			byte[] in = (byte[])source();
 			out = Base64Utils.encodeUrlSafe(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;arrayToList;;;ArrayElement of Argument[0];Element of ReturnValue;value"
+			// "org.springframework.util;CollectionUtils;false;arrayToList;;;ArrayElement of Argument[0];Element of ReturnValue;value;manual"
 			List out = null;
 			Object[] in = newWithArrayElement(source());
 			out = CollectionUtils.arrayToList(in);
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;findFirstMatch;;;Element of Argument[0];ReturnValue;value"
+			// "org.springframework.util;CollectionUtils;false;findFirstMatch;;;Element of Argument[0];ReturnValue;value;manual"
 			Object out = null;
 			Collection in = List.of(source());
 			out = CollectionUtils.findFirstMatch(in, null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;findValueOfType;;;Element of Argument[0];ReturnValue;value"
+			// "org.springframework.util;CollectionUtils;false;findValueOfType;;;Element of Argument[0];ReturnValue;value;manual"
 			Object out = null;
 			Collection in = List.of(source());
 			out = CollectionUtils.findValueOfType(in, (Class<?>[])null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;findValueOfType;;;Element of Argument[0];ReturnValue;value"
+			// "org.springframework.util;CollectionUtils;false;findValueOfType;;;Element of Argument[0];ReturnValue;value;manual"
 			Object out = null;
 			Collection in = List.of(source());
 			out = CollectionUtils.findValueOfType(in, (Class)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;firstElement;;;Element of Argument[0];ReturnValue;value"
+			// "org.springframework.util;CollectionUtils;false;firstElement;;;Element of Argument[0];ReturnValue;value;manual"
 			Object out = null;
 			Set in = Set.of(source());
 			out = CollectionUtils.firstElement(in);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;firstElement;;;Element of Argument[0];ReturnValue;value"
+			// "org.springframework.util;CollectionUtils;false;firstElement;;;Element of Argument[0];ReturnValue;value;manual"
 			Object out = null;
 			List in = List.of(source());
 			out = CollectionUtils.firstElement(in);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;lastElement;;;Element of Argument[0];ReturnValue;value"
+			// "org.springframework.util;CollectionUtils;false;lastElement;;;Element of Argument[0];ReturnValue;value;manual"
 			Object out = null;
 			Set in = Set.of(source());
 			out = CollectionUtils.lastElement(in);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;lastElement;;;Element of Argument[0];ReturnValue;value"
+			// "org.springframework.util;CollectionUtils;false;lastElement;;;Element of Argument[0];ReturnValue;value;manual"
 			Object out = null;
 			List in = List.of(source());
 			out = CollectionUtils.lastElement(in);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;mergeArrayIntoCollection;;;ArrayElement of Argument[0];Element of Argument[1];value"
+			// "org.springframework.util;CollectionUtils;false;mergeArrayIntoCollection;;;ArrayElement of Argument[0];Element of Argument[1];value;manual"
 			Collection out = null;
 			Object[] in = newWithArrayElement(source());
 			CollectionUtils.mergeArrayIntoCollection(in, out);
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;mergePropertiesIntoMap;;;MapKey of Argument[0];MapKey of Argument[1];value"
+			// "org.springframework.util;CollectionUtils;false;mergePropertiesIntoMap;;;MapKey of Argument[0];MapKey of Argument[1];value;manual"
 			Map out = null;
 			Properties in = newPropertiesWithMapKey(source());
 			CollectionUtils.mergePropertiesIntoMap(in, out);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;mergePropertiesIntoMap;;;MapValue of Argument[0];MapValue of Argument[1];value"
+			// "org.springframework.util;CollectionUtils;false;mergePropertiesIntoMap;;;MapValue of Argument[0];MapValue of Argument[1];value;manual"
 			Map out = null;
 			Properties in = newPropertiesWithMapValue(source());
 			CollectionUtils.mergePropertiesIntoMap(in, out);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;toIterator;;;Element of Argument[0];Element of ReturnValue;value"
+			// "org.springframework.util;CollectionUtils;false;toIterator;;;Element of Argument[0];Element of ReturnValue;value;manual"
 			Iterator out = null;
 			Enumeration in = Collections.enumeration(List.of(source()));
 			out = CollectionUtils.toIterator(in);
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;toMultiValueMap;;;Element of MapValue of Argument[0];Element of MapValue of ReturnValue;value"
+			// "org.springframework.util;CollectionUtils;false;toMultiValueMap;;;Element of MapValue of Argument[0];Element of MapValue of ReturnValue;value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Map in = Map.of(null, List.of(source()));
 			out = CollectionUtils.toMultiValueMap(in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;toMultiValueMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
+			// "org.springframework.util;CollectionUtils;false;toMultiValueMap;;;MapKey of Argument[0];MapKey of ReturnValue;value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Map in = Map.of(source(), null);
 			out = CollectionUtils.toMultiValueMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;unmodifiableMultiValueMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
+			// "org.springframework.util;CollectionUtils;false;unmodifiableMultiValueMap;;;MapKey of Argument[0];MapKey of ReturnValue;value;manual"
 			MultiValueMap<Object, Object> out = null;
 			MultiValueMap in = new LinkedMultiValueMap(Map.of(source(), null));
 			out = CollectionUtils.unmodifiableMultiValueMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CollectionUtils;false;unmodifiableMultiValueMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
+			// "org.springframework.util;CollectionUtils;false;unmodifiableMultiValueMap;;;MapValue of Argument[0];MapValue of ReturnValue;value;manual"
 			MultiValueMap<Object, Object> out = null;
 			MultiValueMap in = new LinkedMultiValueMap();
 			in.put(null, source());
@@ -303,14 +303,14 @@ public class Test {
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CompositeIterator;false;add;;;Element of Argument[0];Element of Argument[-1];value"
+			// "org.springframework.util;CompositeIterator;false;add;;;Element of Argument[0];Element of Argument[-1];value;manual"
 			CompositeIterator out = null;
 			Iterator in = List.of(source()).iterator();
 			out.add(in);
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;CompositeIterator;false;next;;;Element of Argument[-1];ReturnValue;value"
+			// "org.springframework.util;CompositeIterator;false;next;;;Element of Argument[-1];ReturnValue;value;manual"
 			Object out = null;
 			CompositeIterator in = new CompositeIterator();
 			in.add(List.of(source()).iterator());
@@ -318,126 +318,126 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;FastByteArrayOutputStream;false;getInputStream;;;Argument[-1];ReturnValue;taint"
+			// "org.springframework.util;FastByteArrayOutputStream;false;getInputStream;;;Argument[-1];ReturnValue;taint;manual"
 			InputStream out = null;
 			FastByteArrayOutputStream in = (FastByteArrayOutputStream)source();
 			out = in.getInputStream();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FastByteArrayOutputStream;false;toByteArray;;;Argument[-1];ReturnValue;taint"
+			// "org.springframework.util;FastByteArrayOutputStream;false;toByteArray;;;Argument[-1];ReturnValue;taint;manual"
 			byte[] out = null;
 			FastByteArrayOutputStream in = (FastByteArrayOutputStream)source();
 			out = in.toByteArray();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FastByteArrayOutputStream;false;write;;;Argument[0];Argument[-1];taint"
+			// "org.springframework.util;FastByteArrayOutputStream;false;write;;;Argument[0];Argument[-1];taint;manual"
 			FastByteArrayOutputStream out = null;
 			int in = (int)source();
 			out.write(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FastByteArrayOutputStream;false;write;;;Argument[0];Argument[-1];taint"
+			// "org.springframework.util;FastByteArrayOutputStream;false;write;;;Argument[0];Argument[-1];taint;manual"
 			FastByteArrayOutputStream out = null;
 			byte[] in = (byte[])source();
 			out.write(in, 0, 0);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FastByteArrayOutputStream;false;writeTo;;;Argument[-1];Argument[0];taint"
+			// "org.springframework.util;FastByteArrayOutputStream;false;writeTo;;;Argument[-1];Argument[0];taint;manual"
 			OutputStream out = null;
 			FastByteArrayOutputStream in = (FastByteArrayOutputStream)source();
 			in.writeTo(out);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint"
+			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint;manual"
 			Writer out = null;
 			String in = (String)source();
 			FileCopyUtils.copy(in, out);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint"
+			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint;manual"
 			Writer out = null;
 			Reader in = (Reader)source();
 			FileCopyUtils.copy(in, out);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint"
+			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint;manual"
 			OutputStream out = null;
 			byte[] in = (byte[])source();
 			FileCopyUtils.copy(in, out);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint"
+			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint;manual"
 			OutputStream out = null;
 			InputStream in = (InputStream)source();
 			FileCopyUtils.copy(in, out);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint"
+			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint;manual"
 			File out = null;
 			byte[] in = (byte[])source();
 			FileCopyUtils.copy(in, out);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint"
+			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint;manual"
 			File out = null;
 			File in = (File)source();
 			FileCopyUtils.copy(in, out);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FileCopyUtils;false;copyToByteArray;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;FileCopyUtils;false;copyToByteArray;;;Argument[0];ReturnValue;taint;manual"
 			byte[] out = null;
 			InputStream in = (InputStream)source();
 			out = FileCopyUtils.copyToByteArray(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FileCopyUtils;false;copyToByteArray;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;FileCopyUtils;false;copyToByteArray;;;Argument[0];ReturnValue;taint;manual"
 			byte[] out = null;
 			File in = (File)source();
 			out = FileCopyUtils.copyToByteArray(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FileCopyUtils;false;copyToString;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;FileCopyUtils;false;copyToString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			Reader in = (Reader)source();
 			out = FileCopyUtils.copyToString(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FileSystemUtils;false;copyRecursively;(java.io.File,java.io.File);;Argument[0];Argument[1];taint"
+			// "org.springframework.util;FileSystemUtils;false;copyRecursively;(java.io.File,java.io.File);;Argument[0];Argument[1];taint;manual"
 			File out = null;
 			File in = (File)source();
 			FileSystemUtils.copyRecursively(in, out);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;LinkedMultiValueMap;false;LinkedMultiValueMap;(java.util.Map);;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;LinkedMultiValueMap;false;LinkedMultiValueMap;(java.util.Map);;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value;manual"
 			LinkedMultiValueMap<Object, Object> out = null;
 			Map in = Map.of(null, List.of(source()));
 			out = new LinkedMultiValueMap(in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;LinkedMultiValueMap;false;LinkedMultiValueMap;(java.util.Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;LinkedMultiValueMap;false;LinkedMultiValueMap;(java.util.Map);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			LinkedMultiValueMap<Object, Object> out = null;
 			Map in = Map.of(source(), null);
 			out = new LinkedMultiValueMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;LinkedMultiValueMap;false;deepCopy;;;MapKey of Argument[-1];MapValue of ReturnValue;value"
+			// "org.springframework.util;LinkedMultiValueMap;false;deepCopy;;;MapKey of Argument[-1];MapValue of ReturnValue;value;manual"
 			LinkedMultiValueMap<Object, Object> out = null;
 			LinkedMultiValueMap in = new LinkedMultiValueMap<Object, Object>();
 			in.set(source(), null);
@@ -445,7 +445,7 @@ public class Test {
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;LinkedMultiValueMap;false;deepCopy;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
+			// "org.springframework.util;LinkedMultiValueMap;false;deepCopy;;;MapValue of Argument[-1];MapValue of ReturnValue;value;manual"
 			LinkedMultiValueMap<Object, Object> out = null;
 			LinkedMultiValueMap in = new LinkedMultiValueMap<Object, Object>();
 			in.set(null, source());
@@ -453,98 +453,98 @@ public class Test {
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;add;;;Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;add;;;Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMapAdapter<Object, Object> out = null;
 			Object in = source();
 			out.add(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;add;;;Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;add;;;Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.add(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;add;;;Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;add;;;Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.add(in, (Object)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;add;;;Argument[1];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;add;;;Argument[1];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMapAdapter<Object, Object> out = null;
 			Object in = source();
 			out.add(null, in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;add;;;Argument[1];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;add;;;Argument[1];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.add(null, in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;add;;;Argument[1];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;add;;;Argument[1];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.add((Object)null, in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;addAll;(java.lang.Object,java.util.List);;Element of Argument[1];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;addAll;(java.lang.Object,java.util.List);;Element of Argument[1];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMapAdapter<Object, Object> out = null;
 			List in = List.of(source());
 			out.addAll(null, in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;addAll;(java.lang.Object,java.util.List);;Element of Argument[1];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;addAll;(java.lang.Object,java.util.List);;Element of Argument[1];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			List in = List.of(source());
 			out.addAll(null, in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;addAll;(java.lang.Object,java.util.List);;Element of Argument[1];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;addAll;(java.lang.Object,java.util.List);;Element of Argument[1];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			List in = List.of(source());
 			out.addAll((Object)null, in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;addAll;(org.springframework.util.MultiValueMap);;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;addAll;(org.springframework.util.MultiValueMap);;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMapAdapter<Object, Object> out = null;
 			MultiValueMap in = (MultiValueMap)Map.of(null, List.of(source()));
 			out.addAll(in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;addAll;(org.springframework.util.MultiValueMap);;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;addAll;(org.springframework.util.MultiValueMap);;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			MultiValueMap in = (MultiValueMap)Map.of(null, List.of(source()));
 			out.addAll(in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMapAdapter<Object, Object> out = null;
 			Object in = source();
 			out.addAll(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.addAll(in, (List)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMapAdapter<Object, Object> out = null;
 			MultiValueMap<Object, Object> mvm = null;
 			mvm.set(source(), "someValue");
@@ -552,7 +552,7 @@ public class Test {
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			MultiValueMap<Object, Object> mvm = null;
 			mvm.set(source(), "someValue");
@@ -560,175 +560,175 @@ public class Test {
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;addIfAbsent;;;Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;addIfAbsent;;;Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.addIfAbsent(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;addIfAbsent;;;Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;addIfAbsent;;;Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.addIfAbsent(in, (Object)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;addIfAbsent;;;Argument[1];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;addIfAbsent;;;Argument[1];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.addIfAbsent(null, in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;addIfAbsent;;;Argument[1];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;addIfAbsent;;;Argument[1];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.addIfAbsent((Object)null, in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;getFirst;;;Element of MapValue of Argument[-1];ReturnValue;value"
+			// "org.springframework.util;MultiValueMap;true;getFirst;;;Element of MapValue of Argument[-1];ReturnValue;value;manual"
 			Object out = null;
 			MultiValueMapAdapter in = new MultiValueMapAdapter(Map.of(null, List.of(source())));
 			out = in.getFirst(null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;getFirst;;;Element of MapValue of Argument[-1];ReturnValue;value"
+			// "org.springframework.util;MultiValueMap;true;getFirst;;;Element of MapValue of Argument[-1];ReturnValue;value;manual"
 			Object out = null;
 			MultiValueMap in = (MultiValueMap)Map.of(null, List.of(source()));
 			out = in.getFirst(null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;getFirst;;;Element of MapValue of Argument[-1];ReturnValue;value"
+			// "org.springframework.util;MultiValueMap;true;getFirst;;;Element of MapValue of Argument[-1];ReturnValue;value;manual"
 			Object out = null;
 			MultiValueMap in = (MultiValueMap)Map.of(null, List.of(source()));
 			out = in.getFirst((Object)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;set;;;Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;set;;;Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMapAdapter<Object, Object> out = null;
 			Object in = source();
 			out.set(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;set;;;Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;set;;;Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.set(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;set;;;Argument[1];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;set;;;Argument[1];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMapAdapter<Object, Object> out = null;
 			Object in = source();
 			out.set(null, in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;set;;;Argument[1];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;set;;;Argument[1];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.set(null, in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;set;;;Argument[1];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;set;;;Argument[1];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.set((Object)null, in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;setAll;;;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;setAll;;;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMapAdapter<Object, Object> out = null;
 			Map in = Map.of(source(), null);
 			out.setAll(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;setAll;;;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;setAll;;;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Map in = Map.of(source(), null);
 			out.setAll(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;setAll;;;MapValue of Argument[0];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;setAll;;;MapValue of Argument[0];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMapAdapter<Object, Object> out = null;
 			Map in = Map.of(null, source());
 			out.setAll(in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;setAll;;;MapValue of Argument[0];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMap;true;setAll;;;MapValue of Argument[0];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMap<Object, Object> out = null;
 			Map in = Map.of(null, source());
 			out.setAll(in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;toSingleValueMap;;;Element of MapValue of Argument[-1];MapValue of ReturnValue;value"
+			// "org.springframework.util;MultiValueMap;true;toSingleValueMap;;;Element of MapValue of Argument[-1];MapValue of ReturnValue;value;manual"
 			Map out = null;
 			MultiValueMapAdapter in = new MultiValueMapAdapter(Map.of(null, List.of(source())));
 			out = in.toSingleValueMap();
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;toSingleValueMap;;;Element of MapValue of Argument[-1];MapValue of ReturnValue;value"
+			// "org.springframework.util;MultiValueMap;true;toSingleValueMap;;;Element of MapValue of Argument[-1];MapValue of ReturnValue;value;manual"
 			Map out = null;
 			MultiValueMap in = (MultiValueMap)Map.of(null, List.of(source()));
 			out = in.toSingleValueMap();
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;toSingleValueMap;;;MapKey of Argument[-1];MapKey of ReturnValue;value"
+			// "org.springframework.util;MultiValueMap;true;toSingleValueMap;;;MapKey of Argument[-1];MapKey of ReturnValue;value;manual"
 			Map out = null;
 			MultiValueMapAdapter in = new MultiValueMapAdapter(Map.of(source(), null));
 			out = in.toSingleValueMap();
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMap;true;toSingleValueMap;;;MapKey of Argument[-1];MapKey of ReturnValue;value"
+			// "org.springframework.util;MultiValueMap;true;toSingleValueMap;;;MapKey of Argument[-1];MapKey of ReturnValue;value;manual"
 			Map out = null;
 			MultiValueMap in = new MultiValueMapAdapter(Map.of(source(), null));
 			out = in.toSingleValueMap();
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMapAdapter;false;MultiValueMapAdapter;;;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value"
+			// "org.springframework.util;MultiValueMapAdapter;false;MultiValueMapAdapter;;;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value;manual"
 			MultiValueMapAdapter<Object, Object> out = null;
 			Map in = Map.of(null, List.of(source()));
 			out = new MultiValueMapAdapter(in);
 			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;MultiValueMapAdapter;false;MultiValueMapAdapter;;;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "org.springframework.util;MultiValueMapAdapter;false;MultiValueMapAdapter;;;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			MultiValueMapAdapter<Object, Object> out = null;
 			Map in = Map.of(source(), null);
 			out = new MultiValueMapAdapter(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;ObjectUtils;false;toObjectArray;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value"
+			// "org.springframework.util;ObjectUtils;false;toObjectArray;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value;manual"
 			Object[] out = null;
 			Object[] in = newWithArrayElement(source());
 			out = ObjectUtils.toObjectArray(in);
 			sink(getArrayElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;ObjectUtils;false;unwrapOptional;;;Element of Argument[0];ReturnValue;value"
+			// "org.springframework.util;ObjectUtils;false;unwrapOptional;;;Element of Argument[0];ReturnValue;value;manual"
 			Object out = null;
 			Object in = Optional.of(source());
 			out = ObjectUtils.unwrapOptional(in);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;PropertiesPersister;true;load;;;Argument[1];Argument[0];taint"
+			// "org.springframework.util;PropertiesPersister;true;load;;;Argument[1];Argument[0];taint;manual"
 			Properties out = null;
 			Reader in = (Reader)source();
 			PropertiesPersister instance = null;
@@ -736,7 +736,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertiesPersister;true;load;;;Argument[1];Argument[0];taint"
+			// "org.springframework.util;PropertiesPersister;true;load;;;Argument[1];Argument[0];taint;manual"
 			Properties out = null;
 			InputStream in = (InputStream)source();
 			PropertiesPersister instance = null;
@@ -744,7 +744,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertiesPersister;true;loadFromXml;;;Argument[1];Argument[0];taint"
+			// "org.springframework.util;PropertiesPersister;true;loadFromXml;;;Argument[1];Argument[0];taint;manual"
 			Properties out = null;
 			InputStream in = (InputStream)source();
 			PropertiesPersister instance = null;
@@ -752,7 +752,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertiesPersister;true;store;;;Argument[0];Argument[1];taint"
+			// "org.springframework.util;PropertiesPersister;true;store;;;Argument[0];Argument[1];taint;manual"
 			Writer out = null;
 			Properties in = (Properties)source();
 			PropertiesPersister instance = null;
@@ -760,7 +760,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertiesPersister;true;store;;;Argument[0];Argument[1];taint"
+			// "org.springframework.util;PropertiesPersister;true;store;;;Argument[0];Argument[1];taint;manual"
 			OutputStream out = null;
 			Properties in = (Properties)source();
 			PropertiesPersister instance = null;
@@ -768,7 +768,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertiesPersister;true;store;;;Argument[2];Argument[1];taint"
+			// "org.springframework.util;PropertiesPersister;true;store;;;Argument[2];Argument[1];taint;manual"
 			Writer out = null;
 			String in = (String)source();
 			PropertiesPersister instance = null;
@@ -776,7 +776,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertiesPersister;true;store;;;Argument[2];Argument[1];taint"
+			// "org.springframework.util;PropertiesPersister;true;store;;;Argument[2];Argument[1];taint;manual"
 			OutputStream out = null;
 			String in = (String)source();
 			PropertiesPersister instance = null;
@@ -784,7 +784,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertiesPersister;true;storeToXml;;;Argument[0];Argument[1];taint"
+			// "org.springframework.util;PropertiesPersister;true;storeToXml;;;Argument[0];Argument[1];taint;manual"
 			OutputStream out = null;
 			Properties in = (Properties)source();
 			PropertiesPersister instance = null;
@@ -792,7 +792,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertiesPersister;true;storeToXml;;;Argument[0];Argument[1];taint"
+			// "org.springframework.util;PropertiesPersister;true;storeToXml;;;Argument[0];Argument[1];taint;manual"
 			OutputStream out = null;
 			Properties in = (Properties)source();
 			PropertiesPersister instance = null;
@@ -800,7 +800,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertiesPersister;true;storeToXml;;;Argument[2];Argument[1];taint"
+			// "org.springframework.util;PropertiesPersister;true;storeToXml;;;Argument[2];Argument[1];taint;manual"
 			OutputStream out = null;
 			String in = (String)source();
 			PropertiesPersister instance = null;
@@ -808,7 +808,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertiesPersister;true;storeToXml;;;Argument[2];Argument[1];taint"
+			// "org.springframework.util;PropertiesPersister;true;storeToXml;;;Argument[2];Argument[1];taint;manual"
 			OutputStream out = null;
 			String in = (String)source();
 			PropertiesPersister instance = null;
@@ -816,35 +816,35 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertyPlaceholderHelper;false;PropertyPlaceholderHelper;;;Argument[0..1];Argument[-1];taint"
+			// "org.springframework.util;PropertyPlaceholderHelper;false;PropertyPlaceholderHelper;;;Argument[0..1];Argument[-1];taint;manual"
 			PropertyPlaceholderHelper out = null;
 			String in = (String)source();
 			out = new PropertyPlaceholderHelper(null, in, null, false);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertyPlaceholderHelper;false;PropertyPlaceholderHelper;;;Argument[0..1];Argument[-1];taint"
+			// "org.springframework.util;PropertyPlaceholderHelper;false;PropertyPlaceholderHelper;;;Argument[0..1];Argument[-1];taint;manual"
 			PropertyPlaceholderHelper out = null;
 			String in = (String)source();
 			out = new PropertyPlaceholderHelper(null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertyPlaceholderHelper;false;PropertyPlaceholderHelper;;;Argument[0..1];Argument[-1];taint"
+			// "org.springframework.util;PropertyPlaceholderHelper;false;PropertyPlaceholderHelper;;;Argument[0..1];Argument[-1];taint;manual"
 			PropertyPlaceholderHelper out = null;
 			String in = (String)source();
 			out = new PropertyPlaceholderHelper(in, null, null, false);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertyPlaceholderHelper;false;PropertyPlaceholderHelper;;;Argument[0..1];Argument[-1];taint"
+			// "org.springframework.util;PropertyPlaceholderHelper;false;PropertyPlaceholderHelper;;;Argument[0..1];Argument[-1];taint;manual"
 			PropertyPlaceholderHelper out = null;
 			String in = (String)source();
 			out = new PropertyPlaceholderHelper(in, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertyPlaceholderHelper;false;replacePlaceholders;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;PropertyPlaceholderHelper;false;replacePlaceholders;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			PropertyPlaceholderHelper instance = null;
@@ -852,7 +852,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;PropertyPlaceholderHelper;false;replacePlaceholders;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;PropertyPlaceholderHelper;false;replacePlaceholders;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			PropertyPlaceholderHelper instance = null;
@@ -860,77 +860,77 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;ResourceUtils;false;extractArchiveURL;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;ResourceUtils;false;extractArchiveURL;;;Argument[0];ReturnValue;taint;manual"
 			URL out = null;
 			URL in = (URL)source();
 			out = ResourceUtils.extractArchiveURL(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;ResourceUtils;false;extractJarFileURL;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;ResourceUtils;false;extractJarFileURL;;;Argument[0];ReturnValue;taint;manual"
 			URL out = null;
 			URL in = (URL)source();
 			out = ResourceUtils.extractJarFileURL(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;ResourceUtils;false;getFile;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;ResourceUtils;false;getFile;;;Argument[0];ReturnValue;taint;manual"
 			File out = null;
 			URL in = (URL)source();
 			out = ResourceUtils.getFile(in, (String)null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;ResourceUtils;false;getFile;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;ResourceUtils;false;getFile;;;Argument[0];ReturnValue;taint;manual"
 			File out = null;
 			URL in = (URL)source();
 			out = ResourceUtils.getFile(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;ResourceUtils;false;getFile;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;ResourceUtils;false;getFile;;;Argument[0];ReturnValue;taint;manual"
 			File out = null;
 			URI in = (URI)source();
 			out = ResourceUtils.getFile(in, (String)null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;ResourceUtils;false;getFile;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;ResourceUtils;false;getFile;;;Argument[0];ReturnValue;taint;manual"
 			File out = null;
 			URI in = (URI)source();
 			out = ResourceUtils.getFile(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;ResourceUtils;false;getFile;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;ResourceUtils;false;getFile;;;Argument[0];ReturnValue;taint;manual"
 			File out = null;
 			String in = (String)source();
 			out = ResourceUtils.getFile(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;ResourceUtils;false;getURL;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;ResourceUtils;false;getURL;;;Argument[0];ReturnValue;taint;manual"
 			URL out = null;
 			String in = (String)source();
 			out = ResourceUtils.getURL(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;ResourceUtils;false;toURI;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;ResourceUtils;false;toURI;;;Argument[0];ReturnValue;taint;manual"
 			URI out = null;
 			URL in = (URL)source();
 			out = ResourceUtils.toURI(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;ResourceUtils;false;toURI;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;ResourceUtils;false;toURI;;;Argument[0];ReturnValue;taint;manual"
 			URI out = null;
 			String in = (String)source();
 			out = ResourceUtils.toURI(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;RouteMatcher;true;combine;;;Argument[0..1];ReturnValue;taint"
+			// "org.springframework.util;RouteMatcher;true;combine;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			RouteMatcher instance = null;
@@ -938,7 +938,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;RouteMatcher;true;combine;;;Argument[0..1];ReturnValue;taint"
+			// "org.springframework.util;RouteMatcher;true;combine;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			RouteMatcher instance = null;
@@ -946,7 +946,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;RouteMatcher;true;matchAndExtract;;;Argument[0];MapKey of ReturnValue;taint"
+			// "org.springframework.util;RouteMatcher;true;matchAndExtract;;;Argument[0];MapKey of ReturnValue;taint;manual"
 			Map out = null;
 			String in = (String)source();
 			RouteMatcher instance = null;
@@ -954,7 +954,7 @@ public class Test {
 			sink(getMapKey(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;RouteMatcher;true;matchAndExtract;;;Argument[1];MapValue of ReturnValue;taint"
+			// "org.springframework.util;RouteMatcher;true;matchAndExtract;;;Argument[1];MapValue of ReturnValue;taint;manual"
 			Map out = null;
 			RouteMatcher.Route in = (RouteMatcher.Route)source();
 			RouteMatcher instance = null;
@@ -962,7 +962,7 @@ public class Test {
 			sink(getMapValue(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;RouteMatcher;true;parseRoute;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;RouteMatcher;true;parseRoute;;;Argument[0];ReturnValue;taint;manual"
 			RouteMatcher.Route out = null;
 			String in = (String)source();
 			RouteMatcher instance = null;
@@ -970,448 +970,448 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;SerializationUtils;false;deserialize;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;SerializationUtils;false;deserialize;;;Argument[0];ReturnValue;taint;manual"
 			Object out = null;
 			byte[] in = (byte[])source();
 			out = SerializationUtils.deserialize(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;SerializationUtils;false;serialize;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;SerializationUtils;false;serialize;;;Argument[0];ReturnValue;taint;manual"
 			byte[] out = null;
 			Object in = source();
 			out = SerializationUtils.serialize(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StreamUtils;false;copy;(byte[],java.io.OutputStream);;Argument[0];Argument[1];taint"
+			// "org.springframework.util;StreamUtils;false;copy;(byte[],java.io.OutputStream);;Argument[0];Argument[1];taint;manual"
 			OutputStream out = null;
 			byte[] in = (byte[])source();
 			StreamUtils.copy(in, out);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StreamUtils;false;copy;(java.io.InputStream,java.io.OutputStream);;Argument[0];Argument[1];taint"
+			// "org.springframework.util;StreamUtils;false;copy;(java.io.InputStream,java.io.OutputStream);;Argument[0];Argument[1];taint;manual"
 			OutputStream out = null;
 			InputStream in = (InputStream)source();
 			StreamUtils.copy(in, out);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StreamUtils;false;copy;(java.lang.String,java.nio.charset.Charset,java.io.OutputStream);;Argument[0];Argument[2];taint"
+			// "org.springframework.util;StreamUtils;false;copy;(java.lang.String,java.nio.charset.Charset,java.io.OutputStream);;Argument[0];Argument[2];taint;manual"
 			OutputStream out = null;
 			String in = (String)source();
 			StreamUtils.copy(in, null, out);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StreamUtils;false;copyRange;;;Argument[0];Argument[1];taint"
+			// "org.springframework.util;StreamUtils;false;copyRange;;;Argument[0];Argument[1];taint;manual"
 			OutputStream out = null;
 			InputStream in = (InputStream)source();
 			StreamUtils.copyRange(in, out, 0L, 0L);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StreamUtils;false;copyToByteArray;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StreamUtils;false;copyToByteArray;;;Argument[0];ReturnValue;taint;manual"
 			byte[] out = null;
 			InputStream in = (InputStream)source();
 			out = StreamUtils.copyToByteArray(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StreamUtils;false;copyToString;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StreamUtils;false;copyToString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			InputStream in = (InputStream)source();
 			out = StreamUtils.copyToString(in, (Charset)null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StreamUtils;false;copyToString;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StreamUtils;false;copyToString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			ByteArrayOutputStream in = (ByteArrayOutputStream)source();
 			out = StreamUtils.copyToString(in, (Charset)null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;addStringToArray;;;Argument[1];ArrayElement of ReturnValue;value"
+			// "org.springframework.util;StringUtils;false;addStringToArray;;;Argument[1];ArrayElement of ReturnValue;value;manual"
 			String[] out = null;
 			String in = (String)source();
 			out = StringUtils.addStringToArray(null, in);
 			sink(getArrayElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;addStringToArray;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value"
+			// "org.springframework.util;StringUtils;false;addStringToArray;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value;manual"
 			String[] out = null;
 			String[] in = (String[])newWithArrayElement(source());
 			out = StringUtils.addStringToArray(in, null);
 			sink(getArrayElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;applyRelativePath;;;Argument[0..1];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;applyRelativePath;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.applyRelativePath(null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;applyRelativePath;;;Argument[0..1];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;applyRelativePath;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.applyRelativePath(in, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;arrayToCommaDelimitedString;;;ArrayElement of Argument[0];ReturnValue;taint",
+			// "org.springframework.util;StringUtils;false;arrayToCommaDelimitedString;;;ArrayElement of Argument[0];ReturnValue;taint;manual",
 			String out = null;
 			Object[] in = { source() };
 			out = StringUtils.arrayToCommaDelimitedString(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;arrayToDelimitedString;;;Argument[1];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;arrayToDelimitedString;;;Argument[1];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.arrayToDelimitedString(null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;arrayToDelimitedString;;;ArrayElement of Argument[0];ReturnValue;taint",
+			// "org.springframework.util;StringUtils;false;arrayToDelimitedString;;;ArrayElement of Argument[0];ReturnValue;taint;manual",
 			String out = null;
 			Object[] in = { source() };
 			out = StringUtils.arrayToDelimitedString(in, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;capitalize;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;capitalize;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.capitalize(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;cleanPath;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;cleanPath;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.cleanPath(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;collectionToCommaDelimitedString;;;Element of Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;collectionToCommaDelimitedString;;;Element of Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			Collection in = List.of(source());
 			out = StringUtils.collectionToCommaDelimitedString(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;collectionToDelimitedString;;;Argument[1..3];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;collectionToDelimitedString;;;Argument[1..3];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.collectionToDelimitedString(null, null, null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;collectionToDelimitedString;;;Argument[1..3];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;collectionToDelimitedString;;;Argument[1..3];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.collectionToDelimitedString(null, null, in, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;collectionToDelimitedString;;;Argument[1..3];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;collectionToDelimitedString;;;Argument[1..3];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.collectionToDelimitedString(null, in, null, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;collectionToDelimitedString;;;Argument[1..3];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;collectionToDelimitedString;;;Argument[1..3];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.collectionToDelimitedString(null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;collectionToDelimitedString;;;Element of Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;collectionToDelimitedString;;;Element of Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			Collection in = List.of(source());
 			out = StringUtils.collectionToDelimitedString(in, null, null, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;collectionToDelimitedString;;;Element of Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;collectionToDelimitedString;;;Element of Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			Collection in = List.of(source());
 			out = StringUtils.collectionToDelimitedString(in, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;commaDelimitedListToSet;;;Argument[0];Element of ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;commaDelimitedListToSet;;;Argument[0];Element of ReturnValue;taint;manual"
 			Set out = null;
 			String in = (String)source();
 			out = StringUtils.commaDelimitedListToSet(in);
 			sink(getElement(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;commaDelimitedListToStringArray;;;Argument[0];ArrayElement of ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;commaDelimitedListToStringArray;;;Argument[0];ArrayElement of ReturnValue;taint;manual"
 			String[] out = null;
 			String in = (String)source();
 			out = StringUtils.commaDelimitedListToStringArray(in);
 			sink(getArrayElement(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;concatenateStringArrays;;;ArrayElement of Argument[0..1];ArrayElement of ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;concatenateStringArrays;;;ArrayElement of Argument[0..1];ArrayElement of ReturnValue;taint;manual"
 			String[] out = null;
 			String[] in = { (String)source() };
 			out = StringUtils.concatenateStringArrays(null, in);
 			sink(getArrayElement(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;concatenateStringArrays;;;ArrayElement of Argument[0..1];ArrayElement of ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;concatenateStringArrays;;;ArrayElement of Argument[0..1];ArrayElement of ReturnValue;taint;manual"
 			String[] out = null;
 			String[] in = { (String)source() };
 			out = StringUtils.concatenateStringArrays(in, null);
 			sink(getArrayElement(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;delete;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;delete;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.delete(in, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;deleteAny;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;deleteAny;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.deleteAny(in, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;delimitedListToStringArray;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;delimitedListToStringArray;;;Argument[0];ReturnValue;taint;manual"
 			String[] out = null;
 			String in = (String)source();
 			out = StringUtils.delimitedListToStringArray(in, null, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;delimitedListToStringArray;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;delimitedListToStringArray;;;Argument[0];ReturnValue;taint;manual"
 			String[] out = null;
 			String in = (String)source();
 			out = StringUtils.delimitedListToStringArray(in, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;getFilename;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;getFilename;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.getFilename(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;getFilenameExtension;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;getFilenameExtension;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.getFilenameExtension(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;mergeStringArrays;;;ArrayElement of Argument[0..1];ArrayElement of ReturnValue;value"
+			// "org.springframework.util;StringUtils;false;mergeStringArrays;;;ArrayElement of Argument[0..1];ArrayElement of ReturnValue;value;manual"
 			String[] out = null;
 			String[] in = { (String)source() };
 			out = StringUtils.mergeStringArrays(null, in);
 			sink(getArrayElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;mergeStringArrays;;;ArrayElement of Argument[0..1];ArrayElement of ReturnValue;value"
+			// "org.springframework.util;StringUtils;false;mergeStringArrays;;;ArrayElement of Argument[0..1];ArrayElement of ReturnValue;value;manual"
 			String[] out = null;
 			String[] in = { (String)source() };
 			out = StringUtils.mergeStringArrays(in, null);
 			sink(getArrayElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;quote;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;quote;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.quote(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;quoteIfString;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;quoteIfString;;;Argument[0];ReturnValue;taint;manual"
 			Object out = null;
 			Object in = source();
 			out = StringUtils.quoteIfString(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;removeDuplicateStrings;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value"
+			// "org.springframework.util;StringUtils;false;removeDuplicateStrings;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value;manual"
 			String[] out = null;
 			String[] in = { (String)source() };
 			out = StringUtils.removeDuplicateStrings(in);
 			sink(getArrayElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;replace;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;replace;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.replace(in, null, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;replace;;;Argument[2];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;replace;;;Argument[2];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.replace(null, null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;sortStringArray;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value"
+			// "org.springframework.util;StringUtils;false;sortStringArray;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value;manual"
 			String[] out = null;
 			String[] in = { (String)source() };
 			out = StringUtils.sortStringArray(in);
 			sink(getArrayElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;split;;;Argument[0];ArrayElement of ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;split;;;Argument[0];ArrayElement of ReturnValue;taint;manual"
 			String[] out = null;
 			String in = (String)source();
 			out = StringUtils.split(in, null);
 			sink(getArrayElement(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;splitArrayElementsIntoProperties;;;ArrayElement of Argument[0];MapKey of ReturnValue;taint",
+			// "org.springframework.util;StringUtils;false;splitArrayElementsIntoProperties;;;ArrayElement of Argument[0];MapKey of ReturnValue;taint;manual",
 			Properties out = null;
 			String[] in = { (String)source() };
 			out = StringUtils.splitArrayElementsIntoProperties(in, null, null);
 			sink(getMapKey(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;splitArrayElementsIntoProperties;;;ArrayElement of Argument[0];MapValue of ReturnValue;taint",
+			// "org.springframework.util;StringUtils;false;splitArrayElementsIntoProperties;;;ArrayElement of Argument[0];MapValue of ReturnValue;taint;manual",
 			Properties out = null;
 			String[] in = { (String)source() };
 			out = StringUtils.splitArrayElementsIntoProperties(in, null, null);
 			sink(getMapValue(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;splitArrayElementsIntoProperties;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;splitArrayElementsIntoProperties;;;Argument[0];ReturnValue;taint;manual"
 			Properties out = null;
 			String[] in = (String[])source();
 			out = StringUtils.splitArrayElementsIntoProperties(in, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;stripFilenameExtension;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;stripFilenameExtension;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.stripFilenameExtension(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;toStringArray;;;Element of Argument[0];ArrayElement of ReturnValue;value",
+			// "org.springframework.util;StringUtils;false;toStringArray;;;Element of Argument[0];ArrayElement of ReturnValue;value;manual",
 			String[] out = null;
 			Enumeration in = Collections.enumeration(List.of(source()));;
 			out = StringUtils.toStringArray(in);
 			sink(getArrayElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;toStringArray;;;Element of Argument[0];ArrayElement of ReturnValue;value",
+			// "org.springframework.util;StringUtils;false;toStringArray;;;Element of Argument[0];ArrayElement of ReturnValue;value;manual",
 			String[] out = null;
 			Collection in = List.of(source());
 			out = StringUtils.toStringArray(in);
 			sink(getArrayElement(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;tokenizeToStringArray;;;Argument[0];ArrayElement of ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;tokenizeToStringArray;;;Argument[0];ArrayElement of ReturnValue;taint;manual"
 			String[] out = null;
 			String in = (String)source();
 			out = StringUtils.tokenizeToStringArray(in, null, false, false);
 			sink(getArrayElement(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;tokenizeToStringArray;;;Argument[0];ArrayElement of ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;tokenizeToStringArray;;;Argument[0];ArrayElement of ReturnValue;taint;manual"
 			String[] out = null;
 			String in = (String)source();
 			out = StringUtils.tokenizeToStringArray(in, null);
 			sink(getArrayElement(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;trimAllWhitespace;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;trimAllWhitespace;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.trimAllWhitespace(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;trimArrayElements;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;trimArrayElements;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;taint;manual"
 			String[] out = null;
 			String[] in = { (String)source() };
 			out = StringUtils.trimArrayElements(in);
 			sink(getArrayElement(out)); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;trimLeadingCharacter;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;trimLeadingCharacter;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.trimLeadingCharacter(in, 'a');
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;trimLeadingWhitespace;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;trimLeadingWhitespace;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.trimLeadingWhitespace(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;trimTrailingCharacter;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;trimTrailingCharacter;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.trimTrailingCharacter(in, 'a');
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;trimTrailingWhitespace;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;trimTrailingWhitespace;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.trimTrailingWhitespace(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;trimWhitespace;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;trimWhitespace;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.trimWhitespace(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;uncapitalize;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;uncapitalize;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.uncapitalize(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;unqualify;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;unqualify;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.unqualify(in, 'a');
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;unqualify;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;unqualify;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.unqualify(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringUtils;false;uriDecode;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringUtils;false;uriDecode;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = StringUtils.uriDecode(in, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;StringValueResolver;false;resolveStringValue;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;StringValueResolver;false;resolveStringValue;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			StringValueResolver instance = null;
@@ -1419,14 +1419,14 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;SystemPropertyUtils;false;resolvePlaceholders;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;SystemPropertyUtils;false;resolvePlaceholders;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = SystemPropertyUtils.resolvePlaceholders(in, false);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;SystemPropertyUtils;false;resolvePlaceholders;;;Argument[0];ReturnValue;taint"
+			// "org.springframework.util;SystemPropertyUtils;false;resolvePlaceholders;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = SystemPropertyUtils.resolvePlaceholders(in);

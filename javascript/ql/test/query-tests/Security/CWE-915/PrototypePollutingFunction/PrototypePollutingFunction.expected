@@ -1478,6 +1478,81 @@ nodes
 | tests.js:547:24:547:28 | value |
 | tests.js:547:24:547:28 | value |
 | tests.js:547:24:547:28 | value |
+| tests.js:552:35:552:37 | src |
+| tests.js:552:35:552:37 | src |
+| tests.js:553:14:553:16 | key |
+| tests.js:553:14:553:16 | key |
+| tests.js:553:14:553:16 | key |
+| tests.js:557:43:557:45 | src |
+| tests.js:557:43:557:45 | src |
+| tests.js:557:43:557:50 | src[key] |
+| tests.js:557:43:557:50 | src[key] |
+| tests.js:557:43:557:50 | src[key] |
+| tests.js:557:43:557:50 | src[key] |
+| tests.js:557:43:557:50 | src[key] |
+| tests.js:559:17:559:19 | key |
+| tests.js:559:17:559:19 | key |
+| tests.js:559:17:559:19 | key |
+| tests.js:559:24:559:26 | src |
+| tests.js:559:24:559:26 | src |
+| tests.js:559:24:559:31 | src[key] |
+| tests.js:559:24:559:31 | src[key] |
+| tests.js:559:24:559:31 | src[key] |
+| tests.js:559:24:559:31 | src[key] |
+| tests.js:559:24:559:31 | src[key] |
+| tests.js:559:24:559:31 | src[key] |
+| tests.js:559:28:559:30 | key |
+| tests.js:559:28:559:30 | key |
+| tests.js:564:35:564:37 | src |
+| tests.js:564:35:564:37 | src |
+| tests.js:565:14:565:16 | key |
+| tests.js:565:14:565:16 | key |
+| tests.js:565:14:565:16 | key |
+| tests.js:569:43:569:45 | src |
+| tests.js:569:43:569:45 | src |
+| tests.js:569:43:569:50 | src[key] |
+| tests.js:569:43:569:50 | src[key] |
+| tests.js:569:43:569:50 | src[key] |
+| tests.js:569:43:569:50 | src[key] |
+| tests.js:569:43:569:50 | src[key] |
+| tests.js:571:17:571:19 | key |
+| tests.js:571:17:571:19 | key |
+| tests.js:571:17:571:19 | key |
+| tests.js:571:24:571:26 | src |
+| tests.js:571:24:571:26 | src |
+| tests.js:571:24:571:31 | src[key] |
+| tests.js:571:24:571:31 | src[key] |
+| tests.js:571:24:571:31 | src[key] |
+| tests.js:571:24:571:31 | src[key] |
+| tests.js:571:24:571:31 | src[key] |
+| tests.js:571:24:571:31 | src[key] |
+| tests.js:571:28:571:30 | key |
+| tests.js:571:28:571:30 | key |
+| tests.js:576:30:576:32 | src |
+| tests.js:576:30:576:32 | src |
+| tests.js:577:14:577:16 | key |
+| tests.js:577:14:577:16 | key |
+| tests.js:577:14:577:16 | key |
+| tests.js:580:38:580:40 | src |
+| tests.js:580:38:580:40 | src |
+| tests.js:580:38:580:45 | src[key] |
+| tests.js:580:38:580:45 | src[key] |
+| tests.js:580:38:580:45 | src[key] |
+| tests.js:580:38:580:45 | src[key] |
+| tests.js:580:38:580:45 | src[key] |
+| tests.js:582:17:582:19 | key |
+| tests.js:582:17:582:19 | key |
+| tests.js:582:17:582:19 | key |
+| tests.js:582:24:582:26 | src |
+| tests.js:582:24:582:26 | src |
+| tests.js:582:24:582:31 | src[key] |
+| tests.js:582:24:582:31 | src[key] |
+| tests.js:582:24:582:31 | src[key] |
+| tests.js:582:24:582:31 | src[key] |
+| tests.js:582:24:582:31 | src[key] |
+| tests.js:582:24:582:31 | src[key] |
+| tests.js:582:28:582:30 | key |
+| tests.js:582:28:582:30 | key |
 edges
 | examples/PrototypePollutingFunction.js:1:16:1:18 | dst | examples/PrototypePollutingFunction.js:5:19:5:21 | dst |
 | examples/PrototypePollutingFunction.js:1:16:1:18 | dst | examples/PrototypePollutingFunction.js:5:19:5:21 | dst |
@@ -3347,6 +3422,102 @@ edges
 | tests.js:545:43:545:47 | value | tests.js:542:35:542:37 | src |
 | tests.js:545:43:545:47 | value | tests.js:542:35:542:37 | src |
 | tests.js:545:43:545:47 | value | tests.js:542:35:542:37 | src |
+| tests.js:552:35:552:37 | src | tests.js:557:43:557:45 | src |
+| tests.js:552:35:552:37 | src | tests.js:557:43:557:45 | src |
+| tests.js:552:35:552:37 | src | tests.js:559:24:559:26 | src |
+| tests.js:552:35:552:37 | src | tests.js:559:24:559:26 | src |
+| tests.js:553:14:553:16 | key | tests.js:559:17:559:19 | key |
+| tests.js:553:14:553:16 | key | tests.js:559:17:559:19 | key |
+| tests.js:553:14:553:16 | key | tests.js:559:17:559:19 | key |
+| tests.js:553:14:553:16 | key | tests.js:559:17:559:19 | key |
+| tests.js:553:14:553:16 | key | tests.js:559:17:559:19 | key |
+| tests.js:553:14:553:16 | key | tests.js:559:17:559:19 | key |
+| tests.js:553:14:553:16 | key | tests.js:559:17:559:19 | key |
+| tests.js:553:14:553:16 | key | tests.js:559:28:559:30 | key |
+| tests.js:553:14:553:16 | key | tests.js:559:28:559:30 | key |
+| tests.js:553:14:553:16 | key | tests.js:559:28:559:30 | key |
+| tests.js:553:14:553:16 | key | tests.js:559:28:559:30 | key |
+| tests.js:557:43:557:45 | src | tests.js:557:43:557:50 | src[key] |
+| tests.js:557:43:557:45 | src | tests.js:557:43:557:50 | src[key] |
+| tests.js:557:43:557:50 | src[key] | tests.js:552:35:552:37 | src |
+| tests.js:557:43:557:50 | src[key] | tests.js:552:35:552:37 | src |
+| tests.js:557:43:557:50 | src[key] | tests.js:552:35:552:37 | src |
+| tests.js:557:43:557:50 | src[key] | tests.js:552:35:552:37 | src |
+| tests.js:557:43:557:50 | src[key] | tests.js:552:35:552:37 | src |
+| tests.js:557:43:557:50 | src[key] | tests.js:552:35:552:37 | src |
+| tests.js:559:24:559:26 | src | tests.js:559:24:559:31 | src[key] |
+| tests.js:559:24:559:26 | src | tests.js:559:24:559:31 | src[key] |
+| tests.js:559:24:559:26 | src | tests.js:559:24:559:31 | src[key] |
+| tests.js:559:24:559:26 | src | tests.js:559:24:559:31 | src[key] |
+| tests.js:559:24:559:31 | src[key] | tests.js:559:24:559:31 | src[key] |
+| tests.js:559:28:559:30 | key | tests.js:559:24:559:31 | src[key] |
+| tests.js:559:28:559:30 | key | tests.js:559:24:559:31 | src[key] |
+| tests.js:559:28:559:30 | key | tests.js:559:24:559:31 | src[key] |
+| tests.js:559:28:559:30 | key | tests.js:559:24:559:31 | src[key] |
+| tests.js:564:35:564:37 | src | tests.js:569:43:569:45 | src |
+| tests.js:564:35:564:37 | src | tests.js:569:43:569:45 | src |
+| tests.js:564:35:564:37 | src | tests.js:571:24:571:26 | src |
+| tests.js:564:35:564:37 | src | tests.js:571:24:571:26 | src |
+| tests.js:565:14:565:16 | key | tests.js:571:17:571:19 | key |
+| tests.js:565:14:565:16 | key | tests.js:571:17:571:19 | key |
+| tests.js:565:14:565:16 | key | tests.js:571:17:571:19 | key |
+| tests.js:565:14:565:16 | key | tests.js:571:17:571:19 | key |
+| tests.js:565:14:565:16 | key | tests.js:571:17:571:19 | key |
+| tests.js:565:14:565:16 | key | tests.js:571:17:571:19 | key |
+| tests.js:565:14:565:16 | key | tests.js:571:17:571:19 | key |
+| tests.js:565:14:565:16 | key | tests.js:571:28:571:30 | key |
+| tests.js:565:14:565:16 | key | tests.js:571:28:571:30 | key |
+| tests.js:565:14:565:16 | key | tests.js:571:28:571:30 | key |
+| tests.js:565:14:565:16 | key | tests.js:571:28:571:30 | key |
+| tests.js:569:43:569:45 | src | tests.js:569:43:569:50 | src[key] |
+| tests.js:569:43:569:45 | src | tests.js:569:43:569:50 | src[key] |
+| tests.js:569:43:569:50 | src[key] | tests.js:564:35:564:37 | src |
+| tests.js:569:43:569:50 | src[key] | tests.js:564:35:564:37 | src |
+| tests.js:569:43:569:50 | src[key] | tests.js:564:35:564:37 | src |
+| tests.js:569:43:569:50 | src[key] | tests.js:564:35:564:37 | src |
+| tests.js:569:43:569:50 | src[key] | tests.js:564:35:564:37 | src |
+| tests.js:569:43:569:50 | src[key] | tests.js:564:35:564:37 | src |
+| tests.js:571:24:571:26 | src | tests.js:571:24:571:31 | src[key] |
+| tests.js:571:24:571:26 | src | tests.js:571:24:571:31 | src[key] |
+| tests.js:571:24:571:26 | src | tests.js:571:24:571:31 | src[key] |
+| tests.js:571:24:571:26 | src | tests.js:571:24:571:31 | src[key] |
+| tests.js:571:24:571:31 | src[key] | tests.js:571:24:571:31 | src[key] |
+| tests.js:571:28:571:30 | key | tests.js:571:24:571:31 | src[key] |
+| tests.js:571:28:571:30 | key | tests.js:571:24:571:31 | src[key] |
+| tests.js:571:28:571:30 | key | tests.js:571:24:571:31 | src[key] |
+| tests.js:571:28:571:30 | key | tests.js:571:24:571:31 | src[key] |
+| tests.js:576:30:576:32 | src | tests.js:580:38:580:40 | src |
+| tests.js:576:30:576:32 | src | tests.js:580:38:580:40 | src |
+| tests.js:576:30:576:32 | src | tests.js:582:24:582:26 | src |
+| tests.js:576:30:576:32 | src | tests.js:582:24:582:26 | src |
+| tests.js:577:14:577:16 | key | tests.js:582:17:582:19 | key |
+| tests.js:577:14:577:16 | key | tests.js:582:17:582:19 | key |
+| tests.js:577:14:577:16 | key | tests.js:582:17:582:19 | key |
+| tests.js:577:14:577:16 | key | tests.js:582:17:582:19 | key |
+| tests.js:577:14:577:16 | key | tests.js:582:17:582:19 | key |
+| tests.js:577:14:577:16 | key | tests.js:582:17:582:19 | key |
+| tests.js:577:14:577:16 | key | tests.js:582:17:582:19 | key |
+| tests.js:577:14:577:16 | key | tests.js:582:28:582:30 | key |
+| tests.js:577:14:577:16 | key | tests.js:582:28:582:30 | key |
+| tests.js:577:14:577:16 | key | tests.js:582:28:582:30 | key |
+| tests.js:577:14:577:16 | key | tests.js:582:28:582:30 | key |
+| tests.js:580:38:580:40 | src | tests.js:580:38:580:45 | src[key] |
+| tests.js:580:38:580:40 | src | tests.js:580:38:580:45 | src[key] |
+| tests.js:580:38:580:45 | src[key] | tests.js:576:30:576:32 | src |
+| tests.js:580:38:580:45 | src[key] | tests.js:576:30:576:32 | src |
+| tests.js:580:38:580:45 | src[key] | tests.js:576:30:576:32 | src |
+| tests.js:580:38:580:45 | src[key] | tests.js:576:30:576:32 | src |
+| tests.js:580:38:580:45 | src[key] | tests.js:576:30:576:32 | src |
+| tests.js:580:38:580:45 | src[key] | tests.js:576:30:576:32 | src |
+| tests.js:582:24:582:26 | src | tests.js:582:24:582:31 | src[key] |
+| tests.js:582:24:582:26 | src | tests.js:582:24:582:31 | src[key] |
+| tests.js:582:24:582:26 | src | tests.js:582:24:582:31 | src[key] |
+| tests.js:582:24:582:26 | src | tests.js:582:24:582:31 | src[key] |
+| tests.js:582:24:582:31 | src[key] | tests.js:582:24:582:31 | src[key] |
+| tests.js:582:28:582:30 | key | tests.js:582:24:582:31 | src[key] |
+| tests.js:582:28:582:30 | key | tests.js:582:24:582:31 | src[key] |
+| tests.js:582:28:582:30 | key | tests.js:582:24:582:31 | src[key] |
+| tests.js:582:28:582:30 | key | tests.js:582:24:582:31 | src[key] |
 #select
 | examples/PrototypePollutingFunction.js:7:13:7:15 | dst | examples/PrototypePollutingFunction.js:2:14:2:16 | key | examples/PrototypePollutingFunction.js:7:13:7:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | examples/PrototypePollutingFunction.js:2:21:2:23 | src | src | examples/PrototypePollutingFunction.js:7:13:7:15 | dst | dst |
 | path-assignment.js:15:13:15:18 | target | path-assignment.js:8:19:8:25 | keys[i] | path-assignment.js:15:13:15:18 | target | The property chain $@ is recursively assigned to $@ without guarding against prototype pollution. | path-assignment.js:8:19:8:25 | keys[i] | here | path-assignment.js:15:13:15:18 | target | target |

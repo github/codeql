@@ -33,8 +33,8 @@ yaml(#20008,0,#20007,0,"tag:yaml.org,2002:str","xx [[ "" ... xxx; xx")
 locations_default(#20009,#10000,4,5,4,102)
 yaml_locations(#20008,#20009)
 yaml(#20007,2,#20000,-2,"tag:yaml.org,2002:seq","- xx [[ ... xxx; xx")
-#20010=@"loc,{#10000},4,3,6,0"
-locations_default(#20010,#10000,4,3,6,0)
+#20010=@"loc,{#10000},4,3,4,103"
+locations_default(#20010,#10000,4,3,4,103)
 yaml_locations(#20007,#20010)
 #20011=*
 yaml_scalars(#20011,0,"xxxxxx")
@@ -88,16 +88,16 @@ yaml(#20028,0,#20017,-3,"tag:yaml.org,2002:str","xxxxxx")
 locations_default(#20029,#10000,10,13,10,18)
 yaml_locations(#20028,#20029)
 yaml(#20017,1,#20016,0,"tag:yaml.org,2002:map","xx: xxxxx")
-#20030=@"loc,{#10000},8,7,14,0"
-locations_default(#20030,#10000,8,7,14,0)
+#20030=@"loc,{#10000},8,7,12,27"
+locations_default(#20030,#10000,8,7,12,27)
 yaml_locations(#20017,#20030)
 yaml(#20016,2,#20013,-1,"tag:yaml.org,2002:seq","- xx: xxxxx")
-#20031=@"loc,{#10000},8,5,14,0"
-locations_default(#20031,#10000,8,5,14,0)
+#20031=@"loc,{#10000},8,5,12,27"
+locations_default(#20031,#10000,8,5,12,27)
 yaml_locations(#20016,#20031)
 yaml(#20013,1,#20000,-3,"tag:yaml.org,2002:map","xxxxxxx:")
-#20032=@"loc,{#10000},7,3,14,0"
-locations_default(#20032,#10000,7,3,14,0)
+#20032=@"loc,{#10000},7,3,12,27"
+locations_default(#20032,#10000,7,3,12,27)
 yaml_locations(#20013,#20032)
 #20033=*
 yaml_scalars(#20033,0,"xxxxx")
@@ -120,12 +120,12 @@ yaml(#20039,0,#20038,0,"tag:yaml.org,2002:str","xxxx_xxxxxxx")
 locations_default(#20040,#10000,16,7,16,18)
 yaml_locations(#20039,#20040)
 yaml(#20038,2,#20035,-1,"tag:yaml.org,2002:seq","- xxxx_xxxxxxx")
-#20041=@"loc,{#10000},16,5,18,0"
-locations_default(#20041,#10000,16,5,18,0)
+#20041=@"loc,{#10000},16,5,16,19"
+locations_default(#20041,#10000,16,5,16,19)
 yaml_locations(#20038,#20041)
 yaml(#20035,1,#20000,-4,"tag:yaml.org,2002:map","xxxxxxxxxxx:")
-#20042=@"loc,{#10000},15,3,18,0"
-locations_default(#20042,#10000,15,3,18,0)
+#20042=@"loc,{#10000},15,3,16,19"
+locations_default(#20042,#10000,15,3,16,19)
 yaml_locations(#20035,#20042)
 #20043=*
 yaml_scalars(#20043,0,"xxxxxx")
@@ -171,8 +171,8 @@ yaml(#20056,0,#20045,-3,"tag:yaml.org,2002:str","xxx xxx xxxx")
 locations_default(#20057,#10000,21,11,21,22)
 yaml_locations(#20056,#20057)
 yaml(#20045,1,#20000,-5,"tag:yaml.org,2002:map","xxxx_xxxxxxx: xxxx")
-#20058=@"loc,{#10000},19,3,23,0"
-locations_default(#20058,#10000,19,3,23,0)
+#20058=@"loc,{#10000},19,3,21,23"
+locations_default(#20058,#10000,19,3,21,23)
 yaml_locations(#20045,#20058)
 #20059=*
 yaml_scalars(#20059,0,"xxx")
@@ -201,16 +201,16 @@ yaml(#20067,0,#20064,-1,"tag:yaml.org,2002:str","xxxxxxx ... xxxxxx=")
 locations_default(#20068,#10000,26,13,26,696)
 yaml_locations(#20067,#20068)
 yaml(#20064,1,#20061,-1,"tag:yaml.org,2002:map","xxxxxx: ... xxxxxx=")
-#20069=@"loc,{#10000},26,5,27,0"
-locations_default(#20069,#10000,26,5,27,0)
+#20069=@"loc,{#10000},26,5,26,697"
+locations_default(#20069,#10000,26,5,26,697)
 yaml_locations(#20064,#20069)
 yaml(#20061,1,#20000,-6,"tag:yaml.org,2002:map","xxxxxx:")
-#20070=@"loc,{#10000},24,3,27,0"
-locations_default(#20070,#10000,24,3,27,0)
+#20070=@"loc,{#10000},24,3,26,697"
+locations_default(#20070,#10000,24,3,26,697)
 yaml_locations(#20061,#20070)
 yaml(#20000,1,#10000,0,"tag:yaml.org,2002:map","xxxxxxxx: xxxx_xx")
-#20071=@"loc,{#10000},1,1,27,0"
-locations_default(#20071,#10000,1,1,27,0)
+#20071=@"loc,{#10000},1,1,26,697"
+locations_default(#20071,#10000,1,1,26,697)
 yaml_locations(#20000,#20071)
 numlines(#10000,26,0,0)
 filetype(#10000,"yaml")

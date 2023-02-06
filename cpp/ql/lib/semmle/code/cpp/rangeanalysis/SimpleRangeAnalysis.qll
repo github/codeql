@@ -296,7 +296,7 @@ private predicate analyzableExpr(Expr e) {
     or
     // Also allow variable accesses, provided that they have SSA
     // information.
-    exists(RangeSsaDefinition def, StackVariable v | e = def.getAUse(v))
+    exists(RangeSsaDefinition def | e = def.getAUse(_))
     or
     e instanceof UnsignedBitwiseAndExpr
     or
@@ -1573,7 +1573,7 @@ private module SimpleRangeAnalysisCached {
     result = min([max(getTruncatedUpperBounds(expr)), getGuardedUpperBound(expr)])
   }
 
-  /** Holds if the upper bound of `expr` may have been widened. This means the the upper bound is in practice likely to be overly wide. */
+  /** Holds if the upper bound of `expr` may have been widened. This means the upper bound is in practice likely to be overly wide. */
   cached
   predicate upperBoundMayBeWidened(Expr e) {
     isRecursiveExpr(e) and

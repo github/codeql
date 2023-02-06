@@ -16,7 +16,7 @@ class IRConfiguration extends TIRConfiguration {
   /**
    * Holds if IR should be created for function `func`. By default, holds for all functions.
    */
-  predicate shouldCreateIRForFunction(Language::Function func) { any() }
+  predicate shouldCreateIRForFunction(Language::Declaration func) { any() }
 
   /**
    * Holds if the strings used as part of an IR dump should be generated for function `func`.
@@ -25,7 +25,7 @@ class IRConfiguration extends TIRConfiguration {
    * of debug strings for IR that will not be dumped. We still generate the actual IR for these
    * functions, however, to preserve the results of any interprocedural analysis.
    */
-  predicate shouldEvaluateDebugStringsForFunction(Language::Function func) { any() }
+  predicate shouldEvaluateDebugStringsForFunction(Language::Declaration func) { any() }
 }
 
 private newtype TIREscapeAnalysisConfiguration = MkIREscapeAnalysisConfiguration()

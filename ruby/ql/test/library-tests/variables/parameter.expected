@@ -1,11 +1,9 @@
 parameterVariable
 | nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:15:23:15:23 | a |
 | nested_scopes.rb:16:26:16:26 | x | nested_scopes.rb:16:26:16:26 | x |
-| nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:16:29:16:29 | a |
 | nested_scopes.rb:18:26:18:26 | x | nested_scopes.rb:18:26:18:26 | x |
 | nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a |
 | parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x |
-| parameters.rb:1:18:1:18 | y | parameters.rb:1:18:1:18 | y |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client |
 | parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas |
 | parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map |
@@ -40,6 +38,10 @@ parameterVariable
 | ssa.rb:53:8:53:10 | foo | ssa.rb:53:8:53:10 | foo |
 | ssa.rb:64:8:64:8 | a | ssa.rb:64:8:64:8 | a |
 | ssa.rb:66:15:66:15 | a | ssa.rb:66:15:66:15 | a |
+| ssa.rb:90:9:90:10 | b1 | ssa.rb:90:9:90:10 | b1 |
+| ssa.rb:90:13:90:14 | b2 | ssa.rb:90:13:90:14 | b2 |
+| ssa.rb:90:17:90:18 | b3 | ssa.rb:90:17:90:18 | b3 |
+| ssa.rb:90:21:90:22 | b4 | ssa.rb:90:21:90:22 | b4 |
 parameterNoVariable
 | parameters.rb:45:22:45:22 | _ |
 parameterVariableNoAccess

@@ -36,5 +36,5 @@ where
   // This is the case is some dummy implementations.
   exists(MethodAccess ma | ma.getEnclosingCallable() = m | ma.getMethod().getName() = "write")
 select c,
-  "This class extends java.io.OutputStream and implements $@, but does not override write(byte[],int,int)",
+  "This class extends 'java.io.OutputStream' and implements $@, but does not override 'write(byte[],int,int)'.",
   m, m.getName()

@@ -16,5 +16,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, MissingJwtSignatureCheckConf conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "A signing key is set $@, but the signature is not verified.",
-  source.getNode(), "here"
+select sink.getNode(), source, sink, "This parses a $@, but the signature is not verified.",
+  source.getNode(), "JWT signing key"

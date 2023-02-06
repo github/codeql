@@ -10,10 +10,10 @@ module Connect {
   /**
    * An expression that creates a new Connect server.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, CallExpr {
+  class ServerDefinition extends Http::Servers::StandardServerDefinition, DataFlow::CallNode {
     ServerDefinition() {
       // `app = connect()`
-      this = DataFlow::moduleImport("connect").getAnInvocation().asExpr()
+      this = DataFlow::moduleImport("connect").getAnInvocation()
     }
   }
 
@@ -30,43 +30,45 @@ module Connect {
      *
      * `kind` is one of: "error", "request", "response", "next".
      */
-    abstract Parameter getRouteHandlerParameter(string kind);
+    abstract DataFlow::ParameterNode getRouteHandlerParameter(string kind);
 
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    override Parameter getRequestParameter() { result = getRouteHandlerParameter("request") }
+    override DataFlow::ParameterNode getRequestParameter() {
+      result = getRouteHandlerParameter("request")
+    }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    override Parameter getResponseParameter() { result = getRouteHandlerParameter("response") }
+    override DataFlow::ParameterNode getResponseParameter() {
+      result = getRouteHandlerParameter("response")
+    }
   }
 
   /**
    * A Connect route handler installed by a route setup.
    */
-  class StandardRouteHandler extends RouteHandler {
-    override Function astNode;
-
+  class StandardRouteHandler extends RouteHandler, DataFlow::FunctionNode {
     StandardRouteHandler() { this = any(RouteSetup setup).getARouteHandler() }
 
-    override Parameter getRouteHandlerParameter(string kind) {
-      result = getRouteHandlerParameter(astNode, kind)
+    override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
+      result = getRouteHandlerParameter(this, kind)
     }
   }
 
   /**
    * A call to a Connect method that sets up a route.
    */
-  class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends DataFlow::MethodCallNode, Http::Servers::StandardRouteSetup {
     ServerDefinition server;
 
     RouteSetup() {
       getMethodName() = "use" and
       (
         // app.use(fun)
-        server.flowsTo(getReceiver())
+        server.ref().getAMethodCall() = this
         or
         // app.use(...).use(fun)
         this.getReceiver().(RouteSetup).getServer() = server
@@ -79,24 +81,32 @@ module Connect {
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = getARouteHandlerExpr().flow().getALocalSource()
+      result = getARouteHandlerNode().getALocalSource()
       or
       exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
     }
 
-    override Expr getServer() { result = server }
+    override DataFlow::Node getServer() { result = server }
 
-    /** Gets an argument that represents a route handler being registered. */
-    Expr getARouteHandlerExpr() { result = getAnArgument() }
+    /**
+     * DEPRECATED: Use `getARouteHandlerNode` instead.
+     * Gets an argument that represents a route handler being registered.
+     */
+    deprecated Expr getARouteHandlerExpr() { result = getARouteHandlerNode().asExpr() }
+
+    /**
+     * Gets an argument that represents a route handler being registered.
+     */
+    DataFlow::Node getARouteHandlerNode() { result = getAnArgument() }
   }
 
   /** An expression that is passed as `basicAuthConnect(<user>, <password>)`. */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     string kind;
 
     Credentials() {
-      exists(CallExpr call |
-        call = DataFlow::moduleImport("basic-auth-connect").getAnInvocation().asExpr() and
+      exists(DataFlow::CallNode call |
+        call = DataFlow::moduleImport("basic-auth-connect").getAnInvocation() and
         call.getNumArgument() = 2
       |
         this = call.getArgument(0) and kind = "user name"
@@ -108,22 +118,24 @@ module Connect {
     override string getCredentialsKind() { result = kind }
   }
 
-  class RequestExpr = NodeJSLib::RequestExpr;
+  deprecated class RequestExpr = NodeJSLib::RequestExpr;
+
+  class RequestNode = NodeJSLib::RequestNode;
 
   /**
    * An access to a user-controlled Connect request input.
    */
-  private class RequestInputAccess extends HTTP::RequestInputAccess {
-    RequestExpr request;
+  private class RequestInputAccess extends Http::RequestInputAccess instanceof DataFlow::MethodCallNode {
+    RequestNode request;
     string kind;
 
     RequestInputAccess() {
       request.getRouteHandler() instanceof StandardRouteHandler and
-      exists(PropAccess cookies |
+      exists(DataFlow::PropRead cookies |
         // `req.cookies.get(<name>)`
         kind = "cookie" and
         cookies.accesses(request, "cookies") and
-        this.asExpr().(MethodCallExpr).calls(cookies, "get")
+        super.calls(cookies, "get")
       )
     }
 

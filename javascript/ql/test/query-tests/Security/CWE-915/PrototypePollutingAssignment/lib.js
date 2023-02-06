@@ -112,3 +112,26 @@ module.exports.sanWithFcuntion = function() {
   }
   obj[one][two] = value; // OK
 }
+
+module.exports.returnsObj = function () {
+    return {
+        set: function (obj, path, value) {
+            obj[path[0]][path[1]] = value; // NOT OK
+        }
+    }
+}
+
+class MyClass {
+    constructor() {}
+
+    set(obj, path, value) {
+        obj[path[0]][path[1]] = value; // NOT OK
+    }
+
+    static staticSet(obj, path, value) {
+        obj[path[0]][path[1]] = value; // OK - not exported
+    }
+}
+module.exports.returnsMewMyClass = function () {
+    return new MyClass();
+}

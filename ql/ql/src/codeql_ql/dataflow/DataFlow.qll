@@ -72,7 +72,7 @@ class AstNodeNode extends Node, MkAstNodeNode {
 }
 
 /**
- * Gets the data-flow node correspoinding to the given AST node.
+ * Gets the data-flow node corresponding to the given AST node.
  */
 pragma[inline]
 Node astNode(AstNode node) { result = MkAstNodeNode(node) }
@@ -204,7 +204,7 @@ class SuperNode extends LocalFlow::TSuperNode {
   Node getANode() { LocalFlow::getRepr(result) = repr }
 
   /** Gets an AST node from any of the nodes in this super node. */
-  AstNode asAstNode() { result = getANode().asAstNode() }
+  AstNode asAstNode() { result = this.getANode().asAstNode() }
 
   /**
    * Gets a single node from this super node.
@@ -212,25 +212,27 @@ class SuperNode extends LocalFlow::TSuperNode {
    * The node is arbitrary and the caller should not rely on how the node is chosen.
    * The node is currently chosen such that:
    * - An `AstNodeNode` is preferred over other nodes.
-   * - A node occuring earlier is preferred over one occurring later.
+   * - A node occurring earlier is preferred over one occurring later.
    */
-  Node getArbitraryRepr() { result = min(Node n | n = getANode() | n order by getInternalId(n)) }
+  Node getArbitraryRepr() {
+    result = min(Node n | n = this.getANode() | n order by getInternalId(n))
+  }
 
   /**
    * Gets the predicate containing all nodes that are part of this super node.
    */
-  Predicate getEnclosingPredicate() { result = getANode().getEnclosingPredicate() }
+  Predicate getEnclosingPredicate() { result = this.getANode().getEnclosingPredicate() }
 
   /** Gets a string representation of this super node. */
   string toString() {
     exists(int c |
-      c = strictcount(getANode()) and
-      result = "Super node of " + c + " nodes in " + getEnclosingPredicate().getName()
+      c = strictcount(this.getANode()) and
+      result = "Super node of " + c + " nodes in " + this.getEnclosingPredicate().getName()
     )
   }
 
   /** Gets the location of an arbitrary node in this super node. */
-  Location getLocation() { result = getArbitraryRepr().getLocation() }
+  Location getLocation() { result = this.getArbitraryRepr().getLocation() }
 
   /** Gets any member call whose receiver is in the same super node. */
   MemberCall getALocalMemberCall() { superNode(result.getBase()) = this }
@@ -287,7 +289,7 @@ class SuperNode extends LocalFlow::TSuperNode {
   cached
   private string getAStringValue(Tracker t) {
     t.start() and
-    result = asAstNode().(String).getValue()
+    result = this.asAstNode().(String).getValue()
     or
     exists(SuperNode pred, Tracker t2 |
       this = pred.track(t2, t) and
@@ -343,7 +345,7 @@ class Tracker extends GlobalFlow::TEdgeLabelOrTrackerState {
   /** Holds if this is the starting point, that is, the summary of the empty path. */
   predicate start() { this = GlobalFlow::MkNoEdge() }
 
-  /** Holds if a call step has been used (possibly preceeded by return steps). */
+  /** Holds if a call step has been used (possibly preceded by return steps). */
   predicate hasCall() { this = GlobalFlow::MkHasCall() }
 
   /** Holds if either `start()` or `hasCall()` holds */

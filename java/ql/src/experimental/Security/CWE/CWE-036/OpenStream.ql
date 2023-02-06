@@ -7,6 +7,7 @@
  * @precision medium
  * @id java/openstream-called-on-tainted-url
  * @tags security
+ *       experimental
  *       external/cwe/cwe-036
  */
 
@@ -53,4 +54,4 @@ where
   sink.getNode().asExpr() = call.getQualifier() and
   any(RemoteUrlToOpenStreamFlowConfig c).hasFlowPath(source, sink)
 select call, source, sink,
-  "URL on which openStream is called may have been constructed from remote source"
+  "URL on which openStream is called may have been constructed from remote source."

@@ -5,7 +5,7 @@
  */
 
 import python
-import DefinitionTracking
+import analysis.DefinitionTracking
 
 predicate uniqueness_error(int number, string what, string problem) {
   what in [
@@ -194,7 +194,7 @@ predicate function_object_consistency(string clsname, string problem, string wha
   exists(FunctionObject func | clsname = func.getAQlClass() |
     what = func.getName() and
     (
-      count(func.descriptiveString()) = 0 and problem = "no descriptiveString()"
+      not exists(func.descriptiveString()) and problem = "no descriptiveString()"
       or
       exists(int c | c = strictcount(func.descriptiveString()) and c > 1 |
         problem = c + "descriptiveString()s"
@@ -231,8 +231,8 @@ predicate points_to_consistency(string clsname, string problem, string what) {
     what = obj.toString()
   )
   or
-  exists(ControlFlowNode use, ControlFlowNode inter, Object obj |
-    intermediate_origins(use, inter, obj) and
+  exists(ControlFlowNode use, ControlFlowNode inter |
+    intermediate_origins(use, inter, _) and
     clsname = use.getAQlClass() and
     problem = "has intermediate origin " + inter and
     what = use.toString()

@@ -2,9 +2,28 @@
 
 namespace System
 {
-    // Generated from `System.MemoryExtensions` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+    // Generated from `System.MemoryExtensions` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
     public static class MemoryExtensions
     {
+        // Generated from `System.MemoryExtensions+TryWriteInterpolatedStringHandler` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        public struct TryWriteInterpolatedStringHandler
+        {
+            public bool AppendFormatted(System.ReadOnlySpan<System.Char> value) => throw null;
+            public bool AppendFormatted(System.ReadOnlySpan<System.Char> value, int alignment = default(int), string format = default(string)) => throw null;
+            public bool AppendFormatted(object value, int alignment = default(int), string format = default(string)) => throw null;
+            public bool AppendFormatted(string value) => throw null;
+            public bool AppendFormatted(string value, int alignment = default(int), string format = default(string)) => throw null;
+            public bool AppendFormatted<T>(T value) => throw null;
+            public bool AppendFormatted<T>(T value, int alignment) => throw null;
+            public bool AppendFormatted<T>(T value, int alignment, string format) => throw null;
+            public bool AppendFormatted<T>(T value, string format) => throw null;
+            public bool AppendLiteral(string value) => throw null;
+            // Stub generator skipped constructor 
+            public TryWriteInterpolatedStringHandler(int literalLength, int formattedCount, System.Span<System.Char> destination, System.IFormatProvider provider, out bool shouldAppend) => throw null;
+            public TryWriteInterpolatedStringHandler(int literalLength, int formattedCount, System.Span<System.Char> destination, out bool shouldAppend) => throw null;
+        }
+
+
         public static System.ReadOnlyMemory<System.Char> AsMemory(this string text) => throw null;
         public static System.ReadOnlyMemory<System.Char> AsMemory(this string text, System.Index startIndex) => throw null;
         public static System.ReadOnlyMemory<System.Char> AsMemory(this string text, System.Range range) => throw null;
@@ -46,6 +65,8 @@ namespace System
         public static bool EndsWith(this System.ReadOnlySpan<System.Char> span, System.ReadOnlySpan<System.Char> value, System.StringComparison comparisonType) => throw null;
         public static bool EndsWith<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
         public static bool EndsWith<T>(this System.Span<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
+        public static System.Text.SpanLineEnumerator EnumerateLines(this System.ReadOnlySpan<System.Char> span) => throw null;
+        public static System.Text.SpanLineEnumerator EnumerateLines(this System.Span<System.Char> span) => throw null;
         public static System.Text.SpanRuneEnumerator EnumerateRunes(this System.ReadOnlySpan<System.Char> span) => throw null;
         public static System.Text.SpanRuneEnumerator EnumerateRunes(this System.Span<System.Char> span) => throw null;
         public static bool Equals(this System.ReadOnlySpan<System.Char> span, System.ReadOnlySpan<System.Char> other, System.StringComparison comparisonType) => throw null;
@@ -80,7 +101,9 @@ namespace System
         public static int SequenceCompareTo<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> other) where T : System.IComparable<T> => throw null;
         public static int SequenceCompareTo<T>(this System.Span<T> span, System.ReadOnlySpan<T> other) where T : System.IComparable<T> => throw null;
         public static bool SequenceEqual<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> other) where T : System.IEquatable<T> => throw null;
+        public static bool SequenceEqual<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> other, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static bool SequenceEqual<T>(this System.Span<T> span, System.ReadOnlySpan<T> other) where T : System.IEquatable<T> => throw null;
+        public static bool SequenceEqual<T>(this System.Span<T> span, System.ReadOnlySpan<T> other, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static void Sort<T, TComparer>(this System.Span<T> span, TComparer comparer) where TComparer : System.Collections.Generic.IComparer<T> => throw null;
         public static void Sort<T>(this System.Span<T> span) => throw null;
         public static void Sort<T>(this System.Span<T> span, System.Comparison<T> comparison) => throw null;
@@ -136,9 +159,11 @@ namespace System
         public static System.ReadOnlySpan<T> TrimStart<T>(this System.ReadOnlySpan<T> span, T trimElement) where T : System.IEquatable<T> => throw null;
         public static System.Span<T> TrimStart<T>(this System.Span<T> span, System.ReadOnlySpan<T> trimElements) where T : System.IEquatable<T> => throw null;
         public static System.Span<T> TrimStart<T>(this System.Span<T> span, T trimElement) where T : System.IEquatable<T> => throw null;
+        public static bool TryWrite(this System.Span<System.Char> destination, System.IFormatProvider provider, ref System.MemoryExtensions.TryWriteInterpolatedStringHandler handler, out int charsWritten) => throw null;
+        public static bool TryWrite(this System.Span<System.Char> destination, ref System.MemoryExtensions.TryWriteInterpolatedStringHandler handler, out int charsWritten) => throw null;
     }
 
-    // Generated from `System.SequencePosition` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+    // Generated from `System.SequencePosition` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
     public struct SequencePosition : System.IEquatable<System.SequencePosition>
     {
         public bool Equals(System.SequencePosition other) => throw null;
@@ -152,7 +177,7 @@ namespace System
 
     namespace Buffers
     {
-        // Generated from `System.Buffers.ArrayBufferWriter<>` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Buffers.ArrayBufferWriter<>` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class ArrayBufferWriter<T> : System.Buffers.IBufferWriter<T>
         {
             public void Advance(int count) => throw null;
@@ -168,7 +193,7 @@ namespace System
             public System.ReadOnlySpan<T> WrittenSpan { get => throw null; }
         }
 
-        // Generated from `System.Buffers.BuffersExtensions` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Buffers.BuffersExtensions` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public static class BuffersExtensions
         {
             public static void CopyTo<T>(System.Buffers.ReadOnlySequence<T> source, System.Span<T> destination) => throw null;
@@ -177,7 +202,7 @@ namespace System
             public static void Write<T>(this System.Buffers.IBufferWriter<T> writer, System.ReadOnlySpan<T> value) => throw null;
         }
 
-        // Generated from `System.Buffers.IBufferWriter<>` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Buffers.IBufferWriter<>` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public interface IBufferWriter<T>
         {
             void Advance(int count);
@@ -185,7 +210,7 @@ namespace System
             System.Span<T> GetSpan(int sizeHint = default(int));
         }
 
-        // Generated from `System.Buffers.MemoryPool<>` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Buffers.MemoryPool<>` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public abstract class MemoryPool<T> : System.IDisposable
         {
             public void Dispose() => throw null;
@@ -196,10 +221,10 @@ namespace System
             public static System.Buffers.MemoryPool<T> Shared { get => throw null; }
         }
 
-        // Generated from `System.Buffers.ReadOnlySequence<>` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Buffers.ReadOnlySequence<>` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public struct ReadOnlySequence<T>
         {
-            // Generated from `System.Buffers.ReadOnlySequence<>+Enumerator` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Buffers.ReadOnlySequence<>+Enumerator` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct Enumerator
             {
                 public System.ReadOnlyMemory<T> Current { get => throw null; }
@@ -239,7 +264,7 @@ namespace System
             public bool TryGet(ref System.SequencePosition position, out System.ReadOnlyMemory<T> memory, bool advance = default(bool)) => throw null;
         }
 
-        // Generated from `System.Buffers.ReadOnlySequenceSegment<>` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Buffers.ReadOnlySequenceSegment<>` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public abstract class ReadOnlySequenceSegment<T>
         {
             public System.ReadOnlyMemory<T> Memory { get => throw null; set => throw null; }
@@ -248,7 +273,7 @@ namespace System
             public System.Int64 RunningIndex { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Buffers.SequenceReader<>` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Buffers.SequenceReader<>` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public struct SequenceReader<T> where T : unmanaged, System.IEquatable<T>
         {
             public void Advance(System.Int64 count) => throw null;
@@ -289,7 +314,7 @@ namespace System
             public System.ReadOnlySpan<T> UnreadSpan { get => throw null; }
         }
 
-        // Generated from `System.Buffers.SequenceReaderExtensions` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Buffers.SequenceReaderExtensions` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public static class SequenceReaderExtensions
         {
             public static bool TryReadBigEndian(ref System.Buffers.SequenceReader<System.Byte> reader, out int value) => throw null;
@@ -300,7 +325,7 @@ namespace System
             public static bool TryReadLittleEndian(ref System.Buffers.SequenceReader<System.Byte> reader, out System.Int16 value) => throw null;
         }
 
-        // Generated from `System.Buffers.StandardFormat` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Buffers.StandardFormat` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public struct StandardFormat : System.IEquatable<System.Buffers.StandardFormat>
         {
             public static bool operator !=(System.Buffers.StandardFormat left, System.Buffers.StandardFormat right) => throw null;
@@ -325,11 +350,13 @@ namespace System
 
         namespace Binary
         {
-            // Generated from `System.Buffers.Binary.BinaryPrimitives` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Buffers.Binary.BinaryPrimitives` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class BinaryPrimitives
             {
                 public static double ReadDoubleBigEndian(System.ReadOnlySpan<System.Byte> source) => throw null;
                 public static double ReadDoubleLittleEndian(System.ReadOnlySpan<System.Byte> source) => throw null;
+                public static System.Half ReadHalfBigEndian(System.ReadOnlySpan<System.Byte> source) => throw null;
+                public static System.Half ReadHalfLittleEndian(System.ReadOnlySpan<System.Byte> source) => throw null;
                 public static System.Int16 ReadInt16BigEndian(System.ReadOnlySpan<System.Byte> source) => throw null;
                 public static System.Int16 ReadInt16LittleEndian(System.ReadOnlySpan<System.Byte> source) => throw null;
                 public static int ReadInt32BigEndian(System.ReadOnlySpan<System.Byte> source) => throw null;
@@ -354,6 +381,8 @@ namespace System
                 public static System.UInt16 ReverseEndianness(System.UInt16 value) => throw null;
                 public static bool TryReadDoubleBigEndian(System.ReadOnlySpan<System.Byte> source, out double value) => throw null;
                 public static bool TryReadDoubleLittleEndian(System.ReadOnlySpan<System.Byte> source, out double value) => throw null;
+                public static bool TryReadHalfBigEndian(System.ReadOnlySpan<System.Byte> source, out System.Half value) => throw null;
+                public static bool TryReadHalfLittleEndian(System.ReadOnlySpan<System.Byte> source, out System.Half value) => throw null;
                 public static bool TryReadInt16BigEndian(System.ReadOnlySpan<System.Byte> source, out System.Int16 value) => throw null;
                 public static bool TryReadInt16LittleEndian(System.ReadOnlySpan<System.Byte> source, out System.Int16 value) => throw null;
                 public static bool TryReadInt32BigEndian(System.ReadOnlySpan<System.Byte> source, out int value) => throw null;
@@ -370,6 +399,8 @@ namespace System
                 public static bool TryReadUInt64LittleEndian(System.ReadOnlySpan<System.Byte> source, out System.UInt64 value) => throw null;
                 public static bool TryWriteDoubleBigEndian(System.Span<System.Byte> destination, double value) => throw null;
                 public static bool TryWriteDoubleLittleEndian(System.Span<System.Byte> destination, double value) => throw null;
+                public static bool TryWriteHalfBigEndian(System.Span<System.Byte> destination, System.Half value) => throw null;
+                public static bool TryWriteHalfLittleEndian(System.Span<System.Byte> destination, System.Half value) => throw null;
                 public static bool TryWriteInt16BigEndian(System.Span<System.Byte> destination, System.Int16 value) => throw null;
                 public static bool TryWriteInt16LittleEndian(System.Span<System.Byte> destination, System.Int16 value) => throw null;
                 public static bool TryWriteInt32BigEndian(System.Span<System.Byte> destination, int value) => throw null;
@@ -386,6 +417,8 @@ namespace System
                 public static bool TryWriteUInt64LittleEndian(System.Span<System.Byte> destination, System.UInt64 value) => throw null;
                 public static void WriteDoubleBigEndian(System.Span<System.Byte> destination, double value) => throw null;
                 public static void WriteDoubleLittleEndian(System.Span<System.Byte> destination, double value) => throw null;
+                public static void WriteHalfBigEndian(System.Span<System.Byte> destination, System.Half value) => throw null;
+                public static void WriteHalfLittleEndian(System.Span<System.Byte> destination, System.Half value) => throw null;
                 public static void WriteInt16BigEndian(System.Span<System.Byte> destination, System.Int16 value) => throw null;
                 public static void WriteInt16LittleEndian(System.Span<System.Byte> destination, System.Int16 value) => throw null;
                 public static void WriteInt32BigEndian(System.Span<System.Byte> destination, int value) => throw null;
@@ -405,7 +438,7 @@ namespace System
         }
         namespace Text
         {
-            // Generated from `System.Buffers.Text.Base64` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Buffers.Text.Base64` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class Base64
             {
                 public static System.Buffers.OperationStatus DecodeFromUtf8(System.ReadOnlySpan<System.Byte> utf8, System.Span<System.Byte> bytes, out int bytesConsumed, out int bytesWritten, bool isFinalBlock = default(bool)) => throw null;
@@ -416,7 +449,7 @@ namespace System
                 public static int GetMaxEncodedToUtf8Length(int length) => throw null;
             }
 
-            // Generated from `System.Buffers.Text.Utf8Formatter` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Buffers.Text.Utf8Formatter` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class Utf8Formatter
             {
                 public static bool TryFormat(System.DateTime value, System.Span<System.Byte> destination, out int bytesWritten, System.Buffers.StandardFormat format = default(System.Buffers.StandardFormat)) => throw null;
@@ -437,7 +470,7 @@ namespace System
                 public static bool TryFormat(System.UInt16 value, System.Span<System.Byte> destination, out int bytesWritten, System.Buffers.StandardFormat format = default(System.Buffers.StandardFormat)) => throw null;
             }
 
-            // Generated from `System.Buffers.Text.Utf8Parser` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Buffers.Text.Utf8Parser` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class Utf8Parser
             {
                 public static bool TryParse(System.ReadOnlySpan<System.Byte> source, out System.DateTime value, out int bytesConsumed, System.Char standardFormat = default(System.Char)) => throw null;
@@ -464,7 +497,7 @@ namespace System
     {
         namespace InteropServices
         {
-            // Generated from `System.Runtime.InteropServices.MemoryMarshal` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Runtime.InteropServices.MemoryMarshal` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class MemoryMarshal
             {
                 public static System.ReadOnlySpan<System.Byte> AsBytes<T>(System.ReadOnlySpan<T> span) where T : struct => throw null;
@@ -476,7 +509,10 @@ namespace System
                 public static System.Span<TTo> Cast<TFrom, TTo>(System.Span<TFrom> span) where TFrom : struct where TTo : struct => throw null;
                 public static System.Memory<T> CreateFromPinnedArray<T>(T[] array, int start, int length) => throw null;
                 public static System.ReadOnlySpan<T> CreateReadOnlySpan<T>(ref T reference, int length) => throw null;
+                unsafe public static System.ReadOnlySpan<System.Byte> CreateReadOnlySpanFromNullTerminated(System.Byte* value) => throw null;
+                unsafe public static System.ReadOnlySpan<System.Char> CreateReadOnlySpanFromNullTerminated(System.Char* value) => throw null;
                 public static System.Span<T> CreateSpan<T>(ref T reference, int length) => throw null;
+                public static System.Byte GetArrayDataReference(System.Array array) => throw null;
                 public static T GetArrayDataReference<T>(T[] array) => throw null;
                 public static T GetReference<T>(System.ReadOnlySpan<T> span) => throw null;
                 public static T GetReference<T>(System.Span<T> span) => throw null;
@@ -491,7 +527,7 @@ namespace System
                 public static void Write<T>(System.Span<System.Byte> destination, ref T value) where T : struct => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.SequenceMarshal` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Runtime.InteropServices.SequenceMarshal` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class SequenceMarshal
             {
                 public static bool TryGetArray<T>(System.Buffers.ReadOnlySequence<T> sequence, out System.ArraySegment<T> segment) => throw null;
@@ -504,7 +540,7 @@ namespace System
     }
     namespace Text
     {
-        // Generated from `System.Text.EncodingExtensions` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Text.EncodingExtensions` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public static class EncodingExtensions
         {
             public static void Convert(this System.Text.Decoder decoder, System.Buffers.ReadOnlySequence<System.Byte> bytes, System.Buffers.IBufferWriter<System.Char> writer, bool flush, out System.Int64 charsUsed, out bool completed) => throw null;
@@ -521,7 +557,16 @@ namespace System
             public static string GetString(this System.Text.Encoding encoding, System.Buffers.ReadOnlySequence<System.Byte> bytes) => throw null;
         }
 
-        // Generated from `System.Text.SpanRuneEnumerator` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Text.SpanLineEnumerator` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        public struct SpanLineEnumerator
+        {
+            public System.ReadOnlySpan<System.Char> Current { get => throw null; }
+            public System.Text.SpanLineEnumerator GetEnumerator() => throw null;
+            public bool MoveNext() => throw null;
+            // Stub generator skipped constructor 
+        }
+
+        // Generated from `System.Text.SpanRuneEnumerator` in `System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public struct SpanRuneEnumerator
         {
             public System.Text.Rune Current { get => throw null; }

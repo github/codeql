@@ -10,6 +10,7 @@
 
 import ast.Ast
 private import codeql.Locations
+import ast.internal.AstNodes
 
 /**
  * The query can extend this class to control which nodes are printed.
@@ -20,12 +21,12 @@ class PrintAstConfiguration extends string {
   /**
    * Holds if the given node should be printed.
    */
-  predicate shouldPrintNode(AstNode n) { any() }
+  predicate shouldPrintNode(AstNode n) { not exists(toMock(n)) }
 }
 
 /**
  * Gets the `i`th child of parent.
- * The ordering is location based and pretty arbitary.
+ * The ordering is location based and pretty arbitrary.
  */
 AstNode getAstChild(PrintAstNode parent, int i) {
   result =

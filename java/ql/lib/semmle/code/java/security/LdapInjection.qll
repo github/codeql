@@ -32,53 +32,6 @@ private class DefaultLdapInjectionSink extends LdapInjectionSink {
   DefaultLdapInjectionSink() { sinkNode(this, "ldap") }
 }
 
-private class DefaultLdapInjectionSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        // jndi
-        "javax.naming.directory;DirContext;true;search;;;Argument[0..1];ldap",
-        // apache
-        "org.apache.directory.ldap.client.api;LdapConnection;true;search;;;Argument[0..2];ldap",
-        // UnboundID: search
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(ReadOnlySearchRequest);;Argument[0];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchRequest);;Argument[0];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,DereferencePolicy,int,int,boolean,Filter,String[]);;Argument[0..7];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,DereferencePolicy,int,int,boolean,String,String[]);;Argument[0..7];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,Filter,String[]);;Argument[0..3];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,String,String[]);;Argument[0..3];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,DereferencePolicy,int,int,boolean,Filter,String[]);;Argument[0..6];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,DereferencePolicy,int,int,boolean,String,String[]);;Argument[0..6];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,Filter,String[]);;Argument[0..2];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,String,String[]);;Argument[0..2];ldap",
-        // UnboundID: searchForEntry
-        "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(ReadOnlySearchRequest);;Argument[0];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(SearchRequest);;Argument[0];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(String,SearchScope,DereferencePolicy,int,boolean,Filter,String[]);;Argument[0..5];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(String,SearchScope,DereferencePolicy,int,boolean,String,String[]);;Argument[0..5];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(String,SearchScope,Filter,String[]);;Argument[0..2];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(String,SearchScope,String,String[]);;Argument[0..2];ldap",
-        // UnboundID: asyncSearch
-        "com.unboundid.ldap.sdk;LDAPConnection;false;asyncSearch;;;Argument[0];ldap",
-        // Spring
-        "org.springframework.ldap.core;LdapTemplate;false;find;;;Argument[0..1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;findOne;;;Argument[0..1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;search;;;Argument[0..1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;searchForContext;;;Argument[0..1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;searchForObject;;;Argument[0..1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(LdapQuery,String);;Argument[0];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String);;Argument[0..1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String,AuthenticatedLdapEntryContextCallback);;Argument[0..1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String,AuthenticatedLdapEntryContextCallback,AuthenticationErrorCallback);;Argument[0..1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String,AuthenticationErrorCallback);;Argument[0..1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String);;Argument[0..1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String,AuthenticatedLdapEntryContextCallback);;Argument[0..1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String,AuthenticatedLdapEntryContextCallback,AuthenticationErrorCallback);;Argument[0..1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String,AuthenticationErrorCallback);;Argument[0..1];ldap"
-      ]
-  }
-}
-
 /** A sanitizer that clears the taint on (boxed) primitive types. */
 private class DefaultLdapSanitizer extends LdapInjectionSanitizer {
   DefaultLdapSanitizer() {
@@ -140,8 +93,8 @@ private predicate filterStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
     ma.getMethod() = m
   |
     m instanceof MethodUnboundIdFilterCreate or
-    m instanceof MethodUnboundIdFilterCreateANDFilter or
-    m instanceof MethodUnboundIdFilterCreateNOTFilter or
+    m instanceof MethodUnboundIdFilterCreateAndFilter or
+    m instanceof MethodUnboundIdFilterCreateNotFilter or
     m instanceof MethodUnboundIdFilterCreateORFilter or
     m instanceof MethodUnboundIdFilterSimplifyFilter
   )

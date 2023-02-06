@@ -1,0 +1,15 @@
+| test.go:19:2:19:2 | definition of a |
+| test.go:20:11:20:14 | &... |
+| test.go:20:12:20:14 | selection of b |
+| test.go:21:2:21:5 | selection of bs |
+| test.go:21:2:21:8 | index expression |
+| test.go:21:17:21:20 | &... |
+| test.go:21:18:21:20 | struct literal |
+| test.go:22:2:22:5 | selection of bs |
+| test.go:22:2:22:8 | index expression |
+| test.go:22:2:22:13 | implicit dereference |
+| test.go:22:2:22:13 | selection of cptr |
+| test.go:23:2:23:7 | implicit dereference |
+| test.go:23:2:23:7 | selection of bptr |
+| test.go:23:2:23:12 | implicit dereference |
+| test.go:23:2:23:12 | selection of cptr |

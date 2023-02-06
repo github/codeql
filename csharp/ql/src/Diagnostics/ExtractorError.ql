@@ -3,9 +3,7 @@
  * @description An error message reported by the extractor, limited to those files where there are no
  *              compilation errors. This indicates a bug or limitation in the extractor, and could lead
  *              to inaccurate results.
- * @kind problem
- * @problem.severity recommendation
- * @precision high
+ * @kind diagnostic
  * @id cs/extraction-error
  * @tags internal non-attributable
  */

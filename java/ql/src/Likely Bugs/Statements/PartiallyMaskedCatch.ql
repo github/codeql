@@ -86,6 +86,7 @@ predicate overlappingExceptions(RefType e1, RefType e2) {
 
 from TryStmt try, int first, int second, RefType masking, RefType masked, string multiCatchMsg
 where
+  try.getFile().isJavaSourceFile() and
   masking = caughtType(try, first) and
   masking.getAStrictAncestor() = masked and
   masked = caughtType(try, second) and
@@ -106,4 +107,5 @@ where
   else multiCatchMsg = ""
 select try.getCatchClause(second),
   "This catch-clause is unreachable" + multiCatchMsg + "; it is masked $@.",
-  try.getCatchClause(first), "here for exceptions of type '" + masking.getName() + "'"
+  try.getCatchClause(first),
+  "by a previous catch-clause for exceptions of type '" + masking.getName() + "'"

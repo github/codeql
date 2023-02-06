@@ -44,7 +44,6 @@ connection
 | type tracker without call steps | tst.js:120:21:120:24 | conn |
 | type tracker without call steps | tst.js:126:22:126:25 | conn |
 | type tracker without call steps | tst_conflict.js:6:38:6:77 | api.cha ... ction() |
-| type tracker without call steps with property MyApplication.namespace.connection | file://:0:0:0:0 | global access path |
 | type tracker without call steps with property conflict | tst.js:63:3:63:25 | MyAppli ... mespace |
 | type tracker without call steps with property conflict | tst_conflict.js:6:3:6:25 | MyAppli ... mespace |
 | type tracker without call steps with property connection | tst.js:62:3:62:25 | MyAppli ... mespace |

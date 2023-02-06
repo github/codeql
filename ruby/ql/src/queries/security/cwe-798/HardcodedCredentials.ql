@@ -12,7 +12,7 @@
  *       external/cwe/cwe-798
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import DataFlow::PathGraph
 import codeql.ruby.TaintTracking
@@ -92,9 +92,9 @@ private predicate maybeCredentialName(string name) {
 
 // Positional parameter
 private DataFlow::Node credentialParameter() {
-  exists(Method m, NamedParameter p, int idx |
+  exists(Method m, NamedParameter p |
     result.asParameter() = p and
-    p = m.getParameter(idx) and
+    p = m.getAParameter() and
     maybeCredentialName(p.getName())
   )
 }
@@ -154,4 +154,5 @@ class HardcodedCredentialsConfiguration extends DataFlow::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, HardcodedCredentialsConfiguration conf
 where conf.hasFlowPath(source, sink)
-select source.getNode(), source, sink, "Use of $@.", source.getNode(), "hardcoded credentials"
+select source.getNode(), source, sink, "This hardcoded value is $@.", sink.getNode(),
+  "used as credentials"

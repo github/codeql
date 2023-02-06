@@ -38,7 +38,7 @@ predicate objectToString(MethodAccess ma) {
   exists(ToStringMethod m |
     m = ma.getMethod() and
     m.getDeclaringType() instanceof TypeObject and
-    variableTrack(ma.getQualifier()).getType().getErasure() instanceof TypeObject
+    exprNode(ma.getQualifier()).getTypeBound().getErasure() instanceof TypeObject
   )
 }
 

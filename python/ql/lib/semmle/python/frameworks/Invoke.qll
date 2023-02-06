@@ -39,7 +39,8 @@ private module Invoke {
             result = InvokeModule::Context::ContextClass::classRef().getACall()
             or
             exists(Function func |
-              func.getADecorator() = invoke().getMember("task").getAUse().asExpr() and
+              func.getADecorator() =
+                invoke().getMember("task").getAValueReachableFromSource().asExpr() and
               result.(DataFlow::ParameterNode).getParameter() = func.getArg(0)
             )
           )

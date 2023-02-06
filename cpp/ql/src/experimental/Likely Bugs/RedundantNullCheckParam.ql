@@ -9,6 +9,7 @@
  * @tags reliability
  *       security
  *       external/cwe/cwe-476
+ *       experimental
  */
 
 import cpp
@@ -52,5 +53,5 @@ where
   candidateResultChecked(check, eqop) and
   // and which has not been checked before in this code path
   candidateResultUnchecked(unchecked)
-select check, "This null check is redundant or there is a missing null check before $@ ", unchecked,
+select check, "This null check is redundant or there is a missing null check before $@.", unchecked,
   "where dereferencing happens"

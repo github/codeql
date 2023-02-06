@@ -1,0 +1,27 @@
+# go.mongodb.org/mongo-driver v1.3.2
+## explicit
+go.mongodb.org/mongo-driver
+# github.com/couchbase/gocb/v2 v2.2.0
+## explicit
+github.com/couchbase/gocb/v2
+# github.com/google/uuid v1.1.4
+## explicit
+github.com/google/uuid
+# github.com/opentracing/opentracing-go v1.2.0
+## explicit
+github.com/opentracing/opentracing-go
+# gopkg.in/couchbase/gocb.v1 v1.6.7
+## explicit
+gopkg.in/couchbase/gocb.v1
+# gopkg.in/couchbase/gocbcore.v7 v7.1.18
+## explicit
+gopkg.in/couchbase/gocbcore.v7
+# gopkg.in/couchbaselabs/gocbconnstr.v1 v1.0.4
+## explicit
+gopkg.in/couchbaselabs/gocbconnstr.v1
+# gopkg.in/couchbaselabs/gojcbmock.v1 v1.0.4
+## explicit
+gopkg.in/couchbaselabs/gojcbmock.v1
+# gopkg.in/couchbaselabs/jsonx.v1 v1.0.0
+## explicit
+gopkg.in/couchbaselabs/jsonx.v1

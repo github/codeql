@@ -86,7 +86,7 @@ module Puppeteer {
       this = page().getMember(["addStyleTag", "addScriptTag"]).getACall()
     }
 
-    override DataFlow::Node getUrl() { result = getParameter(0).getMember("url").getARhs() }
+    override DataFlow::Node getUrl() { result = getParameter(0).getMember("url").asSink() }
 
     override DataFlow::Node getHost() { none() }
 

@@ -13,14 +13,15 @@
 import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
-private import semmle.python.ApiGraphs
 
-from API::CallNode call, DataFlow::Node falseyOrigin, string verb
+from
+  Http::Client::Request request, DataFlow::Node disablingNode, DataFlow::Node origin, string ending
 where
-  verb = HTTP::httpVerbLower() and
-  call = API::moduleImport("requests").getMember(verb).getACall() and
-  falseyOrigin = call.getKeywordParameter("verify").getAValueReachingRhs() and
-  // requests treats `None` as the default and all other "falsey" values as `False`.
-  falseyOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
-  not falseyOrigin.asExpr() instanceof None
-select call, "Call to requests." + verb + " with verify=$@", falseyOrigin, "False"
+  request.disablesCertificateValidation(disablingNode, origin) and
+  // Showing the origin is only useful when it's a different node than the one disabling
+  // certificate validation, for example in `requests.get(..., verify=arg)`, `arg` would
+  // be the `disablingNode`, and the `origin` would be the place were `arg` got its
+  // value from.
+  if disablingNode = origin then ending = "." else ending = " by $@."
+select request, "This request may run without certificate validation because $@" + ending,
+  disablingNode, "it is disabled", origin, "this value"

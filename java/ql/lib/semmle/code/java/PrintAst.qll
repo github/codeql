@@ -7,6 +7,7 @@
  */
 
 import java
+import semmle.code.java.regex.RegexTreeView as RegexTreeView
 
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
@@ -68,7 +69,8 @@ private predicate isNotNeeded(Element el) {
     el.(ExprOrStmt).getEnclosingCallable() = c
   |
     el.getLocation().hasLocationInfo(_, sline, eline, scol, ecol) and
-    c.getLocation().hasLocationInfo(_, sline, eline, scol, ecol)
+    c.getLocation().hasLocationInfo(_, sline, eline, scol, ecol) and
+    not c.getFile().isKotlinSourceFile() // Kotlin constructor bodies have the same location as the constructor
     // simply comparing their getLocation() doesn't work as they have distinct but equivalent locations
   )
   or
@@ -118,7 +120,12 @@ private newtype TPrintAstNode =
     shouldPrint(lvde, _) and lvde.getParent() instanceof SingleLocalVarDeclParent
   } or
   TAnnotationsNode(Annotatable ann) {
-    shouldPrint(ann, _) and ann.hasAnnotation() and not partOfAnnotation(ann)
+    shouldPrint(ann, _) and
+    ann.hasDeclaredAnnotation() and
+    not partOfAnnotation(ann) and
+    // The Kotlin compiler might add annotations that are only present in byte code, although the annotatable element is
+    // present in source code.
+    exists(Annotation a | a.getAnnotatedElement() = ann and shouldPrint(a, _))
   } or
   TParametersNode(Callable c) { shouldPrint(c, _) and not c.hasNoParameters() } or
   TBaseTypesNode(ClassOrInterface ty) { shouldPrint(ty, _) } or
@@ -131,6 +138,11 @@ private newtype TPrintAstNode =
   } or
   TImportsNode(CompilationUnit cu) {
     shouldPrint(cu, _) and exists(Import i | i.getCompilationUnit() = cu)
+  } or
+  TRegExpTermNode(RegexTreeView::RegExpTerm term) {
+    exists(StringLiteral str |
+      term.getRootTerm() = RegexTreeView::getParsedRegExp(str) and shouldPrint(str, _)
+    )
   }
 
 /**
@@ -162,6 +174,19 @@ class PrintAstNode extends TPrintAstNode {
    * Gets the location of this node in the source code.
    */
   Location getLocation() { none() }
+
+  /**
+   * Holds if this node is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /**
    * Gets the value of the property of this node, where the name of the property
@@ -241,6 +266,21 @@ class ExprStmtNode extends ElementNode {
 }
 
 /**
+ * A node representing a `KtInitializerAssignExpr`.
+ */
+class KtInitializerNode extends ExprStmtNode {
+  KtInitializerNode() { element instanceof KtInitializerAssignExpr }
+
+  override PrintAstNode getChild(int childIndex) {
+    // Remove the RHS of the initializer, because otherwise
+    // it appears as both the initializer's child and the
+    // initialize of the related field, producing a DAG not
+    // a tree and consequently unreadable output.
+    result = super.getChild(childIndex) and childIndex = 0
+  }
+}
+
+/**
  * Holds if the given expression is part of an annotation.
  */
 private predicate partOfAnnotation(Expr e) {
@@ -258,19 +298,62 @@ final class AnnotationPartNode extends ExprStmtNode {
 
   override ElementNode getChild(int childIndex) {
     result.getElement() =
-      rank[childIndex](Element ch, string file, int line, int column |
-        ch = this.getAnAnnotationChild() and locationSortKeys(ch, file, line, column)
+      rank[childIndex](Element ch, string file, int line, int column, int idx |
+        ch = this.getAnnotationChild(idx) and locationSortKeys(ch, file, line, column)
       |
-        ch order by file, line, column
+        ch order by file, line, column, idx
       )
   }
 
-  private Expr getAnAnnotationChild() {
-    result = element.(Annotation).getValue(_)
+  private Expr getAnnotationChild(int index) {
+    result = element.(Annotation).getValue(_) and
+    index >= 0 and
+    if exists(int x | x >= 0 | result.isNthChildOf(element, x))
+    then result.isNthChildOf(element, index)
+    else result.isNthChildOf(element, -(index + 1))
     or
-    result = element.(ArrayInit).getAnInit()
-    or
-    result = element.(ArrayInit).(Annotatable).getAnAnnotation()
+    result = element.(ArrayInit).getInit(index)
+  }
+}
+
+/**
+ * A node representing a `StringLiteral`.
+ * If it is used as a regular expression, then it has a single child, the root of the parsed regular expression.
+ */
+final class StringLiteralNode extends ExprStmtNode {
+  StringLiteralNode() { element instanceof StringLiteral }
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex = 0 and
+    result.(RegExpTermNode).getTerm() = RegexTreeView::getParsedRegExp(element)
+  }
+}
+
+/**
+ * A node representing a regular expression term.
+ */
+class RegExpTermNode extends TRegExpTermNode, PrintAstNode {
+  RegexTreeView::RegExpTerm term;
+
+  RegExpTermNode() { this = TRegExpTermNode(term) }
+
+  /** Gets the `RegExpTerm` for this node. */
+  RegexTreeView::RegExpTerm getTerm() { result = term }
+
+  override PrintAstNode getChild(int childIndex) {
+    result.(RegExpTermNode).getTerm() = term.getChild(childIndex)
+  }
+
+  override string toString() {
+    result = "[" + strictconcat(term.getPrimaryQLClass(), " | ") + "] " + term.toString()
+  }
+
+  override Location getLocation() { result = term.getLocation() }
+
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    term.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -298,7 +381,8 @@ final class ClassInstanceExprNode extends ExprStmtNode {
     result = super.getChild(childIndex)
     or
     childIndex = -4 and
-    result.getElement() = element.(ClassInstanceExpr).getAnonymousClass()
+    result.getElement() = element.(ClassInstanceExpr).getAnonymousClass() and
+    not result.getElement() instanceof LocalClassOrInterface // Kotlin anonymous classes are extracted as local classes too.
   }
 }
 
@@ -315,12 +399,6 @@ final class LocalTypeDeclStmtNode extends ExprStmtNode {
     result.getElement() = element.(LocalTypeDeclStmt).getLocalType()
   }
 }
-
-/**
- * DEPRECATED: Renamed `LocalTypeDeclStmtNode` to reflect the fact that
- * as of Java 16 interfaces can also be declared locally, not just classes.
- */
-deprecated class LocalClassDeclStmtNode = LocalTypeDeclStmtNode;
 
 /**
  * A node representing a `ForStmt`.
@@ -459,10 +537,17 @@ final class ClassInterfaceNode extends ElementNode {
     or
     childIndex >= 0 and
     result.(ElementNode).getElement() =
-      rank[childIndex](Element e, string file, int line, int column |
-        e = this.getADeclaration() and locationSortKeys(e, file, line, column)
+      rank[childIndex](Element e, string file, int line, int column, string childStr, int argCount |
+        e = this.getADeclaration() and
+        locationSortKeys(e, file, line, column) and
+        childStr = e.toString() and
+        (
+          if e instanceof Callable
+          then argCount = e.(Callable).getNumberOfParameters()
+          else argCount = 0
+        )
       |
-        e order by file, line, column
+        e order by file, line, column, childStr, argCount
       )
   }
 }
@@ -594,10 +679,10 @@ final class AnnotationsNode extends PrintAstNode, TAnnotationsNode {
 
   override ElementNode getChild(int childIndex) {
     result.getElement() =
-      rank[childIndex](Element e, string file, int line, int column |
-        e = ann.getAnAnnotation() and locationSortKeys(e, file, line, column)
+      rank[childIndex](Element e, string file, int line, int column, string s |
+        e = ann.getAnAnnotation() and locationSortKeys(e, file, line, column) and s = e.toString()
       |
-        e order by file, line, column
+        e order by file, line, column, s
       )
   }
 

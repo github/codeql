@@ -21,6 +21,7 @@ newtype SynthKind =
   DivExprKind() or
   ExponentExprKind() or
   GlobalVariableAccessKind(GlobalVariable v) or
+  IfKind() or
   InstanceVariableAccessKind(InstanceVariable v) or
   IntegerLiteralKind(int i) { i in [-1000 .. 1000] } or
   LShiftExprKind() or
@@ -33,6 +34,7 @@ newtype SynthKind =
   } or
   ModuloExprKind() or
   MulExprKind() or
+  NilLiteralKind() or
   RangeLiteralKind(boolean inclusive) { inclusive in [false, true] } or
   RShiftExprKind() or
   SimpleParameterKind() or
@@ -40,7 +42,8 @@ newtype SynthKind =
   StmtSequenceKind() or
   SelfKind(SelfVariable v) or
   SubExprKind() or
-  ConstantReadAccessKind(string value) { any(Synthesis s).constantReadAccess(value) }
+  ConstantReadAccessKind(string value) { any(Synthesis s).constantReadAccess(value) } or
+  ConstantWriteAccessKind(string value) { any(Synthesis s).constantWriteAccess(value) }
 
 /**
  * An AST child.
@@ -106,6 +109,11 @@ class Synthesis extends TSynthesis {
   predicate constantReadAccess(string name) { none() }
 
   /**
+   * Holds if a constant write access of `name` is needed.
+   */
+  predicate constantWriteAccess(string name) { none() }
+
+  /**
    * Holds if `n` should be excluded from `ControlFlowTree` in the CFG construction.
    */
   predicate excludeFromControlFlowTree(AstNode n) { none() }
@@ -116,7 +124,11 @@ class Synthesis extends TSynthesis {
 private class Desugared extends AstNode {
   Desugared() { this = any(AstNode sugar).getDesugared() }
 
-  AstNode getADescendant() { result = this.getAChild*() }
+  AstNode getADescendant() {
+    result = this
+    or
+    result = this.getADescendant().getAChild()
+  }
 }
 
 /**
@@ -130,7 +142,10 @@ int desugarLevel(AstNode n) { result = count(Desugared desugared | n = desugared
  * Holds if `n` appears in a context that is desugared. That is, a
  * transitive, reflexive parent of `n` is a desugared node.
  */
-predicate isInDesugeredContext(AstNode n) { n = any(AstNode sugar).getDesugared().getAChild*() }
+predicate isInDesugaredContext(AstNode n) {
+  n = any(AstNode sugar).getDesugared() or
+  n = any(AstNode mid | isInDesugaredContext(mid)).getAChild()
+}
 
 /**
  * Holds if `n` is a node that only exists as a result of desugaring some
@@ -139,7 +154,7 @@ predicate isInDesugeredContext(AstNode n) { n = any(AstNode sugar).getDesugared(
 predicate isDesugarNode(AstNode n) {
   n = any(AstNode sugar).getDesugared()
   or
-  isInDesugeredContext(n) and
+  isInDesugaredContext(n) and
   forall(AstNode parent | parent = n.getParent() | parent.isSynthesized())
 }
 
@@ -196,11 +211,8 @@ private module ImplicitSelfSynthesis {
   private predicate regularMethodCallSelfSynthesis(TRegularMethodCall mc, int i, Child child) {
     exists(Ruby::AstNode g |
       mc = TRegularMethodCall(g) and
-      // If there's no explicit receiver (or scope resolution that acts like a
-      // receiver), then the receiver is implicitly `self`.  N.B.  `::Foo()` is
-      // not valid Ruby.
-      not exists(g.(Ruby::Call).getReceiver()) and
-      not exists(g.(Ruby::Call).getMethod().(Ruby::ScopeResolution).getScope())
+      // If there's no explicit receiver, then the receiver is implicitly `self`.
+      not exists(g.(Ruby::Call).getReceiver())
     ) and
     child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc)).getEnclosingSelfScope()))) and
     i = 0
@@ -209,6 +221,38 @@ private module ImplicitSelfSynthesis {
   private class RegularMethodCallSelfSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       regularMethodCallSelfSynthesis(parent, i, child)
+    }
+  }
+
+  pragma[nomagic]
+  private AstNode instanceVarAccessSynthParentStar(InstanceVariableAccess var) {
+    result = var
+    or
+    instanceVarAccessSynthParentStar(var) = getSynthChild(result, _)
+  }
+
+  /**
+   * Gets the `SelfKind` for instance variable access `var`. This is based on the
+   * "owner" of `var`; for real nodes this is the node itself, for synthetic nodes
+   * this is the closest parent that is a real node.
+   */
+  pragma[nomagic]
+  private SelfKind getSelfKind(InstanceVariableAccess var) {
+    exists(Ruby::AstNode owner |
+      owner = toGenerated(instanceVarAccessSynthParentStar(var)) and
+      result = SelfKind(TSelfVariable(scopeOf(owner).getEnclosingSelfScope()))
+    )
+  }
+
+  pragma[nomagic]
+  private predicate instanceVariableSelfSynthesis(InstanceVariableAccess var, int i, Child child) {
+    child = SynthChild(getSelfKind(var)) and
+    i = 0
+  }
+
+  private class InstanceVariableSelfSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      instanceVariableSelfSynthesis(parent, i, child)
     }
   }
 }
@@ -224,8 +268,11 @@ private module SetterDesugar {
     MethodCall getMethodCall() { result = mc }
 
     pragma[nomagic]
-    MethodCallKind getCallKind(boolean setter, int arity) {
-      result = MethodCallKind(mc.getMethodName(), setter, arity)
+    private string getMethodName() { result = mc.getMethodName() }
+
+    pragma[nomagic]
+    MethodCallKind getCallKind(int arity) {
+      result = MethodCallKind(this.getMethodName(), true, arity)
     }
 
     pragma[nomagic]
@@ -251,7 +298,7 @@ private module SetterDesugar {
       exists(AstNode seq | seq = TStmtSequenceSynth(sae, -1) |
         parent = seq and
         i = 0 and
-        child = SynthChild(sae.getCallKind(true, sae.getNumberOfArguments() + 1))
+        child = SynthChild(sae.getCallKind(sae.getNumberOfArguments() + 1))
         or
         exists(AstNode call | call = TMethodCallSynth(seq, 0, _, _, _) |
           parent = call and
@@ -452,6 +499,231 @@ private module AssignOperationDesugar {
     }
   }
 
+  /**
+   * An assignment operation where the left-hand side is a constant
+   * without scope expression, such as`FOO` or `::Foo`.
+   */
+  private class ConstantAssignOperation extends AssignOperation {
+    string name;
+
+    pragma[nomagic]
+    ConstantAssignOperation() {
+      name =
+        any(Ruby::Constant constant | TTokenConstantAccess(constant) = this.getLeftOperand())
+            .getValue()
+      or
+      name =
+        "::" +
+          any(Ruby::Constant constant |
+            TScopeResolutionConstantAccess(any(Ruby::ScopeResolution g | not exists(g.getScope())),
+              constant) = this.getLeftOperand()
+          ).getValue()
+    }
+
+    final string getName() { result = name }
+  }
+
+  pragma[nomagic]
+  private predicate constantAssignOperationSynthesis(AstNode parent, int i, Child child) {
+    exists(ConstantAssignOperation cao |
+      parent = cao and
+      i = -1 and
+      child = SynthChild(AssignExprKind())
+      or
+      exists(AstNode assign | assign = TAssignExprSynth(cao, -1) |
+        parent = assign and
+        i = 0 and
+        child = childRef(cao.getLeftOperand())
+        or
+        parent = assign and
+        i = 1 and
+        child = SynthChild(getKind(cao))
+        or
+        parent = getSynthChild(assign, 1) and
+        (
+          i = 0 and
+          child = SynthChild(ConstantReadAccessKind(cao.getName()))
+          or
+          i = 1 and
+          child = childRef(cao.getRightOperand())
+        )
+      )
+    )
+  }
+
+  /**
+   * ```rb
+   * FOO += y
+   * ```
+   *
+   * desugars to
+   *
+   * ```rb
+   * FOO = FOO + y
+   * ```
+   */
+  private class ConstantAssignOperationSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      constantAssignOperationSynthesis(parent, i, child)
+    }
+
+    final override predicate constantReadAccess(string name) {
+      name = any(ConstantAssignOperation o).getName()
+    }
+
+    final override predicate location(AstNode n, Location l) {
+      exists(ConstantAssignOperation cao, BinaryOperation bo |
+        bo = cao.getDesugared().(AssignExpr).getRightOperand()
+      |
+        n = bo and
+        l = getAssignOperationLocation(cao)
+        or
+        n = bo.getLeftOperand() and
+        hasLocation(cao.getLeftOperand(), l)
+      )
+    }
+  }
+
+  /**
+   * An assignment operation where the left-hand side is a constant
+   * with scope expression, such as `expr::FOO`.
+   */
+  private class ScopeResolutionAssignOperation extends AssignOperation {
+    string name;
+    Expr scope;
+
+    pragma[nomagic]
+    ScopeResolutionAssignOperation() {
+      exists(Ruby::Constant constant, Ruby::ScopeResolution g |
+        TScopeResolutionConstantAccess(g, constant) = this.getLeftOperand() and
+        name = constant.getValue() and
+        toGenerated(scope) = g.getScope()
+      )
+    }
+
+    final string getName() { result = name }
+
+    final Expr getScopeExpr() { result = scope }
+  }
+
+  pragma[nomagic]
+  private predicate scopeResolutionAssignOperationSynthesis(AstNode parent, int i, Child child) {
+    exists(ScopeResolutionAssignOperation cao |
+      parent = cao and
+      i = -1 and
+      child = SynthChild(StmtSequenceKind())
+      or
+      exists(AstNode stmts | stmts = TStmtSequenceSynth(cao, -1) |
+        parent = stmts and
+        i = 0 and
+        child = SynthChild(AssignExprKind())
+        or
+        exists(AstNode assign | assign = TAssignExprSynth(stmts, 0) |
+          parent = assign and
+          i = 0 and
+          child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(cao, 0)))
+          or
+          parent = assign and
+          i = 1 and
+          child = childRef(cao.getScopeExpr())
+        )
+        or
+        parent = stmts and
+        i = 1 and
+        child = SynthChild(AssignExprKind())
+        or
+        exists(AstNode assign | assign = TAssignExprSynth(stmts, 1) |
+          parent = assign and
+          i = 0 and
+          child = SynthChild(ConstantWriteAccessKind(cao.getName()))
+          or
+          exists(AstNode cwa | cwa = TConstantWriteAccessSynth(assign, 0, cao.getName()) |
+            parent = cwa and
+            i = 0 and
+            child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(cao, 0)))
+          )
+          or
+          parent = assign and
+          i = 1 and
+          child = SynthChild(getKind(cao))
+          or
+          exists(AstNode op | op = getSynthChild(assign, 1) |
+            parent = op and
+            i = 0 and
+            child = SynthChild(ConstantReadAccessKind(cao.getName()))
+            or
+            exists(AstNode cra | cra = TConstantReadAccessSynth(op, 0, cao.getName()) |
+              parent = cra and
+              i = 0 and
+              child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(cao, 0)))
+            )
+            or
+            parent = op and
+            i = 1 and
+            child = childRef(cao.getRightOperand())
+          )
+        )
+      )
+    )
+  }
+
+  /**
+   * ```rb
+   * expr::FOO += y
+   * ```
+   *
+   * desugars to
+   *
+   * ```rb
+   * __synth__0 = expr
+   * __synth__0::FOO = _synth__0::FOO + y
+   * ```
+   */
+  private class ScopeResolutionAssignOperationSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      scopeResolutionAssignOperationSynthesis(parent, i, child)
+    }
+
+    final override predicate constantReadAccess(string name) {
+      name = any(ScopeResolutionAssignOperation o).getName()
+    }
+
+    final override predicate localVariable(AstNode n, int i) {
+      n instanceof ScopeResolutionAssignOperation and
+      i = 0
+    }
+
+    final override predicate constantWriteAccess(string name) { this.constantReadAccess(name) }
+
+    final override predicate location(AstNode n, Location l) {
+      exists(ScopeResolutionAssignOperation cao, StmtSequence stmts | stmts = cao.getDesugared() |
+        n = stmts.getStmt(0) and
+        hasLocation(cao.getScopeExpr(), l)
+        or
+        exists(AssignExpr assign | assign = stmts.getStmt(1) |
+          n = assign and hasLocation(cao, l)
+          or
+          n = assign.getLeftOperand() and
+          hasLocation(cao.getLeftOperand(), l)
+          or
+          n = assign.getLeftOperand().(ConstantAccess).getScopeExpr() and
+          hasLocation(cao.getScopeExpr(), l)
+          or
+          exists(BinaryOperation bo | bo = assign.getRightOperand() |
+            n = bo and
+            l = getAssignOperationLocation(cao)
+            or
+            n = bo.getLeftOperand() and
+            hasLocation(cao.getLeftOperand(), l)
+            or
+            n = bo.getLeftOperand().(ConstantAccess).getScopeExpr() and
+            hasLocation(cao.getScopeExpr(), l)
+          )
+        )
+      )
+    }
+  }
+
   /** An assignment operation where the left-hand side is a method call. */
   private class SetterAssignOperation extends AssignOperation {
     private MethodCall mc;
@@ -462,8 +734,11 @@ private module AssignOperationDesugar {
     MethodCall getMethodCall() { result = mc }
 
     pragma[nomagic]
+    private string getMethodName() { result = mc.getMethodName() }
+
+    pragma[nomagic]
     MethodCallKind getCallKind(boolean setter, int arity) {
-      result = MethodCallKind(mc.getMethodName(), setter, arity)
+      result = MethodCallKind(this.getMethodName(), setter, arity)
     }
 
     pragma[nomagic]
@@ -1042,46 +1317,182 @@ private module ImplicitHashValueSynthesis {
 
 /**
  * ```rb
- * def foo(&)
- *   bar(&)
+ * def foo(*, **, &)
+ *   bar(*, **, &)
  * end
  * ```
  * desugars to,
  * ```rb
- * def foo(&__synth_0)
- *   bar(&__synth_0)
+ * def foo(*__synth_0, **__synth_1, &__synth_2)
+ *   bar(*__synth_0, **__synth_1, &__synth_2)
  * end
  * ```
  */
-private module AnonymousBlockParameterSynth {
-  private BlockParameter anonymousBlockParameter() {
+private module AnonymousParameterSynth {
+  private class AnonymousParameter = TBlockParameter or THashSplatParameter or TSplatParameter;
+
+  private class AnonymousArgument = TBlockArgument or THashSplatExpr or TSplatExpr;
+
+  private AnonymousParameter anonymousParameter() {
     exists(Ruby::BlockParameter p | not exists(p.getName()) and toGenerated(result) = p)
+    or
+    exists(Ruby::SplatParameter p | not exists(p.getName()) and toGenerated(result) = p)
+    or
+    exists(Ruby::HashSplatParameter p | not exists(p.getName()) and toGenerated(result) = p)
   }
 
-  private BlockArgument anonymousBlockArgument() {
+  private AnonymousArgument anonymousArgument() {
     exists(Ruby::BlockArgument p | not exists(p.getChild()) and toGenerated(result) = p)
+    or
+    exists(Ruby::SplatArgument p | not exists(p.getChild()) and toGenerated(result) = p)
+    or
+    exists(Ruby::HashSplatArgument p | not exists(p.getChild()) and toGenerated(result) = p)
   }
 
-  private class AnonymousBlockParameterSynthesis extends Synthesis {
+  private class AnonymousParameterSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       i = 0 and
-      parent = anonymousBlockParameter() and
+      parent = anonymousParameter() and
       child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(parent, 0)))
     }
 
-    final override predicate localVariable(AstNode n, int i) {
-      n = anonymousBlockParameter() and i = 0
-    }
+    final override predicate localVariable(AstNode n, int i) { n = anonymousParameter() and i = 0 }
   }
 
-  private class AnonymousBlockArgumentSynthesis extends Synthesis {
+  private class AnonymousArgumentSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       i = 0 and
-      parent = anonymousBlockArgument() and
-      exists(BlockParameter param |
-        param = anonymousBlockParameter() and
+      parent = anonymousArgument() and
+      exists(AnonymousParameter param |
+        param = anonymousParameter() and
         scopeOf(toGenerated(parent)).getEnclosingMethod() = scopeOf(toGenerated(param)) and
         child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+      |
+        param instanceof TBlockParameter and parent instanceof TBlockArgument
+        or
+        param instanceof TSplatParameter and parent instanceof TSplatExpr
+        or
+        param instanceof THashSplatParameter and parent instanceof THashSplatExpr
+      )
+    }
+  }
+}
+
+private module SafeNavigationCallDesugar {
+  /**
+   * ```rb
+   * receiver&.method(args) { ... }
+   * ```
+   * desugars to
+   *
+   * ```rb
+   * __synth__0 = receiver
+   * if nil == __synth__0 then nil else __synth__0.method(args) {...} end
+   * ```
+   */
+  pragma[nomagic]
+  private predicate safeNavigationCallSynthesis(AstNode parent, int i, Child child) {
+    exists(RegularMethodCall call, LocalVariableAccessSynthKind local |
+      call.isSafeNavigationImpl() and
+      local = LocalVariableAccessSynthKind(TLocalVariableSynth(call.getReceiverImpl(), 0))
+    |
+      parent = call and
+      i = -1 and
+      child = SynthChild(StmtSequenceKind())
+      or
+      exists(TStmtSequenceSynth seq | seq = TStmtSequenceSynth(call, -1) |
+        parent = seq and
+        (
+          child = SynthChild(AssignExprKind()) and i = 0
+          or
+          child = SynthChild(IfKind()) and i = 1
+        )
+        or
+        parent = TAssignExprSynth(seq, 0) and
+        (
+          child = SynthChild(local) and
+          i = 0
+          or
+          child = childRef(call.getReceiverImpl()) and i = 1
+        )
+        or
+        exists(TIfSynth ifExpr | ifExpr = TIfSynth(seq, 1) |
+          parent = ifExpr and
+          (
+            child = SynthChild(MethodCallKind("==", false, 2)) and
+            i = 0
+            or
+            child = SynthChild(NilLiteralKind()) and i = 1
+            or
+            child =
+              SynthChild(MethodCallKind(call.getMethodNameImpl(), false,
+                  call.getNumberOfArgumentsImpl())) and
+            i = 2
+          )
+          or
+          parent = TMethodCallSynth(ifExpr, 0, _, _, _) and
+          (
+            child = SynthChild(NilLiteralKind()) and i = 0
+            or
+            child = SynthChild(local) and
+            i = 1
+          )
+          or
+          parent = TMethodCallSynth(ifExpr, 2, _, _, _) and
+          (
+            i = 0 and
+            child = SynthChild(local)
+            or
+            child = childRef(call.getArgumentImpl(i - 1))
+            or
+            child = childRef(call.getBlockImpl()) and i = -2
+          )
+        )
+      )
+    )
+  }
+
+  private class SafeNavigationCallSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      safeNavigationCallSynthesis(parent, i, child)
+    }
+
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      exists(RegularMethodCall call |
+        call.isSafeNavigationImpl() and
+        name = call.getMethodNameImpl() and
+        setter = false and
+        arity = call.getNumberOfArgumentsImpl()
+      )
+      or
+      name = "==" and setter = false and arity = 2
+    }
+
+    final override predicate localVariable(AstNode n, int i) {
+      i = 0 and n = any(RegularMethodCall c | c.isSafeNavigationImpl()).getReceiverImpl()
+    }
+
+    override predicate location(AstNode n, Location l) {
+      exists(RegularMethodCall call, StmtSequence seq |
+        call.isSafeNavigationImpl() and seq = call.getDesugared()
+      |
+        n = seq.getStmt(0) and
+        hasLocation(call.getReceiverImpl(), l)
+        or
+        n = seq.getStmt(1) and
+        l = toGenerated(call).(Ruby::Call).getOperator().getLocation()
+        or
+        n = seq.getStmt(1).(IfExpr).getCondition().(MethodCall).getArgument(0) and
+        hasLocation(call.getReceiverImpl(), l)
+        or
+        n = seq.getStmt(1).(IfExpr).getThen() and
+        hasLocation(call.getReceiverImpl(), l)
+        or
+        n = seq.getStmt(1).(IfExpr).getElse() and
+        hasLocation(call, l)
+        or
+        n = seq.getStmt(1).(IfExpr).getElse().(MethodCall).getReceiver() and
+        hasLocation(call.getReceiverImpl(), l)
       )
     }
   }

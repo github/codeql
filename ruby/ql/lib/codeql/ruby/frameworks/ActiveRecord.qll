@@ -8,7 +8,6 @@ private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.dataflow.internal.DataFlowPrivate
-private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.Stdlib
 private import codeql.ruby.frameworks.Core
@@ -54,7 +53,7 @@ class ActiveRecordModelClass extends ClassDeclaration {
         // In Rails applications `ApplicationRecord` typically extends `ActiveRecord::Base`, but we
         // treat it separately in case the `ApplicationRecord` definition is not in the database.
         API::getTopLevelMember("ApplicationRecord")
-      ].getASubclass().getAUse().asExpr().getExpr()
+      ].getASubclass().getAValueReachableFromSource().asExpr().getExpr()
   }
 
   // Gets the class declaration for this class and all of its super classes
@@ -95,7 +94,7 @@ class ActiveRecordModelClassMethodCall extends MethodCall {
 
   ActiveRecordModelClassMethodCall() {
     // e.g. Foo.where(...)
-    recvCls.getModule() = resolveConstantReadAccess(this.getReceiver())
+    recvCls.getModule() = this.getReceiver().(ConstantReadAccess).getModule()
     or
     // e.g. Foo.joins(:bars).where(...)
     recvCls = this.getReceiver().(ActiveRecordModelClassMethodCall).getReceiverClass()
@@ -133,6 +132,11 @@ private Expr sqlFragmentArgument(MethodCall call) {
       or
       methodName = "reload" and
       result = call.getKeywordArgument("lock")
+      or
+      // Calls to `annotate` can be used to add block comments to SQL queries. These are potentially vulnerable to
+      // SQLi if user supplied input is passed in as an argument.
+      methodName = "annotate" and
+      result = call.getArgument(_)
     )
   )
 }
@@ -240,7 +244,7 @@ abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range,
 // Names of class methods on ActiveRecord models that may return one or more
 // instances of that model. This also includes the `initialize` method.
 // See https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html
-private string finderMethodName() {
+private string staticFinderMethodName() {
   exists(string baseName |
     baseName =
       [
@@ -250,7 +254,7 @@ private string finderMethodName() {
     result = baseName + ["", "!"]
   )
   or
-  result = "new"
+  result = ["new", "create"]
 }
 
 // Gets the "final" receiver in a chain of method calls.
@@ -275,8 +279,24 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
     exists(MethodCall call, Expr recv |
       call = this.asExpr().getExpr() and
       recv = getUltimateReceiver(call) and
-      resolveConstant(recv) = cls.getAQualifiedName() and
-      call.getMethodName() = finderMethodName()
+      (
+        // The receiver refers to an `ActiveRecordModelClass` by name
+        recv.(ConstantReadAccess).getAQualifiedName() = cls.getAQualifiedName()
+        or
+        // The receiver is self, and the call is within a singleton method of
+        // the `ActiveRecordModelClass`
+        recv instanceof SelfVariableAccess and
+        exists(SingletonMethod callScope |
+          callScope = call.getCfgScope() and
+          callScope = cls.getAMethod()
+        )
+      ) and
+      (
+        call.getMethodName() = staticFinderMethodName()
+        or
+        // dynamically generated finder methods
+        call.getMethodName().indexOf("find_by_") = 0
+      )
     )
   }
 
@@ -293,27 +313,34 @@ private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInsta
       m = this.getCfgScope() and
       m.getEnclosingModule() = cls and
       m = cls.getAMethod()
-    )
+    ) and
+    // In a singleton method, `self` refers to the class itself rather than an
+    // instance of that class
+    not this.getSelfScope() instanceof SingletonMethod
   }
 
   final override ActiveRecordModelClass getClass() { result = cls }
 }
 
-// A (locally tracked) active record model object
-private class ActiveRecordInstance extends DataFlow::Node {
+/**
+ * An instance of an `ActiveRecord` model object.
+ */
+class ActiveRecordInstance extends DataFlow::Node {
   private ActiveRecordModelInstantiation instantiation;
 
   ActiveRecordInstance() { this = instantiation or instantiation.flowsTo(this) }
 
+  /** Gets the `ActiveRecordModelClass` that this is an instance of. */
   ActiveRecordModelClass getClass() { result = instantiation.getClass() }
 }
 
-// A call whose receiver may be an active record model object
-private class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
+/** A call whose receiver may be an active record model object */
+class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
   private ActiveRecordInstance instance;
 
   ActiveRecordInstanceMethodCall() { this.getReceiver() = instance }
 
+  /** Gets the `ActiveRecordInstance` that is the receiver of this call. */
   ActiveRecordInstance getInstance() { result = instance }
 }
 
@@ -336,15 +363,6 @@ private module Persistence {
     )
   }
 
-  /**
-   * Holds if `call` has a keyword argument of with value `value`.
-   */
-  private predicate keywordArgumentWithValue(DataFlow::CallNode call, DataFlow::ExprNode value) {
-    exists(ExprNodes::PairCfgNode pair | pair = call.getArgument(_).asExpr() |
-      value.asExpr() = pair.getValue()
-    )
-  }
-
   /** A call to e.g. `User.create(name: "foo")` */
   private class CreateLikeCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
     CreateLikeCall() {
@@ -358,8 +376,12 @@ private module Persistence {
 
     override DataFlow::Node getValue() {
       // attrs as hash elements in arg0
-      hashArgumentWithValue(this, 0, result) or
-      keywordArgumentWithValue(this, result)
+      hashArgumentWithValue(this, 0, result)
+      or
+      result = this.getKeywordArgument(_)
+      or
+      result = this.getPositionalArgument(0) and
+      not result.asExpr() instanceof ExprNodes::HashLiteralCfgNode
     }
   }
 
@@ -371,11 +393,19 @@ private module Persistence {
     }
 
     override DataFlow::Node getValue() {
-      keywordArgumentWithValue(this, result)
+      // User.update(1, name: "foo")
+      result = this.getKeywordArgument(_)
+      or
+      // User.update(1, params)
+      exists(int n | n > 0 |
+        result = this.getPositionalArgument(n) and
+        not result.asExpr() instanceof ExprNodes::ArrayLiteralCfgNode
+      )
       or
       // Case where 2 array args are passed - the first an array of IDs, and the
       // second an array of hashes - each hash corresponding to an ID in the
       // first array.
+      // User.update([1,2,3], [{name: "foo"}, {name: "bar"}])
       exists(ExprNodes::ArrayLiteralCfgNode hashesArray |
         this.getArgument(0).asExpr() instanceof ExprNodes::ArrayLiteralCfgNode and
         hashesArray = this.getArgument(1).asExpr()
@@ -388,6 +418,28 @@ private module Persistence {
         )
       )
     }
+  }
+
+  /**
+   *  A call to `ActiveRecord::Relation#touch_all`, which updates the `updated_at`
+   *  attribute on all records in the relation, setting it to the current time or
+   *  the time specified. If passed additional attribute names, they will also be
+   *  updated with the time.
+   *  Examples:
+   *  ```rb
+   * Person.all.touch_all
+   * Person.where(name: "David").touch_all
+   * Person.all.touch_all(:created_at)
+   * Person.all.touch_all(time: Time.new(2020, 5, 16, 0, 0, 0))
+   * ```
+   */
+  private class TouchAllCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
+    TouchAllCall() {
+      exists(this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass()) and
+      this.getMethodName() = "touch_all"
+    }
+
+    override DataFlow::Node getValue() { result = this.getKeywordArgument("time") }
   }
 
   /** A call to e.g. `User.insert_all([{name: "foo"}, {name: "bar"}])` */
@@ -422,8 +474,12 @@ private module Persistence {
       // attrs as hash elements in arg0
       hashArgumentWithValue(this, 0, result)
       or
+      // attrs as variable in arg0
+      result = this.getPositionalArgument(0) and
+      not result.asExpr() instanceof ExprNodes::HashLiteralCfgNode
+      or
       // keyword arg
-      keywordArgumentWithValue(this, result)
+      result = this.getKeywordArgument(_)
     }
   }
 
@@ -457,5 +513,192 @@ private module Persistence {
     }
 
     override DataFlow::Node getValue() { assignNode.getRhs() = result.asExpr() }
+  }
+}
+
+/**
+ * A method call inside an ActiveRecord model class that establishes an
+ * association between this model and another model.
+ *
+ * ```rb
+ * class User
+ *   has_many :posts
+ *   has_one :profile
+ * end
+ * ```
+ */
+class ActiveRecordAssociation extends DataFlow::CallNode {
+  private ActiveRecordModelClass modelClass;
+
+  ActiveRecordAssociation() {
+    not exists(this.asExpr().getExpr().getEnclosingMethod()) and
+    this.asExpr().getExpr().getEnclosingModule() = modelClass and
+    this.getMethodName() =
+      [
+        "has_one", "has_many", "belongs_to", "has_and_belongs_to_many", "has_one_attached",
+        "has_many_attached"
+      ]
+  }
+
+  /**
+   * Gets the class which declares this association.
+   *  For example, in
+   *  ```rb
+   *  class User
+   *    has_many :posts
+   *  end
+   *  ```
+   *  the source class is `User`.
+   */
+  ActiveRecordModelClass getSourceClass() { result = modelClass }
+
+  /**
+   * Gets the class which this association refers to.
+   *  For example, in
+   *  ```rb
+   *  class User
+   *    has_many :posts
+   *  end
+   *  ```
+   *  the target class is `Post`.
+   */
+  ActiveRecordModelClass getTargetClass() {
+    result.getName().toLowerCase() = this.getTargetModelName()
+  }
+
+  /**
+   * Gets the (lowercase) name of the model this association targets.
+   * For example, in `has_many :posts`, this is `post`.
+   */
+  string getTargetModelName() {
+    exists(string s | s = this.getArgument(0).getConstantValue().getStringlikeValue() |
+      // has_one :profile
+      // belongs_to :user
+      this.isSingular() and
+      result = s
+      or
+      // has_many :posts
+      // has_many :stories
+      this.isCollection() and
+      pluralize(result) = s
+    )
+  }
+
+  /** Holds if this association is one-to-one */
+  predicate isSingular() { this.getMethodName() = ["has_one", "belongs_to", "has_one_attached"] }
+
+  /** Holds if this association is one-to-many or many-to-many */
+  predicate isCollection() {
+    this.getMethodName() = ["has_many", "has_and_belongs_to_many", "has_many_attached"]
+  }
+}
+
+/**
+ * Converts `input` to plural form.
+ *
+ * Examples:
+ *
+ * - photo -> photos
+ * - story -> stories
+ * - photos -> photos
+ */
+bindingset[input]
+bindingset[result]
+private string pluralize(string input) {
+  exists(string stem | stem + "y" = input | result = stem + "ies")
+  or
+  not exists(string stem | stem + "s" = input) and
+  result = input + "s"
+  or
+  exists(string stem | stem + "s" = input) and result = input
+}
+
+/**
+ * A call to a method generated by an ActiveRecord association.
+ * These yield ActiveRecord collection proxies, which act like collections but
+ * add some additional methods.
+ * We exclude `<model>_changed?` and `<model>_previously_changed?` because these
+ * do not yield ActiveRecord instances.
+ * https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html
+ */
+private class ActiveRecordAssociationMethodCall extends DataFlow::CallNode {
+  ActiveRecordAssociation assoc;
+
+  ActiveRecordAssociationMethodCall() {
+    exists(string model | model = assoc.getTargetModelName() |
+      this.getReceiver().(ActiveRecordInstance).getClass() = assoc.getSourceClass() and
+      (
+        assoc.isCollection() and
+        (
+          this.getMethodName() = pluralize(model) + ["", "="]
+          or
+          this.getMethodName() = "<<"
+          or
+          this.getMethodName() = model + ["_ids", "_ids="]
+        )
+        or
+        assoc.isSingular() and
+        (
+          this.getMethodName() = model + ["", "="] or
+          this.getMethodName() = ["build_", "reload_"] + model or
+          this.getMethodName() = "create_" + model + ["!", ""]
+        )
+      )
+    )
+  }
+
+  ActiveRecordAssociation getAssociation() { result = assoc }
+}
+
+/**
+ * A method call on an ActiveRecord collection proxy that yields one or more
+ * ActiveRecord instances.
+ * Example:
+ * ```rb
+ * class User < ActiveRecord::Base
+ *   has_many :posts
+ * end
+ *
+ * User.new.posts.create
+ * ```
+ * https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html
+ */
+private class ActiveRecordCollectionProxyMethodCall extends DataFlow::CallNode {
+  ActiveRecordCollectionProxyMethodCall() {
+    this.getMethodName() =
+      [
+        "push", "concat", "build", "create", "create!", "delete", "delete_all", "destroy",
+        "destroy_all", "find", "distinct", "reset", "reload"
+      ] and
+    (
+      this.getReceiver().(ActiveRecordAssociationMethodCall).getAssociation().isCollection()
+      or
+      exists(ActiveRecordCollectionProxyMethodCall receiver | receiver = this.getReceiver() |
+        receiver.getAssociation().isCollection() and
+        receiver.getMethodName() = ["reset", "reload", "distinct"]
+      )
+    )
+  }
+
+  ActiveRecordAssociation getAssociation() {
+    result = this.getReceiver().(ActiveRecordAssociationMethodCall).getAssociation()
+  }
+}
+
+/**
+ * A call to an association method which yields ActiveRecord instances.
+ */
+private class ActiveRecordAssociationModelInstantiation extends ActiveRecordModelInstantiation instanceof ActiveRecordAssociationMethodCall {
+  override ActiveRecordModelClass getClass() {
+    result = this.(ActiveRecordAssociationMethodCall).getAssociation().getTargetClass()
+  }
+}
+
+/**
+ * A call to a method on a collection proxy which yields ActiveRecord instances.
+ */
+private class ActiveRecordCollectionProxyModelInstantiation extends ActiveRecordModelInstantiation instanceof ActiveRecordCollectionProxyMethodCall {
+  override ActiveRecordModelClass getClass() {
+    result = this.(ActiveRecordCollectionProxyMethodCall).getAssociation().getTargetClass()
   }
 }

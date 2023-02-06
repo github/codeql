@@ -4,12 +4,6 @@ import java
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 
-private class AndroidWidgetSourceModels extends SourceModelCsv {
-  override predicate row(string row) {
-    row = "android.widget;EditText;true;getText;;;ReturnValue;android-widget"
-  }
-}
-
 private class DefaultAndroidWidgetSources extends RemoteFlowSource {
   DefaultAndroidWidgetSources() { sourceNode(this, "android-widget") }
 
@@ -18,18 +12,20 @@ private class DefaultAndroidWidgetSources extends RemoteFlowSource {
 
 private class EditableToStringStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(MethodAccess toString |
-      toString.getMethod().hasName("toString") and
-      toString.getReceiverType().hasQualifiedName("android.text", "Editable")
-    |
-      n1.asExpr() = toString.getQualifier() and
-      n2.asExpr() = toString
+    exists(MethodAccess ma |
+      ma.getMethod().hasName("toString") and
+      ma.getReceiverType().getASourceSupertype*().hasQualifiedName("android.text", "Editable") and
+      n1.asExpr() = ma.getQualifier() and
+      n2.asExpr() = ma
+      or
+      ma.getMethod().hasQualifiedName("java.lang", "String", "valueOf") and
+      ma.getArgument(0)
+          .getType()
+          .(RefType)
+          .getASourceSupertype*()
+          .hasQualifiedName("android.text", "Editable") and
+      n1.asExpr() = ma.getArgument(0) and
+      n2.asExpr() = ma
     )
-  }
-}
-
-private class AndroidWidgetSummaryModels extends SummaryModelCsv {
-  override predicate row(string row) {
-    row = "android.widget;EditText;true;getText;;;Argument[-1];ReturnValue;taint"
   }
 }

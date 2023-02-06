@@ -30,10 +30,8 @@ module CommandInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of remote user input, considered as a flow source for command injection. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-
-    override string getSourceType() { result = "a user-provided value" }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
+    override string getSourceType() { result = "user-provided value" }
   }
 
   /**
@@ -49,6 +47,9 @@ module CommandInjection {
   class ShellwordsEscapeAsSanitizer extends Sanitizer {
     ShellwordsEscapeAsSanitizer() {
       this = API::getTopLevelMember("Shellwords").getAMethodCall(["escape", "shellescape"])
+      or
+      // The method is also added as `String#shellescape`.
+      this.(DataFlow::CallNode).getMethodName() = "shellescape"
     }
   }
 }

@@ -61,13 +61,13 @@ private module HandlebarsTaintSteps {
    * the `FunctionNode` representing `function loudHelper`, and return its parameter `text`.
    */
   private DataFlow::ParameterNode getRegisteredHelperParam(
-    string helperName, DataFlow::FunctionNode helperFunction, int paramIndex
+    string helperName, DataFlow::FunctionNode func, int paramIndex
   ) {
     exists(DataFlow::CallNode registerHelperCall |
       registerHelperCall = any(Handlebars::Handlebars hb).getAMemberCall("registerHelper") and
       registerHelperCall.getArgument(0).mayHaveStringValue(helperName) and
-      helperFunction = registerHelperCall.getArgument(1).getAFunctionValue() and
-      result = helperFunction.getParameter(paramIndex)
+      func = registerHelperCall.getArgument(1).getAFunctionValue() and
+      result = func.getParameter(paramIndex)
     )
   }
 
@@ -130,17 +130,14 @@ private module HandlebarsTaintSteps {
    * ```
    */
   private predicate isHandlebarsArgStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(
-      string helperName, DataFlow::CallNode templatingCall, DataFlow::CallNode compileCall,
-      DataFlow::FunctionNode helperFunction
-    |
+    exists(string helperName, DataFlow::CallNode templatingCall, DataFlow::CallNode compileCall |
       templatingCall = compiledTemplate(compileCall).getACall() and
       exists(string templateText, string paramName, int argIdx |
         compileCall.getArgument(0).mayHaveStringValue(templateText)
       |
         pred = templatingCall.getArgument(0).getALocalSource().getAPropertyWrite(paramName).getRhs() and
         isTemplateHelperCallArg(templateText, helperName, argIdx, paramName) and
-        succ = getRegisteredHelperParam(helperName, helperFunction, argIdx)
+        succ = getRegisteredHelperParam(helperName, _, argIdx)
       )
     )
   }
@@ -150,8 +147,6 @@ private module HandlebarsTaintSteps {
    * helpers registered.
    */
   class HandlebarsStep extends DataFlow::SharedFlowStep {
-    DataFlow::CallNode templatingCall;
-
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       isHandlebarsArgStep(pred, succ)
     }

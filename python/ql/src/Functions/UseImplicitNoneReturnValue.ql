@@ -35,4 +35,4 @@ where
   forall(FunctionValue callee | c.getFunc().pointsTo(callee) | callee.getScope().isProcedure()) and
   /* Mox return objects have an `AndReturn` method */
   not useOfMoxInModule(c.getEnclosingModule())
-select c, "The result of '$@' is used even though it is always None.", func, func.getQualifiedName()
+select c, "The result of $@ is used even though it is always None.", func, func.getQualifiedName()

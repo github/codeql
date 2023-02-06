@@ -8,19 +8,19 @@ module AWS {
   /**
    * Holds if the `i`th argument of `invk` is an object hash for `AWS.Config`.
    */
-  private predicate takesConfigurationObject(InvokeExpr invk, int i) {
+  private predicate takesConfigurationObject(DataFlow::InvokeNode invk, int i) {
     exists(DataFlow::ModuleImportNode mod | mod.getPath() = "aws-sdk" |
       // `AWS.config.update(nd)`
-      invk = mod.getAPropertyRead("config").getAMemberCall("update").asExpr() and
+      invk = mod.getAPropertyRead("config").getAMemberCall("update") and
       i = 0
       or
       exists(DataFlow::SourceNode cfg | cfg = mod.getAConstructorInvocation("Config") |
         // `new AWS.Config(nd)`
-        invk = cfg.asExpr() and
+        invk = cfg and
         i = 0
         or
         // `var config = new AWS.Config(...); config.update(nd);`
-        invk = cfg.getAMemberCall("update").asExpr() and
+        invk = cfg.getAMemberCall("update") and
         i = 0
       )
     )
@@ -29,13 +29,13 @@ module AWS {
   /**
    * An expression that is used as an AWS config value: `{ accessKeyId: <user>, secretAccessKey: <password>}`.
    */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     string kind;
 
     Credentials() {
-      exists(string prop, InvokeExpr invk, int i |
+      exists(string prop, DataFlow::InvokeNode invk, int i |
         takesConfigurationObject(invk, i) and
-        invk.hasOptionArgument(i, prop, this)
+        this = invk.getOptionArgument(i, prop)
       |
         prop = "accessKeyId" and kind = "user name"
         or

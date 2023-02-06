@@ -14,9 +14,7 @@ module TrustedTypes {
   private class TrustedTypesEntry extends API::EntryPoint {
     TrustedTypesEntry() { this = "TrustedTypesEntry" }
 
-    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("trustedTypes") }
-
-    override DataFlow::Node getARhs() { none() }
+    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("trustedTypes") }
   }
 
   private API::Node trustedTypesObj() { result = any(TrustedTypesEntry entry).getANode() }
@@ -38,7 +36,7 @@ module TrustedTypes {
   private class PolicyInputStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(PolicyCreation policy, string method |
-        pred = policy.getReturn().getMember(method).getParameter(0).getARhs() and
+        pred = policy.getReturn().getMember(method).getParameter(0).asSink() and
         succ = policy.getPolicyCallback(method).getParameter(0)
       )
     }

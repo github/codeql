@@ -2,7 +2,7 @@
  * @name Extractor diagnostics
  * @description This query is for internal use only and may change without notice.
  * @kind table
- * @id csharp/extractor-diagnostics
+ * @id cs/extractor-diagnostics
  */
 
 import csharp

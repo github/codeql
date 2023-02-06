@@ -27,7 +27,7 @@ private import implementations.StdString
 private import implementations.Swap
 private import implementations.GetDelim
 private import implementations.SmartPointer
-private import implementations.Sscanf
+private import implementations.Scanf
 private import implementations.Send
 private import implementations.Recv
 private import implementations.Accept

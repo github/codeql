@@ -29,9 +29,9 @@ where
   not isDefinitelyPositive(lhs.getLeftOperand()) and
   lhs.getRightOperand().(IntegerLiteral).getIntValue() = 2 and
   (
-    t instanceof EQExpr and rhs.getIntValue() = 1 and parity = "oddness"
+    t instanceof ValueOrReferenceEqualsExpr and rhs.getIntValue() = 1 and parity = "oddness"
     or
-    t instanceof NEExpr and rhs.getIntValue() = 1 and parity = "evenness"
+    t instanceof ValueOrReferenceNotEqualsExpr and rhs.getIntValue() = 1 and parity = "evenness"
     or
     t instanceof GTExpr and rhs.getIntValue() = 0 and parity = "oddness"
   )

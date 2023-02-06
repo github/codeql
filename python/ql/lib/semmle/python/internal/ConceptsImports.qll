@@ -4,3 +4,4 @@
  */
 
 import semmle.python.dataflow.new.DataFlow
+import semmle.python.concepts.CryptoAlgorithms as CryptoAlgorithms

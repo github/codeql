@@ -7,16 +7,22 @@
 
 import java
 
+/** Holds if `id` is a valid Java identifier. */
+bindingset[id]
+private predicate isValidIdentifier(string id) { id.regexpMatch("[\\w_$]+") }
+
 /** A type that should be in the generated code. */
 abstract private class GeneratedType extends ClassOrInterface {
   GeneratedType() {
     not this instanceof AnonymousClass and
     not this.isLocal() and
-    not this.getPackage() instanceof ExcludedPackage
+    not this.getPackage() instanceof ExcludedPackage and
+    isValidIdentifier(this.getName())
   }
 
   private string stubKeyword() {
-    this instanceof Interface and result = "interface"
+    this instanceof Interface and
+    (if this instanceof AnnotationType then result = "@interface" else result = "interface")
     or
     this instanceof Class and
     (if this instanceof EnumType then result = "enum" else result = "class")
@@ -27,19 +33,32 @@ abstract private class GeneratedType extends ClassOrInterface {
   }
 
   private string stubStaticModifier() {
-    if this.isStatic() then result = "static " else result = ""
+    if this.(NestedType).isStatic() then result = "static " else result = ""
   }
 
   private string stubAccessibilityModifier() {
     if this.isPublic() then result = "public " else result = ""
   }
 
+  private string stubAnnotations() {
+    if exists(this.(AnnotationType).getAnAnnotation())
+    then
+      result =
+        concat(Annotation an |
+            this.(AnnotationType).getAnAnnotation() = an
+          |
+            stubAnnotation(an), "\n" order by an.getType().getQualifiedName()
+          ) + "\n"
+    else result = ""
+  }
+
   /** Gets the entire Java stub code for this type. */
   final string getStub() {
     result =
-      this.stubAbstractModifier() + this.stubStaticModifier() + this.stubAccessibilityModifier() +
-        this.stubKeyword() + " " + this.getName() + stubGenericArguments(this, true) +
-        this.stubBaseTypesString() + "\n{\n" + this.stubMembers() + "}"
+      this.stubAnnotations() + this.stubAbstractModifier() + this.stubStaticModifier() +
+        this.stubAccessibilityModifier() + this.stubKeyword() + " " + this.getName() +
+        stubGenericArguments(this, true) + this.stubBaseTypesString() + "\n{\n" + this.stubMembers()
+        + "}"
   }
 
   private RefType getAnInterestingBaseType() {
@@ -60,7 +79,9 @@ abstract private class GeneratedType extends ClassOrInterface {
           else cls = ""
         ) and
         (
-          if exists(this.getAnInterestingBaseType().(Interface))
+          if
+            exists(this.getAnInterestingBaseType().(Interface)) and
+            not this instanceof AnnotationType
           then (
             (if this instanceof Class then int_kw = " implements " else int_kw = " extends ") and
             interface = concat(stubTypeName(this.getAnInterestingBaseType().(Interface)), ", ")
@@ -92,19 +113,19 @@ abstract private class GeneratedType extends ClassOrInterface {
     not result.isPrivate() and
     not result.isPackageProtected() and
     not result instanceof StaticInitializer and
-    not result instanceof InstanceInitializer
+    not result instanceof InstanceInitializer and
+    isValidIdentifier(result.getName())
   }
 
   final Type getAGeneratedType() {
-    result = this.getAnInterestingBaseType()
-    or
-    result = this.getAGeneratedMember().(Callable).getReturnType()
-    or
-    result = this.getAGeneratedMember().(Callable).getAParameter().getType()
-    or
-    result = this.getAGeneratedMember().(Field).getType()
-    or
-    result = this.getAGeneratedMember().(NestedType)
+    result = this.getAnInterestingBaseType() or
+    result = this.getAGeneratedMember().(Callable).getReturnType() or
+    result = this.getAGeneratedMember().(Callable).getAParameter().getType() or
+    result = this.getAGeneratedMember().(Field).getType() or
+    result = this.getAGeneratedMember().(NestedType) or
+    result = this.(AnnotationType).getAnAnnotation().getType() or
+    result = this.(AnnotationType).getAnAnnotation().getValue(_).getType() or
+    result = this.(AnnotationType).getAnAnnotation().getAnArrayValue(_).getType()
   }
 }
 
@@ -391,6 +412,47 @@ private string stubMember(Member m) {
   )
 }
 
+language[monotonicAggregates]
+private string stubAnnotation(Annotation a) {
+  if exists(a.getValue(_))
+  then
+    result =
+      "@" + a.getType().getName() + "(" +
+        concat(string name, Expr value |
+          value = a.getValue(name)
+        |
+          name + "=" + stubAnnotationValue(value), ","
+        ) + ")"
+  else result = "@" + a.getType().getName()
+}
+
+language[monotonicAggregates]
+private string stubAnnotationValue(Expr value) {
+  result = value.(FieldAccess).getField().getQualifiedName()
+  or
+  (
+    value instanceof Literal or
+    value instanceof CompileTimeConstantExpr
+  ) and
+  if value instanceof StringLiteral
+  then result = "\"\""
+  else result = stubDefaultValue(value.getType())
+  or
+  result = stubAnnotation(value)
+  or
+  result = value.(TypeLiteral).getReferencedType().getName() + ".class"
+  or
+  value instanceof ArrayInit and
+  result =
+    "{" +
+      concat(int i, Expr arrayElement |
+        i >= 0 and
+        arrayElement = value.(ArrayInit).getInit(i)
+      |
+        stubAnnotationValue(arrayElement), "," order by i
+      ) + "}"
+}
+
 bindingset[s]
 private string indent(string s) { result = "    " + s.replaceAll("\n", "\n    ") + "\n" }
 
@@ -437,11 +499,8 @@ private RefType getAReferencedType(RefType t) {
 }
 
 /** A top level type whose file should be stubbed */
-class GeneratedTopLevel extends TopLevelType {
-  GeneratedTopLevel() {
-    this = this.getSourceDeclaration() and
-    this instanceof GeneratedType
-  }
+class GeneratedTopLevel extends TopLevelType instanceof GeneratedType {
+  GeneratedTopLevel() { this = this.getSourceDeclaration() }
 
   private TopLevelType getAnImportedType() {
     result = getAReferencedType(this).getSourceDeclaration()
@@ -474,8 +533,6 @@ class GeneratedTopLevel extends TopLevelType {
 
   /** Creates a full stub for the file containing this type. */
   string stubFile() {
-    result =
-      this.stubComment() + this.stubPackage() + this.stubImports() + this.(GeneratedType).getStub() +
-        "\n"
+    result = this.stubComment() + this.stubPackage() + this.stubImports() + super.getStub() + "\n"
   }
 }

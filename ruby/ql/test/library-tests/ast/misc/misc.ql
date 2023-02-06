@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 private string getValueText(MethodName m) {
   result = m.getConstantValue().getStringlikeValue()

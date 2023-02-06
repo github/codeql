@@ -72,4 +72,48 @@ class Test
     }
 
     void use<T>(T x) { }
+
+    void phiReads(bool b1, bool b2, bool b3, bool b4, bool b5, bool b6)
+    {
+        var x = 0;
+
+        if (b1)
+        {
+            use(x);
+        }
+        else if (b2)
+        {
+            use(x);
+        }
+        // phi_use for `x`
+
+        if (b3)
+        {
+            use(x);
+        }
+        else if (b4)
+        {
+            use(x);
+        }
+        // phi_use for `x`, even though there is an actual use in the block
+        use(x);
+
+
+        if (b5)
+        {
+            use(x);
+        }
+        else
+        {
+            x = 1;
+            use(x);
+        }
+        // no phi_use (normal phi instead)
+
+        if (b6)
+        {
+            use(x);
+        }
+        // no phi_use for `x`, because not live
+    }
 }

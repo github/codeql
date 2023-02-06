@@ -1,0 +1,64 @@
+| Lib.class:0:0:0:0 | Lib<? extends CharSequence> | Lib.class:0:0:0:0 | returnsArray | CharSequence[] |
+| Lib.class:0:0:0:0 | Lib<? extends CharSequence> | Lib.class:0:0:0:0 | returnsExtends | List<? extends CharSequence> |
+| Lib.class:0:0:0:0 | Lib<? extends CharSequence> | Lib.class:0:0:0:0 | returnsInvar | List<? extends CharSequence> |
+| Lib.class:0:0:0:0 | Lib<? extends CharSequence> | Lib.class:0:0:0:0 | returnsSuper | List<?> |
+| Lib.class:0:0:0:0 | Lib<? extends CharSequence> | Lib.class:0:0:0:0 | returnsUnbound | List<?> |
+| Lib.class:0:0:0:0 | Lib<? extends CharSequence> | Lib.class:0:0:0:0 | returnsVar | CharSequence |
+| Lib.class:0:0:0:0 | Lib<? extends CharSequence> | Lib.class:0:0:0:0 | takesArray | <nulltype>[] |
+| Lib.class:0:0:0:0 | Lib<? extends CharSequence> | Lib.class:0:0:0:0 | takesExtends | List<? extends CharSequence> |
+| Lib.class:0:0:0:0 | Lib<? extends CharSequence> | Lib.class:0:0:0:0 | takesInvar | List<? extends CharSequence> |
+| Lib.class:0:0:0:0 | Lib<? extends CharSequence> | Lib.class:0:0:0:0 | takesSuper | List<?> |
+| Lib.class:0:0:0:0 | Lib<? extends CharSequence> | Lib.class:0:0:0:0 | takesUnbound | List<?> |
+| Lib.class:0:0:0:0 | Lib<? extends CharSequence> | Lib.class:0:0:0:0 | takesVar | <nulltype> |
+| Lib.class:0:0:0:0 | Lib<? super CharSequence> | Lib.class:0:0:0:0 | returnsArray | Object[] |
+| Lib.class:0:0:0:0 | Lib<? super CharSequence> | Lib.class:0:0:0:0 | returnsExtends | List<?> |
+| Lib.class:0:0:0:0 | Lib<? super CharSequence> | Lib.class:0:0:0:0 | returnsInvar | List<? super CharSequence> |
+| Lib.class:0:0:0:0 | Lib<? super CharSequence> | Lib.class:0:0:0:0 | returnsSuper | List<? super CharSequence> |
+| Lib.class:0:0:0:0 | Lib<? super CharSequence> | Lib.class:0:0:0:0 | returnsUnbound | List<?> |
+| Lib.class:0:0:0:0 | Lib<? super CharSequence> | Lib.class:0:0:0:0 | returnsVar | Object |
+| Lib.class:0:0:0:0 | Lib<? super CharSequence> | Lib.class:0:0:0:0 | takesArray | CharSequence[] |
+| Lib.class:0:0:0:0 | Lib<? super CharSequence> | Lib.class:0:0:0:0 | takesExtends | List<?> |
+| Lib.class:0:0:0:0 | Lib<? super CharSequence> | Lib.class:0:0:0:0 | takesInvar | List<? super CharSequence> |
+| Lib.class:0:0:0:0 | Lib<? super CharSequence> | Lib.class:0:0:0:0 | takesSuper | List<? super CharSequence> |
+| Lib.class:0:0:0:0 | Lib<? super CharSequence> | Lib.class:0:0:0:0 | takesUnbound | List<?> |
+| Lib.class:0:0:0:0 | Lib<? super CharSequence> | Lib.class:0:0:0:0 | takesVar | CharSequence |
+| Lib.class:0:0:0:0 | Lib<?> | Lib.class:0:0:0:0 | returnsArray | Object[] |
+| Lib.class:0:0:0:0 | Lib<?> | Lib.class:0:0:0:0 | returnsExtends | List<? extends Object> |
+| Lib.class:0:0:0:0 | Lib<?> | Lib.class:0:0:0:0 | returnsInvar | List<?> |
+| Lib.class:0:0:0:0 | Lib<?> | Lib.class:0:0:0:0 | returnsSuper | List<?> |
+| Lib.class:0:0:0:0 | Lib<?> | Lib.class:0:0:0:0 | returnsUnbound | List<?> |
+| Lib.class:0:0:0:0 | Lib<?> | Lib.class:0:0:0:0 | returnsVar | Object |
+| Lib.class:0:0:0:0 | Lib<?> | Lib.class:0:0:0:0 | takesArray | <nulltype>[] |
+| Lib.class:0:0:0:0 | Lib<?> | Lib.class:0:0:0:0 | takesExtends | List<? extends Object> |
+| Lib.class:0:0:0:0 | Lib<?> | Lib.class:0:0:0:0 | takesInvar | List<?> |
+| Lib.class:0:0:0:0 | Lib<?> | Lib.class:0:0:0:0 | takesSuper | List<?> |
+| Lib.class:0:0:0:0 | Lib<?> | Lib.class:0:0:0:0 | takesUnbound | List<?> |
+| Lib.class:0:0:0:0 | Lib<?> | Lib.class:0:0:0:0 | takesVar | <nulltype> |
+| Lib.class:0:0:0:0 | Lib<CharSequence> | Lib.class:0:0:0:0 | returnsArray | CharSequence[] |
+| Lib.class:0:0:0:0 | Lib<CharSequence> | Lib.class:0:0:0:0 | returnsExtends | List<? extends CharSequence> |
+| Lib.class:0:0:0:0 | Lib<CharSequence> | Lib.class:0:0:0:0 | returnsInvar | List<CharSequence> |
+| Lib.class:0:0:0:0 | Lib<CharSequence> | Lib.class:0:0:0:0 | returnsSuper | List<? super CharSequence> |
+| Lib.class:0:0:0:0 | Lib<CharSequence> | Lib.class:0:0:0:0 | returnsUnbound | List<?> |
+| Lib.class:0:0:0:0 | Lib<CharSequence> | Lib.class:0:0:0:0 | returnsVar | CharSequence |
+| Lib.class:0:0:0:0 | Lib<CharSequence> | Lib.class:0:0:0:0 | takesArray | CharSequence[] |
+| Lib.class:0:0:0:0 | Lib<CharSequence> | Lib.class:0:0:0:0 | takesExtends | List<? extends CharSequence> |
+| Lib.class:0:0:0:0 | Lib<CharSequence> | Lib.class:0:0:0:0 | takesInvar | List<CharSequence> |
+| Lib.class:0:0:0:0 | Lib<CharSequence> | Lib.class:0:0:0:0 | takesSuper | List<? super CharSequence> |
+| Lib.class:0:0:0:0 | Lib<CharSequence> | Lib.class:0:0:0:0 | takesUnbound | List<?> |
+| Lib.class:0:0:0:0 | Lib<CharSequence> | Lib.class:0:0:0:0 | takesVar | CharSequence |
+| Lib.java:3:14:3:16 | Lib | Lib.java:5:15:5:22 | takesVar | T |
+| Lib.java:3:14:3:16 | Lib | Lib.java:6:15:6:24 | takesInvar | List<T> |
+| Lib.java:3:14:3:16 | Lib | Lib.java:7:15:7:26 | takesUnbound | List<?> |
+| Lib.java:3:14:3:16 | Lib | Lib.java:8:15:8:26 | takesExtends | List<? extends T> |
+| Lib.java:3:14:3:16 | Lib | Lib.java:9:15:9:24 | takesSuper | List<? super T> |
+| Lib.java:3:14:3:16 | Lib | Lib.java:11:12:11:21 | returnsVar | T |
+| Lib.java:3:14:3:16 | Lib | Lib.java:12:18:12:29 | returnsInvar | List<T> |
+| Lib.java:3:14:3:16 | Lib | Lib.java:13:18:13:31 | returnsUnbound | List<?> |
+| Lib.java:3:14:3:16 | Lib | Lib.java:14:28:14:41 | returnsExtends | List<? extends T> |
+| Lib.java:3:14:3:16 | Lib | Lib.java:15:26:15:37 | returnsSuper | List<? super T> |
+| Lib.java:3:14:3:16 | Lib | Lib.java:17:15:17:24 | takesArray | T[] |
+| Lib.java:3:14:3:16 | Lib | Lib.java:18:14:18:25 | returnsArray | T[] |
+| User.java:1:14:1:17 | User | User.java:3:22:3:25 | test | Lib<? extends CharSequence> |
+| User.java:1:14:1:17 | User | User.java:3:22:3:25 | test | Lib<? super CharSequence> |
+| User.java:1:14:1:17 | User | User.java:3:22:3:25 | test | Lib<?> |
+| User.java:1:14:1:17 | User | User.java:3:22:3:25 | test | Lib<CharSequence> |

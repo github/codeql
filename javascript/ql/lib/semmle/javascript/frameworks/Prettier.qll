@@ -22,7 +22,7 @@ private module Prettier {
         call = API::moduleImport("prettier").getMember("formatWithCursor").getACall()
       |
         pred = call.getArgument(0) and
-        succ = call.getReturn().getMember("formatted").getAnImmediateUse()
+        succ = call.getReturn().getMember("formatted").asSource()
       )
     }
   }

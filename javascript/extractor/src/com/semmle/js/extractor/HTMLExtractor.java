@@ -13,7 +13,6 @@ import com.semmle.js.extractor.ExtractorConfig.ECMAVersion;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.parser.ParseError;
-import com.semmle.util.data.Option;
 import com.semmle.util.data.Pair;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.io.WholeIO;
@@ -40,7 +39,8 @@ public class HTMLExtractor implements IExtractor {
       this.textualExtractor = textualExtractor;
 
       this.scopeManager =
-          new ScopeManager(textualExtractor.getTrapwriter(), config.getEcmaVersion(), true);
+          new ScopeManager(textualExtractor.getTrapwriter(), config.getEcmaVersion(),
+            ScopeManager.FileKind.TEMPLATE);
     }
 
     /*
@@ -238,7 +238,7 @@ public class HTMLExtractor implements IExtractor {
       extractor.setSourceMap(textualExtractor.getSourceMap());
     }
 
-    List<Label> rootNodes = extractor.doit(Option.some(eltHandler));
+    List<Label> rootNodes = extractor.doit(eltHandler);
 
     return Pair.make(rootNodes, locInfo);
   }
@@ -425,7 +425,7 @@ public class HTMLExtractor implements IExtractor {
           extractSnippet(
               TopLevelKind.ANGULAR_STYLE_TEMPLATE,
               config.withSourceType(SourceType.ANGULAR_STYLE_TEMPLATE),
-              new ScopeManager(textualExtractor.getTrapwriter(), ECMAVersion.ECMA2020, true),
+              new ScopeManager(textualExtractor.getTrapwriter(), ECMAVersion.ECMA2020, ScopeManager.FileKind.TEMPLATE),
               textualExtractor,
               m.group(bodyGroup),
               m.start(bodyGroup),

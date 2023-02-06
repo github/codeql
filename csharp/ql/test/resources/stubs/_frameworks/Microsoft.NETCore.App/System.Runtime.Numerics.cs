@@ -4,8 +4,8 @@ namespace System
 {
     namespace Numerics
     {
-        // Generated from `System.Numerics.BigInteger` in `System.Runtime.Numerics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public struct BigInteger : System.IComparable, System.IComparable<System.Numerics.BigInteger>, System.IEquatable<System.Numerics.BigInteger>, System.IFormattable
+        // Generated from `System.Numerics.BigInteger` in `System.Runtime.Numerics, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public struct BigInteger : System.IComparable, System.IComparable<System.Numerics.BigInteger>, System.IEquatable<System.Numerics.BigInteger>, System.IFormattable, System.ISpanFormattable
         {
             public static bool operator !=(System.Numerics.BigInteger left, System.Numerics.BigInteger right) => throw null;
             public static bool operator !=(System.Numerics.BigInteger left, System.Int64 right) => throw null;
@@ -139,7 +139,7 @@ namespace System
             public static System.Numerics.BigInteger operator ~(System.Numerics.BigInteger value) => throw null;
         }
 
-        // Generated from `System.Numerics.Complex` in `System.Runtime.Numerics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Numerics.Complex` in `System.Runtime.Numerics, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Complex : System.IEquatable<System.Numerics.Complex>, System.IFormattable
         {
             public static bool operator !=(System.Numerics.Complex left, System.Numerics.Complex right) => throw null;

@@ -1,0 +1,4 @@
+- description: Extended and experimental security queries for Java and Kotlin
+- queries: .
+- apply: security-experimental-selectors.yml
+  from: codeql/suite-helpers

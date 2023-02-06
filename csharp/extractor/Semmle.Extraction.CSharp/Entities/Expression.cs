@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities
         bool IExpressionParentEntity.IsTopLevelParent => false;
 
         /// <summary>
-        /// Gets a string represention of a constant value.
+        /// Gets a string representation of a constant value.
         /// </summary>
         /// <param name="obj">The value.</param>
         /// <returns>The string representation.</returns>
@@ -240,7 +240,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 var callType = GetCallType(Context, node);
                 if (callType == CallType.Dynamic)
                 {
-                    UserOperator.OperatorSymbol(method.Name, out var operatorName);
+                    UserOperator.TryGetOperatorSymbol(method.Name, out var operatorName);
                     trapFile.dynamic_member_name(this, operatorName);
                     return;
                 }

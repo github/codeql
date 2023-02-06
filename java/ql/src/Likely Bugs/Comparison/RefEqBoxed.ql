@@ -13,7 +13,7 @@
 
 import java
 
-from EqualityTest c
+from ReferenceEqualityTest c
 where
   c.getLeftOperand().getType() instanceof BoxedType and
   c.getRightOperand().getType() instanceof BoxedType and

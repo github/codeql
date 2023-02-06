@@ -4,7 +4,7 @@
  */
 
 import cpp
-import semmle.code.cpp.security.TaintTrackingImpl as ASTTaintTracking
+import semmle.code.cpp.security.TaintTrackingImpl as AstTaintTracking
 import semmle.code.cpp.ir.dataflow.DefaultTaintTracking as IRDefaultTaintTracking
 import IRDefaultTaintTracking::TaintedWithPath as TaintedWithPath
 import TaintedWithPath::Private
@@ -17,7 +17,7 @@ predicate isSinkArgument(Element sink) {
   )
 }
 
-predicate astTaint(Expr source, Element sink) { ASTTaintTracking::tainted(source, sink) }
+predicate astTaint(Expr source, Element sink) { AstTaintTracking::tainted(source, sink) }
 
 class SourceConfiguration extends TaintedWithPath::TaintTrackingConfiguration {
   override predicate isSink(Element e) { isSinkArgument(e) }
@@ -44,8 +44,8 @@ class IRDefaultTaintTrackingTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = ["ir-path", "ir-sink"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(Element source, Element elem, TaintedWithPath::PathNode node, int n |
-      irTaint(source, node, tag) and
+    exists(Element elem, TaintedWithPath::PathNode node, int n |
+      irTaint(_, node, tag) and
       elem = getElementFromPathNode(node) and
       n = count(int startline | getAPredecessor(node).hasLocationInfo(_, startline, _, _, _)) and
       location = elem.getLocation() and

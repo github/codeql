@@ -16,8 +16,11 @@ import java
 import semmle.code.java.Collections
 
 predicate guardedByInstanceOf(VarAccess e, RefType t) {
-  exists(IfStmt s, InstanceOfExpr instanceCheck, RefType checkType |
-    s.getCondition() = instanceCheck and
+  exists(Stmt s, InstanceOfExpr instanceCheck, RefType checkType |
+    (
+      s.(IfStmt).getCondition() = instanceCheck or
+      s.(WhenBranch).getCondition() = instanceCheck
+    ) and
     instanceCheck.getCheckedType() = checkType and
     // The same variable appears as the subject of the `instanceof`.
     instanceCheck.getExpr() = e.getVariable().getAnAccess() and
@@ -27,13 +30,17 @@ predicate guardedByInstanceOf(VarAccess e, RefType t) {
     (checkType = t or checkType = t.getSourceDeclaration().(GenericType).getRawType()) and
     // The expression appears in one of the branches.
     // (We do not verify here whether the guard is correctly implemented.)
-    exists(Stmt branch | branch = s.getThen() or branch = s.getElse() |
+    exists(Stmt branch |
+      branch = s.(IfStmt).getThen() or
+      branch = s.(IfStmt).getElse() or
+      branch = s.(WhenBranch).getRhs()
+    |
       branch = e.getEnclosingStmt().getEnclosingStmt+()
     )
   )
 }
 
-from CastExpr e, CollectionType c, CollectionType coll, string abstractName, string concreteName
+from CastingExpr e, CollectionType c, CollectionType coll, string abstractName, string concreteName
 where
   coll instanceof Interface and
   c instanceof Class and
