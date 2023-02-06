@@ -24,16 +24,29 @@ private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestF
 
 from DataFlow::Node sink, AtmConfig::AtmConfig config, EndpointType sinkType, string message
 where
-  config.isKnownSink(sink, sinkType) and
   // If there are _any_ erroneous endpoints, return nothing. This will prevent us from accidentally running this query
   // when there's a codex-generated data extension file in `java/ql/lib/ext`.
   not EndpointCharacteristics::erroneousEndpoints(_, _, _, _, _) and
-  // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
-  // treated by the actual query as a sanitizer, since the final logic is something like
-  // `isSink(n) and not isSanitizer(n)`. We don't want to include such nodes as positive examples in the prompt.
-  not config.isSanitizer(sink) and
-  message =
-    sinkType.getDescription() + "\n" +
-      // Extract the needed metadata for this endpoint.
-      any(string metadata | EndpointCharacteristics::hasMetadata(sink, metadata))
+  // Extract positive examples of sinks belonging to the existing ATM query configurations.
+  (
+    config.isKnownSink(sink, sinkType) and
+    // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
+    // treated by the actual query as a sanitizer, since the final logic is something like
+    // `isSink(n) and not isSanitizer(n)`. We don't want to include such nodes as positive examples in the prompt.
+    not config.isSanitizer(sink) and
+    message =
+      sinkType.getDescription() + "\n" +
+        // Extract the needed metadata for this endpoint.
+        any(string metadata | EndpointCharacteristics::hasMetadata(sink, metadata))
+  )
+  or
+  // Extract positive examples of sinks belonging to other MaD `kind`s for sink types / queries we have not yet modeled
+  // in an ATM query configuration.
+  exists(string kind, EndpointCharacteristics::OtherMaDSinkCharacteristic charecteristic |
+    charecteristic.appliesToEndpoint(sink, kind) and
+    message =
+      charecteristic + "\n" + kind + "\n" +
+        // Extract the needed metadata for this endpoint.
+        any(string metadata | EndpointCharacteristics::hasMetadata(sink, metadata))
+  )
 select sink, message

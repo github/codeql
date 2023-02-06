@@ -15,7 +15,8 @@ newtype TEndpointType =
   TUrlOpenSinkType() or
   TJdbcUrlSinkType() or
   TCreateFileSinkType() or
-  TSqlSinkType()
+  TSqlSinkType() or
+  TOtherMaDSinkType()
 
 /** A class that can be predicted by endpoint scoring models. */
 abstract class EndpointType extends TEndpointType {
@@ -56,7 +57,7 @@ class SqlSinkType extends EndpointType, TSqlSinkType {
   override string getKind() { result = "sql" }
 }
 
-/** Other SQL injection sinks that are not yet included in the MaD sink kinds. */
+/** Other SQL injection sinks that are not yet included in the MaD sink `kind`s. */
 class SqlInjectionOtherSinkType extends EndpointType, TSqlInjectionOtherSinkType {
   override string getDescription() {
     result = "java persistence or mongodb or other query injection sink"
@@ -76,7 +77,7 @@ class CreateFileSinkType extends EndpointType, TCreateFileSinkType {
   override string getKind() { result = "create-file" }
 }
 
-/** Other tainted path injection sinks that are not yet included in the MaD sink kinds. */
+/** Other tainted path injection sinks that are not yet included in the MaD sink `kind`s. */
 class TaintedPathOtherSinkType extends EndpointType, TTaintedPathOtherSinkType {
   override string getDescription() { result = "other path injection sink" }
 
@@ -103,13 +104,20 @@ class JdbcUrlSinkType extends EndpointType, TJdbcUrlSinkType {
   override string getKind() { result = "jdbc-url" }
 }
 
-/**
- * Other SSRF sinks that are not yet included in the MaD sink kinds.
- */
+/** Other SSRF sinks that are not yet included in the MaD sink `kind`s. */
 class RequestForgeryOtherSinkType extends EndpointType, TRequestForgeryOtherSinkType {
   override string getDescription() { result = "other server-side request forgery sink" }
 
   override int getEncoding() { result = 7 }
 
   override string getKind() { result = "ssrf-other" }
+}
+
+/** Other sinks modeled by a MaD `kind` but not belonging to any of the existing sink types. */
+class OtherMaDSinkType extends EndpointType, TOtherMaDSinkType {
+  override string getDescription() { result = "other sink" }
+
+  override int getEncoding() { result = 8 }
+
+  override string getKind() { result = "other-sink" }
 }
