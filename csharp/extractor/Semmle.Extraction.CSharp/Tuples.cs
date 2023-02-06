@@ -462,5 +462,8 @@ namespace Semmle.Extraction.CSharp
 
         internal static void file_extraction_mode(this System.IO.TextWriter trapFile, Entities.File file, ExtractorMode mode) =>
             trapFile.WriteTuple("file_extraction_mode", file, mode);
+
+        internal static void scoped_annotation(this TextWriter trapFile, IEntity element, ScopedAnnotation @scoped) =>
+            trapFile.WriteTuple("scoped_annotation", element, (int)@scoped);
     }
 }

@@ -32,6 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.localvars(this, kind, Symbol.Name, @var, Type.Create(Context, type).TypeRef, parent);
 
                 PopulateNullability(trapFile, local.GetAnnotatedType());
+                PopulateScopedKind(trapFile, local.ScopedKind);
                 if (local.IsRef)
                     trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
             }
