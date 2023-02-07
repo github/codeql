@@ -85,6 +85,7 @@ class ExternalApi extends DotNet::Callable {
   }
 
   /** Holds if this API has a supported summary. */
+  pragma[nomagic]
   predicate hasSummary() {
     this instanceof SummarizedCallable
     or
@@ -92,11 +93,13 @@ class ExternalApi extends DotNet::Callable {
   }
 
   /** Holds if this API is a known source. */
+  pragma[nomagic]
   predicate isSource() {
     this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
   }
 
   /** Holds if this API is a known sink. */
+  pragma[nomagic]
   predicate isSink() { sinkNode(this.getAnInput(), _) }
 
   /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
