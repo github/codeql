@@ -523,9 +523,8 @@ class GeneratedTopLevel extends TopLevelType instanceof GeneratedType {
   }
 
   private string stubAnImport() {
-    exists(RefType t, string pkg, string name |
+    exists(ClassOrInterface t, string pkg, string name |
       t = this.getAnImportedType() and
-      (t instanceof Class or t instanceof Interface) and
       t.hasQualifiedName(pkg, name) and
       t != this and
       pkg != "java.lang"
