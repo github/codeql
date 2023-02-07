@@ -599,4 +599,14 @@ codeql::AppliedPropertyWrapperExpr ExprTranslator::translateAppliedPropertyWrapp
   return entry;
 }
 
+codeql::RegexLiteralExpr ExprTranslator::translateRegexLiteralExpr(
+    const swift::RegexLiteralExpr& expr) {
+  auto entry = createExprEntry(expr);
+  auto pattern = expr.getRegexText();
+  // the pattern has enclosing '/' delimiters, we'd rather get it without
+  entry.pattern = pattern.substr(1, pattern.size() - 2);
+  entry.version = expr.getVersion();
+  return entry;
+}
+
 }  // namespace codeql
