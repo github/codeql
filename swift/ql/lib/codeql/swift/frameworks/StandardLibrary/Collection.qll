@@ -34,3 +34,21 @@ private class CollectionSummaries extends SummaryModelCsv {
       ]
   }
 }
+
+/**
+ * A content implying that, if a `Collection` is tainted, certain fields are also
+ * tainted.
+ */
+private class CollectionFieldsInheritTaint extends TaintInheritingContent,
+  DataFlow::Content::FieldContent {
+  CollectionFieldsInheritTaint() {
+    exists(FieldDecl f | this.getField() = f |
+      (
+        f.getEnclosingDecl().(NominalTypeDecl).getName() = ["Collection", "BidirectionalCollection"] or
+        f.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getName() =
+          ["Collection", "BidirectionalCollection"]
+      ) and
+      f.getName() = ["first", "last"]
+    )
+  }
+}

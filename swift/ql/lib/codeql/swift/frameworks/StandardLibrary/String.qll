@@ -135,7 +135,7 @@ private class StringFieldsInheritTaint extends TaintInheritingContent,
       ) and
       f.getName() =
         [
-          "first", "last", "unicodeScalars", "utf8", "utf16", "lazy", "utf8CString", "description",
+          "unicodeScalars", "utf8", "utf16", "lazy", "utf8CString", "description",
           "debugDescription", "dataValue", "identifierValue", "capitalized", "localizedCapitalized",
           "localizedLowercase", "localizedUppercase", "decomposedStringWithCanonicalMapping",
           "decomposedStringWithCompatibilityMapping", "precomposedStringWithCanonicalMapping",
