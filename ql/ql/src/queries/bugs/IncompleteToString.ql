@@ -52,8 +52,7 @@ class Branches extends TypeDeclaration {
   }
 
   NewTypeBranch getBranch() { result = branch }
-
-  NewType getNewType() { result = branch.getNewType() }
+  // NewType getNewType() { result = branch.getNewType() }
 }
 
 /**
