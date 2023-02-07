@@ -9,9 +9,7 @@ class UnsafeAndroidAccessTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasUnsafeAndroidAccess" and
-    exists(DataFlow::Node src, DataFlow::Node sink, FetchUntrustedResourceConfiguration conf |
-      conf.hasFlow(src, sink)
-    |
+    exists(DataFlow::Node sink, FetchUntrustedResourceConfiguration conf | conf.hasFlowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

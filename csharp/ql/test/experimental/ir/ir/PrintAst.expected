@@ -118,59 +118,63 @@ array.cs:
 #   20|             0: [IntLiteral] 1
 assignop.cs:
 #    3| [Class] AssignOp
-#    4|   5: [Method] Main
-#    4|     -1: [TypeMention] Void
-#    4|     4: [BlockStmt] {...}
-#    5|       0: [LocalVariableDeclStmt] ... ...;
-#    5|         0: [LocalVariableDeclAndInitExpr] Int32 a = ...
-#    5|           -1: [TypeMention] int
-#    5|           0: [LocalVariableAccess] access to local variable a
-#    5|           1: [IntLiteral] 1
-#    6|       1: [LocalVariableDeclStmt] ... ...;
-#    6|         0: [LocalVariableDeclAndInitExpr] Int32 c = ...
-#    6|           -1: [TypeMention] int
-#    6|           0: [LocalVariableAccess] access to local variable c
-#    6|           1: [IntLiteral] 1
-#    8|       2: [ExprStmt] ...;
-#    8|         0: [AssignAddExpr] ... += ...
+#    5|   5: [Method] Main
+#    5|     -1: [TypeMention] Void
+#    6|     4: [BlockStmt] {...}
+#    7|       0: [LocalVariableDeclStmt] ... ...;
+#    7|         0: [LocalVariableDeclAndInitExpr] Int32 a = ...
+#    7|           -1: [TypeMention] int
+#    7|           0: [LocalVariableAccess] access to local variable a
+#    7|           1: [IntLiteral] 1
+#    8|       1: [LocalVariableDeclStmt] ... ...;
+#    8|         0: [LocalVariableDeclAndInitExpr] Int32 c = ...
+#    8|           -1: [TypeMention] int
 #    8|           0: [LocalVariableAccess] access to local variable c
-#    8|           1: [LocalVariableAccess] access to local variable a
-#    9|       3: [ExprStmt] ...;
-#    9|         0: [AssignSubExpr] ... -= ...
-#    9|           0: [LocalVariableAccess] access to local variable c
-#    9|           1: [LocalVariableAccess] access to local variable a
-#   10|       4: [ExprStmt] ...;
-#   10|         0: [AssignMulExpr] ... *= ...
+#    8|           1: [IntLiteral] 1
+#   10|       2: [ExprStmt] ...;
+#   10|         0: [AssignAddExpr] ... += ...
 #   10|           0: [LocalVariableAccess] access to local variable c
 #   10|           1: [LocalVariableAccess] access to local variable a
-#   11|       5: [ExprStmt] ...;
-#   11|         0: [AssignDivExpr] ... /= ...
+#   11|       3: [ExprStmt] ...;
+#   11|         0: [AssignSubExpr] ... -= ...
 #   11|           0: [LocalVariableAccess] access to local variable c
 #   11|           1: [LocalVariableAccess] access to local variable a
-#   12|       6: [ExprStmt] ...;
-#   12|         0: [AssignRemExpr] ... %= ...
+#   12|       4: [ExprStmt] ...;
+#   12|         0: [AssignMulExpr] ... *= ...
 #   12|           0: [LocalVariableAccess] access to local variable c
 #   12|           1: [LocalVariableAccess] access to local variable a
-#   13|       7: [ExprStmt] ...;
-#   13|         0: [AssignLShiftExpr] ... <<= ...
+#   13|       5: [ExprStmt] ...;
+#   13|         0: [AssignDivExpr] ... /= ...
 #   13|           0: [LocalVariableAccess] access to local variable c
-#   13|           1: [IntLiteral] 2
-#   14|       8: [ExprStmt] ...;
-#   14|         0: [AssignRShiftExpr] ... >>= ...
+#   13|           1: [LocalVariableAccess] access to local variable a
+#   14|       6: [ExprStmt] ...;
+#   14|         0: [AssignRemExpr] ... %= ...
 #   14|           0: [LocalVariableAccess] access to local variable c
-#   14|           1: [IntLiteral] 2
-#   15|       9: [ExprStmt] ...;
-#   15|         0: [AssignAndExpr] ... &= ...
+#   14|           1: [LocalVariableAccess] access to local variable a
+#   15|       7: [ExprStmt] ...;
+#   15|         0: [AssignLeftShiftExpr] ... <<= ...
 #   15|           0: [LocalVariableAccess] access to local variable c
 #   15|           1: [IntLiteral] 2
-#   16|       10: [ExprStmt] ...;
-#   16|         0: [AssignXorExpr] ... ^= ...
+#   16|       8: [ExprStmt] ...;
+#   16|         0: [AssignRightShiftExpr] ... >>= ...
 #   16|           0: [LocalVariableAccess] access to local variable c
 #   16|           1: [IntLiteral] 2
-#   17|       11: [ExprStmt] ...;
-#   17|         0: [AssignOrExpr] ... |= ...
+#   17|       9: [ExprStmt] ...;
+#   17|         0: [AssignAndExpr] ... &= ...
 #   17|           0: [LocalVariableAccess] access to local variable c
 #   17|           1: [IntLiteral] 2
+#   18|       10: [ExprStmt] ...;
+#   18|         0: [AssignXorExpr] ... ^= ...
+#   18|           0: [LocalVariableAccess] access to local variable c
+#   18|           1: [IntLiteral] 2
+#   19|       11: [ExprStmt] ...;
+#   19|         0: [AssignOrExpr] ... |= ...
+#   19|           0: [LocalVariableAccess] access to local variable c
+#   19|           1: [IntLiteral] 2
+#   20|       12: [ExprStmt] ...;
+#   20|         0: [AssignUnsighedRightShiftExpr] ... >>>= ...
+#   20|           0: [LocalVariableAccess] access to local variable c
+#   20|           1: [IntLiteral] 2
 casts.cs:
 #    1| [Class] Casts_A
 #    5| [Class] Casts_B
@@ -228,10 +232,10 @@ collections.cs:
 #   15|                   -1: [ObjectInitializer] { ..., ... }
 #   15|                     0: [MemberInitializer] ... = ...
 #   15|                       0: [FieldAccess] access to field a
-#   15|                       1: [StringLiteral] "Hello"
+#   15|                       1: [StringLiteralUtf16] "Hello"
 #   15|                     1: [MemberInitializer] ... = ...
 #   15|                       0: [FieldAccess] access to field b
-#   15|                       1: [StringLiteral] "World"
+#   15|                       1: [StringLiteralUtf16] "World"
 #   16|               1: [ElementInitializer] call to method Add
 #   16|                 0: [IntLiteral] 1
 #   16|                 1: [ObjectCreation] object creation of type MyClass
@@ -239,10 +243,10 @@ collections.cs:
 #   16|                   -1: [ObjectInitializer] { ..., ... }
 #   16|                     0: [MemberInitializer] ... = ...
 #   16|                       0: [FieldAccess] access to field a
-#   16|                       1: [StringLiteral] "Foo"
+#   16|                       1: [StringLiteralUtf16] "Foo"
 #   16|                     1: [MemberInitializer] ... = ...
 #   16|                       0: [FieldAccess] access to field b
-#   16|                       1: [StringLiteral] "Bar"
+#   16|                       1: [StringLiteralUtf16] "Bar"
 constructor_init.cs:
 #    1| [Class] BaseClass
 #    3|   4: [Field] num
@@ -439,7 +443,7 @@ events.cs:
 #   32|           0: [LocalVariableAccess] access to local variable result
 #   32|           1: [DelegateCall] delegate call
 #   32|             -1: [LocalVariableAccess] access to local variable obj
-#   32|             0: [StringLiteral] "string"
+#   32|             0: [StringLiteralUtf16] "string"
 #   33|       3: [ExprStmt] ...;
 #   33|         0: [MethodCall] call to method RemoveEvent
 #   33|           -1: [LocalVariableAccess] access to local variable obj
@@ -545,13 +549,13 @@ indexers.cs:
 #   22|           0: [IndexerCall] access to indexer
 #   22|             -1: [LocalVariableAccess] access to local variable inst
 #   22|             0: [IntLiteral] 0
-#   22|           1: [StringLiteral] "str1"
+#   22|           1: [StringLiteralUtf16] "str1"
 #   23|       2: [ExprStmt] ...;
 #   23|         0: [AssignExpr] ... = ...
 #   23|           0: [IndexerCall] access to indexer
 #   23|             -1: [LocalVariableAccess] access to local variable inst
 #   23|             0: [IntLiteral] 1
-#   23|           1: [StringLiteral] "str1"
+#   23|           1: [StringLiteralUtf16] "str1"
 #   24|       3: [ExprStmt] ...;
 #   24|         0: [AssignExpr] ... = ...
 #   24|           0: [IndexerCall] access to indexer
@@ -771,7 +775,7 @@ jumps.cs:
 #   13|             0: [MethodCall] call to method WriteLine
 #   13|               -1: [TypeAccess] access to type Console
 #   13|                 0: [TypeMention] Console
-#   13|               0: [StringLiteral] "BreakAndContinue"
+#   13|               0: [StringLiteralUtf16] "BreakAndContinue"
 #   16|       1: [ForStmt] for (...;...;...) ...
 #   16|         -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
 #   16|           -1: [TypeMention] int
@@ -827,7 +831,7 @@ jumps.cs:
 #   38|         0: [MethodCall] call to method WriteLine
 #   38|           -1: [TypeAccess] access to type Console
 #   38|             0: [TypeMention] Console
-#   38|           0: [StringLiteral] "Done"
+#   38|           0: [StringLiteralUtf16] "Done"
 lock.cs:
 #    3| [Class] LockTest
 #    5|   5: [Method] A
@@ -1148,9 +1152,9 @@ stmts.cs:
 #   31|         2: [ConstCase] case ...:
 #   31|           0: [ConstantPatternExpr,IntLiteral] 0
 #   32|         3: [GotoCaseStmt] goto case ...;
-#   32|           0: [StringLiteral] "123"
+#   32|           0: [StringLiteralUtf16] "123"
 #   33|         4: [ConstCase] case ...:
-#   33|           0: [ConstantPatternExpr,StringLiteral] "123"
+#   33|           0: [ConstantPatternExpr,StringLiteralUtf16] "123"
 #   34|         5: [ExprStmt] ...;
 #   34|           0: [AssignExpr] ... = ...
 #   34|             0: [LocalVariableAccess] access to local variable select

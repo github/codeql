@@ -522,6 +522,8 @@ module SignAnalysisCached {
         i instanceof ShiftRightInstruction and
         not i.getResultType().(IntegralType) instanceof SignedIntegralType and
         result = s1.urshift(s2)
+        or
+        i instanceof UnsignedShiftRightInstruction and result = s1.urshift(s2)
       )
       or
       // use hasGuard here?

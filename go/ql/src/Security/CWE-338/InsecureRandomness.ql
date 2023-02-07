@@ -17,7 +17,7 @@ import DataFlow::PathGraph
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string kind
 where
   cfg.hasFlowPath(source, sink) and
-  cfg.isSink(sink.getNode(), kind) and
+  cfg.isSinkWithKind(sink.getNode(), kind) and
   (
     kind != "A password-related function"
     or

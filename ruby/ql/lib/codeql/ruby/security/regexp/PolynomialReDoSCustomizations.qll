@@ -8,8 +8,9 @@ private import codeql.ruby.AST as Ast
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
-private import codeql.ruby.Regexp
-private import codeql.ruby.security.regexp.SuperlinearBackTracking
+private import codeql.ruby.regexp.RegExpTreeView::RegexTreeView as TreeView
+private import codeql.ruby.Regexp as RE
+private import codeql.ruby.Concepts
 
 /**
  * Provides default sources, sinks and sanitizers for reasoning about
@@ -17,6 +18,9 @@ private import codeql.ruby.security.regexp.SuperlinearBackTracking
  * as extension points for adding your own.
  */
 module PolynomialReDoS {
+  private import TreeView
+  import codeql.regex.nfa.SuperlinearBackTracking::Make<TreeView>
+
   /**
    * A data flow source node for polynomial regular expression denial-of-service vulnerabilities.
    */
@@ -52,82 +56,24 @@ module PolynomialReDoS {
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
 
   /**
-   * Gets the AST of a regular expression object that can flow to `node`.
-   */
-  RegExpTerm getRegExpObjectFromNode(DataFlow::Node node) {
-    exists(DataFlow::LocalSourceNode regexp |
-      regexp.flowsTo(node) and
-      result = regexp.asExpr().(CfgNodes::ExprNodes::RegExpLiteralCfgNode).getExpr().getParsed()
-    )
-  }
-
-  /**
    * A regexp match against a superlinear backtracking term, seen as a sink for
    * polynomial regular expression denial-of-service vulnerabilities.
    */
   class PolynomialBackTrackingTermMatch extends Sink {
     PolynomialBackTrackingTerm term;
-    DataFlow::ExprNode matchNode;
+    RegexExecution exec;
 
     PolynomialBackTrackingTermMatch() {
-      exists(DataFlow::Node regexp |
-        term.getRootTerm() = getRegExpObjectFromNode(regexp) and
-        (
-          // `=~` or `!~`
-          exists(CfgNodes::ExprNodes::BinaryOperationCfgNode op |
-            matchNode.asExpr() = op and
-            (
-              op.getExpr() instanceof Ast::RegExpMatchExpr or
-              op.getExpr() instanceof Ast::NoRegExpMatchExpr
-            ) and
-            (
-              this.asExpr() = op.getLeftOperand() and regexp.asExpr() = op.getRightOperand()
-              or
-              this.asExpr() = op.getRightOperand() and regexp.asExpr() = op.getLeftOperand()
-            )
-          )
-          or
-          // Any of the methods on `String` that take a regexp.
-          exists(CfgNodes::ExprNodes::MethodCallCfgNode call |
-            matchNode.asExpr() = call and
-            call.getExpr().getMethodName() =
-              [
-                "[]", "gsub", "gsub!", "index", "match", "match?", "partition", "rindex",
-                "rpartition", "scan", "slice!", "split", "sub", "sub!"
-              ] and
-            this.asExpr() = call.getReceiver() and
-            regexp.asExpr() = call.getArgument(0)
-          )
-          or
-          // A call to `match` or `match?` where the regexp is the receiver.
-          exists(CfgNodes::ExprNodes::MethodCallCfgNode call |
-            matchNode.asExpr() = call and
-            call.getExpr().getMethodName() = ["match", "match?"] and
-            regexp.asExpr() = call.getReceiver() and
-            this.asExpr() = call.getArgument(0)
-          )
-          or
-          // a case-when statement
-          exists(CfgNodes::ExprNodes::CaseExprCfgNode caseWhen |
-            matchNode.asExpr() = caseWhen and
-            this.asExpr() = caseWhen.getValue()
-          |
-            regexp.asExpr() =
-              caseWhen.getBranch(_).(CfgNodes::ExprNodes::WhenClauseCfgNode).getPattern(_)
-            or
-            regexp.asExpr() =
-              caseWhen.getBranch(_).(CfgNodes::ExprNodes::InClauseCfgNode).getPattern()
-          )
-        )
-      )
+      term.getRootTerm() = RE::getTermForExecution(exec) and
+      this = exec.getString()
     }
 
     override RegExpTerm getRegExp() { result = term }
 
-    override DataFlow::Node getHighlight() { result = matchNode }
+    override DataFlow::Node getHighlight() { result = exec }
   }
 
-  private predicate lengthGuard(CfgNodes::ExprCfgNode g, CfgNode node, boolean branch) {
+  private predicate lengthGuard(CfgNodes::AstCfgNode g, CfgNode node, boolean branch) {
     exists(DataFlow::Node input, DataFlow::CallNode length, DataFlow::ExprNode operand |
       length.asExpr().getExpr().(Ast::MethodCall).getMethodName() = "length" and
       length.getReceiver() = input and

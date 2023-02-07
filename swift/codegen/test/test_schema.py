@@ -13,6 +13,8 @@ def test_empty_schema():
 
     assert data.classes == {}
     assert data.includes == set()
+    assert data.null is None
+    assert data.null_class is None
 
 
 def test_one_empty_class():
@@ -24,6 +26,7 @@ def test_one_empty_class():
     assert data.classes == {
         'MyClass': schema.Class('MyClass'),
     }
+    assert data.root_class is data.classes['MyClass']
 
 
 def test_two_empty_classes():
@@ -39,6 +42,7 @@ def test_two_empty_classes():
         'MyClass1': schema.Class('MyClass1', derived={'MyClass2'}),
         'MyClass2': schema.Class('MyClass2', bases=['MyClass1']),
     }
+    assert data.root_class is data.classes['MyClass1']
 
 
 def test_no_external_bases():
@@ -261,6 +265,7 @@ _pragmas = [(defs.qltest.skip, "qltest_skip"),
             (defs.qltest.collapse_hierarchy, "qltest_collapse_hierarchy"),
             (defs.qltest.uncollapse_hierarchy, "qltest_uncollapse_hierarchy"),
             (defs.cpp.skip, "cpp_skip"),
+            (defs.ql.internal, "ql_internal"),
             ]
 
 
@@ -336,7 +341,7 @@ def test_ipa_from_class():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}),
+        'A': schema.Class('A', derived={'B'}, ipa=True),
         'B': schema.Class('B', bases=['A'], ipa=schema.IpaInfo(from_class="A")),
     }
 
@@ -377,7 +382,7 @@ def test_ipa_class_on():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}),
+        'A': schema.Class('A', derived={'B'}, ipa=True),
         'B': schema.Class('B', bases=['A'], ipa=schema.IpaInfo(on_arguments={'a': 'A', 'i': 'int'})),
     }
 
@@ -408,6 +413,39 @@ def test_ipa_class_on_dangling():
             @defs.synth.on_arguments(s=defs.string, a="A", i=defs.int)
             class B:
                 pass
+
+
+def test_ipa_class_hierarchy():
+    @schema.load
+    class data:
+        class Root:
+            pass
+
+        class Base(Root):
+            pass
+
+        class Intermediate(Base):
+            pass
+
+        @defs.synth.on_arguments(a=Base, i=defs.int)
+        class A(Intermediate):
+            pass
+
+        @defs.synth.from_class(Base)
+        class B(Base):
+            pass
+
+        class C(Root):
+            pass
+
+    assert data.classes == {
+        'Root': schema.Class('Root', derived={'Base', 'C'}),
+        'Base': schema.Class('Base', bases=['Root'], derived={'Intermediate', 'B'}, ipa=True),
+        'Intermediate': schema.Class('Intermediate', bases=['Base'], derived={'A'}, ipa=True),
+        'A': schema.Class('A', bases=['Intermediate'], ipa=schema.IpaInfo(on_arguments={'a': 'Base', 'i': 'int'})),
+        'B': schema.Class('B', bases=['Base'], ipa=schema.IpaInfo(from_class='Base')),
+        'C': schema.Class('C', bases=['Root']),
+    }
 
 
 def test_class_docstring():
@@ -452,7 +490,8 @@ def test_property_docstring_newline():
             property.""")
 
     assert data.classes == {
-        'A': schema.Class('A', properties=[schema.SingleProperty('x', 'int', description=["very important", "property."])])
+        'A': schema.Class('A',
+                          properties=[schema.SingleProperty('x', 'int', description=["very important", "property."])])
     }
 
 
@@ -554,6 +593,22 @@ def test_property_doc_override():
     }
 
 
+def test_property_doc_override_no_newlines():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class A:
+                x: int | defs.doc("no multiple\nlines")
+
+
+def test_property_doc_override_no_trailing_dot():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class A:
+                x: int | defs.doc("no dots please.")
+
+
 def test_class_default_doc_name():
     @schema.load
     class data:
@@ -564,6 +619,66 @@ def test_class_default_doc_name():
     assert data.classes == {
         'A': schema.Class('A', default_doc_name="b"),
     }
+
+
+def test_null_class():
+    @schema.load
+    class data:
+        class Root:
+            pass
+
+        @defs.use_for_null
+        class Null(Root):
+            pass
+
+    assert data.classes == {
+        'Root': schema.Class('Root', derived={'Null'}),
+        'Null': schema.Class('Null', bases=['Root']),
+    }
+    assert data.null == 'Null'
+    assert data.null_class is data.classes[data.null]
+
+
+def test_null_class_cannot_be_derived():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class Root:
+                pass
+
+            @defs.use_for_null
+            class Null(Root):
+                pass
+
+            class Impossible(Null):
+                pass
+
+
+def test_null_class_cannot_be_defined_multiple_times():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class Root:
+                pass
+
+            @defs.use_for_null
+            class Null1(Root):
+                pass
+
+            @defs.use_for_null
+            class Null2(Root):
+                pass
+
+
+def test_uppercase_acronyms_are_rejected():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class Root:
+                pass
+
+            class ROTFLNode(Root):
+                pass
 
 
 if __name__ == '__main__':

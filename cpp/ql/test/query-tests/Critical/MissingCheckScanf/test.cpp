@@ -19,6 +19,11 @@ FILE *get_a_stream();
 const char *get_a_string();
 extern locale_t get_a_locale();
 
+typedef long size_t;
+
+void *malloc(size_t size);
+void free(void *ptr);
+
 int main()
 {
 	// --- simple cases ---
@@ -76,6 +81,22 @@ int main()
 
 		i = 1;
 		use(i); // GOOD
+	}
+
+	{
+		int *i = (int*)malloc(sizeof(int)); // Allocated variable
+
+		scanf("%d", i);
+		use(*i); // BAD
+		free(i); // GOOD
+	}
+
+	{
+		int *i = new int; // Allocated variable
+
+		scanf("%d", i);
+		use(*i); // BAD
+		delete i; // GOOD
 	}
 
 	// --- different scanf functions ---

@@ -1,5 +1,5 @@
 name: codeql/javascript-queries
-version: 0.4.4-dev
+version: 0.5.3-dev
 groups: 
   - javascript
   - queries
@@ -10,3 +10,4 @@ dependencies:
   codeql/javascript-all: ${workspace}
   codeql/suite-helpers: ${workspace}
   codeql/typos: ${workspace}
+  codeql/util: ${workspace}

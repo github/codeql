@@ -1,3 +1,4 @@
+WARNING: Predicate globalValueNumber has been deprecated and may be removed in future (diff_ir_expr.ql:8,29-51)
 | test.cpp:5:3:5:13 | ... = ... | test.cpp:5:3:5:13 | ... = ... | AST only |
 | test.cpp:6:3:6:13 | ... = ... | test.cpp:6:3:6:13 | ... = ... | AST only |
 | test.cpp:7:3:7:7 | ... = ... | test.cpp:7:3:7:7 | ... = ... | AST only |

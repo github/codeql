@@ -4,6 +4,10 @@ version: 1.22.1
 column_kind: "utf16"
 extra_env_vars:
   DOTNET_GENERATE_ASPNET_CERTIFICATE: "false"
+github_api_languages:
+  - C#
+scc_languages:
+  - C#
 file_types:
   - name: cs
     display_name: C# sources

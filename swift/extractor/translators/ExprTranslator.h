@@ -20,6 +20,7 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
   codeql::NilLiteralExpr translateNilLiteralExpr(const swift::NilLiteralExpr& expr);
   codeql::CallExpr translateCallExpr(const swift::CallExpr& expr);
   codeql::PrefixUnaryExpr translatePrefixUnaryExpr(const swift::PrefixUnaryExpr& expr);
+  codeql::PostfixUnaryExpr translatePostfixUnaryExpr(const swift::PostfixUnaryExpr& expr);
   codeql::DeclRefExpr translateDeclRefExpr(const swift::DeclRefExpr& expr);
   codeql::AssignExpr translateAssignExpr(const swift::AssignExpr& expr);
   codeql::BindOptionalExpr translateBindOptionalExpr(const swift::BindOptionalExpr& expr);
@@ -101,6 +102,20 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
   codeql::ErrorExpr translateErrorExpr(const swift::ErrorExpr& expr);
   codeql::UnresolvedPatternExpr translateUnresolvedPatternExpr(
       const swift::UnresolvedPatternExpr& expr);
+  codeql::ObjectLiteralExpr translateObjectLiteralExpr(const swift::ObjectLiteralExpr& expr);
+  codeql::OverloadedDeclRefExpr translateOverloadedDeclRefExpr(
+      const swift::OverloadedDeclRefExpr& expr);
+  codeql::DynamicMemberRefExpr translateDynamicMemberRefExpr(
+      const swift::DynamicMemberRefExpr& expr);
+  codeql::DynamicSubscriptExpr translateDynamicSubscriptExpr(
+      const swift::DynamicSubscriptExpr& expr);
+  codeql::UnresolvedSpecializeExpr translateUnresolvedSpecializeExpr(
+      const swift::UnresolvedSpecializeExpr& expr);
+  codeql::PropertyWrapperValuePlaceholderExpr translatePropertyWrapperValuePlaceholderExpr(
+      const swift::PropertyWrapperValuePlaceholderExpr& expr);
+  codeql::AppliedPropertyWrapperExpr translateAppliedPropertyWrapperExpr(
+      const swift::AppliedPropertyWrapperExpr& expr);
+  codeql::RegexLiteralExpr translateRegexLiteralExpr(const swift::RegexLiteralExpr& expr);
 
  private:
   void fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,

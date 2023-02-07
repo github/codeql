@@ -49,4 +49,31 @@ class FooController < ActionController::Base
       puts "foo"
     end
   end
+
+  def some_other_request_handle
+    name = params[:name] # source
+
+    indirect_use_of_reg /^\s+|\s+$/, name
+
+    as_string_indirect '^\s+|\s+$', name
+  end
+
+  def indirect_use_of_reg (reg, input)
+    input.gsub reg, '' # NOT GOOD
+  end
+
+  def as_string_indirect (reg_as_string, input)
+    input.match? reg_as_string, '' # NOT GOOD
+  end
+
+  def re_compile_indirect 
+    name = params[:name] # source
+
+    reg = Regexp.new '^\s+|\s+$'
+    re_compile_indirect_2 reg, name
+  end
+
+  def re_compile_indirect_2 (reg, input)
+    input.gsub reg, '' # NOT GOOD
+  end
 end

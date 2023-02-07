@@ -58,18 +58,45 @@ DEFINE_TRANSLATE_CHECKER(TypeRepr, , )
 #include "swift/AST/TypeReprNodes.def"
 }  // namespace detail
 
+enum class TranslatorPolicy {
+  ignore,
+  translate,
+  translateParent,
+  emitUnknown,
+};
+
 // we want to override the default swift visitor behaviour of chaining calls to immediate
 // superclasses by default and instead provide our own TBD default (using the exact type).
 // Moreover, if the implementation class has translate##CLASS##KIND (that uses generated C++
 // classes), for the class of for a parent thereof, we want to use that. We detect that by using the
-// type traits HasTranslate##CLASS##KIND defined above
+// type traits HasTranslate##CLASS##KIND defined above.
+// A special case is for explicitly ignored classes marked with void, which we should never
+// encounter.
 #define DEFINE_VISIT(KIND, CLASS, PARENT)                                            \
-  void visit##CLASS##KIND(swift::CLASS##KIND* e) {                                   \
-    if constexpr (detail::HasTranslate##CLASS##KIND<CrtpSubclass>::value) {          \
-      dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##CLASS##KIND(*e)); \
+ public:                                                                             \
+  static constexpr TranslatorPolicy getPolicyFor##CLASS##KIND() {                    \
+    if constexpr (std::is_same_v<TrapTagOf<swift::CLASS##KIND>, void>) {             \
+      return TranslatorPolicy::ignore;                                               \
+    } else if constexpr (detail::HasTranslate##CLASS##KIND<CrtpSubclass>::value) {   \
+      return TranslatorPolicy::translate;                                            \
     } else if constexpr (detail::HasTranslate##PARENT<CrtpSubclass>::value) {        \
-      dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##PARENT(*e));      \
+      return TranslatorPolicy::translateParent;                                      \
     } else {                                                                         \
+      return TranslatorPolicy::emitUnknown;                                          \
+    }                                                                                \
+  }                                                                                  \
+                                                                                     \
+ private:                                                                            \
+  void visit##CLASS##KIND(swift::CLASS##KIND* e) {                                   \
+    constexpr auto policy = getPolicyFor##CLASS##KIND();                             \
+    if constexpr (policy == TranslatorPolicy::ignore) {                              \
+      std::cerr << "Unexpected " #CLASS #KIND "\n";                                  \
+      return;                                                                        \
+    } else if constexpr (policy == TranslatorPolicy::translate) {                    \
+      dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##CLASS##KIND(*e)); \
+    } else if constexpr (policy == TranslatorPolicy::translateParent) {              \
+      dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##PARENT(*e));      \
+    } else if constexpr (policy == TranslatorPolicy::emitUnknown) {                  \
       dispatcher.emitUnknown(e);                                                     \
     }                                                                                \
   }
@@ -91,6 +118,10 @@ class AstTranslatorBase : private swift::ASTVisitor<CrtpSubclass>,
     swift::ASTVisitor<CrtpSubclass>::visit(const_cast<E*>(&entity));
   }
 
+  void translateAndEmit(const swift::CapturedValue& e) {
+    dispatcher.emit(static_cast<CrtpSubclass*>(this)->translateCapturedValue(e));
+  }
+
  private:
   friend class swift::ASTVisitor<CrtpSubclass>;
 
@@ -105,9 +136,6 @@ class AstTranslatorBase : private swift::ASTVisitor<CrtpSubclass>,
 
 #define PATTERN(CLASS, PARENT) DEFINE_VISIT(Pattern, CLASS, PARENT)
 #include "swift/AST/PatternNodes.def"
-
-#define TYPEREPR(CLASS, PARENT) DEFINE_VISIT(TypeRepr, CLASS, PARENT)
-#include "swift/AST/TypeReprNodes.def"
 };
 
 // base class for our type visitor, getting a SwiftDispatcher member and define_visit emission for

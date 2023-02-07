@@ -30,6 +30,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateAttributes();
             ContainingType!.PopulateGenerics();
             PopulateNullability(trapFile, Symbol.GetAnnotatedType());
+            PopulateRefKind(trapFile, Symbol.RefKind);
 
             var unboundFieldKey = Field.Create(Context, Symbol.OriginalDefinition);
             trapFile.fields(this, (Symbol.IsConst ? 2 : 1), Symbol.Name, ContainingType, Type.TypeRef, unboundFieldKey);

@@ -327,18 +327,8 @@ class Callable extends StmtParent, Member, @callable {
         this instanceof Method and
         result instanceof Method and
         this.getName() + "$default" = result.getName() and
-        extraLeadingParams <= 1 and
-        (
-          if ktExtensionFunctions(this, _, _)
-          then
-            // Both extension receivers are expected to occur at arg0, with any
-            // dispatch receiver inserted afterwards in the $default proxy's parameter list.
-            // Check the extension receiver matches here, and note regular args
-            // are bumped one position to the right.
-            regularParamsStartIdx = extraLeadingParams + 1 and
-            this.getParameterType(0).getErasure() = eraseRaw(result.getParameterType(0))
-          else regularParamsStartIdx = extraLeadingParams
-        ) and
+        extraLeadingParams <= 1 and // 0 for static methods, 1 for instance methods
+        regularParamsStartIdx = extraLeadingParams and
         lastParamType instanceof TypeObject
       )
     |
@@ -543,7 +533,7 @@ class Method extends Callable, @method {
   string getKotlinName() {
     ktFunctionOriginalNames(this, result)
     or
-    not exists(string n | ktFunctionOriginalNames(this, n)) and
+    not ktFunctionOriginalNames(this, _) and
     result = this.getName()
   }
 
@@ -637,6 +627,9 @@ class FinalizeMethod extends Method {
 class Constructor extends Callable, @constructor {
   /** Holds if this is a default constructor, not explicitly declared in source code. */
   predicate isDefaultConstructor() { isDefConstr(this) }
+
+  /** Holds if this is a constructor without parameters. */
+  predicate isParameterless() { this.getNumberOfParameters() = 0 }
 
   override Constructor getSourceDeclaration() { constrs(this, _, _, _, _, result) }
 
@@ -824,4 +817,19 @@ class ExtensionMethod extends Method {
   KotlinType getExtendedKotlinType() { result = extendedKotlinType }
 
   override string getAPrimaryQlClass() { result = "ExtensionMethod" }
+
+  /**
+   * Gets the index of the parameter that is the extension receiver. This is typically index 0. In case of `$default`
+   * extension methods that are defined as members, the index is 1. Index 0 is the dispatch receiver of the `$default`
+   * method.
+   */
+  int getExtensionReceiverParameterIndex() {
+    if
+      exists(Method src |
+        this = src.getKotlinParameterDefaultsProxy() and
+        src.getNumberOfParameters() = this.getNumberOfParameters() - 3 // 2 extra parameters + 1 dispatch receiver
+      )
+    then result = 1
+    else result = 0
+  }
 }

@@ -78,7 +78,13 @@ function RegisterExtractorPack(id)
             invocation = {path = swiftExtractor, arguments = compilerArguments}
         }
     end
-    return {SwiftMatcher}
+    return {
+      SwiftMatcher,
+      CreatePatternMatcher({'^lsregister$'}, MatchCompilerName, nil,
+                           {trace = false}),
+      CreatePatternMatcher({'^sandbox%-exec$'}, MatchCompilerName, nil,
+                           {trace = false}),
+    }
 end
 
 -- Return a list of minimum supported versions of the configuration file format

@@ -8,14 +8,14 @@ module Generated {
     override string getAPrimaryQlClass() { result = "MemberRefExpr" }
 
     /**
-     * Holds if this member ref expression has direct to storage semantics.
+     * Holds if this member reference expression has direct to storage semantics.
      */
     predicate hasDirectToStorageSemantics() {
       Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasDirectToStorageSemantics()
     }
 
     /**
-     * Holds if this member ref expression has direct to implementation semantics.
+     * Holds if this member reference expression has direct to implementation semantics.
      */
     predicate hasDirectToImplementationSemantics() {
       Synth::convertMemberRefExprToRaw(this)
@@ -24,10 +24,17 @@ module Generated {
     }
 
     /**
-     * Holds if this member ref expression has ordinary semantics.
+     * Holds if this member reference expression has ordinary semantics.
      */
     predicate hasOrdinarySemantics() {
       Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasOrdinarySemantics()
+    }
+
+    /**
+     * Holds if this member reference expression has distributed thunk semantics.
+     */
+    predicate hasDistributedThunkSemantics() {
+      Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasDistributedThunkSemantics()
     }
   }
 }

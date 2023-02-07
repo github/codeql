@@ -119,10 +119,10 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
 }
 
 /** A definition, viewed as a node in a data flow graph. */
-class AssignableDefinitionNode extends Node, TSsaDefinitionNode {
+class AssignableDefinitionNode extends Node, TSsaDefinitionExtNode {
   private Ssa::ExplicitDefinition edef;
 
-  AssignableDefinitionNode() { this = TSsaDefinitionNode(edef) }
+  AssignableDefinitionNode() { this = TSsaDefinitionExtNode(edef) }
 
   /** Gets the underlying definition. */
   AssignableDefinition getDefinition() { result = this.getDefinitionAtNode(_) }

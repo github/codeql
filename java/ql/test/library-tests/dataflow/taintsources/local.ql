@@ -2,11 +2,8 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import TestUtilities.InlineExpectationsTest
 
-class LocalSource extends DataFlow::Node {
-  LocalSource() {
-    this instanceof UserInput and
-    not this instanceof RemoteFlowSource
-  }
+class LocalSource extends DataFlow::Node instanceof UserInput {
+  LocalSource() { not this instanceof RemoteFlowSource }
 }
 
 predicate isTestSink(DataFlow::Node n) {
@@ -36,7 +33,7 @@ class LocalFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasLocalValueFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink | any(LocalValueConf c).hasFlow(src, sink) |
+    exists(DataFlow::Node sink | any(LocalValueConf c).hasFlowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

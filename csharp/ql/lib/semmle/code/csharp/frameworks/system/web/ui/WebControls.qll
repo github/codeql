@@ -2,7 +2,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.web.UI
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Web.UI.WebControls` namespace. */
 class SystemWebUIWebControlsNamespace extends Namespace {
@@ -26,14 +25,6 @@ class SystemWebUIWebControlsTextBoxClass extends SystemWebUIWebControlsClass {
     result.getDeclaringType() = this and
     result.hasName("Text") and
     result.getType() instanceof StringType
-  }
-}
-
-/** Data flow for `System.Web.UI.WebControls.TextBox`. */
-private class SystebWebUIWebControlsTextBoxClassFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      "System.Web.UI.WebControls;TextBox;false;get_Text;();;Argument[this];ReturnValue;taint;manual"
   }
 }
 

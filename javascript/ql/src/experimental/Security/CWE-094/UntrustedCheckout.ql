@@ -9,6 +9,7 @@
  * @id js/actions/pull-request-target
  * @tags actions
  *       security
+ *       experimental
  *       external/cwe/cwe-094
  */
 

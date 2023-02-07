@@ -138,16 +138,14 @@ module DOM {
   /**
    * A JSX attribute, viewed as an `AttributeDefinition`.
    */
-  private class JsxAttributeDefinition extends AttributeDefinition, @jsx_attribute {
-    JsxAttribute attr;
+  private class JsxAttributeDefinition extends AttributeDefinition, @jsx_attribute instanceof JsxAttribute {
+    override string getName() { result = JsxAttribute.super.getName() }
 
-    JsxAttributeDefinition() { this = attr }
+    override DataFlow::Node getValueNode() {
+      result = DataFlow::valueNode(JsxAttribute.super.getValue())
+    }
 
-    override string getName() { result = attr.getName() }
-
-    override DataFlow::Node getValueNode() { result = DataFlow::valueNode(attr.getValue()) }
-
-    override ElementDefinition getElement() { result = attr.getElement() }
+    override ElementDefinition getElement() { result = JsxAttribute.super.getElement() }
   }
 
   /**
@@ -469,7 +467,8 @@ module DOM {
     // One step inlined in the beginning.
     exists(DataFlow::TypeTracker t2 |
       result =
-        any(DataFlow::Node n | n.hasUnderlyingType("Location")).getALocalSource().track(t2, t)
+        any(DataFlow::Node n | n.hasUnderlyingType("Location")).getALocalSource().track(t2, t) and
+      t2.start()
     )
     or
     exists(DataFlow::TypeTracker t2 | result = nonFirstLocationType(t2).track(t2, t))

@@ -9,10 +9,7 @@
 import java
 import ExternalApi
 
-private predicate relevant(ExternalApi api) {
-  not api.isUninteresting() and
-  api.isSource()
-}
+private predicate relevant(ExternalApi api) { api.isSource() }
 
 from string apiName, int usages
 where Results<relevant/1>::restrict(apiName, usages)

@@ -11,7 +11,7 @@ You can view CodeQL packs and write and edit queries for them in Visual Studio C
 
 About CodeQL packs
 ------------------
-CodeQL packs are used to create, share, depend on, and run CodeQL queries and libraries. You can publish your own CodeQL packs and download packs created by others. For more information, see ":ref:`About CodeQL packs <about-codeql-packs>`."
+CodeQL packs are used to create, share, depend on, and run CodeQL queries and libraries. You can publish your own CodeQL packs and download packs created by others. For more information, see "`About CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs>`__."
 
 Using standard CodeQL packs in Visual Studio Code
 --------------------------------------------------------------
@@ -21,16 +21,16 @@ You can write and run query packs that depend on the CodeQL standard libraries, 
 
 Creating and editing CodeQL packs in Visual Studio Code
 -------------------------------------------------------
-To create a new CodeQL pack, you will need to use the CodeQL CLI from a terminal, which you can do within Visual Studio Code or outside of it with the ``codeql pack init`` command. Once you create an empty pack, you can edit the ``qlpack.yml`` file or run the ``codeql pack add`` command to add dependencies or change the name or version. For more information, see ":ref:`Creating and working with CodeQL packs <creating-and-working-with-codeql-packs>`."
+To create a new CodeQL pack, you will need to use the CodeQL CLI from a terminal, which you can do within Visual Studio Code or outside of it with the ``codeql pack init`` command. Once you create an empty pack, you can edit the ``qlpack.yml`` file or run the ``codeql pack add`` command to add dependencies or change the name or version. For more information, see "`Creating and working with CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/creating-and-working-with-codeql-packs>`__."
 
 You can create or edit queries in a CodeQL pack in Visual Studio Code as you would with any CodeQL query, using the standard code editing features such as autocomplete suggestions to find elements to use from the pack's dependencies. 
 
-You can then use the CodeQL CLI to publish your pack to share with others. For more information, see ":ref:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`."
+You can then use the CodeQL CLI to publish your pack to share with others. For more information, see "`Publishing and using CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/publishing-and-using-codeql-packs>`__."
 
 Viewing CodeQL packs and their dependencies in Visual Studio Code
 -----------------------------------------------------------------
 To download a CodeQL pack that someone else has created, run the **CodeQL: Download Packs** command from the Command Palette.
-You can download all the core CodeQL query packs, or enter the full name of a specific pack to download. For example, to download the core queries for analyzing Java, enter ``codeql/java-queries``.
+You can download all the core CodeQL query packs, or enter the full name of a specific pack to download. For example, to download the core queries for analyzing Java or Kotlin, enter ``codeql/java-queries``.
 
 Whether you have downloaded a CodeQL pack or created your own, you can open the ``qlpack.yml`` file in the root of a CodeQL pack directory in Visual Studio Code and view the dependencies section to see what libraries the pack depends on.
 

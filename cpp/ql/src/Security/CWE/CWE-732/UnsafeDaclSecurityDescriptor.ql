@@ -83,16 +83,13 @@ where
     call.getArgument(2) = nullExpr
   )
   or
-  exists(
-    Expr constassign, VariableAccess var, NullDaclConfig nullDaclConfig,
-    NonNullDaclConfig nonNullDaclConfig
-  |
+  exists(VariableAccess var, NullDaclConfig nullDaclConfig, NonNullDaclConfig nonNullDaclConfig |
     message =
       "Setting a DACL to NULL in a SECURITY_DESCRIPTOR using variable " + var +
         " that is set to NULL will result in an unprotected object."
   |
     var = call.getArgument(2) and
-    nullDaclConfig.hasFlow(DataFlow::exprNode(constassign), DataFlow::exprNode(var)) and
-    not nonNullDaclConfig.hasFlow(_, DataFlow::exprNode(var))
+    nullDaclConfig.hasFlowToExpr(var) and
+    not nonNullDaclConfig.hasFlowToExpr(var)
   )
 select call, message

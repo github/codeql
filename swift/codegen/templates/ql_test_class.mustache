@@ -3,14 +3,14 @@
 import codeql.swift.elements
 import TestUtils
 
-from {{class_name}} x{{#properties}}, {{#is_single}}{{type}}{{/is_single}}{{#is_predicate}}string{{/is_predicate}} {{getter}}{{/properties}}
+from {{class_name}} x{{#properties}}, {{#type}}{{.}}{{/type}}{{^type}}string{{/type}} {{getter}}{{/properties}}
 where toBeTested(x) and not x.isUnknown()
 {{#properties}}
-{{#is_single}}
+{{#type}}
 and {{getter}} = x.{{getter}}()
-{{/is_single}}
-{{#is_predicate}}
+{{/type}}
+{{^type}}
 and if x.{{getter}}() then {{getter}} = "yes" else {{getter}} = "no"
-{{/is_predicate}}
+{{/type}}
 {{/properties}}
 select x{{#show_ql_class}}, x.getPrimaryQlClasses(){{/show_ql_class}}{{#properties}}, "{{getter}}:", {{getter}}{{/properties}}

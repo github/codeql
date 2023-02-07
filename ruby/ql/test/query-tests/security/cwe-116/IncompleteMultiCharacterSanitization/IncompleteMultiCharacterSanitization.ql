@@ -20,12 +20,12 @@ class Test extends InlineExpectationsTest {
 }
 
 predicate hasResult(Location location, string element, string value) {
-  exists(DataFlow::Node replace, RETV::RegExpTerm dangerous, string prefix, string kind |
+  exists(DataFlow::Node replace, string kind |
     replace.getLocation() = location and
     element = replace.toString() and
     value = shortKind(kind)
   |
-    Query::isResult(replace, dangerous, prefix, kind)
+    Query::isResult(replace, _, _, kind)
   )
 }
 

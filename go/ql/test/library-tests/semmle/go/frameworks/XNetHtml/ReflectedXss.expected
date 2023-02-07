@@ -1,79 +1,43 @@
 edges
-| test.go:10:2:10:42 | ... := ...[0] : pointer type | test.go:14:15:14:55 | type conversion |
-| test.go:10:2:10:42 | ... := ...[0] : pointer type | test.go:14:42:14:47 | implicit dereference : Cookie |
-| test.go:14:42:14:47 | implicit dereference : Cookie | test.go:14:15:14:55 | type conversion |
-| test.go:14:42:14:47 | implicit dereference : Cookie | test.go:14:42:14:47 | implicit dereference : Cookie |
-| test.go:16:24:16:35 | selection of Body : ReadCloser | test.go:17:15:17:31 | type conversion |
-| test.go:16:24:16:35 | selection of Body : ReadCloser | test.go:17:22:17:25 | implicit dereference : Node |
-| test.go:16:24:16:35 | selection of Body : ReadCloser | test.go:28:22:28:25 | node |
-| test.go:17:22:17:25 | implicit dereference : Node | test.go:17:15:17:31 | type conversion |
-| test.go:17:22:17:25 | implicit dereference : Node | test.go:17:22:17:25 | implicit dereference : Node |
-| test.go:17:22:17:25 | implicit dereference : Node | test.go:28:22:28:25 | node |
-| test.go:19:36:19:47 | selection of Body : ReadCloser | test.go:20:15:20:32 | type conversion |
-| test.go:19:36:19:47 | selection of Body : ReadCloser | test.go:20:22:20:26 | implicit dereference : Node |
-| test.go:20:22:20:26 | implicit dereference : Node | test.go:20:15:20:32 | type conversion |
-| test.go:20:22:20:26 | implicit dereference : Node | test.go:20:22:20:26 | implicit dereference : Node |
-| test.go:22:33:22:44 | selection of Body : ReadCloser | test.go:23:15:23:35 | type conversion |
-| test.go:22:33:22:44 | selection of Body : ReadCloser | test.go:23:22:23:29 | implicit dereference : Node |
-| test.go:22:33:22:44 | selection of Body : ReadCloser | test.go:23:22:23:29 | index expression : pointer type |
-| test.go:23:22:23:29 | implicit dereference : Node | test.go:23:15:23:35 | type conversion |
-| test.go:23:22:23:29 | implicit dereference : Node | test.go:23:22:23:29 | implicit dereference : Node |
-| test.go:23:22:23:29 | implicit dereference : Node | test.go:23:22:23:29 | index expression : pointer type |
-| test.go:23:22:23:29 | index expression : pointer type | test.go:23:15:23:35 | type conversion |
-| test.go:23:22:23:29 | index expression : pointer type | test.go:23:22:23:29 | implicit dereference : Node |
-| test.go:23:22:23:29 | index expression : pointer type | test.go:23:22:23:29 | index expression : pointer type |
-| test.go:25:45:25:56 | selection of Body : ReadCloser | test.go:26:15:26:36 | type conversion |
-| test.go:25:45:25:56 | selection of Body : ReadCloser | test.go:26:22:26:30 | implicit dereference : Node |
-| test.go:25:45:25:56 | selection of Body : ReadCloser | test.go:26:22:26:30 | index expression : pointer type |
-| test.go:26:22:26:30 | implicit dereference : Node | test.go:26:15:26:36 | type conversion |
-| test.go:26:22:26:30 | implicit dereference : Node | test.go:26:22:26:30 | implicit dereference : Node |
-| test.go:26:22:26:30 | implicit dereference : Node | test.go:26:22:26:30 | index expression : pointer type |
-| test.go:26:22:26:30 | index expression : pointer type | test.go:26:15:26:36 | type conversion |
-| test.go:26:22:26:30 | index expression : pointer type | test.go:26:22:26:30 | implicit dereference : Node |
-| test.go:26:22:26:30 | index expression : pointer type | test.go:26:22:26:30 | index expression : pointer type |
-| test.go:30:33:30:44 | selection of Body : ReadCloser | test.go:31:15:31:34 | call to Buffered |
-| test.go:30:33:30:44 | selection of Body : ReadCloser | test.go:32:15:32:29 | call to Raw |
-| test.go:30:33:30:44 | selection of Body : ReadCloser | test.go:34:15:34:19 | value |
-| test.go:30:33:30:44 | selection of Body : ReadCloser | test.go:35:15:35:30 | call to Text |
-| test.go:30:33:30:44 | selection of Body : ReadCloser | test.go:36:15:36:44 | type conversion |
-| test.go:30:33:30:44 | selection of Body : ReadCloser | test.go:36:22:36:38 | call to Token : Token |
-| test.go:36:22:36:38 | call to Token : Token | test.go:36:15:36:44 | type conversion |
+| test.go:10:2:10:42 | ... := ...[0] | test.go:14:15:14:55 | type conversion |
+| test.go:16:24:16:35 | selection of Body | test.go:17:15:17:31 | type conversion |
+| test.go:16:24:16:35 | selection of Body | test.go:28:22:28:25 | node |
+| test.go:19:36:19:47 | selection of Body | test.go:20:15:20:32 | type conversion |
+| test.go:22:33:22:44 | selection of Body | test.go:23:15:23:35 | type conversion |
+| test.go:25:45:25:56 | selection of Body | test.go:26:15:26:36 | type conversion |
+| test.go:30:33:30:44 | selection of Body | test.go:31:15:31:34 | call to Buffered |
+| test.go:30:33:30:44 | selection of Body | test.go:32:15:32:29 | call to Raw |
+| test.go:30:33:30:44 | selection of Body | test.go:34:15:34:19 | value |
+| test.go:30:33:30:44 | selection of Body | test.go:35:15:35:30 | call to Text |
+| test.go:30:33:30:44 | selection of Body | test.go:36:15:36:44 | type conversion |
 nodes
-| test.go:10:2:10:42 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| test.go:10:2:10:42 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:14:15:14:55 | type conversion | semmle.label | type conversion |
-| test.go:14:42:14:47 | implicit dereference : Cookie | semmle.label | implicit dereference : Cookie |
-| test.go:16:24:16:35 | selection of Body : ReadCloser | semmle.label | selection of Body : ReadCloser |
+| test.go:16:24:16:35 | selection of Body | semmle.label | selection of Body |
 | test.go:17:15:17:31 | type conversion | semmle.label | type conversion |
-| test.go:17:22:17:25 | implicit dereference : Node | semmle.label | implicit dereference : Node |
-| test.go:19:36:19:47 | selection of Body : ReadCloser | semmle.label | selection of Body : ReadCloser |
+| test.go:19:36:19:47 | selection of Body | semmle.label | selection of Body |
 | test.go:20:15:20:32 | type conversion | semmle.label | type conversion |
-| test.go:20:22:20:26 | implicit dereference : Node | semmle.label | implicit dereference : Node |
-| test.go:22:33:22:44 | selection of Body : ReadCloser | semmle.label | selection of Body : ReadCloser |
+| test.go:22:33:22:44 | selection of Body | semmle.label | selection of Body |
 | test.go:23:15:23:35 | type conversion | semmle.label | type conversion |
-| test.go:23:22:23:29 | implicit dereference : Node | semmle.label | implicit dereference : Node |
-| test.go:23:22:23:29 | index expression : pointer type | semmle.label | index expression : pointer type |
-| test.go:25:45:25:56 | selection of Body : ReadCloser | semmle.label | selection of Body : ReadCloser |
+| test.go:25:45:25:56 | selection of Body | semmle.label | selection of Body |
 | test.go:26:15:26:36 | type conversion | semmle.label | type conversion |
-| test.go:26:22:26:30 | implicit dereference : Node | semmle.label | implicit dereference : Node |
-| test.go:26:22:26:30 | index expression : pointer type | semmle.label | index expression : pointer type |
 | test.go:28:22:28:25 | node | semmle.label | node |
-| test.go:30:33:30:44 | selection of Body : ReadCloser | semmle.label | selection of Body : ReadCloser |
+| test.go:30:33:30:44 | selection of Body | semmle.label | selection of Body |
 | test.go:31:15:31:34 | call to Buffered | semmle.label | call to Buffered |
 | test.go:32:15:32:29 | call to Raw | semmle.label | call to Raw |
 | test.go:34:15:34:19 | value | semmle.label | value |
 | test.go:35:15:35:30 | call to Text | semmle.label | call to Text |
 | test.go:36:15:36:44 | type conversion | semmle.label | type conversion |
-| test.go:36:22:36:38 | call to Token : Token | semmle.label | call to Token : Token |
 subpaths
 #select
-| test.go:14:15:14:55 | type conversion | test.go:10:2:10:42 | ... := ...[0] : pointer type | test.go:14:15:14:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:10:2:10:42 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:17:15:17:31 | type conversion | test.go:16:24:16:35 | selection of Body : ReadCloser | test.go:17:15:17:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:16:24:16:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:20:15:20:32 | type conversion | test.go:19:36:19:47 | selection of Body : ReadCloser | test.go:20:15:20:32 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:19:36:19:47 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:23:15:23:35 | type conversion | test.go:22:33:22:44 | selection of Body : ReadCloser | test.go:23:15:23:35 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:22:33:22:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:26:15:26:36 | type conversion | test.go:25:45:25:56 | selection of Body : ReadCloser | test.go:26:15:26:36 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:25:45:25:56 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:28:22:28:25 | node | test.go:16:24:16:35 | selection of Body : ReadCloser | test.go:28:22:28:25 | node | Cross-site scripting vulnerability due to $@. | test.go:16:24:16:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:31:15:31:34 | call to Buffered | test.go:30:33:30:44 | selection of Body : ReadCloser | test.go:31:15:31:34 | call to Buffered | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:32:15:32:29 | call to Raw | test.go:30:33:30:44 | selection of Body : ReadCloser | test.go:32:15:32:29 | call to Raw | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:34:15:34:19 | value | test.go:30:33:30:44 | selection of Body : ReadCloser | test.go:34:15:34:19 | value | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:35:15:35:30 | call to Text | test.go:30:33:30:44 | selection of Body : ReadCloser | test.go:35:15:35:30 | call to Text | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:36:15:36:44 | type conversion | test.go:30:33:30:44 | selection of Body : ReadCloser | test.go:36:15:36:44 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:14:15:14:55 | type conversion | test.go:10:2:10:42 | ... := ...[0] | test.go:14:15:14:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:10:2:10:42 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:17:15:17:31 | type conversion | test.go:16:24:16:35 | selection of Body | test.go:17:15:17:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:16:24:16:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:20:15:20:32 | type conversion | test.go:19:36:19:47 | selection of Body | test.go:20:15:20:32 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:19:36:19:47 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:23:15:23:35 | type conversion | test.go:22:33:22:44 | selection of Body | test.go:23:15:23:35 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:22:33:22:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:26:15:26:36 | type conversion | test.go:25:45:25:56 | selection of Body | test.go:26:15:26:36 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:25:45:25:56 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:28:22:28:25 | node | test.go:16:24:16:35 | selection of Body | test.go:28:22:28:25 | node | Cross-site scripting vulnerability due to $@. | test.go:16:24:16:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:31:15:31:34 | call to Buffered | test.go:30:33:30:44 | selection of Body | test.go:31:15:31:34 | call to Buffered | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:32:15:32:29 | call to Raw | test.go:30:33:30:44 | selection of Body | test.go:32:15:32:29 | call to Raw | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:34:15:34:19 | value | test.go:30:33:30:44 | selection of Body | test.go:34:15:34:19 | value | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:35:15:35:30 | call to Text | test.go:30:33:30:44 | selection of Body | test.go:35:15:35:30 | call to Text | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:36:15:36:44 | type conversion | test.go:30:33:30:44 | selection of Body | test.go:36:15:36:44 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |

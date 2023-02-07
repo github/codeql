@@ -9,7 +9,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "SuperRefExpr" }
 
     /**
-     * Gets the self of this super ref expression.
+     * Gets the self of this super reference expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
@@ -22,7 +22,7 @@ module Generated {
     }
 
     /**
-     * Gets the self of this super ref expression.
+     * Gets the self of this super reference expression.
      */
     final VarDecl getSelf() { result = getImmediateSelf().resolve() }
   }

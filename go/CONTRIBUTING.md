@@ -8,7 +8,7 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 ## Building and testing
 
-1. Install the CodeQL CLI as described in [Getting started with the CodeQL CLI](https://codeql.github.com/docs/codeql-cli/getting-started-with-the-codeql-cli/).
+1. Install the CodeQL CLI as described in [Getting started with the CodeQL CLI](https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/getting-started-with-the-codeql-cli).
 
 2. Ensure that `<extraction-root>/codeql` is in your `PATH`.
 
@@ -44,7 +44,7 @@ Follow the steps below to help other users understand what your query does, and 
 
 4. **Make sure the `select` statement is compatible with the query type**
 
-   The `select` statement of your query must be compatible with the query type (determined by the `@kind` metadata property) for alert or path results to be displayed correctly in LGTM and Visual Studio Code.
+   The `select` statement of your query must be compatible with the query type (determined by the `@kind` metadata property) for alert or path results to be displayed correctly in query results.
    For more information on `select` statement format, see [About CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/about-codeql-queries/#select-clause) on codeql.github.com.
 
 5. **Write a query help file**

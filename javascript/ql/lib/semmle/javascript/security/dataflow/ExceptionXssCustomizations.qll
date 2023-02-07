@@ -42,9 +42,7 @@ module ExceptionXss {
     NotYetThrown() { this = "NotYetThrown" }
   }
 
-  private class XssSourceAsSource extends Source {
-    XssSourceAsSource() { this instanceof Shared::Source }
-
+  private class XssSourceAsSource extends Source instanceof Shared::Source {
     override DataFlow::FlowLabel getAFlowLabel() { result instanceof NotYetThrown }
 
     override string getDescription() { result = "Exception text" }

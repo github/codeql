@@ -10,18 +10,23 @@ runs:
   steps:
     - uses: ./swift/actions/share-extractor-pack
     - uses: ./.github/actions/fetch-codeql
+    - id: query-cache
+      uses: ./.github/actions/cache-query-compilation
+      with:
+        key: swift-qltest
     - name: Run QL tests
       shell: bash
       run: |
         codeql test run \
           --threads=0 \
-          --ram 5000 \
+          --ram 50000 \
           --search-path "${{ github.workspace }}/swift/extractor-pack" \
           --check-databases \
           --check-unused-labels \
           --check-repeated-labels \
           --check-redefined-labels \
           --check-use-before-definition \
+          --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}" \
           ${{ inputs.flags }} \
           swift/ql/test
       env:

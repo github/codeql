@@ -571,9 +571,7 @@ class ActiveRecordAssociation extends DataFlow::CallNode {
    * For example, in `has_many :posts`, this is `post`.
    */
   string getTargetModelName() {
-    exists(string s |
-      s = this.getArgument(0).asExpr().getExpr().getConstantValue().getStringlikeValue()
-    |
+    exists(string s | s = this.getArgument(0).getConstantValue().getStringlikeValue() |
       // has_one :profile
       // belongs_to :user
       this.isSingular() and

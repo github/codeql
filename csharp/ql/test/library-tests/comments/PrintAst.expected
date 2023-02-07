@@ -43,7 +43,7 @@ comments2.cs:
 #   52|     3: [Getter] get_S1
 #   52|       4: [BlockStmt] {...}
 #   52|         0: [ReturnStmt] return ...;
-#   52|           0: [StringLiteral] ""
+#   52|           0: [StringLiteralUtf16] ""
 #   53|     4: [Setter] set_S1
 #-----|       2: (Parameters)
 #   53|         0: [Parameter] value

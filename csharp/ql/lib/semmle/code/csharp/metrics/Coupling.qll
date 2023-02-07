@@ -180,13 +180,13 @@ predicate accessesLocalFieldOrProperty(Method m, Declaration f) {
 
 /** whether t has a method m that accesses some local field, */
 predicate hasAccessingMethod(ValueOrRefType t, Method m) {
-  exists(Declaration f | accessesLocalFieldOrProperty(m, f)) and
+  accessesLocalFieldOrProperty(m, _) and
   m.getDeclaringType() = t
 }
 
 /** returns any field or property that is accessed by a local method */
 predicate hasAccessedFieldOrProperty(ValueOrRefType t, Declaration f) {
-  exists(Method m | accessesLocalFieldOrProperty(m, f)) and
+  accessesLocalFieldOrProperty(_, f) and
   f.getDeclaringType() = t
 }
 

@@ -33,6 +33,9 @@
 | lib/lib.js:8:3:8:4 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
 | lib/lib.js:28:3:28:4 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
 | lib/lib.js:36:3:36:4 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
+| lib/lib.js:42:29:42:30 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
+| lib/lib.js:45:29:45:30 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
+| lib/lib.js:53:6:53:7 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
 | lib/moduleLib/moduleLib.js:2:3:2:4 | a* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding a*b |
 | lib/otherLib/js/src/index.js:2:3:2:4 | a* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding a*b |
 | lib/snapdragon.js:7:28:7:29 | a* | Strings starting with 'a' and with many repetitions of 'a' can start matching anywhere after the start of the preceeding aa*$ |
@@ -86,8 +89,8 @@
 | polynomial-redos.js:59:11:59:14 | (.)* | Strings starting with 'fB' and with many repetitions of 'B' can start matching anywhere after the start of the preceeding (B\|Y)+ |
 | polynomial-redos.js:62:7:62:8 | Y* | Strings with many repetitions of 'Y' can start matching anywhere after the start of the preceeding Y* |
 | polynomial-redos.js:63:11:63:12 | Y* | Strings starting with 'K' and with many repetitions of 'Y' can start matching anywhere after the start of the preceeding (K\|Y)+ |
-| polynomial-redos.js:64:14:64:15 | Y* | Strings starting with 'fooK' and with many repetitions of 'Y' can start matching anywhere after the start of the preceeding (K\|Y)+ |
-| polynomial-redos.js:65:14:65:15 | .* | Strings starting with 'fooK' and with many repetitions of 'K' can start matching anywhere after the start of the preceeding (K\|Y)+ |
+| polynomial-redos.js:64:14:64:15 | Y* | Strings starting with 'fooY' and with many repetitions of 'Y' can start matching anywhere after the start of the preceeding (K\|Y)+ |
+| polynomial-redos.js:65:14:65:15 | .* | Strings starting with 'fooY' and with many repetitions of 'K' can start matching anywhere after the start of the preceeding (K\|Y)+ |
 | polynomial-redos.js:66:9:66:10 | .* | Strings starting with 'K' and with many repetitions of 'K' can start matching anywhere after the start of the preceeding (K\|Y).*X |
 | polynomial-redos.js:67:8:67:9 | .* | Strings starting with 'X' and with many repetitions of 'Z' can start matching anywhere after the start of the preceeding [^Y].*X |
 | polynomial-redos.js:68:8:68:9 | .* | Strings starting with 'X' and with many repetitions of 'X' can start matching anywhere after the start of the preceeding [^Y].*$ |
@@ -124,32 +127,33 @@
 | polynomial-redos.js:124:33:124:35 | \\s+ | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding \\s+$ |
 | polynomial-redos.js:130:21:130:22 | c+ | Strings starting with 'c' and with many repetitions of 'c' can start matching anywhere after the start of the preceeding cc+D |
 | polynomial-redos.js:133:22:133:23 | f+ | Strings starting with 'f' and with many repetitions of 'f' can start matching anywhere after the start of the preceeding ff+G |
+| polynomial-redos.js:136:25:136:26 | h+ | Strings starting with 'h' and with many repetitions of 'h' can start matching anywhere after the start of the preceeding hh+I |
 | regexplib/address.js:27:3:27:5 | \\s* | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding (\\s*\\(?0\\d{4}\\)?(\\s*\|-)\\d{3}(\\s*\|-)\\d{3}\\s*) |
 | regexplib/address.js:27:48:27:50 | \\s* | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding (\\s*\\(?0\\d{3}\\)?(\\s*\|-)\\d{3}(\\s*\|-)\\d{4}\\s*) |
 | regexplib/address.js:27:93:27:95 | \\s* | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding (\\s*(7\|8)(\\d{7}\|\\d{3}(\\-\|\\s{1})\\d{4})\\s*) |
 | regexplib/address.js:38:39:38:45 | [ 0-9]* | Strings starting with 'po' and with many repetitions of ' ' can start matching anywhere after the start of the preceeding [ \|\\.]* |
 | regexplib/address.js:51:220:51:222 | \\w+ | Strings starting with 'C/O ' and with many repetitions of '0' can start matching anywhere after the start of the preceeding \\x20* |
-| regexplib/address.js:51:331:51:344 | [a-zA-Z0-9\\-]+ | Strings starting with '0 0#' and with many repetitions of 'FL0' can start matching anywhere after the start of the preceeding \\w+ |
-| regexplib/address.js:51:399:51:401 | \\s+ | Strings starting with '0 0' and with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\x20* |
-| regexplib/address.js:51:415:51:419 | \\x20+ | Strings starting with '0 0\\t0' and with many repetitions of ' 0 ' can start matching anywhere after the start of the preceeding \\x20* |
-| regexplib/address.js:51:420:51:422 | \\w+ | Strings starting with '0 0\\t0 ' and with many repetitions of '0 0 ' can start matching anywhere after the start of the preceeding \\w+ |
-| regexplib/address.js:51:616:51:618 | \\w+ | Strings starting with '0 0\\tC/O ' and with many repetitions of '0' can start matching anywhere after the start of the preceeding \\x20* |
-| regexplib/address.js:51:727:51:740 | [a-zA-Z0-9\\-]+ | Strings starting with '0 0\\t0 0#' and with many repetitions of 'FL0' can start matching anywhere after the start of the preceeding \\w+ |
-| regexplib/address.js:51:796:51:798 | \\s+ | Strings starting with '0 0\\t' and with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s+ |
-| regexplib/address.js:51:803:51:811 | [A-Za-z]+ | Strings starting with '0 0\\t\\t' and with many repetitions of 'A' can start matching anywhere after the start of the preceeding \\w+ |
+| regexplib/address.js:51:331:51:344 | [a-zA-Z0-9\\-]+ | Strings starting with 'C/O 0#' and with many repetitions of 'FL0' can start matching anywhere after the start of the preceeding \\w+ |
+| regexplib/address.js:51:399:51:401 | \\s+ | Strings starting with 'C/O 0' and with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\x20* |
+| regexplib/address.js:51:415:51:419 | \\x20+ | Strings starting with 'C/O 0\\t0' and with many repetitions of ' 0 ' can start matching anywhere after the start of the preceeding \\x20* |
+| regexplib/address.js:51:420:51:422 | \\w+ | Strings starting with 'C/O 0\\t0 ' and with many repetitions of '0 0 ' can start matching anywhere after the start of the preceeding \\w+ |
+| regexplib/address.js:51:616:51:618 | \\w+ | Strings starting with 'C/O 0\\tC/O ' and with many repetitions of '0' can start matching anywhere after the start of the preceeding \\x20* |
+| regexplib/address.js:51:727:51:740 | [a-zA-Z0-9\\-]+ | Strings starting with 'C/O 0\\t0 0#' and with many repetitions of 'FL0' can start matching anywhere after the start of the preceeding \\w+ |
+| regexplib/address.js:51:796:51:798 | \\s+ | Strings starting with 'C/O 0\\t' and with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s+ |
+| regexplib/address.js:51:803:51:811 | [A-Za-z]+ | Strings starting with 'C/O 0\\t\\t' and with many repetitions of 'A' can start matching anywhere after the start of the preceeding \\w+ |
 | regexplib/address.js:67:379:67:755 | [a-zA-Z0-9&#192;&#193;&#194;&#195;&#196;&#197;&#198;&#199;&#200;&#201;&#202;&#203;&#204;&#205;&#206;&#207;&#208;&#209;&#210;&#211;&#212;&#213;&#214;&#216;&#217;&#218;&#219;&#220;&#221;&#223;&#224;&#225;&#226;&#227;&#228;&#229;&#230;&#231;&#232;&#233;&#234;&#235;&#236;&#237;&#238;&#239;&#241;&#242;&#243;&#244;&#245;&#246;&#248;&#249;&#250;&#251;&#252;&#253;&#255;\\.\\,\\-\\/\\' ]+ | Strings starting with '#' and with many repetitions of '#' can start matching anywhere after the start of the preceeding [a-zA-Z0-9&#192;&#193;&#194;&#195;&#196;&#197;&#198;&#199;&#200;&#201;&#202;&#203;&#204;&#205;&#206;&#207;&#208;&#209;&#210;&#211;&#212;&#213;&#214;&#216;&#217;&#218;&#219;&#220;&#221;&#223;&#224;&#225;&#226;&#227;&#228;&#229;&#230;&#231;&#232;&#233;&#234;&#235;&#236;&#237;&#238;&#239;&#241;&#242;&#243;&#244;&#245;&#246;&#248;&#249;&#250;&#251;&#252;&#253;&#255;\\.\\,\\-\\/\\']+ |
 | regexplib/address.js:69:3:69:5 | \\s* | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding (\\s*\\(?0\\d{4}\\)?(\\s*\|-)\\d{3}(\\s*\|-)\\d{3}\\s*) |
 | regexplib/address.js:69:48:69:50 | \\s* | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding (\\s*\\(?0\\d{3}\\)?(\\s*\|-)\\d{3}(\\s*\|-)\\d{4}\\s*) |
 | regexplib/address.js:69:93:69:95 | \\s* | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding (\\s*(7\|8)(\\d{7}\|\\d{3}(\\-\|\\s{1})\\d{4})\\s*) |
 | regexplib/address.js:75:220:75:222 | \\w+ | Strings starting with 'C/O ' and with many repetitions of '0' can start matching anywhere after the start of the preceeding \\x20* |
-| regexplib/address.js:75:331:75:344 | [a-zA-Z0-9\\-]+ | Strings starting with '0 0#' and with many repetitions of 'FL0' can start matching anywhere after the start of the preceeding \\w+ |
-| regexplib/address.js:75:399:75:401 | \\s+ | Strings starting with '0 0' and with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\x20* |
-| regexplib/address.js:75:415:75:419 | \\x20+ | Strings starting with '0 0\\t0' and with many repetitions of ' 0 ' can start matching anywhere after the start of the preceeding \\x20* |
-| regexplib/address.js:75:420:75:422 | \\w+ | Strings starting with '0 0\\t0 ' and with many repetitions of '0 0 ' can start matching anywhere after the start of the preceeding \\w+ |
-| regexplib/address.js:75:616:75:618 | \\w+ | Strings starting with '0 0\\tC/O ' and with many repetitions of '0' can start matching anywhere after the start of the preceeding \\x20* |
-| regexplib/address.js:75:727:75:740 | [a-zA-Z0-9\\-]+ | Strings starting with '0 0\\t0 0#' and with many repetitions of 'FL0' can start matching anywhere after the start of the preceeding \\w+ |
-| regexplib/address.js:75:796:75:798 | \\s+ | Strings starting with '0 0\\t' and with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s+ |
-| regexplib/address.js:75:803:75:811 | [A-Za-z]+ | Strings starting with '0 0\\t\\t' and with many repetitions of 'A' can start matching anywhere after the start of the preceeding \\w+ |
+| regexplib/address.js:75:331:75:344 | [a-zA-Z0-9\\-]+ | Strings starting with 'C/O 0#' and with many repetitions of 'FL0' can start matching anywhere after the start of the preceeding \\w+ |
+| regexplib/address.js:75:399:75:401 | \\s+ | Strings starting with 'C/O 0' and with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\x20* |
+| regexplib/address.js:75:415:75:419 | \\x20+ | Strings starting with 'C/O 0\\t0' and with many repetitions of ' 0 ' can start matching anywhere after the start of the preceeding \\x20* |
+| regexplib/address.js:75:420:75:422 | \\w+ | Strings starting with 'C/O 0\\t0 ' and with many repetitions of '0 0 ' can start matching anywhere after the start of the preceeding \\w+ |
+| regexplib/address.js:75:616:75:618 | \\w+ | Strings starting with 'C/O 0\\tC/O ' and with many repetitions of '0' can start matching anywhere after the start of the preceeding \\x20* |
+| regexplib/address.js:75:727:75:740 | [a-zA-Z0-9\\-]+ | Strings starting with 'C/O 0\\t0 0#' and with many repetitions of 'FL0' can start matching anywhere after the start of the preceeding \\w+ |
+| regexplib/address.js:75:796:75:798 | \\s+ | Strings starting with 'C/O 0\\t' and with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s+ |
+| regexplib/address.js:75:803:75:811 | [A-Za-z]+ | Strings starting with 'C/O 0\\t\\t' and with many repetitions of 'A' can start matching anywhere after the start of the preceeding \\w+ |
 | regexplib/address.js:85:15:85:49 | ([0-9]\|[ ]\|[-]\|[\\(]\|[\\)]\|ext.\|[,])+ | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding (?<Telephone>([0-9]\|[ ]\|[-]\|[\\(]\|[\\)]\|ext.\|[,])+)([ ]\|[:]\|\\t\|[-])*(?<Where>Home\|Office\|Work\|Away\|Fax\|FAX\|Phone) |
 | regexplib/address.js:85:51:85:67 | ([ ]\|[:]\|\\t\|[-])* | Strings starting with '0' and with many repetitions of ' ' can start matching anywhere after the start of the preceeding ([0-9]\|[ ]\|[-]\|[\\(]\|[\\)]\|ext.\|[,])+ |
 | regexplib/address.js:93:3:93:5 | \\s* | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding (\\s*\\(?0\\d{4}\\)?(\\s*\|-)\\d{3}(\\s*\|-)\\d{3}\\s*) |
@@ -199,7 +203,7 @@
 | regexplib/markup.js:5:1525:5:1527 | \\s* | Strings starting with '?'DateLiteral' ?# Per the VB Spec : DateLiteral ::= '#'   DateOrTime   '#'  # ?'DateOrTime'  DateValue    ?# TimeValue ::= HourValue : MinuteValue        10 ?# Hour 01 - 24  : 60 ?# Minute 01 - 60  :  ?# Optional Minute :01 - :60       ' and with many repetitions of '     ' can start matching anywhere after the start of the preceeding \\s* |
 | regexplib/markup.js:6:11:6:25 | [\\w\\*\\)\\(\\,\\s]+ | Strings starting with 'SELECT\\t' and with many repetitions of 'SELECT\\t' can start matching anywhere after the start of the preceeding (SELECT\\s[\\w\\*\\)\\(\\,\\s]+\\sFROM\\s[\\w]+) |
 | regexplib/markup.js:6:99:6:113 | [\\s\\w\\d\\)\\(\\,]* | Strings starting with ' INSERT\\tINTO\\t0' and with many repetitions of '0' can start matching anywhere after the start of the preceeding [\\d\\w]+ |
-| regexplib/markup.js:7:15:7:21 | [^\\\\"]* | Strings starting with '"!' and with many repetitions of '\\\\"!!' can start matching anywhere after the start of the preceeding "([^"](?:\\\\.\|[^\\\\"]*)*)" |
+| regexplib/markup.js:7:8:7:23 | (?:\\\\.\|[^\\\\"]*)* | Strings starting with '"!' and with many repetitions of '\\\\"!\\\\a' can start matching anywhere after the start of the preceeding "([^"](?:\\\\.\|[^\\\\"]*)*)" |
 | regexplib/markup.js:9:6:9:13 | [\\s\\S]*? | Strings starting with '<!--' and with many repetitions of '<!--' can start matching anywhere after the start of the preceeding <!--[\\s\\S]*?--[ \\t\\n\\r]*> |
 | regexplib/markup.js:11:6:11:8 | .*? | Strings starting with '<!--' and with many repetitions of '<!--' can start matching anywhere after the start of the preceeding <!--.*?--> |
 | regexplib/markup.js:12:40:12:42 | .*? | Strings starting with '<!--[if' and with many repetitions of '<!--[if' can start matching anywhere after the start of the preceeding (<!--\\[if.*?<!\\[endif\\]-->) |
@@ -282,7 +286,7 @@
 | regexplib/misc.js:112:32:112:34 | \\s* | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding (\\s*\\(?0\\d{3}\\)?\\s*\\d{3}\\s*\\d{4}\\s*) |
 | regexplib/misc.js:114:6:114:8 | \\\|+ | Strings starting with 'a' and with many repetitions of '\|' can start matching anywhere after the start of the preceeding .+ |
 | regexplib/misc.js:116:3:116:4 | .* | Strings starting with '{' and with many repetitions of '{' can start matching anywhere after the start of the preceeding {.*} |
-| regexplib/misc.js:117:25:117:26 | .+ | Strings starting with '{a}' and with many repetitions of 'a)' can start matching anywhere after the start of the preceeding .+ |
+| regexplib/misc.js:117:25:117:26 | .+ | Strings starting with '(a}' and with many repetitions of 'a)' can start matching anywhere after the start of the preceeding .+ |
 | regexplib/misc.js:119:20:119:22 | \\w+ | Strings with many repetitions of '0' can start matching anywhere after the start of the preceeding (NOT)?(\\s*\\(*)\\s*(\\w+)\\s*(=\|<>\|<\|>\|LIKE\|IN)\\s*(\\(([^\\)]*)\\)\|'([^']*)'\|(-?\\d*\\.?\\d+))(\\s*\\)*\\s*)(AND\|OR)? |
 | regexplib/misc.js:119:52:119:57 | [^\\)]* | Strings starting with '0=(' and with many repetitions of '0<((' can start matching anywhere after the start of the preceeding (NOT)?(\\s*\\(*)\\s*(\\w+)\\s*(=\|<>\|<\|>\|LIKE\|IN)\\s*(\\(([^\\)]*)\\)\|'([^']*)'\|(-?\\d*\\.?\\d+))(\\s*\\)*\\s*)(AND\|OR)? |
 | regexplib/misc.js:123:36:123:38 | .*? | Strings starting with '?se[A' and with many repetitions of '?se[Aa' can start matching anywhere after the start of the preceeding (?s)(?:\\e\\[(?:(\\d+);?)*([A-Za-z])(.*?))(?=\\e\\[\|\\z) |
@@ -339,7 +343,7 @@
 | regexplib/strings.js:53:65:53:73 | [a-z0-9]+ | Strings starting with '0' and with many repetitions of '0' can start matching anywhere after the start of the preceeding [a-z0-9]+ |
 | regexplib/strings.js:54:20:54:22 | \\w+ | Strings with many repetitions of '0' can start matching anywhere after the start of the preceeding (NOT)?(\\s*\\(*)\\s*(\\w+)\\s*(=\|<>\|<\|>\|LIKE\|IN)\\s*(\\(([^\\)]*)\\)\|'([^']*)'\|(-?\\d*\\.?\\d+))(\\s*\\)*\\s*)(AND\|OR)? |
 | regexplib/strings.js:54:52:54:57 | [^\\)]* | Strings starting with '0=(' and with many repetitions of '0<((' can start matching anywhere after the start of the preceeding (NOT)?(\\s*\\(*)\\s*(\\w+)\\s*(=\|<>\|<\|>\|LIKE\|IN)\\s*(\\(([^\\)]*)\\)\|'([^']*)'\|(-?\\d*\\.?\\d+))(\\s*\\)*\\s*)(AND\|OR)? |
-| regexplib/strings.js:56:52:56:53 | .+ | Strings starting with 'PRN.' and with many repetitions of '.' can start matching anywhere after the start of the preceeding .* |
+| regexplib/strings.js:56:52:56:53 | .+ | Strings starting with 'AUX.' and with many repetitions of '.' can start matching anywhere after the start of the preceeding .* |
 | regexplib/strings.js:57:36:57:38 | .*? | Strings starting with '?se[A' and with many repetitions of '?se[Aa' can start matching anywhere after the start of the preceeding (?s)(?:\\e\\[(?:(\\d+);?)*([A-Za-z])(.*?))(?=\\e\\[\|\\z) |
 | regexplib/strings.js:64:3:64:5 | \\w+ | Strings with many repetitions of '0' can start matching anywhere after the start of the preceeding (\\w+)\\s+\\1 |
 | regexplib/strings.js:70:6:70:17 | [a-zA-Z,\\s]+ | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding \\s* |

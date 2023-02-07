@@ -1,8 +1,8 @@
 edges
-| test.go:14:2:14:4 | definition of buf : slice type | test.go:17:10:17:12 | buf |
+| test.go:14:2:14:4 | definition of buf | test.go:17:10:17:12 | buf |
 nodes
-| test.go:14:2:14:4 | definition of buf : slice type | semmle.label | definition of buf : slice type |
+| test.go:14:2:14:4 | definition of buf | semmle.label | definition of buf |
 | test.go:17:10:17:12 | buf | semmle.label | buf |
 subpaths
 #select
-| test.go:17:10:17:12 | buf | test.go:14:2:14:4 | definition of buf : slice type | test.go:17:10:17:12 | buf | HTTP response depends on $@ and may be exposed to an external user. | test.go:14:2:14:4 | definition of buf | stack trace information |
+| test.go:17:10:17:12 | buf | test.go:14:2:14:4 | definition of buf | test.go:17:10:17:12 | buf | HTTP response depends on $@ and may be exposed to an external user. | test.go:14:2:14:4 | definition of buf | stack trace information |

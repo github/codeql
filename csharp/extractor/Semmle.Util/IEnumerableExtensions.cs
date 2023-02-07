@@ -80,6 +80,19 @@ namespace Semmle.Util
         }
 
         /// <summary>
+        /// Applies the action <paramref name="a"/> to each item and its index in this collection.
+        /// </summary>
+        public static void ForEach<T>(this IEnumerable<T> items, Action<T, int> a)
+        {
+            var i = 0;
+            foreach (var item in items)
+            {
+                a(item, i);
+                i++;
+            }
+        }
+
+        /// <summary>
         /// Forces enumeration of this collection and discards the result.
         /// </summary>
         public static void Enumerate<T>(this IEnumerable<T> items)

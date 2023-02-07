@@ -37,6 +37,6 @@ module Generated {
     /**
      * Gets the number of base types of this type declaration.
      */
-    final int getNumberOfBaseTypes() { result = count(getABaseType()) }
+    final int getNumberOfBaseTypes() { result = count(int i | exists(getBaseType(i))) }
   }
 }

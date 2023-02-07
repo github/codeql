@@ -47,6 +47,7 @@ import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
+import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.ts.ast.TypeExpression;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
@@ -680,6 +681,11 @@ public class DefaultVisitor<C, R> implements Visitor<C, R> {
 
   @Override
   public R visit(TypeAssertion nd, C c) {
+    return visit((Expression) nd, c);
+  }
+
+  @Override
+  public R visit(SatisfiesExpr nd, C c) {
     return visit((Expression) nd, c);
   }
 

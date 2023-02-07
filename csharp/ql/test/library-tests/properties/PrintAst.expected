@@ -35,7 +35,7 @@ properties.cs:
 #   29|           0: [AssignExpr] ... = ...
 #   29|             0: [PropertyCall] access to property Caption
 #   29|               -1: [LocalVariableAccess] access to local variable okButton
-#   29|             1: [StringLiteral] "OK"
+#   29|             1: [StringLiteralUtf16] "OK"
 #   30|         2: [LocalVariableDeclStmt] ... ...;
 #   30|           0: [LocalVariableDeclAndInitExpr] String s = ...
 #   30|             -1: [TypeMention] string

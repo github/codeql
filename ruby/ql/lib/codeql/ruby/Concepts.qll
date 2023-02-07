@@ -10,9 +10,48 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.Frameworks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.Regexp as RE
+
+/**
+ * A data-flow node that constructs a SQL statement.
+ *
+ * Often, it is worthy of an alert if a SQL statement is constructed such that
+ * executing it would be a security risk.
+ *
+ * If it is important that the SQL statement is executed, use `SqlExecution`.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `SqlConstruction::Range` instead.
+ */
+class SqlConstruction extends DataFlow::Node instanceof SqlConstruction::Range {
+  /** Gets the argument that specifies the SQL statements to be constructed. */
+  DataFlow::Node getSql() { result = super.getSql() }
+}
+
+/** Provides a class for modeling new SQL execution APIs. */
+module SqlConstruction {
+  /**
+   * A data-flow node that constructs a SQL statement.
+   *
+   * Often, it is worthy of an alert if a SQL statement is constructed such that
+   * executing it would be a security risk.
+   *
+   * If it is important that the SQL statement is executed, use `SqlExecution`.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `SqlConstruction` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the SQL statements to be constructed. */
+    abstract DataFlow::Node getSql();
+  }
+}
 
 /**
  * A data-flow node that executes SQL statements.
+ *
+ * If the context of interest is such that merely constructing a SQL statement
+ * would be valuable to report, consider using `SqlConstruction`.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SqlExecution::Range` instead.
@@ -27,12 +66,58 @@ module SqlExecution {
   /**
    * A data-flow node that executes SQL statements.
    *
+   * If the context of interest is such that merely constructing a SQL
+   * statement would be valuable to report, consider using `SqlConstruction`.
+   *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `SqlExecution` instead.
    */
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the SQL statements to be executed. */
     abstract DataFlow::Node getSql();
+  }
+}
+
+/**
+ * A data-flow node that executes a regular expression.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `RegexExecution::Range` instead.
+ */
+class RegexExecution extends DataFlow::Node instanceof RegexExecution::Range {
+  /** Gets the data flow node for the regex being executed by this node. */
+  DataFlow::Node getRegex() { result = super.getRegex() }
+
+  /** Gets a dataflow node for the string to be searched or matched against. */
+  DataFlow::Node getString() { result = super.getString() }
+
+  /**
+   * Gets the name of this regex execution, typically the name of an executing method.
+   * This is used for nice alert messages and should include the module if possible.
+   */
+  string getName() { result = super.getName() }
+}
+
+/** Provides classes for modeling new regular-expression execution APIs. */
+module RegexExecution {
+  /**
+   * A data-flow node that executes a regular expression.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `RegexExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the data flow node for the regex being executed by this node. */
+    abstract DataFlow::Node getRegex();
+
+    /** Gets a dataflow node for the string to be searched or matched against. */
+    abstract DataFlow::Node getString();
+
+    /**
+     * Gets the name of this regex execution, typically the name of an executing method.
+     * This is used for nice alert messages and should include the module if possible.
+     */
+    abstract string getName();
   }
 }
 
@@ -271,10 +356,7 @@ module Http {
 
         /** Gets the URL pattern for this route, if it can be statically determined. */
         string getUrlPattern() {
-          exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
-            this.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getConstantValue().getStringlikeValue()
-          )
+          result = this.getUrlPatternArg().getALocalSource().getConstantValue().getStringlikeValue()
         }
 
         /**
@@ -538,10 +620,12 @@ module Http {
 
         /** Gets the mimetype of this HTTP response, if it can be statically determined. */
         string getMimetype() {
-          exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
-            this.getMimetypeOrContentTypeArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getConstantValue().getStringlikeValue().splitAt(";", 0)
-          )
+          result =
+            this.getMimetypeOrContentTypeArg()
+                .getALocalSource()
+                .getConstantValue()
+                .getStringlikeValue()
+                .splitAt(";", 0)
           or
           not exists(this.getMimetypeOrContentTypeArg()) and
           result = this.getMimetypeDefault()

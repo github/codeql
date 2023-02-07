@@ -651,6 +651,7 @@ summary
 | System.Collections.Generic;KeyValuePair<,>;false;get_Value;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Generic;LinkedList<>+Enumerator;false;get_Current;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Generic;LinkedList<>;false;AddAfter;(System.Collections.Generic.LinkedListNode<T>,System.Collections.Generic.LinkedListNode<T>);;Argument[0];Argument[1];taint;generated |
+| System.Collections.Generic;LinkedList<>;false;AddAfter;(System.Collections.Generic.LinkedListNode<T>,System.Collections.Generic.LinkedListNode<T>);;Argument[1];Argument[0];taint;generated |
 | System.Collections.Generic;LinkedList<>;false;AddAfter;(System.Collections.Generic.LinkedListNode<T>,System.Collections.Generic.LinkedListNode<T>);;Argument[this];Argument[1];taint;generated |
 | System.Collections.Generic;LinkedList<>;false;AddAfter;(System.Collections.Generic.LinkedListNode<T>,T);;Argument[0];ReturnValue;taint;generated |
 | System.Collections.Generic;LinkedList<>;false;AddAfter;(System.Collections.Generic.LinkedListNode<T>,T);;Argument[1];ReturnValue;taint;generated |
@@ -1444,6 +1445,8 @@ summary
 | System.ComponentModel;AttributeCollection;false;get_SyncRoot;();;Argument[this];ReturnValue;value;generated |
 | System.ComponentModel;BaseNumberConverter;false;ConvertTo;(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type);;Argument[1];ReturnValue;taint;generated |
 | System.ComponentModel;BaseNumberConverter;false;ConvertTo;(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type);;Argument[2];ReturnValue;taint;generated |
+| System.ComponentModel;BindingList<>;false;AddNew;();;Argument[this];ReturnValue;taint;generated |
+| System.ComponentModel;BindingList<>;false;AddNewCore;();;Argument[this];ReturnValue;taint;generated |
 | System.ComponentModel;BindingList<>;false;InsertItem;(System.Int32,T);;Argument[1];Argument[this];taint;generated |
 | System.ComponentModel;BindingList<>;false;InsertItem;(System.Int32,T);;Argument[this];Argument[1];taint;generated |
 | System.ComponentModel;BindingList<>;false;SetItem;(System.Int32,T);;Argument[1];Argument[this];taint;generated |
@@ -6665,6 +6668,8 @@ summary
 | System.Security.Cryptography;RSAPKCS1SignatureFormatter;false;SetHashAlgorithm;(System.String);;Argument[0];Argument[this];taint;generated |
 | System.Security.Cryptography;RSAPKCS1SignatureFormatter;false;SetKey;(System.Security.Cryptography.AsymmetricAlgorithm);;Argument[0];Argument[this];taint;generated |
 | System.Security.Cryptography;SafeEvpPKeyHandle;false;DuplicateHandle;();;Argument[this];ReturnValue;taint;generated |
+| System.Security.Cryptography;SignatureDescription;false;CreateDeformatter;(System.Security.Cryptography.AsymmetricAlgorithm);;Argument[0];ReturnValue;taint;generated |
+| System.Security.Cryptography;SignatureDescription;false;CreateFormatter;(System.Security.Cryptography.AsymmetricAlgorithm);;Argument[0];ReturnValue;taint;generated |
 | System.Security.Policy;Evidence;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Security.Principal;GenericIdentity;false;Clone;();;Argument[this];ReturnValue;taint;generated |
 | System.Security.Principal;GenericIdentity;false;GenericIdentity;(System.Security.Principal.GenericIdentity);;Argument[0];Argument[this];taint;generated |
@@ -7477,9 +7482,7 @@ summary
 | System.Xml.Linq;XContainer;false;Add;(System.Object);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Linq;XContainer;false;Add;(System.Object);;Argument[this];Argument[0];taint;generated |
 | System.Xml.Linq;XContainer;false;Add;(System.Object[]);;Argument[0].Element;Argument[this];taint;generated |
-| System.Xml.Linq;XContainer;false;Add;(System.Object[]);;Argument[this];Argument[0].Element;taint;generated |
 | System.Xml.Linq;XContainer;false;AddFirst;(System.Object);;Argument[this];Argument[0];taint;generated |
-| System.Xml.Linq;XContainer;false;AddFirst;(System.Object[]);;Argument[this];Argument[0].Element;taint;generated |
 | System.Xml.Linq;XContainer;false;CreateWriter;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Linq;XContainer;false;DescendantNodes;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Linq;XContainer;false;Descendants;();;Argument[this];ReturnValue;taint;generated |
@@ -7491,7 +7494,6 @@ summary
 | System.Xml.Linq;XContainer;false;ReplaceNodes;(System.Object);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Linq;XContainer;false;ReplaceNodes;(System.Object);;Argument[this];Argument[0];taint;generated |
 | System.Xml.Linq;XContainer;false;ReplaceNodes;(System.Object[]);;Argument[0].Element;Argument[this];taint;generated |
-| System.Xml.Linq;XContainer;false;ReplaceNodes;(System.Object[]);;Argument[this];Argument[0].Element;taint;generated |
 | System.Xml.Linq;XContainer;false;get_FirstNode;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Linq;XContainer;false;get_LastNode;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Linq;XDeclaration;false;ToString;();;Argument[this];ReturnValue;taint;generated |
@@ -7517,8 +7519,10 @@ summary
 | System.Xml.Linq;XDocument;false;Parse;(System.String,System.Xml.Linq.LoadOptions);;Argument[0];ReturnValue;taint;generated |
 | System.Xml.Linq;XDocument;false;Save;(System.Xml.XmlWriter);;Argument[this];Argument[0];taint;generated |
 | System.Xml.Linq;XDocument;false;SaveAsync;(System.Xml.XmlWriter,System.Threading.CancellationToken);;Argument[1];ReturnValue;taint;generated |
+| System.Xml.Linq;XDocument;false;SaveAsync;(System.Xml.XmlWriter,System.Threading.CancellationToken);;Argument[this];Argument[0];taint;generated |
 | System.Xml.Linq;XDocument;false;WriteTo;(System.Xml.XmlWriter);;Argument[this];Argument[0];taint;generated |
 | System.Xml.Linq;XDocument;false;WriteToAsync;(System.Xml.XmlWriter,System.Threading.CancellationToken);;Argument[1];ReturnValue;taint;generated |
+| System.Xml.Linq;XDocument;false;WriteToAsync;(System.Xml.XmlWriter,System.Threading.CancellationToken);;Argument[this];Argument[0];taint;generated |
 | System.Xml.Linq;XDocument;false;XDocument;(System.Object[]);;Argument[0].Element;Argument[this];taint;generated |
 | System.Xml.Linq;XDocument;false;XDocument;(System.Xml.Linq.XDeclaration,System.Object[]);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Linq;XDocument;false;XDocument;(System.Xml.Linq.XDocument);;Argument[0];Argument[this];taint;generated |
@@ -7562,11 +7566,9 @@ summary
 | System.Xml.Linq;XElement;false;ReplaceAll;(System.Object);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Linq;XElement;false;ReplaceAll;(System.Object);;Argument[this];Argument[0];taint;generated |
 | System.Xml.Linq;XElement;false;ReplaceAll;(System.Object[]);;Argument[0].Element;Argument[this];taint;generated |
-| System.Xml.Linq;XElement;false;ReplaceAll;(System.Object[]);;Argument[this];Argument[0].Element;taint;generated |
 | System.Xml.Linq;XElement;false;ReplaceAttributes;(System.Object);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Linq;XElement;false;ReplaceAttributes;(System.Object);;Argument[this];Argument[0];taint;generated |
 | System.Xml.Linq;XElement;false;ReplaceAttributes;(System.Object[]);;Argument[0].Element;Argument[this];taint;generated |
-| System.Xml.Linq;XElement;false;ReplaceAttributes;(System.Object[]);;Argument[this];Argument[0].Element;taint;generated |
 | System.Xml.Linq;XElement;false;SaveAsync;(System.Xml.XmlWriter,System.Threading.CancellationToken);;Argument[1];ReturnValue;taint;generated |
 | System.Xml.Linq;XElement;false;SetAttributeValue;(System.Xml.Linq.XName,System.Object);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Linq;XElement;false;SetAttributeValue;(System.Xml.Linq.XName,System.Object);;Argument[1];Argument[this];taint;generated |
@@ -7596,9 +7598,7 @@ summary
 | System.Xml.Linq;XNamespace;false;ToString;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Linq;XNamespace;false;get_NamespaceName;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Linq;XNode;false;AddAfterSelf;(System.Object);;Argument[this];Argument[0];taint;generated |
-| System.Xml.Linq;XNode;false;AddAfterSelf;(System.Object[]);;Argument[this];Argument[0].Element;taint;generated |
 | System.Xml.Linq;XNode;false;AddBeforeSelf;(System.Object);;Argument[this];Argument[0];taint;generated |
-| System.Xml.Linq;XNode;false;AddBeforeSelf;(System.Object[]);;Argument[this];Argument[0].Element;taint;generated |
 | System.Xml.Linq;XNode;false;Ancestors;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Linq;XNode;false;Ancestors;(System.Xml.Linq.XName);;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Linq;XNode;false;CreateReader;(System.Xml.Linq.ReaderOptions);;Argument[this];ReturnValue;taint;generated |
@@ -7607,7 +7607,6 @@ summary
 | System.Xml.Linq;XNode;false;NodesAfterSelf;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Linq;XNode;false;ReadFrom;(System.Xml.XmlReader);;Argument[0];ReturnValue;taint;generated |
 | System.Xml.Linq;XNode;false;ReplaceWith;(System.Object);;Argument[this];Argument[0];taint;generated |
-| System.Xml.Linq;XNode;false;ReplaceWith;(System.Object[]);;Argument[this];Argument[0].Element;taint;generated |
 | System.Xml.Linq;XNode;false;get_NextNode;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Linq;XObject;false;AddAnnotation;(System.Object);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Linq;XObject;false;Annotation;(System.Type);;Argument[this];ReturnValue;taint;generated |
@@ -7633,6 +7632,7 @@ summary
 | System.Xml.Linq;XStreamingElement;false;set_Name;(System.Xml.Linq.XName);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Linq;XText;false;WriteTo;(System.Xml.XmlWriter);;Argument[this];Argument[0];taint;generated |
 | System.Xml.Linq;XText;false;WriteToAsync;(System.Xml.XmlWriter,System.Threading.CancellationToken);;Argument[1];ReturnValue;taint;generated |
+| System.Xml.Linq;XText;false;WriteToAsync;(System.Xml.XmlWriter,System.Threading.CancellationToken);;Argument[this];Argument[0];taint;generated |
 | System.Xml.Linq;XText;false;XText;(System.String);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Linq;XText;false;XText;(System.Xml.Linq.XText);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Linq;XText;false;get_Value;();;Argument[this];ReturnValue;taint;generated |
@@ -7976,6 +7976,7 @@ summary
 | System.Xml.Serialization;SoapAttributeAttribute;false;set_Namespace;(System.String);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Serialization;SoapAttributeOverrides;false;get_Item;(System.Type);;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Serialization;SoapAttributeOverrides;false;get_Item;(System.Type,System.String);;Argument[this];ReturnValue;taint;generated |
+| System.Xml.Serialization;SoapAttributes;false;SoapAttributes;(System.Reflection.ICustomAttributeProvider);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Serialization;SoapAttributes;false;get_SoapAttribute;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Serialization;SoapAttributes;false;get_SoapDefaultValue;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Serialization;SoapAttributes;false;get_SoapElement;();;Argument[this];ReturnValue;taint;generated |
@@ -8073,6 +8074,7 @@ summary
 | System.Xml.Serialization;XmlAttributeEventArgs;false;get_ExpectedAttributes;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Serialization;XmlAttributeEventArgs;false;get_ObjectBeingDeserialized;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Serialization;XmlAttributeOverrides;false;get_Item;(System.Type);;Argument[this];ReturnValue;taint;generated |
+| System.Xml.Serialization;XmlAttributes;false;XmlAttributes;(System.Reflection.ICustomAttributeProvider);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Serialization;XmlAttributes;false;get_XmlAnyAttribute;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Serialization;XmlAttributes;false;get_XmlAnyElements;();;Argument[this];ReturnValue;taint;generated |
 | System.Xml.Serialization;XmlAttributes;false;get_XmlArray;();;Argument[this];ReturnValue;taint;generated |
@@ -8267,6 +8269,7 @@ summary
 | System.Xml.Serialization;XmlSerializationWriter;false;WriteElementStringRaw;(System.String,System.String,System.String);;Argument[2];Argument[this];taint;generated |
 | System.Xml.Serialization;XmlSerializationWriter;false;WriteElementStringRaw;(System.String,System.String,System.String,System.Xml.XmlQualifiedName);;Argument[2];Argument[this];taint;generated |
 | System.Xml.Serialization;XmlSerializationWriter;false;WriteElementStringRaw;(System.String,System.String,System.Xml.XmlQualifiedName);;Argument[1];Argument[this];taint;generated |
+| System.Xml.Serialization;XmlSerializationWriter;false;WriteId;(System.Object);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Serialization;XmlSerializationWriter;false;WriteId;(System.Object);;Argument[this];Argument[0];taint;generated |
 | System.Xml.Serialization;XmlSerializationWriter;false;WriteNullableStringEncoded;(System.String,System.String,System.String,System.Xml.XmlQualifiedName);;Argument[2];Argument[this];taint;generated |
 | System.Xml.Serialization;XmlSerializationWriter;false;WriteNullableStringEncodedRaw;(System.String,System.String,System.Byte[],System.Xml.XmlQualifiedName);;Argument[2].Element;Argument[this];taint;generated |
@@ -8282,7 +8285,9 @@ summary
 | System.Xml.Serialization;XmlSerializationWriter;false;WritePotentiallyReferencingElement;(System.String,System.String,System.Object,System.Type,System.Boolean);;Argument[this];Argument[2];taint;generated |
 | System.Xml.Serialization;XmlSerializationWriter;false;WritePotentiallyReferencingElement;(System.String,System.String,System.Object,System.Type,System.Boolean,System.Boolean);;Argument[2];Argument[this];taint;generated |
 | System.Xml.Serialization;XmlSerializationWriter;false;WritePotentiallyReferencingElement;(System.String,System.String,System.Object,System.Type,System.Boolean,System.Boolean);;Argument[this];Argument[2];taint;generated |
+| System.Xml.Serialization;XmlSerializationWriter;false;WriteReferencingElement;(System.String,System.String,System.Object);;Argument[2];Argument[this];taint;generated |
 | System.Xml.Serialization;XmlSerializationWriter;false;WriteReferencingElement;(System.String,System.String,System.Object);;Argument[this];Argument[2];taint;generated |
+| System.Xml.Serialization;XmlSerializationWriter;false;WriteReferencingElement;(System.String,System.String,System.Object,System.Boolean);;Argument[2];Argument[this];taint;generated |
 | System.Xml.Serialization;XmlSerializationWriter;false;WriteReferencingElement;(System.String,System.String,System.Object,System.Boolean);;Argument[this];Argument[2];taint;generated |
 | System.Xml.Serialization;XmlSerializationWriter;false;WriteRpcResult;(System.String,System.String);;Argument[0];Argument[this];taint;generated |
 | System.Xml.Serialization;XmlSerializationWriter;false;WriteRpcResult;(System.String,System.String);;Argument[1];Argument[this];taint;generated |
@@ -8919,20 +8924,25 @@ summary
 | System.Xml;XmlWriter;false;WriteAttributeString;(System.String,System.String,System.String,System.String);;Argument[1];Argument[this];taint;generated |
 | System.Xml;XmlWriter;false;WriteAttributeString;(System.String,System.String,System.String,System.String);;Argument[3];Argument[this];taint;generated |
 | System.Xml;XmlWriter;false;WriteAttributeStringAsync;(System.String,System.String,System.String,System.String);;Argument[1];Argument[this];taint;generated |
+| System.Xml;XmlWriter;false;WriteAttributeStringAsync;(System.String,System.String,System.String,System.String);;Argument[3];Argument[this];taint;generated |
 | System.Xml;XmlWriter;false;WriteElementString;(System.String,System.String);;Argument[1];Argument[this];taint;generated |
 | System.Xml;XmlWriter;false;WriteElementString;(System.String,System.String,System.String);;Argument[2];Argument[this];taint;generated |
 | System.Xml;XmlWriter;false;WriteElementString;(System.String,System.String,System.String,System.String);;Argument[3];Argument[this];taint;generated |
+| System.Xml;XmlWriter;false;WriteElementStringAsync;(System.String,System.String,System.String,System.String);;Argument[3];Argument[this];taint;generated |
 | System.Xml;XmlWriter;false;WriteStartAttribute;(System.String);;Argument[0];Argument[this];taint;generated |
 | System.Xml;XmlWriter;false;WriteStartAttribute;(System.String,System.String);;Argument[0];Argument[this];taint;generated |
 | System.Xml;XmlWriter;true;WriteAttributes;(System.Xml.XmlReader,System.Boolean);;Argument[0];Argument[this];taint;generated |
 | System.Xml;XmlWriter;true;WriteAttributesAsync;(System.Xml.XmlReader,System.Boolean);;Argument[0];Argument[this];taint;generated |
 | System.Xml;XmlWriter;true;WriteName;(System.String);;Argument[0];Argument[this];taint;generated |
+| System.Xml;XmlWriter;true;WriteNameAsync;(System.String);;Argument[0];Argument[this];taint;generated |
 | System.Xml;XmlWriter;true;WriteNmToken;(System.String);;Argument[0];Argument[this];taint;generated |
+| System.Xml;XmlWriter;true;WriteNmTokenAsync;(System.String);;Argument[0];Argument[this];taint;generated |
 | System.Xml;XmlWriter;true;WriteNode;(System.Xml.XPath.XPathNavigator,System.Boolean);;Argument[0];Argument[this];taint;generated |
 | System.Xml;XmlWriter;true;WriteNode;(System.Xml.XmlReader,System.Boolean);;Argument[0];Argument[this];taint;generated |
 | System.Xml;XmlWriter;true;WriteNodeAsync;(System.Xml.XPath.XPathNavigator,System.Boolean);;Argument[0];Argument[this];taint;generated |
 | System.Xml;XmlWriter;true;WriteNodeAsync;(System.Xml.XmlReader,System.Boolean);;Argument[0];Argument[this];taint;generated |
 | System.Xml;XmlWriter;true;WriteQualifiedName;(System.String,System.String);;Argument[0];Argument[this];taint;generated |
+| System.Xml;XmlWriter;true;WriteQualifiedNameAsync;(System.String,System.String);;Argument[0];Argument[this];taint;generated |
 | System.Xml;XmlWriter;true;WriteValue;(System.Object);;Argument[0];Argument[this];taint;generated |
 | System.Xml;XmlWriter;true;WriteValue;(System.String);;Argument[0];Argument[this];taint;generated |
 | System.Xml;XmlWriterSettings;false;get_Encoding;();;Argument[this];ReturnValue;taint;generated |
@@ -10252,4 +10262,4 @@ summary
 | System;ValueTuple<>;false;ToString;();;Argument[this];ReturnValue;taint;generated |
 | System;ValueTuple<>;false;ValueTuple;(T1);;Argument[0];Argument[this].Field[System.ValueTuple<>.Item1];value;manual |
 | System;ValueTuple<>;false;get_Item;(System.Int32);;Argument[this].Field[System.ValueTuple<>.Item1];ReturnValue;value;manual |
-negativeSummary
+neutral

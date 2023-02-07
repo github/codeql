@@ -15,7 +15,7 @@
 
 import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 
 /** Holds if `expr` might overflow. */
 predicate outOfBoundsExpr(Expr expr, string kind) {
