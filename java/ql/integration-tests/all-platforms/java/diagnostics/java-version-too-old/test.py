@@ -8,7 +8,6 @@ if "JAVA_HOME_8_X64" in os.environ:
   sep = ";" if platform.system() == "Windows" else ":"
   os.environ["PATH"] = "".join([os.path.join(os.environ["JAVA_HOME"], "bin"), sep, os.environ["PATH"]])
 
-os.mkdir("diagnostics")
-run_codeql_database_create([], lang="java", runFunction = runUnsuccessfully, db = None, extra_env = {"CODEQL_EXTRACTOR_JAVA_DIAGNOSTIC_DIR": "diagnostics"})
+run_codeql_database_create([], lang="java", runFunction = runUnsuccessfully, db = None)
 
-check_diagnostics(test_dir = ".", diagnostics_dir = "diagnostics")
+check_diagnostics()
