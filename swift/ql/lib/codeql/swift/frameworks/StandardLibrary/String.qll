@@ -100,7 +100,6 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;localizedStringWithFormat(_:_:);;;Argument[0..1];ReturnValue;taint",
         ";String;true;write(_:);;;Argument[0];Argument[-1];taint",
         ";String;true;write(to:);;;Argument[-1];Argument[0];taint",
-        ";String;true;insert(_:at:);;;Argument[0];Argument[-1];taint",
         ";String;true;insert(contentsOf:at:);;;Argument[0];Argument[-1];taint",
         ";String;true;replaceSubrange(_:with::);;;Argument[1];Argument[-1];taint",
         ";String;true;max();;;Argument[-1];ReturnValue;taint",

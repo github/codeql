@@ -30,7 +30,6 @@ private class DataSummaries extends SummaryModelCsv {
         ";Data;true;copyBytes(to:count:);;;Argument[-1];Argument[0];taint",
         ";Data;true;copyBytes(to:from:);;;Argument[-1];Argument[0];taint",
         ";Data;true;flatMap(_:);;;Argument[-1];ReturnValue;taint",
-        ";Data;true;insert(_:at:);;;Argument[0];Argument[-1];taint",
         ";Data;true;insert(contentsOf:at:);;;Argument[0];Argument[-1];taint",
         ";Data;true;map(_:);;;Argument[-1];ReturnValue;taint",
         ";Data;true;reduce(into:_:);;;Argument[-1];ReturnValue;taint",
