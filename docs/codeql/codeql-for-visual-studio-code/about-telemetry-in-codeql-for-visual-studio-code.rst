@@ -21,11 +21,11 @@ If you opt in, GitHub collects the following information related to the usage of
 
 - The identifiers of any CodeQL-related VS Code commands that are run.
     - For each command: the timestamp, time taken, and whether or not the command completed successfully.
-- Usage of UI elements, including buttons, links, and other inputs.
-    - The contents of links or text inputs is not recorded.
-    - Mouse movement and hovering is not recorded.
-- Occurrence of exceptions and error.
-    - All sensitive information such as file paths or non-static exception message content is removed before uploading.
+- Interactions with UI elements, including buttons, links, and other inputs.
+    - Link targets and text inputs are not recorded.
+    - Mouse movement and hovering are not recorded.
+- Occurrence of exceptions and errors.
+    - All sensitive information such as file paths and non-static exception message content are removed before uploading.
 - VS Code and extension version.
 - Randomly generated GUID that uniquely identifies a CodeQL extension installation. (Discarded before aggregation.)
 - IP address of the client sending the telemetry data. (Discarded before aggregation.)
@@ -51,6 +51,7 @@ We only collect the minimal amount of data we need to answer the questions about
 - No contents of CodeQL queries
 - No filesystem paths
 - No user-input text
+- No mouse interactions, such as movement or hovers
 
 Disabling telemetry reporting
 ------------------------------
