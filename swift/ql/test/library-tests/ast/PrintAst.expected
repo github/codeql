@@ -5894,3 +5894,42 @@ statements.swift:
 #   74|         Type = HasModifyAccessorDecl
 #   74|     getParam(0): [ParamDecl] x
 #   74|         Type = Int
+#   87| [TopLevelCodeDecl] { ... }
+#   87|   getBody(): [BraceStmt] { ... }
+#   87|     getElement(0): [IfStmt] if ... then { ... }
+#   87|       getCondition(): [StmtCondition] StmtCondition
+#   87|         getElement(0): (no string representation)
+#   87|           getAvailability(): [AvailabilityInfo] #available
+#   87|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 155
+#   87|             getSpec(1): [OtherAvailabilitySpec] *
+#   87|       getThen(): [BraceStmt] { ... }
+#   88|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   88|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   88|           getArgument(0): [Argument] : [...]
+#   88|             getExpr(): [VarargExpansionExpr] [...]
+#   88|               getSubExpr(): [ArrayExpr] [...]
+#   88|                 getElement(0): [IntegerLiteralExpr] 155
+#   88|                 getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   88|           getArgument(1): [Argument] separator: default separator
+#   88|             getExpr(): [DefaultArgumentExpr] default separator
+#   88|           getArgument(2): [Argument] terminator: default terminator
+#   88|             getExpr(): [DefaultArgumentExpr] default terminator
+#   91| [TopLevelCodeDecl] { ... }
+#   91|   getBody(): [BraceStmt] { ... }
+#   91|     getElement(0): [IfStmt] if ... then { ... }
+#   91|       getCondition(): [StmtCondition] StmtCondition
+#   91|         getElement(0): (no string representation)
+#   91|           getAvailability(): [AvailabilityInfo] #unavailable
+#   91|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 42
+#   91|       getThen(): [BraceStmt] { ... }
+#   92|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   92|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   92|           getArgument(0): [Argument] : [...]
+#   92|             getExpr(): [VarargExpansionExpr] [...]
+#   92|               getSubExpr(): [ArrayExpr] [...]
+#   92|                 getElement(0): [IntegerLiteralExpr] 42
+#   92|                 getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   92|           getArgument(1): [Argument] separator: default separator
+#   92|             getExpr(): [DefaultArgumentExpr] default separator
+#   92|           getArgument(2): [Argument] terminator: default terminator
+#   92|             getExpr(): [DefaultArgumentExpr] default terminator

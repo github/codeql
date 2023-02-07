@@ -101,7 +101,9 @@ locations(
 );
 
 @ast_node =
-  @case_label_item
+  @availability_info
+| @availability_spec
+| @case_label_item
 | @condition_element
 | @decl
 | @expr
@@ -145,6 +147,27 @@ diagnostics(
 | @unspecified_element
 ;
 
+availability_infos(
+  unique int id: @availability_info
+);
+
+#keyset[id]
+availability_info_is_unavailable(
+  int id: @availability_info ref
+);
+
+#keyset[id, index]
+availability_info_specs(
+  int id: @availability_info ref,
+  int index: int ref,
+  int spec: @availability_spec_or_none ref
+);
+
+@availability_spec =
+  @other_availability_spec
+| @platform_version_availability_spec
+;
+
 unspecified_elements(
   unique int id: @unspecified_element,
   string property: string ref,
@@ -161,6 +184,16 @@ unspecified_element_parents(
 unspecified_element_indices(
   int id: @unspecified_element ref,
   int index: int ref
+);
+
+other_availability_specs(
+  unique int id: @other_availability_spec
+);
+
+platform_version_availability_specs(
+  unique int id: @platform_version_availability_spec,
+  string platform: string ref,
+  string version: string ref
 );
 
 @decl =
@@ -1682,6 +1715,12 @@ condition_element_initializers(  //dir=stmt
   int initializer: @expr_or_none ref
 );
 
+#keyset[id]
+condition_element_availabilities(  //dir=stmt
+  int id: @condition_element ref,
+  int availability: @availability_info_or_none ref
+);
+
 @stmt =
   @brace_stmt
 | @break_stmt
@@ -2380,6 +2419,16 @@ variadic_sequence_types(  //dir=type
 
 @ast_node_or_none =
   @ast_node
+| @unspecified_element
+;
+
+@availability_info_or_none =
+  @availability_info
+| @unspecified_element
+;
+
+@availability_spec_or_none =
+  @availability_spec
 | @unspecified_element
 ;
 

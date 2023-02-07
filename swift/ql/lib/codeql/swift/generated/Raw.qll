@@ -63,6 +63,16 @@ module Raw {
 
   class ErrorElement extends @error_element, Locatable { }
 
+  class AvailabilityInfo extends @availability_info, AstNode {
+    override string toString() { result = "AvailabilityInfo" }
+
+    predicate isUnavailable() { availability_info_is_unavailable(this) }
+
+    AvailabilitySpec getSpec(int index) { availability_info_specs(this, index, result) }
+  }
+
+  class AvailabilitySpec extends @availability_spec, AstNode { }
+
   class UnspecifiedElement extends @unspecified_element, ErrorElement {
     override string toString() { result = "UnspecifiedElement" }
 
@@ -73,6 +83,19 @@ module Raw {
     int getIndex() { unspecified_element_indices(this, result) }
 
     string getError() { unspecified_elements(this, _, result) }
+  }
+
+  class OtherAvailabilitySpec extends @other_availability_spec, AvailabilitySpec {
+    override string toString() { result = "OtherAvailabilitySpec" }
+  }
+
+  class PlatformVersionAvailabilitySpec extends @platform_version_availability_spec,
+    AvailabilitySpec {
+    override string toString() { result = "PlatformVersionAvailabilitySpec" }
+
+    string getPlatform() { platform_version_availability_specs(this, result, _) }
+
+    string getVersion() { platform_version_availability_specs(this, _, result) }
   }
 
   class Decl extends @decl, AstNode {
@@ -1129,6 +1152,8 @@ module Raw {
     Pattern getPattern() { condition_element_patterns(this, result) }
 
     Expr getInitializer() { condition_element_initializers(this, result) }
+
+    AvailabilityInfo getAvailability() { condition_element_availabilities(this, result) }
   }
 
   class Stmt extends @stmt, AstNode { }
