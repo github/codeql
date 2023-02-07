@@ -25,6 +25,8 @@ private class CollectionSummaries extends SummaryModelCsv {
         ";Collection;true;split(maxSplits:omittingEmptySubsequences:whereSeparator:);;;Argument[-1];ReturnValue;taint",
         ";Collection;true;split(separator:maxSplits:omittingEmptySubsequences:);;;Argument[-1];ReturnValue;taint",
         ";Collection;true;removeFirst();;;Argument[-1];ReturnValue;taint",
+        ";RangeReplaceableCollection;true;append(_:);;;Argument[0];Argument[-1];taint",
+        ";RangeReplaceableCollection;true;append(contentsOf:);;;Argument[0];Argument[-1];taint",
         ";RangeReplaceableCollection;true;remove(at:);;;Argument[-1];ReturnValue;taint",
         ";RangeReplaceableCollection;true;removeFirst();;;Argument[-1];ReturnValue;taint",
         ";RangeReplaceableCollection;true;removeLast();;;Argument[-1];ReturnValue;taint",
