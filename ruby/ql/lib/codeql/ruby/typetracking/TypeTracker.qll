@@ -306,7 +306,7 @@ module StepSummary {
    * to non-linear recursion for the parts of `step` that involve the
    * call graph.
    */
-  pragma[inline]
+  pragma[nomagic]
   predicate step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
     stepNoCall(nodeFrom, nodeTo, summary)
     or
@@ -320,7 +320,7 @@ module StepSummary {
    * Unlike `StepSummary::step`, this predicate does not compress
    * type-preserving steps.
    */
-  pragma[inline]
+  pragma[nomagic]
   predicate smallstep(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
     smallstepNoCall(nodeFrom, nodeTo, summary)
     or
@@ -429,11 +429,12 @@ class TypeTracker extends TTypeTracker {
    * Gets the summary that corresponds to having taken a forwards
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
-  pragma[inline]
+  bindingset[nodeFrom, this]
   TypeTracker step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo) {
     exists(StepSummary summary |
-      StepSummary::step(nodeFrom, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
-      result = this.append(pragma[only_bind_into](summary))
+      StepSummary::step(pragma[only_bind_out](nodeFrom), _, pragma[only_bind_into](summary)) and
+      result = pragma[only_bind_into](pragma[only_bind_out](this)).append(summary) and
+      StepSummary::step(pragma[only_bind_into](pragma[only_bind_out](nodeFrom)), nodeTo, summary)
     )
   }
 
@@ -461,11 +462,13 @@ class TypeTracker extends TTypeTracker {
    * }
    * ```
    */
-  pragma[inline]
+  bindingset[nodeFrom, this]
   TypeTracker smallstep(Node nodeFrom, Node nodeTo) {
     exists(StepSummary summary |
-      StepSummary::smallstep(nodeFrom, nodeTo, summary) and
-      result = this.append(summary)
+      StepSummary::smallstep(pragma[only_bind_out](nodeFrom), _, pragma[only_bind_into](summary)) and
+      result = pragma[only_bind_into](pragma[only_bind_out](this)).append(summary) and
+      StepSummary::smallstep(pragma[only_bind_into](pragma[only_bind_out](nodeFrom)), nodeTo,
+        summary)
     )
     or
     simpleLocalFlowStep(nodeFrom, nodeTo) and
@@ -562,11 +565,12 @@ class TypeBackTracker extends TTypeBackTracker {
    * Gets the summary that corresponds to having taken a backwards
    * heap and/or inter-procedural step from `nodeTo` to `nodeFrom`.
    */
-  pragma[inline]
+  bindingset[nodeTo, this]
   TypeBackTracker step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo) {
     exists(StepSummary summary |
-      StepSummary::step(pragma[only_bind_out](nodeFrom), nodeTo, pragma[only_bind_into](summary)) and
-      this = result.prepend(pragma[only_bind_into](summary))
+      StepSummary::step(_, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
+      result = pragma[only_bind_into](pragma[only_bind_out](this)).prepend(summary) and
+      StepSummary::step(nodeFrom, pragma[only_bind_into](pragma[only_bind_out](nodeTo)), summary)
     )
   }
 
@@ -594,11 +598,13 @@ class TypeBackTracker extends TTypeBackTracker {
    * }
    * ```
    */
-  pragma[inline]
+  bindingset[nodeTo, this]
   TypeBackTracker smallstep(Node nodeFrom, Node nodeTo) {
     exists(StepSummary summary |
-      StepSummary::smallstep(nodeFrom, nodeTo, summary) and
-      this = result.prepend(summary)
+      StepSummary::smallstep(_, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
+      result = pragma[only_bind_into](pragma[only_bind_out](this)).prepend(summary) and
+      StepSummary::smallstep(nodeFrom, pragma[only_bind_into](pragma[only_bind_out](nodeTo)),
+        summary)
     )
     or
     simpleLocalFlowStep(nodeFrom, nodeTo) and
