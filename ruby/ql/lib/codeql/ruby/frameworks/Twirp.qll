@@ -51,6 +51,9 @@ module Twirp {
             .getModule()
     }
 
+    /**
+     * Gets a handler's method.
+     */
     Ast::Method getHandlerMethod() { result = this.getHandlerClassAstNode().getAnInstanceMethod() }
   }
 
