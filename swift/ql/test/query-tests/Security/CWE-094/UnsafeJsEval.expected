@@ -27,7 +27,6 @@ edges
 | UnsafeJsEval.swift:208:7:208:39 | ... .+(_:_:) ... :  | UnsafeJsEval.swift:279:13:279:13 | string :  |
 | UnsafeJsEval.swift:208:7:208:39 | ... .+(_:_:) ... :  | UnsafeJsEval.swift:285:13:285:13 | string :  |
 | UnsafeJsEval.swift:208:7:208:39 | ... .+(_:_:) ... :  | UnsafeJsEval.swift:299:13:299:13 | string :  |
-| UnsafeJsEval.swift:211:19:211:41 | call to Data.init(_:) :  | UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) :  |
 | UnsafeJsEval.swift:211:19:211:41 | call to Data.init(_:) :  | UnsafeJsEval.swift:214:24:214:24 | remoteData :  |
 | UnsafeJsEval.swift:211:24:211:37 | .utf8 :  | UnsafeJsEval.swift:144:5:144:29 | [summary param] 0 in Data.init(_:) :  |
 | UnsafeJsEval.swift:211:24:211:37 | .utf8 :  | UnsafeJsEval.swift:211:19:211:41 | call to Data.init(_:) :  |
