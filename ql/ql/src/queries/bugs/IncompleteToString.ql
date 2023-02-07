@@ -140,4 +140,5 @@ where
   branch.getNewType() = nt and
   not branch = ts.getRestrictions() and
   not ts.hasUnrestrictedDisjunct()
-select ts, nt, branch
+select ts, "$@ does not define a result for $@ of $@.", ts, "This toString predicate", branch,
+  "this branch", nt, "this newtype"
