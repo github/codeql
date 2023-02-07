@@ -1,2 +1,0 @@
-| regex.swift:3:5:3:5 | ... | hasType: | yes | getPattern: | a.*a | getVersion: | 1 |
-| regex.swift:4:5:4:5 | ... | hasType: | yes | getPattern: | the number (\\d+) | getVersion: | 1 |

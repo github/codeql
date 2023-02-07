@@ -1,2 +1,0 @@
-| regex.swift:3:5:3:5 | ... | Regex<Substring> |
-| regex.swift:4:5:4:5 | ... | Regex<(Substring, Substring)> |
