@@ -667,20 +667,74 @@ private module Stage1 implements StageSig {
     )
     or
     // flow into a callable
-    exists(NodeEx arg |
-      fwdFlow(arg, _, config) and
-      viableParamArgEx(_, node, arg) and
-      cc = true and
-      not fullBarrier(node, config)
-    )
+    fwdFlowIn(_, _, _, node, config) and
+    cc = true
     or
     // flow out of a callable
+    fwdFlowOut(_, node, false, config) and
+    cc = false
+    or
+    // flow through a callable
     exists(DataFlowCall call |
-      fwdFlowOut(call, node, false, config) and
-      cc = false
-      or
       fwdFlowOutFromArg(call, node, config) and
       fwdFlowIsEntered(call, cc, config)
+    )
+  }
+
+  // inline to reduce the number of iterations
+  pragma[inline]
+  private predicate fwdFlowIn(
+    DataFlowCall call, NodeEx arg, Cc cc, ParamNodeEx p, Configuration config
+  ) {
+    // call context cannot help reduce virtual dispatch
+    fwdFlow(arg, cc, config) and
+    viableParamArgEx(call, p, arg) and
+    not fullBarrier(p, config) and
+    (
+      cc = false
+      or
+      not reducedViableImplInCallContext(call, _, _)
+    )
+    or
+    // call context may help reduce virtual dispatch
+    exists(DataFlowCallable target |
+      fwdFlowInReducedViableImplInSomeCallContext(call, arg, p, target, config) and
+      target = viableImplInSomeFwdFlowCallContextExt(call, config) and
+      cc = true
+    )
+  }
+
+  /**
+   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`.
+   */
+  pragma[nomagic]
+  private predicate fwdFlowIsEntered(DataFlowCall call, Cc cc, Configuration config) {
+    fwdFlowIn(call, _, cc, _, config)
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlowInReducedViableImplInSomeCallContext(
+    DataFlowCall call, NodeEx arg, ParamNodeEx p, DataFlowCallable target, Configuration config
+  ) {
+    fwdFlow(arg, true, config) and
+    viableParamArgEx(call, p, arg) and
+    reducedViableImplInCallContext(call, _, _) and
+    target = p.getEnclosingCallable() and
+    not fullBarrier(p, config)
+  }
+
+  /**
+   * Gets a viable dispatch target of `call` in the context `ctx`. This is
+   * restricted to those `call`s for which a context might make a difference,
+   * and to `ctx`s that are reachable in `fwdFlow`.
+   */
+  pragma[nomagic]
+  private DataFlowCallable viableImplInSomeFwdFlowCallContextExt(
+    DataFlowCall call, Configuration config
+  ) {
+    exists(DataFlowCall ctx |
+      fwdFlowIsEntered(ctx, _, config) and
+      result = viableImplInCallContextExt(call, ctx)
     )
   }
 
@@ -726,7 +780,8 @@ private module Stage1 implements StageSig {
     )
   }
 
-  pragma[nomagic]
+  // inline to reduce the number of iterations
+  pragma[inline]
   private predicate fwdFlowOut(DataFlowCall call, NodeEx out, Cc cc, Configuration config) {
     exists(ReturnPosition pos |
       fwdFlowReturnPosition(pos, cc, config) and
@@ -738,17 +793,6 @@ private module Stage1 implements StageSig {
   pragma[nomagic]
   private predicate fwdFlowOutFromArg(DataFlowCall call, NodeEx out, Configuration config) {
     fwdFlowOut(call, out, true, config)
-  }
-
-  /**
-   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`.
-   */
-  pragma[nomagic]
-  private predicate fwdFlowIsEntered(DataFlowCall call, Cc cc, Configuration config) {
-    exists(ArgNodeEx arg |
-      fwdFlow(arg, cc, config) and
-      viableParamArgEx(call, _, arg)
-    )
   }
 
   private predicate stateStepFwd(FlowState state1, FlowState state2, Configuration config) {
@@ -817,19 +861,20 @@ private module Stage1 implements StageSig {
     )
     or
     // flow into a callable
-    exists(DataFlowCall call |
-      revFlowIn(call, node, false, config) and
-      toReturn = false
-      or
-      revFlowInToReturn(call, node, config) and
-      revFlowIsReturned(call, toReturn, config)
-    )
+    revFlowIn(_, node, false, config) and
+    toReturn = false
     or
     // flow out of a callable
     exists(ReturnPosition pos |
       revFlowOut(pos, config) and
       node.(RetNodeEx).getReturnPosition() = pos and
       toReturn = true
+    )
+    or
+    // flow through a callable
+    exists(DataFlowCall call |
+      revFlowInToReturn(call, node, config) and
+      revFlowIsReturned(call, toReturn, config)
     )
   }
 
@@ -886,11 +931,11 @@ private module Stage1 implements StageSig {
   additional predicate viableParamArgNodeCandFwd1(
     DataFlowCall call, ParamNodeEx p, ArgNodeEx arg, Configuration config
   ) {
-    viableParamArgEx(call, p, arg) and
-    fwdFlow(arg, config)
+    fwdFlowIn(call, arg, _, p, config)
   }
 
-  pragma[nomagic]
+  // inline to reduce the number of iterations
+  pragma[inline]
   private predicate revFlowIn(
     DataFlowCall call, ArgNodeEx arg, boolean toReturn, Configuration config
   ) {

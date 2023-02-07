@@ -707,8 +707,8 @@ private module Cached {
      * Gets a viable dispatch target of `call` in the context `ctx`. This is
      * restricted to those `call`s for which a context might make a difference.
      */
-    pragma[nomagic]
-    private DataFlowCallable viableImplInCallContextExt(DataFlowCall call, DataFlowCall ctx) {
+    cached
+    DataFlowCallable viableImplInCallContextExt(DataFlowCall call, DataFlowCall ctx) {
       result = viableImplInCallContext(call, ctx) and
       result = viableCallable(call)
       or
