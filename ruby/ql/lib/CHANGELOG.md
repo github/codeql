@@ -1,3 +1,46 @@
+## 0.5.2
+
+### Minor Analysis Improvements
+
+* Data flowing from the `locals` argument of a Rails `render` call is now tracked to uses of that data in an associated view.
+* Access to headers stored in the `env` of Rack requests is now recognized as a source of remote input.
+* Ruby 3.2: anonymous rest and keyword rest arguments can now be passed as arguments, instead of just used in method parameters.
+
+## 0.5.1
+
+No user-facing changes.
+
+## 0.5.0
+
+### Major Analysis Improvements
+
+* Flow through `initialize` constructors is now taken into account. For example, in
+  ```rb
+  class C
+    def initialize(x)
+      @field = x
+    end
+  end
+
+  C.new(y)
+  ```
+  there will be flow from `y` to the field `@field` on the constructed `C` object.
+
+### Minor Analysis Improvements
+
+* Calls to `Kernel.load`, `Kernel.require`, `Kernel.autoload` are now modeled as sinks for path injection.
+* Calls to `mail` and `inbound_mail` in `ActionMailbox` controllers are now considered sources of remote input.
+* Calls to `GlobalID::Locator.locate` and its variants are now recognized as instances of `OrmInstantiation`.
+* Data flow through the `ActiveSupport` extensions `Enumerable#index_with`, `Enumerable#pick`, `Enumerable#pluck` and `Enumerable#sole`  are now modeled.
+* When resolving a method call, the analysis now also searches in sub-classes of the receiver's type.
+* Taint flow is now tracked through many common JSON parsing and generation methods.
+* The ReDoS libraries in `codeql.ruby.security.regexp` has been moved to a shared pack inside the `shared/` folder, and the previous location has been deprecated.
+* String literals and arrays of string literals in case expression patterns are now recognised as barrier guards.
+
+## 0.4.6
+
+No user-facing changes.
+
 ## 0.4.5
 
 No user-facing changes.

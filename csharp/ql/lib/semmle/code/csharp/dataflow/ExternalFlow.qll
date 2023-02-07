@@ -82,6 +82,7 @@
  */
 
 import csharp
+private import ExternalFlowExtensions as Extensions
 private import internal.AccessPathSyntax
 private import internal.DataFlowDispatch
 private import internal.DataFlowPrivate
@@ -90,152 +91,17 @@ private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
 
-/**
- * DEPRECATED: Define source models as data extensions instead.
- *
- * A unit class for adding additional source model rows.
- *
- * Extend this class to add additional source definitions.
- */
-deprecated class SourceModelCsv = SourceModelCsvInternal;
-
-private class SourceModelCsvInternal extends Unit {
-  /** Holds if `row` specifies a source definition. */
-  abstract predicate row(string row);
-}
-
-/**
- * DEPRECATED: Define sink models as data extensions instead.
- *
- * A unit class for adding additional sink model rows.
- *
- * Extend this class to add additional sink definitions.
- */
-deprecated class SinkModelCsv = SinkModelCsvInternal;
-
-private class SinkModelCsvInternal extends Unit {
-  /** Holds if `row` specifies a sink definition. */
-  abstract predicate row(string row);
-}
-
-/**
- * DEPRECATED: Define summary models as data extensions instead.
- *
- * A unit class for adding additional summary model rows.
- *
- * Extend this class to add additional flow summary definitions.
- */
-deprecated class SummaryModelCsv = SummaryModelCsvInternal;
-
-private class SummaryModelCsvInternal extends Unit {
-  /** Holds if `row` specifies a summary definition. */
-  abstract predicate row(string row);
-}
-
-private predicate sourceModelInternal(string row) { any(SourceModelCsvInternal s).row(row) }
-
-private predicate summaryModelInternal(string row) { any(SummaryModelCsvInternal s).row(row) }
-
-private predicate sinkModelInternal(string row) { any(SinkModelCsvInternal s).row(row) }
-
-/**
- * Holds if a source model exists for the given parameters.
- */
-extensible predicate extSourceModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance
-);
-
 /** Holds if a source model exists for the given parameters. */
-predicate sourceModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance
-) {
-  exists(string row |
-    sourceModelInternal(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = output and
-    row.splitAt(";", 7) = kind and
-    row.splitAt(";", 8) = provenance
-  )
-  or
-  extSourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)
-}
+predicate sourceModel = Extensions::sourceModel/9;
 
 /** Holds if a sink model exists for the given parameters. */
-extensible predicate extSinkModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance
-);
-
-/** Holds if a sink model exists for the given parameters. */
-predicate sinkModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance
-) {
-  exists(string row |
-    sinkModelInternal(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = kind and
-    row.splitAt(";", 8) = provenance
-  )
-  or
-  extSinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)
-}
+predicate sinkModel = Extensions::sinkModel/9;
 
 /** Holds if a summary model exists for the given parameters. */
-extensible predicate extSummaryModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance
-);
-
-/** Holds if a summary model exists for the given parameters. */
-predicate summaryModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance
-) {
-  exists(string row |
-    summaryModelInternal(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = output and
-    row.splitAt(";", 8) = kind and
-    row.splitAt(";", 9) = provenance
-  )
-  or
-  extSummaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)
-}
+predicate summaryModel = Extensions::summaryModel/10;
 
 /** Holds if a model exists indicating there is no flow for the given parameters. */
-extensible predicate extNeutralModel(
-  string namespace, string type, string name, string signature, string provenance
-);
-
-/** Holds if a model exists indicating there is no flow for the given parameters. */
-predicate neutralModel(
-  string namespace, string type, string name, string signature, string provenance
-) {
-  extNeutralModel(namespace, type, name, signature, provenance)
-}
+predicate neutralModel = Extensions::neutralModel/5;
 
 private predicate relevantNamespace(string namespace) {
   sourceModel(namespace, _, _, _, _, _, _, _, _) or
@@ -343,40 +209,6 @@ module ModelValidation {
     )
   }
 
-  private string getInvalidModelSubtype() {
-    exists(string pred, string row |
-      sourceModelInternal(row) and pred = "source"
-      or
-      sinkModelInternal(row) and pred = "sink"
-      or
-      summaryModelInternal(row) and pred = "summary"
-    |
-      exists(string b |
-        b = row.splitAt(";", 2) and
-        not b = ["true", "false"] and
-        result = "Invalid boolean \"" + b + "\" in " + pred + " model."
-      )
-    )
-  }
-
-  private string getInvalidModelColumnCount() {
-    exists(string pred, string row, int expect |
-      sourceModelInternal(row) and expect = 9 and pred = "source"
-      or
-      sinkModelInternal(row) and expect = 9 and pred = "sink"
-      or
-      summaryModelInternal(row) and expect = 10 and pred = "summary"
-    |
-      exists(int cols |
-        cols = 1 + max(int n | exists(row.splitAt(";", n))) and
-        cols != expect and
-        result =
-          "Wrong number of columns in " + pred + " model row, expected " + expect + ", got " + cols +
-            " in " + row + "."
-      )
-    )
-  }
-
   private string getInvalidModelSignature() {
     exists(
       string pred, string namespace, string type, string name, string signature, string ext,
@@ -418,7 +250,7 @@ module ModelValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelSubtype(), getInvalidModelColumnCount(), getInvalidModelKind()
+        getInvalidModelKind()
       ]
   }
 }
@@ -577,11 +409,6 @@ Element interpretElement(
     ext = "Attribute" and result.(Attributable).getAnAttribute().getType() = e
   )
 }
-
-/**
- * Holds if `c` has a `generated` summary.
- */
-predicate hasSummary(Callable c, boolean generated) { summaryElement(c, _, _, _, generated) }
 
 cached
 private module Cached {

@@ -1,0 +1,8 @@
+binarybitwise
+| Operators.cs:7:18:7:25 | ... >>> ... | Operators.cs:7:18:7:19 | access to local variable x1 | Operators.cs:7:25:7:25 | 2 | >>> | UnsignedRightShiftExpr |
+| Operators.cs:10:18:10:25 | ... >>> ... | Operators.cs:10:18:10:19 | access to local variable y1 | Operators.cs:10:25:10:25 | 3 | >>> | UnsignedRightShiftExpr |
+| Operators.cs:13:9:13:16 | ... >>> ... | Operators.cs:13:9:13:9 | access to local variable z | Operators.cs:13:16:13:16 | 5 | >>> | UnsignedRightShiftExpr |
+assignbitwise
+| Operators.cs:13:9:13:16 | ... >>>= ... | Operators.cs:13:9:13:9 | access to local variable z | Operators.cs:13:16:13:16 | 5 | >>>= | AssignUnsighedRightShiftExpr |
+userdefined
+| Operators.cs:19:44:19:46 | >>> | op_UnsignedRightShift | UnsignedRightShiftOperator |

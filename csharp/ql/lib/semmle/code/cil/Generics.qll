@@ -28,6 +28,12 @@ class ConstructedGeneric extends Generic, DotNet::ConstructedGeneric {
   final override Type getTypeArgument(int n) { cil_type_argument(this, n, result) }
 }
 
+/** Gets the concatenation of the `getName()` of type arguments. */
+language[monotonicAggregates]
+private string getTypeArgumentsNames(ConstructedGeneric cg) {
+  result = strictconcat(Type t, int i | t = cg.getTypeArgument(i) | t.getName(), "," order by i)
+}
+
 /** An unbound generic type. */
 class UnboundGenericType extends UnboundGeneric, Type { }
 
@@ -41,6 +47,10 @@ class ConstructedType extends ConstructedGeneric, Type {
   override predicate isInterface() { this.getUnboundType().isInterface() }
 
   override predicate isClass() { this.getUnboundType().isClass() }
+
+  final override string getName() {
+    result = this.getUndecoratedName() + "<" + getTypeArgumentsNames(this) + ">"
+  }
 }
 
 /** A constructed generic method. */

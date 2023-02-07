@@ -1,13 +1,13 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["okhttp3", "Request", True, "Request", "", "", "Argument[0]", "open-url", "manual"]
       - ["okhttp3", "Request$Builder", True, "url", "", "", "Argument[0]", "open-url", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["okhttp3", "HttpUrl", False, "parse", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["okhttp3", "HttpUrl", False, "uri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

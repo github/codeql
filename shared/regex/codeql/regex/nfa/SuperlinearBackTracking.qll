@@ -288,13 +288,11 @@ module Make<RegexTreeViewSig TreeImpl> {
     StateTuple tuple, int dist
   ) {
     // base case.
-    exists(State q1, State q2, State q3 |
-      isStartLoops(pivot, succ) and
-      step(MkStateTuple(pivot, pivot, succ), s1, s2, s3, tuple) and
-      tuple = MkStateTuple(q1, q2, q3) and
-      trace = Nil() and
-      dist = distBackFromEnd(tuple, MkStateTuple(pivot, succ, succ))
-    )
+    isStartLoops(pivot, succ) and
+    step(MkStateTuple(pivot, pivot, succ), s1, s2, s3, tuple) and
+    tuple = MkStateTuple(_, _, _) and
+    trace = Nil() and
+    dist = distBackFromEnd(tuple, MkStateTuple(pivot, succ, succ))
     or
     // recursive case
     exists(StateTuple p |

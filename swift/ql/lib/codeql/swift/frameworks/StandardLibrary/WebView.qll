@@ -1,3 +1,7 @@
+/**
+ * Provides models for WebView-related Swift classes.
+ */
+
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
@@ -29,6 +33,58 @@ private class WKScriptMessageBodyInheritsTaint extends TaintInheritingContent,
     exists(FieldDecl f | this.getField() = f |
       f.getEnclosingDecl() instanceof WKScriptMessageDecl and
       f.getName() = "body"
+    )
+  }
+}
+
+/**
+ * A type or extension delcaration that adopts the protocol `WKNavigationDelegate`.
+ */
+private class AdoptsWkNavigationDelegate extends Decl {
+  AdoptsWkNavigationDelegate() {
+    exists(ProtocolDecl delegate |
+      this.(ExtensionDecl).getAProtocol().getABaseTypeDecl*() = delegate or
+      this.(NominalTypeDecl).getABaseTypeDecl*() = delegate
+    |
+      delegate.getName() = "WKNavigationDelegate"
+    )
+  }
+}
+
+/**
+ * A source for the `decidePolicyFor` parameter of the `webView` method of a type adopting `WKNavigationDelegate`.
+ */
+private class WKNavigationDelegateSource extends RemoteFlowSource {
+  WKNavigationDelegateSource() {
+    exists(ParamDecl p, FuncDecl f, AdoptsWkNavigationDelegate t |
+      t.getAMember() = f and
+      f.getName() =
+        [
+          "webView(_:decidePolicyFor:preferences:decisionHandler:)",
+          "webView(_:decidePolicyFor:decisionHandler:)"
+        ] and
+      p.getDeclaringFunction() = f and
+      p.getIndex() = 1 and
+      this.(DataFlow::ParameterNode).getParameter() = p
+    )
+  }
+
+  override string getSourceType() { result = "Navigation action of a WebView" }
+}
+
+/**
+ * A taint step implying that, if a `WKNavigationAction` is tainted, its `request` field is also tainted.
+ */
+private class WKNavigationActionTaintStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(MemberRefExpr e, Expr self, VarDecl member |
+      self.getType().getName() = "WKNavigationAction" and
+      member.getName() = "request"
+    |
+      e.getBase() = self and
+      e.getMember() = member and
+      n1.asExpr() = self and
+      n2.asExpr() = e
     )
   }
 }
@@ -125,7 +181,8 @@ private class JsExportedSource extends RemoteFlowSource {
       base.getEnclosingDecl() instanceof JsExportedProto and
       adopter.getEnclosingDecl() instanceof JsExportedType
     |
-      this.asExpr().(MemberRefExpr).getMember() = adopter and adopter.getName() = base.getName()
+      this.asExpr().(MemberRefExpr).getMember() = adopter and
+      pragma[only_bind_out](adopter.getName()) = pragma[only_bind_out](base.getName())
     )
   }
 

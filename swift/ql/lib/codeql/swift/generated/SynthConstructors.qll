@@ -6,6 +6,7 @@ import codeql.swift.elements.DiagnosticsConstructor
 import codeql.swift.elements.UnspecifiedElementConstructor
 import codeql.swift.elements.decl.AccessorDeclConstructor
 import codeql.swift.elements.decl.AssociatedTypeDeclConstructor
+import codeql.swift.elements.decl.CapturedDeclConstructor
 import codeql.swift.elements.decl.ClassDeclConstructor
 import codeql.swift.elements.decl.ConcreteFuncDeclConstructor
 import codeql.swift.elements.decl.ConcreteVarDeclConstructor
@@ -102,7 +103,7 @@ import codeql.swift.elements.expr.MagicIdentifierLiteralExprConstructor
 import codeql.swift.elements.expr.MakeTemporarilyEscapableExprConstructor
 import codeql.swift.elements.expr.MemberRefExprConstructor
 import codeql.swift.elements.expr.MetatypeConversionExprConstructor
-import codeql.swift.elements.expr.MethodRefExprConstructor
+import codeql.swift.elements.expr.MethodLookupExprConstructor
 import codeql.swift.elements.expr.NilLiteralExprConstructor
 import codeql.swift.elements.expr.ObjCSelectorExprConstructor
 import codeql.swift.elements.expr.ObjectLiteralExprConstructor

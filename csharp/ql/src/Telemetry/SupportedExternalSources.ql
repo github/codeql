@@ -3,17 +3,14 @@
  * @description A list of 3rd party APIs detected as sources. Excludes APIs exposed by test libraries.
  * @kind metric
  * @tags summary telemetry
- * @id csharp/telemetry/supported-external-api-sources
+ * @id cs/telemetry/supported-external-api-sources
  */
 
 private import csharp
 private import semmle.code.csharp.dispatch.Dispatch
 private import ExternalApi
 
-private predicate relevant(ExternalApi api) {
-  not api.isUninteresting() and
-  api.isSource()
-}
+private predicate relevant(ExternalApi api) { api.isSource() }
 
 from string info, int usages
 where Results<relevant/1>::restrict(info, usages)

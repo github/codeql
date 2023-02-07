@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["android.util", "AttributeSet", False, "getAttributeBooleanValue", "", "", "ReturnValue", "remote", "manual"]
       - ["android.util", "AttributeSet", False, "getAttributeCount", "", "", "ReturnValue", "remote", "manual"]
@@ -21,7 +21,7 @@ extensions:
       - ["android.util", "AttributeSet", False, "getStyleAttribute", "", "", "ReturnValue", "remote", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["android.util", "Log", True, "d", "", "", "Argument[1]", "logging", "manual"]
       - ["android.util", "Log", True, "e", "", "", "Argument[1]", "logging", "manual"]

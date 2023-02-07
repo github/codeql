@@ -8,6 +8,9 @@ import {{.}}
 module Generated {
   {{#has_doc}}
   /**
+  {{#ql_internal}}
+   * INTERNAL: Do not use.
+  {{/ql_internal}}
   {{#doc}}
    * {{.}}
   {{/doc}}

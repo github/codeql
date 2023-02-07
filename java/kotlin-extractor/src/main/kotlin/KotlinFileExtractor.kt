@@ -1194,8 +1194,6 @@ open class KotlinFileExtractor(
             // n + o'th parameter, where `o` is the parameter offset caused by adding any dispatch receiver to the parameter list.
             // Note we don't need to add the extension receiver here because `useValueParameter` always assumes an extension receiver
             // will be prepended if one exists.
-            // Note we have to get the real function ID here before entering this block, because otherwise we'll misrepresent the signature of a generic
-            // function without its type variables -- for example, trying to address `f(T, List<T>)` as `f(Object, List)`.
             val realFunctionId = useFunction<DbCallable>(f)
             DeclarationStackAdjuster(f, OverriddenFunctionAttributes(id, id, locId, nonSyntheticParams, typeParameters = listOf(), isStatic = true)).use {
                 val realParamsVarId = getValueParameterLabel(id, parameterTypes.size - 2)
@@ -1389,7 +1387,7 @@ open class KotlinFileExtractor(
 
     private fun getNullabilityAnnotation(t: IrType, declOrigin: IrDeclarationOrigin, existingAnnotations: List<IrConstructorCall>, javaAnnotations: Collection<JavaAnnotation>?) =
         getNullabilityAnnotationName(t, declOrigin, existingAnnotations, javaAnnotations)?.let {
-            pluginContext.referenceClass(it)?.let { annotationClass ->
+            getClassByFqName(pluginContext, it)?.let { annotationClass ->
                 annotationClass.owner.declarations.firstIsInstanceOrNull<IrConstructor>()?.let { annotationConstructor ->
                     IrConstructorCallImpl.fromSymbolOwner(
                         UNDEFINED_OFFSET, UNDEFINED_OFFSET, annotationConstructor.returnType, annotationConstructor.symbol, 0
@@ -1711,6 +1709,10 @@ open class KotlinFileExtractor(
             when (b.kind) {
                 IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
                 IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
+                else -> {
+                    // TODO: Support IrSyntheticBodyKind.ENUM_ENTRIES
+                    logger.errorElement("Unhandled synthetic body kind " + b.kind.javaClass, b)
+                }
             }
         }
     }
@@ -2402,7 +2404,7 @@ open class KotlinFileExtractor(
 
     private fun findTopLevelFunctionOrWarn(functionFilter: String, type: String, parameterTypes: Array<String>, warnAgainstElement: IrElement): IrFunction? {
 
-        val fn = pluginContext.referenceFunctions(FqName(functionFilter))
+        val fn = getFunctionsByFqName(pluginContext, functionFilter)
             .firstOrNull { fnSymbol ->
                 fnSymbol.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type &&
                 fnSymbol.owner.valueParameters.map { it.type.classFqName?.asString() }.toTypedArray() contentEquals parameterTypes
@@ -2421,7 +2423,7 @@ open class KotlinFileExtractor(
 
     private fun findTopLevelPropertyOrWarn(propertyFilter: String, type: String, warnAgainstElement: IrElement): IrProperty? {
 
-        val prop = pluginContext.referenceProperties(FqName(propertyFilter))
+        val prop = getPropertiesByFqName(pluginContext, propertyFilter)
             .firstOrNull { it.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type }
             ?.owner
 
@@ -5796,9 +5798,6 @@ open class KotlinFileExtractor(
 
         fun findOverriddenAttributes(f: IrFunction) =
             stack.lastOrNull { it.first == f } ?.second
-
-        fun findFirst(f: (Pair<IrDeclaration, OverriddenFunctionAttributes?>) -> Boolean) =
-            stack.findLast(f)
     }
 
     data class OverriddenFunctionAttributes(

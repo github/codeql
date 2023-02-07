@@ -163,46 +163,6 @@ private module Shared {
   }
 
   /**
-   * Holds if some render call passes `value` for `hashKey` in the `locals`
-   * argument, in ERB file `erb`.
-   */
-  pragma[noinline]
-  private predicate renderCallLocals(string hashKey, Expr value, ErbFile erb) {
-    exists(Rails::RenderCall call, Pair kvPair |
-      call.getLocals().getAKeyValuePair() = kvPair and
-      kvPair.getValue() = value and
-      kvPair.getKey().getConstantValue().isStringlikeValue(hashKey) and
-      call.getTemplateFile() = erb
-    )
-  }
-
-  pragma[noinline]
-  private predicate isFlowFromLocals0(
-    CfgNodes::ExprNodes::ElementReferenceCfgNode refNode, string hashKey, ErbFile erb
-  ) {
-    exists(DataFlow::Node argNode |
-      argNode.asExpr() = refNode.getArgument(0) and
-      refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "local_assigns" and
-      argNode.getALocalSource().getConstantValue().isStringlikeValue(hashKey) and
-      erb = refNode.getFile()
-    )
-  }
-
-  private predicate isFlowFromLocals(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(string hashKey, ErbFile erb |
-      // node1 is a `locals` argument to a render call...
-      renderCallLocals(hashKey, node1.asExpr().getExpr(), erb)
-    |
-      // node2 is an element reference against `local_assigns`
-      isFlowFromLocals0(node2.asExpr(), hashKey, erb)
-      or
-      // ...node2 is a "method call" to a "method" with `hashKey` as its name
-      // TODO: This may be a variable read in reality that we interpret as a method call
-      isMethodCall(node2.asExpr().getExpr(), hashKey, erb)
-    )
-  }
-
-  /**
    * Holds if `action` contains an assignment of `value` to an instance
    * variable named `name`, in ERB file `erb`.
    */
@@ -227,9 +187,9 @@ private module Shared {
 
   private predicate isFlowFromControllerInstanceVariable(DataFlow::Node node1, DataFlow::Node node2) {
     // instance variables in the controller
-    exists(ActionControllerActionMethod action, string name, ErbFile template |
+    exists(string name, ErbFile template |
       // match read to write on variable name
-      actionAssigns(action, name, node1.asExpr().getExpr(), template) and
+      actionAssigns(_, name, node1.asExpr().getExpr(), template) and
       // propagate taint from assignment RHS expr to variable read access in view
       isVariableReadAccess(node2.asExpr().getExpr(), name, template)
     )
@@ -275,8 +235,6 @@ private module Shared {
    * An additional step that is preserves dataflow in the context of XSS.
    */
   predicate isAdditionalXssFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    isFlowFromLocals(node1, node2)
-    or
     isFlowFromControllerInstanceVariable(node1, node2)
     or
     isFlowIntoHelperMethod(node1, node2)

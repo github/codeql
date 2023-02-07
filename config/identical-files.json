@@ -29,13 +29,14 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplForContentDataFlow.qll",
     "go/ql/lib/semmle/go/dataflow/internal/DataFlowImpl.qll",
     "go/ql/lib/semmle/go/dataflow/internal/DataFlowImpl2.qll",
+    "go/ql/lib/semmle/go/dataflow/internal/DataFlowImplForStringsNewReplacer.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl2.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl3.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl4.qll",
+    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplForRegExp.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl2.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForRegExp.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForHttpClientLibraries.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForPathname.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImpl.qll"
@@ -402,16 +403,6 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/ControlFlowReachability.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/ControlFlowReachability.qll"
   ],
-  "Inline Test Expectations": [
-    "cpp/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "csharp/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "java/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "python/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "ruby/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "ql/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "go/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "swift/ql/test/TestUtilities/InlineExpectationsTest.qll"
-  ],
   "C++ ExternalAPIs": [
     "cpp/ql/src/Security/CWE/CWE-020/ExternalAPIs.qll",
     "cpp/ql/src/Security/CWE/CWE-020/ir/ExternalAPIs.qll"
@@ -505,14 +496,6 @@
     "python/ql/lib/semmle/python/dataflow/new/internal/TypeTracker.qll",
     "ruby/ql/lib/codeql/ruby/typetracking/TypeTracker.qll"
   ],
-  "CodeQL Tutorial": [
-    "cpp/ql/lib/tutorial.qll",
-    "csharp/ql/lib/tutorial.qll",
-    "java/ql/lib/tutorial.qll",
-    "javascript/ql/lib/tutorial.qll",
-    "python/ql/lib/tutorial.qll",
-    "ruby/ql/lib/tutorial.qll"
-  ],
   "AccessPathSyntax": [
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/AccessPathSyntax.qll",
     "go/ql/lib/semmle/go/dataflow/internal/AccessPathSyntax.qll",
@@ -530,11 +513,6 @@
     "python/ql/lib/semmle/python/internal/ConceptsShared.qll",
     "ruby/ql/lib/codeql/ruby/internal/ConceptsShared.qll",
     "javascript/ql/lib/semmle/javascript/internal/ConceptsShared.qll"
-  ],
-  "Hostname Regexp queries": [
-    "javascript/ql/src/Security/CWE-020/HostnameRegexpShared.qll",
-    "python/ql/src/Security/CWE-020/HostnameRegexpShared.qll",
-    "ruby/ql/src/queries/security/cwe-020/HostnameRegexpShared.qll"
   ],
   "ApiGraphModels": [
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/ApiGraphModels.qll",

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.springframework.ui", "ConcurrentModel", False, "ConcurrentModel", "(Object)", "", "Argument[0]", "Argument[-1].MapValue", "value", "manual"]
       - ["org.springframework.ui", "ConcurrentModel", False, "ConcurrentModel", "(String,Object)", "", "Argument[0]", "Argument[-1].MapKey", "value", "manual"]

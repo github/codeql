@@ -36,7 +36,7 @@ class LocalVariable extends Variable, TLocalVariable {
   /** Gets the access where this local variable is first introduced. */
   VariableAccess getDefiningAccess() {
     result = this.(LocalVariableReal).getDefiningAccessImpl() or
-    synthChild(any(BlockParameter p | this = p.getVariable()), 0, result)
+    synthChild(any(NamedParameter p | this = p.getVariable()), 0, result)
   }
 
   /**
@@ -120,7 +120,7 @@ class VariableAccess extends Expr instanceof VariableAccessImpl {
     or
     this = any(HashPattern p).getValue(_)
     or
-    synthChild(any(BlockParameter p), 0, this)
+    synthChild(any(NamedParameter p), 0, this)
   }
 }
 

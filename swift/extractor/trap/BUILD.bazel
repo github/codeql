@@ -30,7 +30,7 @@ filegroup(
 
 swift_cc_library(
     name = "trap",
-    srcs = [
+    srcs = glob(["*.cpp"]) + [
         "generated/%s%s.cpp" % (dir, name)
         for dir in _dirs
         for name in ("TrapEntries", "TrapClasses")
@@ -43,4 +43,7 @@ swift_cc_library(
         for name in ("TrapEntries", "TrapClasses")
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//swift/extractor/infra/file",
+    ],
 )

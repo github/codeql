@@ -9,6 +9,7 @@ swift_cc_binary(
         "*.cpp",
     ]),
     deps = [
+        "//swift/extractor/config",
         "//swift/extractor/infra",
         "//swift/extractor/invocation",
         "//swift/extractor/remapping",

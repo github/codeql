@@ -3,17 +3,14 @@
  * @description A list of 3rd party APIs detected as flow steps. Excludes APIs exposed by test libraries.
  * @kind metric
  * @tags summary telemetry
- * @id csharp/telemetry/supported-external-api-taint
+ * @id cs/telemetry/supported-external-api-taint
  */
 
 private import csharp
 private import semmle.code.csharp.dispatch.Dispatch
 private import ExternalApi
 
-private predicate relevant(ExternalApi api) {
-  not api.isUninteresting() and
-  api.hasSummary()
-}
+private predicate relevant(ExternalApi api) { api.hasSummary() }
 
 from string info, int usages
 where Results<relevant/1>::restrict(info, usages)

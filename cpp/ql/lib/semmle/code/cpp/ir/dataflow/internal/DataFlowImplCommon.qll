@@ -916,18 +916,36 @@ private module Cached {
     TDataFlowCallSome(DataFlowCall call)
 
   cached
-  newtype TParameterPositionOption =
-    TParameterPositionNone() or
-    TParameterPositionSome(ParameterPosition pos)
+  newtype TParamNodeOption =
+    TParamNodeNone() or
+    TParamNodeSome(ParamNode p)
 
   cached
   newtype TReturnCtx =
     TReturnCtxNone() or
     TReturnCtxNoFlowThrough() or
-    TReturnCtxMaybeFlowThrough(ReturnKindExt kind)
+    TReturnCtxMaybeFlowThrough(ReturnPosition pos)
+
+  cached
+  newtype TTypedContentApprox =
+    MkTypedContentApprox(ContentApprox c, DataFlowType t) {
+      exists(Content cont |
+        c = getContentApprox(cont) and
+        store(_, cont, _, _, t)
+      )
+    }
 
   cached
   newtype TTypedContent = MkTypedContent(Content c, DataFlowType t) { store(_, c, _, _, t) }
+
+  cached
+  TypedContent getATypedContent(TypedContentApprox c) {
+    exists(ContentApprox cls, DataFlowType t, Content cont |
+      c = MkTypedContentApprox(cls, pragma[only_bind_into](t)) and
+      result = MkTypedContent(cont, pragma[only_bind_into](t)) and
+      cls = getContentApprox(cont)
+    )
+  }
 
   cached
   newtype TAccessPathFront =
@@ -935,9 +953,19 @@ private module Cached {
     TFrontHead(TypedContent tc)
 
   cached
+  newtype TApproxAccessPathFront =
+    TApproxFrontNil(DataFlowType t) or
+    TApproxFrontHead(TypedContentApprox tc)
+
+  cached
   newtype TAccessPathFrontOption =
     TAccessPathFrontNone() or
     TAccessPathFrontSome(AccessPathFront apf)
+
+  cached
+  newtype TApproxAccessPathFrontOption =
+    TApproxAccessPathFrontNone() or
+    TApproxAccessPathFrontSome(ApproxAccessPathFront apf)
 }
 
 /**
@@ -1315,15 +1343,15 @@ class DataFlowCallOption extends TDataFlowCallOption {
   }
 }
 
-/** An optional `ParameterPosition`. */
-class ParameterPositionOption extends TParameterPositionOption {
+/** An optional `ParamNode`. */
+class ParamNodeOption extends TParamNodeOption {
   string toString() {
-    this = TParameterPositionNone() and
+    this = TParamNodeNone() and
     result = "(none)"
     or
-    exists(ParameterPosition pos |
-      this = TParameterPositionSome(pos) and
-      result = pos.toString()
+    exists(ParamNode p |
+      this = TParamNodeSome(p) and
+      result = p.toString()
     )
   }
 }
@@ -1335,7 +1363,7 @@ class ParameterPositionOption extends TParameterPositionOption {
  *
  * - `TReturnCtxNone()`: no return flow.
  * - `TReturnCtxNoFlowThrough()`: return flow, but flow through is not possible.
- * - `TReturnCtxMaybeFlowThrough(ReturnKindExt kind)`: return flow, of kind `kind`, and
+ * - `TReturnCtxMaybeFlowThrough(ReturnPosition pos)`: return flow, of kind `pos`, and
  *    flow through may be possible.
  */
 class ReturnCtx extends TReturnCtx {
@@ -1346,10 +1374,84 @@ class ReturnCtx extends TReturnCtx {
     this = TReturnCtxNoFlowThrough() and
     result = "(no flow through)"
     or
-    exists(ReturnKindExt kind |
-      this = TReturnCtxMaybeFlowThrough(kind) and
-      result = kind.toString()
+    exists(ReturnPosition pos |
+      this = TReturnCtxMaybeFlowThrough(pos) and
+      result = pos.toString()
     )
+  }
+}
+
+/** An approximated `Content` tagged with the type of a containing object. */
+class TypedContentApprox extends MkTypedContentApprox {
+  private ContentApprox c;
+  private DataFlowType t;
+
+  TypedContentApprox() { this = MkTypedContentApprox(c, t) }
+
+  /** Gets a typed content approximated by this value. */
+  TypedContent getATypedContent() { result = getATypedContent(this) }
+
+  /** Gets the content. */
+  ContentApprox getContent() { result = c }
+
+  /** Gets the container type. */
+  DataFlowType getContainerType() { result = t }
+
+  /** Gets a textual representation of this approximated content. */
+  string toString() { result = c.toString() }
+}
+
+/**
+ * The front of an approximated access path. This is either a head or a nil.
+ */
+abstract class ApproxAccessPathFront extends TApproxAccessPathFront {
+  abstract string toString();
+
+  abstract DataFlowType getType();
+
+  abstract boolean toBoolNonEmpty();
+
+  TypedContentApprox getHead() { this = TApproxFrontHead(result) }
+
+  pragma[nomagic]
+  TypedContent getAHead() {
+    exists(TypedContentApprox cont |
+      this = TApproxFrontHead(cont) and
+      result = cont.getATypedContent()
+    )
+  }
+}
+
+class ApproxAccessPathFrontNil extends ApproxAccessPathFront, TApproxFrontNil {
+  private DataFlowType t;
+
+  ApproxAccessPathFrontNil() { this = TApproxFrontNil(t) }
+
+  override string toString() { result = ppReprType(t) }
+
+  override DataFlowType getType() { result = t }
+
+  override boolean toBoolNonEmpty() { result = false }
+}
+
+class ApproxAccessPathFrontHead extends ApproxAccessPathFront, TApproxFrontHead {
+  private TypedContentApprox tc;
+
+  ApproxAccessPathFrontHead() { this = TApproxFrontHead(tc) }
+
+  override string toString() { result = tc.toString() }
+
+  override DataFlowType getType() { result = tc.getContainerType() }
+
+  override boolean toBoolNonEmpty() { result = true }
+}
+
+/** An optional approximated access path front. */
+class ApproxAccessPathFrontOption extends TApproxAccessPathFrontOption {
+  string toString() {
+    this = TApproxAccessPathFrontNone() and result = "<none>"
+    or
+    this = TApproxAccessPathFrontSome(any(ApproxAccessPathFront apf | result = apf.toString()))
   }
 }
 
@@ -1385,7 +1487,7 @@ abstract class AccessPathFront extends TAccessPathFront {
 
   abstract DataFlowType getType();
 
-  abstract boolean toBoolNonEmpty();
+  abstract ApproxAccessPathFront toApprox();
 
   TypedContent getHead() { this = TFrontHead(result) }
 }
@@ -1399,7 +1501,7 @@ class AccessPathFrontNil extends AccessPathFront, TFrontNil {
 
   override DataFlowType getType() { result = t }
 
-  override boolean toBoolNonEmpty() { result = false }
+  override ApproxAccessPathFront toApprox() { result = TApproxFrontNil(t) }
 }
 
 class AccessPathFrontHead extends AccessPathFront, TFrontHead {
@@ -1411,7 +1513,7 @@ class AccessPathFrontHead extends AccessPathFront, TFrontHead {
 
   override DataFlowType getType() { result = tc.getContainerType() }
 
-  override boolean toBoolNonEmpty() { result = true }
+  override ApproxAccessPathFront toApprox() { result.getAHead() = tc }
 }
 
 /** An optional access path front. */

@@ -30,9 +30,16 @@ module Ssa {
         certain = true
       )
       or
-      exists(PatternBindingDecl decl, Pattern pattern |
+      // Any variable initialization through pattern matching. For example each `x*` in:
+      // ```
+      // var x1 = v
+      // let x2 = v
+      // let (x3, x4) = tuple
+      // if let x5 = optional { ... }
+      // guard let x6 = optional else { ... }
+      // ```
+      exists(Pattern pattern |
         bb.getNode(i).getNode().asAstNode() = pattern and
-        decl.getAPattern() = pattern and
         v.getParentPattern() = pattern and
         certain = true
       )
@@ -153,10 +160,16 @@ module Ssa {
         pbd.getAPattern() = bb.getNode(blockIndex).getNode().asAstNode() and
         init = var.getParentInitializer()
       |
-        value.getNode().asAstNode() = init
-        or
-        // TODO: We should probably enumerate more cfg nodes here.
-        value.(PropertyGetterCfgNode).getRef() = init
+        value.getAst() = init
+      )
+      or
+      exists(SsaInput::BasicBlock bb, int blockIndex, ConditionElement ce, Expr init |
+        this.definesAt(_, bb, blockIndex) and
+        ce.getPattern() = bb.getNode(blockIndex).getNode().asAstNode() and
+        init = ce.getInitializer() and
+        strictcount(Ssa::WriteDefinition alt | alt.definesAt(_, bb, blockIndex)) = 1 // exclude cases where there are multiple writes from the same pattern, this is at best taint flow.
+      |
+        value.getAst() = init
       )
     }
   }
@@ -165,8 +178,8 @@ module Ssa {
   class PhiDefinition extends Definition, SsaImpl::PhiNode {
     cached
     override Location getLocation() {
-      exists(SsaInput::BasicBlock bb, int i |
-        this.definesAt(_, bb, i) and
+      exists(SsaInput::BasicBlock bb |
+        this.definesAt(_, bb, _) and
         result = bb.getLocation()
       )
     }

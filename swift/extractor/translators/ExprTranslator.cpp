@@ -477,6 +477,7 @@ void ExprTranslator::fillAbstractClosureExpr(const swift::AbstractClosureExpr& e
   assert(expr.getParameters() && "AbstractClosureExpr has getParameters()");
   entry.params = dispatcher.fetchRepeatedLabels(*expr.getParameters());
   entry.body = dispatcher.fetchLabel(expr.getBody());
+  entry.captures = dispatcher.fetchRepeatedLabels(expr.getCaptureInfo().getCaptures());
 }
 
 TrapLabel<ArgumentTag> ExprTranslator::emitArgument(const swift::Argument& arg) {

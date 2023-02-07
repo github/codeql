@@ -30,17 +30,15 @@ private ClassPredicate getUltimateDef(ClassPredicate p) {
 }
 
 predicate redundantOverride(ClassPredicate pred, ClassPredicate sup) {
-  exists(MemberCall mc |
-    forwardingOverride(pred, mc, sup) and
-    // overridden to provide more precise QL doc
-    not exists(pred.getQLDoc()) and
-    // overridden to disambiguate
-    not exists(ClassPredicate other |
-      getUltimateDef(sup) != getUltimateDef(other) and
-      pred.getDeclaringType().getASuperType+() = other.getDeclaringType() and
-      not sup.overrides*(other) and
-      other.getName() = pred.getName() and
-      other.getArity() = pred.getArity()
-    )
+  forwardingOverride(pred, _, sup) and
+  // overridden to provide more precise QL doc
+  not exists(pred.getQLDoc()) and
+  // overridden to disambiguate
+  not exists(ClassPredicate other |
+    getUltimateDef(sup) != getUltimateDef(other) and
+    pred.getDeclaringType().getASuperType+() = other.getDeclaringType() and
+    not sup.overrides*(other) and
+    other.getName() = pred.getName() and
+    other.getArity() = pred.getArity()
   )
 }

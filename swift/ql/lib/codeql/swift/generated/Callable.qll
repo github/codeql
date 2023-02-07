@@ -2,11 +2,22 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.BraceStmt
+import codeql.swift.elements.decl.CapturedDecl
 import codeql.swift.elements.Element
 import codeql.swift.elements.decl.ParamDecl
 
 module Generated {
   class Callable extends Synth::TCallable, Element {
+    /**
+     * Gets the name of this callable, if it exists.
+     */
+    string getName() { result = Synth::convertCallableToRaw(this).(Raw::Callable).getName() }
+
+    /**
+     * Holds if `getName()` exists.
+     */
+    final predicate hasName() { exists(getName()) }
+
     /**
      * Gets the self parameter of this callable, if it exists.
      *
@@ -80,5 +91,33 @@ module Generated {
      * Holds if `getBody()` exists.
      */
     final predicate hasBody() { exists(getBody()) }
+
+    /**
+     * Gets the `index`th capture of this callable (0-based).
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    CapturedDecl getImmediateCapture(int index) {
+      result =
+        Synth::convertCapturedDeclFromRaw(Synth::convertCallableToRaw(this)
+              .(Raw::Callable)
+              .getCapture(index))
+    }
+
+    /**
+     * Gets the `index`th capture of this callable (0-based).
+     */
+    final CapturedDecl getCapture(int index) { result = getImmediateCapture(index).resolve() }
+
+    /**
+     * Gets any of the captures of this callable.
+     */
+    final CapturedDecl getACapture() { result = getCapture(_) }
+
+    /**
+     * Gets the number of captures of this callable.
+     */
+    final int getNumberOfCaptures() { result = count(int i | exists(getCapture(i))) }
   }
 }

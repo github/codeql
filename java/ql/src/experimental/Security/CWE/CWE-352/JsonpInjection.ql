@@ -7,6 +7,7 @@
  * @precision high
  * @id java/jsonp-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-352
  */
 

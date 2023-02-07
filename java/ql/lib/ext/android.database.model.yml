@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["android.database", "DatabaseUtils", False, "blobFileDescriptorForQuery", "(SQLiteDatabase,String,String[])", "", "Argument[1]", "sql", "manual"]
       - ["android.database", "DatabaseUtils", False, "createDbFromSqlStatements", "(Context,String,int,String)", "", "Argument[3]", "sql", "manual"]
@@ -12,7 +12,7 @@ extensions:
       - ["android.database", "DatabaseUtils", False, "stringForQuery", "(SQLiteDatabase,String,String[])", "", "Argument[1]", "sql", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["android.database", "Cursor", True, "copyStringToBuffer", "", "", "Argument[-1]", "Argument[1]", "taint", "manual"]
       - ["android.database", "Cursor", True, "getBlob", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

@@ -15,7 +15,6 @@ sourceLocationPrefix(
   @callable
 | @file
 | @generic_context
-| @iterable_decl_context
 | @locatable
 | @location
 | @type
@@ -30,6 +29,12 @@ element_is_unknown(
   @abstract_closure_expr
 | @abstract_function_decl
 ;
+
+#keyset[id]
+callable_names(
+  int id: @callable ref,
+  string name: string ref
+);
 
 #keyset[id]
 callable_self_params(
@@ -48,6 +53,13 @@ callable_params(
 callable_bodies(
   int id: @callable ref,
   int body: @brace_stmt_or_none ref
+);
+
+#keyset[id, index]
+callable_captures(
+  int id: @callable ref,
+  int index: int ref,
+  int capture: @captured_decl_or_none ref
 );
 
 @file =
@@ -152,7 +164,8 @@ unspecified_element_indices(
 );
 
 @decl =
-  @enum_case_decl
+  @captured_decl
+| @enum_case_decl
 | @extension_decl
 | @if_config_decl
 | @import_decl
@@ -171,6 +184,13 @@ decls(  //dir=decl
   int module: @module_decl_or_none ref
 );
 
+#keyset[id, index]
+decl_members(  //dir=decl
+  int id: @decl ref,
+  int index: int ref,
+  int member: @decl_or_none ref
+);
+
 @generic_context =
   @abstract_function_decl
 | @extension_decl
@@ -185,16 +205,19 @@ generic_context_generic_type_params(  //dir=decl
   int generic_type_param: @generic_type_param_decl_or_none ref
 );
 
-@iterable_decl_context =
-  @extension_decl
-| @nominal_type_decl
-;
+captured_decls(  //dir=decl
+  unique int id: @captured_decl,
+  int decl: @value_decl_or_none ref
+);
 
-#keyset[id, index]
-iterable_decl_context_members(  //dir=decl
-  int id: @iterable_decl_context ref,
-  int index: int ref,
-  int member: @decl_or_none ref
+#keyset[id]
+captured_decl_is_direct(  //dir=decl
+  int id: @captured_decl ref
+);
+
+#keyset[id]
+captured_decl_is_escaping(  //dir=decl
+  int id: @captured_decl ref
 );
 
 enum_case_decls(  //dir=decl
@@ -211,6 +234,13 @@ enum_case_decl_elements(  //dir=decl
 extension_decls(  //dir=decl
   unique int id: @extension_decl,
   int extended_type_decl: @nominal_type_decl_or_none ref
+);
+
+#keyset[id, index]
+extension_decl_protocols(  //dir=decl
+  int id: @extension_decl ref,
+  int index: int ref,
+  int protocol: @protocol_decl_or_none ref
 );
 
 if_config_decls(  //dir=decl
@@ -314,12 +344,6 @@ value_decls(  //dir=decl
 | @destructor_decl
 | @func_decl
 ;
-
-#keyset[id]
-abstract_function_decls(  //dir=decl
-  int id: @abstract_function_decl ref,
-  string name: string ref
-);
 
 @abstract_storage_decl =
   @subscript_decl
@@ -2361,6 +2385,11 @@ variadic_sequence_types(  //dir=type
 
 @brace_stmt_or_none =
   @brace_stmt
+| @unspecified_element
+;
+
+@captured_decl_or_none =
+  @captured_decl
 | @unspecified_element
 ;
 

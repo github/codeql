@@ -7,7 +7,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["jodd.json", "JsonParser", False, "allowAllClasses", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
       - ["jodd.json", "JsonParser", False, "allowClass", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]

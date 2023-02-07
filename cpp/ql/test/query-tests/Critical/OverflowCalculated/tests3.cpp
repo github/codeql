@@ -1,4 +1,4 @@
-// tests1.cpp
+// tests3.cpp
 
 typedef unsigned int size_t;
 
@@ -65,4 +65,22 @@ void test3c()
 	strcat(buffer, "123456");
 
 	delete buffer;
+}
+
+ // --- custom allocators ---
+ 
+void *MyMalloc1(size_t size) { return std::malloc(size); }
+void *MyMalloc2(size_t size);
+
+void tests4()
+{
+	const char *str4 = "1234";
+	char *buffer1 = 0;
+	char *buffer2 = 0;
+
+	buffer1 = (char *)MyMalloc1(strlen(str4)); // BAD
+	strcpy(buffer1, str4);
+
+	buffer2 = (char *)MyMalloc2(strlen(str4)); // BAD
+	strcpy(buffer2, str4);
 }

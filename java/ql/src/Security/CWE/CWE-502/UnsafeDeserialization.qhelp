@@ -28,11 +28,52 @@ for example JSON or XML.  However, these formats should not be deserialized
 into complex objects because this provides further opportunities for attack.
 For example, XML-based deserialization attacks
 are possible through libraries such as XStream and XmlDecoder.
-
+</p>
+<p>
 Alternatively, a tightly controlled whitelist can limit the vulnerability of code, but be aware
 of the existence of so-called Bypass Gadgets, which can circumvent such
 protection measures.
 </p>
+<p>
+Recommendations specific to particular frameworks supported by this query:
+</p>
+<p><b>FastJson</b> - <code>com.alibaba:fastjson</code></p>
+    <ul>
+        <li><b>Secure by Default</b>: Partially</li>
+        <li><b>Recommendation</b>: Call <code>com.alibaba.fastjson.parser.ParserConfig#setSafeMode</code> with the argument <code>true</code> before deserializing untrusted data.</li>
+    </ul>
+<p></p>
+<p><b>FasterXML</b> -  <code>com.fasterxml.jackson.core:jackson-databind</code></p>
+    <ul>
+        <li><b>Secure by Default</b>: Yes</li>
+        <li><b>Recommendation</b>: Don't call <code>com.fasterxml.jackson.databind.ObjectMapper#enableDefaultTyping</code> and don't annotate any object fields with <code>com.fasterxml.jackson.annotation.JsonTypeInfo</code> passing either the <code>CLASS</code> or <code>MINIMAL_CLASS</code> values to the annotation.
+            Read <a href="https://cowtowncoder.medium.com/jackson-2-10-safe-default-typing-2d018f0ce2ba">this guide</a>.</li>
+    </ul>
+<p></p>
+<p><b>Kryo</b> - <code>com.esotericsoftware:kryo</code> and <code>com.esotericsoftware:kryo5</code></p>
+    <ul>
+        <li><b>Secure by Default</b>: Yes for <code>com.esotericsoftware:kryo5</code> and for <code>com.esotericsoftware:kryo</code> >= v5.0.0</li>
+        <li><b>Recommendation</b>: Don't call <code>com.esotericsoftware.kryo(5).Kryo#setRegistrationRequired</code> with the argument <code>false</code> on any <code>Kryo</code> instance that may deserialize untrusted data.</li>
+    </ul>
+<p></p>
+<p><b>ObjectInputStream</b> -  <code>Java Standard Library</code></p>
+    <ul>
+        <li><b>Secure by Default</b>: No</li>
+        <li><b>Recommendation</b>: Use a validating input stream, such as  <code>org.apache.commons.io.serialization.ValidatingObjectInputStream</code>.</li>
+    </ul>
+<p></p>
+<p><b>SnakeYAML</b> - <code>org.yaml:snakeyaml</code></p>
+    <ul>
+        <li><b>Secure by Default</b>: No</li>
+        <li><b>Recommendation</b>: Pass an instance of <code>org.yaml.snakeyaml.constructor.SafeConstructor</code> to  <code>org.yaml.snakeyaml.Yaml</code>'s constructor before using it to deserialize untrusted data.</li>
+    </ul>
+<p></p>
+<p><b>XML Decoder</b> - <code>Standard Java Library</code></p>
+    <ul>
+        <li><b>Secure by Default</b>: No</li>
+        <li><b>Recommendation</b>: Do not use with untrusted user input.</li>
+    </ul>
+<p></p>
 </recommendation>
 
 <example>
@@ -74,7 +115,7 @@ Alvaro Muñoz &amp; Christian Schneider, RSAConference 2016:
 </li>
 <li>
 SnakeYaml documentation on deserialization:
-<a href="https://bitbucket.org/asomov/snakeyaml/wiki/Documentation#markdown-header-loading-yaml">SnakeYaml deserialization</a>.
+<a href="https://bitbucket.org/snakeyaml/snakeyaml/wiki/Documentation#markdown-header-loading-yaml">SnakeYaml deserialization</a>.
 </li>
 <li>
 Hessian deserialization and related gadget chains:

@@ -14,6 +14,7 @@ module Synth {
     TUnspecifiedElement(Raw::UnspecifiedElement id) { constructUnspecifiedElement(id) } or
     TAccessorDecl(Raw::AccessorDecl id) { constructAccessorDecl(id) } or
     TAssociatedTypeDecl(Raw::AssociatedTypeDecl id) { constructAssociatedTypeDecl(id) } or
+    TCapturedDecl(Raw::CapturedDecl id) { constructCapturedDecl(id) } or
     TClassDecl(Raw::ClassDecl id) { constructClassDecl(id) } or
     TConcreteFuncDecl(Raw::ConcreteFuncDecl id) { constructConcreteFuncDecl(id) } or
     TConcreteVarDecl(Raw::ConcreteVarDecl id) { constructConcreteVarDecl(id) } or
@@ -144,7 +145,7 @@ module Synth {
     } or
     TMemberRefExpr(Raw::MemberRefExpr id) { constructMemberRefExpr(id) } or
     TMetatypeConversionExpr(Raw::MetatypeConversionExpr id) { constructMetatypeConversionExpr(id) } or
-    TMethodRefExpr(Raw::DotSyntaxCallExpr id) { constructMethodRefExpr(id) } or
+    TMethodLookupExpr(Raw::SelfApplyExpr id) { constructMethodLookupExpr(id) } or
     TNilLiteralExpr(Raw::NilLiteralExpr id) { constructNilLiteralExpr(id) } or
     TObjCSelectorExpr(Raw::ObjCSelectorExpr id) { constructObjCSelectorExpr(id) } or
     TObjectLiteralExpr(Raw::ObjectLiteralExpr id) { constructObjectLiteralExpr(id) } or
@@ -327,9 +328,9 @@ module Synth {
   class TAbstractTypeParamDecl = TAssociatedTypeDecl or TGenericTypeParamDecl;
 
   class TDecl =
-    TEnumCaseDecl or TExtensionDecl or TIfConfigDecl or TImportDecl or TMissingMemberDecl or
-        TOperatorDecl or TPatternBindingDecl or TPoundDiagnosticDecl or TPrecedenceGroupDecl or
-        TTopLevelCodeDecl or TValueDecl;
+    TCapturedDecl or TEnumCaseDecl or TExtensionDecl or TIfConfigDecl or TImportDecl or
+        TMissingMemberDecl or TOperatorDecl or TPatternBindingDecl or TPoundDiagnosticDecl or
+        TPrecedenceGroupDecl or TTopLevelCodeDecl or TValueDecl;
 
   class TFuncDecl = TAccessorDecl or TConcreteFuncDecl;
 
@@ -337,8 +338,6 @@ module Synth {
     TAbstractFunctionDecl or TExtensionDecl or TGenericTypeDecl or TSubscriptDecl;
 
   class TGenericTypeDecl = TNominalTypeDecl or TOpaqueTypeDecl or TTypeAliasDecl;
-
-  class TIterableDeclContext = TExtensionDecl or TNominalTypeDecl;
 
   class TNominalTypeDecl = TClassDecl or TEnumDecl or TProtocolDecl or TStructDecl;
 
@@ -404,7 +403,7 @@ module Synth {
     TBuiltinLiteralExpr or TInterpolatedStringLiteralExpr or TNilLiteralExpr or
         TObjectLiteralExpr or TRegexLiteralExpr;
 
-  class TLookupExpr = TDynamicLookupExpr or TMemberRefExpr or TMethodRefExpr or TSubscriptExpr;
+  class TLookupExpr = TDynamicLookupExpr or TMemberRefExpr or TMethodLookupExpr or TSubscriptExpr;
 
   class TNumberLiteralExpr = TFloatLiteralExpr or TIntegerLiteralExpr;
 
@@ -495,6 +494,9 @@ module Synth {
   TAssociatedTypeDecl convertAssociatedTypeDeclFromRaw(Raw::Element e) {
     result = TAssociatedTypeDecl(e)
   }
+
+  cached
+  TCapturedDecl convertCapturedDeclFromRaw(Raw::Element e) { result = TCapturedDecl(e) }
 
   cached
   TClassDecl convertClassDeclFromRaw(Raw::Element e) { result = TClassDecl(e) }
@@ -885,7 +887,7 @@ module Synth {
   }
 
   cached
-  TMethodRefExpr convertMethodRefExprFromRaw(Raw::Element e) { result = TMethodRefExpr(e) }
+  TMethodLookupExpr convertMethodLookupExprFromRaw(Raw::Element e) { result = TMethodLookupExpr(e) }
 
   cached
   TNilLiteralExpr convertNilLiteralExprFromRaw(Raw::Element e) { result = TNilLiteralExpr(e) }
@@ -1381,8 +1383,6 @@ module Synth {
     or
     result = convertGenericContextFromRaw(e)
     or
-    result = convertIterableDeclContextFromRaw(e)
-    or
     result = convertLocatableFromRaw(e)
     or
     result = convertLocationFromRaw(e)
@@ -1469,6 +1469,8 @@ module Synth {
 
   cached
   TDecl convertDeclFromRaw(Raw::Element e) {
+    result = convertCapturedDeclFromRaw(e)
+    or
     result = convertEnumCaseDeclFromRaw(e)
     or
     result = convertExtensionDeclFromRaw(e)
@@ -1517,13 +1519,6 @@ module Synth {
     result = convertOpaqueTypeDeclFromRaw(e)
     or
     result = convertTypeAliasDeclFromRaw(e)
-  }
-
-  cached
-  TIterableDeclContext convertIterableDeclContextFromRaw(Raw::Element e) {
-    result = convertExtensionDeclFromRaw(e)
-    or
-    result = convertNominalTypeDeclFromRaw(e)
   }
 
   cached
@@ -1841,7 +1836,7 @@ module Synth {
     or
     result = convertMemberRefExprFromRaw(e)
     or
-    result = convertMethodRefExprFromRaw(e)
+    result = convertMethodLookupExprFromRaw(e)
     or
     result = convertSubscriptExprFromRaw(e)
   }
@@ -2135,6 +2130,9 @@ module Synth {
   Raw::Element convertAssociatedTypeDeclToRaw(TAssociatedTypeDecl e) {
     e = TAssociatedTypeDecl(result)
   }
+
+  cached
+  Raw::Element convertCapturedDeclToRaw(TCapturedDecl e) { e = TCapturedDecl(result) }
 
   cached
   Raw::Element convertClassDeclToRaw(TClassDecl e) { e = TClassDecl(result) }
@@ -2523,7 +2521,7 @@ module Synth {
   }
 
   cached
-  Raw::Element convertMethodRefExprToRaw(TMethodRefExpr e) { e = TMethodRefExpr(result) }
+  Raw::Element convertMethodLookupExprToRaw(TMethodLookupExpr e) { e = TMethodLookupExpr(result) }
 
   cached
   Raw::Element convertNilLiteralExprToRaw(TNilLiteralExpr e) { e = TNilLiteralExpr(result) }
@@ -3019,8 +3017,6 @@ module Synth {
     or
     result = convertGenericContextToRaw(e)
     or
-    result = convertIterableDeclContextToRaw(e)
-    or
     result = convertLocatableToRaw(e)
     or
     result = convertLocationToRaw(e)
@@ -3107,6 +3103,8 @@ module Synth {
 
   cached
   Raw::Element convertDeclToRaw(TDecl e) {
+    result = convertCapturedDeclToRaw(e)
+    or
     result = convertEnumCaseDeclToRaw(e)
     or
     result = convertExtensionDeclToRaw(e)
@@ -3155,13 +3153,6 @@ module Synth {
     result = convertOpaqueTypeDeclToRaw(e)
     or
     result = convertTypeAliasDeclToRaw(e)
-  }
-
-  cached
-  Raw::Element convertIterableDeclContextToRaw(TIterableDeclContext e) {
-    result = convertExtensionDeclToRaw(e)
-    or
-    result = convertNominalTypeDeclToRaw(e)
   }
 
   cached
@@ -3479,7 +3470,7 @@ module Synth {
     or
     result = convertMemberRefExprToRaw(e)
     or
-    result = convertMethodRefExprToRaw(e)
+    result = convertMethodLookupExprToRaw(e)
     or
     result = convertSubscriptExprToRaw(e)
   }

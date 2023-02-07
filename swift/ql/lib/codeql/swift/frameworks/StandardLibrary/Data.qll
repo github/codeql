@@ -1,3 +1,7 @@
+/**
+ * Provides models for the `Data` Swift class.
+ */
+
 import swift
 private import codeql.swift.dataflow.ExternalFlow
 
@@ -37,8 +41,6 @@ private class DataSummaries extends SummaryModelCsv {
         ";Data;true;replaceSubrange(_:with:count:);;;Argument[1];Argument[-1];taint",
         ";Data;true;replacing(_:with:maxReplacements:);;;Argument[1];Argument[-1];taint",
         ";Data;true;replacing(_:with:subrange:maxReplacements:);;;Argument[1];Argument[-1];taint",
-        // TODO: this should be implemented by a model of BidirectionalCollection
-        // ";Data;true;reversed();;;Argument[-1];ReturnValue;taint",
         ";Data;true;sorted();;;Argument[-1];ReturnValue;taint",
         ";Data;true;sorted(by:);;;Argument[-1];ReturnValue;taint",
         ";Data;true;sorted(using:);;;Argument[-1];ReturnValue;taint",

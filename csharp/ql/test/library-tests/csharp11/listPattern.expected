@@ -1,0 +1,20 @@
+listPattern
+| ListPattern.cs:7:18:7:19 | [ ... ] |  |
+| ListPattern.cs:8:18:8:20 | [ ... ] | 1 |
+| ListPattern.cs:9:18:9:23 | [ ... ] | _, 2 |
+| ListPattern.cs:10:18:10:30 | [ ... ] | Int32 y, 3, 4 |
+| ListPattern.cs:11:18:11:31 | [ ... ] | ... or ..., _, 7 |
+| ListPattern.cs:12:18:12:31 | [ ... ] | Int32 a, .., 2 |
+| ListPattern.cs:13:18:13:50 | [ ... ] | Int32 b, .., 2 |
+| ListPattern.cs:20:18:20:19 | [ ... ] |  |
+| ListPattern.cs:22:18:22:22 | [ ... ] | "A" |
+| ListPattern.cs:24:18:24:25 | [ ... ] | _, "B" |
+| ListPattern.cs:26:18:26:34 | [ ... ] | String y, "C", "D" |
+| ListPattern.cs:28:18:28:37 | [ ... ] | ... or ..., _, "G" |
+| ListPattern.cs:30:18:30:33 | [ ... ] | String a, .., "H" |
+| ListPattern.cs:32:18:32:39 | [ ... ] | String b, .., "I" |
+slicePattern
+| ListPattern.cs:12:26:12:27 | .. | ..: |
+| ListPattern.cs:13:26:13:46 | .. | ..:{ ... } |
+| ListPattern.cs:30:26:30:27 | .. | ..: |
+| ListPattern.cs:32:26:32:33 | .. | ..:String[] c |

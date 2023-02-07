@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["ratpack.core.http", "Request", True, "getBody", "", "", "ReturnValue", "remote", "manual"]
       - ["ratpack.core.http", "Request", True, "getContentLength", "", "", "ReturnValue", "remote", "manual"]
@@ -15,7 +15,7 @@ extensions:
       - ["ratpack.core.http", "Request", True, "oneCookie", "", "", "ReturnValue", "remote", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["ratpack.core.http", "Headers", True, "asMultiValueMap", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["ratpack.core.http", "Headers", True, "get", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

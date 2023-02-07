@@ -13,6 +13,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.RegexTreeView::RegexTreeView as TreeView
 private import semmle.python.ApiGraphs
+private import semmle.python.regex
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -66,7 +67,7 @@ module PolynomialReDoS {
 
     RegexExecutionAsSink() {
       exists(RegexExecution re |
-        re.getRegex().asExpr() = t.getRegex() and
+        t = getTermForExecution(re) and
         this = re.getString()
       ) and
       t.isRootTerm()

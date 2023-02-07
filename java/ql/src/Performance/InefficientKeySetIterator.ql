@@ -42,9 +42,9 @@ predicate isKeyNext(Expr e, KeySetIterator it) {
 
 class Key extends LocalVariableDecl {
   Key() {
-    exists(LocalVariableDeclExpr lvde, KeySetIterator it |
+    exists(LocalVariableDeclExpr lvde |
       lvde.getVariable() = this and
-      isKeyNext(lvde.getInit(), it)
+      isKeyNext(lvde.getInit(), _)
     )
   }
 

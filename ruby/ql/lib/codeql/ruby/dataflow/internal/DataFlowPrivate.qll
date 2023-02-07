@@ -364,8 +364,8 @@ private module Cached {
     not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
     or
     // Flow into phi node from read
-    exists(SsaImpl::DefinitionExt def, CfgNodes::ExprCfgNode exprFrom |
-      LocalFlow::localFlowSsaInputFromRead(exprFrom, def, nodeTo)
+    exists(CfgNodes::ExprCfgNode exprFrom |
+      LocalFlow::localFlowSsaInputFromRead(exprFrom, _, nodeTo)
     |
       exprFrom = nodeFrom.asExpr() and
       not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
@@ -410,8 +410,8 @@ private module Cached {
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
     or
     // Flow into phi node from read
-    exists(SsaImpl::DefinitionExt def, CfgNodes::ExprCfgNode exprFrom |
-      LocalFlow::localFlowSsaInputFromRead(exprFrom, def, nodeTo) and
+    exists(CfgNodes::ExprCfgNode exprFrom |
+      LocalFlow::localFlowSsaInputFromRead(exprFrom, _, nodeTo) and
       exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr()]
     )
   }
@@ -520,6 +520,13 @@ private module Cached {
       )
     )
   }
+
+  cached
+  newtype TContentApprox =
+    TUnknownElementContentApprox() or
+    TKnownIntegerElementContentApprox() or
+    TKnownElementContentApprox(string approx) { approx = approxKnownElementIndex(_) } or
+    TNonElementContentApprox(Content c) { not c instanceof Content::ElementContent }
 }
 
 class TElementContent = TKnownElementContent or TUnknownElementContent;
@@ -821,8 +828,8 @@ import ParameterNodes
 
 /** A data-flow node used to model flow summaries. */
 class SummaryNode extends NodeImpl, TSummaryNode {
-  private FlowSummaryImpl::Public::SummarizedCallable c;
-  private FlowSummaryImpl::Private::SummaryNodeState state;
+  FlowSummaryImpl::Public::SummarizedCallable c;
+  FlowSummaryImpl::Private::SummaryNodeState state;
 
   SummaryNode() { this = TSummaryNode(c, state) }
 
@@ -886,8 +893,8 @@ private module ArgumentNodes {
       (
         this.asExpr() = call.getBlock()
         or
-        exists(CfgNodes::ExprCfgNode arg, int n |
-          arg = call.getArgument(n) and
+        exists(CfgNodes::ExprCfgNode arg |
+          arg = call.getAnArgument() and
           this.asExpr() = arg and
           arg.getExpr() instanceof BlockArgument
         )
@@ -944,6 +951,11 @@ private module ArgumentNodes {
 
 import ArgumentNodes
 
+/** A call to `new`. */
+private class NewCall extends DataFlowCall {
+  NewCall() { this.asCall().getExpr().(MethodCall).getMethodName() = "new" }
+}
+
 /** A data-flow node that represents a value syntactically returned by a callable. */
 abstract class ReturningNode extends Node {
   /** Gets the kind of this return node. */
@@ -987,7 +999,12 @@ private module ReturnNodes {
     override ReturnKind getKind() {
       if n.getNode() instanceof BreakStmt
       then result instanceof BreakReturnKind
-      else result instanceof NormalReturnKind
+      else
+        exists(CfgScope scope | scope = this.getCfgScope() |
+          if isUserDefinedNew(scope)
+          then result instanceof NewReturnKind
+          else result instanceof NormalReturnKind
+        )
     }
   }
 
@@ -1011,7 +1028,42 @@ private module ReturnNodes {
   class ExprReturnNode extends ReturningNode, ExprNode {
     ExprReturnNode() { exists(Callable c | implicitReturn(c, this) = c.getAStmt()) }
 
-    override ReturnKind getKind() { result instanceof NormalReturnKind }
+    override ReturnKind getKind() {
+      exists(CfgScope scope | scope = this.(NodeImpl).getCfgScope() |
+        if isUserDefinedNew(scope)
+        then result instanceof NewReturnKind
+        else result instanceof NormalReturnKind
+      )
+    }
+  }
+
+  /**
+   * A `self` node inside an `initialize` method through which data may return.
+   *
+   * For example, in
+   *
+   * ```rb
+   * class C
+   *   def initialize(x)
+   *     @x = x
+   *   end
+   * end
+   * ```
+   *
+   * the implicit `self` reference in `@x` will return data stored in the field
+   * `x` out to the call `C.new`.
+   */
+  class InitializeReturnNode extends ExprPostUpdateNode, ReturningNode {
+    InitializeReturnNode() {
+      exists(Method initialize |
+        this.getCfgScope() = initialize and
+        initialize.getName() = "initialize" and
+        initialize = any(ClassDeclaration c).getAMethod() and
+        this.getPreUpdateNode().asExpr().getExpr() instanceof SelfVariableReadAccess
+      )
+    }
+
+    override ReturnKind getKind() { result instanceof NewReturnKind }
   }
 
   /**
@@ -1047,7 +1099,14 @@ private module ReturnNodes {
 
     SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this, rk) }
 
-    override ReturnKind getKind() { result = rk }
+    override ReturnKind getKind() {
+      result = rk
+      or
+      exists(NewCall new |
+        TLibraryCallable(c) = viableLibraryCallable(new) and
+        result instanceof NewReturnKind
+      )
+    }
   }
 }
 
@@ -1071,7 +1130,9 @@ private module OutNodes {
 
     override DataFlowCall getCall(ReturnKind kind) {
       result = call and
-      kind instanceof NormalReturnKind
+      if call instanceof NewCall
+      then kind instanceof NewReturnKind
+      else kind instanceof NormalReturnKind
     }
   }
 
@@ -1367,4 +1428,59 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+}
+
+/** An approximated `Content`. */
+class ContentApprox extends TContentApprox {
+  string toString() {
+    this = TUnknownElementContentApprox() and
+    result = "element"
+    or
+    this = TKnownIntegerElementContentApprox() and
+    result = "approximated integer element"
+    or
+    exists(string approx |
+      this = TKnownElementContentApprox(approx) and
+      result = "approximated element " + approx
+    )
+    or
+    exists(Content c |
+      this = TNonElementContentApprox(c) and
+      result = c.toString()
+    )
+  }
+}
+
+/**
+ * Gets a string for approximating known element indices.
+ *
+ * We take two characters from the serialized index as the projection,
+ * since for symbols this will include the first character.
+ */
+private string approxKnownElementIndex(Content::KnownElementContent c) {
+  not c.getIndex().isInt(_) and
+  exists(string s | s = c.getIndex().serialize() |
+    s.length() < 2 and
+    result = s
+    or
+    result = s.prefix(2)
+    or
+    // workaround for `prefix` not working with Unicode characters
+    s.length() >= 2 and
+    not exists(s.prefix(2)) and
+    result = s
+  )
+}
+
+/** Gets an approximated value for content `c`. */
+ContentApprox getContentApprox(Content c) {
+  c instanceof Content::UnknownElementContent and
+  result = TUnknownElementContentApprox()
+  or
+  c.(Content::KnownElementContent).getIndex().isInt(_) and
+  result = TKnownIntegerElementContentApprox()
+  or
+  result = TKnownElementContentApprox(approxKnownElementIndex(c))
+  or
+  result = TNonElementContentApprox(c)
 }

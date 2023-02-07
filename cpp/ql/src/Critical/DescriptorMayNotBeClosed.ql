@@ -29,7 +29,7 @@ predicate openDefinition(StackVariable v, ControlFlowNode def) {
 }
 
 predicate openReaches(ControlFlowNode def, ControlFlowNode node) {
-  exists(StackVariable v | openDefinition(v, def) and node = def.getASuccessor())
+  openDefinition(_, def) and node = def.getASuccessor()
   or
   exists(StackVariable v, ControlFlowNode mid |
     openDefinition(v, def) and

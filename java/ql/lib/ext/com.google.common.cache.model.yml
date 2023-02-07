@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["com.google.common.cache", "Cache", True, "asMap", "()", "", "Argument[-1].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["com.google.common.cache", "Cache", True, "asMap", "()", "", "Argument[-1].MapValue", "ReturnValue.MapValue", "value", "manual"]

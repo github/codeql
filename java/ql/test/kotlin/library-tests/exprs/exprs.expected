@@ -924,15 +924,15 @@
 | exprs.kt:15:18:15:18 | y | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:16:9:16:10 | i6 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:16:14:16:14 | x | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:16:14:16:20 | ... << ... | exprs.kt:4:1:142:1 | topLevelMethod | LShiftExpr |
+| exprs.kt:16:14:16:20 | ... << ... | exprs.kt:4:1:142:1 | topLevelMethod | LeftShiftExpr |
 | exprs.kt:16:20:16:20 | y | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:17:9:17:10 | i7 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:17:14:17:14 | x | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:17:14:17:20 | ... >> ... | exprs.kt:4:1:142:1 | topLevelMethod | RShiftExpr |
+| exprs.kt:17:14:17:20 | ... >> ... | exprs.kt:4:1:142:1 | topLevelMethod | RightShiftExpr |
 | exprs.kt:17:20:17:20 | y | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:18:9:18:10 | i8 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:18:14:18:14 | x | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:18:14:18:21 | ... >>> ... | exprs.kt:4:1:142:1 | topLevelMethod | URShiftExpr |
+| exprs.kt:18:14:18:21 | ... >>> ... | exprs.kt:4:1:142:1 | topLevelMethod | UnsignedRightShiftExpr |
 | exprs.kt:18:21:18:21 | y | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:19:9:19:10 | i9 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:19:14:19:14 | x | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
@@ -1162,15 +1162,15 @@
 | exprs.kt:72:19:72:20 | ly | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:73:9:73:10 | l6 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:73:14:73:15 | lx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:73:14:73:21 | ... << ... | exprs.kt:4:1:142:1 | topLevelMethod | LShiftExpr |
+| exprs.kt:73:14:73:21 | ... << ... | exprs.kt:4:1:142:1 | topLevelMethod | LeftShiftExpr |
 | exprs.kt:73:21:73:21 | y | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:74:9:74:10 | l7 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:74:14:74:15 | lx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:74:14:74:21 | ... >> ... | exprs.kt:4:1:142:1 | topLevelMethod | RShiftExpr |
+| exprs.kt:74:14:74:21 | ... >> ... | exprs.kt:4:1:142:1 | topLevelMethod | RightShiftExpr |
 | exprs.kt:74:21:74:21 | y | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:75:9:75:10 | l8 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:75:14:75:15 | lx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:75:14:75:22 | ... >>> ... | exprs.kt:4:1:142:1 | topLevelMethod | URShiftExpr |
+| exprs.kt:75:14:75:22 | ... >>> ... | exprs.kt:4:1:142:1 | topLevelMethod | UnsignedRightShiftExpr |
 | exprs.kt:75:22:75:22 | y | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:76:9:76:10 | l9 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:76:14:76:15 | lx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |

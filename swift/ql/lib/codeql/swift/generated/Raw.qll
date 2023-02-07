@@ -6,11 +6,15 @@ module Raw {
   }
 
   class Callable extends @callable, Element {
+    string getName() { callable_names(this, result) }
+
     ParamDecl getSelfParam() { callable_self_params(this, result) }
 
     ParamDecl getParam(int index) { callable_params(this, index, result) }
 
     BraceStmt getBody() { callable_bodies(this, result) }
+
+    CapturedDecl getCapture(int index) { callable_captures(this, index, result) }
   }
 
   class File extends @file, Element {
@@ -73,6 +77,8 @@ module Raw {
 
   class Decl extends @decl, AstNode {
     ModuleDecl getModule() { decls(this, result) }
+
+    Decl getMember(int index) { decl_members(this, index, result) }
   }
 
   class GenericContext extends @generic_context, Element {
@@ -81,8 +87,14 @@ module Raw {
     }
   }
 
-  class IterableDeclContext extends @iterable_decl_context, Element {
-    Decl getMember(int index) { iterable_decl_context_members(this, index, result) }
+  class CapturedDecl extends @captured_decl, Decl {
+    override string toString() { result = "CapturedDecl" }
+
+    ValueDecl getDecl() { captured_decls(this, result) }
+
+    predicate isDirect() { captured_decl_is_direct(this) }
+
+    predicate isEscaping() { captured_decl_is_escaping(this) }
   }
 
   class EnumCaseDecl extends @enum_case_decl, Decl {
@@ -91,10 +103,12 @@ module Raw {
     EnumElementDecl getElement(int index) { enum_case_decl_elements(this, index, result) }
   }
 
-  class ExtensionDecl extends @extension_decl, GenericContext, IterableDeclContext, Decl {
+  class ExtensionDecl extends @extension_decl, GenericContext, Decl {
     override string toString() { result = "ExtensionDecl" }
 
     NominalTypeDecl getExtendedTypeDecl() { extension_decls(this, result) }
+
+    ProtocolDecl getProtocol(int index) { extension_decl_protocols(this, index, result) }
   }
 
   class IfConfigDecl extends @if_config_decl, Decl {
@@ -154,7 +168,6 @@ module Raw {
   }
 
   class AbstractFunctionDecl extends @abstract_function_decl, GenericContext, ValueDecl, Callable {
-    string getName() { abstract_function_decls(this, result) }
   }
 
   class AbstractStorageDecl extends @abstract_storage_decl, ValueDecl {
@@ -289,7 +302,7 @@ module Raw {
     override string toString() { result = "GenericTypeParamDecl" }
   }
 
-  class NominalTypeDecl extends @nominal_type_decl, GenericTypeDecl, IterableDeclContext {
+  class NominalTypeDecl extends @nominal_type_decl, GenericTypeDecl {
     Type getType() { nominal_type_decls(this, result) }
   }
 

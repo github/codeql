@@ -100,7 +100,7 @@ Type baseType(Type t) {
  */
 predicate exprSourceType(Expr use, Type sourceType, Location sourceLoc) {
   // Reaching definitions.
-  if exists(SsaDefinition def, StackVariable v | use = def.getAUse(v))
+  if exists(SsaDefinition def | use = def.getAUse(_))
   then
     exists(SsaDefinition def, StackVariable v | use = def.getAUse(v) |
       defSourceType(def, v, sourceType, sourceLoc)

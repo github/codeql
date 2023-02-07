@@ -100,6 +100,7 @@ class Class:
     qltest_skip: bool = False
     qltest_collapse_hierarchy: bool = False
     qltest_uncollapse_hierarchy: bool = False
+    ql_internal: bool = False
     ipa: bool = False
     doc: List[str] = field(default_factory=list)
 
@@ -130,7 +131,7 @@ class Class:
 
     @property
     def has_doc(self) -> bool:
-        return bool(self.doc)
+        return bool(self.doc) or self.ql_internal
 
 
 @dataclass
@@ -160,6 +161,7 @@ class GetParentImplementation:
     template: ClassVar = 'ql_parent'
 
     classes: List[Class] = field(default_factory=list)
+    additional_imports: List[str] = field(default_factory=list)
 
 
 @dataclass

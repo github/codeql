@@ -21,8 +21,9 @@ import DataFlow::PathGraph
  */
 class StaticInitializationVectorSource extends Expr {
   StaticInitializationVectorSource() {
-    this = any(ArrayExpr arr | arr.getType().getName() = "Array<UInt8>") or
-    this instanceof StringLiteralExpr
+    this instanceof ArrayExpr or
+    this instanceof StringLiteralExpr or
+    this instanceof NumberLiteralExpr
   }
 }
 
@@ -32,14 +33,21 @@ class StaticInitializationVectorSource extends Expr {
 class EncryptionInitializationSink extends Expr {
   EncryptionInitializationSink() {
     // `iv` arg in `init` is a sink
-    exists(CallExpr call, string fName |
+    exists(InitializerCallExpr call |
       call.getStaticTarget()
-          .(ConstructorDecl)
           .hasQualifiedName([
               "AES", "ChaCha20", "Blowfish", "Rabbit", "CBC", "CFB", "GCM", "OCB", "OFB", "PCBC",
               "CCM", "CTR"
-            ], fName) and
+            ], _) and
       call.getArgumentWithLabel("iv").getExpr() = this
+    )
+    or
+    // RNCryptor
+    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
+      c.getFullName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+      c.getAMember() = f and
+      call.getStaticTarget() = f and
+      call.getArgumentWithLabel(["iv", "IV"]).getExpr() = this
     )
   }
 }

@@ -27,8 +27,4 @@ class Configuration extends TaintTracking::Configuration {
     super.isSanitizer(node) or
     node instanceof UnsafeDeserialization::Sanitizer
   }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    UnsafeDeserialization::isAdditionalTaintStep(fromNode, toNode)
-  }
 }

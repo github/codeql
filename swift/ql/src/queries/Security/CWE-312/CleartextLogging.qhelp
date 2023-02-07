@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Attackers could gain access to sensitive information that is logged unencrypted.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Always make sure to encrypt or obfuscate sensitive information before you log it.
+</p>
+
+<p>
+Generally, you should decrypt sensitive information only at the point where it is necessary for it to be used in cleartext.
+</p>
+
+<p>
+Be aware that external processes often store the standard output and
+standard error streams of the application. This will include logged sensitive information.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example code logs user credentials (in this case, their password)
+in plaintext:
+</p>
+<sample src="CleartextLoggingBad.swift"/>
+<p>
+Instead, you should encrypt or obfuscate the credentials, or omit them entirely:
+</p>
+<sample src="CleartextLoggingGood.swift"/>
+</example>
+
+<references>
+
+<li>M. Dowd, J. McDonald and J. Schuhm, <i>The Art of Software Security Assessment</i>, 1st Edition, Chapter 2 - 'Common Vulnerabilities of Encryption', p. 43. Addison Wesley, 2006.</li>
+<li>M. Howard and D. LeBlanc, <i>Writing Secure Code</i>, 2nd Edition, Chapter 9 - 'Protecting Secret Data', p. 299. Microsoft, 2002.</li>
+<li>OWASP: <a href="https://www.owasp.org/index.php/Password_Plaintext_Storage">Password Plaintext Storage</a>.</li>
+
+</references>
+</qhelp>

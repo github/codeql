@@ -230,7 +230,7 @@ func taintThroughData() {
 
 	// ";Data;true;reversed();;;Argument[-1];ReturnValue;taint",
 	let dataTainted34 = source() as! Data
-	sink(arg: dataTainted34.reversed()) // $ MISSING: tainted=232 // Needs models for BidirectionalCollection
+	sink(arg: dataTainted34.reversed()) // $ tainted=232
 
 	// ";Data;true;sorted();;;Argument[-1];ReturnValue;taint",
 	let dataTainted35 = source() as! Data

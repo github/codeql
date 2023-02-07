@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.springframework.cache", "Cache", True, "get", "(Object)", "", "Argument[-1].MapValue", "ReturnValue.MapValue", "value", "manual"]
       - ["org.springframework.cache", "Cache", True, "get", "(Object,Callable)", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]

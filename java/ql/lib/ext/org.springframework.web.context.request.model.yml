@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["org.springframework.web.context.request", "WebRequest", False, "getDescription", "", "", "ReturnValue", "remote", "manual"]
       - ["org.springframework.web.context.request", "WebRequest", False, "getHeader", "", "", "ReturnValue", "remote", "manual"]
