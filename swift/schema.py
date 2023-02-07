@@ -689,8 +689,13 @@ class PrefixUnaryExpr(ApplyExpr):
 class ProtocolMetatypeToObjectExpr(ImplicitConversionExpr):
     pass
 
+@ql.default_doc_name("regular expression")
 class RegexLiteralExpr(LiteralExpr):
-    pass
+    """A regular expression literal which is checked at compile time, for example `/a(a|b)*b/`."""
+    pattern: string
+    version: int | doc(
+        "version of the internal regular expression language being used by Swift")
+
 
 @ql.internal
 class SelfApplyExpr(ApplyExpr):
