@@ -1,17 +1,17 @@
 edges
-| data.swift:24:5:24:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  |
-| data.swift:25:2:25:66 | [summary param] 0 in Data.init(base64Encoded:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(base64Encoded:options:) :  |
-| data.swift:26:2:26:61 | [summary param] 0 in Data.init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(buffer:) :  |
-| data.swift:27:2:27:62 | [summary param] 0 in Data.init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(buffer:) :  |
-| data.swift:28:2:28:45 | [summary param] 0 in Data.init(bytes:count:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytes:count:) :  |
-| data.swift:29:2:29:82 | [summary param] 0 in Data.init(bytesNoCopy:count:deallocator:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytesNoCopy:count:deallocator:) :  |
-| data.swift:30:2:30:50 | [summary param] 0 in Data.init(contentsOf:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(contentsOf:options:) :  |
-| data.swift:31:2:31:29 | [summary param] 0 in Data.init(referencing:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(referencing:) :  |
-| data.swift:32:2:32:24 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  |
-| data.swift:33:2:33:25 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  |
-| data.swift:34:2:34:63 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  |
-| data.swift:35:2:35:52 | [summary param] 0 in append(_:count:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:count:) :  |
-| data.swift:36:2:36:36 | [summary param] 0 in append(contentsOf:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(contentsOf:) :  |
+| data.swift:25:2:25:26 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  |
+| data.swift:26:2:26:66 | [summary param] 0 in Data.init(base64Encoded:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(base64Encoded:options:) :  |
+| data.swift:27:2:27:61 | [summary param] 0 in Data.init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(buffer:) :  |
+| data.swift:28:2:28:62 | [summary param] 0 in Data.init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(buffer:) :  |
+| data.swift:29:2:29:45 | [summary param] 0 in Data.init(bytes:count:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytes:count:) :  |
+| data.swift:30:2:30:82 | [summary param] 0 in Data.init(bytesNoCopy:count:deallocator:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytesNoCopy:count:deallocator:) :  |
+| data.swift:31:2:31:50 | [summary param] 0 in Data.init(contentsOf:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(contentsOf:options:) :  |
+| data.swift:32:2:32:29 | [summary param] 0 in Data.init(referencing:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(referencing:) :  |
+| data.swift:33:2:33:24 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  |
+| data.swift:34:2:34:25 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  |
+| data.swift:35:2:35:63 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  |
+| data.swift:36:2:36:52 | [summary param] 0 in append(_:count:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:count:) :  |
+| data.swift:37:2:37:36 | [summary param] 0 in append(contentsOf:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(contentsOf:) :  |
 | data.swift:38:2:38:88 | [summary param] this in base64EncodedData(options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedData(options:) :  |
 | data.swift:39:2:39:86 | [summary param] this in base64EncodedString(options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedString(options:) :  |
 | data.swift:40:2:40:99 | [summary param] this in compactMap(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in compactMap(_:) :  |
@@ -37,48 +37,48 @@ edges
 | data.swift:64:2:64:72 | [summary param] this in trimmingPrefix(while:) :  | file://:0:0:0:0 | [summary] to write: return (return) in trimmingPrefix(while:) :  |
 | data.swift:81:20:81:51 | call to Data.init(_:) :  | data.swift:82:26:82:26 | dataTainted :  |
 | data.swift:81:20:81:51 | call to Data.init(_:) :  | data.swift:85:12:85:12 | dataTainted |
-| data.swift:81:25:81:47 | .utf8 :  | data.swift:24:5:24:29 | [summary param] 0 in Data.init(_:) :  |
+| data.swift:81:25:81:47 | .utf8 :  | data.swift:25:2:25:26 | [summary param] 0 in Data.init(_:) :  |
 | data.swift:81:25:81:47 | .utf8 :  | data.swift:81:20:81:51 | call to Data.init(_:) :  |
 | data.swift:81:26:81:33 | call to source() :  | data.swift:81:25:81:47 | .utf8 :  |
 | data.swift:82:21:82:37 | call to Data.init(_:) :  | data.swift:86:12:86:12 | dataTainted2 |
-| data.swift:82:26:82:26 | dataTainted :  | data.swift:24:5:24:29 | [summary param] 0 in Data.init(_:) :  |
+| data.swift:82:26:82:26 | dataTainted :  | data.swift:25:2:25:26 | [summary param] 0 in Data.init(_:) :  |
 | data.swift:82:26:82:26 | dataTainted :  | data.swift:82:21:82:37 | call to Data.init(_:) :  |
 | data.swift:89:21:89:71 | call to Data.init(base64Encoded:options:) :  | data.swift:90:12:90:12 | dataTainted3 |
-| data.swift:89:41:89:48 | call to source() :  | data.swift:25:2:25:66 | [summary param] 0 in Data.init(base64Encoded:options:) :  |
+| data.swift:89:41:89:48 | call to source() :  | data.swift:26:2:26:66 | [summary param] 0 in Data.init(base64Encoded:options:) :  |
 | data.swift:89:41:89:48 | call to source() :  | data.swift:89:21:89:71 | call to Data.init(base64Encoded:options:) :  |
 | data.swift:93:21:93:73 | call to Data.init(buffer:) :  | data.swift:94:12:94:12 | dataTainted4 |
-| data.swift:93:34:93:41 | call to source() :  | data.swift:26:2:26:61 | [summary param] 0 in Data.init(buffer:) :  |
+| data.swift:93:34:93:41 | call to source() :  | data.swift:27:2:27:61 | [summary param] 0 in Data.init(buffer:) :  |
 | data.swift:93:34:93:41 | call to source() :  | data.swift:93:21:93:73 | call to Data.init(buffer:) :  |
 | data.swift:95:21:95:74 | call to Data.init(buffer:) :  | data.swift:96:12:96:12 | dataTainted5 |
-| data.swift:95:34:95:41 | call to source() :  | data.swift:27:2:27:62 | [summary param] 0 in Data.init(buffer:) :  |
+| data.swift:95:34:95:41 | call to source() :  | data.swift:28:2:28:62 | [summary param] 0 in Data.init(buffer:) :  |
 | data.swift:95:34:95:41 | call to source() :  | data.swift:95:21:95:74 | call to Data.init(buffer:) :  |
 | data.swift:99:21:99:72 | call to Data.init(bytes:count:) :  | data.swift:100:12:100:12 | dataTainted6 |
-| data.swift:99:33:99:40 | call to source() :  | data.swift:28:2:28:45 | [summary param] 0 in Data.init(bytes:count:) :  |
+| data.swift:99:33:99:40 | call to source() :  | data.swift:29:2:29:45 | [summary param] 0 in Data.init(bytes:count:) :  |
 | data.swift:99:33:99:40 | call to source() :  | data.swift:99:21:99:72 | call to Data.init(bytes:count:) :  |
 | data.swift:103:21:103:114 | call to Data.init(bytesNoCopy:count:deallocator:) :  | data.swift:104:12:104:12 | dataTainted7 |
-| data.swift:103:39:103:46 | call to source() :  | data.swift:29:2:29:82 | [summary param] 0 in Data.init(bytesNoCopy:count:deallocator:) :  |
+| data.swift:103:39:103:46 | call to source() :  | data.swift:30:2:30:82 | [summary param] 0 in Data.init(bytesNoCopy:count:deallocator:) :  |
 | data.swift:103:39:103:46 | call to source() :  | data.swift:103:21:103:114 | call to Data.init(bytesNoCopy:count:deallocator:) :  |
 | data.swift:107:20:107:27 | call to source() :  | data.swift:108:38:108:38 | urlTainted8 :  |
 | data.swift:108:21:108:62 | call to Data.init(contentsOf:options:) :  | data.swift:109:12:109:12 | dataTainted8 |
-| data.swift:108:38:108:38 | urlTainted8 :  | data.swift:30:2:30:50 | [summary param] 0 in Data.init(contentsOf:options:) :  |
+| data.swift:108:38:108:38 | urlTainted8 :  | data.swift:31:2:31:50 | [summary param] 0 in Data.init(contentsOf:options:) :  |
 | data.swift:108:38:108:38 | urlTainted8 :  | data.swift:108:21:108:62 | call to Data.init(contentsOf:options:) :  |
 | data.swift:112:21:112:58 | call to Data.init(referencing:) :  | data.swift:113:12:113:12 | dataTainted9 |
-| data.swift:112:39:112:46 | call to source() :  | data.swift:31:2:31:29 | [summary param] 0 in Data.init(referencing:) :  |
+| data.swift:112:39:112:46 | call to source() :  | data.swift:32:2:32:29 | [summary param] 0 in Data.init(referencing:) :  |
 | data.swift:112:39:112:46 | call to source() :  | data.swift:112:21:112:58 | call to Data.init(referencing:) :  |
 | data.swift:117:2:117:2 | [post] dataTainted10 :  | data.swift:118:12:118:12 | dataTainted10 |
-| data.swift:117:23:117:30 | call to source() :  | data.swift:32:2:32:24 | [summary param] 0 in append(_:) :  |
+| data.swift:117:23:117:30 | call to source() :  | data.swift:33:2:33:24 | [summary param] 0 in append(_:) :  |
 | data.swift:117:23:117:30 | call to source() :  | data.swift:117:2:117:2 | [post] dataTainted10 :  |
 | data.swift:121:2:121:2 | [post] dataTainted11 :  | data.swift:122:12:122:12 | dataTainted11 |
-| data.swift:121:23:121:30 | call to source() :  | data.swift:33:2:33:25 | [summary param] 0 in append(_:) :  |
+| data.swift:121:23:121:30 | call to source() :  | data.swift:34:2:34:25 | [summary param] 0 in append(_:) :  |
 | data.swift:121:23:121:30 | call to source() :  | data.swift:121:2:121:2 | [post] dataTainted11 :  |
 | data.swift:125:2:125:2 | [post] dataTainted12 :  | data.swift:126:12:126:12 | dataTainted12 |
-| data.swift:125:23:125:30 | call to source() :  | data.swift:34:2:34:63 | [summary param] 0 in append(_:) :  |
+| data.swift:125:23:125:30 | call to source() :  | data.swift:35:2:35:63 | [summary param] 0 in append(_:) :  |
 | data.swift:125:23:125:30 | call to source() :  | data.swift:125:2:125:2 | [post] dataTainted12 :  |
 | data.swift:130:2:130:2 | [post] dataTainted13 :  | data.swift:131:12:131:12 | dataTainted13 |
-| data.swift:130:23:130:30 | call to source() :  | data.swift:35:2:35:52 | [summary param] 0 in append(_:count:) :  |
+| data.swift:130:23:130:30 | call to source() :  | data.swift:36:2:36:52 | [summary param] 0 in append(_:count:) :  |
 | data.swift:130:23:130:30 | call to source() :  | data.swift:130:2:130:2 | [post] dataTainted13 :  |
 | data.swift:135:2:135:2 | [post] dataTainted14 :  | data.swift:136:12:136:12 | dataTainted14 |
-| data.swift:135:35:135:42 | call to source() :  | data.swift:36:2:36:36 | [summary param] 0 in append(contentsOf:) :  |
+| data.swift:135:35:135:42 | call to source() :  | data.swift:37:2:37:36 | [summary param] 0 in append(contentsOf:) :  |
 | data.swift:135:35:135:42 | call to source() :  | data.swift:135:2:135:2 | [post] dataTainted14 :  |
 | data.swift:139:22:139:29 | call to source() :  | data.swift:140:12:140:12 | dataTainted15 :  |
 | data.swift:140:12:140:12 | dataTainted15 :  | data.swift:38:2:38:88 | [summary param] this in base64EncodedData(options:) :  |
@@ -182,6 +182,7 @@ edges
 | file://:0:0:0:0 | [summary param] this in remove(at:) :  | file://:0:0:0:0 | [summary] to write: return (return) in remove(at:) :  |
 | file://:0:0:0:0 | [summary param] this in removeFirst() :  | file://:0:0:0:0 | [summary] to write: return (return) in removeFirst() :  |
 | file://:0:0:0:0 | [summary param] this in removeLast() :  | file://:0:0:0:0 | [summary] to write: return (return) in removeLast() :  |
+| file://:0:0:0:0 | [summary param] this in reversed() :  | file://:0:0:0:0 | [summary] to write: return (return) in reversed() :  |
 | file://:0:0:0:0 | [summary param] this in reversed() :  | file://:0:0:0:0 | [summary] to write: return (return) in reversed() :  |
 | file://:0:0:0:0 | [summary param] this in split(maxSplits:omittingEmptySubsequences:whereSeparator:) :  | file://:0:0:0:0 | [summary] to write: return (return) in split(maxSplits:omittingEmptySubsequences:whereSeparator:) :  |
 | file://:0:0:0:0 | [summary param] this in split(separator:maxSplits:omittingEmptySubsequences:) :  | file://:0:0:0:0 | [summary] to write: return (return) in split(separator:maxSplits:omittingEmptySubsequences:) :  |
@@ -871,19 +872,19 @@ edges
 | webview.swift:150:10:150:10 | src :  | webview.swift:72:9:72:9 | self :  |
 | webview.swift:150:10:150:10 | src :  | webview.swift:150:10:150:14 | .request |
 nodes
-| data.swift:24:5:24:29 | [summary param] 0 in Data.init(_:) :  | semmle.label | [summary param] 0 in Data.init(_:) :  |
-| data.swift:25:2:25:66 | [summary param] 0 in Data.init(base64Encoded:options:) :  | semmle.label | [summary param] 0 in Data.init(base64Encoded:options:) :  |
-| data.swift:26:2:26:61 | [summary param] 0 in Data.init(buffer:) :  | semmle.label | [summary param] 0 in Data.init(buffer:) :  |
-| data.swift:27:2:27:62 | [summary param] 0 in Data.init(buffer:) :  | semmle.label | [summary param] 0 in Data.init(buffer:) :  |
-| data.swift:28:2:28:45 | [summary param] 0 in Data.init(bytes:count:) :  | semmle.label | [summary param] 0 in Data.init(bytes:count:) :  |
-| data.swift:29:2:29:82 | [summary param] 0 in Data.init(bytesNoCopy:count:deallocator:) :  | semmle.label | [summary param] 0 in Data.init(bytesNoCopy:count:deallocator:) :  |
-| data.swift:30:2:30:50 | [summary param] 0 in Data.init(contentsOf:options:) :  | semmle.label | [summary param] 0 in Data.init(contentsOf:options:) :  |
-| data.swift:31:2:31:29 | [summary param] 0 in Data.init(referencing:) :  | semmle.label | [summary param] 0 in Data.init(referencing:) :  |
-| data.swift:32:2:32:24 | [summary param] 0 in append(_:) :  | semmle.label | [summary param] 0 in append(_:) :  |
-| data.swift:33:2:33:25 | [summary param] 0 in append(_:) :  | semmle.label | [summary param] 0 in append(_:) :  |
-| data.swift:34:2:34:63 | [summary param] 0 in append(_:) :  | semmle.label | [summary param] 0 in append(_:) :  |
-| data.swift:35:2:35:52 | [summary param] 0 in append(_:count:) :  | semmle.label | [summary param] 0 in append(_:count:) :  |
-| data.swift:36:2:36:36 | [summary param] 0 in append(contentsOf:) :  | semmle.label | [summary param] 0 in append(contentsOf:) :  |
+| data.swift:25:2:25:26 | [summary param] 0 in Data.init(_:) :  | semmle.label | [summary param] 0 in Data.init(_:) :  |
+| data.swift:26:2:26:66 | [summary param] 0 in Data.init(base64Encoded:options:) :  | semmle.label | [summary param] 0 in Data.init(base64Encoded:options:) :  |
+| data.swift:27:2:27:61 | [summary param] 0 in Data.init(buffer:) :  | semmle.label | [summary param] 0 in Data.init(buffer:) :  |
+| data.swift:28:2:28:62 | [summary param] 0 in Data.init(buffer:) :  | semmle.label | [summary param] 0 in Data.init(buffer:) :  |
+| data.swift:29:2:29:45 | [summary param] 0 in Data.init(bytes:count:) :  | semmle.label | [summary param] 0 in Data.init(bytes:count:) :  |
+| data.swift:30:2:30:82 | [summary param] 0 in Data.init(bytesNoCopy:count:deallocator:) :  | semmle.label | [summary param] 0 in Data.init(bytesNoCopy:count:deallocator:) :  |
+| data.swift:31:2:31:50 | [summary param] 0 in Data.init(contentsOf:options:) :  | semmle.label | [summary param] 0 in Data.init(contentsOf:options:) :  |
+| data.swift:32:2:32:29 | [summary param] 0 in Data.init(referencing:) :  | semmle.label | [summary param] 0 in Data.init(referencing:) :  |
+| data.swift:33:2:33:24 | [summary param] 0 in append(_:) :  | semmle.label | [summary param] 0 in append(_:) :  |
+| data.swift:34:2:34:25 | [summary param] 0 in append(_:) :  | semmle.label | [summary param] 0 in append(_:) :  |
+| data.swift:35:2:35:63 | [summary param] 0 in append(_:) :  | semmle.label | [summary param] 0 in append(_:) :  |
+| data.swift:36:2:36:52 | [summary param] 0 in append(_:count:) :  | semmle.label | [summary param] 0 in append(_:count:) :  |
+| data.swift:37:2:37:36 | [summary param] 0 in append(contentsOf:) :  | semmle.label | [summary param] 0 in append(contentsOf:) :  |
 | data.swift:38:2:38:88 | [summary param] this in base64EncodedData(options:) :  | semmle.label | [summary param] this in base64EncodedData(options:) :  |
 | data.swift:39:2:39:86 | [summary param] this in base64EncodedString(options:) :  | semmle.label | [summary param] this in base64EncodedString(options:) :  |
 | data.swift:40:2:40:99 | [summary param] this in compactMap(_:) :  | semmle.label | [summary param] this in compactMap(_:) :  |
@@ -1066,6 +1067,7 @@ nodes
 | file://:0:0:0:0 | [summary param] this in removeFirst() :  | semmle.label | [summary param] this in removeFirst() :  |
 | file://:0:0:0:0 | [summary param] this in removeLast() :  | semmle.label | [summary param] this in removeLast() :  |
 | file://:0:0:0:0 | [summary param] this in reversed() :  | semmle.label | [summary param] this in reversed() :  |
+| file://:0:0:0:0 | [summary param] this in reversed() :  | semmle.label | [summary param] this in reversed() :  |
 | file://:0:0:0:0 | [summary param] this in split(maxSplits:omittingEmptySubsequences:whereSeparator:) :  | semmle.label | [summary param] this in split(maxSplits:omittingEmptySubsequences:whereSeparator:) :  |
 | file://:0:0:0:0 | [summary param] this in split(separator:maxSplits:omittingEmptySubsequences:) :  | semmle.label | [summary param] this in split(separator:maxSplits:omittingEmptySubsequences:) :  |
 | file://:0:0:0:0 | [summary param] this in suffix(_:) :  | semmle.label | [summary param] this in suffix(_:) :  |
@@ -1185,6 +1187,7 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in remove(at:) :  | semmle.label | [summary] to write: return (return) in remove(at:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in removeFirst() :  | semmle.label | [summary] to write: return (return) in removeFirst() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in removeLast() :  | semmle.label | [summary] to write: return (return) in removeLast() :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in reversed() :  | semmle.label | [summary] to write: return (return) in reversed() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in reversed() :  | semmle.label | [summary] to write: return (return) in reversed() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in shuffled() :  | semmle.label | [summary] to write: return (return) in shuffled() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in shuffled(using:) :  | semmle.label | [summary] to write: return (return) in shuffled(using:) :  |
@@ -1789,20 +1792,20 @@ nodes
 | webview.swift:150:10:150:10 | src :  | semmle.label | src :  |
 | webview.swift:150:10:150:14 | .request | semmle.label | .request |
 subpaths
-| data.swift:81:25:81:47 | .utf8 :  | data.swift:24:5:24:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | data.swift:81:20:81:51 | call to Data.init(_:) :  |
-| data.swift:82:26:82:26 | dataTainted :  | data.swift:24:5:24:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | data.swift:82:21:82:37 | call to Data.init(_:) :  |
-| data.swift:89:41:89:48 | call to source() :  | data.swift:25:2:25:66 | [summary param] 0 in Data.init(base64Encoded:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(base64Encoded:options:) :  | data.swift:89:21:89:71 | call to Data.init(base64Encoded:options:) :  |
-| data.swift:93:34:93:41 | call to source() :  | data.swift:26:2:26:61 | [summary param] 0 in Data.init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(buffer:) :  | data.swift:93:21:93:73 | call to Data.init(buffer:) :  |
-| data.swift:95:34:95:41 | call to source() :  | data.swift:27:2:27:62 | [summary param] 0 in Data.init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(buffer:) :  | data.swift:95:21:95:74 | call to Data.init(buffer:) :  |
-| data.swift:99:33:99:40 | call to source() :  | data.swift:28:2:28:45 | [summary param] 0 in Data.init(bytes:count:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytes:count:) :  | data.swift:99:21:99:72 | call to Data.init(bytes:count:) :  |
-| data.swift:103:39:103:46 | call to source() :  | data.swift:29:2:29:82 | [summary param] 0 in Data.init(bytesNoCopy:count:deallocator:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytesNoCopy:count:deallocator:) :  | data.swift:103:21:103:114 | call to Data.init(bytesNoCopy:count:deallocator:) :  |
-| data.swift:108:38:108:38 | urlTainted8 :  | data.swift:30:2:30:50 | [summary param] 0 in Data.init(contentsOf:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(contentsOf:options:) :  | data.swift:108:21:108:62 | call to Data.init(contentsOf:options:) :  |
-| data.swift:112:39:112:46 | call to source() :  | data.swift:31:2:31:29 | [summary param] 0 in Data.init(referencing:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(referencing:) :  | data.swift:112:21:112:58 | call to Data.init(referencing:) :  |
-| data.swift:117:23:117:30 | call to source() :  | data.swift:32:2:32:24 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | data.swift:117:2:117:2 | [post] dataTainted10 :  |
-| data.swift:121:23:121:30 | call to source() :  | data.swift:33:2:33:25 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | data.swift:121:2:121:2 | [post] dataTainted11 :  |
-| data.swift:125:23:125:30 | call to source() :  | data.swift:34:2:34:63 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | data.swift:125:2:125:2 | [post] dataTainted12 :  |
-| data.swift:130:23:130:30 | call to source() :  | data.swift:35:2:35:52 | [summary param] 0 in append(_:count:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:count:) :  | data.swift:130:2:130:2 | [post] dataTainted13 :  |
-| data.swift:135:35:135:42 | call to source() :  | data.swift:36:2:36:36 | [summary param] 0 in append(contentsOf:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(contentsOf:) :  | data.swift:135:2:135:2 | [post] dataTainted14 :  |
+| data.swift:81:25:81:47 | .utf8 :  | data.swift:25:2:25:26 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | data.swift:81:20:81:51 | call to Data.init(_:) :  |
+| data.swift:82:26:82:26 | dataTainted :  | data.swift:25:2:25:26 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | data.swift:82:21:82:37 | call to Data.init(_:) :  |
+| data.swift:89:41:89:48 | call to source() :  | data.swift:26:2:26:66 | [summary param] 0 in Data.init(base64Encoded:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(base64Encoded:options:) :  | data.swift:89:21:89:71 | call to Data.init(base64Encoded:options:) :  |
+| data.swift:93:34:93:41 | call to source() :  | data.swift:27:2:27:61 | [summary param] 0 in Data.init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(buffer:) :  | data.swift:93:21:93:73 | call to Data.init(buffer:) :  |
+| data.swift:95:34:95:41 | call to source() :  | data.swift:28:2:28:62 | [summary param] 0 in Data.init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(buffer:) :  | data.swift:95:21:95:74 | call to Data.init(buffer:) :  |
+| data.swift:99:33:99:40 | call to source() :  | data.swift:29:2:29:45 | [summary param] 0 in Data.init(bytes:count:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytes:count:) :  | data.swift:99:21:99:72 | call to Data.init(bytes:count:) :  |
+| data.swift:103:39:103:46 | call to source() :  | data.swift:30:2:30:82 | [summary param] 0 in Data.init(bytesNoCopy:count:deallocator:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytesNoCopy:count:deallocator:) :  | data.swift:103:21:103:114 | call to Data.init(bytesNoCopy:count:deallocator:) :  |
+| data.swift:108:38:108:38 | urlTainted8 :  | data.swift:31:2:31:50 | [summary param] 0 in Data.init(contentsOf:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(contentsOf:options:) :  | data.swift:108:21:108:62 | call to Data.init(contentsOf:options:) :  |
+| data.swift:112:39:112:46 | call to source() :  | data.swift:32:2:32:29 | [summary param] 0 in Data.init(referencing:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(referencing:) :  | data.swift:112:21:112:58 | call to Data.init(referencing:) :  |
+| data.swift:117:23:117:30 | call to source() :  | data.swift:33:2:33:24 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | data.swift:117:2:117:2 | [post] dataTainted10 :  |
+| data.swift:121:23:121:30 | call to source() :  | data.swift:34:2:34:25 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | data.swift:121:2:121:2 | [post] dataTainted11 :  |
+| data.swift:125:23:125:30 | call to source() :  | data.swift:35:2:35:63 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | data.swift:125:2:125:2 | [post] dataTainted12 :  |
+| data.swift:130:23:130:30 | call to source() :  | data.swift:36:2:36:52 | [summary param] 0 in append(_:count:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:count:) :  | data.swift:130:2:130:2 | [post] dataTainted13 :  |
+| data.swift:135:35:135:42 | call to source() :  | data.swift:37:2:37:36 | [summary param] 0 in append(contentsOf:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(contentsOf:) :  | data.swift:135:2:135:2 | [post] dataTainted14 :  |
 | data.swift:140:12:140:12 | dataTainted15 :  | data.swift:38:2:38:88 | [summary param] this in base64EncodedData(options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedData(options:) :  | data.swift:140:12:140:55 | call to base64EncodedData(options:) |
 | data.swift:144:12:144:12 | dataTainted16 :  | data.swift:39:2:39:86 | [summary param] this in base64EncodedString(options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedString(options:) :  | data.swift:144:12:144:57 | call to base64EncodedString(options:) |
 | data.swift:148:29:148:29 | dataTainted17 :  | data.swift:40:2:40:99 | [summary param] this in compactMap(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in compactMap(_:) :  | data.swift:148:29:148:72 | call to compactMap(_:) :  |
