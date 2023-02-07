@@ -839,7 +839,7 @@ class LocalClass extends LocalClassOrInterface, NestedClass {
 class TopLevelType extends RefType {
   TopLevelType() {
     not enclInReftype(this, _) and
-    (this instanceof Class or this instanceof Interface)
+    this instanceof ClassOrInterface
   }
 }
 

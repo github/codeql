@@ -515,7 +515,7 @@ private RefType getAReferencedType(RefType t) {
 
 /** A top level type whose file should be stubbed */
 class GeneratedTopLevel extends TopLevelType instanceof GeneratedType {
-  GeneratedTopLevel() { this = this.getSourceDeclaration() }
+  GeneratedTopLevel() { this = this.(ClassOrInterface).getSourceDeclaration() }
 
   private TopLevelType getAnImportedType() {
     result = getAReferencedType(this).getSourceDeclaration() and
