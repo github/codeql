@@ -77,12 +77,19 @@ module Logrus {
    * An assignment statement that assigns a value to the `Formatter` property of a `Logger` object.
    */
   private class SetFormatterAssignment extends AssignStmt {
+    int lhsIndex;
+
     SetFormatterAssignment() {
       exists(Field field |
-        this.getAnLhs().(SelectorExpr).uses(field) and
+        this.getLhs(lhsIndex).(SelectorExpr).uses(field) and
         field.hasQualifiedName(packagePath(), "Logger", "Formatter")
       )
     }
+
+    /**
+     * Gets the formatter that is being assigned to the `Formatter` property.
+     */
+    Expr getFormatter() { result = this.getRhs(lhsIndex) }
   }
 
   /**
@@ -111,7 +118,7 @@ module Logrus {
       expr = call.asExpr()
     )
     or
-    expr = any(SetFormatterAssignment stmt).getRhs() and
+    expr = any(SetFormatterAssignment stmt).getFormatter() and
     node.asExpr() = expr
   }
 
