@@ -1,5 +1,7 @@
 package com.semmle.js.extractor.test;
 
+import java.io.File;
+
 import com.semmle.js.ast.Node;
 import com.semmle.js.extractor.ExtractionMetrics;
 import com.semmle.js.extractor.ExtractorConfig;

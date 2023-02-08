@@ -1,6 +1,7 @@
 package com.semmle.js.extractor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +19,7 @@ import com.semmle.util.exception.Exceptions;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
+import com.semmle.js.extractor.ParseResultInfo;
 
 /**
  * Extractor for populating JavaScript source code, including AST information, lexical information
@@ -36,14 +38,14 @@ public class JSExtractor {
   private static final Pattern containsModuleIndicator =
       Pattern.compile("(?m)^([ \t]*)(import|export|goog\\.module)\\b");
 
-  public Pair<Label, LoCInfo> extract(
+  public Pair<Label, ParseResultInfo> extract(
       TextualExtractor textualExtractor, String source, TopLevelKind toplevelKind, ScopeManager scopeManager)
       throws ParseError {
     // if the file starts with `{ "<string>":` it won't parse as JavaScript; try parsing as JSON
     // instead
     if (FileExtractor.JSON_OBJECT_START.matcher(textualExtractor.getSource()).matches()) {
       try {
-        LoCInfo loc =
+        ParseResultInfo loc =
             new JSONExtractor(config.withTolerateParseErrors(false)).extract(textualExtractor);
         return Pair.make(null, loc);
       } catch (UserError ue) {
@@ -82,7 +84,7 @@ public class JSExtractor {
     return SourceType.SCRIPT;
   }
 
-  public Pair<Label, LoCInfo> extract(
+  public Pair<Label, ParseResultInfo> extract(
       TextualExtractor textualExtractor,
       String source,
       TopLevelKind toplevelKind,
@@ -97,7 +99,7 @@ public class JSExtractor {
     Platform platform = config.getPlatform();
     Node ast = parserRes.getAST();
     LexicalExtractor lexicalExtractor;
-    LoCInfo loc;
+    ParseResultInfo loc;
     if (ast != null) {
       platform = getPlatform(platform, ast);
       if (sourceType == SourceType.SCRIPT && platform == Platform.NODE) {
@@ -124,9 +126,10 @@ public class JSExtractor {
 
       trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind.getValue());
       locationManager.emitSnippetLocation(toplevelLabel, 1, 1, 1, 1);
-      loc = new LoCInfo(0, 0);
+      loc = new ParseResultInfo(0, 0, Collections.emptyList());
     }
 
+    loc.addParseErrors(parserRes.getErrors());
     for (ParseError parseError : parserRes.getErrors()) {
       if (!config.isTolerateParseErrors()) throw parseError;
       Label key = trapwriter.freshLabel();
