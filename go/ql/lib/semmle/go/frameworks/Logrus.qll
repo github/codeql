@@ -124,7 +124,7 @@ module Logrus {
       // find the enclosing function
       func = expr.getEnclosingFunction() and
       // check that the expression is conditional
-      exists(IfStmt stmt | expr.getParent*() = stmt) and
+      expr.getParent*() instanceof IfStmt and
       // and there isn't another formatter assignment in the function
       not exists(Expr formatterAssignment |
         isFormatter(_, formatterAssignment) and
