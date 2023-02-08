@@ -19,10 +19,10 @@ class Then extends StmtSequence, TThen {
   final override string toString() { result = "then ..." }
 }
 
-class Else extends StmtSequence, TElse {
+class Else extends StmtSequence, TElseReal {
   private Ruby::Else g;
 
-  Else() { this = TElse(g) }
+  Else() { this = TElseReal(g) }
 
   override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 

@@ -557,7 +557,7 @@ class MatchPattern extends Expr, TMatchPattern {
   /**
    * Gets the expression being compared, if any. For example, `foo` in the following example.
    * ```rb
-   * case foo => Point{ x:, y: }
+   * foo => Point{ x:, y: }
    * ```
    */
   final Expr getValue() { toGenerated(result) = g.getValue() }
@@ -598,13 +598,13 @@ class TestPattern extends Expr, TTestPattern {
   /**
    * Gets the expression being compared, if any. For example, `foo` in the following example.
    * ```rb
-   * case foo in Point{ x:, y: }
+   * foo in Point{ x:, y: }
    * ```
    */
   final Expr getValue() { toGenerated(result) = g.getValue() }
 
   /**
-   * Gets the pattern in this `=>` expression. In the
+   * Gets the pattern in this `in` expression. In the
    * following example, the pattern is `Point{ x:, y: }`.
    * ```rb
    * foo in Point{ x:, y: }

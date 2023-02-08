@@ -133,7 +133,7 @@ private module Cached {
     TDo(Ruby::Do g) or
     TDoBlock(Ruby::DoBlock g) { not g.getParent() instanceof Ruby::Lambda } or
     TElementReference(Ruby::ElementReference g) or
-    TElse(Ruby::Else g) or
+    TElseReal(Ruby::Else g) or
     TElseSynth(Ast::AstNode parent, int i) { mkSynthChild(ElseKind(), parent, i) } or
     TElsif(Ruby::Elsif g) or
     TEmptyStmt(Ruby::EmptyStatement g) or
@@ -355,10 +355,10 @@ private module Cached {
         TBraceBlockReal or TBreakStmt or TCaseEqExpr or TCaseExpr or TCaseMatchReal or
         TCharacterLiteral or TClassDeclaration or TClassVariableAccessReal or TComplementExpr or
         TComplexLiteral or TDefinedExpr or TDelimitedSymbolLiteral or TDestructuredLeftAssignment or
-        TDestructuredParameter or TDivExprReal or TDo or TDoBlock or TElementReference or TElse or
-        TElsif or TEmptyStmt or TEncoding or TEndBlock or TEnsure or TEqExpr or TExponentExprReal or
-        TFalseLiteral or TFile or TFindPattern or TFloatLiteral or TForExpr or TForwardParameter or
-        TForwardArgument or TGEExpr or TGTExpr or TGlobalVariableAccessReal or
+        TDestructuredParameter or TDivExprReal or TDo or TDoBlock or TElementReference or
+        TElseReal or TElsif or TEmptyStmt or TEncoding or TEndBlock or TEnsure or TEqExpr or
+        TExponentExprReal or TFalseLiteral or TFile or TFindPattern or TFloatLiteral or TForExpr or
+        TForwardParameter or TForwardArgument or TGEExpr or TGTExpr or TGlobalVariableAccessReal or
         THashKeySymbolLiteral or THashLiteral or THashPattern or THashSplatExpr or
         THashSplatNilParameter or THashSplatParameter or THereDoc or TIdentifierMethodCall or
         TIfReal or TIfModifierExpr or TInClauseReal or TInstanceVariableAccessReal or
@@ -445,7 +445,7 @@ private module Cached {
     n = TDoBlock(result) or
     n = TDo(result) or
     n = TElementReference(result) or
-    n = TElse(result) or
+    n = TElseReal(result) or
     n = TElsif(result) or
     n = TEmptyStmt(result) or
     n = TEncoding(result) or
@@ -703,7 +703,7 @@ class TConstantAccess =
   TTokenConstantAccess or TScopeResolutionConstantAccess or TNamespace or
       TConstantReadAccessSynth or TConstantWriteAccessSynth;
 
-class TControlExpr = TConditionalExpr or TCaseExpr or TCaseMatchReal or TCaseMatchSynth or TLoop;
+class TControlExpr = TConditionalExpr or TCaseExpr or TCaseMatch or TLoop;
 
 class TConditionalExpr =
   TIfExpr or TUnlessExpr or TIfModifierExpr or TUnlessModifierExpr or TTernaryIfExpr;
@@ -729,7 +729,7 @@ class TExpr =
 class TSplatExpr = TSplatExprReal or TSplatExprSynth;
 
 class TStmtSequence =
-  TBeginBlock or TEndBlock or TThen or TElse or TElseSynth or TDo or TEnsure or
+  TBeginBlock or TEndBlock or TThen or TElseReal or TElseSynth or TDo or TEnsure or
       TStringInterpolationComponent or TBlock or TBodyStmt or TParenthesizedExpr or
       TStmtSequenceSynth;
 
