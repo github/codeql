@@ -365,14 +365,15 @@ func testTuples2() {
     sink(arg: c)
 }
 
-enum MyEnum {
+indirect enum MyEnum {
     case myNone
     case mySingle(Int)
     case myPair(Int, Int)
+    case myCons(Int, MyEnum)
 }
 
 func testEnums() {
-    let a : MyEnum = .myNone
+    var a : MyEnum = .myNone
 
     switch a {
     case .myNone:
@@ -382,6 +383,8 @@ func testEnums() {
     case .myPair(let a, let b):
         sink(arg: a)
         sink(arg: b)
+    case let .myCons(a, _):
+        sink(arg: a)
     }
 
     if case .mySingle(let x) = a {
@@ -392,44 +395,88 @@ func testEnums() {
         sink(arg: y)
     }
 
-    let b : MyEnum = .mySingle(source())
+    a = .mySingle(source())
+
+    switch a {
+    case .myNone:
+        ()
+    case .mySingle(let a):
+        sink(arg: a) // $ MISSING: flow=398
+    case .myPair(let a, let b):
+        sink(arg: a)
+        sink(arg: b)
+    case let .myCons(a, _):
+        sink(arg: a)
+    }
+
+    if case .mySingle(let x) = a {
+        sink(arg: x) // $ MISSING: flow=398
+    }
+    if case .myPair(let x, let y) = a {
+        sink(arg: x)
+        sink(arg: y)
+    }
+
+    a = MyEnum.myPair(0, source())
+
+    switch a {
+    case .myNone:
+        ()
+    case .mySingle(let a):
+        sink(arg: a)
+    case .myPair(let a, let b):
+        sink(arg: a)
+        sink(arg: b) // $ MISSING: flow=420
+    case let .myCons(a, _):
+        sink(arg: a)
+    }
+
+    if case .mySingle(let x) = a {
+        sink(arg: x)
+    }
+    if case .myPair(let x, let y) = a {
+        sink(arg: x)
+        sink(arg: y) // $ MISSING: flow=420
+    }
+
+    let b: MyEnum = .myCons(42, a)
 
     switch b {
     case .myNone:
         ()
     case .mySingle(let a):
-        sink(arg: a) // $ MISSING: flow=395
+        sink(arg: a)
     case .myPair(let a, let b):
         sink(arg: a)
         sink(arg: b)
+    case let .myCons(a, .myPair(b, c)):
+        sink(arg: a)
+        sink(arg: b)
+        sink(arg: c) // $ MISSING: flow=420
+    case let .myCons(a, _):
+        sink(arg: a)
     }
 
-    if case .mySingle(let x) = a {
-        sink(arg: x) // $ MISSING: flow=395
+    if case .mySingle(let x) = b {
+        sink(arg: x)
     }
-    if case .myPair(let x, let y) = a {
+    if case .myPair(let x, let y) = b {
         sink(arg: x)
         sink(arg: y)
     }
+    if case let .myCons(_, .myPair(_, c)) = b {
+        sink(arg: c) // $ MISSING: flow=420
+    }
 
-    let c = MyEnum.myPair(0, source())
-
-    switch c {
-    case .myNone:
+    switch (a, b) {
+    case let (.myPair(a, b), .myCons(c, .myPair(d, e))):
+        sink(arg: a)
+        sink(arg: b) // $ MISSING: flow=420
+        sink(arg: c)
+        sink(arg: d)
+        sink(arg: e) // $ MISSING: flow=420
+    default:
         ()
-    case .mySingle(let a):
-        sink(arg: a)
-    case .myPair(let a, let b):
-        sink(arg: a)
-        sink(arg: b) // $ MISSING: flow=415
-    }
-
-    if case .mySingle(let x) = a {
-        sink(arg: x)
-    }
-    if case .myPair(let x, let y) = a {
-        sink(arg: x)
-        sink(arg: y) // $ MISSING: flow=415
     }
 }
 
@@ -476,8 +523,8 @@ func testOptionalPropertyAccess(y: Int?) {
 }
 
 func testIdentityArithmetic() {
-  sink(arg: +source()) // $ flow=479
-  sink(arg: (source())) // $ flow=480
+  sink(arg: +source()) // $ flow=526
+  sink(arg: (source())) // $ flow=527
 }
 
 func sink(str: String) {}
@@ -493,14 +540,14 @@ class MyClass {
 
 extension MyClass {
     convenience init(contentsOfFile: String) {
-      self.init(s: source3()) 
-      sink(str: str) // $ flow=496
+      self.init(s: source3())
+      sink(str: str) // $ flow=543
     }
 }
 
 func extensionInits(path: String) {
-  sink(str: MyClass(s: source3()).str) // $ flow=502
-  sink(str: MyClass(contentsOfFile: path).str) // $ flow=496
+  sink(str: MyClass(s: source3()).str) // $ flow=549
+  sink(str: MyClass(contentsOfFile: path).str) // $ flow=543
 }
 
 class InoutConstructorClass {
