@@ -61,6 +61,7 @@ private module Cached {
   }
 
   /** Gets the summary resulting from appending `step` to type-tracking summary `tt`. */
+  pragma[nomagic]
   cached
   TypeTracker append(TypeTracker tt, StepSummary step) {
     exists(Boolean hasCall, OptionalTypeTrackerContent currentContents |
@@ -114,6 +115,7 @@ private module Cached {
   }
 
   /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
+  pragma[nomagic]
   cached
   TypeBackTracker prepend(TypeBackTracker tbt, StepSummary step) {
     exists(Boolean hasReturn, OptionalTypeTrackerContent content |
