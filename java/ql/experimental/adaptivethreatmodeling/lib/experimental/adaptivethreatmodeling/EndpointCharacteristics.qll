@@ -102,9 +102,13 @@ predicate hasMetadata(DataFlow::Node n, string metadata) {
     callee = call.getCallee() and
     package = callee.getDeclaringType().getPackage().getName() and
     type = callee.getDeclaringType().getName() and //TODO: Will this work for inner classes? Will it produce X$Y? What about lambdas? What about enums? What about interfaces? What about annotations?
-    subtypes = true and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
+    (
+      if callee.isFinal() or callee.getDeclaringType().isFinal()
+      then subtypes = false // See https://github.com/github/codeql-java-team/issues/254#issuecomment-1422296423
+      else subtypes = true
+    ) and
     name = callee.getName() and // TODO: Will this work for constructors?
-    signature = paramsString(callee) and
+    signature = paramsString(callee) and // TODO: Why are brackets being escaped (`\[\]` vs `[]`)?
     ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
     provenance = "manual" and // TODO
     (if callee.isPublic() then isPublic = true else isPublic = false) and
