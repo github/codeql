@@ -80,7 +80,7 @@ module Twirp {
       exists(ServiceInterfaceType i, PointerType p, TypeEntity te |
         p.implements(i) and
         this = p.getBaseType() and
-        this.getName().regexpMatch("(?i)" + i.getName() + "(protobuf|json)" + "client") and
+        this.getName().regexpMatch("(?i)" + i.getName() + "(protobuf|json)client") and
         te.getType() = this and
         te.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
       )
