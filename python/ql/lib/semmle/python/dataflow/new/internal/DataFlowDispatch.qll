@@ -461,9 +461,25 @@ private CallCfgNode getSuperCall() {
 }
 
 /**
+ * Holds if the file `f` should be ignored when computing the call-graph.
+ *
+ * We currently see a performance problem when analyzing the `sympy` PyPI package,
+ * which can be part of the database when dependencies are installed and extracted.
+ * From what we can understand, SymPy is using Python in a exotic way, so the fact that
+ * our analysis currently does not handle this project has nothing to say about our
+ * ability to handle normal Python code. Furthermore, SymPy does not look to be relevant
+ * in a security context, so we should not loose out on any security results by doing
+ * this.
+ */
+private predicate ignoreForCallGraph(File f) {
+  f.getAbsolutePath().matches("%/site-packages/sympy/%")
+}
+
+/**
  * Gets a reference to the function `func`.
  */
 private TypeTrackingNode functionTracker(TypeTracker t, Function func) {
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   t.start() and
   (
     result.asExpr() = func.getDefinition()
@@ -473,6 +489,7 @@ private TypeTrackingNode functionTracker(TypeTracker t, Function func) {
     result.asExpr() = func.getDefinition().(FunctionExpr).getADecoratorCall()
   )
   or
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   exists(TypeTracker t2 | result = functionTracker(t2, func).track(t2, t))
 }
 
@@ -485,6 +502,7 @@ Node functionTracker(Function func) { functionTracker(TypeTracker::end(), func).
  * Gets a reference to the class `cls`.
  */
 private TypeTrackingNode classTracker(TypeTracker t, Class cls) {
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   t.start() and
   (
     result.asExpr() = cls.getParent()
@@ -498,6 +516,7 @@ private TypeTrackingNode classTracker(TypeTracker t, Class cls) {
     result.(CallCfgNode).getArg(0) = classInstanceTracker(cls)
   )
   or
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   exists(TypeTracker t2 | result = classTracker(t2, cls).track(t2, t)) and
   not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
@@ -511,16 +530,19 @@ Node classTracker(Class cls) { classTracker(TypeTracker::end(), cls).flowsTo(res
  * Gets a reference to an instance of the class `cls`.
  */
 private TypeTrackingNode classInstanceTracker(TypeTracker t, Class cls) {
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   t.start() and
   resolveClassCall(result.(CallCfgNode).asCfgNode(), cls)
   or
   // result of `super().__new__` as used in a `__new__` method implementation
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   t.start() and
   exists(Class classUsedInSuper |
     fromSuperNewCall(result.(CallCfgNode).asCfgNode(), classUsedInSuper, _, _) and
     classUsedInSuper = getADirectSuperclass*(cls)
   )
   or
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   exists(TypeTracker t2 | result = classInstanceTracker(t2, cls).track(t2, t)) and
   not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
@@ -537,6 +559,7 @@ Node classInstanceTracker(Class cls) {
  * The method cannot be a `staticmethod` or `classmethod`.
  */
 private TypeTrackingNode selfTracker(TypeTracker t, Class classWithMethod) {
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   t.start() and
   exists(Function func |
     func = classWithMethod.getAMethod() and
@@ -546,6 +569,7 @@ private TypeTrackingNode selfTracker(TypeTracker t, Class classWithMethod) {
     result.asExpr() = func.getArg(0)
   )
   or
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   exists(TypeTracker t2 | result = selfTracker(t2, classWithMethod).track(t2, t)) and
   not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
@@ -564,6 +588,7 @@ Node selfTracker(Class classWithMethod) {
  * from a normal method.
  */
 private TypeTrackingNode clsArgumentTracker(TypeTracker t, Class classWithMethod) {
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   t.start() and
   (
     exists(Function func |
@@ -578,6 +603,7 @@ private TypeTrackingNode clsArgumentTracker(TypeTracker t, Class classWithMethod
     result.(CallCfgNode).getArg(0) = selfTracker(classWithMethod)
   )
   or
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   exists(TypeTracker t2 | result = clsArgumentTracker(t2, classWithMethod).track(t2, t)) and
   not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
@@ -596,6 +622,7 @@ Node clsArgumentTracker(Class classWithMethod) {
  * call happened in the method `func` (either a method or a classmethod).
  */
 private TypeTrackingNode superCallNoArgumentTracker(TypeTracker t, Function func) {
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   t.start() and
   not isStaticmethod(func) and
   exists(CallCfgNode call | result = call |
@@ -604,6 +631,7 @@ private TypeTrackingNode superCallNoArgumentTracker(TypeTracker t, Function func
     call.getScope() = func
   )
   or
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   exists(TypeTracker t2 | result = superCallNoArgumentTracker(t2, func).track(t2, t)) and
   not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
@@ -621,6 +649,7 @@ Node superCallNoArgumentTracker(Function func) {
  * first is a reference to the class `cls`, and the second argument is `obj`.
  */
 private TypeTrackingNode superCallTwoArgumentTracker(TypeTracker t, Class cls, Node obj) {
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   t.start() and
   exists(CallCfgNode call | result = call |
     call = getSuperCall() and
@@ -628,6 +657,7 @@ private TypeTrackingNode superCallTwoArgumentTracker(TypeTracker t, Class cls, N
     call.getArg(1) = obj
   )
   or
+  not ignoreForCallGraph(result.getLocation().getFile()) and
   exists(TypeTracker t2 | result = superCallTwoArgumentTracker(t2, cls, obj).track(t2, t)) and
   not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
