@@ -477,6 +477,7 @@ void ExprTranslator::fillAbstractClosureExpr(const swift::AbstractClosureExpr& e
   assert(expr.getParameters() && "AbstractClosureExpr has getParameters()");
   entry.params = dispatcher.fetchRepeatedLabels(*expr.getParameters());
   entry.body = dispatcher.fetchLabel(expr.getBody());
+  entry.captures = dispatcher.fetchRepeatedLabels(expr.getCaptureInfo().getCaptures());
 }
 
 TrapLabel<ArgumentTag> ExprTranslator::emitArgument(const swift::Argument& arg) {
@@ -595,6 +596,16 @@ codeql::AppliedPropertyWrapperExpr ExprTranslator::translateAppliedPropertyWrapp
   entry.value =
       dispatcher.fetchLabel(const_cast<swift::AppliedPropertyWrapperExpr&>(expr).getValue());
   entry.param = dispatcher.fetchLabel(expr.getParamDecl());
+  return entry;
+}
+
+codeql::RegexLiteralExpr ExprTranslator::translateRegexLiteralExpr(
+    const swift::RegexLiteralExpr& expr) {
+  auto entry = createExprEntry(expr);
+  auto pattern = expr.getRegexText();
+  // the pattern has enclosing '/' delimiters, we'd rather get it without
+  entry.pattern = pattern.substr(1, pattern.size() - 2);
+  entry.version = expr.getVersion();
   return entry;
 }
 

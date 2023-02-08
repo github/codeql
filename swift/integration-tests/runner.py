@@ -34,7 +34,10 @@ def execute_test(path):
     return subprocess.run([sys.executable, "-u", path.name], cwd=path.parent).returncode == 0
 
 def skipped(test):
-    return platform.system() != "Darwin" and "osx-only" in test.parts
+    if platform.system() == "Darwin":
+        return "linux-only" in test.parts
+    else:
+        return "osx-only" in test.parts
 
 
 def main(opts):

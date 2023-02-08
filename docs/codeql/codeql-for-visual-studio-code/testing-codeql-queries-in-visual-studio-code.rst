@@ -14,7 +14,7 @@ To ensure that your CodeQL queries produce the expected results, you can run tes
 
 The CodeQL extension automatically prompts VS Code to install the Test Explorer extension as a dependency. The Test Explorer displays any workspace folders with a name ending in ``-tests`` and provides a UI for exploring and running tests in those folders.
 
-For more information about how CodeQL tests work, see ":ref:`Testing custom queries <testing-custom-queries>`" in the CLI help.
+For more information about how CodeQL tests work, see "`Testing custom queries <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/testing-custom-queries>`__" in the CLI help.
 
 Testing the results of your queries
 -----------------------------------
@@ -49,4 +49,4 @@ For more information, see ":ref:`Troubleshooting query performance <troubleshoot
 Further reading
 ----------------
 
-* ":ref:`Testing custom queries <testing-custom-queries>`"
+* "`Testing custom queries <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/testing-custom-queries>`__"

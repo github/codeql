@@ -1,3 +1,7 @@
+/**
+ * Provides models related to custom URL schemes.
+ */
+
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow

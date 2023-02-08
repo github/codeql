@@ -1,3 +1,7 @@
+/**
+ * Provides models for WebView-related Swift classes.
+ */
+
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
