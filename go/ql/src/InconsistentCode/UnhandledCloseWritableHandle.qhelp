@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Data written to a file handle may not immediately be flushed to the underlying storage medium by
+the operating system. Often, the data may be cached in memory until the handle is closed, or
+until a later point after that. Only calling <code>os.File.Sync</code> gives a reasonable guarantee
+that the data is flushed. Therefore, write errors may not occur until <code>os.File.Close</code>
+or <code>os.File.Sync</code> are called. If either is called and any errors returned by them are
+discarded, then the program may be unaware that data loss occurred.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Always check whether <code>os.File.Close</code> returned an error and handle it appropriately.
+</p>
+</recommendation>
+
+<example>
+
+<p>
+In this first example, two calls to <code>os.File.Close</code> are made with the intention of
+closing the file after all work on it has been done or if writing to it fails. However, while
+errors that may arise during the call to <code>os.File.WriteString</code> are handled, any
+errors arising from the calls to <code>os.File.Close</code> are discarded silently:
+</p>
+
+<sample src="UnhandledCloseWritableHandleNotDeferred.go" />
+
+<p>
+In the second example, a call to <code>os.File.Close</code> is deferred in order to accomplish
+the same behaviour as in the first example. However, while errors that may arise during
+the call to <code>os.File.WriteString</code> are handled, any errors arising from
+<code>os.File.Close</code> are again discarded silently:
+</p>
+
+<sample src="UnhandledCloseWritableHandle.go" />
+
+<p>
+To correct this issue, handle errors arising from calls to <code>os.File.Close</code> explicitly:
+</p>
+
+<sample src="UnhandledCloseWritableHandleGood.go" />
+
+</example>
+
+<references>
+    <li>The Go Programming Language Specification: <a href="https://go.dev/ref/spec#Defer_statements">Defer statements</a>.</li>
+    <li>The Go Programming Language Specification: <a href="https://go.dev/ref/spec#Errors">Errors</a>.</li>
+</references>
+</qhelp>
