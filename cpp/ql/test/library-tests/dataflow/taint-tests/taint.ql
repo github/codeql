@@ -106,7 +106,7 @@ module IRTest {
     override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
       // allow arbitrary reads at sinks
       isSink(node) and
-      c = any(DataFlow::ContentSet c_)
+      c.(DataFlow::FieldContent).getField().getDeclaringType() = node.getType().getUnspecifiedType()
     }
   }
 }
