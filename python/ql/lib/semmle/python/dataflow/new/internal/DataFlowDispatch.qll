@@ -468,7 +468,7 @@ private CallCfgNode getSuperCall() {
  * From what we can understand, SymPy is using Python in a exotic way, so the fact that
  * our analysis currently does not handle this project has nothing to say about our
  * ability to handle normal Python code. Furthermore, SymPy does not look to be relevant
- * in a security context, so we should not loose out on any security results by doing
+ * in a security context, so we should not lose out on any security results by doing
  * this.
  */
 private predicate ignoreForCallGraph(File f) {
