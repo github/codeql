@@ -28,12 +28,12 @@ void test_pair()
 	b.first = source();
 	sink(b.first); // $ ast,ir
 	sink(b.second);
-	sink(b); // $ MISSING: ast,ir
+	sink(b); // $ ir MISSING: ast
 
 	c.second = source();
 	sink(c.first);
 	sink(c.second); // $ ast,ir
-	sink(c); // $ MISSING: ast,ir
+	sink(c); // $ ir MISSING: ast
 
 	std::pair<char *, char *> d("123", "456");
 	sink(d.first);
@@ -43,7 +43,7 @@ void test_pair()
 	std::pair<char *, char *> e(source(), "456");
 	sink(e.first); // $ ast,ir
 	sink(e.second);
-	sink(e); // $ MISSING: ast,ir
+	sink(e); // $ ir MISSING: ast
 
 	std::pair<char *, char *> f("123", source());
 	sink(f.first);
