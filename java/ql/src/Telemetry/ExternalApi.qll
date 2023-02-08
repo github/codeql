@@ -8,23 +8,25 @@ private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.TaintTracking
 
+pragma[nomagic]
+private predicate isTestPackage(Package p) {
+  p.getName()
+      .matches([
+          "org.junit%", "junit.%", "org.mockito%", "org.assertj%",
+          "com.github.tomakehurst.wiremock%", "org.hamcrest%", "org.springframework.test.%",
+          "org.springframework.mock.%", "org.springframework.boot.test.%", "reactor.test%",
+          "org.xmlunit%", "org.testcontainers.%", "org.opentest4j%", "org.mockserver%",
+          "org.powermock%", "org.skyscreamer.jsonassert%", "org.rnorth.visibleassertions",
+          "org.openqa.selenium%", "com.gargoylesoftware.htmlunit%", "org.jboss.arquillian.testng%",
+          "org.testng%"
+        ])
+}
+
 /**
  * A test library.
  */
 private class TestLibrary extends RefType {
-  TestLibrary() {
-    this.getPackage()
-        .getName()
-        .matches([
-            "org.junit%", "junit.%", "org.mockito%", "org.assertj%",
-            "com.github.tomakehurst.wiremock%", "org.hamcrest%", "org.springframework.test.%",
-            "org.springframework.mock.%", "org.springframework.boot.test.%", "reactor.test%",
-            "org.xmlunit%", "org.testcontainers.%", "org.opentest4j%", "org.mockserver%",
-            "org.powermock%", "org.skyscreamer.jsonassert%", "org.rnorth.visibleassertions",
-            "org.openqa.selenium%", "com.gargoylesoftware.htmlunit%",
-            "org.jboss.arquillian.testng%", "org.testng%"
-          ])
-  }
+  TestLibrary() { isTestPackage(this.getPackage()) }
 }
 
 private string containerAsJar(Container container) {
