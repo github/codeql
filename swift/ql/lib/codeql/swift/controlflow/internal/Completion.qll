@@ -222,7 +222,7 @@ predicate catchMatchingPattern(DoCatchStmt s, CaseStmt c, Pattern pattern) {
 
 /** Holds if `sub` is a subpattern of `p`. */
 private predicate isSubPattern(Pattern p, Pattern sub) {
-  sub = p.(BindingPattern).getSubPattern().getFullyUnresolved()
+  sub = p.(BindingPattern).getResolveStep()
   or
   sub = p.(EnumElementPattern).getSubPattern().getFullyUnresolved()
   or
@@ -259,8 +259,6 @@ private string getPatternValue(Pattern p) {
 /** Holds if `p` always matches. */
 private predicate isIrrefutableMatch(Pattern p) {
   (p instanceof NamedPattern or p instanceof AnyPattern)
-  or
-  isIrrefutableMatch(p.(BindingPattern).getSubPattern().getFullyUnresolved())
   or
   isIrrefutableMatch(p.(TypedPattern).getSubPattern().getFullyUnresolved())
   or
