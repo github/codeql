@@ -101,12 +101,37 @@ module Logrus {
 
   /**
    * Holds if `node` is the first argument to a call to the `SetFormatter` function or if `node`
-   * is the value being assigned to the `Formatter` property of a `Logger` object.
+   * is the value being assigned to the `Formatter` property of a `Logger` object. The `expr`
+   * is the corresponding expression (the function call or the assignment).
    */
-  private predicate isFormatter(DataFlow::Node node) {
-    node = any(SetFormatterFunction f).getACall().getArgument(0)
+  private predicate isFormatter(DataFlow::Node node, Expr expr) {
+    exists(DataFlow::CallNode call |
+      call = any(SetFormatterFunction f).getACall() and
+      node = call.getArgument(0) and
+      expr = call.asExpr()
+    )
     or
-    node.asExpr() = any(SetFormatterAssignment stmt).getRhs()
+    expr = any(SetFormatterAssignment stmt).getRhs() and
+    node.asExpr() = expr
+  }
+
+  /**
+   * Holds if `expr` is conditional within its enclosing function and there are no other formatter
+   * assignments in the same function.
+   */
+  private predicate isSoleConditional(Expr expr) {
+    exists(FuncDef func |
+      // find the enclosing function
+      func = expr.getEnclosingFunction() and
+      // check that the expression is conditional
+      exists(IfStmt stmt | expr.getParent*() = stmt) and
+      // and there isn't another formatter assignment in the function
+      not exists(Expr formatterAssignment |
+        isFormatter(_, formatterAssignment) and
+        formatterAssignment.getEnclosingFunction() = func and
+        expr != formatterAssignment
+      )
+    )
   }
 
   /**
@@ -116,6 +141,8 @@ module Logrus {
    * property in the codebase.
    */
   private predicate allFormattersMayBeSanitizing() {
-    forex(DataFlow::Node node | isFormatter(node) | mayBeSanitizingFormatter(node))
+    forex(DataFlow::Node node, Expr expr | isFormatter(node, expr) |
+      mayBeSanitizingFormatter(node) and not isSoleConditional(expr)
+    )
   }
 }
