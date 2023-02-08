@@ -24,7 +24,7 @@ API::Node tarfileOpen() {
 }
 
 /**
- * Handle the previous three cases, plus the use of `closing` in the previous cases
+ * A class for handling the previous three cases, plus the use of `closing` in with the previous cases
  */
 class AllTarfileOpens extends API::CallNode {
   AllTarfileOpens() {
@@ -153,7 +153,7 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     // Open a file for access using builtin
     exists(API::CallNode cn |
       cn = API::builtin("open").getACall() and
-      nodeTo = cn.(API::CallNode).getArg(0) and
+      nodeTo = cn.getArg(0) and
       cn.flowsTo(nodeFrom)
     )
     or
