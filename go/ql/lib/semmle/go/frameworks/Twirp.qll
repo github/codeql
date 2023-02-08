@@ -80,7 +80,7 @@ module Twirp {
       exists(ServiceInterfaceType i, PointerType p, TypeEntity te |
         p.implements(i) and
         this = p.getBaseType() and
-        this.getName().toLowerCase() = i.getName().toLowerCase() + ["protobuf", "json"] + "client" and
+        this.getName().regexpMatch("(?i)" + i.getName() + ["(protobuf|json)" + "client") and
         te.getType() = this and
         te.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
       )
@@ -94,7 +94,7 @@ module Twirp {
     ServiceServerType() {
       exists(ServiceInterfaceType i, TypeEntity te |
         this.implements(i) and
-        this.getName().toLowerCase() = i.getName().toLowerCase() + "server" and
+        this.getName().regexpMatch("(?i)" + i.getName() + "server") and
         te.getType() = this and
         te.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
       )
@@ -107,7 +107,7 @@ module Twirp {
   class ClientConstructor extends Function {
     ClientConstructor() {
       exists(ServiceClientType c |
-        this.getName().toLowerCase() = "new" + c.getName().toLowerCase() and
+        this.getName().regexpMatch("(?i)new" + c.getName()) and
         this.getParameterType(0) instanceof StringType and
         this.getParameterType(1).getName() = "HTTPClient" and
         this.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
@@ -123,7 +123,7 @@ module Twirp {
   class ServerConstructor extends Function {
     ServerConstructor() {
       exists(ServiceServerType c, ServiceInterfaceType i |
-        this.getName().toLowerCase() = "new" + c.getName().toLowerCase() and
+        this.getName().regexpMatch("(?i)new" + c.getName()) and
         this.getParameterType(0) = i.getNamedType() and
         this.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
       )
