@@ -102,7 +102,7 @@ module Logrus {
   /**
    * Holds if `node` is the first argument to a call to the `SetFormatter` function or if `node`
    * is the value being assigned to the `Formatter` property of a `Logger` object. The `expr`
-   * is the corresponding expression (the function call or the assignment).
+   * is the corresponding expression (the function call or the rhs of the assignment).
    */
   private predicate isFormatter(DataFlow::Node node, Expr expr) {
     exists(DataFlow::CallNode call |
