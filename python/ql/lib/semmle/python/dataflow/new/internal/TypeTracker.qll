@@ -567,11 +567,11 @@ class TypeBackTracker extends TTypeBackTracker {
    * Gets the summary that corresponds to having taken a backwards
    * heap and/or inter-procedural step from `nodeTo` to `nodeFrom`.
    */
-  bindingset[nodeTo, this]
+  bindingset[nodeTo, result]
   TypeBackTracker step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo) {
     exists(StepSummary summary |
       StepSummary::step(_, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
-      result = pragma[only_bind_into](pragma[only_bind_out](this)).prepend(summary) and
+      this = pragma[only_bind_into](pragma[only_bind_out](result)).prepend(summary) and
       StepSummary::step(nodeFrom, pragma[only_bind_into](pragma[only_bind_out](nodeTo)), summary)
     )
   }
@@ -600,11 +600,11 @@ class TypeBackTracker extends TTypeBackTracker {
    * }
    * ```
    */
-  bindingset[nodeTo, this]
+  bindingset[nodeTo, result]
   TypeBackTracker smallstep(Node nodeFrom, Node nodeTo) {
     exists(StepSummary summary |
       StepSummary::smallstep(_, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
-      result = pragma[only_bind_into](pragma[only_bind_out](this)).prepend(summary) and
+      this = pragma[only_bind_into](pragma[only_bind_out](result)).prepend(summary) and
       StepSummary::smallstep(nodeFrom, pragma[only_bind_into](pragma[only_bind_out](nodeTo)),
         summary)
     )
