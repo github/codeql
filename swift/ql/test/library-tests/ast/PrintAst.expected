@@ -5509,6 +5509,95 @@ patterns.swift:
 #   34|     Type = Int
 #   42| [ConcreteVarDecl] x
 #   42|     Type = String
+#   54| [ConcreteFuncDecl] bound_and_unbound()
+#   54|     InterfaceType = () -> ()
+#   54|   getBody(): [BraceStmt] { ... }
+#   55|     getElement(0): [PatternBindingDecl] var ... = ...
+#   55|       getInit(0): [IntegerLiteralExpr] 1
+#   55|       getInit(1): [IntegerLiteralExpr] 2
+#   55|       getInit(2): [IntegerLiteralExpr] 3
+#   55|       getPattern(0): [NamedPattern] a
+#   55|       getPattern(1): [NamedPattern] b
+#   55|       getPattern(2): [TypedPattern] ... as ...
+#   55|         getSubPattern(): [NamedPattern] c
+#   55|         getTypeRepr(): [TypeRepr] Int
+#   55|     getElement(1): [ConcreteVarDecl] a
+#   55|         Type = Int
+#   55|     getElement(2): [ConcreteVarDecl] b
+#   55|         Type = Int
+#   55|     getElement(3): [ConcreteVarDecl] c
+#   55|         Type = Int
+#   57|     getElement(4): [IfStmt] if ... then { ... }
+#   57|       getCondition(): [StmtCondition] StmtCondition
+#   57|         getElement(0): [ConditionElement] let ...? = ... 
+#   57|           getPattern(): [OptionalSomePattern] let ...?
+#   57|             getSubPattern(): [TuplePattern] (...)
+#   57|               getElement(0): [NamedPattern] a
+#   57|               getElement(1): [NamedPattern] b
+#   57|               getElement(2): [NamedPattern] c
+#   57|             getSubPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   57|           getInitializer(): [CallExpr] call to ...
+#   57|             getFunction(): [MethodLookupExpr] .some
+#   57|               getBase(): [TypeExpr] Optional<(Int, Int, Int)>.Type
+#   57|                 getTypeRepr(): [TypeRepr] Optional<(Int, Int, Int)>
+#   57|               getMethodRef(): [DeclRefExpr] some
+#   57|             getArgument(0): [Argument] : (...)
+#   57|               getExpr(): [TupleExpr] (...)
+#   57|                 getElement(0): [DeclRefExpr] a
+#   57|                 getElement(1): [DeclRefExpr] b
+#   57|                 getElement(2): [DeclRefExpr] c
+#   57|       getThen(): [BraceStmt] { ... }
+#   57|         getElement(0): [AssignExpr]  ... = ...
+#   57|           getDest(): [DiscardAssignmentExpr] _
+#   57|           getSource(): [TupleExpr] (...)
+#   57|             getElement(0): [DeclRefExpr] a
+#   57|             getElement(1): [DeclRefExpr] c
+#   58|     getElement(5): [IfStmt] if ... then { ... }
+#   58|       getCondition(): [StmtCondition] StmtCondition
+#   58|         getElement(0): [ConditionElement] (...) = ... 
+#   58|           getPattern(): [TuplePattern] (...)
+#   58|             getElement(0): [ExprPattern] =~ ...
+#   58|               getSubExpr(): [DeclRefExpr] a
+#   58|             getElement(1): [NamedPattern] b
+#   58|             getElement(1).getFullyUnresolved(): [BindingPattern] let ...
+#   58|             getElement(2): [NamedPattern] c
+#   58|             getElement(2).getFullyUnresolved(): [BindingPattern] let ...
+#   58|           getInitializer(): [TupleExpr] (...)
+#   58|             getElement(0): [DeclRefExpr] a
+#   58|             getElement(1): [DeclRefExpr] b
+#   58|             getElement(2): [DeclRefExpr] c
+#   58|       getThen(): [BraceStmt] { ... }
+#   58|         getElement(0): [AssignExpr]  ... = ...
+#   58|           getDest(): [DiscardAssignmentExpr] _
+#   58|           getSource(): [DeclRefExpr] b
+#   58|           getSource().getFullyConverted(): [ParenExpr] (...)
+#   60|     getElement(6): [SwitchStmt] switch a { ... }
+#   60|       getExpr(): [DeclRefExpr] a
+#   61|       getCase(0): [CaseStmt] case ...
+#   61|         getBody(): [BraceStmt] { ... }
+#   61|           getElement(0): [StringLiteralExpr] equals c
+#   61|         getLabel(0): [CaseLabelItem] =~ ...
+#   61|           getPattern(): [ExprPattern] =~ ...
+#   61|             getSubExpr(): [DeclRefExpr] c
+#   62|       getCase(1): [CaseStmt] case ...
+#   62|         getBody(): [BraceStmt] { ... }
+#   62|           getElement(0): [StringLiteralExpr] binds c
+#   62|         getLabel(0): [CaseLabelItem] c
+#   62|           getPattern(): [NamedPattern] c
+#   62|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   63|       getCase(2): [CaseStmt] case ...
+#   63|         getBody(): [BraceStmt] { ... }
+#   63|           getElement(0): [StringLiteralExpr] default
+#   63|         getLabel(0): [CaseLabelItem] _
+#   63|           getPattern(): [AnyPattern] _
+#   57| [ConcreteVarDecl] a
+#   57|     Type = Int
+#   57| [ConcreteVarDecl] c
+#   57|     Type = Int
+#   58| [ConcreteVarDecl] b
+#   58|     Type = Int
+#   62| [ConcreteVarDecl] c
+#   62|     Type = Int
 statements.swift:
 #    1| [ConcreteFuncDecl] loop()
 #    1|     InterfaceType = () -> ()

@@ -50,3 +50,16 @@ func switch_patterns() {
     case false: "false"
     }
 }
+
+func bound_and_unbound() {
+    let a = 1, b = 2, c: Int = 3
+
+    if let (a, b, c) = Optional.some((a, b, c)) { _ = (a, c) }
+    if case (a, let b, let c) = (a, b, c) { _ = (b) }
+
+    switch a {
+        case c: "equals c"
+        case let c: "binds c"
+        default: "default"
+    }
+}

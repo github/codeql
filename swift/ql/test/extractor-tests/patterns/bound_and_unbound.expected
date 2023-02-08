@@ -1,0 +1,27 @@
+bound
+| patterns.swift:2:9:2:9 | an_int |
+| patterns.swift:3:9:3:9 | a_string |
+| patterns.swift:4:10:4:10 | x |
+| patterns.swift:4:13:4:13 | y |
+| patterns.swift:4:16:4:16 | z |
+| patterns.swift:10:9:10:9 | point |
+| patterns.swift:12:15:12:15 | xx |
+| patterns.swift:12:19:12:19 | yy |
+| patterns.swift:24:9:24:9 | v |
+| patterns.swift:28:19:28:19 | i |
+| patterns.swift:28:22:28:22 | s |
+| patterns.swift:31:9:31:9 | w |
+| patterns.swift:34:14:34:14 | n |
+| patterns.swift:38:9:38:9 | a |
+| patterns.swift:42:14:42:14 | x |
+| patterns.swift:46:9:46:9 | b |
+| patterns.swift:55:9:55:9 | a |
+| patterns.swift:55:16:55:16 | b |
+| patterns.swift:55:23:55:23 | c |
+| patterns.swift:57:13:57:13 | a |
+| patterns.swift:57:19:57:19 | c |
+| patterns.swift:58:21:58:21 | b |
+| patterns.swift:62:18:62:18 | c |
+unbound
+| patterns.swift:57:16:57:16 | b |
+| patterns.swift:58:28:58:28 | c |

@@ -39,3 +39,23 @@
 | patterns.swift:46:9:46:9 | b |
 | patterns.swift:49:10:49:10 | true |
 | patterns.swift:50:10:50:10 | false |
+| patterns.swift:55:9:55:9 | a |
+| patterns.swift:55:16:55:16 | b |
+| patterns.swift:55:23:55:23 | c |
+| patterns.swift:55:23:55:26 | ... as ... |
+| patterns.swift:57:8:57:20 | let ... |
+| patterns.swift:57:8:57:20 | let ...? |
+| patterns.swift:57:12:57:20 | (...) |
+| patterns.swift:57:13:57:13 | a |
+| patterns.swift:57:16:57:16 | b |
+| patterns.swift:57:19:57:19 | c |
+| patterns.swift:58:13:58:29 | (...) |
+| patterns.swift:58:14:58:14 | =~ ... |
+| patterns.swift:58:17:58:21 | let ... |
+| patterns.swift:58:21:58:21 | b |
+| patterns.swift:58:24:58:28 | let ... |
+| patterns.swift:58:28:58:28 | c |
+| patterns.swift:61:14:61:14 | =~ ... |
+| patterns.swift:62:14:62:18 | let ... |
+| patterns.swift:62:18:62:18 | c |
+| patterns.swift:63:9:63:9 | _ |

@@ -222,19 +222,19 @@ predicate catchMatchingPattern(DoCatchStmt s, CaseStmt c, Pattern pattern) {
 
 /** Holds if `sub` is a subpattern of `p`. */
 private predicate isSubPattern(Pattern p, Pattern sub) {
-  sub = p.(BindingPattern).getResolveStep()
+  sub = p.(BindingPattern).getImmediateSubPattern()
   or
-  sub = p.(EnumElementPattern).getSubPattern().getFullyUnresolved()
+  sub = p.(EnumElementPattern).getImmediateSubPattern()
   or
-  sub = p.(IsPattern).getSubPattern().getFullyUnresolved()
+  sub = p.(IsPattern).getImmediateSubPattern()
   or
-  sub = p.(OptionalSomePattern).getFullyUnresolved()
+  sub = p.(OptionalSomePattern).getImmediateSubPattern()
   or
-  sub = p.(ParenPattern).getResolveStep()
+  sub = p.(ParenPattern).getImmediateSubPattern()
   or
-  sub = p.(TuplePattern).getAnElement().getFullyUnresolved()
+  sub = p.(TuplePattern).getImmediateElement(_)
   or
-  sub = p.(TypedPattern).getSubPattern().getFullyUnresolved()
+  sub = p.(TypedPattern).getImmediateSubPattern()
 }
 
 /** Gets the value of `e` if it is a constant value, disregarding conversions. */
