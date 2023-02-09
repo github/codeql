@@ -457,11 +457,11 @@ func testEnums() {
         sink(arg: a)
     }
 
-    if case .mySingle(let x) = b {
+    if case .mySingle(let x) = MyEnum.myPair(source(), 0) {
         sink(arg: x)
     }
-    if case .myPair(let x, let y) = b {
-        sink(arg: x)
+    if case MyEnum.myPair(let x, let y) = .myPair(source(), 0) {
+        sink(arg: x) // $ MISSING: flow=463
         sink(arg: y)
     }
     if case let .myCons(_, .myPair(_, c)) = b {
