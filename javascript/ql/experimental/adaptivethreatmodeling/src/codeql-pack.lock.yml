@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-02-09-04h47m39s.keen-wheel-2cwvr0vb.75264a69cabbf4768baa45764a2960ed594651d0a3977471c6e5b8a044b14067
+compiled: false
