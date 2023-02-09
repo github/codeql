@@ -728,10 +728,11 @@ class TExpr =
 
 class TSplatExpr = TSplatExprReal or TSplatExprSynth;
 
+class TElse = TElseReal or TElseSynth;
+
 class TStmtSequence =
-  TBeginBlock or TEndBlock or TThen or TElseReal or TElseSynth or TDo or TEnsure or
-      TStringInterpolationComponent or TBlock or TBodyStmt or TParenthesizedExpr or
-      TStmtSequenceSynth;
+  TBeginBlock or TEndBlock or TThen or TElse or TDo or TEnsure or TStringInterpolationComponent or
+      TBlock or TBodyStmt or TParenthesizedExpr or TStmtSequenceSynth;
 
 class TBodyStmt = TBeginExpr or TModuleBase or TMethod or TLambda or TDoBlock or TSingletonMethod;
 
