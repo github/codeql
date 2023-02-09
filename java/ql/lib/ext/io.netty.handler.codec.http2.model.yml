@@ -20,3 +20,14 @@ extensions:
     - ["io.netty.handler.codec.http2", "Http2Headers", True, "valueIterator", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http2", "Http2HeadersFrame", True, "headers", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http2", "Http2PushPromiseFrame", True, "http2Headers", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2ConversionUtil", False, "addHttp2ToHttpHeaders", "", "", "Argument[1]", "Argument[2]", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2ConversionUtil", False, "toFullHttpRequest", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2ConversionUtil", False, "toFullHttpRequest", "", "", "Argument[2]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2ConversionUtil", False, "toFullHttpResponse", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2ConversionUtil", False, "toFullHttpResponse", "", "", "Argument[2]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2ConversionUtil", False, "toHttp2Headers", "(HttpHeaders,boolean)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2ConversionUtil", False, "toHttp2Headers", "(HttpHeaders,Http2Headers)", "", "Argument[1]", "Argument[2]", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2ConversionUtil", False, "toHttpRequest", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2ConversionUtil", False, "toHttpResponse", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+
+
