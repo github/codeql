@@ -84,7 +84,7 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     // see wget: https://pypi.org/project/wget/
     exists(API::CallNode mcn |
       mcn = API::moduleImport("wget").getMember("download").getACall() and
-      if exists(Node arg | arg = mcn.getArg(1))
+      if exists(mcn.getArg(1))
       then source = mcn.getArg(1)
       else source = mcn.getReturn().asSource()
     )
