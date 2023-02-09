@@ -49,11 +49,7 @@ class Node0Impl extends TIRDataFlowNode0 {
   DataFlowType getType() { none() } // overridden in subclasses
 
   /** Gets the instruction corresponding to this node, if any. */
-  Instruction asInstruction() {
-    result = this.(InstructionNode0).getInstruction()
-    or
-    result = Ssa::getIRRepresentationOfOperand(this.(SingleUseOperandNode0).getOperand())
-  }
+  Instruction asInstruction() { result = this.(InstructionNode0).getInstruction() }
 
   /** Gets the operands corresponding to this node, if any. */
   Operand asOperand() { result = this.(OperandNode0).getOperand() }
@@ -78,10 +74,8 @@ class Node0Impl extends TIRDataFlowNode0 {
 /**
  * An instruction, viewed as a node in a data flow graph.
  */
-class InstructionNode0 extends Node0Impl, TInstructionNode0 {
+abstract class InstructionNode0 extends Node0Impl {
   Instruction instr;
-
-  InstructionNode0() { this = TInstructionNode0(instr) }
 
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
@@ -98,6 +92,25 @@ class InstructionNode0 extends Node0Impl, TInstructionNode0 {
     // This predicate is overridden in subclasses. This default implementation
     // does not use `Instruction.toString` because that's expensive to compute.
     result = instr.getOpcode().toString()
+  }
+}
+
+/**
+ * An instruction without an operand that is used only once, viewed as a node in a data flow graph.
+ */
+private class InstructionInstructionNode0 extends InstructionNode0, TInstructionNode0 {
+  InstructionInstructionNode0() { this = TInstructionNode0(instr) }
+}
+
+/**
+ * An instruction with an operand that is used only once, viewed as a node in a data flow graph.
+ */
+private class SingleUseOperandInstructionNode0 extends InstructionNode0, TSingleUseOperandNode0 {
+  SingleUseOperandInstructionNode0() {
+    exists(Operand op |
+      this = TSingleUseOperandNode0(op) and
+      instr = Ssa::getIRRepresentationOfOperand(op)
+    )
   }
 }
 
@@ -124,14 +137,14 @@ abstract class OperandNode0 extends Node0Impl {
 /**
  * An operand that is used multiple times, viewed as a node in a data flow graph.
  */
-class MultipleUseOperandNode0 extends OperandNode0, TMultipleUseOperandNode0 {
+private class MultipleUseOperandNode0 extends OperandNode0, TMultipleUseOperandNode0 {
   MultipleUseOperandNode0() { this = TMultipleUseOperandNode0(op) }
 }
 
 /**
  * An operand that is used only once, viewed as a node in a data flow graph.
  */
-class SingleUseOperandNode0 extends OperandNode0, TSingleUseOperandNode0 {
+private class SingleUseOperandNode0 extends OperandNode0, TSingleUseOperandNode0 {
   SingleUseOperandNode0() { this = TSingleUseOperandNode0(op) }
 }
 

@@ -383,13 +383,10 @@ private class Node0 extends Node, TNode0 {
  * An instruction, viewed as a node in a data flow graph.
  */
 class InstructionNode extends Node0 {
+  override InstructionNode0 node;
   Instruction instr;
 
-  InstructionNode() {
-    node.(InstructionNode0).getInstruction() = instr
-    or
-    Ssa::getIRRepresentationOfOperand(node.(SingleUseOperandNode0).getOperand()) = instr
-  }
+  InstructionNode() { instr = node.getInstruction() }
 
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
