@@ -439,7 +439,6 @@ predicate operandForFullyConvertedCall(Operand operand, CallInstruction call) {
 private predicate instructionForFullyConvertedCallWithConversions(
   Instruction instr, CallInstruction call
 ) {
-  // Otherwise, flow to the first non-conversion use.
   instr =
     getUse(unique(Operand operand |
         operand = fullyConvertedCallStep*(getAUse(call)) and
@@ -455,12 +454,14 @@ private predicate instructionForFullyConvertedCallWithConversions(
  * conversion instruction) to use to represent the value of `call` after conversions.
  */
 predicate instructionForFullyConvertedCall(Instruction instr, CallInstruction call) {
+  // Only pick an instruction for the call if we cannot pick a unique operand.
   not operandForFullyConvertedCall(_, call) and
   (
     // If there is no use of the call then we pick the call instruction
     not instructionForFullyConvertedCallWithConversions(_, call) and
     instr = call
     or
+    // Otherwise, flow to the first instruction that defines multiple operands.
     instructionForFullyConvertedCallWithConversions(instr, call)
   )
 }
