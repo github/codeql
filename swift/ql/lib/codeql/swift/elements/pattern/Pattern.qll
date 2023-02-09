@@ -65,4 +65,32 @@ class Pattern extends Generated::Pattern {
 
   /** Holds if this pattern is matched against an expression. */
   predicate hasMatchingExpr() { exists(this.getMatchingExpr()) }
+
+  /**
+   * Holds if this occurs as a sub-pattern of the result.
+   */
+  Pattern getEnclosingPattern() {
+    this = result.(EnumElementPattern).getImmediateSubPattern()
+    or
+    this = result.(OptionalSomePattern).getImmediateSubPattern()
+    or
+    this = result.(TuplePattern).getImmediateElement(_)
+    or
+    result = this.getIdentityPreservingEnclosingPattern()
+  }
+
+  /**
+   * Holds if this occurs as a sub-pattern of the result
+   * without any intervening destructurings of
+   * complex data structures.
+   */
+  Pattern getIdentityPreservingEnclosingPattern() {
+    this = result.(BindingPattern).getImmediateSubPattern()
+    or
+    this = result.(IsPattern).getImmediateSubPattern()
+    or
+    this = result.(ParenPattern).getImmediateSubPattern()
+    or
+    this = result.(TypedPattern).getImmediateSubPattern()
+  }
 }

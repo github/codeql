@@ -185,7 +185,7 @@ private predicate switchMatching(SwitchStmt switch, CaseStmt c, AstNode ast) {
   (
     c.getALabel() = ast
     or
-    isSubPattern+(c.getALabel().getPattern(), ast)
+    ast.(Pattern).getEnclosingPattern+() = c.getALabel().getPattern()
   )
 }
 
@@ -216,25 +216,8 @@ predicate catchMatchingPattern(DoCatchStmt s, CaseStmt c, Pattern pattern) {
   exists(CaseLabelItem cli | catchMatching(s, c, cli) |
     cli.getPattern() = pattern
     or
-    isSubPattern+(cli.getPattern(), pattern)
+    pattern.getEnclosingPattern+() = cli.getPattern()
   )
-}
-
-/** Holds if `sub` is a subpattern of `p`. */
-private predicate isSubPattern(Pattern p, Pattern sub) {
-  sub = p.(BindingPattern).getImmediateSubPattern()
-  or
-  sub = p.(EnumElementPattern).getImmediateSubPattern()
-  or
-  sub = p.(IsPattern).getImmediateSubPattern()
-  or
-  sub = p.(OptionalSomePattern).getImmediateSubPattern()
-  or
-  sub = p.(ParenPattern).getImmediateSubPattern()
-  or
-  sub = p.(TuplePattern).getImmediateElement(_)
-  or
-  sub = p.(TypedPattern).getImmediateSubPattern()
 }
 
 /** Gets the value of `e` if it is a constant value, disregarding conversions. */
