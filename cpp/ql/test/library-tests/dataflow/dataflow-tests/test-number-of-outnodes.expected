@@ -1,3 +1,0 @@
-| dispatch.cpp:60:18:60:29 | Call: new | Unexpected result: ir-count(indirect return)=3 |
-| dispatch.cpp:61:18:61:29 | Call: new | Unexpected result: ir-count(indirect return)=3 |
-| dispatch.cpp:65:10:65:21 | Call: new | Unexpected result: ir-count(indirect return)=3 |
