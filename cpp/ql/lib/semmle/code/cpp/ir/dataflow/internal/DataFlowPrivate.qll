@@ -12,13 +12,21 @@ private module Cached {
   newtype TIRDataFlowNode0 =
     TInstructionNode0(Instruction i) {
       not Ssa::ignoreInstruction(i) and
+      not exists(Operand op |
+        not Ssa::ignoreOperand(op) and i = Ssa::getIRRepresentationOfOperand(op)
+      ) and
       // We exclude `void`-typed instructions because they cannot contain data.
       // However, if the instruction is a glvalue, and their type is `void`, then the result
       // type of the instruction is really `void*`, and thus we still want to have a dataflow
       // node for it.
       (not i.getResultType() instanceof VoidType or i.isGLValue())
     } or
-    TOperandNode0(Operand op) { not Ssa::ignoreOperand(op) }
+    TMultipleUseOperandNode0(Operand op) {
+      not Ssa::ignoreOperand(op) and not exists(Ssa::getIRRepresentationOfOperand(op))
+    } or
+    TSingleUseOperandNode0(Operand op) {
+      not Ssa::ignoreOperand(op) and exists(Ssa::getIRRepresentationOfOperand(op))
+    }
 }
 
 private import Cached
@@ -66,10 +74,8 @@ class Node0Impl extends TIRDataFlowNode0 {
 /**
  * An instruction, viewed as a node in a data flow graph.
  */
-class InstructionNode0 extends Node0Impl, TInstructionNode0 {
+abstract class InstructionNode0 extends Node0Impl {
   Instruction instr;
-
-  InstructionNode0() { this = TInstructionNode0(instr) }
 
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
@@ -85,17 +91,34 @@ class InstructionNode0 extends Node0Impl, TInstructionNode0 {
   override string toStringImpl() {
     // This predicate is overridden in subclasses. This default implementation
     // does not use `Instruction.toString` because that's expensive to compute.
-    result = this.getInstruction().getOpcode().toString()
+    result = instr.getOpcode().toString()
+  }
+}
+
+/**
+ * An instruction without an operand that is used only once, viewed as a node in a data flow graph.
+ */
+private class InstructionInstructionNode0 extends InstructionNode0, TInstructionNode0 {
+  InstructionInstructionNode0() { this = TInstructionNode0(instr) }
+}
+
+/**
+ * An instruction with an operand that is used only once, viewed as a node in a data flow graph.
+ */
+private class SingleUseOperandInstructionNode0 extends InstructionNode0, TSingleUseOperandNode0 {
+  SingleUseOperandInstructionNode0() {
+    exists(Operand op |
+      this = TSingleUseOperandNode0(op) and
+      instr = Ssa::getIRRepresentationOfOperand(op)
+    )
   }
 }
 
 /**
  * An operand, viewed as a node in a data flow graph.
  */
-class OperandNode0 extends Node0Impl, TOperandNode0 {
+abstract class OperandNode0 extends Node0Impl {
   Operand op;
-
-  OperandNode0() { this = TOperandNode0(op) }
 
   /** Gets the operand corresponding to this node. */
   Operand getOperand() { result = op }
@@ -108,7 +131,21 @@ class OperandNode0 extends Node0Impl, TOperandNode0 {
 
   final override Location getLocationImpl() { result = op.getLocation() }
 
-  override string toStringImpl() { result = this.getOperand().toString() }
+  override string toStringImpl() { result = op.toString() }
+}
+
+/**
+ * An operand that is used multiple times, viewed as a node in a data flow graph.
+ */
+private class MultipleUseOperandNode0 extends OperandNode0, TMultipleUseOperandNode0 {
+  MultipleUseOperandNode0() { this = TMultipleUseOperandNode0(op) }
+}
+
+/**
+ * An operand that is used only once, viewed as a node in a data flow graph.
+ */
+private class SingleUseOperandNode0 extends OperandNode0, TSingleUseOperandNode0 {
+  SingleUseOperandNode0() { this = TSingleUseOperandNode0(op) }
 }
 
 /**

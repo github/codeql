@@ -1,13 +1,7 @@
 edges
-| test.cpp:34:45:34:48 | 1024 | test.cpp:34:45:34:48 | 1024 |
-| test.cpp:35:49:35:52 | 1024 | test.cpp:35:49:35:52 | 1024 |
-| test.cpp:37:43:37:46 | 1024 | test.cpp:37:43:37:46 | 1024 |
 nodes
 | test.cpp:34:45:34:48 | 1024 | semmle.label | 1024 |
-| test.cpp:34:45:34:48 | 1024 | semmle.label | 1024 |
 | test.cpp:35:49:35:52 | 1024 | semmle.label | 1024 |
-| test.cpp:35:49:35:52 | 1024 | semmle.label | 1024 |
-| test.cpp:37:43:37:46 | 1024 | semmle.label | 1024 |
 | test.cpp:37:43:37:46 | 1024 | semmle.label | 1024 |
 subpaths
 #select

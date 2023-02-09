@@ -404,7 +404,7 @@ class OperandNode extends Node, Node0 {
   OperandNode() { op = node.getOperand() }
 
   /** Gets the operand corresponding to this node. */
-  Operand getOperand() { result = node.getOperand() }
+  Operand getOperand() { result = op }
 
   override string toStringImpl() { result = op.getDef().getAst().toString() }
 }
@@ -1439,7 +1439,13 @@ private module Cached {
     simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
     or
     // Instruction -> Operand flow
-    simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
+    exists(Instruction iFrom, Operand opTo |
+      iFrom = nodeFrom.asInstruction() and opTo = nodeTo.asOperand()
+    |
+      simpleOperandLocalFlowStep(iFrom, opTo) and
+      // Omit when the instruction node also represents the operand.
+      not iFrom = Ssa::getIRRepresentationOfOperand(opTo)
+    )
     or
     // Phi node -> Node flow
     Ssa::fromPhiNode(nodeFrom, nodeTo)
