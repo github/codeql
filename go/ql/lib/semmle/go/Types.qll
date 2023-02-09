@@ -165,6 +165,9 @@ class Type extends @type {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
+    this.getEntity().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    not exists(this.getEntity()) and
     filepath = "" and
     startline = 0 and
     startcolumn = 0 and
@@ -1014,17 +1017,6 @@ class NamedType extends @namedtype, CompositeType {
   }
 
   override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
-
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    exists(DeclaredType dt |
-      dt.getType() = this and
-      // Note that if the type declaration isn't in the source that we have
-      // then we use a dummy location.
-      dt.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    )
-  }
 }
 
 /**
