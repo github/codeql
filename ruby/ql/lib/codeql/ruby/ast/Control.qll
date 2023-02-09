@@ -555,7 +555,7 @@ class MatchPattern extends Expr, TMatchPattern {
   final override string getAPrimaryQlClass() { result = "MatchPattern" }
 
   /**
-   * Gets the expression being compared, if any. For example, `foo` in the following example.
+   * Gets the expression being compared. For example, `foo` in the following example.
    * ```rb
    * foo => Point{ x:, y: }
    * ```
@@ -596,7 +596,7 @@ class TestPattern extends Expr, TTestPattern {
   final override string getAPrimaryQlClass() { result = "TestPattern" }
 
   /**
-   * Gets the expression being compared, if any. For example, `foo` in the following example.
+   * Gets the expression being compared. For example, `foo` in the following example.
    * ```rb
    * foo in Point{ x:, y: }
    * ```
