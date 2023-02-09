@@ -5898,7 +5898,7 @@ statements.swift:
 #   87|   getBody(): [BraceStmt] { ... }
 #   87|     getElement(0): [IfStmt] if ... then { ... }
 #   87|       getCondition(): [StmtCondition] StmtCondition
-#   87|         getElement(0): (no string representation)
+#   87|         getElement(0): [ConditionElement] #available
 #   87|           getAvailability(): [AvailabilityInfo] #available
 #   87|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 155
 #   87|             getSpec(1): [OtherAvailabilitySpec] *
@@ -5918,7 +5918,7 @@ statements.swift:
 #   91|   getBody(): [BraceStmt] { ... }
 #   91|     getElement(0): [IfStmt] if ... then { ... }
 #   91|       getCondition(): [StmtCondition] StmtCondition
-#   91|         getElement(0): (no string representation)
+#   91|         getElement(0): [ConditionElement] #unavailable
 #   91|           getAvailability(): [AvailabilityInfo] #unavailable
 #   91|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 42
 #   91|       getThen(): [BraceStmt] { ... }
