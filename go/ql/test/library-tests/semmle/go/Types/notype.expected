@@ -1,3 +1,3 @@
-| unknownFunction.go:9:7:9:21 | unknownFunction | invalid type |
-| unknownFunction.go:9:7:9:23 | call to unknownFunction | invalid type |
-| unknownFunction.go:10:7:10:15 | ...+... | invalid type |
+| unknownFunction.go:9:7:9:21 | unknownFunction | file://:0:0:0:0 | invalid type |
+| unknownFunction.go:9:7:9:23 | call to unknownFunction | file://:0:0:0:0 | invalid type |
+| unknownFunction.go:10:7:10:15 | ...+... | file://:0:0:0:0 | invalid type |
