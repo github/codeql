@@ -694,6 +694,33 @@ Struct.cs:
 #   12|       -1: [TypeMention] object
 #   13|     11: [Field] MyReadonlyString
 #   13|       -1: [TypeMention] string
+StructDefault.cs:
+#    1| [Class] MyEmptyClass
+#    2| [Struct] StructDefaultValue
+#    4|   5: [Field] X
+#    4|     -1: [TypeMention] int
+#    5|   6: [Field] Y
+#    5|     -1: [TypeMention] int
+#    6|   7: [Field] Z
+#    6|     -1: [TypeMention] MyEmptyClass
+#    8|   8: [InstanceConstructor] StructDefaultValue
+#-----|     2: (Parameters)
+#    8|       0: [Parameter] x
+#    8|         -1: [TypeMention] int
+#    8|       1: [Parameter] inity
+#    8|         -1: [TypeMention] bool
+#    9|     4: [BlockStmt] {...}
+#   10|       0: [ExprStmt] ...;
+#   10|         0: [AssignExpr] ... = ...
+#   10|           0: [FieldAccess] access to field X
+#   10|           1: [ParameterAccess] access to parameter x
+#   11|       1: [IfStmt] if (...) ...
+#   11|         0: [ParameterAccess] access to parameter inity
+#   11|         1: [BlockStmt] {...}
+#   11|           0: [ExprStmt] ...;
+#   11|             0: [AssignExpr] ... = ...
+#   11|               0: [FieldAccess] access to field Y
+#   11|               1: [IntLiteral] 1
 cil/class1.cs:
 #    4| [Class] Class1
 #    6|   5: [Method] Main
