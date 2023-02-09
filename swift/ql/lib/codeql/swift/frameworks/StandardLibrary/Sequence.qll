@@ -24,6 +24,7 @@ private class SequenceSummaries extends SummaryModelCsv {
         ";Sequence;true;split(separator:maxSplits:omittingEmptySubsequences:);;;Argument[-1];ReturnValue;taint",
         ";Sequence;true;joined();;;Argument[-1];ReturnValue;taint",
         ";Sequence;true;joined(separator:);;;Argument[-1..0];ReturnValue;taint",
+        ";Sequence;true;first(where:);;;Argument[-1];ReturnValue;taint",
       ]
   }
 }
