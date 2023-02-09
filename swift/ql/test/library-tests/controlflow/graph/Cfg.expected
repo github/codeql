@@ -6325,3 +6325,26 @@ cfg.swift:
 
 #  493| 13
 #-----|  -> exit testIfConfig() (normal)
+
+#  496| enter testAvailable()
+#-----|  -> testAvailable()
+
+#  496| testAvailable()
+#-----|  -> x
+
+#  497| var ... = ...
+#-----|  -> x
+
+#  497| x
+#-----|  -> if ... then { ... }
+
+#  497| x
+#-----| match -> 0
+
+#  497| 0
+#-----|  -> var ... = ...
+
+#  499| if ... then { ... }
+#-----|  -> StmtCondition
+
+#  499| StmtCondition
