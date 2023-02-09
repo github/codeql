@@ -7,5 +7,6 @@ import (
 func test() {
 
 	x := rate.Limit(1)
+	_ = x
 
 }
