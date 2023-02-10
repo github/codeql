@@ -28,7 +28,7 @@ abstract class SensitiveNode extends DataFlow::Node {
 }
 
 /** A function call that might produce sensitive data. */
-class SensitiveCall extends SensitiveNode instanceof DataFlow::MethodCallNode {
+class SensitiveCall extends SensitiveNode instanceof DataFlow::CallCfgNode {
   SensitiveDataClassification classification;
 
   SensitiveCall() {
@@ -148,7 +148,7 @@ class CredentialsFunctionName extends SensitiveDataFunctionName {
 abstract class SensitiveAction extends DataFlow::Node { }
 
 /** A call that may perform authorization. */
-class AuthorizationCall extends SensitiveAction, DataFlow::MethodCallNode {
+class AuthorizationCall extends SensitiveAction, DataFlow::CallCfgNode {
   AuthorizationCall() {
     exists(string s | s = this.getMethodName() |
       // name contains `login` or `auth`, but not as part of `loginfo` or `unauth`;
@@ -161,7 +161,7 @@ class AuthorizationCall extends SensitiveAction, DataFlow::MethodCallNode {
 }
 
 /** A call to a function whose name suggests that it encodes or encrypts its arguments. */
-class ProtectCall extends DataFlow::MethodCallNode {
+class ProtectCall extends DataFlow::CallCfgNode {
   ProtectCall() {
     exists(string s | this.getMethodName().regexpMatch("(?i).*" + s + ".*") |
       s = "protect" or s = "encode" or s = "encrypt"
