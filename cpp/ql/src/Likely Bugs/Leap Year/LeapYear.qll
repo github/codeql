@@ -3,7 +3,7 @@
  */
 
 import cpp
-import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.commons.DateTime
 
 /**

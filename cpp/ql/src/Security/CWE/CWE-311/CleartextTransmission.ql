@@ -15,9 +15,9 @@
 import cpp
 import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.security.PrivateData
-import semmle.code.cpp.dataflow.TaintTracking
-import semmle.code.cpp.dataflow.TaintTracking2
-import semmle.code.cpp.dataflow.TaintTracking3
+import semmle.code.cpp.ir.dataflow.TaintTracking
+import semmle.code.cpp.ir.dataflow.TaintTracking2
+import semmle.code.cpp.ir.dataflow.TaintTracking3
 import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.commons.File
 import DataFlow::PathGraph

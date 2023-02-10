@@ -13,7 +13,7 @@
 
 import cpp
 import semmle.code.cpp.security.SensitiveExprs
-import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.ir.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 class SqliteFunctionCall extends FunctionCall {

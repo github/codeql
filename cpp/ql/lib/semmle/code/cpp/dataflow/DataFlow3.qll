@@ -9,4 +9,12 @@
  * See `semmle.code.cpp.dataflow.DataFlow` for the full documentation.
  */
 
-import semmle.code.cpp.ir.dataflow.DataFlow3
+import cpp
+
+/**
+ * Provides classes for performing local (intra-procedural) and
+ * global (inter-procedural) data flow analyses.
+ */
+module DataFlow3 {
+  import semmle.code.cpp.dataflow.internal.DataFlowImpl3
+}

@@ -1,7 +1,7 @@
 import TestUtilities.dataflow.FlowTestCommon
 
 module AstTest {
-  private import semmle.code.cpp.dataflow.old.TaintTracking
+  private import semmle.code.cpp.dataflow.TaintTracking
 
   class AstSmartPointerTaintConfig extends TaintTracking::Configuration {
     AstSmartPointerTaintConfig() { this = "ASTSmartPointerTaintConfig" }

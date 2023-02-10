@@ -1,5 +1,5 @@
 import cpp
-import semmle.code.cpp.dataflow.old.TaintTracking
+import semmle.code.cpp.dataflow.TaintTracking
 
 from DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string msg
 where

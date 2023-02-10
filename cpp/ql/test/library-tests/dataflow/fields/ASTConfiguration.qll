@@ -1,4 +1,4 @@
-private import semmle.code.cpp.dataflow.old.DataFlow
+private import semmle.code.cpp.dataflow.DataFlow
 private import DataFlow
 
 class AstConf extends Configuration {

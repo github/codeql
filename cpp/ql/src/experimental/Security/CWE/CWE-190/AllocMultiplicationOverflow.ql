@@ -14,7 +14,7 @@
 
 import cpp
 import semmle.code.cpp.models.interfaces.Allocation
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 import DataFlow::PathGraph
 
 class MultToAllocConfig extends DataFlow::Configuration {

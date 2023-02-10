@@ -1,1 +1,1 @@
-import semmle.code.cpp.dataflow.old.internal.DataFlowImplConsistency::Consistency
+import semmle.code.cpp.dataflow.internal.DataFlowImplConsistency::Consistency

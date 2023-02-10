@@ -15,6 +15,7 @@
 
 import cpp
 import semmle.code.cpp.commons.Buffer
+import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import LoopBounds
 

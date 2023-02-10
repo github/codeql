@@ -4,7 +4,7 @@
 
 import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow::DataFlow as IR
-import semmle.code.cpp.dataflow.old.DataFlow::DataFlow as AST
+import semmle.code.cpp.dataflow.DataFlow::DataFlow as AST
 import Nodes
 
 class AstPartialDefNode extends AstNode {

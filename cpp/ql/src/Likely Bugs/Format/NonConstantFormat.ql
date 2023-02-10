@@ -15,7 +15,7 @@
  *       external/cwe/cwe-134
  */
 
-import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.commons.Printf
 
 // For the following `...gettext` functions, we assume that

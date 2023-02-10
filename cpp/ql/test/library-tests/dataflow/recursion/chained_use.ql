@@ -1,11 +1,10 @@
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
-import semmle.code.cpp.dataflow.DataFlow2
-import semmle.code.cpp.dataflow.DataFlow3
-import semmle.code.cpp.dataflow.DataFlow4
-import semmle.code.cpp.dataflow.TaintTracking
-import semmle.code.cpp.dataflow.TaintTracking2
-import semmle.code.cpp.dataflow.RecursionPrevention
+import semmle.code.cpp.ir.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow2
+import semmle.code.cpp.ir.dataflow.DataFlow3
+import semmle.code.cpp.ir.dataflow.DataFlow4
+import semmle.code.cpp.ir.dataflow.TaintTracking
+import semmle.code.cpp.ir.dataflow.TaintTracking2
 
 class TestConf1 extends DataFlow::Configuration {
   TestConf1() { this = "TestConf1" }

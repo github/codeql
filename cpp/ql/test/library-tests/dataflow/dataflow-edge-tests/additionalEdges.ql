@@ -1,5 +1,5 @@
 import cpp
-import semmle.code.cpp.dataflow.old.DataFlow
+import semmle.code.cpp.dataflow.DataFlow
 
 class EdgeToExcept extends AdditionalControlFlowEdge {
   EdgeToExcept() {

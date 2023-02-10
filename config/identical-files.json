@@ -8,11 +8,11 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl6.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplForSerializability.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplForOnActivityResult.qll",
-    "cpp/ql/lib/semmle/code/cpp/dataflow/old/internal/DataFlowImpl.qll",
-    "cpp/ql/lib/semmle/code/cpp/dataflow/old/internal/DataFlowImpl2.qll",
-    "cpp/ql/lib/semmle/code/cpp/dataflow/old/internal/DataFlowImpl3.qll",
-    "cpp/ql/lib/semmle/code/cpp/dataflow/old/internal/DataFlowImpl4.qll",
-    "cpp/ql/lib/semmle/code/cpp/dataflow/old/internal/DataFlowImplLocal.qll",
+    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl.qll",
+    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl2.qll",
+    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl3.qll",
+    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl4.qll",
+    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplLocal.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl3.qll",
@@ -43,7 +43,7 @@
   ],
   "DataFlow Java/C++/C#/Go/Python/Ruby/Swift Common": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",
-    "cpp/ql/lib/semmle/code/cpp/dataflow/old/internal/DataFlowImplCommon.qll",
+    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll",
@@ -52,9 +52,9 @@
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplCommon.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImplCommon.qll"
   ],
-"TaintTracking::Configuration Java/C++/C#/Go/Python/Ruby/Swift": [
-    "cpp/ql/lib/semmle/code/cpp/dataflow/old/internal/tainttracking1/TaintTrackingImpl.qll",
-    "cpp/ql/lib/semmle/code/cpp/dataflow/old/internal/tainttracking2/TaintTrackingImpl.qll",
+  "TaintTracking::Configuration Java/C++/C#/Go/Python/Ruby/Swift": [
+    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
+    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/tainttracking3/TaintTrackingImpl.qll",
@@ -80,7 +80,7 @@
   ],
   "DataFlow Java/C++/C#/Python/Ruby/Swift Consistency checks": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
-    "cpp/ql/lib/semmle/code/cpp/dataflow/old/internal/DataFlowImplConsistency.qll",
+    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
@@ -122,7 +122,7 @@
   ],
   "C++ SubBasicBlocks": [
     "cpp/ql/lib/semmle/code/cpp/controlflow/SubBasicBlocks.qll",
-    "cpp/ql/lib/semmle/code/cpp/dataflow/old/internal/SubBasicBlocks.qll"
+    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/SubBasicBlocks.qll"
   ],
   "IR Instruction": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/Instruction.qll",
