@@ -7,4 +7,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2023-02-02-07h41m31s.polite-oven-zwd98jvc.94f8b76770903f7d2847c6dcab80597f91d4d80e685aff51e884262fa9614bf7
