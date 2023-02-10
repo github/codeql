@@ -37,7 +37,7 @@ void test_lambdas()
 	};
 	d(t, u);
 
-	auto e = [](int &a, int &b, int &c) {
+	auto e = [](int &a, int &b, int &c) { // $ ast-def=a ast-def=b ast-def=c ir-def=*c
 		sink(a); // $ ast,ir
 		sink(b);
 		c = source();
