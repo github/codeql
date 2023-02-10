@@ -579,7 +579,7 @@ namespace IndirectFlowThroughGlobals {
   }
 }
 
-void write_to_param(int* x) { // $ ast-def=x ir-def=*x
+void write_to_param(int* x) { // $ ast-def=x
   int s = source();
   x = &s;
 }
@@ -587,5 +587,5 @@ void write_to_param(int* x) { // $ ast-def=x ir-def=*x
 void test_write_to_param() {
   int x = 0;
   write_to_param(&x);
-  sink(x); // $ SPURIOUS: ast,ir
+  sink(x); // $ SPURIOUS: ast
 }
