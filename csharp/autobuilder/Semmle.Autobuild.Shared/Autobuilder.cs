@@ -232,16 +232,26 @@ namespace Semmle.Autobuild.Shared
                 return ret ?? new List<IProjectOrSolution>();
             });
 
-            CodeQLExtractorLangRoot = Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_ROOT");
-            CodeQlPlatform = Actions.GetEnvironmentVariable("CODEQL_PLATFORM");
+            CodeQLExtractorLangRoot = Actions.GetEnvironmentVariable(EnvVars.Root(this.Options.Language));
+            CodeQlPlatform = Actions.GetEnvironmentVariable(EnvVars.Platform);
 
-            TrapDir =
-                Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_TRAP_DIR") ??
-                throw new InvalidEnvironmentException($"The environment variable CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_TRAP_DIR has not been set.");
+            TrapDir = RequireEnvironmentVariable(EnvVars.TrapDir(this.Options.Language));
+            SourceArchiveDir = RequireEnvironmentVariable(EnvVars.SourceArchiveDir(this.Options.Language));
+        }
 
-            SourceArchiveDir =
-                Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_SOURCE_ARCHIVE_DIR") ??
-                throw new InvalidEnvironmentException($"The environment variable CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_SOURCE_ARCHIVE_DIR has not been set.");
+        /// <summary>
+        /// Retrieves the value of an environment variable named <paramref name="name"> or throws
+        /// an exception if no such environment variable has been set.
+        /// </summary>
+        /// <param name="name">The name of the environment variable.</param>
+        /// <returns>The value of the environment variable.</returns>
+        /// <exception cref="InvalidEnvironmentException">
+        /// Thrown if the environment variable is not set.
+        /// </exception>
+        protected string RequireEnvironmentVariable(string name)
+        {
+            return Actions.GetEnvironmentVariable(name) ??
+                throw new InvalidEnvironmentException($"The environment variable {name} has not been set.");
         }
 
         protected string TrapDir { get; }
