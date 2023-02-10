@@ -4,6 +4,10 @@ extensions:
       extensible: sinkModel
     data:
       - ["org.apache.hc.core5.http", "HttpEntityContainer", True, "setEntity", "(HttpEntity)", "", "Argument[0]", "xss", "manual"]
+      - ["org.apache.hc.core5.http", "HttpHost", True, "create", "(URI)", "", "Argument[0]", "%-url", "manual"] # ! maybe step instead
+      - ["org.apache.hc.core5.http", "HttpRequest", True, "setUri", "", "", "Argument[0]", "%-url", "manual"]
+      - ["org.apache.hc.core5.http", "HttpRequestFactory", True, "newHttpRequest", "(String,String)", "", "Argument[1]", "%-url", "manual"] # ! potentially combine with below so signature is ""; make sure still interesting since "Factory" method
+      - ["org.apache.hc.core5.http", "HttpRequestFactory", True, "newHttpRequest", "(String,URI)", "", "Argument[1]", "%-url", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

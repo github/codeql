@@ -1,6 +1,16 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "URIBuilder", "(String)", "", "Argument[0]", "%-url", "manual"]         # ! change to summary instead to be consistent with jakarta, etc.
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "URIBuilder", "(String,Charset)", "", "Argument[0]", "%-url", "manual"] # ! change to summary instead to be consistent with jakarta, etc.
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "URIBuilder", "(URI)", "", "Argument[0]", "%-url", "manual"]            # ! change to summary instead to be consistent with jakarta, etc.
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "URIBuilder", "(URI,Charset)", "", "Argument[0]", "%-url", "manual"]    # ! change to summary instead to be consistent with jakarta, etc.
+      - ["org.apache.hc.core5.net", "URLEncodedUtils", True, "parse", "(URI,Charset)", "", "Argument[0]", "%-url", "manual"] # ! probably remove as FP, look into a little more
+
+  - addsTo:
+      pack: codeql/java-all
       extensible: summaryModel
     data:
       - ["org.apache.hc.core5.net", "URIAuthority", True, "getHostName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
