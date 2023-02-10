@@ -11,7 +11,7 @@ class ErrorElement(Locatable):
 ```
 
 This gets copied verbatim as QL doc comments for the class (with some internal handling for preservation of indentation,
-as explained in https://peps.python.org/pep-0257/#handling-docstring-indentation)
+as explained in https://peps.python.org/pep-0257/#handling-docstring-indentation).
 
 ## Properties
 
@@ -25,7 +25,7 @@ example property `name` in class `File` will get documented as
 ```
 
 This documentation generation will expand common abbreviations. The list of expanded abbreviations can be found
-in `swift/codegen/generators/qlgen.py`.
+in [`codegen/generators/qlgen.py`](./codegen/generators/qlgen.py) as a dictionary under the `abbreviations` variable.
 
 The `name of this file` part in the example above can be customized by appending `| doc("<replacement>")` to the
 property specification, for example
