@@ -39,7 +39,7 @@ module TaintModels {
 }
 
 module AstTest {
-  private import semmle.code.cpp.dataflow.old.TaintTracking
+  private import semmle.code.cpp.dataflow.TaintTracking
   private import semmle.code.cpp.models.interfaces.Taint
 
   /** Common data flow configuration to be used by tests. */

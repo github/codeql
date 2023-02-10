@@ -1,7 +1,7 @@
 import cpp
 private import semmle.code.cpp.models.interfaces.ArrayFunction
 private import semmle.code.cpp.models.implementations.Strcat
-import semmle.code.cpp.dataflow.DataFlow
+private import semmle.code.cpp.ir.dataflow.DataFlow
 
 /**
  * Holds if the expression `e` assigns something including `va` to a

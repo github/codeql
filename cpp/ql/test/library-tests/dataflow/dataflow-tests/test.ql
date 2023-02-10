@@ -1,7 +1,7 @@
 import TestUtilities.dataflow.FlowTestCommon
 
 module AstTest {
-  private import semmle.code.cpp.dataflow.old.DataFlow
+  private import semmle.code.cpp.dataflow.DataFlow
   private import semmle.code.cpp.controlflow.Guards
 
   /**

@@ -12,8 +12,8 @@
  */
 
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
-import semmle.code.cpp.dataflow.DataFlow2
+import semmle.code.cpp.ir.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow2
 
 predicate isCreateProcessFunction(FunctionCall call, int applicationNameIndex, int commandLineIndex) {
   call.getTarget().hasGlobalName("CreateProcessA") and

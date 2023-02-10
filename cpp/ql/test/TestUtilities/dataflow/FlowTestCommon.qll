@@ -13,7 +13,7 @@
 
 import cpp
 private import semmle.code.cpp.ir.dataflow.DataFlow::DataFlow as IRDataFlow
-private import semmle.code.cpp.dataflow.old.DataFlow::DataFlow as AstDataFlow
+private import semmle.code.cpp.dataflow.DataFlow::DataFlow as AstDataFlow
 import TestUtilities.InlineExpectationsTest
 
 class IRFlowTest extends InlineExpectationsTest {

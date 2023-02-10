@@ -12,7 +12,7 @@
 
 import cpp
 import semmle.code.cpp.controlflow.Guards
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 
 /**
  * A call to `SSL_get_verify_result`.

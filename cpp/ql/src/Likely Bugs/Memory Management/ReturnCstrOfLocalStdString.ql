@@ -14,7 +14,7 @@
 
 import cpp
 import semmle.code.cpp.controlflow.SSA
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 
 /** The `std::string` class. */
 class StdString extends Class {

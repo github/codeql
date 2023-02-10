@@ -4,7 +4,10 @@
  * _sink_.
  *
  * Unless configured otherwise, _flow_ means that the exact value of
- * the source may reach the sink.
+ * the source may reach the sink. We do not track flow across pointer
+ * dereferences or array indexing. To track these types of flow, where the
+ * exact value may not be preserved, import
+ * `semmle.code.cpp.dataflow.TaintTracking`.
  *
  * To use global (interprocedural) data flow, extend the class
  * `DataFlow::Configuration` as documented on that class. To use local
@@ -14,4 +17,12 @@
  * `DataFlow::Node`.
  */
 
-import semmle.code.cpp.ir.dataflow.DataFlow
+import cpp
+
+/**
+ * Provides classes for performing local (intra-procedural) and
+ * global (inter-procedural) data flow analyses.
+ */
+module DataFlow {
+  import semmle.code.cpp.dataflow.internal.DataFlowImpl
+}

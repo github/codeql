@@ -1,5 +1,5 @@
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
+private import semmle.code.cpp.ir.dataflow.DataFlow
 
 /**
  * Holds if `v` is a member variable of `c` that looks like it might be variable sized

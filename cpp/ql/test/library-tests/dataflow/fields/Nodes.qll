@@ -1,5 +1,5 @@
 private import semmle.code.cpp.ir.dataflow.DataFlow as IR
-private import semmle.code.cpp.dataflow.old.DataFlow as AST
+private import semmle.code.cpp.dataflow.DataFlow as AST
 private import cpp
 
 private newtype TNode =

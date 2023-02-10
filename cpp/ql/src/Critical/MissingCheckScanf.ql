@@ -16,7 +16,7 @@
 import cpp
 import semmle.code.cpp.commons.Scanf
 import semmle.code.cpp.controlflow.Guards
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.ValueNumbering
 
