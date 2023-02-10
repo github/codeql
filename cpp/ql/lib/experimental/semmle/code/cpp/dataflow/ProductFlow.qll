@@ -1,5 +1,5 @@
-import experimental.semmle.code.cpp.ir.dataflow.DataFlow
-import experimental.semmle.code.cpp.ir.dataflow.DataFlow2
+import semmle.code.cpp.ir.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow2
 
 module ProductFlow {
   abstract class Configuration extends string {
