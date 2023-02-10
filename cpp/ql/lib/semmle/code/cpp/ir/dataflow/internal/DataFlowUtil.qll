@@ -52,11 +52,28 @@ private newtype TIRDataFlowNode =
   TFinalParameterNode(Parameter p, int indirectionIndex) {
     exists(Ssa::FinalParameterUse use |
       use.getParameter() = p and
-      use.getIndirectionIndex() = indirectionIndex
+      use.getIndirectionIndex() = indirectionIndex and
+      parameterIsRedefined(p)
     )
   } or
   TFinalGlobalValue(Ssa::GlobalUse globalUse) or
   TInitialGlobalValue(Ssa::GlobalDef globalUse)
+
+/**
+ * Holds if the value of `*p` (or `**p`, `***p`, etc.) is redefined somewhere in the body
+ * of the enclosing function of `p`.
+ *
+ * Only parameters satisfying this predicate will generate a `FinalParameterNode` transferring
+ * flow out of the function.
+ */
+private predicate parameterIsRedefined(Parameter p) {
+  exists(Ssa::Def def |
+    def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable().getAst() = p and
+    def.getIndirectionIndex() = 0 and
+    def.getIndirection() > 1 and
+    not def.getValue().asInstruction() instanceof InitializeParameterInstruction
+  )
+}
 
 /**
  * An operand that is defined by a `FieldAddressInstruction`.

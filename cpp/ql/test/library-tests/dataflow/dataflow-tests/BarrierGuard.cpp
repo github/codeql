@@ -56,7 +56,7 @@ void bg_stackstruct(XY s1, XY s2) {
   }
 }
 
-void bg_structptr(XY *p1, XY *p2) {
+void bg_structptr(XY *p1, XY *p2) { // $ ast-def=p1 ast-def=p2
   p1->x = source();
   if (guarded(p1->x)) {
     sink(p1->x); // $ SPURIOUS: ast

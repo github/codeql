@@ -8,7 +8,7 @@ struct twoIntFields {
   int getFirst() { return m1; }
 };
 
-void following_pointers(
+void following_pointers( // $ ast-def=sourceStruct1_ptr
     int sourceArray1[],
     int cleanArray1[],
     twoIntFields sourceStruct1,

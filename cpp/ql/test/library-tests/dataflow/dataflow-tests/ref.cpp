@@ -7,16 +7,16 @@ extern int arbitrary;
 
 namespace withoutFields {
   template<typename T>
-  void assign(T &lhs, T rhs) {
+  void assign(T &lhs, T rhs) { // $ ast-def=lhs ir-def=*lhs ast-def=lhs
     lhs = rhs;
   }
 
   template<typename T>
-  void assignWrapper(T &lhs, T rhs) {
+  void assignWrapper(T &lhs, T rhs) { // $ ast-def=lhs ast-def=lhs
     assign(lhs, rhs);
   }
 
-  void notAssign(int &lhs, int rhs) {
+  void notAssign(int &lhs, int rhs) { // $ ast-def=lhs ir-def=*lhs 
     lhs = rhs;
     if (arbitrary) {
       lhs = 1;
@@ -25,14 +25,14 @@ namespace withoutFields {
     }
   }
 
-  void sourceToParam(int &out) {
+  void sourceToParam(int &out) { // $ ast-def=out ir-def=*out 
     out = source();
     if (arbitrary) {
       out = 1;
     }
   }
 
-  void sourceToParamWrapper(int &out) {
+  void sourceToParamWrapper(int &out) { // $ ast-def=out ir-def=*out 
     if (arbitrary) {
       sourceToParam(out);
     } else {
@@ -40,7 +40,7 @@ namespace withoutFields {
     }
   }
 
-  void notSource(int &out) {
+  void notSource(int &out) { // $ ast-def=out ir-def=*out
     out = source();
     if (arbitrary) {
       out = 1;
@@ -71,15 +71,15 @@ namespace withFields {
     int val;
   };
 
-  void assign(Int &lhs, int rhs) {
+  void assign(Int &lhs, int rhs) { // $ ast-def=lhs 
     lhs.val = rhs;
   }
 
-  void assignWrapper(Int &lhs, int rhs) {
+  void assignWrapper(Int &lhs, int rhs) { // $ ast-def=lhs
     assign(lhs, rhs);
   }
 
-  void notAssign(Int &lhs, int rhs) {
+  void notAssign(Int &lhs, int rhs) { // $ ast-def=lhs
     lhs.val = rhs;
     // Field flow ignores that the field is subsequently overwritten, leading
     // to false flow here.
@@ -90,14 +90,14 @@ namespace withFields {
     }
   }
 
-  void sourceToParam(Int &out) {
+  void sourceToParam(Int &out) { // $ ast-def=out
     out.val = source();
     if (arbitrary) {
       out.val = 1;
     }
   }
 
-  void sourceToParamWrapper(Int &out) {
+  void sourceToParamWrapper(Int &out) { // $ ast-def=out
     if (arbitrary) {
       sourceToParam(out);
     } else {
@@ -105,7 +105,7 @@ namespace withFields {
     }
   }
 
-  void notSource(Int &out) {
+  void notSource(Int &out) { // $ ast-def=out
     out.val = source();
     // Field flow ignores that the field is subsequently overwritten, leading
     // to false flow here.

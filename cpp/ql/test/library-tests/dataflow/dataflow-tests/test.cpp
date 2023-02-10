@@ -63,7 +63,7 @@ namespace std {
   template<class T> T&& move(T& t) noexcept; // simplified signature
 }
 
-void identityOperations(int* source1) {
+void identityOperations(int* source1) { // $ ast-def=source1 
   const int *x1 = std::move(source1);
   int* x2 = const_cast<int*>(x1);
   int* x3 = (x2);
@@ -86,7 +86,7 @@ void trackUninitialized() {
   sink(i1); // $ ast,ir
 }
 
-void local_references(int &source1, int clean1) {
+void local_references(int &source1, int clean1) { // $ ast-def=source1 ir-def=*source1
   sink(source1); // $ ast,ir
   source1 = clean1;
   sink(source1); // clean
@@ -111,17 +111,17 @@ void local_references(int &source1, int clean1) {
   }
 }
 
-int alwaysAssignSource(int *out) {
+int alwaysAssignSource(int *out) { // $ ast-def=out ir-def=*out 
   *out = source();
   return 0;
 }
 
-int alwaysAssign0(int *out) {
+int alwaysAssign0(int *out) { // $ ast-def=out ir-def=*out
   *out = 0;
   return 0;
 }
 
-int alwaysAssignInput(int *out, int in) {
+int alwaysAssignInput(int *out, int in) { // $ ast-def=out ir-def=*out
   *out = in;
   return 0;
 }
@@ -468,7 +468,7 @@ void throughStmtExpr(int source1, int clean1) {
   sink(local); // $ ast,ir
 }
 
-void intOutparamSource(int *p) {
+void intOutparamSource(int *p) { // $ ast-def=p ir-def=*p
   *p = source();
 }
 
@@ -484,7 +484,7 @@ struct MyStruct {
   int* content; 
 };
 
-void local_field_flow_def_by_ref_steps_with_local_flow(MyStruct * s) {
+void local_field_flow_def_by_ref_steps_with_local_flow(MyStruct * s) { // $ ast-def=s 
   writes_to_content(s->content);
   int* p_content = s->content;
   sink(*p_content);
@@ -502,7 +502,7 @@ void regression_with_phi_flow(int clean1) {
   }
 }
 
-int intOutparamSourceMissingReturn(int *p) {
+int intOutparamSourceMissingReturn(int *p) { // $ ast-def=p ir-def=*p
   *p = source();
   // return deliberately omitted to test IR dataflow behavior
 }
@@ -521,23 +521,23 @@ void uncertain_definition() {
   sink(stackArray[0]); // $ ast=519:19 ir SPURIOUS: ast=517:7
 }
 
-void set_through_const_pointer(int x, const int **e)
+void set_through_const_pointer(int x, const int **e) // $ ast-def=e ir-def=**e ir-def=*e
 {
   *e = &x;
 }
 
-void test_set_through_const_pointer(int *e)
+void test_set_through_const_pointer(int *e) // $ ast-def=e
 {
   set_through_const_pointer(source(), &e);
   sink(*e); // $ ir MISSING: ast
 }
 
-void sink_then_source_1(int* p) {
+void sink_then_source_1(int* p) { // $ ast-def=p ir-def=*p
     sink(*p); // $ ir // Flow from the unitialized x to the dereference.
     *p = source();
 }
 
-void sink_then_source_2(int* p, int y) {
+void sink_then_source_2(int* p, int y) { // $ ast-def=p ir-def=*p
     sink(y); // $ SPURIOUS: ast ir
     *p = source();
 }
@@ -577,4 +577,15 @@ namespace IndirectFlowThroughGlobals {
     calledAfterTaint();
     sink(*globalInt); // $ ir=562:17 ir=576:17 MISSING: ast=562:17 ast=576:17
   }
+}
+
+void write_to_param(int* x) { // $ ast-def=x
+  int s = source();
+  x = &s;
+}
+
+void test_write_to_param() {
+  int x = 0;
+  write_to_param(&x);
+  sink(x); // $ SPURIOUS: ast
 }
