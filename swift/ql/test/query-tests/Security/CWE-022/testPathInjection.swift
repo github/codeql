@@ -10,25 +10,25 @@ class NSURL {
 
 extension String {
     struct Encoding {
-		static let utf8 = Encoding()
-	}
+        static let utf8 = Encoding()
+    }
 
-	init(contentsOf: URL) {
+    init(contentsOf: URL) {
         let data = ""
         self.init(data)
     }
 
-	init(contentsOfFile path: String) throws {
-		self.init("")
-	}
+    init(contentsOfFile path: String) throws {
+        self.init("")
+    }
 
-	init(contentsOfFile path: String, encoding enc: String.Encoding) throws {
-		self.init("")
-	}
+    init(contentsOfFile path: String, encoding enc: String.Encoding) throws {
+        self.init("")
+    }
 
-	init(contentsOfFile path: String, usedEncoding: inout String.Encoding) throws {
-		self.init("")
-	}
+    init(contentsOfFile path: String, usedEncoding: inout String.Encoding) throws {
+        self.init("")
+    }
 }
 
 class NSString {
