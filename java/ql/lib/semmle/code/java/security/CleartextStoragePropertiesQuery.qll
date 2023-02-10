@@ -5,14 +5,6 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.frameworks.Properties
 import semmle.code.java.security.CleartextStorageQuery
 
-private class PropertiesCleartextStorageSink extends CleartextStorageSink {
-  PropertiesCleartextStorageSink() {
-    exists(MethodAccess m |
-      m.getMethod() instanceof PropertiesSetPropertyMethod and this.asExpr() = m.getArgument(1)
-    )
-  }
-}
-
 /** The instantiation of a `Properties` object, which can be stored to disk. */
 class Properties extends Storable, ClassInstanceExpr {
   Properties() { this.getConstructor().getDeclaringType() instanceof TypeProperty }
