@@ -404,12 +404,16 @@ class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
   }
 }
 
-private Operand fullyConvertedCallStep(Operand op) {
+private Operand fullyConvertedCallStepImpl(Operand op) {
   not exists(getANonConversionUse(op)) and
   exists(Instruction instr |
     conversionFlow(op, instr, _, _) and
     result = getAUse(instr)
   )
+}
+
+private Operand fullyConvertedCallStep(Operand op) {
+  result = unique( | | fullyConvertedCallStepImpl(op))
 }
 
 /**
@@ -438,16 +442,45 @@ private Instruction getANonConversionUse(Operand operand) {
 }
 
 /**
- * Gets the operand that represents the first use of the value of `call` following
+ * Gets an operand that represents the use of the value of `call` following
  * a sequence of conversion-like instructions.
+ *
+ * Note that `operand` is not functionally determined by `call` since there
+ * can be multiple sequences of disjoint conversions following a call. For example,
+ * consider an example like:
+ * ```cpp
+ * long f();
+ * int y;
+ * long x = (long)(y = (int)f());
+ * ```
+ * in this case, there'll be a long-to-int conversion on `f()` before the value is assigned to `y`,
+ * and there will be an int-to-long conversion on `(int)f()` before the value is assigned to `x`.
  */
-predicate operandForFullyConvertedCall(Operand operand, CallInstruction call) {
+private predicate operandForFullyConvertedCallImpl(Operand operand, CallInstruction call) {
   exists(getANonConversionUse(operand)) and
   (
     operand = getAUse(call)
     or
     operand = fullyConvertedCallStep*(getAUse(call))
   )
+}
+
+/**
+ * Gets the operand that represents the use of the value of `call` following
+ * a sequence of conversion-like instructions, if a unique operand exists.
+ */
+predicate operandForFullyConvertedCall(Operand operand, CallInstruction call) {
+  operand = unique(Operand cand | operandForFullyConvertedCallImpl(cand, call))
+}
+
+private predicate instructionForFullyConvertedCallWithConversions(
+  Instruction instr, CallInstruction call
+) {
+  instr =
+    getUse(unique(Operand operand |
+        operand = fullyConvertedCallStep*(getAUse(call)) and
+        not exists(fullyConvertedCallStep(operand))
+      ))
 }
 
 /**
@@ -458,16 +491,15 @@ predicate operandForFullyConvertedCall(Operand operand, CallInstruction call) {
  * conversion instruction) to use to represent the value of `call` after conversions.
  */
 predicate instructionForFullyConvertedCall(Instruction instr, CallInstruction call) {
+  // Only pick an instruction for the call if we cannot pick a unique operand.
   not operandForFullyConvertedCall(_, call) and
   (
     // If there is no use of the call then we pick the call instruction
-    not exists(getAUse(call)) and
+    not instructionForFullyConvertedCallWithConversions(_, call) and
     instr = call
     or
-    // Otherwise, flow to the first non-conversion use.
-    exists(Operand operand | operand = fullyConvertedCallStep*(getAUse(call)) |
-      instr = getANonConversionUse(operand)
-    )
+    // Otherwise, flow to the first instruction that defines multiple operands.
+    instructionForFullyConvertedCallWithConversions(instr, call)
   )
 }
 

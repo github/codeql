@@ -31,7 +31,6 @@ edges
 | A.cpp:57:11:57:24 | call to B [c] | A.cpp:57:11:57:24 | new indirection [c] |
 | A.cpp:57:11:57:24 | new indirection [c] | A.cpp:28:8:28:10 | this indirection [c] |
 | A.cpp:57:11:57:24 | new indirection [c] | A.cpp:57:10:57:32 | call to get |
-| A.cpp:57:11:57:24 | new indirection [c] | A.cpp:57:11:57:24 | new indirection [c] |
 | A.cpp:57:17:57:23 | new | A.cpp:23:10:23:10 | c |
 | A.cpp:57:17:57:23 | new | A.cpp:57:11:57:24 | call to B [c] |
 | A.cpp:57:17:57:23 | new | A.cpp:57:17:57:23 | new |
