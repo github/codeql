@@ -2,8 +2,8 @@ import TestUtilities.InlineExpectationsTest
 import cpp
 
 module AstTest {
-  private import semmle.code.cpp.dataflow.old.DataFlow::DataFlow
-  private import semmle.code.cpp.dataflow.old.internal.DataFlowPrivate
+  private import semmle.code.cpp.dataflow.DataFlow::DataFlow
+  private import semmle.code.cpp.dataflow.internal.DataFlowPrivate
 
   class ASTParameterDefTest extends InlineExpectationsTest {
     ASTParameterDefTest() { this = "ASTParameterDefTest" }
