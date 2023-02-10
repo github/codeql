@@ -237,6 +237,7 @@ namespace Semmle.Autobuild.Shared
 
             TrapDir = RequireEnvironmentVariable(EnvVars.TrapDir(this.Options.Language));
             SourceArchiveDir = RequireEnvironmentVariable(EnvVars.SourceArchiveDir(this.Options.Language));
+            DiagnosticsDir = RequireEnvironmentVariable(EnvVars.DiagnosticDir(this.Options.Language));
         }
 
         /// <summary>
@@ -257,6 +258,8 @@ namespace Semmle.Autobuild.Shared
         protected string TrapDir { get; }
 
         protected string SourceArchiveDir { get; }
+
+        protected string DiagnosticsDir { get; }
 
         private readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
 
