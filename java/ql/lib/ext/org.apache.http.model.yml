@@ -9,7 +9,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.http", "HttpRequest", True, "setURI", "", "", "Argument[0]", "open-url", "manual"]
       - ["org.apache.http", "HttpResponse", True, "setEntity", "(HttpEntity)", "", "Argument[0]", "xss", "manual"]
   - addsTo:
       pack: codeql/java-all
