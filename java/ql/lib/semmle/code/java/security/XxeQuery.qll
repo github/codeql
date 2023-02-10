@@ -1,38 +1,18 @@
-/** Provides taint tracking configurations to be used in XXE queries. */
+/** Provides default definitions to be used in XXE queries. */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.TaintTracking2
-import semmle.code.java.security.XmlParsers
+private import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.security.Xxe
 
 /**
- * A taint-tracking configuration for unvalidated remote user input that is used in XML external entity expansion.
+ * The default implementation of a XXE sink.
+ * The argument of a parse call on an insecurely configured XML parser.
  */
-class XxeConfig extends TaintTracking::Configuration {
-  XxeConfig() { this = "XxeConfig" }
-
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeXxeSink }
-}
-
-/**
- * A taint-tracking configuration for unvalidated local user input that is used in XML external entity expansion.
- */
-class XxeLocalConfig extends TaintTracking::Configuration {
-  XxeLocalConfig() { this = "XxeLocalConfig" }
-
-  override predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeXxeSink }
-}
-
-private class UnsafeXxeSink extends DataFlow::ExprNode {
-  UnsafeXxeSink() {
+private class DefaultXxeSink extends XxeSink {
+  DefaultXxeSink() {
     not exists(SafeSaxSourceFlowConfig safeSource | safeSource.hasFlowTo(this)) and
     exists(XmlParserCall parse |
-      parse.getSink() = this.getExpr() and
+      parse.getSink() = this.asExpr() and
       not parse.isSafe()
     )
   }
@@ -42,7 +22,7 @@ private class UnsafeXxeSink extends DataFlow::ExprNode {
  * A taint-tracking configuration for safe XML readers used to parse XML documents.
  */
 private class SafeSaxSourceFlowConfig extends TaintTracking2::Configuration {
-  SafeSaxSourceFlowConfig() { this = "XmlParsers::SafeSAXSourceFlowConfig" }
+  SafeSaxSourceFlowConfig() { this = "SafeSaxSourceFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSaxSource }
 

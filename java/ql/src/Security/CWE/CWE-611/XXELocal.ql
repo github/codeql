@@ -14,7 +14,8 @@
  */
 
 import java
-import semmle.code.java.security.XxeQuery
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.security.XxeLocalQuery
 import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, XxeLocalConfig conf
