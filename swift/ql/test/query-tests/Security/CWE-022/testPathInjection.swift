@@ -246,12 +246,12 @@ func test() {
     let _ = fm.replaceItemAtURL(originalItemURL: safeNsUrl, withItemAtURL: remoteNsUrl, backupItemName: nil, options: []) // $ hasPathInjection=182
 
     var encoding = String.Encoding.utf8
-    let _ = try! String(contentsOfFile: remoteString) // $ MISSING: hasPathInjection=232
-    let _ = try! String(contentsOfFile: remoteString, encoding: String.Encoding.utf8) // $ MISSING: hasPathInjection=234
-    let _ = try! String(contentsOfFile: remoteString, usedEncoding: &encoding) // $ MISSING: hasPathInjection=235
+    let _ = try! String(contentsOfFile: remoteString) // $ hasPathInjection=182
+    let _ = try! String(contentsOfFile: remoteString, encoding: String.Encoding.utf8) // $ hasPathInjection=182
+    let _ = try! String(contentsOfFile: remoteString, usedEncoding: &encoding) // $ hasPathInjection=182
 
-    let _ = try! NSString(contentsOfFile: remoteString, encoding: 0) // $ MISSING: hasPathInjection=237
-    let _ = try! NSString(contentsOfFile: remoteString, usedEncoding: nil) // $ MISSING: hasPathInjection=238
+    let _ = try! NSString(contentsOfFile: remoteString, encoding: 0) // $ hasPathInjection=182
+    let _ = try! NSString(contentsOfFile: remoteString, usedEncoding: nil) // $ hasPathInjection=182
     NSString().write(to: remoteUrl, atomically: true, encoding: 0)  // $ hasPathInjection=182
     NSString().write(toFile: remoteString, atomically: true, encoding: 0) // $ hasPathInjection=182
 
