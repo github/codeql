@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-02-10-13h12m12s.silver-pen-y8x7l8qq.65590f5abc6b97c7291ae2e414fddf89a8eaa8221d6ed913f96250574d58b80c
+compiled: false
