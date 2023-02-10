@@ -266,6 +266,7 @@ cfg.swift:
 #   47|                 getExpr(): [DeclRefExpr] s
 #   47|               getArgument(1): [Argument] : 
 #   47|                 getExpr(): [StringLiteralExpr] 
+#   47|         getCapture(0): [CapturedDecl] s
 #   51| [ConcreteFuncDecl] createClosure2(x:)
 #   51|     InterfaceType = (Int) -> (Int) -> Int
 #   51|   getParam(0): [ParamDecl] x
@@ -286,6 +287,7 @@ cfg.swift:
 #   53|               getExpr(): [DeclRefExpr] x
 #   53|             getArgument(1): [Argument] : y
 #   53|               getExpr(): [DeclRefExpr] y
+#   53|       getCapture(0): [CapturedDecl] x
 #   55|     getElement(1): [ReturnStmt] return ...
 #   55|       getResult(): [DeclRefExpr] f(y:)
 #   58| [ConcreteFuncDecl] createClosure3(x:)
@@ -308,6 +310,7 @@ cfg.swift:
 #   60|                 getExpr(): [DeclRefExpr] x
 #   60|               getArgument(1): [Argument] : y
 #   60|                 getExpr(): [DeclRefExpr] y
+#   60|         getCapture(0): [CapturedDecl] x
 #   64| [ConcreteFuncDecl] callClosures()
 #   64|     InterfaceType = () -> ()
 #   64|   getBody(): [BraceStmt] { ... }
@@ -758,6 +761,7 @@ cfg.swift:
 #  144|                         getExpr(): [DeclRefExpr] x
 #  144|                       getArgument(1): [Argument] : 5
 #  144|                         getExpr(): [IntegerLiteralExpr] 5
+#  144|                 getCapture(0): [CapturedDecl] x
 #  146|       getCase(2): [CaseStmt] case ...
 #  147|         getBody(): [BraceStmt] { ... }
 #  147|           getElement(0): [ReturnStmt] return ...
@@ -944,6 +948,7 @@ cfg.swift:
 #  185|                               getExpr(): [DeclRefExpr] x
 #  185|                             getArgument(1): [Argument] : 0
 #  185|                               getExpr(): [IntegerLiteralExpr] 0
+#  185|                       getCapture(0): [CapturedDecl] x
 #  185|               getArgument(1): [Argument] : { ... }
 #  185|                 getExpr(): [AutoClosureExpr] { ... }
 #  185|                   getBody(): [BraceStmt] { ... }
@@ -964,6 +969,7 @@ cfg.swift:
 #  185|                             getArgument(1): [Argument] : 5
 #  185|                               getExpr(): [IntegerLiteralExpr] 5
 #  185|                           getExpr().getFullyConverted(): [ParenExpr] (...)
+#  185|                   getCapture(0): [CapturedDecl] x
 #  185|         getThen(): [BraceStmt] { ... }
 #  186|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #  186|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -1178,6 +1184,7 @@ cfg.swift:
 #  238|                 getBody(): [BraceStmt] { ... }
 #  238|                   getElement(0): [ReturnStmt] return ...
 #  238|                     getResult(): [DeclRefExpr] b2
+#  238|                 getCapture(0): [CapturedDecl] b2
 #  238|           getBoolean().getFullyConverted(): [ParenExpr] (...)
 #  238|       getThen(): [BraceStmt] { ... }
 #  239|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
@@ -2412,6 +2419,7 @@ cfg.swift:
 #  368|           getBody(): [BraceStmt] { ... }
 #  369|             getElement(0): [ReturnStmt] return ...
 #  369|               getResult(): [DeclRefExpr] z
+#  369|           getCapture(0): [CapturedDecl] z
 #  368| [ConcreteVarDecl] z
 #  368|     Type = Int
 #  373| [ConcreteFuncDecl] testTupleElement(t:)
@@ -3578,6 +3586,7 @@ declarations.swift:
 #-----|           getElement(0): [ReturnStmt] return ...
 #-----|             getResult(): [MemberRefExpr] .wrappedValue
 #-----|               getBase(): [DeclRefExpr] _x
+#-----|         getCapture(0): [CapturedDecl] _x
 #-----|       getPropertyWrapperBackingVarBinding(): [PatternBindingDecl] var ... = ...
 #   77|         getInit(0): [CallExpr] call to ZeroWrapper.init()
 #   77|           getFunction(): [MethodLookupExpr] ZeroWrapper.init()
@@ -5885,3 +5894,42 @@ statements.swift:
 #   74|         Type = HasModifyAccessorDecl
 #   74|     getParam(0): [ParamDecl] x
 #   74|         Type = Int
+#   87| [TopLevelCodeDecl] { ... }
+#   87|   getBody(): [BraceStmt] { ... }
+#   87|     getElement(0): [IfStmt] if ... then { ... }
+#   87|       getCondition(): [StmtCondition] StmtCondition
+#   87|         getElement(0): (no string representation)
+#   87|           getAvailability(): [AvailabilityInfo] #available
+#   87|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 155
+#   87|             getSpec(1): [OtherAvailabilitySpec] *
+#   87|       getThen(): [BraceStmt] { ... }
+#   88|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   88|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   88|           getArgument(0): [Argument] : [...]
+#   88|             getExpr(): [VarargExpansionExpr] [...]
+#   88|               getSubExpr(): [ArrayExpr] [...]
+#   88|                 getElement(0): [IntegerLiteralExpr] 155
+#   88|                 getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   88|           getArgument(1): [Argument] separator: default separator
+#   88|             getExpr(): [DefaultArgumentExpr] default separator
+#   88|           getArgument(2): [Argument] terminator: default terminator
+#   88|             getExpr(): [DefaultArgumentExpr] default terminator
+#   91| [TopLevelCodeDecl] { ... }
+#   91|   getBody(): [BraceStmt] { ... }
+#   91|     getElement(0): [IfStmt] if ... then { ... }
+#   91|       getCondition(): [StmtCondition] StmtCondition
+#   91|         getElement(0): (no string representation)
+#   91|           getAvailability(): [AvailabilityInfo] #unavailable
+#   91|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 42
+#   91|       getThen(): [BraceStmt] { ... }
+#   92|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   92|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   92|           getArgument(0): [Argument] : [...]
+#   92|             getExpr(): [VarargExpansionExpr] [...]
+#   92|               getSubExpr(): [ArrayExpr] [...]
+#   92|                 getElement(0): [IntegerLiteralExpr] 42
+#   92|                 getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   92|           getArgument(1): [Argument] separator: default separator
+#   92|             getExpr(): [DefaultArgumentExpr] default separator
+#   92|           getArgument(2): [Argument] terminator: default terminator
+#   92|             getExpr(): [DefaultArgumentExpr] default terminator

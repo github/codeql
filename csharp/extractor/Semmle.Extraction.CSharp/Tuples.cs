@@ -191,8 +191,8 @@ namespace Semmle.Extraction.CSharp
         internal static void field_location(this TextWriter trapFile, Field field, Location location) =>
             trapFile.WriteTuple("field_location", field, location);
 
-        internal static void fields(this TextWriter trapFile, Field field, int @const, string name, Type declaringType, Type fieldType, Field unboundKey) =>
-            trapFile.WriteTuple("fields", field, @const, name, declaringType, fieldType, unboundKey);
+        internal static void fields(this TextWriter trapFile, Field field, VariableKind kind, string name, Type declaringType, Type fieldType, Field unboundKey) =>
+            trapFile.WriteTuple("fields", field, (int)kind, name, declaringType, fieldType, unboundKey);
 
         internal static void general_type_parameter_constraints(this TextWriter trapFile, TypeParameterConstraints constraints, int hasKind) =>
             trapFile.WriteTuple("general_type_parameter_constraints", constraints, hasKind);
@@ -227,8 +227,8 @@ namespace Semmle.Extraction.CSharp
         internal static void localvar_location(this TextWriter trapFile, LocalVariable var, Location location) =>
             trapFile.WriteTuple("localvar_location", var, location);
 
-        internal static void localvars(this TextWriter trapFile, LocalVariable key, int @const, string name, int @var, Type type, Expression expr) =>
-            trapFile.WriteTuple("localvars", key, @const, name, @var, type, expr);
+        internal static void localvars(this TextWriter trapFile, LocalVariable key, VariableKind kind, string name, int @var, Type type, Expression expr) =>
+            trapFile.WriteTuple("localvars", key, (int)kind, name, @var, type, expr);
 
         public static void metadata_handle(this TextWriter trapFile, IEntity entity, Location assembly, int handleValue) =>
             trapFile.WriteTuple("metadata_handle", entity, assembly, handleValue);
@@ -462,5 +462,8 @@ namespace Semmle.Extraction.CSharp
 
         internal static void file_extraction_mode(this System.IO.TextWriter trapFile, Entities.File file, ExtractorMode mode) =>
             trapFile.WriteTuple("file_extraction_mode", file, mode);
+
+        internal static void scoped_annotation(this TextWriter trapFile, IEntity element, ScopedAnnotation @scoped) =>
+            trapFile.WriteTuple("scoped_annotation", element, (int)@scoped);
     }
 }

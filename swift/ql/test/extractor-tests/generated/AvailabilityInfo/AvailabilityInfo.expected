@@ -1,0 +1,2 @@
+| test.swift:1:4:1:27 | #available | isUnavailable: | no | getNumberOfSpecs: | 2 |
+| test.swift:5:4:5:45 | #unavailable | isUnavailable: | yes | getNumberOfSpecs: | 3 |

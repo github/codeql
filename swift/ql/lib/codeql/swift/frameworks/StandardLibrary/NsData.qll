@@ -1,4 +1,6 @@
-/** Provides classes and models to work with `NSData`-related objects. */
+/**
+ * Provides models for `NSData` and related Swift classes.
+ */
 
 import swift
 private import codeql.swift.dataflow.DataFlow

@@ -136,6 +136,7 @@ methodlookup.swift:
 #   27|                             getFunction(): [MethodLookupExpr] .instanceMethod()
 #-----|                               getBase(): [DeclRefExpr] self
 #   27|                               getMethodRef(): [DeclRefExpr] instanceMethod()
+#-----|                       getCapture(0): [CapturedDecl] self
 #   27|             getArgument(0): [Argument] : foo
 #   27|               getExpr(): [DeclRefExpr] foo
 #   29|         getElement(5): [CallExpr] call to classMethod()
@@ -244,6 +245,7 @@ methodlookup.swift:
 #   48|                                 getFunction(): [MethodLookupExpr] .instanceMethod()
 #-----|                                   getBase(): [DeclRefExpr] self
 #   48|                                   getMethodRef(): [DeclRefExpr] instanceMethod()
+#-----|                           getCapture(0): [CapturedDecl] self
 #   48|                 getArgument(0): [Argument] : baz
 #   48|                   getExpr(): [DeclRefExpr] baz
 #   48|             getElement(4).getFullyConverted(): [AwaitExpr] await ...

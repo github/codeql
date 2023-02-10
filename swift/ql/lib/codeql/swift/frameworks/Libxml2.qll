@@ -1,3 +1,7 @@
+/**
+ * Provides models for the libxml2 library.
+ */
+
 import swift
 
 /**

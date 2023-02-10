@@ -1391,6 +1391,9 @@ class TypedContentApprox extends MkTypedContentApprox {
   /** Gets a typed content approximated by this value. */
   TypedContent getATypedContent() { result = getATypedContent(this) }
 
+  /** Gets the content. */
+  ContentApprox getContent() { result = c }
+
   /** Gets the container type. */
   DataFlowType getContainerType() { result = t }
 
@@ -1407,6 +1410,8 @@ abstract class ApproxAccessPathFront extends TApproxAccessPathFront {
   abstract DataFlowType getType();
 
   abstract boolean toBoolNonEmpty();
+
+  TypedContentApprox getHead() { this = TApproxFrontHead(result) }
 
   pragma[nomagic]
   TypedContent getAHead() {

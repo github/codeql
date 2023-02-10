@@ -16,9 +16,9 @@ For example, to declare a module ``M`` as private, you could use:
     }
 
 Note that some annotations act on an entity itself, whilst others act on a particular *name* for the entity:
-  - Act on an **entity**: ``abstract``, ``cached``, ``external``, ``transient``, ``final``, ``override``, ``pragma``, ``language``,
+  - Act on an **entity**: ``abstract``, ``cached``, ``external``, ``transient``, ``override``, ``pragma``, ``language``,
     and ``bindingset``
-  - Act on a **name**: ``deprecated``, ``library``, ``private``, and ``query``
+  - Act on a **name**: ``deprecated``, ``library``, ``private``, ``final``, and ``query``
 
 For example, if you annotate an entity with ``private``, then only that particular name is
 private. You could still access that entity under a different name (using an :ref:`alias <aliases>`).
@@ -179,11 +179,11 @@ without ``external``, the compiler will report an error.
 ``final``
 =========
 
-**Available for**: |classes|, |member predicates|, |fields|
+**Available for**: |classes|, |type-aliases|, |member predicates|, |fields|
 
-The ``final`` annotation is applied to entities that can't be overridden or extended.
-In other words, a final class can't act as a base type for any other types, and a final
-predicate or field can't be overridden in a subclass.
+The ``final`` annotation is applied to names that can't be overridden or extended.
+In other words, a final class or a final type alias can't act as a base type for any other types,
+and a final predicate or field can't be overridden in a subclass.
 
 This is useful if you don't want subclasses to change the meaning of a particular entity.
 
@@ -397,6 +397,15 @@ For example, ``x = pragma[only_bind_into](y)`` is semantically equivalent to ``x
 
 For more information, see ":ref:`Binding <binding>`."
 
+``pragma[assume_small_delta]``
+------------------------------
+
+**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
+
+The ``pragma[assume_small_delta]`` annotation changes the compilation of the annotated recursive predicate.
+If the compiler normally generates the join orders ``order_<1>``, ``order_<2>``, ``order_<3>``, and ``standard_order``,
+applying this annotation makes ``standard_order`` the same as ``order_<3>`` and removes the (now redundant) ``order_<3>`` join order.
+
 .. _language:
 
 Language pragmas
@@ -444,5 +453,6 @@ The ``bindingset`` annotation takes a comma-separated list of variables.
 .. |fields|                    replace:: :ref:`fields <fields>`
 .. |modules|                   replace:: :ref:`modules <modules>`
 .. |aliases|                   replace:: :ref:`aliases <aliases>`
+.. |type-aliases|              replace:: :ref:`type aliases <type-aliases>`
 .. |algebraic datatypes|       replace:: :ref:`algebraic datatypes <algebraic-datatypes>`
 .. |expressions|               replace:: :ref:`expressions <expressions>`

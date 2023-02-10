@@ -233,10 +233,9 @@ module PasswordHeuristics {
   predicate isDummyPassword(string password) {
     password.length() < 4
     or
-    exists(string normalized | normalized = password.toLowerCase() |
-      count(normalized.charAt(_)) = 1 or
-      normalized
-          .regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth|redacted|0123456789).*")
-    )
+    count(password.charAt(_)) <= 2 // aaaaaaaa or bBbBbB or ghghghghghgh or the like
+    or
+    password
+        .regexpMatch("(?i).*(pass|test|sample|example|secret|root|admin|user|change|auth|redacted|0123456789).*")
   }
 }

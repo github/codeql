@@ -96,16 +96,11 @@ private class JSEvaluateScriptDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
 }
 
 /**
- * A default SQL injection sanitrizer.
+ * A default SQL injection sanitizer.
  */
 private class DefaultUnsafeJsEvalAdditionalTaintStep extends UnsafeJsEvalAdditionalTaintStep {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(Argument arg |
-      arg =
-        any(CallExpr ce |
-          ce.getStaticTarget().(MethodDecl).hasQualifiedName("String", "init(decoding:as:)")
-        ).getArgument(0)
-      or
       arg =
         any(CallExpr ce |
           ce.getStaticTarget()
