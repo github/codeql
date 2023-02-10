@@ -84,9 +84,7 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     // see wget: https://pypi.org/project/wget/
     exists(API::CallNode mcn |
       mcn = API::moduleImport("wget").getMember("download").getACall() and
-      if exists(mcn.getArg(1))
-      then source = mcn.getArg(1)
-      else source = mcn.getReturn().asSource()
+      if exists(mcn.getArg(1)) then source = mcn.getArg(1) else source = mcn.getReturn().asSource()
     )
     or
     // catch the Django uploaded files as a source
