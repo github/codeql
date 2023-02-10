@@ -29,9 +29,7 @@
 | generic.go:47:6:47:16 | MyInterface | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.MyInterface |
 | generic.go:67:6:67:22 | HasBlankTypeParam | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.HasBlankTypeParam |
 | generic.go:68:6:68:23 | HasBlankTypeParams | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.HasBlankTypeParams |
-| generic.go:82:6:82:14 | GenericArray | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericArray |
 | generic.go:84:6:84:21 | GenericSignature | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericSignature |
-| generic.go:85:6:85:26 | GenericSignature | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericSignature |
 | interface.go:3:6:3:7 | i0 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i0 |
 | interface.go:5:6:5:7 | i1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i1 |
 | interface.go:9:6:9:7 | i2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i2 |
