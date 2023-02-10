@@ -11,25 +11,20 @@ uniqueType
 uniqueNodeLocation
 | allocators.cpp:14:5:14:8 | Phi | Node should have one location but has 4. |
 | allocators.cpp:14:5:14:8 | main | Node should have one location but has 4. |
-| allocators.cpp:14:5:14:8 | main | Node should have one location but has 4. |
 | allocators.cpp:14:5:14:8 | main indirection | Node should have one location but has 4. |
 | allocators.cpp:14:5:14:8 | main indirection | Node should have one location but has 4. |
-| break_labels.c:2:11:2:11 | i | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | i | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | i | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | i indirection | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | i indirection | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | x | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | x | Node should have one location but has 4. |
-| break_labels.c:2:11:2:11 | x | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | x indirection | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | x indirection | Node should have one location but has 4. |
 | duff.c:2:12:2:12 | i | Node should have one location but has 4. |
 | duff.c:2:12:2:12 | i | Node should have one location but has 4. |
-| duff.c:2:12:2:12 | i | Node should have one location but has 4. |
 | duff.c:2:12:2:12 | i indirection | Node should have one location but has 4. |
 | duff.c:2:12:2:12 | i indirection | Node should have one location but has 4. |
-| duff.c:2:12:2:12 | x | Node should have one location but has 4. |
 | duff.c:2:12:2:12 | x | Node should have one location but has 4. |
 | duff.c:2:12:2:12 | x | Node should have one location but has 4. |
 | duff.c:2:12:2:12 | x indirection | Node should have one location but has 4. |
@@ -48,55 +43,44 @@ uniqueNodeLocation
 | file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
 | ifelsestmt.c:37:17:37:17 | x | Node should have one location but has 2. |
 | ifelsestmt.c:37:17:37:17 | x | Node should have one location but has 2. |
-| ifelsestmt.c:37:17:37:17 | x | Node should have one location but has 2. |
 | ifelsestmt.c:37:17:37:17 | x indirection | Node should have one location but has 2. |
 | ifelsestmt.c:37:17:37:17 | x indirection | Node should have one location but has 2. |
-| ifelsestmt.c:37:24:37:24 | y | Node should have one location but has 2. |
 | ifelsestmt.c:37:24:37:24 | y | Node should have one location but has 2. |
 | ifelsestmt.c:37:24:37:24 | y | Node should have one location but has 2. |
 | ifelsestmt.c:37:24:37:24 | y indirection | Node should have one location but has 2. |
 | ifelsestmt.c:37:24:37:24 | y indirection | Node should have one location but has 2. |
 | ifstmt.c:27:17:27:17 | x | Node should have one location but has 2. |
 | ifstmt.c:27:17:27:17 | x | Node should have one location but has 2. |
-| ifstmt.c:27:17:27:17 | x | Node should have one location but has 2. |
 | ifstmt.c:27:17:27:17 | x indirection | Node should have one location but has 2. |
 | ifstmt.c:27:17:27:17 | x indirection | Node should have one location but has 2. |
-| ifstmt.c:27:24:27:24 | y | Node should have one location but has 2. |
 | ifstmt.c:27:24:27:24 | y | Node should have one location but has 2. |
 | ifstmt.c:27:24:27:24 | y | Node should have one location but has 2. |
 | ifstmt.c:27:24:27:24 | y indirection | Node should have one location but has 2. |
 | ifstmt.c:27:24:27:24 | y indirection | Node should have one location but has 2. |
 | no_dynamic_init.cpp:9:5:9:8 | Phi | Node should have one location but has 4. |
 | no_dynamic_init.cpp:9:5:9:8 | main | Node should have one location but has 4. |
-| no_dynamic_init.cpp:9:5:9:8 | main | Node should have one location but has 4. |
 | no_dynamic_init.cpp:9:5:9:8 | main indirection | Node should have one location but has 4. |
 | no_dynamic_init.cpp:9:5:9:8 | main indirection | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
-| nodefaultswitchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | i indirection | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | i indirection | Node should have one location but has 4. |
-| nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | x indirection | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | x indirection | Node should have one location but has 4. |
 | parameterinitializer.cpp:18:5:18:8 | Phi | Node should have one location but has 4. |
 | parameterinitializer.cpp:18:5:18:8 | main | Node should have one location but has 4. |
-| parameterinitializer.cpp:18:5:18:8 | main | Node should have one location but has 4. |
 | parameterinitializer.cpp:18:5:18:8 | main indirection | Node should have one location but has 4. |
 | parameterinitializer.cpp:18:5:18:8 | main indirection | Node should have one location but has 4. |
 | stream_it.cpp:16:5:16:8 | Phi | Node should have one location but has 4. |
 | stream_it.cpp:16:5:16:8 | main | Node should have one location but has 4. |
-| stream_it.cpp:16:5:16:8 | main | Node should have one location but has 4. |
 | stream_it.cpp:16:5:16:8 | main indirection | Node should have one location but has 4. |
 | stream_it.cpp:16:5:16:8 | main indirection | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
-| switchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | i indirection | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | i indirection | Node should have one location but has 4. |
-| switchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | x indirection | Node should have one location but has 4. |
@@ -106,28 +90,18 @@ missingLocation
 uniqueNodeToString
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
-| break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | i indirection | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | i indirection | Node should have one toString but has 2. |
-| break_labels.c:2:11:2:11 | x | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | x | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | x | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | x indirection | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | x indirection | Node should have one toString but has 2. |
 | break_labels.c:4:9:4:9 | i | Node should have one toString but has 2. |
 | break_labels.c:4:9:4:9 | i | Node should have one toString but has 2. |
-| break_labels.c:4:9:4:9 | i | Node should have one toString but has 2. |
-| break_labels.c:4:9:4:9 | i | Node should have one toString but has 2. |
-| break_labels.c:4:9:4:9 | x | Node should have one toString but has 2. |
-| break_labels.c:4:9:4:9 | x | Node should have one toString but has 2. |
 | break_labels.c:4:9:4:9 | x | Node should have one toString but has 2. |
 | break_labels.c:4:9:4:9 | x | Node should have one toString but has 2. |
 | break_labels.c:6:16:6:16 | i | Node should have one toString but has 2. |
 | break_labels.c:6:16:6:16 | i | Node should have one toString but has 2. |
-| break_labels.c:6:16:6:16 | i | Node should have one toString but has 2. |
-| break_labels.c:6:16:6:16 | i | Node should have one toString but has 2. |
-| break_labels.c:6:16:6:16 | x | Node should have one toString but has 2. |
-| break_labels.c:6:16:6:16 | x | Node should have one toString but has 2. |
 | break_labels.c:6:16:6:16 | x | Node should have one toString but has 2. |
 | break_labels.c:6:16:6:16 | x | Node should have one toString but has 2. |
 | break_labels.c:7:17:7:17 | i | Node should have one toString but has 2. |
@@ -148,28 +122,18 @@ uniqueNodeToString
 | break_labels.c:7:17:7:17 | x indirection | Node should have one toString but has 2. |
 | duff.c:2:12:2:12 | i | Node should have one toString but has 2. |
 | duff.c:2:12:2:12 | i | Node should have one toString but has 2. |
-| duff.c:2:12:2:12 | i | Node should have one toString but has 2. |
 | duff.c:2:12:2:12 | i indirection | Node should have one toString but has 2. |
 | duff.c:2:12:2:12 | i indirection | Node should have one toString but has 2. |
-| duff.c:2:12:2:12 | x | Node should have one toString but has 2. |
 | duff.c:2:12:2:12 | x | Node should have one toString but has 2. |
 | duff.c:2:12:2:12 | x | Node should have one toString but has 2. |
 | duff.c:2:12:2:12 | x indirection | Node should have one toString but has 2. |
 | duff.c:2:12:2:12 | x indirection | Node should have one toString but has 2. |
 | duff.c:3:14:3:14 | i | Node should have one toString but has 2. |
 | duff.c:3:14:3:14 | i | Node should have one toString but has 2. |
-| duff.c:3:14:3:14 | i | Node should have one toString but has 2. |
-| duff.c:3:14:3:14 | i | Node should have one toString but has 2. |
-| duff.c:3:14:3:14 | x | Node should have one toString but has 2. |
-| duff.c:3:14:3:14 | x | Node should have one toString but has 2. |
 | duff.c:3:14:3:14 | x | Node should have one toString but has 2. |
 | duff.c:3:14:3:14 | x | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | i | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | i | Node should have one toString but has 2. |
-| duff.c:4:13:4:13 | i | Node should have one toString but has 2. |
-| duff.c:4:13:4:13 | i | Node should have one toString but has 2. |
-| duff.c:4:13:4:13 | x | Node should have one toString but has 2. |
-| duff.c:4:13:4:13 | x | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | x | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | x | Node should have one toString but has 2. |
 | file://:0:0:0:0 | i | Node should have one toString but has 2. |
@@ -180,38 +144,26 @@ uniqueNodeToString
 | file://:0:0:0:0 | y | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
-| nodefaultswitchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:1:12:1:12 | i indirection | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:1:12:1:12 | i indirection | Node should have one toString but has 2. |
-| nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:1:12:1:12 | x indirection | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:1:12:1:12 | x indirection | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
-| nodefaultswitchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
-| nodefaultswitchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
-| nodefaultswitchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
-| nodefaultswitchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
-| switchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | i indirection | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | i indirection | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
-| switchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | x indirection | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | x indirection | Node should have one toString but has 2. |
 | switchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
 | switchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
-| switchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
-| switchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
-| switchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
-| switchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
 | switchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
 | switchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
 missingToString
