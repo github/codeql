@@ -263,7 +263,7 @@ module Stmts {
         // ... a boolean condition.
         astFirst(ast.getElement(i).getBoolean().getFullyConverted(), first)
         or
-        // ... or an availability check ...
+        // ... or an availability check.
         astFirst(ast.getElement(i).getAvailability().getFullyUnresolved(), first)
       )
     }
