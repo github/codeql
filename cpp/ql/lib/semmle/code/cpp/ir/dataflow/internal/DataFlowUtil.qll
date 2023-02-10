@@ -53,7 +53,7 @@ private newtype TIRDataFlowNode =
     exists(Ssa::FinalParameterUse use |
       use.getParameter() = p and
       use.getIndirectionIndex() = indirectionIndex and
-      parameterIsDefined(p)
+      parameterIsRedefined(p)
     )
   } or
   TFinalGlobalValue(Ssa::GlobalUse globalUse) or
@@ -66,7 +66,7 @@ private newtype TIRDataFlowNode =
  * Only parameters satisfying this predicate will generate a `FinalParameterNode` transferring
  * flow out of the function.
  */
-private predicate parameterIsDefined(Parameter p) {
+private predicate parameterIsRedefined(Parameter p) {
   exists(Ssa::Def def |
     def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable().getAst() = p and
     def.getIndirectionIndex() = 0 and

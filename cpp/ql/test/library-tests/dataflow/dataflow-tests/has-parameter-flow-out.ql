@@ -28,6 +28,11 @@ module IRTest {
   private import semmle.code.cpp.ir.dataflow.DataFlow
   private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 
+  private string stars(int k) {
+    k = [0 .. max(FinalParameterNode n | | n.getIndirectionIndex())] and
+    (if k = 0 then result = "" else result = "*" + stars(k - 1))
+  }
+
   class IRParameterDefTest extends InlineExpectationsTest {
     IRParameterDefTest() { this = "IRParameterDefTest" }
 
@@ -41,7 +46,7 @@ module IRTest {
         location = f.getLocation() and
         element = p.toString() and
         tag = "ir-def" and
-        value = "**********".prefix(n.getIndirectionIndex()) + p.getName()
+        value = stars(n.getIndirectionIndex()) + p.getName()
       )
     }
   }
