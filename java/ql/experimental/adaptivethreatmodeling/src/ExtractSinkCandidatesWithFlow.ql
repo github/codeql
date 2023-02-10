@@ -13,7 +13,9 @@
 
 private import java
 import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.ExternalFlow
 private import experimental.adaptivethreatmodeling.EndpointCharacteristics as EndpointCharacteristics
+private import experimental.adaptivethreatmodeling.EndpointTypes
 private import experimental.adaptivethreatmodeling.ATMConfig as AtmConfig
 private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
 private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
@@ -21,6 +23,14 @@ private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestF
 
 from DataFlow::Node sink, string message
 where
+  // If a node is already a know MaD sink for any of our queries, we don't include it as a candidate. Otherwise, we might
+  // include it as a candidate for query A, but the model will label it as a sink for one of the sink types of query B,
+  // for which it's already a known sink. This would result in overlap between our detected sinks and the pre-existing
+  // modeling. We assume that, if a sink has already been modeled in a MaD model, then it doesn't belong to any
+  // additional sink types.
+  not exists(AtmConfig::AtmConfig config, EndpointType sinkType |
+    sinkType = config.getASinkEndpointType() and sinkNode(sink, sinkType.getKind())
+  ) and
   // The message is the concatenation of all relevant configs, and we surface only sinks that have at least one relevant
   // config.
   message =
