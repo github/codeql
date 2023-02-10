@@ -401,7 +401,7 @@ func testEnums() {
     case .myNone:
         ()
     case .mySingle(let a):
-        sink(arg: a) // $ MISSING: flow=398
+        sink(arg: a) // $ flow=398
     case .myPair(let a, let b):
         sink(arg: a)
         sink(arg: b)
@@ -410,7 +410,7 @@ func testEnums() {
     }
 
     if case .mySingle(let x) = a {
-        sink(arg: x) // $ MISSING: flow=398
+        sink(arg: x) // $ flow=398
     }
     if case .myPair(let x, let y) = a {
         sink(arg: x)
@@ -426,7 +426,7 @@ func testEnums() {
         sink(arg: a)
     case .myPair(let a, let b):
         sink(arg: a)
-        sink(arg: b) // $ MISSING: flow=420
+        sink(arg: b) // $ flow=420
     case let .myCons(a, _):
         sink(arg: a)
     }
@@ -436,7 +436,7 @@ func testEnums() {
     }
     if case .myPair(let x, let y) = a {
         sink(arg: x)
-        sink(arg: y) // $ MISSING: flow=420
+        sink(arg: y) // $ flow=420
     }
 
     let b: MyEnum = .myCons(42, a)
@@ -461,7 +461,7 @@ func testEnums() {
         sink(arg: x)
     }
     if case MyEnum.myPair(let x, let y) = .myPair(source(), 0) {
-        sink(arg: x) // $ MISSING: flow=463
+        sink(arg: x) // $ flow=463
         sink(arg: y)
     }
     if case let .myCons(_, .myPair(_, c)) = b {
@@ -471,7 +471,7 @@ func testEnums() {
     switch (a, b) {
     case let (.myPair(a, b), .myCons(c, .myPair(d, e))):
         sink(arg: a)
-        sink(arg: b) // $ MISSING: flow=420
+        sink(arg: b) // $ flow=420
         sink(arg: c)
         sink(arg: d)
         sink(arg: e) // $ MISSING: flow=420

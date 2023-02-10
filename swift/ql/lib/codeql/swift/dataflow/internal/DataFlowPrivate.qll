@@ -201,7 +201,8 @@ private module Cached {
   cached
   newtype TContent =
     TFieldContent(FieldDecl f) or
-    TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) }
+    TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) } or
+    TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) }
 }
 
 /**
@@ -558,6 +559,13 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
   )
   or
+  // creation of an enum `.variant(v1, v2)`
+  exists(EnumElementExpr enum, int pos |
+    node1.asExpr() = enum.getArgument(pos).getExpr() and
+    node2.asExpr() = enum and
+    c.isSingleton(any(Content::EnumContent ec | ec.getField() = enum.getElement().getParam(pos)))
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
 }
 
@@ -577,6 +585,20 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node1.asExpr() = tuple.getSubExpr() and
     node2.asExpr() = tuple and
     c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
+  )
+  or
+  // read of an enum member via `case let .variant(v1, v2)` pattern matching
+  exists(Expr enumExpr, ParamDecl enumField, VarDecl boundVar |
+    node1.asExpr() = enumExpr and
+    node2.asDefinition().getSourceVariable() = boundVar and
+    c.isSingleton(any(Content::EnumContent ec | ec.getField() = enumField))
+  |
+    exists(EnumElementPattern enumPat, NamedPattern namePat, int idx |
+      enumPat.getMatchingExpr() = enumExpr and
+      enumPat.getElement().getParam(idx) = enumField and
+      namePat.getIdentityPreservingEnclosingPattern*() = enumPat.getSubPattern(idx) and
+      namePat.getVarDecl() = boundVar
+    )
   )
 }
 

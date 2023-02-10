@@ -171,6 +171,20 @@ module Content {
 
     override string toString() { result = "Tuple element at index " + index.toString() }
   }
+
+  /** A field of an enum element. */
+  class EnumContent extends Content, TEnumContent {
+    private ParamDecl f;
+
+    EnumContent() { this = TEnumContent(f) }
+
+    /** Gets the declaration of the enum field. */
+    ParamDecl getField() { result = f }
+
+    override string toString() {
+      exists(EnumElementDecl d, int pos | d.getParam(pos) = f | result = d.toString() + ":" + pos)
+    }
+  }
 }
 
 /**
