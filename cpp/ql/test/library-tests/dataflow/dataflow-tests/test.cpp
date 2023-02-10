@@ -563,18 +563,18 @@ namespace IndirectFlowThroughGlobals {
   }
 
   void f() {
-    sink(*globalInt); // $ ir=562:17 ir=576:17 // tainted or clean? Not sure.
+    sink(*globalInt); // $ ir=562:17 ir=576:17 MISSING: ast=562:17 ast=576:17
     taintGlobal();
-    sink(*globalInt); // $ ir=562:17 MISSING: ast=562:17 SPURIOUS: ir=576:17
+    sink(*globalInt); // $ ir=562:17 ir=576:17 MISSING: ast=562:17 ast=576:17
   }
 
   void calledAfterTaint() {
-    sink(*globalInt); // $ ir=576:17 MISSING: ast=576:17 SPURIOUS: ir=562:17
+    sink(*globalInt); // $ ir=562:17 ir=576:17 MISSING: ast=562:17 ast=576:17
   }
 
   void taintAndCall() {
     globalInt = indirect_source();
     calledAfterTaint();
-    sink(*globalInt); // $ ir=576:17 MISSING: ast=576:17 SPURIOUS: ir=562:17
+    sink(*globalInt); // $ ir=562:17 ir=576:17 MISSING: ast=562:17 ast=576:17
   }
 }
