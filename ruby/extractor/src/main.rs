@@ -75,7 +75,6 @@ fn main() -> std::io::Result<()> {
                 main_thread_logger
                     .message("configuration-error", "Configuration error")
                     .text(&format!("{}; defaulting to 1 thread.", e))
-                    .status_page()
                     .severity(diagnostics::Severity::Warning),
             );
             1
@@ -97,7 +96,6 @@ fn main() -> std::io::Result<()> {
                 main_thread_logger
                     .message("configuration-error", "Configuration error")
                     .text(&format!("{}; using gzip.", e))
-                    .status_page()
                     .severity(diagnostics::Severity::Warning),
             );
             trap::Compression::Gzip

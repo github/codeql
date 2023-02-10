@@ -274,7 +274,12 @@ impl<'a> Visitor<'a> {
         );
     }
 
-    fn record_parse_error_for_node(&mut self, error_message: String, node: Node) {
+    fn record_parse_error_for_node(
+        &mut self,
+        error_message: String,
+        node: Node,
+        status_page: bool,
+    ) {
         let (start_line, start_column, end_line, end_column) = location_for(self, node);
         let loc = location(
             self.trap_writer,
@@ -284,14 +289,16 @@ impl<'a> Visitor<'a> {
             end_line,
             end_column,
         );
-        self.record_parse_error(
-            loc,
-            self.diagnostics_writer
-                .message("parse-error", "Parse error")
-                .severity(diagnostics::Severity::Error)
-                .location(self.path, start_line, start_column, end_line, end_column)
-                .text(&error_message),
-        );
+        let mut mesg = self
+            .diagnostics_writer
+            .message("parse-error", "Parse error");
+        &mesg.severity(diagnostics::Severity::Error)
+            .location(self.path, start_line, start_column, end_line, end_column)
+            .text(&error_message);
+        if status_page {
+            &mesg.status_page();
+        }
+        self.record_parse_error(loc, &mesg);
     }
 
     fn enter_node(&mut self, node: Node) -> bool {
@@ -301,7 +308,7 @@ impl<'a> Visitor<'a> {
             } else {
                 "parse error".to_string()
             };
-            self.record_parse_error_for_node(error_message, node);
+            self.record_parse_error_for_node(error_message, node, true);
             return false;
         }
 
@@ -390,8 +397,7 @@ impl<'a> Visitor<'a> {
                         .message("parse-error", "Parse error")
                         .severity(diagnostics::Severity::Error)
                         .location(self.path, start_line, start_column, end_line, end_column)
-                        .text(&error_message)
-                        .status_page(),
+                        .text(&error_message),
                 );
 
                 valid = false;
@@ -446,7 +452,7 @@ impl<'a> Visitor<'a> {
                         child_node.type_name,
                         field.type_info
                     );
-                    self.record_parse_error_for_node(error_message, *node);
+                    self.record_parse_error_for_node(error_message, *node,false);
                 }
             } else if child_node.field_name.is_some() || child_node.type_name.named {
                 let error_message = format!(
@@ -455,7 +461,7 @@ impl<'a> Visitor<'a> {
                     &child_node.field_name.unwrap_or("child"),
                     &child_node.type_name
                 );
-                self.record_parse_error_for_node(error_message, *node);
+                self.record_parse_error_for_node(error_message, *node, false);
             }
         }
         let mut args = Vec::new();
@@ -478,7 +484,7 @@ impl<'a> Visitor<'a> {
                             node.kind(),
                             column_name
                         );
-                        self.record_parse_error_for_node(error_message, *node);
+                        self.record_parse_error_for_node(error_message, *node, false);
                     }
                 }
                 Storage::Table {
@@ -494,7 +500,7 @@ impl<'a> Visitor<'a> {
                                 table_name,
                             );
 
-                            self.record_parse_error_for_node(error_message, *node);
+                            self.record_parse_error_for_node(error_message, *node, false);
                             break;
                         }
                         let mut args = vec![trap::Arg::Label(parent_id)];
@@ -593,7 +599,6 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
                         .diagnostics_writer
                         .message("internal-error", "Internal error")
                         .text("expecting a line break symbol, but none found while correcting end column value")
-                        .status_page()
                         .severity(diagnostics::Severity::Error),
                 );
             }
@@ -613,7 +618,6 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
                         index,
                         source.len()
                     ))
-                    .status_page()
                     .severity(diagnostics::Severity::Error),
             );
         }
