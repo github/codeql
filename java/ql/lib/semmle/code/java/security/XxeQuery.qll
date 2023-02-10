@@ -5,7 +5,6 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.security.XmlParsers
-import DataFlow::PathGraph
 
 /**
  * A taint-tracking configuration for unvalidated remote user input that is used in XML external entity expansion.
