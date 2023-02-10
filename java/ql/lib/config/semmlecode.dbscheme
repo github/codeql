@@ -648,7 +648,7 @@ case @stmt.kind of
 
 #keyset[parent,idx]
 exprs(
-  unique int id: @expr,
+  int id: @expr,
   int kind: int ref,
   int typeid: @type ref,
   int parent: @exprparent ref,
