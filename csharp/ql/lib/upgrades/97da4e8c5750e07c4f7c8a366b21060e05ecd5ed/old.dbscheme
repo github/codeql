@@ -878,13 +878,6 @@ param_location(
   int id: @parameter ref,
   int loc: @location ref);
 
-@has_scoped_annotation = @local_scope_variable
-
-scoped_annotation(
-  int id: @has_scoped_annotation ref,
-  int kind: int ref // scoped ref = 1, scoped value = 2
-  );
-
 /** STATEMENTS **/
 
 @exprorstmt_parent = @control_flow_element | @top_level_exprorstmt_parent;

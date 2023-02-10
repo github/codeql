@@ -343,6 +343,87 @@ PatternMatchSpan.cs:
 #   16|         2: [DefaultCase] default:
 #   16|         3: [BlockStmt] {...}
 #   16|           0: [BreakStmt] break;
+Scoped.cs:
+#    1| [Struct] S1
+#    2| [Struct] S2
+#    7| [Class] ScopedModifierTest
+#    9|   5: [Method] M1
+#    9|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#    9|       0: [Parameter] x1
+#    9|         -1: [TypeMention] int
+#    9|       1: [Parameter] y1
+#    9|         -1: [TypeMention] int
+#   10|     4: [BlockStmt] {...}
+#   13|       0: [ReturnStmt] return ...;
+#   13|         0: [RefExpr] ref ...
+#   13|           0: [ParameterAccess] access to parameter y1
+#   16|   6: [Method] M2
+#   16|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   16|       0: [Parameter] x2
+#   16|         -1: [TypeMention] int
+#   16|       1: [Parameter] y2
+#   16|         -1: [TypeMention] int
+#   17|     4: [BlockStmt] {...}
+#   18|       0: [ExprStmt] ...;
+#   18|         0: [AssignExpr] ... = ...
+#   18|           0: [ParameterAccess] access to parameter x2
+#   18|           1: [IntLiteral] 0
+#   21|       1: [ReturnStmt] return ...;
+#   21|         0: [RefExpr] ref ...
+#   21|           0: [ParameterAccess] access to parameter y2
+#   24|   7: [Method] M3
+#   24|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   24|       0: [Parameter] x3
+#   24|         -1: [TypeMention] int
+#   25|     4: [BlockStmt] {...}
+#   27|       0: [ReturnStmt] return ...;
+#   27|         0: [ParameterAccess] access to parameter x3
+#   30|   8: [Method] M4
+#   30|     -1: [TypeMention] S1
+#-----|     2: (Parameters)
+#   30|       0: [Parameter] x4
+#   30|         -1: [TypeMention] S1
+#   31|     4: [BlockStmt] {...}
+#   33|       0: [ReturnStmt] return ...;
+#   33|         0: [ParameterAccess] access to parameter x4
+#   36|   9: [Method] M5
+#   36|     -1: [TypeMention] S2
+#-----|     2: (Parameters)
+#   36|       0: [Parameter] x5
+#   36|         -1: [TypeMention] S2
+#   37|     4: [BlockStmt] {...}
+#   40|       0: [ReturnStmt] return ...;
+#   40|         0: [ObjectCreation] object creation of type S2
+#   40|           0: [TypeMention] S2
+#   43|   10: [Method] M6
+#   43|     -1: [TypeMention] S2
+#-----|     2: (Parameters)
+#   43|       0: [Parameter] x6
+#   43|         -1: [TypeMention] S2
+#   44|     4: [BlockStmt] {...}
+#   47|       0: [ReturnStmt] return ...;
+#   47|         0: [ObjectCreation] object creation of type S2
+#   47|           0: [TypeMention] S2
+#   50|   11: [Method] Locals
+#   50|     -1: [TypeMention] S2
+#   51|     4: [BlockStmt] {...}
+#   52|       0: [LocalVariableDeclStmt] ... ...;
+#   52|         0: [LocalVariableDeclAndInitExpr] S2 x7 = ...
+#   52|           -1: [TypeMention] null
+#   52|           0: [LocalVariableAccess] access to local variable x7
+#   52|           1: [ObjectCreation] object creation of type S2
+#   52|             0: [TypeMention] S2
+#   55|       1: [LocalVariableDeclStmt] ... ...;
+#   55|         0: [LocalVariableDeclAndInitExpr] S2 y7 = ...
+#   55|           -1: [TypeMention] S2
+#   55|           0: [LocalVariableAccess] access to local variable y7
+#   55|           1: [ObjectCreation] object creation of type S2
+#   55|             0: [TypeMention] S2
+#   56|       2: [ReturnStmt] return ...;
+#   56|         0: [LocalVariableAccess] access to local variable y7
 SignAnalysis.cs:
 #    1| [Class] MySignAnalysis
 #    4|   5: [Method] UnsignedRightShiftSign
