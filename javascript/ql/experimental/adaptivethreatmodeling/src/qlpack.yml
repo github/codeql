@@ -9,4 +9,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2023-02-11-03h21m25s.icy-garage-s5p1v9l0.7d6c13a4afdd1f18453ff25a5ca0f049db9912ae469fc0627cd3b90c54f24a22
