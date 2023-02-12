@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-02-04-20h31m34s.bold-oven-nx79bw4v.d2846da5be3f7c9aad8bf64bc1db4b864a9458f188578ec78b5c0cbdb385cfa3
+compiled: false
