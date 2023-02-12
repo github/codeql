@@ -117,14 +117,6 @@ newtype TNode =
   TSynthStarArgsElementParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isStarArgs(_) | exists(callable.getParameter(ppos)))
   } or
-  /**
-   * A synthetic node to capture a `*args` argument that is passed to a `*args`
-   * parameter, but "too late" in the argument list, so we cannot just do a 1-1 mapping
-   * without messing up the indexes.
-   */
-  TSynthLateStarArgsParameterNode(DataFlowCallable callable) {
-    exists(ParameterPosition ppos | ppos.isStarArgs(_) | exists(callable.getParameter(ppos)))
-  } or
   /** A synthetic node to capture keyword arguments that are passed to a `**kwargs` parameter. */
   TSynthDictSplatArgumentNode(CallNode call) { exists(call.getArgByName(_)) } or
   /** A synthetic node to allow flow to keyword parameters from a `**kwargs` argument. */

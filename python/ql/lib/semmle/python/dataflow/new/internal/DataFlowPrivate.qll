@@ -135,49 +135,6 @@ predicate synthStarArgsElementParameterNodeStoreStep(
   )
 }
 
-/**
- * A synthetic node to capture a `*args` argument that is passed to a `*args`
- * parameter, but "too late" in the argument list, so we cannot just do a 1-1 mapping
- * without messing up the indexes; instead we make a list/tuple/set read step to
- * `SynthStarArgsElementParameterNode`.
- *
- * Example. The `*args` arguments starts at index 1, while the `*args` parameter accepts
- * arguments starting at index 0.
- *
- * ```py
- * def func(*args): ...
- * func(1, *args)
- */
-class SynthLateStarArgsParameterNode extends ParameterNodeImpl, TSynthLateStarArgsParameterNode {
-  DataFlowCallable callable;
-
-  SynthLateStarArgsParameterNode() { this = TSynthLateStarArgsParameterNode(callable) }
-
-  override string toString() { result = "SynthLateStarArgsParameterNode" }
-
-  override Scope getScope() { result = callable.getScope() }
-
-  override Location getLocation() { result = callable.getLocation() }
-
-  override Parameter getParameter() { none() }
-}
-
-predicate synthLateStarArgsParameterNodeReadStep(
-  SynthLateStarArgsParameterNode nodeFrom, Content c, ParameterNode nodeTo
-) {
-  (
-    c instanceof ListElementContent
-    or
-    c instanceof TupleElementContent
-    or
-    c instanceof SetElementContent
-  ) and
-  exists(DataFlowCallable callable |
-    nodeFrom = TSynthLateStarArgsParameterNode(callable) and
-    nodeTo = TSynthStarArgsElementParameterNode(callable)
-  )
-}
-
 // =============================================================================
 // **kwargs (DictSplat) related
 // =============================================================================
@@ -843,8 +800,6 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom, c, nodeTo)
   or
-  synthLateStarArgsParameterNodeReadStep(nodeFrom, c, nodeTo)
-  or
   synthDictSplatParameterNodeReadStep(nodeFrom, c, nodeTo)
 }
 
@@ -1005,8 +960,6 @@ predicate nodeIsHidden(Node n) {
   n instanceof SummaryParameterNode
   or
   n instanceof SynthStarArgsElementParameterNode
-  or
-  n instanceof SynthLateStarArgsParameterNode
   or
   n instanceof SynthDictSplatArgumentNode
   or
