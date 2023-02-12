@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-02-04-20h31m18s.icy-button-tzsdx9tr.6d3c1047207e98543a07bee5b0240d66ec2710c7c7e8bf9be1cbc1ceed4b8fea
+compiled: false
