@@ -1,15 +1,2 @@
 missingAnnotationOnSink
 failures
-| UnsafeUnpack.py:19:35:19:41 | ControlFlowNode for tarpath | Unexpected result: result=BAD |
-| UnsafeUnpack.py:34:23:34:38 | ControlFlowNode for local_ziped_path | Unexpected result: result=BAD |
-| UnsafeUnpack.py:48:23:48:37 | ControlFlowNode for compressed_file | Unexpected result: result=BAD |
-| UnsafeUnpack.py:52:23:52:37 | ControlFlowNode for compressed_file | Unexpected result: result=BAD |
-| UnsafeUnpack.py:66:23:66:37 | ControlFlowNode for compressed_file | Unexpected result: result=BAD |
-| UnsafeUnpack.py:87:23:87:29 | ControlFlowNode for tarpath | Unexpected result: result=BAD |
-| UnsafeUnpack.py:105:35:105:42 | ControlFlowNode for savepath | Unexpected result: result=BAD |
-| UnsafeUnpack.py:112:35:112:43 | ControlFlowNode for file_path | Unexpected result: result=BAD |
-| UnsafeUnpack.py:120:41:120:58 | ControlFlowNode for uploaded_file_path | Unexpected result: result=BAD |
-| UnsafeUnpack.py:142:49:142:51 | ControlFlowNode for tar | Unexpected result: result=BAD |
-| UnsafeUnpack.py:167:67:167:72 | ControlFlowNode for result | Unexpected result: result=BAD |
-| UnsafeUnpack.py:176:1:176:34 | ControlFlowNode for Attribute() | Unexpected result: result=BAD |
-| UnsafeUnpack.py:201:29:201:36 | ControlFlowNode for Attribute | Unexpected result: result=BAD |
