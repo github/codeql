@@ -38,6 +38,13 @@ module IndirectCommandInjection {
   }
 
   /**
+   * A read of `process.env`, considered as a flow source for command injection.
+   */
+  private class ProcessEnvAsSource extends Source {
+    ProcessEnvAsSource() { this = NodeJSLib::process().getAPropertyRead("env") }
+  }
+
+  /**
    * An object containing parsed command-line arguments, considered as a flow source for command injection.
    */
   class ParsedCommandLineArgumentsAsSource extends Source {
