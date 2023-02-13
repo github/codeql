@@ -395,45 +395,17 @@ module Filters {
   predicate next(Method pred, Method succ) { next(_, pred, succ) }
 
   /**
-   * Holds if `n` is the post-update node of a self-variable access in method
-   * `m` which stores content in the self variable.
-   * In the example below, `n` is the post-update node for `@x = 1`.
-   * ```rb
-   * def m
-   *   @x = 1
-   * end
-   * ```
-   */
-  private predicate variableAccessPostUpdate(DataFlow::PostUpdateNode n, Method m) {
-    n.getPreUpdateNode().asExpr() instanceof SelfVariableAccessCfgNode and
-    m = n.getPreUpdateNode().asExpr().getExpr().getEnclosingCallable() and
-    DataFlowPrivate::storeStep(_, _, n)
-  }
-
-  /**
-   * Holds if `n` is the syntactically last dataflow node in `m` that satisfies `variableAccessPostUpdate`.
-   * In the example below, `n` is the post-update node for `@y = 2`.
-   * ```rb
-   * def m
-   *   @x = 1
-   *   @y = 2
-   * end
-   * ```
-   */
-  private predicate lastVariableAccessPostUpdate(DataFlow::PostUpdateNode n, Method m) {
-    variableAccessPostUpdate(n, m) and
-    not exists(DataFlow::PostUpdateNode n2 |
-      variableAccessPostUpdate(n2, m) and
-      n.getPreUpdateNode().asExpr().getASuccessor+() = n2.getPreUpdateNode().asExpr()
-    )
-  }
-
-  /**
    * Holds if `n` is a post-update node for `self` in method `m`.
    */
   predicate selfPostUpdate(DataFlow::PostUpdateNode n, Method m) {
     n.getPreUpdateNode().asExpr() instanceof SelfVariableAccessCfgNode and
-    m = n.getPreUpdateNode().asExpr().getExpr().getEnclosingCallable()
+    m = n.getPreUpdateNode().asExpr().getExpr().getEnclosingCallable() and
+    n.getPreUpdateNode()
+        .asExpr()
+        .(SelfVariableAccessCfgNode)
+        .getExpr()
+        .getVariable()
+        .getDeclaringScope() = m
   }
 
   /**
@@ -452,25 +424,6 @@ module Filters {
       selfPostUpdate(n2, m) and
       n.getPreUpdateNode().asExpr().getASuccessor+() = n2.getPreUpdateNode().asExpr()
     )
-  }
-
-  /**
-   * Holds if `a` is the syntactically last access of the self variable `v` in method `m`.
-   */
-  private predicate lastMethodSelfVarAccess(SelfVariableAccessCfgNode a, SelfVariable v, Method m) {
-    a.getExpr().getEnclosingMethod() = m and
-    v = a.getExpr().getVariable() and
-    not exists(SelfVariableAccessCfgNode a2 |
-      a2.getExpr().getVariable() = v and
-      a.getASuccessor+() = a2
-    )
-  }
-
-  /**
-   * Holds if there is no access to `self` in method `m`.
-   */
-  private predicate noSelfVarAccess(Method m) {
-    not exists(SelfVariableAccess a | a.getEnclosingMethod() = m)
   }
 
   /**
@@ -494,53 +447,28 @@ module Filters {
       exists(Method predMethod, Method succMethod |
         next(predMethod, succMethod) and
         (
-          // Flow from an update of self (due to an instance variable write) in
-          // `pred` to the self parameter of `succ`
+          // Flow from a post-update node of self  in `pred` to the self parameter of `succ`
           //
           // def a
-          //   @x = 1 ---+
-          // end         |
-          //             |
-          // def b  <----+
+          //   foo() ---------+
+          //   @x = 1 ---+    |
+          // end         |    |
+          //             |    |
+          // def b  <----+----+
           //  ...
           //
-          lastVariableAccessPostUpdate(pred, predMethod) and
+          selfPostUpdate(pred, predMethod) and
           selfParameter(succ, succMethod)
           or
-          // Flow from an update of self in `pred` to the self parameter of `succ`
-          //
-          // def a
-          //   @x = 1 ---+
-          // end         |
-          //             |
-          // def b  <----+
-          //  ...
-          //
-          lastSelfPostUpdate(pred, predMethod) and
-          selfParameter(succ, succMethod)
-          or
-          // When there is no update of self in `pred`, flow from the last access to self to the self parameter of `succ`
-          //
-          // def a
-          //   foo() ---+
-          //   x = 1    |
-          // end        |
-          //            |
-          // def b  <---+
-          // ...
-          //
-          not variableAccessPostUpdate(_, predMethod) and
-          lastMethodSelfVarAccess(pred.asExpr(), _, predMethod) and
-          selfParameter(succ, succMethod)
-          or
-          // When there is no access to self in `pred`, flow from the self parameter of `pred` to the self parameter of `succ`
+          // Flow from the self parameter of `pred` to the self parameter of `succ`
           //
           // def a ---+
+          //   ...    |
           // end      |
           //          |
-          // def b <--+
-          // ...
-          noSelfVarAccess(predMethod) and
+          // def b  <-+
+          //   ...
+          //
           selfParameter(pred, predMethod) and
           selfParameter(succ, succMethod)
         )

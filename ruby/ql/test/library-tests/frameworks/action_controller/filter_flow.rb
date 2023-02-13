@@ -84,7 +84,7 @@ class FiveController < ActionController::Base
   end
 
   def c
-    sink @foo
+    sink  @foo
   end
   
   def taint_foo
