@@ -9,7 +9,7 @@
  *
  * Unless configured otherwise, _flow_ means that the exact value of
  * the source may reach the sink. To track flow where the exact value
- * may not be preserved, import `semmle.code.cpp.ir.dataflow.TaintTracking`.
+ * may not be preserved, import `semmle.code.cpp.dataflow.new.TaintTracking`.
  *
  * To use global (interprocedural) data flow, extend the class
  * `DataFlow::Configuration` as documented on that class. To use local
@@ -21,6 +21,10 @@
 
 import cpp
 
+/**
+ * Provides classes for performing local (intra-procedural) and
+ * global (inter-procedural) data flow analyses.
+ */
 module DataFlow {
   import semmle.code.cpp.ir.dataflow.internal.DataFlowImpl
 }
