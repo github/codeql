@@ -5,8 +5,8 @@ module AstTest {
   private import semmle.code.cpp.dataflow.DataFlow::DataFlow
   private import semmle.code.cpp.dataflow.internal.DataFlowPrivate
 
-  class ASTParameterDefTest extends InlineExpectationsTest {
-    ASTParameterDefTest() { this = "ASTParameterDefTest" }
+  class AstParameterDefTest extends InlineExpectationsTest {
+    AstParameterDefTest() { this = "AstParameterDefTest" }
 
     override string getARelevantTag() { result = "ast-def" }
 

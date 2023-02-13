@@ -5,8 +5,8 @@ module AstTest {
   private import semmle.code.cpp.dataflow.DataFlow::DataFlow
   private import semmle.code.cpp.dataflow.internal.DataFlowPrivate
 
-  class ASTMultipleOutNodesTest extends InlineExpectationsTest {
-    ASTMultipleOutNodesTest() { this = "ASTMultipleOutNodesTest" }
+  class AstMultipleOutNodesTest extends InlineExpectationsTest {
+    AstMultipleOutNodesTest() { this = "AstMultipleOutNodesTest" }
 
     override string getARelevantTag() { result = "ast-count(" + any(ReturnKind k).toString() + ")" }
 
