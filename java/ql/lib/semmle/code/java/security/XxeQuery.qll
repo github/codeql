@@ -2,6 +2,7 @@
 
 import java
 private import semmle.code.java.dataflow.TaintTracking2
+private import semmle.code.java.security.XmlParsers
 import semmle.code.java.security.Xxe
 
 /**

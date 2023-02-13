@@ -1,7 +1,7 @@
 /** Provides classes to reason about XML eXternal Entity (XXE) vulnerabilities. */
 
 import java
-import semmle.code.java.security.XmlParsers
+private import semmle.code.java.dataflow.DataFlow
 
 /** A node where insecure XML parsing takes place. */
 abstract class XxeSink extends DataFlow::Node { }
