@@ -814,6 +814,12 @@ class CaseLabelItem(AstNode):
     guard: optional[Expr] | child
 
 class AvailabilitySpec(AstNode):
+    """
+    An availability spec, that is, part of an `AvailabilityInfo` condition. For example `iOS 12` and `*` in:
+    ```
+    if #available(iOS 12, *)
+    ```
+    """
     pass
 
 class PlatformVersionAvailabilitySpec(AvailabilitySpec):

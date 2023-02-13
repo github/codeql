@@ -4,5 +4,11 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 
 module Generated {
+  /**
+   * An availability spec, that is, part of an `AvailabilityInfo` condition. For example `iOS 12` and `*` in:
+   * ```
+   * if #available(iOS 12, *)
+   * ```
+   */
   class AvailabilitySpec extends Synth::TAvailabilitySpec, AstNode { }
 }
