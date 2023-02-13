@@ -145,5 +145,5 @@ const cashDom = require("cash-dom");
             return src; // to model spuriously finding an edge. The below is still OK.
         }
     };
-    cashDom("#id").html(DOMPurify ? DOMPurify.sanitize(src) : src); // OK - but currently flagged [INCONSISTENCY]
+    cashDom("#id").html(DOMPurify ? DOMPurify.sanitize(src) : src); // OK
 })();
