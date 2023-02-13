@@ -96,7 +96,8 @@ predicate isTypeAccess(DataFlow::Node n) { n.asExpr() instanceof TypeAccess }
 predicate hasMetadata(DataFlow::Node n, string metadata) {
   exists(
     Callable callee, Call call, string package, string type, boolean subtypes, string name,
-    string signature, string ext, int input, string provenance, boolean isPublic
+    string signature, string ext, int input, string provenance, boolean isPublic,
+    boolean isExternalApiDataNode
   |
     n.asExpr() = call.getArgument(input) and
     callee = call.getCallee() and
@@ -112,11 +113,16 @@ predicate hasMetadata(DataFlow::Node n, string metadata) {
     ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
     provenance = "manual" and // TODO
     (if callee.isPublic() then isPublic = true else isPublic = false) and
+    (
+      if n instanceof ExternalAPIs::ExternalApiDataNode
+      then isExternalApiDataNode = true
+      else isExternalApiDataNode = false
+    ) and
     metadata =
       "{'Package': '" + package + "', 'Type': '" + type + "', 'Subtypes': " + subtypes +
         ", 'Name': '" + name + "', 'Signature': '" + signature + "', 'Ext': '" + ext +
         "', 'Argument index': " + input + ", 'Provenance': '" + provenance + "', 'Is public': " +
-        isPublic + "}" // TODO: Why are the curly braces added twice?
+        isPublic + ", 'Is passed to external API': " + isExternalApiDataNode + "}" // TODO: Why are the curly braces added twice?
   )
 }
 
