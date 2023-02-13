@@ -795,12 +795,63 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) { none() }
 
+private predicate fieldHasApproxName(Field f, string s) {
+  s = f.getName().charAt(0) and
+  // Reads and writes of union fields are tracked using `UnionContent`.
+  not f.getDeclaringType() instanceof Cpp::Union
+}
+
+private predicate unionHasApproxName(Cpp::Union u, string s) { s = u.getName().charAt(0) }
+
+cached
+private newtype TContentApprox =
+  TFieldApproxContent(string s) { fieldHasApproxName(_, s) } or
+  TUnionApproxContent(string s) { unionHasApproxName(_, s) }
+
 /** An approximated `Content`. */
-class ContentApprox = Unit;
+class ContentApprox extends TContentApprox {
+  string toString() { none() } // overriden in subclasses
+}
+
+private class FieldApproxContent extends ContentApprox, TFieldApproxContent {
+  string s;
+
+  FieldApproxContent() { this = TFieldApproxContent(s) }
+
+  Field getAField() { fieldHasApproxName(result, s) }
+
+  string getPrefix() { result = s }
+
+  final override string toString() { result = s }
+}
+
+private class UnionApproxContent extends ContentApprox, TUnionApproxContent {
+  string s;
+
+  UnionApproxContent() { this = TUnionApproxContent(s) }
+
+  Cpp::Union getAUnion() { unionHasApproxName(result, s) }
+
+  string getPrefix() { result = s }
+
+  final override string toString() { result = s }
+}
 
 /** Gets an approximated value for content `c`. */
 pragma[inline]
-ContentApprox getContentApprox(Content c) { any() }
+ContentApprox getContentApprox(Content c) {
+  exists(string prefix, Field f |
+    prefix = result.(FieldApproxContent).getPrefix() and
+    f = c.(FieldContent).getField() and
+    fieldHasApproxName(f, prefix)
+  )
+  or
+  exists(string prefix, Cpp::Union u |
+    prefix = result.(UnionApproxContent).getPrefix() and
+    u = c.(UnionContent).getUnion() and
+    unionHasApproxName(u, prefix)
+  )
+}
 
 private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
   override predicate argHasPostUpdateExclude(ArgumentNode n) {
