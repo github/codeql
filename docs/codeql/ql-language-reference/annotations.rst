@@ -301,7 +301,7 @@ based on the given binding set. This can be useful to prevent the optimiser
 from choosing a sub-optimal join order.
 
 For instance, in the example below, the ``pragma[inline_late]`` and
-``bindingset[x]`` annotation specifies that calls to ``p`` should be join ordered
+``bindingset[x]`` annotations specifiy that calls to ``p`` should be join ordered
 in a context where ``x`` is already bound. This forces the join orderer to
 order the ``q(x)`` call before ``p(x)``, which is more computationally efficient
 than ordering ``p(x)`` before ``q(x)``.
