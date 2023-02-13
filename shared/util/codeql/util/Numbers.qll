@@ -104,7 +104,7 @@ private int toHex(string hex) {
  * Gets the value of 16 to the power of `n`. Holds only for `n` in the range
  * 0..7 (inclusive).
  */
-int sixteenToThe(int n) {
+private int sixteenToThe(int n) {
   // 16**7 is the largest power of 16 that fits in an int.
   n in [0 .. 7] and result = 1.bitShiftLeft(4 * n)
 }
@@ -113,7 +113,7 @@ int sixteenToThe(int n) {
  * Gets the value of 8 to the power of `n`. Holds only for `n` in the range
  * 0..10 (inclusive).
  */
-int eightToThe(int n) {
+private int eightToThe(int n) {
   // 8**10 is the largest power of 8 that fits in an int.
   n in [0 .. 10] and result = 1.bitShiftLeft(3 * n)
 }
@@ -122,7 +122,7 @@ int eightToThe(int n) {
  * Gets the value of 2 to the power of `n`. Holds only for `n` in the range
  * 0..30 (inclusive).
  */
-int twoToThe(int n) { n in [0 .. 30] and result = 1.bitShiftLeft(n) }
+private int twoToThe(int n) { n in [0 .. 30] and result = 1.bitShiftLeft(n) }
 
 /** Gets `s` with any leading "0" characters removed. */
 bindingset[s]
