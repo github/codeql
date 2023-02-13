@@ -1479,15 +1479,22 @@ private module Cached {
     // Reverse flow: data that flows from the definition node back into the indirection returned
     // by a function. This allows data to flow 'in' through references returned by a modeled
     // function such as `operator[]`.
-    exists(Operand address, int indirectionIndex |
-      nodeHasOperand(nodeTo.(IndirectReturnOutNode), address, indirectionIndex)
+    or
+    exists(
+      DataFlowFunction f, CallInstruction call, FunctionInput inModel, FunctionOutput outModel,
+      int indirectionIndex, IndirectReturnOutNode outNode
     |
-      exists(StoreInstruction store |
-        nodeHasInstruction(nodeFrom, store, indirectionIndex - 1) and
-        store.getDestinationAddressOperand() = address
-      )
-      or
-      Ssa::outNodeHasAddressAndIndex(nodeFrom, address, indirectionIndex)
+      inModel.isReturnValueDeref() and
+      outModel.isQualifierObject() and
+      f.hasDataFlow(inModel, outModel) and
+      call.getStaticCallTarget() = f and
+      // nodeFrom is a post-update node whose pre-update node is an out node
+      outNode = nodeFrom.(PostUpdateNode).getPreUpdateNode() and
+      outNode.getCallInstruction() = call and
+      outNode.getIndirectionIndex() = indirectionIndex and
+      // and nodeTo is the post-update node whose pre-update node is the qualifier of the function.
+      hasOperandAndIndex(nodeTo.(PostUpdateNode).getPreUpdateNode(), call.getThisArgumentOperand(),
+        indirectionIndex)
     )
   }
 
