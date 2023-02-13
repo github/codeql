@@ -19,6 +19,13 @@ separated list to select what to generate (choosing among `dbscheme`, `ql`, `tra
 C++ code is generated during build (see [`swift/extractor/trap/BUILD.bazel`](../extractor/trap/BUILD.bazel)). After a
 build you can browse the generated code in `bazel-bin/swift/extractor/trap/generated`.
 
+For debugging you can also run `./codegen.py` directly. You must then ensure dependencies are installed, which you can
+with the command
+
+```bash
+pip3 install -r ./requirements.txt
+```
+
 ## Implementation notes
 
 The suite uses [mustache templating](https://mustache.github.io/) for generation. Templates are

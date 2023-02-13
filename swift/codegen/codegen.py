@@ -3,11 +3,15 @@
 
 import argparse
 import logging
-import pathlib
+import os
 import sys
-import importlib
-import types
+import pathlib
 import typing
+
+if 'BUILD_WORKSPACE_DIRECTORY' not in os.environ:
+    # we are not running with `bazel run`, set up module search path
+    _repo_root = pathlib.Path(__file__).resolve().parents[2]
+    sys.path.append(str(_repo_root))
 
 from swift.codegen.lib import render, paths
 from swift.codegen.generators import generate
