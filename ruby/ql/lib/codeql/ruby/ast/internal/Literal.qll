@@ -4,7 +4,7 @@ private import Constant
 private import TreeSitter
 private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.controlflow.CfgNodes
-private import codeql.NumberUtils
+private import codeql.util.Numbers
 
 int parseInteger(Ruby::Integer i) {
   exists(string s | s = i.getValue().toLowerCase().replaceAll("_", "") |
