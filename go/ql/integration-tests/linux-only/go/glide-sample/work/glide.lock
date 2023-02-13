@@ -1,0 +1,8 @@
+hash: a038ec873f1340df8003419888cd3451cb578b410908b5d0cf5d5c6b97fedd10
+updated: 2020-10-02T18:10:47.090137+01:00
+imports:
+- name: golang.org/x/time
+  version: 3af7569d3a1e776fc2a3c1cec133b43105ea9c2e
+  subpackages:
+  - rate
+testImports: []
