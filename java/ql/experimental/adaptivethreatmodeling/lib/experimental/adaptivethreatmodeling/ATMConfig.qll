@@ -105,17 +105,21 @@ abstract class AtmConfig extends TaintTracking::Configuration {
     // An endpoint is an effective sink (sink candidate) if none of its characteristics give much indication whether or
     // not it is a sink. Historically, we used endpoint filters, and scored endpoints that are filtered out neither by
     // a standard endpoint filter nor by an endpoint filter specific to this sink type.
-    exists(EndpointCharacteristics::EndpointCharacteristic filter, float confidence |
-      filter.appliesToEndpoint(candidateSink) and
-      confidence >= filter.mediumConfidence() and
-      (
-        // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
-        filter.hasImplications(any(NegativeType negative), true, confidence)
-        or
-        // Exclude endpoints that have a characteristic that implies they're not sinks for _this particular_ sink type.
-        filter.hasImplications(this.getASinkEndpointType(), false, confidence)
-      ) and
-      result = filter
+    result.appliesToEndpoint(candidateSink) and
+    // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
+    exists(float confidence |
+      confidence >= result.mediumConfidence() and
+      result.hasImplications(any(NegativeType negative), true, confidence)
+    )
+    or
+    // Exclude endpoints that have a characteristic that implies they're not sinks for _this particular_ sink type,
+    // for every sink type relevant to this query.
+    not exists(EndpointType sinkType |
+      sinkType = this.getASinkEndpointType() and
+      not exists(float confidence |
+        confidence >= result.mediumConfidence() and
+        result.hasImplications(sinkType, false, confidence)
+      )
     )
   }
 
@@ -151,7 +155,8 @@ abstract class AtmConfig extends TaintTracking::Configuration {
       // `isFlowLikelyInBaseQuery`, leaving only effective sinks.
       this.hasFlowPath(source, sink) and
       not this.isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
-      isEffectiveSink(sink.getNode())
+      isEffectiveSink(sink.getNode()) and
+      not isKnownSink(sink.getNode()) // As long as we're not boosting sources this is already implicitly checked by `isFlowLikelyInBaseQuery`
     )
   }
 }
