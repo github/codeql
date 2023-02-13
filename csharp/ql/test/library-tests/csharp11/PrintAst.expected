@@ -165,6 +165,70 @@ ListPattern.cs:
 #   33|         13: [BreakStmt] break;
 #   34|         14: [DefaultCase] default:
 #   35|         15: [BreakStmt] break;
+NameofScope.cs:
+#    3| [Class] MyAttributeTestClass
+#    5|   5: [Class] MyAttribute
+#-----|     3: (Base types)
+#    5|       0: [TypeMention] Attribute
+#    7|     4: [Field] S
+#    7|       -1: [TypeMention] string
+#    8|     5: [InstanceConstructor] MyAttribute
+#-----|       2: (Parameters)
+#    8|         0: [Parameter] s
+#    8|           -1: [TypeMention] string
+#    8|       4: [AssignExpr] ... = ...
+#    8|         0: [FieldAccess] access to field S
+#    8|         1: [ParameterAccess] access to parameter s
+#   12|   6: [Method] M1<>
+#   12|     -1: [TypeMention] Void
+#-----|     0: (Attributes)
+#   11|       1: [DefaultAttribute] [My(...)]
+#   11|         -1: [TypeMention] MyAttribute
+#   11|         0: [NameOfExpr] nameof(...)
+#   11|           0: [TypeAccess] access to type T
+#   11|             0: [TypeMention] T
+#-----|     1: (Type parameters)
+#   12|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   12|       0: [Parameter] x
+#   12|         -1: [TypeMention] string
+#   12|     4: [BlockStmt] {...}
+#   15|   7: [Method] M2
+#   15|     -1: [TypeMention] string
+#-----|     0: (Attributes)
+#   14|       1: [ReturnAttribute] [return: My(...)]
+#   14|         -1: [TypeMention] MyAttribute
+#   14|         0: [NameOfExpr] nameof(...)
+#   14|           0: [ParameterAccess] access to parameter y
+#-----|     2: (Parameters)
+#   15|       0: [Parameter] y
+#   15|         -1: [TypeMention] string
+#   15|     4: [ParameterAccess] access to parameter y
+#   17|   8: [Method] M3
+#   17|     -1: [TypeMention] object
+#-----|     2: (Parameters)
+#   17|       0: [Parameter] z
+#   17|         -1: [TypeMention] string
+#-----|         0: (Attributes)
+#   17|           1: [DefaultAttribute] [My(...)]
+#   17|             -1: [TypeMention] MyAttribute
+#   17|             0: [NameOfExpr] nameof(...)
+#   17|               0: [ParameterAccess] access to parameter z
+#   17|     4: [ParameterAccess] access to parameter z
+#   19|   9: [Method] M4<>
+#   19|     -1: [TypeMention] object
+#-----|     1: (Type parameters)
+#   19|       0: [TypeParameter] S
+#-----|     2: (Parameters)
+#   19|       0: [Parameter] z
+#   19|         -1: [TypeMention] string
+#-----|         0: (Attributes)
+#   19|           1: [DefaultAttribute] [My(...)]
+#   19|             -1: [TypeMention] MyAttribute
+#   19|             0: [NameOfExpr] nameof(...)
+#   19|               0: [TypeAccess] access to type S
+#   19|                 0: [TypeMention] S
+#   19|     4: [ParameterAccess] access to parameter z
 NativeInt.cs:
 #    1| [Class] NativeInt
 #    3|   5: [Method] M1
@@ -279,6 +343,87 @@ PatternMatchSpan.cs:
 #   16|         2: [DefaultCase] default:
 #   16|         3: [BlockStmt] {...}
 #   16|           0: [BreakStmt] break;
+Scoped.cs:
+#    1| [Struct] S1
+#    2| [Struct] S2
+#    7| [Class] ScopedModifierTest
+#    9|   5: [Method] M1
+#    9|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#    9|       0: [Parameter] x1
+#    9|         -1: [TypeMention] int
+#    9|       1: [Parameter] y1
+#    9|         -1: [TypeMention] int
+#   10|     4: [BlockStmt] {...}
+#   13|       0: [ReturnStmt] return ...;
+#   13|         0: [RefExpr] ref ...
+#   13|           0: [ParameterAccess] access to parameter y1
+#   16|   6: [Method] M2
+#   16|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   16|       0: [Parameter] x2
+#   16|         -1: [TypeMention] int
+#   16|       1: [Parameter] y2
+#   16|         -1: [TypeMention] int
+#   17|     4: [BlockStmt] {...}
+#   18|       0: [ExprStmt] ...;
+#   18|         0: [AssignExpr] ... = ...
+#   18|           0: [ParameterAccess] access to parameter x2
+#   18|           1: [IntLiteral] 0
+#   21|       1: [ReturnStmt] return ...;
+#   21|         0: [RefExpr] ref ...
+#   21|           0: [ParameterAccess] access to parameter y2
+#   24|   7: [Method] M3
+#   24|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   24|       0: [Parameter] x3
+#   24|         -1: [TypeMention] int
+#   25|     4: [BlockStmt] {...}
+#   27|       0: [ReturnStmt] return ...;
+#   27|         0: [ParameterAccess] access to parameter x3
+#   30|   8: [Method] M4
+#   30|     -1: [TypeMention] S1
+#-----|     2: (Parameters)
+#   30|       0: [Parameter] x4
+#   30|         -1: [TypeMention] S1
+#   31|     4: [BlockStmt] {...}
+#   33|       0: [ReturnStmt] return ...;
+#   33|         0: [ParameterAccess] access to parameter x4
+#   36|   9: [Method] M5
+#   36|     -1: [TypeMention] S2
+#-----|     2: (Parameters)
+#   36|       0: [Parameter] x5
+#   36|         -1: [TypeMention] S2
+#   37|     4: [BlockStmt] {...}
+#   40|       0: [ReturnStmt] return ...;
+#   40|         0: [ObjectCreation] object creation of type S2
+#   40|           0: [TypeMention] S2
+#   43|   10: [Method] M6
+#   43|     -1: [TypeMention] S2
+#-----|     2: (Parameters)
+#   43|       0: [Parameter] x6
+#   43|         -1: [TypeMention] S2
+#   44|     4: [BlockStmt] {...}
+#   47|       0: [ReturnStmt] return ...;
+#   47|         0: [ObjectCreation] object creation of type S2
+#   47|           0: [TypeMention] S2
+#   50|   11: [Method] Locals
+#   50|     -1: [TypeMention] S2
+#   51|     4: [BlockStmt] {...}
+#   52|       0: [LocalVariableDeclStmt] ... ...;
+#   52|         0: [LocalVariableDeclAndInitExpr] S2 x7 = ...
+#   52|           -1: [TypeMention] null
+#   52|           0: [LocalVariableAccess] access to local variable x7
+#   52|           1: [ObjectCreation] object creation of type S2
+#   52|             0: [TypeMention] S2
+#   55|       1: [LocalVariableDeclStmt] ... ...;
+#   55|         0: [LocalVariableDeclAndInitExpr] S2 y7 = ...
+#   55|           -1: [TypeMention] S2
+#   55|           0: [LocalVariableAccess] access to local variable y7
+#   55|           1: [ObjectCreation] object creation of type S2
+#   55|             0: [TypeMention] S2
+#   56|       2: [ReturnStmt] return ...;
+#   56|         0: [LocalVariableAccess] access to local variable y7
 SignAnalysis.cs:
 #    1| [Class] MySignAnalysis
 #    4|   5: [Method] UnsignedRightShiftSign
@@ -612,6 +757,51 @@ Strings.cs:
 #   53|           1: [StringLiteralUtf8] "The nested message
 #   53|             is UTF-8 encoded and
 #   53|           spans multiple lines."
+Struct.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [Class] MyEmptyClass
+#    5|   2: [Struct] RefStruct
+#    7|     5: [Field] MyInt
+#    7|       -1: [TypeMention] int
+#    8|     6: [Field] MyByte
+#    8|       -1: [TypeMention] byte
+#    9|     7: [Field] MyObject
+#    9|       -1: [TypeMention] object
+#   10|     8: [Field] MyEmptyClass
+#   10|       -1: [TypeMention] MyEmptyClass
+#   11|     9: [Field] MyReadonlyByte
+#   11|       -1: [TypeMention] byte
+#   12|     10: [Field] MyReadonlyObject
+#   12|       -1: [TypeMention] object
+#   13|     11: [Field] MyReadonlyString
+#   13|       -1: [TypeMention] string
+StructDefault.cs:
+#    1| [Class] MyEmptyClass
+#    2| [Struct] StructDefaultValue
+#    4|   5: [Field] X
+#    4|     -1: [TypeMention] int
+#    5|   6: [Field] Y
+#    5|     -1: [TypeMention] int
+#    6|   7: [Field] Z
+#    6|     -1: [TypeMention] MyEmptyClass
+#    8|   8: [InstanceConstructor] StructDefaultValue
+#-----|     2: (Parameters)
+#    8|       0: [Parameter] x
+#    8|         -1: [TypeMention] int
+#    8|       1: [Parameter] inity
+#    8|         -1: [TypeMention] bool
+#    9|     4: [BlockStmt] {...}
+#   10|       0: [ExprStmt] ...;
+#   10|         0: [AssignExpr] ... = ...
+#   10|           0: [FieldAccess] access to field X
+#   10|           1: [ParameterAccess] access to parameter x
+#   11|       1: [IfStmt] if (...) ...
+#   11|         0: [ParameterAccess] access to parameter inity
+#   11|         1: [BlockStmt] {...}
+#   11|           0: [ExprStmt] ...;
+#   11|             0: [AssignExpr] ... = ...
+#   11|               0: [FieldAccess] access to field Y
+#   11|               1: [IntLiteral] 1
 cil/class1.cs:
 #    4| [Class] Class1
 #    6|   5: [Method] Main

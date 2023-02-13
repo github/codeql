@@ -336,26 +336,17 @@ private predicate elementSpec(
   neutralModel(package, type, name, signature, _) and ext = "" and subtypes = false
 }
 
-private string paramsStringPart(Callable c, int i) {
-  i = -1 and result = "("
-  or
-  exists(int n, string p | c.getParameterType(n).getErasure().toString() = p |
-    i = 2 * n and result = p
-    or
-    i = 2 * n - 1 and result = "," and n != 0
-  )
-  or
-  i = 2 * c.getNumberOfParameters() and result = ")"
-}
-
 /**
  * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
  *
- * Returns the empty string if the callable has no parameters.
+ * Returns an empty parenthesized string if the callable has no parameters.
  * Parameter types are represented by their type erasure.
  */
 cached
-string paramsString(Callable c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
+string paramsString(Callable c) {
+  result =
+    "(" + concat(int i | | c.getParameterType(i).getErasure().toString(), "," order by i) + ")"
+}
 
 private Element interpretElement0(
   string package, string type, boolean subtypes, string name, string signature

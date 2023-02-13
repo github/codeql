@@ -7,9 +7,18 @@ private import DataFlowPrivate
 private import DataFlowUtil
 private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowImplCommon as DataFlowImplCommon
+private import semmle.code.java.controlflow.Guards
+private import semmle.code.java.dataflow.RangeUtils
 
 /** Gets a string for approximating the name of a field. */
 string approximateFieldContent(FieldContent fc) { result = fc.getField().getName().prefix(1) }
+
+private predicate deadcode(Expr e) {
+  exists(Guard g, boolean b |
+    g.(ConstantBooleanExpr).getBooleanValue() = b and
+    g.controls(e.getBasicBlock(), b.booleanNot())
+  )
+}
 
 cached
 private module Cached {
@@ -17,6 +26,7 @@ private module Cached {
   newtype TNode =
     TExprNode(Expr e) {
       DataFlowImplCommon::forceCachingInSameStage() and
+      not deadcode(e) and
       not e.getType() instanceof VoidType and
       not e.getParent*() instanceof Annotation
     } or

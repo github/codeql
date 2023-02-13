@@ -181,19 +181,20 @@ def test_internal_not_in_import_list(generate_import_list):
 
 def test_hierarchy_children(generate_children_implementations):
     assert generate_children_implementations([
-        schema.Class("A", derived={"B", "C"}),
+        schema.Class("A", derived={"B", "C"}, pragmas=["ql_internal"]),
         schema.Class("B", bases=["A"], derived={"D"}),
-        schema.Class("C", bases=["A"], derived={"D"}),
+        schema.Class("C", bases=["A"], derived={"D"}, pragmas=["ql_internal"]),
         schema.Class("D", bases=["B", "C"]),
     ]) == ql.GetParentImplementation(
-        classes=[ql.Class(name="A"),
+        classes=[ql.Class(name="A", ql_internal=True),
                  ql.Class(name="B", bases=["A"], imports=[
                      stub_import_prefix + "A"]),
                  ql.Class(name="C", bases=["A"], imports=[
-                     stub_import_prefix + "A"]),
+                     stub_import_prefix + "A"], ql_internal=True),
                  ql.Class(name="D", final=True, bases=["B", "C"],
                           imports=[stub_import_prefix + cls for cls in "BC"]),
                  ],
+        additional_imports=[stub_import_prefix + cls for cls in "AC"],
     )
 
 

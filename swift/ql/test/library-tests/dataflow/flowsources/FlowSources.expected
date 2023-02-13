@@ -17,11 +17,19 @@
 | alamofire.swift:448:20:448:49 | call to String.init(contentsOfFile:) | external |
 | alamofire.swift:455:23:455:32 | .data | external |
 | alamofire.swift:461:23:461:32 | .data | external |
-| customurlschemes.swift:30:44:30:54 | url | external |
-| customurlschemes.swift:34:52:34:68 | url | external |
-| customurlschemes.swift:38:52:38:62 | url | external |
-| customurlschemes.swift:43:9:43:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
-| customurlschemes.swift:48:9:48:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
+| customurlschemes.swift:53:44:53:54 | url | external |
+| customurlschemes.swift:57:52:57:68 | url | external |
+| customurlschemes.swift:61:52:61:62 | url | external |
+| customurlschemes.swift:66:9:66:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
+| customurlschemes.swift:71:9:71:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
+| customurlschemes.swift:77:59:77:76 | options | external |
+| customurlschemes.swift:78:28:78:38 | continue | external |
+| customurlschemes.swift:79:28:79:39 | didUpdate | external |
+| customurlschemes.swift:80:28:80:65 | openURLContexts | external |
+| customurlschemes.swift:86:59:86:76 | options | external |
+| customurlschemes.swift:87:28:87:38 | continue | external |
+| customurlschemes.swift:88:28:88:39 | didUpdate | external |
+| customurlschemes.swift:89:28:89:65 | openURLContexts | external |
 | data.swift:18:20:18:54 | call to Data.init(contentsOf:options:) | external |
 | file://:0:0:0:0 | .data | external |
 | file://:0:0:0:0 | .result | external |
@@ -55,14 +63,26 @@
 | generics.swift:67:9:67:27 | call to source11() | external |
 | generics.swift:68:9:68:18 | .source12 | external |
 | generics.swift:69:9:69:27 | call to source13() | external |
-| generics.swift:88:9:88:15 | .source1 | external |
-| generics.swift:89:9:89:15 | .source2 | external |
-| generics.swift:90:9:90:14 | .source1 | external |
-| generics.swift:91:9:91:14 | .source2 | external |
-| generics.swift:92:9:92:15 | .source1 | external |
-| generics.swift:93:9:93:15 | .source2 | external |
-| generics.swift:112:9:112:15 | .source1 | external |
-| generics.swift:113:9:113:15 | .source2 | external |
+| generics.swift:93:9:93:15 | .source0 | external |
+| generics.swift:94:9:94:15 | .source1 | external |
+| generics.swift:95:9:95:15 | .source2 | external |
+| generics.swift:96:9:96:14 | .source0 | external |
+| generics.swift:97:9:97:14 | .source1 | external |
+| generics.swift:98:9:98:14 | .source2 | external |
+| generics.swift:99:9:99:15 | .source0 | external |
+| generics.swift:100:9:100:15 | .source1 | external |
+| generics.swift:101:9:101:15 | .source2 | external |
+| generics.swift:125:9:125:15 | .source0 | external |
+| generics.swift:126:9:126:15 | .source1 | external |
+| generics.swift:127:9:127:15 | .source2 | external |
+| generics.swift:128:9:128:14 | .source0 | external |
+| generics.swift:129:9:129:14 | .source1 | external |
+| generics.swift:130:9:130:14 | .source2 | external |
+| generics.swift:131:9:131:15 | .source0 | external |
+| generics.swift:132:9:132:15 | .source1 | external |
+| generics.swift:133:9:133:15 | .source2 | external |
+| generics.swift:162:9:162:22 | call to source2() | external |
+| generics.swift:163:9:163:22 | call to source3() | external |
 | nsdata.swift:18:17:18:40 | call to NSData.init(contentsOf:) | external |
 | nsdata.swift:19:17:19:53 | call to NSData.init(contentsOf:options:) | external |
 | string.swift:56:21:56:44 | call to String.init(contentsOf:) | external |
@@ -74,10 +94,16 @@
 | url.swift:53:15:53:19 | .resourceBytes | external |
 | url.swift:60:15:60:19 | .lines | external |
 | url.swift:67:16:67:22 | .lines | external |
-| webview.swift:20:82:20:102 | message | external |
-| webview.swift:25:5:25:13 | .globalObject | external |
-| webview.swift:26:5:26:39 | call to objectForKeyedSubscript(_:) | external |
-| webview.swift:39:9:39:9 | .tainted | Member of a type exposed through JSExport |
-| webview.swift:43:10:43:10 | self | Member of a type exposed through JSExport |
-| webview.swift:43:18:43:24 | arg1 | Member of a type exposed through JSExport |
-| webview.swift:43:29:43:35 | arg2 | Member of a type exposed through JSExport |
+| webview.swift:13:32:13:49 | decidePolicyFor | Navigation action of a WebView |
+| webview.swift:14:32:14:49 | decidePolicyFor | Navigation action of a WebView |
+| webview.swift:41:82:41:102 | message | external |
+| webview.swift:46:5:46:13 | .globalObject | external |
+| webview.swift:47:5:47:39 | call to objectForKeyedSubscript(_:) | external |
+| webview.swift:60:9:60:9 | .tainted | Member of a type exposed through JSExport |
+| webview.swift:64:10:64:10 | self | Member of a type exposed through JSExport |
+| webview.swift:64:18:64:24 | arg1 | Member of a type exposed through JSExport |
+| webview.swift:64:29:64:35 | arg2 | Member of a type exposed through JSExport |
+| webview.swift:72:32:72:49 | decidePolicyFor | Navigation action of a WebView |
+| webview.swift:73:32:73:49 | decidePolicyFor | Navigation action of a WebView |
+| webview.swift:79:32:79:49 | decidePolicyFor | Navigation action of a WebView |
+| webview.swift:80:32:80:49 | decidePolicyFor | Navigation action of a WebView |

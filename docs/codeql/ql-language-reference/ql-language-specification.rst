@@ -62,7 +62,7 @@ where such a file is found is the query directory. If there is no such
 directory, the directory of the ``.ql`` file itself is the query
 directory.
 
-A ``qlpack.yml`` file defines a :ref:`CodeQL pack <about-codeql-packs>`.
+A ``qlpack.yml`` file defines a `CodeQL pack <https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs>`__.
 The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation.
 ``codeql-pack.yml`` is an alias for ``qlpack.yml``.
 
@@ -74,7 +74,7 @@ added to the library path, the CodeQL packs named in its
 path, and the process continues until all packs have been
 resolved. The actual library path consists of the root directories of
 the selected CodeQL packs. This process depends on a mechanism for finding
-CodeQL packs by pack name and version, as described in the :ref:`CodeQL CLI documentation <codeql-cli>`.
+CodeQL packs by pack name and version, as described in the `CodeQL CLI documentation <https://docs.github.com/en/code-security/codeql-cli>`__.
 
 When the query directory contains neither a ``qlpack.yml`` nor
 ``codeql-pack.yml`` file, it is considered to be a CodeQL pack with no name and
@@ -133,17 +133,34 @@ The program is invalid if any of these environments is not definite.
 Module environments
 ~~~~~~~~~~~~~~~~~~~
 
-For each of modules, types, and predicates, a module *imports*, *declares*, and *exports* an environment. These are defined as follows (with X denoting the type of entity we are currently considering):
+For each of modules, types, predicates, module signatures, type signatures, and predicates signatures, we distinguish four environments: *publically declared*, *privately declared*, *exported*, and *visible*.
+These are defined as follows (with X denoting the type of entity we are currently considering):
 
--  The *imported X environment* of a module is defined to be the union of the exported X environments of all the modules which the current module directly imports (see "`Import directives <#import-directives>`__").
+-  The *privately declared X environment* of a module is the multimap of X declarations and aliases in the module itself that are annotated as ``private``.
 
--  The *declared X environment* of a module is the multimap of X declarations in the module itself.
+-  The *publically declared X environment* of a module is the multimap of X declarations and aliases in the module itself that are not annotated as ``private``.
 
--  The *exported X environment* of a module is the union of the exported X environments of the modules which the current module directly imports (excluding ``private`` imports), and the declared X environment of the current module (excluding ``private`` declarations).
+-  The *exported X environment* of a module is the union of
 
--  The *external X environment* of a module is the visible X environment of the enclosing module, if there is one, and otherwise the global X environment.
+    1.  its *publically declared X environment*, and
 
--  The *visible X environment* is the union of the imported X environment, the declared X environment, and the external X environment.
+    2.  for each module which the current module directly imports (excluding ``private`` imports - see "`Import directives <#import-directives>`__"): all entries from the *exported X environment* that have a key not present in the *publically declared X environment* of the current module, and
+
+    3.  if X is ``predicates``, then for each module signature ``S`` that is implemented by the current module: an entry for each module signature default predicate in ``S`` that does not have the same name and arity as any of the entries in the **publically declared predicate environment** of the current module.
+
+-  The *visible X environment* of a module is the union of
+
+    1. its *exported X environment*, and
+
+    2. its *privately declared X environment*, and
+
+    3. the *global X environment*, and
+
+    4. for each module which the current module privately imports: all entries from the *exported X environment* that have a key not present in the *publically declared X environment* of the current module, and
+
+    5. if there is an enclosing module: all entries from the *visible X environment* of the enclosing module that have a key not present in the *publically declared X environment* of the current module, and
+
+    6. all parameters of the current module that are of type X.
 
 The program is invalid if any of these environments is not definite.
 
@@ -675,7 +692,7 @@ The following table summarizes the syntactic constructs which can be marked with
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 | ``external``   |         |            |                   | yes                   |         |        |         |         |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``final``      | yes     |            | yes               |                       |         | yes    |         |         |
+| ``final``      | yes     |            | yes               |                       |         | yes    |         | yes     |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 | ``transient``  |         |            |                   | yes                   |         |        |         |         |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+

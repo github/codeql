@@ -1223,7 +1223,16 @@ private module MkStage<StageSig PrevStage> {
     bindingset[tc, tail]
     Ap apCons(TypedContent tc, Ap tail);
 
-    Content getHeadContent(Ap ap);
+    /**
+     * An approximation of `Content` that corresponds to the precision level of
+     * `Ap`, such that the mappings from both `Ap` and `Content` to this type
+     * are functional.
+     */
+    class ApHeadContent;
+
+    ApHeadContent getHeadContent(Ap ap);
+
+    ApHeadContent projectToHeadContent(Content c);
 
     class ApOption;
 
@@ -1471,20 +1480,20 @@ private module MkStage<StageSig PrevStage> {
       )
     }
 
-    private class ApNonNil instanceof Ap {
-      pragma[nomagic]
-      ApNonNil() { not this instanceof ApNil }
-
-      string toString() { result = "" }
+    pragma[nomagic]
+    private predicate readStepCand(
+      NodeEx node1, ApHeadContent apc, Content c, NodeEx node2, Configuration config
+    ) {
+      PrevStage::readStepCand(node1, c, node2, config) and
+      apc = projectToHeadContent(c)
     }
 
-    pragma[nomagic]
-    private predicate fwdFlowRead0(
-      NodeEx node1, FlowState state, Cc cc, ParamNodeOption summaryCtx, ApOption argAp, ApNonNil ap,
-      Configuration config
+    bindingset[node1, apc]
+    pragma[inline_late]
+    private predicate readStepCand0(
+      NodeEx node1, ApHeadContent apc, Content c, NodeEx node2, Configuration config
     ) {
-      fwdFlow(node1, state, cc, summaryCtx, argAp, ap, config) and
-      PrevStage::readStepCand(node1, _, _, config)
+      readStepCand(node1, apc, c, node2, config)
     }
 
     pragma[nomagic]
@@ -1492,9 +1501,11 @@ private module MkStage<StageSig PrevStage> {
       Ap ap, Content c, NodeEx node1, NodeEx node2, FlowState state, Cc cc,
       ParamNodeOption summaryCtx, ApOption argAp, Configuration config
     ) {
-      fwdFlowRead0(node1, state, cc, summaryCtx, argAp, ap, config) and
-      PrevStage::readStepCand(node1, c, node2, config) and
-      getHeadContent(ap) = c
+      exists(ApHeadContent apc |
+        fwdFlow(node1, state, cc, summaryCtx, argAp, ap, config) and
+        apc = getHeadContent(ap) and
+        readStepCand0(node1, apc, c, node2, config)
+      )
     }
 
     pragma[nomagic]
@@ -2068,8 +2079,12 @@ private module Stage2Param implements MkStage<Stage1>::StageParam {
   bindingset[tc, tail]
   Ap apCons(TypedContent tc, Ap tail) { result = true and exists(tc) and exists(tail) }
 
+  class ApHeadContent = Unit;
+
   pragma[inline]
-  Content getHeadContent(Ap ap) { exists(result) and ap = true }
+  ApHeadContent getHeadContent(Ap ap) { exists(result) and ap = true }
+
+  ApHeadContent projectToHeadContent(Content c) { any() }
 
   class ApOption = BooleanOption;
 
@@ -2333,8 +2348,12 @@ private module Stage3Param implements MkStage<Stage2>::StageParam {
   bindingset[tc, tail]
   Ap apCons(TypedContent tc, Ap tail) { result.getAHead() = tc and exists(tail) }
 
+  class ApHeadContent = ContentApprox;
+
   pragma[noinline]
-  Content getHeadContent(Ap ap) { result = ap.getAHead().getContent() }
+  ApHeadContent getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+
+  predicate projectToHeadContent = getContentApprox/1;
 
   class ApOption = ApproxAccessPathFrontOption;
 
@@ -2409,8 +2428,12 @@ private module Stage4Param implements MkStage<Stage3>::StageParam {
   bindingset[tc, tail]
   Ap apCons(TypedContent tc, Ap tail) { result.getHead() = tc and exists(tail) }
 
+  class ApHeadContent = Content;
+
   pragma[noinline]
-  Content getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+  ApHeadContent getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+
+  ApHeadContent projectToHeadContent(Content c) { result = c }
 
   class ApOption = AccessPathFrontOption;
 
@@ -2739,8 +2762,12 @@ private module Stage5Param implements MkStage<Stage4>::StageParam {
   bindingset[tc, tail]
   Ap apCons(TypedContent tc, Ap tail) { result = push(tc, tail) }
 
+  class ApHeadContent = Content;
+
   pragma[noinline]
-  Content getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+  ApHeadContent getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+
+  ApHeadContent projectToHeadContent(Content c) { result = c }
 
   class ApOption = AccessPathApproxOption;
 

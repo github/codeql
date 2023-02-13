@@ -1,7 +1,7 @@
 .. pull-quote:: Other query-running commands
 
-   Queries run with ``database analyze`` have strict :ref:`metadata requirements
-   <including-query-metadata>`. You can also execute queries using the following
+   Queries run with ``database analyze`` have strict `metadata requirements
+   <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/using-custom-queries-with-the-codeql-cli#including-query-metadata>`__. You can also execute queries using the following
    plumbing-level subcommands:
    
    - `database run-queries <../manual/database-run-queries>`__, which

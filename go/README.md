@@ -13,7 +13,7 @@ It contains two major components:
 
 To analyze a Go codebase, either use the [CodeQL command-line
 interface](https://codeql.github.com/docs/codeql-cli/) to create a database yourself, or
-download a pre-built database from [GitHub.com](https://codeql.github.com/docs/codeql-cli/creating-codeql-databases/#downloading-databases-from-github-com). You can then run any of the
+download a pre-built database from [GitHub.com](https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/creating-codeql-databases#downloading-databases-from-githubcom). You can then run any of the
 queries contained in this repository either on the command line or using the VS Code extension.
 
 ## Contributions
