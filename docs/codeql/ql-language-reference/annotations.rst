@@ -289,6 +289,39 @@ into the places where it is called. This can be useful when a predicate body is 
 compute entirely, as it ensures that the predicate is evaluated with the other contextual information
 at the places where it is called.
 
+``pragma[inline_late]``
+-----------------------
+
+**Available for**: |non-member predicates|
+
+The ``pragma[inline_late]`` annotation must be used in conjunction with a
+``bindingset[...]`` pragma. Together, they tell the QL optimiser to use the
+specified binding set for assessing join orders both in the body of the
+annotated predicate and at call sites and to inline the body into call sites
+after join ordering. This can be useful to prevent the optimiser from choosing
+a sub-optimal join order.
+
+For instance, in the example below, the ``pragma[inline_late]`` and
+``bindingset[x]`` annotations specifiy that calls to ``p`` should be join ordered
+in a context where ``x`` is already bound. This forces the join orderer to
+order ``q(x)`` before ``p(x)``, which is more computationally efficient
+than ordering ``p(x)`` before ``q(x)``.
+
+.. code-block:: ql
+
+	bindingset[x]
+	pragma[inline_late]
+	predicate p(int x) { x in [0..100000000] }
+
+	predicate q(int x) { x in [0..10000] }
+
+	from int x
+	where p(x) and q(x)
+	select x
+
+..
+
+
 ``pragma[noinline]``
 --------------------
 
