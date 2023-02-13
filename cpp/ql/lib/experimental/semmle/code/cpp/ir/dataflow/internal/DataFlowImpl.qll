@@ -693,6 +693,7 @@ private module Stage1 implements StageSig {
     (
       cc = false
       or
+      cc = true and
       not reducedViableImplInCallContext(call, _, _)
     )
     or
