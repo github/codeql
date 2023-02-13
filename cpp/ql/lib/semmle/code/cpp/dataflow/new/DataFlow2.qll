@@ -6,7 +6,7 @@
  * `DataFlow2::Configuration`, a `DataFlow3::Configuration`, or a
  * `DataFlow4::Configuration`.
  *
- * See `semmle.code.cpp.ir.dataflow.DataFlow` for the full documentation.
+ * See `semmle.code.cpp.dataflow.new.DataFlow` for the full documentation.
  */
 
 import cpp

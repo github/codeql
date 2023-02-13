@@ -8,7 +8,7 @@
  * `TaintTracking::Configuration` class extends `DataFlow::Configuration`, and
  * `TaintTracking2::Configuration` extends `DataFlow2::Configuration`.
  *
- * See `semmle.code.cpp.ir.dataflow.TaintTracking` for the full documentation.
+ * See `semmle.code.cpp.dataflow.new.TaintTracking` for the full documentation.
  */
 
 /**
