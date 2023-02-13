@@ -2,12 +2,12 @@ additionalFlowSteps
 | controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/comments_controller.rb:74:3:77:5 | self in ensure_user_can_edit_comments |
 | controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/comments_controller.rb:79:3:81:5 | self in set_comment |
 | controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/comments_controller.rb:99:3:100:5 | self in foo |
-| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/posts_controller.rb:12:3:13:5 | self in index |
-| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/posts_controller.rb:15:3:16:5 | self in show |
-| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/posts_controller.rb:18:3:19:5 | self in upvote |
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/posts_controller.rb:12:3:15:5 | self in index |
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/posts_controller.rb:17:3:18:5 | self in show |
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/posts_controller.rb:20:3:21:5 | self in upvote |
 | controllers/application_controller.rb:11:53:11:59 | self | controllers/application_controller.rb:6:3:8:5 | self in set_user |
 | controllers/application_controller.rb:11:53:11:59 | self | controllers/photos_controller.rb:3:3:6:5 | self in show |
-| controllers/application_controller.rb:11:53:11:59 | self | controllers/posts_controller.rb:23:3:25:5 | self in set_post |
+| controllers/application_controller.rb:11:53:11:59 | self | controllers/posts_controller.rb:25:3:27:5 | self in set_post |
 | controllers/comments_controller.rb:50:5:50:12 | self | controllers/comments_controller.rb:87:3:89:5 | self in check_feature_flags |
 | controllers/comments_controller.rb:53:3:54:5 | self in create | controllers/comments_controller.rb:83:3:85:5 | self in log_comment_change |
 | controllers/comments_controller.rb:57:5:61:7 | self | controllers/comments_controller.rb:87:3:89:5 | self in check_feature_flags |
@@ -28,8 +28,18 @@ additionalFlowSteps
 | controllers/comments_controller.rb:102:3:103:5 | self in bar | controllers/comments_controller.rb:64:3:66:5 | self in photo |
 | controllers/comments_controller.rb:102:3:103:5 | self in bar | controllers/comments_controller.rb:68:3:70:5 | self in destroy |
 | controllers/photos_controller.rb:5:5:5:6 | [post] self | controllers/photos_controller.rb:8:3:9:5 | self in foo |
-| controllers/posts_controller.rb:18:3:19:5 | self in upvote | controllers/posts_controller.rb:27:3:29:5 | self in log_upvote |
-| controllers/posts_controller.rb:24:5:24:9 | [post] self | controllers/application_controller.rb:6:3:8:5 | self in set_user |
+| controllers/posts_controller.rb:20:3:21:5 | self in upvote | controllers/posts_controller.rb:29:3:31:5 | self in log_upvote |
+| controllers/posts_controller.rb:26:5:26:9 | [post] self | controllers/application_controller.rb:6:3:8:5 | self in set_user |
+| filter_flow.rb:14:5:14:8 | [post] self | filter_flow.rb:17:3:18:5 | self in b |
+| filter_flow.rb:17:3:18:5 | self in b | filter_flow.rb:20:3:22:5 | self in c |
+| filter_flow.rb:30:5:30:8 | [post] self | filter_flow.rb:33:3:35:5 | self in b |
+| filter_flow.rb:34:5:34:8 | [post] self | filter_flow.rb:37:3:39:5 | self in c |
+| filter_flow.rb:48:5:48:8 | [post] self | filter_flow.rb:51:3:52:5 | self in b |
+| filter_flow.rb:51:3:52:5 | self in b | filter_flow.rb:54:3:56:5 | self in c |
+| filter_flow.rb:64:16:64:21 | self | filter_flow.rb:67:3:68:5 | self in b |
+| filter_flow.rb:67:3:68:5 | self in b | filter_flow.rb:70:3:72:5 | self in c |
+| filter_flow.rb:80:5:80:8 | self | filter_flow.rb:83:3:84:5 | self in b |
+| filter_flow.rb:83:3:84:5 | self in b | filter_flow.rb:86:3:88:5 | self in c |
 filterChain
 | controllers/comments_controller.rb:17:3:51:5 | index | controllers/application_controller.rb:6:3:8:5 | set_user | controllers/comments_controller.rb:99:3:100:5 | foo |
 | controllers/comments_controller.rb:17:3:51:5 | index | controllers/application_controller.rb:10:3:12:5 | log_request | controllers/application_controller.rb:6:3:8:5 | set_user |
@@ -84,3 +94,13 @@ filterChain
 | controllers/posts_controller.rb:20:3:21:5 | upvote | controllers/application_controller.rb:10:3:12:5 | log_request | controllers/posts_controller.rb:25:3:27:5 | set_post |
 | controllers/posts_controller.rb:20:3:21:5 | upvote | controllers/posts_controller.rb:20:3:21:5 | upvote | controllers/posts_controller.rb:29:3:31:5 | log_upvote |
 | controllers/posts_controller.rb:20:3:21:5 | upvote | controllers/posts_controller.rb:25:3:27:5 | set_post | controllers/application_controller.rb:6:3:8:5 | set_user |
+| filter_flow.rb:17:3:18:5 | b | filter_flow.rb:13:3:15:5 | a | filter_flow.rb:17:3:18:5 | b |
+| filter_flow.rb:17:3:18:5 | b | filter_flow.rb:17:3:18:5 | b | filter_flow.rb:20:3:22:5 | c |
+| filter_flow.rb:33:3:35:5 | b | filter_flow.rb:29:3:31:5 | a | filter_flow.rb:33:3:35:5 | b |
+| filter_flow.rb:33:3:35:5 | b | filter_flow.rb:33:3:35:5 | b | filter_flow.rb:37:3:39:5 | c |
+| filter_flow.rb:51:3:52:5 | b | filter_flow.rb:46:3:49:5 | a | filter_flow.rb:51:3:52:5 | b |
+| filter_flow.rb:51:3:52:5 | b | filter_flow.rb:51:3:52:5 | b | filter_flow.rb:54:3:56:5 | c |
+| filter_flow.rb:67:3:68:5 | b | filter_flow.rb:63:3:65:5 | a | filter_flow.rb:67:3:68:5 | b |
+| filter_flow.rb:67:3:68:5 | b | filter_flow.rb:67:3:68:5 | b | filter_flow.rb:70:3:72:5 | c |
+| filter_flow.rb:83:3:84:5 | b | filter_flow.rb:79:3:81:5 | a | filter_flow.rb:83:3:84:5 | b |
+| filter_flow.rb:83:3:84:5 | b | filter_flow.rb:83:3:84:5 | b | filter_flow.rb:86:3:88:5 | c |
