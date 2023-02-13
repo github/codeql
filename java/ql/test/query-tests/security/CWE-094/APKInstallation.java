@@ -57,4 +57,19 @@ public class APKInstallation extends Activity {
         intent.setData(Uri.fromFile(file));
         startActivity(intent);
     }
+
+    public void openWebsite() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("http://www.example.com"));
+        startActivity(intent);
+    }
+
+    public void otherIntent(File file) {
+        Intent intent = new Intent(this, OtherActivity.class);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.fromFile(file));
+    }
+}
+
+class OtherActivity extends Activity {
 }

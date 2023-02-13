@@ -1,18 +1,16 @@
 edges
 nodes
 | APKInstallation.java:14:31:14:58 | fromFile(...) | semmle.label | fromFile(...) |
-| APKInstallation.java:21:31:21:44 | parse(...) | semmle.label | parse(...) |
-| APKInstallation.java:29:24:29:38 | parse(...) | semmle.label | parse(...) |
 | APKInstallation.java:36:24:36:51 | fromFile(...) | semmle.label | fromFile(...) |
 | APKInstallation.java:43:31:43:48 | fromFile(...) | semmle.label | fromFile(...) |
 | APKInstallation.java:50:24:50:41 | fromFile(...) | semmle.label | fromFile(...) |
 | APKInstallation.java:57:24:57:41 | fromFile(...) | semmle.label | fromFile(...) |
+| APKInstallation.java:70:24:70:41 | fromFile(...) | semmle.label | fromFile(...) |
 subpaths
 #select
 | APKInstallation.java:14:31:14:58 | fromFile(...) | APKInstallation.java:14:31:14:58 | fromFile(...) | APKInstallation.java:14:31:14:58 | fromFile(...) | Arbitrary Android APK installation. |
-| APKInstallation.java:21:31:21:44 | parse(...) | APKInstallation.java:21:31:21:44 | parse(...) | APKInstallation.java:21:31:21:44 | parse(...) | Arbitrary Android APK installation. |
-| APKInstallation.java:29:24:29:38 | parse(...) | APKInstallation.java:29:24:29:38 | parse(...) | APKInstallation.java:29:24:29:38 | parse(...) | Arbitrary Android APK installation. |
 | APKInstallation.java:36:24:36:51 | fromFile(...) | APKInstallation.java:36:24:36:51 | fromFile(...) | APKInstallation.java:36:24:36:51 | fromFile(...) | Arbitrary Android APK installation. |
 | APKInstallation.java:43:31:43:48 | fromFile(...) | APKInstallation.java:43:31:43:48 | fromFile(...) | APKInstallation.java:43:31:43:48 | fromFile(...) | Arbitrary Android APK installation. |
 | APKInstallation.java:50:24:50:41 | fromFile(...) | APKInstallation.java:50:24:50:41 | fromFile(...) | APKInstallation.java:50:24:50:41 | fromFile(...) | Arbitrary Android APK installation. |
 | APKInstallation.java:57:24:57:41 | fromFile(...) | APKInstallation.java:57:24:57:41 | fromFile(...) | APKInstallation.java:57:24:57:41 | fromFile(...) | Arbitrary Android APK installation. |
+| APKInstallation.java:70:24:70:41 | fromFile(...) | APKInstallation.java:70:24:70:41 | fromFile(...) | APKInstallation.java:70:24:70:41 | fromFile(...) | Arbitrary Android APK installation. |

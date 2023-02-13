@@ -71,7 +71,7 @@ class SetDataSink extends DataFlow::ExprNode {
 /** A method that generates a URI. */
 class UriConstructorMethod extends Method {
   UriConstructorMethod() {
-    this.hasQualifiedName("android.net", "Uri", ["parse", "fromFile", "fromParts"]) or
+    this.hasQualifiedName("android.net", "Uri", [/*"parse",*/ "fromFile", "fromParts"]) or
     this.hasQualifiedName("androidx.core.content", "FileProvider", "getUriForFile")
   }
 }
@@ -110,6 +110,13 @@ class ApkConfiguration extends DataFlow::Configuration {
   }
 }
 
+class SetActionMethod extends Method {
+  SetActionMethod() {
+    this.hasName("setAction") and
+    this.getDeclaringType() instanceof TypeIntent
+  }
+}
+
 private class InstallPackageActionConfiguration extends TaintTracking3::Configuration {
   InstallPackageActionConfiguration() { this = "InstallPackageActionConfiguration" }
 
@@ -123,10 +130,19 @@ private class InstallPackageActionConfiguration extends TaintTracking3::Configur
   ) {
     state1 instanceof DataFlow::FlowStateEmpty and
     state2 = "hasPackageInstallAction" and
-    exists(ConstructorCall cc |
-      cc.getConstructedType() instanceof TypeIntent and
-      node1.asExpr() = cc.getArgument(0) and
-      node2.asExpr() = cc
+    (
+      exists(ConstructorCall cc |
+        cc.getConstructedType() instanceof TypeIntent and
+        node1.asExpr() = cc.getArgument(0) and
+        node1.asExpr().getType() instanceof TypeString and
+        node2.asExpr() = cc
+      )
+      or
+      exists(MethodAccess ma |
+        ma.getMethod() instanceof SetActionMethod and
+        node1.asExpr() = ma.getArgument(0) and
+        node2.asExpr() = ma.getQualifier()
+      )
     )
   }
 
