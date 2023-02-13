@@ -154,6 +154,26 @@ class Type extends @type {
    * Gets a basic textual representation of this type.
    */
   string toString() { result = this.getName() }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getEntity().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    not exists(this.getEntity()) and
+    filepath = "" and
+    startline = 0 and
+    startcolumn = 0 and
+    endline = 0 and
+    endcolumn = 0
+  }
 }
 
 /** An invalid type. */
