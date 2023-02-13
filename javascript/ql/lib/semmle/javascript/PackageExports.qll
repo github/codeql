@@ -45,6 +45,9 @@ private DataFlow::Node getAValueExportedByPackage() {
   // module.exports = new Foo();
   exists(DataFlow::SourceNode callee |
     callee = getAValueExportedByPackage().(DataFlow::NewNode).getCalleeNode().getALocalSource()
+    or
+    callee.(DataFlow::ClassNode).getConstructor() =
+      getAValueExportedByPackage().(DataFlow::NewNode).getCalleeNode().getAFunctionValue()
   |
     result = callee.getAPropertyRead("prototype").getAPropertyWrite(publicPropertyName()).getRhs()
     or
