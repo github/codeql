@@ -11,7 +11,7 @@
  * See `semmle.code.cpp.ir.dataflow.TaintTracking` for the full documentation.
  */
 
- /**
+/**
  * Provides classes for performing local (intra-procedural) and
  * global (inter-procedural) taint-tracking analyses.
  */
