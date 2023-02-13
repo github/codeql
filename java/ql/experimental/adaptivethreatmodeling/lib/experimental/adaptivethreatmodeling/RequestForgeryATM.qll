@@ -23,11 +23,7 @@ class RequestForgeryAtmConfig extends AtmConfig {
     not source.asExpr().(MethodAccess).getCallee() instanceof UrlConnectionGetInputStreamMethod
   }
 
-  override EndpointType getASinkEndpointType() {
-    result instanceof RequestForgeryOtherSinkType or
-    result instanceof UrlOpenSinkType or
-    result instanceof JdbcUrlSinkType
-  }
+  override EndpointType getASinkEndpointType() { result instanceof RequestForgerySinkType }
 
   /*
    * This is largely a copy of the taint tracking configuration for the standard SSRF

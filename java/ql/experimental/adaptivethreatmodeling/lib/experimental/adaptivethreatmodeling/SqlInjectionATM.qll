@@ -16,7 +16,7 @@ class SqlInjectionAtmConfig extends AtmConfig {
   override predicate isKnownSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override EndpointType getASinkEndpointType() {
-    result instanceof SqlInjectionOtherSinkType or result instanceof SqlSinkType
+    result instanceof SqlSinkType or result instanceof SqlSinkType
   }
 
   /*
