@@ -39,14 +39,4 @@ where
         // Extract the needed metadata for this endpoint.
         any(string metadata | EndpointCharacteristics::hasMetadata(sink, metadata))
   )
-  or
-  // Extract positive examples of sinks belonging to other MaD `kind`s for sink types / queries we have not yet modeled
-  // in an ATM query configuration.
-  exists(string kind, EndpointCharacteristics::OtherMaDSinkCharacteristic charecteristic |
-    charecteristic.appliesToEndpoint(sink, kind) and
-    message =
-      charecteristic + "\n" + kind + "\n" +
-        // Extract the needed metadata for this endpoint.
-        any(string metadata | EndpointCharacteristics::hasMetadata(sink, metadata))
-  )
 select sink, message
