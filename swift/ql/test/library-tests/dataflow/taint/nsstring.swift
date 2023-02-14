@@ -97,6 +97,14 @@ class NSString : NSObject, NSCopying, NSMutableCopying {
   func getFileSystemRepresentation(_ cname: UnsafeMutablePointer<CChar>, maxLength max: Int) -> Bool { return true }
 }
 
+class NSMutableString: NSString {
+  func append(_ aString: String) {}
+  func insert(_ aString: String, at loc: Int) {}
+  func replaceCharacters(in range: NSRange, with aString: String) {}
+  func replaceOccurrences(of target: String, with replacement: String, options: NSString.CompareOptions = [], range searchRange: NSRange) -> Int { return 0 }
+  func setString(_ aString: String) {}
+}
+
 class NSArray : NSObject {
 }
 
@@ -137,6 +145,7 @@ struct UTType {
 
 func sourceString() -> String { return "" }
 func sourceNSString() -> NSString { return NSString(string: "") }
+func sourceNSMutableString() -> NSMutableString { return NSMutableString(string: "") }
 func sourceUnicharString() -> UnsafePointer<unichar> { return (nil as UnsafePointer<unichar>?)! }
 func sourceMutableUnicharString() -> UnsafeMutablePointer<unichar> { return (nil as UnsafeMutablePointer<unichar>?)! }
 func sourceURL() -> URL { return URL(string: "")! }
@@ -347,4 +356,37 @@ func taintThroughInterpolatedStrings() {
   sink(arg: str20.mutableCopy()) // $ MISSING: tainted=
   sink(arg: str20.copy(with: nil)) // $ MISSING: tainted=
   sink(arg: str20.mutableCopy(with: nil)) // $ MISSING: tainted=
+
+  // `NSMutableString` methods
+
+  sink(arg: sourceNSMutableString().capitalized(with: nil)) // $ MISSING: tainted=
+
+  var str30 = NSMutableString(string: "")
+  sink(arg: str30)
+  str30.append(sourceString())
+  sink(arg: str30) // $ MISSING: tainted=
+
+  var str31 = NSMutableString(string: "")
+  sink(arg: str31)
+  str31.insert(sourceString(), at: 0)
+  sink(arg: str31) // $ MISSING: tainted=
+
+  var str32 = NSMutableString(string: "")
+  sink(arg: str32)
+  str32.replaceCharacters(in: myRange, with: sourceString())
+  sink(arg: str32) // $ MISSING: tainted=
+
+  var str33 = NSMutableString(string: "")
+  sink(arg: str33)
+  str33.replaceOccurrences(of: "a", with: sourceString(), range: myRange)
+  sink(arg: str33) // $ MISSING: tainted=
+
+  var str34 = NSMutableString(string: "")
+  sink(arg: str34)
+  str34.setString(sourceString())
+  sink(arg: str34) // $ MISSING: tainted=
+  str34.append("-append")
+  sink(arg: str34) // $ MISSING: tainted=
+  str34.setString("")
+  sink(arg: str34)
 }
