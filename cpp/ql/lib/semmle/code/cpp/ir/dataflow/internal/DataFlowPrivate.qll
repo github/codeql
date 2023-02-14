@@ -119,7 +119,7 @@ abstract class InstructionNode0 extends Node0Impl {
     result = instr.getOpcode().toString()
   }
 
-  final override predicate isGLValue() { instr.isGLValue() }
+  final override predicate isGLValue() { exists(getInstructionType(instr, true)) }
 }
 
 /**
@@ -160,7 +160,7 @@ abstract class OperandNode0 extends Node0Impl {
 
   override string toStringImpl() { result = op.toString() }
 
-  final override predicate isGLValue() { op.isGLValue() }
+  final override predicate isGLValue() { exists(getOperandType(op, true)) }
 }
 
 /**
