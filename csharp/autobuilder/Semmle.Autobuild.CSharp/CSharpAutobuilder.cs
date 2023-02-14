@@ -1,6 +1,8 @@
 ﻿using Semmle.Extraction.CSharp;
 using Semmle.Util.Logging;
 using Semmle.Autobuild.Shared;
+using Semmle.Util;
+using System.Linq;
 
 namespace Semmle.Autobuild.CSharp
 {
@@ -29,6 +31,8 @@ namespace Semmle.Autobuild.CSharp
 
     public class CSharpAutobuilder : Autobuilder<CSharpAutobuildOptions>
     {
+        private BuildCommandAutoRule? buildCommandAutoRule;
+
         public CSharpAutobuilder(IBuildActions actions, CSharpAutobuildOptions options) : base(actions, options) { }
 
         public override BuildScript GetBuildScript()
@@ -99,19 +103,69 @@ namespace Semmle.Autobuild.CSharp
                         (s & CheckExtractorRun(false)) |
                         (attemptExtractorCleanup & BuildScript.Failure);
 
+                    this.buildCommandAutoRule = new BuildCommandAutoRule(DotNetRule.WithDotNet);
+
                     attempt =
                         // First try .NET Core
                         IntermediateAttempt(new DotNetRule().Analyse(this, true)) |
                         // Then MSBuild
                         (() => IntermediateAttempt(new MsBuildRule().Analyse(this, true))) |
                         // And finally look for a script that might be a build script
-                        (() => new BuildCommandAutoRule(DotNetRule.WithDotNet).Analyse(this, true) & CheckExtractorRun(true)) |
+                        (() => this.buildCommandAutoRule.Analyse(this, true) & CheckExtractorRun(true)) |
                         // All attempts failed: print message
                         AutobuildFailure();
                     break;
             }
 
             return attempt;
+        }
+
+        protected override void AutobuildFailureDiagnostic()
+        {
+            DiagnosticMessage message;
+
+            // if `ScriptPath` is not null here, the `BuildCommandAuto` rule was
+            // run and found at least one script to execute
+            if (this.buildCommandAutoRule is not null &&
+                this.buildCommandAutoRule.ScriptPath is not null)
+            {
+                // if we found multiple build scripts in the project directory, then we can say
+                // as much to indicate that we may have picked the wrong one;
+                // otherwise, we just report that the one script we found didn't work
+                if (this.buildCommandAutoRule.CandidatePaths.Count() > 1)
+                {
+                    var source = GetDiagnosticSource("multiple-build-scripts", "There are multiple potential build scripts");
+                    message = new DiagnosticMessage(source)
+                    {
+                        MarkdownMessage =
+                            "We found multiple potential build scripts for your project and " +
+                            $"attempted to run `{buildCommandAutoRule.ScriptPath}`, which failed. " +
+                            "This may not be the right build script for your project. " +
+                            "You can specify which build script to use by providing a suitable build command for your project."
+                    };
+                }
+                else
+                {
+                    var source = GetDiagnosticSource("script-failure", "Unable to build project using build script");
+                    message = new DiagnosticMessage(source)
+                    {
+                        MarkdownMessage =
+                            "We attempted to build your project using a script located at " +
+                            $"`{buildCommandAutoRule.ScriptPath}`, which failed. " +
+                            "You can manually specify a suitable build command for your project."
+                    };
+                }
+            }
+            else
+            {
+                // none of the above apply; produce a generic autobuild failure message
+                base.AutobuildFailureDiagnostic();
+                return;
+            }
+
+            // all messages generated here are errors
+            message.Severity = DiagnosticMessage.TspSeverity.Error;
+            Diagnostic(message);
         }
 
         /// <summary>
