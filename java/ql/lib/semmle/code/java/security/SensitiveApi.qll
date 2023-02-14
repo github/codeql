@@ -485,6 +485,10 @@ private predicate otherApiCallableCredentialParam(string s) {
       "com.mongodb.MongoCredential;createCredential(String, String, char[]);2",
       "com.mongodb.MongoCredential;createMongoCRCredential(String, String, char[]);2",
       "com.mongodb.MongoCredential;createPlainCredential(String, String, char[]);2",
-      "com.mongodb.MongoCredential;createScramSha1Credential(String, String, char[]);2"
+      "com.mongodb.MongoCredential;createScramSha1Credential(String, String, char[]);2",
+      "com.microsoft.sqlserver.jdbc.SQLServerDataSource;setUser(String);0",
+      "com.microsoft.sqlserver.jdbc.SQLServerDataSource;setPassword(String);0",
+      "com.microsoft.sqlserver.jdbc.SQLServerDataSource;getConnection(String, String);0",
+      "com.microsoft.sqlserver.jdbc.SQLServerDataSource;getConnection(String, String);1",
     ]
 }
