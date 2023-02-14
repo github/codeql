@@ -149,7 +149,6 @@ private module BrowserIdCrypto {
  */
 private module NodeJSCrypto {
   private class InstantiatedAlgorithm extends DataFlow::CallNode {
-    CryptographicAlgorithm algorithm; // non-functional
     private string algorithmName;
 
     InstantiatedAlgorithm() {
@@ -169,12 +168,11 @@ private module NodeJSCrypto {
       exists(DataFlow::SourceNode mod |
         mod = DataFlow::moduleImport("crypto") and
         this = mod.getAMemberCall("create" + ["Hash", "Hmac", "Sign", "Cipher"]) and
-        algorithmName = this.getArgument(0).getStringValue() and
-        algorithm.matchesName(algorithmName)
+        algorithmName = this.getArgument(0).getStringValue()
       )
     }
 
-    CryptographicAlgorithm getAlgorithm() { result = algorithm }
+    CryptographicAlgorithm getAlgorithm() { result.matchesName(algorithmName) }
 
     private BlockMode getExplicitBlockMode() { result.matchesString(algorithmName) }
 
