@@ -602,8 +602,8 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
     exists(DataFlowType type |
       type = globalDef.getUnspecifiedType() and
       if this.isGLValue()
-      then result = globalDef.getUnspecifiedType()
-      else result = getTypeImpl(type.getUnspecifiedType(), globalDef.getIndirectionIndex() - 1)
+      then result = type
+      else result = getTypeImpl(type, globalDef.getIndirectionIndex() - 1)
     )
   }
 
