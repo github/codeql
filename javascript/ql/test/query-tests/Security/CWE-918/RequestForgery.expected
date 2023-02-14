@@ -88,6 +88,19 @@ nodes
 | serverSide.js:115:25:115:35 | request.url |
 | serverSide.js:117:27:117:29 | url |
 | serverSide.js:117:27:117:29 | url |
+| serverSide.js:123:9:123:52 | tainted |
+| serverSide.js:123:19:123:42 | url.par ... , true) |
+| serverSide.js:123:19:123:48 | url.par ... ).query |
+| serverSide.js:123:19:123:52 | url.par ... ery.url |
+| serverSide.js:123:29:123:35 | req.url |
+| serverSide.js:123:29:123:35 | req.url |
+| serverSide.js:127:14:127:20 | tainted |
+| serverSide.js:127:14:127:20 | tainted |
+| serverSide.js:130:9:130:45 | myUrl |
+| serverSide.js:130:17:130:45 | `${some ... inted}` |
+| serverSide.js:130:37:130:43 | tainted |
+| serverSide.js:131:15:131:19 | myUrl |
+| serverSide.js:131:15:131:19 | myUrl |
 edges
 | serverSide.js:14:9:14:52 | tainted | serverSide.js:18:13:18:19 | tainted |
 | serverSide.js:14:9:14:52 | tainted | serverSide.js:18:13:18:19 | tainted |
@@ -172,6 +185,18 @@ edges
 | serverSide.js:115:17:115:42 | new URL ... , base) | serverSide.js:115:11:115:42 | url |
 | serverSide.js:115:25:115:35 | request.url | serverSide.js:115:17:115:42 | new URL ... , base) |
 | serverSide.js:115:25:115:35 | request.url | serverSide.js:115:17:115:42 | new URL ... , base) |
+| serverSide.js:123:9:123:52 | tainted | serverSide.js:127:14:127:20 | tainted |
+| serverSide.js:123:9:123:52 | tainted | serverSide.js:127:14:127:20 | tainted |
+| serverSide.js:123:9:123:52 | tainted | serverSide.js:130:37:130:43 | tainted |
+| serverSide.js:123:19:123:42 | url.par ... , true) | serverSide.js:123:19:123:48 | url.par ... ).query |
+| serverSide.js:123:19:123:48 | url.par ... ).query | serverSide.js:123:19:123:52 | url.par ... ery.url |
+| serverSide.js:123:19:123:52 | url.par ... ery.url | serverSide.js:123:9:123:52 | tainted |
+| serverSide.js:123:29:123:35 | req.url | serverSide.js:123:19:123:42 | url.par ... , true) |
+| serverSide.js:123:29:123:35 | req.url | serverSide.js:123:19:123:42 | url.par ... , true) |
+| serverSide.js:130:9:130:45 | myUrl | serverSide.js:131:15:131:19 | myUrl |
+| serverSide.js:130:9:130:45 | myUrl | serverSide.js:131:15:131:19 | myUrl |
+| serverSide.js:130:17:130:45 | `${some ... inted}` | serverSide.js:130:9:130:45 | myUrl |
+| serverSide.js:130:37:130:43 | tainted | serverSide.js:130:17:130:45 | `${some ... inted}` |
 #select
 | serverSide.js:18:5:18:20 | request(tainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:18:13:18:19 | tainted | The $@ of this request depends on a $@. | serverSide.js:18:13:18:19 | tainted | URL | serverSide.js:14:29:14:35 | req.url | user-provided value |
 | serverSide.js:20:5:20:24 | request.get(tainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:20:17:20:23 | tainted | The $@ of this request depends on a $@. | serverSide.js:20:17:20:23 | tainted | URL | serverSide.js:14:29:14:35 | req.url | user-provided value |
@@ -195,3 +220,5 @@ edges
 | serverSide.js:100:5:100:26 | new Web ... ainted) | serverSide.js:98:29:98:35 | req.url | serverSide.js:100:19:100:25 | tainted | The $@ of this request depends on a $@. | serverSide.js:100:19:100:25 | tainted | URL | serverSide.js:98:29:98:35 | req.url | user-provided value |
 | serverSide.js:109:20:109:30 | new ws(url) | serverSide.js:108:17:108:27 | request.url | serverSide.js:109:27:109:29 | url | The $@ of this request depends on a $@. | serverSide.js:109:27:109:29 | url | URL | serverSide.js:108:17:108:27 | request.url | user-provided value |
 | serverSide.js:117:20:117:30 | new ws(url) | serverSide.js:115:25:115:35 | request.url | serverSide.js:117:27:117:29 | url | The $@ of this request depends on a $@. | serverSide.js:117:27:117:29 | url | URL | serverSide.js:115:25:115:35 | request.url | user-provided value |
+| serverSide.js:125:5:128:6 | axios({ ... \\n    }) | serverSide.js:123:29:123:35 | req.url | serverSide.js:127:14:127:20 | tainted | The $@ of this request depends on a $@. | serverSide.js:127:14:127:20 | tainted | URL | serverSide.js:123:29:123:35 | req.url | user-provided value |
+| serverSide.js:131:5:131:20 | axios.get(myUrl) | serverSide.js:123:29:123:35 | req.url | serverSide.js:131:15:131:19 | myUrl | The $@ of this request depends on a $@. | serverSide.js:131:15:131:19 | myUrl | URL | serverSide.js:123:29:123:35 | req.url | user-provided value |

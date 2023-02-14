@@ -6,7 +6,7 @@
  */
 
 import go
-import DiagnosticsReporting
+import semmle.go.DiagnosticsReporting
 
 from string msg, int sev
 where reportableDiagnostics(_, msg, sev)

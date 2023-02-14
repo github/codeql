@@ -279,7 +279,22 @@ private string stubQualifier(RefType t) {
     exists(RefType et | et = t.(NestedType).getEnclosingType().getSourceDeclaration() |
       result = stubQualifier(et) + et.getName() + "."
     )
-  else result = ""
+  else
+    if needsPackageName(t)
+    then result = t.getPackage().getName() + "."
+    else result = ""
+}
+
+/**
+ * Holds if `t` may clash with another type of the same name, so should be referred to using the fully qualified name
+ */
+private predicate needsPackageName(RefType t) {
+  exists(GeneratedTopLevel top, RefType other |
+    t.getSourceDeclaration() = [getAReferencedType(top), top].getSourceDeclaration() and
+    other.getSourceDeclaration() = [getAReferencedType(top), top].getSourceDeclaration() and
+    t.getName() = other.getName() and
+    t != other
+  )
 }
 
 language[monotonicAggregates]
@@ -503,7 +518,8 @@ class GeneratedTopLevel extends TopLevelType instanceof GeneratedType {
   GeneratedTopLevel() { this = this.getSourceDeclaration() }
 
   private TopLevelType getAnImportedType() {
-    result = getAReferencedType(this).getSourceDeclaration()
+    result = getAReferencedType(this).getSourceDeclaration() and
+    not needsPackageName(result) // use the fully qualified name rather than importing it if it may cause name clashes
   }
 
   private string stubAnImport() {

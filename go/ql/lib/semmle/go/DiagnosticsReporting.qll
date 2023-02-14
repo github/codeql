@@ -1,3 +1,5 @@
+/** Provides classes for working with errors and warnings recorded during extraction. */
+
 import go
 
 /** Gets the SARIF severity level that indicates an error. */

@@ -1,53 +1,53 @@
-| A | m | func()  |
-| A2 | m | func()  |
-| AC | m | func()  |
-| AC | n | func()  |
-| AC | o | func()  |
-| AEmbedded | m | func()  |
-| AExtended | m | func()  |
-| AExtended | n | func()  |
-| B | m | func()  |
-| B | n | func()  |
-| C | n | func()  |
-| C | o | func()  |
-| GenericInterface | GetT | func() T |
-| MyInterface | clone | func() MyInterface |
-| MyInterface | dummy1 | func() [10]U |
-| MyInterface | dummy2 | func() * U |
-| MyInterface | dummy3 | func() []U |
-| MyInterface | dummy4 | func() [U]U |
-| MyInterface | dummy5 | func() chan<- U |
-| MyInterface | dummy6 | func() MyMapType |
-| MyInterface | dummy7 | func() MyFuncType2 |
-| MyInterface | dummy11 | func() GenericArray |
-| MyInterface | dummy12 | func() GenericPointer |
-| MyInterface | dummy13 | func() GenericSlice |
-| MyInterface | dummy14 | func() GenericMap1 |
-| MyInterface | dummy15 | func() GenericMap2 |
-| MyInterface | dummy17 | func() GenericChannel |
-| MyInterface | dummy18 | func() GenericNamed |
-| MyInterface | dummy19 | func() MyFuncType1 |
-| MyInterface | dummy20 | func() MyFuncType2 |
-| T | half | func() Foo |
-| T3 | half | func() Foo |
-| T4 | half | func() Foo |
-| embedder | f | func() int |
-| embedder2 | f | func() int |
-| embedder3 | f | func() int |
-| embedder4 | f | func() int |
-| i6 | String | func() string |
-| i7 | String | func() string |
-| i8 | String | func() string |
-| i8 | StringA | func() string |
-| i9 | String | func() string |
-| i9 | StringB | func() string |
-| i14 | String | func() string |
-| i14 | StringA | func() string |
-| i15 | String | func() string |
-| i15 | StringB | func() string |
-| i17 | StringA | func() string |
-| i18 | StringA | func() string |
-| i19 | StringB | func() string |
-| i20 | StringB | func() string |
-| ptrembedder | f | func() int |
-| ptrembedder | g | func() int |
+| generic.go:32:6:32:21 | GenericInterface | GetT | func() T |
+| generic.go:47:6:47:16 | MyInterface | clone | func() MyInterface |
+| generic.go:47:6:47:16 | MyInterface | dummy1 | func() [10]U |
+| generic.go:47:6:47:16 | MyInterface | dummy2 | func() * U |
+| generic.go:47:6:47:16 | MyInterface | dummy3 | func() []U |
+| generic.go:47:6:47:16 | MyInterface | dummy4 | func() [U]U |
+| generic.go:47:6:47:16 | MyInterface | dummy5 | func() chan<- U |
+| generic.go:47:6:47:16 | MyInterface | dummy6 | func() MyMapType |
+| generic.go:47:6:47:16 | MyInterface | dummy7 | func() MyFuncType2 |
+| generic.go:47:6:47:16 | MyInterface | dummy11 | func() GenericArray |
+| generic.go:47:6:47:16 | MyInterface | dummy12 | func() GenericPointer |
+| generic.go:47:6:47:16 | MyInterface | dummy13 | func() GenericSlice |
+| generic.go:47:6:47:16 | MyInterface | dummy14 | func() GenericMap1 |
+| generic.go:47:6:47:16 | MyInterface | dummy15 | func() GenericMap2 |
+| generic.go:47:6:47:16 | MyInterface | dummy17 | func() GenericChannel |
+| generic.go:47:6:47:16 | MyInterface | dummy18 | func() GenericNamed |
+| generic.go:47:6:47:16 | MyInterface | dummy19 | func() MyFuncType1 |
+| generic.go:47:6:47:16 | MyInterface | dummy20 | func() MyFuncType2 |
+| interface.go:28:6:28:7 | i6 | String | func() string |
+| interface.go:34:6:34:7 | i7 | String | func() string |
+| interface.go:41:6:41:7 | i8 | String | func() string |
+| interface.go:41:6:41:7 | i8 | StringA | func() string |
+| interface.go:47:6:47:7 | i9 | String | func() string |
+| interface.go:47:6:47:7 | i9 | StringB | func() string |
+| interface.go:75:6:75:8 | i14 | String | func() string |
+| interface.go:75:6:75:8 | i14 | StringA | func() string |
+| interface.go:81:6:81:8 | i15 | String | func() string |
+| interface.go:81:6:81:8 | i15 | StringB | func() string |
+| interface.go:91:6:91:8 | i17 | StringA | func() string |
+| interface.go:95:6:95:8 | i18 | StringA | func() string |
+| interface.go:101:6:101:8 | i19 | StringB | func() string |
+| interface.go:105:6:105:8 | i20 | StringB | func() string |
+| pkg1/embedding.go:19:6:19:13 | embedder | f | func() int |
+| pkg1/embedding.go:22:6:22:16 | ptrembedder | f | func() int |
+| pkg1/embedding.go:22:6:22:16 | ptrembedder | g | func() int |
+| pkg1/embedding.go:25:6:25:14 | embedder2 | f | func() int |
+| pkg1/embedding.go:28:6:28:14 | embedder3 | f | func() int |
+| pkg1/embedding.go:35:6:35:14 | embedder4 | f | func() int |
+| pkg1/interfaces.go:3:6:3:6 | A | m | func()  |
+| pkg1/interfaces.go:7:6:7:6 | B | m | func()  |
+| pkg1/interfaces.go:7:6:7:6 | B | n | func()  |
+| pkg1/interfaces.go:12:6:12:6 | C | n | func()  |
+| pkg1/interfaces.go:12:6:12:6 | C | o | func()  |
+| pkg1/interfaces.go:17:6:17:14 | AEmbedded | m | func()  |
+| pkg1/interfaces.go:21:6:21:7 | AC | m | func()  |
+| pkg1/interfaces.go:21:6:21:7 | AC | n | func()  |
+| pkg1/interfaces.go:21:6:21:7 | AC | o | func()  |
+| pkg1/interfaces.go:26:6:26:14 | AExtended | m | func()  |
+| pkg1/interfaces.go:26:6:26:14 | AExtended | n | func()  |
+| pkg1/interfaces.go:31:6:31:7 | A2 | m | func()  |
+| pkg1/tst.go:3:6:3:6 | T | half | func() Foo |
+| pkg1/tst.go:14:6:14:7 | T3 | half | func() Foo |
+| pkg1/tst.go:19:6:19:7 | T4 | half | func() Foo |
