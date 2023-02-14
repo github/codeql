@@ -1,0 +1,334 @@
+failures
+astTypeBugs
+irTypeBugs
+| clang.cpp:8:7:8:14 | clang.cpp:8:7:8:14 | clang.cpp:8:7:8:14 | getFirst indirection |
+| clang.cpp:8:7:8:14 | clang.cpp:8:7:8:14 | clang.cpp:8:7:8:14 | getFirst indirection |
+| clang.cpp:8:7:8:14 | clang.cpp:8:7:8:14 | clang.cpp:8:7:8:14 | getFirst indirection |
+| clang.cpp:8:27:8:28 | clang.cpp:8:27:8:28 | clang.cpp:8:27:8:28 | this indirection |
+| clang.cpp:8:27:8:28 | clang.cpp:8:27:8:28 | clang.cpp:8:27:8:28 | this indirection |
+| dispatch.cpp:5:8:5:8 | dispatch.cpp:5:8:5:8 | dispatch.cpp:5:8:5:8 | Top indirection |
+| dispatch.cpp:5:8:5:8 | dispatch.cpp:5:8:5:8 | dispatch.cpp:5:8:5:8 | Top indirection |
+| dispatch.cpp:5:8:5:8 | dispatch.cpp:5:8:5:8 | dispatch.cpp:5:8:5:8 | Top indirection |
+| dispatch.cpp:6:15:6:23 | dispatch.cpp:6:15:6:23 | dispatch.cpp:6:15:6:23 | isSource1 indirection |
+| dispatch.cpp:6:15:6:23 | dispatch.cpp:6:15:6:23 | dispatch.cpp:6:15:6:23 | isSource1 indirection |
+| dispatch.cpp:6:15:6:23 | dispatch.cpp:6:15:6:23 | dispatch.cpp:6:15:6:23 | isSource1 indirection |
+| dispatch.cpp:7:15:7:23 | dispatch.cpp:7:15:7:23 | dispatch.cpp:7:15:7:23 | isSource2 indirection |
+| dispatch.cpp:7:15:7:23 | dispatch.cpp:7:15:7:23 | dispatch.cpp:7:15:7:23 | isSource2 indirection |
+| dispatch.cpp:7:15:7:23 | dispatch.cpp:7:15:7:23 | dispatch.cpp:7:15:7:23 | isSource2 indirection |
+| dispatch.cpp:8:16:8:21 | dispatch.cpp:8:16:8:21 | dispatch.cpp:8:16:8:21 | isSink indirection |
+| dispatch.cpp:8:16:8:21 | dispatch.cpp:8:16:8:21 | dispatch.cpp:8:16:8:21 | isSink indirection |
+| dispatch.cpp:8:16:8:21 | dispatch.cpp:8:16:8:21 | dispatch.cpp:8:16:8:21 | isSink indirection |
+| dispatch.cpp:9:15:9:24 | dispatch.cpp:9:15:9:24 | dispatch.cpp:9:15:9:24 | notSource1 indirection |
+| dispatch.cpp:9:15:9:24 | dispatch.cpp:9:15:9:24 | dispatch.cpp:9:15:9:24 | notSource1 indirection |
+| dispatch.cpp:9:15:9:24 | dispatch.cpp:9:15:9:24 | dispatch.cpp:9:15:9:24 | notSource1 indirection |
+| dispatch.cpp:10:15:10:24 | dispatch.cpp:10:15:10:24 | dispatch.cpp:10:15:10:24 | notSource2 indirection |
+| dispatch.cpp:10:15:10:24 | dispatch.cpp:10:15:10:24 | dispatch.cpp:10:15:10:24 | notSource2 indirection |
+| dispatch.cpp:10:15:10:24 | dispatch.cpp:10:15:10:24 | dispatch.cpp:10:15:10:24 | notSource2 indirection |
+| dispatch.cpp:11:16:11:22 | dispatch.cpp:11:16:11:22 | dispatch.cpp:11:16:11:22 | notSink indirection |
+| dispatch.cpp:11:16:11:22 | dispatch.cpp:11:16:11:22 | dispatch.cpp:11:16:11:22 | notSink indirection |
+| dispatch.cpp:11:16:11:22 | dispatch.cpp:11:16:11:22 | dispatch.cpp:11:16:11:22 | notSink indirection |
+| dispatch.cpp:15:8:15:8 | dispatch.cpp:15:8:15:8 | dispatch.cpp:15:8:15:8 | Middle indirection |
+| dispatch.cpp:15:8:15:8 | dispatch.cpp:15:8:15:8 | dispatch.cpp:15:8:15:8 | Middle indirection |
+| dispatch.cpp:15:8:15:8 | dispatch.cpp:15:8:15:8 | dispatch.cpp:15:8:15:8 | Middle indirection |
+| dispatch.cpp:16:7:16:15 | dispatch.cpp:16:7:16:15 | dispatch.cpp:16:7:16:15 | isSource2 indirection |
+| dispatch.cpp:16:7:16:15 | dispatch.cpp:16:7:16:15 | dispatch.cpp:16:7:16:15 | isSource2 indirection |
+| dispatch.cpp:16:7:16:15 | dispatch.cpp:16:7:16:15 | dispatch.cpp:16:7:16:15 | isSource2 indirection |
+| dispatch.cpp:17:7:17:16 | dispatch.cpp:17:7:17:16 | dispatch.cpp:17:7:17:16 | notSource2 indirection |
+| dispatch.cpp:17:7:17:16 | dispatch.cpp:17:7:17:16 | dispatch.cpp:17:7:17:16 | notSource2 indirection |
+| dispatch.cpp:17:7:17:16 | dispatch.cpp:17:7:17:16 | dispatch.cpp:17:7:17:16 | notSource2 indirection |
+| dispatch.cpp:21:8:21:8 | dispatch.cpp:21:8:21:8 | dispatch.cpp:21:8:21:8 | Bottom indirection |
+| dispatch.cpp:21:8:21:8 | dispatch.cpp:21:8:21:8 | dispatch.cpp:21:8:21:8 | Bottom indirection |
+| dispatch.cpp:21:8:21:8 | dispatch.cpp:21:8:21:8 | dispatch.cpp:21:8:21:8 | Bottom indirection |
+| dispatch.cpp:22:7:22:15 | dispatch.cpp:22:7:22:15 | dispatch.cpp:22:7:22:15 | isSource1 indirection |
+| dispatch.cpp:22:7:22:15 | dispatch.cpp:22:7:22:15 | dispatch.cpp:22:7:22:15 | isSource1 indirection |
+| dispatch.cpp:22:7:22:15 | dispatch.cpp:22:7:22:15 | dispatch.cpp:22:7:22:15 | isSource1 indirection |
+| dispatch.cpp:23:8:23:13 | dispatch.cpp:23:8:23:13 | dispatch.cpp:23:8:23:13 | isSink indirection |
+| dispatch.cpp:23:8:23:13 | dispatch.cpp:23:8:23:13 | dispatch.cpp:23:8:23:13 | isSink indirection |
+| dispatch.cpp:23:8:23:13 | dispatch.cpp:23:8:23:13 | dispatch.cpp:23:8:23:13 | isSink indirection |
+| dispatch.cpp:24:7:24:16 | dispatch.cpp:24:7:24:16 | dispatch.cpp:24:7:24:16 | notSource1 indirection |
+| dispatch.cpp:24:7:24:16 | dispatch.cpp:24:7:24:16 | dispatch.cpp:24:7:24:16 | notSource1 indirection |
+| dispatch.cpp:24:7:24:16 | dispatch.cpp:24:7:24:16 | dispatch.cpp:24:7:24:16 | notSource1 indirection |
+| dispatch.cpp:25:8:25:14 | dispatch.cpp:25:8:25:14 | dispatch.cpp:25:8:25:14 | notSink indirection |
+| dispatch.cpp:25:8:25:14 | dispatch.cpp:25:8:25:14 | dispatch.cpp:25:8:25:14 | notSink indirection |
+| dispatch.cpp:25:8:25:14 | dispatch.cpp:25:8:25:14 | dispatch.cpp:25:8:25:14 | notSink indirection |
+| dispatch.cpp:50:6:50:21 | dispatch.cpp:50:6:50:21 | dispatch.cpp:50:6:50:21 | globalBottom indirection |
+| dispatch.cpp:54:6:54:26 | dispatch.cpp:54:6:54:26 | dispatch.cpp:54:6:54:26 | globalBottom indirection |
+| dispatch.cpp:54:6:54:26 | dispatch.cpp:54:6:54:26 | dispatch.cpp:54:6:54:26 | globalMiddle indirection |
+| dispatch.cpp:99:18:99:31 | dispatch.cpp:99:18:99:31 | dispatch.cpp:99:18:99:31 | returnCallSink |
+| dispatch.cpp:100:3:100:18 | dispatch.cpp:100:3:100:18 | dispatch.cpp:100:3:100:18 | return ... |
+| dispatch.cpp:103:43:103:55 | dispatch.cpp:103:43:103:55 | dispatch.cpp:103:43:103:55 | maybeCallSink |
+| dispatch.cpp:103:75:103:86 | dispatch.cpp:103:75:103:86 | dispatch.cpp:103:75:103:86 | dontCallSink |
+| dispatch.cpp:105:5:105:17 | dispatch.cpp:105:5:105:17 | dispatch.cpp:105:5:105:17 | maybeCallSink |
+| dispatch.cpp:105:21:105:34 | dispatch.cpp:105:21:105:34 | dispatch.cpp:105:21:105:34 | call to returnCallSink |
+| dispatch.cpp:107:3:107:15 | dispatch.cpp:107:3:107:15 | dispatch.cpp:107:3:107:15 | maybeCallSink |
+| dispatch.cpp:107:3:107:15 | dispatch.cpp:107:3:107:15 | dispatch.cpp:107:3:107:15 | maybeCallSink |
+| dispatch.cpp:108:3:108:14 | dispatch.cpp:108:3:108:14 | dispatch.cpp:108:3:108:14 | dontCallSink |
+| dispatch.cpp:108:3:108:14 | dispatch.cpp:108:3:108:14 | dispatch.cpp:108:3:108:14 | dontCallSink |
+| dispatch.cpp:113:17:113:24 | dispatch.cpp:113:17:113:24 | dispatch.cpp:113:17:113:24 | isSource indirection |
+| dispatch.cpp:113:17:113:24 | dispatch.cpp:113:17:113:24 | dispatch.cpp:113:17:113:24 | isSource indirection |
+| dispatch.cpp:113:17:113:24 | dispatch.cpp:113:17:113:24 | dispatch.cpp:113:17:113:24 | isSource indirection |
+| dispatch.cpp:117:9:117:16 | dispatch.cpp:117:9:117:16 | dispatch.cpp:117:9:117:16 | isSource indirection |
+| dispatch.cpp:117:9:117:16 | dispatch.cpp:117:9:117:16 | dispatch.cpp:117:9:117:16 | isSource indirection |
+| dispatch.cpp:117:9:117:16 | dispatch.cpp:117:9:117:16 | dispatch.cpp:117:9:117:16 | isSource indirection |
+| dispatch.cpp:139:55:139:58 | dispatch.cpp:139:55:139:58 | dispatch.cpp:139:55:139:58 | func |
+| dispatch.cpp:140:3:140:6 | dispatch.cpp:140:3:140:6 | dispatch.cpp:140:3:140:6 | func |
+| dispatch.cpp:140:3:140:6 | dispatch.cpp:140:3:140:6 | dispatch.cpp:140:3:140:6 | func |
+| dispatch.cpp:143:55:143:58 | dispatch.cpp:143:55:143:58 | dispatch.cpp:143:55:143:58 | func |
+| dispatch.cpp:144:3:144:6 | dispatch.cpp:144:3:144:6 | dispatch.cpp:144:3:144:6 | func |
+| dispatch.cpp:144:3:144:6 | dispatch.cpp:144:3:144:6 | dispatch.cpp:144:3:144:6 | func |
+| dispatch.cpp:147:6:147:29 | dispatch.cpp:147:6:147:29 | dispatch.cpp:147:6:147:29 | u indirection |
+| dispatch.cpp:148:5:148:5 | dispatch.cpp:148:5:148:5 | dispatch.cpp:148:5:148:5 | f |
+| dispatch.cpp:151:6:151:33 | dispatch.cpp:151:6:151:33 | dispatch.cpp:151:6:151:33 | u indirection |
+| dispatch.cpp:153:37:153:37 | dispatch.cpp:153:37:153:37 | dispatch.cpp:153:37:153:37 | f |
+| dispatch.cpp:153:37:153:37 | dispatch.cpp:153:37:153:37 | dispatch.cpp:153:37:153:37 | f |
+| dispatch.cpp:154:37:154:37 | dispatch.cpp:154:37:154:37 | dispatch.cpp:154:37:154:37 | g |
+| dispatch.cpp:154:37:154:37 | dispatch.cpp:154:37:154:37 | dispatch.cpp:154:37:154:37 | g |
+| dispatch.cpp:159:57:159:60 | dispatch.cpp:159:57:159:60 | dispatch.cpp:159:57:159:60 | func |
+| dispatch.cpp:160:3:160:6 | dispatch.cpp:160:3:160:6 | dispatch.cpp:160:3:160:6 | func |
+| dispatch.cpp:160:3:160:6 | dispatch.cpp:160:3:160:6 | dispatch.cpp:160:3:160:6 | func |
+| dispatch.cpp:163:57:163:60 | dispatch.cpp:163:57:163:60 | dispatch.cpp:163:57:163:60 | func |
+| dispatch.cpp:164:3:164:6 | dispatch.cpp:164:3:164:6 | dispatch.cpp:164:3:164:6 | func |
+| dispatch.cpp:164:3:164:6 | dispatch.cpp:164:3:164:6 | dispatch.cpp:164:3:164:6 | func |
+| dispatch.cpp:167:6:167:31 | dispatch.cpp:167:6:167:31 | dispatch.cpp:167:6:167:31 | u2 indirection |
+| dispatch.cpp:168:8:168:8 | dispatch.cpp:168:8:168:8 | dispatch.cpp:168:8:168:8 | f |
+| dispatch.cpp:171:6:171:35 | dispatch.cpp:171:6:171:35 | dispatch.cpp:171:6:171:35 | u2 indirection |
+| dispatch.cpp:173:42:173:42 | dispatch.cpp:173:42:173:42 | dispatch.cpp:173:42:173:42 | f |
+| dispatch.cpp:173:42:173:42 | dispatch.cpp:173:42:173:42 | dispatch.cpp:173:42:173:42 | f |
+| dispatch.cpp:174:42:174:42 | dispatch.cpp:174:42:174:42 | dispatch.cpp:174:42:174:42 | g |
+| dispatch.cpp:174:42:174:42 | dispatch.cpp:174:42:174:42 | dispatch.cpp:174:42:174:42 | g |
+| example.c:19:6:19:6 | example.c:19:6:19:6 | example.c:19:6:19:6 | b |
+| example.c:19:6:19:6 | example.c:19:6:19:6 | example.c:19:6:19:6 | b |
+| example.c:24:2:24:7 | example.c:24:2:24:7 | example.c:24:2:24:7 | coords |
+| example.c:24:13:24:18 | example.c:24:13:24:18 | example.c:24:13:24:18 | coords |
+| example.c:26:2:26:7 | example.c:26:2:26:7 | example.c:26:2:26:7 | coords |
+| example.c:26:19:26:24 | example.c:26:19:26:24 | example.c:26:19:26:24 | coords |
+| file://:0:0:0:0 | file://:0:0:0:0 | file://:0:0:0:0 | this |
+| file://:0:0:0:0 | file://:0:0:0:0 | file://:0:0:0:0 | this indirection |
+| file://:0:0:0:0 | file://:0:0:0:0 | file://:0:0:0:0 | this indirection |
+| globals.cpp:11:6:11:21 | globals.cpp:11:6:11:21 | globals.cpp:11:6:11:21 | flowTestGlobal1 indirection |
+| globals.cpp:18:6:18:16 | globals.cpp:18:6:18:16 | globals.cpp:18:6:18:16 | flowTestGlobal2 indirection |
+| lambdas.cpp:13:11:13:11 | lambdas.cpp:13:11:13:11 | lambdas.cpp:13:11:13:11 | (unnamed constructor) indirection |
+| lambdas.cpp:13:11:13:11 | lambdas.cpp:13:11:13:11 | lambdas.cpp:13:11:13:11 | (unnamed constructor) indirection |
+| lambdas.cpp:13:11:13:11 | lambdas.cpp:13:11:13:11 | lambdas.cpp:13:11:13:11 | (unnamed constructor) indirection |
+| lambdas.cpp:13:17:13:17 | lambdas.cpp:13:17:13:17 | lambdas.cpp:13:17:13:17 | operator() indirection |
+| lambdas.cpp:13:17:13:17 | lambdas.cpp:13:17:13:17 | lambdas.cpp:13:17:13:17 | operator() indirection |
+| lambdas.cpp:13:17:13:17 | lambdas.cpp:13:17:13:17 | lambdas.cpp:13:17:13:17 | operator() indirection |
+| lambdas.cpp:14:3:14:6 | lambdas.cpp:14:3:14:6 | lambdas.cpp:14:3:14:6 | this |
+| lambdas.cpp:14:3:14:6 | lambdas.cpp:14:3:14:6 | lambdas.cpp:14:3:14:6 | this indirection |
+| lambdas.cpp:14:3:14:6 | lambdas.cpp:14:3:14:6 | lambdas.cpp:14:3:14:6 | this indirection |
+| lambdas.cpp:15:3:15:6 | lambdas.cpp:15:3:15:6 | lambdas.cpp:15:3:15:6 | this |
+| lambdas.cpp:15:3:15:6 | lambdas.cpp:15:3:15:6 | lambdas.cpp:15:3:15:6 | this indirection |
+| lambdas.cpp:15:3:15:6 | lambdas.cpp:15:3:15:6 | lambdas.cpp:15:3:15:6 | this indirection |
+| lambdas.cpp:20:11:20:11 | lambdas.cpp:20:11:20:11 | lambdas.cpp:20:11:20:11 | (unnamed constructor) indirection |
+| lambdas.cpp:20:11:20:11 | lambdas.cpp:20:11:20:11 | lambdas.cpp:20:11:20:11 | (unnamed constructor) indirection |
+| lambdas.cpp:20:11:20:11 | lambdas.cpp:20:11:20:11 | lambdas.cpp:20:11:20:11 | (unnamed constructor) indirection |
+| lambdas.cpp:20:15:20:15 | lambdas.cpp:20:15:20:15 | lambdas.cpp:20:15:20:15 | operator() indirection |
+| lambdas.cpp:20:15:20:15 | lambdas.cpp:20:15:20:15 | lambdas.cpp:20:15:20:15 | operator() indirection |
+| lambdas.cpp:20:15:20:15 | lambdas.cpp:20:15:20:15 | lambdas.cpp:20:15:20:15 | operator() indirection |
+| lambdas.cpp:21:3:21:6 | lambdas.cpp:21:3:21:6 | lambdas.cpp:21:3:21:6 | this |
+| lambdas.cpp:21:3:21:6 | lambdas.cpp:21:3:21:6 | lambdas.cpp:21:3:21:6 | this indirection |
+| lambdas.cpp:21:3:21:6 | lambdas.cpp:21:3:21:6 | lambdas.cpp:21:3:21:6 | this indirection |
+| lambdas.cpp:22:3:22:6 | lambdas.cpp:22:3:22:6 | lambdas.cpp:22:3:22:6 | this |
+| lambdas.cpp:22:3:22:6 | lambdas.cpp:22:3:22:6 | lambdas.cpp:22:3:22:6 | this indirection |
+| lambdas.cpp:22:3:22:6 | lambdas.cpp:22:3:22:6 | lambdas.cpp:22:3:22:6 | this indirection |
+| lambdas.cpp:23:3:23:14 | lambdas.cpp:23:3:23:14 | lambdas.cpp:23:3:23:14 | this |
+| lambdas.cpp:23:3:23:14 | lambdas.cpp:23:3:23:14 | lambdas.cpp:23:3:23:14 | this indirection |
+| lambdas.cpp:23:3:23:14 | lambdas.cpp:23:3:23:14 | lambdas.cpp:23:3:23:14 | this indirection |
+| lambdas.cpp:28:11:28:11 | lambdas.cpp:28:11:28:11 | lambdas.cpp:28:11:28:11 | (unnamed constructor) indirection |
+| lambdas.cpp:28:11:28:11 | lambdas.cpp:28:11:28:11 | lambdas.cpp:28:11:28:11 | (unnamed constructor) indirection |
+| lambdas.cpp:28:11:28:11 | lambdas.cpp:28:11:28:11 | lambdas.cpp:28:11:28:11 | (unnamed constructor) indirection |
+| lambdas.cpp:28:15:28:15 | lambdas.cpp:28:15:28:15 | lambdas.cpp:28:15:28:15 | operator() indirection |
+| lambdas.cpp:28:15:28:15 | lambdas.cpp:28:15:28:15 | lambdas.cpp:28:15:28:15 | operator() indirection |
+| lambdas.cpp:28:15:28:15 | lambdas.cpp:28:15:28:15 | lambdas.cpp:28:15:28:15 | operator() indirection |
+| lambdas.cpp:29:3:29:6 | lambdas.cpp:29:3:29:6 | lambdas.cpp:29:3:29:6 | this |
+| lambdas.cpp:29:3:29:6 | lambdas.cpp:29:3:29:6 | lambdas.cpp:29:3:29:6 | this indirection |
+| lambdas.cpp:29:3:29:6 | lambdas.cpp:29:3:29:6 | lambdas.cpp:29:3:29:6 | this indirection |
+| lambdas.cpp:30:3:30:6 | lambdas.cpp:30:3:30:6 | lambdas.cpp:30:3:30:6 | this |
+| lambdas.cpp:30:3:30:6 | lambdas.cpp:30:3:30:6 | lambdas.cpp:30:3:30:6 | this indirection |
+| lambdas.cpp:30:3:30:6 | lambdas.cpp:30:3:30:6 | lambdas.cpp:30:3:30:6 | this indirection |
+| lambdas.cpp:34:11:34:11 | lambdas.cpp:34:11:34:11 | lambdas.cpp:34:11:34:11 | (unnamed constructor) indirection |
+| lambdas.cpp:34:11:34:11 | lambdas.cpp:34:11:34:11 | lambdas.cpp:34:11:34:11 | (unnamed constructor) indirection |
+| lambdas.cpp:34:11:34:11 | lambdas.cpp:34:11:34:11 | lambdas.cpp:34:11:34:11 | (unnamed constructor) indirection |
+| lambdas.cpp:34:13:34:13 | lambdas.cpp:34:13:34:13 | lambdas.cpp:34:13:34:13 | operator void (*)(int, int) indirection |
+| lambdas.cpp:34:13:34:13 | lambdas.cpp:34:13:34:13 | lambdas.cpp:34:13:34:13 | operator void (*)(int, int) indirection |
+| lambdas.cpp:34:13:34:13 | lambdas.cpp:34:13:34:13 | lambdas.cpp:34:13:34:13 | operator void (*)(int, int) indirection |
+| lambdas.cpp:34:13:34:13 | lambdas.cpp:34:13:34:13 | lambdas.cpp:34:13:34:13 | operator() indirection |
+| lambdas.cpp:34:13:34:13 | lambdas.cpp:34:13:34:13 | lambdas.cpp:34:13:34:13 | operator() indirection |
+| lambdas.cpp:34:13:34:13 | lambdas.cpp:34:13:34:13 | lambdas.cpp:34:13:34:13 | operator() indirection |
+| lambdas.cpp:40:11:40:11 | lambdas.cpp:40:11:40:11 | lambdas.cpp:40:11:40:11 | (unnamed constructor) indirection |
+| lambdas.cpp:40:11:40:11 | lambdas.cpp:40:11:40:11 | lambdas.cpp:40:11:40:11 | (unnamed constructor) indirection |
+| lambdas.cpp:40:11:40:11 | lambdas.cpp:40:11:40:11 | lambdas.cpp:40:11:40:11 | (unnamed constructor) indirection |
+| lambdas.cpp:40:13:40:13 | lambdas.cpp:40:13:40:13 | lambdas.cpp:40:13:40:13 | operator void (*)(int &, int &, int &) indirection |
+| lambdas.cpp:40:13:40:13 | lambdas.cpp:40:13:40:13 | lambdas.cpp:40:13:40:13 | operator void (*)(int &, int &, int &) indirection |
+| lambdas.cpp:40:13:40:13 | lambdas.cpp:40:13:40:13 | lambdas.cpp:40:13:40:13 | operator void (*)(int &, int &, int &) indirection |
+| lambdas.cpp:40:13:40:13 | lambdas.cpp:40:13:40:13 | lambdas.cpp:40:13:40:13 | operator() indirection |
+| lambdas.cpp:40:13:40:13 | lambdas.cpp:40:13:40:13 | lambdas.cpp:40:13:40:13 | operator() indirection |
+| lambdas.cpp:40:13:40:13 | lambdas.cpp:40:13:40:13 | lambdas.cpp:40:13:40:13 | operator() indirection |
+| ref.cpp:19:8:19:16 | ref.cpp:19:8:19:16 | ref.cpp:19:8:19:16 | arbitrary indirection |
+| ref.cpp:28:8:28:20 | ref.cpp:28:8:28:20 | ref.cpp:28:8:28:20 | arbitrary indirection |
+| ref.cpp:35:8:35:27 | ref.cpp:35:8:35:27 | ref.cpp:35:8:35:27 | arbitrary indirection |
+| ref.cpp:43:8:43:16 | ref.cpp:43:8:43:16 | ref.cpp:43:8:43:16 | arbitrary indirection |
+| ref.cpp:82:8:82:16 | ref.cpp:82:8:82:16 | ref.cpp:82:8:82:16 | arbitrary indirection |
+| ref.cpp:93:8:93:20 | ref.cpp:93:8:93:20 | ref.cpp:93:8:93:20 | arbitrary indirection |
+| ref.cpp:100:8:100:27 | ref.cpp:100:8:100:27 | ref.cpp:100:8:100:27 | arbitrary indirection |
+| ref.cpp:108:8:108:16 | ref.cpp:108:8:108:16 | ref.cpp:108:8:108:16 | arbitrary indirection |
+| test.cpp:67:14:67:15 | test.cpp:67:14:67:15 | test.cpp:67:14:67:15 | definition of x1 |
+| test.cpp:67:19:67:37 | test.cpp:67:19:67:37 | test.cpp:67:19:67:37 | call to move |
+| test.cpp:68:30:68:31 | test.cpp:68:30:68:31 | test.cpp:68:30:68:31 | x1 |
+| test.cpp:68:30:68:31 | test.cpp:68:30:68:31 | test.cpp:68:30:68:31 | x1 |
+| test.cpp:70:14:70:15 | test.cpp:70:14:70:15 | test.cpp:70:14:70:15 | definition of x4 |
+| test.cpp:70:19:70:33 | test.cpp:70:19:70:33 | test.cpp:70:19:70:33 | x3 |
+| test.cpp:71:8:71:9 | test.cpp:71:8:71:9 | test.cpp:71:8:71:9 | x4 |
+| test.cpp:189:7:189:21 | test.cpp:189:7:189:21 | test.cpp:189:7:189:21 | returnParameter indirection |
+| test.cpp:189:7:189:21 | test.cpp:189:7:189:21 | test.cpp:189:7:189:21 | returnParameter indirection |
+| test.cpp:189:7:189:21 | test.cpp:189:7:189:21 | test.cpp:189:7:189:21 | returnParameter indirection |
+| test.cpp:193:8:193:26 | test.cpp:193:8:193:26 | test.cpp:193:8:193:26 | callReturnParameter indirection |
+| test.cpp:193:8:193:26 | test.cpp:193:8:193:26 | test.cpp:193:8:193:26 | callReturnParameter indirection |
+| test.cpp:193:8:193:26 | test.cpp:193:8:193:26 | test.cpp:193:8:193:26 | callReturnParameter indirection |
+| test.cpp:194:13:194:27 | test.cpp:194:13:194:27 | test.cpp:194:13:194:27 | this indirection |
+| test.cpp:194:13:194:27 | test.cpp:194:13:194:27 | test.cpp:194:13:194:27 | this indirection |
+| test.cpp:200:7:200:27 | test.cpp:200:7:200:27 | test.cpp:200:7:200:27 | returnSourceParameter indirection |
+| test.cpp:200:7:200:27 | test.cpp:200:7:200:27 | test.cpp:200:7:200:27 | returnSourceParameter indirection |
+| test.cpp:200:7:200:27 | test.cpp:200:7:200:27 | test.cpp:200:7:200:27 | returnSourceParameter indirection |
+| test.cpp:206:8:206:32 | test.cpp:206:8:206:32 | test.cpp:206:8:206:32 | callReturnSourceParameter indirection |
+| test.cpp:206:8:206:32 | test.cpp:206:8:206:32 | test.cpp:206:8:206:32 | callReturnSourceParameter indirection |
+| test.cpp:206:8:206:32 | test.cpp:206:8:206:32 | test.cpp:206:8:206:32 | callReturnSourceParameter indirection |
+| test.cpp:207:13:207:33 | test.cpp:207:13:207:33 | test.cpp:207:13:207:33 | this indirection |
+| test.cpp:207:13:207:33 | test.cpp:207:13:207:33 | test.cpp:207:13:207:33 | this indirection |
+| test.cpp:209:13:209:33 | test.cpp:209:13:209:33 | test.cpp:209:13:209:33 | this indirection |
+| test.cpp:209:13:209:33 | test.cpp:209:13:209:33 | test.cpp:209:13:209:33 | this indirection |
+| test.cpp:213:7:213:28 | test.cpp:213:7:213:28 | test.cpp:213:7:213:28 | returnSourceParameter2 indirection |
+| test.cpp:213:7:213:28 | test.cpp:213:7:213:28 | test.cpp:213:7:213:28 | returnSourceParameter2 indirection |
+| test.cpp:213:7:213:28 | test.cpp:213:7:213:28 | test.cpp:213:7:213:28 | returnSourceParameter2 indirection |
+| test.cpp:220:8:220:33 | test.cpp:220:8:220:33 | test.cpp:220:8:220:33 | callReturnSourceParameter2 indirection |
+| test.cpp:220:8:220:33 | test.cpp:220:8:220:33 | test.cpp:220:8:220:33 | callReturnSourceParameter2 indirection |
+| test.cpp:220:8:220:33 | test.cpp:220:8:220:33 | test.cpp:220:8:220:33 | callReturnSourceParameter2 indirection |
+| test.cpp:221:13:221:34 | test.cpp:221:13:221:34 | test.cpp:221:13:221:34 | this indirection |
+| test.cpp:221:13:221:34 | test.cpp:221:13:221:34 | test.cpp:221:13:221:34 | this indirection |
+| test.cpp:223:13:223:34 | test.cpp:223:13:223:34 | test.cpp:223:13:223:34 | this indirection |
+| test.cpp:223:13:223:34 | test.cpp:223:13:223:34 | test.cpp:223:13:223:34 | this indirection |
+| test.cpp:229:7:229:18 | test.cpp:229:7:229:18 | test.cpp:229:7:229:18 | returnSource indirection |
+| test.cpp:229:7:229:18 | test.cpp:229:7:229:18 | test.cpp:229:7:229:18 | returnSource indirection |
+| test.cpp:229:7:229:18 | test.cpp:229:7:229:18 | test.cpp:229:7:229:18 | returnSource indirection |
+| test.cpp:235:8:235:23 | test.cpp:235:8:235:23 | test.cpp:235:8:235:23 | callReturnSource indirection |
+| test.cpp:235:8:235:23 | test.cpp:235:8:235:23 | test.cpp:235:8:235:23 | callReturnSource indirection |
+| test.cpp:235:8:235:23 | test.cpp:235:8:235:23 | test.cpp:235:8:235:23 | callReturnSource indirection |
+| test.cpp:236:13:236:24 | test.cpp:236:13:236:24 | test.cpp:236:13:236:24 | this indirection |
+| test.cpp:236:13:236:24 | test.cpp:236:13:236:24 | test.cpp:236:13:236:24 | this indirection |
+| test.cpp:244:10:244:15 | test.cpp:244:10:244:15 | test.cpp:244:10:244:15 | level0 indirection |
+| test.cpp:244:10:244:15 | test.cpp:244:10:244:15 | test.cpp:244:10:244:15 | level0 indirection |
+| test.cpp:244:10:244:15 | test.cpp:244:10:244:15 | test.cpp:244:10:244:15 | level0 indirection |
+| test.cpp:245:7:245:12 | test.cpp:245:7:245:12 | test.cpp:245:7:245:12 | this indirection |
+| test.cpp:245:7:245:12 | test.cpp:245:7:245:12 | test.cpp:245:7:245:12 | this indirection |
+| test.cpp:246:7:246:16 | test.cpp:246:7:246:16 | test.cpp:246:7:246:16 | this indirection |
+| test.cpp:246:7:246:16 | test.cpp:246:7:246:16 | test.cpp:246:7:246:16 | this indirection |
+| test.cpp:249:10:249:15 | test.cpp:249:10:249:15 | test.cpp:249:10:249:15 | level1 indirection |
+| test.cpp:249:10:249:15 | test.cpp:249:10:249:15 | test.cpp:249:10:249:15 | level1 indirection |
+| test.cpp:249:10:249:15 | test.cpp:249:10:249:15 | test.cpp:249:10:249:15 | level1 indirection |
+| test.cpp:251:7:251:12 | test.cpp:251:7:251:12 | test.cpp:251:7:251:12 | this indirection |
+| test.cpp:251:7:251:12 | test.cpp:251:7:251:12 | test.cpp:251:7:251:12 | this indirection |
+| test.cpp:254:10:254:19 | test.cpp:254:10:254:19 | test.cpp:254:10:254:19 | safelevel1 indirection |
+| test.cpp:254:10:254:19 | test.cpp:254:10:254:19 | test.cpp:254:10:254:19 | safelevel1 indirection |
+| test.cpp:254:10:254:19 | test.cpp:254:10:254:19 | test.cpp:254:10:254:19 | safelevel1 indirection |
+| test.cpp:256:7:256:12 | test.cpp:256:7:256:12 | test.cpp:256:7:256:12 | this indirection |
+| test.cpp:256:7:256:12 | test.cpp:256:7:256:12 | test.cpp:256:7:256:12 | this indirection |
+| test.cpp:259:10:259:15 | test.cpp:259:10:259:15 | test.cpp:259:10:259:15 | level2 indirection |
+| test.cpp:259:10:259:15 | test.cpp:259:10:259:15 | test.cpp:259:10:259:15 | level2 indirection |
+| test.cpp:259:10:259:15 | test.cpp:259:10:259:15 | test.cpp:259:10:259:15 | level2 indirection |
+| test.cpp:264:10:264:15 | test.cpp:264:10:264:15 | test.cpp:264:10:264:15 | level0 indirection |
+| test.cpp:264:10:264:15 | test.cpp:264:10:264:15 | test.cpp:264:10:264:15 | level0 indirection |
+| test.cpp:264:10:264:15 | test.cpp:264:10:264:15 | test.cpp:264:10:264:15 | level0 indirection |
+| test.cpp:265:15:265:20 | test.cpp:265:15:265:20 | test.cpp:265:15:265:20 | this indirection |
+| test.cpp:265:15:265:20 | test.cpp:265:15:265:20 | test.cpp:265:15:265:20 | this indirection |
+| test.cpp:267:11:267:20 | test.cpp:267:11:267:20 | test.cpp:267:11:267:20 | this indirection |
+| test.cpp:267:11:267:20 | test.cpp:267:11:267:20 | test.cpp:267:11:267:20 | this indirection |
+| test.cpp:271:9:271:14 | test.cpp:271:9:271:14 | test.cpp:271:9:271:14 | level1 indirection |
+| test.cpp:271:9:271:14 | test.cpp:271:9:271:14 | test.cpp:271:9:271:14 | level1 indirection |
+| test.cpp:271:9:271:14 | test.cpp:271:9:271:14 | test.cpp:271:9:271:14 | level1 indirection |
+| test.cpp:273:14:273:19 | test.cpp:273:14:273:19 | test.cpp:273:14:273:19 | this indirection |
+| test.cpp:273:14:273:19 | test.cpp:273:14:273:19 | test.cpp:273:14:273:19 | this indirection |
+| test.cpp:276:9:276:18 | test.cpp:276:9:276:18 | test.cpp:276:9:276:18 | safelevel1 indirection |
+| test.cpp:276:9:276:18 | test.cpp:276:9:276:18 | test.cpp:276:9:276:18 | safelevel1 indirection |
+| test.cpp:276:9:276:18 | test.cpp:276:9:276:18 | test.cpp:276:9:276:18 | safelevel1 indirection |
+| test.cpp:278:14:278:19 | test.cpp:278:14:278:19 | test.cpp:278:14:278:19 | this indirection |
+| test.cpp:278:14:278:19 | test.cpp:278:14:278:19 | test.cpp:278:14:278:19 | this indirection |
+| test.cpp:281:9:281:14 | test.cpp:281:9:281:14 | test.cpp:281:9:281:14 | level2 indirection |
+| test.cpp:281:9:281:14 | test.cpp:281:9:281:14 | test.cpp:281:9:281:14 | level2 indirection |
+| test.cpp:281:9:281:14 | test.cpp:281:9:281:14 | test.cpp:281:9:281:14 | level2 indirection |
+| test.cpp:287:12:287:17 | test.cpp:287:12:287:17 | test.cpp:287:12:287:17 | level0 indirection |
+| test.cpp:287:12:287:17 | test.cpp:287:12:287:17 | test.cpp:287:12:287:17 | level0 indirection |
+| test.cpp:287:12:287:17 | test.cpp:287:12:287:17 | test.cpp:287:12:287:17 | level0 indirection |
+| test.cpp:288:17:288:22 | test.cpp:288:17:288:22 | test.cpp:288:17:288:22 | this indirection |
+| test.cpp:288:17:288:22 | test.cpp:288:17:288:22 | test.cpp:288:17:288:22 | this indirection |
+| test.cpp:290:13:290:22 | test.cpp:290:13:290:22 | test.cpp:290:13:290:22 | this indirection |
+| test.cpp:290:13:290:22 | test.cpp:290:13:290:22 | test.cpp:290:13:290:22 | this indirection |
+| test.cpp:294:11:294:16 | test.cpp:294:11:294:16 | test.cpp:294:11:294:16 | level1 indirection |
+| test.cpp:294:11:294:16 | test.cpp:294:11:294:16 | test.cpp:294:11:294:16 | level1 indirection |
+| test.cpp:294:11:294:16 | test.cpp:294:11:294:16 | test.cpp:294:11:294:16 | level1 indirection |
+| test.cpp:295:17:295:22 | test.cpp:295:17:295:22 | test.cpp:295:17:295:22 | this indirection |
+| test.cpp:295:17:295:22 | test.cpp:295:17:295:22 | test.cpp:295:17:295:22 | this indirection |
+| test.cpp:299:11:299:20 | test.cpp:299:11:299:20 | test.cpp:299:11:299:20 | safelevel1 indirection |
+| test.cpp:299:11:299:20 | test.cpp:299:11:299:20 | test.cpp:299:11:299:20 | safelevel1 indirection |
+| test.cpp:299:11:299:20 | test.cpp:299:11:299:20 | test.cpp:299:11:299:20 | safelevel1 indirection |
+| test.cpp:300:23:300:28 | test.cpp:300:23:300:28 | test.cpp:300:23:300:28 | this indirection |
+| test.cpp:300:23:300:28 | test.cpp:300:23:300:28 | test.cpp:300:23:300:28 | this indirection |
+| test.cpp:304:11:304:16 | test.cpp:304:11:304:16 | test.cpp:304:11:304:16 | level2 indirection |
+| test.cpp:304:11:304:16 | test.cpp:304:11:304:16 | test.cpp:304:11:304:16 | level2 indirection |
+| test.cpp:304:11:304:16 | test.cpp:304:11:304:16 | test.cpp:304:11:304:16 | level2 indirection |
+| test.cpp:313:12:313:12 | test.cpp:313:12:313:12 | test.cpp:313:12:313:12 | f indirection |
+| test.cpp:313:12:313:12 | test.cpp:313:12:313:12 | test.cpp:313:12:313:12 | f indirection |
+| test.cpp:313:12:313:12 | test.cpp:313:12:313:12 | test.cpp:313:12:313:12 | f indirection |
+| test.cpp:314:2:314:2 | test.cpp:314:2:314:2 | test.cpp:314:2:314:2 | this indirection |
+| test.cpp:314:2:314:2 | test.cpp:314:2:314:2 | test.cpp:314:2:314:2 | this indirection |
+| test.cpp:316:12:316:12 | test.cpp:316:12:316:12 | test.cpp:316:12:316:12 | g indirection |
+| test.cpp:316:12:316:12 | test.cpp:316:12:316:12 | test.cpp:316:12:316:12 | g indirection |
+| test.cpp:316:12:316:12 | test.cpp:316:12:316:12 | test.cpp:316:12:316:12 | g indirection |
+| test.cpp:317:10:317:10 | test.cpp:317:10:317:10 | test.cpp:317:10:317:10 | this indirection |
+| test.cpp:317:10:317:10 | test.cpp:317:10:317:10 | test.cpp:317:10:317:10 | this indirection |
+| test.cpp:319:10:319:10 | test.cpp:319:10:319:10 | test.cpp:319:10:319:10 | this indirection |
+| test.cpp:319:10:319:10 | test.cpp:319:10:319:10 | test.cpp:319:10:319:10 | this indirection |
+| test.cpp:321:2:321:2 | test.cpp:321:2:321:2 | test.cpp:321:2:321:2 | this indirection |
+| test.cpp:321:2:321:2 | test.cpp:321:2:321:2 | test.cpp:321:2:321:2 | this indirection |
+| test.cpp:323:11:323:11 | test.cpp:323:11:323:11 | test.cpp:323:11:323:11 | h indirection |
+| test.cpp:323:11:323:11 | test.cpp:323:11:323:11 | test.cpp:323:11:323:11 | h indirection |
+| test.cpp:323:11:323:11 | test.cpp:323:11:323:11 | test.cpp:323:11:323:11 | h indirection |
+| test.cpp:336:8:336:8 | test.cpp:336:8:336:8 | test.cpp:336:8:336:8 | globalVar indirection |
+| test.cpp:342:8:342:23 | test.cpp:342:8:342:23 | test.cpp:342:8:342:23 | globalVar indirection |
+| test.cpp:346:8:346:19 | test.cpp:346:8:346:19 | test.cpp:346:8:346:19 | globalVar indirection |
+| test.cpp:358:8:358:17 | test.cpp:358:8:358:17 | test.cpp:358:8:358:17 | taintField indirection |
+| test.cpp:358:8:358:17 | test.cpp:358:8:358:17 | test.cpp:358:8:358:17 | taintField indirection |
+| test.cpp:358:8:358:17 | test.cpp:358:8:358:17 | test.cpp:358:8:358:17 | taintField indirection |
+| test.cpp:359:5:359:9 | test.cpp:359:5:359:9 | test.cpp:359:5:359:9 | this indirection |
+| test.cpp:359:5:359:9 | test.cpp:359:5:359:9 | test.cpp:359:5:359:9 | this indirection |
+| test.cpp:362:8:362:8 | test.cpp:362:8:362:8 | test.cpp:362:8:362:8 | f indirection |
+| test.cpp:362:8:362:8 | test.cpp:362:8:362:8 | test.cpp:362:8:362:8 | f indirection |
+| test.cpp:362:8:362:8 | test.cpp:362:8:362:8 | test.cpp:362:8:362:8 | f indirection |
+| test.cpp:363:10:363:14 | test.cpp:363:10:363:14 | test.cpp:363:10:363:14 | this indirection |
+| test.cpp:363:10:363:14 | test.cpp:363:10:363:14 | test.cpp:363:10:363:14 | this indirection |
+| test.cpp:364:5:364:14 | test.cpp:364:5:364:14 | test.cpp:364:5:364:14 | this indirection |
+| test.cpp:364:5:364:14 | test.cpp:364:5:364:14 | test.cpp:364:5:364:14 | this indirection |
+| test.cpp:365:10:365:14 | test.cpp:365:10:365:14 | test.cpp:365:10:365:14 | this indirection |
+| test.cpp:365:10:365:14 | test.cpp:365:10:365:14 | test.cpp:365:10:365:14 | this indirection |
+| test.cpp:368:8:368:23 | test.cpp:368:8:368:23 | test.cpp:368:8:368:23 | calledAfterTaint indirection |
+| test.cpp:368:8:368:23 | test.cpp:368:8:368:23 | test.cpp:368:8:368:23 | calledAfterTaint indirection |
+| test.cpp:368:8:368:23 | test.cpp:368:8:368:23 | test.cpp:368:8:368:23 | calledAfterTaint indirection |
+| test.cpp:369:10:369:14 | test.cpp:369:10:369:14 | test.cpp:369:10:369:14 | this indirection |
+| test.cpp:369:10:369:14 | test.cpp:369:10:369:14 | test.cpp:369:10:369:14 | this indirection |
+| test.cpp:372:8:372:19 | test.cpp:372:8:372:19 | test.cpp:372:8:372:19 | taintAndCall indirection |
+| test.cpp:372:8:372:19 | test.cpp:372:8:372:19 | test.cpp:372:8:372:19 | taintAndCall indirection |
+| test.cpp:372:8:372:19 | test.cpp:372:8:372:19 | test.cpp:372:8:372:19 | taintAndCall indirection |
+| test.cpp:373:5:373:9 | test.cpp:373:5:373:9 | test.cpp:373:5:373:9 | this indirection |
+| test.cpp:373:5:373:9 | test.cpp:373:5:373:9 | test.cpp:373:5:373:9 | this indirection |
+| test.cpp:374:5:374:20 | test.cpp:374:5:374:20 | test.cpp:374:5:374:20 | this indirection |
+| test.cpp:374:5:374:20 | test.cpp:374:5:374:20 | test.cpp:374:5:374:20 | this indirection |
+| test.cpp:375:10:375:14 | test.cpp:375:10:375:14 | test.cpp:375:10:375:14 | this indirection |
+| test.cpp:375:10:375:14 | test.cpp:375:10:375:14 | test.cpp:375:10:375:14 | this indirection |
+| test.cpp:441:26:441:26 | test.cpp:441:26:441:26 | test.cpp:441:26:441:26 | 1 |
+| test.cpp:449:25:449:25 | test.cpp:449:25:449:25 | test.cpp:449:25:449:25 | 2 |
+| test.cpp:526:3:526:4 | test.cpp:526:3:526:4 | test.cpp:526:3:526:4 | * ... |
+| test.cpp:526:4:526:4 | test.cpp:526:4:526:4 | test.cpp:526:4:526:4 | e |
+| test.cpp:526:4:526:4 | test.cpp:526:4:526:4 | test.cpp:526:4:526:4 | e |
+| test.cpp:526:8:526:9 | test.cpp:526:8:526:9 | test.cpp:526:8:526:9 | & ... |
+| test.cpp:565:8:565:8 | test.cpp:565:8:565:8 | test.cpp:565:8:565:8 | globalInt indirection |
+| test.cpp:571:8:571:23 | test.cpp:571:8:571:23 | test.cpp:571:8:571:23 | globalInt indirection |
+| test.cpp:575:8:575:19 | test.cpp:575:8:575:19 | test.cpp:575:8:575:19 | globalInt indirection |
