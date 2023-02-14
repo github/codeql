@@ -20,7 +20,7 @@ void test1()
 	char bigbuffer[20];
 	
 	memcpy(bigbuffer, smallbuffer, sizeof(smallbuffer)); // GOOD
-	memcpy(bigbuffer, smallbuffer, sizeof(bigbuffer)); // BAD: over-read [NOT DETECTED]
+	memcpy(bigbuffer, smallbuffer, sizeof(bigbuffer)); // BAD: over-read
 	memcpy(smallbuffer, bigbuffer, sizeof(smallbuffer)); // GOOD
 	memcpy(smallbuffer, bigbuffer, sizeof(bigbuffer)); // BAD: over-write
 }
