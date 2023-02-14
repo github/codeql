@@ -397,8 +397,7 @@ module Filters {
   /**
    * Holds if `n` is a post-update node for `self` in method `m`.
    */
-  predicate selfPostUpdate(DataFlow::PostUpdateNode n, Method m) {
-    n.getPreUpdateNode().asExpr() instanceof SelfVariableAccessCfgNode and
+  private predicate selfPostUpdate(DataFlow::PostUpdateNode n, Method m) {
     m = n.getPreUpdateNode().asExpr().getExpr().getEnclosingCallable() and
     n.getPreUpdateNode()
         .asExpr()
@@ -406,24 +405,6 @@ module Filters {
         .getExpr()
         .getVariable()
         .getDeclaringScope() = m
-  }
-
-  /**
-   * Holds if `n` is the syntactically last dataflow node in `m` that satisfies `selfPostUpdate`.
-   * In the example below, `n` is the post-update node for `bar`.
-   * ```rb
-   * def m
-   *   foo
-   *   bar
-   * end
-   * ```
-   */
-  predicate lastSelfPostUpdate(DataFlow::PostUpdateNode n, Method m) {
-    selfPostUpdate(n, m) and
-    not exists(DataFlow::PostUpdateNode n2 |
-      selfPostUpdate(n2, m) and
-      n.getPreUpdateNode().asExpr().getASuccessor+() = n2.getPreUpdateNode().asExpr()
-    )
   }
 
   /**
@@ -444,34 +425,31 @@ module Filters {
      * part of the callback chain.
      */
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(Method predMethod, Method succMethod |
-        next(predMethod, succMethod) and
-        (
-          // Flow from a post-update node of self  in `pred` to the self parameter of `succ`
-          //
-          // def a
-          //   foo() ---------+
-          //   @x = 1 ---+    |
-          // end         |    |
-          //             |    |
-          // def b  <----+----+
-          //  ...
-          //
-          selfPostUpdate(pred, predMethod) and
-          selfParameter(succ, succMethod)
-          or
-          // Flow from the self parameter of `pred` to the self parameter of `succ`
-          //
-          // def a ---+
-          //   ...    |
-          // end      |
-          //          |
-          // def b  <-+
-          //   ...
-          //
-          selfParameter(pred, predMethod) and
-          selfParameter(succ, succMethod)
-        )
+      exists(Method predMethod, Method succMethod | next(predMethod, succMethod) |
+        // Flow from a post-update node of self  in `pred` to the self parameter of `succ`
+        //
+        // def a
+        //   foo() ---------+
+        //   @x = 1 ---+    |
+        // end         |    |
+        //             |    |
+        // def b  <----+----+
+        //  ...
+        //
+        selfPostUpdate(pred, predMethod) and
+        selfParameter(succ, succMethod)
+        or
+        // Flow from the self parameter of `pred` to the self parameter of `succ`
+        //
+        // def a ---+
+        //   ...    |
+        // end      |
+        //          |
+        // def b  <-+
+        //   ...
+        //
+        selfParameter(pred, predMethod) and
+        selfParameter(succ, succMethod)
       )
     }
   }
