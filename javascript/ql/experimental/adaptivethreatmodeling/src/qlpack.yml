@@ -9,4 +9,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2023-02-14-06h43m09s.teal-market-l0pfm5q0.9dfc8385b00cd91028c65ea61791c9a24bafedc1da9180adb4d7b0be03a1ef06
