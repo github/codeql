@@ -44,6 +44,8 @@
 | lib/subLib4/factory.js:8:3:8:4 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
 | lib/subLib5/feature.js:2:3:2:4 | a* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding a*b |
 | lib/subLib5/main.js:2:3:2:4 | a* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding a*b |
+| lib/subLib5/subclass.js:5:6:5:7 | a* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding a*b |
+| lib/subLib6/index.js:2:4:2:5 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
 | lib/sublib/factory.js:13:14:13:15 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
 | polynomial-redos.js:7:24:7:26 | \\s+ | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding \\s+$ |
 | polynomial-redos.js:8:17:8:18 |  * | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding  *, * |

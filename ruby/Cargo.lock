@@ -507,9 +507,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.91"
+version = "1.0.93"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "877c235533714907a8c2464236f5c4b2a17262ef1bd71f38f35ea592c8da6883"
+checksum = "cad406b69c91885b5107daf2c29572f6c8cdb3c66826821e286c533490c0bc76"
 dependencies = [
  "itoa",
  "ryu",
@@ -666,7 +666,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-ruby"
 version = "0.20.0"
-source = "git+https://github.com/tree-sitter/tree-sitter-ruby.git?rev=7a1921bcfd90e3a04c1ad011059087aaf0168dd4#7a1921bcfd90e3a04c1ad011059087aaf0168dd4"
+source = "git+https://github.com/tree-sitter/tree-sitter-ruby.git?rev=206c7077164372c596ffa8eaadb9435c28941364#206c7077164372c596ffa8eaadb9435c28941364"
 dependencies = [
  "cc",
  "tree-sitter",

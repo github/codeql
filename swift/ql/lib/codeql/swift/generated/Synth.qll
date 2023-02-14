@@ -5,10 +5,15 @@ cached
 module Synth {
   cached
   newtype TElement =
+    TAvailabilityInfo(Raw::AvailabilityInfo id) { constructAvailabilityInfo(id) } or
     TComment(Raw::Comment id) { constructComment(id) } or
     TDbFile(Raw::DbFile id) { constructDbFile(id) } or
     TDbLocation(Raw::DbLocation id) { constructDbLocation(id) } or
     TDiagnostics(Raw::Diagnostics id) { constructDiagnostics(id) } or
+    TOtherAvailabilitySpec(Raw::OtherAvailabilitySpec id) { constructOtherAvailabilitySpec(id) } or
+    TPlatformVersionAvailabilitySpec(Raw::PlatformVersionAvailabilitySpec id) {
+      constructPlatformVersionAvailabilitySpec(id)
+    } or
     TUnknownFile() or
     TUnknownLocation() or
     TUnspecifiedElement(Raw::UnspecifiedElement id) { constructUnspecifiedElement(id) } or
@@ -304,8 +309,10 @@ module Synth {
     TWeakStorageType(Raw::WeakStorageType id) { constructWeakStorageType(id) }
 
   class TAstNode =
-    TCaseLabelItem or TConditionElement or TDecl or TExpr or TPattern or TStmt or TStmtCondition or
-        TTypeRepr;
+    TAvailabilityInfo or TAvailabilitySpec or TCaseLabelItem or TConditionElement or TDecl or
+        TExpr or TPattern or TStmt or TStmtCondition or TTypeRepr;
+
+  class TAvailabilitySpec = TOtherAvailabilitySpec or TPlatformVersionAvailabilitySpec;
 
   class TCallable = TAbstractClosureExpr or TAbstractFunctionDecl;
 
@@ -465,6 +472,9 @@ module Synth {
   class TUnarySyntaxSugarType = TArraySliceType or TOptionalType or TVariadicSequenceType;
 
   cached
+  TAvailabilityInfo convertAvailabilityInfoFromRaw(Raw::Element e) { result = TAvailabilityInfo(e) }
+
+  cached
   TComment convertCommentFromRaw(Raw::Element e) { result = TComment(e) }
 
   cached
@@ -475,6 +485,16 @@ module Synth {
 
   cached
   TDiagnostics convertDiagnosticsFromRaw(Raw::Element e) { result = TDiagnostics(e) }
+
+  cached
+  TOtherAvailabilitySpec convertOtherAvailabilitySpecFromRaw(Raw::Element e) {
+    result = TOtherAvailabilitySpec(e)
+  }
+
+  cached
+  TPlatformVersionAvailabilitySpec convertPlatformVersionAvailabilitySpecFromRaw(Raw::Element e) {
+    result = TPlatformVersionAvailabilitySpec(e)
+  }
 
   cached
   TUnknownFile convertUnknownFileFromRaw(Raw::Element e) { none() }
@@ -1351,6 +1371,10 @@ module Synth {
 
   cached
   TAstNode convertAstNodeFromRaw(Raw::Element e) {
+    result = convertAvailabilityInfoFromRaw(e)
+    or
+    result = convertAvailabilitySpecFromRaw(e)
+    or
     result = convertCaseLabelItemFromRaw(e)
     or
     result = convertConditionElementFromRaw(e)
@@ -1366,6 +1390,13 @@ module Synth {
     result = convertStmtConditionFromRaw(e)
     or
     result = convertTypeReprFromRaw(e)
+  }
+
+  cached
+  TAvailabilitySpec convertAvailabilitySpecFromRaw(Raw::Element e) {
+    result = convertOtherAvailabilitySpecFromRaw(e)
+    or
+    result = convertPlatformVersionAvailabilitySpecFromRaw(e)
   }
 
   cached
@@ -2101,6 +2132,9 @@ module Synth {
   }
 
   cached
+  Raw::Element convertAvailabilityInfoToRaw(TAvailabilityInfo e) { e = TAvailabilityInfo(result) }
+
+  cached
   Raw::Element convertCommentToRaw(TComment e) { e = TComment(result) }
 
   cached
@@ -2111,6 +2145,16 @@ module Synth {
 
   cached
   Raw::Element convertDiagnosticsToRaw(TDiagnostics e) { e = TDiagnostics(result) }
+
+  cached
+  Raw::Element convertOtherAvailabilitySpecToRaw(TOtherAvailabilitySpec e) {
+    e = TOtherAvailabilitySpec(result)
+  }
+
+  cached
+  Raw::Element convertPlatformVersionAvailabilitySpecToRaw(TPlatformVersionAvailabilitySpec e) {
+    e = TPlatformVersionAvailabilitySpec(result)
+  }
 
   cached
   Raw::Element convertUnknownFileToRaw(TUnknownFile e) { none() }
@@ -2985,6 +3029,10 @@ module Synth {
 
   cached
   Raw::Element convertAstNodeToRaw(TAstNode e) {
+    result = convertAvailabilityInfoToRaw(e)
+    or
+    result = convertAvailabilitySpecToRaw(e)
+    or
     result = convertCaseLabelItemToRaw(e)
     or
     result = convertConditionElementToRaw(e)
@@ -3000,6 +3048,13 @@ module Synth {
     result = convertStmtConditionToRaw(e)
     or
     result = convertTypeReprToRaw(e)
+  }
+
+  cached
+  Raw::Element convertAvailabilitySpecToRaw(TAvailabilitySpec e) {
+    result = convertOtherAvailabilitySpecToRaw(e)
+    or
+    result = convertPlatformVersionAvailabilitySpecToRaw(e)
   }
 
   cached

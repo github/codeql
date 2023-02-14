@@ -48,7 +48,7 @@ apply_lambda(MY_LAMBDA2, taint(9))
 
 class A
   def method1 x
-    sink x # $ hasValueFlow=10 $ hasValueFlow=11 $ hasValueFlow=12 $ hasValueFlow=13 $ hasValueFlow=26 $ hasValueFlow=28 $ hasValueFlow=30 $ SPURIOUS: hasValueFlow=27
+    sink x # $ hasValueFlow=10 $ hasValueFlow=11 $ hasValueFlow=12 $ hasValueFlow=13 $ hasValueFlow=26 $ hasValueFlow=28 $ hasValueFlow=30 $ hasValueFlow=33 $ SPURIOUS: hasValueFlow=27
   end
 
   def method2 x
@@ -75,6 +75,14 @@ class A
     [0, 1, 3].each do
       x.method1(y)
     end
+  end
+
+  def method5 x
+    self.method1 x
+  end
+
+  def call_method5
+    self.method5 (taint 33)
   end
 
   def self.singleton_method2 x
@@ -126,6 +134,10 @@ class B < A
 
   def call_method3 x
     self.method3(self, x)
+  end
+
+  def call_method5 x
+    self.method5 (taint 34)
   end
 
   def self.call_singleton_method2 x

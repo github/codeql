@@ -343,6 +343,183 @@ PatternMatchSpan.cs:
 #   16|         2: [DefaultCase] default:
 #   16|         3: [BlockStmt] {...}
 #   16|           0: [BreakStmt] break;
+RelaxedShift.cs:
+#    1| [Interface] IShiftOperators<,,>
+#-----|   1: (Type parameters)
+#    1|     0: [TypeParameter] TSelf
+#    1|     1: [TypeParameter] TOther
+#    1|     2: [TypeParameter] TReturn
+#    3|   4: [LeftShiftOperator] <<
+#    3|     -1: [TypeMention] TReturn
+#-----|     2: (Parameters)
+#    3|       0: [Parameter] value
+#    3|         -1: [TypeMention] TSelf
+#    3|       1: [Parameter] shiftAmount
+#    3|         -1: [TypeMention] TOther
+#    5|   5: [RightShiftOperator] >>
+#    5|     -1: [TypeMention] TReturn
+#-----|     2: (Parameters)
+#    5|       0: [Parameter] value
+#    5|         -1: [TypeMention] TSelf
+#    5|       1: [Parameter] shiftAmount
+#    5|         -1: [TypeMention] TOther
+#    7|   6: [UnsignedRightShiftOperator] >>>
+#    7|     -1: [TypeMention] TReturn
+#-----|     2: (Parameters)
+#    7|       0: [Parameter] value
+#    7|         -1: [TypeMention] TSelf
+#    7|       1: [Parameter] shiftAmount
+#    7|         -1: [TypeMention] TOther
+#   10| [Class] Number
+#-----|   3: (Base types)
+#   12|   5: [LeftShiftOperator] <<
+#   12|     -1: [TypeMention] Number
+#-----|     2: (Parameters)
+#   12|       0: [Parameter] value
+#   12|         -1: [TypeMention] Number
+#   12|       1: [Parameter] shiftAmount
+#   12|         -1: [TypeMention] string
+#   12|     4: [ParameterAccess] access to parameter value
+#   14|   6: [RightShiftOperator] >>
+#   14|     -1: [TypeMention] Number
+#-----|     2: (Parameters)
+#   14|       0: [Parameter] value
+#   14|         -1: [TypeMention] Number
+#   14|       1: [Parameter] shiftAmount
+#   14|         -1: [TypeMention] string
+#   14|     4: [ParameterAccess] access to parameter value
+#   16|   7: [UnsignedRightShiftOperator] >>>
+#   16|     -1: [TypeMention] Number
+#-----|     2: (Parameters)
+#   16|       0: [Parameter] value
+#   16|         -1: [TypeMention] Number
+#   16|       1: [Parameter] shiftAmount
+#   16|         -1: [TypeMention] string
+#   16|     4: [ParameterAccess] access to parameter value
+#   19| [Class] TestRelaxedShift
+#   21|   5: [Method] M1
+#   21|     -1: [TypeMention] Void
+#   22|     4: [BlockStmt] {...}
+#   23|       0: [LocalVariableDeclStmt] ... ...;
+#   23|         0: [LocalVariableDeclAndInitExpr] Number n11 = ...
+#   23|           -1: [TypeMention] Number
+#   23|           0: [LocalVariableAccess] access to local variable n11
+#   23|           1: [ObjectCreation] object creation of type Number
+#   23|             0: [TypeMention] Number
+#   24|       1: [LocalVariableDeclStmt] ... ...;
+#   24|         0: [LocalVariableDeclAndInitExpr] Number n12 = ...
+#   24|           -1: [TypeMention] Number
+#   24|           0: [LocalVariableAccess] access to local variable n12
+#   24|           1: [OperatorCall] call to operator <<
+#   24|             0: [LocalVariableAccess] access to local variable n11
+#   24|             1: [StringLiteralUtf16] "1"
+#   26|       2: [LocalVariableDeclStmt] ... ...;
+#   26|         0: [LocalVariableDeclAndInitExpr] Number n21 = ...
+#   26|           -1: [TypeMention] Number
+#   26|           0: [LocalVariableAccess] access to local variable n21
+#   26|           1: [ObjectCreation] object creation of type Number
+#   26|             0: [TypeMention] Number
+#   27|       3: [LocalVariableDeclStmt] ... ...;
+#   27|         0: [LocalVariableDeclAndInitExpr] Number n22 = ...
+#   27|           -1: [TypeMention] Number
+#   27|           0: [LocalVariableAccess] access to local variable n22
+#   27|           1: [OperatorCall] call to operator >>
+#   27|             0: [LocalVariableAccess] access to local variable n21
+#   27|             1: [StringLiteralUtf16] "2"
+#   29|       4: [LocalVariableDeclStmt] ... ...;
+#   29|         0: [LocalVariableDeclAndInitExpr] Number n31 = ...
+#   29|           -1: [TypeMention] Number
+#   29|           0: [LocalVariableAccess] access to local variable n31
+#   29|           1: [ObjectCreation] object creation of type Number
+#   29|             0: [TypeMention] Number
+#   30|       5: [LocalVariableDeclStmt] ... ...;
+#   30|         0: [LocalVariableDeclAndInitExpr] Number n32 = ...
+#   30|           -1: [TypeMention] Number
+#   30|           0: [LocalVariableAccess] access to local variable n32
+#   30|           1: [OperatorCall] call to operator >>>
+#   30|             0: [LocalVariableAccess] access to local variable n31
+#   30|             1: [StringLiteralUtf16] "3"
+Scoped.cs:
+#    1| [Struct] S1
+#    2| [Struct] S2
+#    7| [Class] ScopedModifierTest
+#    9|   5: [Method] M1
+#    9|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#    9|       0: [Parameter] x1
+#    9|         -1: [TypeMention] int
+#    9|       1: [Parameter] y1
+#    9|         -1: [TypeMention] int
+#   10|     4: [BlockStmt] {...}
+#   13|       0: [ReturnStmt] return ...;
+#   13|         0: [RefExpr] ref ...
+#   13|           0: [ParameterAccess] access to parameter y1
+#   16|   6: [Method] M2
+#   16|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   16|       0: [Parameter] x2
+#   16|         -1: [TypeMention] int
+#   16|       1: [Parameter] y2
+#   16|         -1: [TypeMention] int
+#   17|     4: [BlockStmt] {...}
+#   18|       0: [ExprStmt] ...;
+#   18|         0: [AssignExpr] ... = ...
+#   18|           0: [ParameterAccess] access to parameter x2
+#   18|           1: [IntLiteral] 0
+#   21|       1: [ReturnStmt] return ...;
+#   21|         0: [RefExpr] ref ...
+#   21|           0: [ParameterAccess] access to parameter y2
+#   24|   7: [Method] M3
+#   24|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   24|       0: [Parameter] x3
+#   24|         -1: [TypeMention] int
+#   25|     4: [BlockStmt] {...}
+#   27|       0: [ReturnStmt] return ...;
+#   27|         0: [ParameterAccess] access to parameter x3
+#   30|   8: [Method] M4
+#   30|     -1: [TypeMention] S1
+#-----|     2: (Parameters)
+#   30|       0: [Parameter] x4
+#   30|         -1: [TypeMention] S1
+#   31|     4: [BlockStmt] {...}
+#   33|       0: [ReturnStmt] return ...;
+#   33|         0: [ParameterAccess] access to parameter x4
+#   36|   9: [Method] M5
+#   36|     -1: [TypeMention] S2
+#-----|     2: (Parameters)
+#   36|       0: [Parameter] x5
+#   36|         -1: [TypeMention] S2
+#   37|     4: [BlockStmt] {...}
+#   40|       0: [ReturnStmt] return ...;
+#   40|         0: [ObjectCreation] object creation of type S2
+#   40|           0: [TypeMention] S2
+#   43|   10: [Method] M6
+#   43|     -1: [TypeMention] S2
+#-----|     2: (Parameters)
+#   43|       0: [Parameter] x6
+#   43|         -1: [TypeMention] S2
+#   44|     4: [BlockStmt] {...}
+#   47|       0: [ReturnStmt] return ...;
+#   47|         0: [ObjectCreation] object creation of type S2
+#   47|           0: [TypeMention] S2
+#   50|   11: [Method] Locals
+#   50|     -1: [TypeMention] S2
+#   51|     4: [BlockStmt] {...}
+#   52|       0: [LocalVariableDeclStmt] ... ...;
+#   52|         0: [LocalVariableDeclAndInitExpr] S2 x7 = ...
+#   52|           -1: [TypeMention] null
+#   52|           0: [LocalVariableAccess] access to local variable x7
+#   52|           1: [ObjectCreation] object creation of type S2
+#   52|             0: [TypeMention] S2
+#   55|       1: [LocalVariableDeclStmt] ... ...;
+#   55|         0: [LocalVariableDeclAndInitExpr] S2 y7 = ...
+#   55|           -1: [TypeMention] S2
+#   55|           0: [LocalVariableAccess] access to local variable y7
+#   55|           1: [ObjectCreation] object creation of type S2
+#   55|             0: [TypeMention] S2
+#   56|       2: [ReturnStmt] return ...;
+#   56|         0: [LocalVariableAccess] access to local variable y7
 SignAnalysis.cs:
 #    1| [Class] MySignAnalysis
 #    4|   5: [Method] UnsignedRightShiftSign
@@ -694,6 +871,33 @@ Struct.cs:
 #   12|       -1: [TypeMention] object
 #   13|     11: [Field] MyReadonlyString
 #   13|       -1: [TypeMention] string
+StructDefault.cs:
+#    1| [Class] MyEmptyClass
+#    2| [Struct] StructDefaultValue
+#    4|   5: [Field] X
+#    4|     -1: [TypeMention] int
+#    5|   6: [Field] Y
+#    5|     -1: [TypeMention] int
+#    6|   7: [Field] Z
+#    6|     -1: [TypeMention] MyEmptyClass
+#    8|   8: [InstanceConstructor] StructDefaultValue
+#-----|     2: (Parameters)
+#    8|       0: [Parameter] x
+#    8|         -1: [TypeMention] int
+#    8|       1: [Parameter] inity
+#    8|         -1: [TypeMention] bool
+#    9|     4: [BlockStmt] {...}
+#   10|       0: [ExprStmt] ...;
+#   10|         0: [AssignExpr] ... = ...
+#   10|           0: [FieldAccess] access to field X
+#   10|           1: [ParameterAccess] access to parameter x
+#   11|       1: [IfStmt] if (...) ...
+#   11|         0: [ParameterAccess] access to parameter inity
+#   11|         1: [BlockStmt] {...}
+#   11|           0: [ExprStmt] ...;
+#   11|             0: [AssignExpr] ... = ...
+#   11|               0: [FieldAccess] access to field Y
+#   11|               1: [IntLiteral] 1
 cil/class1.cs:
 #    4| [Class] Class1
 #    6|   5: [Method] Main

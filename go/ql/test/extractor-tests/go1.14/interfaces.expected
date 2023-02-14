@@ -1,17 +1,17 @@
-| A | A | tst.go:4:2:4:2 | m |
-| AA | AA | tst.go:4:2:4:2 | m |
-| AB | AB | tst.go:4:2:4:2 | m |
-| AB | AB | tst.go:9:2:9:2 | n |
-| ABC | ABC | tst.go:4:2:4:2 | m |
-| ABC | ABC | tst.go:9:2:9:2 | n |
-| ABC | ABC | tst.go:14:2:14:2 | o |
-| AC | AC | tst.go:4:2:4:2 | m |
-| AC | AC | tst.go:13:2:13:2 | n |
-| AC | AC | tst.go:14:2:14:2 | o |
-| B | B | tst.go:8:2:8:2 | m |
-| B | B | tst.go:9:2:9:2 | n |
-| BC | BC | tst.go:8:2:8:2 | m |
-| BC | BC | tst.go:9:2:9:2 | n |
-| BC | BC | tst.go:14:2:14:2 | o |
-| C | C | tst.go:13:2:13:2 | n |
-| C | C | tst.go:14:2:14:2 | o |
+| tst.go:3:6:3:6 | A | A | tst.go:4:2:4:2 | m |
+| tst.go:7:6:7:6 | B | B | tst.go:8:2:8:2 | m |
+| tst.go:7:6:7:6 | B | B | tst.go:9:2:9:2 | n |
+| tst.go:12:6:12:6 | C | C | tst.go:13:2:13:2 | n |
+| tst.go:12:6:12:6 | C | C | tst.go:14:2:14:2 | o |
+| tst.go:17:6:17:7 | AA | AA | tst.go:4:2:4:2 | m |
+| tst.go:22:6:22:7 | AB | AB | tst.go:4:2:4:2 | m |
+| tst.go:22:6:22:7 | AB | AB | tst.go:9:2:9:2 | n |
+| tst.go:27:6:27:7 | BC | BC | tst.go:8:2:8:2 | m |
+| tst.go:27:6:27:7 | BC | BC | tst.go:9:2:9:2 | n |
+| tst.go:27:6:27:7 | BC | BC | tst.go:14:2:14:2 | o |
+| tst.go:32:6:32:7 | AC | AC | tst.go:4:2:4:2 | m |
+| tst.go:32:6:32:7 | AC | AC | tst.go:13:2:13:2 | n |
+| tst.go:32:6:32:7 | AC | AC | tst.go:14:2:14:2 | o |
+| tst.go:37:6:37:8 | ABC | ABC | tst.go:4:2:4:2 | m |
+| tst.go:37:6:37:8 | ABC | ABC | tst.go:9:2:9:2 | n |
+| tst.go:37:6:37:8 | ABC | ABC | tst.go:14:2:14:2 | o |

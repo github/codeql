@@ -30,7 +30,9 @@ class SwiftDispatcher {
                                const swift::Pattern*,
                                const swift::TypeRepr*,
                                const swift::TypeBase*,
-                               const swift::CapturedValue*>;
+                               const swift::CapturedValue*,
+                               const swift::PoundAvailableInfo*,
+                               const swift::AvailabilitySpec*>;
 
   template <typename E>
   static constexpr bool IsStorable = std::is_constructible_v<Store::Handle, const E&>;
@@ -227,6 +229,10 @@ class SwiftDispatcher {
     attachLocation(clause->Loc, clause->Loc, locatableLabel);
   }
 
+  void attachLocation(swift::AvailabilitySpec* spec, TrapLabel<LocatableTag> locatableLabel) {
+    attachLocation(spec->getSourceRange().Start, spec->getSourceRange().End, locatableLabel);
+  }
+
   // Emits a Location TRAP entry and attaches it to a `Locatable` trap label for a given `SourceLoc`
   void attachLocation(swift::SourceLoc loc, TrapLabel<LocatableTag> locatableLabel) {
     attachLocation(loc, loc, locatableLabel);
@@ -364,6 +370,8 @@ class SwiftDispatcher {
   virtual void visit(const swift::Stmt* stmt) = 0;
   virtual void visit(const swift::StmtCondition* cond) = 0;
   virtual void visit(const swift::StmtConditionElement* cond) = 0;
+  virtual void visit(const swift::PoundAvailableInfo* availability) = 0;
+  virtual void visit(const swift::AvailabilitySpec* spec) = 0;
   virtual void visit(const swift::CaseLabelItem* item) = 0;
   virtual void visit(const swift::Expr* expr) = 0;
   virtual void visit(const swift::Pattern* pattern) = 0;

@@ -45,7 +45,7 @@ class InsecureCertificateFlag extends FlagKind {
 
   bindingset[result]
   override string getAFlagName() {
-    result.toLowerCase().matches("%" + ["selfcert", "selfsign", "validat", "verif", "trust"] + "%")
+    result.regexpMatch("(?i).*(selfcert|selfsign|validat|verif|trust).*")
   }
 }
 
