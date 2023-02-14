@@ -1496,6 +1496,7 @@ private module Cached {
     )
   }
 
+  pragma[nomagic]
   private predicate outNodeHasCallAndIndirection(
     IndirectReturnOutNode outNode, CallInstruction call, int indirectionIndex
   ) {

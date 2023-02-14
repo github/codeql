@@ -199,6 +199,7 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
   )
 }
 
+pragma[nomagic]
 private predicate outNodeHasCallAndIndirection(
   IndirectReturnOutNode outNode, CallInstruction call, int indirectionIndex
 ) {
