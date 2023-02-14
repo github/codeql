@@ -4,7 +4,7 @@ import inflection
 import typing
 import types
 import pathlib
-import importlib
+import importlib.util
 from dataclasses import dataclass
 from toposort import toposort_flatten
 
