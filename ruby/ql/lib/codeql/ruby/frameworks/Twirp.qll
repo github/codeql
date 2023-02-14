@@ -19,32 +19,30 @@ module Twirp {
   class ServiceInstantiation extends DataFlow::CallNode {
     ServiceInstantiation() {
       this =
-        API::getTopLevelMember("Twirp").getMember("Service").getASubclass*().getAnInstantiation()
+        API::getTopLevelMember("Twirp").getMember("Service").getASubclass().getAnInstantiation()
     }
 
     /**
      * Gets a local source node for the Service instantiation argument (the service handler).
      */
-    DataFlow::LocalSourceNode getHandlerSource() { result = this.getArgument(0).getALocalSource() }
+    private DataFlow::LocalSourceNode getHandlerSource() {
+      result = this.getArgument(0).getALocalSource()
+    }
 
     /**
      * Gets the API::Node for the service handler's class.
      */
-    API::Node getHandlerClassApiNode() { result.getAnInstantiation() = this.getHandlerSource() }
-
-    /**
-     * Gets the local source node for the service handler's class.
-     */
-    DataFlow::LocalSourceNode getHandlerClassDataFlowNode() {
-      result = this.getHandlerClassApiNode().asSource()
+    private API::Node getAHandlerClassApiNode() {
+      result.getAnInstantiation() = this.getHandlerSource()
     }
 
     /**
      * Gets the AST module for the service handler's class.
      */
-    Ast::Module getHandlerClassAstNode() {
+    private Ast::Module getAHandlerClassAstNode() {
       result =
-        this.getHandlerClassDataFlowNode()
+        this.getAHandlerClassApiNode()
+            .asSource()
             .asExpr()
             .(CfgNodes::ExprNodes::ConstantReadAccessCfgNode)
             .getExpr()
@@ -54,7 +52,9 @@ module Twirp {
     /**
      * Gets a handler's method.
      */
-    Ast::Method getHandlerMethod() { result = this.getHandlerClassAstNode().getAnInstanceMethod() }
+    Ast::Method getAHandlerMethod() {
+      result = this.getAHandlerClassAstNode().getAnInstanceMethod()
+    }
   }
 
   /**
@@ -62,8 +62,7 @@ module Twirp {
    */
   class ClientInstantiation extends DataFlow::CallNode {
     ClientInstantiation() {
-      this =
-        API::getTopLevelMember("Twirp").getMember("Client").getASubclass*().getAnInstantiation()
+      this = API::getTopLevelMember("Twirp").getMember("Client").getASubclass().getAnInstantiation()
     }
   }
 
@@ -76,7 +75,7 @@ module Twirp {
   class UnmarshaledParameter extends Http::Server::RequestInputAccess::Range,
     DataFlow::ParameterNode {
     UnmarshaledParameter() {
-      exists(ServiceInstantiation i | i.getHandlerMethod().getParameter(0) = this.asParameter())
+      exists(ServiceInstantiation i | i.getAHandlerMethod().getParameter(0) = this.asParameter())
     }
 
     override string getSourceType() { result = "Twirp Unmarhaled Parameter" }

@@ -1,10 +1,8 @@
 private import codeql.ruby.frameworks.Twirp
 private import codeql.ruby.DataFlow
 
-query predicate sourceTest(DataFlow::Node s) { s instanceof Twirp::UnmarshaledParameter }
+query predicate sourceTest(Twirp::UnmarshaledParameter source) { any() }
 
-query predicate ssrfSinkTest(DataFlow::Node n) { n instanceof Twirp::ServiceUrlAsSsrfSink }
+query predicate ssrfSinkTest(Twirp::ServiceUrlAsSsrfSink sink) { any() }
 
-query predicate serviceInstantiationTest(DataFlow::Node n) {
-  n instanceof Twirp::ServiceInstantiation
-}
+query predicate serviceInstantiationTest(Twirp::ServiceInstantiation si) { any() }
