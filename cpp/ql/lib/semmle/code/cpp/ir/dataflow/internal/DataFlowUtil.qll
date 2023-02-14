@@ -1631,6 +1631,19 @@ predicate localExprFlow(Expr e1, Expr e2) {
   localExprFlowPlus(e1, e2)
 }
 
+bindingset[f]
+pragma[inline_late]
+private int getFieldSize(Field f) { result = f.getType().getSize() }
+
+/**
+ * Gets a field in the union `u` whose size
+ * is `bytes` number of bytes.
+ */
+private Field getAFieldWithSize(Union u, int bytes) {
+  result = u.getAField() and
+  bytes = getFieldSize(result)
+}
+
 cached
 private newtype TContent =
   TFieldContent(Field f, int indirectionIndex) {
@@ -1638,11 +1651,15 @@ private newtype TContent =
     // Reads and writes of union fields are tracked using `UnionContent`.
     not f.getDeclaringType() instanceof Union
   } or
-  TUnionContent(Union u, int indirectionIndex) {
-    // We key `UnionContent` by the union instead of its fields since a write to one
-    // field can be read by any read of the union's fields.
-    indirectionIndex =
-      [1 .. max(Ssa::getMaxIndirectionsForType(u.getAField().getUnspecifiedType()))]
+  TUnionContent(Union u, int bytes, int indirectionIndex) {
+    exists(Field f |
+      f = u.getAField() and
+      bytes = getFieldSize(f) and
+      // We key `UnionContent` by the union instead of its fields since a write to one
+      // field can be read by any read of the union's fields.
+      indirectionIndex =
+        [1 .. max(Ssa::getMaxIndirectionsForType(getAFieldWithSize(u, bytes).getUnspecifiedType()))]
+    )
   }
 
 /**
@@ -1684,8 +1701,9 @@ class FieldContent extends Content, TFieldContent {
 class UnionContent extends Content, TUnionContent {
   Union u;
   int indirectionIndex;
+  int bytes;
 
-  UnionContent() { this = TUnionContent(u, indirectionIndex) }
+  UnionContent() { this = TUnionContent(u, bytes, indirectionIndex) }
 
   override string toString() {
     indirectionIndex = 1 and result = u.toString()
@@ -1694,7 +1712,7 @@ class UnionContent extends Content, TUnionContent {
   }
 
   /** Gets a field of the underlying union of this `UnionContent`, if any. */
-  Field getAField() { result = u.getAField() }
+  Field getAField() { result = u.getAField() and getFieldSize(result) = bytes }
 
   /** Gets the underlying union of this `UnionContent`. */
   Union getUnion() { result = u }
