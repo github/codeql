@@ -143,10 +143,13 @@ class Node extends TIRDataFlowNode {
   /** Gets the function to which this node belongs, if any. */
   Declaration getFunction() { none() } // overridden in subclasses
 
+  /** Holds if this node represents a glvalue. */
+  predicate isGLValue() { none() }
+
   /**
    * Gets the type of this node.
    *
-   * If `asInstruction().isGLValue()` holds, then the type of this node
+   * If `isGLValue()` holds, then the type of this node
    * should be thought of as "pointer to `getType()`".
    */
   DataFlowType getType() { none() } // overridden in subclasses
@@ -394,6 +397,8 @@ private class Node0 extends Node, TNode0 {
     // does not use `Instruction.toString` because that's expensive to compute.
     result = node.toStringImpl()
   }
+
+  override predicate isGLValue() { node.isGLValue() }
 }
 
 /**
@@ -497,7 +502,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   override Declaration getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
 
-  override DataFlowType getType() { result = this.getAnInput().getType() }
+  override DataFlowType getType() { result = this.getAnInput().getType().getUnspecifiedType() }
 
   final override Location getLocationImpl() { result = phi.getBasicBlock().getLocation() }
 
@@ -591,10 +596,14 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
 
   override Declaration getFunction() { result = globalDef.getIRFunction().getFunction() }
 
+  final override predicate isGLValue() { globalDef.getIndirectionIndex() = 0 }
+
   override DataFlowType getType() {
-    exists(int indirectionIndex |
-      indirectionIndex = globalDef.getIndirectionIndex() and
-      result = getTypeImpl(globalDef.getUnspecifiedType(), indirectionIndex)
+    exists(DataFlowType type |
+      type = globalDef.getUnspecifiedType() and
+      if this.isGLValue()
+      then result = type
+      else result = getTypeImpl(type, globalDef.getIndirectionIndex() - 1)
     )
   }
 
@@ -843,8 +852,11 @@ class RawIndirectOperand extends Node, TRawIndirectOperand {
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
   override DataFlowType getType() {
-    exists(int sub | if operand.isGLValue() then sub = 1 else sub = 0 |
-      result = getTypeImpl(operand.getType().getUnspecifiedType(), indirectionIndex - sub)
+    exists(int sub, DataFlowType type, boolean isGLValue |
+      type = getOperandType(operand, isGLValue) and
+      if isGLValue = true then sub = 1 else sub = 0
+    |
+      result = getTypeImpl(type.getUnspecifiedType(), indirectionIndex - sub)
     )
   }
 
@@ -938,8 +950,11 @@ class RawIndirectInstruction extends Node, TRawIndirectInstruction {
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
   override DataFlowType getType() {
-    exists(int sub | if instr.isGLValue() then sub = 1 else sub = 0 |
-      result = getTypeImpl(instr.getResultType().getUnspecifiedType(), indirectionIndex - sub)
+    exists(int sub, DataFlowType type, boolean isGLValue |
+      type = getInstructionType(instr, isGLValue) and
+      if isGLValue = true then sub = 1 else sub = 0
+    |
+      result = getTypeImpl(type.getUnspecifiedType(), indirectionIndex - sub)
     )
   }
 
