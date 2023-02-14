@@ -40,7 +40,7 @@ module RegExpInjection {
    * expression injection.
    */
   class ArgvAsSource extends Source instanceof IndirectCommandInjection::Source {
-    override string describe() { result = "command-line argument" }
+    override string describe() { result = IndirectCommandInjection::Source.super.describe() }
   }
 
   /**
