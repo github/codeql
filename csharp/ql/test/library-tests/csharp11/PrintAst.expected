@@ -1,3 +1,221 @@
+CheckedOperators.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [Class] Number
+#    5|     4: [Property] Value
+#    5|       -1: [TypeMention] int
+#    5|       3: [Getter] get_Value
+#    7|     5: [InstanceConstructor] Number
+#-----|       2: (Parameters)
+#    7|         0: [Parameter] n
+#    7|           -1: [TypeMention] int
+#    7|       4: [AssignExpr] ... = ...
+#    7|         0: [PropertyCall] access to property Value
+#    7|           -1: [ThisAccess] this access
+#    7|         1: [ParameterAccess] access to parameter n
+#    9|     6: [CheckedAddOperator] checked +
+#    9|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#    9|         0: [Parameter] n1
+#    9|           -1: [TypeMention] Number
+#    9|         1: [Parameter] n2
+#    9|           -1: [TypeMention] Number
+#   10|       4: [ObjectCreation] object creation of type Number
+#   10|         -1: [TypeMention] Number
+#   10|         0: [CheckedExpr] checked (...)
+#   10|           0: [AddExpr] ... + ...
+#   10|             0: [PropertyCall] access to property Value
+#   10|               -1: [ParameterAccess] access to parameter n1
+#   10|             1: [PropertyCall] access to property Value
+#   10|               -1: [ParameterAccess] access to parameter n2
+#   12|     7: [AddOperator] +
+#   12|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   12|         0: [Parameter] n1
+#   12|           -1: [TypeMention] Number
+#   12|         1: [Parameter] n2
+#   12|           -1: [TypeMention] Number
+#   13|       4: [ObjectCreation] object creation of type Number
+#   13|         -1: [TypeMention] Number
+#   13|         0: [AddExpr] ... + ...
+#   13|           0: [PropertyCall] access to property Value
+#   13|             -1: [ParameterAccess] access to parameter n1
+#   13|           1: [PropertyCall] access to property Value
+#   13|             -1: [ParameterAccess] access to parameter n2
+#   15|     8: [CheckedSubOperator] checked -
+#   15|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   15|         0: [Parameter] n1
+#   15|           -1: [TypeMention] Number
+#   15|         1: [Parameter] n2
+#   15|           -1: [TypeMention] Number
+#   16|       4: [ObjectCreation] object creation of type Number
+#   16|         -1: [TypeMention] Number
+#   16|         0: [CheckedExpr] checked (...)
+#   16|           0: [SubExpr] ... - ...
+#   16|             0: [PropertyCall] access to property Value
+#   16|               -1: [ParameterAccess] access to parameter n1
+#   16|             1: [PropertyCall] access to property Value
+#   16|               -1: [ParameterAccess] access to parameter n2
+#   18|     9: [SubOperator] -
+#   18|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   18|         0: [Parameter] n1
+#   18|           -1: [TypeMention] Number
+#   18|         1: [Parameter] n2
+#   18|           -1: [TypeMention] Number
+#   19|       4: [ObjectCreation] object creation of type Number
+#   19|         -1: [TypeMention] Number
+#   19|         0: [SubExpr] ... - ...
+#   19|           0: [PropertyCall] access to property Value
+#   19|             -1: [ParameterAccess] access to parameter n1
+#   19|           1: [PropertyCall] access to property Value
+#   19|             -1: [ParameterAccess] access to parameter n2
+#   21|     10: [CheckedMulOperator] checked *
+#   21|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   21|         0: [Parameter] n1
+#   21|           -1: [TypeMention] Number
+#   21|         1: [Parameter] n2
+#   21|           -1: [TypeMention] Number
+#   22|       4: [ObjectCreation] object creation of type Number
+#   22|         -1: [TypeMention] Number
+#   22|         0: [CheckedExpr] checked (...)
+#   22|           0: [MulExpr] ... * ...
+#   22|             0: [PropertyCall] access to property Value
+#   22|               -1: [ParameterAccess] access to parameter n1
+#   22|             1: [PropertyCall] access to property Value
+#   22|               -1: [ParameterAccess] access to parameter n2
+#   24|     11: [MulOperator] *
+#   24|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   24|         0: [Parameter] n1
+#   24|           -1: [TypeMention] Number
+#   24|         1: [Parameter] n2
+#   24|           -1: [TypeMention] Number
+#   25|       4: [ObjectCreation] object creation of type Number
+#   25|         -1: [TypeMention] Number
+#   25|         0: [MulExpr] ... * ...
+#   25|           0: [PropertyCall] access to property Value
+#   25|             -1: [ParameterAccess] access to parameter n1
+#   25|           1: [PropertyCall] access to property Value
+#   25|             -1: [ParameterAccess] access to parameter n2
+#   27|     12: [CheckedDivOperator] checked /
+#   27|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   27|         0: [Parameter] n1
+#   27|           -1: [TypeMention] Number
+#   27|         1: [Parameter] n2
+#   27|           -1: [TypeMention] Number
+#   28|       4: [ObjectCreation] object creation of type Number
+#   28|         -1: [TypeMention] Number
+#   28|         0: [CheckedExpr] checked (...)
+#   28|           0: [DivExpr] ... / ...
+#   28|             0: [PropertyCall] access to property Value
+#   28|               -1: [ParameterAccess] access to parameter n1
+#   28|             1: [PropertyCall] access to property Value
+#   28|               -1: [ParameterAccess] access to parameter n2
+#   30|     13: [DivOperator] /
+#   30|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   30|         0: [Parameter] n1
+#   30|           -1: [TypeMention] Number
+#   30|         1: [Parameter] n2
+#   30|           -1: [TypeMention] Number
+#   31|       4: [ObjectCreation] object creation of type Number
+#   31|         -1: [TypeMention] Number
+#   31|         0: [DivExpr] ... / ...
+#   31|           0: [PropertyCall] access to property Value
+#   31|             -1: [ParameterAccess] access to parameter n1
+#   31|           1: [PropertyCall] access to property Value
+#   31|             -1: [ParameterAccess] access to parameter n2
+#   33|     14: [CheckedMinusOperator] checked -
+#   33|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   33|         0: [Parameter] n
+#   33|           -1: [TypeMention] Number
+#   34|       4: [ObjectCreation] object creation of type Number
+#   34|         -1: [TypeMention] Number
+#   34|         0: [CheckedExpr] checked (...)
+#   34|           0: [UnaryMinusExpr] -...
+#   34|             0: [PropertyCall] access to property Value
+#   34|               -1: [ParameterAccess] access to parameter n
+#   36|     15: [MinusOperator] -
+#   36|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   36|         0: [Parameter] n
+#   36|           -1: [TypeMention] Number
+#   37|       4: [ObjectCreation] object creation of type Number
+#   37|         -1: [TypeMention] Number
+#   37|         0: [UnaryMinusExpr] -...
+#   37|           0: [PropertyCall] access to property Value
+#   37|             -1: [ParameterAccess] access to parameter n
+#   39|     16: [CheckedIncrementOperator] checked ++
+#   39|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   39|         0: [Parameter] n
+#   39|           -1: [TypeMention] Number
+#   40|       4: [ObjectCreation] object creation of type Number
+#   40|         -1: [TypeMention] Number
+#   40|         0: [CheckedExpr] checked (...)
+#   40|           0: [AddExpr] ... + ...
+#   40|             0: [PropertyCall] access to property Value
+#   40|               -1: [ParameterAccess] access to parameter n
+#   40|             1: [IntLiteral] 1
+#   42|     17: [IncrementOperator] ++
+#   42|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   42|         0: [Parameter] n
+#   42|           -1: [TypeMention] Number
+#   43|       4: [ObjectCreation] object creation of type Number
+#   43|         -1: [TypeMention] Number
+#   43|         0: [AddExpr] ... + ...
+#   43|           0: [PropertyCall] access to property Value
+#   43|             -1: [ParameterAccess] access to parameter n
+#   43|           1: [IntLiteral] 1
+#   45|     18: [CheckedDecrementOperator] checked --
+#   45|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   45|         0: [Parameter] n
+#   45|           -1: [TypeMention] Number
+#   46|       4: [ObjectCreation] object creation of type Number
+#   46|         -1: [TypeMention] Number
+#   46|         0: [CheckedExpr] checked (...)
+#   46|           0: [SubExpr] ... - ...
+#   46|             0: [PropertyCall] access to property Value
+#   46|               -1: [ParameterAccess] access to parameter n
+#   46|             1: [IntLiteral] 1
+#   48|     19: [DecrementOperator] --
+#   48|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   48|         0: [Parameter] n
+#   48|           -1: [TypeMention] Number
+#   49|       4: [ObjectCreation] object creation of type Number
+#   49|         -1: [TypeMention] Number
+#   49|         0: [SubExpr] ... - ...
+#   49|           0: [PropertyCall] access to property Value
+#   49|             -1: [ParameterAccess] access to parameter n
+#   49|           1: [IntLiteral] 1
+#   51|     20: [ExplicitConversionOperator] explicit conversion
+#   51|       -1: [TypeMention] short
+#-----|       2: (Parameters)
+#   51|         0: [Parameter] n
+#   51|           -1: [TypeMention] Number
+#   52|       4: [CastExpr] (...) ...
+#   52|         0: [TypeAccess] access to type Int16
+#   52|           0: [TypeMention] short
+#   52|         1: [PropertyCall] access to property Value
+#   52|           -1: [ParameterAccess] access to parameter n
+#   54|     21: [CheckedExplicitConversionOperator] checked explicit conversion
+#   54|       -1: [TypeMention] short
+#-----|       2: (Parameters)
+#   54|         0: [Parameter] n
+#   54|           -1: [TypeMention] Number
+#   55|       4: [CheckedExpr] checked (...)
+#   55|         0: [CastExpr] (...) ...
+#   55|           0: [TypeAccess] access to type Int16
+#   55|             0: [TypeMention] short
+#   55|           1: [PropertyCall] access to property Value
+#   55|             -1: [ParameterAccess] access to parameter n
 GenericAttribute.cs:
 #    3| [GenericAssemblyAttribute] [assembly: MyGeneric<Int32>(...)]
 #    3|   0: [TypeMention] MyGenericAttribute<int>
