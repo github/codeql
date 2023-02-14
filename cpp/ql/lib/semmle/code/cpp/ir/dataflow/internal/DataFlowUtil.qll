@@ -1628,9 +1628,7 @@ private newtype TContent =
     // field can be read by any read of the union's fields.
     indirectionIndex =
       [1 .. max(Ssa::getMaxIndirectionsForType(u.getAField().getUnspecifiedType()))]
-  } or
-  TCollectionContent() or // Not used in C/C++
-  TArrayContent() // Not used in C/C++.
+  }
 
 /**
  * A description of the way data may be stored inside an object. Examples
@@ -1680,22 +1678,17 @@ class UnionContent extends Content, TUnionContent {
     indirectionIndex > 1 and result = u.toString() + " indirection"
   }
 
+  /** Gets a field of the underlying union of this `UnionContent`, if any. */
   Field getAField() { result = u.getAField() }
 
+  /** Gets the underlying union of this `UnionContent`. */
+  Union getUnion() { result = u }
+
+  /** Gets the indirection index of this `UnionContent`. */
   pragma[inline]
   int getIndirectionIndex() {
     pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
   }
-}
-
-/** A reference through an array. */
-class ArrayContent extends Content, TArrayContent {
-  override string toString() { result = "[]" }
-}
-
-/** A reference through the contents of some collection-like container. */
-private class CollectionContent extends Content, TCollectionContent {
-  override string toString() { result = "<element>" }
 }
 
 /**
