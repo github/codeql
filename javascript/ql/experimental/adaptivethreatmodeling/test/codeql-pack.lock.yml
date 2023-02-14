@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-02-13-06h56m21s.purple-sponge-tsl1mxf4.a8f6005a79279b077f7d4caf944ccb18f35d693655b4aa9e88a45eada8f7023a
+compiled: false
