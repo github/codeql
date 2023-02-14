@@ -156,6 +156,16 @@ namespace Semmle.Autobuild.CSharp
                     };
                 }
             }
+            // both dotnet and msbuild builds require project or solution files; if we haven't found any
+            // then neither of those rules would've worked
+            else if (this.ProjectsOrSolutionsToBuild.Count == 0)
+            {
+                var source = GetDiagnosticSource("no-projects-or-solutions", "No project or solutions files found");
+                message = new DiagnosticMessage(source)
+                {
+                    PlaintextMessage = "CodeQL could not find any project or solution files in your repository."
+                };
+            }
             else
             {
                 // none of the above apply; produce a generic autobuild failure message
