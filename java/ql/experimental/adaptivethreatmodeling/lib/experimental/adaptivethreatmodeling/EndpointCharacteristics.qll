@@ -479,7 +479,7 @@ abstract class LikelyNotASinkCharacteristic extends EndpointCharacteristic {
  * An EndpointFilterCharacteristic that indicates that an endpoint is a type access. Type accesses are not sinks.
  */
 private class IsTypeAccessCharacteristic extends NotASinkCharacteristic {
-  IsTypeAccessCharacteristic() { this = "is type access" }
+  IsTypeAccessCharacteristic() { this = "type access" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) { isTypeAccess(n) }
 }
@@ -489,7 +489,7 @@ private class IsTypeAccessCharacteristic extends NotASinkCharacteristic {
  * never be a sink.
  */
 private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
-  IsSanitizerCharacteristic() { this = "is sanitizer" }
+  IsSanitizerCharacteristic() { this = "sanitizer" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
     exists(AtmConfig config | config.isSanitizer(n))
@@ -523,6 +523,27 @@ private class SafeExternalApiMethodCharacteristic extends NotASinkCharacteristic
         or
         not call.getCallee().getDeclaringType().getPackage().getName().matches("org.junit%") and
         this = baseDescription + "other than org.junit"
+      )
+    )
+  }
+}
+
+/**
+ * An EndpointFilterCharacteristic that indicates that an endpoint is an argument to an exception, which is not a sink.
+ */
+private class ExceptionCharacteristic extends NotASinkCharacteristic {
+  ExceptionCharacteristic() { this = "exception" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    exists(Expr::Call call, RefType type |
+      n.asExpr() = call.getAnArgument() and
+      type = call.getCallee().getDeclaringType().getASupertype*() and
+      (
+        type instanceof TypeException or
+        type instanceof TypeThrowable or
+        type instanceof TypeRuntimeException or
+        type instanceof TypeClassCastException or
+        type instanceof TypeNullPointerException
       )
     )
   }
@@ -603,8 +624,8 @@ private class IsExternalCharacteristic extends StandardEndpointFilterCharacteris
 }
 
 /**
- * An EndpointFilterCharacteristic that indicates that an endpoint is and argument to a method call is not the final
- * step in a taint propagation. This prevents us from detecting expresssions near sinks that are not the sink itself.
+ * An EndpointFilterCharacteristic that indicates that an endpoint is not the final step in a taint propagation. This
+ * prevents us from detecting expresssions near sinks that are not the sink itself.
  *
  * WARNING: These endpoints should not be used as negative samples for training, because a there are rare situations
  * where a node is both a sink and the `from` node of a flow step: when the called API uses the given value dangerously
@@ -622,6 +643,31 @@ private class IsFlowStep extends StandardEndpointFilterCharacteristic {
   private predicate isKnownStepSrc(DataFlow::Node n) {
     any(TaintTracking::Configuration c).isAdditionalFlowStep(n, _) or
     TaintTracking::localTaintStep(n, _)
+  }
+}
+
+/**
+ * An EndpointFilterCharacteristic that indicates that an endpoint sits in a test file.
+ *
+ * WARNING: These endpoints should not be used as negative samples for training, because there can in fact be sinks in
+ * test files -- we just don't care to model them because they aren't exploitable.
+ */
+private class TestFileCharacteristic extends StandardEndpointFilterCharacteristic {
+  TestFileCharacteristic() { this = "test file" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    exists(File f | f = n.getLocation().getFile() and isInTestFile(f))
+  }
+
+  /**
+   * Holds if `file` is a test file. Copied from java/ql/src/utils/modelgenerator/internal/CaptureModelsSpecific.qll.
+   *
+   * TODO: Why can't I import utils.modelgenerator.internal.CaptureModelsSpecific?
+   */
+  private predicate isInTestFile(File file) {
+    file.getAbsolutePath().matches("%src/test/%") or
+    file.getAbsolutePath().matches("%/guava-tests/%") or
+    file.getAbsolutePath().matches("%/guava-testlib/%")
   }
 }
 // class IsArgumentToModeledFunctionCharacteristic extends StandardEndpointFilterCharacteristic {
