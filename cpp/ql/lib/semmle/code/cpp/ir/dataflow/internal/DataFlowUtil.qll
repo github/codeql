@@ -1678,10 +1678,13 @@ class UnionContent extends Content, TUnionContent {
     indirectionIndex > 1 and result = u.toString() + " indirection"
   }
 
+  /** Gets a field of the underlying union of this `UnionContent`, if any. */
   Field getAField() { result = u.getAField() }
 
+  /** Gets the underlying union of this `UnionContent`. */
   Union getUnion() { result = u }
 
+  /** Gets the indirection index of this `UnionContent`. */
   pragma[inline]
   int getIndirectionIndex() {
     pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
