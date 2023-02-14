@@ -4,9 +4,22 @@
 typealias unichar = UInt16
 
 class NSObject {
+  func copy() -> Any { return 0 }
+  func mutableCopy() -> Any { return 0 }
 }
 
-class NSString : NSObject {
+struct NSZone {
+}
+
+protocol NSCopying {
+  func copy(with zone: NSZone?) -> Any
+}
+
+protocol NSMutableCopying {
+  func mutableCopy(with zone: NSZone?) -> Any
+}
+
+class NSString : NSObject, NSCopying, NSMutableCopying {
   struct EncodingConversionOptions : OptionSet {
     let rawValue: Int
   }
@@ -36,6 +49,9 @@ class NSString : NSObject {
   convenience init?(data: Data, encoding: UInt) { self.init(string: "") }
   convenience init?(contentsOfFile path: String) { self.init(string: "") }
   convenience init?(contentsOf url: URL) { self.init(string: "") }
+
+  func copy(with zone: NSZone? = nil) -> Any { return 0 }
+  func mutableCopy(with zone: NSZone? = nil) -> Any { return 0 }
 
   class func localizedStringWithFormat(_ format: NSString, _ args: CVarArg) -> Self { return (nil as Self?)! }
   class func path(withComponents components: [String]) -> String { return "" }
@@ -322,4 +338,13 @@ func taintThroughInterpolatedStrings() {
     sink(arg: outBuffer) // $ MISSING: tainted=
     sink(arg: outBuffer.pointee) // $ MISSING: tainted=
   }
+
+  // `NSObject` methods
+
+  var str20 = sourceNSString()
+
+  sink(arg: str20.copy()) // $ MISSING: tainted=
+  sink(arg: str20.mutableCopy()) // $ MISSING: tainted=
+  sink(arg: str20.copy(with: nil)) // $ MISSING: tainted=
+  sink(arg: str20.mutableCopy(with: nil)) // $ MISSING: tainted=
 }
