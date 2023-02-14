@@ -1479,7 +1479,6 @@ private module Cached {
     // Reverse flow: data that flows from the definition node back into the indirection returned
     // by a function. This allows data to flow 'in' through references returned by a modeled
     // function such as `operator[]`.
-    or
     exists(
       DataFlowFunction f, CallInstruction call, FunctionInput inModel, FunctionOutput outModel,
       int indirectionIndex, IndirectReturnOutNode outNode
@@ -1490,12 +1489,18 @@ private module Cached {
       call.getStaticCallTarget() = f and
       // nodeFrom is a post-update node whose pre-update node is an out node
       outNode = nodeFrom.(PostUpdateNode).getPreUpdateNode() and
-      outNode.getCallInstruction() = call and
-      outNode.getIndirectionIndex() = indirectionIndex and
+      outNodeHasCallAndIndirection(outNode, call, indirectionIndex) and
       // and nodeTo is the post-update node whose pre-update node is the qualifier of the function.
       hasOperandAndIndex(nodeTo.(PostUpdateNode).getPreUpdateNode(), call.getThisArgumentOperand(),
         indirectionIndex)
     )
+  }
+
+  private predicate outNodeHasCallAndIndirection(
+    IndirectReturnOutNode outNode, CallInstruction call, int indirectionIndex
+  ) {
+    outNode.getCallInstruction() = call and
+    outNode.getIndirectionIndex() = indirectionIndex
   }
 
   private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {

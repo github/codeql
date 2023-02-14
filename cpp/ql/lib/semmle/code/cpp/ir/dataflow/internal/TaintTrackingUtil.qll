@@ -192,10 +192,16 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
     call.getStaticCallTarget() = f and
     // nodeFrom is a post-update node whose pre-update node is an out node
     outNode = nodeIn.(PostUpdateNode).getPreUpdateNode() and
-    outNode.getCallInstruction() = call and
-    outNode.getIndirectionIndex() = indirectionIndex and
+    outNodeHasCallAndIndirection(outNode, call, indirectionIndex) and
     // and nodeTo is the post-update node whose pre-update node is the qualifier of the function.
     hasOperandAndIndex(nodeOut.(PostUpdateNode).getPreUpdateNode(), call.getThisArgumentOperand(),
       indirectionIndex)
   )
+}
+
+private predicate outNodeHasCallAndIndirection(
+  IndirectReturnOutNode outNode, CallInstruction call, int indirectionIndex
+) {
+  outNode.getCallInstruction() = call and
+  outNode.getIndirectionIndex() = indirectionIndex
 }
