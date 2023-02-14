@@ -1,3 +1,4 @@
+using Semmle.Util;
 using Semmle.Util.Logging;
 using System;
 using System.Collections.Generic;
@@ -238,6 +239,8 @@ namespace Semmle.Autobuild.Shared
             TrapDir = RequireEnvironmentVariable(EnvVars.TrapDir(this.Options.Language));
             SourceArchiveDir = RequireEnvironmentVariable(EnvVars.SourceArchiveDir(this.Options.Language));
             DiagnosticsDir = RequireEnvironmentVariable(EnvVars.DiagnosticDir(this.Options.Language));
+
+            this.diagnostics = DiagnosticsStream.ForFile(Path.Combine(DiagnosticsDir, $"autobuilder-{DateTime.UtcNow:yyyyMMddHHmm}.jsonc"));
         }
 
         /// <summary>
@@ -263,6 +266,8 @@ namespace Semmle.Autobuild.Shared
 
         private readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
 
+        private readonly DiagnosticsStream diagnostics;
+
         /// <summary>
         /// Log a given build event to the console.
         /// </summary>
@@ -271,6 +276,15 @@ namespace Semmle.Autobuild.Shared
         public void Log(Severity severity, string format, params object[] args)
         {
             logger.Log(severity, format, args);
+        }
+
+        /// <summary>
+        /// Write <paramref name="diagnostic"/> to the diagnostics file.
+        /// </summary>
+        /// <param name="diagnostic">The diagnostics entry to write.</param>
+        public void Diagnostic(DiagnosticMessage diagnostic)
+        {
+            diagnostics.AddEntry(diagnostic);
         }
 
         /// <summary>
@@ -304,10 +318,48 @@ namespace Semmle.Autobuild.Shared
         /// </summary>
         public abstract BuildScript GetBuildScript();
 
+        /// <summary>
+        /// Constructs a standard <see cref="DiagnosticMessage.TspSource" /> for some message
+        /// <see cref="id" /> with a human-friendly <see cref="name" />.
+        /// </summary>
+        /// <param name="id">The last part of the message id.</param>
+        /// <param name="name">The human-friendly description of the message.</param>
+        /// <returns>The resulting <see cref="DiagnosticMessage.TspSource" />.</returns>
+        protected DiagnosticMessage.TspSource GetDiagnosticSource(string id, string name) =>
+            new($"{this.Options.Language.UpperCaseName.ToLower()}/autobuilder/{id}", name);
+
+        /// <summary>
+        /// Produces a diagnostic for the tool status page that we were unable to automatically
+        /// build the user's project and that they can manually specify a build command. This
+        /// can be overriden to implement more specific messages depending on the origin of
+        /// the failure.
+        /// </summary>
+        protected virtual void AutobuildFailureDiagnostic()
+        {
+            var message = new DiagnosticMessage(GetDiagnosticSource("autobuild-failure", "Unable to build project"))
+            {
+                PlaintextMessage =
+                    "We were unable to automatically build your project. " +
+                    "You can manually specify a suitable build command for your project.",
+                Severity = DiagnosticMessage.TspSeverity.Error
+            };
+
+            Diagnostic(message);
+        }
+
+        /// <summary>
+        /// Returns a build script that can be run upon autobuild failure.
+        /// </summary>
+        /// <returns>
+        /// A build script that reports that we could not automatically detect a suitable build method.
+        /// </returns>
         protected BuildScript AutobuildFailure() =>
             BuildScript.Create(actions =>
                 {
                     Log(Severity.Error, "Could not auto-detect a suitable build method");
+
+                    AutobuildFailureDiagnostic();
+
                     return 1;
                 });
 
