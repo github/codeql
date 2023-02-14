@@ -69,6 +69,31 @@ class Node0Impl extends TIRDataFlowNode0 {
 
   /** Gets a textual representation of this node. */
   final string toString() { result = this.toStringImpl() }
+
+  /** Holds if the value of this node is a glvalue */
+  predicate isGLValue() { none() } // overridden in subclasses
+}
+
+/**
+ * Gets the type of the operand `op`.
+ *
+ * The boolean `isGLValue` is true if the operand represents a glvalue. In that case,
+ * the returned type should be thought of as a pointer type whose base type is given
+ * by this predicate.
+ */
+DataFlowType getOperandType(Operand op, boolean isGLValue) {
+  Ssa::getLanguageType(op).hasType(result, isGLValue)
+}
+
+/**
+ * Gets the type of the instruction `instr`.
+ *
+ * The boolean `isGLValue` is true if the operand represents a glvalue. In that case,
+ * the returned type should be thought of as a pointer type whose base type is given
+ * by this predicate.
+ */
+DataFlowType getInstructionType(Instruction instr, boolean isGLValue) {
+  Ssa::getResultLanguageType(instr).hasType(result, isGLValue)
 }
 
 /**
@@ -84,7 +109,7 @@ abstract class InstructionNode0 extends Node0Impl {
 
   override Declaration getFunction() { result = instr.getEnclosingFunction() }
 
-  override DataFlowType getType() { result = instr.getResultType() }
+  override DataFlowType getType() { result = getInstructionType(instr, _) }
 
   final override Location getLocationImpl() { result = instr.getLocation() }
 
@@ -93,6 +118,8 @@ abstract class InstructionNode0 extends Node0Impl {
     // does not use `Instruction.toString` because that's expensive to compute.
     result = instr.getOpcode().toString()
   }
+
+  final override predicate isGLValue() { instr.isGLValue() }
 }
 
 /**
@@ -127,11 +154,13 @@ abstract class OperandNode0 extends Node0Impl {
 
   override Declaration getFunction() { result = op.getUse().getEnclosingFunction() }
 
-  override DataFlowType getType() { result = op.getType() }
+  override DataFlowType getType() { result = getOperandType(op, _) }
 
   final override Location getLocationImpl() { result = op.getLocation() }
 
   override string toStringImpl() { result = op.toString() }
+
+  final override predicate isGLValue() { op.isGLValue() }
 }
 
 /**
