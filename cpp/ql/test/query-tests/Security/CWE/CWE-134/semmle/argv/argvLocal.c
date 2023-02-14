@@ -150,14 +150,14 @@ int main(int argc, char **argv) {
 	printf(i8);
 	printWrapper(i8);
 
-	// BAD: i9 value comes from argv
+	// BAD: i9 value comes from argv [NOT DETECTED]
 	char i9buf[32];
 	char *i9 = i9buf;
 	memcpy(1 ? ++i9 : 0, argv[1], 1);
 	printf(i9);
 	printWrapper(i9);
 
-	// BAD: i91 value comes from argv
+	// BAD: i91 value comes from argv [NOT DETECTED]
 	char i91buf[64];
 	char *i91 = &i91buf[0];
 	memcpy(0 ? 0 : i91, argv[1] + 1, 1);
