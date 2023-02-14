@@ -30,6 +30,7 @@ import itertools
 import inflection
 
 from swift.codegen.lib import schema, ql
+from swift.codegen.loaders import schemaloader
 
 log = logging.getLogger(__name__)
 
@@ -297,7 +298,7 @@ def generate(opts, renderer):
 
     stubs = {q for q in stub_out.rglob("*.qll")}
 
-    data = schema.load_file(input)
+    data = schemaloader.load_file(input)
 
     classes = {name: get_ql_class(cls) for name, cls in data.classes.items()}
     if not classes:
