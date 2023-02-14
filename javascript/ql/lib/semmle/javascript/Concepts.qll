@@ -115,5 +115,22 @@ abstract class PersistentWriteAccess extends DataFlow::Node {
  * Provides models for cryptographic things.
  */
 module Cryptography {
-  import semmle.javascript.internal.ConceptsShared::Cryptography
+  private import semmle.javascript.internal.ConceptsShared::Cryptography as SC
+
+  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range {
+    /** DEPRECATED. This predicate has been renamed to `getAnInput`. */
+    deprecated final DataFlow::Node getInput() { result = this.getAnInput() }
+  }
+
+  class EncryptionAlgorithm = SC::EncryptionAlgorithm;
+
+  class HashingAlgorithm = SC::HashingAlgorithm;
+
+  class PasswordHashingAlgorithm = SC::PasswordHashingAlgorithm;
+
+  module CryptographicOperation = SC::CryptographicOperation;
+
+  class BlockMode = SC::BlockMode;
+
+  class CryptographicAlgorithm = SC::CryptographicAlgorithm;
 }
