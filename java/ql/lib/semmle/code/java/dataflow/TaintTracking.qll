@@ -8,5 +8,6 @@ import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.internal.TaintTrackingUtil::StringBuilderVarModule
 
 module TaintTracking {
+  import semmle.code.java.dataflow.internal.tainttracking1.TaintTracking
   import semmle.code.java.dataflow.internal.tainttracking1.TaintTrackingImpl
 }

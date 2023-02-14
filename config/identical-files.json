@@ -1,13 +1,18 @@
 {
   "DataFlow Java/C++/C#/Go/Python/Ruby/Swift": [
-    "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl.qll",
+    "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl.qll"
+  ],
+  "DataFlow Java/C++/C#/Go/Python/Ruby/Swift Legacy Configuration": [
+    "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl1.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl2.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl3.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl4.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl5.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl6.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplForSerializability.qll",
-    "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplForOnActivityResult.qll",
+    "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplForOnActivityResult.qll"
+  ],
+  "DataFlow Java/C++/C#/Go/Python/Ruby/Swift todo": [
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl3.qll",
@@ -42,7 +47,9 @@
     "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImpl.qll"
   ],
   "DataFlow Java/C++/C#/Go/Python/Ruby/Swift Common": [
-    "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",
+    "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll"
+  ],
+  "DataFlow Java/C++/C#/Go/Python/Ruby/Swift Common todo": [
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
