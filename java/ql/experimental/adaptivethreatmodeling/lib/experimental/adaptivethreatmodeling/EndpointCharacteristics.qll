@@ -538,13 +538,7 @@ private class ExceptionCharacteristic extends NotASinkCharacteristic {
     exists(Expr::Call call, RefType type |
       n.asExpr() = call.getAnArgument() and
       type = call.getCallee().getDeclaringType().getASupertype*() and
-      (
-        type instanceof TypeException or
-        type instanceof TypeThrowable or
-        type instanceof TypeRuntimeException or
-        type instanceof TypeClassCastException or
-        type instanceof TypeNullPointerException
-      )
+      type instanceof TypeThrowable
     )
   }
 }
