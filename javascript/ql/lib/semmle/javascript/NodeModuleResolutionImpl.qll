@@ -120,6 +120,13 @@ private File resolveMainPath(PackageJson pkg, string mainPath, int priority) {
           priority - 999) // very high priority, to make sure everything else is tried first
     )
   )
+  or
+  not exists(MainModulePath::of(pkg, _)) and
+  exists(Folder parent |
+    parent = pkg.getFile().getParentContainer() and
+    result = tryExtensions(parent, "index", priority) and
+    mainPath = "."
+  )
 }
 
 /**

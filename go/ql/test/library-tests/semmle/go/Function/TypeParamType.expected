@@ -13,3 +13,4 @@
 | TG2 | interface { } |
 | U | interface { } |
 | V | interface { int64 \| float64 } |
+| bytes | interface { []uint8 \| string } |

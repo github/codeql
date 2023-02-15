@@ -10,9 +10,7 @@ private import semmle.code.SMAP
 
 /** Holds if element `e` has name `name`. */
 predicate hasName(Element e, string name) {
-  classes(e, name, _, _)
-  or
-  interfaces(e, name, _, _)
+  classes_or_interfaces(e, name, _, _)
   or
   primitives(e, name)
   or

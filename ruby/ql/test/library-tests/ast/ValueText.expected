@@ -263,6 +263,14 @@ exprValue
 | control/cases.rb:157:8:157:8 | 1 | 1 | int |
 | control/cases.rb:157:8:157:12 | ... + ... | 2 | int |
 | control/cases.rb:157:12:157:12 | 1 | 1 | int |
+| control/cases.rb:160:1:160:14 | false | false | boolean |
+| control/cases.rb:160:1:160:14 | true | true | boolean |
+| control/cases.rb:160:10:160:10 | 1 | 1 | int |
+| control/cases.rb:160:13:160:13 | 2 | 2 | int |
+| control/cases.rb:162:1:162:20 | nil | nil | nil |
+| control/cases.rb:162:10:162:10 | :x | :x | symbol |
+| control/cases.rb:162:16:162:16 | :y | :y | symbol |
+| control/cases.rb:162:19:162:19 | 1 | 1 | int |
 | control/conditionals.rb:2:5:2:5 | 0 | 0 | int |
 | control/conditionals.rb:3:5:3:5 | 0 | 0 | int |
 | control/conditionals.rb:4:5:4:5 | 0 | 0 | int |
@@ -1147,6 +1155,12 @@ exprCfgNodeValue
 | control/cases.rb:157:8:157:8 | 1 | 1 | int |
 | control/cases.rb:157:8:157:12 | ... + ... | 2 | int |
 | control/cases.rb:157:12:157:12 | 1 | 1 | int |
+| control/cases.rb:160:1:160:14 | false | false | boolean |
+| control/cases.rb:160:1:160:14 | true | true | boolean |
+| control/cases.rb:160:10:160:10 | 1 | 1 | int |
+| control/cases.rb:160:13:160:13 | 2 | 2 | int |
+| control/cases.rb:162:1:162:20 | nil | nil | nil |
+| control/cases.rb:162:19:162:19 | 1 | 1 | int |
 | control/conditionals.rb:2:5:2:5 | 0 | 0 | int |
 | control/conditionals.rb:3:5:3:5 | 0 | 0 | int |
 | control/conditionals.rb:4:5:4:5 | 0 | 0 | int |

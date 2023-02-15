@@ -1,0 +1,11 @@
+load("@swift_codegen_deps//:requirements.bzl", "requirement")
+
+py_library(
+    name = "loaders",
+    srcs = glob(["*.py"]),
+    visibility = ["//swift/codegen:__subpackages__"],
+    deps = [
+        requirement("toposort"),
+        requirement("inflection"),
+    ],
+)

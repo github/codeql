@@ -261,9 +261,9 @@ module ModelValidation {
         [
           "open-url", "jndi-injection", "ldap", "sql", "jdbc-url", "logging", "mvel", "xpath",
           "groovy", "xss", "ognl-injection", "intent-start", "pending-intent-sent",
-          "url-open-stream", "url-redirect", "create-file", "write-file", "set-hostname-verifier",
-          "header-splitting", "information-leak", "xslt", "jexl", "bean-validation", "ssti",
-          "fragment-injection"
+          "url-open-stream", "url-redirect", "create-file", "read-file", "write-file",
+          "set-hostname-verifier", "header-splitting", "information-leak", "xslt", "jexl",
+          "bean-validation", "ssti", "fragment-injection"
         ] and
       not kind.matches("regex-use%") and
       not kind.matches("qltest%") and

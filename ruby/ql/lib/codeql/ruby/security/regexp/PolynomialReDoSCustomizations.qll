@@ -24,7 +24,13 @@ module PolynomialReDoS {
   /**
    * A data flow source node for polynomial regular expression denial-of-service vulnerabilities.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /**
+     * Gets a string that describes the source.
+     * For use in the alert message.
+     */
+    string describe() { result = "user-provided value" }
+  }
 
   /**
    * A data flow sink node for polynomial regular expression denial-of-service vulnerabilities.
@@ -54,6 +60,15 @@ module PolynomialReDoS {
    * A source of remote user input, considered as a flow source.
    */
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+
+  private import codeql.ruby.frameworks.core.Gem::Gem as Gem
+
+  /** A library input, considered as a flow source. */
+  class LibraryInputAsSource extends Source {
+    LibraryInputAsSource() { this = Gem::getALibraryInput() }
+
+    override string describe() { result = "library input" }
+  }
 
   /**
    * A regexp match against a superlinear backtracking term, seen as a sink for
