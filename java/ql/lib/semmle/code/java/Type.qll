@@ -839,11 +839,8 @@ class LocalClass extends LocalClassOrInterface, NestedClass {
 }
 
 /** A top-level type. */
-class TopLevelType extends RefType {
-  TopLevelType() {
-    not enclInReftype(this, _) and
-    (this instanceof Class or this instanceof Interface)
-  }
+class TopLevelType extends ClassOrInterface {
+  TopLevelType() { not enclInReftype(this, _) }
 }
 
 /** A top-level class. */

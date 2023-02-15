@@ -1,0 +1,8 @@
+getAnImport
+| Test.java:1:1:1:18 | import packageA.* | packageA/Subclass.java:3:14:3:21 | Subclass |
+| Test.java:1:1:1:18 | import packageA.* | packageA/Subinterface.java:3:18:3:29 | Subinterface |
+| Test.java:1:1:1:18 | import packageA.* | packageA/Superclass.java:3:14:3:23 | Superclass |
+| Test.java:1:1:1:18 | import packageA.* | packageA/Superinterface2.java:3:18:3:32 | Superinterface2 |
+| Test.java:1:1:1:18 | import packageA.* | packageA/Superinterface.java:3:18:3:31 | Superinterface |
+#select
+| Test.java:1:1:1:18 | import packageA.* | file://:0:0:0:0 | packageA |

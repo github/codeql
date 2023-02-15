@@ -1,0 +1,3 @@
+| Test.java:3:1:3:25 | import Subclass | packageA/Subclass.java:3:14:3:21 | Subclass |
+| Test.java:4:1:4:31 | import Inner | packageA/Subclass.java:4:18:4:22 | Inner |
+| Test.java:5:1:5:29 | import Subinterface | packageA/Subinterface.java:3:18:3:29 | Subinterface |
