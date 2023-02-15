@@ -667,20 +667,75 @@ private module Stage1 implements StageSig {
     )
     or
     // flow into a callable
-    exists(NodeEx arg |
-      fwdFlow(arg, _, config) and
-      viableParamArgEx(_, node, arg) and
-      cc = true and
-      not fullBarrier(node, config)
-    )
+    fwdFlowIn(_, _, _, node, config) and
+    cc = true
     or
     // flow out of a callable
+    fwdFlowOut(_, node, false, config) and
+    cc = false
+    or
+    // flow through a callable
     exists(DataFlowCall call |
-      fwdFlowOut(call, node, false, config) and
-      cc = false
-      or
       fwdFlowOutFromArg(call, node, config) and
       fwdFlowIsEntered(call, cc, config)
+    )
+  }
+
+  // inline to reduce the number of iterations
+  pragma[inline]
+  private predicate fwdFlowIn(
+    DataFlowCall call, NodeEx arg, Cc cc, ParamNodeEx p, Configuration config
+  ) {
+    // call context cannot help reduce virtual dispatch
+    fwdFlow(arg, cc, config) and
+    viableParamArgEx(call, p, arg) and
+    not fullBarrier(p, config) and
+    (
+      cc = false
+      or
+      cc = true and
+      not reducedViableImplInCallContext(call, _, _)
+    )
+    or
+    // call context may help reduce virtual dispatch
+    exists(DataFlowCallable target |
+      fwdFlowInReducedViableImplInSomeCallContext(call, arg, p, target, config) and
+      target = viableImplInSomeFwdFlowCallContextExt(call, config) and
+      cc = true
+    )
+  }
+
+  /**
+   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`.
+   */
+  pragma[nomagic]
+  private predicate fwdFlowIsEntered(DataFlowCall call, Cc cc, Configuration config) {
+    fwdFlowIn(call, _, cc, _, config)
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlowInReducedViableImplInSomeCallContext(
+    DataFlowCall call, NodeEx arg, ParamNodeEx p, DataFlowCallable target, Configuration config
+  ) {
+    fwdFlow(arg, true, config) and
+    viableParamArgEx(call, p, arg) and
+    reducedViableImplInCallContext(call, _, _) and
+    target = p.getEnclosingCallable() and
+    not fullBarrier(p, config)
+  }
+
+  /**
+   * Gets a viable dispatch target of `call` in the context `ctx`. This is
+   * restricted to those `call`s for which a context might make a difference,
+   * and to `ctx`s that are reachable in `fwdFlow`.
+   */
+  pragma[nomagic]
+  private DataFlowCallable viableImplInSomeFwdFlowCallContextExt(
+    DataFlowCall call, Configuration config
+  ) {
+    exists(DataFlowCall ctx |
+      fwdFlowIsEntered(ctx, _, config) and
+      result = viableImplInCallContextExt(call, ctx)
     )
   }
 
@@ -726,7 +781,8 @@ private module Stage1 implements StageSig {
     )
   }
 
-  pragma[nomagic]
+  // inline to reduce the number of iterations
+  pragma[inline]
   private predicate fwdFlowOut(DataFlowCall call, NodeEx out, Cc cc, Configuration config) {
     exists(ReturnPosition pos |
       fwdFlowReturnPosition(pos, cc, config) and
@@ -738,17 +794,6 @@ private module Stage1 implements StageSig {
   pragma[nomagic]
   private predicate fwdFlowOutFromArg(DataFlowCall call, NodeEx out, Configuration config) {
     fwdFlowOut(call, out, true, config)
-  }
-
-  /**
-   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`.
-   */
-  pragma[nomagic]
-  private predicate fwdFlowIsEntered(DataFlowCall call, Cc cc, Configuration config) {
-    exists(ArgNodeEx arg |
-      fwdFlow(arg, cc, config) and
-      viableParamArgEx(call, _, arg)
-    )
   }
 
   private predicate stateStepFwd(FlowState state1, FlowState state2, Configuration config) {
@@ -817,19 +862,20 @@ private module Stage1 implements StageSig {
     )
     or
     // flow into a callable
-    exists(DataFlowCall call |
-      revFlowIn(call, node, false, config) and
-      toReturn = false
-      or
-      revFlowInToReturn(call, node, config) and
-      revFlowIsReturned(call, toReturn, config)
-    )
+    revFlowIn(_, node, false, config) and
+    toReturn = false
     or
     // flow out of a callable
     exists(ReturnPosition pos |
       revFlowOut(pos, config) and
       node.(RetNodeEx).getReturnPosition() = pos and
       toReturn = true
+    )
+    or
+    // flow through a callable
+    exists(DataFlowCall call |
+      revFlowInToReturn(call, node, config) and
+      revFlowIsReturned(call, toReturn, config)
     )
   }
 
@@ -886,11 +932,11 @@ private module Stage1 implements StageSig {
   additional predicate viableParamArgNodeCandFwd1(
     DataFlowCall call, ParamNodeEx p, ArgNodeEx arg, Configuration config
   ) {
-    viableParamArgEx(call, p, arg) and
-    fwdFlow(arg, config)
+    fwdFlowIn(call, arg, _, p, config)
   }
 
-  pragma[nomagic]
+  // inline to reduce the number of iterations
+  pragma[inline]
   private predicate revFlowIn(
     DataFlowCall call, ArgNodeEx arg, boolean toReturn, Configuration config
   ) {
@@ -1223,7 +1269,16 @@ private module MkStage<StageSig PrevStage> {
     bindingset[tc, tail]
     Ap apCons(TypedContent tc, Ap tail);
 
-    Content getHeadContent(Ap ap);
+    /**
+     * An approximation of `Content` that corresponds to the precision level of
+     * `Ap`, such that the mappings from both `Ap` and `Content` to this type
+     * are functional.
+     */
+    class ApHeadContent;
+
+    ApHeadContent getHeadContent(Ap ap);
+
+    ApHeadContent projectToHeadContent(Content c);
 
     class ApOption;
 
@@ -1471,34 +1526,32 @@ private module MkStage<StageSig PrevStage> {
       )
     }
 
-    private class ApNonNil instanceof Ap {
-      pragma[nomagic]
-      ApNonNil() { not this instanceof ApNil }
-
-      string toString() { result = "" }
-    }
-
     pragma[nomagic]
-    private predicate fwdFlowRead0(
-      NodeEx node1, FlowState state, Cc cc, ParamNodeOption summaryCtx, ApOption argAp, ApNonNil ap,
-      Configuration config
+    private predicate readStepCand(
+      NodeEx node1, ApHeadContent apc, Content c, NodeEx node2, Configuration config
     ) {
-      fwdFlow(node1, state, cc, summaryCtx, argAp, ap, config) and
-      PrevStage::readStepCand(node1, _, _, config)
+      PrevStage::readStepCand(node1, c, node2, config) and
+      apc = projectToHeadContent(c)
     }
 
-    bindingset[ap, c]
+    bindingset[node1, apc]
     pragma[inline_late]
-    private predicate hasHeadContent(Ap ap, Content c) { getHeadContent(ap) = c }
+    private predicate readStepCand0(
+      NodeEx node1, ApHeadContent apc, Content c, NodeEx node2, Configuration config
+    ) {
+      readStepCand(node1, apc, c, node2, config)
+    }
 
     pragma[nomagic]
     private predicate fwdFlowRead(
       Ap ap, Content c, NodeEx node1, NodeEx node2, FlowState state, Cc cc,
       ParamNodeOption summaryCtx, ApOption argAp, Configuration config
     ) {
-      fwdFlowRead0(node1, state, cc, summaryCtx, argAp, ap, config) and
-      PrevStage::readStepCand(node1, c, node2, config) and
-      hasHeadContent(ap, c)
+      exists(ApHeadContent apc |
+        fwdFlow(node1, state, cc, summaryCtx, argAp, ap, config) and
+        apc = getHeadContent(ap) and
+        readStepCand0(node1, apc, c, node2, config)
+      )
     }
 
     pragma[nomagic]
@@ -2072,8 +2125,12 @@ private module Stage2Param implements MkStage<Stage1>::StageParam {
   bindingset[tc, tail]
   Ap apCons(TypedContent tc, Ap tail) { result = true and exists(tc) and exists(tail) }
 
+  class ApHeadContent = Unit;
+
   pragma[inline]
-  Content getHeadContent(Ap ap) { exists(result) and ap = true }
+  ApHeadContent getHeadContent(Ap ap) { exists(result) and ap = true }
+
+  ApHeadContent projectToHeadContent(Content c) { any() }
 
   class ApOption = BooleanOption;
 
@@ -2337,8 +2394,12 @@ private module Stage3Param implements MkStage<Stage2>::StageParam {
   bindingset[tc, tail]
   Ap apCons(TypedContent tc, Ap tail) { result.getAHead() = tc and exists(tail) }
 
+  class ApHeadContent = ContentApprox;
+
   pragma[noinline]
-  Content getHeadContent(Ap ap) { result = ap.getAHead().getContent() }
+  ApHeadContent getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+
+  predicate projectToHeadContent = getContentApprox/1;
 
   class ApOption = ApproxAccessPathFrontOption;
 
@@ -2413,8 +2474,12 @@ private module Stage4Param implements MkStage<Stage3>::StageParam {
   bindingset[tc, tail]
   Ap apCons(TypedContent tc, Ap tail) { result.getHead() = tc and exists(tail) }
 
+  class ApHeadContent = Content;
+
   pragma[noinline]
-  Content getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+  ApHeadContent getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+
+  ApHeadContent projectToHeadContent(Content c) { result = c }
 
   class ApOption = AccessPathFrontOption;
 
@@ -2743,8 +2808,12 @@ private module Stage5Param implements MkStage<Stage4>::StageParam {
   bindingset[tc, tail]
   Ap apCons(TypedContent tc, Ap tail) { result = push(tc, tail) }
 
+  class ApHeadContent = Content;
+
   pragma[noinline]
-  Content getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+  ApHeadContent getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+
+  ApHeadContent projectToHeadContent(Content c) { result = c }
 
   class ApOption = AccessPathApproxOption;
 

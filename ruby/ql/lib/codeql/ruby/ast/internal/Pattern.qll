@@ -27,6 +27,10 @@ deprecated class TuplePatternImpl extends Ruby::AstNode {
  * Holds if `node` is a case pattern.
  */
 predicate casePattern(Ruby::AstNode node) {
+  node = any(Ruby::TestPattern parent).getPattern()
+  or
+  node = any(Ruby::MatchPattern parent).getPattern()
+  or
   node = any(Ruby::InClause parent).getPattern()
   or
   node = any(Ruby::ArrayPattern parent).getChild(_).(Ruby::UnderscorePatternExpr)

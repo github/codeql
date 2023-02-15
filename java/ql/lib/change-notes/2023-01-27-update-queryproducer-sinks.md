@@ -1,4 +1,0 @@
----
-category: minorAnalysis
----
-* Added sink models for the `createQuery`, `createNativeQuery`, and `createSQLQuery` methods of the `org.hibernate.query.QueryProducer` interface.

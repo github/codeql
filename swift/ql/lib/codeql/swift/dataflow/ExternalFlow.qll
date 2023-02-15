@@ -78,12 +78,14 @@ private import internal.FlowSummaryImplSpecific
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
+  private import codeql.swift.frameworks.StandardLibrary.Collection
   private import codeql.swift.frameworks.StandardLibrary.CustomUrlSchemes
   private import codeql.swift.frameworks.StandardLibrary.Data
   private import codeql.swift.frameworks.StandardLibrary.FilePath
   private import codeql.swift.frameworks.StandardLibrary.InputStream
   private import codeql.swift.frameworks.StandardLibrary.NsData
   private import codeql.swift.frameworks.StandardLibrary.NsUrl
+  private import codeql.swift.frameworks.StandardLibrary.Sequence
   private import codeql.swift.frameworks.StandardLibrary.String
   private import codeql.swift.frameworks.StandardLibrary.Url
   private import codeql.swift.frameworks.StandardLibrary.UrlSession
@@ -424,33 +426,53 @@ private Element interpretElement0(
     )
     or
     // Member functions
-    exists(NominalTypeDecl nomTypeDecl, Decl decl, MethodDecl method |
+    exists(NominalTypeDecl namedTypeDecl, Decl declWithMethod, MethodDecl method |
       method.getName() = name and
-      method = decl.getAMember() and
-      nomTypeDecl.getFullName() = type and
+      method = declWithMethod.getAMember() and
+      namedTypeDecl.getFullName() = type and
       matchesSignature(method, signature) and
       result = method
     |
+      // member declared in the named type or a subtype of it (or an extension of any)
       subtypes = true and
-      decl.asNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
+      declWithMethod.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
       or
+      // member declared in a type that's extended with a protocol that is the named type
+      exists(ExtensionDecl e |
+        e.getExtendedTypeDecl().getADerivedTypeDecl*() = declWithMethod.asNominalTypeDecl()
+      |
+        subtypes = true and
+        e.getAProtocol() = namedTypeDecl.getADerivedTypeDecl*()
+      )
+      or
+      // member declared directly in the named type (or an extension of it)
       subtypes = false and
-      decl.asNominalTypeDecl() = nomTypeDecl
+      declWithMethod.asNominalTypeDecl() = namedTypeDecl
     )
     or
     // Fields
     signature = "" and
-    exists(NominalTypeDecl nomTypeDecl, Decl decl, FieldDecl field |
+    exists(NominalTypeDecl namedTypeDecl, Decl declWithField, FieldDecl field |
       field.getName() = name and
-      field = decl.getAMember() and
-      nomTypeDecl.getFullName() = type and
+      field = declWithField.getAMember() and
+      namedTypeDecl.getFullName() = type and
       result = field
     |
+      // field declared in the named type or a subtype of it (or an extension of any)
       subtypes = true and
-      decl.asNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
+      declWithField.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
       or
+      // field declared in a type that's extended with a protocol that is the named type
+      exists(ExtensionDecl e |
+        e.getExtendedTypeDecl().getADerivedTypeDecl*() = declWithField.asNominalTypeDecl()
+      |
+        subtypes = true and
+        e.getAProtocol() = namedTypeDecl.getADerivedTypeDecl*()
+      )
+      or
+      // field declared directly in the named type (or an extension of it)
       subtypes = false and
-      decl.asNominalTypeDecl() = nomTypeDecl
+      declWithField.asNominalTypeDecl() = namedTypeDecl
     )
   )
 }

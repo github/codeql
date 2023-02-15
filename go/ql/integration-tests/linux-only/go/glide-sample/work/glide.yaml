@@ -1,0 +1,5 @@
+package: glidetest
+import:
+- package: golang.org/x/time
+  subpackages:
+  - rate

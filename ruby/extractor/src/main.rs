@@ -1,3 +1,4 @@
+mod diagnostics;
 mod extractor;
 mod trap;
 
@@ -24,22 +25,19 @@ use tree_sitter::{Language, Parser, Range};
  * of cores available on the machine to determine how many threads to use
  * (minimum of 1). If unspecified, should be considered as set to -1."
  */
-fn num_codeql_threads() -> usize {
+fn num_codeql_threads() -> Result<usize, String> {
     let threads_str = std::env::var("CODEQL_THREADS").unwrap_or_else(|_| "-1".to_owned());
     match threads_str.parse::<i32>() {
         Ok(num) if num <= 0 => {
             let reduction = -num as usize;
-            std::cmp::max(1, num_cpus::get() - reduction)
+            Ok(std::cmp::max(1, num_cpus::get() - reduction))
         }
-        Ok(num) => num as usize,
+        Ok(num) => Ok(num as usize),
 
-        Err(_) => {
-            tracing::error!(
-                "Unable to parse CODEQL_THREADS value '{}'; defaulting to 1 thread.",
-                &threads_str
-            );
-            1
-        }
+        Err(_) => Err(format!(
+            "Unable to parse CODEQL_THREADS value '{}'",
+            &threads_str
+        )),
     }
 }
 
@@ -68,7 +66,21 @@ fn main() -> std::io::Result<()> {
                 .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new("ruby_extractor=warn")),
         )
         .init();
-    let num_threads = num_codeql_threads();
+    let diagnostics = diagnostics::DiagnosticLoggers::new("ruby");
+    let mut main_thread_logger = diagnostics.logger();
+    let num_threads = match num_codeql_threads() {
+        Ok(num) => num,
+        Err(e) => {
+            main_thread_logger.write(
+                main_thread_logger
+                    .message("configuration-error", "Configuration error")
+                    .text(&format!("{}; defaulting to 1 thread.", e))
+                    .status_page()
+                    .severity(diagnostics::Severity::Warning),
+            );
+            1
+        }
+    };
     tracing::info!(
         "Using {} {}",
         num_threads,
@@ -78,6 +90,20 @@ fn main() -> std::io::Result<()> {
             "threads"
         }
     );
+    let trap_compression = match trap::Compression::from_env("CODEQL_RUBY_TRAP_COMPRESSION") {
+        Ok(x) => x,
+        Err(e) => {
+            main_thread_logger.write(
+                main_thread_logger
+                    .message("configuration-error", "Configuration error")
+                    .text(&format!("{}; using gzip.", e))
+                    .status_page()
+                    .severity(diagnostics::Severity::Warning),
+            );
+            trap::Compression::Gzip
+        }
+    };
+    drop(main_thread_logger);
     rayon::ThreadPoolBuilder::new()
         .num_threads(num_threads)
         .build_global()
@@ -100,7 +126,6 @@ fn main() -> std::io::Result<()> {
         .value_of("output-dir")
         .expect("missing --output-dir");
     let trap_dir = PathBuf::from(trap_dir);
-    let trap_compression = trap::Compression::from_env("CODEQL_RUBY_TRAP_COMPRESSION");
 
     let file_list = matches.value_of("file-list").expect("missing --file-list");
     let file_list = fs::File::open(file_list)?;
@@ -119,6 +144,7 @@ fn main() -> std::io::Result<()> {
     lines
         .par_iter()
         .try_for_each(|line| {
+            let mut diagnostics_writer = diagnostics.logger();
             let path = PathBuf::from(line).canonicalize()?;
             let src_archive_file = path_for(&src_archive_dir, &path, "");
             let mut source = std::fs::read(&path)?;
@@ -131,6 +157,7 @@ fn main() -> std::io::Result<()> {
                     erb,
                     "erb",
                     &erb_schema,
+                    &mut diagnostics_writer,
                     &mut trap_writer,
                     &path,
                     &source,
@@ -170,20 +197,35 @@ fn main() -> std::io::Result<()> {
                                     Ok(str) => source = str.as_bytes().to_owned(),
                                     Err(msg) => {
                                         needs_conversion = false;
-                                        tracing::warn!(
-                                            "{}: character decoding failure: {} ({})",
-                                            &path.to_string_lossy(),
-                                            msg,
-                                            &encoding_name
+                                        diagnostics_writer.write(
+                                            diagnostics_writer
+                                                .message(
+                                                    "character-encoding-error",
+                                                    "Character encoding error",
+                                                )
+                                                .text(&format!(
+                                                    "{}: character decoding failure: {} ({})",
+                                                    &path.to_string_lossy(),
+                                                    msg,
+                                                    &encoding_name
+                                                ))
+                                                .status_page()
+                                                .severity(diagnostics::Severity::Warning),
                                         );
                                     }
                                 }
                             }
                         } else {
-                            tracing::warn!(
-                                "{}: unknown character encoding: '{}'",
-                                &path.to_string_lossy(),
-                                &encoding_name
+                            diagnostics_writer.write(
+                                diagnostics_writer
+                                    .message("character-encoding-error", "Character encoding error")
+                                    .text(&format!(
+                                        "{}: unknown character encoding: '{}'",
+                                        &path.to_string_lossy(),
+                                        &encoding_name
+                                    ))
+                                    .status_page()
+                                    .severity(diagnostics::Severity::Warning),
                             );
                         }
                     }
@@ -194,6 +236,7 @@ fn main() -> std::io::Result<()> {
                 language,
                 "ruby",
                 &schema,
+                &mut diagnostics_writer,
                 &mut trap_writer,
                 &path,
                 &source,

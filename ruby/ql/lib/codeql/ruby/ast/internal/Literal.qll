@@ -4,7 +4,7 @@ private import Constant
 private import TreeSitter
 private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.controlflow.CfgNodes
-private import codeql.NumberUtils
+private import codeql.util.Numbers
 
 int parseInteger(Ruby::Integer i) {
   exists(string s | s = i.getValue().toLowerCase().replaceAll("_", "") |
@@ -147,6 +147,12 @@ class FalseLiteral extends BooleanLiteralImpl, TFalseLiteral {
   final override string toString() { result = g.getValue() }
 
   final override boolean getValue() { result = false }
+}
+
+class BooleanLiteralSynth extends BooleanLiteralImpl, TBooleanLiteralSynth {
+  final override string toString() { result = this.getValue().toString() }
+
+  final override boolean getValue() { this = TBooleanLiteralSynth(_, _, result) }
 }
 
 class EncodingLiteralImpl extends Expr, TEncoding {

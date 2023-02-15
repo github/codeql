@@ -72,7 +72,10 @@ private predicate isRelevantForModels(J::Callable api) {
 /**
  * Holds if it is relevant to generate models for `api` based on data flow analysis.
  */
-predicate isRelevantForDataFlowModels = isRelevantForModels/1;
+predicate isRelevantForDataFlowModels(J::Callable api) {
+  isRelevantForModels(api) and
+  (not api.getDeclaringType() instanceof J::Interface or exists(api.getBody()))
+}
 
 predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
 

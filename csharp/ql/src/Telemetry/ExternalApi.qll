@@ -11,17 +11,19 @@ private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlow
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
+pragma[nomagic]
+private predicate isTestNamespace(Namespace ns) {
+  ns.getFullName()
+      .matches([
+          "NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%", "Moq%"
+        ])
+}
+
 /**
  * A test library.
  */
 class TestLibrary extends RefType {
-  TestLibrary() {
-    this.getNamespace()
-        .getFullName()
-        .matches([
-            "NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%", "Moq%"
-          ])
-  }
+  TestLibrary() { isTestNamespace(this.getNamespace()) }
 }
 
 /** Holds if the given callable is not worth supporting. */
@@ -85,6 +87,7 @@ class ExternalApi extends DotNet::Callable {
   }
 
   /** Holds if this API has a supported summary. */
+  pragma[nomagic]
   predicate hasSummary() {
     this instanceof SummarizedCallable
     or
@@ -92,11 +95,13 @@ class ExternalApi extends DotNet::Callable {
   }
 
   /** Holds if this API is a known source. */
+  pragma[nomagic]
   predicate isSource() {
     this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
   }
 
   /** Holds if this API is a known sink. */
+  pragma[nomagic]
   predicate isSink() { sinkNode(this.getAnInput(), _) }
 
   /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
