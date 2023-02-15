@@ -7,4 +7,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    codeql/javascript-experimental-atm-model: "0.3.1-2023-02-13-06h56m21s.dreamy-store-sdrp4q8b.45bc1e9c18e48e50855ca54a9c9e68c85605ca39212f9735087abb030a443bbb"
