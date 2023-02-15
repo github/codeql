@@ -122,13 +122,13 @@ namespace Semmle.Autobuild.CSharp
 
         protected override void AutobuildFailureDiagnostic()
         {
-            DiagnosticMessage message;
-
             // if `ScriptPath` is not null here, the `BuildCommandAuto` rule was
             // run and found at least one script to execute
             if (this.buildCommandAutoRule is not null &&
                 this.buildCommandAutoRule.ScriptPath is not null)
             {
+                DiagnosticMessage message;
+
                 // if we found multiple build scripts in the project directory, then we can say
                 // as much to indicate that we may have picked the wrong one;
                 // otherwise, we just report that the one script we found didn't work
@@ -155,27 +155,23 @@ namespace Semmle.Autobuild.CSharp
                             "You can manually specify a suitable build command for your project."
                     };
                 }
+
+                message.Severity = DiagnosticMessage.TspSeverity.Error;
+                Diagnostic(message);
             }
             // both dotnet and msbuild builds require project or solution files; if we haven't found any
             // then neither of those rules would've worked
-            else if (this.ProjectsOrSolutionsToBuild.Count == 0)
+            if (this.ProjectsOrSolutionsToBuild.Count == 0)
             {
                 var source = GetDiagnosticSource("no-projects-or-solutions", "No project or solutions files found");
-                message = new DiagnosticMessage(source)
+                var message = new DiagnosticMessage(source)
                 {
-                    PlaintextMessage = "CodeQL could not find any project or solution files in your repository."
+                    PlaintextMessage = "CodeQL could not find any project or solution files in your repository.",
+                    Severity = DiagnosticMessage.TspSeverity.Error
                 };
-            }
-            else
-            {
-                // none of the above apply; produce a generic autobuild failure message
-                base.AutobuildFailureDiagnostic();
-                return;
-            }
 
-            // all messages generated here are errors
-            message.Severity = DiagnosticMessage.TspSeverity.Error;
-            Diagnostic(message);
+                Diagnostic(message);
+            }
         }
 
         /// <summary>
