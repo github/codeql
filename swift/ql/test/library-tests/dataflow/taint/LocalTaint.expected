@@ -1157,6 +1157,7 @@
 | nsstring.swift:395:13:395:13 | str30 | nsstring.swift:396:3:396:3 | str30 |
 | nsstring.swift:396:3:396:3 | [post] str30 | nsstring.swift:397:13:397:13 | str30 |
 | nsstring.swift:396:3:396:3 | str30 | nsstring.swift:397:13:397:13 | str30 |
+| nsstring.swift:396:16:396:29 | call to sourceString() | nsstring.swift:396:3:396:3 | [post] str30 |
 | nsstring.swift:399:7:399:7 | SSA def(str31) | nsstring.swift:400:13:400:13 | str31 |
 | nsstring.swift:399:15:399:41 | call to NSMutableString.init(string:) | nsstring.swift:399:7:399:7 | SSA def(str31) |
 | nsstring.swift:399:39:399:39 |  | nsstring.swift:399:15:399:41 | call to NSMutableString.init(string:) |
@@ -1164,6 +1165,7 @@
 | nsstring.swift:400:13:400:13 | str31 | nsstring.swift:401:3:401:3 | str31 |
 | nsstring.swift:401:3:401:3 | [post] str31 | nsstring.swift:402:13:402:13 | str31 |
 | nsstring.swift:401:3:401:3 | str31 | nsstring.swift:402:13:402:13 | str31 |
+| nsstring.swift:401:16:401:29 | call to sourceString() | nsstring.swift:401:3:401:3 | [post] str31 |
 | nsstring.swift:404:7:404:7 | SSA def(str32) | nsstring.swift:405:13:405:13 | str32 |
 | nsstring.swift:404:15:404:41 | call to NSMutableString.init(string:) | nsstring.swift:404:7:404:7 | SSA def(str32) |
 | nsstring.swift:404:39:404:39 |  | nsstring.swift:404:15:404:41 | call to NSMutableString.init(string:) |
@@ -1172,6 +1174,7 @@
 | nsstring.swift:406:3:406:3 | [post] str32 | nsstring.swift:407:13:407:13 | str32 |
 | nsstring.swift:406:3:406:3 | str32 | nsstring.swift:407:13:407:13 | str32 |
 | nsstring.swift:406:31:406:31 | myRange | nsstring.swift:411:66:411:66 | myRange |
+| nsstring.swift:406:46:406:59 | call to sourceString() | nsstring.swift:406:3:406:3 | [post] str32 |
 | nsstring.swift:409:7:409:7 | SSA def(str33) | nsstring.swift:410:13:410:13 | str33 |
 | nsstring.swift:409:15:409:41 | call to NSMutableString.init(string:) | nsstring.swift:409:7:409:7 | SSA def(str33) |
 | nsstring.swift:409:39:409:39 |  | nsstring.swift:409:15:409:41 | call to NSMutableString.init(string:) |
@@ -1179,6 +1182,7 @@
 | nsstring.swift:410:13:410:13 | str33 | nsstring.swift:411:3:411:3 | str33 |
 | nsstring.swift:411:3:411:3 | [post] str33 | nsstring.swift:412:13:412:13 | str33 |
 | nsstring.swift:411:3:411:3 | str33 | nsstring.swift:412:13:412:13 | str33 |
+| nsstring.swift:411:43:411:56 | call to sourceString() | nsstring.swift:411:3:411:3 | [post] str33 |
 | nsstring.swift:414:7:414:7 | SSA def(str34) | nsstring.swift:415:13:415:13 | str34 |
 | nsstring.swift:414:15:414:41 | call to NSMutableString.init(string:) | nsstring.swift:414:7:414:7 | SSA def(str34) |
 | nsstring.swift:414:39:414:39 |  | nsstring.swift:414:15:414:41 | call to NSMutableString.init(string:) |
@@ -1186,14 +1190,17 @@
 | nsstring.swift:415:13:415:13 | str34 | nsstring.swift:416:3:416:3 | str34 |
 | nsstring.swift:416:3:416:3 | [post] str34 | nsstring.swift:417:13:417:13 | str34 |
 | nsstring.swift:416:3:416:3 | str34 | nsstring.swift:417:13:417:13 | str34 |
+| nsstring.swift:416:19:416:32 | call to sourceString() | nsstring.swift:416:3:416:3 | [post] str34 |
 | nsstring.swift:417:13:417:13 | [post] str34 | nsstring.swift:418:3:418:3 | str34 |
 | nsstring.swift:417:13:417:13 | str34 | nsstring.swift:418:3:418:3 | str34 |
 | nsstring.swift:418:3:418:3 | [post] str34 | nsstring.swift:419:13:419:13 | str34 |
 | nsstring.swift:418:3:418:3 | str34 | nsstring.swift:419:13:419:13 | str34 |
+| nsstring.swift:418:16:418:16 | -append | nsstring.swift:418:3:418:3 | [post] str34 |
 | nsstring.swift:419:13:419:13 | [post] str34 | nsstring.swift:420:3:420:3 | str34 |
 | nsstring.swift:419:13:419:13 | str34 | nsstring.swift:420:3:420:3 | str34 |
 | nsstring.swift:420:3:420:3 | [post] str34 | nsstring.swift:421:13:421:13 | str34 |
 | nsstring.swift:420:3:420:3 | str34 | nsstring.swift:421:13:421:13 | str34 |
+| nsstring.swift:420:19:420:19 |  | nsstring.swift:420:3:420:3 | [post] str34 |
 | nsstring.swift:425:13:425:28 | call to sourceNSString() | nsstring.swift:425:13:425:30 | .utf8String |
 | nsstring.swift:426:13:426:62 | call to Self.init(utf8String:) | nsstring.swift:426:13:426:63 | ...! |
 | nsstring.swift:426:34:426:49 | call to sourceNSString() | nsstring.swift:426:34:426:51 | .utf8String |

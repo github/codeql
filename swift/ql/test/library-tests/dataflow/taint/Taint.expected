@@ -390,6 +390,11 @@ edges
 | nsstring.swift:94:3:94:69 | [summary param] 0 in appendingPathExtension(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathExtension(_:) :  |
 | nsstring.swift:94:3:94:69 | [summary param] this in appendingPathExtension(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathExtension(_:) :  |
 | nsstring.swift:95:3:95:74 | [summary param] this in strings(byAppendingPaths:) :  | file://:0:0:0:0 | [summary] to write: return (return) in strings(byAppendingPaths:) :  |
+| nsstring.swift:131:3:131:35 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  |
+| nsstring.swift:132:3:132:48 | [summary param] 0 in insert(_:at:) :  | file://:0:0:0:0 | [summary] to write: argument this in insert(_:at:) :  |
+| nsstring.swift:133:3:133:68 | [summary param] 1 in replaceCharacters(in:with:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceCharacters(in:with:) :  |
+| nsstring.swift:134:3:134:157 | [summary param] 1 in replaceOccurrences(of:with:options:range:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceOccurrences(of:with:options:range:) :  |
+| nsstring.swift:135:3:135:38 | [summary param] 0 in setString(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in setString(_:) :  |
 | nsstring.swift:149:2:149:25 | [summary param] 0 in URL.init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:) :  |
 | nsstring.swift:154:3:154:46 | [summary param] 0 in Data.init(bytes:count:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytes:count:) :  |
 | nsstring.swift:193:34:193:54 | call to sourceUnicharString() :  | nsstring.swift:31:3:31:58 | [summary param] 0 in NSString.init(characters:length:) :  |
@@ -568,6 +573,23 @@ edges
 | nsstring.swift:334:29:334:29 | [post] ptr3 :  | nsstring.swift:335:13:335:13 | ptr3 |
 | nsstring.swift:392:13:392:35 | call to sourceNSMutableString() :  | nsstring.swift:77:3:77:64 | [summary param] this in capitalized(with:) :  |
 | nsstring.swift:392:13:392:35 | call to sourceNSMutableString() :  | nsstring.swift:392:13:392:58 | call to capitalized(with:) |
+| nsstring.swift:396:3:396:3 | [post] str30 :  | nsstring.swift:397:13:397:13 | str30 |
+| nsstring.swift:396:16:396:29 | call to sourceString() :  | nsstring.swift:131:3:131:35 | [summary param] 0 in append(_:) :  |
+| nsstring.swift:396:16:396:29 | call to sourceString() :  | nsstring.swift:396:3:396:3 | [post] str30 :  |
+| nsstring.swift:401:3:401:3 | [post] str31 :  | nsstring.swift:402:13:402:13 | str31 |
+| nsstring.swift:401:16:401:29 | call to sourceString() :  | nsstring.swift:132:3:132:48 | [summary param] 0 in insert(_:at:) :  |
+| nsstring.swift:401:16:401:29 | call to sourceString() :  | nsstring.swift:401:3:401:3 | [post] str31 :  |
+| nsstring.swift:406:3:406:3 | [post] str32 :  | nsstring.swift:407:13:407:13 | str32 |
+| nsstring.swift:406:46:406:59 | call to sourceString() :  | nsstring.swift:133:3:133:68 | [summary param] 1 in replaceCharacters(in:with:) :  |
+| nsstring.swift:406:46:406:59 | call to sourceString() :  | nsstring.swift:406:3:406:3 | [post] str32 :  |
+| nsstring.swift:411:3:411:3 | [post] str33 :  | nsstring.swift:412:13:412:13 | str33 |
+| nsstring.swift:411:43:411:56 | call to sourceString() :  | nsstring.swift:134:3:134:157 | [summary param] 1 in replaceOccurrences(of:with:options:range:) :  |
+| nsstring.swift:411:43:411:56 | call to sourceString() :  | nsstring.swift:411:3:411:3 | [post] str33 :  |
+| nsstring.swift:416:3:416:3 | [post] str34 :  | nsstring.swift:417:13:417:13 | str34 |
+| nsstring.swift:416:3:416:3 | [post] str34 :  | nsstring.swift:419:13:419:13 | str34 |
+| nsstring.swift:416:3:416:3 | [post] str34 :  | nsstring.swift:421:13:421:13 | str34 |
+| nsstring.swift:416:19:416:32 | call to sourceString() :  | nsstring.swift:135:3:135:38 | [summary param] 0 in setString(_:) :  |
+| nsstring.swift:416:19:416:32 | call to sourceString() :  | nsstring.swift:416:3:416:3 | [post] str34 :  |
 | nsstring.swift:425:13:425:28 | call to sourceNSString() :  | nsstring.swift:425:13:425:30 | .utf8String |
 | nsstring.swift:426:13:426:62 | call to Self.init(utf8String:) :  | nsstring.swift:426:13:426:63 | ...! |
 | nsstring.swift:426:34:426:49 | call to sourceNSString() :  | nsstring.swift:426:34:426:61 | ...! :  |
@@ -1355,23 +1377,28 @@ nodes
 | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | semmle.label | [summary] to write: argument this in append(_:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | semmle.label | [summary] to write: argument this in append(_:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | semmle.label | [summary] to write: argument this in append(_:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | semmle.label | [summary] to write: argument this in append(_:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in append(_:count:) :  | semmle.label | [summary] to write: argument this in append(_:count:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in append(_:length:) :  | semmle.label | [summary] to write: argument this in append(_:length:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in append(contentsOf:) :  | semmle.label | [summary] to write: argument this in append(contentsOf:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in append(contentsOf:) :  | semmle.label | [summary] to write: argument this in append(contentsOf:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in defineProperty(_:descriptor:) :  | semmle.label | [summary] to write: argument this in defineProperty(_:descriptor:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in insert(_:at:) :  | semmle.label | [summary] to write: argument this in insert(_:at:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in insert(_:at:) :  | semmle.label | [summary] to write: argument this in insert(_:at:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in insert(contentsOf:at:) :  | semmle.label | [summary] to write: argument this in insert(contentsOf:at:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in insert(contentsOf:at:) :  | semmle.label | [summary] to write: argument this in insert(contentsOf:at:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replace(_:with:maxReplacements:) :  | semmle.label | [summary] to write: argument this in replace(_:with:maxReplacements:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replaceBytes(in:withBytes:) :  | semmle.label | [summary] to write: argument this in replaceBytes(in:withBytes:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replaceBytes(in:withBytes:length:) :  | semmle.label | [summary] to write: argument this in replaceBytes(in:withBytes:length:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in replaceCharacters(in:with:) :  | semmle.label | [summary] to write: argument this in replaceCharacters(in:with:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in replaceOccurrences(of:with:options:range:) :  | semmle.label | [summary] to write: argument this in replaceOccurrences(of:with:options:range:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  | semmle.label | [summary] to write: argument this in replaceSubrange(_:with:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  | semmle.label | [summary] to write: argument this in replaceSubrange(_:with:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:count:) :  | semmle.label | [summary] to write: argument this in replaceSubrange(_:with:count:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replacing(_:with:maxReplacements:) :  | semmle.label | [summary] to write: argument this in replacing(_:with:maxReplacements:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replacing(_:with:subrange:maxReplacements:) :  | semmle.label | [summary] to write: argument this in replacing(_:with:subrange:maxReplacements:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in setData(_:) :  | semmle.label | [summary] to write: argument this in setData(_:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in setString(_:) :  | semmle.label | [summary] to write: argument this in setString(_:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:at:) :  | semmle.label | [summary] to write: argument this in setValue(_:at:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:forProperty:) :  | semmle.label | [summary] to write: argument this in setValue(_:forProperty:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in write(_:) :  | semmle.label | [summary] to write: argument this in write(_:) :  |
@@ -1745,6 +1772,11 @@ nodes
 | nsstring.swift:94:3:94:69 | [summary param] 0 in appendingPathExtension(_:) :  | semmle.label | [summary param] 0 in appendingPathExtension(_:) :  |
 | nsstring.swift:94:3:94:69 | [summary param] this in appendingPathExtension(_:) :  | semmle.label | [summary param] this in appendingPathExtension(_:) :  |
 | nsstring.swift:95:3:95:74 | [summary param] this in strings(byAppendingPaths:) :  | semmle.label | [summary param] this in strings(byAppendingPaths:) :  |
+| nsstring.swift:131:3:131:35 | [summary param] 0 in append(_:) :  | semmle.label | [summary param] 0 in append(_:) :  |
+| nsstring.swift:132:3:132:48 | [summary param] 0 in insert(_:at:) :  | semmle.label | [summary param] 0 in insert(_:at:) :  |
+| nsstring.swift:133:3:133:68 | [summary param] 1 in replaceCharacters(in:with:) :  | semmle.label | [summary param] 1 in replaceCharacters(in:with:) :  |
+| nsstring.swift:134:3:134:157 | [summary param] 1 in replaceOccurrences(of:with:options:range:) :  | semmle.label | [summary param] 1 in replaceOccurrences(of:with:options:range:) :  |
+| nsstring.swift:135:3:135:38 | [summary param] 0 in setString(_:) :  | semmle.label | [summary param] 0 in setString(_:) :  |
 | nsstring.swift:149:2:149:25 | [summary param] 0 in URL.init(string:) :  | semmle.label | [summary param] 0 in URL.init(string:) :  |
 | nsstring.swift:154:3:154:46 | [summary param] 0 in Data.init(bytes:count:) :  | semmle.label | [summary param] 0 in Data.init(bytes:count:) :  |
 | nsstring.swift:193:13:193:68 | call to NSString.init(characters:length:) | semmle.label | call to NSString.init(characters:length:) |
@@ -1920,6 +1952,23 @@ nodes
 | nsstring.swift:335:13:335:13 | ptr3 | semmle.label | ptr3 |
 | nsstring.swift:392:13:392:35 | call to sourceNSMutableString() :  | semmle.label | call to sourceNSMutableString() :  |
 | nsstring.swift:392:13:392:58 | call to capitalized(with:) | semmle.label | call to capitalized(with:) |
+| nsstring.swift:396:3:396:3 | [post] str30 :  | semmle.label | [post] str30 :  |
+| nsstring.swift:396:16:396:29 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:397:13:397:13 | str30 | semmle.label | str30 |
+| nsstring.swift:401:3:401:3 | [post] str31 :  | semmle.label | [post] str31 :  |
+| nsstring.swift:401:16:401:29 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:402:13:402:13 | str31 | semmle.label | str31 |
+| nsstring.swift:406:3:406:3 | [post] str32 :  | semmle.label | [post] str32 :  |
+| nsstring.swift:406:46:406:59 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:407:13:407:13 | str32 | semmle.label | str32 |
+| nsstring.swift:411:3:411:3 | [post] str33 :  | semmle.label | [post] str33 :  |
+| nsstring.swift:411:43:411:56 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:412:13:412:13 | str33 | semmle.label | str33 |
+| nsstring.swift:416:3:416:3 | [post] str34 :  | semmle.label | [post] str34 :  |
+| nsstring.swift:416:19:416:32 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:417:13:417:13 | str34 | semmle.label | str34 |
+| nsstring.swift:419:13:419:13 | str34 | semmle.label | str34 |
+| nsstring.swift:421:13:421:13 | str34 | semmle.label | str34 |
 | nsstring.swift:425:13:425:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
 | nsstring.swift:425:13:425:30 | .utf8String | semmle.label | .utf8String |
 | nsstring.swift:426:13:426:62 | call to Self.init(utf8String:) :  | semmle.label | call to Self.init(utf8String:) :  |
@@ -2568,6 +2617,11 @@ subpaths
 | nsstring.swift:312:13:312:28 | call to sourceNSString() :  | nsstring.swift:95:3:95:74 | [summary param] this in strings(byAppendingPaths:) :  | file://:0:0:0:0 | [summary] to write: return (return) in strings(byAppendingPaths:) :  | nsstring.swift:312:13:312:60 | call to strings(byAppendingPaths:) :  |
 | nsstring.swift:334:3:334:18 | call to sourceNSString() :  | nsstring.swift:66:3:66:281 | [summary param] this in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  | nsstring.swift:334:29:334:29 | [post] ptr3 :  |
 | nsstring.swift:392:13:392:35 | call to sourceNSMutableString() :  | nsstring.swift:77:3:77:64 | [summary param] this in capitalized(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in capitalized(with:) :  | nsstring.swift:392:13:392:58 | call to capitalized(with:) |
+| nsstring.swift:396:16:396:29 | call to sourceString() :  | nsstring.swift:131:3:131:35 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | nsstring.swift:396:3:396:3 | [post] str30 :  |
+| nsstring.swift:401:16:401:29 | call to sourceString() :  | nsstring.swift:132:3:132:48 | [summary param] 0 in insert(_:at:) :  | file://:0:0:0:0 | [summary] to write: argument this in insert(_:at:) :  | nsstring.swift:401:3:401:3 | [post] str31 :  |
+| nsstring.swift:406:46:406:59 | call to sourceString() :  | nsstring.swift:133:3:133:68 | [summary param] 1 in replaceCharacters(in:with:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceCharacters(in:with:) :  | nsstring.swift:406:3:406:3 | [post] str32 :  |
+| nsstring.swift:411:43:411:56 | call to sourceString() :  | nsstring.swift:134:3:134:157 | [summary param] 1 in replaceOccurrences(of:with:options:range:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceOccurrences(of:with:options:range:) :  | nsstring.swift:411:3:411:3 | [post] str33 :  |
+| nsstring.swift:416:19:416:32 | call to sourceString() :  | nsstring.swift:135:3:135:38 | [summary param] 0 in setString(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in setString(_:) :  | nsstring.swift:416:3:416:3 | [post] str34 :  |
 | nsstring.swift:426:34:426:61 | ...! :  | nsstring.swift:48:15:48:101 | [summary param] 0 in Self.init(utf8String:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(utf8String:) :  | nsstring.swift:426:13:426:62 | call to Self.init(utf8String:) :  |
 | string.swift:170:29:170:29 | tainted :  | string.swift:103:3:103:82 | [summary param] 0 in appending(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  | string.swift:170:13:170:36 | call to appending(_:) |
 | string.swift:171:13:171:13 | tainted :  | string.swift:103:3:103:82 | [summary param] this in appending(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  | string.swift:171:13:171:36 | call to appending(_:) |
@@ -2835,6 +2889,13 @@ subpaths
 | nsstring.swift:312:13:312:63 | ...[...] | nsstring.swift:312:13:312:28 | call to sourceNSString() :  | nsstring.swift:312:13:312:63 | ...[...] | result |
 | nsstring.swift:335:13:335:13 | ptr3 | nsstring.swift:334:3:334:18 | call to sourceNSString() :  | nsstring.swift:335:13:335:13 | ptr3 | result |
 | nsstring.swift:392:13:392:58 | call to capitalized(with:) | nsstring.swift:392:13:392:35 | call to sourceNSMutableString() :  | nsstring.swift:392:13:392:58 | call to capitalized(with:) | result |
+| nsstring.swift:397:13:397:13 | str30 | nsstring.swift:396:16:396:29 | call to sourceString() :  | nsstring.swift:397:13:397:13 | str30 | result |
+| nsstring.swift:402:13:402:13 | str31 | nsstring.swift:401:16:401:29 | call to sourceString() :  | nsstring.swift:402:13:402:13 | str31 | result |
+| nsstring.swift:407:13:407:13 | str32 | nsstring.swift:406:46:406:59 | call to sourceString() :  | nsstring.swift:407:13:407:13 | str32 | result |
+| nsstring.swift:412:13:412:13 | str33 | nsstring.swift:411:43:411:56 | call to sourceString() :  | nsstring.swift:412:13:412:13 | str33 | result |
+| nsstring.swift:417:13:417:13 | str34 | nsstring.swift:416:19:416:32 | call to sourceString() :  | nsstring.swift:417:13:417:13 | str34 | result |
+| nsstring.swift:419:13:419:13 | str34 | nsstring.swift:416:19:416:32 | call to sourceString() :  | nsstring.swift:419:13:419:13 | str34 | result |
+| nsstring.swift:421:13:421:13 | str34 | nsstring.swift:416:19:416:32 | call to sourceString() :  | nsstring.swift:421:13:421:13 | str34 | result |
 | nsstring.swift:425:13:425:30 | .utf8String | nsstring.swift:425:13:425:28 | call to sourceNSString() :  | nsstring.swift:425:13:425:30 | .utf8String | result |
 | nsstring.swift:426:13:426:63 | ...! | nsstring.swift:426:34:426:49 | call to sourceNSString() :  | nsstring.swift:426:13:426:63 | ...! | result |
 | nsstring.swift:427:13:427:30 | .lowercased | nsstring.swift:427:13:427:28 | call to sourceNSString() :  | nsstring.swift:427:13:427:30 | .lowercased | result |

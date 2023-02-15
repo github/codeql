@@ -394,31 +394,31 @@ func taintThroughInterpolatedStrings() {
   var str30 = NSMutableString(string: "")
   sink(arg: str30)
   str30.append(sourceString())
-  sink(arg: str30) // $ MISSING: tainted=
+  sink(arg: str30) // $ tainted=396
 
   var str31 = NSMutableString(string: "")
   sink(arg: str31)
   str31.insert(sourceString(), at: 0)
-  sink(arg: str31) // $ MISSING: tainted=
+  sink(arg: str31) // $ tainted=401
 
   var str32 = NSMutableString(string: "")
   sink(arg: str32)
   str32.replaceCharacters(in: myRange, with: sourceString())
-  sink(arg: str32) // $ MISSING: tainted=
+  sink(arg: str32) // $ tainted=406
 
   var str33 = NSMutableString(string: "")
   sink(arg: str33)
   str33.replaceOccurrences(of: "a", with: sourceString(), range: myRange)
-  sink(arg: str33) // $ MISSING: tainted=
+  sink(arg: str33) // $ tainted=411
 
   var str34 = NSMutableString(string: "")
   sink(arg: str34)
   str34.setString(sourceString())
-  sink(arg: str34) // $ MISSING: tainted=
+  sink(arg: str34) // $ tainted=416
   str34.append("-append")
-  sink(arg: str34) // $ MISSING: tainted=
+  sink(arg: str34) // $ tainted=416
   str34.setString("")
-  sink(arg: str34)
+  sink(arg: str34) // $ SPURIOUS: tainted=416
 
   // member variables
 

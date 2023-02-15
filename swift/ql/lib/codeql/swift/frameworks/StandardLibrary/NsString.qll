@@ -113,6 +113,12 @@ private class NsStringSummaries extends SummaryModelCsv {
       ";NSString;true;addingPercentEscapes(using:);;;Argument[-1];ReturnValue;taint",
       ";NSString;true;replacingPercentEscapes(using:);;;Argument[-1];ReturnValue;taint",
       ";NSString;true;applyTransform(_:reverse:range:updatedRange:);;;Argument[-1];ReturnValue;taint",
+      ";NSMutableString;true;append(_:);;;Argument[0];Argument[-1];taint",
+      ";NSMutableString;true;insert(_:at:);;;Argument[0];Argument[-1];taint",
+      ";NSMutableString;true;replaceCharacters(in:with:);;;Argument[1];Argument[-1];taint",
+      ";NSMutableString;true;replaceOccurrences(of:with:options:range:);;;Argument[1];Argument[-1];taint",
+      ";NSMutableString;true;setString(_:);;;Argument[0];Argument[-1];taint",
+      ";NSMutableString;true;appendFormat(_:_:);;;Argument[0];Argument[-1];taint", //0..
     ]
   }
 }
