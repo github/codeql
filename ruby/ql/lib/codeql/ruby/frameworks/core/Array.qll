@@ -1186,6 +1186,16 @@ module Array {
     }
   }
 
+  private class JoinSummary extends SimpleSummarizedCallable {
+    JoinSummary() { this = ["join"] }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self].Element[any]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
   private class PushSummary extends SimpleSummarizedCallable {
     // `append` is an alias for `push`
     PushSummary() { this = ["push", "append"] }
@@ -1816,6 +1826,8 @@ module Array {
     }
   }
 
+  private import codeql.ruby.frameworks.core.Kernel
+
   /**
    * Holds if there an array element `pred` might taint the array defined by `succ`.
    * This is used for queries where we consider an entire array to be tainted if any of its elements are tainted.
@@ -1829,19 +1841,12 @@ module Array {
     )
     or
     exists(DataFlow::CallNode call |
-      call.getMethodName() = "[]" and
+      call.asExpr().getExpr() = getAStaticArrayCall("[]")
+      or
+      call.(Kernel::KernelMethodCall).getMethodName() = "Array"
+    |
       succ = call and
       pred = call.getArgument(_)
-    )
-    or
-    exists(DataFlow::CallNode call | call.getMethodName() = "join" |
-      pred = call.getReceiver() and
-      succ = call
-    )
-    or
-    exists(DataFlow::CallNode call | call.getMethodName() = "Array" |
-      pred = call.getArgument(_) and
-      succ = call
     )
   }
 }
