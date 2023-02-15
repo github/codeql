@@ -136,7 +136,7 @@ if os.path.isdir(specsFile):
 elif specsFile.endswith(".yml") or specsFile.endswith(".yaml"):
     specs = readYml(specsFile)
 elif specsFile.endswith(".csv"):
-    spcs = readCsv(specsFile)
+    specs = readCsv(specsFile)
 else:
     print(f"Invalid specs {specsFile}. Must be a csv file, a yml file, or a directory of yml files.")
     sys.exit(1)
