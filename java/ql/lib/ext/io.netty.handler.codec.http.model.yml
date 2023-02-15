@@ -1,45 +1,43 @@
 extensions:
-  - addsTo:
-      pack: codeql/java-all
-      extensible: sinkModel
-    data:
-      - ["io.netty.handler.codec.http", "DefaultFullHttpRequest", True, "DefaultFullHttpRequest", "(HttpVersion,HttpMethod,String,ByteBuf)", "", "Argument[2]", "open-url", "ai-generated"]
-      - ["io.netty.handler.codec.http", "DefaultHttpRequest", True, "DefaultHttpRequest", "(HttpVersion,HttpMethod,String)", "", "Argument[2]", "open-url", "ai-generated"]
-  - addsTo:
-      pack: codeql/java-all
-      extensible: summaryModel
-    data:
-      - ["io.netty.handler.codec.http", "QueryStringEncoder", True, "QueryStringEncoder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "copy", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "entries", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "get", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "get", "", "", "Argument[1]", "ReturnValue", "value", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "getAll", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "getAllAsString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "getAsString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "getHeader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "getHeader", "", "", "Argument[2]", "ReturnValue", "value", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "getHost", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "getHost", "", "", "Argument[2]", "ReturnValue", "value", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "iteratorAsString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "iteratorCharSequence", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "names", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "newEntity", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "valueCharSequenceIterator", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "valueStringIterator", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpHeaders", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpMessage", True, "headers", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpMessage", True, "trailingHeaders", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "LastHttpMessage", True, "trailingHeaders", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpRequest", True, "getUri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "HttpRequest", True, "uri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "QueryStringDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "decodeComponent", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "parameters", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "path", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "rawPath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "rawQuery", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "uri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-
-
+- addsTo:
+    pack: codeql/java-all
+    extensible: sinkModel
+  data:
+    - ["io.netty.handler.codec.http", "DefaultFullHttpRequest", True, "DefaultFullHttpRequest", "(HttpVersion,HttpMethod,String,ByteBuf)", "", "Argument[2]", "open-url", "ai-generated"]
+    - ["io.netty.handler.codec.http", "DefaultHttpRequest", True, "DefaultHttpRequest", "(HttpVersion,HttpMethod,String)", "", "Argument[2]", "open-url", "ai-generated"]
+- addsTo:
+    pack: codeql/java-all
+    extensible: summaryModel
+  data:
+    - ["io.netty.handler.codec.http", "QueryStringEncoder", True, "QueryStringEncoder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "copy", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "entries", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "get", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "get", "", "", "Argument[1]", "ReturnValue", "value", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "getAll", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "getAllAsString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "getAsString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "getHeader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "getHeader", "", "", "Argument[2]", "ReturnValue", "value", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "getHost", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "getHost", "", "", "Argument[1]", "ReturnValue", "value", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "iteratorAsString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "iteratorCharSequence", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "names", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "newEntity", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "valueCharSequenceIterator", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "valueStringIterator", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpMessage", True, "headers", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "LastHttpContent", True, "trailingHeaders", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpRequest", True, "getUri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpRequest", True, "uri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "QueryStringDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "decodeComponent", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "parameters", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "path", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "rawPath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "rawQuery", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "uri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    
