@@ -839,7 +839,7 @@ private newtype TContentApprox =
 
 /** An approximated `Content`. */
 class ContentApprox extends TContentApprox {
-  string toString() { none() } // overriden in subclasses
+  string toString() { none() } // overridden in subclasses
 }
 
 private class FieldApproxContent extends ContentApprox, TFieldApproxContent {
