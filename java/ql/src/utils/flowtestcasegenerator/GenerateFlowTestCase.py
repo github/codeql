@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import errno
 import json
@@ -47,7 +47,7 @@ if len(sys.argv) != 4:
 
 try:
     os.makedirs(sys.argv[3])
-except Exception as e:
+except OSError as e:
     if e.errno != errno.EEXIST:
         print("Failed to create output directory %s: %s" % (sys.argv[3], e))
         sys.exit(1)
@@ -75,19 +75,68 @@ except Exception as e:
           (sys.argv[2], e), file=sys.stderr)
     sys.exit(1)
 
-commentRegex = re.compile("^\s*(//|#)")
+commentRegex = re.compile(r"^\s*(//|#)")
 
 
 def isComment(s):
     return commentRegex.match(s) is not None
 
 
-try:
-    with open(sys.argv[1], "r") as f:
-        specs = [l for l in f if not isComment(l)]
-except Exception as e:
-    print("Failed to open %s: %s\n" % (sys.argv[1], e))
+def readCsv(file):
+    try:
+        with open(file, "r") as f:
+            specs = [l for l in f if not isComment(l)]
+    except Exception as e:
+        print("Failed to open %s: %s\n" % (file, e))
+        sys.exit(1)
+
+    specs = [row.split(";") for row in specs]
+    return specs
+
+
+def readYml(file):
+    try:
+        import yaml
+        with open(file, "r") as f:
+            doc = yaml.load(f.read(), yaml.Loader)
+        specs = []
+        for ext in doc['extensions']:
+            if ext['addsTo']['extensible'] == 'summaryModel':
+                for row in ext['data']:
+                    if isinstance(row[2], bool):
+                        row[2] = str(row[2]).lower()
+                    specs.append(row)
+        return specs
+    except ImportError:
+        print("PyYAML not found - try \n    pip install pyyaml")
+        sys.exit(1)
+    except ValueError as e:
+        print("Invalid yaml model in %s: %s\n" % (file, e))
+        sys.exit(1)
+    except OSError as e:
+        print("Failed to open %s: %s\n" % (file, e))
+        sys.exit(1)
+
+
+def readYmlDir(dirname):
+    specs = []
+    for f in os.listdir(dirname):
+        if f.endswith('.yml'):
+            specs += readYml(f"{dirname}/{f}")
+    return specs
+
+
+specsFile = sys.argv[1]
+if os.path.isdir(specsFile):
+    specs = readYmlDir(specsFile)
+elif specsFile.endswith(".yml") or specsFile.endswith(".yaml"):
+    specs = readYml(specsFile)
+elif specsFile.endswith(".csv"):
+    spcs = readCsv(specsFile)
+else:
+    print(f"Invalid specs {specsFile}. Must be a csv file, a yml file, or a directory of yml files.")
     sys.exit(1)
+
 
 projectTestPkgDir = os.path.join(projectDir, "src", "main", "java", "test")
 projectTestFile = os.path.join(projectTestPkgDir, "Test.java")
@@ -95,18 +144,17 @@ projectTestFile = os.path.join(projectTestPkgDir, "Test.java")
 os.makedirs(projectTestPkgDir)
 
 
-def qualifiedOuterNameFromCsvRow(row):
-    cells = row.split(";")
-    if len(cells) < 2:
+def qualifiedOuterNameFromRow(row):
+    if len(row) < 2:
         return None
-    return cells[0] + "." + cells[1].replace("$", ".")
+    return row[0] + "." + row[1].replace("$", ".")
 
 
 with open(projectTestFile, "w") as testJava:
     testJava.write("package test;\n\npublic class Test {\n\n")
 
     for i, spec in enumerate(specs):
-        outerName = qualifiedOuterNameFromCsvRow(spec)
+        outerName = qualifiedOuterNameFromRow(spec)
         if outerName is None:
             print("A taint specification has the wrong format: should be 'package;classname;methodname....'", file=sys.stderr)
             print("Mis-formatted row: " + spec, file=sys.stderr)
@@ -140,7 +188,7 @@ dependencies:
 with open(qlFile, "w") as f:
     f.write(
         "import java\nimport utils.flowtestcasegenerator.GenerateFlowTestCase\n\nclass GenRow extends TargetSummaryModelCsv {\n\n\toverride predicate row(string r) {\n\t\tr = [\n")
-    f.write(",\n".join('\t\t\t"%s"' % spec.strip() for spec in specs))
+    f.write(",\n".join('\t\t\t"%s"' % ';'.join(spec) for spec in specs))
     f.write("\n\t\t]\n\t}\n}\n")
 
 print("Generating tests")
@@ -221,7 +269,7 @@ if len(supportModelRows) != 0:
     # Make a test extension file
     with open(resultYml, "w") as f:
         models = "\n".join('      - [%s]' %
-                          modelSpecRow[0].strip() for modelSpecRow in supportModelRows)
+                           modelSpecRow[0].strip() for modelSpecRow in supportModelRows)
         dataextensions = f"""extensions:
   - addsTo:
       pack: codeql/java-tests
