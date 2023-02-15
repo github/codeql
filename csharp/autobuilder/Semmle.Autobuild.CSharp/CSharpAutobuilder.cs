@@ -134,41 +134,36 @@ namespace Semmle.Autobuild.CSharp
                 // otherwise, we just report that the one script we found didn't work
                 if (this.buildCommandAutoRule.CandidatePaths.Count() > 1)
                 {
-                    var source = GetDiagnosticSource("multiple-build-scripts", "There are multiple potential build scripts");
-                    message = new DiagnosticMessage(source)
-                    {
-                        MarkdownMessage =
-                            "CodeQL found multiple potential build scripts for your project and " +
-                            $"attempted to run `{buildCommandAutoRule.ScriptPath}`, which failed. " +
-                            "This may not be the right build script for your project. " +
-                            "You can specify which build script to use by providing a suitable build command for your project."
-                    };
+                    message = MakeDiagnostic("multiple-build-scripts", "There are multiple potential build scripts");
+                    message.MarkdownMessage =
+                        "CodeQL found multiple potential build scripts for your project and " +
+                        $"attempted to run `{buildCommandAutoRule.ScriptPath}`, which failed. " +
+                        "This may not be the right build script for your project. " +
+                        "You can specify which build script to use by providing a suitable build command for your project.";
                 }
                 else
                 {
-                    var source = GetDiagnosticSource("script-failure", "Unable to build project using build script");
-                    message = new DiagnosticMessage(source)
-                    {
-                        MarkdownMessage =
-                            "CodeQL attempted to build your project using a script located at " +
-                            $"`{buildCommandAutoRule.ScriptPath}`, which failed. " +
-                            "You can manually specify a suitable build command for your project."
-                    };
+                    message = MakeDiagnostic("script-failure", "Unable to build project using build script");
+                    message.MarkdownMessage =
+                        "CodeQL attempted to build your project using a script located at " +
+                        $"`{buildCommandAutoRule.ScriptPath}`, which failed. " +
+                        "You can manually specify a suitable build command for your project.";
                 }
 
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
                 Diagnostic(message);
             }
+
             // both dotnet and msbuild builds require project or solution files; if we haven't found any
             // then neither of those rules would've worked
             if (this.ProjectsOrSolutionsToBuild.Count == 0)
             {
-                var source = GetDiagnosticSource("no-projects-or-solutions", "No project or solutions files found");
-                var message = new DiagnosticMessage(source)
-                {
-                    PlaintextMessage = "CodeQL could not find any project or solution files in your repository.",
-                    Severity = DiagnosticMessage.TspSeverity.Error
-                };
+                var message = MakeDiagnostic("no-projects-or-solutions", "No project or solutions files found");
+                message.PlaintextMessage = "CodeQL could not find any project or solution files in your repository.";
+                message.Severity = DiagnosticMessage.TspSeverity.Error;
+
+                Diagnostic(message);
+            }
 
                 Diagnostic(message);
             }
