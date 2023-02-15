@@ -8,14 +8,19 @@ private import codeql.swift.elements.decl.EnumElementDecl
 /**
  * An expression that constructs a case of an enum.
  */
-abstract class EnumElementExpr extends Expr {
+class EnumElementExpr extends Expr {
   EnumElementDecl decl;
+
+  EnumElementExpr() {
+    this.(NullaryEnumElementExpr).getElement() = decl or
+    this.(NonNullaryEnumElementExpr).getElement() = decl
+  }
 
   /** Gets the declaration of the enum element that this expression creates. */
   EnumElementDecl getElement() { result = decl }
 
   /** Gets the `i`th argument passed to this enum element expression (0-based). */
-  Argument getArgument(int i) { none() }
+  Argument getArgument(int i) { result = this.(NonNullaryEnumElementExpr).getArgument(i) }
 
   /** Gets an argument passed to this enum element expression, if any. */
   final Argument getAnArgument() { result = this.getArgument(_) }
@@ -24,23 +29,28 @@ abstract class EnumElementExpr extends Expr {
   final int getNumberOfArguments() { result = count(this.getArgument(_)) }
 }
 
+/**
+ * An expression that refers to an enum element, either directly in the case of a nullary enum element,
+ * or referring to the enum element constructor in the case of a non-nullary enum element.
+ */
 private class EnumElementLookupExpr extends MethodLookupExpr {
   EnumElementLookupExpr() { this.getMember() instanceof EnumElementDecl }
 }
 
-private class NullaryEnumElementExpr extends EnumElementExpr instanceof EnumElementLookupExpr {
-  NullaryEnumElementExpr() {
-    this.getMember() = decl and not exists(CallExpr ce | ce.getFunction() = this)
-  }
+/** An expression creating an enum with no arguments */
+private class NullaryEnumElementExpr extends EnumElementLookupExpr {
+  /** Gets the declaration of the enum element that this expression creates. */
+  EnumElementDecl getElement() { this.getMember() = result }
+
+  NullaryEnumElementExpr() { not exists(CallExpr ce | ce.getFunction() = this) }
 }
 
-private class NonNullaryEnumElementExpr extends EnumElementExpr instanceof CallExpr {
-  NonNullaryEnumElementExpr() {
-    exists(EnumElementLookupExpr eele |
-      this.getFunction() = eele and
-      eele.getMember() = decl
-    )
-  }
+/** An expression creating an enum with arguments */
+private class NonNullaryEnumElementExpr extends CallExpr {
+  EnumElementLookupExpr eele;
 
-  override Argument getArgument(int i) { result = CallExpr.super.getArgument(i) }
+  /** Gets the declaration of the enum element that this expression creates. */
+  EnumElementDecl getElement() { eele.getMember() = result }
+
+  NonNullaryEnumElementExpr() { this.getFunction() = eele }
 }

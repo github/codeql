@@ -563,7 +563,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(EnumElementExpr enum, int pos |
     node1.asExpr() = enum.getArgument(pos).getExpr() and
     node2.asExpr() = enum and
-    c.isSingleton(any(Content::EnumContent ec | ec.getField() = enum.getElement().getParam(pos)))
+    c.isSingleton(any(Content::EnumContent ec | ec.getParam() = enum.getElement().getParam(pos)))
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
@@ -588,14 +588,14 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   // read of an enum member via `case let .variant(v1, v2)` pattern matching
-  exists(Expr enumExpr, ParamDecl enumField, VarDecl boundVar |
+  exists(Expr enumExpr, ParamDecl enumParam, VarDecl boundVar |
     node1.asExpr() = enumExpr and
     node2.asDefinition().getSourceVariable() = boundVar and
-    c.isSingleton(any(Content::EnumContent ec | ec.getField() = enumField))
+    c.isSingleton(any(Content::EnumContent ec | ec.getParam() = enumParam))
   |
     exists(EnumElementPattern enumPat, NamedPattern namePat, int idx |
       enumPat.getMatchingExpr() = enumExpr and
-      enumPat.getElement().getParam(idx) = enumField and
+      enumPat.getElement().getParam(idx) = enumParam and
       namePat.getIdentityPreservingEnclosingPattern*() = enumPat.getSubPattern(idx) and
       namePat.getVarDecl() = boundVar
     )
