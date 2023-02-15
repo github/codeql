@@ -382,10 +382,10 @@ func taintThroughInterpolatedStrings() {
 
   var str20 = sourceNSString()
 
-  sink(arg: str20.copy()) // $ MISSING: tainted=
-  sink(arg: str20.mutableCopy()) // $ MISSING: tainted=
-  sink(arg: str20.copy(with: nil)) // $ MISSING: tainted=
-  sink(arg: str20.mutableCopy(with: nil)) // $ MISSING: tainted=
+  sink(arg: str20.copy()) // $ tainted=383
+  sink(arg: str20.mutableCopy()) // $ tainted=383
+  sink(arg: str20.copy(with: nil)) // $ tainted=383
+  sink(arg: str20.mutableCopy(with: nil)) // $ tainted=383
 
   // `NSMutableString` methods
 
