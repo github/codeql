@@ -319,14 +319,21 @@ namespace Semmle.Autobuild.Shared
         public abstract BuildScript GetBuildScript();
 
         /// <summary>
-        /// Constructs a standard <see cref="DiagnosticMessage.TspSource" /> for some message
-        /// <see cref="id" /> with a human-friendly <see cref="name" />.
+        /// Constructs a standard <see cref="DiagnosticMessage" /> for some message with
+        /// <see cref="id" /> and a human-friendly <see cref="name" />.
         /// </summary>
         /// <param name="id">The last part of the message id.</param>
         /// <param name="name">The human-friendly description of the message.</param>
-        /// <returns>The resulting <see cref="DiagnosticMessage.TspSource" />.</returns>
-        protected DiagnosticMessage.TspSource GetDiagnosticSource(string id, string name) =>
-            new($"{this.Options.Language.UpperCaseName.ToLower()}/autobuilder/{id}", name);
+        /// <returns>The resulting <see cref="DiagnosticMessage" />.</returns>
+        protected DiagnosticMessage MakeDiagnostic(string id, string name)
+        {
+            DiagnosticMessage diag = new(new($"{this.Options.Language.UpperCaseName.ToLower()}/autobuilder/{id}", name));
+            diag.Source.ExtractorName = Options.Language.UpperCaseName.ToLower();
+            diag.Visibility.StatusPage = true;
+
+            return diag;
+        }
+
 
         /// <summary>
         /// Produces a diagnostic for the tool status page that we were unable to automatically
@@ -336,13 +343,11 @@ namespace Semmle.Autobuild.Shared
         /// </summary>
         protected virtual void AutobuildFailureDiagnostic()
         {
-            var message = new DiagnosticMessage(GetDiagnosticSource("autobuild-failure", "Unable to build project"))
-            {
-                PlaintextMessage =
-                    "We were unable to automatically build your project. " +
-                    "You can manually specify a suitable build command for your project.",
-                Severity = DiagnosticMessage.TspSeverity.Error
-            };
+            var message = MakeDiagnostic("autobuild-failure", "Unable to build project");
+            message.PlaintextMessage =
+                "We were unable to automatically build your project. " +
+                "You can manually specify a suitable build command for your project.";
+            message.Severity = DiagnosticMessage.TspSeverity.Error;
 
             Diagnostic(message);
         }
