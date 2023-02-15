@@ -9,7 +9,6 @@
 private import python
 import DataFlowPublic
 private import DataFlowPrivate
-private import semmle.python.internal.CachedStages
 private import semmle.python.internal.Awaited
 
 /**
@@ -35,7 +34,6 @@ private import semmle.python.internal.Awaited
 class LocalSourceNode extends Node {
   cached
   LocalSourceNode() {
-    Stages::DataFlow::ref() and
     this instanceof ExprNode and
     not simpleLocalFlowStepForTypetracking(_, this)
     or
@@ -189,7 +187,6 @@ private module Cached {
    */
   cached
   predicate hasLocalSource(Node sink, LocalSourceNode source) {
-    Stages::DataFlow::ref() and
     source = sink
     or
     exists(Node second |

@@ -6,7 +6,6 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
 private import semmle.python.types.Extensions
-private import semmle.python.internal.CachedStages
 
 /* Use this version for speed */
 class CfgOrigin extends @py_object {
@@ -2566,7 +2565,6 @@ module AttributePointsTo {
   predicate variableAttributePointsTo(
     EssaVariable var, Context context, string name, ObjectInternal value, CfgOrigin origin
   ) {
-    Stages::DataFlow::ref() and
     definitionAttributePointsTo(var.getDefinition(), context, name, value, origin)
     or
     exists(EssaVariable prev |

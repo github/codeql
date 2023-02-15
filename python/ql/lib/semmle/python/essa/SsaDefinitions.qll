@@ -4,14 +4,12 @@
  */
 
 import python
-private import semmle.python.internal.CachedStages
 
 cached
 module SsaSource {
   /** Holds if `v` is used as the receiver in a method call. */
   cached
   predicate method_call_refinement(Variable v, ControlFlowNode use, CallNode call) {
-    Stages::AST::ref() and
     use = v.getAUse() and
     call.getFunction().(AttrNode).getObject() = use and
     not test_contains(_, call)

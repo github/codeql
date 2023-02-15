@@ -1,6 +1,5 @@
 import python
 private import semmle.python.types.Builtins
-private import semmle.python.internal.CachedStages
 
 /**
  * An alias in an import statement, the `mod as name` part of `import mod as name`. May be artificial;
@@ -206,7 +205,6 @@ class ImportStar extends ImportStar_ {
   /* syntax: from modname import * */
   cached
   ImportExpr getModuleExpr() {
-    Stages::AST::ref() and
     result = this.getModule()
     or
     result = this.getModule().(ImportMember).getModule()

@@ -11,7 +11,6 @@
 import python
 import semmle.python.essa.SsaDefinitions
 private import semmle.python.types.Builtins
-private import semmle.python.internal.CachedStages
 
 deprecated module BasePointsTo {
   /** INTERNAL -- Use n.refersTo(value, _, origin) instead */
@@ -318,7 +317,6 @@ module BaseFlow {
   predicate scope_entry_value_transfer_from_earlier(
     EssaVariable pred_var, Scope pred_scope, ScopeEntryDefinition succ_def, Scope succ_scope
   ) {
-    Stages::DataFlow::ref() and
     exists(SsaSourceVariable var |
       essa_var_scope(var, pred_scope, pred_var) and
       scope_entry_def_scope(var, succ_scope, succ_def)

@@ -1,6 +1,5 @@
 import python
 private import semmle.python.pointsto.PointsTo
-private import semmle.python.internal.CachedStages
 
 /*
  * Note about matching parent and child nodes and CFG splitting:
@@ -125,7 +124,6 @@ class ControlFlowNode extends @py_flow_node {
   /** Gets a textual representation of this element. */
   cached
   string toString() {
-    Stages::DataFlow::ref() and
     exists(Scope s | s.getEntryNode() = this | result = "Entry node for " + s.toString())
     or
     exists(Scope s | s.getANormalExit() = this | result = "Exit node for " + s.toString())
@@ -196,7 +194,6 @@ class ControlFlowNode extends @py_flow_node {
   /** Gets the scope containing this flow node */
   cached
   Scope getScope() {
-    Stages::AST::ref() and
     if this.getNode() instanceof Scope
     then
       /* Entry or exit node */
@@ -621,7 +618,6 @@ class UnaryExprNode extends ControlFlowNode {
 class DefinitionNode extends ControlFlowNode {
   cached
   DefinitionNode() {
-    Stages::AST::ref() and
     exists(Assign a | a.getATarget().getAFlowNode() = this)
     or
     exists(AnnAssign a | a.getTarget().getAFlowNode() = this and exists(a.getValue()))
@@ -689,7 +685,6 @@ class TupleNode extends SequenceNode {
   TupleNode() { toAst(this) instanceof Tuple }
 
   override ControlFlowNode getElement(int n) {
-    Stages::AST::ref() and
     exists(Tuple t | this.getNode() = t and result.getNode() = t.getElt(n)) and
     (
       result.getBasicBlock().dominates(this.getBasicBlock())
@@ -1008,10 +1003,7 @@ class BasicBlock extends @py_flow_node {
 
   /** Whether this basic block strictly dominates the other */
   cached
-  predicate strictlyDominates(BasicBlock other) {
-    Stages::AST::ref() and
-    other.getImmediateDominator+() = this
-  }
+  predicate strictlyDominates(BasicBlock other) { other.getImmediateDominator+() = this }
 
   /** Whether this basic block dominates the other */
   predicate dominates(BasicBlock other) {
@@ -1022,7 +1014,6 @@ class BasicBlock extends @py_flow_node {
 
   cached
   BasicBlock getImmediateDominator() {
-    Stages::AST::ref() and
     this.firstNode().getImmediateDominator().getBasicBlock() = result
   }
 
@@ -1061,10 +1052,7 @@ class BasicBlock extends @py_flow_node {
 
   /** Gets a successor to this basic block */
   cached
-  BasicBlock getASuccessor() {
-    Stages::AST::ref() and
-    result = this.getLastNode().getASuccessor().getBasicBlock()
-  }
+  BasicBlock getASuccessor() { result = this.getLastNode().getASuccessor().getBasicBlock() }
 
   /** Gets a predecessor to this basic block */
   BasicBlock getAPredecessor() { result.getASuccessor() = this }
@@ -1135,10 +1123,7 @@ class BasicBlock extends @py_flow_node {
 
   /** Holds if this basic block strictly reaches the other. Is the start of other reachable from the end of this. */
   cached
-  predicate strictlyReaches(BasicBlock other) {
-    Stages::AST::ref() and
-    this.getASuccessor+() = other
-  }
+  predicate strictlyReaches(BasicBlock other) { this.getASuccessor+() = other }
 
   /** Holds if this basic block reaches the other. Is the start of other reachable from the end of this. */
   predicate reaches(BasicBlock other) { this = other or this.strictlyReaches(other) }
