@@ -185,7 +185,7 @@ private predicate switchMatching(SwitchStmt switch, CaseStmt c, AstNode ast) {
   (
     c.getALabel() = ast
     or
-    ast.(Pattern).getEnclosingPattern+() = c.getALabel().getPattern()
+    ast.(Pattern).getImmediateEnclosingPattern+() = c.getALabel().getPattern()
   )
 }
 
@@ -216,7 +216,7 @@ predicate catchMatchingPattern(DoCatchStmt s, CaseStmt c, Pattern pattern) {
   exists(CaseLabelItem cli | catchMatching(s, c, cli) |
     cli.getPattern() = pattern
     or
-    pattern.getEnclosingPattern+() = cli.getPattern()
+    pattern.getImmediateEnclosingPattern+() = cli.getPattern()
   )
 }
 

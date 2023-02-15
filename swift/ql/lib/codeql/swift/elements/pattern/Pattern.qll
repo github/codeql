@@ -70,21 +70,28 @@ class Pattern extends Generated::Pattern {
    * Holds if this occurs as a sub-pattern of the result.
    */
   Pattern getEnclosingPattern() {
+    result = this.getFullyUnresolved().(Pattern).getImmediateEnclosingPattern()
+  }
+
+  /**
+   * Holds if this occurs as an immediate sub-pattern of the result.
+   */
+  Pattern getImmediateEnclosingPattern() {
     this = result.(EnumElementPattern).getImmediateSubPattern()
     or
     this = result.(OptionalSomePattern).getImmediateSubPattern()
     or
     this = result.(TuplePattern).getImmediateElement(_)
     or
-    result = this.getIdentityPreservingEnclosingPattern()
+    result = this.getImmediateIdentityPreservingEnclosingPattern()
   }
 
   /**
-   * Holds if this occurs as a sub-pattern of the result
+   * Holds if this occurs as an immediate sub-pattern of the result
    * without any intervening destructurings of
    * complex data structures.
    */
-  Pattern getIdentityPreservingEnclosingPattern() {
+  Pattern getImmediateIdentityPreservingEnclosingPattern() {
     this = result.(BindingPattern).getImmediateSubPattern()
     or
     this = result.(IsPattern).getImmediateSubPattern()

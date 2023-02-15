@@ -596,7 +596,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     exists(EnumElementPattern enumPat, NamedPattern namePat, int idx |
       enumPat.getMatchingExpr() = enumExpr and
       enumPat.getElement().getParam(idx) = enumParam and
-      namePat.getIdentityPreservingEnclosingPattern*() = enumPat.getSubPattern(idx) and
+      namePat.getImmediateIdentityPreservingEnclosingPattern*() = enumPat.getSubPattern(idx) and
       namePat.getVarDecl() = boundVar
     )
   )
