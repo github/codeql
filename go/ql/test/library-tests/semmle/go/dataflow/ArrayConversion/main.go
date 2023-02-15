@@ -23,4 +23,3 @@ func main() {
 	b[0] = source()
 	sink(b[0]) // $ taintflow
 }
-

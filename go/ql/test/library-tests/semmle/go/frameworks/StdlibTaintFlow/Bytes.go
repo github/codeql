@@ -323,29 +323,29 @@ func TaintStepTest_Clone(sourceCQL interface{}) interface{} {
 
 func TaintStepTest_Cutleft(sourceCQL interface{}) interface{} {
 	fromReader628 := sourceCQL.([]byte)
-        sep := []byte{}
-        left, _, _ := bytes.Cut(fromReader628, sep)
+	sep := []byte{}
+	left, _, _ := bytes.Cut(fromReader628, sep)
 	return left
 }
 
 func TaintStepTest_Cutright(sourceCQL interface{}) interface{} {
 	fromReader628 := sourceCQL.([]byte)
-        sep := []byte{}
-        _, right, _ := bytes.Cut(fromReader628, sep)
+	sep := []byte{}
+	_, right, _ := bytes.Cut(fromReader628, sep)
 	return right
 }
 
 func TaintStepTest_CutPrefix(sourceCQL interface{}) interface{} {
 	fromReader628 := sourceCQL.([]byte)
-        sep := []byte{}
-        result, _ := bytes.CutPrefix(fromReader628, sep)
+	sep := []byte{}
+	result, _ := bytes.CutPrefix(fromReader628, sep)
 	return result
 }
 
 func TaintStepTest_CutSuffix(sourceCQL interface{}) interface{} {
 	fromReader628 := sourceCQL.([]byte)
-        sep := []byte{}
-        result, _ := bytes.CutSuffix(fromReader628, sep)
+	sep := []byte{}
+	result, _ := bytes.CutSuffix(fromReader628, sep)
 	return result
 }
 
