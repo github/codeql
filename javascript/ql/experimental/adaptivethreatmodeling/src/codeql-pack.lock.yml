@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-02-13-06h56m42s.lucid-seed-frnx40l8.781f9c50b760ad938d3817c290df8919497f415a01d1cb71006764ecbd0faaf5
+compiled: false
