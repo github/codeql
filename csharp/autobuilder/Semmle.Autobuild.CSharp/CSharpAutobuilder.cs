@@ -33,6 +33,8 @@ namespace Semmle.Autobuild.CSharp
     {
         private DotNetRule? dotNetRule;
 
+        private MsBuildRule? msBuildRule;
+
         private BuildCommandAutoRule? buildCommandAutoRule;
 
         public CSharpAutobuilder(IBuildActions actions, CSharpAutobuildOptions options) : base(actions, options) { }
@@ -106,13 +108,14 @@ namespace Semmle.Autobuild.CSharp
                         (attemptExtractorCleanup & BuildScript.Failure);
 
                     this.dotNetRule = new DotNetRule();
+                    this.msBuildRule = new MsBuildRule();
                     this.buildCommandAutoRule = new BuildCommandAutoRule(DotNetRule.WithDotNet);
 
                     attempt =
                         // First try .NET Core
                         IntermediateAttempt(dotNetRule.Analyse(this, true)) |
                         // Then MSBuild
-                        (() => IntermediateAttempt(new MsBuildRule().Analyse(this, true))) |
+                        (() => IntermediateAttempt(msBuildRule.Analyse(this, true))) |
                         // And finally look for a script that might be a build script
                         (() => this.buildCommandAutoRule.Analyse(this, true) & CheckExtractorRun(true)) |
                         // All attempts failed: print message
@@ -174,6 +177,34 @@ namespace Semmle.Autobuild.CSharp
                     "CodeQL found some projects which cannot be built with .NET Core:\n" +
                     string.Join('\n', dotNetRule.NotDotNetProjects.Select(p => $"- `{p.FullPath}`"));
                 message.Severity = DiagnosticMessage.TspSeverity.Warning;
+
+                Diagnostic(message);
+            }
+
+            // report any projects that failed to build with .NET Core
+            if (dotNetRule is not null && dotNetRule.FailedProjectsOrSolutions.Any())
+            {
+                var message = MakeDiagnostic("dotnet-build-failure", "Some projects or solutions failed to build using .NET Core");
+                message.MarkdownMessage =
+                    "CodeQL was unable to build the following projects using .NET Core:\n" +
+                    string.Join('\n', dotNetRule.FailedProjectsOrSolutions.Select(p => $"- `{p.FullPath}`")) +
+                    "\nYou can manually specify a suitable build command for your project to exclude these projects " +
+                    "or to ensure that they can be built successfully.";
+                message.Severity = DiagnosticMessage.TspSeverity.Error;
+
+                Diagnostic(message);
+            }
+
+            // report any projects that failed to build with MSBuild
+            if (msBuildRule is not null && msBuildRule.FailedProjectsOrSolutions.Any())
+            {
+                var message = MakeDiagnostic("msbuild-build-failure", "Some projects or solutions failed to build using MSBuild");
+                message.MarkdownMessage =
+                    "CodeQL was unable to build the following projects using MSBuild:\n" +
+                    string.Join('\n', msBuildRule.FailedProjectsOrSolutions.Select(p => $"- `{p.FullPath}`")) +
+                    "\nYou can manually specify a suitable build command for your project to exclude these projects " +
+                    "or to ensure that they can be built successfully.";;
+                message.Severity = DiagnosticMessage.TspSeverity.Error;
 
                 Diagnostic(message);
             }
