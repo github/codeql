@@ -22,7 +22,7 @@ func TaintStepTest_UnsafeStringData(sourceCQL interface{}) interface{} {
 	return unsafe.StringData(s)
 }
 
-func RunAllTaints_Sync() {
+func RunAllTaints_Unsafe() {
 	{
 		source := newSource(0)
 		out := TaintStepTest_UnsafeSlice(source)
