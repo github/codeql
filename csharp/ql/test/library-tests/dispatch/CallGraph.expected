@@ -242,3 +242,10 @@
 | ViableCallable.cs:492:10:492:12 | Run | ViableCallable.cs:488:40:488:40 | checked + |
 | ViableCallable.cs:492:10:492:12 | Run | ViableCallable.cs:489:28:489:35 | explicit conversion |
 | ViableCallable.cs:492:10:492:12 | Run | ViableCallable.cs:490:28:490:35 | checked explicit conversion |
+| ViableCallable.cs:542:10:542:15 | Run<> | ViableCallable.cs:514:39:514:39 | checked - |
+| ViableCallable.cs:542:10:542:15 | Run<> | ViableCallable.cs:516:31:516:31 | * |
+| ViableCallable.cs:542:10:542:15 | Run<> | ViableCallable.cs:517:39:517:39 | checked * |
+| ViableCallable.cs:542:10:542:15 | Run<> | ViableCallable.cs:519:31:519:31 | / |
+| ViableCallable.cs:542:10:542:15 | Run<> | ViableCallable.cs:520:39:520:39 | checked / |
+| ViableCallable.cs:542:10:542:15 | Run<> | ViableCallable.cs:524:18:524:20 | M12 |
+| ViableCallable.cs:542:10:542:15 | Run<> | ViableCallable.cs:526:18:526:20 | M13 |
