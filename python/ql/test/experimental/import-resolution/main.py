@@ -87,7 +87,7 @@ check("non_clashing_submodule", non_clashing_submodule, "<module attr_clash.non_
 
 # check that import * from an __init__ file works
 from package.subpackage2 import *
-check("subpackage2_attr", subpackage2_attr, "subpackage2_attr", globals()) #$ MISSING: prints=subpackage2_attr
+check("subpackage2_attr", subpackage2_attr, "subpackage2_attr", globals()) #$ prints=subpackage2_attr
 
 
 exit(__file__)

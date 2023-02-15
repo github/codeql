@@ -167,8 +167,9 @@ module ImportResolution {
     )
   }
 
+  /** Gets the module from which attributes are imported by `i`. */
   Module getModuleImportedByImportStar(ImportStar i) {
-    isPreferredModuleForName(result.getFile(), i.getImportedModuleName())
+    isPreferredModuleForName(result.getFile(), i.getImportedModuleName() + ["", ".__init__"])
   }
 
   /**
