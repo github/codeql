@@ -363,6 +363,8 @@ edges
 | nsstring.swift:69:3:69:61 | [summary param] this in lossyCString() :  | file://:0:0:0:0 | [summary] to write: return (return) in lossyCString() :  |
 | nsstring.swift:72:3:72:106 | [summary param] 0 in appendingFormat(_:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingFormat(_:_:) :  |
 | nsstring.swift:72:3:72:106 | [summary param] this in appendingFormat(_:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingFormat(_:_:) :  |
+| nsstring.swift:73:3:73:59 | [summary param] 0 in appending(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  |
+| nsstring.swift:73:3:73:59 | [summary param] this in appending(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  |
 | nsstring.swift:74:3:74:116 | [summary param] 1 in padding(toLength:withPad:startingAt:) :  | file://:0:0:0:0 | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  |
 | nsstring.swift:74:3:74:116 | [summary param] this in padding(toLength:withPad:startingAt:) :  | file://:0:0:0:0 | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  |
 | nsstring.swift:75:3:75:63 | [summary param] this in lowercased(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in lowercased(with:) :  |
@@ -552,6 +554,10 @@ edges
 | nsstring.swift:295:45:295:58 | call to sourceString() :  | nsstring.swift:295:13:295:59 | call to appendingPathExtension(_:) |
 | nsstring.swift:296:13:296:28 | call to sourceNSString() :  | nsstring.swift:94:3:94:69 | [summary param] this in appendingPathExtension(_:) :  |
 | nsstring.swift:296:13:296:28 | call to sourceNSString() :  | nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) |
+| nsstring.swift:299:13:299:28 | call to sourceNSString() :  | nsstring.swift:73:3:73:59 | [summary param] this in appending(_:) :  |
+| nsstring.swift:299:13:299:28 | call to sourceNSString() :  | nsstring.swift:299:13:299:42 | call to appending(_:) |
+| nsstring.swift:300:32:300:45 | call to sourceString() :  | nsstring.swift:73:3:73:59 | [summary param] 0 in appending(_:) :  |
+| nsstring.swift:300:32:300:45 | call to sourceString() :  | nsstring.swift:300:13:300:46 | call to appending(_:) |
 | nsstring.swift:311:13:311:28 | call to sourceNSString() :  | nsstring.swift:95:3:95:74 | [summary param] this in strings(byAppendingPaths:) :  |
 | nsstring.swift:311:13:311:28 | call to sourceNSString() :  | nsstring.swift:311:13:311:60 | call to strings(byAppendingPaths:) |
 | nsstring.swift:312:13:312:28 | call to sourceNSString() :  | nsstring.swift:95:3:95:74 | [summary param] this in strings(byAppendingPaths:) :  |
@@ -1441,6 +1447,8 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  | semmle.label | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  | semmle.label | [summary] to write: return (return) in appending(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  | semmle.label | [summary] to write: return (return) in appending(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  | semmle.label | [summary] to write: return (return) in appending(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  | semmle.label | [summary] to write: return (return) in appending(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in appendingFormat(_:_:) :  | semmle.label | [summary] to write: return (return) in appendingFormat(_:_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in appendingFormat(_:_:) :  | semmle.label | [summary] to write: return (return) in appendingFormat(_:_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:) :  | semmle.label | [summary] to write: return (return) in appendingPathComponent(_:) :  |
@@ -1710,6 +1718,8 @@ nodes
 | nsstring.swift:69:3:69:61 | [summary param] this in lossyCString() :  | semmle.label | [summary param] this in lossyCString() :  |
 | nsstring.swift:72:3:72:106 | [summary param] 0 in appendingFormat(_:_:) :  | semmle.label | [summary param] 0 in appendingFormat(_:_:) :  |
 | nsstring.swift:72:3:72:106 | [summary param] this in appendingFormat(_:_:) :  | semmle.label | [summary param] this in appendingFormat(_:_:) :  |
+| nsstring.swift:73:3:73:59 | [summary param] 0 in appending(_:) :  | semmle.label | [summary param] 0 in appending(_:) :  |
+| nsstring.swift:73:3:73:59 | [summary param] this in appending(_:) :  | semmle.label | [summary param] this in appending(_:) :  |
 | nsstring.swift:74:3:74:116 | [summary param] 1 in padding(toLength:withPad:startingAt:) :  | semmle.label | [summary param] 1 in padding(toLength:withPad:startingAt:) :  |
 | nsstring.swift:74:3:74:116 | [summary param] this in padding(toLength:withPad:startingAt:) :  | semmle.label | [summary param] this in padding(toLength:withPad:startingAt:) :  |
 | nsstring.swift:75:3:75:63 | [summary param] this in lowercased(with:) :  | semmle.label | [summary param] this in lowercased(with:) :  |
@@ -1896,6 +1906,10 @@ nodes
 | nsstring.swift:295:45:295:58 | call to sourceString() :  | semmle.label | call to sourceString() :  |
 | nsstring.swift:296:13:296:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
 | nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) | semmle.label | call to appendingPathExtension(_:) |
+| nsstring.swift:299:13:299:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:299:13:299:42 | call to appending(_:) | semmle.label | call to appending(_:) |
+| nsstring.swift:300:13:300:46 | call to appending(_:) | semmle.label | call to appending(_:) |
+| nsstring.swift:300:32:300:45 | call to sourceString() :  | semmle.label | call to sourceString() :  |
 | nsstring.swift:311:13:311:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
 | nsstring.swift:311:13:311:60 | call to strings(byAppendingPaths:) | semmle.label | call to strings(byAppendingPaths:) |
 | nsstring.swift:312:13:312:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
@@ -2548,6 +2562,8 @@ subpaths
 | nsstring.swift:292:13:292:28 | call to sourceNSString() :  | nsstring.swift:93:3:93:110 | [summary param] this in appendingPathComponent(_:conformingTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:conformingTo:) :  | nsstring.swift:292:13:292:88 | call to appendingPathComponent(_:conformingTo:) |
 | nsstring.swift:295:45:295:58 | call to sourceString() :  | nsstring.swift:94:3:94:69 | [summary param] 0 in appendingPathExtension(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathExtension(_:) :  | nsstring.swift:295:13:295:59 | call to appendingPathExtension(_:) |
 | nsstring.swift:296:13:296:28 | call to sourceNSString() :  | nsstring.swift:94:3:94:69 | [summary param] this in appendingPathExtension(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathExtension(_:) :  | nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) |
+| nsstring.swift:299:13:299:28 | call to sourceNSString() :  | nsstring.swift:73:3:73:59 | [summary param] this in appending(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  | nsstring.swift:299:13:299:42 | call to appending(_:) |
+| nsstring.swift:300:32:300:45 | call to sourceString() :  | nsstring.swift:73:3:73:59 | [summary param] 0 in appending(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  | nsstring.swift:300:13:300:46 | call to appending(_:) |
 | nsstring.swift:311:13:311:28 | call to sourceNSString() :  | nsstring.swift:95:3:95:74 | [summary param] this in strings(byAppendingPaths:) :  | file://:0:0:0:0 | [summary] to write: return (return) in strings(byAppendingPaths:) :  | nsstring.swift:311:13:311:60 | call to strings(byAppendingPaths:) |
 | nsstring.swift:312:13:312:28 | call to sourceNSString() :  | nsstring.swift:95:3:95:74 | [summary param] this in strings(byAppendingPaths:) :  | file://:0:0:0:0 | [summary] to write: return (return) in strings(byAppendingPaths:) :  | nsstring.swift:312:13:312:60 | call to strings(byAppendingPaths:) :  |
 | nsstring.swift:334:3:334:18 | call to sourceNSString() :  | nsstring.swift:66:3:66:281 | [summary param] this in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  | nsstring.swift:334:29:334:29 | [post] ptr3 :  |
@@ -2813,6 +2829,8 @@ subpaths
 | nsstring.swift:292:13:292:88 | call to appendingPathComponent(_:conformingTo:) | nsstring.swift:292:13:292:28 | call to sourceNSString() :  | nsstring.swift:292:13:292:88 | call to appendingPathComponent(_:conformingTo:) | result |
 | nsstring.swift:295:13:295:59 | call to appendingPathExtension(_:) | nsstring.swift:295:45:295:58 | call to sourceString() :  | nsstring.swift:295:13:295:59 | call to appendingPathExtension(_:) | result |
 | nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) | nsstring.swift:296:13:296:28 | call to sourceNSString() :  | nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) | result |
+| nsstring.swift:299:13:299:42 | call to appending(_:) | nsstring.swift:299:13:299:28 | call to sourceNSString() :  | nsstring.swift:299:13:299:42 | call to appending(_:) | result |
+| nsstring.swift:300:13:300:46 | call to appending(_:) | nsstring.swift:300:32:300:45 | call to sourceString() :  | nsstring.swift:300:13:300:46 | call to appending(_:) | result |
 | nsstring.swift:311:13:311:60 | call to strings(byAppendingPaths:) | nsstring.swift:311:13:311:28 | call to sourceNSString() :  | nsstring.swift:311:13:311:60 | call to strings(byAppendingPaths:) | result |
 | nsstring.swift:312:13:312:63 | ...[...] | nsstring.swift:312:13:312:28 | call to sourceNSString() :  | nsstring.swift:312:13:312:63 | ...[...] | result |
 | nsstring.swift:335:13:335:13 | ptr3 | nsstring.swift:334:3:334:18 | call to sourceNSString() :  | nsstring.swift:335:13:335:13 | ptr3 | result |

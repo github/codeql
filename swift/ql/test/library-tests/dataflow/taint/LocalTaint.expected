@@ -1014,33 +1014,22 @@
 | nsstring.swift:294:13:294:13 | harmless | nsstring.swift:294:13:294:47 | call to appendingPathExtension(_:) |
 | nsstring.swift:294:13:294:13 | harmless | nsstring.swift:295:13:295:13 | harmless |
 | nsstring.swift:294:45:294:45 |  | nsstring.swift:294:13:294:47 | call to appendingPathExtension(_:) |
-| nsstring.swift:295:13:295:13 | [post] harmless | nsstring.swift:298:14:298:14 | harmless |
+| nsstring.swift:295:13:295:13 | [post] harmless | nsstring.swift:298:13:298:13 | harmless |
 | nsstring.swift:295:13:295:13 | harmless | nsstring.swift:295:13:295:59 | call to appendingPathExtension(_:) |
-| nsstring.swift:295:13:295:13 | harmless | nsstring.swift:298:14:298:14 | harmless |
+| nsstring.swift:295:13:295:13 | harmless | nsstring.swift:298:13:298:13 | harmless |
 | nsstring.swift:295:45:295:58 | call to sourceString() | nsstring.swift:295:13:295:59 | call to appendingPathExtension(_:) |
 | nsstring.swift:296:13:296:28 | call to sourceNSString() | nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) |
 | nsstring.swift:296:53:296:53 |  | nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) |
-| nsstring.swift:298:7:298:7 | SSA def(str1) | nsstring.swift:299:13:299:13 | str1 |
-| nsstring.swift:298:14:298:14 | harmless | nsstring.swift:298:7:298:7 | SSA def(str1) |
-| nsstring.swift:298:14:298:14 | harmless | nsstring.swift:307:13:307:13 | harmless |
-| nsstring.swift:299:13:299:13 | [post] str1 | nsstring.swift:300:3:300:3 | str1 |
-| nsstring.swift:299:13:299:13 | str1 | nsstring.swift:300:3:300:3 | str1 |
-| nsstring.swift:300:3:300:3 | [post] str1 | nsstring.swift:301:13:301:13 | str1 |
-| nsstring.swift:300:3:300:3 | str1 | nsstring.swift:300:3:300:20 | call to appending(_:) |
-| nsstring.swift:300:3:300:3 | str1 | nsstring.swift:301:13:301:13 | str1 |
-| nsstring.swift:300:18:300:18 |  | nsstring.swift:300:3:300:20 | call to appending(_:) |
-| nsstring.swift:301:13:301:13 | [post] str1 | nsstring.swift:302:3:302:3 | str1 |
-| nsstring.swift:301:13:301:13 | str1 | nsstring.swift:302:3:302:3 | str1 |
-| nsstring.swift:302:3:302:3 | [post] str1 | nsstring.swift:303:13:303:13 | str1 |
-| nsstring.swift:302:3:302:3 | str1 | nsstring.swift:302:3:302:32 | call to appending(_:) |
-| nsstring.swift:302:3:302:3 | str1 | nsstring.swift:303:13:303:13 | str1 |
-| nsstring.swift:302:18:302:31 | call to sourceString() | nsstring.swift:302:3:302:32 | call to appending(_:) |
-| nsstring.swift:303:13:303:13 | [post] str1 | nsstring.swift:304:3:304:3 | str1 |
-| nsstring.swift:303:13:303:13 | str1 | nsstring.swift:304:3:304:3 | str1 |
-| nsstring.swift:304:3:304:3 | [post] str1 | nsstring.swift:305:13:305:13 | str1 |
-| nsstring.swift:304:3:304:3 | str1 | nsstring.swift:304:3:304:20 | call to appending(_:) |
-| nsstring.swift:304:3:304:3 | str1 | nsstring.swift:305:13:305:13 | str1 |
-| nsstring.swift:304:18:304:18 |  | nsstring.swift:304:3:304:20 | call to appending(_:) |
+| nsstring.swift:298:13:298:13 | [post] harmless | nsstring.swift:300:13:300:13 | harmless |
+| nsstring.swift:298:13:298:13 | harmless | nsstring.swift:298:13:298:34 | call to appending(_:) |
+| nsstring.swift:298:13:298:13 | harmless | nsstring.swift:300:13:300:13 | harmless |
+| nsstring.swift:298:32:298:32 |  | nsstring.swift:298:13:298:34 | call to appending(_:) |
+| nsstring.swift:299:13:299:28 | call to sourceNSString() | nsstring.swift:299:13:299:42 | call to appending(_:) |
+| nsstring.swift:299:40:299:40 |  | nsstring.swift:299:13:299:42 | call to appending(_:) |
+| nsstring.swift:300:13:300:13 | [post] harmless | nsstring.swift:307:13:307:13 | harmless |
+| nsstring.swift:300:13:300:13 | harmless | nsstring.swift:300:13:300:46 | call to appending(_:) |
+| nsstring.swift:300:13:300:13 | harmless | nsstring.swift:307:13:307:13 | harmless |
+| nsstring.swift:300:32:300:45 | call to sourceString() | nsstring.swift:300:13:300:46 | call to appending(_:) |
 | nsstring.swift:307:13:307:13 | [post] harmless | nsstring.swift:308:13:308:13 | harmless |
 | nsstring.swift:307:13:307:13 | harmless | nsstring.swift:307:13:307:52 | call to strings(byAppendingPaths:) |
 | nsstring.swift:307:13:307:13 | harmless | nsstring.swift:308:13:308:13 | harmless |

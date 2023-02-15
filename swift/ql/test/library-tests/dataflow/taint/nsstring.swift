@@ -295,14 +295,14 @@ func taintThroughInterpolatedStrings() {
   sink(arg: harmless.appendingPathExtension(sourceString())) // $ tainted=295
   sink(arg: sourceNSString().appendingPathExtension("")) // $ tainted=296
 
-  var str1 = harmless
-  sink(arg: str1)
-  str1.appending("")
-  sink(arg: str1)
-  str1.appending(sourceString())
-  sink(arg: str1) // $ MISSING: tainted=
-  str1.appending("")
-  sink(arg: str1) // $ MISSING: tainted=
+  sink(arg: harmless.appending(""))
+  sink(arg: sourceNSString().appending("")) // $ tainted=299
+  sink(arg: harmless.appending(sourceString())) // $ tainted=300
+
+
+
+
+
 
   sink(arg: harmless.strings(byAppendingPaths: [""]))
   sink(arg: harmless.strings(byAppendingPaths: [""])[0])
