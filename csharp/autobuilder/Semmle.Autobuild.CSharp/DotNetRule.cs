@@ -15,6 +15,21 @@ namespace Semmle.Autobuild.CSharp
     /// </summary>
     internal class DotNetRule : IBuildRule<CSharpAutobuildOptions>
     {
+        private IEnumerable<Project<CSharpAutobuildOptions>> notDotNetProjects;
+
+        /// <summary>
+        /// A list of projects which are incompatible with DotNet.
+        /// </summary>
+        public IEnumerable<Project<CSharpAutobuildOptions>> NotDotNetProjects
+        {
+            get { return this.notDotNetProjects; }
+        }
+
+        public DotNetRule()
+        {
+            this.notDotNetProjects = new List<Project<CSharpAutobuildOptions>>();
+        }
+
         public BuildScript Analyse(IAutobuilder<CSharpAutobuildOptions> builder, bool auto)
         {
             if (!builder.ProjectsOrSolutionsToBuild.Any())
@@ -22,10 +37,12 @@ namespace Semmle.Autobuild.CSharp
 
             if (auto)
             {
-                var notDotNetProject = builder.ProjectsOrSolutionsToBuild
+                notDotNetProjects = builder.ProjectsOrSolutionsToBuild
                     .SelectMany(p => Enumerators.Singleton(p).Concat(p.IncludedProjects))
                     .OfType<Project<CSharpAutobuildOptions>>()
-                    .FirstOrDefault(p => !p.DotNetProject);
+                    .Where(p => !p.DotNetProject);
+                var notDotNetProject = notDotNetProjects.FirstOrDefault();
+
                 if (notDotNetProject is not null)
                 {
                     builder.Log(Severity.Info, "Not using .NET Core because of incompatible project {0}", notDotNetProject);

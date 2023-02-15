@@ -31,6 +31,8 @@ namespace Semmle.Autobuild.CSharp
 
     public class CSharpAutobuilder : Autobuilder<CSharpAutobuildOptions>
     {
+        private DotNetRule? dotNetRule;
+
         private BuildCommandAutoRule? buildCommandAutoRule;
 
         public CSharpAutobuilder(IBuildActions actions, CSharpAutobuildOptions options) : base(actions, options) { }
@@ -103,11 +105,12 @@ namespace Semmle.Autobuild.CSharp
                         (s & CheckExtractorRun(false)) |
                         (attemptExtractorCleanup & BuildScript.Failure);
 
+                    this.dotNetRule = new DotNetRule();
                     this.buildCommandAutoRule = new BuildCommandAutoRule(DotNetRule.WithDotNet);
 
                     attempt =
                         // First try .NET Core
-                        IntermediateAttempt(new DotNetRule().Analyse(this, true)) |
+                        IntermediateAttempt(dotNetRule.Analyse(this, true)) |
                         // Then MSBuild
                         (() => IntermediateAttempt(new MsBuildRule().Analyse(this, true))) |
                         // And finally look for a script that might be a build script
@@ -164,6 +167,13 @@ namespace Semmle.Autobuild.CSharp
 
                 Diagnostic(message);
             }
+            else if (dotNetRule is not null && dotNetRule.NotDotNetProjects.Any())
+            {
+                var message = MakeDiagnostic("dotnet-incompatible-projects", "Some projects are incompatible with .NET Core");
+                message.MarkdownMessage =
+                    "CodeQL found some projects which cannot be built with .NET Core:\n" +
+                    string.Join('\n', dotNetRule.NotDotNetProjects.Select(p => $"- `{p.FullPath}`"));
+                message.Severity = DiagnosticMessage.TspSeverity.Warning;
 
                 Diagnostic(message);
             }
