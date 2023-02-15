@@ -18,7 +18,11 @@
 
    macOS 11 Big Sur
 
-   macOS 12 Monterey","x86-64
+   macOS 12 Monterey
+
+   macOS 13 Ventura","x86-64
+
+   x86-64, arm64 (Apple Silicon)
 
    x86-64, arm64 (Apple Silicon)
 

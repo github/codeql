@@ -303,6 +303,13 @@ private class CookiesSameSiteProtectionSetting extends Settings::NillableStringl
   }
 }
 
+pragma[nomagic]
+private predicate isPotentialRenderCall(MethodCall renderCall, Location loc, ErbFile erbFile) {
+  renderCall.getMethodName() = "render" and
+  loc = renderCall.getLocation() and
+  RenderCallUtils::getTemplateFile(renderCall) = erbFile
+}
+
 // TODO: initialization hooks, e.g. before_configuration, after_initialize...
 // TODO: initializers
 /** A synthetic global to represent the value passed to the `locals` argument of a render call for a specific ERB file. */
@@ -313,10 +320,11 @@ private class LocalAssignsHashSyntheticGlobal extends SummaryComponent::Syntheti
   private MethodCall renderCall;
 
   LocalAssignsHashSyntheticGlobal() {
-    this = "LocalAssignsHashSyntheticGlobal+" + id and
-    id = erbFile.getRelativePath() + "+" + renderCall.getLocation() and
-    renderCall.getMethodName() = "render" and
-    RenderCallUtils::getTemplateFile(renderCall) = erbFile
+    exists(Location loc |
+      this = "LocalAssignsHashSyntheticGlobal+" + id and
+      isPotentialRenderCall(renderCall, loc, erbFile) and
+      id = erbFile.getRelativePath() + "+" + loc
+    )
   }
 
   /** Gets the `ErbFile` which this locals hash is accessible from. */

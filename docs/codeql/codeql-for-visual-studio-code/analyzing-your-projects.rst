@@ -29,13 +29,13 @@ Obtaining a local database
 
 If you have a CodeQL database saved locally, as an unarchived folder or as a ZIP file, you can add it to Visual Studio Code. There are several ways to obtain a local CodeQL database.
 
-- To create a database with the CodeQL CLI, see ":ref:`Creating CodeQL databases <creating-codeql-databases>`."
+- To create a database with the CodeQL CLI, see "`Creating CodeQL databases <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/creating-codeql-databases>`__."
 
 - To analyze a test database, add a ``.testproj`` folder to the Databases view.
-  Test databases (that is, folders with a ``.testproj`` extension) are generated when you run regression tests on custom queries using the :ref:`CodeQL CLI <codeql-cli>`.
+  Test databases (that is, folders with a ``.testproj`` extension) are generated when you run regression tests on custom queries using the CodeQL CLI.
   If a query fails a regression test, you may want to analyze the test database in Visual Studio Code to debug the failure.
 
-  For more information about running query tests, see ":ref:`Testing custom queries <testing-custom-queries>`" in the CodeQL CLI help.
+  For more information about running query tests, see "`Testing custom queries <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/testing-custom-queries>`__" in the CodeQL CLI help.
 
 .. include:: ../reusables/download-github-database.rst
 
@@ -77,7 +77,7 @@ To run the query, use **CodeQL: Run Query on Selected Database**.
 
 You can see all quick queries that you've run in the current session in the Query History view. Click an entry to see the exact text of the quick query that produced the results.
 
-Once you're happy with your quick query, you should save it in a CodeQL pack so you can access it later. For more information, see ":ref:`About CodeQL packs <about-codeql-packs>`."
+Once you're happy with your quick query, you should save it in a CodeQL pack so you can access it later. For more information, see "`About CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs>`__."
 
 .. _running-a-specific-part-of-a-query-or-library:
 
@@ -118,13 +118,13 @@ To see the queries that you have run in the current session, open the Query Hist
       :alt: See a list of previous queries
 
 The Query History contains information including the date and time when the query was run, the name of the query, the database on which it was run, and how long it took to run the query.
-To customize the information that is displayed, right-click an entry and select **Set Label**.
+To customize the information that is displayed, right-click an entry and select **Rename**.
 
 Click an entry to display the corresponding results in the Query Results view, and double-click
-to display the query itself in the editor (or right-click and select **Open Query**).
-To display the exact text that produced the results for a particular entry, right-click it and select **Show Query Text**. This can differ from **Open Query** as the query file may have been modified since you last ran it.
+to display the query itself in the editor (or right-click and select **View Query**).
+To display the exact text that produced the results for a particular entry, right-click it and select **View Query Text**. This can differ from **View Query** as the query file may have been modified since you last ran it.
 
-To remove queries from the Query History view, select all the queries you want to remove, then right-click and select **Remove History Item**.
+To remove queries from the Query History view, select all the queries you want to remove, then right-click and select **Delete**.
 
 .. _viewing-query-results:
 
@@ -135,7 +135,7 @@ Viewing query results
 
    .. pull-quote:: Note
 
-      Depending on the query, you can also choose different views such as CSV, :ref:`SARIF <sarif-output>`, or :ref:`DIL format <dil>`. For example, to view the DIL format, right-click a result and select **View DIL**.
+      Depending on the query, you can also choose different views such as CSV, `SARIF <https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/sarif-output>`__, or :ref:`DIL format <dil>`. For example, to view the DIL format, right-click a result and select **View DIL**.
       The available output views are determined by the format and the metadata of the query. For more information, see ":ref:`CodeQL queries <codeql-queries>`."
 
 #. Use the dropdown menu in the Results view to choose which results to display, and in what form to display them, such as a formatted alert message or a table of raw results.

@@ -29,7 +29,10 @@ class SwiftDispatcher {
                                const swift::Expr*,
                                const swift::Pattern*,
                                const swift::TypeRepr*,
-                               const swift::TypeBase*>;
+                               const swift::TypeBase*,
+                               const swift::CapturedValue*,
+                               const swift::PoundAvailableInfo*,
+                               const swift::AvailabilitySpec*>;
 
   template <typename E>
   static constexpr bool IsStorable = std::is_constructible_v<Store::Handle, const E&>;
@@ -218,8 +221,16 @@ class SwiftDispatcher {
     attachLocation(locatable->getStartLoc(), locatable->getEndLoc(), locatableLabel);
   }
 
+  void attachLocation(const swift::CapturedValue* capture, TrapLabel<LocatableTag> locatableLabel) {
+    attachLocation(capture->getLoc(), locatableLabel);
+  }
+
   void attachLocation(const swift::IfConfigClause* clause, TrapLabel<LocatableTag> locatableLabel) {
     attachLocation(clause->Loc, clause->Loc, locatableLabel);
+  }
+
+  void attachLocation(swift::AvailabilitySpec* spec, TrapLabel<LocatableTag> locatableLabel) {
+    attachLocation(spec->getSourceRange().Start, spec->getSourceRange().End, locatableLabel);
   }
 
   // Emits a Location TRAP entry and attaches it to a `Locatable` trap label for a given `SourceLoc`
@@ -359,11 +370,14 @@ class SwiftDispatcher {
   virtual void visit(const swift::Stmt* stmt) = 0;
   virtual void visit(const swift::StmtCondition* cond) = 0;
   virtual void visit(const swift::StmtConditionElement* cond) = 0;
+  virtual void visit(const swift::PoundAvailableInfo* availability) = 0;
+  virtual void visit(const swift::AvailabilitySpec* spec) = 0;
   virtual void visit(const swift::CaseLabelItem* item) = 0;
   virtual void visit(const swift::Expr* expr) = 0;
   virtual void visit(const swift::Pattern* pattern) = 0;
   virtual void visit(const swift::TypeRepr* typeRepr, swift::Type type) = 0;
   virtual void visit(const swift::TypeBase* type) = 0;
+  virtual void visit(const swift::CapturedValue* capture) = 0;
 
   const swift::SourceManager& sourceManager;
   TrapDomain& trap;

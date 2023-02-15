@@ -334,6 +334,7 @@ void DeclTranslator::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl&
   entry.params = dispatcher.fetchRepeatedLabels(*decl.getParameters());
   auto self = const_cast<swift::ParamDecl* const>(decl.getImplicitSelfDecl());
   entry.self_param = dispatcher.fetchOptionalLabel(self);
+  entry.captures = dispatcher.fetchRepeatedLabels(decl.getCaptureInfo().getCaptures());
   fillValueDecl(decl, entry);
   fillGenericContext(decl, entry);
 }
@@ -437,6 +438,16 @@ codeql::MissingMemberDecl DeclTranslator::translateMissingMemberDecl(
     const swift::MissingMemberDecl& decl) {
   auto entry = createEntry(decl);
   entry.name = decl.getName().getBaseName().userFacingName().str();
+  return entry;
+}
+
+codeql::CapturedDecl DeclTranslator::translateCapturedValue(const swift::CapturedValue& capture) {
+  codeql::CapturedDecl entry{dispatcher.template assignNewLabel(capture)};
+  auto decl = capture.getDecl();
+  entry.decl = dispatcher.fetchLabel(decl);
+  entry.module = dispatcher.fetchLabel(decl->getModuleContext());
+  entry.is_direct = capture.isDirect();
+  entry.is_escaping = !capture.isNoEscape();
   return entry;
 }
 }  // namespace codeql

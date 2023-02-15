@@ -100,8 +100,7 @@ SARIF file
 ----------
 
 Static analysis results interchange format (SARIF) is an output format used for
-sharing static analysis results. For more information, see ":ref:`SARIF
-output <sarif-output>`."
+sharing static analysis results. For more information, see "`SARIF <https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/sarif-output>`__."
 
 .. _source-reference:
 

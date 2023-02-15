@@ -8,13 +8,14 @@ private module Impl {
   }
 
   private Element getImmediateChildOfCallable(Callable e, int index, string partialPredicateCall) {
-    exists(int b, int bElement, int n, int nSelfParam, int nParam, int nBody |
+    exists(int b, int bElement, int n, int nSelfParam, int nParam, int nBody, int nCapture |
       b = 0 and
       bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
       n = bElement and
       nSelfParam = n + 1 and
       nParam = nSelfParam + 1 + max(int i | i = -1 or exists(e.getImmediateParam(i)) | i) and
       nBody = nParam + 1 and
+      nCapture = nBody + 1 + max(int i | i = -1 or exists(e.getImmediateCapture(i)) | i) and
       (
         none()
         or
@@ -26,6 +27,9 @@ private module Impl {
         partialPredicateCall = "Param(" + (index - nSelfParam).toString() + ")"
         or
         index = nParam and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        or
+        result = e.getImmediateCapture(index - nBody) and
+        partialPredicateCall = "Capture(" + (index - nBody).toString() + ")"
       )
     )
   }
@@ -181,6 +185,40 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfAvailabilityInfo(
+    AvailabilityInfo e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAstNode, int n, int nSpec |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nSpec = n + 1 + max(int i | i = -1 or exists(e.getImmediateSpec(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateSpec(index - n) and
+        partialPredicateCall = "Spec(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfAvailabilitySpec(
+    AvailabilitySpec e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfUnspecifiedElement(
     UnspecifiedElement e, int index, string partialPredicateCall
   ) {
@@ -193,6 +231,38 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfErrorElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfOtherAvailabilitySpec(
+    OtherAvailabilitySpec e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAvailabilitySpec, int n |
+      b = 0 and
+      bAvailabilitySpec =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAvailabilitySpec(e, i, _)) | i) and
+      n = bAvailabilitySpec and
+      (
+        none()
+        or
+        result = getImmediateChildOfAvailabilitySpec(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPlatformVersionAvailabilitySpec(
+    PlatformVersionAvailabilitySpec e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAvailabilitySpec, int n |
+      b = 0 and
+      bAvailabilitySpec =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAvailabilitySpec(e, i, _)) | i) and
+      n = bAvailabilitySpec and
+      (
+        none()
+        or
+        result = getImmediateChildOfAvailabilitySpec(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -230,6 +300,21 @@ private module Impl {
         or
         result = e.getImmediateGenericTypeParam(index - n) and
         partialPredicateCall = "GenericTypeParam(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfCapturedDecl(
+    CapturedDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bDecl, int n |
+      b = 0 and
+      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      n = bDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -3289,13 +3374,16 @@ private module Impl {
   private Element getImmediateChildOfConditionElement(
     ConditionElement e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bAstNode, int n, int nBoolean, int nPattern, int nInitializer |
+    exists(
+      int b, int bAstNode, int n, int nBoolean, int nPattern, int nInitializer, int nAvailability
+    |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
       nBoolean = n + 1 and
       nPattern = nBoolean + 1 and
       nInitializer = nPattern + 1 and
+      nAvailability = nInitializer + 1 and
       (
         none()
         or
@@ -3308,6 +3396,10 @@ private module Impl {
         index = nPattern and
         result = e.getImmediateInitializer() and
         partialPredicateCall = "Initializer()"
+        or
+        index = nInitializer and
+        result = e.getImmediateAvailability() and
+        partialPredicateCall = "Availability()"
       )
     )
   }
@@ -4736,7 +4828,15 @@ private module Impl {
     or
     result = getImmediateChildOfUnknownLocation(e, index, partialAccessor)
     or
+    result = getImmediateChildOfAvailabilityInfo(e, index, partialAccessor)
+    or
     result = getImmediateChildOfUnspecifiedElement(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOtherAvailabilitySpec(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPlatformVersionAvailabilitySpec(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCapturedDecl(e, index, partialAccessor)
     or
     result = getImmediateChildOfEnumCaseDecl(e, index, partialAccessor)
     or

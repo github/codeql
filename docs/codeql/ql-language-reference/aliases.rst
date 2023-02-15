@@ -63,11 +63,11 @@ Use the following syntax to define an alias for a :ref:`type <types>`:
 Note that ``class`` is just a keyword. You can define an alias for any type—namely, :ref:`primitive types <primitive-types>`,
 :ref:`database types <database-types>` and user-defined :ref:`classes <classes>`.
 
-For example, you can use an alias to abbreviate the name of the primitive type ``boolean`` to ``bool``:
+For example, you can use an alias to abbreviate the name of the primitive type ``boolean`` to ``Bool``:
 
 .. code-block:: ql
 
-    class bool = boolean;
+    class Bool = boolean;
 
 Or, to use a class ``OneTwo`` defined in a :ref:`module <explicit-modules>` ``M`` in 
 ``OneTwoThreeLib.qll``, you could create an alias to use the shorter name ``OT`` instead:

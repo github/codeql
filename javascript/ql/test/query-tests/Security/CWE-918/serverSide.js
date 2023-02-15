@@ -117,3 +117,19 @@ new ws.Server({ port: 8080 }).on('connection', function (socket, request) {
     const socket = new ws(url);
   });
 });
+
+
+var server2 = http.createServer(function(req, res) {
+    var tainted = url.parse(req.url, true).query.url;
+
+    axios({
+        method: 'get',
+        url: tainted // NOT OK
+    })
+
+    var myUrl = `${something}/bla/${tainted}`; 
+    axios.get(myUrl); // NOT OK
+
+    var myEncodedUrl = `${something}/bla/${encodeURIComponent(tainted)}`; 
+    axios.get(myEncodedUrl); // OK
+})

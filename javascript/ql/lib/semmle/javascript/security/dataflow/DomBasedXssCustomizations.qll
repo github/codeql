@@ -287,6 +287,8 @@ module DomBasedXss {
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
+  private class HtmlSanitizerAsSanitizer extends Sanitizer instanceof HtmlSanitizerCall { }
+
   /**
    * Holds if there exists two dataflow edges to `succ`, where one edges is sanitized, and the other edge starts with `pred`.
    */

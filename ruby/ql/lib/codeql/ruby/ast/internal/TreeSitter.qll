@@ -1125,6 +1125,23 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Line" }
   }
 
+  /** A class representing `match_pattern` nodes. */
+  class MatchPattern extends @ruby_match_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "MatchPattern" }
+
+    /** Gets the node corresponding to the field `pattern`. */
+    final UnderscorePatternTopExprBody getPattern() { ruby_match_pattern_def(this, result, _) }
+
+    /** Gets the node corresponding to the field `value`. */
+    final UnderscoreArg getValue() { ruby_match_pattern_def(this, _, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      ruby_match_pattern_def(this, result, _) or ruby_match_pattern_def(this, _, result)
+    }
+  }
+
   /** A class representing `method` nodes. */
   class Method extends @ruby_method, AstNode {
     /** Gets the name of the primary QL class for this element. */
@@ -1660,6 +1677,23 @@ module Ruby {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { ruby_symbol_array_child(this, _, result) }
+  }
+
+  /** A class representing `test_pattern` nodes. */
+  class TestPattern extends @ruby_test_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "TestPattern" }
+
+    /** Gets the node corresponding to the field `pattern`. */
+    final UnderscorePatternTopExprBody getPattern() { ruby_test_pattern_def(this, result, _) }
+
+    /** Gets the node corresponding to the field `value`. */
+    final UnderscoreArg getValue() { ruby_test_pattern_def(this, _, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      ruby_test_pattern_def(this, result, _) or ruby_test_pattern_def(this, _, result)
+    }
   }
 
   /** A class representing `then` nodes. */

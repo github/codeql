@@ -7,7 +7,7 @@ protocol SortComparator {
 	associatedtype Compared
 }
 
-struct Data : BidirectionalCollection
+struct Data : RangeReplaceableCollection
 {
 	struct Base64EncodingOptions : OptionSet { let rawValue: Int }
 	struct Base64DecodingOptions : OptionSet { let rawValue: Int }
@@ -21,7 +21,8 @@ struct Data : BidirectionalCollection
 	func index(before: Self.Index) -> Self.Index { return 0 }
 	subscript(position: Self.Index) -> Self.Element { get { return 0 } }
 
-    init<S>(_ elements: S) {}
+ 	init() {}
+	init<S>(_ elements: S) {}
 	init(base64Encoded: Data, options: Data.Base64DecodingOptions) {}
 	init<SourceType>(buffer: UnsafeBufferPointer<SourceType>) {}
 	init<SourceType>(buffer: UnsafeMutablePointer<SourceType>) {}
@@ -34,7 +35,6 @@ struct Data : BidirectionalCollection
 	func append<SourceType>(_: UnsafeBufferPointer<SourceType>) {}
 	func append(_: UnsafePointer<UInt8>, count: Int) {}
 	func append(contentsOf: [UInt8]) {}
-	func append<S>(contentsOf: S) {}
 	func base64EncodedData(options: Data.Base64EncodingOptions) -> Data { return Data("") }
 	func base64EncodedString(options: Data.Base64EncodingOptions) -> String { return "" }
 	func compactMap<ElementOfResult>(_: (UInt8) -> ElementOfResult) -> [ElementOfResult] { return [] }
@@ -230,7 +230,7 @@ func taintThroughData() {
 
 	// ";Data;true;reversed();;;Argument[-1];ReturnValue;taint",
 	let dataTainted34 = source() as! Data
-	sink(arg: dataTainted34.reversed()) // $ MISSING: tainted=232 // Needs models for BidirectionalCollection
+	sink(arg: dataTainted34.reversed()) // $ tainted=232
 
 	// ";Data;true;sorted();;;Argument[-1];ReturnValue;taint",
 	let dataTainted35 = source() as! Data

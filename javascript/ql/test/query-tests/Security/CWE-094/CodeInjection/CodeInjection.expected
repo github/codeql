@@ -84,6 +84,15 @@ nodes
 | express.js:26:17:26:35 | req.param("wobble") |
 | express.js:27:34:27:38 | taint |
 | express.js:27:34:27:38 | taint |
+| express.js:34:9:34:35 | taint |
+| express.js:34:17:34:35 | req.param("wobble") |
+| express.js:34:17:34:35 | req.param("wobble") |
+| express.js:43:15:43:19 | taint |
+| express.js:43:15:43:19 | taint |
+| express.js:49:30:49:32 | msg |
+| express.js:49:30:49:32 | msg |
+| express.js:50:10:50:12 | msg |
+| express.js:50:10:50:12 | msg |
 | module.js:9:16:9:29 | req.query.code |
 | module.js:9:16:9:29 | req.query.code |
 | module.js:9:16:9:29 | req.query.code |
@@ -216,6 +225,14 @@ edges
 | express.js:26:9:26:35 | taint | express.js:27:34:27:38 | taint |
 | express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint |
 | express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint |
+| express.js:34:9:34:35 | taint | express.js:43:15:43:19 | taint |
+| express.js:34:9:34:35 | taint | express.js:43:15:43:19 | taint |
+| express.js:34:17:34:35 | req.param("wobble") | express.js:34:9:34:35 | taint |
+| express.js:34:17:34:35 | req.param("wobble") | express.js:34:9:34:35 | taint |
+| express.js:49:30:49:32 | msg | express.js:50:10:50:12 | msg |
+| express.js:49:30:49:32 | msg | express.js:50:10:50:12 | msg |
+| express.js:49:30:49:32 | msg | express.js:50:10:50:12 | msg |
+| express.js:49:30:49:32 | msg | express.js:50:10:50:12 | msg |
 | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code |
 | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
@@ -311,6 +328,8 @@ edges
 | express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") | This code execution depends on a $@. | express.js:19:37:19:70 | req.par ... odule") | user-provided value |
 | express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") | This code execution depends on a $@. | express.js:21:19:21:48 | req.par ... ntext") | user-provided value |
 | express.js:27:34:27:38 | taint | express.js:26:17:26:35 | req.param("wobble") | express.js:27:34:27:38 | taint | This code execution depends on a $@. | express.js:26:17:26:35 | req.param("wobble") | user-provided value |
+| express.js:43:15:43:19 | taint | express.js:34:17:34:35 | req.param("wobble") | express.js:43:15:43:19 | taint | This code execution depends on a $@. | express.js:34:17:34:35 | req.param("wobble") | user-provided value |
+| express.js:50:10:50:12 | msg | express.js:49:30:49:32 | msg | express.js:50:10:50:12 | msg | This code execution depends on a $@. | express.js:49:30:49:32 | msg | user-provided value |
 | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | This code execution depends on a $@. | module.js:9:16:9:29 | req.query.code | user-provided value |
 | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | This code execution depends on a $@. | module.js:11:17:11:30 | req.query.code | user-provided value |
 | react-native.js:8:32:8:38 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:32:8:38 | tainted | This code execution depends on a $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
