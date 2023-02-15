@@ -3,11 +3,12 @@ import sys
 import pytest
 
 from swift.codegen.test.utils import *
-from swift.codegen.lib.schema import defs
+from swift.codegen.lib import schemadefs as defs
+from swift.codegen.loaders.schemaloader import load
 
 
 def test_empty_schema():
-    @schema.load
+    @load
     class data:
         pass
 
@@ -18,7 +19,7 @@ def test_empty_schema():
 
 
 def test_one_empty_class():
-    @schema.load
+    @load
     class data:
         class MyClass:
             pass
@@ -30,7 +31,7 @@ def test_one_empty_class():
 
 
 def test_two_empty_classes():
-    @schema.load
+    @load
     class data:
         class MyClass1:
             pass
@@ -50,7 +51,7 @@ def test_no_external_bases():
         pass
 
     with pytest.raises(schema.Error):
-        @schema.load
+        @load
         class data:
             class MyClass(A):
                 pass
@@ -58,7 +59,7 @@ def test_no_external_bases():
 
 def test_no_multiple_roots():
     with pytest.raises(schema.Error):
-        @schema.load
+        @load
         class data:
             class MyClass1:
                 pass
@@ -68,7 +69,7 @@ def test_no_multiple_roots():
 
 
 def test_empty_classes_diamond():
-    @schema.load
+    @load
     class data:
         class A:
             pass
@@ -92,7 +93,7 @@ def test_empty_classes_diamond():
 
 #
 def test_group():
-    @schema.load
+    @load
     class data:
         @defs.group("xxx")
         class A:
@@ -104,7 +105,7 @@ def test_group():
 
 
 def test_group_is_inherited():
-    @schema.load
+    @load
     class data:
         class A:
             pass
@@ -129,7 +130,7 @@ def test_group_is_inherited():
 
 def test_no_mixed_groups_in_bases():
     with pytest.raises(schema.Error):
-        @schema.load
+        @load
         class data:
             class A:
                 pass
@@ -151,14 +152,14 @@ def test_no_mixed_groups_in_bases():
 
 def test_lowercase_rejected():
     with pytest.raises(schema.Error):
-        @schema.load
+        @load
         class data:
             class aLowerCase:
                 pass
 
 
 def test_properties():
-    @schema.load
+    @load
     class data:
         class A:
             one: defs.string
@@ -182,7 +183,7 @@ def test_class_properties():
     class A:
         pass
 
-    @schema.load
+    @load
     class data:
         class A:
             pass
@@ -205,7 +206,7 @@ def test_class_properties():
 
 
 def test_string_reference_class_properties():
-    @schema.load
+    @load
     class data:
         class A:
             one: "A"
@@ -227,14 +228,14 @@ def test_string_reference_class_properties():
                                   lambda t: defs.list[defs.optional[t]]])
 def test_string_reference_dangling(spec):
     with pytest.raises(schema.Error):
-        @schema.load
+        @load
         class data:
             class A:
                 x: spec("B")
 
 
 def test_children():
-    @schema.load
+    @load
     class data:
         class A:
             one: "A" | defs.child
@@ -255,7 +256,7 @@ def test_children():
 @pytest.mark.parametrize("spec", [defs.string, defs.int, defs.boolean, defs.predicate])
 def test_builtin_and_predicate_children_not_allowed(spec):
     with pytest.raises(schema.Error):
-        @schema.load
+        @load
         class data:
             class A:
                 x: spec | defs.child
@@ -271,7 +272,7 @@ _pragmas = [(defs.qltest.skip, "qltest_skip"),
 
 @pytest.mark.parametrize("pragma,expected", _pragmas)
 def test_property_with_pragma(pragma, expected):
-    @schema.load
+    @load
     class data:
         class A:
             x: defs.string | pragma
@@ -288,7 +289,7 @@ def test_property_with_pragmas():
     for pragma, _ in _pragmas:
         spec |= pragma
 
-    @schema.load
+    @load
     class data:
         class A:
             x: spec
@@ -302,7 +303,7 @@ def test_property_with_pragmas():
 
 @pytest.mark.parametrize("pragma,expected", _pragmas)
 def test_class_with_pragma(pragma, expected):
-    @schema.load
+    @load
     class data:
         @pragma
         class A:
@@ -318,7 +319,7 @@ def test_class_with_pragmas():
         for p, _ in _pragmas:
             p(cls)
 
-    @schema.load
+    @load
     class data:
         class A:
             pass
@@ -331,7 +332,7 @@ def test_class_with_pragmas():
 
 
 def test_ipa_from_class():
-    @schema.load
+    @load
     class data:
         class A:
             pass
@@ -347,7 +348,7 @@ def test_ipa_from_class():
 
 
 def test_ipa_from_class_ref():
-    @schema.load
+    @load
     class data:
         @defs.synth.from_class("B")
         class A:
@@ -364,7 +365,7 @@ def test_ipa_from_class_ref():
 
 def test_ipa_from_class_dangling():
     with pytest.raises(schema.Error):
-        @schema.load
+        @load
         class data:
             @defs.synth.from_class("X")
             class A:
@@ -372,7 +373,7 @@ def test_ipa_from_class_dangling():
 
 
 def test_ipa_class_on():
-    @schema.load
+    @load
     class data:
         class A:
             pass
@@ -391,7 +392,7 @@ def test_ipa_class_on_ref():
     class A:
         pass
 
-    @schema.load
+    @load
     class data:
         @defs.synth.on_arguments(b="B", i=defs.int)
         class A:
@@ -408,7 +409,7 @@ def test_ipa_class_on_ref():
 
 def test_ipa_class_on_dangling():
     with pytest.raises(schema.Error):
-        @schema.load
+        @load
         class data:
             @defs.synth.on_arguments(s=defs.string, a="A", i=defs.int)
             class B:
@@ -416,7 +417,7 @@ def test_ipa_class_on_dangling():
 
 
 def test_ipa_class_hierarchy():
-    @schema.load
+    @load
     class data:
         class Root:
             pass
@@ -449,7 +450,7 @@ def test_ipa_class_hierarchy():
 
 
 def test_class_docstring():
-    @schema.load
+    @load
     class data:
         class A:
             """Very important class."""
@@ -460,7 +461,7 @@ def test_class_docstring():
 
 
 def test_property_docstring():
-    @schema.load
+    @load
     class data:
         class A:
             x: int | defs.desc("very important property.")
@@ -471,7 +472,7 @@ def test_property_docstring():
 
 
 def test_class_docstring_newline():
-    @schema.load
+    @load
     class data:
         class A:
             """Very important
@@ -483,7 +484,7 @@ def test_class_docstring_newline():
 
 
 def test_property_docstring_newline():
-    @schema.load
+    @load
     class data:
         class A:
             x: int | defs.desc("""very important 
@@ -496,7 +497,7 @@ def test_property_docstring_newline():
 
 
 def test_class_docstring_stripped():
-    @schema.load
+    @load
     class data:
         class A:
             """
@@ -511,7 +512,7 @@ def test_class_docstring_stripped():
 
 
 def test_property_docstring_stripped():
-    @schema.load
+    @load
     class data:
         class A:
             x: int | defs.desc("""
@@ -526,7 +527,7 @@ def test_property_docstring_stripped():
 
 
 def test_class_docstring_split():
-    @schema.load
+    @load
     class data:
         class A:
             """Very important class.
@@ -539,7 +540,7 @@ def test_class_docstring_split():
 
 
 def test_property_docstring_split():
-    @schema.load
+    @load
     class data:
         class A:
             x: int | defs.desc("""very important property.
@@ -553,7 +554,7 @@ def test_property_docstring_split():
 
 
 def test_class_docstring_indent():
-    @schema.load
+    @load
     class data:
         class A:
             """
@@ -567,7 +568,7 @@ def test_class_docstring_indent():
 
 
 def test_property_docstring_indent():
-    @schema.load
+    @load
     class data:
         class A:
             x: int | defs.desc("""
@@ -582,7 +583,7 @@ def test_property_docstring_indent():
 
 
 def test_property_doc_override():
-    @schema.load
+    @load
     class data:
         class A:
             x: int | defs.doc("y")
@@ -595,7 +596,7 @@ def test_property_doc_override():
 
 def test_property_doc_override_no_newlines():
     with pytest.raises(schema.Error):
-        @schema.load
+        @load
         class data:
             class A:
                 x: int | defs.doc("no multiple\nlines")
@@ -603,14 +604,14 @@ def test_property_doc_override_no_newlines():
 
 def test_property_doc_override_no_trailing_dot():
     with pytest.raises(schema.Error):
-        @schema.load
+        @load
         class data:
             class A:
                 x: int | defs.doc("no dots please.")
 
 
 def test_class_default_doc_name():
-    @schema.load
+    @load
     class data:
         @defs.ql.default_doc_name("b")
         class A:
@@ -622,7 +623,7 @@ def test_class_default_doc_name():
 
 
 def test_null_class():
-    @schema.load
+    @load
     class data:
         class Root:
             pass
@@ -641,7 +642,7 @@ def test_null_class():
 
 def test_null_class_cannot_be_derived():
     with pytest.raises(schema.Error):
-        @schema.load
+        @load
         class data:
             class Root:
                 pass
@@ -656,7 +657,7 @@ def test_null_class_cannot_be_derived():
 
 def test_null_class_cannot_be_defined_multiple_times():
     with pytest.raises(schema.Error):
-        @schema.load
+        @load
         class data:
             class Root:
                 pass
@@ -672,7 +673,7 @@ def test_null_class_cannot_be_defined_multiple_times():
 
 def test_uppercase_acronyms_are_rejected():
     with pytest.raises(schema.Error):
-        @schema.load
+        @load
         class data:
             class Root:
                 pass
