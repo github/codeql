@@ -91,4 +91,4 @@ print()
 if status() == 0:
     print("PASS")
 else:
-    print("FAIL")
+    sys.exit("FAIL")
