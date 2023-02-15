@@ -72,7 +72,7 @@ module Cryptography {
        * This may have no result - for example if the `CryptographicAlgorithm` used
        * is a stream cipher rather than a block cipher.
        */
-      BlockMode getBlockMode() { none() }
+      abstract BlockMode getBlockMode();
     }
   }
 
