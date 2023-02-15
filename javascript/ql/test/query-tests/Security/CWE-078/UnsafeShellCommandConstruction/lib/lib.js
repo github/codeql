@@ -554,3 +554,17 @@ module.exports.shellThing = function (name) {
     
     indirectShell("rm", ["-rf", name], {shell: true});
 }
+
+module.exports.badSanitizer = function (name) {
+    if (!name.match(/^(.|\.){1,64}$/)) { // <- bad sanitizer
+        exec("rm -rf " + name); // NOT OK
+    } else {
+        exec("rm -rf " + name); // NOT OK
+    }
+
+    if (!name.match(/^\w{1,64}$/)) { // <- good sanitizer
+        exec("rm -rf " + name); // NOT OK
+    } else {
+        exec("rm -rf " + name); // OK
+    }
+}

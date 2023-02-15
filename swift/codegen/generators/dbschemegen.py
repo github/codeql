@@ -18,8 +18,8 @@ import typing
 import inflection
 
 from swift.codegen.lib import schema
+from swift.codegen.loaders import schemaloader
 from swift.codegen.lib.dbscheme import *
-from typing import Set, List
 
 log = logging.getLogger(__name__)
 
@@ -123,7 +123,7 @@ def generate(opts, renderer):
     input = opts.schema
     out = opts.dbscheme
 
-    data = schema.load_file(input)
+    data = schemaloader.load_file(input)
 
     dbscheme = Scheme(src=input.relative_to(opts.swift_dir),
                       includes=get_includes(data, include_dir=input.parent, swift_dir=opts.swift_dir),

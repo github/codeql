@@ -10,12 +10,15 @@ caseValues
 | cases.rb:137:1:145:3 | case ... | cases.rb:137:6:137:9 | call to expr |
 | cases.rb:147:1:152:3 | case ... | cases.rb:147:6:147:9 | call to expr |
 | cases.rb:154:1:158:3 | case ... | cases.rb:154:6:154:9 | call to expr |
+| cases.rb:160:1:160:14 | case ... | cases.rb:160:1:160:4 | call to expr |
+| cases.rb:162:1:162:20 | case ... | cases.rb:162:1:162:4 | call to expr |
 caseNoValues
 | cases.rb:18:1:22:3 | case ... |
 caseElseBranches
 | cases.rb:8:1:15:3 | case ... | cases.rb:13:1:14:7 | else ... |
 | cases.rb:26:1:29:3 | case ... | cases.rb:28:3:28:12 | else ... |
 | cases.rb:31:1:37:3 | case ... | cases.rb:36:3:36:12 | else ... |
+| cases.rb:160:1:160:14 | case ... | cases.rb:160:1:160:14 | else ... |
 caseNoElseBranches
 | cases.rb:18:1:22:3 | case ... |
 | cases.rb:39:1:80:3 | case ... |
@@ -26,6 +29,7 @@ caseNoElseBranches
 | cases.rb:137:1:145:3 | case ... |
 | cases.rb:147:1:152:3 | case ... |
 | cases.rb:154:1:158:3 | case ... |
+| cases.rb:162:1:162:20 | case ... |
 caseWhenBranches
 | cases.rb:8:1:15:3 | case ... | cases.rb:9:1:10:7 | when ... | 0 | cases.rb:9:6:9:6 | b | cases.rb:9:7:10:7 | then ... |
 | cases.rb:8:1:15:3 | case ... | cases.rb:11:1:12:7 | when ... | 0 | cases.rb:11:6:11:6 | c | cases.rb:11:10:12:7 | then ... |
@@ -132,3 +136,6 @@ caseAllBranches
 | cases.rb:154:1:158:3 | case ... | 0 | cases.rb:155:3:155:12 | in ... then ... |
 | cases.rb:154:1:158:3 | case ... | 1 | cases.rb:156:3:156:13 | in ... then ... |
 | cases.rb:154:1:158:3 | case ... | 2 | cases.rb:157:3:157:14 | in ... then ... |
+| cases.rb:160:1:160:14 | case ... | 0 | cases.rb:160:1:160:14 | in ... then ... |
+| cases.rb:160:1:160:14 | case ... | 1 | cases.rb:160:1:160:14 | else ... |
+| cases.rb:162:1:162:20 | case ... | 0 | cases.rb:162:1:162:20 | in ... then ... |

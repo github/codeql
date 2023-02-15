@@ -1,3 +1,7 @@
+/**
+ * Provides models for the `URL` Swift class.
+ */
+
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
