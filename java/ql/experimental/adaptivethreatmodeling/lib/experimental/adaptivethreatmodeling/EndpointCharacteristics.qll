@@ -497,22 +497,21 @@ private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-/**
- * An EndpointFilterCharacteristic that indicates that an endpoint is a MaD taint step. MaD modeled taint steps are
- * global, so they are not sinks for any query. Non-MaD taint steps might be specific to a particular query, so we don't
- * filter those out.
- */
-private class IsMaDTaintStepCharacteristic extends NotASinkCharacteristic {
-  IsMaDTaintStepCharacteristic() { this = "mad taint step" }
-
-  override predicate appliesToEndpoint(DataFlow::Node n) {
-    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(n, _, _) or
-    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(n, _, _) or
-    FlowSummaryImpl::Private::Steps::summaryGetterStep(n, _, _, _) or
-    FlowSummaryImpl::Private::Steps::summarySetterStep(n, _, _, _)
-  }
-}
-
+// /**
+//  * An EndpointFilterCharacteristic that indicates that an endpoint is a MaD taint step. MaD modeled taint steps are
+//  * global, so they are not sinks for any query. Non-MaD taint steps might be specific to a particular query, so we don't
+//  * filter those out.
+//  */
+// private class IsMaDTaintStepCharacteristic extends NotASinkCharacteristic {
+//   IsMaDTaintStepCharacteristic() { this = "mad taint step" }
+//   override predicate appliesToEndpoint(DataFlow::Node n) {
+//     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(n, _, _)
+//     or
+//     // FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(n, _, _) or
+//     // FlowSummaryImpl::Private::Steps::summaryGetterStep(n, _, _, _) or
+//     FlowSummaryImpl::Private::Steps::summarySetterStep(n, _, _, _)
+//   }
+// }
 /**
  * An EndpointFilterCharacteristic that indicates that an endpoint is an argument to a safe external API method.
  *
