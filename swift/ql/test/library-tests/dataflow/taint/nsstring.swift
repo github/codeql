@@ -95,6 +95,36 @@ class NSString : NSObject, NSCopying, NSMutableCopying {
   func strings(byAppendingPaths paths: [String]) -> [String] { return [] }
   func completePath(into outputName: AutoreleasingUnsafeMutablePointer<NSString?>?, caseSensitive flag: Bool, matchesInto outputArray: AutoreleasingUnsafeMutablePointer<NSArray?>?, filterTypes: [String]?) -> Int { return 1 }
   func getFileSystemRepresentation(_ cname: UnsafeMutablePointer<CChar>, maxLength max: Int) -> Bool { return true }
+
+  var utf8String: UnsafePointer<CChar>? { get { return nil } }
+  var lowercased: String { get { return "" } }
+  var localizedLowercase: String { get { return "" } }
+  var uppercased: String { get { return "" } }
+  var localizedUppercase: String { get { return "" } }
+  var capitalized: String { get { return "" } }
+  var localizedCapitalized: String { get { return "" } }
+  var decomposedStringWithCanonicalMapping: String { get { return "" } }
+  var decomposedStringWithCompatibilityMapping: String { get { return "" } }
+  var precomposedStringWithCanonicalMapping: String { get { return "" } }
+  var precomposedStringWithCompatibilityMapping: String { get { return "" } }
+  var doubleValue: Double { get { return 0.0 } }
+  var floatValue: Float { get { return 0.0 } }
+  var intValue: Int32 { get { return 0 } }
+  var integerValue: Int { get { return 0 } }
+  var longLongValue: Int64 { get { return 0 } }
+  var boolValue: Bool { get { return false } }
+  var description: String { get { return "" } }
+  var pathComponents: [String] { get { return [] } }
+  var fileSystemRepresentation: UnsafePointer<CChar> { get { return (nil as UnsafePointer<CChar>?)! } }
+  var lastPathComponent: String { get { return "" } }
+  var pathExtension: String { get { return "" } }
+  var abbreviatingWithTildeInPath: String { get { return "" } }
+  var deletingLastPathComponent: String { get { return "" } }
+  var deletingPathExtension: String { get { return "" } }
+  var expandingTildeInPath: String { get { return "" } }
+  var resolvingSymlinksInPath: String { get { return "" } }
+  var standardizingPath: String { get { return "" } }
+  var removingPercentEncoding: String? { get { return "" } }
 }
 
 class NSMutableString: NSString {
@@ -389,4 +419,38 @@ func taintThroughInterpolatedStrings() {
   sink(arg: str34) // $ MISSING: tainted=
   str34.setString("")
   sink(arg: str34)
+
+  // member variables
+
+  sink(arg: sourceNSString().utf8String) // $ MISSING: tainted=
+  sink(arg: NSString(utf8String: sourceNSString().utf8String!)!) // $ MISSING: tainted=
+  sink(arg: sourceNSString().lowercased) // $ MISSING: tainted=
+  sink(arg: sourceNSString().localizedLowercase) // $ MISSING: tainted=
+  sink(arg: sourceNSString().uppercased) // $ MISSING: tainted=
+  sink(arg: sourceNSString().localizedUppercase) // $ MISSING: tainted=
+  sink(arg: sourceNSString().capitalized) // $ MISSING: tainted=
+  sink(arg: sourceNSString().localizedCapitalized) // $ MISSING: tainted=
+  sink(arg: sourceNSString().decomposedStringWithCanonicalMapping) // $ MISSING: tainted=
+  sink(arg: sourceNSString().decomposedStringWithCompatibilityMapping) // $ MISSING: tainted=
+  sink(arg: sourceNSString().precomposedStringWithCanonicalMapping) // $ MISSING: tainted=
+  sink(arg: sourceNSString().precomposedStringWithCompatibilityMapping) // $ MISSING: tainted=
+  sink(arg: sourceNSString().doubleValue) // $ MISSING: tainted=
+  sink(arg: sourceNSString().floatValue) // $ MISSING: tainted=
+  sink(arg: sourceNSString().intValue) // $ MISSING: tainted=
+  sink(arg: sourceNSString().integerValue) // $ MISSING: tainted=
+  sink(arg: sourceNSString().longLongValue) // $ MISSING: tainted=
+  sink(arg: sourceNSString().boolValue) // $ MISSING: tainted=
+  sink(arg: sourceNSString().description) // $ MISSING: tainted=
+  sink(arg: sourceNSString().pathComponents) // $ MISSING: tainted=
+  sink(arg: sourceNSString().pathComponents[0]) // $ MISSING: tainted=
+  sink(arg: sourceNSString().fileSystemRepresentation) // $ MISSING: tainted=
+  sink(arg: sourceNSString().lastPathComponent) // $ MISSING: tainted=
+  sink(arg: sourceNSString().pathExtension) // $ MISSING: tainted=
+  sink(arg: sourceNSString().abbreviatingWithTildeInPath) // $ MISSING: tainted=
+  sink(arg: sourceNSString().deletingLastPathComponent) // $ MISSING: tainted=
+  sink(arg: sourceNSString().deletingPathExtension) // $ MISSING: tainted=
+  sink(arg: sourceNSString().expandingTildeInPath) // $ MISSING: tainted=
+  sink(arg: sourceNSString().resolvingSymlinksInPath) // $ MISSING: tainted=
+  sink(arg: sourceNSString().standardizingPath) // $ MISSING: tainted=
+  sink(arg: sourceNSString().removingPercentEncoding) // $ MISSING: tainted=
 }
