@@ -138,7 +138,7 @@ namespace Semmle.Autobuild.CSharp
                     message = new DiagnosticMessage(source)
                     {
                         MarkdownMessage =
-                            "We found multiple potential build scripts for your project and " +
+                            "CodeQL found multiple potential build scripts for your project and " +
                             $"attempted to run `{buildCommandAutoRule.ScriptPath}`, which failed. " +
                             "This may not be the right build script for your project. " +
                             "You can specify which build script to use by providing a suitable build command for your project."
@@ -150,7 +150,7 @@ namespace Semmle.Autobuild.CSharp
                     message = new DiagnosticMessage(source)
                     {
                         MarkdownMessage =
-                            "We attempted to build your project using a script located at " +
+                            "CodeQL attempted to build your project using a script located at " +
                             $"`{buildCommandAutoRule.ScriptPath}`, which failed. " +
                             "You can manually specify a suitable build command for your project."
                     };
