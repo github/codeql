@@ -8,6 +8,7 @@ import semmle.code.java.security.QueryInjection
 import semmle.code.java.security.PathCreation
 import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import experimental.adaptivethreatmodeling.EndpointTypes
 private import experimental.adaptivethreatmodeling.ATMConfig
 private import experimental.adaptivethreatmodeling.SqlInjectionATM
@@ -493,6 +494,22 @@ private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
     exists(AtmConfig config | config.isSanitizer(n))
+  }
+}
+
+/**
+ * An EndpointFilterCharacteristic that indicates that an endpoint is a MaD taint step. MaD modeled taint steps are
+ * global, so they are not sinks for any query. Non-MaD taint steps might be specific to a particular query, so we don't
+ * filter those out.
+ */
+private class IsMaDTaintStepCharacteristic extends NotASinkCharacteristic {
+  IsMaDTaintStepCharacteristic() { this = "mad taint step" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(n, _, _) or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(n, _, _) or
+    FlowSummaryImpl::Private::Steps::summaryGetterStep(n, _, _, _) or
+    FlowSummaryImpl::Private::Steps::summarySetterStep(n, _, _, _)
   }
 }
 
