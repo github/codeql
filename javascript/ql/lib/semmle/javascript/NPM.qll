@@ -198,7 +198,7 @@ class PackageJson extends JsonObject {
   /**
    * Gets the main module of this package.
    */
-  Module getMainModule() { result = getExportedModule(".") }
+  Module getMainModule() { result = this.getExportedModule(".") }
 
   /**
    * Gets the module exported under the given relative path.
