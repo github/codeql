@@ -13,10 +13,13 @@ import tempfile
 
 if any(s == "--help" for s in sys.argv):
     print("""Usage:
-GenerateFlowTestCase.py specsToTest.csv projectPom.xml outdir [--force]
+GenerateFlowTestCase.py specsToTest projectPom.xml outdir [--force]
 
-This generates test cases exercising function model specifications found in specsToTest.csv
+This generates test cases exercising function model specifications found in specsToTest
 producing files Test.java, test.ql, test.ext.yml and test.expected in outdir.
+
+specsToTest should either be a .csv file, a .yml file, or a directory of .yml files, containing the 
+model specifications to test.
 
 projectPom.xml should be a Maven pom sufficient to resolve the classes named in specsToTest.csv.
 Typically this means supplying a skeleton POM <dependencies> section that retrieves whatever jars
@@ -40,9 +43,10 @@ if "--force" in sys.argv:
 
 if len(sys.argv) != 4:
     print(
-        "Usage: GenerateFlowTestCase.py specsToTest.csv projectPom.xml outdir [--force]", file=sys.stderr)
-    print("specsToTest.csv should contain CSV rows describing method taint-propagation specifications to test", file=sys.stderr)
-    print("projectPom.xml should import dependencies sufficient to resolve the types used in specsToTest.csv", file=sys.stderr)
+        "Usage: GenerateFlowTestCase.py specsToTest projectPom.xml outdir [--force]", file=sys.stderr)
+    print("specsToTest should contain CSV rows or YAML models describing method taint-propagation specifications to test", file=sys.stderr)
+    print("projectPom.xml should import dependencies sufficient to resolve the types used in specsToTest", file=sys.stderr)
+    print("\nRun with --help for more details.", file=sys.stderr)
     sys.exit(1)
 
 try:
@@ -85,7 +89,7 @@ def isComment(s):
 def readCsv(file):
     try:
         with open(file, "r") as f:
-            specs = [l for l in f if not isComment(l)]
+            specs = [l.strip() for l in f if not isComment(l)]
     except Exception as e:
         print("Failed to open %s: %s\n" % (file, e))
         sys.exit(1)
