@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-02-13-06h56m55s.mango-camera-59q6mx7l.7f6466f1ca97865a596a3b09ed77de79f84f079547bb006617c9e5fda61580a2
+compiled: false
