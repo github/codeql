@@ -41,7 +41,6 @@ class Configration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof PrefixStringSanitizer or
     guard instanceof QuoteGuard or
     guard instanceof ContainsHtmlGuard or
     guard instanceof TypeTestGuard
@@ -49,15 +48,6 @@ class Configration extends TaintTracking::Configuration {
 }
 
 private import semmle.javascript.security.dataflow.Xss::Shared as Shared
-
-private class PrefixStringSanitizer extends TaintTracking::SanitizerGuardNode,
-  DomBasedXss::PrefixStringSanitizer {
-  PrefixStringSanitizer() { this = this }
-}
-
-private class PrefixString extends DataFlow::FlowLabel, DomBasedXss::PrefixString {
-  PrefixString() { this = this }
-}
 
 private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::QuoteGuard {
   QuoteGuard() { this = this }
