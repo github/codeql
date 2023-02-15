@@ -165,7 +165,9 @@ namespace Semmle.Autobuild.CSharp
             if (this.ProjectsOrSolutionsToBuild.Count == 0)
             {
                 var message = MakeDiagnostic("no-projects-or-solutions", "No project or solutions files found");
-                message.PlaintextMessage = "CodeQL could not find any project or solution files in your repository.";
+                message.PlaintextMessage =
+                    "CodeQL could not find any project or solution files in your repository. " +
+                    "You can manually specify a suitable build command for your project.";
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
 
                 Diagnostic(message);
