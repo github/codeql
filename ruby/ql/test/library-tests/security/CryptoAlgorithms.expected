@@ -12,6 +12,10 @@ weakHashingAlgorithms
 | SHA0 |
 | SHA1 |
 strongHashingAlgorithms
+| BLAKE2 |
+| BLAKE2B |
+| BLAKE2S |
+| BLAKE3 |
 | DSA |
 | ECDSA256 |
 | ECDSA384 |
@@ -30,6 +34,10 @@ strongHashingAlgorithms
 | SHA3256 |
 | SHA3384 |
 | SHA3512 |
+| SHAKE128 |
+| SHAKE256 |
+| SM3 |
+| WHIRLPOOL |
 weakEncryptionAlgorithms
 | 3DES |
 | ARC2 |
