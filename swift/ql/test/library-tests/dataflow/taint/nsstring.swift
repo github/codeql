@@ -190,110 +190,110 @@ func sink(arg: Any) {}
 func taintThroughInterpolatedStrings() {
   // simple initializers
 
-  sink(arg: NSString(characters: sourceUnicharString(), length: 512)) // $ MISSING: tainted=
-  sink(arg: NSString(charactersNoCopy: sourceMutableUnicharString(), length: 512, freeWhenDone: false)) // $ MISSING: tainted=
-  sink(arg: NSString(string: sourceString())) // $ MISSING: tainted=
-  sink(arg: NSString(format: sourceString(), arguments: (nil as CVaListPointer?)!)) // $ MISSING: tainted=
-  sink(arg: NSString(format: sourceString(), locale: nil, arguments: (nil as CVaListPointer?)!)) // $ MISSING: tainted=
-  sink(arg: NSString(format: sourceNSString())) // $ MISSING: tainted=
-  sink(arg: NSString(format: sourceNSString(), locale: nil)) // $ MISSING: tainted=
+  sink(arg: NSString(characters: sourceUnicharString(), length: 512)) // $ tainted=193
+  sink(arg: NSString(charactersNoCopy: sourceMutableUnicharString(), length: 512, freeWhenDone: false)) // $ tainted=194
+  sink(arg: NSString(string: sourceString())) // $ tainted=195
+  sink(arg: NSString(format: sourceString(), arguments: (nil as CVaListPointer?)!)) // $ tainted=196
+  sink(arg: NSString(format: sourceString(), locale: nil, arguments: (nil as CVaListPointer?)!)) // $ tainted=197
+  sink(arg: NSString(format: sourceNSString())) // $ tainted=198
+  sink(arg: NSString(format: sourceNSString(), locale: nil)) // $ tainted=199
 
   // initializers that can throw
 
-  sink(arg: try! NSString(contentsOfFile: sourceString(), encoding: 0)) // $ MISSING: tainted=
-  sink(arg: try! NSString(contentsOfFile: sourceString(), usedEncoding: nil)) // $ MISSING: tainted=
-  sink(arg: try! NSString(contentsOf: sourceURL(), encoding: 0)) // $ MISSING: tainted=
-  sink(arg: try! NSString(contentsOf: URL(string: sourceString())!, encoding: 0)) // $ MISSING: tainted=
-  sink(arg: try! NSString(contentsOf: sourceURL(), usedEncoding: nil)) // $ MISSING: tainted=
-  sink(arg: try! NSString(contentsOf: URL(string: sourceString())!, usedEncoding: nil)) // $ MISSING: tainted=
+  sink(arg: try! NSString(contentsOfFile: sourceString(), encoding: 0)) // $ tainted=203
+  sink(arg: try! NSString(contentsOfFile: sourceString(), usedEncoding: nil)) // $ tainted=204
+  sink(arg: try! NSString(contentsOf: sourceURL(), encoding: 0)) // $: tainted=205
+  sink(arg: try! NSString(contentsOf: URL(string: sourceString())!, encoding: 0)) // $ tainted=206
+  sink(arg: try! NSString(contentsOf: sourceURL(), usedEncoding: nil)) // $ tainted=207
+  sink(arg: try! NSString(contentsOf: URL(string: sourceString())!, usedEncoding: nil)) // $ tainted=208
 
   // initializers returning an optional
 
-  sink(arg: NSString(bytes: sourceUnsafeRawPointer(), length: 1024, encoding: 0)) // $ MISSING: tainted=
-  sink(arg: NSString(bytes: sourceUnsafeRawPointer(), length: 1024, encoding: 0)!) // $ MISSING: tainted=
+  sink(arg: NSString(bytes: sourceUnsafeRawPointer(), length: 1024, encoding: 0)) // $ tainted=212
+  sink(arg: NSString(bytes: sourceUnsafeRawPointer(), length: 1024, encoding: 0)!) // $ tainted=213
   sink(arg: NSString(bytes: UnsafeRawPointer(sourceUnsafeMutableRawPointer()), length: 1024, encoding: 0)!) // $ MISSING: tainted=
 
-  sink(arg: NSString(bytesNoCopy: sourceUnsafeMutableRawPointer(), length: 1024, encoding: 0, freeWhenDone: false)) // $ MISSING: tainted=
-  sink(arg: NSString(bytesNoCopy: sourceUnsafeMutableRawPointer(), length: 1024, encoding: 0, freeWhenDone: false)!) // $ MISSING: tainted=
+  sink(arg: NSString(bytesNoCopy: sourceUnsafeMutableRawPointer(), length: 1024, encoding: 0, freeWhenDone: false)) // $ tainted=216
+  sink(arg: NSString(bytesNoCopy: sourceUnsafeMutableRawPointer(), length: 1024, encoding: 0, freeWhenDone: false)!) // $ tainted=217
   sink(arg: NSString(bytesNoCopy: UnsafeMutableRawPointer(mutating: sourceUnsafeRawPointer()), length: 1024, encoding: 0, freeWhenDone: false)!) // $ MISSING: tainted=
 
-  sink(arg: NSString(cString: sourceCString(), encoding: 0)) // $ MISSING: tainted=
-  sink(arg: NSString(cString: sourceCString(), encoding: 0)!) // $ MISSING: tainted=
+  sink(arg: NSString(cString: sourceCString(), encoding: 0)) // $ tainted=220
+  sink(arg: NSString(cString: sourceCString(), encoding: 0)!) // $ tainted=221
   sink(arg: NSString(cString: sourceUnsafeRawPointer().bindMemory(to: CChar.self, capacity: 1024), encoding: 0)!) // $ MISSING: tainted=
 
-  sink(arg: NSString(cString: sourceCString())) // $ MISSING: tainted=
-  sink(arg: NSString(cString: sourceCString())!) // $ MISSING: tainted=
+  sink(arg: NSString(cString: sourceCString())) // $ tainted=224
+  sink(arg: NSString(cString: sourceCString())!) // $ tainted=225
   sink(arg: NSString(cString: sourceUnsafeRawPointer().bindMemory(to: CChar.self, capacity: 1024))!) // $ MISSING: tainted=
 
-  sink(arg: NSString(utf8String: sourceCString())) // $ MISSING: tainted=
-  sink(arg: NSString(utf8String: sourceCString())!) // $ MISSING: tainted=
+  sink(arg: NSString(utf8String: sourceCString())) // $ tainted=228
+  sink(arg: NSString(utf8String: sourceCString())!) // $ tainted=229
   sink(arg: NSString(utf8String: sourceUnsafeRawPointer().bindMemory(to: CChar.self, capacity: 1024))!) // $ MISSING: tainted=
 
-  sink(arg: NSString(data: sourceData(), encoding: 0)) // $ MISSING: tainted=
-  sink(arg: NSString(data: sourceData(), encoding: 0)!) // $ MISSING: tainted=
-  sink(arg: NSString(data: Data(bytes: sourceUnsafeRawPointer(), count: 1024), encoding: 0)!) // $ MISSING: tainted=
+  sink(arg: NSString(data: sourceData(), encoding: 0)) // $ tainted=232
+  sink(arg: NSString(data: sourceData(), encoding: 0)!) // $ tainted=233
+  sink(arg: NSString(data: Data(bytes: sourceUnsafeRawPointer(), count: 1024), encoding: 0)!) // $ tainted=234
 
-  sink(arg: NSString(contentsOfFile: sourceString())) // $ MISSING: tainted=
-  sink(arg: NSString(contentsOfFile: sourceString())!) // $ MISSING: tainted=
+  sink(arg: NSString(contentsOfFile: sourceString())) // $ tainted=236
+  sink(arg: NSString(contentsOfFile: sourceString())!) // $ tainted=237
 
-  sink(arg: NSString(contentsOf: sourceURL())) // $ MISSING: tainted=
-  sink(arg: NSString(contentsOf: sourceURL())!) // $ MISSING: tainted=
+  sink(arg: NSString(contentsOf: sourceURL())) // $ tainted=239
+  sink(arg: NSString(contentsOf: sourceURL())!) // $ tainted=240
 
   // simple methods (taint flow to return value)
 
   let harmless = NSString(string: "harmless")
   let myRange = NSRange(location:0, length: 128)
 
-  sink(arg: NSString.localizedStringWithFormat(sourceNSString(), (nil as CVarArg?)!)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().character(at: 0)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().cString(using: 0)!) // $ MISSING: tainted=
-  sink(arg: sourceNSString().cString()) // $ MISSING: tainted=
-  sink(arg: sourceNSString().lossyCString()) // $ MISSING: tainted=
-  sink(arg: sourceNSString().padding(toLength: 256, withPad: " ", startingAt: 0)) // $ MISSING: tainted=
-  sink(arg: harmless.padding(toLength: 256, withPad: sourceString(), startingAt: 0)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().lowercased(with: nil)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().uppercased(with: nil)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().capitalized(with: nil)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().components(separatedBy: ",")) // $ MISSING: tainted=
-  sink(arg: sourceNSString().components(separatedBy: ",")[0]) // $ MISSING: tainted=
-  sink(arg: sourceNSString().components(separatedBy: CharacterSet.whitespaces)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().components(separatedBy: CharacterSet.whitespaces)[0]) // $ MISSING: tainted=
-  sink(arg: sourceNSString().trimmingCharacters(in: CharacterSet.whitespaces)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().substring(from: 0)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().substring(with: myRange)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().substring(to: 80)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().folding(locale: nil)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().applyingTransform(StringTransform.toLatin, reverse: false)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().propertyList()) // $ MISSING: tainted=
-  sink(arg: sourceNSString().propertyListFromStringsFileFormat()) // $ MISSING: tainted=
-  sink(arg: sourceNSString().variantFittingPresentationWidth(80)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().data(using: 0)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().data(using: 0, allowLossyConversion: false)) // $ MISSING: tainted=
-  sink(arg: NSString.path(withComponents: ["a", "b", "c"])) // $ MISSING: tainted=
-  sink(arg: NSString.path(withComponents: sourceStringArray())) // $ MISSING: tainted=
+  sink(arg: NSString.localizedStringWithFormat(sourceNSString(), (nil as CVarArg?)!)) // $ tainted=247
+  sink(arg: sourceNSString().character(at: 0)) // $ tainted=248
+  sink(arg: sourceNSString().cString(using: 0)!) // $ tainted=249
+  sink(arg: sourceNSString().cString()) // $ tainted=250
+  sink(arg: sourceNSString().lossyCString()) // $ tainted=251
+  sink(arg: sourceNSString().padding(toLength: 256, withPad: " ", startingAt: 0)) // $ tainted=252
+  sink(arg: harmless.padding(toLength: 256, withPad: sourceString(), startingAt: 0)) // $ tainted=253
+  sink(arg: sourceNSString().lowercased(with: nil)) // $ tainted=254
+  sink(arg: sourceNSString().uppercased(with: nil)) // $ tainted=255
+  sink(arg: sourceNSString().capitalized(with: nil)) // $ tainted=256
+  sink(arg: sourceNSString().components(separatedBy: ",")) // $ tainted=257
+  sink(arg: sourceNSString().components(separatedBy: ",")[0]) // $ tainted=258
+  sink(arg: sourceNSString().components(separatedBy: CharacterSet.whitespaces)) // $ tainted=259
+  sink(arg: sourceNSString().components(separatedBy: CharacterSet.whitespaces)[0]) // $ tainted=260
+  sink(arg: sourceNSString().trimmingCharacters(in: CharacterSet.whitespaces)) // $ tainted=261
+  sink(arg: sourceNSString().substring(from: 0)) // $ tainted=262
+  sink(arg: sourceNSString().substring(with: myRange)) // $ tainted=263
+  sink(arg: sourceNSString().substring(to: 80)) // $ tainted=264
+  sink(arg: sourceNSString().folding(locale: nil)) // $ tainted=265
+  sink(arg: sourceNSString().applyingTransform(StringTransform.toLatin, reverse: false)) // $ tainted=266
+  sink(arg: sourceNSString().propertyList()) // $ tainted=267
+  sink(arg: sourceNSString().propertyListFromStringsFileFormat()) // $ tainted=268
+  sink(arg: sourceNSString().variantFittingPresentationWidth(80)) // $ tainted=269
+  sink(arg: sourceNSString().data(using: 0)) // $ tainted=270
+  sink(arg: sourceNSString().data(using: 0, allowLossyConversion: false)) // $ tainted=271
+  sink(arg: NSString.path(withComponents: ["a", "b", "c"]))
+  sink(arg: NSString.path(withComponents: sourceStringArray())) // $ tainted=273
   sink(arg: NSString.path(withComponents: ["a", sourceString(), "c"])) // $ MISSING: tainted=
-  sink(arg: NSString.string(withCString: sourceCString())) // $ MISSING: tainted=
-  sink(arg: NSString.string(withCString: sourceCString(), length: 128)) // $ MISSING: tainted=
-  sink(arg: NSString.string(withContentsOfFile: sourceString())) // $ MISSING: tainted=
-  sink(arg: NSString.string(withContentsOf: sourceURL())) // $ MISSING: tainted=
+  sink(arg: NSString.string(withCString: sourceCString())) // $ tainted=275
+  sink(arg: NSString.string(withCString: sourceCString(), length: 128)) // $ tainted=276
+  sink(arg: NSString.string(withContentsOfFile: sourceString())) // $ tainted=277
+  sink(arg: NSString.string(withContentsOf: sourceURL())) // $ tainted=278
 
   // appending
 
   sink(arg: harmless.appendingFormat(harmless, (nil as CVarArg?)!))
-  sink(arg: harmless.appendingFormat(sourceNSString(), (nil as CVarArg?)!)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().appendingFormat(harmless, (nil as CVarArg?)!)) // $ MISSING: tainted=
+  sink(arg: harmless.appendingFormat(sourceNSString(), (nil as CVarArg?)!)) // $ tainted=283
+  sink(arg: sourceNSString().appendingFormat(harmless, (nil as CVarArg?)!)) // $ tainted=284
 
   sink(arg: harmless.appendingPathComponent(""))
-  sink(arg: harmless.appendingPathComponent(sourceString())) // $ MISSING: tainted=
-  sink(arg: sourceNSString().appendingPathComponent("")) // $ MISSING: tainted=
+  sink(arg: harmless.appendingPathComponent(sourceString())) // $ tainted=287
+  sink(arg: sourceNSString().appendingPathComponent("")) // $ tainted=288
 
   sink(arg: harmless.appendingPathComponent("", conformingTo: (nil as UTType?)!))
-  sink(arg: harmless.appendingPathComponent(sourceString(), conformingTo: (nil as UTType?)!)) // $ MISSING: tainted=
-  sink(arg: sourceNSString().appendingPathComponent("", conformingTo: (nil as UTType?)!)) // $ MISSING: tainted=
+  sink(arg: harmless.appendingPathComponent(sourceString(), conformingTo: (nil as UTType?)!)) // $ tainted=291
+  sink(arg: sourceNSString().appendingPathComponent("", conformingTo: (nil as UTType?)!)) // $ tainted=292
 
   sink(arg: harmless.appendingPathExtension(""))
-  sink(arg: harmless.appendingPathExtension(sourceString())) // $ MISSING: tainted=
-  sink(arg: sourceNSString().appendingPathExtension("")) // $ MISSING: tainted=
+  sink(arg: harmless.appendingPathExtension(sourceString())) // $ tainted=295
+  sink(arg: sourceNSString().appendingPathExtension("")) // $ tainted=296
 
   var str1 = harmless
   sink(arg: str1)
@@ -308,8 +308,8 @@ func taintThroughInterpolatedStrings() {
   sink(arg: harmless.strings(byAppendingPaths: [""])[0])
   sink(arg: harmless.strings(byAppendingPaths: [sourceString()])) // $ MISSING: tainted=
   sink(arg: harmless.strings(byAppendingPaths: [sourceString()])[0]) // $ MISSING: tainted=
-  sink(arg: sourceNSString().strings(byAppendingPaths: [""])) // $ MISSING: tainted=
-  sink(arg: sourceNSString().strings(byAppendingPaths: [""])[0]) // $ MISSING: tainted=
+  sink(arg: sourceNSString().strings(byAppendingPaths: [""])) // $ tainted=311
+  sink(arg: sourceNSString().strings(byAppendingPaths: [""])[0]) // $ tainted=312
 
   // other methods
 
@@ -332,7 +332,7 @@ func taintThroughInterpolatedStrings() {
   harmless.getBytes(ptr3, maxLength: 128, usedLength: nil, encoding: 0, range: myRange, remaining: nil)
   sink(arg: ptr3)
   sourceNSString().getBytes(ptr3, maxLength: 128, usedLength: nil, encoding: 0, range: myRange, remaining: nil)
-  sink(arg: ptr3) // $ MISSING: tainted=
+  sink(arg: ptr3) // $ tainted=334
 
   var ptr4 = (nil as UnsafeMutablePointer<CChar>?)!
   sink(arg: ptr4)
@@ -389,7 +389,7 @@ func taintThroughInterpolatedStrings() {
 
   // `NSMutableString` methods
 
-  sink(arg: sourceNSMutableString().capitalized(with: nil)) // $ MISSING: tainted=
+  sink(arg: sourceNSMutableString().capitalized(with: nil)) // $ tainted=392
 
   var str30 = NSMutableString(string: "")
   sink(arg: str30)
@@ -422,35 +422,35 @@ func taintThroughInterpolatedStrings() {
 
   // member variables
 
-  sink(arg: sourceNSString().utf8String) // $ MISSING: tainted=
-  sink(arg: NSString(utf8String: sourceNSString().utf8String!)!) // $ MISSING: tainted=
-  sink(arg: sourceNSString().lowercased) // $ MISSING: tainted=
+  sink(arg: sourceNSString().utf8String) // $ tainted=425
+  sink(arg: NSString(utf8String: sourceNSString().utf8String!)!) // $ tainted=426
+  sink(arg: sourceNSString().lowercased) // $ tainted=427
   sink(arg: sourceNSString().localizedLowercase) // $ MISSING: tainted=
-  sink(arg: sourceNSString().uppercased) // $ MISSING: tainted=
-  sink(arg: sourceNSString().localizedUppercase) // $ MISSING: tainted=
-  sink(arg: sourceNSString().capitalized) // $ MISSING: tainted=
-  sink(arg: sourceNSString().localizedCapitalized) // $ MISSING: tainted=
-  sink(arg: sourceNSString().decomposedStringWithCanonicalMapping) // $ MISSING: tainted=
-  sink(arg: sourceNSString().decomposedStringWithCompatibilityMapping) // $ MISSING: tainted=
-  sink(arg: sourceNSString().precomposedStringWithCanonicalMapping) // $ MISSING: tainted=
-  sink(arg: sourceNSString().precomposedStringWithCompatibilityMapping) // $ MISSING: tainted=
-  sink(arg: sourceNSString().doubleValue) // $ MISSING: tainted=
-  sink(arg: sourceNSString().floatValue) // $ MISSING: tainted=
-  sink(arg: sourceNSString().intValue) // $ MISSING: tainted=
-  sink(arg: sourceNSString().integerValue) // $ MISSING: tainted=
-  sink(arg: sourceNSString().longLongValue) // $ MISSING: tainted=
-  sink(arg: sourceNSString().boolValue) // $ MISSING: tainted=
-  sink(arg: sourceNSString().description) // $ MISSING: tainted=
-  sink(arg: sourceNSString().pathComponents) // $ MISSING: tainted=
-  sink(arg: sourceNSString().pathComponents[0]) // $ MISSING: tainted=
-  sink(arg: sourceNSString().fileSystemRepresentation) // $ MISSING: tainted=
-  sink(arg: sourceNSString().lastPathComponent) // $ MISSING: tainted=
-  sink(arg: sourceNSString().pathExtension) // $ MISSING: tainted=
-  sink(arg: sourceNSString().abbreviatingWithTildeInPath) // $ MISSING: tainted=
-  sink(arg: sourceNSString().deletingLastPathComponent) // $ MISSING: tainted=
-  sink(arg: sourceNSString().deletingPathExtension) // $ MISSING: tainted=
-  sink(arg: sourceNSString().expandingTildeInPath) // $ MISSING: tainted=
-  sink(arg: sourceNSString().resolvingSymlinksInPath) // $ MISSING: tainted=
-  sink(arg: sourceNSString().standardizingPath) // $ MISSING: tainted=
-  sink(arg: sourceNSString().removingPercentEncoding) // $ MISSING: tainted=
+  sink(arg: sourceNSString().uppercased) // $ tainted=429
+  sink(arg: sourceNSString().localizedUppercase) // $ tainted=430
+  sink(arg: sourceNSString().capitalized) // $ tainted=431
+  sink(arg: sourceNSString().localizedCapitalized) // $ tainted=432
+  sink(arg: sourceNSString().decomposedStringWithCanonicalMapping) // $ tainted=433
+  sink(arg: sourceNSString().decomposedStringWithCompatibilityMapping) // $ tainted=434
+  sink(arg: sourceNSString().precomposedStringWithCanonicalMapping) // $ tainted=435
+  sink(arg: sourceNSString().precomposedStringWithCompatibilityMapping) // $ tainted=436
+  sink(arg: sourceNSString().doubleValue) // $ tainted=437
+  sink(arg: sourceNSString().floatValue) // $ tainted=438
+  sink(arg: sourceNSString().intValue) // $ tainted=439
+  sink(arg: sourceNSString().integerValue) // $ tainted=440
+  sink(arg: sourceNSString().longLongValue) // $ tainted=441
+  sink(arg: sourceNSString().boolValue) // $ tainted=442
+  sink(arg: sourceNSString().description) // $ tainted=443
+  sink(arg: sourceNSString().pathComponents) // $ tainted=444
+  sink(arg: sourceNSString().pathComponents[0]) // $ tainted=445
+  sink(arg: sourceNSString().fileSystemRepresentation) // $ tainted=446
+  sink(arg: sourceNSString().lastPathComponent) // $ tainted=447
+  sink(arg: sourceNSString().pathExtension) // $ tainted=448
+  sink(arg: sourceNSString().abbreviatingWithTildeInPath) // $ tainted=449
+  sink(arg: sourceNSString().deletingLastPathComponent) // $ tainted=450
+  sink(arg: sourceNSString().deletingPathExtension) // $ tainted=451
+  sink(arg: sourceNSString().expandingTildeInPath) // $ tainted=452
+  sink(arg: sourceNSString().resolvingSymlinksInPath) // $ tainted=453
+  sink(arg: sourceNSString().standardizingPath) // $ tainted=454
+  sink(arg: sourceNSString().removingPercentEncoding) // $ tainted=455
 }

@@ -331,6 +331,270 @@ edges
 | nsmutabledata.swift:48:33:48:40 | call to source() :  | nsmutabledata.swift:49:15:49:37 | .mutableBytes |
 | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 :  | nsmutabledata.swift:13:9:13:9 | self :  |
 | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 :  | nsmutabledata.swift:49:15:49:37 | .mutableBytes |
+| nsstring.swift:31:3:31:58 | [summary param] 0 in NSString.init(characters:length:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(characters:length:) :  |
+| nsstring.swift:32:3:32:113 | [summary param] 0 in NSString.init(charactersNoCopy:length:freeWhenDone:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(charactersNoCopy:length:freeWhenDone:) :  |
+| nsstring.swift:33:3:33:33 | [summary param] 0 in NSString.init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(string:) :  |
+| nsstring.swift:35:15:35:95 | [summary param] 0 in Self.init(format:arguments:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(format:arguments:) :  |
+| nsstring.swift:36:15:36:109 | [summary param] 0 in Self.init(format:locale:arguments:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(format:locale:arguments:) :  |
+| nsstring.swift:37:15:37:82 | [summary param] 0 in Self.init(format:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(format:_:) :  |
+| nsstring.swift:38:15:38:99 | [summary param] 0 in Self.init(format:locale:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(format:locale:_:) :  |
+| nsstring.swift:39:15:39:100 | [summary param] 0 in Self.init(contentsOfFile:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOfFile:encoding:) :  |
+| nsstring.swift:40:15:40:127 | [summary param] 0 in Self.init(contentsOfFile:usedEncoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOfFile:usedEncoding:) :  |
+| nsstring.swift:41:15:41:92 | [summary param] 0 in Self.init(contentsOf:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOf:encoding:) :  |
+| nsstring.swift:42:15:42:119 | [summary param] 0 in Self.init(contentsOf:usedEncoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOf:usedEncoding:) :  |
+| nsstring.swift:44:15:44:103 | [summary param] 0 in Self.init(bytes:length:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(bytes:length:encoding:) :  |
+| nsstring.swift:45:15:45:153 | [summary param] 0 in Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  |
+| nsstring.swift:46:15:46:114 | [summary param] 0 in Self.init(cString:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(cString:encoding:) :  |
+| nsstring.swift:47:15:47:82 | [summary param] 0 in Self.init(cString:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(cString:) :  |
+| nsstring.swift:48:15:48:101 | [summary param] 0 in Self.init(utf8String:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(utf8String:) :  |
+| nsstring.swift:49:15:49:73 | [summary param] 0 in Self.init(data:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(data:encoding:) :  |
+| nsstring.swift:50:15:50:74 | [summary param] 0 in Self.init(contentsOfFile:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOfFile:) :  |
+| nsstring.swift:51:15:51:66 | [summary param] 0 in Self.init(contentsOf:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOf:) :  |
+| nsstring.swift:56:3:56:110 | [summary param] 0 in localizedStringWithFormat(_:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in localizedStringWithFormat(_:_:) :  |
+| nsstring.swift:57:3:57:78 | [summary param] 0 in path(withComponents:) :  | file://:0:0:0:0 | [summary] to write: return (return) in path(withComponents:) :  |
+| nsstring.swift:58:3:58:83 | [summary param] 0 in string(withCString:) :  | file://:0:0:0:0 | [summary] to write: return (return) in string(withCString:) :  |
+| nsstring.swift:59:3:59:96 | [summary param] 0 in string(withCString:length:) :  | file://:0:0:0:0 | [summary] to write: return (return) in string(withCString:length:) :  |
+| nsstring.swift:60:3:60:75 | [summary param] 0 in string(withContentsOfFile:) :  | file://:0:0:0:0 | [summary] to write: return (return) in string(withContentsOfFile:) :  |
+| nsstring.swift:61:3:61:67 | [summary param] 0 in string(withContentsOf:) :  | file://:0:0:0:0 | [summary] to write: return (return) in string(withContentsOf:) :  |
+| nsstring.swift:63:3:63:55 | [summary param] this in character(at:) :  | file://:0:0:0:0 | [summary] to write: return (return) in character(at:) :  |
+| nsstring.swift:66:3:66:281 | [summary param] this in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  |
+| nsstring.swift:67:3:67:76 | [summary param] this in cString(using:) :  | file://:0:0:0:0 | [summary] to write: return (return) in cString(using:) :  |
+| nsstring.swift:68:3:68:56 | [summary param] this in cString() :  | file://:0:0:0:0 | [summary] to write: return (return) in cString() :  |
+| nsstring.swift:69:3:69:61 | [summary param] this in lossyCString() :  | file://:0:0:0:0 | [summary] to write: return (return) in lossyCString() :  |
+| nsstring.swift:72:3:72:106 | [summary param] 0 in appendingFormat(_:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingFormat(_:_:) :  |
+| nsstring.swift:72:3:72:106 | [summary param] this in appendingFormat(_:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingFormat(_:_:) :  |
+| nsstring.swift:74:3:74:116 | [summary param] 1 in padding(toLength:withPad:startingAt:) :  | file://:0:0:0:0 | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  |
+| nsstring.swift:74:3:74:116 | [summary param] this in padding(toLength:withPad:startingAt:) :  | file://:0:0:0:0 | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  |
+| nsstring.swift:75:3:75:63 | [summary param] this in lowercased(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in lowercased(with:) :  |
+| nsstring.swift:76:3:76:63 | [summary param] this in uppercased(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in uppercased(with:) :  |
+| nsstring.swift:77:3:77:64 | [summary param] this in capitalized(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in capitalized(with:) :  |
+| nsstring.swift:78:3:78:74 | [summary param] this in components(separatedBy:) :  | file://:0:0:0:0 | [summary] to write: return (return) in components(separatedBy:) :  |
+| nsstring.swift:79:3:79:80 | [summary param] this in components(separatedBy:) :  | file://:0:0:0:0 | [summary] to write: return (return) in components(separatedBy:) :  |
+| nsstring.swift:80:3:80:71 | [summary param] this in trimmingCharacters(in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in trimmingCharacters(in:) :  |
+| nsstring.swift:81:3:81:51 | [summary param] this in substring(from:) :  | file://:0:0:0:0 | [summary] to write: return (return) in substring(from:) :  |
+| nsstring.swift:82:3:82:61 | [summary param] this in substring(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in substring(with:) :  |
+| nsstring.swift:83:3:83:49 | [summary param] this in substring(to:) :  | file://:0:0:0:0 | [summary] to write: return (return) in substring(to:) :  |
+| nsstring.swift:84:3:84:94 | [summary param] this in folding(options:locale:) :  | file://:0:0:0:0 | [summary] to write: return (return) in folding(options:locale:) :  |
+| nsstring.swift:85:3:85:94 | [summary param] this in applyingTransform(_:reverse:) :  | file://:0:0:0:0 | [summary] to write: return (return) in applyingTransform(_:reverse:) :  |
+| nsstring.swift:87:3:87:41 | [summary param] this in propertyList() :  | file://:0:0:0:0 | [summary] to write: return (return) in propertyList() :  |
+| nsstring.swift:88:3:88:80 | [summary param] this in propertyListFromStringsFileFormat() :  | file://:0:0:0:0 | [summary] to write: return (return) in propertyListFromStringsFileFormat() :  |
+| nsstring.swift:89:3:89:76 | [summary param] this in variantFittingPresentationWidth(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in variantFittingPresentationWidth(_:) :  |
+| nsstring.swift:90:3:90:57 | [summary param] this in data(using:) :  | file://:0:0:0:0 | [summary] to write: return (return) in data(using:) :  |
+| nsstring.swift:91:3:91:91 | [summary param] this in data(using:allowLossyConversion:) :  | file://:0:0:0:0 | [summary] to write: return (return) in data(using:allowLossyConversion:) :  |
+| nsstring.swift:92:3:92:68 | [summary param] 0 in appendingPathComponent(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:) :  |
+| nsstring.swift:92:3:92:68 | [summary param] this in appendingPathComponent(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:) :  |
+| nsstring.swift:93:3:93:110 | [summary param] 0 in appendingPathComponent(_:conformingTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:conformingTo:) :  |
+| nsstring.swift:93:3:93:110 | [summary param] this in appendingPathComponent(_:conformingTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:conformingTo:) :  |
+| nsstring.swift:94:3:94:69 | [summary param] 0 in appendingPathExtension(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathExtension(_:) :  |
+| nsstring.swift:94:3:94:69 | [summary param] this in appendingPathExtension(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathExtension(_:) :  |
+| nsstring.swift:95:3:95:74 | [summary param] this in strings(byAppendingPaths:) :  | file://:0:0:0:0 | [summary] to write: return (return) in strings(byAppendingPaths:) :  |
+| nsstring.swift:149:2:149:25 | [summary param] 0 in URL.init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:) :  |
+| nsstring.swift:154:3:154:46 | [summary param] 0 in Data.init(bytes:count:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytes:count:) :  |
+| nsstring.swift:193:34:193:54 | call to sourceUnicharString() :  | nsstring.swift:31:3:31:58 | [summary param] 0 in NSString.init(characters:length:) :  |
+| nsstring.swift:193:34:193:54 | call to sourceUnicharString() :  | nsstring.swift:193:13:193:68 | call to NSString.init(characters:length:) |
+| nsstring.swift:194:40:194:67 | call to sourceMutableUnicharString() :  | nsstring.swift:32:3:32:113 | [summary param] 0 in NSString.init(charactersNoCopy:length:freeWhenDone:) :  |
+| nsstring.swift:194:40:194:67 | call to sourceMutableUnicharString() :  | nsstring.swift:194:13:194:102 | call to NSString.init(charactersNoCopy:length:freeWhenDone:) |
+| nsstring.swift:195:30:195:43 | call to sourceString() :  | nsstring.swift:33:3:33:33 | [summary param] 0 in NSString.init(string:) :  |
+| nsstring.swift:195:30:195:43 | call to sourceString() :  | nsstring.swift:195:13:195:44 | call to NSString.init(string:) |
+| nsstring.swift:196:30:196:43 | call to sourceString() :  | nsstring.swift:35:15:35:95 | [summary param] 0 in Self.init(format:arguments:) :  |
+| nsstring.swift:196:30:196:43 | call to sourceString() :  | nsstring.swift:196:13:196:82 | call to Self.init(format:arguments:) |
+| nsstring.swift:197:30:197:43 | call to sourceString() :  | nsstring.swift:36:15:36:109 | [summary param] 0 in Self.init(format:locale:arguments:) :  |
+| nsstring.swift:197:30:197:43 | call to sourceString() :  | nsstring.swift:197:13:197:95 | call to Self.init(format:locale:arguments:) |
+| nsstring.swift:198:30:198:45 | call to sourceNSString() :  | nsstring.swift:37:15:37:82 | [summary param] 0 in Self.init(format:_:) :  |
+| nsstring.swift:198:30:198:45 | call to sourceNSString() :  | nsstring.swift:198:13:198:46 | call to Self.init(format:_:) |
+| nsstring.swift:199:30:199:45 | call to sourceNSString() :  | nsstring.swift:38:15:38:99 | [summary param] 0 in Self.init(format:locale:_:) :  |
+| nsstring.swift:199:30:199:45 | call to sourceNSString() :  | nsstring.swift:199:13:199:59 | call to Self.init(format:locale:_:) |
+| nsstring.swift:203:18:203:70 | call to Self.init(contentsOfFile:encoding:) :  | nsstring.swift:203:13:203:70 | try! ... |
+| nsstring.swift:203:43:203:56 | call to sourceString() :  | nsstring.swift:39:15:39:100 | [summary param] 0 in Self.init(contentsOfFile:encoding:) :  |
+| nsstring.swift:203:43:203:56 | call to sourceString() :  | nsstring.swift:203:18:203:70 | call to Self.init(contentsOfFile:encoding:) :  |
+| nsstring.swift:204:18:204:76 | call to Self.init(contentsOfFile:usedEncoding:) :  | nsstring.swift:204:13:204:76 | try! ... |
+| nsstring.swift:204:43:204:56 | call to sourceString() :  | nsstring.swift:40:15:40:127 | [summary param] 0 in Self.init(contentsOfFile:usedEncoding:) :  |
+| nsstring.swift:204:43:204:56 | call to sourceString() :  | nsstring.swift:204:18:204:76 | call to Self.init(contentsOfFile:usedEncoding:) :  |
+| nsstring.swift:205:18:205:63 | call to Self.init(contentsOf:encoding:) :  | nsstring.swift:205:13:205:63 | try! ... |
+| nsstring.swift:205:39:205:49 | call to sourceURL() :  | nsstring.swift:41:15:41:92 | [summary param] 0 in Self.init(contentsOf:encoding:) :  |
+| nsstring.swift:205:39:205:49 | call to sourceURL() :  | nsstring.swift:205:18:205:63 | call to Self.init(contentsOf:encoding:) :  |
+| nsstring.swift:206:18:206:80 | call to Self.init(contentsOf:encoding:) :  | nsstring.swift:206:13:206:80 | try! ... |
+| nsstring.swift:206:39:206:65 | call to URL.init(string:) :  | nsstring.swift:206:39:206:66 | ...! :  |
+| nsstring.swift:206:39:206:66 | ...! :  | nsstring.swift:41:15:41:92 | [summary param] 0 in Self.init(contentsOf:encoding:) :  |
+| nsstring.swift:206:39:206:66 | ...! :  | nsstring.swift:206:18:206:80 | call to Self.init(contentsOf:encoding:) :  |
+| nsstring.swift:206:51:206:64 | call to sourceString() :  | nsstring.swift:149:2:149:25 | [summary param] 0 in URL.init(string:) :  |
+| nsstring.swift:206:51:206:64 | call to sourceString() :  | nsstring.swift:206:39:206:65 | call to URL.init(string:) :  |
+| nsstring.swift:207:18:207:69 | call to Self.init(contentsOf:usedEncoding:) :  | nsstring.swift:207:13:207:69 | try! ... |
+| nsstring.swift:207:39:207:49 | call to sourceURL() :  | nsstring.swift:42:15:42:119 | [summary param] 0 in Self.init(contentsOf:usedEncoding:) :  |
+| nsstring.swift:207:39:207:49 | call to sourceURL() :  | nsstring.swift:207:18:207:69 | call to Self.init(contentsOf:usedEncoding:) :  |
+| nsstring.swift:208:18:208:86 | call to Self.init(contentsOf:usedEncoding:) :  | nsstring.swift:208:13:208:86 | try! ... |
+| nsstring.swift:208:39:208:65 | call to URL.init(string:) :  | nsstring.swift:208:39:208:66 | ...! :  |
+| nsstring.swift:208:39:208:66 | ...! :  | nsstring.swift:42:15:42:119 | [summary param] 0 in Self.init(contentsOf:usedEncoding:) :  |
+| nsstring.swift:208:39:208:66 | ...! :  | nsstring.swift:208:18:208:86 | call to Self.init(contentsOf:usedEncoding:) :  |
+| nsstring.swift:208:51:208:64 | call to sourceString() :  | nsstring.swift:149:2:149:25 | [summary param] 0 in URL.init(string:) :  |
+| nsstring.swift:208:51:208:64 | call to sourceString() :  | nsstring.swift:208:39:208:65 | call to URL.init(string:) :  |
+| nsstring.swift:212:29:212:52 | call to sourceUnsafeRawPointer() :  | nsstring.swift:44:15:44:103 | [summary param] 0 in Self.init(bytes:length:encoding:) :  |
+| nsstring.swift:212:29:212:52 | call to sourceUnsafeRawPointer() :  | nsstring.swift:212:13:212:80 | call to Self.init(bytes:length:encoding:) |
+| nsstring.swift:213:13:213:80 | call to Self.init(bytes:length:encoding:) :  | nsstring.swift:213:13:213:81 | ...! |
+| nsstring.swift:213:29:213:52 | call to sourceUnsafeRawPointer() :  | nsstring.swift:44:15:44:103 | [summary param] 0 in Self.init(bytes:length:encoding:) :  |
+| nsstring.swift:213:29:213:52 | call to sourceUnsafeRawPointer() :  | nsstring.swift:213:13:213:80 | call to Self.init(bytes:length:encoding:) :  |
+| nsstring.swift:216:35:216:65 | call to sourceUnsafeMutableRawPointer() :  | nsstring.swift:45:15:45:153 | [summary param] 0 in Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  |
+| nsstring.swift:216:35:216:65 | call to sourceUnsafeMutableRawPointer() :  | nsstring.swift:216:13:216:114 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) |
+| nsstring.swift:217:13:217:114 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  | nsstring.swift:217:13:217:115 | ...! |
+| nsstring.swift:217:35:217:65 | call to sourceUnsafeMutableRawPointer() :  | nsstring.swift:45:15:45:153 | [summary param] 0 in Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  |
+| nsstring.swift:217:35:217:65 | call to sourceUnsafeMutableRawPointer() :  | nsstring.swift:217:13:217:114 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  |
+| nsstring.swift:220:31:220:45 | call to sourceCString() :  | nsstring.swift:46:15:46:114 | [summary param] 0 in Self.init(cString:encoding:) :  |
+| nsstring.swift:220:31:220:45 | call to sourceCString() :  | nsstring.swift:220:13:220:59 | call to Self.init(cString:encoding:) |
+| nsstring.swift:221:13:221:59 | call to Self.init(cString:encoding:) :  | nsstring.swift:221:13:221:60 | ...! |
+| nsstring.swift:221:31:221:45 | call to sourceCString() :  | nsstring.swift:46:15:46:114 | [summary param] 0 in Self.init(cString:encoding:) :  |
+| nsstring.swift:221:31:221:45 | call to sourceCString() :  | nsstring.swift:221:13:221:59 | call to Self.init(cString:encoding:) :  |
+| nsstring.swift:224:31:224:45 | call to sourceCString() :  | nsstring.swift:47:15:47:82 | [summary param] 0 in Self.init(cString:) :  |
+| nsstring.swift:224:31:224:45 | call to sourceCString() :  | nsstring.swift:224:13:224:46 | call to Self.init(cString:) |
+| nsstring.swift:225:13:225:46 | call to Self.init(cString:) :  | nsstring.swift:225:13:225:47 | ...! |
+| nsstring.swift:225:31:225:45 | call to sourceCString() :  | nsstring.swift:47:15:47:82 | [summary param] 0 in Self.init(cString:) :  |
+| nsstring.swift:225:31:225:45 | call to sourceCString() :  | nsstring.swift:225:13:225:46 | call to Self.init(cString:) :  |
+| nsstring.swift:228:34:228:48 | call to sourceCString() :  | nsstring.swift:48:15:48:101 | [summary param] 0 in Self.init(utf8String:) :  |
+| nsstring.swift:228:34:228:48 | call to sourceCString() :  | nsstring.swift:228:13:228:49 | call to Self.init(utf8String:) |
+| nsstring.swift:229:13:229:49 | call to Self.init(utf8String:) :  | nsstring.swift:229:13:229:50 | ...! |
+| nsstring.swift:229:34:229:48 | call to sourceCString() :  | nsstring.swift:48:15:48:101 | [summary param] 0 in Self.init(utf8String:) :  |
+| nsstring.swift:229:34:229:48 | call to sourceCString() :  | nsstring.swift:229:13:229:49 | call to Self.init(utf8String:) :  |
+| nsstring.swift:232:28:232:39 | call to sourceData() :  | nsstring.swift:49:15:49:73 | [summary param] 0 in Self.init(data:encoding:) :  |
+| nsstring.swift:232:28:232:39 | call to sourceData() :  | nsstring.swift:232:13:232:53 | call to Self.init(data:encoding:) |
+| nsstring.swift:233:13:233:53 | call to Self.init(data:encoding:) :  | nsstring.swift:233:13:233:54 | ...! |
+| nsstring.swift:233:28:233:39 | call to sourceData() :  | nsstring.swift:49:15:49:73 | [summary param] 0 in Self.init(data:encoding:) :  |
+| nsstring.swift:233:28:233:39 | call to sourceData() :  | nsstring.swift:233:13:233:53 | call to Self.init(data:encoding:) :  |
+| nsstring.swift:234:13:234:91 | call to Self.init(data:encoding:) :  | nsstring.swift:234:13:234:92 | ...! |
+| nsstring.swift:234:28:234:77 | call to Data.init(bytes:count:) :  | nsstring.swift:49:15:49:73 | [summary param] 0 in Self.init(data:encoding:) :  |
+| nsstring.swift:234:28:234:77 | call to Data.init(bytes:count:) :  | nsstring.swift:234:13:234:91 | call to Self.init(data:encoding:) :  |
+| nsstring.swift:234:40:234:63 | call to sourceUnsafeRawPointer() :  | nsstring.swift:154:3:154:46 | [summary param] 0 in Data.init(bytes:count:) :  |
+| nsstring.swift:234:40:234:63 | call to sourceUnsafeRawPointer() :  | nsstring.swift:234:28:234:77 | call to Data.init(bytes:count:) :  |
+| nsstring.swift:236:38:236:51 | call to sourceString() :  | nsstring.swift:50:15:50:74 | [summary param] 0 in Self.init(contentsOfFile:) :  |
+| nsstring.swift:236:38:236:51 | call to sourceString() :  | nsstring.swift:236:13:236:52 | call to Self.init(contentsOfFile:) |
+| nsstring.swift:237:13:237:52 | call to Self.init(contentsOfFile:) :  | nsstring.swift:237:13:237:53 | ...! |
+| nsstring.swift:237:38:237:51 | call to sourceString() :  | nsstring.swift:50:15:50:74 | [summary param] 0 in Self.init(contentsOfFile:) :  |
+| nsstring.swift:237:38:237:51 | call to sourceString() :  | nsstring.swift:237:13:237:52 | call to Self.init(contentsOfFile:) :  |
+| nsstring.swift:239:34:239:44 | call to sourceURL() :  | nsstring.swift:51:15:51:66 | [summary param] 0 in Self.init(contentsOf:) :  |
+| nsstring.swift:239:34:239:44 | call to sourceURL() :  | nsstring.swift:239:13:239:45 | call to Self.init(contentsOf:) |
+| nsstring.swift:240:13:240:45 | call to Self.init(contentsOf:) :  | nsstring.swift:240:13:240:46 | ...! |
+| nsstring.swift:240:34:240:44 | call to sourceURL() :  | nsstring.swift:51:15:51:66 | [summary param] 0 in Self.init(contentsOf:) :  |
+| nsstring.swift:240:34:240:44 | call to sourceURL() :  | nsstring.swift:240:13:240:45 | call to Self.init(contentsOf:) :  |
+| nsstring.swift:247:48:247:63 | call to sourceNSString() :  | nsstring.swift:56:3:56:110 | [summary param] 0 in localizedStringWithFormat(_:_:) :  |
+| nsstring.swift:247:48:247:63 | call to sourceNSString() :  | nsstring.swift:247:13:247:84 | call to localizedStringWithFormat(_:_:) |
+| nsstring.swift:248:13:248:28 | call to sourceNSString() :  | nsstring.swift:63:3:63:55 | [summary param] this in character(at:) :  |
+| nsstring.swift:248:13:248:28 | call to sourceNSString() :  | nsstring.swift:248:13:248:45 | call to character(at:) |
+| nsstring.swift:249:13:249:28 | call to sourceNSString() :  | nsstring.swift:67:3:67:76 | [summary param] this in cString(using:) :  |
+| nsstring.swift:249:13:249:28 | call to sourceNSString() :  | nsstring.swift:249:13:249:46 | call to cString(using:) :  |
+| nsstring.swift:249:13:249:46 | call to cString(using:) :  | nsstring.swift:249:13:249:47 | ...! |
+| nsstring.swift:250:13:250:28 | call to sourceNSString() :  | nsstring.swift:68:3:68:56 | [summary param] this in cString() :  |
+| nsstring.swift:250:13:250:28 | call to sourceNSString() :  | nsstring.swift:250:13:250:38 | call to cString() |
+| nsstring.swift:251:13:251:28 | call to sourceNSString() :  | nsstring.swift:69:3:69:61 | [summary param] this in lossyCString() :  |
+| nsstring.swift:251:13:251:28 | call to sourceNSString() :  | nsstring.swift:251:13:251:43 | call to lossyCString() |
+| nsstring.swift:252:13:252:28 | call to sourceNSString() :  | nsstring.swift:74:3:74:116 | [summary param] this in padding(toLength:withPad:startingAt:) :  |
+| nsstring.swift:252:13:252:28 | call to sourceNSString() :  | nsstring.swift:252:13:252:80 | call to padding(toLength:withPad:startingAt:) |
+| nsstring.swift:253:54:253:67 | call to sourceString() :  | nsstring.swift:74:3:74:116 | [summary param] 1 in padding(toLength:withPad:startingAt:) :  |
+| nsstring.swift:253:54:253:67 | call to sourceString() :  | nsstring.swift:253:13:253:83 | call to padding(toLength:withPad:startingAt:) |
+| nsstring.swift:254:13:254:28 | call to sourceNSString() :  | nsstring.swift:75:3:75:63 | [summary param] this in lowercased(with:) :  |
+| nsstring.swift:254:13:254:28 | call to sourceNSString() :  | nsstring.swift:254:13:254:50 | call to lowercased(with:) |
+| nsstring.swift:255:13:255:28 | call to sourceNSString() :  | nsstring.swift:76:3:76:63 | [summary param] this in uppercased(with:) :  |
+| nsstring.swift:255:13:255:28 | call to sourceNSString() :  | nsstring.swift:255:13:255:50 | call to uppercased(with:) |
+| nsstring.swift:256:13:256:28 | call to sourceNSString() :  | nsstring.swift:77:3:77:64 | [summary param] this in capitalized(with:) :  |
+| nsstring.swift:256:13:256:28 | call to sourceNSString() :  | nsstring.swift:256:13:256:51 | call to capitalized(with:) |
+| nsstring.swift:257:13:257:28 | call to sourceNSString() :  | nsstring.swift:78:3:78:74 | [summary param] this in components(separatedBy:) :  |
+| nsstring.swift:257:13:257:28 | call to sourceNSString() :  | nsstring.swift:257:13:257:57 | call to components(separatedBy:) |
+| nsstring.swift:258:13:258:28 | call to sourceNSString() :  | nsstring.swift:78:3:78:74 | [summary param] this in components(separatedBy:) :  |
+| nsstring.swift:258:13:258:28 | call to sourceNSString() :  | nsstring.swift:258:13:258:57 | call to components(separatedBy:) :  |
+| nsstring.swift:258:13:258:57 | call to components(separatedBy:) :  | nsstring.swift:258:13:258:60 | ...[...] |
+| nsstring.swift:259:13:259:28 | call to sourceNSString() :  | nsstring.swift:79:3:79:80 | [summary param] this in components(separatedBy:) :  |
+| nsstring.swift:259:13:259:28 | call to sourceNSString() :  | nsstring.swift:259:13:259:78 | call to components(separatedBy:) |
+| nsstring.swift:260:13:260:28 | call to sourceNSString() :  | nsstring.swift:79:3:79:80 | [summary param] this in components(separatedBy:) :  |
+| nsstring.swift:260:13:260:28 | call to sourceNSString() :  | nsstring.swift:260:13:260:78 | call to components(separatedBy:) :  |
+| nsstring.swift:260:13:260:78 | call to components(separatedBy:) :  | nsstring.swift:260:13:260:81 | ...[...] |
+| nsstring.swift:261:13:261:28 | call to sourceNSString() :  | nsstring.swift:80:3:80:71 | [summary param] this in trimmingCharacters(in:) :  |
+| nsstring.swift:261:13:261:28 | call to sourceNSString() :  | nsstring.swift:261:13:261:77 | call to trimmingCharacters(in:) |
+| nsstring.swift:262:13:262:28 | call to sourceNSString() :  | nsstring.swift:81:3:81:51 | [summary param] this in substring(from:) :  |
+| nsstring.swift:262:13:262:28 | call to sourceNSString() :  | nsstring.swift:262:13:262:47 | call to substring(from:) |
+| nsstring.swift:263:13:263:28 | call to sourceNSString() :  | nsstring.swift:82:3:82:61 | [summary param] this in substring(with:) :  |
+| nsstring.swift:263:13:263:28 | call to sourceNSString() :  | nsstring.swift:263:13:263:53 | call to substring(with:) |
+| nsstring.swift:264:13:264:28 | call to sourceNSString() :  | nsstring.swift:83:3:83:49 | [summary param] this in substring(to:) :  |
+| nsstring.swift:264:13:264:28 | call to sourceNSString() :  | nsstring.swift:264:13:264:46 | call to substring(to:) |
+| nsstring.swift:265:13:265:28 | call to sourceNSString() :  | nsstring.swift:84:3:84:94 | [summary param] this in folding(options:locale:) :  |
+| nsstring.swift:265:13:265:28 | call to sourceNSString() :  | nsstring.swift:265:13:265:49 | call to folding(options:locale:) |
+| nsstring.swift:266:13:266:28 | call to sourceNSString() :  | nsstring.swift:85:3:85:94 | [summary param] this in applyingTransform(_:reverse:) :  |
+| nsstring.swift:266:13:266:28 | call to sourceNSString() :  | nsstring.swift:266:13:266:87 | call to applyingTransform(_:reverse:) |
+| nsstring.swift:267:13:267:28 | call to sourceNSString() :  | nsstring.swift:87:3:87:41 | [summary param] this in propertyList() :  |
+| nsstring.swift:267:13:267:28 | call to sourceNSString() :  | nsstring.swift:267:13:267:43 | call to propertyList() |
+| nsstring.swift:268:13:268:28 | call to sourceNSString() :  | nsstring.swift:88:3:88:80 | [summary param] this in propertyListFromStringsFileFormat() :  |
+| nsstring.swift:268:13:268:28 | call to sourceNSString() :  | nsstring.swift:268:13:268:64 | call to propertyListFromStringsFileFormat() |
+| nsstring.swift:269:13:269:28 | call to sourceNSString() :  | nsstring.swift:89:3:89:76 | [summary param] this in variantFittingPresentationWidth(_:) :  |
+| nsstring.swift:269:13:269:28 | call to sourceNSString() :  | nsstring.swift:269:13:269:64 | call to variantFittingPresentationWidth(_:) |
+| nsstring.swift:270:13:270:28 | call to sourceNSString() :  | nsstring.swift:90:3:90:57 | [summary param] this in data(using:) :  |
+| nsstring.swift:270:13:270:28 | call to sourceNSString() :  | nsstring.swift:270:13:270:43 | call to data(using:) |
+| nsstring.swift:271:13:271:28 | call to sourceNSString() :  | nsstring.swift:91:3:91:91 | [summary param] this in data(using:allowLossyConversion:) :  |
+| nsstring.swift:271:13:271:28 | call to sourceNSString() :  | nsstring.swift:271:13:271:72 | call to data(using:allowLossyConversion:) |
+| nsstring.swift:273:43:273:61 | call to sourceStringArray() :  | nsstring.swift:57:3:57:78 | [summary param] 0 in path(withComponents:) :  |
+| nsstring.swift:273:43:273:61 | call to sourceStringArray() :  | nsstring.swift:273:13:273:62 | call to path(withComponents:) |
+| nsstring.swift:275:42:275:56 | call to sourceCString() :  | nsstring.swift:58:3:58:83 | [summary param] 0 in string(withCString:) :  |
+| nsstring.swift:275:42:275:56 | call to sourceCString() :  | nsstring.swift:275:13:275:57 | call to string(withCString:) |
+| nsstring.swift:276:42:276:56 | call to sourceCString() :  | nsstring.swift:59:3:59:96 | [summary param] 0 in string(withCString:length:) :  |
+| nsstring.swift:276:42:276:56 | call to sourceCString() :  | nsstring.swift:276:13:276:70 | call to string(withCString:length:) |
+| nsstring.swift:277:49:277:62 | call to sourceString() :  | nsstring.swift:60:3:60:75 | [summary param] 0 in string(withContentsOfFile:) :  |
+| nsstring.swift:277:49:277:62 | call to sourceString() :  | nsstring.swift:277:13:277:63 | call to string(withContentsOfFile:) |
+| nsstring.swift:278:45:278:55 | call to sourceURL() :  | nsstring.swift:61:3:61:67 | [summary param] 0 in string(withContentsOf:) :  |
+| nsstring.swift:278:45:278:55 | call to sourceURL() :  | nsstring.swift:278:13:278:56 | call to string(withContentsOf:) |
+| nsstring.swift:283:38:283:53 | call to sourceNSString() :  | nsstring.swift:72:3:72:106 | [summary param] 0 in appendingFormat(_:_:) :  |
+| nsstring.swift:283:38:283:53 | call to sourceNSString() :  | nsstring.swift:283:13:283:74 | call to appendingFormat(_:_:) |
+| nsstring.swift:284:13:284:28 | call to sourceNSString() :  | nsstring.swift:72:3:72:106 | [summary param] this in appendingFormat(_:_:) :  |
+| nsstring.swift:284:13:284:28 | call to sourceNSString() :  | nsstring.swift:284:13:284:74 | call to appendingFormat(_:_:) |
+| nsstring.swift:287:45:287:58 | call to sourceString() :  | nsstring.swift:92:3:92:68 | [summary param] 0 in appendingPathComponent(_:) :  |
+| nsstring.swift:287:45:287:58 | call to sourceString() :  | nsstring.swift:287:13:287:59 | call to appendingPathComponent(_:) |
+| nsstring.swift:288:13:288:28 | call to sourceNSString() :  | nsstring.swift:92:3:92:68 | [summary param] this in appendingPathComponent(_:) :  |
+| nsstring.swift:288:13:288:28 | call to sourceNSString() :  | nsstring.swift:288:13:288:55 | call to appendingPathComponent(_:) |
+| nsstring.swift:291:45:291:58 | call to sourceString() :  | nsstring.swift:93:3:93:110 | [summary param] 0 in appendingPathComponent(_:conformingTo:) :  |
+| nsstring.swift:291:45:291:58 | call to sourceString() :  | nsstring.swift:291:13:291:92 | call to appendingPathComponent(_:conformingTo:) |
+| nsstring.swift:292:13:292:28 | call to sourceNSString() :  | nsstring.swift:93:3:93:110 | [summary param] this in appendingPathComponent(_:conformingTo:) :  |
+| nsstring.swift:292:13:292:28 | call to sourceNSString() :  | nsstring.swift:292:13:292:88 | call to appendingPathComponent(_:conformingTo:) |
+| nsstring.swift:295:45:295:58 | call to sourceString() :  | nsstring.swift:94:3:94:69 | [summary param] 0 in appendingPathExtension(_:) :  |
+| nsstring.swift:295:45:295:58 | call to sourceString() :  | nsstring.swift:295:13:295:59 | call to appendingPathExtension(_:) |
+| nsstring.swift:296:13:296:28 | call to sourceNSString() :  | nsstring.swift:94:3:94:69 | [summary param] this in appendingPathExtension(_:) :  |
+| nsstring.swift:296:13:296:28 | call to sourceNSString() :  | nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) |
+| nsstring.swift:311:13:311:28 | call to sourceNSString() :  | nsstring.swift:95:3:95:74 | [summary param] this in strings(byAppendingPaths:) :  |
+| nsstring.swift:311:13:311:28 | call to sourceNSString() :  | nsstring.swift:311:13:311:60 | call to strings(byAppendingPaths:) |
+| nsstring.swift:312:13:312:28 | call to sourceNSString() :  | nsstring.swift:95:3:95:74 | [summary param] this in strings(byAppendingPaths:) :  |
+| nsstring.swift:312:13:312:28 | call to sourceNSString() :  | nsstring.swift:312:13:312:60 | call to strings(byAppendingPaths:) :  |
+| nsstring.swift:312:13:312:60 | call to strings(byAppendingPaths:) :  | nsstring.swift:312:13:312:63 | ...[...] |
+| nsstring.swift:334:3:334:18 | call to sourceNSString() :  | nsstring.swift:66:3:66:281 | [summary param] this in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  |
+| nsstring.swift:334:3:334:18 | call to sourceNSString() :  | nsstring.swift:334:29:334:29 | [post] ptr3 :  |
+| nsstring.swift:334:29:334:29 | [post] ptr3 :  | nsstring.swift:335:13:335:13 | ptr3 |
+| nsstring.swift:392:13:392:35 | call to sourceNSMutableString() :  | nsstring.swift:77:3:77:64 | [summary param] this in capitalized(with:) :  |
+| nsstring.swift:392:13:392:35 | call to sourceNSMutableString() :  | nsstring.swift:392:13:392:58 | call to capitalized(with:) |
+| nsstring.swift:425:13:425:28 | call to sourceNSString() :  | nsstring.swift:425:13:425:30 | .utf8String |
+| nsstring.swift:426:13:426:62 | call to Self.init(utf8String:) :  | nsstring.swift:426:13:426:63 | ...! |
+| nsstring.swift:426:34:426:49 | call to sourceNSString() :  | nsstring.swift:426:34:426:61 | ...! :  |
+| nsstring.swift:426:34:426:61 | ...! :  | nsstring.swift:48:15:48:101 | [summary param] 0 in Self.init(utf8String:) :  |
+| nsstring.swift:426:34:426:61 | ...! :  | nsstring.swift:426:13:426:62 | call to Self.init(utf8String:) :  |
+| nsstring.swift:427:13:427:28 | call to sourceNSString() :  | nsstring.swift:427:13:427:30 | .lowercased |
+| nsstring.swift:429:13:429:28 | call to sourceNSString() :  | nsstring.swift:429:13:429:30 | .uppercased |
+| nsstring.swift:430:13:430:28 | call to sourceNSString() :  | nsstring.swift:430:13:430:30 | .localizedUppercase |
+| nsstring.swift:431:13:431:28 | call to sourceNSString() :  | nsstring.swift:431:13:431:30 | .capitalized |
+| nsstring.swift:432:13:432:28 | call to sourceNSString() :  | nsstring.swift:432:13:432:30 | .localizedCapitalized |
+| nsstring.swift:433:13:433:28 | call to sourceNSString() :  | nsstring.swift:433:13:433:30 | .decomposedStringWithCanonicalMapping |
+| nsstring.swift:434:13:434:28 | call to sourceNSString() :  | nsstring.swift:434:13:434:30 | .decomposedStringWithCompatibilityMapping |
+| nsstring.swift:435:13:435:28 | call to sourceNSString() :  | nsstring.swift:435:13:435:30 | .precomposedStringWithCanonicalMapping |
+| nsstring.swift:436:13:436:28 | call to sourceNSString() :  | nsstring.swift:436:13:436:30 | .precomposedStringWithCompatibilityMapping |
+| nsstring.swift:437:13:437:28 | call to sourceNSString() :  | nsstring.swift:437:13:437:30 | .doubleValue |
+| nsstring.swift:438:13:438:28 | call to sourceNSString() :  | nsstring.swift:438:13:438:30 | .floatValue |
+| nsstring.swift:439:13:439:28 | call to sourceNSString() :  | nsstring.swift:439:13:439:30 | .intValue |
+| nsstring.swift:440:13:440:28 | call to sourceNSString() :  | nsstring.swift:440:13:440:30 | .integerValue |
+| nsstring.swift:441:13:441:28 | call to sourceNSString() :  | nsstring.swift:441:13:441:30 | .longLongValue |
+| nsstring.swift:442:13:442:28 | call to sourceNSString() :  | nsstring.swift:442:13:442:30 | .boolValue |
+| nsstring.swift:443:13:443:28 | call to sourceNSString() :  | nsstring.swift:443:13:443:30 | .description |
+| nsstring.swift:444:13:444:28 | call to sourceNSString() :  | nsstring.swift:444:13:444:30 | .pathComponents |
+| nsstring.swift:445:13:445:28 | call to sourceNSString() :  | nsstring.swift:445:13:445:46 | ...[...] |
+| nsstring.swift:446:13:446:28 | call to sourceNSString() :  | nsstring.swift:446:13:446:30 | .fileSystemRepresentation |
+| nsstring.swift:447:13:447:28 | call to sourceNSString() :  | nsstring.swift:447:13:447:30 | .lastPathComponent |
+| nsstring.swift:448:13:448:28 | call to sourceNSString() :  | nsstring.swift:448:13:448:30 | .pathExtension |
+| nsstring.swift:449:13:449:28 | call to sourceNSString() :  | nsstring.swift:449:13:449:30 | .abbreviatingWithTildeInPath |
+| nsstring.swift:450:13:450:28 | call to sourceNSString() :  | nsstring.swift:450:13:450:30 | .deletingLastPathComponent |
+| nsstring.swift:451:13:451:28 | call to sourceNSString() :  | nsstring.swift:451:13:451:30 | .deletingPathExtension |
+| nsstring.swift:452:13:452:28 | call to sourceNSString() :  | nsstring.swift:452:13:452:30 | .expandingTildeInPath |
+| nsstring.swift:453:13:453:28 | call to sourceNSString() :  | nsstring.swift:453:13:453:30 | .resolvingSymlinksInPath |
+| nsstring.swift:454:13:454:28 | call to sourceNSString() :  | nsstring.swift:454:13:454:30 | .standardizingPath |
+| nsstring.swift:455:13:455:28 | call to sourceNSString() :  | nsstring.swift:455:13:455:30 | .removingPercentEncoding |
 | string.swift:60:2:60:54 | [summary param] 0 in String.init(data:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(data:encoding:) :  |
 | string.swift:64:3:64:63 | [summary param] 0 in String.init(format:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(format:_:) :  |
 | string.swift:65:3:65:60 | [summary param] 0 in String.init(format:arguments:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(format:arguments:) :  |
@@ -1076,6 +1340,7 @@ nodes
 | file://:0:0:0:0 | [summary] to write: argument 0 in copyBytes(to:) :  | semmle.label | [summary] to write: argument 0 in copyBytes(to:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:) :  | semmle.label | [summary] to write: argument 0 in getBytes(_:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:length:) :  | semmle.label | [summary] to write: argument 0 in getBytes(_:length:) :  |
+| file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  | semmle.label | [summary] to write: argument 0 in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:range:) :  | semmle.label | [summary] to write: argument 0 in getBytes(_:range:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0.parameter 0 in enumerateBytes(_:) :  | semmle.label | [summary] to write: argument 0.parameter 0 in enumerateBytes(_:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  | semmle.label | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  |
@@ -1109,6 +1374,7 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(buffer:) :  | semmle.label | [summary] to write: return (return) in Data.init(buffer:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(buffer:) :  | semmle.label | [summary] to write: return (return) in Data.init(buffer:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytes:count:) :  | semmle.label | [summary] to write: return (return) in Data.init(bytes:count:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytes:count:) :  | semmle.label | [summary] to write: return (return) in Data.init(bytes:count:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytesNoCopy:count:deallocator:) :  | semmle.label | [summary] to write: return (return) in Data.init(bytesNoCopy:count:deallocator:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(contentsOf:options:) :  | semmle.label | [summary] to write: return (return) in Data.init(contentsOf:options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(referencing:) :  | semmle.label | [summary] to write: return (return) in Data.init(referencing:) :  |
@@ -1134,6 +1400,25 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in NSData.init(contentsOfFile:options:) :  | semmle.label | [summary] to write: return (return) in NSData.init(contentsOfFile:options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in NSData.init(contentsOfMappedFile:) :  | semmle.label | [summary] to write: return (return) in NSData.init(contentsOfMappedFile:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in NSData.init(data:) :  | semmle.label | [summary] to write: return (return) in NSData.init(data:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(characters:length:) :  | semmle.label | [summary] to write: return (return) in NSString.init(characters:length:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(charactersNoCopy:length:freeWhenDone:) :  | semmle.label | [summary] to write: return (return) in NSString.init(charactersNoCopy:length:freeWhenDone:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(string:) :  | semmle.label | [summary] to write: return (return) in NSString.init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(bytes:length:encoding:) :  | semmle.label | [summary] to write: return (return) in Self.init(bytes:length:encoding:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  | semmle.label | [summary] to write: return (return) in Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(cString:) :  | semmle.label | [summary] to write: return (return) in Self.init(cString:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(cString:encoding:) :  | semmle.label | [summary] to write: return (return) in Self.init(cString:encoding:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOf:) :  | semmle.label | [summary] to write: return (return) in Self.init(contentsOf:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOf:encoding:) :  | semmle.label | [summary] to write: return (return) in Self.init(contentsOf:encoding:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOf:usedEncoding:) :  | semmle.label | [summary] to write: return (return) in Self.init(contentsOf:usedEncoding:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOfFile:) :  | semmle.label | [summary] to write: return (return) in Self.init(contentsOfFile:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOfFile:encoding:) :  | semmle.label | [summary] to write: return (return) in Self.init(contentsOfFile:encoding:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOfFile:usedEncoding:) :  | semmle.label | [summary] to write: return (return) in Self.init(contentsOfFile:usedEncoding:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(data:encoding:) :  | semmle.label | [summary] to write: return (return) in Self.init(data:encoding:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(format:_:) :  | semmle.label | [summary] to write: return (return) in Self.init(format:_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(format:arguments:) :  | semmle.label | [summary] to write: return (return) in Self.init(format:arguments:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(format:locale:_:) :  | semmle.label | [summary] to write: return (return) in Self.init(format:locale:_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(format:locale:arguments:) :  | semmle.label | [summary] to write: return (return) in Self.init(format:locale:arguments:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Self.init(utf8String:) :  | semmle.label | [summary] to write: return (return) in Self.init(utf8String:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in String.init(_:) :  | semmle.label | [summary] to write: return (return) in String.init(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in String.init(_:) :  | semmle.label | [summary] to write: return (return) in String.init(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in String.init(_:) :  | semmle.label | [summary] to write: return (return) in String.init(_:) :  |
@@ -1149,23 +1434,41 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in String.init(format:locale:arguments:) :  | semmle.label | [summary] to write: return (return) in String.init(format:locale:arguments:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in String.init(repeating:count:) :  | semmle.label | [summary] to write: return (return) in String.init(repeating:count:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:) :  | semmle.label | [summary] to write: return (return) in URL.init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:) :  | semmle.label | [summary] to write: return (return) in URL.init(string:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in URL.init(string:relativeTo:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in URL.init(string:relativeTo:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  | semmle.label | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  | semmle.label | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  | semmle.label | [summary] to write: return (return) in appending(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  | semmle.label | [summary] to write: return (return) in appending(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in appendingFormat(_:_:) :  | semmle.label | [summary] to write: return (return) in appendingFormat(_:_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in appendingFormat(_:_:) :  | semmle.label | [summary] to write: return (return) in appendingFormat(_:_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:) :  | semmle.label | [summary] to write: return (return) in appendingPathComponent(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:) :  | semmle.label | [summary] to write: return (return) in appendingPathComponent(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:conformingTo:) :  | semmle.label | [summary] to write: return (return) in appendingPathComponent(_:conformingTo:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:conformingTo:) :  | semmle.label | [summary] to write: return (return) in appendingPathComponent(_:conformingTo:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in appendingPathExtension(_:) :  | semmle.label | [summary] to write: return (return) in appendingPathExtension(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in appendingPathExtension(_:) :  | semmle.label | [summary] to write: return (return) in appendingPathExtension(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in applyingTransform(_:reverse:) :  | semmle.label | [summary] to write: return (return) in applyingTransform(_:reverse:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in atIndex(_:) :  | semmle.label | [summary] to write: return (return) in atIndex(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedData(options:) :  | semmle.label | [summary] to write: return (return) in base64EncodedData(options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedData(options:) :  | semmle.label | [summary] to write: return (return) in base64EncodedData(options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedString(options:) :  | semmle.label | [summary] to write: return (return) in base64EncodedString(options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedString(options:) :  | semmle.label | [summary] to write: return (return) in base64EncodedString(options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in base64Encoding() :  | semmle.label | [summary] to write: return (return) in base64Encoding() :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in cString() :  | semmle.label | [summary] to write: return (return) in cString() :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in cString(using:) :  | semmle.label | [summary] to write: return (return) in cString(using:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in cString(using:) :  | semmle.label | [summary] to write: return (return) in cString(using:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in capitalized(with:) :  | semmle.label | [summary] to write: return (return) in capitalized(with:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in capitalized(with:) :  | semmle.label | [summary] to write: return (return) in capitalized(with:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in character(at:) :  | semmle.label | [summary] to write: return (return) in character(at:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in compactMap(_:) :  | semmle.label | [summary] to write: return (return) in compactMap(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in components(separatedBy:) :  | semmle.label | [summary] to write: return (return) in components(separatedBy:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in components(separatedBy:) :  | semmle.label | [summary] to write: return (return) in components(separatedBy:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in components(separatedBy:) :  | semmle.label | [summary] to write: return (return) in components(separatedBy:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in compressed(using:) :  | semmle.label | [summary] to write: return (return) in compressed(using:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in data(using:) :  | semmle.label | [summary] to write: return (return) in data(using:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in data(using:allowLossyConversion:) :  | semmle.label | [summary] to write: return (return) in data(using:allowLossyConversion:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in dataWithContentsOfMappedFile(_:) :  | semmle.label | [summary] to write: return (return) in dataWithContentsOfMappedFile(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in decompressed(using:) :  | semmle.label | [summary] to write: return (return) in decompressed(using:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in dropFirst(_:) :  | semmle.label | [summary] to write: return (return) in dropFirst(_:) :  |
@@ -1173,15 +1476,24 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in flatMap(_:) :  | semmle.label | [summary] to write: return (return) in flatMap(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in flatMap(_:) :  | semmle.label | [summary] to write: return (return) in flatMap(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in folding(options:locale:) :  | semmle.label | [summary] to write: return (return) in folding(options:locale:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in folding(options:locale:) :  | semmle.label | [summary] to write: return (return) in folding(options:locale:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in forProperty(_:) :  | semmle.label | [summary] to write: return (return) in forProperty(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in localizedStringWithFormat(_:_:) :  | semmle.label | [summary] to write: return (return) in localizedStringWithFormat(_:_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in localizedStringWithFormat(_:_:) :  | semmle.label | [summary] to write: return (return) in localizedStringWithFormat(_:_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in lossyCString() :  | semmle.label | [summary] to write: return (return) in lossyCString() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in lowercased() :  | semmle.label | [summary] to write: return (return) in lowercased() :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in lowercased(with:) :  | semmle.label | [summary] to write: return (return) in lowercased(with:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in lowercased(with:) :  | semmle.label | [summary] to write: return (return) in lowercased(with:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in map(_:) :  | semmle.label | [summary] to write: return (return) in map(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  | semmle.label | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  | semmle.label | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  | semmle.label | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in path(withComponents:) :  | semmle.label | [summary] to write: return (return) in path(withComponents:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in prefix(_:) :  | semmle.label | [summary] to write: return (return) in prefix(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in prefix(through:) :  | semmle.label | [summary] to write: return (return) in prefix(through:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in prefix(upTo:) :  | semmle.label | [summary] to write: return (return) in prefix(upTo:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in propertyList() :  | semmle.label | [summary] to write: return (return) in propertyList() :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in propertyListFromStringsFileFormat() :  | semmle.label | [summary] to write: return (return) in propertyListFromStringsFileFormat() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in propertyListFromStringsFileFormat() :  | semmle.label | [summary] to write: return (return) in propertyListFromStringsFileFormat() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in reduce(into:_:) :  | semmle.label | [summary] to write: return (return) in reduce(into:_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in remove(at:) :  | semmle.label | [summary] to write: return (return) in remove(at:) :  |
@@ -1196,8 +1508,16 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in sorted(using:) :  | semmle.label | [summary] to write: return (return) in sorted(using:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in split(maxSplits:omittingEmptySubsequences:whereSeparator:) :  | semmle.label | [summary] to write: return (return) in split(maxSplits:omittingEmptySubsequences:whereSeparator:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in split(separator:maxSplits:omittingEmptySubsequences:) :  | semmle.label | [summary] to write: return (return) in split(separator:maxSplits:omittingEmptySubsequences:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in string(withCString:) :  | semmle.label | [summary] to write: return (return) in string(withCString:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in string(withCString:length:) :  | semmle.label | [summary] to write: return (return) in string(withCString:length:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in string(withContentsOf:) :  | semmle.label | [summary] to write: return (return) in string(withContentsOf:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in string(withContentsOfFile:) :  | semmle.label | [summary] to write: return (return) in string(withContentsOfFile:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in strings(byAppendingPaths:) :  | semmle.label | [summary] to write: return (return) in strings(byAppendingPaths:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in subdata(with:) :  | semmle.label | [summary] to write: return (return) in subdata(with:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in substring(from:) :  | semmle.label | [summary] to write: return (return) in substring(from:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in substring(from:) :  | semmle.label | [summary] to write: return (return) in substring(from:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in substring(to:) :  | semmle.label | [summary] to write: return (return) in substring(to:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in substring(with:) :  | semmle.label | [summary] to write: return (return) in substring(with:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in suffix(_:) :  | semmle.label | [summary] to write: return (return) in suffix(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in suffix(from:) :  | semmle.label | [summary] to write: return (return) in suffix(from:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in toArray() :  | semmle.label | [summary] to write: return (return) in toArray() :  |
@@ -1216,10 +1536,13 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in toString() :  | semmle.label | [summary] to write: return (return) in toString() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in toUInt32() :  | semmle.label | [summary] to write: return (return) in toUInt32() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in trimmingCharacters(in:) :  | semmle.label | [summary] to write: return (return) in trimmingCharacters(in:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in trimmingCharacters(in:) :  | semmle.label | [summary] to write: return (return) in trimmingCharacters(in:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in trimmingPrefix(_:) :  | semmle.label | [summary] to write: return (return) in trimmingPrefix(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in trimmingPrefix(while:) :  | semmle.label | [summary] to write: return (return) in trimmingPrefix(while:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in uppercased() :  | semmle.label | [summary] to write: return (return) in uppercased() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in uppercased(with:) :  | semmle.label | [summary] to write: return (return) in uppercased(with:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in uppercased(with:) :  | semmle.label | [summary] to write: return (return) in uppercased(with:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in variantFittingPresentationWidth(_:) :  | semmle.label | [summary] to write: return (return) in variantFittingPresentationWidth(_:) :  |
 | nsdata.swift:22:9:22:9 | self :  | semmle.label | self :  |
 | nsdata.swift:23:9:23:9 | self :  | semmle.label | self :  |
 | nsdata.swift:24:5:24:50 | [summary param] 0 in NSData.init(bytes:length:) :  | semmle.label | [summary param] 0 in NSData.init(bytes:length:) :  |
@@ -1355,6 +1678,296 @@ nodes
 | nsmutabledata.swift:48:33:48:40 | call to source() :  | semmle.label | call to source() :  |
 | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 :  | semmle.label | nsMutableDataTainted6 :  |
 | nsmutabledata.swift:49:15:49:37 | .mutableBytes | semmle.label | .mutableBytes |
+| nsstring.swift:31:3:31:58 | [summary param] 0 in NSString.init(characters:length:) :  | semmle.label | [summary param] 0 in NSString.init(characters:length:) :  |
+| nsstring.swift:32:3:32:113 | [summary param] 0 in NSString.init(charactersNoCopy:length:freeWhenDone:) :  | semmle.label | [summary param] 0 in NSString.init(charactersNoCopy:length:freeWhenDone:) :  |
+| nsstring.swift:33:3:33:33 | [summary param] 0 in NSString.init(string:) :  | semmle.label | [summary param] 0 in NSString.init(string:) :  |
+| nsstring.swift:35:15:35:95 | [summary param] 0 in Self.init(format:arguments:) :  | semmle.label | [summary param] 0 in Self.init(format:arguments:) :  |
+| nsstring.swift:36:15:36:109 | [summary param] 0 in Self.init(format:locale:arguments:) :  | semmle.label | [summary param] 0 in Self.init(format:locale:arguments:) :  |
+| nsstring.swift:37:15:37:82 | [summary param] 0 in Self.init(format:_:) :  | semmle.label | [summary param] 0 in Self.init(format:_:) :  |
+| nsstring.swift:38:15:38:99 | [summary param] 0 in Self.init(format:locale:_:) :  | semmle.label | [summary param] 0 in Self.init(format:locale:_:) :  |
+| nsstring.swift:39:15:39:100 | [summary param] 0 in Self.init(contentsOfFile:encoding:) :  | semmle.label | [summary param] 0 in Self.init(contentsOfFile:encoding:) :  |
+| nsstring.swift:40:15:40:127 | [summary param] 0 in Self.init(contentsOfFile:usedEncoding:) :  | semmle.label | [summary param] 0 in Self.init(contentsOfFile:usedEncoding:) :  |
+| nsstring.swift:41:15:41:92 | [summary param] 0 in Self.init(contentsOf:encoding:) :  | semmle.label | [summary param] 0 in Self.init(contentsOf:encoding:) :  |
+| nsstring.swift:42:15:42:119 | [summary param] 0 in Self.init(contentsOf:usedEncoding:) :  | semmle.label | [summary param] 0 in Self.init(contentsOf:usedEncoding:) :  |
+| nsstring.swift:44:15:44:103 | [summary param] 0 in Self.init(bytes:length:encoding:) :  | semmle.label | [summary param] 0 in Self.init(bytes:length:encoding:) :  |
+| nsstring.swift:45:15:45:153 | [summary param] 0 in Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  | semmle.label | [summary param] 0 in Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  |
+| nsstring.swift:46:15:46:114 | [summary param] 0 in Self.init(cString:encoding:) :  | semmle.label | [summary param] 0 in Self.init(cString:encoding:) :  |
+| nsstring.swift:47:15:47:82 | [summary param] 0 in Self.init(cString:) :  | semmle.label | [summary param] 0 in Self.init(cString:) :  |
+| nsstring.swift:48:15:48:101 | [summary param] 0 in Self.init(utf8String:) :  | semmle.label | [summary param] 0 in Self.init(utf8String:) :  |
+| nsstring.swift:49:15:49:73 | [summary param] 0 in Self.init(data:encoding:) :  | semmle.label | [summary param] 0 in Self.init(data:encoding:) :  |
+| nsstring.swift:50:15:50:74 | [summary param] 0 in Self.init(contentsOfFile:) :  | semmle.label | [summary param] 0 in Self.init(contentsOfFile:) :  |
+| nsstring.swift:51:15:51:66 | [summary param] 0 in Self.init(contentsOf:) :  | semmle.label | [summary param] 0 in Self.init(contentsOf:) :  |
+| nsstring.swift:56:3:56:110 | [summary param] 0 in localizedStringWithFormat(_:_:) :  | semmle.label | [summary param] 0 in localizedStringWithFormat(_:_:) :  |
+| nsstring.swift:57:3:57:78 | [summary param] 0 in path(withComponents:) :  | semmle.label | [summary param] 0 in path(withComponents:) :  |
+| nsstring.swift:58:3:58:83 | [summary param] 0 in string(withCString:) :  | semmle.label | [summary param] 0 in string(withCString:) :  |
+| nsstring.swift:59:3:59:96 | [summary param] 0 in string(withCString:length:) :  | semmle.label | [summary param] 0 in string(withCString:length:) :  |
+| nsstring.swift:60:3:60:75 | [summary param] 0 in string(withContentsOfFile:) :  | semmle.label | [summary param] 0 in string(withContentsOfFile:) :  |
+| nsstring.swift:61:3:61:67 | [summary param] 0 in string(withContentsOf:) :  | semmle.label | [summary param] 0 in string(withContentsOf:) :  |
+| nsstring.swift:63:3:63:55 | [summary param] this in character(at:) :  | semmle.label | [summary param] this in character(at:) :  |
+| nsstring.swift:66:3:66:281 | [summary param] this in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  | semmle.label | [summary param] this in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  |
+| nsstring.swift:67:3:67:76 | [summary param] this in cString(using:) :  | semmle.label | [summary param] this in cString(using:) :  |
+| nsstring.swift:68:3:68:56 | [summary param] this in cString() :  | semmle.label | [summary param] this in cString() :  |
+| nsstring.swift:69:3:69:61 | [summary param] this in lossyCString() :  | semmle.label | [summary param] this in lossyCString() :  |
+| nsstring.swift:72:3:72:106 | [summary param] 0 in appendingFormat(_:_:) :  | semmle.label | [summary param] 0 in appendingFormat(_:_:) :  |
+| nsstring.swift:72:3:72:106 | [summary param] this in appendingFormat(_:_:) :  | semmle.label | [summary param] this in appendingFormat(_:_:) :  |
+| nsstring.swift:74:3:74:116 | [summary param] 1 in padding(toLength:withPad:startingAt:) :  | semmle.label | [summary param] 1 in padding(toLength:withPad:startingAt:) :  |
+| nsstring.swift:74:3:74:116 | [summary param] this in padding(toLength:withPad:startingAt:) :  | semmle.label | [summary param] this in padding(toLength:withPad:startingAt:) :  |
+| nsstring.swift:75:3:75:63 | [summary param] this in lowercased(with:) :  | semmle.label | [summary param] this in lowercased(with:) :  |
+| nsstring.swift:76:3:76:63 | [summary param] this in uppercased(with:) :  | semmle.label | [summary param] this in uppercased(with:) :  |
+| nsstring.swift:77:3:77:64 | [summary param] this in capitalized(with:) :  | semmle.label | [summary param] this in capitalized(with:) :  |
+| nsstring.swift:78:3:78:74 | [summary param] this in components(separatedBy:) :  | semmle.label | [summary param] this in components(separatedBy:) :  |
+| nsstring.swift:79:3:79:80 | [summary param] this in components(separatedBy:) :  | semmle.label | [summary param] this in components(separatedBy:) :  |
+| nsstring.swift:80:3:80:71 | [summary param] this in trimmingCharacters(in:) :  | semmle.label | [summary param] this in trimmingCharacters(in:) :  |
+| nsstring.swift:81:3:81:51 | [summary param] this in substring(from:) :  | semmle.label | [summary param] this in substring(from:) :  |
+| nsstring.swift:82:3:82:61 | [summary param] this in substring(with:) :  | semmle.label | [summary param] this in substring(with:) :  |
+| nsstring.swift:83:3:83:49 | [summary param] this in substring(to:) :  | semmle.label | [summary param] this in substring(to:) :  |
+| nsstring.swift:84:3:84:94 | [summary param] this in folding(options:locale:) :  | semmle.label | [summary param] this in folding(options:locale:) :  |
+| nsstring.swift:85:3:85:94 | [summary param] this in applyingTransform(_:reverse:) :  | semmle.label | [summary param] this in applyingTransform(_:reverse:) :  |
+| nsstring.swift:87:3:87:41 | [summary param] this in propertyList() :  | semmle.label | [summary param] this in propertyList() :  |
+| nsstring.swift:88:3:88:80 | [summary param] this in propertyListFromStringsFileFormat() :  | semmle.label | [summary param] this in propertyListFromStringsFileFormat() :  |
+| nsstring.swift:89:3:89:76 | [summary param] this in variantFittingPresentationWidth(_:) :  | semmle.label | [summary param] this in variantFittingPresentationWidth(_:) :  |
+| nsstring.swift:90:3:90:57 | [summary param] this in data(using:) :  | semmle.label | [summary param] this in data(using:) :  |
+| nsstring.swift:91:3:91:91 | [summary param] this in data(using:allowLossyConversion:) :  | semmle.label | [summary param] this in data(using:allowLossyConversion:) :  |
+| nsstring.swift:92:3:92:68 | [summary param] 0 in appendingPathComponent(_:) :  | semmle.label | [summary param] 0 in appendingPathComponent(_:) :  |
+| nsstring.swift:92:3:92:68 | [summary param] this in appendingPathComponent(_:) :  | semmle.label | [summary param] this in appendingPathComponent(_:) :  |
+| nsstring.swift:93:3:93:110 | [summary param] 0 in appendingPathComponent(_:conformingTo:) :  | semmle.label | [summary param] 0 in appendingPathComponent(_:conformingTo:) :  |
+| nsstring.swift:93:3:93:110 | [summary param] this in appendingPathComponent(_:conformingTo:) :  | semmle.label | [summary param] this in appendingPathComponent(_:conformingTo:) :  |
+| nsstring.swift:94:3:94:69 | [summary param] 0 in appendingPathExtension(_:) :  | semmle.label | [summary param] 0 in appendingPathExtension(_:) :  |
+| nsstring.swift:94:3:94:69 | [summary param] this in appendingPathExtension(_:) :  | semmle.label | [summary param] this in appendingPathExtension(_:) :  |
+| nsstring.swift:95:3:95:74 | [summary param] this in strings(byAppendingPaths:) :  | semmle.label | [summary param] this in strings(byAppendingPaths:) :  |
+| nsstring.swift:149:2:149:25 | [summary param] 0 in URL.init(string:) :  | semmle.label | [summary param] 0 in URL.init(string:) :  |
+| nsstring.swift:154:3:154:46 | [summary param] 0 in Data.init(bytes:count:) :  | semmle.label | [summary param] 0 in Data.init(bytes:count:) :  |
+| nsstring.swift:193:13:193:68 | call to NSString.init(characters:length:) | semmle.label | call to NSString.init(characters:length:) |
+| nsstring.swift:193:34:193:54 | call to sourceUnicharString() :  | semmle.label | call to sourceUnicharString() :  |
+| nsstring.swift:194:13:194:102 | call to NSString.init(charactersNoCopy:length:freeWhenDone:) | semmle.label | call to NSString.init(charactersNoCopy:length:freeWhenDone:) |
+| nsstring.swift:194:40:194:67 | call to sourceMutableUnicharString() :  | semmle.label | call to sourceMutableUnicharString() :  |
+| nsstring.swift:195:13:195:44 | call to NSString.init(string:) | semmle.label | call to NSString.init(string:) |
+| nsstring.swift:195:30:195:43 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:196:13:196:82 | call to Self.init(format:arguments:) | semmle.label | call to Self.init(format:arguments:) |
+| nsstring.swift:196:30:196:43 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:197:13:197:95 | call to Self.init(format:locale:arguments:) | semmle.label | call to Self.init(format:locale:arguments:) |
+| nsstring.swift:197:30:197:43 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:198:13:198:46 | call to Self.init(format:_:) | semmle.label | call to Self.init(format:_:) |
+| nsstring.swift:198:30:198:45 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:199:13:199:59 | call to Self.init(format:locale:_:) | semmle.label | call to Self.init(format:locale:_:) |
+| nsstring.swift:199:30:199:45 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:203:13:203:70 | try! ... | semmle.label | try! ... |
+| nsstring.swift:203:18:203:70 | call to Self.init(contentsOfFile:encoding:) :  | semmle.label | call to Self.init(contentsOfFile:encoding:) :  |
+| nsstring.swift:203:43:203:56 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:204:13:204:76 | try! ... | semmle.label | try! ... |
+| nsstring.swift:204:18:204:76 | call to Self.init(contentsOfFile:usedEncoding:) :  | semmle.label | call to Self.init(contentsOfFile:usedEncoding:) :  |
+| nsstring.swift:204:43:204:56 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:205:13:205:63 | try! ... | semmle.label | try! ... |
+| nsstring.swift:205:18:205:63 | call to Self.init(contentsOf:encoding:) :  | semmle.label | call to Self.init(contentsOf:encoding:) :  |
+| nsstring.swift:205:39:205:49 | call to sourceURL() :  | semmle.label | call to sourceURL() :  |
+| nsstring.swift:206:13:206:80 | try! ... | semmle.label | try! ... |
+| nsstring.swift:206:18:206:80 | call to Self.init(contentsOf:encoding:) :  | semmle.label | call to Self.init(contentsOf:encoding:) :  |
+| nsstring.swift:206:39:206:65 | call to URL.init(string:) :  | semmle.label | call to URL.init(string:) :  |
+| nsstring.swift:206:39:206:66 | ...! :  | semmle.label | ...! :  |
+| nsstring.swift:206:51:206:64 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:207:13:207:69 | try! ... | semmle.label | try! ... |
+| nsstring.swift:207:18:207:69 | call to Self.init(contentsOf:usedEncoding:) :  | semmle.label | call to Self.init(contentsOf:usedEncoding:) :  |
+| nsstring.swift:207:39:207:49 | call to sourceURL() :  | semmle.label | call to sourceURL() :  |
+| nsstring.swift:208:13:208:86 | try! ... | semmle.label | try! ... |
+| nsstring.swift:208:18:208:86 | call to Self.init(contentsOf:usedEncoding:) :  | semmle.label | call to Self.init(contentsOf:usedEncoding:) :  |
+| nsstring.swift:208:39:208:65 | call to URL.init(string:) :  | semmle.label | call to URL.init(string:) :  |
+| nsstring.swift:208:39:208:66 | ...! :  | semmle.label | ...! :  |
+| nsstring.swift:208:51:208:64 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:212:13:212:80 | call to Self.init(bytes:length:encoding:) | semmle.label | call to Self.init(bytes:length:encoding:) |
+| nsstring.swift:212:29:212:52 | call to sourceUnsafeRawPointer() :  | semmle.label | call to sourceUnsafeRawPointer() :  |
+| nsstring.swift:213:13:213:80 | call to Self.init(bytes:length:encoding:) :  | semmle.label | call to Self.init(bytes:length:encoding:) :  |
+| nsstring.swift:213:13:213:81 | ...! | semmle.label | ...! |
+| nsstring.swift:213:29:213:52 | call to sourceUnsafeRawPointer() :  | semmle.label | call to sourceUnsafeRawPointer() :  |
+| nsstring.swift:216:13:216:114 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) | semmle.label | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) |
+| nsstring.swift:216:35:216:65 | call to sourceUnsafeMutableRawPointer() :  | semmle.label | call to sourceUnsafeMutableRawPointer() :  |
+| nsstring.swift:217:13:217:114 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  | semmle.label | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  |
+| nsstring.swift:217:13:217:115 | ...! | semmle.label | ...! |
+| nsstring.swift:217:35:217:65 | call to sourceUnsafeMutableRawPointer() :  | semmle.label | call to sourceUnsafeMutableRawPointer() :  |
+| nsstring.swift:220:13:220:59 | call to Self.init(cString:encoding:) | semmle.label | call to Self.init(cString:encoding:) |
+| nsstring.swift:220:31:220:45 | call to sourceCString() :  | semmle.label | call to sourceCString() :  |
+| nsstring.swift:221:13:221:59 | call to Self.init(cString:encoding:) :  | semmle.label | call to Self.init(cString:encoding:) :  |
+| nsstring.swift:221:13:221:60 | ...! | semmle.label | ...! |
+| nsstring.swift:221:31:221:45 | call to sourceCString() :  | semmle.label | call to sourceCString() :  |
+| nsstring.swift:224:13:224:46 | call to Self.init(cString:) | semmle.label | call to Self.init(cString:) |
+| nsstring.swift:224:31:224:45 | call to sourceCString() :  | semmle.label | call to sourceCString() :  |
+| nsstring.swift:225:13:225:46 | call to Self.init(cString:) :  | semmle.label | call to Self.init(cString:) :  |
+| nsstring.swift:225:13:225:47 | ...! | semmle.label | ...! |
+| nsstring.swift:225:31:225:45 | call to sourceCString() :  | semmle.label | call to sourceCString() :  |
+| nsstring.swift:228:13:228:49 | call to Self.init(utf8String:) | semmle.label | call to Self.init(utf8String:) |
+| nsstring.swift:228:34:228:48 | call to sourceCString() :  | semmle.label | call to sourceCString() :  |
+| nsstring.swift:229:13:229:49 | call to Self.init(utf8String:) :  | semmle.label | call to Self.init(utf8String:) :  |
+| nsstring.swift:229:13:229:50 | ...! | semmle.label | ...! |
+| nsstring.swift:229:34:229:48 | call to sourceCString() :  | semmle.label | call to sourceCString() :  |
+| nsstring.swift:232:13:232:53 | call to Self.init(data:encoding:) | semmle.label | call to Self.init(data:encoding:) |
+| nsstring.swift:232:28:232:39 | call to sourceData() :  | semmle.label | call to sourceData() :  |
+| nsstring.swift:233:13:233:53 | call to Self.init(data:encoding:) :  | semmle.label | call to Self.init(data:encoding:) :  |
+| nsstring.swift:233:13:233:54 | ...! | semmle.label | ...! |
+| nsstring.swift:233:28:233:39 | call to sourceData() :  | semmle.label | call to sourceData() :  |
+| nsstring.swift:234:13:234:91 | call to Self.init(data:encoding:) :  | semmle.label | call to Self.init(data:encoding:) :  |
+| nsstring.swift:234:13:234:92 | ...! | semmle.label | ...! |
+| nsstring.swift:234:28:234:77 | call to Data.init(bytes:count:) :  | semmle.label | call to Data.init(bytes:count:) :  |
+| nsstring.swift:234:40:234:63 | call to sourceUnsafeRawPointer() :  | semmle.label | call to sourceUnsafeRawPointer() :  |
+| nsstring.swift:236:13:236:52 | call to Self.init(contentsOfFile:) | semmle.label | call to Self.init(contentsOfFile:) |
+| nsstring.swift:236:38:236:51 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:237:13:237:52 | call to Self.init(contentsOfFile:) :  | semmle.label | call to Self.init(contentsOfFile:) :  |
+| nsstring.swift:237:13:237:53 | ...! | semmle.label | ...! |
+| nsstring.swift:237:38:237:51 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:239:13:239:45 | call to Self.init(contentsOf:) | semmle.label | call to Self.init(contentsOf:) |
+| nsstring.swift:239:34:239:44 | call to sourceURL() :  | semmle.label | call to sourceURL() :  |
+| nsstring.swift:240:13:240:45 | call to Self.init(contentsOf:) :  | semmle.label | call to Self.init(contentsOf:) :  |
+| nsstring.swift:240:13:240:46 | ...! | semmle.label | ...! |
+| nsstring.swift:240:34:240:44 | call to sourceURL() :  | semmle.label | call to sourceURL() :  |
+| nsstring.swift:247:13:247:84 | call to localizedStringWithFormat(_:_:) | semmle.label | call to localizedStringWithFormat(_:_:) |
+| nsstring.swift:247:48:247:63 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:248:13:248:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:248:13:248:45 | call to character(at:) | semmle.label | call to character(at:) |
+| nsstring.swift:249:13:249:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:249:13:249:46 | call to cString(using:) :  | semmle.label | call to cString(using:) :  |
+| nsstring.swift:249:13:249:47 | ...! | semmle.label | ...! |
+| nsstring.swift:250:13:250:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:250:13:250:38 | call to cString() | semmle.label | call to cString() |
+| nsstring.swift:251:13:251:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:251:13:251:43 | call to lossyCString() | semmle.label | call to lossyCString() |
+| nsstring.swift:252:13:252:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:252:13:252:80 | call to padding(toLength:withPad:startingAt:) | semmle.label | call to padding(toLength:withPad:startingAt:) |
+| nsstring.swift:253:13:253:83 | call to padding(toLength:withPad:startingAt:) | semmle.label | call to padding(toLength:withPad:startingAt:) |
+| nsstring.swift:253:54:253:67 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:254:13:254:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:254:13:254:50 | call to lowercased(with:) | semmle.label | call to lowercased(with:) |
+| nsstring.swift:255:13:255:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:255:13:255:50 | call to uppercased(with:) | semmle.label | call to uppercased(with:) |
+| nsstring.swift:256:13:256:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:256:13:256:51 | call to capitalized(with:) | semmle.label | call to capitalized(with:) |
+| nsstring.swift:257:13:257:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:257:13:257:57 | call to components(separatedBy:) | semmle.label | call to components(separatedBy:) |
+| nsstring.swift:258:13:258:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:258:13:258:57 | call to components(separatedBy:) :  | semmle.label | call to components(separatedBy:) :  |
+| nsstring.swift:258:13:258:60 | ...[...] | semmle.label | ...[...] |
+| nsstring.swift:259:13:259:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:259:13:259:78 | call to components(separatedBy:) | semmle.label | call to components(separatedBy:) |
+| nsstring.swift:260:13:260:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:260:13:260:78 | call to components(separatedBy:) :  | semmle.label | call to components(separatedBy:) :  |
+| nsstring.swift:260:13:260:81 | ...[...] | semmle.label | ...[...] |
+| nsstring.swift:261:13:261:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:261:13:261:77 | call to trimmingCharacters(in:) | semmle.label | call to trimmingCharacters(in:) |
+| nsstring.swift:262:13:262:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:262:13:262:47 | call to substring(from:) | semmle.label | call to substring(from:) |
+| nsstring.swift:263:13:263:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:263:13:263:53 | call to substring(with:) | semmle.label | call to substring(with:) |
+| nsstring.swift:264:13:264:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:264:13:264:46 | call to substring(to:) | semmle.label | call to substring(to:) |
+| nsstring.swift:265:13:265:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:265:13:265:49 | call to folding(options:locale:) | semmle.label | call to folding(options:locale:) |
+| nsstring.swift:266:13:266:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:266:13:266:87 | call to applyingTransform(_:reverse:) | semmle.label | call to applyingTransform(_:reverse:) |
+| nsstring.swift:267:13:267:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:267:13:267:43 | call to propertyList() | semmle.label | call to propertyList() |
+| nsstring.swift:268:13:268:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:268:13:268:64 | call to propertyListFromStringsFileFormat() | semmle.label | call to propertyListFromStringsFileFormat() |
+| nsstring.swift:269:13:269:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:269:13:269:64 | call to variantFittingPresentationWidth(_:) | semmle.label | call to variantFittingPresentationWidth(_:) |
+| nsstring.swift:270:13:270:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:270:13:270:43 | call to data(using:) | semmle.label | call to data(using:) |
+| nsstring.swift:271:13:271:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:271:13:271:72 | call to data(using:allowLossyConversion:) | semmle.label | call to data(using:allowLossyConversion:) |
+| nsstring.swift:273:13:273:62 | call to path(withComponents:) | semmle.label | call to path(withComponents:) |
+| nsstring.swift:273:43:273:61 | call to sourceStringArray() :  | semmle.label | call to sourceStringArray() :  |
+| nsstring.swift:275:13:275:57 | call to string(withCString:) | semmle.label | call to string(withCString:) |
+| nsstring.swift:275:42:275:56 | call to sourceCString() :  | semmle.label | call to sourceCString() :  |
+| nsstring.swift:276:13:276:70 | call to string(withCString:length:) | semmle.label | call to string(withCString:length:) |
+| nsstring.swift:276:42:276:56 | call to sourceCString() :  | semmle.label | call to sourceCString() :  |
+| nsstring.swift:277:13:277:63 | call to string(withContentsOfFile:) | semmle.label | call to string(withContentsOfFile:) |
+| nsstring.swift:277:49:277:62 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:278:13:278:56 | call to string(withContentsOf:) | semmle.label | call to string(withContentsOf:) |
+| nsstring.swift:278:45:278:55 | call to sourceURL() :  | semmle.label | call to sourceURL() :  |
+| nsstring.swift:283:13:283:74 | call to appendingFormat(_:_:) | semmle.label | call to appendingFormat(_:_:) |
+| nsstring.swift:283:38:283:53 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:284:13:284:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:284:13:284:74 | call to appendingFormat(_:_:) | semmle.label | call to appendingFormat(_:_:) |
+| nsstring.swift:287:13:287:59 | call to appendingPathComponent(_:) | semmle.label | call to appendingPathComponent(_:) |
+| nsstring.swift:287:45:287:58 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:288:13:288:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:288:13:288:55 | call to appendingPathComponent(_:) | semmle.label | call to appendingPathComponent(_:) |
+| nsstring.swift:291:13:291:92 | call to appendingPathComponent(_:conformingTo:) | semmle.label | call to appendingPathComponent(_:conformingTo:) |
+| nsstring.swift:291:45:291:58 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:292:13:292:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:292:13:292:88 | call to appendingPathComponent(_:conformingTo:) | semmle.label | call to appendingPathComponent(_:conformingTo:) |
+| nsstring.swift:295:13:295:59 | call to appendingPathExtension(_:) | semmle.label | call to appendingPathExtension(_:) |
+| nsstring.swift:295:45:295:58 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:296:13:296:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) | semmle.label | call to appendingPathExtension(_:) |
+| nsstring.swift:311:13:311:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:311:13:311:60 | call to strings(byAppendingPaths:) | semmle.label | call to strings(byAppendingPaths:) |
+| nsstring.swift:312:13:312:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:312:13:312:60 | call to strings(byAppendingPaths:) :  | semmle.label | call to strings(byAppendingPaths:) :  |
+| nsstring.swift:312:13:312:63 | ...[...] | semmle.label | ...[...] |
+| nsstring.swift:334:3:334:18 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:334:29:334:29 | [post] ptr3 :  | semmle.label | [post] ptr3 :  |
+| nsstring.swift:335:13:335:13 | ptr3 | semmle.label | ptr3 |
+| nsstring.swift:392:13:392:35 | call to sourceNSMutableString() :  | semmle.label | call to sourceNSMutableString() :  |
+| nsstring.swift:392:13:392:58 | call to capitalized(with:) | semmle.label | call to capitalized(with:) |
+| nsstring.swift:425:13:425:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:425:13:425:30 | .utf8String | semmle.label | .utf8String |
+| nsstring.swift:426:13:426:62 | call to Self.init(utf8String:) :  | semmle.label | call to Self.init(utf8String:) :  |
+| nsstring.swift:426:13:426:63 | ...! | semmle.label | ...! |
+| nsstring.swift:426:34:426:49 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:426:34:426:61 | ...! :  | semmle.label | ...! :  |
+| nsstring.swift:427:13:427:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:427:13:427:30 | .lowercased | semmle.label | .lowercased |
+| nsstring.swift:429:13:429:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:429:13:429:30 | .uppercased | semmle.label | .uppercased |
+| nsstring.swift:430:13:430:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:430:13:430:30 | .localizedUppercase | semmle.label | .localizedUppercase |
+| nsstring.swift:431:13:431:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:431:13:431:30 | .capitalized | semmle.label | .capitalized |
+| nsstring.swift:432:13:432:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:432:13:432:30 | .localizedCapitalized | semmle.label | .localizedCapitalized |
+| nsstring.swift:433:13:433:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:433:13:433:30 | .decomposedStringWithCanonicalMapping | semmle.label | .decomposedStringWithCanonicalMapping |
+| nsstring.swift:434:13:434:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:434:13:434:30 | .decomposedStringWithCompatibilityMapping | semmle.label | .decomposedStringWithCompatibilityMapping |
+| nsstring.swift:435:13:435:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:435:13:435:30 | .precomposedStringWithCanonicalMapping | semmle.label | .precomposedStringWithCanonicalMapping |
+| nsstring.swift:436:13:436:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:436:13:436:30 | .precomposedStringWithCompatibilityMapping | semmle.label | .precomposedStringWithCompatibilityMapping |
+| nsstring.swift:437:13:437:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:437:13:437:30 | .doubleValue | semmle.label | .doubleValue |
+| nsstring.swift:438:13:438:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:438:13:438:30 | .floatValue | semmle.label | .floatValue |
+| nsstring.swift:439:13:439:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:439:13:439:30 | .intValue | semmle.label | .intValue |
+| nsstring.swift:440:13:440:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:440:13:440:30 | .integerValue | semmle.label | .integerValue |
+| nsstring.swift:441:13:441:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:441:13:441:30 | .longLongValue | semmle.label | .longLongValue |
+| nsstring.swift:442:13:442:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:442:13:442:30 | .boolValue | semmle.label | .boolValue |
+| nsstring.swift:443:13:443:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:443:13:443:30 | .description | semmle.label | .description |
+| nsstring.swift:444:13:444:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:444:13:444:30 | .pathComponents | semmle.label | .pathComponents |
+| nsstring.swift:445:13:445:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:445:13:445:46 | ...[...] | semmle.label | ...[...] |
+| nsstring.swift:446:13:446:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:446:13:446:30 | .fileSystemRepresentation | semmle.label | .fileSystemRepresentation |
+| nsstring.swift:447:13:447:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:447:13:447:30 | .lastPathComponent | semmle.label | .lastPathComponent |
+| nsstring.swift:448:13:448:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:448:13:448:30 | .pathExtension | semmle.label | .pathExtension |
+| nsstring.swift:449:13:449:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:449:13:449:30 | .abbreviatingWithTildeInPath | semmle.label | .abbreviatingWithTildeInPath |
+| nsstring.swift:450:13:450:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:450:13:450:30 | .deletingLastPathComponent | semmle.label | .deletingLastPathComponent |
+| nsstring.swift:451:13:451:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:451:13:451:30 | .deletingPathExtension | semmle.label | .deletingPathExtension |
+| nsstring.swift:452:13:452:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:452:13:452:30 | .expandingTildeInPath | semmle.label | .expandingTildeInPath |
+| nsstring.swift:453:13:453:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:453:13:453:30 | .resolvingSymlinksInPath | semmle.label | .resolvingSymlinksInPath |
+| nsstring.swift:454:13:454:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:454:13:454:30 | .standardizingPath | semmle.label | .standardizingPath |
+| nsstring.swift:455:13:455:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:455:13:455:30 | .removingPercentEncoding | semmle.label | .removingPercentEncoding |
 | string.swift:60:2:60:54 | [summary param] 0 in String.init(data:encoding:) :  | semmle.label | [summary param] 0 in String.init(data:encoding:) :  |
 | string.swift:64:3:64:63 | [summary param] 0 in String.init(format:_:) :  | semmle.label | [summary param] 0 in String.init(format:_:) :  |
 | string.swift:65:3:65:60 | [summary param] 0 in String.init(format:arguments:) :  | semmle.label | [summary param] 0 in String.init(format:arguments:) :  |
@@ -1864,6 +2477,82 @@ subpaths
 | nsmutabledata.swift:40:66:40:73 | call to source() :  | nsmutabledata.swift:17:5:17:121 | [summary param] 1 in replaceBytes(in:withBytes:length:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceBytes(in:withBytes:length:) :  | nsmutabledata.swift:40:5:40:5 | [post] nsMutableDataTainted4 :  |
 | nsmutabledata.swift:44:35:44:42 | call to source() :  | nsmutabledata.swift:18:5:18:33 | [summary param] 0 in setData(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in setData(_:) :  | nsmutabledata.swift:44:5:44:5 | [post] nsMutableDataTainted5 :  |
 | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 :  | nsmutabledata.swift:13:9:13:9 | self :  | file://:0:0:0:0 | .mutableBytes :  | nsmutabledata.swift:49:15:49:37 | .mutableBytes |
+| nsstring.swift:193:34:193:54 | call to sourceUnicharString() :  | nsstring.swift:31:3:31:58 | [summary param] 0 in NSString.init(characters:length:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(characters:length:) :  | nsstring.swift:193:13:193:68 | call to NSString.init(characters:length:) |
+| nsstring.swift:194:40:194:67 | call to sourceMutableUnicharString() :  | nsstring.swift:32:3:32:113 | [summary param] 0 in NSString.init(charactersNoCopy:length:freeWhenDone:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(charactersNoCopy:length:freeWhenDone:) :  | nsstring.swift:194:13:194:102 | call to NSString.init(charactersNoCopy:length:freeWhenDone:) |
+| nsstring.swift:195:30:195:43 | call to sourceString() :  | nsstring.swift:33:3:33:33 | [summary param] 0 in NSString.init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(string:) :  | nsstring.swift:195:13:195:44 | call to NSString.init(string:) |
+| nsstring.swift:196:30:196:43 | call to sourceString() :  | nsstring.swift:35:15:35:95 | [summary param] 0 in Self.init(format:arguments:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(format:arguments:) :  | nsstring.swift:196:13:196:82 | call to Self.init(format:arguments:) |
+| nsstring.swift:197:30:197:43 | call to sourceString() :  | nsstring.swift:36:15:36:109 | [summary param] 0 in Self.init(format:locale:arguments:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(format:locale:arguments:) :  | nsstring.swift:197:13:197:95 | call to Self.init(format:locale:arguments:) |
+| nsstring.swift:198:30:198:45 | call to sourceNSString() :  | nsstring.swift:37:15:37:82 | [summary param] 0 in Self.init(format:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(format:_:) :  | nsstring.swift:198:13:198:46 | call to Self.init(format:_:) |
+| nsstring.swift:199:30:199:45 | call to sourceNSString() :  | nsstring.swift:38:15:38:99 | [summary param] 0 in Self.init(format:locale:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(format:locale:_:) :  | nsstring.swift:199:13:199:59 | call to Self.init(format:locale:_:) |
+| nsstring.swift:203:43:203:56 | call to sourceString() :  | nsstring.swift:39:15:39:100 | [summary param] 0 in Self.init(contentsOfFile:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOfFile:encoding:) :  | nsstring.swift:203:18:203:70 | call to Self.init(contentsOfFile:encoding:) :  |
+| nsstring.swift:204:43:204:56 | call to sourceString() :  | nsstring.swift:40:15:40:127 | [summary param] 0 in Self.init(contentsOfFile:usedEncoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOfFile:usedEncoding:) :  | nsstring.swift:204:18:204:76 | call to Self.init(contentsOfFile:usedEncoding:) :  |
+| nsstring.swift:205:39:205:49 | call to sourceURL() :  | nsstring.swift:41:15:41:92 | [summary param] 0 in Self.init(contentsOf:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOf:encoding:) :  | nsstring.swift:205:18:205:63 | call to Self.init(contentsOf:encoding:) :  |
+| nsstring.swift:206:39:206:66 | ...! :  | nsstring.swift:41:15:41:92 | [summary param] 0 in Self.init(contentsOf:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOf:encoding:) :  | nsstring.swift:206:18:206:80 | call to Self.init(contentsOf:encoding:) :  |
+| nsstring.swift:206:51:206:64 | call to sourceString() :  | nsstring.swift:149:2:149:25 | [summary param] 0 in URL.init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:) :  | nsstring.swift:206:39:206:65 | call to URL.init(string:) :  |
+| nsstring.swift:207:39:207:49 | call to sourceURL() :  | nsstring.swift:42:15:42:119 | [summary param] 0 in Self.init(contentsOf:usedEncoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOf:usedEncoding:) :  | nsstring.swift:207:18:207:69 | call to Self.init(contentsOf:usedEncoding:) :  |
+| nsstring.swift:208:39:208:66 | ...! :  | nsstring.swift:42:15:42:119 | [summary param] 0 in Self.init(contentsOf:usedEncoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOf:usedEncoding:) :  | nsstring.swift:208:18:208:86 | call to Self.init(contentsOf:usedEncoding:) :  |
+| nsstring.swift:208:51:208:64 | call to sourceString() :  | nsstring.swift:149:2:149:25 | [summary param] 0 in URL.init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:) :  | nsstring.swift:208:39:208:65 | call to URL.init(string:) :  |
+| nsstring.swift:212:29:212:52 | call to sourceUnsafeRawPointer() :  | nsstring.swift:44:15:44:103 | [summary param] 0 in Self.init(bytes:length:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(bytes:length:encoding:) :  | nsstring.swift:212:13:212:80 | call to Self.init(bytes:length:encoding:) |
+| nsstring.swift:213:29:213:52 | call to sourceUnsafeRawPointer() :  | nsstring.swift:44:15:44:103 | [summary param] 0 in Self.init(bytes:length:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(bytes:length:encoding:) :  | nsstring.swift:213:13:213:80 | call to Self.init(bytes:length:encoding:) :  |
+| nsstring.swift:216:35:216:65 | call to sourceUnsafeMutableRawPointer() :  | nsstring.swift:45:15:45:153 | [summary param] 0 in Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  | nsstring.swift:216:13:216:114 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) |
+| nsstring.swift:217:35:217:65 | call to sourceUnsafeMutableRawPointer() :  | nsstring.swift:45:15:45:153 | [summary param] 0 in Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  | nsstring.swift:217:13:217:114 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) :  |
+| nsstring.swift:220:31:220:45 | call to sourceCString() :  | nsstring.swift:46:15:46:114 | [summary param] 0 in Self.init(cString:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(cString:encoding:) :  | nsstring.swift:220:13:220:59 | call to Self.init(cString:encoding:) |
+| nsstring.swift:221:31:221:45 | call to sourceCString() :  | nsstring.swift:46:15:46:114 | [summary param] 0 in Self.init(cString:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(cString:encoding:) :  | nsstring.swift:221:13:221:59 | call to Self.init(cString:encoding:) :  |
+| nsstring.swift:224:31:224:45 | call to sourceCString() :  | nsstring.swift:47:15:47:82 | [summary param] 0 in Self.init(cString:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(cString:) :  | nsstring.swift:224:13:224:46 | call to Self.init(cString:) |
+| nsstring.swift:225:31:225:45 | call to sourceCString() :  | nsstring.swift:47:15:47:82 | [summary param] 0 in Self.init(cString:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(cString:) :  | nsstring.swift:225:13:225:46 | call to Self.init(cString:) :  |
+| nsstring.swift:228:34:228:48 | call to sourceCString() :  | nsstring.swift:48:15:48:101 | [summary param] 0 in Self.init(utf8String:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(utf8String:) :  | nsstring.swift:228:13:228:49 | call to Self.init(utf8String:) |
+| nsstring.swift:229:34:229:48 | call to sourceCString() :  | nsstring.swift:48:15:48:101 | [summary param] 0 in Self.init(utf8String:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(utf8String:) :  | nsstring.swift:229:13:229:49 | call to Self.init(utf8String:) :  |
+| nsstring.swift:232:28:232:39 | call to sourceData() :  | nsstring.swift:49:15:49:73 | [summary param] 0 in Self.init(data:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(data:encoding:) :  | nsstring.swift:232:13:232:53 | call to Self.init(data:encoding:) |
+| nsstring.swift:233:28:233:39 | call to sourceData() :  | nsstring.swift:49:15:49:73 | [summary param] 0 in Self.init(data:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(data:encoding:) :  | nsstring.swift:233:13:233:53 | call to Self.init(data:encoding:) :  |
+| nsstring.swift:234:28:234:77 | call to Data.init(bytes:count:) :  | nsstring.swift:49:15:49:73 | [summary param] 0 in Self.init(data:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(data:encoding:) :  | nsstring.swift:234:13:234:91 | call to Self.init(data:encoding:) :  |
+| nsstring.swift:234:40:234:63 | call to sourceUnsafeRawPointer() :  | nsstring.swift:154:3:154:46 | [summary param] 0 in Data.init(bytes:count:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(bytes:count:) :  | nsstring.swift:234:28:234:77 | call to Data.init(bytes:count:) :  |
+| nsstring.swift:236:38:236:51 | call to sourceString() :  | nsstring.swift:50:15:50:74 | [summary param] 0 in Self.init(contentsOfFile:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOfFile:) :  | nsstring.swift:236:13:236:52 | call to Self.init(contentsOfFile:) |
+| nsstring.swift:237:38:237:51 | call to sourceString() :  | nsstring.swift:50:15:50:74 | [summary param] 0 in Self.init(contentsOfFile:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOfFile:) :  | nsstring.swift:237:13:237:52 | call to Self.init(contentsOfFile:) :  |
+| nsstring.swift:239:34:239:44 | call to sourceURL() :  | nsstring.swift:51:15:51:66 | [summary param] 0 in Self.init(contentsOf:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOf:) :  | nsstring.swift:239:13:239:45 | call to Self.init(contentsOf:) |
+| nsstring.swift:240:34:240:44 | call to sourceURL() :  | nsstring.swift:51:15:51:66 | [summary param] 0 in Self.init(contentsOf:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(contentsOf:) :  | nsstring.swift:240:13:240:45 | call to Self.init(contentsOf:) :  |
+| nsstring.swift:247:48:247:63 | call to sourceNSString() :  | nsstring.swift:56:3:56:110 | [summary param] 0 in localizedStringWithFormat(_:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in localizedStringWithFormat(_:_:) :  | nsstring.swift:247:13:247:84 | call to localizedStringWithFormat(_:_:) |
+| nsstring.swift:248:13:248:28 | call to sourceNSString() :  | nsstring.swift:63:3:63:55 | [summary param] this in character(at:) :  | file://:0:0:0:0 | [summary] to write: return (return) in character(at:) :  | nsstring.swift:248:13:248:45 | call to character(at:) |
+| nsstring.swift:249:13:249:28 | call to sourceNSString() :  | nsstring.swift:67:3:67:76 | [summary param] this in cString(using:) :  | file://:0:0:0:0 | [summary] to write: return (return) in cString(using:) :  | nsstring.swift:249:13:249:46 | call to cString(using:) :  |
+| nsstring.swift:250:13:250:28 | call to sourceNSString() :  | nsstring.swift:68:3:68:56 | [summary param] this in cString() :  | file://:0:0:0:0 | [summary] to write: return (return) in cString() :  | nsstring.swift:250:13:250:38 | call to cString() |
+| nsstring.swift:251:13:251:28 | call to sourceNSString() :  | nsstring.swift:69:3:69:61 | [summary param] this in lossyCString() :  | file://:0:0:0:0 | [summary] to write: return (return) in lossyCString() :  | nsstring.swift:251:13:251:43 | call to lossyCString() |
+| nsstring.swift:252:13:252:28 | call to sourceNSString() :  | nsstring.swift:74:3:74:116 | [summary param] this in padding(toLength:withPad:startingAt:) :  | file://:0:0:0:0 | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  | nsstring.swift:252:13:252:80 | call to padding(toLength:withPad:startingAt:) |
+| nsstring.swift:253:54:253:67 | call to sourceString() :  | nsstring.swift:74:3:74:116 | [summary param] 1 in padding(toLength:withPad:startingAt:) :  | file://:0:0:0:0 | [summary] to write: return (return) in padding(toLength:withPad:startingAt:) :  | nsstring.swift:253:13:253:83 | call to padding(toLength:withPad:startingAt:) |
+| nsstring.swift:254:13:254:28 | call to sourceNSString() :  | nsstring.swift:75:3:75:63 | [summary param] this in lowercased(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in lowercased(with:) :  | nsstring.swift:254:13:254:50 | call to lowercased(with:) |
+| nsstring.swift:255:13:255:28 | call to sourceNSString() :  | nsstring.swift:76:3:76:63 | [summary param] this in uppercased(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in uppercased(with:) :  | nsstring.swift:255:13:255:50 | call to uppercased(with:) |
+| nsstring.swift:256:13:256:28 | call to sourceNSString() :  | nsstring.swift:77:3:77:64 | [summary param] this in capitalized(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in capitalized(with:) :  | nsstring.swift:256:13:256:51 | call to capitalized(with:) |
+| nsstring.swift:257:13:257:28 | call to sourceNSString() :  | nsstring.swift:78:3:78:74 | [summary param] this in components(separatedBy:) :  | file://:0:0:0:0 | [summary] to write: return (return) in components(separatedBy:) :  | nsstring.swift:257:13:257:57 | call to components(separatedBy:) |
+| nsstring.swift:258:13:258:28 | call to sourceNSString() :  | nsstring.swift:78:3:78:74 | [summary param] this in components(separatedBy:) :  | file://:0:0:0:0 | [summary] to write: return (return) in components(separatedBy:) :  | nsstring.swift:258:13:258:57 | call to components(separatedBy:) :  |
+| nsstring.swift:259:13:259:28 | call to sourceNSString() :  | nsstring.swift:79:3:79:80 | [summary param] this in components(separatedBy:) :  | file://:0:0:0:0 | [summary] to write: return (return) in components(separatedBy:) :  | nsstring.swift:259:13:259:78 | call to components(separatedBy:) |
+| nsstring.swift:260:13:260:28 | call to sourceNSString() :  | nsstring.swift:79:3:79:80 | [summary param] this in components(separatedBy:) :  | file://:0:0:0:0 | [summary] to write: return (return) in components(separatedBy:) :  | nsstring.swift:260:13:260:78 | call to components(separatedBy:) :  |
+| nsstring.swift:261:13:261:28 | call to sourceNSString() :  | nsstring.swift:80:3:80:71 | [summary param] this in trimmingCharacters(in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in trimmingCharacters(in:) :  | nsstring.swift:261:13:261:77 | call to trimmingCharacters(in:) |
+| nsstring.swift:262:13:262:28 | call to sourceNSString() :  | nsstring.swift:81:3:81:51 | [summary param] this in substring(from:) :  | file://:0:0:0:0 | [summary] to write: return (return) in substring(from:) :  | nsstring.swift:262:13:262:47 | call to substring(from:) |
+| nsstring.swift:263:13:263:28 | call to sourceNSString() :  | nsstring.swift:82:3:82:61 | [summary param] this in substring(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in substring(with:) :  | nsstring.swift:263:13:263:53 | call to substring(with:) |
+| nsstring.swift:264:13:264:28 | call to sourceNSString() :  | nsstring.swift:83:3:83:49 | [summary param] this in substring(to:) :  | file://:0:0:0:0 | [summary] to write: return (return) in substring(to:) :  | nsstring.swift:264:13:264:46 | call to substring(to:) |
+| nsstring.swift:265:13:265:28 | call to sourceNSString() :  | nsstring.swift:84:3:84:94 | [summary param] this in folding(options:locale:) :  | file://:0:0:0:0 | [summary] to write: return (return) in folding(options:locale:) :  | nsstring.swift:265:13:265:49 | call to folding(options:locale:) |
+| nsstring.swift:266:13:266:28 | call to sourceNSString() :  | nsstring.swift:85:3:85:94 | [summary param] this in applyingTransform(_:reverse:) :  | file://:0:0:0:0 | [summary] to write: return (return) in applyingTransform(_:reverse:) :  | nsstring.swift:266:13:266:87 | call to applyingTransform(_:reverse:) |
+| nsstring.swift:267:13:267:28 | call to sourceNSString() :  | nsstring.swift:87:3:87:41 | [summary param] this in propertyList() :  | file://:0:0:0:0 | [summary] to write: return (return) in propertyList() :  | nsstring.swift:267:13:267:43 | call to propertyList() |
+| nsstring.swift:268:13:268:28 | call to sourceNSString() :  | nsstring.swift:88:3:88:80 | [summary param] this in propertyListFromStringsFileFormat() :  | file://:0:0:0:0 | [summary] to write: return (return) in propertyListFromStringsFileFormat() :  | nsstring.swift:268:13:268:64 | call to propertyListFromStringsFileFormat() |
+| nsstring.swift:269:13:269:28 | call to sourceNSString() :  | nsstring.swift:89:3:89:76 | [summary param] this in variantFittingPresentationWidth(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in variantFittingPresentationWidth(_:) :  | nsstring.swift:269:13:269:64 | call to variantFittingPresentationWidth(_:) |
+| nsstring.swift:270:13:270:28 | call to sourceNSString() :  | nsstring.swift:90:3:90:57 | [summary param] this in data(using:) :  | file://:0:0:0:0 | [summary] to write: return (return) in data(using:) :  | nsstring.swift:270:13:270:43 | call to data(using:) |
+| nsstring.swift:271:13:271:28 | call to sourceNSString() :  | nsstring.swift:91:3:91:91 | [summary param] this in data(using:allowLossyConversion:) :  | file://:0:0:0:0 | [summary] to write: return (return) in data(using:allowLossyConversion:) :  | nsstring.swift:271:13:271:72 | call to data(using:allowLossyConversion:) |
+| nsstring.swift:273:43:273:61 | call to sourceStringArray() :  | nsstring.swift:57:3:57:78 | [summary param] 0 in path(withComponents:) :  | file://:0:0:0:0 | [summary] to write: return (return) in path(withComponents:) :  | nsstring.swift:273:13:273:62 | call to path(withComponents:) |
+| nsstring.swift:275:42:275:56 | call to sourceCString() :  | nsstring.swift:58:3:58:83 | [summary param] 0 in string(withCString:) :  | file://:0:0:0:0 | [summary] to write: return (return) in string(withCString:) :  | nsstring.swift:275:13:275:57 | call to string(withCString:) |
+| nsstring.swift:276:42:276:56 | call to sourceCString() :  | nsstring.swift:59:3:59:96 | [summary param] 0 in string(withCString:length:) :  | file://:0:0:0:0 | [summary] to write: return (return) in string(withCString:length:) :  | nsstring.swift:276:13:276:70 | call to string(withCString:length:) |
+| nsstring.swift:277:49:277:62 | call to sourceString() :  | nsstring.swift:60:3:60:75 | [summary param] 0 in string(withContentsOfFile:) :  | file://:0:0:0:0 | [summary] to write: return (return) in string(withContentsOfFile:) :  | nsstring.swift:277:13:277:63 | call to string(withContentsOfFile:) |
+| nsstring.swift:278:45:278:55 | call to sourceURL() :  | nsstring.swift:61:3:61:67 | [summary param] 0 in string(withContentsOf:) :  | file://:0:0:0:0 | [summary] to write: return (return) in string(withContentsOf:) :  | nsstring.swift:278:13:278:56 | call to string(withContentsOf:) |
+| nsstring.swift:283:38:283:53 | call to sourceNSString() :  | nsstring.swift:72:3:72:106 | [summary param] 0 in appendingFormat(_:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingFormat(_:_:) :  | nsstring.swift:283:13:283:74 | call to appendingFormat(_:_:) |
+| nsstring.swift:284:13:284:28 | call to sourceNSString() :  | nsstring.swift:72:3:72:106 | [summary param] this in appendingFormat(_:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingFormat(_:_:) :  | nsstring.swift:284:13:284:74 | call to appendingFormat(_:_:) |
+| nsstring.swift:287:45:287:58 | call to sourceString() :  | nsstring.swift:92:3:92:68 | [summary param] 0 in appendingPathComponent(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:) :  | nsstring.swift:287:13:287:59 | call to appendingPathComponent(_:) |
+| nsstring.swift:288:13:288:28 | call to sourceNSString() :  | nsstring.swift:92:3:92:68 | [summary param] this in appendingPathComponent(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:) :  | nsstring.swift:288:13:288:55 | call to appendingPathComponent(_:) |
+| nsstring.swift:291:45:291:58 | call to sourceString() :  | nsstring.swift:93:3:93:110 | [summary param] 0 in appendingPathComponent(_:conformingTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:conformingTo:) :  | nsstring.swift:291:13:291:92 | call to appendingPathComponent(_:conformingTo:) |
+| nsstring.swift:292:13:292:28 | call to sourceNSString() :  | nsstring.swift:93:3:93:110 | [summary param] this in appendingPathComponent(_:conformingTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathComponent(_:conformingTo:) :  | nsstring.swift:292:13:292:88 | call to appendingPathComponent(_:conformingTo:) |
+| nsstring.swift:295:45:295:58 | call to sourceString() :  | nsstring.swift:94:3:94:69 | [summary param] 0 in appendingPathExtension(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathExtension(_:) :  | nsstring.swift:295:13:295:59 | call to appendingPathExtension(_:) |
+| nsstring.swift:296:13:296:28 | call to sourceNSString() :  | nsstring.swift:94:3:94:69 | [summary param] this in appendingPathExtension(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appendingPathExtension(_:) :  | nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) |
+| nsstring.swift:311:13:311:28 | call to sourceNSString() :  | nsstring.swift:95:3:95:74 | [summary param] this in strings(byAppendingPaths:) :  | file://:0:0:0:0 | [summary] to write: return (return) in strings(byAppendingPaths:) :  | nsstring.swift:311:13:311:60 | call to strings(byAppendingPaths:) |
+| nsstring.swift:312:13:312:28 | call to sourceNSString() :  | nsstring.swift:95:3:95:74 | [summary param] this in strings(byAppendingPaths:) :  | file://:0:0:0:0 | [summary] to write: return (return) in strings(byAppendingPaths:) :  | nsstring.swift:312:13:312:60 | call to strings(byAppendingPaths:) :  |
+| nsstring.swift:334:3:334:18 | call to sourceNSString() :  | nsstring.swift:66:3:66:281 | [summary param] this in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  | nsstring.swift:334:29:334:29 | [post] ptr3 :  |
+| nsstring.swift:392:13:392:35 | call to sourceNSMutableString() :  | nsstring.swift:77:3:77:64 | [summary param] this in capitalized(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in capitalized(with:) :  | nsstring.swift:392:13:392:58 | call to capitalized(with:) |
+| nsstring.swift:426:34:426:61 | ...! :  | nsstring.swift:48:15:48:101 | [summary param] 0 in Self.init(utf8String:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Self.init(utf8String:) :  | nsstring.swift:426:13:426:62 | call to Self.init(utf8String:) :  |
 | string.swift:170:29:170:29 | tainted :  | string.swift:103:3:103:82 | [summary param] 0 in appending(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  | string.swift:170:13:170:36 | call to appending(_:) |
 | string.swift:171:13:171:13 | tainted :  | string.swift:103:3:103:82 | [summary param] this in appending(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  | string.swift:171:13:171:36 | call to appending(_:) |
 | string.swift:172:13:172:13 | tainted :  | string.swift:103:3:103:82 | [summary param] this in appending(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in appending(_:) :  | string.swift:172:13:172:38 | call to appending(_:) |
@@ -2056,6 +2745,108 @@ subpaths
 | nsmutabledata.swift:41:15:41:15 | nsMutableDataTainted4 | nsmutabledata.swift:40:66:40:73 | call to source() :  | nsmutabledata.swift:41:15:41:15 | nsMutableDataTainted4 | result |
 | nsmutabledata.swift:45:15:45:15 | nsMutableDataTainted5 | nsmutabledata.swift:44:35:44:42 | call to source() :  | nsmutabledata.swift:45:15:45:15 | nsMutableDataTainted5 | result |
 | nsmutabledata.swift:49:15:49:37 | .mutableBytes | nsmutabledata.swift:48:33:48:40 | call to source() :  | nsmutabledata.swift:49:15:49:37 | .mutableBytes | result |
+| nsstring.swift:193:13:193:68 | call to NSString.init(characters:length:) | nsstring.swift:193:34:193:54 | call to sourceUnicharString() :  | nsstring.swift:193:13:193:68 | call to NSString.init(characters:length:) | result |
+| nsstring.swift:194:13:194:102 | call to NSString.init(charactersNoCopy:length:freeWhenDone:) | nsstring.swift:194:40:194:67 | call to sourceMutableUnicharString() :  | nsstring.swift:194:13:194:102 | call to NSString.init(charactersNoCopy:length:freeWhenDone:) | result |
+| nsstring.swift:195:13:195:44 | call to NSString.init(string:) | nsstring.swift:195:30:195:43 | call to sourceString() :  | nsstring.swift:195:13:195:44 | call to NSString.init(string:) | result |
+| nsstring.swift:196:13:196:82 | call to Self.init(format:arguments:) | nsstring.swift:196:30:196:43 | call to sourceString() :  | nsstring.swift:196:13:196:82 | call to Self.init(format:arguments:) | result |
+| nsstring.swift:197:13:197:95 | call to Self.init(format:locale:arguments:) | nsstring.swift:197:30:197:43 | call to sourceString() :  | nsstring.swift:197:13:197:95 | call to Self.init(format:locale:arguments:) | result |
+| nsstring.swift:198:13:198:46 | call to Self.init(format:_:) | nsstring.swift:198:30:198:45 | call to sourceNSString() :  | nsstring.swift:198:13:198:46 | call to Self.init(format:_:) | result |
+| nsstring.swift:199:13:199:59 | call to Self.init(format:locale:_:) | nsstring.swift:199:30:199:45 | call to sourceNSString() :  | nsstring.swift:199:13:199:59 | call to Self.init(format:locale:_:) | result |
+| nsstring.swift:203:13:203:70 | try! ... | nsstring.swift:203:43:203:56 | call to sourceString() :  | nsstring.swift:203:13:203:70 | try! ... | result |
+| nsstring.swift:204:13:204:76 | try! ... | nsstring.swift:204:43:204:56 | call to sourceString() :  | nsstring.swift:204:13:204:76 | try! ... | result |
+| nsstring.swift:205:13:205:63 | try! ... | nsstring.swift:205:39:205:49 | call to sourceURL() :  | nsstring.swift:205:13:205:63 | try! ... | result |
+| nsstring.swift:206:13:206:80 | try! ... | nsstring.swift:206:51:206:64 | call to sourceString() :  | nsstring.swift:206:13:206:80 | try! ... | result |
+| nsstring.swift:207:13:207:69 | try! ... | nsstring.swift:207:39:207:49 | call to sourceURL() :  | nsstring.swift:207:13:207:69 | try! ... | result |
+| nsstring.swift:208:13:208:86 | try! ... | nsstring.swift:208:51:208:64 | call to sourceString() :  | nsstring.swift:208:13:208:86 | try! ... | result |
+| nsstring.swift:212:13:212:80 | call to Self.init(bytes:length:encoding:) | nsstring.swift:212:29:212:52 | call to sourceUnsafeRawPointer() :  | nsstring.swift:212:13:212:80 | call to Self.init(bytes:length:encoding:) | result |
+| nsstring.swift:213:13:213:81 | ...! | nsstring.swift:213:29:213:52 | call to sourceUnsafeRawPointer() :  | nsstring.swift:213:13:213:81 | ...! | result |
+| nsstring.swift:216:13:216:114 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) | nsstring.swift:216:35:216:65 | call to sourceUnsafeMutableRawPointer() :  | nsstring.swift:216:13:216:114 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) | result |
+| nsstring.swift:217:13:217:115 | ...! | nsstring.swift:217:35:217:65 | call to sourceUnsafeMutableRawPointer() :  | nsstring.swift:217:13:217:115 | ...! | result |
+| nsstring.swift:220:13:220:59 | call to Self.init(cString:encoding:) | nsstring.swift:220:31:220:45 | call to sourceCString() :  | nsstring.swift:220:13:220:59 | call to Self.init(cString:encoding:) | result |
+| nsstring.swift:221:13:221:60 | ...! | nsstring.swift:221:31:221:45 | call to sourceCString() :  | nsstring.swift:221:13:221:60 | ...! | result |
+| nsstring.swift:224:13:224:46 | call to Self.init(cString:) | nsstring.swift:224:31:224:45 | call to sourceCString() :  | nsstring.swift:224:13:224:46 | call to Self.init(cString:) | result |
+| nsstring.swift:225:13:225:47 | ...! | nsstring.swift:225:31:225:45 | call to sourceCString() :  | nsstring.swift:225:13:225:47 | ...! | result |
+| nsstring.swift:228:13:228:49 | call to Self.init(utf8String:) | nsstring.swift:228:34:228:48 | call to sourceCString() :  | nsstring.swift:228:13:228:49 | call to Self.init(utf8String:) | result |
+| nsstring.swift:229:13:229:50 | ...! | nsstring.swift:229:34:229:48 | call to sourceCString() :  | nsstring.swift:229:13:229:50 | ...! | result |
+| nsstring.swift:232:13:232:53 | call to Self.init(data:encoding:) | nsstring.swift:232:28:232:39 | call to sourceData() :  | nsstring.swift:232:13:232:53 | call to Self.init(data:encoding:) | result |
+| nsstring.swift:233:13:233:54 | ...! | nsstring.swift:233:28:233:39 | call to sourceData() :  | nsstring.swift:233:13:233:54 | ...! | result |
+| nsstring.swift:234:13:234:92 | ...! | nsstring.swift:234:40:234:63 | call to sourceUnsafeRawPointer() :  | nsstring.swift:234:13:234:92 | ...! | result |
+| nsstring.swift:236:13:236:52 | call to Self.init(contentsOfFile:) | nsstring.swift:236:38:236:51 | call to sourceString() :  | nsstring.swift:236:13:236:52 | call to Self.init(contentsOfFile:) | result |
+| nsstring.swift:237:13:237:53 | ...! | nsstring.swift:237:38:237:51 | call to sourceString() :  | nsstring.swift:237:13:237:53 | ...! | result |
+| nsstring.swift:239:13:239:45 | call to Self.init(contentsOf:) | nsstring.swift:239:34:239:44 | call to sourceURL() :  | nsstring.swift:239:13:239:45 | call to Self.init(contentsOf:) | result |
+| nsstring.swift:240:13:240:46 | ...! | nsstring.swift:240:34:240:44 | call to sourceURL() :  | nsstring.swift:240:13:240:46 | ...! | result |
+| nsstring.swift:247:13:247:84 | call to localizedStringWithFormat(_:_:) | nsstring.swift:247:48:247:63 | call to sourceNSString() :  | nsstring.swift:247:13:247:84 | call to localizedStringWithFormat(_:_:) | result |
+| nsstring.swift:248:13:248:45 | call to character(at:) | nsstring.swift:248:13:248:28 | call to sourceNSString() :  | nsstring.swift:248:13:248:45 | call to character(at:) | result |
+| nsstring.swift:249:13:249:47 | ...! | nsstring.swift:249:13:249:28 | call to sourceNSString() :  | nsstring.swift:249:13:249:47 | ...! | result |
+| nsstring.swift:250:13:250:38 | call to cString() | nsstring.swift:250:13:250:28 | call to sourceNSString() :  | nsstring.swift:250:13:250:38 | call to cString() | result |
+| nsstring.swift:251:13:251:43 | call to lossyCString() | nsstring.swift:251:13:251:28 | call to sourceNSString() :  | nsstring.swift:251:13:251:43 | call to lossyCString() | result |
+| nsstring.swift:252:13:252:80 | call to padding(toLength:withPad:startingAt:) | nsstring.swift:252:13:252:28 | call to sourceNSString() :  | nsstring.swift:252:13:252:80 | call to padding(toLength:withPad:startingAt:) | result |
+| nsstring.swift:253:13:253:83 | call to padding(toLength:withPad:startingAt:) | nsstring.swift:253:54:253:67 | call to sourceString() :  | nsstring.swift:253:13:253:83 | call to padding(toLength:withPad:startingAt:) | result |
+| nsstring.swift:254:13:254:50 | call to lowercased(with:) | nsstring.swift:254:13:254:28 | call to sourceNSString() :  | nsstring.swift:254:13:254:50 | call to lowercased(with:) | result |
+| nsstring.swift:255:13:255:50 | call to uppercased(with:) | nsstring.swift:255:13:255:28 | call to sourceNSString() :  | nsstring.swift:255:13:255:50 | call to uppercased(with:) | result |
+| nsstring.swift:256:13:256:51 | call to capitalized(with:) | nsstring.swift:256:13:256:28 | call to sourceNSString() :  | nsstring.swift:256:13:256:51 | call to capitalized(with:) | result |
+| nsstring.swift:257:13:257:57 | call to components(separatedBy:) | nsstring.swift:257:13:257:28 | call to sourceNSString() :  | nsstring.swift:257:13:257:57 | call to components(separatedBy:) | result |
+| nsstring.swift:258:13:258:60 | ...[...] | nsstring.swift:258:13:258:28 | call to sourceNSString() :  | nsstring.swift:258:13:258:60 | ...[...] | result |
+| nsstring.swift:259:13:259:78 | call to components(separatedBy:) | nsstring.swift:259:13:259:28 | call to sourceNSString() :  | nsstring.swift:259:13:259:78 | call to components(separatedBy:) | result |
+| nsstring.swift:260:13:260:81 | ...[...] | nsstring.swift:260:13:260:28 | call to sourceNSString() :  | nsstring.swift:260:13:260:81 | ...[...] | result |
+| nsstring.swift:261:13:261:77 | call to trimmingCharacters(in:) | nsstring.swift:261:13:261:28 | call to sourceNSString() :  | nsstring.swift:261:13:261:77 | call to trimmingCharacters(in:) | result |
+| nsstring.swift:262:13:262:47 | call to substring(from:) | nsstring.swift:262:13:262:28 | call to sourceNSString() :  | nsstring.swift:262:13:262:47 | call to substring(from:) | result |
+| nsstring.swift:263:13:263:53 | call to substring(with:) | nsstring.swift:263:13:263:28 | call to sourceNSString() :  | nsstring.swift:263:13:263:53 | call to substring(with:) | result |
+| nsstring.swift:264:13:264:46 | call to substring(to:) | nsstring.swift:264:13:264:28 | call to sourceNSString() :  | nsstring.swift:264:13:264:46 | call to substring(to:) | result |
+| nsstring.swift:265:13:265:49 | call to folding(options:locale:) | nsstring.swift:265:13:265:28 | call to sourceNSString() :  | nsstring.swift:265:13:265:49 | call to folding(options:locale:) | result |
+| nsstring.swift:266:13:266:87 | call to applyingTransform(_:reverse:) | nsstring.swift:266:13:266:28 | call to sourceNSString() :  | nsstring.swift:266:13:266:87 | call to applyingTransform(_:reverse:) | result |
+| nsstring.swift:267:13:267:43 | call to propertyList() | nsstring.swift:267:13:267:28 | call to sourceNSString() :  | nsstring.swift:267:13:267:43 | call to propertyList() | result |
+| nsstring.swift:268:13:268:64 | call to propertyListFromStringsFileFormat() | nsstring.swift:268:13:268:28 | call to sourceNSString() :  | nsstring.swift:268:13:268:64 | call to propertyListFromStringsFileFormat() | result |
+| nsstring.swift:269:13:269:64 | call to variantFittingPresentationWidth(_:) | nsstring.swift:269:13:269:28 | call to sourceNSString() :  | nsstring.swift:269:13:269:64 | call to variantFittingPresentationWidth(_:) | result |
+| nsstring.swift:270:13:270:43 | call to data(using:) | nsstring.swift:270:13:270:28 | call to sourceNSString() :  | nsstring.swift:270:13:270:43 | call to data(using:) | result |
+| nsstring.swift:271:13:271:72 | call to data(using:allowLossyConversion:) | nsstring.swift:271:13:271:28 | call to sourceNSString() :  | nsstring.swift:271:13:271:72 | call to data(using:allowLossyConversion:) | result |
+| nsstring.swift:273:13:273:62 | call to path(withComponents:) | nsstring.swift:273:43:273:61 | call to sourceStringArray() :  | nsstring.swift:273:13:273:62 | call to path(withComponents:) | result |
+| nsstring.swift:275:13:275:57 | call to string(withCString:) | nsstring.swift:275:42:275:56 | call to sourceCString() :  | nsstring.swift:275:13:275:57 | call to string(withCString:) | result |
+| nsstring.swift:276:13:276:70 | call to string(withCString:length:) | nsstring.swift:276:42:276:56 | call to sourceCString() :  | nsstring.swift:276:13:276:70 | call to string(withCString:length:) | result |
+| nsstring.swift:277:13:277:63 | call to string(withContentsOfFile:) | nsstring.swift:277:49:277:62 | call to sourceString() :  | nsstring.swift:277:13:277:63 | call to string(withContentsOfFile:) | result |
+| nsstring.swift:278:13:278:56 | call to string(withContentsOf:) | nsstring.swift:278:45:278:55 | call to sourceURL() :  | nsstring.swift:278:13:278:56 | call to string(withContentsOf:) | result |
+| nsstring.swift:283:13:283:74 | call to appendingFormat(_:_:) | nsstring.swift:283:38:283:53 | call to sourceNSString() :  | nsstring.swift:283:13:283:74 | call to appendingFormat(_:_:) | result |
+| nsstring.swift:284:13:284:74 | call to appendingFormat(_:_:) | nsstring.swift:284:13:284:28 | call to sourceNSString() :  | nsstring.swift:284:13:284:74 | call to appendingFormat(_:_:) | result |
+| nsstring.swift:287:13:287:59 | call to appendingPathComponent(_:) | nsstring.swift:287:45:287:58 | call to sourceString() :  | nsstring.swift:287:13:287:59 | call to appendingPathComponent(_:) | result |
+| nsstring.swift:288:13:288:55 | call to appendingPathComponent(_:) | nsstring.swift:288:13:288:28 | call to sourceNSString() :  | nsstring.swift:288:13:288:55 | call to appendingPathComponent(_:) | result |
+| nsstring.swift:291:13:291:92 | call to appendingPathComponent(_:conformingTo:) | nsstring.swift:291:45:291:58 | call to sourceString() :  | nsstring.swift:291:13:291:92 | call to appendingPathComponent(_:conformingTo:) | result |
+| nsstring.swift:292:13:292:88 | call to appendingPathComponent(_:conformingTo:) | nsstring.swift:292:13:292:28 | call to sourceNSString() :  | nsstring.swift:292:13:292:88 | call to appendingPathComponent(_:conformingTo:) | result |
+| nsstring.swift:295:13:295:59 | call to appendingPathExtension(_:) | nsstring.swift:295:45:295:58 | call to sourceString() :  | nsstring.swift:295:13:295:59 | call to appendingPathExtension(_:) | result |
+| nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) | nsstring.swift:296:13:296:28 | call to sourceNSString() :  | nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) | result |
+| nsstring.swift:311:13:311:60 | call to strings(byAppendingPaths:) | nsstring.swift:311:13:311:28 | call to sourceNSString() :  | nsstring.swift:311:13:311:60 | call to strings(byAppendingPaths:) | result |
+| nsstring.swift:312:13:312:63 | ...[...] | nsstring.swift:312:13:312:28 | call to sourceNSString() :  | nsstring.swift:312:13:312:63 | ...[...] | result |
+| nsstring.swift:335:13:335:13 | ptr3 | nsstring.swift:334:3:334:18 | call to sourceNSString() :  | nsstring.swift:335:13:335:13 | ptr3 | result |
+| nsstring.swift:392:13:392:58 | call to capitalized(with:) | nsstring.swift:392:13:392:35 | call to sourceNSMutableString() :  | nsstring.swift:392:13:392:58 | call to capitalized(with:) | result |
+| nsstring.swift:425:13:425:30 | .utf8String | nsstring.swift:425:13:425:28 | call to sourceNSString() :  | nsstring.swift:425:13:425:30 | .utf8String | result |
+| nsstring.swift:426:13:426:63 | ...! | nsstring.swift:426:34:426:49 | call to sourceNSString() :  | nsstring.swift:426:13:426:63 | ...! | result |
+| nsstring.swift:427:13:427:30 | .lowercased | nsstring.swift:427:13:427:28 | call to sourceNSString() :  | nsstring.swift:427:13:427:30 | .lowercased | result |
+| nsstring.swift:429:13:429:30 | .uppercased | nsstring.swift:429:13:429:28 | call to sourceNSString() :  | nsstring.swift:429:13:429:30 | .uppercased | result |
+| nsstring.swift:430:13:430:30 | .localizedUppercase | nsstring.swift:430:13:430:28 | call to sourceNSString() :  | nsstring.swift:430:13:430:30 | .localizedUppercase | result |
+| nsstring.swift:431:13:431:30 | .capitalized | nsstring.swift:431:13:431:28 | call to sourceNSString() :  | nsstring.swift:431:13:431:30 | .capitalized | result |
+| nsstring.swift:432:13:432:30 | .localizedCapitalized | nsstring.swift:432:13:432:28 | call to sourceNSString() :  | nsstring.swift:432:13:432:30 | .localizedCapitalized | result |
+| nsstring.swift:433:13:433:30 | .decomposedStringWithCanonicalMapping | nsstring.swift:433:13:433:28 | call to sourceNSString() :  | nsstring.swift:433:13:433:30 | .decomposedStringWithCanonicalMapping | result |
+| nsstring.swift:434:13:434:30 | .decomposedStringWithCompatibilityMapping | nsstring.swift:434:13:434:28 | call to sourceNSString() :  | nsstring.swift:434:13:434:30 | .decomposedStringWithCompatibilityMapping | result |
+| nsstring.swift:435:13:435:30 | .precomposedStringWithCanonicalMapping | nsstring.swift:435:13:435:28 | call to sourceNSString() :  | nsstring.swift:435:13:435:30 | .precomposedStringWithCanonicalMapping | result |
+| nsstring.swift:436:13:436:30 | .precomposedStringWithCompatibilityMapping | nsstring.swift:436:13:436:28 | call to sourceNSString() :  | nsstring.swift:436:13:436:30 | .precomposedStringWithCompatibilityMapping | result |
+| nsstring.swift:437:13:437:30 | .doubleValue | nsstring.swift:437:13:437:28 | call to sourceNSString() :  | nsstring.swift:437:13:437:30 | .doubleValue | result |
+| nsstring.swift:438:13:438:30 | .floatValue | nsstring.swift:438:13:438:28 | call to sourceNSString() :  | nsstring.swift:438:13:438:30 | .floatValue | result |
+| nsstring.swift:439:13:439:30 | .intValue | nsstring.swift:439:13:439:28 | call to sourceNSString() :  | nsstring.swift:439:13:439:30 | .intValue | result |
+| nsstring.swift:440:13:440:30 | .integerValue | nsstring.swift:440:13:440:28 | call to sourceNSString() :  | nsstring.swift:440:13:440:30 | .integerValue | result |
+| nsstring.swift:441:13:441:30 | .longLongValue | nsstring.swift:441:13:441:28 | call to sourceNSString() :  | nsstring.swift:441:13:441:30 | .longLongValue | result |
+| nsstring.swift:442:13:442:30 | .boolValue | nsstring.swift:442:13:442:28 | call to sourceNSString() :  | nsstring.swift:442:13:442:30 | .boolValue | result |
+| nsstring.swift:443:13:443:30 | .description | nsstring.swift:443:13:443:28 | call to sourceNSString() :  | nsstring.swift:443:13:443:30 | .description | result |
+| nsstring.swift:444:13:444:30 | .pathComponents | nsstring.swift:444:13:444:28 | call to sourceNSString() :  | nsstring.swift:444:13:444:30 | .pathComponents | result |
+| nsstring.swift:445:13:445:46 | ...[...] | nsstring.swift:445:13:445:28 | call to sourceNSString() :  | nsstring.swift:445:13:445:46 | ...[...] | result |
+| nsstring.swift:446:13:446:30 | .fileSystemRepresentation | nsstring.swift:446:13:446:28 | call to sourceNSString() :  | nsstring.swift:446:13:446:30 | .fileSystemRepresentation | result |
+| nsstring.swift:447:13:447:30 | .lastPathComponent | nsstring.swift:447:13:447:28 | call to sourceNSString() :  | nsstring.swift:447:13:447:30 | .lastPathComponent | result |
+| nsstring.swift:448:13:448:30 | .pathExtension | nsstring.swift:448:13:448:28 | call to sourceNSString() :  | nsstring.swift:448:13:448:30 | .pathExtension | result |
+| nsstring.swift:449:13:449:30 | .abbreviatingWithTildeInPath | nsstring.swift:449:13:449:28 | call to sourceNSString() :  | nsstring.swift:449:13:449:30 | .abbreviatingWithTildeInPath | result |
+| nsstring.swift:450:13:450:30 | .deletingLastPathComponent | nsstring.swift:450:13:450:28 | call to sourceNSString() :  | nsstring.swift:450:13:450:30 | .deletingLastPathComponent | result |
+| nsstring.swift:451:13:451:30 | .deletingPathExtension | nsstring.swift:451:13:451:28 | call to sourceNSString() :  | nsstring.swift:451:13:451:30 | .deletingPathExtension | result |
+| nsstring.swift:452:13:452:30 | .expandingTildeInPath | nsstring.swift:452:13:452:28 | call to sourceNSString() :  | nsstring.swift:452:13:452:30 | .expandingTildeInPath | result |
+| nsstring.swift:453:13:453:30 | .resolvingSymlinksInPath | nsstring.swift:453:13:453:28 | call to sourceNSString() :  | nsstring.swift:453:13:453:30 | .resolvingSymlinksInPath | result |
+| nsstring.swift:454:13:454:30 | .standardizingPath | nsstring.swift:454:13:454:28 | call to sourceNSString() :  | nsstring.swift:454:13:454:30 | .standardizingPath | result |
+| nsstring.swift:455:13:455:30 | .removingPercentEncoding | nsstring.swift:455:13:455:28 | call to sourceNSString() :  | nsstring.swift:455:13:455:30 | .removingPercentEncoding | result |
 | string.swift:134:13:134:13 | "..." | string.swift:132:11:132:18 | call to source() :  | string.swift:134:13:134:13 | "..." | result |
 | string.swift:136:13:136:13 | "..." | string.swift:132:11:132:18 | call to source() :  | string.swift:136:13:136:13 | "..." | result |
 | string.swift:138:13:138:13 | "..." | string.swift:132:11:132:18 | call to source() :  | string.swift:138:13:138:13 | "..." | result |

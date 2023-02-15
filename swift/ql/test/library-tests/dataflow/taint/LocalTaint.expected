@@ -583,66 +583,82 @@
 | nsstring.swift:35:15:35:15 | self | nsstring.swift:35:15:35:15 | SSA def(self) |
 | nsstring.swift:35:73:35:73 | [post] self | nsstring.swift:35:15:35:95 | self[return] |
 | nsstring.swift:35:73:35:73 | self | nsstring.swift:35:15:35:95 | self[return] |
+| nsstring.swift:35:91:35:91 |  | nsstring.swift:35:73:35:93 | call to NSString.init(string:) |
 | nsstring.swift:36:15:36:15 | SSA def(self) | nsstring.swift:36:87:36:87 | self |
 | nsstring.swift:36:15:36:15 | self | nsstring.swift:36:15:36:15 | SSA def(self) |
 | nsstring.swift:36:87:36:87 | [post] self | nsstring.swift:36:15:36:109 | self[return] |
 | nsstring.swift:36:87:36:87 | self | nsstring.swift:36:15:36:109 | self[return] |
+| nsstring.swift:36:105:36:105 |  | nsstring.swift:36:87:36:107 | call to NSString.init(string:) |
 | nsstring.swift:37:15:37:15 | SSA def(self) | nsstring.swift:37:60:37:60 | self |
 | nsstring.swift:37:15:37:15 | self | nsstring.swift:37:15:37:15 | SSA def(self) |
 | nsstring.swift:37:60:37:60 | [post] self | nsstring.swift:37:15:37:82 | self[return] |
 | nsstring.swift:37:60:37:60 | self | nsstring.swift:37:15:37:82 | self[return] |
+| nsstring.swift:37:78:37:78 |  | nsstring.swift:37:60:37:80 | call to NSString.init(string:) |
 | nsstring.swift:38:15:38:15 | SSA def(self) | nsstring.swift:38:77:38:77 | self |
 | nsstring.swift:38:15:38:15 | self | nsstring.swift:38:15:38:15 | SSA def(self) |
 | nsstring.swift:38:77:38:77 | [post] self | nsstring.swift:38:15:38:99 | self[return] |
 | nsstring.swift:38:77:38:77 | self | nsstring.swift:38:15:38:99 | self[return] |
+| nsstring.swift:38:95:38:95 |  | nsstring.swift:38:77:38:97 | call to NSString.init(string:) |
 | nsstring.swift:39:15:39:15 | SSA def(self) | nsstring.swift:39:78:39:78 | self |
 | nsstring.swift:39:15:39:15 | self | nsstring.swift:39:15:39:15 | SSA def(self) |
 | nsstring.swift:39:78:39:78 | [post] self | nsstring.swift:39:15:39:100 | self[return] |
 | nsstring.swift:39:78:39:78 | self | nsstring.swift:39:15:39:100 | self[return] |
+| nsstring.swift:39:96:39:96 |  | nsstring.swift:39:78:39:98 | call to NSString.init(string:) |
 | nsstring.swift:40:15:40:15 | SSA def(self) | nsstring.swift:40:105:40:105 | self |
 | nsstring.swift:40:15:40:15 | self | nsstring.swift:40:15:40:15 | SSA def(self) |
 | nsstring.swift:40:105:40:105 | [post] self | nsstring.swift:40:15:40:127 | self[return] |
 | nsstring.swift:40:105:40:105 | self | nsstring.swift:40:15:40:127 | self[return] |
+| nsstring.swift:40:123:40:123 |  | nsstring.swift:40:105:40:125 | call to NSString.init(string:) |
 | nsstring.swift:41:15:41:15 | SSA def(self) | nsstring.swift:41:70:41:70 | self |
 | nsstring.swift:41:15:41:15 | self | nsstring.swift:41:15:41:15 | SSA def(self) |
 | nsstring.swift:41:70:41:70 | [post] self | nsstring.swift:41:15:41:92 | self[return] |
 | nsstring.swift:41:70:41:70 | self | nsstring.swift:41:15:41:92 | self[return] |
+| nsstring.swift:41:88:41:88 |  | nsstring.swift:41:70:41:90 | call to NSString.init(string:) |
 | nsstring.swift:42:15:42:15 | SSA def(self) | nsstring.swift:42:97:42:97 | self |
 | nsstring.swift:42:15:42:15 | self | nsstring.swift:42:15:42:15 | SSA def(self) |
 | nsstring.swift:42:97:42:97 | [post] self | nsstring.swift:42:15:42:119 | self[return] |
 | nsstring.swift:42:97:42:97 | self | nsstring.swift:42:15:42:119 | self[return] |
+| nsstring.swift:42:115:42:115 |  | nsstring.swift:42:97:42:117 | call to NSString.init(string:) |
 | nsstring.swift:44:15:44:15 | SSA def(self) | nsstring.swift:44:81:44:81 | self |
 | nsstring.swift:44:15:44:15 | self | nsstring.swift:44:15:44:15 | SSA def(self) |
 | nsstring.swift:44:81:44:81 | [post] self | nsstring.swift:44:15:44:103 | self[return] |
 | nsstring.swift:44:81:44:81 | self | nsstring.swift:44:15:44:103 | self[return] |
+| nsstring.swift:44:99:44:99 |  | nsstring.swift:44:81:44:101 | call to NSString.init(string:) |
 | nsstring.swift:45:15:45:15 | SSA def(self) | nsstring.swift:45:131:45:131 | self |
 | nsstring.swift:45:15:45:15 | self | nsstring.swift:45:15:45:15 | SSA def(self) |
 | nsstring.swift:45:131:45:131 | [post] self | nsstring.swift:45:15:45:153 | self[return] |
 | nsstring.swift:45:131:45:131 | self | nsstring.swift:45:15:45:153 | self[return] |
+| nsstring.swift:45:149:45:149 |  | nsstring.swift:45:131:45:151 | call to NSString.init(string:) |
 | nsstring.swift:46:15:46:15 | SSA def(self) | nsstring.swift:46:92:46:92 | self |
 | nsstring.swift:46:15:46:15 | self | nsstring.swift:46:15:46:15 | SSA def(self) |
 | nsstring.swift:46:92:46:92 | [post] self | nsstring.swift:46:15:46:114 | self[return] |
 | nsstring.swift:46:92:46:92 | self | nsstring.swift:46:15:46:114 | self[return] |
+| nsstring.swift:46:110:46:110 |  | nsstring.swift:46:92:46:112 | call to NSString.init(string:) |
 | nsstring.swift:47:15:47:15 | SSA def(self) | nsstring.swift:47:60:47:60 | self |
 | nsstring.swift:47:15:47:15 | self | nsstring.swift:47:15:47:15 | SSA def(self) |
 | nsstring.swift:47:60:47:60 | [post] self | nsstring.swift:47:15:47:82 | self[return] |
 | nsstring.swift:47:60:47:60 | self | nsstring.swift:47:15:47:82 | self[return] |
+| nsstring.swift:47:78:47:78 |  | nsstring.swift:47:60:47:80 | call to NSString.init(string:) |
 | nsstring.swift:48:15:48:15 | SSA def(self) | nsstring.swift:48:79:48:79 | self |
 | nsstring.swift:48:15:48:15 | self | nsstring.swift:48:15:48:15 | SSA def(self) |
 | nsstring.swift:48:79:48:79 | [post] self | nsstring.swift:48:15:48:101 | self[return] |
 | nsstring.swift:48:79:48:79 | self | nsstring.swift:48:15:48:101 | self[return] |
+| nsstring.swift:48:97:48:97 |  | nsstring.swift:48:79:48:99 | call to NSString.init(string:) |
 | nsstring.swift:49:15:49:15 | SSA def(self) | nsstring.swift:49:51:49:51 | self |
 | nsstring.swift:49:15:49:15 | self | nsstring.swift:49:15:49:15 | SSA def(self) |
 | nsstring.swift:49:51:49:51 | [post] self | nsstring.swift:49:15:49:73 | self[return] |
 | nsstring.swift:49:51:49:51 | self | nsstring.swift:49:15:49:73 | self[return] |
+| nsstring.swift:49:69:49:69 |  | nsstring.swift:49:51:49:71 | call to NSString.init(string:) |
 | nsstring.swift:50:15:50:15 | SSA def(self) | nsstring.swift:50:52:50:52 | self |
 | nsstring.swift:50:15:50:15 | self | nsstring.swift:50:15:50:15 | SSA def(self) |
 | nsstring.swift:50:52:50:52 | [post] self | nsstring.swift:50:15:50:74 | self[return] |
 | nsstring.swift:50:52:50:52 | self | nsstring.swift:50:15:50:74 | self[return] |
+| nsstring.swift:50:70:50:70 |  | nsstring.swift:50:52:50:72 | call to NSString.init(string:) |
 | nsstring.swift:51:15:51:15 | SSA def(self) | nsstring.swift:51:44:51:44 | self |
 | nsstring.swift:51:15:51:15 | self | nsstring.swift:51:15:51:15 | SSA def(self) |
 | nsstring.swift:51:44:51:44 | [post] self | nsstring.swift:51:15:51:66 | self[return] |
 | nsstring.swift:51:44:51:44 | self | nsstring.swift:51:15:51:66 | self[return] |
+| nsstring.swift:51:62:51:62 |  | nsstring.swift:51:44:51:64 | call to NSString.init(string:) |
 | nsstring.swift:53:8:53:8 | SSA def(self) | nsstring.swift:53:3:53:57 | self[return] |
 | nsstring.swift:53:8:53:8 | self | nsstring.swift:53:8:53:8 | SSA def(self) |
 | nsstring.swift:54:8:54:8 | SSA def(self) | nsstring.swift:54:3:54:64 | self[return] |
@@ -680,6 +696,7 @@
 | nsstring.swift:71:8:71:8 | self | nsstring.swift:71:8:71:8 | SSA def(self) |
 | nsstring.swift:72:8:72:8 | SSA def(self) | nsstring.swift:72:3:72:106 | self[return] |
 | nsstring.swift:72:8:72:8 | self | nsstring.swift:72:8:72:8 | SSA def(self) |
+| nsstring.swift:72:102:72:102 |  | nsstring.swift:72:85:72:104 | call to NSString.init(string:) |
 | nsstring.swift:73:8:73:8 | SSA def(self) | nsstring.swift:73:3:73:59 | self[return] |
 | nsstring.swift:73:8:73:8 | self | nsstring.swift:73:8:73:8 | SSA def(self) |
 | nsstring.swift:74:8:74:8 | SSA def(self) | nsstring.swift:74:3:74:116 | self[return] |
@@ -833,6 +850,8 @@
 | nsstring.swift:168:8:168:8 | self | nsstring.swift:168:8:168:8 | SSA def(self) |
 | nsstring.swift:171:8:171:8 | SSA def(self) | nsstring.swift:171:8:171:8 | self[return] |
 | nsstring.swift:171:8:171:8 | self | nsstring.swift:171:8:171:8 | SSA def(self) |
+| nsstring.swift:177:61:177:61 |  | nsstring.swift:177:44:177:63 | call to NSString.init(string:) |
+| nsstring.swift:178:82:178:82 |  | nsstring.swift:178:58:178:84 | call to NSMutableString.init(string:) |
 | nsstring.swift:179:64:179:64 | nil | nsstring.swift:179:63:179:95 | ...! |
 | nsstring.swift:180:78:180:78 | nil | nsstring.swift:180:77:180:116 | ...! |
 | nsstring.swift:181:34:181:48 | call to URL.init(string:) | nsstring.swift:181:34:181:49 | ...! |
@@ -841,96 +860,210 @@
 | nsstring.swift:183:75:183:75 | nil | nsstring.swift:183:74:183:107 | ...! |
 | nsstring.swift:184:56:184:56 | nil | nsstring.swift:184:55:184:85 | ...! |
 | nsstring.swift:185:41:185:41 | 0 | nsstring.swift:185:36:185:42 | call to Data.init(_:) |
+| nsstring.swift:193:34:193:54 | call to sourceUnicharString() | nsstring.swift:193:13:193:68 | call to NSString.init(characters:length:) |
+| nsstring.swift:194:40:194:67 | call to sourceMutableUnicharString() | nsstring.swift:194:13:194:102 | call to NSString.init(charactersNoCopy:length:freeWhenDone:) |
+| nsstring.swift:195:30:195:43 | call to sourceString() | nsstring.swift:195:13:195:44 | call to NSString.init(string:) |
+| nsstring.swift:196:30:196:43 | call to sourceString() | nsstring.swift:196:13:196:82 | call to Self.init(format:arguments:) |
+| nsstring.swift:196:57:196:81 | ...! | nsstring.swift:196:13:196:82 | call to Self.init(format:arguments:) |
 | nsstring.swift:196:58:196:58 | nil | nsstring.swift:196:57:196:81 | ...! |
+| nsstring.swift:197:30:197:43 | call to sourceString() | nsstring.swift:197:13:197:95 | call to Self.init(format:locale:arguments:) |
+| nsstring.swift:197:70:197:94 | ...! | nsstring.swift:197:13:197:95 | call to Self.init(format:locale:arguments:) |
 | nsstring.swift:197:71:197:71 | nil | nsstring.swift:197:70:197:94 | ...! |
+| nsstring.swift:198:30:198:45 | call to sourceNSString() | nsstring.swift:198:13:198:46 | call to Self.init(format:_:) |
+| nsstring.swift:199:30:199:45 | call to sourceNSString() | nsstring.swift:199:13:199:59 | call to Self.init(format:locale:_:) |
 | nsstring.swift:203:18:203:70 | call to Self.init(contentsOfFile:encoding:) | nsstring.swift:203:13:203:70 | try! ... |
+| nsstring.swift:203:43:203:56 | call to sourceString() | nsstring.swift:203:18:203:70 | call to Self.init(contentsOfFile:encoding:) |
 | nsstring.swift:204:18:204:76 | call to Self.init(contentsOfFile:usedEncoding:) | nsstring.swift:204:13:204:76 | try! ... |
+| nsstring.swift:204:43:204:56 | call to sourceString() | nsstring.swift:204:18:204:76 | call to Self.init(contentsOfFile:usedEncoding:) |
 | nsstring.swift:205:18:205:63 | call to Self.init(contentsOf:encoding:) | nsstring.swift:205:13:205:63 | try! ... |
+| nsstring.swift:205:39:205:49 | call to sourceURL() | nsstring.swift:205:18:205:63 | call to Self.init(contentsOf:encoding:) |
 | nsstring.swift:206:18:206:80 | call to Self.init(contentsOf:encoding:) | nsstring.swift:206:13:206:80 | try! ... |
 | nsstring.swift:206:39:206:65 | call to URL.init(string:) | nsstring.swift:206:39:206:66 | ...! |
+| nsstring.swift:206:39:206:66 | ...! | nsstring.swift:206:18:206:80 | call to Self.init(contentsOf:encoding:) |
 | nsstring.swift:206:51:206:64 | call to sourceString() | nsstring.swift:206:39:206:65 | call to URL.init(string:) |
 | nsstring.swift:207:18:207:69 | call to Self.init(contentsOf:usedEncoding:) | nsstring.swift:207:13:207:69 | try! ... |
+| nsstring.swift:207:39:207:49 | call to sourceURL() | nsstring.swift:207:18:207:69 | call to Self.init(contentsOf:usedEncoding:) |
 | nsstring.swift:208:18:208:86 | call to Self.init(contentsOf:usedEncoding:) | nsstring.swift:208:13:208:86 | try! ... |
 | nsstring.swift:208:39:208:65 | call to URL.init(string:) | nsstring.swift:208:39:208:66 | ...! |
+| nsstring.swift:208:39:208:66 | ...! | nsstring.swift:208:18:208:86 | call to Self.init(contentsOf:usedEncoding:) |
 | nsstring.swift:208:51:208:64 | call to sourceString() | nsstring.swift:208:39:208:65 | call to URL.init(string:) |
+| nsstring.swift:212:29:212:52 | call to sourceUnsafeRawPointer() | nsstring.swift:212:13:212:80 | call to Self.init(bytes:length:encoding:) |
 | nsstring.swift:213:13:213:80 | call to Self.init(bytes:length:encoding:) | nsstring.swift:213:13:213:81 | ...! |
+| nsstring.swift:213:29:213:52 | call to sourceUnsafeRawPointer() | nsstring.swift:213:13:213:80 | call to Self.init(bytes:length:encoding:) |
 | nsstring.swift:214:13:214:105 | call to Self.init(bytes:length:encoding:) | nsstring.swift:214:13:214:106 | ...! |
+| nsstring.swift:214:29:214:77 | call to UnsafeRawPointer.init(_:) | nsstring.swift:214:13:214:105 | call to Self.init(bytes:length:encoding:) |
+| nsstring.swift:216:35:216:65 | call to sourceUnsafeMutableRawPointer() | nsstring.swift:216:13:216:114 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) |
 | nsstring.swift:217:13:217:114 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) | nsstring.swift:217:13:217:115 | ...! |
+| nsstring.swift:217:35:217:65 | call to sourceUnsafeMutableRawPointer() | nsstring.swift:217:13:217:114 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) |
 | nsstring.swift:218:13:218:142 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) | nsstring.swift:218:13:218:143 | ...! |
+| nsstring.swift:218:35:218:93 | call to UnsafeMutableRawPointer.init(mutating:) | nsstring.swift:218:13:218:142 | call to Self.init(bytesNoCopy:length:encoding:freeWhenDone:) |
+| nsstring.swift:220:31:220:45 | call to sourceCString() | nsstring.swift:220:13:220:59 | call to Self.init(cString:encoding:) |
 | nsstring.swift:221:13:221:59 | call to Self.init(cString:encoding:) | nsstring.swift:221:13:221:60 | ...! |
+| nsstring.swift:221:31:221:45 | call to sourceCString() | nsstring.swift:221:13:221:59 | call to Self.init(cString:encoding:) |
 | nsstring.swift:222:13:222:111 | call to Self.init(cString:encoding:) | nsstring.swift:222:13:222:112 | ...! |
+| nsstring.swift:222:31:222:97 | call to bindMemory(to:capacity:) | nsstring.swift:222:13:222:111 | call to Self.init(cString:encoding:) |
+| nsstring.swift:224:31:224:45 | call to sourceCString() | nsstring.swift:224:13:224:46 | call to Self.init(cString:) |
 | nsstring.swift:225:13:225:46 | call to Self.init(cString:) | nsstring.swift:225:13:225:47 | ...! |
+| nsstring.swift:225:31:225:45 | call to sourceCString() | nsstring.swift:225:13:225:46 | call to Self.init(cString:) |
 | nsstring.swift:226:13:226:98 | call to Self.init(cString:) | nsstring.swift:226:13:226:99 | ...! |
+| nsstring.swift:226:31:226:97 | call to bindMemory(to:capacity:) | nsstring.swift:226:13:226:98 | call to Self.init(cString:) |
+| nsstring.swift:228:34:228:48 | call to sourceCString() | nsstring.swift:228:13:228:49 | call to Self.init(utf8String:) |
 | nsstring.swift:229:13:229:49 | call to Self.init(utf8String:) | nsstring.swift:229:13:229:50 | ...! |
+| nsstring.swift:229:34:229:48 | call to sourceCString() | nsstring.swift:229:13:229:49 | call to Self.init(utf8String:) |
 | nsstring.swift:230:13:230:101 | call to Self.init(utf8String:) | nsstring.swift:230:13:230:102 | ...! |
+| nsstring.swift:230:34:230:100 | call to bindMemory(to:capacity:) | nsstring.swift:230:13:230:101 | call to Self.init(utf8String:) |
+| nsstring.swift:232:28:232:39 | call to sourceData() | nsstring.swift:232:13:232:53 | call to Self.init(data:encoding:) |
 | nsstring.swift:233:13:233:53 | call to Self.init(data:encoding:) | nsstring.swift:233:13:233:54 | ...! |
+| nsstring.swift:233:28:233:39 | call to sourceData() | nsstring.swift:233:13:233:53 | call to Self.init(data:encoding:) |
 | nsstring.swift:234:13:234:91 | call to Self.init(data:encoding:) | nsstring.swift:234:13:234:92 | ...! |
+| nsstring.swift:234:28:234:77 | call to Data.init(bytes:count:) | nsstring.swift:234:13:234:91 | call to Self.init(data:encoding:) |
 | nsstring.swift:234:40:234:63 | call to sourceUnsafeRawPointer() | nsstring.swift:234:28:234:77 | call to Data.init(bytes:count:) |
+| nsstring.swift:236:38:236:51 | call to sourceString() | nsstring.swift:236:13:236:52 | call to Self.init(contentsOfFile:) |
 | nsstring.swift:237:13:237:52 | call to Self.init(contentsOfFile:) | nsstring.swift:237:13:237:53 | ...! |
+| nsstring.swift:237:38:237:51 | call to sourceString() | nsstring.swift:237:13:237:52 | call to Self.init(contentsOfFile:) |
+| nsstring.swift:239:34:239:44 | call to sourceURL() | nsstring.swift:239:13:239:45 | call to Self.init(contentsOf:) |
 | nsstring.swift:240:13:240:45 | call to Self.init(contentsOf:) | nsstring.swift:240:13:240:46 | ...! |
+| nsstring.swift:240:34:240:44 | call to sourceURL() | nsstring.swift:240:13:240:45 | call to Self.init(contentsOf:) |
 | nsstring.swift:244:7:244:7 | SSA def(harmless) | nsstring.swift:253:13:253:13 | harmless |
 | nsstring.swift:244:18:244:45 | call to NSString.init(string:) | nsstring.swift:244:7:244:7 | SSA def(harmless) |
+| nsstring.swift:244:35:244:35 | harmless | nsstring.swift:244:18:244:45 | call to NSString.init(string:) |
 | nsstring.swift:245:7:245:7 | SSA def(myRange) | nsstring.swift:263:46:263:46 | myRange |
 | nsstring.swift:245:17:245:48 | call to _NSRange.init(location:length:) | nsstring.swift:245:7:245:7 | SSA def(myRange) |
+| nsstring.swift:247:48:247:63 | call to sourceNSString() | nsstring.swift:247:13:247:84 | call to localizedStringWithFormat(_:_:) |
 | nsstring.swift:247:67:247:67 | nil | nsstring.swift:247:66:247:83 | ...! |
+| nsstring.swift:248:13:248:28 | call to sourceNSString() | nsstring.swift:248:13:248:45 | call to character(at:) |
+| nsstring.swift:249:13:249:28 | call to sourceNSString() | nsstring.swift:249:13:249:46 | call to cString(using:) |
 | nsstring.swift:249:13:249:46 | call to cString(using:) | nsstring.swift:249:13:249:47 | ...! |
+| nsstring.swift:250:13:250:28 | call to sourceNSString() | nsstring.swift:250:13:250:38 | call to cString() |
+| nsstring.swift:251:13:251:28 | call to sourceNSString() | nsstring.swift:251:13:251:43 | call to lossyCString() |
+| nsstring.swift:252:13:252:28 | call to sourceNSString() | nsstring.swift:252:13:252:80 | call to padding(toLength:withPad:startingAt:) |
+| nsstring.swift:252:62:252:62 |   | nsstring.swift:252:13:252:80 | call to padding(toLength:withPad:startingAt:) |
 | nsstring.swift:253:13:253:13 | [post] harmless | nsstring.swift:282:13:282:13 | harmless |
+| nsstring.swift:253:13:253:13 | harmless | nsstring.swift:253:13:253:83 | call to padding(toLength:withPad:startingAt:) |
 | nsstring.swift:253:13:253:13 | harmless | nsstring.swift:282:13:282:13 | harmless |
+| nsstring.swift:253:54:253:67 | call to sourceString() | nsstring.swift:253:13:253:83 | call to padding(toLength:withPad:startingAt:) |
+| nsstring.swift:254:13:254:28 | call to sourceNSString() | nsstring.swift:254:13:254:50 | call to lowercased(with:) |
+| nsstring.swift:255:13:255:28 | call to sourceNSString() | nsstring.swift:255:13:255:50 | call to uppercased(with:) |
+| nsstring.swift:256:13:256:28 | call to sourceNSString() | nsstring.swift:256:13:256:51 | call to capitalized(with:) |
+| nsstring.swift:257:13:257:28 | call to sourceNSString() | nsstring.swift:257:13:257:57 | call to components(separatedBy:) |
+| nsstring.swift:258:13:258:28 | call to sourceNSString() | nsstring.swift:258:13:258:57 | call to components(separatedBy:) |
 | nsstring.swift:258:13:258:57 | call to components(separatedBy:) | nsstring.swift:258:13:258:60 | ...[...] |
+| nsstring.swift:259:13:259:28 | call to sourceNSString() | nsstring.swift:259:13:259:78 | call to components(separatedBy:) |
+| nsstring.swift:260:13:260:28 | call to sourceNSString() | nsstring.swift:260:13:260:78 | call to components(separatedBy:) |
 | nsstring.swift:260:13:260:78 | call to components(separatedBy:) | nsstring.swift:260:13:260:81 | ...[...] |
+| nsstring.swift:261:13:261:28 | call to sourceNSString() | nsstring.swift:261:13:261:77 | call to trimmingCharacters(in:) |
+| nsstring.swift:262:13:262:28 | call to sourceNSString() | nsstring.swift:262:13:262:47 | call to substring(from:) |
+| nsstring.swift:263:13:263:28 | call to sourceNSString() | nsstring.swift:263:13:263:53 | call to substring(with:) |
 | nsstring.swift:263:46:263:46 | myRange | nsstring.swift:318:39:318:39 | myRange |
+| nsstring.swift:264:13:264:28 | call to sourceNSString() | nsstring.swift:264:13:264:46 | call to substring(to:) |
+| nsstring.swift:265:13:265:28 | call to sourceNSString() | nsstring.swift:265:13:265:49 | call to folding(options:locale:) |
+| nsstring.swift:266:13:266:28 | call to sourceNSString() | nsstring.swift:266:13:266:87 | call to applyingTransform(_:reverse:) |
+| nsstring.swift:267:13:267:28 | call to sourceNSString() | nsstring.swift:267:13:267:43 | call to propertyList() |
+| nsstring.swift:268:13:268:28 | call to sourceNSString() | nsstring.swift:268:13:268:64 | call to propertyListFromStringsFileFormat() |
+| nsstring.swift:269:13:269:28 | call to sourceNSString() | nsstring.swift:269:13:269:64 | call to variantFittingPresentationWidth(_:) |
+| nsstring.swift:270:13:270:28 | call to sourceNSString() | nsstring.swift:270:13:270:43 | call to data(using:) |
+| nsstring.swift:271:13:271:28 | call to sourceNSString() | nsstring.swift:271:13:271:72 | call to data(using:allowLossyConversion:) |
+| nsstring.swift:272:43:272:57 | [...] | nsstring.swift:272:13:272:58 | call to path(withComponents:) |
+| nsstring.swift:273:43:273:61 | call to sourceStringArray() | nsstring.swift:273:13:273:62 | call to path(withComponents:) |
+| nsstring.swift:274:43:274:68 | [...] | nsstring.swift:274:13:274:69 | call to path(withComponents:) |
+| nsstring.swift:275:42:275:56 | call to sourceCString() | nsstring.swift:275:13:275:57 | call to string(withCString:) |
+| nsstring.swift:276:42:276:56 | call to sourceCString() | nsstring.swift:276:13:276:70 | call to string(withCString:length:) |
+| nsstring.swift:277:49:277:62 | call to sourceString() | nsstring.swift:277:13:277:63 | call to string(withContentsOfFile:) |
+| nsstring.swift:278:45:278:55 | call to sourceURL() | nsstring.swift:278:13:278:56 | call to string(withContentsOf:) |
 | nsstring.swift:282:13:282:13 | [post] harmless | nsstring.swift:282:38:282:38 | harmless |
+| nsstring.swift:282:13:282:13 | harmless | nsstring.swift:282:13:282:66 | call to appendingFormat(_:_:) |
 | nsstring.swift:282:13:282:13 | harmless | nsstring.swift:282:38:282:38 | harmless |
 | nsstring.swift:282:38:282:38 | [post] harmless | nsstring.swift:283:13:283:13 | harmless |
+| nsstring.swift:282:38:282:38 | harmless | nsstring.swift:282:13:282:66 | call to appendingFormat(_:_:) |
 | nsstring.swift:282:38:282:38 | harmless | nsstring.swift:283:13:283:13 | harmless |
 | nsstring.swift:282:49:282:49 | nil | nsstring.swift:282:48:282:65 | ...! |
 | nsstring.swift:283:13:283:13 | [post] harmless | nsstring.swift:284:46:284:46 | harmless |
+| nsstring.swift:283:13:283:13 | harmless | nsstring.swift:283:13:283:74 | call to appendingFormat(_:_:) |
 | nsstring.swift:283:13:283:13 | harmless | nsstring.swift:284:46:284:46 | harmless |
+| nsstring.swift:283:38:283:53 | call to sourceNSString() | nsstring.swift:283:13:283:74 | call to appendingFormat(_:_:) |
 | nsstring.swift:283:57:283:57 | nil | nsstring.swift:283:56:283:73 | ...! |
+| nsstring.swift:284:13:284:28 | call to sourceNSString() | nsstring.swift:284:13:284:74 | call to appendingFormat(_:_:) |
 | nsstring.swift:284:46:284:46 | [post] harmless | nsstring.swift:286:13:286:13 | harmless |
+| nsstring.swift:284:46:284:46 | harmless | nsstring.swift:284:13:284:74 | call to appendingFormat(_:_:) |
 | nsstring.swift:284:46:284:46 | harmless | nsstring.swift:286:13:286:13 | harmless |
 | nsstring.swift:284:57:284:57 | nil | nsstring.swift:284:56:284:73 | ...! |
 | nsstring.swift:286:13:286:13 | [post] harmless | nsstring.swift:287:13:287:13 | harmless |
+| nsstring.swift:286:13:286:13 | harmless | nsstring.swift:286:13:286:47 | call to appendingPathComponent(_:) |
 | nsstring.swift:286:13:286:13 | harmless | nsstring.swift:287:13:287:13 | harmless |
+| nsstring.swift:286:45:286:45 |  | nsstring.swift:286:13:286:47 | call to appendingPathComponent(_:) |
 | nsstring.swift:287:13:287:13 | [post] harmless | nsstring.swift:290:13:290:13 | harmless |
+| nsstring.swift:287:13:287:13 | harmless | nsstring.swift:287:13:287:59 | call to appendingPathComponent(_:) |
 | nsstring.swift:287:13:287:13 | harmless | nsstring.swift:290:13:290:13 | harmless |
+| nsstring.swift:287:45:287:58 | call to sourceString() | nsstring.swift:287:13:287:59 | call to appendingPathComponent(_:) |
+| nsstring.swift:288:13:288:28 | call to sourceNSString() | nsstring.swift:288:13:288:55 | call to appendingPathComponent(_:) |
+| nsstring.swift:288:53:288:53 |  | nsstring.swift:288:13:288:55 | call to appendingPathComponent(_:) |
 | nsstring.swift:290:13:290:13 | [post] harmless | nsstring.swift:291:13:291:13 | harmless |
+| nsstring.swift:290:13:290:13 | harmless | nsstring.swift:290:13:290:80 | call to appendingPathComponent(_:conformingTo:) |
 | nsstring.swift:290:13:290:13 | harmless | nsstring.swift:291:13:291:13 | harmless |
+| nsstring.swift:290:45:290:45 |  | nsstring.swift:290:13:290:80 | call to appendingPathComponent(_:conformingTo:) |
 | nsstring.swift:290:64:290:64 | nil | nsstring.swift:290:63:290:79 | ...! |
 | nsstring.swift:291:13:291:13 | [post] harmless | nsstring.swift:294:13:294:13 | harmless |
+| nsstring.swift:291:13:291:13 | harmless | nsstring.swift:291:13:291:92 | call to appendingPathComponent(_:conformingTo:) |
 | nsstring.swift:291:13:291:13 | harmless | nsstring.swift:294:13:294:13 | harmless |
+| nsstring.swift:291:45:291:58 | call to sourceString() | nsstring.swift:291:13:291:92 | call to appendingPathComponent(_:conformingTo:) |
 | nsstring.swift:291:76:291:76 | nil | nsstring.swift:291:75:291:91 | ...! |
+| nsstring.swift:292:13:292:28 | call to sourceNSString() | nsstring.swift:292:13:292:88 | call to appendingPathComponent(_:conformingTo:) |
+| nsstring.swift:292:53:292:53 |  | nsstring.swift:292:13:292:88 | call to appendingPathComponent(_:conformingTo:) |
 | nsstring.swift:292:72:292:72 | nil | nsstring.swift:292:71:292:87 | ...! |
 | nsstring.swift:294:13:294:13 | [post] harmless | nsstring.swift:295:13:295:13 | harmless |
+| nsstring.swift:294:13:294:13 | harmless | nsstring.swift:294:13:294:47 | call to appendingPathExtension(_:) |
 | nsstring.swift:294:13:294:13 | harmless | nsstring.swift:295:13:295:13 | harmless |
+| nsstring.swift:294:45:294:45 |  | nsstring.swift:294:13:294:47 | call to appendingPathExtension(_:) |
 | nsstring.swift:295:13:295:13 | [post] harmless | nsstring.swift:298:14:298:14 | harmless |
+| nsstring.swift:295:13:295:13 | harmless | nsstring.swift:295:13:295:59 | call to appendingPathExtension(_:) |
 | nsstring.swift:295:13:295:13 | harmless | nsstring.swift:298:14:298:14 | harmless |
+| nsstring.swift:295:45:295:58 | call to sourceString() | nsstring.swift:295:13:295:59 | call to appendingPathExtension(_:) |
+| nsstring.swift:296:13:296:28 | call to sourceNSString() | nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) |
+| nsstring.swift:296:53:296:53 |  | nsstring.swift:296:13:296:55 | call to appendingPathExtension(_:) |
 | nsstring.swift:298:7:298:7 | SSA def(str1) | nsstring.swift:299:13:299:13 | str1 |
 | nsstring.swift:298:14:298:14 | harmless | nsstring.swift:298:7:298:7 | SSA def(str1) |
 | nsstring.swift:298:14:298:14 | harmless | nsstring.swift:307:13:307:13 | harmless |
 | nsstring.swift:299:13:299:13 | [post] str1 | nsstring.swift:300:3:300:3 | str1 |
 | nsstring.swift:299:13:299:13 | str1 | nsstring.swift:300:3:300:3 | str1 |
 | nsstring.swift:300:3:300:3 | [post] str1 | nsstring.swift:301:13:301:13 | str1 |
+| nsstring.swift:300:3:300:3 | str1 | nsstring.swift:300:3:300:20 | call to appending(_:) |
 | nsstring.swift:300:3:300:3 | str1 | nsstring.swift:301:13:301:13 | str1 |
+| nsstring.swift:300:18:300:18 |  | nsstring.swift:300:3:300:20 | call to appending(_:) |
 | nsstring.swift:301:13:301:13 | [post] str1 | nsstring.swift:302:3:302:3 | str1 |
 | nsstring.swift:301:13:301:13 | str1 | nsstring.swift:302:3:302:3 | str1 |
 | nsstring.swift:302:3:302:3 | [post] str1 | nsstring.swift:303:13:303:13 | str1 |
+| nsstring.swift:302:3:302:3 | str1 | nsstring.swift:302:3:302:32 | call to appending(_:) |
 | nsstring.swift:302:3:302:3 | str1 | nsstring.swift:303:13:303:13 | str1 |
+| nsstring.swift:302:18:302:31 | call to sourceString() | nsstring.swift:302:3:302:32 | call to appending(_:) |
 | nsstring.swift:303:13:303:13 | [post] str1 | nsstring.swift:304:3:304:3 | str1 |
 | nsstring.swift:303:13:303:13 | str1 | nsstring.swift:304:3:304:3 | str1 |
 | nsstring.swift:304:3:304:3 | [post] str1 | nsstring.swift:305:13:305:13 | str1 |
+| nsstring.swift:304:3:304:3 | str1 | nsstring.swift:304:3:304:20 | call to appending(_:) |
 | nsstring.swift:304:3:304:3 | str1 | nsstring.swift:305:13:305:13 | str1 |
+| nsstring.swift:304:18:304:18 |  | nsstring.swift:304:3:304:20 | call to appending(_:) |
 | nsstring.swift:307:13:307:13 | [post] harmless | nsstring.swift:308:13:308:13 | harmless |
+| nsstring.swift:307:13:307:13 | harmless | nsstring.swift:307:13:307:52 | call to strings(byAppendingPaths:) |
 | nsstring.swift:307:13:307:13 | harmless | nsstring.swift:308:13:308:13 | harmless |
+| nsstring.swift:307:48:307:51 | [...] | nsstring.swift:307:13:307:52 | call to strings(byAppendingPaths:) |
 | nsstring.swift:308:13:308:13 | [post] harmless | nsstring.swift:309:13:309:13 | harmless |
+| nsstring.swift:308:13:308:13 | harmless | nsstring.swift:308:13:308:52 | call to strings(byAppendingPaths:) |
 | nsstring.swift:308:13:308:13 | harmless | nsstring.swift:309:13:309:13 | harmless |
 | nsstring.swift:308:13:308:52 | call to strings(byAppendingPaths:) | nsstring.swift:308:13:308:55 | ...[...] |
+| nsstring.swift:308:48:308:51 | [...] | nsstring.swift:308:13:308:52 | call to strings(byAppendingPaths:) |
 | nsstring.swift:309:13:309:13 | [post] harmless | nsstring.swift:310:13:310:13 | harmless |
+| nsstring.swift:309:13:309:13 | harmless | nsstring.swift:309:13:309:64 | call to strings(byAppendingPaths:) |
 | nsstring.swift:309:13:309:13 | harmless | nsstring.swift:310:13:310:13 | harmless |
+| nsstring.swift:309:48:309:63 | [...] | nsstring.swift:309:13:309:64 | call to strings(byAppendingPaths:) |
 | nsstring.swift:310:13:310:13 | [post] harmless | nsstring.swift:318:3:318:3 | harmless |
+| nsstring.swift:310:13:310:13 | harmless | nsstring.swift:310:13:310:64 | call to strings(byAppendingPaths:) |
 | nsstring.swift:310:13:310:13 | harmless | nsstring.swift:318:3:318:3 | harmless |
 | nsstring.swift:310:13:310:64 | call to strings(byAppendingPaths:) | nsstring.swift:310:13:310:67 | ...[...] |
+| nsstring.swift:310:48:310:63 | [...] | nsstring.swift:310:13:310:64 | call to strings(byAppendingPaths:) |
+| nsstring.swift:311:13:311:28 | call to sourceNSString() | nsstring.swift:311:13:311:60 | call to strings(byAppendingPaths:) |
+| nsstring.swift:311:56:311:59 | [...] | nsstring.swift:311:13:311:60 | call to strings(byAppendingPaths:) |
+| nsstring.swift:312:13:312:28 | call to sourceNSString() | nsstring.swift:312:13:312:60 | call to strings(byAppendingPaths:) |
 | nsstring.swift:312:13:312:60 | call to strings(byAppendingPaths:) | nsstring.swift:312:13:312:63 | ...[...] |
+| nsstring.swift:312:56:312:59 | [...] | nsstring.swift:312:13:312:60 | call to strings(byAppendingPaths:) |
 | nsstring.swift:316:7:316:7 | SSA def(ptr1) | nsstring.swift:317:13:317:13 | ptr1 |
 | nsstring.swift:316:14:316:53 | ...! | nsstring.swift:316:7:316:7 | SSA def(ptr1) |
 | nsstring.swift:316:15:316:15 | nil | nsstring.swift:316:14:316:53 | ...! |
@@ -957,12 +1090,14 @@
 | nsstring.swift:331:13:331:13 | [post] ptr3 | nsstring.swift:332:21:332:21 | ptr3 |
 | nsstring.swift:331:13:331:13 | ptr3 | nsstring.swift:332:21:332:21 | ptr3 |
 | nsstring.swift:332:3:332:3 | [post] harmless | nsstring.swift:339:3:339:3 | harmless |
+| nsstring.swift:332:3:332:3 | harmless | nsstring.swift:332:21:332:21 | [post] ptr3 |
 | nsstring.swift:332:3:332:3 | harmless | nsstring.swift:339:3:339:3 | harmless |
 | nsstring.swift:332:21:332:21 | [post] ptr3 | nsstring.swift:333:13:333:13 | ptr3 |
 | nsstring.swift:332:21:332:21 | ptr3 | nsstring.swift:333:13:333:13 | ptr3 |
 | nsstring.swift:332:80:332:80 | myRange | nsstring.swift:334:88:334:88 | myRange |
 | nsstring.swift:333:13:333:13 | [post] ptr3 | nsstring.swift:334:29:334:29 | ptr3 |
 | nsstring.swift:333:13:333:13 | ptr3 | nsstring.swift:334:29:334:29 | ptr3 |
+| nsstring.swift:334:3:334:18 | call to sourceNSString() | nsstring.swift:334:29:334:29 | [post] ptr3 |
 | nsstring.swift:334:29:334:29 | [post] ptr3 | nsstring.swift:335:13:335:13 | ptr3 |
 | nsstring.swift:334:29:334:29 | ptr3 | nsstring.swift:335:13:335:13 | ptr3 |
 | nsstring.swift:334:88:334:88 | myRange | nsstring.swift:406:31:406:31 | myRange |
@@ -1025,20 +1160,24 @@
 | nsstring.swift:386:13:386:13 | str20 | nsstring.swift:387:13:387:13 | str20 |
 | nsstring.swift:387:13:387:13 | [post] str20 | nsstring.swift:388:13:388:13 | str20 |
 | nsstring.swift:387:13:387:13 | str20 | nsstring.swift:388:13:388:13 | str20 |
+| nsstring.swift:392:13:392:35 | call to sourceNSMutableString() | nsstring.swift:392:13:392:58 | call to capitalized(with:) |
 | nsstring.swift:394:7:394:7 | SSA def(str30) | nsstring.swift:395:13:395:13 | str30 |
 | nsstring.swift:394:15:394:41 | call to NSMutableString.init(string:) | nsstring.swift:394:7:394:7 | SSA def(str30) |
+| nsstring.swift:394:39:394:39 |  | nsstring.swift:394:15:394:41 | call to NSMutableString.init(string:) |
 | nsstring.swift:395:13:395:13 | [post] str30 | nsstring.swift:396:3:396:3 | str30 |
 | nsstring.swift:395:13:395:13 | str30 | nsstring.swift:396:3:396:3 | str30 |
 | nsstring.swift:396:3:396:3 | [post] str30 | nsstring.swift:397:13:397:13 | str30 |
 | nsstring.swift:396:3:396:3 | str30 | nsstring.swift:397:13:397:13 | str30 |
 | nsstring.swift:399:7:399:7 | SSA def(str31) | nsstring.swift:400:13:400:13 | str31 |
 | nsstring.swift:399:15:399:41 | call to NSMutableString.init(string:) | nsstring.swift:399:7:399:7 | SSA def(str31) |
+| nsstring.swift:399:39:399:39 |  | nsstring.swift:399:15:399:41 | call to NSMutableString.init(string:) |
 | nsstring.swift:400:13:400:13 | [post] str31 | nsstring.swift:401:3:401:3 | str31 |
 | nsstring.swift:400:13:400:13 | str31 | nsstring.swift:401:3:401:3 | str31 |
 | nsstring.swift:401:3:401:3 | [post] str31 | nsstring.swift:402:13:402:13 | str31 |
 | nsstring.swift:401:3:401:3 | str31 | nsstring.swift:402:13:402:13 | str31 |
 | nsstring.swift:404:7:404:7 | SSA def(str32) | nsstring.swift:405:13:405:13 | str32 |
 | nsstring.swift:404:15:404:41 | call to NSMutableString.init(string:) | nsstring.swift:404:7:404:7 | SSA def(str32) |
+| nsstring.swift:404:39:404:39 |  | nsstring.swift:404:15:404:41 | call to NSMutableString.init(string:) |
 | nsstring.swift:405:13:405:13 | [post] str32 | nsstring.swift:406:3:406:3 | str32 |
 | nsstring.swift:405:13:405:13 | str32 | nsstring.swift:406:3:406:3 | str32 |
 | nsstring.swift:406:3:406:3 | [post] str32 | nsstring.swift:407:13:407:13 | str32 |
@@ -1046,12 +1185,14 @@
 | nsstring.swift:406:31:406:31 | myRange | nsstring.swift:411:66:411:66 | myRange |
 | nsstring.swift:409:7:409:7 | SSA def(str33) | nsstring.swift:410:13:410:13 | str33 |
 | nsstring.swift:409:15:409:41 | call to NSMutableString.init(string:) | nsstring.swift:409:7:409:7 | SSA def(str33) |
+| nsstring.swift:409:39:409:39 |  | nsstring.swift:409:15:409:41 | call to NSMutableString.init(string:) |
 | nsstring.swift:410:13:410:13 | [post] str33 | nsstring.swift:411:3:411:3 | str33 |
 | nsstring.swift:410:13:410:13 | str33 | nsstring.swift:411:3:411:3 | str33 |
 | nsstring.swift:411:3:411:3 | [post] str33 | nsstring.swift:412:13:412:13 | str33 |
 | nsstring.swift:411:3:411:3 | str33 | nsstring.swift:412:13:412:13 | str33 |
 | nsstring.swift:414:7:414:7 | SSA def(str34) | nsstring.swift:415:13:415:13 | str34 |
 | nsstring.swift:414:15:414:41 | call to NSMutableString.init(string:) | nsstring.swift:414:7:414:7 | SSA def(str34) |
+| nsstring.swift:414:39:414:39 |  | nsstring.swift:414:15:414:41 | call to NSMutableString.init(string:) |
 | nsstring.swift:415:13:415:13 | [post] str34 | nsstring.swift:416:3:416:3 | str34 |
 | nsstring.swift:415:13:415:13 | str34 | nsstring.swift:416:3:416:3 | str34 |
 | nsstring.swift:416:3:416:3 | [post] str34 | nsstring.swift:417:13:417:13 | str34 |
@@ -1064,9 +1205,40 @@
 | nsstring.swift:419:13:419:13 | str34 | nsstring.swift:420:3:420:3 | str34 |
 | nsstring.swift:420:3:420:3 | [post] str34 | nsstring.swift:421:13:421:13 | str34 |
 | nsstring.swift:420:3:420:3 | str34 | nsstring.swift:421:13:421:13 | str34 |
+| nsstring.swift:425:13:425:28 | call to sourceNSString() | nsstring.swift:425:13:425:30 | .utf8String |
 | nsstring.swift:426:13:426:62 | call to Self.init(utf8String:) | nsstring.swift:426:13:426:63 | ...! |
+| nsstring.swift:426:34:426:49 | call to sourceNSString() | nsstring.swift:426:34:426:51 | .utf8String |
 | nsstring.swift:426:34:426:51 | .utf8String | nsstring.swift:426:34:426:61 | ...! |
+| nsstring.swift:426:34:426:61 | ...! | nsstring.swift:426:13:426:62 | call to Self.init(utf8String:) |
+| nsstring.swift:427:13:427:28 | call to sourceNSString() | nsstring.swift:427:13:427:30 | .lowercased |
+| nsstring.swift:429:13:429:28 | call to sourceNSString() | nsstring.swift:429:13:429:30 | .uppercased |
+| nsstring.swift:430:13:430:28 | call to sourceNSString() | nsstring.swift:430:13:430:30 | .localizedUppercase |
+| nsstring.swift:431:13:431:28 | call to sourceNSString() | nsstring.swift:431:13:431:30 | .capitalized |
+| nsstring.swift:432:13:432:28 | call to sourceNSString() | nsstring.swift:432:13:432:30 | .localizedCapitalized |
+| nsstring.swift:433:13:433:28 | call to sourceNSString() | nsstring.swift:433:13:433:30 | .decomposedStringWithCanonicalMapping |
+| nsstring.swift:434:13:434:28 | call to sourceNSString() | nsstring.swift:434:13:434:30 | .decomposedStringWithCompatibilityMapping |
+| nsstring.swift:435:13:435:28 | call to sourceNSString() | nsstring.swift:435:13:435:30 | .precomposedStringWithCanonicalMapping |
+| nsstring.swift:436:13:436:28 | call to sourceNSString() | nsstring.swift:436:13:436:30 | .precomposedStringWithCompatibilityMapping |
+| nsstring.swift:437:13:437:28 | call to sourceNSString() | nsstring.swift:437:13:437:30 | .doubleValue |
+| nsstring.swift:438:13:438:28 | call to sourceNSString() | nsstring.swift:438:13:438:30 | .floatValue |
+| nsstring.swift:439:13:439:28 | call to sourceNSString() | nsstring.swift:439:13:439:30 | .intValue |
+| nsstring.swift:440:13:440:28 | call to sourceNSString() | nsstring.swift:440:13:440:30 | .integerValue |
+| nsstring.swift:441:13:441:28 | call to sourceNSString() | nsstring.swift:441:13:441:30 | .longLongValue |
+| nsstring.swift:442:13:442:28 | call to sourceNSString() | nsstring.swift:442:13:442:30 | .boolValue |
+| nsstring.swift:443:13:443:28 | call to sourceNSString() | nsstring.swift:443:13:443:30 | .description |
+| nsstring.swift:444:13:444:28 | call to sourceNSString() | nsstring.swift:444:13:444:30 | .pathComponents |
+| nsstring.swift:445:13:445:28 | call to sourceNSString() | nsstring.swift:445:13:445:30 | .pathComponents |
 | nsstring.swift:445:13:445:30 | .pathComponents | nsstring.swift:445:13:445:46 | ...[...] |
+| nsstring.swift:446:13:446:28 | call to sourceNSString() | nsstring.swift:446:13:446:30 | .fileSystemRepresentation |
+| nsstring.swift:447:13:447:28 | call to sourceNSString() | nsstring.swift:447:13:447:30 | .lastPathComponent |
+| nsstring.swift:448:13:448:28 | call to sourceNSString() | nsstring.swift:448:13:448:30 | .pathExtension |
+| nsstring.swift:449:13:449:28 | call to sourceNSString() | nsstring.swift:449:13:449:30 | .abbreviatingWithTildeInPath |
+| nsstring.swift:450:13:450:28 | call to sourceNSString() | nsstring.swift:450:13:450:30 | .deletingLastPathComponent |
+| nsstring.swift:451:13:451:28 | call to sourceNSString() | nsstring.swift:451:13:451:30 | .deletingPathExtension |
+| nsstring.swift:452:13:452:28 | call to sourceNSString() | nsstring.swift:452:13:452:30 | .expandingTildeInPath |
+| nsstring.swift:453:13:453:28 | call to sourceNSString() | nsstring.swift:453:13:453:30 | .resolvingSymlinksInPath |
+| nsstring.swift:454:13:454:28 | call to sourceNSString() | nsstring.swift:454:13:454:30 | .standardizingPath |
+| nsstring.swift:455:13:455:28 | call to sourceNSString() | nsstring.swift:455:13:455:30 | .removingPercentEncoding |
 | string.swift:6:8:6:8 | SSA def(self) | string.swift:6:8:6:8 | self[return] |
 | string.swift:6:8:6:8 | self | string.swift:6:8:6:8 | SSA def(self) |
 | string.swift:10:3:10:3 | SSA def(self) | string.swift:10:3:10:27 | self[return] |

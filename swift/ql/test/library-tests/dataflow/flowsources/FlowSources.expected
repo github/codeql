@@ -85,6 +85,14 @@
 | generics.swift:163:9:163:22 | call to source3() | external |
 | nsdata.swift:18:17:18:40 | call to NSData.init(contentsOf:) | external |
 | nsdata.swift:19:17:19:53 | call to NSData.init(contentsOf:options:) | external |
+| nsstring.swift:31:21:31:50 | call to Self.init(contentsOfFile:) | external |
+| nsstring.swift:32:21:32:63 | call to Self.init(contentsOfFile:encoding:) | external |
+| nsstring.swift:33:21:33:69 | call to Self.init(contentsOfFile:usedEncoding:) | external |
+| nsstring.swift:34:17:34:57 | call to string(withContentsOfFile:) | external |
+| nsstring.swift:37:21:37:45 | call to Self.init(contentsOf:) | external |
+| nsstring.swift:38:21:38:58 | call to Self.init(contentsOf:encoding:) | external |
+| nsstring.swift:39:21:39:64 | call to Self.init(contentsOf:usedEncoding:) | external |
+| nsstring.swift:40:17:40:52 | call to string(withContentsOf:) | external |
 | string.swift:56:21:56:44 | call to String.init(contentsOf:) | external |
 | string.swift:57:21:57:77 | call to String.init(contentsOf:encoding:) | external |
 | string.swift:59:21:59:69 | call to String.init(contentsOf:usedEncoding:) | external |
