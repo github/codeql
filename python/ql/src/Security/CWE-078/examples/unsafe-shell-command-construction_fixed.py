@@ -1,4 +1,4 @@
 import subprocess
 
-def download (path): 
+def download(path): 
     subprocess.run(["wget", path]) # OK

@@ -68,11 +68,11 @@ module UnsafeShellCommandConstruction {
     Fstring fstring;
 
     StringInterpolationAsSink() {
-      isUsedAsShellCommand(any(DataFlow::Node n | n.asExpr() = fstring), s) and
+      isUsedAsShellCommand(DataFlow::exprNode(fstring), s) and
       this.asExpr() = fstring.getASubExpression()
     }
 
-    override string describe() { result = "string construction" }
+    override string describe() { result = "f-string" }
 
     override DataFlow::Node getCommandExecution() { result = s }
 
@@ -101,7 +101,7 @@ module UnsafeShellCommandConstruction {
   }
 
   /**
-   * A string constructed using a `.join(" ")` call, where the resulting string ends up being executed as a shell command.
+   * A string constructed using a `" ".join(...)` call, where the resulting string ends up being executed as a shell command.
    */
   class ArrayJoin extends Sink {
     Concepts::SystemCommandExecution s;

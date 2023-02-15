@@ -1,4 +1,4 @@
 import os
 
-def download (path): 
+def download(path): 
     os.system("wget " + path) # NOT OK

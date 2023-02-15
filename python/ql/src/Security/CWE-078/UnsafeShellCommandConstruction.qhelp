@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 	<p>
-		Dynamically constructing a shell command with inputs from exported 
+		Dynamically constructing a shell command with inputs from library 
 		functions may inadvertently change the meaning of the shell command.
 		
 		Clients using the exported function may use inputs containing
@@ -21,7 +21,7 @@
 
 	<p>
 		If possible, provide the dynamic arguments to the shell as an array 
-		to APIs such as <code>system(..)</code> to avoid interpretation by the shell.
+		to APIs such as <code>subprocess.run</code> to avoid interpretation by the shell.
 	</p>
 
 	<p>
@@ -55,7 +55,7 @@
 
 	<p>
 		To avoid such potentially catastrophic behaviors, provide the
-		input from exported functions as an argument that does not
+		input from library functions as an argument that does not
 		get interpreted by a shell:
 	</p>
 
