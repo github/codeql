@@ -17,6 +17,8 @@ namespace Semmle.Autobuild.CSharp
     {
         private IEnumerable<Project<CSharpAutobuildOptions>> notDotNetProjects;
 
+        public readonly List<IProjectOrSolution> FailedProjectsOrSolutions = new();
+
         /// <summary>
         /// A list of projects which are incompatible with DotNet.
         /// </summary>
@@ -67,7 +69,10 @@ namespace Semmle.Autobuild.CSharp
 
                         var build = GetBuildScript(builder, dotNetPath, environment, projectOrSolution.FullPath);
 
-                        ret &= BuildScript.Try(clean) & BuildScript.Try(restore) & build;
+                        ret &= BuildScript.Try(clean) & BuildScript.Try(restore) & BuildScript.OnFailure(build, ret =>
+                        {
+                            FailedProjectsOrSolutions.Add(projectOrSolution);
+                        });
                     }
                     return ret;
                 });

@@ -70,6 +70,9 @@ namespace Semmle.Autobuild.Shared
         /// <returns>The exit code from this build script.</returns>
         public abstract int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, BuildOutputHandler onOutput, BuildOutputHandler onError);
 
+        /// <summary>
+        /// A build script which executes an external program or script.
+        /// </summary>
         private class BuildCommand : BuildScript
         {
             private readonly string exe, arguments;
@@ -154,6 +157,9 @@ namespace Semmle.Autobuild.Shared
 
         }
 
+        /// <summary>
+        /// A build script which runs a C# function.
+        /// </summary>
         private class ReturnBuildCommand : BuildScript
         {
             private readonly Func<IBuildActions, int> func;
@@ -332,6 +338,23 @@ namespace Semmle.Autobuild.Shared
         /// always returning a successful exit code.
         /// </summary>
         public static BuildScript Try(BuildScript s) => s | Success;
+
+        /// <summary>
+        /// Creates a build script that runs the build script <paramref name="s" />. If
+        /// running <paramref name="s" /> fails, <paramref name="k" /> is invoked with
+        /// the exit code.
+        /// </summary>
+        /// <param name="s">The build script to run.</param>
+        /// <param name="k">
+        /// The callback that is invoked if <paramref name="s" /> failed.
+        /// </param>
+        /// <returns>The build script which implements this.</returns>
+        public static BuildScript OnFailure(BuildScript s, Action<int> k) =>
+            new BindBuildScript(s, ret => Create(actions =>
+            {
+                if (!Succeeded(ret)) k(ret);
+                return ret;
+            }));
 
         /// <summary>
         /// Creates a build script that deletes the given directory.
