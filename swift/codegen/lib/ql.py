@@ -135,11 +135,28 @@ class Class:
 
 
 @dataclass
+class IpaUnderlyingAccessor:
+    argument: str
+    type: str
+    constructorparams: List[Param]
+
+    def __post_init__(self):
+        if self.constructorparams:
+            self.constructorparams = [Param(x) for x in self.constructorparams]
+            self.constructorparams[0].first = True
+
+
+@dataclass
 class Stub:
     template: ClassVar = 'ql_stub'
 
     name: str
     base_import: str
+    ipa_accessors: List[IpaUnderlyingAccessor] = field(default_factory=list)
+
+    @property
+    def has_ipa_accessors(self) -> bool:
+        return bool(self.ipa_accessors)
 
 
 @dataclass
