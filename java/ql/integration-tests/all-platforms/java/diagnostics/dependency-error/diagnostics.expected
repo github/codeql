@@ -1,1 +1,14 @@
-{"markdownMessage": "In the course of building your code, it looks like a dependency failed to download. Check that all dependencies are available, including supplying credentials to access any private dependencies. Suspicious output line: `Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Could not find artifact junit:junit-nonesuch:jar:4.11 in central (https://repo.maven.apache.org/maven2)`", "severity": "error", "source": {"extractorName": "java", "id": "java/autobuilder/dependency-download-failure", "name": "Failed to download a dependency"}, "visibility": {"cliSummaryTable": true, "statusPage": true, "telemetry": true}}
+{
+  "markdownMessage": "A dependency failed to download. Check that all dependencies are available, and [https://github.com/Azure/actions-workflow-samples/blob/master/assets/create-secrets-for-GitHub-workflows.md#set-up-secrets-in-github-action-workflows](supply credentials for any private dependencies). Suspicious output line: `Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Could not find artifact junit:junit-nonesuch:jar:4.11 in central (https://repo.maven.apache.org/maven2)`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/dependency-download-failure",
+    "name": "Failed to download a dependency"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

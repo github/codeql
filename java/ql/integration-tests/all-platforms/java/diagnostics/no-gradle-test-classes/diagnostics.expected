@@ -1,2 +1,28 @@
-{"markdownMessage": "Autobuilding found a Gradle project without the Gradle wrapper present. Trying to use the most recent version, which may not be appropriate. Consider adding the Gradle wrapper to the repository", "severity": "warning", "source": {"extractorName": "java", "id": "java/autobuilder/guessed-gradle-version", "name": "Required Gradle version not specified"}, "visibility": {"cliSummaryTable": true, "statusPage": true, "telemetry": true}}
-{"markdownMessage": "We tried to build a Gradle project that does not define a `testClasses` goal. Consider supplying a manual build command instead. Suspicious output line: `org.gradle.execution.TaskSelectionException: Task 'testClasses' not found in root project 'no-gradle-test-classes'.`", "severity": "error", "source": {"extractorName": "java", "id": "java/autobuilder/test-classes-gradle-target", "name": "Gradle target 'testClasses' not found"}, "visibility": {"cliSummaryTable": true, "statusPage": true, "telemetry": true}}
+{
+  "markdownMessage": "Built a Gradle project without the [https://docs.gradle.org/current/userguide/gradle_wrapper.html](Gradle wrapper). This may use an incompatible version of Gradle",
+  "severity": "warning",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/guessed-gradle-version",
+    "name": "Required Gradle version not specified"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Gradle project does not define a `testClasses` goal. [https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language](Supply a manual build command) that builds the code that should be analyzed. Suspicious output line: `org.gradle.execution.TaskSelectionException: Task 'testClasses' not found in root project 'no-gradle-test-classes'.`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/test-classes-gradle-target",
+    "name": "Gradle target 'testClasses' not found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

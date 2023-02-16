@@ -1,1 +1,14 @@
-{"markdownMessage": "Could not find a Gradle, Maven or Ant top-level project to build. Please [TODO](supply a manual build command)", "severity": "error", "source": {"extractorName": "java", "id": "java/autobuilder/no-build-command", "name": "No build command found"}, "visibility": {"cliSummaryTable": true, "statusPage": true, "telemetry": true}}
+{
+  "markdownMessage": "Could not find a Gradle, Maven or Ant top-level project to build. Please [https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language](supply a manual build command)",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/no-build-command",
+    "name": "No build command found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
