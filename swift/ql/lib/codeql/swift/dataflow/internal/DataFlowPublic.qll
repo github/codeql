@@ -38,6 +38,11 @@ class Node extends TNode {
   Expr asExpr() { none() }
 
   /**
+   * Gets this node's underlying pattern, if any.
+   */
+  Pattern asPattern() { none() }
+
+  /**
    * Gets this data flow node's corresponding control flow node.
    */
   ControlFlowNode getCfgNode() { none() }
@@ -62,6 +67,20 @@ class ExprNode extends Node, TExprNode {
   ExprNode() { this = TExprNode(n, expr) }
 
   override Expr asExpr() { result = expr }
+
+  override ControlFlowNode getCfgNode() { result = n }
+}
+
+/**
+ * A pattern, viewed as a node in a data flow graph.
+ */
+class PatternNode extends Node, TPatternNode {
+  CfgNode n;
+  Pattern pattern;
+
+  PatternNode() { this = TPatternNode(n, pattern) }
+
+  override Pattern asPattern() { result = pattern }
 
   override ControlFlowNode getCfgNode() { result = n }
 }

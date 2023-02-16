@@ -118,6 +118,16 @@ class ExprCfgNode extends CfgNode {
   Expr getExpr() { result = e }
 }
 
+/** A control-flow node that wraps a pattern. */
+class PatternCfgNode extends CfgNode {
+  Pattern p;
+
+  PatternCfgNode() { p = this.getNode().asAstNode() }
+
+  /** Gets the underlying pattern. */
+  Pattern getPattern() { result = p }
+}
+
 /** A control-flow node that wraps a property getter. */
 class PropertyGetterCfgNode extends CfgNode {
   override PropertyGetterElement n;

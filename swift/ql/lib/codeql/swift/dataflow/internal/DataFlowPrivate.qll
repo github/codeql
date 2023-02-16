@@ -40,6 +40,14 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
 }
 
+private class PatternNodeImpl extends PatternNode, NodeImpl {
+  override Location getLocationImpl() { result = pattern.getLocation() }
+
+  override string toStringImpl() { result = pattern.toString() }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
+}
+
 private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
   override Location getLocationImpl() { result = def.getLocation() }
 
@@ -63,6 +71,7 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(CfgNode n, Expr e) { hasExprNode(n, e) } or
+    TPatternNode(CfgNode n, Pattern p) { hasPatternNode(n, p) } or
     TSsaDefinitionNode(Ssa::Definition def) or
     TInoutReturnNode(ParamDecl param) { modifiableParam(param) } or
     TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
@@ -229,6 +238,11 @@ private predicate hasExprNode(CfgNode n, Expr e) {
   n.(PropertySetterCfgNode).getAssignExpr() = e
   or
   n.(PropertyObserverCfgNode).getAssignExpr() = e
+}
+
+private predicate hasPatternNode(PatternCfgNode n, Pattern p) {
+  n.getPattern() = p and
+  p = p.resolve() // no need to turn hidden-AST patterns (`let`s, parens) into data flow nodes
 }
 
 import Cached
