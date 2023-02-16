@@ -42,16 +42,15 @@ namespace Semmle.Autobuild.CSharp
 
         public override void Fire(DiagnosticClassifier classifier, Match match)
         {
-            if (!match.Groups.ContainsKey("sdkName"))
+            if (!match.Groups.TryGetValue("sdkName", out var sdkName))
                 throw new ArgumentException("Expected regular expression match to contain sdkName");
 
-            var sdkName = match.Groups["sdkName"].Value;
             var xamarinResults = classifier.Results.OfType<Result>().Where(result =>
-                result.SDKName.Equals(sdkName)
+                result.SDKName.Equals(sdkName.Value)
             );
 
             if (!xamarinResults.Any())
-                classifier.Results.Add(new Result(sdkName));
+                classifier.Results.Add(new Result(sdkName.Value));
         }
     }
 
