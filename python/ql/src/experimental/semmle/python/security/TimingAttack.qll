@@ -292,6 +292,25 @@ class UserInputInComparisonConfig extends TaintTracking2::Configuration {
   }
 }
 
+/**
+ * A configuration tracing flow from  a client Secret obtained by an HTTP header to a len() function.
+ */
+private class ExcludeLenFunc extends TaintTracking2::Configuration {
+  ExcludeLenFunc() { this = "ExcludeLenFunc" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof ClientSuppliedSecret }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(Call call |
+      call.getFunc().(Name).getId() = "len" and
+      sink.asExpr() = call.getArg(0)
+    )
+  }
+}
+
+/**
+ * Holds if there is a fast-fail check.
+ */
 private class CompareSink extends DataFlow::Node {
   CompareSink() {
     exists(Compare compare |
@@ -320,5 +339,14 @@ private class CompareSink extends DataFlow::Node {
         not compare.getLeft() instanceof None
       )      
    )     
+  }
+  
+/**
+ * Holds if there is a flow to len().
+ */
+  predicate FlowToLen() {
+    exists(ExcludeLenFunc config, DataFlow2::PathNode source, DataFlow2::PathNode sink |
+       config.hasFlowPath(source, sink)
+    )
   }
 }
