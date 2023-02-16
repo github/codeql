@@ -121,8 +121,8 @@ module Cryptography {
    * A data-flow node that is an application of a cryptographic algorithm. For example,
    * encryption, decryption, signature-validation.
    *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `CryptographicOperation` instead.
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `CryptographicOperation::Range` instead.
    */
   class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range {
     /**
