@@ -301,8 +301,8 @@ func taintThroughSimpleStringOperations() {
   sink(arg: tainted.removingPercentEncoding!) // $ tainted=217
 
   sink(arg: clean.replacingOccurrences(of: "a", with: "b"))
-  sink(arg: tainted.replacingOccurrences(of: "a", with: "b")) // $ MISSING: tainted=217
-  sink(arg: clean.replacingOccurrences(of: "a", with: source2())) // $ MISSING: tainted=217
+  sink(arg: tainted.replacingOccurrences(of: "a", with: "b")) // $ tainted=217
+  sink(arg: clean.replacingOccurrences(of: "a", with: source2())) // $ tainted=305
 }
 
 func taintThroughMutatingStringOperations() {
@@ -345,7 +345,7 @@ func taintThroughMutatingStringOperations() {
   var str7 = ""
   sink(arg: str7)
   str7.replaceSubrange((nil as Range<String.Index>?)!, with: source2())
-  sink(arg: str7) // $ MISSING: tainted=347
+  sink(arg: str7) // $ tainted=347
 }
 
 func source3() -> Data { return Data("") }

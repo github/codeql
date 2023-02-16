@@ -338,6 +338,7 @@ edges
 | string.swift:67:3:67:77 | [summary param] 0 in String.init(format:locale:arguments:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(format:locale:arguments:) :  |
 | string.swift:69:3:69:106 | [summary param] 0 in localizedStringWithFormat(_:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in localizedStringWithFormat(_:_:) :  |
 | string.swift:71:3:71:102 | [summary param] 0 in String.init(bytes:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(bytes:encoding:) :  |
+| string.swift:86:12:87:51 | [summary param] 1 in replaceSubrange(_:with:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  |
 | string.swift:101:3:101:63 | [summary param] this in lowercased(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in lowercased(with:) :  |
 | string.swift:102:3:102:63 | [summary param] this in uppercased(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in uppercased(with:) :  |
 | string.swift:103:3:103:64 | [summary param] this in capitalized(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in capitalized(with:) :  |
@@ -351,6 +352,8 @@ edges
 | string.swift:110:3:110:78 | [summary param] this in propertyListFromStringsFileFormat() :  | file://:0:0:0:0 | [summary] to write: return (return) in propertyListFromStringsFileFormat() :  |
 | string.swift:111:3:111:74 | [summary param] this in cString(using:) :  | file://:0:0:0:0 | [summary] to write: return (return) in cString(using:) :  |
 | string.swift:112:8:112:8 | self :  | string.swift:112:3:112:79 | self[return] :  |
+| string.swift:113:3:114:77 | [summary param] 1 in replacingOccurrences(of:with:options:range:) :  | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  |
+| string.swift:113:3:114:77 | [summary param] this in replacingOccurrences(of:with:options:range:) :  | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  |
 | string.swift:137:11:137:18 | call to source() :  | string.swift:139:13:139:13 | "..." |
 | string.swift:137:11:137:18 | call to source() :  | string.swift:141:13:141:13 | "..." |
 | string.swift:137:11:137:18 | call to source() :  | string.swift:143:13:143:13 | "..." |
@@ -425,6 +428,7 @@ edges
 | string.swift:217:17:217:25 | call to source2() :  | string.swift:297:13:297:21 | .decomposedStringWithCanonicalMapping |
 | string.swift:217:17:217:25 | call to source2() :  | string.swift:299:13:299:21 | .precomposedStringWithCompatibilityMapping |
 | string.swift:217:17:217:25 | call to source2() :  | string.swift:301:13:301:44 | ...! |
+| string.swift:217:17:217:25 | call to source2() :  | string.swift:304:13:304:13 | tainted :  |
 | string.swift:218:20:218:27 | call to source() :  | string.swift:222:20:222:20 | taintedInt :  |
 | string.swift:221:20:221:20 | tainted :  | file://:0:0:0:0 | [summary param] 0 in String.init(_:) :  |
 | string.swift:221:20:221:20 | tainted :  | string.swift:221:13:221:27 | call to String.init(_:) |
@@ -494,8 +498,13 @@ edges
 | string.swift:263:13:263:13 | [post] tainted :  | string.swift:297:13:297:21 | .decomposedStringWithCanonicalMapping |
 | string.swift:263:13:263:13 | [post] tainted :  | string.swift:299:13:299:21 | .precomposedStringWithCompatibilityMapping |
 | string.swift:263:13:263:13 | [post] tainted :  | string.swift:301:13:301:44 | ...! |
+| string.swift:263:13:263:13 | [post] tainted :  | string.swift:304:13:304:13 | tainted :  |
 | string.swift:263:13:263:13 | tainted :  | string.swift:112:8:112:8 | self :  |
 | string.swift:263:13:263:13 | tainted :  | string.swift:263:13:263:13 | [post] tainted :  |
+| string.swift:304:13:304:13 | tainted :  | string.swift:113:3:114:77 | [summary param] this in replacingOccurrences(of:with:options:range:) :  |
+| string.swift:304:13:304:13 | tainted :  | string.swift:304:13:304:60 | call to replacingOccurrences(of:with:options:range:) |
+| string.swift:305:55:305:63 | call to source2() :  | string.swift:113:3:114:77 | [summary param] 1 in replacingOccurrences(of:with:options:range:) :  |
+| string.swift:305:55:305:63 | call to source2() :  | string.swift:305:13:305:64 | call to replacingOccurrences(of:with:options:range:) |
 | string.swift:309:14:309:22 | call to source2() :  | string.swift:310:13:310:13 | str1 |
 | string.swift:309:14:309:22 | call to source2() :  | string.swift:311:13:311:13 | &... :  |
 | string.swift:309:14:309:22 | call to source2() :  | string.swift:312:13:312:13 | str1 |
@@ -520,6 +529,9 @@ edges
 | string.swift:335:14:335:22 | call to source2() :  | string.swift:338:13:338:13 | str5 |
 | string.swift:340:14:340:22 | call to source2() :  | string.swift:341:13:341:13 | str6 |
 | string.swift:340:14:340:22 | call to source2() :  | string.swift:343:13:343:13 | str6 |
+| string.swift:347:3:347:3 | [post] &... :  | string.swift:348:13:348:13 | str7 |
+| string.swift:347:62:347:70 | call to source2() :  | string.swift:86:12:87:51 | [summary param] 1 in replaceSubrange(_:with:) :  |
+| string.swift:347:62:347:70 | call to source2() :  | string.swift:347:3:347:3 | [post] &... :  |
 | string.swift:355:23:355:77 | call to String.init(data:encoding:) :  | string.swift:358:12:358:25 | ...! |
 | string.swift:355:36:355:44 | call to source3() :  | string.swift:60:2:60:54 | [summary param] 0 in String.init(data:encoding:) :  |
 | string.swift:355:36:355:44 | call to source3() :  | string.swift:355:23:355:77 | call to String.init(data:encoding:) :  |
@@ -1097,6 +1109,7 @@ nodes
 | file://:0:0:0:0 | [summary] to write: argument this in replaceBytes(in:withBytes:length:) :  | semmle.label | [summary] to write: argument this in replaceBytes(in:withBytes:length:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  | semmle.label | [summary] to write: argument this in replaceSubrange(_:with:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  | semmle.label | [summary] to write: argument this in replaceSubrange(_:with:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  | semmle.label | [summary] to write: argument this in replaceSubrange(_:with:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:count:) :  | semmle.label | [summary] to write: argument this in replaceSubrange(_:with:count:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replacing(_:with:maxReplacements:) :  | semmle.label | [summary] to write: argument this in replacing(_:with:maxReplacements:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replacing(_:with:subrange:maxReplacements:) :  | semmle.label | [summary] to write: argument this in replacing(_:with:subrange:maxReplacements:) :  |
@@ -1187,6 +1200,8 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in remove(at:) :  | semmle.label | [summary] to write: return (return) in remove(at:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in removeFirst() :  | semmle.label | [summary] to write: return (return) in removeFirst() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in removeLast() :  | semmle.label | [summary] to write: return (return) in removeLast() :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  | semmle.label | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  | semmle.label | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in reversed() :  | semmle.label | [summary] to write: return (return) in reversed() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in reversed() :  | semmle.label | [summary] to write: return (return) in reversed() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in shuffled() :  | semmle.label | [summary] to write: return (return) in shuffled() :  |
@@ -1362,6 +1377,7 @@ nodes
 | string.swift:67:3:67:77 | [summary param] 0 in String.init(format:locale:arguments:) :  | semmle.label | [summary param] 0 in String.init(format:locale:arguments:) :  |
 | string.swift:69:3:69:106 | [summary param] 0 in localizedStringWithFormat(_:_:) :  | semmle.label | [summary param] 0 in localizedStringWithFormat(_:_:) :  |
 | string.swift:71:3:71:102 | [summary param] 0 in String.init(bytes:encoding:) :  | semmle.label | [summary param] 0 in String.init(bytes:encoding:) :  |
+| string.swift:86:12:87:51 | [summary param] 1 in replaceSubrange(_:with:) :  | semmle.label | [summary param] 1 in replaceSubrange(_:with:) :  |
 | string.swift:101:3:101:63 | [summary param] this in lowercased(with:) :  | semmle.label | [summary param] this in lowercased(with:) :  |
 | string.swift:102:3:102:63 | [summary param] this in uppercased(with:) :  | semmle.label | [summary param] this in uppercased(with:) :  |
 | string.swift:103:3:103:64 | [summary param] this in capitalized(with:) :  | semmle.label | [summary param] this in capitalized(with:) :  |
@@ -1376,6 +1392,8 @@ nodes
 | string.swift:111:3:111:74 | [summary param] this in cString(using:) :  | semmle.label | [summary param] this in cString(using:) :  |
 | string.swift:112:3:112:79 | self[return] :  | semmle.label | self[return] :  |
 | string.swift:112:8:112:8 | self :  | semmle.label | self :  |
+| string.swift:113:3:114:77 | [summary param] 1 in replacingOccurrences(of:with:options:range:) :  | semmle.label | [summary param] 1 in replacingOccurrences(of:with:options:range:) :  |
+| string.swift:113:3:114:77 | [summary param] this in replacingOccurrences(of:with:options:range:) :  | semmle.label | [summary param] this in replacingOccurrences(of:with:options:range:) :  |
 | string.swift:137:11:137:18 | call to source() :  | semmle.label | call to source() :  |
 | string.swift:139:13:139:13 | "..." | semmle.label | "..." |
 | string.swift:141:13:141:13 | "..." | semmle.label | "..." |
@@ -1479,6 +1497,10 @@ nodes
 | string.swift:297:13:297:21 | .decomposedStringWithCanonicalMapping | semmle.label | .decomposedStringWithCanonicalMapping |
 | string.swift:299:13:299:21 | .precomposedStringWithCompatibilityMapping | semmle.label | .precomposedStringWithCompatibilityMapping |
 | string.swift:301:13:301:44 | ...! | semmle.label | ...! |
+| string.swift:304:13:304:13 | tainted :  | semmle.label | tainted :  |
+| string.swift:304:13:304:60 | call to replacingOccurrences(of:with:options:range:) | semmle.label | call to replacingOccurrences(of:with:options:range:) |
+| string.swift:305:13:305:64 | call to replacingOccurrences(of:with:options:range:) | semmle.label | call to replacingOccurrences(of:with:options:range:) |
+| string.swift:305:55:305:63 | call to source2() :  | semmle.label | call to source2() :  |
 | string.swift:309:14:309:22 | call to source2() :  | semmle.label | call to source2() :  |
 | string.swift:310:13:310:13 | str1 | semmle.label | str1 |
 | string.swift:311:13:311:13 | &... :  | semmle.label | &... :  |
@@ -1506,6 +1528,9 @@ nodes
 | string.swift:340:14:340:22 | call to source2() :  | semmle.label | call to source2() :  |
 | string.swift:341:13:341:13 | str6 | semmle.label | str6 |
 | string.swift:343:13:343:13 | str6 | semmle.label | str6 |
+| string.swift:347:3:347:3 | [post] &... :  | semmle.label | [post] &... :  |
+| string.swift:347:62:347:70 | call to source2() :  | semmle.label | call to source2() :  |
+| string.swift:348:13:348:13 | str7 | semmle.label | str7 |
 | string.swift:355:23:355:77 | call to String.init(data:encoding:) :  | semmle.label | call to String.init(data:encoding:) :  |
 | string.swift:355:36:355:44 | call to source3() :  | semmle.label | call to source3() :  |
 | string.swift:358:12:358:25 | ...! | semmle.label | ...! |
@@ -1899,9 +1924,12 @@ subpaths
 | string.swift:255:13:255:13 | tainted :  | string.swift:110:3:110:78 | [summary param] this in propertyListFromStringsFileFormat() :  | file://:0:0:0:0 | [summary] to write: return (return) in propertyListFromStringsFileFormat() :  | string.swift:255:13:255:55 | call to propertyListFromStringsFileFormat() |
 | string.swift:256:13:256:13 | tainted :  | string.swift:110:3:110:78 | [summary param] this in propertyListFromStringsFileFormat() :  | file://:0:0:0:0 | [summary] to write: return (return) in propertyListFromStringsFileFormat() :  | string.swift:256:13:256:55 | call to propertyListFromStringsFileFormat() :  |
 | string.swift:263:13:263:13 | tainted :  | string.swift:112:8:112:8 | self :  | string.swift:112:3:112:79 | self[return] :  | string.swift:263:13:263:13 | [post] tainted :  |
+| string.swift:304:13:304:13 | tainted :  | string.swift:113:3:114:77 | [summary param] this in replacingOccurrences(of:with:options:range:) :  | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  | string.swift:304:13:304:60 | call to replacingOccurrences(of:with:options:range:) |
+| string.swift:305:55:305:63 | call to source2() :  | string.swift:113:3:114:77 | [summary param] 1 in replacingOccurrences(of:with:options:range:) :  | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  | string.swift:305:13:305:64 | call to replacingOccurrences(of:with:options:range:) |
 | string.swift:311:13:311:13 | &... :  | file://:0:0:0:0 | [summary param] this in remove(at:) :  | file://:0:0:0:0 | [summary] to write: return (return) in remove(at:) :  | string.swift:311:13:311:44 | call to remove(at:) |
 | string.swift:326:13:326:13 | &... :  | file://:0:0:0:0 | [summary param] this in removeFirst() :  | file://:0:0:0:0 | [summary] to write: return (return) in removeFirst() :  | string.swift:326:13:326:30 | call to removeFirst() |
 | string.swift:330:13:330:13 | &... :  | file://:0:0:0:0 | [summary param] this in removeLast() :  | file://:0:0:0:0 | [summary] to write: return (return) in removeLast() :  | string.swift:330:13:330:29 | call to removeLast() |
+| string.swift:347:62:347:70 | call to source2() :  | string.swift:86:12:87:51 | [summary param] 1 in replaceSubrange(_:with:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  | string.swift:347:3:347:3 | [post] &... :  |
 | string.swift:355:36:355:44 | call to source3() :  | string.swift:60:2:60:54 | [summary param] 0 in String.init(data:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(data:encoding:) :  | string.swift:355:23:355:77 | call to String.init(data:encoding:) :  |
 | string.swift:361:30:361:38 | call to source3() :  | file://:0:0:0:0 | [summary param] 0 in String.init(decoding:as:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(decoding:as:) :  | string.swift:361:13:361:54 | call to String.init(decoding:as:) |
 | string.swift:403:22:403:22 | tainted :  | string.swift:111:3:111:74 | [summary param] this in cString(using:) :  | file://:0:0:0:0 | [summary] to write: return (return) in cString(using:) :  | string.swift:403:22:403:65 | call to cString(using:) :  |
@@ -2113,6 +2141,8 @@ subpaths
 | string.swift:297:13:297:21 | .decomposedStringWithCanonicalMapping | string.swift:217:17:217:25 | call to source2() :  | string.swift:297:13:297:21 | .decomposedStringWithCanonicalMapping | result |
 | string.swift:299:13:299:21 | .precomposedStringWithCompatibilityMapping | string.swift:217:17:217:25 | call to source2() :  | string.swift:299:13:299:21 | .precomposedStringWithCompatibilityMapping | result |
 | string.swift:301:13:301:44 | ...! | string.swift:217:17:217:25 | call to source2() :  | string.swift:301:13:301:44 | ...! | result |
+| string.swift:304:13:304:60 | call to replacingOccurrences(of:with:options:range:) | string.swift:217:17:217:25 | call to source2() :  | string.swift:304:13:304:60 | call to replacingOccurrences(of:with:options:range:) | result |
+| string.swift:305:13:305:64 | call to replacingOccurrences(of:with:options:range:) | string.swift:305:55:305:63 | call to source2() :  | string.swift:305:13:305:64 | call to replacingOccurrences(of:with:options:range:) | result |
 | string.swift:310:13:310:13 | str1 | string.swift:309:14:309:22 | call to source2() :  | string.swift:310:13:310:13 | str1 | result |
 | string.swift:311:13:311:44 | call to remove(at:) | string.swift:309:14:309:22 | call to source2() :  | string.swift:311:13:311:44 | call to remove(at:) | result |
 | string.swift:312:13:312:13 | str1 | string.swift:309:14:309:22 | call to source2() :  | string.swift:312:13:312:13 | str1 | result |
@@ -2131,6 +2161,7 @@ subpaths
 | string.swift:338:13:338:13 | str5 | string.swift:335:14:335:22 | call to source2() :  | string.swift:338:13:338:13 | str5 | result |
 | string.swift:341:13:341:13 | str6 | string.swift:340:14:340:22 | call to source2() :  | string.swift:341:13:341:13 | str6 | result |
 | string.swift:343:13:343:13 | str6 | string.swift:340:14:340:22 | call to source2() :  | string.swift:343:13:343:13 | str6 | result |
+| string.swift:348:13:348:13 | str7 | string.swift:347:62:347:70 | call to source2() :  | string.swift:348:13:348:13 | str7 | result |
 | string.swift:358:12:358:25 | ...! | string.swift:355:36:355:44 | call to source3() :  | string.swift:358:12:358:25 | ...! | result |
 | string.swift:361:13:361:54 | call to String.init(decoding:as:) | string.swift:361:30:361:38 | call to source3() :  | string.swift:361:13:361:54 | call to String.init(decoding:as:) | result |
 | string.swift:404:13:404:13 | arrayString2 | string.swift:366:17:366:25 | call to source2() :  | string.swift:404:13:404:13 | arrayString2 | result |

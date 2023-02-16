@@ -1369,7 +1369,13 @@
 | string.swift:301:13:301:13 | tainted | string.swift:304:13:304:13 | tainted |
 | string.swift:301:13:301:21 | .removingPercentEncoding | string.swift:301:13:301:44 | ...! |
 | string.swift:303:13:303:13 | [post] clean | string.swift:305:13:305:13 | clean |
+| string.swift:303:13:303:13 | clean | string.swift:303:13:303:58 | call to replacingOccurrences(of:with:options:range:) |
 | string.swift:303:13:303:13 | clean | string.swift:305:13:305:13 | clean |
+| string.swift:303:55:303:55 | b | string.swift:303:13:303:58 | call to replacingOccurrences(of:with:options:range:) |
+| string.swift:304:13:304:13 | tainted | string.swift:304:13:304:60 | call to replacingOccurrences(of:with:options:range:) |
+| string.swift:304:57:304:57 | b | string.swift:304:13:304:60 | call to replacingOccurrences(of:with:options:range:) |
+| string.swift:305:13:305:13 | clean | string.swift:305:13:305:64 | call to replacingOccurrences(of:with:options:range:) |
+| string.swift:305:55:305:63 | call to source2() | string.swift:305:13:305:64 | call to replacingOccurrences(of:with:options:range:) |
 | string.swift:309:7:309:7 | SSA def(str1) | string.swift:310:13:310:13 | str1 |
 | string.swift:309:14:309:22 | call to source2() | string.swift:309:7:309:7 | SSA def(str1) |
 | string.swift:310:13:310:13 | [post] str1 | string.swift:311:13:311:13 | str1 |
@@ -1446,6 +1452,7 @@
 | string.swift:347:3:347:3 | [post] &... | string.swift:348:13:348:13 | str7 |
 | string.swift:347:3:347:3 | str7 | string.swift:347:3:347:3 | &... |
 | string.swift:347:25:347:25 | nil | string.swift:347:24:347:53 | ...! |
+| string.swift:347:62:347:70 | call to source2() | string.swift:347:3:347:3 | [post] &... |
 | string.swift:351:38:351:38 |  | string.swift:351:33:351:40 | call to Data.init(_:) |
 | string.swift:354:7:354:7 | SSA def(stringClean) | string.swift:357:12:357:12 | stringClean |
 | string.swift:354:21:354:74 | call to String.init(data:encoding:) | string.swift:354:7:354:7 | SSA def(stringClean) |
@@ -1613,6 +1620,7 @@
 | string.swift:492:35:492:35 | [post] buffer | string.swift:492:64:492:64 | buffer |
 | string.swift:492:35:492:35 | buffer | string.swift:492:64:492:64 | buffer |
 | string.swift:492:35:492:42 | .baseAddress | string.swift:492:35:492:53 | ...! |
+| string.swift:492:35:492:53 | ...! | string.swift:492:15:492:129 | call to String.init(bytesNoCopy:length:encoding:freeWhenDone:) |
 | string.swift:494:8:494:8 | taintedUInt8Values | string.swift:494:8:494:8 | &... |
 | string.swift:494:8:499:4 | call to withUnsafeMutableBytes(_:) | string.swift:494:3:499:4 | try! ... |
 | string.swift:495:6:495:14 | SSA def(buffer) | string.swift:496:15:496:15 | buffer |
@@ -1626,6 +1634,7 @@
 | string.swift:498:35:498:35 | [post] buffer | string.swift:498:64:498:64 | buffer |
 | string.swift:498:35:498:35 | buffer | string.swift:498:64:498:64 | buffer |
 | string.swift:498:35:498:42 | .baseAddress | string.swift:498:35:498:53 | ...! |
+| string.swift:498:35:498:53 | ...! | string.swift:498:15:498:129 | call to String.init(bytesNoCopy:length:encoding:freeWhenDone:) |
 | string.swift:505:7:505:31 | SSA def(cleanCCharValues) | string.swift:508:3:508:3 | cleanCCharValues |
 | string.swift:505:35:505:55 | [...] | string.swift:505:7:505:31 | SSA def(cleanCCharValues) |
 | string.swift:506:7:506:33 | SSA def(taintedCCharValues) | string.swift:516:3:516:3 | taintedCCharValues |
