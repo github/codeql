@@ -89,6 +89,9 @@ check("non_clashing_submodule", non_clashing_submodule, "<module attr_clash.non_
 from package.subpackage2 import *
 check("subpackage2_attr", subpackage2_attr, "subpackage2_attr", globals()) #$ prints=subpackage2_attr
 
+# check that definitions from within if-then-else are found
+from if_then_else import if_then_else_defined
+check("if_then_else_defined", if_then_else_defined, "if_defined", globals()) #$ MISSING: prints=if_defined prints=else_defined_1 prints=else_defined_2
 
 exit(__file__)
 
