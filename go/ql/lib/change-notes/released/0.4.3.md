@@ -2,7 +2,7 @@
 
 ### New Features
 
-* Go 1.20 is now supported. The extractor now functions as expected when Go 1.20 is installed, the definitions of `implementsComparable` has been updated according to Go 1.20's new, more-liberal rules, and taint flow models have been added for relevant new standard library functions.
+* Go 1.20 is now supported. The extractor now functions as expected when Go 1.20 is installed; the definition of `implementsComparable` has been updated according to Go 1.20's new, more-liberal rules; and taint flow models have been added for relevant, new standard-library functions.
 
 ### Minor Analysis Improvements
 
