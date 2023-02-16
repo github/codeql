@@ -91,7 +91,7 @@ check("subpackage2_attr", subpackage2_attr, "subpackage2_attr", globals()) #$ pr
 
 # check that definitions from within if-then-else are found
 from if_then_else import if_then_else_defined
-check("if_then_else_defined", if_then_else_defined, "if_defined", globals()) #$ MISSING: prints=if_defined prints=else_defined_1 prints=else_defined_2
+check("if_then_else_defined", if_then_else_defined, "if_defined", globals()) #$ prints=if_defined prints=else_defined_1 prints=else_defined_2
 
 exit(__file__)
 
