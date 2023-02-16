@@ -28,6 +28,6 @@ class ClientSuppliedSecretConfig extends TaintTracking::Configuration {
 }
 
 from ClientSuppliedSecretConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+where config.hasFlowPath(source, sink) and not sink.getNode().(CompareSink).FlowToLen()
 select sink.getNode(), source, sink, "Timing attack against $@ validation.", source.getNode(),
   "client-supplied token"
