@@ -146,10 +146,12 @@ private predicate existsFailFastCheck(Expr firstInput, Expr secondInput) {
     ) and
     (
       compare.getLeft() = firstInput and
-      compare.getComparator(0) = secondInput
+      compare.getComparator(0) = secondInput and
+      not compare.getAComparator() instanceof None
       or
       compare.getLeft() = secondInput and
-      compare.getComparator(0) = firstInput
+      compare.getComparator(0) = firstInput and
+      not compare.getAComparator() instanceof None
     )
   )
 }
