@@ -204,6 +204,11 @@ impl DiagnosticMessage {
         match &self.location {
             Some(Location {
                 file: Some(path),
+                start_line: None,
+                ..
+            }) => format!("{}: {}", path, self.plaintext_message),
+            Some(Location {
+                file: Some(path),
                 start_line: Some(line),
                 ..
             }) => format!("{}:{}: {}", path, line, self.plaintext_message),
@@ -247,6 +252,11 @@ impl DiagnosticMessage {
     #[allow(unused)]
     pub fn telemetry(&mut self) -> &mut Self {
         self.visibility.telemetry = true;
+        self
+    }
+    pub fn file(&mut self, path: &str) -> &mut Self {
+        let loc = self.location.get_or_insert(Default::default());
+        loc.file = Some(path.to_owned());
         self
     }
     pub fn location(

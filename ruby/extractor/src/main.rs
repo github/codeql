@@ -198,14 +198,14 @@ fn main() -> std::io::Result<()> {
                                         diagnostics_writer.write(
                                             diagnostics_writer
                                                 .message(
-                                                    "character-encoding-error",
-                                                    "Character encoding error",
+                                                    "character-decoding-error",
+                                                    "Character decoding error",
                                                 )
+                                                .file(&path.to_string_lossy())
                                                 .text(&format!(
-                                                    "{}: character decoding failure: {} ({})",
-                                                    &path.to_string_lossy(),
+                                                    "could not decode the file contents as '{}': {}",
+                                                    &encoding_name,
                                                     msg,
-                                                    &encoding_name
                                                 ))
                                                 .status_page()
                                                 .severity(diagnostics::Severity::Warning),
@@ -216,13 +216,14 @@ fn main() -> std::io::Result<()> {
                         } else {
                             diagnostics_writer.write(
                                 diagnostics_writer
-                                    .message("character-encoding-error", "Character encoding error")
+                                    .message("unknown-character-encoding", "Unknown character encoding")
+                                    .file(&path.to_string_lossy())
                                     .text(&format!(
-                                        "{}: unknown character encoding: '{}'",
-                                        &path.to_string_lossy(),
+                                        "unknown character encoding '{}' in '#encoding:' directive.",
                                         &encoding_name
                                     ))
                                     .status_page()
+                                    .help_link("https://docs.ruby-lang.org/en/3.2/syntax/comments_rdoc.html#label-encoding+Directive")
                                     .severity(diagnostics::Severity::Warning),
                             );
                         }
