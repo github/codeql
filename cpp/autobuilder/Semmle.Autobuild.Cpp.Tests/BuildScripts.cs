@@ -75,6 +75,18 @@ namespace Semmle.Autobuild.Cpp.Tests
             throw new ArgumentException("Missing RunProcess " + pattern);
         }
 
+        int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? env, BuildOutputHandler onOutput, BuildOutputHandler onError)
+        {
+            var ret = (this as IBuildActions).RunProcess(cmd, args, workingDirectory, env, out var stdout);
+
+            foreach (var line in stdout)
+            {
+                onOutput(line);
+            }
+
+            return ret;
+        }
+
         public IList<string> DirectoryDeleteIn = new List<string>();
 
         void IBuildActions.DirectoryDelete(string dir, bool recursive)
