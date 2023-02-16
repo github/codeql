@@ -311,7 +311,7 @@ private class ExcludeLenFunc extends TaintTracking2::Configuration {
 /**
  * Holds if there is a fast-fail check.
  */
-private class CompareSink extends DataFlow::Node {
+class CompareSink extends DataFlow::Node {
   CompareSink() {
     exists(Compare compare |
       (
