@@ -1,18 +1,36 @@
 using Semmle.Util.Logging;
+using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Semmle.Autobuild.Shared
 {
+    internal static class MsBuildCommandExtensions
+    {
+        /// <summary>
+        /// Appends a call to msbuild.
+        /// </summary>
+        /// <param name="cmdBuilder"></param>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public static CommandBuilder MsBuildCommand(this CommandBuilder cmdBuilder, IAutobuilder<AutobuildOptionsShared> builder)
+        {
+            var isArmMac = builder.Actions.IsMacOs() && builder.Actions.IsArm();
+
+            // mono doesn't ship with `msbuild` on Arm-based Macs, but we can fall back to
+            // msbuild that ships with `dotnet` which can be invoked with `dotnet msbuild`
+            // perhaps we should do this on all platforms?
+            return isArmMac ?
+                cmdBuilder.RunCommand("dotnet").Argument("msbuild") :
+                cmdBuilder.RunCommand("msbuild");
+        }
+    }
+
     /// <summary>
     /// A build rule using msbuild.
     /// </summary>
     public class MsBuildRule : IBuildRule<AutobuildOptionsShared>
     {
-        /// <summary>
-        /// The name of the msbuild command.
-        /// </summary>
-        private const string msBuild = "msbuild";
-
         public BuildScript Analyse(IAutobuilder<AutobuildOptionsShared> builder, bool auto)
         {
             if (!builder.ProjectsOrSolutionsToBuild.Any())
@@ -57,7 +75,7 @@ namespace Semmle.Autobuild.Shared
                             Script;
                     var nugetRestore = GetNugetRestoreScript();
                     var msbuildRestoreCommand = new CommandBuilder(builder.Actions).
-                        RunCommand(msBuild).
+                        MsBuildCommand(builder).
                         Argument("/t:restore").
                         QuoteArgument(projectOrSolution.FullPath);
 
@@ -95,7 +113,7 @@ namespace Semmle.Autobuild.Shared
                     command.RunCommand("set Platform=&& type NUL", quoteExe: false);
                 }
 
-                command.RunCommand(msBuild);
+                command.MsBuildCommand(builder);
                 command.QuoteArgument(projectOrSolution.FullPath);
 
                 var target = builder.Options.MsBuildTarget ?? "rebuild";
