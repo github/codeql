@@ -306,15 +306,20 @@ impl<'a> Visitor<'a> {
     fn enter_node(&mut self, node: Node) -> bool {
         if node.is_missing() {
             self.record_parse_error_for_node(
-                "parse error: expecting {}",
-                &[node.kind()],
+                "A parse error occurred, expecting {} symbol. Check the syntax of the file using the {} command. If the file is indeed invalid, please correct the error or exclude the file from analysis.",
+                &[node.kind(), "ruby -c"],
                 node,
                 true,
             );
             return false;
         }
         if node.is_error() {
-            self.record_parse_error_for_node("parse error", &[], node, true);
+            self.record_parse_error_for_node(
+                "A parse error occurred. Check the syntax of the file using the {} command. If the file is indeed invalid, please correct the error or exclude the file from analysis.",
+                &["ruby -c"],
+                node,
+                true,
+            );
             return false;
         };
 

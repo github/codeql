@@ -203,8 +203,8 @@ fn main() -> std::io::Result<()> {
                                                 )
                                                 .file(&path.to_string_lossy())
                                                 .message(
-                                                    "could not decode the file contents as {}: {}",
-                                                    &[&encoding_name, &msg],
+                                                    "Could not decode the file contents as {}: {}. Validate that the contents of the file matches the character encoding specified in the {} directive at the top of the file.",
+                                                    &[&encoding_name, &msg, "encoding:"],
                                                 )
                                                 .status_page()
                                                 .severity(diagnostics::Severity::Warning),
@@ -218,7 +218,7 @@ fn main() -> std::io::Result<()> {
                                     .new_entry("unknown-character-encoding", "Unknown character encoding")
                                     .file(&path.to_string_lossy())
                                     .message(
-                                        "unknown character encoding {} in {} directive.",
+                                        "Unknown character encoding {} in {} directive. Validate that the specified name is a supported character set.",
                                         &[&encoding_name, "#encoding:"],
                                     )
                                     .status_page()
