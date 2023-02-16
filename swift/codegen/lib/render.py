@@ -106,7 +106,6 @@ class RenderManager(Renderer):
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_val is None:
             for f in self._existing - self._skipped - self.written:
-                self._hashes.pop(self._get_path(f), None)
                 f.unlink(missing_ok=True)
                 log.info(f"removed {f.name}")
             for f in self.written:
@@ -116,6 +115,10 @@ class RenderManager(Renderer):
             # so that they get the chance to be regenerated again during the next run
             for f in self.written:
                 self._hashes.pop(self._get_path(f), None)
+        # clean up the registry from files that do not exist any more
+        for f in list(self._hashes):
+            if not (self._swift_dir / f).exists():
+                self._hashes.pop(f)
         self._dump_registry()
 
     def _do_write(self, mnemonic: str, contents: str, output: pathlib.Path):
