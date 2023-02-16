@@ -73,8 +73,8 @@ fn main() -> std::io::Result<()> {
         Err(e) => {
             main_thread_logger.write(
                 main_thread_logger
-                    .message("configuration-error", "Configuration error")
-                    .text(&format!("{}; defaulting to 1 thread.", e))
+                    .new_entry("configuration-error", "Configuration error")
+                    .message("{}; defaulting to 1 thread.", &[&e])
                     .severity(diagnostics::Severity::Warning),
             );
             1
@@ -94,8 +94,8 @@ fn main() -> std::io::Result<()> {
         Err(e) => {
             main_thread_logger.write(
                 main_thread_logger
-                    .message("configuration-error", "Configuration error")
-                    .text(&format!("{}; using gzip.", e))
+                    .new_entry("configuration-error", "Configuration error")
+                    .message("{}; using gzip.", &[&e])
                     .severity(diagnostics::Severity::Warning),
             );
             trap::Compression::Gzip
@@ -197,16 +197,15 @@ fn main() -> std::io::Result<()> {
                                         needs_conversion = false;
                                         diagnostics_writer.write(
                                             diagnostics_writer
-                                                .message(
+                                                .new_entry(
                                                     "character-decoding-error",
                                                     "Character decoding error",
                                                 )
                                                 .file(&path.to_string_lossy())
-                                                .text(&format!(
-                                                    "could not decode the file contents as '{}': {}",
-                                                    &encoding_name,
-                                                    msg,
-                                                ))
+                                                .message(
+                                                    "could not decode the file contents as {}: {}",
+                                                    &[&encoding_name, &msg],
+                                                )
                                                 .status_page()
                                                 .severity(diagnostics::Severity::Warning),
                                         );
@@ -216,12 +215,12 @@ fn main() -> std::io::Result<()> {
                         } else {
                             diagnostics_writer.write(
                                 diagnostics_writer
-                                    .message("unknown-character-encoding", "Unknown character encoding")
+                                    .new_entry("unknown-character-encoding", "Unknown character encoding")
                                     .file(&path.to_string_lossy())
-                                    .text(&format!(
-                                        "unknown character encoding '{}' in '#encoding:' directive.",
-                                        &encoding_name
-                                    ))
+                                    .message(
+                                        "unknown character encoding {} in {} directive.",
+                                        &[&encoding_name, "#encoding:"],
+                                    )
                                     .status_page()
                                     .help_link("https://docs.ruby-lang.org/en/3.2/syntax/comments_rdoc.html#label-encoding+Directive")
                                     .severity(diagnostics::Severity::Warning),

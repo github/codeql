@@ -276,7 +276,8 @@ impl<'a> Visitor<'a> {
 
     fn record_parse_error_for_node(
         &mut self,
-        error_message: String,
+        message: &str,
+        args: &[&str],
         node: Node,
         status_page: bool,
     ) {
@@ -291,10 +292,11 @@ impl<'a> Visitor<'a> {
         );
         let mut mesg = self
             .diagnostics_writer
-            .message("parse-error", "Parse error");
-        &mesg.severity(diagnostics::Severity::Error)
+            .new_entry("parse-error", "Parse error");
+        &mesg
+            .severity(diagnostics::Severity::Error)
             .location(self.path, start_line, start_column, end_line, end_column)
-            .text(&error_message);
+            .message(message, args);
         if status_page {
             &mesg.status_page();
         }
@@ -302,15 +304,19 @@ impl<'a> Visitor<'a> {
     }
 
     fn enter_node(&mut self, node: Node) -> bool {
-        if node.is_error() || node.is_missing() {
-            let error_message = if node.is_missing() {
-                format!("parse error: expecting '{}'", node.kind())
-            } else {
-                "parse error".to_string()
-            };
-            self.record_parse_error_for_node(error_message, node, true);
+        if node.is_missing() {
+            self.record_parse_error_for_node(
+                "parse error: expecting {}",
+                &[node.kind()],
+                node,
+                true,
+            );
             return false;
         }
+        if node.is_error() {
+            self.record_parse_error_for_node("parse error", &[], node, true);
+            return false;
+        };
 
         let id = self.trap_writer.fresh_id();
 
@@ -390,14 +396,13 @@ impl<'a> Visitor<'a> {
                 }
             }
             _ => {
-                let error_message = format!("unknown table type: '{}'", node.kind());
                 self.record_parse_error(
                     loc,
                     self.diagnostics_writer
-                        .message("parse-error", "Parse error")
+                        .new_entry("parse-error", "Parse error")
                         .severity(diagnostics::Severity::Error)
                         .location(self.path, start_line, start_column, end_line, end_column)
-                        .text(&error_message),
+                        .message("unknown table type: {}", &[node.kind()]),
                 );
 
                 valid = false;
@@ -445,23 +450,29 @@ impl<'a> Visitor<'a> {
                         values.push(trap::Arg::Label(child_node.label));
                     }
                 } else if field.name.is_some() {
-                    let error_message = format!(
-                        "type mismatch for field {}::{} with type {:?} != {:?}",
-                        node.kind(),
-                        child_node.field_name.unwrap_or("child"),
-                        child_node.type_name,
-                        field.type_info
+                    self.record_parse_error_for_node(
+                        "type mismatch for field {}::{} with type {} != {}",
+                        &[
+                            node.kind(),
+                            child_node.field_name.unwrap_or("child"),
+                            &format!("{:?}", child_node.type_name),
+                            &format!("{:?}", field.type_info),
+                        ],
+                        *node,
+                        false,
                     );
-                    self.record_parse_error_for_node(error_message, *node,false);
                 }
             } else if child_node.field_name.is_some() || child_node.type_name.named {
-                let error_message = format!(
-                    "value for unknown field: {}::{} and type {:?}",
-                    node.kind(),
-                    &child_node.field_name.unwrap_or("child"),
-                    &child_node.type_name
+                self.record_parse_error_for_node(
+                    "value for unknown field: {}::{} and type {}",
+                    &[
+                        node.kind(),
+                        &child_node.field_name.unwrap_or("child"),
+                        &format!("{:?}", child_node.type_name),
+                    ],
+                    *node,
+                    false,
                 );
-                self.record_parse_error_for_node(error_message, *node, false);
             }
         }
         let mut args = Vec::new();
@@ -484,7 +495,7 @@ impl<'a> Visitor<'a> {
                             node.kind(),
                             column_name
                         );
-                        self.record_parse_error_for_node(error_message, *node, false);
+                        self.record_parse_error_for_node(&error_message, &[], *node, false);
                     }
                 }
                 Storage::Table {
@@ -494,13 +505,12 @@ impl<'a> Visitor<'a> {
                 } => {
                     for (index, child_value) in child_values.iter().enumerate() {
                         if !*has_index && index > 0 {
-                            let error_message = format!(
+                            self.record_parse_error_for_node(
                                 "too many values for field: {}::{}",
-                                node.kind(),
-                                table_name,
+                                &[node.kind(), table_name],
+                                *node,
+                                false,
                             );
-
-                            self.record_parse_error_for_node(error_message, *node, false);
                             break;
                         }
                         let mut args = vec![trap::Arg::Label(parent_id)];
@@ -597,8 +607,8 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
                 visitor.diagnostics_writer.write(
                     visitor
                         .diagnostics_writer
-                        .message("internal-error", "Internal error")
-                        .text("expecting a line break symbol, but none found while correcting end column value")
+                        .new_entry("internal-error", "Internal error")
+                        .message("expecting a line break symbol, but none found while correcting end column value", &[])
                         .severity(diagnostics::Severity::Error),
                 );
             }
@@ -612,12 +622,11 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
             visitor.diagnostics_writer.write(
                 visitor
                     .diagnostics_writer
-                    .message("internal-error", "Internal error")
-                    .text(&format!(
+                    .new_entry("internal-error", "Internal error")
+                    .message(
                         "cannot correct end column value: end_byte index {} is not in range [1,{}]",
-                        index,
-                        source.len()
-                    ))
+                        &[&index.to_string(), &source.len().to_string()],
+                    )
                     .severity(diagnostics::Severity::Error),
             );
         }
