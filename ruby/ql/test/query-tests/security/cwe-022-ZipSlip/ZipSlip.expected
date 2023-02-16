@@ -1,0 +1,30 @@
+edges
+| zip_slip.rb:8:15:8:54 | call to new :  | zip_slip.rb:9:5:9:11 | tarfile :  |
+| zip_slip.rb:9:5:9:11 | tarfile :  | zip_slip.rb:9:22:9:26 | entry :  |
+| zip_slip.rb:9:22:9:26 | entry :  | zip_slip.rb:10:19:10:33 | call to full_name |
+| zip_slip.rb:33:5:33:24 | call to open :  | zip_slip.rb:33:35:33:39 | entry :  |
+| zip_slip.rb:33:35:33:39 | entry :  | zip_slip.rb:34:17:34:26 | call to name |
+| zip_slip.rb:53:12:53:54 | call to open :  | zip_slip.rb:54:11:54:14 | gzip :  |
+| zip_slip.rb:54:11:54:14 | gzip :  | zip_slip.rb:60:42:60:56 | compressed_file :  |
+| zip_slip.rb:60:42:60:56 | compressed_file :  | zip_slip.rb:61:7:61:21 | compressed_file :  |
+| zip_slip.rb:61:7:61:21 | compressed_file :  | zip_slip.rb:61:32:61:36 | entry :  |
+| zip_slip.rb:61:32:61:36 | entry :  | zip_slip.rb:63:21:63:30 | entry_path |
+nodes
+| zip_slip.rb:8:15:8:54 | call to new :  | semmle.label | call to new :  |
+| zip_slip.rb:9:5:9:11 | tarfile :  | semmle.label | tarfile :  |
+| zip_slip.rb:9:22:9:26 | entry :  | semmle.label | entry :  |
+| zip_slip.rb:10:19:10:33 | call to full_name | semmle.label | call to full_name |
+| zip_slip.rb:33:5:33:24 | call to open :  | semmle.label | call to open :  |
+| zip_slip.rb:33:35:33:39 | entry :  | semmle.label | entry :  |
+| zip_slip.rb:34:17:34:26 | call to name | semmle.label | call to name |
+| zip_slip.rb:53:12:53:54 | call to open :  | semmle.label | call to open :  |
+| zip_slip.rb:54:11:54:14 | gzip :  | semmle.label | gzip :  |
+| zip_slip.rb:60:42:60:56 | compressed_file :  | semmle.label | compressed_file :  |
+| zip_slip.rb:61:7:61:21 | compressed_file :  | semmle.label | compressed_file :  |
+| zip_slip.rb:61:32:61:36 | entry :  | semmle.label | entry :  |
+| zip_slip.rb:63:21:63:30 | entry_path | semmle.label | entry_path |
+subpaths
+#select
+| zip_slip.rb:10:19:10:33 | call to full_name | zip_slip.rb:8:15:8:54 | call to new :  | zip_slip.rb:10:19:10:33 | call to full_name | This file extraction depends on a $@. | zip_slip.rb:8:15:8:54 | call to new | potentially untrusted source |
+| zip_slip.rb:34:17:34:26 | call to name | zip_slip.rb:33:5:33:24 | call to open :  | zip_slip.rb:34:17:34:26 | call to name | This file extraction depends on a $@. | zip_slip.rb:33:5:33:24 | call to open | potentially untrusted source |
+| zip_slip.rb:63:21:63:30 | entry_path | zip_slip.rb:53:12:53:54 | call to open :  | zip_slip.rb:63:21:63:30 | entry_path | This file extraction depends on a $@. | zip_slip.rb:53:12:53:54 | call to open | potentially untrusted source |
