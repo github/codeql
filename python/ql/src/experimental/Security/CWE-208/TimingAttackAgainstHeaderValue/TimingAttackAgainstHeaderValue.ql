@@ -24,13 +24,7 @@ class ClientSuppliedSecretConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof ClientSuppliedSecret }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(Compare cmp, Expr left, Expr right, Cmpop cmpop |
-      cmpop.getSymbol() = ["==", "in", "is not", "!="] and
-      cmp.compares(left, cmpop, right) and
-      sink.asExpr() = [left, right]
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof CompareSink }
 }
 
 from ClientSuppliedSecretConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
