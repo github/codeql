@@ -307,9 +307,7 @@ private class CompareSink extends DataFlow::Node {
       )
     ) or    
    exists(Compare compare |
-      (
-        compare.getOp(0) instanceof Eq or
-        compare.getOp(0) instanceof NotEq or  
+      ( 
         compare.getOp(0) instanceof IsNot 
       ) and
       (
