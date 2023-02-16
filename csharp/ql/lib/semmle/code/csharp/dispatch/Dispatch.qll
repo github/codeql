@@ -72,6 +72,7 @@ private module Internal {
         not mc.isLateBound()
       } or
       TDispatchAccessorCall(AccessorCall ac) or
+      TDispatchOperatorCall(OperatorCall oc) { not oc.isLateBound() } or
       TDispatchReflectionCall(MethodCall mc, string name, Expr object, Expr qualifier, int args) {
         isReflectionCall(mc, name, object, qualifier, args)
       } or
@@ -89,8 +90,6 @@ private module Internal {
         c = any(ObjectCreation oc | not oc.isLateBound())
         or
         c instanceof ConstructorInitializer
-        or
-        c = any(OperatorCall oc | not oc.isLateBound())
         or
         c instanceof LocalFunctionCall
       }
@@ -113,12 +112,12 @@ private module Internal {
     }
 
     cached
-    predicate mayBenefitFromCallContext(DispatchMethodOrAccessorCall dc) {
+    predicate mayBenefitFromCallContext(DispatchOverridableCall dc) {
       dc.mayBenefitFromCallContext(_, _)
     }
 
     cached
-    RuntimeCallable getADynamicTargetInCallContext(DispatchMethodOrAccessorCall dc, DispatchCall ctx) {
+    RuntimeCallable getADynamicTargetInCallContext(DispatchOverridableCall dc, DispatchCall ctx) {
       result = dc.getADynamicTargetInCallContext(ctx)
     }
   }
@@ -214,6 +213,9 @@ private module Internal {
     /** Gets the qualifier of this call, if any. */
     abstract Expr getQualifier();
 
+    /** Gets the qualifier or another expression that can be used for typing purposes, if any. */
+    Expr getSyntheticQualifier() { result = this.getQualifier() }
+
     /** Gets a static (compile-time) target of this call. */
     abstract Callable getAStaticTarget();
 
@@ -241,7 +243,7 @@ private module Internal {
   private predicate hasCallable0(Gvn::GvnType t, OverridableCallable c, OverridableCallable source) {
     c.getUnboundDeclaration() = source and
     any(ValueOrRefType t0 | Gvn::getGlobalValueNumber(t0) = t).hasCallable(c) and
-    source = any(DispatchMethodOrAccessorCall call).getAStaticTargetExt()
+    source = any(DispatchOverridableCall call).getAStaticTargetExt()
   }
 
   pragma[noinline]
@@ -250,7 +252,7 @@ private module Internal {
     hasOverrider(t, c)
   }
 
-  abstract private class DispatchMethodOrAccessorCall extends DispatchCallImpl {
+  abstract private class DispatchOverridableCall extends DispatchCallImpl {
     pragma[noinline]
     OverridableCallable getAStaticTargetExt() {
       exists(OverridableCallable target | this.getAStaticTarget() = target |
@@ -261,13 +263,15 @@ private module Internal {
     }
 
     pragma[nomagic]
-    predicate hasQualifierTypeInherited(Type t) { t = getAPossibleType(this.getQualifier(), _) }
+    predicate hasQualifierTypeInherited(Type t) {
+      t = getAPossibleType(this.getSyntheticQualifier(), _)
+    }
 
     pragma[noinline]
     private predicate hasSubsumedQualifierType(Gvn::GvnType t) {
       hasOverrider(t, _) and
       exists(Type t0 |
-        t0 = getAPossibleType(this.getQualifier(), false) and
+        t0 = getAPossibleType(this.getSyntheticQualifier(), false) and
         not t0 instanceof TypeParameter
       |
         t = Gvn::getGlobalValueNumber(t0)
@@ -280,12 +284,12 @@ private module Internal {
     private predicate hasConstrainedTypeParameterQualifierType(
       Unification::ConstrainedTypeParameter tp
     ) {
-      tp = getAPossibleType(this.getQualifier(), false)
+      tp = getAPossibleType(this.getSyntheticQualifier(), false)
     }
 
     pragma[noinline]
     private predicate hasUnconstrainedTypeParameterQualifierType() {
-      getAPossibleType(this.getQualifier(), false) instanceof
+      getAPossibleType(this.getSyntheticQualifier(), false) instanceof
         Unification::UnconstrainedTypeParameter
     }
 
@@ -313,7 +317,7 @@ private module Internal {
         |
           pdef = def.getDefinition() and
           p = pdef.getTarget() and
-          this.getQualifier() = def.getARead() and
+          this.getSyntheticQualifier() = def.getARead() and
           p.getPosition() = i and
           c.getAParameter() = p and
           not p.isParams()
@@ -446,7 +450,7 @@ private module Internal {
 
     pragma[noinline]
     NonConstructedOverridableCallable getAViableOverrider0() {
-      getAPossibleType(this.getQualifier(), false) instanceof TypeParameter and
+      getAPossibleType(this.getSyntheticQualifier(), false) instanceof TypeParameter and
       result.getAConstructingCallableOrSelf() = this.getAStaticTargetExt()
     }
 
@@ -775,7 +779,7 @@ private module Internal {
    * The set of viable targets is determined by taking virtual dispatch
    * into account.
    */
-  private class DispatchMethodCall extends DispatchMethodOrAccessorCall, TDispatchMethodCall {
+  private class DispatchMethodCall extends DispatchOverridableCall, TDispatchMethodCall {
     override MethodCall getCall() { this = TDispatchMethodCall(result) }
 
     override Expr getArgument(int i) {
@@ -791,12 +795,34 @@ private module Internal {
   }
 
   /**
+   * An ordinary operator call.
+   *
+   * The set of viable targets is determined by taking virtual dispatch
+   * into account.
+   */
+  private class DispatchOperatorCall extends DispatchOverridableCall, TDispatchOperatorCall {
+    override OperatorCall getCall() { this = TDispatchOperatorCall(result) }
+
+    override Expr getArgument(int i) { result = this.getCall().getArgument(i) }
+
+    /**
+     * Gets the first child expression of an operator call, which can be considered the qualifier
+     * expression for the dispatch call use-cases.
+     */
+    override Expr getSyntheticQualifier() { result = this.getCall().getChildExpr(0) }
+
+    override Expr getQualifier() { none() }
+
+    override Operator getAStaticTarget() { result = this.getCall().getTarget() }
+  }
+
+  /**
    * A call to an accessor.
    *
    * The set of viable targets is determined by taking virtual dispatch
    * into account.
    */
-  private class DispatchAccessorCall extends DispatchMethodOrAccessorCall, TDispatchAccessorCall {
+  private class DispatchAccessorCall extends DispatchOverridableCall, TDispatchAccessorCall {
     override AccessorCall getCall() { this = TDispatchAccessorCall(result) }
 
     override Expr getArgument(int i) { result = this.getCall().getArgument(i) }
@@ -806,7 +832,7 @@ private module Internal {
     override Accessor getAStaticTarget() { result = this.getCall().getTarget() }
 
     override RuntimeAccessor getADynamicTarget() {
-      result = DispatchMethodOrAccessorCall.super.getADynamicTarget() and
+      result = DispatchOverridableCall.super.getADynamicTarget() and
       // Calls to accessors may have `dynamic` expression arguments,
       // so we need to check that the types match
       forall(Type argumentType, int i | this.hasDynamicArg(i, argumentType) |
@@ -830,7 +856,7 @@ private module Internal {
 
     pragma[nomagic]
     private predicate hasQualifierType(Type qualifierType, boolean isExactType) {
-      exists(Type t | t = getAPossibleType(this.getQualifier(), isExactType) |
+      exists(Type t | t = getAPossibleType(this.getSyntheticQualifier(), isExactType) |
         qualifierType = t and
         not t instanceof TypeParameter
         or
@@ -1116,7 +1142,8 @@ private module Internal {
 
   /** A call using reflection. */
   private class DispatchReflectionCall extends DispatchReflectionOrDynamicCall,
-    TDispatchReflectionCall {
+    TDispatchReflectionCall
+  {
     override MethodCall getCall() { this = TDispatchReflectionCall(result, _, _, _, _) }
 
     override string getName() { this = TDispatchReflectionCall(_, result, _, _, _) }
@@ -1164,7 +1191,8 @@ private module Internal {
 
   /** A method call using dynamic types. */
   private class DispatchDynamicMethodCall extends DispatchReflectionOrDynamicCall,
-    TDispatchDynamicMethodCall {
+    TDispatchDynamicMethodCall
+  {
     override DynamicMethodCall getCall() { this = TDispatchDynamicMethodCall(result) }
 
     override string getName() { result = this.getCall().getLateBoundTargetName() }
@@ -1185,7 +1213,8 @@ private module Internal {
 
   /** An operator call using dynamic types. */
   private class DispatchDynamicOperatorCall extends DispatchReflectionOrDynamicCall,
-    TDispatchDynamicOperatorCall {
+    TDispatchDynamicOperatorCall
+  {
     override DynamicOperatorCall getCall() { this = TDispatchDynamicOperatorCall(result) }
 
     override string getName() {
@@ -1202,7 +1231,8 @@ private module Internal {
 
   /** A (potential) call to a property accessor using dynamic types. */
   private class DispatchDynamicMemberAccess extends DispatchReflectionOrDynamicCall,
-    TDispatchDynamicMemberAccess {
+    TDispatchDynamicMemberAccess
+  {
     override DynamicMemberAccess getCall() { this = TDispatchDynamicMemberAccess(result) }
 
     override string getName() {
@@ -1226,7 +1256,8 @@ private module Internal {
 
   /** A (potential) call to an indexer accessor using dynamic types. */
   private class DispatchDynamicElementAccess extends DispatchReflectionOrDynamicCall,
-    TDispatchDynamicElementAccess {
+    TDispatchDynamicElementAccess
+  {
     override DynamicElementAccess getCall() { this = TDispatchDynamicElementAccess(result) }
 
     override string getName() {
@@ -1252,7 +1283,8 @@ private module Internal {
 
   /** A (potential) call to an event accessor using dynamic types. */
   private class DispatchDynamicEventAccess extends DispatchReflectionOrDynamicCall,
-    TDispatchDynamicEventAccess {
+    TDispatchDynamicEventAccess
+  {
     override AssignArithmeticOperation getCall() {
       this = TDispatchDynamicEventAccess(result, _, _)
     }
@@ -1269,7 +1301,8 @@ private module Internal {
 
   /** A call to a constructor using dynamic types. */
   private class DispatchDynamicObjectCreation extends DispatchReflectionOrDynamicCall,
-    TDispatchDynamicObjectCreation {
+    TDispatchDynamicObjectCreation
+  {
     override DynamicObjectCreation getCall() { this = TDispatchDynamicObjectCreation(result) }
 
     override string getName() { none() }
