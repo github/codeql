@@ -289,3 +289,34 @@ class UserInputInComparisonConfig extends TaintTracking2::Configuration {
     )
   }
 }
+
+private class CompareSink extends DataFlow::Node {
+  CompareSink() {
+    exists(Compare compare |
+      (
+        compare.getOp(0) instanceof Eq or
+        compare.getOp(0) instanceof NotEq or
+        compare.getOp(0) instanceof In
+      ) and
+      (
+        compare.getLeft() = this.asExpr() and
+        not compare.getComparator(0).(StrConst).getText() = "bearer" 
+        or
+        compare.getComparator(0) = this.asExpr() and
+        not compare.getLeft().(StrConst).getText() = "bearer" 
+      )
+    ) or    
+   exists(Compare compare |
+      (
+        compare.getOp(0) instanceof IsNot 
+      ) and
+      (
+        compare.getLeft() = this.asExpr() and
+        not compare.getComparator(0) instanceof None
+        or
+        compare.getComparator(0) = this.asExpr() and
+        not compare.getLeft() instanceof None
+      )      
+   )     
+  }
+}
