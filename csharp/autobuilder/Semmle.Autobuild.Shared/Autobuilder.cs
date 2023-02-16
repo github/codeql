@@ -264,6 +264,8 @@ namespace Semmle.Autobuild.Shared
 
         protected string DiagnosticsDir { get; }
 
+        protected abstract DiagnosticClassifier DiagnosticClassifier { get; }
+
         private readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
 
         private readonly DiagnosticsStream diagnostics;
@@ -310,7 +312,23 @@ namespace Semmle.Autobuild.Shared
                 Log(silent ? Severity.Debug : Severity.Info, $"Exit code {ret}{(string.IsNullOrEmpty(msg) ? "" : $": {msg}")}");
             }
 
-            return script.Run(Actions, startCallback, exitCallback);
+            var onOutput = BuildOutputHandler(Console.Out);
+            var onError = BuildOutputHandler(Console.Error);
+
+            var buildResult = script.Run(Actions, startCallback, exitCallback, onOutput, onError);
+
+            // if the build succeeded, all diagnostics we captured from the build output should be warnings;
+            // otherwise they should all be errors
+            var diagSeverity = buildResult == 0 ? DiagnosticMessage.TspSeverity.Warning : DiagnosticMessage.TspSeverity.Error;
+            foreach (var diagResult in this.DiagnosticClassifier.Results)
+            {
+                var diag = diagResult.ToDiagnosticMessage(this);
+                diag.Severity = diagSeverity;
+
+                Diagnostic(diag);
+            }
+
+            return buildResult;
         }
 
         /// <summary>
@@ -325,7 +343,7 @@ namespace Semmle.Autobuild.Shared
         /// <param name="id">The last part of the message id.</param>
         /// <param name="name">The human-friendly description of the message.</param>
         /// <returns>The resulting <see cref="DiagnosticMessage" />.</returns>
-        protected DiagnosticMessage MakeDiagnostic(string id, string name)
+        public DiagnosticMessage MakeDiagnostic(string id, string name)
         {
             DiagnosticMessage diag = new(new($"{this.Options.Language.UpperCaseName.ToLower()}/autobuilder/{id}", name));
             diag.Source.ExtractorName = Options.Language.UpperCaseName.ToLower();
@@ -367,6 +385,24 @@ namespace Semmle.Autobuild.Shared
 
                     return 1;
                 });
+
+        /// <summary>
+        /// Constructs a <see cref="BuildOutputHandler" /> which uses the <see cref="DiagnosticClassifier" />
+        /// to classify build output. All data also gets written to <paramref name="writer" />.
+        /// </summary>
+        /// <param name="writer">
+        /// The <see cref="TextWriter" /> to which the build output would have normally been written to.
+        /// This is normally <see cref="Console.Out" /> or <see cref="Console.Error" />.
+        /// </param>
+        /// <returns>The constructed <see cref="BuildOutputHandler" />.</returns>
+        protected BuildOutputHandler BuildOutputHandler(TextWriter writer) => new(data =>
+        {
+            if (data is not null)
+            {
+                writer.WriteLine(data);
+                DiagnosticClassifier.ClassifyLine(data);
+            }
+        });
 
         /// <summary>
         /// Value of CODEQL_EXTRACTOR_<LANG>_ROOT environment variable.
