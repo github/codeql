@@ -344,7 +344,7 @@ private class CompareSink extends DataFlow::Node {
 /**
  * Holds if there is a flow to len().
  */
-  predicate FlowToLen() {
+  predicate flowtolen() {
     exists(ExcludeLenFunc config, DataFlow2::PathNode source, DataFlow2::PathNode sink |
        config.hasFlowPath(source, sink)
     )
