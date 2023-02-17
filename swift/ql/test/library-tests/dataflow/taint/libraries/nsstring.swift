@@ -476,3 +476,12 @@ func taintThroughConversions() {
   let str7 = str5 as! String // in real-world Swift you can just use `as` here
   sink(arg: str7) // $ tainted=473
 }
+
+func taintThroughData() {
+  // additional tests through the `Data` class
+  let str1 = sourceNSString()
+  let data1 = str1.data(using: 0)!
+  sink(arg: data1) // $ tainted=482
+  let str2 = NSString(data: data1, encoding: 0)!
+  sink(arg: str2) // $ tainted=482
+}
