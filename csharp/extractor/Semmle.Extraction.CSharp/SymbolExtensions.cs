@@ -286,7 +286,7 @@ namespace Semmle.Extraction.CSharp
         public static IEnumerable<IFieldSymbol?> GetTupleElementsMaybeNull(this INamedTypeSymbol type) =>
             type.TupleElements;
 
-        private static void AddContaining(INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined)
+        private static void BuildQualifierAndName(INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined)
         {
             if (named.ContainingType is not null)
             {
@@ -299,6 +299,9 @@ namespace Semmle.Extraction.CSharp
                     BuildAssembly(named.ContainingAssembly, trapFile);
                 named.ContainingNamespace.BuildNamespace(cx, trapFile);
             }
+
+            var name = named.IsFileLocal ? named.MetadataName : named.Name;
+            trapFile.Write(name);
         }
 
         private static void BuildTupleId(INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined)
@@ -332,13 +335,11 @@ namespace Semmle.Extraction.CSharp
 
             if (named.TypeParameters.IsEmpty)
             {
-                AddContaining(named, cx, trapFile, symbolBeingDefined);
-                trapFile.Write(named.Name);
+                BuildQualifierAndName(named, cx, trapFile, symbolBeingDefined);
             }
             else if (named.IsReallyUnbound())
             {
-                AddContaining(named, cx, trapFile, symbolBeingDefined);
-                trapFile.Write(named.Name);
+                BuildQualifierAndName(named, cx, trapFile, symbolBeingDefined);
                 trapFile.Write("`");
                 trapFile.Write(named.TypeParameters.Length);
             }

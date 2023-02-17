@@ -85,6 +85,9 @@ namespace Semmle.Extraction.CSharp.Entities
             if (nt.IsRecord)
                 HasModifier(cx, trapFile, key, Modifiers.Record);
 
+            if (nt.IsFileLocal)
+                HasModifier(cx, trapFile, key, Modifiers.File);
+
             if (nt.TypeKind == TypeKind.Struct)
             {
                 if (nt.IsReadOnly)
@@ -97,7 +100,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static void ExtractModifiers(Context cx, TextWriter trapFile, IEntity key, ISymbol symbol)
         {
-            HasAccessibility(cx, trapFile, key, symbol.DeclaredAccessibility);
+            if (symbol.Kind != SymbolKind.NamedType || !((INamedTypeSymbol)symbol).IsFileLocal)
+                HasAccessibility(cx, trapFile, key, symbol.DeclaredAccessibility);
+
             if (symbol.Kind == SymbolKind.ErrorType)
                 trapFile.has_modifiers(key, Modifier.Create(cx, Accessibility.Public));
 
