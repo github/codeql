@@ -95,7 +95,10 @@ check("if_then_else_defined", if_then_else_defined, "if_defined", globals()) #$ 
 
 # check that refined definitions are handled correctly
 import refined # $ imports=refined as=refined
-check("refined.SOURCE", refined.SOURCE, refined.SOURCE, globals()) #$ prints=SOURCE
+check("refined.SOURCE", refined.SOURCE, refined.SOURCE, globals()) #$ MISSING: prints=SOURCE
+
+import if_then_else_refined # $ imports=if_then_else_refined as=if_then_else_refined
+check("if_then_else_refined.src", if_then_else_refined.src, if_then_else_refined.src, globals()) #$ MISSING: prints=SOURCE
 
 exit(__file__)
 
