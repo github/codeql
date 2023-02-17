@@ -86,7 +86,7 @@ class GoModDependency extends Dependency, GoModRequireLine {
   }
 
   /**
-   * Holds if this require line originally states dependency `path` had version `ver`.
+   * Holds if this require line originally states dependency `path` had version `v`.
    *
    * The actual info of this dependency can change based on `replace` directives in the same go.mod
    * file, which replace a dependency with another one.
