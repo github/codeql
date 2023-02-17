@@ -36,8 +36,6 @@ private predicate isInTestFile(J::File file) {
 private predicate isJdkInternal(J::CompilationUnit cu) {
   cu.getPackage().getName().matches("org.graalvm%") or
   cu.getPackage().getName().matches("com.sun%") or
-  cu.getPackage().getName().matches("javax.swing%") or
-  cu.getPackage().getName().matches("java.awt%") or
   cu.getPackage().getName().matches("sun%") or
   cu.getPackage().getName().matches("jdk%") or
   cu.getPackage().getName().matches("java2d%") or
@@ -57,12 +55,18 @@ private predicate isJdkInternal(J::CompilationUnit cu) {
   cu.getPackage().getName() = ""
 }
 
+private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
+  cu.getPackage().getName().matches("javax.swing%") or
+  cu.getPackage().getName().matches("java.awt%")
+}
+
 /**
  * Holds if it is relevant to generate models for `api`.
  */
 private predicate isRelevantForModels(J::Callable api) {
   not isInTestFile(api.getCompilationUnit().getFile()) and
   not isJdkInternal(api.getCompilationUnit()) and
+  not isInfrequentlyUsed(api.getCompilationUnit()) and
   not api instanceof J::MainMethod and
   not api instanceof J::StaticInitializer and
   not exists(J::FunctionalExpr funcExpr | api = funcExpr.asMethod()) and
