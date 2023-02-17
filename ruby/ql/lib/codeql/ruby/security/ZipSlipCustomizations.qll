@@ -12,6 +12,11 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.RemoteFlowSources
 
+/**
+ * Provides default sources, sinks and sanitizers for reasoning about
+ * zip slip vulnerabilities, as well as extension points for
+ * adding your own.
+ */
 module ZipSlip {
   /**
    * A data flow source for zip slip vulnerabilities.
