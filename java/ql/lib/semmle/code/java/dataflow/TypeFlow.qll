@@ -681,9 +681,14 @@ private predicate unionTypeFlow0(TypeFlowNode n, RefType t, boolean exact) {
 private predicate unionTypeFlow(TypeFlowNode n, RefType t, boolean exact) {
   unionTypeFlow0(n, t, exact) and
   // filter impossible union parts:
-  if exact = true
-  then t.getErasure().(RefType).getASourceSupertype*() = getTypeBound(n).getErasure()
-  else haveIntersection(getTypeBound(n), t)
+  exists(RefType tErased, RefType boundErased |
+    pragma[only_bind_into](tErased) = t.getErasure() and
+    pragma[only_bind_into](boundErased) = getTypeBound(n).getErasure()
+  |
+    if exact = true
+    then tErased.getASourceSupertype*() = boundErased
+    else erasedHaveIntersection(tErased, boundErased)
+  )
 }
 
 /**

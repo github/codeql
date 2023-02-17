@@ -5,13 +5,6 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-    paths:
-      - "ql/**"
-      - "**.qll"
-      - "**.ql"
-      - "**.dbscheme"
-      - "**/qlpack.yml"
-      - ".github/workflows/ql-for-ql-build.yml"
 
 env:
   CARGO_TERM_COLOR: always

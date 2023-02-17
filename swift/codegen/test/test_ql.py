@@ -149,5 +149,12 @@ def test_class_without_description():
     assert prop.has_description is False
 
 
+def test_ipa_accessor_has_first_constructor_param_marked():
+    params = ["a", "b", "c"]
+    x = ql.IpaUnderlyingAccessor("foo", "bar", params)
+    assert x.constructorparams[0].first
+    assert [p.param for p in x.constructorparams] == params
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

@@ -3,32 +3,34 @@
 import python
 
 /** the Python major version number */
-int major_version() {
-  explicit_major_version(result)
-  or
-  not explicit_major_version(_) and
-  /* If there is more than one version, prefer 2 for backwards compatibility */
-  (if py_flags_versioned("version.major", "2", "2") then result = 2 else result = 3)
-}
+int major_version() { full_python_analysis_version(result, _, _) }
 
 /** the Python minor version number */
-int minor_version() {
-  exists(string v | py_flags_versioned("version.minor", v, major_version().toString()) |
-    result = v.toInt()
-  )
-}
+int minor_version() { full_python_analysis_version(_, result, _) }
 
 /** the Python micro version number */
-int micro_version() {
-  exists(string v | py_flags_versioned("version.micro", v, major_version().toString()) |
-    result = v.toInt()
-  )
+int micro_version() { full_python_analysis_version(_, _, result) }
+
+/** Gets the latest supported minor version for the given major version. */
+private int latest_supported_minor_version(int major) {
+  major = 2 and result = 7
+  or
+  major = 3 and result = 11
 }
 
-private predicate explicit_major_version(int v) {
-  exists(string version | py_flags_versioned("language.version", version, _) |
-    version.charAt(0) = "2" and v = 2
-    or
-    version.charAt(0) = "3" and v = 3
+private predicate full_python_analysis_version(int major, int minor, int micro) {
+  exists(string version_string | py_flags_versioned("language.version", version_string, _) |
+    major = version_string.regexpFind("\\d+", 0, _).toInt() and
+    (
+      minor = version_string.regexpFind("\\d+", 1, _).toInt()
+      or
+      not exists(version_string.regexpFind("\\d+", 1, _)) and
+      minor = latest_supported_minor_version(major)
+    ) and
+    (
+      micro = version_string.regexpFind("\\d+", 2, _).toInt()
+      or
+      not exists(version_string.regexpFind("\\d+", 2, _)) and micro = 0
+    )
   )
 }

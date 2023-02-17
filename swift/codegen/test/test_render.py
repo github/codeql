@@ -214,23 +214,40 @@ class MyError(Exception):
     pass
 
 
-def test_managed_render_exception_drops_written_from_registry(pystache_renderer, sut):
+def test_managed_render_exception_drops_written_and_inexsistent_from_registry(pystache_renderer, sut):
     data = mock.Mock(spec=("template",))
     text = "some text"
     pystache_renderer.render_name.side_effect = (text,)
     output = paths.swift_dir / "some/output.txt"
-    registry = paths.swift_dir / "a/registry.list"
+    registry = paths.swift_dir / "x/registry.list"
     write(output, text)
+    write(paths.swift_dir / "a")
+    write(paths.swift_dir / "c")
     write(registry, "a a a\n"
                     f"some/output.txt whatever {hash(text)}\n"
-                    "b b b")
+                    "b b b\n"
+                    "c c c")
 
     with pytest.raises(MyError):
         with sut.manage(generated=(), stubs=(), registry=registry) as renderer:
             renderer.render(data, output)
             raise MyError
 
-    assert_file(registry, "a a a\nb b b\n")
+    assert_file(registry, "a a a\nc c c\n")
+
+
+def test_managed_render_drops_inexsistent_from_registry(pystache_renderer, sut):
+    registry = paths.swift_dir / "x/registry.list"
+    write(paths.swift_dir / "a")
+    write(paths.swift_dir / "c")
+    write(registry, f"a {hash('')} {hash('')}\n"
+                    "b b b\n"
+                    f"c {hash('')} {hash('')}")
+
+    with sut.manage(generated=(), stubs=(), registry=registry):
+        pass
+
+    assert_file(registry, f"a {hash('')} {hash('')}\nc {hash('')} {hash('')}\n")
 
 
 def test_managed_render_exception_does_not_erase(pystache_renderer, sut):

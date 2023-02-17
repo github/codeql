@@ -1,1 +1,1 @@
-| err.go:6:7:6:7 | undeclared name: unknownFunction |
+| err.go:6:7:6:7 | undefined: unknownFunction |

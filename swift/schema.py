@@ -9,7 +9,7 @@ This file should be kept simple:
 For how documentation of generated QL code works, please read schema_documentation.md.
 """
 
-from swift.codegen.lib.schema.defs import *
+from swift.codegen.lib.schemadefs import *
 
 include("prefix.dbscheme")
 

@@ -81,7 +81,14 @@ module Cryptography {
    * data of arbitrary length using a block encryption algorithm.
    */
   class BlockMode extends string {
-    BlockMode() { this = ["ECB", "CBC", "GCM", "CCM", "CFB", "OFB", "CTR", "OPENPGP"] }
+    BlockMode() {
+      this =
+        [
+          "ECB", "CBC", "GCM", "CCM", "CFB", "OFB", "CTR", "OPENPGP",
+          "XTS", // https://csrc.nist.gov/publications/detail/sp/800-38e/final
+          "EAX" // https://en.wikipedia.org/wiki/EAX_mode
+        ]
+    }
 
     /** Holds if this block mode is considered to be insecure. */
     predicate isWeak() { this = "ECB" }
