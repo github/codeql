@@ -9,4 +9,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    codeql/javascript-experimental-atm-model: "0.3.1-2023-02-13-06h57m09s.cool-sugar-hy9x7xpm.f1d1fc33c1aa58d7bfc56a3879986fb4cebbc941acdeed561836ad4e3e89da14"
