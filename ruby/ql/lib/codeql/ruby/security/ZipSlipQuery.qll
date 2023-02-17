@@ -34,7 +34,5 @@ class Configuration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof ZipSlip::Sanitizer
-  }
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof ZipSlip::Sanitizer }
 }

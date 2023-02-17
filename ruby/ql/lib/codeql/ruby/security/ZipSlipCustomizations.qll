@@ -118,7 +118,6 @@ module ZipSlip {
     }
   }
 
-
   /**
    * Existing PathSanitization model created for regular path traversals
    */
