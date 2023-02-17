@@ -216,6 +216,103 @@ CheckedOperators.cs:
 #   55|             0: [TypeMention] short
 #   55|           1: [PropertyCall] access to property Value
 #   55|             -1: [ParameterAccess] access to parameter n
+FileScoped1.cs:
+#    1| [Interface] I1
+#    3| [Interface] I2
+#    5| [Class] C1
+#-----|   3: (Base types)
+#    5|     1: [TypeMention] I1
+#    7| [Class] C2
+#    9| [Class] C3
+#-----|   3: (Base types)
+#    9|     1: [TypeMention] I2
+#   11| [Interface] IC
+#   13| [Class] C4<>
+#-----|   1: (Type parameters)
+#   13|     0: [TypeParameter] T
+#   15| [Class] C5<>
+#-----|   1: (Type parameters)
+#   15|     0: [TypeParameter] S
+#-----|   3: (Base types)
+#   15|     0: [TypeMention] C4<S>
+#   15|       1: [TypeMention] S
+#   17| [Struct] S1
+#   19| [Enum] E1
+#   21| [DelegateType] D1
+#   23| [RecordClass] R1
+#   23|   12: [NEOperator] !=
+#-----|     2: (Parameters)
+#   23|       0: [Parameter] left
+#   23|       1: [Parameter] right
+#   23|   13: [EQOperator] ==
+#-----|     2: (Parameters)
+#   23|       0: [Parameter] left
+#   23|       1: [Parameter] right
+#   23|   14: [Property] EqualityContract
+#   23|     3: [Getter] get_EqualityContract
+#   25| [RecordStruct] RS1
+#   25|   10: [NEOperator] !=
+#-----|     2: (Parameters)
+#   25|       0: [Parameter] left
+#   25|       1: [Parameter] right
+#   25|   11: [EQOperator] ==
+#-----|     2: (Parameters)
+#   25|       0: [Parameter] left
+#   25|       1: [Parameter] right
+FileScoped2.cs:
+#    1| [Interface] I1
+#    3| [Interface] I2
+#    5| [Class] C1
+#    7| [Class] C2
+#-----|   3: (Base types)
+#    7|     1: [TypeMention] I2
+#    9| [Class] IC
+#   11| [Class] C4<>
+#-----|   1: (Type parameters)
+#   11|     0: [TypeParameter] T
+#   13| [Class] C5<>
+#-----|   1: (Type parameters)
+#   13|     0: [TypeParameter] S
+#-----|   3: (Base types)
+#   13|     0: [TypeMention] C4<S>
+#   13|       1: [TypeMention] S
+#   15| [Struct] S1
+#   17| [Enum] E1
+#   19| [DelegateType] D1
+#   21| [RecordClass] R1
+#   21|   12: [NEOperator] !=
+#-----|     2: (Parameters)
+#   21|       0: [Parameter] left
+#   21|       1: [Parameter] right
+#   21|   13: [EQOperator] ==
+#-----|     2: (Parameters)
+#   21|       0: [Parameter] left
+#   21|       1: [Parameter] right
+#   21|   14: [Property] EqualityContract
+#   21|     3: [Getter] get_EqualityContract
+#   23| [RecordStruct] RS1
+#   23|   10: [NEOperator] !=
+#-----|     2: (Parameters)
+#   23|       0: [Parameter] left
+#   23|       1: [Parameter] right
+#   23|   11: [EQOperator] ==
+#-----|     2: (Parameters)
+#   23|       0: [Parameter] left
+#   23|       1: [Parameter] right
+FileScoped3.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [Interface] I10
+#    5|   2: [Class] C10
+#    7|   3: [Class] C11
+#-----|     3: (Base types)
+#    7|       1: [TypeMention] I10
+FileScoped4.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [Interface] I10
+#    5|   2: [Class] C10
+#    7|   3: [Class] C11
+#-----|     3: (Base types)
+#    7|       1: [TypeMention] I10
 GenericAttribute.cs:
 #    3| [GenericAssemblyAttribute] [assembly: MyGeneric<Int32>(...)]
 #    3|   0: [TypeMention] MyGenericAttribute<int>
