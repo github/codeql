@@ -840,7 +840,8 @@ module NodeJSLib {
    * A function that flows to a route setup.
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    Http::Servers::StandardRouteHandler, DataFlow::FunctionNode
+  {
     TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
   }
 
@@ -1163,7 +1164,8 @@ module NodeJSLib {
    * A registration of an event handler on a NodeJS EventEmitter instance.
    */
   private class NodeJSEventRegistration extends EventRegistration::DefaultEventRegistration,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     override NodeJSEventEmitter emitter;
 
     NodeJSEventRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
@@ -1173,7 +1175,8 @@ module NodeJSLib {
    * A dispatch of an event on a NodeJS EventEmitter instance.
    */
   private class NodeJSEventDispatch extends EventDispatch::DefaultEventDispatch,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     override NodeJSEventEmitter emitter;
 
     NodeJSEventDispatch() { this = emitter.ref().getAMethodCall("emit") }
@@ -1223,7 +1226,8 @@ module NodeJSLib {
    * A registration of an event handler on a NodeJS net server instance.
    */
   private class NodeJSNetServerRegistration extends EventRegistration::DefaultEventRegistration,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     override NodeJSNetServerConnection emitter;
 
     NodeJSNetServerRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }

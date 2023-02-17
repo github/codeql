@@ -190,7 +190,8 @@ module SecondOrderCommandInjection {
   /**
    * A sanitizer that blocks flow when a string is tested to start with a certain prefix.
    */
-  class PrefixStringSanitizer extends TaintTracking::SanitizerGuardNode instanceof StringOps::StartsWith {
+  class PrefixStringSanitizer extends TaintTracking::SanitizerGuardNode instanceof StringOps::StartsWith
+  {
     override predicate sanitizes(boolean outcome, Expr e) {
       e = super.getBaseString().asExpr() and
       outcome = super.getPolarity()
@@ -200,7 +201,8 @@ module SecondOrderCommandInjection {
   /**
    * A sanitizer that blocks flow when a string does not start with "--"
    */
-  class DoubleDashSanitizer extends TaintTracking::SanitizerGuardNode instanceof StringOps::StartsWith {
+  class DoubleDashSanitizer extends TaintTracking::SanitizerGuardNode instanceof StringOps::StartsWith
+  {
     DoubleDashSanitizer() { super.getSubstring().mayHaveStringValue("--") }
 
     override predicate sanitizes(boolean outcome, Expr e) {

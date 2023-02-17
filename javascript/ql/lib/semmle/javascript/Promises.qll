@@ -616,7 +616,8 @@ module Bluebird {
   }
 
   private class BluebirdCoroutineDefinitionAsPartialInvoke extends DataFlow::PartialInvokeNode::Range,
-    BluebirdCoroutineDefinition {
+    BluebirdCoroutineDefinition
+  {
     override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
       boundArgs = 0 and
       callback = this.getArgument(0) and
