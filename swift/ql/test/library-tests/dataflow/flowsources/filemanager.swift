@@ -17,7 +17,7 @@ class FileManager : NSObject {
     	let rawValue: Int
 	}
 
-	func contentsOfDirectory(at url: URL, includingPropertyForKeys keys: [URLResourceKey]?, options mask: FileManager.DirectoryEnumerationOptions = []) throws -> [URL] { return [] }
+	func contentsOfDirectory(at url: URL, includingPropertiesForKeys keys: [URLResourceKey]?, options mask: FileManager.DirectoryEnumerationOptions = []) throws -> [URL] { return [] }
 	func contentsOfDirectory(atPath path: String) throws -> [String] { return [] }
 	func directoryContents(atPath path: String) -> [Any]? { return [] } // returns array of NSString
 	func subpathsOfDirectory(atPath path: String) throws -> [String] { return [] }
@@ -34,8 +34,7 @@ class FileManager : NSObject {
 func testFileHandle(fm: FileManager, url: URL, path: String) {
 	do
 	{
-		let contents1 = try fm.contentsOfDirectory(at: url, includingPropertyForKeys: nil) // SOURCE
-		let content1 = contents1[0]
+		let contents1 = try fm.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) // SOURCE
 		let contents2 = try fm.contentsOfDirectory(atPath: path) // SOURCE
 		let contents3 = fm.directoryContents(atPath: path)! // SOURCE
 

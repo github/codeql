@@ -38,6 +38,14 @@
 | file://:0:0:0:0 | .source1 | external |
 | file://:0:0:0:0 | .source4 | external |
 | file://:0:0:0:0 | .source9 | external |
+| filemanager.swift:37:23:37:86 | call to contentsOfDirectory(at:includingPropertiesForKeys:options:) | external |
+| filemanager.swift:38:23:38:58 | call to contentsOfDirectory(atPath:) | external |
+| filemanager.swift:39:19:39:52 | call to directoryContents(atPath:) | external |
+| filemanager.swift:41:23:41:58 | call to subpathsOfDirectory(atPath:) | external |
+| filemanager.swift:42:19:42:43 | call to subpaths(atPath:) | external |
+| filemanager.swift:44:19:44:60 | call to destinationOfSymbolicLink(atPath:) | external |
+| filemanager.swift:45:15:45:56 | call to pathContentOfSymbolicLink(atPath:) | external |
+| filemanager.swift:47:14:47:38 | call to contents(atPath:) | external |
 | generics.swift:10:9:10:16 | .source1 | external |
 | generics.swift:11:9:11:16 | .source2 | external |
 | generics.swift:12:9:12:24 | call to source3() | external |
