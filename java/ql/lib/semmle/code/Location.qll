@@ -182,7 +182,9 @@ class Location extends @location {
       filepath = f.getAbsolutePath()
     ) and
     // No line mapping for this file
-    not hasSmapLocationInfo(_, _, _, _, _, filepath, startline, endline)
+    not hasSmapLocationInfo(_, _, _, _, _, filepath, startline, endline) and
+    not hasLombokLocationInfo(_, _, _, _, _, filepath, startline, startcolumn, endline, endcolumn) and
+    any()
     or
     // If there exists a line mapping for this file, then use that
     exists(string outFilepath, int outStartline, int outEndline |
@@ -192,7 +194,33 @@ class Location extends @location {
       hasSmapLocationInfo(filepath, startline, startcolumn, endline, endcolumn, outFilepath,
         outStartline, outEndline)
     )
+    or
+    // If there exists a line mapping for this file, then use that
+    exists(
+      string outFilepath, int outStartline, int outStartcolumn, int outEndline, int outEndcolumn
+    |
+      exists(File f |
+        locations_default(this, f, outStartline, outStartcolumn, outEndline, outEndcolumn)
+      |
+        outFilepath = f.getAbsolutePath()
+      ) and
+      hasLombokLocationInfo(filepath, startline, startcolumn, endline, endcolumn, outFilepath,
+        outStartline, outStartcolumn, outEndline, outEndcolumn)
+    )
   }
+}
+
+predicate hasLombokLocationInfo(
+  string inputPath, int isl, int isc, int iel, int iec, string outputPath, int osl, int osc,
+  int oel, int oec
+) {
+  exists(File inputFile, File outputFile |
+    inputPath = inputFile.getAbsolutePath() and
+    outputPath = outputFile.getAbsolutePath() and
+    locations_default(_, outputFile, osl, osc, oel, oec) and
+    lombok_map(_, outputFile, osl, osc, inputFile, isl, isc) and
+    lombok_map(_, outputFile, oel, oec, inputFile, iel, iec)
+  )
 }
 
 private predicate hasSourceLocation(Top l, Location loc, File f) {

@@ -252,6 +252,16 @@ smap_lines(
   int outputLineIncrement: int ref
 );
 
+lombok_map(
+  unique int id: @lombok_map,
+  int delombokedFileId: @file ref,
+  int delombokedLine: int ref,
+  int delombokedColumn: int ref,
+  int originalFileId: @file ref,
+  int originalLine: int ref,
+  int originalColumn: int ref
+);
+
 /*
  * Locations and files
  */
