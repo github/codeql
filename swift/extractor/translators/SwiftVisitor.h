@@ -21,7 +21,12 @@ class SwiftVisitor : private SwiftDispatcher {
   void extract(swift::Token& comment) { emitComment(comment); }
 
  private:
-  void visit(const swift::Decl* decl) override { declTranslator.translateAndEmit(*decl); }
+  void visit(const swift::Decl* decl) override {
+    if (auto iterable = llvm::dyn_cast<swift::IterableDeclContext>(decl)) {
+      iterable->loadAllMembers();
+    }
+    declTranslator.translateAndEmit(*decl);
+  }
   void visit(const swift::Stmt* stmt) override { stmtTranslator.translateAndEmit(*stmt); }
   void visit(const swift::StmtCondition* cond) override { stmtTranslator.translateAndEmit(*cond); }
   void visit(const swift::StmtConditionElement* element) override {
