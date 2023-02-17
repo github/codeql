@@ -11,7 +11,6 @@ class SqlTest extends InlineExpectationsTest {
     exists(SQL::Query q, SQL::QueryString qs | qs = q.getAQueryString() |
       q.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
-      qs.hasLocationInfo(_, _, _, _, _) and
       element = q.toString() and
       value = qs.toString()
     )
