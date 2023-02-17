@@ -65,6 +65,19 @@ private import semmle.python.dataflow.new.internal.DataFlowPrivate
  */
 module ImportResolution {
   /**
+   * Holds if there is an ESSA step from `defFrom` to `defTo`, which should be allowed
+   * for import resolution.
+   */
+  private predicate allowedEssaImportStep(EssaDefinition defFrom, EssaDefinition defTo) {
+    // to handle definitions guarded by if-then-else
+    defFrom = defTo.(PhiFunction).getAnInput()
+    or
+    // refined variable
+    // example: https://github.com/nvbn/thefuck/blob/ceeaeab94b5df5a4fe9d94d61e4f6b0bbea96378/thefuck/utils.py#L25-L45
+    defFrom = defTo.(EssaNodeRefinement).getInput().getDefinition()
+  }
+
+  /**
    * Holds if the module `m` defines a name `name` by assigning `defn` to it. This is an
    * overapproximation, as `name` may not in fact be exported (e.g. by defining an `__all__` that does
    * not include `name`).
@@ -74,15 +87,7 @@ module ImportResolution {
     exists(EssaVariable v, EssaDefinition essaDef |
       v.getName() = name and
       v.getAUse() = ImportStar::getStarImported*(m).getANormalExit() and
-      (
-        essaDef = v.getDefinition()
-        or
-        // to handle definitions guarded by if-then-else
-        essaDef = v.getDefinition().(PhiFunction).getAnInput()
-        or
-        // refined variable
-        essaDef = v.getDefinition().(EssaNodeRefinement).getInput().getDefinition()
-      )
+      allowedEssaImportStep*(essaDef, v.getDefinition())
     |
       defn.getNode() = essaDef.(AssignmentDefinition).getValue()
       or
