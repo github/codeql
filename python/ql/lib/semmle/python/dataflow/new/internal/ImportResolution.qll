@@ -79,6 +79,9 @@ module ImportResolution {
         or
         // to handle definitions guarded by if-then-else
         essaDef = v.getDefinition().(PhiFunction).getAnInput()
+        or
+        // refined variable
+        essaDef = v.getDefinition().(EssaNodeRefinement).getInput().getDefinition()
       )
     |
       defn.getNode() = essaDef.(AssignmentDefinition).getValue()
