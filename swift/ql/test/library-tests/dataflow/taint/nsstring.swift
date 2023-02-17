@@ -272,8 +272,8 @@ func taintThroughInterpolatedStrings() {
   sink(arg: sourceNSString().data(using: 0, allowLossyConversion: false)) // $ tainted=272
   sink(arg: sourceNSString().replacingOccurrences(of: "a", with: "b")) // $ tainted=273
   sink(arg: harmless.replacingOccurrences(of: "a", with: sourceString())) // $ tainted=274
-  sink(arg: sourceNSString().replacingOccurrences(of: "a", with: "b", range: NSRange(location: 0, length: 10))) // $ MISSING: tainted=
-  sink(arg: harmless.replacingOccurrences(of: "a", with: sourceString(), range: NSRange(location: 0, length: 10))) // $ MISSING: tainted=
+  sink(arg: sourceNSString().replacingOccurrences(of: "a", with: "b", range: NSRange(location: 0, length: 10))) // $ tainted=275
+  sink(arg: harmless.replacingOccurrences(of: "a", with: sourceString(), range: NSRange(location: 0, length: 10))) // $ tainted=276
   sink(arg: NSString.path(withComponents: ["a", "b", "c"]))
   sink(arg: NSString.path(withComponents: sourceStringArray())) // $ tainted=278
   sink(arg: NSString.path(withComponents: ["a", sourceString(), "c"])) // $ MISSING: tainted=

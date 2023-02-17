@@ -973,8 +973,12 @@
 | nsstring.swift:274:13:274:13 | harmless | nsstring.swift:274:13:274:72 | call to replacingOccurrences(of:with:) |
 | nsstring.swift:274:13:274:13 | harmless | nsstring.swift:276:13:276:13 | harmless |
 | nsstring.swift:274:58:274:71 | call to sourceString() | nsstring.swift:274:13:274:72 | call to replacingOccurrences(of:with:) |
+| nsstring.swift:275:13:275:28 | call to sourceNSString() | nsstring.swift:275:13:275:110 | call to replacingOccurrences(of:with:options:range:) |
+| nsstring.swift:275:66:275:66 | b | nsstring.swift:275:13:275:110 | call to replacingOccurrences(of:with:options:range:) |
 | nsstring.swift:276:13:276:13 | [post] harmless | nsstring.swift:287:13:287:13 | harmless |
+| nsstring.swift:276:13:276:13 | harmless | nsstring.swift:276:13:276:113 | call to replacingOccurrences(of:with:options:range:) |
 | nsstring.swift:276:13:276:13 | harmless | nsstring.swift:287:13:287:13 | harmless |
+| nsstring.swift:276:58:276:71 | call to sourceString() | nsstring.swift:276:13:276:113 | call to replacingOccurrences(of:with:options:range:) |
 | nsstring.swift:277:43:277:57 | [...] | nsstring.swift:277:13:277:58 | call to path(withComponents:) |
 | nsstring.swift:278:43:278:61 | call to sourceStringArray() | nsstring.swift:278:13:278:62 | call to path(withComponents:) |
 | nsstring.swift:279:43:279:68 | [...] | nsstring.swift:279:13:279:69 | call to path(withComponents:) |

@@ -384,6 +384,8 @@ edges
 | nsstring.swift:84:3:84:94 | [summary param] this in applyingTransform(_:reverse:) :  | file://:0:0:0:0 | [summary] to write: return (return) in applyingTransform(_:reverse:) :  |
 | nsstring.swift:86:3:86:96 | [summary param] 1 in replacingOccurrences(of:with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:) :  |
 | nsstring.swift:86:3:86:96 | [summary param] this in replacingOccurrences(of:with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:) :  |
+| nsstring.swift:87:3:87:163 | [summary param] 1 in replacingOccurrences(of:with:options:range:) :  | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  |
+| nsstring.swift:87:3:87:163 | [summary param] this in replacingOccurrences(of:with:options:range:) :  | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  |
 | nsstring.swift:88:3:88:41 | [summary param] this in propertyList() :  | file://:0:0:0:0 | [summary] to write: return (return) in propertyList() :  |
 | nsstring.swift:89:3:89:80 | [summary param] this in propertyListFromStringsFileFormat() :  | file://:0:0:0:0 | [summary] to write: return (return) in propertyListFromStringsFileFormat() :  |
 | nsstring.swift:90:3:90:76 | [summary param] this in variantFittingPresentationWidth(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in variantFittingPresentationWidth(_:) :  |
@@ -543,6 +545,10 @@ edges
 | nsstring.swift:273:13:273:28 | call to sourceNSString() :  | nsstring.swift:273:13:273:69 | call to replacingOccurrences(of:with:) |
 | nsstring.swift:274:58:274:71 | call to sourceString() :  | nsstring.swift:86:3:86:96 | [summary param] 1 in replacingOccurrences(of:with:) :  |
 | nsstring.swift:274:58:274:71 | call to sourceString() :  | nsstring.swift:274:13:274:72 | call to replacingOccurrences(of:with:) |
+| nsstring.swift:275:13:275:28 | call to sourceNSString() :  | nsstring.swift:87:3:87:163 | [summary param] this in replacingOccurrences(of:with:options:range:) :  |
+| nsstring.swift:275:13:275:28 | call to sourceNSString() :  | nsstring.swift:275:13:275:110 | call to replacingOccurrences(of:with:options:range:) |
+| nsstring.swift:276:58:276:71 | call to sourceString() :  | nsstring.swift:87:3:87:163 | [summary param] 1 in replacingOccurrences(of:with:options:range:) :  |
+| nsstring.swift:276:58:276:71 | call to sourceString() :  | nsstring.swift:276:13:276:113 | call to replacingOccurrences(of:with:options:range:) |
 | nsstring.swift:278:43:278:61 | call to sourceStringArray() :  | nsstring.swift:56:3:56:78 | [summary param] 0 in path(withComponents:) :  |
 | nsstring.swift:278:43:278:61 | call to sourceStringArray() :  | nsstring.swift:278:13:278:62 | call to path(withComponents:) |
 | nsstring.swift:280:42:280:56 | call to sourceCString() :  | nsstring.swift:57:3:57:83 | [summary param] 0 in string(withCString:) :  |
@@ -1562,6 +1568,8 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in removeLast() :  | semmle.label | [summary] to write: return (return) in removeLast() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:) :  | semmle.label | [summary] to write: return (return) in replacingOccurrences(of:with:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:) :  | semmle.label | [summary] to write: return (return) in replacingOccurrences(of:with:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  | semmle.label | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  | semmle.label | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in reversed() :  | semmle.label | [summary] to write: return (return) in reversed() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in reversed() :  | semmle.label | [summary] to write: return (return) in reversed() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in shuffled() :  | semmle.label | [summary] to write: return (return) in shuffled() :  |
@@ -1794,6 +1802,8 @@ nodes
 | nsstring.swift:84:3:84:94 | [summary param] this in applyingTransform(_:reverse:) :  | semmle.label | [summary param] this in applyingTransform(_:reverse:) :  |
 | nsstring.swift:86:3:86:96 | [summary param] 1 in replacingOccurrences(of:with:) :  | semmle.label | [summary param] 1 in replacingOccurrences(of:with:) :  |
 | nsstring.swift:86:3:86:96 | [summary param] this in replacingOccurrences(of:with:) :  | semmle.label | [summary param] this in replacingOccurrences(of:with:) :  |
+| nsstring.swift:87:3:87:163 | [summary param] 1 in replacingOccurrences(of:with:options:range:) :  | semmle.label | [summary param] 1 in replacingOccurrences(of:with:options:range:) :  |
+| nsstring.swift:87:3:87:163 | [summary param] this in replacingOccurrences(of:with:options:range:) :  | semmle.label | [summary param] this in replacingOccurrences(of:with:options:range:) :  |
 | nsstring.swift:88:3:88:41 | [summary param] this in propertyList() :  | semmle.label | [summary param] this in propertyList() :  |
 | nsstring.swift:89:3:89:80 | [summary param] this in propertyListFromStringsFileFormat() :  | semmle.label | [summary param] this in propertyListFromStringsFileFormat() :  |
 | nsstring.swift:90:3:90:76 | [summary param] this in variantFittingPresentationWidth(_:) :  | semmle.label | [summary param] this in variantFittingPresentationWidth(_:) :  |
@@ -1950,6 +1960,10 @@ nodes
 | nsstring.swift:273:13:273:69 | call to replacingOccurrences(of:with:) | semmle.label | call to replacingOccurrences(of:with:) |
 | nsstring.swift:274:13:274:72 | call to replacingOccurrences(of:with:) | semmle.label | call to replacingOccurrences(of:with:) |
 | nsstring.swift:274:58:274:71 | call to sourceString() :  | semmle.label | call to sourceString() :  |
+| nsstring.swift:275:13:275:28 | call to sourceNSString() :  | semmle.label | call to sourceNSString() :  |
+| nsstring.swift:275:13:275:110 | call to replacingOccurrences(of:with:options:range:) | semmle.label | call to replacingOccurrences(of:with:options:range:) |
+| nsstring.swift:276:13:276:113 | call to replacingOccurrences(of:with:options:range:) | semmle.label | call to replacingOccurrences(of:with:options:range:) |
+| nsstring.swift:276:58:276:71 | call to sourceString() :  | semmle.label | call to sourceString() :  |
 | nsstring.swift:278:13:278:62 | call to path(withComponents:) | semmle.label | call to path(withComponents:) |
 | nsstring.swift:278:43:278:61 | call to sourceStringArray() :  | semmle.label | call to sourceStringArray() :  |
 | nsstring.swift:280:13:280:57 | call to string(withCString:) | semmle.label | call to string(withCString:) |
@@ -2647,6 +2661,8 @@ subpaths
 | nsstring.swift:272:13:272:28 | call to sourceNSString() :  | nsstring.swift:92:3:92:91 | [summary param] this in data(using:allowLossyConversion:) :  | file://:0:0:0:0 | [summary] to write: return (return) in data(using:allowLossyConversion:) :  | nsstring.swift:272:13:272:72 | call to data(using:allowLossyConversion:) |
 | nsstring.swift:273:13:273:28 | call to sourceNSString() :  | nsstring.swift:86:3:86:96 | [summary param] this in replacingOccurrences(of:with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:) :  | nsstring.swift:273:13:273:69 | call to replacingOccurrences(of:with:) |
 | nsstring.swift:274:58:274:71 | call to sourceString() :  | nsstring.swift:86:3:86:96 | [summary param] 1 in replacingOccurrences(of:with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:) :  | nsstring.swift:274:13:274:72 | call to replacingOccurrences(of:with:) |
+| nsstring.swift:275:13:275:28 | call to sourceNSString() :  | nsstring.swift:87:3:87:163 | [summary param] this in replacingOccurrences(of:with:options:range:) :  | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  | nsstring.swift:275:13:275:110 | call to replacingOccurrences(of:with:options:range:) |
+| nsstring.swift:276:58:276:71 | call to sourceString() :  | nsstring.swift:87:3:87:163 | [summary param] 1 in replacingOccurrences(of:with:options:range:) :  | file://:0:0:0:0 | [summary] to write: return (return) in replacingOccurrences(of:with:options:range:) :  | nsstring.swift:276:13:276:113 | call to replacingOccurrences(of:with:options:range:) |
 | nsstring.swift:278:43:278:61 | call to sourceStringArray() :  | nsstring.swift:56:3:56:78 | [summary param] 0 in path(withComponents:) :  | file://:0:0:0:0 | [summary] to write: return (return) in path(withComponents:) :  | nsstring.swift:278:13:278:62 | call to path(withComponents:) |
 | nsstring.swift:280:42:280:56 | call to sourceCString() :  | nsstring.swift:57:3:57:83 | [summary param] 0 in string(withCString:) :  | file://:0:0:0:0 | [summary] to write: return (return) in string(withCString:) :  | nsstring.swift:280:13:280:57 | call to string(withCString:) |
 | nsstring.swift:281:42:281:56 | call to sourceCString() :  | nsstring.swift:58:3:58:96 | [summary param] 0 in string(withCString:length:) :  | file://:0:0:0:0 | [summary] to write: return (return) in string(withCString:length:) :  | nsstring.swift:281:13:281:70 | call to string(withCString:length:) |
@@ -2925,6 +2941,8 @@ subpaths
 | nsstring.swift:272:13:272:72 | call to data(using:allowLossyConversion:) | nsstring.swift:272:13:272:28 | call to sourceNSString() :  | nsstring.swift:272:13:272:72 | call to data(using:allowLossyConversion:) | result |
 | nsstring.swift:273:13:273:69 | call to replacingOccurrences(of:with:) | nsstring.swift:273:13:273:28 | call to sourceNSString() :  | nsstring.swift:273:13:273:69 | call to replacingOccurrences(of:with:) | result |
 | nsstring.swift:274:13:274:72 | call to replacingOccurrences(of:with:) | nsstring.swift:274:58:274:71 | call to sourceString() :  | nsstring.swift:274:13:274:72 | call to replacingOccurrences(of:with:) | result |
+| nsstring.swift:275:13:275:110 | call to replacingOccurrences(of:with:options:range:) | nsstring.swift:275:13:275:28 | call to sourceNSString() :  | nsstring.swift:275:13:275:110 | call to replacingOccurrences(of:with:options:range:) | result |
+| nsstring.swift:276:13:276:113 | call to replacingOccurrences(of:with:options:range:) | nsstring.swift:276:58:276:71 | call to sourceString() :  | nsstring.swift:276:13:276:113 | call to replacingOccurrences(of:with:options:range:) | result |
 | nsstring.swift:278:13:278:62 | call to path(withComponents:) | nsstring.swift:278:43:278:61 | call to sourceStringArray() :  | nsstring.swift:278:13:278:62 | call to path(withComponents:) | result |
 | nsstring.swift:280:13:280:57 | call to string(withCString:) | nsstring.swift:280:42:280:56 | call to sourceCString() :  | nsstring.swift:280:13:280:57 | call to string(withCString:) | result |
 | nsstring.swift:281:13:281:70 | call to string(withCString:length:) | nsstring.swift:281:42:281:56 | call to sourceCString() :  | nsstring.swift:281:13:281:70 | call to string(withCString:length:) | result |
