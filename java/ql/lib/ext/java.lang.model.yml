@@ -3,6 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+# suggested label is not supported:      - ["java.lang", "Module", True, "getResourceAsStream", "(String)", "", "Argument[0]", "read-file", "generated"]
+# suggested label is not supported:      - ["java.lang", "ProcessBuilder", True, "ProcessBuilder", "(String[])", "", "Argument[0]", "command-injection", "generated"]
       - ["java.lang", "String", False, "matches", "(String)", "", "Argument[0]", "regex-use[f-1]", "manual"]
       - ["java.lang", "String", False, "replaceAll", "(String,String)", "", "Argument[0]", "regex-use[-1]", "manual"]
       - ["java.lang", "String", False, "replaceFirst", "(String,String)", "", "Argument[0]", "regex-use[-1]", "manual"]
