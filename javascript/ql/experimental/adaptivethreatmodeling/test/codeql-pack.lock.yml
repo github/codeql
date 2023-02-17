@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-02-17-07h21m20s.bubbly-fowl-gjngwxsk.3729a51083416e439098741bf0407843cbc5abecfe0f48d2d98b742300763114
+compiled: false
