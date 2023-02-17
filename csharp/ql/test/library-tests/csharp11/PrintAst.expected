@@ -657,6 +657,97 @@ RelaxedShift.cs:
 #   30|           1: [OperatorCall] call to operator >>>
 #   30|             0: [LocalVariableAccess] access to local variable n31
 #   30|             1: [StringLiteralUtf16] "3"
+RequiredMembers.cs:
+#    4| [Class] ClassRequiredMembers
+#    6|   4: [Field] RequiredField
+#    6|     -1: [TypeMention] object
+#    7|   5: [Property] RequiredProperty
+#    7|     -1: [TypeMention] string
+#    7|     3: [Getter] get_RequiredProperty
+#    7|     4: [Setter] set_RequiredProperty
+#-----|       2: (Parameters)
+#    7|         0: [Parameter] value
+#    8|   6: [Property] VirtualProperty
+#    8|     -1: [TypeMention] object
+#    8|     3: [Getter] get_VirtualProperty
+#    8|     4: [Setter] set_VirtualProperty
+#-----|       2: (Parameters)
+#    8|         0: [Parameter] value
+#   10|   7: [InstanceConstructor] ClassRequiredMembers
+#   10|     4: [BlockStmt] {...}
+#   13|   8: [InstanceConstructor] ClassRequiredMembers
+#-----|     0: (Attributes)
+#   12|       1: [DefaultAttribute] [SetsRequiredMembers(...)]
+#   12|         0: [TypeMention] SetsRequiredMembersAttribute
+#-----|     2: (Parameters)
+#   13|       0: [Parameter] requiredField
+#   13|         -1: [TypeMention] object
+#   13|       1: [Parameter] requiredProperty
+#   13|         -1: [TypeMention] string
+#   14|     4: [BlockStmt] {...}
+#   15|       0: [ExprStmt] ...;
+#   15|         0: [AssignExpr] ... = ...
+#   15|           0: [FieldAccess] access to field RequiredField
+#   15|           1: [ParameterAccess] access to parameter requiredField
+#   16|       1: [ExprStmt] ...;
+#   16|         0: [AssignExpr] ... = ...
+#   16|           0: [PropertyCall] access to property RequiredProperty
+#   16|           1: [ParameterAccess] access to parameter requiredProperty
+#   20| [Class] ClassRequiredMembersSub
+#-----|   3: (Base types)
+#   20|     0: [TypeMention] ClassRequiredMembers
+#   22|   4: [Property] VirtualProperty
+#   22|     -1: [TypeMention] object
+#   22|     3: [Getter] get_VirtualProperty
+#   22|     4: [Setter] set_VirtualProperty
+#-----|       2: (Parameters)
+#   22|         0: [Parameter] value
+#   24|   5: [InstanceConstructor] ClassRequiredMembersSub
+#   24|     3: [ConstructorInitializer] call to constructor ClassRequiredMembers
+#   24|     4: [BlockStmt] {...}
+#   27|   6: [InstanceConstructor] ClassRequiredMembersSub
+#-----|     0: (Attributes)
+#   26|       1: [DefaultAttribute] [SetsRequiredMembers(...)]
+#   26|         0: [TypeMention] SetsRequiredMembersAttribute
+#-----|     2: (Parameters)
+#   27|       0: [Parameter] requiredField
+#   27|         -1: [TypeMention] object
+#   27|       1: [Parameter] requiredProperty
+#   27|         -1: [TypeMention] string
+#   27|       2: [Parameter] virtualProperty
+#   27|         -1: [TypeMention] object
+#   27|     3: [ConstructorInitializer] call to constructor ClassRequiredMembers
+#   27|       0: [ParameterAccess] access to parameter requiredField
+#   27|       1: [ParameterAccess] access to parameter requiredProperty
+#   28|     4: [BlockStmt] {...}
+#   29|       0: [ExprStmt] ...;
+#   29|         0: [AssignExpr] ... = ...
+#   29|           0: [PropertyCall] access to property VirtualProperty
+#   29|           1: [ParameterAccess] access to parameter virtualProperty
+#   33| [RecordClass] RecordRequiredMembers
+#   33|   12: [NEOperator] !=
+#-----|     2: (Parameters)
+#   33|       0: [Parameter] left
+#   33|       1: [Parameter] right
+#   33|   13: [EQOperator] ==
+#-----|     2: (Parameters)
+#   33|       0: [Parameter] left
+#   33|       1: [Parameter] right
+#   33|   14: [Property] EqualityContract
+#   33|     3: [Getter] get_EqualityContract
+#   35|   15: [Property] X
+#   35|     -1: [TypeMention] object
+#   35|     3: [Getter] get_X
+#   35|     4: [Setter] set_X
+#-----|       2: (Parameters)
+#   35|         0: [Parameter] value
+#   38| [Struct] StructRequiredMembers
+#   40|   5: [Property] Y
+#   40|     -1: [TypeMention] string
+#   40|     3: [Getter] get_Y
+#   40|     4: [Setter] set_Y
+#-----|       2: (Parameters)
+#   40|         0: [Parameter] value
 Scoped.cs:
 #    1| [Struct] S1
 #    2| [Struct] S2

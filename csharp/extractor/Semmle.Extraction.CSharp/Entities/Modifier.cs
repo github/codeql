@@ -65,6 +65,15 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.has_modifiers(target, Modifier.Create(cx, modifier));
         }
 
+        private static void ExtractFieldModifiers(Context cx, TextWriter trapFile, IEntity key, IFieldSymbol symbol)
+        {
+            if (symbol.IsReadOnly)
+                HasModifier(cx, trapFile, key, Modifiers.Readonly);
+
+            if (symbol.IsRequired)
+                HasModifier(cx, trapFile, key, Modifiers.Required);
+        }
+
         private static void ExtractNamedTypeModifiers(Context cx, TextWriter trapFile, IEntity key, ISymbol symbol)
         {
             if (symbol.Kind != SymbolKind.NamedType)
@@ -106,8 +115,11 @@ namespace Semmle.Extraction.CSharp.Entities
             if (symbol.IsVirtual)
                 HasModifier(cx, trapFile, key, Modifiers.Virtual);
 
-            if (symbol.Kind == SymbolKind.Field && ((IFieldSymbol)symbol).IsReadOnly)
-                HasModifier(cx, trapFile, key, Modifiers.Readonly);
+            if (symbol is IFieldSymbol field)
+                ExtractFieldModifiers(cx, trapFile, key, field);
+
+            if (symbol.Kind == SymbolKind.Property && ((IPropertySymbol)symbol).IsRequired)
+                HasModifier(cx, trapFile, key, Modifiers.Required);
 
             if (symbol.IsOverride)
                 HasModifier(cx, trapFile, key, Modifiers.Override);

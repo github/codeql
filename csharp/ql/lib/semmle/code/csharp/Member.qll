@@ -90,6 +90,9 @@ class Modifiable extends Declaration, @modifiable {
   /** Holds if this declaration is `const`. */
   predicate isConst() { this.hasModifier("const") }
 
+  /** Holds if this declaration has the modifier `required`. */
+  predicate isRequired() { this.hasModifier("required") }
+
   /** Holds if this declaration is `unsafe`. */
   predicate isUnsafe() {
     this.hasModifier("unsafe") or
@@ -178,6 +181,8 @@ class Member extends DotNet::Member, Modifiable, @member {
   override predicate isAbstract() { Modifiable.super.isAbstract() }
 
   override predicate isStatic() { Modifiable.super.isStatic() }
+
+  override predicate isRequired() { Modifiable.super.isRequired() }
 }
 
 private class TOverridable = @virtualizable or @callable_accessor;
