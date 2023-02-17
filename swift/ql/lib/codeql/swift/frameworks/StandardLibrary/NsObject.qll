@@ -12,11 +12,12 @@ private import codeql.swift.dataflow.FlowSteps
  */
 private class NsObjectSummaries extends SummaryModelCsv {
   override predicate row(string row) {
-    row = [
-      ";NSObject;true;copy();;;Argument[-1];ReturnValue;taint",
-      ";NSObject;true;mutableCopy();;;Argument[-1];ReturnValue;taint",
-      ";NSCopying;true;copy(with:);;;Argument[-1];ReturnValue;taint",
-      ";NSMutableCopying;true;mutableCopy(with:);;;Argument[-1];ReturnValue;taint",
-    ]
+    row =
+      [
+        ";NSObject;true;copy();;;Argument[-1];ReturnValue;taint",
+        ";NSObject;true;mutableCopy();;;Argument[-1];ReturnValue;taint",
+        ";NSCopying;true;copy(with:);;;Argument[-1];ReturnValue;taint",
+        ";NSMutableCopying;true;mutableCopy(with:);;;Argument[-1];ReturnValue;taint",
+      ]
   }
 }
