@@ -28,9 +28,7 @@ abstract class Dependency extends Locatable {
    */
   abstract predicate relevantForFile(File file);
 
-  /**
-   * An import of this dependency.
-   */
+  /** Gets an import of this dependency. */
   ImportSpec getAnImport() {
     result.getPath().regexpMatch("\\Q" + this.getDepPath() + "\\E(/.*)?") and
     this.relevantForFile(result.getFile())
