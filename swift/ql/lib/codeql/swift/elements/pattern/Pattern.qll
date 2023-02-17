@@ -64,17 +64,27 @@ class Pattern extends Generated::Pattern {
   }
 
   /** Holds if this pattern is matched against an expression. */
-  predicate hasMatchingExpr() { exists(this.getMatchingExpr()) }
+  final predicate hasMatchingExpr() { exists(this.getMatchingExpr()) }
 
   /**
-   * Holds if this occurs as a sub-pattern of the result.
+   * Gets the parent pattern of this pattern, if any.
    */
-  Pattern getEnclosingPattern() {
+  final Pattern getEnclosingPattern() {
     result = this.getFullyUnresolved().(Pattern).getImmediateEnclosingPattern()
   }
 
   /**
-   * Holds if this occurs as an immediate sub-pattern of the result.
+   * Gets the parent pattern of this pattern, but only if
+   * both patterns match against the same object, which is not
+   * the case when destructuring a complex data structure,
+   * like a tuple or enum.
+   */
+  final Pattern getIdentityPreservingEnclosingPattern() {
+    result = this.getFullyUnresolved().(Pattern).getImmediateIdentityPreservingEnclosingPattern()
+  }
+
+  /**
+   * Gets the parent pattern of this pattern, if any.
    */
   Pattern getImmediateEnclosingPattern() {
     this = result.(EnumElementPattern).getImmediateSubPattern()
@@ -87,9 +97,10 @@ class Pattern extends Generated::Pattern {
   }
 
   /**
-   * Holds if this occurs as an immediate sub-pattern of the result
-   * without any intervening destructurings of
-   * complex data structures.
+   * Gets the immediate parent pattern of this pattern, but only if
+   * both patterns match against the same object, which is not
+   * the case when destructuring a complex data structure,
+   * like a tuple or enum.
    */
   Pattern getImmediateIdentityPreservingEnclosingPattern() {
     this = result.(BindingPattern).getImmediateSubPattern()
