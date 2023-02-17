@@ -244,9 +244,9 @@ func taintThroughSimpleStringOperations() {
   sink(arg: tainted.reversed()) // $ tainted=217
 
   sink(arg: tainted.split(separator: ",")) // $ tainted=217
-  sink(arg: tainted.split(whereSeparator: { // $ tainted=217
+  sink(arg: tainted.split(whereSeparator: {
     c in return (c == ",")
-  }))
+  })) // $ tainted=217
   sink(arg: tainted.trimmingCharacters(in: CharacterSet.whitespaces)) // $ tainted=217
   sink(arg: tainted.padding(toLength: 20, withPad: " ", startingAt: 0)) // $ tainted=217
   sink(arg: tainted.components(separatedBy: CharacterSet.whitespaces)) // $ tainted=217
