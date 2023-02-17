@@ -264,8 +264,8 @@ func testBoundsChecking(input string) {
 				_ = int16(parsed)
 			}
 		}
-		if parsed <= math.MaxUint32 {
-			_ = uint32(parsed)
+		if parsed <= math.MaxUint16 {
+			_ = uint16(parsed)
 		}
 	}
 	{
