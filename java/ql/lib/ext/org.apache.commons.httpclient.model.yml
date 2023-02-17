@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.commons.httpclient", "URI", True, "URI", "(String,boolean)", "", "Argument[0]", "open-url", "generated"]
+      - ["org.apache.commons.httpclient", "URI", True, "URI", "(String,boolean)", "", "Argument[0]", "open-url", "ai-generated"]
 

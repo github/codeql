@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-# suggested label is not supported:      - ["javax.naming.directory", "DirContext", True, "getAttributes", "(String,String[])", "", "Argument[0]", "TODO", "generated"] # @atorralba would like to take a look at some point
+# suggested label is not supported:      - ["javax.naming.directory", "DirContext", True, "getAttributes", "(String,String[])", "", "Argument[0]", "TODO", "ai-generated"] # @atorralba would like to take a look at some point
       - ["javax.naming.directory", "DirContext", True, "search", "", "", "Argument[0..1]", "ldap", "manual"]
