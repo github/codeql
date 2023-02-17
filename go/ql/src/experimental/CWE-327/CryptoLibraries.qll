@@ -203,7 +203,7 @@ class Des extends CryptographicOperation, DataFlow::CallNode {
  * Models cryptographic operations of the `crypto/rc4` package.
  */
 class Rc4 extends CryptographicOperation, DataFlow::CallNode {
-  Rc4() { this.getTarget().hasQualifiedName("crypto/rc4", ["NewCipher"]) }
+  Rc4() { this.getTarget().hasQualifiedName("crypto/rc4", "NewCipher") }
 
   override Expr getInput() { result = this.getArgument(0).asExpr() }
 
