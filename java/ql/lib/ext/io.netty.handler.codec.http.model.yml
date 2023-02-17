@@ -32,7 +32,7 @@ extensions:
     - ["io.netty.handler.codec.http", "LastHttpContent", True, "trailingHeaders", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpRequest", True, "getUri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpRequest", True, "uri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-    - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "QueryStringDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "QueryStringDecoder", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
     - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "decodeComponent", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "parameters", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "path", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
