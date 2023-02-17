@@ -23,7 +23,7 @@ module K8sIoApiCoreV1 {
     }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp = outp
+      inp.isReceiver() and outp = output
     }
   }
 
