@@ -24,7 +24,7 @@ jobs:
         with: 
           key: all-queries
       - name: check formatting
-        run: find */ql -type f \( -name "*.qll" -o -name "*.ql" \) -print0 | xargs -0 codeql query format --check-only
+        run: find */ql -type f \( -name "*.qll" -o -name "*.ql" \) -print0 | xargs -0 codeql query format -q --check-only
       - name: compile queries - check-only
         # run with --check-only if running in a PR (github.sha != main)
         if : ${{ github.event_name == 'pull_request' }}
