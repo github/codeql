@@ -4486,17 +4486,17 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http;QueryStringDecoder;true;decodeComponent;;;Argument[-1];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http;QueryStringDecoder;true;decodeComponent;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
-			QueryStringDecoder in = (QueryStringDecoder)source();
-			out = QueryStringDecoder.decodeComponent(null);
+			String in = (String)source();
+			out = QueryStringDecoder.decodeComponent(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http;QueryStringDecoder;true;decodeComponent;;;Argument[-1];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http;QueryStringDecoder;true;decodeComponent;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
-			QueryStringDecoder in = (QueryStringDecoder)source();
-			out = QueryStringDecoder.decodeComponent(null, null);
+			String in = (String)source();
+			out = QueryStringDecoder.decodeComponent(in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
