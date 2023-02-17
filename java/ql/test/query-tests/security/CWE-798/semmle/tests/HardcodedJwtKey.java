@@ -62,4 +62,49 @@ public class HardcodedJwtKey {
             return false;
         }
     }
+
+    public String accessTokenBad384(String username) {
+        Algorithm algorithm = Algorithm.HMAC384(SECRET); // $ HardcodedCredentialsApiCall
+
+        return JWT.create()
+                .withExpiresAt(new Date(new Date().getTime() + ACCESS_EXPIRE_TIME))
+                .withIssuer(ISSUER)
+                .withClaim("username", username)
+                .sign(algorithm);
+    }
+
+    // GOOD: Get secret from system configuration then sign a token
+    public String accessTokenGood384(String username) {
+        String tokenSecret = System.getenv("SECRET_KEY");
+        Algorithm algorithm = Algorithm.HMAC384(tokenSecret);
+
+        return JWT.create()
+                .withExpiresAt(new Date(new Date().getTime() + ACCESS_EXPIRE_TIME))
+                .withIssuer(ISSUER)
+                .withClaim("username", username)
+                .sign(algorithm);
+    }
+
+    public String accessTokenBad512(String username) {
+        Algorithm algorithm = Algorithm.HMAC512(SECRET); // $ HardcodedCredentialsApiCall
+
+        return JWT.create()
+                .withExpiresAt(new Date(new Date().getTime() + ACCESS_EXPIRE_TIME))
+                .withIssuer(ISSUER)
+                .withClaim("username", username)
+                .sign(algorithm);
+    }
+
+    // GOOD: Get secret from system configuration then sign a token
+    public String accessTokenGood512(String username) {
+        String tokenSecret = System.getenv("SECRET_KEY");
+        Algorithm algorithm = Algorithm.HMAC512(tokenSecret);
+
+        return JWT.create()
+                .withExpiresAt(new Date(new Date().getTime() + ACCESS_EXPIRE_TIME))
+                .withIssuer(ISSUER)
+                .withClaim("username", username)
+                .sign(algorithm);
+    }
+
 }
