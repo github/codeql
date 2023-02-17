@@ -1,3 +1,4 @@
+#!/bin/env python3
 # Generates a report on the amount of code sharing in this repo
 #
 # The purpose of this is 
