@@ -51,5 +51,6 @@ module SqlInjection {
    * sanitizer-guard.
    */
   class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
-    StringConstArrayInclusionCallBarrier { }
+    StringConstArrayInclusionCallBarrier
+  { }
 }

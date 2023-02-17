@@ -93,7 +93,8 @@ class NetHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
 }
 
 /** A configuration to track values that can disable certificate validation for NetHttp. */
-private class NetHttpDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
+private class NetHttpDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration
+{
   NetHttpDisablesCertificateValidationConfiguration() {
     this = "NetHttpDisablesCertificateValidationConfiguration"
   }
