@@ -11,6 +11,9 @@ private class SourceString extends DataFlow::Node {
   SourceString() {
     this.asExpr().(StrConst).getText() = contents and
     this.asExpr().getParent() instanceof Assign
+    or
+    this.asExpr().(ClassExpr).getInnerScope().getName() = "SOURCE" and
+    contents = "SOURCE"
   }
 
   string getContents() { result = contents }

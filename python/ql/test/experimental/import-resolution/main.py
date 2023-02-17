@@ -93,6 +93,10 @@ check("subpackage2_attr", subpackage2_attr, "subpackage2_attr", globals()) #$ pr
 from if_then_else import if_then_else_defined
 check("if_then_else_defined", if_then_else_defined, "if_defined", globals()) #$ prints=if_defined prints=else_defined_1 prints=else_defined_2
 
+# check that refined definitions are handled correctly
+import refined # $ imports=refined as=refined
+check("refined.SOURCE", refined.SOURCE, refined.SOURCE, globals()) #$ MISSING: prints=SOURCE
+
 exit(__file__)
 
 print()
