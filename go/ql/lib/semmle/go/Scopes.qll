@@ -602,7 +602,7 @@ private newtype TCallable =
   TFuncLitCallable(FuncLit l)
 
 /**
- * This is either a `Function` or a `FuncLit`, because of limitations of both
+ * A `Function` or a `FuncLit`. We do it this way because of limitations of both
  * `Function` and `FuncDef`:
  *   - `Function` is an entity, and therefore does not include function literals, and
  *   - `FuncDef` is an AST node, and so is not extracted for functions from external libraries.
