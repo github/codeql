@@ -13,10 +13,7 @@ public class CharObjectHashMap<V> implements CharObjectMap<V>
     public CharObjectHashMap(){}
     public CharObjectHashMap(int p0){}
     public CharObjectHashMap(int p0, float p1){}
-    public Collection<V> values(){ return null; }
-    public Iterable<CharObjectMap.PrimitiveEntry<V>> entries(){ return null; }
     public Set<Character> keySet(){ return null; }
-    public Set<Map.Entry<Character, V>> entrySet(){ return null; }
     public String toString(){ return null; }
     public V get(Object p0){ return null; }
     public V get(char p0){ return null; }
@@ -31,8 +28,11 @@ public class CharObjectHashMap<V> implements CharObjectMap<V>
     public boolean isEmpty(){ return false; }
     public int hashCode(){ return 0; }
     public int size(){ return 0; }
+    public java.lang.Iterable<CharObjectMap.PrimitiveEntry<V>> entries(){ return null; }
+    public java.util.Collection<V> values(){ return null; }
+    public java.util.Set<Map.Entry<Character, V>> entrySet(){ return null; }
     public static float DEFAULT_LOAD_FACTOR = 0;
     public static int DEFAULT_CAPACITY = 0;
     public void clear(){}
-    public void putAll(Map<? extends Character, ? extends V> p0){}
+    public void putAll(java.util.Map<? extends Character, ? extends V> p0){}
 }

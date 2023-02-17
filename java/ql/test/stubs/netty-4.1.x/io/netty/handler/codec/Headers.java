@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface Headers<K, V, T extends Headers<K, V, T>> extends Iterable<Map.Entry<K, V>>
+public interface Headers<K, V, T extends Headers<K, V, T>> extends java.lang.Iterable<Map.Entry<K, V>>
 {
     Boolean getBoolean(K p0);
     Boolean getBooleanAndRemove(K p0);
@@ -21,14 +21,12 @@ public interface Headers<K, V, T extends Headers<K, V, T>> extends Iterable<Map.
     Float getFloatAndRemove(K p0);
     Integer getInt(K p0);
     Integer getIntAndRemove(K p0);
-    Iterator<Map.Entry<K, V>> iterator();
     List<V> getAll(K p0);
     List<V> getAllAndRemove(K p0);
     Long getLong(K p0);
     Long getLongAndRemove(K p0);
     Long getTimeMillis(K p0);
     Long getTimeMillisAndRemove(K p0);
-    Set<K> names();
     Short getShort(K p0);
     Short getShortAndRemove(K p0);
     T add(Headers<? extends K, ? extends V, ? extends Object> p0);
@@ -96,6 +94,8 @@ public interface Headers<K, V, T extends Headers<K, V, T>> extends Iterable<Map.
     int getInt(K p0, int p1);
     int getIntAndRemove(K p0, int p1);
     int size();
+    java.util.Iterator<Map.Entry<K, V>> iterator();
+    java.util.Set<K> names();
     long getLong(K p0, long p1);
     long getLongAndRemove(K p0, long p1);
     long getTimeMillis(K p0, long p1);

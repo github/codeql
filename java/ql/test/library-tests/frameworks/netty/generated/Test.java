@@ -50,7 +50,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import java.nio.channels.GatheringByteChannel;
 import java.nio.channels.ScatteringByteChannel;
@@ -251,522 +250,410 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;ensureWritable;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;ensureWritable;(int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.ensureWritable(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;ensureWritable;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;ensureWritable;(int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
 			out = in.ensureWritable(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;ensureWritable;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;ensureWritable;(int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			out = in.ensureWritable(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;ensureWritable;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;ensureWritable;(int);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.ensureWritable(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;ensureWritable;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.ensureWritable(0, false);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;ensureWritable;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.ensureWritable(0, false);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;ensureWritable;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.ensureWritable(0, false);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getByte;;;Argument[-1];ReturnValue;taint;manual"
-			byte out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.getByte(0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getByte;;;Argument[-1];ReturnValue;taint;manual"
-			byte out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.getByte(0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getByte;;;Argument[-1];ReturnValue;taint;manual"
-			byte out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.getByte(0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getByte;;;Argument[-1];ReturnValue;taint;manual"
-			byte out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.getByte(0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf);;Argument[-1];Argument[1];taint;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			in.getBytes(0, out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			ByteBuf out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			in.getBytes(0, out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf);;Argument[-1];Argument[1];taint;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
 			in.getBytes(0, out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.getBytes(0, out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.getBytes(0, out, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf);;Argument[-1];Argument[1];taint;manual"
 			ByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			in.getBytes(0, out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			ByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			in.getBytes(0, out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			ByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			in.getBytes(0, out, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf);;Argument[-1];Argument[1];taint;manual"
 			ByteBuf out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			in.getBytes(0, out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.getBytes(0, out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.getBytes(0, out, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			ByteBuffer out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.getBytes(0, out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			ByteBuffer out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			in.getBytes(0, out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			ByteBuffer out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.getBytes(0, out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			FileChannel out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.getBytes(0, out, 0L, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			FileChannel out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			in.getBytes(0, out, 0L, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			FileChannel out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.getBytes(0, out, 0L, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			GatheringByteChannel out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.getBytes(0, out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			GatheringByteChannel out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			in.getBytes(0, out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			GatheringByteChannel out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.getBytes(0, out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			OutputStream out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.getBytes(0, out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			OutputStream out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			in.getBytes(0, out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			OutputStream out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.getBytes(0, out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			byte[] out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			in.getBytes(0, out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			byte[] out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.getBytes(0, out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			byte[] out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.getBytes(0, out, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			byte[] out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			in.getBytes(0, out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			byte[] out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			in.getBytes(0, out, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			byte[] out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.getBytes(0, out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];Argument[1];taint;manual"
-			byte[] out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.getBytes(0, out, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.getBytes(0, (ByteBuf)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.getBytes(0, (byte[])null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.getBytes(0, null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
 			out = in.getBytes(0, (ByteBuf)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.getBytes(0, (ByteBuf)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf);;Argument[-1];ReturnValue;value;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.getBytes(0, (ByteBuf)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int);;Argument[-1];Argument[1];taint;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			in.getBytes(0, out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int);;Argument[-1];Argument[1];taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			in.getBytes(0, out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int);;Argument[-1];Argument[1];taint;manual"
+			ByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			in.getBytes(0, out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int);;Argument[-1];Argument[1];taint;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			in.getBytes(0, out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			out = in.getBytes(0, (ByteBuf)null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
 			out = in.getBytes(0, (ByteBuf)null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.getBytes(0, (ByteBuf)null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.getBytes(0, (ByteBuffer)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.getBytes(0, (OutputStream)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.getBytes(0, (byte[])null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.getBytes(0, (byte[])null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.getBytes(0, (ByteBuf)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			out = in.getBytes(0, (ByteBuf)null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.getBytes(0, (ByteBuf)null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.getBytes(0, (ByteBuffer)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.getBytes(0, (OutputStream)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.getBytes(0, (byte[])null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.getBytes(0, (byte[])null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			CompositeByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.getBytes(0, (ByteBuf)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.getBytes(0, (ByteBuf)null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int,int);;Argument[-1];Argument[1];taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			in.getBytes(0, out, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int,int);;Argument[-1];Argument[1];taint;manual"
+			ByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			in.getBytes(0, out, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int,int);;Argument[-1];Argument[1];taint;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			in.getBytes(0, out, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.getBytes(0, (ByteBuf)null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.getBytes(0, (ByteBuf)null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.getBytes(0, (ByteBuf)null, 0, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuffer);;Argument[-1];Argument[1];taint;manual"
+			ByteBuffer out = null;
+			ByteBuf in = (ByteBuf)source();
+			in.getBytes(0, out);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuffer);;Argument[-1];Argument[1];taint;manual"
+			ByteBuffer out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			in.getBytes(0, out);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuffer);;Argument[-1];Argument[1];taint;manual"
+			ByteBuffer out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			in.getBytes(0, out);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuffer);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.getBytes(0, (ByteBuffer)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuffer);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.getBytes(0, (ByteBuffer)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,ByteBuffer);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.getBytes(0, (ByteBuffer)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,FileChannel,long,int);;Argument[-1];Argument[1];taint;manual"
+			FileChannel out = null;
+			ByteBuf in = (ByteBuf)source();
+			in.getBytes(0, out, 0L, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,FileChannel,long,int);;Argument[-1];Argument[1];taint;manual"
+			FileChannel out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			in.getBytes(0, out, 0L, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,FileChannel,long,int);;Argument[-1];Argument[1];taint;manual"
+			FileChannel out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			in.getBytes(0, out, 0L, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,GatheringByteChannel,int);;Argument[-1];Argument[1];taint;manual"
+			GatheringByteChannel out = null;
+			ByteBuf in = (ByteBuf)source();
+			in.getBytes(0, out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,GatheringByteChannel,int);;Argument[-1];Argument[1];taint;manual"
+			GatheringByteChannel out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			in.getBytes(0, out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,GatheringByteChannel,int);;Argument[-1];Argument[1];taint;manual"
+			GatheringByteChannel out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			in.getBytes(0, out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,OutputStream,int);;Argument[-1];Argument[1];taint;manual"
+			OutputStream out = null;
+			ByteBuf in = (ByteBuf)source();
+			in.getBytes(0, out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,OutputStream,int);;Argument[-1];Argument[1];taint;manual"
+			OutputStream out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			in.getBytes(0, out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,OutputStream,int);;Argument[-1];Argument[1];taint;manual"
+			OutputStream out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			in.getBytes(0, out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,OutputStream,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.getBytes(0, (OutputStream)null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,OutputStream,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.getBytes(0, (OutputStream)null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,OutputStream,int);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.getBytes(0, (OutputStream)null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			CompositeByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.getBytes(0, (byte[])null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			CompositeByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.getBytes(0, (byte[])null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.getBytes(0, (FileChannel)null, 0L, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.getBytes(0, (GatheringByteChannel)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.getBytes(0, (FileChannel)null, 0L, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.getBytes(0, (GatheringByteChannel)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.getBytes(0, (FileChannel)null, 0L, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.getBytes(0, (GatheringByteChannel)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;getChar;;;Argument[-1];ReturnValue;taint;manual"
-			char out = null;
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[]);;Argument[-1];Argument[1];taint;manual"
+			byte[] out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.getChar(0);
+			in.getBytes(0, out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getChar;;;Argument[-1];ReturnValue;taint;manual"
-			char out = null;
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[]);;Argument[-1];Argument[1];taint;manual"
+			byte[] out = null;
 			ByteBuf in = (ByteBuf)source();
-			out = in.getChar(0);
+			in.getBytes(0, out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;getChar;;;Argument[-1];ReturnValue;taint;manual"
-			char out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.getChar(0);
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[]);;Argument[-1];Argument[1];taint;manual"
+			byte[] out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			in.getBytes(0, out);
 			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[]);;Argument[-1];Argument[1];taint;manual"
+			byte[] out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			in.getBytes(0, out);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[]);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			out = in.getBytes(0, (byte[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[]);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.getBytes(0, (byte[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[]);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.getBytes(0, (byte[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[]);;Argument[-1];ReturnValue;value;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.getBytes(0, (byte[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[],int,int);;Argument[-1];Argument[1];taint;manual"
+			byte[] out = null;
+			ByteBuf in = (ByteBuf)source();
+			in.getBytes(0, out, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[],int,int);;Argument[-1];Argument[1];taint;manual"
+			byte[] out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			in.getBytes(0, out, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[],int,int);;Argument[-1];Argument[1];taint;manual"
+			byte[] out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			in.getBytes(0, out, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[],int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.getBytes(0, (byte[])null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[],int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.getBytes(0, (byte[])null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;getBytes;(int,byte[],int,int);;Argument[-1];ReturnValue;value;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.getBytes(0, (byte[])null, 0, 0);
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "io.netty.buffer;ByteBuf;true;getCharSequence;;;Argument[-1];ReturnValue;taint;manual"
@@ -790,56 +677,56 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;markReaderIndex;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;markReaderIndex;();;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.markReaderIndex();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;markReaderIndex;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;markReaderIndex;();;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
 			out = in.markReaderIndex();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;markReaderIndex;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;markReaderIndex;();;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			out = in.markReaderIndex();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;markReaderIndex;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;markReaderIndex;();;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.markReaderIndex();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;markWriterIndex;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;markWriterIndex;();;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.markWriterIndex();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;markWriterIndex;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;markWriterIndex;();;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
 			out = in.markWriterIndex();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;markWriterIndex;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;markWriterIndex;();;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			out = in.markWriterIndex();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;markWriterIndex;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;markWriterIndex;();;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.markWriterIndex();
@@ -937,605 +824,451 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;order;;;Argument[-1];ReturnValue;taint;manual"
+			// "io.netty.buffer;ByteBuf;true;order;(ByteOrder);;Argument[-1];ReturnValue;taint;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.order(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;order;;;Argument[-1];ReturnValue;taint;manual"
+			// "io.netty.buffer;ByteBuf;true;order;(ByteOrder);;Argument[-1];ReturnValue;taint;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
 			out = in.order(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;order;;;Argument[-1];ReturnValue;taint;manual"
+			// "io.netty.buffer;ByteBuf;true;order;(ByteOrder);;Argument[-1];ReturnValue;taint;manual"
 			ByteBuf out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			out = in.order(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;order;;;Argument[-1];ReturnValue;taint;manual"
-			ByteOrder out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.order();
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;order;;;Argument[-1];ReturnValue;taint;manual"
-			ByteOrder out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.order();
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;order;;;Argument[-1];ReturnValue;taint;manual"
-			ByteOrder out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.order();
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readByte;;;Argument[-1];ReturnValue;taint;manual"
-			byte out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.readByte();
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readByte;;;Argument[-1];ReturnValue;taint;manual"
-			byte out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.readByte();
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readByte;;;Argument[-1];ReturnValue;taint;manual"
-			byte out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.readByte();
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf);;Argument[-1];Argument[0];taint;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			in.readBytes(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf);;Argument[-1];Argument[0];taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			in.readBytes(out);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf);;Argument[-1];Argument[0];taint;manual"
+			ByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			in.readBytes(out);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf);;Argument[-1];Argument[0];taint;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			in.readBytes(out);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			out = in.readBytes((ByteBuf)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.readBytes((ByteBuf)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.readBytes((ByteBuf)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf);;Argument[-1];ReturnValue;value;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.readBytes((ByteBuf)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int);;Argument[-1];Argument[0];taint;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			in.readBytes(out, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int);;Argument[-1];Argument[0];taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			in.readBytes(out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int);;Argument[-1];Argument[0];taint;manual"
+			ByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			in.readBytes(out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int);;Argument[-1];Argument[0];taint;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			in.readBytes(out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			out = in.readBytes((ByteBuf)null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.readBytes((ByteBuf)null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.readBytes((ByteBuf)null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.readBytes((ByteBuf)null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int,int);;Argument[-1];Argument[0];taint;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			in.readBytes(out, 0, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.readBytes(out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.readBytes(out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int,int);;Argument[-1];Argument[0];taint;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
 			in.readBytes(out, 0, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			ByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			in.readBytes(out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			ByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			in.readBytes(out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int,int);;Argument[-1];Argument[0];taint;manual"
 			ByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			in.readBytes(out, 0, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.readBytes(out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.readBytes(out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int,int);;Argument[-1];Argument[0];taint;manual"
 			ByteBuf out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			in.readBytes(out, 0, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			out = in.readBytes((ByteBuf)null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.readBytes((ByteBuf)null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.readBytes((ByteBuf)null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.readBytes((ByteBuf)null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuffer);;Argument[-1];Argument[0];taint;manual"
 			ByteBuffer out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			in.readBytes(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuffer);;Argument[-1];Argument[0];taint;manual"
 			ByteBuffer out = null;
 			ByteBuf in = (ByteBuf)source();
 			in.readBytes(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuffer);;Argument[-1];Argument[0];taint;manual"
 			ByteBuffer out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			in.readBytes(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuffer);;Argument[-1];Argument[0];taint;manual"
 			ByteBuffer out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			in.readBytes(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuffer);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			out = in.readBytes((ByteBuffer)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuffer);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.readBytes((ByteBuffer)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuffer);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.readBytes((ByteBuffer)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(ByteBuffer);;Argument[-1];ReturnValue;value;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.readBytes((ByteBuffer)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(FileChannel,long,int);;Argument[-1];Argument[0];taint;manual"
 			FileChannel out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			in.readBytes(out, 0L, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(FileChannel,long,int);;Argument[-1];Argument[0];taint;manual"
 			FileChannel out = null;
 			ByteBuf in = (ByteBuf)source();
 			in.readBytes(out, 0L, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(FileChannel,long,int);;Argument[-1];Argument[0];taint;manual"
 			FileChannel out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			in.readBytes(out, 0L, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(GatheringByteChannel,int);;Argument[-1];Argument[0];taint;manual"
 			GatheringByteChannel out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			in.readBytes(out, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(GatheringByteChannel,int);;Argument[-1];Argument[0];taint;manual"
 			GatheringByteChannel out = null;
 			ByteBuf in = (ByteBuf)source();
 			in.readBytes(out, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(GatheringByteChannel,int);;Argument[-1];Argument[0];taint;manual"
 			GatheringByteChannel out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			in.readBytes(out, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			OutputStream out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			in.readBytes(out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			OutputStream out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.readBytes(out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			OutputStream out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			in.readBytes(out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			OutputStream out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.readBytes(out, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			byte[] out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			in.readBytes(out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			byte[] out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			in.readBytes(out, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			byte[] out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.readBytes(out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			byte[] out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.readBytes(out, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			byte[] out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			in.readBytes(out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			byte[] out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			in.readBytes(out, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			byte[] out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.readBytes(out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			byte[] out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.readBytes(out, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			int out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			in.readBytes(out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			in.readBytes(out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];Argument[0];taint;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			in.readBytes(out);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.readBytes((ByteBuf)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.readBytes((ByteBuf)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.readBytes((ByteBuf)null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.readBytes((ByteBuffer)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(OutputStream,int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.readBytes((OutputStream)null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(OutputStream,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.readBytes((OutputStream)null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(OutputStream,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.readBytes((OutputStream)null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(OutputStream,int);;Argument[-1];ReturnValue;value;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.readBytes((OutputStream)null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[]);;Argument[-1];Argument[0];taint;manual"
+			byte[] out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			in.readBytes(out);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[]);;Argument[-1];Argument[0];taint;manual"
+			byte[] out = null;
+			ByteBuf in = (ByteBuf)source();
+			in.readBytes(out);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[]);;Argument[-1];Argument[0];taint;manual"
+			byte[] out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			in.readBytes(out);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[]);;Argument[-1];Argument[0];taint;manual"
+			byte[] out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			in.readBytes(out);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[]);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.readBytes((byte[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[]);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.readBytes((byte[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[]);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.readBytes((byte[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[]);;Argument[-1];ReturnValue;value;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.readBytes((byte[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[],int,int);;Argument[-1];Argument[0];taint;manual"
+			byte[] out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			in.readBytes(out, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[],int,int);;Argument[-1];Argument[0];taint;manual"
+			byte[] out = null;
+			ByteBuf in = (ByteBuf)source();
+			in.readBytes(out, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[],int,int);;Argument[-1];Argument[0];taint;manual"
+			byte[] out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			in.readBytes(out, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[],int,int);;Argument[-1];Argument[0];taint;manual"
+			byte[] out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			in.readBytes(out, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[],int,int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.readBytes((byte[])null, 0, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[],int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.readBytes((byte[])null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[],int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.readBytes((byte[])null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(byte[],int,int);;Argument[-1];ReturnValue;value;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.readBytes((byte[])null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;readBytes;(int);;Argument[-1];ReturnValue;taint;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.readBytes(0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.readBytes((ByteBuf)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.readBytes((ByteBuf)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.readBytes((ByteBuf)null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.readBytes((ByteBuffer)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.readBytes((OutputStream)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.readBytes((byte[])null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.readBytes((byte[])null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.readBytes(0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.readBytes((ByteBuf)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.readBytes((ByteBuf)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.readBytes((ByteBuf)null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.readBytes((ByteBuffer)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.readBytes((OutputStream)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.readBytes((byte[])null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.readBytes((byte[])null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.readBytes(0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			CompositeByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.readBytes((ByteBuf)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			CompositeByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.readBytes((ByteBuf)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			CompositeByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.readBytes((ByteBuf)null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			CompositeByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.readBytes((ByteBuffer)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			CompositeByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.readBytes((OutputStream)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			CompositeByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.readBytes((byte[])null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			CompositeByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.readBytes((byte[])null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.readBytes((FileChannel)null, 0L, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.readBytes((GatheringByteChannel)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.readBytes((FileChannel)null, 0L, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.readBytes((GatheringByteChannel)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.readBytes((FileChannel)null, 0L, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.readBytes((GatheringByteChannel)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;readChar;;;Argument[-1];ReturnValue;taint;manual"
-			char out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.readChar();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readChar;;;Argument[-1];ReturnValue;taint;manual"
-			char out = null;
+			// "io.netty.buffer;ByteBuf;true;readBytes;(int);;Argument[-1];ReturnValue;taint;manual"
+			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
-			out = in.readChar();
+			out = in.readBytes(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;readChar;;;Argument[-1];ReturnValue;taint;manual"
-			char out = null;
+			// "io.netty.buffer;ByteBuf;true;readBytes;(int);;Argument[-1];ReturnValue;taint;manual"
+			ByteBuf out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.readChar();
+			out = in.readBytes(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
@@ -1784,448 +1517,357 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;setByte;;;Argument[1];Argument[-1];taint;manual"
-			AbstractByteBuf out = null;
-			int in = (int)source();
-			out.setByte(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setByte;;;Argument[1];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			int in = (int)source();
-			out.setByte(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setByte;;;Argument[1];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			int in = (int)source();
-			out.setByte(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setByte;;;Argument[1];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			int in = (int)source();
-			out.setByte(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.setBytes(0, (ByteBuf)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.setBytes(0, (byte[])null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.setBytes(0, null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
 			out = in.setBytes(0, (ByteBuf)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.setBytes(0, (ByteBuf)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf);;Argument[-1];ReturnValue;value;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.setBytes(0, (ByteBuf)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf);;Argument[1];Argument[-1];taint;manual"
+			AbstractByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.setBytes(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf);;Argument[1];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.setBytes(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf);;Argument[1];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.setBytes(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf);;Argument[1];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.setBytes(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			out = in.setBytes(0, (ByteBuf)null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
 			out = in.setBytes(0, (ByteBuf)null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.setBytes(0, (ByteBuf)null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.setBytes(0, (ByteBuffer)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.setBytes(0, (byte[])null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.setBytes(0, (byte[])null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.setBytes(0, (ByteBuf)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			out = in.setBytes(0, (ByteBuf)null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.setBytes(0, (ByteBuf)null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.setBytes(0, (ByteBuffer)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.setBytes(0, (byte[])null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.setBytes(0, (byte[])null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			CompositeByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.setBytes(0, (ByteBuf)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.setBytes(0, (ByteBuf)null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int);;Argument[1];Argument[-1];taint;manual"
+			AbstractByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.setBytes(0, in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int);;Argument[1];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.setBytes(0, in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int);;Argument[1];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.setBytes(0, in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int);;Argument[1];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.setBytes(0, in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.setBytes(0, (ByteBuf)null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.setBytes(0, (ByteBuf)null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.setBytes(0, (ByteBuf)null, 0, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int,int);;Argument[1];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.setBytes(0, in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int,int);;Argument[1];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.setBytes(0, in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuf,int,int);;Argument[1];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.setBytes(0, in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuffer);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.setBytes(0, (ByteBuffer)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuffer);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.setBytes(0, (ByteBuffer)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuffer);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.setBytes(0, (ByteBuffer)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuffer);;Argument[1];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			ByteBuffer in = (ByteBuffer)source();
+			out.setBytes(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuffer);;Argument[1];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuffer in = (ByteBuffer)source();
+			out.setBytes(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ByteBuffer);;Argument[1];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			ByteBuffer in = (ByteBuffer)source();
+			out.setBytes(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,FileChannel,long,int);;Argument[1];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			FileChannel in = (FileChannel)source();
+			out.setBytes(0, in, 0L, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,FileChannel,long,int);;Argument[1];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			FileChannel in = (FileChannel)source();
+			out.setBytes(0, in, 0L, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,FileChannel,long,int);;Argument[1];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			FileChannel in = (FileChannel)source();
+			out.setBytes(0, in, 0L, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,InputStream,int);;Argument[1];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			InputStream in = (InputStream)source();
+			out.setBytes(0, in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,InputStream,int);;Argument[1];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			InputStream in = (InputStream)source();
+			out.setBytes(0, in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,InputStream,int);;Argument[1];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			InputStream in = (InputStream)source();
+			out.setBytes(0, in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ScatteringByteChannel,int);;Argument[1];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			ScatteringByteChannel in = (ScatteringByteChannel)source();
+			out.setBytes(0, in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ScatteringByteChannel,int);;Argument[1];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ScatteringByteChannel in = (ScatteringByteChannel)source();
+			out.setBytes(0, in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,ScatteringByteChannel,int);;Argument[1];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			ScatteringByteChannel in = (ScatteringByteChannel)source();
+			out.setBytes(0, in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[]);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			out = in.setBytes(0, (byte[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[]);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.setBytes(0, (byte[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[]);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.setBytes(0, (byte[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[]);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.setBytes(0, (byte[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[]);;Argument[1];Argument[-1];taint;manual"
+			AbstractByteBuf out = null;
+			byte[] in = (byte[])source();
+			out.setBytes(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[]);;Argument[1];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			byte[] in = (byte[])source();
+			out.setBytes(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[]);;Argument[1];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			byte[] in = (byte[])source();
+			out.setBytes(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[]);;Argument[1];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			byte[] in = (byte[])source();
+			out.setBytes(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[],int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.setBytes(0, (byte[])null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[],int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.setBytes(0, (byte[])null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[],int,int);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.setBytes(0, (byte[])null, 0, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.setBytes(0, (FileChannel)null, 0L, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.setBytes(0, (InputStream)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.setBytes(0, (ScatteringByteChannel)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.setBytes(0, (FileChannel)null, 0L, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.setBytes(0, (InputStream)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.setBytes(0, (ScatteringByteChannel)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.setBytes(0, (FileChannel)null, 0L, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.setBytes(0, (InputStream)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.setBytes(0, (ScatteringByteChannel)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			AbstractByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.setBytes(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			AbstractByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.setBytes(0, in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			AbstractByteBuf out = null;
-			byte[] in = (byte[])source();
-			out.setBytes(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.setBytes(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.setBytes(0, in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.setBytes(0, in, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			ByteBuffer in = (ByteBuffer)source();
-			out.setBytes(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			FileChannel in = (FileChannel)source();
-			out.setBytes(0, in, 0L, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			InputStream in = (InputStream)source();
-			out.setBytes(0, in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			ScatteringByteChannel in = (ScatteringByteChannel)source();
-			out.setBytes(0, in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			byte[] in = (byte[])source();
-			out.setBytes(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[],int,int);;Argument[1];Argument[-1];taint;manual"
 			ByteBuf out = null;
 			byte[] in = (byte[])source();
 			out.setBytes(0, in, 0, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.setBytes(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.setBytes(0, in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.setBytes(0, in, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			ByteBuffer in = (ByteBuffer)source();
-			out.setBytes(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			FileChannel in = (FileChannel)source();
-			out.setBytes(0, in, 0L, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			InputStream in = (InputStream)source();
-			out.setBytes(0, in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			ScatteringByteChannel in = (ScatteringByteChannel)source();
-			out.setBytes(0, in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			byte[] in = (byte[])source();
-			out.setBytes(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[],int,int);;Argument[1];Argument[-1];taint;manual"
 			CompositeByteBuf out = null;
 			byte[] in = (byte[])source();
 			out.setBytes(0, in, 0, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.setBytes(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.setBytes(0, in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.setBytes(0, in, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			ByteBuffer in = (ByteBuffer)source();
-			out.setBytes(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			FileChannel in = (FileChannel)source();
-			out.setBytes(0, in, 0L, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			InputStream in = (InputStream)source();
-			out.setBytes(0, in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			ScatteringByteChannel in = (ScatteringByteChannel)source();
-			out.setBytes(0, in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			byte[] in = (byte[])source();
-			out.setBytes(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setBytes;;;Argument[1];Argument[-1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;setBytes;(int,byte[],int,int);;Argument[1];Argument[-1];taint;manual"
 			SwappedByteBuf out = null;
 			byte[] in = (byte[])source();
 			out.setBytes(0, in, 0, 0);
@@ -2257,55 +1899,6 @@ public class Test {
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.setChar(0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setChar;;;Argument[1];Argument[-1];taint;manual"
-			AbstractByteBuf out = null;
-			int in = (int)source();
-			out.setChar(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setChar;;;Argument[1];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			int in = (int)source();
-			out.setChar(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setChar;;;Argument[1];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			int in = (int)source();
-			out.setChar(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setChar;;;Argument[1];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			int in = (int)source();
-			out.setChar(0, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setCharSequence;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.setCharSequence(0, null, null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setCharSequence;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.setCharSequence(0, null, null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;setCharSequence;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.setCharSequence(0, null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
@@ -2652,52 +2245,73 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;skipBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;skipBytes;(int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.skipBytes(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;skipBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;skipBytes;(int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
 			out = in.skipBytes(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;skipBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;skipBytes;(int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			out = in.skipBytes(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;skipBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;skipBytes;(int);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.skipBytes(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;slice;();;Argument[-1];ReturnValue;taint;manual"
+			// "io.netty.buffer;ByteBuf;true;slice;;;Argument[-1];ReturnValue;taint;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.slice();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;slice;();;Argument[-1];ReturnValue;taint;manual"
+			// "io.netty.buffer;ByteBuf;true;slice;;;Argument[-1];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			out = in.slice(0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;slice;;;Argument[-1];ReturnValue;taint;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
 			out = in.slice();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;slice;();;Argument[-1];ReturnValue;taint;manual"
+			// "io.netty.buffer;ByteBuf;true;slice;;;Argument[-1];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.slice(0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;slice;;;Argument[-1];ReturnValue;taint;manual"
 			ByteBuf out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			out = in.slice();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;slice;;;Argument[-1];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.slice(0, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
@@ -2848,462 +2462,399 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.writeBytes((ByteBuf)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.writeBytes((ByteBuf)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.writeBytes((ByteBuf)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf);;Argument[-1];ReturnValue;value;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.writeBytes((ByteBuf)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf);;Argument[0];Argument[-1];taint;manual"
+			AbstractByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.writeBytes(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf);;Argument[0];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.writeBytes(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf);;Argument[0];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.writeBytes(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf);;Argument[0];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.writeBytes(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			AbstractByteBuf in = (AbstractByteBuf)source();
 			out = in.writeBytes((ByteBuf)null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.writeBytes((ByteBuf)null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.writeBytes((ByteBuffer)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.writeBytes((byte[])null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.writeBytes((byte[])null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.writeBytes((ByteBuf)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
 			out = in.writeBytes((ByteBuf)null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.writeBytes((ByteBuf)null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.writeBytes((ByteBuffer)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.writeBytes((byte[])null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.writeBytes((byte[])null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.writeBytes((ByteBuf)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			out = in.writeBytes((ByteBuf)null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int);;Argument[-1];ReturnValue;value;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.writeBytes((ByteBuf)null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int);;Argument[0];Argument[-1];taint;manual"
+			AbstractByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.writeBytes(in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int);;Argument[0];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.writeBytes(in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int);;Argument[0];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.writeBytes(in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int);;Argument[0];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.writeBytes(in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			out = in.writeBytes((ByteBuf)null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.writeBytes((ByteBuf)null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
 			ByteBuf out = null;
 			SwappedByteBuf in = (SwappedByteBuf)source();
 			out = in.writeBytes((ByteBuf)null, 0, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.writeBytes((ByteBuffer)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.writeBytes((byte[])null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			ByteBuf out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.writeBytes((byte[])null, 0, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			CompositeByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.writeBytes((ByteBuf)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int,int);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.writeBytes((ByteBuf)null, 0, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int,int);;Argument[0];Argument[-1];taint;manual"
+			AbstractByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.writeBytes(in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int,int);;Argument[0];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.writeBytes(in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int,int);;Argument[0];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.writeBytes(in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuf,int,int);;Argument[0];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.writeBytes(in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuffer);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			out = in.writeBytes((ByteBuffer)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuffer);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.writeBytes((ByteBuffer)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuffer);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.writeBytes((ByteBuffer)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuffer);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.writeBytes((ByteBuffer)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuffer);;Argument[0];Argument[-1];taint;manual"
+			AbstractByteBuf out = null;
+			ByteBuffer in = (ByteBuffer)source();
+			out.writeBytes(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuffer);;Argument[0];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			ByteBuffer in = (ByteBuffer)source();
+			out.writeBytes(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuffer);;Argument[0];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuffer in = (ByteBuffer)source();
+			out.writeBytes(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ByteBuffer);;Argument[0];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			ByteBuffer in = (ByteBuffer)source();
+			out.writeBytes(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(FileChannel,long,int);;Argument[0];Argument[-1];taint;manual"
+			AbstractByteBuf out = null;
+			FileChannel in = (FileChannel)source();
+			out.writeBytes(in, 0L, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(FileChannel,long,int);;Argument[0];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			FileChannel in = (FileChannel)source();
+			out.writeBytes(in, 0L, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(FileChannel,long,int);;Argument[0];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			FileChannel in = (FileChannel)source();
+			out.writeBytes(in, 0L, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(InputStream,int);;Argument[0];Argument[-1];taint;manual"
+			AbstractByteBuf out = null;
+			InputStream in = (InputStream)source();
+			out.writeBytes(in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(InputStream,int);;Argument[0];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			InputStream in = (InputStream)source();
+			out.writeBytes(in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(InputStream,int);;Argument[0];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			InputStream in = (InputStream)source();
+			out.writeBytes(in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ScatteringByteChannel,int);;Argument[0];Argument[-1];taint;manual"
+			AbstractByteBuf out = null;
+			ScatteringByteChannel in = (ScatteringByteChannel)source();
+			out.writeBytes(in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ScatteringByteChannel,int);;Argument[0];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			ScatteringByteChannel in = (ScatteringByteChannel)source();
+			out.writeBytes(in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(ScatteringByteChannel,int);;Argument[0];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			ScatteringByteChannel in = (ScatteringByteChannel)source();
+			out.writeBytes(in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[]);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			out = in.writeBytes((byte[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[]);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.writeBytes((byte[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[]);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.writeBytes((byte[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[]);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.writeBytes((byte[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[]);;Argument[0];Argument[-1];taint;manual"
+			AbstractByteBuf out = null;
+			byte[] in = (byte[])source();
+			out.writeBytes(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[]);;Argument[0];Argument[-1];taint;manual"
+			ByteBuf out = null;
+			byte[] in = (byte[])source();
+			out.writeBytes(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[]);;Argument[0];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			byte[] in = (byte[])source();
+			out.writeBytes(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[]);;Argument[0];Argument[-1];taint;manual"
+			SwappedByteBuf out = null;
+			byte[] in = (byte[])source();
+			out.writeBytes(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[],int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			AbstractByteBuf in = (AbstractByteBuf)source();
+			out = in.writeBytes((byte[])null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[],int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = in.writeBytes((byte[])null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[],int,int);;Argument[-1];ReturnValue;value;manual"
+			ByteBuf out = null;
+			SwappedByteBuf in = (SwappedByteBuf)source();
+			out = in.writeBytes((byte[])null, 0, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[],int,int);;Argument[-1];ReturnValue;value;manual"
 			CompositeByteBuf out = null;
 			CompositeByteBuf in = (CompositeByteBuf)source();
 			out = in.writeBytes((byte[])null, 0, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			CompositeByteBuf out = null;
-			CompositeByteBuf in = (CompositeByteBuf)source();
-			out = in.writeBytes(null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.writeBytes((FileChannel)null, 0L, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.writeBytes((InputStream)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.writeBytes((ScatteringByteChannel)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.writeBytes((FileChannel)null, 0L, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.writeBytes((InputStream)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.writeBytes((ScatteringByteChannel)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.writeBytes((FileChannel)null, 0L, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.writeBytes((InputStream)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.writeBytes((ScatteringByteChannel)null, 0);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			AbstractByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.writeBytes(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			AbstractByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.writeBytes(in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			AbstractByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.writeBytes(in, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			AbstractByteBuf out = null;
-			ByteBuffer in = (ByteBuffer)source();
-			out.writeBytes(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			AbstractByteBuf out = null;
-			FileChannel in = (FileChannel)source();
-			out.writeBytes(in, 0L, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			AbstractByteBuf out = null;
-			InputStream in = (InputStream)source();
-			out.writeBytes(in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			AbstractByteBuf out = null;
-			ScatteringByteChannel in = (ScatteringByteChannel)source();
-			out.writeBytes(in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			AbstractByteBuf out = null;
-			byte[] in = (byte[])source();
-			out.writeBytes(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[],int,int);;Argument[0];Argument[-1];taint;manual"
 			AbstractByteBuf out = null;
 			byte[] in = (byte[])source();
 			out.writeBytes(in, 0, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.writeBytes(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.writeBytes(in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.writeBytes(in, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			ByteBuffer in = (ByteBuffer)source();
-			out.writeBytes(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			FileChannel in = (FileChannel)source();
-			out.writeBytes(in, 0L, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			InputStream in = (InputStream)source();
-			out.writeBytes(in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			ScatteringByteChannel in = (ScatteringByteChannel)source();
-			out.writeBytes(in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			ByteBuf out = null;
-			byte[] in = (byte[])source();
-			out.writeBytes(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[],int,int);;Argument[0];Argument[-1];taint;manual"
 			ByteBuf out = null;
 			byte[] in = (byte[])source();
 			out.writeBytes(in, 0, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.writeBytes(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.writeBytes(in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.writeBytes(in, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			ByteBuffer in = (ByteBuffer)source();
-			out.writeBytes(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			CompositeByteBuf out = null;
-			byte[] in = (byte[])source();
-			out.writeBytes(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[],int,int);;Argument[0];Argument[-1];taint;manual"
 			CompositeByteBuf out = null;
 			byte[] in = (byte[])source();
 			out.writeBytes(in, 0, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.writeBytes(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.writeBytes(in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			ByteBuf in = (ByteBuf)source();
-			out.writeBytes(in, 0, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			ByteBuffer in = (ByteBuffer)source();
-			out.writeBytes(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			FileChannel in = (FileChannel)source();
-			out.writeBytes(in, 0L, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			InputStream in = (InputStream)source();
-			out.writeBytes(in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			ScatteringByteChannel in = (ScatteringByteChannel)source();
-			out.writeBytes(in, 0);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
-			SwappedByteBuf out = null;
-			byte[] in = (byte[])source();
-			out.writeBytes(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeBytes;;;Argument[0];Argument[-1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;writeBytes;(byte[],int,int);;Argument[0];Argument[-1];taint;manual"
 			SwappedByteBuf out = null;
 			byte[] in = (byte[])source();
 			out.writeBytes(in, 0, 0);
@@ -3366,45 +2917,24 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeCharSequence;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			AbstractByteBuf in = (AbstractByteBuf)source();
-			out = in.writeCharSequence(null, null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeCharSequence;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			ByteBuf in = (ByteBuf)source();
-			out = in.writeCharSequence(null, null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeCharSequence;;;Argument[-1];ReturnValue;value;manual"
-			int out = null;
-			SwappedByteBuf in = (SwappedByteBuf)source();
-			out = in.writeCharSequence(null, null);
-			sink(out); // $ hasValueFlow
-		}
-		{
-			// "io.netty.buffer;ByteBuf;true;writeCharSequence;;;Argument[1];Argument[-1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;writeCharSequence;;;Argument[0];Argument[-1];taint;manual"
 			AbstractByteBuf out = null;
-			Charset in = (Charset)source();
-			out.writeCharSequence(null, in);
+			CharSequence in = (CharSequence)source();
+			out.writeCharSequence(in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeCharSequence;;;Argument[1];Argument[-1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;writeCharSequence;;;Argument[0];Argument[-1];taint;manual"
 			ByteBuf out = null;
-			Charset in = (Charset)source();
-			out.writeCharSequence(null, in);
+			CharSequence in = (CharSequence)source();
+			out.writeCharSequence(in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.buffer;ByteBuf;true;writeCharSequence;;;Argument[1];Argument[-1];taint;manual"
+			// "io.netty.buffer;ByteBuf;true;writeCharSequence;;;Argument[0];Argument[-1];taint;manual"
 			SwappedByteBuf out = null;
-			Charset in = (Charset)source();
-			out.writeCharSequence(null, in);
+			CharSequence in = (CharSequence)source();
+			out.writeCharSequence(in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
@@ -4283,63 +3813,63 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http.multipart;HttpPostMultipartRequestDecoder;true;HttpPostMultipartRequestDecoder;(HttpDataFactory,HttpRequest);;Argument[1];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http.multipart;HttpPostMultipartRequestDecoder;true;HttpPostMultipartRequestDecoder;(HttpDataFactory,HttpRequest);;Argument[1];Argument[-1];taint;manual"
 			HttpPostMultipartRequestDecoder out = null;
 			HttpRequest in = (HttpRequest)source();
 			out = new HttpPostMultipartRequestDecoder(null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http.multipart;HttpPostMultipartRequestDecoder;true;HttpPostMultipartRequestDecoder;(HttpDataFactory,HttpRequest,Charset);;Argument[1];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http.multipart;HttpPostMultipartRequestDecoder;true;HttpPostMultipartRequestDecoder;(HttpDataFactory,HttpRequest,Charset);;Argument[1];Argument[-1];taint;manual"
 			HttpPostMultipartRequestDecoder out = null;
 			HttpRequest in = (HttpRequest)source();
 			out = new HttpPostMultipartRequestDecoder(null, in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http.multipart;HttpPostMultipartRequestDecoder;true;HttpPostMultipartRequestDecoder;(HttpRequest);;Argument[0];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http.multipart;HttpPostMultipartRequestDecoder;true;HttpPostMultipartRequestDecoder;(HttpRequest);;Argument[0];Argument[-1];taint;manual"
 			HttpPostMultipartRequestDecoder out = null;
 			HttpRequest in = (HttpRequest)source();
 			out = new HttpPostMultipartRequestDecoder(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http.multipart;HttpPostRequestDecoder;true;HttpPostRequestDecoder;(HttpDataFactory,HttpRequest);;Argument[1];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http.multipart;HttpPostRequestDecoder;true;HttpPostRequestDecoder;(HttpDataFactory,HttpRequest);;Argument[1];Argument[-1];taint;manual"
 			HttpPostRequestDecoder out = null;
 			HttpRequest in = (HttpRequest)source();
 			out = new HttpPostRequestDecoder(null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http.multipart;HttpPostRequestDecoder;true;HttpPostRequestDecoder;(HttpDataFactory,HttpRequest,Charset);;Argument[1];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http.multipart;HttpPostRequestDecoder;true;HttpPostRequestDecoder;(HttpDataFactory,HttpRequest,Charset);;Argument[1];Argument[-1];taint;manual"
 			HttpPostRequestDecoder out = null;
 			HttpRequest in = (HttpRequest)source();
 			out = new HttpPostRequestDecoder(null, in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http.multipart;HttpPostRequestDecoder;true;HttpPostRequestDecoder;(HttpRequest);;Argument[0];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http.multipart;HttpPostRequestDecoder;true;HttpPostRequestDecoder;(HttpRequest);;Argument[0];Argument[-1];taint;manual"
 			HttpPostRequestDecoder out = null;
 			HttpRequest in = (HttpRequest)source();
 			out = new HttpPostRequestDecoder(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http.multipart;HttpPostStandardRequestDecoder;true;HttpPostStandardRequestDecoder;(HttpDataFactory,HttpRequest);;Argument[1];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http.multipart;HttpPostStandardRequestDecoder;true;HttpPostStandardRequestDecoder;(HttpDataFactory,HttpRequest);;Argument[1];Argument[-1];taint;manual"
 			HttpPostStandardRequestDecoder out = null;
 			HttpRequest in = (HttpRequest)source();
 			out = new HttpPostStandardRequestDecoder(null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http.multipart;HttpPostStandardRequestDecoder;true;HttpPostStandardRequestDecoder;(HttpDataFactory,HttpRequest,Charset);;Argument[1];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http.multipart;HttpPostStandardRequestDecoder;true;HttpPostStandardRequestDecoder;(HttpDataFactory,HttpRequest,Charset);;Argument[1];Argument[-1];taint;manual"
 			HttpPostStandardRequestDecoder out = null;
 			HttpRequest in = (HttpRequest)source();
 			out = new HttpPostStandardRequestDecoder(null, in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http.multipart;HttpPostStandardRequestDecoder;true;HttpPostStandardRequestDecoder;(HttpRequest);;Argument[0];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http.multipart;HttpPostStandardRequestDecoder;true;HttpPostStandardRequestDecoder;(HttpRequest);;Argument[0];Argument[-1];taint;manual"
 			HttpPostStandardRequestDecoder out = null;
 			HttpRequest in = (HttpRequest)source();
 			out = new HttpPostStandardRequestDecoder(in);
@@ -4886,70 +4416,70 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];Argument[-1];taint;manual"
 			QueryStringDecoder out = null;
 			String in = (String)source();
 			out = new QueryStringDecoder(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];Argument[-1];taint;manual"
 			QueryStringDecoder out = null;
 			String in = (String)source();
 			out = new QueryStringDecoder(in, (Charset)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];Argument[-1];taint;manual"
 			QueryStringDecoder out = null;
 			String in = (String)source();
 			out = new QueryStringDecoder(in, (Charset)null, false);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];Argument[-1];taint;manual"
 			QueryStringDecoder out = null;
 			String in = (String)source();
 			out = new QueryStringDecoder(in, (Charset)null, false, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];Argument[-1];taint;manual"
 			QueryStringDecoder out = null;
 			String in = (String)source();
 			out = new QueryStringDecoder(in, false);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];Argument[-1];taint;manual"
 			QueryStringDecoder out = null;
 			String in = (String)source();
 			out = new QueryStringDecoder(in, null, false, 0, false);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];Argument[-1];taint;manual"
 			QueryStringDecoder out = null;
 			URI in = (URI)source();
 			out = new QueryStringDecoder(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];Argument[-1];taint;manual"
 			QueryStringDecoder out = null;
 			URI in = (URI)source();
 			out = new QueryStringDecoder(in, (Charset)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];Argument[-1];taint;manual"
 			QueryStringDecoder out = null;
 			URI in = (URI)source();
 			out = new QueryStringDecoder(in, (Charset)null, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];ReturnValue;taint;manual"
+			// "io.netty.handler.codec.http;QueryStringDecoder;true;QueryStringDecoder;;;Argument[0];Argument[-1];taint;manual"
 			QueryStringDecoder out = null;
 			URI in = (URI)source();
 			out = new QueryStringDecoder(in, (Charset)null, 0, false);
