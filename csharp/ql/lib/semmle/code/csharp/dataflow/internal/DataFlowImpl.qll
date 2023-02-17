@@ -960,6 +960,17 @@ module Impl<FullStateConfigSig Config> {
   }
 
   /**
+   * Gets an additional term that is added to `branch` and `join` when deciding whether
+   * the amount of forward or backward branching is within the limit specified by the
+   * configuration.
+   */
+  pragma[nomagic]
+  private int getLanguageSpecificFlowIntoCallNodeCand1(ArgNodeEx arg, ParamNodeEx p) {
+    flowIntoCallNodeCand1(_, arg, p) and
+    result = getAdditionalFlowIntoCallNodeTerm(arg.projectToNode(), p.projectToNode())
+  }
+
+  /**
    * Gets the amount of forward branching on the origin of a cross-call path
    * edge in the graph of paths between sources and sinks that ignores call
    * contexts.
@@ -968,6 +979,7 @@ module Impl<FullStateConfigSig Config> {
   private int branch(NodeEx n1) {
     result =
       strictcount(NodeEx n | flowOutOfCallNodeCand1(_, n1, _, n) or flowIntoCallNodeCand1(_, n1, n))
+        + sum(ParamNodeEx p1 | | getLanguageSpecificFlowIntoCallNodeCand1(n1, p1))
   }
 
   /**
@@ -979,6 +991,7 @@ module Impl<FullStateConfigSig Config> {
   private int join(NodeEx n2) {
     result =
       strictcount(NodeEx n | flowOutOfCallNodeCand1(_, n, _, n2) or flowIntoCallNodeCand1(_, n, n2))
+        + sum(ArgNodeEx arg2 | | getLanguageSpecificFlowIntoCallNodeCand1(arg2, n2))
   }
 
   /**
