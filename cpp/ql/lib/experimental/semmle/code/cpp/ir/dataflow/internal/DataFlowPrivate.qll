@@ -565,3 +565,19 @@ private class MyConsistencyConfiguration extends Consistency::ConsistencyConfigu
     any()
   }
 }
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * `call` is a call with an argument `arg` that is part of a path from a source to a sink, and
+ * `p` is the target parameter of a callable to which `call` may resolve.
+ *
+ * All these values are bound by the dataflow library, and if this predicate is implemented it
+ * should be specified with a bindingset annotation that binds all the columns.
+ */
+bindingset[call, p, arg]
+int getAdditionalFlowIntoCallNodeTerm(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
+  none()
+}
