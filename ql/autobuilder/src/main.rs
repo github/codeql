@@ -19,6 +19,7 @@ fn main() -> std::io::Result<()> {
         .arg("--include-extension=.qll")
         .arg("--include-extension=.dbscheme")
         .arg("--include=**/qlpack.yml")
+        .arg("--include=deprecated.blame")
         .arg("--size-limit=5m")
         .arg("--language=ql")
         .arg("--working-dir=.")
