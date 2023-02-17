@@ -29,7 +29,8 @@ private class SmartPtr extends Class, PointerWrapper {
  * - `std::weak_ptr<T>::operator*()`
  */
 private class PointerUnwrapperFunction extends MemberFunction, TaintFunction, DataFlowFunction,
-  SideEffectFunction, AliasFunction {
+  SideEffectFunction, AliasFunction
+{
   PointerUnwrapperFunction() {
     exists(PointerWrapper wrapper | wrapper.getAnUnwrapperFunction() = this)
   }
