@@ -16,6 +16,11 @@ Type getRootSourceDeclaration(Type t) {
   else result = t
 }
 
+/** Gets the return type of the callable c, or the constructed tpe if it's a constructor */
+Type getReturnType(Callable c) {
+  if c instanceof Constructor then result = c.getDeclaringType() else result = c.getReturnType()
+}
+
 /**
  * Holds if type `t` does not clash with another type we want to import that has the same base name.
  */

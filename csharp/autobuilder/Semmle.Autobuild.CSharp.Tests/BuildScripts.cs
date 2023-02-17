@@ -145,6 +145,14 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         bool IBuildActions.IsWindows() => IsWindows;
 
+        public bool IsMacOs { get; set; }
+
+        bool IBuildActions.IsMacOs() => IsMacOs;
+
+        public bool IsArm { get; set; }
+
+        bool IBuildActions.IsArm() => IsArm;
+
         public string PathCombine(params string[] parts)
         {
             return string.Join(IsWindows ? '\\' : '/', parts.Where(p => !string.IsNullOrWhiteSpace(p)));

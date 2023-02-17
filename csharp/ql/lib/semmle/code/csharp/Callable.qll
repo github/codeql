@@ -435,8 +435,12 @@ class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @de
  * (`BinaryOperator`), or a conversion operator (`ConversionOperator`).
  */
 class Operator extends Callable, Member, Attributable, @operator {
-  /** Gets the assembly name of this operator. */
-  string getAssemblyName() { operators(this, result, _, _, _, _) }
+  /**
+   * DEPRECATED: use `getFunctionName()` instead.
+   *
+   * Gets the assembly name of this operator.
+   */
+  deprecated string getAssemblyName() { result = this.getFunctionName() }
 
   override string getName() { operators(this, _, result, _, _, _) }
 
@@ -445,7 +449,7 @@ class Operator extends Callable, Member, Attributable, @operator {
   /**
    * Gets the metadata name of the operator, such as `op_implicit` or `op_RightShift`.
    */
-  string getFunctionName() { none() }
+  string getFunctionName() { operators(this, result, _, _, _, _) }
 
   override ValueOrRefType getDeclaringType() { operators(this, _, _, result, _, _) }
 
@@ -481,10 +485,11 @@ class RecordCloneMethod extends Method, DotNet::RecordCloneCallable {
  * A user-defined unary operator - an operator taking one operand.
  *
  * Either a plus operator (`PlusOperator`), minus operator (`MinusOperator`),
- * not operator (`NotOperator`), complement operator (`ComplementOperator`),
- * true operator (`TrueOperator`), false operator (`FalseOperator`),
- * increment operator (`IncrementOperator`), or decrement operator
- * (`DecrementOperator`).
+ * checked minus operator (`CheckedMinusOperator`), not operator (`NotOperator`),
+ * complement operator (`ComplementOperator`), true operator (`TrueOperator`),
+ * false operator (`FalseOperator`), increment operator (`IncrementOperator`),
+ * checked increment operator (`CheckedIncrementOperator`), decrement operator
+ * (`DecrementOperator`) or checked decrement operator (`CheckedDecrementOperator`).
  */
 class UnaryOperator extends Operator {
   UnaryOperator() {
@@ -505,8 +510,6 @@ class UnaryOperator extends Operator {
 class PlusOperator extends UnaryOperator {
   PlusOperator() { this.getName() = "+" }
 
-  override string getFunctionName() { result = "op_UnaryPlus" }
-
   override string getAPrimaryQlClass() { result = "PlusOperator" }
 }
 
@@ -522,9 +525,22 @@ class PlusOperator extends UnaryOperator {
 class MinusOperator extends UnaryOperator {
   MinusOperator() { this.getName() = "-" }
 
-  override string getFunctionName() { result = "op_UnaryNegation" }
-
   override string getAPrimaryQlClass() { result = "MinusOperator" }
+}
+
+/**
+ * A user-defined checked minus operator (`-`), for example
+ *
+ * ```csharp
+ * public static Widget operator checked -(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedMinusOperator extends UnaryOperator {
+  CheckedMinusOperator() { this.getName() = "checked -" }
+
+  override string getAPrimaryQlClass() { result = "CheckedMinusOperator" }
 }
 
 /**
@@ -538,8 +554,6 @@ class MinusOperator extends UnaryOperator {
  */
 class NotOperator extends UnaryOperator {
   NotOperator() { this.getName() = "!" }
-
-  override string getFunctionName() { result = "op_LogicalNot" }
 
   override string getAPrimaryQlClass() { result = "NotOperator" }
 }
@@ -556,8 +570,6 @@ class NotOperator extends UnaryOperator {
 class ComplementOperator extends UnaryOperator {
   ComplementOperator() { this.getName() = "~" }
 
-  override string getFunctionName() { result = "op_OnesComplement" }
-
   override string getAPrimaryQlClass() { result = "ComplementOperator" }
 }
 
@@ -573,9 +585,22 @@ class ComplementOperator extends UnaryOperator {
 class IncrementOperator extends UnaryOperator {
   IncrementOperator() { this.getName() = "++" }
 
-  override string getFunctionName() { result = "op_Increment" }
-
   override string getAPrimaryQlClass() { result = "IncrementOperator" }
+}
+
+/**
+ * A user-defined checked increment operator (`++`), for example
+ *
+ * ```csharp
+ * public static Widget operator checked ++(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedIncrementOperator extends UnaryOperator {
+  CheckedIncrementOperator() { this.getName() = "checked ++" }
+
+  override string getAPrimaryQlClass() { result = "CheckedIncrementOperator" }
 }
 
 /**
@@ -590,9 +615,22 @@ class IncrementOperator extends UnaryOperator {
 class DecrementOperator extends UnaryOperator {
   DecrementOperator() { this.getName() = "--" }
 
-  override string getFunctionName() { result = "op_Decrement" }
-
   override string getAPrimaryQlClass() { result = "DecrementOperator" }
+}
+
+/**
+ * A user-defined checked decrement operator (`--`), for example
+ *
+ * ```csharp
+ * public static Widget operator checked --(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedDecrementOperator extends UnaryOperator {
+  CheckedDecrementOperator() { this.getName() = "checked --" }
+
+  override string getAPrimaryQlClass() { result = "CheckedDecrementOperator" }
 }
 
 /**
@@ -606,8 +644,6 @@ class DecrementOperator extends UnaryOperator {
  */
 class FalseOperator extends UnaryOperator {
   FalseOperator() { this.getName() = "false" }
-
-  override string getFunctionName() { result = "op_False" }
 
   override string getAPrimaryQlClass() { result = "FalseOperator" }
 }
@@ -624,17 +660,18 @@ class FalseOperator extends UnaryOperator {
 class TrueOperator extends UnaryOperator {
   TrueOperator() { this.getName() = "true" }
 
-  override string getFunctionName() { result = "op_True" }
-
   override string getAPrimaryQlClass() { result = "TrueOperator" }
 }
 
 /**
  * A user-defined binary operator.
  *
- * Either an addition operator (`AddOperator`), a subtraction operator
- * (`SubOperator`), a multiplication operator (`MulOperator`), a division
- * operator (`DivOperator`), a remainder operator (`RemOperator`), an and
+ * Either an addition operator (`AddOperator`), a checked addition operator
+ * (`CheckedAddOperator`) a subtraction operator (`SubOperator`), a checked
+ * substraction operator (`CheckedSubOperator`), a multiplication operator
+ * (`MulOperator`), a checked multiplication operator (`CheckedMulOperator`),
+ * a division operator (`DivOperator`), a checked division operator
+ * (`CheckedDivOperator`), a remainder operator (`RemOperator`), an and
  * operator (`AndOperator`), an or operator (`OrOperator`), an xor
  * operator (`XorOperator`), a left shift operator (`LeftShiftOperator`),
  * a right shift operator (`RightShiftOperator`), an unsigned right shift
@@ -659,9 +696,22 @@ class BinaryOperator extends Operator {
 class AddOperator extends BinaryOperator {
   AddOperator() { this.getName() = "+" }
 
-  override string getFunctionName() { result = "op_Addition" }
-
   override string getAPrimaryQlClass() { result = "AddOperator" }
+}
+
+/**
+ * A user-defined checked addition operator (`+`), for example
+ *
+ * ```csharp
+ * public static Widget operator checked +(Widget lhs, Widget rhs) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedAddOperator extends BinaryOperator {
+  CheckedAddOperator() { this.getName() = "checked +" }
+
+  override string getAPrimaryQlClass() { result = "CheckedAddOperator" }
 }
 
 /**
@@ -676,9 +726,22 @@ class AddOperator extends BinaryOperator {
 class SubOperator extends BinaryOperator {
   SubOperator() { this.getName() = "-" }
 
-  override string getFunctionName() { result = "op_Subtraction" }
-
   override string getAPrimaryQlClass() { result = "SubOperator" }
+}
+
+/**
+ * A user-defined checked subtraction operator (`-`), for example
+ *
+ * ```csharp
+ * public static Widget operator checked -(Widget lhs, Widget rhs) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedSubOperator extends BinaryOperator {
+  CheckedSubOperator() { this.getName() = "checked -" }
+
+  override string getAPrimaryQlClass() { result = "CheckedSubOperator" }
 }
 
 /**
@@ -693,9 +756,22 @@ class SubOperator extends BinaryOperator {
 class MulOperator extends BinaryOperator {
   MulOperator() { this.getName() = "*" }
 
-  override string getFunctionName() { result = "op_Multiply" }
-
   override string getAPrimaryQlClass() { result = "MulOperator" }
+}
+
+/**
+ * A user-defined checked multiplication operator (`*`), for example
+ *
+ * ```csharp
+ * public static Widget operator checked *(Widget lhs, Widget rhs) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedMulOperator extends BinaryOperator {
+  CheckedMulOperator() { this.getName() = "checked *" }
+
+  override string getAPrimaryQlClass() { result = "CheckedMulOperator" }
 }
 
 /**
@@ -710,9 +786,22 @@ class MulOperator extends BinaryOperator {
 class DivOperator extends BinaryOperator {
   DivOperator() { this.getName() = "/" }
 
-  override string getFunctionName() { result = "op_Division" }
-
   override string getAPrimaryQlClass() { result = "DivOperator" }
+}
+
+/**
+ * A user-defined checked division operator (`/`), for example
+ *
+ * ```csharp
+ * public static Widget operator checked /(Widget lhs, Widget rhs) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedDivOperator extends BinaryOperator {
+  CheckedDivOperator() { this.getName() = "checked /" }
+
+  override string getAPrimaryQlClass() { result = "CheckedDivOperator" }
 }
 
 /**
@@ -726,8 +815,6 @@ class DivOperator extends BinaryOperator {
  */
 class RemOperator extends BinaryOperator {
   RemOperator() { this.getName() = "%" }
-
-  override string getFunctionName() { result = "op_Modulus" }
 
   override string getAPrimaryQlClass() { result = "RemOperator" }
 }
@@ -744,8 +831,6 @@ class RemOperator extends BinaryOperator {
 class AndOperator extends BinaryOperator {
   AndOperator() { this.getName() = "&" }
 
-  override string getFunctionName() { result = "op_BitwiseAnd" }
-
   override string getAPrimaryQlClass() { result = "AndOperator" }
 }
 
@@ -760,8 +845,6 @@ class AndOperator extends BinaryOperator {
  */
 class OrOperator extends BinaryOperator {
   OrOperator() { this.getName() = "|" }
-
-  override string getFunctionName() { result = "op_BitwiseOr" }
 
   override string getAPrimaryQlClass() { result = "OrOperator" }
 }
@@ -778,8 +861,6 @@ class OrOperator extends BinaryOperator {
 class XorOperator extends BinaryOperator {
   XorOperator() { this.getName() = "^" }
 
-  override string getFunctionName() { result = "op_ExclusiveOr" }
-
   override string getAPrimaryQlClass() { result = "XorOperator" }
 }
 
@@ -794,8 +875,6 @@ class XorOperator extends BinaryOperator {
  */
 class LeftShiftOperator extends BinaryOperator {
   LeftShiftOperator() { this.getName() = "<<" }
-
-  override string getFunctionName() { result = "op_LeftShift" }
 
   override string getAPrimaryQlClass() { result = "LeftShiftOperator" }
 }
@@ -815,8 +894,6 @@ deprecated class LShiftOperator = LeftShiftOperator;
 class RightShiftOperator extends BinaryOperator {
   RightShiftOperator() { this.getName() = ">>" }
 
-  override string getFunctionName() { result = "op_RightShift" }
-
   override string getAPrimaryQlClass() { result = "RightShiftOperator" }
 }
 
@@ -835,8 +912,6 @@ deprecated class RShiftOperator = RightShiftOperator;
 class UnsignedRightShiftOperator extends BinaryOperator {
   UnsignedRightShiftOperator() { this.getName() = ">>>" }
 
-  override string getFunctionName() { result = "op_UnsignedRightShift" }
-
   override string getAPrimaryQlClass() { result = "UnsignedRightShiftOperator" }
 }
 
@@ -851,8 +926,6 @@ class UnsignedRightShiftOperator extends BinaryOperator {
  */
 class EQOperator extends BinaryOperator {
   EQOperator() { this.getName() = "==" }
-
-  override string getFunctionName() { result = "op_Equality" }
 
   override string getAPrimaryQlClass() { result = "EQOperator" }
 }
@@ -869,8 +942,6 @@ class EQOperator extends BinaryOperator {
 class NEOperator extends BinaryOperator {
   NEOperator() { this.getName() = "!=" }
 
-  override string getFunctionName() { result = "op_Inequality" }
-
   override string getAPrimaryQlClass() { result = "NEOperator" }
 }
 
@@ -885,8 +956,6 @@ class NEOperator extends BinaryOperator {
  */
 class LTOperator extends BinaryOperator {
   LTOperator() { this.getName() = "<" }
-
-  override string getFunctionName() { result = "op_LessThan" }
 
   override string getAPrimaryQlClass() { result = "LTOperator" }
 }
@@ -903,8 +972,6 @@ class LTOperator extends BinaryOperator {
 class GTOperator extends BinaryOperator {
   GTOperator() { this.getName() = ">" }
 
-  override string getFunctionName() { result = "op_GreaterThan" }
-
   override string getAPrimaryQlClass() { result = "GTOperator" }
 }
 
@@ -919,8 +986,6 @@ class GTOperator extends BinaryOperator {
  */
 class LEOperator extends BinaryOperator {
   LEOperator() { this.getName() = "<=" }
-
-  override string getFunctionName() { result = "op_LessThanOrEqual" }
 
   override string getAPrimaryQlClass() { result = "LEOperator" }
 }
@@ -937,8 +1002,6 @@ class LEOperator extends BinaryOperator {
 class GEOperator extends BinaryOperator {
   GEOperator() { this.getName() = ">=" }
 
-  override string getFunctionName() { result = "op_GreaterThanOrEqual" }
-
   override string getAPrimaryQlClass() { result = "GEOperator" }
 }
 
@@ -954,7 +1017,8 @@ class GEOperator extends BinaryOperator {
 class ConversionOperator extends Operator {
   ConversionOperator() {
     this.getName() = "implicit conversion" or
-    this.getName() = "explicit conversion"
+    this.getName() = "explicit conversion" or
+    this.getName() = "checked explicit conversion"
   }
 
   /** Gets the source type of the conversion. */
@@ -976,8 +1040,6 @@ class ConversionOperator extends Operator {
 class ImplicitConversionOperator extends ConversionOperator {
   ImplicitConversionOperator() { this.getName() = "implicit conversion" }
 
-  override string getFunctionName() { result = "op_Implicit" }
-
   override string getAPrimaryQlClass() { result = "ImplicitConversionOperator" }
 }
 
@@ -993,9 +1055,22 @@ class ImplicitConversionOperator extends ConversionOperator {
 class ExplicitConversionOperator extends ConversionOperator {
   ExplicitConversionOperator() { this.getName() = "explicit conversion" }
 
-  override string getFunctionName() { result = "op_Explicit" }
-
   override string getAPrimaryQlClass() { result = "ExplicitConversionOperator" }
+}
+
+/**
+ * A user-defined checked explicit conversion operator, for example
+ *
+ * ```csharp
+ * public static explicit operator checked int(BigInteger i) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedExplicitConversionOperator extends ConversionOperator {
+  CheckedExplicitConversionOperator() { this.getName() = "checked explicit conversion" }
+
+  override string getAPrimaryQlClass() { result = "CheckedExplicitConversionOperator" }
 }
 
 /**
