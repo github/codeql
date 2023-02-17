@@ -356,7 +356,7 @@ public class FileExtractor {
 
     /** Determine the {@link FileType} for a given file based on its extension only. */
     public static FileType forFileExtension(File f) {
-      String lcExt = StringUtil.lc(FileUtil.extension(f)); // TODO: Here, it doesn't recognize .html.erb files
+      String lcExt = StringUtil.lc(FileUtil.extension(f));
       for (FileType tp : values())
         if (tp.getExtensions().contains(lcExt)) {
           return tp;
