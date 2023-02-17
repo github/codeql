@@ -38,7 +38,7 @@ module ZipSlip {
   /**
    * A call to `Zlib::GzipReader.open(path)`, considered a flow source.
    */
-  class GzipReaderOpen extends Source {
+  private class GzipReaderOpen extends Source {
     GzipReaderOpen() {
       this = API::getTopLevelMember("Zlib").getMember("GzipReader").getReturn("open").asSource() and
       // If argument refers to a string object, then it's a hardcoded path and
@@ -54,7 +54,7 @@ module ZipSlip {
   /**
    * A call to `Gem::Package::TarReader.new(file_stream)`, considered a flow source.
    */
-  class TarReaderInstance extends Source {
+  private class TarReaderInstance extends Source {
     TarReaderInstance() {
       this =
         API::getTopLevelMember("Gem")
@@ -75,7 +75,7 @@ module ZipSlip {
   /**
    * A call to `Zip::File.open(path)`, considered a flow source.
    */
-  class ZipFileOpen extends Source {
+  private class ZipFileOpen extends Source {
     ZipFileOpen() {
       this = API::getTopLevelMember("Zip").getMember("File").getReturn("open").asSource() and
       // If argument refers to a string object, then it's a hardcoded path and
@@ -91,20 +91,20 @@ module ZipSlip {
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizer extends Sanitizer, StringConstCompareBarrier { }
+  private class StringConstCompareAsSanitizer extends Sanitizer, StringConstCompareBarrier { }
 
   /**
    * An inclusion check against an array of constant strings, considered as a
    * sanitizer-guard.
    */
-  class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
+  private class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
     StringConstArrayInclusionCallBarrier { }
 
   /**
    * A sanitizer like `File.expand_path(path).start_with?` where `path` is a path of a single entry inside the archive.
-   * It is assumed that if `File.expand_path` is called, it is to verify the path is safe so there's no modelling of `start_with?` or other comparisons to avoid false-negatives.
+   * It is assumed that if `File.expand_path` is called, it is to verify the path is safe so there's no modeling of `start_with?` or other comparisons to avoid false-negatives.
    */
-  class ExpandedPathStartsWithAsSanitizer extends Sanitizer {
+  private class ExpandedPathStartsWithAsSanitizer extends Sanitizer {
     ExpandedPathStartsWithAsSanitizer() {
       exists(DataFlow::CallNode cn |
         cn.getMethodName() = "expand_path" and
@@ -112,4 +112,10 @@ module ZipSlip {
       )
     }
   }
+
+
+  /**
+   * Existing PathSanitization model created for regular path traversals
+   */
+  private class PathSanitizationAsSanitizer extends Sanitizer instanceof Path::PathSanitization { }
 }
