@@ -13,15 +13,21 @@ import codeql_ql.ast.internal.TreeSitter
 
 date today() { result = any(Blame::BlameInfo b).getToday().getValue().toDate() }
 
+pragma[nomagic]
+Annotation getADeprecatedAnnotationAt(string filePath, int line) {
+  result.getLocation().getFile().getRelativePath() = filePath and
+  result.getLocation().getStartLine() = line and
+  result.getName() = "deprecated"
+}
+
 class DatedDeprecation extends Annotation {
   date lastModified;
 
   DatedDeprecation() {
     this.getName() = "deprecated" and
     exists(Blame::FileEntry f, Blame::BlameEntry b |
-      f.getFileName().getValue() = this.getLocation().getFile().getRelativePath() and
+      this = getADeprecatedAnnotationAt(f.getFileName().getValue(), b.getLine(_).getValue().toInt()) and
       f.getBlameEntry(_) = b and
-      b.getLine(_).getValue().toInt() = this.getLocation().getStartLine() and
       lastModified = b.getDate().getValue().toDate()
     )
   }
