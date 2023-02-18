@@ -1,3 +1,13 @@
+/**
+ * @name Outdated deprecation
+ * @description Deprecations that are over a year old should be removed.
+ * @kind problem
+ * @problem.severity warning
+ * @id ql/outdated-deprecation
+ * @tags maintainability
+ * @precision high
+ */
+
 import ql
 import codeql_ql.ast.internal.TreeSitter
 
