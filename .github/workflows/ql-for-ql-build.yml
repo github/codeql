@@ -34,7 +34,9 @@ jobs:
         id: cache-extractor
         uses: actions/cache@v3
         with:
-          path: ql/extractor-pack/
+          path: |
+            ql/extractor-pack/
+            ql/target/release/buramu
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-extractor-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('ql/**/*.rs') }}
       - name: Cache cargo
         if: steps.cache-extractor.outputs.cache-hit != 'true'
