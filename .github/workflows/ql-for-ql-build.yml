@@ -65,6 +65,7 @@ jobs:
           LGTM_INDEX_FILTERS: |
             exclude:ql/ql/test
             exclude:*/ql/lib/upgrades/
+            exclude:java/ql/integration-tests
       - name: Upload sarif to code-scanning
         uses: github/codeql-action/upload-sarif@v2
         with:
