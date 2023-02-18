@@ -2,7 +2,7 @@
  * @name Outdated deprecation
  * @description Deprecations that are over a year old should be removed.
  * @kind problem
- * @problem.severity warning
+ * @problem.severity recommendation
  * @id ql/outdated-deprecation
  * @tags maintainability
  * @precision high
@@ -32,9 +32,14 @@ class DatedDeprecation extends Annotation {
     )
   }
 
-  date getLastModified() { result = lastModified }
+  /** Gets how long ago this deprecation was added, in months. */
+  int getMonthsOld() {
+    exists(float month |
+      month = 365 / 12 and result = (lastModified.daysTo(today()) / month).floor()
+    )
+  }
 }
 
 from DatedDeprecation d
-where d.getLastModified().daysTo(today()) > 365
-select d, "This deprecation is over a year old."
+where d.getMonthsOld() >= 14
+select d, "This deprecation is over 14 months old."
