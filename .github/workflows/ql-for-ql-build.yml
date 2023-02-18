@@ -57,6 +57,7 @@ jobs:
           key: run-ql-for-ql
       - name: Make database and analyze
         run: |
+          ./ql/target/release/buramu > deprecated.blame # Add a blame file for the extractor to parse.
           ${CODEQL} database create -l=ql --search-path ql/extractor-pack ${DB}
           ${CODEQL} database analyze -j0 --format=sarif-latest --output=ql-for-ql.sarif ${DB} ql/ql/src/codeql-suites/ql-code-scanning.qls  --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
         env: 
