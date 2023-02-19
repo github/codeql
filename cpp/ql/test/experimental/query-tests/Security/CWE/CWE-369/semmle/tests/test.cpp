@@ -58,9 +58,9 @@ int badTestf3(int type, int met) {
   is = getSize(type);
   switch (met) {
   case 1:
-    if (is >= 0) return 123 / is; // BAD
+    if (is >= 0) return 123 / is; // BAD [NOT DETECTED]
   case 2:
-    if (0 == is) return 123 / is; // BAD
+    if (0 == is) return 123 / is; // BAD [NOT DETECTED]
   case 3:
     if (!is & 123 / is) // BAD
       return 123;
@@ -82,7 +82,7 @@ int badTestf3(int type, int met) {
   }
   if (is != 0) return -1;
   if (is == 0) type += 1;
-  return 123 / is; // BAD
+  return 123 / is; // BAD [NOT DETECTED]
 }
 
 int goodTestf3(int type, int met) {
@@ -207,7 +207,7 @@ int badTestf10(int type) {
 }
 int badTestf11(int type) {
   int is = getSize(type);
-  return 123 / (is - 3); // BAD 
+  return 123 / (is - 3); // BAD
 }
 
 int goodTestf11(int type) {
@@ -223,7 +223,7 @@ int badTestf12(FILE * f) {
   int a;
   int ret = -1;
   a = getc(f);
-  if (a == 0) ret = 123 / a; // BAD
+  if (a == 0) ret = 123 / a; // BAD [NOT DETECTED]
   return ret;
 }
 
