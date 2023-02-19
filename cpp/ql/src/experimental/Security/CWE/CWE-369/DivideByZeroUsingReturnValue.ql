@@ -122,10 +122,7 @@ predicate compareFunctionWithValue(Expr guardExp, Function compArg, Expr valArg)
 pragma[inline]
 predicate checkConditions1(Expr div, Function fn, float changeInt) {
   exists(Expr val |
-    (
-      val.getEnclosingFunction() = fn //or
-      //val.getEnclosingFunction() = div.getEnclosingFunction()
-    ) and
+    val.getEnclosingFunction() = fn and
     val.getValue().toFloat() = changeInt and
     compareFunctionWithValue(div, fn, val)
   )
