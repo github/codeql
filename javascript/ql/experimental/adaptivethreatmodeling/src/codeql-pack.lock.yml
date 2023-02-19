@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-02-18-14h29m16s.sweet-nail-slkv2064.39fc01d6bf147627292883e01088ecbf04b496a75f146824b28ade96576382e4
+compiled: false
