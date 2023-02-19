@@ -293,3 +293,13 @@ when g
 else
     foo
 end
+
+if foo != "foo"
+    foo = "bar"
+end
+
+foo # $ guarded
+
+foo = some_call()
+foo = "bar" unless foo == "foo"
+foo # $ guarded

@@ -9,6 +9,46 @@ private import codeql.ruby.ast.internal.Constant
 private import codeql.ruby.InclusionTests
 private import codeql.ruby.ast.internal.Literal
 
+/**
+ * A barrier guard for code of the form
+ * ```rb
+ * if x != "foo"
+ *   x = "bar"
+ * end
+ *
+ * x
+ * ```
+ *
+ * In this example the read of `x` on the last line is guarded by the `if` statement.
+ * This is because if `x == "foo"` then it has a constant value and is not considered tainted,
+ * and if `x != "foo"` then it is overwritten to the constant value `"bar"`.
+ *
+ * It would be nice to make this guard generic over the kind of test performed
+ * on `x`, but that is tricky because it affects what kind of overwrites we
+ * consider to be safe.
+ */
+cached
+private DataFlow::Node stringConstCompareAndOverwrite() {
+  exists(
+    CfgNodes::AstCfgNode guard, ExprCfgNode testedNode, boolean branch,
+    Ssa::WriteDefinition overwrite, Ssa::PhiNode phi
+  |
+    stringConstCompare(guard, testedNode, branch) and
+    overwrite.getSourceVariable() = testedNode.getExpr().(VariableReadAccess).getVariable() and
+    exists(ExprCfgNode value | overwrite.assigns(value) |
+      value.getConstantValue().isStringlikeValue(_)
+    ) and
+    // ConditionBlock.controls(overwrite.getBasicBlock(), branch.booleanNot()
+    exists(ConditionBlock conditionBlock, SuccessorTypes::ConditionalSuccessor s |
+      guard = conditionBlock.getLastNode() and
+      s.getValue() = branch.booleanNot() and
+      conditionBlock.controls(overwrite.getBasicBlock(), s)
+    ) and
+    phi.getAnInput() = overwrite and
+    result.asExpr() = phi.getARead()
+  )
+}
+
 cached
 private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch) {
   exists(CfgNodes::ExprNodes::ComparisonOperationCfgNode c |
@@ -72,7 +112,8 @@ private predicate stringConstCompareOr(
  */
 class StringConstCompareBarrier extends DataFlow::Node {
   StringConstCompareBarrier() {
-    this = DataFlow::BarrierGuard<stringConstCompare/3>::getABarrierNode()
+    this = DataFlow::BarrierGuard<stringConstCompare/3>::getABarrierNode() or
+    this = stringConstCompareAndOverwrite()
   }
 }
 
