@@ -557,6 +557,27 @@
 | nsmutabledata.swift:48:9:48:9 | SSA def(nsMutableDataTainted6) | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 |
 | nsmutabledata.swift:48:33:48:40 | call to source() | nsmutabledata.swift:48:9:48:9 | SSA def(nsMutableDataTainted6) |
 | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 | nsmutabledata.swift:49:15:49:37 | .mutableBytes |
+| simple.swift:12:13:12:13 | 1 | simple.swift:12:13:12:24 | ... .+(_:_:) ... |
+| simple.swift:12:17:12:24 | call to source() | simple.swift:12:13:12:24 | ... .+(_:_:) ... |
+| simple.swift:13:13:13:20 | call to source() | simple.swift:13:13:13:24 | ... .+(_:_:) ... |
+| simple.swift:13:24:13:24 | 1 | simple.swift:13:13:13:24 | ... .+(_:_:) ... |
+| simple.swift:14:13:14:13 | 1 | simple.swift:14:13:14:24 | ... .-(_:_:) ... |
+| simple.swift:14:17:14:24 | call to source() | simple.swift:14:13:14:24 | ... .-(_:_:) ... |
+| simple.swift:15:13:15:20 | call to source() | simple.swift:15:13:15:24 | ... .-(_:_:) ... |
+| simple.swift:15:24:15:24 | 1 | simple.swift:15:13:15:24 | ... .-(_:_:) ... |
+| simple.swift:16:13:16:13 | 2 | simple.swift:16:13:16:24 | ... .*(_:_:) ... |
+| simple.swift:16:17:16:24 | call to source() | simple.swift:16:13:16:24 | ... .*(_:_:) ... |
+| simple.swift:17:13:17:20 | call to source() | simple.swift:17:13:17:24 | ... .*(_:_:) ... |
+| simple.swift:17:24:17:24 | 2 | simple.swift:17:13:17:24 | ... .*(_:_:) ... |
+| simple.swift:18:13:18:13 | 100 | simple.swift:18:13:18:26 | ... ./(_:_:) ... |
+| simple.swift:18:19:18:26 | call to source() | simple.swift:18:13:18:26 | ... ./(_:_:) ... |
+| simple.swift:19:13:19:20 | call to source() | simple.swift:19:13:19:24 | ... ./(_:_:) ... |
+| simple.swift:19:24:19:24 | 100 | simple.swift:19:13:19:24 | ... ./(_:_:) ... |
+| simple.swift:20:13:20:13 | 100 | simple.swift:20:13:20:26 | ... .%(_:_:) ... |
+| simple.swift:20:19:20:26 | call to source() | simple.swift:20:13:20:26 | ... .%(_:_:) ... |
+| simple.swift:21:13:21:20 | call to source() | simple.swift:21:13:21:24 | ... .%(_:_:) ... |
+| simple.swift:21:24:21:24 | 100 | simple.swift:21:13:21:24 | ... .%(_:_:) ... |
+| simple.swift:23:14:23:21 | call to source() | simple.swift:23:13:23:21 | call to -(_:) |
 | simple.swift:36:7:36:7 | SSA def(a) | simple.swift:37:13:37:13 | a |
 | simple.swift:36:11:36:11 | 0 | simple.swift:36:7:36:7 | SSA def(a) |
 | simple.swift:37:13:37:13 | [post] a | simple.swift:38:3:38:3 | a |
