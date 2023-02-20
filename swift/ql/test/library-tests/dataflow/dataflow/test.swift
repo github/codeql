@@ -476,6 +476,6 @@ func testOptionalPropertyAccess(y: Int?) {
 }
 
 func testIdentityArithmetic() {
-  sink(arg: +source()) // $ MISSING: flow=479
+  sink(arg: +source()) // $ flow=479
   sink(arg: (source())) // $ flow=480
 }
