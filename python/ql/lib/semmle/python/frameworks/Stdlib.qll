@@ -2669,6 +2669,7 @@ private module StdlibPrivate {
 
     HashlibNewCall() {
       this = hashlibNewCall(hashName) and
+      // we only want to consider it as an cryptographic operation if the input is available
       exists(this.getParameter(1, "data"))
     }
 
@@ -2749,6 +2750,78 @@ private module StdlibPrivate {
       // in Python 3.9, you are allowed to use `hashlib.md5(string=<bytes-like>)`.
       result = this.getArgByName("string")
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // hmac
+  // ---------------------------------------------------------------------------
+  abstract class HmacCryptographicOperation extends Cryptography::CryptographicOperation::Range,
+    API::CallNode {
+    abstract API::Node getDigestArg();
+
+    override Cryptography::CryptographicAlgorithm getAlgorithm() {
+      exists(string algorithmName | result.matchesName(algorithmName) |
+        this.getDigestArg().asSink() = hashlibMember(algorithmName).asSource()
+        or
+        this.getDigestArg().getAValueReachingSink().asExpr().(StrConst).getText() = algorithmName
+      )
+    }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
+  }
+
+  API::CallNode getHmacConstructorCall(API::Node digestArg) {
+    result = API::moduleImport("hmac").getMember(["new", "HMAC"]).getACall() and
+    digestArg = result.getParameter(2, "digestmod")
+  }
+
+  /**
+   * A call to `hmac.new`/`hmac.HMAC`.
+   *
+   * See https://docs.python.org/3.11/library/hmac.html#hmac.new
+   */
+  class HmacNewCall extends HmacCryptographicOperation {
+    API::Node digestArg;
+
+    HmacNewCall() {
+      this = getHmacConstructorCall(digestArg) and
+      // we only want to consider it as an cryptographic operation if the input is available
+      exists(this.getParameter(1, "msg").asSink())
+    }
+
+    override API::Node getDigestArg() { result = digestArg }
+
+    override DataFlow::Node getAnInput() { result = this.getParameter(1, "msg").asSink() }
+  }
+
+  /**
+   * A call to `.update` on an HMAC object.
+   *
+   * See https://docs.python.org/3.11/library/hmac.html#hmac.HMAC.update
+   */
+  class HmacUpdateCall extends HmacCryptographicOperation {
+    API::Node digestArg;
+
+    HmacUpdateCall() {
+      this = getHmacConstructorCall(digestArg).getReturn().getMember("update").getACall()
+    }
+
+    override API::Node getDigestArg() { result = digestArg }
+
+    override DataFlow::Node getAnInput() { result = this.getParameter(0, "msg").asSink() }
+  }
+
+  /**
+   * A call to `hmac.digest`.
+   *
+   * See https://docs.python.org/3.11/library/hmac.html#hmac.digest
+   */
+  class HmacDigestCall extends HmacCryptographicOperation {
+    HmacDigestCall() { this = API::moduleImport("hmac").getMember("digest").getACall() }
+
+    override API::Node getDigestArg() { result = this.getParameter(2, "digest") }
+
+    override DataFlow::Node getAnInput() { result = this.getParameter(1, "msg").asSink() }
   }
 
   // ---------------------------------------------------------------------------
