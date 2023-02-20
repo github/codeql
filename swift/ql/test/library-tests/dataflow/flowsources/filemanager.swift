@@ -34,17 +34,17 @@ class FileManager : NSObject {
 func testFileHandle(fm: FileManager, url: URL, path: String) {
 	do
 	{
-		let contents1 = try fm.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) // SOURCE
-		let contents2 = try fm.contentsOfDirectory(atPath: path) // SOURCE
-		let contents3 = fm.directoryContents(atPath: path)! // SOURCE
+		let contents1 = try fm.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) // $ source=local
+		let contents2 = try fm.contentsOfDirectory(atPath: path) // $ source=local
+		let contents3 = fm.directoryContents(atPath: path)! // $ source=local
 
-		let subpaths1 = try fm.subpathsOfDirectory(atPath: path) // SOURCE
-		let subpaths2 = fm.subpaths(atPath: path)! // SOURCE
+		let subpaths1 = try fm.subpathsOfDirectory(atPath: path) // $ source=local
+		let subpaths2 = fm.subpaths(atPath: path)! // $ source=local
 
-		let link1 = try fm.destinationOfSymbolicLink(atPath: path) // SOURCE
-		let link2 = fm.pathContentOfSymbolicLink(atPath: path)! // SOURCE
+		let link1 = try fm.destinationOfSymbolicLink(atPath: path) // $ source=local
+		let link2 = fm.pathContentOfSymbolicLink(atPath: path)! // $ source=local
 
-		let data = fm.contents(atPath: path)! // SOURCE
+		let data = fm.contents(atPath: path)! // $ source=local
 	} catch {
 		// ...
 	}

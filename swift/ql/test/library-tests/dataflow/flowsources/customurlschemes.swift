@@ -1,4 +1,5 @@
 // --- stubs ---
+
 class UIApplication {
     struct OpenURLOptionsKey : Hashable {
         static func == (lhs: OpenURLOptionsKey, rhs: OpenURLOptionsKey) -> Bool {
@@ -50,41 +51,41 @@ protocol UISceneDelegate {
 // --- tests ---
 
 class AppDelegate: UIApplicationDelegate {
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool { // SOURCE
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool { // $ source=remote
         return true
     }
 
-    func application(_ application: UIApplication, handleOpen url: URL) -> Bool { // SOURCE
+    func application(_ application: UIApplication, handleOpen url: URL) -> Bool { // $ source=remote
         return true
     }
 
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool { // SOURCE
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool { // $ source=remote
         return true
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
-        launchOptions?[.url] // SOURCE
+        launchOptions?[.url] // $ source=remote
         return true
     }
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
-        launchOptions?[.url] // SOURCE
+        launchOptions?[.url] // $ source=remote
         return true
     }
 }
 
 class SceneDelegate : UISceneDelegate {
-    func scene(_: UIScene, willConnectTo: UISceneSession, options: UIScene.ConnectionOptions) {} // SOURCE
-    func scene(_: UIScene, continue: NSUserActivity) {} // SOURCE
-    func scene(_: UIScene, didUpdate: NSUserActivity) {} // SOURCE
-    func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>) {} // SOURCE
+    func scene(_: UIScene, willConnectTo: UISceneSession, options: UIScene.ConnectionOptions) {} // $ source=remote
+    func scene(_: UIScene, continue: NSUserActivity) {} // $ source=remote
+    func scene(_: UIScene, didUpdate: NSUserActivity) {} // $ source=remote
+    func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>) {} // $ source=remote
 }
 
 class Extended {}
 
 extension Extended : UISceneDelegate {
-    func scene(_: UIScene, willConnectTo: UISceneSession, options: UIScene.ConnectionOptions) {} // SOURCE
-    func scene(_: UIScene, continue: NSUserActivity) {} // SOURCE
-    func scene(_: UIScene, didUpdate: NSUserActivity) {} // SOURCE
-    func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>) {} // SOURCE
+    func scene(_: UIScene, willConnectTo: UISceneSession, options: UIScene.ConnectionOptions) {} // $ source=remote
+    func scene(_: UIScene, continue: NSUserActivity) {} // $ source=remote
+    func scene(_: UIScene, didUpdate: NSUserActivity) {} // $ source=remote
+    func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>) {} // $ source=remote
 }

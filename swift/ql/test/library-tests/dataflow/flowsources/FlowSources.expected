@@ -17,19 +17,19 @@
 | alamofire.swift:448:20:448:49 | call to String.init(contentsOfFile:) | external |
 | alamofire.swift:455:23:455:32 | .data | external |
 | alamofire.swift:461:23:461:32 | .data | external |
-| customurlschemes.swift:53:44:53:54 | url | external |
-| customurlschemes.swift:57:52:57:68 | url | external |
-| customurlschemes.swift:61:52:61:62 | url | external |
-| customurlschemes.swift:66:9:66:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
-| customurlschemes.swift:71:9:71:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
-| customurlschemes.swift:77:59:77:76 | options | external |
-| customurlschemes.swift:78:28:78:38 | continue | external |
-| customurlschemes.swift:79:28:79:39 | didUpdate | external |
-| customurlschemes.swift:80:28:80:65 | openURLContexts | external |
-| customurlschemes.swift:86:59:86:76 | options | external |
-| customurlschemes.swift:87:28:87:38 | continue | external |
-| customurlschemes.swift:88:28:88:39 | didUpdate | external |
-| customurlschemes.swift:89:28:89:65 | openURLContexts | external |
+| customurlschemes.swift:54:44:54:54 | url | external |
+| customurlschemes.swift:58:52:58:68 | url | external |
+| customurlschemes.swift:62:52:62:62 | url | external |
+| customurlschemes.swift:67:9:67:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
+| customurlschemes.swift:72:9:72:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
+| customurlschemes.swift:78:59:78:76 | options | external |
+| customurlschemes.swift:79:28:79:38 | continue | external |
+| customurlschemes.swift:80:28:80:39 | didUpdate | external |
+| customurlschemes.swift:81:28:81:65 | openURLContexts | external |
+| customurlschemes.swift:87:59:87:76 | options | external |
+| customurlschemes.swift:88:28:88:38 | continue | external |
+| customurlschemes.swift:89:28:89:39 | didUpdate | external |
+| customurlschemes.swift:90:28:90:65 | openURLContexts | external |
 | data.swift:18:20:18:54 | call to Data.init(contentsOf:options:) | external |
 | file://:0:0:0:0 | .data | external |
 | file://:0:0:0:0 | .result | external |
