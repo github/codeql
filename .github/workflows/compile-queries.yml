@@ -24,14 +24,14 @@ jobs:
         with: 
           key: all-queries
       - name: check formatting
-        run: find */ql -type f \( -name "*.qll" -o -name "*.ql" \) -print0 | xargs -0 codeql query format --check-only
+        run: find */ql -type f \( -name "*.qll" -o -name "*.ql" \) -print0 | xargs -0 -n 3000 -P 10 codeql query format -q --check-only
       - name: compile queries - check-only
         # run with --check-only if running in a PR (github.sha != main)
         if : ${{ github.event_name == 'pull_request' }}
         shell: bash
-        run: codeql query compile -j0 */ql/{src,examples} --keep-going --warnings=error --check-only --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+        run: codeql query compile -q -j0 */ql/{src,examples} --keep-going --warnings=error --check-only --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
       - name: compile queries - full
         # do full compile if running on main - this populates the cache
         if : ${{ github.event_name != 'pull_request' }}
         shell: bash
-        run: codeql query compile -j0 */ql/{src,examples} --keep-going --warnings=error --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+        run: codeql query compile -q -j0 */ql/{src,examples} --keep-going --warnings=error --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"

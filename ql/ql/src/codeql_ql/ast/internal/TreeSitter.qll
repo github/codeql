@@ -1743,3 +1743,116 @@ module Yaml {
     final override AstNode getAFieldOrChild() { yaml_yaml_child(this, _, result) }
   }
 }
+
+module Blame {
+  /** The base class for all AST nodes */
+  class AstNode extends @blame_ast_node {
+    /** Gets a string representation of this element. */
+    string toString() { result = this.getAPrimaryQlClass() }
+
+    /** Gets the location of this element. */
+    final L::Location getLocation() { blame_ast_node_info(this, _, _, result) }
+
+    /** Gets the parent of this element. */
+    final AstNode getParent() { blame_ast_node_info(this, result, _, _) }
+
+    /** Gets the index of this node among the children of its parent. */
+    final int getParentIndex() { blame_ast_node_info(this, _, result, _) }
+
+    /** Gets a field or child node of this node. */
+    AstNode getAFieldOrChild() { none() }
+
+    /** Gets the name of the primary QL class for this element. */
+    string getAPrimaryQlClass() { result = "???" }
+
+    /** Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs. */
+    string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
+  }
+
+  /** A token. */
+  class Token extends @blame_token, AstNode {
+    /** Gets the value of this token. */
+    final string getValue() { blame_tokeninfo(this, _, result) }
+
+    /** Gets a string representation of this element. */
+    final override string toString() { result = this.getValue() }
+
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "Token" }
+  }
+
+  /** A reserved word. */
+  class ReservedWord extends @blame_reserved_word, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ReservedWord" }
+  }
+
+  /** A class representing `blame_entry` nodes. */
+  class BlameEntry extends @blame_blame_entry, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "BlameEntry" }
+
+    /** Gets the node corresponding to the field `date`. */
+    final Date getDate() { blame_blame_entry_def(this, result) }
+
+    /** Gets the node corresponding to the field `line`. */
+    final Number getLine(int i) { blame_blame_entry_line(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      blame_blame_entry_def(this, result) or blame_blame_entry_line(this, _, result)
+    }
+  }
+
+  /** A class representing `blame_info` nodes. */
+  class BlameInfo extends @blame_blame_info, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "BlameInfo" }
+
+    /** Gets the node corresponding to the field `file_entry`. */
+    final FileEntry getFileEntry(int i) { blame_blame_info_file_entry(this, i, result) }
+
+    /** Gets the node corresponding to the field `today`. */
+    final Date getToday() { blame_blame_info_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      blame_blame_info_file_entry(this, _, result) or blame_blame_info_def(this, result)
+    }
+  }
+
+  /** A class representing `date` tokens. */
+  class Date extends @blame_token_date, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Date" }
+  }
+
+  /** A class representing `file_entry` nodes. */
+  class FileEntry extends @blame_file_entry, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "FileEntry" }
+
+    /** Gets the node corresponding to the field `blame_entry`. */
+    final BlameEntry getBlameEntry(int i) { blame_file_entry_blame_entry(this, i, result) }
+
+    /** Gets the node corresponding to the field `file_name`. */
+    final Filename getFileName() { blame_file_entry_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      blame_file_entry_blame_entry(this, _, result) or blame_file_entry_def(this, result)
+    }
+  }
+
+  /** A class representing `filename` tokens. */
+  class Filename extends @blame_token_filename, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Filename" }
+  }
+
+  /** A class representing `number` tokens. */
+  class Number extends @blame_token_number, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Number" }
+  }
+}
