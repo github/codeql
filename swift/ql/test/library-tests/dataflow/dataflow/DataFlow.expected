@@ -324,6 +324,7 @@ nodes
 | test.swift:472:20:472:20 | cx [x] :  | semmle.label | cx [x] :  |
 | test.swift:472:20:472:23 | .x :  | semmle.label | .x :  |
 | test.swift:473:15:473:15 | z1 | semmle.label | z1 |
+| test.swift:480:14:480:21 | call to source() | semmle.label | call to source() |
 subpaths
 | test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | arg1 :  | test.swift:65:1:70:1 | arg2[return] :  | test.swift:75:31:75:32 | [post] &... :  |
 | test.swift:114:19:114:19 | arg :  | test.swift:109:9:109:14 | arg :  | test.swift:110:12:110:12 | arg :  | test.swift:114:12:114:22 | call to ... :  |
@@ -408,3 +409,4 @@ subpaths
 | test.swift:361:15:361:18 | .1 | test.swift:351:31:351:38 | call to source() :  | test.swift:361:15:361:18 | .1 | result |
 | test.swift:442:19:442:19 | a | test.swift:259:12:259:19 | call to source() :  | test.swift:442:19:442:19 | a | result |
 | test.swift:473:15:473:15 | z1 | test.swift:259:12:259:19 | call to source() :  | test.swift:473:15:473:15 | z1 | result |
+| test.swift:480:14:480:21 | call to source() | test.swift:480:14:480:21 | call to source() | test.swift:480:14:480:21 | call to source() | result |

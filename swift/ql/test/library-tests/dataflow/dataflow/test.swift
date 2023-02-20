@@ -474,3 +474,8 @@ func testOptionalPropertyAccess(y: Int?) {
     guard let z2 = cy.x else { return }
     sink(arg: z2)
 }
+
+func testIdentityArithmetic() {
+  sink(arg: +source()) // $ MISSING: flow=479
+  sink(arg: (source())) // $ flow=480
+}
