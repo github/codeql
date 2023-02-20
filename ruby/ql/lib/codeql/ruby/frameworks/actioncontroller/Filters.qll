@@ -35,6 +35,17 @@ module Filters {
     }
   }
 
+  bindingset[call]
+  pragma[inline_late]
+  private ActionControllerActionMethod getADescendentAction(MethodCallCfgNode call) {
+    result = call.getExpr().getEnclosingModule().getAMethod()
+    or
+    exists(ModuleBase m |
+      m.getModule() = call.getExpr().getEnclosingModule().getModule().getAnImmediateDescendent+() and
+      result = m.getAMethod()
+    )
+  }
+
   /**
    * A call to a class method that adds or removes a filter from the callback chain.
    * This class exists to encapsulate common behavior between calls that
@@ -65,14 +76,7 @@ module Filters {
         not exists(this.getOnlyArgument()) and
         forall(string except | except = this.getExceptArgument() | result.getName() != except)
       ) and
-      (
-        result = this.getExpr().getEnclosingModule().getAMethod()
-        or
-        exists(ModuleBase m |
-          m.getModule() = this.getExpr().getEnclosingModule().getModule().getADescendent() and
-          result = m.getAMethod()
-        )
-      )
+      result = getADescendentAction(this)
     }
 
     private string getOnlyArgument() {
