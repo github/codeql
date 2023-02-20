@@ -6,6 +6,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
+private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.java.dataflow.TaintTracking
 
 pragma[nomagic]
@@ -91,8 +92,14 @@ class ExternalApi extends Callable {
   pragma[nomagic]
   predicate isSink() { sinkNode(this.getAnInput(), _) }
 
+  /** Holds if this API is a known neutral. */
+  pragma[nomagic]
+  predicate isNeutral() { this = any(FlowSummaryImpl::Public::NeutralCallable nsc).asCallable() }
+
   /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
-  predicate isSupported() { this.hasSummary() or this.isSource() or this.isSink() }
+  predicate isSupported() {
+    this.hasSummary() or this.isSource() or this.isSink() or this.isNeutral()
+  }
 }
 
 /** DEPRECATED: Alias for ExternalApi */
