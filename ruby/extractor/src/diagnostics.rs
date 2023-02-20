@@ -200,15 +200,19 @@ impl DiagnosticLoggers {
 }
 
 fn longest_backtick_sequence_length(text: &str) -> usize {
+    let mut result = 0;
     let mut count = 0;
     for c in text.chars() {
         if c == '`' {
             count += 1;
         } else {
+            if count > result {
+                result = count;
+            }
             count = 0;
         }
     }
-    count
+    result
 }
 impl DiagnosticMessage {
     pub fn full_error_message(&self) -> String {
@@ -326,7 +330,10 @@ fn test_message() {
     let mut m = DiagnosticLoggers::new("foo")
         .logger()
         .new_entry("id", "name");
-    m.message("hello with backticks: {}", &["`hello`"]);
-    assert_eq!("hello with backticks: `hello`", m.plaintext_message);
-    assert_eq!("hello with backticks: `` `hello` ``", m.markdown_message);
+    m.message("hello with backticks: {}", &["oh `hello`!"]);
+    assert_eq!("hello with backticks: oh `hello`!", m.plaintext_message);
+    assert_eq!(
+        "hello with backticks: `` oh `hello`! ``",
+        m.markdown_message
+    );
 }
