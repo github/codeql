@@ -65,14 +65,13 @@ module Filters {
         not exists(this.getOnlyArgument()) and
         forall(string except | except = this.getExceptArgument() | result.getName() != except)
       ) and
-      // This is a simple heuristic and will miss some cases.
       (
-        // The action is in the same class as this call
-        result = lookupMethod(this.getExpr().getEnclosingModule().getModule(), _)
+        result = this.getExpr().getEnclosingModule().getAMethod()
         or
-        // or the action is in an immediate subclass of this call
-        result.getEnclosingModule().getModule().getAnImmediateAncestor() =
-          this.getExpr().getEnclosingModule().getModule()
+        exists(ModuleBase m |
+          m.getModule() = this.getExpr().getEnclosingModule().getModule().getADescendent() and
+          result = m.getAMethod()
+        )
       )
     }
 
