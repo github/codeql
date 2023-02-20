@@ -21,8 +21,8 @@ class MyView(MethodView):
 
 the_view = MyView.as_view('my_view')
 
-app.add_url_rule('/the/', defaults={'user_id': None},  # $routeSetup="/the/"
-                 view_func=the_view, methods=['GET',])
+app.add_url_rule('/the/', defaults={'user_id': None},
+                 view_func=the_view, methods=['GET',]) # $routeSetup="/the/"
 
 @app.route("/dangerous")  # $routeSetup="/dangerous"
 def dangerous():  # $requestHandler
