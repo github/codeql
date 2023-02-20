@@ -3,5 +3,5 @@ import codeql.swift.dataflow.FlowSources
 import codeql.swift.dataflow.ExternalFlow
 import FlowConfig
 
-from RemoteFlowSource source
+from FlowSource source
 select source, concat(source.getSourceType(), ", ")
