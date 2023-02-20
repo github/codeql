@@ -9,7 +9,7 @@ inputs:
 outputs:
   cache-dir:
     description: "The directory where the cache was stored"
-    value: ${{ steps.fill-compilation-dir.outputs.compdir }}
+    value: ${{ steps.output-compilation-dir.outputs.compdir }}
 
 runs:
   using: composite
@@ -42,7 +42,15 @@ runs:
         restore-keys: | # restore the latest cache if the exact cache is unavailable, to speed up compilation.
           codeql-compile-${{ inputs.key }}-${{ github.ref_name }}-
           codeql-compile-${{ inputs.key }}-main-
+    - name: Output-compilationdir
+      id: output-compilation-dir
+      shell: bash
+      run: |
+        echo "compdir=${COMBINED_CACHE_DIR}" >> $GITHUB_OUTPUT
+      env:
+        COMBINED_CACHE_DIR: ${{ runner.temp }}/compilation-dir
     - name: Fill compilation cache directory
+      id: fill-compilation-dir
       uses: actions/github-script@v6
       env: 
         COMBINED_CACHE_DIR: ${{ runner.temp }}/compilation-dir
