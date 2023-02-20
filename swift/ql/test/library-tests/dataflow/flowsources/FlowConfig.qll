@@ -34,6 +34,3 @@ class CustomTestSourcesCsv extends SourceModelCsv {
       ]
   }
 }
-
-from RemoteFlowSource source
-select source, concat(source.getSourceType(), ", ")
