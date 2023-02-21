@@ -1,0 +1,2 @@
+| assignment.swift:6:2:6:6 |  ... = ... | AssignExpr | x | 1 |
+| assignment.swift:33:2:33:6 |  ... = ... | AssignExpr | y | z |
