@@ -11,6 +11,8 @@ namespace Semmle.Autobuild.CSharp
     /// </summary>
     public class MissingXamarinSdkRule : DiagnosticRule
     {
+        private const string docsUrl = "https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-xamarin-applications";
+
         public class Result : IDiagnosticsResult
         {
             /// <summary>
@@ -29,7 +31,7 @@ namespace Semmle.Autobuild.CSharp
                     $"missing-xamarin-{this.SDKName.ToLower()}-sdk",
                     $"Missing Xamarin SDK for {this.SDKName}"
                 );
-                diag.PlaintextMessage = "Please install this SDK before running CodeQL.";
+                diag.MarkdownMessage = $"Please [configure your workflow]({docsUrl}) for this SDK before running CodeQL.";
 
                 return diag;
             }
