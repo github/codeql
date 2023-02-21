@@ -31,7 +31,7 @@ namespace Semmle.Autobuild.CSharp
                     $"missing-xamarin-{this.SDKName.ToLower()}-sdk",
                     $"Missing Xamarin SDK for {this.SDKName}"
                 );
-                diag.MarkdownMessage = $"Please [configure your workflow]({docsUrl}) for this SDK before running CodeQL.";
+                diag.MarkdownMessage = $"[Configure your workflow]({docsUrl}) for this SDK before running CodeQL.";
 
                 return diag;
             }
