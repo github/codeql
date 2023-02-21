@@ -31,6 +31,9 @@ namespace Semmle.Autobuild.CSharp
 
     public class CSharpAutobuilder : Autobuilder<CSharpAutobuildOptions>
     {
+        private const string buildCommandDocsUrl =
+            "https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages";
+
         private DotNetRule? dotNetRule;
 
         private MsBuildRule? msBuildRule;
@@ -150,7 +153,7 @@ namespace Semmle.Autobuild.CSharp
                         "CodeQL found multiple potential build scripts for your project and " +
                         $"attempted to run `{buildCommandAutoRule.ScriptPath}`, which failed. " +
                         "This may not be the right build script for your project. " +
-                        "You can specify which build script to use by providing a suitable build command for your project.";
+                        $"Set up a [manual build command]({buildCommandDocsUrl}).";
                 }
                 else
                 {
@@ -158,7 +161,7 @@ namespace Semmle.Autobuild.CSharp
                     message.MarkdownMessage =
                         "CodeQL attempted to build your project using a script located at " +
                         $"`{buildCommandAutoRule.ScriptPath}`, which failed. " +
-                        "You can manually specify a suitable build command for your project.";
+                        $"Set up a [manual build command]({buildCommandDocsUrl}).";
                 }
 
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
@@ -172,7 +175,7 @@ namespace Semmle.Autobuild.CSharp
                 var message = MakeDiagnostic("no-projects-or-solutions", "No project or solutions files found");
                 message.PlaintextMessage =
                     "CodeQL could not find any project or solution files in your repository. " +
-                    "You can manually specify a suitable build command for your project.";
+                    $"Set up a [manual build command]({buildCommandDocsUrl}).";
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
 
                 AddDiagnostic(message);
@@ -195,8 +198,7 @@ namespace Semmle.Autobuild.CSharp
                 message.MarkdownMessage =
                     "CodeQL was unable to build the following projects using .NET Core:\n" +
                     string.Join('\n', dotNetRule.FailedProjectsOrSolutions.Select(p => $"- `{p.FullPath}`")) +
-                    "\nYou can manually specify a suitable build command for your project to exclude these projects " +
-                    "or to ensure that they can be built successfully.";
+                    $"\nSet up a [manual build command]({buildCommandDocsUrl}).";
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
 
                 AddDiagnostic(message);
@@ -209,8 +211,7 @@ namespace Semmle.Autobuild.CSharp
                 message.MarkdownMessage =
                     "CodeQL was unable to build the following projects using MSBuild:\n" +
                     string.Join('\n', msBuildRule.FailedProjectsOrSolutions.Select(p => $"- `{p.FullPath}`")) +
-                    "\nYou can manually specify a suitable build command for your project to exclude these projects " +
-                    "or to ensure that they can be built successfully.";;
+                    $"\nSet up a [manual build command]({buildCommandDocsUrl}).";
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
 
                 AddDiagnostic(message);
