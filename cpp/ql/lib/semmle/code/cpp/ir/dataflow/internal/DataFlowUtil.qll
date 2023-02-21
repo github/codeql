@@ -988,7 +988,7 @@ private predicate indirectExprNodeShouldBeIndirectOperand(RawIndirectOperand nod
       e = e0.getFullyConverted()
     )
     or
-    not indirectExprNodeShouldBeIndirectOperand0(_, _, e.getUnconverted()) and
+    not indirectExprNodeShouldBeIndirectOperand0(_, node, _) and
     e = instr.getConvertedResultExpression()
   )
 }
