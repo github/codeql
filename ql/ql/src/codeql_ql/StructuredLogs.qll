@@ -16,6 +16,8 @@ class Object extends JSON::Object {
 
   Array getArray(string key) { result = this.getValue(key) }
 
+  Object getObject(string key) { result = this.getValue(key) }
+
   string getType() { result = this.getString("type") }
 
   int getEventId() { result = this.getNumber("event_id") }
@@ -29,6 +31,8 @@ class Array extends JSON::Array {
   string getString(int i) { result = this.getChild(i).(JSON::String).getChild().getValue() }
 
   int getNumber(int i) { result = this.getChild(i).(JSON::Number).getValue().toInt() }
+
+  Array getArray(int i) { result = this.getChild(i) }
 }
 
 abstract class LogEntry extends Object { }
@@ -63,6 +67,8 @@ class PredicateStarted extends LogEntry {
   string getRAHash() { result = this.getString("raHash") }
 
   Object getRA() { result = this.getValue("ra") }
+
+  string getDependency(string key) { result = this.getObject("dependencies").getString(key) }
 }
 
 class PipelineStarted extends LogEntry {
