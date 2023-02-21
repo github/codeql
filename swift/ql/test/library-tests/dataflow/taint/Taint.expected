@@ -331,6 +331,17 @@ edges
 | nsmutabledata.swift:48:33:48:40 | call to source() :  | nsmutabledata.swift:49:15:49:37 | .mutableBytes |
 | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 :  | nsmutabledata.swift:13:9:13:9 | self :  |
 | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 :  | nsmutabledata.swift:49:15:49:37 | .mutableBytes |
+| simple.swift:12:17:12:24 | call to source() :  | simple.swift:12:13:12:24 | ... .+(_:_:) ... |
+| simple.swift:13:13:13:20 | call to source() :  | simple.swift:13:13:13:24 | ... .+(_:_:) ... |
+| simple.swift:14:17:14:24 | call to source() :  | simple.swift:14:13:14:24 | ... .-(_:_:) ... |
+| simple.swift:15:13:15:20 | call to source() :  | simple.swift:15:13:15:24 | ... .-(_:_:) ... |
+| simple.swift:16:17:16:24 | call to source() :  | simple.swift:16:13:16:24 | ... .*(_:_:) ... |
+| simple.swift:17:13:17:20 | call to source() :  | simple.swift:17:13:17:24 | ... .*(_:_:) ... |
+| simple.swift:18:19:18:26 | call to source() :  | simple.swift:18:13:18:26 | ... ./(_:_:) ... |
+| simple.swift:19:13:19:20 | call to source() :  | simple.swift:19:13:19:24 | ... ./(_:_:) ... |
+| simple.swift:20:19:20:26 | call to source() :  | simple.swift:20:13:20:26 | ... .%(_:_:) ... |
+| simple.swift:21:13:21:20 | call to source() :  | simple.swift:21:13:21:24 | ... .%(_:_:) ... |
+| simple.swift:23:14:23:21 | call to source() :  | simple.swift:23:13:23:21 | call to -(_:) |
 | string.swift:60:2:60:54 | [summary param] 0 in String.init(data:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(data:encoding:) :  |
 | string.swift:64:3:64:63 | [summary param] 0 in String.init(format:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(format:_:) :  |
 | string.swift:65:3:65:60 | [summary param] 0 in String.init(format:arguments:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(format:arguments:) :  |
@@ -1370,6 +1381,28 @@ nodes
 | nsmutabledata.swift:48:33:48:40 | call to source() :  | semmle.label | call to source() :  |
 | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 :  | semmle.label | nsMutableDataTainted6 :  |
 | nsmutabledata.swift:49:15:49:37 | .mutableBytes | semmle.label | .mutableBytes |
+| simple.swift:12:13:12:24 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| simple.swift:12:17:12:24 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:13:13:13:20 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:13:13:13:24 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| simple.swift:14:13:14:24 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| simple.swift:14:17:14:24 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:15:13:15:20 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:15:13:15:24 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| simple.swift:16:13:16:24 | ... .*(_:_:) ... | semmle.label | ... .*(_:_:) ... |
+| simple.swift:16:17:16:24 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:17:13:17:20 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:17:13:17:24 | ... .*(_:_:) ... | semmle.label | ... .*(_:_:) ... |
+| simple.swift:18:13:18:26 | ... ./(_:_:) ... | semmle.label | ... ./(_:_:) ... |
+| simple.swift:18:19:18:26 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:19:13:19:20 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:19:13:19:24 | ... ./(_:_:) ... | semmle.label | ... ./(_:_:) ... |
+| simple.swift:20:13:20:26 | ... .%(_:_:) ... | semmle.label | ... .%(_:_:) ... |
+| simple.swift:20:19:20:26 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:21:13:21:20 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:21:13:21:24 | ... .%(_:_:) ... | semmle.label | ... .%(_:_:) ... |
+| simple.swift:23:13:23:21 | call to -(_:) | semmle.label | call to -(_:) |
+| simple.swift:23:14:23:21 | call to source() :  | semmle.label | call to source() :  |
 | string.swift:60:2:60:54 | [summary param] 0 in String.init(data:encoding:) :  | semmle.label | [summary param] 0 in String.init(data:encoding:) :  |
 | string.swift:64:3:64:63 | [summary param] 0 in String.init(format:_:) :  | semmle.label | [summary param] 0 in String.init(format:_:) :  |
 | string.swift:65:3:65:60 | [summary param] 0 in String.init(format:arguments:) :  | semmle.label | [summary param] 0 in String.init(format:arguments:) :  |
@@ -2084,6 +2117,17 @@ subpaths
 | nsmutabledata.swift:41:15:41:15 | nsMutableDataTainted4 | nsmutabledata.swift:40:66:40:73 | call to source() :  | nsmutabledata.swift:41:15:41:15 | nsMutableDataTainted4 | result |
 | nsmutabledata.swift:45:15:45:15 | nsMutableDataTainted5 | nsmutabledata.swift:44:35:44:42 | call to source() :  | nsmutabledata.swift:45:15:45:15 | nsMutableDataTainted5 | result |
 | nsmutabledata.swift:49:15:49:37 | .mutableBytes | nsmutabledata.swift:48:33:48:40 | call to source() :  | nsmutabledata.swift:49:15:49:37 | .mutableBytes | result |
+| simple.swift:12:13:12:24 | ... .+(_:_:) ... | simple.swift:12:17:12:24 | call to source() :  | simple.swift:12:13:12:24 | ... .+(_:_:) ... | result |
+| simple.swift:13:13:13:24 | ... .+(_:_:) ... | simple.swift:13:13:13:20 | call to source() :  | simple.swift:13:13:13:24 | ... .+(_:_:) ... | result |
+| simple.swift:14:13:14:24 | ... .-(_:_:) ... | simple.swift:14:17:14:24 | call to source() :  | simple.swift:14:13:14:24 | ... .-(_:_:) ... | result |
+| simple.swift:15:13:15:24 | ... .-(_:_:) ... | simple.swift:15:13:15:20 | call to source() :  | simple.swift:15:13:15:24 | ... .-(_:_:) ... | result |
+| simple.swift:16:13:16:24 | ... .*(_:_:) ... | simple.swift:16:17:16:24 | call to source() :  | simple.swift:16:13:16:24 | ... .*(_:_:) ... | result |
+| simple.swift:17:13:17:24 | ... .*(_:_:) ... | simple.swift:17:13:17:20 | call to source() :  | simple.swift:17:13:17:24 | ... .*(_:_:) ... | result |
+| simple.swift:18:13:18:26 | ... ./(_:_:) ... | simple.swift:18:19:18:26 | call to source() :  | simple.swift:18:13:18:26 | ... ./(_:_:) ... | result |
+| simple.swift:19:13:19:24 | ... ./(_:_:) ... | simple.swift:19:13:19:20 | call to source() :  | simple.swift:19:13:19:24 | ... ./(_:_:) ... | result |
+| simple.swift:20:13:20:26 | ... .%(_:_:) ... | simple.swift:20:19:20:26 | call to source() :  | simple.swift:20:13:20:26 | ... .%(_:_:) ... | result |
+| simple.swift:21:13:21:24 | ... .%(_:_:) ... | simple.swift:21:13:21:20 | call to source() :  | simple.swift:21:13:21:24 | ... .%(_:_:) ... | result |
+| simple.swift:23:13:23:21 | call to -(_:) | simple.swift:23:14:23:21 | call to source() :  | simple.swift:23:13:23:21 | call to -(_:) | result |
 | string.swift:139:13:139:13 | "..." | string.swift:137:11:137:18 | call to source() :  | string.swift:139:13:139:13 | "..." | result |
 | string.swift:141:13:141:13 | "..." | string.swift:137:11:137:18 | call to source() :  | string.swift:141:13:141:13 | "..." | result |
 | string.swift:143:13:143:13 | "..." | string.swift:137:11:137:18 | call to source() :  | string.swift:143:13:143:13 | "..." | result |
