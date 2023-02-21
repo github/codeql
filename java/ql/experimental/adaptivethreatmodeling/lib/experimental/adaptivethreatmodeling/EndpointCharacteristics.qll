@@ -112,7 +112,7 @@ predicate hasMetadata(DataFlow::Node n, string metadata) {
     name = callee.getName() and // TODO: Will this work for constructors?
     signature = paramsString(callee) and // TODO: Why are brackets being escaped (`\[\]` vs `[]`)?
     ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
-    provenance = "manual" and // TODO
+    provenance = "ai-generated" and
     (if callee.isPublic() then isPublic = true else isPublic = false) and
     (
       if n instanceof ExternalAPIs::ExternalApiDataNode
