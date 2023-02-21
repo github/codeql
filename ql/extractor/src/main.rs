@@ -108,6 +108,9 @@ fn main() -> std::io::Result<()> {
                 && !line.ends_with(".dbscheme")
                 && !line.ends_with("qlpack.yml")
                 && !line.ends_with(".blame")
+                && !line.ends_with(".json")
+                && !line.ends_with(".jsonl")
+                && !line.ends_with(".jsonc")
             {
                 return Ok(());
             }
