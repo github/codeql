@@ -6,42 +6,44 @@ class A {
         return "tainted";
     }
 
+    public static void sink(Object o) { }
+
     public static void test1() {
-        String bad = source(); // $ hasTaintFlow
+        String bad = source();
         String good = "hi";
 
-        bad.formatted(good); // $ hasTaintFlow
-        good.formatted("a", bad, "b", good); // $ hasTaintFlow
-        String.format("%s%s", bad, good); // $ hasTaintFlow
-        String.format("%s", good);
-        String.format("%s %s %s %s %s %s %s %s %s %s ", "a", "a", "a", "a", "a", "a", "a", "a", "a", bad); // $ hasTaintFlow
+        sink(bad.formatted(good)); // $ hasTaintFlow
+        sink(good.formatted("a", bad, "b", good)); // $ hasTaintFlow
+        sink(String.format("%s%s", bad, good)); // $ hasTaintFlow
+        sink(String.format("%s", good));
+        sink(String.format("%s %s %s %s %s %s %s %s %s %s ", "a", "a", "a", "a", "a", "a", "a", "a", "a", bad)); // $ hasTaintFlow
     }
 
     public static void test2() {
-        String bad = source();  // $ hasTaintFlow
+        String bad = source();
         Formatter f = new Formatter();
 
-        f.toString();
-        f.format("%s", bad);  // $ hasTaintFlow
-        f.toString(); // $ hasTaintFlow
+        sink(f.toString());
+        sink(f.format("%s", bad));  // $ hasTaintFlow
+        sink(f.toString()); // $ hasTaintFlow
     }
 
     public static void test3() {
-        String bad = source();  // $ hasTaintFlow
+        String bad = source();
         StringBuilder sb = new StringBuilder();
         Formatter f = new Formatter(sb);
 
-        sb.toString(); // $ hasTaintFlow false positive 
-        f.format("%s", bad);  // $ hasTaintFlow
-        sb.toString(); // $ hasTaintFlow
+        sink(sb.toString()); // $ SPURIOUS: hasTaintFlow
+        sink(f.format("%s", bad));  // $ hasTaintFlow
+        sink(sb.toString()); // $ hasTaintFlow
     }
 
     public static void test4() {
-        String bad = source();  // $ hasTaintFlow
+        String bad = source();
         StringBuilder sb = new StringBuilder();
 
-        sb.append(bad);  // $ hasTaintFlow
+        sink(sb.append(bad));  // $ hasTaintFlow
 
-        new Formatter(sb).format("ok").toString();  // $ hasTaintFlow
+        sink(new Formatter(sb).format("ok").toString());  // $ hasTaintFlow
     }
 }

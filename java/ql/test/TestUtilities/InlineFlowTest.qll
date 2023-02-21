@@ -47,7 +47,7 @@ private predicate defaultSource(DataFlow::Node src) {
   src.asExpr().(MethodAccess).getMethod().getName() = ["source", "taint"]
 }
 
-private module DefaultFlowConf implements DataFlow::ConfigSig {
+module DefaultFlowConf implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { defaultSource(n) }
 
   predicate isSink(DataFlow::Node n) {
@@ -98,40 +98,33 @@ class InlineFlowTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = ["hasValueFlow", "hasTaintFlow"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    if exists(EnableLegacyConfiguration e)
-    then
-      tag = "hasValueFlow" and
-      exists(DataFlow::Node src, DataFlow::Node sink | getValueFlowConfig().hasFlow(src, sink) |
-        sink.getLocation() = location and
-        element = sink.toString() and
-        if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
-      )
-      or
-      tag = "hasTaintFlow" and
-      exists(DataFlow::Node src, DataFlow::Node sink |
-        getTaintFlowConfig().hasFlow(src, sink) and not getValueFlowConfig().hasFlow(src, sink)
-      |
-        sink.getLocation() = location and
-        element = sink.toString() and
-        if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
-      )
-    else (
-      tag = "hasValueFlow" and
-      exists(DataFlow::Node src, DataFlow::Node sink | DefaultValueFlow::hasFlow(src, sink) |
-        sink.getLocation() = location and
-        element = sink.toString() and
-        if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
-      )
-      or
-      tag = "hasTaintFlow" and
-      exists(DataFlow::Node src, DataFlow::Node sink |
-        DefaultTaintFlow::hasFlow(src, sink) and not DefaultValueFlow::hasFlow(src, sink)
-      |
-        sink.getLocation() = location and
-        element = sink.toString() and
-        if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
-      )
+    tag = "hasValueFlow" and
+    exists(DataFlow::Node src, DataFlow::Node sink | hasValueFlow(src, sink) |
+      sink.getLocation() = location and
+      element = sink.toString() and
+      if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
     )
+    or
+    tag = "hasTaintFlow" and
+    exists(DataFlow::Node src, DataFlow::Node sink |
+      hasTaintFlow(src, sink) and not hasValueFlow(src, sink)
+    |
+      sink.getLocation() = location and
+      element = sink.toString() and
+      if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
+    )
+  }
+
+  predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) {
+    if exists(EnableLegacyConfiguration e)
+    then getValueFlowConfig().hasFlow(src, sink)
+    else DefaultValueFlow::hasFlow(src, sink)
+  }
+
+  predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
+    if exists(EnableLegacyConfiguration e)
+    then getTaintFlowConfig().hasFlow(src, sink)
+    else DefaultTaintFlow::hasFlow(src, sink)
   }
 
   DataFlow::Configuration getValueFlowConfig() { result = any(DefaultValueFlowConf config) }
