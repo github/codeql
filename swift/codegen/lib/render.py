@@ -25,13 +25,16 @@ class Error(Exception):
 class Renderer:
     """ Template renderer using mustache templates in the `templates` directory """
 
-    def __init__(self, swift_dir: pathlib.Path):
+    def __init__(self, root_dir: pathlib.Path):
         self._r = pystache.Renderer(search_dirs=str(paths.templates_dir), escape=lambda u: u)
-        self._swift_dir = swift_dir
-        self._generator = self._get_path(paths.exe_file)
+        self._root_dir = root_dir
+        try:
+            self._generator = self._get_path(paths.exe_file)
+        except ValueError:
+            self._generator = paths.exe_file.name
 
     def _get_path(self, file: pathlib.Path):
-        return file.relative_to(self._swift_dir)
+        return file.relative_to(self._root_dir)
 
     def render(self, data: object, output: pathlib.Path):
         """ Render `data` to `output`.
@@ -60,7 +63,7 @@ class Renderer:
 
     def manage(self, generated: typing.Iterable[pathlib.Path], stubs: typing.Iterable[pathlib.Path],
                registry: pathlib.Path, force: bool = False) -> "RenderManager":
-        return RenderManager(self._swift_dir, generated, stubs, registry, force)
+        return RenderManager(self._root_dir, generated, stubs, registry, force)
 
 
 class RenderManager(Renderer):
@@ -85,10 +88,10 @@ class RenderManager(Renderer):
         pre: str
         post: typing.Optional[str] = None
 
-    def __init__(self, swift_dir: pathlib.Path, generated: typing.Iterable[pathlib.Path],
+    def __init__(self, root_dir: pathlib.Path, generated: typing.Iterable[pathlib.Path],
                  stubs: typing.Iterable[pathlib.Path],
                  registry: pathlib.Path, force: bool = False):
-        super().__init__(swift_dir)
+        super().__init__(root_dir)
         self._registry_path = registry
         self._force = force
         self._hashes = {}
@@ -117,7 +120,7 @@ class RenderManager(Renderer):
                 self._hashes.pop(self._get_path(f), None)
         # clean up the registry from files that do not exist any more
         for f in list(self._hashes):
-            if not (self._swift_dir / f).exists():
+            if not (self._root_dir / f).exists():
                 self._hashes.pop(f)
         self._dump_registry()
 

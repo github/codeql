@@ -17,16 +17,16 @@ def run_mock():
 
 
 # these are lambdas so that they will use patched paths when called
-def stub_path(): return paths.swift_dir / "ql/lib/stub/path"
+def stub_path(): return paths.root_dir / "ql/lib/stub/path"
 
 
-def ql_output_path(): return paths.swift_dir / "ql/lib/other/path"
+def ql_output_path(): return paths.root_dir / "ql/lib/other/path"
 
 
-def ql_test_output_path(): return paths.swift_dir / "ql/test/path"
+def ql_test_output_path(): return paths.root_dir / "ql/test/path"
 
 
-def generated_registry_path(): return paths.swift_dir / "registry.list"
+def generated_registry_path(): return paths.root_dir / "registry.list"
 
 
 def import_file(): return stub_path().with_suffix(".qll")
@@ -47,7 +47,7 @@ def qlgen_opts(opts):
     opts.ql_test_output = ql_test_output_path()
     opts.generated_registry = generated_registry_path()
     opts.ql_format = True
-    opts.swift_dir = paths.swift_dir
+    opts.root_dir = paths.root_dir
     opts.force = False
     return opts
 

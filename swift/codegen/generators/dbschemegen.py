@@ -110,12 +110,12 @@ def get_declarations(data: schema.Schema):
     return declarations
 
 
-def get_includes(data: schema.Schema, include_dir: pathlib.Path, swift_dir: pathlib.Path):
+def get_includes(data: schema.Schema, include_dir: pathlib.Path, root_dir: pathlib.Path):
     includes = []
     for inc in data.includes:
         inc = include_dir / inc
         with open(inc) as inclusion:
-            includes.append(SchemeInclude(src=inc.relative_to(swift_dir), data=inclusion.read()))
+            includes.append(SchemeInclude(src=inc.relative_to(root_dir), data=inclusion.read()))
     return includes
 
 
@@ -125,8 +125,8 @@ def generate(opts, renderer):
 
     data = schemaloader.load_file(input)
 
-    dbscheme = Scheme(src=input.relative_to(opts.swift_dir),
-                      includes=get_includes(data, include_dir=input.parent, swift_dir=opts.swift_dir),
+    dbscheme = Scheme(src=input.relative_to(opts.root_dir),
+                      includes=get_includes(data, include_dir=input.parent, root_dir=opts.root_dir),
                       declarations=get_declarations(data))
 
     renderer.render(dbscheme, out)

@@ -33,13 +33,13 @@ def render_manager(renderer):
 @pytest.fixture
 def opts():
     ret = mock.MagicMock()
-    ret.swift_dir = paths.swift_dir
+    ret.root_dir = paths.root_dir
     return ret
 
 
 @pytest.fixture(autouse=True)
 def override_paths(tmp_path):
-    with mock.patch("swift.codegen.lib.paths.swift_dir", tmp_path), \
+    with mock.patch("swift.codegen.lib.paths.root_dir", tmp_path), \
             mock.patch("swift.codegen.lib.paths.exe_file", tmp_path / "exe"):
         yield
 

@@ -198,8 +198,8 @@ def get_ql_ipa_class(cls: schema.Class):
     return get_ql_ipa_class_db(cls.name)
 
 
-def get_import(file: pathlib.Path, swift_dir: pathlib.Path):
-    stem = file.relative_to(swift_dir / "ql/lib").with_suffix("")
+def get_import(file: pathlib.Path, root_dir: pathlib.Path):
+    stem = file.relative_to(root_dir / "ql/lib").with_suffix("")
     return str(stem).replace("/", ".")
 
 
@@ -344,7 +344,7 @@ def generate(opts, renderer):
 
         classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
         for c in classes_by_dir_and_name:
-            imports[c.name] = get_import(stub_out / c.path, opts.swift_dir)
+            imports[c.name] = get_import(stub_out / c.path, opts.root_dir)
 
         for c in classes.values():
             qll = out / c.path.with_suffix(".qll")
@@ -355,7 +355,7 @@ def generate(opts, renderer):
             path = _get_path(c)
             stub_file = stub_out / path
             if not renderer.is_customized_stub(stub_file):
-                base_import = get_import(out / path, opts.swift_dir)
+                base_import = get_import(out / path, opts.root_dir)
                 renderer.render(_get_stub(c, base_import), stub_file)
 
         # for example path/to/elements -> path/to/elements.qll
@@ -404,7 +404,7 @@ def generate(opts, renderer):
                     if not renderer.is_customized_stub(stub_file):
                         # stub rendering must be postponed as we might not have yet all subtracted ipa types in `ipa_type`
                         stubs[stub_file] = ql.Synth.ConstructorStub(ipa_type)
-                    constructor_import = get_import(stub_file, opts.swift_dir)
+                    constructor_import = get_import(stub_file, opts.root_dir)
                     constructor_imports.append(constructor_import)
                     if ipa_type.is_ipa:
                         ipa_constructor_imports.append(constructor_import)
