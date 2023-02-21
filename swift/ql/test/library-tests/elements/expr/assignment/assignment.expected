@@ -1,2 +1,4 @@
-| assignment.swift:6:2:6:6 |  ... = ... | AssignExpr | x | 1 |
-| assignment.swift:33:2:33:6 |  ... = ... | AssignExpr | y | z |
+| assignment.swift:6:2:6:6 |  ... = ... | AssignExpr, Assignment | x | 1 |
+| assignment.swift:9:2:9:7 | ... += ... | AssignAddExpr, AssignArithmeticOperation, AssignOperation, Assignment | &... | 1 |
+| assignment.swift:19:2:19:8 | ... <<= ... | AssignBitwiseOperation, AssignLShiftExpr, AssignOperation, Assignment | &... | 1 |
+| assignment.swift:33:2:33:6 |  ... = ... | AssignExpr, Assignment | y | z |
