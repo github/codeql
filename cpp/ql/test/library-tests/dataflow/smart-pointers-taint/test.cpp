@@ -8,7 +8,7 @@ void test_unique_ptr_int() {
 	std::unique_ptr<int> p2 = std::make_unique<int>(source());
 	
 	sink(*p1); // $ ir MISSING: ast
-	sink(*p2); // $ ast ir=8:50
+	sink(*p2); // $ ast ir
 }
 
 struct A {
@@ -23,7 +23,7 @@ void test_unique_ptr_struct() {
 	
 	sink(p1->x); // $ ir MISSING: ast
 	sink(p1->y);
-	sink(p2->x); // $ ir=22:46 MISSING: ast
+	sink(p2->x); // $ ir MISSING: ast
 	sink(p2->y);
 }
 
@@ -32,7 +32,7 @@ void test_shared_ptr_int() {
 	std::shared_ptr<int> p2 = std::make_shared<int>(source());
 	
 	sink(*p1); // $ ast,ir
-	sink(*p2); // $ ast ir=32:50
+	sink(*p2); // $ ast ir
 }
 
 void test_shared_ptr_struct() {
