@@ -1930,12 +1930,6 @@ module JSON {
     final override AstNode getAFieldOrChild() { json_document_child(this, _, result) }
   }
 
-  /** A class representing `escape_sequence` tokens. */
-  class EscapeSequence extends @json_token_escape_sequence, Token {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "EscapeSequence" }
-  }
-
   /** A class representing `false` tokens. */
   class False extends @json_token_false, Token {
     /** Gets the name of the primary QL class for this element. */
@@ -1995,16 +1989,10 @@ module JSON {
     final override AstNode getAFieldOrChild() { json_string_child(this, result) }
   }
 
-  /** A class representing `string_content` nodes. */
-  class StringContent extends @json_string_content, AstNode {
+  /** A class representing `string_content` tokens. */
+  class StringContent extends @json_token_string_content, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "StringContent" }
-
-    /** Gets the `i`th child of this node. */
-    final EscapeSequence getChild(int i) { json_string_content_child(this, i, result) }
-
-    /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { json_string_content_child(this, _, result) }
   }
 
   /** A class representing `true` tokens. */
