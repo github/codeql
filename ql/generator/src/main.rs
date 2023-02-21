@@ -581,6 +581,10 @@ fn main() -> std::io::Result<()> {
             name: "Blame".to_owned(),
             node_types: tree_sitter_blame::NODE_TYPES,
         },
+        Language {
+            name: "JSON".to_owned(),
+            node_types: tree_sitter_json::NODE_TYPES,
+        },
     ];
     let mut dbscheme_writer = LineWriter::new(File::create(dbscheme_path)?);
     write!(
