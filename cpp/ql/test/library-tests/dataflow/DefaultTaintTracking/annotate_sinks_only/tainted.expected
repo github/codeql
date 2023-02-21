@@ -1,17 +1,2 @@
 WARNING: Module TaintedWithPath has been deprecated and may be removed in future (tainted.ql:10,8-47)
 WARNING: Predicate tainted has been deprecated and may be removed in future (tainted.ql:21,3-28)
-| defaulttainttracking.cpp:4:33:4:52 | // $ ir MISSING: ast | Missing result:ir= |
-| defaulttainttracking.cpp:5:32:5:42 | // $ ast,ir | Missing result:ir= |
-| defaulttainttracking.cpp:10:37:10:47 | // $ ast,ir | Missing result:ir= |
-| defaulttainttracking.cpp:12:14:12:24 | // $ ast,ir | Missing result:ir= |
-| defaulttainttracking.cpp:174:16:174:26 | // $ ast,ir | Missing result:ir= |
-| defaulttainttracking.cpp:178:14:178:24 | // $ ast,ir | Missing result:ir= |
-| defaulttainttracking.cpp:179:14:179:34 | // $ SPURIOUS: ast,ir | Fixed spurious result:ir= |
-| defaulttainttracking.cpp:198:14:198:34 | // $ SPURIOUS: ast,ir | Fixed spurious result:ir= |
-| stl.cpp:74:11:74:30 | // $ ir MISSING: ast | Missing result:ir= |
-| stl.cpp:91:13:91:32 | // $ ir MISSING: ast | Missing result:ir= |
-| stl.cpp:92:13:92:32 | // $ ir MISSING: ast | Missing result:ir= |
-| stl.cpp:93:13:93:32 | // $ ir MISSING: ast | Missing result:ir= |
-| stl.cpp:94:13:94:32 | // $ ir MISSING: ast | Missing result:ir= |
-| stl.cpp:144:12:144:31 | // $ ir MISSING: ast | Missing result:ir= |
-| stl.cpp:158:12:158:31 | // $ ir MISSING: ast | Missing result:ir= |
