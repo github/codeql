@@ -186,10 +186,22 @@ private class PointerOrReferenceTypeIndirection extends Indirection instanceof P
   override int getNumberOfIndirections() {
     result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
   }
+}
 
-  override predicate isAdditionalDereference(Instruction deref, Operand address) { none() }
+private class PointerWrapperTypeIndirection extends Indirection instanceof PointerWrapper {
+  PointerWrapperTypeIndirection() { baseType = PointerWrapper.super.getBaseType() }
 
-  override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) { none() }
+  override int getNumberOfIndirections() {
+    result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
+  }
+
+  override predicate isAdditionalDereference(Instruction deref, Operand address) {
+    exists(CallInstruction call |
+      operandForFullyConvertedCall(getAUse(deref), call) and
+      this = call.getStaticCallTarget().getClassAndName("operator*") and
+      address = call.getThisArgumentOperand()
+    )
+  }
 }
 
 private module IteratorIndirections {
