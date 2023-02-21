@@ -84,6 +84,10 @@ signature module FullStateConfigSig {
    * - `FeatureEqualSourceSinkCallContext`:
    *    Implies both of the above and additionally ensures that the entire flow
    *    path preserves the call context.
+   *
+   * These features are generally not relevant for typical end-to-end data flow
+   * queries, but should only be used for constructing paths that need to
+   * somehow be pluggable in another path context.
    */
   FlowFeature getAFeature();
 
