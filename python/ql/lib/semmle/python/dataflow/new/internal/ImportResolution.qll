@@ -118,7 +118,6 @@ module ImportResolution {
         EssaFlow::defToFirstUse(firstDef, mid) and
         EssaFlow::useToNextUse*(mid, end) and
         not EssaFlow::useToNextUse(end, _) and
-        lastUseVar.getAUse() = end and
         val.asCfgNode() = end
       )
     )
