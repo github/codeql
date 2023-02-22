@@ -1,50 +1,45 @@
 /**
  * Sample/test of the graphs library.
  */
+
 import experimental.Graph::Graph
 
-class SampleBarChart extends Graph
-{
-    SampleBarChart() { this = "Here is a bar chart" }
+class SampleBarChart extends Graph {
+  SampleBarChart() { this = "Here is a bar chart" }
 
-    override string getType() { result = "bar" }
+  override string getType() { result = "bar" }
 
-    override predicate chartData(string key, float value)
-    {
-        key = "C++" and value = 21.0
-        or
-        key = "Python" and value = 3.10
-        or
-        key = "TypeScript" and value = 5.0
-    }
+  override predicate chartData(string key, float value) {
+    key = "C++" and value = 21.0
+    or
+    key = "Python" and value = 3.1
+    or
+    key = "TypeScript" and value = 5.0
+  }
 }
 
-class SampleLineGraph extends Graph
-{
-    SampleLineGraph() { this = "Here is a line chart" }
+class SampleLineGraph extends Graph {
+  SampleLineGraph() { this = "Here is a line chart" }
 
-    override string getType() { result = "line" }
+  override string getType() { result = "line" }
 
-    override predicate pointData(int series, float x, float y)
-    {
-        series = 0 and x in [-10..10] and y=x*x
-        or
-        series=1 and x in [-10 .. 10] and y=-5+2*x
-    }
+  override predicate pointData(int series, float x, float y) {
+    series = 0 and x in [-10 .. 10] and y = x * x
+    or
+    series = 1 and x in [-10 .. 10] and y = -5 + 2 * x
+  }
 }
 
-class SampleFlameGraph extends Graph
-{
-    SampleFlameGraph() { this = "Here is the flame graph" }
+class SampleFlameGraph extends Graph {
+  SampleFlameGraph() { this = "Here is the flame graph" }
 
-    override string getType() { result = "flame" }
+  override string getType() { result = "flame" }
 
-    override predicate spanData(string item, float start, float end)
-    {
-        item = "Item1" and start = 0 and end = 100
-        or
-        item = "Item2" and start = 0 and end = 25
-        or
-        item = "Item3" and start = 10 and end = 20
-    }
+  override predicate spanData(string item, float start, float end) {
+    item = "Item1" and start = 0 and end = 100
+    or
+    item = "Item2" and start = 0 and end = 25
+    or
+    item = "Item3" and start = 10 and end = 20
+  }
 }
