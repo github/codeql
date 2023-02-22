@@ -9,12 +9,12 @@ class SampleBarChart extends Graph {
 
   override string getType() { result = "bar" }
 
-  override predicate chartData(string key, float value) {
-    key = "C++" and value = 21.0
+  override predicate chartData(string key, int series, float value) {
+    key = "C++" and series = 0 and value = 21.0
     or
-    key = "Python" and value = 3.1
+    key = "Python" and series = 0 and value = 3.1
     or
-    key = "TypeScript" and value = 5.0
+    key = "TypeScript" and series = 0 and value = 5.0
   }
 }
 
