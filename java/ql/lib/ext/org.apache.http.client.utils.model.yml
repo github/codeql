@@ -22,4 +22,3 @@ extensions:
       - ["org.apache.http.client.utils", "URIUtils", True, "rewriteURI", "(URI,HttpHost,boolean)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.http.client.utils", "URIUtils", True, "rewriteURIForRoute", "(URI,RouteInfo)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.http.client.utils", "URIUtils", True, "rewriteURIForRoute", "(URI,RouteInfo,boolean)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.http.client.utils", "URIUtils", True, "rewriteURIForRoute", "(URI,RouteInfo,boolean)", "", "Argument[2]", "ReturnValue", "taint", "manual"]
