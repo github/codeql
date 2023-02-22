@@ -14,6 +14,14 @@ namespace Semmle.Autobuild.Shared
         public static readonly Func<string, string> CodeFormatter = item => $"`{item}`";
 
         /// <summary>
+        /// Formats the string as a markdown link.
+        /// </summary>
+        /// <param name="link">The URL for the link.</param>
+        /// <param name="title">The text that is displayed.</param>
+        /// <returns>A string containing a markdown-formatted link.</returns>
+        public static string ToMarkdownLink(this string link, string title) => $"[{title}]({link})";
+
+        /// <summary>
         /// Renders <see cref="projects" /> as a markdown list of the project paths.
         /// </summary>
         /// <param name="projects">
