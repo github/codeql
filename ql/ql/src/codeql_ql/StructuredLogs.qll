@@ -223,9 +223,8 @@ module KindPredicatesLog {
 
   class PipeLineRun extends Object {
     PipeLineRuns runs;
-    int index;
 
-    PipeLineRun() { runs.getObject(index) = this }
+    PipeLineRun() { runs.getObject(_) = this }
 
     PipeLineRuns getArray() { result = runs }
 
