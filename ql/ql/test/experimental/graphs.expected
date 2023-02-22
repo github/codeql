@@ -1,0 +1,58 @@
+graph_info
+| Here is a bar chart | title | Here is a bar chart |
+| Here is a bar chart | type | bar |
+| Here is a line chart | title | Here is a line chart |
+| Here is a line chart | type | line |
+| Here is the flame graph | title | Here is the flame graph |
+| Here is the flame graph | type | flame |
+graph_chart
+| Here is a bar chart | C++ | 21.0 |
+| Here is a bar chart | Python | 3.1 |
+| Here is a bar chart | TypeScript | 5.0 |
+graph_xy
+| Here is a line chart | 0 | 0.0 | 0.0 |
+| Here is a line chart | 0 | 1.0 | 1.0 |
+| Here is a line chart | 0 | 2.0 | 4.0 |
+| Here is a line chart | 0 | 3.0 | 9.0 |
+| Here is a line chart | 0 | 4.0 | 16.0 |
+| Here is a line chart | 0 | 5.0 | 25.0 |
+| Here is a line chart | 0 | 6.0 | 36.0 |
+| Here is a line chart | 0 | 7.0 | 49.0 |
+| Here is a line chart | 0 | 8.0 | 64.0 |
+| Here is a line chart | 0 | 9.0 | 81.0 |
+| Here is a line chart | 0 | 10.0 | 100.0 |
+| Here is a line chart | 0 | -1.0 | 1.0 |
+| Here is a line chart | 0 | -2.0 | 4.0 |
+| Here is a line chart | 0 | -3.0 | 9.0 |
+| Here is a line chart | 0 | -4.0 | 16.0 |
+| Here is a line chart | 0 | -5.0 | 25.0 |
+| Here is a line chart | 0 | -6.0 | 36.0 |
+| Here is a line chart | 0 | -7.0 | 49.0 |
+| Here is a line chart | 0 | -8.0 | 64.0 |
+| Here is a line chart | 0 | -9.0 | 81.0 |
+| Here is a line chart | 0 | -10.0 | 100.0 |
+| Here is a line chart | 1 | 0.0 | -5.0 |
+| Here is a line chart | 1 | 1.0 | -3.0 |
+| Here is a line chart | 1 | 2.0 | -1.0 |
+| Here is a line chart | 1 | 3.0 | 1.0 |
+| Here is a line chart | 1 | 4.0 | 3.0 |
+| Here is a line chart | 1 | 5.0 | 5.0 |
+| Here is a line chart | 1 | 6.0 | 7.0 |
+| Here is a line chart | 1 | 7.0 | 9.0 |
+| Here is a line chart | 1 | 8.0 | 11.0 |
+| Here is a line chart | 1 | 9.0 | 13.0 |
+| Here is a line chart | 1 | 10.0 | 15.0 |
+| Here is a line chart | 1 | -1.0 | -7.0 |
+| Here is a line chart | 1 | -2.0 | -9.0 |
+| Here is a line chart | 1 | -3.0 | -11.0 |
+| Here is a line chart | 1 | -4.0 | -13.0 |
+| Here is a line chart | 1 | -5.0 | -15.0 |
+| Here is a line chart | 1 | -6.0 | -17.0 |
+| Here is a line chart | 1 | -7.0 | -19.0 |
+| Here is a line chart | 1 | -8.0 | -21.0 |
+| Here is a line chart | 1 | -9.0 | -23.0 |
+| Here is a line chart | 1 | -10.0 | -25.0 |
+graph_span
+| Here is the flame graph | Item1 | 0.0 | 100.0 |
+| Here is the flame graph | Item2 | 0.0 | 25.0 |
+| Here is the flame graph | Item3 | 10.0 | 20.0 |
