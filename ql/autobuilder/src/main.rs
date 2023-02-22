@@ -23,7 +23,7 @@ fn main() -> std::io::Result<()> {
         .arg("--include-extension=.jsonl")
         .arg("--include=**/qlpack.yml")
         .arg("--include=deprecated.blame")
-        .arg("--size-limit=5m")
+        .arg("--size-limit=10m")
         .arg("--language=ql")
         .arg("--working-dir=.")
         .arg(db);
