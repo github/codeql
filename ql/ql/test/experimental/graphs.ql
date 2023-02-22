@@ -35,11 +35,11 @@ class SampleFlameGraph extends Graph {
 
   override string getType() { result = "flame" }
 
-  override predicate spanData(string item, float start, float end) {
-    item = "Item1" and start = 0 and end = 100
+  override predicate flameData(string id, string text, string parent, float value, float offset) {
+    id = "item1" and text = "Item 1" and parent = "" and value = 50 and offset = 0
     or
-    item = "Item2" and start = 0 and end = 25
+    id = "item2" and text = "Item 2" and parent = "item1" and value = 25 and offset = 0
     or
-    item = "Item3" and start = 10 and end = 20
+    id = "item3" and text = "Item 3" and parent = "item2" and value = 10 and offset = 5
   }
 }

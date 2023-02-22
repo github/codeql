@@ -40,8 +40,12 @@ module Graph {
 
     /**
      * Defines span data, for use in flame graphs.
+     * Specify `text=""` for the root node.
+     * Specify `offset=0` if unused.
+     * Right now, the ID of each node is a string - I couldn't figure out how to make this work with generic types
+     * in a nice way or using parameterized modules.
      */
-    predicate spanData(string item, float start, float end) { none() }
+    predicate flameData(string id, string text, string parent, float value, float offset) { none() }
   }
 
   query predicate graph_info(Graph graph, string field, string value) {
@@ -58,7 +62,9 @@ module Graph {
     graph.pointData(series, x, y)
   }
 
-  query predicate graph_span(Graph graph, string item, float start, float end) {
-    graph.spanData(item, start, end)
+  query predicate graph_flame(
+    Graph graph, string id, string text, string parent, float value, float offset
+  ) {
+    graph.flameData(id, text, parent, value, offset)
   }
 }
