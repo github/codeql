@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-02-22-09h36m29s.frosty-papaya-61sgk573.2eeedc053bf671b94709a551c609fff993c486739b66e18003099c39a09b46e6
+compiled: false
