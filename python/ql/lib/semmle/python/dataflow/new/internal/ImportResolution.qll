@@ -86,7 +86,7 @@ module ImportResolution {
   predicate module_export(Module m, string name, DataFlow::CfgNode defn) {
     exists(EssaVariable v, EssaDefinition essaDef |
       v.getName() = name and
-      v.getAUse() = ImportStar::getStarImported*(m).getANormalExit() and
+      v.getAUse() = m.getANormalExit() and
       allowedEssaImportStep*(essaDef, v.getDefinition())
     |
       defn.getNode() = essaDef.(AssignmentDefinition).getValue()
@@ -94,6 +94,10 @@ module ImportResolution {
       defn.getNode() = essaDef.(ArgumentRefinement).getArgument()
     )
     or
+    // `from <pkg> import *`
+    module_export(ImportStar::getStarImported+(m), name, defn)
+    or
+    // `import <pkg>` or `from <pkg> import <stuff>`
     exists(Alias a |
       defn.asExpr() = a.getValue() and
       a.getAsname().(Name).getId() = name and
