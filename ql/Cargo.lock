@@ -737,7 +737,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-json"
 version = "0.20.0"
-source = "git+https://github.com/tausbn/tree-sitter-json.git?rev=ea1f655604c32c2f76aad2abed2498a56d81f3a9#ea1f655604c32c2f76aad2abed2498a56d81f3a9"
+source = "git+https://github.com/tausbn/tree-sitter-json.git?rev=745663ee997f1576fe1e7187e6347e0db36ec7a9#745663ee997f1576fe1e7187e6347e0db36ec7a9"
 dependencies = [
  "cc",
  "tree-sitter",
