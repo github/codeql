@@ -1,5 +1,5 @@
 {
-  "markdownMessage": "An Android build may have failed. Ensure the Code Scanning workflow installs required dependencies, and that the [https://developer.android.com/studio/releases/gradle-plugin#updating-gradle](Gradle and Android SDK versions are compatible). Suspicious output line: `   > Minimum supported Gradle version is 7.4. Current version is 7.3. If using the gradle wrapper, try editing the distributionUrl in <test-root-directory>/gradle/wrapper/gradle-wrapper.properties to gradle-7.4-all.zip`",
+  "markdownMessage": "An Android build may have failed. Ensure the Code Scanning workflow installs required dependencies, and that the [Gradle and Android SDK versions are compatible](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle). Suspicious output line: `   > Minimum supported Gradle version is 7.4. Current version is 7.3. If using the gradle wrapper, try editing the distributionUrl in <test-root-directory>/gradle/wrapper/gradle-wrapper.properties to gradle-7.4-all.zip`",
   "severity": "error",
   "source": {
     "extractorName": "java",
@@ -13,7 +13,7 @@
   }
 }
 {
-  "markdownMessage": "An Android build may have failed. Ensure the Code Scanning workflow installs required dependencies, and that the [https://developer.android.com/studio/releases/gradle-plugin#updating-gradle](Gradle and Android SDK versions are compatible). Suspicious output line: `Caused by: java.lang.RuntimeException: Minimum supported Gradle version is 7.4. Current version is 7.3. If using the gradle wrapper, try editing the distributionUrl in <test-root-directory>/gradle/wrapper/gradle-wrapper.properties to gradle-7.4-all.zip`",
+  "markdownMessage": "An Android build may have failed. Ensure the Code Scanning workflow installs required dependencies, and that the [Gradle and Android SDK versions are compatible](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle). Suspicious output line: `Caused by: java.lang.RuntimeException: Minimum supported Gradle version is 7.4. Current version is 7.3. If using the gradle wrapper, try editing the distributionUrl in <test-root-directory>/gradle/wrapper/gradle-wrapper.properties to gradle-7.4-all.zip`",
   "severity": "error",
   "source": {
     "extractorName": "java",

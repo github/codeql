@@ -1,5 +1,5 @@
 {
-  "markdownMessage": "Built a Gradle project without the [https://docs.gradle.org/current/userguide/gradle_wrapper.html](Gradle wrapper). This may use an incompatible version of Gradle",
+  "markdownMessage": "Built a Gradle project without the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). This may use an incompatible version of Gradle",
   "severity": "warning",
   "source": {
     "extractorName": "java",
@@ -13,7 +13,7 @@
   }
 }
 {
-  "markdownMessage": "Gradle project does not define a `testClasses` goal. [https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language](Supply a manual build command) that builds the code that should be analyzed. Suspicious output line: `org.gradle.execution.TaskSelectionException: Task 'testClasses' not found in root project 'no-gradle-test-classes'.`",
+  "markdownMessage": "Gradle project does not define a `testClasses` goal. [Supply a manual build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language) that builds the code that should be analyzed. Suspicious output line: `org.gradle.execution.TaskSelectionException: Task 'testClasses' not found in root project 'no-gradle-test-classes'.`",
   "severity": "error",
   "source": {
     "extractorName": "java",

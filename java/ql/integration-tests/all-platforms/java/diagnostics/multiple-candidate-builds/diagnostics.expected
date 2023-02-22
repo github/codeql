@@ -13,7 +13,7 @@
   }
 }
 {
-  "markdownMessage": "If you want to use one of the candidate build systems and directories (see previous warnings), please [https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language](supply a manual a build command)",
+  "markdownMessage": "If you want to use one of the candidate build systems and directories (see previous warnings), please [supply a manual a build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
   "severity": "error",
   "source": {
     "extractorName": "java",

@@ -1,5 +1,5 @@
 {
-  "markdownMessage": "Built a Gradle project without the [https://docs.gradle.org/current/userguide/gradle_wrapper.html](Gradle wrapper). This may use an incompatible version of Gradle",
+  "markdownMessage": "Built a Gradle project without the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). This may use an incompatible version of Gradle",
   "severity": "warning",
   "source": {
     "extractorName": "java",
