@@ -13,6 +13,8 @@ class Object extends JSON::Object {
 
   int getNumber(string key) { result = this.getValue(key).(JSON::Number).getValue().toInt() }
 
+  float getFloat(string key) { result = this.getValue(key).(JSON::Number).getValue().toFloat() }
+
   Array getArray(string key) { result = this.getValue(key) }
 
   Object getObject(string key) { result = this.getValue(key) }
@@ -31,7 +33,18 @@ class Array extends JSON::Array {
 
   int getNumber(int i) { result = this.getChild(i).(JSON::Number).getValue().toInt() }
 
+  float getFloat(int i) { result = this.getChild(i).(JSON::Number).getValue().toFloat() }
+
   Array getArray(int i) { result = this.getChild(i) }
+}
+
+/**
+ * Gets the i'th non-negative number in `a`.
+ *
+ * This is needed because the evaluator log is padded with -1s in some cases.
+ */
+private float getRanked(Array a, int i) {
+  result = rank[i + 1](int j, float f | f = a.getFloat(j) and f >= 0 | f order by j)
 }
 
 module EvaluatorLog {
@@ -86,13 +99,13 @@ module EvaluatorLog {
 
     string getRAReference() { result = this.getString("raReference") }
 
-    int getCount(int i) { result = this.getArray("counts").getNumber(i) }
+    float getCount(int i) { result = getRanked(this.getArray("counts"), i) }
 
-    int getDuplicationPercentage(int i) {
-      result = this.getArray("duplicationPercentages").getNumber(i)
+    float getDuplicationPercentage(int i) {
+      result = getRanked(this.getArray("duplicationPercentages"), i)
     }
 
-    int getResultSize() { result = this.getNumber("resultSize") }
+    float getResultSize() { result = this.getFloat("resultSize") }
   }
 
   class PredicateCompleted extends Entry {
@@ -100,7 +113,7 @@ module EvaluatorLog {
 
     int getStartEvent() { result = this.getNumber("startEvent") }
 
-    int getResultSize() { result = this.getNumber("resultSize") }
+    float getResultSize() { result = this.getFloat("resultSize") }
   }
 
   class QueryCompleted extends Entry {
@@ -118,7 +131,7 @@ module EvaluatorLog {
   class CacheLookup extends Entry {
     CacheLookup() { this.getType() = "CACHE_LOOKUP" }
 
-    int getRelationSize() { result = this.getNumber("relationSize") }
+    float getRelationSize() { result = this.getFloat("relationSize") }
   }
 
   class SentinelEmpty extends Entry {
@@ -214,7 +227,7 @@ module KindPredicatesLog {
       )
     }
 
-    int getResultSize() { result = this.getNumber("resultSize") }
+    float getResultSize() { result = this.getFloat("resultSize") }
   }
 
   class SentinelEmpty extends SummaryEvent {
@@ -230,9 +243,11 @@ module KindPredicatesLog {
 
     string getRAReference() { result = this.getString("raReference") }
 
-    Array getCounts() { result = this.getArray("counts") }
+    float getCount(int i) { result = getRanked(this.getArray("counts"), i) }
 
-    Array getDuplicationPercentages() { result = this.getArray("duplicationPercentages") }
+    float getDuplicationPercentage(int i) {
+      result = getRanked(this.getArray("duplicationPercentages"), i)
+    }
   }
 
   class PipeLineRuns extends Array {
@@ -245,8 +260,22 @@ module KindPredicatesLog {
     PipeLineRun getRun(int i) { result = this.getObject(i) }
   }
 
+  class Depencencies extends Object {
+    SummaryEvent event;
+
+    Depencencies() { event.getObject("dependencies") = this }
+
+    SummaryEvent getEvent() { result = event }
+
+    predicate hasEntry(string name, string hash) { this.getString(name) = hash }
+
+    SummaryEvent getADependency() { this.getString(_) = result.getRAHash() }
+  }
+
   class ComputeSimple extends SummaryEvent {
     ComputeSimple() { evaluationStrategy = "COMPUTE_SIMPLE" }
+
+    Depencencies getDependencies() { result = this.getObject("dependencies") }
 
     PipeLineRun getPipelineRun() { result.getArray() = this.getArray("pipelineRuns") }
   }
