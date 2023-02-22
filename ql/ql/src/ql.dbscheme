@@ -1292,22 +1292,11 @@ json_pair_def(
 
 json_string_child(
   unique int json_string__: @json_string__ ref,
-  unique int child: @json_string_content ref
+  unique int child: @json_token_string_content ref
 );
 
 json_string_def(
   unique int id: @json_string__
-);
-
-#keyset[json_string_content, index]
-json_string_content_child(
-  int json_string_content: @json_string_content ref,
-  int index: int ref,
-  unique int child: @json_token_escape_sequence ref
-);
-
-json_string_content_def(
-  unique int id: @json_string_content
 );
 
 @json_value = @json_array | @json_object | @json_string__ | @json_token_false | @json_token_null | @json_token_number | @json_token_true
@@ -1321,15 +1310,15 @@ json_tokeninfo(
 case @json_token.kind of
   0 = @json_reserved_word
 | 1 = @json_token_comment
-| 2 = @json_token_escape_sequence
-| 3 = @json_token_false
-| 4 = @json_token_null
-| 5 = @json_token_number
+| 2 = @json_token_false
+| 3 = @json_token_null
+| 4 = @json_token_number
+| 5 = @json_token_string_content
 | 6 = @json_token_true
 ;
 
 
-@json_ast_node = @json_array | @json_document | @json_object | @json_pair | @json_string__ | @json_string_content | @json_token
+@json_ast_node = @json_array | @json_document | @json_object | @json_pair | @json_string__ | @json_token
 
 @json_ast_node_parent = @file | @json_ast_node
 
