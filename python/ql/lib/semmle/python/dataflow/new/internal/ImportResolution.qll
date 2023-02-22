@@ -307,9 +307,21 @@ module ImportResolution {
       module_reexport(reexporter, attr_name, m)
     )
     or
-    // Submodules that are implicitly defined with relative imports of the form `from .foo import ...`.
-    // In practice, we create a definition for each module in a package, even if it is not imported.
+    // submodules of packages will be available as `<pkg>.<submodule>` after doing
+    // `import <pkg>.<submodule>` at least once in the program, or can be directly
+    // imported with `from <pkg> import <submodule>` (even with an empty
+    // `<pkg>.__init__` file).
+    //
+    // Until an import of `<pkg>.<submodule>` is executed, it is technically possible
+    // that `<pkg>.<submodule>` (or `from <pkg> import <submodule>`) can refer to an
+    // attribute set in `<pkg>.__init__`.
+    //
+    // Therefore, if there is an attribute defined in `<pkg>.__init__` with the same
+    // name as a submodule, we always consider that this attribute _could_ be a
+    // reference to the submodule, even if we don't know that the submodule has been
+    // imported yet.
     exists(string submodule, Module package |
+      submodule = result.asVar().getName() and
       SsaSource::init_module_submodule_defn(result.asVar().getSourceVariable(),
         package.getEntryNode()) and
       m = getModuleFromName(package.getPackageName() + "." + submodule)

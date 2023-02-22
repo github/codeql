@@ -81,7 +81,7 @@ if sys.version_info[0] == 3:
 
 
 from attr_clash import clashing_attr, non_clashing_submodule #$ imports=attr_clash.clashing_attr as=clashing_attr imports=attr_clash.non_clashing_submodule as=non_clashing_submodule
-check("clashing_attr", clashing_attr, "clashing_attr", globals()) #$ prints=clashing_attr SPURIOUS: prints="<module attr_clash.clashing_attr>" SPURIOUS: prints="<module attr_clash.__init__>" SPURIOUS: prints="<module attr_clash.non_clashing_submodule>"
+check("clashing_attr", clashing_attr, "clashing_attr", globals()) #$ prints=clashing_attr SPURIOUS: prints="<module attr_clash.clashing_attr>"
 check("non_clashing_submodule", non_clashing_submodule, "<module attr_clash.non_clashing_submodule>", globals()) #$ prints="<module attr_clash.non_clashing_submodule>"
 
 # check that import * only imports the __all__ attributes
