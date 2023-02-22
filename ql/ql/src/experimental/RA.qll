@@ -52,7 +52,7 @@ module RAParser<RApredicate Predicate> {
     /** Gets a predicate name referenced in the RHS of an RA expression. */
     abstract string getARhsPredicate();
 
-    final string toString() { result = getPredicate().getLineOfRA(getLine()) }
+    final string toString() { result = this.getPredicate().getLineOfRA(this.getLine()) }
 
     /** Gets a child of this RA expression - not by index yet. */
     RAExpr getAChild() {
