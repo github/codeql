@@ -21,12 +21,10 @@ namespace Semmle.Autobuild.Cpp
 
     public class CppAutobuilder : Autobuilder<CppAutobuildOptions>
     {
-        private DiagnosticClassifier classifier;
+        private readonly DiagnosticClassifier classifier;
 
-        public CppAutobuilder(IBuildActions actions, CppAutobuildOptions options) : base(actions, options)
-        {
+        public CppAutobuilder(IBuildActions actions, CppAutobuildOptions options) : base(actions, options) =>
             classifier = new DiagnosticClassifier();
-        }
 
         protected override DiagnosticClassifier DiagnosticClassifier => classifier;
 

@@ -15,22 +15,14 @@ namespace Semmle.Autobuild.CSharp
     /// </summary>
     internal class DotNetRule : IBuildRule<CSharpAutobuildOptions>
     {
-        private IEnumerable<Project<CSharpAutobuildOptions>> notDotNetProjects;
-
         public readonly List<IProjectOrSolution> FailedProjectsOrSolutions = new();
 
         /// <summary>
         /// A list of projects which are incompatible with DotNet.
         /// </summary>
-        public IEnumerable<Project<CSharpAutobuildOptions>> NotDotNetProjects
-        {
-            get { return this.notDotNetProjects; }
-        }
+        public IEnumerable<Project<CSharpAutobuildOptions>> NotDotNetProjects { get; private set; }
 
-        public DotNetRule()
-        {
-            this.notDotNetProjects = new List<Project<CSharpAutobuildOptions>>();
-        }
+        public DotNetRule() => NotDotNetProjects = new List<Project<CSharpAutobuildOptions>>();
 
         public BuildScript Analyse(IAutobuilder<CSharpAutobuildOptions> builder, bool auto)
         {
@@ -39,11 +31,11 @@ namespace Semmle.Autobuild.CSharp
 
             if (auto)
             {
-                notDotNetProjects = builder.ProjectsOrSolutionsToBuild
+                NotDotNetProjects = builder.ProjectsOrSolutionsToBuild
                     .SelectMany(p => Enumerators.Singleton(p).Concat(p.IncludedProjects))
                     .OfType<Project<CSharpAutobuildOptions>>()
                     .Where(p => !p.DotNetProject);
-                var notDotNetProject = notDotNetProjects.FirstOrDefault();
+                var notDotNetProject = NotDotNetProjects.FirstOrDefault();
 
                 if (notDotNetProject is not null)
                 {

@@ -31,12 +31,13 @@ namespace Semmle.Util
             /// <summary>
             /// Name of the CodeQL extractor. This is used to identify which tool component the reporting descriptor object should be nested under in SARIF.
             /// </summary>
-            public string? ExtractorName { get; set; }
+            public string? ExtractorName { get; }
 
-            public TspSource(string id, string name)
+            public TspSource(string id, string name, string? extractorName = null)
             {
                 Id = id;
                 Name = name;
+                ExtractorName = extractorName;
             }
         }
 
@@ -66,6 +67,13 @@ namespace Semmle.Util
             /// True if the message should be sent to telemetry (defaults to false).
             /// </summary>
             public bool? Telemetry { get; set; }
+
+            public TspVisibility(bool? statusPage = null, bool? cliSummaryTable = null, bool? telemetry = null)
+            {
+                this.StatusPage = statusPage;
+                this.CLISummaryTable = cliSummaryTable;
+                this.Telemetry = telemetry;
+            }
         }
 
         public class TspLocation
@@ -78,6 +86,15 @@ namespace Semmle.Util
             public int? StartColumn { get; set; }
             public int? EndLine { get; set; }
             public int? EndColumn { get; set; }
+
+            public TspLocation(string? file = null, int? startLine = null, int? startColumn = null, int? endLine = null, int? endColumn = null)
+            {
+                this.File = file;
+                this.StartLine = startLine;
+                this.StartColumn = startColumn;
+                this.EndLine = endLine;
+                this.EndColumn = endColumn;
+            }
         }
 
         /// <summary>
@@ -109,9 +126,6 @@ namespace Semmle.Util
         /// If true, then this message won't be presented to users.
         /// </summary>
         public bool Internal { get; set; }
-        /// <summary>
-        ///
-        /// </summary>
         public TspVisibility Visibility { get; }
         public TspLocation Location { get; }
         /// <summary>
@@ -162,7 +176,8 @@ namespace Semmle.Util
 
             serializer = new JsonSerializer
             {
-                ContractResolver = contractResolver
+                ContractResolver = contractResolver,
+                NullValueHandling = NullValueHandling.Ignore
             };
 
             writer = streamWriter;

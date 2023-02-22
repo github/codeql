@@ -41,10 +41,8 @@ namespace Semmle.Autobuild.CSharp
 
         protected override DiagnosticClassifier DiagnosticClassifier => diagnosticClassifier;
 
-        public CSharpAutobuilder(IBuildActions actions, CSharpAutobuildOptions options) : base(actions, options)
-        {
+        public CSharpAutobuilder(IBuildActions actions, CSharpAutobuildOptions options) : base(actions, options) =>
             diagnosticClassifier = new CSharpDiagnosticClassifier();
-        }
 
         public override BuildScript GetBuildScript()
         {
@@ -164,7 +162,7 @@ namespace Semmle.Autobuild.CSharp
                 }
 
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
-                Diagnostic(message);
+                AddDiagnostic(message);
             }
 
             // both dotnet and msbuild builds require project or solution files; if we haven't found any
@@ -177,7 +175,7 @@ namespace Semmle.Autobuild.CSharp
                     "You can manually specify a suitable build command for your project.";
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
 
-                Diagnostic(message);
+                AddDiagnostic(message);
             }
             else if (dotNetRule is not null && dotNetRule.NotDotNetProjects.Any())
             {
@@ -187,7 +185,7 @@ namespace Semmle.Autobuild.CSharp
                     string.Join('\n', dotNetRule.NotDotNetProjects.Select(p => $"- `{p.FullPath}`"));
                 message.Severity = DiagnosticMessage.TspSeverity.Warning;
 
-                Diagnostic(message);
+                AddDiagnostic(message);
             }
 
             // report any projects that failed to build with .NET Core
@@ -201,7 +199,7 @@ namespace Semmle.Autobuild.CSharp
                     "or to ensure that they can be built successfully.";
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
 
-                Diagnostic(message);
+                AddDiagnostic(message);
             }
 
             // report any projects that failed to build with MSBuild
@@ -215,7 +213,7 @@ namespace Semmle.Autobuild.CSharp
                     "or to ensure that they can be built successfully.";;
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
 
-                Diagnostic(message);
+                AddDiagnostic(message);
             }
         }
 
