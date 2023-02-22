@@ -6,9 +6,9 @@ graph_info
 | Here is the flame graph | title | Here is the flame graph |
 | Here is the flame graph | type | flame |
 graph_chart
-| Here is a bar chart | C++ | 21.0 |
-| Here is a bar chart | Python | 3.1 |
-| Here is a bar chart | TypeScript | 5.0 |
+| Here is a bar chart | C++ | 0 | 21.0 |
+| Here is a bar chart | Python | 0 | 3.1 |
+| Here is a bar chart | TypeScript | 0 | 5.0 |
 graph_xy
 | Here is a line chart | 0 | 0.0 | 0.0 |
 | Here is a line chart | 0 | 1.0 | 1.0 |

@@ -18,19 +18,19 @@ module Graph {
     Graph() { any() }
 
     /**
-     * Defines the type of the graph: Currently "bar", "line" or "flame"
+     * Gets the type of the graph: Currently "bar", "line" or "flame"
      */
     abstract string getType();
 
     /**
-     * Defines the title of the graph, can be overridden.
+     * Gets the title of the graph, can be overridden.
      */
     string getTitle() { result = this }
 
     /**
-     * Defines char data, required for chart type = "bar"
+     * Defines chart data, required for chart type = "bar"
      */
-    predicate chartData(string key, float value) { none() }
+    predicate chartData(string key, int series, float value) { none() }
 
     /**
      * Defines point data.
@@ -50,7 +50,9 @@ module Graph {
     field = "title" and value = graph.getTitle()
   }
 
-  query predicate graph_chart(Graph graph, string key, float value) { graph.chartData(key, value) }
+  query predicate graph_chart(Graph graph, string key, int series, float value) {
+    graph.chartData(key, series, value)
+  }
 
   query predicate graph_xy(Graph graph, int series, float x, float y) {
     graph.pointData(series, x, y)
