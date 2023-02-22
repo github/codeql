@@ -95,7 +95,11 @@ module ImportResolution {
     )
     or
     // `from <pkg> import *`
-    module_export(ImportStar::getStarImported+(m), name, defn)
+    exists(Module importedFrom |
+      importedFrom = ImportStar::getStarImported(m) and
+      module_export(importedFrom, name, defn) and
+      potential_module_export(importedFrom, name)
+    )
     or
     // `import <pkg>` or `from <pkg> import <stuff>`
     exists(Alias a |

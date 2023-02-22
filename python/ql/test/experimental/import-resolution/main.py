@@ -119,7 +119,7 @@ import has_defined_all_indirection # $ imports=has_defined_all_indirection as=ha
 check("has_defined_all_indirection.all_defined_foo_copy", has_defined_all_indirection.all_defined_foo_copy, "all_defined_foo_copy", globals()) #$ prints=all_defined_foo_copy
 
 try:
-    check("has_defined_all_indirection.all_defined_bar_copy", has_defined_all_indirection.all_defined_bar_copy, "all_defined_bar_copy", globals()) #$ SPURIOUS: prints=all_defined_bar_copy
+    check("has_defined_all_indirection.all_defined_bar_copy", has_defined_all_indirection.all_defined_bar_copy, "all_defined_bar_copy", globals())
     raise Exception("Did not get expected AttributeError")
 except AttributeError as e:
     if "all_defined_bar_copy" in str(e):
