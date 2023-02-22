@@ -126,6 +126,120 @@ module EvaluatorLog {
   }
 }
 
+module KindPredicatesLog {
+  class SummaryHeader extends Object {
+    SummaryHeader() { exists(this.getString("summaryLogVersion")) }
+
+    string getSummaryLogVersion() { result = this.getString("summaryLogVersion") }
+
+    string getCodeqlVersion() { result = this.getString("codeqlVersion") }
+
+    private string getStartTimeString() { result = this.getString("startTime") }
+
+    predicate hasStartTime(
+      int year, string month, int day, int hours, int minute, int second, int millisecond
+    ) {
+      exists(string s, string r |
+        s = this.getStartTimeString() and
+        r = "(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2})\\.(\\d{3})Z"
+      |
+        year = s.regexpCapture(r, 1).toInt() and
+        month = s.regexpCapture(r, 2) and
+        day = s.regexpCapture(r, 3).toInt() and
+        hours = s.regexpCapture(r, 4).toInt() and
+        minute = s.regexpCapture(r, 5).toInt() and
+        second = s.regexpCapture(r, 6).toInt() and
+        millisecond = s.regexpCapture(r, 7).toInt()
+      )
+    }
+  }
+
+  class AppearsAs extends Object {
+    SummaryEvent event;
+
+    AppearsAs() { event.getObject("appearsAs") = this }
+
+    SummaryEvent getSummaryEvent() { result = event }
+
+    PredicateName getAPredicateName() { result.getAppearsAs() = this }
+  }
+
+  class PredicateName extends Object {
+    AppearsAs appearsAs;
+
+    PredicateName() { pragma[only_bind_out](appearsAs.getObject(_)) = this }
+
+    AppearsAs getAppearsAs() { result = appearsAs }
+
+    Query getAQuery() { result.getPredicateName() = this }
+  }
+
+  class Query extends Array {
+    PredicateName predicateName;
+
+    Query() { this = predicateName.getArray(_) }
+
+    PredicateName getPredicateName() { result = predicateName }
+  }
+
+  class SummaryEvent extends Object {
+    string evaluationStrategy;
+
+    SummaryEvent() { evaluationStrategy = this.getString("evaluationStrategy") }
+
+    string getEvaluationStrategy() { result = evaluationStrategy }
+
+    string getRaHash() { result = this.getString("raHash") }
+
+    string getPredicateName() { result = this.getString("predicateName") }
+
+    string getCompletionTimeString() { result = this.getString("completionTime") }
+
+    AppearsAs getAppearsAs() { result = this.getObject("appearsAs") }
+
+    predicate hasCompletionTime(
+      int year, string month, int day, int hours, int minute, int second, int millisecond
+    ) {
+      exists(string s, string r |
+        s = this.getCompletionTimeString() and
+        r = "(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2})\\.(\\d{3})Z"
+      |
+        year = s.regexpCapture(r, 1).toInt() and
+        month = s.regexpCapture(r, 2) and
+        day = s.regexpCapture(r, 3).toInt() and
+        hours = s.regexpCapture(r, 4).toInt() and
+        minute = s.regexpCapture(r, 5).toInt() and
+        second = s.regexpCapture(r, 6).toInt() and
+        millisecond = s.regexpCapture(r, 7).toInt()
+      )
+    }
+  }
+
+  class SentinelEmpty extends SummaryEvent {
+    SentinelEmpty() { evaluationStrategy = "SENTINEL_EMPTY" }
+  }
+
+  class ComputeSimple extends SummaryEvent {
+    ComputeSimple() { evaluationStrategy = "COMPUTE_SIMPLE" }
+  }
+
+  class ComputeRecursive extends SummaryEvent {
+    ComputeRecursive() { evaluationStrategy = "COMPUTE_RECURSIVE" }
+  }
+
+  class InLayer extends SummaryEvent {
+    InLayer() { evaluationStrategy = "IN_LAYER" }
+  }
+
+  class ComputedExtensional extends SummaryEvent {
+    ComputedExtensional() { evaluationStrategy = "COMPUTED_EXTENSIONAL" }
+  }
+
+  class Extensional extends SummaryEvent {
+    Extensional() { evaluationStrategy = "EXTENSIONAL" }
+  }
+}
+
 // Stuff to test whether we've covered all event types
 private File logFile() { result = any(EvaluatorLog::LogHeader h).getLocation().getFile() }
 
