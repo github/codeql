@@ -78,34 +78,63 @@ module ImportResolution {
   }
 
   /**
-   * Holds if the module `m` defines a name `name` by assigning `defn` to it. This is an
-   * overapproximation, as `name` may not in fact be exported (e.g. by defining an `__all__` that does
-   * not include `name`).
+   * Holds if the module `m` defines a name `name` with the value `val`. The value
+   * represents the value `name` will have at the end of the module (the last place we
+   * have def-use flow to).
+   *
+   * Note: The handling of re-exporting imports is a bit simplistic. We assume that if
+   * an import is made, it will be re-exported (which will not be the case if a new
+   * value is assigned to the name, or it is deleted).
    */
   pragma[nomagic]
-  predicate module_export(Module m, string name, DataFlow::CfgNode defn) {
-    exists(EssaVariable v, EssaDefinition essaDef |
-      v.getName() = name and
-      v.getAUse() = m.getANormalExit() and
-      allowedEssaImportStep*(essaDef, v.getDefinition())
+  predicate module_export(Module m, string name, DataFlow::Node val) {
+    // Definitions made inside `m` itself
+    //
+    // for code such as `foo = ...; foo.bar = ...` there will be TWO
+    // EssaDefinition/EssaVariable. One for `foo = ...` (AssignmentDefinition) and one
+    // for `foo.bar = ...`. The one for `foo.bar = ...` (EssaNodeRefinement). The
+    // EssaNodeRefinement is the one that will reach the end of the module (normal
+    // exit).
+    //
+    // However, we cannot just use the EssaNodeRefinement as the `val`, because the
+    // normal data-flow depends on use-use flow, and use-use flow targets CFG nodes not
+    // EssaNodes. So we need to go back from the EssaDefinition/EssaVariable that
+    // reaches the end of the module, to the first definition of the variable, and then
+    // track forwards using use-use flow to find a suitable CFG node that has flow into
+    // it from use-use flow.
+    exists(EssaVariable lastUseVar, EssaVariable firstDef |
+      lastUseVar.getName() = name and
+      // we ignore special variable $ introduced by our analysis (not used for anything)
+      // we ignore special variable * introduced by `from <pkg> import *` -- TODO: understand why we even have this?
+      not name in ["$", "*"] and
+      lastUseVar.getAUse() = m.getANormalExit() and
+      allowedEssaImportStep*(firstDef, lastUseVar) and
+      not allowedEssaImportStep(_, firstDef)
     |
-      defn.getNode() = essaDef.(AssignmentDefinition).getValue()
+      not EssaFlow::defToFirstUse(firstDef, _) and
+      val.asVar() = firstDef
       or
-      defn.getNode() = essaDef.(ArgumentRefinement).getArgument()
+      exists(ControlFlowNode mid, ControlFlowNode end |
+        EssaFlow::defToFirstUse(firstDef, mid) and
+        EssaFlow::useToNextUse*(mid, end) and
+        not EssaFlow::useToNextUse(end, _) and
+        lastUseVar.getAUse() = end and
+        val.asCfgNode() = end
+      )
     )
     or
-    // `from <pkg> import *`
+    // re-exports from `from <pkg> import *`
     exists(Module importedFrom |
       importedFrom = ImportStar::getStarImported(m) and
-      module_export(importedFrom, name, defn) and
+      module_export(importedFrom, name, val) and
       potential_module_export(importedFrom, name)
     )
     or
-    // `import <pkg>` or `from <pkg> import <stuff>`
+    // re-exports from `import <pkg>` or `from <pkg> import <stuff>`
     exists(Alias a |
-      defn.asExpr() = a.getValue() and
+      val.asExpr() = a.getValue() and
       a.getAsname().(Name).getId() = name and
-      defn.getScope() = m
+      val.getScope() = m
     )
   }
 

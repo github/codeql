@@ -81,7 +81,7 @@ if sys.version_info[0] == 3:
 
 
 from attr_clash import clashing_attr, non_clashing_submodule #$ imports=attr_clash.clashing_attr as=clashing_attr imports=attr_clash.non_clashing_submodule as=non_clashing_submodule
-check("clashing_attr", clashing_attr, "clashing_attr", globals()) #$ prints=clashing_attr SPURIOUS: prints="<module attr_clash.clashing_attr>"
+check("clashing_attr", clashing_attr, "clashing_attr", globals()) #$ prints=clashing_attr SPURIOUS: prints="<module attr_clash.clashing_attr>" SPURIOUS: prints="<module attr_clash.__init__>" SPURIOUS: prints="<module attr_clash.non_clashing_submodule>"
 check("non_clashing_submodule", non_clashing_submodule, "<module attr_clash.non_clashing_submodule>", globals()) #$ prints="<module attr_clash.non_clashing_submodule>"
 
 # check that import * only imports the __all__ attributes
@@ -143,12 +143,12 @@ import if_then_else_refined # $ imports=if_then_else_refined as=if_then_else_ref
 check("if_then_else_refined.src", if_then_else_refined.src, if_then_else_refined.src, globals()) #$ prints=SOURCE
 
 import simplistic_reexport # $ imports=simplistic_reexport as=simplistic_reexport
-check("simplistic_reexport.bar_attr", simplistic_reexport.bar_attr, "overwritten", globals()) #$ prints=overwritten SPURIOUS: prints=bar_attr
+check("simplistic_reexport.bar_attr", simplistic_reexport.bar_attr, "overwritten", globals()) #$ MISSING: prints=overwritten SPURIOUS: prints=bar_attr
 check("simplistic_reexport.baz_attr", simplistic_reexport.baz_attr, "overwritten", globals()) #$ prints=overwritten SPURIOUS: prints=baz_attr
 
 # check that we don't treat all assignments as being exports
 import block_flow_check #$ imports=block_flow_check as=block_flow_check
-check("block_flow_check.SOURCE", block_flow_check.SOURCE, block_flow_check.SOURCE, globals()) #$ SPURIOUS: prints=SOURCE
+check("block_flow_check.SOURCE", block_flow_check.SOURCE, block_flow_check.SOURCE, globals())
 
 exit(__file__)
 
