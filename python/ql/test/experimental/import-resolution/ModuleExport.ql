@@ -6,5 +6,6 @@ from Module m, string name, DataFlow::Node defn
 where
   ImportResolution::module_export(m, name, defn) and
   exists(m.getLocation().getFile().getRelativePath()) and
-  not defn.getScope() = any(Module trace | trace.getName() = "trace")
+  not defn.getScope() = any(Module trace | trace.getName() = "trace") and
+  not m.getName() = "main"
 select m.getName(), name, defn
