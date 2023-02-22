@@ -443,7 +443,7 @@ private string stubStaticOrConst(Member m) {
 }
 
 private string stubOverride(Member m) {
-  if m.getDeclaringType() instanceof Interface
+  if m.getDeclaringType() instanceof Interface and not m.isStatic()
   then result = ""
   else
     if m.(Virtualizable).isVirtual()
@@ -741,13 +741,13 @@ private string stubOperator(Operator o, Assembly assembly) {
   then
     result =
       "    " + stubModifiers(o) + stubExplicit(o) + "operator " + stubClassName(o.getReturnType()) +
-        "(" + stubParameters(o) + ") => throw null;\n"
+        "(" + stubParameters(o) + ")" + stubImplementation(o) + ";\n"
   else
     if not o.getDeclaringType() instanceof Enum
     then
       result =
         "    " + stubModifiers(o) + stubClassName(o.getReturnType()) + " operator " + o.getName() +
-          "(" + stubParameters(o) + ") => throw null;\n"
+          "(" + stubParameters(o) + ")" + stubImplementation(o) + ";\n"
     else result = "    // Stub generator skipped operator: " + o.getName() + "\n"
 }
 
