@@ -189,7 +189,7 @@ module KindPredicatesLog {
 
     string getEvaluationStrategy() { result = evaluationStrategy }
 
-    string getRaHash() { result = this.getString("raHash") }
+    string getRAHash() { result = this.getString("raHash") }
 
     string getPredicateName() { result = this.getString("predicateName") }
 
@@ -229,7 +229,7 @@ module KindPredicatesLog {
 
     PipeLineRuns getArray() { result = runs }
 
-    string getRaReference() { result = this.getString("raReference") }
+    string getRAReference() { result = this.getString("raReference") }
 
     Array getCounts() { result = this.getArray("counts") }
 
