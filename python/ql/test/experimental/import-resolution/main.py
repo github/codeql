@@ -154,6 +154,10 @@ check("simplistic_reexport.baz_attr", simplistic_reexport.baz_attr, "overwritten
 import block_flow_check #$ imports=block_flow_check as=block_flow_check
 check("block_flow_check.SOURCE", block_flow_check.SOURCE, block_flow_check.SOURCE, globals())
 
+# show that import resolution is a bit too generous with definitions
+import generous_export #$ imports=generous_export as=generous_export
+check("generous_export.SOURCE", generous_export.SOURCE, generous_export.SOURCE, globals()) #$ SPURIOUS: prints=SOURCE
+
 exit(__file__)
 
 print()
