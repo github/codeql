@@ -1,5 +1,5 @@
 {
-  "markdownMessage": "Building using Maven was skipped because there were multiple sibling build directories containing build files: [./maven-project-1,./maven-project-2]. If you want to use one of these, please [TODO](manually supply a build command)",
+  "markdownMessage": "Building using Maven was skipped because there were multiple sibling build directories containing build files: [./maven-project-1,./maven-project-2]. If you want to use one of these, please [manually supply a build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
   "severity": "warning",
   "source": {
     "extractorName": "java",
