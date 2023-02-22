@@ -1,14 +1,16 @@
 /**
  * Parses RA expressions.
  */
-signature class RAstring extends string;
 
+/**
+ * A predicate that contains RA.
+ */
 signature class RApredicate {
   string getLineOfRA(int n);
 }
 
 /**
- * Parses strings of RA provided by an RA predicate,
+ * Parses strings of RA provided by an RA predicate, and represented the
  */
 module RAParser<RApredicate Predicate> {
   private string parseRaExpr(Predicate p, int line, int arity, int lhs) {
