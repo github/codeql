@@ -84,6 +84,10 @@ from attr_clash import clashing_attr, non_clashing_submodule #$ imports=attr_cla
 check("clashing_attr", clashing_attr, "clashing_attr", globals()) #$ prints=clashing_attr SPURIOUS: prints="<module attr_clash.clashing_attr>"
 check("non_clashing_submodule", non_clashing_submodule, "<module attr_clash.non_clashing_submodule>", globals()) #$ prints="<module attr_clash.non_clashing_submodule>"
 
+import attr_clash.clashing_attr as _doesnt_matter #$ imports=attr_clash.clashing_attr as=_doesnt_matter
+from attr_clash import clashing_attr, non_clashing_submodule #$ imports=attr_clash.clashing_attr as=clashing_attr imports=attr_clash.non_clashing_submodule as=non_clashing_submodule
+check("clashing_attr", clashing_attr, "<module attr_clash.clashing_attr>", globals()) #$ prints="<module attr_clash.clashing_attr>" SPURIOUS: prints=clashing_attr
+
 # check that import * only imports the __all__ attributes
 from has_defined_all import *
 check("all_defined_foo", all_defined_foo, "all_defined_foo", globals()) #$ prints=all_defined_foo
