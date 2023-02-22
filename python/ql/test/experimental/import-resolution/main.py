@@ -84,6 +84,48 @@ from attr_clash import clashing_attr, non_clashing_submodule #$ imports=attr_cla
 check("clashing_attr", clashing_attr, "clashing_attr", globals()) #$ prints=clashing_attr SPURIOUS: prints="<module attr_clash.clashing_attr>"
 check("non_clashing_submodule", non_clashing_submodule, "<module attr_clash.non_clashing_submodule>", globals()) #$ prints="<module attr_clash.non_clashing_submodule>"
 
+# check that import * only imports the __all__ attributes
+from has_defined_all import *
+check("all_defined_foo", all_defined_foo, "all_defined_foo", globals()) #$ prints=all_defined_foo
+
+try:
+    check("all_defined_bar", all_defined_bar, "all_defined_bar", globals()) #$ SPURIOUS: prints=all_defined_bar
+    raise Exception("Did not get expected NameError")
+except NameError as e:
+    if "all_defined_bar" in str(e):
+        print("Got expected NameError:", e)
+    else:
+        raise
+
+import has_defined_all # $ imports=has_defined_all as=has_defined_all
+check("has_defined_all.all_defined_foo", has_defined_all.all_defined_foo, "all_defined_foo", globals()) #$ prints=all_defined_foo
+check("has_defined_all.all_defined_bar", has_defined_all.all_defined_bar, "all_defined_bar", globals()) #$ prints=all_defined_bar
+
+# same check as above, but going through one level of indirection (which can make a difference)
+from has_defined_all_indirection import *
+check("all_defined_foo_copy", all_defined_foo_copy, "all_defined_foo_copy", globals()) #$ prints=all_defined_foo_copy
+
+try:
+    check("all_defined_bar_copy", all_defined_bar_copy, "all_defined_bar_copy", globals()) #$ SPURIOUS: prints=all_defined_bar_copy
+    raise Exception("Did not get expected NameError")
+except NameError as e:
+    if "all_defined_bar_copy" in str(e):
+        print("Got expected NameError:", e)
+    else:
+        raise
+
+# same check as above, but going through one level of indirection (which can make a difference)
+import has_defined_all_indirection # $ imports=has_defined_all_indirection as=has_defined_all_indirection
+check("has_defined_all_indirection.all_defined_foo_copy", has_defined_all_indirection.all_defined_foo_copy, "all_defined_foo_copy", globals()) #$ prints=all_defined_foo_copy
+
+try:
+    check("has_defined_all_indirection.all_defined_bar_copy", has_defined_all_indirection.all_defined_bar_copy, "all_defined_bar_copy", globals()) #$ SPURIOUS: prints=all_defined_bar_copy
+    raise Exception("Did not get expected AttributeError")
+except AttributeError as e:
+    if "all_defined_bar_copy" in str(e):
+        print("Got expected AttributeError:", e)
+    else:
+        raise
 
 # check that import * from an __init__ file works
 from package.subpackage2 import *
