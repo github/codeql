@@ -34,26 +34,26 @@ def SINK_F(x):
 
 def out():
     sinkO1 = { "x": "" }
-    def captureOut1():
+    def captureOut1(): #$ entry=sinkO1
         sinkO1["x"] = SOURCE
     captureOut1()
     SINK(sinkO1["x"]) #$ MISSING:captured
 
     sinkO2 = { "x": "" }
     def captureOut2():
-        def m():
+        def m(): #$ entry=sinkO2
             sinkO2["x"] = SOURCE
         m()
     captureOut2()
     SINK(sinkO2["x"]) #$ MISSING:captured
 
     nonSink0 = { "x": "" }
-    def captureOut1NotCalled():
+    def captureOut1NotCalled(): #$ entry=nonSink0
         nonSink0["x"] = SOURCE
     SINK_F(nonSink0["x"])
 
     def captureOut2NotCalled():
-        def m():
+        def m(): #$ entry=nonSink0
             nonSink0["x"] = SOURCE
     captureOut2NotCalled()
     SINK_F(nonSink0["x"])
@@ -64,26 +64,26 @@ def test_out():
 
 def through(tainted):
     sinkO1 = { "x": "" }
-    def captureOut1():
+    def captureOut1(): #$ entry=tainted entry=sinkO1
         sinkO1["x"] = tainted
     captureOut1()
     SINK(sinkO1["x"]) #$ MISSING:captured
 
     sinkO2 = { "x": "" }
-    def captureOut2():
-        def m():
+    def captureOut2(): #$ MISSING:entry=tainted entry=sinkO2
+        def m(): #$ entry=tainted entry=sinkO2
             sinkO2["x"] = tainted
         m()
     captureOut2()
     SINK(sinkO2["x"]) #$ MISSING:captured
 
     nonSink0 = { "x": "" }
-    def captureOut1NotCalled():
+    def captureOut1NotCalled(): #$ entry=tainted entry=nonSink0
         nonSink0["x"] = tainted
     SINK_F(nonSink0["x"])
 
-    def captureOut2NotCalled():
-        def m():
+    def captureOut2NotCalled(): #$ MISSING:entry=tainted entry=nonSink0
+        def m(): #$ entry=tainted entry=nonSink0
             nonSink0["x"] = tainted
     captureOut2NotCalled()
     SINK_F(nonSink0["x"])

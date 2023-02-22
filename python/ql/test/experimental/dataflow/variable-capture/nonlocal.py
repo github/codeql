@@ -34,15 +34,15 @@ def SINK_F(x):
 
 def out():
     sinkO1 = ""
-    def captureOut1():
+    def captureOut1(): #$ MISSING:entry=sink01
         nonlocal sinkO1
         sinkO1 = SOURCE
     captureOut1()
     SINK(sinkO1) #$ MISSING:captured
 
     sinkO2 = ""
-    def captureOut2():
-        def m():
+    def captureOut2(): #$ MISSING:entry=sink02
+        def m(): #$ MISSING:entry=sink02
             nonlocal sinkO2
             sinkO2 = SOURCE
         m()
@@ -50,13 +50,13 @@ def out():
     SINK(sinkO2) #$ MISSING:captured
 
     nonSink0 = ""
-    def captureOut1NotCalled():
+    def captureOut1NotCalled(): #$ MISSING:entry=nonSink0
         nonlocal nonSink0
         nonSink0 = SOURCE
     SINK_F(nonSink0)
 
-    def captureOut2NotCalled():
-        def m():
+    def captureOut2NotCalled(): #$ MISSING:entry=nonSink0
+        def m(): #$ MISSING:entry=nonSink0
             nonlocal nonSink0
             nonSink0 = SOURCE
     captureOut2NotCalled()
@@ -68,15 +68,15 @@ def test_out():
 
 def through(tainted):
     sinkO1 = ""
-    def captureOut1():
+    def captureOut1(): #$ entry=tainted MISSING:entry=sink01
         nonlocal sinkO1
         sinkO1 = tainted
     captureOut1()
     SINK(sinkO1) #$ MISSING:captured
 
     sinkO2 = ""
-    def captureOut2():
-        def m():
+    def captureOut2(): #$ MISSING:entry=tainted entry=sink02
+        def m(): #$ entry=tainted MISSING:entry=sink02
             nonlocal sinkO2
             sinkO2 = tainted
         m()
@@ -84,13 +84,13 @@ def through(tainted):
     SINK(sinkO2) #$ MISSING:captured
 
     nonSink0 = ""
-    def captureOut1NotCalled():
+    def captureOut1NotCalled(): #$ entry=tainted MISSING:entry=nonSink0
         nonlocal nonSink0
         nonSink0 = tainted
     SINK_F(nonSink0)
 
-    def captureOut2NotCalled():
-        def m():
+    def captureOut2NotCalled(): #$ MISSING:entry=tainted entry=nonSink0
+        def m(): #$ entry=tainted MISSING:entry=nonSink0
             nonlocal nonSink0
             nonSink0 = tainted
     captureOut2NotCalled()

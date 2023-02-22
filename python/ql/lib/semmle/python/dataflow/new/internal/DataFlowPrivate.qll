@@ -281,6 +281,12 @@ module EssaFlow {
       nodeTo = TKwOverflowNode(call, callable) and
       nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode()
     )
+    or
+    // captured variable
+    exists(CallableValue callable, string name, ScopeEntryDefinition def |
+      nodeFrom = TCapturedParameterNode(callable, name, def) and
+      nodeTo.asVar() = def
+    )
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {

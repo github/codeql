@@ -32,27 +32,33 @@ def SINK_F(x):
 
 # Capture the parameter of an outer function.
 def inParam(tainted):
-    def captureIn1():
+    def captureIn1(): #$ entry=tainted
         sinkI1 = tainted
-        SINK(sinkI1) #$ MISSING:captured
+        SINK(sinkI1) #$ captured
     captureIn1()
 
-    def captureIn2():
-        def m():
+    def captureIn1a(): #$ entry=tainted
+        sinkI1 = tainted
+        SINK(sinkI1) #$ captured
+    a = captureIn1a
+    a()
+
+    def captureIn2(): #$ MISSING:entry=tainted
+        def m(): #$ entry=tainted
             sinkI2 = tainted
             SINK(sinkI2) #$ MISSING:captured
         m()
     captureIn2()
 
-    captureIn3 = lambda arg: SINK(tainted)
+    captureIn3 = lambda arg: SINK(tainted) #$ entry=tainted
     captureIn3("")
 
-    def captureIn1NotCalled():
+    def captureIn1NotCalled(): #$ entry=tainted
         nonSink0 = tainted
         SINK_F(nonSink0)
 
-    def captureIn2NotCalled():
-        def m():
+    def captureIn2NotCalled(): #$ MISSING:entry=tainted
+        def m(): #$ entry=tainted
             nonSink0 = tainted
             SINK_F(nonSink0)
     captureIn2NotCalled()
@@ -65,27 +71,27 @@ def test_inParam():
 def inLocal():
     tainted = SOURCE
 
-    def captureIn1():
+    def captureIn1(): #$ entry=tainted
         sinkI1 = tainted
         SINK(sinkI1) #$ MISSING:captured
     captureIn1()
 
-    def captureIn2():
-        def m():
+    def captureIn2(): #$ MISSING:entry=tainted
+        def m(): #$ entry=tainted
             sinkI2 = tainted
             SINK(sinkI2) #$ MISSING:captured
         m()
     captureIn2()
 
-    captureIn3 = lambda arg: SINK(tainted)
+    captureIn3 = lambda arg: SINK(tainted) #$ entry=tainted
     captureIn3("")
 
-    def captureIn1NotCalled():
+    def captureIn1NotCalled(): #$ entry=tainted
         nonSink0 = tainted
         SINK_F(nonSink0)
 
-    def captureIn2NotCalled():
-        def m():
+    def captureIn2NotCalled(): #$ MISSING:entry=tainted
+        def m(): #$ entry=tainted
             nonSink0 = tainted
             SINK_F(nonSink0)
     captureIn2NotCalled()
