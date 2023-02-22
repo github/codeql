@@ -213,14 +213,43 @@ module KindPredicatesLog {
         millisecond = s.regexpCapture(r, 7).toInt()
       )
     }
+
+    int getResultSize() { result = this.getNumber("resultSize") }
   }
 
   class SentinelEmpty extends SummaryEvent {
     SentinelEmpty() { evaluationStrategy = "SENTINEL_EMPTY" }
   }
 
+  class PipeLineRun extends Object {
+    PipeLineRuns runs;
+    int index;
+
+    PipeLineRun() { runs.getObject(index) = this }
+
+    PipeLineRuns getArray() { result = runs }
+
+    string getRaReference() { result = this.getString("raReference") }
+
+    Array getCounts() { result = this.getArray("counts") }
+
+    Array getDuplicationPercentages() { result = this.getArray("duplicationPercentages") }
+  }
+
+  class PipeLineRuns extends Array {
+    SummaryEvent event;
+
+    PipeLineRuns() { event.getArray("pipelineRuns") = this }
+
+    SummaryEvent getEvent() { result = event }
+
+    PipeLineRun getRun(int i) { result = this.getObject(i) }
+  }
+
   class ComputeSimple extends SummaryEvent {
     ComputeSimple() { evaluationStrategy = "COMPUTE_SIMPLE" }
+
+    PipeLineRun getPipelineRun() { result.getArray() = this.getArray("pipelineRuns") }
   }
 
   class ComputeRecursive extends SummaryEvent {
