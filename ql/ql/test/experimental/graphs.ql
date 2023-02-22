@@ -1,5 +1,5 @@
 /**
- * Sample/test 
+ * Sample/test of the graphs library.
  */
 import experimental.Graph::Graph
 
@@ -25,9 +25,6 @@ class SampleLineGraph extends Graph
 
     override string getType() { result = "line" }
 
-    // override predicate data(float x, float y) { x in [-10 .. 10] and y=x*x }
-
-    // Warning is a QL bug
     override predicate pointData(int series, float x, float y)
     {
         series = 0 and x in [-10..10] and y=x*x
