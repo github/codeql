@@ -66,6 +66,10 @@ private class ImportConfiguration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     sink = API::moduleImport("trace").getMember("check").getACall().getArg(1)
   }
+
+  override predicate isBarrier(DataFlow::Node node) {
+    exists(DataFlow::MethodCallNode call | call.calls(node, "block_flow"))
+  }
 }
 
 class ResolutionTest extends InlineExpectationsTest {

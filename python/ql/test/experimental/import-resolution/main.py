@@ -146,6 +146,10 @@ import simplistic_reexport # $ imports=simplistic_reexport as=simplistic_reexpor
 check("simplistic_reexport.bar_attr", simplistic_reexport.bar_attr, "overwritten", globals()) #$ prints=overwritten SPURIOUS: prints=bar_attr
 check("simplistic_reexport.baz_attr", simplistic_reexport.baz_attr, "overwritten", globals()) #$ prints=overwritten SPURIOUS: prints=baz_attr
 
+# check that we don't treat all assignments as being exports
+import block_flow_check #$ imports=block_flow_check as=block_flow_check
+check("block_flow_check.SOURCE", block_flow_check.SOURCE, block_flow_check.SOURCE, globals()) #$ SPURIOUS: prints=SOURCE
+
 exit(__file__)
 
 print()

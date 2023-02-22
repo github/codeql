@@ -11,6 +11,9 @@
 | baz | __file__ | baz.py:2:7:2:14 | ControlFlowNode for __file__ |
 | baz | __file__ | baz.py:6:6:6:13 | ControlFlowNode for __file__ |
 | baz | baz_attr | baz.py:4:12:4:21 | ControlFlowNode for Str |
+| block_flow_check | SOURCE | block_flow_check.py:4:1:4:21 | ControlFlowNode for ClassExpr |
+| block_flow_check | __file__ | block_flow_check.py:2:7:2:14 | ControlFlowNode for __file__ |
+| block_flow_check | __file__ | block_flow_check.py:14:6:14:13 | ControlFlowNode for __file__ |
 | foo | __file__ | foo.py:2:7:2:14 | ControlFlowNode for __file__ |
 | foo | __file__ | foo.py:14:6:14:13 | ControlFlowNode for __file__ |
 | foo | __private_foo_attr | foo.py:8:22:8:41 | ControlFlowNode for Str |
