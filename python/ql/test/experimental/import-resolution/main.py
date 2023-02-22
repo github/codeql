@@ -101,7 +101,7 @@ import if_then_else_refined # $ imports=if_then_else_refined as=if_then_else_ref
 check("if_then_else_refined.src", if_then_else_refined.src, if_then_else_refined.src, globals()) #$ prints=SOURCE
 
 import simplistic_reexport # $ imports=simplistic_reexport as=simplistic_reexport
-check("simplistic_reexport.bar_attr", simplistic_reexport.bar_attr, "overwritten", globals()) #$ prints=overwritten SPURIOUS: prints="<module bar>" prints=bar_attr
+check("simplistic_reexport.bar_attr", simplistic_reexport.bar_attr, "overwritten", globals()) #$ prints=overwritten SPURIOUS: prints=bar_attr
 check("simplistic_reexport.baz_attr", simplistic_reexport.baz_attr, "overwritten", globals()) #$ prints=overwritten SPURIOUS: prints=baz_attr
 
 exit(__file__)
