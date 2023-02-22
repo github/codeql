@@ -1,5 +1,6 @@
 ﻿using Xunit;
 using Semmle.Autobuild.Shared;
+using Semmle.Util;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -89,10 +90,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             var ret = (this as IBuildActions).RunProcess(cmd, args, workingDirectory, env, out var stdout);
 
-            foreach (var line in stdout)
-            {
-                onOutput(line);
-            }
+            stdout.ForEach(line => onOutput(line));
 
             return ret;
         }

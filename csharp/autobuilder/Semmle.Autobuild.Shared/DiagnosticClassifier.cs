@@ -80,15 +80,14 @@ namespace Semmle.Autobuild.Shared
         /// <param name="line">The line to which the rules should be applied to.</param>
         public void ClassifyLine(string line)
         {
-            foreach (var rule in this.rules)
+            this.rules.ForEach(rule =>
             {
                 var match = rule.Pattern.Match(line);
                 if (match.Success)
                 {
                     rule.Fire(this, match);
                 }
-            }
-
+            });
         }
     }
 }

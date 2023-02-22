@@ -284,7 +284,7 @@ namespace Semmle.Autobuild.Shared
         /// Write <paramref name="diagnostic"/> to the diagnostics file.
         /// </summary>
         /// <param name="diagnostic">The diagnostics entry to write.</param>
-        public void Diagnostic(DiagnosticMessage diagnostic)
+        public void AddDiagnostic(DiagnosticMessage diagnostic)
         {
             diagnostics.AddEntry(diagnostic);
         }
@@ -320,13 +320,11 @@ namespace Semmle.Autobuild.Shared
             // if the build succeeded, all diagnostics we captured from the build output should be warnings;
             // otherwise they should all be errors
             var diagSeverity = buildResult == 0 ? DiagnosticMessage.TspSeverity.Warning : DiagnosticMessage.TspSeverity.Error;
-            foreach (var diagResult in this.DiagnosticClassifier.Results)
+            this.DiagnosticClassifier.Results.Select(result => result.ToDiagnosticMessage(this)).ForEach(result =>
             {
-                var diag = diagResult.ToDiagnosticMessage(this);
-                diag.Severity = diagSeverity;
-
-                Diagnostic(diag);
-            }
+                result.Severity = diagSeverity;
+                AddDiagnostic(result);
+            });
 
             return buildResult;
         }
@@ -345,8 +343,11 @@ namespace Semmle.Autobuild.Shared
         /// <returns>The resulting <see cref="DiagnosticMessage" />.</returns>
         public DiagnosticMessage MakeDiagnostic(string id, string name)
         {
-            DiagnosticMessage diag = new(new($"{this.Options.Language.UpperCaseName.ToLower()}/autobuilder/{id}", name));
-            diag.Source.ExtractorName = Options.Language.UpperCaseName.ToLower();
+            DiagnosticMessage diag = new(new(
+                $"{this.Options.Language.UpperCaseName.ToLower()}/autobuilder/{id}",
+                name,
+                Options.Language.UpperCaseName.ToLower()
+            ));
             diag.Visibility.StatusPage = true;
 
             return diag;
@@ -367,7 +368,7 @@ namespace Semmle.Autobuild.Shared
                 "You can manually specify a suitable build command for your project.";
             message.Severity = DiagnosticMessage.TspSeverity.Error;
 
-            Diagnostic(message);
+            AddDiagnostic(message);
         }
 
         /// <summary>

@@ -10,29 +10,21 @@ namespace Semmle.Autobuild.Shared
     public class BuildCommandAutoRule : IBuildRule<AutobuildOptionsShared>
     {
         private readonly WithDotNet<AutobuildOptionsShared> withDotNet;
-        private IEnumerable<string> candidatePaths;
-        private string? scriptPath;
 
         /// <summary>
         /// A list of paths to files in the project directory which we classified as scripts.
         /// </summary>
-        public IEnumerable<string> CandidatePaths
-        {
-            get { return this.candidatePaths; }
-        }
+        public IEnumerable<string> CandidatePaths { get; private set; }
 
         /// <summary>
         /// The path of the script we decided to run, if any.
         /// </summary>
-        public string? ScriptPath
-        {
-            get { return this.scriptPath; }
-        }
+        public string? ScriptPath { get; private set; }
 
         public BuildCommandAutoRule(WithDotNet<AutobuildOptionsShared> withDotNet)
         {
             this.withDotNet = withDotNet;
-            this.candidatePaths = new List<string>();
+            this.CandidatePaths = new List<string>();
         }
 
         /// <summary>
@@ -70,18 +62,18 @@ namespace Semmle.Autobuild.Shared
             var scripts = buildScripts.SelectMany(s => extensions.Select(e => s + e));
             // search through the files in the project directory for paths which end in one of
             // the names given by `scripts`, then order them by their distance from the root
-            this.candidatePaths = builder.Paths.Where(p => scripts.Any(p.Item1.ToLower().EndsWith)).OrderBy(p => p.Item2).Select(p => p.Item1);
+            this.CandidatePaths = builder.Paths.Where(p => scripts.Any(p.Item1.ToLower().EndsWith)).OrderBy(p => p.Item2).Select(p => p.Item1);
             // pick the first matching path, if there is one
-            this.scriptPath = candidatePaths.FirstOrDefault();
+            this.ScriptPath = this.CandidatePaths.FirstOrDefault();
 
-            if (scriptPath is null)
+            if (this.ScriptPath is null)
                 return BuildScript.Failure;
 
             var chmod = new CommandBuilder(builder.Actions);
-            chmod.RunCommand("/bin/chmod", $"u+x {scriptPath}");
+            chmod.RunCommand("/bin/chmod", $"u+x {this.ScriptPath}");
             var chmodScript = builder.Actions.IsWindows() ? BuildScript.Success : BuildScript.Try(chmod.Script);
 
-            var dir = builder.Actions.GetDirectoryName(scriptPath);
+            var dir = builder.Actions.GetDirectoryName(this.ScriptPath);
 
             // A specific .NET Core version may be required
             return chmodScript & withDotNet(builder, environment =>
@@ -93,7 +85,7 @@ namespace Semmle.Autobuild.Shared
                 if (vsTools is not null)
                     command.CallBatFile(vsTools.Path);
 
-                command.RunCommand(scriptPath);
+                command.RunCommand(this.ScriptPath);
                 return command.Script;
             });
         }
