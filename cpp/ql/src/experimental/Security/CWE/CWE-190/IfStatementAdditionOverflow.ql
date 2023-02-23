@@ -1,13 +1,8 @@
 /**
  * @name Integer addition may overflow inside if statement
- * @description Detects "if (a+b>c) a=c-b", which incorrectly implements
- *              a = min(a,c-b) if a+b overflows. Should be replaced by
- *              "if (a>c-b) a=c-b". Also detects "if (b+a>c) a=c-b"
- *              (swapped terms in addition), if (a+b>c) { a=c-b }"
- *              (assignment inside block), "c<a+b" (swapped operands) and
- *              ">=", "<", "<=" instead of ">" (all operators). This
- *              integer overflow is the root cause of the buffer overflow
- *              in the SHA-3 reference implementation (CVE-2022-37454).
+ * @description "if (a+b>c) a=c-b" was detected where "a+b" may potentially
+ *              produce an integer overflow (or wraparound). The code can be
+ *              rewritten to "if (a>c-b) a=c-b" which avoids the overflow.
  * @kind problem
  * @problem.severity warning
  * @id cpp/if-statement-addition-overflow
@@ -27,7 +22,6 @@ from IfStmt ifstmt, RelationalOperation relop, ExprStmt exprstmt, BlockStmt bloc
 where ifstmt.getCondition() = relop and
   relop.getAnOperand() = addexpr and
   addexpr.getUnspecifiedType() instanceof IntegralType and
-  subexpr.getUnspecifiedType() instanceof IntegralType and
   not isFromMacroDefinition(relop) and
   exprMightOverflowPositively(addexpr) and
   (ifstmt.getThen() = exprstmt or
@@ -39,6 +33,5 @@ where ifstmt.getCondition() = relop and
   globalValueNumber(addexpr.getRightOperand()) = globalValueNumber(subexpr.getRightOperand())) or
   (hashCons(addexpr.getRightOperand()) = hashCons(assignexpr.getLValue()) and
   globalValueNumber(addexpr.getLeftOperand()) = globalValueNumber(subexpr.getRightOperand()))) and
-  globalValueNumber(relop.getAnOperand()) = globalValueNumber(subexpr.getLeftOperand()) and
-  not globalValueNumber(addexpr.getAnOperand()) = globalValueNumber(relop.getAnOperand())
+  globalValueNumber(relop.getAnOperand()) = globalValueNumber(subexpr.getLeftOperand())
 select ifstmt, "Integer addition may overflow inside if statement."
