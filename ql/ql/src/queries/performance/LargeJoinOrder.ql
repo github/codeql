@@ -82,11 +82,10 @@ predicate hasDuplication(ComputeRecursive recursive, string ordering, int i, flo
     )
 }
 
-// -----
 /**
- * Holds if the bucket `bucket` has `resultSize` resultSize in the `iteration`'th iteration.
+ * Holds if the ordering `ordering` has `resultSize` resultSize in the `iteration`'th iteration.
  *
- * For example, the "base" bucket in iteration 0 has size 42.
+ * For example, the "base" ordering in iteration 0 has size 42.
  */
 private predicate hasResultSize(
   ComputeRecursive recursive, string ordering, SummaryEvent inLayer, int iteration, float resultSize
@@ -130,9 +129,9 @@ int getSize(ComputeRecursive recursive, string predicateName, int iteration, TDe
     kind = TCurrent() and
     i = iteration
   |
-    result = getInLayerEventWithName(recursive, predicateName).getDeltaSize(iteration - 1)
+    result = getInLayerEventWithName(recursive, predicateName).getDeltaSize(i)
     or
-    not exists(getInLayerEventWithName(recursive, predicateName).getDeltaSize(iteration - 1)) and
+    not exists(getInLayerEventWithName(recursive, predicateName).getDeltaSize(i)) and
     result = 0
   )
 }
@@ -155,35 +154,35 @@ private predicate isDelta(string predicateName, TDeltaKind kind, string withoutS
   withoutSuffix = predicateName.regexpCapture("(.+)#cur_delta", 1)
 }
 
-predicate hasDependentPredicateSizeInBucket(
-  ComputeRecursive recursive, string bucket, SummaryEvent inLayer, int iteration,
+predicate hasDependentPredicateSize(
+  ComputeRecursive recursive, string ordering, SummaryEvent inLayer, int iteration,
   string predicateName, float size
 ) {
   exists( |
     inLayer = firstPredicate(recursive) and
-    bucket = inLayer.getPipelineRuns().getRun(iteration).getRAReference()
+    ordering = inLayer.getPipelineRuns().getRun(iteration).getRAReference()
   |
     // We treat iteration 0 as a non-recursive case
-    if bucket = "base"
+    if ordering = "base"
     then size = getDependencyWithName(recursive.getDependencies(), predicateName).getResultSize()
     else
       exists(TDeltaKind kind |
         size = getSize(recursive, predicateName, iteration, kind) and
-        isDelta(getAnRaOperation(inLayer, bucket).getARhsPredicate(), kind, predicateName)
+        isDelta(getAnRaOperation(inLayer, ordering).getARhsPredicate(), kind, predicateName)
       )
   )
   or
   exists(SummaryEvent inLayer0, float size0 |
     successor(recursive, inLayer0, inLayer) and
-    hasDependentPredicateSizeInBucket(recursive, bucket, inLayer0, iteration, predicateName, size0)
+    hasDependentPredicateSize(recursive, ordering, inLayer0, iteration, predicateName, size0)
   |
     // We treat iteration 0 as a non-recursive case
-    if bucket = "base"
+    if ordering = "base"
     then size = getDependencyWithName(recursive.getDependencies(), predicateName).getResultSize()
     else
       exists(TDeltaKind kind |
         size = getSize(recursive, predicateName, iteration, kind) + size0 and
-        isDelta(getAnRaOperation(inLayer, bucket).getARhsPredicate(), kind, predicateName)
+        isDelta(getAnRaOperation(inLayer, ordering).getARhsPredicate(), kind, predicateName)
       )
   )
 }
@@ -192,13 +191,13 @@ SummaryEvent getInLayerOrRecursive(ComputeRecursive recursive) {
   result = recursive or result.(InLayer).getComputeRecursiveEvent() = recursive
 }
 
-predicate hasDependentPredicateSizeInBucket(
-  ComputeRecursive recursive, string bucket, string predicateName, float size
+predicate hasDependentPredicateSize(
+  ComputeRecursive recursive, string ordering, string predicateName, float size
 ) {
   size =
     strictsum(SummaryEvent inLayer, int iteration, int s |
       inLayer = getInLayerOrRecursive(recursive) and
-      hasDependentPredicateSizeInBucket(recursive, bucket, inLayer, iteration, predicateName, s)
+      hasDependentPredicateSize(recursive, ordering, inLayer, iteration, predicateName, s)
     |
       s
     )
@@ -216,12 +215,12 @@ predicate hasDependentPredicateSizeInBucket(
  * - For a non-"base" ordering, it's defined as any `#prev_delta` or `#cur_delta` predicates
  *   that appear in the pipeline.
  */
-float getRecursiveBadness(ComputeRecursive recursive, string bucket) {
+float getRecursiveBadness(ComputeRecursive recursive, string ordering) {
   exists(float maxTupleCount, float resultSize, float maxDependentPredicateSize |
-    maxTupleCount = max(float tc | hasTupleCount(recursive, bucket, _, tc) | tc) and
-    hasResultSize(recursive, bucket, resultSize) and
+    maxTupleCount = max(float tc | hasTupleCount(recursive, ordering, _, tc) | tc) and
+    hasResultSize(recursive, ordering, resultSize) and
     maxDependentPredicateSize =
-      max(float size | hasDependentPredicateSizeInBucket(recursive, bucket, _, size) | size) and
+      max(float size | hasDependentPredicateSize(recursive, ordering, _, size) | size) and
     resultSize.maximum(maxDependentPredicateSize) > 0 and
     result = maxTupleCount / resultSize.maximum(maxDependentPredicateSize)
   )
@@ -259,9 +258,9 @@ where
     badness = getNonRecursiveBadness(evt) and
     extractSimpleInformation(evt, predicateName, index, tupleCount, duplicationPercentage, operation)
     or
-    exists(string bucket |
-      badness = getRecursiveBadness(evt, bucket) and
-      extractRecursiveInformation(evt, predicateName, bucket, index, tupleCount,
+    exists(string ordering |
+      badness = getRecursiveBadness(evt, ordering) and
+      extractRecursiveInformation(evt, predicateName, ordering, index, tupleCount,
         duplicationPercentage, operation)
     )
   )
