@@ -1,0 +1,13 @@
+sensitiveNodes
+| test.py:1:1:1:11 | ControlFlowNode for getPassword | an access to getPassword | password |
+| test.py:2:1:2:8 | ControlFlowNode for password | an access to password | password |
+| test.py:3:1:3:8 | ControlFlowNode for PassWord | an access to PassWord | password |
+| test.py:4:1:4:21 | ControlFlowNode for myPasswordInCleartext | an access to myPasswordInCleartext | password |
+| test.py:5:1:5:11 | ControlFlowNode for getPassword | an access to getPassword | password |
+| test.py:8:1:8:17 | ControlFlowNode for Attribute() | a call to get | password |
+| test.py:9:1:9:13 | ControlFlowNode for Subscript | an access to password | password |
+| test.py:10:1:10:6 | ControlFlowNode for secret | an access to secret | secret |
+sensitiveActions
+methodCallNodes
+| test.py:6:1:6:15 | ControlFlowNode for Attribute() |
+| test.py:8:1:8:17 | ControlFlowNode for Attribute() |
