@@ -77,7 +77,8 @@ class Array extends JSON::Array {
  *
  * This is needed because the evaluator log is padded with -1s in some cases.
  */
-private float getRanked(Array a, int i) {
+pragma[nomagic]
+private float getRankedFloat(Array a, int i) {
   result = rank[i + 1](int j, float f | f = a.getFloat(j) and f >= 0 | f order by j)
 }
 
@@ -137,10 +138,10 @@ module EvaluatorLog {
 
     string getRAReference() { result = this.getString("raReference") }
 
-    float getCount(int i) { result = getRanked(this.getArray("counts"), i) }
+    float getCount(int i) { result = getRankedFloat(this.getArray("counts"), i) }
 
     float getDuplicationPercentage(int i) {
-      result = getRanked(this.getArray("duplicationPercentages"), i)
+      result = getRankedFloat(this.getArray("duplicationPercentages"), i)
     }
 
     float getResultSize() { result = this.getFloat("resultSize") }
@@ -250,6 +251,11 @@ module KindPredicatesLog {
 
     int getMillis() { result = this.getNumber("millis") }
 
+    PipeLineRuns getPipelineRuns() { result = this.getArray("pipelineRuns") }
+
+    pragma[nomagic]
+    float getDeltaSize(int i) { result = getRankedFloat(this.getArray("deltaSizes"), i) }
+
     predicate hasCompletionTime(
       int year, string month, int day, int hours, int minute, int second, int millisecond
     ) {
@@ -271,9 +277,7 @@ module KindPredicatesLog {
 
     float getResultSize() { result = this.getFloat("resultSize") }
 
-    Array getRA(string ordering) { result = this.getObject("ra").getArray(ordering) }
-
-    string getAnOrdering() { exists(this.getRA(result)) }
+    string getAnOrdering() { exists(this.getRA().getPipeLine(result)) }
 
     override string toString() {
       if exists(this.getPredicateName())
@@ -307,6 +311,8 @@ module KindPredicatesLog {
     RA() { evt.getObject("ra") = this }
 
     PipeLine getPipeLine(string name) { result = this.getArray(name) }
+
+    PipeLine getPipeLine() { result = this.getPipeLine("pipeline") }
   }
 
   class SentinelEmpty extends SummaryEvent {
@@ -341,12 +347,12 @@ module KindPredicatesLog {
 
     Array getCounts() { result = this.getArray("counts") }
 
-    float getCount(int i) { result = getRanked(this.getArray("counts"), i) }
+    float getCount(int i) { result = getRankedFloat(this.getArray("counts"), i) }
 
     Array getDuplicationPercentage() { result = this.getArray("duplicationPercentages") }
 
     float getDuplicationPercentage(int i) {
-      result = getRanked(this.getArray("duplicationPercentages"), i)
+      result = getRankedFloat(this.getArray("duplicationPercentages"), i)
     }
   }
 
@@ -391,10 +397,14 @@ module KindPredicatesLog {
   }
 
   /** Gets the `index`'th event that's evaluated by `recursive`. */
-  private InLayer layerEventRank(ComputeRecursive recursive, int index) {
+  private SummaryEvent layerEventRank(ComputeRecursive recursive, int index) {
     result =
-      rank[index + 1](InLayer cand, int startline, string filepath |
-        cand.getComputeRecursiveEvent() = recursive and
+      rank[index + 1](SummaryEvent cand, int startline, string filepath |
+        (
+          cand = recursive
+          or
+          cand.(InLayer).getComputeRecursiveEvent() = recursive
+        ) and
         cand.hasLocationInfo(filepath, startline, _, _, _)
       |
         cand order by filepath, startline
@@ -405,15 +415,13 @@ module KindPredicatesLog {
    * Gets the first predicate that's evaluated in an iteration
    * of the SCC computation rooted at `recursive`.
    */
-  private InLayer firstPredicate(ComputeRecursive recursive) {
-    result = layerEventRank(recursive, 0)
-  }
+  SummaryEvent firstPredicate(ComputeRecursive recursive) { result = layerEventRank(recursive, 0) }
 
   /**
    * Gets the last predicate that's evaluated in an iteration
    * of the SCC computation rooted at `recursive`.
    */
-  private InLayer lastPredicate(ComputeRecursive recursive) {
+  SummaryEvent lastPredicate(ComputeRecursive recursive) {
     exists(int n |
       result = layerEventRank(recursive, n) and
       not exists(layerEventRank(recursive, n + 1))
@@ -424,7 +432,7 @@ module KindPredicatesLog {
    * Holds if the predicate represented by `next` was evaluated after the
    * predicate represented by `prev` in the SCC computation rooted at `recursive`.
    */
-  predicate successor(ComputeRecursive recursive, InLayer prev, InLayer next) {
+  predicate successor(ComputeRecursive recursive, SummaryEvent prev, InLayer next) {
     exists(int index |
       layerEventRank(recursive, index) = prev and
       layerEventRank(recursive, index + 1) = next
@@ -503,6 +511,8 @@ module KindPredicatesLog {
 
   class ComputeRecursive extends SummaryEvent {
     ComputeRecursive() { evaluationStrategy = "COMPUTE_RECURSIVE" }
+
+    Depencencies getDependencies() { result = this.getObject("dependencies") }
   }
 
   class InLayer extends SummaryEvent {
@@ -515,12 +525,8 @@ module KindPredicatesLog {
     Array getPredicateIterationMillis() { result = this.getArray("predicateIterationMillis") }
 
     float getPredicateIterationMillis(int i) {
-      result = getRanked(this.getArray("predicateIterationMillis"), i)
+      result = getRankedFloat(this.getArray("predicateIterationMillis"), i)
     }
-
-    PipeLineRuns getPipelineRuns() { result = this.getArray("pipelineRuns") }
-
-    float getDeltaSize(int i) { result = getRanked(this.getArray("deltaSizes"), i) }
   }
 
   class ComputedExtensional extends SummaryEvent {
