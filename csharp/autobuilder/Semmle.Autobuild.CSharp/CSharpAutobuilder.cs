@@ -3,6 +3,7 @@ using Semmle.Util.Logging;
 using Semmle.Autobuild.Shared;
 using Semmle.Util;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Semmle.Autobuild.CSharp
 {
@@ -141,7 +142,7 @@ namespace Semmle.Autobuild.CSharp
                 var message = MakeDiagnostic("dotnet-incompatible-projects", "Some projects are incompatible with .NET Core");
                 message.MarkdownMessage =
                     "CodeQL found some projects which cannot be built with .NET Core:\n" +
-                    string.Join('\n', autoBuildRule.DotNetRule.NotDotNetProjects.Select(p => $"- `{p.FullPath}`"));
+                    autoBuildRule.DotNetRule.NotDotNetProjects.ToMarkdownList(5);
                 message.Severity = DiagnosticMessage.TspSeverity.Warning;
 
                 AddDiagnostic(message);
@@ -153,7 +154,7 @@ namespace Semmle.Autobuild.CSharp
                 var message = MakeDiagnostic("dotnet-build-failure", "Some projects or solutions failed to build using .NET Core");
                 message.MarkdownMessage =
                     "CodeQL was unable to build the following projects using .NET Core:\n" +
-                    string.Join('\n', autoBuildRule.DotNetRule.FailedProjectsOrSolutions.Select(p => $"- `{p.FullPath}`")) +
+                    autoBuildRule.DotNetRule.FailedProjectsOrSolutions.ToMarkdownList(10) +
                     $"\nSet up a [manual build command]({buildCommandDocsUrl}).";
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
 
@@ -166,7 +167,7 @@ namespace Semmle.Autobuild.CSharp
                 var message = MakeDiagnostic("msbuild-build-failure", "Some projects or solutions failed to build using MSBuild");
                 message.MarkdownMessage =
                     "CodeQL was unable to build the following projects using MSBuild:\n" +
-                    string.Join('\n', autoBuildRule.MsBuildRule.FailedProjectsOrSolutions.Select(p => $"- `{p.FullPath}`")) +
+                    autoBuildRule.MsBuildRule.FailedProjectsOrSolutions.ToMarkdownList(10) +
                     $"\nSet up a [manual build command]({buildCommandDocsUrl}).";
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
 
