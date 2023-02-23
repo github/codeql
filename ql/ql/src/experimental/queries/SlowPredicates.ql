@@ -7,7 +7,7 @@ import codeql_ql.StructuredLogs
 
 int predicateRank(KindPredicatesLog::SummaryEvent evt) {
   evt =
-    rank[result](KindPredicatesLog::ComputeSimple y, int m | m = y.getMillis() | y order by m desc)
+    rank[result](KindPredicatesLog::SummaryEvent y, int m | m = y.getMillis() | y order by m desc)
 }
 
 from KindPredicatesLog::SummaryEvent evt
