@@ -31,7 +31,7 @@ predicate erroneousEndpoints(
   // An endpoint's characteristics should not include positive indicators with medium/high confidence for more than one
   // class.
   exists(EndpointCharacteristic characteristic2, EndpointType endpointClass2, float confidence2 |
-    endpointClass.getEncoding() != endpointClass2.getEncoding() and
+    endpointClass != endpointClass2 and
     characteristic.appliesToEndpoint(endpoint) and
     characteristic2.appliesToEndpoint(endpoint) and
     characteristic.hasImplications(endpointClass, true, confidence) and
@@ -150,9 +150,7 @@ abstract class EndpointCharacteristic extends string {
    * This predicate describes what the characteristic tells us about an endpoint.
    *
    * Params:
-   * endpointClass: The sink type. Each EndpointType has a predicate getEncoding, which specifies the classifier
-   * class for this sink type. Class 0 is the negative class (non-sink). Each positive int corresponds to a single
-   * sink type.
+   * endpointClass: The sink type.
    * isPositiveIndicator: If true, this characteristic indicates that this endpoint _is_ a member of the class; if
    * false, it indicates that it _isn't_ a member of the class.
    * confidence: A float in [0, 1], which tells us how strong an indicator this characteristic is for the endpoint
