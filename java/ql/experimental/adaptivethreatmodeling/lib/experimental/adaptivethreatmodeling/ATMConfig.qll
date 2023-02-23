@@ -109,7 +109,7 @@ abstract class AtmConfig extends TaintTracking::Configuration {
     // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
     exists(float confidence |
       confidence >= result.mediumConfidence() and
-      result.hasImplications(any(NegativeType negative), true, confidence)
+      result.hasImplications(any(NegativeSinkType negative), true, confidence)
     )
     or
     // Exclude endpoints that have a characteristic that implies they're not sinks for _this particular_ sink type,

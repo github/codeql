@@ -31,7 +31,7 @@ from
 where
   characteristic.appliesToEndpoint(endpoint) and
   confidence >= characteristic.highConfidence() and
-  characteristic.hasImplications(any(NegativeType negative), true, confidence) and
+  characteristic.hasImplications(any(NegativeSinkType negative), true, confidence) and
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
   // certain about in the prompt.
   not EndpointCharacteristics::erroneousEndpoints(endpoint, _, _, _, _) and
@@ -47,7 +47,7 @@ where
   |
     characteristic2.appliesToEndpoint(endpoint) and
     confidence2 >= characteristic2.maximalConfidence() and
-    not positiveType instanceof NegativeType and
+    not positiveType instanceof NegativeSinkType and
     characteristic2.hasImplications(positiveType, true, confidence2)
   ) and
   endpoint = getSampleFromSampleRate(0.01) and
