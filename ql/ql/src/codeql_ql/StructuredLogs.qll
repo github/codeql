@@ -233,7 +233,7 @@ module KindPredicatesLog {
 
     override string toString() {
       if exists(this.getPredicateName())
-      then result = getPredicateName()
+      then result = this.getPredicateName()
       else result = "<Summary event>"
     }
   }
