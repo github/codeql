@@ -269,6 +269,31 @@ module KindPredicatesLog {
       then result = this.getPredicateName()
       else result = "<Summary event>"
     }
+
+    RA getRA() { result = this.getObject("ra") }
+  }
+
+  class PipeLine extends Array {
+    RA ra;
+    string raReference;
+
+    RA getRA() { result = ra }
+
+    string getRAReference() { result = raReference }
+
+    PipeLine() { this = ra.getArray(raReference) }
+
+    string getLineOfRA(int n) { result = this.getString(n) }
+  }
+
+  class RA extends Object {
+    SummaryEvent evt;
+
+    SummaryEvent getEvent() { result = evt }
+
+    RA() { evt.getObject("ra") = this }
+
+    PipeLine getPipeLine(string name) { result = this.getArray(name) }
   }
 
   class SentinelEmpty extends SummaryEvent {
@@ -283,6 +308,17 @@ module KindPredicatesLog {
     PipeLineRuns getArray() { result = runs }
 
     string getRAReference() { result = this.getString("raReference") }
+
+    PipeLine getPipeLine() {
+      exists(SummaryEvent evt | runs.getEvent() = evt |
+        result = evt.getRA().getPipeLine(pragma[only_bind_into](this.getRAReference()))
+      )
+    }
+
+    float getCount(int i, string raLine) {
+      result = this.getCount(i) and
+      raLine = this.getPipeLine().getLineOfRA(pragma[only_bind_into](i))
+    }
 
     float getCount(int i) { result = getRanked(this.getArray("counts"), i) }
 
