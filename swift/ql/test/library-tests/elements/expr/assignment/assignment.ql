@@ -13,7 +13,23 @@ string describe(Expr e) {
   or
   e instanceof AssignAddExpr and result = "AssignAddExpr"
   or
+  e instanceof AssignSubExpr and result = "AssignSubExpr"
+  or
+  e instanceof AssignMulExpr and result = "AssignMulExpr"
+  or
+  e instanceof AssignDivExpr and result = "AssignDivExpr"
+  or
+  e instanceof AssignRemExpr and result = "AssignRemExpr"
+  or
   e instanceof AssignLShiftExpr and result = "AssignLShiftExpr"
+  or
+  e instanceof AssignRShiftExpr and result = "AssignRShiftExpr"
+  or
+  e instanceof AssignAndExpr and result = "AssignAndExpr"
+  or
+  e instanceof AssignOrExpr and result = "AssignOrExpr"
+  or
+  e instanceof AssignXorExpr and result = "AssignXorExpr"
 }
 
 from Assignment e

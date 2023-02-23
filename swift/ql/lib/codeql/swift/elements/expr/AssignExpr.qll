@@ -104,6 +104,54 @@ class AssignAddExpr extends AssignArithmeticOperationEx {
 }
 
 /**
+ * A subtraction assignment expression:
+ * ```
+ * a -= b
+ * ```
+ */
+class AssignSubExpr extends AssignArithmeticOperationEx {
+  AssignSubExpr() { this.getOperator().getName() = "-=(_:_:)" }
+
+  override string toString() { result = "... -= ..." }
+}
+
+/**
+ * A multiplication assignment expression:
+ * ```
+ * a *= b
+ * ```
+ */
+class AssignMulExpr extends AssignArithmeticOperationEx {
+  AssignMulExpr() { this.getOperator().getName() = "*=(_:_:)" }
+
+  override string toString() { result = "... *= ..." }
+}
+
+/**
+ * A division assignment expression:
+ * ```
+ * a /= b
+ * ```
+ */
+class AssignDivExpr extends AssignArithmeticOperationEx {
+  AssignDivExpr() { this.getOperator().getName() = "/=(_:_:)" }
+
+  override string toString() { result = "... /= ..." }
+}
+
+/**
+ * A remainder assignment expression:
+ * ```
+ * a %= b
+ * ```
+ */
+class AssignRemExpr extends AssignArithmeticOperationEx {
+  AssignRemExpr() { this.getOperator().getName() = "%=(_:_:)" }
+
+  override string toString() { result = "... %= ..." }
+}
+
+/**
  * A left-shift assignment expression:
  * ```
  * a <<= b
@@ -114,4 +162,51 @@ class AssignLShiftExpr extends AssignBitwiseOperationEx {
 
   override string toString() { result = "... <<= ..." }
 }
-// TODO ...
+
+/**
+ * A right-shift assignment expression:
+ * ```
+ * a >>= b
+ * ```
+ */
+class AssignRShiftExpr extends AssignBitwiseOperationEx {
+  AssignRShiftExpr() { this.getOperator().getName() = ">>=(_:_:)" }
+
+  override string toString() { result = "... >>= ..." }
+}
+
+/**
+ * A bitwise-and assignment expression:
+ * ```
+ * a &= b
+ * ```
+ */
+class AssignAndExpr extends AssignBitwiseOperationEx {
+  AssignAndExpr() { this.getOperator().getName() = "&=(_:_:)" }
+
+  override string toString() { result = "... &= ..." }
+}
+
+/**
+ * A bitwise-or assignment expression:
+ * ```
+ * a |= b
+ * ```
+ */
+class AssignOrExpr extends AssignBitwiseOperationEx {
+  AssignOrExpr() { this.getOperator().getName() = "|=(_:_:)" }
+
+  override string toString() { result = "... |= ..." }
+}
+
+/**
+ * A bitwise exclusive-or assignment expression:
+ * ```
+ * a ^= b
+ * ```
+ */
+class AssignXorExpr extends AssignBitwiseOperationEx {
+  AssignXorExpr() { this.getOperator().getName() = "^=(_:_:)" }
+
+  override string toString() { result = "... ^= ..." }
+}
