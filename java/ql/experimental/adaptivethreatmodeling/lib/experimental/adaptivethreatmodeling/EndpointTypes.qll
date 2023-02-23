@@ -5,16 +5,16 @@
  * only predict classes defined within this file. This file is the source of truth for the integer
  * representation of each of these classes.
  */
-newtype TEndpointType =
-  TNegativeType() or
-  TSqlSinkType() or
-  TTaintedPathSinkType() or
-  TRequestForgerySinkType() or
-  TOtherMaDSinkType()
 
-/** A class that can be predicted by endpoint scoring models. */
-abstract class EndpointType extends TEndpointType {
-  abstract string getDescription();
+/** A class that can be predicted by a classifier. */
+abstract class EndpointType extends string {
+  /**
+   * Holds when the string matches the name of the sink / source type.
+   */
+  bindingset[this]
+  EndpointType() { any() }
+
+  final string getDescription() { result = this }
 
   /**
    * Gets the integer representation of this endpoint type. This integer representation specifies the class number
@@ -29,13 +29,23 @@ abstract class EndpointType extends TEndpointType {
    * See https://github.com/github/codeql/blob/44213f0144fdd54bb679ca48d68b28dcf820f7a8/java/ql/lib/semmle/code/java/dataflow/ExternalFlow.qll#LL353C11-L357C31
    */
   abstract string getKind();
+}
 
-  string toString() { result = getDescription() }
+/** A class for sink types that can be predicted by a classifier. */
+abstract class SinkType extends EndpointType {
+  bindingset[this]
+  SinkType() { any() }
+}
+
+/** A class for source types that can be predicted by a classifier. */
+abstract class SourceType extends EndpointType {
+  bindingset[this]
+  SourceType() { any() }
 }
 
 /** The `Negative` class for non-sinks. */
-class NegativeType extends EndpointType, TNegativeType {
-  override string getDescription() { result = "non-sink" }
+class NegativeSinkType extends SinkType {
+  NegativeSinkType() { this = "non-sink" }
 
   override int getEncoding() { result = 0 }
 
@@ -43,8 +53,8 @@ class NegativeType extends EndpointType, TNegativeType {
 }
 
 /** All sinks relevant to the SQL injection query */
-class SqlSinkType extends EndpointType, TSqlSinkType {
-  override string getDescription() { result = "sql injection sink" }
+class SqlSinkType extends SinkType {
+  SqlSinkType() { this = "sql injection sink" }
 
   override int getEncoding() { result = 1 }
 
@@ -52,8 +62,8 @@ class SqlSinkType extends EndpointType, TSqlSinkType {
 }
 
 /** All sinks relevant to the tainted path injection query. */
-class TaintedPathSinkType extends EndpointType, TTaintedPathSinkType {
-  override string getDescription() { result = "path injection sink" }
+class TaintedPathSinkType extends SinkType {
+  TaintedPathSinkType() { this = "path injection sink" }
 
   override int getEncoding() { result = 2 }
 
@@ -61,8 +71,8 @@ class TaintedPathSinkType extends EndpointType, TTaintedPathSinkType {
 }
 
 /** All sinks relevant to the SSRF query. */
-class RequestForgerySinkType extends EndpointType, TRequestForgerySinkType {
-  override string getDescription() { result = "ssrf sink" }
+class RequestForgerySinkType extends SinkType {
+  RequestForgerySinkType() { this = "ssrf sink" }
 
   override int getEncoding() { result = 3 }
 
@@ -70,8 +80,8 @@ class RequestForgerySinkType extends EndpointType, TRequestForgerySinkType {
 }
 
 /** Other sinks modeled by a MaD `kind` but not belonging to any of the existing sink types. */
-class OtherMaDSinkType extends EndpointType, TOtherMaDSinkType {
-  override string getDescription() { result = "other sink" }
+class OtherMaDSinkType extends SinkType {
+  OtherMaDSinkType() { this = "other sink" }
 
   override int getEncoding() { result = 4 }
 

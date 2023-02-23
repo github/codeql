@@ -451,7 +451,7 @@ abstract private class NotASinkCharacteristic extends EndpointCharacteristic {
   override predicate hasImplications(
     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
   ) {
-    endpointClass instanceof NegativeType and
+    endpointClass instanceof NegativeSinkType and
     isPositiveIndicator = true and
     confidence = highConfidence()
   }
@@ -470,7 +470,7 @@ abstract class LikelyNotASinkCharacteristic extends EndpointCharacteristic {
   override predicate hasImplications(
     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
   ) {
-    endpointClass instanceof NegativeType and
+    endpointClass instanceof NegativeSinkType and
     isPositiveIndicator = true and
     confidence = mediumConfidence()
   }
@@ -595,7 +595,7 @@ abstract private class StandardEndpointFilterCharacteristic extends EndpointFilt
   override predicate hasImplications(
     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
   ) {
-    endpointClass instanceof NegativeType and
+    endpointClass instanceof NegativeSinkType and
     isPositiveIndicator = true and
     confidence = mediumConfidence()
   }
