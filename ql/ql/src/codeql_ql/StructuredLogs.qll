@@ -264,6 +264,10 @@ module KindPredicatesLog {
 
     float getResultSize() { result = this.getFloat("resultSize") }
 
+    Array getRA(string ordering) { result = this.getObject("ra").getArray(ordering) }
+
+    string getAnOrdering() { exists(this.getRA(result)) }
+
     override string toString() {
       if exists(this.getPredicateName())
       then result = this.getPredicateName()
@@ -325,12 +329,137 @@ module KindPredicatesLog {
     Predicate getPredicate() { result = getPredicateFromPosition(this.getPosition()) }
   }
 
+  /** Gets the `index`'th event that's evaluated by `recursive`. */
+  private InLayer layerEventRank(ComputeRecursive recursive, int index) {
+    result =
+      rank[index + 1](InLayer cand, int startline, string filepath |
+        cand.getComputeRecursiveEvent() = recursive and
+        cand.hasLocationInfo(filepath, startline, _, _, _)
+      |
+        cand order by filepath, startline
+      )
+  }
+
+  /**
+   * Gets the first predicate that's evaluated in an iteration
+   * of the SCC computation rooted at `recursive`.
+   */
+  private InLayer firstPredicate(ComputeRecursive recursive) {
+    result = layerEventRank(recursive, 0)
+  }
+
+  /**
+   * Gets the last predicate that's evaluated in an iteration
+   * of the SCC computation rooted at `recursive`.
+   */
+  private InLayer lastPredicate(ComputeRecursive recursive) {
+    exists(int n |
+      result = layerEventRank(recursive, n) and
+      not exists(layerEventRank(recursive, n + 1))
+    )
+  }
+
+  /**
+   * Holds if the predicate represented by `next` was evaluated after the
+   * predicate represented by `prev` in the SCC computation rooted at `recursive`.
+   */
+  predicate successor(ComputeRecursive recursive, InLayer prev, InLayer next) {
+    exists(int index |
+      layerEventRank(recursive, index) = prev and
+      layerEventRank(recursive, index + 1) = next
+    )
+  }
+
+  bindingset[this]
+  signature class ResultSig;
+
+  /**
+   * A signature for generically traversing a SCC computation.
+   */
+  signature module Fold<ResultSig R> {
+    /**
+     * Gets the base case for the fold. That is, the initial value that
+     * is produced from the first evaluation of the first IN_LAYER event
+     * in the recursive evaluation.
+     */
+    bindingset[run]
+    R base(PipeLineRun run);
+
+    /**
+     * Gets the recursive case for the fold. That is, `r` is the accumulation
+     * of the previous evaluations, and `run` is the pipeline of the next IN_LAYER
+     * event that is evaluated.
+     */
+    bindingset[run, r]
+    R fold(PipeLineRun run, R r);
+  }
+
+  module Iterate<ResultSig R, Fold<R> F> {
+    private R iterate(ComputeRecursive recursive, int iteration, InLayer pred) {
+      // Case: The first iteration
+      iteration = 0 and
+      (
+        // Subcase: The first predicate in the first iteration
+        pred = firstPredicate(recursive) and
+        result = F::base(pred.getPipelineRuns().getRun(0))
+        or
+        // Subcase: The predicate has a predecessor
+        exists(InLayer pred0, R r |
+          successor(recursive, pred0, pred) and
+          r = iterate(recursive, 0, pred0) and
+          result = F::fold(pred.getPipelineRuns().getRun(0), r)
+        )
+      )
+      or
+      // Case: Not the first iteration
+      iteration > 0 and
+      (
+        // Subcase: The first predicate in the iteration
+        pred = firstPredicate(recursive) and
+        exists(InLayer last, R r |
+          last = lastPredicate(recursive) and
+          r = iterate(recursive, iteration - 1, last) and
+          result = F::fold(pred.getPipelineRuns().getRun(iteration), r)
+        )
+        or
+        // Subcase: The predicate has a predecessor in the same iteration
+        exists(InLayer pred0, R r |
+          successor(recursive, pred0, pred) and
+          r = iterate(recursive, iteration, pred0) and
+          result = F::fold(pred.getPipelineRuns().getRun(iteration), r)
+        )
+      )
+    }
+
+    R iterate(ComputeRecursive recursive) {
+      exists(int iteration, InLayer pred |
+        pred = lastPredicate(recursive) and
+        result = iterate(recursive, iteration, pred) and
+        not exists(iterate(recursive, iteration + 1, pred))
+      )
+    }
+  }
+
   class ComputeRecursive extends SummaryEvent {
     ComputeRecursive() { evaluationStrategy = "COMPUTE_RECURSIVE" }
   }
 
   class InLayer extends SummaryEvent {
     InLayer() { evaluationStrategy = "IN_LAYER" }
+
+    string getMainHash() { result = this.getString("mainHash") }
+
+    ComputeRecursive getComputeRecursiveEvent() { result.getRAHash() = this.getMainHash() }
+
+    Array getPredicateIterationMillis() { result = this.getArray("predicateIterationMillis") }
+
+    float getPredicateIterationMillis(int i) {
+      result = getRanked(this.getArray("predicateIterationMillis"), i)
+    }
+
+    PipeLineRuns getPipelineRuns() { result = this.getArray("pipelineRuns") }
+
+    float getDeltaSize(int i) { result = getRanked(this.getArray("deltaSizes"), i) }
   }
 
   class ComputedExtensional extends SummaryEvent {
