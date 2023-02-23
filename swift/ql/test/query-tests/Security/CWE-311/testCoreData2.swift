@@ -65,3 +65,30 @@ class testCoreData2_2 {
 		obj.myBankAccountNumber = bankAccountNo // BAD
 	}
 }
+
+class MyContainer {
+    var value: Int = 0
+    var value2: Int! = 0
+    var bankAccountNo: Int = 0
+    var bankAccountNo2: Int! = 0
+}
+
+func testCoreData2_3(dbObj: MyManagedObject2, maybeObj: MyManagedObject2?, container: MyContainer, bankAccountNo: MyContainer, bankAccountNo2: MyContainer!) {
+	dbObj.myValue = container.value // GOOD (not sensitive)
+	dbObj.myValue = container.value2 // GOOD (not sensitive)
+	dbObj.myValue = container.bankAccountNo // BAD
+	dbObj.myValue = container.bankAccountNo2 // BAD
+
+	dbObj.myValue = bankAccountNo.value // BAD [NOT DETECTED]
+	dbObj.myValue = bankAccountNo.value2 // BAD [NOT DETECTED]
+	dbObj.myValue = bankAccountNo2.value // BAD [NOT DETECTED]
+	dbObj.myValue = bankAccountNo2.value2 // BAD [NOT DETECTED]
+
+	maybeObj?.myValue = container.bankAccountNo // BAD
+	maybeObj?.myValue = bankAccountNo.value // BAD [NOT DETECTED]
+	maybeObj?.myValue = bankAccountNo2.value2 // BAD [NOT DETECTED]
+
+	var a = bankAccountNo // sensitive
+	var b = a.value
+	dbObj.myValue = b // BAD [NOT DETECTED]
+}
