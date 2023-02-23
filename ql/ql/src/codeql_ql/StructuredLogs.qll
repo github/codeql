@@ -1,6 +1,35 @@
 private import ql
 private import codeql_ql.ast.internal.TreeSitter
 
+/** Gets a timestamp corresponding to the number of seconds since the date Semmle was founded. */
+bindingset[d, h, m, s, ms]
+private float getTimestamp(date d, int h, int m, int s, int ms) {
+  result = (("2006-12-28".toDate().daysTo(d) * 24 + h) * 60 + m) * 60 + s + ms / 1000.0
+}
+
+bindingset[str]
+private float stringToTimestamp(string str) {
+  exists(string r, date d, int h, int m, int s, int ms |
+    r = "(\\d{4}-\\d{2}-\\d{2})T(\\d{2}):(\\d{2}):(\\d{2})\\.(\\d{3})Z"
+  |
+    d = str.regexpCapture(r, 1).toDate() and
+    h = str.regexpCapture(r, 2).toInt() and
+    m = str.regexpCapture(r, 3).toInt() and
+    s = str.regexpCapture(r, 4).toInt() and
+    ms = str.regexpCapture(r, 5).toInt() and
+    result = getTimestamp(d, h, m, s, ms)
+  )
+}
+
+bindingset[s]
+private Predicate getPredicateFromPosition(string s) {
+  exists(string r, string filepath, int startline | r = "(.*):(\\d+),(\\d+)-(\\d+),(\\d+)" |
+    filepath = s.regexpCapture(r, 1) and
+    startline = s.regexpCapture(r, 2).toInt() and
+    result.hasLocationInfo(filepath, startline, _, _, _)
+  )
+}
+
 class Object extends JSON::Object {
   JSON::Value getValue(string key) {
     exists(JSON::Pair p | p = this.getChild(_) |
@@ -24,6 +53,8 @@ class Object extends JSON::Object {
   int getEventId() { result = this.getNumber("event_id") }
 
   string getTime() { result = this.getString("time") }
+
+  float getTimestamp() { result = stringToTimestamp(this.getTime()) }
 }
 
 class Array extends JSON::Array {
@@ -229,6 +260,8 @@ module KindPredicatesLog {
       )
     }
 
+    float getCompletionTime() { result = stringToTimestamp(this.getCompletionTimeString()) }
+
     float getResultSize() { result = this.getFloat("resultSize") }
 
     override string toString() {
@@ -286,6 +319,10 @@ module KindPredicatesLog {
     Depencencies getDependencies() { result = this.getObject("dependencies") }
 
     PipeLineRun getPipelineRun() { result.getArray() = this.getArray("pipelineRuns") }
+
+    string getPosition() { result = this.getString("position") }
+
+    Predicate getPredicate() { result = getPredicateFromPosition(this.getPosition()) }
   }
 
   class ComputeRecursive extends SummaryEvent {
@@ -303,16 +340,4 @@ module KindPredicatesLog {
   class Extensional extends SummaryEvent {
     Extensional() { evaluationStrategy = "EXTENSIONAL" }
   }
-}
-
-// Stuff to test whether we've covered all event types
-private File logFile() { result = any(EvaluatorLog::LogHeader h).getLocation().getFile() }
-
-private Object missing() {
-  result =
-    any(Object o |
-      o.getLocation().getFile() = logFile() and
-      not o instanceof EvaluatorLog::Entry and
-      not exists(o.getParent().getParent()) // don't count nested objects
-    )
 }
