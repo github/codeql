@@ -13,7 +13,8 @@ class Assignment extends Expr {
   Assignment() {
     this instanceof AssignExpr or
     this instanceof AssignArithmeticOperationEx or
-    this instanceof AssignBitwiseOperationEx
+    this instanceof AssignBitwiseOperationEx or
+    this instanceof AssignPointwiseOperationEx
   }
 
   /**
@@ -71,7 +72,8 @@ class AssignExpr extends Generated::AssignExpr {
 class AssignOperation extends Assignment, BinaryExpr {
   AssignOperation() {
     this instanceof AssignArithmeticOperationEx or
-    this instanceof AssignBitwiseOperationEx
+    this instanceof AssignBitwiseOperationEx or
+    this instanceof AssignPointwiseOperationEx
   }
 }
 
@@ -102,6 +104,19 @@ class AssignBitwiseOperation extends AssignOperation instanceof AssignBitwiseOpe
  * Private abstract class, extended to define the scope of `AssignBitwiseOperation`.
  */
 abstract private class AssignBitwiseOperationEx extends BinaryExpr { }
+
+/**
+ * A pointwise assignment expression. For example:
+ * ```
+ * x .&= y
+ * ```
+ */
+class AssignPointwiseOperation extends AssignOperation instanceof AssignPointwiseOperationEx { }
+
+/**
+ * Private abstract class, extended to define the scope of `AssignPointwiseOperation`.
+ */
+abstract private class AssignPointwiseOperationEx extends BinaryExpr { }
 
 /**
  * An addition assignment expression:
@@ -226,4 +241,40 @@ class AssignXorExpr extends AssignBitwiseOperationEx {
   AssignXorExpr() { this.getOperator().getName() = "^=(_:_:)" }
 
   override string toString() { result = "... ^= ..." }
+}
+
+/**
+ * A pointwise bitwise-and assignment expression:
+ * ```
+ * a .&= b
+ * ```
+ */
+class AssignPointwiseAndExpr extends AssignPointwiseOperationEx {
+  AssignPointwiseAndExpr() { this.getOperator().getName() = ".&=(_:_:)" }
+
+  override string toString() { result = "... .&= ..." }
+}
+
+/**
+ * A pointwise bitwise-or assignment expression:
+ * ```
+ * a .|= b
+ * ```
+ */
+class AssignPointwiseOrExpr extends AssignPointwiseOperationEx {
+  AssignPointwiseOrExpr() { this.getOperator().getName() = ".|=(_:_:)" }
+
+  override string toString() { result = "... .|= ..." }
+}
+
+/**
+ * A pointwise bitwise exclusive-or assignment expression:
+ * ```
+ * a .^= b
+ * ```
+ */
+class AssignPointwiseXorExpr extends AssignPointwiseOperationEx {
+  AssignPointwiseXorExpr() { this.getOperator().getName() = ".^=(_:_:)" }
+
+  override string toString() { result = "... .^= ..." }
 }

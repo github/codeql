@@ -31,6 +31,12 @@ string describe(Expr e) {
   or
   e instanceof AssignXorExpr and result = "AssignXorExpr"
   or 
+  e instanceof AssignPointwiseAndExpr and result = "AssignPointwiseAndExpr"
+  or
+  e instanceof AssignPointwiseOrExpr and result = "AssignPointwiseOrExpr"
+  or
+  e instanceof AssignPointwiseXorExpr and result = "AssignPointwiseXorExpr"
+  or
   e.(Assignment).hasOverflowOperator() and result = "hasOverflowOperator"
 }
 

@@ -15,3 +15,6 @@
 | assignment.swift:26:2:26:9 | ... <<= ... | AssignBitwiseOperation, AssignLShiftExpr, AssignOperation, Assignment, hasOverflowOperator | &... | 1 |
 | assignment.swift:27:2:27:9 | ... >>= ... | AssignBitwiseOperation, AssignOperation, AssignRShiftExpr, Assignment, hasOverflowOperator | &... | 1 |
 | assignment.swift:33:2:33:6 |  ... = ... | AssignExpr, Assignment | y | z |
+| assignment.swift:34:2:34:8 | ... .&= ... | AssignOperation, AssignPointwiseAndExpr, Assignment | &... | m |
+| assignment.swift:35:2:35:8 | ... .\|= ... | AssignOperation, AssignPointwiseOrExpr, Assignment | &... | m |
+| assignment.swift:36:2:36:8 | ... .^= ... | AssignOperation, AssignPointwiseXorExpr, Assignment | &... | m |
