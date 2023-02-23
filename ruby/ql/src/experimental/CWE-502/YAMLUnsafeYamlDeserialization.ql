@@ -18,6 +18,7 @@ import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.RemoteFlowSources
 import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
+import codeql.ruby.security.UnsafeDeserializationCustomizations
 
 abstract class YAMLSink extends DataFlow::Node { }
 
@@ -45,8 +46,8 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     // for detecting The CVE we should uncomment following line instead of current RemoteFlowSource
-    source instanceof DataFlow::LocalSourceNode
-    // source instanceof RemoteFlowSource
+    // source instanceof DataFlow::LocalSourceNode
+    source instanceof UnsafeDeserialization::Source
   }
 
   override predicate isSink(DataFlow::Node sink) {
