@@ -13,7 +13,7 @@
  */
 
 import ruby
-import codeql.ruby.security.ZipSlipQuery
+import codeql.ruby.experimental.ZipSlipQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
