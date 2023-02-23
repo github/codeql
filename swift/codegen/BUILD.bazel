@@ -5,9 +5,12 @@ py_binary(
     srcs = ["codegen.py"],
     data = [
         "//swift:schema",
-        "//swift:schema_includes",
+        "//swift:codegen_conf",
         "//swift/codegen/templates:cpp",
         "//swift/codegen/templates:trap",
+    ],
+    args = [
+        "--configuration-file=$(location //swift:codegen_conf)",
     ],
     visibility = ["//swift:__subpackages__"],
     deps = [

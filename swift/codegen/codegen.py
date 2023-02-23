@@ -7,6 +7,7 @@ import os
 import sys
 import pathlib
 import typing
+import shlex
 
 if 'BUILD_WORKSPACE_DIRECTORY' not in os.environ:
     # we are not running with `bazel run`, set up module search path
@@ -18,35 +19,45 @@ from swift.codegen.generators import generate
 
 
 def _parse_args() -> argparse.Namespace:
+    dirs = [pathlib.Path().resolve()]
+    dirs.extend(dirs[0].parents)
+    for dir in dirs:
+        conf = dir / "codegen.conf"
+        if conf.exists():
+            break
+    else:
+        conf = None
+
     p = argparse.ArgumentParser(description="Code generation suite")
-    p.add_argument("--generate", type=lambda x: x.split(","), default=["dbscheme", "ql"],
+    p.add_argument("--generate", type=lambda x: x.split(","),
                    help="specify what targets to generate as a comma separated list, choosing among dbscheme, ql, trap "
                         "and cpp")
     p.add_argument("--verbose", "-v", action="store_true", help="print more information")
     p.add_argument("--quiet", "-q", action="store_true", help="only print errors")
-    p.add_argument("--root-dir", type=_abspath, default=paths.root_dir,
-                   help="the directory that should be regarded as the root of the language pack codebase. Used to"
-                        "compute QL imports and in some comments and as root for relative paths provided as options "
-                        "(default %(default)s)")
-    p.add_argument("--language", default=paths.root_dir.name,
-                   help="string that should replace {language} in other provided options")
+    p.add_argument("--configuration-file", "-c", type=_abspath, default=conf,
+                   help="A configuration file to load options from. By default, the first codegen.conf file found by "
+                        "going up directories from the current location. If present all paths provided in options are "
+                        "considered relative to its directory")
+    p.add_argument("--root-dir", type=_abspath,
+                   help="the directory that should be regarded as the root of the language pack codebase. Used to "
+                        "compute QL imports and in some comments and as root for relative paths provided as options. "
+                        "If not provided it defaults to the directory of the configuration file, if any")
     path_arguments = [
         p.add_argument("--schema", default="schema.py",
                        help="input schema file (default %(default)s)"),
-        p.add_argument("--dbscheme", default="ql/lib/{language}.dbscheme",
-                       help="output file for dbscheme generation, input file for trap generation (default "
-                            "%(default)s)"),
-        p.add_argument("--ql-output", default="ql/lib/codeql/{language}/generated",
-                       help="output directory for generated QL files (default %(default)s)"),
-        p.add_argument("--ql-stub-output", default="ql/lib/codeql/{language}/elements",
-                       help="output directory for QL stub/customization files (default %(default)s). Defines also the "
+        p.add_argument("--dbscheme",
+                       help="output file for dbscheme generation, input file for trap generation"),
+        p.add_argument("--ql-output",
+                       help="output directory for generated QL files"),
+        p.add_argument("--ql-stub-output",
+                       help="output directory for QL stub/customization files. Defines also the "
                             "generated qll file importing every class file"),
-        p.add_argument("--ql-test-output", default="ql/test/extractor-tests/generated",
-                       help="output directory for QL generated extractor test files (default %(default)s)"),
+        p.add_argument("--ql-test-output",
+                       help="output directory for QL generated extractor test files"),
         p.add_argument("--cpp-output",
                        help="output directory for generated C++ files, required if trap or cpp is provided to "
                             "--generate"),
-        p.add_argument("--generated-registry", default="ql/.generated.list",
+        p.add_argument("--generated-registry",
                        help="registry file containing information about checked-in generated code"),
     ]
     p.add_argument("--ql-format", action="store_true", default=True,
@@ -56,11 +67,24 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--force", "-f", action="store_true",
                    help="generate all files without skipping unchanged files and overwriting modified ones"),
     opts = p.parse_args()
+    if opts.configuration_file is not None:
+        with open(opts.configuration_file) as config:
+            defaults = p.parse_args(shlex.split(config.read(), comments=True))
+            for flag, value in opts._get_kwargs():
+                if value is None:
+                    setattr(opts, flag, getattr(defaults, flag))
+        if opts.root_dir is None:
+            opts.root_dir = opts.configuration_file.parent
+    if opts.root_dir is None:
+        p.error("Either --configuration-file or --root-dir must be provided, or a codegen.conf file must be in a "
+                "containing directory")
+    if not opts.generate:
+        p.error("Nothing to do, specify --generate")
     # absolutize all paths relative to --root-dir
     for arg in path_arguments:
         path = getattr(opts, arg.dest)
         if path is not None:
-            setattr(opts, arg.dest, opts.root_dir / path.format(language=opts.language))
+            setattr(opts, arg.dest, opts.root_dir / path)
     return opts
 
 
