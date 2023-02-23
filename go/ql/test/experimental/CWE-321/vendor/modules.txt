@@ -1,96 +1,200 @@
 # github.com/appleboy/gin-jwt/v2 v2.8.0
-## explicit
+## explicit; go 1.15
 github.com/appleboy/gin-jwt/v2
 # github.com/cristalhq/jwt/v3 v3.1.0
-## explicit
+## explicit; go 1.13
 github.com/cristalhq/jwt/v3
-# github.com/gin-gonic/gin v1.7.7
-## explicit
-github.com/gin-gonic/gin
-# github.com/go-kit/kit v0.12.0
-## explicit
-github.com/go-kit/kit
-# github.com/golang-jwt/jwt/v4 v4.4.1
-## explicit
-github.com/golang-jwt/jwt/v4
-# github.com/lestrrat/go-jwx v0.9.1
-## explicit
-github.com/lestrrat/go-jwx
-# github.com/square/go-jose/v3 v3.0.0-20200630053402-0a67ce9b0693
-## explicit
-github.com/square/go-jose/v3
-# gopkg.in/square/go-jose.v2 v2.6.0
-## explicit
-gopkg.in/square/go-jose.v2
 # github.com/davecgh/go-spew v1.1.1
 ## explicit
-github.com/davecgh/go-spew
+github.com/davecgh/go-spew/spew
 # github.com/gin-contrib/sse v0.1.0
-## explicit
+## explicit; go 1.12
 github.com/gin-contrib/sse
+# github.com/gin-gonic/gin v1.7.7
+## explicit; go 1.13
+github.com/gin-gonic/gin
+github.com/gin-gonic/gin/binding
+github.com/gin-gonic/gin/internal/bytesconv
+github.com/gin-gonic/gin/internal/json
+github.com/gin-gonic/gin/render
+# github.com/go-kit/kit v0.12.0
+## explicit; go 1.17
+github.com/go-kit/kit/auth/jwt
+github.com/go-kit/kit/endpoint
+github.com/go-kit/kit/transport
+github.com/go-kit/kit/transport/grpc
+github.com/go-kit/kit/transport/http
 # github.com/go-kit/log v0.2.0
-## explicit
+## explicit; go 1.17
 github.com/go-kit/log
 # github.com/go-logfmt/logfmt v0.5.1
-## explicit
+## explicit; go 1.17
 github.com/go-logfmt/logfmt
 # github.com/go-playground/locales v0.13.0
-## explicit
+## explicit; go 1.13
 github.com/go-playground/locales
+github.com/go-playground/locales/currency
 # github.com/go-playground/universal-translator v0.17.0
-## explicit
+## explicit; go 1.13
 github.com/go-playground/universal-translator
 # github.com/go-playground/validator/v10 v10.4.1
-## explicit
+## explicit; go 1.13
 github.com/go-playground/validator/v10
+# github.com/golang-jwt/jwt/v4 v4.4.1
+## explicit; go 1.16
+github.com/golang-jwt/jwt/v4
 # github.com/golang/protobuf v1.5.2
-## explicit
-github.com/golang/protobuf
+## explicit; go 1.9
+github.com/golang/protobuf/proto
+github.com/golang/protobuf/ptypes
+github.com/golang/protobuf/ptypes/any
+github.com/golang/protobuf/ptypes/duration
+github.com/golang/protobuf/ptypes/timestamp
 # github.com/json-iterator/go v1.1.12
-## explicit
+## explicit; go 1.12
 github.com/json-iterator/go
 # github.com/leodido/go-urn v1.2.0
-## explicit
+## explicit; go 1.13
 github.com/leodido/go-urn
+# github.com/lestrrat/go-jwx v0.9.1
+## explicit; go 1.17
+github.com/lestrrat/go-jwx/internal/base64
+github.com/lestrrat/go-jwx/jwa
+github.com/lestrrat/go-jwx/jwk
 # github.com/lestrrat/go-pdebug v0.0.0-20180220043741-569c97477ae8
 ## explicit
 github.com/lestrrat/go-pdebug
 # github.com/mattn/go-isatty v0.0.14
-## explicit
+## explicit; go 1.12
 github.com/mattn/go-isatty
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
 ## explicit
 github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.2
-## explicit
+## explicit; go 1.12
 github.com/modern-go/reflect2
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
+# github.com/square/go-jose/v3 v3.0.0-20200630053402-0a67ce9b0693
+## explicit; go 1.12
+github.com/square/go-jose/v3
+github.com/square/go-jose/v3/cipher
+github.com/square/go-jose/v3/json
 # github.com/ugorji/go/codec v1.1.7
 ## explicit
 github.com/ugorji/go/codec
 # golang.org/x/crypto v0.0.0-20210915214749-c084706c2272
-## explicit
-golang.org/x/crypto
+## explicit; go 1.17
+golang.org/x/crypto/ed25519
+golang.org/x/crypto/ed25519/internal/edwards25519
+golang.org/x/crypto/pbkdf2
+golang.org/x/crypto/sha3
 # golang.org/x/net v0.0.0-20210917221730-978cfadd31cf
-## explicit
-golang.org/x/net
-# golang.org/x/sys v0.0.0-20210917161153-d61c044b1678
-## explicit
-golang.org/x/sys
-# golang.org/x/text v0.3.7
-## explicit
-golang.org/x/text
+## explicit; go 1.17
+golang.org/x/net/http/httpguts
+golang.org/x/net/http2
+golang.org/x/net/http2/hpack
+golang.org/x/net/idna
+golang.org/x/net/internal/timeseries
+golang.org/x/net/trace
+# golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f
+## explicit; go 1.17
+golang.org/x/sys/cpu
+golang.org/x/sys/internal/unsafeheader
+golang.org/x/sys/unix
+# golang.org/x/text v0.3.8
+## explicit; go 1.17
+golang.org/x/text/secure/bidirule
+golang.org/x/text/transform
+golang.org/x/text/unicode/bidi
+golang.org/x/text/unicode/norm
 # google.golang.org/genproto v0.0.0-20210917145530-b395a37504d4
-## explicit
-google.golang.org/genproto
+## explicit; go 1.11
+google.golang.org/genproto/googleapis/rpc/status
 # google.golang.org/grpc v1.40.0
-## explicit
+## explicit; go 1.11
 google.golang.org/grpc
+google.golang.org/grpc/attributes
+google.golang.org/grpc/backoff
+google.golang.org/grpc/balancer
+google.golang.org/grpc/balancer/base
+google.golang.org/grpc/balancer/grpclb/state
+google.golang.org/grpc/balancer/roundrobin
+google.golang.org/grpc/binarylog/grpc_binarylog_v1
+google.golang.org/grpc/codes
+google.golang.org/grpc/connectivity
+google.golang.org/grpc/credentials
+google.golang.org/grpc/encoding
+google.golang.org/grpc/encoding/proto
+google.golang.org/grpc/grpclog
+google.golang.org/grpc/internal
+google.golang.org/grpc/internal/backoff
+google.golang.org/grpc/internal/balancerload
+google.golang.org/grpc/internal/binarylog
+google.golang.org/grpc/internal/buffer
+google.golang.org/grpc/internal/channelz
+google.golang.org/grpc/internal/credentials
+google.golang.org/grpc/internal/envconfig
+google.golang.org/grpc/internal/grpclog
+google.golang.org/grpc/internal/grpcrand
+google.golang.org/grpc/internal/grpcsync
+google.golang.org/grpc/internal/grpcutil
+google.golang.org/grpc/internal/metadata
+google.golang.org/grpc/internal/resolver
+google.golang.org/grpc/internal/resolver/dns
+google.golang.org/grpc/internal/resolver/passthrough
+google.golang.org/grpc/internal/resolver/unix
+google.golang.org/grpc/internal/serviceconfig
+google.golang.org/grpc/internal/status
+google.golang.org/grpc/internal/syscall
+google.golang.org/grpc/internal/transport
+google.golang.org/grpc/internal/transport/networktype
+google.golang.org/grpc/keepalive
+google.golang.org/grpc/metadata
+google.golang.org/grpc/peer
+google.golang.org/grpc/resolver
+google.golang.org/grpc/serviceconfig
+google.golang.org/grpc/stats
+google.golang.org/grpc/status
+google.golang.org/grpc/tap
 # google.golang.org/protobuf v1.27.1
+## explicit; go 1.9
+google.golang.org/protobuf/encoding/prototext
+google.golang.org/protobuf/encoding/protowire
+google.golang.org/protobuf/internal/descfmt
+google.golang.org/protobuf/internal/descopts
+google.golang.org/protobuf/internal/detrand
+google.golang.org/protobuf/internal/encoding/defval
+google.golang.org/protobuf/internal/encoding/messageset
+google.golang.org/protobuf/internal/encoding/tag
+google.golang.org/protobuf/internal/encoding/text
+google.golang.org/protobuf/internal/errors
+google.golang.org/protobuf/internal/filedesc
+google.golang.org/protobuf/internal/filetype
+google.golang.org/protobuf/internal/flags
+google.golang.org/protobuf/internal/genid
+google.golang.org/protobuf/internal/impl
+google.golang.org/protobuf/internal/order
+google.golang.org/protobuf/internal/pragma
+google.golang.org/protobuf/internal/set
+google.golang.org/protobuf/internal/strs
+google.golang.org/protobuf/internal/version
+google.golang.org/protobuf/proto
+google.golang.org/protobuf/reflect/protodesc
+google.golang.org/protobuf/reflect/protoreflect
+google.golang.org/protobuf/reflect/protoregistry
+google.golang.org/protobuf/runtime/protoiface
+google.golang.org/protobuf/runtime/protoimpl
+google.golang.org/protobuf/types/descriptorpb
+google.golang.org/protobuf/types/known/anypb
+google.golang.org/protobuf/types/known/durationpb
+google.golang.org/protobuf/types/known/timestamppb
+# gopkg.in/square/go-jose.v2 v2.6.0
 ## explicit
-google.golang.org/protobuf
+gopkg.in/square/go-jose.v2
+gopkg.in/square/go-jose.v2/cipher
+gopkg.in/square/go-jose.v2/json
 # gopkg.in/yaml.v2 v2.2.8
 ## explicit
 gopkg.in/yaml.v2
