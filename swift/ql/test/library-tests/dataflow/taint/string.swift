@@ -181,7 +181,7 @@ func taintThroughStringConcatenation() {
   str += "def"
   sink(arg: str)
   str += source2()
-  sink(arg: str) // $ MISSING: tainted=183
+  sink(arg: str) // $ tainted=183
 
   var str2 = "abc"
   sink(arg: str2)
