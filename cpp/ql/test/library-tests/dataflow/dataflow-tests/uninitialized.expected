@@ -34,3 +34,6 @@
 | test.cpp:441:7:441:11 | local | test.cpp:442:18:442:22 | local |
 | test.cpp:441:7:441:11 | local | test.cpp:443:8:443:12 | local |
 | test.cpp:441:7:441:11 | local | test.cpp:444:9:444:13 | local |
+| test.cpp:521:9:521:9 | x | test.cpp:522:25:522:25 | x |
+| test.cpp:525:9:525:9 | y | test.cpp:526:25:526:25 | y |
+| test.cpp:525:9:525:9 | y | test.cpp:526:28:526:28 | y |

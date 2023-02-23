@@ -39,7 +39,14 @@ class UsersController < ApplicationController
     init_logger
 
     sanitized = html_escape params[:baz]
-    @logger.debug unsanitized             # GOOD: sanitized user input
-    @logger.debug "input: " + unsanitized # GOOD: sanitized user input
+    @logger.debug sanitized             # GOOD: sanitized user input
+    @logger.debug "input: " + sanitized # GOOD: sanitized user input
+  end
+
+  def inspect_sanitization
+    init_logger
+
+    @logger.debug params[:foo]         # BAD: unsanitized user input
+    @logger.debug params[:foo].inspect # GOOD: sanitized user input
   end
 end

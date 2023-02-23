@@ -1,4 +1,4 @@
-/*
+/**
  * For internal use only.
  *
  * Provides an implementation of scoring alerts for use in adaptive threat modeling (ATM).

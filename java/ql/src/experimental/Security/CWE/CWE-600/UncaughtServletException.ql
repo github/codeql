@@ -9,6 +9,7 @@
  * @precision medium
  * @id java/uncaught-servlet-exception
  * @tags security
+ *       experimental
  *       external/cwe/cwe-600
  */
 

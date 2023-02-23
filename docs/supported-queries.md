@@ -27,19 +27,15 @@ The process must begin with the first step and must conclude with the final step
 
    Add one or more unit tests for the query (and for any library changes you make) to the `ql/<language>/ql/test/experimental` directory. Tests for library changes go into the `library-tests` subdirectory, and tests for queries go into `query-tests` with their relative path mirroring the query's location under `ql/<language>/ql/src/experimental`.
 
-   - See the section on [Testing custom queries](https://codeql.github.com/docs/codeql-cli/testing-custom-queries/) in the [CodeQL documentation](https://codeql.github.com/docs/) for more information.
+   - See the section on [Testing custom queries](https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/testing-custom-queries) in the [CodeQL CLI documentation](https://docs.github.com/en/code-security/codeql-cli) for more information.
    - See [C/C++ CodeQL tests](/cpp/ql/test/README.md) for more information about contributing tests for C/C++ queries in particular.
 
 4. **Test for correctness on real-world code**
 
    Test the query on a number of large real-world projects to make sure it doesn't give too many false positive results. Adjust the `@precision` and `@problem.severity` attributes in accordance with the real-world results you observe. See the advice on query metadata below.
 
-   You can use the LGTM.com [query console](https://lgtm.com/query) to get an overview of true and false positive results on a large number of projects. The simplest way to do this is to:
-
-   1. [Create a list of prominent projects](https://lgtm.com/help/lgtm/managing-project-lists) on LGTM.
-   2. In the query console, [run your query against your custom project list](https://lgtm.com/help/lgtm/using-query-console).
-   3. Save links to your query console results and include them in discussions on issues and pull requests.
-
+   GitHub is running a private beta test of a new feature for testing CodeQL queries at scale from VS Code. To request access to the beta program, please respond to this [GitHub Discussion](https://github.com/orgs/community/discussions/40453).
+   
 5. **Test and improve performance**
 
    There must be a balance between the execution time of a query and the value of its results: queries that are highly valuable and broadly applicable can be allowed to take longer to run. In all cases, you need to address any easy-to-fix performance issues before the query is put into production.
@@ -62,8 +58,6 @@ The process must begin with the first step and must conclude with the final step
 
       - The severity is one of `error`, `warning`, or `recommendation`.
       - The precision is one of `very-high`, `high`, `medium` or `low`. It may take a few iterations to get this right.
-      - Currently, LGTM runs all `error` or `warning` queries with a `very-high`, `high`, or `medium` precision. In addition, `recommendation` queries with `very-high` or `high` precision are run.
-      - However, results from `error` and `warning` queries with `medium` precision, as well as `recommendation` queries with `high` precision, are not shown by default.
 
    c. All queries need an `@id`.
 

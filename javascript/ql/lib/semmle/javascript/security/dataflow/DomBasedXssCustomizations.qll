@@ -287,6 +287,8 @@ module DomBasedXss {
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
+  private class HtmlSanitizerAsSanitizer extends Sanitizer instanceof HtmlSanitizerCall { }
+
   /**
    * Holds if there exists two dataflow edges to `succ`, where one edges is sanitized, and the other edge starts with `pred`.
    */
@@ -318,9 +320,7 @@ module DomBasedXss {
   }
 
   /** A source of remote user input, considered as a flow source for DOM-based XSS. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * A flow-label representing tainted values where the prefix is attacker controlled.
@@ -341,5 +341,9 @@ module DomBasedXss {
       label = prefixLabel() and
       outcome = super.getPolarity()
     }
+  }
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("html-injection").asSink() }
   }
 }

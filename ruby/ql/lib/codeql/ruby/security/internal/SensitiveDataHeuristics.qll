@@ -103,7 +103,7 @@ module HeuristicNames {
    */
   string notSensitiveRegexp() {
     result =
-      "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|random|((?<!un)(en))?(crypt|code)|certain|concert|secretar|accountant|accountab).*"
+      "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|random|((?<!un)(en))?(crypt|(?<!pass)code)|certain|concert|secretar|accountant|accountab).*"
   }
 
   /**

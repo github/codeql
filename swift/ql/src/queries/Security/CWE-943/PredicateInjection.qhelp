@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Predicates represent logical conditions that can be used to check whether an object matches them.
+If a predicate is built from user-provided data without sufficient sanitization, an attacker may
+be able to change the overall meaning of the predicate.
+</p>
+</overview>
+<recommendation>
+<p>
+When building a predicate from untrusted data, you should either pass it to the appropriate <code>arguments</code> parameter during initialization, or as an array of substitution variables before evaluation. You should not append or concatenate it to the body of the predicate.
+</p>
+</recommendation>
+<example>
+<p>
+In the following insecure example, <code>NSPredicate</code> is built directly from data obtained from an HTTP request. This is untrusted, and can be arbitrarily set by an attacker to alter the meaning of the predicate:
+</p>
+<sample src="PredicateInjectionBad.swift" />
+<p>
+A better way to do this is to use the <code>arguments</code> parameter of <code>NSPredicate</code>'s constructor. This prevents attackers from altering the meaning of the predicate, even if they control the externally obtained data, as seen in the following secure example:
+</p>
+<sample src="PredicateInjectionGood.swift" />
+</example>
+<references>
+<li>Apple Developer Documentation: <a href="https://developer.apple.com/documentation/foundation/nspredicate">NSPredicate</a> </li>
+</references>
+</qhelp>

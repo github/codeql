@@ -65,7 +65,7 @@ CSharp7.cs:
 #   31|           2: [ThrowExpr] throw ...
 #   31|             0: [ObjectCreation] object creation of type ArgumentException
 #   31|               -1: [TypeMention] ArgumentException
-#   31|               0: [StringLiteral] "i"
+#   31|               0: [StringLiteralUtf16] "i"
 #   35| [Class] OutVariables
 #   37|   5: [Method] F
 #   37|     -1: [TypeMention] Void
@@ -76,7 +76,7 @@ CSharp7.cs:
 #   39|       0: [ExprStmt] ...;
 #   39|         0: [AssignExpr] ... = ...
 #   39|           0: [ParameterAccess] access to parameter x
-#   39|           1: [StringLiteral] "tainted"
+#   39|           1: [StringLiteralUtf16] "tainted"
 #   42|   6: [Method] G
 #   42|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
@@ -116,7 +116,7 @@ CSharp7.cs:
 #   54|           1: [LocalVariableAccess] access to local variable t2
 #   55|       6: [ExprStmt] ...;
 #   55|         0: [MethodCall] call to method G
-#   55|           0: [StringLiteral] "tainted"
+#   55|           0: [StringLiteralUtf16] "tainted"
 #   55|           1: [LocalVariableAccess,LocalVariableDeclExpr] String t4
 #   56|       7: [LocalVariableDeclStmt] ... ...;
 #   56|         0: [LocalVariableDeclAndInitExpr] String t5 = ...
@@ -209,7 +209,7 @@ CSharp7.cs:
 #   77|             0: [LocalVariableDeclExpr] String i
 #   77|             1: [LocalVariableDeclExpr] Int32 j
 #   77|           1: [TupleExpr] (..., ...)
-#   77|             0: [StringLiteral] ""
+#   77|             0: [StringLiteralUtf16] ""
 #   77|             1: [LocalVariableAccess] access to local variable x
 #   80|   7: [Method] I
 #   80|     -1: [TypeMention] string
@@ -230,8 +230,8 @@ CSharp7.cs:
 #   87|           -1: [TypeMention] (string, string)
 #   87|           0: [LocalVariableAccess] access to local variable t1
 #   87|           1: [TupleExpr] (..., ...)
-#   87|             0: [StringLiteral] "tainted"
-#   87|             1: [StringLiteral] "X2"
+#   87|             0: [StringLiteralUtf16] "tainted"
+#   87|             1: [StringLiteralUtf16] "X2"
 #   88|       1: [ExprStmt] ...;
 #   88|         0: [AssignExpr] ... = ...
 #   88|           0: [TupleExpr] (..., ...)
@@ -259,7 +259,7 @@ CSharp7.cs:
 #   95|           0: [LocalVariableAccess] access to local variable m1
 #   95|           1: [TupleExpr] (..., ...)
 #   95|             0: [IntLiteral] 1
-#   95|             1: [StringLiteral] "TupleExprNode1"
+#   95|             1: [StringLiteralUtf16] "TupleExprNode1"
 #   96|       1: [LocalVariableDeclStmt] ... ...;
 #   96|         0: [LocalVariableDeclAndInitExpr] (Int32,(String,Int32)) m2 = ...
 #   96|           -1: [TypeMention] (int, (string, int))
@@ -267,7 +267,7 @@ CSharp7.cs:
 #   96|           1: [TupleExpr] (..., ...)
 #   96|             0: [IntLiteral] 1
 #   96|             1: [TupleExpr] (..., ...)
-#   96|               0: [StringLiteral] "TupleExprNode2"
+#   96|               0: [StringLiteralUtf16] "TupleExprNode2"
 #   96|               1: [IntLiteral] 2
 #   99|   10: [Method] TupleMemberAccess
 #   99|     -1: [TypeMention] Void
@@ -278,7 +278,7 @@ CSharp7.cs:
 #  101|           0: [LocalVariableAccess] access to local variable m1
 #  101|           1: [FieldAccess] access to field Item1
 #  101|             -1: [TupleExpr] (..., ...)
-#  101|               0: [StringLiteral] "TupleMemberAccess1"
+#  101|               0: [StringLiteralUtf16] "TupleMemberAccess1"
 #  101|               1: [IntLiteral] 0
 #  102|       1: [LocalVariableDeclStmt] ... ...;
 #  102|         0: [LocalVariableDeclAndInitExpr] (String,Int32) m2 = ...
@@ -288,7 +288,7 @@ CSharp7.cs:
 #  102|             -1: [TupleExpr] (..., ...)
 #  102|               0: [IntLiteral] 0
 #  102|               1: [TupleExpr] (..., ...)
-#  102|                 0: [StringLiteral] "TupleMemberAccess2"
+#  102|                 0: [StringLiteralUtf16] "TupleMemberAccess2"
 #  102|                 1: [IntLiteral] 1
 #  105|   11: [Method] DefUse
 #  105|     -1: [TypeMention] Void
@@ -299,7 +299,7 @@ CSharp7.cs:
 #  107|             0: [LocalVariableDeclExpr] String m1
 #  107|             1: [LocalVariableDeclExpr] (Int32,Int32) m2
 #  107|           1: [TupleExpr] (..., ...)
-#  107|             0: [StringLiteral] "DefUse1"
+#  107|             0: [StringLiteralUtf16] "DefUse1"
 #  107|             1: [TupleExpr] (..., ...)
 #  107|               0: [IntLiteral] 0
 #  107|               1: [IntLiteral] 1
@@ -338,7 +338,7 @@ CSharp7.cs:
 #  112|               0: [LocalVariableAccess] access to local variable m1
 #  112|               1: [LocalVariableAccess] access to local variable m2
 #  112|             1: [TupleExpr] (..., ...)
-#  112|               0: [StringLiteral] "DefUse2"
+#  112|               0: [StringLiteralUtf16] "DefUse2"
 #  112|               1: [TupleExpr] (..., ...)
 #  112|                 0: [IntLiteral] 0
 #  112|                 1: [IntLiteral] 1
@@ -367,7 +367,7 @@ CSharp7.cs:
 #  121|           0: [LocalVariableAccess] access to local variable m13
 #  121|           1: [AssignExpr] ... = ...
 #  121|             0: [LocalVariableAccess] access to local variable m12
-#  121|             1: [StringLiteral] "DefUse3"
+#  121|             1: [StringLiteralUtf16] "DefUse3"
 #  125| [Class] LocalFunctions
 #  127|   5: [Method] Main
 #  127|     -1: [TypeMention] int
@@ -523,7 +523,7 @@ CSharp7.cs:
 #  170|       4: [ExprStmt] ...;
 #  170|         0: [LocalFunctionCall] call to local function h
 #  170|           -1: [LocalFunctionAccess] access to local function h
-#  170|           0: [StringLiteral] ""
+#  170|           0: [StringLiteralUtf16] ""
 #  170|           1: [BoolLiteral] true
 #  173|   7: [Method] GlobalFlow
 #  173|     -1: [TypeMention] Void
@@ -532,7 +532,7 @@ CSharp7.cs:
 #  175|         0: [LocalVariableDeclAndInitExpr] String src = ...
 #  175|           -1: [TypeMention] string
 #  175|           0: [LocalVariableAccess] access to local variable src
-#  175|           1: [StringLiteral] "tainted"
+#  175|           1: [StringLiteralUtf16] "tainted"
 #  176|       1: [LocalFunctionStmt] f(...)
 #  176|         0: [LocalFunction] f
 #-----|           2: (Parameters)
@@ -542,7 +542,7 @@ CSharp7.cs:
 #  176|             0: [LocalFunctionCall] call to local function g
 #  176|               -1: [LocalFunctionAccess] access to local function g
 #  176|               0: [ParameterAccess] access to parameter s
-#  176|             1: [StringLiteral] ""
+#  176|             1: [StringLiteralUtf16] ""
 #  177|       2: [LocalFunctionStmt] g(...)
 #  177|         0: [LocalFunction] g
 #-----|           2: (Parameters)
@@ -734,7 +734,7 @@ CSharp7.cs:
 #  235|               -1: [TypeAccess] access to type Console
 #  235|                 0: [TypeMention] Console
 #  235|               0: [InterpolatedStringExpr] $"..."
-#  235|                 0: [StringLiteral] "int "
+#  235|                 0: [StringLiteralUtf16] "int "
 #  235|                 1: [LocalVariableAccess] access to local variable i1
 #  237|         2: [IfStmt] if (...) ...
 #  237|           0: [IsExpr] ... is ...
@@ -747,7 +747,7 @@ CSharp7.cs:
 #  239|                 -1: [TypeAccess] access to type Console
 #  239|                   0: [TypeMention] Console
 #  239|                 0: [InterpolatedStringExpr] $"..."
-#  239|                   0: [StringLiteral] "string "
+#  239|                   0: [StringLiteralUtf16] "string "
 #  239|                   1: [LocalVariableAccess] access to local variable s1
 #  241|           2: [IfStmt] if (...) ...
 #  241|             0: [IsExpr] ... is ...
@@ -763,16 +763,16 @@ CSharp7.cs:
 #  248|       2: [SwitchStmt] switch (...) {...}
 #  248|         0: [LocalVariableAccess] access to local variable o
 #  250|         0: [ConstCase] case ...:
-#  250|           0: [ConstantPatternExpr,StringLiteral] "xyz"
+#  250|           0: [ConstantPatternExpr,StringLiteralUtf16] "xyz"
 #  251|         1: [BreakStmt] break;
 #  252|         2: [ConstCase] case ...:
-#  252|           0: [ConstantPatternExpr,StringLiteral] ""
+#  252|           0: [ConstantPatternExpr,StringLiteralUtf16] ""
 #  252|           1: [LTExpr] ... < ...
 #  252|             0: [IntLiteral] 1
 #  252|             1: [IntLiteral] 2
 #  253|         3: [BreakStmt] break;
 #  254|         4: [ConstCase] case ...:
-#  254|           0: [ConstantPatternExpr,StringLiteral] "x"
+#  254|           0: [ConstantPatternExpr,StringLiteralUtf16] "x"
 #  254|           1: [IsExpr] ... is ...
 #  254|             0: [LocalVariableAccess] access to local variable o
 #  254|             1: [VariablePatternExpr] String s4
@@ -782,7 +782,7 @@ CSharp7.cs:
 #  255|             -1: [TypeAccess] access to type Console
 #  255|               0: [TypeMention] Console
 #  255|             0: [InterpolatedStringExpr] $"..."
-#  255|               0: [StringLiteral] "x "
+#  255|               0: [StringLiteralUtf16] "x "
 #  255|               1: [LocalVariableAccess] access to local variable s4
 #  256|         6: [BreakStmt] break;
 #  257|         7: [CaseStmt] case ...:
@@ -796,7 +796,7 @@ CSharp7.cs:
 #  258|             -1: [TypeAccess] access to type Console
 #  258|               0: [TypeMention] Console
 #  258|             0: [InterpolatedStringExpr] $"..."
-#  258|               0: [StringLiteral] "positive "
+#  258|               0: [StringLiteralUtf16] "positive "
 #  258|               1: [LocalVariableAccess] access to local variable i2
 #  259|         9: [BreakStmt] break;
 #  260|         10: [CaseStmt] case ...:
@@ -807,7 +807,7 @@ CSharp7.cs:
 #  261|             -1: [TypeAccess] access to type Console
 #  261|               0: [TypeMention] Console
 #  261|             0: [InterpolatedStringExpr] $"..."
-#  261|               0: [StringLiteral] "int "
+#  261|               0: [StringLiteralUtf16] "int "
 #  261|               1: [LocalVariableAccess] access to local variable i3
 #  262|         12: [BreakStmt] break;
 #  263|         13: [CaseStmt] case ...:
@@ -818,7 +818,7 @@ CSharp7.cs:
 #  264|             -1: [TypeAccess] access to type Console
 #  264|               0: [TypeMention] Console
 #  264|             0: [InterpolatedStringExpr] $"..."
-#  264|               0: [StringLiteral] "string "
+#  264|               0: [StringLiteralUtf16] "string "
 #  264|               1: [LocalVariableAccess] access to local variable s2
 #  265|         15: [BreakStmt] break;
 #  266|         16: [CaseStmt] case ...:
@@ -828,7 +828,7 @@ CSharp7.cs:
 #  267|           0: [MethodCall] call to method WriteLine
 #  267|             -1: [TypeAccess] access to type Console
 #  267|               0: [TypeMention] Console
-#  267|             0: [StringLiteral] "Double"
+#  267|             0: [StringLiteralUtf16] "Double"
 #  268|         18: [BreakStmt] break;
 #  269|         19: [CaseStmt] case ...:
 #  269|           0: [VariablePatternExpr] Object v2
@@ -838,7 +838,7 @@ CSharp7.cs:
 #  272|           0: [MethodCall] call to method WriteLine
 #  272|             -1: [TypeAccess] access to type Console
 #  272|               0: [TypeMention] Console
-#  272|             0: [StringLiteral] "Something else"
+#  272|             0: [StringLiteralUtf16] "Something else"
 #  273|         23: [BreakStmt] break;
 #  278| [Class] ForeachStatements
 #  280|   5: [Method] Test

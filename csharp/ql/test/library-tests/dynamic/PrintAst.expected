@@ -61,14 +61,14 @@ dynamic.cs:
 #   18|           -1: [TypeMention] KeyValuePair<string, dynamic>
 #   18|             1: [TypeMention] string
 #   18|             2: [TypeMention] dynamic
-#   18|           0: [StringLiteral] ""
+#   18|           0: [StringLiteralUtf16] ""
 #   18|           1: [LocalVariableAccess] access to local variable d
 #   19|       7: [ExprStmt] ...;
 #   19|         0: [DynamicObjectCreation] dynamic object creation of type KeyValuePair<String,dynamic>
 #   19|           -1: [TypeMention] KeyValuePair<string, dynamic>
 #   19|             1: [TypeMention] string
 #   19|             2: [TypeMention] dynamic
-#   19|           0: [StringLiteral] ""
+#   19|           0: [StringLiteralUtf16] ""
 #   19|           1: [LocalVariableAccess] access to local variable d
 #   22|       8: [ExprStmt] ...;
 #   22|         0: [ObjectCreation] object creation of type DynamicTest
@@ -86,14 +86,14 @@ dynamic.cs:
 #   26|       10: [ExprStmt] ...;
 #   26|         0: [DynamicMethodCall] dynamic call to method Bar
 #   26|           -1: [LocalVariableAccess] access to local variable d
-#   26|           0: [StringLiteral] ""
+#   26|           0: [StringLiteralUtf16] ""
 #   27|       11: [ExprStmt] ...;
 #   27|         0: [DynamicMethodCall] dynamic call to method Foo
 #   27|           0: [LocalVariableAccess] access to local variable d
 #   30|       12: [ExprStmt] ...;
 #   30|         0: [MethodCall] call to method Bar
 #   30|           -1: [LocalVariableAccess] access to local variable dt
-#   30|           0: [StringLiteral] ""
+#   30|           0: [StringLiteralUtf16] ""
 #   31|       13: [ExprStmt] ...;
 #   31|         0: [MethodCall] call to method Foo
 #   31|           0: [IntLiteral] 0

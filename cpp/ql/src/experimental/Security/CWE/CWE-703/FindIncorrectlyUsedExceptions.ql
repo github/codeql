@@ -7,6 +7,7 @@
  * @precision medium
  * @tags correctness
  *       security
+ *       experimental
  *       external/cwe/cwe-703
  *       external/cwe/cwe-248
  *       external/cwe/cwe-390

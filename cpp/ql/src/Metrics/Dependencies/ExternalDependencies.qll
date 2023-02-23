@@ -28,8 +28,8 @@ private newtype LibraryT =
     lib.getVersion() = version
   } or
   LibraryTExternalPackage(@external_package ep, string name, string version) {
-    exists(string namespace, string package_name |
-      external_packages(ep, namespace, package_name, version) and
+    exists(string package_name |
+      external_packages(ep, _, package_name, version) and
       name = package_name
     )
   }
@@ -42,8 +42,8 @@ class Library extends LibraryT {
   string version;
 
   Library() {
-    exists(LibraryElement lib | this = LibraryTElement(lib, name, version)) or
-    exists(@external_package ep | this = LibraryTExternalPackage(ep, name, version))
+    this = LibraryTElement(_, name, version) or
+    this = LibraryTExternalPackage(_, name, version)
   }
 
   string getName() { result = name }
@@ -52,7 +52,7 @@ class Library extends LibraryT {
     // The versions reported for C/C++ dependencies are just the versions that
     // happen to be installed on the system where the build takes place.
     // Reporting those versions is likely to cause misunderstandings, both for
-    // people reading them and for the vulnerability checker of lgtm.
+    // people reading them and for vulnerability checkers.
     result = "unknown"
   }
 

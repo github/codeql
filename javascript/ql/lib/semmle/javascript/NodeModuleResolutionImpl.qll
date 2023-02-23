@@ -87,7 +87,13 @@ File tryExtensions(Folder dir, string basename, int priority) {
  * Or `name`, if `name` has no file extension.
  */
 bindingset[name]
-private string getStem(string name) { result = name.regexpCapture("(.+?)(?:\\.([^.]+))?", 1) }
+private string getStem(string name) {
+  // everything before the last dot
+  result = name.regexpCapture("(.+?)(?:\\.([^.]+))?", 1)
+  or
+  // everything before the first dot
+  result = name.regexpCapture("^([^.]*)\\..*$", 1)
+}
 
 /**
  * Gets a file that a main module from `pkg` exported as `mainPath` with the given `priority`.
@@ -113,6 +119,13 @@ private File resolveMainPath(PackageJson pkg, string mainPath, int priority) {
         tryExtensions(subFolder, getStem(main.getComponent(main.getNumComponent() - 1)),
           priority - 999) // very high priority, to make sure everything else is tried first
     )
+  )
+  or
+  not exists(MainModulePath::of(pkg, _)) and
+  exists(Folder parent |
+    parent = pkg.getFile().getParentContainer() and
+    result = tryExtensions(parent, "index", priority) and
+    mainPath = "."
   )
 }
 

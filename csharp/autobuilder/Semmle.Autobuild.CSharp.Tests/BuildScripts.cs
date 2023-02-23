@@ -145,6 +145,14 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         bool IBuildActions.IsWindows() => IsWindows;
 
+        public bool IsMacOs { get; set; }
+
+        bool IBuildActions.IsMacOs() => IsMacOs;
+
+        public bool IsArm { get; set; }
+
+        bool IBuildActions.IsArm() => IsArm;
+
         public string PathCombine(params string[] parts)
         {
             return string.Join(IsWindows ? '\\' : '/', parts.Where(p => !string.IsNullOrWhiteSpace(p)));
@@ -403,7 +411,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.GetCurrentDirectory = cwd;
             actions.IsWindows = isWindows;
 
-            var options = new AutobuildOptions(actions, Language.CSharp);
+            var options = new CSharpAutobuildOptions(actions);
             return new CSharpAutobuilder(actions, options);
         }
 
@@ -576,7 +584,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"] = false;
         }
 
-        private void TestAutobuilderScript(Autobuilder autobuilder, int expectedOutput, int commandsRun)
+        private void TestAutobuilderScript(CSharpAutobuilder autobuilder, int expectedOutput, int commandsRun)
         {
             Assert.Equal(expectedOutput, autobuilder.GetBuildScript().Run(actions, StartCallback, EndCallback));
 

@@ -1,11 +1,12 @@
 name: codeql/cpp-queries
-version: 0.4.4-dev
+version: 0.5.4-dev
 groups: 
   - cpp
   - queries
 dependencies:
     codeql/cpp-all: ${workspace}
     codeql/suite-helpers: ${workspace}
+    codeql/util: ${workspace}
 suites: codeql-suites
 extractor: cpp
 defaultSuiteFile: codeql-suites/cpp-code-scanning.qls

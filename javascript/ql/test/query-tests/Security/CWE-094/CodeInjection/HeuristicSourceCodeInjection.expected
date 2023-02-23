@@ -88,6 +88,15 @@ nodes
 | express.js:26:17:26:35 | req.param("wobble") |
 | express.js:27:34:27:38 | taint |
 | express.js:27:34:27:38 | taint |
+| express.js:34:9:34:35 | taint |
+| express.js:34:17:34:35 | req.param("wobble") |
+| express.js:34:17:34:35 | req.param("wobble") |
+| express.js:43:15:43:19 | taint |
+| express.js:43:15:43:19 | taint |
+| express.js:49:30:49:32 | msg |
+| express.js:49:30:49:32 | msg |
+| express.js:50:10:50:12 | msg |
+| express.js:50:10:50:12 | msg |
 | module.js:9:16:9:29 | req.query.code |
 | module.js:9:16:9:29 | req.query.code |
 | module.js:9:16:9:29 | req.query.code |
@@ -224,6 +233,14 @@ edges
 | express.js:26:9:26:35 | taint | express.js:27:34:27:38 | taint |
 | express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint |
 | express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint |
+| express.js:34:9:34:35 | taint | express.js:43:15:43:19 | taint |
+| express.js:34:9:34:35 | taint | express.js:43:15:43:19 | taint |
+| express.js:34:17:34:35 | req.param("wobble") | express.js:34:9:34:35 | taint |
+| express.js:34:17:34:35 | req.param("wobble") | express.js:34:9:34:35 | taint |
+| express.js:49:30:49:32 | msg | express.js:50:10:50:12 | msg |
+| express.js:49:30:49:32 | msg | express.js:50:10:50:12 | msg |
+| express.js:49:30:49:32 | msg | express.js:50:10:50:12 | msg |
+| express.js:49:30:49:32 | msg | express.js:50:10:50:12 | msg |
 | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code |
 | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |

@@ -226,21 +226,17 @@ abstract class ScriptDependency extends Dependency {
 /**
  * An embedded JavaScript library included inside a `<script>` tag.
  */
-class InlineScriptDependency extends ScriptDependency, @toplevel {
-  FrameworkLibraryInstance fli;
-
-  InlineScriptDependency() { this = fli }
-
+class InlineScriptDependency extends ScriptDependency, @toplevel instanceof FrameworkLibraryInstance {
   override predicate info(string id, string v) {
     exists(FrameworkLibrary fl |
-      fli.info(fl, v) and
+      FrameworkLibraryInstance.super.info(fl, v) and
       id = fl.getId()
     )
   }
 
   override Expr getAnApiUse() {
     exists(FrameworkLibrary fl |
-      fli.info(fl, _) and
+      FrameworkLibraryInstance.super.info(fl, _) and
       propAccessOnGlobal(result, fl.getAnEntryPoint()) and
       result.getFile() = this.getFile() and
       result.getTopLevel() != this
@@ -252,21 +248,17 @@ class InlineScriptDependency extends ScriptDependency, @toplevel {
  * An external JavaScript library referenced via the `src` attribute
  * of a `<script>` tag.
  */
-class ExternalScriptDependency extends ScriptDependency, @xmlattribute {
-  FrameworkLibraryReference flr;
-
-  ExternalScriptDependency() { this = flr }
-
+class ExternalScriptDependency extends ScriptDependency, @xmlattribute instanceof FrameworkLibraryReference {
   override predicate info(string id, string v) {
     exists(FrameworkLibrary fl |
-      flr.info(fl, v) and
+      FrameworkLibraryReference.super.info(fl, v) and
       id = fl.getId()
     )
   }
 
   override Expr getAnApiUse() {
     exists(FrameworkLibrary fl |
-      flr.info(fl, _) and
+      FrameworkLibraryReference.super.info(fl, _) and
       propAccessOnGlobal(result, fl.getAnEntryPoint()) and
       result.getFile() = this.getFile()
     )
@@ -276,9 +268,7 @@ class ExternalScriptDependency extends ScriptDependency, @xmlattribute {
 /**
  * A dependency on GWT indicated by a GWT header script.
  */
-private class GwtDependency extends ScriptDependency {
-  GwtDependency() { this instanceof GwtHeader }
-
+private class GwtDependency extends ScriptDependency instanceof GwtHeader {
   override predicate info(string id, string v) {
     id = "gwt" and
     exists(GwtHeader h | h = this |

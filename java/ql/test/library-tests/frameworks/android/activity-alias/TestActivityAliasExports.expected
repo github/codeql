@@ -1,0 +1,4 @@
+| Example2Activity.java:5:14:5:29 | Example2Activity | AndroidManifest.xml:68:9:72:20 | activity |
+| Example2Activity.java:5:14:5:29 | Example2Activity | AndroidManifest.xml:74:9:82:26 | activity-alias |
+| ExampleActivity.java:5:14:5:28 | ExampleActivity | AndroidManifest.xml:55:9:59:25 | activity |
+| ExampleActivity.java:5:14:5:28 | ExampleActivity | AndroidManifest.xml:61:9:66:26 | activity-alias |

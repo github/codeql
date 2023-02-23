@@ -45,6 +45,10 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
   codeql::ImportDecl translateImportDecl(const swift::ImportDecl& decl);
   std::optional<codeql::ModuleDecl> translateModuleDecl(const swift::ModuleDecl& decl);
   codeql::IfConfigDecl translateIfConfigDecl(const swift::IfConfigDecl& decl);
+  std::optional<codeql::OpaqueTypeDecl> translateOpaqueTypeDecl(const swift::OpaqueTypeDecl& decl);
+  codeql::PoundDiagnosticDecl translatePoundDiagnosticDecl(const swift::PoundDiagnosticDecl& decl);
+  codeql::MissingMemberDecl translateMissingMemberDecl(const swift::MissingMemberDecl& decl);
+  codeql::CapturedDecl translateCapturedValue(const swift::CapturedValue& capture);
 
  private:
   std::string mangledName(const swift::ValueDecl& decl);
@@ -52,8 +56,7 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
                                 codeql::AbstractFunctionDecl& entry);
   void fillOperatorDecl(const swift::OperatorDecl& decl, codeql::OperatorDecl& entry);
   void fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl& entry);
-  void fillIterableDeclContext(const swift::IterableDeclContext& decl,
-                               codeql::IterableDeclContext& entry);
+  void fillIterableDeclContext(const swift::IterableDeclContext& decl, codeql::Decl& entry);
   void fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& entry);
   void fillNominalTypeDecl(const swift::NominalTypeDecl& decl, codeql::NominalTypeDecl& entry);
   void fillGenericContext(const swift::GenericContext& decl, codeql::GenericContext& entry);
@@ -62,9 +65,9 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
                                codeql::AbstractStorageDecl& entry);
 
   template <typename D>
-  std::optional<TrapClassOf<D>> createNamedEntry(const D& decl) {
-    auto id = dispatcher.assignNewLabel(decl, mangledName(decl));
+  auto createNamedEntry(const D& decl) {
     std::optional<TrapClassOf<D>> entry;
+    auto id = dispatcher.assignNewLabel(decl, mangledName(decl));
     if (dispatcher.shouldEmitDeclBody(decl)) {
       entry.emplace(id);
       fillDecl(decl, *entry);
@@ -73,7 +76,7 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
   }
 
   template <typename D>
-  TrapClassOf<D> createEntry(const D& decl) {
+  auto createEntry(const D& decl) {
     TrapClassOf<D> entry{dispatcher.template assignNewLabel(decl)};
     fillDecl(decl, entry);
     return entry;

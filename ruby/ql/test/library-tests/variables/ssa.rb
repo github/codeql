@@ -86,3 +86,18 @@ def m11
      end
   end
 end
+
+def m12(b1, b2, b3, b4)
+  x = 0
+  if (b1) then
+    puts x
+  elsif (b2) then
+    puts x
+  end
+  # phi read for x
+  if (b3) then
+    puts x
+  elsif (b4) then
+    puts x
+  end
+end

@@ -43,12 +43,8 @@ private module Cached {
       nodeFrom.asExpr() = interpolated.getAppendingExpr()
     )
     or
-    // allow flow through string concatenation.
-    exists(AddExpr ae |
-      ae.getAnOperand() = nodeFrom.asExpr() and
-      ae = nodeTo.asExpr() and
-      ae.getType().getName() = "String"
-    )
+    // allow flow through arithmetic (this case includes string concatenation)
+    nodeTo.asExpr().(ArithmeticOperation).getAnOperand() = nodeFrom.asExpr()
     or
     // flow through a subscript access
     exists(SubscriptExpr se |
@@ -64,6 +60,8 @@ private module Cached {
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    or
+    any(AdditionalTaintStep a).step(nodeFrom, nodeTo)
   }
 
   /**
@@ -72,7 +70,13 @@ private module Cached {
    */
   cached
   predicate localTaintStepCached(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    DataFlow::localFlowStep(nodeFrom, nodeTo)
+    or
     defaultAdditionalTaintStep(nodeFrom, nodeTo)
+    or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
   }
 }
 

@@ -51,6 +51,10 @@ public class MybatisSqlInjectionService {
 		sqlInjectionMapper.bad9(hashMap);
 	}
 
+	public void bad10(Integer id, String name) {
+		sqlInjectionMapper.bad10(id, name);
+	}
+
 	public List<Test> good1(Integer id) {
 		List<Test> result = sqlInjectionMapper.good1(id);
 		return result;
@@ -71,5 +75,17 @@ public class MybatisSqlInjectionService {
 
 	public void badInsert(String input) {
 		sqlInjectionMapper.badInsert(input);
+	}
+
+	public void good2(String name, Integer age){
+		sqlInjectionMapper.good2(name, age);
+	}
+
+	public void good3(String age){
+		sqlInjectionMapper.good3(age);
+	}
+
+	public void good4(Integer id, String name) {
+		sqlInjectionMapper.good4(id, name);
 	}
 }

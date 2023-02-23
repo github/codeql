@@ -70,7 +70,7 @@ class PrintAstNode extends TPrintNode {
    * Holds if this node is at the specified location. The location spans column
    * `startcolumn` of line `startline` to column `endcolumn` of line `endline`
    * in file `filepath`. For more information, see
-   * [LGTM locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn

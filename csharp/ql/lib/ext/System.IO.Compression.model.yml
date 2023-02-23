@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.IO.Compression", "DeflateStream", False, "DeflateStream", "(System.IO.Stream,System.IO.Compression.CompressionLevel)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO.Compression", "DeflateStream", False, "DeflateStream", "(System.IO.Stream,System.IO.Compression.CompressionLevel,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO.Compression", "DeflateStream", False, "DeflateStream", "(System.IO.Stream,System.IO.Compression.CompressionMode)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO.Compression", "DeflateStream", False, "DeflateStream", "(System.IO.Stream,System.IO.Compression.CompressionMode,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "manual"]

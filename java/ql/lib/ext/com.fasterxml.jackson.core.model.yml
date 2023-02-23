@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.fasterxml.jackson.core", "JsonFactory", False, "createParser", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

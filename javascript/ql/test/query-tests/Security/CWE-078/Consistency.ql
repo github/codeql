@@ -1,10 +1,10 @@
 import javascript
 import testUtilities.ConsistencyChecking
-import semmle.javascript.security.dataflow.CommandInjection
-import semmle.javascript.security.dataflow.IndirectCommandInjection
-import semmle.javascript.security.dataflow.ShellCommandInjectionFromEnvironment
-import semmle.javascript.security.dataflow.UnsafeShellCommandConstruction
-import semmle.javascript.security.dataflow.SecondOrderCommandInjectionQuery
+import semmle.javascript.security.dataflow.CommandInjectionQuery as CommandInjection
+import semmle.javascript.security.dataflow.IndirectCommandInjectionQuery as IndirectCommandInjection
+import semmle.javascript.security.dataflow.ShellCommandInjectionFromEnvironmentQuery as ShellCommandInjectionFromEnvironment
+import semmle.javascript.security.dataflow.UnsafeShellCommandConstructionQuery as UnsafeShellCommandConstruction
+import semmle.javascript.security.dataflow.SecondOrderCommandInjectionQuery as SecondOrderCommandInjectionQuery
 
 class CommandInjectionConsistency extends ConsistencyConfiguration {
   CommandInjectionConsistency() { this = "ComandInjection" }

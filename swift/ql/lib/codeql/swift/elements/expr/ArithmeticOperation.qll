@@ -98,7 +98,10 @@ class RemExpr extends BinaryExpr {
  * ```
  */
 class UnaryArithmeticOperation extends PrefixUnaryExpr {
-  UnaryArithmeticOperation() { this instanceof UnaryMinusExpr }
+  UnaryArithmeticOperation() {
+    this instanceof UnaryMinusExpr or
+    this instanceof UnaryPlusExpr
+  }
 }
 
 /**
@@ -109,4 +112,14 @@ class UnaryArithmeticOperation extends PrefixUnaryExpr {
  */
 class UnaryMinusExpr extends PrefixUnaryExpr {
   UnaryMinusExpr() { this.getStaticTarget().getName() = "-(_:)" }
+}
+
+/**
+ * A unary plus expression.
+ * ```
+ * +a
+ * ```
+ */
+class UnaryPlusExpr extends PrefixUnaryExpr {
+  UnaryPlusExpr() { this.getStaticTarget().getName() = "+(_:)" }
 }

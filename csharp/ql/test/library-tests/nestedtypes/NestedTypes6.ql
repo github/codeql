@@ -6,7 +6,7 @@ import csharp
 
 from UnboundGenericClass o, UnboundGenericClass i
 where
-  o.hasQualifiedName("NestedTypes.Outer<>") and
-  i.hasQualifiedName("NestedTypes.Outer<>+Inner<>") and
+  o.hasQualifiedName("NestedTypes", "Outer<>") and
+  i.hasQualifiedName("NestedTypes", "Outer<>+Inner<>") and
   i = o.getANestedType()
 select o, i

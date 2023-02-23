@@ -1,0 +1,21 @@
+ # A partial model of jodd.json.JsonParser noting fluent methods.
+ #
+ # This means that DataFlow::localFlow and similar methods are aware
+ # that the result of (e.g.) JsonParser.allowClass is an alias of the
+ # qualifier.
+ #
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["jodd.json", "JsonParser", False, "allowAllClasses", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "allowClass", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "lazy", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "looseMode", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "map", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "setClassMetadataName", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "strictTypes", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "useAltPaths", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "withClassMetadata", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "withValueConverter", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]

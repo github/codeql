@@ -4,7 +4,17 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 
 module Generated {
+  /**
+   * A placeholder for missing declarations that can arise on object deserialization.
+   */
   class MissingMemberDecl extends Synth::TMissingMemberDecl, Decl {
     override string getAPrimaryQlClass() { result = "MissingMemberDecl" }
+
+    /**
+     * Gets the name of this missing member declaration.
+     */
+    string getName() {
+      result = Synth::convertMissingMemberDeclToRaw(this).(Raw::MissingMemberDecl).getName()
+    }
   }
 }

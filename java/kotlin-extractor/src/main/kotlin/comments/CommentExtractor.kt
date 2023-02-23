@@ -25,7 +25,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
     private val logger = fileExtractor.logger
 
     fun extract() {
-        val psi2Ir = getPsi2Ir(logger)
+        val psi2Ir = getPsi2Ir()
         if (psi2Ir == null) {
             logger.warn("Comments will not be extracted as Kotlin version is too old (${KotlinCompilerVersion.getVersion()})")
             return

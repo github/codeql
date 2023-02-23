@@ -1,19 +1,20 @@
 /**
  * INTERNAL use only. This is an experimental API subject to change without notice.
  *
- * Provides classes and predicates for dealing with flow models specified in CSV format.
+ * Provides classes and predicates for dealing with MaD flow models specified
+ * in data extensions and CSV format.
  *
  * The CSV specification has the following columns:
  * - Sources:
- *   `namespace; type; subtypes; name; signature; ext; output; kind`
+ *   `package; type; subtypes; name; signature; ext; output; kind; provenance`
  * - Sinks:
- *   `namespace; type; subtypes; name; signature; ext; input; kind`
+ *   `package; type; subtypes; name; signature; ext; input; kind; provenance`
  * - Summaries:
- *   `namespace; type; subtypes; name; signature; ext; input; output; kind`
+ *   `package; type; subtypes; name; signature; ext; input; output; kind; provenance`
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
- * 1. The `namespace` column selects a package.
+ * 1. The `package` column selects a package.
  * 2. The `type` column selects a type within that package.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type.
@@ -61,6 +62,7 @@
  */
 
 private import go
+private import ExternalFlowExtensions as Extensions
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
@@ -75,148 +77,44 @@ private module Frameworks {
   private import semmle.go.frameworks.Stdlib
 }
 
-private class BuiltinModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        ";;false;append;;;Argument[0].ArrayElement;ReturnValue.ArrayElement;value",
-        ";;false;append;;;Argument[1];ReturnValue.ArrayElement;value"
-      ]
-  }
-}
-
-/**
- * A unit class for adding additional source model rows.
- *
- * Extend this class to add additional source definitions.
- */
-class SourceModelCsv extends Unit {
-  /** Holds if `row` specifies a source definition. */
-  abstract predicate row(string row);
-}
-
-/**
- * A unit class for adding additional sink model rows.
- *
- * Extend this class to add additional sink definitions.
- */
-class SinkModelCsv extends Unit {
-  /** Holds if `row` specifies a sink definition. */
-  abstract predicate row(string row);
-}
-
-/**
- * A unit class for adding additional summary model rows.
- *
- * Extend this class to add additional flow summary definitions.
- */
-class SummaryModelCsv extends Unit {
-  /** Holds if `row` specifies a summary definition. */
-  abstract predicate row(string row);
-}
-
-/** Holds if `row` is a source model. */
-predicate sourceModel(string row) { any(SourceModelCsv s).row(row) }
-
-/** Holds if `row` is a sink model. */
-predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
-
-/** Holds if `row` is a summary model. */
-predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
-
 /** Holds if a source model exists for the given parameters. */
-predicate sourceModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind
-) {
-  exists(string row |
-    sourceModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = output and
-    row.splitAt(";", 7) = kind
-  )
-}
+predicate sourceModel = Extensions::sourceModel/9;
 
 /** Holds if a sink model exists for the given parameters. */
-predicate sinkModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind
-) {
-  exists(string row |
-    sinkModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = kind
-  )
-}
+predicate sinkModel = Extensions::sinkModel/9;
 
 /** Holds if a summary model exists for the given parameters. */
-predicate summaryModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind
-) {
-  summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, _)
-}
+predicate summaryModel = Extensions::summaryModel/10;
 
-/** Holds if a summary model `row` exists for the given parameters. */
-predicate summaryModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string row
-) {
-  summaryModel(row) and
-  row.splitAt(";", 0) = namespace and
-  row.splitAt(";", 1) = type and
-  row.splitAt(";", 2) = subtypes.toString() and
-  subtypes = [true, false] and
-  row.splitAt(";", 3) = name and
-  row.splitAt(";", 4) = signature and
-  row.splitAt(";", 5) = ext and
-  row.splitAt(";", 6) = input and
-  row.splitAt(";", 7) = output and
-  row.splitAt(";", 8) = kind
-}
-
-/** Holds if `package` have CSV framework coverage. */
-private predicate packageHasCsvCoverage(string package) {
-  sourceModel(package, _, _, _, _, _, _, _) or
-  sinkModel(package, _, _, _, _, _, _, _) or
-  summaryModel(package, _, _, _, _, _, _, _, _)
+/** Holds if `package` have MaD framework coverage. */
+private predicate packageHasMaDCoverage(string package) {
+  sourceModel(package, _, _, _, _, _, _, _, _) or
+  sinkModel(package, _, _, _, _, _, _, _, _) or
+  summaryModel(package, _, _, _, _, _, _, _, _, _)
 }
 
 /**
- * Holds if `package` and `subpkg` have CSV framework coverage and `subpkg`
+ * Holds if `package` and `subpkg` have MaD framework coverage and `subpkg`
  * is a subpackage of `package`.
  */
 private predicate packageHasASubpackage(string package, string subpkg) {
-  packageHasCsvCoverage(package) and
-  packageHasCsvCoverage(subpkg) and
+  packageHasMaDCoverage(package) and
+  packageHasMaDCoverage(subpkg) and
   subpkg.prefix(subpkg.indexOf(".")) = package
 }
 
 /**
- * Holds if `package` has CSV framework coverage and it is not a subpackage of
- * any other package with CSV framework coverage.
+ * Holds if `package` has MaD framework coverage and it is not a subpackage of
+ * any other package with MaD framework coverage.
  */
 private predicate canonicalPackage(string package) {
-  packageHasCsvCoverage(package) and not packageHasASubpackage(_, package)
+  packageHasMaDCoverage(package) and not packageHasASubpackage(_, package)
 }
 
 /**
- * Holds if `package` and `subpkg` have CSV framework coverage, `subpkg` is a
+ * Holds if `package` and `subpkg` have MaD framework coverage, `subpkg` is a
  * subpackage of `package` (or they are the same), and `package` is not a
- * subpackage of any other package with CSV framework coverage.
+ * subpackage of any other package with MaD framework coverage.
  */
 private predicate canonicalPackageHasASubpackage(string package, string subpkg) {
   canonicalPackage(package) and
@@ -224,9 +122,9 @@ private predicate canonicalPackageHasASubpackage(string package, string subpkg) 
 }
 
 /**
- * Holds if CSV framework coverage of `package` is `n` api endpoints of the
+ * Holds if MaD framework coverage of `package` is `n` api endpoints of the
  * kind `(kind, part)`, and `pkgs` is the number of subpackages of `package`
- * which have CSV framework coverage (including `package` itself).
+ * which have MaD framework coverage (including `package` itself).
  */
 predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
   pkgs = strictcount(string subpkg | canonicalPackageHasASubpackage(package, subpkg)) and
@@ -234,36 +132,36 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
     part = "source" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string output |
+        string ext, string output, string provenance |
         canonicalPackageHasASubpackage(package, subpkg) and
-        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind)
+        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind, provenance)
       )
     or
     part = "sink" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input |
+        string ext, string input, string provenance |
         canonicalPackageHasASubpackage(package, subpkg) and
-        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind)
+        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind, provenance)
       )
     or
     part = "summary" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output |
+        string ext, string input, string output, string provenance |
         canonicalPackageHasASubpackage(package, subpkg) and
-        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind)
+        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, provenance)
       )
   )
 }
 
-/** Provides a query predicate to check the CSV data for validation errors. */
-module CsvValidation {
+/** Provides a query predicate to check the MaD models for validation errors. */
+module ModelValidation {
   private string getInvalidModelInput() {
     exists(string pred, AccessPath input, string part |
-      sinkModel(_, _, _, _, _, _, input, _) and pred = "sink"
+      sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
       or
-      summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, input, _, _, _) and pred = "summary"
     |
       (
         invalidSpecComponent(input, part) and
@@ -279,9 +177,9 @@ module CsvValidation {
 
   private string getInvalidModelOutput() {
     exists(string pred, string output, string part |
-      sourceModel(_, _, _, _, _, _, output, _) and pred = "source"
+      sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
       or
-      summaryModel(_, _, _, _, _, _, _, output, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, _, output, _, _) and pred = "summary"
     |
       invalidSpecComponent(output, part) and
       not part = "" and
@@ -291,57 +189,25 @@ module CsvValidation {
   }
 
   private string getInvalidModelKind() {
-    exists(string row, string kind | summaryModel(row) |
-      kind = row.splitAt(";", 8) and
+    exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
       not kind = ["taint", "value"] and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
   }
 
-  private string getInvalidModelSubtype() {
-    exists(string pred, string row |
-      sourceModel(row) and pred = "source"
-      or
-      sinkModel(row) and pred = "sink"
-      or
-      summaryModel(row) and pred = "summary"
-    |
-      exists(string b |
-        b = row.splitAt(";", 2) and
-        not b = ["true", "false"] and
-        result = "Invalid boolean \"" + b + "\" in " + pred + " model."
-      )
-    )
-  }
-
-  private string getInvalidModelColumnCount() {
-    exists(string pred, string row, int expect |
-      sourceModel(row) and expect = 8 and pred = "source"
-      or
-      sinkModel(row) and expect = 8 and pred = "sink"
-      or
-      summaryModel(row) and expect = 9 and pred = "summary"
-    |
-      exists(int cols |
-        cols = 1 + max(int n | exists(row.splitAt(";", n))) and
-        cols != expect and
-        result =
-          "Wrong number of columns in " + pred + " model row, expected " + expect + ", got " + cols +
-            "."
-      )
-    )
-  }
-
   private string getInvalidModelSignature() {
-    exists(string pred, string namespace, string type, string name, string signature, string ext |
-      sourceModel(namespace, type, _, name, signature, ext, _, _) and pred = "source"
-      or
-      sinkModel(namespace, type, _, name, signature, ext, _, _) and pred = "sink"
-      or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "summary"
+    exists(
+      string pred, string package, string type, string name, string signature, string ext,
+      string provenance
     |
-      not namespace.regexpMatch("[a-zA-Z0-9_\\./]*") and
-      result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
+      sourceModel(package, type, _, name, signature, ext, _, _, provenance) and pred = "source"
+      or
+      sinkModel(package, type, _, name, signature, ext, _, _, provenance) and pred = "sink"
+      or
+      summaryModel(package, type, _, name, signature, ext, _, _, _, provenance) and pred = "summary"
+    |
+      not package.regexpMatch("[a-zA-Z0-9_\\./]*") and
+      result = "Dubious package \"" + package + "\" in " + pred + " model."
       or
       not type.regexpMatch("[a-zA-Z0-9_\\$<>]*") and
       result = "Dubious type \"" + type + "\" in " + pred + " model."
@@ -354,26 +220,29 @@ module CsvValidation {
       or
       not ext.regexpMatch("|Annotated") and
       result = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
+      or
+      not provenance = ["manual", "generated"] and
+      result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
   }
 
-  /** Holds if some row in a CSV-based flow model appears to contain typos. */
+  /** Holds if some row in a MaD flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelSubtype(), getInvalidModelColumnCount(), getInvalidModelKind()
+        getInvalidModelKind()
       ]
   }
 }
 
 pragma[nomagic]
 private predicate elementSpec(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext
+  string package, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(namespace, type, subtypes, name, signature, ext, _, _) or
-  sinkModel(namespace, type, subtypes, name, signature, ext, _, _) or
-  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
+  sourceModel(package, type, subtypes, name, signature, ext, _, _, _) or
+  sinkModel(package, type, subtypes, name, signature, ext, _, _, _) or
+  summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _)
 }
 
 private string paramsStringPart(Function f, int i) {
@@ -421,7 +290,9 @@ SourceOrSinkElement interpretElement(
 predicate hasExternalSpecification(Function f) {
   f = any(SummarizedCallable sc).asFunction()
   or
-  exists(SourceOrSinkElement e | f = e.asEntity() | sourceElement(e, _, _) or sinkElement(e, _, _))
+  exists(SourceOrSinkElement e | f = e.asEntity() |
+    sourceElement(e, _, _, _) or sinkElement(e, _, _, _)
+  )
 }
 
 private predicate parseField(AccessPathToken c, DataFlow::FieldContent f) {
@@ -467,7 +338,7 @@ predicate parseContent(string component, DataFlow::Content content) {
 cached
 private module Cached {
   /**
-   * Holds if `node` is specified as a source with the given kind in a CSV flow
+   * Holds if `node` is specified as a source with the given kind in a MaD flow
    * model.
    */
   cached
@@ -476,7 +347,7 @@ private module Cached {
   }
 
   /**
-   * Holds if `node` is specified as a sink with the given kind in a CSV flow
+   * Holds if `node` is specified as a sink with the given kind in a MaD flow
    * model.
    */
   cached

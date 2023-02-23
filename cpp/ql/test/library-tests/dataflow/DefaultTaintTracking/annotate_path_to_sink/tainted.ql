@@ -44,8 +44,8 @@ class IRDefaultTaintTrackingTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = ["ir-path", "ir-sink"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(Element source, Element elem, TaintedWithPath::PathNode node, int n |
-      irTaint(source, node, tag) and
+    exists(Element elem, TaintedWithPath::PathNode node, int n |
+      irTaint(_, node, tag) and
       elem = getElementFromPathNode(node) and
       n = count(int startline | getAPredecessor(node).hasLocationInfo(_, startline, _, _, _)) and
       location = elem.getLocation() and

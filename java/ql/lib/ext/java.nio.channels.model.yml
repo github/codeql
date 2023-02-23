@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.nio.channels", "Channels", False, "newChannel", "(InputStream)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.channels", "ReadableByteChannel", True, "read", "(ByteBuffer)", "", "Argument[-1]", "Argument[0]", "taint", "manual"]

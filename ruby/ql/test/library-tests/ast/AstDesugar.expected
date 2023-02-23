@@ -60,257 +60,257 @@ calls/calls.rb:
 #  249|         getReceiver: [ConstantReadAccess] X
 #  249|       getValue: [MethodCall] call to bar
 #  249|         getReceiver: [ConstantReadAccess] X
-#  314| [AssignExpr] ... = ...
-#  314|   getDesugared: [StmtSequence] ...
-#  314|     getStmt: [SetterMethodCall] call to foo=
-#  314|       getReceiver: [SelfVariableAccess] self
-#  314|       getArgument: [AssignExpr] ... = ...
-#  314|         getAnOperand/getRightOperand: [IntegerLiteral] 10
-#  314|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
-#  314|     getStmt: [LocalVariableAccess] __synth__0
-#  315| [AssignExpr] ... = ...
-#  315|   getDesugared: [StmtSequence] ...
-#  315|     getStmt: [SetterMethodCall] call to []=
-#  315|       getReceiver: [MethodCall] call to foo
-#  315|         getReceiver: [SelfVariableAccess] self
-#  315|       getArgument: [IntegerLiteral] 0
-#  315|       getArgument: [AssignExpr] ... = ...
-#  315|         getAnOperand/getRightOperand: [IntegerLiteral] 10
-#  315|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
-#  315|     getStmt: [LocalVariableAccess] __synth__0
 #  316| [AssignExpr] ... = ...
 #  316|   getDesugared: [StmtSequence] ...
-#  316|     getStmt: [AssignExpr] ... = ...
-#  316|       getAnOperand/getLeftOperand: [MethodCall] call to foo
-#  316|       getDesugared: [StmtSequence] ...
-#  316|         getStmt: [SetterMethodCall] call to foo=
-#  316|           getReceiver: [SelfVariableAccess] self
-#  316|           getArgument: [AssignExpr] ... = ...
-#  316|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
-#  316|             getAnOperand/getRightOperand: [MethodCall] call to []
-#  316|               getReceiver: [LocalVariableAccess] __synth__0
-#  316|               getArgument: [IntegerLiteral] 0
-#  316|         getStmt: [LocalVariableAccess] __synth__0__1
-#  316|     getStmt: [AssignExpr] ... = ...
-#  316|       getAnOperand/getLeftOperand: [MethodCall] call to bar
-#  316|       getDesugared: [StmtSequence] ...
-#  316|         getStmt: [SetterMethodCall] call to bar=
-#  316|           getReceiver: [SelfVariableAccess] self
-#  316|           getArgument: [AssignExpr] ... = ...
-#  316|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
-#  316|             getAnOperand/getRightOperand: [MethodCall] call to []
-#  316|               getReceiver: [LocalVariableAccess] __synth__0
-#  316|               getArgument: [RangeLiteral] _ .. _
-#  316|                 getBegin: [IntegerLiteral] 1
-#  316|                 getEnd: [IntegerLiteral] -2
-#  316|         getStmt: [LocalVariableAccess] __synth__0__1
-#  316|     getStmt: [AssignExpr] ... = ...
-#  316|       getAnOperand/getLeftOperand: [ElementReference] ...[...]
-#  316|       getDesugared: [StmtSequence] ...
-#  316|         getStmt: [SetterMethodCall] call to []=
-#  316|           getReceiver: [MethodCall] call to foo
-#  316|             getReceiver: [SelfVariableAccess] self
-#  316|           getArgument: [AssignExpr] ... = ...
-#  316|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
-#  316|             getAnOperand/getRightOperand: [MethodCall] call to []
-#  316|               getReceiver: [LocalVariableAccess] __synth__0
-#  316|               getArgument: [IntegerLiteral] -1
-#  316|           getArgument: [IntegerLiteral] 4
-#  316|         getStmt: [LocalVariableAccess] __synth__0__1
-#  316|     getStmt: [AssignExpr] ... = ...
-#  316|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
-#  316|       getAnOperand/getRightOperand: [SplatExpr] * ...
-#  316|         getAnOperand/getOperand/getReceiver: [ArrayLiteral] [...]
-#  316|           getDesugared: [MethodCall] call to []
-#  316|             getReceiver: [ConstantReadAccess] Array
-#  316|             getArgument: [IntegerLiteral] 1
-#  316|             getArgument: [IntegerLiteral] 2
-#  316|             getArgument: [IntegerLiteral] 3
-#  316|             getArgument: [IntegerLiteral] 4
+#  316|     getStmt: [SetterMethodCall] call to foo=
+#  316|       getReceiver: [SelfVariableAccess] self
+#  316|       getArgument: [AssignExpr] ... = ...
+#  316|         getAnOperand/getRightOperand: [IntegerLiteral] 10
+#  316|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
+#  316|     getStmt: [LocalVariableAccess] __synth__0
 #  317| [AssignExpr] ... = ...
 #  317|   getDesugared: [StmtSequence] ...
-#  317|     getStmt: [AssignExpr] ... = ...
-#  317|       getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#  317|       getAnOperand/getRightOperand: [MethodCall] call to []
-#  317|         getReceiver: [LocalVariableAccess] __synth__0
-#  317|         getArgument: [IntegerLiteral] 0
-#  317|     getStmt: [AssignExpr] ... = ...
-#  317|       getAnOperand/getLeftOperand: [ElementReference] ...[...]
-#  317|       getDesugared: [StmtSequence] ...
-#  317|         getStmt: [SetterMethodCall] call to []=
-#  317|           getReceiver: [MethodCall] call to foo
-#  317|             getReceiver: [SelfVariableAccess] self
-#  317|           getArgument: [AssignExpr] ... = ...
-#  317|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
-#  317|             getAnOperand/getRightOperand: [MethodCall] call to []
-#  317|               getReceiver: [LocalVariableAccess] __synth__0
-#  317|               getArgument: [RangeLiteral] _ .. _
-#  317|                 getBegin: [IntegerLiteral] 1
-#  317|                 getEnd: [IntegerLiteral] -1
-#  317|           getArgument: [IntegerLiteral] 5
-#  317|         getStmt: [LocalVariableAccess] __synth__0__1
-#  317|     getStmt: [AssignExpr] ... = ...
-#  317|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
-#  317|       getAnOperand/getRightOperand: [SplatExpr] * ...
-#  317|         getAnOperand/getOperand/getReceiver: [ArrayLiteral] [...]
-#  317|           getDesugared: [MethodCall] call to []
-#  317|             getReceiver: [ConstantReadAccess] Array
-#  317|             getArgument: [IntegerLiteral] 1
-#  317|             getArgument: [IntegerLiteral] 2
-#  317|             getArgument: [IntegerLiteral] 3
-#  318| [AssignAddExpr] ... += ...
+#  317|     getStmt: [SetterMethodCall] call to []=
+#  317|       getReceiver: [MethodCall] call to foo
+#  317|         getReceiver: [SelfVariableAccess] self
+#  317|       getArgument: [IntegerLiteral] 0
+#  317|       getArgument: [AssignExpr] ... = ...
+#  317|         getAnOperand/getRightOperand: [IntegerLiteral] 10
+#  317|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
+#  317|     getStmt: [LocalVariableAccess] __synth__0
+#  318| [AssignExpr] ... = ...
 #  318|   getDesugared: [StmtSequence] ...
 #  318|     getStmt: [AssignExpr] ... = ...
-#  318|       getAnOperand/getRightOperand: [SelfVariableAccess] self
-#  318|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
-#  318|     getStmt: [SetterMethodCall] call to count=
-#  318|       getReceiver: [LocalVariableAccess] __synth__0
-#  318|       getArgument: [LocalVariableAccess] __synth__1
+#  318|       getAnOperand/getLeftOperand: [MethodCall] call to foo
+#  318|       getDesugared: [StmtSequence] ...
+#  318|         getStmt: [SetterMethodCall] call to foo=
+#  318|           getReceiver: [SelfVariableAccess] self
+#  318|           getArgument: [AssignExpr] ... = ...
+#  318|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
+#  318|             getAnOperand/getRightOperand: [MethodCall] call to []
+#  318|               getReceiver: [LocalVariableAccess] __synth__0
+#  318|               getArgument: [IntegerLiteral] 0
+#  318|         getStmt: [LocalVariableAccess] __synth__0__1
 #  318|     getStmt: [AssignExpr] ... = ...
-#  318|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__1
-#  318|       getAnOperand/getRightOperand: [AddExpr] ... + ...
-#  318|         getAnOperand/getLeftOperand/getReceiver: [MethodCall] call to count
-#  318|           getReceiver: [LocalVariableAccess] __synth__0
-#  318|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
-#  318|     getStmt: [LocalVariableAccess] __synth__1
-#  319| [AssignAddExpr] ... += ...
+#  318|       getAnOperand/getLeftOperand: [MethodCall] call to bar
+#  318|       getDesugared: [StmtSequence] ...
+#  318|         getStmt: [SetterMethodCall] call to bar=
+#  318|           getReceiver: [SelfVariableAccess] self
+#  318|           getArgument: [AssignExpr] ... = ...
+#  318|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
+#  318|             getAnOperand/getRightOperand: [MethodCall] call to []
+#  318|               getReceiver: [LocalVariableAccess] __synth__0
+#  318|               getArgument: [RangeLiteral] _ .. _
+#  318|                 getBegin: [IntegerLiteral] 1
+#  318|                 getEnd: [IntegerLiteral] -2
+#  318|         getStmt: [LocalVariableAccess] __synth__0__1
+#  318|     getStmt: [AssignExpr] ... = ...
+#  318|       getAnOperand/getLeftOperand: [ElementReference] ...[...]
+#  318|       getDesugared: [StmtSequence] ...
+#  318|         getStmt: [SetterMethodCall] call to []=
+#  318|           getReceiver: [MethodCall] call to foo
+#  318|             getReceiver: [SelfVariableAccess] self
+#  318|           getArgument: [AssignExpr] ... = ...
+#  318|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
+#  318|             getAnOperand/getRightOperand: [MethodCall] call to []
+#  318|               getReceiver: [LocalVariableAccess] __synth__0
+#  318|               getArgument: [IntegerLiteral] -1
+#  318|           getArgument: [IntegerLiteral] 4
+#  318|         getStmt: [LocalVariableAccess] __synth__0__1
+#  318|     getStmt: [AssignExpr] ... = ...
+#  318|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
+#  318|       getAnOperand/getRightOperand: [SplatExpr] * ...
+#  318|         getAnOperand/getOperand/getReceiver: [ArrayLiteral] [...]
+#  318|           getDesugared: [MethodCall] call to []
+#  318|             getReceiver: [ConstantReadAccess] Array
+#  318|             getArgument: [IntegerLiteral] 1
+#  318|             getArgument: [IntegerLiteral] 2
+#  318|             getArgument: [IntegerLiteral] 3
+#  318|             getArgument: [IntegerLiteral] 4
+#  319| [AssignExpr] ... = ...
 #  319|   getDesugared: [StmtSequence] ...
 #  319|     getStmt: [AssignExpr] ... = ...
-#  319|       getAnOperand/getRightOperand: [MethodCall] call to foo
-#  319|         getReceiver: [SelfVariableAccess] self
+#  319|       getAnOperand/getLeftOperand: [LocalVariableAccess] a
+#  319|       getAnOperand/getRightOperand: [MethodCall] call to []
+#  319|         getReceiver: [LocalVariableAccess] __synth__0
+#  319|         getArgument: [IntegerLiteral] 0
+#  319|     getStmt: [AssignExpr] ... = ...
+#  319|       getAnOperand/getLeftOperand: [ElementReference] ...[...]
+#  319|       getDesugared: [StmtSequence] ...
+#  319|         getStmt: [SetterMethodCall] call to []=
+#  319|           getReceiver: [MethodCall] call to foo
+#  319|             getReceiver: [SelfVariableAccess] self
+#  319|           getArgument: [AssignExpr] ... = ...
+#  319|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
+#  319|             getAnOperand/getRightOperand: [MethodCall] call to []
+#  319|               getReceiver: [LocalVariableAccess] __synth__0
+#  319|               getArgument: [RangeLiteral] _ .. _
+#  319|                 getBegin: [IntegerLiteral] 1
+#  319|                 getEnd: [IntegerLiteral] -1
+#  319|           getArgument: [IntegerLiteral] 5
+#  319|         getStmt: [LocalVariableAccess] __synth__0__1
+#  319|     getStmt: [AssignExpr] ... = ...
 #  319|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
-#  319|     getStmt: [SetterMethodCall] call to []=
-#  319|       getReceiver: [LocalVariableAccess] __synth__0
-#  319|       getArgument: [LocalVariableAccess] __synth__1
-#  319|       getArgument: [LocalVariableAccess] __synth__2
-#  319|     getStmt: [AssignExpr] ... = ...
-#  319|       getAnOperand/getRightOperand: [IntegerLiteral] 0
-#  319|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__1
-#  319|     getStmt: [AssignExpr] ... = ...
-#  319|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__2
-#  319|       getAnOperand/getRightOperand: [AddExpr] ... + ...
-#  319|         getAnOperand/getLeftOperand/getReceiver: [MethodCall] call to []
-#  319|           getReceiver: [LocalVariableAccess] __synth__0
-#  319|           getArgument: [LocalVariableAccess] __synth__1
-#  319|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
-#  319|     getStmt: [LocalVariableAccess] __synth__2
-#  320| [AssignMulExpr] ... *= ...
+#  319|       getAnOperand/getRightOperand: [SplatExpr] * ...
+#  319|         getAnOperand/getOperand/getReceiver: [ArrayLiteral] [...]
+#  319|           getDesugared: [MethodCall] call to []
+#  319|             getReceiver: [ConstantReadAccess] Array
+#  319|             getArgument: [IntegerLiteral] 1
+#  319|             getArgument: [IntegerLiteral] 2
+#  319|             getArgument: [IntegerLiteral] 3
+#  320| [AssignAddExpr] ... += ...
 #  320|   getDesugared: [StmtSequence] ...
 #  320|     getStmt: [AssignExpr] ... = ...
-#  320|       getAnOperand/getRightOperand: [MethodCall] call to bar
-#  320|         getReceiver: [MethodCall] call to foo
-#  320|           getReceiver: [SelfVariableAccess] self
+#  320|       getAnOperand/getRightOperand: [SelfVariableAccess] self
 #  320|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
-#  320|     getStmt: [SetterMethodCall] call to []=
+#  320|     getStmt: [SetterMethodCall] call to count=
 #  320|       getReceiver: [LocalVariableAccess] __synth__0
 #  320|       getArgument: [LocalVariableAccess] __synth__1
-#  320|       getArgument: [LocalVariableAccess] __synth__2
-#  320|       getArgument: [LocalVariableAccess] __synth__3
-#  320|       getArgument: [LocalVariableAccess] __synth__4
 #  320|     getStmt: [AssignExpr] ... = ...
-#  320|       getAnOperand/getRightOperand: [IntegerLiteral] 0
 #  320|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__1
-#  320|     getStmt: [AssignExpr] ... = ...
-#  320|       getAnOperand/getRightOperand: [MethodCall] call to baz
-#  320|         getReceiver: [MethodCall] call to foo
-#  320|           getReceiver: [SelfVariableAccess] self
-#  320|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__2
-#  320|     getStmt: [AssignExpr] ... = ...
 #  320|       getAnOperand/getRightOperand: [AddExpr] ... + ...
-#  320|         getAnOperand/getLeftOperand/getReceiver: [MethodCall] call to boo
-#  320|           getReceiver: [MethodCall] call to foo
-#  320|             getReceiver: [SelfVariableAccess] self
-#  320|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
-#  320|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__3
-#  320|     getStmt: [AssignExpr] ... = ...
-#  320|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__4
-#  320|       getAnOperand/getRightOperand: [MulExpr] ... * ...
-#  320|         getAnOperand/getLeftOperand/getReceiver: [MethodCall] call to []
+#  320|         getAnOperand/getLeftOperand/getReceiver: [MethodCall] call to count
 #  320|           getReceiver: [LocalVariableAccess] __synth__0
-#  320|           getArgument: [LocalVariableAccess] __synth__1
-#  320|           getArgument: [LocalVariableAccess] __synth__2
-#  320|           getArgument: [LocalVariableAccess] __synth__3
-#  320|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 2
-#  320|     getStmt: [LocalVariableAccess] __synth__4
-#  340| [ForExpr] for ... in ...
-#  340|   getDesugared: [MethodCall] call to each
-#  340|     getBlock: [BraceBlock] { ... }
-#  340|       getParameter: [SimpleParameter] __synth__0__1
-#  340|         getDefiningAccess: [LocalVariableAccess] __synth__0__1
-#  340|       getStmt: [AssignExpr] ... = ...
-#  340|         getDesugared: [StmtSequence] ...
-#  340|           getStmt: [AssignExpr] ... = ...
-#  340|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
-#  340|             getAnOperand/getRightOperand: [SplatExpr] * ...
-#  340|               getAnOperand/getOperand/getReceiver: [LocalVariableAccess] __synth__0__1
-#  340|           getStmt: [AssignExpr] ... = ...
-#  340|             getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#  340|             getAnOperand/getRightOperand: [MethodCall] call to []
-#  340|               getReceiver: [LocalVariableAccess] __synth__0__1
-#  340|               getArgument: [IntegerLiteral] 0
-#  340|           getStmt: [AssignExpr] ... = ...
-#  340|             getAnOperand/getLeftOperand: [LocalVariableAccess] y
-#  340|             getAnOperand/getRightOperand: [MethodCall] call to []
-#  340|               getReceiver: [LocalVariableAccess] __synth__0__1
-#  340|               getArgument: [IntegerLiteral] 1
-#  340|           getStmt: [AssignExpr] ... = ...
-#  340|             getAnOperand/getLeftOperand: [LocalVariableAccess] z
-#  340|             getAnOperand/getRightOperand: [MethodCall] call to []
-#  340|               getReceiver: [LocalVariableAccess] __synth__0__1
-#  340|               getArgument: [IntegerLiteral] 2
-#  340|         getAnOperand/getLeftOperand: [DestructuredLhsExpr] (..., ...)
-#  341|       getStmt: [MethodCall] call to foo
-#  341|         getReceiver: [SelfVariableAccess] self
-#  341|         getArgument: [LocalVariableAccess] x
-#  341|         getArgument: [LocalVariableAccess] y
-#  341|         getArgument: [LocalVariableAccess] z
-#  340|     getReceiver: [ArrayLiteral] [...]
-#  340|       getDesugared: [MethodCall] call to []
-#  340|         getReceiver: [ConstantReadAccess] Array
-#  340|         getArgument: [ArrayLiteral] [...]
-#  340|           getDesugared: [MethodCall] call to []
-#  340|             getReceiver: [ConstantReadAccess] Array
-#  340|             getArgument: [IntegerLiteral] 1
-#  340|             getArgument: [IntegerLiteral] 2
-#  340|             getArgument: [IntegerLiteral] 3
-#  340|         getArgument: [ArrayLiteral] [...]
-#  340|           getDesugared: [MethodCall] call to []
-#  340|             getReceiver: [ConstantReadAccess] Array
-#  340|             getArgument: [IntegerLiteral] 4
-#  340|             getArgument: [IntegerLiteral] 5
-#  340|             getArgument: [IntegerLiteral] 6
-#  362| [MethodCall] call to empty?
-#  362|   getDesugared: [StmtSequence] ...
-#  362|     getStmt: [AssignExpr] ... = ...
-#  362|       getAnOperand/getRightOperand: [MethodCall] call to list
-#  362|         getReceiver: [SelfVariableAccess] self
-#  362|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
-#  362|     getStmt: [IfExpr] if ...
-#  362|       getBranch/getThen: [NilLiteral] nil
-#  362|       getBranch/getElse: [MethodCall] call to empty?
-#  362|         getReceiver: [LocalVariableAccess] __synth__0__1
-#  362|       getCondition: [MethodCall] call to ==
-#  362|         getArgument: [LocalVariableAccess] __synth__0__1
-#  362|         getReceiver: [NilLiteral] nil
-#  364| [MethodCall] call to bar
+#  320|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
+#  320|     getStmt: [LocalVariableAccess] __synth__1
+#  321| [AssignAddExpr] ... += ...
+#  321|   getDesugared: [StmtSequence] ...
+#  321|     getStmt: [AssignExpr] ... = ...
+#  321|       getAnOperand/getRightOperand: [MethodCall] call to foo
+#  321|         getReceiver: [SelfVariableAccess] self
+#  321|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
+#  321|     getStmt: [SetterMethodCall] call to []=
+#  321|       getReceiver: [LocalVariableAccess] __synth__0
+#  321|       getArgument: [LocalVariableAccess] __synth__1
+#  321|       getArgument: [LocalVariableAccess] __synth__2
+#  321|     getStmt: [AssignExpr] ... = ...
+#  321|       getAnOperand/getRightOperand: [IntegerLiteral] 0
+#  321|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__1
+#  321|     getStmt: [AssignExpr] ... = ...
+#  321|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__2
+#  321|       getAnOperand/getRightOperand: [AddExpr] ... + ...
+#  321|         getAnOperand/getLeftOperand/getReceiver: [MethodCall] call to []
+#  321|           getReceiver: [LocalVariableAccess] __synth__0
+#  321|           getArgument: [LocalVariableAccess] __synth__1
+#  321|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
+#  321|     getStmt: [LocalVariableAccess] __synth__2
+#  322| [AssignMulExpr] ... *= ...
+#  322|   getDesugared: [StmtSequence] ...
+#  322|     getStmt: [AssignExpr] ... = ...
+#  322|       getAnOperand/getRightOperand: [MethodCall] call to bar
+#  322|         getReceiver: [MethodCall] call to foo
+#  322|           getReceiver: [SelfVariableAccess] self
+#  322|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
+#  322|     getStmt: [SetterMethodCall] call to []=
+#  322|       getReceiver: [LocalVariableAccess] __synth__0
+#  322|       getArgument: [LocalVariableAccess] __synth__1
+#  322|       getArgument: [LocalVariableAccess] __synth__2
+#  322|       getArgument: [LocalVariableAccess] __synth__3
+#  322|       getArgument: [LocalVariableAccess] __synth__4
+#  322|     getStmt: [AssignExpr] ... = ...
+#  322|       getAnOperand/getRightOperand: [IntegerLiteral] 0
+#  322|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__1
+#  322|     getStmt: [AssignExpr] ... = ...
+#  322|       getAnOperand/getRightOperand: [MethodCall] call to baz
+#  322|         getReceiver: [MethodCall] call to foo
+#  322|           getReceiver: [SelfVariableAccess] self
+#  322|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__2
+#  322|     getStmt: [AssignExpr] ... = ...
+#  322|       getAnOperand/getRightOperand: [AddExpr] ... + ...
+#  322|         getAnOperand/getLeftOperand/getReceiver: [MethodCall] call to boo
+#  322|           getReceiver: [MethodCall] call to foo
+#  322|             getReceiver: [SelfVariableAccess] self
+#  322|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
+#  322|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__3
+#  322|     getStmt: [AssignExpr] ... = ...
+#  322|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__4
+#  322|       getAnOperand/getRightOperand: [MulExpr] ... * ...
+#  322|         getAnOperand/getLeftOperand/getReceiver: [MethodCall] call to []
+#  322|           getReceiver: [LocalVariableAccess] __synth__0
+#  322|           getArgument: [LocalVariableAccess] __synth__1
+#  322|           getArgument: [LocalVariableAccess] __synth__2
+#  322|           getArgument: [LocalVariableAccess] __synth__3
+#  322|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 2
+#  322|     getStmt: [LocalVariableAccess] __synth__4
+#  342| [ForExpr] for ... in ...
+#  342|   getDesugared: [MethodCall] call to each
+#  342|     getBlock: [BraceBlock] { ... }
+#  342|       getParameter: [SimpleParameter] __synth__0__1
+#  342|         getDefiningAccess: [LocalVariableAccess] __synth__0__1
+#  342|       getStmt: [AssignExpr] ... = ...
+#  342|         getDesugared: [StmtSequence] ...
+#  342|           getStmt: [AssignExpr] ... = ...
+#  342|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
+#  342|             getAnOperand/getRightOperand: [SplatExpr] * ...
+#  342|               getAnOperand/getOperand/getReceiver: [LocalVariableAccess] __synth__0__1
+#  342|           getStmt: [AssignExpr] ... = ...
+#  342|             getAnOperand/getLeftOperand: [LocalVariableAccess] x
+#  342|             getAnOperand/getRightOperand: [MethodCall] call to []
+#  342|               getReceiver: [LocalVariableAccess] __synth__0__1
+#  342|               getArgument: [IntegerLiteral] 0
+#  342|           getStmt: [AssignExpr] ... = ...
+#  342|             getAnOperand/getLeftOperand: [LocalVariableAccess] y
+#  342|             getAnOperand/getRightOperand: [MethodCall] call to []
+#  342|               getReceiver: [LocalVariableAccess] __synth__0__1
+#  342|               getArgument: [IntegerLiteral] 1
+#  342|           getStmt: [AssignExpr] ... = ...
+#  342|             getAnOperand/getLeftOperand: [LocalVariableAccess] z
+#  342|             getAnOperand/getRightOperand: [MethodCall] call to []
+#  342|               getReceiver: [LocalVariableAccess] __synth__0__1
+#  342|               getArgument: [IntegerLiteral] 2
+#  342|         getAnOperand/getLeftOperand: [DestructuredLhsExpr] (..., ...)
+#  343|       getStmt: [MethodCall] call to foo
+#  343|         getReceiver: [SelfVariableAccess] self
+#  343|         getArgument: [LocalVariableAccess] x
+#  343|         getArgument: [LocalVariableAccess] y
+#  343|         getArgument: [LocalVariableAccess] z
+#  342|     getReceiver: [ArrayLiteral] [...]
+#  342|       getDesugared: [MethodCall] call to []
+#  342|         getReceiver: [ConstantReadAccess] Array
+#  342|         getArgument: [ArrayLiteral] [...]
+#  342|           getDesugared: [MethodCall] call to []
+#  342|             getReceiver: [ConstantReadAccess] Array
+#  342|             getArgument: [IntegerLiteral] 1
+#  342|             getArgument: [IntegerLiteral] 2
+#  342|             getArgument: [IntegerLiteral] 3
+#  342|         getArgument: [ArrayLiteral] [...]
+#  342|           getDesugared: [MethodCall] call to []
+#  342|             getReceiver: [ConstantReadAccess] Array
+#  342|             getArgument: [IntegerLiteral] 4
+#  342|             getArgument: [IntegerLiteral] 5
+#  342|             getArgument: [IntegerLiteral] 6
+#  364| [MethodCall] call to empty?
 #  364|   getDesugared: [StmtSequence] ...
 #  364|     getStmt: [AssignExpr] ... = ...
-#  364|       getAnOperand/getRightOperand: [MethodCall] call to foo
+#  364|       getAnOperand/getRightOperand: [MethodCall] call to list
 #  364|         getReceiver: [SelfVariableAccess] self
 #  364|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
 #  364|     getStmt: [IfExpr] if ...
 #  364|       getBranch/getThen: [NilLiteral] nil
-#  364|       getBranch/getElse: [MethodCall] call to bar
+#  364|       getBranch/getElse: [MethodCall] call to empty?
 #  364|         getReceiver: [LocalVariableAccess] __synth__0__1
-#  364|         getArgument: [IntegerLiteral] 1
-#  364|         getArgument: [IntegerLiteral] 2
-#  364|         getBlock: [BraceBlock] { ... }
-#  364|           getParameter: [SimpleParameter] x
-#  364|             getDefiningAccess: [LocalVariableAccess] x
-#  364|           getStmt: [LocalVariableAccess] x
 #  364|       getCondition: [MethodCall] call to ==
 #  364|         getArgument: [LocalVariableAccess] __synth__0__1
 #  364|         getReceiver: [NilLiteral] nil
+#  366| [MethodCall] call to bar
+#  366|   getDesugared: [StmtSequence] ...
+#  366|     getStmt: [AssignExpr] ... = ...
+#  366|       getAnOperand/getRightOperand: [MethodCall] call to foo
+#  366|         getReceiver: [SelfVariableAccess] self
+#  366|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
+#  366|     getStmt: [IfExpr] if ...
+#  366|       getBranch/getThen: [NilLiteral] nil
+#  366|       getBranch/getElse: [MethodCall] call to bar
+#  366|         getReceiver: [LocalVariableAccess] __synth__0__1
+#  366|         getArgument: [IntegerLiteral] 1
+#  366|         getArgument: [IntegerLiteral] 2
+#  366|         getBlock: [BraceBlock] { ... }
+#  366|           getParameter: [SimpleParameter] x
+#  366|             getDefiningAccess: [LocalVariableAccess] x
+#  366|           getStmt: [LocalVariableAccess] x
+#  366|       getCondition: [MethodCall] call to ==
+#  366|         getArgument: [LocalVariableAccess] __synth__0__1
+#  366|         getReceiver: [NilLiteral] nil
 control/cases.rb:
 #   90| [ArrayLiteral] %w(...)
 #   90|   getDesugared: [MethodCall] call to []
@@ -326,6 +326,30 @@ control/cases.rb:
 #   91|       getComponent: [StringTextComponent] foo
 #   91|     getArgument: [SymbolLiteral] :"bar"
 #   91|       getComponent: [StringTextComponent] bar
+#  160| [TestPattern] ... in ...
+#  160|   getDesugared: [CaseExpr] case ...
+#  160|     getValue: [MethodCall] call to expr
+#  160|       getReceiver: [SelfVariableAccess] self
+#  160|     getBranch: [InClause] in ... then ...
+#  160|       getBody: [BooleanLiteral] true
+#  160|       getPattern: [ArrayPattern] [ ..., * ]
+#  160|         getPrefixElement: [IntegerLiteral] 1
+#  160|         getPrefixElement: [IntegerLiteral] 2
+#  160|     getBranch/getElseBranch: [StmtSequence] else ...
+#  160|       getStmt: [BooleanLiteral] false
+#  162| [MatchPattern] ... => ...
+#  162|   getDesugared: [CaseExpr] case ...
+#  162|     getValue: [MethodCall] call to expr
+#  162|       getReceiver: [SelfVariableAccess] self
+#  162|     getBranch: [InClause] in ... then ...
+#  162|       getBody: [NilLiteral] nil
+#  162|       getPattern: [HashPattern] { ..., ** }
+#  162|         getKey: [SymbolLiteral] :x
+#  162|           getComponent: [StringTextComponent] x
+#  162|         getValue: [LocalVariableAccess] v
+#  162|         getKey: [SymbolLiteral] :y
+#  162|           getComponent: [StringTextComponent] y
+#  162|         getValue: [IntegerLiteral] 1
 constants/constants.rb:
 #   20| [ArrayLiteral] [...]
 #   20|   getDesugared: [MethodCall] call to []

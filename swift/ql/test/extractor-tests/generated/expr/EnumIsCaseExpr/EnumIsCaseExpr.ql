@@ -2,10 +2,11 @@
 import codeql.swift.elements
 import TestUtils
 
-from EnumIsCaseExpr x, Expr getSubExpr, EnumElementDecl getElement
+from EnumIsCaseExpr x, string hasType, Expr getSubExpr, EnumElementDecl getElement
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getSubExpr = x.getSubExpr() and
   getElement = x.getElement()
-select x, "getSubExpr:", getSubExpr, "getElement:", getElement
+select x, "hasType:", hasType, "getSubExpr:", getSubExpr, "getElement:", getElement

@@ -1,0 +1,6 @@
+name: codeql/typetracking
+version: 0.0.5-dev
+groups: shared
+library: true
+dependencies:
+  codeql/util: ${workspace}

@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.commons.jexl3", "Expression", False, "callable", "", "", "Argument[-1]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "Expression", False, "evaluate", "", "", "Argument[-1]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "JexlEngine", False, "getProperty", "(JexlContext,Object,String)", "", "Argument[2]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "JexlEngine", False, "getProperty", "(Object,String)", "", "Argument[1]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "JexlEngine", False, "setProperty", "(JexlContext,Object,String)", "", "Argument[2]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "JexlEngine", False, "setProperty", "(Object,String,Object)", "", "Argument[1]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "JexlExpression", False, "callable", "", "", "Argument[-1]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "JexlExpression", False, "evaluate", "", "", "Argument[-1]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "JexlScript", False, "callable", "", "", "Argument[-1]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "JexlScript", False, "execute", "", "", "Argument[-1]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "JxltEngine$Expression", False, "evaluate", "", "", "Argument[-1]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "JxltEngine$Expression", False, "prepare", "", "", "Argument[-1]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "JxltEngine$Template", False, "evaluate", "", "", "Argument[-1]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "Script", False, "callable", "", "", "Argument[-1]", "jexl", "manual"]
+      - ["org.apache.commons.jexl3", "Script", False, "execute", "", "", "Argument[-1]", "jexl", "manual"]

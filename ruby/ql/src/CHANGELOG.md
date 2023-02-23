@@ -1,3 +1,59 @@
+## 0.5.3
+
+### New Queries
+
+* Added a new query, `rb/regex/badly-anchored-regexp`, to detect regular expression validators that use `^` and `$` 
+  as anchors and therefore might match only a single line of a multi-line string.
+
+### Minor Analysis Improvements
+
+* The `rb/polynomial-redos` query now considers the entrypoints of the API of a gem as sources.
+
+## 0.5.2
+
+### New Queries
+
+* Added a new query, `rb/html-constructed-from-input`, to detect libraries that unsafely construct HTML from their inputs.
+
+## 0.5.1
+
+### New Queries
+
+* Added a new query, `rb/unsafe-code-construction`, to detect libraries that unsafely construct code from their inputs.
+
+### Minor Analysis Improvements
+
+* The `rb/unsafe-deserialization` query now recognizes input from STDIN as a source.
+
+## 0.5.0
+
+### New Queries
+
+* Added a new query, `rb/stack-trace-exposure`, to detect exposure of stack-traces to users via HTTP responses.
+
+### Minor Analysis Improvements
+
+* The `AlertSuppression.ql` query has been updated to support the new `# codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy `# lgtm` and `# lgtm[query-id]` comments can now also be placed on the line before an alert.
+* Extended the `rb/kernel-open` query with following sinks: `IO.write`, `IO.binread`, `IO.binwrite`, `IO.foreach`, `IO.readlines`, and `URI.open`.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+### New Queries
+
+* Added a new query, `rb/shell-command-constructed-from-input`, to detect libraries that unsafely construct shell commands from their inputs.
+
+### Minor Analysis Improvements
+
+* The `rb/sql-injection` query now considers consider SQL constructions, such as calls to `Arel.sql`, as sinks.
+
 ## 0.4.3
 
 ### Minor Analysis Improvements

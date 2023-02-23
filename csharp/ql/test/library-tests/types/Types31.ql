@@ -11,6 +11,6 @@ where
   m.getReturnType() = t and
   t.getTypeArgument(0) = arg1 and
   t.getTypeArgument(1) = arg2 and
-  arg1.getQualifiedName() = "System.String" and
-  arg2.getQualifiedName() = "Types.Class"
+  arg1.hasQualifiedName("System", "String") and
+  arg2.hasQualifiedName("Types", "Class")
 select t, arg1.toString(), arg2

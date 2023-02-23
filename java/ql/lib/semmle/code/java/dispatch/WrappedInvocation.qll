@@ -34,7 +34,7 @@ private predicate runner(Method m, int n, Method runmethod) {
 private Expr getRunnerArgument(MethodAccess ma, Method runmethod) {
   exists(Method runner, int param |
     runner(runner, param, runmethod) and
-    viableImpl(ma) = runner and
+    viableImpl_v2(ma) = runner and
     result = ma.getArgument(param)
   )
   or

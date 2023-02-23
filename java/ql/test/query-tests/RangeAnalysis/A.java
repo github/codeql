@@ -204,4 +204,11 @@ public class A {
       A.arr1[RandomUtils.nextInt(0, arr1.length + 1)] + // BAD: random int may be out of range
       A.arr1[RandomUtils.nextInt(0, arr1.length)]; // GOOD: random int must be in range
   }
+
+  int m17() {
+    return this.arr2[(new Random()).nextInt(arr2.length + 1)] +  // BAD: random int may be out of range
+      this.arr2[(new Random()).nextInt(arr2.length)] + // GOOD: random int must be in range
+      this.arr2[RandomUtils.nextInt(0, arr2.length + 1)] + // BAD: random int may be out of range
+      this.arr2[RandomUtils.nextInt(0, arr2.length)]; // GOOD: random int must be in range
+  }
 }

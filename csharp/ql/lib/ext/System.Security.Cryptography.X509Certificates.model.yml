@@ -1,0 +1,26 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Security.Cryptography.X509Certificates", "X509Certificate2Collection", False, "Add", "(System.Security.Cryptography.X509Certificates.X509Certificate2)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509Certificate2Collection", False, "AddRange", "(System.Security.Cryptography.X509Certificates.X509Certificate2Collection)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509Certificate2Collection", False, "AddRange", "(System.Security.Cryptography.X509Certificates.X509Certificate2[])", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509Certificate2Collection", False, "Find", "(System.Security.Cryptography.X509Certificates.X509FindType,System.Object,System.Boolean)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509Certificate2Collection", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Security.Cryptography.X509Certificates.X509Certificate2Enumerator.Current]", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509Certificate2Collection", False, "Insert", "(System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate2)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509Certificate2Collection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509Certificate2Collection", False, "set_Item", "(System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate2)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509CertificateCollection", False, "Add", "(System.Security.Cryptography.X509Certificates.X509Certificate)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509CertificateCollection", False, "AddRange", "(System.Security.Cryptography.X509Certificates.X509CertificateCollection)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509CertificateCollection", False, "AddRange", "(System.Security.Cryptography.X509Certificates.X509Certificate[])", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509CertificateCollection", False, "CopyTo", "(System.Security.Cryptography.X509Certificates.X509Certificate[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509CertificateCollection", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Security.Cryptography.X509Certificates.X509CertificateCollection+X509CertificateEnumerator.Current]", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509CertificateCollection", False, "Insert", "(System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509CertificateCollection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509CertificateCollection", False, "set_Item", "(System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509ChainElementCollection", False, "CopyTo", "(System.Security.Cryptography.X509Certificates.X509ChainElement[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509ChainElementCollection", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Security.Cryptography.X509Certificates.X509ChainElementEnumerator.Current]", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509ExtensionCollection", False, "Add", "(System.Security.Cryptography.X509Certificates.X509Extension)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509ExtensionCollection", False, "CopyTo", "(System.Security.Cryptography.X509Certificates.X509Extension[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
+      - ["System.Security.Cryptography.X509Certificates", "X509ExtensionCollection", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Security.Cryptography.X509Certificates.X509ExtensionEnumerator.Current]", "value", "manual"]

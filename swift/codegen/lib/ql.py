@@ -100,6 +100,7 @@ class Class:
     qltest_skip: bool = False
     qltest_collapse_hierarchy: bool = False
     qltest_uncollapse_hierarchy: bool = False
+    ql_internal: bool = False
     ipa: bool = False
     doc: List[str] = field(default_factory=list)
 
@@ -130,7 +131,19 @@ class Class:
 
     @property
     def has_doc(self) -> bool:
-        return bool(self.doc)
+        return bool(self.doc) or self.ql_internal
+
+
+@dataclass
+class IpaUnderlyingAccessor:
+    argument: str
+    type: str
+    constructorparams: List[Param]
+
+    def __post_init__(self):
+        if self.constructorparams:
+            self.constructorparams = [Param(x) for x in self.constructorparams]
+            self.constructorparams[0].first = True
 
 
 @dataclass
@@ -139,6 +152,11 @@ class Stub:
 
     name: str
     base_import: str
+    ipa_accessors: List[IpaUnderlyingAccessor] = field(default_factory=list)
+
+    @property
+    def has_ipa_accessors(self) -> bool:
+        return bool(self.ipa_accessors)
 
 
 @dataclass
@@ -160,14 +178,14 @@ class GetParentImplementation:
     template: ClassVar = 'ql_parent'
 
     classes: List[Class] = field(default_factory=list)
+    additional_imports: List[str] = field(default_factory=list)
 
 
 @dataclass
 class PropertyForTest:
     getter: str
+    is_total: bool = True
     type: Optional[str] = None
-    is_single: bool = False
-    is_predicate: bool = False
     is_repeated: bool = False
 
 

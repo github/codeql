@@ -8,31 +8,46 @@ private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
+
+pragma[nomagic]
+private predicate isTestNamespace(Namespace ns) {
+  ns.getFullName()
+      .matches([
+          "NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%", "Moq%"
+        ])
+}
 
 /**
  * A test library.
  */
 class TestLibrary extends RefType {
-  TestLibrary() {
-    this.getNamespace()
-        .getQualifiedName()
-        .matches([
-            "NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%", "Moq%"
-          ])
-  }
+  TestLibrary() { isTestNamespace(this.getNamespace()) }
+}
+
+/** Holds if the given callable is not worth supporting. */
+private predicate isUninteresting(DotNet::Callable c) {
+  c.getDeclaringType() instanceof TestLibrary or
+  c.(Constructor).isParameterless()
 }
 
 /**
  * An external API from either the C# Standard Library or a 3rd party library.
  */
 class ExternalApi extends DotNet::Callable {
-  ExternalApi() { this.isUnboundDeclaration() and this.fromLibrary() }
+  ExternalApi() {
+    this.isUnboundDeclaration() and
+    this.fromLibrary() and
+    this.(Modifiable).isEffectivelyPublic() and
+    not isUninteresting(this)
+  }
 
   /**
    * Gets the unbound type, name and parameter types of this API.
    */
+  bindingset[this]
   private string getSignature() {
     result =
       this.getDeclaringType().getUnboundDeclaration() + "." + this.getName() + "(" +
@@ -42,72 +57,65 @@ class ExternalApi extends DotNet::Callable {
   /**
    * Gets the namespace of this API.
    */
-  private string getNamespace() { this.getDeclaringType().hasQualifiedName(result, _) }
+  bindingset[this]
+  string getNamespace() { this.getDeclaringType().hasQualifiedName(result, _) }
 
   /**
-   * Gets the assembly file name containing this API.
+   * Gets the namespace and signature of this API.
    */
-  private string getAssembly() { result = this.getFile().getBaseName() }
-
-  /**
-   * Gets the assembly file name and namespace of this API.
-   */
-  string getInfoPrefix() { result = this.getAssembly() + "#" + this.getNamespace() }
-
-  /**
-   * Gets the assembly file name, namespace and signature of this API.
-   */
-  string getInfo() { result = this.getInfoPrefix() + "#" + this.getSignature() }
-
-  /** Gets a call to this API callable. */
-  DispatchCall getACall() {
-    this = result.getADynamicTarget().getUnboundDeclaration()
-    or
-    this = result.getAStaticTarget().getUnboundDeclaration()
-  }
+  bindingset[this]
+  string getApiName() { result = this.getNamespace() + "#" + this.getSignature() }
 
   /** Gets a node that is an input to a call to this API. */
   private ArgumentNode getAnInput() {
-    result.getCall().(DataFlowDispatch::NonDelegateDataFlowCall).getDispatchCall() = this.getACall()
+    result
+        .getCall()
+        .(DataFlowDispatch::NonDelegateDataFlowCall)
+        .getATarget(_)
+        .getUnboundDeclaration() = this
   }
 
   /** Gets a node that is an output from a call to this API. */
   private DataFlow::Node getAnOutput() {
-    exists(DataFlowDispatch::NonDelegateDataFlowCall call, DataFlowImplCommon::ReturnKindExt ret |
-      result = ret.getAnOutNode(call)
+    exists(
+      Call c, DataFlowDispatch::NonDelegateDataFlowCall dc, DataFlowImplCommon::ReturnKindExt ret
     |
-      this.getACall() = call.getDispatchCall()
+      dc.getDispatchCall().getCall() = c and
+      c.getTarget().getUnboundDeclaration() = this
+    |
+      result = ret.getAnOutNode(dc)
     )
   }
 
   /** Holds if this API has a supported summary. */
+  pragma[nomagic]
   predicate hasSummary() {
     this instanceof SummarizedCallable
     or
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }
 
-  /** Holds if this API is a constructor without parameters. */
-  private predicate isParameterlessConstructor() {
-    this instanceof Constructor and this.getNumberOfParameters() = 0
-  }
-
-  /** Holds if this API is part of a common testing library or framework. */
-  private predicate isTestLibrary() { this.getDeclaringType() instanceof TestLibrary }
-
-  /** Holds if this API is not worth supporting. */
-  predicate isUninteresting() { this.isTestLibrary() or this.isParameterlessConstructor() }
-
   /** Holds if this API is a known source. */
+  pragma[nomagic]
   predicate isSource() {
     this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
   }
 
   /** Holds if this API is a known sink. */
+  pragma[nomagic]
   predicate isSink() { sinkNode(this.getAnInput(), _) }
 
-  /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
-  predicate isSupported() { this.hasSummary() or this.isSource() or this.isSink() }
+  /** Holds if this API is a known neutral. */
+  pragma[nomagic]
+  predicate isNeutral() { this instanceof FlowSummaryImpl::Public::NeutralCallable }
+
+  /**
+   * Holds if this API is supported by existing CodeQL libraries, that is, it is either a
+   * recognized source, sink or neutral or it has a flow summary.
+   */
+  predicate isSupported() {
+    this.hasSummary() or this.isSource() or this.isSink() or this.isNeutral()
+  }
 }
 
 /**
@@ -125,30 +133,30 @@ signature predicate relevantApi(ExternalApi api);
  * for restricting the number or returned results based on a certain limit.
  */
 module Results<relevantApi/1 getRelevantUsages> {
-  private int getUsages(string apiInfo) {
+  private int getUsages(string apiName) {
     result =
-      strictcount(DispatchCall c, ExternalApi api |
-        c = api.getACall() and
-        apiInfo = api.getInfo() and
+      strictcount(Call c, ExternalApi api |
+        c.getTarget().getUnboundDeclaration() = api and
+        apiName = api.getApiName() and
         getRelevantUsages(api)
       )
   }
 
-  private int getOrder(string apiInfo) {
-    apiInfo =
-      rank[result](string info, int usages |
-        usages = getUsages(info)
+  private int getOrder(string apiName) {
+    apiName =
+      rank[result](string name, int usages |
+        usages = getUsages(name)
       |
-        info order by usages desc, info
+        name order by usages desc, name
       )
   }
 
   /**
-   * Holds if there exists an API with `apiInfo` that is being used `usages` times
+   * Holds if there exists an API with `apiName` that is being used `usages` times
    * and if it is in the top results (guarded by resultLimit).
    */
-  predicate restrict(string apiInfo, int usages) {
-    usages = getUsages(apiInfo) and
-    getOrder(apiInfo) <= resultLimit()
+  predicate restrict(string apiName, int usages) {
+    usages = getUsages(apiName) and
+    getOrder(apiName) <= resultLimit()
   }
 }

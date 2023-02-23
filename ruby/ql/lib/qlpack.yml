@@ -1,10 +1,14 @@
 name: codeql/ruby-all
-version: 0.4.4-dev
+version: 0.5.4-dev
 groups: ruby
 extractor: ruby
 dbscheme: ruby.dbscheme
 upgrades: upgrades
 library: true
 dependencies:
+  codeql/regex: ${workspace}
   codeql/ssa: ${workspace}
-
+  codeql/tutorial: ${workspace}
+  codeql/util: ${workspace}
+dataExtensions:
+  - codeql/ruby/frameworks/**/model.yml

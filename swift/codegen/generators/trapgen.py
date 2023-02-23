@@ -18,6 +18,7 @@ import inflection
 from toposort import toposort_flatten
 
 from swift.codegen.lib import dbscheme, cpp
+from swift.codegen.loaders import dbschemeloader
 
 log = logging.getLogger(__name__)
 
@@ -41,10 +42,10 @@ def get_cpp_type(schema_type: str):
 def get_field(c: dbscheme.Column):
     args = {
         "field_name": c.schema_name,
-        "type": c.type,
+        "base_type": c.type,
     }
     args.update(cpp.get_field_override(c.schema_name))
-    args["type"] = get_cpp_type(args["type"])
+    args["base_type"] = get_cpp_type(args["base_type"])
     return cpp.Field(**args)
 
 
@@ -73,7 +74,7 @@ def generate(opts, renderer):
     out = opts.cpp_output
 
     traps = {pathlib.Path(): []}
-    for e in dbscheme.iterload(opts.dbscheme):
+    for e in dbschemeloader.iterload(opts.dbscheme):
         if e.is_table:
             traps.setdefault(e.dir, []).append(get_trap(e))
         elif e.is_union:

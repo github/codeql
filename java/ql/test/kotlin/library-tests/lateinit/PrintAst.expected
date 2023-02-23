@@ -30,7 +30,7 @@ test.kt:
 #    4|         0: [ReturnStmt] return ...
 #    4|           0: [MethodAccess] println(...)
 #    4|             -1: [TypeAccess] ConsoleKt
-#    4|             0: [StringLiteral] a
+#    4|             0: [StringLiteral] "a"
 #    6|     6: [Method] init
 #    6|       3: [TypeAccess] LateInit
 #    6|       5: [BlockStmt] { ... }

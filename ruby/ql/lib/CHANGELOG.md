@@ -1,3 +1,70 @@
+## 0.5.3
+
+### Minor Analysis Improvements
+
+ * Ruby 3.1: one-line pattern matches are now supported. The AST nodes are named `TestPattern` (`expr in pattern`) and `MatchPattern` (`expr => pattern`).
+
+## 0.5.2
+
+### Minor Analysis Improvements
+
+* Data flowing from the `locals` argument of a Rails `render` call is now tracked to uses of that data in an associated view.
+* Access to headers stored in the `env` of Rack requests is now recognized as a source of remote input.
+* Ruby 3.2: anonymous rest and keyword rest arguments can now be passed as arguments, instead of just used in method parameters.
+
+## 0.5.1
+
+No user-facing changes.
+
+## 0.5.0
+
+### Major Analysis Improvements
+
+* Flow through `initialize` constructors is now taken into account. For example, in
+  ```rb
+  class C
+    def initialize(x)
+      @field = x
+    end
+  end
+
+  C.new(y)
+  ```
+  there will be flow from `y` to the field `@field` on the constructed `C` object.
+
+### Minor Analysis Improvements
+
+* Calls to `Kernel.load`, `Kernel.require`, `Kernel.autoload` are now modeled as sinks for path injection.
+* Calls to `mail` and `inbound_mail` in `ActionMailbox` controllers are now considered sources of remote input.
+* Calls to `GlobalID::Locator.locate` and its variants are now recognized as instances of `OrmInstantiation`.
+* Data flow through the `ActiveSupport` extensions `Enumerable#index_with`, `Enumerable#pick`, `Enumerable#pluck` and `Enumerable#sole`  are now modeled.
+* When resolving a method call, the analysis now also searches in sub-classes of the receiver's type.
+* Taint flow is now tracked through many common JSON parsing and generation methods.
+* The ReDoS libraries in `codeql.ruby.security.regexp` has been moved to a shared pack inside the `shared/` folder, and the previous location has been deprecated.
+* String literals and arrays of string literals in case expression patterns are now recognised as barrier guards.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+### Minor Analysis Improvements
+
+* Data flow through the `ActiveSupport` extension `Enumerable#index_by` is now modeled.
+* The `codeql.ruby.Concepts` library now has a `SqlConstruction` class, in addition to the existing `SqlExecution` class.
+* Calls to `Arel.sql` are now modeled as instances of the new `SqlConstruction` concept.
+* Arguments to RPC endpoints (public methods) on subclasses of `ActionCable::Channel::Base` are now recognized as sources of remote user input.
+* Taint flow through the `ActiveSupport` extensions `Hash#reverse_merge` and `Hash:reverse_merge!`, and their aliases, is now modeled more generally, where previously it was only modeled in the context of `ActionController` parameters.
+* Calls to `logger` in `ActiveSupport` actions are now recognised as logger instances.
+* Calls to `send_data` in `ActiveSupport` actions are recognised as HTTP responses.
+* Calls to `body_stream` in `ActiveSupport` actions are recognised as HTTP request accesses.
+* The `ActiveSupport` extensions `Object#try` and `Object#try!` are now recognised as code executions.
+
 ## 0.4.3
 
 ### Minor Analysis Improvements

@@ -7,11 +7,11 @@ namespace Semmle.Autobuild.Shared
     /// <summary>
     /// Auto-detection of build scripts.
     /// </summary>
-    public class BuildCommandAutoRule : IBuildRule
+    public class BuildCommandAutoRule : IBuildRule<AutobuildOptionsShared>
     {
-        private readonly WithDotNet withDotNet;
+        private readonly WithDotNet<AutobuildOptionsShared> withDotNet;
 
-        public BuildCommandAutoRule(WithDotNet withDotNet)
+        public BuildCommandAutoRule(WithDotNet<AutobuildOptionsShared> withDotNet)
         {
             this.withDotNet = withDotNet;
         }
@@ -31,7 +31,7 @@ namespace Semmle.Autobuild.Shared
             "build"
         };
 
-        public BuildScript Analyse(Autobuilder builder, bool auto)
+        public BuildScript Analyse(IAutobuilder<AutobuildOptionsShared> builder, bool auto)
         {
             builder.Log(Severity.Info, "Attempting to locate build script");
 

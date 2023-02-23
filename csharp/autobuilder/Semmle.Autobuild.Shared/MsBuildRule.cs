@@ -1,19 +1,37 @@
 using Semmle.Util.Logging;
+using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Semmle.Autobuild.Shared
 {
+    internal static class MsBuildCommandExtensions
+    {
+        /// <summary>
+        /// Appends a call to msbuild.
+        /// </summary>
+        /// <param name="cmdBuilder"></param>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public static CommandBuilder MsBuildCommand(this CommandBuilder cmdBuilder, IAutobuilder<AutobuildOptionsShared> builder)
+        {
+            var isArmMac = builder.Actions.IsMacOs() && builder.Actions.IsArm();
+
+            // mono doesn't ship with `msbuild` on Arm-based Macs, but we can fall back to
+            // msbuild that ships with `dotnet` which can be invoked with `dotnet msbuild`
+            // perhaps we should do this on all platforms?
+            return isArmMac ?
+                cmdBuilder.RunCommand("dotnet").Argument("msbuild") :
+                cmdBuilder.RunCommand("msbuild");
+        }
+    }
+
     /// <summary>
     /// A build rule using msbuild.
     /// </summary>
-    public class MsBuildRule : IBuildRule
+    public class MsBuildRule : IBuildRule<AutobuildOptionsShared>
     {
-        /// <summary>
-        /// The name of the msbuild command.
-        /// </summary>
-        private const string msBuild = "msbuild";
-
-        public BuildScript Analyse(Autobuilder builder, bool auto)
+        public BuildScript Analyse(IAutobuilder<AutobuildOptionsShared> builder, bool auto)
         {
             if (!builder.ProjectsOrSolutionsToBuild.Any())
                 return BuildScript.Failure;
@@ -27,8 +45,8 @@ namespace Semmle.Autobuild.Shared
             {
                 var firstSolution = builder.ProjectsOrSolutionsToBuild.OfType<ISolution>().FirstOrDefault();
                 vsTools = firstSolution is not null
-                                ? BuildTools.FindCompatibleVcVars(builder.Actions, firstSolution)
-                                : BuildTools.VcVarsAllBatFiles(builder.Actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault();
+                                        ? BuildTools.FindCompatibleVcVars(builder.Actions, firstSolution)
+                                        : BuildTools.VcVarsAllBatFiles(builder.Actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault();
             }
 
             if (vsTools is null && builder.Actions.IsWindows())
@@ -57,7 +75,7 @@ namespace Semmle.Autobuild.Shared
                             Script;
                     var nugetRestore = GetNugetRestoreScript();
                     var msbuildRestoreCommand = new CommandBuilder(builder.Actions).
-                        RunCommand(msBuild).
+                        MsBuildCommand(builder).
                         Argument("/t:restore").
                         QuoteArgument(projectOrSolution.FullPath);
 
@@ -95,7 +113,7 @@ namespace Semmle.Autobuild.Shared
                     command.RunCommand("set Platform=&& type NUL", quoteExe: false);
                 }
 
-                command.RunCommand(msBuild);
+                command.MsBuildCommand(builder);
                 command.QuoteArgument(projectOrSolution.FullPath);
 
                 var target = builder.Options.MsBuildTarget ?? "rebuild";
@@ -123,7 +141,7 @@ namespace Semmle.Autobuild.Shared
         ///
         /// Returns <code>null</code> when no version is specified.
         /// </summary>
-        public static VcVarsBatFile? GetVcVarsBatFile(Autobuilder builder)
+        public static VcVarsBatFile? GetVcVarsBatFile<TAutobuildOptions>(IAutobuilder<TAutobuildOptions> builder) where TAutobuildOptions : AutobuildOptionsShared
         {
             VcVarsBatFile? vsTools = null;
 
@@ -154,7 +172,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// Returns a script for downloading `nuget.exe` from nuget.org.
         /// </summary>
-        private static BuildScript DownloadNugetExe(Autobuilder builder, string path) =>
+        private static BuildScript DownloadNugetExe<TAutobuildOptions>(IAutobuilder<TAutobuildOptions> builder, string path) where TAutobuildOptions : AutobuildOptionsShared =>
             BuildScript.Create(_ =>
             {
                 builder.Log(Severity.Info, "Attempting to download nuget.exe");

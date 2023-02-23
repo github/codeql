@@ -94,13 +94,13 @@ predicate urlPath(DataFlow::Node nd) {
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "BadRedirectCheck" }
 
-  override predicate isSource(DataFlow::Node source) { this.isSource(source, _) }
+  override predicate isSource(DataFlow::Node source) { this.isCheckedSource(source, _) }
 
   /**
    * Holds if `source` is the first node that flows into a use of a variable that is checked by a
    * bad redirect check `check`..
    */
-  predicate isSource(DataFlow::Node source, DataFlow::Node check) {
+  predicate isCheckedSource(DataFlow::Node source, DataFlow::Node check) {
     exists(SsaWithFields v |
       DataFlow::localFlow(source, v.getAUse()) and
       not exists(source.getAPredecessor()) and
@@ -170,7 +170,7 @@ predicate isBadRedirectCheckWrapper(DataFlow::Node check, FuncDef f, FunctionInp
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node check
 where
-  cfg.isSource(source.getNode(), check) and
+  cfg.isCheckedSource(source.getNode(), check) and
   cfg.hasFlowPath(source, sink)
 select check, source, sink,
   "This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position.",

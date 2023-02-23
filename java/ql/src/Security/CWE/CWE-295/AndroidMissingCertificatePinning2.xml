@@ -1,0 +1,21 @@
+<!-- GOOD: Certificate pinning implemented via a Network Security Config file -->
+
+<!-- In AndroidManifest.xml -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.app">
+
+    <application android:networkSecurityConfig="@xml/NetworkSecurityConfig">
+        ...
+    </application>
+
+</manifest>
+
+<!-- In res/xml/NetworkSecurityConfig.xml -->
+<network-security-config>
+    <domain-config>
+        <domain>good.example.com</domain>
+        <pin-set expiration="2038/1/19">
+            <pin digest="SHA-256">...</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>

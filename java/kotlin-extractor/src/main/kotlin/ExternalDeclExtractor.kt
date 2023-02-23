@@ -1,16 +1,14 @@
 package com.github.codeql
 
-import com.github.codeql.utils.isExternalDeclaration
 import com.github.codeql.utils.isExternalFileClassMember
 import com.semmle.extractor.java.OdasaOutput
 import com.semmle.util.data.StringDigestor
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.isFileClass
 import org.jetbrains.kotlin.ir.util.packageFqName
-import org.jetbrains.kotlin.ir.util.parentClassOrNull
-import org.jetbrains.kotlin.name.FqName
+import java.io.BufferedWriter
 import java.io.File
 import java.util.ArrayList
 import java.util.HashSet
@@ -25,87 +23,103 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
     val propertySignature = ";property"
     val fieldSignature = ";field"
 
+    val output = OdasaOutput(false, logger).also {
+        it.setCurrentSourceFile(File(sourceFilePath))
+    }
+
     fun extractLater(d: IrDeclarationWithName, signature: String): Boolean {
         if (d !is IrClass && !isExternalFileClassMember(d)) {
             logger.errorElement("External declaration is neither a class, nor a top-level declaration", d)
             return false
         }
-        val declBinaryName = declBinaryNames.getOrPut(d) { getIrDeclBinaryName(d) }
+        val declBinaryName = declBinaryNames.getOrPut(d) { getIrElementBinaryName(d) }
         val ret = externalDeclsDone.add(Pair(declBinaryName, signature))
         if (ret) externalDeclWorkList.add(Pair(d, signature))
         return ret
     }
     fun extractLater(c: IrClass) = extractLater(c, "")
 
+    fun writeStubTrapFile(e: IrElement, signature: String = "") {
+        extractElement(e, signature, true) { trapFileBW, _, _ ->
+            trapFileBW.write("// Trap file stubbed because this declaration was extracted from source in $sourceFilePath\n")
+            trapFileBW.write("// Part of invocation $invocationTrapFile\n")
+        }
+    }
+
+    private fun extractElement(element: IrElement, possiblyLongSignature: String, fromSource: Boolean, extractorFn: (BufferedWriter, String, OdasaOutput.TrapFileManager) -> Unit) {
+        // In order to avoid excessively long signatures which can lead to trap file names longer than the filesystem
+        // limit, we truncate and add a hash to preserve uniqueness if necessary.
+        val signature = if (possiblyLongSignature.length > 100) {
+            possiblyLongSignature.substring(0, 92) + "#" + StringDigestor.digest(possiblyLongSignature).substring(0, 8)
+        } else { possiblyLongSignature }
+        output.getTrapLockerForDecl(element, signature, fromSource).useAC { locker ->
+            locker.trapFileManager.useAC { manager ->
+                val shortName = when(element) {
+                    is IrDeclarationWithName -> element.name.asString()
+                    is IrFile -> element.name
+                    else -> "(unknown name)"
+                }
+                if (manager == null) {
+                    logger.info("Skipping extracting external decl $shortName")
+                } else {
+                    val trapFile = manager.file
+                    val trapTmpFile = File.createTempFile("${trapFile.nameWithoutExtension}.", ".${trapFile.extension}.tmp", trapFile.parentFile)
+                    try {
+                        GZIPOutputStream(trapTmpFile.outputStream()).bufferedWriter().use {
+                            extractorFn(it, signature, manager)
+                        }
+
+                        if (!trapTmpFile.renameTo(trapFile)) {
+                            logger.error("Failed to rename $trapTmpFile to $trapFile")
+                        }
+                    } catch (e: Exception) {
+                        manager.setHasError()
+                        logger.error("Failed to extract '$shortName'. Partial TRAP file location is $trapTmpFile", e)
+                    }
+                }
+            }
+        }
+    }
+
     fun extractExternalClasses() {
-        val output = OdasaOutput(false, logger)
-        output.setCurrentSourceFile(File(sourceFilePath))
         do {
             val nextBatch = ArrayList(externalDeclWorkList)
             externalDeclWorkList.clear()
             nextBatch.forEach { workPair ->
                 val (irDecl, possiblyLongSignature) = workPair
-                // In order to avoid excessively long signatures which can lead to trap file names longer than the filesystem
-                // limit, we truncate and add a hash to preserve uniqueness if necessary.
-                val signature = if (possiblyLongSignature.length > 100) {
-                    possiblyLongSignature.substring(0, 92) + "#" + StringDigestor.digest(possiblyLongSignature).substring(0, 8)
-                } else { possiblyLongSignature }
-                output.getTrapLockerForDecl(irDecl, signature).useAC { locker ->
-                    locker.trapFileManager.useAC { manager ->
-                        val shortName = when(irDecl) {
-                            is IrDeclarationWithName -> irDecl.name.asString()
-                            else -> "(unknown name)"
+                extractElement(irDecl, possiblyLongSignature, false) { trapFileBW, signature, manager ->
+                    val containingClass = getContainingClassOrSelf(irDecl)
+                    if (containingClass == null) {
+                        logger.errorElement("Unable to get containing class", irDecl)
+                    } else {
+                        val binaryPath = getIrClassBinaryPath(containingClass)
+
+                        // We want our comments to be the first thing in the file,
+                        // so start off with a mere TrapWriter
+                        val tw = TrapWriter(logger.loggerBase, TrapLabelManager(), trapFileBW, diagnosticTrapWriter)
+                        tw.writeComment("Generated by the CodeQL Kotlin extractor for external dependencies")
+                        tw.writeComment("Part of invocation $invocationTrapFile")
+                        if (signature != possiblyLongSignature) {
+                            tw.writeComment("Function signature abbreviated; full signature is: $possiblyLongSignature")
                         }
-                        if(manager == null) {
-                            logger.info("Skipping extracting external decl $shortName")
+                        // Now elevate to a SourceFileTrapWriter, and populate the
+                        // file information if needed:
+                        val ftw = tw.makeFileTrapWriter(binaryPath, true)
+
+                        val fileExtractor = KotlinFileExtractor(logger, ftw, null, binaryPath, manager, this, primitiveTypeMapping, pluginContext, KotlinFileExtractor.DeclarationStack(), globalExtensionState)
+
+                        if (irDecl is IrClass) {
+                            // Populate a location and compilation-unit package for the file. This is similar to
+                            // the beginning of `KotlinFileExtractor.extractFileContents` but without an `IrFile`
+                            // to start from.
+                            val pkg = irDecl.packageFqName?.asString() ?: ""
+                            val pkgId = fileExtractor.extractPackage(pkg)
+                            ftw.writeHasLocation(ftw.fileId, ftw.getWholeFileLocation())
+                            ftw.writeCupackage(ftw.fileId, pkgId)
+
+                            fileExtractor.extractClassSource(irDecl, extractDeclarations = !irDecl.isFileClass, extractStaticInitializer = false, extractPrivateMembers = false, extractFunctionBodies = false)
                         } else {
-                            val trapFile = manager.file
-                            val trapTmpFile = File.createTempFile("${trapFile.nameWithoutExtension}.", ".${trapFile.extension}.tmp", trapFile.parentFile)
-
-                            val containingClass = getContainingClassOrSelf(irDecl)
-                            if (containingClass == null) {
-                                logger.errorElement("Unable to get containing class", irDecl)
-                                return
-                            }
-                            val binaryPath = getIrClassBinaryPath(containingClass)
-                            try {
-                                GZIPOutputStream(trapTmpFile.outputStream()).bufferedWriter().use { trapFileBW ->
-                                    // We want our comments to be the first thing in the file,
-                                    // so start off with a mere TrapWriter
-                                    val tw = TrapWriter(logger.loggerBase, TrapLabelManager(), trapFileBW, diagnosticTrapWriter)
-                                    tw.writeComment("Generated by the CodeQL Kotlin extractor for external dependencies")
-                                    tw.writeComment("Part of invocation $invocationTrapFile")
-                                    if (signature != possiblyLongSignature) {
-                                        tw.writeComment("Function signature abbreviated; full signature is: $possiblyLongSignature")
-                                    }
-                                    // Now elevate to a SourceFileTrapWriter, and populate the
-                                    // file information if needed:
-                                    val ftw = tw.makeFileTrapWriter(binaryPath, true)
-
-                                    val fileExtractor = KotlinFileExtractor(logger, ftw, null, binaryPath, manager, this, primitiveTypeMapping, pluginContext, KotlinFileExtractor.DeclarationStack(), globalExtensionState)
-
-                                    if (irDecl is IrClass) {
-                                        // Populate a location and compilation-unit package for the file. This is similar to
-                                        // the beginning of `KotlinFileExtractor.extractFileContents` but without an `IrFile`
-                                        // to start from.
-                                        val pkg = irDecl.packageFqName?.asString() ?: ""
-                                        val pkgId = fileExtractor.extractPackage(pkg)
-                                        ftw.writeHasLocation(ftw.fileId, ftw.getWholeFileLocation())
-                                        ftw.writeCupackage(ftw.fileId, pkgId)
-
-                                        fileExtractor.extractClassSource(irDecl, extractDeclarations = !irDecl.isFileClass, extractStaticInitializer = false, extractPrivateMembers = false, extractFunctionBodies = false)
-                                    } else {
-                                        fileExtractor.extractDeclaration(irDecl, extractPrivateMembers = false, extractFunctionBodies = false)
-                                    }
-                                }
-
-                                if (!trapTmpFile.renameTo(trapFile)) {
-                                    logger.error("Failed to rename $trapTmpFile to $trapFile")
-                                }
-                            } catch (e: Exception) {
-                                manager.setHasError()
-                                logger.error("Failed to extract '$shortName'. Partial TRAP file location is $trapTmpFile", e)
-                            }
+                            fileExtractor.extractDeclaration(irDecl, extractPrivateMembers = false, extractFunctionBodies = false, extractAnnotations = true)
                         }
                     }
                 }

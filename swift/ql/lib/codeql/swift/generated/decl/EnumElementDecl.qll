@@ -41,6 +41,6 @@ module Generated {
     /**
      * Gets the number of parameters of this enum element declaration.
      */
-    final int getNumberOfParams() { result = count(getAParam()) }
+    final int getNumberOfParams() { result = count(int i | exists(getParam(i))) }
   }
 }
