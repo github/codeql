@@ -71,13 +71,19 @@ module ImportResolution {
    */
   pragma[nomagic]
   predicate module_export(Module m, string name, DataFlow::CfgNode defn) {
-    exists(EssaVariable v |
+    exists(EssaVariable v, EssaDefinition essaDef |
       v.getName() = name and
-      v.getAUse() = ImportStar::getStarImported*(m).getANormalExit()
+      v.getAUse() = ImportStar::getStarImported*(m).getANormalExit() and
+      (
+        essaDef = v.getDefinition()
+        or
+        // to handle definitions guarded by if-then-else
+        essaDef = v.getDefinition().(PhiFunction).getAnInput()
+      )
     |
-      defn.getNode() = v.getDefinition().(AssignmentDefinition).getValue()
+      defn.getNode() = essaDef.(AssignmentDefinition).getValue()
       or
-      defn.getNode() = v.getDefinition().(ArgumentRefinement).getArgument()
+      defn.getNode() = essaDef.(ArgumentRefinement).getArgument()
     )
     or
     exists(Alias a |

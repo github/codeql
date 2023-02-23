@@ -47,54 +47,54 @@ def m6(arg1, arg2)
 end
 
 # Bad: method has parameter but only one result is memoized.
-def m7(arg) # $result=BAD
+def m7(arg)
   @m7 ||= begin
     arg += 3
   end
   @m7
-end
+end # $result=BAD
 
 # Bad: method has parameter but only one result is memoized.
-def m8(arg) # $result=BAD
+def m8(arg)
   @m8 ||= begin
     long_running_method(arg)
   end
   @m8
-end
+end # $result=BAD
 
 # Bad: method has parameter but only one result is memoized.
-def m9(arg) # $result=BAD
+def m9(arg)
   @m9 ||= long_running_method(arg)
-end
+end # $result=BAD
 
 # Bad: method has parameter but only one result is memoized.
-def m10(arg1, arg2) # $result=BAD
+def m10(arg1, arg2)
   @m10 ||= long_running_method(arg1, arg2)
-end
+end # $result=BAD
 
 # Bad: `arg2` not used in key.
-def m11(arg1, arg2) # $result=BAD
+def m11(arg1, arg2)
   @m11 ||= {}
   @m11[arg1] ||= long_running_method(arg1, arg2)
-end
+end # $result=BAD
 
 # Bad: `arg2` not used in key.
-def m12(arg1, arg2) # $result=BAD
+def m12(arg1, arg2)
   @m12 ||= Hash.new do |h1, arg1|
     h1[arg1] = result(arg1, arg2)
   end
   @m12[arg1]
-end
+end # $result=BAD
 
 # Bad: arg not used in key.
-def m13(id:) # $result=BAD
+def m13(id:)
   @m13 ||= Rails.cache.fetch("product_sku/#{id}", expires_in: 30.minutes) do
     ActiveRecord::Base.transaction do
       ProductSku.find_by(id: id)
     end
   end
   @m13
-end
+end # $result=BAD
 
 # Good (FP): arg is used in key via string interpolation.
 def m14(arg)

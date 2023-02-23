@@ -13,9 +13,9 @@ Unknown.new.run #$ use=getMember("Unknown").getMethod("new").getReturn().getMeth
 Foo::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
 
 Const = [1, 2, 3] #$ use=getMember("Array").getMethod("[]").getReturn()
-Const.each do |c| #$ use=getMember("Const").getMethod("each").getReturn() def=getMember("Const").getMethod("each").getBlock()
+Const.each do |c| #$ use=getMember("Const")
     puts c #$ use=getMember("Const").getMethod("each").getBlock().getParameter(0) use=getMember("Const").getContent(element)
-end
+end #$ use=getMember("Const").getMethod("each").getReturn() def=getMember("Const").getMethod("each").getBlock()
 
 foo = Foo #$ use=getMember("Foo")
 foo::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")

@@ -15,5 +15,5 @@ struct Data {
 
 func testData() {
     let url = URL(string: "http://example.com/")
-    let data = try Data(contentsOf: url!, options: []) // SOURCE
+    let data = try Data(contentsOf: url!, options: []) // $ source=remote
 }

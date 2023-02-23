@@ -7,6 +7,7 @@ using System.Xml;
 using System.Net.Http;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace Semmle.Autobuild.Shared
 {
@@ -97,6 +98,18 @@ namespace Semmle.Autobuild.Shared
         /// True if we are running on Windows.
         /// </summary>
         bool IsWindows();
+
+        /// <summary>
+        /// Gets a value indicating whether we are running on macOS.
+        /// </summary>
+        /// <returns>True if we are running on macOS.</returns>
+        bool IsMacOs();
+
+        /// <summary>
+        /// Gets a value indicating whether we are running on arm.
+        /// </summary>
+        /// <returns>True if we are running on arm.</returns>
+        bool IsArm();
 
         /// <summary>
         /// Combine path segments, Path.Combine().
@@ -202,6 +215,12 @@ namespace Semmle.Autobuild.Shared
         IEnumerable<string> IBuildActions.EnumerateDirectories(string dir) => Directory.EnumerateDirectories(dir);
 
         bool IBuildActions.IsWindows() => Win32.IsWindows();
+
+        bool IBuildActions.IsMacOs() => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
+        bool IBuildActions.IsArm() =>
+            RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ||
+            RuntimeInformation.ProcessArchitecture == Architecture.Arm;
 
         string IBuildActions.PathCombine(params string[] parts) => Path.Combine(parts);
 
