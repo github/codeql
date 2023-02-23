@@ -16,7 +16,7 @@ import KindPredicatesLog
 float getBadness(ComputeSimple simple) {
   exists(float maxTupleCount, float resultSize, float largestDependency, float denom |
     resultSize = simple.getResultSize() and
-    extractInformation(simple, maxTupleCount, _, _, _, _) and
+    extractInformation(simple, maxTupleCount, _, _, _) and
     largestDependency = max(simple.getDependencies().getADependency().getResultSize()) and
     denom = resultSize.maximum(largestDependency) and
     denom > 0 and // avoid division by zero (which would create a NaN result).
@@ -28,13 +28,11 @@ pragma[nomagic]
 predicate hasPipelineRun(ComputeSimple simple, PipeLineRun run) { run = simple.getPipelineRun() }
 
 predicate extractInformation(
-  ComputeSimple simple, float maxTupleCount, int pipelineIndex, Array tuples,
-  Array duplicationPercentages, Array ra
+  ComputeSimple simple, float maxTupleCount, Array tuples, Array duplicationPercentages, Array ra
 ) {
   exists(PipeLineRun run |
     hasPipelineRun(simple, run) and
     maxTupleCount = max(run.getCount(_)) and
-    pragma[only_bind_out](tuples.getFloat(pipelineIndex)) = maxTupleCount and
     tuples = run.getCounts() and
     duplicationPercentages = run.getDuplicationPercentage() and
     ra = simple.getRA()
@@ -42,10 +40,13 @@ predicate extractInformation(
 }
 
 from
-  ComputeSimple evt, float f, float maxTupleCount, int pipelineIndex, Array tuples,
-  Array duplicationPercentages, Array ra
+  ComputeSimple evt, float badness, float maxTupleCount, Array tuples, Array duplicationPercentages,
+  Array ra, int index
 where
-  f = getBadness(evt) and
-  f > 1.5 and
-  extractInformation(evt, maxTupleCount, pipelineIndex, tuples, duplicationPercentages, ra)
-select evt, f, pipelineIndex, tuples, duplicationPercentages, ra order by f desc
+  badness = getBadness(evt) and
+  badness > 1.5 and
+  extractInformation(evt, maxTupleCount, tuples, duplicationPercentages, ra)
+select evt.getPredicateName() as predicate_name, badness, index,
+  tuples.getFloat(index) as tuple_count,
+  duplicationPercentages.getFloat(index) as duplication_percentage, ra.getString(index) order by
+    badness desc
