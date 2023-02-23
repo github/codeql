@@ -16,7 +16,7 @@ import KindPredicatesLog
 float getBadness(ComputeSimple simple) {
   exists(float maxTupleCount, float resultSize, float largestDependency, float denom |
     resultSize = simple.getResultSize() and
-    maxTupleCount = max(simple.getPipelineRun().getCount(_)) and
+    extractInformation(simple, maxTupleCount, _, _, _, _) and
     largestDependency = max(simple.getDependencies().getADependency().getResultSize()) and
     denom = resultSize.maximum(largestDependency) and
     denom > 0 and // avoid division by zero (which would create a NaN result).
@@ -24,6 +24,28 @@ float getBadness(ComputeSimple simple) {
   )
 }
 
-from ComputeSimple evt, float f
-where f = getBadness(evt) and f > 1.5
-select evt, f order by f desc
+pragma[nomagic]
+predicate hasPipelineRun(ComputeSimple simple, PipeLineRun run) { run = simple.getPipelineRun() }
+
+predicate extractInformation(
+  ComputeSimple simple, float maxTupleCount, int pipelineIndex, Array tuples,
+  Array duplicationPercentages, Array ra
+) {
+  exists(PipeLineRun run |
+    hasPipelineRun(simple, run) and
+    maxTupleCount = max(run.getCount(_)) and
+    pragma[only_bind_out](tuples.getFloat(pipelineIndex)) = maxTupleCount and
+    tuples = run.getCounts() and
+    duplicationPercentages = run.getDuplicationPercentage() and
+    ra = simple.getRa()
+  )
+}
+
+from
+  ComputeSimple evt, float f, float maxTupleCount, int pipelineIndex, Array tuples,
+  Array duplicationPercentages, Array ra
+where
+  f = getBadness(evt) and
+  f > 1.5 and
+  extractInformation(evt, maxTupleCount, pipelineIndex, tuples, duplicationPercentages, ra)
+select evt, f, pipelineIndex, tuples, duplicationPercentages, ra order by f desc
