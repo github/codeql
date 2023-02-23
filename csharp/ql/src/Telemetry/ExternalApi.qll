@@ -12,6 +12,7 @@ private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSumma
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
+/** TODO: Remove this comment again. */
 pragma[nomagic]
 private predicate isTestNamespace(Namespace ns) {
   ns.getFullName()
