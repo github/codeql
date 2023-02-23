@@ -35,7 +35,7 @@ predicate extractInformation(
     maxTupleCount = max(run.getCount(_)) and
     tuples = run.getCounts() and
     duplicationPercentages = run.getDuplicationPercentage() and
-    ra = simple.getRA()
+    ra = simple.getPipeLine()
   )
 }
 

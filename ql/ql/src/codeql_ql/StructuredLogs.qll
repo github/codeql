@@ -1,5 +1,6 @@
 private import ql
 private import codeql_ql.ast.internal.TreeSitter
+private import experimental.RA
 
 /** Gets a timestamp corresponding to the number of seconds since the date Semmle was founded. */
 bindingset[d, h, m, s, ms]
@@ -67,6 +68,8 @@ class Array extends JSON::Array {
   float getFloat(int i) { result = this.getChild(i).(JSON::Number).getValue().toFloat() }
 
   Array getArray(int i) { result = this.getChild(i) }
+
+  int getLength() { result = count(this.getChild(_)) }
 }
 
 /**
@@ -76,6 +79,10 @@ class Array extends JSON::Array {
  */
 private float getRanked(Array a, int i) {
   result = rank[i + 1](int j, float f | f = a.getFloat(j) and f >= 0 | f order by j)
+}
+
+private string getRankedLine(Array a, int i) {
+  result = rank[i + 1](int j, string s | s = a.getString(j) and s != "" | s order by j)
 }
 
 module EvaluatorLog {
@@ -274,7 +281,32 @@ module KindPredicatesLog {
       else result = "<Summary event>"
     }
 
-    Array getRA(string ordering) { result = this.getObject("ra").getArray(ordering) }
+    RA getRA() { result = this.getObject("ra") }
+  }
+
+  class PipeLine extends Array {
+    RA ra;
+    string raReference;
+
+    RA getRA() { result = ra }
+
+    string getRAReference() { result = raReference }
+
+    PipeLine() { this = ra.getArray(raReference) }
+
+    string getLineOfRA(int n) { result = getRankedLine(this, n) }
+
+    RAExpr getExpr(int n) { result.getPredicate() = this and result.getLine() = n }
+  }
+
+  class RA extends Object {
+    SummaryEvent evt;
+
+    SummaryEvent getEvent() { result = evt }
+
+    RA() { evt.getObject("ra") = this }
+
+    PipeLine getPipeLine(string name) { result = this.getArray(name) }
   }
 
   class SentinelEmpty extends SummaryEvent {
@@ -289,6 +321,23 @@ module KindPredicatesLog {
     PipeLineRuns getArray() { result = runs }
 
     string getRAReference() { result = this.getString("raReference") }
+
+    PipeLine getPipeLine() {
+      exists(SummaryEvent evt | runs.getEvent() = evt |
+        result = evt.getRA().getPipeLine(pragma[only_bind_into](this.getRAReference()))
+      )
+    }
+
+    float getCount(int i, string raLine) {
+      result = this.getCount(i) and
+      raLine = this.getPipeLine().getLineOfRA(pragma[only_bind_into](i))
+    }
+
+    float getCountAndExpr(int i, RAExpr raExpr) {
+      result = this.getCount(i) and
+      raExpr.getPredicate() = this.getPipeLine() and
+      raExpr.getLine() = i
+    }
 
     Array getCounts() { result = this.getArray("counts") }
 
@@ -338,7 +387,7 @@ module KindPredicatesLog {
      * Gets the RA for this event. Unlike recursive predicates, a COMPUTE_SIMPLE
      * event only has one pipeline ordering (and it's named "pipeline").
      */
-    Array getRA() { result = this.getObject("ra").getArray("pipeline") }
+    PipeLine getPipeLine() { result = this.getObject("ra").getArray("pipeline") }
   }
 
   /** Gets the `index`'th event that's evaluated by `recursive`. */
@@ -481,4 +530,6 @@ module KindPredicatesLog {
   class Extensional extends SummaryEvent {
     Extensional() { evaluationStrategy = "EXTENSIONAL" }
   }
+
+  class RAExpr = RAParser<PipeLine>::RAExpr;
 }
