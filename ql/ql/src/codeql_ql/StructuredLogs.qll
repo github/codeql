@@ -1,5 +1,6 @@
 private import ql
 private import codeql_ql.ast.internal.TreeSitter
+private import experimental.RA
 
 /** Gets a timestamp corresponding to the number of seconds since the date Semmle was founded. */
 bindingset[d, h, m, s, ms]
@@ -76,6 +77,10 @@ class Array extends JSON::Array {
  */
 private float getRanked(Array a, int i) {
   result = rank[i + 1](int j, float f | f = a.getFloat(j) and f >= 0 | f order by j)
+}
+
+private string getRankedLine(Array a, int i) {
+  result = rank[i + 1](int j, string s | s = a.getString(j) and s != "" | s order by j)
 }
 
 module EvaluatorLog {
@@ -283,7 +288,9 @@ module KindPredicatesLog {
 
     PipeLine() { this = ra.getArray(raReference) }
 
-    string getLineOfRA(int n) { result = this.getString(n) }
+    string getLineOfRA(int n) { result = getRankedLine(this, n) }
+
+    RAExpr getExpr(int n) { result.getPredicate() = this and result.getLine() = n }
   }
 
   class RA extends Object {
@@ -318,6 +325,12 @@ module KindPredicatesLog {
     float getCount(int i, string raLine) {
       result = this.getCount(i) and
       raLine = this.getPipeLine().getLineOfRA(pragma[only_bind_into](i))
+    }
+
+    float getCountAndExpr(int i, RAExpr raExpr) {
+      result = this.getCount(i) and
+      raExpr.getPredicate() = this.getPipeLine() and
+      raExpr.getLine() = i
     }
 
     float getCount(int i) { result = getRanked(this.getArray("counts"), i) }
@@ -376,4 +389,6 @@ module KindPredicatesLog {
   class Extensional extends SummaryEvent {
     Extensional() { evaluationStrategy = "EXTENSIONAL" }
   }
+
+  class RAExpr = RAParser<PipeLine>::RAExpr;
 }
