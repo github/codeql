@@ -26,8 +26,71 @@ module RAParser<RApredicate Predicate> {
     result = str.trim().regexpCapture("return r([0-9]+)", 1).toInt()
   }
 
+  bindingset[str]
+  private predicate parseScan(string str, int arity, int lhs, string rhs) {
+    exists(string r, string trimmed |
+      r = "\\{(\\d+)\\}\\s+r(\\d+)\\s+=\\s+SCAN\\s+([0-9a-zA-Z:#_]+)\\s.*" and
+      trimmed = str.trim()
+    |
+      arity = trimmed.regexpCapture(r, 1).toInt() and
+      lhs = trimmed.regexpCapture(r, 2).toInt() and
+      rhs = trimmed.regexpCapture(r, 3)
+    )
+  }
+
+  bindingset[str]
+  private predicate parseJoin(string str, int arity, int lhs, string left, string right) {
+    exists(string r, string trimmed |
+      r =
+        "\\{(\\d+)\\}\\s+r(\\d+)\\s+=\\s+JOIN\\s+([0-9a-zA-Z:#_]+)\\s+WITH\\s+([0-9a-zA-Z:#_]+)\\s.*" and
+      trimmed = str.trim()
+    |
+      arity = trimmed.regexpCapture(r, 1).toInt() and
+      lhs = trimmed.regexpCapture(r, 2).toInt() and
+      left = trimmed.regexpCapture(r, 3) and
+      right = trimmed.regexpCapture(r, 4)
+    )
+  }
+
+  bindingset[str]
+  private predicate parseSelect(string str, int arity, int lhs, string rhs) {
+    exists(string r, string trimmed |
+      r = "\\{(\\d+)\\}\\s+r(\\d+)\\s+=\\s+SELECT\\s+([0-9a-zA-Z:#_]+).*" and
+      trimmed = str.trim()
+    |
+      arity = trimmed.regexpCapture(r, 1).toInt() and
+      lhs = trimmed.regexpCapture(r, 2).toInt() and
+      rhs = trimmed.regexpCapture(r, 3)
+    )
+  }
+
+  bindingset[str]
+  private predicate parseAntiJoin(string str, int arity, int lhs, string left, string right) {
+    exists(string r, string trimmed |
+      r = "\\{(\\d+)\\}\\s+r(\\d+)\\s+=\\s+([0-9a-zA-Z:#_]+)\\s+AND\\s+NOT\\s+([0-9a-zA-Z:#_]+).*" and
+      trimmed = str.trim()
+    |
+      arity = trimmed.regexpCapture(r, 1).toInt() and
+      lhs = trimmed.regexpCapture(r, 2).toInt() and
+      left = trimmed.regexpCapture(r, 3) and
+      right = trimmed.regexpCapture(r, 4)
+    )
+  }
+
   private newtype TRA =
     TReturn(Predicate p, int line, int v) { v = parseReturn(p.getLineOfRA(line)) } or
+    TScan(Predicate p, int line, int arity, int lhs, string rhs) {
+      parseScan(p.getLineOfRA(line), arity, lhs, rhs)
+    } or
+    TJoin(Predicate p, int line, int arity, int lhs, string left, string right) {
+      parseJoin(p.getLineOfRA(line), arity, lhs, left, right)
+    } or
+    TSelect(Predicate p, int line, int arity, int lhs, string rhs) {
+      parseSelect(p.getLineOfRA(line), arity, lhs, rhs)
+    } or
+    TAntiJoin(Predicate p, int line, int arity, int lhs, string left, string right) {
+      parseAntiJoin(p.getLineOfRA(line), arity, lhs, left, right)
+    } or
     TUnknown(Predicate p, int line, int lhs, int arity, string rhs) {
       rhs = parseRaExpr(p, line, arity, lhs)
     }
@@ -90,11 +153,11 @@ module RAParser<RApredicate Predicate> {
   }
 
   class RAReturnExpr extends RAExpr, TReturn {
-    RAReturnExpr() { this = TReturn(p, line, res) }
-
     Predicate p;
     int line;
     int res;
+
+    RAReturnExpr() { this = TReturn(p, line, res) }
 
     override Predicate getPredicate() { result = p }
 
@@ -107,5 +170,116 @@ module RAParser<RApredicate Predicate> {
     override int getArity() { none() }
 
     override string getARhsPredicate() { none() }
+  }
+
+  class RAScanExpr extends RAExpr, TScan {
+    Predicate p;
+    int line;
+    int arity;
+    int lhs;
+    string rhs;
+
+    RAScanExpr() { this = TScan(p, line, arity, lhs, rhs) }
+
+    override Predicate getPredicate() { result = p }
+
+    override int getLine() { result = line }
+
+    override int getLhs() { result = lhs }
+
+    override int getArity() { result = arity }
+
+    override int getARhsVariable() { isVariable(rhs, result) }
+
+    override string getARhsPredicate() {
+      result = rhs and
+      not isVariable(result, _)
+    }
+  }
+
+  bindingset[s]
+  private predicate isVariable(string s, int n) { n = s.regexpCapture("r(\\d+)", 1).toInt() }
+
+  class RAJoinExpr extends RAExpr, TJoin {
+    Predicate p;
+    int line;
+    int arity;
+    int lhs;
+    string left;
+    string right;
+
+    RAJoinExpr() { this = TJoin(p, line, arity, lhs, left, right) }
+
+    override Predicate getPredicate() { result = p }
+
+    override int getLine() { result = line }
+
+    override int getLhs() { result = lhs }
+
+    override int getArity() { result = arity }
+
+    // Note: We could return reasonable values here sometimes.
+    override int getARhsVariable() { isVariable([left, right], result) }
+
+    // Note: We could return reasonable values here sometimes.
+    override string getARhsPredicate() {
+      result = [left, right] and
+      not isVariable(result, _)
+    }
+  }
+
+  class RaSelectExpr extends RAExpr, TSelect {
+    Predicate p;
+    int line;
+    int arity;
+    int lhs;
+    string rhs;
+
+    RaSelectExpr() { this = TSelect(p, line, arity, lhs, rhs) }
+
+    override Predicate getPredicate() { result = p }
+
+    override int getLine() { result = line }
+
+    override int getLhs() { result = lhs }
+
+    override int getArity() { result = arity }
+
+    // Note: We could return reasonable values here sometimes.
+    override int getARhsVariable() { isVariable(rhs, result) }
+
+    // Note: We could return reasonable values here sometimes.
+    override string getARhsPredicate() {
+      result = rhs and
+      not isVariable(result, _)
+    }
+  }
+
+  class RaAntiJoinExpr extends RAExpr, TAntiJoin {
+    Predicate p;
+    int line;
+    int arity;
+    int lhs;
+    string left;
+    string right;
+
+    RaAntiJoinExpr() { this = TAntiJoin(p, line, arity, lhs, left, right) }
+
+    override Predicate getPredicate() { result = p }
+
+    override int getLine() { result = line }
+
+    override int getLhs() { result = lhs }
+
+    override int getArity() { result = arity }
+
+    // Note: We could return reasonable values here sometimes.
+    override int getARhsVariable() { isVariable([left, right], result) }
+
+    // Note: We could return reasonable values here sometimes.
+    override string getARhsPredicate() {
+      result = [left, right] and
+      not isVariable(result, _)
+    }
   }
 }
