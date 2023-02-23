@@ -258,11 +258,11 @@ namespace Semmle.Autobuild.Shared
                 throw new InvalidEnvironmentException($"The environment variable {name} has not been set.");
         }
 
-        protected string TrapDir { get; }
+        public string TrapDir { get; }
 
-        protected string SourceArchiveDir { get; }
+        public string SourceArchiveDir { get; }
 
-        protected string DiagnosticsDir { get; }
+        public string DiagnosticsDir { get; }
 
         protected abstract DiagnosticClassifier DiagnosticClassifier { get; }
 
