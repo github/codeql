@@ -30,7 +30,7 @@ def generate(opts, input, renderer):
 
 def test_empty(generate):
     assert generate([]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[],
     )
@@ -43,10 +43,10 @@ def test_includes(input, opts, generate):
         write(opts.schema.parent / i, i + " data")
 
     assert generate([]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[
             dbscheme.SchemeInclude(
-                src=schema_dir / i,
+                src=pathlib.Path(i),
                 data=i + " data",
             ) for i in includes
         ],
@@ -58,7 +58,7 @@ def test_empty_final_class(generate, dir_param):
     assert generate([
         schema.Class("Object", group=dir_param.input),
     ]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[
             dbscheme.Table(
@@ -78,7 +78,7 @@ def test_final_class_with_single_scalar_field(generate, dir_param):
             schema.SingleProperty("foo", "bar"),
         ]),
     ]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[
             dbscheme.Table(
@@ -98,7 +98,7 @@ def test_final_class_with_single_class_field(generate, dir_param):
             schema.SingleProperty("foo", "Bar"),
         ]),
     ]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[
             dbscheme.Table(
@@ -118,7 +118,7 @@ def test_final_class_with_optional_field(generate, dir_param):
             schema.OptionalProperty("foo", "bar"),
         ]),
     ]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[
             dbscheme.Table(
@@ -146,7 +146,7 @@ def test_final_class_with_repeated_field(generate, property_cls, dir_param):
             property_cls("foo", "bar"),
         ]),
     ]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[
             dbscheme.Table(
@@ -174,7 +174,7 @@ def test_final_class_with_predicate_field(generate, dir_param):
             schema.PredicateProperty("foo"),
         ]),
     ]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[
             dbscheme.Table(
@@ -205,7 +205,7 @@ def test_final_class_with_more_fields(generate, dir_param):
             schema.PredicateProperty("six"),
         ]),
     ]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[
             dbscheme.Table(
@@ -259,7 +259,7 @@ def test_empty_class_with_derived(generate):
         schema.Class(name="Left", bases=["Base"]),
         schema.Class(name="Right", bases=["Base"]),
     ]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[
             dbscheme.Union(
@@ -290,7 +290,7 @@ def test_class_with_derived_and_single_property(generate, dir_param):
         schema.Class(name="Left", bases=["Base"]),
         schema.Class(name="Right", bases=["Base"]),
     ]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[
             dbscheme.Union(
@@ -330,7 +330,7 @@ def test_class_with_derived_and_optional_property(generate, dir_param):
         schema.Class(name="Left", bases=["Base"]),
         schema.Class(name="Right", bases=["Base"]),
     ]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[
             dbscheme.Union(
@@ -370,7 +370,7 @@ def test_class_with_derived_and_repeated_property(generate, dir_param):
         schema.Class(name="Left", bases=["Base"]),
         schema.Class(name="Right", bases=["Base"]),
     ]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[
             dbscheme.Union(
@@ -432,7 +432,7 @@ def test_null_class(generate):
             bases=["Base"],
         ),
     ], null="Null") == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[
             dbscheme.Union(
@@ -514,7 +514,7 @@ def test_ipa_classes_ignored(generate):
         schema.Class(name="B", ipa=schema.IpaInfo(from_class="A")),
         schema.Class(name="C", ipa=schema.IpaInfo(on_arguments={"x": "A"})),
     ]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[],
     )
@@ -526,7 +526,7 @@ def test_ipa_derived_classes_ignored(generate):
         schema.Class(name="B", bases=["A"], ipa=schema.IpaInfo()),
         schema.Class(name="C", bases=["A"]),
     ]) == dbscheme.Scheme(
-        src=schema_file,
+        src=schema_file.name,
         includes=[],
         declarations=[
             dbscheme.Union("@a", ["@c"]),

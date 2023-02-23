@@ -6,6 +6,8 @@ from swift.codegen.test.utils import *
 
 import hashlib
 
+generator = "foo"
+
 
 @pytest.fixture
 def pystache_renderer_cls():
@@ -22,7 +24,7 @@ def pystache_renderer(pystache_renderer_cls):
 
 @pytest.fixture
 def sut(pystache_renderer):
-    return render.Renderer(paths.root_dir)
+    return render.Renderer(generator, paths.root_dir)
 
 
 def assert_file(file, text):
@@ -53,7 +55,7 @@ def test_render(pystache_renderer, sut):
 
     assert_file(output, text)
     assert pystache_renderer.mock_calls == [
-        mock.call.render_name(data.template, data, generator=paths.exe_file.relative_to(paths.root_dir)),
+        mock.call.render_name(data.template, data, generator=generator),
     ]
 
 
@@ -72,7 +74,7 @@ def test_managed_render(pystache_renderer, sut):
 
     assert_file(registry, f"some/output.txt {hash(text)} {hash(text)}\n")
     assert pystache_renderer.mock_calls == [
-        mock.call.render_name(data.template, data, generator=paths.exe_file.relative_to(paths.root_dir)),
+        mock.call.render_name(data.template, data, generator=generator),
     ]
 
 
@@ -90,7 +92,7 @@ def test_managed_render_with_no_registry(pystache_renderer, sut):
 
     assert_file(registry, f"some/output.txt {hash(text)} {hash(text)}\n")
     assert pystache_renderer.mock_calls == [
-        mock.call.render_name(data.template, data, generator=paths.exe_file.relative_to(paths.root_dir)),
+        mock.call.render_name(data.template, data, generator=generator),
     ]
 
 
@@ -111,7 +113,7 @@ def test_managed_render_with_post_processing(pystache_renderer, sut):
 
     assert_file(registry, f"some/output.txt {hash(text)} {hash(postprocessed_text)}\n")
     assert pystache_renderer.mock_calls == [
-        mock.call.render_name(data.template, data, generator=paths.exe_file.relative_to(paths.root_dir)),
+        mock.call.render_name(data.template, data, generator=generator),
     ]
 
 
@@ -149,7 +151,7 @@ def test_managed_render_with_skipping_of_generated_file(pystache_renderer, sut):
 
     assert_file(registry, f"some/output.txt {hash(some_output)} {hash(some_output)}\n")
     assert pystache_renderer.mock_calls == [
-        mock.call.render_name(data.template, data, generator=paths.exe_file.relative_to(paths.root_dir)),
+        mock.call.render_name(data.template, data, generator=generator),
     ]
 
 
@@ -171,7 +173,7 @@ def test_managed_render_with_skipping_of_stub_file(pystache_renderer, sut):
 
     assert_file(registry, f"some/stub.txt {hash(some_output)} {hash(some_processed_output)}\n")
     assert pystache_renderer.mock_calls == [
-        mock.call.render_name(data.template, data, generator=paths.exe_file.relative_to(paths.root_dir)),
+        mock.call.render_name(data.template, data, generator=generator),
     ]
 
 
@@ -277,7 +279,7 @@ def test_render_with_extensions(pystache_renderer, sut):
     sut.render(data, output)
     expected_templates = ["test_template_foo", "test_template_bar", "test_template_baz"]
     assert pystache_renderer.mock_calls == [
-        mock.call.render_name(t, data, generator=paths.exe_file.relative_to(paths.root_dir))
+        mock.call.render_name(t, data, generator=generator)
         for t in expected_templates
     ]
     for expected_output, expected_contents in zip(expected_outputs, rendered):
@@ -301,7 +303,7 @@ def test_managed_render_with_force_not_skipping_generated_file(pystache_renderer
 
     assert_file(registry, f"some/output.txt {hash(some_output)} {hash(some_output)}\n")
     assert pystache_renderer.mock_calls == [
-        mock.call.render_name(data.template, data, generator=paths.exe_file.relative_to(paths.root_dir)),
+        mock.call.render_name(data.template, data, generator=generator),
     ]
 
 
@@ -323,7 +325,7 @@ def test_managed_render_with_force_not_skipping_stub_file(pystache_renderer, sut
 
     assert_file(registry, f"some/stub.txt {hash(some_output)} {hash(some_output)}\n")
     assert pystache_renderer.mock_calls == [
-        mock.call.render_name(data.template, data, generator=paths.exe_file.relative_to(paths.root_dir)),
+        mock.call.render_name(data.template, data, generator=generator),
     ]
 
 

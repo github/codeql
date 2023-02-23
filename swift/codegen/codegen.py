@@ -60,12 +60,19 @@ def _parse_args() -> argparse.Namespace:
         p.add_argument("--generated-registry",
                        help="registry file containing information about checked-in generated code"),
     ]
+    p.add_argument("--script-name",
+                   help="script name to put in header comments of generated files. By default, the path of this "
+                        "script relative to the root directory")
+    p.add_argument("--trap-library",
+                   help="path to the trap library from an include directory, required if generating C++ trap bindings"),
     p.add_argument("--ql-format", action="store_true", default=True,
                    help="use codeql to autoformat QL files (which is the default)")
     p.add_argument("--no-ql-format", action="store_false", dest="ql_format", help="do not format QL files")
     p.add_argument("--codeql-binary", default="codeql", help="command to use for QL formatting (default %(default)s)")
     p.add_argument("--force", "-f", action="store_true",
-                   help="generate all files without skipping unchanged files and overwriting modified ones"),
+                   help="generate all files without skipping unchanged files and overwriting modified ones")
+    p.add_argument("--use-current-directory", action="store_true",
+                   help="do not consider paths as relative to --root-dir or the configuration directory")
     opts = p.parse_args()
     if opts.configuration_file is not None:
         with open(opts.configuration_file) as config:
@@ -75,16 +82,15 @@ def _parse_args() -> argparse.Namespace:
                     setattr(opts, flag, getattr(defaults, flag))
         if opts.root_dir is None:
             opts.root_dir = opts.configuration_file.parent
-    if opts.root_dir is None:
-        p.error("Either --configuration-file or --root-dir must be provided, or a codegen.conf file must be in a "
-                "containing directory")
     if not opts.generate:
         p.error("Nothing to do, specify --generate")
-    # absolutize all paths relative to --root-dir
+    # absolutize all paths
     for arg in path_arguments:
         path = getattr(opts, arg.dest)
         if path is not None:
-            setattr(opts, arg.dest, opts.root_dir / path)
+            setattr(opts, arg.dest, _abspath(path) if opts.use_current_directory else (opts.root_dir / path))
+    if not opts.script_name:
+        opts.script_name = paths.exe_file.relative_to(opts.root_dir)
     return opts
 
 
@@ -102,7 +108,7 @@ def run():
         log_level = logging.INFO
     logging.basicConfig(format="{levelname} {message}", style='{', level=log_level)
     for target in opts.generate:
-        generate(target, opts, render.Renderer(opts.root_dir))
+        generate(target, opts, render.Renderer(opts.script_name, opts.root_dir))
 
 
 if __name__ == "__main__":

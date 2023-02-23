@@ -125,8 +125,8 @@ def generate(opts, renderer):
 
     data = schemaloader.load_file(input)
 
-    dbscheme = Scheme(src=input.relative_to(opts.root_dir),
-                      includes=get_includes(data, include_dir=input.parent, root_dir=opts.root_dir),
+    dbscheme = Scheme(src=input.name,
+                      includes=get_includes(data, include_dir=input.parent, root_dir=input.parent),
                       declarations=get_declarations(data))
 
     renderer.render(dbscheme, out)

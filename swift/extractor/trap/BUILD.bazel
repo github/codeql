@@ -16,10 +16,14 @@ genrule(
     cmd = " ".join([
         "$(location //swift/codegen)",
         "--generate=dbscheme,trap,cpp",
-        "--dbscheme $(RULEDIR)/generated/swift.dbscheme",
-        "--cpp-output $(RULEDIR)/generated",
+        "--dbscheme=$(RULEDIR)/generated/swift.dbscheme",
+        "--cpp-output=$(RULEDIR)/generated",
+        "--trap-library=swift/extractor/trap",
+        "--use-current-dir",
+        "--schema=$(location //swift:schema)",
+        "--script-name=codegen/codegen.py",
     ]),
-    exec_tools = ["//swift/codegen"],
+    exec_tools = ["//swift/codegen", "//swift:schema"],
 )
 
 filegroup(

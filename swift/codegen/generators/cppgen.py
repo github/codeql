@@ -95,4 +95,5 @@ def generate(opts, renderer):
     out = opts.cpp_output
     for dir, classes in processor.get_classes().items():
         renderer.render(cpp.ClassList(classes, opts.schema,
-                                      include_parent=bool(dir)), out / dir / "TrapClasses")
+                                      include_parent=bool(dir),
+                                      trap_library=opts.trap_library), out / dir / "TrapClasses")

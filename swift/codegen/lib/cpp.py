@@ -1,3 +1,4 @@
+import pathlib
 import re
 from dataclasses import dataclass, field
 from typing import List, ClassVar
@@ -110,6 +111,8 @@ class TrapList:
     extensions = ["h", "cpp"]
     traps: List[Trap]
     source: str
+    trap_library_dir: pathlib.Path
+    gen_dir: pathlib.Path
 
 
 @dataclass
@@ -156,4 +159,5 @@ class ClassList:
 
     classes: List[Class]
     source: str
+    trap_library: str
     include_parent: bool = False

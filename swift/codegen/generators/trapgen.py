@@ -72,6 +72,7 @@ def generate(opts, renderer):
     assert opts.cpp_output
     tag_graph = {}
     out = opts.cpp_output
+    trap_library = opts.trap_library
 
     traps = {pathlib.Path(): []}
     for e in dbschemeloader.iterload(opts.dbscheme):
@@ -84,7 +85,8 @@ def generate(opts, renderer):
 
     for dir, entries in traps.items():
         dir = dir or pathlib.Path()
-        renderer.render(cpp.TrapList(entries, opts.dbscheme), out / dir / "TrapEntries")
+        relative_gen_dir = pathlib.Path(*[".." for _ in dir.parents])
+        renderer.render(cpp.TrapList(entries, opts.dbscheme, trap_library, relative_gen_dir), out / dir / "TrapEntries")
 
     tags = []
     for tag in toposort_flatten(tag_graph):

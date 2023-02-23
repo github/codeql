@@ -25,13 +25,10 @@ class Error(Exception):
 class Renderer:
     """ Template renderer using mustache templates in the `templates` directory """
 
-    def __init__(self, root_dir: pathlib.Path):
+    def __init__(self, generator: pathlib.Path, root_dir: pathlib.Path):
         self._r = pystache.Renderer(search_dirs=str(paths.templates_dir), escape=lambda u: u)
         self._root_dir = root_dir
-        try:
-            self._generator = self._get_path(paths.exe_file)
-        except ValueError:
-            self._generator = paths.exe_file.name
+        self._generator = generator
 
     def _get_path(self, file: pathlib.Path):
         return file.relative_to(self._root_dir)
@@ -63,7 +60,7 @@ class Renderer:
 
     def manage(self, generated: typing.Iterable[pathlib.Path], stubs: typing.Iterable[pathlib.Path],
                registry: pathlib.Path, force: bool = False) -> "RenderManager":
-        return RenderManager(self._root_dir, generated, stubs, registry, force)
+        return RenderManager(self._generator, self._root_dir, generated, stubs, registry, force)
 
 
 class RenderManager(Renderer):
@@ -88,10 +85,10 @@ class RenderManager(Renderer):
         pre: str
         post: typing.Optional[str] = None
 
-    def __init__(self, root_dir: pathlib.Path, generated: typing.Iterable[pathlib.Path],
+    def __init__(self, generator: pathlib.Path, root_dir: pathlib.Path, generated: typing.Iterable[pathlib.Path],
                  stubs: typing.Iterable[pathlib.Path],
                  registry: pathlib.Path, force: bool = False):
-        super().__init__(root_dir)
+        super().__init__(generator, root_dir)
         self._registry_path = registry
         self._force = force
         self._hashes = {}

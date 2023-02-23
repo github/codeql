@@ -5,7 +5,13 @@ load("//misc/bazel:pkg_runfiles.bzl", "pkg_runfiles")
 
 filegroup(
     name = "schema",
-    srcs = ["schema.py"] + glob(["*.dbscheme"]),
+    srcs = ["schema.py"],
+    visibility = ["//swift:__subpackages__"],
+)
+
+filegroup(
+    name = "schema_includes",
+    srcs = glob(["*.dbscheme"]),
     visibility = ["//swift:__subpackages__"],
 )
 
