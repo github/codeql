@@ -333,15 +333,3 @@ module KindPredicatesLog {
     Extensional() { evaluationStrategy = "EXTENSIONAL" }
   }
 }
-
-// Stuff to test whether we've covered all event types
-private File logFile() { result = any(EvaluatorLog::LogHeader h).getLocation().getFile() }
-
-private Object missing() {
-  result =
-    any(Object o |
-      o.getLocation().getFile() = logFile() and
-      not o instanceof EvaluatorLog::Entry and
-      not exists(o.getParent().getParent()) // don't count nested objects
-    )
-}
