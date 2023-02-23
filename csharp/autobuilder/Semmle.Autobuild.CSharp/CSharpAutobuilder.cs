@@ -34,36 +34,20 @@ namespace Semmle.Autobuild.CSharp
         private const string buildCommandDocsUrl =
             "https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages";
 
-        private DotNetRule? dotNetRule;
-
-        private MsBuildRule? msBuildRule;
-
-        private BuildCommandAutoRule? buildCommandAutoRule;
+        private readonly AutoBuildRule autoBuildRule;
 
         private readonly DiagnosticClassifier diagnosticClassifier;
 
         protected override DiagnosticClassifier DiagnosticClassifier => diagnosticClassifier;
 
-        public CSharpAutobuilder(IBuildActions actions, CSharpAutobuildOptions options) : base(actions, options) =>
-            diagnosticClassifier = new CSharpDiagnosticClassifier();
+        public CSharpAutobuilder(IBuildActions actions, CSharpAutobuildOptions options) : base(actions, options)
+        {
+            this.autoBuildRule = new AutoBuildRule(this);
+            this.diagnosticClassifier = new CSharpDiagnosticClassifier();
+        }
 
         public override BuildScript GetBuildScript()
         {
-            /// <summary>
-            /// A script that checks that the C# extractor has been executed.
-            /// </summary>
-            BuildScript CheckExtractorRun(bool warnOnFailure) =>
-                BuildScript.Create(actions =>
-                {
-                    if (actions.FileExists(Extractor.GetCSharpLogPath()))
-                        return 0;
-
-                    if (warnOnFailure)
-                        Log(Severity.Error, "No C# code detected during build.");
-
-                    return 1;
-                });
-
             var attempt = BuildScript.Failure;
             switch (GetCSharpBuildStrategy())
             {
@@ -81,51 +65,9 @@ namespace Semmle.Autobuild.CSharp
                     attempt = new DotNetRule().Analyse(this, false) & CheckExtractorRun(true);
                     break;
                 case CSharpBuildStrategy.Auto:
-                    var cleanTrapFolder =
-                        BuildScript.DeleteDirectory(TrapDir);
-                    var cleanSourceArchive =
-                        BuildScript.DeleteDirectory(SourceArchiveDir);
-                    var tryCleanExtractorArgsLogs =
-                        BuildScript.Create(actions =>
-                        {
-                            foreach (var file in Extractor.GetCSharpArgsLogs())
-                            {
-                                try
-                                {
-                                    actions.FileDelete(file);
-                                }
-                                catch // lgtm[cs/catch-of-all-exceptions] lgtm[cs/empty-catch-block]
-                                { }
-                            }
-
-                            return 0;
-                        });
-                    var attemptExtractorCleanup =
-                        BuildScript.Try(cleanTrapFolder) &
-                        BuildScript.Try(cleanSourceArchive) &
-                        tryCleanExtractorArgsLogs &
-                        BuildScript.DeleteFile(Extractor.GetCSharpLogPath());
-
-                    /// <summary>
-                    /// Execute script `s` and check that the C# extractor has been executed.
-                    /// If either fails, attempt to cleanup any artifacts produced by the extractor,
-                    /// and exit with code 1, in order to proceed to the next attempt.
-                    /// </summary>
-                    BuildScript IntermediateAttempt(BuildScript s) =>
-                        (s & CheckExtractorRun(false)) |
-                        (attemptExtractorCleanup & BuildScript.Failure);
-
-                    this.dotNetRule = new DotNetRule();
-                    this.msBuildRule = new MsBuildRule();
-                    this.buildCommandAutoRule = new BuildCommandAutoRule(DotNetRule.WithDotNet);
-
                     attempt =
-                        // First try .NET Core
-                        IntermediateAttempt(dotNetRule.Analyse(this, true)) |
-                        // Then MSBuild
-                        (() => IntermediateAttempt(msBuildRule.Analyse(this, true))) |
-                        // And finally look for a script that might be a build script
-                        (() => this.buildCommandAutoRule.Analyse(this, true) & CheckExtractorRun(true)) |
+                        // Attempt a few different build strategies to see if one works
+                        this.autoBuildRule.Analyse(this, true) |
                         // All attempts failed: print message
                         AutobuildFailure();
                     break;
@@ -134,24 +76,38 @@ namespace Semmle.Autobuild.CSharp
             return attempt;
         }
 
+        /// <summary>
+        /// A script that checks that the C# extractor has been executed.
+        /// </summary>
+        public BuildScript CheckExtractorRun(bool warnOnFailure) =>
+            BuildScript.Create(actions =>
+            {
+                if (actions.FileExists(Extractor.GetCSharpLogPath()))
+                    return 0;
+
+                if (warnOnFailure)
+                    Log(Severity.Error, "No C# code detected during build.");
+
+                return 1;
+            });
+
         protected override void AutobuildFailureDiagnostic()
         {
             // if `ScriptPath` is not null here, the `BuildCommandAuto` rule was
             // run and found at least one script to execute
-            if (this.buildCommandAutoRule is not null &&
-                this.buildCommandAutoRule.ScriptPath is not null)
+            if (this.autoBuildRule.BuildCommandAutoRule.ScriptPath is not null)
             {
                 DiagnosticMessage message;
 
                 // if we found multiple build scripts in the project directory, then we can say
                 // as much to indicate that we may have picked the wrong one;
                 // otherwise, we just report that the one script we found didn't work
-                if (this.buildCommandAutoRule.CandidatePaths.Count() > 1)
+                if (this.autoBuildRule.BuildCommandAutoRule.CandidatePaths.Count() > 1)
                 {
                     message = MakeDiagnostic("multiple-build-scripts", "There are multiple potential build scripts");
                     message.MarkdownMessage =
                         "CodeQL found multiple potential build scripts for your project and " +
-                        $"attempted to run `{buildCommandAutoRule.ScriptPath}`, which failed. " +
+                        $"attempted to run `{autoBuildRule.BuildCommandAutoRule.ScriptPath}`, which failed. " +
                         "This may not be the right build script for your project. " +
                         $"Set up a [manual build command]({buildCommandDocsUrl}).";
                 }
@@ -160,7 +116,7 @@ namespace Semmle.Autobuild.CSharp
                     message = MakeDiagnostic("script-failure", "Unable to build project using build script");
                     message.MarkdownMessage =
                         "CodeQL attempted to build your project using a script located at " +
-                        $"`{buildCommandAutoRule.ScriptPath}`, which failed. " +
+                        $"`{autoBuildRule.BuildCommandAutoRule.ScriptPath}`, which failed. " +
                         $"Set up a [manual build command]({buildCommandDocsUrl}).";
                 }
 
@@ -180,24 +136,24 @@ namespace Semmle.Autobuild.CSharp
 
                 AddDiagnostic(message);
             }
-            else if (dotNetRule is not null && dotNetRule.NotDotNetProjects.Any())
+            else if (autoBuildRule.DotNetRule.NotDotNetProjects.Any())
             {
                 var message = MakeDiagnostic("dotnet-incompatible-projects", "Some projects are incompatible with .NET Core");
                 message.MarkdownMessage =
                     "CodeQL found some projects which cannot be built with .NET Core:\n" +
-                    string.Join('\n', dotNetRule.NotDotNetProjects.Select(p => $"- `{p.FullPath}`"));
+                    string.Join('\n', autoBuildRule.DotNetRule.NotDotNetProjects.Select(p => $"- `{p.FullPath}`"));
                 message.Severity = DiagnosticMessage.TspSeverity.Warning;
 
                 AddDiagnostic(message);
             }
 
             // report any projects that failed to build with .NET Core
-            if (dotNetRule is not null && dotNetRule.FailedProjectsOrSolutions.Any())
+            if (autoBuildRule.DotNetRule.FailedProjectsOrSolutions.Any())
             {
                 var message = MakeDiagnostic("dotnet-build-failure", "Some projects or solutions failed to build using .NET Core");
                 message.MarkdownMessage =
                     "CodeQL was unable to build the following projects using .NET Core:\n" +
-                    string.Join('\n', dotNetRule.FailedProjectsOrSolutions.Select(p => $"- `{p.FullPath}`")) +
+                    string.Join('\n', autoBuildRule.DotNetRule.FailedProjectsOrSolutions.Select(p => $"- `{p.FullPath}`")) +
                     $"\nSet up a [manual build command]({buildCommandDocsUrl}).";
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
 
@@ -205,12 +161,12 @@ namespace Semmle.Autobuild.CSharp
             }
 
             // report any projects that failed to build with MSBuild
-            if (msBuildRule is not null && msBuildRule.FailedProjectsOrSolutions.Any())
+            if (autoBuildRule.MsBuildRule.FailedProjectsOrSolutions.Any())
             {
                 var message = MakeDiagnostic("msbuild-build-failure", "Some projects or solutions failed to build using MSBuild");
                 message.MarkdownMessage =
                     "CodeQL was unable to build the following projects using MSBuild:\n" +
-                    string.Join('\n', msBuildRule.FailedProjectsOrSolutions.Select(p => $"- `{p.FullPath}`")) +
+                    string.Join('\n', autoBuildRule.MsBuildRule.FailedProjectsOrSolutions.Select(p => $"- `{p.FullPath}`")) +
                     $"\nSet up a [manual build command]({buildCommandDocsUrl}).";
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
 
