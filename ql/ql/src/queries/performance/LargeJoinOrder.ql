@@ -37,7 +37,7 @@ predicate extractInformation(
     pragma[only_bind_out](tuples.getFloat(pipelineIndex)) = maxTupleCount and
     tuples = run.getCounts() and
     duplicationPercentages = run.getDuplicationPercentage() and
-    ra = simple.getRa()
+    ra = simple.getRA()
   )
 }
 
