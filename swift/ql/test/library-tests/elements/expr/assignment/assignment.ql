@@ -30,6 +30,8 @@ string describe(Expr e) {
   e instanceof AssignOrExpr and result = "AssignOrExpr"
   or
   e instanceof AssignXorExpr and result = "AssignXorExpr"
+  or 
+  e.(Assignment).hasOverflowOperator() and result = "hasOverflowOperator"
 }
 
 from Assignment e

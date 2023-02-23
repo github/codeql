@@ -9,4 +9,9 @@
 | assignment.swift:18:2:18:7 | ... ^= ... | AssignBitwiseOperation, AssignOperation, AssignXorExpr, Assignment | &... | 1 |
 | assignment.swift:19:2:19:8 | ... <<= ... | AssignBitwiseOperation, AssignLShiftExpr, AssignOperation, Assignment | &... | 1 |
 | assignment.swift:20:2:20:8 | ... >>= ... | AssignBitwiseOperation, AssignOperation, AssignRShiftExpr, Assignment | &... | 1 |
+| assignment.swift:23:2:23:8 | ... *= ... | AssignArithmeticOperation, AssignMulExpr, AssignOperation, Assignment, hasOverflowOperator | &... | 1 |
+| assignment.swift:24:2:24:8 | ... += ... | AssignAddExpr, AssignArithmeticOperation, AssignOperation, Assignment, hasOverflowOperator | &... | 1 |
+| assignment.swift:25:2:25:8 | ... -= ... | AssignArithmeticOperation, AssignOperation, AssignSubExpr, Assignment, hasOverflowOperator | &... | 1 |
+| assignment.swift:26:2:26:9 | ... <<= ... | AssignBitwiseOperation, AssignLShiftExpr, AssignOperation, Assignment, hasOverflowOperator | &... | 1 |
+| assignment.swift:27:2:27:9 | ... >>= ... | AssignBitwiseOperation, AssignOperation, AssignRShiftExpr, Assignment, hasOverflowOperator | &... | 1 |
 | assignment.swift:33:2:33:6 |  ... = ... | AssignExpr, Assignment | y | z |
