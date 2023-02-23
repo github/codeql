@@ -97,6 +97,7 @@ class Class:
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
     imports: List[str] = field(default_factory=list)
+    import_prefix: Optional[str] = None
     qltest_skip: bool = False
     qltest_collapse_hierarchy: bool = False
     qltest_uncollapse_hierarchy: bool = False
@@ -152,6 +153,7 @@ class Stub:
 
     name: str
     base_import: str
+    import_prefix: str
     ipa_accessors: List[IpaUnderlyingAccessor] = field(default_factory=list)
 
     @property
@@ -178,7 +180,7 @@ class GetParentImplementation:
     template: ClassVar = 'ql_parent'
 
     classes: List[Class] = field(default_factory=list)
-    additional_imports: List[str] = field(default_factory=list)
+    imports: List[str] = field(default_factory=list)
 
 
 @dataclass
@@ -190,19 +192,23 @@ class PropertyForTest:
 
 
 @dataclass
-class ClassTester:
+class TesterBase:
+    class_name: str
+    elements_module: str
+
+
+@dataclass
+class ClassTester(TesterBase):
     template: ClassVar = 'ql_test_class'
 
-    class_name: str
     properties: List[PropertyForTest] = field(default_factory=list)
     show_ql_class: bool = False
 
 
 @dataclass
-class PropertyTester:
+class PropertyTester(TesterBase):
     template: ClassVar = 'ql_test_property'
 
-    class_name: str
     property: PropertyForTest
 
 
@@ -290,6 +296,7 @@ class Synth:
         template: ClassVar = "ql_ipa_types"
 
         root: str
+        import_prefix: str
         final_classes: List["Synth.FinalClass"] = field(default_factory=list)
         non_final_classes: List["Synth.NonFinalClass"] = field(default_factory=list)
 
@@ -302,3 +309,4 @@ class Synth:
         template: ClassVar = "ql_ipa_constructor_stub"
 
         cls: "Synth.FinalClass"
+        import_prefix: str

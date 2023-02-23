@@ -14,7 +14,7 @@ QL code generation
    corresponding to raw types)
 Moreover in the test directory for each <Class> in <group> it will generate beneath the
 extractor-tests/generated/<group>/<Class> directory either
- * a `MISSING_SOURCE.txt` explanation file if no `swift` source is present, or
+ * a `MISSING_SOURCE.txt` explanation file if no source is present, or
  * one `<Class>.ql` test query for all single properties and on `<Class>_<property>.ql` test query for each optional or
    repeated property
 """
@@ -287,7 +287,7 @@ def _should_skip_qltest(cls: schema.Class, lookup: typing.Dict[str, schema.Class
         cls, lookup)
 
 
-def _get_stub(cls: schema.Class, base_import: str) -> ql.Stub:
+def _get_stub(cls: schema.Class, base_import: str, generated_import_prefix: str) -> ql.Stub:
     if isinstance(cls.ipa, schema.IpaInfo):
         if cls.ipa.from_class is not None:
             accessors = [
@@ -307,7 +307,7 @@ def _get_stub(cls: schema.Class, base_import: str) -> ql.Stub:
             ]
     else:
         accessors = []
-    return ql.Stub(name=cls.name, base_import=base_import, ipa_accessors=accessors)
+    return ql.Stub(name=cls.name, base_import=base_import, import_prefix=generated_import_prefix, ipa_accessors=accessors)
 
 
 def generate(opts, renderer):
@@ -335,6 +335,7 @@ def generate(opts, renderer):
         raise RootElementHasChildren(root)
 
     imports = {}
+    generated_import_prefix = get_import(out, opts.root_dir)
 
     with renderer.manage(generated=generated, stubs=stubs, registry=opts.generated_registry,
                          force=opts.force) as renderer:
@@ -349,6 +350,7 @@ def generate(opts, renderer):
         for c in classes.values():
             qll = out / c.path.with_suffix(".qll")
             c.imports = [imports[t] for t in get_classes_used_by(c)]
+            c.import_prefix = generated_import_prefix
             renderer.render(c, qll)
 
         for c in data.classes.values():
@@ -356,16 +358,18 @@ def generate(opts, renderer):
             stub_file = stub_out / path
             if not renderer.is_customized_stub(stub_file):
                 base_import = get_import(out / path, opts.root_dir)
-                renderer.render(_get_stub(c, base_import), stub_file)
+                renderer.render(_get_stub(c, base_import, generated_import_prefix), stub_file)
 
         # for example path/to/elements -> path/to/elements.qll
         renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].ql_internal]),
                         include_file)
 
+        elements_module = get_import(include_file, opts.root_dir)
+
         renderer.render(
             ql.GetParentImplementation(
                 classes=list(classes.values()),
-                additional_imports=[i for name, i in imports.items() if classes[name].ql_internal],
+                imports=[elements_module] + [i for name, i in imports.items() if classes[name].ql_internal],
             ),
             out / 'ParentChild.qll')
 
@@ -374,7 +378,7 @@ def generate(opts, renderer):
                 continue
             test_dir = test_out / c.group / c.name
             test_dir.mkdir(parents=True, exist_ok=True)
-            if not any(test_dir.glob("*.swift")):
+            if all(f.suffix in (".txt", ".ql", ".actual", ".expected") for f in test_dir.glob("*.*")):
                 log.warning(f"no test source in {test_dir.relative_to(test_out)}")
                 renderer.render(ql.MissingTestInstructions(),
                                 test_dir / missing_test_source_filename)
@@ -383,11 +387,13 @@ def generate(opts, renderer):
                                                     lambda p: p.is_total)
             renderer.render(ql.ClassTester(class_name=c.name,
                                            properties=total_props,
+                                           elements_module=elements_module,
                                            # in case of collapsed hierarchies we want to see the actual QL class in results
                                            show_ql_class="qltest_collapse_hierarchy" in c.pragmas),
                             test_dir / f"{c.name}.ql")
             for p in partial_props:
                 renderer.render(ql.PropertyTester(class_name=c.name,
+                                                  elements_module=elements_module,
                                                   property=p), test_dir / f"{c.name}_{p.getter}.ql")
 
         final_ipa_types = []
@@ -403,7 +409,7 @@ def generate(opts, renderer):
                     stub_file = stub_out / cls.group / f"{cls.name}Constructor.qll"
                     if not renderer.is_customized_stub(stub_file):
                         # stub rendering must be postponed as we might not have yet all subtracted ipa types in `ipa_type`
-                        stubs[stub_file] = ql.Synth.ConstructorStub(ipa_type)
+                        stubs[stub_file] = ql.Synth.ConstructorStub(ipa_type, import_prefix=generated_import_prefix)
                     constructor_import = get_import(stub_file, opts.root_dir)
                     constructor_imports.append(constructor_import)
                     if ipa_type.is_ipa:
@@ -413,7 +419,8 @@ def generate(opts, renderer):
 
         for stub_file, data in stubs.items():
             renderer.render(data, stub_file)
-        renderer.render(ql.Synth.Types(root.name, final_ipa_types, non_final_ipa_types), out / "Synth.qll")
+        renderer.render(ql.Synth.Types(root.name, generated_import_prefix,
+                        final_ipa_types, non_final_ipa_types), out / "Synth.qll")
         renderer.render(ql.ImportList(constructor_imports), out / "SynthConstructors.qll")
         renderer.render(ql.ImportList(ipa_constructor_imports), out / "PureSynthConstructors.qll")
         if opts.ql_format:
