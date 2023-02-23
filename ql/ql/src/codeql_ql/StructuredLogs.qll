@@ -273,6 +273,8 @@ module KindPredicatesLog {
       then result = this.getPredicateName()
       else result = "<Summary event>"
     }
+
+    Array getRA(string ordering) { result = this.getObject("ra").getArray(ordering) }
   }
 
   class SentinelEmpty extends SummaryEvent {
@@ -288,7 +290,11 @@ module KindPredicatesLog {
 
     string getRAReference() { result = this.getString("raReference") }
 
+    Array getCounts() { result = this.getArray("counts") }
+
     float getCount(int i) { result = getRanked(this.getArray("counts"), i) }
+
+    Array getDuplicationPercentage() { result = this.getArray("duplicationPercentages") }
 
     float getDuplicationPercentage(int i) {
       result = getRanked(this.getArray("duplicationPercentages"), i)
@@ -327,6 +333,12 @@ module KindPredicatesLog {
     string getPosition() { result = this.getString("position") }
 
     Predicate getPredicate() { result = getPredicateFromPosition(this.getPosition()) }
+
+    /**
+     * Gets the RA for this event. Unlike recursive predicates, a COMPUTE_SIMPLE
+     * event only has one pipeline ordering (and it's named "pipeline").
+     */
+    Array getRA() { result = this.getObject("ra").getArray("pipeline") }
   }
 
   /** Gets the `index`'th event that's evaluated by `recursive`. */

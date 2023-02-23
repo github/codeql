@@ -16,7 +16,7 @@ import KindPredicatesLog
 float getBadness(ComputeSimple simple) {
   exists(float maxTupleCount, float resultSize, float largestDependency, float denom |
     resultSize = simple.getResultSize() and
-    maxTupleCount = max(simple.getPipelineRun().getCount(_)) and
+    extractInformation(simple, maxTupleCount, _, _, _) and
     largestDependency = max(simple.getDependencies().getADependency().getResultSize()) and
     denom = resultSize.maximum(largestDependency) and
     denom > 0 and // avoid division by zero (which would create a NaN result).
@@ -24,6 +24,29 @@ float getBadness(ComputeSimple simple) {
   )
 }
 
-from ComputeSimple evt, float f
-where f = getBadness(evt) and f > 1.5
-select evt, f order by f desc
+pragma[nomagic]
+predicate hasPipelineRun(ComputeSimple simple, PipeLineRun run) { run = simple.getPipelineRun() }
+
+predicate extractInformation(
+  ComputeSimple simple, float maxTupleCount, Array tuples, Array duplicationPercentages, Array ra
+) {
+  exists(PipeLineRun run |
+    hasPipelineRun(simple, run) and
+    maxTupleCount = max(run.getCount(_)) and
+    tuples = run.getCounts() and
+    duplicationPercentages = run.getDuplicationPercentage() and
+    ra = simple.getRA()
+  )
+}
+
+from
+  ComputeSimple evt, float badness, float maxTupleCount, Array tuples, Array duplicationPercentages,
+  Array ra, int index
+where
+  badness = getBadness(evt) and
+  badness > 1.5 and
+  extractInformation(evt, maxTupleCount, tuples, duplicationPercentages, ra)
+select evt.getPredicateName() as predicate_name, badness, index,
+  tuples.getFloat(index) as tuple_count,
+  duplicationPercentages.getFloat(index) as duplication_percentage, ra.getString(index) order by
+    badness desc
