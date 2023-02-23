@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+            Processing an unvalidated user input can allow an attacker to execute arbitrary code in your application.
+            Unsafe deserializing the malicious serialized yaml document through the Psych (YAML) library, making it possible to execute some code or execute arbitrary code with the help of a complete gadget chain.
+        </p>
+    </overview>
+    <recommendation>
+        <p>
+            After Psych(YAML) 4.0.0, the load method is same as safe_load method.
+            This vulnerability can be prevented by using YAML.load (same as <code>YAML.safe_load</code>), <code>YAML.load_file</code> (same as <code>YAML.safe_load_file</code>) instead of <code>YAML.unsafe_*</code> methods.
+            Be careful that <code>YAML.load_stream</code> don't use safe_load method, Also Be careful the <code>to_ruby</code> method of Psych get called on a trusted parsed (<code>YAML.parse*</code>) yaml document.
+        </p>
+    </recommendation>
+    <example>
+        <p>In the example below, you can see safe and unsafe methods get called by a remote user input. You can give correct authorization to users, or you can use safe methods for loading yaml documents.</p>
+        <sample src="YAMLUnsafeYamlDeserialization.rb" />
+    </example>
+</qhelp>
