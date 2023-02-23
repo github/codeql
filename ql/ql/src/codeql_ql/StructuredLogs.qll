@@ -362,31 +362,6 @@ module KindPredicatesLog {
     )
   }
 
-  /**
-   * Holds if the predicate represented by `inLayer` was run in the `iteration`'iteration
-   * of the SCC computation rooted at `recursive`.
-   */
-  private predicate ran(ComputeRecursive recursive, int iteration, InLayer inLayer) {
-    exists(int index |
-      inLayer = layerEventRank(recursive, index) and
-      inLayer.getPredicateIterationMillis().getNumber(iteration) >= 0
-    )
-  }
-
-  /**
-   * Gets the next iteration in which the predicate `pred` in the `iteration`'th iteration
-   * of a recursive SCC rooted at `recursive` should be evaluated.
-   */
-  int nextPipeline(ComputeRecursive recursive, int iteration, InLayer inLayer) {
-    iteration = 0 and
-    if ran(recursive, iteration, inLayer) then result = 1 else result = 0
-    or
-    iteration > 1 and
-    exists(int n | n = nextPipeline(recursive, iteration - 1, inLayer) |
-      if ran(recursive, iteration, inLayer) then result = n + 1 else result = n
-    )
-  }
-
   bindingset[this]
   signature class ResultSig;
 
