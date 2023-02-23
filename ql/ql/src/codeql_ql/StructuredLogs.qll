@@ -241,6 +241,8 @@ module KindPredicatesLog {
 
     AppearsAs getAppearsAs() { result = this.getObject("appearsAs") }
 
+    int getMillis() { result = this.getNumber("millis") }
+
     predicate hasCompletionTime(
       int year, string month, int day, int hours, int minute, int second, int millisecond
     ) {
@@ -265,6 +267,12 @@ module KindPredicatesLog {
     Array getRA(string ordering) { result = this.getObject("ra").getArray(ordering) }
 
     string getAnOrdering() { exists(this.getRA(result)) }
+
+    override string toString() {
+      if exists(this.getPredicateName())
+      then result = this.getPredicateName()
+      else result = "<Summary event>"
+    }
   }
 
   class SentinelEmpty extends SummaryEvent {
