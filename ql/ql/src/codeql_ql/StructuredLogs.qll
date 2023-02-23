@@ -68,6 +68,8 @@ class Array extends JSON::Array {
   float getFloat(int i) { result = this.getChild(i).(JSON::Number).getValue().toFloat() }
 
   Array getArray(int i) { result = this.getChild(i) }
+
+  int getLength() { result = count(this.getChild(_)) }
 }
 
 /**

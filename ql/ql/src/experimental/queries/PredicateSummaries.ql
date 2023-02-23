@@ -14,5 +14,5 @@ int maxPipeLineLength(KindPredicatesLog::SummaryEvent evt) {
 }
 
 from KindPredicatesLog::SummaryEvent evt
-select evt, evt.getResultSize(), evt.getMillis() as ms, maxTupleCount(evt) as mc, evt.getMillis(),
+select evt, evt.getResultSize(), evt.getMillis() as ms, maxTupleCount(evt) as mc,
   maxPipeLineLength(evt) as len order by mc desc
