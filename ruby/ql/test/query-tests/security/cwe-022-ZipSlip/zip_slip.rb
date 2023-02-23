@@ -12,6 +12,19 @@ class TestController < ActionController::Base
       end
     end
   end
+
+  # BAD
+  def tarReaderBlockUnsafe
+    path = params[:path]
+    file_stream = IO.new(IO.sysopen(path))
+    Gem::Package::TarReader.new(file_stream) do |tarfile|
+      tarfile.each_entry do |entry|
+        ::File.open(entry.full_name, "wb") do |os|
+          entry.read
+        end
+      end
+    end
+  end
   
   # GOOD
   def tarReadeSanitizedExpandPath
@@ -33,6 +46,30 @@ class TestController < ActionController::Base
     Zip::File.open(path).each do |entry|
       File.open(entry.name, "wb") do |os|
         entry.read
+      end
+    end
+  end
+
+  # BAD
+  def zipFileBlockUnsafe
+    path = params[:path]
+    Zip::File.open(path) do |zip_file|
+      zip_file.each do |entry|
+        File.open(entry.name, "wb") do |os|
+          entry.read
+        end
+      end
+    end
+  end
+
+  # GOOD
+  def zipFileBlockSafeHardcodedPath
+    path = '/safepath.zip'
+    Zip::File.open(path) do |zip_file|
+      zip_file.each do |entry|
+        File.open(entry.name, "wb") do |os|
+          entry.read
+        end
       end
     end
   end
@@ -84,14 +121,11 @@ class TestController < ActionController::Base
     path = params[:path]
     File.open(path, 'rb') do |f|
       gz = Zlib::GzipReader.new(f)
-      uncompressed_data = gz.read
-      puts uncompressed_data
-      gz.close
-    end
-    zlib.each do |entry|
-      entry_path = entry.full_name
-      ::File.open(entry_path, 'wb') do |os|
-        entry.read
+      gz.each do |entry|
+        entry_path = entry.full_name
+        ::File.open(entry_path, 'wb') do |os|
+          entry.read
+        end
       end
     end
   end
