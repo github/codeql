@@ -12,10 +12,8 @@
  *       external/cwe/cwe-502
  */
 
-import codeql.ruby.AST
 import codeql.ruby.ApiGraphs
 import codeql.ruby.DataFlow
-import codeql.ruby.dataflow.RemoteFlowSources
 import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 import codeql.ruby.security.UnsafeDeserializationCustomizations
@@ -38,26 +36,28 @@ class YamlUnsafeLoadArgument extends YamlSink {
       API::getTopLevelMember(["YAML", "Psych"])
           .getAMethodCall("unsafe_load_file")
           .getKeywordArgument("filename")
+    or
+    this =
+      API::getTopLevelMember(["YAML", "Psych"])
+          .getAMethodCall(["parse", "parse_stream", "parse_file"])
+          .getAMethodCall("to_ruby")
   }
 }
 
 class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnsafeDeserialization" }
+  Configuration() { this = "UnsafeYAMLDeserialization" }
 
   override predicate isSource(DataFlow::Node source) {
-    // for detecting The CVE we should uncomment following line instead of current RemoteFlowSource
+    // to detect CVE-2022-32224, we should uncomment following line instead of current UnsafeDeserialization::Source
     // source instanceof DataFlow::LocalSourceNode
     source instanceof UnsafeDeserialization::Source
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    // for detecting The CVE we should uncomment following line
+    // after changing the isSource for detecting CVE-2022-32224
+    // uncomment the following line only see the CVE sink not other files similar sinks
     // sink.getLocation().getFile().toString().matches("%yaml_column%") and
-    sink instanceof YamlSink or
-    sink =
-      API::getTopLevelMember(["YAML", "Psych"])
-          .getAMethodCall(["parse", "parse_stream", "parse_file"])
-          .getAMethodCall("to_ruby")
+    sink instanceof YamlSink
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
