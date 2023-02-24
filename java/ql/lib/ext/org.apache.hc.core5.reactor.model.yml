@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: sinkModel
+    data:
+      - ["org.apache.hc.core5.reactor", "EndpointParameters", True, "EndpointParameters", "(HttpHost,Object)", "", "Argument[0]", "%-url", "manual"] # ! ModelType: sinkOrStep, Notes: sink/step if I'm understanding EndpointParameters correctly
+      - ["org.apache.hc.core5.reactor", "EndpointParameters", True, "EndpointParameters", "(String,String,int,Object)", "", "Argument[1]", "%-url", "manual"] # ! ModelType: sinkOrStep, Notes: sink/step if I'm understanding EndpointParameters correctly

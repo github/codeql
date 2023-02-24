@@ -4,6 +4,11 @@ extensions:
       extensible: sinkModel
     data:
       - ["org.apache.hc.core5.http", "HttpEntityContainer", True, "setEntity", "(HttpEntity)", "", "Argument[0]", "xss", "manual"]
+      - ["org.apache.hc.core5.http", "HttpHost", True, "HttpHost", "(String)", "", "Argument[0]", "%-url", "manual"]  # ! ModelType: sinkOrStep, Notes:
+      - ["org.apache.hc.core5.http", "HttpHost", True, "HttpHost", "(String,InetAddress,String,int)", "", "Argument[2]", "%-url", "manual"]  # ! ModelType: sinkOrStep, Notes:
+      - ["org.apache.hc.core5.http", "HttpHost", True, "HttpHost", "(String,String)", "", "Argument[1]", "%-url", "manual"]  # ! ModelType: sinkOrStep, Notes:
+      - ["org.apache.hc.core5.http", "HttpHost", True, "HttpHost", "(String,String,int)", "", "Argument[1]", "%-url", "manual"]  # ! ModelType: sinkOrStep, Notes:
+      - ["org.apache.hc.core5.http", "HttpHost", True, "HttpHost", "(String,int)", "", "Argument[0]", "%-url", "manual"]  # ! ModelType: sinkOrStep, Notes:
       - ["org.apache.hc.core5.http", "HttpHost", True, "create", "(URI)", "", "Argument[0]", "%-url", "manual"] # ! maybe step instead
       - ["org.apache.hc.core5.http", "HttpRequest", True, "setUri", "", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http", "HttpRequestFactory", True, "newHttpRequest", "(String,String)", "", "Argument[1]", "%-url", "manual"] # ! potentially combine with below so signature is ""; make sure still interesting since "Factory" method

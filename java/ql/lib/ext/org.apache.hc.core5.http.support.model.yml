@@ -3,6 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["org.apache.hc.core5.http.support", "AbstractRequestBuilder", True, "setHttpHost", "", "", "Argument[0]", "%-url", "manual"]  # ! ModelType: sink, Notes:
       - ["org.apache.hc.core5.http.support", "AbstractRequestBuilder", True, "setUri", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.support", "AbstractRequestBuilder", True, "setUri", "(URI)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "delete", "(String)", "", "Argument[0]", "%-url", "manual"]
@@ -19,6 +20,7 @@ extensions:
       - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "post", "(URI)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "put", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "put", "(URI)", "", "Argument[0]", "%-url", "manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "setHttpHost", "", "", "Argument[0]", "%-url", "manual"]     # ! ModelType: sink, Notes: prbly subtyped by AbstractRequestBuilder above
       - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "setUri", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "setUri", "(URI)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "trace", "(String)", "", "Argument[0]", "%-url", "manual"]

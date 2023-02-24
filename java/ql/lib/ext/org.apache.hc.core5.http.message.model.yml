@@ -3,9 +3,13 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(Method,HttpHost,String)", "", "Argument[1]", "%-url", "manual"]  # ! ModelType: sink, Notes:
       - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(Method,URI)", "", "Argument[1]", "%-url", "manual"]
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "%-url", "manual"]  # ! ModelType: sink, Notes:
       - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(String,URI)", "", "Argument[1]", "%-url", "manual"]
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(Method,HttpHost,String)", "", "Argument[1]", "%-url", "manual"]                # ! ModelType: sink, Notes:
       - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(Method,URI)", "", "Argument[1]", "%-url", "manual"]
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "%-url", "manual"]                # ! ModelType: sink, Notes:
       - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(String,URI)", "", "Argument[1]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "setUri", "", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.message", "HttpRequestWrapper", True, "setUri", "", "", "Argument[0]", "%-url", "manual"]

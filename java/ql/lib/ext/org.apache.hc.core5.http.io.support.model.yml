@@ -17,6 +17,7 @@ extensions:
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "post", "(URI)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "put", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "put", "(URI)", "", "Argument[0]", "%-url", "manual"]
+      - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "setHttpHost", "", "", "Argument[0]", "%-url", "manual"]  # ! ModelType: sink, Notes: possibly subtyped by AbstractRequestBuilder
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "setUri", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "setUri", "(URI)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "trace", "(String)", "", "Argument[0]", "%-url", "manual"]
