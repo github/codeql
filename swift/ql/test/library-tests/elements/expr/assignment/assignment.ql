@@ -30,7 +30,7 @@ string describe(Expr e) {
   e instanceof AssignOrExpr and result = "AssignOrExpr"
   or
   e instanceof AssignXorExpr and result = "AssignXorExpr"
-  or 
+  or
   e instanceof AssignPointwiseAndExpr and result = "AssignPointwiseAndExpr"
   or
   e instanceof AssignPointwiseOrExpr and result = "AssignPointwiseOrExpr"
@@ -41,10 +41,6 @@ string describe(Expr e) {
 }
 
 from Assignment e
-where
-  e.getLocation().getFile().getBaseName() != ""
-select
-  e,
-  concat(describe(e), ", "),
-  concat(e.getDest().toString(), ", "),
+where e.getLocation().getFile().getBaseName() != ""
+select e, concat(describe(e), ", "), concat(e.getDest().toString(), ", "),
   concat(e.getSource().toString(), ", ")
