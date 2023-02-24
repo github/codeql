@@ -203,7 +203,7 @@ func (m ModMode) argsForGoVersion(version string) []string {
 }
 
 // addVersionToMod add a go version directive, e.g. `go 1.14` to a `go.mod` file.
-func addVersionToMod(goMod []byte, version string) bool {
+func addVersionToMod(version string) bool {
 	cmd := exec.Command("go", "mod", "edit", "-go="+version)
 	return util.RunCmd(cmd)
 }
@@ -294,7 +294,7 @@ func main() {
 				} else if explicitRe := regexp.MustCompile("(?m)^## explicit$"); !explicitRe.Match(modulesTxt) {
 					// and the modules.txt does not contain an explicit annotation
 					log.Println("Adding a version directive to the go.mod file as the modules.txt does not have explicit annotations")
-					if !addVersionToMod(goMod, "1.13") {
+					if !addVersionToMod("1.13") {
 						log.Println("Failed to add a version to the go.mod file to fix explicitly required package bug; not using vendored dependencies")
 						modMode = ModMod
 					}
