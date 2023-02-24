@@ -76,18 +76,11 @@ predicate hasDuplication(
 
 predicate hasDuplication(ComputeRecursive recursive, string ordering, int i, float duplication) {
   duplication =
-    max(SummaryEvent inLayer, int iteration, int dup |
-      inLayer = getInLayerOrRecursive(recursive) and
-      hasDuplication(recursive, ordering, inLayer, iteration, i, dup)
-    |
-      dup
-    )
+    max(int iteration, int dup | hasDuplication(recursive, ordering, _, iteration, i, dup) | dup)
 }
 
 /**
  * Holds if the ordering `ordering` has `resultSize` resultSize in the `iteration`'th iteration.
- *
- * For example, the "base" ordering in iteration 0 has size 42.
  */
 private predicate hasResultSize(
   ComputeRecursive recursive, string ordering, SummaryEvent inLayer, int iteration, float resultSize
@@ -109,12 +102,7 @@ private predicate hasResultSize(
 
 predicate hasResultSize(ComputeRecursive recursive, string ordering, float resultSize) {
   resultSize =
-    strictsum(InLayer inLayer, int iteration, float r |
-      inLayer.getComputeRecursiveEvent() = recursive and
-      hasResultSize(recursive, ordering, inLayer, iteration, r)
-    |
-      r
-    )
+    strictsum(int iteration, float r | hasResultSize(recursive, ordering, _, iteration, r) | r)
 }
 
 RAParser<PipeLine>::RAExpr getAnRaOperation(SummaryEvent inLayer, string ordering) {
@@ -221,9 +209,8 @@ predicate hasDependentPredicateSize(
   ComputeRecursive recursive, string ordering, string predicateName, float size
 ) {
   size =
-    strictsum(SummaryEvent inLayer, int iteration, int s |
-      inLayer = getInLayerOrRecursive(recursive) and
-      hasDependentPredicateSize(recursive, ordering, inLayer, iteration, predicateName, s)
+    strictsum(int iteration, float s |
+      hasDependentPredicateSize(recursive, ordering, _, iteration, predicateName, s)
     |
       s
     )
