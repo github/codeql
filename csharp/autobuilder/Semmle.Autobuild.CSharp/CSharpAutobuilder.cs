@@ -125,6 +125,12 @@ namespace Semmle.Autobuild.CSharp
                 AddDiagnostic(message);
             }
 
+            // project files which don't exist get marked as not .NET core projects, but we don't want
+            // to show an error for this if the files don't exist
+            var foundNotDotNetProjects = autoBuildRule.DotNetRule.NotDotNetProjects.Where(
+                proj => this.Actions.FileExists(proj.FullPath)
+            );
+
             // both dotnet and msbuild builds require project or solution files; if we haven't found any
             // then neither of those rules would've worked
             if (this.ProjectsOrSolutionsToBuild.Count == 0)
@@ -137,7 +143,8 @@ namespace Semmle.Autobuild.CSharp
 
                 AddDiagnostic(message);
             }
-            else if (autoBuildRule.DotNetRule.NotDotNetProjects.Any())
+            // show a warning if there are projects which are not compatible with .NET Core, in case that is unintentional
+            else if (foundNotDotNetProjects.Any())
             {
                 var message = MakeDiagnostic("dotnet-incompatible-projects", "Some projects are incompatible with .NET Core");
                 message.MarkdownMessage =
