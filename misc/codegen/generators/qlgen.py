@@ -320,8 +320,9 @@ def generate(opts, renderer):
 
     generated = {q for q in out.rglob("*.qll")}
     generated.add(include_file)
-    generated.update(q for q in test_out.rglob("*.ql"))
-    generated.update(q for q in test_out.rglob(missing_test_source_filename))
+    if test_out:
+        generated.update(q for q in test_out.rglob("*.ql"))
+        generated.update(q for q in test_out.rglob(missing_test_source_filename))
 
     stubs = {q for q in stub_out.rglob("*.qll")}
 
@@ -373,28 +374,29 @@ def generate(opts, renderer):
             ),
             out / 'ParentChild.qll')
 
-        for c in data.classes.values():
-            if _should_skip_qltest(c, data.classes):
-                continue
-            test_dir = test_out / c.group / c.name
-            test_dir.mkdir(parents=True, exist_ok=True)
-            if all(f.suffix in (".txt", ".ql", ".actual", ".expected") for f in test_dir.glob("*.*")):
-                log.warning(f"no test source in {test_dir.relative_to(test_out)}")
-                renderer.render(ql.MissingTestInstructions(),
-                                test_dir / missing_test_source_filename)
-                continue
-            total_props, partial_props = _partition(_get_all_properties_to_be_tested(c, data.classes),
-                                                    lambda p: p.is_total)
-            renderer.render(ql.ClassTester(class_name=c.name,
-                                           properties=total_props,
-                                           elements_module=elements_module,
-                                           # in case of collapsed hierarchies we want to see the actual QL class in results
-                                           show_ql_class="qltest_collapse_hierarchy" in c.pragmas),
-                            test_dir / f"{c.name}.ql")
-            for p in partial_props:
-                renderer.render(ql.PropertyTester(class_name=c.name,
-                                                  elements_module=elements_module,
-                                                  property=p), test_dir / f"{c.name}_{p.getter}.ql")
+        if test_out:
+            for c in data.classes.values():
+                if _should_skip_qltest(c, data.classes):
+                    continue
+                test_dir = test_out / c.group / c.name
+                test_dir.mkdir(parents=True, exist_ok=True)
+                if all(f.suffix in (".txt", ".ql", ".actual", ".expected") for f in test_dir.glob("*.*")):
+                    log.warning(f"no test source in {test_dir.relative_to(test_out)}")
+                    renderer.render(ql.MissingTestInstructions(),
+                                    test_dir / missing_test_source_filename)
+                    continue
+                total_props, partial_props = _partition(_get_all_properties_to_be_tested(c, data.classes),
+                                                        lambda p: p.is_total)
+                renderer.render(ql.ClassTester(class_name=c.name,
+                                               properties=total_props,
+                                               elements_module=elements_module,
+                                               # in case of collapsed hierarchies we want to see the actual QL class in results
+                                               show_ql_class="qltest_collapse_hierarchy" in c.pragmas),
+                                test_dir / f"{c.name}.ql")
+                for p in partial_props:
+                    renderer.render(ql.PropertyTester(class_name=c.name,
+                                                      elements_module=elements_module,
+                                                      property=p), test_dir / f"{c.name}_{p.getter}.ql")
 
         final_ipa_types = []
         non_final_ipa_types = []
