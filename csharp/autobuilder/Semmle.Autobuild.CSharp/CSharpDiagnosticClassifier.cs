@@ -82,7 +82,7 @@ namespace Semmle.Autobuild.CSharp
                 );
                 diag.MarkdownMessage =
                     "Some project files were not found when CodeQL built your project:\n\n" +
-                    this.MissingProjectFiles.AsEnumerable().ToMarkdownList(MarkdownUtil.CodeFormatter, 5) +
+                    this.MissingProjectFiles.AsEnumerable().Select(p => builder.MakeRelative(p)).ToMarkdownList(MarkdownUtil.CodeFormatter, 5) +
                     "\n\nThis may lead to subsequent failures. " +
                     "You can check for common causes for missing project files:\n\n" +
                     $"- Ensure that the project is built using the {runsOnDocsUrl.ToMarkdownLink("intended operating system")} and that filenames on case-sensitive platforms are correctly specified.\n" +

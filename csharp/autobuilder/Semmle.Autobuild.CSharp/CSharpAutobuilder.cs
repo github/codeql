@@ -1,9 +1,8 @@
-﻿using Semmle.Extraction.CSharp;
+using Semmle.Extraction.CSharp;
 using Semmle.Util.Logging;
 using Semmle.Autobuild.Shared;
 using Semmle.Util;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace Semmle.Autobuild.CSharp
 {
@@ -99,6 +98,7 @@ namespace Semmle.Autobuild.CSharp
             if (this.autoBuildRule.BuildCommandAutoRule.ScriptPath is not null)
             {
                 DiagnosticMessage message;
+                var relScriptPath = this.MakeRelative(autoBuildRule.BuildCommandAutoRule.ScriptPath);
 
                 // if we found multiple build scripts in the project directory, then we can say
                 // as much to indicate that we may have picked the wrong one;
@@ -108,7 +108,7 @@ namespace Semmle.Autobuild.CSharp
                     message = MakeDiagnostic("multiple-build-scripts", "There are multiple potential build scripts");
                     message.MarkdownMessage =
                         "CodeQL found multiple potential build scripts for your project and " +
-                        $"attempted to run `{autoBuildRule.BuildCommandAutoRule.ScriptPath}`, which failed. " +
+                        $"attempted to run `{relScriptPath}`, which failed. " +
                         "This may not be the right build script for your project. " +
                         $"Set up a [manual build command]({buildCommandDocsUrl}).";
                 }
@@ -117,7 +117,7 @@ namespace Semmle.Autobuild.CSharp
                     message = MakeDiagnostic("script-failure", "Unable to build project using build script");
                     message.MarkdownMessage =
                         "CodeQL attempted to build your project using a script located at " +
-                        $"`{autoBuildRule.BuildCommandAutoRule.ScriptPath}`, which failed. " +
+                        $"`{relScriptPath}`, which failed. " +
                         $"Set up a [manual build command]({buildCommandDocsUrl}).";
                 }
 
@@ -142,7 +142,7 @@ namespace Semmle.Autobuild.CSharp
                 var message = MakeDiagnostic("dotnet-incompatible-projects", "Some projects are incompatible with .NET Core");
                 message.MarkdownMessage =
                     "CodeQL found some projects which cannot be built with .NET Core:\n" +
-                    autoBuildRule.DotNetRule.NotDotNetProjects.ToMarkdownList(5);
+                    autoBuildRule.DotNetRule.NotDotNetProjects.Select(p => this.MakeRelative(p.FullPath)).ToMarkdownList(MarkdownUtil.CodeFormatter, 5);
                 message.Severity = DiagnosticMessage.TspSeverity.Warning;
 
                 AddDiagnostic(message);
@@ -154,7 +154,7 @@ namespace Semmle.Autobuild.CSharp
                 var message = MakeDiagnostic("dotnet-build-failure", "Some projects or solutions failed to build using .NET Core");
                 message.MarkdownMessage =
                     "CodeQL was unable to build the following projects using .NET Core:\n" +
-                    autoBuildRule.DotNetRule.FailedProjectsOrSolutions.ToMarkdownList(10) +
+                    autoBuildRule.DotNetRule.FailedProjectsOrSolutions.Select(p => this.MakeRelative(p.FullPath)).ToMarkdownList(MarkdownUtil.CodeFormatter, 10) +
                     $"\nSet up a [manual build command]({buildCommandDocsUrl}).";
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
 
@@ -167,7 +167,7 @@ namespace Semmle.Autobuild.CSharp
                 var message = MakeDiagnostic("msbuild-build-failure", "Some projects or solutions failed to build using MSBuild");
                 message.MarkdownMessage =
                     "CodeQL was unable to build the following projects using MSBuild:\n" +
-                    autoBuildRule.MsBuildRule.FailedProjectsOrSolutions.ToMarkdownList(10) +
+                    autoBuildRule.MsBuildRule.FailedProjectsOrSolutions.Select(p => this.MakeRelative(p.FullPath)).ToMarkdownList(MarkdownUtil.CodeFormatter, 10) +
                     $"\nSet up a [manual build command]({buildCommandDocsUrl}).";
                 message.Severity = DiagnosticMessage.TspSeverity.Error;
 
