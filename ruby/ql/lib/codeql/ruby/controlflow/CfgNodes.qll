@@ -243,6 +243,35 @@ module ExprNodes {
     override Literal getExpr() { result = super.getExpr() }
   }
 
+  private class ControlExprChildMapping extends ExprChildMapping, ControlExpr {
+    override predicate relevantChild(AstNode n) { none() }
+  }
+
+  /** A control-flow node that wraps a `ControlExpr` AST expression. */
+  class ControlExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ControlExprCfgNode" }
+
+    override ControlExprChildMapping e;
+
+    override ControlExpr getExpr() { result = super.getExpr() }
+  }
+
+  private class LhsExprChildMapping extends ExprChildMapping, LhsExpr {
+    override predicate relevantChild(AstNode n) { none() }
+  }
+
+  /** A control-flow node that wraps a `LhsExpr` AST expression. */
+  class LhsExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "LhsExprCfgNode" }
+
+    override LhsExprChildMapping e;
+
+    override LhsExpr getExpr() { result = super.getExpr() }
+
+    /** Gets a variable used in (or introduced by) this LHS. */
+    Variable getAVariable() { result = e.(VariableAccess).getVariable() }
+  }
+
   private class AssignExprChildMapping extends ExprChildMapping, AssignExpr {
     override predicate relevantChild(AstNode n) { n = this.getAnOperand() }
   }
@@ -256,7 +285,7 @@ module ExprNodes {
     final override AssignExpr getExpr() { result = ExprCfgNode.super.getExpr() }
 
     /** Gets the LHS of this assignment. */
-    final ExprCfgNode getLhs() { e.hasCfgChild(e.getLeftOperand(), this, result) }
+    final LhsExprCfgNode getLhs() { e.hasCfgChild(e.getLeftOperand(), this, result) }
 
     /** Gets the RHS of this assignment. */
     final ExprCfgNode getRhs() { e.hasCfgChild(e.getRightOperand(), this, result) }

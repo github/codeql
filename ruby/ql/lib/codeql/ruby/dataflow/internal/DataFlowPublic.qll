@@ -985,6 +985,105 @@ class ClassNode extends ModuleNode {
 }
 
 /**
+ * A data flow node corresponding to a literal expression.
+ */
+class LiteralNode extends ExprNode {
+  private CfgNodes::ExprNodes::LiteralCfgNode literalCfgNode;
+
+  LiteralNode() { this.asExpr() = literalCfgNode }
+
+  /** Gets the underlying AST node as a `Literal`. */
+  Literal asLiteralAstNode() { result = literalCfgNode.getExpr() }
+}
+
+/**
+ * A data flow node corresponding to an operation expression.
+ */
+class OperationNode extends ExprNode {
+  private CfgNodes::ExprNodes::OperationCfgNode operationCfgNode;
+
+  OperationNode() { this.asExpr() = operationCfgNode }
+
+  /** Gets the underlying AST node as an `Operation`. */
+  Operation asOperationAstNode() { result = operationCfgNode.getExpr() }
+
+  /** Gets the operator of this operation. */
+  final string getOperator() { result = operationCfgNode.getOperator() }
+
+  /** Gets an operand of this operation. */
+  final Node getAnOperand() { result.asExpr() = operationCfgNode.getAnOperand() }
+}
+
+/**
+ * A data flow node corresponding to a control expression (e.g. `if`, `while`, `for`).
+ */
+class ControlExprNode extends ExprNode {
+  private CfgNodes::ExprNodes::ControlExprCfgNode controlExprCfgNode;
+
+  ControlExprNode() { this.asExpr() = controlExprCfgNode }
+
+  /** Gets the underlying AST node as a `ControlExpr`. */
+  ControlExpr asControlExprAstNode() { result = controlExprCfgNode.getExpr() }
+}
+
+/**
+ * A data flow node corresponding to a variable access expression.
+ */
+class VariableAccessNode extends ExprNode {
+  private CfgNodes::ExprNodes::VariableAccessCfgNode variableAccessCfgNode;
+
+  VariableAccessNode() { this.asExpr() = variableAccessCfgNode }
+
+  /** Gets the underlying AST node as a `VariableAccess`. */
+  VariableAccess asVariableAccessAstNode() { result = variableAccessCfgNode.getExpr() }
+}
+
+/**
+ * A data flow node corresponding to a constant access expression.
+ */
+class ConstantAccessNode extends ExprNode {
+  private CfgNodes::ExprNodes::ConstantAccessCfgNode constantAccessCfgNode;
+
+  ConstantAccessNode() { this.asExpr() = constantAccessCfgNode }
+
+  /** Gets the underlying AST node as a `ConstantAccess`. */
+  ConstantAccess asConstantAccessAstNode() { result = constantAccessCfgNode.getExpr() }
+
+  /** Gets the node corresponding to the scope expression. */
+  final Node getScopeNode() { result.asExpr() = constantAccessCfgNode.getScopeExpr() }
+}
+
+/**
+ * A data flow node corresponding to a LHS expression.
+ */
+class LhsExprNode extends ExprNode {
+  private CfgNodes::ExprNodes::LhsExprCfgNode lhsExprCfgNode;
+
+  LhsExprNode() { this.asExpr() = lhsExprCfgNode }
+
+  /** Gets the underlying AST node as a `LhsExpr`. */
+  LhsExpr asLhsExprAstNode() { result = lhsExprCfgNode.getExpr() }
+
+  /** Gets a variable used in (or introduced by) this LHS. */
+  Variable getAVariable() { result = lhsExprCfgNode.getAVariable() }
+}
+
+/**
+ * A data flow node corresponding to a statement sequence expression.
+ */
+class StmtSequenceNode extends ExprNode {
+  private CfgNodes::ExprNodes::StmtSequenceCfgNode stmtSequenceCfgNode;
+
+  StmtSequenceNode() { this.asExpr() = stmtSequenceCfgNode }
+
+  /** Gets the underlying AST node as a `StmtSequence`. */
+  StmtSequence asStmtSequenceAstNode() { result = stmtSequenceCfgNode.getExpr() }
+
+  /** Gets the last statement in this sequence, if any. */
+  final ExprNode getLastStmt() { result.asExpr() = stmtSequenceCfgNode.getLastStmt() }
+}
+
+/**
  * A data flow node corresponding to a method, block, or lambda expression.
  */
 class CallableNode extends ExprNode {
