@@ -441,10 +441,6 @@ class OperandNode extends Node, Node0 {
 Type stripPointer(Type t) {
   result = any(Ssa::Indirection ind | ind.getType() = t).getBaseType()
   or
-  // These types have a sensible base type, but don't receive additional
-  // dataflow nodes representing their indirections. So for now we special case them.
-  result = t.(ArrayType).getBaseType()
-  or
   result = t.(PointerToMemberType).getBaseType()
   or
   result = t.(FunctionPointerIshType).getBaseType()

@@ -86,9 +86,11 @@ int getMaxIndirectionsForType(Type type) {
   result = countIndirectionsForCppType(getTypeForGLValue(type))
 }
 
-private class PointerOrReferenceType extends Cpp::DerivedType {
-  PointerOrReferenceType() {
+private class PointerOrArrayOrReferenceType extends Cpp::DerivedType {
+  PointerOrArrayOrReferenceType() {
     this instanceof Cpp::PointerType
+    or
+    this instanceof Cpp::ArrayType
     or
     this instanceof Cpp::ReferenceType
   }
@@ -180,8 +182,10 @@ abstract class Indirection extends Type {
   predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) { none() }
 }
 
-private class PointerOrReferenceTypeIndirection extends Indirection instanceof PointerOrReferenceType {
-  PointerOrReferenceTypeIndirection() { baseType = PointerOrReferenceType.super.getBaseType() }
+private class PointerOrArrayOrReferenceTypeIndirection extends Indirection instanceof PointerOrArrayOrReferenceType {
+  PointerOrArrayOrReferenceTypeIndirection() {
+    baseType = PointerOrArrayOrReferenceType.super.getBaseType()
+  }
 
   override int getNumberOfIndirections() {
     result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
@@ -211,7 +215,8 @@ private module IteratorIndirections {
 
   class IteratorIndirection extends Indirection instanceof Interfaces::Iterator {
     IteratorIndirection() {
-      not this instanceof PointerOrReferenceTypeIndirection and baseType = super.getValueType()
+      not this instanceof PointerOrArrayOrReferenceTypeIndirection and
+      baseType = super.getValueType()
     }
 
     override int getNumberOfIndirections() {
@@ -399,7 +404,7 @@ predicate isModifiableByCall(ArgumentOperand operand, int indirectionIndex) {
       // by `call` should not be of the form `const T*` (for some deeply const type `T`).
       if call.getStaticCallTarget() instanceof Cpp::ConstMemberFunction
       then
-        exists(PointerOrReferenceType resultType |
+        exists(PointerOrArrayOrReferenceType resultType |
           resultType = call.getResultType() and
           not resultType.isDeeplyConstBelow()
         )
@@ -420,10 +425,7 @@ private predicate isModifiableAtImpl(CppType cppType, int indirectionIndex) {
   (
     exists(Type pointerType, Type base, Type t |
       pointerType = t.getUnderlyingType() and
-      (
-        pointerType = any(Indirection ind).getUnderlyingType() or
-        pointerType instanceof Cpp::ArrayType
-      ) and
+      pointerType = any(Indirection ind).getUnderlyingType() and
       cppType.hasType(t, _) and
       base = getTypeImpl(pointerType, indirectionIndex)
     |

@@ -176,18 +176,9 @@ private newtype TDefOrUseImpl =
       cppType.hasUnspecifiedType(p.getUnspecifiedType(), _) and
       isModifiableAt(cppType, indirectionIndex + 1)
     ) and
-    (
-      exists(Indirection indirection |
-        indirection.getType() = p.getUnspecifiedType() and
-        indirectionIndex = [1 .. indirection.getNumberOfIndirections()]
-      )
-      or
-      // Array types don't have indirections. So we need to special case them here.
-      exists(Cpp::ArrayType arrayType, CppType cppType |
-        arrayType = p.getUnspecifiedType() and
-        cppType.hasUnspecifiedType(arrayType, _) and
-        indirectionIndex = [1 .. countIndirectionsForCppType(cppType)]
-      )
+    exists(Indirection indirection |
+      indirection.getType() = p.getUnspecifiedType() and
+      indirectionIndex = [1 .. indirection.getNumberOfIndirections()]
     )
   }
 
@@ -287,7 +278,7 @@ abstract class DefImpl extends DefOrUseImpl {
 
   override int getIndirectionIndex() { result = ind }
 
-  override string toString() { result = "DefImpl" }
+  override string toString() { result = "Def of " + this.getSourceVariable() }
 
   override Cpp::Location getLocation() { result = this.getAddressOperand().getUse().getLocation() }
 
@@ -331,7 +322,7 @@ abstract class UseImpl extends DefOrUseImpl {
   /** Gets the node associated with this use. */
   abstract Node getNode();
 
-  override string toString() { result = "UseImpl" }
+  override string toString() { result = "Use of " + this.getSourceVariable() }
 
   /** Gets the indirection index of this use. */
   final override int getIndirectionIndex() { result = ind }
