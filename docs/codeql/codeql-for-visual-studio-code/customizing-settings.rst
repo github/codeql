@@ -25,6 +25,8 @@ Editing settings
 
 3. Edit a setting. The new settings are saved automatically.
 
+Alternatively, you can edit the settings in JSON format by opening the command palette and selecting **Preferences: Open User Settings (JSON)**.
+
 Choosing a version of the CodeQL CLI
 --------------------------------------
 
@@ -55,8 +57,8 @@ By default, items in the query history view are retained for 30 days. You can se
 
 .. _configuring-settings-for-running-queries:
 
-Configuring settings for running queries
------------------------------------------
+Configuring settings for running queries locally
+------------------------------------------------
 
 There are a number of settings for **Running Queries**. If your queries run too slowly and time out frequently, you may want to increase the memory. 
 
@@ -64,8 +66,47 @@ There are a number of settings for **Running Queries**. If your queries run too 
 
 To save query server logs in a custom location, edit the **Running Queries: Custom Log Directory** setting. If you use a custom log directory, the extension saves the logs permanently, instead of deleting them automatically after each workspace session. This is useful if you want to investigate these logs to improve the performance of your queries.
 
-Configuring settings for testing queries
------------------------------------------
+Configuring settings for variant analysis
+------------------------------------------
+
+You can define or edit lists of GitHub repositories for variant analysis, and change to a different controller repository using the **Variant analysis** settings.
+
+For information on the purpose and requirements for a controller repository, see ":ref:`About the controller repository <controller-repository>`."
+TODO
+The items shown in the Variant Analysis Repositories panel can also be managed by editing a file in your VS Code workspace called databases.json. This file contains a JSON representation of all the items displayed in the panel. To open your databases.json file in an editor window, click the { } icon in the top right of the variant analysis repositories panel. You can then see a structured representation of the repos, orgs and lists in your panel. For example:
+
+{
+  "version": 1,
+  "databases": {
+    "variantAnalysis": {
+      "repositoryLists": [
+        {
+          "name": "My favourite JavaScript repos",
+          "repositories": [
+            "facebook/react",
+            "babel/babel",
+            "angular/angular"
+          ]
+        }
+      ],
+      "owners": [
+        "microsoft"
+      ],
+      "repositories": [
+        "apache/hadoop"
+      ]
+    }
+  },
+  "selected": {
+    "kind": "variantAnalysisSystemDefinedList",
+    "listName": "top_10"
+  }
+}
+
+You can change the items shown in the panel or add new items by directly editing this file.
+
+Configuring settings for testing queries locally
+------------------------------------------------
 
 To increase the number of threads used for testing queries, you can update the **Running Tests > Number Of Threads** setting.
 

@@ -3,7 +3,7 @@
 .. _exploring-data-flow-with-path-queries:
 
 Exploring data flow with path queries
-=================================================
+=====================================
 
 You can run CodeQL queries in VS Code to help you track the flow of data through a program, highlighting areas that are potential security vulnerabilities.
 
