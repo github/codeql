@@ -16,6 +16,7 @@ import (
 	"golang.org/x/mod/semver"
 
 	"github.com/github/codeql-go/extractor/autobuilder"
+	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/util"
 )
 
@@ -249,12 +250,30 @@ func main() {
 	depMode := GoGetNoModules
 	modMode := ModUnset
 	needGopath := true
+	goDirectiveFound := false
+	goDirectiveVersion := "1.16"
 	if _, present := os.LookupEnv("GO111MODULE"); !present {
 		os.Setenv("GO111MODULE", "auto")
 	}
 	if util.FileExists("go.mod") {
 		depMode = GoGetWithModules
 		needGopath = false
+		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+)$`)
+		goMod, err := ioutil.ReadFile("go.mod")
+		if err != nil {
+			log.Println("Failed to read go.mod to check for missing Go version")
+		} else {
+			matches := versionRe.FindSubmatch(goMod)
+			if matches != nil {
+				goDirectiveFound = true
+				if len(matches) > 1 {
+					goDirectiveVersion = "v" + string(matches[1])
+					if semver.Compare(goDirectiveVersion, getEnvGoSemVer()) >= 0 {
+						diagnostics.EmitNewerGoVersionNeeded()
+					}
+				}
+			}
+		}
 		log.Println("Found go.mod, enabling go modules")
 	} else if util.FileExists("Gopkg.toml") {
 		depMode = Dep
@@ -283,10 +302,7 @@ func main() {
 		// we work around this by adding an explicit go version of 1.13, which is the last version
 		// where this is not an issue
 		if depMode == GoGetWithModules {
-			goMod, err := ioutil.ReadFile("go.mod")
-			if err != nil {
-				log.Println("Failed to read go.mod to check for missing Go version")
-			} else if versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+[0-9]+\.[0-9]+$`); !versionRe.Match(goMod) {
+			if !goDirectiveFound {
 				// if the go.mod does not contain a version line
 				modulesTxt, err := ioutil.ReadFile("vendor/modules.txt")
 				if err != nil {

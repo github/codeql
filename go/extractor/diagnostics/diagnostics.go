@@ -101,3 +101,13 @@ func EmitPackageDifferentOSArchitecture(pkgPath string) {
 		"", 0, 0, 0, 0,
 	)
 }
+
+func EmitNewerGoVersionNeeded() {
+	emitDiagnostic("go/autobuilder/newer-go-version-needed",
+		"Newer Go version needed",
+		"The version of Go available in the environment is lower than the version specified in the `go.mod` file. [Install a newer version](https://github.com/actions/setup-go#basic)",
+		severityError, false,
+		true, true, true,
+		"", 0, 0, 0, 0,
+	)
+}
