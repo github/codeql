@@ -30,16 +30,16 @@ predicate hasTupleCount(
   float tupleCount
 ) {
   inLayer = firstPredicate(recursive) and
-  exists(PipeLineRun run | run = inLayer.getPipelineRuns().getRun(iteration) |
-    ordering = run.getRAReference() and
+  exists(PipeLineRun run |
+    run = inLayer.getPipelineRuns().getRun(iteration) and ordering = run.getRAReference()
+  |
     tupleCount = run.getCount(i)
-  )
-  or
-  exists(SummaryEvent inLayer0, float tupleCount0, PipeLineRun run |
-    run = inLayer.getPipelineRuns().getRun(pragma[only_bind_into](iteration)) and
-    successor(recursive, inLayer0, inLayer) and
-    hasTupleCount(recursive, ordering, inLayer0, pragma[only_bind_into](iteration), i, tupleCount0) and
-    tupleCount = run.getCount(i) + tupleCount0
+    or
+    exists(SummaryEvent inLayer0, float tupleCount0 |
+      successor(recursive, inLayer0, inLayer) and
+      hasTupleCount(recursive, ordering, inLayer0, pragma[only_bind_into](iteration), i, tupleCount0) and
+      tupleCount = run.getCount(i) + tupleCount0
+    )
   )
 }
 
@@ -58,17 +58,19 @@ predicate hasDuplication(
   ComputeRecursive recursive, string ordering, SummaryEvent inLayer, int iteration, int i,
   float duplication
 ) {
-  inLayer = firstPredicate(recursive) and
-  exists(PipeLineRun run | run = inLayer.getPipelineRuns().getRun(iteration) |
-    ordering = run.getRAReference() and
+  exists(PipeLineRun run |
+    run = inLayer.getPipelineRuns().getRun(iteration) and
+    ordering = run.getRAReference()
+  |
+    inLayer = firstPredicate(recursive) and
     duplication = run.getDuplicationPercentage(i)
-  )
-  or
-  exists(SummaryEvent inLayer0, float duplication0, PipeLineRun run |
-    run = inLayer.getPipelineRuns().getRun(pragma[only_bind_into](iteration)) and
-    successor(recursive, inLayer0, inLayer) and
-    hasDuplication(recursive, ordering, inLayer0, pragma[only_bind_into](iteration), i, duplication0) and
-    duplication = run.getDuplicationPercentage(i).maximum(duplication0)
+    or
+    exists(SummaryEvent inLayer0, float duplication0 |
+      successor(recursive, inLayer0, inLayer) and
+      hasDuplication(recursive, ordering, inLayer0, pragma[only_bind_into](iteration), i,
+        duplication0) and
+      duplication = run.getDuplicationPercentage(i).maximum(duplication0)
+    )
   )
 }
 
@@ -90,14 +92,18 @@ predicate hasDuplication(ComputeRecursive recursive, string ordering, int i, flo
 private predicate hasResultSize(
   ComputeRecursive recursive, string ordering, SummaryEvent inLayer, int iteration, float resultSize
 ) {
-  inLayer = firstPredicate(recursive) and
-  ordering = inLayer.getPipelineRuns().getRun(iteration).getRAReference() and
-  resultSize = inLayer.getDeltaSize(iteration)
-  or
-  exists(SummaryEvent inLayer0, int resultSize0 |
-    successor(recursive, inLayer0, inLayer) and
-    hasResultSize(recursive, ordering, inLayer0, iteration, resultSize0) and
-    resultSize = inLayer.getDeltaSize(iteration) + resultSize0
+  exists(PipeLineRun run |
+    run = inLayer.getPipelineRuns().getRun(iteration) and
+    ordering = run.getRAReference()
+  |
+    inLayer = firstPredicate(recursive) and
+    resultSize = inLayer.getDeltaSize(iteration)
+    or
+    exists(SummaryEvent inLayer0, int resultSize0 |
+      successor(recursive, inLayer0, inLayer) and
+      hasResultSize(recursive, ordering, inLayer0, iteration, resultSize0) and
+      resultSize = inLayer.getDeltaSize(iteration) + resultSize0
+    )
   )
 }
 
@@ -122,17 +128,20 @@ SummaryEvent getInLayerEventWithName(ComputeRecursive recursive, string predicat
 
 bindingset[predicateName, iteration]
 int getSize(ComputeRecursive recursive, string predicateName, int iteration, TDeltaKind kind) {
-  exists(int i |
+  exists(int i, SummaryEvent event |
     kind = TPrevious() and
     i = iteration - 1
     or
     kind = TCurrent() and
     i = iteration
   |
-    result = getInLayerEventWithName(recursive, predicateName).getDeltaSize(i)
-    or
-    not exists(getInLayerEventWithName(recursive, predicateName).getDeltaSize(i)) and
-    result = 0
+    event = getInLayerEventWithName(recursive, predicateName) and
+    (
+      result = event.getDeltaSize(i)
+      or
+      not exists(event.getDeltaSize(i)) and
+      result = 0
+    )
   )
 }
 
@@ -154,36 +163,53 @@ private predicate isDelta(string predicateName, TDeltaKind kind, string withoutS
   withoutSuffix = predicateName.regexpCapture("(.+)#cur_delta", 1)
 }
 
+bindingset[iteration]
+float getRecursiveDependencySize(
+  ComputeRecursive recursive, string predicateName, int iteration, SummaryEvent inLayer,
+  string ordering, TDeltaKind kind
+) {
+  result = getSize(recursive, predicateName, iteration, kind) and
+  isDelta(getAnRaOperation(inLayer, ordering).getARhsPredicate(), kind, predicateName)
+}
+
+bindingset[ordering, iteration]
+predicate hasDependentPredicateSizeImpl(
+  ComputeRecursive recursive, string ordering, float size, string predicateName, int iteration,
+  SummaryEvent inLayer
+) {
+  // We treat the base case as a non-recursive case
+  if ordering = "base"
+  then
+    size =
+      [
+        getDependencyWithName(recursive.getDependencies(), predicateName).getResultSize(),
+        getRecursiveDependencySize(recursive, predicateName, iteration, inLayer, ordering,
+          TCurrent())
+      ]
+  else
+    size =
+      getRecursiveDependencySize(recursive, predicateName, iteration, inLayer, ordering, TPrevious())
+}
+
+pragma[nomagic]
 predicate hasDependentPredicateSize(
   ComputeRecursive recursive, string ordering, SummaryEvent inLayer, int iteration,
   string predicateName, float size
 ) {
-  exists( |
+  exists(PipeLineRun run |
+    run = inLayer.getPipelineRuns().getRun(pragma[only_bind_into](iteration)) and
+    ordering = run.getRAReference()
+  |
     inLayer = firstPredicate(recursive) and
-    ordering = inLayer.getPipelineRuns().getRun(iteration).getRAReference()
-  |
-    // We treat iteration 0 as a non-recursive case
-    if ordering = "base"
-    then size = getDependencyWithName(recursive.getDependencies(), predicateName).getResultSize()
-    else
-      exists(TDeltaKind kind |
-        size = getSize(recursive, predicateName, iteration, kind) and
-        isDelta(getAnRaOperation(inLayer, ordering).getARhsPredicate(), kind, predicateName)
-      )
-  )
-  or
-  exists(SummaryEvent inLayer0, float size0 |
-    successor(recursive, inLayer0, inLayer) and
-    hasDependentPredicateSize(recursive, ordering, inLayer0, iteration, predicateName, size0)
-  |
-    // We treat iteration 0 as a non-recursive case
-    if ordering = "base"
-    then size = getDependencyWithName(recursive.getDependencies(), predicateName).getResultSize()
-    else
-      exists(TDeltaKind kind |
-        size = getSize(recursive, predicateName, iteration, kind) + size0 and
-        isDelta(getAnRaOperation(inLayer, ordering).getARhsPredicate(), kind, predicateName)
-      )
+    hasDependentPredicateSizeImpl(recursive, ordering, size, predicateName, iteration, inLayer)
+    or
+    exists(SummaryEvent inLayer0, float size0, float size1 |
+      successor(recursive, inLayer0, inLayer) and
+      hasDependentPredicateSize(recursive, ordering, inLayer0, pragma[only_bind_into](iteration),
+        predicateName, size0) and
+      hasDependentPredicateSizeImpl(recursive, ordering, size1, predicateName, iteration, inLayer) and
+      size = size0 + size1
+    )
   )
 }
 
