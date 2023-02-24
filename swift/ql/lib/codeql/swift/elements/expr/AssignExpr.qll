@@ -2,7 +2,7 @@ private import codeql.swift.generated.expr.AssignExpr
 private import codeql.swift.elements.expr.BinaryExpr
 
 /**
- * Any assignment expression. For example:
+ * An assignment expression. For example:
  * ```
  * x = 0
  * y += 1
@@ -63,7 +63,7 @@ class AssignExpr extends Generated::AssignExpr {
 }
 
 /**
- * Any assignment expression apart from `=`. For example:
+ * An assignment expression apart from `=`. For example:
  * ```
  * x += 1
  * y &= z
