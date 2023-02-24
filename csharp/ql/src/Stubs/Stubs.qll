@@ -740,14 +740,16 @@ private string stubOperator(Operator o, Assembly assembly) {
   if o instanceof ConversionOperator
   then
     result =
-      "    " + stubModifiers(o) + stubExplicit(o) + "operator " + stubClassName(o.getReturnType()) +
-        "(" + stubParameters(o) + ")" + stubImplementation(o) + ";\n"
+      "    " + stubModifiers(o) + stubExplicit(o) + "operator " + stubChecked(o) +
+        stubClassName(o.getReturnType()) + "(" + stubParameters(o) + ")" + stubImplementation(o) +
+        ";\n"
   else
     if not o.getDeclaringType() instanceof Enum
     then
       result =
-        "    " + stubModifiers(o) + stubClassName(o.getReturnType()) + " operator " + o.getName() +
-          "(" + stubParameters(o) + ")" + stubImplementation(o) + ";\n"
+        "    " + stubModifiers(o) + stubClassName(o.getReturnType()) + " " +
+          stubExplicitImplementation(o) + "operator " + o.getName() + "(" + stubParameters(o) + ")" +
+          stubImplementation(o) + ";\n"
     else result = "    // Stub generator skipped operator: " + o.getName() + "\n"
 }
 
@@ -888,7 +890,16 @@ private string stubConstructorInitializer(Constructor c) {
 private string stubExplicit(ConversionOperator op) {
   op instanceof ImplicitConversionOperator and result = "implicit "
   or
-  op instanceof ExplicitConversionOperator and result = "explicit "
+  (
+    op instanceof ExplicitConversionOperator
+    or
+    op instanceof CheckedExplicitConversionOperator
+  ) and
+  result = "explicit "
+}
+
+private string stubChecked(Operator o) {
+  if o instanceof CheckedExplicitConversionOperator then result = "checked " else result = ""
 }
 
 private string stubGetter(DeclarationWithGetSetAccessors p) {
