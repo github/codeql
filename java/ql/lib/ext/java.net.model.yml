@@ -27,5 +27,6 @@ extensions:
       - ["java.net", "URI", False, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URI", False, "toURL", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URL", False, "URL", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["java.net", "URL", False, "toURI", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.net", "URL", False, "toURI", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.net", "URL", False, "toExternalForm", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URLDecoder", False, "decode", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
