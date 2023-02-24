@@ -271,6 +271,16 @@ namespace Semmle.Autobuild.Shared
         private readonly DiagnosticsStream diagnostics;
 
         /// <summary>
+        /// Makes <see cref="path" /> relative to the root source directory.
+        /// </summary>
+        /// <param name="path">The path which to make relative.</param>
+        /// <returns>The relative path.</returns>
+        public string MakeRelative(string path)
+        {
+            return Path.GetRelativePath(this.RootDirectory, path);
+        }
+
+        /// <summary>
         /// Log a given build event to the console.
         /// </summary>
         /// <param name="format">The format string.</param>
