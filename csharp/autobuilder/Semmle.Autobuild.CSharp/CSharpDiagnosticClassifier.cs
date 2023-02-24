@@ -39,7 +39,7 @@ namespace Semmle.Autobuild.CSharp
         }
 
         public MissingXamarinSdkRule() :
-            base("MSB4019:[^\"]*\"[^\"]*/Xamarin/(?<sdkName>[^/]*)/Xamarin\\.(\\k<sdkName>)\\.CSharp\\.targets\"")
+            base("MSB4019:[^\"]*\"[^\"]*Xamarin\\.(?<sdkName>[^\\.]*)\\.CSharp\\.targets\"")
         {
         }
 
