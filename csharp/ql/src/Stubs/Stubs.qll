@@ -400,7 +400,7 @@ private string stubAccessibility(Member m) {
   if
     m.getDeclaringType() instanceof Interface
     or
-    exists(m.(Virtualizable).getExplicitlyImplementedInterface())
+    exists(getSingleSpecificImplementedInterface(m))
     or
     m instanceof Constructor and m.isStatic()
   then result = ""
@@ -713,9 +713,13 @@ private string stubEventAccessors(Event e) {
   else result = ";"
 }
 
+private Interface getSingleSpecificImplementedInterface(Member c) {
+  result = unique(Interface i | i = c.(Virtualizable).getExplicitlyImplementedInterface())
+}
+
 private string stubExplicitImplementation(Member c) {
-  if exists(c.(Virtualizable).getExplicitlyImplementedInterface())
-  then result = stubClassName(c.(Virtualizable).getExplicitlyImplementedInterface()) + "."
+  if exists(getSingleSpecificImplementedInterface(c))
+  then result = stubClassName(getSingleSpecificImplementedInterface(c)) + "."
   else result = ""
 }
 
