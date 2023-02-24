@@ -11,6 +11,6 @@
 import ql
 
 from ExprAggregate agg
-where agg.getKind() = ["sum", "strictsum"]
+where agg.getKind() = ["sum", "strictsum", "avg"]
 select agg,
   "This " + agg.getKind() + " does not have a domain argument, so may produce surprising results."
