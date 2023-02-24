@@ -432,8 +432,8 @@ void intPointerSourceCaller() {
 void intPointerSourceCaller2() {
   int local[1];
   intPointerSource(local);
-  sink(local); // $ ast=433:7 ast=434:20 ir
-  sink(*local); // $ ast=433:7 ast=434:20 ir
+  sink(local); // $ ast=433:7 ast=434:20 ir=433:7 ir=434:20 ir
+  sink(*local); // $ ast=433:7 ast=434:20 ir=433:7 ir=434:20
 }
 
 void intArraySourceCaller() {
@@ -447,8 +447,8 @@ void intArraySourceCaller() {
 void intArraySourceCaller2() {
   int local[2];
   intArraySource(local, 2);
-  sink(local); // $ ast=448:7 ast=449:18 ir
-  sink(*local); // $ ast=448:7 ast=449:18 ir
+  sink(local); // $ ast=448:7 ast=449:18 ir=448:7 ir=449:18 ir
+  sink(*local); // $ ast=448:7 ast=449:18 ir=448:7 ir=449:18
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -594,5 +594,5 @@ void test_indirect_flow_to_array() {
   int* p = indirect_source();
   int* xs[2];
   xs[0] = p;
-  sink(*xs[0]); // $ MISSING: ir,ast
+  sink(*xs[0]); // $ ir=594:12 MISSING: ast SPURIOUS: ir=595:8
 }
