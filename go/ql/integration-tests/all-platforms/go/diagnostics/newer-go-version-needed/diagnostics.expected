@@ -1,0 +1,15 @@
+{
+  "internal": false,
+  "markdownMessage": "The version of Go available in the environment is lower than the version specified in the `go.mod` file. [Install a newer version](https://github.com/actions/setup-go#basic)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/newer-go-version-needed",
+    "name": "Newer Go version needed"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
