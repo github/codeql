@@ -20,10 +20,10 @@ import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 import codeql.ruby.security.UnsafeDeserializationCustomizations
 
-abstract class YAMLSink extends DataFlow::Node { }
+abstract class YamlSink extends DataFlow::Node { }
 
-class YamlunsafeLoadArgument extends YAMLSink {
-  YamlunsafeLoadArgument() {
+class YamlUnsafeLoadArgument extends YamlSink {
+  YamlUnsafeLoadArgument() {
     this =
       API::getTopLevelMember(["YAML", "Psych"])
           .getAMethodCall(["unsafe_load_file", "unsafe_load", "load_stream"])
@@ -53,7 +53,7 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     // for detecting The CVE we should uncomment following line
     // sink.getLocation().getFile().toString().matches("%yaml_column%") and
-    sink instanceof YAMLSink or
+    sink instanceof YamlSink or
     sink =
       API::getTopLevelMember(["YAML", "Psych"])
           .getAMethodCall(["parse", "parse_stream", "parse_file"])
