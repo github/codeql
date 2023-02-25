@@ -103,10 +103,18 @@ private class PointerOrArrayOrReferenceType extends Cpp::DerivedType {
  * (i.e., `countIndirections(e.getUnspecifiedType())`).
  */
 private int countIndirections(Type t) {
-  result = any(Indirection ind | ind.getType() = t).getNumberOfIndirections()
-  or
-  not exists(Indirection ind | ind.getType() = t) and
-  result = 0
+  // We special case void pointers because we don't know how many indirections
+  // they really have. In a Glorious Future we could do a pre-analysis to figure out
+  // which kinds of values flows into the type and use the maximum number of
+  // indirections flowinginto the type.
+  if t instanceof Cpp::VoidPointerType
+  then result = 2
+  else (
+    result = any(Indirection ind | ind.getType() = t).getNumberOfIndirections()
+    or
+    not exists(Indirection ind | ind.getType() = t) and
+    result = 0
+  )
 }
 
 /**
