@@ -613,5 +613,5 @@ void test_flow_through_void_double_pointer(int *p) // $ ast-def=p
 {
   intPointerSource(p);
   void* q = (void*)&p;
-  sink(**(int**)q); // $ MISSING: ast,ir
+  sink(**(int**)q); // $ ir MISSING: ast
 }

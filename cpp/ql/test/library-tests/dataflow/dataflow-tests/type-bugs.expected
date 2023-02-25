@@ -1,3 +1,59 @@
 failures
 astTypeBugs
 irTypeBugs
+| dispatch.cpp:60:18:60:29 | dispatch.cpp:60:18:60:29 | dispatch.cpp:60:18:60:29 | new indirection |
+| dispatch.cpp:60:18:60:29 | dispatch.cpp:60:18:60:29 | dispatch.cpp:60:18:60:29 | new indirection |
+| dispatch.cpp:60:18:60:29 | dispatch.cpp:60:18:60:29 | dispatch.cpp:60:18:60:29 | new indirection |
+| dispatch.cpp:61:18:61:29 | dispatch.cpp:61:18:61:29 | dispatch.cpp:61:18:61:29 | new indirection |
+| dispatch.cpp:61:18:61:29 | dispatch.cpp:61:18:61:29 | dispatch.cpp:61:18:61:29 | new indirection |
+| dispatch.cpp:61:18:61:29 | dispatch.cpp:61:18:61:29 | dispatch.cpp:61:18:61:29 | new indirection |
+| dispatch.cpp:65:10:65:21 | dispatch.cpp:65:10:65:21 | dispatch.cpp:65:10:65:21 | new indirection |
+| dispatch.cpp:65:10:65:21 | dispatch.cpp:65:10:65:21 | dispatch.cpp:65:10:65:21 | new indirection |
+| dispatch.cpp:65:10:65:21 | dispatch.cpp:65:10:65:21 | dispatch.cpp:65:10:65:21 | new indirection |
+| example.c:8:24:8:32 | example.c:8:24:8:32 | example.c:8:24:8:32 | something indirection |
+| example.c:28:14:28:25 | example.c:28:14:28:25 | example.c:28:14:28:25 | & ... indirection |
+| example.c:28:14:28:25 | example.c:28:14:28:25 | example.c:28:14:28:25 | (void *)... indirection |
+| example.c:28:14:28:25 | example.c:28:14:28:25 | example.c:28:14:28:25 | doSomething output argument |
+| file://:0:0:0:0 | file://:0:0:0:0 | file://:0:0:0:0 | (unnamed parameter 0) indirection |
+| file://:0:0:0:0 | file://:0:0:0:0 | file://:0:0:0:0 | overflow_arg_area indirection |
+| file://:0:0:0:0 | file://:0:0:0:0 | file://:0:0:0:0 | reg_save_area indirection |
+| test.cpp:380:20:380:23 | test.cpp:380:20:380:23 | test.cpp:380:20:380:23 | dest indirection |
+| test.cpp:380:38:380:40 | test.cpp:380:38:380:40 | test.cpp:380:38:380:40 | src indirection |
+| test.cpp:384:3:384:8 | test.cpp:384:3:384:8 | test.cpp:384:3:384:8 | call to memcpy indirection |
+| test.cpp:384:10:384:13 | test.cpp:384:10:384:13 | test.cpp:384:10:384:13 | & ... indirection |
+| test.cpp:384:10:384:13 | test.cpp:384:10:384:13 | test.cpp:384:10:384:13 | (void *)... indirection |
+| test.cpp:384:10:384:13 | test.cpp:384:10:384:13 | test.cpp:384:10:384:13 | memcpy output argument |
+| test.cpp:384:16:384:23 | test.cpp:384:16:384:23 | test.cpp:384:16:384:23 | & ... indirection |
+| test.cpp:384:16:384:23 | test.cpp:384:16:384:23 | test.cpp:384:16:384:23 | (const void *)... indirection |
+| test.cpp:391:3:391:8 | test.cpp:391:3:391:8 | test.cpp:391:3:391:8 | call to memcpy indirection |
+| test.cpp:391:10:391:13 | test.cpp:391:10:391:13 | test.cpp:391:10:391:13 | & ... indirection |
+| test.cpp:391:10:391:13 | test.cpp:391:10:391:13 | test.cpp:391:10:391:13 | (void *)... indirection |
+| test.cpp:391:10:391:13 | test.cpp:391:10:391:13 | test.cpp:391:10:391:13 | memcpy output argument |
+| test.cpp:391:16:391:23 | test.cpp:391:16:391:23 | test.cpp:391:16:391:23 | & ... indirection |
+| test.cpp:391:16:391:23 | test.cpp:391:16:391:23 | test.cpp:391:16:391:23 | (const void *)... indirection |
+| test.cpp:400:3:400:8 | test.cpp:400:3:400:8 | test.cpp:400:3:400:8 | call to memcpy indirection |
+| test.cpp:400:10:400:13 | test.cpp:400:10:400:13 | test.cpp:400:10:400:13 | & ... indirection |
+| test.cpp:400:10:400:13 | test.cpp:400:10:400:13 | test.cpp:400:10:400:13 | (void *)... indirection |
+| test.cpp:400:10:400:13 | test.cpp:400:10:400:13 | test.cpp:400:10:400:13 | memcpy output argument |
+| test.cpp:400:16:400:22 | test.cpp:400:16:400:22 | test.cpp:400:16:400:22 | & ... indirection |
+| test.cpp:400:16:400:22 | test.cpp:400:16:400:22 | test.cpp:400:16:400:22 | (const void *)... indirection |
+| test.cpp:407:3:407:8 | test.cpp:407:3:407:8 | test.cpp:407:3:407:8 | call to memcpy indirection |
+| test.cpp:407:10:407:13 | test.cpp:407:10:407:13 | test.cpp:407:10:407:13 | & ... indirection |
+| test.cpp:407:10:407:13 | test.cpp:407:10:407:13 | test.cpp:407:10:407:13 | (void *)... indirection |
+| test.cpp:407:10:407:13 | test.cpp:407:10:407:13 | test.cpp:407:10:407:13 | memcpy output argument |
+| test.cpp:407:16:407:22 | test.cpp:407:16:407:22 | test.cpp:407:16:407:22 | & ... indirection |
+| test.cpp:407:16:407:22 | test.cpp:407:16:407:22 | test.cpp:407:16:407:22 | (const void *)... indirection |
+| test.cpp:481:24:481:27 | test.cpp:481:24:481:27 | test.cpp:481:24:481:27 | (unnamed parameter 0) indirection |
+| test.cpp:488:21:488:30 | test.cpp:488:21:488:30 | test.cpp:488:21:488:30 | (void *)... indirection |
+| test.cpp:488:21:488:30 | test.cpp:488:21:488:30 | test.cpp:488:21:488:30 | content indirection |
+| test.cpp:488:21:488:30 | test.cpp:488:21:488:30 | test.cpp:488:21:488:30 | writes_to_content output argument |
+| test.cpp:615:9:615:9 | test.cpp:615:9:615:9 | test.cpp:615:9:615:9 | definition of q indirection |
+| test.cpp:615:9:615:9 | test.cpp:615:9:615:9 | test.cpp:615:9:615:9 | definition of q indirection |
+| test.cpp:615:9:615:9 | test.cpp:615:9:615:9 | test.cpp:615:9:615:9 | q indirection |
+| test.cpp:615:13:615:21 | test.cpp:615:13:615:21 | test.cpp:615:13:615:21 | & ... indirection |
+| test.cpp:615:13:615:21 | test.cpp:615:13:615:21 | test.cpp:615:13:615:21 | (void *)... indirection |
+| test.cpp:615:13:615:21 | test.cpp:615:13:615:21 | test.cpp:615:13:615:21 | (void *)... indirection |
+| test.cpp:616:17:616:17 | test.cpp:616:17:616:17 | test.cpp:616:17:616:17 | q indirection |
+| test.cpp:616:17:616:17 | test.cpp:616:17:616:17 | test.cpp:616:17:616:17 | q indirection |
+| test.cpp:616:17:616:17 | test.cpp:616:17:616:17 | test.cpp:616:17:616:17 | q indirection |
+| test.cpp:616:17:616:17 | test.cpp:616:17:616:17 | test.cpp:616:17:616:17 | q indirection |
