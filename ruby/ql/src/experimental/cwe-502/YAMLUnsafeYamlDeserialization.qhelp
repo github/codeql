@@ -17,4 +17,10 @@
         <p>In the example below, you can see safe and unsafe methods get called by a remote user input. You can give correct authorization to users, or you can use safe methods for loading yaml documents.</p>
         <sample src="YAMLUnsafeYamlDeserialization.rb" />
     </example>
+    <references>
+    <li>
+    You can read that how unsafe yaml load methods can lead to code executions.
+    <a href="https://devcraft.io/2021/01/07/universal-deserialisation-gadget-for-ruby-2-x-3-x.html">Universal Deserialisation Gadget for Ruby 2.x-3.x </a>.
+    </li>
+    </references>
 </qhelp>
