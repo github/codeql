@@ -1,0 +1,12 @@
+edges
+| PlistUnsafeDeserialization.rb:5:30:5:35 | call to params :  | PlistUnsafeDeserialization.rb:5:30:5:49 | ...[...] |
+| PlistUnsafeDeserialization.rb:6:30:6:35 | call to params :  | PlistUnsafeDeserialization.rb:6:30:6:49 | ...[...] |
+nodes
+| PlistUnsafeDeserialization.rb:5:30:5:35 | call to params :  | semmle.label | call to params :  |
+| PlistUnsafeDeserialization.rb:5:30:5:49 | ...[...] | semmle.label | ...[...] |
+| PlistUnsafeDeserialization.rb:6:30:6:35 | call to params :  | semmle.label | call to params :  |
+| PlistUnsafeDeserialization.rb:6:30:6:49 | ...[...] | semmle.label | ...[...] |
+subpaths
+#select
+| PlistUnsafeDeserialization.rb:5:30:5:49 | ...[...] | PlistUnsafeDeserialization.rb:5:30:5:35 | call to params :  | PlistUnsafeDeserialization.rb:5:30:5:49 | ...[...] | Unsafe deserialization depends on a $@. | PlistUnsafeDeserialization.rb:5:30:5:35 | call to params | potentially untrusted source |
+| PlistUnsafeDeserialization.rb:6:30:6:49 | ...[...] | PlistUnsafeDeserialization.rb:6:30:6:35 | call to params :  | PlistUnsafeDeserialization.rb:6:30:6:49 | ...[...] | Unsafe deserialization depends on a $@. | PlistUnsafeDeserialization.rb:6:30:6:35 | call to params | potentially untrusted source |
