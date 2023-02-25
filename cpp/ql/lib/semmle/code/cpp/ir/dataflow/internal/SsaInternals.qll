@@ -144,7 +144,7 @@ private newtype TDefOrUseImpl =
       indirectionIndex = [0 .. defIndex] + 1
     )
   } or
-  TGlobalDef(Cpp::GlobalOrNamespaceVariable v, IRFunction f, int indirectionIndex) {
+  TGlobalDefImpl(Cpp::GlobalOrNamespaceVariable v, IRFunction f, int indirectionIndex) {
     // Represents the initial "definition" of a global variable when entering
     // a function body.
     exists(VariableAddressInstruction vai |
@@ -475,12 +475,12 @@ class GlobalUse extends UseImpl, TGlobalUse {
   override BaseSourceVariableInstruction getBase() { none() }
 }
 
-class GlobalDef extends TGlobalDef {
+class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
   Cpp::GlobalOrNamespaceVariable global;
   IRFunction f;
   int indirectionIndex;
 
-  GlobalDef() { this = TGlobalDef(global, f, indirectionIndex) }
+  GlobalDefImpl() { this = TGlobalDefImpl(global, f, indirectionIndex) }
 
   /** Gets the global variable associated with this definition. */
   Cpp::GlobalOrNamespaceVariable getVariable() { result = global }
@@ -489,10 +489,10 @@ class GlobalDef extends TGlobalDef {
   IRFunction getIRFunction() { result = f }
 
   /** Gets the global variable associated with this definition. */
-  int getIndirectionIndex() { result = indirectionIndex }
+  override int getIndirectionIndex() { result = indirectionIndex }
 
   /** Holds if this definition or use has index `index` in block `block`. */
-  final predicate hasIndexInBlock(IRBlock block, int index) {
+  final override predicate hasIndexInBlock(IRBlock block, int index) {
     exists(EnterFunctionInstruction enter |
       enter = f.getEnterFunctionInstruction() and
       block.getInstruction(index) = enter
@@ -500,25 +500,8 @@ class GlobalDef extends TGlobalDef {
   }
 
   /** Gets the global variable associated with this definition. */
-  SourceVariable getSourceVariable() { sourceVariableIsGlobal(result, global, f, indirectionIndex) }
-
-  /**
-   * Holds if this definition has index `index` in block `block`, and
-   * is a definition of the variable `sv`
-   */
-  final predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
-    this.hasIndexInBlock(block, index) and
-    sv = this.getSourceVariable()
-  }
-
-  /** Gets the location of this element. */
-  final Cpp::Location getLocation() { result = f.getLocation() }
-
-  /** Gets a textual representation of this element. */
-  string toString() {
-    if indirectionIndex = 0
-    then result = global.toString()
-    else result = global.toString() + " indirection"
+  override SourceVariable getSourceVariable() {
+    sourceVariableIsGlobal(result, global, f, indirectionIndex)
   }
 
   /**
@@ -526,6 +509,12 @@ class GlobalDef extends TGlobalDef {
    * and typedefs have been resolved.
    */
   Type getUnspecifiedType() { result = global.getUnspecifiedType() }
+
+  override string toString() { result = "GlobalDef" }
+
+  override Location getLocation() { result = f.getLocation() }
+
+  override BaseSourceVariableInstruction getBase() { none() }
 }
 
 /**
@@ -641,33 +630,31 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
  * So this predicate recurses back along conversions and `PointerArithmeticInstruction`s to find the
  * first use that has provides use-use flow, and uses that target as the target of the `nodeFrom`.
  */
-private predicate adjustForPointerArith(Node nodeFrom, UseOrPhi use, boolean uncertain) {
+private predicate adjustForPointerArith(
+  DefOrUse defOrUse, Node nodeFrom, UseOrPhi use, boolean uncertain
+) {
   nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
-  exists(DefOrUse defOrUse, Node adjusted |
+  exists(Node adjusted |
     indirectConversionFlowStep*(adjusted, nodeFrom) and
     nodeToDefOrUse(adjusted, defOrUse, uncertain) and
     adjacentDefRead(defOrUse, use)
   )
 }
 
-private predicate ssaFlowImpl(Node nodeFrom, Node nodeTo, boolean uncertain) {
+private predicate ssaFlowImpl(SsaDefOrUse defOrUse, Node nodeFrom, Node nodeTo, boolean uncertain) {
   // `nodeFrom = any(PostUpdateNode pun).getPreUpdateNode()` is implied by adjustedForPointerArith.
   exists(UseOrPhi use |
-    adjustForPointerArith(nodeFrom, use, uncertain) and
+    adjustForPointerArith(defOrUse, nodeFrom, use, uncertain) and
     useToNode(use, nodeTo)
-  )
-  or
-  not nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
-  exists(DefOrUse defOrUse1, UseOrPhi use |
-    nodeToDefOrUse(nodeFrom, defOrUse1, uncertain) and
-    adjacentDefRead(defOrUse1, use) and
+    or
+    not nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
+    nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
+    adjacentDefRead(defOrUse, use) and
     useToNode(use, nodeTo)
-  )
-  or
-  // Initial global variable value to a first use
-  exists(GlobalDef globalDef, UseOrPhi use |
-    nodeFrom.(InitialGlobalValue).getGlobalDef() = globalDef and
-    globalDefToUse(globalDef, use) and
+    or
+    // Initial global variable value to a first use
+    nodeFrom.(InitialGlobalValue).getGlobalDef() = defOrUse and
+    globalDefToUse(defOrUse, use) and
     useToNode(use, nodeTo) and
     uncertain = false
   )
@@ -677,29 +664,28 @@ private predicate ssaFlowImpl(Node nodeFrom, Node nodeTo, boolean uncertain) {
  * Holds if `def` is the corresponding definition of
  * the SSA library's `definition`.
  */
-private predicate ssaDefinition(Def def, Definition definition) {
+private Definition ssaDefinition(Def def) {
   exists(IRBlock block, int i, SourceVariable sv |
     def.hasIndexInBlock(block, i, sv) and
-    definition.definesAt(sv, block, i)
+    result.definesAt(sv, block, i)
   )
 }
 
 /** Gets a node that represents the prior definition of `node`. */
-private Node getAPriorDefinition(Node node) {
-  exists(Def def, Definition definition, Definition inp, Def input |
-    defToNode(node, def, true) and
-    ssaDefinition(def, definition) and
-    uncertainWriteDefinitionInput(pragma[only_bind_into](definition), pragma[only_bind_into](inp)) and
-    ssaDefinition(input, inp) and
-    defToNode(result, input, _)
+private Node getAPriorDefinition(SsaDefOrUse defOrUse) {
+  exists(IRBlock bb, int i, SourceVariable sv, Definition def, DefOrUse defOrUse0 |
+    SsaCached::lastRefRedef(def, bb, i, ssaDefinition(defOrUse)) and
+    def.getSourceVariable() = sv and
+    defOrUse0.hasIndexInBlock(bb, i, sv) and
+    nodeToDefOrUse(result, defOrUse0, _)
   )
 }
 
 /** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
 predicate ssaFlow(Node nodeFrom, Node nodeTo) {
-  exists(Node nFrom, boolean uncertain |
-    ssaFlowImpl(nFrom, nodeTo, uncertain) and
-    if uncertain = true then nodeFrom = [nFrom, getAPriorDefinition(nFrom)] else nodeFrom = nFrom
+  exists(Node nFrom, boolean uncertain, SsaDefOrUse defOrUse |
+    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and
+    if uncertain = true then nodeFrom = [nFrom, getAPriorDefinition(defOrUse)] else nodeFrom = nFrom
   )
 }
 
@@ -774,7 +760,7 @@ private module SsaInput implements SsaImplCommon::InputSig {
       if def.isCertain() then certain = true else certain = false
     )
     or
-    exists(GlobalDef global |
+    exists(GlobalDefImpl global |
       global.hasIndexInBlock(bb, i, v) and
       certain = true
     )
@@ -839,15 +825,20 @@ private newtype TSsaDefOrUse =
       defOrUse.(DefImpl).hasIndexInBlock(bb, i, sv)
     )
   } or
-  TPhi(PhiNode phi)
+  TPhi(PhiNode phi) or
+  TGlobalDef(GlobalDefImpl global)
 
 abstract private class SsaDefOrUse extends TSsaDefOrUse {
+  /** Gets a textual representation of this element. */
   string toString() { none() }
 
+  /** Gets the underlying non-phi definition or use. */
   DefOrUseImpl asDefOrUse() { none() }
 
+  /** Gets the underlying phi node. */
   PhiNode asPhi() { none() }
 
+  /** Gets the location of this element. */
   abstract Location getLocation();
 }
 
@@ -864,9 +855,48 @@ class DefOrUse extends TDefOrUse, SsaDefOrUse {
 
   override string toString() { result = defOrUse.toString() }
 
+  /**
+   * Holds if this definition (or use) has index `index` in block `block`,
+   * and is a definition (or use) of the variable `sv`.
+   */
   predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
     defOrUse.hasIndexInBlock(block, index, sv)
   }
+}
+
+class GlobalDef extends TGlobalDef, SsaDefOrUse {
+  GlobalDefImpl global;
+
+  GlobalDef() { this = TGlobalDef(global) }
+
+  /** Gets the location of this definition. */
+  final override Location getLocation() { result = global.getLocation() }
+
+  /** Gets a textual representation of this definition. */
+  override string toString() { result = "GlobalDef" }
+
+  /**
+   * Holds if this definition has index `index` in block `block`, and
+   * is a definition of the variable `sv`.
+   */
+  predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
+    global.hasIndexInBlock(block, index, sv)
+  }
+
+  /** Gets the indirection index of this definition. */
+  int getIndirectionIndex() { result = global.getIndirectionIndex() }
+
+  /**
+   * Gets the type of this definition after specifiers have been deeply stripped
+   * and typedefs have been resolved.
+   */
+  DataFlowType getUnspecifiedType() { result = global.getUnspecifiedType() }
+
+  /** Gets the `IRFunction` whose body is evaluated after this definition. */
+  IRFunction getIRFunction() { result = global.getIRFunction() }
+
+  /** Gets the global variable associated with this definition. */
+  Cpp::GlobalOrNamespaceVariable getVariable() { result = global.getVariable() }
 }
 
 class Phi extends TPhi, SsaDefOrUse {
