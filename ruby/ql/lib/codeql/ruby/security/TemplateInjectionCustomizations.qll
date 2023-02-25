@@ -7,8 +7,6 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.RemoteFlowSources
-import codeql.ruby.ApiGraphs
-import codeql.ruby.AST
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
