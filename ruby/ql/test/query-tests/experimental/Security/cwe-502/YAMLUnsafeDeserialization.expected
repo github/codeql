@@ -1,0 +1,34 @@
+edges
+| YAMLUnsafeDeserialization.rb:11:23:11:28 | call to params :  | YAMLUnsafeDeserialization.rb:11:23:11:42 | ...[...] |
+| YAMLUnsafeDeserialization.rb:12:28:12:33 | call to params :  | YAMLUnsafeDeserialization.rb:12:28:12:45 | ...[...] |
+| YAMLUnsafeDeserialization.rb:13:23:13:28 | call to params :  | YAMLUnsafeDeserialization.rb:13:23:13:42 | ...[...] |
+| YAMLUnsafeDeserialization.rb:14:39:14:44 | call to params :  | YAMLUnsafeDeserialization.rb:14:39:14:58 | ...[...] :  |
+| YAMLUnsafeDeserialization.rb:14:39:14:58 | ...[...] :  | YAMLUnsafeDeserialization.rb:15:5:15:24 | call to to_ruby |
+| YAMLUnsafeDeserialization.rb:16:17:16:22 | call to params :  | YAMLUnsafeDeserialization.rb:16:17:16:36 | ...[...] :  |
+| YAMLUnsafeDeserialization.rb:16:17:16:36 | ...[...] :  | YAMLUnsafeDeserialization.rb:16:5:16:45 | call to to_ruby |
+| YAMLUnsafeDeserialization.rb:17:22:17:27 | call to params :  | YAMLUnsafeDeserialization.rb:17:22:17:39 | ...[...] :  |
+| YAMLUnsafeDeserialization.rb:17:22:17:39 | ...[...] :  | YAMLUnsafeDeserialization.rb:17:5:17:48 | call to to_ruby |
+nodes
+| YAMLUnsafeDeserialization.rb:11:23:11:28 | call to params :  | semmle.label | call to params :  |
+| YAMLUnsafeDeserialization.rb:11:23:11:42 | ...[...] | semmle.label | ...[...] |
+| YAMLUnsafeDeserialization.rb:12:28:12:33 | call to params :  | semmle.label | call to params :  |
+| YAMLUnsafeDeserialization.rb:12:28:12:45 | ...[...] | semmle.label | ...[...] |
+| YAMLUnsafeDeserialization.rb:13:23:13:28 | call to params :  | semmle.label | call to params :  |
+| YAMLUnsafeDeserialization.rb:13:23:13:42 | ...[...] | semmle.label | ...[...] |
+| YAMLUnsafeDeserialization.rb:14:39:14:44 | call to params :  | semmle.label | call to params :  |
+| YAMLUnsafeDeserialization.rb:14:39:14:58 | ...[...] :  | semmle.label | ...[...] :  |
+| YAMLUnsafeDeserialization.rb:15:5:15:24 | call to to_ruby | semmle.label | call to to_ruby |
+| YAMLUnsafeDeserialization.rb:16:5:16:45 | call to to_ruby | semmle.label | call to to_ruby |
+| YAMLUnsafeDeserialization.rb:16:17:16:22 | call to params :  | semmle.label | call to params :  |
+| YAMLUnsafeDeserialization.rb:16:17:16:36 | ...[...] :  | semmle.label | ...[...] :  |
+| YAMLUnsafeDeserialization.rb:17:5:17:48 | call to to_ruby | semmle.label | call to to_ruby |
+| YAMLUnsafeDeserialization.rb:17:22:17:27 | call to params :  | semmle.label | call to params :  |
+| YAMLUnsafeDeserialization.rb:17:22:17:39 | ...[...] :  | semmle.label | ...[...] :  |
+subpaths
+#select
+| YAMLUnsafeDeserialization.rb:11:23:11:42 | ...[...] | YAMLUnsafeDeserialization.rb:11:23:11:28 | call to params :  | YAMLUnsafeDeserialization.rb:11:23:11:42 | ...[...] | Unsafe deserialization depends on a $@. | YAMLUnsafeDeserialization.rb:11:23:11:28 | call to params | potentially untrusted source |
+| YAMLUnsafeDeserialization.rb:12:28:12:45 | ...[...] | YAMLUnsafeDeserialization.rb:12:28:12:33 | call to params :  | YAMLUnsafeDeserialization.rb:12:28:12:45 | ...[...] | Unsafe deserialization depends on a $@. | YAMLUnsafeDeserialization.rb:12:28:12:33 | call to params | potentially untrusted source |
+| YAMLUnsafeDeserialization.rb:13:23:13:42 | ...[...] | YAMLUnsafeDeserialization.rb:13:23:13:28 | call to params :  | YAMLUnsafeDeserialization.rb:13:23:13:42 | ...[...] | Unsafe deserialization depends on a $@. | YAMLUnsafeDeserialization.rb:13:23:13:28 | call to params | potentially untrusted source |
+| YAMLUnsafeDeserialization.rb:15:5:15:24 | call to to_ruby | YAMLUnsafeDeserialization.rb:14:39:14:44 | call to params :  | YAMLUnsafeDeserialization.rb:15:5:15:24 | call to to_ruby | Unsafe deserialization depends on a $@. | YAMLUnsafeDeserialization.rb:14:39:14:44 | call to params | potentially untrusted source |
+| YAMLUnsafeDeserialization.rb:16:5:16:45 | call to to_ruby | YAMLUnsafeDeserialization.rb:16:17:16:22 | call to params :  | YAMLUnsafeDeserialization.rb:16:5:16:45 | call to to_ruby | Unsafe deserialization depends on a $@. | YAMLUnsafeDeserialization.rb:16:17:16:22 | call to params | potentially untrusted source |
+| YAMLUnsafeDeserialization.rb:17:5:17:48 | call to to_ruby | YAMLUnsafeDeserialization.rb:17:22:17:27 | call to params :  | YAMLUnsafeDeserialization.rb:17:5:17:48 | call to to_ruby | Unsafe deserialization depends on a $@. | YAMLUnsafeDeserialization.rb:17:22:17:27 | call to params | potentially untrusted source |
