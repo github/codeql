@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+            Processing an unvalidated user input can allow an attacker to execute arbitrary code in your application.
+            Unsafe deserializing the malicious serialized xml document through the Plist library, making it possible to execute some code or execute arbitrary code with the help of a complete gadget chain.
+        </p>
+    </overview>
+    <recommendation>
+        <p>
+            This vulnerability can be prevented by using <code>Plist.parse_xml</code>.
+        </p>
+    </recommendation>
+    <example>
+        <p>In the example below, you can see safe and unsafe call of this dangerous method that can be abused by a remote user input. You can use "marshal: false" as an arugument for <code>Plist.parse_xml</code> to use it safe.
+        </p>
+        <sample src="PlistUnsafeYamlDeserialization.rb" />
+    </example>
+    <references>
+    <li>
+    Security considerations from library documentation
+    <a href="https://github.com/patsplat/plist#label-Security+considerations">patsplat/plist</a>.
+    </li>
+    </references>
+</qhelp>

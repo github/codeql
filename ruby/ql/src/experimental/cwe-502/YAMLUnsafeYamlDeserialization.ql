@@ -1,5 +1,5 @@
 /**
- * @name Deserialization of user-controlled data by YAML
+ * @name Unsafe Deserialization of user-controlled data by YAML
  * @description Deserializing user-controlled data may allow attackers to
  *              execute arbitrary code.
  * @kind path-problem
@@ -18,10 +18,10 @@ import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 import codeql.ruby.security.UnsafeDeserializationCustomizations
 
-abstract class YamlSink extends DataFlow::Node { }
+abstract class YamlUnsafeSinks extends DataFlow::Node { }
 
-class YamlUnsafeLoadArgument extends YamlSink {
-  YamlUnsafeLoadArgument() {
+class YamlUnsafeArgument extends YamlUnsafeSinks {
+  YamlUnsafeArgument() {
     this =
       API::getTopLevelMember(["YAML", "Psych"])
           .getAMethodCall(["unsafe_load_file", "unsafe_load", "load_stream"])
@@ -45,7 +45,7 @@ class YamlUnsafeLoadArgument extends YamlSink {
 }
 
 class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnsafeYAMLDeserialization" }
+  Configuration() { this = "YamlUnsafeDeserialization" }
 
   override predicate isSource(DataFlow::Node source) {
     // to detect CVE-2022-32224, we should uncomment following line instead of current UnsafeDeserialization::Source
@@ -57,7 +57,7 @@ class Configuration extends TaintTracking::Configuration {
     // after changing the isSource for detecting CVE-2022-32224
     // uncomment the following line only see the CVE sink not other files similar sinks
     // sink.getLocation().getFile().toString().matches("%yaml_column%") and
-    sink instanceof YamlSink
+    sink instanceof YamlUnsafeSinks
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -84,5 +84,5 @@ class Configuration extends TaintTracking::Configuration {
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This file extraction depends on a $@.", source.getNode(),
+select sink.getNode(), source, sink, "Unsafe deserialization depends on a $@.", source.getNode(),
   "potentially untrusted source"
