@@ -6,7 +6,7 @@
  * @problem.severity error
  * @security-severity 8.8
  * @precision high
- * @id rb/ssti
+ * @id rb/server-side-template-injection
  * @tags security
  *       external/cwe/cwe-94
  */
