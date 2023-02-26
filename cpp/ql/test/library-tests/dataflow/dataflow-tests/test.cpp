@@ -608,3 +608,10 @@ void test_def_by_ref_followed_by_uncertain_write_pointer(int* p) { // $ ast-def=
   *p = 0;
   sink(*p); // $ ir MISSING: ast
 }
+
+void test_flow_through_void_double_pointer(int *p) // $ ast-def=p
+{
+  intPointerSource(p);
+  void* q = (void*)&p;
+  sink(**(int**)q); // $ MISSING: ast,ir
+}
