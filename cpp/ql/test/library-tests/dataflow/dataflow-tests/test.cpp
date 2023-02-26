@@ -589,3 +589,10 @@ void test_write_to_param() {
   write_to_param(&x);
   sink(x); // $ SPURIOUS: ast
 }
+
+void test_indirect_flow_to_array() {
+  int* p = indirect_source();
+  int* xs[2];
+  xs[0] = p;
+  sink(*xs[0]); // $ MISSING: ir,ast
+}
