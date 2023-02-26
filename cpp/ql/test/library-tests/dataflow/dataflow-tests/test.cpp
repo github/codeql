@@ -518,7 +518,7 @@ void uncertain_definition() {
   int clean = 0;
   stackArray[0] = source();
   stackArray[1] = clean;
-  sink(stackArray[0]); // $ ast=519:19 ir SPURIOUS: ast=517:7
+  sink(stackArray[0]); // $ ast=519:19 ir=517:7 ir=519:19 SPURIOUS: ast=517:7
 }
 
 void set_through_const_pointer(int x, const int **e) // $ ast-def=e ir-def=**e ir-def=*e
@@ -600,11 +600,11 @@ void test_indirect_flow_to_array() {
 void test_def_by_ref_followed_by_uncertain_write_array(int* p) { // $ ast-def=p ir-def=*p
   intPointerSource(p);
   p[10] = 0;
-  sink(*p); // $ MISSING: ast,ir
+  sink(*p); // $ ir MISSING: ast
 }
 
 void test_def_by_ref_followed_by_uncertain_write_pointer(int* p) { // $ ast-def=p ir-def=*p
   intPointerSource(p);
   *p = 0;
-  sink(*p); // $ MISSING: ast,ir
+  sink(*p); // $ ir MISSING: ast
 }
