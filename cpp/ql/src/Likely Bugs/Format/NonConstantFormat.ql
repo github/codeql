@@ -57,9 +57,12 @@ predicate underscoreMacro(Expr e) {
  */
 predicate cannotContainString(Type t, boolean isIndirect) {
   isIndirect = false and
-  (
-    t.getUnspecifiedType() instanceof BuiltInType or
-    t.getUnspecifiedType() instanceof IntegralOrEnumType
+  exists(Type unspecified |
+    unspecified = t.getUnspecifiedType() and
+    not unspecified instanceof UnknownType
+  |
+    unspecified instanceof BuiltInType or
+    unspecified instanceof IntegralOrEnumType
   )
 }
 
@@ -124,6 +127,11 @@ predicate isSanitizerNode(DataFlow::Node node) {
   cannotContainString(node.getType(), false)
 }
 
+predicate isSinkImpl(DataFlow::Node sink, Expr formatString) {
+  [sink.asExpr(), sink.asIndirectExpr()] = formatString and
+  exists(FormattingFunctionCall fc | formatString = fc.getArgument(fc.getFormatParameterIndex()))
+}
+
 class NonConstFlow extends TaintTracking::Configuration {
   NonConstFlow() { this = "NonConstFlow" }
 
@@ -135,9 +143,7 @@ class NonConstFlow extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(FormattingFunctionCall fc | sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex()))
-  }
+  override predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
 
   override predicate isSanitizer(DataFlow::Node node) { isSanitizerNode(node) }
 }
@@ -147,7 +153,7 @@ where
   call.getArgument(call.getFormatParameterIndex()) = formatString and
   exists(NonConstFlow cf, DataFlow::Node sink |
     cf.hasFlowTo(sink) and
-    sink.asExpr() = formatString
+    isSinkImpl(sink, formatString)
   )
 select formatString,
   "The format string argument to " + call.getTarget().getName() +

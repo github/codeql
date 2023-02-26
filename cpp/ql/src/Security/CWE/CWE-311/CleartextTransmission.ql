@@ -208,7 +208,7 @@ class Encrypted extends Expr {
  * operation `nsr`.
  */
 predicate isSinkSendRecv(DataFlow::Node sink, NetworkSendRecv nsr) {
-  sink.asConvertedExpr() = nsr.getDataExpr().getFullyConverted()
+  [sink.asIndirectConvertedExpr(), sink.asConvertedExpr()] = nsr.getDataExpr().getFullyConverted()
 }
 
 /**

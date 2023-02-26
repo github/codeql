@@ -39,7 +39,7 @@ class PotentiallyExposedSystemDataConfiguration extends TaintTracking::Configura
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(OutputWrite ow | ow.getASource().getAChild*() = sink.asExpr())
+    exists(OutputWrite ow | ow.getASource().getAChild*() = sink.asIndirectExpr())
   }
 }
 

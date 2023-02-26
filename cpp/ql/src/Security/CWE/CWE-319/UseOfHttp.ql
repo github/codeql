@@ -59,11 +59,11 @@ class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node src) {
     // Sources are strings containing an HTTP URL not in a private domain.
-    src.asExpr() instanceof HttpStringLiteral and
+    src.asIndirectExpr() instanceof HttpStringLiteral and
     // block taint starting at `strstr`, which is likely testing an existing URL, rather than constructing an HTTP URL.
     not exists(FunctionCall fc |
       fc.getTarget().getName() = ["strstr", "strcasestr"] and
-      fc.getArgument(1) = globalValueNumber(src.asExpr()).getAnExpr()
+      fc.getArgument(1) = globalValueNumber(src.asIndirectExpr()).getAnExpr()
     )
   }
 
@@ -77,16 +77,16 @@ class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
               "system", "gethostbyname", "gethostbyname2", "gethostbyname_r", "getaddrinfo",
               "X509_load_http", "X509_CRL_load_http"
             ]) and
-      sink.asExpr() = fc.getArgument(0)
+      sink.asIndirectExpr() = fc.getArgument(0)
       or
       fc.getTarget().hasGlobalOrStdName(["send", "URLDownloadToFile", "URLDownloadToCacheFile"]) and
-      sink.asExpr() = fc.getArgument(1)
+      sink.asIndirectExpr() = fc.getArgument(1)
       or
       fc.getTarget().hasGlobalOrStdName(["curl_easy_setopt", "getnameinfo"]) and
-      sink.asExpr() = fc.getArgument(2)
+      sink.asIndirectExpr() = fc.getArgument(2)
       or
       fc.getTarget().hasGlobalOrStdName(["ShellExecute", "ShellExecuteA", "ShellExecuteW"]) and
-      sink.asExpr() = fc.getArgument(3)
+      sink.asIndirectExpr() = fc.getArgument(3)
     )
   }
 }
@@ -96,5 +96,5 @@ from
   HttpStringLiteral str
 where
   config.hasFlowPath(source, sink) and
-  str = source.getNode().asExpr()
+  str = source.getNode().asIndirectExpr()
 select str, source, sink, "This URL may be constructed with the HTTP protocol."
