@@ -596,3 +596,15 @@ void test_indirect_flow_to_array() {
   xs[0] = p;
   sink(*xs[0]); // $ ir=594:12 MISSING: ast SPURIOUS: ir=595:8
 }
+
+void test_def_by_ref_followed_by_uncertain_write_array(int* p) { // $ ast-def=p ir-def=*p
+  intPointerSource(p);
+  p[10] = 0;
+  sink(*p); // $ MISSING: ast,ir
+}
+
+void test_def_by_ref_followed_by_uncertain_write_pointer(int* p) { // $ ast-def=p ir-def=*p
+  intPointerSource(p);
+  *p = 0;
+  sink(*p); // $ MISSING: ast,ir
+}
