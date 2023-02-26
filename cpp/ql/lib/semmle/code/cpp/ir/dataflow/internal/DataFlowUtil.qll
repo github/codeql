@@ -809,7 +809,7 @@ private class PostIndirectReturnOutNode extends IndirectReturnOutNode, PostUpdat
  *
  * Returns `t`, but stripped of the outer-most `indirectionIndex` number of indirections.
  */
-Type getTypeImpl(Type t, int indirectionIndex) {
+private Type getTypeImpl0(Type t, int indirectionIndex) {
   indirectionIndex = 0 and
   result = t
   or
@@ -819,10 +819,28 @@ Type getTypeImpl(Type t, int indirectionIndex) {
     // We need to avoid the case where `stripPointer(t) = t` (which can happen on
     // iterators that specify a `value_type` that is the iterator itself). Such a type
     // would create an infinite loop otherwise. For these cases we simply don't produce
-    // a result for `getType`.
+    // a result for `getTypeImpl`.
     stripped.getUnspecifiedType() != t.getUnspecifiedType() and
-    result = getTypeImpl(stripped, indirectionIndex - 1)
+    result = getTypeImpl0(stripped, indirectionIndex - 1)
   )
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * Returns `t`, but stripped of the outer-most `indirectionIndex` number of indirections.
+ *
+ * If `indirectionIndex` cannot be stripped off `t`, an `UnknownType` is returned.
+ */
+bindingset[indirectionIndex]
+Type getTypeImpl(Type t, int indirectionIndex) {
+  result = getTypeImpl0(t, indirectionIndex)
+  or
+  // If we cannot produce the right type we return an error type.
+  // This can sometimes happen when we don't know the real
+  // type of a void pointer.
+  not exists(getTypeImpl0(t, indirectionIndex)) and
+  result instanceof UnknownType
 }
 
 /**

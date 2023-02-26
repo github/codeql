@@ -199,6 +199,7 @@
 | realistic.cpp:26:5:26:10 | offset | AST only |
 | realistic.cpp:49:20:49:22 | baz | AST only |
 | realistic.cpp:53:35:53:43 | bufferLen | AST only |
+| realistic.cpp:54:50:54:61 | call to user_input | IR only |
 | realistic.cpp:55:16:55:18 | foo | IR only |
 | realistic.cpp:55:23:55:25 | access to array | IR only |
 | realistic.cpp:55:28:55:36 | baz | IR only |
@@ -207,6 +208,7 @@
 | realistic.cpp:57:99:57:101 | access to array | IR only |
 | realistic.cpp:57:104:57:112 | baz | IR only |
 | realistic.cpp:57:114:57:122 | userInput | IR only |
+| realistic.cpp:60:21:60:52 | buffer | IR only |
 | realistic.cpp:60:25:60:27 | foo | IR only |
 | realistic.cpp:60:32:60:34 | access to array | IR only |
 | realistic.cpp:60:37:60:45 | baz | IR only |
