@@ -169,18 +169,20 @@ private newtype TDefOrUseImpl =
     // Avoid creating parameter nodes if there is no definitions of the variable other than the initializaion.
     exists(SsaInternals0::Def def |
       def.getSourceVariable().getBaseVariable().(BaseIRVariable).getIRVariable().getAst() = p and
-      not def.getValue().asInstruction() instanceof InitializeParameterInstruction
-    ) and
-    // If the type is modifiable
-    exists(CppType cppType |
-      cppType.hasUnspecifiedType(p.getUnspecifiedType(), _) and
-      isModifiableAt(cppType, indirectionIndex + 1)
-    ) and
-    exists(Indirection indirection |
-      indirection.getType() = p.getUnspecifiedType() and
-      indirectionIndex = [1 .. indirection.getNumberOfIndirections()]
+      not def.getValue().asInstruction() instanceof InitializeParameterInstruction and
+      unspecifiedTypeIsModifiableAt(p.getUnspecifiedType(), indirectionIndex)
     )
   }
+
+private predicate unspecifiedTypeIsModifiableAt(Type unspecified, int indirectionIndex) {
+  indirectionIndex = [1 .. getIndirectionForUnspecifiedType(unspecified).getNumberOfIndirections()] and
+  exists(CppType cppType |
+    cppType.hasUnspecifiedType(unspecified, _) and
+    isModifiableAt(cppType, indirectionIndex + 1)
+  )
+}
+
+private Indirection getIndirectionForUnspecifiedType(Type t) { result.getType() = t }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
   /** Gets a textual representation of this element. */
