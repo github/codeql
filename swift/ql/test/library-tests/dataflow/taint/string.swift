@@ -82,6 +82,9 @@ extension String : CVarArg {
   func withPlatformString<Result>(_ body: (UnsafePointer<CInterop.PlatformChar>) throws -> Result) rethrows -> Result { return 0 as! Result }
 
   init?(validating path: FilePath) { self.init() }
+
+  mutating func replaceSubrange<C>(_ subrange: Range<String.Index>, with newElements: C)
+    where C : Collection, C.Element == Character {}
 }
 
 extension StringProtocol {
@@ -107,6 +110,8 @@ extension StringProtocol {
   func propertyListFromStringsFileFormat() -> [String : String] { return [:] }
   func cString(using encoding: String.Encoding) -> [CChar]? { return nil }
   func enumerateLines(invoking body: @escaping (String, inout Bool) -> Void) {}
+  func replacingOccurrences<Target, Replacement>(of target: Target, with replacement: Replacement, options: String.CompareOptions = [], range searchRange: Range<Self.Index>? = nil) -> String
+    where Target : StringProtocol, Replacement : StringProtocol { return "" }
 }
 
 class Data
@@ -131,19 +136,19 @@ func sink(arg: Any) {}
 func taintThroughInterpolatedStrings() {
   var x = source()
 
-  sink(arg: "\(x)") // $ tainted=132
+  sink(arg: "\(x)") // $ tainted=137
 
-  sink(arg: "\(x) \(x)") // $ tainted=132
+  sink(arg: "\(x) \(x)") // $ tainted=137
 
-  sink(arg: "\(x) \(0) \(x)") // $ tainted=132
+  sink(arg: "\(x) \(0) \(x)") // $ tainted=137
 
   let y = 42
 
   sink(arg: "\(y)") // clean
 
-  sink(arg: "\(x) hello \(y)") // $ tainted=132
+  sink(arg: "\(x) hello \(y)") // $ tainted=137
 
-  sink(arg: "\(y) world \(x)") // $ tainted=132
+  sink(arg: "\(y) world \(x)") // $ tainted=137
 
   x = 0
   sink(arg: "\(x)") // clean
@@ -156,55 +161,55 @@ func taintThroughStringConcatenation() {
   let tainted = source2()
 
   sink(arg: clean)
-  sink(arg: tainted) // $ tainted=156
+  sink(arg: tainted) // $ tainted=161
 
   sink(arg: clean + clean)
-  sink(arg: clean + tainted) // $ tainted=156
-  sink(arg: tainted + clean) // $ tainted=156
-  sink(arg: tainted + tainted) // $ tainted=156
+  sink(arg: clean + tainted) // $ tainted=161
+  sink(arg: tainted + clean) // $ tainted=161
+  sink(arg: tainted + tainted) // $ tainted=161
 
   sink(arg: ">" + clean + "<")
-  sink(arg: ">" + tainted + "<") // $ tainted=156
+  sink(arg: ">" + tainted + "<") // $ tainted=161
 
   sink(arg: clean.appending(clean))
-  sink(arg: clean.appending(tainted)) // $ tainted=156
-  sink(arg: tainted.appending(clean)) // $ tainted=156
-  sink(arg: tainted.appending(tainted)) // $ tainted=156
+  sink(arg: clean.appending(tainted)) // $ tainted=161
+  sink(arg: tainted.appending(clean)) // $ tainted=161
+  sink(arg: tainted.appending(tainted)) // $ tainted=161
 
   var str = "abc"
   sink(arg: str)
   str += "def"
   sink(arg: str)
   str += source2()
-  sink(arg: str) // $ MISSING: tainted=178
+  sink(arg: str) // $ MISSING: tainted=183
 
   var str2 = "abc"
   sink(arg: str2)
   str2.append("def")
   sink(arg: str2)
   str2.append(source2())
-  sink(arg: str2) // $ tainted=185
+  sink(arg: str2) // $ tainted=190
 
   var str3 = "abc"
   sink(arg: str3)
   str3.append(contentsOf: "def")
   sink(arg: str3)
   str3.append(contentsOf: source2())
-  sink(arg: str3) // $ tainted=192
+  sink(arg: str3) // $ tainted=197
 
   var str4 = "abc"
   sink(arg: str4)
   str4.write("def")
   sink(arg: str4)
   str4.write(source2())
-  sink(arg: str4) // $ tainted=199
+  sink(arg: str4) // $ tainted=204
 
   var str5 = "abc"
   sink(arg: str5)
   str5.insert(contentsOf: "abc", at: str5.startIndex)
   sink(arg: str5)
   str5.insert(contentsOf: source2(), at: str5.startIndex)
-  sink(arg: str5) // $ tainted=206
+  sink(arg: str5) // $ tainted=211
 }
 
 func taintThroughSimpleStringOperations() {
@@ -213,42 +218,42 @@ func taintThroughSimpleStringOperations() {
   let taintedInt = source()
 
   sink(arg: String(clean))
-  sink(arg: String(tainted)) // $ tainted=212
-  sink(arg: String(taintedInt)) // $ tainted=213
+  sink(arg: String(tainted)) // $ tainted=217
+  sink(arg: String(taintedInt)) // $ tainted=218
 
-  sink(arg: String(format: tainted, 1, 2, 3)) // $ tainted=212
-  sink(arg: String(format: tainted, arguments: [])) // $ tainted=212
-  sink(arg: String(format: tainted, locale: nil, 1, 2, 3)) // $ tainted=212
-  sink(arg: String(format: tainted, locale: nil, arguments: [])) // $ tainted=212
-  sink(arg: String.localizedStringWithFormat(tainted, 1, 2, 3)) // $ tainted=212
-  sink(arg: String(format: "%s", tainted)) // $ MISSING: tainted=212
-  sink(arg: String(format: "%i %i %i", 1, 2, taintedInt)) // $ MISSING: tainted=213
+  sink(arg: String(format: tainted, 1, 2, 3)) // $ tainted=217
+  sink(arg: String(format: tainted, arguments: [])) // $ tainted=217
+  sink(arg: String(format: tainted, locale: nil, 1, 2, 3)) // $ tainted=217
+  sink(arg: String(format: tainted, locale: nil, arguments: [])) // $ tainted=217
+  sink(arg: String.localizedStringWithFormat(tainted, 1, 2, 3)) // $ tainted=217
+  sink(arg: String(format: "%s", tainted)) // $ MISSING: tainted=217
+  sink(arg: String(format: "%i %i %i", 1, 2, taintedInt)) // $ MISSING: tainted=218
 
   sink(arg: String(repeating: clean, count: 2))
-  sink(arg: String(repeating: tainted, count: 2)) // $ tainted=212
+  sink(arg: String(repeating: tainted, count: 2)) // $ tainted=217
 
-  sink(arg: tainted.dropFirst(10)) // $ tainted=212
-  sink(arg: tainted.dropLast(10)) // $ tainted=212
-  sink(arg: tainted.substring(from: tainted.startIndex)) // $ tainted=212
+  sink(arg: tainted.dropFirst(10)) // $ tainted=217
+  sink(arg: tainted.dropLast(10)) // $ tainted=217
+  sink(arg: tainted.substring(from: tainted.startIndex)) // $ tainted=217
 
-  sink(arg: tainted.lowercased()) // $ tainted=212
-  sink(arg: tainted.uppercased()) // $ tainted=212
-  sink(arg: tainted.lowercased(with: nil)) // $ tainted=212
-  sink(arg: tainted.uppercased(with: nil)) // $ tainted=212
-  sink(arg: tainted.capitalized(with: nil)) // $ tainted=212
-  sink(arg: tainted.reversed()) // $ tainted=212
+  sink(arg: tainted.lowercased()) // $ tainted=217
+  sink(arg: tainted.uppercased()) // $ tainted=217
+  sink(arg: tainted.lowercased(with: nil)) // $ tainted=217
+  sink(arg: tainted.uppercased(with: nil)) // $ tainted=217
+  sink(arg: tainted.capitalized(with: nil)) // $ tainted=217
+  sink(arg: tainted.reversed()) // $ tainted=217
 
-  sink(arg: tainted.split(separator: ",")) // $ tainted=212
-  sink(arg: tainted.split(whereSeparator: { // $ tainted=212
+  sink(arg: tainted.split(separator: ",")) // $ tainted=217
+  sink(arg: tainted.split(whereSeparator: {
     c in return (c == ",")
-  }))
-  sink(arg: tainted.trimmingCharacters(in: CharacterSet.whitespaces)) // $ tainted=212
-  sink(arg: tainted.padding(toLength: 20, withPad: " ", startingAt: 0)) // $ tainted=212
-  sink(arg: tainted.components(separatedBy: CharacterSet.whitespaces)) // $ tainted=212
-  sink(arg: tainted.components(separatedBy: CharacterSet.whitespaces)[0]) // $ tainted=212
-  sink(arg: tainted.folding(locale: nil)) // $ tainted=212
-  sink(arg: tainted.propertyListFromStringsFileFormat()) // $ tainted=212
-  sink(arg: tainted.propertyListFromStringsFileFormat()["key"]!) // $ tainted=212
+  })) // $ tainted=217
+  sink(arg: tainted.trimmingCharacters(in: CharacterSet.whitespaces)) // $ tainted=217
+  sink(arg: tainted.padding(toLength: 20, withPad: " ", startingAt: 0)) // $ tainted=217
+  sink(arg: tainted.components(separatedBy: CharacterSet.whitespaces)) // $ tainted=217
+  sink(arg: tainted.components(separatedBy: CharacterSet.whitespaces)[0]) // $ tainted=217
+  sink(arg: tainted.folding(locale: nil)) // $ tainted=217
+  sink(arg: tainted.propertyListFromStringsFileFormat()) // $ tainted=217
+  sink(arg: tainted.propertyListFromStringsFileFormat()["key"]!) // $ tainted=217
 
   sink(arg: clean.enumerateLines(invoking: {
     line, stop in
@@ -257,81 +262,90 @@ func taintThroughSimpleStringOperations() {
   }))
   sink(arg: tainted.enumerateLines(invoking: {
     line, stop in
-    sink(arg: line) // $ MISSING: tainted=212
+    sink(arg: line) // $ MISSING: tainted=217
     sink(arg: stop)
   }))
 
   sink(arg: [clean, clean].joined())
-  sink(arg: [tainted, clean].joined()) // $ MISSING: tainted=212
-  sink(arg: [clean, tainted].joined()) // $ MISSING: tainted=212
-  sink(arg: [tainted, tainted].joined()) // $ MISSING: tainted=212
+  sink(arg: [tainted, clean].joined()) // $ MISSING: tainted=217
+  sink(arg: [clean, tainted].joined()) // $ MISSING: tainted=217
+  sink(arg: [tainted, tainted].joined()) // $ MISSING: tainted=217
 
   sink(arg: clean.description)
-  sink(arg: tainted.description) // $ tainted=212
+  sink(arg: tainted.description) // $ tainted=217
   sink(arg: clean.debugDescription)
-  sink(arg: tainted.debugDescription) // $ tainted=212
+  sink(arg: tainted.debugDescription) // $ tainted=217
   sink(arg: clean.utf8)
-  sink(arg: tainted.utf8) // $ tainted=212
+  sink(arg: tainted.utf8) // $ tainted=217
   sink(arg: clean.utf16)
-  sink(arg: tainted.utf16) // $ tainted=212
+  sink(arg: tainted.utf16) // $ tainted=217
   sink(arg: clean.unicodeScalars)
-  sink(arg: tainted.unicodeScalars) // $ tainted=212
+  sink(arg: tainted.unicodeScalars) // $ tainted=217
   sink(arg: clean.utf8CString)
-  sink(arg: tainted.utf8CString) // $ tainted=212
+  sink(arg: tainted.utf8CString) // $ tainted=217
   sink(arg: clean.lazy)
-  sink(arg: tainted.lazy) // $ tainted=212
+  sink(arg: tainted.lazy) // $ tainted=217
   sink(arg: clean.capitalized)
-  sink(arg: tainted.capitalized) // $ tainted=212
+  sink(arg: tainted.capitalized) // $ tainted=217
   sink(arg: clean.localizedCapitalized)
-  sink(arg: tainted.localizedCapitalized) // $ tainted=212
+  sink(arg: tainted.localizedCapitalized) // $ tainted=217
   sink(arg: clean.localizedLowercase)
-  sink(arg: tainted.localizedLowercase) // $ tainted=212
+  sink(arg: tainted.localizedLowercase) // $ tainted=217
   sink(arg: clean.localizedUppercase)
-  sink(arg: tainted.localizedUppercase) // $ tainted=212
+  sink(arg: tainted.localizedUppercase) // $ tainted=217
   sink(arg: clean.decomposedStringWithCanonicalMapping)
-  sink(arg: tainted.decomposedStringWithCanonicalMapping) // $ tainted=212
+  sink(arg: tainted.decomposedStringWithCanonicalMapping) // $ tainted=217
   sink(arg: clean.precomposedStringWithCompatibilityMapping)
-  sink(arg: tainted.precomposedStringWithCompatibilityMapping) // $ tainted=212
+  sink(arg: tainted.precomposedStringWithCompatibilityMapping) // $ tainted=217
   sink(arg: clean.removingPercentEncoding!)
-  sink(arg: tainted.removingPercentEncoding!) // $ tainted=212
+  sink(arg: tainted.removingPercentEncoding!) // $ tainted=217
+
+  sink(arg: clean.replacingOccurrences(of: "a", with: "b"))
+  sink(arg: tainted.replacingOccurrences(of: "a", with: "b")) // $ tainted=217
+  sink(arg: clean.replacingOccurrences(of: "a", with: source2())) // $ tainted=305
 }
 
 func taintThroughMutatingStringOperations() {
   var str1 = source2()
-  sink(arg: str1) // $ tainted=300
-  sink(arg: str1.remove(at: str1.startIndex)) // $ tainted=300
-  sink(arg: str1) // $ tainted=300
+  sink(arg: str1) // $ tainted=309
+  sink(arg: str1.remove(at: str1.startIndex)) // $ tainted=309
+  sink(arg: str1) // $ tainted=309
 
   var str2 = source2()
-  sink(arg: str2) // $ tainted=305
+  sink(arg: str2) // $ tainted=314
   str2.removeAll()
-  sink(arg: str2) // $ SPURIOUS: tainted=305
+  sink(arg: str2) // $ SPURIOUS: tainted=314
 
   var str3 = source2()
-  sink(arg: str3) // $ tainted=310
+  sink(arg: str3) // $ tainted=319
   str3.removeAll(where: { _ in true } )
-  sink(arg: str3) // $ SPURIOUS: tainted=310
+  sink(arg: str3) // $ SPURIOUS: tainted=319
 
   var str4 = source2()
-  sink(arg: str4) // $ tainted=315
-  sink(arg: str4.removeFirst()) // $ tainted=315
-  sink(arg: str4) // $ tainted=315
+  sink(arg: str4) // $ tainted=324
+  sink(arg: str4.removeFirst()) // $ tainted=324
+  sink(arg: str4) // $ tainted=324
   str4.removeFirst(5)
-  sink(arg: str4) // $ tainted=315
-  sink(arg: str4.removeLast()) // $ tainted=315
-  sink(arg: str4) // $ tainted=315
+  sink(arg: str4) // $ tainted=324
+  sink(arg: str4.removeLast()) // $ tainted=324
+  sink(arg: str4) // $ tainted=324
   str4.removeLast(5)
-  sink(arg: str4) // $ tainted=315
+  sink(arg: str4) // $ tainted=324
 
   var str5 = source2()
-  sink(arg: str5) // $ tainted=326
+  sink(arg: str5) // $ tainted=335
   str5.removeSubrange(str5.startIndex ... str5.index(str5.startIndex, offsetBy: 5))
-  sink(arg: str5) // $ tainted=326
+  sink(arg: str5) // $ tainted=335
 
   var str6 = source2()
-  sink(arg: str6) // $ tainted=331
+  sink(arg: str6) // $ tainted=340
   str6.makeContiguousUTF8()
-  sink(arg: str6) // $ tainted=331
+  sink(arg: str6) // $ tainted=340
+
+  var str7 = ""
+  sink(arg: str7)
+  str7.replaceSubrange((nil as Range<String.Index>?)!, with: source2())
+  sink(arg: str7) // $ tainted=347
 }
 
 func source3() -> Data { return Data("") }
@@ -341,10 +355,10 @@ func taintThroughData() {
   let stringTainted = String(data: source3(), encoding: String.Encoding.utf8)
 
 	sink(arg: stringClean!)
-	sink(arg: stringTainted!) // $ tainted=341
+	sink(arg: stringTainted!) // $ tainted=355
 
   sink(arg: String(decoding: Data(""), as: UTF8.self))
-  sink(arg: String(decoding: source3(), as: UTF8.self)) // $ tainted=347
+  sink(arg: String(decoding: source3(), as: UTF8.self)) // $ tainted=361
 }
 
 func taintThroughEncodings() {
@@ -358,8 +372,8 @@ func taintThroughEncodings() {
   })
   tainted.withUTF8({
     buffer in
-    sink(arg: buffer) // $ MISSING: tainted=352
-    sink(arg: buffer.baseAddress!) // $ MISSING: tainted=352
+    sink(arg: buffer) // $ MISSING: tainted=366
+    sink(arg: buffer.baseAddress!) // $ MISSING: tainted=366
   })
 
   clean.withCString({
@@ -368,7 +382,7 @@ func taintThroughEncodings() {
   })
   tainted.withCString({
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=352
+    sink(arg: ptr) // $ MISSING: tainted=366
   })
   clean.withCString(encodedAs: UTF8.self, {
     ptr in
@@ -376,7 +390,7 @@ func taintThroughEncodings() {
   })
   tainted.withCString(encodedAs: UTF8.self, {
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=352
+    sink(arg: ptr) // $ MISSING: tainted=366
   })
 
   let arrayString1 = clean.cString(using: String.Encoding.utf8)!
@@ -387,11 +401,11 @@ func taintThroughEncodings() {
     sink(arg: String(cString: buffer.baseAddress!))
   })
   let arrayString2 = tainted.cString(using: String.Encoding.utf8)!
-  sink(arg: arrayString2) // $ tainted=352
+  sink(arg: arrayString2) // $ tainted=366
   arrayString1.withUnsafeBufferPointer({
     buffer in
-    sink(arg: buffer) // $ MISSING: tainted=352
-    sink(arg: String(cString: buffer.baseAddress!)) // $ MISSING: tainted=352
+    sink(arg: buffer) // $ MISSING: tainted=366
+    sink(arg: String(cString: buffer.baseAddress!)) // $ MISSING: tainted=366
   })
 
   clean.withPlatformString({
@@ -407,14 +421,14 @@ func taintThroughEncodings() {
   })
   tainted.withPlatformString({
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=352
-    sink(arg: String(platformString: ptr)) // $ MISSING: tainted=352
+    sink(arg: ptr) // $ MISSING: tainted=366
+    sink(arg: String(platformString: ptr)) // $ MISSING: tainted=366
 
     let buffer = UnsafeBufferPointer(start: ptr, count: 10)
     let arrayString = Array(buffer)
-    sink(arg: buffer) // $ MISSING: tainted=352
-    sink(arg: arrayString) // $ MISSING: tainted=352
-    sink(arg: String(platformString: arrayString)) // $ MISSING: tainted=352
+    sink(arg: buffer) // $ MISSING: tainted=366
+    sink(arg: arrayString) // $ MISSING: tainted=366
+    sink(arg: String(platformString: arrayString)) // $ MISSING: tainted=366
   })
 
   clean.withContiguousStorageIfAvailable({
@@ -425,7 +439,7 @@ func taintThroughEncodings() {
   tainted.withContiguousStorageIfAvailable({
     ptr in
     sink(arg: ptr)
-    sink(arg: ptr.baseAddress!) // $ MISSING: tainted=352
+    sink(arg: ptr.baseAddress!) // $ MISSING: tainted=366
   })
 }
 
@@ -443,20 +457,20 @@ func taintFromUInt8Array() {
       return 3
     }
   ))
-  sink(arg: String(unsafeUninitializedCapacity: 256, initializingUTF8With: { // $ MISSING: tainted=436
+  sink(arg: String(unsafeUninitializedCapacity: 256, initializingUTF8With: { // $ MISSING: tainted=450
     (buffer: UnsafeMutableBufferPointer<UInt8>) -> Int in
       sink(arg: buffer)
       let _ = buffer.initialize(from: taintedUInt8Values)
-      sink(arg: buffer) // $ MISSING: tainted=436
+      sink(arg: buffer) // $ MISSING: tainted=450
       return 256
     }
   ))
 
   sink(arg: String(bytes: cleanUInt8Values, encoding: String.Encoding.utf8)!)
-  sink(arg: String(bytes: taintedUInt8Values, encoding: String.Encoding.utf8)!) // $ tainted=436
+  sink(arg: String(bytes: taintedUInt8Values, encoding: String.Encoding.utf8)!) // $ tainted=450
 
   sink(arg: String(cString: cleanUInt8Values))
-  sink(arg: String(cString: taintedUInt8Values)) // $ tainted=436
+  sink(arg: String(cString: taintedUInt8Values)) // $ tainted=450
 
   try! cleanUInt8Values.withUnsafeBufferPointer({
     (buffer: UnsafeBufferPointer<UInt8>) throws in
@@ -466,9 +480,9 @@ func taintFromUInt8Array() {
   })
   try! taintedUInt8Values.withUnsafeBufferPointer({
     (buffer: UnsafeBufferPointer<UInt8>) throws in
-    sink(arg: buffer) // $ MISSING: tainted=436
-    sink(arg: buffer.baseAddress!) // $ MISSING: tainted=436
-    sink(arg: String(cString: buffer.baseAddress!)) // $ MISSING: tainted=436
+    sink(arg: buffer) // $ MISSING: tainted=450
+    sink(arg: buffer.baseAddress!) // $ MISSING: tainted=450
+    sink(arg: String(cString: buffer.baseAddress!)) // $ MISSING: tainted=450
   })
 
   try! cleanUInt8Values.withUnsafeMutableBytes({
@@ -479,9 +493,9 @@ func taintFromUInt8Array() {
   })
   try! taintedUInt8Values.withUnsafeMutableBytes({
     (buffer: UnsafeMutableRawBufferPointer) throws in
-    sink(arg: buffer) // $ MISSING: tainted=436
-    sink(arg: buffer.baseAddress!) // $ MISSING: tainted=436
-    sink(arg: String(bytesNoCopy: buffer.baseAddress!, length: buffer.count, encoding: String.Encoding.utf8, freeWhenDone: false)!) // $ MISSING: tainted=436
+    sink(arg: buffer) // $ MISSING: tainted=450
+    sink(arg: buffer.baseAddress!) // $ MISSING: tainted=450
+    sink(arg: String(bytesNoCopy: buffer.baseAddress!, length: buffer.count, encoding: String.Encoding.utf8, freeWhenDone: false)!) // $ MISSING: tainted=450
   })
 }
 
@@ -501,15 +515,15 @@ func taintThroughCCharArray() {
   })
   taintedCCharValues.withUnsafeBufferPointer({
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=492
-    sink(arg: ptr.baseAddress!) // $ MISSING: tainted=492
-    sink(arg: String(utf8String: ptr.baseAddress!)!) // $ MISSING: tainted=492
-    sink(arg: String(validatingUTF8: ptr.baseAddress!)!) // $ MISSING: tainted=492
-    sink(arg: String(cString: ptr.baseAddress!)) // $ MISSING: tainted=492
+    sink(arg: ptr) // $ MISSING: tainted=506
+    sink(arg: ptr.baseAddress!) // $ MISSING: tainted=506
+    sink(arg: String(utf8String: ptr.baseAddress!)!) // $ MISSING: tainted=506
+    sink(arg: String(validatingUTF8: ptr.baseAddress!)!) // $ MISSING: tainted=506
+    sink(arg: String(cString: ptr.baseAddress!)) // $ MISSING: tainted=506
   })
 
   sink(arg: String(cString: cleanCCharValues))
-  sink(arg: String(cString: taintedCCharValues)) // $ tainted=492
+  sink(arg: String(cString: taintedCCharValues)) // $ tainted=506
 }
 
 func source6() -> [unichar] { return [] }
@@ -527,10 +541,10 @@ func taintThroughUnicharArray() {
   })
   taintedUnicharValues.withUnsafeBufferPointer({
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=519
-    sink(arg: ptr.baseAddress!) // $ MISSING: tainted=519
-    sink(arg: String(utf16CodeUnits: ptr.baseAddress!, count: ptr.count)) // $ MISSING: tainted=519
-    sink(arg: String(utf16CodeUnitsNoCopy: ptr.baseAddress!, count: ptr.count, freeWhenDone: false)) // $ MISSING: tainted=519
+    sink(arg: ptr) // $ MISSING: tainted=533
+    sink(arg: ptr.baseAddress!) // $ MISSING: tainted=533
+    sink(arg: String(utf16CodeUnits: ptr.baseAddress!, count: ptr.count)) // $ MISSING: tainted=533
+    sink(arg: String(utf16CodeUnitsNoCopy: ptr.baseAddress!, count: ptr.count, freeWhenDone: false)) // $ MISSING: tainted=533
   })
 }
 
@@ -539,31 +553,31 @@ func source7() -> Substring { return Substring() }
 func taintThroughSubstring() {
   let tainted = source2()
 
-  sink(arg: source7()) // $ tainted=542
+  sink(arg: source7()) // $ tainted=556
 
   let sub1 = tainted[tainted.startIndex ..< tainted.endIndex]
-  sink(arg: sub1) // $ tainted=540
-  sink(arg: String(sub1)) // $ tainted=540
+  sink(arg: sub1) // $ tainted=554
+  sink(arg: String(sub1)) // $ tainted=554
 
   let sub2 = tainted.prefix(10)
-  sink(arg: sub2) // $ tainted=540
-  sink(arg: String(sub2)) // $ tainted=540
+  sink(arg: sub2) // $ tainted=554
+  sink(arg: String(sub2)) // $ tainted=554
 
   let sub3 = tainted.prefix(through: tainted.endIndex)
-  sink(arg: sub3) // $ tainted=540
-  sink(arg: String(sub3)) // $ tainted=540
+  sink(arg: sub3) // $ tainted=554
+  sink(arg: String(sub3)) // $ tainted=554
 
   let sub4 = tainted.prefix(upTo: tainted.endIndex)
-  sink(arg: sub4) // $ tainted=540
-  sink(arg: String(sub4)) // $ tainted=540
+  sink(arg: sub4) // $ tainted=554
+  sink(arg: String(sub4)) // $ tainted=554
 
   let sub5 = tainted.suffix(10)
-  sink(arg: sub5) // $ tainted=540
-  sink(arg: String(sub5)) // $ tainted=540
+  sink(arg: sub5) // $ tainted=554
+  sink(arg: String(sub5)) // $ tainted=554
 
   let sub6 = tainted.suffix(from: tainted.startIndex)
-  sink(arg: sub6) // $ tainted=540
-  sink(arg: String(sub6)) // $ tainted=540
+  sink(arg: sub6) // $ tainted=554
+  sink(arg: String(sub6)) // $ tainted=554
 }
 
 func taintedThroughFilePath() {
@@ -571,16 +585,16 @@ func taintedThroughFilePath() {
   let tainted = FilePath(source2())
 
   sink(arg: clean)
-  sink(arg: tainted) // $ MISSING: tainted=571
+  sink(arg: tainted) // $ MISSING: tainted=585
 
-  sink(arg: tainted.extension!) // $ MISSING: tainted=571
-  sink(arg: tainted.stem!) // $ MISSING: tainted=571
-  sink(arg: tainted.string) // $ MISSING: tainted=571
-  sink(arg: tainted.description) // $ MISSING: tainted=571
-  sink(arg: tainted.debugDescription) // $ MISSING: tainted=571
+  sink(arg: tainted.extension!) // $ MISSING: tainted=585
+  sink(arg: tainted.stem!) // $ MISSING: tainted=585
+  sink(arg: tainted.string) // $ MISSING: tainted=585
+  sink(arg: tainted.description) // $ MISSING: tainted=585
+  sink(arg: tainted.debugDescription) // $ MISSING: tainted=585
 
-  sink(arg: String(decoding: tainted)) // $ MISSING: tainted=571
-  sink(arg: String(validating: tainted)!) // $ MISSING: tainted=571
+  sink(arg: String(decoding: tainted)) // $ MISSING: tainted=585
+  sink(arg: String(validating: tainted)!) // $ MISSING: tainted=585
 
   let _ = clean.withCString({
     ptr in
@@ -588,7 +602,7 @@ func taintedThroughFilePath() {
   })
   let _ = tainted.withCString({
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=571
+    sink(arg: ptr) // $ MISSING: tainted=585
   })
 
   let _ = clean.withPlatformString({
@@ -599,34 +613,34 @@ func taintedThroughFilePath() {
   })
   let _ = tainted.withPlatformString({
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=571
-    sink(arg: String(platformString: ptr)) // $ MISSING: tainted=571
-    sink(arg: String(validatingPlatformString: ptr)!) // $ MISSING: tainted=571
+    sink(arg: ptr) // $ MISSING: tainted=585
+    sink(arg: String(platformString: ptr)) // $ MISSING: tainted=585
+    sink(arg: String(validatingPlatformString: ptr)!) // $ MISSING: tainted=585
   })
 
   var fp1 = FilePath("")
   sink(arg: fp1)
   fp1.append(source2())
-  sink(arg: fp1) // $ MISSING: tainted=609
+  sink(arg: fp1) // $ MISSING: tainted=623
   fp1.append("")
-  sink(arg: fp1) // $ MISSING: tainted=609
+  sink(arg: fp1) // $ MISSING: tainted=623
 
   sink(arg: clean.appending(""))
-  sink(arg: clean.appending(source2())) // $ MISSING: tainted=615
-  sink(arg: tainted.appending("")) // $ MISSING: tainted=571
-  sink(arg: tainted.appending(source2())) // $ MISSING: tainted=571,617
+  sink(arg: clean.appending(source2())) // $ MISSING: tainted=629
+  sink(arg: tainted.appending("")) // $ MISSING: tainted=585
+  sink(arg: tainted.appending(source2())) // $ MISSING: tainted=585,631
 }
 
 func taintedThroughConversion() {
   sink(arg: String(0))
-  sink(arg: String(source())) // $ tainted=622
+  sink(arg: String(source())) // $ tainted=636
   sink(arg: Int(0).description)
-  sink(arg: source().description) // $ MISSING: tainted=624
+  sink(arg: source().description) // $ MISSING: tainted=638
   sink(arg: String(describing: 0))
-  sink(arg: String(describing: source())) // $ tainted=626
+  sink(arg: String(describing: source())) // $ tainted=640
 
   sink(arg: Int("123")!)
-  sink(arg: Int(source2())!) // $ MISSING: tainted=629
+  sink(arg: Int(source2())!) // $ MISSING: tainted=643
 }
 
 func untaintedFields() {

@@ -1,6 +1,6 @@
 {
     "name": "my-unsafe-library",
-    "main": "./foobar.js",
+    "main": "./index.ts",
     "exports": {
         "./MyNode": {
             "require": "./lib/MyNode.cjs",

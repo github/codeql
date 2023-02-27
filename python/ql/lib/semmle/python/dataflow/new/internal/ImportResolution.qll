@@ -71,13 +71,19 @@ module ImportResolution {
    */
   pragma[nomagic]
   predicate module_export(Module m, string name, DataFlow::CfgNode defn) {
-    exists(EssaVariable v |
+    exists(EssaVariable v, EssaDefinition essaDef |
       v.getName() = name and
-      v.getAUse() = ImportStar::getStarImported*(m).getANormalExit()
+      v.getAUse() = ImportStar::getStarImported*(m).getANormalExit() and
+      (
+        essaDef = v.getDefinition()
+        or
+        // to handle definitions guarded by if-then-else
+        essaDef = v.getDefinition().(PhiFunction).getAnInput()
+      )
     |
-      defn.getNode() = v.getDefinition().(AssignmentDefinition).getValue()
+      defn.getNode() = essaDef.(AssignmentDefinition).getValue()
       or
-      defn.getNode() = v.getDefinition().(ArgumentRefinement).getArgument()
+      defn.getNode() = essaDef.(ArgumentRefinement).getArgument()
     )
     or
     exists(Alias a |
@@ -167,8 +173,22 @@ module ImportResolution {
     )
   }
 
+  /**
+   * Gets the (most likely) module for the name `name`, if any.
+   *
+   * Handles the fact that for the name `<pkg>` representing a package the actual module
+   * is `<pkg>.__init__`.
+   *
+   * See `isPreferredModuleForName` for more details on what "most likely" module means.
+   */
+  pragma[inline]
+  private Module getModuleFromName(string name) {
+    isPreferredModuleForName(result.getFile(), name + ["", ".__init__"])
+  }
+
+  /** Gets the module from which attributes are imported by `i`. */
   Module getModuleImportedByImportStar(ImportStar i) {
-    isPreferredModuleForName(result.getFile(), i.getImportedModuleName())
+    result = getModuleFromName(i.getImportedModuleName())
   }
 
   /**
@@ -223,7 +243,7 @@ module ImportResolution {
     exists(string module_name | result = getReferenceToModuleName(module_name) |
       // Depending on whether the referenced module is a package or not, we may need to add a
       // trailing `.__init__` to the module name.
-      isPreferredModuleForName(m.getFile(), module_name + ["", ".__init__"])
+      m = getModuleFromName(module_name)
       or
       // Module defined via `sys.modules`
       m = sys_modules_module_with_name(module_name)
@@ -234,7 +254,7 @@ module ImportResolution {
       ar.accesses(getModuleReference(p), attr_name) and
       result = ar
     |
-      isPreferredModuleForName(m.getFile(), p.getPackageName() + "." + attr_name + ["", ".__init__"])
+      m = getModuleFromName(p.getPackageName() + "." + attr_name)
     )
     or
     // This is also true for attributes that come from reexports.
@@ -248,8 +268,7 @@ module ImportResolution {
     exists(string submodule, Module package |
       SsaSource::init_module_submodule_defn(result.asVar().getSourceVariable(),
         package.getEntryNode()) and
-      isPreferredModuleForName(m.getFile(),
-        package.getPackageName() + "." + submodule + ["", ".__init__"])
+      m = getModuleFromName(package.getPackageName() + "." + submodule)
     )
   }
 

@@ -10,7 +10,10 @@ module RegExpInjection {
   /**
    * A data flow source for untrusted user input used to construct regular expressions.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /** Gets a description of this source. */
+    string describe() { result = "user-provided value" }
+  }
 
   /**
    * A data flow sink for untrusted user input used to construct regular expressions.
@@ -28,6 +31,16 @@ module RegExpInjection {
    */
   class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
     RemoteFlowSourceAsSource() { not this instanceof ClientSideRemoteFlowSource }
+  }
+
+  private import IndirectCommandInjectionCustomizations
+
+  /**
+   * A read of `process.env`, `process.argv`, and similar, considered as a flow source for regular
+   * expression injection.
+   */
+  class ArgvAsSource extends Source instanceof IndirectCommandInjection::Source {
+    override string describe() { result = IndirectCommandInjection::Source.super.describe() }
   }
 
   /**

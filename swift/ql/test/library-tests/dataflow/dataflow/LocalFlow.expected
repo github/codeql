@@ -390,3 +390,4 @@
 | test.swift:472:20:472:23 | .x | test.swift:472:11:472:15 | SSA def(z1) |
 | test.swift:474:11:474:15 | SSA def(z2) | test.swift:475:15:475:15 | z2 |
 | test.swift:474:20:474:23 | .x | test.swift:474:11:474:15 | SSA def(z2) |
+| test.swift:479:14:479:21 | call to source() | test.swift:479:13:479:21 | call to +(_:) |
