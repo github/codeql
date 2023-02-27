@@ -461,7 +461,7 @@ class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
 
   PostFieldUpdateNode() { this = TPostFieldUpdateNode(fieldAddress, indirectionIndex) }
 
-  override Function getFunction() { result = fieldAddress.getUse().getEnclosingFunction() }
+  override Declaration getFunction() { result = fieldAddress.getUse().getEnclosingFunction() }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
@@ -543,7 +543,7 @@ class SideEffectOperandNode extends Node, IndirectOperand {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Function getFunction() { result = call.getEnclosingFunction() }
+  override Declaration getFunction() { result = call.getEnclosingFunction() }
 
   Expr getArgument() { result = call.getArgument(argumentIndex).getUnconvertedResultExpression() }
 }
@@ -629,7 +629,7 @@ class IndirectParameterNode extends Node, IndirectInstruction {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
+  override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
 
   override string toStringImpl() {
     result = this.getParameter().toString() + " indirection"
@@ -702,7 +702,7 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PartialDef
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Function getFunction() { result = this.getCallInstruction().getEnclosingFunction() }
+  override Declaration getFunction() { result = this.getCallInstruction().getEnclosingFunction() }
 
   override Node getPreUpdateNode() { hasOperandAndIndex(result, operand, indirectionIndex) }
 
@@ -847,7 +847,7 @@ class RawIndirectOperand extends Node, TRawIndirectOperand {
   /** Gets the underlying indirection index. */
   int getIndirectionIndex() { result = indirectionIndex }
 
-  override Function getFunction() { result = this.getOperand().getDef().getEnclosingFunction() }
+  override Declaration getFunction() { result = this.getOperand().getDef().getEnclosingFunction() }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
@@ -888,7 +888,7 @@ class FinalParameterNode extends Node, TFinalParameterNode {
   /** Gets the argument index associated with this final use. */
   final int getArgumentIndex() { result = p.getIndex() }
 
-  override Function getFunction() { result = p.getFunction() }
+  override Declaration getFunction() { result = p.getFunction() }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
@@ -945,7 +945,7 @@ class RawIndirectInstruction extends Node, TRawIndirectInstruction {
   /** Gets the underlying indirection index. */
   int getIndirectionIndex() { result = indirectionIndex }
 
-  override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
+  override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
