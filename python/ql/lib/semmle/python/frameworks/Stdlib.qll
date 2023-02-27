@@ -1465,7 +1465,19 @@ private module StdlibPrivate {
     t.start() and
     result = openCall and
     (
-      openCall instanceof OpenCall
+      openCall instanceof OpenCall and
+      // don't include the open call inside of Path.open in pathlib.py since
+      // the call to `path_obj.open` is covered by `PathLibOpenCall`.
+      not exists(Module mod, Class cls, Function func |
+        openCall.(OpenCall).asCfgNode().getScope() = func and
+        func.getName() = "open" and
+        func.getScope() = cls and
+        cls.getName() = "Path" and
+        cls.getScope() = mod and
+        mod.getName() = "pathlib" and
+        // do allow this call if we're analyzing pathlib.py as part of CPython though
+        not exists(mod.getFile().getRelativePath())
+      )
       or
       openCall instanceof PathLibOpenCall
     )

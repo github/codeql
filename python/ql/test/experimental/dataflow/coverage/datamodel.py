@@ -124,6 +124,40 @@ def test_staticmethod_call():
   C.staticmethod(arg1, arg2) # $ func=C.staticmethod arg1 arg2
 
 
+# subclass
+class SC(C):
+    pass
+sc = SC()
+
+@expects(6)
+def test_subclass_method_call():
+  func_obj = sc.method.__func__
+
+  sc.method(arg1, arg2) # $ func=C.method arg1 arg2
+  SC.method(sc, arg1, arg2) # $ func=C.method arg1 arg2
+  func_obj(sc, arg1, arg2) # $ MISSING: func=C.method arg1 arg2
+
+
+@expects(6)
+def test_subclass_classmethod_call():
+  c_func_obj = SC.classmethod.__func__
+
+  sc.classmethod(arg1, arg2) # $ func=C.classmethod arg1 arg2
+  SC.classmethod(arg1, arg2) # $ func=C.classmethod arg1 arg2
+  c_func_obj(SC, arg1, arg2) # $ MISSING: func=C.classmethod arg1 arg2
+
+
+@expects(5)
+def test_subclass_staticmethod_call():
+  try:
+    SC.staticmethod.__func__
+  except AttributeError:
+    print("OK")
+
+  sc.staticmethod(arg1, arg2) # $ func=C.staticmethod arg1 arg2
+  SC.staticmethod(arg1, arg2) # $ func=C.staticmethod arg1 arg2
+
+
 # Generator functions
 # A function or method which uses the yield statement (see section The yield statement) is called a generator function. Such a function, when called, always returns an iterator object which can be used to execute the body of the function: calling the iterator’s iterator.__next__() method will cause the function to execute until it provides a value using the yield statement. When the function executes a return statement or falls off the end, a StopIteration exception is raised and the iterator will have reached the end of the set of values to be returned.
 def gen(x, count):
@@ -198,5 +232,16 @@ class Customized:
 customized = Customized()
 SINK(Customized.a)  #$ MISSING:flow="SOURCE, l:-8 -> customized.a"
 SINK_F(Customized.b)
-SINK(customized.a)  #$ MISSING:flow="SOURCE, l:-10 -> customized.a"
+SINK(customized.a)  #$ MISSING: flow="SOURCE, l:-10 -> customized.a"
 SINK(customized.b)  #$ flow="SOURCE, l:-7 -> customized.b"
+
+
+class Test2:
+
+  def __init__(self, arg):
+    self.x = SOURCE
+    self.y = arg
+
+t = Test2(SOURCE)
+SINK(t.x) # $ flow="SOURCE, l:-4 -> t.x"
+SINK(t.y) # $ flow="SOURCE, l:-2 -> t.y"

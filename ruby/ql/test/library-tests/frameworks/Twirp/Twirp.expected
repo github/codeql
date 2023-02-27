@@ -1,0 +1,6 @@
+sourceTest
+| hello_world_server.rb:8:13:8:15 | req |
+ssrfSinkTest
+| hello_world_client.rb:6:47:6:75 | "http://localhost:8080/twirp" |
+serviceInstantiationTest
+| hello_world_server.rb:24:11:24:61 | call to new |

@@ -8,6 +8,7 @@ upgrades: upgrades
 dependencies:
   codeql/ssa: ${workspace}
   codeql/tutorial: ${workspace}
+  codeql/util: ${workspace}
 dataExtensions:
   - ext/*.model.yml
   - ext/generated/*.model.yml

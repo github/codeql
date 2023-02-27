@@ -456,6 +456,7 @@ dependencies = [
  "tracing-subscriber",
  "tree-sitter",
  "tree-sitter-blame",
+ "tree-sitter-json",
  "tree-sitter-ql",
  "tree-sitter-ql-dbscheme",
  "tree-sitter-ql-yaml",
@@ -470,6 +471,7 @@ dependencies = [
  "tracing",
  "tracing-subscriber",
  "tree-sitter-blame",
+ "tree-sitter-json",
  "tree-sitter-ql",
  "tree-sitter-ql-dbscheme",
  "tree-sitter-ql-yaml",
@@ -727,6 +729,15 @@ dependencies = [
 [[package]]
 name = "tree-sitter-blame"
 version = "0.0.1"
+dependencies = [
+ "cc",
+ "tree-sitter",
+]
+
+[[package]]
+name = "tree-sitter-json"
+version = "0.20.0"
+source = "git+https://github.com/tausbn/tree-sitter-json.git?rev=745663ee997f1576fe1e7187e6347e0db36ec7a9#745663ee997f1576fe1e7187e6347e0db36ec7a9"
 dependencies = [
  "cc",
  "tree-sitter",

@@ -413,7 +413,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
 
   /**
    * Gets a direct or indirect supertype of this type.
-   * This does not including itself, unless this type is part of a cycle
+   * This does not include itself, unless this type is part of a cycle
    * in the type hierarchy.
    */
   RefType getAStrictAncestor() { result = this.getASupertype().getAnAncestor() }

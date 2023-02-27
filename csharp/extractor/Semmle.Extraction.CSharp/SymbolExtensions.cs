@@ -77,12 +77,8 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Gets the source-level modifiers belonging to this symbol, if any.
         /// </summary>
-        public static IEnumerable<string> GetSourceLevelModifiers(this ISymbol symbol)
-        {
-            var methodModifiers = symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.BaseMethodDeclarationSyntax>(md => md.Modifiers);
-            var typeModifiers = symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax>(cd => cd.Modifiers);
-            return methodModifiers.Concat(typeModifiers).Select(m => m.Text);
-        }
+        public static IEnumerable<string> GetSourceLevelModifiers(this ISymbol symbol) =>
+            symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.MemberDeclarationSyntax>(md => md.Modifiers).Select(m => m.Text);
 
         /// <summary>
         /// Holds if the ID generated for `dependant` will contain a reference to
