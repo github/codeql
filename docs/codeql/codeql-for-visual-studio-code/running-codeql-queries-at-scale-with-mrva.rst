@@ -19,7 +19,7 @@ When you run variant analysis against a list of repositories, your query is run 
 .. _controller-repository:
 
 Setting a controller repository for variant analysis
--------------------------------------------------
+----------------------------------------------------
 
 When you run variant analysis, the analysis is run entirely using GitHub Actions. You don't need to create any workflows, but you must specify which GitHub repository the CodeQL extension should use as the "controller repository." Controller repositories can be empty, but they must have at least one commit and the ``GITHUB_TOKEN`` must have "Read and write permissions" when running workflows. For more information, see "`Managing GitHub Actions settings for a repository <https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#setting-the-permissions-of-the-github_token-for-your-repository>`__."
 
@@ -31,9 +31,6 @@ When you run variant analysis, the analysis is run entirely using GitHub Actions
    - The controller repository visibility must be "private" if you need to analyze any private repositories. Any actions minutes used by variant analysis, above the free limit, will be charged to the repository owner. For more information about free minutes and billing, see "`About billing for GitHub Actions <https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions>`__." 
 
 TODO: Check on "internal" repositories.
-
-
-TODO: check that the guess in the note above is accurate.
 
 Setting up variant analysis
 ---------------------------
