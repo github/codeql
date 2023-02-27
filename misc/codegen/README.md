@@ -1,30 +1,24 @@
 # Code generation suite
 
 This directory contains the code generation suite used by the Swift extractor and the QL library. This suite will use
-the abstract class specification of [`schema.yml`](schema.yml) to generate:
+the abstract class specification of `schema.py` to generate:
 
-* [the `dbscheme` file](../ql/lib/misc.dbscheme) (see [`dbschemegen.py`](generators/dbschemegen.py))
-* [the QL generated code](../ql/lib/codeql/swift/generated) and when
-  appropriate [the corresponding stubs](../ql/lib/codeql/swift/elements) (see [`qlgen.py`](generators/qlgen.py))
+* the `dbscheme` file (see [`dbschemegen.py`](generators/dbschemegen.py))
+* the QL generated code and when appropriate the corresponding stubs (see [`qlgen.py`](generators/qlgen.py))
 * C++ tags and trap entries (see [`trapgen.py`](generators/trapgen.py))
 * C++ structured classes (see [`cppgen.py`](generators/cppgen.py))
 
+An example `schema.py` [can be found in the Swift package](../../swift/schema.py).
+
 ## Usage
 
-By default `bazel run //misc/codegen` will update all checked-in generated files (`dbscheme` and QL sources). You can
-append `--` followed by other options to tweak the behaviour, which is mainly intended for debugging.
+By default `bazel run //misc/codegen -- -c your-codegen.conf` will load options from `your-codegen.conf`. See
+the [Swift configuration](../../swift/codegen.conf) for an example. Calling `misc/codegen/codegen.py` directly (provided
+you installed dependencies via `pip3 install -r misc/codegen/requirements.txt`) will use a file named `codegen.conf`
+contained in an ancestor directory if any exists.
+
 See `bazel run //misc/codegen -- --help` for a list of all options. In particular `--generate` can be used with a comma
 separated list to select what to generate (choosing among `dbscheme`, `ql`, `trap` and `cpp`).
-
-C++ code is generated during build (see [`swift/extractor/trap/BUILD.bazel`](../extractor/trap/BUILD.bazel)). After a
-build you can browse the generated code in `bazel-bin/swift/extractor/trap/generated`.
-
-For debugging you can also run `./codegen.py` directly. You must then ensure dependencies are installed, which you can
-with the command
-
-```bash
-pip3 install -r ./requirements.txt
-```
 
 ## Implementation notes
 
