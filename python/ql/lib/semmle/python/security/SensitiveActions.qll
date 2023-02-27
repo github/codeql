@@ -12,7 +12,6 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.security.internal.SensitiveDataHeuristics
-import semmle.python.essa.Essa
 private import HeuristicNames
 
 /** An expression that might contain sensitive data. */
