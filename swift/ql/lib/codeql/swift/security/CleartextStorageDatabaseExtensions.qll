@@ -75,58 +75,41 @@ private class RealmStore extends CleartextStorageDatabaseSink instanceof DataFlo
   }
 }
 
-/**
- * A `DataFlow::Node` that is an expression stored with the GRDB library.
- */
-private class GrdbStore extends CleartextStorageDatabaseSink {
-  GrdbStore() {
-    exists(CallExpr call, MethodDecl method |
-      call.getStaticTarget() = method and
-      call.getArgumentWithLabel("arguments").getExpr() = this.asExpr()
-    |
-      method
-          .hasQualifiedName("Database",
-            ["allStatements(sql:arguments:)", "execute(sql:arguments:)",])
-      or
-      method.hasQualifiedName("SQLRequest", "init(sql:arguments:adapter:cached:)")
-      or
-      method.hasQualifiedName("SQL", ["init(sql:arguments:)", "append(sql:arguments:)"])
-      or
-      method.hasQualifiedName("SQLStatementCursor", "init(database:sql:arguments:prepFlags:)")
-      or
-      method
-          .hasQualifiedName("TableRecord",
-            [
-              "select(sql:arguments:)", "select(sql:arguments:as:)", "filter(sql:arguments:)",
-              "order(sql:arguments:)"
-            ])
-      or
-      method
-          .hasQualifiedName(["Row", "DatabaseValueConvertible", "FetchableRecord"],
-            [
-              "fetchCursor(_:sql:arguments:adapter:)", "fetchAll(_:sql:arguments:adapter:)",
-              "fetchSet(_:sql:arguments:adapter:)", "fetchOne(_:sql:arguments:adapter:)"
-            ])
-      or
-      method
-          .hasQualifiedName("FetchableRecord",
-            [
-              "fetchCursor(_:arguments:adapter:)", "fetchAll(_:arguments:adapter:)",
-              "fetchSet(_:arguments:adapter:)", "fetchOne(_:arguments:adapter:)",
-            ])
-      or
-      method.hasQualifiedName("Statement", ["execute(arguments:)"])
-      or
-      method
-          .hasQualifiedName("CommonTableExpression", "init(recursive:named:columns:sql:arguments:)")
-    )
-    or
-    exists(CallExpr call, MethodDecl method |
-      call.getStaticTarget() = method and
-      call.getArgument(0).getExpr() = this.asExpr()
-    |
-      method.hasQualifiedName("Statement", "setArguments(_:)")
-    )
+private class CleartextStorageDatabaseSinks extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        // GRDB sinks
+        ";Database;true;allStatements(sql:arguments:);;;Argument[1];database-store",
+        ";Database;true;execute(sql:arguments:);;;Argument[1];database-store",
+        ";SQLRequest;true;init(sql:arguments:adapter:cached:);;;Argument[1];database-store",
+        ";SQL;true;init(sql:arguments:);;;Argument[1];database-store",
+        ";SQL;true;append(sql:arguments:);;;Argument[1];database-store",
+        ";SQLStatementCursor;true;init(database:sql:arguments:prepFlags:);;;Argument[2];database-store",
+        ";TableRecord;true;select(sql:arguments:);;;Argument[1];database-store",
+        ";TableRecord;true;select(sql:arguments:as:);;;Argument[1];database-store",
+        ";TableRecord;true;filter(sql:arguments:);;;Argument[1];database-store",
+        ";TableRecord;true;order(sql:arguments:);;;Argument[1];database-store",
+        ";Row;true;fetchCursor(_:sql:arguments:adapter:);;;Argument[2];database-store",
+        ";Row;true;fetchAll(_:sql:arguments:adapter:);;;Argument[2];database-store",
+        ";Row;true;fetchSet(_:sql:arguments:adapter:);;;Argument[2];database-store",
+        ";Row;true;fetchOne(_:sql:arguments:adapter:);;;Argument[2];database-store",
+        ";DatabaseValueConvertible;true;fetchCursor(_:sql:arguments:adapter:);;;Argument[2];database-store",
+        ";DatabaseValueConvertible;true;fetchAll(_:sql:arguments:adapter:);;;Argument[2];database-store",
+        ";DatabaseValueConvertible;true;fetchSet(_:sql:arguments:adapter:);;;Argument[2];database-store",
+        ";DatabaseValueConvertible;true;fetchOne(_:sql:arguments:adapter:);;;Argument[2];database-store",
+        ";FetchableRecord;true;fetchCursor(_:sql:arguments:adapter:);;;Argument[2];database-store",
+        ";FetchableRecord;true;fetchAll(_:sql:arguments:adapter:);;;Argument[2];database-store",
+        ";FetchableRecord;true;fetchSet(_:sql:arguments:adapter:);;;Argument[2];database-store",
+        ";FetchableRecord;true;fetchOne(_:sql:arguments:adapter:);;;Argument[2];database-store",
+        ";FetchableRecord;true;fetchCursor(_:arguments:adapter:);;;Argument[1];database-store",
+        ";FetchableRecord;true;fetchAll(_:arguments:adapter:);;;Argument[1];database-store",
+        ";FetchableRecord;true;fetchSet(_:arguments:adapter:);;;Argument[1];database-store",
+        ";FetchableRecord;true;fetchOne(_:arguments:adapter:);;;Argument[1];database-store",
+        ";Statement;true;execute(arguments:);;;Argument[0];database-store",
+        ";CommonTableExpression;true;init(recursive:named:columns:sql:arguments:);;;Argument[4];database-store",
+        ";Statement;true;setArguments(_:);;;Argument[0];database-store"
+      ]
   }
 }
 
