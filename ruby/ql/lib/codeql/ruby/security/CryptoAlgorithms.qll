@@ -27,6 +27,26 @@ private newtype TCryptographicAlgorithm =
   }
 
 /**
+ * Gets the most specific `CryptographicAlgorithm` that matches the given `name`.
+ * A matching algorithm is one where the name of the algorithm matches the start of name, with allowances made for different name formats.
+ * In the case that multiple `CryptographicAlgorithm`s match the given `name`, the algorithm(s) with the longest name will be selected. This is intended to select more specific versions of algorithms when multiple versions could match - for example "SHA3_224" matches against both "SHA3" and "SHA3224", but the latter is a more precise match.
+ */
+bindingset[name]
+private CryptographicAlgorithm getBestAlgorithmForName(string name) {
+  result =
+    max(CryptographicAlgorithm algorithm |
+      algorithm.getName() =
+        [
+          name.toUpperCase(), // the full name
+          name.toUpperCase().regexpCapture("^([\\w]+)(?:-.*)?$", 1), // the name prior to any dashes or spaces
+          name.toUpperCase().regexpCapture("^([A-Z0-9]+)(?:(-|_).*)?$", 1) // the name prior to any dashes, spaces, or underscores
+        ].regexpReplaceAll("[-_ ]", "") // strip dashes, underscores, and spaces
+    |
+      algorithm order by algorithm.getName().length()
+    )
+}
+
+/**
  * A cryptographic algorithm.
  */
 abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
@@ -39,15 +59,11 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
   abstract string getName();
 
   /**
-   * Holds if the name of this algorithm matches `name` modulo case,
-   * white space, dashes, underscores, and anything after a dash in the name
-   * (to ignore modes of operation, such as CBC or ECB).
+   * Holds if the name of this algorithm is the most specific match for `name`.
+   * This predicate matches quite liberally to account for different ways of formatting algorithm names, e.g. using dashes, underscores, or spaces as separators, including or not including block modes of operation, etc.
    */
   bindingset[name]
-  predicate matchesName(string name) {
-    [name.toUpperCase(), name.toUpperCase().regexpCapture("^(\\w+)(?:-.*)?$", 1)]
-        .regexpReplaceAll("[-_ ]", "") = getName()
-  }
+  predicate matchesName(string name) { this = getBestAlgorithmForName(name) }
 
   /**
    * Holds if this algorithm is weak.

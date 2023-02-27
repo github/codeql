@@ -10,6 +10,8 @@
 | cases.rb:137:1:145:3 | case ... | CaseExpr |
 | cases.rb:147:1:152:3 | case ... | CaseExpr |
 | cases.rb:154:1:158:3 | case ... | CaseExpr |
+| cases.rb:160:1:160:14 | case ... | CaseExpr |
+| cases.rb:162:1:162:20 | case ... | CaseExpr |
 | conditionals.rb:10:1:12:3 | if ... | IfExpr |
 | conditionals.rb:15:1:19:3 | if ... | IfExpr |
 | conditionals.rb:22:1:30:3 | if ... | IfExpr |

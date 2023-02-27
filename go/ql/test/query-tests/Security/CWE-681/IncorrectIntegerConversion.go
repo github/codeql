@@ -264,6 +264,9 @@ func testBoundsChecking(input string) {
 				_ = int16(parsed)
 			}
 		}
+		if parsed <= math.MaxUint16 {
+			_ = uint16(parsed)
+		}
 	}
 	{
 		parsed, err := strconv.ParseUint(input, 10, 32)

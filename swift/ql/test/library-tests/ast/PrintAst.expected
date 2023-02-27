@@ -3071,6 +3071,107 @@ cfg.swift:
 #  489|     getElement(7): [IntegerLiteralExpr] 11
 #  490|     getElement(8): [IntegerLiteralExpr] 12
 #  493|     getElement(9): [IntegerLiteralExpr] 13
+#  496| [ConcreteFuncDecl] testAvailable()
+#  496|     InterfaceType = () -> Int
+#  496|   getBody(): [BraceStmt] { ... }
+#  497|     getElement(0): [PatternBindingDecl] var ... = ...
+#  497|       getInit(0): [IntegerLiteralExpr] 0
+#  497|       getPattern(0): [NamedPattern] x
+#  497|     getElement(1): [ConcreteVarDecl] x
+#  497|         Type = Int
+#  499|     getElement(2): [IfStmt] if ... then { ... }
+#  499|       getCondition(): [StmtCondition] StmtCondition
+#  499|         getElement(0): [ConditionElement] #available
+#  499|           getAvailability(): [AvailabilityInfo] #available
+#  499|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 10
+#  499|             getSpec(1): [OtherAvailabilitySpec] *
+#  499|       getThen(): [BraceStmt] { ... }
+#  500|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
+#  500|           getFunction(): [MethodLookupExpr] .+=(_:_:)
+#  500|             getBase(): [TypeExpr] Int.Type
+#  500|               getTypeRepr(): [TypeRepr] Int
+#  500|             getMethodRef(): [DeclRefExpr] +=(_:_:)
+#  500|           getArgument(0): [Argument] : &...
+#  500|             getExpr(): [InOutExpr] &...
+#  500|               getSubExpr(): [DeclRefExpr] x
+#  500|           getArgument(1): [Argument] : 1
+#  500|             getExpr(): [IntegerLiteralExpr] 1
+#  503|     getElement(3): [IfStmt] if ... then { ... }
+#  503|       getCondition(): [StmtCondition] StmtCondition
+#  503|         getElement(0): [ConditionElement] #available
+#  503|           getAvailability(): [AvailabilityInfo] #available
+#  503|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 10.13
+#  503|             getSpec(1): [OtherAvailabilitySpec] *
+#  503|       getThen(): [BraceStmt] { ... }
+#  504|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
+#  504|           getFunction(): [MethodLookupExpr] .+=(_:_:)
+#  504|             getBase(): [TypeExpr] Int.Type
+#  504|               getTypeRepr(): [TypeRepr] Int
+#  504|             getMethodRef(): [DeclRefExpr] +=(_:_:)
+#  504|           getArgument(0): [Argument] : &...
+#  504|             getExpr(): [InOutExpr] &...
+#  504|               getSubExpr(): [DeclRefExpr] x
+#  504|           getArgument(1): [Argument] : 1
+#  504|             getExpr(): [IntegerLiteralExpr] 1
+#  507|     getElement(4): [IfStmt] if ... then { ... }
+#  507|       getCondition(): [StmtCondition] StmtCondition
+#  507|         getElement(0): [ConditionElement] #unavailable
+#  507|           getAvailability(): [AvailabilityInfo] #unavailable
+#  507|             getSpec(0): [PlatformVersionAvailabilitySpec] iOS 10
+#  507|             getSpec(1): [PlatformVersionAvailabilitySpec] watchOS 10
+#  507|             getSpec(2): [PlatformVersionAvailabilitySpec] macOS 10
+#  507|       getThen(): [BraceStmt] { ... }
+#  508|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
+#  508|           getFunction(): [MethodLookupExpr] .+=(_:_:)
+#  508|             getBase(): [TypeExpr] Int.Type
+#  508|               getTypeRepr(): [TypeRepr] Int
+#  508|             getMethodRef(): [DeclRefExpr] +=(_:_:)
+#  508|           getArgument(0): [Argument] : &...
+#  508|             getExpr(): [InOutExpr] &...
+#  508|               getSubExpr(): [DeclRefExpr] x
+#  508|           getArgument(1): [Argument] : 1
+#  508|             getExpr(): [IntegerLiteralExpr] 1
+#  511|     getElement(5): [GuardStmt] guard ... else { ... }
+#  511|       getCondition(): [StmtCondition] StmtCondition
+#  511|         getElement(0): [ConditionElement] #available
+#  511|           getAvailability(): [AvailabilityInfo] #available
+#  511|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 12
+#  511|             getSpec(1): [OtherAvailabilitySpec] *
+#  511|       getBody(): [BraceStmt] { ... }
+#  512|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
+#  512|           getFunction(): [MethodLookupExpr] .+=(_:_:)
+#  512|             getBase(): [TypeExpr] Int.Type
+#  512|               getTypeRepr(): [TypeRepr] Int
+#  512|             getMethodRef(): [DeclRefExpr] +=(_:_:)
+#  512|           getArgument(0): [Argument] : &...
+#  512|             getExpr(): [InOutExpr] &...
+#  512|               getSubExpr(): [DeclRefExpr] x
+#  512|           getArgument(1): [Argument] : 1
+#  512|             getExpr(): [IntegerLiteralExpr] 1
+#  515|     getElement(6): [IfStmt] if ... then { ... }
+#  515|       getCondition(): [StmtCondition] StmtCondition
+#  515|         getElement(0): [ConditionElement] #available
+#  515|           getAvailability(): [AvailabilityInfo] #available
+#  515|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 12
+#  515|             getSpec(1): [OtherAvailabilitySpec] *
+#  515|         getElement(1): [ConditionElement] #available
+#  515|           getAvailability(): [AvailabilityInfo] #available
+#  515|             getSpec(0): [PlatformVersionAvailabilitySpec] iOS 12
+#  515|             getSpec(1): [OtherAvailabilitySpec] *
+#  515|       getThen(): [BraceStmt] { ... }
+#  516|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
+#  516|           getFunction(): [MethodLookupExpr] .+=(_:_:)
+#  516|             getBase(): [TypeExpr] Int.Type
+#  516|               getTypeRepr(): [TypeRepr] Int
+#  516|             getMethodRef(): [DeclRefExpr] +=(_:_:)
+#  516|           getArgument(0): [Argument] : &...
+#  516|             getExpr(): [InOutExpr] &...
+#  516|               getSubExpr(): [DeclRefExpr] x
+#  516|           getArgument(1): [Argument] : 1
+#  516|             getExpr(): [IntegerLiteralExpr] 1
+#  519|     getElement(7): [ReturnStmt] return ...
+#  519|       getResult(): [DeclRefExpr] x
+#  519|       getResult().getFullyConverted(): [LoadExpr] (Int) ...
 declarations.swift:
 #    1| [StructDecl] Foo
 #    2|   getMember(0): [PatternBindingDecl] var ... = ...
@@ -5898,7 +5999,7 @@ statements.swift:
 #   87|   getBody(): [BraceStmt] { ... }
 #   87|     getElement(0): [IfStmt] if ... then { ... }
 #   87|       getCondition(): [StmtCondition] StmtCondition
-#   87|         getElement(0): (no string representation)
+#   87|         getElement(0): [ConditionElement] #available
 #   87|           getAvailability(): [AvailabilityInfo] #available
 #   87|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 155
 #   87|             getSpec(1): [OtherAvailabilitySpec] *
@@ -5918,7 +6019,7 @@ statements.swift:
 #   91|   getBody(): [BraceStmt] { ... }
 #   91|     getElement(0): [IfStmt] if ... then { ... }
 #   91|       getCondition(): [StmtCondition] StmtCondition
-#   91|         getElement(0): (no string representation)
+#   91|         getElement(0): [ConditionElement] #unavailable
 #   91|           getAvailability(): [AvailabilityInfo] #unavailable
 #   91|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 42
 #   91|       getThen(): [BraceStmt] { ... }

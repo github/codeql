@@ -5,9 +5,11 @@ This file should be kept simple:
 * no flow control
 * no aliases
 * only class definitions with annotations and `include` calls
+
+For how documentation of generated QL code works, please read schema_documentation.md.
 """
 
-from swift.codegen.lib.schema.defs import *
+from misc.codegen.lib.schemadefs import *
 
 include("prefix.dbscheme")
 
@@ -812,6 +814,12 @@ class CaseLabelItem(AstNode):
     guard: optional[Expr] | child
 
 class AvailabilitySpec(AstNode):
+    """
+    An availability spec, that is, part of an `AvailabilityInfo` condition. For example `iOS 12` and `*` in:
+    ```
+    if #available(iOS 12, *)
+    ```
+    """
     pass
 
 class PlatformVersionAvailabilitySpec(AvailabilitySpec):

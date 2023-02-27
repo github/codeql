@@ -39,6 +39,8 @@ bazel run //swift/codegen
 to update generated files. This can be shortened to
 `bazel run codegen` if you are in the `swift` directory.
 
+You can also run `../misc/codegen/codegen.py`, as long as you are beneath the `swift` directory.
+
 ## IDE setup
 
 ### CLion and the native bazel plugin

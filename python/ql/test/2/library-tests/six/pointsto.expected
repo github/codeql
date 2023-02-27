@@ -6,4 +6,4 @@
 | six.moves.urllib | Package six.moves.urllib |
 | six.moves.urllib.parse | Module six.moves.urllib_parse |
 | six.moves.urllib.parse.urlsplit | Function urlsplit |
-| six.moves.zip | builtin-class itertools.izip |
+| six.moves.zip | Builtin-function zip |

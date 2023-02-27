@@ -384,7 +384,7 @@ module Make<InlineExpectationsTestSig Impl> {
       la = a.getLocation() and
       pragma[only_bind_into](lb) = b.getLocation() and
       pragma[only_bind_into](la).hasLocationInfo(fname, line, _, _, _) and
-      lb.hasLocationInfo(fname, line, _, _, _)
+      lb.hasLocationInfo(fname, _, _, line, _)
     )
   }
 

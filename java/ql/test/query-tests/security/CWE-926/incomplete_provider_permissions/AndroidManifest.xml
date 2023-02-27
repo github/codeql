@@ -17,22 +17,22 @@
 
         <!-- Read Only -->
 
-        <!-- $ hasIncompletePermissions --><provider
+        <provider
             android:name=".MyContentProviderRO"
             android:authorities="table"
             android:enabled="true"
             android:exported="true"
-            android:readPermission="android.permission.MANAGE_DOCUMENTS"></provider>
+            android:readPermission="android.permission.MANAGE_DOCUMENTS"></provider><!-- $ hasIncompletePermissions -->
 
 
         <!-- Write Only -->
 
-         <!-- $ hasIncompletePermissions --> <provider
+         <provider
             android:name=".MyContentProviderWO"
             android:authorities="table"
             android:enabled="true"
             android:exported="true"
-            android:writePermission="android.permission.MANAGE_DOCUMENTS"></provider>
+            android:writePermission="android.permission.MANAGE_DOCUMENTS"></provider><!-- $ hasIncompletePermissions -->
 
          <!-- Full -->
 

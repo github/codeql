@@ -88,7 +88,7 @@ struct DataResponse<Success, Failure: Error> {
 
     let result: Result<Success, Failure>
 
-    var value: Success? { result.success } // SOURCE
+    var value: Success? { result.success } // $ source=remote
 }
 
 struct DownloadResponse<Success, Failure: Error> {
@@ -96,7 +96,7 @@ struct DownloadResponse<Success, Failure: Error> {
 
     let result: Result<Success, Failure>
 
-    var value: Success? { result.success } // SOURCE
+    var value: Success? { result.success } // $ source=remote
 }
 
 typealias AFDataResponse<Success> = DataResponse<Success, AFError>
@@ -341,42 +341,42 @@ func testAlamofire() {
 
     AF.request("http://example.com/").response {
         response in
-        if let data = response.data { // SOURCE
+        if let data = response.data { // $ source=remote
             // ...
         }
     }
 
     AF.request("http://example.com/").response(responseSerializer: MySerializer()) {
         response in
-        if let obj = response.value { // SOURCE
+        if let obj = response.value { // $ source=remote
             // ...
         }
     }
 
     AF.request("http://example.com/").responseData {
         response in
-        if let data = response.value { // SOURCE
+        if let data = response.value { // $ source=remote
             // ...
         }
     }
 
     AF.request("http://example.com/").responseString {
         response in
-        if let str = response.value { // SOURCE
+        if let str = response.value { // $ source=remote
             // ...
         }
     }
 
     AF.request("http://example.com/").responseJSON {
         response in
-        if let json = response.value { // SOURCE
+        if let json = response.value { // $ source=remote
             // ...
         }
     }
 
     AF.request("http://example.com/").responseDecodable(of: MyDecodable.self) {
         response in
-        if let decodable = response.value { // SOURCE
+        if let decodable = response.value { // $ source=remote
             // ...
         }
     }
@@ -386,49 +386,49 @@ func testAlamofire() {
     AF.download("http://example.com/").response {
         response in
         if let path = response.fileURL?.path {
-            let str = try? String(contentsOfFile: path) // SOURCE
+            let str = try? String(contentsOfFile: path) // $ MISSING: source=remote $ SPURIOUS: source=local
             // ...
         }
     }
 
     AF.download("http://example.com/").response(responseSerializer: MySerializer()) {
         response in
-        if let obj = response.value { // SOURCE
+        if let obj = response.value { // $ source=remote
             // ...
         }
     }
 
     AF.download("http://example.com/").responseURL {
         response in
-        if let url = response.value { // just the URL [FALSE POSITIVE]
-            let str = try? String(contentsOf: url) // SOURCE
+        if let url = response.value { // $ SPURIOUS: source=remote (this is just the URL)
+            let str = try? String(contentsOf: url) // $ source=remote
             // ...
         }
     }
 
     AF.download("http://example.com/").responseData {
         response in
-        if let data = response.value { // SOURCE
+        if let data = response.value { // $ source=remote
             // ...
         }
     }
 
     AF.download("http://example.com/").responseString {
         response in
-        if let str = response.value { // SOURCE
+        if let str = response.value { // $ source=remote
             // ...
         }
     }
 
     AF.download("http://example.com/").responseJSON {
         response in
-        if let json = response.value { // SOURCE
+        if let json = response.value { // $ source=remote
         }
     }
 
     AF.download("http://example.com/").responseDecodable(of: MyDecodable.self) {
         response in
-        if let decodable = response.value { // SOURCE
+        if let decodable = response.value { // $ source=remote
             // ...
         }
     }
@@ -445,20 +445,20 @@ func testAlamofire() {
         // ...
     }
     // ...
-    let str = try? String(contentsOfFile: myPath) // SOURCE
+    let str = try? String(contentsOfFile: myPath) // $ MISSING: source=remote SPURIOUS: source=local
 
     // chaining
     //  - in practice there are a wide range of calls that can be chained through.
 
     AF.request("http://example.com/").response {
         response in
-        if let data = response.data { // SOURCE
+        if let data = response.data { // $ source=remote
             // ...
         }
     }
     .response {
         response in
-        if let data = response.data { // SOURCE
+        if let data = response.data { // $ source=remote
             // ...
         }
     }
@@ -470,7 +470,7 @@ func testAlamofire() {
         switch stream.event {
         case let .stream(result):
             switch result {
-            case let .success(data): // SOURCE [NOT DETECTED]
+            case let .success(data): // $ MISSING: source=remote
                 doSomethingWith(data)
                 // ...
             }
@@ -485,7 +485,7 @@ func testAlamofire() {
         switch stream.event {
         case let .stream(result):
             switch result {
-            case let .success(value): // SOURCE [NOT DETECTED]
+            case let .success(value): // $ MISSING: source=remote
                 doSomethingWith(value)
                 // ...
             }
@@ -500,7 +500,7 @@ func testAlamofire() {
         switch stream.event {
         case let .stream(result):
             switch result {
-            case let .success(value): // SOURCE [NOT DETECTED]
+            case let .success(value): // MISSING: source=remote
                 doSomethingWith(value)
                 // ...
             }
@@ -515,7 +515,7 @@ func testAlamofire() {
         switch stream.event {
         case let .stream(result):
             switch result {
-            case let .success(value): // SOURCE [NOT DETECTED]
+            case let .success(value): // MISSING: source=remote
                 doSomethingWith(value)
                 // ...
             }
@@ -530,7 +530,7 @@ func testAlamofire() {
     AF.streamRequest("http://example.com/").responseStream {
         stream in
         if case let .stream(myResult) = stream.event {
-            if case let .success(myData) = myResult { // SOURCE [NOT DETECTED]
+            if case let .success(myData) = myResult { // MISSING: source=remote
                 doSomethingWith(myData)
             }
         }
@@ -539,7 +539,7 @@ func testAlamofire() {
     AF.streamRequest("http://example.com/").responseStream {
         stream in
         if case let .stream(myResult) = stream.event {
-           doSomethingWith(myResult.success!) // SOURCE [NOT DETECTED]
+           doSomethingWith(myResult.success!) // MISSING: source=remote
         }
     }
 

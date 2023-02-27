@@ -5,7 +5,7 @@ private import semmle.python.internal.CachedStages
 
 cached
 private predicate is_an_object(@py_object obj) {
-  Stages::DataFlow::ref() and
+  Stages::PointsTo::ref() and
   /* CFG nodes for numeric literals, all of which have a @py_cobject for the value of that literal */
   obj instanceof ControlFlowNode and
   not obj.(ControlFlowNode).getNode() instanceof IntegerLiteral and
@@ -78,7 +78,7 @@ class Object extends @py_object {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    Stages::DataFlow::ref() and
+    Stages::PointsTo::ref() and
     this.hasOrigin() and
     this.getOrigin()
         .getLocation()
@@ -98,7 +98,7 @@ class Object extends @py_object {
   /** Gets a textual representation of this element. */
   cached
   string toString() {
-    Stages::DataFlow::ref() and
+    Stages::PointsTo::ref() and
     not this = undefinedVariable() and
     not this = unknownValue() and
     exists(ClassObject type | type.asBuiltin() = this.asBuiltin().getClass() |
