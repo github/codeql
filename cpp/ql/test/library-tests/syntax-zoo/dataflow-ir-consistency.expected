@@ -1,12 +1,4 @@
 uniqueEnclosingCallable
-| cpp11.cpp:36:5:36:14 | global_int indirection | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:36:5:36:14 | global_int indirection | Node should have one enclosing callable but has 0. |
-| misc.c:10:5:10:13 | topLevel1 indirection | Node should have one enclosing callable but has 0. |
-| misc.c:10:5:10:13 | topLevel1 indirection | Node should have one enclosing callable but has 0. |
-| misc.c:11:5:11:13 | topLevel2 indirection | Node should have one enclosing callable but has 0. |
-| misc.c:11:5:11:13 | topLevel2 indirection | Node should have one enclosing callable but has 0. |
-| misc.c:210:5:210:20 | global_with_init indirection | Node should have one enclosing callable but has 0. |
-| misc.c:210:5:210:20 | global_with_init indirection | Node should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 | allocators.cpp:14:5:14:8 | Phi | Node should have one location but has 4. |
