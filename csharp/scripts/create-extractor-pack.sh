@@ -6,7 +6,11 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   dotnet_platform="linux-x64"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   platform="osx64"
-  dotnet_platform="osx-x64"
+  if [[ $(uname -m) == 'arm64' ]]; then
+    dotnet_platform="osx-arm64"
+  else
+    dotnet_platform="osx-x64"
+  fi
 else
   echo "Unknown OS"
   exit 1

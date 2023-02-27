@@ -146,7 +146,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
     return ql.Property(**args)
 
 
-def get_ql_class(cls: schema.Class):
+def get_ql_class(cls: schema.Class) -> ql.Class:
     pragmas = {k: True for k in cls.pragmas if k.startswith("ql")}
     prev_child = ""
     properties = []
@@ -228,6 +228,10 @@ def format(codeql, files):
         log.debug(line.strip())
 
 
+def _get_path(cls: schema.Class) -> pathlib.Path:
+    return pathlib.Path(cls.group or "", cls.name).with_suffix(".qll")
+
+
 def _get_all_properties(cls: schema.Class, lookup: typing.Dict[str, schema.Class],
                         already_seen: typing.Optional[typing.Set[int]] = None) -> \
         typing.Iterable[typing.Tuple[schema.Class, schema.Property]]:
@@ -283,6 +287,29 @@ def _should_skip_qltest(cls: schema.Class, lookup: typing.Dict[str, schema.Class
         cls, lookup)
 
 
+def _get_stub(cls: schema.Class, base_import: str) -> ql.Stub:
+    if isinstance(cls.ipa, schema.IpaInfo):
+        if cls.ipa.from_class is not None:
+            accessors = [
+                ql.IpaUnderlyingAccessor(
+                    argument="Entity",
+                    type=_to_db_type(cls.ipa.from_class),
+                    constructorparams=["result"]
+                )
+            ]
+        elif cls.ipa.on_arguments is not None:
+            accessors = [
+                ql.IpaUnderlyingAccessor(
+                    argument=inflection.camelize(arg),
+                    type=_to_db_type(type),
+                    constructorparams=["result" if a == arg else "_" for a in cls.ipa.on_arguments]
+                ) for arg, type in cls.ipa.on_arguments.items()
+            ]
+    else:
+        accessors = []
+    return ql.Stub(name=cls.name, base_import=base_import, ipa_accessors=accessors)
+
+
 def generate(opts, renderer):
     input = opts.schema
     out = opts.ql_output
@@ -323,10 +350,13 @@ def generate(opts, renderer):
             qll = out / c.path.with_suffix(".qll")
             c.imports = [imports[t] for t in get_classes_used_by(c)]
             renderer.render(c, qll)
-            stub_file = stub_out / c.path.with_suffix(".qll")
+
+        for c in data.classes.values():
+            path = _get_path(c)
+            stub_file = stub_out / path
             if not renderer.is_customized_stub(stub_file):
-                stub = ql.Stub(name=c.name, base_import=get_import(qll, opts.swift_dir))
-                renderer.render(stub, stub_file)
+                base_import = get_import(out / path, opts.swift_dir)
+                renderer.render(_get_stub(c, base_import), stub_file)
 
         # for example path/to/elements -> path/to/elements.qll
         renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].ql_internal]),

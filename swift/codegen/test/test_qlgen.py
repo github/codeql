@@ -816,5 +816,29 @@ def test_property_on_class_with_default_doc_name(generate_classes):
     }
 
 
+def test_stub_on_class_with_ipa_from_class(generate_classes):
+    assert generate_classes([
+        schema.Class("MyObject", ipa=schema.IpaInfo(from_class="A")),
+    ]) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject", ipa_accessors=[
+            ql.IpaUnderlyingAccessor(argument="Entity", type="Raw::A", constructorparams=["result"]),
+        ]),
+            ql.Class(name="MyObject", final=True, ipa=True)),
+    }
+
+
+def test_stub_on_class_with_ipa_on_arguments(generate_classes):
+    assert generate_classes([
+        schema.Class("MyObject", ipa=schema.IpaInfo(on_arguments={"base": "A", "index": "int", "label": "string"})),
+    ]) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject", ipa_accessors=[
+            ql.IpaUnderlyingAccessor(argument="Base", type="Raw::A", constructorparams=["result", "_", "_"]),
+            ql.IpaUnderlyingAccessor(argument="Index", type="int", constructorparams=["_", "result", "_"]),
+            ql.IpaUnderlyingAccessor(argument="Label", type="string", constructorparams=["_", "_", "result"]),
+        ]),
+            ql.Class(name="MyObject", final=True, ipa=True)),
+    }
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

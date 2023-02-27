@@ -1,3 +1,9 @@
+## 0.5.3
+
+### Minor Analysis Improvements
+
+* C# 11: Added extractor support for the `scoped` modifier annotation on parameters and local variables.
+
 ## 0.5.2
 
 ### Major Analysis Improvements

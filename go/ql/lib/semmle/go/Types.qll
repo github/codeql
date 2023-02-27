@@ -112,22 +112,10 @@ class Type extends @type {
       or
       u instanceof ArrayType and u.(ArrayType).getElementType().implementsComparable()
       or
-      exists(InterfaceType uif | uif = u |
-        not uif instanceof BasicInterfaceType and
-        if exists(uif.getAnEmbeddedTypeSetLiteral())
-        then
-          // All types in the intersection of all the embedded type set
-          // literals must implement comparable.
-          forall(Type intersectionType |
-            intersectionType = uif.getAnEmbeddedTypeSetLiteral().getATerm().getType() and
-            forall(TypeSetLiteralType tslit | tslit = uif.getAnEmbeddedTypeSetLiteral() |
-              intersectionType = tslit.getATerm().getType()
-            )
-          |
-            intersectionType.implementsComparable()
-          )
-        else uif.isOrEmbedsComparable()
-      )
+      // As of Go 1.20, any interface type satisfies the `comparable` constraint, even though comparison
+      // may panic at runtime depending on the actual object's concrete type.
+      // Look at git history here if you need the old definition.
+      u instanceof InterfaceType
     )
   }
 

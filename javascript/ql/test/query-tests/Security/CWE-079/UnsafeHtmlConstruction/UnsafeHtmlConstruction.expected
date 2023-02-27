@@ -30,6 +30,10 @@ nodes
 | lib2/index.ts:13:16:13:41 | setting ... i].name |
 | lib2/index.ts:18:62:18:65 | name |
 | lib2/index.ts:18:62:18:65 | name |
+| lib2/src/MyNode.ts:1:28:1:28 | s |
+| lib2/src/MyNode.ts:1:28:1:28 | s |
+| lib2/src/MyNode.ts:2:29:2:29 | s |
+| lib2/src/MyNode.ts:2:29:2:29 | s |
 | lib/src/MyNode.ts:1:28:1:28 | s |
 | lib/src/MyNode.ts:1:28:1:28 | s |
 | lib/src/MyNode.ts:2:29:2:29 | s |
@@ -164,6 +168,10 @@ edges
 | lib2/index.ts:13:16:13:33 | settings.mySetting | lib2/index.ts:13:16:13:36 | setting ... ting[i] |
 | lib2/index.ts:13:16:13:36 | setting ... ting[i] | lib2/index.ts:13:16:13:41 | setting ... i].name |
 | lib2/index.ts:13:16:13:41 | setting ... i].name | lib2/index.ts:13:9:13:41 | name |
+| lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s |
+| lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s |
+| lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s |
+| lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s |
 | lib/src/MyNode.ts:1:28:1:28 | s | lib/src/MyNode.ts:2:29:2:29 | s |
 | lib/src/MyNode.ts:1:28:1:28 | s | lib/src/MyNode.ts:2:29:2:29 | s |
 | lib/src/MyNode.ts:1:28:1:28 | s | lib/src/MyNode.ts:2:29:2:29 | s |
@@ -280,6 +288,7 @@ edges
 | lib2/index.ts:2:27:2:27 | s | lib2/index.ts:1:28:1:28 | s | lib2/index.ts:2:27:2:27 | s | This HTML construction which depends on $@ might later allow $@. | lib2/index.ts:1:28:1:28 | s | library input | lib2/index.ts:3:47:3:50 | html | cross-site scripting |
 | lib2/index.ts:7:58:7:65 | settings | lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:7:58:7:65 | settings | This HTML construction which depends on $@ might later allow $@. | lib2/index.ts:6:29:6:36 | settings | library input | lib2/index.ts:7:47:7:77 | "<span> ... /span>" | cross-site scripting |
 | lib2/index.ts:18:62:18:65 | name | lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:18:62:18:65 | name | This HTML construction which depends on $@ might later allow $@. | lib2/index.ts:6:29:6:36 | settings | library input | lib2/index.ts:18:51:18:77 | "<span> ... /span>" | cross-site scripting |
+| lib2/src/MyNode.ts:2:29:2:29 | s | lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s | This HTML construction which depends on $@ might later allow $@. | lib2/src/MyNode.ts:1:28:1:28 | s | library input | lib2/src/MyNode.ts:3:49:3:52 | html | cross-site scripting |
 | lib/src/MyNode.ts:2:29:2:29 | s | lib/src/MyNode.ts:1:28:1:28 | s | lib/src/MyNode.ts:2:29:2:29 | s | This HTML construction which depends on $@ might later allow $@. | lib/src/MyNode.ts:1:28:1:28 | s | library input | lib/src/MyNode.ts:3:49:3:52 | html | cross-site scripting |
 | main.js:2:29:2:29 | s | main.js:1:55:1:55 | s | main.js:2:29:2:29 | s | This HTML construction which depends on $@ might later allow $@. | main.js:1:55:1:55 | s | library input | main.js:3:49:3:52 | html | cross-site scripting |
 | main.js:7:49:7:49 | s | main.js:6:49:6:49 | s | main.js:7:49:7:49 | s | This XML parsing which depends on $@ might later allow $@. | main.js:6:49:6:49 | s | library input | main.js:8:48:8:66 | doc.documentElement | cross-site scripting |
