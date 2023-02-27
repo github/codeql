@@ -316,8 +316,7 @@ class CompareSink extends DataFlow::Node {
     exists(Compare compare |
       (
         compare.getOp(0) instanceof Eq or
-        compare.getOp(0) instanceof NotEq or
-        compare.getOp(0) instanceof In
+        compare.getOp(0) instanceof NotEq 
       ) and
       (
         compare.getLeft() = this.asExpr() and
