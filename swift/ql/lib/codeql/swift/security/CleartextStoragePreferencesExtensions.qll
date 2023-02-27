@@ -75,9 +75,7 @@ private class NSUserDefaultsControllerStore extends CleartextStoragePreferencesS
  * An encryption sanitizer for cleartext preferences storage vulnerabilities.
  */
 private class CleartextStoragePreferencesEncryptionSanitizer extends CleartextStoragePreferencesSanitizer {
-  CleartextStoragePreferencesEncryptionSanitizer() {
-    this.asExpr() instanceof EncryptedExpr
-  }
+  CleartextStoragePreferencesEncryptionSanitizer() { this.asExpr() instanceof EncryptedExpr }
 }
 
 /**
@@ -85,4 +83,6 @@ private class CleartextStoragePreferencesEncryptionSanitizer extends CleartextSt
  */
 private class DefaultCleartextStoragePreferencesSink extends CleartextStoragePreferencesSink {
   DefaultCleartextStoragePreferencesSink() { sinkNode(this, "preferences-store") }
+
+  override string getStoreName() { result = "a preferences store" }
 }

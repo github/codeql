@@ -84,9 +84,7 @@ private class AlamofireTransmittedSink extends CleartextTransmissionSink {
  * An encryption sanitizer for cleartext transmission vulnerabilities.
  */
 private class CleartextTransmissionEncryptionSanitizer extends CleartextTransmissionSanitizer {
-  CleartextTransmissionEncryptionSanitizer() {
-    this.asExpr() instanceof EncryptedExpr
-  }
+  CleartextTransmissionEncryptionSanitizer() { this.asExpr() instanceof EncryptedExpr }
 }
 
 /**

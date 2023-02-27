@@ -134,9 +134,7 @@ private class GrdbStore extends CleartextStorageDatabaseSink {
  * An encryption sanitizer for cleartext database storage vulnerabilities.
  */
 private class CleartextStorageDatabaseEncryptionSanitizer extends CleartextStorageDatabaseSanitizer {
-  CleartextStorageDatabaseEncryptionSanitizer() {
-    this.asExpr() instanceof EncryptedExpr
-  }
+  CleartextStorageDatabaseEncryptionSanitizer() { this.asExpr() instanceof EncryptedExpr }
 }
 
 /**
