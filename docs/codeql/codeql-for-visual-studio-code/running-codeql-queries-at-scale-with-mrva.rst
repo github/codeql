@@ -14,28 +14,23 @@ When you write a query to find variants of a security vulnerability and finish t
 
 The core functionality of the CodeQL extension helps you write queries and run them locally against a CodeQL database. In contrast, variant analysis allows you to send your CodeQL query to GitHub.com to be tested against a list of repositories.
 
-When you run variant analysis against a list of repositories, your query is run against each repository that has a CodeQL database available to analyze. GitHub creates and stores CodeQL databases for thousands of public repositories, including every repository that runs code scanning using CodeQL. If you want to include your repositories in variant analysis, you need to enable code scanning using CodeQL on GitHub.com before adding your repository to a list for analysis. For information about enabling code scanning using CodeQL, see "`Configuring code scanning automatically <https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning-for-a-repository#configuring-code-scanning-automatically>`__."
+When you run variant analysis against a list of repositories, your query is run against each repository that has a CodeQL database available to analyze. GitHub creates and stores CodeQL databases for thousands of public repositories, including every repository that runs code scanning using CodeQL. If you want to run variant analysis on your repositories, you need to enable code scanning using CodeQL on GitHub.com before adding your repository to a list for analysis (either default setup, or advanced setup using the CodeQL action). For information about enabling code scanning using CodeQL, see "`Configuring code scanning automatically <https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning-for-a-repository#configuring-code-scanning-automatically>`__."
 
 .. _controller-repository:
 
 Setting a controller repository for variant analysis
 ----------------------------------------------------
 
-When you run variant analysis, the analysis is run entirely using GitHub Actions. You don't need to create any workflows, but you must specify which GitHub repository the CodeQL extension should use as the "controller repository." Controller repositories can be empty, but they must have at least one commit and the ``GITHUB_TOKEN`` must have "Read and write permissions" when running workflows. For more information, see "`Managing GitHub Actions settings for a repository <https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#setting-the-permissions-of-the-github_token-for-your-repository>`__."
+When you run variant analysis, the analysis is run entirely using GitHub Actions. You don't need to create any workflows, but you must specify which GitHub repository the CodeQL extension should use as the "controller repository." Controller repositories can be empty, but they must have at least one commit. The ``GITHUB_TOKEN`` must also have "Read and write permissions" to run workflows in that repository. For more information, see "`Managing GitHub Actions settings for a repository <https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#setting-the-permissions-of-the-github_token-for-your-repository>`__."
 
 .. pull-quote::
    
    Note
 
    - The controller repository visibility can be "public" if you plan to analyze public repositories. The variant analysis will be free.
-   - The controller repository visibility must be "private" if you need to analyze any private repositories. Any actions minutes used by variant analysis, above the free limit, will be charged to the repository owner. For more information about free minutes and billing, see "`About billing for GitHub Actions <https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions>`__." 
+   - The controller repository visibility must be "private" if you need to analyze any private or internal repositories. Any actions minutes used by variant analysis, above the free limit, will be charged to the repository owner. For more information about free minutes and billing, see "`About billing for GitHub Actions <https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions>`__." 
 
-TODO: Check on "internal" repositories.
-
-Setting up variant analysis
----------------------------
-
-You can define a controller repository before running your first variant analysis.
+You must define a controller repository before you can run your first variant analysis.
 
 .. image:: ../images/codeql-for-visual-studio-code/controller-repository.png
     :width: 350
@@ -58,18 +53,16 @@ Running a query at scale using variant analysis
 
 #. Select which GitHub repository or repositories you want to run your query against.
 
-   - Select **Top X repositories**.
-   - Click **Add new database**, the **+** icon, to select either a single repository, or all repositories in an organization.
-   - Click **LIST-NAME** to select a custom list that you have created previously.
-   - Click **Add new list**, the folder icon, to create a custom list (see later in this article for details).
-
+   - Click **Top X repositories** to select this list of public repositories for analysis.
+   - Click **LIST-NAME** to select a custom list for analysis (see :ref:`later in this article <custom-lists>` for details).
+   - Click **Add new database**, the **+** icon, to add a repository or an organization to the panel, then click to select it for analysis.
         .. image:: ../images/codeql-for-visual-studio-code/variant-analysis-repo-lists.png
             :width: 350
-            :alt: Screenshot of the CodeQL extension in Visual Studio Code. The "Variant Analysis Repositories" section is expanded and the header buttons are highlighted with a dark orange outline. The "Top 10 repositories" item has a checkmark to show that it is currently selected.
+            :alt: Screenshot of the CodeQL extension in Visual Studio Code. The "Variant Analysis Repositories" section is expanded. The "Top 10 repositories" item has a checkmark to show that it is currently selected. Examples of a custom list, "example-list", a full organization, "octo-org", and a single repository, "octo-org/octo-repo", are shown in the list of repositories available for variant analysis.
 
 #. Open the query you want to run, right-click in the query file, and select **CodeQL: Run Variant Analysis** to start variant analysis.
 
-The CodeQL extension builds a CodeQL pack with your library and any library dependencies. The CodeQL pack and your selected repository list are posted to an API endpoint on GitHub.com which triggers a GitHub Actions dynamic workflow in your controller repository. The workflow spins up multiple parallel jobs to execute the CodeQL query against the repositories in the list, optimizing query execution. As each repository is analyzed, the results are processed and displayed in a variant analysis results view in Visual Studio Code.
+The CodeQL extension builds a CodeQL pack with your library and any library dependencies. The CodeQL pack and your selected repository list are posted to an API endpoint on GitHub.com which triggers a GitHub Actions dynamic workflow in your controller repository. The workflow spins up multiple parallel jobs to execute the CodeQL query against the repositories in the list, optimizing query execution. As each repository is analyzed, the results are processed and displayed in a Variant Analysis Results view in Visual Studio Code.
 
 .. pull-quote::
 
@@ -93,7 +86,7 @@ For each repository, you can see:
 - Visibility of the repository
 - Whether analysis is still running (black, moving circle) or finished (green checkmark)
 - Number of stars the repository has on GitHub
-- How long ago the CodeQL database that was analyzed was created
+- When the repository was last updated
 
 To see the results for a repository:
 
@@ -107,23 +100,25 @@ To see the results for a repository:
 Exporting your results
 ----------------------
 
-You can export your results for further analysis or to discuss them with collaborators. In the results view, click **Export results** to export the results to a secret gist on GitHub.com or to a markdown file.
+You can export your results for further analysis or to discuss them with collaborators. In the results view, click **Export results** to export the results to a secret gist on GitHub.com or to a markdown file in your workspace.
+
+.. _custom-lists:
 
 Creating custom lists of repositories
----------------------------------------
+-------------------------------------
 
-After you have defined a controller repository, the Variant analysis repositories panel shows the lists of repositories that you can select for variant analysis. You can use the options in the panel header to select a specific repository or organization for variant analysis, and to create and manage custom lists of repositories for variant analysis.
+After you have defined a controller repository, the Variant Analysis Repositories panel shows the lists of repositories that you can select for variant analysis. You can use the options in the panel header to add a specific repository or organization to the panel, and to create and manage custom lists of repositories for variant analysis.
 
 .. pull-quote::
 
     Note
 
-    CodeQL analysis always requires a CodeQL database to run queries against. When you run variant analysis against a list of repositories, your query will only be executed against the repositories that currently have a CodeQL database available to download.  So the best way to make a repository available for variant analysis is to enable code scanning with CodeQL.
+    CodeQL analysis always requires a CodeQL database to run queries against. When you run variant analysis against a list of repositories, your query will only be executed against the repositories that currently have a CodeQL database available to download.  So the best way to make a repository available for variant analysis is to enable code scanning with CodeQL. For information about enabling code scanning using CodeQL, see "`Configuring code scanning automatically <https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning-for-a-repository#configuring-code-scanning-automatically>`__."
 
 Selecting a single GitHub repository or organization for analysis
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. In the Variant analysis repositories panel, click the **+**, add new database, icon. 
+#. In the Variant Analysis Repositories panel, click the **+**, add new database, icon. 
 
 #. From the dropdown menu, click **From a GitHub repository** or **All repositories of GitHub org or owner**.
 
@@ -136,7 +131,7 @@ Selecting a single GitHub repository or organization for analysis
 Creating a custom list of repositories
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. In the Variant analysis repositories panel, click the |add-list| icon.
+#. In the Variant Analysis Repositories panel, click the |add-list| icon.
 
 #. Type a name for the new list and press **Enter**.
 
@@ -144,9 +139,9 @@ Creating a custom list of repositories
 
 You can manage and edit your custom lists by right-clicking on either the list name, or a repository name within the list, and selecting an option from the context menu.
 
-The custom lists are stored in your workspace in a ``databases.json`` file. If you want to edit this file directly, you can open by clicking **{ }** in the panel header. 
+The custom lists are stored in your workspace in a ``databases.json`` file. If you want to edit this file directly, you can open it by clicking **{ }** in the panel header. 
 
-For example, if you want to continue analyzing a set of repositories that had results for your query, click **Copy repository list** in the Variant analysis results view to add a list of the repositories that have results for your query to the clipboard as JSON. For example:
+For example, if you want to continue analyzing a set of repositories that had results for your query, click **Copy repository list** in the Variant Analysis Results view to add a list of only the repositories that have results to the clipboard as JSON. For example:
 
 .. code-block:: json
 
@@ -157,7 +152,7 @@ For example, if you want to continue analyzing a set of repositories that had re
         ]
     }
 
-You can then insert the ``new-repo-list`` of repositories into your list of custom repository lists for easy access in the Variant analysis repositories panel.
+You can then insert the ``new-repo-list`` of repositories into your list of custom repository lists for easy access in the Variant Analysis Repositories panel.
 
 Troubleshooting variant analysis
 --------------------------------
