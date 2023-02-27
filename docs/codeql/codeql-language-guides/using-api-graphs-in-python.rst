@@ -93,8 +93,32 @@ where the return value of ``re.compile`` is used:
 
 Note that this includes all uses of the result of ``re.compile``, including those reachable via
 local flow. To get just the *calls* to ``re.compile``, you can use ``asSource`` instead of
-``getAValueReachableFromSource``. As this is a common occurrence, you can use ``getACall`` instead of
-``getReturn`` followed by ``asSource``.
+``getAValueReachableFromSource``. As this is a common occurrence, you can, instead of
+``getReturn`` followed by ``asSource``, simply use ``getACall``. This will result in an
+``API::CallNode``, which deserves a small description of its own.
+
+``API::CallNode``s are not ``API::Node``s. Instead they are ``DataFlow::Node``s with some convenience
+predicates that allows you to recover ``API::Node``s for the return value as well as for parameters
+to the call. This enables you to constrain the call in various ways using the API graph. The following
+snippet finds all calls to ``re.compile`` where the ``pattern`` argument comes from parsing a command
+line argument using the ``argparse`` library.
+
+.. code-block:: ql
+
+    import python
+    import semmle.python.ApiGraphs
+
+    from API::CallNode call
+    where
+        call = API::moduleImport("re").getMember("compile").getACall() and
+        call.getParameter(0, "pattern") =
+            API::moduleImport("argparse")
+                .getMember("ArgumentParser")
+                .getReturn()
+                .getMember("parse_args")
+                .getMember(_)
+    select call
+
 
 Note that the API graph does not distinguish between class instantiations and function calls. As far
 as it's concerned, both are simply places where an API graph node is called.
