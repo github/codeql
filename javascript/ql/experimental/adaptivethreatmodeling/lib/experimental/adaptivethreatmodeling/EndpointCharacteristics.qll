@@ -409,7 +409,7 @@ private class CryptographicOperationFlowCharacteristic extends NotASinkCharacter
   CryptographicOperationFlowCharacteristic() { this = "CryptographicOperationFlow" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
-    any(CryptographicOperation op).getInput() = n
+    any(CryptographicOperation op).getAnInput() = n
   }
 }
 
