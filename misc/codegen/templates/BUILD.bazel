@@ -1,0 +1,11 @@
+package(default_visibility = ["//misc/codegen:__subpackages__"])
+
+filegroup(
+    name = "trap",
+    srcs = glob(["trap_*.mustache"]),
+)
+
+filegroup(
+    name = "cpp",
+    srcs = glob(["cpp_*.mustache"]),
+)
