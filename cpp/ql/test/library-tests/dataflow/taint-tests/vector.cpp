@@ -389,7 +389,7 @@ void test_vector_output_iterator(int b) {
 	*i9 = source();
 	taint_vector_output_iterator(i9);
 
-	sink(v9); // $ ast=330:10 ir=330:10 SPURIOUS: ast=389:8 ir=389:8
+	sink(v9); // $ ast=330:10 ir=330:10 ir SPURIOUS: ast=389:8 ir=389:8
 
 	std::vector<int>::iterator i10 = v10.begin();
 	vector_iterator_assign_wrapper(i10, 10);
