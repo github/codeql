@@ -18,15 +18,18 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
-  override predicate isSink(DataFlow::Node node) { node instanceof Stored }
+  override predicate isSink(DataFlow::Node node) { node instanceof CleartextStoragePreferencesSink }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer instanceof CleartextStoragePreferencesSanitizer
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(CleartextStoragePreferencesAdditionalTaintStep s).step(nodeFrom, nodeTo)
+  }
 
   override predicate isSanitizerIn(DataFlow::Node node) {
     // make sources barriers so that we only report the closest instance
     this.isSource(node)
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    // encryption barrier
-    node.asExpr() instanceof EncryptedExpr
   }
 }

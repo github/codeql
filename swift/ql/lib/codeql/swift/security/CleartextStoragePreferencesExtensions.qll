@@ -4,17 +4,36 @@
  */
 
 import swift
+import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
 
 /**
- * A `DataFlow::Node` of something that gets stored in an application preference store.
+ * A dataflow sink for cleartext preferences storage vulnerabilities. That is,
+ * a `DataFlow::Node` of something that gets stored in an application
+ * preference store.
  */
-abstract class Stored extends DataFlow::Node {
+abstract class CleartextStoragePreferencesSink extends DataFlow::Node {
   abstract string getStoreName();
 }
 
+/**
+ * A sanitizer for cleartext preferences storage vulnerabilities.
+ */
+abstract class CleartextStoragePreferencesSanitizer extends DataFlow::Node { }
+
+/**
+ * A unit class for adding additional taint steps.
+ */
+class CleartextStoragePreferencesAdditionalTaintStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for paths related to cleartext preferences storage vulnerabilities.
+   */
+  abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
+}
+
 /** The `DataFlow::Node` of an expression that gets written to the user defaults database */
-class UserDefaultsStore extends Stored {
+class UserDefaultsStore extends CleartextStoragePreferencesSink {
   UserDefaultsStore() {
     exists(CallExpr call |
       call.getStaticTarget().(MethodDecl).hasQualifiedName("UserDefaults", "set(_:forKey:)") and
@@ -26,7 +45,7 @@ class UserDefaultsStore extends Stored {
 }
 
 /** The `DataFlow::Node` of an expression that gets written to the iCloud-backed NSUbiquitousKeyValueStore */
-class NSUbiquitousKeyValueStore extends Stored {
+class NSUbiquitousKeyValueStore extends CleartextStoragePreferencesSink {
   NSUbiquitousKeyValueStore() {
     exists(CallExpr call |
       call.getStaticTarget()
@@ -45,8 +64,17 @@ class NSUbiquitousKeyValueStore extends Stored {
  * object via reflection (`perform(Selector)`) or the `NSKeyValueCoding`,
  * `NSKeyValueBindingCreation` APIs. (TODO)
  */
-class NSUserDefaultsControllerStore extends Stored {
+class NSUserDefaultsControllerStore extends CleartextStoragePreferencesSink {
   NSUserDefaultsControllerStore() { none() }
 
   override string getStoreName() { result = "the user defaults database" }
+}
+
+/**
+ * An encryption sanitizer for cleartext preferences storage vulnerabilities.
+ */
+class CleartextStoragePreferencesEncryptionSanitizer extends CleartextStoragePreferencesSanitizer {
+  CleartextStoragePreferencesEncryptionSanitizer() {
+    this.asExpr() instanceof EncryptedExpr
+  }
 }

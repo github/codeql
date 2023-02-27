@@ -4,17 +4,35 @@
  */
 
 import swift
+import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
 
 /**
- * A `DataFlow::Node` that is something stored in a local database.
+ * A dataflow sink for cleartext database storage vulnerabilities. That is,
+ * a `DataFlow::Node` that is something stored in a local database.
  */
-abstract class Stored extends DataFlow::Node { }
+abstract class CleartextStorageDatabaseSink extends DataFlow::Node { }
+
+/**
+ * A sanitizer for cleartext database storage vulnerabilities.
+ */
+abstract class CleartextStorageDatabaseSanitizer extends DataFlow::Node { }
+
+/**
+ * A unit class for adding additional taint steps.
+ */
+class CleartextStorageDatabaseAdditionalTaintStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for paths related to cleartext database storage vulnerabilities.
+   */
+  abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
+}
 
 /**
  * A `DataFlow::Node` that is an expression stored with the Core Data library.
  */
-class CoreDataStore extends Stored {
+class CoreDataStore extends CleartextStorageDatabaseSink {
   CoreDataStore() {
     // values written into Core Data objects through `set*Value` methods are a sink.
     exists(CallExpr call |
@@ -42,7 +60,7 @@ class CoreDataStore extends Stored {
  * A `DataFlow::Node` that is an expression stored with the Realm database
  * library.
  */
-class RealmStore extends Stored instanceof DataFlow::PostUpdateNode {
+class RealmStore extends CleartextStorageDatabaseSink instanceof DataFlow::PostUpdateNode {
   RealmStore() {
     // any write into a class derived from `RealmSwiftObject` is a sink. For
     // example in `realmObj.data = sensitive` the post-update node corresponding
@@ -59,7 +77,7 @@ class RealmStore extends Stored instanceof DataFlow::PostUpdateNode {
 /**
  * A `DataFlow::Node` that is an expression stored with the GRDB library.
  */
-class GrdbStore extends Stored {
+class GrdbStore extends CleartextStorageDatabaseSink {
   GrdbStore() {
     exists(CallExpr call, MethodDecl method |
       call.getStaticTarget() = method and
@@ -107,6 +125,28 @@ class GrdbStore extends Stored {
       call.getArgument(0).getExpr() = this.asExpr()
     |
       method.hasQualifiedName("Statement", "setArguments(_:)")
+    )
+  }
+}
+
+/**
+ * An encryption sanitizer for cleartext database storage vulnerabilities.
+ */
+class CleartextStorageDatabaseEncryptionSanitizer extends CleartextStorageDatabaseSanitizer {
+  CleartextStorageDatabaseEncryptionSanitizer() {
+    this.asExpr() instanceof EncryptedExpr
+  }
+}
+
+/**
+ * An additional taint step for cleartext database storage vulnerabilities.
+ * Needed until we have proper content flow through arrays.
+ */
+class CleartextStorageDatabaseArrayAdditionalTaintStep extends CleartextStorageDatabaseAdditionalTaintStep {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    exists(ArrayExpr arr |
+      nodeFrom.asExpr() = arr.getAnElement() and
+      nodeTo.asExpr() = arr
     )
   }
 }

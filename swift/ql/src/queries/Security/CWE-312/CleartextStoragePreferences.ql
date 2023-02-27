@@ -29,6 +29,6 @@ from CleartextStorageConfig config, DataFlow::PathNode sourceNode, DataFlow::Pat
 where config.hasFlowPath(sourceNode, sinkNode)
 select cleanupNode(sinkNode.getNode()), sourceNode, sinkNode,
   "This operation stores '" + sinkNode.getNode().toString() + "' in " +
-    sinkNode.getNode().(Stored).getStoreName() +
+    sinkNode.getNode().(CleartextStoragePreferencesSink).getStoreName() +
     ". It may contain unencrypted sensitive data from $@.", sourceNode,
   sourceNode.getNode().toString()

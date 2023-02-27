@@ -18,24 +18,19 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
-  override predicate isSink(DataFlow::Node node) { node instanceof Stored }
+  override predicate isSink(DataFlow::Node node) { node instanceof CleartextStorageDatabaseSink }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer instanceof CleartextStorageDatabaseSanitizer
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(CleartextStorageDatabaseAdditionalTaintStep s).step(nodeFrom, nodeTo)
+  }
 
   override predicate isSanitizerIn(DataFlow::Node node) {
     // make sources barriers so that we only report the closest instance
     isSource(node)
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    // encryption barrier
-    node.asExpr() instanceof EncryptedExpr
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // Needed until we have proper content flow through arrays
-    exists(ArrayExpr arr |
-      node1.asExpr() = arr.getAnElement() and
-      node2.asExpr() = arr
-    )
   }
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
