@@ -14,58 +14,58 @@
         android:theme="@style/Theme.HappyBirthday"
         tools:targetApi="31">
 
-        <!-- $ hasImplicitExport --> <activity
+        <activity
             android:name=".Activity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
-        </activity>
+        </activity> <!-- $ hasImplicitExport -->
 
-        <!-- $ hasImplicitExport --> <receiver
+        <receiver
             android:name=".CheckInstall">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_INSTALL"/>
 
             </intent-filter>
-        </receiver>
+        </receiver> <!-- $ hasImplicitExport -->
 
-        <!-- $ hasImplicitExport --> <service
+        <service
             android:name=".backgroundService">
             <intent-filter>
                 <action android:name="android.intent.action.START_BACKGROUND"/>
 
             </intent-filter>
-        </service>
+        </service> <!-- $ hasImplicitExport -->
 
-        <!-- $ hasImplicitExport --> <provider
+        <provider
             android:name=".MyCloudProvider">
             <intent-filter>
                 <action android:name="android.intent.action.DOCUMENTS_PROVIDER"/>
 
             </intent-filter>
-        </provider>
+        </provider> <!-- $ hasImplicitExport -->
 
-        <!-- Safe: 'android:exported' explicitly set --> <activity
+        <activity
             android:name=".Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
-        </activity>
+        </activity> <!-- Safe: 'android:exported' explicitly set -->
 
-        <!-- Safe: no intent filter --> <activity
+        <activity
             android:name=".Activity">
-        </activity>
+        </activity> <!-- Safe: no intent filter -->
 
-        <!-- Safe: has 'permission' attribute --> <activity
+        <activity
             android:name=".Activity"
             android:permission=".Test">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
-        </activity>
+        </activity> <!-- Safe: has 'permission' attribute -->
 
-        <!-- Safe: 'provider' with read and write permissions set --> <provider
+        <provider
             android:name=".MyCloudProvider"
             android:readPermission=".TestRead"
             android:writePermission=".TestWrite">
@@ -73,41 +73,41 @@
                 <action android:name="android.intent.action.DOCUMENTS_PROVIDER"/>
 
             </intent-filter>
-        </provider>
+        </provider> <!-- Safe: 'provider' with read and write permissions set -->
 
-        <!-- $ hasImplicitExport --> <provider
+        <provider
             android:name=".MyCloudProvider"
             android:readPermission=".TestRead">
             <intent-filter>
                 <action android:name="android.intent.action.DOCUMENTS_PROVIDER"/>
 
             </intent-filter>
-        </provider>
+        </provider> <!-- $ hasImplicitExport -->
 
-        <!-- $ hasImplicitExport --> <provider
+        <provider
             android:name=".MyCloudProvider"
             android:writePermission=".TestWrite">
             <intent-filter>
                 <action android:name="android.intent.action.DOCUMENTS_PROVIDER"/>
 
             </intent-filter>
-        </provider>
+        </provider> <!-- $ hasImplicitExport -->
 
-        <!-- Safe: has category 'android.intent.category.LAUNCHER' --> <activity
+        <activity
             android:name=".Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> <!-- Safe: has category 'android.intent.category.LAUNCHER' -->
 
-        <!-- Safe: has action 'android.intent.category.MAIN' --> <activity
+        <activity
             android:name=".Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
-        </activity>
+        </activity> <!-- Safe: has action 'android.intent.category.MAIN' -->
 
     </application>
 

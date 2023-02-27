@@ -238,3 +238,7 @@
 | ViableCallable.cs:458:10:458:14 | M5<> | ViableCallable.cs:444:23:444:27 | M2<> |
 | ViableCallable.cs:475:10:475:12 | Run | ViableCallable.cs:468:10:468:11 | M2 |
 | ViableCallable.cs:475:10:475:12 | Run | ViableCallable.cs:473:17:473:18 | M1 |
+| ViableCallable.cs:492:10:492:12 | Run | ViableCallable.cs:487:32:487:32 | + |
+| ViableCallable.cs:492:10:492:12 | Run | ViableCallable.cs:488:40:488:40 | checked + |
+| ViableCallable.cs:492:10:492:12 | Run | ViableCallable.cs:489:28:489:35 | explicit conversion |
+| ViableCallable.cs:492:10:492:12 | Run | ViableCallable.cs:490:28:490:35 | checked explicit conversion |

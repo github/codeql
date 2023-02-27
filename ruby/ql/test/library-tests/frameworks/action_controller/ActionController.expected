@@ -3,7 +3,7 @@ actionControllerControllerClasses
 | controllers/comments_controller.rb:1:1:104:3 | CommentsController |
 | controllers/foo/bars_controller.rb:3:1:46:3 | BarsController |
 | controllers/photos_controller.rb:1:1:10:3 | PhotosController |
-| controllers/posts_controller.rb:1:1:30:3 | PostsController |
+| controllers/posts_controller.rb:1:1:32:3 | PostsController |
 | controllers/tags_controller.rb:1:1:2:3 | TagsController |
 | controllers/users/notifications_controller.rb:2:3:5:5 | Users::NotificationsController |
 | input_access.rb:1:1:50:3 | UsersController |
@@ -23,9 +23,9 @@ actionControllerActionMethods
 | controllers/foo/bars_controller.rb:34:3:39:5 | show_2 |
 | controllers/photos_controller.rb:3:3:6:5 | show |
 | controllers/photos_controller.rb:8:3:9:5 | foo |
-| controllers/posts_controller.rb:12:3:13:5 | index |
-| controllers/posts_controller.rb:15:3:16:5 | show |
-| controllers/posts_controller.rb:18:3:19:5 | upvote |
+| controllers/posts_controller.rb:12:3:15:5 | index |
+| controllers/posts_controller.rb:17:3:18:5 | show |
+| controllers/posts_controller.rb:20:3:21:5 | upvote |
 | controllers/users/notifications_controller.rb:3:5:4:7 | mark_as_read |
 | input_access.rb:2:3:49:5 | index |
 | logging.rb:2:5:8:7 | index |
@@ -71,7 +71,7 @@ paramsCalls
 | controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
 | controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
 | controllers/foo/bars_controller.rb:22:10:22:15 | call to params |
-| controllers/posts_controller.rb:24:23:24:28 | call to params |
+| controllers/posts_controller.rb:26:23:26:28 | call to params |
 | params_flow.rb:3:10:3:15 | call to params |
 | params_flow.rb:7:10:7:15 | call to params |
 | params_flow.rb:11:10:11:15 | call to params |
@@ -126,7 +126,7 @@ paramsSources
 | controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
 | controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
 | controllers/foo/bars_controller.rb:22:10:22:15 | call to params |
-| controllers/posts_controller.rb:24:23:24:28 | call to params |
+| controllers/posts_controller.rb:26:23:26:28 | call to params |
 | params_flow.rb:3:10:3:15 | call to params |
 | params_flow.rb:7:10:7:15 | call to params |
 | params_flow.rb:11:10:11:15 | call to params |
@@ -191,7 +191,7 @@ httpInputAccesses
 | controllers/foo/bars_controller.rb:14:10:14:15 | call to params | ActionController::Metal#params |
 | controllers/foo/bars_controller.rb:21:21:21:26 | call to params | ActionController::Metal#params |
 | controllers/foo/bars_controller.rb:22:10:22:15 | call to params | ActionController::Metal#params |
-| controllers/posts_controller.rb:24:23:24:28 | call to params | ActionController::Metal#params |
+| controllers/posts_controller.rb:26:23:26:28 | call to params | ActionController::Metal#params |
 | input_access.rb:3:5:3:18 | call to params | ActionDispatch::Request#params |
 | input_access.rb:4:5:4:22 | call to parameters | ActionDispatch::Request#parameters |
 | input_access.rb:5:5:5:15 | call to GET | ActionDispatch::Request#GET |
@@ -297,6 +297,9 @@ renderCalls
 | controllers/foo/bars_controller.rb:35:5:35:33 | call to render |
 | controllers/foo/bars_controller.rb:38:5:38:50 | call to render |
 | controllers/foo/bars_controller.rb:44:5:44:17 | call to render |
+| controllers/posts_controller.rb:13:5:13:51 | call to render |
+| controllers/posts_controller.rb:14:5:14:127 | call to render |
+| controllers/posts_controller.rb:36:5:36:51 | call to render |
 httpResponses
 | controllers/comments_controller.rb:26:5:26:17 | call to body= | controllers/comments_controller.rb:26:21:26:34 | ... = ... |
 | controllers/comments_controller.rb:36:5:36:37 | call to send_file | controllers/comments_controller.rb:36:24:36:36 | "my-file.ext" |

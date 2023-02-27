@@ -2,10 +2,11 @@
 /csharp/ @github/codeql-csharp
 /go/ @github/codeql-go
 /java/ @github/codeql-java
-/javascript/ @github/codeql-javascript
-/python/ @github/codeql-python
-/ruby/ @github/codeql-ruby
+/javascript/ @github/codeql-dynamic
+/python/ @github/codeql-dynamic
+/ruby/ @github/codeql-dynamic
 /swift/ @github/codeql-swift
+/misc/codegen/ @github/codeql-swift
 /java/kotlin-extractor/ @github/codeql-kotlin
 /java/kotlin-explorer/ @github/codeql-kotlin
 

@@ -397,14 +397,21 @@ private predicate potentialInterfaceImplementationWithSignature(string sig, RefT
   not t.isAbstract()
 }
 
-pragma[nomagic]
-private predicate implementsInterfaceMethod(SrcMethod impl, SrcMethod m) {
-  exists(RefType t, Interface i, Method minst, Method implinst |
-    m = minst.getSourceDeclaration() and
+pragma[noinline]
+private predicate isInterfaceSourceImplementation(Method minst, RefType t) {
+  exists(Interface i |
     i = minst.getDeclaringType() and
     t.extendsOrImplements+(i) and
-    t.isSourceDeclaration() and
+    t.isSourceDeclaration()
+  )
+}
+
+pragma[nomagic]
+private predicate implementsInterfaceMethod(SrcMethod impl, SrcMethod m) {
+  exists(RefType t, Method minst, Method implinst |
+    isInterfaceSourceImplementation(minst, t) and
     potentialInterfaceImplementationWithSignature(minst.getSignature(), t, implinst) and
+    m = minst.getSourceDeclaration() and
     impl = implinst.getSourceDeclaration()
   )
 }
@@ -542,7 +549,7 @@ class Method extends Callable, @method {
 
 /** A method that is the same as its source declaration. */
 class SrcMethod extends Method {
-  SrcMethod() { methods(_, _, _, _, _, this) }
+  SrcMethod() { methods(this, _, _, _, _, this) }
 
   /**
    * All the methods that could possibly be called when this method

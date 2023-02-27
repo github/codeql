@@ -23,6 +23,18 @@ func TaintStepTest_ErrorsUnwrap_B0I0O0(sourceCQL interface{}) interface{} {
 	return intoError957
 }
 
+func TaintStepTest_ErrorsJoin1(sourceCQL interface{}) interface{} {
+	fromError784 := sourceCQL.(error)
+	intoError957 := errors.Join(fromError784, errors.New(""))
+	return intoError957
+}
+
+func TaintStepTest_ErrorsJoin2(sourceCQL interface{}) interface{} {
+	fromError784 := sourceCQL.(error)
+	intoError957 := errors.Join(errors.New(""), fromError784)
+	return intoError957
+}
+
 func RunAllTaints_Errors() {
 	{
 		source := newSource(0)
@@ -38,5 +50,15 @@ func RunAllTaints_Errors() {
 		source := newSource(2)
 		out := TaintStepTest_ErrorsUnwrap_B0I0O0(source)
 		sink(2, out)
+	}
+	{
+		source := newSource(3)
+		out := TaintStepTest_ErrorsJoin1(source)
+		sink(3, out)
+	}
+	{
+		source := newSource(4)
+		out := TaintStepTest_ErrorsJoin2(source)
+		sink(4, out)
 	}
 }

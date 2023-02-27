@@ -7,14 +7,9 @@
  */
 
 private import csharp
-private import semmle.code.csharp.dispatch.Dispatch
-private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import ExternalApi
 
-private predicate relevant(ExternalApi api) {
-  not api.isSupported() and
-  not api instanceof FlowSummaryImpl::Public::NeutralCallable
-}
+private predicate relevant(ExternalApi api) { not api.isSupported() }
 
 from string info, int usages
 where Results<relevant/1>::restrict(info, usages)
