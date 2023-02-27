@@ -72,36 +72,38 @@ Configuring settings for variant analysis
 You can define or edit lists of GitHub repositories for variant analysis, and change to a different controller repository using the **Variant analysis** settings.
 
 For information on the purpose and requirements for a controller repository, see ":ref:`About the controller repository <controller-repository>`."
-TODO
-The items shown in the Variant Analysis Repositories panel can also be managed by editing a file in your VS Code workspace called databases.json. This file contains a JSON representation of all the items displayed in the panel. To open your databases.json file in an editor window, click the { } icon in the top right of the variant analysis repositories panel. You can then see a structured representation of the repos, orgs and lists in your panel. For example:
 
-{
-  "version": 1,
-  "databases": {
-    "variantAnalysis": {
-      "repositoryLists": [
-        {
-          "name": "My favourite JavaScript repos",
-          "repositories": [
-            "facebook/react",
-            "babel/babel",
-            "angular/angular"
-          ]
-        }
-      ],
-      "owners": [
-        "microsoft"
-      ],
-      "repositories": [
-        "apache/hadoop"
-      ]
+You can also edit the items shown in the Variant analysis repositories panel by editing a file in your Visual Studio Code workspace called ``databases.json``. This file contains a JSON representation of all the items displayed in the panel. To open your ``databases.json`` file in an editor window, click the **{ }** icon in the top right of the variant analysis repositories panel. You can then see a structured representation of the repos, orgs and lists in your panel. For example:
+
+.. code-block:: json
+
+  {
+    "version": 1,
+    "databases": {
+      "variantAnalysis": {
+        "repositoryLists": [
+          {
+            "name": "My favourite JavaScript repos",
+            "repositories": [
+              "facebook/react",
+              "babel/babel",
+              "angular/angular"
+            ]
+          }
+        ],
+        "owners": [
+          "microsoft"
+        ],
+        "repositories": [
+          "apache/hadoop"
+        ]
+      }
+    },
+    "selected": {
+      "kind": "variantAnalysisSystemDefinedList",
+      "listName": "top_10"
     }
-  },
-  "selected": {
-    "kind": "variantAnalysisSystemDefinedList",
-    "listName": "top_10"
   }
-}
 
 You can change the items shown in the panel or add new items by directly editing this file.
 
