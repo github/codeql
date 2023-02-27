@@ -1051,14 +1051,14 @@ StaticInterfaceMembers.cs:
 #    5|       0: [Parameter] other
 #    5|         -1: [TypeMention] T
 #    5|     4: [ParameterAccess] access to parameter other
-#    7|   6: [Method] Add
+#    7|   6: [AddOperator] +
 #    7|     -1: [TypeMention] T
 #-----|     2: (Parameters)
 #    7|       0: [Parameter] left
 #    7|         -1: [TypeMention] T
 #    7|       1: [Parameter] right
 #    7|         -1: [TypeMention] T
-#    9|   7: [Method] Subtract
+#    9|   7: [SubOperator] -
 #    9|     -1: [TypeMention] T
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] left
@@ -1066,121 +1066,265 @@ StaticInterfaceMembers.cs:
 #    9|       1: [Parameter] right
 #    9|         -1: [TypeMention] T
 #    9|     4: [ParameterAccess] access to parameter left
-#   11|   8: [Method] Zero
-#   11|     -1: [TypeMention] T
-#   11|     4: [DefaultValueExpr] default(...)
-#   11|       0: [TypeAccess] access to type T
-#   11|         0: [TypeMention] T
-#   14| [Class] Complex
+#   11|   8: [ExplicitConversionOperator] explicit conversion
+#   11|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   11|       0: [Parameter] n
+#   11|         -1: [TypeMention] T
+#   13|   9: [ExplicitConversionOperator] explicit conversion
+#   13|     -1: [TypeMention] short
+#-----|     2: (Parameters)
+#   13|       0: [Parameter] n
+#   13|         -1: [TypeMention] T
+#   15|   10: [Method] Inc
+#   15|     -1: [TypeMention] T
+#-----|     2: (Parameters)
+#   15|       0: [Parameter] other
+#   15|         -1: [TypeMention] T
+#   17|   11: [Method] Dec
+#   17|     -1: [TypeMention] T
+#-----|     2: (Parameters)
+#   17|       0: [Parameter] other
+#   17|         -1: [TypeMention] T
+#   17|     4: [ParameterAccess] access to parameter other
+#   19|   12: [Method] Add
+#   19|     -1: [TypeMention] T
+#-----|     2: (Parameters)
+#   19|       0: [Parameter] left
+#   19|         -1: [TypeMention] T
+#   19|       1: [Parameter] right
+#   19|         -1: [TypeMention] T
+#   21|   13: [Method] Subtract
+#   21|     -1: [TypeMention] T
+#-----|     2: (Parameters)
+#   21|       0: [Parameter] left
+#   21|         -1: [TypeMention] T
+#   21|       1: [Parameter] right
+#   21|         -1: [TypeMention] T
+#   21|     4: [ParameterAccess] access to parameter left
+#   23|   14: [Method] Zero
+#   23|     -1: [TypeMention] T
+#   23|     4: [DefaultValueExpr] default(...)
+#   23|       0: [TypeAccess] access to type T
+#   23|         0: [TypeMention] T
+#   26| [Class] Complex
 #-----|   3: (Base types)
-#   16|   4: [Property] Real
-#   16|     -1: [TypeMention] double
-#   16|     2: [AssignExpr] ... = ...
-#   16|       0: [PropertyCall] access to property Real
-#   16|       1: [DoubleLiteral] 0
-#   16|     3: [Getter] get_Real
-#   16|     4: [Setter] set_Real
+#   28|   4: [Property] Real
+#   28|     -1: [TypeMention] double
+#   28|     2: [AssignExpr] ... = ...
+#   28|       0: [PropertyCall] access to property Real
+#   28|       1: [DoubleLiteral] 0
+#   28|     3: [Getter] get_Real
+#   28|     4: [Setter] set_Real
 #-----|       2: (Parameters)
-#   16|         0: [Parameter] value
-#   17|   5: [Property] Imaginary
-#   17|     -1: [TypeMention] double
-#   17|     2: [AssignExpr] ... = ...
-#   17|       0: [PropertyCall] access to property Imaginary
-#   17|       1: [DoubleLiteral] 0
-#   17|     3: [Getter] get_Imaginary
-#   17|     4: [Setter] set_Imaginary
+#   28|         0: [Parameter] value
+#   29|   5: [Property] Imaginary
+#   29|     -1: [TypeMention] double
+#   29|     2: [AssignExpr] ... = ...
+#   29|       0: [PropertyCall] access to property Imaginary
+#   29|       1: [DoubleLiteral] 0
+#   29|     3: [Getter] get_Imaginary
+#   29|     4: [Setter] set_Imaginary
 #-----|       2: (Parameters)
-#   17|         0: [Parameter] value
-#   19|   6: [InstanceConstructor] Complex
-#   19|     4: [BlockStmt] {...}
-#   21|   7: [Method] Zero
-#   21|     -1: [TypeMention] Complex
-#   21|     4: [ObjectCreation] object creation of type Complex
-#   21|       0: [TypeMention] Complex
-#   23|   8: [IncrementOperator] ++
-#   23|     -1: [TypeMention] Complex
-#-----|     2: (Parameters)
-#   23|       0: [Parameter] other
-#   23|         -1: [TypeMention] Complex
-#   24|     4: [ObjectCreation] object creation of type Complex
-#   24|       -2: [TypeMention] Complex
-#   24|       -1: [ObjectInitializer] { ..., ... }
-#   24|         0: [MemberInitializer] ... = ...
-#   24|           0: [PropertyCall] access to property Real
-#   24|           1: [AddExpr] ... + ...
-#   24|             0: [PropertyCall] access to property Real
-#   24|               -1: [ParameterAccess] access to parameter other
-#   24|             1: [DoubleLiteral] 1
-#   24|         1: [MemberInitializer] ... = ...
-#   24|           0: [PropertyCall] access to property Imaginary
-#   24|           1: [PropertyCall] access to property Imaginary
-#   24|             -1: [ParameterAccess] access to parameter other
-#   26|   9: [DecrementOperator] --
-#   26|     -1: [TypeMention] Complex
-#-----|     2: (Parameters)
-#   26|       0: [Parameter] other
-#   26|         -1: [TypeMention] Complex
-#   27|     4: [ObjectCreation] object creation of type Complex
-#   27|       -2: [TypeMention] Complex
-#   27|       -1: [ObjectInitializer] { ..., ... }
-#   27|         0: [MemberInitializer] ... = ...
-#   27|           0: [PropertyCall] access to property Real
-#   27|           1: [SubExpr] ... - ...
-#   27|             0: [PropertyCall] access to property Real
-#   27|               -1: [ParameterAccess] access to parameter other
-#   27|             1: [DoubleLiteral] 1
-#   27|         1: [MemberInitializer] ... = ...
-#   27|           0: [PropertyCall] access to property Imaginary
-#   27|           1: [PropertyCall] access to property Imaginary
-#   27|             -1: [ParameterAccess] access to parameter other
-#   29|   10: [Method] Add
-#   29|     -1: [TypeMention] Complex
-#-----|     2: (Parameters)
-#   29|       0: [Parameter] left
-#   29|         -1: [TypeMention] Complex
-#   29|       1: [Parameter] right
-#   29|         -1: [TypeMention] Complex
-#   30|     4: [ObjectCreation] object creation of type Complex
-#   30|       -2: [TypeMention] Complex
-#   30|       -1: [ObjectInitializer] { ..., ... }
-#   30|         0: [MemberInitializer] ... = ...
-#   30|           0: [PropertyCall] access to property Real
-#   30|           1: [AddExpr] ... + ...
-#   30|             0: [PropertyCall] access to property Real
-#   30|               -1: [ParameterAccess] access to parameter left
-#   30|             1: [PropertyCall] access to property Real
-#   30|               -1: [ParameterAccess] access to parameter right
-#   30|         1: [MemberInitializer] ... = ...
-#   30|           0: [PropertyCall] access to property Imaginary
-#   30|           1: [AddExpr] ... + ...
-#   30|             0: [PropertyCall] access to property Imaginary
-#   30|               -1: [ParameterAccess] access to parameter left
-#   30|             1: [PropertyCall] access to property Imaginary
-#   30|               -1: [ParameterAccess] access to parameter right
-#   32|   11: [Method] Subtract
-#   32|     -1: [TypeMention] Complex
-#-----|     2: (Parameters)
-#   32|       0: [Parameter] left
-#   32|         -1: [TypeMention] Complex
-#   32|       1: [Parameter] right
-#   32|         -1: [TypeMention] Complex
+#   29|         0: [Parameter] value
+#   31|   6: [InstanceConstructor] Complex
+#   31|     4: [BlockStmt] {...}
+#   33|   7: [Method] Zero
+#   33|     -1: [TypeMention] Complex
 #   33|     4: [ObjectCreation] object creation of type Complex
-#   33|       -2: [TypeMention] Complex
-#   33|       -1: [ObjectInitializer] { ..., ... }
-#   33|         0: [MemberInitializer] ... = ...
-#   33|           0: [PropertyCall] access to property Real
-#   33|           1: [SubExpr] ... - ...
-#   33|             0: [PropertyCall] access to property Real
-#   33|               -1: [ParameterAccess] access to parameter left
-#   33|             1: [PropertyCall] access to property Real
-#   33|               -1: [ParameterAccess] access to parameter right
-#   33|         1: [MemberInitializer] ... = ...
-#   33|           0: [PropertyCall] access to property Imaginary
-#   33|           1: [SubExpr] ... - ...
-#   33|             0: [PropertyCall] access to property Imaginary
-#   33|               -1: [ParameterAccess] access to parameter left
-#   33|             1: [PropertyCall] access to property Imaginary
-#   33|               -1: [ParameterAccess] access to parameter right
+#   33|       0: [TypeMention] Complex
+#   35|   8: [IncrementOperator] ++
+#   35|     -1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   35|       0: [Parameter] other
+#   35|         -1: [TypeMention] Complex
+#   36|     4: [ObjectCreation] object creation of type Complex
+#   36|       -2: [TypeMention] Complex
+#   36|       -1: [ObjectInitializer] { ..., ... }
+#   36|         0: [MemberInitializer] ... = ...
+#   36|           0: [PropertyCall] access to property Real
+#   36|           1: [AddExpr] ... + ...
+#   36|             0: [PropertyCall] access to property Real
+#   36|               -1: [ParameterAccess] access to parameter other
+#   36|             1: [DoubleLiteral] 1
+#   36|         1: [MemberInitializer] ... = ...
+#   36|           0: [PropertyCall] access to property Imaginary
+#   36|           1: [PropertyCall] access to property Imaginary
+#   36|             -1: [ParameterAccess] access to parameter other
+#   38|   9: [DecrementOperator] --
+#   38|     -1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   38|       0: [Parameter] other
+#   38|         -1: [TypeMention] Complex
+#   39|     4: [ObjectCreation] object creation of type Complex
+#   39|       -2: [TypeMention] Complex
+#   39|       -1: [ObjectInitializer] { ..., ... }
+#   39|         0: [MemberInitializer] ... = ...
+#   39|           0: [PropertyCall] access to property Real
+#   39|           1: [SubExpr] ... - ...
+#   39|             0: [PropertyCall] access to property Real
+#   39|               -1: [ParameterAccess] access to parameter other
+#   39|             1: [DoubleLiteral] 1
+#   39|         1: [MemberInitializer] ... = ...
+#   39|           0: [PropertyCall] access to property Imaginary
+#   39|           1: [PropertyCall] access to property Imaginary
+#   39|             -1: [ParameterAccess] access to parameter other
+#   41|   10: [AddOperator] +
+#   41|     -1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   41|       0: [Parameter] left
+#   41|         -1: [TypeMention] Complex
+#   41|       1: [Parameter] right
+#   41|         -1: [TypeMention] Complex
+#   42|     4: [ObjectCreation] object creation of type Complex
+#   42|       -2: [TypeMention] Complex
+#   42|       -1: [ObjectInitializer] { ..., ... }
+#   42|         0: [MemberInitializer] ... = ...
+#   42|           0: [PropertyCall] access to property Real
+#   42|           1: [AddExpr] ... + ...
+#   42|             0: [PropertyCall] access to property Real
+#   42|               -1: [ParameterAccess] access to parameter left
+#   42|             1: [PropertyCall] access to property Real
+#   42|               -1: [ParameterAccess] access to parameter right
+#   42|         1: [MemberInitializer] ... = ...
+#   42|           0: [PropertyCall] access to property Imaginary
+#   42|           1: [AddExpr] ... + ...
+#   42|             0: [PropertyCall] access to property Imaginary
+#   42|               -1: [ParameterAccess] access to parameter left
+#   42|             1: [PropertyCall] access to property Imaginary
+#   42|               -1: [ParameterAccess] access to parameter right
+#   44|   11: [SubOperator] -
+#   44|     -1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   44|       0: [Parameter] left
+#   44|         -1: [TypeMention] Complex
+#   44|       1: [Parameter] right
+#   44|         -1: [TypeMention] Complex
+#   45|     4: [ObjectCreation] object creation of type Complex
+#   45|       -2: [TypeMention] Complex
+#   45|       -1: [ObjectInitializer] { ..., ... }
+#   45|         0: [MemberInitializer] ... = ...
+#   45|           0: [PropertyCall] access to property Real
+#   45|           1: [SubExpr] ... - ...
+#   45|             0: [PropertyCall] access to property Real
+#   45|               -1: [ParameterAccess] access to parameter left
+#   45|             1: [PropertyCall] access to property Real
+#   45|               -1: [ParameterAccess] access to parameter right
+#   45|         1: [MemberInitializer] ... = ...
+#   45|           0: [PropertyCall] access to property Imaginary
+#   45|           1: [SubExpr] ... - ...
+#   45|             0: [PropertyCall] access to property Imaginary
+#   45|               -1: [ParameterAccess] access to parameter left
+#   45|             1: [PropertyCall] access to property Imaginary
+#   45|               -1: [ParameterAccess] access to parameter right
+#   47|   12: [ExplicitConversionOperator] explicit conversion
+#   47|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   47|       0: [Parameter] n
+#   47|         -1: [TypeMention] Complex
+#   47|     4: [CastExpr] (...) ...
+#   47|       0: [TypeAccess] access to type Int32
+#   47|         0: [TypeMention] int
+#   47|       1: [PropertyCall] access to property Real
+#   47|         -1: [ParameterAccess] access to parameter n
+#   49|   13: [ExplicitConversionOperator] explicit conversion
+#   49|     -1: [TypeMention] short
+#-----|     2: (Parameters)
+#   49|       0: [Parameter] n
+#   49|         -1: [TypeMention] Complex
+#   49|     4: [CastExpr] (...) ...
+#   49|       0: [TypeAccess] access to type Int16
+#   49|         0: [TypeMention] short
+#   49|       1: [PropertyCall] access to property Real
+#   49|         -1: [ParameterAccess] access to parameter n
+#   51|   14: [Method] Inc
+#   51|     -1: [TypeMention] Complex
+#   51|     -1: [TypeMention] INumber<Complex>
+#   51|       1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   51|       0: [Parameter] other
+#   51|         -1: [TypeMention] Complex
+#   52|     4: [ObjectCreation] object creation of type Complex
+#   52|       -2: [TypeMention] Complex
+#   52|       -1: [ObjectInitializer] { ..., ... }
+#   52|         0: [MemberInitializer] ... = ...
+#   52|           0: [PropertyCall] access to property Real
+#   52|           1: [AddExpr] ... + ...
+#   52|             0: [PropertyCall] access to property Real
+#   52|               -1: [ParameterAccess] access to parameter other
+#   52|             1: [DoubleLiteral] 1
+#   52|         1: [MemberInitializer] ... = ...
+#   52|           0: [PropertyCall] access to property Imaginary
+#   52|           1: [PropertyCall] access to property Imaginary
+#   52|             -1: [ParameterAccess] access to parameter other
+#   54|   15: [Method] Dec
+#   54|     -1: [TypeMention] Complex
+#   54|     -1: [TypeMention] INumber<Complex>
+#   54|       1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   54|       0: [Parameter] other
+#   54|         -1: [TypeMention] Complex
+#   55|     4: [ObjectCreation] object creation of type Complex
+#   55|       -2: [TypeMention] Complex
+#   55|       -1: [ObjectInitializer] { ..., ... }
+#   55|         0: [MemberInitializer] ... = ...
+#   55|           0: [PropertyCall] access to property Real
+#   55|           1: [SubExpr] ... - ...
+#   55|             0: [PropertyCall] access to property Real
+#   55|               -1: [ParameterAccess] access to parameter other
+#   55|             1: [DoubleLiteral] 1
+#   55|         1: [MemberInitializer] ... = ...
+#   55|           0: [PropertyCall] access to property Imaginary
+#   55|           1: [PropertyCall] access to property Imaginary
+#   55|             -1: [ParameterAccess] access to parameter other
+#   57|   16: [Method] Add
+#   57|     -1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   57|       0: [Parameter] left
+#   57|         -1: [TypeMention] Complex
+#   57|       1: [Parameter] right
+#   57|         -1: [TypeMention] Complex
+#   58|     4: [ObjectCreation] object creation of type Complex
+#   58|       -2: [TypeMention] Complex
+#   58|       -1: [ObjectInitializer] { ..., ... }
+#   58|         0: [MemberInitializer] ... = ...
+#   58|           0: [PropertyCall] access to property Real
+#   58|           1: [AddExpr] ... + ...
+#   58|             0: [PropertyCall] access to property Real
+#   58|               -1: [ParameterAccess] access to parameter left
+#   58|             1: [PropertyCall] access to property Real
+#   58|               -1: [ParameterAccess] access to parameter right
+#   58|         1: [MemberInitializer] ... = ...
+#   58|           0: [PropertyCall] access to property Imaginary
+#   58|           1: [AddExpr] ... + ...
+#   58|             0: [PropertyCall] access to property Imaginary
+#   58|               -1: [ParameterAccess] access to parameter left
+#   58|             1: [PropertyCall] access to property Imaginary
+#   58|               -1: [ParameterAccess] access to parameter right
+#   60|   17: [Method] Subtract
+#   60|     -1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   60|       0: [Parameter] left
+#   60|         -1: [TypeMention] Complex
+#   60|       1: [Parameter] right
+#   60|         -1: [TypeMention] Complex
+#   61|     4: [ObjectCreation] object creation of type Complex
+#   61|       -2: [TypeMention] Complex
+#   61|       -1: [ObjectInitializer] { ..., ... }
+#   61|         0: [MemberInitializer] ... = ...
+#   61|           0: [PropertyCall] access to property Real
+#   61|           1: [SubExpr] ... - ...
+#   61|             0: [PropertyCall] access to property Real
+#   61|               -1: [ParameterAccess] access to parameter left
+#   61|             1: [PropertyCall] access to property Real
+#   61|               -1: [ParameterAccess] access to parameter right
+#   61|         1: [MemberInitializer] ... = ...
+#   61|           0: [PropertyCall] access to property Imaginary
+#   61|           1: [SubExpr] ... - ...
+#   61|             0: [PropertyCall] access to property Imaginary
+#   61|               -1: [ParameterAccess] access to parameter left
+#   61|             1: [PropertyCall] access to property Imaginary
+#   61|               -1: [ParameterAccess] access to parameter right
 Strings.cs:
 #    3| [Class] MyTestClass
 #    5|   5: [Method] M1
