@@ -15,11 +15,11 @@ abstract class EndpointType extends string {
   EndpointType() { any() }
 
   /**
-   * Gets the name of the sink/source kind for this endpoint type as used in Models as Data.
+   * Gets the name of the sink/source kind for this endpoint type as used in models-as-data.
    *
    * See https://github.com/github/codeql/blob/44213f0144fdd54bb679ca48d68b28dcf820f7a8/java/ql/lib/semmle/code/java/dataflow/ExternalFlow.qll#LL353C11-L357C31
    */
-  abstract string getKind();
+  final string getKind() { result = this }
 }
 
 /** A class for sink types that can be predicted by a classifier. */
@@ -37,34 +37,24 @@ abstract class SourceType extends EndpointType {
 /** The `Negative` class for non-sinks. */
 class NegativeSinkType extends SinkType {
   NegativeSinkType() { this = "non-sink" }
-
-  override string getKind() { result = "" }
 }
 
 /** All sinks relevant to the SQL injection query */
 class SqlSinkType extends SinkType {
-  SqlSinkType() { this = "sql injection sink" }
-
-  override string getKind() { result = "sql" }
+  SqlSinkType() { this = "sql" }
 }
 
 /** All sinks relevant to the tainted path injection query. */
 class TaintedPathSinkType extends SinkType {
-  TaintedPathSinkType() { this = "path injection sink" }
-
-  override string getKind() { result = "tainted-path" }
+  TaintedPathSinkType() { this = "tainted-path" }
 }
 
 /** All sinks relevant to the SSRF query. */
 class RequestForgerySinkType extends SinkType {
-  RequestForgerySinkType() { this = "ssrf sink" }
-
-  override string getKind() { result = "ssrf" }
+  RequestForgerySinkType() { this = "ssrf" }
 }
 
 /** Other sinks modeled by a MaD `kind` but not belonging to any of the existing sink types. */
 class OtherMaDSinkType extends SinkType {
-  OtherMaDSinkType() { this = "other sink" }
-
-  override string getKind() { result = "other-sink" }
+  OtherMaDSinkType() { this = "other-sink" }
 }
