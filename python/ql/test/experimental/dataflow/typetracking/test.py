@@ -91,7 +91,7 @@ def unrelated_func():
     return "foo"
 
 def use_funcs_with_decorators():
-    x = get_tracked2() # $ MISSING: tracked
+    x = get_tracked2() # $ tracked
     y = unrelated_func()
 
 # ------------------------------------------------------------------------------
@@ -117,11 +117,11 @@ class Foo(object):
     def meth1(self):
         do_stuff(self)
 
-    def meth2(self): # $ MISSING: tracked_self
-        do_stuff(self) # $ MISSING: tracked_self
+    def meth2(self): # $ tracked_self
+        do_stuff(self) # $ tracked_self
 
-    def meth3(self): # $ MISSING: tracked_self
-        do_stuff(self) # $ MISSING: tracked_self
+    def meth3(self): # $ tracked_self
+        do_stuff(self) # $ tracked_self
 
 
 class Bar(Foo):

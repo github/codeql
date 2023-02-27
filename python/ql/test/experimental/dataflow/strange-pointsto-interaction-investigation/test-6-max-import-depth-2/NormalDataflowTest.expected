@@ -1,5 +1,0 @@
-missingAnnotationOnSink
-| ../src/isfile_no_problem.py:43:6:43:8 | ../src/isfile_no_problem.py:43 | ERROR, you should add `# $ MISSING: flow` annotation | foo |
-failures
-| ../src/isfile_no_problem.py:43:11:43:41 | Comment # $ flow="SOURCE, l:-15 -> foo" | Missing result:flow="SOURCE, l:-15 -> foo" |
-| ../src/urandom_problem.py:43:6:43:8 | ControlFlowNode for foo | Fixed missing result:flow="SOURCE, l:-15 -> foo" |

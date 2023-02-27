@@ -1,5 +1,6 @@
 private import ql
 private import codeql_ql.ast.internal.TreeSitter
+private import experimental.RA
 
 /** Gets a timestamp corresponding to the number of seconds since the date Semmle was founded. */
 bindingset[d, h, m, s, ms]
@@ -67,6 +68,8 @@ class Array extends JSON::Array {
   float getFloat(int i) { result = this.getChild(i).(JSON::Number).getValue().toFloat() }
 
   Array getArray(int i) { result = this.getChild(i) }
+
+  int getLength() { result = count(this.getChild(_)) }
 }
 
 /**
@@ -74,8 +77,13 @@ class Array extends JSON::Array {
  *
  * This is needed because the evaluator log is padded with -1s in some cases.
  */
-private float getRanked(Array a, int i) {
+pragma[nomagic]
+private float getRankedFloat(Array a, int i) {
   result = rank[i + 1](int j, float f | f = a.getFloat(j) and f >= 0 | f order by j)
+}
+
+private string getRankedLine(Array a, int i) {
+  result = rank[i + 1](int j, string s | s = a.getString(j) and s != "" | s order by j)
 }
 
 module EvaluatorLog {
@@ -130,10 +138,10 @@ module EvaluatorLog {
 
     string getRAReference() { result = this.getString("raReference") }
 
-    float getCount(int i) { result = getRanked(this.getArray("counts"), i) }
+    float getCount(int i) { result = getRankedFloat(this.getArray("counts"), i) }
 
     float getDuplicationPercentage(int i) {
-      result = getRanked(this.getArray("duplicationPercentages"), i)
+      result = getRankedFloat(this.getArray("duplicationPercentages"), i)
     }
 
     float getResultSize() { result = this.getFloat("resultSize") }
@@ -241,6 +249,13 @@ module KindPredicatesLog {
 
     AppearsAs getAppearsAs() { result = this.getObject("appearsAs") }
 
+    int getMillis() { result = this.getNumber("millis") }
+
+    PipeLineRuns getPipelineRuns() { result = this.getArray("pipelineRuns") }
+
+    pragma[nomagic]
+    float getDeltaSize(int i) { result = getRankedFloat(this.getArray("deltaSizes"), i) }
+
     predicate hasCompletionTime(
       int year, string month, int day, int hours, int minute, int second, int millisecond
     ) {
@@ -261,6 +276,43 @@ module KindPredicatesLog {
     float getCompletionTime() { result = stringToTimestamp(this.getCompletionTimeString()) }
 
     float getResultSize() { result = this.getFloat("resultSize") }
+
+    string getAnOrdering() { exists(this.getRA().getPipeLine(result)) }
+
+    override string toString() {
+      if exists(this.getPredicateName())
+      then result = this.getPredicateName()
+      else result = "<Summary event>"
+    }
+
+    RA getRA() { result = this.getObject("ra") }
+  }
+
+  class PipeLine extends Array {
+    RA ra;
+    string raReference;
+
+    RA getRA() { result = ra }
+
+    string getRAReference() { result = raReference }
+
+    PipeLine() { this = ra.getArray(raReference) }
+
+    string getLineOfRA(int n) { result = getRankedLine(this, n) }
+
+    RAExpr getExpr(int n) { result.getPredicate() = this and result.getLine() = n }
+  }
+
+  class RA extends Object {
+    SummaryEvent evt;
+
+    SummaryEvent getEvent() { result = evt }
+
+    RA() { evt.getObject("ra") = this }
+
+    PipeLine getPipeLine(string name) { result = this.getArray(name) }
+
+    PipeLine getPipeLine() { result = this.getPipeLine("pipeline") }
   }
 
   class SentinelEmpty extends SummaryEvent {
@@ -276,10 +328,31 @@ module KindPredicatesLog {
 
     string getRAReference() { result = this.getString("raReference") }
 
-    float getCount(int i) { result = getRanked(this.getArray("counts"), i) }
+    PipeLine getPipeLine() {
+      exists(SummaryEvent evt | runs.getEvent() = evt |
+        result = evt.getRA().getPipeLine(pragma[only_bind_into](this.getRAReference()))
+      )
+    }
+
+    float getCount(int i, string raLine) {
+      result = this.getCount(i) and
+      raLine = this.getPipeLine().getLineOfRA(pragma[only_bind_into](i))
+    }
+
+    float getCountAndExpr(int i, RAExpr raExpr) {
+      result = this.getCount(i) and
+      raExpr.getPredicate() = this.getPipeLine() and
+      raExpr.getLine() = i
+    }
+
+    Array getCounts() { result = this.getArray("counts") }
+
+    float getCount(int i) { result = getRankedFloat(this.getArray("counts"), i) }
+
+    Array getDuplicationPercentage() { result = this.getArray("duplicationPercentages") }
 
     float getDuplicationPercentage(int i) {
-      result = getRanked(this.getArray("duplicationPercentages"), i)
+      result = getRankedFloat(this.getArray("duplicationPercentages"), i)
     }
   }
 
@@ -315,14 +388,145 @@ module KindPredicatesLog {
     string getPosition() { result = this.getString("position") }
 
     Predicate getPredicate() { result = getPredicateFromPosition(this.getPosition()) }
+
+    /**
+     * Gets the RA for this event. Unlike recursive predicates, a COMPUTE_SIMPLE
+     * event only has one pipeline ordering (and it's named "pipeline").
+     */
+    PipeLine getPipeLine() { result = this.getObject("ra").getArray("pipeline") }
+  }
+
+  /** Gets the `index`'th event that's evaluated by `recursive`. */
+  private SummaryEvent layerEventRank(ComputeRecursive recursive, int index) {
+    result =
+      rank[index + 1](SummaryEvent cand, int startline, string filepath |
+        (
+          cand = recursive
+          or
+          cand.(InLayer).getComputeRecursiveEvent() = recursive
+        ) and
+        cand.hasLocationInfo(filepath, startline, _, _, _)
+      |
+        cand order by filepath, startline
+      )
+  }
+
+  /**
+   * Gets the first predicate that's evaluated in an iteration
+   * of the SCC computation rooted at `recursive`.
+   */
+  SummaryEvent firstPredicate(ComputeRecursive recursive) { result = layerEventRank(recursive, 0) }
+
+  /**
+   * Gets the last predicate that's evaluated in an iteration
+   * of the SCC computation rooted at `recursive`.
+   */
+  SummaryEvent lastPredicate(ComputeRecursive recursive) {
+    exists(int n |
+      result = layerEventRank(recursive, n) and
+      not exists(layerEventRank(recursive, n + 1))
+    )
+  }
+
+  /**
+   * Holds if the predicate represented by `next` was evaluated after the
+   * predicate represented by `prev` in the SCC computation rooted at `recursive`.
+   */
+  predicate successor(ComputeRecursive recursive, SummaryEvent prev, InLayer next) {
+    exists(int index |
+      layerEventRank(recursive, index) = prev and
+      layerEventRank(recursive, index + 1) = next
+    )
+  }
+
+  bindingset[this]
+  signature class ResultSig;
+
+  /**
+   * A signature for generically traversing a SCC computation.
+   */
+  signature module Fold<ResultSig R> {
+    /**
+     * Gets the base case for the fold. That is, the initial value that
+     * is produced from the first evaluation of the first IN_LAYER event
+     * in the recursive evaluation.
+     */
+    bindingset[run]
+    R base(PipeLineRun run);
+
+    /**
+     * Gets the recursive case for the fold. That is, `r` is the accumulation
+     * of the previous evaluations, and `run` is the pipeline of the next IN_LAYER
+     * event that is evaluated.
+     */
+    bindingset[run, r]
+    R fold(PipeLineRun run, R r);
+  }
+
+  module Iterate<ResultSig R, Fold<R> F> {
+    private R iterate(ComputeRecursive recursive, int iteration, InLayer pred) {
+      // Case: The first iteration
+      iteration = 0 and
+      (
+        // Subcase: The first predicate in the first iteration
+        pred = firstPredicate(recursive) and
+        result = F::base(pred.getPipelineRuns().getRun(0))
+        or
+        // Subcase: The predicate has a predecessor
+        exists(InLayer pred0, R r |
+          successor(recursive, pred0, pred) and
+          r = iterate(recursive, 0, pred0) and
+          result = F::fold(pred.getPipelineRuns().getRun(0), r)
+        )
+      )
+      or
+      // Case: Not the first iteration
+      iteration > 0 and
+      (
+        // Subcase: The first predicate in the iteration
+        pred = firstPredicate(recursive) and
+        exists(InLayer last, R r |
+          last = lastPredicate(recursive) and
+          r = iterate(recursive, iteration - 1, last) and
+          result = F::fold(pred.getPipelineRuns().getRun(iteration), r)
+        )
+        or
+        // Subcase: The predicate has a predecessor in the same iteration
+        exists(InLayer pred0, R r |
+          successor(recursive, pred0, pred) and
+          r = iterate(recursive, iteration, pred0) and
+          result = F::fold(pred.getPipelineRuns().getRun(iteration), r)
+        )
+      )
+    }
+
+    R iterate(ComputeRecursive recursive) {
+      exists(int iteration, InLayer pred |
+        pred = lastPredicate(recursive) and
+        result = iterate(recursive, iteration, pred) and
+        not exists(iterate(recursive, iteration + 1, pred))
+      )
+    }
   }
 
   class ComputeRecursive extends SummaryEvent {
     ComputeRecursive() { evaluationStrategy = "COMPUTE_RECURSIVE" }
+
+    Depencencies getDependencies() { result = this.getObject("dependencies") }
   }
 
   class InLayer extends SummaryEvent {
     InLayer() { evaluationStrategy = "IN_LAYER" }
+
+    string getMainHash() { result = this.getString("mainHash") }
+
+    ComputeRecursive getComputeRecursiveEvent() { result.getRAHash() = this.getMainHash() }
+
+    Array getPredicateIterationMillis() { result = this.getArray("predicateIterationMillis") }
+
+    float getPredicateIterationMillis(int i) {
+      result = getRankedFloat(this.getArray("predicateIterationMillis"), i)
+    }
   }
 
   class ComputedExtensional extends SummaryEvent {
@@ -332,16 +536,6 @@ module KindPredicatesLog {
   class Extensional extends SummaryEvent {
     Extensional() { evaluationStrategy = "EXTENSIONAL" }
   }
-}
 
-// Stuff to test whether we've covered all event types
-private File logFile() { result = any(EvaluatorLog::LogHeader h).getLocation().getFile() }
-
-private Object missing() {
-  result =
-    any(Object o |
-      o.getLocation().getFile() = logFile() and
-      not o instanceof EvaluatorLog::Entry and
-      not exists(o.getParent().getParent()) // don't count nested objects
-    )
+  class RAExpr = RAParser<PipeLine>::RAExpr;
 }
