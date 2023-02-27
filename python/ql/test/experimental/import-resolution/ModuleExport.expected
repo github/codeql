@@ -103,12 +103,6 @@
 | if_then_else_refined | exit | if_then_else_refined.py:19:1:19:4 | ControlFlowNode for exit |
 | if_then_else_refined | globals | if_then_else_refined.py:17:24:17:30 | ControlFlowNode for globals |
 | if_then_else_refined | src | if_then_else_refined.py:17:19:17:21 | ControlFlowNode for src |
-| namespace_package.namespace_module | __file__ | namespace_package/namespace_module.py:6:6:6:13 | ControlFlowNode for __file__ |
-| namespace_package.namespace_module | __name__ | namespace_package/namespace_module.py:0:0:0:0 | GSSA Variable __name__ |
-| namespace_package.namespace_module | __package__ | namespace_package/namespace_module.py:0:0:0:0 | GSSA Variable __package__ |
-| namespace_package.namespace_module | enter | namespace_package/namespace_module.py:2:1:2:5 | ControlFlowNode for enter |
-| namespace_package.namespace_module | exit | namespace_package/namespace_module.py:6:1:6:4 | ControlFlowNode for exit |
-| namespace_package.namespace_module | namespace_module_attr | namespace_package/namespace_module.py:4:1:4:21 | GSSA Variable namespace_module_attr |
 | package.__init__ | __file__ | package/__init__.py:7:6:7:13 | ControlFlowNode for __file__ |
 | package.__init__ | __name__ | package/__init__.py:0:0:0:0 | GSSA Variable __name__ |
 | package.__init__ | __package__ | package/__init__.py:0:0:0:0 | GSSA Variable __package__ |
