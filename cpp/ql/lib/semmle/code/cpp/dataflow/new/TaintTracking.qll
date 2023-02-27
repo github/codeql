@@ -15,8 +15,8 @@
  * `TaintTracking::localTaintStep` with arguments of type `DataFlow::Node`.
  */
 
-import semmle.code.cpp.ir.dataflow.DataFlow
-import semmle.code.cpp.ir.dataflow.DataFlow2
+import semmle.code.cpp.dataflow.new.DataFlow
+import semmle.code.cpp.dataflow.new.DataFlow2
 
 /**
  * Provides classes for performing local (intra-procedural) and
