@@ -6,6 +6,7 @@
 import swift
 import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for cleartext transmission vulnerabilities. That is,
@@ -86,4 +87,11 @@ private class CleartextTransmissionEncryptionSanitizer extends CleartextTransmis
   CleartextTransmissionEncryptionSanitizer() {
     this.asExpr() instanceof EncryptedExpr
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultCleartextTransmissionSink extends CleartextTransmissionSink {
+  DefaultCleartextTransmissionSink() { sinkNode(this, "transmission") }
 }

@@ -6,6 +6,7 @@
 import swift
 import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for cleartext database storage vulnerabilities. That is,
@@ -149,4 +150,11 @@ private class CleartextStorageDatabaseArrayAdditionalTaintStep extends Cleartext
       nodeTo.asExpr() = arr
     )
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultCleartextStorageDatabaseSink extends CleartextStorageDatabaseSink {
+  DefaultCleartextStorageDatabaseSink() { sinkNode(this, "database-store") }
 }

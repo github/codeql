@@ -6,6 +6,7 @@
 import swift
 import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for cleartext preferences storage vulnerabilities. That is,
@@ -77,4 +78,11 @@ private class CleartextStoragePreferencesEncryptionSanitizer extends CleartextSt
   CleartextStoragePreferencesEncryptionSanitizer() {
     this.asExpr() instanceof EncryptedExpr
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultCleartextStoragePreferencesSink extends CleartextStoragePreferencesSink {
+  DefaultCleartextStoragePreferencesSink() { sinkNode(this, "preferences-store") }
 }
