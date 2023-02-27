@@ -39,7 +39,7 @@ where
     // in.
     sink instanceof ExternalAPIs::ExternalApiDataNode and
     message =
-      sinkType.getDescription() + "\n" +
+      sinkType + "\n" +
         // Extract the needed metadata for this endpoint.
         any(string metadata | EndpointCharacteristics::hasMetadata(sink, metadata))
   )

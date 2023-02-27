@@ -14,8 +14,6 @@ abstract class EndpointType extends string {
   bindingset[this]
   EndpointType() { any() }
 
-  final string getDescription() { result = this }
-
   /**
    * Gets the name of the sink/source kind for this endpoint type as used in Models as Data.
    *
