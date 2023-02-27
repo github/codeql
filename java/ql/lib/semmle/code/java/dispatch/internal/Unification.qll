@@ -22,6 +22,17 @@ module MkUnification<unificationTarget/1 targetLeft, unificationTarget/1 targetR
     targetRight(t2) and t2.getGenericType() = g
   }
 
+  pragma[noinline]
+  private predicate unificationTargetsWithCommonSourceDecl(
+    ParameterizedType pt1, ParameterizedType pt2
+  ) {
+    exists(RefType commonSourceDecl |
+      unificationTargets(pt1, pt2) and
+      pragma[only_bind_out](pt1).getSourceDeclaration() = pragma[only_bind_out](commonSourceDecl) and
+      pragma[only_bind_out](pt2).getSourceDeclaration() = commonSourceDecl
+    )
+  }
+
   private predicate unificationTargets(Type t1, Type t2) {
     exists(GenericType g | unificationTargetLeft(t1, g) and unificationTargetRight(t2, g))
     or
@@ -32,10 +43,9 @@ module MkUnification<unificationTarget/1 targetLeft, unificationTarget/1 targetR
     )
     or
     exists(ParameterizedType pt1, ParameterizedType pt2, int pos |
-      unificationTargets(pt1, pt2) and
-      not pt1.getSourceDeclaration() != pt2.getSourceDeclaration() and
-      t1 = pt1.getTypeArgument(pos) and
-      t2 = pt2.getTypeArgument(pos)
+      unificationTargetsWithCommonSourceDecl(pt1, pt2) and
+      t1 = pt1.getTypeArgument(pragma[only_bind_into](pos)) and
+      t2 = pt2.getTypeArgument(pragma[only_bind_into](pos))
     )
   }
 
@@ -44,8 +54,8 @@ module MkUnification<unificationTarget/1 targetLeft, unificationTarget/1 targetR
     ParameterizedType t1, ParameterizedType t2, int pos, RefType arg1, RefType arg2
   ) {
     unificationTargets(t1, t2) and
-    arg1 = t1.getTypeArgument(pos) and
-    arg2 = t2.getTypeArgument(pos)
+    arg1 = t1.getTypeArgument(pragma[only_bind_into](pos)) and
+    arg2 = t2.getTypeArgument(pragma[only_bind_into](pos))
   }
 
   private RefType getUpperBound(RefType t) {

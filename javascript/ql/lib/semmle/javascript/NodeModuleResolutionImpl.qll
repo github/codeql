@@ -62,7 +62,7 @@ File loadAsFile(Require req, int rootPriority, int priority) {
  */
 File loadAsDirectory(Require req, int rootPriority, int priority) {
   exists(Folder dir | dir = req.getImportedPath().resolve(rootPriority) |
-    result = resolveMainModule(dir.(NpmPackage).getPackageJson(), priority) or
+    result = resolveMainModule(dir.(NpmPackage).getPackageJson(), priority, ".") or
     result = tryExtensions(dir, "index", priority - (numberOfExtensions() + 1))
   )
 }
@@ -132,12 +132,10 @@ private File resolveMainPath(PackageJson pkg, string mainPath, int priority) {
 /**
  * Gets the main module described by `pkg` with the given `priority`.
  */
-File resolveMainModule(PackageJson pkg, int priority) {
-  exists(int subPriority, string mainPath |
-    result = resolveMainPath(pkg, mainPath, subPriority) and
-    if mainPath = "." then subPriority = priority else priority = subPriority + 1000
-  )
+File resolveMainModule(PackageJson pkg, int priority, string exportPath) {
+  result = resolveMainPath(pkg, exportPath, priority)
   or
+  exportPath = "." and
   exists(Folder folder, Folder child |
     child = folder or
     child = folder.getChildContainer(getASrcFolderName()) or
@@ -149,6 +147,7 @@ File resolveMainModule(PackageJson pkg, int priority) {
   )
   or
   // if there is no main module, then we look for files that are explicitly included in the published package.
+  exportPath = "." and
   exists(PathExpr file |
     // `FilesPath` only exists if there is no main module for a given package.
     file = FilesPath::of(pkg) and priority = 100 // fixing the priority, because there might be multiple files in the package.

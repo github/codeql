@@ -16,6 +16,8 @@ string describe(ArithmeticOperation e) {
   e instanceof UnaryArithmeticOperation and result = "UnaryArithmeticOperation"
   or
   e instanceof UnaryMinusExpr and result = "UnaryMinusExpr"
+  or
+  e instanceof UnaryPlusExpr and result = "UnaryPlusExpr"
 }
 
 from ArithmeticOperation e

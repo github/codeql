@@ -5,5 +5,5 @@
 | bad.go:3:5:3:5 | expected 'IDENT', found newline |
 | bad.go:5:1:5:1 | expected ';', found wnvwun |
 | badimport.go:6:2:6:2 | invalid import path (invalid character U+007B '{') |
-| badimport.go:6:2:6:2 | invalid import path: "github.com/pkg{}" |
+| badimport.go:6:2:6:2 | malformed import path "github.com/pkg{}": invalid char '{' |
 | type.go:11:9:11:9 | cannot use v (variable of type V) as T value in argument to takesT |

@@ -153,6 +153,9 @@ private module Cached {
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(OptionalEvaluationExpr).getSubExpr()
     or
+    // flow through unary `+` (which does nothing)
+    nodeFrom.asExpr() = nodeTo.asExpr().(UnaryPlusExpr).getOperand()
+    or
     // flow through nil-coalescing operator `??`
     exists(BinaryExpr nco |
       nco.getOperator().(FreeFunctionDecl).getName() = "??(_:_:)" and

@@ -1,3 +1,9 @@
+## 0.5.3
+
+### Minor Analysis Improvements
+
+ * Ruby 3.1: one-line pattern matches are now supported. The AST nodes are named `TestPattern` (`expr in pattern`) and `MatchPattern` (`expr => pattern`).
+
 ## 0.5.2
 
 ### Minor Analysis Improvements
