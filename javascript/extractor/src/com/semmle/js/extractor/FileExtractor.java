@@ -122,7 +122,7 @@ public class FileExtractor {
         }
         // for ERB files we are only interrested in `.html.erb` files
         if (FileUtil.extension(f).equalsIgnoreCase(".erb")) {
-          if (!f.getName().endsWith(".html.erb")) {
+          if (!f.getName().toLowerCase().endsWith(".html.erb")) {
             return false;
           }
         }
