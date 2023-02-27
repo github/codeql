@@ -1,1 +1,0 @@
-semmle-extractor-options: --lang=3 --dont-split-graph --max-import-depth=1 -R ../src
