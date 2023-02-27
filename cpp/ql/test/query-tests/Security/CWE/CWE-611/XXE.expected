@@ -6,6 +6,12 @@ edges
 | tests2.cpp:49:12:49:12 | call to SAXParser | tests2.cpp:51:2:51:2 | p indirection |
 | tests3.cpp:23:21:23:53 | call to createXMLReader indirection | tests3.cpp:25:2:25:2 | p indirection |
 | tests3.cpp:23:21:23:53 | call to createXMLReader indirection | tests3.cpp:25:2:25:2 | p indirection |
+| tests3.cpp:35:16:35:20 | p_3_3 indirection | tests3.cpp:38:2:38:6 | p_3_3 indirection |
+| tests3.cpp:35:16:35:20 | p_3_3 indirection | tests3.cpp:38:2:38:6 | p_3_3 indirection |
+| tests3.cpp:35:24:35:56 | call to createXMLReader indirection | tests3.cpp:35:16:35:20 | p_3_3 indirection |
+| tests3.cpp:48:16:48:20 | p_3_5 indirection | tests3.cpp:56:2:56:6 | p_3_5 indirection |
+| tests3.cpp:48:16:48:20 | p_3_5 indirection | tests3.cpp:56:2:56:6 | p_3_5 indirection |
+| tests3.cpp:48:24:48:56 | call to createXMLReader indirection | tests3.cpp:48:16:48:20 | p_3_5 indirection |
 | tests3.cpp:60:21:60:53 | call to createXMLReader indirection | tests3.cpp:63:2:63:2 | p indirection |
 | tests3.cpp:60:21:60:53 | call to createXMLReader indirection | tests3.cpp:63:2:63:2 | p indirection |
 | tests3.cpp:67:21:67:53 | call to createXMLReader indirection | tests3.cpp:70:2:70:2 | p indirection |
@@ -66,6 +72,14 @@ nodes
 | tests3.cpp:23:21:23:53 | call to createXMLReader indirection | semmle.label | call to createXMLReader indirection |
 | tests3.cpp:25:2:25:2 | p indirection | semmle.label | p indirection |
 | tests3.cpp:25:2:25:2 | p indirection | semmle.label | p indirection |
+| tests3.cpp:35:16:35:20 | p_3_3 indirection | semmle.label | p_3_3 indirection |
+| tests3.cpp:35:24:35:56 | call to createXMLReader indirection | semmle.label | call to createXMLReader indirection |
+| tests3.cpp:38:2:38:6 | p_3_3 indirection | semmle.label | p_3_3 indirection |
+| tests3.cpp:38:2:38:6 | p_3_3 indirection | semmle.label | p_3_3 indirection |
+| tests3.cpp:48:16:48:20 | p_3_5 indirection | semmle.label | p_3_5 indirection |
+| tests3.cpp:48:24:48:56 | call to createXMLReader indirection | semmle.label | call to createXMLReader indirection |
+| tests3.cpp:56:2:56:6 | p_3_5 indirection | semmle.label | p_3_5 indirection |
+| tests3.cpp:56:2:56:6 | p_3_5 indirection | semmle.label | p_3_5 indirection |
 | tests3.cpp:60:21:60:53 | call to createXMLReader indirection | semmle.label | call to createXMLReader indirection |
 | tests3.cpp:63:2:63:2 | p indirection | semmle.label | p indirection |
 | tests3.cpp:63:2:63:2 | p indirection | semmle.label | p indirection |
@@ -144,6 +158,10 @@ subpaths
 | tests2.cpp:51:2:51:2 | p indirection | tests2.cpp:49:12:49:12 | call to SAXParser | tests2.cpp:51:2:51:2 | p indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests2.cpp:49:12:49:12 | call to SAXParser | XML parser |
 | tests3.cpp:25:2:25:2 | p indirection | tests3.cpp:23:21:23:53 | call to createXMLReader indirection | tests3.cpp:25:2:25:2 | p indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests3.cpp:23:21:23:53 | call to createXMLReader indirection | XML parser |
 | tests3.cpp:25:2:25:2 | p indirection | tests3.cpp:23:21:23:53 | call to createXMLReader indirection | tests3.cpp:25:2:25:2 | p indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests3.cpp:23:21:23:53 | call to createXMLReader indirection | XML parser |
+| tests3.cpp:38:2:38:6 | p_3_3 indirection | tests3.cpp:35:24:35:56 | call to createXMLReader indirection | tests3.cpp:38:2:38:6 | p_3_3 indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests3.cpp:35:24:35:56 | call to createXMLReader indirection | XML parser |
+| tests3.cpp:38:2:38:6 | p_3_3 indirection | tests3.cpp:35:24:35:56 | call to createXMLReader indirection | tests3.cpp:38:2:38:6 | p_3_3 indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests3.cpp:35:24:35:56 | call to createXMLReader indirection | XML parser |
+| tests3.cpp:56:2:56:6 | p_3_5 indirection | tests3.cpp:48:24:48:56 | call to createXMLReader indirection | tests3.cpp:56:2:56:6 | p_3_5 indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests3.cpp:48:24:48:56 | call to createXMLReader indirection | XML parser |
+| tests3.cpp:56:2:56:6 | p_3_5 indirection | tests3.cpp:48:24:48:56 | call to createXMLReader indirection | tests3.cpp:56:2:56:6 | p_3_5 indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests3.cpp:48:24:48:56 | call to createXMLReader indirection | XML parser |
 | tests3.cpp:63:2:63:2 | p indirection | tests3.cpp:60:21:60:53 | call to createXMLReader indirection | tests3.cpp:63:2:63:2 | p indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests3.cpp:60:21:60:53 | call to createXMLReader indirection | XML parser |
 | tests3.cpp:63:2:63:2 | p indirection | tests3.cpp:60:21:60:53 | call to createXMLReader indirection | tests3.cpp:63:2:63:2 | p indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests3.cpp:60:21:60:53 | call to createXMLReader indirection | XML parser |
 | tests3.cpp:70:2:70:2 | p indirection | tests3.cpp:67:21:67:53 | call to createXMLReader indirection | tests3.cpp:70:2:70:2 | p indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests3.cpp:67:21:67:53 | call to createXMLReader indirection | XML parser |

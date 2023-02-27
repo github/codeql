@@ -41,22 +41,16 @@ edges
 | test.cpp:178:22:178:26 | flags indirection | test.cpp:178:13:178:19 | strncat output argument |
 | test.cpp:180:13:180:19 | strncat output argument | test.cpp:183:32:183:38 | command indirection |
 | test.cpp:180:22:180:29 | filename indirection | test.cpp:180:13:180:19 | strncat output argument |
-| test.cpp:186:47:186:54 | filename | test.cpp:188:20:188:24 | flags indirection |
 | test.cpp:186:47:186:54 | filename indirection | test.cpp:187:18:187:25 | filename indirection |
 | test.cpp:186:47:186:54 | filename indirection | test.cpp:188:20:188:24 | flags indirection |
 | test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:11:188:17 | strncat output argument |
 | test.cpp:187:18:187:25 | filename indirection | test.cpp:187:11:187:15 | strncat output argument |
 | test.cpp:188:11:188:17 | strncat output argument | test.cpp:188:11:188:17 | strncat output argument |
 | test.cpp:188:11:188:17 | strncat output argument | test.cpp:188:11:188:17 | strncat output argument |
-| test.cpp:188:11:188:17 | strncat output argument | test.cpp:188:11:188:17 | strncat output argument |
 | test.cpp:188:20:188:24 | flags indirection | test.cpp:188:11:188:17 | strncat output argument |
-| test.cpp:188:20:188:24 | flags indirection | test.cpp:188:11:188:17 | strncat output argument |
-| test.cpp:194:9:194:16 | fread output argument | test.cpp:196:26:196:33 | filename |
 | test.cpp:194:9:194:16 | fread output argument | test.cpp:196:26:196:33 | filename indirection |
 | test.cpp:196:10:196:16 | concat output argument | test.cpp:198:32:198:38 | command indirection |
 | test.cpp:196:10:196:16 | concat output argument | test.cpp:198:32:198:38 | command indirection |
-| test.cpp:196:26:196:33 | filename | test.cpp:186:47:186:54 | filename |
-| test.cpp:196:26:196:33 | filename | test.cpp:196:10:196:16 | concat output argument |
 | test.cpp:196:26:196:33 | filename indirection | test.cpp:186:47:186:54 | filename indirection |
 | test.cpp:196:26:196:33 | filename indirection | test.cpp:196:10:196:16 | concat output argument |
 | test.cpp:196:26:196:33 | filename indirection | test.cpp:196:10:196:16 | concat output argument |
@@ -121,19 +115,15 @@ nodes
 | test.cpp:183:32:183:38 | command indirection | semmle.label | command indirection |
 | test.cpp:183:32:183:38 | command indirection | semmle.label | command indirection |
 | test.cpp:183:32:183:38 | command indirection | semmle.label | command indirection |
-| test.cpp:186:47:186:54 | filename | semmle.label | filename |
 | test.cpp:186:47:186:54 | filename indirection | semmle.label | filename indirection |
 | test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:187:18:187:25 | filename indirection | semmle.label | filename indirection |
 | test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
-| test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
-| test.cpp:188:20:188:24 | flags indirection | semmle.label | flags indirection |
 | test.cpp:188:20:188:24 | flags indirection | semmle.label | flags indirection |
 | test.cpp:194:9:194:16 | fread output argument | semmle.label | fread output argument |
 | test.cpp:196:10:196:16 | concat output argument | semmle.label | concat output argument |
 | test.cpp:196:10:196:16 | concat output argument | semmle.label | concat output argument |
-| test.cpp:196:26:196:33 | filename | semmle.label | filename |
 | test.cpp:196:26:196:33 | filename indirection | semmle.label | filename indirection |
 | test.cpp:198:32:198:38 | command indirection | semmle.label | command indirection |
 | test.cpp:198:32:198:38 | command indirection | semmle.label | command indirection |
@@ -144,7 +134,6 @@ nodes
 | test.cpp:220:19:220:26 | filename indirection | semmle.label | filename indirection |
 | test.cpp:222:32:222:38 | command indirection | semmle.label | command indirection |
 subpaths
-| test.cpp:196:26:196:33 | filename | test.cpp:186:47:186:54 | filename | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
 | test.cpp:196:26:196:33 | filename indirection | test.cpp:186:47:186:54 | filename indirection | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
 | test.cpp:196:26:196:33 | filename indirection | test.cpp:186:47:186:54 | filename indirection | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
 #select
