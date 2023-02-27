@@ -127,8 +127,6 @@ abstract private class AssignPointwiseOperationEx extends BinaryExpr { }
  */
 class AssignAddExpr extends AssignArithmeticOperationEx {
   AssignAddExpr() { this.getOperator().getName() = ["+=(_:_:)", "&+=(_:_:)"] }
-
-  override string toString() { result = "... += ..." }
 }
 
 /**
@@ -140,8 +138,6 @@ class AssignAddExpr extends AssignArithmeticOperationEx {
  */
 class AssignSubExpr extends AssignArithmeticOperationEx {
   AssignSubExpr() { this.getOperator().getName() = ["-=(_:_:)", "&-=(_:_:)"] }
-
-  override string toString() { result = "... -= ..." }
 }
 
 /**
@@ -153,8 +149,6 @@ class AssignSubExpr extends AssignArithmeticOperationEx {
  */
 class AssignMulExpr extends AssignArithmeticOperationEx {
   AssignMulExpr() { this.getOperator().getName() = ["*=(_:_:)", "&*=(_:_:)"] }
-
-  override string toString() { result = "... *= ..." }
 }
 
 /**
@@ -165,8 +159,6 @@ class AssignMulExpr extends AssignArithmeticOperationEx {
  */
 class AssignDivExpr extends AssignArithmeticOperationEx {
   AssignDivExpr() { this.getOperator().getName() = "/=(_:_:)" }
-
-  override string toString() { result = "... /= ..." }
 }
 
 /**
@@ -177,8 +169,6 @@ class AssignDivExpr extends AssignArithmeticOperationEx {
  */
 class AssignRemExpr extends AssignArithmeticOperationEx {
   AssignRemExpr() { this.getOperator().getName() = "%=(_:_:)" }
-
-  override string toString() { result = "... %= ..." }
 }
 
 /**
@@ -190,8 +180,6 @@ class AssignRemExpr extends AssignArithmeticOperationEx {
  */
 class AssignLShiftExpr extends AssignBitwiseOperationEx {
   AssignLShiftExpr() { this.getOperator().getName() = ["<<=(_:_:)", "&<<=(_:_:)"] }
-
-  override string toString() { result = "... <<= ..." }
 }
 
 /**
@@ -203,8 +191,6 @@ class AssignLShiftExpr extends AssignBitwiseOperationEx {
  */
 class AssignRShiftExpr extends AssignBitwiseOperationEx {
   AssignRShiftExpr() { this.getOperator().getName() = [">>=(_:_:)", "&>>=(_:_:)"] }
-
-  override string toString() { result = "... >>= ..." }
 }
 
 /**
@@ -215,8 +201,6 @@ class AssignRShiftExpr extends AssignBitwiseOperationEx {
  */
 class AssignAndExpr extends AssignBitwiseOperationEx {
   AssignAndExpr() { this.getOperator().getName() = "&=(_:_:)" }
-
-  override string toString() { result = "... &= ..." }
 }
 
 /**
@@ -227,8 +211,6 @@ class AssignAndExpr extends AssignBitwiseOperationEx {
  */
 class AssignOrExpr extends AssignBitwiseOperationEx {
   AssignOrExpr() { this.getOperator().getName() = "|=(_:_:)" }
-
-  override string toString() { result = "... |= ..." }
 }
 
 /**
@@ -239,8 +221,6 @@ class AssignOrExpr extends AssignBitwiseOperationEx {
  */
 class AssignXorExpr extends AssignBitwiseOperationEx {
   AssignXorExpr() { this.getOperator().getName() = "^=(_:_:)" }
-
-  override string toString() { result = "... ^= ..." }
 }
 
 /**
@@ -251,8 +231,6 @@ class AssignXorExpr extends AssignBitwiseOperationEx {
  */
 class AssignPointwiseAndExpr extends AssignPointwiseOperationEx {
   AssignPointwiseAndExpr() { this.getOperator().getName() = ".&=(_:_:)" }
-
-  override string toString() { result = "... .&= ..." }
 }
 
 /**
@@ -263,8 +241,6 @@ class AssignPointwiseAndExpr extends AssignPointwiseOperationEx {
  */
 class AssignPointwiseOrExpr extends AssignPointwiseOperationEx {
   AssignPointwiseOrExpr() { this.getOperator().getName() = ".|=(_:_:)" }
-
-  override string toString() { result = "... .|= ..." }
 }
 
 /**
@@ -275,6 +251,4 @@ class AssignPointwiseOrExpr extends AssignPointwiseOperationEx {
  */
 class AssignPointwiseXorExpr extends AssignPointwiseOperationEx {
   AssignPointwiseXorExpr() { this.getOperator().getName() = ".^=(_:_:)" }
-
-  override string toString() { result = "... .^= ..." }
 }
