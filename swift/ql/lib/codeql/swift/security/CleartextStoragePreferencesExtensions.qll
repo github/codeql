@@ -33,7 +33,7 @@ class CleartextStoragePreferencesAdditionalTaintStep extends Unit {
 }
 
 /** The `DataFlow::Node` of an expression that gets written to the user defaults database */
-class UserDefaultsStore extends CleartextStoragePreferencesSink {
+private class UserDefaultsStore extends CleartextStoragePreferencesSink {
   UserDefaultsStore() {
     exists(CallExpr call |
       call.getStaticTarget().(MethodDecl).hasQualifiedName("UserDefaults", "set(_:forKey:)") and
@@ -45,7 +45,7 @@ class UserDefaultsStore extends CleartextStoragePreferencesSink {
 }
 
 /** The `DataFlow::Node` of an expression that gets written to the iCloud-backed NSUbiquitousKeyValueStore */
-class NSUbiquitousKeyValueStore extends CleartextStoragePreferencesSink {
+private class NSUbiquitousKeyValueStore extends CleartextStoragePreferencesSink {
   NSUbiquitousKeyValueStore() {
     exists(CallExpr call |
       call.getStaticTarget()
@@ -64,7 +64,7 @@ class NSUbiquitousKeyValueStore extends CleartextStoragePreferencesSink {
  * object via reflection (`perform(Selector)`) or the `NSKeyValueCoding`,
  * `NSKeyValueBindingCreation` APIs. (TODO)
  */
-class NSUserDefaultsControllerStore extends CleartextStoragePreferencesSink {
+private class NSUserDefaultsControllerStore extends CleartextStoragePreferencesSink {
   NSUserDefaultsControllerStore() { none() }
 
   override string getStoreName() { result = "the user defaults database" }
@@ -73,7 +73,7 @@ class NSUserDefaultsControllerStore extends CleartextStoragePreferencesSink {
 /**
  * An encryption sanitizer for cleartext preferences storage vulnerabilities.
  */
-class CleartextStoragePreferencesEncryptionSanitizer extends CleartextStoragePreferencesSanitizer {
+private class CleartextStoragePreferencesEncryptionSanitizer extends CleartextStoragePreferencesSanitizer {
   CleartextStoragePreferencesEncryptionSanitizer() {
     this.asExpr() instanceof EncryptedExpr
   }

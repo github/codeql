@@ -32,8 +32,8 @@ class CleartextTransmissionAdditionalTaintStep extends Unit {
 /**
  * An `Expr` that is transmitted with `NWConnection.send`.
  */
-class NWConnectionSend extends CleartextTransmissionSink {
-  NWConnectionSend() {
+private class NWConnectionSendSink extends CleartextTransmissionSink {
+  NWConnectionSendSink() {
     // `content` arg to `NWConnection.send` is a sink
     exists(CallExpr call |
       call.getStaticTarget()
@@ -48,8 +48,8 @@ class NWConnectionSend extends CleartextTransmissionSink {
  * An `Expr` that is used to form a `URL`. Such expressions are very likely to
  * be transmitted over a network, because that's what URLs are for.
  */
-class Url extends CleartextTransmissionSink {
-  Url() {
+private class UrlSink extends CleartextTransmissionSink {
+  UrlSink() {
     // `string` arg in `URL.init` is a sink
     // (we assume here that the URL goes on to be used in a network operation)
     exists(CallExpr call |
@@ -64,8 +64,8 @@ class Url extends CleartextTransmissionSink {
 /**
  * An `Expr` that transmitted through the Alamofire library.
  */
-class AlamofireTransmitted extends CleartextTransmissionSink {
-  AlamofireTransmitted() {
+private class AlamofireTransmittedSink extends CleartextTransmissionSink {
+  AlamofireTransmittedSink() {
     // sinks are the first argument containing the URL, and the `parameters`
     // and `headers` arguments to appropriate methods of `Session`.
     exists(CallExpr call, string fName |
@@ -82,7 +82,7 @@ class AlamofireTransmitted extends CleartextTransmissionSink {
 /**
  * An encryption sanitizer for cleartext transmission vulnerabilities.
  */
-class CleartextTransmissionEncryptionSanitizer extends CleartextTransmissionSanitizer {
+private class CleartextTransmissionEncryptionSanitizer extends CleartextTransmissionSanitizer {
   CleartextTransmissionEncryptionSanitizer() {
     this.asExpr() instanceof EncryptedExpr
   }

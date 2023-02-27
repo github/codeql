@@ -32,7 +32,7 @@ class CleartextStorageDatabaseAdditionalTaintStep extends Unit {
 /**
  * A `DataFlow::Node` that is an expression stored with the Core Data library.
  */
-class CoreDataStore extends CleartextStorageDatabaseSink {
+private class CoreDataStore extends CleartextStorageDatabaseSink {
   CoreDataStore() {
     // values written into Core Data objects through `set*Value` methods are a sink.
     exists(CallExpr call |
@@ -60,7 +60,7 @@ class CoreDataStore extends CleartextStorageDatabaseSink {
  * A `DataFlow::Node` that is an expression stored with the Realm database
  * library.
  */
-class RealmStore extends CleartextStorageDatabaseSink instanceof DataFlow::PostUpdateNode {
+private class RealmStore extends CleartextStorageDatabaseSink instanceof DataFlow::PostUpdateNode {
   RealmStore() {
     // any write into a class derived from `RealmSwiftObject` is a sink. For
     // example in `realmObj.data = sensitive` the post-update node corresponding
@@ -77,7 +77,7 @@ class RealmStore extends CleartextStorageDatabaseSink instanceof DataFlow::PostU
 /**
  * A `DataFlow::Node` that is an expression stored with the GRDB library.
  */
-class GrdbStore extends CleartextStorageDatabaseSink {
+private class GrdbStore extends CleartextStorageDatabaseSink {
   GrdbStore() {
     exists(CallExpr call, MethodDecl method |
       call.getStaticTarget() = method and
@@ -132,7 +132,7 @@ class GrdbStore extends CleartextStorageDatabaseSink {
 /**
  * An encryption sanitizer for cleartext database storage vulnerabilities.
  */
-class CleartextStorageDatabaseEncryptionSanitizer extends CleartextStorageDatabaseSanitizer {
+private class CleartextStorageDatabaseEncryptionSanitizer extends CleartextStorageDatabaseSanitizer {
   CleartextStorageDatabaseEncryptionSanitizer() {
     this.asExpr() instanceof EncryptedExpr
   }
@@ -142,7 +142,7 @@ class CleartextStorageDatabaseEncryptionSanitizer extends CleartextStorageDataba
  * An additional taint step for cleartext database storage vulnerabilities.
  * Needed until we have proper content flow through arrays.
  */
-class CleartextStorageDatabaseArrayAdditionalTaintStep extends CleartextStorageDatabaseAdditionalTaintStep {
+private class CleartextStorageDatabaseArrayAdditionalTaintStep extends CleartextStorageDatabaseAdditionalTaintStep {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(ArrayExpr arr |
       nodeFrom.asExpr() = arr.getAnElement() and
