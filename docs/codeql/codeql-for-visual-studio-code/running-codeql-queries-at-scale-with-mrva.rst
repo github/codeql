@@ -18,39 +18,27 @@ When you run variant analysis against a list of repositories, your query is run 
 
 .. _controller-repository:
 
-About the controller repository
--------------------------------
+Setting a controller repository for variant analysis
+-------------------------------------------------
 
-When you run variant analysis, the analysis is run entirely using dynamic workflows for GitHub Actions. You don't need to create any workflows, but you must specify which GitHub repository the CodeQL extension should use as the "controller repository."
+When you run variant analysis, the analysis is run entirely using GitHub Actions. You don't need to create any workflows, but you must specify which GitHub repository the CodeQL extension should use as the "controller repository." Controller repositories can be empty, but they must have at least one commit and the ``GITHUB_TOKEN`` must have "Read and write permissions" when running workflows. For more information, see "`Managing GitHub Actions settings for a repository <https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#setting-the-permissions-of-the-github_token-for-your-repository>`__."
 
-Functions of the controller repository
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. pull-quote::
+   
+   Note
 
-- **Workflow management:** the workflow runs that are triggered when you run variant analysis are shown on the **Actions** tab for the repository in much the same as other workflow runs.
-- **Billing:** when you analyze private repositories, the actions minutes used by CodeQL analysis are billed to the owner of the controller repository.
-
-Requirements of the controller repository
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- The repository must have at least one commit. 
-- The ``GITHUB_TOKEN`` must have "Read and write permissions" when running workflows in this repository. For more information, see "`Managing GitHub Actions settings for a repository <https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#setting-the-permissions-of-the-github_token-for-your-repository>`__."
-- The repository visibility must be "public" if you plan to analyze public repositories. The variant analysis will be free.
-- The repository visibility must be "private" or "internal" if you need to analyze private and internal repositories. Any actions minutes used by variant analysis, above the free limit, will be charged to the repository owner. For more information about free minutes and billing, see "`About billing for GitHub Actions <https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions>`__." 
+   - The controller repository visibility can be "public" if you plan to analyze public repositories. The variant analysis will be free.
+   - The controller repository visibility must be "private" if you need to analyze any private repositories. Any actions minutes used by variant analysis, above the free limit, will be charged to the repository owner. For more information about free minutes and billing, see "`About billing for GitHub Actions <https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions>`__." 
 
 TODO: Check on "internal" repositories.
 
-.. pull-quote::
-
-    Note
-
-    You can update your settings to use a different controller repository when you want to run variant analysis on a different group of repositories. For example, if you have finished testing the query on open source code and now want to test it on your private code. However, you must wait until any previous analysis is complete before you change the controller repository.
 
 TODO: check that the guess in the note above is accurate.
 
 Setting up variant analysis
 ---------------------------
 
-You can configure the CodeQL extension to run variant analysis by defining a controller repository.
+You can define a controller repository before running your first variant analysis.
 
 .. image:: ../images/codeql-for-visual-studio-code/controller-repository.png
     :width: 350
@@ -84,7 +72,7 @@ Running a query at scale using variant analysis
 
 #. Open the query you want to run, right-click in the query file, and select **CodeQL: Run Variant Analysis** to start variant analysis.
 
-The CodeQL extension builds a CodeQL pack with your library and any library dependencies. The CodeQL pack and your selected repository list are posted to an API endpoint on GitHub.com which triggers a GitHub Actions dynamic workflow in your controller repository. The workflow spins up multiple parallel jobs to execute the CodeQL query against the repositories in the list, optimizing query execution. As each workflow run finishes, the results are processed and displayed in a variant analysis results view in Visual Studio Code.
+The CodeQL extension builds a CodeQL pack with your library and any library dependencies. The CodeQL pack and your selected repository list are posted to an API endpoint on GitHub.com which triggers a GitHub Actions dynamic workflow in your controller repository. The workflow spins up multiple parallel jobs to execute the CodeQL query against the repositories in the list, optimizing query execution. As each repository is analyzed, the results are processed and displayed in a variant analysis results view in Visual Studio Code.
 
 .. pull-quote::
 
@@ -122,7 +110,7 @@ To see the results for a repository:
 Exporting your results
 ----------------------
 
-You can export your results for further analysis or to discuss them with collaborators. In the results view, click **Export results** to export the results to a gist on GitHub.com or to a markdown file.
+You can export your results for further analysis or to discuss them with collaborators. In the results view, click **Export results** to export the results to a secret gist on GitHub.com or to a markdown file.
 
 Creating custom lists of repositories
 ---------------------------------------

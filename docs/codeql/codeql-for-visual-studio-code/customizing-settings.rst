@@ -71,7 +71,7 @@ Configuring settings for variant analysis
 
 You can define or edit lists of GitHub repositories for variant analysis, and change to a different controller repository using the **Variant analysis** settings.
 
-For information on the purpose and requirements for a controller repository, see ":ref:`About the controller repository <controller-repository>`."
+For information on the purpose and requirements for a controller repository, see ":ref:`Setting up a controller repository for variant analysis <controller-repository>`."
 
 You can also edit the items shown in the Variant analysis repositories panel by editing a file in your Visual Studio Code workspace called ``databases.json``. This file contains a JSON representation of all the items displayed in the panel. To open your ``databases.json`` file in an editor window, click the **{ }** icon in the top right of the variant analysis repositories panel. You can then see a structured representation of the repos, orgs and lists in your panel. For example:
 
