@@ -1,26 +1,48 @@
 failures
 edges
-| flow.rb:8:1:8:4 | [post] user [@name] :  | flow.rb:10:5:10:8 | user [@name] :  |
-| flow.rb:8:1:8:4 | [post] user [@name] :  | flow.rb:10:5:10:8 | user [@name] :  |
-| flow.rb:8:13:8:22 | call to source :  | flow.rb:8:1:8:4 | [post] user [@name] :  |
-| flow.rb:8:13:8:22 | call to source :  | flow.rb:8:1:8:4 | [post] user [@name] :  |
-| flow.rb:10:5:10:8 | user [@name] :  | flow.rb:10:5:10:26 | call to serializable_hash [element name] :  |
-| flow.rb:10:5:10:8 | user [@name] :  | flow.rb:10:5:10:26 | call to serializable_hash [element name] :  |
-| flow.rb:10:5:10:26 | call to serializable_hash [element name] :  | flow.rb:11:6:11:6 | h [element name] :  |
-| flow.rb:10:5:10:26 | call to serializable_hash [element name] :  | flow.rb:11:6:11:6 | h [element name] :  |
-| flow.rb:11:6:11:6 | h [element name] :  | flow.rb:11:6:11:14 | ...[...] |
-| flow.rb:11:6:11:6 | h [element name] :  | flow.rb:11:6:11:14 | ...[...] |
+| flow.rb:9:1:9:4 | [post] user [@name] :  | flow.rb:11:5:11:8 | user [@name] :  |
+| flow.rb:9:1:9:4 | [post] user [@name] :  | flow.rb:11:5:11:8 | user [@name] :  |
+| flow.rb:9:13:9:22 | call to source :  | flow.rb:9:1:9:4 | [post] user [@name] :  |
+| flow.rb:9:13:9:22 | call to source :  | flow.rb:9:1:9:4 | [post] user [@name] :  |
+| flow.rb:11:5:11:8 | user [@name] :  | flow.rb:11:5:11:26 | call to serializable_hash [element name] :  |
+| flow.rb:11:5:11:8 | user [@name] :  | flow.rb:11:5:11:26 | call to serializable_hash [element name] :  |
+| flow.rb:11:5:11:26 | call to serializable_hash [element name] :  | flow.rb:12:6:12:6 | h [element name] :  |
+| flow.rb:11:5:11:26 | call to serializable_hash [element name] :  | flow.rb:12:6:12:6 | h [element name] :  |
+| flow.rb:12:6:12:6 | h [element name] :  | flow.rb:12:6:12:14 | ...[...] |
+| flow.rb:12:6:12:6 | h [element name] :  | flow.rb:12:6:12:14 | ...[...] |
+| flow.rb:17:1:17:5 | [post] user2 [@age] :  | flow.rb:19:6:19:10 | user2 [@age] :  |
+| flow.rb:17:1:17:5 | [post] user2 [@age] :  | flow.rb:19:6:19:10 | user2 [@age] :  |
+| flow.rb:17:13:17:22 | call to source :  | flow.rb:17:1:17:5 | [post] user2 [@age] :  |
+| flow.rb:17:13:17:22 | call to source :  | flow.rb:17:1:17:5 | [post] user2 [@age] :  |
+| flow.rb:19:6:19:10 | user2 [@age] :  | flow.rb:19:6:19:28 | call to serializable_hash [element age] :  |
+| flow.rb:19:6:19:10 | user2 [@age] :  | flow.rb:19:6:19:28 | call to serializable_hash [element age] :  |
+| flow.rb:19:6:19:28 | call to serializable_hash [element age] :  | flow.rb:20:6:20:7 | h2 [element age] :  |
+| flow.rb:19:6:19:28 | call to serializable_hash [element age] :  | flow.rb:20:6:20:7 | h2 [element age] :  |
+| flow.rb:20:6:20:7 | h2 [element age] :  | flow.rb:20:6:20:14 | ...[...] |
+| flow.rb:20:6:20:7 | h2 [element age] :  | flow.rb:20:6:20:14 | ...[...] |
 nodes
-| flow.rb:8:1:8:4 | [post] user [@name] :  | semmle.label | [post] user [@name] :  |
-| flow.rb:8:1:8:4 | [post] user [@name] :  | semmle.label | [post] user [@name] :  |
-| flow.rb:8:13:8:22 | call to source :  | semmle.label | call to source :  |
-| flow.rb:8:13:8:22 | call to source :  | semmle.label | call to source :  |
-| flow.rb:10:5:10:8 | user [@name] :  | semmle.label | user [@name] :  |
-| flow.rb:10:5:10:8 | user [@name] :  | semmle.label | user [@name] :  |
-| flow.rb:10:5:10:26 | call to serializable_hash [element name] :  | semmle.label | call to serializable_hash [element name] :  |
-| flow.rb:10:5:10:26 | call to serializable_hash [element name] :  | semmle.label | call to serializable_hash [element name] :  |
-| flow.rb:11:6:11:6 | h [element name] :  | semmle.label | h [element name] :  |
-| flow.rb:11:6:11:6 | h [element name] :  | semmle.label | h [element name] :  |
-| flow.rb:11:6:11:14 | ...[...] | semmle.label | ...[...] |
-| flow.rb:11:6:11:14 | ...[...] | semmle.label | ...[...] |
+| flow.rb:9:1:9:4 | [post] user [@name] :  | semmle.label | [post] user [@name] :  |
+| flow.rb:9:1:9:4 | [post] user [@name] :  | semmle.label | [post] user [@name] :  |
+| flow.rb:9:13:9:22 | call to source :  | semmle.label | call to source :  |
+| flow.rb:9:13:9:22 | call to source :  | semmle.label | call to source :  |
+| flow.rb:11:5:11:8 | user [@name] :  | semmle.label | user [@name] :  |
+| flow.rb:11:5:11:8 | user [@name] :  | semmle.label | user [@name] :  |
+| flow.rb:11:5:11:26 | call to serializable_hash [element name] :  | semmle.label | call to serializable_hash [element name] :  |
+| flow.rb:11:5:11:26 | call to serializable_hash [element name] :  | semmle.label | call to serializable_hash [element name] :  |
+| flow.rb:12:6:12:6 | h [element name] :  | semmle.label | h [element name] :  |
+| flow.rb:12:6:12:6 | h [element name] :  | semmle.label | h [element name] :  |
+| flow.rb:12:6:12:14 | ...[...] | semmle.label | ...[...] |
+| flow.rb:12:6:12:14 | ...[...] | semmle.label | ...[...] |
+| flow.rb:17:1:17:5 | [post] user2 [@age] :  | semmle.label | [post] user2 [@age] :  |
+| flow.rb:17:1:17:5 | [post] user2 [@age] :  | semmle.label | [post] user2 [@age] :  |
+| flow.rb:17:13:17:22 | call to source :  | semmle.label | call to source :  |
+| flow.rb:17:13:17:22 | call to source :  | semmle.label | call to source :  |
+| flow.rb:19:6:19:10 | user2 [@age] :  | semmle.label | user2 [@age] :  |
+| flow.rb:19:6:19:10 | user2 [@age] :  | semmle.label | user2 [@age] :  |
+| flow.rb:19:6:19:28 | call to serializable_hash [element age] :  | semmle.label | call to serializable_hash [element age] :  |
+| flow.rb:19:6:19:28 | call to serializable_hash [element age] :  | semmle.label | call to serializable_hash [element age] :  |
+| flow.rb:20:6:20:7 | h2 [element age] :  | semmle.label | h2 [element age] :  |
+| flow.rb:20:6:20:7 | h2 [element age] :  | semmle.label | h2 [element age] :  |
+| flow.rb:20:6:20:14 | ...[...] | semmle.label | ...[...] |
+| flow.rb:20:6:20:14 | ...[...] | semmle.label | ...[...] |
 subpaths
