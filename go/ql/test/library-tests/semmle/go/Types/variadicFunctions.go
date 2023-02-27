@@ -7,7 +7,7 @@ func testing() {
 	nonvariadicDeclaredFunction([]int{})
 }
 
-func variadicDeclaredFunction(x ...int) int { // $ isVariadic
+func variadicDeclaredFunction(x ...int) int {
 	a := make([]int, 0, 10)
 	y := append(x, a...)
 	print(x[0], x[1])
@@ -15,7 +15,7 @@ func variadicDeclaredFunction(x ...int) int { // $ isVariadic
 	fmt.Fprint(nil, nil, nil)
 	variadicFunctionLiteral := func(z ...int) int { return z[1] } // $ isVariadic
 	return variadicFunctionLiteral(y...)
-}
+} // $ isVariadic
 
 func nonvariadicDeclaredFunction(x []int) int {
 	return 0

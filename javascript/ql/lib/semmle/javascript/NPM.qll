@@ -198,9 +198,7 @@ class PackageJson extends JsonObject {
   /**
    * Gets the main module of this package.
    */
-  Module getMainModule() {
-    result = min(Module m, int prio | m.getFile() = resolveMainModule(this, prio) | m order by prio)
-  }
+  Module getMainModule() { result = this.getExportedModule(".") }
 
   /**
    * Gets the module exported under the given relative path.
@@ -208,10 +206,12 @@ class PackageJson extends JsonObject {
    * The main module is considered exported under the path `"."`.
    */
   Module getExportedModule(string relativePath) {
-    relativePath = "." and
-    result = this.getMainModule()
-    or
-    result.getFile() = MainModulePath::of(this, relativePath).resolve()
+    result =
+      min(Module m, int prio |
+        m.getFile() = resolveMainModule(this, prio, relativePath)
+      |
+        m order by prio
+      )
   }
 
   /**

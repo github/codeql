@@ -1,1 +1,2 @@
-import semmle.python.dataflow.new.internal.DataFlowImplConsistency::Consistency
+import python
+import experimental.dataflow.TestUtil.DataFlowConsistency

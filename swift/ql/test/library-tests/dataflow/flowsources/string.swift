@@ -53,15 +53,15 @@ func testStrings() {
 		let string2 = String(repeating: "abc", count: 10)
 
 		let url = URL(string: "http://example.com/")
-		let string3 = try String(contentsOf: url!) // SOURCE
-		let string4 = try String(contentsOf: url!, encoding: String.Encoding.ascii) // SOURCE
+		let string3 = try String(contentsOf: url!) // $ source=remote
+		let string4 = try String(contentsOf: url!, encoding: String.Encoding.ascii) // $ source=remote
 		var encoding = String.Encoding.ascii
-		let string5 = try String(contentsOf: url!, usedEncoding: &encoding) // SOURCE
+		let string5 = try String(contentsOf: url!, usedEncoding: &encoding) // $ source=remote
 
 		let path = "file.txt"
-		let string6 = try String(contentsOfFile: path) // SOURCE
-		let string7 = try String(contentsOfFile: path, encoding: String.Encoding.ascii) // SOURCE
-		let string8 = try String(contentsOfFile: path, usedEncoding: &encoding) // SOURCE
+		let string6 = try String(contentsOfFile: path) // $ source=local
+		let string7 = try String(contentsOfFile: path, encoding: String.Encoding.ascii) // $ source=local
+		let string8 = try String(contentsOfFile: path, usedEncoding: &encoding) // $ source=local
 	} catch {
 		// ...
 	}

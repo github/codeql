@@ -15,6 +15,6 @@ class NSData {
 
 func testNSData() {
     let url = URL(string: "http://example.com/")
-    let _ = try NSData(contentsOf: url!) // SOURCE
-    let _ = try NSData(contentsOf: url!, options: []) // SOURCE
+    let _ = try NSData(contentsOf: url!) // $ source=remote
+    let _ = try NSData(contentsOf: url!, options: []) // $ source=remote
 }

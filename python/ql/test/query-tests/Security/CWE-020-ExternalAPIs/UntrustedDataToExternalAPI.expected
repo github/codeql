@@ -1,12 +1,25 @@
 edges
 | test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:13:16:13:22 | ControlFlowNode for request |
 | test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:23:16:23:22 | ControlFlowNode for request |
+| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:34:12:34:18 | ControlFlowNode for request |
+| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:42:12:42:18 | ControlFlowNode for request |
+| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:54:12:54:18 | ControlFlowNode for request |
 | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:5:26:5:32 | GSSA Variable request |
 | test.py:5:26:5:32 | GSSA Variable request | test.py:0:0:0:0 | ModuleVariableNode for test.request |
 | test.py:13:16:13:22 | ControlFlowNode for request | test.py:13:16:13:27 | ControlFlowNode for Attribute |
 | test.py:13:16:13:27 | ControlFlowNode for Attribute | test.py:15:36:15:39 | ControlFlowNode for data |
 | test.py:23:16:23:22 | ControlFlowNode for request | test.py:23:16:23:27 | ControlFlowNode for Attribute |
 | test.py:23:16:23:27 | ControlFlowNode for Attribute | test.py:25:44:25:47 | ControlFlowNode for data |
+| test.py:34:12:34:18 | ControlFlowNode for request | test.py:34:12:34:23 | ControlFlowNode for Attribute |
+| test.py:34:12:34:23 | ControlFlowNode for Attribute | test.py:35:10:35:13 | ControlFlowNode for data |
+| test.py:34:12:34:23 | ControlFlowNode for Attribute | test.py:36:13:36:16 | ControlFlowNode for data |
+| test.py:42:12:42:18 | ControlFlowNode for request | test.py:42:12:42:23 | ControlFlowNode for Attribute |
+| test.py:42:12:42:23 | ControlFlowNode for Attribute | test.py:43:22:43:25 | ControlFlowNode for data |
+| test.py:42:12:42:23 | ControlFlowNode for Attribute | test.py:44:25:44:28 | ControlFlowNode for data |
+| test.py:47:17:47:19 | ControlFlowNode for arg | test.py:50:32:50:34 | ControlFlowNode for arg |
+| test.py:54:12:54:18 | ControlFlowNode for request | test.py:54:12:54:23 | ControlFlowNode for Attribute |
+| test.py:54:12:54:23 | ControlFlowNode for Attribute | test.py:55:17:55:20 | ControlFlowNode for data |
+| test.py:55:17:55:20 | ControlFlowNode for data | test.py:47:17:47:19 | ControlFlowNode for arg |
 nodes
 | test.py:0:0:0:0 | ModuleVariableNode for test.request | semmle.label | ModuleVariableNode for test.request |
 | test.py:5:26:5:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
@@ -17,7 +30,24 @@ nodes
 | test.py:23:16:23:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | test.py:23:16:23:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:25:44:25:47 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+| test.py:34:12:34:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:34:12:34:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:35:10:35:13 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+| test.py:36:13:36:16 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+| test.py:42:12:42:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:42:12:42:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:43:22:43:25 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+| test.py:44:25:44:28 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+| test.py:47:17:47:19 | ControlFlowNode for arg | semmle.label | ControlFlowNode for arg |
+| test.py:50:32:50:34 | ControlFlowNode for arg | semmle.label | ControlFlowNode for arg |
+| test.py:54:12:54:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:54:12:54:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:55:17:55:20 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
 subpaths
 #select
-| test.py:15:36:15:39 | ControlFlowNode for data | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:15:36:15:39 | ControlFlowNode for data | Call to hmac.new [param 1] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |
-| test.py:25:44:25:47 | ControlFlowNode for data | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:25:44:25:47 | ControlFlowNode for data | Call to hmac.new [param 1] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |
+| test.py:15:36:15:39 | ControlFlowNode for data | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:15:36:15:39 | ControlFlowNode for data | Call to hmac.new [position 1] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |
+| test.py:25:44:25:47 | ControlFlowNode for data | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:25:44:25:47 | ControlFlowNode for data | Call to hmac.new [keyword msg] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |
+| test.py:35:10:35:13 | ControlFlowNode for data | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:35:10:35:13 | ControlFlowNode for data | Call to unknown.lib.func [position 0] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |
+| test.py:36:13:36:16 | ControlFlowNode for data | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:36:13:36:16 | ControlFlowNode for data | Call to unknown.lib.func [keyword kw] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |
+| test.py:43:22:43:25 | ControlFlowNode for data | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:43:22:43:25 | ControlFlowNode for data | Call to unknown.lib.func [position 0] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |
+| test.py:44:25:44:28 | ControlFlowNode for data | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:44:25:44:28 | ControlFlowNode for data | Call to unknown.lib.func [keyword kw] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |

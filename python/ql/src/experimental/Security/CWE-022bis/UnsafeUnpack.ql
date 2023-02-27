@@ -8,7 +8,7 @@
  * @id py/unsafe-unpacking
  * @problem.severity error
  * @security-severity 7.5
- * @precision high
+ * @precision medium
  * @tags security
  *       experimental
  *       external/cwe/cwe-022

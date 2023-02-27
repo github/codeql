@@ -86,3 +86,9 @@ app.get('/has-sanitizer', function(req, res) {
 
   new RegExp("^.*\.(" + input.replace(/,/g, "|") + ")$"); // NOT OK
 });
+
+app.get("argv", function(req, res) {
+    new RegExp(`^${process.env.HOME}/Foo/bar.app$`); // NOT OK
+
+    new RegExp(`^${process.argv[1]}/Foo/bar.app$`); // NOT OK
+});
