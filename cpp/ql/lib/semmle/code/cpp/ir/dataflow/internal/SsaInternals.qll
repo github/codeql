@@ -676,7 +676,8 @@ private Definition ssaDefinition(Def def) {
 /** Gets a node that represents the prior definition of `node`. */
 private Node getAPriorDefinition(SsaDefOrUse defOrUse) {
   exists(IRBlock bb, int i, SourceVariable sv, Definition def, DefOrUse defOrUse0 |
-    SsaCached::lastRefRedef(def, bb, i, ssaDefinition(defOrUse)) and
+    SsaCached::lastRefRedef(pragma[only_bind_into](def), pragma[only_bind_into](bb),
+      pragma[only_bind_into](i), ssaDefinition(defOrUse)) and
     def.getSourceVariable() = sv and
     defOrUse0.hasIndexInBlock(bb, i, sv) and
     nodeToDefOrUse(result, defOrUse0, _)
