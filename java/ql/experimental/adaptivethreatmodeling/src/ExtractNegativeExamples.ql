@@ -43,7 +43,7 @@ where
   // they're ambiguous and might confuse the model, so we explicitly exclude all known sinks from the negative examples.
   not exists(
     EndpointCharacteristics::EndpointCharacteristic characteristic2, float confidence2,
-    EndpointType positiveType
+    SinkType positiveType
   |
     characteristic2.appliesToEndpoint(endpoint) and
     confidence2 >= characteristic2.maximalConfidence() and
