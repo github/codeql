@@ -197,6 +197,10 @@ abstract class EndpointCharacteristic extends string {
   final float mediumConfidence() { result = 0.6 }
 }
 
+/*
+ * Characteristics that are indicative of being a sink of some particular type.
+ */
+
 /**
  * Endpoints identified as "create-file" sinks by the MaD modeling are tainted path sinks with maximal confidence.
  */
@@ -329,29 +333,12 @@ private class RequestForgeryOtherSinkCharacteristic extends EndpointCharacterist
 }
 
 /*
- * Characteristics that are indicative of not being a sink of any type, and have historically been used to select
- * negative samples for training.
+ * Characteristics that are indicative of not being a sink of any type.
  */
 
 /**
- * A characteristic that is an indicator of not being a sink of any type, because it's a modeled argument.
- */
-abstract class OtherModeledArgumentCharacteristic extends EndpointCharacteristic {
-  bindingset[this]
-  OtherModeledArgumentCharacteristic() { any() }
-}
-
-/**
- * A characteristic that is an indicator of not being a sink of any type, because it's an argument to a function of a
- * builtin object.
- */
-abstract private class ArgumentToBuiltinFunctionCharacteristic extends OtherModeledArgumentCharacteristic {
-  bindingset[this]
-  ArgumentToBuiltinFunctionCharacteristic() { any() }
-}
-
-/**
- * A high-confidence characteristic that indicates that an endpoint is not a sink of any type.
+ * A high-confidence characteristic that indicates that an endpoint is not a sink of any type. These endpoints can be
+ * used as negative samples for training or for a few-shot prompt.
  */
 abstract private class NotASinkCharacteristic extends EndpointCharacteristic {
   bindingset[this]
@@ -367,26 +354,7 @@ abstract private class NotASinkCharacteristic extends EndpointCharacteristic {
 }
 
 /**
- * A medium-confidence characteristic that indicates that an endpoint is not a sink of any type.
- *
- * TODO: This class is currently not private, because the current extraction logic explicitly avoids including these
- * endpoints in the training data. We might want to change this in the future.
- */
-abstract class LikelyNotASinkCharacteristic extends EndpointCharacteristic {
-  bindingset[this]
-  LikelyNotASinkCharacteristic() { any() }
-
-  override predicate hasImplications(
-    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
-  ) {
-    endpointClass instanceof NegativeSinkType and
-    isPositiveIndicator = true and
-    confidence = mediumConfidence()
-  }
-}
-
-/**
- * An EndpointFilterCharacteristic that indicates that an endpoint is a type access. Type accesses are not sinks.
+ * A negative characteristic that indicates that an endpoint is a type access. Type accesses are not sinks.
  */
 private class IsTypeAccessCharacteristic extends NotASinkCharacteristic {
   IsTypeAccessCharacteristic() { this = "type access" }
@@ -395,8 +363,8 @@ private class IsTypeAccessCharacteristic extends NotASinkCharacteristic {
 }
 
 /**
- * An EndpointFilterCharacteristic that indicates that an endpoint is a sanitizer for some sink type. A sanitizer can
- * never be a sink.
+ * A negative characteristic that indicates that an endpoint is a sanitizer for some sink type. A sanitizer can never
+ * be a sink.
  */
 private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
   IsSanitizerCharacteristic() { this = "sanitizer" }
@@ -407,8 +375,8 @@ private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
 }
 
 // /**
-//  * An EndpointFilterCharacteristic that indicates that an endpoint is a MaD taint step. MaD modeled taint steps are
-//  * global, so they are not sinks for any query. Non-MaD taint steps might be specific to a particular query, so we don't
+//  * A negative characteristic that indicates that an endpoint is a MaD taint step. MaD modeled taint steps are global,
+//  * so they are not sinks for any query. Non-MaD taint steps might be specific to a particular query, so we don't
 //  * filter those out.
 //  */
 // private class IsMaDTaintStepCharacteristic extends NotASinkCharacteristic {
@@ -422,7 +390,7 @@ private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
 //   }
 // }
 /**
- * An EndpointFilterCharacteristic that indicates that an endpoint is an argument to a safe external API method.
+ * A negative characteristic that indicates that an endpoint is an argument to a safe external API method.
  *
  * Based on java/ql/lib/semmle/code/java/security/ExternalAPIs.qll.
  *
@@ -454,7 +422,7 @@ private class SafeExternalApiMethodCharacteristic extends NotASinkCharacteristic
 }
 
 /**
- * An EndpointFilterCharacteristic that indicates that an endpoint is an argument to an exception, which is not a sink.
+ * A negative characteristic that indicates that an endpoint is an argument to an exception, which is not a sink.
  */
 private class ExceptionCharacteristic extends NotASinkCharacteristic {
   ExceptionCharacteristic() { this = "exception" }
@@ -468,22 +436,15 @@ private class ExceptionCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-/*
- * Characteristics that have historically acted as endpoint filters to exclude endpoints from scoring at inference time.
- */
-
-/** A characteristic that has historically acted as an endpoint filter for inference-time scoring. */
-abstract class EndpointFilterCharacteristic extends EndpointCharacteristic {
-  bindingset[this]
-  EndpointFilterCharacteristic() { any() }
-}
-
 /**
- * An EndpointFilterCharacteristic that indicates that an endpoint is unlikely to be a sink of any type.
+ * A medium-confidence characteristic that indicates that an endpoint is unlikely to be a sink of any type. These
+ * endpoints can be excluded from scoring at inference time, both to save time and to avoid false positives. They should
+ * not, however, be used as negative samples for training or for a few-shot prompt, because they may include a small
+ * number of sinks.
  */
-abstract private class StandardEndpointFilterCharacteristic extends EndpointFilterCharacteristic {
+abstract private class LikelyNotASinkCharacteristic extends EndpointCharacteristic {
   bindingset[this]
-  StandardEndpointFilterCharacteristic() { any() }
+  LikelyNotASinkCharacteristic() { any() }
 
   override predicate hasImplications(
     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
@@ -495,7 +456,7 @@ abstract private class StandardEndpointFilterCharacteristic extends EndpointFilt
 }
 
 /**
- * An EndpointFilterCharacteristic that indicates that an endpoint is a constant expression. While a constant expression
+ * A negative characteristic that indicates that an endpoint is a constant expression. While a constant expression
  * can be a sink, it cannot be part of a tainted flow: Constant expressions always evaluate to a constant primitive
  * value, so they can't ever appear in an alert. These endpoints are therefore excluded from scoring at inference time.
  *
@@ -503,7 +464,7 @@ abstract private class StandardEndpointFilterCharacteristic extends EndpointFilt
  * non-sinks. They are merely not interesting sinks to run through the ML model because they can never be part of a
  * tainted flow.
  */
-private class IsConstantExpressionCharacteristic extends StandardEndpointFilterCharacteristic {
+private class IsConstantExpressionCharacteristic extends LikelyNotASinkCharacteristic {
   IsConstantExpressionCharacteristic() { this = "constant expression" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
@@ -512,13 +473,13 @@ private class IsConstantExpressionCharacteristic extends StandardEndpointFilterC
 }
 
 /**
- * An EndpointFilterCharacteristic that indicates that an endpoint is not part of the source code for the project being
+ * A negative characteristic that indicates that an endpoint is not part of the source code for the project being
  * analyzed.
  *
  * WARNING: These endpoints should not be used as negative samples for training, because they are not necessarily
  * non-sinks. They are merely not interesting sinks to run through the ML model.
  */
-private class IsExternalCharacteristic extends StandardEndpointFilterCharacteristic {
+private class IsExternalCharacteristic extends LikelyNotASinkCharacteristic {
   IsExternalCharacteristic() { this = "external" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
@@ -527,7 +488,7 @@ private class IsExternalCharacteristic extends StandardEndpointFilterCharacteris
 }
 
 /**
- * An EndpointFilterCharacteristic that indicates that an endpoint is not the final step in a taint propagation. This
+ * A negative characteristic that indicates that an endpoint is not the final step in a taint propagation. This
  * prevents us from detecting expresssions near sinks that are not the sink itself.
  *
  * WARNING: These endpoints should not be used as negative samples for training, because a there are rare situations
@@ -535,7 +496,7 @@ private class IsExternalCharacteristic extends StandardEndpointFilterCharacteris
  * and then returns the given value. Example: `stillTainted = dangerous(tainted)`, assuming that the implementation of
  * `dangerous(x)` eventually returns `x`.
  */
-private class IsFlowStep extends StandardEndpointFilterCharacteristic {
+private class IsFlowStep extends LikelyNotASinkCharacteristic {
   IsFlowStep() { this = "flow step" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) { isKnownStepSrc(n) }
@@ -550,12 +511,12 @@ private class IsFlowStep extends StandardEndpointFilterCharacteristic {
 }
 
 /**
- * An EndpointFilterCharacteristic that indicates that an endpoint sits in a test file.
+ * A negative characteristic that indicates that an endpoint sits in a test file.
  *
  * WARNING: These endpoints should not be used as negative samples for training, because there can in fact be sinks in
  * test files -- we just don't care to model them because they aren't exploitable.
  */
-private class TestFileCharacteristic extends StandardEndpointFilterCharacteristic {
+private class TestFileCharacteristic extends LikelyNotASinkCharacteristic {
   TestFileCharacteristic() { this = "test file" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
