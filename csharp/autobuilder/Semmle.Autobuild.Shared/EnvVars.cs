@@ -1,3 +1,5 @@
+using Semmle.Util;
+
 namespace Semmle.Autobuild.Shared
 {
     public static class EnvVars
