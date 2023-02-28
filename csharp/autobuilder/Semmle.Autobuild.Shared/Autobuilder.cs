@@ -240,7 +240,7 @@ namespace Semmle.Autobuild.Shared
             SourceArchiveDir = RequireEnvironmentVariable(EnvVars.SourceArchiveDir(this.Options.Language));
             DiagnosticsDir = RequireEnvironmentVariable(EnvVars.DiagnosticDir(this.Options.Language));
 
-            this.diagnostics = DiagnosticsStream.ForFile(Path.Combine(DiagnosticsDir, $"autobuilder-{DateTime.UtcNow:yyyyMMddHHmm}.jsonc"));
+            this.diagnostics = new DiagnosticsStream(Path.Combine(DiagnosticsDir, $"autobuilder-{DateTime.UtcNow:yyyyMMddHHmm}.jsonc"));
         }
 
         /// <summary>
