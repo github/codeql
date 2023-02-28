@@ -25,15 +25,15 @@ import semmle.code.cpp.models.implementations.Strcat
 import DataFlow::PathGraph
 
 /**
- * Holds if `fst` is a string that is used in a format or concatenation function resulting in `snd`,
- * and is *not* placed at the start of the resulting string. This indicates that the author did not
- * expect `fst` to control what program is run if the resulting string is eventually interpreted as
- * a command line, for example as an argument to `system`.
+ * Holds if `incoming` is a string that is used in a format or concatenation function resulting
+ * in `outgoing`, and is *not* placed at the start of the resulting string. This indicates that
+ * the author did not expect `incoming` to control what program is run if the resulting string
+ * is eventually interpreted as a command line, for example as an argument to `system`.
  */
-predicate interestingConcatenation(DataFlow::Node fst, DataFlow::Node snd) {
+predicate interestingConcatenation(DataFlow::Node incoming, DataFlow::Node outgoing) {
   exists(FormattingFunctionCall call, int index, FormatLiteral literal |
-    fst.asIndirectArgument() = call.getConversionArgument(index) and
-    snd.asDefiningArgument() = call.getOutputArgument(false) and
+    incoming.asIndirectArgument() = call.getConversionArgument(index) and
+    outgoing.asDefiningArgument() = call.getOutputArgument(false) and
     literal = call.getFormat() and
     not literal.getConvSpecOffset(index) = 0 and
     literal.getConversionChar(index) = ["s", "S"]
@@ -42,16 +42,16 @@ predicate interestingConcatenation(DataFlow::Node fst, DataFlow::Node snd) {
   // strcat and friends
   exists(StrcatFunction strcatFunc, Call call |
     call.getTarget() = strcatFunc and
-    fst.asIndirectArgument() = call.getArgument(strcatFunc.getParamSrc()) and
-    snd.asDefiningArgument() = call.getArgument(strcatFunc.getParamDest())
+    incoming.asIndirectArgument() = call.getArgument(strcatFunc.getParamSrc()) and
+    outgoing.asDefiningArgument() = call.getArgument(strcatFunc.getParamDest())
   )
   or
   exists(Call call, Operator op |
     call.getTarget() = op and
     op.hasQualifiedName("std", "operator+") and
     op.getType().(UserType).hasQualifiedName("std", "basic_string") and
-    fst.asIndirectArgument() = call.getArgument(1) and // left operand
-    call = snd.asInstruction().getUnconvertedResultExpression()
+    incoming.asIndirectArgument() = call.getArgument(1) and // left operand
+    call = outgoing.asInstruction().getUnconvertedResultExpression()
   )
 }
 
@@ -60,22 +60,23 @@ class ConcatState extends DataFlow::FlowState {
 }
 
 class ExecState extends DataFlow::FlowState {
-  DataFlow::Node fst;
-  DataFlow::Node snd;
+  DataFlow::Node incoming;
+  DataFlow::Node outgoing;
 
   ExecState() {
     this =
-      "ExecState (" + fst.getLocation() + " | " + fst + ", " + snd.getLocation() + " | " + snd + ")" and
-    interestingConcatenation(pragma[only_bind_into](fst), pragma[only_bind_into](snd))
+      "ExecState (" + incoming.getLocation() + " | " + incoming + ", " + outgoing.getLocation() +
+        " | " + outgoing + ")" and
+    interestingConcatenation(pragma[only_bind_into](incoming), pragma[only_bind_into](outgoing))
   }
 
-  DataFlow::Node getFstNode() { result = fst }
+  DataFlow::Node getIncomingNode() { result = incoming }
 
-  DataFlow::Node getSndNode() { result = snd }
+  DataFlow::Node getOutgoingNode() { result = outgoing }
 
   /** Holds if this is a possible `ExecState` for `sink`. */
   predicate isFeasibleForSink(DataFlow::Node sink) {
-    any(ExecStateConfiguration conf).hasFlow(snd, sink)
+    any(ExecStateConfiguration conf).hasFlow(outgoing, sink)
   }
 }
 
@@ -93,7 +94,7 @@ class ExecStateConfiguration extends TaintTracking2::Configuration {
   ExecStateConfiguration() { this = "ExecStateConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(ExecState state | state.getSndNode() = source)
+    any(ExecState state).getOutgoingNode() = source
   }
 
   override predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _, _) }
@@ -121,8 +122,8 @@ class ExecTaintConfiguration extends TaintTracking::Configuration {
     DataFlow::FlowState state2
   ) {
     state1 instanceof ConcatState and
-    state2.(ExecState).getFstNode() = node1 and
-    state2.(ExecState).getSndNode() = node2
+    state2.(ExecState).getIncomingNode() = node1 and
+    state2.(ExecState).getOutgoingNode() = node2
   }
 
   override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
@@ -146,7 +147,7 @@ where
   conf.hasFlowPath(sourceNode, sinkNode) and
   taintCause = sourceNode.getNode().(FlowSource).getSourceType() and
   isSinkImpl(sinkNode.getNode(), command, callChain) and
-  concatResult = sinkNode.getState().(ExecState).getSndNode()
+  concatResult = sinkNode.getState().(ExecState).getOutgoingNode()
 select command, sourceNode, sinkNode,
   "This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to "
     + callChain + ".", sourceNode, "user input (" + taintCause + ")", concatResult,
