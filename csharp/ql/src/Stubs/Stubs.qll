@@ -744,9 +744,9 @@ private string stubOperator(Operator o, Assembly assembly) {
   if o instanceof ConversionOperator
   then
     result =
-      "    " + stubModifiers(o) + stubExplicit(o) + "operator " + stubChecked(o) +
-        stubClassName(o.getReturnType()) + "(" + stubParameters(o) + ")" + stubImplementation(o) +
-        ";\n"
+      "    " + stubModifiers(o) + stubExplicit(o) + stubExplicitImplementation(o) + "operator " +
+        stubChecked(o) + stubClassName(o.getReturnType()) + "(" + stubParameters(o) + ")" +
+        stubImplementation(o) + ";\n"
   else
     if not o.getDeclaringType() instanceof Enum
     then

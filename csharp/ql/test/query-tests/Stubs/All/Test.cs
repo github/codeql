@@ -146,6 +146,8 @@ namespace Test
         static virtual T operator -(T left, T right) => throw null;
         static abstract T operator *(T left, T right);
         static virtual T operator /(T left, T right) => throw null;
+        static abstract explicit operator short(T n);
+        static abstract explicit operator int(T n);
         void M1();
         void M2();
     }
@@ -154,6 +156,7 @@ namespace Test
     {
         static abstract T operator +(T left, T right);
         static virtual T operator -(T left, T right) => throw null;
+        static abstract explicit operator short(T n);
         void M1();
     }
 
@@ -165,6 +168,8 @@ namespace Test
         static Class11 IInterface2<Class11>.operator /(Class11 left, Class11 right) => throw null;
         public void M1() => throw null;
         void IInterface2<Class11>.M2() => throw null;
+        public static explicit operator short(Class11 n) => 0;
+        static explicit IInterface2<Class11>.operator int(Class11 n) => 0;
     }
 
     public enum Enum1
