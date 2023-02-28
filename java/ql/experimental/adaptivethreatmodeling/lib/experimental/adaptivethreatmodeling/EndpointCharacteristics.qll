@@ -40,7 +40,7 @@ predicate isKnownSink(DataFlow::Node sink, SinkType sinkType) {
  */
 predicate erroneousEndpoints(
   DataFlow::Node endpoint, EndpointCharacteristic characteristic, EndpointType endpointClass,
-  float confidence, string errorMessage
+  float confidence, string errorMessage, boolean ignoreKnownModelingErrors
 ) {
   // An endpoint's characteristics should not include positive indicators with medium/high confidence for more than one
   // sink/source type.
@@ -63,10 +63,13 @@ predicate erroneousEndpoints(
     not (
       characteristic instanceof IsSanitizerCharacteristic or
       characteristic2 instanceof IsSanitizerCharacteristic
+    ) and
+    (
+      ignoreKnownModelingErrors = true and
+      not knownOverlappingCharacteristics(characteristic, characteristic2)
+      or
+      ignoreKnownModelingErrors = false
     )
-    // and
-    // // We currently know of some sink types that overlap with one another.
-    // not knownOverlappingCharacteristics(characteristic, characteristic2)
   ) and
   errorMessage = "Endpoint has high-confidence positive indicators for multiple classes"
   or
@@ -80,6 +83,7 @@ predicate erroneousEndpoints(
     confidence > characteristic.mediumConfidence() and
     confidence2 > characteristic2.mediumConfidence()
   ) and
+  ignoreKnownModelingErrors = false and
   errorMessage = "Endpoint has high-confidence positive and negative indicators for the same class"
 }
 
@@ -104,6 +108,18 @@ predicate erroneousConfidences(
 //   characteristic1 = ["file creation sink", "other path injection sink"] and
 //   characteristic2 = ["file creation sink", "other path injection sink"]
 // }
+/**
+ * Holds if `characteristic1` and `characteristic2` are among the pairs of currently known positive characteristics that
+ * have some overlap in their results. This indicates a problem with the underlying Java modeling.
+ */
+private predicate knownOverlappingCharacteristics(
+  EndpointCharacteristic characteristic1, EndpointCharacteristic characteristic2
+) {
+  characteristic1 != characteristic2 and
+  characteristic1 = ["mad taint step", "create path"] and
+  characteristic2 = ["mad taint step", "create path"]
+}
+
 predicate isTypeAccess(DataFlow::Node n) { n.asExpr() instanceof TypeAccess }
 
 /**
@@ -374,21 +390,22 @@ private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-// /**
-//  * A negative characteristic that indicates that an endpoint is a MaD taint step. MaD modeled taint steps are global,
-//  * so they are not sinks for any query. Non-MaD taint steps might be specific to a particular query, so we don't
-//  * filter those out.
-//  */
-// private class IsMaDTaintStepCharacteristic extends NotASinkCharacteristic {
-//   IsMaDTaintStepCharacteristic() { this = "mad taint step" }
-//   override predicate appliesToEndpoint(DataFlow::Node n) {
-//     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(n, _, _)
-//     or
-//     // FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(n, _, _) or
-//     // FlowSummaryImpl::Private::Steps::summaryGetterStep(n, _, _, _) or
-//     FlowSummaryImpl::Private::Steps::summarySetterStep(n, _, _, _)
-//   }
-// }
+/**
+ * A negative characteristic that indicates that an endpoint is a MaD taint step. MaD modeled taint steps are global,
+ * so they are not sinks for any query. Non-MaD taint steps might be specific to a particular query, so we don't
+ * filter those out.
+ */
+private class IsMaDTaintStepCharacteristic extends NotASinkCharacteristic {
+  IsMaDTaintStepCharacteristic() { this = "mad taint step" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(n, _, _) or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(n, _, _) or
+    FlowSummaryImpl::Private::Steps::summaryGetterStep(n, _, _, _) or
+    FlowSummaryImpl::Private::Steps::summarySetterStep(n, _, _, _)
+  }
+}
+
 /**
  * A negative characteristic that indicates that an endpoint is an argument to a safe external API method.
  *

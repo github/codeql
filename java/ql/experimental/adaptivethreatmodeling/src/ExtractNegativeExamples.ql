@@ -35,7 +35,7 @@ where
   characteristic.hasImplications(any(NegativeSinkType negative), true, confidence) and
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
   // certain about in the prompt.
-  not EndpointCharacteristics::erroneousEndpoints(endpoint, _, _, _, _) and
+  not EndpointCharacteristics::erroneousEndpoints(endpoint, _, _, _, _, false) and
   // Exclude type access nodes because they will never be on a flow path so they're not useful negative examples.
   not EndpointCharacteristics::isTypeAccess(endpoint) and
   // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
