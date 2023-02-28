@@ -23,7 +23,8 @@ extensions:
       - ["io.netty.util", "AsciiString", False, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["io.netty.util", "AsciiString", False, "toLowerCase", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["io.netty.util", "AsciiString", False, "toUpperCase", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.util", "AsciiString", False, "trim", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "trim", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "trim", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       
 
       

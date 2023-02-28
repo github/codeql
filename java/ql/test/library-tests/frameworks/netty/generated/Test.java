@@ -6,13 +6,19 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufConvertible;
 import io.netty.buffer.ByteBufHolder;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.CompositeByteBuf;
 import io.netty.buffer.DefaultByteBufHolder;
 import io.netty.buffer.SwappedByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.DefaultFileRegion;
 import io.netty.channel.FileRegion;
+import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.Headers;
 import io.netty.handler.codec.HeadersUtils;
+// import io.netty.handler.codec.V; // testgen bug?
 import io.netty.handler.codec.base64.Base64;
 import io.netty.handler.codec.base64.Base64Dialect;
 import io.netty.handler.codec.http.FullHttpMessage;
@@ -45,11 +51,13 @@ import io.netty.handler.codec.http2.Http2HeadersFrame;
 import io.netty.handler.codec.http2.Http2PushPromiseFrame;
 import io.netty.handler.codec.http2.HttpConversionUtil;
 import io.netty.util.AbstractReferenceCounted;
+import io.netty.util.AsciiString;
 import io.netty.util.ReferenceCounted;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.GatheringByteChannel;
 import java.nio.channels.ScatteringByteChannel;
@@ -3582,6 +3590,475 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
+			// "io.netty.buffer;ByteBufInputStream;true;ByteBufInputStream;;;Argument[0];Argument[-1];taint;manual"
+			ByteBufInputStream out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = new ByteBufInputStream(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufInputStream;true;ByteBufInputStream;;;Argument[0];Argument[-1];taint;manual"
+			ByteBufInputStream out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = new ByteBufInputStream(in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufInputStream;true;ByteBufInputStream;;;Argument[0];Argument[-1];taint;manual"
+			ByteBufInputStream out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = new ByteBufInputStream(in, 0, false);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufInputStream;true;ByteBufInputStream;;;Argument[0];Argument[-1];taint;manual"
+			ByteBufInputStream out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = new ByteBufInputStream(in, false);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufOutputStream;true;ByteBufOutputStream;;;Argument[0];Argument[-1];taint;manual"
+			ByteBufOutputStream out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = new ByteBufOutputStream(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufOutputStream;true;buffer;();;Argument[-1];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBufOutputStream in = (ByteBufOutputStream)source();
+			out = in.buffer();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;copy;(AsciiString,ByteBuf);;Argument[0];Argument[1];taint;manual"
+			ByteBuf out = null;
+			AsciiString in = (AsciiString)source();
+			ByteBufUtil.copy(in, out);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;copy;(AsciiString,int,ByteBuf,int);;Argument[0];Argument[2];taint;manual"
+			ByteBuf out = null;
+			AsciiString in = (AsciiString)source();
+			ByteBufUtil.copy(in, 0, out, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;copy;(AsciiString,int,ByteBuf,int,int);;Argument[0];Argument[2];taint;manual"
+			ByteBuf out = null;
+			AsciiString in = (AsciiString)source();
+			ByteBufUtil.copy(in, 0, out, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;decodeHexDump;(CharSequence);;Argument[0];ReturnValue;taint;manual"
+			byte[] out = null;
+			CharSequence in = (CharSequence)source();
+			out = ByteBufUtil.decodeHexDump(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;decodeHexDump;(CharSequence,int,int);;Argument[0];ReturnValue;taint;manual"
+			byte[] out = null;
+			CharSequence in = (CharSequence)source();
+			out = ByteBufUtil.decodeHexDump(in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;encodeString;(ByteBufAllocator,CharBuffer,Charset);;Argument[1];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			CharBuffer in = (CharBuffer)source();
+			out = ByteBufUtil.encodeString(null, in, null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;encodeString;(ByteBufAllocator,CharBuffer,Charset,int);;Argument[1];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			CharBuffer in = (CharBuffer)source();
+			out = ByteBufUtil.encodeString(null, in, null, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;ensureAccessible;(ByteBuf);;Argument[0];ReturnValue;value;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = ByteBufUtil.ensureAccessible(in);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;getBytes;(ByteBuf);;Argument[0];ReturnValue;taint;manual"
+			byte[] out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = ByteBufUtil.getBytes(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;getBytes;(ByteBuf,int,int);;Argument[0];ReturnValue;taint;manual"
+			byte[] out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = ByteBufUtil.getBytes(in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;getBytes;(ByteBuf,int,int,boolean);;Argument[0];ReturnValue;taint;manual"
+			byte[] out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = ByteBufUtil.getBytes(in, 0, 0, false);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;readBytes;(ByteBufAllocator,ByteBuf,int);;Argument[1];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = ByteBufUtil.readBytes(null, in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;reserveAndWriteUtf8;(ByteBuf,CharSequence,int);;Argument[1];Argument[0];taint;manual"
+			ByteBuf out = null;
+			CharSequence in = (CharSequence)source();
+			ByteBufUtil.reserveAndWriteUtf8(out, in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;reserveAndWriteUtf8;(ByteBuf,CharSequence,int,int,int);;Argument[1];Argument[0];taint;manual"
+			ByteBuf out = null;
+			CharSequence in = (CharSequence)source();
+			ByteBufUtil.reserveAndWriteUtf8(out, in, 0, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;writeAscii;(ByteBuf,CharSequence);;Argument[1];Argument[0];taint;manual"
+			ByteBuf out = null;
+			CharSequence in = (CharSequence)source();
+			ByteBufUtil.writeAscii(out, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;writeAscii;(ByteBufAllocator,CharSequence);;Argument[1];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			CharSequence in = (CharSequence)source();
+			out = ByteBufUtil.writeAscii((ByteBufAllocator)null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;writeUtf8;(ByteBuf,CharSequence);;Argument[1];Argument[0];taint;manual"
+			ByteBuf out = null;
+			CharSequence in = (CharSequence)source();
+			ByteBufUtil.writeUtf8(out, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;writeUtf8;(ByteBuf,CharSequence,int,int);;Argument[1];Argument[0];taint;manual"
+			ByteBuf out = null;
+			CharSequence in = (CharSequence)source();
+			ByteBufUtil.writeUtf8(out, in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;ByteBufUtil;false;writeUtf8;(ByteBufAllocator,CharSequence);;Argument[1];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			CharSequence in = (CharSequence)source();
+			out = ByteBufUtil.writeUtf8((ByteBufAllocator)null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;false;CompositeByteBuf;(ByteBufAllocator,boolean,int,ByteBuf[]);;Argument[3].ArrayElement;Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf[] in = (ByteBuf[])new ByteBuf[]{(ByteBuf)source()};
+			out = new CompositeByteBuf((ByteBufAllocator)null, false, 0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;false;CompositeByteBuf;(ByteBufAllocator,boolean,int,Iterable);;Argument[3].Element;Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			Iterable in = (Iterable)List.of(source());
+			out = new CompositeByteBuf((ByteBufAllocator)null, false, 0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;addComponent;(ByteBuf);;Argument[0];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.addComponent(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;addComponent;(boolean,ByteBuf);;Argument[1];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.addComponent(false, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;addComponent;(boolean,int,ByteBuf);;Argument[2];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.addComponent(false, 0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;addComponent;(int,ByteBuf);;Argument[1];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.addComponent(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;addComponents;(ByteBuf[]);;Argument[0].ArrayElement;Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf[] in = (ByteBuf[])new ByteBuf[]{(ByteBuf)source()};
+			out.addComponents(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;addComponents;(Iterable);;Argument[0].Element;Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			Iterable in = (Iterable)List.of(source());
+			out.addComponents(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;addComponents;(boolean,ByteBuf[]);;Argument[1].ArrayElement;Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf[] in = (ByteBuf[])new ByteBuf[]{(ByteBuf)source()};
+			out.addComponents(false, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;addComponents;(boolean,Iterable);;Argument[1].Element;Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			Iterable in = (Iterable)List.of(source());
+			out.addComponents(false, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;addComponents;(int,ByteBuf[]);;Argument[1].ArrayElement;Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf[] in = (ByteBuf[])new ByteBuf[]{(ByteBuf)source()};
+			out.addComponents(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;addComponents;(int,Iterable);;Argument[1].Element;Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			Iterable in = (Iterable)List.of(source());
+			out.addComponents(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;addFlattenedComponents;(boolean,ByteBuf);;Argument[1];Argument[-1];taint;manual"
+			CompositeByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out.addFlattenedComponents(false, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;component;(int);;Argument[-1];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.component(0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;componentAtOffset;(int);;Argument[-1];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.componentAtOffset(0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;consolidate;();;Argument[-1];ReturnValue;taint;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.consolidate();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;CompositeByteBuf;true;consolidate;(int,int);;Argument[-1];ReturnValue;taint;manual"
+			CompositeByteBuf out = null;
+			CompositeByteBuf in = (CompositeByteBuf)source();
+			out = in.consolidate(0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;copiedBuffer;(ByteBuf);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = Unpooled.copiedBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;copiedBuffer;(ByteBuf[]);;Argument[0].ArrayElement;ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuf[] in = (ByteBuf[])new ByteBuf[]{(ByteBuf)source()};
+			out = Unpooled.copiedBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;copiedBuffer;(ByteBuffer);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuffer in = (ByteBuffer)source();
+			out = Unpooled.copiedBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;copiedBuffer;(ByteBuffer[]);;Argument[0].ArrayElement;ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuffer[] in = (ByteBuffer[])new ByteBuffer[]{(ByteBuffer)source()};
+			out = Unpooled.copiedBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;copiedBuffer;(CharSequence,Charset);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			CharSequence in = (CharSequence)source();
+			out = Unpooled.copiedBuffer(in, (Charset)null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;copiedBuffer;(CharSequence,int,int,Charset);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			CharSequence in = (CharSequence)source();
+			out = Unpooled.copiedBuffer(in, 0, 0, (Charset)null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;copiedBuffer;(byte[]);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			byte[] in = (byte[])source();
+			out = Unpooled.copiedBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;copiedBuffer;(byte[],int,int);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			byte[] in = (byte[])source();
+			out = Unpooled.copiedBuffer(in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;copiedBuffer;(byte[][]);;Argument[0].ArrayElement;ReturnValue;taint;manual"
+			ByteBuf out = null;
+			byte[][] in = (byte[][])new byte[][]{(byte[])source()};
+			out = Unpooled.copiedBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;copiedBuffer;(char[],Charset);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			char[] in = (char[])source();
+			out = Unpooled.copiedBuffer(in, (Charset)null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;copiedBuffer;(char[],int,int,Charset);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			char[] in = (char[])source();
+			out = Unpooled.copiedBuffer(in, 0, 0, (Charset)null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;unmodifiableBuffer;(ByteBuf);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = Unpooled.unmodifiableBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;unmodifiableBuffer;(ByteBuf[]);;Argument[0].ArrayElement;ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuf[] in = (ByteBuf[])new ByteBuf[]{(ByteBuf)source()};
+			out = Unpooled.unmodifiableBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;unreleasableBuffer;(ByteBuf);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = Unpooled.unreleasableBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;wrappedBuffer;(ByteBuf);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			out = Unpooled.wrappedBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;wrappedBuffer;(ByteBuf[]);;Argument[0].ArrayElement;ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuf[] in = (ByteBuf[])new ByteBuf[]{(ByteBuf)source()};
+			out = Unpooled.wrappedBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;wrappedBuffer;(ByteBuffer);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuffer in = (ByteBuffer)source();
+			out = Unpooled.wrappedBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;wrappedBuffer;(ByteBuffer[]);;Argument[0].ArrayElement;ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuffer[] in = (ByteBuffer[])new ByteBuffer[]{(ByteBuffer)source()};
+			out = Unpooled.wrappedBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;wrappedBuffer;(byte[]);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			byte[] in = (byte[])source();
+			out = Unpooled.wrappedBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;wrappedBuffer;(byte[],int,int);;Argument[0];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			byte[] in = (byte[])source();
+			out = Unpooled.wrappedBuffer(in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;wrappedBuffer;(byte[][]);;Argument[0].ArrayElement;ReturnValue;taint;manual"
+			ByteBuf out = null;
+			byte[][] in = (byte[][])new byte[][]{(byte[])source()};
+			out = Unpooled.wrappedBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;wrappedBuffer;(int,ByteBuf[]);;Argument[1].ArrayElement;ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuf[] in = (ByteBuf[])new ByteBuf[]{(ByteBuf)source()};
+			out = Unpooled.wrappedBuffer(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;wrappedBuffer;(int,ByteBuffer[]);;Argument[1].ArrayElement;ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuffer[] in = (ByteBuffer[])new ByteBuffer[]{(ByteBuffer)source()};
+			out = Unpooled.wrappedBuffer(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;wrappedBuffer;(int,byte[][]);;Argument[1].ArrayElement;ReturnValue;taint;manual"
+			ByteBuf out = null;
+			byte[][] in = (byte[][])new byte[][]{(byte[])source()};
+			out = Unpooled.wrappedBuffer(0, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.buffer;Unpooled;false;wrappedUnmodifiableBuffer;(ByteBuf[]);;Argument[0].ArrayElement;ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuf[] in = (ByteBuf[])new ByteBuf[]{(ByteBuf)source()};
+			out = Unpooled.wrappedUnmodifiableBuffer(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
 			// "io.netty.handler.codec.base64;Base64;true;decode;;;Argument[0];ReturnValue;taint;manual"
 			ByteBuf out = null;
 			ByteBuf in = (ByteBuf)source();
@@ -4205,6 +4682,55 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;add;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.add((CharSequence)null, (Iterable)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;add;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.add((CharSequence)null, (Object)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;add;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.add((String)null, (Iterable)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;add;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.add((String)null, (Object)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;add;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.add(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;addInt;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.addInt(null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;addShort;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.addShort(null, (short)0);
+			sink(out); // $ hasValueFlow
+		}
+		{
 			// "io.netty.handler.codec.http;HttpHeaders;true;copy;;;Argument[-1];ReturnValue;taint;manual"
 			HttpHeaders out = null;
 			HttpHeaders in = (HttpHeaders)source();
@@ -4365,6 +4891,76 @@ public class Test {
 			String in = (String)source();
 			out = HttpHeaders.newEntity(in);
 			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;remove;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.remove((CharSequence)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;remove;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.remove((String)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;set;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.set((CharSequence)null, (Iterable)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;set;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.set((CharSequence)null, (Object)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;set;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.set((String)null, (Iterable)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;set;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.set((String)null, (Object)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;set;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.set(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;setAll;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.setAll(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;setInt;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.setInt(null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec.http;HttpHeaders;true;setShort;;;Argument[-1];ReturnValue;value;manual"
+			HttpHeaders out = null;
+			HttpHeaders in = (HttpHeaders)source();
+			out = in.setShort(null, (short)0);
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "io.netty.handler.codec.http;HttpHeaders;true;toString;;;Argument[-1];ReturnValue;taint;manual"
@@ -4542,6 +5138,134 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
+			// "io.netty.handler.codec;ByteToMessageDecoder$Cumulator;true;cumulate;(ByteBufAllocator,ByteBuf,ByteBuf);;Argument[1];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			ByteToMessageDecoder.Cumulator instance = null;
+			out = instance.cumulate(null, in, null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.handler.codec;ByteToMessageDecoder$Cumulator;true;cumulate;(ByteBufAllocator,ByteBuf,ByteBuf);;Argument[2];ReturnValue;taint;manual"
+			ByteBuf out = null;
+			ByteBuf in = (ByteBuf)source();
+			ByteToMessageDecoder.Cumulator instance = null;
+			out = instance.cumulate(null, null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;add;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.add((Object)null, (Iterable)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;add;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.add((Object)null, (Object)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;add;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.add((Object)null, (Object[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;add;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.add(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;addBoolean;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.addBoolean(null, false);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;addByte;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.addByte(null, (byte)0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;addChar;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.addChar(null, '\0');
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;addDouble;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.addDouble(null, 0.0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;addFloat;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.addFloat(null, 0.0f);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;addInt;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.addInt(null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;addLong;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.addLong(null, 0L);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;addObject;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.addObject((Object)null, (Iterable)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;addObject;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.addObject((Object)null, (Object)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;addObject;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.addObject((Object)null, (Object[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;addShort;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.addShort(null, (short)0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;addTimeMillis;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.addTimeMillis(null, 0L);
+			sink(out); // $ hasValueFlow
+		}
+		{
 			// "io.netty.handler.codec;Headers;true;get;(Object);;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			Headers in = (Headers)source();
@@ -4614,6 +5338,125 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
+			// "io.netty.handler.codec;Headers;true;set;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.set((Object)null, (Iterable)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;set;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.set((Object)null, (Object)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;set;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.set((Object)null, (Object[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;set;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.set(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;setAll;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.setAll(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;setBoolean;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.setBoolean(null, false);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;setByte;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.setByte(null, (byte)0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;setChar;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.setChar(null, '\0');
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;setDouble;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.setDouble(null, 0.0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;setFloat;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.setFloat(null, 0.0f);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;setInt;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.setInt(null, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;setLong;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.setLong(null, 0L);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;setObject;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.setObject((Object)null, (Iterable)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;setObject;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.setObject((Object)null, (Object)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;setObject;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.setObject((Object)null, (Object[])null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;setShort;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.setShort(null, (short)0);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "io.netty.handler.codec;Headers;true;setTimeMillis;;;Argument[-1];ReturnValue;value;manual"
+			Headers out = null;
+			Headers in = (Headers)source();
+			out = in.setTimeMillis(null, 0L);
+			sink(out); // $ hasValueFlow
+		}
+		{
 			// "io.netty.handler.codec;HeadersUtils;false;getAllAsString;(Headers,Object);;Argument[0];ReturnValue;taint;manual"
 			List out = null;
 			Headers in = (Headers)source();
@@ -4646,6 +5489,273 @@ public class Test {
 			String out = null;
 			Iterator in = (Iterator)source();
 			out = HeadersUtils.toString(null, in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			ByteBuffer in = (ByteBuffer)source();
+			out = new AsciiString(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			ByteBuffer in = (ByteBuffer)source();
+			out = new AsciiString(in, 0, 0, false);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			ByteBuffer in = (ByteBuffer)source();
+			out = new AsciiString(in, false);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			CharSequence in = (CharSequence)source();
+			out = new AsciiString(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			CharSequence in = (CharSequence)source();
+			out = new AsciiString(in, (Charset)null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			CharSequence in = (CharSequence)source();
+			out = new AsciiString(in, (Charset)null, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			CharSequence in = (CharSequence)source();
+			out = new AsciiString(in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			byte[] in = (byte[])source();
+			out = new AsciiString(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			byte[] in = (byte[])source();
+			out = new AsciiString(in, 0, 0, false);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			byte[] in = (byte[])source();
+			out = new AsciiString(in, false);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			char[] in = (char[])source();
+			out = new AsciiString(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			char[] in = (char[])source();
+			out = new AsciiString(in, (Charset)null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			char[] in = (char[])source();
+			out = new AsciiString(in, (Charset)null, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;AsciiString;;;Argument[0];Argument[-1];taint;manual"
+			AsciiString out = null;
+			char[] in = (char[])source();
+			out = new AsciiString(in, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;array;();;Argument[-1];ReturnValue;taint;manual"
+			byte[] out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.array();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;cached;(String);;Argument[0];ReturnValue;taint;manual"
+			AsciiString out = null;
+			String in = (String)source();
+			out = AsciiString.cached(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;concat;(CharSequence);;Argument[-1];ReturnValue;taint;manual"
+			AsciiString out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.concat(null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;concat;(CharSequence);;Argument[0];ReturnValue;taint;manual"
+			AsciiString out = null;
+			CharSequence in = (CharSequence)source();
+			AsciiString instance = null;
+			out = instance.concat(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;copy;(int,byte[],int,int);;Argument[-1];Argument[1];taint;manual"
+			byte[] out = null;
+			AsciiString in = (AsciiString)source();
+			in.copy(0, out, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;copy;(int,char[],int,int);;Argument[-1];Argument[1];taint;manual"
+			char[] out = null;
+			AsciiString in = (AsciiString)source();
+			in.copy(0, out, 0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;of;(CharSequence);;Argument[0];ReturnValue;taint;manual"
+			AsciiString out = null;
+			CharSequence in = (CharSequence)source();
+			out = AsciiString.of(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;replace;(char,char);;Argument[-1];ReturnValue;taint;manual"
+			AsciiString out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.replace('\0', '\0');
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;split;(String,int);;Argument[-1];ReturnValue;taint;manual"
+			AsciiString[] out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.split(null, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;split;(char);;Argument[-1];ReturnValue;taint;manual"
+			AsciiString[] out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.split('\0');
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;subSequence;;;Argument[-1];ReturnValue;taint;manual"
+			AsciiString out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.subSequence(0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;subSequence;;;Argument[-1];ReturnValue;taint;manual"
+			AsciiString out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.subSequence(0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;subSequence;;;Argument[-1];ReturnValue;taint;manual"
+			AsciiString out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.subSequence(0, 0, false);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;toByteArray;;;Argument[-1];ReturnValue;taint;manual"
+			byte[] out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.toByteArray();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;toByteArray;;;Argument[-1];ReturnValue;taint;manual"
+			byte[] out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.toByteArray(0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;toCharArray;;;Argument[-1];ReturnValue;taint;manual"
+			char[] out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.toCharArray();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;toCharArray;;;Argument[-1];ReturnValue;taint;manual"
+			char[] out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.toCharArray(0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;toLowerCase;();;Argument[-1];ReturnValue;taint;manual"
+			AsciiString out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.toLowerCase();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;toString;;;Argument[-1];ReturnValue;taint;manual"
+			String out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.toString();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;toString;;;Argument[-1];ReturnValue;taint;manual"
+			String out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.toString(0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;toString;;;Argument[-1];ReturnValue;taint;manual"
+			String out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.toString(0, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;toUpperCase;();;Argument[-1];ReturnValue;taint;manual"
+			AsciiString out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.toUpperCase();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;trim;();;Argument[-1];ReturnValue;taint;manual"
+			AsciiString out = null;
+			AsciiString in = (AsciiString)source();
+			out = in.trim();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "io.netty.util;AsciiString;false;trim;(CharSequence);;Argument[0];ReturnValue;taint;manual"
+			CharSequence out = null;
+			CharSequence in = (CharSequence)source();
+			out = AsciiString.trim(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
