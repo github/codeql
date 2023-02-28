@@ -97,15 +97,14 @@ namespace Semmle.Autobuild.CSharp
             // run and found at least one script to execute
             if (this.autoBuildRule.BuildCommandAutoRule.ScriptPath is not null)
             {
-                DiagnosticMessage message;
                 var relScriptPath = this.MakeRelative(autoBuildRule.BuildCommandAutoRule.ScriptPath);
 
                 // if we found multiple build scripts in the project directory, then we can say
                 // as much to indicate that we may have picked the wrong one;
                 // otherwise, we just report that the one script we found didn't work
-                if (this.autoBuildRule.BuildCommandAutoRule.CandidatePaths.Count() > 1)
-                {
-                    message = new(
+                DiagnosticMessage message =
+                    this.autoBuildRule.BuildCommandAutoRule.CandidatePaths.Count() > 1 ?
+                    new(
                         this.Options.Language,
                         "multiple-build-scripts",
                         "There are multiple potential build scripts",
@@ -114,11 +113,8 @@ namespace Semmle.Autobuild.CSharp
                             $"attempted to run `{relScriptPath}`, which failed. " +
                             "This may not be the right build script for your project. " +
                             $"Set up a [manual build command]({buildCommandDocsUrl})."
-                    );
-                }
-                else
-                {
-                    message = new(
+                    ) :
+                    new(
                         this.Options.Language,
                         "script-failure",
                         "Unable to build project using build script",
@@ -127,7 +123,6 @@ namespace Semmle.Autobuild.CSharp
                             $"`{relScriptPath}`, which failed. " +
                             $"Set up a [manual build command]({buildCommandDocsUrl})."
                     );
-                }
 
                 AddDiagnostic(message);
             }
