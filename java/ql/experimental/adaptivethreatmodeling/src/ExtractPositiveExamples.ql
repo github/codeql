@@ -20,7 +20,7 @@ private import experimental.adaptivethreatmodeling.ATMConfig as AtmConfig
  * the ML-gnerarated, noisy sinks will end up poluting the positive examples used in the prompt!
  */
 
-from DataFlow::Node sink, EndpointType sinkType, string message
+from DataFlow::Node sink, SinkType sinkType, string message
 where
   // If there are _any_ erroneous endpoints, return nothing. This will prevent us from accidentally running this query
   // when there's a codex-generated data extension file in `java/ql/lib/ext`.
