@@ -51,7 +51,7 @@ The name of the controller repository is saved in your settings for the CodeQL e
 Running a query at scale using variant analysis
 -----------------------------------------------
 
-#. Expand the **Variant Analysis Repositories** section, to show the default lists of the top 10, top 100, and top 1,000 public repositories on GitHub.com. These are ranked by considering various metrics such as number of stars, number of watchers, number of forks etc.
+#. Expand the **Variant Analysis Repositories** section, to show the default lists which include a selection 10, 100, and 1,000 public repositories on GitHub.com for the language that you are analyzing.
 
 #. Select which GitHub repository or repositories you want to run your query against. Click a row to highlight it, and then click **Select** to select that repository, organization, or list of repositories. If you want to add a new repository, organization, or list, use the options in the header panel. For information, see ":ref:`Creating custom lists of repositories <custom-lists>`", later in this article.
 
