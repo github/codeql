@@ -16,14 +16,14 @@ void test()
 		S s;
 		**s.x = user_input();
 		*s.x = nullptr;
-		sink(**s.x); // $ SPURIOUS: ir
+		sink(**s.x); // clean
 	}
 
 	{
 		S s;
 		**s.x = user_input();
 		**s.x = 0;
-		sink(**s.x); // $ SPURIOUS: ir
+		sink(**s.x); // clean
 	}
 
 	{
@@ -37,13 +37,13 @@ void test()
 		S s;
 		*s.x = user_input(true);
 		s.x = nullptr;
-		sink(*s.x); // $ SPURIOUS: ir
+		sink(*s.x); // clean
 	}
 
 	{
 		S s;
 		**s.x = user_input();
 		s.x = nullptr;
-		sink(*s.x); // $ SPURIOUS: ir // indirect flow
+		sink(*s.x); // clean
 	}
 }
