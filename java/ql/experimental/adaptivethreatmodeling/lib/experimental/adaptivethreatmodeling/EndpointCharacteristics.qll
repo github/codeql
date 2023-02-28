@@ -10,7 +10,7 @@ import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import experimental.adaptivethreatmodeling.EndpointTypes
-private import experimental.adaptivethreatmodeling.ATMConfig
+private import experimental.adaptivethreatmodeling.ATMConfigs // To import the configurations of all supported Java queries
 private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
 private import semmle.code.java.Expr as Expr
 
@@ -25,7 +25,7 @@ predicate isKnownSink(DataFlow::Node sink, SinkType sinkType) {
   // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
   // known sink for the class.
   sinkType != any(NegativeSinkType negative) and
-  exists(EndpointCharacteristics::EndpointCharacteristic characteristic |
+  exists(EndpointCharacteristic characteristic |
     characteristic.appliesToEndpoint(sink) and
     characteristic.hasImplications(sinkType, true, characteristic.maximalConfidence())
   )
@@ -97,8 +97,8 @@ predicate erroneousConfidences(
 //  * both characteristics belong to the same query.
 //  */
 // private predicate knownOverlappingCharacteristics(
-//   EndpointCharacteristics::EndpointCharacteristic characteristic1,
-//   EndpointCharacteristics::EndpointCharacteristic characteristic2
+//   EndpointCharacteristic characteristic1,
+//   EndpointCharacteristic characteristic2
 // ) {
 //   characteristic1 != characteristic2 and
 //   characteristic1 = ["file creation sink", "other path injection sink"] and

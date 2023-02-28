@@ -5,12 +5,10 @@
  * possible. Java queries that are defined in a `.ql` file get copied into this file.
  */
 
-private import java as java
 private import semmle.code.java.dataflow.TaintTracking
+/* Configurations of queries we boost with ATM */
 import semmle.code.java.security.RequestForgeryConfig
 import semmle.code.java.security.SqlInjectionQuery
-import EndpointTypes
-import EndpointCharacteristics as EndpointCharacteristics
 /* Copied from java/ql/src/Security/CWE/CWE-022/TaintedPath.ql */
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.security.PathCreation
