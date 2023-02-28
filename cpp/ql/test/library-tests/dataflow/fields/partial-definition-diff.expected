@@ -167,6 +167,24 @@
 | by_reference.cpp:88:9:88:9 | a | AST only |
 | by_reference.cpp:92:3:92:5 | * ... | AST only |
 | by_reference.cpp:96:3:96:4 | pa | AST only |
+| clearing.cpp:15:7:15:7 | s | IR only |
+| clearing.cpp:16:3:16:6 | * ... | AST only |
+| clearing.cpp:17:12:17:12 | s | IR only |
+| clearing.cpp:22:7:22:7 | s | IR only |
+| clearing.cpp:23:7:23:7 | s | IR only |
+| clearing.cpp:24:12:24:12 | s | IR only |
+| clearing.cpp:29:3:29:6 | * ... | AST only |
+| clearing.cpp:30:7:30:7 | s | IR only |
+| clearing.cpp:31:8:31:11 | * ... | IR only |
+| clearing.cpp:31:11:31:11 | s | IR only |
+| clearing.cpp:36:3:36:6 | * ... | AST only |
+| clearing.cpp:37:5:37:5 | x | AST only |
+| clearing.cpp:38:8:38:11 | * ... | IR only |
+| clearing.cpp:38:11:38:11 | s | IR only |
+| clearing.cpp:43:7:43:7 | s | IR only |
+| clearing.cpp:44:5:44:5 | x | AST only |
+| clearing.cpp:45:8:45:11 | * ... | IR only |
+| clearing.cpp:45:11:45:11 | s | IR only |
 | complex.cpp:9:20:9:21 | this | IR only |
 | complex.cpp:10:20:10:21 | this | IR only |
 | complex.cpp:11:22:11:23 | a_ | AST only |

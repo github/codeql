@@ -408,6 +408,24 @@
 | by_reference.cpp:135:27:135:27 | a |
 | by_reference.cpp:136:8:136:13 | pouter |
 | by_reference.cpp:136:16:136:16 | a |
+| clearing.cpp:15:5:15:5 | s |
+| clearing.cpp:16:4:16:4 | s |
+| clearing.cpp:17:10:17:10 | s |
+| clearing.cpp:22:5:22:5 | s |
+| clearing.cpp:23:5:23:5 | s |
+| clearing.cpp:24:10:24:10 | s |
+| clearing.cpp:29:4:29:4 | s |
+| clearing.cpp:30:5:30:5 | s |
+| clearing.cpp:31:8:31:11 | * ... |
+| clearing.cpp:31:9:31:9 | s |
+| clearing.cpp:36:4:36:4 | s |
+| clearing.cpp:37:3:37:3 | s |
+| clearing.cpp:38:8:38:11 | * ... |
+| clearing.cpp:38:9:38:9 | s |
+| clearing.cpp:43:5:43:5 | s |
+| clearing.cpp:44:3:44:3 | s |
+| clearing.cpp:45:8:45:11 | * ... |
+| clearing.cpp:45:9:45:9 | s |
 | complex.cpp:9:20:9:21 | this |
 | complex.cpp:10:20:10:21 | this |
 | complex.cpp:11:22:11:23 | this |

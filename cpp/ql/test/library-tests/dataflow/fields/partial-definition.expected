@@ -348,6 +348,16 @@
 | by_reference.cpp:135:27:135:27 | a |
 | by_reference.cpp:136:8:136:13 | pouter |
 | by_reference.cpp:136:16:136:16 | a |
+| clearing.cpp:16:3:16:6 | * ... |
+| clearing.cpp:16:4:16:4 | s |
+| clearing.cpp:29:3:29:6 | * ... |
+| clearing.cpp:29:4:29:4 | s |
+| clearing.cpp:36:3:36:6 | * ... |
+| clearing.cpp:36:4:36:4 | s |
+| clearing.cpp:37:3:37:3 | s |
+| clearing.cpp:37:5:37:5 | x |
+| clearing.cpp:44:3:44:3 | s |
+| clearing.cpp:44:5:44:5 | x |
 | complex.cpp:11:22:11:23 | a_ |
 | complex.cpp:11:22:11:23 | this |
 | complex.cpp:12:22:12:23 | b_ |

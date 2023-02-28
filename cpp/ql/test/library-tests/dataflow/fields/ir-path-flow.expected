@@ -572,6 +572,50 @@ edges
 | by_reference.cpp:136:8:136:13 | pouter indirection [a] | by_reference.cpp:136:16:136:16 | a |
 | by_reference.cpp:136:8:136:13 | pouter indirection [a] | by_reference.cpp:136:16:136:16 | a indirection |
 | by_reference.cpp:136:16:136:16 | a indirection | by_reference.cpp:136:16:136:16 | a |
+| clearing.cpp:15:3:15:22 | ... = ... | clearing.cpp:15:7:15:7 | s indirection [post update] [x indirection] |
+| clearing.cpp:15:7:15:7 | s indirection [post update] [x indirection] | clearing.cpp:17:10:17:10 | s indirection [x indirection] |
+| clearing.cpp:15:11:15:20 | call to user_input | clearing.cpp:15:3:15:22 | ... = ... |
+| clearing.cpp:17:9:17:12 | * ... indirection | clearing.cpp:17:8:17:12 | * ... |
+| clearing.cpp:17:10:17:10 | s indirection [x indirection] | clearing.cpp:17:8:17:12 | * ... |
+| clearing.cpp:17:10:17:10 | s indirection [x indirection] | clearing.cpp:17:9:17:12 | * ... indirection |
+| clearing.cpp:17:10:17:10 | s indirection [x indirection] | clearing.cpp:17:12:17:12 | x indirection |
+| clearing.cpp:17:10:17:10 | s indirection [x indirection] | clearing.cpp:17:12:17:12 | x indirection |
+| clearing.cpp:17:12:17:12 | x indirection | clearing.cpp:17:8:17:12 | * ... |
+| clearing.cpp:17:12:17:12 | x indirection | clearing.cpp:17:8:17:12 | * ... |
+| clearing.cpp:22:3:22:22 | ... = ... | clearing.cpp:22:7:22:7 | s indirection [post update] [x indirection] |
+| clearing.cpp:22:7:22:7 | s indirection [post update] [x indirection] | clearing.cpp:24:10:24:10 | s indirection [x indirection] |
+| clearing.cpp:22:11:22:20 | call to user_input | clearing.cpp:22:3:22:22 | ... = ... |
+| clearing.cpp:24:9:24:12 | * ... indirection | clearing.cpp:24:8:24:12 | * ... |
+| clearing.cpp:24:10:24:10 | s indirection [x indirection] | clearing.cpp:24:8:24:12 | * ... |
+| clearing.cpp:24:10:24:10 | s indirection [x indirection] | clearing.cpp:24:9:24:12 | * ... indirection |
+| clearing.cpp:24:10:24:10 | s indirection [x indirection] | clearing.cpp:24:12:24:12 | x indirection |
+| clearing.cpp:24:10:24:10 | s indirection [x indirection] | clearing.cpp:24:12:24:12 | x indirection |
+| clearing.cpp:24:12:24:12 | x indirection | clearing.cpp:24:8:24:12 | * ... |
+| clearing.cpp:24:12:24:12 | x indirection | clearing.cpp:24:8:24:12 | * ... |
+| clearing.cpp:29:3:29:25 | ... = ... | clearing.cpp:29:6:29:6 | s indirection [post update] [x indirection] |
+| clearing.cpp:29:6:29:6 | s indirection [post update] [x indirection] | clearing.cpp:31:9:31:9 | s indirection [x indirection] |
+| clearing.cpp:29:10:29:19 | call to user_input | clearing.cpp:29:3:29:25 | ... = ... |
+| clearing.cpp:31:9:31:9 | s indirection [x indirection] | clearing.cpp:31:8:31:11 | * ... |
+| clearing.cpp:31:9:31:9 | s indirection [x indirection] | clearing.cpp:31:11:31:11 | x indirection |
+| clearing.cpp:31:9:31:9 | s indirection [x indirection] | clearing.cpp:31:11:31:11 | x indirection |
+| clearing.cpp:31:11:31:11 | x indirection | clearing.cpp:31:8:31:11 | * ... |
+| clearing.cpp:31:11:31:11 | x indirection | clearing.cpp:31:8:31:11 | * ... |
+| clearing.cpp:36:3:36:25 | ... = ... | clearing.cpp:36:6:36:6 | s indirection [post update] [x indirection] |
+| clearing.cpp:36:6:36:6 | s indirection [post update] [x indirection] | clearing.cpp:38:9:38:9 | s indirection [x indirection] |
+| clearing.cpp:36:10:36:19 | call to user_input | clearing.cpp:36:3:36:25 | ... = ... |
+| clearing.cpp:38:9:38:9 | s indirection [x indirection] | clearing.cpp:38:8:38:11 | * ... |
+| clearing.cpp:38:9:38:9 | s indirection [x indirection] | clearing.cpp:38:11:38:11 | x indirection |
+| clearing.cpp:38:9:38:9 | s indirection [x indirection] | clearing.cpp:38:11:38:11 | x indirection |
+| clearing.cpp:38:11:38:11 | x indirection | clearing.cpp:38:8:38:11 | * ... |
+| clearing.cpp:38:11:38:11 | x indirection | clearing.cpp:38:8:38:11 | * ... |
+| clearing.cpp:43:3:43:22 | ... = ... | clearing.cpp:43:7:43:7 | s indirection [post update] [x indirection] |
+| clearing.cpp:43:7:43:7 | s indirection [post update] [x indirection] | clearing.cpp:45:9:45:9 | s indirection [x indirection] |
+| clearing.cpp:43:11:43:20 | call to user_input | clearing.cpp:43:3:43:22 | ... = ... |
+| clearing.cpp:45:9:45:9 | s indirection [x indirection] | clearing.cpp:45:8:45:11 | * ... indirection |
+| clearing.cpp:45:9:45:9 | s indirection [x indirection] | clearing.cpp:45:11:45:11 | x indirection |
+| clearing.cpp:45:9:45:9 | s indirection [x indirection] | clearing.cpp:45:11:45:11 | x indirection |
+| clearing.cpp:45:11:45:11 | x indirection | clearing.cpp:45:8:45:11 | * ... indirection |
+| clearing.cpp:45:11:45:11 | x indirection | clearing.cpp:45:8:45:11 | * ... indirection |
 | complex.cpp:9:7:9:7 | this indirection [a_] | complex.cpp:9:20:9:21 | this indirection [a_] |
 | complex.cpp:9:20:9:21 | a_ | complex.cpp:9:7:9:7 | a indirection |
 | complex.cpp:9:20:9:21 | a_ indirection | complex.cpp:9:7:9:7 | a indirection |
@@ -1433,6 +1477,43 @@ nodes
 | by_reference.cpp:136:8:136:13 | pouter indirection [a] | semmle.label | pouter indirection [a] |
 | by_reference.cpp:136:16:136:16 | a | semmle.label | a |
 | by_reference.cpp:136:16:136:16 | a indirection | semmle.label | a indirection |
+| clearing.cpp:15:3:15:22 | ... = ... | semmle.label | ... = ... |
+| clearing.cpp:15:7:15:7 | s indirection [post update] [x indirection] | semmle.label | s indirection [post update] [x indirection] |
+| clearing.cpp:15:11:15:20 | call to user_input | semmle.label | call to user_input |
+| clearing.cpp:17:8:17:12 | * ... | semmle.label | * ... |
+| clearing.cpp:17:9:17:12 | * ... indirection | semmle.label | * ... indirection |
+| clearing.cpp:17:10:17:10 | s indirection [x indirection] | semmle.label | s indirection [x indirection] |
+| clearing.cpp:17:12:17:12 | x indirection | semmle.label | x indirection |
+| clearing.cpp:17:12:17:12 | x indirection | semmle.label | x indirection |
+| clearing.cpp:22:3:22:22 | ... = ... | semmle.label | ... = ... |
+| clearing.cpp:22:7:22:7 | s indirection [post update] [x indirection] | semmle.label | s indirection [post update] [x indirection] |
+| clearing.cpp:22:11:22:20 | call to user_input | semmle.label | call to user_input |
+| clearing.cpp:24:8:24:12 | * ... | semmle.label | * ... |
+| clearing.cpp:24:9:24:12 | * ... indirection | semmle.label | * ... indirection |
+| clearing.cpp:24:10:24:10 | s indirection [x indirection] | semmle.label | s indirection [x indirection] |
+| clearing.cpp:24:12:24:12 | x indirection | semmle.label | x indirection |
+| clearing.cpp:24:12:24:12 | x indirection | semmle.label | x indirection |
+| clearing.cpp:29:3:29:25 | ... = ... | semmle.label | ... = ... |
+| clearing.cpp:29:6:29:6 | s indirection [post update] [x indirection] | semmle.label | s indirection [post update] [x indirection] |
+| clearing.cpp:29:10:29:19 | call to user_input | semmle.label | call to user_input |
+| clearing.cpp:31:8:31:11 | * ... | semmle.label | * ... |
+| clearing.cpp:31:9:31:9 | s indirection [x indirection] | semmle.label | s indirection [x indirection] |
+| clearing.cpp:31:11:31:11 | x indirection | semmle.label | x indirection |
+| clearing.cpp:31:11:31:11 | x indirection | semmle.label | x indirection |
+| clearing.cpp:36:3:36:25 | ... = ... | semmle.label | ... = ... |
+| clearing.cpp:36:6:36:6 | s indirection [post update] [x indirection] | semmle.label | s indirection [post update] [x indirection] |
+| clearing.cpp:36:10:36:19 | call to user_input | semmle.label | call to user_input |
+| clearing.cpp:38:8:38:11 | * ... | semmle.label | * ... |
+| clearing.cpp:38:9:38:9 | s indirection [x indirection] | semmle.label | s indirection [x indirection] |
+| clearing.cpp:38:11:38:11 | x indirection | semmle.label | x indirection |
+| clearing.cpp:38:11:38:11 | x indirection | semmle.label | x indirection |
+| clearing.cpp:43:3:43:22 | ... = ... | semmle.label | ... = ... |
+| clearing.cpp:43:7:43:7 | s indirection [post update] [x indirection] | semmle.label | s indirection [post update] [x indirection] |
+| clearing.cpp:43:11:43:20 | call to user_input | semmle.label | call to user_input |
+| clearing.cpp:45:8:45:11 | * ... indirection | semmle.label | * ... indirection |
+| clearing.cpp:45:9:45:9 | s indirection [x indirection] | semmle.label | s indirection [x indirection] |
+| clearing.cpp:45:11:45:11 | x indirection | semmle.label | x indirection |
+| clearing.cpp:45:11:45:11 | x indirection | semmle.label | x indirection |
 | complex.cpp:9:7:9:7 | a indirection | semmle.label | a indirection |
 | complex.cpp:9:7:9:7 | this indirection [a_] | semmle.label | this indirection [a_] |
 | complex.cpp:9:20:9:21 | a_ | semmle.label | a_ |
@@ -1883,6 +1964,11 @@ subpaths
 | by_reference.cpp:134:29:134:29 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:134:29:134:29 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
 | by_reference.cpp:135:27:135:27 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:135:27:135:27 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
 | by_reference.cpp:136:16:136:16 | a | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:136:16:136:16 | a | a flows from $@ | by_reference.cpp:96:8:96:17 | call to user_input | call to user_input |
+| clearing.cpp:17:8:17:12 | * ... | clearing.cpp:15:11:15:20 | call to user_input | clearing.cpp:17:8:17:12 | * ... | * ... flows from $@ | clearing.cpp:15:11:15:20 | call to user_input | call to user_input |
+| clearing.cpp:24:8:24:12 | * ... | clearing.cpp:22:11:22:20 | call to user_input | clearing.cpp:24:8:24:12 | * ... | * ... flows from $@ | clearing.cpp:22:11:22:20 | call to user_input | call to user_input |
+| clearing.cpp:31:8:31:11 | * ... | clearing.cpp:29:10:29:19 | call to user_input | clearing.cpp:31:8:31:11 | * ... | * ... flows from $@ | clearing.cpp:29:10:29:19 | call to user_input | call to user_input |
+| clearing.cpp:38:8:38:11 | * ... | clearing.cpp:36:10:36:19 | call to user_input | clearing.cpp:38:8:38:11 | * ... | * ... flows from $@ | clearing.cpp:36:10:36:19 | call to user_input | call to user_input |
+| clearing.cpp:45:8:45:11 | * ... indirection | clearing.cpp:43:11:43:20 | call to user_input | clearing.cpp:45:8:45:11 | * ... indirection | * ... indirection flows from $@ | clearing.cpp:43:11:43:20 | call to user_input | call to user_input |
 | complex.cpp:42:18:42:18 | call to a | complex.cpp:53:19:53:28 | call to user_input | complex.cpp:42:18:42:18 | call to a | call to a flows from $@ | complex.cpp:53:19:53:28 | call to user_input | call to user_input |
 | complex.cpp:42:18:42:18 | call to a | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:42:18:42:18 | call to a | call to a flows from $@ | complex.cpp:55:19:55:28 | call to user_input | call to user_input |
 | complex.cpp:43:18:43:18 | call to b | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:43:18:43:18 | call to b | call to b flows from $@ | complex.cpp:54:19:54:28 | call to user_input | call to user_input |
