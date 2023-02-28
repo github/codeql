@@ -306,7 +306,7 @@ impl<'a> Visitor<'a> {
     fn enter_node(&mut self, node: Node) -> bool {
         if node.is_missing() {
             self.record_parse_error_for_node(
-                "A parse error occurred, expecting {} symbol. Check the syntax of the file using the {} command. If the file is indeed invalid, please correct the error or exclude the file from analysis.",
+                "A parse error occurred (expected {} symbol). Check the syntax of the file using the {} command. If the file is invalid, correct the error or exclude the file from analysis.",
                 &[node.kind(), "ruby -c"],
                 node,
                 true,
@@ -315,7 +315,7 @@ impl<'a> Visitor<'a> {
         }
         if node.is_error() {
             self.record_parse_error_for_node(
-                "A parse error occurred. Check the syntax of the file using the {} command. If the file is indeed invalid, please correct the error or exclude the file from analysis.",
+                "A parse error occurred. Check the syntax of the file using the {} command. If the file is invalid, correct the error or exclude the file from analysis.",
                 &["ruby -c"],
                 node,
                 true,
@@ -407,7 +407,7 @@ impl<'a> Visitor<'a> {
                         .new_entry("parse-error", "Parse error")
                         .severity(diagnostics::Severity::Error)
                         .location(self.path, start_line, start_column, end_line, end_column)
-                        .message("unknown table type: {}", &[node.kind()]),
+                        .message("Unknown table type: {}", &[node.kind()]),
                 );
 
                 valid = false;
@@ -456,7 +456,7 @@ impl<'a> Visitor<'a> {
                     }
                 } else if field.name.is_some() {
                     self.record_parse_error_for_node(
-                        "type mismatch for field {}::{} with type {} != {}",
+                        "Type mismatch for field {}::{} with type {} != {}",
                         &[
                             node.kind(),
                             child_node.field_name.unwrap_or("child"),
@@ -469,7 +469,7 @@ impl<'a> Visitor<'a> {
                 }
             } else if child_node.field_name.is_some() || child_node.type_name.named {
                 self.record_parse_error_for_node(
-                    "value for unknown field: {}::{} and type {}",
+                    "Value for unknown field: {}::{} and type {}",
                     &[
                         node.kind(),
                         &child_node.field_name.unwrap_or("child"),
@@ -493,9 +493,9 @@ impl<'a> Visitor<'a> {
                         let error_message = format!(
                             "{} for field: {}::{}",
                             if child_values.is_empty() {
-                                "missing value"
+                                "Missing value"
                             } else {
-                                "too many values"
+                                "Too many values"
                             },
                             node.kind(),
                             column_name
@@ -511,7 +511,7 @@ impl<'a> Visitor<'a> {
                     for (index, child_value) in child_values.iter().enumerate() {
                         if !*has_index && index > 0 {
                             self.record_parse_error_for_node(
-                                "too many values for field: {}::{}",
+                                "Too many values for field: {}::{}",
                                 &[node.kind(), table_name],
                                 *node,
                                 false,
@@ -613,7 +613,7 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
                     visitor
                         .diagnostics_writer
                         .new_entry("internal-error", "Internal error")
-                        .message("expecting a line break symbol, but none found while correcting end column value", &[])
+                        .message("Expecting a line break symbol, but none found while correcting end column value", &[])
                         .severity(diagnostics::Severity::Error),
                 );
             }
@@ -629,7 +629,7 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
                     .diagnostics_writer
                     .new_entry("internal-error", "Internal error")
                     .message(
-                        "cannot correct end column value: end_byte index {} is not in range [1,{}]",
+                        "Cannot correct end column value: end_byte index {} is not in range [1,{}]",
                         &[&index.to_string(), &source.len().to_string()],
                     )
                     .severity(diagnostics::Severity::Error),

@@ -203,10 +203,11 @@ fn main() -> std::io::Result<()> {
                                                 )
                                                 .file(&path.to_string_lossy())
                                                 .message(
-                                                    "Could not decode the file contents as {}: {}. Validate that the contents of the file matches the character encoding specified in the {} directive at the top of the file.",
+                                                    "Could not decode the file contents as {}: {}. The contents of the file must match the character encoding specified in the {} directive.",
                                                     &[&encoding_name, &msg, "encoding:"],
                                                 )
                                                 .status_page()
+                                                .help_link("https://docs.ruby-lang.org/en/master/syntax/comments_rdoc.html#label-encoding+Directive")
                                                 .severity(diagnostics::Severity::Warning),
                                         );
                                     }
@@ -218,11 +219,11 @@ fn main() -> std::io::Result<()> {
                                     .new_entry("unknown-character-encoding", "Unknown character encoding")
                                     .file(&path.to_string_lossy())
                                     .message(
-                                        "Unknown character encoding {} in {} directive. Validate that the specified name is a supported character set.",
+                                        "Unknown character encoding {} in {} directive.",
                                         &[&encoding_name, "#encoding:"],
                                     )
                                     .status_page()
-                                    .help_link("https://docs.ruby-lang.org/en/3.2/syntax/comments_rdoc.html#label-encoding+Directive")
+                                    .help_link("https://docs.ruby-lang.org/en/master/syntax/comments_rdoc.html#label-encoding+Directive")
                                     .severity(diagnostics::Severity::Warning),
                             );
                         }
