@@ -12,6 +12,7 @@ enum class TrapType {
   module,
   invocation,
   linkage,
+  lazy_declarations,
 };
 
 std::filesystem::path getTrapPath(const SwiftExtractorState& state,

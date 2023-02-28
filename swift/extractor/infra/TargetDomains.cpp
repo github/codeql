@@ -13,6 +13,8 @@ static const char* typeToStr(TrapType type) {
       return "invocations";
     case TrapType::linkage:
       return "linkage";
+    case TrapType::lazy_declarations:
+      return "lazy_decls";
     default:
       return "";
   }
