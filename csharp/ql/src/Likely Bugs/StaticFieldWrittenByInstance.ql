@@ -19,7 +19,7 @@ where
   fw.getTarget() = f and
   f.isStatic() and
   c = fw.getEnclosingCallable() and
-  not exists(Member m | m = c or m = c.(Accessor).getDeclaration() | m.isStatic()) and
+  not [c.(Member), c.(Accessor).getDeclaration()].isStatic() and
   f.getDeclaringType() = c.getDeclaringType() and
   c.fromSource()
-select fw.(VariableAccess), "Write to static field from instance method, property or constructor."
+select fw.(VariableAccess), "Write to static field from instance method, property, or constructor."
