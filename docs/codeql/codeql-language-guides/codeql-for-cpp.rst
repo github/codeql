@@ -14,6 +14,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    expressions-types-and-statements-in-cpp
    conversions-and-classes-in-cpp
    analyzing-data-flow-in-cpp
+   analyzing-data-flow-in-cpp-new
    refining-a-query-to-account-for-edge-cases
    detecting-a-potential-buffer-overflow
    using-the-guards-library-in-cpp
