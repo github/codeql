@@ -94,7 +94,7 @@ To see the results for a repository:
 
 #. Click the repository name to show a summary of each result.
 
-#. Explore the information available for each result using links to the source files in GitHub.com and, for data flow queries, the **Show paths** link. For more information, see "ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`."
+#. Explore the information available for each result using links to the source files in GitHub.com and, for data flow queries, the **Show paths** link. For more information, see ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`."
 
 Exporting your results
 ----------------------
