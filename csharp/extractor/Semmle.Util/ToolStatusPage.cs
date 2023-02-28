@@ -157,18 +157,10 @@ namespace Semmle.Util
         /// Initialises a new <see cref="DiagnosticsStream" /> for a file at <paramref name="path" />.
         /// </summary>
         /// <param name="path">The path to the file that should be created.</param>
-        /// <returns>
-        /// A <see cref="DiagnosticsStream" /> object which allows diagnostics to be
-        /// written to a file at <paramname name="path" />.
-        /// </returns>
-        public static DiagnosticsStream ForFile(string path)
+        public DiagnosticsStream(string path)
         {
-            var stream = File.CreateText(path);
-            return new DiagnosticsStream(stream);
-        }
+            this.writer = File.CreateText(path);
 
-        public DiagnosticsStream(StreamWriter streamWriter)
-        {
             var contractResolver = new DefaultContractResolver
             {
                 NamingStrategy = new CamelCaseNamingStrategy()
@@ -179,8 +171,6 @@ namespace Semmle.Util
                 ContractResolver = contractResolver,
                 NullValueHandling = NullValueHandling.Ignore
             };
-
-            writer = streamWriter;
         }
 
         /// <summary>
