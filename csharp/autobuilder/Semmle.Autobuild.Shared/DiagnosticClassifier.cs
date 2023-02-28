@@ -16,8 +16,11 @@ namespace Semmle.Autobuild.Shared
         /// <param name="builder">
         /// The autobuilder to use for constructing the base <see cref="DiagnosticMessage" />.
         /// </param>
+        /// <param name="severity">
+        /// An optional severity value which overrides the default severity of the diagnostic.
+        /// </param>
         /// <returns>The <see cref="DiagnosticMessage" /> corresponding to this result.</returns>
-        DiagnosticMessage ToDiagnosticMessage<T>(Autobuilder<T> builder) where T : AutobuildOptionsShared;
+        DiagnosticMessage ToDiagnosticMessage<T>(Autobuilder<T> builder, DiagnosticMessage.TspSeverity? severity = null) where T : AutobuildOptionsShared;
     }
 
     public class DiagnosticRule
