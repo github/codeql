@@ -505,7 +505,7 @@ private class IsExternalCharacteristic extends LikelyNotASinkCharacteristic {
 }
 
 /**
- * A negative characteristic that indicates that an endpoint is not the final step in a taint propagation. This
+ * A negative characteristic that indicates that an endpoint is a non-final step in a taint propagation. This
  * prevents us from detecting expresssions near sinks that are not the sink itself.
  *
  * WARNING: These endpoints should not be used as negative samples for training, because a there are rare situations
@@ -513,8 +513,8 @@ private class IsExternalCharacteristic extends LikelyNotASinkCharacteristic {
  * and then returns the given value. Example: `stillTainted = dangerous(tainted)`, assuming that the implementation of
  * `dangerous(x)` eventually returns `x`.
  */
-private class IsFlowStep extends LikelyNotASinkCharacteristic {
-  IsFlowStep() { this = "flow step" }
+private class IsFlowStepCharacteristic extends LikelyNotASinkCharacteristic {
+  IsFlowStepCharacteristic() { this = "flow step" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) { isKnownStepSrc(n) }
 
@@ -524,6 +524,31 @@ private class IsFlowStep extends LikelyNotASinkCharacteristic {
   private predicate isKnownStepSrc(DataFlow::Node n) {
     any(TaintTracking::Configuration c).isAdditionalFlowStep(n, _) or
     TaintTracking::localTaintStep(n, _)
+  }
+}
+
+/**
+ * A negative characteristic that indicates that an endpoint is not a `to` node for any known taint step. Such a node
+ * cannot be tainted, because taint can't flow into it.
+ *
+ * WARNING: These endpoints should not be used as negative samples for training, because they may include sinks for
+ * which our taint tracking modeling is incomplete.
+ */
+private class CannotBeTaintedCharacteristic extends LikelyNotASinkCharacteristic {
+  CannotBeTaintedCharacteristic() { this = "cannot be tainted" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) { not isKnownOutNodeForStep(n) }
+
+  /**
+   * Holds if the node `n` is known as the predecessor in a modeled flow step.
+   */
+  private predicate isKnownOutNodeForStep(DataFlow::Node n) {
+    any(TaintTracking::Configuration c).isAdditionalFlowStep(_, n) or
+    TaintTracking::localTaintStep(_, n) or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(_, n, _) or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(_, n, _) or
+    FlowSummaryImpl::Private::Steps::summaryGetterStep(_, _, n, _) or
+    FlowSummaryImpl::Private::Steps::summarySetterStep(_, _, n, _)
   }
 }
 
