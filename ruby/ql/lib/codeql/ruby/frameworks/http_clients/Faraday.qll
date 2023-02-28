@@ -34,9 +34,9 @@ class FaradayHttpRequest extends Http::Client::Request::Range, DataFlow::CallNod
         // one-off requests
         API::getTopLevelMember("Faraday"),
         // connection re-use
-        API::getTopLevelMember("Faraday").getInstance(),
+        API::getTopLevelMember("Faraday").getASubclass*().getInstance(),
         // connection re-use with Faraday::Connection.new instantiation
-        API::getTopLevelMember("Faraday").getMember("Connection").getInstance()
+        API::getTopLevelMember("Faraday").getMember("Connection").getASubclass*().getInstance()
       ] and
     requestNode =
       connectionNode
