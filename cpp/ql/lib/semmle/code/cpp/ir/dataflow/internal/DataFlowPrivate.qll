@@ -720,7 +720,9 @@ predicate readStep(Node node1, Content c, Node node2) {
  * Holds if values stored inside content `c` are cleared at node `n`.
  */
 predicate clearsContent(Node n, Content c) {
-  none() // stub implementation
+  n =
+    any(PostUpdateNode pun, Content d | d.impliesClearOf(c) and storeStep(_, d, pun) | pun)
+        .getPreUpdateNode()
 }
 
 /**
