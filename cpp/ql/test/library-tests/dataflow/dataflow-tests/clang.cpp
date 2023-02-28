@@ -48,5 +48,5 @@ void following_pointers( // $ ast-def=sourceStruct1_ptr
 
   int stackArray[2] = { source(), source() };
   stackArray[0] = source();
-  sink(stackArray); // $ ast ir
+  sink(stackArray); // $ ast ir ir=49:7 ir=49:25 ir=49:35 ir=50:19
 }

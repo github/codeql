@@ -40,7 +40,7 @@ public:
     cc.insert(nullptr);
     ct.insert(new C());
     sink(&cc); // no flow
-    sink(&ct); // $ ast ir=41:15
+    sink(&ct); // $ ast ir
   }
   void f1()
   {
@@ -53,7 +53,7 @@ public:
   {
     B *b = new B();
     b->set(new C1());
-    sink(b->get());                // $ ast ir=55:12
+    sink(b->get());                // $ ast ir
     sink((new B(new C()))->get()); // $ ast ir
   }
 
@@ -63,7 +63,7 @@ public:
     B *b2;
     b2 = setOnB(b1, new C2());
     sink(b1->c); // no flow
-    sink(b2->c); // $ ast ir=64:21
+    sink(b2->c); // $ ast ir
   }
 
   void f4()
@@ -72,7 +72,7 @@ public:
     B *b2;
     b2 = setOnBWrap(b1, new C2());
     sink(b1->c); // no flow
-    sink(b2->c); // $ ast ir=73:25
+    sink(b2->c); // $ ast ir
   }
 
   B *setOnBWrap(B *b1, C *c)

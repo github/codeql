@@ -28,18 +28,6 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   or
   modeledTaintStep(nodeFrom, nodeTo)
   or
-  // Flow from `op` to `*op`.
-  exists(Operand operand, int indirectionIndex |
-    nodeHasOperand(nodeFrom, operand, indirectionIndex) and
-    nodeHasOperand(nodeTo, operand, indirectionIndex - 1)
-  )
-  or
-  // Flow from `instr` to `*instr`.
-  exists(Instruction instr, int indirectionIndex |
-    nodeHasInstruction(nodeFrom, instr, indirectionIndex) and
-    nodeHasInstruction(nodeTo, instr, indirectionIndex - 1)
-  )
-  or
   // Flow from (the indirection of) an operand of a pointer arithmetic instruction to the
   // indirection of the pointer arithmetic instruction. This provides flow from `source`
   // in `x[source]` to the result of the associated load instruction.

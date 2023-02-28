@@ -48,9 +48,11 @@ class ToBufferConfiguration extends TaintTracking::Configuration {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(SensitiveBufferWrite w | w.getASource() = sink.asExpr())
-  }
+  override predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
+}
+
+predicate isSinkImpl(DataFlow::Node sink, SensitiveBufferWrite w) {
+  w.getASource() = sink.asIndirectExpr()
 }
 
 from
@@ -59,7 +61,7 @@ from
 where
   config.hasFlowPath(sourceNode, sinkNode) and
   sourceNode.getNode() = source and
-  w.getASource() = sinkNode.getNode().asExpr()
+  isSinkImpl(sinkNode.getNode(), w)
 select w, sourceNode, sinkNode,
   "This write into buffer '" + w.getDest().toString() + "' may contain unencrypted data from $@.",
   source, "user input (" + source.getSourceType() + ")"

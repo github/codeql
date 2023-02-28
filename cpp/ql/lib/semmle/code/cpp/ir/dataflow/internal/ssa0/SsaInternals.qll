@@ -41,8 +41,7 @@ private newtype TDefOrUseImpl =
     isIteratorUse(container, iteratorAddress, _, _)
   } or
   TFinalParameterUse(Parameter p) {
-    any(Indirection indirection).getType() = p.getUnspecifiedType() or
-    p.getUnspecifiedType() instanceof Cpp::ArrayType
+    any(Indirection indirection).getType() = p.getUnspecifiedType()
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {

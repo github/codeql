@@ -40,3 +40,5 @@
 | test.cpp:547:9:547:9 | x | test.cpp:548:25:548:25 | x |
 | test.cpp:551:9:551:9 | y | test.cpp:552:25:552:25 | y |
 | test.cpp:551:9:551:9 | y | test.cpp:552:28:552:28 | y |
+| test.cpp:595:8:595:9 | xs | test.cpp:596:3:596:4 | xs |
+| test.cpp:595:8:595:9 | xs | test.cpp:597:9:597:10 | xs |

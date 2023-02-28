@@ -71,7 +71,7 @@ class OverflowDestinationConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sourceSized(_, sink.asConvertedExpr()) }
+  override predicate isSink(DataFlow::Node sink) { sourceSized(_, sink.asIndirectConvertedExpr()) }
 
   override predicate isSanitizer(DataFlow::Node node) {
     exists(Variable checkedVar |
@@ -91,6 +91,6 @@ from
   DataFlow::PathNode sink
 where
   conf.hasFlowPath(source, sink) and
-  sourceSized(fc, sink.getNode().asConvertedExpr())
+  sourceSized(fc, sink.getNode().asIndirectConvertedExpr())
 select fc, source, sink,
   "To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size."

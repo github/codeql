@@ -60,8 +60,8 @@ edges
 | A.cpp:90:15:90:15 | c | A.cpp:90:7:90:8 | set output argument [c] |
 | A.cpp:98:12:98:18 | new | A.cpp:100:5:100:13 | ... = ... |
 | A.cpp:100:5:100:13 | ... = ... | A.cpp:100:9:100:9 | c1 indirection [post update] [a] |
-| A.cpp:100:9:100:9 | c1 indirection [post update] [a] | A.cpp:101:8:101:9 | (C *)... indirection [a] |
-| A.cpp:101:8:101:9 | (C *)... indirection [a] | A.cpp:103:14:103:14 | c indirection [a] |
+| A.cpp:100:9:100:9 | c1 indirection [post update] [a] | A.cpp:101:8:101:9 | c1 indirection [a] |
+| A.cpp:101:8:101:9 | c1 indirection [a] | A.cpp:103:14:103:14 | c indirection [a] |
 | A.cpp:103:14:103:14 | c indirection [a] | A.cpp:107:12:107:13 | c1 indirection [a] |
 | A.cpp:103:14:103:14 | c indirection [a] | A.cpp:120:12:120:13 | c1 indirection [a] |
 | A.cpp:107:12:107:13 | c1 indirection [a] | A.cpp:107:12:107:16 | a |
@@ -268,6 +268,7 @@ edges
 | E.cpp:21:13:21:16 | data indirection [buffer indirection] | E.cpp:21:18:21:23 | buffer indirection |
 | E.cpp:21:18:21:23 | buffer indirection | E.cpp:21:18:21:23 | buffer indirection |
 | E.cpp:28:21:28:23 | argument_source output argument | E.cpp:31:10:31:12 | raw indirection |
+| E.cpp:28:21:28:23 | argument_source output argument | E.cpp:31:10:31:12 | raw indirection |
 | E.cpp:29:21:29:29 | argument_source output argument | E.cpp:29:24:29:29 | b indirection [post update] [buffer indirection] |
 | E.cpp:29:24:29:29 | b indirection [post update] [buffer indirection] | E.cpp:32:10:32:10 | b indirection [buffer indirection] |
 | E.cpp:30:21:30:33 | argument_source output argument | E.cpp:30:28:30:33 | data indirection [post update] [buffer indirection] |
@@ -280,8 +281,8 @@ edges
 | aliasing.cpp:9:3:9:22 | ... = ... | aliasing.cpp:9:6:9:7 | s indirection [post update] [m1] |
 | aliasing.cpp:9:6:9:7 | s indirection [post update] [m1] | aliasing.cpp:25:17:25:19 | pointerSetter output argument [m1] |
 | aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:9:3:9:22 | ... = ... |
-| aliasing.cpp:13:3:13:21 | ... = ... | aliasing.cpp:13:5:13:6 | (reference dereference) indirection [post update] [m1] |
-| aliasing.cpp:13:5:13:6 | (reference dereference) indirection [post update] [m1] | aliasing.cpp:26:19:26:20 | referenceSetter output argument [m1] |
+| aliasing.cpp:13:3:13:21 | ... = ... | aliasing.cpp:13:5:13:6 | s indirection [post update] [m1] |
+| aliasing.cpp:13:5:13:6 | s indirection [post update] [m1] | aliasing.cpp:26:19:26:20 | referenceSetter output argument [m1] |
 | aliasing.cpp:13:10:13:19 | call to user_input | aliasing.cpp:13:3:13:21 | ... = ... |
 | aliasing.cpp:25:17:25:19 | pointerSetter output argument [m1] | aliasing.cpp:29:8:29:9 | s1 indirection [m1] |
 | aliasing.cpp:26:19:26:20 | referenceSetter output argument [m1] | aliasing.cpp:30:8:30:9 | s2 indirection [m1] |
@@ -457,21 +458,21 @@ edges
 | by_reference.cpp:44:12:44:24 | call to nonMemberGetA | by_reference.cpp:43:9:43:27 | getThroughNonMember indirection |
 | by_reference.cpp:44:26:44:29 | this indirection [a] | by_reference.cpp:31:46:31:46 | s indirection [a] |
 | by_reference.cpp:44:26:44:29 | this indirection [a] | by_reference.cpp:44:12:44:24 | call to nonMemberGetA |
-| by_reference.cpp:50:3:50:3 | setDirectly output argument [a] | by_reference.cpp:51:8:51:8 | (const S)... indirection [a] |
+| by_reference.cpp:50:3:50:3 | setDirectly output argument [a] | by_reference.cpp:51:8:51:8 | s indirection [a] |
 | by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:15:26:15:30 | value |
 | by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:50:3:50:3 | setDirectly output argument [a] |
-| by_reference.cpp:51:8:51:8 | (const S)... indirection [a] | by_reference.cpp:35:9:35:19 | this indirection [a] |
-| by_reference.cpp:51:8:51:8 | (const S)... indirection [a] | by_reference.cpp:51:10:51:20 | call to getDirectly |
-| by_reference.cpp:56:3:56:3 | setIndirectly output argument [a] | by_reference.cpp:57:8:57:8 | (const S)... indirection [a] |
+| by_reference.cpp:51:8:51:8 | s indirection [a] | by_reference.cpp:35:9:35:19 | this indirection [a] |
+| by_reference.cpp:51:8:51:8 | s indirection [a] | by_reference.cpp:51:10:51:20 | call to getDirectly |
+| by_reference.cpp:56:3:56:3 | setIndirectly output argument [a] | by_reference.cpp:57:8:57:8 | s indirection [a] |
 | by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:19:28:19:32 | value |
 | by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:56:3:56:3 | setIndirectly output argument [a] |
-| by_reference.cpp:57:8:57:8 | (const S)... indirection [a] | by_reference.cpp:39:9:39:21 | this indirection [a] |
-| by_reference.cpp:57:8:57:8 | (const S)... indirection [a] | by_reference.cpp:57:10:57:22 | call to getIndirectly |
-| by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] | by_reference.cpp:63:8:63:8 | (const S)... indirection [a] |
+| by_reference.cpp:57:8:57:8 | s indirection [a] | by_reference.cpp:39:9:39:21 | this indirection [a] |
+| by_reference.cpp:57:8:57:8 | s indirection [a] | by_reference.cpp:57:10:57:22 | call to getIndirectly |
+| by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] | by_reference.cpp:63:8:63:8 | s indirection [a] |
 | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:23:34:23:38 | value |
 | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] |
-| by_reference.cpp:63:8:63:8 | (const S)... indirection [a] | by_reference.cpp:43:9:43:27 | this indirection [a] |
-| by_reference.cpp:63:8:63:8 | (const S)... indirection [a] | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
+| by_reference.cpp:63:8:63:8 | s indirection [a] | by_reference.cpp:43:9:43:27 | this indirection [a] |
+| by_reference.cpp:63:8:63:8 | s indirection [a] | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
 | by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] | by_reference.cpp:69:22:69:23 | & ... indirection [a] |
 | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:11:48:11:52 | value |
 | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] |
@@ -483,11 +484,11 @@ edges
 | by_reference.cpp:84:10:84:10 | inner indirection [post update] [a] | by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a] |
 | by_reference.cpp:84:10:84:10 | inner indirection [post update] [a] | by_reference.cpp:107:29:107:37 | taint_inner_a_ptr output argument [a] |
 | by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:84:3:84:25 | ... = ... |
-| by_reference.cpp:88:3:88:24 | ... = ... | by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] |
-| by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] | by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] |
-| by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] | by_reference.cpp:123:21:123:36 | taint_inner_a_ref output argument [a] |
-| by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] |
-| by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] | by_reference.cpp:127:21:127:38 | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:88:3:88:24 | ... = ... | by_reference.cpp:88:9:88:9 | inner indirection [post update] [a] |
+| by_reference.cpp:88:9:88:9 | inner indirection [post update] [a] | by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:88:9:88:9 | inner indirection [post update] [a] | by_reference.cpp:123:21:123:36 | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:88:9:88:9 | inner indirection [post update] [a] | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:88:9:88:9 | inner indirection [post update] [a] | by_reference.cpp:127:21:127:38 | taint_inner_a_ref output argument [a] |
 | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:88:3:88:24 | ... = ... |
 | by_reference.cpp:91:25:91:26 | pa | by_reference.cpp:104:15:104:22 | taint_a_ptr output argument |
 | by_reference.cpp:91:25:91:26 | pa | by_reference.cpp:108:15:108:24 | taint_a_ptr output argument |
@@ -585,17 +586,17 @@ edges
 | complex.cpp:11:22:11:27 | ... = ... | complex.cpp:11:22:11:23 | this indirection [post update] [a_] |
 | complex.cpp:12:17:12:17 | b | complex.cpp:12:22:12:27 | ... = ... |
 | complex.cpp:12:22:12:27 | ... = ... | complex.cpp:12:22:12:23 | this indirection [post update] [b_] |
-| complex.cpp:40:17:40:17 | b indirection [inner, f, a_] | complex.cpp:42:8:42:8 | (reference dereference) indirection [inner, f, a_] |
-| complex.cpp:40:17:40:17 | b indirection [inner, f, b_] | complex.cpp:43:8:43:8 | (reference dereference) indirection [inner, f, b_] |
-| complex.cpp:42:8:42:8 | (reference dereference) indirection [inner, f, a_] | complex.cpp:42:10:42:14 | inner indirection [f, a_] |
+| complex.cpp:40:17:40:17 | b indirection [inner, f, a_] | complex.cpp:42:8:42:8 | b indirection [inner, f, a_] |
+| complex.cpp:40:17:40:17 | b indirection [inner, f, b_] | complex.cpp:43:8:43:8 | b indirection [inner, f, b_] |
+| complex.cpp:42:8:42:8 | b indirection [inner, f, a_] | complex.cpp:42:10:42:14 | inner indirection [f, a_] |
 | complex.cpp:42:10:42:14 | inner indirection [f, a_] | complex.cpp:42:16:42:16 | f indirection [a_] |
 | complex.cpp:42:16:42:16 | f indirection [a_] | complex.cpp:9:7:9:7 | this indirection [a_] |
 | complex.cpp:42:16:42:16 | f indirection [a_] | complex.cpp:42:18:42:18 | call to a |
-| complex.cpp:43:8:43:8 | (reference dereference) indirection [inner, f, b_] | complex.cpp:43:10:43:14 | inner indirection [f, b_] |
+| complex.cpp:43:8:43:8 | b indirection [inner, f, b_] | complex.cpp:43:10:43:14 | inner indirection [f, b_] |
 | complex.cpp:43:10:43:14 | inner indirection [f, b_] | complex.cpp:43:16:43:16 | f indirection [b_] |
 | complex.cpp:43:16:43:16 | f indirection [b_] | complex.cpp:10:7:10:7 | this indirection [b_] |
 | complex.cpp:43:16:43:16 | f indirection [b_] | complex.cpp:43:18:43:18 | call to b |
-| complex.cpp:53:6:53:10 | b1 indirection [post update] [inner, f, a_] | complex.cpp:59:7:59:8 | (reference to) indirection [inner, f, a_] |
+| complex.cpp:53:6:53:10 | b1 indirection [post update] [inner, f, a_] | complex.cpp:59:7:59:8 | b1 indirection [inner, f, a_] |
 | complex.cpp:53:12:53:12 | inner indirection [post update] [f, a_] | complex.cpp:53:6:53:10 | b1 indirection [post update] [inner, f, a_] |
 | complex.cpp:53:12:53:12 | inner indirection [post update] [f, a_] | complex.cpp:53:6:53:10 | b1 indirection [post update] [inner, f, a_] |
 | complex.cpp:53:12:53:12 | inner indirection [post update] [f, a_] | complex.cpp:53:6:53:10 | b1 indirection [post update] [inner, f, a_] |
@@ -604,7 +605,7 @@ edges
 | complex.cpp:53:12:53:12 | setA output argument [a_] | complex.cpp:53:12:53:12 | inner indirection [post update] [f, a_] |
 | complex.cpp:53:19:53:28 | call to user_input | complex.cpp:11:17:11:17 | a |
 | complex.cpp:53:19:53:28 | call to user_input | complex.cpp:53:12:53:12 | setA output argument [a_] |
-| complex.cpp:54:6:54:10 | b2 indirection [post update] [inner, f, b_] | complex.cpp:62:7:62:8 | (reference to) indirection [inner, f, b_] |
+| complex.cpp:54:6:54:10 | b2 indirection [post update] [inner, f, b_] | complex.cpp:62:7:62:8 | b2 indirection [inner, f, b_] |
 | complex.cpp:54:12:54:12 | inner indirection [post update] [f, b_] | complex.cpp:54:6:54:10 | b2 indirection [post update] [inner, f, b_] |
 | complex.cpp:54:12:54:12 | inner indirection [post update] [f, b_] | complex.cpp:54:6:54:10 | b2 indirection [post update] [inner, f, b_] |
 | complex.cpp:54:12:54:12 | inner indirection [post update] [f, b_] | complex.cpp:54:6:54:10 | b2 indirection [post update] [inner, f, b_] |
@@ -613,7 +614,7 @@ edges
 | complex.cpp:54:12:54:12 | setB output argument [b_] | complex.cpp:54:12:54:12 | inner indirection [post update] [f, b_] |
 | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:12:17:12:17 | b |
 | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:54:12:54:12 | setB output argument [b_] |
-| complex.cpp:55:6:55:10 | b3 indirection [post update] [inner, f, a_] | complex.cpp:65:7:65:8 | (reference to) indirection [inner, f, a_] |
+| complex.cpp:55:6:55:10 | b3 indirection [post update] [inner, f, a_] | complex.cpp:65:7:65:8 | b3 indirection [inner, f, a_] |
 | complex.cpp:55:12:55:12 | inner indirection [post update] [f, a_] | complex.cpp:55:6:55:10 | b3 indirection [post update] [inner, f, a_] |
 | complex.cpp:55:12:55:12 | inner indirection [post update] [f, a_] | complex.cpp:55:6:55:10 | b3 indirection [post update] [inner, f, a_] |
 | complex.cpp:55:12:55:12 | inner indirection [post update] [f, a_] | complex.cpp:55:6:55:10 | b3 indirection [post update] [inner, f, a_] |
@@ -622,7 +623,7 @@ edges
 | complex.cpp:55:12:55:12 | setA output argument [a_] | complex.cpp:55:12:55:12 | inner indirection [post update] [f, a_] |
 | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:11:17:11:17 | a |
 | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:55:12:55:12 | setA output argument [a_] |
-| complex.cpp:56:6:56:10 | b3 indirection [post update] [inner, f, b_] | complex.cpp:65:7:65:8 | (reference to) indirection [inner, f, b_] |
+| complex.cpp:56:6:56:10 | b3 indirection [post update] [inner, f, b_] | complex.cpp:65:7:65:8 | b3 indirection [inner, f, b_] |
 | complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] | complex.cpp:56:6:56:10 | b3 indirection [post update] [inner, f, b_] |
 | complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] | complex.cpp:56:6:56:10 | b3 indirection [post update] [inner, f, b_] |
 | complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] | complex.cpp:56:6:56:10 | b3 indirection [post update] [inner, f, b_] |
@@ -631,18 +632,19 @@ edges
 | complex.cpp:56:12:56:12 | setB output argument [b_] | complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] |
 | complex.cpp:56:19:56:28 | call to user_input | complex.cpp:12:17:12:17 | b |
 | complex.cpp:56:19:56:28 | call to user_input | complex.cpp:56:12:56:12 | setB output argument [b_] |
-| complex.cpp:59:7:59:8 | (reference to) indirection [inner, f, a_] | complex.cpp:40:17:40:17 | b indirection [inner, f, a_] |
-| complex.cpp:62:7:62:8 | (reference to) indirection [inner, f, b_] | complex.cpp:40:17:40:17 | b indirection [inner, f, b_] |
-| complex.cpp:65:7:65:8 | (reference to) indirection [inner, f, a_] | complex.cpp:40:17:40:17 | b indirection [inner, f, a_] |
-| complex.cpp:65:7:65:8 | (reference to) indirection [inner, f, b_] | complex.cpp:40:17:40:17 | b indirection [inner, f, b_] |
-| conflated.cpp:10:3:10:22 | ... = ... | conflated.cpp:10:7:10:7 | (reference dereference) indirection [post update] [p indirection] |
-| conflated.cpp:10:7:10:7 | (reference dereference) indirection [post update] [p indirection] | conflated.cpp:11:9:11:10 | (reference dereference) indirection [p indirection] |
+| complex.cpp:59:7:59:8 | b1 indirection [inner, f, a_] | complex.cpp:40:17:40:17 | b indirection [inner, f, a_] |
+| complex.cpp:62:7:62:8 | b2 indirection [inner, f, b_] | complex.cpp:40:17:40:17 | b indirection [inner, f, b_] |
+| complex.cpp:65:7:65:8 | b3 indirection [inner, f, a_] | complex.cpp:40:17:40:17 | b indirection [inner, f, a_] |
+| complex.cpp:65:7:65:8 | b3 indirection [inner, f, b_] | complex.cpp:40:17:40:17 | b indirection [inner, f, b_] |
+| conflated.cpp:10:3:10:22 | ... = ... | conflated.cpp:10:7:10:7 | ra indirection [post update] [p indirection] |
+| conflated.cpp:10:7:10:7 | ra indirection [post update] [p indirection] | conflated.cpp:11:9:11:10 | ra indirection [p indirection] |
 | conflated.cpp:10:11:10:20 | call to user_input | conflated.cpp:10:3:10:22 | ... = ... |
-| conflated.cpp:11:9:11:10 | (reference dereference) indirection [p indirection] | conflated.cpp:11:8:11:12 | * ... |
-| conflated.cpp:11:9:11:10 | (reference dereference) indirection [p indirection] | conflated.cpp:11:12:11:12 | p indirection |
-| conflated.cpp:11:9:11:10 | (reference dereference) indirection [p indirection] | conflated.cpp:11:12:11:12 | p indirection |
+| conflated.cpp:11:9:11:10 | ra indirection [p indirection] | conflated.cpp:11:8:11:12 | * ... |
+| conflated.cpp:11:9:11:10 | ra indirection [p indirection] | conflated.cpp:11:12:11:12 | p indirection |
+| conflated.cpp:11:9:11:10 | ra indirection [p indirection] | conflated.cpp:11:12:11:12 | p indirection |
 | conflated.cpp:11:12:11:12 | p indirection | conflated.cpp:11:8:11:12 | * ... |
 | conflated.cpp:11:12:11:12 | p indirection | conflated.cpp:11:8:11:12 | * ... |
+| conflated.cpp:19:19:19:21 | argument_source output argument | conflated.cpp:20:8:20:10 | raw indirection |
 | conflated.cpp:19:19:19:21 | argument_source output argument | conflated.cpp:20:8:20:10 | raw indirection |
 | conflated.cpp:19:19:19:21 | argument_source output argument | conflated.cpp:20:8:20:10 | raw indirection |
 | conflated.cpp:29:3:29:22 | ... = ... | conflated.cpp:29:7:29:7 | pa indirection [post update] [x] |
@@ -691,34 +693,34 @@ edges
 | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:35:23:35 | b |
 | constructors.cpp:23:28:23:28 | a | constructors.cpp:23:25:23:29 | this indirection [post update] [a_] |
 | constructors.cpp:23:35:23:35 | b | constructors.cpp:23:32:23:36 | this indirection [post update] [b_] |
-| constructors.cpp:26:15:26:15 | f indirection [a_] | constructors.cpp:28:10:28:10 | (reference dereference) indirection [a_] |
-| constructors.cpp:26:15:26:15 | f indirection [b_] | constructors.cpp:29:10:29:10 | (reference dereference) indirection [b_] |
-| constructors.cpp:28:10:28:10 | (reference dereference) indirection [a_] | constructors.cpp:18:9:18:9 | this indirection [a_] |
-| constructors.cpp:28:10:28:10 | (reference dereference) indirection [a_] | constructors.cpp:28:12:28:12 | call to a |
-| constructors.cpp:29:10:29:10 | (reference dereference) indirection [b_] | constructors.cpp:19:9:19:9 | this indirection [b_] |
-| constructors.cpp:29:10:29:10 | (reference dereference) indirection [b_] | constructors.cpp:29:12:29:12 | call to b |
-| constructors.cpp:34:9:34:9 | call to Foo [a_] | constructors.cpp:40:9:40:9 | (reference to) indirection [a_] |
+| constructors.cpp:26:15:26:15 | f indirection [a_] | constructors.cpp:28:10:28:10 | f indirection [a_] |
+| constructors.cpp:26:15:26:15 | f indirection [b_] | constructors.cpp:29:10:29:10 | f indirection [b_] |
+| constructors.cpp:28:10:28:10 | f indirection [a_] | constructors.cpp:18:9:18:9 | this indirection [a_] |
+| constructors.cpp:28:10:28:10 | f indirection [a_] | constructors.cpp:28:12:28:12 | call to a |
+| constructors.cpp:29:10:29:10 | f indirection [b_] | constructors.cpp:19:9:19:9 | this indirection [b_] |
+| constructors.cpp:29:10:29:10 | f indirection [b_] | constructors.cpp:29:12:29:12 | call to b |
+| constructors.cpp:34:9:34:9 | call to Foo [a_] | constructors.cpp:40:9:40:9 | f indirection [a_] |
 | constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:23:13:23:13 | a |
 | constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:34:9:34:9 | call to Foo [a_] |
-| constructors.cpp:35:9:35:9 | call to Foo [b_] | constructors.cpp:43:9:43:9 | (reference to) indirection [b_] |
+| constructors.cpp:35:9:35:9 | call to Foo [b_] | constructors.cpp:43:9:43:9 | g indirection [b_] |
 | constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:23:20:23:20 | b |
 | constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:35:9:35:9 | call to Foo [b_] |
-| constructors.cpp:36:9:36:9 | call to Foo [a_] | constructors.cpp:46:9:46:9 | (reference to) indirection [a_] |
-| constructors.cpp:36:9:36:9 | call to Foo [b_] | constructors.cpp:46:9:46:9 | (reference to) indirection [b_] |
+| constructors.cpp:36:9:36:9 | call to Foo [a_] | constructors.cpp:46:9:46:9 | h indirection [a_] |
+| constructors.cpp:36:9:36:9 | call to Foo [b_] | constructors.cpp:46:9:46:9 | h indirection [b_] |
 | constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:23:13:23:13 | a |
 | constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:36:9:36:9 | call to Foo [a_] |
 | constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:23:20:23:20 | b |
 | constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:36:9:36:9 | call to Foo [b_] |
-| constructors.cpp:40:9:40:9 | (reference to) indirection [a_] | constructors.cpp:26:15:26:15 | f indirection [a_] |
-| constructors.cpp:43:9:43:9 | (reference to) indirection [b_] | constructors.cpp:26:15:26:15 | f indirection [b_] |
-| constructors.cpp:46:9:46:9 | (reference to) indirection [a_] | constructors.cpp:26:15:26:15 | f indirection [a_] |
-| constructors.cpp:46:9:46:9 | (reference to) indirection [b_] | constructors.cpp:26:15:26:15 | f indirection [b_] |
+| constructors.cpp:40:9:40:9 | f indirection [a_] | constructors.cpp:26:15:26:15 | f indirection [a_] |
+| constructors.cpp:43:9:43:9 | g indirection [b_] | constructors.cpp:26:15:26:15 | f indirection [b_] |
+| constructors.cpp:46:9:46:9 | h indirection [a_] | constructors.cpp:26:15:26:15 | f indirection [a_] |
+| constructors.cpp:46:9:46:9 | h indirection [b_] | constructors.cpp:26:15:26:15 | f indirection [b_] |
 | qualifiers.cpp:9:21:9:25 | value | qualifiers.cpp:9:30:9:44 | ... = ... |
 | qualifiers.cpp:9:30:9:44 | ... = ... | qualifiers.cpp:9:36:9:36 | this indirection [post update] [a] |
 | qualifiers.cpp:12:40:12:44 | value | qualifiers.cpp:12:49:12:64 | ... = ... |
 | qualifiers.cpp:12:49:12:64 | ... = ... | qualifiers.cpp:12:56:12:56 | inner indirection [post update] [a] |
 | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:51:13:65 | ... = ... |
-| qualifiers.cpp:13:51:13:65 | ... = ... | qualifiers.cpp:13:57:13:57 | (reference dereference) indirection [post update] [a] |
+| qualifiers.cpp:13:51:13:65 | ... = ... | qualifiers.cpp:13:57:13:57 | inner indirection [post update] [a] |
 | qualifiers.cpp:22:5:22:9 | getInner output argument [inner indirection, a] | qualifiers.cpp:23:10:23:14 | outer indirection [inner indirection, a] |
 | qualifiers.cpp:22:5:22:38 | ... = ... | qualifiers.cpp:22:23:22:23 | call to getInner indirection [post update] [a] |
 | qualifiers.cpp:22:23:22:23 | call to getInner indirection [post update] [a] | qualifiers.cpp:22:5:22:9 | getInner output argument [inner indirection, a] |
@@ -809,28 +811,28 @@ edges
 | simple.cpp:20:24:20:29 | ... = ... | simple.cpp:20:24:20:25 | this indirection [post update] [a_] |
 | simple.cpp:21:19:21:19 | b | simple.cpp:21:24:21:29 | ... = ... |
 | simple.cpp:21:24:21:29 | ... = ... | simple.cpp:21:24:21:25 | this indirection [post update] [b_] |
-| simple.cpp:26:15:26:15 | f indirection [a_] | simple.cpp:28:10:28:10 | (reference dereference) indirection [a_] |
-| simple.cpp:26:15:26:15 | f indirection [b_] | simple.cpp:29:10:29:10 | (reference dereference) indirection [b_] |
-| simple.cpp:28:10:28:10 | (reference dereference) indirection [a_] | simple.cpp:18:9:18:9 | this indirection [a_] |
-| simple.cpp:28:10:28:10 | (reference dereference) indirection [a_] | simple.cpp:28:12:28:12 | call to a |
-| simple.cpp:29:10:29:10 | (reference dereference) indirection [b_] | simple.cpp:19:9:19:9 | this indirection [b_] |
-| simple.cpp:29:10:29:10 | (reference dereference) indirection [b_] | simple.cpp:29:12:29:12 | call to b |
-| simple.cpp:39:5:39:5 | setA output argument [a_] | simple.cpp:45:9:45:9 | (reference to) indirection [a_] |
+| simple.cpp:26:15:26:15 | f indirection [a_] | simple.cpp:28:10:28:10 | f indirection [a_] |
+| simple.cpp:26:15:26:15 | f indirection [b_] | simple.cpp:29:10:29:10 | f indirection [b_] |
+| simple.cpp:28:10:28:10 | f indirection [a_] | simple.cpp:18:9:18:9 | this indirection [a_] |
+| simple.cpp:28:10:28:10 | f indirection [a_] | simple.cpp:28:12:28:12 | call to a |
+| simple.cpp:29:10:29:10 | f indirection [b_] | simple.cpp:19:9:19:9 | this indirection [b_] |
+| simple.cpp:29:10:29:10 | f indirection [b_] | simple.cpp:29:12:29:12 | call to b |
+| simple.cpp:39:5:39:5 | setA output argument [a_] | simple.cpp:45:9:45:9 | f indirection [a_] |
 | simple.cpp:39:12:39:21 | call to user_input | simple.cpp:20:19:20:19 | a |
 | simple.cpp:39:12:39:21 | call to user_input | simple.cpp:39:5:39:5 | setA output argument [a_] |
-| simple.cpp:40:5:40:5 | setB output argument [b_] | simple.cpp:48:9:48:9 | (reference to) indirection [b_] |
+| simple.cpp:40:5:40:5 | setB output argument [b_] | simple.cpp:48:9:48:9 | g indirection [b_] |
 | simple.cpp:40:12:40:21 | call to user_input | simple.cpp:21:19:21:19 | b |
 | simple.cpp:40:12:40:21 | call to user_input | simple.cpp:40:5:40:5 | setB output argument [b_] |
-| simple.cpp:41:5:41:5 | setA output argument [a_] | simple.cpp:51:9:51:9 | (reference to) indirection [a_] |
+| simple.cpp:41:5:41:5 | setA output argument [a_] | simple.cpp:51:9:51:9 | h indirection [a_] |
 | simple.cpp:41:12:41:21 | call to user_input | simple.cpp:20:19:20:19 | a |
 | simple.cpp:41:12:41:21 | call to user_input | simple.cpp:41:5:41:5 | setA output argument [a_] |
-| simple.cpp:42:5:42:5 | setB output argument [b_] | simple.cpp:51:9:51:9 | (reference to) indirection [b_] |
+| simple.cpp:42:5:42:5 | setB output argument [b_] | simple.cpp:51:9:51:9 | h indirection [b_] |
 | simple.cpp:42:12:42:21 | call to user_input | simple.cpp:21:19:21:19 | b |
 | simple.cpp:42:12:42:21 | call to user_input | simple.cpp:42:5:42:5 | setB output argument [b_] |
-| simple.cpp:45:9:45:9 | (reference to) indirection [a_] | simple.cpp:26:15:26:15 | f indirection [a_] |
-| simple.cpp:48:9:48:9 | (reference to) indirection [b_] | simple.cpp:26:15:26:15 | f indirection [b_] |
-| simple.cpp:51:9:51:9 | (reference to) indirection [a_] | simple.cpp:26:15:26:15 | f indirection [a_] |
-| simple.cpp:51:9:51:9 | (reference to) indirection [b_] | simple.cpp:26:15:26:15 | f indirection [b_] |
+| simple.cpp:45:9:45:9 | f indirection [a_] | simple.cpp:26:15:26:15 | f indirection [a_] |
+| simple.cpp:48:9:48:9 | g indirection [b_] | simple.cpp:26:15:26:15 | f indirection [b_] |
+| simple.cpp:51:9:51:9 | h indirection [a_] | simple.cpp:26:15:26:15 | f indirection [a_] |
+| simple.cpp:51:9:51:9 | h indirection [b_] | simple.cpp:26:15:26:15 | f indirection [b_] |
 | simple.cpp:65:5:65:22 | ... = ... | simple.cpp:65:7:65:7 | a indirection [post update] [i] |
 | simple.cpp:65:7:65:7 | a indirection [post update] [i] | simple.cpp:67:10:67:11 | a2 indirection [i] |
 | simple.cpp:65:11:65:20 | call to user_input | simple.cpp:65:5:65:22 | ... = ... |
@@ -960,7 +962,7 @@ nodes
 | A.cpp:98:12:98:18 | new | semmle.label | new |
 | A.cpp:100:5:100:13 | ... = ... | semmle.label | ... = ... |
 | A.cpp:100:9:100:9 | c1 indirection [post update] [a] | semmle.label | c1 indirection [post update] [a] |
-| A.cpp:101:8:101:9 | (C *)... indirection [a] | semmle.label | (C *)... indirection [a] |
+| A.cpp:101:8:101:9 | c1 indirection [a] | semmle.label | c1 indirection [a] |
 | A.cpp:103:14:103:14 | c indirection [a] | semmle.label | c indirection [a] |
 | A.cpp:107:12:107:13 | c1 indirection [a] | semmle.label | c1 indirection [a] |
 | A.cpp:107:12:107:16 | a | semmle.label | a |
@@ -1158,6 +1160,7 @@ nodes
 | E.cpp:30:23:30:26 | p indirection [post update] [data, buffer indirection] | semmle.label | p indirection [post update] [data, buffer indirection] |
 | E.cpp:30:28:30:33 | data indirection [post update] [buffer indirection] | semmle.label | data indirection [post update] [buffer indirection] |
 | E.cpp:31:10:31:12 | raw indirection | semmle.label | raw indirection |
+| E.cpp:31:10:31:12 | raw indirection | semmle.label | raw indirection |
 | E.cpp:32:10:32:10 | b indirection [buffer indirection] | semmle.label | b indirection [buffer indirection] |
 | E.cpp:32:13:32:18 | buffer indirection | semmle.label | buffer indirection |
 | E.cpp:32:13:32:18 | buffer indirection | semmle.label | buffer indirection |
@@ -1166,7 +1169,7 @@ nodes
 | aliasing.cpp:9:6:9:7 | s indirection [post update] [m1] | semmle.label | s indirection [post update] [m1] |
 | aliasing.cpp:9:11:9:20 | call to user_input | semmle.label | call to user_input |
 | aliasing.cpp:13:3:13:21 | ... = ... | semmle.label | ... = ... |
-| aliasing.cpp:13:5:13:6 | (reference dereference) indirection [post update] [m1] | semmle.label | (reference dereference) indirection [post update] [m1] |
+| aliasing.cpp:13:5:13:6 | s indirection [post update] [m1] | semmle.label | s indirection [post update] [m1] |
 | aliasing.cpp:13:10:13:19 | call to user_input | semmle.label | call to user_input |
 | aliasing.cpp:25:17:25:19 | pointerSetter output argument [m1] | semmle.label | pointerSetter output argument [m1] |
 | aliasing.cpp:26:19:26:20 | referenceSetter output argument [m1] | semmle.label | referenceSetter output argument [m1] |
@@ -1334,15 +1337,15 @@ nodes
 | by_reference.cpp:44:26:44:29 | this indirection [a] | semmle.label | this indirection [a] |
 | by_reference.cpp:50:3:50:3 | setDirectly output argument [a] | semmle.label | setDirectly output argument [a] |
 | by_reference.cpp:50:17:50:26 | call to user_input | semmle.label | call to user_input |
-| by_reference.cpp:51:8:51:8 | (const S)... indirection [a] | semmle.label | (const S)... indirection [a] |
+| by_reference.cpp:51:8:51:8 | s indirection [a] | semmle.label | s indirection [a] |
 | by_reference.cpp:51:10:51:20 | call to getDirectly | semmle.label | call to getDirectly |
 | by_reference.cpp:56:3:56:3 | setIndirectly output argument [a] | semmle.label | setIndirectly output argument [a] |
 | by_reference.cpp:56:19:56:28 | call to user_input | semmle.label | call to user_input |
-| by_reference.cpp:57:8:57:8 | (const S)... indirection [a] | semmle.label | (const S)... indirection [a] |
+| by_reference.cpp:57:8:57:8 | s indirection [a] | semmle.label | s indirection [a] |
 | by_reference.cpp:57:10:57:22 | call to getIndirectly | semmle.label | call to getIndirectly |
 | by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] | semmle.label | setThroughNonMember output argument [a] |
 | by_reference.cpp:62:25:62:34 | call to user_input | semmle.label | call to user_input |
-| by_reference.cpp:63:8:63:8 | (const S)... indirection [a] | semmle.label | (const S)... indirection [a] |
+| by_reference.cpp:63:8:63:8 | s indirection [a] | semmle.label | s indirection [a] |
 | by_reference.cpp:63:10:63:28 | call to getThroughNonMember | semmle.label | call to getThroughNonMember |
 | by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] | semmle.label | nonMemberSetA output argument [a] |
 | by_reference.cpp:68:21:68:30 | call to user_input | semmle.label | call to user_input |
@@ -1352,7 +1355,7 @@ nodes
 | by_reference.cpp:84:10:84:10 | inner indirection [post update] [a] | semmle.label | inner indirection [post update] [a] |
 | by_reference.cpp:84:14:84:23 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:88:3:88:24 | ... = ... | semmle.label | ... = ... |
-| by_reference.cpp:88:9:88:9 | (reference dereference) indirection [post update] [a] | semmle.label | (reference dereference) indirection [post update] [a] |
+| by_reference.cpp:88:9:88:9 | inner indirection [post update] [a] | semmle.label | inner indirection [post update] [a] |
 | by_reference.cpp:88:13:88:22 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:91:25:91:26 | pa | semmle.label | pa |
 | by_reference.cpp:92:9:92:18 | call to user_input | semmle.label | call to user_input |
@@ -1448,11 +1451,11 @@ nodes
 | complex.cpp:12:22:12:27 | ... = ... | semmle.label | ... = ... |
 | complex.cpp:40:17:40:17 | b indirection [inner, f, a_] | semmle.label | b indirection [inner, f, a_] |
 | complex.cpp:40:17:40:17 | b indirection [inner, f, b_] | semmle.label | b indirection [inner, f, b_] |
-| complex.cpp:42:8:42:8 | (reference dereference) indirection [inner, f, a_] | semmle.label | (reference dereference) indirection [inner, f, a_] |
+| complex.cpp:42:8:42:8 | b indirection [inner, f, a_] | semmle.label | b indirection [inner, f, a_] |
 | complex.cpp:42:10:42:14 | inner indirection [f, a_] | semmle.label | inner indirection [f, a_] |
 | complex.cpp:42:16:42:16 | f indirection [a_] | semmle.label | f indirection [a_] |
 | complex.cpp:42:18:42:18 | call to a | semmle.label | call to a |
-| complex.cpp:43:8:43:8 | (reference dereference) indirection [inner, f, b_] | semmle.label | (reference dereference) indirection [inner, f, b_] |
+| complex.cpp:43:8:43:8 | b indirection [inner, f, b_] | semmle.label | b indirection [inner, f, b_] |
 | complex.cpp:43:10:43:14 | inner indirection [f, b_] | semmle.label | inner indirection [f, b_] |
 | complex.cpp:43:16:43:16 | f indirection [b_] | semmle.label | f indirection [b_] |
 | complex.cpp:43:18:43:18 | call to b | semmle.label | call to b |
@@ -1480,18 +1483,19 @@ nodes
 | complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] | semmle.label | inner indirection [post update] [f, b_] |
 | complex.cpp:56:12:56:12 | setB output argument [b_] | semmle.label | setB output argument [b_] |
 | complex.cpp:56:19:56:28 | call to user_input | semmle.label | call to user_input |
-| complex.cpp:59:7:59:8 | (reference to) indirection [inner, f, a_] | semmle.label | (reference to) indirection [inner, f, a_] |
-| complex.cpp:62:7:62:8 | (reference to) indirection [inner, f, b_] | semmle.label | (reference to) indirection [inner, f, b_] |
-| complex.cpp:65:7:65:8 | (reference to) indirection [inner, f, a_] | semmle.label | (reference to) indirection [inner, f, a_] |
-| complex.cpp:65:7:65:8 | (reference to) indirection [inner, f, b_] | semmle.label | (reference to) indirection [inner, f, b_] |
+| complex.cpp:59:7:59:8 | b1 indirection [inner, f, a_] | semmle.label | b1 indirection [inner, f, a_] |
+| complex.cpp:62:7:62:8 | b2 indirection [inner, f, b_] | semmle.label | b2 indirection [inner, f, b_] |
+| complex.cpp:65:7:65:8 | b3 indirection [inner, f, a_] | semmle.label | b3 indirection [inner, f, a_] |
+| complex.cpp:65:7:65:8 | b3 indirection [inner, f, b_] | semmle.label | b3 indirection [inner, f, b_] |
 | conflated.cpp:10:3:10:22 | ... = ... | semmle.label | ... = ... |
-| conflated.cpp:10:7:10:7 | (reference dereference) indirection [post update] [p indirection] | semmle.label | (reference dereference) indirection [post update] [p indirection] |
+| conflated.cpp:10:7:10:7 | ra indirection [post update] [p indirection] | semmle.label | ra indirection [post update] [p indirection] |
 | conflated.cpp:10:11:10:20 | call to user_input | semmle.label | call to user_input |
 | conflated.cpp:11:8:11:12 | * ... | semmle.label | * ... |
-| conflated.cpp:11:9:11:10 | (reference dereference) indirection [p indirection] | semmle.label | (reference dereference) indirection [p indirection] |
+| conflated.cpp:11:9:11:10 | ra indirection [p indirection] | semmle.label | ra indirection [p indirection] |
 | conflated.cpp:11:12:11:12 | p indirection | semmle.label | p indirection |
 | conflated.cpp:11:12:11:12 | p indirection | semmle.label | p indirection |
 | conflated.cpp:19:19:19:21 | argument_source output argument | semmle.label | argument_source output argument |
+| conflated.cpp:20:8:20:10 | raw indirection | semmle.label | raw indirection |
 | conflated.cpp:20:8:20:10 | raw indirection | semmle.label | raw indirection |
 | conflated.cpp:20:8:20:10 | raw indirection | semmle.label | raw indirection |
 | conflated.cpp:29:3:29:22 | ... = ... | semmle.label | ... = ... |
@@ -1542,9 +1546,9 @@ nodes
 | constructors.cpp:23:35:23:35 | b | semmle.label | b |
 | constructors.cpp:26:15:26:15 | f indirection [a_] | semmle.label | f indirection [a_] |
 | constructors.cpp:26:15:26:15 | f indirection [b_] | semmle.label | f indirection [b_] |
-| constructors.cpp:28:10:28:10 | (reference dereference) indirection [a_] | semmle.label | (reference dereference) indirection [a_] |
+| constructors.cpp:28:10:28:10 | f indirection [a_] | semmle.label | f indirection [a_] |
 | constructors.cpp:28:12:28:12 | call to a | semmle.label | call to a |
-| constructors.cpp:29:10:29:10 | (reference dereference) indirection [b_] | semmle.label | (reference dereference) indirection [b_] |
+| constructors.cpp:29:10:29:10 | f indirection [b_] | semmle.label | f indirection [b_] |
 | constructors.cpp:29:12:29:12 | call to b | semmle.label | call to b |
 | constructors.cpp:34:9:34:9 | call to Foo [a_] | semmle.label | call to Foo [a_] |
 | constructors.cpp:34:11:34:20 | call to user_input | semmle.label | call to user_input |
@@ -1554,10 +1558,10 @@ nodes
 | constructors.cpp:36:9:36:9 | call to Foo [b_] | semmle.label | call to Foo [b_] |
 | constructors.cpp:36:11:36:20 | call to user_input | semmle.label | call to user_input |
 | constructors.cpp:36:25:36:34 | call to user_input | semmle.label | call to user_input |
-| constructors.cpp:40:9:40:9 | (reference to) indirection [a_] | semmle.label | (reference to) indirection [a_] |
-| constructors.cpp:43:9:43:9 | (reference to) indirection [b_] | semmle.label | (reference to) indirection [b_] |
-| constructors.cpp:46:9:46:9 | (reference to) indirection [a_] | semmle.label | (reference to) indirection [a_] |
-| constructors.cpp:46:9:46:9 | (reference to) indirection [b_] | semmle.label | (reference to) indirection [b_] |
+| constructors.cpp:40:9:40:9 | f indirection [a_] | semmle.label | f indirection [a_] |
+| constructors.cpp:43:9:43:9 | g indirection [b_] | semmle.label | g indirection [b_] |
+| constructors.cpp:46:9:46:9 | h indirection [a_] | semmle.label | h indirection [a_] |
+| constructors.cpp:46:9:46:9 | h indirection [b_] | semmle.label | h indirection [b_] |
 | qualifiers.cpp:9:21:9:25 | value | semmle.label | value |
 | qualifiers.cpp:9:30:9:44 | ... = ... | semmle.label | ... = ... |
 | qualifiers.cpp:9:36:9:36 | this indirection [post update] [a] | semmle.label | this indirection [post update] [a] |
@@ -1566,7 +1570,7 @@ nodes
 | qualifiers.cpp:12:56:12:56 | inner indirection [post update] [a] | semmle.label | inner indirection [post update] [a] |
 | qualifiers.cpp:13:42:13:46 | value | semmle.label | value |
 | qualifiers.cpp:13:51:13:65 | ... = ... | semmle.label | ... = ... |
-| qualifiers.cpp:13:57:13:57 | (reference dereference) indirection [post update] [a] | semmle.label | (reference dereference) indirection [post update] [a] |
+| qualifiers.cpp:13:57:13:57 | inner indirection [post update] [a] | semmle.label | inner indirection [post update] [a] |
 | qualifiers.cpp:22:5:22:9 | getInner output argument [inner indirection, a] | semmle.label | getInner output argument [inner indirection, a] |
 | qualifiers.cpp:22:5:22:38 | ... = ... | semmle.label | ... = ... |
 | qualifiers.cpp:22:23:22:23 | call to getInner indirection [post update] [a] | semmle.label | call to getInner indirection [post update] [a] |
@@ -1651,9 +1655,9 @@ nodes
 | simple.cpp:21:24:21:29 | ... = ... | semmle.label | ... = ... |
 | simple.cpp:26:15:26:15 | f indirection [a_] | semmle.label | f indirection [a_] |
 | simple.cpp:26:15:26:15 | f indirection [b_] | semmle.label | f indirection [b_] |
-| simple.cpp:28:10:28:10 | (reference dereference) indirection [a_] | semmle.label | (reference dereference) indirection [a_] |
+| simple.cpp:28:10:28:10 | f indirection [a_] | semmle.label | f indirection [a_] |
 | simple.cpp:28:12:28:12 | call to a | semmle.label | call to a |
-| simple.cpp:29:10:29:10 | (reference dereference) indirection [b_] | semmle.label | (reference dereference) indirection [b_] |
+| simple.cpp:29:10:29:10 | f indirection [b_] | semmle.label | f indirection [b_] |
 | simple.cpp:29:12:29:12 | call to b | semmle.label | call to b |
 | simple.cpp:39:5:39:5 | setA output argument [a_] | semmle.label | setA output argument [a_] |
 | simple.cpp:39:12:39:21 | call to user_input | semmle.label | call to user_input |
@@ -1663,10 +1667,10 @@ nodes
 | simple.cpp:41:12:41:21 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:42:5:42:5 | setB output argument [b_] | semmle.label | setB output argument [b_] |
 | simple.cpp:42:12:42:21 | call to user_input | semmle.label | call to user_input |
-| simple.cpp:45:9:45:9 | (reference to) indirection [a_] | semmle.label | (reference to) indirection [a_] |
-| simple.cpp:48:9:48:9 | (reference to) indirection [b_] | semmle.label | (reference to) indirection [b_] |
-| simple.cpp:51:9:51:9 | (reference to) indirection [a_] | semmle.label | (reference to) indirection [a_] |
-| simple.cpp:51:9:51:9 | (reference to) indirection [b_] | semmle.label | (reference to) indirection [b_] |
+| simple.cpp:45:9:45:9 | f indirection [a_] | semmle.label | f indirection [a_] |
+| simple.cpp:48:9:48:9 | g indirection [b_] | semmle.label | g indirection [b_] |
+| simple.cpp:51:9:51:9 | h indirection [a_] | semmle.label | h indirection [a_] |
+| simple.cpp:51:9:51:9 | h indirection [b_] | semmle.label | h indirection [b_] |
 | simple.cpp:65:5:65:22 | ... = ... | semmle.label | ... = ... |
 | simple.cpp:65:7:65:7 | a indirection [post update] [i] | semmle.label | a indirection [post update] [i] |
 | simple.cpp:65:11:65:20 | call to user_input | semmle.label | call to user_input |
@@ -1757,11 +1761,11 @@ subpaths
 | by_reference.cpp:40:12:40:15 | this indirection [a] | by_reference.cpp:35:9:35:19 | this indirection [a] | by_reference.cpp:35:9:35:19 | getDirectly indirection | by_reference.cpp:40:18:40:28 | call to getDirectly |
 | by_reference.cpp:44:26:44:29 | this indirection [a] | by_reference.cpp:31:46:31:46 | s indirection [a] | by_reference.cpp:31:16:31:28 | nonMemberGetA indirection | by_reference.cpp:44:12:44:24 | call to nonMemberGetA |
 | by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:15:26:15:30 | value | by_reference.cpp:16:11:16:11 | this indirection [post update] [a] | by_reference.cpp:50:3:50:3 | setDirectly output argument [a] |
-| by_reference.cpp:51:8:51:8 | (const S)... indirection [a] | by_reference.cpp:35:9:35:19 | this indirection [a] | by_reference.cpp:35:9:35:19 | getDirectly indirection | by_reference.cpp:51:10:51:20 | call to getDirectly |
+| by_reference.cpp:51:8:51:8 | s indirection [a] | by_reference.cpp:35:9:35:19 | this indirection [a] | by_reference.cpp:35:9:35:19 | getDirectly indirection | by_reference.cpp:51:10:51:20 | call to getDirectly |
 | by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:19:28:19:32 | value | by_reference.cpp:20:5:20:8 | setDirectly output argument [a] | by_reference.cpp:56:3:56:3 | setIndirectly output argument [a] |
-| by_reference.cpp:57:8:57:8 | (const S)... indirection [a] | by_reference.cpp:39:9:39:21 | this indirection [a] | by_reference.cpp:39:9:39:21 | getIndirectly indirection | by_reference.cpp:57:10:57:22 | call to getIndirectly |
+| by_reference.cpp:57:8:57:8 | s indirection [a] | by_reference.cpp:39:9:39:21 | this indirection [a] | by_reference.cpp:39:9:39:21 | getIndirectly indirection | by_reference.cpp:57:10:57:22 | call to getIndirectly |
 | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:23:34:23:38 | value | by_reference.cpp:24:19:24:22 | nonMemberSetA output argument [a] | by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] |
-| by_reference.cpp:63:8:63:8 | (const S)... indirection [a] | by_reference.cpp:43:9:43:27 | this indirection [a] | by_reference.cpp:43:9:43:27 | getThroughNonMember indirection | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
+| by_reference.cpp:63:8:63:8 | s indirection [a] | by_reference.cpp:43:9:43:27 | this indirection [a] | by_reference.cpp:43:9:43:27 | getThroughNonMember indirection | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
 | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:11:48:11:52 | value | by_reference.cpp:12:8:12:8 | s indirection [post update] [a] | by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] |
 | by_reference.cpp:69:22:69:23 | & ... indirection [a] | by_reference.cpp:31:46:31:46 | s indirection [a] | by_reference.cpp:31:16:31:28 | nonMemberGetA indirection | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
 | complex.cpp:42:16:42:16 | f indirection [a_] | complex.cpp:9:7:9:7 | this indirection [a_] | complex.cpp:9:7:9:7 | a indirection | complex.cpp:42:18:42:18 | call to a |
@@ -1770,17 +1774,17 @@ subpaths
 | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:12:17:12:17 | b | complex.cpp:12:22:12:23 | this indirection [post update] [b_] | complex.cpp:54:12:54:12 | setB output argument [b_] |
 | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:11:17:11:17 | a | complex.cpp:11:22:11:23 | this indirection [post update] [a_] | complex.cpp:55:12:55:12 | setA output argument [a_] |
 | complex.cpp:56:19:56:28 | call to user_input | complex.cpp:12:17:12:17 | b | complex.cpp:12:22:12:23 | this indirection [post update] [b_] | complex.cpp:56:12:56:12 | setB output argument [b_] |
-| constructors.cpp:28:10:28:10 | (reference dereference) indirection [a_] | constructors.cpp:18:9:18:9 | this indirection [a_] | constructors.cpp:18:9:18:9 | a indirection | constructors.cpp:28:12:28:12 | call to a |
-| constructors.cpp:29:10:29:10 | (reference dereference) indirection [b_] | constructors.cpp:19:9:19:9 | this indirection [b_] | constructors.cpp:19:9:19:9 | b indirection | constructors.cpp:29:12:29:12 | call to b |
+| constructors.cpp:28:10:28:10 | f indirection [a_] | constructors.cpp:18:9:18:9 | this indirection [a_] | constructors.cpp:18:9:18:9 | a indirection | constructors.cpp:28:12:28:12 | call to a |
+| constructors.cpp:29:10:29:10 | f indirection [b_] | constructors.cpp:19:9:19:9 | this indirection [b_] | constructors.cpp:19:9:19:9 | b indirection | constructors.cpp:29:12:29:12 | call to b |
 | constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:23:13:23:13 | a | constructors.cpp:23:25:23:29 | this indirection [post update] [a_] | constructors.cpp:34:9:34:9 | call to Foo [a_] |
 | constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:32:23:36 | this indirection [post update] [b_] | constructors.cpp:35:9:35:9 | call to Foo [b_] |
 | constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:23:13:23:13 | a | constructors.cpp:23:25:23:29 | this indirection [post update] [a_] | constructors.cpp:36:9:36:9 | call to Foo [a_] |
 | constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:32:23:36 | this indirection [post update] [b_] | constructors.cpp:36:9:36:9 | call to Foo [b_] |
 | qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:9:21:9:25 | value | qualifiers.cpp:9:36:9:36 | this indirection [post update] [a] | qualifiers.cpp:27:11:27:18 | setA output argument [a] |
 | qualifiers.cpp:32:35:32:44 | call to user_input | qualifiers.cpp:12:40:12:44 | value | qualifiers.cpp:12:56:12:56 | inner indirection [post update] [a] | qualifiers.cpp:32:23:32:30 | pointerSetA output argument [a] |
-| qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:57:13:57 | (reference dereference) indirection [post update] [a] | qualifiers.cpp:37:19:37:35 | referenceSetA output argument [a] |
-| simple.cpp:28:10:28:10 | (reference dereference) indirection [a_] | simple.cpp:18:9:18:9 | this indirection [a_] | simple.cpp:18:9:18:9 | a indirection | simple.cpp:28:12:28:12 | call to a |
-| simple.cpp:29:10:29:10 | (reference dereference) indirection [b_] | simple.cpp:19:9:19:9 | this indirection [b_] | simple.cpp:19:9:19:9 | b indirection | simple.cpp:29:12:29:12 | call to b |
+| qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:57:13:57 | inner indirection [post update] [a] | qualifiers.cpp:37:19:37:35 | referenceSetA output argument [a] |
+| simple.cpp:28:10:28:10 | f indirection [a_] | simple.cpp:18:9:18:9 | this indirection [a_] | simple.cpp:18:9:18:9 | a indirection | simple.cpp:28:12:28:12 | call to a |
+| simple.cpp:29:10:29:10 | f indirection [b_] | simple.cpp:19:9:19:9 | this indirection [b_] | simple.cpp:19:9:19:9 | b indirection | simple.cpp:29:12:29:12 | call to b |
 | simple.cpp:39:12:39:21 | call to user_input | simple.cpp:20:19:20:19 | a | simple.cpp:20:24:20:25 | this indirection [post update] [a_] | simple.cpp:39:5:39:5 | setA output argument [a_] |
 | simple.cpp:40:12:40:21 | call to user_input | simple.cpp:21:19:21:19 | b | simple.cpp:21:24:21:25 | this indirection [post update] [b_] | simple.cpp:40:5:40:5 | setB output argument [b_] |
 | simple.cpp:41:12:41:21 | call to user_input | simple.cpp:20:19:20:19 | a | simple.cpp:20:24:20:25 | this indirection [post update] [a_] | simple.cpp:41:5:41:5 | setA output argument [a_] |
@@ -1834,6 +1838,7 @@ subpaths
 | D.cpp:64:25:64:28 | elem | D.cpp:56:15:56:24 | new | D.cpp:64:25:64:28 | elem | elem flows from $@ | D.cpp:56:15:56:24 | new | new |
 | E.cpp:21:18:21:23 | buffer indirection | E.cpp:30:21:30:33 | argument_source output argument | E.cpp:21:18:21:23 | buffer indirection | buffer indirection flows from $@ | E.cpp:30:21:30:33 | argument_source output argument | argument_source output argument |
 | E.cpp:31:10:31:12 | raw indirection | E.cpp:28:21:28:23 | argument_source output argument | E.cpp:31:10:31:12 | raw indirection | raw indirection flows from $@ | E.cpp:28:21:28:23 | argument_source output argument | argument_source output argument |
+| E.cpp:31:10:31:12 | raw indirection | E.cpp:28:21:28:23 | argument_source output argument | E.cpp:31:10:31:12 | raw indirection | raw indirection flows from $@ | E.cpp:28:21:28:23 | argument_source output argument | argument_source output argument |
 | E.cpp:32:13:32:18 | buffer indirection | E.cpp:29:21:29:29 | argument_source output argument | E.cpp:32:13:32:18 | buffer indirection | buffer indirection flows from $@ | E.cpp:29:21:29:29 | argument_source output argument | argument_source output argument |
 | aliasing.cpp:29:11:29:12 | m1 | aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:29:11:29:12 | m1 | m1 flows from $@ | aliasing.cpp:9:11:9:20 | call to user_input | call to user_input |
 | aliasing.cpp:30:11:30:12 | m1 | aliasing.cpp:13:10:13:19 | call to user_input | aliasing.cpp:30:11:30:12 | m1 | m1 flows from $@ | aliasing.cpp:13:10:13:19 | call to user_input | call to user_input |
@@ -1883,6 +1888,7 @@ subpaths
 | complex.cpp:43:18:43:18 | call to b | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:43:18:43:18 | call to b | call to b flows from $@ | complex.cpp:54:19:54:28 | call to user_input | call to user_input |
 | complex.cpp:43:18:43:18 | call to b | complex.cpp:56:19:56:28 | call to user_input | complex.cpp:43:18:43:18 | call to b | call to b flows from $@ | complex.cpp:56:19:56:28 | call to user_input | call to user_input |
 | conflated.cpp:11:8:11:12 | * ... | conflated.cpp:10:11:10:20 | call to user_input | conflated.cpp:11:8:11:12 | * ... | * ... flows from $@ | conflated.cpp:10:11:10:20 | call to user_input | call to user_input |
+| conflated.cpp:20:8:20:10 | raw indirection | conflated.cpp:19:19:19:21 | argument_source output argument | conflated.cpp:20:8:20:10 | raw indirection | raw indirection flows from $@ | conflated.cpp:19:19:19:21 | argument_source output argument | argument_source output argument |
 | conflated.cpp:20:8:20:10 | raw indirection | conflated.cpp:19:19:19:21 | argument_source output argument | conflated.cpp:20:8:20:10 | raw indirection | raw indirection flows from $@ | conflated.cpp:19:19:19:21 | argument_source output argument | argument_source output argument |
 | conflated.cpp:20:8:20:10 | raw indirection | conflated.cpp:19:19:19:21 | argument_source output argument | conflated.cpp:20:8:20:10 | raw indirection | raw indirection flows from $@ | conflated.cpp:19:19:19:21 | argument_source output argument | argument_source output argument |
 | conflated.cpp:30:12:30:12 | x | conflated.cpp:29:11:29:20 | call to user_input | conflated.cpp:30:12:30:12 | x | x flows from $@ | conflated.cpp:29:11:29:20 | call to user_input | call to user_input |

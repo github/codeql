@@ -3,6 +3,8 @@
 | A.cpp:28:29:28:29 | this | IR only |
 | A.cpp:31:14:31:21 | new | IR only |
 | A.cpp:40:15:40:21 | 0 | IR only |
+| A.cpp:40:15:40:21 | 0 | IR only |
+| A.cpp:41:15:41:21 | new | IR only |
 | A.cpp:41:15:41:21 | new | IR only |
 | A.cpp:41:15:41:21 | new | IR only |
 | A.cpp:47:12:47:18 | new | IR only |
@@ -140,11 +142,17 @@
 | aliasing.cpp:206:15:206:16 | s | IR only |
 | arrays.cpp:6:3:6:8 | access to array | AST only |
 | arrays.cpp:7:8:7:13 | access to array | IR only |
+| arrays.cpp:7:8:7:13 | access to array | IR only |
+| arrays.cpp:8:8:8:13 | access to array | IR only |
 | arrays.cpp:8:8:8:13 | access to array | IR only |
 | arrays.cpp:9:8:9:11 | * ... | IR only |
+| arrays.cpp:9:8:9:11 | * ... | IR only |
+| arrays.cpp:10:8:10:15 | * ... | IR only |
 | arrays.cpp:10:8:10:15 | * ... | IR only |
 | arrays.cpp:15:3:15:10 | * ... | AST only |
 | arrays.cpp:16:8:16:13 | access to array | IR only |
+| arrays.cpp:16:8:16:13 | access to array | IR only |
+| arrays.cpp:17:8:17:13 | access to array | IR only |
 | arrays.cpp:17:8:17:13 | access to array | IR only |
 | arrays.cpp:36:19:36:22 | data | AST only |
 | arrays.cpp:42:22:42:25 | data | AST only |
@@ -191,6 +199,7 @@
 | realistic.cpp:26:5:26:10 | offset | AST only |
 | realistic.cpp:49:20:49:22 | baz | AST only |
 | realistic.cpp:53:35:53:43 | bufferLen | AST only |
+| realistic.cpp:54:50:54:61 | call to user_input | IR only |
 | realistic.cpp:55:16:55:18 | foo | IR only |
 | realistic.cpp:55:23:55:25 | access to array | IR only |
 | realistic.cpp:55:28:55:36 | baz | IR only |
@@ -199,6 +208,7 @@
 | realistic.cpp:57:99:57:101 | access to array | IR only |
 | realistic.cpp:57:104:57:112 | baz | IR only |
 | realistic.cpp:57:114:57:122 | userInput | IR only |
+| realistic.cpp:60:21:60:52 | buffer | IR only |
 | realistic.cpp:60:25:60:27 | foo | IR only |
 | realistic.cpp:60:32:60:34 | access to array | IR only |
 | realistic.cpp:60:37:60:45 | baz | IR only |

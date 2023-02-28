@@ -512,6 +512,7 @@
 | realistic.cpp:54:27:54:29 | baz |
 | realistic.cpp:54:32:54:40 | userInput |
 | realistic.cpp:54:42:54:47 | buffer |
+| realistic.cpp:54:50:54:59 | call to user_input |
 | realistic.cpp:55:12:55:14 | foo |
 | realistic.cpp:55:12:55:21 | access to array |
 | realistic.cpp:55:23:55:25 | baz |
@@ -525,6 +526,7 @@
 | realistic.cpp:60:21:60:30 | access to array |
 | realistic.cpp:60:32:60:34 | baz |
 | realistic.cpp:60:37:60:45 | userInput |
+| realistic.cpp:60:47:60:52 | buffer |
 | realistic.cpp:60:55:60:57 | foo |
 | realistic.cpp:60:55:60:64 | access to array |
 | realistic.cpp:60:66:60:68 | baz |

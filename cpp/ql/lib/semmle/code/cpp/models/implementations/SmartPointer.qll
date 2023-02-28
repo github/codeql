@@ -17,6 +17,8 @@ private class SmartPtr extends Class, PointerWrapper {
   }
 
   override predicate pointsToConst() { this.getTemplateArgument(0).(Type).isConst() }
+
+  override Type getBaseType() { result = this.getTemplateArgument(0) }
 }
 
 /**

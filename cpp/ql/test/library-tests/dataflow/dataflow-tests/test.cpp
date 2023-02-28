@@ -432,8 +432,8 @@ void intPointerSourceCaller() {
 void intPointerSourceCaller2() {
   int local[1];
   intPointerSource(local);
-  sink(local); // $ ast=433:7 ast=434:20 ir
-  sink(*local); // $ ast=433:7 ast=434:20 ir
+  sink(local); // $ ast=433:7 ast=434:20 ir=433:7 ir=434:20 ir
+  sink(*local); // $ ast=433:7 ast=434:20 ir=433:7 ir=434:20
 }
 
 void intArraySourceCaller() {
@@ -447,8 +447,8 @@ void intArraySourceCaller() {
 void intArraySourceCaller2() {
   int local[2];
   intArraySource(local, 2);
-  sink(local); // $ ast=448:7 ast=449:18 ir
-  sink(*local); // $ ast=448:7 ast=449:18 ir
+  sink(local); // $ ast=448:7 ast=449:18 ir=448:7 ir=449:18 ir
+  sink(*local); // $ ast=448:7 ast=449:18 ir=448:7 ir=449:18
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -518,7 +518,7 @@ void uncertain_definition() {
   int clean = 0;
   stackArray[0] = source();
   stackArray[1] = clean;
-  sink(stackArray[0]); // $ ast=519:19 ir SPURIOUS: ast=517:7
+  sink(stackArray[0]); // $ ast=519:19 ir=517:7 ir=519:19 SPURIOUS: ast=517:7
 }
 
 void set_through_const_pointer(int x, const int **e) // $ ast-def=e ir-def=**e ir-def=*e
@@ -588,4 +588,30 @@ void test_write_to_param() {
   int x = 0;
   write_to_param(&x);
   sink(x); // $ SPURIOUS: ast
+}
+
+void test_indirect_flow_to_array() {
+  int* p = indirect_source();
+  int* xs[2];
+  xs[0] = p;
+  sink(*xs[0]); // $ ir=594:12 MISSING: ast SPURIOUS: ir=595:8
+}
+
+void test_def_by_ref_followed_by_uncertain_write_array(int* p) { // $ ast-def=p ir-def=*p
+  intPointerSource(p);
+  p[10] = 0;
+  sink(*p); // $ ir MISSING: ast
+}
+
+void test_def_by_ref_followed_by_uncertain_write_pointer(int* p) { // $ ast-def=p ir-def=*p
+  intPointerSource(p);
+  *p = 0;
+  sink(*p); // $ ir MISSING: ast
+}
+
+void test_flow_through_void_double_pointer(int *p) // $ ast-def=p
+{
+  intPointerSource(p);
+  void* q = (void*)&p;
+  sink(**(int**)q); // $ ir MISSING: ast
 }

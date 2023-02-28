@@ -86,9 +86,11 @@ int getMaxIndirectionsForType(Type type) {
   result = countIndirectionsForCppType(getTypeForGLValue(type))
 }
 
-private class PointerOrReferenceType extends Cpp::DerivedType {
-  PointerOrReferenceType() {
+private class PointerOrArrayOrReferenceType extends Cpp::DerivedType {
+  PointerOrArrayOrReferenceType() {
     this instanceof Cpp::PointerType
+    or
+    this instanceof Cpp::ArrayType
     or
     this instanceof Cpp::ReferenceType
   }
@@ -101,10 +103,18 @@ private class PointerOrReferenceType extends Cpp::DerivedType {
  * (i.e., `countIndirections(e.getUnspecifiedType())`).
  */
 private int countIndirections(Type t) {
-  result = any(Indirection ind | ind.getType() = t).getNumberOfIndirections()
-  or
-  not exists(Indirection ind | ind.getType() = t) and
-  result = 0
+  // We special case void pointers because we don't know how many indirections
+  // they really have. In a Glorious Future we could do a pre-analysis to figure out
+  // which kinds of values flows into the type and use the maximum number of
+  // indirections flowinginto the type.
+  if t instanceof Cpp::VoidPointerType
+  then result = 2
+  else (
+    result = any(Indirection ind | ind.getType() = t).getNumberOfIndirections()
+    or
+    not exists(Indirection ind | ind.getType() = t) and
+    result = 0
+  )
 }
 
 /**
@@ -180,16 +190,30 @@ abstract class Indirection extends Type {
   predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) { none() }
 }
 
-private class PointerOrReferenceTypeIndirection extends Indirection instanceof PointerOrReferenceType {
-  PointerOrReferenceTypeIndirection() { baseType = PointerOrReferenceType.super.getBaseType() }
+private class PointerOrArrayOrReferenceTypeIndirection extends Indirection instanceof PointerOrArrayOrReferenceType {
+  PointerOrArrayOrReferenceTypeIndirection() {
+    baseType = PointerOrArrayOrReferenceType.super.getBaseType()
+  }
+
+  override int getNumberOfIndirections() {
+    result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
+  }
+}
+
+private class PointerWrapperTypeIndirection extends Indirection instanceof PointerWrapper {
+  PointerWrapperTypeIndirection() { baseType = PointerWrapper.super.getBaseType() }
 
   override int getNumberOfIndirections() {
     result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
   }
 
-  override predicate isAdditionalDereference(Instruction deref, Operand address) { none() }
-
-  override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) { none() }
+  override predicate isAdditionalDereference(Instruction deref, Operand address) {
+    exists(CallInstruction call |
+      operandForFullyConvertedCall(getAUse(deref), call) and
+      this = call.getStaticCallTarget().getClassAndName("operator*") and
+      address = call.getThisArgumentOperand()
+    )
+  }
 }
 
 private module IteratorIndirections {
@@ -199,7 +223,8 @@ private module IteratorIndirections {
 
   class IteratorIndirection extends Indirection instanceof Interfaces::Iterator {
     IteratorIndirection() {
-      not this instanceof PointerOrReferenceTypeIndirection and baseType = super.getValueType()
+      not this instanceof PointerOrArrayOrReferenceTypeIndirection and
+      baseType = super.getValueType()
     }
 
     override int getNumberOfIndirections() {
@@ -387,7 +412,7 @@ predicate isModifiableByCall(ArgumentOperand operand, int indirectionIndex) {
       // by `call` should not be of the form `const T*` (for some deeply const type `T`).
       if call.getStaticCallTarget() instanceof Cpp::ConstMemberFunction
       then
-        exists(PointerOrReferenceType resultType |
+        exists(PointerOrArrayOrReferenceType resultType |
           resultType = call.getResultType() and
           not resultType.isDeeplyConstBelow()
         )
@@ -408,10 +433,7 @@ private predicate isModifiableAtImpl(CppType cppType, int indirectionIndex) {
   (
     exists(Type pointerType, Type base, Type t |
       pointerType = t.getUnderlyingType() and
-      (
-        pointerType = any(Indirection ind).getUnderlyingType() or
-        pointerType instanceof Cpp::ArrayType
-      ) and
+      pointerType = any(Indirection ind).getUnderlyingType() and
       cppType.hasType(t, _) and
       base = getTypeImpl(pointerType, indirectionIndex)
     |
