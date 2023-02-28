@@ -1,7 +1,5 @@
 | NonConstantFormat.c:30:10:30:16 | access to array | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| NonConstantFormat.c:34:9:34:36 | call to any_random_function | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | NonConstantFormat.c:41:9:41:27 | call to any_random_function | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| NonConstantFormat.c:45:9:45:48 | call to any_random_function | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | nested.cpp:21:23:21:26 | fmt0 | The format string argument to snprintf should be constant to prevent security issues and other potential errors. |
 | nested.cpp:79:32:79:38 | call to get_fmt | The format string argument to diagnostic should be constant to prevent security issues and other potential errors. |
 | nested.cpp:87:18:87:20 | fmt | The format string argument to diagnostic should be constant to prevent security issues and other potential errors. |

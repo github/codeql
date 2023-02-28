@@ -121,7 +121,7 @@ predicate isNonConst(DataFlow::Node node, boolean isIndirect) {
 
 pragma[noinline]
 predicate isSanitizerNode(DataFlow::Node node) {
-  underscoreMacro(node.asExpr())
+  underscoreMacro([node.asExpr(), node.asIndirectExpr()])
   or
   exists(node.asExpr()) and
   cannotContainString(node.getType(), false)
