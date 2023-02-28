@@ -3,13 +3,14 @@ edges
 | impl/unsafeCode.rb:7:12:7:12 | x :  | impl/unsafeCode.rb:8:30:8:30 | x |
 | impl/unsafeCode.rb:12:12:12:12 | x :  | impl/unsafeCode.rb:13:33:13:33 | x |
 | impl/unsafeCode.rb:28:17:28:22 | my_arr :  | impl/unsafeCode.rb:29:10:29:15 | my_arr |
-| impl/unsafeCode.rb:32:21:32:21 | x :  | impl/unsafeCode.rb:34:10:34:12 | arr |
-| impl/unsafeCode.rb:37:15:37:15 | x :  | impl/unsafeCode.rb:40:10:40:12 | arr |
-| impl/unsafeCode.rb:37:15:37:15 | x :  | impl/unsafeCode.rb:44:10:44:12 | arr |
+| impl/unsafeCode.rb:32:21:32:21 | x :  | impl/unsafeCode.rb:33:12:33:12 | x :  |
+| impl/unsafeCode.rb:33:12:33:12 | x :  | impl/unsafeCode.rb:34:10:34:12 | arr |
+| impl/unsafeCode.rb:37:15:37:15 | x :  | impl/unsafeCode.rb:39:14:39:14 | x :  |
+| impl/unsafeCode.rb:39:5:39:7 | [post] arr [element] :  | impl/unsafeCode.rb:40:10:40:12 | arr |
+| impl/unsafeCode.rb:39:5:39:7 | [post] arr [element] :  | impl/unsafeCode.rb:44:10:44:12 | arr |
+| impl/unsafeCode.rb:39:14:39:14 | x :  | impl/unsafeCode.rb:39:5:39:7 | [post] arr [element] :  |
 | impl/unsafeCode.rb:47:15:47:15 | x :  | impl/unsafeCode.rb:49:9:49:12 | #{...} |
 | impl/unsafeCode.rb:54:21:54:21 | x :  | impl/unsafeCode.rb:55:22:55:22 | x |
-| impl/unsafeCode.rb:59:21:59:21 | x :  | impl/unsafeCode.rb:61:10:61:12 | arr |
-| impl/unsafeCode.rb:59:21:59:21 | x :  | impl/unsafeCode.rb:64:10:64:12 | arr |
 nodes
 | impl/unsafeCode.rb:2:12:2:17 | target :  | semmle.label | target :  |
 | impl/unsafeCode.rb:3:17:3:25 | #{...} | semmle.label | #{...} |
@@ -20,17 +21,17 @@ nodes
 | impl/unsafeCode.rb:28:17:28:22 | my_arr :  | semmle.label | my_arr :  |
 | impl/unsafeCode.rb:29:10:29:15 | my_arr | semmle.label | my_arr |
 | impl/unsafeCode.rb:32:21:32:21 | x :  | semmle.label | x :  |
+| impl/unsafeCode.rb:33:12:33:12 | x :  | semmle.label | x :  |
 | impl/unsafeCode.rb:34:10:34:12 | arr | semmle.label | arr |
 | impl/unsafeCode.rb:37:15:37:15 | x :  | semmle.label | x :  |
+| impl/unsafeCode.rb:39:5:39:7 | [post] arr [element] :  | semmle.label | [post] arr [element] :  |
+| impl/unsafeCode.rb:39:14:39:14 | x :  | semmle.label | x :  |
 | impl/unsafeCode.rb:40:10:40:12 | arr | semmle.label | arr |
 | impl/unsafeCode.rb:44:10:44:12 | arr | semmle.label | arr |
 | impl/unsafeCode.rb:47:15:47:15 | x :  | semmle.label | x :  |
 | impl/unsafeCode.rb:49:9:49:12 | #{...} | semmle.label | #{...} |
 | impl/unsafeCode.rb:54:21:54:21 | x :  | semmle.label | x :  |
 | impl/unsafeCode.rb:55:22:55:22 | x | semmle.label | x |
-| impl/unsafeCode.rb:59:21:59:21 | x :  | semmle.label | x :  |
-| impl/unsafeCode.rb:61:10:61:12 | arr | semmle.label | arr |
-| impl/unsafeCode.rb:64:10:64:12 | arr | semmle.label | arr |
 subpaths
 #select
 | impl/unsafeCode.rb:3:17:3:25 | #{...} | impl/unsafeCode.rb:2:12:2:17 | target :  | impl/unsafeCode.rb:3:17:3:25 | #{...} | This string interpolation which depends on $@ is later $@. | impl/unsafeCode.rb:2:12:2:17 | target | library input | impl/unsafeCode.rb:3:5:3:27 | call to eval | interpreted as code |
@@ -42,5 +43,3 @@ subpaths
 | impl/unsafeCode.rb:44:10:44:12 | arr | impl/unsafeCode.rb:37:15:37:15 | x :  | impl/unsafeCode.rb:44:10:44:12 | arr | This array which depends on $@ is later $@. | impl/unsafeCode.rb:37:15:37:15 | x | library input | impl/unsafeCode.rb:44:5:44:24 | call to eval | interpreted as code |
 | impl/unsafeCode.rb:49:9:49:12 | #{...} | impl/unsafeCode.rb:47:15:47:15 | x :  | impl/unsafeCode.rb:49:9:49:12 | #{...} | This string interpolation which depends on $@ is later $@. | impl/unsafeCode.rb:47:15:47:15 | x | library input | impl/unsafeCode.rb:51:5:51:13 | call to eval | interpreted as code |
 | impl/unsafeCode.rb:55:22:55:22 | x | impl/unsafeCode.rb:54:21:54:21 | x :  | impl/unsafeCode.rb:55:22:55:22 | x | This string concatenation which depends on $@ is later $@. | impl/unsafeCode.rb:54:21:54:21 | x | library input | impl/unsafeCode.rb:56:5:56:13 | call to eval | interpreted as code |
-| impl/unsafeCode.rb:61:10:61:12 | arr | impl/unsafeCode.rb:59:21:59:21 | x :  | impl/unsafeCode.rb:61:10:61:12 | arr | This array which depends on $@ is later $@. | impl/unsafeCode.rb:59:21:59:21 | x | library input | impl/unsafeCode.rb:61:5:61:23 | call to eval | interpreted as code |
-| impl/unsafeCode.rb:64:10:64:12 | arr | impl/unsafeCode.rb:59:21:59:21 | x :  | impl/unsafeCode.rb:64:10:64:12 | arr | This array which depends on $@ is later $@. | impl/unsafeCode.rb:59:21:59:21 | x | library input | impl/unsafeCode.rb:64:5:64:24 | call to eval | interpreted as code |

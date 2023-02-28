@@ -1825,30 +1825,6 @@ module Array {
       preservesValue = true
     }
   }
-
-  private import codeql.ruby.frameworks.core.Kernel
-
-  /**
-   * Holds if there an array element `pred` might taint the array defined by `succ`.
-   * This is used for queries where we consider an entire array to be tainted if any of its elements are tainted.
-   */
-  predicate taintedArrayObjectSteps(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::CallNode call |
-      call.getMethodName() = ["<<", "push", "append"] and
-      call.getReceiver() = succ and
-      pred = call.getArgument(0) and
-      call.getNumberOfArguments() = 1
-    )
-    or
-    exists(DataFlow::CallNode call |
-      call.asExpr().getExpr() = getAStaticArrayCall("[]")
-      or
-      call.(Kernel::KernelMethodCall).getMethodName() = "Array"
-    |
-      succ = call and
-      pred = call.getArgument(_)
-    )
-  }
 }
 
 /**

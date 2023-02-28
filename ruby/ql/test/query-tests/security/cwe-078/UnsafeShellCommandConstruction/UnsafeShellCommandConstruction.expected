@@ -12,8 +12,10 @@ edges
 | impl/unsafeShell.rb:51:17:51:17 | x :  | impl/unsafeShell.rb:52:14:52:14 | x |
 | impl/unsafeShell.rb:51:17:51:17 | x :  | impl/unsafeShell.rb:54:29:54:29 | x |
 | impl/unsafeShell.rb:57:21:57:21 | x :  | impl/unsafeShell.rb:58:23:58:23 | x |
-| impl/unsafeShell.rb:61:20:61:20 | x :  | impl/unsafeShell.rb:64:14:64:16 | arr |
-| impl/unsafeShell.rb:61:20:61:20 | x :  | impl/unsafeShell.rb:68:14:68:16 | arr |
+| impl/unsafeShell.rb:61:20:61:20 | x :  | impl/unsafeShell.rb:63:14:63:14 | x :  |
+| impl/unsafeShell.rb:63:5:63:7 | [post] arr [element] :  | impl/unsafeShell.rb:64:14:64:16 | arr |
+| impl/unsafeShell.rb:63:5:63:7 | [post] arr [element] :  | impl/unsafeShell.rb:68:14:68:16 | arr |
+| impl/unsafeShell.rb:63:14:63:14 | x :  | impl/unsafeShell.rb:63:5:63:7 | [post] arr [element] :  |
 nodes
 | impl/sub/notImported.rb:2:12:2:17 | target :  | semmle.label | target :  |
 | impl/sub/notImported.rb:3:19:3:27 | #{...} | semmle.label | #{...} |
@@ -41,6 +43,8 @@ nodes
 | impl/unsafeShell.rb:57:21:57:21 | x :  | semmle.label | x :  |
 | impl/unsafeShell.rb:58:23:58:23 | x | semmle.label | x |
 | impl/unsafeShell.rb:61:20:61:20 | x :  | semmle.label | x :  |
+| impl/unsafeShell.rb:63:5:63:7 | [post] arr [element] :  | semmle.label | [post] arr [element] :  |
+| impl/unsafeShell.rb:63:14:63:14 | x :  | semmle.label | x :  |
 | impl/unsafeShell.rb:64:14:64:16 | arr | semmle.label | arr |
 | impl/unsafeShell.rb:68:14:68:16 | arr | semmle.label | arr |
 subpaths
