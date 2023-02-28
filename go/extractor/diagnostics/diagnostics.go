@@ -102,6 +102,16 @@ func EmitPackageDifferentOSArchitecture(pkgPath string) {
 	)
 }
 
+func EmitCannotFindPackage(pkgPath string) {
+	emitDiagnostic("go/extractor/package-not-found",
+		"Package "+pkgPath+" could not be found",
+		"Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+		severityError, false,
+		true, true, true,
+		"", 0, 0, 0, 0,
+	)
+}
+
 func EmitNewerGoVersionNeeded() {
 	emitDiagnostic("go/autobuilder/newer-go-version-needed",
 		"Newer Go version needed",

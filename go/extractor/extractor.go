@@ -151,8 +151,10 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 				if strings.Contains(errString, "build constraints exclude all Go files in ") {
 					// `err` is a NoGoError from the package cmd/go/internal/load, which we cannot access as it is internal
 					diagnostics.EmitPackageDifferentOSArchitecture(pkg.PkgPath)
+				} else if strings.Contains(errString, "cannot find package") ||
+					strings.Contains(errString, "no required module provides package") {
+					diagnostics.EmitCannotFindPackage(pkg.PkgPath)
 				}
-
 				extraction.extractError(tw, err, lbl, i)
 			}
 		}
