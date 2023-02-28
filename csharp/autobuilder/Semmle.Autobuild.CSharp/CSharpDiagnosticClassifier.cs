@@ -26,16 +26,13 @@ namespace Semmle.Autobuild.CSharp
                 this.SDKName = sdkName;
             }
 
-            public DiagnosticMessage ToDiagnosticMessage<T>(Autobuilder<T> builder) where T : AutobuildOptionsShared
-            {
-                var diag = builder.MakeDiagnostic(
-                    $"missing-xamarin-{this.SDKName.ToLower()}-sdk",
-                    $"Missing Xamarin SDK for {this.SDKName}"
-                );
-                diag.MarkdownMessage = $"[Configure your workflow]({docsUrl}) for this SDK before running CodeQL.";
-
-                return diag;
-            }
+            public DiagnosticMessage ToDiagnosticMessage<T>(Autobuilder<T> builder, DiagnosticMessage.TspSeverity? severity = null) where T : AutobuildOptionsShared => new(
+                builder.Options.Language,
+                $"missing-xamarin-{this.SDKName.ToLower()}-sdk",
+                $"Missing Xamarin SDK for {this.SDKName}",
+                severity: severity ?? DiagnosticMessage.TspSeverity.Error,
+                markdownMessage: $"[Configure your workflow]({docsUrl}) for this SDK before running CodeQL."
+            );
         }
 
         public MissingXamarinSdkRule() :
@@ -74,24 +71,23 @@ namespace Semmle.Autobuild.CSharp
                 this.MissingProjectFiles = new HashSet<string>();
             }
 
-            public DiagnosticMessage ToDiagnosticMessage<T>(Autobuilder<T> builder) where T : AutobuildOptionsShared
-            {
-                var diag = builder.MakeDiagnostic(
-                    $"missing-project-files",
-                    $"Missing project files"
-                );
-                diag.MarkdownMessage =
-                    "Some project files were not found when CodeQL built your project:\n\n" +
-                    this.MissingProjectFiles.AsEnumerable().Select(p => builder.MakeRelative(p)).ToMarkdownList(MarkdownUtil.CodeFormatter, 5) +
-                    "\n\nThis may lead to subsequent failures. " +
-                    "You can check for common causes for missing project files:\n\n" +
-                    $"- Ensure that the project is built using the {runsOnDocsUrl.ToMarkdownLink("intended operating system")} and that filenames on case-sensitive platforms are correctly specified.\n" +
-                    $"- If your repository uses Git submodules, ensure that those are {checkoutDocsUrl.ToMarkdownLink("checked out")} before the CodeQL action is run.\n" +
-                    "- If you auto-generate some project files as part of your build process, ensure that these are generated before the CodeQL action is run.";
-                diag.Severity = DiagnosticMessage.TspSeverity.Warning;
+            public DiagnosticMessage ToDiagnosticMessage<T>(Autobuilder<T> builder, DiagnosticMessage.TspSeverity? severity = null) where T : AutobuildOptionsShared => new(
+                builder.Options.Language,
+                "missing-project-files",
+                "Missing project files",
+                severity: severity ?? DiagnosticMessage.TspSeverity.Warning,
+                markdownMessage: $"""
+                Some project files were not found when CodeQL built your project:
 
-                return diag;
-            }
+                {this.MissingProjectFiles.AsEnumerable().Select(p => builder.MakeRelative(p)).ToMarkdownList(MarkdownUtil.CodeFormatter, 5)}
+
+                This may lead to subsequent failures. You can check for common causes for missing project files:
+
+                - Ensure that the project is built using the {runsOnDocsUrl.ToMarkdownLink("intended operating system")} and that filenames on case-sensitive platforms are correctly specified.
+                - If your repository uses Git submodules, ensure that those are {checkoutDocsUrl.ToMarkdownLink("checked out")} before the CodeQL action is run.
+                - If you auto-generate some project files as part of your build process, ensure that these are generated before the CodeQL action is run.
+                """
+            );
         }
 
         public MissingProjectFileRule() :

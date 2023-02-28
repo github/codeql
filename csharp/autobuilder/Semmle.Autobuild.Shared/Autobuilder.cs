@@ -330,11 +330,9 @@ namespace Semmle.Autobuild.Shared
             // if the build succeeded, all diagnostics we captured from the build output should be warnings;
             // otherwise they should all be errors
             var diagSeverity = buildResult == 0 ? DiagnosticMessage.TspSeverity.Warning : DiagnosticMessage.TspSeverity.Error;
-            this.DiagnosticClassifier.Results.Select(result => result.ToDiagnosticMessage(this)).ForEach(result =>
-            {
-                result.Severity = diagSeverity;
-                AddDiagnostic(result);
-            });
+            this.DiagnosticClassifier.Results
+                .Select(result => result.ToDiagnosticMessage(this, diagSeverity))
+                .ForEach(AddDiagnostic);
 
             return buildResult;
         }
@@ -344,25 +342,6 @@ namespace Semmle.Autobuild.Shared
         /// </summary>
         public abstract BuildScript GetBuildScript();
 
-        /// <summary>
-        /// Constructs a standard <see cref="DiagnosticMessage" /> for some message with
-        /// <see cref="id" /> and a human-friendly <see cref="name" />.
-        /// </summary>
-        /// <param name="id">The last part of the message id.</param>
-        /// <param name="name">The human-friendly description of the message.</param>
-        /// <returns>The resulting <see cref="DiagnosticMessage" />.</returns>
-        public DiagnosticMessage MakeDiagnostic(string id, string name)
-        {
-            DiagnosticMessage diag = new(new(
-                $"{this.Options.Language.UpperCaseName.ToLower()}/autobuilder/{id}",
-                name,
-                Options.Language.UpperCaseName.ToLower()
-            ));
-            diag.Visibility.StatusPage = true;
-
-            return diag;
-        }
-
 
         /// <summary>
         /// Produces a diagnostic for the tool status page that we were unable to automatically
@@ -370,16 +349,16 @@ namespace Semmle.Autobuild.Shared
         /// can be overriden to implement more specific messages depending on the origin of
         /// the failure.
         /// </summary>
-        protected virtual void AutobuildFailureDiagnostic()
-        {
-            var message = MakeDiagnostic("autobuild-failure", "Unable to build project");
-            message.PlaintextMessage =
-                "We were unable to automatically build your project. " +
-                "You can manually specify a suitable build command for your project.";
-            message.Severity = DiagnosticMessage.TspSeverity.Error;
-
-            AddDiagnostic(message);
-        }
+        protected virtual void AutobuildFailureDiagnostic() => AddDiagnostic(new DiagnosticMessage(
+                this.Options.Language,
+                "autobuild-failure",
+                "Unable to build project",
+                visibility: new DiagnosticMessage.TspVisibility(statusPage: true),
+                plaintextMessage: """
+                    We were unable to automatically build your project.
+                    Set up a manual build command.
+                """
+            ));
 
         /// <summary>
         /// Returns a build script that can be run upon autobuild failure.

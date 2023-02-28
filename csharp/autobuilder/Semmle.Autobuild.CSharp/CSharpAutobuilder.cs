@@ -105,23 +105,30 @@ namespace Semmle.Autobuild.CSharp
                 // otherwise, we just report that the one script we found didn't work
                 if (this.autoBuildRule.BuildCommandAutoRule.CandidatePaths.Count() > 1)
                 {
-                    message = MakeDiagnostic("multiple-build-scripts", "There are multiple potential build scripts");
-                    message.MarkdownMessage =
-                        "CodeQL found multiple potential build scripts for your project and " +
-                        $"attempted to run `{relScriptPath}`, which failed. " +
-                        "This may not be the right build script for your project. " +
-                        $"Set up a [manual build command]({buildCommandDocsUrl}).";
+                    message = new(
+                        this.Options.Language,
+                        "multiple-build-scripts",
+                        "There are multiple potential build scripts",
+                        markdownMessage:
+                            "CodeQL found multiple potential build scripts for your project and " +
+                            $"attempted to run `{relScriptPath}`, which failed. " +
+                            "This may not be the right build script for your project. " +
+                            $"Set up a [manual build command]({buildCommandDocsUrl})."
+                    );
                 }
                 else
                 {
-                    message = MakeDiagnostic("script-failure", "Unable to build project using build script");
-                    message.MarkdownMessage =
-                        "CodeQL attempted to build your project using a script located at " +
-                        $"`{relScriptPath}`, which failed. " +
-                        $"Set up a [manual build command]({buildCommandDocsUrl}).";
+                    message = new(
+                        this.Options.Language,
+                        "script-failure",
+                        "Unable to build project using build script",
+                        markdownMessage:
+                            "CodeQL attempted to build your project using a script located at " +
+                            $"`{relScriptPath}`, which failed. " +
+                            $"Set up a [manual build command]({buildCommandDocsUrl})."
+                    );
                 }
 
-                message.Severity = DiagnosticMessage.TspSeverity.Error;
                 AddDiagnostic(message);
             }
 
@@ -135,50 +142,63 @@ namespace Semmle.Autobuild.CSharp
             // then neither of those rules would've worked
             if (this.ProjectsOrSolutionsToBuild.Count == 0)
             {
-                var message = MakeDiagnostic("no-projects-or-solutions", "No project or solutions files found");
-                message.PlaintextMessage =
-                    "CodeQL could not find any project or solution files in your repository. " +
-                    $"Set up a [manual build command]({buildCommandDocsUrl}).";
-                message.Severity = DiagnosticMessage.TspSeverity.Error;
-
-                AddDiagnostic(message);
+                this.AddDiagnostic(new(
+                    this.Options.Language,
+                    "no-projects-or-solutions",
+                    "No project or solutions files found",
+                    markdownMessage:
+                        "CodeQL could not find any project or solution files in your repository. " +
+                        $"Set up a [manual build command]({buildCommandDocsUrl})."
+                ));
             }
             // show a warning if there are projects which are not compatible with .NET Core, in case that is unintentional
             else if (foundNotDotNetProjects.Any())
             {
-                var message = MakeDiagnostic("dotnet-incompatible-projects", "Some projects are incompatible with .NET Core");
-                message.MarkdownMessage =
-                    "CodeQL found some projects which cannot be built with .NET Core:\n" +
-                    autoBuildRule.DotNetRule.NotDotNetProjects.Select(p => this.MakeRelative(p.FullPath)).ToMarkdownList(MarkdownUtil.CodeFormatter, 5);
-                message.Severity = DiagnosticMessage.TspSeverity.Warning;
+                this.AddDiagnostic(new(
+                    this.Options.Language,
+                    "dotnet-incompatible-projects",
+                    "Some projects are incompatible with .NET Core",
+                    severity: DiagnosticMessage.TspSeverity.Warning,
+                    markdownMessage: $"""
+                    CodeQL found some projects which cannot be built with .NET Core:
 
-                AddDiagnostic(message);
+                    {autoBuildRule.DotNetRule.NotDotNetProjects.Select(p => this.MakeRelative(p.FullPath)).ToMarkdownList(MarkdownUtil.CodeFormatter, 5)}
+                    """
+                ));
             }
 
             // report any projects that failed to build with .NET Core
             if (autoBuildRule.DotNetRule.FailedProjectsOrSolutions.Any())
             {
-                var message = MakeDiagnostic("dotnet-build-failure", "Some projects or solutions failed to build using .NET Core");
-                message.MarkdownMessage =
-                    "CodeQL was unable to build the following projects using .NET Core:\n" +
-                    autoBuildRule.DotNetRule.FailedProjectsOrSolutions.Select(p => this.MakeRelative(p.FullPath)).ToMarkdownList(MarkdownUtil.CodeFormatter, 10) +
-                    $"\nSet up a [manual build command]({buildCommandDocsUrl}).";
-                message.Severity = DiagnosticMessage.TspSeverity.Error;
+                this.AddDiagnostic(new(
+                    this.Options.Language,
+                    "dotnet-build-failure",
+                    "Some projects or solutions failed to build using .NET Core",
+                    markdownMessage: $"""
+                    CodeQL was unable to build the following projects using .NET Core:
 
-                AddDiagnostic(message);
+                    {autoBuildRule.DotNetRule.FailedProjectsOrSolutions.Select(p => this.MakeRelative(p.FullPath)).ToMarkdownList(MarkdownUtil.CodeFormatter, 10)}
+
+                    Set up a [manual build command]({buildCommandDocsUrl}).
+                    """
+                ));
             }
 
             // report any projects that failed to build with MSBuild
             if (autoBuildRule.MsBuildRule.FailedProjectsOrSolutions.Any())
             {
-                var message = MakeDiagnostic("msbuild-build-failure", "Some projects or solutions failed to build using MSBuild");
-                message.MarkdownMessage =
-                    "CodeQL was unable to build the following projects using MSBuild:\n" +
-                    autoBuildRule.MsBuildRule.FailedProjectsOrSolutions.Select(p => this.MakeRelative(p.FullPath)).ToMarkdownList(MarkdownUtil.CodeFormatter, 10) +
-                    $"\nSet up a [manual build command]({buildCommandDocsUrl}).";
-                message.Severity = DiagnosticMessage.TspSeverity.Error;
+                this.AddDiagnostic(new(
+                    this.Options.Language,
+                    "msbuild-build-failure",
+                    "Some projects or solutions failed to build using MSBuild",
+                    markdownMessage: $"""
+                    CodeQL was unable to build the following projects using MSBuild:
 
-                AddDiagnostic(message);
+                    {autoBuildRule.MsBuildRule.FailedProjectsOrSolutions.Select(p => this.MakeRelative(p.FullPath)).ToMarkdownList(MarkdownUtil.CodeFormatter, 10)}
+
+                    Set up a [manual build command]({buildCommandDocsUrl}).
+                    """
+                ));
             }
         }
 
