@@ -85,6 +85,12 @@ predicate isSinkImpl(DataFlow::Node sink, Expr command, string callChain) {
   shellCommand(command, callChain)
 }
 
+predicate isSanitizerImpl(DataFlow::Node node) {
+  node.asExpr().getUnspecifiedType() instanceof IntegralType
+  or
+  node.asExpr().getUnspecifiedType() instanceof FloatingPointType
+}
+
 /**
  * A `TaintTracking` configuration that's used to find the relevant `ExecState`s for a
  * given sink. This avoids a cartesian product between all sinks and all `ExecState`s in
@@ -98,6 +104,8 @@ class ExecStateConfiguration extends TaintTracking2::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _, _) }
+
+  override predicate isSanitizer(DataFlow::Node node) { isSanitizerImpl(node) }
 
   override predicate isSanitizerOut(DataFlow::Node node) {
     isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
@@ -126,14 +134,7 @@ class ExecTaintConfiguration extends TaintTracking::Configuration {
     state2.(ExecState).getOutgoingNode() = node2
   }
 
-  override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
-    (
-      node.asInstruction().getResultType() instanceof IntegralType
-      or
-      node.asInstruction().getResultType() instanceof FloatingPointType
-    ) and
-    state instanceof ConcatState
-  }
+  override predicate isSanitizer(DataFlow::Node node) { isSanitizerImpl(node) }
 
   override predicate isSanitizerOut(DataFlow::Node node) {
     isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
