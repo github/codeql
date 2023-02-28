@@ -5,6 +5,7 @@
 
 #include "swift/extractor/translators/TranslatorBase.h"
 #include "swift/extractor/trap/generated/decl/TrapClasses.h"
+#include "swift/extractor/mangler/SwiftMangler.h"
 
 namespace codeql {
 
@@ -86,7 +87,7 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
     entry.module = dispatcher.fetchLabel(decl.getModuleContext());
   }
 
-  swift::Mangle::ASTMangler mangler;
+  SwiftMangler mangler;
 };
 
 }  // namespace codeql
