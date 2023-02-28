@@ -14,7 +14,9 @@ When you write a query to find variants of a security vulnerability and finish t
 
 The core functionality of the CodeQL extension helps you write queries and run them locally against a CodeQL database. In contrast, variant analysis allows you to send your CodeQL query to GitHub.com to be tested against a list of repositories.
 
-When you run variant analysis against a list of repositories, your query is run against each repository that has a CodeQL database available to analyze. GitHub creates and stores CodeQL databases for thousands of public repositories, including every repository that runs code scanning using CodeQL. If you want to run variant analysis on your repositories, you need to enable code scanning using CodeQL on GitHub.com before adding your repository to a list for analysis (either default setup, or advanced setup using the CodeQL action). For information about enabling code scanning using CodeQL, see "`Configuring code scanning automatically <https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning-for-a-repository#configuring-code-scanning-automatically>`__."
+When you run variant analysis against a list of repositories, your query is run against each repository that has a CodeQL database available to analyze. GitHub creates and stores the latest CodeQL database for the default branch of thousands of public repositories, including every repository that runs code scanning using CodeQL. 
+
+If you want to run variant analysis on your repositories, you need to enable code scanning using CodeQL on GitHub.com before adding your repository to a list for analysis (either default setup, or advanced setup using the CodeQL action). For information about enabling code scanning using CodeQL, see "`Configuring code scanning automatically <https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning-for-a-repository#configuring-code-scanning-automatically>`__."
 
 .. _controller-repository:
 
@@ -42,23 +44,20 @@ You must define a controller repository before you can run your first variant an
 
 #. Type the owner and name of the repository on GitHub.com that you want to use as your controller repository and press the **Enter** key.
 
-#. If you are prompted to authenticate with GitHub, follow the instructions and sign into your pesonal or organization account. When you have finished following the process, a prompt from GitHub Authentication may ask for permission to open a URI in Visual Studio Code, click **Open**.
+#. If you are prompted to authenticate with GitHub, follow the instructions and sign into your personal or organization account. When you have finished following the process, a prompt from GitHub Authentication may ask for permission to open a URI in Visual Studio Code, click **Open**.
 
 The name of the controller repository is saved in your settings for the CodeQL extension. For information on how to edit the controller repository, see ":ref:`Customizing settings <customizing-settings>`."
 
 Running a query at scale using variant analysis
 -----------------------------------------------
 
-#. Expand the **Variant Analysis Repositories** section, to show the default lists of the top 10, top 100, and top 1000 public repositories on GitHub.com. These are ranked by considering various metrics such as number of stars, number of watchers, number of forks etc.
+#. Expand the **Variant Analysis Repositories** section, to show the default lists of the top 10, top 100, and top 1,000 public repositories on GitHub.com. These are ranked by considering various metrics such as number of stars, number of watchers, number of forks etc.
 
-#. Select which GitHub repository or repositories you want to run your query against.
+#. Select which GitHub repository or repositories you want to run your query against. Click a row to highlight it, and then click **Select** to select that repository, organization, or list of repositories. If you want to add a new repository, organization, or list, use the options in the header panel. For information, see ":ref:`Creating custom lists of repositories <custom-lists>`", later in this article.
 
-   - Click **Top X repositories** to select this list of public repositories for analysis.
-   - Click **LIST-NAME** to select a custom list for analysis (see :ref:`later in this article <custom-lists>` for details).
-   - Click **Add new database**, the **+** icon, to add a repository or an organization to the panel, then click to select it for analysis.
-        .. image:: ../images/codeql-for-visual-studio-code/variant-analysis-repo-lists.png
-            :width: 350
-            :alt: Screenshot of the CodeQL extension in Visual Studio Code. The "Variant Analysis Repositories" section is expanded. The "Top 10 repositories" item has a checkmark to show that it is currently selected. Examples of a custom list, "example-list", a full organization, "octo-org", and a single repository, "octo-org/octo-repo", are shown in the list of repositories available for variant analysis.
+    .. image:: ../images/codeql-for-visual-studio-code/variant-analysis-repo-lists.png
+        :width: 350
+        :alt: Screenshot of the CodeQL extension in Visual Studio Code. The "Variant Analysis Repositories" section is expanded. The "Top 10 repositories" item has a checkmark to show that it is currently selected for analysis. The user has clicked on the row for a single repository "octo-org/octo-repo" and it is highlighted blue. The "Select" button for that row is highlighted with a dark orange highlight.
 
 #. Open the query you want to run, right-click in the query file, and select **CodeQL: Run Variant Analysis** to start variant analysis.
 
@@ -73,7 +72,7 @@ The CodeQL extension builds a CodeQL pack with your library and any library depe
 Exploring your results
 ----------------------
 
-When you run variant analysis, as soon as a workflow to run your analysis on GitHub is running, a Variant Analysis Results view opens to display the results as soon as they are ready. You can use this view to monitor progress, see any errors, and access the workflow logs in your controller repository.
+When you run variant analysis, as soon as a workflow to run your analysis on GitHub is running, a Variant Analysis Results view opens to display the results as they are ready. You can use this view to monitor progress, see any errors, and access the workflow logs in your controller repository.
 
 .. image:: ../images/codeql-for-visual-studio-code/variant-analysis-results-view.png
     :alt: Screenshot of the "Variant Analysis Results" view showing a partially complete run. Analysis of ``angular/angular`` is still running but all other results are displayed. ``facebook/create-react-app`` has three results for this query.
@@ -113,7 +112,7 @@ After you have defined a controller repository, the Variant Analysis Repositorie
 
     Note
 
-    CodeQL analysis always requires a CodeQL database to run queries against. When you run variant analysis against a list of repositories, your query will only be executed against the repositories that currently have a CodeQL database available to download.  So the best way to make a repository available for variant analysis is to enable code scanning with CodeQL. For information about enabling code scanning using CodeQL, see "`Configuring code scanning automatically <https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning-for-a-repository#configuring-code-scanning-automatically>`__."
+    CodeQL analysis always requires a CodeQL database to run queries against. When you run variant analysis against a list of repositories, your query will only be executed against the repositories that currently have a CodeQL database available to download.  The best way to make a repository available for variant analysis is to enable code scanning with CodeQL. For information about enabling code scanning using CodeQL, see "`Configuring code scanning automatically <https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning-for-a-repository#configuring-code-scanning-automatically>`__."
 
 Selecting a single GitHub repository or organization for analysis
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

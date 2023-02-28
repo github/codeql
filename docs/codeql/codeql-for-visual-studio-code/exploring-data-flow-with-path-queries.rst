@@ -30,7 +30,7 @@ Running path queries in VS Code locally
 #. Click each step to jump to it in the source code and investigate the problem further.
 #. To navigate the results from your keyboard, you can bind shortcuts to the **CodeQL: Navigate Up/Down/Left/Right in Result Viewer** commands.
 
-When you are ready to run a path query at scale, you can use the Variant Analysis Repositories panel to run the query against up to 1000 repositories on GitHub.com. For information on running analysis at scale across many CodeQL databases, see ":ref:`Running CodeQL queries at scale with multi-repository variant analysis <running-codeql-queries-at-scale-with-mrva>`."
+When you are ready to run a path query at scale, you can use the Variant Analysis Repositories panel to run the query against up to 1,000 repositories on GitHub.com. For information on running analysis at scale across many CodeQL databases, see ":ref:`Running CodeQL queries at scale with multi-repository variant analysis <running-codeql-queries-at-scale-with-mrva>`."
 
 Further reading
 -----------------

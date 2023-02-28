@@ -6,11 +6,11 @@ Troubleshooting CodeQL for Visual Studio Code
 =============================================
 
 This article explains how to debug problems with the analysis of CodeQL databases that are stored on your local
-machine. For information on troubleshooting variant analysis, where the analysis is run using GitHub Actions, see
+machine. For information on troubleshooting variant analysis, which runs on GitHub.com, see
 ":ref:`Troubleshooting variant analysis <troubleshooting-variant-analysis>`."
 
 You can use the detailed information written to the extension's log files if you need to troubleshoot problems
-analysing CodeQL databases that are stored locally.
+analyzing CodeQL databases that are stored locally.
 
 About the log files
 --------------------
