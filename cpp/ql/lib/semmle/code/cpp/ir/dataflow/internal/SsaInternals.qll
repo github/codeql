@@ -809,11 +809,6 @@ module SsaCached {
   predicate lastRefRedef(Definition def, IRBlock bb, int i, Definition next) {
     SsaImpl::lastRefRedef(def, bb, i, next)
   }
-
-  cached
-  predicate uncertainWriteDefinitionInput(SsaImpl::UncertainWriteDefinition def, Definition inp) {
-    SsaImpl::uncertainWriteDefinitionInput(def, inp)
-  }
 }
 
 cached
