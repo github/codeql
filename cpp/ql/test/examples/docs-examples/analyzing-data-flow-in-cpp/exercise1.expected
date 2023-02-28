@@ -1,0 +1,2 @@
+| gethostbyname.cpp:6:25:6:44 | https://github.com | gethostbyname.cpp:11:23:11:35 | call to gethostbyname |
+| gethostbyname.cpp:9:37:9:56 | https://github.com | gethostbyname.cpp:9:23:9:35 | call to gethostbyname |
