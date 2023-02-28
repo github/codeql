@@ -11,11 +11,25 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import experimental.adaptivethreatmodeling.EndpointTypes
 private import experimental.adaptivethreatmodeling.ATMConfig
-private import experimental.adaptivethreatmodeling.SqlInjectionATM
-private import experimental.adaptivethreatmodeling.TaintedPathATM
-private import experimental.adaptivethreatmodeling.RequestForgeryATM
 private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
 private import semmle.code.java.Expr as Expr
+
+/*
+ * Predicates that are used to surface prompt examples and candidates for classification with an ML model.
+ */
+
+/**
+ * Holds if `sink` is a known sink of type `sinkType`.
+ */
+predicate isKnownSink(DataFlow::Node sink, SinkType sinkType) {
+  // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
+  // known sink for the class.
+  sinkType != any(NegativeSinkType negative) and
+  exists(EndpointCharacteristics::EndpointCharacteristic characteristic |
+    characteristic.appliesToEndpoint(sink) and
+    characteristic.hasImplications(sinkType, true, characteristic.maximalConfidence())
+  )
+}
 
 /**
  * Holds if the given endpoint has a self-contradictory combination of characteristics. Detects errors in our endpoint
@@ -126,6 +140,10 @@ predicate hasMetadata(DataFlow::Node n, string metadata) {
         isPublic + ", 'Is passed to external API': " + isExternalApiDataNode + "}" // TODO: Why are the curly braces added twice?
   )
 }
+
+/*
+ * EndpointCharacteristic classes.
+ */
 
 /**
  * A set of characteristics that a particular endpoint might have. This set of characteristics is used to make decisions
@@ -379,7 +397,7 @@ private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
   IsSanitizerCharacteristic() { this = "sanitizer" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
-    exists(AtmConfig config | config.isSanitizer(n))
+    exists(TaintTracking::Configuration config | config.isSanitizer(n))
   }
 }
 

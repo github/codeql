@@ -53,8 +53,3 @@ class TaintedPathSinkType extends SinkType {
 class RequestForgerySinkType extends SinkType {
   RequestForgerySinkType() { this = "ssrf" }
 }
-
-/** Other sinks modeled by a MaD `kind` but not belonging to any of the existing sink types. */
-class OtherMaDSinkType extends SinkType {
-  OtherMaDSinkType() { this = "other-sink" }
-}

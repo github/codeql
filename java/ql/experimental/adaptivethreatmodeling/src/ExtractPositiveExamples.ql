@@ -13,9 +13,6 @@ private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
 private import experimental.adaptivethreatmodeling.EndpointCharacteristics as EndpointCharacteristics
 private import experimental.adaptivethreatmodeling.EndpointTypes
 private import experimental.adaptivethreatmodeling.ATMConfig as AtmConfig
-private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
-private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
-private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestForgeryAtm
 
 /*
  * ****** WARNING: ******
@@ -23,18 +20,18 @@ private import experimental.adaptivethreatmodeling.RequestForgeryATM as RequestF
  * the ML-gnerarated, noisy sinks will end up poluting the positive examples used in the prompt!
  */
 
-from DataFlow::Node sink, AtmConfig::AtmConfig config, EndpointType sinkType, string message
+from DataFlow::Node sink, EndpointType sinkType, string message
 where
   // If there are _any_ erroneous endpoints, return nothing. This will prevent us from accidentally running this query
   // when there's a codex-generated data extension file in `java/ql/lib/ext`.
   not EndpointCharacteristics::erroneousEndpoints(_, _, _, _, _) and
   // Extract positive examples of sinks belonging to the existing ATM query configurations.
   (
-    config.isKnownSink(sink, sinkType) and
+    EndpointCharacteristics::isKnownSink(sink, sinkType) and
     // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
     // treated by the actual query as a sanitizer, since the final logic is something like
     // `isSink(n) and not isSanitizer(n)`. We don't want to include such nodes as positive examples in the prompt.
-    not config.isSanitizer(sink) and
+    not exists(TaintTracking::Configuration config | config.isSanitizer(sink)) and
     // Include only sinks that are arguments to an external API call, because these are the sinks we are most interested
     // in.
     sink instanceof ExternalAPIs::ExternalApiDataNode and
