@@ -100,6 +100,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static void ExtractModifiers(Context cx, TextWriter trapFile, IEntity key, ISymbol symbol)
         {
+            // A file scoped type has declared accessibility `internal` which we shouldn't extract.
+            // The file modifier is extracted as a source level modifier.
             if (symbol.Kind != SymbolKind.NamedType || !((INamedTypeSymbol)symbol).IsFileLocal)
                 HasAccessibility(cx, trapFile, key, symbol.DeclaredAccessibility);
 
