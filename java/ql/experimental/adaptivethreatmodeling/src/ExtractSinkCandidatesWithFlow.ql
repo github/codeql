@@ -20,10 +20,10 @@ private import experimental.adaptivethreatmodeling.ATMConfig as AtmConfig
 
 /**
  * Holds if the candidate sink `candidateSink` should be considered as a possible sink of type `sinkType`, and
- * classified by the ML model. A candidate sink is a node that cannot be excluded form `sinkType` based on its
+ * classified by the ML model. A candidate sink is a node that cannot be excluded from `sinkType` based on its
  * characteristics.
  */
-predicate isEffectiveSink(DataFlow::Node candidateSink, SinkType sinkType) {
+predicate isSinkCandidate(DataFlow::Node candidateSink, SinkType sinkType) {
   sinkType != any(NegativeSinkType negative) and
   not exists(EndpointCharacteristics::EndpointCharacteristic characteristic |
     characteristic = getAReasonSinkExcluded(candidateSink, sinkType)
@@ -69,7 +69,7 @@ where
   message =
     strictconcat(SinkType sinkType |
         not EndpointCharacteristics::isKnownSink(sinkCandidate, sinkType) and
-        isEffectiveSink(sinkCandidate, sinkType)
+        isSinkCandidate(sinkCandidate, sinkType)
       |
         sinkType + ", "
       ) + "\n" +
