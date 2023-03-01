@@ -599,3 +599,27 @@ private class TestFileCharacteristic extends LikelyNotASinkCharacteristic {
     file.getAbsolutePath().matches("%/guava-testlib/%")
   }
 }
+
+/**
+ * A negative characteristic that indicates that an endpoint is a non-sink argument to a method whose sinks have already
+ * been modeled.
+ *
+ * WARNING: These endpoints should not be used as negative samples for training, because some sinks may have been missed
+ * when the method was modeled. Specifically, as we start using ATM to merge in new declarations, we can be less sure
+ * that a method with one argument modeled as a MaD sink has also had its remaining arguments manually reviewed. The
+ * ML model might have predicted argument 0 of some method to be a sink but not argument 1, when in fact argument 1 is
+ * also a sink.
+ */
+private class OtherArgumentToModeledMethodCharacteristic extends LikelyNotASinkCharacteristic {
+  OtherArgumentToModeledMethodCharacteristic() {
+    this = "other argument to a method that has already been modeled"
+  }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    not sinkNode(n, _) and
+    exists(DataFlow::Node sink, string kind |
+      sinkNode(sink, kind) and
+      n.asExpr() = sink.asExpr().(Argument).getCall().getAnArgument()
+    )
+  }
+}
