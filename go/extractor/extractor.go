@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"github.com/github/codeql-go/extractor/dbscheme"
+	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/srcarchive"
 	"github.com/github/codeql-go/extractor/trap"
 	"github.com/github/codeql-go/extractor/util"
@@ -144,7 +145,14 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		if len(pkg.Errors) != 0 {
 			log.Printf("Warning: encountered errors extracting package `%s`:", pkg.PkgPath)
 			for i, err := range pkg.Errors {
-				log.Printf("  %s", err.Error())
+				errString := err.Error()
+				log.Printf("  %s", errString)
+
+				if strings.Contains(errString, "build constraints exclude all Go files in ") {
+					// `err` is a NoGoError from the package cmd/go/internal/load, which we cannot access as it is internal
+					diagnostics.EmitPackageDifferentOSArchitecture(pkg.PkgPath)
+				}
+
 				extraction.extractError(tw, err, lbl, i)
 			}
 		}
