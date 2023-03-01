@@ -185,6 +185,8 @@
 | clearing.cpp:46:5:46:5 | x | AST only |
 | clearing.cpp:47:8:47:11 | * ... | IR only |
 | clearing.cpp:47:11:47:11 | s | IR only |
+| clearing.cpp:62:2:62:10 | access to array | AST only |
+| clearing.cpp:63:10:63:12 | s | IR only |
 | complex.cpp:9:20:9:21 | this | IR only |
 | complex.cpp:10:20:10:21 | this | IR only |
 | complex.cpp:11:22:11:23 | a_ | AST only |

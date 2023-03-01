@@ -358,6 +358,10 @@
 | clearing.cpp:39:5:39:5 | x |
 | clearing.cpp:46:3:46:3 | s |
 | clearing.cpp:46:5:46:5 | x |
+| clearing.cpp:61:18:61:18 | s |
+| clearing.cpp:61:20:61:22 | val |
+| clearing.cpp:62:2:62:2 | s |
+| clearing.cpp:62:2:62:10 | access to array |
 | complex.cpp:11:22:11:23 | a_ |
 | complex.cpp:11:22:11:23 | this |
 | complex.cpp:12:22:12:23 | b_ |

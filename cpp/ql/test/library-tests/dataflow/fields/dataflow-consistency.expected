@@ -133,6 +133,8 @@ postWithInFlow
 | clearing.cpp:38:6:38:6 | x [inner post update] | PostUpdateNode should not be the target of local flow. |
 | clearing.cpp:39:5:39:5 | x [post update] | PostUpdateNode should not be the target of local flow. |
 | clearing.cpp:46:5:46:5 | x [post update] | PostUpdateNode should not be the target of local flow. |
+| clearing.cpp:62:2:62:10 | access to array [post update] | PostUpdateNode should not be the target of local flow. |
+| clearing.cpp:62:4:62:6 | val [inner post update] | PostUpdateNode should not be the target of local flow. |
 | complex.cpp:11:22:11:23 | a_ [post update] | PostUpdateNode should not be the target of local flow. |
 | complex.cpp:12:22:12:23 | b_ [post update] | PostUpdateNode should not be the target of local flow. |
 | conflated.cpp:10:3:10:7 | * ... [post update] | PostUpdateNode should not be the target of local flow. |

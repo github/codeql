@@ -47,3 +47,18 @@ void test()
 		sink(*s.x); // clean
 	}
 }
+
+void argument_source(int*);
+
+struct S2
+{
+	int* val;
+};
+
+void test_uncertain_write_is_not_clear()
+{
+	S2 s;
+	argument_source(s.val);
+	s.val[10] = 0;
+	sink(*s.val); // $ MISSING: ast,ir
+}

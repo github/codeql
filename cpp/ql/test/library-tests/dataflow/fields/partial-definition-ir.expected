@@ -426,6 +426,10 @@
 | clearing.cpp:46:3:46:3 | s |
 | clearing.cpp:47:8:47:11 | * ... |
 | clearing.cpp:47:9:47:9 | s |
+| clearing.cpp:61:18:61:18 | s |
+| clearing.cpp:61:20:61:22 | val |
+| clearing.cpp:62:2:62:2 | s |
+| clearing.cpp:63:8:63:8 | s |
 | complex.cpp:9:20:9:21 | this |
 | complex.cpp:10:20:10:21 | this |
 | complex.cpp:11:22:11:23 | this |
