@@ -402,13 +402,11 @@ module Filters {
    * Holds if `n` is a post-update node for `self` in method `m`.
    */
   private predicate selfPostUpdate(DataFlow::PostUpdateNode n, Method m) {
-    m = n.getPreUpdateNode().asExpr().getExpr().getEnclosingCallable() and
-    n.getPreUpdateNode()
-        .asExpr()
-        .(SelfVariableAccessCfgNode)
-        .getExpr()
-        .getVariable()
-        .getDeclaringScope() = m
+    n.getPreUpdateNode().asExpr().getExpr() =
+      any(SelfVariableAccess self |
+        pragma[only_bind_into](m) = self.getEnclosingCallable() and
+        self.getVariable().getDeclaringScope() = m
+      )
   }
 
   /**
