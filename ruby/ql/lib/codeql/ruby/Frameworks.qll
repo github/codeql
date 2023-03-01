@@ -33,3 +33,4 @@ private import codeql.ruby.frameworks.Sinatra
 private import codeql.ruby.frameworks.Twirp
 private import codeql.ruby.frameworks.Sqlite3
 private import codeql.ruby.frameworks.Pg
+private import codeql.ruby.frameworks.Yaml
