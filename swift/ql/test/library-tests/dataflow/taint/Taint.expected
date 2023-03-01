@@ -331,8 +331,8 @@ edges
 | nsmutabledata.swift:48:33:48:40 | call to source() :  | nsmutabledata.swift:49:15:49:37 | .mutableBytes |
 | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 :  | nsmutabledata.swift:13:9:13:9 | self :  |
 | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 :  | nsmutabledata.swift:49:15:49:37 | .mutableBytes |
-| nsstring.swift:7:3:7:33 | [summary param] this in copy() :  | file://:0:0:0:0 | [summary] to write: return (return) in copy() :  |
-| nsstring.swift:8:3:8:40 | [summary param] this in mutableCopy() :  | file://:0:0:0:0 | [summary] to write: return (return) in mutableCopy() :  |
+| nsstring.swift:11:3:11:33 | [summary param] this in copy() :  | file://:0:0:0:0 | [summary] to write: return (return) in copy() :  |
+| nsstring.swift:12:3:12:40 | [summary param] this in mutableCopy() :  | file://:0:0:0:0 | [summary] to write: return (return) in mutableCopy() :  |
 | nsstring.swift:31:3:31:58 | [summary param] 0 in NSString.init(characters:length:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(characters:length:) :  |
 | nsstring.swift:32:3:32:113 | [summary param] 0 in NSString.init(charactersNoCopy:length:freeWhenDone:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(charactersNoCopy:length:freeWhenDone:) :  |
 | nsstring.swift:33:3:33:33 | [summary param] 0 in NSString.init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(string:) :  |
@@ -591,9 +591,9 @@ edges
 | nsstring.swift:383:15:383:30 | call to sourceNSString() :  | nsstring.swift:386:13:386:13 | str20 :  |
 | nsstring.swift:383:15:383:30 | call to sourceNSString() :  | nsstring.swift:387:13:387:13 | str20 :  |
 | nsstring.swift:383:15:383:30 | call to sourceNSString() :  | nsstring.swift:388:13:388:13 | str20 :  |
-| nsstring.swift:385:13:385:13 | str20 :  | nsstring.swift:7:3:7:33 | [summary param] this in copy() :  |
+| nsstring.swift:385:13:385:13 | str20 :  | nsstring.swift:11:3:11:33 | [summary param] this in copy() :  |
 | nsstring.swift:385:13:385:13 | str20 :  | nsstring.swift:385:13:385:24 | call to copy() |
-| nsstring.swift:386:13:386:13 | str20 :  | nsstring.swift:8:3:8:40 | [summary param] this in mutableCopy() :  |
+| nsstring.swift:386:13:386:13 | str20 :  | nsstring.swift:12:3:12:40 | [summary param] this in mutableCopy() :  |
 | nsstring.swift:386:13:386:13 | str20 :  | nsstring.swift:386:13:386:31 | call to mutableCopy() |
 | nsstring.swift:387:13:387:13 | str20 :  | nsstring.swift:52:3:52:57 | [summary param] this in copy(with:) :  |
 | nsstring.swift:387:13:387:13 | str20 :  | nsstring.swift:387:13:387:33 | call to copy(with:) |
@@ -1786,8 +1786,8 @@ nodes
 | nsmutabledata.swift:48:33:48:40 | call to source() :  | semmle.label | call to source() :  |
 | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 :  | semmle.label | nsMutableDataTainted6 :  |
 | nsmutabledata.swift:49:15:49:37 | .mutableBytes | semmle.label | .mutableBytes |
-| nsstring.swift:7:3:7:33 | [summary param] this in copy() :  | semmle.label | [summary param] this in copy() :  |
-| nsstring.swift:8:3:8:40 | [summary param] this in mutableCopy() :  | semmle.label | [summary param] this in mutableCopy() :  |
+| nsstring.swift:11:3:11:33 | [summary param] this in copy() :  | semmle.label | [summary param] this in copy() :  |
+| nsstring.swift:12:3:12:40 | [summary param] this in mutableCopy() :  | semmle.label | [summary param] this in mutableCopy() :  |
 | nsstring.swift:31:3:31:58 | [summary param] 0 in NSString.init(characters:length:) :  | semmle.label | [summary param] 0 in NSString.init(characters:length:) :  |
 | nsstring.swift:32:3:32:113 | [summary param] 0 in NSString.init(charactersNoCopy:length:freeWhenDone:) :  | semmle.label | [summary param] 0 in NSString.init(charactersNoCopy:length:freeWhenDone:) :  |
 | nsstring.swift:33:3:33:33 | [summary param] 0 in NSString.init(string:) :  | semmle.label | [summary param] 0 in NSString.init(string:) :  |
@@ -2767,8 +2767,8 @@ subpaths
 | nsstring.swift:311:13:311:28 | call to sourceNSString() :  | nsstring.swift:96:3:96:74 | [summary param] this in strings(byAppendingPaths:) :  | file://:0:0:0:0 | [summary] to write: return (return) in strings(byAppendingPaths:) :  | nsstring.swift:311:13:311:60 | call to strings(byAppendingPaths:) |
 | nsstring.swift:312:13:312:28 | call to sourceNSString() :  | nsstring.swift:96:3:96:74 | [summary param] this in strings(byAppendingPaths:) :  | file://:0:0:0:0 | [summary] to write: return (return) in strings(byAppendingPaths:) :  | nsstring.swift:312:13:312:60 | call to strings(byAppendingPaths:) :  |
 | nsstring.swift:334:3:334:18 | call to sourceNSString() :  | nsstring.swift:65:3:65:281 | [summary param] this in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:maxLength:usedLength:encoding:options:range:remaining:) :  | nsstring.swift:334:29:334:29 | [post] ptr3 :  |
-| nsstring.swift:385:13:385:13 | str20 :  | nsstring.swift:7:3:7:33 | [summary param] this in copy() :  | file://:0:0:0:0 | [summary] to write: return (return) in copy() :  | nsstring.swift:385:13:385:24 | call to copy() |
-| nsstring.swift:386:13:386:13 | str20 :  | nsstring.swift:8:3:8:40 | [summary param] this in mutableCopy() :  | file://:0:0:0:0 | [summary] to write: return (return) in mutableCopy() :  | nsstring.swift:386:13:386:31 | call to mutableCopy() |
+| nsstring.swift:385:13:385:13 | str20 :  | nsstring.swift:11:3:11:33 | [summary param] this in copy() :  | file://:0:0:0:0 | [summary] to write: return (return) in copy() :  | nsstring.swift:385:13:385:24 | call to copy() |
+| nsstring.swift:386:13:386:13 | str20 :  | nsstring.swift:12:3:12:40 | [summary param] this in mutableCopy() :  | file://:0:0:0:0 | [summary] to write: return (return) in mutableCopy() :  | nsstring.swift:386:13:386:31 | call to mutableCopy() |
 | nsstring.swift:387:13:387:13 | str20 :  | nsstring.swift:52:3:52:57 | [summary param] this in copy(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in copy(with:) :  | nsstring.swift:387:13:387:33 | call to copy(with:) |
 | nsstring.swift:388:13:388:13 | str20 :  | nsstring.swift:53:3:53:64 | [summary param] this in mutableCopy(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in mutableCopy(with:) :  | nsstring.swift:388:13:388:40 | call to mutableCopy(with:) |
 | nsstring.swift:392:13:392:35 | call to sourceNSMutableString() :  | nsstring.swift:76:3:76:64 | [summary param] this in capitalized(with:) :  | file://:0:0:0:0 | [summary] to write: return (return) in capitalized(with:) :  | nsstring.swift:392:13:392:58 | call to capitalized(with:) |

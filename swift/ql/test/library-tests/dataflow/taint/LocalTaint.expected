@@ -558,22 +558,30 @@
 | nsmutabledata.swift:48:9:48:9 | SSA def(nsMutableDataTainted6) | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 |
 | nsmutabledata.swift:48:33:48:40 | call to source() | nsmutabledata.swift:48:9:48:9 | SSA def(nsMutableDataTainted6) |
 | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 | nsmutabledata.swift:49:15:49:37 | .mutableBytes |
-| nsstring.swift:6:7:6:7 | SSA def(self) | nsstring.swift:6:7:6:7 | self[return] |
-| nsstring.swift:6:7:6:7 | SSA def(self) | nsstring.swift:6:7:6:7 | self[return] |
-| nsstring.swift:6:7:6:7 | self | nsstring.swift:6:7:6:7 | SSA def(self) |
-| nsstring.swift:6:7:6:7 | self | nsstring.swift:6:7:6:7 | SSA def(self) |
-| nsstring.swift:7:8:7:8 | SSA def(self) | nsstring.swift:7:3:7:33 | self[return] |
-| nsstring.swift:7:8:7:8 | self | nsstring.swift:7:8:7:8 | SSA def(self) |
-| nsstring.swift:8:8:8:8 | SSA def(self) | nsstring.swift:8:3:8:40 | self[return] |
-| nsstring.swift:8:8:8:8 | self | nsstring.swift:8:8:8:8 | SSA def(self) |
-| nsstring.swift:11:8:11:8 | SSA def(self) | nsstring.swift:11:8:11:8 | self[return] |
+| nsstring.swift:6:8:6:8 | SSA def(self) | nsstring.swift:6:8:6:8 | self[return] |
+| nsstring.swift:6:8:6:8 | self | nsstring.swift:6:8:6:8 | SSA def(self) |
+| nsstring.swift:7:7:7:7 | self | nsstring.swift:7:7:7:7 | SSA def(self) |
+| nsstring.swift:7:26:7:26 | SSA def(self) | nsstring.swift:7:26:7:57 | self[return] |
+| nsstring.swift:7:26:7:26 | self | nsstring.swift:7:26:7:26 | SSA def(self) |
+| nsstring.swift:7:40:7:40 | 0 | nsstring.swift:7:39:7:55 | ...! |
+| nsstring.swift:7:71:7:71 | SSA def(self) | nsstring.swift:7:71:7:77 | self[return] |
+| nsstring.swift:7:71:7:71 | self | nsstring.swift:7:71:7:71 | SSA def(self) |
+| nsstring.swift:10:7:10:7 | SSA def(self) | nsstring.swift:10:7:10:7 | self[return] |
+| nsstring.swift:10:7:10:7 | SSA def(self) | nsstring.swift:10:7:10:7 | self[return] |
+| nsstring.swift:10:7:10:7 | self | nsstring.swift:10:7:10:7 | SSA def(self) |
+| nsstring.swift:10:7:10:7 | self | nsstring.swift:10:7:10:7 | SSA def(self) |
+| nsstring.swift:11:8:11:8 | SSA def(self) | nsstring.swift:11:3:11:33 | self[return] |
 | nsstring.swift:11:8:11:8 | self | nsstring.swift:11:8:11:8 | SSA def(self) |
-| nsstring.swift:22:7:22:7 | SSA def(self) | nsstring.swift:22:7:22:7 | self[return] |
-| nsstring.swift:22:7:22:7 | self | nsstring.swift:22:7:22:7 | SSA def(self) |
-| nsstring.swift:22:56:22:56 | SSA def(self) | nsstring.swift:22:56:22:56 | self[return] |
-| nsstring.swift:22:56:22:56 | self | nsstring.swift:22:56:22:56 | SSA def(self) |
-| nsstring.swift:24:9:24:9 | self | nsstring.swift:24:9:24:9 | SSA def(self) |
-| nsstring.swift:28:9:28:9 | self | nsstring.swift:28:9:28:9 | SSA def(self) |
+| nsstring.swift:12:8:12:8 | SSA def(self) | nsstring.swift:12:3:12:40 | self[return] |
+| nsstring.swift:12:8:12:8 | self | nsstring.swift:12:8:12:8 | SSA def(self) |
+| nsstring.swift:15:8:15:8 | SSA def(self) | nsstring.swift:15:8:15:8 | self[return] |
+| nsstring.swift:15:8:15:8 | self | nsstring.swift:15:8:15:8 | SSA def(self) |
+| nsstring.swift:26:7:26:7 | SSA def(self) | nsstring.swift:26:7:26:7 | self[return] |
+| nsstring.swift:26:7:26:7 | self | nsstring.swift:26:7:26:7 | SSA def(self) |
+| nsstring.swift:26:56:26:56 | SSA def(self) | nsstring.swift:26:56:26:56 | self[return] |
+| nsstring.swift:26:56:26:56 | self | nsstring.swift:26:56:26:56 | SSA def(self) |
+| nsstring.swift:27:54:27:54 | self | nsstring.swift:27:54:27:54 | SSA def(self) |
+| nsstring.swift:29:43:29:43 | self | nsstring.swift:29:43:29:43 | SSA def(self) |
 | nsstring.swift:31:3:31:3 | SSA def(self) | nsstring.swift:31:3:31:58 | self[return] |
 | nsstring.swift:31:3:31:3 | self | nsstring.swift:31:3:31:3 | SSA def(self) |
 | nsstring.swift:32:3:32:3 | SSA def(self) | nsstring.swift:32:3:32:113 | self[return] |

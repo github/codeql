@@ -3,6 +3,10 @@
 
 typealias unichar = UInt16
 
+struct AutoreleasingUnsafeMutablePointer<Pointee> {
+  var pointee: Pointee { get { return (0 as! Pointee?)! } nonmutating set { } }
+}
+
 class NSObject {
   func copy() -> Any { return 0 }
   func mutableCopy() -> Any { return 0 }
@@ -20,13 +24,9 @@ protocol NSMutableCopying {
 }
 
 class NSString : NSObject, NSCopying, NSMutableCopying {
-  struct EncodingConversionOptions : OptionSet {
-    let rawValue: Int
-  }
+  struct EncodingConversionOptions : OptionSet { let rawValue: Int }
 
-  struct CompareOptions : OptionSet {
-    let rawValue: Int
-  }
+  struct CompareOptions : OptionSet { let rawValue: Int }
 
   init(characters: UnsafePointer<unichar>, length: Int) {}
   init(charactersNoCopy characters: UnsafeMutablePointer<unichar>, length: Int, freeWhenDone freeBuffer: Bool) {}
