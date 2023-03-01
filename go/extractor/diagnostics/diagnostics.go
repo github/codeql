@@ -2,6 +2,7 @@ package diagnostics
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -46,14 +47,18 @@ type diagnostic struct {
 }
 
 var diagnosticsEmitted, diagnosticsLimit uint = 0, 100
+var noDiagnosticDirPrinted bool = false
 
 func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagnosticSeverity, internal, visibilitySP, visibilityCST, visibilityT bool, file string, startLine, startColumn, endLine, endColumn int) {
-	if diagnosticsEmitted <= diagnosticsLimit {
+	if diagnosticsEmitted < diagnosticsLimit {
 		diagnosticsEmitted += 1
 
 		diagnosticDir := os.Getenv("CODEQL_EXTRACTOR_GO_DIAGNOSTIC_DIR")
 		if diagnosticDir == "" {
-			log.Println("No diagnostic directory set, so not emitting diagnostic")
+			if !noDiagnosticDirPrinted {
+				log.Println("No diagnostic directory set, so not emitting diagnostic")
+				noDiagnosticDirPrinted = true
+			}
 			return
 		}
 
@@ -73,6 +78,18 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 			optLoc,
 		}
 
+		if diagnosticsEmitted == diagnosticsLimit {
+			d = diagnostic{
+				time.Now().UTC().Format("2006-01-02T15:04:05.000") + "Z",
+				sourceStruct{"go/diagnostic-limit-hit", "Some diagnostics were dropped", "go"},
+				fmt.Sprintf("The number of diagnostics exceeded the limit (%d); the remainder were dropped.", diagnosticsLimit),
+				string(severityWarning),
+				false,
+				visibilityStruct{true, true, true},
+				nil,
+			}
+		}
+
 		content, err := json.Marshal(d)
 		if err != nil {
 			log.Println(err)
@@ -83,7 +100,12 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 			log.Println("Failed to create temporary file for diagnostic: ")
 			log.Println(err)
 		}
-		defer targetFile.Close()
+		defer func() {
+			if err := targetFile.Close(); err != nil {
+				log.Println("Failed to close diagnostic file:")
+				log.Println(err)
+			}
+		}()
 
 		_, err = targetFile.Write(content)
 		if err != nil {

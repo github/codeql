@@ -251,7 +251,6 @@ func main() {
 	modMode := ModUnset
 	needGopath := true
 	goDirectiveFound := false
-	goDirectiveVersion := "1.16"
 	if _, present := os.LookupEnv("GO111MODULE"); !present {
 		os.Setenv("GO111MODULE", "auto")
 	}
@@ -267,7 +266,7 @@ func main() {
 			if matches != nil {
 				goDirectiveFound = true
 				if len(matches) > 1 {
-					goDirectiveVersion = "v" + string(matches[1])
+					goDirectiveVersion := "v" + string(matches[1])
 					if semver.Compare(goDirectiveVersion, getEnvGoSemVer()) >= 0 {
 						diagnostics.EmitNewerGoVersionNeeded()
 					}
