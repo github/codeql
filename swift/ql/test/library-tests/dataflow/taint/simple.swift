@@ -38,33 +38,33 @@ func taintThroughAssignmentArithmetic() {
   a += 1
   sink(arg: a)
   a += source()
-  sink(arg: a) // $ MISSING: tainted=
+  sink(arg: a) // $ tainted=40
   a += 1
-  sink(arg: a) // $ MISSING: tainted=
+  sink(arg: a) // $ tainted=40
   a = 0
   sink(arg: a)
 
   var b = 128
   b -= source()
-  sink(arg: b) // $ MISSING: tainted=
+  sink(arg: b) // $ tainted=48
   b -= 1
-  sink(arg: b) // $ MISSING: tainted=
+  sink(arg: b) // $ tainted=48
 
   var c = 10
   c *= source()
-  sink(arg: c) // $ MISSING: tainted=
+  sink(arg: c) // $ tainted=54
   c *= 2
-  sink(arg: c) // $ MISSING: tainted=
+  sink(arg: c) // $ tainted=54
 
   var d = 100
   d /= source()
-  sink(arg: d) // $ MISSING: tainted=
+  sink(arg: d) // $ tainted=60
   d /= 2
-  sink(arg: d) // $ MISSING: tainted=
+  sink(arg: d) // $ tainted=60
 
   var e = 1000
   e %= source()
-  sink(arg: e) // $ MISSING: tainted=
+  sink(arg: e) // $ tainted=66
   e %= 100
-  sink(arg: e) // $ MISSING: tainted=
+  sink(arg: e) // $ tainted=66
 }
