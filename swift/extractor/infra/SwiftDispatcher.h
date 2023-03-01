@@ -45,18 +45,14 @@ class SwiftDispatcher {
   // the SwiftDispatcher
   SwiftDispatcher(const swift::SourceManager& sourceManager,
                   TrapDomain& trap,
+                  SwiftLocationExtractor& locationExtractor,
                   swift::ModuleDecl& currentModule,
                   swift::SourceFile* currentPrimarySourceFile = nullptr)
       : sourceManager{sourceManager},
         trap{trap},
+        locationExtractor{locationExtractor},
         currentModule{currentModule},
-        currentPrimarySourceFile{currentPrimarySourceFile},
-        locationExtractor(trap) {
-    if (currentPrimarySourceFile) {
-      // we make sure the file is in the trap output even if the source is empty
-      locationExtractor.emitFile(currentPrimarySourceFile->getFilename());
-    }
-  }
+        currentPrimarySourceFile{currentPrimarySourceFile} {}
 
   const std::unordered_set<swift::ModuleDecl*> getEncounteredModules() && {
     return std::move(encounteredModules);
@@ -157,7 +153,7 @@ class SwiftDispatcher {
     // TODO when everything is moved to structured C++ classes, this should be moved to createEntry
     if (auto l = store.get(e)) {
       if constexpr (IsLocatable<E>) {
-        attachLocation(e, *l);
+        locationExtractor.attachLocation(sourceManager, e, *l);
       }
       return *l;
     }
@@ -206,48 +202,8 @@ class SwiftDispatcher {
   template <typename E, typename... Args>
   auto createUncachedEntry(const E& e, Args&&... args) {
     auto label = trap.createLabel<TrapTagOf<E>>(std::forward<Args>(args)...);
-    attachLocation(&e, label);
+    locationExtractor.attachLocation(sourceManager, &e, label);
     return TrapClassOf<E>{label};
-  }
-
-  template <typename Locatable>
-  void attachLocation(Locatable locatable, TrapLabel<LocatableTag> locatableLabel) {
-    attachLocation(&locatable, locatableLabel);
-  }
-
-  // Emits a Location TRAP entry and attaches it to a `Locatable` trap label
-  template <typename Locatable>
-  void attachLocation(Locatable* locatable, TrapLabel<LocatableTag> locatableLabel) {
-    attachLocation(locatable->getStartLoc(), locatable->getEndLoc(), locatableLabel);
-  }
-
-  void attachLocation(const swift::CapturedValue* capture, TrapLabel<LocatableTag> locatableLabel) {
-    attachLocation(capture->getLoc(), locatableLabel);
-  }
-
-  void attachLocation(const swift::IfConfigClause* clause, TrapLabel<LocatableTag> locatableLabel) {
-    attachLocation(clause->Loc, clause->Loc, locatableLabel);
-  }
-
-  void attachLocation(swift::AvailabilitySpec* spec, TrapLabel<LocatableTag> locatableLabel) {
-    attachLocation(spec->getSourceRange().Start, spec->getSourceRange().End, locatableLabel);
-  }
-
-  // Emits a Location TRAP entry and attaches it to a `Locatable` trap label for a given `SourceLoc`
-  void attachLocation(swift::SourceLoc loc, TrapLabel<LocatableTag> locatableLabel) {
-    attachLocation(loc, loc, locatableLabel);
-  }
-
-  // Emits a Location TRAP entry for a list of swift entities and attaches it to a `Locatable` trap
-  // label
-  template <typename Locatable>
-  void attachLocation(llvm::MutableArrayRef<Locatable>* locatables,
-                      TrapLabel<LocatableTag> locatableLabel) {
-    if (locatables->empty()) {
-      return;
-    }
-    attachLocation(locatables->front().getStartLoc(), locatables->back().getEndLoc(),
-                   locatableLabel);
   }
 
   // return `std::optional(fetchLabel(arg))` if arg converts to true, otherwise std::nullopt
@@ -317,7 +273,7 @@ class SwiftDispatcher {
   void emitComment(swift::Token& comment) {
     CommentsTrap entry{trap.createLabel<CommentTag>(), comment.getRawText().str()};
     trap.emit(entry);
-    attachLocation(comment.getRange().getStart(), comment.getRange().getEnd(), entry.id);
+    locationExtractor.attachLocation(sourceManager, comment, entry.id);
   }
 
  private:
@@ -332,12 +288,6 @@ class SwiftDispatcher {
 
   template <typename T>
   struct HasId<T, decltype(std::declval<T>().id, void())> : std::true_type {};
-
-  void attachLocation(swift::SourceLoc start,
-                      swift::SourceLoc end,
-                      TrapLabel<LocatableTag> locatableLabel) {
-    locationExtractor.attachLocation(sourceManager, start, end, locatableLabel);
-  }
 
   template <typename Tag, typename... Ts>
   TrapLabel<Tag> fetchLabelFromUnion(const llvm::PointerUnion<Ts...> u) {
@@ -382,11 +332,11 @@ class SwiftDispatcher {
   const swift::SourceManager& sourceManager;
   TrapDomain& trap;
   Store store;
+  SwiftLocationExtractor& locationExtractor;
   Store::Handle waitingForNewLabel{std::monostate{}};
   swift::ModuleDecl& currentModule;
   swift::SourceFile* currentPrimarySourceFile;
   std::unordered_set<swift::ModuleDecl*> encounteredModules;
-  SwiftLocationExtractor locationExtractor;
 };
 
 }  // namespace codeql
