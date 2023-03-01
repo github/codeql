@@ -515,23 +515,6 @@ abstract private class LikelyNotASinkCharacteristic extends EndpointCharacterist
 }
 
 /**
- * A negative characteristic that indicates that an endpoint is a constant expression. While a constant expression
- * can be a sink, it cannot be part of a tainted flow: Constant expressions always evaluate to a constant primitive
- * value, so they can't ever appear in an alert. These endpoints are therefore excluded from scoring at inference time.
- *
- * WARNING: These endpoints should not be used as negative samples for training, because they are not necessarily
- * non-sinks. They are merely not interesting sinks to run through the ML model because they can never be part of a
- * tainted flow.
- */
-private class IsConstantExpressionCharacteristic extends LikelyNotASinkCharacteristic {
-  IsConstantExpressionCharacteristic() { this = "constant expression" }
-
-  override predicate appliesToEndpoint(DataFlow::Node n) {
-    n.asExpr() instanceof CompileTimeConstantExpr
-  }
-}
-
-/**
  * A negative characteristic that indicates that an endpoint is not part of the source code for the project being
  * analyzed.
  *
