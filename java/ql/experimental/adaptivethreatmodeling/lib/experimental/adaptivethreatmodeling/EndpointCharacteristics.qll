@@ -625,3 +625,29 @@ private class OtherArgumentToModeledMethodCharacteristic extends LikelyNotASinkC
     )
   }
 }
+
+/*
+ * TODO: `UninterestingToModelCharacteristic` should _not_ be used to filter out sink candidates when running this
+ * query on a user's codebase for customized modeling.
+ */
+
+/**
+ * A characteristic that indicates not necessarily that an endpoint is not a sink, but rather that it is not a sink
+ * that's interesting to model in the standard Java libraries. These filters should be removed when extracting sink
+ * candidates within a user's codebase for customized modeling.
+ *
+ * These endpoints should not be used as negative samples for training or for a few-shot prompt, because they are not
+ * necessarily non-sinks.
+ */
+abstract private class UninterestingToModelCharacteristic extends EndpointCharacteristic {
+  bindingset[this]
+  UninterestingToModelCharacteristic() { any() }
+
+  override predicate hasImplications(
+    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
+  ) {
+    endpointClass instanceof NegativeSinkType and
+    isPositiveIndicator = true and
+    confidence = mediumConfidence()
+  }
+}
