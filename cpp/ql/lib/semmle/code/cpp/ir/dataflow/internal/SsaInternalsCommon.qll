@@ -565,6 +565,7 @@ private module Cached {
     )
   }
 
+  pragma[assume_small_delta]
   private predicate convertsIntoArgumentRev(Instruction instr) {
     convertsIntoArgumentFwd(instr) and
     (
