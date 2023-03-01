@@ -347,9 +347,6 @@ module Http {
        */
       abstract RouteHandler getRouteHandler();
 
-      /** DEPRECATED. Use `ref().flowsTo()` instead. */
-      deprecated predicate flowsTo(DataFlow::Node nd) { this.ref().flowsTo(nd) }
-
       private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
         t.start() and
         result = this
@@ -371,9 +368,6 @@ module Http {
        * Gets the route handler that provides this response.
        */
       abstract RouteHandler getRouteHandler();
-
-      /** DEPRECATED. Use `ref().flowsTo()` instead. */
-      deprecated predicate flowsTo(DataFlow::Node nd) { this.ref().flowsTo(nd) }
 
       private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
         t.start() and

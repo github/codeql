@@ -59,26 +59,6 @@ abstract class MutexType extends Type {
    * Gets a call that unlocks any mutex of this type.
    */
   FunctionCall getUnlockAccess() { this.unlockAccess(result, _) }
-
-  /**
-   * DEPRECATED: use mustlockAccess(fc, arg) instead.
-   */
-  deprecated Function getMustlockFunction() { result = this.getMustlockAccess().getTarget() }
-
-  /**
-   * DEPRECATED: use trylockAccess(fc, arg) instead.
-   */
-  deprecated Function getTrylockFunction() { result = this.getTrylockAccess().getTarget() }
-
-  /**
-   * DEPRECATED: use lockAccess(fc, arg) instead.
-   */
-  deprecated Function getLockFunction() { result = this.getLockAccess().getTarget() }
-
-  /**
-   * DEPRECATED: use unlockAccess(fc, arg) instead.
-   */
-  deprecated Function getUnlockFunction() { result = this.getUnlockAccess().getTarget() }
 }
 
 /**

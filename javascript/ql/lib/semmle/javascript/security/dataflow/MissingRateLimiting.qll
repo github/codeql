@@ -40,17 +40,6 @@ abstract class ExpensiveRouteHandler extends DataFlow::Node {
   abstract predicate explain(string explanation, DataFlow::Node reference, string referenceLabel);
 }
 
-/**
- * DEPRECATED. Use `RateLimitingMiddleware` instead.
- *
- * A route handler expression that is guarded by a rate limiter.
- */
-deprecated class RateLimitedRouteHandlerExpr extends Express::RouteHandlerExpr {
-  RateLimitedRouteHandlerExpr() {
-    Routing::getNode(this.flow()).isGuardedBy(any(RateLimitingMiddleware m))
-  }
-}
-
 // default implementations
 /**
  * A route handler that performs an expensive action, and hence should be rate-limited.
@@ -97,17 +86,6 @@ class SystemCommandExecutionAsExpensiveAction extends ExpensiveAction instanceof
 /** A database access, considered as an expensive action. */
 class DatabaseAccessAsExpensiveAction extends ExpensiveAction instanceof DatabaseAccess {
   override string describe() { result = "a database access" }
-}
-
-/**
- * DEPRECATED. Use the `Routing::Node` API instead.
- *
- * A route handler expression that is rate-limited by a rate-limiting middleware.
- */
-deprecated class RouteHandlerExpressionWithRateLimiter extends Expr {
-  RouteHandlerExpressionWithRateLimiter() {
-    Routing::getNode(this.flow()).isGuardedBy(any(RateLimitingMiddleware m))
-  }
 }
 
 /**

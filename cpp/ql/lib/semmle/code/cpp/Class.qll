@@ -228,18 +228,6 @@ class Class extends UserType {
   }
 
   /**
-   * DEPRECATED: name changed to `hasImplicitCopyConstructor` to reflect that
-   * `= default` members are no longer included.
-   */
-  deprecated predicate hasGeneratedCopyConstructor() { this.hasImplicitCopyConstructor() }
-
-  /**
-   * DEPRECATED: name changed to `hasImplicitCopyAssignmentOperator` to
-   * reflect that `= default` members are no longer included.
-   */
-  deprecated predicate hasGeneratedCopyAssignmentOperator() { this.hasImplicitCopyConstructor() }
-
-  /**
    * Holds if this class, struct or union has an implicitly-declared copy
    * constructor that is not _deleted_. This predicate is more accurate than
    * checking if this class, struct or union has a `CopyConstructor cc` where

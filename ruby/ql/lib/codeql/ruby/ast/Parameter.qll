@@ -68,27 +68,6 @@ class DestructuredParameter extends Parameter, TDestructuredParameter {
   final override string getAPrimaryQlClass() { result = "DestructuredParameter" }
 }
 
-/**
- * DEPRECATED
- *
- * A parameter defined using a pattern.
- *
- * This includes both simple parameters and tuple parameters.
- */
-deprecated class PatternParameter extends Parameter, Pattern, TPatternParameter {
-  override LocalVariable getAVariable() { result = Pattern.super.getAVariable() }
-}
-
-/**
- * DEPRECATED
- *
- * A parameter defined using a tuple pattern.
- */
-deprecated class TuplePatternParameter extends PatternParameter, TuplePattern,
-  TDestructuredParameter {
-  final override LocalVariable getAVariable() { result = TuplePattern.super.getAVariable() }
-}
-
 /** A named parameter. */
 class NamedParameter extends Parameter, TNamedParameter {
   /** Gets the name of this parameter. */
