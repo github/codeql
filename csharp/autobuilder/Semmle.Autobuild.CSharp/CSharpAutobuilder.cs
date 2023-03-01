@@ -36,14 +36,12 @@ namespace Semmle.Autobuild.CSharp
 
         private readonly AutoBuildRule autoBuildRule;
 
-        private readonly DiagnosticClassifier diagnosticClassifier;
-
-        protected override DiagnosticClassifier DiagnosticClassifier => diagnosticClassifier;
+        protected override DiagnosticClassifier DiagnosticClassifier { get; }
 
         public CSharpAutobuilder(IBuildActions actions, CSharpAutobuildOptions options) : base(actions, options)
         {
             this.autoBuildRule = new AutoBuildRule(this);
-            this.diagnosticClassifier = new CSharpDiagnosticClassifier();
+            this.DiagnosticClassifier = new CSharpDiagnosticClassifier();
         }
 
         public override BuildScript GetBuildScript()
