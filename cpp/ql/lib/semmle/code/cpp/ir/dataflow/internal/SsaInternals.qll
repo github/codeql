@@ -550,11 +550,20 @@ predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
  * flows to `useOrPhi`.
  */
 private predicate globalDefToUse(GlobalDef globalDef, UseOrPhi useOrPhi) {
-  exists(IRBlock bb1, int i1, IRBlock bb2, int i2, SourceVariable v |
-    globalDef.hasIndexInBlock(bb1, i1, v) and
-    adjacentDefRead(_, pragma[only_bind_into](bb1), pragma[only_bind_into](i1),
-      pragma[only_bind_into](bb2), pragma[only_bind_into](i2)) and
-    useOrPhi.asDefOrUse().hasIndexInBlock(bb2, i2, v)
+  exists(IRBlock bb1, int i1, SourceVariable v | globalDef.hasIndexInBlock(bb1, i1, v) |
+    // Def -> use
+    exists(IRBlock bb2, int i2 |
+      adjacentDefRead(_, pragma[only_bind_into](bb1), pragma[only_bind_into](i1),
+        pragma[only_bind_into](bb2), pragma[only_bind_into](i2)) and
+      useOrPhi.asDefOrUse().hasIndexInBlock(bb2, i2, v)
+    )
+    or
+    // Def -> phi
+    exists(PhiNode phi |
+      lastRefRedef(_, bb1, i1, phi) and
+      useOrPhi.asPhi() = phi and
+      phi.getSourceVariable() = pragma[only_bind_into](v)
+    )
   )
 }
 
