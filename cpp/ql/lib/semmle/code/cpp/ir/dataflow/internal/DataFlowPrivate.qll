@@ -630,7 +630,7 @@ predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
     nodeHasInstruction(node1, store, pragma[only_bind_into](indirectionIndex1)) and
     node2.getIndirectionIndex() = 1 and
     numberOfLoadsFromOperand(node2.getFieldAddress(), store.getDestinationAddressOperand(),
-      numberOfLoads)
+      numberOfLoads, certain)
   |
     exists(FieldContent fc | fc = c |
       fc.getField() = node2.getUpdatedField() and
@@ -648,17 +648,21 @@ predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
  * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
  * operations and exactly `n` `LoadInstruction` operations.
  */
-private predicate numberOfLoadsFromOperandRec(Operand operandFrom, Operand operandTo, int ind) {
+private predicate numberOfLoadsFromOperandRec(
+  Operand operandFrom, Operand operandTo, int ind, boolean certain
+) {
   exists(Instruction load | Ssa::isDereference(load, operandFrom) |
-    operandTo = operandFrom and ind = 0
+    operandTo = operandFrom and ind = 0 and certain = true
     or
-    numberOfLoadsFromOperand(load.getAUse(), operandTo, ind - 1)
+    numberOfLoadsFromOperand(load.getAUse(), operandTo, ind - 1, certain)
   )
   or
-  exists(Operand op, Instruction instr |
+  exists(Operand op, Instruction instr, boolean isPointerArith, boolean certain0 |
     instr = op.getDef() and
-    conversionFlow(operandFrom, instr, _, _) and
-    numberOfLoadsFromOperand(op, operandTo, ind)
+    conversionFlow(operandFrom, instr, isPointerArith, _) and
+    numberOfLoadsFromOperand(op, operandTo, ind, certain0)
+  |
+    if isPointerArith = true then certain = false else certain = certain0
   )
 }
 
@@ -666,13 +670,16 @@ private predicate numberOfLoadsFromOperandRec(Operand operandFrom, Operand opera
  * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
  * operations and exactly `n` `LoadInstruction` operations.
  */
-private predicate numberOfLoadsFromOperand(Operand operandFrom, Operand operandTo, int n) {
-  numberOfLoadsFromOperandRec(operandFrom, operandTo, n)
+private predicate numberOfLoadsFromOperand(
+  Operand operandFrom, Operand operandTo, int n, boolean certain
+) {
+  numberOfLoadsFromOperandRec(operandFrom, operandTo, n, certain)
   or
   not Ssa::isDereference(_, operandFrom) and
   not conversionFlow(operandFrom, _, _, _) and
   operandFrom = operandTo and
-  n = 0
+  n = 0 and
+  certain = true
 }
 
 // Needed to join on both an operand and an index at the same time.
@@ -702,7 +709,7 @@ predicate readStep(Node node1, Content c, Node node2) {
     // The `1` here matches the `node2.getIndirectionIndex() = 1` conjunct
     // in `storeStep`.
     nodeHasOperand(node1, fa1.getObjectAddressOperand(), 1) and
-    numberOfLoadsFromOperand(fa1, operand, numberOfLoads)
+    numberOfLoadsFromOperand(fa1, operand, numberOfLoads, _)
   |
     exists(FieldContent fc | fc = c |
       fc.getField() = fa1.getField() and
