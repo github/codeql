@@ -1648,13 +1648,13 @@ public class Parser {
       return this.finishNode(node);
     } else if (this.type == TokenType.pound) {
       Position startLoc = this.startLoc;
-      // there is only one case where this is valid, and that is "Ergonomic brand checks for Private Fields", i.e. `#name in obj`. 
+      // there is only one case where this is valid, and that is "Ergonomic brand checks for Private Fields", i.e. `#name in obj`.
       Identifier id = parseIdent(true);
       String op = String.valueOf(this.value);
       if (!op.equals("in")) {
         this.unexpected(startLoc);
       }
-      return this.parseExprOp(id, this.start, startLoc, -1, false); 
+      return this.parseExprOp(id, this.start, startLoc, -1, false);
     } else if (this.type == TokenType.name) {
       Position startLoc = this.startLoc;
       Identifier id = this.parseIdent(this.type != TokenType.name);
