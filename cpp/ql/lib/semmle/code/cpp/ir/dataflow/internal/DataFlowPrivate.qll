@@ -624,8 +624,11 @@ predicate jumpStep(Node n1, Node n2) {
  * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
+ *
+ * The boolean `certain` is true if the destinatino address does not involve
+ * any pointer arithmetic, and false otherwise.
  */
-predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
+private predicate storeStepImpl(Node node1, Content c, PostFieldUpdateNode node2, boolean certain) {
   exists(int indirectionIndex1, int numberOfLoads, StoreInstruction store |
     nodeHasInstruction(node1, store, pragma[only_bind_into](indirectionIndex1)) and
     node2.getIndirectionIndex() = 1 and
@@ -642,6 +645,15 @@ predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
       uc.getIndirectionIndex() = 1 + indirectionIndex1 + numberOfLoads
     )
   )
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
+ * Thus, `node2` references an object with a field `f` that contains the
+ * value of `node1`.
+ */
+predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
+  storeStepImpl(node1, c, node2, _)
 }
 
 /**
@@ -727,8 +739,9 @@ predicate readStep(Node node1, Content c, Node node2) {
  * Holds if values stored inside content `c` are cleared at node `n`.
  */
 predicate clearsContent(Node n, Content c) {
+  // Only a certain `storeStep` can clear the content.
   n =
-    any(PostUpdateNode pun, Content d | d.impliesClearOf(c) and storeStep(_, d, pun) | pun)
+    any(PostUpdateNode pun, Content d | d.impliesClearOf(c) and storeStepImpl(_, d, pun, true) | pun)
         .getPreUpdateNode()
 }
 
