@@ -1,0 +1,1500 @@
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo000 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo001 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo002 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo003 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo004 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo005 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo006 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo007 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo008 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo009 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo010 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo011 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo012 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo013 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo014 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo015 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo016 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo017 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo018 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo019 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo020 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo021 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo022 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo023 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo024 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo025 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo026 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo027 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo028 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo029 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo030 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo031 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo032 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo033 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo034 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo035 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo036 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo037 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo038 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo039 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo041 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo042 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo043 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo044 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo045 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo046 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo047 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo048 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo049 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo050 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo051 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo052 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo053 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo054 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo055 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo056 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo057 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo058 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo059 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo060 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo061 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo062 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo063 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo064 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo065 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo066 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo067 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo068 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo069 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo070 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo071 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo072 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo073 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo074 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo075 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo076 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo077 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo078 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo079 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo080 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo081 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo082 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo083 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo084 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo085 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo086 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo087 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo088 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo089 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo090 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo091 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo092 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo093 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo094 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo095 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo096 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo097 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo098 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Package github.com/nosuchorg/nosuchrepo099 could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "internal": false,
+  "markdownMessage": "The number of diagnostics exceeded the limit (100); the remainder were dropped.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/diagnostic-limit-hit",
+    "name": "Some diagnostics were dropped"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
