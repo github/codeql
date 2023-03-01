@@ -253,6 +253,7 @@
 | data.swift:195:58:195:58 | &... | data.swift:195:58:195:73 | ...[...] |
 | data.swift:195:58:195:58 | c | data.swift:195:58:195:58 | &... |
 | data.swift:195:58:195:73 | ...[...] | data.swift:195:58:195:73 | &... |
+| data.swift:195:78:195:78 | 1 | data.swift:195:58:195:73 | &... |
 | data.swift:199:6:199:6 | SSA def(dataTainted27) | data.swift:200:2:200:2 | dataTainted27 |
 | data.swift:199:22:199:29 | call to Data.init(_:) | data.swift:199:6:199:6 | SSA def(dataTainted27) |
 | data.swift:199:27:199:27 |  | data.swift:199:22:199:29 | call to Data.init(_:) |
@@ -1283,16 +1284,19 @@
 | simple.swift:38:3:38:3 | &... | simple.swift:39:13:39:13 | a |
 | simple.swift:38:3:38:3 | [post] &... | simple.swift:39:13:39:13 | a |
 | simple.swift:38:3:38:3 | a | simple.swift:38:3:38:3 | &... |
+| simple.swift:38:8:38:8 | 1 | simple.swift:38:3:38:3 | &... |
 | simple.swift:39:13:39:13 | [post] a | simple.swift:40:3:40:3 | a |
 | simple.swift:39:13:39:13 | a | simple.swift:40:3:40:3 | a |
 | simple.swift:40:3:40:3 | &... | simple.swift:41:13:41:13 | a |
 | simple.swift:40:3:40:3 | [post] &... | simple.swift:41:13:41:13 | a |
 | simple.swift:40:3:40:3 | a | simple.swift:40:3:40:3 | &... |
+| simple.swift:40:8:40:15 | call to source() | simple.swift:40:3:40:3 | &... |
 | simple.swift:41:13:41:13 | [post] a | simple.swift:42:3:42:3 | a |
 | simple.swift:41:13:41:13 | a | simple.swift:42:3:42:3 | a |
 | simple.swift:42:3:42:3 | &... | simple.swift:43:13:43:13 | a |
 | simple.swift:42:3:42:3 | [post] &... | simple.swift:43:13:43:13 | a |
 | simple.swift:42:3:42:3 | a | simple.swift:42:3:42:3 | &... |
+| simple.swift:42:8:42:8 | 1 | simple.swift:42:3:42:3 | &... |
 | simple.swift:44:3:44:7 | SSA def(a) | simple.swift:45:13:45:13 | a |
 | simple.swift:44:7:44:7 | 0 | simple.swift:44:3:44:7 | SSA def(a) |
 | simple.swift:47:7:47:7 | SSA def(b) | simple.swift:48:3:48:3 | b |
@@ -1300,41 +1304,49 @@
 | simple.swift:48:3:48:3 | &... | simple.swift:49:13:49:13 | b |
 | simple.swift:48:3:48:3 | [post] &... | simple.swift:49:13:49:13 | b |
 | simple.swift:48:3:48:3 | b | simple.swift:48:3:48:3 | &... |
+| simple.swift:48:8:48:15 | call to source() | simple.swift:48:3:48:3 | &... |
 | simple.swift:49:13:49:13 | [post] b | simple.swift:50:3:50:3 | b |
 | simple.swift:49:13:49:13 | b | simple.swift:50:3:50:3 | b |
 | simple.swift:50:3:50:3 | &... | simple.swift:51:13:51:13 | b |
 | simple.swift:50:3:50:3 | [post] &... | simple.swift:51:13:51:13 | b |
 | simple.swift:50:3:50:3 | b | simple.swift:50:3:50:3 | &... |
+| simple.swift:50:8:50:8 | 1 | simple.swift:50:3:50:3 | &... |
 | simple.swift:53:7:53:7 | SSA def(c) | simple.swift:54:3:54:3 | c |
 | simple.swift:53:11:53:11 | 10 | simple.swift:53:7:53:7 | SSA def(c) |
 | simple.swift:54:3:54:3 | &... | simple.swift:55:13:55:13 | c |
 | simple.swift:54:3:54:3 | [post] &... | simple.swift:55:13:55:13 | c |
 | simple.swift:54:3:54:3 | c | simple.swift:54:3:54:3 | &... |
+| simple.swift:54:8:54:15 | call to source() | simple.swift:54:3:54:3 | &... |
 | simple.swift:55:13:55:13 | [post] c | simple.swift:56:3:56:3 | c |
 | simple.swift:55:13:55:13 | c | simple.swift:56:3:56:3 | c |
 | simple.swift:56:3:56:3 | &... | simple.swift:57:13:57:13 | c |
 | simple.swift:56:3:56:3 | [post] &... | simple.swift:57:13:57:13 | c |
 | simple.swift:56:3:56:3 | c | simple.swift:56:3:56:3 | &... |
+| simple.swift:56:8:56:8 | 2 | simple.swift:56:3:56:3 | &... |
 | simple.swift:59:7:59:7 | SSA def(d) | simple.swift:60:3:60:3 | d |
 | simple.swift:59:11:59:11 | 100 | simple.swift:59:7:59:7 | SSA def(d) |
 | simple.swift:60:3:60:3 | &... | simple.swift:61:13:61:13 | d |
 | simple.swift:60:3:60:3 | [post] &... | simple.swift:61:13:61:13 | d |
 | simple.swift:60:3:60:3 | d | simple.swift:60:3:60:3 | &... |
+| simple.swift:60:8:60:15 | call to source() | simple.swift:60:3:60:3 | &... |
 | simple.swift:61:13:61:13 | [post] d | simple.swift:62:3:62:3 | d |
 | simple.swift:61:13:61:13 | d | simple.swift:62:3:62:3 | d |
 | simple.swift:62:3:62:3 | &... | simple.swift:63:13:63:13 | d |
 | simple.swift:62:3:62:3 | [post] &... | simple.swift:63:13:63:13 | d |
 | simple.swift:62:3:62:3 | d | simple.swift:62:3:62:3 | &... |
+| simple.swift:62:8:62:8 | 2 | simple.swift:62:3:62:3 | &... |
 | simple.swift:65:7:65:7 | SSA def(e) | simple.swift:66:3:66:3 | e |
 | simple.swift:65:11:65:11 | 1000 | simple.swift:65:7:65:7 | SSA def(e) |
 | simple.swift:66:3:66:3 | &... | simple.swift:67:13:67:13 | e |
 | simple.swift:66:3:66:3 | [post] &... | simple.swift:67:13:67:13 | e |
 | simple.swift:66:3:66:3 | e | simple.swift:66:3:66:3 | &... |
+| simple.swift:66:8:66:15 | call to source() | simple.swift:66:3:66:3 | &... |
 | simple.swift:67:13:67:13 | [post] e | simple.swift:68:3:68:3 | e |
 | simple.swift:67:13:67:13 | e | simple.swift:68:3:68:3 | e |
 | simple.swift:68:3:68:3 | &... | simple.swift:69:13:69:13 | e |
 | simple.swift:68:3:68:3 | [post] &... | simple.swift:69:13:69:13 | e |
 | simple.swift:68:3:68:3 | e | simple.swift:68:3:68:3 | &... |
+| simple.swift:68:8:68:8 | 100 | simple.swift:68:3:68:3 | &... |
 | string.swift:6:8:6:8 | SSA def(self) | string.swift:6:8:6:8 | self[return] |
 | string.swift:6:8:6:8 | self | string.swift:6:8:6:8 | SSA def(self) |
 | string.swift:10:3:10:3 | SSA def(self) | string.swift:10:3:10:27 | self[return] |
@@ -1864,11 +1876,13 @@
 | string.swift:181:3:181:3 | &... | string.swift:182:13:182:13 | str |
 | string.swift:181:3:181:3 | [post] &... | string.swift:182:13:182:13 | str |
 | string.swift:181:3:181:3 | str | string.swift:181:3:181:3 | &... |
+| string.swift:181:10:181:10 | def | string.swift:181:3:181:3 | &... |
 | string.swift:182:13:182:13 | [post] str | string.swift:183:3:183:3 | str |
 | string.swift:182:13:182:13 | str | string.swift:183:3:183:3 | str |
 | string.swift:183:3:183:3 | &... | string.swift:184:13:184:13 | str |
 | string.swift:183:3:183:3 | [post] &... | string.swift:184:13:184:13 | str |
 | string.swift:183:3:183:3 | str | string.swift:183:3:183:3 | &... |
+| string.swift:183:10:183:18 | call to source2() | string.swift:183:3:183:3 | &... |
 | string.swift:186:7:186:7 | SSA def(str2) | string.swift:187:13:187:13 | str2 |
 | string.swift:186:14:186:14 | abc | string.swift:186:7:186:7 | SSA def(str2) |
 | string.swift:187:13:187:13 | [post] str2 | string.swift:188:3:188:3 | str2 |

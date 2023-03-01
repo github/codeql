@@ -95,6 +95,7 @@ private module Frameworks {
   private import codeql.swift.frameworks.StandardLibrary.WebView
   private import codeql.swift.frameworks.Alamofire.Alamofire
   private import codeql.swift.security.CleartextLoggingExtensions
+  private import codeql.swift.security.CleartextStorageDatabaseExtensions
   private import codeql.swift.security.PathInjectionExtensions
   private import codeql.swift.security.PredicateInjectionExtensions
 }

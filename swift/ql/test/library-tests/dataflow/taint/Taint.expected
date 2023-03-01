@@ -662,6 +662,16 @@ edges
 | simple.swift:20:19:20:26 | call to source() :  | simple.swift:20:13:20:26 | ... .%(_:_:) ... |
 | simple.swift:21:13:21:20 | call to source() :  | simple.swift:21:13:21:24 | ... .%(_:_:) ... |
 | simple.swift:23:14:23:21 | call to source() :  | simple.swift:23:13:23:21 | call to -(_:) |
+| simple.swift:40:8:40:15 | call to source() :  | simple.swift:41:13:41:13 | a |
+| simple.swift:40:8:40:15 | call to source() :  | simple.swift:43:13:43:13 | a |
+| simple.swift:48:8:48:15 | call to source() :  | simple.swift:49:13:49:13 | b |
+| simple.swift:48:8:48:15 | call to source() :  | simple.swift:51:13:51:13 | b |
+| simple.swift:54:8:54:15 | call to source() :  | simple.swift:55:13:55:13 | c |
+| simple.swift:54:8:54:15 | call to source() :  | simple.swift:57:13:57:13 | c |
+| simple.swift:60:8:60:15 | call to source() :  | simple.swift:61:13:61:13 | d |
+| simple.swift:60:8:60:15 | call to source() :  | simple.swift:63:13:63:13 | d |
+| simple.swift:66:8:66:15 | call to source() :  | simple.swift:67:13:67:13 | e |
+| simple.swift:66:8:66:15 | call to source() :  | simple.swift:69:13:69:13 | e |
 | string.swift:60:2:60:54 | [summary param] 0 in String.init(data:encoding:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(data:encoding:) :  |
 | string.swift:64:3:64:63 | [summary param] 0 in String.init(format:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(format:_:) :  |
 | string.swift:65:3:65:60 | [summary param] 0 in String.init(format:arguments:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(format:arguments:) :  |
@@ -707,6 +717,7 @@ edges
 | string.swift:177:13:177:13 | tainted :  | string.swift:177:13:177:38 | call to appending(_:) |
 | string.swift:177:31:177:31 | tainted :  | string.swift:106:3:106:82 | [summary param] 0 in appending(_:) :  |
 | string.swift:177:31:177:31 | tainted :  | string.swift:177:13:177:38 | call to appending(_:) |
+| string.swift:183:10:183:18 | call to source2() :  | string.swift:184:13:184:13 | str |
 | string.swift:190:3:190:3 | [post] &... :  | string.swift:191:13:191:13 | str2 |
 | string.swift:190:15:190:23 | call to source2() :  | file://:0:0:0:0 | [summary param] 0 in append(_:) :  |
 | string.swift:190:15:190:23 | call to source2() :  | string.swift:190:3:190:3 | [post] &... :  |
@@ -2140,6 +2151,21 @@ nodes
 | simple.swift:21:13:21:24 | ... .%(_:_:) ... | semmle.label | ... .%(_:_:) ... |
 | simple.swift:23:13:23:21 | call to -(_:) | semmle.label | call to -(_:) |
 | simple.swift:23:14:23:21 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:40:8:40:15 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:41:13:41:13 | a | semmle.label | a |
+| simple.swift:43:13:43:13 | a | semmle.label | a |
+| simple.swift:48:8:48:15 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:49:13:49:13 | b | semmle.label | b |
+| simple.swift:51:13:51:13 | b | semmle.label | b |
+| simple.swift:54:8:54:15 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:55:13:55:13 | c | semmle.label | c |
+| simple.swift:57:13:57:13 | c | semmle.label | c |
+| simple.swift:60:8:60:15 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:61:13:61:13 | d | semmle.label | d |
+| simple.swift:63:13:63:13 | d | semmle.label | d |
+| simple.swift:66:8:66:15 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:67:13:67:13 | e | semmle.label | e |
+| simple.swift:69:13:69:13 | e | semmle.label | e |
 | string.swift:60:2:60:54 | [summary param] 0 in String.init(data:encoding:) :  | semmle.label | [summary param] 0 in String.init(data:encoding:) :  |
 | string.swift:64:3:64:63 | [summary param] 0 in String.init(format:_:) :  | semmle.label | [summary param] 0 in String.init(format:_:) :  |
 | string.swift:65:3:65:60 | [summary param] 0 in String.init(format:arguments:) :  | semmle.label | [summary param] 0 in String.init(format:arguments:) :  |
@@ -2183,6 +2209,8 @@ nodes
 | string.swift:177:13:177:13 | tainted :  | semmle.label | tainted :  |
 | string.swift:177:13:177:38 | call to appending(_:) | semmle.label | call to appending(_:) |
 | string.swift:177:31:177:31 | tainted :  | semmle.label | tainted :  |
+| string.swift:183:10:183:18 | call to source2() :  | semmle.label | call to source2() :  |
+| string.swift:184:13:184:13 | str | semmle.label | str |
 | string.swift:190:3:190:3 | [post] &... :  | semmle.label | [post] &... :  |
 | string.swift:190:15:190:23 | call to source2() :  | semmle.label | call to source2() :  |
 | string.swift:191:13:191:13 | str2 | semmle.label | str2 |
@@ -3075,6 +3103,16 @@ subpaths
 | simple.swift:20:13:20:26 | ... .%(_:_:) ... | simple.swift:20:19:20:26 | call to source() :  | simple.swift:20:13:20:26 | ... .%(_:_:) ... | result |
 | simple.swift:21:13:21:24 | ... .%(_:_:) ... | simple.swift:21:13:21:20 | call to source() :  | simple.swift:21:13:21:24 | ... .%(_:_:) ... | result |
 | simple.swift:23:13:23:21 | call to -(_:) | simple.swift:23:14:23:21 | call to source() :  | simple.swift:23:13:23:21 | call to -(_:) | result |
+| simple.swift:41:13:41:13 | a | simple.swift:40:8:40:15 | call to source() :  | simple.swift:41:13:41:13 | a | result |
+| simple.swift:43:13:43:13 | a | simple.swift:40:8:40:15 | call to source() :  | simple.swift:43:13:43:13 | a | result |
+| simple.swift:49:13:49:13 | b | simple.swift:48:8:48:15 | call to source() :  | simple.swift:49:13:49:13 | b | result |
+| simple.swift:51:13:51:13 | b | simple.swift:48:8:48:15 | call to source() :  | simple.swift:51:13:51:13 | b | result |
+| simple.swift:55:13:55:13 | c | simple.swift:54:8:54:15 | call to source() :  | simple.swift:55:13:55:13 | c | result |
+| simple.swift:57:13:57:13 | c | simple.swift:54:8:54:15 | call to source() :  | simple.swift:57:13:57:13 | c | result |
+| simple.swift:61:13:61:13 | d | simple.swift:60:8:60:15 | call to source() :  | simple.swift:61:13:61:13 | d | result |
+| simple.swift:63:13:63:13 | d | simple.swift:60:8:60:15 | call to source() :  | simple.swift:63:13:63:13 | d | result |
+| simple.swift:67:13:67:13 | e | simple.swift:66:8:66:15 | call to source() :  | simple.swift:67:13:67:13 | e | result |
+| simple.swift:69:13:69:13 | e | simple.swift:66:8:66:15 | call to source() :  | simple.swift:69:13:69:13 | e | result |
 | string.swift:139:13:139:13 | "..." | string.swift:137:11:137:18 | call to source() :  | string.swift:139:13:139:13 | "..." | result |
 | string.swift:141:13:141:13 | "..." | string.swift:137:11:137:18 | call to source() :  | string.swift:141:13:141:13 | "..." | result |
 | string.swift:143:13:143:13 | "..." | string.swift:137:11:137:18 | call to source() :  | string.swift:143:13:143:13 | "..." | result |
@@ -3088,6 +3126,7 @@ subpaths
 | string.swift:175:13:175:36 | call to appending(_:) | string.swift:161:17:161:25 | call to source2() :  | string.swift:175:13:175:36 | call to appending(_:) | result |
 | string.swift:176:13:176:36 | call to appending(_:) | string.swift:161:17:161:25 | call to source2() :  | string.swift:176:13:176:36 | call to appending(_:) | result |
 | string.swift:177:13:177:38 | call to appending(_:) | string.swift:161:17:161:25 | call to source2() :  | string.swift:177:13:177:38 | call to appending(_:) | result |
+| string.swift:184:13:184:13 | str | string.swift:183:10:183:18 | call to source2() :  | string.swift:184:13:184:13 | str | result |
 | string.swift:191:13:191:13 | str2 | string.swift:190:15:190:23 | call to source2() :  | string.swift:191:13:191:13 | str2 | result |
 | string.swift:198:13:198:13 | str3 | string.swift:197:27:197:35 | call to source2() :  | string.swift:198:13:198:13 | str3 | result |
 | string.swift:205:13:205:13 | str4 | string.swift:204:14:204:22 | call to source2() :  | string.swift:205:13:205:13 | str4 | result |
