@@ -123,6 +123,9 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
   auto trap = createTargetTrapDomain(state, filename, trapType);
   if (!trap) {
     // another process arrived first, nothing to do for us
+    if (lazyDeclaration) {
+      state.emittedDeclarations.insert(lazyDeclaration);
+    }
     return {};
   }
 
@@ -242,7 +245,7 @@ void codeql::extractExtractLazyDeclarations(SwiftExtractorState& state,
     extractLazy(state, compiler);
   }
   if (iteration >= upperBound) {
-    std::cerr << "Swift extractor reach upper bound while extracting lazy declarations\n";
+    std::cerr << "Swift extractor reached upper bound while extracting lazy declarations\n";
     abort();
   }
 }
