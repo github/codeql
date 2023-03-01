@@ -89,7 +89,7 @@ This source is already known by the CodeQL JS analysis, but we'll show how it co
         - [
             "global",
             "Member[addEventListener].Argument[1].Parameter[0].Member[data]",
-            "remote-flow",
+            "remote",
           ]
 
 To break this down:
@@ -100,7 +100,7 @@ To break this down:
 - **Argument[1]** selects the second argument of calls to that member (the argument containing the callback).
 - **Parameter[0]** selects the first parameter of the callback (the parameter named **event**).
 - **Member[data]** selects accesses to the **data** property of the event object.
-- Finally, the kind **remote-flow** indicates that this is considered a source of remote flow.
+- Finally, the kind **remote** indicates that this is considered a source of remote flow.
 
 Continued example: Restricting the event type
 ---------------------------------------------
@@ -127,7 +127,7 @@ We can refine the model by adding the **WithStringArgument** component to restri
         - [
             "global",
             "Member[addEventListener].WithStringArgument[0=message].Argument[1].Parameter[0].Member[data]",
-            "remote-flow",
+            "remote",
           ]
 
 The **WithStringArgument[0=message]** component here selects the subset of calls to **addEventListener** where the first argument is a string literal with the value **"message"**.
@@ -308,7 +308,7 @@ Adds a new taint source. Most taint-tracking queries will use the new source.
 
 - **type**: Name of a type from which to evaluate **path**.
 - **path**: Access path leading to the source.
-- **kind**: Kind of source to add. Currently only **remote-flow** is used.
+- **kind**: Kind of source to add. Currently only **remote** is used.
 
 Example:
 
@@ -319,7 +319,7 @@ Example:
         pack: codeql/javascript-all
         extensible: sourceModel
       data:
-        - ["global", "Member[user].Member[name]", "remote-flow"]
+        - ["global", "Member[user].Member[name]", "remote"]
 
 sinkModel(type, path, kind)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -447,7 +447,7 @@ Kinds
 Source kinds
 ~~~~~~~~~~~~
 
-- **remote-flow**: A generic source of remote flow. Most taint-tracking queries will use such a source. Currently this is the only supported source kind.
+- **remote**: A generic source of remote flow. Most taint-tracking queries will use such a source. Currently this is the only supported source kind.
 
 Sink kinds
 ~~~~~~~~~~
