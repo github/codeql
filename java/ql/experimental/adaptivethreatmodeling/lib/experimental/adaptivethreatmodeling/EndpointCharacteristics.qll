@@ -43,7 +43,7 @@ predicate erroneousEndpoints(
   float confidence, string errorMessage, boolean ignoreKnownModelingErrors
 ) {
   // An endpoint's characteristics should not include positive indicators with medium/high confidence for more than one
-  // sink/source type.
+  // sink/source type (including the negative type).
   exists(EndpointCharacteristic characteristic2, EndpointType endpointClass2, float confidence2 |
     endpointClass != endpointClass2 and
     (
@@ -110,7 +110,8 @@ predicate erroneousConfidences(
 // }
 /**
  * Holds if `characteristic1` and `characteristic2` are among the pairs of currently known positive characteristics that
- * have some overlap in their results. This indicates a problem with the underlying Java modeling.
+ * have some overlap in their results. This indicates a problem with the underlying Java modeling. Specificatlly,
+ * `PathCreation` is prone to FPs.
  */
 private predicate knownOverlappingCharacteristics(
   EndpointCharacteristic characteristic1, EndpointCharacteristic characteristic2
@@ -235,8 +236,8 @@ private class CreateFileSinkCharacteristic extends EndpointCharacteristic {
 }
 
 /**
- * Endpoints identified as "PathCreation" by the standard Java libraries are path injection sinks with maximal
- * confidence.
+ * Endpoints identified as `PathCreation` by the standard Java libraries are path injection sinks with medium
+ * confidence, because `PathCreation` is prone to FPs.
  */
 private class CreatePathSinkCharacteristic extends EndpointCharacteristic {
   CreatePathSinkCharacteristic() { this = "create path" }
@@ -250,7 +251,7 @@ private class CreatePathSinkCharacteristic extends EndpointCharacteristic {
   ) {
     endpointClass instanceof TaintedPathSinkType and
     isPositiveIndicator = true and
-    confidence = maximalConfidence()
+    confidence = mediumConfidence()
   }
 }
 
