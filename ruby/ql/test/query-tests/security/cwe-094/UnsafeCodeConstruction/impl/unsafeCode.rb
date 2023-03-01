@@ -57,10 +57,10 @@ class Foobar
   end
 
   def join_indirect(x, y) 
-    arr = Array("foo = ", x)
-    eval(arr.join(" ")) # NOT OK - but not currently flagged by the query
+    arr = Array(x)
+    eval(arr.join(" ")) # NOT OK
 
-    arr2 = [Array("foo = ", y).join(" ")]
-    eval(arr2.join("\n")) # NOT OK - but not currently flagged by the query
+    arr2 = [Array(["foo = ", y]).join(" ")]
+    eval(arr2.join("\n")) # NOT OK
   end
 end

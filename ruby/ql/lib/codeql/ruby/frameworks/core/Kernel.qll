@@ -197,4 +197,35 @@ module Kernel {
       super.getMethodName() = ["autoload", "autoload?"]
     }
   }
+
+  /**
+   * A call to `Array()`, that converts it's singular argument to an array.
+   * This summary is based on https://ruby-doc.org/3.2.1/Kernel.html#method-i-Array
+   */
+  private class KernelArraySummary extends SummarizedCallable {
+    KernelArraySummary() { this = "Array()" }
+
+    override MethodCall getACallSimple() {
+      result.getMethodName() = "Array" and
+      // I have to have a simplified "KernelMethodCall" implementation inlined here, because relying on `UnknownMethodCall` results in non-monotonic recursion (even if using `getACall`).
+      (
+        result = API::getTopLevelMember("Kernel").getAMethodCall(_).asExpr().getExpr()
+        or
+        result.getReceiver() instanceof SelfVariableAccess
+      )
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        // already an array
+        input = "Argument[0].WithElement[0..]" and
+        output = "ReturnValue"
+        or
+        // not already an array
+        input = "Argument[0].WithoutElement[0..]" and
+        output = "ReturnValue.Element[0]"
+      ) and
+      preservesValue = true
+    }
+  }
 }
