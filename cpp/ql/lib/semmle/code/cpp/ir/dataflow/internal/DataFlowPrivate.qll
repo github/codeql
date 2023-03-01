@@ -625,7 +625,7 @@ predicate jumpStep(Node n1, Node n2) {
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  *
- * The boolean `certain` is true if the destinatino address does not involve
+ * The boolean `certain` is true if the destination address does not involve
  * any pointer arithmetic, and false otherwise.
  */
 private predicate storeStepImpl(Node node1, Content c, PostFieldUpdateNode node2, boolean certain) {
