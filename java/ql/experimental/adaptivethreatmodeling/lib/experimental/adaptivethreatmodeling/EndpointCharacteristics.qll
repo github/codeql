@@ -651,3 +651,18 @@ abstract private class UninterestingToModelCharacteristic extends EndpointCharac
     confidence = mediumConfidence()
   }
 }
+
+/**
+ * A negative characteristic that filters out non-public methods. Non-public methods are not interesting to include in
+ * the standard Java modeling, because they cannot be called from outside the package.
+ */
+private class NonPublicMethodCharacteristic extends UninterestingToModelCharacteristic {
+  NonPublicMethodCharacteristic() { this = "non-public method" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    exists(Expr::Call call |
+      n.asExpr() = call.getAnArgument() and
+      not call.getCallee().isPublic()
+    )
+  }
+}
