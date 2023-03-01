@@ -455,6 +455,28 @@ private class ExceptionCharacteristic extends NotASinkCharacteristic {
 }
 
 /**
+ * A negative characteristic that indicates that an endpoint was manually modeled as a neutral model.
+ *
+ * TODO: It may be necessary to turn this into a LikelyNotASinkCharacteristic, pending answers to the definition of a
+ * neutral model (https://github.com/github/codeql-java-team/issues/254#issuecomment-1435309148).
+ */
+private class NeutralModelCharacteristic extends NotASinkCharacteristic {
+  NeutralModelCharacteristic() { this = "neutral model" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    exists(Callable callee, Call call, string package, string type, string name, string signature |
+      n.asExpr() = call.getAnArgument() and
+      callee = call.getCallee() and
+      package = callee.getDeclaringType().getPackage().getName() and
+      type = callee.getDeclaringType().getErasure().getName() and
+      name = callee.getSourceDeclaration().getName() and
+      signature = paramsString(callee) and
+      neutralModel(package, type, name, signature, "manual")
+    )
+  }
+}
+
+/**
  * A medium-confidence characteristic that indicates that an endpoint is unlikely to be a sink of any type. These
  * endpoints can be excluded from scoring at inference time, both to save time and to avoid false positives. They should
  * not, however, be used as negative samples for training or for a few-shot prompt, because they may include a small
@@ -575,27 +597,5 @@ private class TestFileCharacteristic extends LikelyNotASinkCharacteristic {
     file.getAbsolutePath().matches("%src/test/%") or
     file.getAbsolutePath().matches("%/guava-tests/%") or
     file.getAbsolutePath().matches("%/guava-testlib/%")
-  }
-}
-
-/**
- * A negative characteristic that indicates that an endpoint was manually modeled as a neutral model.
- *
- * TODO: It may be possible to turn this into a NotASinkCharacteristic, pending answers to the definition of a neutral
- * model (https://github.com/github/codeql-java-team/issues/254#issuecomment-1435309148).
- */
-private class NeutralModelCharacteristic extends LikelyNotASinkCharacteristic {
-  NeutralModelCharacteristic() { this = "neutral model" }
-
-  override predicate appliesToEndpoint(DataFlow::Node n) {
-    exists(Callable callee, Call call, string package, string type, string name, string signature |
-      n.asExpr() = call.getAnArgument() and
-      callee = call.getCallee() and
-      package = callee.getDeclaringType().getPackage().getName() and
-      type = callee.getDeclaringType().getErasure().getName() and
-      name = callee.getSourceDeclaration().getName() and
-      signature = paramsString(callee) and
-      neutralModel(package, type, name, signature, "manual")
-    )
   }
 }
