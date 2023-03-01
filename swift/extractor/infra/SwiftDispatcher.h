@@ -11,6 +11,7 @@
 #include "swift/extractor/infra/SwiftTagTraits.h"
 #include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
+#include "swift/extractor/infra/SwiftBodyEmissionStrategy.h"
 
 namespace codeql {
 
@@ -46,13 +47,11 @@ class SwiftDispatcher {
   SwiftDispatcher(const swift::SourceManager& sourceManager,
                   TrapDomain& trap,
                   SwiftLocationExtractor& locationExtractor,
-                  swift::ModuleDecl& currentModule,
-                  swift::SourceFile* currentPrimarySourceFile = nullptr)
+                  SwiftBodyEmissionStrategy& bodyEmissionStrategy)
       : sourceManager{sourceManager},
         trap{trap},
         locationExtractor{locationExtractor},
-        currentModule{currentModule},
-        currentPrimarySourceFile{currentPrimarySourceFile} {}
+        bodyEmissionStrategy{bodyEmissionStrategy} {}
 
   const std::unordered_set<swift::ModuleDecl*> getEncounteredModules() && {
     return std::move(encounteredModules);
@@ -238,36 +237,9 @@ class SwiftDispatcher {
     trap.debug(args...);
   }
 
-  // In order to not emit duplicated entries for declarations, we restrict emission to only
-  // Decls declared within the current "scope".
-  // Depending on the whether we are extracting a primary source file or not the scope is defined as
-  // follows:
-  //  - not extracting a primary source file (`currentPrimarySourceFile == nullptr`): the current
-  //    scope means the current module. This is used in the case of system or builtin modules.
-  //  - extracting a primary source file: in this mode, we extract several files belonging to the
-  //    same module one by one. In this mode, we restrict emission only to the same file ignoring
-  //    all the other files.
-  // This is also used to register the modules we encounter.
-  // TODO calls to this function should be taken away from `DeclVisitor` and moved around with a
-  // clearer separation between naming entities (some decls, all types), deciding whether to emit
-  // them and finally visiting emitting the contents of the entity (which should remain in the
-  // visitors). Then this double responsibility (carrying out the test and registering encountered
-  // modules) should also be cleared out
   bool shouldEmitDeclBody(const swift::Decl& decl) {
-    auto module = decl.getModuleContext();
-    if (module != &currentModule) {
-      encounteredModules.insert(module);
-      return false;
-    }
-    // ModuleDecl is a special case: if it passed the previous test, it is the current module
-    // but it never has a source file, so we short circuit to emit it in any case
-    if (!currentPrimarySourceFile || decl.getKind() == swift::DeclKind::Module) {
-      return true;
-    }
-    if (auto context = decl.getDeclContext()) {
-      return currentPrimarySourceFile == context->getParentSourceFile();
-    }
-    return false;
+    encounteredModules.insert(decl.getModuleContext());
+    return bodyEmissionStrategy.shouldEmitDeclBody(decl);
   }
 
   void emitComment(swift::Token& comment) {
@@ -333,9 +305,8 @@ class SwiftDispatcher {
   TrapDomain& trap;
   Store store;
   SwiftLocationExtractor& locationExtractor;
+  SwiftBodyEmissionStrategy& bodyEmissionStrategy;
   Store::Handle waitingForNewLabel{std::monostate{}};
-  swift::ModuleDecl& currentModule;
-  swift::SourceFile* currentPrimarySourceFile;
   std::unordered_set<swift::ModuleDecl*> encounteredModules;
 };
 
