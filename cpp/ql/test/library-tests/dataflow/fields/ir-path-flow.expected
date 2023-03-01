@@ -581,6 +581,13 @@ edges
 | clearing.cpp:33:9:33:9 | s indirection [x indirection] | clearing.cpp:33:11:33:11 | x indirection |
 | clearing.cpp:33:11:33:11 | x indirection | clearing.cpp:33:8:33:11 | * ... |
 | clearing.cpp:33:11:33:11 | x indirection | clearing.cpp:33:8:33:11 | * ... |
+| clearing.cpp:61:20:61:22 | argument_source output argument | clearing.cpp:61:20:61:22 | s indirection [post update] [val indirection] |
+| clearing.cpp:61:20:61:22 | s indirection [post update] [val indirection] | clearing.cpp:63:8:63:8 | s indirection [val indirection] |
+| clearing.cpp:63:8:63:8 | s indirection [val indirection] | clearing.cpp:63:7:63:12 | * ... |
+| clearing.cpp:63:8:63:8 | s indirection [val indirection] | clearing.cpp:63:10:63:12 | val indirection |
+| clearing.cpp:63:8:63:8 | s indirection [val indirection] | clearing.cpp:63:10:63:12 | val indirection |
+| clearing.cpp:63:10:63:12 | val indirection | clearing.cpp:63:7:63:12 | * ... |
+| clearing.cpp:63:10:63:12 | val indirection | clearing.cpp:63:7:63:12 | * ... |
 | complex.cpp:9:7:9:7 | this indirection [a_] | complex.cpp:9:20:9:21 | this indirection [a_] |
 | complex.cpp:9:20:9:21 | a_ | complex.cpp:9:7:9:7 | a indirection |
 | complex.cpp:9:20:9:21 | a_ indirection | complex.cpp:9:7:9:7 | a indirection |
@@ -1452,6 +1459,12 @@ nodes
 | clearing.cpp:33:9:33:9 | s indirection [x indirection] | semmle.label | s indirection [x indirection] |
 | clearing.cpp:33:11:33:11 | x indirection | semmle.label | x indirection |
 | clearing.cpp:33:11:33:11 | x indirection | semmle.label | x indirection |
+| clearing.cpp:61:20:61:22 | argument_source output argument | semmle.label | argument_source output argument |
+| clearing.cpp:61:20:61:22 | s indirection [post update] [val indirection] | semmle.label | s indirection [post update] [val indirection] |
+| clearing.cpp:63:7:63:12 | * ... | semmle.label | * ... |
+| clearing.cpp:63:8:63:8 | s indirection [val indirection] | semmle.label | s indirection [val indirection] |
+| clearing.cpp:63:10:63:12 | val indirection | semmle.label | val indirection |
+| clearing.cpp:63:10:63:12 | val indirection | semmle.label | val indirection |
 | complex.cpp:9:7:9:7 | a indirection | semmle.label | a indirection |
 | complex.cpp:9:7:9:7 | this indirection [a_] | semmle.label | this indirection [a_] |
 | complex.cpp:9:20:9:21 | a_ | semmle.label | a_ |
@@ -1906,6 +1919,7 @@ subpaths
 | by_reference.cpp:135:27:135:27 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:135:27:135:27 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
 | by_reference.cpp:136:16:136:16 | a | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:136:16:136:16 | a | a flows from $@ | by_reference.cpp:96:8:96:17 | call to user_input | call to user_input |
 | clearing.cpp:33:8:33:11 | * ... | clearing.cpp:31:10:31:19 | call to user_input | clearing.cpp:33:8:33:11 | * ... | * ... flows from $@ | clearing.cpp:31:10:31:19 | call to user_input | call to user_input |
+| clearing.cpp:63:7:63:12 | * ... | clearing.cpp:61:20:61:22 | argument_source output argument | clearing.cpp:63:7:63:12 | * ... | * ... flows from $@ | clearing.cpp:61:20:61:22 | argument_source output argument | argument_source output argument |
 | complex.cpp:42:18:42:18 | call to a | complex.cpp:53:19:53:28 | call to user_input | complex.cpp:42:18:42:18 | call to a | call to a flows from $@ | complex.cpp:53:19:53:28 | call to user_input | call to user_input |
 | complex.cpp:42:18:42:18 | call to a | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:42:18:42:18 | call to a | call to a flows from $@ | complex.cpp:55:19:55:28 | call to user_input | call to user_input |
 | complex.cpp:43:18:43:18 | call to b | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:43:18:43:18 | call to b | call to b flows from $@ | complex.cpp:54:19:54:28 | call to user_input | call to user_input |
