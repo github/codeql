@@ -11,7 +11,6 @@ import UnsafeShellCommandConstructionCustomizations::UnsafeShellCommandConstruct
 private import codeql.ruby.TaintTracking
 private import CommandInjectionCustomizations::CommandInjection as CommandInjection
 private import codeql.ruby.dataflow.BarrierGuards
-private import codeql.ruby.frameworks.core.Array
 
 /**
  * A taint-tracking configuration for detecting shell command constructed from library input vulnerabilities.

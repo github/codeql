@@ -10,7 +10,6 @@ import codeql.ruby.DataFlow
 import UnsafeCodeConstructionCustomizations::UnsafeCodeConstruction
 private import codeql.ruby.TaintTracking
 private import codeql.ruby.dataflow.BarrierGuards
-private import codeql.ruby.frameworks.core.Array
 
 /**
  * A taint-tracking configuration for detecting code constructed from library input vulnerabilities.
