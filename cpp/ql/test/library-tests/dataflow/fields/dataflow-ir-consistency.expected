@@ -18,6 +18,11 @@ uniquePostUpdate
 | aliasing.cpp:77:11:77:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
 | aliasing.cpp:84:11:84:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
 | aliasing.cpp:91:11:91:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
+| clearing.cpp:69:3:69:3 | s indirection | Node has multiple PostUpdateNodes. |
+| clearing.cpp:76:2:76:2 | s indirection | Node has multiple PostUpdateNodes. |
+| clearing.cpp:83:4:83:4 | s indirection | Node has multiple PostUpdateNodes. |
+| clearing.cpp:90:2:90:2 | s indirection | Node has multiple PostUpdateNodes. |
+| clearing.cpp:97:4:97:4 | s indirection | Node has multiple PostUpdateNodes. |
 | complex.cpp:22:3:22:5 | this indirection | Node has multiple PostUpdateNodes. |
 | complex.cpp:25:7:25:7 | this indirection | Node has multiple PostUpdateNodes. |
 | complex.cpp:42:10:42:14 | inner indirection | Node has multiple PostUpdateNodes. |

@@ -448,6 +448,14 @@ edges
 | by_reference.cpp:135:8:135:13 | pouter [inner_ptr, a] | by_reference.cpp:135:16:135:24 | inner_ptr [a] |
 | by_reference.cpp:135:16:135:24 | inner_ptr [a] | by_reference.cpp:135:27:135:27 | a |
 | by_reference.cpp:136:8:136:13 | pouter [a] | by_reference.cpp:136:16:136:16 | a |
+| clearing.cpp:89:2:89:2 | s [post update] [val] | clearing.cpp:91:7:91:7 | s [val] |
+| clearing.cpp:89:2:89:25 | ... = ... | clearing.cpp:89:2:89:2 | s [post update] [val] |
+| clearing.cpp:89:10:89:19 | call to user_input | clearing.cpp:89:2:89:25 | ... = ... |
+| clearing.cpp:91:7:91:7 | s [val] | clearing.cpp:91:9:91:11 | val |
+| clearing.cpp:96:2:96:2 | s [post update] [val] | clearing.cpp:98:7:98:7 | s [val] |
+| clearing.cpp:96:2:96:25 | ... = ... | clearing.cpp:96:2:96:2 | s [post update] [val] |
+| clearing.cpp:96:10:96:19 | call to user_input | clearing.cpp:96:2:96:25 | ... = ... |
+| clearing.cpp:98:7:98:7 | s [val] | clearing.cpp:98:9:98:11 | val |
 | complex.cpp:9:7:9:7 | this [a_] | complex.cpp:9:20:9:21 | this [a_] |
 | complex.cpp:9:20:9:21 | this [a_] | complex.cpp:9:20:9:21 | a_ |
 | complex.cpp:10:7:10:7 | this [b_] | complex.cpp:10:20:10:21 | this [b_] |
@@ -1155,6 +1163,16 @@ nodes
 | by_reference.cpp:135:27:135:27 | a | semmle.label | a |
 | by_reference.cpp:136:8:136:13 | pouter [a] | semmle.label | pouter [a] |
 | by_reference.cpp:136:16:136:16 | a | semmle.label | a |
+| clearing.cpp:89:2:89:2 | s [post update] [val] | semmle.label | s [post update] [val] |
+| clearing.cpp:89:2:89:25 | ... = ... | semmle.label | ... = ... |
+| clearing.cpp:89:10:89:19 | call to user_input | semmle.label | call to user_input |
+| clearing.cpp:91:7:91:7 | s [val] | semmle.label | s [val] |
+| clearing.cpp:91:9:91:11 | val | semmle.label | val |
+| clearing.cpp:96:2:96:2 | s [post update] [val] | semmle.label | s [post update] [val] |
+| clearing.cpp:96:2:96:25 | ... = ... | semmle.label | ... = ... |
+| clearing.cpp:96:10:96:19 | call to user_input | semmle.label | call to user_input |
+| clearing.cpp:98:7:98:7 | s [val] | semmle.label | s [val] |
+| clearing.cpp:98:9:98:11 | val | semmle.label | val |
 | complex.cpp:9:7:9:7 | this [a_] | semmle.label | this [a_] |
 | complex.cpp:9:20:9:21 | a_ | semmle.label | a_ |
 | complex.cpp:9:20:9:21 | this [a_] | semmle.label | this [a_] |
@@ -1551,6 +1569,8 @@ subpaths
 | by_reference.cpp:134:29:134:29 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:134:29:134:29 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
 | by_reference.cpp:135:27:135:27 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:135:27:135:27 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
 | by_reference.cpp:136:16:136:16 | a | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:136:16:136:16 | a | a flows from $@ | by_reference.cpp:96:8:96:17 | call to user_input | call to user_input |
+| clearing.cpp:91:9:91:11 | val | clearing.cpp:89:10:89:19 | call to user_input | clearing.cpp:91:9:91:11 | val | val flows from $@ | clearing.cpp:89:10:89:19 | call to user_input | call to user_input |
+| clearing.cpp:98:9:98:11 | val | clearing.cpp:96:10:96:19 | call to user_input | clearing.cpp:98:9:98:11 | val | val flows from $@ | clearing.cpp:96:10:96:19 | call to user_input | call to user_input |
 | complex.cpp:42:18:42:18 | call to a | complex.cpp:53:19:53:28 | call to user_input | complex.cpp:42:18:42:18 | call to a | call to a flows from $@ | complex.cpp:53:19:53:28 | call to user_input | call to user_input |
 | complex.cpp:42:18:42:18 | call to a | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:42:18:42:18 | call to a | call to a flows from $@ | complex.cpp:55:19:55:28 | call to user_input | call to user_input |
 | complex.cpp:43:18:43:18 | call to b | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:43:18:43:18 | call to b | call to b flows from $@ | complex.cpp:54:19:54:28 | call to user_input | call to user_input |

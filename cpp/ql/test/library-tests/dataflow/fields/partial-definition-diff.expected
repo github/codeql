@@ -187,6 +187,16 @@
 | clearing.cpp:47:11:47:11 | s | IR only |
 | clearing.cpp:62:2:62:10 | access to array | AST only |
 | clearing.cpp:63:10:63:12 | s | IR only |
+| clearing.cpp:69:5:69:7 | val | AST only |
+| clearing.cpp:70:10:70:12 | s | IR only |
+| clearing.cpp:76:4:76:6 | val | AST only |
+| clearing.cpp:77:10:77:12 | s | IR only |
+| clearing.cpp:83:6:83:8 | val | AST only |
+| clearing.cpp:84:10:84:12 | s | IR only |
+| clearing.cpp:89:4:89:6 | val | AST only |
+| clearing.cpp:90:4:90:6 | val | AST only |
+| clearing.cpp:96:4:96:6 | val | AST only |
+| clearing.cpp:97:6:97:8 | val | AST only |
 | complex.cpp:9:20:9:21 | this | IR only |
 | complex.cpp:10:20:10:21 | this | IR only |
 | complex.cpp:11:22:11:23 | a_ | AST only |

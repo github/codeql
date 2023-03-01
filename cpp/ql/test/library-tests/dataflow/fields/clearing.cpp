@@ -62,3 +62,38 @@ void test_uncertain_write_is_not_clear()
 	s.val[10] = 0;
 	sink(*s.val); // $ ir MISSING: ast
 }
+
+void test_indirection_should_not_be_cleared() {
+	S2 s;
+	argument_source(s.val); // *s.val is tainted
+	*s.val++ = 0;
+	sink(*s.val); // $ MISSING: ir,ast
+}
+
+void test_indirection_should_not_be_cleared_incr_post() {
+	S2 s;
+	argument_source(s.val); // *s.val is tainted
+	s.val++;
+	sink(*s.val); // $ MISSING: ir,ast
+}
+
+void test_indirection_should_not_be_cleared_incr_pre() {
+	S2 s;
+	argument_source(s.val); // *s.val is tainted
+	++s.val;
+	sink(*s.val); // $ MISSING: ir,ast
+}
+
+void test_direct_should_be_cleared_post() {
+	S2 s;
+	s.val = user_input(true); // s.val is tainted
+	s.val++;
+	sink(s.val); // $ ast
+}
+
+void test_direct_should_be_cleared_pre() {
+	S2 s;
+	s.val = user_input(true); // s.val is tainted
+	++s.val;
+	sink(s.val); // $ ast
+}
