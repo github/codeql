@@ -1,9 +1,11 @@
 .. _analyzing-data-flow-in-cpp-new:
 
+.. pull-quote:: Note
+
+   The data flow library described here is available from CodeQL 2.13.0 onwards. See :ref:`here <analyzing-data-flow-in-cpp>` for the library available in earlier versions.
+
 Analyzing data flow in C and C++
 ================================
-
-:ref:`Data flow <analyzing-data-flow-in-cpp>`
 
 You can use data flow analysis to track the flow of potentially malicious or insecure data that can cause vulnerabilities in your codebase.
 
@@ -20,27 +22,45 @@ Local data flow is data flow within a single function. Local data flow is usuall
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
 
-The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``). It is possible to map between data flow nodes and expressions/parameters using the member predicates ``asExpr`` and ``asParameter``:
+The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``). It is possible to map between data flow nodes and expressions/parameters using the member predicates ``asExpr``, ``asIndirectExpr``, and ``asParameter``:
 
 .. code-block:: ql
 
    class Node {
-     /** Gets the expression corresponding to this node, if any. */
+     /**
+      * Gets the expression corresponding to this node, if any.
+      */
      Expr asExpr() { ... }
 
-     /** Gets the parameter corresponding to this node, if any. */
+     /**
+      * Gets the expression corresponding to this node, if any, after dereferencing
+      * the expression `index` times.
+      */
+     Expr asIndirectExpr(int index) { ... }
+
+     /**
+      * Gets the parameter corresponding to this node, if any.
+      */
      Parameter asParameter() { ... }
+
+     /**
+      * Gets the parameter corresponding to this node, if any, after dereferencing
+      * the expression `index` times.
+      */
+     Parameter asParameter(int index) { ... }
 
      ...
    }
 
 The predicate ``localFlowStep(Node nodeFrom, Node nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``. The predicate can be applied recursively (using the ``+`` and ``*`` operators), or through the predefined recursive predicate ``localFlow``, which is equivalent to ``localFlowStep*``.
 
-For example, finding flow from a parameter ``source`` to an expression ``sink`` in zero or more local steps can be achieved as follows:
+For example, finding flow from a parameter ``source`` to an expression ``sink`` in zero or more local steps can be achieved as follows, where ``nodeFrom`` and ``nodeTo`` are of type ``DataFlow::Node``:
 
 .. code-block:: ql
 
-   DataFlow::localFlow(DataFlow::parameterNode(source), DataFlow::exprNode(sink))
+   nodeFrom.asParameter() = source and
+   nodeTo.asExpr() = sink and
+   DataFlow::localFlow(nodeFrom, nodeTo)
 
 Using local taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,11 +76,13 @@ In this case, the argument to ``malloc`` is tainted.
 
 The local taint tracking library is in the module ``TaintTracking``. Like local data flow, a predicate ``localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo)`` holds if there is an immediate taint propagation edge from the node ``nodeFrom`` to the node ``nodeTo``. The predicate can be applied recursively (using the ``+`` and ``*`` operators), or through the predefined recursive predicate ``localTaint``, which is equivalent to ``localTaintStep*``.
 
-For example, finding taint propagation from a parameter ``source`` to an expression ``sink`` in zero or more local steps can be achieved as follows:
+For example, finding taint propagation from a parameter ``source`` to an expression ``sink`` in zero or more local steps can be achieved as follows, where ``nodeFrom`` and ``nodeTo`` are of type ``DataFlow::Node``:
 
 .. code-block:: ql
 
-   TaintTracking::localTaint(DataFlow::parameterNode(source), DataFlow::exprNode(sink))
+   nodeFrom.asParameter() = source and
+   nodeTo.asExpr() = sink and
+   TaintTracking::localTaint(nodeFrom, nodeTo):
 
 Examples
 ~~~~~~~~
@@ -77,7 +99,7 @@ The following query finds the filename passed to ``fopen``.
      fc.getTarget() = fopen
    select fc.getArgument(0)
 
-Unfortunately, this will only give the expression in the argument, not the values which could be passed to it. So we use local data flow to find all expressions that flow into the argument:
+Unfortunately, this will only give the expression in the argument, not the values which could be passed to it. So we use local data flow to find all expressions that flow into the argument, where we use ``asIndirectExpr(1)`` as we are interested in the value of the string passed to `fopen`, not the pointer pointing to it:
 
 .. code-block:: ql
 

@@ -1,9 +1,11 @@
 .. _analyzing-data-flow-in-cpp:
 
+.. pull-quote:: Note
+
+   The data flow library described here will be deprecated in the near future. For the replacement library see :ref:`here <analyzing-data-flow-in-cpp-new>`.
+
 Analyzing data flow in C and C++
 ================================
-
-:ref:`Data flow <analyzing-data-flow-in-cpp-new>`
 
 You can use data flow analysis to track the flow of potentially malicious or insecure data that can cause vulnerabilities in your codebase.
 
