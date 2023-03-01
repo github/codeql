@@ -81,7 +81,7 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 		if diagnosticsEmitted == diagnosticsLimit {
 			d = diagnostic{
 				time.Now().UTC().Format("2006-01-02T15:04:05.000") + "Z",
-				sourceStruct{"go/diagnostic-limit-hit", "Some diagnostics were dropped", "go"},
+				sourceStruct{"go/autobuilder/diagnostic-limit-hit", "Some diagnostics were dropped", "go"},
 				fmt.Sprintf("The number of diagnostics exceeded the limit (%d); the remainder were dropped.", diagnosticsLimit),
 				string(severityWarning),
 				false,
@@ -115,7 +115,7 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 }
 
 func EmitPackageDifferentOSArchitecture(pkgPath string) {
-	emitDiagnostic("go/extractor/package-different-os-architecture",
+	emitDiagnostic("go/autobuilder/package-different-os-architecture",
 		"Package "+pkgPath+" is intended for a different OS or architecture",
 		"Make sure the `GOOS` and `GOARCH` [environment variables are correctly set](https://docs.github.com/en/actions/learn-github-actions/variables#defining-environment-variables-for-a-single-workflow). Alternatively, [change your OS and architecture](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#using-a-github-hosted-runner)",
 		severityWarning, false,
@@ -125,7 +125,7 @@ func EmitPackageDifferentOSArchitecture(pkgPath string) {
 }
 
 func EmitCannotFindPackage(pkgPath string) {
-	emitDiagnostic("go/extractor/package-not-found",
+	emitDiagnostic("go/autobuilder/package-not-found",
 		"Package "+pkgPath+" could not be found",
 		"Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
 		severityError, false,

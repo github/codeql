@@ -4,7 +4,7 @@
   "severity": "warning",
   "source": {
     "extractorName": "go",
-    "id": "go/extractor/package-different-os-architecture",
+    "id": "go/autobuilder/package-different-os-architecture",
     "name": "Package syscall/js is intended for a different OS or architecture"
   },
   "visibility": {

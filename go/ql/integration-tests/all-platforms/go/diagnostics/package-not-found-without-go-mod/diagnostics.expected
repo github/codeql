@@ -4,7 +4,7 @@
   "severity": "error",
   "source": {
     "extractorName": "go",
-    "id": "go/extractor/package-not-found",
+    "id": "go/autobuilder/package-not-found",
     "name": "Package github.com/linode/linode-docs-theme could not be found"
   },
   "visibility": {
