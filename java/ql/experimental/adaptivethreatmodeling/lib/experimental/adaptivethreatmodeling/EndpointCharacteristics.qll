@@ -576,3 +576,25 @@ private class TestFileCharacteristic extends LikelyNotASinkCharacteristic {
     file.getAbsolutePath().matches("%/guava-testlib/%")
   }
 }
+
+/**
+ * A negative characteristic that indicates that an endpoint was manually modeled as a neutral model.
+ *
+ * TODO: It may be possible to turn this into a NotASinkCharacteristic, pending answers to the definition of a neutral
+ * model (https://github.com/github/codeql-java-team/issues/254#issuecomment-1435309148).
+ */
+private class NeutralModelCharacteristic extends LikelyNotASinkCharacteristic {
+  NeutralModelCharacteristic() { this = "neutral model" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    exists(Callable callee, Call call, string package, string type, string name, string signature |
+      n.asExpr() = call.getAnArgument() and
+      callee = call.getCallee() and
+      package = callee.getDeclaringType().getPackage().getName() and
+      type = callee.getDeclaringType().getName() and //TODO: Will this work for inner classes? Will it produce X$Y? What about lambdas? What about enums? What about interfaces? What about annotations?
+      name = callee.getName() and // TODO: Will this work for constructors?
+      signature = paramsString(callee) and // TODO: Why are brackets being escaped (`\[\]` vs `[]`)?
+      neutralModel(package, type, name, signature, "manual")
+    )
+  }
+}
