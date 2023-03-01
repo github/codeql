@@ -8,7 +8,7 @@ namespace Microsoft
         {
             namespace Headers
             {
-                // Generated from `Microsoft.Net.Http.Headers.CacheControlHeaderValue` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.CacheControlHeaderValue` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CacheControlHeaderValue
                 {
                     public CacheControlHeaderValue() => throw null;
@@ -47,7 +47,7 @@ namespace Microsoft
                     public static bool TryParse(Microsoft.Extensions.Primitives.StringSegment input, out Microsoft.Net.Http.Headers.CacheControlHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.ContentDispositionHeaderValue` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.ContentDispositionHeaderValue` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ContentDispositionHeaderValue
                 {
                     public ContentDispositionHeaderValue(Microsoft.Extensions.Primitives.StringSegment dispositionType) => throw null;
@@ -69,14 +69,14 @@ namespace Microsoft
                     public static bool TryParse(Microsoft.Extensions.Primitives.StringSegment input, out Microsoft.Net.Http.Headers.ContentDispositionHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.ContentDispositionHeaderValueIdentityExtensions` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.ContentDispositionHeaderValueIdentityExtensions` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class ContentDispositionHeaderValueIdentityExtensions
                 {
                     public static bool IsFileDisposition(this Microsoft.Net.Http.Headers.ContentDispositionHeaderValue header) => throw null;
                     public static bool IsFormDisposition(this Microsoft.Net.Http.Headers.ContentDispositionHeaderValue header) => throw null;
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.ContentRangeHeaderValue` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.ContentRangeHeaderValue` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ContentRangeHeaderValue
                 {
                     public ContentRangeHeaderValue(System.Int64 length) => throw null;
@@ -95,7 +95,7 @@ namespace Microsoft
                     public Microsoft.Extensions.Primitives.StringSegment Unit { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.CookieHeaderValue` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.CookieHeaderValue` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CookieHeaderValue
                 {
                     public CookieHeaderValue(Microsoft.Extensions.Primitives.StringSegment name) => throw null;
@@ -113,7 +113,7 @@ namespace Microsoft
                     public Microsoft.Extensions.Primitives.StringSegment Value { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.EntityTagHeaderValue` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.EntityTagHeaderValue` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class EntityTagHeaderValue
                 {
                     public static Microsoft.Net.Http.Headers.EntityTagHeaderValue Any { get => throw null; }
@@ -133,7 +133,7 @@ namespace Microsoft
                     public static bool TryParseStrictList(System.Collections.Generic.IList<string> inputs, out System.Collections.Generic.IList<Microsoft.Net.Http.Headers.EntityTagHeaderValue> parsedValues) => throw null;
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.HeaderNames` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.HeaderNames` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class HeaderNames
                 {
                     public static string Accept;
@@ -234,14 +234,14 @@ namespace Microsoft
                     public static string XXSSProtection;
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.HeaderQuality` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.HeaderQuality` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class HeaderQuality
                 {
                     public const double Match = default;
                     public const double NoMatch = default;
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.HeaderUtilities` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.HeaderUtilities` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class HeaderUtilities
                 {
                     public static bool ContainsCacheDirective(Microsoft.Extensions.Primitives.StringValues cacheControlDirectives, string targetDirectives) => throw null;
@@ -258,7 +258,7 @@ namespace Microsoft
                     public static Microsoft.Extensions.Primitives.StringSegment UnescapeAsQuotedString(Microsoft.Extensions.Primitives.StringSegment input) => throw null;
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.MediaTypeHeaderValue` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.MediaTypeHeaderValue` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MediaTypeHeaderValue
                 {
                     public Microsoft.Extensions.Primitives.StringSegment Boundary { get => throw null; set => throw null; }
@@ -293,14 +293,14 @@ namespace Microsoft
                     public Microsoft.Extensions.Primitives.StringSegment Type { get => throw null; }
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.MediaTypeHeaderValueComparer` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.MediaTypeHeaderValueComparer` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MediaTypeHeaderValueComparer : System.Collections.Generic.IComparer<Microsoft.Net.Http.Headers.MediaTypeHeaderValue>
                 {
                     public int Compare(Microsoft.Net.Http.Headers.MediaTypeHeaderValue mediaType1, Microsoft.Net.Http.Headers.MediaTypeHeaderValue mediaType2) => throw null;
                     public static Microsoft.Net.Http.Headers.MediaTypeHeaderValueComparer QualityComparer { get => throw null; }
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.NameValueHeaderValue` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.NameValueHeaderValue` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class NameValueHeaderValue
                 {
                     public Microsoft.Net.Http.Headers.NameValueHeaderValue Copy() => throw null;
@@ -324,7 +324,7 @@ namespace Microsoft
                     public Microsoft.Extensions.Primitives.StringSegment Value { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.RangeConditionHeaderValue` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.RangeConditionHeaderValue` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RangeConditionHeaderValue
                 {
                     public Microsoft.Net.Http.Headers.EntityTagHeaderValue EntityTag { get => throw null; }
@@ -339,7 +339,7 @@ namespace Microsoft
                     public static bool TryParse(Microsoft.Extensions.Primitives.StringSegment input, out Microsoft.Net.Http.Headers.RangeConditionHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.RangeHeaderValue` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.RangeHeaderValue` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RangeHeaderValue
                 {
                     public override bool Equals(object obj) => throw null;
@@ -353,7 +353,7 @@ namespace Microsoft
                     public Microsoft.Extensions.Primitives.StringSegment Unit { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.RangeItemHeaderValue` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.RangeItemHeaderValue` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RangeItemHeaderValue
                 {
                     public override bool Equals(object obj) => throw null;
@@ -364,7 +364,7 @@ namespace Microsoft
                     public override string ToString() => throw null;
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.SameSiteMode` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.SameSiteMode` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum SameSiteMode : int
                 {
                     Lax = 1,
@@ -373,7 +373,7 @@ namespace Microsoft
                     Unspecified = -1,
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.SetCookieHeaderValue` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.SetCookieHeaderValue` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class SetCookieHeaderValue
                 {
                     public void AppendToStringBuilder(System.Text.StringBuilder builder) => throw null;
@@ -400,7 +400,7 @@ namespace Microsoft
                     public Microsoft.Extensions.Primitives.StringSegment Value { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.StringWithQualityHeaderValue` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.StringWithQualityHeaderValue` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class StringWithQualityHeaderValue
                 {
                     public override bool Equals(object obj) => throw null;
@@ -418,7 +418,7 @@ namespace Microsoft
                     public Microsoft.Extensions.Primitives.StringSegment Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.Net.Http.Headers.StringWithQualityHeaderValueComparer` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Net.Http.Headers.StringWithQualityHeaderValueComparer` in `Microsoft.Net.Http.Headers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class StringWithQualityHeaderValueComparer : System.Collections.Generic.IComparer<Microsoft.Net.Http.Headers.StringWithQualityHeaderValue>
                 {
                     public int Compare(Microsoft.Net.Http.Headers.StringWithQualityHeaderValue stringWithQuality1, Microsoft.Net.Http.Headers.StringWithQualityHeaderValue stringWithQuality2) => throw null;

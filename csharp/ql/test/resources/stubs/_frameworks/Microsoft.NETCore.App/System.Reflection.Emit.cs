@@ -6,7 +6,7 @@ namespace System
     {
         namespace Emit
         {
-            // Generated from `System.Reflection.Emit.AssemblyBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.AssemblyBuilder` in `System.Reflection.Emit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AssemblyBuilder : System.Reflection.Assembly
             {
                 public override string CodeBase { get => throw null; }
@@ -47,7 +47,7 @@ namespace System
                 public void SetCustomAttribute(System.Reflection.Emit.CustomAttributeBuilder customBuilder) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.AssemblyBuilderAccess` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.AssemblyBuilderAccess` in `System.Reflection.Emit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum AssemblyBuilderAccess : int
             {
@@ -55,7 +55,7 @@ namespace System
                 RunAndCollect = 9,
             }
 
-            // Generated from `System.Reflection.Emit.ConstructorBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.ConstructorBuilder` in `System.Reflection.Emit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ConstructorBuilder : System.Reflection.ConstructorInfo
             {
                 public override System.Reflection.MethodAttributes Attributes { get => throw null; }
@@ -83,7 +83,7 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.EnumBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.EnumBuilder` in `System.Reflection.Emit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EnumBuilder : System.Reflection.TypeInfo
             {
                 public override System.Reflection.Assembly Assembly { get => throw null; }
@@ -147,7 +147,7 @@ namespace System
                 public override System.Type UnderlyingSystemType { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Emit.EventBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.EventBuilder` in `System.Reflection.Emit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventBuilder
             {
                 public void AddOtherMethod(System.Reflection.Emit.MethodBuilder mdBuilder) => throw null;
@@ -158,7 +158,7 @@ namespace System
                 public void SetRemoveOnMethod(System.Reflection.Emit.MethodBuilder mdBuilder) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.FieldBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.FieldBuilder` in `System.Reflection.Emit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FieldBuilder : System.Reflection.FieldInfo
             {
                 public override System.Reflection.FieldAttributes Attributes { get => throw null; }
@@ -180,7 +180,7 @@ namespace System
                 public override void SetValue(object obj, object val, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Globalization.CultureInfo culture) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.GenericTypeParameterBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.GenericTypeParameterBuilder` in `System.Reflection.Emit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class GenericTypeParameterBuilder : System.Reflection.TypeInfo
             {
                 public override System.Reflection.Assembly Assembly { get => throw null; }
@@ -258,7 +258,7 @@ namespace System
                 public override System.Type UnderlyingSystemType { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Emit.MethodBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.MethodBuilder` in `System.Reflection.Emit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MethodBuilder : System.Reflection.MethodInfo
             {
                 public override System.Reflection.MethodAttributes Attributes { get => throw null; }
@@ -304,7 +304,7 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.ModuleBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.ModuleBuilder` in `System.Reflection.Emit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ModuleBuilder : System.Reflection.Module
             {
                 public override System.Reflection.Assembly Assembly { get => throw null; }
@@ -357,7 +357,7 @@ namespace System
                 public void SetCustomAttribute(System.Reflection.Emit.CustomAttributeBuilder customBuilder) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.PropertyBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.PropertyBuilder` in `System.Reflection.Emit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PropertyBuilder : System.Reflection.PropertyInfo
             {
                 public void AddOtherMethod(System.Reflection.Emit.MethodBuilder mdBuilder) => throw null;
@@ -387,7 +387,7 @@ namespace System
                 public override void SetValue(object obj, object value, object[] index) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.TypeBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.TypeBuilder` in `System.Reflection.Emit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TypeBuilder : System.Reflection.TypeInfo
             {
                 public void AddInterfaceImplementation(System.Type interfaceType) => throw null;

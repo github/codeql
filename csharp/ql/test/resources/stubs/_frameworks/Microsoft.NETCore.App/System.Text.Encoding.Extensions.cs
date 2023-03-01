@@ -4,7 +4,7 @@ namespace System
 {
     namespace Text
     {
-        // Generated from `System.Text.ASCIIEncoding` in `System.Text.Encoding.Extensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.ASCIIEncoding` in `System.Text.Encoding.Extensions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ASCIIEncoding : System.Text.Encoding
         {
             public ASCIIEncoding() => throw null;
@@ -30,7 +30,7 @@ namespace System
             public override bool IsSingleByte { get => throw null; }
         }
 
-        // Generated from `System.Text.UTF32Encoding` in `System.Text.Encoding.Extensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.UTF32Encoding` in `System.Text.Encoding.Extensions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class UTF32Encoding : System.Text.Encoding
         {
             public override bool Equals(object value) => throw null;
@@ -57,7 +57,7 @@ namespace System
             public UTF32Encoding(bool bigEndian, bool byteOrderMark, bool throwOnInvalidCharacters) => throw null;
         }
 
-        // Generated from `System.Text.UTF7Encoding` in `System.Text.Encoding.Extensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.UTF7Encoding` in `System.Text.Encoding.Extensions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class UTF7Encoding : System.Text.Encoding
         {
             public override bool Equals(object value) => throw null;
@@ -81,7 +81,7 @@ namespace System
             public UTF7Encoding(bool allowOptionals) => throw null;
         }
 
-        // Generated from `System.Text.UTF8Encoding` in `System.Text.Encoding.Extensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.UTF8Encoding` in `System.Text.Encoding.Extensions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class UTF8Encoding : System.Text.Encoding
         {
             public override bool Equals(object value) => throw null;
@@ -112,7 +112,7 @@ namespace System
             public UTF8Encoding(bool encoderShouldEmitUTF8Identifier, bool throwOnInvalidBytes) => throw null;
         }
 
-        // Generated from `System.Text.UnicodeEncoding` in `System.Text.Encoding.Extensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.UnicodeEncoding` in `System.Text.Encoding.Extensions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class UnicodeEncoding : System.Text.Encoding
         {
             public const int CharSize = default;

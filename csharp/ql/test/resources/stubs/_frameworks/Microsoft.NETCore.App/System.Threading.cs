@@ -4,7 +4,7 @@ namespace System
 {
     namespace Threading
     {
-        // Generated from `System.Threading.AbandonedMutexException` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.AbandonedMutexException` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AbandonedMutexException : System.SystemException
         {
             public AbandonedMutexException() => throw null;
@@ -18,7 +18,7 @@ namespace System
             public int MutexIndex { get => throw null; }
         }
 
-        // Generated from `System.Threading.AsyncFlowControl` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.AsyncFlowControl` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct AsyncFlowControl : System.IDisposable, System.IEquatable<System.Threading.AsyncFlowControl>
         {
             public static bool operator !=(System.Threading.AsyncFlowControl a, System.Threading.AsyncFlowControl b) => throw null;
@@ -31,7 +31,7 @@ namespace System
             public void Undo() => throw null;
         }
 
-        // Generated from `System.Threading.AsyncLocal<>` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.AsyncLocal<>` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AsyncLocal<T>
         {
             public AsyncLocal() => throw null;
@@ -39,7 +39,7 @@ namespace System
             public T Value { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Threading.AsyncLocalValueChangedArgs<>` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.AsyncLocalValueChangedArgs<>` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct AsyncLocalValueChangedArgs<T>
         {
             // Stub generator skipped constructor 
@@ -48,13 +48,13 @@ namespace System
             public bool ThreadContextChanged { get => throw null; }
         }
 
-        // Generated from `System.Threading.AutoResetEvent` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.AutoResetEvent` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AutoResetEvent : System.Threading.EventWaitHandle
         {
             public AutoResetEvent(bool initialState) : base(default(bool), default(System.Threading.EventResetMode)) => throw null;
         }
 
-        // Generated from `System.Threading.Barrier` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.Barrier` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Barrier : System.IDisposable
         {
             public System.Int64 AddParticipant() => throw null;
@@ -76,7 +76,7 @@ namespace System
             public bool SignalAndWait(int millisecondsTimeout, System.Threading.CancellationToken cancellationToken) => throw null;
         }
 
-        // Generated from `System.Threading.BarrierPostPhaseException` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.BarrierPostPhaseException` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class BarrierPostPhaseException : System.Exception
         {
             public BarrierPostPhaseException() => throw null;
@@ -86,10 +86,10 @@ namespace System
             public BarrierPostPhaseException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Threading.ContextCallback` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.ContextCallback` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void ContextCallback(object state);
 
-        // Generated from `System.Threading.CountdownEvent` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.CountdownEvent` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CountdownEvent : System.IDisposable
         {
             public void AddCount() => throw null;
@@ -115,14 +115,14 @@ namespace System
             public System.Threading.WaitHandle WaitHandle { get => throw null; }
         }
 
-        // Generated from `System.Threading.EventResetMode` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.EventResetMode` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum EventResetMode : int
         {
             AutoReset = 0,
             ManualReset = 1,
         }
 
-        // Generated from `System.Threading.EventWaitHandle` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.EventWaitHandle` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EventWaitHandle : System.Threading.WaitHandle
         {
             public EventWaitHandle(bool initialState, System.Threading.EventResetMode mode) => throw null;
@@ -134,7 +134,7 @@ namespace System
             public static bool TryOpenExisting(string name, out System.Threading.EventWaitHandle result) => throw null;
         }
 
-        // Generated from `System.Threading.ExecutionContext` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.ExecutionContext` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ExecutionContext : System.IDisposable, System.Runtime.Serialization.ISerializable
         {
             public static System.Threading.ExecutionContext Capture() => throw null;
@@ -148,7 +148,7 @@ namespace System
             public static System.Threading.AsyncFlowControl SuppressFlow() => throw null;
         }
 
-        // Generated from `System.Threading.HostExecutionContext` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.HostExecutionContext` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class HostExecutionContext : System.IDisposable
         {
             public virtual System.Threading.HostExecutionContext CreateCopy() => throw null;
@@ -159,7 +159,7 @@ namespace System
             protected internal object State { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Threading.HostExecutionContextManager` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.HostExecutionContextManager` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class HostExecutionContextManager
         {
             public virtual System.Threading.HostExecutionContext Capture() => throw null;
@@ -168,7 +168,7 @@ namespace System
             public virtual object SetHostExecutionContext(System.Threading.HostExecutionContext hostExecutionContext) => throw null;
         }
 
-        // Generated from `System.Threading.Interlocked` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.Interlocked` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Interlocked
         {
             public static int Add(ref int location1, int value) => throw null;
@@ -180,6 +180,7 @@ namespace System
             public static System.UInt32 And(ref System.UInt32 location1, System.UInt32 value) => throw null;
             public static System.UInt64 And(ref System.UInt64 location1, System.UInt64 value) => throw null;
             public static System.IntPtr CompareExchange(ref System.IntPtr location1, System.IntPtr value, System.IntPtr comparand) => throw null;
+            public static System.UIntPtr CompareExchange(ref System.UIntPtr location1, System.UIntPtr value, System.UIntPtr comparand) => throw null;
             public static double CompareExchange(ref double location1, double value, double comparand) => throw null;
             public static float CompareExchange(ref float location1, float value, float comparand) => throw null;
             public static int CompareExchange(ref int location1, int value, int comparand) => throw null;
@@ -193,6 +194,7 @@ namespace System
             public static System.UInt32 Decrement(ref System.UInt32 location) => throw null;
             public static System.UInt64 Decrement(ref System.UInt64 location) => throw null;
             public static System.IntPtr Exchange(ref System.IntPtr location1, System.IntPtr value) => throw null;
+            public static System.UIntPtr Exchange(ref System.UIntPtr location1, System.UIntPtr value) => throw null;
             public static double Exchange(ref double location1, double value) => throw null;
             public static float Exchange(ref float location1, float value) => throw null;
             public static int Exchange(ref int location1, int value) => throw null;
@@ -215,7 +217,7 @@ namespace System
             public static System.UInt64 Read(ref System.UInt64 location) => throw null;
         }
 
-        // Generated from `System.Threading.LazyInitializer` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.LazyInitializer` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class LazyInitializer
         {
             public static T EnsureInitialized<T>(ref T target) where T : class => throw null;
@@ -225,8 +227,8 @@ namespace System
             public static T EnsureInitialized<T>(ref T target, ref object syncLock, System.Func<T> valueFactory) where T : class => throw null;
         }
 
-        // Generated from `System.Threading.LockCookie` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public struct LockCookie
+        // Generated from `System.Threading.LockCookie` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public struct LockCookie : System.IEquatable<System.Threading.LockCookie>
         {
             public static bool operator !=(System.Threading.LockCookie a, System.Threading.LockCookie b) => throw null;
             public static bool operator ==(System.Threading.LockCookie a, System.Threading.LockCookie b) => throw null;
@@ -236,7 +238,7 @@ namespace System
             // Stub generator skipped constructor 
         }
 
-        // Generated from `System.Threading.LockRecursionException` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.LockRecursionException` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class LockRecursionException : System.Exception
         {
             public LockRecursionException() => throw null;
@@ -245,20 +247,20 @@ namespace System
             public LockRecursionException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Threading.LockRecursionPolicy` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.LockRecursionPolicy` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum LockRecursionPolicy : int
         {
             NoRecursion = 0,
             SupportsRecursion = 1,
         }
 
-        // Generated from `System.Threading.ManualResetEvent` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.ManualResetEvent` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ManualResetEvent : System.Threading.EventWaitHandle
         {
             public ManualResetEvent(bool initialState) : base(default(bool), default(System.Threading.EventResetMode)) => throw null;
         }
 
-        // Generated from `System.Threading.ManualResetEventSlim` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.ManualResetEventSlim` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ManualResetEventSlim : System.IDisposable
         {
             public void Dispose() => throw null;
@@ -279,7 +281,7 @@ namespace System
             public System.Threading.WaitHandle WaitHandle { get => throw null; }
         }
 
-        // Generated from `System.Threading.Monitor` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.Monitor` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Monitor
         {
             public static void Enter(object obj) => throw null;
@@ -302,7 +304,7 @@ namespace System
             public static bool Wait(object obj, int millisecondsTimeout, bool exitContext) => throw null;
         }
 
-        // Generated from `System.Threading.Mutex` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.Mutex` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Mutex : System.Threading.WaitHandle
         {
             public Mutex() => throw null;
@@ -314,7 +316,7 @@ namespace System
             public static bool TryOpenExisting(string name, out System.Threading.Mutex result) => throw null;
         }
 
-        // Generated from `System.Threading.ReaderWriterLock` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.ReaderWriterLock` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ReaderWriterLock : System.Runtime.ConstrainedExecution.CriticalFinalizerObject
         {
             public void AcquireReaderLock(System.TimeSpan timeout) => throw null;
@@ -335,7 +337,7 @@ namespace System
             public int WriterSeqNum { get => throw null; }
         }
 
-        // Generated from `System.Threading.ReaderWriterLockSlim` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.ReaderWriterLockSlim` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ReaderWriterLockSlim : System.IDisposable
         {
             public int CurrentReadCount { get => throw null; }
@@ -366,7 +368,7 @@ namespace System
             public int WaitingWriteCount { get => throw null; }
         }
 
-        // Generated from `System.Threading.Semaphore` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.Semaphore` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Semaphore : System.Threading.WaitHandle
         {
             public static System.Threading.Semaphore OpenExisting(string name) => throw null;
@@ -378,7 +380,7 @@ namespace System
             public static bool TryOpenExisting(string name, out System.Threading.Semaphore result) => throw null;
         }
 
-        // Generated from `System.Threading.SemaphoreFullException` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.SemaphoreFullException` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SemaphoreFullException : System.SystemException
         {
             public SemaphoreFullException() => throw null;
@@ -387,7 +389,7 @@ namespace System
             public SemaphoreFullException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Threading.SemaphoreSlim` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.SemaphoreSlim` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SemaphoreSlim : System.IDisposable
         {
             public System.Threading.WaitHandle AvailableWaitHandle { get => throw null; }
@@ -412,10 +414,10 @@ namespace System
             public System.Threading.Tasks.Task<bool> WaitAsync(int millisecondsTimeout, System.Threading.CancellationToken cancellationToken) => throw null;
         }
 
-        // Generated from `System.Threading.SendOrPostCallback` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.SendOrPostCallback` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void SendOrPostCallback(object state);
 
-        // Generated from `System.Threading.SpinLock` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.SpinLock` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct SpinLock
         {
             public void Enter(ref bool lockTaken) => throw null;
@@ -431,7 +433,7 @@ namespace System
             public void TryEnter(ref bool lockTaken) => throw null;
         }
 
-        // Generated from `System.Threading.SpinWait` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.SpinWait` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct SpinWait
         {
             public int Count { get => throw null; }
@@ -445,7 +447,7 @@ namespace System
             // Stub generator skipped constructor 
         }
 
-        // Generated from `System.Threading.SynchronizationContext` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.SynchronizationContext` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SynchronizationContext
         {
             public virtual System.Threading.SynchronizationContext CreateCopy() => throw null;
@@ -462,7 +464,7 @@ namespace System
             protected static int WaitHelper(System.IntPtr[] waitHandles, bool waitAll, int millisecondsTimeout) => throw null;
         }
 
-        // Generated from `System.Threading.SynchronizationLockException` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.SynchronizationLockException` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SynchronizationLockException : System.SystemException
         {
             public SynchronizationLockException() => throw null;
@@ -471,7 +473,7 @@ namespace System
             public SynchronizationLockException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Threading.ThreadLocal<>` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.ThreadLocal<>` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ThreadLocal<T> : System.IDisposable
         {
             public void Dispose() => throw null;
@@ -487,7 +489,7 @@ namespace System
             // ERR: Stub generator didn't handle member: ~ThreadLocal
         }
 
-        // Generated from `System.Threading.Volatile` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.Volatile` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Volatile
         {
             public static System.IntPtr Read(ref System.IntPtr location) => throw null;
@@ -520,7 +522,7 @@ namespace System
             public static void Write<T>(ref T location, T value) where T : class => throw null;
         }
 
-        // Generated from `System.Threading.WaitHandleCannotBeOpenedException` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.WaitHandleCannotBeOpenedException` in `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class WaitHandleCannotBeOpenedException : System.ApplicationException
         {
             public WaitHandleCannotBeOpenedException() => throw null;

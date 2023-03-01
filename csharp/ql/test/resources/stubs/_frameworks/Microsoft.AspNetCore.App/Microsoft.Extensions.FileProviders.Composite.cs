@@ -6,7 +6,7 @@ namespace Microsoft
     {
         namespace FileProviders
         {
-            // Generated from `Microsoft.Extensions.FileProviders.CompositeFileProvider` in `Microsoft.Extensions.FileProviders.Composite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.Extensions.FileProviders.CompositeFileProvider` in `Microsoft.Extensions.FileProviders.Composite, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class CompositeFileProvider : Microsoft.Extensions.FileProviders.IFileProvider
             {
                 public CompositeFileProvider(System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileProviders.IFileProvider> fileProviders) => throw null;
@@ -19,7 +19,7 @@ namespace Microsoft
 
             namespace Composite
             {
-                // Generated from `Microsoft.Extensions.FileProviders.Composite.CompositeDirectoryContents` in `Microsoft.Extensions.FileProviders.Composite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Extensions.FileProviders.Composite.CompositeDirectoryContents` in `Microsoft.Extensions.FileProviders.Composite, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CompositeDirectoryContents : Microsoft.Extensions.FileProviders.IDirectoryContents, System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileProviders.IFileInfo>, System.Collections.IEnumerable
                 {
                     public CompositeDirectoryContents(System.Collections.Generic.IList<Microsoft.Extensions.FileProviders.IFileProvider> fileProviders, string subpath) => throw null;

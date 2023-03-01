@@ -6,7 +6,7 @@ namespace Microsoft
     {
         namespace Logging
         {
-            // Generated from `Microsoft.Extensions.Logging.EventSourceLoggerFactoryExtensions` in `Microsoft.Extensions.Logging.EventSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.Extensions.Logging.EventSourceLoggerFactoryExtensions` in `Microsoft.Extensions.Logging.EventSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class EventSourceLoggerFactoryExtensions
             {
                 public static Microsoft.Extensions.Logging.ILoggingBuilder AddEventSourceLogger(this Microsoft.Extensions.Logging.ILoggingBuilder builder) => throw null;
@@ -14,7 +14,7 @@ namespace Microsoft
 
             namespace EventSource
             {
-                // Generated from `Microsoft.Extensions.Logging.EventSource.EventSourceLoggerProvider` in `Microsoft.Extensions.Logging.EventSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Extensions.Logging.EventSource.EventSourceLoggerProvider` in `Microsoft.Extensions.Logging.EventSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class EventSourceLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider, System.IDisposable
                 {
                     public Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName) => throw null;
@@ -22,10 +22,10 @@ namespace Microsoft
                     public EventSourceLoggerProvider(Microsoft.Extensions.Logging.EventSource.LoggingEventSource eventSource) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.EventSource.LoggingEventSource` in `Microsoft.Extensions.Logging.EventSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Extensions.Logging.EventSource.LoggingEventSource` in `Microsoft.Extensions.Logging.EventSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class LoggingEventSource : System.Diagnostics.Tracing.EventSource
                 {
-                    // Generated from `Microsoft.Extensions.Logging.EventSource.LoggingEventSource+Keywords` in `Microsoft.Extensions.Logging.EventSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.Extensions.Logging.EventSource.LoggingEventSource+Keywords` in `Microsoft.Extensions.Logging.EventSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public static class Keywords
                     {
                         public const System.Diagnostics.Tracing.EventKeywords FormattedMessage = default;

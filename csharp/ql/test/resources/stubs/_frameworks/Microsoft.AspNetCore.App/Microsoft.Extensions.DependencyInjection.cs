@@ -6,7 +6,7 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.DefaultServiceProviderFactory` in `Microsoft.Extensions.DependencyInjection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.Extensions.DependencyInjection.DefaultServiceProviderFactory` in `Microsoft.Extensions.DependencyInjection, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DefaultServiceProviderFactory : Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<Microsoft.Extensions.DependencyInjection.IServiceCollection>
             {
                 public Microsoft.Extensions.DependencyInjection.IServiceCollection CreateBuilder(Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
@@ -15,7 +15,7 @@ namespace Microsoft
                 public DefaultServiceProviderFactory(Microsoft.Extensions.DependencyInjection.ServiceProviderOptions options) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.ServiceCollectionContainerBuilderExtensions` in `Microsoft.Extensions.DependencyInjection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.Extensions.DependencyInjection.ServiceCollectionContainerBuilderExtensions` in `Microsoft.Extensions.DependencyInjection, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ServiceCollectionContainerBuilderExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.ServiceProvider BuildServiceProvider(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
@@ -23,7 +23,7 @@ namespace Microsoft
                 public static Microsoft.Extensions.DependencyInjection.ServiceProvider BuildServiceProvider(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, bool validateScopes) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.ServiceProvider` in `Microsoft.Extensions.DependencyInjection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.Extensions.DependencyInjection.ServiceProvider` in `Microsoft.Extensions.DependencyInjection, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ServiceProvider : System.IAsyncDisposable, System.IDisposable, System.IServiceProvider
             {
                 public void Dispose() => throw null;
@@ -31,7 +31,7 @@ namespace Microsoft
                 public object GetService(System.Type serviceType) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.ServiceProviderOptions` in `Microsoft.Extensions.DependencyInjection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.Extensions.DependencyInjection.ServiceProviderOptions` in `Microsoft.Extensions.DependencyInjection, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ServiceProviderOptions
             {
                 public ServiceProviderOptions() => throw null;

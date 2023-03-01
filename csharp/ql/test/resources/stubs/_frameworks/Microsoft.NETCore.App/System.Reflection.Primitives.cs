@@ -6,7 +6,7 @@ namespace System
     {
         namespace Emit
         {
-            // Generated from `System.Reflection.Emit.FlowControl` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.FlowControl` in `System.Reflection.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum FlowControl : int
             {
                 Branch = 0,
@@ -20,7 +20,7 @@ namespace System
                 Throw = 8,
             }
 
-            // Generated from `System.Reflection.Emit.OpCode` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.OpCode` in `System.Reflection.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct OpCode : System.IEquatable<System.Reflection.Emit.OpCode>
             {
                 public static bool operator !=(System.Reflection.Emit.OpCode a, System.Reflection.Emit.OpCode b) => throw null;
@@ -40,7 +40,7 @@ namespace System
                 public System.Int16 Value { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Emit.OpCodeType` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.OpCodeType` in `System.Reflection.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum OpCodeType : int
             {
                 Annotation = 0,
@@ -51,7 +51,7 @@ namespace System
                 Primitive = 5,
             }
 
-            // Generated from `System.Reflection.Emit.OpCodes` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.OpCodes` in `System.Reflection.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class OpCodes
             {
                 public static System.Reflection.Emit.OpCode Add;
@@ -283,7 +283,7 @@ namespace System
                 public static System.Reflection.Emit.OpCode Xor;
             }
 
-            // Generated from `System.Reflection.Emit.OperandType` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.OperandType` in `System.Reflection.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum OperandType : int
             {
                 InlineBrTarget = 0,
@@ -306,7 +306,7 @@ namespace System
                 ShortInlineVar = 18,
             }
 
-            // Generated from `System.Reflection.Emit.PackingSize` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.PackingSize` in `System.Reflection.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum PackingSize : int
             {
                 Size1 = 1,
@@ -320,7 +320,7 @@ namespace System
                 Unspecified = 0,
             }
 
-            // Generated from `System.Reflection.Emit.StackBehaviour` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.StackBehaviour` in `System.Reflection.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum StackBehaviour : int
             {
                 Pop0 = 0,

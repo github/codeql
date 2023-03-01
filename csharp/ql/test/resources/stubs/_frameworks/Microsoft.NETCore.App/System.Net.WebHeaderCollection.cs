@@ -4,7 +4,7 @@ namespace System
 {
     namespace Net
     {
-        // Generated from `System.Net.HttpRequestHeader` in `System.Net.WebHeaderCollection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.HttpRequestHeader` in `System.Net.WebHeaderCollection, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum HttpRequestHeader : int
         {
             Accept = 20,
@@ -50,7 +50,7 @@ namespace System
             Warning = 9,
         }
 
-        // Generated from `System.Net.HttpResponseHeader` in `System.Net.WebHeaderCollection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.HttpResponseHeader` in `System.Net.WebHeaderCollection, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum HttpResponseHeader : int
         {
             AcceptRanges = 20,
@@ -85,7 +85,7 @@ namespace System
             WwwAuthenticate = 29,
         }
 
-        // Generated from `System.Net.WebHeaderCollection` in `System.Net.WebHeaderCollection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.WebHeaderCollection` in `System.Net.WebHeaderCollection, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class WebHeaderCollection : System.Collections.Specialized.NameValueCollection, System.Collections.IEnumerable, System.Runtime.Serialization.ISerializable
         {
             public void Add(System.Net.HttpRequestHeader header, string value) => throw null;

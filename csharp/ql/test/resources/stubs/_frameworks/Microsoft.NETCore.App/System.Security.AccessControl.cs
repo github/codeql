@@ -6,7 +6,7 @@ namespace System
     {
         namespace AccessControl
         {
-            // Generated from `System.Security.AccessControl.AccessControlActions` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AccessControlActions` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum AccessControlActions : int
             {
@@ -15,7 +15,7 @@ namespace System
                 View = 1,
             }
 
-            // Generated from `System.Security.AccessControl.AccessControlModification` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AccessControlModification` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum AccessControlModification : int
             {
                 Add = 0,
@@ -26,7 +26,7 @@ namespace System
                 Set = 1,
             }
 
-            // Generated from `System.Security.AccessControl.AccessControlSections` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AccessControlSections` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum AccessControlSections : int
             {
@@ -38,21 +38,21 @@ namespace System
                 Owner = 4,
             }
 
-            // Generated from `System.Security.AccessControl.AccessControlType` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AccessControlType` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum AccessControlType : int
             {
                 Allow = 0,
                 Deny = 1,
             }
 
-            // Generated from `System.Security.AccessControl.AccessRule` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AccessRule` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class AccessRule : System.Security.AccessControl.AuthorizationRule
             {
                 public System.Security.AccessControl.AccessControlType AccessControlType { get => throw null; }
                 protected AccessRule(System.Security.Principal.IdentityReference identity, int accessMask, bool isInherited, System.Security.AccessControl.InheritanceFlags inheritanceFlags, System.Security.AccessControl.PropagationFlags propagationFlags, System.Security.AccessControl.AccessControlType type) : base(default(System.Security.Principal.IdentityReference), default(int), default(bool), default(System.Security.AccessControl.InheritanceFlags), default(System.Security.AccessControl.PropagationFlags)) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.AccessRule<>` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AccessRule<>` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AccessRule<T> : System.Security.AccessControl.AccessRule where T : struct
             {
                 public AccessRule(System.Security.Principal.IdentityReference identity, T rights, System.Security.AccessControl.AccessControlType type) : base(default(System.Security.Principal.IdentityReference), default(int), default(bool), default(System.Security.AccessControl.InheritanceFlags), default(System.Security.AccessControl.PropagationFlags), default(System.Security.AccessControl.AccessControlType)) => throw null;
@@ -62,7 +62,7 @@ namespace System
                 public T Rights { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.AceEnumerator` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AceEnumerator` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AceEnumerator : System.Collections.IEnumerator
             {
                 public System.Security.AccessControl.GenericAce Current { get => throw null; }
@@ -71,7 +71,7 @@ namespace System
                 public void Reset() => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.AceFlags` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AceFlags` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum AceFlags : byte
             {
@@ -87,7 +87,7 @@ namespace System
                 SuccessfulAccess = 64,
             }
 
-            // Generated from `System.Security.AccessControl.AceQualifier` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AceQualifier` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum AceQualifier : int
             {
                 AccessAllowed = 0,
@@ -96,7 +96,7 @@ namespace System
                 SystemAudit = 2,
             }
 
-            // Generated from `System.Security.AccessControl.AceType` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AceType` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum AceType : byte
             {
                 AccessAllowed = 0,
@@ -119,7 +119,7 @@ namespace System
                 SystemAuditObject = 7,
             }
 
-            // Generated from `System.Security.AccessControl.AuditFlags` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AuditFlags` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum AuditFlags : int
             {
@@ -128,14 +128,14 @@ namespace System
                 Success = 1,
             }
 
-            // Generated from `System.Security.AccessControl.AuditRule` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AuditRule` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class AuditRule : System.Security.AccessControl.AuthorizationRule
             {
                 public System.Security.AccessControl.AuditFlags AuditFlags { get => throw null; }
                 protected AuditRule(System.Security.Principal.IdentityReference identity, int accessMask, bool isInherited, System.Security.AccessControl.InheritanceFlags inheritanceFlags, System.Security.AccessControl.PropagationFlags propagationFlags, System.Security.AccessControl.AuditFlags auditFlags) : base(default(System.Security.Principal.IdentityReference), default(int), default(bool), default(System.Security.AccessControl.InheritanceFlags), default(System.Security.AccessControl.PropagationFlags)) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.AuditRule<>` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AuditRule<>` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AuditRule<T> : System.Security.AccessControl.AuditRule where T : struct
             {
                 public AuditRule(System.Security.Principal.IdentityReference identity, T rights, System.Security.AccessControl.AuditFlags flags) : base(default(System.Security.Principal.IdentityReference), default(int), default(bool), default(System.Security.AccessControl.InheritanceFlags), default(System.Security.AccessControl.PropagationFlags), default(System.Security.AccessControl.AuditFlags)) => throw null;
@@ -145,7 +145,7 @@ namespace System
                 public T Rights { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.AuthorizationRule` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AuthorizationRule` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class AuthorizationRule
             {
                 protected internal int AccessMask { get => throw null; }
@@ -156,7 +156,7 @@ namespace System
                 public System.Security.AccessControl.PropagationFlags PropagationFlags { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.AuthorizationRuleCollection` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.AuthorizationRuleCollection` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AuthorizationRuleCollection : System.Collections.ReadOnlyCollectionBase
             {
                 public void AddRule(System.Security.AccessControl.AuthorizationRule rule) => throw null;
@@ -165,7 +165,7 @@ namespace System
                 public System.Security.AccessControl.AuthorizationRule this[int index] { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.CommonAce` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.CommonAce` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CommonAce : System.Security.AccessControl.QualifiedAce
             {
                 public override int BinaryLength { get => throw null; }
@@ -174,7 +174,7 @@ namespace System
                 public static int MaxOpaqueLength(bool isCallback) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.CommonAcl` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.CommonAcl` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class CommonAcl : System.Security.AccessControl.GenericAcl
             {
                 public override int BinaryLength { get => throw null; }
@@ -190,7 +190,7 @@ namespace System
                 public override System.Byte Revision { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.CommonObjectSecurity` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.CommonObjectSecurity` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class CommonObjectSecurity : System.Security.AccessControl.ObjectSecurity
             {
                 protected void AddAccessRule(System.Security.AccessControl.AccessRule rule) => throw null;
@@ -211,7 +211,7 @@ namespace System
                 protected void SetAuditRule(System.Security.AccessControl.AuditRule rule) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.CommonSecurityDescriptor` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.CommonSecurityDescriptor` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CommonSecurityDescriptor : System.Security.AccessControl.GenericSecurityDescriptor
             {
                 public void AddDiscretionaryAcl(System.Byte revision, int trusted) => throw null;
@@ -235,7 +235,7 @@ namespace System
                 public System.Security.AccessControl.SystemAcl SystemAcl { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.CompoundAce` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.CompoundAce` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CompoundAce : System.Security.AccessControl.KnownAce
             {
                 public override int BinaryLength { get => throw null; }
@@ -244,13 +244,13 @@ namespace System
                 public override void GetBinaryForm(System.Byte[] binaryForm, int offset) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.CompoundAceType` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.CompoundAceType` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum CompoundAceType : int
             {
                 Impersonation = 1,
             }
 
-            // Generated from `System.Security.AccessControl.ControlFlags` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.ControlFlags` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum ControlFlags : int
             {
@@ -273,7 +273,7 @@ namespace System
                 SystemAclProtected = 8192,
             }
 
-            // Generated from `System.Security.AccessControl.CustomAce` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.CustomAce` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CustomAce : System.Security.AccessControl.GenericAce
             {
                 public override int BinaryLength { get => throw null; }
@@ -285,7 +285,7 @@ namespace System
                 public void SetOpaque(System.Byte[] opaque) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.DiscretionaryAcl` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.DiscretionaryAcl` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DiscretionaryAcl : System.Security.AccessControl.CommonAcl
             {
                 public void AddAccess(System.Security.AccessControl.AccessControlType accessType, System.Security.Principal.SecurityIdentifier sid, System.Security.AccessControl.ObjectAccessRule rule) => throw null;
@@ -305,7 +305,7 @@ namespace System
                 public void SetAccess(System.Security.AccessControl.AccessControlType accessType, System.Security.Principal.SecurityIdentifier sid, int accessMask, System.Security.AccessControl.InheritanceFlags inheritanceFlags, System.Security.AccessControl.PropagationFlags propagationFlags, System.Security.AccessControl.ObjectAceFlags objectFlags, System.Guid objectType, System.Guid inheritedObjectType) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.GenericAce` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.GenericAce` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class GenericAce
             {
                 public static bool operator !=(System.Security.AccessControl.GenericAce left, System.Security.AccessControl.GenericAce right) => throw null;
@@ -325,7 +325,7 @@ namespace System
                 public System.Security.AccessControl.PropagationFlags PropagationFlags { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.GenericAcl` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.GenericAcl` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class GenericAcl : System.Collections.ICollection, System.Collections.IEnumerable
             {
                 public static System.Byte AclRevision;
@@ -345,7 +345,7 @@ namespace System
                 public virtual object SyncRoot { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.GenericSecurityDescriptor` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.GenericSecurityDescriptor` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class GenericSecurityDescriptor
             {
                 public int BinaryLength { get => throw null; }
@@ -359,7 +359,7 @@ namespace System
                 public static System.Byte Revision { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.InheritanceFlags` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.InheritanceFlags` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum InheritanceFlags : int
             {
@@ -368,7 +368,7 @@ namespace System
                 ObjectInherit = 2,
             }
 
-            // Generated from `System.Security.AccessControl.KnownAce` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.KnownAce` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class KnownAce : System.Security.AccessControl.GenericAce
             {
                 public int AccessMask { get => throw null; set => throw null; }
@@ -376,10 +376,10 @@ namespace System
                 public System.Security.Principal.SecurityIdentifier SecurityIdentifier { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.NativeObjectSecurity` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.NativeObjectSecurity` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class NativeObjectSecurity : System.Security.AccessControl.CommonObjectSecurity
             {
-                // Generated from `System.Security.AccessControl.NativeObjectSecurity+ExceptionFromErrorCode` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Security.AccessControl.NativeObjectSecurity+ExceptionFromErrorCode` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 protected internal delegate System.Exception ExceptionFromErrorCode(int errorCode, string name, System.Runtime.InteropServices.SafeHandle handle, object context);
 
 
@@ -395,7 +395,7 @@ namespace System
                 protected void Persist(string name, System.Security.AccessControl.AccessControlSections includeSections, object exceptionContext) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.ObjectAccessRule` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.ObjectAccessRule` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class ObjectAccessRule : System.Security.AccessControl.AccessRule
             {
                 public System.Guid InheritedObjectType { get => throw null; }
@@ -404,7 +404,7 @@ namespace System
                 public System.Guid ObjectType { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.ObjectAce` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.ObjectAce` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ObjectAce : System.Security.AccessControl.QualifiedAce
             {
                 public override int BinaryLength { get => throw null; }
@@ -416,7 +416,7 @@ namespace System
                 public System.Guid ObjectAceType { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.ObjectAceFlags` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.ObjectAceFlags` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum ObjectAceFlags : int
             {
@@ -425,7 +425,7 @@ namespace System
                 ObjectAceTypePresent = 1,
             }
 
-            // Generated from `System.Security.AccessControl.ObjectAuditRule` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.ObjectAuditRule` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class ObjectAuditRule : System.Security.AccessControl.AuditRule
             {
                 public System.Guid InheritedObjectType { get => throw null; }
@@ -434,7 +434,7 @@ namespace System
                 public System.Guid ObjectType { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.ObjectSecurity` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.ObjectSecurity` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class ObjectSecurity
             {
                 public abstract System.Type AccessRightType { get; }
@@ -484,7 +484,7 @@ namespace System
                 protected void WriteUnlock() => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.ObjectSecurity<>` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.ObjectSecurity<>` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class ObjectSecurity<T> : System.Security.AccessControl.NativeObjectSecurity where T : struct
             {
                 public override System.Type AccessRightType { get => throw null; }
@@ -512,7 +512,7 @@ namespace System
                 public virtual void SetAuditRule(System.Security.AccessControl.AuditRule<T> rule) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.PrivilegeNotHeldException` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.PrivilegeNotHeldException` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PrivilegeNotHeldException : System.UnauthorizedAccessException, System.Runtime.Serialization.ISerializable
             {
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -522,7 +522,7 @@ namespace System
                 public PrivilegeNotHeldException(string privilege, System.Exception inner) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.PropagationFlags` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.PropagationFlags` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum PropagationFlags : int
             {
@@ -531,7 +531,7 @@ namespace System
                 None = 0,
             }
 
-            // Generated from `System.Security.AccessControl.QualifiedAce` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.QualifiedAce` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class QualifiedAce : System.Security.AccessControl.KnownAce
             {
                 public System.Security.AccessControl.AceQualifier AceQualifier { get => throw null; }
@@ -542,7 +542,7 @@ namespace System
                 public void SetOpaque(System.Byte[] opaque) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.RawAcl` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.RawAcl` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RawAcl : System.Security.AccessControl.GenericAcl
             {
                 public override int BinaryLength { get => throw null; }
@@ -556,7 +556,7 @@ namespace System
                 public override System.Byte Revision { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.RawSecurityDescriptor` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.RawSecurityDescriptor` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RawSecurityDescriptor : System.Security.AccessControl.GenericSecurityDescriptor
             {
                 public override System.Security.AccessControl.ControlFlags ControlFlags { get => throw null; }
@@ -571,7 +571,7 @@ namespace System
                 public System.Security.AccessControl.RawAcl SystemAcl { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.ResourceType` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.ResourceType` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ResourceType : int
             {
                 DSObject = 8,
@@ -589,7 +589,7 @@ namespace System
                 WmiGuidObject = 11,
             }
 
-            // Generated from `System.Security.AccessControl.SecurityInfos` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.SecurityInfos` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum SecurityInfos : int
             {
@@ -599,7 +599,7 @@ namespace System
                 SystemAcl = 8,
             }
 
-            // Generated from `System.Security.AccessControl.SystemAcl` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.AccessControl.SystemAcl` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SystemAcl : System.Security.AccessControl.CommonAcl
             {
                 public void AddAudit(System.Security.AccessControl.AuditFlags auditFlags, System.Security.Principal.SecurityIdentifier sid, int accessMask, System.Security.AccessControl.InheritanceFlags inheritanceFlags, System.Security.AccessControl.PropagationFlags propagationFlags) => throw null;
@@ -622,7 +622,7 @@ namespace System
         }
         namespace Policy
         {
-            // Generated from `System.Security.Policy.Evidence` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Policy.Evidence` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Evidence : System.Collections.ICollection, System.Collections.IEnumerable
             {
                 public void AddAssembly(object id) => throw null;
@@ -650,7 +650,7 @@ namespace System
                 public object SyncRoot { get => throw null; }
             }
 
-            // Generated from `System.Security.Policy.EvidenceBase` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Policy.EvidenceBase` in `System.Security.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class EvidenceBase
             {
                 public virtual System.Security.Policy.EvidenceBase Clone() => throw null;

@@ -8,7 +8,7 @@ namespace Microsoft
         {
             namespace Features
             {
-                // Generated from `Microsoft.AspNetCore.Http.Features.FeatureCollection` in `Microsoft.Extensions.Features, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Http.Features.FeatureCollection` in `Microsoft.Extensions.Features, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FeatureCollection : Microsoft.AspNetCore.Http.Features.IFeatureCollection, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Type, object>>, System.Collections.IEnumerable
                 {
                     public FeatureCollection() => throw null;
@@ -23,7 +23,14 @@ namespace Microsoft
                     public void Set<TFeature>(TFeature instance) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.FeatureReference<>` in `Microsoft.Extensions.Features, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Http.Features.FeatureCollectionExtensions` in `Microsoft.Extensions.Features, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public static class FeatureCollectionExtensions
+                {
+                    public static object GetRequiredFeature(this Microsoft.AspNetCore.Http.Features.IFeatureCollection featureCollection, System.Type key) => throw null;
+                    public static TFeature GetRequiredFeature<TFeature>(this Microsoft.AspNetCore.Http.Features.IFeatureCollection featureCollection) => throw null;
+                }
+
+                // Generated from `Microsoft.AspNetCore.Http.Features.FeatureReference<>` in `Microsoft.Extensions.Features, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct FeatureReference<T>
                 {
                     public static Microsoft.AspNetCore.Http.Features.FeatureReference<T> Default;
@@ -32,7 +39,7 @@ namespace Microsoft
                     public T Update(Microsoft.AspNetCore.Http.Features.IFeatureCollection features, T feature) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.FeatureReferences<>` in `Microsoft.Extensions.Features, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Http.Features.FeatureReferences<>` in `Microsoft.Extensions.Features, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct FeatureReferences<TCache>
                 {
                     public TCache Cache;
@@ -46,7 +53,7 @@ namespace Microsoft
                     public int Revision { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.IFeatureCollection` in `Microsoft.Extensions.Features, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Http.Features.IFeatureCollection` in `Microsoft.Extensions.Features, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IFeatureCollection : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Type, object>>, System.Collections.IEnumerable
                 {
                     TFeature Get<TFeature>();

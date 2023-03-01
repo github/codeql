@@ -4,7 +4,7 @@ namespace System
 {
     namespace Net
     {
-        // Generated from `System.Net.Dns` in `System.Net.NameResolution, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.Dns` in `System.Net.NameResolution, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Dns
         {
             public static System.IAsyncResult BeginGetHostAddresses(string hostNameOrAddress, System.AsyncCallback requestCallback, object state) => throw null;
@@ -35,7 +35,7 @@ namespace System
             public static System.Net.IPHostEntry Resolve(string hostName) => throw null;
         }
 
-        // Generated from `System.Net.IPHostEntry` in `System.Net.NameResolution, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.IPHostEntry` in `System.Net.NameResolution, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class IPHostEntry
         {
             public System.Net.IPAddress[] AddressList { get => throw null; set => throw null; }

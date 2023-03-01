@@ -6,7 +6,7 @@ namespace Microsoft
     {
         namespace Configuration
         {
-            // Generated from `Microsoft.Extensions.Configuration.FileConfigurationExtensions` in `Microsoft.Extensions.Configuration.FileExtensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.Extensions.Configuration.FileConfigurationExtensions` in `Microsoft.Extensions.Configuration.FileExtensions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class FileConfigurationExtensions
             {
                 public static System.Action<Microsoft.Extensions.Configuration.FileLoadExceptionContext> GetFileLoadExceptionHandler(this Microsoft.Extensions.Configuration.IConfigurationBuilder builder) => throw null;
@@ -16,7 +16,7 @@ namespace Microsoft
                 public static Microsoft.Extensions.Configuration.IConfigurationBuilder SetFileProvider(this Microsoft.Extensions.Configuration.IConfigurationBuilder builder, Microsoft.Extensions.FileProviders.IFileProvider fileProvider) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.FileConfigurationProvider` in `Microsoft.Extensions.Configuration.FileExtensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.Extensions.Configuration.FileConfigurationProvider` in `Microsoft.Extensions.Configuration.FileExtensions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class FileConfigurationProvider : Microsoft.Extensions.Configuration.ConfigurationProvider, System.IDisposable
             {
                 public void Dispose() => throw null;
@@ -28,7 +28,7 @@ namespace Microsoft
                 public override string ToString() => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.FileConfigurationSource` in `Microsoft.Extensions.Configuration.FileExtensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.Extensions.Configuration.FileConfigurationSource` in `Microsoft.Extensions.Configuration.FileExtensions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class FileConfigurationSource : Microsoft.Extensions.Configuration.IConfigurationSource
             {
                 public abstract Microsoft.Extensions.Configuration.IConfigurationProvider Build(Microsoft.Extensions.Configuration.IConfigurationBuilder builder);
@@ -43,7 +43,7 @@ namespace Microsoft
                 public void ResolveFileProvider() => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.FileLoadExceptionContext` in `Microsoft.Extensions.Configuration.FileExtensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.Extensions.Configuration.FileLoadExceptionContext` in `Microsoft.Extensions.Configuration.FileExtensions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class FileLoadExceptionContext
             {
                 public System.Exception Exception { get => throw null; set => throw null; }
