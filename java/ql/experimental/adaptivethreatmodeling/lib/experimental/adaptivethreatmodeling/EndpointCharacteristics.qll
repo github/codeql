@@ -139,13 +139,13 @@ predicate hasMetadata(DataFlow::Node n, string metadata) {
     n.asExpr() = call.getArgument(input) and
     callee = call.getCallee() and
     package = callee.getDeclaringType().getPackage().getName() and
-    type = callee.getDeclaringType().getName() and //TODO: Will this work for inner classes? Will it produce X$Y? What about lambdas? What about enums? What about interfaces? What about annotations?
+    type = callee.getDeclaringType().getErasure().getName() and
     (
       if callee.isFinal() or callee.getDeclaringType().isFinal()
       then subtypes = false // See https://github.com/github/codeql-java-team/issues/254#issuecomment-1422296423
       else subtypes = true
     ) and
-    name = callee.getName() and // TODO: Will this work for constructors?
+    name = callee.getSourceDeclaration().getName() and
     signature = paramsString(callee) and // TODO: Why are brackets being escaped (`\[\]` vs `[]`)?
     ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
     provenance = "ai-generated" and
@@ -592,9 +592,9 @@ private class NeutralModelCharacteristic extends LikelyNotASinkCharacteristic {
       n.asExpr() = call.getAnArgument() and
       callee = call.getCallee() and
       package = callee.getDeclaringType().getPackage().getName() and
-      type = callee.getDeclaringType().getName() and //TODO: Will this work for inner classes? Will it produce X$Y? What about lambdas? What about enums? What about interfaces? What about annotations?
-      name = callee.getName() and // TODO: Will this work for constructors?
-      signature = paramsString(callee) and // TODO: Why are brackets being escaped (`\[\]` vs `[]`)?
+      type = callee.getDeclaringType().getErasure().getName() and
+      name = callee.getSourceDeclaration().getName() and
+      signature = paramsString(callee) and
       neutralModel(package, type, name, signature, "manual")
     )
   }
