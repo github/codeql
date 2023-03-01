@@ -90,3 +90,25 @@ class UsersController < ActionController::Base
     eval(code); # BAD
   end
 end
+
+Rails.application.routes.draw { resources :posts }
+
+class PostsController < ActionController::Base
+  before_action :foo
+  before_action :bar
+  after_action :baz
+
+  def index
+  end
+
+  def foo
+    @foo = params[:foo]
+  end
+
+  def bar
+  end
+
+  def baz
+    eval(@foo)
+  end
+end

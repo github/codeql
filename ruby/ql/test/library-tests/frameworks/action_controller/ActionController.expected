@@ -6,6 +6,11 @@ actionControllerControllerClasses
 | controllers/posts_controller.rb:1:1:32:3 | PostsController |
 | controllers/tags_controller.rb:1:1:2:3 | TagsController |
 | controllers/users/notifications_controller.rb:2:3:5:5 | Users::NotificationsController |
+| filter_flow.rb:9:1:23:3 | OneController |
+| filter_flow.rb:25:1:40:3 | TwoController |
+| filter_flow.rb:42:1:57:3 | ThreeController |
+| filter_flow.rb:59:1:73:3 | FourController |
+| filter_flow.rb:75:1:93:3 | FiveController |
 | input_access.rb:1:1:50:3 | UsersController |
 | params_flow.rb:1:1:162:3 | MyController |
 | params_flow.rb:170:1:178:3 | Subclass |
@@ -27,6 +32,22 @@ actionControllerActionMethods
 | controllers/posts_controller.rb:17:3:18:5 | show |
 | controllers/posts_controller.rb:20:3:21:5 | upvote |
 | controllers/users/notifications_controller.rb:3:5:4:7 | mark_as_read |
+| filter_flow.rb:13:3:15:5 | a |
+| filter_flow.rb:17:3:18:5 | b |
+| filter_flow.rb:20:3:22:5 | c |
+| filter_flow.rb:29:3:31:5 | a |
+| filter_flow.rb:33:3:35:5 | b |
+| filter_flow.rb:37:3:39:5 | c |
+| filter_flow.rb:46:3:49:5 | a |
+| filter_flow.rb:51:3:52:5 | b |
+| filter_flow.rb:54:3:56:5 | c |
+| filter_flow.rb:63:3:65:5 | a |
+| filter_flow.rb:67:3:68:5 | b |
+| filter_flow.rb:70:3:72:5 | c |
+| filter_flow.rb:79:3:81:5 | a |
+| filter_flow.rb:83:3:84:5 | b |
+| filter_flow.rb:86:3:88:5 | c |
+| filter_flow.rb:90:3:92:5 | taint_foo |
 | input_access.rb:2:3:49:5 | index |
 | logging.rb:2:5:8:7 | index |
 | params_flow.rb:2:3:4:5 | m1 |
@@ -72,6 +93,11 @@ paramsCalls
 | controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
 | controllers/foo/bars_controller.rb:22:10:22:15 | call to params |
 | controllers/posts_controller.rb:26:23:26:28 | call to params |
+| filter_flow.rb:14:12:14:17 | call to params |
+| filter_flow.rb:30:12:30:17 | call to params |
+| filter_flow.rb:47:12:47:17 | call to params |
+| filter_flow.rb:64:16:64:21 | call to params |
+| filter_flow.rb:91:12:91:17 | call to params |
 | params_flow.rb:3:10:3:15 | call to params |
 | params_flow.rb:7:10:7:15 | call to params |
 | params_flow.rb:11:10:11:15 | call to params |
@@ -127,6 +153,11 @@ paramsSources
 | controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
 | controllers/foo/bars_controller.rb:22:10:22:15 | call to params |
 | controllers/posts_controller.rb:26:23:26:28 | call to params |
+| filter_flow.rb:14:12:14:17 | call to params |
+| filter_flow.rb:30:12:30:17 | call to params |
+| filter_flow.rb:47:12:47:17 | call to params |
+| filter_flow.rb:64:16:64:21 | call to params |
+| filter_flow.rb:91:12:91:17 | call to params |
 | params_flow.rb:3:10:3:15 | call to params |
 | params_flow.rb:7:10:7:15 | call to params |
 | params_flow.rb:11:10:11:15 | call to params |
@@ -192,6 +223,11 @@ httpInputAccesses
 | controllers/foo/bars_controller.rb:21:21:21:26 | call to params | ActionController::Metal#params |
 | controllers/foo/bars_controller.rb:22:10:22:15 | call to params | ActionController::Metal#params |
 | controllers/posts_controller.rb:26:23:26:28 | call to params | ActionController::Metal#params |
+| filter_flow.rb:14:12:14:17 | call to params | ActionController::Metal#params |
+| filter_flow.rb:30:12:30:17 | call to params | ActionController::Metal#params |
+| filter_flow.rb:47:12:47:17 | call to params | ActionController::Metal#params |
+| filter_flow.rb:64:16:64:21 | call to params | ActionController::Metal#params |
+| filter_flow.rb:91:12:91:17 | call to params | ActionController::Metal#params |
 | input_access.rb:3:5:3:18 | call to params | ActionDispatch::Request#params |
 | input_access.rb:4:5:4:22 | call to parameters | ActionDispatch::Request#parameters |
 | input_access.rb:5:5:5:15 | call to GET | ActionDispatch::Request#GET |
