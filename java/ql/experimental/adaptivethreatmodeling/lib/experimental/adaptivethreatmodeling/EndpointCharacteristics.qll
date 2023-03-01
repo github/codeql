@@ -464,14 +464,33 @@ private class NeutralModelCharacteristic extends NotASinkCharacteristic {
   NeutralModelCharacteristic() { this = "neutral model" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
-    exists(Callable callee, Call call, string package, string type, string name, string signature |
-      n.asExpr() = call.getAnArgument() and
-      callee = call.getCallee() and
+    exists(Callable callee, string package, string type, string name, string signature |
+      callee = n.asExpr().(Argument).getCall().getCallee() and
       package = callee.getDeclaringType().getPackage().getName() and
       type = callee.getDeclaringType().getErasure().getName() and
       name = callee.getSourceDeclaration().getName() and
       signature = paramsString(callee) and
       neutralModel(package, type, name, signature, "manual")
+    )
+  }
+}
+
+/**
+ * A negative characteristic that indicates that an endpoint is unexploitable even if it is a sink.
+ *
+ * A sink is highly unlikely to be exploitable if its callee's name starts with `is` the callee has a boolean return
+ * type (e.g. `isDirectory`). These kinds of calls normally do only checks, and appear before the proper call that does
+ * the dangerous/interesting thing, so we want the latter to be modeled as the sink.
+ */
+private class UnexploitableCharacteristic extends NotASinkCharacteristic {
+  UnexploitableCharacteristic() { this = "unexploitable" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    not sinkNode(n, _) and
+    exists(Callable callee |
+      callee = n.asExpr().(Argument).getCall().getCallee() and
+      callee.getName().matches("is%") and
+      callee.getReturnType() instanceof BooleanType
     )
   }
 }
