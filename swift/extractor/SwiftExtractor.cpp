@@ -224,13 +224,11 @@ static void cleanupPendingDeclarations(SwiftExtractorState& state) {
     }
   }
 }
-
 static void extractLazy(SwiftExtractorState& state, swift::CompilerInstance& compiler) {
   cleanupPendingDeclarations(state);
   std::vector<const swift::Decl*> worklist;
   std::copy(std::begin(state.pendingDeclarations), std::end(state.pendingDeclarations),
             std::back_inserter(worklist));
-
   for (auto pending : worklist) {
     extractDeclarations(state, compiler, *pending->getModuleContext(), nullptr, pending);
   }

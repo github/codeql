@@ -2,6 +2,7 @@
 
 #include <swift/AST/Decl.h>
 #include <swift/AST/ASTMangler.h>
+#include <swift/AST/Module.h>
 
 #include "swift/extractor/translators/TranslatorBase.h"
 #include "swift/extractor/trap/generated/decl/TrapClasses.h"
@@ -73,8 +74,9 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
       dispatcher.extractedDeclaration(&decl);
       entry.emplace(id);
       fillDecl(decl, *entry);
+    } else {
+      dispatcher.skippedDeclaration(&decl);
     }
-    dispatcher.skippedDeclaration(&decl);
     return entry;
   }
 

@@ -60,8 +60,18 @@ class SwiftDispatcher {
     return std::move(encounteredModules);
   }
 
-  void extractedDeclaration(const swift::Decl* decl) { state.emittedDeclarations.insert(decl); }
-  void skippedDeclaration(const swift::Decl* decl) { state.pendingDeclarations.insert(decl); }
+  void extractedDeclaration(const swift::Decl* decl) {
+    swift::ModuleDecl* module = decl->getModuleContext();
+    if (module->isBuiltinModule() || module->getName().str() == "__ObjC") {
+      state.emittedDeclarations.insert(decl);
+    }
+  }
+  void skippedDeclaration(const swift::Decl* decl) {
+    swift::ModuleDecl* module = decl->getModuleContext();
+    if (module->isBuiltinModule() || module->getName().str() == "__ObjC") {
+      state.pendingDeclarations.insert(decl);
+    }
+  }
 
   template <typename Entry>
   void emit(Entry&& entry) {
