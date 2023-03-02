@@ -24,6 +24,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["java.net", "InetAddress", True, "getByName", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["java.net", "InetAddress", True, "getAllByName", "(String)", "", "Argument[0]", "ReturnValue.ArrayElement", "taint", "ai-generated"]
       - ["java.net", "InetSocketAddress", True, "createUnresolved", "(String,int)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
       - ["java.net", "InetSocketAddress", True, "InetSocketAddress", "(String,int)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
       - ["java.net", "URI", False, "resolve", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]

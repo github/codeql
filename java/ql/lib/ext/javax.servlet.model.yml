@@ -9,3 +9,9 @@ extensions:
       - ["javax.servlet", "ServletRequest", False, "getParameterNames", "()", "", "ReturnValue", "remote", "manual"]
       - ["javax.servlet", "ServletRequest", False, "getParameterValues", "(String)", "", "ReturnValue", "remote", "manual"]
       - ["javax.servlet", "ServletRequest", False, "getReader", "()", "", "ReturnValue", "remote", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.servlet", "ServletContext", True, "getResourceAsStream", "(String)", "", "Argument[0]", "read-file", "ai-generated"]
