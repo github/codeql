@@ -1247,8 +1247,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       }
       logEndProcess(start, "Done extracting " + file);
     } catch (OutOfMemoryError oom) {
-      System.err.println("Out of memory while extracting " + file + ".");
-      oom.printStackTrace(System.err);
+      System.err.println("Out of memory while extracting a file.");
       System.exit(137); // caught by the CodeQL CLI
     } catch (Throwable t) {
       System.err.println("Exception while extracting " + file + ".");
