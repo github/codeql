@@ -205,7 +205,7 @@ class SslFlowConfig extends DataFlow::Configuration {
 from DataFlow::PathNode source, DataFlow::PathNode sink, InsecureUrlFlowConfig config
 where
   config.hasFlowPath(source, sink) and
-  exists(BasicAuthFlowConfig bc | bc.hasFlowTo(sink.getNode())) and
-  not exists(SslFlowConfig sc | sc.hasFlowTo(sink.getNode()))
+  any(BasicAuthFlowConfig bc).hasFlowTo(sink.getNode()) and
+  not any(SslFlowConfig sc).hasFlowTo(sink.getNode())
 select sink.getNode(), source, sink, "Insecure LDAP authentication from $@.", source.getNode(),
   "LDAP connection string"
