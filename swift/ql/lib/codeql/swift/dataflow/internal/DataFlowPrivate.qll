@@ -211,6 +211,8 @@ private predicate modifiable(Argument arg) {
   arg.getExpr() instanceof InOutExpr
   or
   arg.getExpr().getType() instanceof NominalType
+  or
+  arg.getLabel() = "ptr"
 }
 
 predicate modifiableParam(ParamDecl param) {

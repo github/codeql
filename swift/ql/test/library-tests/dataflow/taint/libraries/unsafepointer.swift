@@ -25,7 +25,7 @@ func taintPointer(ptr: UnsafeMutablePointer<String>) {
 }
 
 func clearPointer2(ptr: UnsafeMutablePointer<String>) {
-  sink(arg: ptr.pointee) // $ MISSING: tainted=21
+  sink(arg: ptr.pointee) // $ tainted=21
   sink(arg: ptr)
 
   ptr.pointee = "abc"
@@ -42,12 +42,12 @@ func testMutatingPointerInCall(ptr: UnsafeMutablePointer<String>) {
 
   taintPointer(ptr: ptr) // mutates `ptr` pointee with a tainted value
 
-  sink(arg: ptr.pointee) // $ MISSING: tainted=21
+  sink(arg: ptr.pointee) // $ tainted=21
   sink(arg: ptr)
 
   clearPointer2(ptr: ptr)
 
-  sink(arg: ptr.pointee)
+  sink(arg: ptr.pointee) // $ SPURIOUS: tainted=21
   sink(arg: ptr)
 }
 
@@ -96,6 +96,6 @@ func testMutatingMyPointerInCall(ptr: MyPointer) {
 
   taintMyPointer(ptr: ptr) // mutates `ptr` pointee with a tainted value
 
-  sink(arg: ptr.pointee) // $ MISSING: tainted=87
+  sink(arg: ptr.pointee) // $ tainted=87
   sink(arg: ptr)
 }
