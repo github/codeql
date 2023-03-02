@@ -2,7 +2,7 @@
     "name": "typescript-parser-wrapper",
     "private": true,
     "dependencies": {
-        "typescript": "5.0.0-beta"
+        "typescript": "5.0.1-rc"
     },
     "scripts": {
         "build": "tsc --project tsconfig.json",
