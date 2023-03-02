@@ -68,3 +68,21 @@ func taintThroughAssignmentArithmetic() {
   e %= 100
   sink(arg: e) // $ tainted=66
 }
+
+func taintThroughBitwiseOperators() {
+  sink(arg: 0 | source()) // $ MISSING: tainted=73
+  sink(arg: source() | 0) // $ MISSING: tainted=74
+
+  sink(arg: 0xffff & source()) // $ MISSING: tainted=76
+  sink(arg: source() & 0xffff) // $ MISSING: tainted=77
+
+  sink(arg: 0xffff ^ source()) // $ MISSING: tainted=79
+  sink(arg: source() ^ 0xffff) // $ MISSING: tainted=80
+
+  sink(arg: source() << 1) // $ MISSING: tainted=82
+  sink(arg: source() &<< 1) // $ MISSING: tainted=83
+  sink(arg: source() >> 1) // $ MISSING: tainted=84
+  sink(arg: source() &>> 1) // $ MISSING: tainted=85
+
+  sink(arg: ~source()) // $ MISSING: tainted=87
+}
