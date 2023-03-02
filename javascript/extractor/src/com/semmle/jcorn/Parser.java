@@ -2783,7 +2783,7 @@ public class Parser {
     boolean isBreak = keyword.equals("break");
     this.next();
     Identifier label = null;
-    if (this.eat(TokenType.semi) || this.insertSemicolon()) {
+    if (this.eagerlyTrySemicolon()) {
       label = null;
     } else if (this.type != TokenType.name) {
       this.unexpected();
@@ -2893,6 +2893,15 @@ public class Parser {
         new IfStatement(new SourceLocation(startLoc), test, consequent, alternate));
   }
 
+  /**
+   * Consumes or inserts a semicolon if possible, and returns true if a semicolon was consumed or inserted.
+   *
+   * Returns false if there was no semicolon and insertion was not possible.
+   */
+  protected boolean eagerlyTrySemicolon() {
+    return this.eat(TokenType.semi) || this.insertSemicolon();
+  }
+
   protected ReturnStatement parseReturnStatement(Position startLoc) {
     if (!this.inFunction && !this.options.allowReturnOutsideFunction())
       this.raise(this.start, "'return' outside of function");
@@ -2902,7 +2911,7 @@ public class Parser {
     // optional arguments, we eagerly look for a semicolon or the
     // possibility to insert one.
     Expression argument;
-    if (this.eat(TokenType.semi) || this.insertSemicolon()) {
+    if (this.eagerlyTrySemicolon()) {
       argument = null;
     } else {
       argument = this.parseExpression(false, null);
@@ -3404,6 +3413,7 @@ public class Parser {
     Statement declaration;
     List<ExportSpecifier> specifiers;
     Expression source = null;
+    Expression assertion = null;
     if (this.shouldParseExportStatement()) {
       declaration = this.parseStatement(true, false);
       if (declaration == null) return null;
@@ -3419,11 +3429,13 @@ public class Parser {
       declaration = null;
       specifiers = this.parseExportSpecifiers(exports);
       source = parseExportFrom(specifiers, source, false);
+      assertion = parseImportOrExportAssertionAndSemicolon(); // TODO: store in AST
     }
     return this.finishNode(
         new ExportNamedDeclaration(loc, declaration, specifiers, (Literal) source));
   }
 
+  /** Parses the 'from' clause of an export, not including the assertion or semicolon. */
   protected Expression parseExportFrom(
       List<ExportSpecifier> specifiers, Expression source, boolean expectFrom) {
     if (this.eatContextual("from")) {
@@ -3442,13 +3454,13 @@ public class Parser {
 
       source = null;
     }
-    this.semicolon();
     return source;
   }
 
   protected ExportDeclaration parseExportAll(
       SourceLocation loc, Position starLoc, Set<String> exports) {
     Expression source = parseExportFrom(null, null, true);
+    Expression assertion = parseImportOrExportAssertionAndSemicolon(); // TODO: store in AST
     return this.finishNode(new ExportAllDeclaration(loc, (Literal) source));
   }
 
@@ -3514,6 +3526,16 @@ public class Parser {
     return parseImportRest(loc);
   }
 
+  protected Expression parseImportOrExportAssertionAndSemicolon() {
+    Expression result = null;
+    if (!this.eagerlyTrySemicolon()) {
+      this.expectContextual("assert");
+      result = this.parseObj(false, null);
+      this.semicolon();
+    }
+    return result;
+  }
+
   protected ImportDeclaration parseImportRest(SourceLocation loc) {
     List<ImportSpecifier> specifiers;
     Literal source;
@@ -3527,7 +3549,7 @@ public class Parser {
       if (this.type != TokenType.string) this.unexpected();
       source = (Literal) this.parseExprAtom(null);
     }
-    this.semicolon();
+    Expression assertion = this.parseImportOrExportAssertionAndSemicolon(); // TODO: store in AST
     if (specifiers == null) return null;
     return this.finishNode(new ImportDeclaration(loc, specifiers, source));
   }

@@ -314,6 +314,7 @@ public class ESNextParser extends JSXParser {
         this.parseExportSpecifiersMaybe(specifiers, exports);
       }
       Literal source = (Literal) this.parseExportFrom(specifiers, null, true);
+      Expression assertion = this.parseImportOrExportAssertionAndSemicolon(); // TODO: store in AST
       return this.finishNode(new ExportNamedDeclaration(exportStart, null, specifiers, source));
     }
 
@@ -330,6 +331,7 @@ public class ESNextParser extends JSXParser {
       List<ExportSpecifier> specifiers = CollectionUtil.makeList(nsSpec);
       this.parseExportSpecifiersMaybe(specifiers, exports);
       Literal source = (Literal) this.parseExportFrom(specifiers, null, true);
+      Expression assertion = this.parseImportOrExportAssertionAndSemicolon(); // TODO: store in AST
       return this.finishNode(new ExportNamedDeclaration(exportStart, null, specifiers, source));
     }
 
@@ -435,6 +437,10 @@ public class ESNextParser extends JSXParser {
    */
   private DynamicImport parseDynamicImport(Position startLoc) {
     Expression source = parseMaybeAssign(false, null, null);
+    Expression assertion = null;
+    if (this.eat(TokenType.comma)) {
+      assertion = this.parseMaybeAssign(false, null, null); // TODO: store in AST
+    }
     this.expect(TokenType.parenR);
     DynamicImport di = this.finishNode(new DynamicImport(new SourceLocation(startLoc), source));
     return di;
