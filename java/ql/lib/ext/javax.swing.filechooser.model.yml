@@ -1,7 +1,0 @@
-extensions:
-
-  - addsTo:
-      pack: codeql/java-all
-      extensible: sinkModel
-    data:
-      - ["javax.swing.filechooser", "FileSystemView", True, "isTraversable", "(File)", "", "Argument[0]", "read-file", "ai-generated"] # only reads file meta data
