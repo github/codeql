@@ -15,58 +15,41 @@ public class APKInstallation extends Activity {
         startActivity(intent);
     }
 
-    public void downloadAPK(String url) {
-        // BAD: the url is not checked
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse(url), "application/vnd.android.package-archive");
-        startActivity(intent);
-    }
-
-    public void installAPK2() {
-        String path = "file:///sdcard/Download/MyApp.apk";
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setType("application/vnd.android.package-archive");
-        intent.setData(Uri.parse(path));
-        startActivity(intent);
-    }
-
     public void installAPK3(String path) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setType(APK_MIMETYPE);
+        // BAD: the path is not checked
         intent.setData(Uri.fromFile(new File(path)));
         startActivity(intent);
     }
 
-    public void installAPK4(String path) {
+    public void installAPKFromExternalStorage(String path) {
+        // BAD: file is from external storage
         File file = new File(Environment.getExternalStorageDirectory(), path);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(file), APK_MIMETYPE);
         startActivity(intent);
     }
 
-    public void installAPK5(String path) {
+    public void installAPKFromExternalStorageWithActionInstallPackage(String path) {
+        // BAD: file is from external storage
         File file = new File(Environment.getExternalStorageDirectory(), path);
         Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
         intent.setData(Uri.fromFile(file));
         startActivity(intent);
     }
 
-    public void installAPK6(String path) {
+    public void installAPKInstallPackageLiteral(String path) {
         File file = new File(Environment.getExternalStorageDirectory(), path);
         Intent intent = new Intent("android.intent.action.INSTALL_PACKAGE");
         intent.setData(Uri.fromFile(file));
         startActivity(intent);
     }
 
-    public void openWebsite() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("http://www.example.com"));
-        startActivity(intent);
-    }
-
     public void otherIntent(File file) {
         Intent intent = new Intent(this, OtherActivity.class);
         intent.setAction(Intent.ACTION_VIEW);
+        // BAD: the file is from unknown source
         intent.setData(Uri.fromFile(file));
     }
 }
