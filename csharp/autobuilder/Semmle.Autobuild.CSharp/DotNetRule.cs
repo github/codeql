@@ -15,6 +15,15 @@ namespace Semmle.Autobuild.CSharp
     /// </summary>
     internal class DotNetRule : IBuildRule<CSharpAutobuildOptions>
     {
+        public readonly List<IProjectOrSolution> FailedProjectsOrSolutions = new();
+
+        /// <summary>
+        /// A list of projects which are incompatible with DotNet.
+        /// </summary>
+        public IEnumerable<Project<CSharpAutobuildOptions>> NotDotNetProjects { get; private set; }
+
+        public DotNetRule() => NotDotNetProjects = new List<Project<CSharpAutobuildOptions>>();
+
         public BuildScript Analyse(IAutobuilder<CSharpAutobuildOptions> builder, bool auto)
         {
             if (!builder.ProjectsOrSolutionsToBuild.Any())
@@ -22,10 +31,12 @@ namespace Semmle.Autobuild.CSharp
 
             if (auto)
             {
-                var notDotNetProject = builder.ProjectsOrSolutionsToBuild
+                NotDotNetProjects = builder.ProjectsOrSolutionsToBuild
                     .SelectMany(p => Enumerators.Singleton(p).Concat(p.IncludedProjects))
                     .OfType<Project<CSharpAutobuildOptions>>()
-                    .FirstOrDefault(p => !p.DotNetProject);
+                    .Where(p => !p.DotNetProject);
+                var notDotNetProject = NotDotNetProjects.FirstOrDefault();
+
                 if (notDotNetProject is not null)
                 {
                     builder.Log(Severity.Info, "Not using .NET Core because of incompatible project {0}", notDotNetProject);
@@ -50,7 +61,10 @@ namespace Semmle.Autobuild.CSharp
 
                         var build = GetBuildScript(builder, dotNetPath, environment, projectOrSolution.FullPath);
 
-                        ret &= BuildScript.Try(clean) & BuildScript.Try(restore) & build;
+                        ret &= BuildScript.Try(clean) & BuildScript.Try(restore) & BuildScript.OnFailure(build, ret =>
+                        {
+                            FailedProjectsOrSolutions.Add(projectOrSolution);
+                        });
                     }
                     return ret;
                 });

@@ -1,5 +1,6 @@
 ﻿using Xunit;
 using Semmle.Autobuild.Shared;
+using Semmle.Util;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -73,6 +74,15 @@ namespace Semmle.Autobuild.Cpp.Tests
             if (RunProcess.TryGetValue(pattern, out var ret))
                 return ret;
             throw new ArgumentException("Missing RunProcess " + pattern);
+        }
+
+        int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? env, BuildOutputHandler onOutput, BuildOutputHandler onError)
+        {
+            var ret = (this as IBuildActions).RunProcess(cmd, args, workingDirectory, env, out var stdout);
+
+            stdout.ForEach(line => onOutput(line));
+
+            return ret;
         }
 
         public IList<string> DirectoryDeleteIn = new List<string>();
@@ -243,6 +253,7 @@ namespace Semmle.Autobuild.Cpp.Tests
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_TRAP_DIR"] = "";
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_SOURCE_ARCHIVE_DIR"] = "";
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_ROOT"] = $@"C:\codeql\{codeqlUpperLanguage.ToLowerInvariant()}";
+            Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_DIAGNOSTIC_DIR"] = Path.GetTempPath();
             Actions.GetEnvironmentVariable["CODEQL_JAVA_HOME"] = @"C:\codeql\tools\java";
             Actions.GetEnvironmentVariable["CODEQL_PLATFORM"] = "win64";
             Actions.GetEnvironmentVariable["SEMMLE_DIST"] = @"C:\odasa";
