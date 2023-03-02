@@ -53,6 +53,7 @@ import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.diagnostics.DiagnosticLevel;
 import com.semmle.util.diagnostics.DiagnosticWriter;
+import com.semmle.util.diagnostics.DiagnosticLocation;
 import com.semmle.util.exception.CatastrophicError;
 import com.semmle.util.exception.Exceptions;
 import com.semmle.util.exception.ResourceError;
@@ -545,6 +546,17 @@ public class AutoBuild {
    * {@link DiagnosticWriter} for more details.
    */
   public void writeDiagnostics(String message, JSDiagnosticKind error) throws IOException {
+    writeDiagnostics(message, error, null);
+  }
+
+
+  /**
+   * Persist a diagnostic message with a location to a file in the diagnostics directory.
+   * See {@link JSDiagnosticKind} for the kinds of errors that can be reported,
+   * and see
+   * {@link DiagnosticWriter} for more details.
+   */
+  public void writeDiagnostics(String message, JSDiagnosticKind error, DiagnosticLocation location) throws IOException {
     if (diagnostics.get() == null) {
       warn("No diagnostics directory, so not writing diagnostic: " + message);
       return;
@@ -552,7 +564,7 @@ public class AutoBuild {
 
     // DiagnosticLevel level, String extractorName, String sourceId, String sourceName, String markdown
     diagnostics.get().writeMarkdown(error.getLevel(), "javascript", "javascript/" + error.getId(), error.getName(),
-        message);
+        message, location);
   }
 
   private DiagnosticWriter initDiagnosticsWriter(int count) {
@@ -1219,7 +1231,19 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       if (!extractor.getConfig().isExterns()) seenFiles = true;
       for (ParseError err : loc.getParseErrors()) {
         String msg = "A parse error occurred: " + err.getMessage() + ". Check the syntax of the file. If the file is invalid, correct the error or exclude the file from analysis.";
-        writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR);
+        // file, relative to the source root
+        String relativeFilePath = file.toString();
+        if (relativeFilePath.startsWith(LGTM_SRC.toString())) {
+          relativeFilePath = relativeFilePath.substring(LGTM_SRC.toString().length() + 1);
+        }
+        DiagnosticLocation diagLoc = DiagnosticLocation.builder()
+            .setFile(relativeFilePath)
+            .setStartLine(err.getPosition().getLine())
+            .setStartColumn(err.getPosition().getColumn())
+            .setEndLine(err.getPosition().getLine())
+            .setEndColumn(err.getPosition().getColumn())
+            .build();
+        writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR, diagLoc);
       }
       logEndProcess(start, "Done extracting " + file);
     } catch (OutOfMemoryError oom) {
