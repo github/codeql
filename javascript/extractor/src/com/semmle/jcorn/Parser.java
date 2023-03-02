@@ -3429,10 +3429,10 @@ public class Parser {
       declaration = null;
       specifiers = this.parseExportSpecifiers(exports);
       source = parseExportFrom(specifiers, source, false);
-      assertion = parseImportOrExportAssertionAndSemicolon(); // TODO: store in AST
+      assertion = parseImportOrExportAssertionAndSemicolon();
     }
     return this.finishNode(
-        new ExportNamedDeclaration(loc, declaration, specifiers, (Literal) source));
+        new ExportNamedDeclaration(loc, declaration, specifiers, (Literal) source, assertion));
   }
 
   /** Parses the 'from' clause of an export, not including the assertion or semicolon. */
@@ -3460,8 +3460,8 @@ public class Parser {
   protected ExportDeclaration parseExportAll(
       SourceLocation loc, Position starLoc, Set<String> exports) {
     Expression source = parseExportFrom(null, null, true);
-    Expression assertion = parseImportOrExportAssertionAndSemicolon(); // TODO: store in AST
-    return this.finishNode(new ExportAllDeclaration(loc, (Literal) source));
+    Expression assertion = parseImportOrExportAssertionAndSemicolon();
+    return this.finishNode(new ExportAllDeclaration(loc, (Literal) source, assertion));
   }
 
   private void checkExport(Set<String> exports, String name, Position pos) {
@@ -3549,9 +3549,9 @@ public class Parser {
       if (this.type != TokenType.string) this.unexpected();
       source = (Literal) this.parseExprAtom(null);
     }
-    Expression assertion = this.parseImportOrExportAssertionAndSemicolon(); // TODO: store in AST
+    Expression assertion = this.parseImportOrExportAssertionAndSemicolon();
     if (specifiers == null) return null;
-    return this.finishNode(new ImportDeclaration(loc, specifiers, source));
+    return this.finishNode(new ImportDeclaration(loc, specifiers, source, assertion));
   }
 
   // Parses a comma-separated list of module imports.

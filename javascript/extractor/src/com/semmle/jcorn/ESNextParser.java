@@ -314,8 +314,8 @@ public class ESNextParser extends JSXParser {
         this.parseExportSpecifiersMaybe(specifiers, exports);
       }
       Literal source = (Literal) this.parseExportFrom(specifiers, null, true);
-      Expression assertion = this.parseImportOrExportAssertionAndSemicolon(); // TODO: store in AST
-      return this.finishNode(new ExportNamedDeclaration(exportStart, null, specifiers, source));
+      Expression assertion = this.parseImportOrExportAssertionAndSemicolon();
+      return this.finishNode(new ExportNamedDeclaration(exportStart, null, specifiers, source, assertion));
     }
 
     return super.parseExportRest(exportStart, exports);
@@ -331,8 +331,8 @@ public class ESNextParser extends JSXParser {
       List<ExportSpecifier> specifiers = CollectionUtil.makeList(nsSpec);
       this.parseExportSpecifiersMaybe(specifiers, exports);
       Literal source = (Literal) this.parseExportFrom(specifiers, null, true);
-      Expression assertion = this.parseImportOrExportAssertionAndSemicolon(); // TODO: store in AST
-      return this.finishNode(new ExportNamedDeclaration(exportStart, null, specifiers, source));
+      Expression assertion = this.parseImportOrExportAssertionAndSemicolon();
+      return this.finishNode(new ExportNamedDeclaration(exportStart, null, specifiers, source, assertion));
     }
 
     return super.parseExportAll(exportStart, starLoc, exports);
@@ -437,12 +437,12 @@ public class ESNextParser extends JSXParser {
    */
   private DynamicImport parseDynamicImport(Position startLoc) {
     Expression source = parseMaybeAssign(false, null, null);
-    Expression assertion = null;
+    Expression attributes = null;
     if (this.eat(TokenType.comma)) {
-      assertion = this.parseMaybeAssign(false, null, null); // TODO: store in AST
+      attributes = this.parseMaybeAssign(false, null, null);
     }
     this.expect(TokenType.parenR);
-    DynamicImport di = this.finishNode(new DynamicImport(new SourceLocation(startLoc), source));
+    DynamicImport di = this.finishNode(new DynamicImport(new SourceLocation(startLoc), source, attributes));
     return di;
   }
 

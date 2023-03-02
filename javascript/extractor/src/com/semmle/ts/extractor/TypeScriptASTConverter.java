@@ -342,7 +342,7 @@ public class TypeScriptASTConverter {
         return convertArrowFunction(node, loc);
       case "AsExpression":
         return convertTypeAssertionExpression(node, loc);
-      case "SatisfiesExpression": 
+      case "SatisfiesExpression":
         return convertSatisfiesExpression(node, loc);
       case "AwaitExpression":
         return convertAwaitExpression(node, loc);
@@ -888,7 +888,7 @@ public class TypeScriptASTConverter {
   private Node convertCallExpression(JsonObject node, SourceLocation loc) throws ParseError {
     List<Expression> arguments = convertChildren(node, "arguments");
     if (arguments.size() == 1 && hasKind(node.get("expression"), "ImportKeyword")) {
-      return new DynamicImport(loc, arguments.get(0));
+      return new DynamicImport(loc, arguments.get(0), null); // TODO: preserve import attributes
     }
     Expression callee = convertChild(node, "expression");
     List<ITypeExpression> typeArguments = convertChildrenAsTypes(node, "typeArguments");
@@ -1199,9 +1199,9 @@ public class TypeScriptASTConverter {
           hasKind(node.get("exportClause"), "NamespaceExport")
               ? Collections.singletonList(convertChild(node, "exportClause"))
               : convertChildren(node.get("exportClause").getAsJsonObject(), "elements");
-      return new ExportNamedDeclaration(loc, null, specifiers, source, hasTypeKeyword);
+      return new ExportNamedDeclaration(loc, null, specifiers, source, null, hasTypeKeyword); // TODO: preserve import assertions
     } else {
-      return new ExportAllDeclaration(loc, source);
+      return new ExportAllDeclaration(loc, source, null); // TODO: preserve import assertions
     }
   }
 
@@ -1400,7 +1400,7 @@ public class TypeScriptASTConverter {
       }
       hasTypeKeyword = importClause.get("isTypeOnly").getAsBoolean();
     }
-    ImportDeclaration importDecl = new ImportDeclaration(loc, specifiers, src, hasTypeKeyword);
+    ImportDeclaration importDecl = new ImportDeclaration(loc, specifiers, src, null, hasTypeKeyword); // TODO: preserve import assertions
     attachSymbolInformation(importDecl, node);
     return importDecl;
   }
@@ -1746,7 +1746,7 @@ public class TypeScriptASTConverter {
     if (hasFlag(node, "NestedNamespace")) {
       // In a nested namespace declaration `namespace A.B`, the nested namespace `B`
       // is implicitly exported.
-      return new ExportNamedDeclaration(loc, decl, new ArrayList<>(), null);
+      return new ExportNamedDeclaration(loc, decl, new ArrayList<>(), null, null); // TODO: preserve import assertion
     } else {
       return fixExports(loc, decl);
     }
@@ -2455,7 +2455,7 @@ public class TypeScriptASTConverter {
       advance(loc, skipped);
       // capture group 1 is `default`, if present
       if (m.group(1) == null)
-        return new ExportNamedDeclaration(outerLoc, (Statement) decl, new ArrayList<>(), null);
+        return new ExportNamedDeclaration(outerLoc, (Statement) decl, new ArrayList<>(), null, null); // TODO: preserve import assertions
       return new ExportDefaultDeclaration(outerLoc, decl);
     }
     return decl;

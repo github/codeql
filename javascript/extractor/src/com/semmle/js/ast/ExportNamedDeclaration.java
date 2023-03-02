@@ -15,20 +15,22 @@ public class ExportNamedDeclaration extends ExportDeclaration {
   private final Statement declaration;
   private final List<ExportSpecifier> specifiers;
   private final Literal source;
+  private final Expression assertion;
   private final boolean hasTypeKeyword;
 
   public ExportNamedDeclaration(
-      SourceLocation loc, Statement declaration, List<ExportSpecifier> specifiers, Literal source) {
-    this(loc, declaration, specifiers, source, false);
+      SourceLocation loc, Statement declaration, List<ExportSpecifier> specifiers, Literal source, Expression assertion) {
+    this(loc, declaration, specifiers, source, assertion, false);
   }
 
   public ExportNamedDeclaration(
       SourceLocation loc, Statement declaration, List<ExportSpecifier> specifiers, Literal source,
-      boolean hasTypeKeyword) {
+      Expression assertion, boolean hasTypeKeyword) {
     super("ExportNamedDeclaration", loc);
     this.declaration = declaration;
     this.specifiers = specifiers;
     this.source = source;
+    this.assertion = assertion;
     this.hasTypeKeyword = hasTypeKeyword;
   }
 
@@ -55,6 +57,11 @@ public class ExportNamedDeclaration extends ExportDeclaration {
   @Override
   public <C, R> R accept(Visitor<C, R> v, C c) {
     return v.visit(this, c);
+  }
+
+  /** Returns the expression after the <code>assert</code> keyword, if any, such as <code>{ type: "json" }</code>. */
+  public Expression getAssertion() {
+    return assertion;
   }
 
   /** Returns true if this is an <code>export type</code> declaration. */
