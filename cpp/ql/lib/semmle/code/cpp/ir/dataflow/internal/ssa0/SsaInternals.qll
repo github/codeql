@@ -225,8 +225,8 @@ private newtype TSsaDefOrUse =
     or
     // If `defOrUse` is a definition we only include it if the
     // SSA library concludes that it's live after the write.
-    exists(Definition def, SourceVariable sv, IRBlock bb, int i |
-      def.definesAt(sv, bb, i) and
+    exists(DefinitionExt def, SourceVariable sv, IRBlock bb, int i |
+      def.definesAt(sv, bb, i, _) and
       defOrUse.(DefImpl).hasIndexInBlock(bb, i, sv)
     )
   } or
@@ -301,6 +301,11 @@ class Def extends DefOrUse {
 
 private module SsaImpl = SsaImplCommon::Make<SsaInput>;
 
-class PhiNode = SsaImpl::PhiNode;
+class PhiNode extends SsaImpl::DefinitionExt {
+  PhiNode() {
+    this instanceof SsaImpl::PhiNode or
+    this instanceof SsaImpl::PhiReadNode
+  }
+}
 
-class Definition = SsaImpl::Definition;
+class DefinitionExt = SsaImpl::DefinitionExt;

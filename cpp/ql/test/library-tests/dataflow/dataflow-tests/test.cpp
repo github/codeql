@@ -626,5 +626,5 @@ void test_def_via_phi_read(bool b)
     use(buffer);
   }
   intPointerSource(buffer);
-  sink(buffer); // $ ast MISSING: ir
+  sink(buffer); // $ ast,ir
 }
