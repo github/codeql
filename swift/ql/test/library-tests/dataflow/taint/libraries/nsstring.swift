@@ -128,7 +128,7 @@ class NSString : NSObject, NSCopying, NSMutableCopying {
   var removingPercentEncoding: String? { get { return "" } }
 }
 
-class NSMutableString: NSString {
+class NSMutableString : NSString {
   func append(_ aString: String) {}
   func insert(_ aString: String, at loc: Int) {}
   func replaceCharacters(in range: NSRange, with aString: String) {}
@@ -453,4 +453,35 @@ func taintThroughInterpolatedStrings() {
   sink(arg: sourceNSString().resolvingSymlinksInPath) // $ tainted=453
   sink(arg: sourceNSString().standardizingPath) // $ tainted=454
   sink(arg: sourceNSString().removingPercentEncoding) // $ tainted=455
+}
+
+extension String {
+  // an artificial initializer for initializing a `String` from an `NSString`. This can be done
+  // in real-world Swift, but probably involves bridging magic and one of the other initializers.
+  init(_: NSString) { self.init() }
+}
+
+func taintThroughConversions() {
+  // these are best effort tests as there's bridging magic between `String` and `NSString` that
+  // we can't easily stub.
+  let str1 = sourceString()
+  let str2 = NSString(string: str1)
+  sink(arg: str2) // $ tainted=467
+  let str3 = str1 as! NSString // in real-world Swift you can just use `as` here
+  sink(arg: str3) // $ tainted=467
+
+  let str5 = sourceNSString()
+  let str6 = String(str5)
+  sink(arg: str6) // $ tainted=473
+  let str7 = str5 as! String // in real-world Swift you can just use `as` here
+  sink(arg: str7) // $ tainted=473
+}
+
+func taintThroughData() {
+  // additional tests through the `Data` class
+  let str1 = sourceNSString()
+  let data1 = str1.data(using: 0)!
+  sink(arg: data1) // $ tainted=482
+  let str2 = NSString(data: data1, encoding: 0)!
+  sink(arg: str2) // $ tainted=482
 }
