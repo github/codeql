@@ -82,7 +82,7 @@ For example, finding taint propagation from a parameter ``source`` to an express
 
    nodeFrom.asParameter() = source and
    nodeTo.asExpr() = sink and
-   TaintTracking::localTaint(nodeFrom, nodeTo):
+   TaintTracking::localTaint(nodeFrom, nodeTo)
 
 Examples
 ~~~~~~~~
