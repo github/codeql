@@ -1,0 +1,73 @@
+<!DOCTYPE qhelp PUBLIC
+ "-//Semmle//qhelp//EN"
+ "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Android allows an application to install an APK (Android package kit)
+      using an <code>Intent</code> with
+      the <code>"application/vnd.android.package-archive"</code> MIME type. If
+      the file used in the <code>Intent</code> is from a location that is not
+      controlled by the application (for example, the SD card which is
+      universally writable), this can result in the installation of an
+      application which was not intended.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      It is advised to transition to install packages using
+      the <code>PackageInstaller</code> class.
+    </p>
+
+    <p>
+      If installation from a file is necessary, it is best to use
+      a <code>FileProvider</code>. Content providers can provide more specific
+      permissions than file system permissions can.
+    </p>
+
+    <p>
+      When your application does not require installing packages, do not add
+      the <code>REQUEST_INSTALL_PACKAGES</code> permission in the manifest file.
+    </p>
+  </recommendation>
+
+  <example>
+
+    <p>
+      In the following (bad) example, the package is installed from a file which
+      may be altered by another application.
+    </p>
+
+    <sample src="InstallApkWithFile.java"/>
+
+    <p>
+      In the following (good) example, the package is installed by using
+      a <code>FileProvider</code>.
+    </p>
+
+    <sample src="InstallApkWithFileProvider.java"/>
+
+    <p>
+      In the following (good) example, the package is installed using an
+      instance of the <code>android.content.pm.PackageInstaller</code> class.
+    </p>
+
+    <sample src="InstallApkWithPackageInstaller.java"/>
+  </example>
+
+  <references>
+    <li>
+      Intent.ACTION_INSTALL_PACKAGE: <a href="https://developer.android.com/reference/android/content/Intent#ACTION_INSTALL_PACKAGE"></a>.
+    </li>
+    <li>
+      Android Manifest Permission to Install Packages: <a href="https://developer.android.com/reference/android/Manifest.permission#REQUEST_INSTALL_PACKAGES"></a>.
+    </li>
+    <li>
+      PackageInstaller: <a href="https://developer.android.com/reference/android/content/pm/PackageInstaller"></a>.
+    </li>
+    <li>
+      FileProvider: <a href="https://developer.android.com/reference/androidx/core/content/FileProvider"></a>.
+    </li>
+  </references>
+</qhelp>
