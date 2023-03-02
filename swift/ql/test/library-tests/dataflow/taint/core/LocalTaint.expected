@@ -19,6 +19,18 @@
 | simple.swift:21:13:21:20 | call to source() | simple.swift:21:13:21:24 | ... .%(_:_:) ... |
 | simple.swift:21:24:21:24 | 100 | simple.swift:21:13:21:24 | ... .%(_:_:) ... |
 | simple.swift:23:14:23:21 | call to source() | simple.swift:23:13:23:21 | call to -(_:) |
+| simple.swift:27:13:27:13 | 1 | simple.swift:27:13:27:25 | ... .&+(_:_:) ... |
+| simple.swift:27:18:27:25 | call to source() | simple.swift:27:13:27:25 | ... .&+(_:_:) ... |
+| simple.swift:28:13:28:20 | call to source() | simple.swift:28:13:28:25 | ... .&+(_:_:) ... |
+| simple.swift:28:25:28:25 | 1 | simple.swift:28:13:28:25 | ... .&+(_:_:) ... |
+| simple.swift:29:13:29:13 | 1 | simple.swift:29:13:29:25 | ... .&-(_:_:) ... |
+| simple.swift:29:18:29:25 | call to source() | simple.swift:29:13:29:25 | ... .&-(_:_:) ... |
+| simple.swift:30:13:30:20 | call to source() | simple.swift:30:13:30:25 | ... .&-(_:_:) ... |
+| simple.swift:30:25:30:25 | 1 | simple.swift:30:13:30:25 | ... .&-(_:_:) ... |
+| simple.swift:31:13:31:13 | 2 | simple.swift:31:13:31:25 | ... .&*(_:_:) ... |
+| simple.swift:31:18:31:25 | call to source() | simple.swift:31:13:31:25 | ... .&*(_:_:) ... |
+| simple.swift:32:13:32:20 | call to source() | simple.swift:32:13:32:25 | ... .&*(_:_:) ... |
+| simple.swift:32:25:32:25 | 2 | simple.swift:32:13:32:25 | ... .&*(_:_:) ... |
 | simple.swift:36:7:36:7 | SSA def(a) | simple.swift:37:13:37:13 | a |
 | simple.swift:36:11:36:11 | 0 | simple.swift:36:7:36:7 | SSA def(a) |
 | simple.swift:37:13:37:13 | [post] a | simple.swift:38:3:38:3 | a |

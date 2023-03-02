@@ -24,12 +24,12 @@ func taintThroughArithmetic() {
 
   // overflow operators
 
-  sink(arg: 1 &+ source()) // $ MISSING: tainted=
-  sink(arg: source() &+ 1) // $ MISSING: tainted=
-  sink(arg: 1 &- source()) // $ MISSING: tainted=
-  sink(arg: source() &- 1) // $ MISSING: tainted=
-  sink(arg: 2 &* source()) // $ MISSING: tainted=
-  sink(arg: source() &* 2) // $ MISSING: tainted=
+  sink(arg: 1 &+ source()) // $ tainted=27
+  sink(arg: source() &+ 1) // $ tainted=28
+  sink(arg: 1 &- source()) // $ tainted=29
+  sink(arg: source() &- 1) // $ tainted=30
+  sink(arg: 2 &* source()) // $ tainted=31
+  sink(arg: source() &* 2) // $ tainted=32
 }
 
 func taintThroughAssignmentArithmetic() {

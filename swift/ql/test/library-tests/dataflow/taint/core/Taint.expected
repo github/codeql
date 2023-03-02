@@ -10,6 +10,12 @@ edges
 | simple.swift:20:19:20:26 | call to source() :  | simple.swift:20:13:20:26 | ... .%(_:_:) ... |
 | simple.swift:21:13:21:20 | call to source() :  | simple.swift:21:13:21:24 | ... .%(_:_:) ... |
 | simple.swift:23:14:23:21 | call to source() :  | simple.swift:23:13:23:21 | call to -(_:) |
+| simple.swift:27:18:27:25 | call to source() :  | simple.swift:27:13:27:25 | ... .&+(_:_:) ... |
+| simple.swift:28:13:28:20 | call to source() :  | simple.swift:28:13:28:25 | ... .&+(_:_:) ... |
+| simple.swift:29:18:29:25 | call to source() :  | simple.swift:29:13:29:25 | ... .&-(_:_:) ... |
+| simple.swift:30:13:30:20 | call to source() :  | simple.swift:30:13:30:25 | ... .&-(_:_:) ... |
+| simple.swift:31:18:31:25 | call to source() :  | simple.swift:31:13:31:25 | ... .&*(_:_:) ... |
+| simple.swift:32:13:32:20 | call to source() :  | simple.swift:32:13:32:25 | ... .&*(_:_:) ... |
 | simple.swift:40:8:40:15 | call to source() :  | simple.swift:41:13:41:13 | a |
 | simple.swift:40:8:40:15 | call to source() :  | simple.swift:43:13:43:13 | a |
 | simple.swift:48:8:48:15 | call to source() :  | simple.swift:49:13:49:13 | b |
@@ -48,6 +54,18 @@ nodes
 | simple.swift:21:13:21:24 | ... .%(_:_:) ... | semmle.label | ... .%(_:_:) ... |
 | simple.swift:23:13:23:21 | call to -(_:) | semmle.label | call to -(_:) |
 | simple.swift:23:14:23:21 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:27:13:27:25 | ... .&+(_:_:) ... | semmle.label | ... .&+(_:_:) ... |
+| simple.swift:27:18:27:25 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:28:13:28:20 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:28:13:28:25 | ... .&+(_:_:) ... | semmle.label | ... .&+(_:_:) ... |
+| simple.swift:29:13:29:25 | ... .&-(_:_:) ... | semmle.label | ... .&-(_:_:) ... |
+| simple.swift:29:18:29:25 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:30:13:30:20 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:30:13:30:25 | ... .&-(_:_:) ... | semmle.label | ... .&-(_:_:) ... |
+| simple.swift:31:13:31:25 | ... .&*(_:_:) ... | semmle.label | ... .&*(_:_:) ... |
+| simple.swift:31:18:31:25 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:32:13:32:20 | call to source() :  | semmle.label | call to source() :  |
+| simple.swift:32:13:32:25 | ... .&*(_:_:) ... | semmle.label | ... .&*(_:_:) ... |
 | simple.swift:40:8:40:15 | call to source() :  | semmle.label | call to source() :  |
 | simple.swift:41:13:41:13 | a | semmle.label | a |
 | simple.swift:43:13:43:13 | a | semmle.label | a |
@@ -86,6 +104,12 @@ subpaths
 | simple.swift:20:13:20:26 | ... .%(_:_:) ... | simple.swift:20:19:20:26 | call to source() :  | simple.swift:20:13:20:26 | ... .%(_:_:) ... | result |
 | simple.swift:21:13:21:24 | ... .%(_:_:) ... | simple.swift:21:13:21:20 | call to source() :  | simple.swift:21:13:21:24 | ... .%(_:_:) ... | result |
 | simple.swift:23:13:23:21 | call to -(_:) | simple.swift:23:14:23:21 | call to source() :  | simple.swift:23:13:23:21 | call to -(_:) | result |
+| simple.swift:27:13:27:25 | ... .&+(_:_:) ... | simple.swift:27:18:27:25 | call to source() :  | simple.swift:27:13:27:25 | ... .&+(_:_:) ... | result |
+| simple.swift:28:13:28:25 | ... .&+(_:_:) ... | simple.swift:28:13:28:20 | call to source() :  | simple.swift:28:13:28:25 | ... .&+(_:_:) ... | result |
+| simple.swift:29:13:29:25 | ... .&-(_:_:) ... | simple.swift:29:18:29:25 | call to source() :  | simple.swift:29:13:29:25 | ... .&-(_:_:) ... | result |
+| simple.swift:30:13:30:25 | ... .&-(_:_:) ... | simple.swift:30:13:30:20 | call to source() :  | simple.swift:30:13:30:25 | ... .&-(_:_:) ... | result |
+| simple.swift:31:13:31:25 | ... .&*(_:_:) ... | simple.swift:31:18:31:25 | call to source() :  | simple.swift:31:13:31:25 | ... .&*(_:_:) ... | result |
+| simple.swift:32:13:32:25 | ... .&*(_:_:) ... | simple.swift:32:13:32:20 | call to source() :  | simple.swift:32:13:32:25 | ... .&*(_:_:) ... | result |
 | simple.swift:41:13:41:13 | a | simple.swift:40:8:40:15 | call to source() :  | simple.swift:41:13:41:13 | a | result |
 | simple.swift:43:13:43:13 | a | simple.swift:40:8:40:15 | call to source() :  | simple.swift:43:13:43:13 | a | result |
 | simple.swift:49:13:49:13 | b | simple.swift:48:8:48:15 | call to source() :  | simple.swift:49:13:49:13 | b | result |

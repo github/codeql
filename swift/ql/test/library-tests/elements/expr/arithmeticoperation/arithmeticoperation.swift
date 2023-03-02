@@ -12,7 +12,7 @@ func test(c: Bool, x: Int, y: Int, z: Int) {
 	v = +x;
 
    // arithmetic operations with overflow
-   v = x &+ y; // NOT DETECTED
-   v = x &- y; // NOT DETECTED
-   v = x &* y; // NOT DETECTED
+   v = x &+ y;
+   v = x &- y;
+   v = x &* y;
 }
