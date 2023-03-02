@@ -190,10 +190,11 @@ namespace Semmle.Autobuild.Shared
         /// solution file and tools.
         /// </summary>
         /// <param name="options">The command line options.</param>
-        protected Autobuilder(IBuildActions actions, TAutobuildOptions options)
+        protected Autobuilder(IBuildActions actions, TAutobuildOptions options, DiagnosticClassifier diagnosticClassifier)
         {
             Actions = actions;
             Options = options;
+            DiagnosticClassifier = diagnosticClassifier;
 
             pathsLazy = new Lazy<IEnumerable<(string, int)>>(() =>
             {
@@ -264,7 +265,7 @@ namespace Semmle.Autobuild.Shared
 
         public string DiagnosticsDir { get; }
 
-        protected abstract DiagnosticClassifier DiagnosticClassifier { get; }
+        protected DiagnosticClassifier DiagnosticClassifier { get; }
 
         private readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
 

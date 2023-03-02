@@ -1,4 +1,4 @@
-using Semmle.Extraction.CSharp;
+﻿using Semmle.Extraction.CSharp;
 using Semmle.Util.Logging;
 using Semmle.Autobuild.Shared;
 using Semmle.Util;
@@ -36,13 +36,8 @@ namespace Semmle.Autobuild.CSharp
 
         private readonly AutoBuildRule autoBuildRule;
 
-        protected override DiagnosticClassifier DiagnosticClassifier { get; }
-
-        public CSharpAutobuilder(IBuildActions actions, CSharpAutobuildOptions options) : base(actions, options)
-        {
+        public CSharpAutobuilder(IBuildActions actions, CSharpAutobuildOptions options) : base(actions, options, new CSharpDiagnosticClassifier()) =>
             this.autoBuildRule = new AutoBuildRule(this);
-            this.DiagnosticClassifier = new CSharpDiagnosticClassifier();
-        }
 
         public override BuildScript GetBuildScript()
         {
