@@ -101,6 +101,27 @@
 | simple.swift:68:3:68:3 | [post] &... | simple.swift:69:13:69:13 | e |
 | simple.swift:68:3:68:3 | e | simple.swift:68:3:68:3 | &... |
 | simple.swift:68:8:68:8 | 100 | simple.swift:68:3:68:3 | &... |
+| simple.swift:73:13:73:13 | 0 | simple.swift:73:13:73:24 | ... .\|(_:_:) ... |
+| simple.swift:73:17:73:24 | call to source() | simple.swift:73:13:73:24 | ... .\|(_:_:) ... |
+| simple.swift:74:13:74:20 | call to source() | simple.swift:74:13:74:24 | ... .\|(_:_:) ... |
+| simple.swift:74:24:74:24 | 0 | simple.swift:74:13:74:24 | ... .\|(_:_:) ... |
+| simple.swift:76:13:76:13 | 0xffff | simple.swift:76:13:76:29 | ... .&(_:_:) ... |
+| simple.swift:76:22:76:29 | call to source() | simple.swift:76:13:76:29 | ... .&(_:_:) ... |
+| simple.swift:77:13:77:20 | call to source() | simple.swift:77:13:77:24 | ... .&(_:_:) ... |
+| simple.swift:77:24:77:24 | 0xffff | simple.swift:77:13:77:24 | ... .&(_:_:) ... |
+| simple.swift:79:13:79:13 | 0xffff | simple.swift:79:13:79:29 | ... .^(_:_:) ... |
+| simple.swift:79:22:79:29 | call to source() | simple.swift:79:13:79:29 | ... .^(_:_:) ... |
+| simple.swift:80:13:80:20 | call to source() | simple.swift:80:13:80:24 | ... .^(_:_:) ... |
+| simple.swift:80:24:80:24 | 0xffff | simple.swift:80:13:80:24 | ... .^(_:_:) ... |
+| simple.swift:82:13:82:20 | call to source() | simple.swift:82:13:82:25 | ... .<<(_:_:) ... |
+| simple.swift:82:25:82:25 | 1 | simple.swift:82:13:82:25 | ... .<<(_:_:) ... |
+| simple.swift:83:13:83:20 | call to source() | simple.swift:83:13:83:26 | ... .&<<(_:_:) ... |
+| simple.swift:83:26:83:26 | 1 | simple.swift:83:13:83:26 | ... .&<<(_:_:) ... |
+| simple.swift:84:13:84:20 | call to source() | simple.swift:84:13:84:25 | ... .>>(_:_:) ... |
+| simple.swift:84:25:84:25 | 1 | simple.swift:84:13:84:25 | ... .>>(_:_:) ... |
+| simple.swift:85:13:85:20 | call to source() | simple.swift:85:13:85:26 | ... .&>>(_:_:) ... |
+| simple.swift:85:26:85:26 | 1 | simple.swift:85:13:85:26 | ... .&>>(_:_:) ... |
+| simple.swift:87:14:87:21 | call to source() | simple.swift:87:13:87:21 | call to ~(_:) |
 | subscript.swift:1:7:1:7 | SSA def(self) | subscript.swift:1:7:1:7 | self[return] |
 | subscript.swift:1:7:1:7 | SSA def(self) | subscript.swift:1:7:1:7 | self[return] |
 | subscript.swift:1:7:1:7 | self | subscript.swift:1:7:1:7 | SSA def(self) |

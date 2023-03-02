@@ -6,6 +6,8 @@ private import codeql.swift.elements.expr.PrefixUnaryExpr
  * A bitwise operation, such as:
  * ```
  * a & b
+ * a << b
+ * ~a
  * ```
  */
 class BitwiseOperation extends Expr {
@@ -27,6 +29,8 @@ class BitwiseOperation extends Expr {
  * A binary bitwise operation, such as:
  * ```
  * a & b
+ * a << b
+ * a .^ b
  * ```
  */
 class BinaryBitwiseOperation extends BinaryExpr {
@@ -34,6 +38,9 @@ class BinaryBitwiseOperation extends BinaryExpr {
     this instanceof AndBitwiseExpr or
     this instanceof OrBitwiseExpr or
     this instanceof XorBitwiseExpr or
+    this instanceof PointwiseAndExpr or
+    this instanceof PointwiseOrExpr or
+    this instanceof PointwiseXorExpr or
     this instanceof ShiftLeftBitwiseExpr or
     this instanceof ShiftRightBitwiseExpr
   }
@@ -67,6 +74,36 @@ class OrBitwiseExpr extends BinaryExpr {
  */
 class XorBitwiseExpr extends BinaryExpr {
   XorBitwiseExpr() { this.getStaticTarget().getName() = "^(_:_:)" }
+}
+
+/**
+ * A pointwise bitwise-and expression:
+ * ```
+ * a .& b
+ * ```
+ */
+class PointwiseAndExpr extends BinaryExpr {
+  PointwiseAndExpr() { this.getOperator().getName() = ".&(_:_:)" }
+}
+
+/**
+ * A pointwise bitwise-or expression:
+ * ```
+ * a .| b
+ * ```
+ */
+class PointwiseOrExpr extends BinaryExpr {
+  PointwiseOrExpr() { this.getOperator().getName() = ".|(_:_:)" }
+}
+
+/**
+ * A pointwise bitwise exclusive-or expression:
+ * ```
+ * a .^ b
+ * ```
+ */
+class PointwiseXorExpr extends BinaryExpr {
+  PointwiseXorExpr() { this.getOperator().getName() = ".^(_:_:)" }
 }
 
 /**
