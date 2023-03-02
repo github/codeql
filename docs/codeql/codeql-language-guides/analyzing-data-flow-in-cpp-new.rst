@@ -22,7 +22,9 @@ Local data flow is data flow within a single function. Local data flow is usuall
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
 
-The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``). It is possible to map between data flow nodes and expressions/parameters using the member predicates ``asExpr``, ``asIndirectExpr``, and ``asParameter``:
+The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``, ``IndirectExprNode``) and parameter nodes (``ParameterNode``, ``IndirectParameterNode``). The indirect nodes represent expressions or parameters after a fixed number of pointer dereferences.
+
+It is possible to map between data flow nodes and expressions/parameters using the member predicates ``asExpr``, ``asIndirectExpr``, and ``asParameter``:
 
 .. code-block:: ql
 
@@ -115,7 +117,7 @@ Unfortunately, this will only give the expression in the argument, not the value
      DataFlow::localFlow(source, sink)
    select src
 
-Then we can vary the source, for example an access to a public parameter. The following query finds where a public parameter is used to open a file:
+Then we can vary the source and, for example, use the parameter of a function. The following query finds where a parameter is used when opening a file:
 
 .. code-block:: ql
 

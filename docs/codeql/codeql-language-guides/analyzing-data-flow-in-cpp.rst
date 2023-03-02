@@ -105,7 +105,7 @@ Unfortunately, this will only give the expression in the argument, not the value
      and DataFlow::localFlow(DataFlow::exprNode(src), DataFlow::exprNode(fc.getArgument(0)))
    select src
 
-Then we can vary the source, for example an access to a public parameter. The following query finds where a public parameter is used to open a file:
+Then we can vary the source and, for example, use the parameter of a function. The following query finds where a parameter is used when opening a file:
 
 .. code-block:: ql
 
