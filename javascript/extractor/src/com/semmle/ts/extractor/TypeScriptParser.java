@@ -409,7 +409,7 @@ public class TypeScriptParser {
         exitCode = parserWrapperProcess.waitFor();
       }
       if (exitCode != null && (exitCode == NODEJS_EXIT_CODE_FATAL_ERROR || exitCode == NODEJS_EXIT_CODE_SIG_ABORT)) {
-        // this is caught in the auto-builder, and handled as an OOM. Check there is the message is changed.
+        // this is caught in the auto-builder, and handled as an OOM. Check there if the message is changed.
         return new TypeScriptWrapperOOMError("The TypeScript parser wrapper crashed, possibly from running out of memory.", e);
       }
       if (exitCode != null) {
