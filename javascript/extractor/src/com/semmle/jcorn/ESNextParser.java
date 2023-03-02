@@ -439,7 +439,10 @@ public class ESNextParser extends JSXParser {
     Expression source = parseMaybeAssign(false, null, null);
     Expression attributes = null;
     if (this.eat(TokenType.comma)) {
-      attributes = this.parseMaybeAssign(false, null, null);
+      if (this.type != TokenType.parenR) { // Skip if the comma was a trailing comma
+        attributes = this.parseMaybeAssign(false, null, null);
+        this.eat(TokenType.comma); // Allow trailing comma
+      }
     }
     this.expect(TokenType.parenR);
     DynamicImport di = this.finishNode(new DynamicImport(new SourceLocation(startLoc), source, attributes));
