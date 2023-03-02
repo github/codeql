@@ -10,6 +10,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["org.springframework.web.client", "RestTemplate", True, "exchange", "(String,HttpMethod,HttpEntity,Class,Object[])", "", "Argument[0]", "open-url", "ai-generated"]
       - ["org.springframework.web.client", "RestTemplate", False, "delete", "", "", "Argument[0]", "open-url", "manual"]
       - ["org.springframework.web.client", "RestTemplate", False, "doExecute", "", "", "Argument[0]", "open-url", "manual"]
       - ["org.springframework.web.client", "RestTemplate", False, "exchange", "", "", "Argument[0]", "open-url", "manual"]

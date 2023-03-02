@@ -3,6 +3,23 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["java.nio.file", "Files", True, "createTempFile", "(Path,String,String,FileAttribute[])", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["java.nio.file", "Files", True, "createDirectory", "(Path,FileAttribute[])", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["java.nio.file", "Files", True, "isSymbolicLink", "(Path)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.nio.file", "Files", True, "createDirectories", "(Path,FileAttribute[])", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["java.nio.file", "Files", True, "move", "(Path,Path,CopyOption[])", "", "Argument[1]", "create-file", "ai-generated"]
+      - ["java.nio.file", "Files", True, "createFile", "(Path,FileAttribute[])", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["java.nio.file", "Files", True, "getLastModifiedTime", "(Path,LinkOption[])", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.nio.file", "Files", True, "isWritable", "(Path)", "", "Argument[0]", "read-file", "ai-generated"]
+# suggested label is not supported:      - ["java.nio.file", "Files", True, "delete", "(Path)", "", "Argument[0]", "delete-file", "ai-generated"]
+# suggested label is not supported:      - ["java.nio.file", "FileSystem", True, "getPathMatcher", "(String)", "", "Argument[0]", "summaryStep/ReturnValue", "ai-generated"]
+# suggested label is not supported:      - ["java.nio.file", "Files", True, "move", "(Path,Path,CopyOption[])", "", "Argument[0]", "delete-file", "ai-generated"]
+      - ["java.nio.file", "Files", True, "exists", "(Path,LinkOption[])", "", "Argument[0]", "read-file", "ai-generated"]
+# suggested label is not supported:      - ["java.nio.file", "Files", True, "walkFileTree", "(Path,FileVisitor)", "", "Argument[0]", "Argument[1].Method[visitFileFailed(Path,IOException)].Parameter[0]", "ai-generated"]
+# suggested label is not supported:      - ["java.nio.file", "Files", True, "walkFileTree", "(Path,FileVisitor)", "", "Argument[0]", "Argument[1].Method[postVisitDirectory(Path,IOException)].Parameter[0]", "ai-generated"]
+# suggested label is not supported:      - ["java.nio.file", "Files", True, "walkFileTree", "(Path,FileVisitor)", "", "Argument[0]", "Argument[1].Method[preVisitDirectory(Path,BasicFileAttributes)].Parameter[0]", "ai-generated"]
+# suggested label is not supported:      - ["java.nio.file", "Files", True, "walkFileTree", "(Path,FileVisitor)", "", "Argument[0]", "Argument[1].Method[visitFile(Path,BasicFileAttributes)].Parameter[0]", "ai-generated"]
+      - ["java.nio.file", "Files", True, "isDirectory", "(Path,LinkOption[])", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.nio.file", "Files", False, "copy", "", "", "Argument[0]", "read-file", "manual"]
       - ["java.nio.file", "Files", False, "copy", "", "", "Argument[1]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "createDirectories", "", "", "Argument[0]", "create-file", "manual"]
@@ -23,6 +40,19 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
+      - ["java.nio.file", "Files", True, "newByteChannel", "(Path,OpenOption[])", "", "ReturnValue", "taint, "ai-generated"]
+      - ["java.nio.file", "Files", True, "newDirectoryStream", "(Path)", "", "ReturnValue", "taint, "ai-generated"]
+      - ["java.nio.file", "Files", True, "newOutputStream", "(Path,OpenOption[])", "", "ReturnValue", "taint, "ai-generated"]
+      - ["java.nio.file", "Files", True, "newBufferedReader", "(Path)", "", "ReturnValue", "taint, "ai-generated"]
+      - ["java.nio.file", "Files", True, "newInputStream", "(Path,OpenOption[])", "", "ReturnValue", "taint, "ai-generated"]
+      - ["java.nio.file", "FileSystem", True, "getPath", "(String,String[])", "", "ReturnValue", "taint, "ai-generated"]
+      - ["java.nio.file", "Files", True, "walk", "(Path,FileVisitOption[])", "", "ReturnValue", "taint, "ai-generated"]
+      - ["java.nio.file", "Path", True, "of", "(String,String[])", "", "ReturnValue", "taint, "ai-generated"]
+      - ["java.nio.file", "Path", True, "of", "(URI)", "", "ReturnValue", "taint, "ai-generated"]
+      - ["java.nio.file", "Files", True, "newBufferedReader", "(Path,Charset)", "", "ReturnValue", "taint, "ai-generated"]
+      - ["java.nio.file", "Files", True, "newDirectoryStream", "(Path,Filter)", "", "ReturnValue", "taint, "ai-generated"]
+      - ["java.nio.file", "Files", True, "newByteChannel", "(Path,Set,FileAttribute[])", "", "ReturnValue", "taint, "ai-generated"]
+      - ["java.nio.file", "Path", True, "of", "(String,String[])", "", "ReturnValue.ArrayElement", "taint, "ai-generated"]
       - ["java.nio.file", "FileSystem", True, "getPath", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "FileSystem", True, "getRootDirectories", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "getParent", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
