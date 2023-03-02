@@ -33,8 +33,8 @@ The local data flow library is in the module ``DataFlow``, which defines the cla
      Expr asExpr() { ... }
 
      /**
-      * Gets the expression corresponding to this node, if any, after dereferencing
-      * the expression `index` times.
+      * Gets the expression corresponding to a node that is obtained after dereferencing
+      * the expression `index` times, if any.
       */
      Expr asIndirectExpr(int index) { ... }
 
@@ -44,8 +44,8 @@ The local data flow library is in the module ``DataFlow``, which defines the cla
      Parameter asParameter() { ... }
 
      /**
-      * Gets the parameter corresponding to this node, if any, after dereferencing
-      * the expression `index` times.
+      * Gets the parameter corresponding to a node that is obtained after dereferencing
+      * the parameter `index` times.
       */
      Parameter asParameter(int index) { ... }
 
