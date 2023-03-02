@@ -172,6 +172,8 @@ namespace Test
         static explicit IInterface2<Class11>.operator int(Class11 n) => 0;
     }
 
+    public static unsafe class MyUnsafeClass { }
+
     public enum Enum1
     {
         None1,
