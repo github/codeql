@@ -98,5 +98,5 @@ jobs:
             echo "Expected to find at least one alert from an ML-powered query but found ${num_alerts}."
             exit 1
           else
-            echo "Found ${num_alerts} alerts from ML-powered queries.";
+            echo "Found ${num_alerts} alerts from ML-powered queries!";
           fi
