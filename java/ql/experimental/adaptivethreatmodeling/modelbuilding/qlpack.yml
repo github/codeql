@@ -7,4 +7,4 @@ groups:
     - experimental
 dependencies:
     codeql/java-experimental-atm-lib: ${workspace}
-    codeql/java-experimental-atm-model: "0.0.0"
+    dsp-testing/java-experimental-atm-model: 0.0.1-2023-03-01-22h50m13s.strong-hook-x5wdbz6x.156ee0c1bd64e6232b5a780c6c84365b1dc1fc2b1e9467dcfd56731e2058a68f
