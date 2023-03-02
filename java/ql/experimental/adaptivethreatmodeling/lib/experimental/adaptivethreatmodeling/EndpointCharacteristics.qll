@@ -666,3 +666,30 @@ private class NonPublicMethodCharacteristic extends UninterestingToModelCharacte
     )
   }
 }
+
+/**
+ * A negative characteristic that filters out calls for which the package the call originates from and the package where
+ * the callee is defined are the same up to at least three levels, and the callee package is at least four levels deep.
+ * Such calls are not interesting to run through the ML model, because they represent methods that are far less likely
+ * to be called from outside, and are primarily used internally within the framework.
+ */
+private class SimilarPackageCharacteristic extends UninterestingToModelCharacteristic {
+  SimilarPackageCharacteristic() { this = "callee package is similar to call package" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    exists(string package, string calleePackage, int numLevels |
+      package = n.asExpr().getCompilationUnit().getPackage().getName() and
+      calleePackage =
+        n.asExpr().(Argument).getCall().getCallee().getDeclaringType().getPackage().getName() and
+      // Count the number of dots in the callee package name to determine how deep the package is.
+      count(calleePackage.indexOf(".")) >= 3 and
+      // Check that both package names are identical up to and including the third level.
+      numLevels = 2 and
+      count(package.indexOf(".")) >= numLevels and
+      // Add a trailing dot to the package names so that the full package name is matched if it has only numLevels + 1
+      // levels.
+      package.substring(0, (package + ".").indexOf(".", numLevels, 0)) =
+        calleePackage.substring(0, (calleePackage + ".").indexOf(".", numLevels, 0))
+    )
+  }
+}
