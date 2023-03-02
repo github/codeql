@@ -139,7 +139,7 @@ predicate hasMetadata(DataFlow::Node n, string metadata) {
     n.asExpr() = call.getArgument(input) and
     callee = call.getCallee() and
     package = callee.getDeclaringType().getPackage().getName() and
-    type = callee.getDeclaringType().getErasure().getName() and
+    type = callee.getDeclaringType().getErasure().(RefType).nestedName() and
     (
       if callee.isFinal() or callee.getDeclaringType().isFinal()
       then subtypes = false // See https://github.com/github/codeql-java-team/issues/254#issuecomment-1422296423
@@ -467,7 +467,7 @@ private class NeutralModelCharacteristic extends NotASinkCharacteristic {
     exists(Callable callee, string package, string type, string name, string signature |
       callee = n.asExpr().(Argument).getCall().getCallee() and
       package = callee.getDeclaringType().getPackage().getName() and
-      type = callee.getDeclaringType().getErasure().getName() and
+      type = callee.getDeclaringType().getErasure().(RefType).nestedName() and
       name = callee.getSourceDeclaration().getName() and
       signature = paramsString(callee) and
       neutralModel(package, type, name, signature, "manual")
