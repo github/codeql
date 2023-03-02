@@ -224,6 +224,7 @@ const astProperties: string[] = [
     "argument",
     "argumentExpression",
     "arguments",
+    "assertClause",
     "assertsModifier",
     "asteriskToken",
     "attributes",
