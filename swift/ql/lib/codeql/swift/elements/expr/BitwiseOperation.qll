@@ -73,20 +73,22 @@ class XorBitwiseExpr extends BinaryExpr {
  * A bitwise shift left expression.
  * ```
  * a << b
+ * a &<<
  * ```
  */
 class ShiftLeftBitwiseExpr extends BinaryExpr {
-  ShiftLeftBitwiseExpr() { this.getStaticTarget().getName() = "<<(_:_:)" }
+  ShiftLeftBitwiseExpr() { this.getStaticTarget().getName() = ["<<(_:_:)", "&<<(_:_:)"] }
 }
 
 /**
  * A bitwise shift right expression.
  * ```
  * a >> b
+ * a &>>
  * ```
  */
 class ShiftRightBitwiseExpr extends BinaryExpr {
-  ShiftRightBitwiseExpr() { this.getStaticTarget().getName() = ">>(_:_:)" }
+  ShiftRightBitwiseExpr() { this.getStaticTarget().getName() = [">>(_:_:)", "&>>(_:_:)"] }
 }
 
 /**

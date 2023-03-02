@@ -7,8 +7,8 @@ func bitwise() {
   _ = 1 >> 0
 
   // bitwise operations with overflow
-  _ = 1 &<< 1 // NOT DETECTED
-  _ = 1 &>> 1 // NOT DETECTED
+  _ = 1 &<< 1
+  _ = 1 &>> 1
 
   // pointwise bitwise operations
   let a = SIMD4<Int>(1, 2, 3, 4)
