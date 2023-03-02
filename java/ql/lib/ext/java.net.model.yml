@@ -19,6 +19,12 @@ extensions:
       - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[],ClassLoader)", "", "Argument[0]", "open-url", "manual"]
       - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[0]", "open-url", "manual"]
       - ["java.net", "URLClassLoader", False, "newInstance", "", "", "Argument[0]", "open-url", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(String,URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[1]", "open-url", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(String,URL[],ClassLoader)", "", "Argument[1]", "open-url", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[0]", "open-url", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[],ClassLoader)", "", "Argument[0]", "open-url", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[])", "", "Argument[0]", "open-url", "manual"]
+      - ["java.net", "URLClassLoader", True, "URLClassLoader", "(URL[],ClassLoader)", "", "Argument[0]", "open-url", "ai-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
@@ -27,16 +33,16 @@ extensions:
       - ["java.net", "InetAddress", True, "getAllByName", "(String)", "", "Argument[0]", "ReturnValue.ArrayElement", "taint", "ai-generated"]
       - ["java.net", "InetSocketAddress", True, "createUnresolved", "(String,int)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
       - ["java.net", "InetSocketAddress", True, "InetSocketAddress", "(String,int)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
-      - ["java.net", "URI", False, "resolve", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
-      - ["java.net", "URI", False, "resolve", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
       - ["java.net", "URI", False, "URI", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.net", "URI", False, "create", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.net", "URI", False, "resolve", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["java.net", "URI", False, "resolve", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
       - ["java.net", "URI", False, "toASCIIString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URI", False, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URI", False, "toURL", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URL", False, "URL", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
-      - ["java.net", "URL", False, "toURI", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["java.net", "URL", False, "toExternalForm", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URL", False, "URL", "(URL,String)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
       - ["java.net", "URL", False, "URL", "(URL,String)", "", "Argument[1]", "Argument[this]", "taint", "ai-generated"] # @atorralba: review for consistency
+      - ["java.net", "URL", False, "toExternalForm", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.net", "URL", False, "toURI", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URLDecoder", False, "decode", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
