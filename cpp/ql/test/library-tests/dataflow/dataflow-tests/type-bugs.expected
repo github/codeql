@@ -1,8 +1,3 @@
 failures
 astTypeBugs
 irTypeBugs
-| test.cpp:15:3:15:6 | test.cpp:15:3:15:6 | test.cpp:15:3:15:6 | Phi |
-| test.cpp:43:10:43:20 | test.cpp:43:10:43:20 | test.cpp:43:10:43:20 | Phi |
-| test.cpp:43:10:43:20 | test.cpp:43:10:43:20 | test.cpp:43:10:43:20 | Phi |
-| test.cpp:628:3:628:18 | test.cpp:628:3:628:18 | test.cpp:628:3:628:18 | Phi |
-| test.cpp:628:3:628:18 | test.cpp:628:3:628:18 | test.cpp:628:3:628:18 | Phi |

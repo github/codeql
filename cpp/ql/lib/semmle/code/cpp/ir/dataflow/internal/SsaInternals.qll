@@ -48,6 +48,16 @@ private module SourceVariables {
      * indirections) of this source variable.
      */
     abstract BaseSourceVariable getBaseVariable();
+
+    /** Holds if this variable is a glvalue. */
+    predicate isGLValue() { none() }
+
+    /**
+     * Gets the type of this source variable. If `isGLValue()` holds, then
+     * the type of this source variable should be thought of as "pointer
+     * to `getType()`".
+     */
+    abstract DataFlowType getType();
   }
 
   class SourceIRVariable extends SourceVariable, TSourceIRVariable {
@@ -65,6 +75,12 @@ private module SourceVariables {
       or
       ind > 0 and
       result = this.getIRVariable().toString() + " indirection"
+    }
+
+    override predicate isGLValue() { ind = 0 }
+
+    override DataFlowType getType() {
+      if ind = 0 then result = var.getType() else result = getTypeImpl(var.getType(), ind - 1)
     }
   }
 
@@ -84,6 +100,8 @@ private module SourceVariables {
       ind > 0 and
       result = "Call indirection"
     }
+
+    override DataFlowType getType() { result = getTypeImpl(call.getResultType(), ind) }
   }
 }
 
