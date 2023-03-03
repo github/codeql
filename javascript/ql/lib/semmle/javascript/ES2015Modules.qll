@@ -98,7 +98,7 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
    * import foo from "foo" assert { type: "json" };
    * ```
    */
-  ObjectExpr getImportAssertion() { result = getChildExpr(-10) }
+  ObjectExpr getImportAssertion() { result = this.getChildExpr(-10) }
 
   /** Gets the `i`th import specifier of this import declaration. */
   ImportSpecifier getSpecifier(int i) { result = getChildExpr(i) }
