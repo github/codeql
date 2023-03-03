@@ -1,6 +1,8 @@
 ## 0.5.4
 
-No user-facing changes.
+### Minor Analysis Improvements
+
+* The `js/regex-injection` query now recognizes environment variables and command-line arguments as sources.
 
 ## 0.5.3
 
