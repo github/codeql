@@ -90,7 +90,7 @@ extensions:
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "post", "(URI)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "put", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "put", "(URI)", "", "Argument[0]", "%-url", "manual"]
-      - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "setHttpHost", "", "", "Argument[0]", "%-url", "manual"]
+      - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "setHttpHost", "(HttpHost)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "setUri", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "setUri", "(URI)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "trace", "(String)", "", "Argument[0]", "%-url", "manual"]
