@@ -15,6 +15,11 @@ class SwiftMangler {
 
   std::optional<std::string> mangleType(const swift::ModuleType& type);
 
+#define TYPE(TYPE_ID, PARENT_TYPE)
+#define BUILTIN_TYPE(TYPE_ID, PARENT_TYPE) \
+  std::optional<std::string> mangleType(const swift::TYPE_ID##Type& type);
+#include <swift/AST/TypeNodes.def>
+
  private:
   swift::Mangle::ASTMangler mangler;
 };
