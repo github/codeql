@@ -707,3 +707,23 @@ private class SimilarPackageCharacteristic extends UninterestingToModelCharacter
     )
   }
 }
+
+/**
+ * A negative characteristic that filters out calls to undocumented methods in undocumented classes inside the current
+ * DB. The assumption is that methods that are intended / likely to be called from outside the package are documented.
+ *
+ * Note that in practice we have seen some interesting sinks in methods that are external-facing but undocumented
+ * (and appear in empty Javadoc pages), so this filter can be expected to lead to the loss of some interesting sinks.
+ */
+private class UndocumentedMethodCharacteristic extends UninterestingToModelCharacteristic {
+  UndocumentedMethodCharacteristic() { this = "undocumented method" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    exists(Callable callee |
+      callee = n.asExpr().(Argument).getCall().getCallee() and
+      not exists(callee.(Documentable).getJavadoc()) and
+      not exists(callee.getDeclaringType().(Documentable).getJavadoc()) and
+      callee.fromSource()
+    )
+  }
+}
