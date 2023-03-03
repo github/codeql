@@ -42,4 +42,4 @@ extensions:
       - ["org.apache.hc.client5.http.classic.methods", "HttpTrace", True, "HttpTrace", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.classic.methods", "HttpTrace", True, "HttpTrace", "(URI)", "", "Argument[0]", "%-url", "manual"]
       # ! `HttpUriRequestBase` extends Object>HeaderGroup>BasicHttpRequest>BasicClassicHttpRequest; subclasses are `HttpDelete` through `HttpTrace` above
-      - ["org.apache.hc.client5.http.classic.methods", "HttpUriRequestBase", True, "HttpUriRequestBase", "(String,URI) ", "", "Argument[1]", "%-url", "manual"]
+      - ["org.apache.hc.client5.http.classic.methods", "HttpUriRequestBase", True, "HttpUriRequestBase", "(String,URI)", "", "Argument[1]", "%-url", "manual"]
