@@ -540,9 +540,9 @@ module JQuery {
       JQuery::isMethodArgumentInterpretedAsHtml(name) and
       node = this.getAnArgument()
       or
-      // for `$, it's only the first one
+      // for `$, it's only the first one, or an "html" option
       name = "$" and
-      node = this.getArgument(0)
+      node = [this.getArgument(0), this.getOptionArgument(1, "html")]
     }
 
     /**

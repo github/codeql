@@ -157,6 +157,8 @@ nodes
 | xss-through-dom.js:140:19:140:21 | src |
 | xss-through-dom.js:141:25:141:27 | src |
 | xss-through-dom.js:141:25:141:27 | src |
+| xss-through-dom.js:150:24:150:26 | src |
+| xss-through-dom.js:150:24:150:26 | src |
 edges
 | forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values |
 | forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values |
@@ -257,6 +259,8 @@ edges
 | xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:140:19:140:21 | src |
 | xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:141:25:141:27 | src |
 | xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:141:25:141:27 | src |
+| xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:150:24:150:26 | src |
+| xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:150:24:150:26 | src |
 | xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:139:11:139:52 | src |
 | xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:139:11:139:52 | src |
 #select
@@ -302,3 +306,4 @@ edges
 | xss-through-dom.js:132:16:132:23 | linkText | xss-through-dom.js:130:42:130:62 | dSelect ... tring() | xss-through-dom.js:132:16:132:23 | linkText | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:130:42:130:62 | dSelect ... tring() | DOM text |
 | xss-through-dom.js:140:19:140:21 | src | xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:140:19:140:21 | src | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:139:17:139:52 | documen ... k").src | DOM text |
 | xss-through-dom.js:141:25:141:27 | src | xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:141:25:141:27 | src | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:139:17:139:52 | documen ... k").src | DOM text |
+| xss-through-dom.js:150:24:150:26 | src | xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:150:24:150:26 | src | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:139:17:139:52 | documen ... k").src | DOM text |
