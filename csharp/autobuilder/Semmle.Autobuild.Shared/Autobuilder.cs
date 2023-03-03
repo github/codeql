@@ -241,7 +241,7 @@ namespace Semmle.Autobuild.Shared
             SourceArchiveDir = RequireEnvironmentVariable(EnvVars.SourceArchiveDir(this.Options.Language));
             DiagnosticsDir = RequireEnvironmentVariable(EnvVars.DiagnosticDir(this.Options.Language));
 
-            this.diagnostics = actions.CreateDiagnosticsWriter(Path.Combine(DiagnosticsDir, $"autobuilder-{DateTime.UtcNow:yyyyMMddHHmm}.jsonc"));
+            this.diagnostics = actions.CreateDiagnosticsWriter(Path.Combine(DiagnosticsDir, $"autobuilder-{DateTime.UtcNow:yyyyMMddHHmm}-{Environment.ProcessId}.jsonc"));
         }
 
         /// <summary>
