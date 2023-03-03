@@ -50,7 +50,7 @@ static fs::path getFilename(swift::ModuleDecl& module,
     return resolvePath(primaryFile->getFilename());
   }
   if (lazyDeclaration) {
-    static SwiftMangler mangler;
+    SwiftMangler mangler;
     return mangler.mangledName(*lazyDeclaration);
   }
   // PCM clang module
