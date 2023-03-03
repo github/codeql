@@ -28,7 +28,7 @@ import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.classic.methods.HttpTrace;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
 
-// import org.apache.hc.client5.http.fluent.Request;
+import org.apache.hc.client5.http.fluent.Request;
 // import org.apache.hc.client5.http.protocol.RedirectLocations;
 // import org.apache.hc.client5.http.utils.URIUtils;
 
@@ -187,8 +187,8 @@ public class ApacheHttp5SSRF extends HttpServlet {
             ClassicHttpRequests.create("method", uri.toString()); // $ SSRF
             ClassicHttpRequests.create("method", uri); // $ SSRF
 
-            BasicHttpRequests.delete(uri.toString()); // $ SSRF
-            BasicHttpRequests.delete(uri); // $ SSRF
+            ClassicHttpRequests.delete(uri.toString()); // $ SSRF
+            ClassicHttpRequests.delete(uri); // $ SSRF
 
             ClassicHttpRequests.get(uri.toString()); // $ SSRF
             ClassicHttpRequests.get(uri); // $ SSRF
@@ -238,6 +238,48 @@ public class ApacheHttp5SSRF extends HttpServlet {
 
             // org.apache.hc.client5.http.classic.methods.HttpUriRequestBase
             new HttpUriRequestBase("method", uri); // $ SSRF
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+    // org.apache.hc.client5.http.fluent
+    protected void doGet3(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+
+            String uriSink = request.getParameter("uri");
+            URI uri = new URI(uriSink);
+
+            // org.apache.hc.client5.http.fluent.Request
+            Request.create(Method.CONNECT, uri); // $ SSRF
+            Request.create("method", uri.toString()); // $ SSRF
+            Request.create("method", uri); // $ SSRF
+
+            Request.delete(uri.toString()); // $ SSRF
+            Request.delete(uri); // $ SSRF
+
+            Request.get(uri.toString()); // $ SSRF
+            Request.get(uri); // $ SSRF
+
+            Request.head(uri.toString()); // $ SSRF
+            Request.head(uri); // $ SSRF
+
+            Request.options(uri.toString()); // $ SSRF
+            Request.options(uri); // $ SSRF
+
+            Request.patch(uri.toString()); // $ SSRF
+            Request.patch(uri); // $ SSRF
+
+            Request.post(uri.toString()); // $ SSRF
+            Request.post(uri); // $ SSRF
+
+            Request.put(uri.toString()); // $ SSRF
+            Request.put(uri); // $ SSRF
+
+            Request.trace(uri.toString()); // $ SSRF
+            Request.trace(uri); // $ SSRF
 
         } catch (Exception e) {
             // TODO: handle exception
