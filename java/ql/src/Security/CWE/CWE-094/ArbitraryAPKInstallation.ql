@@ -23,6 +23,7 @@ class PackageArchiveMimeTypeLiteral extends StringLiteral {
   PackageArchiveMimeTypeLiteral() { this.getValue() = "application/vnd.android.package-archive" }
 }
 
+/** The `android.content.Intent.ACTION_INSTALL_PACKAGE` constant. */
 class InstallPackageAction extends Expr {
   InstallPackageAction() {
     this.(StringLiteral).getValue() = "android.intent.action.INSTALL_PACKAGE"
@@ -110,6 +111,7 @@ class ApkConfiguration extends DataFlow::Configuration {
   }
 }
 
+/** The `setAction` method of the `android.content.Intent` class. */
 class SetActionMethod extends Method {
   SetActionMethod() {
     this.hasName("setAction") and
@@ -117,6 +119,12 @@ class SetActionMethod extends Method {
   }
 }
 
+/**
+ * A dataflow configuration tracking the flow from the `android.content.Intent.ACTION_INSTALL_PACKAGE`
+ * constant to either the constructor of an intent or the `setAction` method of an intent.
+ *
+ * This is used to track if an intent is used to install an APK.
+ */
 private class InstallPackageActionConfiguration extends TaintTracking3::Configuration {
   InstallPackageActionConfiguration() { this = "InstallPackageActionConfiguration" }
 
