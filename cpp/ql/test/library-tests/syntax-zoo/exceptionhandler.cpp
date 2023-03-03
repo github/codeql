@@ -7,7 +7,7 @@ void g() {
 	throw 1;
 }
 
-void f() {
+static void f() {
 	try {
 		try {
 			g();

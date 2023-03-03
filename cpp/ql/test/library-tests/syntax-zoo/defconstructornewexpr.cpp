@@ -1,6 +1,6 @@
 class C { };
 
-void f() {
+static void f() {
 	new C;
   return;
 }

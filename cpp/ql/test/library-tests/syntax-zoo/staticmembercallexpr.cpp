@@ -3,7 +3,7 @@ class C {
 		static void g();
 };
 
-void f() {
+static void f() {
 	C c;
 	c.g();
 	;

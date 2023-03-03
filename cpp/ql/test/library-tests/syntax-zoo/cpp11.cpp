@@ -114,7 +114,7 @@ namespace synthetic_dtor_calls {
     }
   }
 
-  void f(int x) {
+  static void f(int x) {
     while (x > 0) {
       C c;
       if (x == 1) {

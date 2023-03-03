@@ -6,7 +6,7 @@ class C {
         ~C();
 };
 
-void f(int b) {
+static void f(int b) {
     int i;
 
     if (({

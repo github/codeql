@@ -1,6 +1,6 @@
 int atoi(const char*);
 
-int main(int argc, char** argv)
+static int f(int argc, char** argv)
 {
   char* matrix[argc][atoi(argv[1])];
   return 0;

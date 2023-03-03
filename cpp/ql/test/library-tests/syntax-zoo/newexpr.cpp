@@ -3,7 +3,7 @@ class C {
 		C(int i, int j);
 };
 
-void f() {
+static void f() {
 	int a, b, c, d;
 	new C(a + b, c - d);
 }
