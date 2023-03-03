@@ -565,6 +565,7 @@ module Impl<FullStateConfigSig Config> {
     /**
      * Holds if `c` is the target of a store in the flow covered by `fwdFlow`.
      */
+    pragma[assume_small_delta]
     pragma[nomagic]
     private predicate fwdFlowConsCand(Content c) {
       exists(NodeEx mid, NodeEx node, TypedContent tc |
@@ -784,6 +785,7 @@ module Impl<FullStateConfigSig Config> {
       )
     }
 
+    pragma[nomagic]
     additional predicate revFlowState(FlowState state) {
       exists(NodeEx node |
         sinkNode(node, state) and
@@ -1187,6 +1189,7 @@ module Impl<FullStateConfigSig Config> {
         fwdFlow(node, state, cc, summaryCtx, argAp, ap, _)
       }
 
+      pragma[assume_small_delta]
       pragma[nomagic]
       private predicate fwdFlow0(
         NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, ApOption argAp, Ap ap,
@@ -3512,6 +3515,7 @@ module Impl<FullStateConfigSig Config> {
     )
   }
 
+  pragma[assume_small_delta]
   pragma[nomagic]
   private predicate pathThroughCallable0(
     DataFlowCall call, PathNodeMid mid, ReturnKindExt kind, FlowState state, CallContext cc,
