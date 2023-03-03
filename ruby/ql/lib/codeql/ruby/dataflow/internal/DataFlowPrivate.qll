@@ -1504,13 +1504,6 @@ class AdditionalJumpStep extends Unit {
  * an additional forward or backwards branching factor that is not taken into account
  * when calculating the (virtual) dispatch cost.
  *
- * `call` is a call with an argument `arg` that is part of a path from a source to a sink, and
- * `p` is the target parameter of a callable to which `call` may resolve.
- *
- * All these values are bound by the dataflow library, and if this predicate is implemented it
- * should be specified with a bindingset annotation that binds all the columns.
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
  */
-bindingset[call, p, arg]
-int getAdditionalFlowIntoCallNodeTerm(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
-  none()
-}
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }
