@@ -4,9 +4,3 @@ extensions:
       extensible: summaryModel
     data:
       - ["org.apache.hc.client5.http.protocol", "RedirectLocations", True, "add", "", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]  # ! double-check the output for this step
-
-  - addsTo:
-      pack: codeql/java-all
-      extensible: neutralModel
-    data:
-      - ["org.apache.hc.client5.http.protocol", "RedirectLocations", "contains", "", "manual"]
