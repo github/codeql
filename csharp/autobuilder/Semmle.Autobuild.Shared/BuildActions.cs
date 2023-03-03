@@ -11,26 +11,11 @@ using System.Runtime.InteropServices;
 
 namespace Semmle.Autobuild.Shared
 {
-    public delegate void BuildOutputHandler(string? data);
-
     /// <summary>
     /// Wrapper around system calls so that the build scripts can be unit-tested.
     /// </summary>
     public interface IBuildActions
     {
-
-        /// <summary>
-        /// Runs a process, captures its output, and provides it asynchronously.
-        /// </summary>
-        /// <param name="exe">The exe to run.</param>
-        /// <param name="args">The other command line arguments.</param>
-        /// <param name="workingDirectory">The working directory (<code>null</code> for current directory).</param>
-        /// <param name="env">Additional environment variables.</param>
-        /// <param name="onOutput">A handler for stdout output.</param>
-        /// <param name="onError">A handler for stderr output.</param>
-        /// <returns>The process exit code.</returns>
-        int RunProcess(string exe, string args, string? workingDirectory, IDictionary<string, string>? env, BuildOutputHandler onOutput, BuildOutputHandler onError);
-
         /// <summary>
         /// Runs a process and captures its output.
         /// </summary>
@@ -195,26 +180,6 @@ namespace Semmle.Autobuild.Shared
                     environment.ForEach(kvp => pi.Environment[kvp.Key] = kvp.Value);
             }
             return pi;
-        }
-
-        int IBuildActions.RunProcess(string exe, string args, string? workingDirectory, System.Collections.Generic.IDictionary<string, string>? env, BuildOutputHandler onOutput, BuildOutputHandler onError)
-        {
-            var pi = GetProcessStartInfo(exe, args, workingDirectory, env, true);
-            using var p = new Process
-            {
-                StartInfo = pi
-            };
-            p.StartInfo.RedirectStandardError = true;
-            p.OutputDataReceived += new DataReceivedEventHandler((sender, e) => onOutput(e.Data));
-            p.ErrorDataReceived += new DataReceivedEventHandler((sender, e) => onError(e.Data));
-
-            p.Start();
-
-            p.BeginErrorReadLine();
-            p.BeginOutputReadLine();
-
-            p.WaitForExit();
-            return p.ExitCode;
         }
 
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? environment)
