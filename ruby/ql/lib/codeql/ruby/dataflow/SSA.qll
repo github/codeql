@@ -295,6 +295,26 @@ module Ssa {
   }
 
   /**
+   * An SSA definition inserted at the beginning of a scope to represent a captured `self` variable.
+   * For example, in
+   *
+   * ```rb
+   * def m(x)
+   *   x.tap do |x|
+   *     foo(x)
+   *   end
+   * end
+   * ```
+   *
+   * an entry definition for `self` is inserted at the start of the `do` block.
+   */
+  class CapturedSelfDefinition extends CapturedEntryDefinition {
+    private SelfVariable v;
+
+    CapturedSelfDefinition() { this.getSourceVariable() = v }
+  }
+
+  /**
    * An SSA definition inserted at a call that may update the value of a captured
    * variable. For example, in
    *

@@ -5,6 +5,8 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.Concepts
 private import codeql.ruby.AST
 private import codeql.ruby.dataflow.FlowSummary
+private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import codeql.ruby.dataflow.SSA
 
 /** Provides modeling for the Sinatra library. */
 module Sinatra {
@@ -30,10 +32,9 @@ module Sinatra {
   }
 
   private class Params extends DataFlow::CallNode, Http::Server::RequestInputAccess::Range {
-    private Route route;
-
     Params() {
-      this.asExpr().getExpr().getEnclosingCallable() = route.getBody().asCallableAstNode() and
+      this.asExpr().getExpr().getEnclosingCallable() =
+        [any(Route r).getBody(), any(Filter f).getBody()].asCallableAstNode() and
       this.getMethodName() = "params"
     }
 
@@ -140,6 +141,9 @@ module Sinatra {
 
     Filter() { this = app.getAModuleLevelCall(["before", "after"]) }
 
+    /** Gets the app which this filter belongs to. */
+    App getApp() { result = app }
+
     /**
      * Gets the pattern which constrains this route, if any. In the example below, the pattern is `/protected/*`.
      * Patterns are typically given as strings, and are interpreted by the `mustermann` gem (they are not regular expressions).
@@ -168,5 +172,51 @@ module Sinatra {
 
   class AfterFilter extends Filter {
     AfterFilter() { this.getMethodName() = "after" }
+  }
+
+  /**
+   * A class defining additional jump steps arising from filters.
+   */
+  class FilterJumpStep extends DataFlowPrivate::AdditionalJumpStep {
+    /**
+     * Holds if data can flow from `pred` to `succ` via a callback chain.
+     */
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(BeforeFilter filter, Route route |
+        // the filter and route belong to the same app
+        filter.getApp() = route.getApp() and
+        // the filter applies to all routes
+        not filter.hasPattern() and
+        selfPostUpdate(pred, filter.getApp(), filter.getBody().asExpr().getExpr()) and
+        blockCapturedSelfParameterNode(succ, route.getBody().asExpr().getExpr())
+      )
+    }
+
+    /**
+     * Holds if `n` is a post-update node for the `self` parameter of `app` in block `b`.
+     *
+     * In this example, `n` is the post-update node for `@foo = 1`.
+     * ```rb
+     * class MyApp < Sinatra::Base
+     *   before do
+     *     @foo = 1
+     *   end
+     * end
+     * ```
+     */
+    private predicate selfPostUpdate(DataFlow::PostUpdateNode n, App app, Block b) {
+      n.getPreUpdateNode().asExpr().getExpr() =
+        any(SelfVariableAccess self |
+          pragma[only_bind_into](b) = self.getEnclosingCallable() and
+          self.getVariable().getDeclaringScope() = app.getADeclaration()
+        )
+    }
+  }
+
+  private predicate blockCapturedSelfParameterNode(DataFlow::Node n, Block b) {
+    exists(Ssa::CapturedSelfDefinition d |
+      n.(DataFlowPrivate::SsaDefinitionExtNode).getDefinitionExt() = d and
+      d.getBasicBlock().getScope() = b
+    )
   }
 }

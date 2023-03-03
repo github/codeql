@@ -72,7 +72,7 @@ class MyApp < Sinatra::Base
   end
   
   get '/' do
-    @foo = params["foo"]
+    @foo = source "foo"
     erb :index, locals: {foo:  @foo}
   end
   
@@ -91,13 +91,22 @@ class MyApp < Sinatra::Base
     params['splat'] #=> 'bar/baz'
   end
   
+  get "/home" do
+    sink @user # $ hasTaintFlow=a
+  end
+  
   after do
     puts response.status
+  end
+  
+  before do
+    @user = source "a"
   end
   
   before '/protected/*' do
     authenticate!
   end
+  
   
   after '/create/:slug' do |slug|
     session[:last_slug] = slug
