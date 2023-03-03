@@ -132,34 +132,48 @@ predicate isTypeAccess(DataFlow::Node n) { n.asExpr() instanceof TypeAccess }
  */
 predicate hasMetadata(DataFlow::Node n, string metadata) {
   exists(
-    Callable callee, Call call, string package, string type, boolean subtypes, string name,
-    string signature, string ext, int input, string provenance, boolean isPublic,
-    boolean isExternalApiDataNode
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    int input, string provenance, boolean isPublic, boolean isExternalApiDataNode, boolean isFinal
   |
+    hasMetadata(n, package, type, name, signature, input, isFinal, isPublic, isExternalApiDataNode) and
+    (if isFinal = true then subtypes = false else subtypes = true) and
+    ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
+    provenance = "ai-generated" and
+    metadata =
+      "{'Package': '" + package + "', 'Type': '" + type + "', 'Subtypes': " + subtypes +
+        ", 'Name': '" + name + "', 'Signature': '" + signature + "', 'Ext': '" + ext +
+        "', 'Argument index': " + input + ", 'Provenance': '" + provenance + "', 'Is public': " +
+        isPublic + ", 'Is passed to external API': " + isExternalApiDataNode + "}" // TODO: Why are the curly braces added twice?
+  )
+}
+
+/**
+ * Holds if `n` has the given metadata.
+ *
+ * This is a helper function to extract and export needed information about each endpoint.
+ */
+predicate hasMetadata(
+  DataFlow::Node n, string package, string type, string name, string signature, int input,
+  boolean isFinal, boolean isPublic, boolean isExternalApiDataNode
+) {
+  exists(Callable callee, Call call |
     n.asExpr() = call.getArgument(input) and
     callee = call.getCallee() and
     package = callee.getDeclaringType().getPackage().getName() and
     type = callee.getDeclaringType().getErasure().(RefType).nestedName() and
     (
       if callee.isFinal() or callee.getDeclaringType().isFinal()
-      then subtypes = false // See https://github.com/github/codeql-java-team/issues/254#issuecomment-1422296423
-      else subtypes = true
+      then isFinal = true
+      else isFinal = false
     ) and
     name = callee.getSourceDeclaration().getName() and
     signature = paramsString(callee) and // TODO: Why are brackets being escaped (`\[\]` vs `[]`)?
-    ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
-    provenance = "ai-generated" and
     (if callee.isPublic() then isPublic = true else isPublic = false) and
     (
       if n instanceof ExternalAPIs::ExternalApiDataNode
       then isExternalApiDataNode = true
       else isExternalApiDataNode = false
-    ) and
-    metadata =
-      "{'Package': '" + package + "', 'Type': '" + type + "', 'Subtypes': " + subtypes +
-        ", 'Name': '" + name + "', 'Signature': '" + signature + "', 'Ext': '" + ext +
-        "', 'Argument index': " + input + ", 'Provenance': '" + provenance + "', 'Is public': " +
-        isPublic + ", 'Is passed to external API': " + isExternalApiDataNode + "}" // TODO: Why are the curly braces added twice?
+    )
   )
 }
 
