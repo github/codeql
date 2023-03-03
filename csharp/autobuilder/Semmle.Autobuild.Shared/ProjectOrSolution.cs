@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Semmle.Util;
 
 namespace Semmle.Autobuild.Shared
 {

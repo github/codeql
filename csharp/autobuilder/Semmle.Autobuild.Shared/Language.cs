@@ -1,4 +1,4 @@
-﻿namespace Semmle.Util
+﻿namespace Semmle.Autobuild.Shared
 {
     public sealed class Language
     {

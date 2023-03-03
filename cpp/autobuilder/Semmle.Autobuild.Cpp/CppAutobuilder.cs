@@ -1,5 +1,4 @@
 ﻿using Semmle.Autobuild.Shared;
-using Semmle.Util;
 
 namespace Semmle.Autobuild.Cpp
 {
@@ -22,7 +21,7 @@ namespace Semmle.Autobuild.Cpp
 
     public class CppAutobuilder : Autobuilder<CppAutobuildOptions>
     {
-        public CppAutobuilder(IBuildActions actions, CppAutobuildOptions options) : base(actions, options, new DiagnosticClassifier()) { }
+        public CppAutobuilder(IBuildActions actions, CppAutobuildOptions options) : base(actions, options) { }
 
         public override BuildScript GetBuildScript()
         {

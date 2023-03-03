@@ -1,6 +1,5 @@
 ﻿using Xunit;
 using Semmle.Autobuild.Shared;
-using Semmle.Util;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -82,15 +81,6 @@ namespace Semmle.Autobuild.CSharp.Tests
 
             if (!RunProcess.TryGetValue(pattern, out var ret))
                 throw new ArgumentException("Missing RunProcess " + pattern);
-
-            return ret;
-        }
-
-        int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? env, BuildOutputHandler onOutput, BuildOutputHandler onError)
-        {
-            var ret = (this as IBuildActions).RunProcess(cmd, args, workingDirectory, env, out var stdout);
-
-            stdout.ForEach(line => onOutput(line));
 
             return ret;
         }
@@ -401,7 +391,6 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_SOURCE_ARCHIVE_DIR"] = "";
             actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_ROOT"] = $@"C:\codeql\{codeqlUpperLanguage.ToLowerInvariant()}";
-            actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_DIAGNOSTIC_DIR"] = Path.GetTempPath();
             actions.GetEnvironmentVariable["CODEQL_JAVA_HOME"] = @"C:\codeql\tools\java";
             actions.GetEnvironmentVariable["CODEQL_PLATFORM"] = isWindows ? "win64" : "linux64";
             actions.GetEnvironmentVariable["LGTM_INDEX_VSTOOLS_VERSION"] = vsToolsVersion;
