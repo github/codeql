@@ -30,10 +30,10 @@ instructionWithoutSuccessor
 | misc.c:174:17:174:22 | CallSideEffect: call to getInt | Instruction 'CallSideEffect: call to getInt' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
 | misc.c:174:30:174:35 | CallSideEffect: call to getInt | Instruction 'CallSideEffect: call to getInt' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
 | misc.c:174:55:174:60 | Store: (char ****)... | Instruction 'Store: (char ****)...' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
-| ms_try_mix.cpp:33:13:33:19 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | ms_try_mix.cpp:27:6:27:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
-| ms_try_mix.cpp:51:5:51:11 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | ms_try_mix.cpp:47:6:47:28 | void ms_empty_finally_at_end() | void ms_empty_finally_at_end() |
-| stmt_expr.cpp:27:5:27:15 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | stmt_expr.cpp:21:6:21:6 | void stmtexpr::g(int) | void stmtexpr::g(int) |
-| stmt_expr.cpp:29:11:32:11 | CopyValue: (statement expression) | Instruction 'CopyValue: (statement expression)' has no successors in function '$@'. | stmt_expr.cpp:21:6:21:6 | void stmtexpr::g(int) | void stmtexpr::g(int) |
+| ms_try_mix.cpp:35:13:35:19 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:53:5:53:11 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | ms_try_mix.cpp:49:6:49:28 | void ms_empty_finally_at_end() | void ms_empty_finally_at_end() |
+| stmt_expr.cpp:27:5:27:15 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | stmt_expr.cpp:21:13:21:13 | void stmtexpr::g(int) | void stmtexpr::g(int) |
+| stmt_expr.cpp:29:11:32:11 | CopyValue: (statement expression) | Instruction 'CopyValue: (statement expression)' has no successors in function '$@'. | stmt_expr.cpp:21:13:21:13 | void stmtexpr::g(int) | void stmtexpr::g(int) |
 | stmt_in_type.cpp:5:53:5:53 | Constant: 1 | Instruction 'Constant: 1' has no successors in function '$@'. | stmt_in_type.cpp:2:6:2:12 | void cpp_fun() | void cpp_fun() |
 | vla.c:5:9:5:14 | Uninitialized: definition of matrix | Instruction 'Uninitialized: definition of matrix' has no successors in function '$@'. | vla.c:3:12:3:12 | int f(int, char**) | int f(int, char**) |
 | vla.c:5:16:5:19 | Load: argc | Instruction 'Load: argc' has no successors in function '$@'. | vla.c:3:12:3:12 | int f(int, char**) | int f(int, char**) |
@@ -47,12 +47,6 @@ instructionWithoutSuccessor
 | vla.c:14:74:14:79 | CallSideEffect: call to getInt | Instruction 'CallSideEffect: call to getInt' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
 | vla.c:14:92:14:94 | Store: (char *)... | Instruction 'Store: (char *)...' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
 ambiguousSuccessors
-| conditional_destructors.cpp:29:6:29:7 | InitializeNonLocal: f1 | Instruction 'InitializeNonLocal: f1' has 2 successors of kind 'Goto' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | void f1() | void f1() |
-| conditional_destructors.cpp:38:6:38:7 | InitializeNonLocal: f2 | Instruction 'InitializeNonLocal: f2' has 2 successors of kind 'Goto' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | void f2() | void f2() |
-| forstmt.cpp:1:6:1:7 | InitializeNonLocal: f1 | Instruction 'InitializeNonLocal: f1' has 2 successors of kind 'Goto' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | void f1() | void f1() |
-| forstmt.cpp:8:6:8:7 | InitializeNonLocal: f2 | Instruction 'InitializeNonLocal: f2' has 2 successors of kind 'Goto' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | void f2() | void f2() |
-| nonmembercallexpr.c:1:6:1:6 | InitializeNonLocal: g | Instruction 'InitializeNonLocal: g' has 2 successors of kind 'Goto' in function '$@'. | nonmembercallexpr.c:1:6:1:6 | void g(); void g())(); void(* g(); void(* g())() | void g(); void g())(); void(* g(); void(* g())() |
-| revsubscriptexpr.c:1:6:1:6 | InitializeNonLocal: g | Instruction 'InitializeNonLocal: g' has 2 successors of kind 'Goto' in function '$@'. | nonmembercallexpr.c:1:6:1:6 | void g(); void g())(); void(* g(); void(* g())() | void g(); void g())(); void(* g(); void(* g())() |
 unexplainedLoop
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
@@ -79,7 +73,7 @@ invalidOverlap
 nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
-| pmcallexpr.cpp:8:2:8:15 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pmcallexpr.cpp:6:13:6:13 | void f() | void f() |
+| pmcallexpr.cpp:10:2:10:15 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pmcallexpr.cpp:8:13:8:13 | void f() | void f() |
 | pointer_to_member.cpp:23:5:23:54 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
 | pointer_to_member.cpp:24:5:24:49 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
 nonUniqueIRVariable

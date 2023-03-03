@@ -11,7 +11,7 @@ static void f() {
 	}
 }
 
-void g(bool condition) {
+static void g(bool condition) {
 	try {
 		if (condition) throw 1;
 	} catch (...) {

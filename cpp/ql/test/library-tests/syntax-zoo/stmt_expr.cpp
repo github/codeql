@@ -18,7 +18,7 @@ static void f(int b) {
         ;
 }
 
-void g(int b) {
+static void g(int b) {
     void *ptr;
     int i;
 
