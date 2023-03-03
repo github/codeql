@@ -57,7 +57,8 @@ module HardcodedKeys {
         pkg =
           [
             "github.com/golang-jwt/jwt/v4", "github.com/dgrijalva/jwt-go",
-            "github.com/form3tech-oss/jwt-go", "github.com/ory/fosite/token/jwt"
+            "github.com/form3tech-oss/jwt-go", "github.com/ory/fosite/token/jwt",
+            "github.com/gogf/gf-jwt/v2", "github.com/kataras/iris/v12/middleware/jwt",
           ]
       |
         exists(DataFlow::MethodCallNode m |
