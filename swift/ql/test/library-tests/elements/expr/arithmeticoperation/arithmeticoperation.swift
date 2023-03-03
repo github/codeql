@@ -11,8 +11,8 @@ func test(c: Bool, x: Int, y: Int, z: Int) {
 	v = -x;
 	v = +x;
 
-   // arithmetic operations with overflow
-   v = x &+ y;
-   v = x &- y;
-   v = x &* y;
+	// arithmetic operations with overflow
+	v = x &+ y;
+	v = x &- y;
+	v = x &* y;
 }
