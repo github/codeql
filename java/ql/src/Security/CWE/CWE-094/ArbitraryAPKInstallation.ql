@@ -71,7 +71,7 @@ class SetDataSink extends DataFlow::ExprNode {
 /** A method that generates a URI. */
 class UriConstructorMethod extends Method {
   UriConstructorMethod() {
-    this.hasQualifiedName("android.net", "Uri", [/*"parse",*/ "fromFile", "fromParts"]) or
+    this.hasQualifiedName("android.net", "Uri", ["fromFile", "fromParts"]) or
     this.hasQualifiedName("androidx.core.content", "FileProvider", "getUriForFile")
   }
 }

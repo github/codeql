@@ -58,16 +58,16 @@
 
   <references>
     <li>
-      Intent.ACTION_INSTALL_PACKAGE: <a href="https://developer.android.com/reference/android/content/Intent#ACTION_INSTALL_PACKAGE"></a>.
+      Android Developers: <a href="https://developer.android.com/reference/android/content/Intent#ACTION_INSTALL_PACKAGE">Intent.ACTION_INSTALL_PACKAGE</a>.
     </li>
     <li>
-      Android Manifest Permission to Install Packages: <a href="https://developer.android.com/reference/android/Manifest.permission#REQUEST_INSTALL_PACKAGES"></a>.
+      Android Developers: <a href="https://developer.android.com/reference/android/Manifest.permission#REQUEST_INSTALL_PACKAGES">Manifest.permission.REQUEST_INSTALL_PACKAGES</a>.
     </li>
     <li>
-      PackageInstaller: <a href="https://developer.android.com/reference/android/content/pm/PackageInstaller"></a>.
+     Android Developers: <a href="https://developer.android.com/reference/android/content/pm/PackageInstaller">PackageInstaller</a>.
     </li>
     <li>
-      FileProvider: <a href="https://developer.android.com/reference/androidx/core/content/FileProvider"></a>.
+      Android Developers: <a href="https://developer.android.com/reference/androidx/core/content/FileProvider">FileProvider</a>.
     </li>
   </references>
 </qhelp>
