@@ -97,7 +97,7 @@ The following query finds the filename passed to ``fopen``.
 
    from Function fopen, FunctionCall fc
    where
-     fopen.hasQualifiedName("fopen") and
+     fopen.hasGlobalName("fopen") and
      fc.getTarget() = fopen
    select fc.getArgument(0)
 
@@ -110,7 +110,7 @@ Unfortunately, this will only give the expression in the argument, not the value
 
    from Function fopen, FunctionCall fc, Expr src, DataFlow::Node source, DataFlow::Node sink
    where
-     fopen.hasQualifiedName("fopen") and
+     fopen.hasGlobalName("fopen") and
      fc.getTarget() = fopen and
      source.asIndirectExpr(1) = src and
      sink.asIndirectExpr(1) = fc.getArgument(0) and
@@ -126,7 +126,7 @@ Then we can vary the source and, for example, use the parameter of a function. T
 
    from Function fopen, FunctionCall fc, Parameter p, DataFlow::Node source, DataFlow::Node sink
    where
-     fopen.hasQualifiedName("fopen") and
+     fopen.hasGlobalName("fopen") and
      fc.getTarget() = fopen and
      source.asParameter(1) = p and
      sink.asIndirectExpr(1) = fc.getArgument(0) and
@@ -253,14 +253,14 @@ The following data flow configuration tracks data flow from environment variable
      override predicate isSource(DataFlow::Node source) {
        exists(Function getenv |
          source.asIndirectExpr(1).(FunctionCall).getTarget() = getenv and
-         getenv.hasQualifiedName("getenv")
+         getenv.hasGlobalName("getenv")
        )
      }
 
      override predicate isSink(DataFlow::Node sink) {
        exists(FunctionCall fc |
          sink.asIndirectExpr(1) = fc.getArgument(0) and
-         fc.getTarget().hasQualifiedName("fopen")
+         fc.getTarget().hasGlobalName("fopen")
        )
      }
    }
@@ -386,7 +386,7 @@ Exercise 3
    import semmle.code.cpp.dataflow.new.DataFlow
 
    class GetenvSource extends DataFlow::Node {
-     GetenvSource() { this.asIndirectExpr(1).(FunctionCall).getTarget().hasQualifiedName("getenv") }
+     GetenvSource() { this.asIndirectExpr(1).(FunctionCall).getTarget().hasGlobalName("getenv") }
    }
 
 Exercise 4
@@ -398,7 +398,7 @@ Exercise 4
    import semmle.code.cpp.dataflow.new.DataFlow
 
    class GetenvSource extends DataFlow::Node {
-     GetenvSource() { this.asIndirectExpr(1).(FunctionCall).getTarget().hasQualifiedName("getenv") }
+     GetenvSource() { this.asIndirectExpr(1).(FunctionCall).getTarget().hasGlobalName("getenv") }
    }
 
    class GetenvToGethostbynameConfiguration extends DataFlow::Configuration {
