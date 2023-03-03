@@ -242,11 +242,7 @@ codeql::OpenedArchetypeType TypeTranslator::translateOpenedArchetypeType(
 }
 
 codeql::ModuleType TypeTranslator::translateModuleType(const swift::ModuleType& type) {
-  auto key = type.getModule()->getRealName().str().str();
-  if (type.getModule()->isNonSwiftModule()) {
-    key += "|clang";
-  }
-  auto entry = createTypeEntry(type, key);
+  auto entry = createTypeEntry(type);
   entry.module = dispatcher.fetchLabel(type.getModule());
   return entry;
 }

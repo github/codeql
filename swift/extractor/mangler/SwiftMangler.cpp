@@ -30,3 +30,11 @@ std::string SwiftMangler::mangledName(const swift::Decl& decl) {
   }
   return ret.str();
 }
+
+std::optional<std::string> SwiftMangler::mangleType(const swift::ModuleType& type) {
+  auto key = type.getModule()->getRealName().str().str();
+  if (type.getModule()->isNonSwiftModule()) {
+    key += "|clang";
+  }
+  return key;
+}
