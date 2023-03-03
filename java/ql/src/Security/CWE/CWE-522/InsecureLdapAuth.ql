@@ -53,8 +53,13 @@ predicate concatInsecureLdapString(Expr protocol, Expr host) {
 
 /** Gets the leftmost operand in a concatenated string */
 Expr getLeftmostConcatOperand(Expr expr) {
+  // if expr instanceof AddExpr
+  // then result = getLeftmostConcatOperand(expr.(AddExpr).getLeftOperand())
+  // else result = expr
   if expr instanceof AddExpr
-  then result = getLeftmostConcatOperand(expr.(AddExpr).getLeftOperand())
+  then
+    result = expr.(AddExpr).getLeftOperand*() and
+    not result instanceof AddExpr
   else result = expr
 }
 
