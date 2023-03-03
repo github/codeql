@@ -3,6 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+     # ! `BasicHttpRequests` only extends `Object`; deprecated in favor of `BasicRequestBuilder`, so should maybe be removed as a model eventually
       - ["org.apache.hc.client5.http.async.methods", "BasicHttpRequests", True, "create", "(Method,HttpHost,String)", "", "Argument[1]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "BasicHttpRequests", True, "create", "(Method,String)", "", "Argument[1]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "BasicHttpRequests", True, "create", "(Method,URI)", "", "Argument[1]", "%-url", "manual"]
@@ -32,8 +33,10 @@ extensions:
       - ["org.apache.hc.client5.http.async.methods", "BasicHttpRequests", True, "trace", "(HttpHost,String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "BasicHttpRequests", True, "trace", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "BasicHttpRequests", True, "trace", "(URI)", "", "Argument[0]", "%-url", "manual"]
+      # ! `ConfigurableHttpRequest` extends from Object>HeaderGroup>BasicHttpRequest and has subclass SimpleHttpRequest
       - ["org.apache.hc.client5.http.async.methods", "ConfigurableHttpRequest", True, "ConfigurableHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "ConfigurableHttpRequest", True, "ConfigurableHttpRequest", "(String,URI)", "", "Argument[1]", "%-url", "manual"]
+      # ! `SimpleHttpRequest` extends from Object>HeaderGroup>BasicHttpRequest>ConfigurableHttpRequest
       - ["org.apache.hc.client5.http.async.methods", "SimpleHttpRequest", True, "SimpleHttpRequest", "(Method,HttpHost,String)", "", "Argument[1]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleHttpRequest", True, "SimpleHttpRequest", "(Method,URI)", "", "Argument[1]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleHttpRequest", True, "SimpleHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "%-url", "manual"]
@@ -42,6 +45,7 @@ extensions:
       - ["org.apache.hc.client5.http.async.methods", "SimpleHttpRequest", True, "create", "(Method,URI)", "", "Argument[1]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleHttpRequest", True, "create", "(String,String)", "", "Argument[1]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleHttpRequest", True, "create", "(String,URI)", "", "Argument[1]", "%-url", "manual"]
+      # ! `SimpleHttpRequests` only extends `Object`; deprecated in favor of `SimpleRequestBuilder`, so should maybe be removed as a model eventually
       - ["org.apache.hc.client5.http.async.methods", "SimpleHttpRequests", True, "create", "(Method,HttpHost,String)", "", "Argument[1]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleHttpRequests", True, "create", "(Method,String)", "", "Argument[1]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleHttpRequests", True, "create", "(Method,URI)", "", "Argument[1]", "%-url", "manual"]
@@ -71,6 +75,7 @@ extensions:
       - ["org.apache.hc.client5.http.async.methods", "SimpleHttpRequests", True, "trace", "(HttpHost,String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleHttpRequests", True, "trace", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleHttpRequests", True, "trace", "(URI)", "", "Argument[0]", "%-url", "manual"]
+      # ! `SimpleRequestBuilder` extends from Object>AbstractMessageBuilder>AbstractRequestBuilder (setHttpHost in particular is probably covered by AbstractRequestBuilder's version (if we have that model))
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "delete", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "delete", "(URI)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "get", "(String)", "", "Argument[0]", "%-url", "manual"]
@@ -85,7 +90,7 @@ extensions:
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "post", "(URI)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "put", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "put", "(URI)", "", "Argument[0]", "%-url", "manual"]
-      - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "setHttpHost", "", "", "Argument[0]", "%-url", "manual"]  # ! Notes: possibly subtyped by AbstractRequestBuilder
+      - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "setHttpHost", "", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "setUri", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "setUri", "(URI)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.client5.http.async.methods", "SimpleRequestBuilder", True, "trace", "(String)", "", "Argument[0]", "%-url", "manual"]
