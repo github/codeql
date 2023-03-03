@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"io/fs"
 	"log"
 	"os"
 	"os/exec"
@@ -280,4 +281,18 @@ func EscapeTrapSpecialChars(s string) string {
 	s = strings.ReplaceAll(s, "@", "&commat;")
 	s = strings.ReplaceAll(s, "#", "&num;")
 	return s
+}
+
+func FindGoFiles(root string) bool {
+	found := false
+	filepath.WalkDir(root, func(s string, d fs.DirEntry, e error) error {
+		if e != nil {
+			return e
+		}
+		if filepath.Ext(d.Name()) == ".go" {
+			found = true
+		}
+		return nil
+	})
+	return found
 }

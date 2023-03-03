@@ -98,6 +98,15 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	if len(pkgs) == 0 {
 		log.Println("No packages found.")
+
+		wd, err := os.Getwd()
+		if err != nil {
+			log.Fatalf("Unable to determine current directory: %s\n", err.Error())
+		}
+
+		if util.FindGoFiles(wd) {
+			diagnostics.EmitGoFilesFoundButNotProcessed()
+		}
 	}
 
 	log.Println("Extracting universe scope.")
