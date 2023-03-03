@@ -498,7 +498,14 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   override Declaration getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
 
-  override DataFlowType getType() { result = this.getAnInput().getType().getUnspecifiedType() }
+  override DataFlowType getType() {
+    exists(Ssa::SourceVariable sv |
+      this.getPhiNode().definesAt(sv, _, _, _) and
+      result = sv.getType()
+    )
+  }
+
+  override predicate isGLValue() { phi.getSourceVariable().isGLValue() }
 
   final override Location getLocationImpl() { result = phi.getBasicBlock().getLocation() }
 

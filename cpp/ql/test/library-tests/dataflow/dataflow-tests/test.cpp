@@ -615,3 +615,16 @@ void test_flow_through_void_double_pointer(int *p) // $ ast-def=p
   void* q = (void*)&p;
   sink(**(int**)q); // $ ir MISSING: ast
 }
+
+void use(int *);
+
+void test_def_via_phi_read(bool b)
+{
+  static int buffer[10]; // This is missing an initialisation in IR dataflow
+  if (b)
+  {
+    use(buffer);
+  }
+  intPointerSource(buffer);
+  sink(buffer); // $ ast,ir
+}

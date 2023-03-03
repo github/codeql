@@ -43,7 +43,7 @@ class Node0Impl extends TIRDataFlowNode0 {
   /**
    * Gets the type of this node.
    *
-   * If `asInstruction().isGLValue()` holds, then the type of this node
+   * If `isGLValue()` holds, then the type of this node
    * should be thought of as "pointer to `getType()`".
    */
   DataFlowType getType() { none() } // overridden in subclasses
