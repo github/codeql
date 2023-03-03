@@ -92,6 +92,7 @@ class Observer : public swift::FrontendObserver {
   void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
     codeql::extractSwiftFiles(state, compiler);
     codeql::extractSwiftInvocation(state, compiler, invocationTrap);
+    codeql::extractExtractLazyDeclarations(state, compiler);
   }
 
  private:
