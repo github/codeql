@@ -726,9 +726,9 @@ locations_default(#20275,#10000,1,9,1,14)
 hasLocation(#20274,#20275)
 regexp_const_value(#20274,"module")
 #20276=*
-exprs(#20276,8,#20272,-10,"assert  ... json"" }")
-#20277=@"loc,{#10000},1,17,1,39"
-locations_default(#20277,#10000,1,17,1,39)
+exprs(#20276,8,#20272,-10,"{ type: ""json"" }")
+#20277=@"loc,{#10000},1,24,1,39"
+locations_default(#20277,#10000,1,24,1,39)
 hasLocation(#20276,#20277)
 enclosing_stmt(#20276,#20272)
 expr_containers(#20276,#20001)
@@ -754,9 +754,9 @@ locations_default(#20283,#10000,2,22,2,27)
 hasLocation(#20282,#20283)
 regexp_const_value(#20282,"module")
 #20284=*
-exprs(#20284,8,#20280,-10,"assert  ... json"" }")
-#20285=@"loc,{#10000},2,30,2,52"
-locations_default(#20285,#10000,2,30,2,52)
+exprs(#20284,8,#20280,-10,"{ type: ""json"" }")
+#20285=@"loc,{#10000},2,37,2,52"
+locations_default(#20285,#10000,2,37,2,52)
 hasLocation(#20284,#20285)
 enclosing_stmt(#20284,#20280)
 expr_containers(#20284,#20001)
@@ -798,9 +798,9 @@ locations_default(#20294,#10000,3,21,3,26)
 hasLocation(#20293,#20294)
 regexp_const_value(#20293,"module")
 #20295=*
-exprs(#20295,8,#20291,-10,"assert  ... json"" }")
-#20296=@"loc,{#10000},3,29,3,51"
-locations_default(#20296,#10000,3,29,3,51)
+exprs(#20295,8,#20291,-10,"{ type: ""json"" }")
+#20296=@"loc,{#10000},3,36,3,51"
+locations_default(#20296,#10000,3,36,3,51)
 hasLocation(#20295,#20296)
 enclosing_stmt(#20295,#20291)
 expr_containers(#20295,#20001)
@@ -846,9 +846,9 @@ locations_default(#20305,#10000,4,17,4,22)
 hasLocation(#20304,#20305)
 regexp_const_value(#20304,"module")
 #20306=*
-exprs(#20306,8,#20302,-10,"assert  ... json"" }")
-#20307=@"loc,{#10000},4,25,4,47"
-locations_default(#20307,#10000,4,25,4,47)
+exprs(#20306,8,#20302,-10,"{ type: ""json"" }")
+#20307=@"loc,{#10000},4,32,4,47"
+locations_default(#20307,#10000,4,32,4,47)
 hasLocation(#20306,#20307)
 enclosing_stmt(#20306,#20302)
 expr_containers(#20306,#20001)
@@ -888,9 +888,9 @@ locations_default(#20315,#10000,6,21,6,26)
 hasLocation(#20314,#20315)
 regexp_const_value(#20314,"module")
 #20316=*
-exprs(#20316,8,#20312,-10,"assert  ... json"" }")
-#20317=@"loc,{#10000},6,29,6,51"
-locations_default(#20317,#10000,6,29,6,51)
+exprs(#20316,8,#20312,-10,"{ type: ""json"" }")
+#20317=@"loc,{#10000},6,36,6,51"
+locations_default(#20317,#10000,6,36,6,51)
 hasLocation(#20316,#20317)
 enclosing_stmt(#20316,#20312)
 expr_containers(#20316,#20001)
@@ -933,9 +933,9 @@ locations_default(#20326,#10000,7,16,7,21)
 hasLocation(#20325,#20326)
 regexp_const_value(#20325,"module")
 #20327=*
-exprs(#20327,8,#20323,-10,"assert  ... json"" }")
-#20328=@"loc,{#10000},7,24,7,46"
-locations_default(#20328,#10000,7,24,7,46)
+exprs(#20327,8,#20323,-10,"{ type: ""json"" }")
+#20328=@"loc,{#10000},7,31,7,46"
+locations_default(#20328,#10000,7,31,7,46)
 hasLocation(#20327,#20328)
 enclosing_stmt(#20327,#20323)
 expr_containers(#20327,#20001)
@@ -961,9 +961,9 @@ locations_default(#20334,#10000,8,22,8,27)
 hasLocation(#20333,#20334)
 regexp_const_value(#20333,"module")
 #20335=*
-exprs(#20335,8,#20331,-10,"assert  ... json"" }")
-#20336=@"loc,{#10000},8,30,8,52"
-locations_default(#20336,#10000,8,30,8,52)
+exprs(#20335,8,#20331,-10,"{ type: ""json"" }")
+#20336=@"loc,{#10000},8,37,8,52"
+locations_default(#20336,#10000,8,37,8,52)
 hasLocation(#20335,#20336)
 enclosing_stmt(#20335,#20331)
 expr_containers(#20335,#20001)

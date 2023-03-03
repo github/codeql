@@ -177,6 +177,7 @@ public class TypeScriptASTConverter {
   private static final Pattern EXPORT_DECL_START =
       Pattern.compile("^export" + "(" + WHITESPACE_CHAR + "+default)?" + WHITESPACE_CHAR + "+");
   private static final Pattern TYPEOF_START = Pattern.compile("^typeof" + WHITESPACE_CHAR + "+");
+  private static final Pattern ASSERT_START = Pattern.compile("^assert" + WHITESPACE_CHAR + "+");
   private static final Pattern WHITESPACE_END_PAREN =
       Pattern.compile("^" + WHITESPACE_CHAR + "*\\)");
 
@@ -2286,6 +2287,11 @@ public class TypeScriptASTConverter {
     List<Property> properties = new ArrayList<>();
     for (INode child : convertChildren(node, "elements")) {
       properties.add((Property)child);
+    }
+    // Adjust location to skip over the `assert` keyword.
+    Matcher m = ASSERT_START.matcher(loc.getSource());
+    if (m.find()) {
+      advance(loc, m.group(0));
     }
     return new ObjectExpression(loc, properties);
   }
