@@ -1,3 +1,9 @@
+## 0.4.4
+
+### Minor Analysis Improvements
+
+* The query `go/incorrect-integer-conversion` now correctly recognizes guards of the form `if val <= x` to protect a conversion `uintX(val)` when `x` is in the range `(math.MaxIntX, math.MaxUintX]`.
+
 ## 0.4.3
 
 ### New Queries
