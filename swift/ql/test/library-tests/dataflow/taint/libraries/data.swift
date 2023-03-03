@@ -158,13 +158,13 @@ func taintThroughData() {
 	let dataTainted19 = source() as! Data
 	let pointerTainted19 = UnsafeMutablePointer<UInt8>.allocate(capacity: 0)
 	dataTainted19.copyBytes(to: pointerTainted19, count: 0)
-	sink(arg: pointerTainted19) // $ MISSING: tainted=158
+	sink(arg: pointerTainted19) // $ tainted=158
 
 	// ";Data;true;copyBytes(to:from:);;;Argument[-1];Argument[0];taint",
 	let dataTainted20 = source() as! Data
 	let pointerTainted20 = UnsafeMutablePointer<UInt8>.allocate(capacity: 0)
 	dataTainted20.copyBytes(to: pointerTainted20, from: 0..<1)
-	sink(arg: pointerTainted20) // $ MISSING: tainted=164
+	sink(arg: pointerTainted20) // $ tainted=164
 
 	// ";Data;true;flatMap(_:);;;Argument[-1];ReturnValue;taint",
 	let dataTainted21 = source() as! Data

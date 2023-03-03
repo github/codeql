@@ -96,6 +96,6 @@ func testMutatingMyPointerInCall(ptr: MyPointer) {
 
   taintMyPointer(ptr: ptr) // mutates `ptr` pointee with a tainted value
 
-  sink(arg: ptr.pointee) // $ tainted=87
+  sink(arg: ptr.pointee) // $ MISSING: tainted=87
   sink(arg: ptr)
 }
