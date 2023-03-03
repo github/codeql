@@ -1759,6 +1759,7 @@ public class ASTExtractor {
     public Label visit(ExportAllDeclaration nd, Context c) {
       Label lbl = super.visit(nd, c);
       visit(nd.getSource(), lbl, 0);
+      visit(nd.getAssertion(), lbl, -10);
       return lbl;
     }
 
@@ -1774,6 +1775,7 @@ public class ASTExtractor {
       Label lbl = super.visit(nd, c);
       visit(nd.getDeclaration(), lbl, -1);
       visit(nd.getSource(), lbl, -2);
+      visit(nd.getAssertion(), lbl, -10);
       IdContext childContext =
           nd.hasSource()
               ? IdContext.LABEL
@@ -1797,6 +1799,7 @@ public class ASTExtractor {
     public Label visit(ImportDeclaration nd, Context c) {
       Label lbl = super.visit(nd, c);
       visit(nd.getSource(), lbl, -1);
+      visit(nd.getAssertion(), lbl, -10);
       IdContext childContext =
           nd.hasTypeKeyword()
               ? IdContext.TYPE_ONLY_IMPORT
@@ -1972,6 +1975,7 @@ public class ASTExtractor {
     public Label visit(DynamicImport nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getSource(), key, 0);
+      visit(nd.getAttributes(), key, 1);
       return key;
     }
 
