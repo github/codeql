@@ -1,4 +1,7 @@
 
+struct AutoreleasingUnsafeMutablePointer<Pointee> {
+}
+
 class MyClass {
 	init() {
 		val = 0
