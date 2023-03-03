@@ -117,7 +117,7 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 func EmitPackageDifferentOSArchitecture(pkgPath string) {
 	emitDiagnostic("go/autobuilder/package-different-os-architecture",
 		"Package "+pkgPath+" is intended for a different OS or architecture",
-		"Make sure the `GOOS` and `GOARCH` [environment variables are correctly set](https://docs.github.com/en/actions/learn-github-actions/variables#defining-environment-variables-for-a-single-workflow). Alternatively, [change your OS and architecture](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#using-a-github-hosted-runner)",
+		"Make sure the `GOOS` and `GOARCH` [environment variables are correctly set](https://docs.github.com/en/actions/learn-github-actions/variables#defining-environment-variables-for-a-single-workflow). Alternatively, [change your OS and architecture](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#using-a-github-hosted-runner).",
 		severityWarning, false,
 		true, true, true,
 		"", 0, 0, 0, 0,
@@ -127,7 +127,7 @@ func EmitPackageDifferentOSArchitecture(pkgPath string) {
 func EmitCannotFindPackage(pkgPath string) {
 	emitDiagnostic("go/autobuilder/package-not-found",
 		"Package "+pkgPath+" could not be found",
-		"Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)",
+		"Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language).",
 		severityError, false,
 		true, true, true,
 		"", 0, 0, 0, 0,
@@ -137,7 +137,7 @@ func EmitCannotFindPackage(pkgPath string) {
 func EmitNewerGoVersionNeeded() {
 	emitDiagnostic("go/autobuilder/newer-go-version-needed",
 		"Newer Go version needed",
-		"The version of Go available in the environment is lower than the version specified in the `go.mod` file. [Install a newer version](https://github.com/actions/setup-go#basic)",
+		"The version of Go available in the environment is lower than the version specified in the `go.mod` file. [Install a newer version](https://github.com/actions/setup-go#basic).",
 		severityError, false,
 		true, true, true,
 		"", 0, 0, 0, 0,
