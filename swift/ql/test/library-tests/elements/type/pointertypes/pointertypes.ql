@@ -2,6 +2,8 @@ import swift
 import codeql.swift.frameworks.StandardLibrary.PointerTypes
 
 string describe(Type t) {
+  t instanceof PointerType and result = "PointerType"
+  or
   t instanceof BuiltinRawPointerType and result = "BuiltinRawPointerType"
   or
   t instanceof UnsafeTypedPointerType and result = "UnsafeTypedPointerType"

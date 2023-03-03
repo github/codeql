@@ -6,6 +6,22 @@
 import swift
 
 /**
+ * A type that is used as a pointer in Swift, such as `UnsafePointer`,
+ * `UnsafeBufferPointer` and similar types.
+ */
+class PointerType extends Type {
+  PointerType() {
+    this instanceof UnsafeTypedPointerType or
+    this instanceof UnsafeRawPointerType or
+    this instanceof OpaquePointerType or
+    this instanceof AutoreleasingUnsafeMutablePointerType or
+    this instanceof UnmanagedType or
+    this instanceof CVaListPointerType or
+    this instanceof ManagedBufferPointerType
+  }
+}
+
+/**
  * A Swift unsafe typed pointer type such as `UnsafePointer`,
  * `UnsafeMutablePointer` or `UnsafeBufferPointer`.
  */
