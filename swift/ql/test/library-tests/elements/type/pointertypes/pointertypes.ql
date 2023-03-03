@@ -12,7 +12,8 @@ string describe(Type t) {
   or
   t instanceof OpaquePointerType and result = "OpaquePointerType"
   or
-  t instanceof AutoreleasingUnsafeMutablePointerType and result = "AutoreleasingUnsafeMutablePointerType"
+  t instanceof AutoreleasingUnsafeMutablePointerType and
+  result = "AutoreleasingUnsafeMutablePointerType"
   or
   t instanceof UnmanagedType and result = "UnmanagedType"
   or

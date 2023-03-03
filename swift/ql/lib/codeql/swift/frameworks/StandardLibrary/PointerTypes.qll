@@ -26,9 +26,7 @@ class PointerType extends Type {
  * `UnsafeMutablePointer` or `UnsafeBufferPointer`.
  */
 class UnsafeTypedPointerType extends BoundGenericType {
-  UnsafeTypedPointerType() {
-    this.getName().regexpMatch("Unsafe(Mutable|)(Buffer|)Pointer<.*")
-  }
+  UnsafeTypedPointerType() { this.getName().regexpMatch("Unsafe(Mutable|)(Buffer|)Pointer<.*") }
 }
 
 /**
@@ -36,18 +34,14 @@ class UnsafeTypedPointerType extends BoundGenericType {
  * `UnsafeMutableRawPointer` or `UnsafeRawBufferPointer`.
  */
 class UnsafeRawPointerType extends NominalType {
-  UnsafeRawPointerType() {
-    this.getName().regexpMatch("Unsafe(Mutable|)Raw(Buffer|)Pointer")
-  }
+  UnsafeRawPointerType() { this.getName().regexpMatch("Unsafe(Mutable|)Raw(Buffer|)Pointer") }
 }
 
 /**
  * A Swift `OpaquePointer`.
  */
 class OpaquePointerType extends NominalType {
-  OpaquePointerType() {
-    this.getName() = "OpaquePointer"
-  }
+  OpaquePointerType() { this.getName() = "OpaquePointer" }
 }
 
 /**
@@ -63,25 +57,19 @@ class AutoreleasingUnsafeMutablePointerType extends BoundGenericType {
  * A Swift `Unmanaged` object reference.
  */
 class UnmanagedType extends BoundGenericType {
-  UnmanagedType() {
-    this.getName().matches("Unmanaged<%")
-  }
+  UnmanagedType() { this.getName().matches("Unmanaged<%") }
 }
 
 /**
  * A Swift `CVaListPointer`.
  */
 class CVaListPointerType extends NominalType {
-  CVaListPointerType() {
-    this.getName() = "CVaListPointer"
-  }
+  CVaListPointerType() { this.getName() = "CVaListPointer" }
 }
 
 /**
  * A Swift `ManagedBufferPointer`.
  */
 class ManagedBufferPointerType extends BoundGenericType {
-  ManagedBufferPointerType() {
-    this.getName().matches("ManagedBufferPointer<%")
-  }
+  ManagedBufferPointerType() { this.getName().matches("ManagedBufferPointer<%") }
 }
