@@ -29,8 +29,17 @@ import org.apache.hc.client5.http.classic.methods.HttpTrace;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
 
 import org.apache.hc.client5.http.fluent.Request;
-// import org.apache.hc.client5.http.protocol.RedirectLocations;
-// import org.apache.hc.client5.http.utils.URIUtils;
+
+import org.apache.hc.core5.http.impl.bootstrap.HttpAsyncRequester;
+import org.apache.hc.core5.http.impl.io.DefaultClassicHttpRequestFactory;
+import org.apache.hc.core5.http.impl.nio.DefaultHttpRequestFactory;
+
+import org.apache.hc.core5.http.io.support.ClassicRequestBuilder;
+
+import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
+import org.apache.hc.core5.http.message.BasicHttpRequest;
+import org.apache.hc.core5.http.message.HttpRequestWrapper;
+
 
 public class ApacheHttp5SSRF extends HttpServlet {
 
@@ -285,4 +294,119 @@ public class ApacheHttp5SSRF extends HttpServlet {
             // TODO: handle exception
         }
     }
+
+    // org.apache.hc.core5.http.impl.bootstrap
+    // org.apache.hc.core5.http.impl.io
+    // org.apache.hc.core5.http.impl.nio
+    protected void doGet4(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+
+            String uriSink = request.getParameter("uri");
+            URI uri = new URI(uriSink);
+
+            String hostSink = request.getParameter("host");
+            HttpHost host = new HttpHost(hostSink);
+
+            // org.apache.hc.core5.http.impl.bootstrap
+            //AsyncRequesterBootstrap asyncReq = new AsyncRequesterBootstrap();
+            HttpAsyncRequester httpAsyncReq = new HttpAsyncRequester(null, null, null, null, null, null);
+            httpAsyncReq.connect(host, null); // $ SSRF
+            httpAsyncReq.connect(host, null, null, null); // $ SSRF
+
+            // org.apache.hc.core5.http.impl.io
+            DefaultClassicHttpRequestFactory defClassicHttpReqFact = new DefaultClassicHttpRequestFactory();
+            defClassicHttpReqFact.newHttpRequest("method", uri.toString()); // $ SSRF
+            defClassicHttpReqFact.newHttpRequest("method", uri); // $ SSRF
+
+            // org.apache.hc.core5.http.impl.nio
+            DefaultHttpRequestFactory defHttpReqFact = new DefaultHttpRequestFactory();
+            defHttpReqFact.newHttpRequest("method", uri.toString()); // $ SSRF
+            defHttpReqFact.newHttpRequest("method", uri); // $ SSRF
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+    // org.apache.hc.core5.http.io.support
+    protected void doGet5(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+
+            String uriSink = request.getParameter("uri");
+            URI uri = new URI(uriSink);
+
+            String hostSink = request.getParameter("host");
+            HttpHost host = new HttpHost(hostSink);
+
+            // org.apache.hc.core5.http.io.support.ClassicRequestBuilder
+            ClassicRequestBuilder.delete(uri.toString()); // $ SSRF
+            ClassicRequestBuilder.delete(uri); // $ SSRF
+
+            ClassicRequestBuilder.get(uri.toString()); // $ SSRF
+            ClassicRequestBuilder.get(uri); // $ SSRF
+
+            ClassicRequestBuilder.head(uri.toString()); // $ SSRF
+            ClassicRequestBuilder.head(uri); // $ SSRF
+
+            ClassicRequestBuilder.options(uri.toString()); // $ SSRF
+            ClassicRequestBuilder.options(uri); // $ SSRF
+
+            ClassicRequestBuilder.patch(uri.toString()); // $ SSRF
+            ClassicRequestBuilder.patch(uri); // $ SSRF
+
+            ClassicRequestBuilder.post(uri.toString()); // $ SSRF
+            ClassicRequestBuilder.post(uri); // $ SSRF
+
+            ClassicRequestBuilder.put(uri.toString()); // $ SSRF
+            ClassicRequestBuilder.put(uri); // $ SSRF
+
+            ClassicRequestBuilder.get().setHttpHost(host); // $ SSRF
+
+            ClassicRequestBuilder.get().setUri(uri.toString()); // $ SSRF
+            ClassicRequestBuilder.get().setUri(uri); // $ SSRF
+
+            ClassicRequestBuilder.trace(uri.toString()); // $ SSRF
+            ClassicRequestBuilder.trace(uri); // $ SSRF
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+    // org.apache.hc.core5.http.message
+    protected void doGet6(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+
+            String uriSink = request.getParameter("uri");
+            URI uri = new URI(uriSink);
+
+            String hostSink = request.getParameter("host");
+            HttpHost host = new HttpHost(hostSink);
+
+            // BasicClassicHttpRequest
+            new BasicClassicHttpRequest(Method.CONNECT, host, "path"); // $ SSRF
+            new BasicClassicHttpRequest(Method.CONNECT, uri); // $ SSRF
+            new BasicClassicHttpRequest("method", host, "path"); // $ SSRF
+            new BasicClassicHttpRequest("method", uri); // $ SSRF
+
+            // BasicHttpRequest
+            new BasicHttpRequest(Method.CONNECT, host, "path"); // $ SSRF
+            new BasicHttpRequest(Method.CONNECT, uri); // $ SSRF
+            new BasicHttpRequest("method", host, "path"); // $ SSRF
+            new BasicHttpRequest("method", uri); // $ SSRF
+            BasicHttpRequest bhr = new BasicHttpRequest("method", "path");
+            bhr.setUri(uri); // $ SSRF
+
+            // HttpRequestWrapper
+            HttpRequestWrapper hrw = new HttpRequestWrapper(null);
+            hrw.setUri(uri); // $ SSRF
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
 }

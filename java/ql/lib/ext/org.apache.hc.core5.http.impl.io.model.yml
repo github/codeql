@@ -3,5 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      # ! `DefaultClassicHttpRequestFactory` extends Object, no subclasses, implements `HttpRequestFactory`; HAS javadocs
       - ["org.apache.hc.core5.http.impl.io", "DefaultClassicHttpRequestFactory", True, "newHttpRequest", "(String,String)", "", "Argument[1]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.impl.io", "DefaultClassicHttpRequestFactory", True, "newHttpRequest", "(String,URI)", "", "Argument[1]", "%-url", "manual"]

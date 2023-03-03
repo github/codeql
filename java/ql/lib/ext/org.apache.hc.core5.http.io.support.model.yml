@@ -3,6 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      # ! ClassicRequestBuilder extends Object>AbstractMessageBuilder>AbstractRequestBuilder, no subclasses; does not really have javadocs
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "delete", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "delete", "(URI)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "get", "(String)", "", "Argument[0]", "%-url", "manual"]
@@ -17,7 +18,7 @@ extensions:
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "post", "(URI)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "put", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "put", "(URI)", "", "Argument[0]", "%-url", "manual"]
-      - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "setHttpHost", "", "", "Argument[0]", "%-url", "manual"]  # ! ModelType: sink, Notes: possibly subtyped by AbstractRequestBuilder
+      - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "setHttpHost", "(HttpHost)", "", "Argument[0]", "%-url", "manual"]  # ! possibly subtyped by AbstractRequestBuilder
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "setUri", "(String)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "setUri", "(URI)", "", "Argument[0]", "%-url", "manual"]
       - ["org.apache.hc.core5.http.io.support", "ClassicRequestBuilder", True, "trace", "(String)", "", "Argument[0]", "%-url", "manual"]
