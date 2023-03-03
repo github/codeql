@@ -1,6 +1,6 @@
 namespace staticlocals {
 
-int g() {
+static int g() {
     return 1;
 }
 

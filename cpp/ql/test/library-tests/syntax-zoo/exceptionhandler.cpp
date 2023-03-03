@@ -3,7 +3,7 @@ namespace ehandler {
 class C { };
 class D { };
 
-void g() {
+static void g() {
 	throw 1;
 }
 
