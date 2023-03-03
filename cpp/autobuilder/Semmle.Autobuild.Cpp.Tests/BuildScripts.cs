@@ -194,6 +194,15 @@ namespace Semmle.Autobuild.Cpp.Tests
             if (!DownloadFiles.Contains((address, fileName)))
                 throw new ArgumentException($"Missing DownloadFile, {address}, {fileName}");
         }
+
+        public IDiagnosticsWriter CreateDiagnosticsWriter(string filename) => new TestDiagnosticWriter();
+    }
+
+    internal class TestDiagnosticWriter : IDiagnosticsWriter
+    {
+        public IList<DiagnosticMessage> Diagnostics { get; } = new List<DiagnosticMessage>();
+
+        public void AddEntry(DiagnosticMessage message) => this.Diagnostics.Add(message);
     }
 
     /// <summary>
@@ -253,7 +262,7 @@ namespace Semmle.Autobuild.Cpp.Tests
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_TRAP_DIR"] = "";
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_SOURCE_ARCHIVE_DIR"] = "";
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_ROOT"] = $@"C:\codeql\{codeqlUpperLanguage.ToLowerInvariant()}";
-            Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_DIAGNOSTIC_DIR"] = Path.GetTempPath();
+            Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_DIAGNOSTIC_DIR"] = "";
             Actions.GetEnvironmentVariable["CODEQL_JAVA_HOME"] = @"C:\codeql\tools\java";
             Actions.GetEnvironmentVariable["CODEQL_PLATFORM"] = "win64";
             Actions.GetEnvironmentVariable["SEMMLE_DIST"] = @"C:\odasa";

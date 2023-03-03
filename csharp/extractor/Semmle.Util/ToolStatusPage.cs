@@ -175,10 +175,22 @@ namespace Semmle.Util
     }
 
     /// <summary>
+    /// Provides the ability to write diagnostic messages to some output.
+    /// </summary>
+    public interface IDiagnosticsWriter
+    {
+        /// <summary>
+        /// Adds <paramref name="message" /> as a new diagnostics entry.
+        /// </summary>
+        /// <param name="message">The diagnostics entry to add.</param>
+        void AddEntry(DiagnosticMessage message);
+    }
+
+    /// <summary>
     /// A wrapper around an underlying <see cref="StreamWriter" /> which allows
     /// <see cref="DiagnosticMessage" /> objects to be serialized to it.
     /// </summary>
-    public sealed class DiagnosticsStream : IDisposable
+    public sealed class DiagnosticsStream : IDiagnosticsWriter, IDisposable
     {
         private readonly JsonSerializer serializer;
         private readonly StreamWriter writer;

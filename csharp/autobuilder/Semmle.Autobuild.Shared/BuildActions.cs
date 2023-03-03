@@ -167,6 +167,17 @@ namespace Semmle.Autobuild.Shared
         /// Downloads the resource with the specified URI to a local file.
         /// </summary>
         void DownloadFile(string address, string fileName);
+
+        /// <summary>
+        /// Creates an <see cref="IDiagnosticsWriter" /> for the given <paramref name="filename" />.
+        /// </summary>
+        /// <param name="filename">
+        /// The path suggesting where the diagnostics should be written to.
+        /// </param>
+        /// <returns>
+        /// A <see cref="IDiagnosticsWriter" /> to which diagnostic entries can be added.
+        /// </returns>
+        IDiagnosticsWriter CreateDiagnosticsWriter(string filename);
     }
 
     /// <summary>
@@ -287,6 +298,8 @@ namespace Semmle.Autobuild.Shared
 
         public void DownloadFile(string address, string fileName) =>
             DownloadFileAsync(address, fileName).Wait();
+
+        public IDiagnosticsWriter CreateDiagnosticsWriter(string filename) => new DiagnosticsStream(filename);
 
         public static IBuildActions Instance { get; } = new SystemBuildActions();
     }

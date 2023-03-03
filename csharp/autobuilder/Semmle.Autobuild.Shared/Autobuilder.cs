@@ -241,7 +241,7 @@ namespace Semmle.Autobuild.Shared
             SourceArchiveDir = RequireEnvironmentVariable(EnvVars.SourceArchiveDir(this.Options.Language));
             DiagnosticsDir = RequireEnvironmentVariable(EnvVars.DiagnosticDir(this.Options.Language));
 
-            this.diagnostics = new DiagnosticsStream(Path.Combine(DiagnosticsDir, $"autobuilder-{DateTime.UtcNow:yyyyMMddHHmm}.jsonc"));
+            this.diagnostics = actions.CreateDiagnosticsWriter(Path.Combine(DiagnosticsDir, $"autobuilder-{DateTime.UtcNow:yyyyMMddHHmm}.jsonc"));
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace Semmle.Autobuild.Shared
 
         private readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
 
-        private readonly DiagnosticsStream diagnostics;
+        private readonly IDiagnosticsWriter diagnostics;
 
         /// <summary>
         /// Makes <see cref="path" /> relative to the root source directory.

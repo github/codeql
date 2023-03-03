@@ -210,6 +210,16 @@ namespace Semmle.Autobuild.CSharp.Tests
             if (!DownloadFiles.Contains((address, fileName)))
                 throw new ArgumentException($"Missing DownloadFile, {address}, {fileName}");
         }
+
+
+        public IDiagnosticsWriter CreateDiagnosticsWriter(string filename) => new TestDiagnosticWriter();
+    }
+
+    internal class TestDiagnosticWriter : IDiagnosticsWriter
+    {
+        public IList<DiagnosticMessage> Diagnostics { get; } = new List<DiagnosticMessage>();
+
+        public void AddEntry(DiagnosticMessage message) => this.Diagnostics.Add(message);
     }
 
     /// <summary>
@@ -401,7 +411,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_SOURCE_ARCHIVE_DIR"] = "";
             actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_ROOT"] = $@"C:\codeql\{codeqlUpperLanguage.ToLowerInvariant()}";
-            actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_DIAGNOSTIC_DIR"] = Path.GetTempPath();
+            actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_DIAGNOSTIC_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_JAVA_HOME"] = @"C:\codeql\tools\java";
             actions.GetEnvironmentVariable["CODEQL_PLATFORM"] = isWindows ? "win64" : "linux64";
             actions.GetEnvironmentVariable["LGTM_INDEX_VSTOOLS_VERSION"] = vsToolsVersion;
