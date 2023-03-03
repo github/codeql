@@ -203,10 +203,10 @@ edges
 | array_flow.rb:80:13:80:21 | call to source :  | array_flow.rb:80:5:80:5 | a [element 1] :  |
 | array_flow.rb:81:8:81:8 | c :  | array_flow.rb:83:10:83:10 | c |
 | array_flow.rb:81:8:81:8 | c :  | array_flow.rb:83:10:83:10 | c |
-| array_flow.rb:81:15:81:15 | __synth__0 [element 1] :  | array_flow.rb:81:8:81:8 | c :  |
-| array_flow.rb:81:15:81:15 | __synth__0 [element 1] :  | array_flow.rb:81:8:81:8 | c :  |
-| array_flow.rb:81:15:81:15 | a [element 1] :  | array_flow.rb:81:15:81:15 | __synth__0 [element 1] :  |
-| array_flow.rb:81:15:81:15 | a [element 1] :  | array_flow.rb:81:15:81:15 | __synth__0 [element 1] :  |
+| array_flow.rb:81:15:81:15 | __synth__3 [element 1] :  | array_flow.rb:81:8:81:8 | c :  |
+| array_flow.rb:81:15:81:15 | __synth__3 [element 1] :  | array_flow.rb:81:8:81:8 | c :  |
+| array_flow.rb:81:15:81:15 | a [element 1] :  | array_flow.rb:81:15:81:15 | __synth__3 [element 1] :  |
+| array_flow.rb:81:15:81:15 | a [element 1] :  | array_flow.rb:81:15:81:15 | __synth__3 [element 1] :  |
 | array_flow.rb:88:5:88:5 | a [element 1] :  | array_flow.rb:89:9:89:9 | a [element 1] :  |
 | array_flow.rb:88:5:88:5 | a [element 1] :  | array_flow.rb:89:9:89:9 | a [element 1] :  |
 | array_flow.rb:88:13:88:22 | call to source :  | array_flow.rb:88:5:88:5 | a [element 1] :  |
@@ -4460,8 +4460,8 @@ nodes
 | array_flow.rb:80:13:80:21 | call to source :  | semmle.label | call to source :  |
 | array_flow.rb:81:8:81:8 | c :  | semmle.label | c :  |
 | array_flow.rb:81:8:81:8 | c :  | semmle.label | c :  |
-| array_flow.rb:81:15:81:15 | __synth__0 [element 1] :  | semmle.label | __synth__0 [element 1] :  |
-| array_flow.rb:81:15:81:15 | __synth__0 [element 1] :  | semmle.label | __synth__0 [element 1] :  |
+| array_flow.rb:81:15:81:15 | __synth__3 [element 1] :  | semmle.label | __synth__3 [element 1] :  |
+| array_flow.rb:81:15:81:15 | __synth__3 [element 1] :  | semmle.label | __synth__3 [element 1] :  |
 | array_flow.rb:81:15:81:15 | a [element 1] :  | semmle.label | a [element 1] :  |
 | array_flow.rb:81:15:81:15 | a [element 1] :  | semmle.label | a [element 1] :  |
 | array_flow.rb:83:10:83:10 | c | semmle.label | c |
