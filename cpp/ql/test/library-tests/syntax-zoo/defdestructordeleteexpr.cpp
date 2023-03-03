@@ -1,6 +1,6 @@
 class C { };
 
-void f() {
+static void f() {
 	C* c = new C();
 	delete c;
 }

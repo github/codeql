@@ -2,6 +2,6 @@ struct ArrayDelete {
   ~ArrayDelete();
 };
 
-void f() {
+static void f() {
   delete[] (ArrayDelete*)nullptr;
 }

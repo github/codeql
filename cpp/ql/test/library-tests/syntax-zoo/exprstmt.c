@@ -1,4 +1,4 @@
-void f() {
+static void f() {
     1;
     ;
 }

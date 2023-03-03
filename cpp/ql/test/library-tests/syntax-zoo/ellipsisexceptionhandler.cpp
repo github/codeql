@@ -1,6 +1,6 @@
 namespace eehandler {
 
-void f() {
+static void f() {
 	try {
 		try {
 			throw 1;
