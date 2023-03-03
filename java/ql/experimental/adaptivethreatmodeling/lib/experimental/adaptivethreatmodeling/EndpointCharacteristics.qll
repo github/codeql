@@ -233,20 +233,33 @@ abstract class EndpointCharacteristic extends string {
  */
 
 /**
+ * A high-confidence characteristic that indicates that an endpoint is a sink of a specified type. These endpoints can
+ * be used as positive samples for training or for a few-shot prompt.
+ */
+abstract private class SinkCharacteristic extends EndpointCharacteristic {
+  bindingset[this]
+  SinkCharacteristic() { any() }
+
+  abstract EndpointType getSinkType();
+
+  final override predicate hasImplications(
+    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
+  ) {
+    endpointClass = this.getSinkType() and
+    isPositiveIndicator = true and
+    confidence = this.maximalConfidence()
+  }
+}
+
+/**
  * Endpoints identified as "create-file" sinks by the MaD modeling are tainted path sinks with maximal confidence.
  */
-private class CreateFileSinkCharacteristic extends EndpointCharacteristic {
+private class CreateFileSinkCharacteristic extends SinkCharacteristic {
   CreateFileSinkCharacteristic() { this = "create file" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) { sinkNode(n, "create-file") }
 
-  override predicate hasImplications(
-    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
-  ) {
-    endpointClass instanceof TaintedPathSinkType and
-    isPositiveIndicator = true and
-    confidence = maximalConfidence()
-  }
+  override EndpointType getSinkType() { result instanceof TaintedPathSinkType }
 }
 
 /**
@@ -272,25 +285,19 @@ private class CreatePathSinkCharacteristic extends EndpointCharacteristic {
 /**
  * Endpoints identified as "sql" sinks by the MaD modeling are SQL sinks with maximal confidence.
  */
-private class SqlMaDSinkCharacteristic extends EndpointCharacteristic {
+private class SqlMaDSinkCharacteristic extends SinkCharacteristic {
   SqlMaDSinkCharacteristic() { this = "mad modeled sql" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) { sinkNode(n, "sql") }
 
-  override predicate hasImplications(
-    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
-  ) {
-    endpointClass instanceof SqlSinkType and
-    isPositiveIndicator = true and
-    confidence = maximalConfidence()
-  }
+  override EndpointType getSinkType() { result instanceof SqlSinkType }
 }
 
 /**
  * Endpoints identified as "SqlInjectionSink" by the standard Java libraries are SQL injection sinks with maximal
  * confidence.
  */
-private class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
+private class SqlInjectionSinkCharacteristic extends SinkCharacteristic {
   SqlInjectionSinkCharacteristic() { this = "other modeled sql" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
@@ -298,54 +305,36 @@ private class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
     not sinkNode(n, "sql")
   }
 
-  override predicate hasImplications(
-    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
-  ) {
-    endpointClass instanceof SqlSinkType and
-    isPositiveIndicator = true and
-    confidence = maximalConfidence()
-  }
+  override EndpointType getSinkType() { result instanceof SqlSinkType }
 }
 
 /**
  * Endpoints identified as "open-url" sinks by the MaD modeling are SSRF sinks with maximal confidence.
  */
-private class UrlOpenSinkCharacteristic extends EndpointCharacteristic {
+private class UrlOpenSinkCharacteristic extends SinkCharacteristic {
   UrlOpenSinkCharacteristic() { this = "open url" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) { sinkNode(n, "open-url") }
 
-  override predicate hasImplications(
-    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
-  ) {
-    endpointClass instanceof RequestForgerySinkType and
-    isPositiveIndicator = true and
-    confidence = maximalConfidence()
-  }
+  override EndpointType getSinkType() { result instanceof RequestForgerySinkType }
 }
 
 /**
  * Endpoints identified as "jdbc-url" sinks by the MaD modeling are SSRF sinks with maximal confidence.
  */
-private class JdbcUrlSinkCharacteristic extends EndpointCharacteristic {
+private class JdbcUrlSinkCharacteristic extends SinkCharacteristic {
   JdbcUrlSinkCharacteristic() { this = "jdbc url" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) { sinkNode(n, "jdbc-url") }
 
-  override predicate hasImplications(
-    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
-  ) {
-    endpointClass instanceof RequestForgerySinkType and
-    isPositiveIndicator = true and
-    confidence = maximalConfidence()
-  }
+  override EndpointType getSinkType() { result instanceof RequestForgerySinkType }
 }
 
 /**
  * Endpoints identified as "RequestForgerySink" by the standard Java libraries but not by MaD models are SSRF sinks with
  * maximal confidence.
  */
-private class RequestForgeryOtherSinkCharacteristic extends EndpointCharacteristic {
+private class RequestForgeryOtherSinkCharacteristic extends SinkCharacteristic {
   RequestForgeryOtherSinkCharacteristic() { this = "request forgery" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
@@ -354,13 +343,7 @@ private class RequestForgeryOtherSinkCharacteristic extends EndpointCharacterist
     not sinkNode(n, "jdbc-url")
   }
 
-  override predicate hasImplications(
-    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
-  ) {
-    endpointClass instanceof RequestForgerySinkType and
-    isPositiveIndicator = true and
-    confidence = maximalConfidence()
-  }
+  override EndpointType getSinkType() { result instanceof RequestForgerySinkType }
 }
 
 /*
