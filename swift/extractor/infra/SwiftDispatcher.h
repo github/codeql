@@ -60,19 +60,6 @@ class SwiftDispatcher {
     return std::move(encounteredModules);
   }
 
-  void extractedDeclaration(const swift::Decl* decl) {
-    swift::ModuleDecl* module = decl->getModuleContext();
-    if (module->isBuiltinModule() || module->getName().str() == "__ObjC") {
-      state.emittedDeclarations.insert(decl);
-    }
-  }
-  void skippedDeclaration(const swift::Decl* decl) {
-    swift::ModuleDecl* module = decl->getModuleContext();
-    if (module->isBuiltinModule() || module->getName().str() == "__ObjC") {
-      state.pendingDeclarations.insert(decl);
-    }
-  }
-
   template <typename Entry>
   void emit(Entry&& entry) {
     bool valid = true;
@@ -264,7 +251,23 @@ class SwiftDispatcher {
     locationExtractor.attachLocation(sourceManager, comment, entry.id);
   }
 
+  void extractedDeclaration(const swift::Decl& decl) {
+    if (isLazyDeclaration(decl)) {
+      state.emittedDeclarations.insert(&decl);
+    }
+  }
+  void skippedDeclaration(const swift::Decl& decl) {
+    if (isLazyDeclaration(decl)) {
+      state.pendingDeclarations.insert(&decl);
+    }
+  }
+
  private:
+  bool isLazyDeclaration(const swift::Decl& decl) {
+    swift::ModuleDecl* module = decl.getModuleContext();
+    return module->isBuiltinModule() || module->getName().str() == "__ObjC";
+  }
+
   template <typename T, typename = void>
   struct HasSize : std::false_type {};
 

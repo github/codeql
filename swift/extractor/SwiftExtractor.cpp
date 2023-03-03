@@ -78,20 +78,22 @@ static fs::path getFilename(swift::ModuleDecl& module,
   return resolvePath(filename);
 }
 
-static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& module,
-                                                        swift::SourceFile* primaryFile,
-                                                        const swift::Decl* lazyDeclaration) {
-  llvm::SmallVector<swift::Decl*> ret;
+static llvm::SmallVector<const swift::Decl*> getTopLevelDecls(swift::ModuleDecl& module,
+                                                              swift::SourceFile* primaryFile,
+                                                              const swift::Decl* lazyDeclaration) {
+  llvm::SmallVector<const swift::Decl*> ret;
   if (lazyDeclaration) {
-    ret.push_back(const_cast<swift::Decl*>(lazyDeclaration));
+    ret.push_back(lazyDeclaration);
     return ret;
   }
   ret.push_back(&module);
+  llvm::SmallVector<swift::Decl*> topLevelDecls;
   if (primaryFile) {
-    primaryFile->getTopLevelDecls(ret);
+    primaryFile->getTopLevelDecls(topLevelDecls);
   } else {
-    module.getTopLevelDecls(ret);
+    module.getTopLevelDecls(topLevelDecls);
   }
+  ret.insert(ret.end(), topLevelDecls.data(), topLevelDecls.data() + topLevelDecls.size());
   return ret;
 }
 
@@ -100,7 +102,7 @@ static TrapType getTrapType(swift::SourceFile* primaryFile, const swift::Decl* l
     return TrapType::source;
   }
   if (lazyDeclaration) {
-    return TrapType::lazy_declarations;
+    return TrapType::lazy_declaration;
   }
   return TrapType::module;
 }
@@ -199,10 +201,12 @@ void codeql::extractSwiftFiles(SwiftExtractorState& state, swift::CompilerInstan
         continue;
       }
       archiveFile(state.configuration, *sourceFile);
-      encounteredModules = extractDeclarations(state, compiler, *module, sourceFile, nullptr);
+      encounteredModules =
+          extractDeclarations(state, compiler, *module, sourceFile, /*lazy declaration*/ nullptr);
     }
     if (!isFromSourceFile) {
-      encounteredModules = extractDeclarations(state, compiler, *module, nullptr, nullptr);
+      encounteredModules = extractDeclarations(state, compiler, *module, /*source file*/ nullptr,
+                                               /*lazy declaration*/ nullptr);
     }
     for (auto encountered : encounteredModules) {
       if (state.encounteredModules.count(encountered) == 0) {
@@ -214,23 +218,22 @@ void codeql::extractSwiftFiles(SwiftExtractorState& state, swift::CompilerInstan
 }
 
 static void cleanupPendingDeclarations(SwiftExtractorState& state) {
-  std::vector<const swift::Decl*> worklist;
-  std::copy(std::begin(state.pendingDeclarations), std::end(state.pendingDeclarations),
-            std::back_inserter(worklist));
-
+  std::vector<const swift::Decl*> worklist(std::begin(state.pendingDeclarations),
+                                           std::end(state.pendingDeclarations));
   for (auto decl : worklist) {
     if (state.emittedDeclarations.count(decl)) {
       state.pendingDeclarations.erase(decl);
     }
   }
 }
+
 static void extractLazy(SwiftExtractorState& state, swift::CompilerInstance& compiler) {
   cleanupPendingDeclarations(state);
-  std::vector<const swift::Decl*> worklist;
-  std::copy(std::begin(state.pendingDeclarations), std::end(state.pendingDeclarations),
-            std::back_inserter(worklist));
+  std::vector<const swift::Decl*> worklist(std::begin(state.pendingDeclarations),
+                                           std::end(state.pendingDeclarations));
   for (auto pending : worklist) {
-    extractDeclarations(state, compiler, *pending->getModuleContext(), nullptr, pending);
+    extractDeclarations(state, compiler, *pending->getModuleContext(), /*source file*/ nullptr,
+                        pending);
   }
 }
 

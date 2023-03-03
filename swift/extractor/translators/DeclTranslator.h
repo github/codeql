@@ -71,11 +71,11 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
     std::optional<TrapClassOf<D>> entry;
     auto id = dispatcher.assignNewLabel(decl, mangledName(decl));
     if (dispatcher.shouldEmitDeclBody(decl)) {
-      dispatcher.extractedDeclaration(&decl);
+      dispatcher.extractedDeclaration(decl);
       entry.emplace(id);
       fillDecl(decl, *entry);
     } else {
-      dispatcher.skippedDeclaration(&decl);
+      dispatcher.skippedDeclaration(decl);
     }
     return entry;
   }
