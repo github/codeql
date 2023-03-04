@@ -53,7 +53,7 @@ where
   ) and
   endpoint = getSampleFromSampleRate(0.01) and
   message =
-    "Non-sink of type " + characteristic + " with confidence " + confidence.toString() + "\n" +
+    characteristic + "\n" +
       // Extract the needed metadata for this endpoint.
       any(string metadata | EndpointCharacteristics::hasMetadata(endpoint, metadata))
 select endpoint, message

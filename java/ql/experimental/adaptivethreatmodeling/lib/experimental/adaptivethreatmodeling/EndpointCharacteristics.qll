@@ -394,7 +394,7 @@ private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
  * filter those out.
  */
 private class IsMaDTaintStepCharacteristic extends NotASinkCharacteristic {
-  IsMaDTaintStepCharacteristic() { this = "mad taint step" }
+  IsMaDTaintStepCharacteristic() { this = "taint step" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(n, _, _) or
@@ -415,8 +415,8 @@ private class SafeExternalApiMethodCharacteristic extends NotASinkCharacteristic
   string baseDescription;
 
   SafeExternalApiMethodCharacteristic() {
-    baseDescription = "safe external API method " and
-    this = any(string s | s = baseDescription + ["org.junit", "other than org.junit"])
+    baseDescription = "safe external API method" and
+    this = any(string s | s = baseDescription + [" (org.junit)", ""])
   }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
@@ -427,10 +427,10 @@ private class SafeExternalApiMethodCharacteristic extends NotASinkCharacteristic
         // The vast majority of calls to safe external API methods involve junit. To get a diverse set of negative
         // examples, we break those off into a separate characteristic.
         call.getCallee().getDeclaringType().getPackage().getName().matches("org.junit%") and
-        this = baseDescription + "org.junit"
+        this = baseDescription + " (org.junit)"
         or
         not call.getCallee().getDeclaringType().getPackage().getName().matches("org.junit%") and
-        this = baseDescription + "other than org.junit"
+        this = baseDescription
       )
     )
   }
@@ -458,7 +458,7 @@ private class ExceptionCharacteristic extends NotASinkCharacteristic {
  * neutral model (https://github.com/github/codeql-java-team/issues/254#issuecomment-1435309148).
  */
 private class NeutralModelCharacteristic extends NotASinkCharacteristic {
-  NeutralModelCharacteristic() { this = "neutral model" }
+  NeutralModelCharacteristic() { this = "known non-sink" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
     exists(Callable callee, string package, string type, string name, string signature |
