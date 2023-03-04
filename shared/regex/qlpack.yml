@@ -1,5 +1,5 @@
 name: codeql/regex
-version: 0.0.8
+version: 0.0.9-dev
 groups: shared
 library: true
 dependencies:
