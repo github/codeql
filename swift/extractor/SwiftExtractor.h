@@ -7,4 +7,5 @@
 
 namespace codeql {
 void extractSwiftFiles(SwiftExtractorState& state, swift::CompilerInstance& compiler);
+void extractExtractLazyDeclarations(SwiftExtractorState& state, swift::CompilerInstance& compiler);
 }  // namespace codeql
