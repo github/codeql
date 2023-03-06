@@ -4,7 +4,24 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.LiteralExpr
 
 module Generated {
+  /**
+   * A regular expression literal which is checked at compile time, for example `/a(a|b)*b/`.
+   */
   class RegexLiteralExpr extends Synth::TRegexLiteralExpr, LiteralExpr {
     override string getAPrimaryQlClass() { result = "RegexLiteralExpr" }
+
+    /**
+     * Gets the pattern of this regular expression.
+     */
+    string getPattern() {
+      result = Synth::convertRegexLiteralExprToRaw(this).(Raw::RegexLiteralExpr).getPattern()
+    }
+
+    /**
+     * Gets the version of the internal regular expression language being used by Swift.
+     */
+    int getVersion() {
+      result = Synth::convertRegexLiteralExprToRaw(this).(Raw::RegexLiteralExpr).getVersion()
+    }
   }
 }

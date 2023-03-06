@@ -3,20 +3,21 @@ import codeql.swift.elements
 import TestUtils
 
 from
-  OpaqueTypeDecl x, int getNumberOfGenericTypeParams, ModuleDecl getModule, Type getInterfaceType,
-  string getName, int getNumberOfBaseTypes, ValueDecl getNamingDeclaration,
+  OpaqueTypeDecl x, int getNumberOfGenericTypeParams, ModuleDecl getModule, int getNumberOfMembers,
+  Type getInterfaceType, string getName, int getNumberOfBaseTypes, ValueDecl getNamingDeclaration,
   int getNumberOfOpaqueGenericParams
 where
   toBeTested(x) and
   not x.isUnknown() and
   getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
   getModule = x.getModule() and
+  getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType = x.getInterfaceType() and
   getName = x.getName() and
   getNumberOfBaseTypes = x.getNumberOfBaseTypes() and
   getNamingDeclaration = x.getNamingDeclaration() and
   getNumberOfOpaqueGenericParams = x.getNumberOfOpaqueGenericParams()
 select x, "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getModule:", getModule,
-  "getInterfaceType:", getInterfaceType, "getName:", getName, "getNumberOfBaseTypes:",
-  getNumberOfBaseTypes, "getNamingDeclaration:", getNamingDeclaration,
-  "getNumberOfOpaqueGenericParams:", getNumberOfOpaqueGenericParams
+  "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:", getInterfaceType, "getName:",
+  getName, "getNumberOfBaseTypes:", getNumberOfBaseTypes, "getNamingDeclaration:",
+  getNamingDeclaration, "getNumberOfOpaqueGenericParams:", getNumberOfOpaqueGenericParams

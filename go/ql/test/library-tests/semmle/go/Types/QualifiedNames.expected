@@ -1,99 +1,99 @@
-| A | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.A |
-| A2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.A2 |
-| AC | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.AC |
-| AEmbedded | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.AEmbedded |
-| AExtended | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.AExtended |
-| B | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.B |
-| Bar | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.Bar |
-| Baz | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.Baz |
-| C | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.C |
-| CircularGenericStruct1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.CircularGenericStruct1 |
-| CircularGenericStruct2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.CircularGenericStruct2 |
-| EmbedsBaz | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.EmbedsBaz |
-| Foo | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.Foo |
-| G | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.G |
-| GenericArray | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericArray |
-| GenericChannel | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericChannel |
-| GenericInterface | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericInterface |
-| GenericMap1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericMap1 |
-| GenericMap2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericMap2 |
-| GenericNamed | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericNamed |
-| GenericPointer | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericPointer |
-| GenericSignature | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericSignature |
-| GenericSlice | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericSlice |
-| GenericStruct1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct1 |
-| GenericStruct2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct2 |
-| GenericStruct2b | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct2b |
-| HasBlankTypeParam | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.HasBlankTypeParam |
-| HasBlankTypeParams | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.HasBlankTypeParams |
-| MyFuncType1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.MyFuncType1 |
-| MyFuncType2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.MyFuncType2 |
-| MyInterface | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.MyInterface |
-| MyMapType | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.MyMapType |
-| Qux | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.Qux |
-| T | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T |
-| T | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.T |
-| T2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T2 |
-| T3 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T3 |
-| T4 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T4 |
-| UsesCircularGenericStruct1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.UsesCircularGenericStruct1 |
-| a | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.a |
-| b | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.b |
-| base | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.base |
-| c | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.c |
-| d | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.d |
-| embedder | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder |
-| embedder2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder2 |
-| embedder3 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder3 |
-| embedder4 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder4 |
-| i0 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i0 |
-| i1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i1 |
-| i2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i2 |
-| i3 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i3 |
-| i4 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i4 |
-| i5 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i5 |
-| i6 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i6 |
-| i7 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i7 |
-| i8 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i8 |
-| i9 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i9 |
-| i10 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i10 |
-| i11 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i11 |
-| i12 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i12 |
-| i13 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i13 |
-| i14 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i14 |
-| i15 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i15 |
-| i16 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i16 |
-| i17 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i17 |
-| i18 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i18 |
-| i19 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i19 |
-| i20 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i20 |
-| ptrembedder | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.ptrembedder |
-| s | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.s |
-| t | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.t |
-| testComparable | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable |
-| testComparable0 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable0 |
-| testComparable1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable1 |
-| testComparable2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable2 |
-| testComparable3 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable3 |
-| testComparable4 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable4 |
-| testComparable5 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable5 |
-| testComparable6 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable6 |
-| testComparable7 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable7 |
-| testComparable8 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable8 |
-| testComparable9 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable9 |
-| testComparable10 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable10 |
-| testComparable11 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable11 |
-| testComparable12 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable12 |
-| testComparable13 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable13 |
-| testComparable14 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable14 |
-| testComparable15 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable15 |
-| testComparable16 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable16 |
-| testComparable17 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable17 |
-| testComparable18 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable18 |
-| testComparable19 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable19 |
-| testComparable20 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable20 |
-| testComparable21 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable21 |
-| testComparable22 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable22 |
-| testComparable23 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable23 |
-| u | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.u |
-| v | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.v |
+| cyclic.go:3:6:3:6 | s | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.s |
+| cyclic.go:7:6:7:6 | t | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.t |
+| cyclic.go:12:6:12:6 | u | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.u |
+| cyclic.go:16:6:16:6 | v | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.v |
+| depth.go:5:6:5:6 | a | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.a |
+| depth.go:10:6:10:6 | b | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.b |
+| depth.go:14:6:14:6 | c | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.c |
+| depth.go:18:6:18:6 | d | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.d |
+| embedded.go:3:6:3:8 | Baz | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.Baz |
+| embedded.go:7:6:7:8 | Qux | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.Qux |
+| embedded.go:12:6:12:14 | EmbedsBaz | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.EmbedsBaz |
+| generic.go:3:6:3:19 | GenericStruct1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct1 |
+| generic.go:11:6:11:27 | CircularGenericStruct1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.CircularGenericStruct1 |
+| generic.go:15:6:15:31 | UsesCircularGenericStruct1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.UsesCircularGenericStruct1 |
+| generic.go:19:6:19:19 | GenericStruct2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct2 |
+| generic.go:24:6:24:20 | GenericStruct2b | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct2b |
+| generic.go:28:6:28:27 | CircularGenericStruct2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.CircularGenericStruct2 |
+| generic.go:32:6:32:21 | GenericInterface | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericInterface |
+| generic.go:36:6:36:17 | GenericArray | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericArray |
+| generic.go:37:6:37:19 | GenericPointer | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericPointer |
+| generic.go:38:6:38:17 | GenericSlice | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericSlice |
+| generic.go:39:6:39:16 | GenericMap1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericMap1 |
+| generic.go:40:6:40:16 | GenericMap2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericMap2 |
+| generic.go:41:6:41:19 | GenericChannel | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericChannel |
+| generic.go:42:6:42:14 | MyMapType | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.MyMapType |
+| generic.go:43:6:43:17 | GenericNamed | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericNamed |
+| generic.go:44:6:44:16 | MyFuncType1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.MyFuncType1 |
+| generic.go:45:6:45:16 | MyFuncType2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.MyFuncType2 |
+| generic.go:47:6:47:16 | MyInterface | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.MyInterface |
+| generic.go:67:6:67:22 | HasBlankTypeParam | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.HasBlankTypeParam |
+| generic.go:68:6:68:23 | HasBlankTypeParams | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.HasBlankTypeParams |
+| generic.go:84:6:84:21 | GenericSignature | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericSignature |
+| interface.go:3:6:3:7 | i0 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i0 |
+| interface.go:5:6:5:7 | i1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i1 |
+| interface.go:9:6:9:7 | i2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i2 |
+| interface.go:13:6:13:7 | i3 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i3 |
+| interface.go:18:6:18:7 | i4 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i4 |
+| interface.go:23:6:23:7 | i5 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i5 |
+| interface.go:28:6:28:7 | i6 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i6 |
+| interface.go:34:6:34:7 | i7 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i7 |
+| interface.go:41:6:41:7 | i8 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i8 |
+| interface.go:47:6:47:7 | i9 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i9 |
+| interface.go:52:6:52:8 | i10 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i10 |
+| interface.go:57:6:57:8 | i11 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i11 |
+| interface.go:63:6:63:8 | i12 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i12 |
+| interface.go:69:6:69:8 | i13 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i13 |
+| interface.go:75:6:75:8 | i14 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i14 |
+| interface.go:81:6:81:8 | i15 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i15 |
+| interface.go:87:6:87:8 | i16 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i16 |
+| interface.go:91:6:91:8 | i17 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i17 |
+| interface.go:95:6:95:8 | i18 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i18 |
+| interface.go:101:6:101:8 | i19 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i19 |
+| interface.go:105:6:105:8 | i20 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.i20 |
+| interface.go:114:6:114:19 | testComparable | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable |
+| interface.go:115:6:115:20 | testComparable0 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable0 |
+| interface.go:116:6:116:20 | testComparable1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable1 |
+| interface.go:117:6:117:20 | testComparable2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable2 |
+| interface.go:118:6:118:20 | testComparable3 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable3 |
+| interface.go:119:6:119:20 | testComparable4 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable4 |
+| interface.go:120:6:120:20 | testComparable5 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable5 |
+| interface.go:121:6:121:20 | testComparable6 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable6 |
+| interface.go:122:6:122:20 | testComparable7 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable7 |
+| interface.go:123:6:123:20 | testComparable8 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable8 |
+| interface.go:124:6:124:20 | testComparable9 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable9 |
+| interface.go:125:6:125:21 | testComparable10 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable10 |
+| interface.go:126:6:126:21 | testComparable11 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable11 |
+| interface.go:127:6:127:21 | testComparable12 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable12 |
+| interface.go:128:6:128:21 | testComparable13 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable13 |
+| interface.go:129:6:129:21 | testComparable14 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable14 |
+| interface.go:130:6:130:21 | testComparable15 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable15 |
+| interface.go:131:6:131:21 | testComparable16 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable16 |
+| interface.go:132:6:132:21 | testComparable17 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable17 |
+| interface.go:133:6:133:21 | testComparable18 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable18 |
+| interface.go:134:6:134:21 | testComparable19 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable19 |
+| interface.go:135:6:135:21 | testComparable20 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable20 |
+| interface.go:136:6:136:21 | testComparable21 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable21 |
+| interface.go:137:6:137:21 | testComparable22 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable22 |
+| interface.go:138:6:138:21 | testComparable23 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.testComparable23 |
+| pkg1/embedding.go:8:6:8:9 | base | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.base |
+| pkg1/embedding.go:19:6:19:13 | embedder | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder |
+| pkg1/embedding.go:22:6:22:16 | ptrembedder | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.ptrembedder |
+| pkg1/embedding.go:25:6:25:14 | embedder2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder2 |
+| pkg1/embedding.go:28:6:28:14 | embedder3 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder3 |
+| pkg1/embedding.go:35:6:35:14 | embedder4 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder4 |
+| pkg1/interfaces.go:3:6:3:6 | A | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.A |
+| pkg1/interfaces.go:7:6:7:6 | B | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.B |
+| pkg1/interfaces.go:12:6:12:6 | C | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.C |
+| pkg1/interfaces.go:17:6:17:14 | AEmbedded | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.AEmbedded |
+| pkg1/interfaces.go:21:6:21:7 | AC | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.AC |
+| pkg1/interfaces.go:26:6:26:14 | AExtended | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.AExtended |
+| pkg1/interfaces.go:31:6:31:7 | A2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.A2 |
+| pkg1/tst.go:3:6:3:6 | T | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T |
+| pkg1/tst.go:9:6:9:7 | T2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T2 |
+| pkg1/tst.go:14:6:14:7 | T3 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T3 |
+| pkg1/tst.go:19:6:19:7 | T4 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T4 |
+| pkg1/tst.go:24:6:24:8 | Foo | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.Foo |
+| pkg1/tst.go:29:6:29:8 | Bar | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.Bar |
+| pkg2/tst.go:3:6:3:6 | T | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.T |
+| pkg2/tst.go:7:6:7:6 | G | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.G |

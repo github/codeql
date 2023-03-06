@@ -147,7 +147,9 @@ module MembershipCandidate {
         child instanceof RegExpConstant or
         child instanceof RegExpAlt or
         child instanceof RegExpGroup
-      )
+      ) and
+      // exclude "length matches" that match every string
+      not this.getAChild*() instanceof RegExpDot
     }
 
     /**

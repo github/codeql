@@ -45,8 +45,12 @@ module Cryptography {
 
     /**
      * Gets the block mode used to perform this cryptographic operation.
-     * This may have no result - for example if the `CryptographicAlgorithm` used
-     * is a stream cipher rather than a block cipher.
+     *
+     * This predicate is only expected to have a result if two conditions hold:
+     *  1. The operation is an encryption operation, i.e. the algorithm used is an `EncryptionAlgorithm`, and
+     *  2. The algorithm used is a block cipher (not a stream cipher).
+     *
+     * If either of these conditions do not hold, then this predicate should have no result.
      */
     BlockMode getBlockMode() { result = super.getBlockMode() }
   }
@@ -69,8 +73,12 @@ module Cryptography {
 
       /**
        * Gets the block mode used to perform this cryptographic operation.
-       * This may have no result - for example if the `CryptographicAlgorithm` used
-       * is a stream cipher rather than a block cipher.
+       *
+       * This predicate is only expected to have a result if two conditions hold:
+       *  1. The operation is an encryption operation, i.e. the algorithm used is an `EncryptionAlgorithm`, and
+       *  2. The algorithm used is a block cipher (not a stream cipher).
+       *
+       * If either of these conditions do not hold, then this predicate should have no result.
        */
       abstract BlockMode getBlockMode();
     }
@@ -81,10 +89,21 @@ module Cryptography {
    * data of arbitrary length using a block encryption algorithm.
    */
   class BlockMode extends string {
-    BlockMode() { this = ["ECB", "CBC", "GCM", "CCM", "CFB", "OFB", "CTR", "OPENPGP"] }
+    BlockMode() {
+      this =
+        [
+          "ECB", "CBC", "GCM", "CCM", "CFB", "OFB", "CTR", "OPENPGP",
+          "XTS", // https://csrc.nist.gov/publications/detail/sp/800-38e/final
+          "EAX" // https://en.wikipedia.org/wiki/EAX_mode
+        ]
+    }
 
     /** Holds if this block mode is considered to be insecure. */
     predicate isWeak() { this = "ECB" }
+
+    /** Holds if the given string appears to match this block mode. */
+    bindingset[s]
+    predicate matchesString(string s) { s.toUpperCase().matches("%" + this + "%") }
   }
 }
 

@@ -1,0 +1,5 @@
+| closures.swift:8:12:8:12 | x | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:7:6:7:6 | x | isDirect: | yes | isEscaping: | no |
+| closures.swift:9:12:9:12 | y | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:6:7:6:7 | y | isDirect: | yes | isEscaping: | no |
+| closures.swift:17:5:17:5 | x | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:15:7:15:7 | x | isDirect: | yes | isEscaping: | yes |
+| closures.swift:20:3:20:3 | escape | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:12:5:12:5 | escape | isDirect: | yes | isEscaping: | yes |
+| closures.swift:25:3:25:3 | escape | getModule: | file://:0:0:0:0 | closures | getNumberOfMembers: | 0 | getDecl: | closures.swift:12:5:12:5 | escape | isDirect: | yes | isEscaping: | yes |

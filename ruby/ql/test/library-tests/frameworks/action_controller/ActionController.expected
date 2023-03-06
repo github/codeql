@@ -1,29 +1,53 @@
 actionControllerControllerClasses
-| controllers/comments_controller.rb:1:1:53:3 | CommentsController |
+| controllers/application_controller.rb:1:1:13:3 | ApplicationController |
+| controllers/comments_controller.rb:1:1:104:3 | CommentsController |
 | controllers/foo/bars_controller.rb:3:1:46:3 | BarsController |
-| controllers/photos_controller.rb:1:1:4:3 | PhotosController |
-| controllers/posts_controller.rb:1:1:10:3 | PostsController |
+| controllers/photos_controller.rb:1:1:10:3 | PhotosController |
+| controllers/posts_controller.rb:1:1:32:3 | PostsController |
 | controllers/tags_controller.rb:1:1:2:3 | TagsController |
 | controllers/users/notifications_controller.rb:2:3:5:5 | Users::NotificationsController |
+| filter_flow.rb:9:1:23:3 | OneController |
+| filter_flow.rb:25:1:40:3 | TwoController |
+| filter_flow.rb:42:1:57:3 | ThreeController |
+| filter_flow.rb:59:1:73:3 | FourController |
+| filter_flow.rb:75:1:93:3 | FiveController |
 | input_access.rb:1:1:50:3 | UsersController |
 | params_flow.rb:1:1:162:3 | MyController |
 | params_flow.rb:170:1:178:3 | Subclass |
 actionControllerActionMethods
-| controllers/comments_controller.rb:2:3:36:5 | index |
-| controllers/comments_controller.rb:38:3:44:5 | show |
-| controllers/comments_controller.rb:46:3:48:5 | photo |
-| controllers/comments_controller.rb:50:3:52:5 | destroy |
+| controllers/comments_controller.rb:17:3:51:5 | index |
+| controllers/comments_controller.rb:53:3:54:5 | create |
+| controllers/comments_controller.rb:56:3:62:5 | show |
+| controllers/comments_controller.rb:64:3:66:5 | photo |
+| controllers/comments_controller.rb:68:3:70:5 | destroy |
 | controllers/foo/bars_controller.rb:5:3:7:5 | index |
 | controllers/foo/bars_controller.rb:9:3:18:5 | show_debug |
 | controllers/foo/bars_controller.rb:20:3:24:5 | show |
 | controllers/foo/bars_controller.rb:26:3:28:5 | go_back |
 | controllers/foo/bars_controller.rb:30:3:32:5 | go_back_2 |
 | controllers/foo/bars_controller.rb:34:3:39:5 | show_2 |
-| controllers/photos_controller.rb:2:3:3:5 | show |
-| controllers/posts_controller.rb:2:3:3:5 | index |
-| controllers/posts_controller.rb:5:3:6:5 | show |
-| controllers/posts_controller.rb:8:3:9:5 | upvote |
+| controllers/photos_controller.rb:3:3:6:5 | show |
+| controllers/photos_controller.rb:8:3:9:5 | foo |
+| controllers/posts_controller.rb:12:3:15:5 | index |
+| controllers/posts_controller.rb:17:3:18:5 | show |
+| controllers/posts_controller.rb:20:3:21:5 | upvote |
 | controllers/users/notifications_controller.rb:3:5:4:7 | mark_as_read |
+| filter_flow.rb:13:3:15:5 | a |
+| filter_flow.rb:17:3:18:5 | b |
+| filter_flow.rb:20:3:22:5 | c |
+| filter_flow.rb:29:3:31:5 | a |
+| filter_flow.rb:33:3:35:5 | b |
+| filter_flow.rb:37:3:39:5 | c |
+| filter_flow.rb:46:3:49:5 | a |
+| filter_flow.rb:51:3:52:5 | b |
+| filter_flow.rb:54:3:56:5 | c |
+| filter_flow.rb:63:3:65:5 | a |
+| filter_flow.rb:67:3:68:5 | b |
+| filter_flow.rb:70:3:72:5 | c |
+| filter_flow.rb:79:3:81:5 | a |
+| filter_flow.rb:83:3:84:5 | b |
+| filter_flow.rb:86:3:88:5 | c |
+| filter_flow.rb:90:3:92:5 | taint_foo |
 | input_access.rb:2:3:49:5 | index |
 | logging.rb:2:5:8:7 | index |
 | params_flow.rb:2:3:4:5 | m1 |
@@ -63,10 +87,17 @@ actionControllerActionMethods
 | params_flow.rb:165:3:167:5 | m34 |
 | params_flow.rb:171:3:173:5 | m35 |
 paramsCalls
+| controllers/comments_controller.rb:80:36:80:41 | call to params |
 | controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
 | controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
 | controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
 | controllers/foo/bars_controller.rb:22:10:22:15 | call to params |
+| controllers/posts_controller.rb:26:23:26:28 | call to params |
+| filter_flow.rb:14:12:14:17 | call to params |
+| filter_flow.rb:30:12:30:17 | call to params |
+| filter_flow.rb:47:12:47:17 | call to params |
+| filter_flow.rb:64:16:64:21 | call to params |
+| filter_flow.rb:91:12:91:17 | call to params |
 | params_flow.rb:3:10:3:15 | call to params |
 | params_flow.rb:7:10:7:15 | call to params |
 | params_flow.rb:11:10:11:15 | call to params |
@@ -116,10 +147,17 @@ paramsCalls
 | params_flow.rb:172:10:172:15 | call to params |
 | params_flow.rb:176:10:176:15 | call to params |
 paramsSources
+| controllers/comments_controller.rb:80:36:80:41 | call to params |
 | controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
 | controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
 | controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
 | controllers/foo/bars_controller.rb:22:10:22:15 | call to params |
+| controllers/posts_controller.rb:26:23:26:28 | call to params |
+| filter_flow.rb:14:12:14:17 | call to params |
+| filter_flow.rb:30:12:30:17 | call to params |
+| filter_flow.rb:47:12:47:17 | call to params |
+| filter_flow.rb:64:16:64:21 | call to params |
+| filter_flow.rb:91:12:91:17 | call to params |
 | params_flow.rb:3:10:3:15 | call to params |
 | params_flow.rb:7:10:7:15 | call to params |
 | params_flow.rb:11:10:11:15 | call to params |
@@ -169,19 +207,27 @@ paramsSources
 | params_flow.rb:172:10:172:15 | call to params |
 | params_flow.rb:176:10:176:15 | call to params |
 httpInputAccesses
-| controllers/comments_controller.rb:3:5:3:18 | call to params | ActionDispatch::Request#params |
-| controllers/comments_controller.rb:4:5:4:22 | call to parameters | ActionDispatch::Request#parameters |
-| controllers/comments_controller.rb:5:5:5:15 | call to GET | ActionDispatch::Request#GET |
-| controllers/comments_controller.rb:6:5:6:16 | call to POST | ActionDispatch::Request#POST |
-| controllers/comments_controller.rb:7:5:7:28 | call to query_parameters | ActionDispatch::Request#query_parameters |
-| controllers/comments_controller.rb:8:5:8:30 | call to request_parameters | ActionDispatch::Request#request_parameters |
-| controllers/comments_controller.rb:9:5:9:31 | call to filtered_parameters | ActionDispatch::Request#filtered_parameters |
-| controllers/comments_controller.rb:51:12:51:30 | call to body_stream | ActionDispatch::Request#body_stream |
+| controllers/application_controller.rb:11:53:11:64 | call to path | ActionDispatch::Request#path |
+| controllers/comments_controller.rb:18:5:18:18 | call to params | ActionDispatch::Request#params |
+| controllers/comments_controller.rb:19:5:19:22 | call to parameters | ActionDispatch::Request#parameters |
+| controllers/comments_controller.rb:20:5:20:15 | call to GET | ActionDispatch::Request#GET |
+| controllers/comments_controller.rb:21:5:21:16 | call to POST | ActionDispatch::Request#POST |
+| controllers/comments_controller.rb:22:5:22:28 | call to query_parameters | ActionDispatch::Request#query_parameters |
+| controllers/comments_controller.rb:23:5:23:30 | call to request_parameters | ActionDispatch::Request#request_parameters |
+| controllers/comments_controller.rb:24:5:24:31 | call to filtered_parameters | ActionDispatch::Request#filtered_parameters |
+| controllers/comments_controller.rb:69:12:69:30 | call to body_stream | ActionDispatch::Request#body_stream |
+| controllers/comments_controller.rb:80:36:80:41 | call to params | ActionController::Metal#params |
 | controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies | ActionController::Metal#cookies |
 | controllers/foo/bars_controller.rb:13:21:13:26 | call to params | ActionController::Metal#params |
 | controllers/foo/bars_controller.rb:14:10:14:15 | call to params | ActionController::Metal#params |
 | controllers/foo/bars_controller.rb:21:21:21:26 | call to params | ActionController::Metal#params |
 | controllers/foo/bars_controller.rb:22:10:22:15 | call to params | ActionController::Metal#params |
+| controllers/posts_controller.rb:26:23:26:28 | call to params | ActionController::Metal#params |
+| filter_flow.rb:14:12:14:17 | call to params | ActionController::Metal#params |
+| filter_flow.rb:30:12:30:17 | call to params | ActionController::Metal#params |
+| filter_flow.rb:47:12:47:17 | call to params | ActionController::Metal#params |
+| filter_flow.rb:64:16:64:21 | call to params | ActionController::Metal#params |
+| filter_flow.rb:91:12:91:17 | call to params | ActionController::Metal#params |
 | input_access.rb:3:5:3:18 | call to params | ActionDispatch::Request#params |
 | input_access.rb:4:5:4:22 | call to parameters | ActionDispatch::Request#parameters |
 | input_access.rb:5:5:5:15 | call to GET | ActionDispatch::Request#GET |
@@ -275,21 +321,25 @@ cookiesCalls
 cookiesSources
 | controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies |
 redirectToCalls
-| controllers/comments_controller.rb:40:21:40:49 | call to redirect_to |
+| controllers/comments_controller.rb:58:21:58:49 | call to redirect_to |
 | controllers/foo/bars_controller.rb:17:5:17:30 | call to redirect_to |
 | controllers/foo/bars_controller.rb:27:5:27:39 | call to redirect_back_or_to |
 | controllers/foo/bars_controller.rb:31:5:31:56 | call to redirect_back |
 renderCalls
-| controllers/comments_controller.rb:42:21:42:64 | call to render |
+| controllers/comments_controller.rb:60:21:60:64 | call to render |
+| controllers/comments_controller.rb:76:5:76:68 | call to render |
 | controllers/foo/bars_controller.rb:6:5:6:37 | call to render |
 | controllers/foo/bars_controller.rb:23:5:23:76 | call to render |
 | controllers/foo/bars_controller.rb:35:5:35:33 | call to render |
 | controllers/foo/bars_controller.rb:38:5:38:50 | call to render |
 | controllers/foo/bars_controller.rb:44:5:44:17 | call to render |
+| controllers/posts_controller.rb:13:5:13:51 | call to render |
+| controllers/posts_controller.rb:14:5:14:127 | call to render |
+| controllers/posts_controller.rb:36:5:36:51 | call to render |
 httpResponses
-| controllers/comments_controller.rb:11:5:11:17 | call to body= | controllers/comments_controller.rb:11:21:11:34 | ... = ... |
-| controllers/comments_controller.rb:21:5:21:37 | call to send_file | controllers/comments_controller.rb:21:24:21:36 | "my-file.ext" |
-| controllers/comments_controller.rb:47:5:47:20 | call to send_data | controllers/comments_controller.rb:47:15:47:20 | @photo |
+| controllers/comments_controller.rb:26:5:26:17 | call to body= | controllers/comments_controller.rb:26:21:26:34 | ... = ... |
+| controllers/comments_controller.rb:36:5:36:37 | call to send_file | controllers/comments_controller.rb:36:24:36:36 | "my-file.ext" |
+| controllers/comments_controller.rb:65:5:65:20 | call to send_data | controllers/comments_controller.rb:65:15:65:20 | @photo |
 | controllers/foo/bars_controller.rb:15:16:15:97 | call to render_to_string | controllers/foo/bars_controller.rb:15:33:15:47 | "foo/bars/show" |
 | controllers/foo/bars_controller.rb:23:5:23:76 | call to render | controllers/foo/bars_controller.rb:23:12:23:26 | "foo/bars/show" |
 | controllers/foo/bars_controller.rb:35:5:35:33 | call to render | controllers/foo/bars_controller.rb:35:18:35:33 | call to [] |
@@ -300,21 +350,21 @@ actionControllerHelperMethods
 getAssociatedControllerClasses
 controllerTemplateFiles
 headerWriteAccesses
-| controllers/comments_controller.rb:15:5:15:35 | call to []= | content-type | controllers/comments_controller.rb:15:39:15:49 | ... = ... |
-| controllers/comments_controller.rb:16:5:16:46 | call to set_header | content-length | controllers/comments_controller.rb:16:43:16:45 | 100 |
-| controllers/comments_controller.rb:17:5:17:39 | call to []= | x-custom-header | controllers/comments_controller.rb:17:43:17:46 | ... = ... |
-| controllers/comments_controller.rb:18:5:18:39 | call to []= | x-another-custom-header | controllers/comments_controller.rb:18:43:18:47 | ... = ... |
-| controllers/comments_controller.rb:19:5:19:49 | call to add_header | x-yet-another | controllers/comments_controller.rb:19:42:19:49 | "indeed" |
-| controllers/comments_controller.rb:25:5:25:21 | call to location= | location | controllers/comments_controller.rb:25:25:25:36 | ... = ... |
-| controllers/comments_controller.rb:26:5:26:26 | call to cache_control= | cache-control | controllers/comments_controller.rb:26:30:26:36 | ... = ... |
-| controllers/comments_controller.rb:27:5:27:27 | call to _cache_control= | cache-control | controllers/comments_controller.rb:27:31:27:37 | ... = ... |
-| controllers/comments_controller.rb:28:5:28:17 | call to etag= | etag | controllers/comments_controller.rb:28:21:28:27 | ... = ... |
-| controllers/comments_controller.rb:29:5:29:20 | call to charset= | content-type | controllers/comments_controller.rb:29:24:29:30 | ... = ... |
-| controllers/comments_controller.rb:30:5:30:25 | call to content_type= | content-type | controllers/comments_controller.rb:30:29:30:35 | ... = ... |
-| controllers/comments_controller.rb:32:5:32:17 | call to date= | date | controllers/comments_controller.rb:32:21:32:30 | ... = ... |
-| controllers/comments_controller.rb:33:5:33:26 | call to last_modified= | last-modified | controllers/comments_controller.rb:33:30:33:43 | ... = ... |
-| controllers/comments_controller.rb:34:5:34:22 | call to weak_etag= | etag | controllers/comments_controller.rb:34:26:34:32 | ... = ... |
-| controllers/comments_controller.rb:35:5:35:24 | call to strong_etag= | etag | controllers/comments_controller.rb:35:28:35:34 | ... = ... |
+| controllers/comments_controller.rb:30:5:30:35 | call to []= | content-type | controllers/comments_controller.rb:30:39:30:49 | ... = ... |
+| controllers/comments_controller.rb:31:5:31:46 | call to set_header | content-length | controllers/comments_controller.rb:31:43:31:45 | 100 |
+| controllers/comments_controller.rb:32:5:32:39 | call to []= | x-custom-header | controllers/comments_controller.rb:32:43:32:46 | ... = ... |
+| controllers/comments_controller.rb:33:5:33:39 | call to []= | x-another-custom-header | controllers/comments_controller.rb:33:43:33:47 | ... = ... |
+| controllers/comments_controller.rb:34:5:34:49 | call to add_header | x-yet-another | controllers/comments_controller.rb:34:42:34:49 | "indeed" |
+| controllers/comments_controller.rb:40:5:40:21 | call to location= | location | controllers/comments_controller.rb:40:25:40:36 | ... = ... |
+| controllers/comments_controller.rb:41:5:41:26 | call to cache_control= | cache-control | controllers/comments_controller.rb:41:30:41:36 | ... = ... |
+| controllers/comments_controller.rb:42:5:42:27 | call to _cache_control= | cache-control | controllers/comments_controller.rb:42:31:42:37 | ... = ... |
+| controllers/comments_controller.rb:43:5:43:17 | call to etag= | etag | controllers/comments_controller.rb:43:21:43:27 | ... = ... |
+| controllers/comments_controller.rb:44:5:44:20 | call to charset= | content-type | controllers/comments_controller.rb:44:24:44:30 | ... = ... |
+| controllers/comments_controller.rb:45:5:45:25 | call to content_type= | content-type | controllers/comments_controller.rb:45:29:45:35 | ... = ... |
+| controllers/comments_controller.rb:47:5:47:17 | call to date= | date | controllers/comments_controller.rb:47:21:47:30 | ... = ... |
+| controllers/comments_controller.rb:48:5:48:26 | call to last_modified= | last-modified | controllers/comments_controller.rb:48:30:48:43 | ... = ... |
+| controllers/comments_controller.rb:49:5:49:22 | call to weak_etag= | etag | controllers/comments_controller.rb:49:26:49:32 | ... = ... |
+| controllers/comments_controller.rb:50:5:50:24 | call to strong_etag= | etag | controllers/comments_controller.rb:50:28:50:34 | ... = ... |
 loggingCalls
 | logging.rb:3:9:3:31 | call to info | logging.rb:3:21:3:31 | "some info" |
 | logging.rb:4:9:4:31 | call to warn | logging.rb:4:21:4:31 | "a warning" |

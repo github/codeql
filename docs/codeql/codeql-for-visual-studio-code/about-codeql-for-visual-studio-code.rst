@@ -14,7 +14,7 @@ CodeQL for Visual Studio Code provides an easy way to run queries from the large
 With these queries, or your own custom queries, you can analyze databases generated from source code to find errors and security vulnerabilities.
 The Results view shows the flow of data through the results of path queries, which is essential for triaging security results.
 
-The CodeQL extension also adds a **CodeQL** sidebar view to VS Code. This contains a list of databases, and an overview of the queries that you have run in the current session.
+The CodeQL extension also adds a **CodeQL** sidebar view to VS Code. This contains a list of local CodeQL databases, an overview of the queries that you have run in the current session, and a variant analysis view for large scale analysis.
 
 The extension provides standard `IntelliSense <https://code.visualstudio.com/docs/editor/intellisense>`__
 features for query files (extension ``.ql``) and library files (extension ``.qll``) that you open in the Visual Studio Code editor.
@@ -37,3 +37,4 @@ Further reading
 
 - ":doc:`Setting up CodeQL in Visual Studio Code <setting-up-codeql-in-visual-studio-code>`"
 - ":doc:`Analyzing your projects <analyzing-your-projects>`"
+- ":doc:`Running CodeQL queries at scale with multi-repository variant analysis <running-codeql-queries-at-scale-with-mrva>`"

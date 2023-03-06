@@ -15,7 +15,6 @@ sourceLocationPrefix(
   @callable
 | @file
 | @generic_context
-| @iterable_decl_context
 | @locatable
 | @location
 | @type
@@ -54,6 +53,13 @@ callable_params(
 callable_bodies(
   int id: @callable ref,
   int body: @brace_stmt_or_none ref
+);
+
+#keyset[id, index]
+callable_captures(
+  int id: @callable ref,
+  int index: int ref,
+  int capture: @captured_decl_or_none ref
 );
 
 @file =
@@ -95,7 +101,9 @@ locations(
 );
 
 @ast_node =
-  @case_label_item
+  @availability_info
+| @availability_spec
+| @case_label_item
 | @condition_element
 | @decl
 | @expr
@@ -139,6 +147,27 @@ diagnostics(
 | @unspecified_element
 ;
 
+availability_infos(
+  unique int id: @availability_info
+);
+
+#keyset[id]
+availability_info_is_unavailable(
+  int id: @availability_info ref
+);
+
+#keyset[id, index]
+availability_info_specs(
+  int id: @availability_info ref,
+  int index: int ref,
+  int spec: @availability_spec_or_none ref
+);
+
+@availability_spec =
+  @other_availability_spec
+| @platform_version_availability_spec
+;
+
 unspecified_elements(
   unique int id: @unspecified_element,
   string property: string ref,
@@ -157,8 +186,19 @@ unspecified_element_indices(
   int index: int ref
 );
 
+other_availability_specs(
+  unique int id: @other_availability_spec
+);
+
+platform_version_availability_specs(
+  unique int id: @platform_version_availability_spec,
+  string platform: string ref,
+  string version: string ref
+);
+
 @decl =
-  @enum_case_decl
+  @captured_decl
+| @enum_case_decl
 | @extension_decl
 | @if_config_decl
 | @import_decl
@@ -177,6 +217,13 @@ decls(  //dir=decl
   int module: @module_decl_or_none ref
 );
 
+#keyset[id, index]
+decl_members(  //dir=decl
+  int id: @decl ref,
+  int index: int ref,
+  int member: @decl_or_none ref
+);
+
 @generic_context =
   @abstract_function_decl
 | @extension_decl
@@ -191,16 +238,19 @@ generic_context_generic_type_params(  //dir=decl
   int generic_type_param: @generic_type_param_decl_or_none ref
 );
 
-@iterable_decl_context =
-  @extension_decl
-| @nominal_type_decl
-;
+captured_decls(  //dir=decl
+  unique int id: @captured_decl,
+  int decl: @value_decl_or_none ref
+);
 
-#keyset[id, index]
-iterable_decl_context_members(  //dir=decl
-  int id: @iterable_decl_context ref,
-  int index: int ref,
-  int member: @decl_or_none ref
+#keyset[id]
+captured_decl_is_direct(  //dir=decl
+  int id: @captured_decl ref
+);
+
+#keyset[id]
+captured_decl_is_escaping(  //dir=decl
+  int id: @captured_decl ref
 );
 
 enum_case_decls(  //dir=decl
@@ -1407,7 +1457,9 @@ protocol_metatype_to_object_exprs(  //dir=expr
 );
 
 regex_literal_exprs(  //dir=expr
-  unique int id: @regex_literal_expr
+  unique int id: @regex_literal_expr,
+  string pattern: string ref,
+  int version: int ref
 );
 
 @self_apply_expr =
@@ -1662,6 +1714,12 @@ condition_element_patterns(  //dir=stmt
 condition_element_initializers(  //dir=stmt
   int id: @condition_element ref,
   int initializer: @expr_or_none ref
+);
+
+#keyset[id]
+condition_element_availabilities(  //dir=stmt
+  int id: @condition_element ref,
+  int availability: @availability_info_or_none ref
 );
 
 @stmt =
@@ -2365,8 +2423,23 @@ variadic_sequence_types(  //dir=type
 | @unspecified_element
 ;
 
+@availability_info_or_none =
+  @availability_info
+| @unspecified_element
+;
+
+@availability_spec_or_none =
+  @availability_spec
+| @unspecified_element
+;
+
 @brace_stmt_or_none =
   @brace_stmt
+| @unspecified_element
+;
+
+@captured_decl_or_none =
+  @captured_decl
 | @unspecified_element
 ;
 

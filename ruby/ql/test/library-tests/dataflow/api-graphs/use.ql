@@ -44,7 +44,7 @@ class ApiUseTest extends InlineExpectationsTest {
         max(API::Node a2, Location l2, DataFlow::Node n2 |
           relevantNode(a2, n2, l2, tag) and
           l2.getFile() = location.getFile() and
-          l2.getStartLine() = location.getStartLine()
+          l2.getEndLine() = location.getEndLine()
         |
           a2.getPath()
           order by

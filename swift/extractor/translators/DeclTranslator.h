@@ -2,9 +2,11 @@
 
 #include <swift/AST/Decl.h>
 #include <swift/AST/ASTMangler.h>
+#include <swift/AST/Module.h>
 
 #include "swift/extractor/translators/TranslatorBase.h"
 #include "swift/extractor/trap/generated/decl/TrapClasses.h"
+#include "swift/extractor/mangler/SwiftMangler.h"
 
 namespace codeql {
 
@@ -48,6 +50,7 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
   std::optional<codeql::OpaqueTypeDecl> translateOpaqueTypeDecl(const swift::OpaqueTypeDecl& decl);
   codeql::PoundDiagnosticDecl translatePoundDiagnosticDecl(const swift::PoundDiagnosticDecl& decl);
   codeql::MissingMemberDecl translateMissingMemberDecl(const swift::MissingMemberDecl& decl);
+  codeql::CapturedDecl translateCapturedValue(const swift::CapturedValue& capture);
 
  private:
   std::string mangledName(const swift::ValueDecl& decl);
@@ -55,8 +58,7 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
                                 codeql::AbstractFunctionDecl& entry);
   void fillOperatorDecl(const swift::OperatorDecl& decl, codeql::OperatorDecl& entry);
   void fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl& entry);
-  void fillIterableDeclContext(const swift::IterableDeclContext& decl,
-                               codeql::IterableDeclContext& entry);
+  void fillIterableDeclContext(const swift::IterableDeclContext& decl, codeql::Decl& entry);
   void fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& entry);
   void fillNominalTypeDecl(const swift::NominalTypeDecl& decl, codeql::NominalTypeDecl& entry);
   void fillGenericContext(const swift::GenericContext& decl, codeql::GenericContext& entry);
@@ -69,8 +71,11 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
     std::optional<TrapClassOf<D>> entry;
     auto id = dispatcher.assignNewLabel(decl, mangledName(decl));
     if (dispatcher.shouldEmitDeclBody(decl)) {
+      dispatcher.extractedDeclaration(decl);
       entry.emplace(id);
       fillDecl(decl, *entry);
+    } else {
+      dispatcher.skippedDeclaration(decl);
     }
     return entry;
   }
@@ -86,7 +91,7 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
     entry.module = dispatcher.fetchLabel(decl.getModuleContext());
   }
 
-  swift::Mangle::ASTMangler mangler;
+  SwiftMangler mangler;
 };
 
 }  // namespace codeql

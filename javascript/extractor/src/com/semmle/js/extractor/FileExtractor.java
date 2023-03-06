@@ -104,7 +104,7 @@ public class FileExtractor {
 
   /** Information about supported file types. */
   public static enum FileType {
-    HTML(".htm", ".html", ".xhtm", ".xhtml", ".vue", ".hbs", ".ejs", ".njk", ".html.erb") {
+    HTML(".htm", ".html", ".xhtm", ".xhtml", ".vue", ".hbs", ".ejs", ".njk", ".erb") {
       @Override
       public IExtractor mkExtractor(ExtractorConfig config, ExtractorState state) {
         return new HTMLExtractor(config, state);
@@ -119,6 +119,12 @@ public class FileExtractor {
       protected boolean contains(File f, String lcExt, ExtractorConfig config) {
         if (isBinaryFile(f, lcExt, config)) {
           return false;
+        }
+        // for ERB files we are only interrested in `.html.erb` files
+        if (FileUtil.extension(f).equalsIgnoreCase(".erb")) {
+          if (!f.getName().toLowerCase().endsWith(".html.erb")) {
+            return false;
+          }
         }
         return super.contains(f, lcExt, config);
       }

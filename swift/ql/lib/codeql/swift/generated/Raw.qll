@@ -13,6 +13,8 @@ module Raw {
     ParamDecl getParam(int index) { callable_params(this, index, result) }
 
     BraceStmt getBody() { callable_bodies(this, result) }
+
+    CapturedDecl getCapture(int index) { callable_captures(this, index, result) }
   }
 
   class File extends @file, Element {
@@ -61,6 +63,16 @@ module Raw {
 
   class ErrorElement extends @error_element, Locatable { }
 
+  class AvailabilityInfo extends @availability_info, AstNode {
+    override string toString() { result = "AvailabilityInfo" }
+
+    predicate isUnavailable() { availability_info_is_unavailable(this) }
+
+    AvailabilitySpec getSpec(int index) { availability_info_specs(this, index, result) }
+  }
+
+  class AvailabilitySpec extends @availability_spec, AstNode { }
+
   class UnspecifiedElement extends @unspecified_element, ErrorElement {
     override string toString() { result = "UnspecifiedElement" }
 
@@ -73,8 +85,23 @@ module Raw {
     string getError() { unspecified_elements(this, _, result) }
   }
 
+  class OtherAvailabilitySpec extends @other_availability_spec, AvailabilitySpec {
+    override string toString() { result = "OtherAvailabilitySpec" }
+  }
+
+  class PlatformVersionAvailabilitySpec extends @platform_version_availability_spec,
+    AvailabilitySpec {
+    override string toString() { result = "PlatformVersionAvailabilitySpec" }
+
+    string getPlatform() { platform_version_availability_specs(this, result, _) }
+
+    string getVersion() { platform_version_availability_specs(this, _, result) }
+  }
+
   class Decl extends @decl, AstNode {
     ModuleDecl getModule() { decls(this, result) }
+
+    Decl getMember(int index) { decl_members(this, index, result) }
   }
 
   class GenericContext extends @generic_context, Element {
@@ -83,8 +110,14 @@ module Raw {
     }
   }
 
-  class IterableDeclContext extends @iterable_decl_context, Element {
-    Decl getMember(int index) { iterable_decl_context_members(this, index, result) }
+  class CapturedDecl extends @captured_decl, Decl {
+    override string toString() { result = "CapturedDecl" }
+
+    ValueDecl getDecl() { captured_decls(this, result) }
+
+    predicate isDirect() { captured_decl_is_direct(this) }
+
+    predicate isEscaping() { captured_decl_is_escaping(this) }
   }
 
   class EnumCaseDecl extends @enum_case_decl, Decl {
@@ -93,7 +126,7 @@ module Raw {
     EnumElementDecl getElement(int index) { enum_case_decl_elements(this, index, result) }
   }
 
-  class ExtensionDecl extends @extension_decl, GenericContext, IterableDeclContext, Decl {
+  class ExtensionDecl extends @extension_decl, GenericContext, Decl {
     override string toString() { result = "ExtensionDecl" }
 
     NominalTypeDecl getExtendedTypeDecl() { extension_decls(this, result) }
@@ -292,7 +325,7 @@ module Raw {
     override string toString() { result = "GenericTypeParamDecl" }
   }
 
-  class NominalTypeDecl extends @nominal_type_decl, GenericTypeDecl, IterableDeclContext {
+  class NominalTypeDecl extends @nominal_type_decl, GenericTypeDecl {
     Type getType() { nominal_type_decls(this, result) }
   }
 
@@ -919,6 +952,10 @@ module Raw {
 
   class RegexLiteralExpr extends @regex_literal_expr, LiteralExpr {
     override string toString() { result = "RegexLiteralExpr" }
+
+    string getPattern() { regex_literal_exprs(this, result, _) }
+
+    int getVersion() { regex_literal_exprs(this, _, result) }
   }
 
   class SelfApplyExpr extends @self_apply_expr, ApplyExpr {
@@ -1117,6 +1154,8 @@ module Raw {
     Pattern getPattern() { condition_element_patterns(this, result) }
 
     Expr getInitializer() { condition_element_initializers(this, result) }
+
+    AvailabilityInfo getAvailability() { condition_element_availabilities(this, result) }
   }
 
   class Stmt extends @stmt, AstNode { }

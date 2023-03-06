@@ -84,10 +84,10 @@ def test_indirect_assign_bound_method():
     sf = myobj.setFoo
 
     sf(SOURCE)
-    SINK(myobj.foo) # $ MISSING: flow="SOURCE, l:-1 -> myobj.foo"
+    SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
 
     sf(NONSOURCE)
-    SINK_F(myobj.foo)
+    SINK_F(myobj.foo) # $ SPURIOUS: flow="SOURCE, l:-4 -> myobj.foo"
 
 
 @expects(3) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
@@ -167,6 +167,17 @@ def fields_with_local_flow(x):
 def test_fields():
     SINK(fields_with_local_flow(SOURCE)) # $ flow="SOURCE -> fields_with_local_flow(..)"
 
+
+def call_with_source(func):
+    func(SOURCE)
+
+
+def test_bound_method_passed_as_arg():
+    myobj = MyObj(NONSOURCE)
+    call_with_source(myobj.setFoo)
+    SINK(myobj.foo) # $ MISSING: flow="SOURCE, l:-5 -> foo.x"
+
+
 # ------------------------------------------------------------------------------
 # Nested Object
 # ------------------------------------------------------------------------------
@@ -244,6 +255,9 @@ class CrosstalkTestX:
     def setvalue(self, value):
         self.x = value
 
+    def do_nothing(self, value):
+        pass
+
 
 class CrosstalkTestY:
     def __init__(self):
@@ -295,10 +309,10 @@ def test_potential_crosstalk_different_name(cond=True):
 
     func(SOURCE)
 
-    SINK(objx.x) # $ MISSING: flow="SOURCE, l:-2 -> objx.x"
+    SINK(objx.x) # $ flow="SOURCE, l:-2 -> objx.x"
     SINK_F(objx.y)
     SINK_F(objy.x)
-    SINK(objy.y, not_present_at_runtime=True) # $ MISSING: flow="SOURCE, l:-5 -> objy.y"
+    SINK(objy.y, not_present_at_runtime=True) # $ flow="SOURCE, l:-5 -> objy.y"
 
 
 @expects(8) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
@@ -318,10 +332,10 @@ def test_potential_crosstalk_same_name(cond=True):
 
     func(SOURCE)
 
-    SINK(objx.x) # $ MISSING: flow="SOURCE, l:-2 -> objx.x"
+    SINK(objx.x) # $ flow="SOURCE, l:-2 -> objx.x"
     SINK_F(objx.y)
     SINK_F(objy.x)
-    SINK(objy.y, not_present_at_runtime=True) # $ MISSING: flow="SOURCE, l:-5 -> objy.y"
+    SINK(objy.y, not_present_at_runtime=True) # $ flow="SOURCE, l:-5 -> objy.y"
 
 
 @expects(10) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
@@ -349,6 +363,53 @@ def test_potential_crosstalk_same_name_object_reference(cond=True):
     SINK(obj.x) # $ flow="SOURCE, l:-7 -> obj.x"
     SINK(obj.y, not_present_at_runtime=True) # $ flow="SOURCE, l:-8 -> obj.y"
 
+
+@expects(4) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_potential_crosstalk_same_class(cond=True):
+    objx1 = CrosstalkTestX()
+    SINK_F(objx1.x)
+
+    objx2 = CrosstalkTestX()
+    SINK_F(objx2.x)
+
+    if cond:
+        func = objx1.setvalue
+    else:
+        func = objx2.do_nothing
+
+    # We want to ensure that objx2.x does not end up getting tainted, since that would
+    # be cross-talk between the self arguments are their functions.
+    func(SOURCE)
+
+    SINK(objx1.x) # $ flow="SOURCE, l:-2 -> objx1.x"
+    SINK_F(objx2.x)
+
+
+class NewTest(object):
+    def __new__(cls, arg):
+        cls.foo = arg
+        return super().__new__(cls) # $ unresolved_call=super().__new__(..)
+
+@expects(4) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test__new__():
+    # we want to make sure that we DON'T pass the synthetic pre-update node for
+    # the class instance to __new__, like we do for __init__.
+    nt = NewTest(SOURCE)
+    # the __new__ implementation sets the foo attribute on THE CLASS itself. The
+    # attribute lookup on the class instance will go to the class itself when the
+    # attribute isn't defined on the class instance, so we will actually see `nt.foo`
+    # contain the source, but the point of this test is that we should see identical
+    # behavior between NewTest.foo and nt.foo, which we dont!
+    #
+    # Also note that we currently (October 2022) dont' model writes to classes very
+    # well.
+
+    SINK(NewTest.foo) # $ MISSING: flow="SOURCE, l:-10 -> NewTest.foo"
+    SINK(nt.foo) # $ MISSING: flow="SOURCE, l:-11 -> nt.foo"
+
+    NewTest.foo = NONSOURCE
+    SINK_F(NewTest.foo)
+    SINK_F(nt.foo)
 
 # ------------------------------------------------------------------------------
 # Global scope
@@ -400,7 +461,7 @@ SINK(obj2.foo) # $ flow="SOURCE, l:-1 -> obj2.foo"
 
 # apparently these if statements below makes a difference :O
 # but one is not enough
-cond = os.urandom(1)[0] > 128
+cond = os.urandom(1)[0] > 128 # $ unresolved_call=os.urandom(..)
 
 if cond:
     pass

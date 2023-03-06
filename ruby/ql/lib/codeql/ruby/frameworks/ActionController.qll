@@ -15,6 +15,15 @@ private import codeql.ruby.frameworks.internal.Rails
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 
 /**
+ * Provides modeling for ActionController, which is part of the `actionpack` gem.
+ * Version: 7.0.
+ */
+module ActionController {
+  // TODO: move the rest of this file inside this module.
+  import codeql.ruby.frameworks.actioncontroller.Filters
+}
+
+/**
  * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::ParamsCall` instead.
  */
 deprecated class ParamsCall = Rails::ParamsCall;
@@ -355,6 +364,21 @@ private class ActionControllerRenderToCall extends RenderToCallImpl {
   }
 }
 
+/** A call to `ActionController::Renderer#render`. */
+private class RendererRenderCall extends RenderCallImpl {
+  RendererRenderCall() {
+    this =
+      [
+        // ActionController#render is an alias for ActionController::Renderer#render
+        any(ActionControllerClass c).getAnImmediateReference().getAMethodCall("render"),
+        any(ActionControllerClass c)
+            .getAnImmediateReference()
+            .getAMethodCall("renderer")
+            .getAMethodCall("render")
+      ].asExpr().getExpr()
+  }
+}
+
 /** A call to `html_escape` from within a controller. */
 private class ActionControllerHtmlEscapeCall extends HtmlEscapeCallImpl {
   ActionControllerHtmlEscapeCall() {
@@ -496,15 +520,15 @@ ActionControllerClass getAssociatedControllerClass(ErbFile f) {
  * templates in `app/views/` and `app/views/layouts/`.
  */
 predicate controllerTemplateFile(ActionControllerClass cls, ErbFile templateFile) {
-  exists(string templatesPath, string sourcePrefix, string subPath, string controllerPath |
+  exists(string sourcePrefix, string subPath, string controllerPath |
     controllerPath = cls.getLocation().getFile().getRelativePath() and
-    templatesPath = templateFile.getParentContainer().getRelativePath() and
     // `sourcePrefix` is either a prefix path ending in a slash, or empty if
     // the rails app is at the source root
     sourcePrefix = [controllerPath.regexpCapture("^(.*/)app/controllers/(?:.*?)/(?:[^/]*)$", 1), ""] and
     controllerPath = sourcePrefix + "app/controllers/" + subPath + "_controller.rb" and
     (
-      templatesPath = sourcePrefix + "app/views/" + subPath or
+      sourcePrefix + "app/views/" + subPath = templateFile.getParentContainer().getRelativePath()
+      or
       templateFile.getRelativePath().matches(sourcePrefix + "app/views/layouts/" + subPath + "%")
     )
   )

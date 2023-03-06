@@ -83,10 +83,12 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
+        protected virtual MethodKind ExplicitlyImplementsKind => MethodKind.Ordinary;
+
         public void Overrides(TextWriter trapFile)
         {
             foreach (var explicitInterface in Symbol.ExplicitInterfaceImplementations
-                .Where(sym => sym.MethodKind == MethodKind.Ordinary)
+                .Where(sym => sym.MethodKind == ExplicitlyImplementsKind)
                 .Select(impl => Type.Create(Context, impl.ContainingType)))
             {
                 trapFile.explicitly_implements(this, explicitInterface.TypeRef);

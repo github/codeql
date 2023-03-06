@@ -1,3 +1,15 @@
+## 0.4.3
+
+### Minor Analysis Improvements
+
+* Added dataflow sources for the [express-ws](https://www.npmjs.com/package/express-ws) library. 
+
+## 0.4.2
+
+### Minor Analysis Improvements
+
+* Added sinks from the [`node-pty`](https://www.npmjs.com/package/node-pty) library to the `js/code-injection` query.
+
 ## 0.4.1
 
 No user-facing changes.

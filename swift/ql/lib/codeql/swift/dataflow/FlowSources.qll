@@ -28,7 +28,7 @@ abstract class RemoteFlowSource extends FlowSource { }
 /**
  * A data flow source of local user input that is defined through 'models as data'.
  */
-private class ExternalLocalFlowSource extends RemoteFlowSource {
+private class ExternalLocalFlowSource extends LocalFlowSource {
   ExternalLocalFlowSource() { sourceNode(this, "local") }
 
   override string getSourceType() { result = "external" }

@@ -1,3 +1,318 @@
+CheckedOperators.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [Class] Number
+#    5|     4: [Property] Value
+#    5|       -1: [TypeMention] int
+#    5|       3: [Getter] get_Value
+#    7|     5: [InstanceConstructor] Number
+#-----|       2: (Parameters)
+#    7|         0: [Parameter] n
+#    7|           -1: [TypeMention] int
+#    7|       4: [AssignExpr] ... = ...
+#    7|         0: [PropertyCall] access to property Value
+#    7|           -1: [ThisAccess] this access
+#    7|         1: [ParameterAccess] access to parameter n
+#    9|     6: [CheckedAddOperator] checked +
+#    9|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#    9|         0: [Parameter] n1
+#    9|           -1: [TypeMention] Number
+#    9|         1: [Parameter] n2
+#    9|           -1: [TypeMention] Number
+#   10|       4: [ObjectCreation] object creation of type Number
+#   10|         -1: [TypeMention] Number
+#   10|         0: [CheckedExpr] checked (...)
+#   10|           0: [AddExpr] ... + ...
+#   10|             0: [PropertyCall] access to property Value
+#   10|               -1: [ParameterAccess] access to parameter n1
+#   10|             1: [PropertyCall] access to property Value
+#   10|               -1: [ParameterAccess] access to parameter n2
+#   12|     7: [AddOperator] +
+#   12|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   12|         0: [Parameter] n1
+#   12|           -1: [TypeMention] Number
+#   12|         1: [Parameter] n2
+#   12|           -1: [TypeMention] Number
+#   13|       4: [ObjectCreation] object creation of type Number
+#   13|         -1: [TypeMention] Number
+#   13|         0: [AddExpr] ... + ...
+#   13|           0: [PropertyCall] access to property Value
+#   13|             -1: [ParameterAccess] access to parameter n1
+#   13|           1: [PropertyCall] access to property Value
+#   13|             -1: [ParameterAccess] access to parameter n2
+#   15|     8: [CheckedSubOperator] checked -
+#   15|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   15|         0: [Parameter] n1
+#   15|           -1: [TypeMention] Number
+#   15|         1: [Parameter] n2
+#   15|           -1: [TypeMention] Number
+#   16|       4: [ObjectCreation] object creation of type Number
+#   16|         -1: [TypeMention] Number
+#   16|         0: [CheckedExpr] checked (...)
+#   16|           0: [SubExpr] ... - ...
+#   16|             0: [PropertyCall] access to property Value
+#   16|               -1: [ParameterAccess] access to parameter n1
+#   16|             1: [PropertyCall] access to property Value
+#   16|               -1: [ParameterAccess] access to parameter n2
+#   18|     9: [SubOperator] -
+#   18|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   18|         0: [Parameter] n1
+#   18|           -1: [TypeMention] Number
+#   18|         1: [Parameter] n2
+#   18|           -1: [TypeMention] Number
+#   19|       4: [ObjectCreation] object creation of type Number
+#   19|         -1: [TypeMention] Number
+#   19|         0: [SubExpr] ... - ...
+#   19|           0: [PropertyCall] access to property Value
+#   19|             -1: [ParameterAccess] access to parameter n1
+#   19|           1: [PropertyCall] access to property Value
+#   19|             -1: [ParameterAccess] access to parameter n2
+#   21|     10: [CheckedMulOperator] checked *
+#   21|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   21|         0: [Parameter] n1
+#   21|           -1: [TypeMention] Number
+#   21|         1: [Parameter] n2
+#   21|           -1: [TypeMention] Number
+#   22|       4: [ObjectCreation] object creation of type Number
+#   22|         -1: [TypeMention] Number
+#   22|         0: [CheckedExpr] checked (...)
+#   22|           0: [MulExpr] ... * ...
+#   22|             0: [PropertyCall] access to property Value
+#   22|               -1: [ParameterAccess] access to parameter n1
+#   22|             1: [PropertyCall] access to property Value
+#   22|               -1: [ParameterAccess] access to parameter n2
+#   24|     11: [MulOperator] *
+#   24|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   24|         0: [Parameter] n1
+#   24|           -1: [TypeMention] Number
+#   24|         1: [Parameter] n2
+#   24|           -1: [TypeMention] Number
+#   25|       4: [ObjectCreation] object creation of type Number
+#   25|         -1: [TypeMention] Number
+#   25|         0: [MulExpr] ... * ...
+#   25|           0: [PropertyCall] access to property Value
+#   25|             -1: [ParameterAccess] access to parameter n1
+#   25|           1: [PropertyCall] access to property Value
+#   25|             -1: [ParameterAccess] access to parameter n2
+#   27|     12: [CheckedDivOperator] checked /
+#   27|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   27|         0: [Parameter] n1
+#   27|           -1: [TypeMention] Number
+#   27|         1: [Parameter] n2
+#   27|           -1: [TypeMention] Number
+#   28|       4: [ObjectCreation] object creation of type Number
+#   28|         -1: [TypeMention] Number
+#   28|         0: [CheckedExpr] checked (...)
+#   28|           0: [DivExpr] ... / ...
+#   28|             0: [PropertyCall] access to property Value
+#   28|               -1: [ParameterAccess] access to parameter n1
+#   28|             1: [PropertyCall] access to property Value
+#   28|               -1: [ParameterAccess] access to parameter n2
+#   30|     13: [DivOperator] /
+#   30|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   30|         0: [Parameter] n1
+#   30|           -1: [TypeMention] Number
+#   30|         1: [Parameter] n2
+#   30|           -1: [TypeMention] Number
+#   31|       4: [ObjectCreation] object creation of type Number
+#   31|         -1: [TypeMention] Number
+#   31|         0: [DivExpr] ... / ...
+#   31|           0: [PropertyCall] access to property Value
+#   31|             -1: [ParameterAccess] access to parameter n1
+#   31|           1: [PropertyCall] access to property Value
+#   31|             -1: [ParameterAccess] access to parameter n2
+#   33|     14: [CheckedMinusOperator] checked -
+#   33|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   33|         0: [Parameter] n
+#   33|           -1: [TypeMention] Number
+#   34|       4: [ObjectCreation] object creation of type Number
+#   34|         -1: [TypeMention] Number
+#   34|         0: [CheckedExpr] checked (...)
+#   34|           0: [UnaryMinusExpr] -...
+#   34|             0: [PropertyCall] access to property Value
+#   34|               -1: [ParameterAccess] access to parameter n
+#   36|     15: [MinusOperator] -
+#   36|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   36|         0: [Parameter] n
+#   36|           -1: [TypeMention] Number
+#   37|       4: [ObjectCreation] object creation of type Number
+#   37|         -1: [TypeMention] Number
+#   37|         0: [UnaryMinusExpr] -...
+#   37|           0: [PropertyCall] access to property Value
+#   37|             -1: [ParameterAccess] access to parameter n
+#   39|     16: [CheckedIncrementOperator] checked ++
+#   39|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   39|         0: [Parameter] n
+#   39|           -1: [TypeMention] Number
+#   40|       4: [ObjectCreation] object creation of type Number
+#   40|         -1: [TypeMention] Number
+#   40|         0: [CheckedExpr] checked (...)
+#   40|           0: [AddExpr] ... + ...
+#   40|             0: [PropertyCall] access to property Value
+#   40|               -1: [ParameterAccess] access to parameter n
+#   40|             1: [IntLiteral] 1
+#   42|     17: [IncrementOperator] ++
+#   42|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   42|         0: [Parameter] n
+#   42|           -1: [TypeMention] Number
+#   43|       4: [ObjectCreation] object creation of type Number
+#   43|         -1: [TypeMention] Number
+#   43|         0: [AddExpr] ... + ...
+#   43|           0: [PropertyCall] access to property Value
+#   43|             -1: [ParameterAccess] access to parameter n
+#   43|           1: [IntLiteral] 1
+#   45|     18: [CheckedDecrementOperator] checked --
+#   45|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   45|         0: [Parameter] n
+#   45|           -1: [TypeMention] Number
+#   46|       4: [ObjectCreation] object creation of type Number
+#   46|         -1: [TypeMention] Number
+#   46|         0: [CheckedExpr] checked (...)
+#   46|           0: [SubExpr] ... - ...
+#   46|             0: [PropertyCall] access to property Value
+#   46|               -1: [ParameterAccess] access to parameter n
+#   46|             1: [IntLiteral] 1
+#   48|     19: [DecrementOperator] --
+#   48|       -1: [TypeMention] Number
+#-----|       2: (Parameters)
+#   48|         0: [Parameter] n
+#   48|           -1: [TypeMention] Number
+#   49|       4: [ObjectCreation] object creation of type Number
+#   49|         -1: [TypeMention] Number
+#   49|         0: [SubExpr] ... - ...
+#   49|           0: [PropertyCall] access to property Value
+#   49|             -1: [ParameterAccess] access to parameter n
+#   49|           1: [IntLiteral] 1
+#   51|     20: [ExplicitConversionOperator] explicit conversion
+#   51|       -1: [TypeMention] short
+#-----|       2: (Parameters)
+#   51|         0: [Parameter] n
+#   51|           -1: [TypeMention] Number
+#   52|       4: [CastExpr] (...) ...
+#   52|         0: [TypeAccess] access to type Int16
+#   52|           0: [TypeMention] short
+#   52|         1: [PropertyCall] access to property Value
+#   52|           -1: [ParameterAccess] access to parameter n
+#   54|     21: [CheckedExplicitConversionOperator] checked explicit conversion
+#   54|       -1: [TypeMention] short
+#-----|       2: (Parameters)
+#   54|         0: [Parameter] n
+#   54|           -1: [TypeMention] Number
+#   55|       4: [CheckedExpr] checked (...)
+#   55|         0: [CastExpr] (...) ...
+#   55|           0: [TypeAccess] access to type Int16
+#   55|             0: [TypeMention] short
+#   55|           1: [PropertyCall] access to property Value
+#   55|             -1: [ParameterAccess] access to parameter n
+FileScoped1.cs:
+#    1| [Interface] I1
+#    3| [Interface] I2
+#    5| [Class] C1
+#-----|   3: (Base types)
+#    5|     1: [TypeMention] I1
+#    7| [Class] C2
+#    9| [Class] C3
+#-----|   3: (Base types)
+#    9|     1: [TypeMention] I2
+#   11| [Interface] IC
+#   13| [Class] C4<>
+#-----|   1: (Type parameters)
+#   13|     0: [TypeParameter] T
+#   15| [Class] C5<>
+#-----|   1: (Type parameters)
+#   15|     0: [TypeParameter] S
+#-----|   3: (Base types)
+#   15|     0: [TypeMention] C4<S>
+#   15|       1: [TypeMention] S
+#   17| [Struct] S1
+#   19| [Enum] E1
+#   21| [DelegateType] D1
+#   23| [RecordClass] R1
+#   23|   12: [NEOperator] !=
+#-----|     2: (Parameters)
+#   23|       0: [Parameter] left
+#   23|       1: [Parameter] right
+#   23|   13: [EQOperator] ==
+#-----|     2: (Parameters)
+#   23|       0: [Parameter] left
+#   23|       1: [Parameter] right
+#   23|   14: [Property] EqualityContract
+#   23|     3: [Getter] get_EqualityContract
+#   25| [RecordStruct] RS1
+#   25|   10: [NEOperator] !=
+#-----|     2: (Parameters)
+#   25|       0: [Parameter] left
+#   25|       1: [Parameter] right
+#   25|   11: [EQOperator] ==
+#-----|     2: (Parameters)
+#   25|       0: [Parameter] left
+#   25|       1: [Parameter] right
+FileScoped2.cs:
+#    1| [Interface] I1
+#    3| [Interface] I2
+#    5| [Class] C1
+#    7| [Class] C2
+#-----|   3: (Base types)
+#    7|     1: [TypeMention] I2
+#    9| [Class] IC
+#   11| [Class] C4<>
+#-----|   1: (Type parameters)
+#   11|     0: [TypeParameter] T
+#   13| [Class] C5<>
+#-----|   1: (Type parameters)
+#   13|     0: [TypeParameter] S
+#-----|   3: (Base types)
+#   13|     0: [TypeMention] C4<S>
+#   13|       1: [TypeMention] S
+#   15| [Struct] S1
+#   17| [Enum] E1
+#   19| [DelegateType] D1
+#   21| [RecordClass] R1
+#   21|   12: [NEOperator] !=
+#-----|     2: (Parameters)
+#   21|       0: [Parameter] left
+#   21|       1: [Parameter] right
+#   21|   13: [EQOperator] ==
+#-----|     2: (Parameters)
+#   21|       0: [Parameter] left
+#   21|       1: [Parameter] right
+#   21|   14: [Property] EqualityContract
+#   21|     3: [Getter] get_EqualityContract
+#   23| [RecordStruct] RS1
+#   23|   10: [NEOperator] !=
+#-----|     2: (Parameters)
+#   23|       0: [Parameter] left
+#   23|       1: [Parameter] right
+#   23|   11: [EQOperator] ==
+#-----|     2: (Parameters)
+#   23|       0: [Parameter] left
+#   23|       1: [Parameter] right
+FileScoped3.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [Interface] I10
+#    5|   2: [Class] C10
+#    7|   3: [Class] C11
+#-----|     3: (Base types)
+#    7|       1: [TypeMention] I10
+FileScoped4.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [Interface] I10
+#    5|   2: [Class] C10
+#    7|   3: [Class] C11
+#-----|     3: (Base types)
+#    7|       1: [TypeMention] I10
 GenericAttribute.cs:
 #    3| [GenericAssemblyAttribute] [assembly: MyGeneric<Int32>(...)]
 #    3|   0: [TypeMention] MyGenericAttribute<int>
@@ -165,6 +480,70 @@ ListPattern.cs:
 #   33|         13: [BreakStmt] break;
 #   34|         14: [DefaultCase] default:
 #   35|         15: [BreakStmt] break;
+NameofScope.cs:
+#    3| [Class] MyAttributeTestClass
+#    5|   5: [Class] MyAttribute
+#-----|     3: (Base types)
+#    5|       0: [TypeMention] Attribute
+#    7|     4: [Field] S
+#    7|       -1: [TypeMention] string
+#    8|     5: [InstanceConstructor] MyAttribute
+#-----|       2: (Parameters)
+#    8|         0: [Parameter] s
+#    8|           -1: [TypeMention] string
+#    8|       4: [AssignExpr] ... = ...
+#    8|         0: [FieldAccess] access to field S
+#    8|         1: [ParameterAccess] access to parameter s
+#   12|   6: [Method] M1<>
+#   12|     -1: [TypeMention] Void
+#-----|     0: (Attributes)
+#   11|       1: [DefaultAttribute] [My(...)]
+#   11|         -1: [TypeMention] MyAttribute
+#   11|         0: [NameOfExpr] nameof(...)
+#   11|           0: [TypeAccess] access to type T
+#   11|             0: [TypeMention] T
+#-----|     1: (Type parameters)
+#   12|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   12|       0: [Parameter] x
+#   12|         -1: [TypeMention] string
+#   12|     4: [BlockStmt] {...}
+#   15|   7: [Method] M2
+#   15|     -1: [TypeMention] string
+#-----|     0: (Attributes)
+#   14|       1: [ReturnAttribute] [return: My(...)]
+#   14|         -1: [TypeMention] MyAttribute
+#   14|         0: [NameOfExpr] nameof(...)
+#   14|           0: [ParameterAccess] access to parameter y
+#-----|     2: (Parameters)
+#   15|       0: [Parameter] y
+#   15|         -1: [TypeMention] string
+#   15|     4: [ParameterAccess] access to parameter y
+#   17|   8: [Method] M3
+#   17|     -1: [TypeMention] object
+#-----|     2: (Parameters)
+#   17|       0: [Parameter] z
+#   17|         -1: [TypeMention] string
+#-----|         0: (Attributes)
+#   17|           1: [DefaultAttribute] [My(...)]
+#   17|             -1: [TypeMention] MyAttribute
+#   17|             0: [NameOfExpr] nameof(...)
+#   17|               0: [ParameterAccess] access to parameter z
+#   17|     4: [ParameterAccess] access to parameter z
+#   19|   9: [Method] M4<>
+#   19|     -1: [TypeMention] object
+#-----|     1: (Type parameters)
+#   19|       0: [TypeParameter] S
+#-----|     2: (Parameters)
+#   19|       0: [Parameter] z
+#   19|         -1: [TypeMention] string
+#-----|         0: (Attributes)
+#   19|           1: [DefaultAttribute] [My(...)]
+#   19|             -1: [TypeMention] MyAttribute
+#   19|             0: [NameOfExpr] nameof(...)
+#   19|               0: [TypeAccess] access to type S
+#   19|                 0: [TypeMention] S
+#   19|     4: [ParameterAccess] access to parameter z
 NativeInt.cs:
 #    1| [Class] NativeInt
 #    3|   5: [Method] M1
@@ -279,6 +658,274 @@ PatternMatchSpan.cs:
 #   16|         2: [DefaultCase] default:
 #   16|         3: [BlockStmt] {...}
 #   16|           0: [BreakStmt] break;
+RelaxedShift.cs:
+#    1| [Interface] IShiftOperators<,,>
+#-----|   1: (Type parameters)
+#    1|     0: [TypeParameter] TSelf
+#    1|     1: [TypeParameter] TOther
+#    1|     2: [TypeParameter] TReturn
+#    3|   4: [LeftShiftOperator] <<
+#    3|     -1: [TypeMention] TReturn
+#-----|     2: (Parameters)
+#    3|       0: [Parameter] value
+#    3|         -1: [TypeMention] TSelf
+#    3|       1: [Parameter] shiftAmount
+#    3|         -1: [TypeMention] TOther
+#    5|   5: [RightShiftOperator] >>
+#    5|     -1: [TypeMention] TReturn
+#-----|     2: (Parameters)
+#    5|       0: [Parameter] value
+#    5|         -1: [TypeMention] TSelf
+#    5|       1: [Parameter] shiftAmount
+#    5|         -1: [TypeMention] TOther
+#    7|   6: [UnsignedRightShiftOperator] >>>
+#    7|     -1: [TypeMention] TReturn
+#-----|     2: (Parameters)
+#    7|       0: [Parameter] value
+#    7|         -1: [TypeMention] TSelf
+#    7|       1: [Parameter] shiftAmount
+#    7|         -1: [TypeMention] TOther
+#   10| [Class] Number
+#-----|   3: (Base types)
+#   12|   5: [LeftShiftOperator] <<
+#   12|     -1: [TypeMention] Number
+#-----|     2: (Parameters)
+#   12|       0: [Parameter] value
+#   12|         -1: [TypeMention] Number
+#   12|       1: [Parameter] shiftAmount
+#   12|         -1: [TypeMention] string
+#   12|     4: [ParameterAccess] access to parameter value
+#   14|   6: [RightShiftOperator] >>
+#   14|     -1: [TypeMention] Number
+#-----|     2: (Parameters)
+#   14|       0: [Parameter] value
+#   14|         -1: [TypeMention] Number
+#   14|       1: [Parameter] shiftAmount
+#   14|         -1: [TypeMention] string
+#   14|     4: [ParameterAccess] access to parameter value
+#   16|   7: [UnsignedRightShiftOperator] >>>
+#   16|     -1: [TypeMention] Number
+#-----|     2: (Parameters)
+#   16|       0: [Parameter] value
+#   16|         -1: [TypeMention] Number
+#   16|       1: [Parameter] shiftAmount
+#   16|         -1: [TypeMention] string
+#   16|     4: [ParameterAccess] access to parameter value
+#   19| [Class] TestRelaxedShift
+#   21|   5: [Method] M1
+#   21|     -1: [TypeMention] Void
+#   22|     4: [BlockStmt] {...}
+#   23|       0: [LocalVariableDeclStmt] ... ...;
+#   23|         0: [LocalVariableDeclAndInitExpr] Number n11 = ...
+#   23|           -1: [TypeMention] Number
+#   23|           0: [LocalVariableAccess] access to local variable n11
+#   23|           1: [ObjectCreation] object creation of type Number
+#   23|             0: [TypeMention] Number
+#   24|       1: [LocalVariableDeclStmt] ... ...;
+#   24|         0: [LocalVariableDeclAndInitExpr] Number n12 = ...
+#   24|           -1: [TypeMention] Number
+#   24|           0: [LocalVariableAccess] access to local variable n12
+#   24|           1: [OperatorCall] call to operator <<
+#   24|             0: [LocalVariableAccess] access to local variable n11
+#   24|             1: [StringLiteralUtf16] "1"
+#   26|       2: [LocalVariableDeclStmt] ... ...;
+#   26|         0: [LocalVariableDeclAndInitExpr] Number n21 = ...
+#   26|           -1: [TypeMention] Number
+#   26|           0: [LocalVariableAccess] access to local variable n21
+#   26|           1: [ObjectCreation] object creation of type Number
+#   26|             0: [TypeMention] Number
+#   27|       3: [LocalVariableDeclStmt] ... ...;
+#   27|         0: [LocalVariableDeclAndInitExpr] Number n22 = ...
+#   27|           -1: [TypeMention] Number
+#   27|           0: [LocalVariableAccess] access to local variable n22
+#   27|           1: [OperatorCall] call to operator >>
+#   27|             0: [LocalVariableAccess] access to local variable n21
+#   27|             1: [StringLiteralUtf16] "2"
+#   29|       4: [LocalVariableDeclStmt] ... ...;
+#   29|         0: [LocalVariableDeclAndInitExpr] Number n31 = ...
+#   29|           -1: [TypeMention] Number
+#   29|           0: [LocalVariableAccess] access to local variable n31
+#   29|           1: [ObjectCreation] object creation of type Number
+#   29|             0: [TypeMention] Number
+#   30|       5: [LocalVariableDeclStmt] ... ...;
+#   30|         0: [LocalVariableDeclAndInitExpr] Number n32 = ...
+#   30|           -1: [TypeMention] Number
+#   30|           0: [LocalVariableAccess] access to local variable n32
+#   30|           1: [OperatorCall] call to operator >>>
+#   30|             0: [LocalVariableAccess] access to local variable n31
+#   30|             1: [StringLiteralUtf16] "3"
+RequiredMembers.cs:
+#    4| [Class] ClassRequiredMembers
+#    6|   4: [Field] RequiredField
+#    6|     -1: [TypeMention] object
+#    7|   5: [Property] RequiredProperty
+#    7|     -1: [TypeMention] string
+#    7|     3: [Getter] get_RequiredProperty
+#    7|     4: [Setter] set_RequiredProperty
+#-----|       2: (Parameters)
+#    7|         0: [Parameter] value
+#    8|   6: [Property] VirtualProperty
+#    8|     -1: [TypeMention] object
+#    8|     3: [Getter] get_VirtualProperty
+#    8|     4: [Setter] set_VirtualProperty
+#-----|       2: (Parameters)
+#    8|         0: [Parameter] value
+#   10|   7: [InstanceConstructor] ClassRequiredMembers
+#   10|     4: [BlockStmt] {...}
+#   13|   8: [InstanceConstructor] ClassRequiredMembers
+#-----|     0: (Attributes)
+#   12|       1: [DefaultAttribute] [SetsRequiredMembers(...)]
+#   12|         0: [TypeMention] SetsRequiredMembersAttribute
+#-----|     2: (Parameters)
+#   13|       0: [Parameter] requiredField
+#   13|         -1: [TypeMention] object
+#   13|       1: [Parameter] requiredProperty
+#   13|         -1: [TypeMention] string
+#   14|     4: [BlockStmt] {...}
+#   15|       0: [ExprStmt] ...;
+#   15|         0: [AssignExpr] ... = ...
+#   15|           0: [FieldAccess] access to field RequiredField
+#   15|           1: [ParameterAccess] access to parameter requiredField
+#   16|       1: [ExprStmt] ...;
+#   16|         0: [AssignExpr] ... = ...
+#   16|           0: [PropertyCall] access to property RequiredProperty
+#   16|           1: [ParameterAccess] access to parameter requiredProperty
+#   20| [Class] ClassRequiredMembersSub
+#-----|   3: (Base types)
+#   20|     0: [TypeMention] ClassRequiredMembers
+#   22|   4: [Property] VirtualProperty
+#   22|     -1: [TypeMention] object
+#   22|     3: [Getter] get_VirtualProperty
+#   22|     4: [Setter] set_VirtualProperty
+#-----|       2: (Parameters)
+#   22|         0: [Parameter] value
+#   24|   5: [InstanceConstructor] ClassRequiredMembersSub
+#   24|     3: [ConstructorInitializer] call to constructor ClassRequiredMembers
+#   24|     4: [BlockStmt] {...}
+#   27|   6: [InstanceConstructor] ClassRequiredMembersSub
+#-----|     0: (Attributes)
+#   26|       1: [DefaultAttribute] [SetsRequiredMembers(...)]
+#   26|         0: [TypeMention] SetsRequiredMembersAttribute
+#-----|     2: (Parameters)
+#   27|       0: [Parameter] requiredField
+#   27|         -1: [TypeMention] object
+#   27|       1: [Parameter] requiredProperty
+#   27|         -1: [TypeMention] string
+#   27|       2: [Parameter] virtualProperty
+#   27|         -1: [TypeMention] object
+#   27|     3: [ConstructorInitializer] call to constructor ClassRequiredMembers
+#   27|       0: [ParameterAccess] access to parameter requiredField
+#   27|       1: [ParameterAccess] access to parameter requiredProperty
+#   28|     4: [BlockStmt] {...}
+#   29|       0: [ExprStmt] ...;
+#   29|         0: [AssignExpr] ... = ...
+#   29|           0: [PropertyCall] access to property VirtualProperty
+#   29|           1: [ParameterAccess] access to parameter virtualProperty
+#   33| [RecordClass] RecordRequiredMembers
+#   33|   12: [NEOperator] !=
+#-----|     2: (Parameters)
+#   33|       0: [Parameter] left
+#   33|       1: [Parameter] right
+#   33|   13: [EQOperator] ==
+#-----|     2: (Parameters)
+#   33|       0: [Parameter] left
+#   33|       1: [Parameter] right
+#   33|   14: [Property] EqualityContract
+#   33|     3: [Getter] get_EqualityContract
+#   35|   15: [Property] X
+#   35|     -1: [TypeMention] object
+#   35|     3: [Getter] get_X
+#   35|     4: [Setter] set_X
+#-----|       2: (Parameters)
+#   35|         0: [Parameter] value
+#   38| [Struct] StructRequiredMembers
+#   40|   5: [Property] Y
+#   40|     -1: [TypeMention] string
+#   40|     3: [Getter] get_Y
+#   40|     4: [Setter] set_Y
+#-----|       2: (Parameters)
+#   40|         0: [Parameter] value
+Scoped.cs:
+#    1| [Struct] S1
+#    2| [Struct] S2
+#    7| [Class] ScopedModifierTest
+#    9|   5: [Method] M1
+#    9|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#    9|       0: [Parameter] x1
+#    9|         -1: [TypeMention] int
+#    9|       1: [Parameter] y1
+#    9|         -1: [TypeMention] int
+#   10|     4: [BlockStmt] {...}
+#   13|       0: [ReturnStmt] return ...;
+#   13|         0: [RefExpr] ref ...
+#   13|           0: [ParameterAccess] access to parameter y1
+#   16|   6: [Method] M2
+#   16|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   16|       0: [Parameter] x2
+#   16|         -1: [TypeMention] int
+#   16|       1: [Parameter] y2
+#   16|         -1: [TypeMention] int
+#   17|     4: [BlockStmt] {...}
+#   18|       0: [ExprStmt] ...;
+#   18|         0: [AssignExpr] ... = ...
+#   18|           0: [ParameterAccess] access to parameter x2
+#   18|           1: [IntLiteral] 0
+#   21|       1: [ReturnStmt] return ...;
+#   21|         0: [RefExpr] ref ...
+#   21|           0: [ParameterAccess] access to parameter y2
+#   24|   7: [Method] M3
+#   24|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   24|       0: [Parameter] x3
+#   24|         -1: [TypeMention] int
+#   25|     4: [BlockStmt] {...}
+#   27|       0: [ReturnStmt] return ...;
+#   27|         0: [ParameterAccess] access to parameter x3
+#   30|   8: [Method] M4
+#   30|     -1: [TypeMention] S1
+#-----|     2: (Parameters)
+#   30|       0: [Parameter] x4
+#   30|         -1: [TypeMention] S1
+#   31|     4: [BlockStmt] {...}
+#   33|       0: [ReturnStmt] return ...;
+#   33|         0: [ParameterAccess] access to parameter x4
+#   36|   9: [Method] M5
+#   36|     -1: [TypeMention] S2
+#-----|     2: (Parameters)
+#   36|       0: [Parameter] x5
+#   36|         -1: [TypeMention] S2
+#   37|     4: [BlockStmt] {...}
+#   40|       0: [ReturnStmt] return ...;
+#   40|         0: [ObjectCreation] object creation of type S2
+#   40|           0: [TypeMention] S2
+#   43|   10: [Method] M6
+#   43|     -1: [TypeMention] S2
+#-----|     2: (Parameters)
+#   43|       0: [Parameter] x6
+#   43|         -1: [TypeMention] S2
+#   44|     4: [BlockStmt] {...}
+#   47|       0: [ReturnStmt] return ...;
+#   47|         0: [ObjectCreation] object creation of type S2
+#   47|           0: [TypeMention] S2
+#   50|   11: [Method] Locals
+#   50|     -1: [TypeMention] S2
+#   51|     4: [BlockStmt] {...}
+#   52|       0: [LocalVariableDeclStmt] ... ...;
+#   52|         0: [LocalVariableDeclAndInitExpr] S2 x7 = ...
+#   52|           -1: [TypeMention] null
+#   52|           0: [LocalVariableAccess] access to local variable x7
+#   52|           1: [ObjectCreation] object creation of type S2
+#   52|             0: [TypeMention] S2
+#   55|       1: [LocalVariableDeclStmt] ... ...;
+#   55|         0: [LocalVariableDeclAndInitExpr] S2 y7 = ...
+#   55|           -1: [TypeMention] S2
+#   55|           0: [LocalVariableAccess] access to local variable y7
+#   55|           1: [ObjectCreation] object creation of type S2
+#   55|             0: [TypeMention] S2
+#   56|       2: [ReturnStmt] return ...;
+#   56|         0: [LocalVariableAccess] access to local variable y7
 SignAnalysis.cs:
 #    1| [Class] MySignAnalysis
 #    4|   5: [Method] UnsignedRightShiftSign
@@ -404,14 +1051,14 @@ StaticInterfaceMembers.cs:
 #    5|       0: [Parameter] other
 #    5|         -1: [TypeMention] T
 #    5|     4: [ParameterAccess] access to parameter other
-#    7|   6: [Method] Add
+#    7|   6: [AddOperator] +
 #    7|     -1: [TypeMention] T
 #-----|     2: (Parameters)
 #    7|       0: [Parameter] left
 #    7|         -1: [TypeMention] T
 #    7|       1: [Parameter] right
 #    7|         -1: [TypeMention] T
-#    9|   7: [Method] Subtract
+#    9|   7: [SubOperator] -
 #    9|     -1: [TypeMention] T
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] left
@@ -419,121 +1066,265 @@ StaticInterfaceMembers.cs:
 #    9|       1: [Parameter] right
 #    9|         -1: [TypeMention] T
 #    9|     4: [ParameterAccess] access to parameter left
-#   11|   8: [Method] Zero
-#   11|     -1: [TypeMention] T
-#   11|     4: [DefaultValueExpr] default(...)
-#   11|       0: [TypeAccess] access to type T
-#   11|         0: [TypeMention] T
-#   14| [Class] Complex
+#   11|   8: [ExplicitConversionOperator] explicit conversion
+#   11|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   11|       0: [Parameter] n
+#   11|         -1: [TypeMention] T
+#   13|   9: [ExplicitConversionOperator] explicit conversion
+#   13|     -1: [TypeMention] short
+#-----|     2: (Parameters)
+#   13|       0: [Parameter] n
+#   13|         -1: [TypeMention] T
+#   15|   10: [Method] Inc
+#   15|     -1: [TypeMention] T
+#-----|     2: (Parameters)
+#   15|       0: [Parameter] other
+#   15|         -1: [TypeMention] T
+#   17|   11: [Method] Dec
+#   17|     -1: [TypeMention] T
+#-----|     2: (Parameters)
+#   17|       0: [Parameter] other
+#   17|         -1: [TypeMention] T
+#   17|     4: [ParameterAccess] access to parameter other
+#   19|   12: [Method] Add
+#   19|     -1: [TypeMention] T
+#-----|     2: (Parameters)
+#   19|       0: [Parameter] left
+#   19|         -1: [TypeMention] T
+#   19|       1: [Parameter] right
+#   19|         -1: [TypeMention] T
+#   21|   13: [Method] Subtract
+#   21|     -1: [TypeMention] T
+#-----|     2: (Parameters)
+#   21|       0: [Parameter] left
+#   21|         -1: [TypeMention] T
+#   21|       1: [Parameter] right
+#   21|         -1: [TypeMention] T
+#   21|     4: [ParameterAccess] access to parameter left
+#   23|   14: [Method] Zero
+#   23|     -1: [TypeMention] T
+#   23|     4: [DefaultValueExpr] default(...)
+#   23|       0: [TypeAccess] access to type T
+#   23|         0: [TypeMention] T
+#   26| [Class] Complex
 #-----|   3: (Base types)
-#   16|   4: [Property] Real
-#   16|     -1: [TypeMention] double
-#   16|     2: [AssignExpr] ... = ...
-#   16|       0: [PropertyCall] access to property Real
-#   16|       1: [DoubleLiteral] 0
-#   16|     3: [Getter] get_Real
-#   16|     4: [Setter] set_Real
+#   28|   4: [Property] Real
+#   28|     -1: [TypeMention] double
+#   28|     2: [AssignExpr] ... = ...
+#   28|       0: [PropertyCall] access to property Real
+#   28|       1: [DoubleLiteral] 0
+#   28|     3: [Getter] get_Real
+#   28|     4: [Setter] set_Real
 #-----|       2: (Parameters)
-#   16|         0: [Parameter] value
-#   17|   5: [Property] Imaginary
-#   17|     -1: [TypeMention] double
-#   17|     2: [AssignExpr] ... = ...
-#   17|       0: [PropertyCall] access to property Imaginary
-#   17|       1: [DoubleLiteral] 0
-#   17|     3: [Getter] get_Imaginary
-#   17|     4: [Setter] set_Imaginary
+#   28|         0: [Parameter] value
+#   29|   5: [Property] Imaginary
+#   29|     -1: [TypeMention] double
+#   29|     2: [AssignExpr] ... = ...
+#   29|       0: [PropertyCall] access to property Imaginary
+#   29|       1: [DoubleLiteral] 0
+#   29|     3: [Getter] get_Imaginary
+#   29|     4: [Setter] set_Imaginary
 #-----|       2: (Parameters)
-#   17|         0: [Parameter] value
-#   19|   6: [InstanceConstructor] Complex
-#   19|     4: [BlockStmt] {...}
-#   21|   7: [Method] Zero
-#   21|     -1: [TypeMention] Complex
-#   21|     4: [ObjectCreation] object creation of type Complex
-#   21|       0: [TypeMention] Complex
-#   23|   8: [IncrementOperator] ++
-#   23|     -1: [TypeMention] Complex
-#-----|     2: (Parameters)
-#   23|       0: [Parameter] other
-#   23|         -1: [TypeMention] Complex
-#   24|     4: [ObjectCreation] object creation of type Complex
-#   24|       -2: [TypeMention] Complex
-#   24|       -1: [ObjectInitializer] { ..., ... }
-#   24|         0: [MemberInitializer] ... = ...
-#   24|           0: [PropertyCall] access to property Real
-#   24|           1: [AddExpr] ... + ...
-#   24|             0: [PropertyCall] access to property Real
-#   24|               -1: [ParameterAccess] access to parameter other
-#   24|             1: [DoubleLiteral] 1
-#   24|         1: [MemberInitializer] ... = ...
-#   24|           0: [PropertyCall] access to property Imaginary
-#   24|           1: [PropertyCall] access to property Imaginary
-#   24|             -1: [ParameterAccess] access to parameter other
-#   26|   9: [DecrementOperator] --
-#   26|     -1: [TypeMention] Complex
-#-----|     2: (Parameters)
-#   26|       0: [Parameter] other
-#   26|         -1: [TypeMention] Complex
-#   27|     4: [ObjectCreation] object creation of type Complex
-#   27|       -2: [TypeMention] Complex
-#   27|       -1: [ObjectInitializer] { ..., ... }
-#   27|         0: [MemberInitializer] ... = ...
-#   27|           0: [PropertyCall] access to property Real
-#   27|           1: [SubExpr] ... - ...
-#   27|             0: [PropertyCall] access to property Real
-#   27|               -1: [ParameterAccess] access to parameter other
-#   27|             1: [DoubleLiteral] 1
-#   27|         1: [MemberInitializer] ... = ...
-#   27|           0: [PropertyCall] access to property Imaginary
-#   27|           1: [PropertyCall] access to property Imaginary
-#   27|             -1: [ParameterAccess] access to parameter other
-#   29|   10: [Method] Add
-#   29|     -1: [TypeMention] Complex
-#-----|     2: (Parameters)
-#   29|       0: [Parameter] left
-#   29|         -1: [TypeMention] Complex
-#   29|       1: [Parameter] right
-#   29|         -1: [TypeMention] Complex
-#   30|     4: [ObjectCreation] object creation of type Complex
-#   30|       -2: [TypeMention] Complex
-#   30|       -1: [ObjectInitializer] { ..., ... }
-#   30|         0: [MemberInitializer] ... = ...
-#   30|           0: [PropertyCall] access to property Real
-#   30|           1: [AddExpr] ... + ...
-#   30|             0: [PropertyCall] access to property Real
-#   30|               -1: [ParameterAccess] access to parameter left
-#   30|             1: [PropertyCall] access to property Real
-#   30|               -1: [ParameterAccess] access to parameter right
-#   30|         1: [MemberInitializer] ... = ...
-#   30|           0: [PropertyCall] access to property Imaginary
-#   30|           1: [AddExpr] ... + ...
-#   30|             0: [PropertyCall] access to property Imaginary
-#   30|               -1: [ParameterAccess] access to parameter left
-#   30|             1: [PropertyCall] access to property Imaginary
-#   30|               -1: [ParameterAccess] access to parameter right
-#   32|   11: [Method] Subtract
-#   32|     -1: [TypeMention] Complex
-#-----|     2: (Parameters)
-#   32|       0: [Parameter] left
-#   32|         -1: [TypeMention] Complex
-#   32|       1: [Parameter] right
-#   32|         -1: [TypeMention] Complex
+#   29|         0: [Parameter] value
+#   31|   6: [InstanceConstructor] Complex
+#   31|     4: [BlockStmt] {...}
+#   33|   7: [Method] Zero
+#   33|     -1: [TypeMention] Complex
 #   33|     4: [ObjectCreation] object creation of type Complex
-#   33|       -2: [TypeMention] Complex
-#   33|       -1: [ObjectInitializer] { ..., ... }
-#   33|         0: [MemberInitializer] ... = ...
-#   33|           0: [PropertyCall] access to property Real
-#   33|           1: [SubExpr] ... - ...
-#   33|             0: [PropertyCall] access to property Real
-#   33|               -1: [ParameterAccess] access to parameter left
-#   33|             1: [PropertyCall] access to property Real
-#   33|               -1: [ParameterAccess] access to parameter right
-#   33|         1: [MemberInitializer] ... = ...
-#   33|           0: [PropertyCall] access to property Imaginary
-#   33|           1: [SubExpr] ... - ...
-#   33|             0: [PropertyCall] access to property Imaginary
-#   33|               -1: [ParameterAccess] access to parameter left
-#   33|             1: [PropertyCall] access to property Imaginary
-#   33|               -1: [ParameterAccess] access to parameter right
+#   33|       0: [TypeMention] Complex
+#   35|   8: [IncrementOperator] ++
+#   35|     -1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   35|       0: [Parameter] other
+#   35|         -1: [TypeMention] Complex
+#   36|     4: [ObjectCreation] object creation of type Complex
+#   36|       -2: [TypeMention] Complex
+#   36|       -1: [ObjectInitializer] { ..., ... }
+#   36|         0: [MemberInitializer] ... = ...
+#   36|           0: [PropertyCall] access to property Real
+#   36|           1: [AddExpr] ... + ...
+#   36|             0: [PropertyCall] access to property Real
+#   36|               -1: [ParameterAccess] access to parameter other
+#   36|             1: [DoubleLiteral] 1
+#   36|         1: [MemberInitializer] ... = ...
+#   36|           0: [PropertyCall] access to property Imaginary
+#   36|           1: [PropertyCall] access to property Imaginary
+#   36|             -1: [ParameterAccess] access to parameter other
+#   38|   9: [DecrementOperator] --
+#   38|     -1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   38|       0: [Parameter] other
+#   38|         -1: [TypeMention] Complex
+#   39|     4: [ObjectCreation] object creation of type Complex
+#   39|       -2: [TypeMention] Complex
+#   39|       -1: [ObjectInitializer] { ..., ... }
+#   39|         0: [MemberInitializer] ... = ...
+#   39|           0: [PropertyCall] access to property Real
+#   39|           1: [SubExpr] ... - ...
+#   39|             0: [PropertyCall] access to property Real
+#   39|               -1: [ParameterAccess] access to parameter other
+#   39|             1: [DoubleLiteral] 1
+#   39|         1: [MemberInitializer] ... = ...
+#   39|           0: [PropertyCall] access to property Imaginary
+#   39|           1: [PropertyCall] access to property Imaginary
+#   39|             -1: [ParameterAccess] access to parameter other
+#   41|   10: [AddOperator] +
+#   41|     -1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   41|       0: [Parameter] left
+#   41|         -1: [TypeMention] Complex
+#   41|       1: [Parameter] right
+#   41|         -1: [TypeMention] Complex
+#   42|     4: [ObjectCreation] object creation of type Complex
+#   42|       -2: [TypeMention] Complex
+#   42|       -1: [ObjectInitializer] { ..., ... }
+#   42|         0: [MemberInitializer] ... = ...
+#   42|           0: [PropertyCall] access to property Real
+#   42|           1: [AddExpr] ... + ...
+#   42|             0: [PropertyCall] access to property Real
+#   42|               -1: [ParameterAccess] access to parameter left
+#   42|             1: [PropertyCall] access to property Real
+#   42|               -1: [ParameterAccess] access to parameter right
+#   42|         1: [MemberInitializer] ... = ...
+#   42|           0: [PropertyCall] access to property Imaginary
+#   42|           1: [AddExpr] ... + ...
+#   42|             0: [PropertyCall] access to property Imaginary
+#   42|               -1: [ParameterAccess] access to parameter left
+#   42|             1: [PropertyCall] access to property Imaginary
+#   42|               -1: [ParameterAccess] access to parameter right
+#   44|   11: [SubOperator] -
+#   44|     -1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   44|       0: [Parameter] left
+#   44|         -1: [TypeMention] Complex
+#   44|       1: [Parameter] right
+#   44|         -1: [TypeMention] Complex
+#   45|     4: [ObjectCreation] object creation of type Complex
+#   45|       -2: [TypeMention] Complex
+#   45|       -1: [ObjectInitializer] { ..., ... }
+#   45|         0: [MemberInitializer] ... = ...
+#   45|           0: [PropertyCall] access to property Real
+#   45|           1: [SubExpr] ... - ...
+#   45|             0: [PropertyCall] access to property Real
+#   45|               -1: [ParameterAccess] access to parameter left
+#   45|             1: [PropertyCall] access to property Real
+#   45|               -1: [ParameterAccess] access to parameter right
+#   45|         1: [MemberInitializer] ... = ...
+#   45|           0: [PropertyCall] access to property Imaginary
+#   45|           1: [SubExpr] ... - ...
+#   45|             0: [PropertyCall] access to property Imaginary
+#   45|               -1: [ParameterAccess] access to parameter left
+#   45|             1: [PropertyCall] access to property Imaginary
+#   45|               -1: [ParameterAccess] access to parameter right
+#   47|   12: [ExplicitConversionOperator] explicit conversion
+#   47|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   47|       0: [Parameter] n
+#   47|         -1: [TypeMention] Complex
+#   47|     4: [CastExpr] (...) ...
+#   47|       0: [TypeAccess] access to type Int32
+#   47|         0: [TypeMention] int
+#   47|       1: [PropertyCall] access to property Real
+#   47|         -1: [ParameterAccess] access to parameter n
+#   49|   13: [ExplicitConversionOperator] explicit conversion
+#   49|     -1: [TypeMention] short
+#-----|     2: (Parameters)
+#   49|       0: [Parameter] n
+#   49|         -1: [TypeMention] Complex
+#   49|     4: [CastExpr] (...) ...
+#   49|       0: [TypeAccess] access to type Int16
+#   49|         0: [TypeMention] short
+#   49|       1: [PropertyCall] access to property Real
+#   49|         -1: [ParameterAccess] access to parameter n
+#   51|   14: [Method] Inc
+#   51|     -1: [TypeMention] Complex
+#   51|     -1: [TypeMention] INumber<Complex>
+#   51|       1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   51|       0: [Parameter] other
+#   51|         -1: [TypeMention] Complex
+#   52|     4: [ObjectCreation] object creation of type Complex
+#   52|       -2: [TypeMention] Complex
+#   52|       -1: [ObjectInitializer] { ..., ... }
+#   52|         0: [MemberInitializer] ... = ...
+#   52|           0: [PropertyCall] access to property Real
+#   52|           1: [AddExpr] ... + ...
+#   52|             0: [PropertyCall] access to property Real
+#   52|               -1: [ParameterAccess] access to parameter other
+#   52|             1: [DoubleLiteral] 1
+#   52|         1: [MemberInitializer] ... = ...
+#   52|           0: [PropertyCall] access to property Imaginary
+#   52|           1: [PropertyCall] access to property Imaginary
+#   52|             -1: [ParameterAccess] access to parameter other
+#   54|   15: [Method] Dec
+#   54|     -1: [TypeMention] Complex
+#   54|     -1: [TypeMention] INumber<Complex>
+#   54|       1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   54|       0: [Parameter] other
+#   54|         -1: [TypeMention] Complex
+#   55|     4: [ObjectCreation] object creation of type Complex
+#   55|       -2: [TypeMention] Complex
+#   55|       -1: [ObjectInitializer] { ..., ... }
+#   55|         0: [MemberInitializer] ... = ...
+#   55|           0: [PropertyCall] access to property Real
+#   55|           1: [SubExpr] ... - ...
+#   55|             0: [PropertyCall] access to property Real
+#   55|               -1: [ParameterAccess] access to parameter other
+#   55|             1: [DoubleLiteral] 1
+#   55|         1: [MemberInitializer] ... = ...
+#   55|           0: [PropertyCall] access to property Imaginary
+#   55|           1: [PropertyCall] access to property Imaginary
+#   55|             -1: [ParameterAccess] access to parameter other
+#   57|   16: [Method] Add
+#   57|     -1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   57|       0: [Parameter] left
+#   57|         -1: [TypeMention] Complex
+#   57|       1: [Parameter] right
+#   57|         -1: [TypeMention] Complex
+#   58|     4: [ObjectCreation] object creation of type Complex
+#   58|       -2: [TypeMention] Complex
+#   58|       -1: [ObjectInitializer] { ..., ... }
+#   58|         0: [MemberInitializer] ... = ...
+#   58|           0: [PropertyCall] access to property Real
+#   58|           1: [AddExpr] ... + ...
+#   58|             0: [PropertyCall] access to property Real
+#   58|               -1: [ParameterAccess] access to parameter left
+#   58|             1: [PropertyCall] access to property Real
+#   58|               -1: [ParameterAccess] access to parameter right
+#   58|         1: [MemberInitializer] ... = ...
+#   58|           0: [PropertyCall] access to property Imaginary
+#   58|           1: [AddExpr] ... + ...
+#   58|             0: [PropertyCall] access to property Imaginary
+#   58|               -1: [ParameterAccess] access to parameter left
+#   58|             1: [PropertyCall] access to property Imaginary
+#   58|               -1: [ParameterAccess] access to parameter right
+#   60|   17: [Method] Subtract
+#   60|     -1: [TypeMention] Complex
+#-----|     2: (Parameters)
+#   60|       0: [Parameter] left
+#   60|         -1: [TypeMention] Complex
+#   60|       1: [Parameter] right
+#   60|         -1: [TypeMention] Complex
+#   61|     4: [ObjectCreation] object creation of type Complex
+#   61|       -2: [TypeMention] Complex
+#   61|       -1: [ObjectInitializer] { ..., ... }
+#   61|         0: [MemberInitializer] ... = ...
+#   61|           0: [PropertyCall] access to property Real
+#   61|           1: [SubExpr] ... - ...
+#   61|             0: [PropertyCall] access to property Real
+#   61|               -1: [ParameterAccess] access to parameter left
+#   61|             1: [PropertyCall] access to property Real
+#   61|               -1: [ParameterAccess] access to parameter right
+#   61|         1: [MemberInitializer] ... = ...
+#   61|           0: [PropertyCall] access to property Imaginary
+#   61|           1: [SubExpr] ... - ...
+#   61|             0: [PropertyCall] access to property Imaginary
+#   61|               -1: [ParameterAccess] access to parameter left
+#   61|             1: [PropertyCall] access to property Imaginary
+#   61|               -1: [ParameterAccess] access to parameter right
 Strings.cs:
 #    3| [Class] MyTestClass
 #    5|   5: [Method] M1
@@ -612,6 +1403,51 @@ Strings.cs:
 #   53|           1: [StringLiteralUtf8] "The nested message
 #   53|             is UTF-8 encoded and
 #   53|           spans multiple lines."
+Struct.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [Class] MyEmptyClass
+#    5|   2: [Struct] RefStruct
+#    7|     5: [Field] MyInt
+#    7|       -1: [TypeMention] int
+#    8|     6: [Field] MyByte
+#    8|       -1: [TypeMention] byte
+#    9|     7: [Field] MyObject
+#    9|       -1: [TypeMention] object
+#   10|     8: [Field] MyEmptyClass
+#   10|       -1: [TypeMention] MyEmptyClass
+#   11|     9: [Field] MyReadonlyByte
+#   11|       -1: [TypeMention] byte
+#   12|     10: [Field] MyReadonlyObject
+#   12|       -1: [TypeMention] object
+#   13|     11: [Field] MyReadonlyString
+#   13|       -1: [TypeMention] string
+StructDefault.cs:
+#    1| [Class] MyEmptyClass
+#    2| [Struct] StructDefaultValue
+#    4|   5: [Field] X
+#    4|     -1: [TypeMention] int
+#    5|   6: [Field] Y
+#    5|     -1: [TypeMention] int
+#    6|   7: [Field] Z
+#    6|     -1: [TypeMention] MyEmptyClass
+#    8|   8: [InstanceConstructor] StructDefaultValue
+#-----|     2: (Parameters)
+#    8|       0: [Parameter] x
+#    8|         -1: [TypeMention] int
+#    8|       1: [Parameter] inity
+#    8|         -1: [TypeMention] bool
+#    9|     4: [BlockStmt] {...}
+#   10|       0: [ExprStmt] ...;
+#   10|         0: [AssignExpr] ... = ...
+#   10|           0: [FieldAccess] access to field X
+#   10|           1: [ParameterAccess] access to parameter x
+#   11|       1: [IfStmt] if (...) ...
+#   11|         0: [ParameterAccess] access to parameter inity
+#   11|         1: [BlockStmt] {...}
+#   11|           0: [ExprStmt] ...;
+#   11|             0: [AssignExpr] ... = ...
+#   11|               0: [FieldAccess] access to field Y
+#   11|               1: [IntLiteral] 1
 cil/class1.cs:
 #    4| [Class] Class1
 #    6|   5: [Method] Main

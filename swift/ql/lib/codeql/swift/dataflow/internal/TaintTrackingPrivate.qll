@@ -43,11 +43,16 @@ private module Cached {
       nodeFrom.asExpr() = interpolated.getAppendingExpr()
     )
     or
-    // allow flow through string concatenation.
-    exists(AddExpr ae |
-      ae.getAnOperand() = nodeFrom.asExpr() and
-      ae = nodeTo.asExpr() and
-      ae.getType().getName() = "String"
+    // allow flow through arithmetic (this case includes string concatenation)
+    nodeTo.asExpr().(ArithmeticOperation).getAnOperand() = nodeFrom.asExpr()
+    or
+    // allow flow through bitwise operations
+    nodeTo.asExpr().(BitwiseOperation).getAnOperand() = nodeFrom.asExpr()
+    or
+    // allow flow through assignment operations (e.g. `+=`)
+    exists(AssignOperation op |
+      nodeFrom.asExpr() = op.getSource() and
+      nodeTo.asExpr() = op.getDest()
     )
     or
     // flow through a subscript access

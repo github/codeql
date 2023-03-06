@@ -118,6 +118,10 @@ class AstTranslatorBase : private swift::ASTVisitor<CrtpSubclass>,
     swift::ASTVisitor<CrtpSubclass>::visit(const_cast<E*>(&entity));
   }
 
+  void translateAndEmit(const swift::CapturedValue& e) {
+    dispatcher.emit(static_cast<CrtpSubclass*>(this)->translateCapturedValue(e));
+  }
+
  private:
   friend class swift::ASTVisitor<CrtpSubclass>;
 

@@ -9,6 +9,12 @@ string describe(BitwiseOperation e) {
   or
   e instanceof XorBitwiseExpr and result = "XorBitwiseExpr"
   or
+  e instanceof PointwiseAndExpr and result = "PointwiseAndExpr"
+  or
+  e instanceof PointwiseOrExpr and result = "PointwiseOrExpr"
+  or
+  e instanceof PointwiseXorExpr and result = "PointwiseXorExpr"
+  or
   e instanceof ShiftLeftBitwiseExpr and result = "ShiftLeftBitwiseExpr"
   or
   e instanceof ShiftRightBitwiseExpr and result = "ShiftRightBitwiseExpr"

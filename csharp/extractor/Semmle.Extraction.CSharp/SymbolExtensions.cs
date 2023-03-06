@@ -77,12 +77,8 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Gets the source-level modifiers belonging to this symbol, if any.
         /// </summary>
-        public static IEnumerable<string> GetSourceLevelModifiers(this ISymbol symbol)
-        {
-            var methodModifiers = symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.BaseMethodDeclarationSyntax>(md => md.Modifiers);
-            var typeModifiers = symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax>(cd => cd.Modifiers);
-            return methodModifiers.Concat(typeModifiers).Select(m => m.Text);
-        }
+        public static IEnumerable<string> GetSourceLevelModifiers(this ISymbol symbol) =>
+            symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.MemberDeclarationSyntax>(md => md.Modifiers).Select(m => m.Text);
 
         /// <summary>
         /// Holds if the ID generated for `dependant` will contain a reference to
@@ -286,54 +282,60 @@ namespace Semmle.Extraction.CSharp
         public static IEnumerable<IFieldSymbol?> GetTupleElementsMaybeNull(this INamedTypeSymbol type) =>
             type.TupleElements;
 
+        private static void BuildQualifierAndName(INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined)
+        {
+            if (named.ContainingType is not null)
+            {
+                named.ContainingType.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
+                trapFile.Write('.');
+            }
+            else if (named.ContainingNamespace is not null)
+            {
+                if (cx.ShouldAddAssemblyTrapPrefix && named.ContainingAssembly is not null)
+                    BuildAssembly(named.ContainingAssembly, trapFile);
+                named.ContainingNamespace.BuildNamespace(cx, trapFile);
+            }
+
+            var name = named.IsFileLocal ? named.MetadataName : named.Name;
+            trapFile.Write(name);
+        }
+
+        private static void BuildTupleId(INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined)
+        {
+            trapFile.Write('(');
+            trapFile.BuildList(",", named.GetTupleElementsMaybeNull(),
+                (i, f) =>
+                {
+                    if (f is null)
+                    {
+                        trapFile.Write($"null({i})");
+                    }
+                    else
+                    {
+                        trapFile.Write((f.CorrespondingTupleField ?? f).Name);
+                        trapFile.Write(":");
+                        f.Type.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
+                    }
+                }
+                );
+            trapFile.Write(")");
+        }
+
         private static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType)
         {
             if (!constructUnderlyingTupleType && named.IsTupleType)
             {
-                trapFile.Write('(');
-                trapFile.BuildList(",", named.GetTupleElementsMaybeNull(),
-                    (i, f) =>
-                    {
-                        if (f is null)
-                        {
-                            trapFile.Write($"null({i})");
-                        }
-                        else
-                        {
-                            trapFile.Write((f.CorrespondingTupleField ?? f).Name);
-                            trapFile.Write(":");
-                            f.Type.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
-                        }
-                    }
-                    );
-                trapFile.Write(")");
+                BuildTupleId(named, cx, trapFile, symbolBeingDefined);
                 return;
-            }
-
-            void AddContaining()
-            {
-                if (named.ContainingType is not null)
-                {
-                    named.ContainingType.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
-                    trapFile.Write('.');
-                }
-                else if (named.ContainingNamespace is not null)
-                {
-                    if (cx.ShouldAddAssemblyTrapPrefix && named.ContainingAssembly is not null)
-                        BuildAssembly(named.ContainingAssembly, trapFile);
-                    named.ContainingNamespace.BuildNamespace(cx, trapFile);
-                }
             }
 
             if (named.TypeParameters.IsEmpty)
             {
-                AddContaining();
-                trapFile.Write(named.Name);
+                BuildQualifierAndName(named, cx, trapFile, symbolBeingDefined);
             }
             else if (named.IsReallyUnbound())
             {
-                AddContaining();
-                trapFile.Write(named.Name);
+                BuildQualifierAndName(named, cx, trapFile, symbolBeingDefined);
                 trapFile.Write("`");
                 trapFile.Write(named.TypeParameters.Length);
             }

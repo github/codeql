@@ -64,11 +64,12 @@ string getZero(PrimitiveType t) {
  * Holds if `c` may require disambiguation from an overload with the same argument count.
  */
 predicate mayBeAmbiguous(Callable c) {
-  exists(Callable other, string package, string type, string name |
-    c.hasQualifiedName(package, type, name) and
+  exists(Callable other, Callable override, string package, string type, string name |
+    override = [c, c.(Method).getASourceOverriddenMethod*()] and
+    override.hasQualifiedName(package, type, name) and
     other.hasQualifiedName(package, type, name) and
-    other.getNumberOfParameters() = c.getNumberOfParameters() and
-    other != c
+    other.getNumberOfParameters() = override.getNumberOfParameters() and
+    other != override
   )
   or
   c.isVarargs()
