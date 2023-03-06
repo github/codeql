@@ -7,6 +7,7 @@ private import codeql.swift.dataflow.Ssa
 private import codeql.swift.controlflow.BasicBlocks
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import codeql.swift.frameworks.StandardLibrary.PointerTypes
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -211,6 +212,8 @@ private predicate modifiable(Argument arg) {
   arg.getExpr() instanceof InOutExpr
   or
   arg.getExpr().getType() instanceof NominalType
+  or
+  arg.getExpr().getType() instanceof PointerType
 }
 
 predicate modifiableParam(ParamDecl param) {
