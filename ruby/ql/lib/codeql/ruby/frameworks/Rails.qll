@@ -29,16 +29,13 @@ private module RenderCallUtils {
     result = getTemplatePathValue(renderCall).regexpCapture("^/?(.*/)?(?:[^/]*?)$", 1)
   }
 
-  // everything after the final slash, or the whole string if there is no slash
-  private string getBaseName(MethodCall renderCall) {
-    result = getTemplatePathValue(renderCall).regexpCapture("^/?(?:.*/)?([^/]*?)$", 1)
-  }
-
   /**
    * Gets the template file to be rendered by this render call, if any.
    */
   ErbFile getTemplateFile(MethodCall renderCall) {
-    result.getTemplateName() = getBaseName(renderCall) and
+    // everything after the final slash, or the whole string if there is no slash
+    result.getTemplateName() =
+      getTemplatePathValue(renderCall).regexpCapture("^/?(?:.*/)?([^/]*?)$", 1) and
     result.getRelativePath().matches("%app/views/" + getSubPath(renderCall) + "%")
   }
 

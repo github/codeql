@@ -83,6 +83,9 @@ class Member extends Declaration, @dotnet_member {
   /** Holds if this member is declared `required`. */
   predicate isRequired() { none() }
 
+  /** Holds if this member is declared `file` local. */
+  predicate isFile() { none() }
+
   /**
    * Holds if this member has name `name` and is defined in type `type`
    * with namespace `namespace`.
