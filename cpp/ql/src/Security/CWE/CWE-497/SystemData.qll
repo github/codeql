@@ -72,7 +72,7 @@ private predicate sqlConnectInfo(FunctionCall source, Expr use) {
 class SqlConnectInfo extends SystemData {
   SqlConnectInfo() { sqlConnectInfo(this, _) }
 
-  override DataFlow::Node getAnExpr() { sqlConnectInfo(this, result.asExpr()) }
+  override DataFlow::Node getAnExpr() { sqlConnectInfo(this, result.asIndirectExpr(1)) }
 
   override predicate isSensitive() { any() }
 }
