@@ -48,6 +48,12 @@ class Configuration extends TaintTracking::Configuration {
     f instanceof DocumentUrl and
     g instanceof DocumentUrl and
     succ.(DataFlow::PropRead).accesses(pred, "href")
+    or
+    exists(HtmlSanitizerCall call |
+      pred = call.getInput() and
+      succ = call and
+      f = g
+    )
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
