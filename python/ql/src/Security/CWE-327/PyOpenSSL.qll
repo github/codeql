@@ -79,7 +79,5 @@ class PyOpenSsl extends TlsLibrary {
 
   override ProtocolRestriction protocol_restriction() { result instanceof SetOptionsCall }
 
-  override ProtocolUnrestriction protocol_unrestriction() {
-    result instanceof UnspecificPyOpenSslContextCreation
-  }
+  override ProtocolUnrestriction protocol_unrestriction() { none() }
 }

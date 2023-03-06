@@ -217,9 +217,5 @@ class Ssl extends TlsLibrary {
     result instanceof OptionsAugAndNot
     or
     result instanceof ContextSetVersion
-    or
-    result instanceof UnspecificSslContextCreation
-    or
-    result instanceof UnspecificSslDefaultContextCreation
   }
 }

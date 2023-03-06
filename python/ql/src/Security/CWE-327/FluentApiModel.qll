@@ -20,7 +20,7 @@ import TlsLibraryModel
  * Since we really want "the last unrestriction, not nullified by a restriction",
  * we also disallow flow into restrictions.
  */
-module InsecureContextConfiguration2 implements DataFlow::StateConfigSig {
+module InsecureContextConfiguration implements DataFlow::StateConfigSig {
   private newtype TFlowState =
     TMkFlowState(TlsLibrary library, int bits) {
       bits in [0 .. max(any(ProtocolVersion v).getBit()) * 2 - 1]
@@ -112,7 +112,7 @@ module InsecureContextConfiguration2 implements DataFlow::StateConfigSig {
   }
 }
 
-private module InsecureContextFlow = DataFlow::MakeWithState<InsecureContextConfiguration2>;
+private module InsecureContextFlow = DataFlow::MakeWithState<InsecureContextConfiguration>;
 
 /**
  * Holds if `conectionCreation` marks the creation of a connection based on the contex
