@@ -99,3 +99,31 @@ func testMutatingMyPointerInCall(ptr: MyPointer) {
   sink(arg: ptr.pointee) // $ MISSING: tainted=87
   sink(arg: ptr)
 }
+
+// ---
+
+struct MyPointerContainer {
+  var ptr: UnsafeMutablePointer<String>
+}
+
+struct MyGenericPointerContainer<T> {
+  var ptr: UnsafeMutablePointer<T>
+}
+
+func writePointerContainer(mpc: MyPointerContainer) {
+  mpc.ptr.pointee = sourceString()
+  sink(arg: mpc.ptr.pointee) // $ tainted=114
+}
+
+func writeGenericPointerContainer<T>(mgpc: MyGenericPointerContainer<T>) {
+  mgpc.ptr.pointee = sourceString() as! T
+  sink(arg: mgpc.ptr.pointee) // $ tainted=119
+}
+
+func testWritingPointerContainersInCalls(mpc: MyPointerContainer, mgpc: MyGenericPointerContainer<Int>) {
+  writePointerContainer(mpc: mpc)
+  sink(arg: mpc.ptr.pointee) // $ tainted=114
+
+  writeGenericPointerContainer(mgpc: mgpc)
+  sink(arg: mgpc.ptr.pointee) // $ MISSING: tainted=119
+}
