@@ -264,6 +264,8 @@ private Configuration getConfig(TConfigState state) { state = TMkConfigState(res
 
 private FlowState getState(TConfigState state) { state = TMkConfigState(_, result) }
 
+private predicate singleConfiguration() { 1 = strictcount(Configuration c) }
+
 private module Config implements FullStateConfigSig {
   class FlowState = TConfigState;
 
@@ -292,13 +294,18 @@ private module Config implements FullStateConfigSig {
 
   predicate isBarrierOut(Node node) { any(Configuration config).isBarrierOut(node) }
 
-  predicate isAdditionalFlowStep(Node node1, Node node2) { none() }
+  predicate isAdditionalFlowStep(Node node1, Node node2) {
+    singleConfiguration() and
+    any(Configuration config).isAdditionalFlowStep(node1, node2)
+  }
 
   predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
     getConfig(state1).isAdditionalFlowStep(node1, getState(state1), node2, getState(state2)) and
     getConfig(state2) = getConfig(state1)
     or
-    getConfig(state1).isAdditionalFlowStep(node1, node2) and state2 = state1
+    not singleConfiguration() and
+    getConfig(state1).isAdditionalFlowStep(node1, node2) and
+    state2 = state1
   }
 
   predicate allowImplicitRead(Node node, ContentSet c) {
