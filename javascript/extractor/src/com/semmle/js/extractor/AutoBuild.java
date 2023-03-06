@@ -8,10 +8,12 @@ import java.lang.ProcessBuilder.Redirect;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
@@ -487,10 +489,13 @@ public class AutoBuild {
         }
         // ensuring that the finalize steps detects that no code was seen.
         Path srcFolder = Paths.get(EnvironmentVariables.getWipDatabase(), "src");
-        // check that the srcFolder is empty
-        if (Files.list(srcFolder).count() == 0) {
+        try {
           // Non-recursive delete because "src/" should be empty.
           FileUtil8.delete(srcFolder);
+        } catch (NoSuchFileException e) {
+          Exceptions.ignore(e, "the directory did not exist");
+        } catch (DirectoryNotEmptyException e) {
+          Exceptions.ignore(e, "just leave the directory if it is not empty");
         }
         return 0;
       }
@@ -1230,11 +1235,12 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       if (!extractor.getConfig().isExterns() && (loc == null || loc.getLinesOfCode() != 0)) seenCode = true;
       if (!extractor.getConfig().isExterns()) seenFiles = true;
       for (ParseError err : loc.getParseErrors()) {
-        String msg = "A parse error occurred: " + err.getMessage() + ". Check the syntax of the file. If the file is invalid, correct the error or exclude the file from analysis.";
+        String msg = "A parse error occurred: " + StringUtil.escapeMarkdown(err.getMessage())
+            + ". Check the syntax of the file. If the file is invalid, correct the error or exclude the file from analysis.";
         // file, relative to the source root
-        String relativeFilePath = file.toString();
-        if (relativeFilePath.startsWith(LGTM_SRC.toString())) {
-          relativeFilePath = relativeFilePath.substring(LGTM_SRC.toString().length() + 1);
+        String relativeFilePath = null;
+        if (file.startsWith(LGTM_SRC)) {
+          relativeFilePath = file.subpath(LGTM_SRC.getNameCount(), file.getNameCount()).toString();
         }
         DiagnosticLocation diagLoc = DiagnosticLocation.builder()
             .setFile(relativeFilePath)
@@ -1255,7 +1261,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       try {
         writeDiagnostics("Internal error: " + t, JSDiagnosticKind.INTERNAL_ERROR);
       } catch (IOException ignored) {
-        // ignore - we are already crashing
+        Exceptions.ignore(ignored, "we are already crashing");
       }
       System.exit(1);
     }
