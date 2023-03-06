@@ -39,7 +39,17 @@ class PotentiallyExposedSystemDataConfiguration extends TaintTracking::Configura
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(OutputWrite ow | ow.getASource().getAChild*() = sink.asIndirectExpr())
+    exists(OutputWrite ow, Expr child | child = ow.getASource().getAChild*() |
+      // Most sinks receive a pointer as an argument (for example `printf`),
+      // and we use an indirect sink for those.
+      // However, some sinks (for example `puts`) receive receive a single
+      // character as an argument. For those we have to use a direct sink.
+      if
+        child.getUnspecifiedType() instanceof PointerType or
+        child.getUnspecifiedType() instanceof ArrayType
+      then child = sink.asIndirectExpr()
+      else child = sink.asExpr()
+    )
   }
 }
 
