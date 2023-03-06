@@ -479,3 +479,26 @@ func testIdentityArithmetic() {
   sink(arg: +source()) // $ flow=479
   sink(arg: (source())) // $ flow=480
 }
+
+func sink(str: String) {}
+
+func source3() -> String { return "" }
+
+class MyClass {
+    var str: String
+    init(s: String) {
+      str = s
+    }
+}
+
+extension MyClass {
+    convenience init(contentsOfFile: String) {
+      self.init(s: source3()) // taint should flow from the source String(contentsOfFile:) into MyClass
+      sink(str: str)
+    }
+}
+
+func extensionInits(path: String) {
+  sink(str: MyClass(s: source3()).str)
+  sink(str: MyClass(contentsOfFile: path).str)
+}
