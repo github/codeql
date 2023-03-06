@@ -25,6 +25,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    javadoc
    working-with-source-locations
    abstract-syntax-tree-classes-for-working-with-java-programs
+   customizing-library-models-for-java
 
 -  :doc:`Basic query for Java code <basic-query-for-java-code>`: Learn to write and run a simple CodeQL query.
 
@@ -46,3 +47,4 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Abstract syntax tree classes for working with Java programs <abstract-syntax-tree-classes-for-working-with-java-programs>`: CodeQL has a large selection of classes for representing the abstract syntax tree of Java programs.
 
+-  :doc:`Customizing library models for Java <customizing-library-models-for-java>`: You can customize the CodeQL library for Java to model the behavior of your own Java libraries using data extensions.
