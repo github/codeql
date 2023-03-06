@@ -15,6 +15,7 @@ import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.dataflow.TaintTracking3
+import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
 import DataFlow::PathGraph
 
@@ -85,7 +86,8 @@ class ExternalApkSource extends DataFlow::Node {
   ExternalApkSource() {
     sourceNode(this, "android-external-storage-dir") or
     this.asExpr().(MethodAccess).getMethod() instanceof UriConstructorMethod or
-    this.asExpr().(StringLiteral).getValue().matches("file://%")
+    this.asExpr().(StringLiteral).getValue().matches("file://%") or
+    this instanceof RemoteFlowSource
   }
 }
 
