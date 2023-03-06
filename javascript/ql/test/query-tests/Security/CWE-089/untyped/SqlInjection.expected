@@ -50,6 +50,14 @@ nodes
 | graphql.js:120:38:120:48 | `foo ${id}` |
 | graphql.js:120:38:120:48 | `foo ${id}` |
 | graphql.js:120:45:120:46 | id |
+| html-sanitizer.js:13:39:13:44 | param1 |
+| html-sanitizer.js:13:39:13:44 | param1 |
+| html-sanitizer.js:14:5:14:24 | param1 |
+| html-sanitizer.js:14:14:14:24 | xss(param1) |
+| html-sanitizer.js:14:18:14:23 | param1 |
+| html-sanitizer.js:16:9:16:59 | `SELECT ...  param1 |
+| html-sanitizer.js:16:9:16:59 | `SELECT ...  param1 |
+| html-sanitizer.js:16:54:16:59 | param1 |
 | json-schema-validator.js:25:15:25:48 | query |
 | json-schema-validator.js:25:23:25:48 | JSON.pa ... y.data) |
 | json-schema-validator.js:25:34:25:47 | req.query.data |
@@ -466,6 +474,13 @@ edges
 | graphql.js:119:16:119:28 | req.params.id | graphql.js:119:11:119:28 | id |
 | graphql.js:120:45:120:46 | id | graphql.js:120:38:120:48 | `foo ${id}` |
 | graphql.js:120:45:120:46 | id | graphql.js:120:38:120:48 | `foo ${id}` |
+| html-sanitizer.js:13:39:13:44 | param1 | html-sanitizer.js:14:18:14:23 | param1 |
+| html-sanitizer.js:13:39:13:44 | param1 | html-sanitizer.js:14:18:14:23 | param1 |
+| html-sanitizer.js:14:5:14:24 | param1 | html-sanitizer.js:16:54:16:59 | param1 |
+| html-sanitizer.js:14:14:14:24 | xss(param1) | html-sanitizer.js:14:5:14:24 | param1 |
+| html-sanitizer.js:14:18:14:23 | param1 | html-sanitizer.js:14:14:14:24 | xss(param1) |
+| html-sanitizer.js:16:54:16:59 | param1 | html-sanitizer.js:16:9:16:59 | `SELECT ...  param1 |
+| html-sanitizer.js:16:54:16:59 | param1 | html-sanitizer.js:16:9:16:59 | `SELECT ...  param1 |
 | json-schema-validator.js:25:15:25:48 | query | json-schema-validator.js:33:22:33:26 | query |
 | json-schema-validator.js:25:15:25:48 | query | json-schema-validator.js:33:22:33:26 | query |
 | json-schema-validator.js:25:15:25:48 | query | json-schema-validator.js:35:18:35:22 | query |
@@ -924,6 +939,7 @@ edges
 | graphql.js:75:46:75:64 | "{ foo" + id + " }" | graphql.js:74:14:74:25 | req.query.id | graphql.js:75:46:75:64 | "{ foo" + id + " }" | This query depends on a $@. | graphql.js:74:14:74:25 | req.query.id | user-provided value |
 | graphql.js:84:14:90:8 | `{\\n     ...      }` | graphql.js:74:14:74:25 | req.query.id | graphql.js:84:14:90:8 | `{\\n     ...      }` | This query depends on a $@. | graphql.js:74:14:74:25 | req.query.id | user-provided value |
 | graphql.js:120:38:120:48 | `foo ${id}` | graphql.js:119:16:119:28 | req.params.id | graphql.js:120:38:120:48 | `foo ${id}` | This query depends on a $@. | graphql.js:119:16:119:28 | req.params.id | user-provided value |
+| html-sanitizer.js:16:9:16:59 | `SELECT ...  param1 | html-sanitizer.js:13:39:13:44 | param1 | html-sanitizer.js:16:9:16:59 | `SELECT ...  param1 | This query depends on a $@. | html-sanitizer.js:13:39:13:44 | param1 | user-provided value |
 | json-schema-validator.js:33:22:33:26 | query | json-schema-validator.js:25:34:25:47 | req.query.data | json-schema-validator.js:33:22:33:26 | query | This query depends on a $@. | json-schema-validator.js:25:34:25:47 | req.query.data | user-provided value |
 | json-schema-validator.js:35:18:35:22 | query | json-schema-validator.js:25:34:25:47 | req.query.data | json-schema-validator.js:35:18:35:22 | query | This query depends on a $@. | json-schema-validator.js:25:34:25:47 | req.query.data | user-provided value |
 | json-schema-validator.js:55:22:55:26 | query | json-schema-validator.js:50:34:50:47 | req.query.data | json-schema-validator.js:55:22:55:26 | query | This query depends on a $@. | json-schema-validator.js:50:34:50:47 | req.query.data | user-provided value |

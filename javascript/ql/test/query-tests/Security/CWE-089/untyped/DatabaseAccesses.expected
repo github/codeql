@@ -1,3 +1,4 @@
+| html-sanitizer.js:15:5:17:5 | connect ... K\\n    ) |
 | json-schema-validator.js:27:13:27:27 | doc.find(query) |
 | json-schema-validator.js:30:13:30:27 | doc.find(query) |
 | json-schema-validator.js:33:13:33:27 | doc.find(query) |
