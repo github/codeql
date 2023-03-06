@@ -2,8 +2,8 @@
  * Provides Go-specific definitions for use in the data flow library.
  */
 
-import go
-import semmle.go.dataflow.FunctionInputsAndOutputs
+private import go
+private import semmle.go.dataflow.FunctionInputsAndOutputs
 private import semmle.go.dataflow.ExternalFlow
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl

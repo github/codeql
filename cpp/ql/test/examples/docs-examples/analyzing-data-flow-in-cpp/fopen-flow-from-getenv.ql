@@ -7,14 +7,14 @@ class EnvironmentToFileConfiguration extends DataFlow::Configuration {
   override predicate isSource(DataFlow::Node source) {
     exists(Function getenv |
       source.asIndirectExpr(1).(FunctionCall).getTarget() = getenv and
-      getenv.hasQualifiedName("getenv")
+      getenv.hasGlobalName("getenv")
     )
   }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(FunctionCall fc |
       sink.asIndirectExpr(1) = fc.getArgument(0) and
-      fc.getTarget().hasQualifiedName("fopen")
+      fc.getTarget().hasGlobalName("fopen")
     )
   }
 }

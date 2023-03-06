@@ -11,6 +11,8 @@ namespace Semmle.Extraction.CSharp.Entities
         protected UserOperator(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
+        protected override MethodKind ExplicitlyImplementsKind => MethodKind.UserDefinedOperator;
+
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
@@ -37,6 +39,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             ContainingType.PopulateGenerics();
+            Overrides(trapFile);
         }
 
         public override bool NeedsPopulation => Context.Defines(Symbol) || IsImplicitOperator(out _);

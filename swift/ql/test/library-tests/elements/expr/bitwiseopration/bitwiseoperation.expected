@@ -4,3 +4,8 @@
 | bitwiseoperation.swift:5:7:5:11 | ... .^(_:_:) ... | BinaryBitwiseOperation, XorBitwiseExpr |
 | bitwiseoperation.swift:6:7:6:12 | ... .<<(_:_:) ... | BinaryBitwiseOperation, ShiftLeftBitwiseExpr |
 | bitwiseoperation.swift:7:7:7:12 | ... .>>(_:_:) ... | BinaryBitwiseOperation, ShiftRightBitwiseExpr |
+| bitwiseoperation.swift:10:7:10:13 | ... .&<<(_:_:) ... | BinaryBitwiseOperation, ShiftLeftBitwiseExpr |
+| bitwiseoperation.swift:11:7:11:13 | ... .&>>(_:_:) ... | BinaryBitwiseOperation, ShiftRightBitwiseExpr |
+| bitwiseoperation.swift:17:7:17:12 | ... ..&(_:_:) ... | BinaryBitwiseOperation, PointwiseAndExpr |
+| bitwiseoperation.swift:18:7:18:12 | ... ..\|(_:_:) ... | BinaryBitwiseOperation, PointwiseOrExpr |
+| bitwiseoperation.swift:19:7:19:12 | ... ..^(_:_:) ... | BinaryBitwiseOperation, PointwiseXorExpr |

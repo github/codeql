@@ -2,7 +2,7 @@ import cpp
 import semmle.code.cpp.dataflow.new.DataFlow
 
 class GetenvSource extends DataFlow::Node {
-  GetenvSource() { this.asIndirectExpr(1).(FunctionCall).getTarget().hasQualifiedName("getenv") }
+  GetenvSource() { this.asIndirectExpr(1).(FunctionCall).getTarget().hasGlobalName("getenv") }
 }
 
 class GetenvToGethostbynameConfiguration extends DataFlow::Configuration {

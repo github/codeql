@@ -1,5 +1,5 @@
-#10000=@"/rails.erb;sourcefile"
-files(#10000,"/rails.erb")
+#10000=@"/rails.html.erb;sourcefile"
+files(#10000,"/rails.html.erb")
 #10001=@"/;folder"
 folders(#10001,"/")
 containerparent(#10001,#10000)

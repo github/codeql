@@ -134,11 +134,11 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
       node = DataFlow::BarrierGuard<upperBoundCheckGuard/3>::getABarrierNodeForGuard(g) and
       g.isBoundFor(bitSize, sinkIsSigned)
     )
-  }
-
-  override predicate isSanitizerOut(DataFlow::Node node) {
-    exists(int bitSize | isIncorrectIntegerConversion(sourceBitSize, bitSize) |
-      this.isSinkWithBitSize(node, bitSize)
+    or
+    exists(DataFlow::Node sink, int bitSize |
+      isIncorrectIntegerConversion(sourceBitSize, bitSize) and
+      this.isSinkWithBitSize(sink, bitSize) and
+      TaintTracking::localTaintStep(sink, node)
     )
   }
 }
