@@ -493,12 +493,12 @@ class MyClass {
 
 extension MyClass {
     convenience init(contentsOfFile: String) {
-      self.init(s: source3()) // taint should flow from the source String(contentsOfFile:) into MyClass
-      sink(str: str)
+      self.init(s: source3()) 
+      sink(str: str) // $ flow=496
     }
 }
 
 func extensionInits(path: String) {
-  sink(str: MyClass(s: source3()).str)
-  sink(str: MyClass(contentsOfFile: path).str)
+  sink(str: MyClass(s: source3()).str) // $ flow=502
+  sink(str: MyClass(contentsOfFile: path).str) // $ flow=496
 }

@@ -399,6 +399,29 @@ private module ReturnNodes {
     override ReturnKind getKind() { result instanceof NormalReturnKind }
   }
 
+  class SelfReturnNode extends ReturnNode, TInoutReturnNode, NodeImpl {
+    SelfParamDecl param;
+    ControlFlowNode exit;
+    SelfReturnNode() {
+      this = TInoutReturnNode(param) and
+      exit instanceof ExitNode and
+      exit.getScope() = param.getDeclaringFunction() and
+      param.getDeclaringFunction() instanceof ConstructorDecl
+    }
+    override ControlFlowNode getCfgNode() { result = exit }
+
+    override DataFlowCallable getEnclosingCallable() {
+      result = TDataFlowFunc(param.getDeclaringFunction())
+    }
+
+    ParamDecl getParameter() { result = param }
+
+    override Location getLocationImpl() { result = exit.getLocation() }
+
+    override string toStringImpl() { result = param.toString() + "[constructor return]" }
+    override ReturnKind getKind() { result instanceof NormalReturnKind }
+  }
+
   class InoutReturnNodeImpl extends ReturnNode, TInoutReturnNode, NodeImpl {
     ParamDecl param;
     ControlFlowNode exit;
