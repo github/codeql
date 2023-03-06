@@ -13,6 +13,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    codeql-library-for-typescript
    analyzing-data-flow-in-javascript-and-typescript
    using-flow-labels-for-precise-data-flow-analysis
+   customizing-library-models-for-javascript
    specifying-additional-remote-flow-sources-for-javascript
    using-type-tracking-for-api-modeling
    abstract-syntax-tree-classes-for-working-with-javascript-and-typescript-programs
@@ -27,6 +28,8 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 -  :doc:`Analyzing data flow in JavaScript and TypeScript <analyzing-data-flow-in-javascript-and-typescript>`: This topic describes how data flow analysis is implemented in the CodeQL libraries for JavaScript/TypeScript and includes examples to help you write your own data flow queries.
 
 -  :doc:`Using flow labels for precise data flow analysis <using-flow-labels-for-precise-data-flow-analysis>`: You can associate flow labels with each value tracked by the flow analysis to determine whether the flow contains potential vulnerabilities.
+
+-  :doc:`Customizing library models for JavaScript <customizing-library-models-for-javascript>`: You can model the libraries used in your code without making changes to the CodeQL standard library by specifying source, sink, and flow summaries in a data extension file.
 
 -  :doc:`Using type tracking for API modeling <using-type-tracking-for-api-modeling>`: You can track data through an API by creating a model using the CodeQL type-tracking library for JavaScript.
 
