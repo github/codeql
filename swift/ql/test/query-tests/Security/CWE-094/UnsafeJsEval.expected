@@ -47,7 +47,7 @@ edges
 | UnsafeJsEval.swift:276:13:276:13 | string :  | UnsafeJsEval.swift:277:26:277:26 | string |
 | UnsafeJsEval.swift:279:13:279:13 | string :  | UnsafeJsEval.swift:280:26:280:26 | string |
 | UnsafeJsEval.swift:285:13:285:13 | string :  | UnsafeJsEval.swift:286:3:286:10 | .utf16 :  |
-| UnsafeJsEval.swift:286:3:286:10 | .utf16 :  | UnsafeJsEval.swift:286:51:286:51 | stringBytes :  |
+| UnsafeJsEval.swift:286:3:286:10 | .utf16 :  | file://:0:0:0:0 | [summary param] this in withContiguousStorageIfAvailable(_:) :  |
 | UnsafeJsEval.swift:286:51:286:51 | stringBytes :  | UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) :  |
 | UnsafeJsEval.swift:286:51:286:51 | stringBytes :  | UnsafeJsEval.swift:291:17:291:17 | jsstr |
 | UnsafeJsEval.swift:287:16:287:98 | call to JSStringRetain(_:) :  | UnsafeJsEval.swift:291:17:291:17 | jsstr |
@@ -64,6 +64,8 @@ edges
 | UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) :  | UnsafeJsEval.swift:305:17:305:17 | jsstr |
 | UnsafeJsEval.swift:318:24:318:87 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:320:44:320:74 | ... .+(_:_:) ... |
 | file://:0:0:0:0 | [summary param] 0 in String.init(decoding:as:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(decoding:as:) :  |
+| file://:0:0:0:0 | [summary param] this in withContiguousStorageIfAvailable(_:) :  | file://:0:0:0:0 | [summary] to write: argument 0.parameter 0 in withContiguousStorageIfAvailable(_:) :  |
+| file://:0:0:0:0 | [summary] to write: argument 0.parameter 0 in withContiguousStorageIfAvailable(_:) :  | UnsafeJsEval.swift:286:51:286:51 | stringBytes :  |
 nodes
 | UnsafeJsEval.swift:69:2:73:5 | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  | semmle.label | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  |
 | UnsafeJsEval.swift:75:2:80:5 | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  | semmle.label | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  |
@@ -106,6 +108,8 @@ nodes
 | UnsafeJsEval.swift:318:24:318:87 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
 | UnsafeJsEval.swift:320:44:320:74 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
 | file://:0:0:0:0 | [summary param] 0 in String.init(decoding:as:) :  | semmle.label | [summary param] 0 in String.init(decoding:as:) :  |
+| file://:0:0:0:0 | [summary param] this in withContiguousStorageIfAvailable(_:) :  | semmle.label | [summary param] this in withContiguousStorageIfAvailable(_:) :  |
+| file://:0:0:0:0 | [summary] to write: argument 0.parameter 0 in withContiguousStorageIfAvailable(_:) :  | semmle.label | [summary] to write: argument 0.parameter 0 in withContiguousStorageIfAvailable(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | semmle.label | [summary] to write: return (return) in Data.init(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in String.init(decoding:as:) :  | semmle.label | [summary] to write: return (return) in String.init(decoding:as:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  | semmle.label | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  |
