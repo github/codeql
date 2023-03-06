@@ -125,5 +125,5 @@ func testWritingPointerContainersInCalls(mpc: MyPointerContainer, mgpc: MyGeneri
   sink(arg: mpc.ptr.pointee) // $ tainted=114
 
   writeGenericPointerContainer(mgpc: mgpc)
-  sink(arg: mgpc.ptr.pointee) // $ MISSING: tainted=119
+  sink(arg: mgpc.ptr.pointee) // $ tainted=119
 }
