@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-03-03-10h00m33s.loving-airport-71md0lh6.3a4dc666f9b1c91b80008590382c95452170c607d75a87b831ddc068ac09bc7f
+compiled: false
