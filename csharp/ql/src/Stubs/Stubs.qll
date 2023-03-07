@@ -400,7 +400,7 @@ private string stubAccessibility(Member m) {
   if
     m.getDeclaringType() instanceof Interface
     or
-    exists(useExplicitImplementedInterface(m))
+    exists(getExplicitImplementedInterface(m))
     or
     m instanceof Constructor and m.isStatic()
   then result = ""
@@ -714,21 +714,21 @@ private string stubEventAccessors(Event e) {
 }
 
 /**
- * Returns an interface that `c` explicitly implements, if either or the
- * following holds.
+ * Returns an interface that `c` explicitly implements, if either of the
+ * following also holds.
  * (1) `c` is not static.
  * (2) `c` is static and an implementation of a generic with type constraints.
  * (3) `c` is static and there is another member with the same name
- * but different return types.
+ * but different return type.
  *
- * We use these rules, as explicit interfaces are needed in some cases, eg.
+ * We use these rules as explicit interfaces are needed in some cases
  * for compilation purposes (both to distinguish members but also to ensure
- * type constraints are satisfied). We can't always use the explicit interface
- * due to the generic math support, because then in some cases we will only be
- * able to access a static via a type variable with type
+ * type constraints are satisfied). We can't always use explicit interface
+ * implementation due to the generic math support, because then in some cases
+ * we will only be able to access a static via a type variable with type
  * constraints (C# 11 language feature).
  */
-private Interface useExplicitImplementedInterface(Virtualizable c) {
+private Interface getExplicitImplementedInterface(Virtualizable c) {
   result = unique(Interface i | i = c.getExplicitlyImplementedInterface()) and
   (
     not c.isStatic()
@@ -754,8 +754,8 @@ private Interface useExplicitImplementedInterface(Virtualizable c) {
 }
 
 private string stubExplicitImplementation(Member c) {
-  if exists(useExplicitImplementedInterface(c))
-  then result = stubClassName(useExplicitImplementedInterface(c)) + "."
+  if exists(getExplicitImplementedInterface(c))
+  then result = stubClassName(getExplicitImplementedInterface(c)) + "."
   else result = ""
 }
 
