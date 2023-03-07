@@ -69,8 +69,11 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 		} else {
 			optLoc = &locationStruct{file, startLine, startColumn, endLine, endColumn}
 		}
+
+		timestamp := time.Now().UTC().Format("2006-01-02T15:04:05.000") + "Z"
+
 		d := diagnostic{
-			time.Now().UTC().Format("2006-01-02T15:04:05.000") + "Z",
+			timestamp,
 			sourceStruct{sourceid, sourcename, "go"},
 			markdownMessage,
 			string(severity),
@@ -81,7 +84,7 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 
 		if diagnosticsEmitted == diagnosticsLimit {
 			d = diagnostic{
-				time.Now().UTC().Format("2006-01-02T15:04:05.000") + "Z",
+				timestamp,
 				sourceStruct{"go/autobuilder/diagnostic-limit-hit", "Some diagnostics were dropped", "go"},
 				fmt.Sprintf("The number of diagnostics exceeded the limit (%d); the remainder were dropped.", diagnosticsLimit),
 				string(severityWarning),
@@ -116,7 +119,8 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 }
 
 func EmitPackageDifferentOSArchitecture(pkgPath string) {
-	emitDiagnostic("go/autobuilder/package-different-os-architecture",
+	emitDiagnostic(
+		"go/autobuilder/package-different-os-architecture",
 		"Package "+pkgPath+" is intended for a different OS or architecture",
 		"Make sure the `GOOS` and `GOARCH` [environment variables are correctly set](https://docs.github.com/en/actions/learn-github-actions/variables#defining-environment-variables-for-a-single-workflow). Alternatively, [change your OS and architecture](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#using-a-github-hosted-runner).",
 		severityWarning, false,
@@ -158,7 +162,8 @@ func EmitCannotFindPackages(pkgPaths []string) {
 }
 
 func EmitNewerGoVersionNeeded() {
-	emitDiagnostic("go/autobuilder/newer-go-version-needed",
+	emitDiagnostic(
+		"go/autobuilder/newer-go-version-needed",
 		"Newer Go version needed",
 		"The detected version of Go is lower than the version specified in `go.mod`. [Install a newer version](https://github.com/actions/setup-go#basic).",
 		severityError, false,
@@ -168,7 +173,8 @@ func EmitNewerGoVersionNeeded() {
 }
 
 func EmitGoFilesFoundButNotProcessed() {
-	emitDiagnostic("go/autobuilder/go-files-found-but-not-processed",
+	emitDiagnostic(
+		"go/autobuilder/go-files-found-but-not-processed",
 		"Go files were found but not processed",
 		"[Specify a custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages) that includes one or more `go build` commands to build the `.go` files to be analyzed.",
 		severityError, false,
