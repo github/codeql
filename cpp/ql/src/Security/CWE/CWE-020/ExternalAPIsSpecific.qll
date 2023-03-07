@@ -61,7 +61,7 @@ deprecated class UntrustedDataToExternalApiConfig extends TaintTracking::Configu
 /** DEPRECATED: Alias for UntrustedDataToExternalApiConfig */
 deprecated class UntrustedDataToExternalAPIConfig = UntrustedDataToExternalApiConfig;
 
-module UntrustedDataToExternalApiConfig implements DataFlow:ConfigSig {
+module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(RemoteFlowSourceFunction remoteFlow |
       remoteFlow = source.asExpr().(Call).getTarget() and
