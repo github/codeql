@@ -82,15 +82,7 @@ predicate introducesNewField(Class derived, Class base) {
 
 module CastToPointerArithFlow = DataFlow::MakeWithState<CastToPointerArithFlowConfig>;
 
-pragma[nomagic]
-predicate hasFullyConvertedType(CastToPointerArithFlow::PathNode node, Type t) {
-  getFullyConvertedType(node.getNode()) = t
-}
-
-from CastToPointerArithFlow::PathNode source, CastToPointerArithFlow::PathNode sink, Type t
-where
-  CastToPointerArithFlow::hasFlowPath(pragma[only_bind_into](source), pragma[only_bind_into](sink)) and
-  hasFullyConvertedType(source, t) and
-  hasFullyConvertedType(sink, t)
+from CastToPointerArithFlow::PathNode source, CastToPointerArithFlow::PathNode sink
+where CastToPointerArithFlow::hasFlowPath(source, sink)
 select sink, source, sink, "This pointer arithmetic may be done with the wrong type because of $@.",
   source, "this cast"
