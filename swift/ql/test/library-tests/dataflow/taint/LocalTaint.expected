@@ -1,5 +1,7 @@
+| data.swift:2:8:2:8 | SSA def(self) | data.swift:2:8:2:8 | self[constructor return] |
 | data.swift:2:8:2:8 | SSA def(self) | data.swift:2:8:2:8 | self[return] |
 | data.swift:2:8:2:8 | self | data.swift:2:8:2:8 | SSA def(self) |
+| data.swift:4:7:4:7 | SSA def(self) | data.swift:4:7:4:7 | self[constructor return] |
 | data.swift:4:7:4:7 | SSA def(self) | data.swift:4:7:4:7 | self[return] |
 | data.swift:4:7:4:7 | SSA def(self) | data.swift:4:7:4:7 | self[return] |
 | data.swift:4:7:4:7 | self | data.swift:4:7:4:7 | SSA def(self) |
@@ -17,22 +19,31 @@
 | data.swift:21:7:21:7 | self | data.swift:21:7:21:7 | SSA def(self) |
 | data.swift:22:52:22:52 | SSA def(self) | data.swift:22:52:22:67 | self[return] |
 | data.swift:22:52:22:52 | self | data.swift:22:52:22:52 | SSA def(self) |
+| data.swift:24:3:24:3 | SSA def(self) | data.swift:24:3:24:11 | self[constructor return] |
 | data.swift:24:3:24:3 | SSA def(self) | data.swift:24:3:24:11 | self[return] |
 | data.swift:24:3:24:3 | self | data.swift:24:3:24:3 | SSA def(self) |
+| data.swift:25:2:25:2 | SSA def(self) | data.swift:25:2:25:26 | self[constructor return] |
 | data.swift:25:2:25:2 | SSA def(self) | data.swift:25:2:25:26 | self[return] |
 | data.swift:25:2:25:2 | self | data.swift:25:2:25:2 | SSA def(self) |
+| data.swift:26:2:26:2 | SSA def(self) | data.swift:26:2:26:66 | self[constructor return] |
 | data.swift:26:2:26:2 | SSA def(self) | data.swift:26:2:26:66 | self[return] |
 | data.swift:26:2:26:2 | self | data.swift:26:2:26:2 | SSA def(self) |
+| data.swift:27:2:27:2 | SSA def(self) | data.swift:27:2:27:61 | self[constructor return] |
 | data.swift:27:2:27:2 | SSA def(self) | data.swift:27:2:27:61 | self[return] |
 | data.swift:27:2:27:2 | self | data.swift:27:2:27:2 | SSA def(self) |
+| data.swift:28:2:28:2 | SSA def(self) | data.swift:28:2:28:62 | self[constructor return] |
 | data.swift:28:2:28:2 | SSA def(self) | data.swift:28:2:28:62 | self[return] |
 | data.swift:28:2:28:2 | self | data.swift:28:2:28:2 | SSA def(self) |
+| data.swift:29:2:29:2 | SSA def(self) | data.swift:29:2:29:45 | self[constructor return] |
 | data.swift:29:2:29:2 | SSA def(self) | data.swift:29:2:29:45 | self[return] |
 | data.swift:29:2:29:2 | self | data.swift:29:2:29:2 | SSA def(self) |
+| data.swift:30:2:30:2 | SSA def(self) | data.swift:30:2:30:82 | self[constructor return] |
 | data.swift:30:2:30:2 | SSA def(self) | data.swift:30:2:30:82 | self[return] |
 | data.swift:30:2:30:2 | self | data.swift:30:2:30:2 | SSA def(self) |
+| data.swift:31:2:31:2 | SSA def(self) | data.swift:31:2:31:50 | self[constructor return] |
 | data.swift:31:2:31:2 | SSA def(self) | data.swift:31:2:31:50 | self[return] |
 | data.swift:31:2:31:2 | self | data.swift:31:2:31:2 | SSA def(self) |
+| data.swift:32:2:32:2 | SSA def(self) | data.swift:32:2:32:29 | self[constructor return] |
 | data.swift:32:2:32:2 | SSA def(self) | data.swift:32:2:32:29 | self[return] |
 | data.swift:32:2:32:2 | self | data.swift:32:2:32:2 | SSA def(self) |
 | data.swift:33:7:33:7 | SSA def(self) | data.swift:33:2:33:24 | self[return] |
@@ -108,6 +119,7 @@
 | data.swift:64:7:64:7 | SSA def(self) | data.swift:64:2:64:72 | self[return] |
 | data.swift:64:7:64:7 | self | data.swift:64:7:64:7 | SSA def(self) |
 | data.swift:64:68:64:68 |  | data.swift:64:63:64:70 | call to Data.init(_:) |
+| data.swift:69:7:69:7 | SSA def(self) | data.swift:69:7:69:7 | self[constructor return] |
 | data.swift:69:7:69:7 | SSA def(self) | data.swift:69:7:69:7 | self[return] |
 | data.swift:69:7:69:7 | SSA def(self) | data.swift:69:7:69:7 | self[return] |
 | data.swift:69:7:69:7 | self | data.swift:69:7:69:7 | SSA def(self) |
@@ -324,12 +336,16 @@
 | data.swift:261:6:261:6 | SSA def(dataTainted41) | data.swift:262:12:262:12 | dataTainted41 |
 | data.swift:261:22:261:29 | call to source() | data.swift:261:6:261:6 | SSA def(dataTainted41) |
 | data.swift:262:12:262:12 | dataTainted41 | data.swift:262:12:262:54 | call to trimmingPrefix(while:) |
+| nsdata.swift:5:2:5:2 | SSA def(self) | nsdata.swift:5:2:5:25 | self[constructor return] |
 | nsdata.swift:5:2:5:2 | SSA def(self) | nsdata.swift:5:2:5:25 | self[return] |
 | nsdata.swift:5:2:5:2 | self | nsdata.swift:5:2:5:2 | SSA def(self) |
+| nsdata.swift:10:5:10:5 | SSA def(self) | nsdata.swift:10:5:10:29 | self[constructor return] |
 | nsdata.swift:10:5:10:5 | SSA def(self) | nsdata.swift:10:5:10:29 | self[return] |
 | nsdata.swift:10:5:10:5 | self | nsdata.swift:10:5:10:5 | SSA def(self) |
+| nsdata.swift:13:8:13:8 | SSA def(self) | nsdata.swift:13:8:13:8 | self[constructor return] |
 | nsdata.swift:13:8:13:8 | SSA def(self) | nsdata.swift:13:8:13:8 | self[return] |
 | nsdata.swift:13:8:13:8 | self | nsdata.swift:13:8:13:8 | SSA def(self) |
+| nsdata.swift:15:8:15:8 | SSA def(self) | nsdata.swift:15:8:15:8 | self[constructor return] |
 | nsdata.swift:15:8:15:8 | SSA def(self) | nsdata.swift:15:8:15:8 | self[return] |
 | nsdata.swift:15:8:15:8 | self | nsdata.swift:15:8:15:8 | SSA def(self) |
 | nsdata.swift:17:7:17:7 | SSA def(self) | nsdata.swift:17:7:17:7 | self[return] |
@@ -345,30 +361,43 @@
 | nsdata.swift:23:9:23:9 | self | nsdata.swift:23:9:23:9 | SSA def(self) |
 | nsdata.swift:23:9:23:9 | self | nsdata.swift:23:9:23:9 | SSA def(self) |
 | nsdata.swift:23:9:23:9 | value | nsdata.swift:23:9:23:9 | SSA def(value) |
+| nsdata.swift:24:5:24:5 | SSA def(self) | nsdata.swift:24:5:24:50 | self[constructor return] |
 | nsdata.swift:24:5:24:5 | SSA def(self) | nsdata.swift:24:5:24:50 | self[return] |
 | nsdata.swift:24:5:24:5 | self | nsdata.swift:24:5:24:5 | SSA def(self) |
+| nsdata.swift:25:5:25:5 | SSA def(self) | nsdata.swift:25:5:25:68 | self[constructor return] |
 | nsdata.swift:25:5:25:5 | SSA def(self) | nsdata.swift:25:5:25:68 | self[return] |
 | nsdata.swift:25:5:25:5 | self | nsdata.swift:25:5:25:5 | SSA def(self) |
+| nsdata.swift:26:5:26:5 | SSA def(self) | nsdata.swift:26:5:26:130 | self[constructor return] |
 | nsdata.swift:26:5:26:5 | SSA def(self) | nsdata.swift:26:5:26:130 | self[return] |
 | nsdata.swift:26:5:26:5 | self | nsdata.swift:26:5:26:5 | SSA def(self) |
+| nsdata.swift:27:5:27:5 | SSA def(self) | nsdata.swift:27:5:27:90 | self[constructor return] |
 | nsdata.swift:27:5:27:5 | SSA def(self) | nsdata.swift:27:5:27:90 | self[return] |
 | nsdata.swift:27:5:27:5 | self | nsdata.swift:27:5:27:5 | SSA def(self) |
+| nsdata.swift:28:5:28:5 | SSA def(self) | nsdata.swift:28:5:28:23 | self[constructor return] |
 | nsdata.swift:28:5:28:5 | SSA def(self) | nsdata.swift:28:5:28:23 | self[return] |
 | nsdata.swift:28:5:28:5 | self | nsdata.swift:28:5:28:5 | SSA def(self) |
+| nsdata.swift:29:5:29:5 | SSA def(self) | nsdata.swift:29:5:29:36 | self[constructor return] |
 | nsdata.swift:29:5:29:5 | SSA def(self) | nsdata.swift:29:5:29:36 | self[return] |
 | nsdata.swift:29:5:29:5 | self | nsdata.swift:29:5:29:5 | SSA def(self) |
+| nsdata.swift:30:5:30:5 | SSA def(self) | nsdata.swift:30:5:30:93 | self[constructor return] |
 | nsdata.swift:30:5:30:5 | SSA def(self) | nsdata.swift:30:5:30:93 | self[return] |
 | nsdata.swift:30:5:30:5 | self | nsdata.swift:30:5:30:5 | SSA def(self) |
+| nsdata.swift:31:5:31:5 | SSA def(self) | nsdata.swift:31:5:31:29 | self[constructor return] |
 | nsdata.swift:31:5:31:5 | SSA def(self) | nsdata.swift:31:5:31:29 | self[return] |
 | nsdata.swift:31:5:31:5 | self | nsdata.swift:31:5:31:5 | SSA def(self) |
+| nsdata.swift:32:5:32:5 | SSA def(self) | nsdata.swift:32:5:32:61 | self[constructor return] |
 | nsdata.swift:32:5:32:5 | SSA def(self) | nsdata.swift:32:5:32:61 | self[return] |
 | nsdata.swift:32:5:32:5 | self | nsdata.swift:32:5:32:5 | SSA def(self) |
+| nsdata.swift:33:5:33:5 | SSA def(self) | nsdata.swift:33:5:33:47 | self[constructor return] |
 | nsdata.swift:33:5:33:5 | SSA def(self) | nsdata.swift:33:5:33:47 | self[return] |
 | nsdata.swift:33:5:33:5 | self | nsdata.swift:33:5:33:5 | SSA def(self) |
+| nsdata.swift:34:5:34:5 | SSA def(self) | nsdata.swift:34:5:34:88 | self[constructor return] |
 | nsdata.swift:34:5:34:5 | SSA def(self) | nsdata.swift:34:5:34:88 | self[return] |
 | nsdata.swift:34:5:34:5 | self | nsdata.swift:34:5:34:5 | SSA def(self) |
+| nsdata.swift:35:5:35:5 | SSA def(self) | nsdata.swift:35:5:35:92 | self[constructor return] |
 | nsdata.swift:35:5:35:5 | SSA def(self) | nsdata.swift:35:5:35:92 | self[return] |
 | nsdata.swift:35:5:35:5 | self | nsdata.swift:35:5:35:5 | SSA def(self) |
+| nsdata.swift:36:5:36:5 | SSA def(self) | nsdata.swift:36:5:36:49 | self[constructor return] |
 | nsdata.swift:36:5:36:5 | SSA def(self) | nsdata.swift:36:5:36:49 | self[return] |
 | nsdata.swift:36:5:36:5 | self | nsdata.swift:36:5:36:5 | SSA def(self) |
 | nsdata.swift:37:10:37:10 | SSA def(self) | nsdata.swift:37:5:37:98 | self[return] |
@@ -503,16 +532,20 @@
 | nsdata.swift:139:15:139:15 | nsDataTainted24 | nsdata.swift:139:15:139:31 | .bytes |
 | nsdata.swift:139:15:139:15 | nsDataTainted24 | nsdata.swift:140:15:140:15 | nsDataTainted24 |
 | nsdata.swift:140:15:140:15 | nsDataTainted24 | nsdata.swift:140:15:140:31 | .description |
+| nsmutabledata.swift:5:5:5:5 | SSA def(self) | nsmutabledata.swift:5:5:5:29 | self[constructor return] |
 | nsmutabledata.swift:5:5:5:5 | SSA def(self) | nsmutabledata.swift:5:5:5:29 | self[return] |
 | nsmutabledata.swift:5:5:5:5 | self | nsmutabledata.swift:5:5:5:5 | SSA def(self) |
+| nsmutabledata.swift:8:8:8:8 | SSA def(self) | nsmutabledata.swift:8:8:8:8 | self[constructor return] |
 | nsmutabledata.swift:8:8:8:8 | SSA def(self) | nsmutabledata.swift:8:8:8:8 | self[return] |
 | nsmutabledata.swift:8:8:8:8 | self | nsmutabledata.swift:8:8:8:8 | SSA def(self) |
+| nsmutabledata.swift:10:7:10:7 | SSA def(self) | nsmutabledata.swift:10:7:10:7 | self[constructor return] |
 | nsmutabledata.swift:10:7:10:7 | SSA def(self) | nsmutabledata.swift:10:7:10:7 | self[return] |
 | nsmutabledata.swift:10:7:10:7 | SSA def(self) | nsmutabledata.swift:10:7:10:7 | self[return] |
 | nsmutabledata.swift:10:7:10:7 | self | nsmutabledata.swift:10:7:10:7 | SSA def(self) |
 | nsmutabledata.swift:10:7:10:7 | self | nsmutabledata.swift:10:7:10:7 | SSA def(self) |
 | nsmutabledata.swift:12:7:12:7 | SSA def(self) | nsmutabledata.swift:12:7:12:7 | self[return] |
 | nsmutabledata.swift:12:7:12:7 | self | nsmutabledata.swift:12:7:12:7 | SSA def(self) |
+| nsmutabledata.swift:12:30:12:30 | SSA def(self) | nsmutabledata.swift:12:30:12:30 | self[constructor return] |
 | nsmutabledata.swift:12:30:12:30 | SSA def(self) | nsmutabledata.swift:12:30:12:30 | self[return] |
 | nsmutabledata.swift:12:30:12:30 | self | nsmutabledata.swift:12:30:12:30 | SSA def(self) |
 | nsmutabledata.swift:13:9:13:9 | self | nsmutabledata.swift:13:9:13:9 | SSA def(self) |
@@ -637,8 +670,10 @@
 | simple.swift:68:3:68:3 | &... | simple.swift:69:13:69:13 | e |
 | simple.swift:68:3:68:3 | [post] &... | simple.swift:69:13:69:13 | e |
 | simple.swift:68:3:68:3 | e | simple.swift:68:3:68:3 | &... |
+| string.swift:6:8:6:8 | SSA def(self) | string.swift:6:8:6:8 | self[constructor return] |
 | string.swift:6:8:6:8 | SSA def(self) | string.swift:6:8:6:8 | self[return] |
 | string.swift:6:8:6:8 | self | string.swift:6:8:6:8 | SSA def(self) |
+| string.swift:10:3:10:3 | SSA def(self) | string.swift:10:3:10:27 | self[constructor return] |
 | string.swift:10:3:10:3 | SSA def(self) | string.swift:10:3:10:27 | self[return] |
 | string.swift:10:3:10:3 | self | string.swift:10:3:10:3 | SSA def(self) |
 | string.swift:12:7:12:7 | self | string.swift:12:7:12:7 | SSA def(self) |
@@ -662,23 +697,28 @@
 | string.swift:21:8:21:8 | self | string.swift:21:8:21:8 | SSA def(self) |
 | string.swift:24:8:24:8 | SSA def(self) | string.swift:24:3:26:3 | self[return] |
 | string.swift:24:8:24:8 | self | string.swift:24:8:24:8 | SSA def(self) |
+| string.swift:34:8:34:8 | SSA def(self) | string.swift:34:8:34:8 | self[constructor return] |
 | string.swift:34:8:34:8 | SSA def(self) | string.swift:34:8:34:8 | self[return] |
 | string.swift:34:8:34:8 | self | string.swift:34:8:34:8 | SSA def(self) |
 | string.swift:35:42:35:42 | SSA def(self) | string.swift:35:42:35:70 | self[return] |
 | string.swift:35:42:35:42 | self | string.swift:35:42:35:42 | SSA def(self) |
+| string.swift:38:7:38:7 | SSA def(self) | string.swift:38:7:38:7 | self[constructor return] |
 | string.swift:38:7:38:7 | SSA def(self) | string.swift:38:7:38:7 | self[return] |
 | string.swift:38:7:38:7 | SSA def(self) | string.swift:38:7:38:7 | self[return] |
 | string.swift:38:7:38:7 | self | string.swift:38:7:38:7 | SSA def(self) |
 | string.swift:38:7:38:7 | self | string.swift:38:7:38:7 | SSA def(self) |
 | string.swift:41:7:41:7 | SSA def(self) | string.swift:41:7:41:7 | self[return] |
 | string.swift:41:7:41:7 | self | string.swift:41:7:41:7 | SSA def(self) |
+| string.swift:41:27:41:27 | SSA def(self) | string.swift:41:27:41:27 | self[constructor return] |
 | string.swift:41:27:41:27 | SSA def(self) | string.swift:41:27:41:27 | self[return] |
 | string.swift:41:27:41:27 | self | string.swift:41:27:41:27 | SSA def(self) |
 | string.swift:43:5:43:5 | SSA def(self) | string.swift:43:28:43:28 | self |
 | string.swift:43:5:43:5 | self | string.swift:43:5:43:5 | SSA def(self) |
 | string.swift:43:10:43:20 | SSA def(rawValue) | string.swift:43:44:43:44 | rawValue |
 | string.swift:43:10:43:20 | rawValue | string.swift:43:10:43:20 | SSA def(rawValue) |
+| string.swift:43:28:43:28 | [post] self | string.swift:43:5:43:53 | self[constructor return] |
 | string.swift:43:28:43:28 | [post] self | string.swift:43:5:43:53 | self[return] |
+| string.swift:43:28:43:28 | self | string.swift:43:5:43:53 | self[constructor return] |
 | string.swift:43:28:43:28 | self | string.swift:43:5:43:53 | self[return] |
 | string.swift:45:9:45:9 | self | string.swift:45:9:45:9 | SSA def(self) |
 | string.swift:45:9:45:9 | self | string.swift:45:9:45:9 | SSA def(self) |
@@ -690,91 +730,124 @@
 | string.swift:53:60:53:60 | self | string.swift:53:60:53:60 | SSA def(self) |
 | string.swift:54:56:54:56 | SSA def(self) | string.swift:54:56:54:83 | self[return] |
 | string.swift:54:56:54:56 | self | string.swift:54:56:54:56 | SSA def(self) |
+| string.swift:56:9:56:9 | SSA def(self) | string.swift:56:9:56:9 | self[constructor return] |
 | string.swift:56:9:56:9 | SSA def(self) | string.swift:56:9:56:9 | self[return] |
 | string.swift:56:9:56:9 | self | string.swift:56:9:56:9 | SSA def(self) |
 | string.swift:57:14:57:14 | self | string.swift:57:14:57:14 | SSA def(self) |
 | string.swift:60:2:60:2 | SSA def(self) | string.swift:60:42:60:42 | self |
 | string.swift:60:2:60:2 | self | string.swift:60:2:60:2 | SSA def(self) |
+| string.swift:60:42:60:42 | &... | string.swift:60:2:60:54 | self[constructor return] |
 | string.swift:60:42:60:42 | &... | string.swift:60:2:60:54 | self[return] |
+| string.swift:60:42:60:42 | [post] &... | string.swift:60:2:60:54 | self[constructor return] |
 | string.swift:60:42:60:42 | [post] &... | string.swift:60:2:60:54 | self[return] |
 | string.swift:60:42:60:42 | self | string.swift:60:42:60:42 | &... |
 | string.swift:62:3:62:3 | SSA def(self) | string.swift:62:35:62:35 | self |
 | string.swift:62:3:62:3 | self | string.swift:62:3:62:3 | SSA def(self) |
+| string.swift:62:35:62:35 | &... | string.swift:62:3:62:47 | self[constructor return] |
 | string.swift:62:35:62:35 | &... | string.swift:62:3:62:47 | self[return] |
+| string.swift:62:35:62:35 | [post] &... | string.swift:62:3:62:47 | self[constructor return] |
 | string.swift:62:35:62:35 | [post] &... | string.swift:62:3:62:47 | self[return] |
 | string.swift:62:35:62:35 | self | string.swift:62:35:62:35 | &... |
 | string.swift:64:3:64:3 | SSA def(self) | string.swift:64:51:64:51 | self |
 | string.swift:64:3:64:3 | self | string.swift:64:3:64:3 | SSA def(self) |
+| string.swift:64:51:64:51 | &... | string.swift:64:3:64:63 | self[constructor return] |
 | string.swift:64:51:64:51 | &... | string.swift:64:3:64:63 | self[return] |
+| string.swift:64:51:64:51 | [post] &... | string.swift:64:3:64:63 | self[constructor return] |
 | string.swift:64:51:64:51 | [post] &... | string.swift:64:3:64:63 | self[return] |
 | string.swift:64:51:64:51 | self | string.swift:64:51:64:51 | &... |
 | string.swift:65:3:65:3 | SSA def(self) | string.swift:65:48:65:48 | self |
 | string.swift:65:3:65:3 | self | string.swift:65:3:65:3 | SSA def(self) |
+| string.swift:65:48:65:48 | &... | string.swift:65:3:65:60 | self[constructor return] |
 | string.swift:65:48:65:48 | &... | string.swift:65:3:65:60 | self[return] |
+| string.swift:65:48:65:48 | [post] &... | string.swift:65:3:65:60 | self[constructor return] |
 | string.swift:65:48:65:48 | [post] &... | string.swift:65:3:65:60 | self[return] |
 | string.swift:65:48:65:48 | self | string.swift:65:48:65:48 | &... |
 | string.swift:66:3:66:3 | SSA def(self) | string.swift:66:63:66:63 | self |
 | string.swift:66:3:66:3 | self | string.swift:66:3:66:3 | SSA def(self) |
+| string.swift:66:63:66:63 | &... | string.swift:66:3:66:75 | self[constructor return] |
 | string.swift:66:63:66:63 | &... | string.swift:66:3:66:75 | self[return] |
+| string.swift:66:63:66:63 | [post] &... | string.swift:66:3:66:75 | self[constructor return] |
 | string.swift:66:63:66:63 | [post] &... | string.swift:66:3:66:75 | self[return] |
 | string.swift:66:63:66:63 | self | string.swift:66:63:66:63 | &... |
 | string.swift:67:3:67:3 | SSA def(self) | string.swift:67:65:67:65 | self |
 | string.swift:67:3:67:3 | self | string.swift:67:3:67:3 | SSA def(self) |
+| string.swift:67:65:67:65 | &... | string.swift:67:3:67:77 | self[constructor return] |
 | string.swift:67:65:67:65 | &... | string.swift:67:3:67:77 | self[return] |
+| string.swift:67:65:67:65 | [post] &... | string.swift:67:3:67:77 | self[constructor return] |
 | string.swift:67:65:67:65 | [post] &... | string.swift:67:3:67:77 | self[return] |
 | string.swift:67:65:67:65 | self | string.swift:67:65:67:65 | &... |
 | string.swift:69:15:69:15 | SSA def(self) | string.swift:69:3:69:106 | self[return] |
 | string.swift:69:15:69:15 | self | string.swift:69:15:69:15 | SSA def(self) |
 | string.swift:71:3:71:3 | SSA def(self) | string.swift:71:90:71:90 | self |
 | string.swift:71:3:71:3 | self | string.swift:71:3:71:3 | SSA def(self) |
+| string.swift:71:90:71:90 | &... | string.swift:71:3:71:102 | self[constructor return] |
 | string.swift:71:90:71:90 | &... | string.swift:71:3:71:102 | self[return] |
+| string.swift:71:90:71:90 | [post] &... | string.swift:71:3:71:102 | self[constructor return] |
 | string.swift:71:90:71:90 | [post] &... | string.swift:71:3:71:102 | self[return] |
 | string.swift:71:90:71:90 | self | string.swift:71:90:71:90 | &... |
 | string.swift:73:3:73:3 | SSA def(self) | string.swift:73:60:73:60 | self |
 | string.swift:73:3:73:3 | self | string.swift:73:3:73:3 | SSA def(self) |
+| string.swift:73:60:73:60 | &... | string.swift:73:3:73:72 | self[constructor return] |
 | string.swift:73:60:73:60 | &... | string.swift:73:3:73:72 | self[return] |
+| string.swift:73:60:73:60 | [post] &... | string.swift:73:3:73:72 | self[constructor return] |
 | string.swift:73:60:73:60 | [post] &... | string.swift:73:3:73:72 | self[return] |
 | string.swift:73:60:73:60 | self | string.swift:73:60:73:60 | &... |
 | string.swift:74:3:74:3 | SSA def(self) | string.swift:74:60:74:60 | self |
 | string.swift:74:3:74:3 | self | string.swift:74:3:74:3 | SSA def(self) |
+| string.swift:74:60:74:60 | &... | string.swift:74:3:74:72 | self[constructor return] |
 | string.swift:74:60:74:60 | &... | string.swift:74:3:74:72 | self[return] |
+| string.swift:74:60:74:60 | [post] &... | string.swift:74:3:74:72 | self[constructor return] |
 | string.swift:74:60:74:60 | [post] &... | string.swift:74:3:74:72 | self[return] |
 | string.swift:74:60:74:60 | self | string.swift:74:60:74:60 | &... |
 | string.swift:75:3:75:3 | SSA def(self) | string.swift:75:120:75:120 | self |
 | string.swift:75:3:75:3 | self | string.swift:75:3:75:3 | SSA def(self) |
+| string.swift:75:120:75:120 | &... | string.swift:75:3:75:132 | self[constructor return] |
 | string.swift:75:120:75:120 | &... | string.swift:75:3:75:132 | self[return] |
+| string.swift:75:120:75:120 | [post] &... | string.swift:75:3:75:132 | self[constructor return] |
 | string.swift:75:120:75:120 | [post] &... | string.swift:75:3:75:132 | self[return] |
 | string.swift:75:120:75:120 | self | string.swift:75:120:75:120 | &... |
 | string.swift:76:3:76:3 | SSA def(self) | string.swift:76:51:76:51 | self |
 | string.swift:76:3:76:3 | self | string.swift:76:3:76:3 | SSA def(self) |
+| string.swift:76:51:76:51 | &... | string.swift:76:3:76:63 | self[constructor return] |
 | string.swift:76:51:76:51 | &... | string.swift:76:3:76:63 | self[return] |
+| string.swift:76:51:76:51 | [post] &... | string.swift:76:3:76:63 | self[constructor return] |
 | string.swift:76:51:76:51 | [post] &... | string.swift:76:3:76:63 | self[return] |
 | string.swift:76:51:76:51 | self | string.swift:76:51:76:51 | &... |
 | string.swift:77:3:77:3 | SSA def(self) | string.swift:77:62:77:62 | self |
 | string.swift:77:3:77:3 | self | string.swift:77:3:77:3 | SSA def(self) |
+| string.swift:77:62:77:62 | &... | string.swift:77:3:77:74 | self[constructor return] |
 | string.swift:77:62:77:62 | &... | string.swift:77:3:77:74 | self[return] |
+| string.swift:77:62:77:62 | [post] &... | string.swift:77:3:77:74 | self[constructor return] |
 | string.swift:77:62:77:62 | [post] &... | string.swift:77:3:77:74 | self[return] |
 | string.swift:77:62:77:62 | self | string.swift:77:62:77:62 | &... |
 | string.swift:78:3:78:3 | SSA def(self) | string.swift:78:93:78:93 | self |
 | string.swift:78:3:78:3 | self | string.swift:78:3:78:3 | SSA def(self) |
+| string.swift:78:93:78:93 | &... | string.swift:78:3:78:105 | self[constructor return] |
 | string.swift:78:93:78:93 | &... | string.swift:78:3:78:105 | self[return] |
+| string.swift:78:93:78:93 | [post] &... | string.swift:78:3:78:105 | self[constructor return] |
 | string.swift:78:93:78:93 | [post] &... | string.swift:78:3:78:105 | self[return] |
 | string.swift:78:93:78:93 | self | string.swift:78:93:78:93 | &... |
 | string.swift:80:3:80:3 | SSA def(self) | string.swift:80:64:80:64 | self |
 | string.swift:80:3:80:3 | self | string.swift:80:3:80:3 | SSA def(self) |
+| string.swift:80:64:80:64 | &... | string.swift:80:3:80:76 | self[constructor return] |
 | string.swift:80:64:80:64 | &... | string.swift:80:3:80:76 | self[return] |
+| string.swift:80:64:80:64 | [post] &... | string.swift:80:3:80:76 | self[constructor return] |
 | string.swift:80:64:80:64 | [post] &... | string.swift:80:3:80:76 | self[return] |
 | string.swift:80:64:80:64 | self | string.swift:80:64:80:64 | &... |
 | string.swift:81:3:81:3 | SSA def(self) | string.swift:81:91:81:91 | self |
 | string.swift:81:3:81:3 | self | string.swift:81:3:81:3 | SSA def(self) |
+| string.swift:81:91:81:91 | &... | string.swift:81:3:81:103 | self[constructor return] |
 | string.swift:81:91:81:91 | &... | string.swift:81:3:81:103 | self[return] |
+| string.swift:81:91:81:91 | [post] &... | string.swift:81:3:81:103 | self[constructor return] |
 | string.swift:81:91:81:91 | [post] &... | string.swift:81:3:81:103 | self[return] |
 | string.swift:81:91:81:91 | self | string.swift:81:91:81:91 | &... |
 | string.swift:82:8:82:8 | SSA def(self) | string.swift:82:3:82:141 | self[return] |
 | string.swift:82:8:82:8 | self | string.swift:82:8:82:8 | SSA def(self) |
 | string.swift:84:3:84:3 | SSA def(self) | string.swift:84:38:84:38 | self |
 | string.swift:84:3:84:3 | self | string.swift:84:3:84:3 | SSA def(self) |
+| string.swift:84:38:84:38 | &... | string.swift:84:3:84:50 | self[constructor return] |
 | string.swift:84:38:84:38 | &... | string.swift:84:3:84:50 | self[return] |
+| string.swift:84:38:84:38 | [post] &... | string.swift:84:3:84:50 | self[constructor return] |
 | string.swift:84:38:84:38 | [post] &... | string.swift:84:3:84:50 | self[return] |
 | string.swift:84:38:84:38 | self | string.swift:84:38:84:38 | &... |
 | string.swift:86:17:86:17 | SSA def(self) | string.swift:86:12:87:51 | self[return] |
@@ -825,6 +898,7 @@
 | string.swift:113:8:113:8 | self | string.swift:113:8:113:8 | SSA def(self) |
 | string.swift:117:7:117:7 | SSA def(self) | string.swift:117:7:117:7 | self[return] |
 | string.swift:117:7:117:7 | self | string.swift:117:7:117:7 | SSA def(self) |
+| string.swift:119:5:119:5 | SSA def(self) | string.swift:119:5:119:29 | self[constructor return] |
 | string.swift:119:5:119:5 | SSA def(self) | string.swift:119:5:119:29 | self[return] |
 | string.swift:119:5:119:5 | self | string.swift:119:5:119:5 | SSA def(self) |
 | string.swift:125:32:125:32 | SSA def(self) | string.swift:125:32:125:47 | self[return] |
@@ -1927,6 +2001,7 @@
 | string.swift:643:13:643:26 | call to Self.init(_:) | string.swift:643:13:643:27 | ...! |
 | string.swift:647:7:647:7 | SSA def(tainted) | string.swift:651:13:651:13 | tainted |
 | string.swift:647:17:647:25 | call to source2() | string.swift:647:7:647:7 | SSA def(tainted) |
+| subscript.swift:1:7:1:7 | SSA def(self) | subscript.swift:1:7:1:7 | self[constructor return] |
 | subscript.swift:1:7:1:7 | SSA def(self) | subscript.swift:1:7:1:7 | self[return] |
 | subscript.swift:1:7:1:7 | SSA def(self) | subscript.swift:1:7:1:7 | self[return] |
 | subscript.swift:1:7:1:7 | self | subscript.swift:1:7:1:7 | SSA def(self) |
@@ -1946,8 +2021,10 @@
 | try.swift:17:18:17:24 | call to clean() | try.swift:17:13:17:24 | try? ... |
 | try.swift:18:13:18:25 | try? ... | try.swift:18:12:18:27 | ...! |
 | try.swift:18:18:18:25 | call to source() | try.swift:18:13:18:25 | try? ... |
+| ui.swift:3:8:3:8 | SSA def(self) | ui.swift:3:8:3:8 | self[constructor return] |
 | ui.swift:3:8:3:8 | SSA def(self) | ui.swift:3:8:3:8 | self[return] |
 | ui.swift:3:8:3:8 | self | ui.swift:3:8:3:8 | SSA def(self) |
+| ui.swift:5:7:5:7 | SSA def(self) | ui.swift:5:7:5:7 | self[constructor return] |
 | ui.swift:5:7:5:7 | SSA def(self) | ui.swift:5:7:5:7 | self[return] |
 | ui.swift:5:7:5:7 | SSA def(self) | ui.swift:5:7:5:7 | self[return] |
 | ui.swift:5:7:5:7 | self | ui.swift:5:7:5:7 | SSA def(self) |
@@ -1958,10 +2035,12 @@
 | ui.swift:10:10:10:10 | self | ui.swift:10:10:10:10 | SSA def(self) |
 | ui.swift:10:15:10:34 | SSA def(hasher) | ui.swift:10:5:10:43 | hasher[return] |
 | ui.swift:10:15:10:34 | hasher | ui.swift:10:15:10:34 | SSA def(hasher) |
+| ui.swift:13:7:13:7 | SSA def(self) | ui.swift:13:7:13:7 | self[constructor return] |
 | ui.swift:13:7:13:7 | SSA def(self) | ui.swift:13:7:13:7 | self[return] |
 | ui.swift:13:7:13:7 | SSA def(self) | ui.swift:13:7:13:7 | self[return] |
 | ui.swift:13:7:13:7 | self | ui.swift:13:7:13:7 | SSA def(self) |
 | ui.swift:13:7:13:7 | self | ui.swift:13:7:13:7 | SSA def(self) |
+| ui.swift:15:7:15:7 | SSA def(self) | ui.swift:15:7:15:7 | self[constructor return] |
 | ui.swift:15:7:15:7 | SSA def(self) | ui.swift:15:7:15:7 | self[return] |
 | ui.swift:15:7:15:7 | SSA def(self) | ui.swift:15:7:15:7 | self[return] |
 | ui.swift:15:7:15:7 | self | ui.swift:15:7:15:7 | SSA def(self) |
@@ -1980,16 +2059,20 @@
 | ui.swift:23:10:23:10 | self | ui.swift:23:10:23:10 | SSA def(self) |
 | ui.swift:23:15:23:34 | SSA def(hasher) | ui.swift:23:5:23:43 | hasher[return] |
 | ui.swift:23:15:23:34 | hasher | ui.swift:23:15:23:34 | SSA def(hasher) |
+| ui.swift:26:8:26:8 | SSA def(self) | ui.swift:26:8:26:8 | self[constructor return] |
 | ui.swift:26:8:26:8 | SSA def(self) | ui.swift:26:8:26:8 | self[return] |
 | ui.swift:26:8:26:8 | self | ui.swift:26:8:26:8 | SSA def(self) |
+| ui.swift:28:7:28:7 | SSA def(self) | ui.swift:28:7:28:7 | self[constructor return] |
 | ui.swift:28:7:28:7 | SSA def(self) | ui.swift:28:7:28:7 | self[return] |
 | ui.swift:28:7:28:7 | SSA def(self) | ui.swift:28:7:28:7 | self[return] |
 | ui.swift:28:7:28:7 | self | ui.swift:28:7:28:7 | SSA def(self) |
 | ui.swift:28:7:28:7 | self | ui.swift:28:7:28:7 | SSA def(self) |
+| ui.swift:30:7:30:7 | SSA def(self) | ui.swift:30:7:30:7 | self[constructor return] |
 | ui.swift:30:7:30:7 | SSA def(self) | ui.swift:30:7:30:7 | self[return] |
 | ui.swift:30:7:30:7 | SSA def(self) | ui.swift:30:7:30:7 | self[return] |
 | ui.swift:30:7:30:7 | self | ui.swift:30:7:30:7 | SSA def(self) |
 | ui.swift:30:7:30:7 | self | ui.swift:30:7:30:7 | SSA def(self) |
+| ui.swift:31:11:31:11 | SSA def(self) | ui.swift:31:11:31:11 | self[constructor return] |
 | ui.swift:31:11:31:11 | SSA def(self) | ui.swift:31:11:31:11 | self[return] |
 | ui.swift:31:11:31:11 | SSA def(self) | ui.swift:31:11:31:11 | self[return] |
 | ui.swift:31:11:31:11 | self | ui.swift:31:11:31:11 | SSA def(self) |
@@ -2022,6 +2105,7 @@
 | ui.swift:38:13:38:13 | self | ui.swift:38:13:38:13 | SSA def(self) |
 | ui.swift:38:13:38:13 | self | ui.swift:38:13:38:13 | SSA def(self) |
 | ui.swift:38:13:38:13 | value | ui.swift:38:13:38:13 | SSA def(value) |
+| ui.swift:41:11:41:11 | SSA def(self) | ui.swift:41:11:41:11 | self[constructor return] |
 | ui.swift:41:11:41:11 | SSA def(self) | ui.swift:41:11:41:11 | self[return] |
 | ui.swift:41:11:41:11 | SSA def(self) | ui.swift:41:11:41:11 | self[return] |
 | ui.swift:41:11:41:11 | self | ui.swift:41:11:41:11 | SSA def(self) |
@@ -2068,12 +2152,15 @@
 | ui.swift:73:10:73:10 | safe | ui.swift:75:10:75:10 | safe |
 | ui.swift:74:10:74:10 | [post] tainted | ui.swift:76:10:76:10 | tainted |
 | ui.swift:74:10:74:10 | tainted | ui.swift:76:10:76:10 | tainted |
+| url.swift:2:7:2:7 | SSA def(self) | url.swift:2:7:2:7 | self[constructor return] |
 | url.swift:2:7:2:7 | SSA def(self) | url.swift:2:7:2:7 | self[return] |
 | url.swift:2:7:2:7 | SSA def(self) | url.swift:2:7:2:7 | self[return] |
 | url.swift:2:7:2:7 | self | url.swift:2:7:2:7 | SSA def(self) |
 | url.swift:2:7:2:7 | self | url.swift:2:7:2:7 | SSA def(self) |
+| url.swift:8:2:8:2 | SSA def(self) | url.swift:8:2:8:25 | self[constructor return] |
 | url.swift:8:2:8:2 | SSA def(self) | url.swift:8:2:8:25 | self[return] |
 | url.swift:8:2:8:2 | self | url.swift:8:2:8:2 | SSA def(self) |
+| url.swift:9:2:9:2 | SSA def(self) | url.swift:9:2:9:43 | self[constructor return] |
 | url.swift:9:2:9:2 | SSA def(self) | url.swift:9:2:9:43 | self[return] |
 | url.swift:9:2:9:2 | self | url.swift:9:2:9:2 | SSA def(self) |
 | url.swift:10:25:10:25 | SSA def(self) | url.swift:10:25:10:53 | self[return] |
@@ -2120,14 +2207,18 @@
 | url.swift:26:26:26:26 | self | url.swift:26:26:26:26 | SSA def(self) |
 | url.swift:29:7:29:7 | SSA def(self) | url.swift:29:7:29:7 | self[return] |
 | url.swift:29:7:29:7 | self | url.swift:29:7:29:7 | SSA def(self) |
+| url.swift:31:5:31:5 | SSA def(self) | url.swift:31:5:31:29 | self[constructor return] |
 | url.swift:31:5:31:5 | SSA def(self) | url.swift:31:5:31:29 | self[return] |
 | url.swift:31:5:31:5 | self | url.swift:31:5:31:5 | SSA def(self) |
+| url.swift:34:7:34:7 | SSA def(self) | url.swift:34:7:34:7 | self[constructor return] |
 | url.swift:34:7:34:7 | SSA def(self) | url.swift:34:7:34:7 | self[return] |
 | url.swift:34:7:34:7 | SSA def(self) | url.swift:34:7:34:7 | self[return] |
 | url.swift:34:7:34:7 | self | url.swift:34:7:34:7 | SSA def(self) |
 | url.swift:34:7:34:7 | self | url.swift:34:7:34:7 | SSA def(self) |
+| url.swift:36:8:36:8 | SSA def(self) | url.swift:36:8:36:8 | self[constructor return] |
 | url.swift:36:8:36:8 | SSA def(self) | url.swift:36:8:36:8 | self[return] |
 | url.swift:36:8:36:8 | self | url.swift:36:8:36:8 | SSA def(self) |
+| url.swift:40:8:40:8 | SSA def(self) | url.swift:40:8:40:8 | self[constructor return] |
 | url.swift:40:8:40:8 | SSA def(self) | url.swift:40:8:40:8 | self[return] |
 | url.swift:40:8:40:8 | self | url.swift:40:8:40:8 | SSA def(self) |
 | url.swift:44:6:44:6 | self | url.swift:44:6:44:6 | SSA def(self) |
@@ -2216,16 +2307,20 @@
 | url.swift:64:6:64:6 | value | url.swift:64:6:64:6 | SSA def(value) |
 | url.swift:67:7:67:7 | SSA def(self) | url.swift:67:7:67:7 | self[return] |
 | url.swift:67:7:67:7 | self | url.swift:67:7:67:7 | SSA def(self) |
+| url.swift:67:30:67:30 | SSA def(self) | url.swift:67:30:67:30 | self[constructor return] |
 | url.swift:67:30:67:30 | SSA def(self) | url.swift:67:30:67:30 | self[return] |
 | url.swift:67:30:67:30 | self | url.swift:67:30:67:30 | SSA def(self) |
 | url.swift:69:7:69:7 | SSA def(self) | url.swift:69:7:69:7 | self[return] |
 | url.swift:69:7:69:7 | self | url.swift:69:7:69:7 | SSA def(self) |
+| url.swift:69:33:69:33 | SSA def(self) | url.swift:69:33:69:33 | self[constructor return] |
 | url.swift:69:33:69:33 | SSA def(self) | url.swift:69:33:69:33 | self[return] |
 | url.swift:69:33:69:33 | self | url.swift:69:33:69:33 | SSA def(self) |
 | url.swift:71:7:71:7 | SSA def(self) | url.swift:71:7:71:7 | self[return] |
 | url.swift:71:7:71:7 | self | url.swift:71:7:71:7 | SSA def(self) |
+| url.swift:71:43:71:43 | SSA def(self) | url.swift:71:43:71:43 | self[constructor return] |
 | url.swift:71:43:71:43 | SSA def(self) | url.swift:71:43:71:43 | self[return] |
 | url.swift:71:43:71:43 | self | url.swift:71:43:71:43 | SSA def(self) |
+| url.swift:73:7:73:7 | SSA def(self) | url.swift:73:7:73:7 | self[constructor return] |
 | url.swift:73:7:73:7 | SSA def(self) | url.swift:73:7:73:7 | self[return] |
 | url.swift:73:7:73:7 | SSA def(self) | url.swift:73:7:73:7 | self[return] |
 | url.swift:73:7:73:7 | self | url.swift:73:7:73:7 | SSA def(self) |
@@ -2591,62 +2686,80 @@
 | url.swift:203:12:203:12 | clean | url.swift:205:12:205:12 | clean |
 | url.swift:204:12:204:12 | [post] tainted | url.swift:206:12:206:12 | tainted |
 | url.swift:204:12:204:12 | tainted | url.swift:206:12:206:12 | tainted |
+| webview.swift:4:7:4:7 | SSA def(self) | webview.swift:4:7:4:7 | self[constructor return] |
 | webview.swift:4:7:4:7 | SSA def(self) | webview.swift:4:7:4:7 | self[return] |
 | webview.swift:4:7:4:7 | SSA def(self) | webview.swift:4:7:4:7 | self[return] |
 | webview.swift:4:7:4:7 | self | webview.swift:4:7:4:7 | SSA def(self) |
 | webview.swift:4:7:4:7 | self | webview.swift:4:7:4:7 | SSA def(self) |
 | webview.swift:6:7:6:7 | SSA def(self) | webview.swift:6:7:6:7 | self[return] |
 | webview.swift:6:7:6:7 | self | webview.swift:6:7:6:7 | SSA def(self) |
+| webview.swift:6:34:6:34 | SSA def(self) | webview.swift:6:34:6:34 | self[constructor return] |
 | webview.swift:6:34:6:34 | SSA def(self) | webview.swift:6:34:6:34 | self[return] |
 | webview.swift:6:34:6:34 | self | webview.swift:6:34:6:34 | SSA def(self) |
 | webview.swift:7:26:7:26 | SSA def(self) | webview.swift:7:26:7:42 | self[return] |
 | webview.swift:7:26:7:26 | self | webview.swift:7:26:7:26 | SSA def(self) |
 | webview.swift:10:7:10:7 | SSA def(self) | webview.swift:10:7:10:7 | self[return] |
 | webview.swift:10:7:10:7 | self | webview.swift:10:7:10:7 | SSA def(self) |
+| webview.swift:11:5:11:5 | SSA def(self) | webview.swift:11:5:11:23 | self[constructor return] |
 | webview.swift:11:5:11:5 | SSA def(self) | webview.swift:11:5:11:23 | self[return] |
 | webview.swift:11:5:11:5 | self | webview.swift:11:5:11:5 | SSA def(self) |
+| webview.swift:14:7:14:7 | SSA def(self) | webview.swift:14:7:14:7 | self[constructor return] |
 | webview.swift:14:7:14:7 | SSA def(self) | webview.swift:14:7:14:7 | self[return] |
 | webview.swift:14:7:14:7 | SSA def(self) | webview.swift:14:7:14:7 | self[return] |
 | webview.swift:14:7:14:7 | self | webview.swift:14:7:14:7 | SSA def(self) |
 | webview.swift:14:7:14:7 | self | webview.swift:14:7:14:7 | SSA def(self) |
+| webview.swift:16:7:16:7 | SSA def(self) | webview.swift:16:7:16:7 | self[constructor return] |
 | webview.swift:16:7:16:7 | SSA def(self) | webview.swift:16:7:16:7 | self[return] |
 | webview.swift:16:7:16:7 | SSA def(self) | webview.swift:16:7:16:7 | self[return] |
 | webview.swift:16:7:16:7 | self | webview.swift:16:7:16:7 | SSA def(self) |
 | webview.swift:16:7:16:7 | self | webview.swift:16:7:16:7 | SSA def(self) |
+| webview.swift:18:7:18:7 | SSA def(self) | webview.swift:18:7:18:7 | self[constructor return] |
 | webview.swift:18:7:18:7 | SSA def(self) | webview.swift:18:7:18:7 | self[return] |
 | webview.swift:18:7:18:7 | SSA def(self) | webview.swift:18:7:18:7 | self[return] |
 | webview.swift:18:7:18:7 | self | webview.swift:18:7:18:7 | SSA def(self) |
 | webview.swift:18:7:18:7 | self | webview.swift:18:7:18:7 | SSA def(self) |
+| webview.swift:20:7:20:7 | SSA def(self) | webview.swift:20:7:20:7 | self[constructor return] |
 | webview.swift:20:7:20:7 | SSA def(self) | webview.swift:20:7:20:7 | self[return] |
 | webview.swift:20:7:20:7 | SSA def(self) | webview.swift:20:7:20:7 | self[return] |
 | webview.swift:20:7:20:7 | self | webview.swift:20:7:20:7 | SSA def(self) |
 | webview.swift:20:7:20:7 | self | webview.swift:20:7:20:7 | SSA def(self) |
+| webview.swift:22:7:22:7 | SSA def(self) | webview.swift:22:7:22:7 | self[constructor return] |
 | webview.swift:22:7:22:7 | SSA def(self) | webview.swift:22:7:22:7 | self[return] |
 | webview.swift:22:7:22:7 | SSA def(self) | webview.swift:22:7:22:7 | self[return] |
 | webview.swift:22:7:22:7 | self | webview.swift:22:7:22:7 | SSA def(self) |
 | webview.swift:22:7:22:7 | self | webview.swift:22:7:22:7 | SSA def(self) |
+| webview.swift:24:7:24:7 | SSA def(self) | webview.swift:24:7:24:7 | self[constructor return] |
 | webview.swift:24:7:24:7 | SSA def(self) | webview.swift:24:7:24:7 | self[return] |
 | webview.swift:24:7:24:7 | SSA def(self) | webview.swift:24:7:24:7 | self[return] |
 | webview.swift:24:7:24:7 | self | webview.swift:24:7:24:7 | SSA def(self) |
 | webview.swift:24:7:24:7 | self | webview.swift:24:7:24:7 | SSA def(self) |
 | webview.swift:26:7:26:7 | SSA def(self) | webview.swift:26:7:26:7 | self[return] |
 | webview.swift:26:7:26:7 | self | webview.swift:26:7:26:7 | SSA def(self) |
+| webview.swift:27:5:27:5 | SSA def(self) | webview.swift:27:5:27:39 | self[constructor return] |
 | webview.swift:27:5:27:5 | SSA def(self) | webview.swift:27:5:27:39 | self[return] |
 | webview.swift:27:5:27:5 | self | webview.swift:27:5:27:5 | SSA def(self) |
+| webview.swift:28:5:28:5 | SSA def(self) | webview.swift:28:5:28:38 | self[constructor return] |
 | webview.swift:28:5:28:5 | SSA def(self) | webview.swift:28:5:28:38 | self[return] |
 | webview.swift:28:5:28:5 | self | webview.swift:28:5:28:5 | SSA def(self) |
+| webview.swift:29:5:29:5 | SSA def(self) | webview.swift:29:5:29:42 | self[constructor return] |
 | webview.swift:29:5:29:5 | SSA def(self) | webview.swift:29:5:29:42 | self[return] |
 | webview.swift:29:5:29:5 | self | webview.swift:29:5:29:5 | SSA def(self) |
+| webview.swift:30:5:30:5 | SSA def(self) | webview.swift:30:5:30:40 | self[constructor return] |
 | webview.swift:30:5:30:5 | SSA def(self) | webview.swift:30:5:30:40 | self[return] |
 | webview.swift:30:5:30:5 | self | webview.swift:30:5:30:5 | SSA def(self) |
+| webview.swift:31:5:31:5 | SSA def(self) | webview.swift:31:5:31:42 | self[constructor return] |
 | webview.swift:31:5:31:5 | SSA def(self) | webview.swift:31:5:31:42 | self[return] |
 | webview.swift:31:5:31:5 | self | webview.swift:31:5:31:5 | SSA def(self) |
+| webview.swift:32:5:32:5 | SSA def(self) | webview.swift:32:5:32:42 | self[constructor return] |
 | webview.swift:32:5:32:5 | SSA def(self) | webview.swift:32:5:32:42 | self[return] |
 | webview.swift:32:5:32:5 | self | webview.swift:32:5:32:5 | SSA def(self) |
+| webview.swift:33:5:33:5 | SSA def(self) | webview.swift:33:5:33:42 | self[constructor return] |
 | webview.swift:33:5:33:5 | SSA def(self) | webview.swift:33:5:33:42 | self[return] |
 | webview.swift:33:5:33:5 | self | webview.swift:33:5:33:5 | SSA def(self) |
+| webview.swift:34:5:34:5 | SSA def(self) | webview.swift:34:5:34:40 | self[constructor return] |
 | webview.swift:34:5:34:5 | SSA def(self) | webview.swift:34:5:34:40 | self[return] |
 | webview.swift:34:5:34:5 | self | webview.swift:34:5:34:5 | SSA def(self) |
+| webview.swift:35:5:35:5 | SSA def(self) | webview.swift:35:5:35:40 | self[constructor return] |
 | webview.swift:35:5:35:5 | SSA def(self) | webview.swift:35:5:35:40 | self[return] |
 | webview.swift:35:5:35:5 | self | webview.swift:35:5:35:5 | SSA def(self) |
 | webview.swift:36:10:36:10 | SSA def(self) | webview.swift:36:5:36:41 | self[return] |
@@ -2693,26 +2806,32 @@
 | webview.swift:55:10:55:10 | self | webview.swift:55:10:55:10 | SSA def(self) |
 | webview.swift:62:7:62:7 | SSA def(self) | webview.swift:62:7:62:7 | self[return] |
 | webview.swift:62:7:62:7 | self | webview.swift:62:7:62:7 | SSA def(self) |
+| webview.swift:62:33:62:33 | SSA def(self) | webview.swift:62:33:62:33 | self[constructor return] |
 | webview.swift:62:33:62:33 | SSA def(self) | webview.swift:62:33:62:33 | self[return] |
 | webview.swift:62:33:62:33 | self | webview.swift:62:33:62:33 | SSA def(self) |
 | webview.swift:64:7:64:7 | SSA def(self) | webview.swift:64:7:64:7 | self[return] |
 | webview.swift:64:7:64:7 | self | webview.swift:64:7:64:7 | SSA def(self) |
+| webview.swift:64:31:64:31 | SSA def(self) | webview.swift:64:31:64:31 | self[constructor return] |
 | webview.swift:64:31:64:31 | SSA def(self) | webview.swift:64:31:64:31 | self[return] |
 | webview.swift:64:31:64:31 | self | webview.swift:64:31:64:31 | SSA def(self) |
+| webview.swift:65:5:65:5 | SSA def(self) | webview.swift:65:5:65:93 | self[constructor return] |
 | webview.swift:65:5:65:5 | SSA def(self) | webview.swift:65:5:65:93 | self[return] |
 | webview.swift:65:5:65:5 | self | webview.swift:65:5:65:5 | SSA def(self) |
+| webview.swift:66:5:66:5 | SSA def(self) | webview.swift:66:5:66:126 | self[constructor return] |
 | webview.swift:66:5:66:5 | SSA def(self) | webview.swift:66:5:66:126 | self[return] |
 | webview.swift:66:5:66:5 | self | webview.swift:66:5:66:5 | SSA def(self) |
 | webview.swift:68:26:68:26 | SSA def(self) | webview.swift:68:26:68:42 | self[return] |
 | webview.swift:68:26:68:26 | self | webview.swift:68:26:68:26 | SSA def(self) |
 | webview.swift:71:7:71:7 | SSA def(self) | webview.swift:71:7:71:7 | self[return] |
 | webview.swift:71:7:71:7 | self | webview.swift:71:7:71:7 | SSA def(self) |
+| webview.swift:71:37:71:37 | SSA def(self) | webview.swift:71:37:71:37 | self[constructor return] |
 | webview.swift:71:37:71:37 | SSA def(self) | webview.swift:71:37:71:37 | self[return] |
 | webview.swift:71:37:71:37 | self | webview.swift:71:37:71:37 | SSA def(self) |
 | webview.swift:72:9:72:9 | self | webview.swift:72:9:72:9 | SSA def(self) |
 | webview.swift:72:9:72:9 | self | webview.swift:72:9:72:9 | SSA def(self) |
 | webview.swift:72:9:72:9 | self | webview.swift:72:9:72:9 | SSA def(self) |
 | webview.swift:72:9:72:9 | value | webview.swift:72:9:72:9 | SSA def(value) |
+| webview.swift:75:8:75:8 | SSA def(self) | webview.swift:75:8:75:8 | self[constructor return] |
 | webview.swift:75:8:75:8 | SSA def(self) | webview.swift:75:8:75:8 | self[return] |
 | webview.swift:75:8:75:8 | self | webview.swift:75:8:75:8 | SSA def(self) |
 | webview.swift:83:11:83:18 | call to source() | webview.swift:83:10:83:41 | .body |
