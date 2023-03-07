@@ -22,7 +22,7 @@ def getManualFlags(invocationTrapName):
     return ['-Xplugin=' + extractorJar, '-P', 'plugin:kotlin-extractor:invocationTrapFile=' + trapDir + '/invocations/' + invocationTrapName + '.trap']
 
 # This is both normally intercepted, and it has the extractor flags manually added
-runUnsuccessfully([get_cmd('kotlinc'), 'doubleIntercepted.kt'] + getManualFlags('doubleIntercepted'))
+runSuccessfully([get_cmd('kotlinc'), 'doubleIntercepted.kt'] + getManualFlags('doubleIntercepted'))
 os.environ['CODEQL_EXTRACTOR_JAVA_AGENT_DISABLE_KOTLIN'] = 'true'
 # We don't see this compilation at all
 runSuccessfully([get_cmd('kotlinc'), 'notSeen.kt'])
