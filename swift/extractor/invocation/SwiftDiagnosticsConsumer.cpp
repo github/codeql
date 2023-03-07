@@ -15,11 +15,11 @@ void SwiftDiagnosticsConsumer::handleDiagnostic(swift::SourceManager& sourceMana
                                                 const swift::DiagnosticInfo& diagInfo) {
   auto message = getDiagMessage(sourceManager, diagInfo);
   DiagnosticsTrap diag{};
-  diag.id = trap.createLabel<DiagnosticsTag>();
+  diag.id = trap.createTypedLabel<DiagnosticsTag>();
   diag.kind = translateDiagnosticsKind(diagInfo.Kind);
   diag.text = message;
   trap.emit(diag);
-  locationExtractor.attachLocation(sourceManager, diagInfo.Loc, diagInfo.Loc, diag.id);
+  locationExtractor.attachLocation(sourceManager, diagInfo, diag.id);
 }
 
 std::string SwiftDiagnosticsConsumer::getDiagMessage(swift::SourceManager& sourceManager,

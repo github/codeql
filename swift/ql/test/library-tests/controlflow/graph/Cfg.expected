@@ -5736,10 +5736,10 @@ cfg.swift:
 
 #  457| #keyPath(...)
 #-----|  -> var ... = ...
+#-----|  -> exit #keyPath(...) (normal)
 
 #  457| #keyPath(...)
 #-----|  -> var ... = ...
-#-----|  -> exit #keyPath(...) (normal)
 
 #  457| enter #keyPath(...)
 #-----|  -> #keyPath(...)
@@ -5787,13 +5787,13 @@ cfg.swift:
 
 #  458| #keyPath(...)
 #-----|  -> var ... = ...
-
-#  458| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  458| #keyPath(...)
-#-----|  -> var ... = ...
 #-----|  -> exit #keyPath(...) (normal)
+
+#  458| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  458| #keyPath(...)
+#-----|  -> var ... = ...
 
 #  458| enter #keyPath(...)
 #-----|  -> #keyPath(...)
@@ -5850,16 +5850,16 @@ cfg.swift:
 
 #  459| #keyPath(...)
 #-----|  -> var ... = ...
-
-#  459| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  459| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  459| #keyPath(...)
-#-----|  -> var ... = ...
 #-----|  -> exit #keyPath(...) (normal)
+
+#  459| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  459| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  459| #keyPath(...)
+#-----|  -> var ... = ...
 
 #  459| enter #keyPath(...)
 #-----|  -> #keyPath(...)

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <charconv>
 
 namespace codeql {
 
@@ -21,13 +22,19 @@ class UntypedTrapLabel {
 
   static constexpr uint64_t undefined = 0xffffffffffffffff;
 
- protected:
-  UntypedTrapLabel() : id_{undefined} {}
-  UntypedTrapLabel(uint64_t id) : id_{id} { assert(id != undefined); }
-
  public:
+  UntypedTrapLabel() : id_{undefined} {}
+  explicit UntypedTrapLabel(uint64_t id) : id_{id} { assert(id != undefined); }
+  UntypedTrapLabel(UndefinedTrapLabel) : UntypedTrapLabel() {}
+
   bool valid() const { return id_ != undefined; }
   explicit operator bool() const { return valid(); }
+
+  std::string str() const {
+    char buffer[1 + 2 * sizeof(id_) + 1] = "#";
+    std::to_chars(buffer + 1, buffer + sizeof(buffer), id_, 16);
+    return buffer;
+  }
 
   friend std::ostream& operator<<(std::ostream& out, UntypedTrapLabel l) {
     // TODO: this is a temporary fix to catch us from outputting undefined labels to trap
@@ -39,6 +46,7 @@ class UntypedTrapLabel {
   }
 
   friend bool operator==(UntypedTrapLabel lhs, UntypedTrapLabel rhs) { return lhs.id_ == rhs.id_; }
+  friend bool operator!=(UntypedTrapLabel lhs, UntypedTrapLabel rhs) { return lhs.id_ != rhs.id_; }
 };
 
 template <typename TagParam>
@@ -60,8 +68,8 @@ class TrapLabel : public UntypedTrapLabel {
   }
 
   // The caller is responsible for ensuring ID uniqueness.
-  static TrapLabel unsafeCreateFromExplicitId(uint64_t id) { return {id}; }
-  static TrapLabel unsafeCreateFromUntyped(UntypedTrapLabel label) { return {label.id_}; }
+  static TrapLabel unsafeCreateFromExplicitId(uint64_t id) { return TrapLabel{id}; }
+  static TrapLabel unsafeCreateFromUntyped(UntypedTrapLabel label) { return TrapLabel{label.id_}; }
 
   template <typename SourceTag>
   TrapLabel(const TrapLabel<SourceTag>& other) : UntypedTrapLabel(other) {
