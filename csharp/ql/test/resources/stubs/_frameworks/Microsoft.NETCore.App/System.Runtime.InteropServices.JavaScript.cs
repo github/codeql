@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -8,19 +9,16 @@ namespace System
         {
             namespace JavaScript
             {
-                // Generated from `System.Runtime.InteropServices.JavaScript.JSException` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class JSException : System.Exception
                 {
                     public JSException(string msg) => throw null;
                 }
 
-                // Generated from `System.Runtime.InteropServices.JavaScript.JSExportAttribute` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class JSExportAttribute : System.Attribute
                 {
                     public JSExportAttribute() => throw null;
                 }
 
-                // Generated from `System.Runtime.InteropServices.JavaScript.JSFunctionBinding` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class JSFunctionBinding
                 {
                     public static System.Runtime.InteropServices.JavaScript.JSFunctionBinding BindJSFunction(string functionName, string moduleName, System.ReadOnlySpan<System.Runtime.InteropServices.JavaScript.JSMarshalerType> signatures) => throw null;
@@ -29,7 +27,6 @@ namespace System
                     public JSFunctionBinding() => throw null;
                 }
 
-                // Generated from `System.Runtime.InteropServices.JavaScript.JSHost` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public static class JSHost
                 {
                     public static System.Runtime.InteropServices.JavaScript.JSObject DotnetInstance { get => throw null; }
@@ -37,7 +34,6 @@ namespace System
                     public static System.Threading.Tasks.Task<System.Runtime.InteropServices.JavaScript.JSObject> ImportAsync(string moduleName, string moduleUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 }
 
-                // Generated from `System.Runtime.InteropServices.JavaScript.JSImportAttribute` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class JSImportAttribute : System.Attribute
                 {
                     public string FunctionName { get => throw null; }
@@ -46,20 +42,16 @@ namespace System
                     public string ModuleName { get => throw null; }
                 }
 
-                // Generated from `System.Runtime.InteropServices.JavaScript.JSMarshalAsAttribute<>` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class JSMarshalAsAttribute<T> : System.Attribute where T : System.Runtime.InteropServices.JavaScript.JSType
                 {
                     public JSMarshalAsAttribute() => throw null;
                 }
 
-                // Generated from `System.Runtime.InteropServices.JavaScript.JSMarshalerArgument` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct JSMarshalerArgument
                 {
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSMarshalerArgument+ArgumentToJSCallback<>` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public delegate void ArgumentToJSCallback<T>(ref System.Runtime.InteropServices.JavaScript.JSMarshalerArgument arg, T value);
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSMarshalerArgument+ArgumentToManagedCallback<>` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public delegate void ArgumentToManagedCallback<T>(ref System.Runtime.InteropServices.JavaScript.JSMarshalerArgument arg, out T value);
 
 
@@ -169,7 +161,6 @@ namespace System
                     public void ToManagedBig(out System.Int64? value) => throw null;
                 }
 
-                // Generated from `System.Runtime.InteropServices.JavaScript.JSMarshalerType` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class JSMarshalerType
                 {
                     public static System.Runtime.InteropServices.JavaScript.JSMarshalerType Action() => throw null;
@@ -206,7 +197,6 @@ namespace System
                     public static System.Runtime.InteropServices.JavaScript.JSMarshalerType Void { get => throw null; }
                 }
 
-                // Generated from `System.Runtime.InteropServices.JavaScript.JSObject` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class JSObject : System.IDisposable
                 {
                     public void Dispose() => throw null;
@@ -227,112 +217,93 @@ namespace System
                     public void SetProperty(string propertyName, string value) => throw null;
                 }
 
-                // Generated from `System.Runtime.InteropServices.JavaScript.JSType` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public abstract class JSType
                 {
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Any` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Any : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Array<>` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Array<T> : System.Runtime.InteropServices.JavaScript.JSType where T : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+BigInt` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class BigInt : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Boolean` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Boolean : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Date` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Date : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Discard` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Discard : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Error` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Error : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Function` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Function : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Function<,,,>` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Function<T1, T2, T3, T4> : System.Runtime.InteropServices.JavaScript.JSType where T1 : System.Runtime.InteropServices.JavaScript.JSType where T2 : System.Runtime.InteropServices.JavaScript.JSType where T3 : System.Runtime.InteropServices.JavaScript.JSType where T4 : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Function<,,>` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Function<T1, T2, T3> : System.Runtime.InteropServices.JavaScript.JSType where T1 : System.Runtime.InteropServices.JavaScript.JSType where T2 : System.Runtime.InteropServices.JavaScript.JSType where T3 : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Function<,>` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Function<T1, T2> : System.Runtime.InteropServices.JavaScript.JSType where T1 : System.Runtime.InteropServices.JavaScript.JSType where T2 : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Function<>` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Function<T> : System.Runtime.InteropServices.JavaScript.JSType where T : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+MemoryView` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class MemoryView : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Number` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Number : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Object` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Object : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Promise<>` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Promise<T> : System.Runtime.InteropServices.JavaScript.JSType where T : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+String` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class String : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }
 
 
-                    // Generated from `System.Runtime.InteropServices.JavaScript.JSType+Void` in `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class Void : System.Runtime.InteropServices.JavaScript.JSType
                     {
                     }

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.IO.Compression, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Compression
         {
-            // Generated from `System.IO.Compression.CompressionLevel` in `System.IO.Compression, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public enum CompressionLevel : int
             {
                 Fastest = 1,
@@ -15,14 +15,12 @@ namespace System
                 SmallestSize = 3,
             }
 
-            // Generated from `System.IO.Compression.CompressionMode` in `System.IO.Compression, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public enum CompressionMode : int
             {
                 Compress = 1,
                 Decompress = 0,
             }
 
-            // Generated from `System.IO.Compression.DeflateStream` in `System.IO.Compression, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public class DeflateStream : System.IO.Stream
             {
                 public System.IO.Stream BaseStream { get => throw null; }
@@ -59,7 +57,6 @@ namespace System
                 public override void WriteByte(System.Byte value) => throw null;
             }
 
-            // Generated from `System.IO.Compression.GZipStream` in `System.IO.Compression, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public class GZipStream : System.IO.Stream
             {
                 public System.IO.Stream BaseStream { get => throw null; }
@@ -96,7 +93,6 @@ namespace System
                 public override void WriteByte(System.Byte value) => throw null;
             }
 
-            // Generated from `System.IO.Compression.ZLibStream` in `System.IO.Compression, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public class ZLibStream : System.IO.Stream
             {
                 public System.IO.Stream BaseStream { get => throw null; }
@@ -133,7 +129,6 @@ namespace System
                 public ZLibStream(System.IO.Stream stream, System.IO.Compression.CompressionMode mode, bool leaveOpen) => throw null;
             }
 
-            // Generated from `System.IO.Compression.ZipArchive` in `System.IO.Compression, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public class ZipArchive : System.IDisposable
             {
                 public string Comment { get => throw null; set => throw null; }
@@ -150,7 +145,6 @@ namespace System
                 public ZipArchive(System.IO.Stream stream, System.IO.Compression.ZipArchiveMode mode, bool leaveOpen, System.Text.Encoding entryNameEncoding) => throw null;
             }
 
-            // Generated from `System.IO.Compression.ZipArchiveEntry` in `System.IO.Compression, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public class ZipArchiveEntry
             {
                 public System.IO.Compression.ZipArchive Archive { get => throw null; }
@@ -168,7 +162,6 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.IO.Compression.ZipArchiveMode` in `System.IO.Compression, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public enum ZipArchiveMode : int
             {
                 Create = 1,

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Collections.Specialized, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,10 +7,8 @@ namespace System
     {
         namespace Specialized
         {
-            // Generated from `System.Collections.Specialized.BitVector32` in `System.Collections.Specialized, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct BitVector32 : System.IEquatable<System.Collections.Specialized.BitVector32>
             {
-                // Generated from `System.Collections.Specialized.BitVector32+Section` in `System.Collections.Specialized, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Section : System.IEquatable<System.Collections.Specialized.BitVector32.Section>
                 {
                     public static bool operator !=(System.Collections.Specialized.BitVector32.Section a, System.Collections.Specialized.BitVector32.Section b) => throw null;
@@ -42,7 +41,6 @@ namespace System
                 public static string ToString(System.Collections.Specialized.BitVector32 value) => throw null;
             }
 
-            // Generated from `System.Collections.Specialized.HybridDictionary` in `System.Collections.Specialized, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HybridDictionary : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable
             {
                 public void Add(object key, object value) => throw null;
@@ -66,7 +64,6 @@ namespace System
                 public System.Collections.ICollection Values { get => throw null; }
             }
 
-            // Generated from `System.Collections.Specialized.IOrderedDictionary` in `System.Collections.Specialized, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IOrderedDictionary : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable
             {
                 System.Collections.IDictionaryEnumerator GetEnumerator();
@@ -75,7 +72,6 @@ namespace System
                 void RemoveAt(int index);
             }
 
-            // Generated from `System.Collections.Specialized.ListDictionary` in `System.Collections.Specialized, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ListDictionary : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable
             {
                 public void Add(object key, object value) => throw null;
@@ -97,10 +93,8 @@ namespace System
                 public System.Collections.ICollection Values { get => throw null; }
             }
 
-            // Generated from `System.Collections.Specialized.NameObjectCollectionBase` in `System.Collections.Specialized, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class NameObjectCollectionBase : System.Collections.ICollection, System.Collections.IEnumerable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
             {
-                // Generated from `System.Collections.Specialized.NameObjectCollectionBase+KeysCollection` in `System.Collections.Specialized, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class KeysCollection : System.Collections.ICollection, System.Collections.IEnumerable
                 {
                     void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
@@ -144,7 +138,6 @@ namespace System
                 object System.Collections.ICollection.SyncRoot { get => throw null; }
             }
 
-            // Generated from `System.Collections.Specialized.NameValueCollection` in `System.Collections.Specialized, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NameValueCollection : System.Collections.Specialized.NameObjectCollectionBase
             {
                 public void Add(System.Collections.Specialized.NameValueCollection c) => throw null;
@@ -174,7 +167,6 @@ namespace System
                 public virtual void Set(string name, string value) => throw null;
             }
 
-            // Generated from `System.Collections.Specialized.OrderedDictionary` in `System.Collections.Specialized, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class OrderedDictionary : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable, System.Collections.Specialized.IOrderedDictionary, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
             {
                 public void Add(object key, object value) => throw null;
@@ -206,7 +198,6 @@ namespace System
                 public System.Collections.ICollection Values { get => throw null; }
             }
 
-            // Generated from `System.Collections.Specialized.StringCollection` in `System.Collections.Specialized, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StringCollection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
             {
                 int System.Collections.IList.Add(object value) => throw null;
@@ -237,7 +228,6 @@ namespace System
                 public object SyncRoot { get => throw null; }
             }
 
-            // Generated from `System.Collections.Specialized.StringDictionary` in `System.Collections.Specialized, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StringDictionary : System.Collections.IEnumerable
             {
                 public virtual void Add(string key, string value) => throw null;
@@ -256,7 +246,6 @@ namespace System
                 public virtual System.Collections.ICollection Values { get => throw null; }
             }
 
-            // Generated from `System.Collections.Specialized.StringEnumerator` in `System.Collections.Specialized, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StringEnumerator
             {
                 public string Current { get => throw null; }

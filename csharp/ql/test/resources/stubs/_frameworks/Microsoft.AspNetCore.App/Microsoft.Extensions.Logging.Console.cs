@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Logging.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Logging
         {
-            // Generated from `Microsoft.Extensions.Logging.ConsoleLoggerExtensions` in `Microsoft.Extensions.Logging.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ConsoleLoggerExtensions
             {
                 public static Microsoft.Extensions.Logging.ILoggingBuilder AddConsole(this Microsoft.Extensions.Logging.ILoggingBuilder builder) => throw null;
@@ -23,7 +23,6 @@ namespace Microsoft
 
             namespace Console
             {
-                // Generated from `Microsoft.Extensions.Logging.Console.ConsoleFormatter` in `Microsoft.Extensions.Logging.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class ConsoleFormatter
                 {
                     protected ConsoleFormatter(string name) => throw null;
@@ -31,7 +30,6 @@ namespace Microsoft
                     public abstract void Write<TState>(Microsoft.Extensions.Logging.Abstractions.LogEntry<TState> logEntry, Microsoft.Extensions.Logging.IExternalScopeProvider scopeProvider, System.IO.TextWriter textWriter);
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.Console.ConsoleFormatterNames` in `Microsoft.Extensions.Logging.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class ConsoleFormatterNames
                 {
                     public const string Json = default;
@@ -39,7 +37,6 @@ namespace Microsoft
                     public const string Systemd = default;
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.Console.ConsoleFormatterOptions` in `Microsoft.Extensions.Logging.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ConsoleFormatterOptions
                 {
                     public ConsoleFormatterOptions() => throw null;
@@ -48,14 +45,12 @@ namespace Microsoft
                     public bool UseUtcTimestamp { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.Console.ConsoleLoggerFormat` in `Microsoft.Extensions.Logging.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum ConsoleLoggerFormat : int
                 {
                     Default = 0,
                     Systemd = 1,
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.Console.ConsoleLoggerOptions` in `Microsoft.Extensions.Logging.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ConsoleLoggerOptions
                 {
                     public ConsoleLoggerOptions() => throw null;
@@ -70,7 +65,6 @@ namespace Microsoft
                     public bool UseUtcTimestamp { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.Console.ConsoleLoggerProvider` in `Microsoft.Extensions.Logging.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ConsoleLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider, Microsoft.Extensions.Logging.ISupportExternalScope, System.IDisposable
                 {
                     public ConsoleLoggerProvider(Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.Extensions.Logging.Console.ConsoleLoggerOptions> options) => throw null;
@@ -80,21 +74,18 @@ namespace Microsoft
                     public void SetScopeProvider(Microsoft.Extensions.Logging.IExternalScopeProvider scopeProvider) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.Console.ConsoleLoggerQueueFullMode` in `Microsoft.Extensions.Logging.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum ConsoleLoggerQueueFullMode : int
                 {
                     DropWrite = 1,
                     Wait = 0,
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.Console.JsonConsoleFormatterOptions` in `Microsoft.Extensions.Logging.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class JsonConsoleFormatterOptions : Microsoft.Extensions.Logging.Console.ConsoleFormatterOptions
                 {
                     public JsonConsoleFormatterOptions() => throw null;
                     public System.Text.Json.JsonWriterOptions JsonWriterOptions { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.Console.LoggerColorBehavior` in `Microsoft.Extensions.Logging.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum LoggerColorBehavior : int
                 {
                     Default = 0,
@@ -102,7 +93,6 @@ namespace Microsoft
                     Enabled = 1,
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.Console.SimpleConsoleFormatterOptions` in `Microsoft.Extensions.Logging.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class SimpleConsoleFormatterOptions : Microsoft.Extensions.Logging.Console.ConsoleFormatterOptions
                 {
                     public Microsoft.Extensions.Logging.Console.LoggerColorBehavior ColorBehavior { get => throw null; set => throw null; }

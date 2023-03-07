@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Formats.Tar, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Tar
         {
-            // Generated from `System.Formats.Tar.GnuTarEntry` in `System.Formats.Tar, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class GnuTarEntry : System.Formats.Tar.PosixTarEntry
             {
                 public System.DateTimeOffset AccessTime { get => throw null; set => throw null; }
@@ -15,14 +15,12 @@ namespace System
                 public GnuTarEntry(System.Formats.Tar.TarEntryType entryType, string entryName) => throw null;
             }
 
-            // Generated from `System.Formats.Tar.PaxGlobalExtendedAttributesTarEntry` in `System.Formats.Tar, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class PaxGlobalExtendedAttributesTarEntry : System.Formats.Tar.PosixTarEntry
             {
                 public System.Collections.Generic.IReadOnlyDictionary<string, string> GlobalExtendedAttributes { get => throw null; }
                 public PaxGlobalExtendedAttributesTarEntry(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>> globalExtendedAttributes) => throw null;
             }
 
-            // Generated from `System.Formats.Tar.PaxTarEntry` in `System.Formats.Tar, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class PaxTarEntry : System.Formats.Tar.PosixTarEntry
             {
                 public System.Collections.Generic.IReadOnlyDictionary<string, string> ExtendedAttributes { get => throw null; }
@@ -31,7 +29,6 @@ namespace System
                 public PaxTarEntry(System.Formats.Tar.TarEntryType entryType, string entryName, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>> extendedAttributes) => throw null;
             }
 
-            // Generated from `System.Formats.Tar.PosixTarEntry` in `System.Formats.Tar, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class PosixTarEntry : System.Formats.Tar.TarEntry
             {
                 public int DeviceMajor { get => throw null; set => throw null; }
@@ -41,7 +38,6 @@ namespace System
                 public string UserName { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Formats.Tar.TarEntry` in `System.Formats.Tar, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class TarEntry
             {
                 public int Checksum { get => throw null; }
@@ -61,7 +57,6 @@ namespace System
                 public int Uid { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Formats.Tar.TarEntryFormat` in `System.Formats.Tar, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum TarEntryFormat : int
             {
                 Gnu = 4,
@@ -71,7 +66,6 @@ namespace System
                 V7 = 1,
             }
 
-            // Generated from `System.Formats.Tar.TarEntryType` in `System.Formats.Tar, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum TarEntryType : byte
             {
                 BlockDevice = 52,
@@ -94,7 +88,6 @@ namespace System
                 V7RegularFile = 0,
             }
 
-            // Generated from `System.Formats.Tar.TarFile` in `System.Formats.Tar, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class TarFile
             {
                 public static void CreateFromDirectory(string sourceDirectoryName, System.IO.Stream destination, bool includeBaseDirectory) => throw null;
@@ -107,7 +100,6 @@ namespace System
                 public static System.Threading.Tasks.Task ExtractToDirectoryAsync(string sourceFileName, string destinationDirectoryName, bool overwriteFiles, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             }
 
-            // Generated from `System.Formats.Tar.TarReader` in `System.Formats.Tar, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class TarReader : System.IAsyncDisposable, System.IDisposable
             {
                 public void Dispose() => throw null;
@@ -117,7 +109,6 @@ namespace System
                 public TarReader(System.IO.Stream archiveStream, bool leaveOpen = default(bool)) => throw null;
             }
 
-            // Generated from `System.Formats.Tar.TarWriter` in `System.Formats.Tar, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class TarWriter : System.IAsyncDisposable, System.IDisposable
             {
                 public void Dispose() => throw null;
@@ -132,14 +123,12 @@ namespace System
                 public System.Threading.Tasks.Task WriteEntryAsync(string fileName, string entryName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             }
 
-            // Generated from `System.Formats.Tar.UstarTarEntry` in `System.Formats.Tar, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class UstarTarEntry : System.Formats.Tar.PosixTarEntry
             {
                 public UstarTarEntry(System.Formats.Tar.TarEntry other) => throw null;
                 public UstarTarEntry(System.Formats.Tar.TarEntryType entryType, string entryName) => throw null;
             }
 
-            // Generated from `System.Formats.Tar.V7TarEntry` in `System.Formats.Tar, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class V7TarEntry : System.Formats.Tar.TarEntry
             {
                 public V7TarEntry(System.Formats.Tar.TarEntry other) => throw null;

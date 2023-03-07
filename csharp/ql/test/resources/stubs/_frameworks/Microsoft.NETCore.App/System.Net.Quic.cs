@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Net.Quic, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Quic
         {
-            // Generated from `System.Net.Quic.QuicAbortDirection` in `System.Net.Quic, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum QuicAbortDirection : int
             {
@@ -15,7 +15,6 @@ namespace System
                 Write = 2,
             }
 
-            // Generated from `System.Net.Quic.QuicClientConnectionOptions` in `System.Net.Quic, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class QuicClientConnectionOptions : System.Net.Quic.QuicConnectionOptions
             {
                 public System.Net.Security.SslClientAuthenticationOptions ClientAuthenticationOptions { get => throw null; set => throw null; }
@@ -24,7 +23,6 @@ namespace System
                 public System.Net.EndPoint RemoteEndPoint { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Quic.QuicConnection` in `System.Net.Quic, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class QuicConnection : System.IAsyncDisposable
             {
                 public System.Threading.Tasks.ValueTask<System.Net.Quic.QuicStream> AcceptInboundStreamAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -40,7 +38,6 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Net.Quic.QuicConnectionOptions` in `System.Net.Quic, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class QuicConnectionOptions
             {
                 public System.Int64 DefaultCloseErrorCode { get => throw null; set => throw null; }
@@ -51,7 +48,6 @@ namespace System
                 internal QuicConnectionOptions() => throw null;
             }
 
-            // Generated from `System.Net.Quic.QuicError` in `System.Net.Quic, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum QuicError : int
             {
                 AddressInUse = 4,
@@ -69,7 +65,6 @@ namespace System
                 VersionNegotiationError = 9,
             }
 
-            // Generated from `System.Net.Quic.QuicException` in `System.Net.Quic, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class QuicException : System.IO.IOException
             {
                 public System.Int64? ApplicationErrorCode { get => throw null; }
@@ -77,7 +72,6 @@ namespace System
                 public QuicException(System.Net.Quic.QuicError error, System.Int64? applicationErrorCode, string message) => throw null;
             }
 
-            // Generated from `System.Net.Quic.QuicListener` in `System.Net.Quic, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class QuicListener : System.IAsyncDisposable
             {
                 public System.Threading.Tasks.ValueTask<System.Net.Quic.QuicConnection> AcceptConnectionAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -88,7 +82,6 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Net.Quic.QuicListenerOptions` in `System.Net.Quic, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class QuicListenerOptions
             {
                 public System.Collections.Generic.List<System.Net.Security.SslApplicationProtocol> ApplicationProtocols { get => throw null; set => throw null; }
@@ -98,14 +91,12 @@ namespace System
                 public QuicListenerOptions() => throw null;
             }
 
-            // Generated from `System.Net.Quic.QuicServerConnectionOptions` in `System.Net.Quic, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class QuicServerConnectionOptions : System.Net.Quic.QuicConnectionOptions
             {
                 public QuicServerConnectionOptions() => throw null;
                 public System.Net.Security.SslServerAuthenticationOptions ServerAuthenticationOptions { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Quic.QuicStream` in `System.Net.Quic, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class QuicStream : System.IO.Stream
             {
                 public void Abort(System.Net.Quic.QuicAbortDirection abortDirection, System.Int64 errorCode) => throw null;
@@ -145,7 +136,6 @@ namespace System
                 public System.Threading.Tasks.Task WritesClosed { get => throw null; }
             }
 
-            // Generated from `System.Net.Quic.QuicStreamType` in `System.Net.Quic, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum QuicStreamType : int
             {
                 Bidirectional = 1,

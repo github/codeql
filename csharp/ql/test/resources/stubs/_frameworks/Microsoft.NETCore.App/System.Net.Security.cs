@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Security
         {
-            // Generated from `System.Net.Security.AuthenticatedStream` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class AuthenticatedStream : System.IO.Stream
             {
                 protected AuthenticatedStream(System.IO.Stream innerStream, bool leaveInnerStreamOpen) => throw null;
@@ -21,14 +21,12 @@ namespace System
                 public bool LeaveInnerStreamOpen { get => throw null; }
             }
 
-            // Generated from `System.Net.Security.CipherSuitesPolicy` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CipherSuitesPolicy
             {
                 public System.Collections.Generic.IEnumerable<System.Net.Security.TlsCipherSuite> AllowedCipherSuites { get => throw null; }
                 public CipherSuitesPolicy(System.Collections.Generic.IEnumerable<System.Net.Security.TlsCipherSuite> allowedCipherSuites) => throw null;
             }
 
-            // Generated from `System.Net.Security.EncryptionPolicy` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum EncryptionPolicy : int
             {
                 AllowNoEncryption = 1,
@@ -36,10 +34,8 @@ namespace System
                 RequireEncryption = 0,
             }
 
-            // Generated from `System.Net.Security.LocalCertificateSelectionCallback` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate System.Security.Cryptography.X509Certificates.X509Certificate LocalCertificateSelectionCallback(object sender, string targetHost, System.Security.Cryptography.X509Certificates.X509CertificateCollection localCertificates, System.Security.Cryptography.X509Certificates.X509Certificate remoteCertificate, string[] acceptableIssuers);
 
-            // Generated from `System.Net.Security.NegotiateAuthentication` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NegotiateAuthentication : System.IDisposable
             {
                 public void Dispose() => throw null;
@@ -62,7 +58,6 @@ namespace System
                 public System.Net.Security.NegotiateAuthenticationStatusCode Wrap(System.ReadOnlySpan<System.Byte> input, System.Buffers.IBufferWriter<System.Byte> outputWriter, bool requestEncryption, out bool isEncrypted) => throw null;
             }
 
-            // Generated from `System.Net.Security.NegotiateAuthenticationClientOptions` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NegotiateAuthenticationClientOptions
             {
                 public System.Security.Principal.TokenImpersonationLevel AllowedImpersonationLevel { get => throw null; set => throw null; }
@@ -75,7 +70,6 @@ namespace System
                 public string TargetName { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Security.NegotiateAuthenticationServerOptions` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NegotiateAuthenticationServerOptions
             {
                 public System.Security.Authentication.ExtendedProtection.ChannelBinding Binding { get => throw null; set => throw null; }
@@ -87,7 +81,6 @@ namespace System
                 public System.Net.Security.ProtectionLevel RequiredProtectionLevel { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Security.NegotiateAuthenticationStatusCode` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum NegotiateAuthenticationStatusCode : int
             {
                 BadBinding = 3,
@@ -108,7 +101,6 @@ namespace System
                 Unsupported = 4,
             }
 
-            // Generated from `System.Net.Security.NegotiateStream` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NegotiateStream : System.Net.Security.AuthenticatedStream
             {
                 public virtual void AuthenticateAsClient() => throw null;
@@ -175,7 +167,6 @@ namespace System
                 public override int WriteTimeout { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Security.ProtectionLevel` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ProtectionLevel : int
             {
                 EncryptAndSign = 2,
@@ -183,16 +174,12 @@ namespace System
                 Sign = 1,
             }
 
-            // Generated from `System.Net.Security.RemoteCertificateValidationCallback` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate bool RemoteCertificateValidationCallback(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certificate, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors);
 
-            // Generated from `System.Net.Security.ServerCertificateSelectionCallback` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate System.Security.Cryptography.X509Certificates.X509Certificate ServerCertificateSelectionCallback(object sender, string hostName);
 
-            // Generated from `System.Net.Security.ServerOptionsSelectionCallback` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate System.Threading.Tasks.ValueTask<System.Net.Security.SslServerAuthenticationOptions> ServerOptionsSelectionCallback(System.Net.Security.SslStream stream, System.Net.Security.SslClientHelloInfo clientHelloInfo, object state, System.Threading.CancellationToken cancellationToken);
 
-            // Generated from `System.Net.Security.SslApplicationProtocol` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SslApplicationProtocol : System.IEquatable<System.Net.Security.SslApplicationProtocol>
             {
                 public static bool operator !=(System.Net.Security.SslApplicationProtocol left, System.Net.Security.SslApplicationProtocol right) => throw null;
@@ -210,14 +197,12 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Net.Security.SslCertificateTrust` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SslCertificateTrust
             {
                 public static System.Net.Security.SslCertificateTrust CreateForX509Collection(System.Security.Cryptography.X509Certificates.X509Certificate2Collection trustList, bool sendTrustInHandshake = default(bool)) => throw null;
                 public static System.Net.Security.SslCertificateTrust CreateForX509Store(System.Security.Cryptography.X509Certificates.X509Store store, bool sendTrustInHandshake = default(bool)) => throw null;
             }
 
-            // Generated from `System.Net.Security.SslClientAuthenticationOptions` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SslClientAuthenticationOptions
             {
                 public bool AllowRenegotiation { get => throw null; set => throw null; }
@@ -234,7 +219,6 @@ namespace System
                 public string TargetHost { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Security.SslClientHelloInfo` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SslClientHelloInfo
             {
                 public string ServerName { get => throw null; }
@@ -242,7 +226,6 @@ namespace System
                 public System.Security.Authentication.SslProtocols SslProtocols { get => throw null; }
             }
 
-            // Generated from `System.Net.Security.SslServerAuthenticationOptions` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SslServerAuthenticationOptions
             {
                 public bool AllowRenegotiation { get => throw null; set => throw null; }
@@ -260,7 +243,6 @@ namespace System
                 public SslServerAuthenticationOptions() => throw null;
             }
 
-            // Generated from `System.Net.Security.SslStream` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SslStream : System.Net.Security.AuthenticatedStream
             {
                 public void AuthenticateAsClient(System.Net.Security.SslClientAuthenticationOptions sslClientAuthenticationOptions) => throw null;
@@ -343,14 +325,12 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~SslStream
             }
 
-            // Generated from `System.Net.Security.SslStreamCertificateContext` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SslStreamCertificateContext
             {
                 public static System.Net.Security.SslStreamCertificateContext Create(System.Security.Cryptography.X509Certificates.X509Certificate2 target, System.Security.Cryptography.X509Certificates.X509Certificate2Collection additionalCertificates, bool offline) => throw null;
                 public static System.Net.Security.SslStreamCertificateContext Create(System.Security.Cryptography.X509Certificates.X509Certificate2 target, System.Security.Cryptography.X509Certificates.X509Certificate2Collection additionalCertificates, bool offline = default(bool), System.Net.Security.SslCertificateTrust trust = default(System.Net.Security.SslCertificateTrust)) => throw null;
             }
 
-            // Generated from `System.Net.Security.TlsCipherSuite` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum TlsCipherSuite : ushort
             {
                 TLS_AES_128_CCM_8_SHA256 = 4869,
@@ -698,7 +678,6 @@ namespace System
     {
         namespace Authentication
         {
-            // Generated from `System.Security.Authentication.AuthenticationException` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AuthenticationException : System.SystemException
             {
                 public AuthenticationException() => throw null;
@@ -707,7 +686,6 @@ namespace System
                 public AuthenticationException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `System.Security.Authentication.InvalidCredentialException` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class InvalidCredentialException : System.Security.Authentication.AuthenticationException
             {
                 public InvalidCredentialException() => throw null;
@@ -718,7 +696,6 @@ namespace System
 
             namespace ExtendedProtection
             {
-                // Generated from `System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ExtendedProtectionPolicy : System.Runtime.Serialization.ISerializable
                 {
                     public System.Security.Authentication.ExtendedProtection.ChannelBinding CustomChannelBinding { get => throw null; }
@@ -735,7 +712,6 @@ namespace System
                     public override string ToString() => throw null;
                 }
 
-                // Generated from `System.Security.Authentication.ExtendedProtection.PolicyEnforcement` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum PolicyEnforcement : int
                 {
                     Always = 2,
@@ -743,14 +719,12 @@ namespace System
                     WhenSupported = 1,
                 }
 
-                // Generated from `System.Security.Authentication.ExtendedProtection.ProtectionScenario` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum ProtectionScenario : int
                 {
                     TransportSelected = 0,
                     TrustedProxy = 1,
                 }
 
-                // Generated from `System.Security.Authentication.ExtendedProtection.ServiceNameCollection` in `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ServiceNameCollection : System.Collections.ReadOnlyCollectionBase
                 {
                     public bool Contains(string searchServiceName) => throw null;

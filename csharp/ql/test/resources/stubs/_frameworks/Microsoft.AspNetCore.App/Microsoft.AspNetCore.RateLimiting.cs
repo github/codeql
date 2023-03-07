@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,14 +7,12 @@ namespace Microsoft
     {
         namespace Builder
         {
-            // Generated from `Microsoft.AspNetCore.Builder.RateLimiterApplicationBuilderExtensions` in `Microsoft.AspNetCore.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RateLimiterApplicationBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseRateLimiter(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseRateLimiter(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, Microsoft.AspNetCore.RateLimiting.RateLimiterOptions options) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.RateLimiterEndpointConventionBuilderExtensions` in `Microsoft.AspNetCore.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RateLimiterEndpointConventionBuilderExtensions
             {
                 public static TBuilder DisableRateLimiting<TBuilder>(this TBuilder builder) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
@@ -21,7 +20,6 @@ namespace Microsoft
                 public static TBuilder RequireRateLimiting<TBuilder>(this TBuilder builder, string policyName) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.RateLimiterServiceCollectionExtensions` in `Microsoft.AspNetCore.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RateLimiterServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddRateLimiter(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.RateLimiting.RateLimiterOptions> configureOptions) => throw null;
@@ -30,27 +28,23 @@ namespace Microsoft
         }
         namespace RateLimiting
         {
-            // Generated from `Microsoft.AspNetCore.RateLimiting.DisableRateLimitingAttribute` in `Microsoft.AspNetCore.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DisableRateLimitingAttribute : System.Attribute
             {
                 public DisableRateLimitingAttribute() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.RateLimiting.EnableRateLimitingAttribute` in `Microsoft.AspNetCore.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class EnableRateLimitingAttribute : System.Attribute
             {
                 public EnableRateLimitingAttribute(string policyName) => throw null;
                 public string PolicyName { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.RateLimiting.IRateLimiterPolicy<>` in `Microsoft.AspNetCore.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IRateLimiterPolicy<TPartitionKey>
             {
                 System.Threading.RateLimiting.RateLimitPartition<TPartitionKey> GetPartition(Microsoft.AspNetCore.Http.HttpContext httpContext);
                 System.Func<Microsoft.AspNetCore.RateLimiting.OnRejectedContext, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask> OnRejected { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.RateLimiting.OnRejectedContext` in `Microsoft.AspNetCore.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class OnRejectedContext
             {
                 public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; set => throw null; }
@@ -58,7 +52,6 @@ namespace Microsoft
                 public OnRejectedContext() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.RateLimiting.RateLimiterOptions` in `Microsoft.AspNetCore.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RateLimiterOptions
             {
                 public Microsoft.AspNetCore.RateLimiting.RateLimiterOptions AddPolicy<TPartitionKey, TPolicy>(string policyName) where TPolicy : Microsoft.AspNetCore.RateLimiting.IRateLimiterPolicy<TPartitionKey> => throw null;
@@ -70,7 +63,6 @@ namespace Microsoft
                 public int RejectionStatusCode { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.RateLimiting.RateLimiterOptionsExtensions` in `Microsoft.AspNetCore.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RateLimiterOptionsExtensions
             {
                 public static Microsoft.AspNetCore.RateLimiting.RateLimiterOptions AddConcurrencyLimiter(this Microsoft.AspNetCore.RateLimiting.RateLimiterOptions options, string policyName, System.Action<System.Threading.RateLimiting.ConcurrencyLimiterOptions> configureOptions) => throw null;

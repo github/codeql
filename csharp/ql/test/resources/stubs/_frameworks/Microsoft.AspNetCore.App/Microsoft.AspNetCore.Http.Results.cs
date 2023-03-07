@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,12 +7,10 @@ namespace Microsoft
     {
         namespace Http
         {
-            // Generated from `Microsoft.AspNetCore.Http.IResultExtensions` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IResultExtensions
             {
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.Results` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class Results
             {
                 public static Microsoft.AspNetCore.Http.IResult Accepted(string uri = default(string), object value = default(object)) => throw null;
@@ -67,7 +66,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Http.IResult ValidationProblem(System.Collections.Generic.IDictionary<string, string[]> errors, string detail = default(string), string instance = default(string), int? statusCode = default(int?), string title = default(string), string type = default(string), System.Collections.Generic.IDictionary<string, object> extensions = default(System.Collections.Generic.IDictionary<string, object>)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.TypedResults` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class TypedResults
             {
                 public static Microsoft.AspNetCore.Http.HttpResults.Accepted Accepted(System.Uri uri) => throw null;
@@ -126,7 +124,6 @@ namespace Microsoft
 
             namespace HttpResults
             {
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Accepted` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Accepted : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -136,7 +133,6 @@ namespace Microsoft
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Accepted<>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Accepted<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -148,7 +144,6 @@ namespace Microsoft
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.AcceptedAtRoute` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AcceptedAtRoute : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -159,7 +154,6 @@ namespace Microsoft
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.AcceptedAtRoute<>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AcceptedAtRoute<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -172,7 +166,6 @@ namespace Microsoft
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.BadRequest` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class BadRequest : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -181,7 +174,6 @@ namespace Microsoft
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.BadRequest<>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class BadRequest<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -192,7 +184,6 @@ namespace Microsoft
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.ChallengeHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ChallengeHttpResult : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Collections.Generic.IReadOnlyList<string> AuthenticationSchemes { get => throw null; set => throw null; }
@@ -200,7 +191,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Authentication.AuthenticationProperties Properties { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Conflict` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Conflict : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -209,7 +199,6 @@ namespace Microsoft
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Conflict<>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Conflict<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -220,7 +209,6 @@ namespace Microsoft
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.ContentHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ContentHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public string ContentType { get => throw null; set => throw null; }
@@ -229,7 +217,6 @@ namespace Microsoft
                     public int? StatusCode { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Created` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Created : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -239,7 +226,6 @@ namespace Microsoft
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Created<>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Created<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -251,7 +237,6 @@ namespace Microsoft
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.CreatedAtRoute` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CreatedAtRoute : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -262,7 +247,6 @@ namespace Microsoft
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.CreatedAtRoute<>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CreatedAtRoute<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -275,14 +259,12 @@ namespace Microsoft
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.EmptyHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class EmptyHttpResult : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public static Microsoft.AspNetCore.Http.HttpResults.EmptyHttpResult Instance { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.FileContentHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FileContentHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IResult
                 {
                     public string ContentType { get => throw null; set => throw null; }
@@ -295,7 +277,6 @@ namespace Microsoft
                     public System.DateTimeOffset? LastModified { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.FileStreamHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FileStreamHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IResult
                 {
                     public string ContentType { get => throw null; set => throw null; }
@@ -308,7 +289,6 @@ namespace Microsoft
                     public System.DateTimeOffset? LastModified { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.ForbidHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ForbidHttpResult : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Collections.Generic.IReadOnlyList<string> AuthenticationSchemes { get => throw null; set => throw null; }
@@ -316,7 +296,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Authentication.AuthenticationProperties Properties { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.JsonHttpResult<>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class JsonHttpResult<TValue> : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
                 {
                     public string ContentType { get => throw null; set => throw null; }
@@ -327,7 +306,6 @@ namespace Microsoft
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.NoContent` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class NoContent : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -336,7 +314,6 @@ namespace Microsoft
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.NotFound` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class NotFound : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -345,7 +322,6 @@ namespace Microsoft
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.NotFound<>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class NotFound<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -356,7 +332,6 @@ namespace Microsoft
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Ok` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Ok : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -365,7 +340,6 @@ namespace Microsoft
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Ok<>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Ok<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -376,7 +350,6 @@ namespace Microsoft
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.PhysicalFileHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PhysicalFileHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IResult
                 {
                     public string ContentType { get => throw null; set => throw null; }
@@ -389,7 +362,6 @@ namespace Microsoft
                     public System.DateTimeOffset? LastModified { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ProblemHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<Microsoft.AspNetCore.Mvc.ProblemDetails>
                 {
                     public string ContentType { get => throw null; }
@@ -401,7 +373,6 @@ namespace Microsoft
                     Microsoft.AspNetCore.Mvc.ProblemDetails Microsoft.AspNetCore.Http.IValueHttpResult<Microsoft.AspNetCore.Mvc.ProblemDetails>.Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.PushStreamHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PushStreamHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IResult
                 {
                     public string ContentType { get => throw null; set => throw null; }
@@ -413,7 +384,6 @@ namespace Microsoft
                     public System.DateTimeOffset? LastModified { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.RedirectHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RedirectHttpResult : Microsoft.AspNetCore.Http.IResult
                 {
                     public bool AcceptLocalUrlOnly { get => throw null; }
@@ -423,7 +393,6 @@ namespace Microsoft
                     public string Url { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.RedirectToRouteHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RedirectToRouteHttpResult : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -434,7 +403,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Routing.RouteValueDictionary RouteValues { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Results<,,,,,>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Results<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6> : Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult where TResult3 : Microsoft.AspNetCore.Http.IResult where TResult4 : Microsoft.AspNetCore.Http.IResult where TResult5 : Microsoft.AspNetCore.Http.IResult where TResult6 : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -448,7 +416,6 @@ namespace Microsoft
                     public static implicit operator Microsoft.AspNetCore.Http.HttpResults.Results<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6>(TResult6 result) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Results<,,,,>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Results<TResult1, TResult2, TResult3, TResult4, TResult5> : Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult where TResult3 : Microsoft.AspNetCore.Http.IResult where TResult4 : Microsoft.AspNetCore.Http.IResult where TResult5 : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -461,7 +428,6 @@ namespace Microsoft
                     public static implicit operator Microsoft.AspNetCore.Http.HttpResults.Results<TResult1, TResult2, TResult3, TResult4, TResult5>(TResult5 result) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Results<,,,>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Results<TResult1, TResult2, TResult3, TResult4> : Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult where TResult3 : Microsoft.AspNetCore.Http.IResult where TResult4 : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -473,7 +439,6 @@ namespace Microsoft
                     public static implicit operator Microsoft.AspNetCore.Http.HttpResults.Results<TResult1, TResult2, TResult3, TResult4>(TResult4 result) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Results<,,>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Results<TResult1, TResult2, TResult3> : Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult where TResult3 : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -484,7 +449,6 @@ namespace Microsoft
                     public static implicit operator Microsoft.AspNetCore.Http.HttpResults.Results<TResult1, TResult2, TResult3>(TResult3 result) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Results<,>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Results<TResult1, TResult2> : Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -494,7 +458,6 @@ namespace Microsoft
                     public static implicit operator Microsoft.AspNetCore.Http.HttpResults.Results<TResult1, TResult2>(TResult2 result) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.SignInHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class SignInHttpResult : Microsoft.AspNetCore.Http.IResult
                 {
                     public string AuthenticationScheme { get => throw null; set => throw null; }
@@ -503,7 +466,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Authentication.AuthenticationProperties Properties { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.SignOutHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class SignOutHttpResult : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Collections.Generic.IReadOnlyList<string> AuthenticationSchemes { get => throw null; set => throw null; }
@@ -511,7 +473,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Authentication.AuthenticationProperties Properties { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.StatusCodeHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class StatusCodeHttpResult : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -519,7 +480,6 @@ namespace Microsoft
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.UnauthorizedHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class UnauthorizedHttpResult : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -527,7 +487,6 @@ namespace Microsoft
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.UnprocessableEntity` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class UnprocessableEntity : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -536,7 +495,6 @@ namespace Microsoft
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.UnprocessableEntity<>` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class UnprocessableEntity<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -547,7 +505,6 @@ namespace Microsoft
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.Utf8ContentHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class Utf8ContentHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public string ContentType { get => throw null; set => throw null; }
@@ -556,7 +513,6 @@ namespace Microsoft
                     public int? StatusCode { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.ValidationProblem` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ValidationProblem : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<Microsoft.AspNetCore.Http.HttpValidationProblemDetails>, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider
                 {
                     public string ContentType { get => throw null; }
@@ -569,7 +525,6 @@ namespace Microsoft
                     Microsoft.AspNetCore.Http.HttpValidationProblemDetails Microsoft.AspNetCore.Http.IValueHttpResult<Microsoft.AspNetCore.Http.HttpValidationProblemDetails>.Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.HttpResults.VirtualFileHttpResult` in `Microsoft.AspNetCore.Http.Results, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class VirtualFileHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IResult
                 {
                     public string ContentType { get => throw null; set => throw null; }

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Caching.Memory, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -8,7 +9,6 @@ namespace Microsoft
         {
             namespace Distributed
             {
-                // Generated from `Microsoft.Extensions.Caching.Distributed.MemoryDistributedCache` in `Microsoft.Extensions.Caching.Memory, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MemoryDistributedCache : Microsoft.Extensions.Caching.Distributed.IDistributedCache
                 {
                     public System.Byte[] Get(string key) => throw null;
@@ -26,7 +26,6 @@ namespace Microsoft
             }
             namespace Memory
             {
-                // Generated from `Microsoft.Extensions.Caching.Memory.MemoryCache` in `Microsoft.Extensions.Caching.Memory, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MemoryCache : Microsoft.Extensions.Caching.Memory.IMemoryCache, System.IDisposable
                 {
                     public void Clear() => throw null;
@@ -43,7 +42,6 @@ namespace Microsoft
                     // ERR: Stub generator didn't handle member: ~MemoryCache
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Memory.MemoryCacheOptions` in `Microsoft.Extensions.Caching.Memory, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MemoryCacheOptions : Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>
                 {
                     public Microsoft.Extensions.Internal.ISystemClock Clock { get => throw null; set => throw null; }
@@ -56,7 +54,6 @@ namespace Microsoft
                     Microsoft.Extensions.Caching.Memory.MemoryCacheOptions Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>.Value { get => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions` in `Microsoft.Extensions.Caching.Memory, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MemoryDistributedCacheOptions : Microsoft.Extensions.Caching.Memory.MemoryCacheOptions
                 {
                     public MemoryDistributedCacheOptions() => throw null;
@@ -66,7 +63,6 @@ namespace Microsoft
         }
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.MemoryCacheServiceCollectionExtensions` in `Microsoft.Extensions.Caching.Memory, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MemoryCacheServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddDistributedMemoryCache(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;

@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.Numerics.Vectors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace Numerics
     {
-        // Generated from `System.Numerics.Matrix3x2` in `System.Numerics.Vectors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Matrix3x2 : System.IEquatable<System.Numerics.Matrix3x2>
         {
             public static bool operator !=(System.Numerics.Matrix3x2 value1, System.Numerics.Matrix3x2 value2) => throw null;
@@ -52,7 +52,6 @@ namespace System
             public System.Numerics.Vector2 Translation { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Numerics.Matrix4x4` in `System.Numerics.Vectors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Matrix4x4 : System.IEquatable<System.Numerics.Matrix4x4>
         {
             public static bool operator !=(System.Numerics.Matrix4x4 value1, System.Numerics.Matrix4x4 value2) => throw null;
@@ -130,7 +129,6 @@ namespace System
             public static System.Numerics.Matrix4x4 Transpose(System.Numerics.Matrix4x4 matrix) => throw null;
         }
 
-        // Generated from `System.Numerics.Plane` in `System.Numerics.Vectors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Plane : System.IEquatable<System.Numerics.Plane>
         {
             public static bool operator !=(System.Numerics.Plane value1, System.Numerics.Plane value2) => throw null;
@@ -154,7 +152,6 @@ namespace System
             public static System.Numerics.Plane Transform(System.Numerics.Plane plane, System.Numerics.Quaternion rotation) => throw null;
         }
 
-        // Generated from `System.Numerics.Quaternion` in `System.Numerics.Vectors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Quaternion : System.IEquatable<System.Numerics.Quaternion>
         {
             public static bool operator !=(System.Numerics.Quaternion value1, System.Numerics.Quaternion value2) => throw null;
@@ -200,7 +197,6 @@ namespace System
             public static System.Numerics.Quaternion Zero { get => throw null; }
         }
 
-        // Generated from `System.Numerics.Vector` in `System.Numerics.Vectors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Vector
         {
             public static System.Numerics.Vector<T> Abs<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
@@ -326,7 +322,6 @@ namespace System
             public static System.Numerics.Vector<T> Xor<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
         }
 
-        // Generated from `System.Numerics.Vector2` in `System.Numerics.Vectors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Vector2 : System.IEquatable<System.Numerics.Vector2>, System.IFormattable
         {
             public static bool operator !=(System.Numerics.Vector2 left, System.Numerics.Vector2 right) => throw null;
@@ -388,7 +383,6 @@ namespace System
             public static System.Numerics.Vector2 Zero { get => throw null; }
         }
 
-        // Generated from `System.Numerics.Vector3` in `System.Numerics.Vectors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Vector3 : System.IEquatable<System.Numerics.Vector3>, System.IFormattable
         {
             public static bool operator !=(System.Numerics.Vector3 left, System.Numerics.Vector3 right) => throw null;
@@ -452,7 +446,6 @@ namespace System
             public static System.Numerics.Vector3 Zero { get => throw null; }
         }
 
-        // Generated from `System.Numerics.Vector4` in `System.Numerics.Vectors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Vector4 : System.IEquatable<System.Numerics.Vector4>, System.IFormattable
         {
             public static bool operator !=(System.Numerics.Vector4 left, System.Numerics.Vector4 right) => throw null;
@@ -520,7 +513,6 @@ namespace System
             public static System.Numerics.Vector4 Zero { get => throw null; }
         }
 
-        // Generated from `System.Numerics.Vector<>` in `System.Numerics.Vectors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Vector<T> : System.IEquatable<System.Numerics.Vector<T>>, System.IFormattable where T : struct
         {
             public static bool operator !=(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;

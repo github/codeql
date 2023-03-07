@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Net.WebSockets.Client, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace WebSockets
         {
-            // Generated from `System.Net.WebSockets.ClientWebSocket` in `System.Net.WebSockets.Client, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ClientWebSocket : System.Net.WebSockets.WebSocket
             {
                 public override void Abort() => throw null;
@@ -29,7 +29,6 @@ namespace System
                 public override string SubProtocol { get => throw null; }
             }
 
-            // Generated from `System.Net.WebSockets.ClientWebSocketOptions` in `System.Net.WebSockets.Client, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ClientWebSocketOptions
             {
                 public void AddSubProtocol(string subProtocol) => throw null;

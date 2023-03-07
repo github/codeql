@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.OutputCaching, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Builder
         {
-            // Generated from `Microsoft.AspNetCore.Builder.OutputCacheApplicationBuilderExtensions` in `Microsoft.AspNetCore.OutputCaching, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class OutputCacheApplicationBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseOutputCache(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
@@ -15,7 +15,6 @@ namespace Microsoft
         }
         namespace OutputCaching
         {
-            // Generated from `Microsoft.AspNetCore.OutputCaching.CacheVaryByRules` in `Microsoft.AspNetCore.OutputCaching, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class CacheVaryByRules
             {
                 public string CacheKeyPrefix { get => throw null; set => throw null; }
@@ -27,13 +26,11 @@ namespace Microsoft
                 public System.Collections.Generic.IDictionary<string, string> VaryByValues { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.OutputCaching.IOutputCacheFeature` in `Microsoft.AspNetCore.OutputCaching, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IOutputCacheFeature
             {
                 Microsoft.AspNetCore.OutputCaching.OutputCacheContext Context { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.OutputCaching.IOutputCachePolicy` in `Microsoft.AspNetCore.OutputCaching, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IOutputCachePolicy
             {
                 System.Threading.Tasks.ValueTask CacheRequestAsync(Microsoft.AspNetCore.OutputCaching.OutputCacheContext context, System.Threading.CancellationToken cancellation);
@@ -41,7 +38,6 @@ namespace Microsoft
                 System.Threading.Tasks.ValueTask ServeResponseAsync(Microsoft.AspNetCore.OutputCaching.OutputCacheContext context, System.Threading.CancellationToken cancellation);
             }
 
-            // Generated from `Microsoft.AspNetCore.OutputCaching.IOutputCacheStore` in `Microsoft.AspNetCore.OutputCaching, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IOutputCacheStore
             {
                 System.Threading.Tasks.ValueTask EvictByTagAsync(string tag, System.Threading.CancellationToken cancellationToken);
@@ -49,7 +45,6 @@ namespace Microsoft
                 System.Threading.Tasks.ValueTask SetAsync(string key, System.Byte[] value, string[] tags, System.TimeSpan validFor, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.OutputCaching.OutputCacheAttribute` in `Microsoft.AspNetCore.OutputCaching, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class OutputCacheAttribute : System.Attribute
             {
                 public int Duration { get => throw null; set => throw null; }
@@ -61,7 +56,6 @@ namespace Microsoft
                 public string[] VaryByRouteValueNames { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.OutputCaching.OutputCacheContext` in `Microsoft.AspNetCore.OutputCaching, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class OutputCacheContext
             {
                 public bool AllowCacheLookup { get => throw null; set => throw null; }
@@ -76,7 +70,6 @@ namespace Microsoft
                 public System.Collections.Generic.HashSet<string> Tags { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.OutputCaching.OutputCacheOptions` in `Microsoft.AspNetCore.OutputCaching, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class OutputCacheOptions
             {
                 public void AddBasePolicy(System.Action<Microsoft.AspNetCore.OutputCaching.OutputCachePolicyBuilder> build) => throw null;
@@ -93,7 +86,6 @@ namespace Microsoft
                 public bool UseCaseSensitivePaths { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.OutputCaching.OutputCachePolicyBuilder` in `Microsoft.AspNetCore.OutputCaching, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class OutputCachePolicyBuilder
             {
                 public Microsoft.AspNetCore.OutputCaching.OutputCachePolicyBuilder AddPolicy(System.Type policyType) => throw null;
@@ -126,7 +118,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.OutputCacheConventionBuilderExtensions` in `Microsoft.AspNetCore.OutputCaching, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class OutputCacheConventionBuilderExtensions
             {
                 public static TBuilder CacheOutput<TBuilder>(this TBuilder builder) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
@@ -136,7 +127,6 @@ namespace Microsoft
                 public static TBuilder CacheOutput<TBuilder>(this TBuilder builder, string policyName) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.OutputCacheServiceCollectionExtensions` in `Microsoft.AspNetCore.OutputCaching, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class OutputCacheServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddOutputCache(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;

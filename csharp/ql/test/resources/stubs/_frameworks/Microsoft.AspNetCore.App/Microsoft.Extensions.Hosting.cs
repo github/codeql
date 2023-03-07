@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.OptionsBuilderExtensions` in `Microsoft.Extensions.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class OptionsBuilderExtensions
             {
                 public static Microsoft.Extensions.Options.OptionsBuilder<TOptions> ValidateOnStart<TOptions>(this Microsoft.Extensions.Options.OptionsBuilder<TOptions> optionsBuilder) where TOptions : class => throw null;
@@ -15,21 +15,18 @@ namespace Microsoft
         }
         namespace Hosting
         {
-            // Generated from `Microsoft.Extensions.Hosting.BackgroundServiceExceptionBehavior` in `Microsoft.Extensions.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public enum BackgroundServiceExceptionBehavior : int
             {
                 Ignore = 1,
                 StopHost = 0,
             }
 
-            // Generated from `Microsoft.Extensions.Hosting.ConsoleLifetimeOptions` in `Microsoft.Extensions.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ConsoleLifetimeOptions
             {
                 public ConsoleLifetimeOptions() => throw null;
                 public bool SuppressStatusMessages { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Hosting.Host` in `Microsoft.Extensions.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class Host
             {
                 public static Microsoft.Extensions.Hosting.HostApplicationBuilder CreateApplicationBuilder() => throw null;
@@ -38,7 +35,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.Hosting.IHostBuilder CreateDefaultBuilder(string[] args) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Hosting.HostApplicationBuilder` in `Microsoft.Extensions.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HostApplicationBuilder
             {
                 public Microsoft.Extensions.Hosting.IHost Build() => throw null;
@@ -52,7 +48,6 @@ namespace Microsoft
                 public Microsoft.Extensions.DependencyInjection.IServiceCollection Services { get => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Hosting.HostApplicationBuilderSettings` in `Microsoft.Extensions.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HostApplicationBuilderSettings
             {
                 public string ApplicationName { get => throw null; set => throw null; }
@@ -64,7 +59,6 @@ namespace Microsoft
                 public HostApplicationBuilderSettings() => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Hosting.HostBuilder` in `Microsoft.Extensions.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HostBuilder : Microsoft.Extensions.Hosting.IHostBuilder
             {
                 public Microsoft.Extensions.Hosting.IHost Build() => throw null;
@@ -78,7 +72,6 @@ namespace Microsoft
                 public Microsoft.Extensions.Hosting.IHostBuilder UseServiceProviderFactory<TContainerBuilder>(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<TContainerBuilder> factory) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Hosting.HostOptions` in `Microsoft.Extensions.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HostOptions
             {
                 public Microsoft.Extensions.Hosting.BackgroundServiceExceptionBehavior BackgroundServiceExceptionBehavior { get => throw null; set => throw null; }
@@ -86,7 +79,6 @@ namespace Microsoft
                 public System.TimeSpan ShutdownTimeout { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Hosting.HostingHostBuilderExtensions` in `Microsoft.Extensions.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HostingHostBuilderExtensions
             {
                 public static Microsoft.Extensions.Hosting.IHostBuilder ConfigureAppConfiguration(this Microsoft.Extensions.Hosting.IHostBuilder hostBuilder, System.Action<Microsoft.Extensions.Configuration.IConfigurationBuilder> configureDelegate) => throw null;
@@ -109,7 +101,6 @@ namespace Microsoft
 
             namespace Internal
             {
-                // Generated from `Microsoft.Extensions.Hosting.Internal.ApplicationLifetime` in `Microsoft.Extensions.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ApplicationLifetime : Microsoft.Extensions.Hosting.IApplicationLifetime, Microsoft.Extensions.Hosting.IHostApplicationLifetime
                 {
                     public ApplicationLifetime(Microsoft.Extensions.Logging.ILogger<Microsoft.Extensions.Hosting.Internal.ApplicationLifetime> logger) => throw null;
@@ -121,7 +112,6 @@ namespace Microsoft
                     public void StopApplication() => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Hosting.Internal.ConsoleLifetime` in `Microsoft.Extensions.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ConsoleLifetime : Microsoft.Extensions.Hosting.IHostLifetime, System.IDisposable
                 {
                     public ConsoleLifetime(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.ConsoleLifetimeOptions> options, Microsoft.Extensions.Hosting.IHostEnvironment environment, Microsoft.Extensions.Hosting.IHostApplicationLifetime applicationLifetime, Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions> hostOptions) => throw null;
@@ -131,7 +121,6 @@ namespace Microsoft
                     public System.Threading.Tasks.Task WaitForStartAsync(System.Threading.CancellationToken cancellationToken) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Hosting.Internal.HostingEnvironment` in `Microsoft.Extensions.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HostingEnvironment : Microsoft.Extensions.Hosting.IHostEnvironment, Microsoft.Extensions.Hosting.IHostingEnvironment
                 {
                     public string ApplicationName { get => throw null; set => throw null; }

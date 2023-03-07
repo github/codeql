@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Http
         {
-            // Generated from `System.Net.Http.ByteArrayContent` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ByteArrayContent : System.Net.Http.HttpContent
             {
                 public ByteArrayContent(System.Byte[] content) => throw null;
@@ -19,14 +19,12 @@ namespace System
                 protected internal override bool TryComputeLength(out System.Int64 length) => throw null;
             }
 
-            // Generated from `System.Net.Http.ClientCertificateOption` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ClientCertificateOption : int
             {
                 Automatic = 1,
                 Manual = 0,
             }
 
-            // Generated from `System.Net.Http.DelegatingHandler` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DelegatingHandler : System.Net.Http.HttpMessageHandler
             {
                 protected DelegatingHandler() => throw null;
@@ -37,17 +35,14 @@ namespace System
                 protected internal override System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> SendAsync(System.Net.Http.HttpRequestMessage request, System.Threading.CancellationToken cancellationToken) => throw null;
             }
 
-            // Generated from `System.Net.Http.FormUrlEncodedContent` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FormUrlEncodedContent : System.Net.Http.ByteArrayContent
             {
                 public FormUrlEncodedContent(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>> nameValueCollection) : base(default(System.Byte[])) => throw null;
                 protected override System.Threading.Tasks.Task SerializeToStreamAsync(System.IO.Stream stream, System.Net.TransportContext context, System.Threading.CancellationToken cancellationToken) => throw null;
             }
 
-            // Generated from `System.Net.Http.HeaderEncodingSelector<>` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate System.Text.Encoding HeaderEncodingSelector<TContext>(string headerName, TContext context);
 
-            // Generated from `System.Net.Http.HttpClient` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HttpClient : System.Net.Http.HttpMessageInvoker
             {
                 public System.Uri BaseAddress { get => throw null; set => throw null; }
@@ -108,7 +103,6 @@ namespace System
                 public System.TimeSpan Timeout { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Http.HttpClientHandler` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HttpClientHandler : System.Net.Http.HttpMessageHandler
             {
                 public bool AllowAutoRedirect { get => throw null; set => throw null; }
@@ -141,14 +135,12 @@ namespace System
                 public bool UseProxy { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Http.HttpCompletionOption` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum HttpCompletionOption : int
             {
                 ResponseContentRead = 0,
                 ResponseHeadersRead = 1,
             }
 
-            // Generated from `System.Net.Http.HttpContent` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class HttpContent : System.IDisposable
             {
                 public void CopyTo(System.IO.Stream stream, System.Net.TransportContext context, System.Threading.CancellationToken cancellationToken) => throw null;
@@ -179,14 +171,12 @@ namespace System
                 protected internal abstract bool TryComputeLength(out System.Int64 length);
             }
 
-            // Generated from `System.Net.Http.HttpKeepAlivePingPolicy` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum HttpKeepAlivePingPolicy : int
             {
                 Always = 1,
                 WithActiveRequests = 0,
             }
 
-            // Generated from `System.Net.Http.HttpMessageHandler` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class HttpMessageHandler : System.IDisposable
             {
                 public void Dispose() => throw null;
@@ -196,7 +186,6 @@ namespace System
                 protected internal abstract System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> SendAsync(System.Net.Http.HttpRequestMessage request, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `System.Net.Http.HttpMessageInvoker` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HttpMessageInvoker : System.IDisposable
             {
                 public void Dispose() => throw null;
@@ -207,7 +196,6 @@ namespace System
                 public virtual System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> SendAsync(System.Net.Http.HttpRequestMessage request, System.Threading.CancellationToken cancellationToken) => throw null;
             }
 
-            // Generated from `System.Net.Http.HttpMethod` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HttpMethod : System.IEquatable<System.Net.Http.HttpMethod>
             {
                 public static bool operator !=(System.Net.Http.HttpMethod left, System.Net.Http.HttpMethod right) => throw null;
@@ -229,14 +217,12 @@ namespace System
                 public static System.Net.Http.HttpMethod Trace { get => throw null; }
             }
 
-            // Generated from `System.Net.Http.HttpProtocolException` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HttpProtocolException : System.IO.IOException
             {
                 public System.Int64 ErrorCode { get => throw null; }
                 public HttpProtocolException(System.Int64 errorCode, string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `System.Net.Http.HttpRequestException` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HttpRequestException : System.Exception
             {
                 public HttpRequestException() => throw null;
@@ -246,7 +232,6 @@ namespace System
                 public System.Net.HttpStatusCode? StatusCode { get => throw null; }
             }
 
-            // Generated from `System.Net.Http.HttpRequestMessage` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HttpRequestMessage : System.IDisposable
             {
                 public System.Net.Http.HttpContent Content { get => throw null; set => throw null; }
@@ -265,7 +250,6 @@ namespace System
                 public System.Net.Http.HttpVersionPolicy VersionPolicy { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Http.HttpRequestOptions` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HttpRequestOptions : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable
             {
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>.Add(System.Collections.Generic.KeyValuePair<string, object> item) => throw null;
@@ -289,7 +273,6 @@ namespace System
                 System.Collections.Generic.ICollection<object> System.Collections.Generic.IDictionary<string, object>.Values { get => throw null; }
             }
 
-            // Generated from `System.Net.Http.HttpRequestOptionsKey<>` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct HttpRequestOptionsKey<TValue>
             {
                 // Stub generator skipped constructor 
@@ -297,7 +280,6 @@ namespace System
                 public string Key { get => throw null; }
             }
 
-            // Generated from `System.Net.Http.HttpResponseMessage` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HttpResponseMessage : System.IDisposable
             {
                 public System.Net.Http.HttpContent Content { get => throw null; set => throw null; }
@@ -316,7 +298,6 @@ namespace System
                 public System.Version Version { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Http.HttpVersionPolicy` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum HttpVersionPolicy : int
             {
                 RequestVersionExact = 2,
@@ -324,7 +305,6 @@ namespace System
                 RequestVersionOrLower = 0,
             }
 
-            // Generated from `System.Net.Http.MessageProcessingHandler` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class MessageProcessingHandler : System.Net.Http.DelegatingHandler
             {
                 protected MessageProcessingHandler() => throw null;
@@ -335,7 +315,6 @@ namespace System
                 protected internal override System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> SendAsync(System.Net.Http.HttpRequestMessage request, System.Threading.CancellationToken cancellationToken) => throw null;
             }
 
-            // Generated from `System.Net.Http.MultipartContent` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MultipartContent : System.Net.Http.HttpContent, System.Collections.Generic.IEnumerable<System.Net.Http.HttpContent>, System.Collections.IEnumerable
             {
                 public virtual void Add(System.Net.Http.HttpContent content) => throw null;
@@ -355,7 +334,6 @@ namespace System
                 protected internal override bool TryComputeLength(out System.Int64 length) => throw null;
             }
 
-            // Generated from `System.Net.Http.MultipartFormDataContent` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MultipartFormDataContent : System.Net.Http.MultipartContent
             {
                 public override void Add(System.Net.Http.HttpContent content) => throw null;
@@ -366,7 +344,6 @@ namespace System
                 protected override System.Threading.Tasks.Task SerializeToStreamAsync(System.IO.Stream stream, System.Net.TransportContext context, System.Threading.CancellationToken cancellationToken) => throw null;
             }
 
-            // Generated from `System.Net.Http.ReadOnlyMemoryContent` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ReadOnlyMemoryContent : System.Net.Http.HttpContent
             {
                 protected override System.IO.Stream CreateContentReadStream(System.Threading.CancellationToken cancellationToken) => throw null;
@@ -378,14 +355,12 @@ namespace System
                 protected internal override bool TryComputeLength(out System.Int64 length) => throw null;
             }
 
-            // Generated from `System.Net.Http.SocketsHttpConnectionContext` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SocketsHttpConnectionContext
             {
                 public System.Net.DnsEndPoint DnsEndPoint { get => throw null; }
                 public System.Net.Http.HttpRequestMessage InitialRequestMessage { get => throw null; }
             }
 
-            // Generated from `System.Net.Http.SocketsHttpHandler` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SocketsHttpHandler : System.Net.Http.HttpMessageHandler
             {
                 public System.Diagnostics.DistributedContextPropagator ActivityHeadersPropagator { get => throw null; set => throw null; }
@@ -425,7 +400,6 @@ namespace System
                 public bool UseProxy { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Http.SocketsHttpPlaintextStreamFilterContext` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SocketsHttpPlaintextStreamFilterContext
             {
                 public System.Net.Http.HttpRequestMessage InitialRequestMessage { get => throw null; }
@@ -433,7 +407,6 @@ namespace System
                 public System.IO.Stream PlaintextStream { get => throw null; }
             }
 
-            // Generated from `System.Net.Http.StreamContent` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StreamContent : System.Net.Http.HttpContent
             {
                 protected override System.IO.Stream CreateContentReadStream(System.Threading.CancellationToken cancellationToken) => throw null;
@@ -447,7 +420,6 @@ namespace System
                 protected internal override bool TryComputeLength(out System.Int64 length) => throw null;
             }
 
-            // Generated from `System.Net.Http.StringContent` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StringContent : System.Net.Http.ByteArrayContent
             {
                 protected override System.Threading.Tasks.Task SerializeToStreamAsync(System.IO.Stream stream, System.Net.TransportContext context, System.Threading.CancellationToken cancellationToken) => throw null;
@@ -460,7 +432,6 @@ namespace System
 
             namespace Headers
             {
-                // Generated from `System.Net.Http.Headers.AuthenticationHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class AuthenticationHeaderValue : System.ICloneable
                 {
                     public AuthenticationHeaderValue(string scheme) => throw null;
@@ -475,7 +446,6 @@ namespace System
                     public static bool TryParse(string input, out System.Net.Http.Headers.AuthenticationHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.CacheControlHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class CacheControlHeaderValue : System.ICloneable
                 {
                     public CacheControlHeaderValue() => throw null;
@@ -503,7 +473,6 @@ namespace System
                     public static bool TryParse(string input, out System.Net.Http.Headers.CacheControlHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.ContentDispositionHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ContentDispositionHeaderValue : System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -525,7 +494,6 @@ namespace System
                     public static bool TryParse(string input, out System.Net.Http.Headers.ContentDispositionHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.ContentRangeHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ContentRangeHeaderValue : System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -545,7 +513,6 @@ namespace System
                     public string Unit { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Net.Http.Headers.EntityTagHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class EntityTagHeaderValue : System.ICloneable
                 {
                     public static System.Net.Http.Headers.EntityTagHeaderValue Any { get => throw null; }
@@ -561,10 +528,8 @@ namespace System
                     public static bool TryParse(string input, out System.Net.Http.Headers.EntityTagHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.HeaderStringValues` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct HeaderStringValues : System.Collections.Generic.IEnumerable<string>, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.IEnumerable
                 {
-                    // Generated from `System.Net.Http.Headers.HeaderStringValues+Enumerator` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public struct Enumerator : System.Collections.Generic.IEnumerator<string>, System.Collections.IEnumerator, System.IDisposable
                     {
                         public string Current { get => throw null; }
@@ -584,7 +549,6 @@ namespace System
                     public override string ToString() => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.HttpContentHeaders` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class HttpContentHeaders : System.Net.Http.Headers.HttpHeaders
                 {
                     public System.Collections.Generic.ICollection<string> Allow { get => throw null; }
@@ -600,7 +564,6 @@ namespace System
                     public System.DateTimeOffset? LastModified { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Net.Http.Headers.HttpHeaderValueCollection<>` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class HttpHeaderValueCollection<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable where T : class
                 {
                     public void Add(T item) => throw null;
@@ -617,7 +580,6 @@ namespace System
                     public bool TryParseAdd(string input) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.HttpHeaders` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public abstract class HttpHeaders : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.Collections.Generic.IEnumerable<string>>>, System.Collections.IEnumerable
                 {
                     public void Add(string name, System.Collections.Generic.IEnumerable<string> values) => throw null;
@@ -636,10 +598,8 @@ namespace System
                     public bool TryGetValues(string name, out System.Collections.Generic.IEnumerable<string> values) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.HttpHeadersNonValidated` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct HttpHeadersNonValidated : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.Net.Http.Headers.HeaderStringValues>>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, System.Net.Http.Headers.HeaderStringValues>>, System.Collections.Generic.IReadOnlyDictionary<string, System.Net.Http.Headers.HeaderStringValues>, System.Collections.IEnumerable
                 {
-                    // Generated from `System.Net.Http.Headers.HttpHeadersNonValidated+Enumerator` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, System.Net.Http.Headers.HeaderStringValues>>, System.Collections.IEnumerator, System.IDisposable
                     {
                         public System.Collections.Generic.KeyValuePair<string, System.Net.Http.Headers.HeaderStringValues> Current { get => throw null; }
@@ -665,7 +625,6 @@ namespace System
                     System.Collections.Generic.IEnumerable<System.Net.Http.Headers.HeaderStringValues> System.Collections.Generic.IReadOnlyDictionary<string, System.Net.Http.Headers.HeaderStringValues>.Values { get => throw null; }
                 }
 
-                // Generated from `System.Net.Http.Headers.HttpRequestHeaders` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class HttpRequestHeaders : System.Net.Http.Headers.HttpHeaders
                 {
                     public System.Net.Http.Headers.HttpHeaderValueCollection<System.Net.Http.Headers.MediaTypeWithQualityHeaderValue> Accept { get => throw null; }
@@ -702,7 +661,6 @@ namespace System
                     public System.Net.Http.Headers.HttpHeaderValueCollection<System.Net.Http.Headers.WarningHeaderValue> Warning { get => throw null; }
                 }
 
-                // Generated from `System.Net.Http.Headers.HttpResponseHeaders` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class HttpResponseHeaders : System.Net.Http.Headers.HttpHeaders
                 {
                     public System.Net.Http.Headers.HttpHeaderValueCollection<string> AcceptRanges { get => throw null; }
@@ -727,7 +685,6 @@ namespace System
                     public System.Net.Http.Headers.HttpHeaderValueCollection<System.Net.Http.Headers.AuthenticationHeaderValue> WwwAuthenticate { get => throw null; }
                 }
 
-                // Generated from `System.Net.Http.Headers.MediaTypeHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class MediaTypeHeaderValue : System.ICloneable
                 {
                     public string CharSet { get => throw null; set => throw null; }
@@ -744,7 +701,6 @@ namespace System
                     public static bool TryParse(string input, out System.Net.Http.Headers.MediaTypeHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.MediaTypeWithQualityHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class MediaTypeWithQualityHeaderValue : System.Net.Http.Headers.MediaTypeHeaderValue, System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -755,7 +711,6 @@ namespace System
                     public static bool TryParse(string input, out System.Net.Http.Headers.MediaTypeWithQualityHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.NameValueHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class NameValueHeaderValue : System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -771,7 +726,6 @@ namespace System
                     public string Value { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Net.Http.Headers.NameValueWithParametersHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class NameValueWithParametersHeaderValue : System.Net.Http.Headers.NameValueHeaderValue, System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -786,7 +740,6 @@ namespace System
                     public static bool TryParse(string input, out System.Net.Http.Headers.NameValueWithParametersHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.ProductHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ProductHeaderValue : System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -801,7 +754,6 @@ namespace System
                     public string Version { get => throw null; }
                 }
 
-                // Generated from `System.Net.Http.Headers.ProductInfoHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ProductInfoHeaderValue : System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -817,7 +769,6 @@ namespace System
                     public static bool TryParse(string input, out System.Net.Http.Headers.ProductInfoHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.RangeConditionHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class RangeConditionHeaderValue : System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -833,7 +784,6 @@ namespace System
                     public static bool TryParse(string input, out System.Net.Http.Headers.RangeConditionHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.RangeHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class RangeHeaderValue : System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -848,7 +798,6 @@ namespace System
                     public string Unit { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Net.Http.Headers.RangeItemHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class RangeItemHeaderValue : System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -860,7 +809,6 @@ namespace System
                     public override string ToString() => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.RetryConditionHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class RetryConditionHeaderValue : System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -875,7 +823,6 @@ namespace System
                     public static bool TryParse(string input, out System.Net.Http.Headers.RetryConditionHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.StringWithQualityHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class StringWithQualityHeaderValue : System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -890,7 +837,6 @@ namespace System
                     public string Value { get => throw null; }
                 }
 
-                // Generated from `System.Net.Http.Headers.TransferCodingHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class TransferCodingHeaderValue : System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -905,7 +851,6 @@ namespace System
                     public string Value { get => throw null; }
                 }
 
-                // Generated from `System.Net.Http.Headers.TransferCodingWithQualityHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class TransferCodingWithQualityHeaderValue : System.Net.Http.Headers.TransferCodingHeaderValue, System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -916,7 +861,6 @@ namespace System
                     public static bool TryParse(string input, out System.Net.Http.Headers.TransferCodingWithQualityHeaderValue parsedValue) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.ViaHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ViaHeaderValue : System.ICloneable
                 {
                     object System.ICloneable.Clone() => throw null;
@@ -934,7 +878,6 @@ namespace System
                     public ViaHeaderValue(string protocolVersion, string receivedBy, string protocolName, string comment) => throw null;
                 }
 
-                // Generated from `System.Net.Http.Headers.WarningHeaderValue` in `System.Net.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class WarningHeaderValue : System.ICloneable
                 {
                     public string Agent { get => throw null; }

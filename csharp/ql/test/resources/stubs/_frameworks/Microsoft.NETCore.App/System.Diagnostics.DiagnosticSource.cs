@@ -1,13 +1,12 @@
 // This file contains auto-generated code.
+// Generated from `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 
 namespace System
 {
     namespace Diagnostics
     {
-        // Generated from `System.Diagnostics.Activity` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class Activity : System.IDisposable
         {
-            // Generated from `System.Diagnostics.Activity+Enumerator<>` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct Enumerator<T>
             {
                 public T Current { get => throw null; }
@@ -76,7 +75,6 @@ namespace System
             public string TraceStateString { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Diagnostics.ActivityChangedEventArgs` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public struct ActivityChangedEventArgs
         {
             // Stub generator skipped constructor 
@@ -84,7 +82,6 @@ namespace System
             public System.Diagnostics.Activity Previous { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Diagnostics.ActivityContext` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public struct ActivityContext : System.IEquatable<System.Diagnostics.ActivityContext>
         {
             public static bool operator !=(System.Diagnostics.ActivityContext left, System.Diagnostics.ActivityContext right) => throw null;
@@ -104,7 +101,6 @@ namespace System
             public static bool TryParse(string traceParent, string traceState, out System.Diagnostics.ActivityContext context) => throw null;
         }
 
-        // Generated from `System.Diagnostics.ActivityCreationOptions<>` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public struct ActivityCreationOptions<T>
         {
             // Stub generator skipped constructor 
@@ -119,7 +115,6 @@ namespace System
             public string TraceState { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Diagnostics.ActivityEvent` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public struct ActivityEvent
         {
             // Stub generator skipped constructor 
@@ -131,7 +126,6 @@ namespace System
             public System.DateTimeOffset Timestamp { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.ActivityIdFormat` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public enum ActivityIdFormat : int
         {
             Hierarchical = 1,
@@ -139,7 +133,6 @@ namespace System
             W3C = 2,
         }
 
-        // Generated from `System.Diagnostics.ActivityKind` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public enum ActivityKind : int
         {
             Client = 2,
@@ -149,7 +142,6 @@ namespace System
             Server = 1,
         }
 
-        // Generated from `System.Diagnostics.ActivityLink` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public struct ActivityLink : System.IEquatable<System.Diagnostics.ActivityLink>
         {
             public static bool operator !=(System.Diagnostics.ActivityLink left, System.Diagnostics.ActivityLink right) => throw null;
@@ -164,7 +156,6 @@ namespace System
             public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> Tags { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.ActivityListener` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class ActivityListener : System.IDisposable
         {
             public ActivityListener() => throw null;
@@ -176,7 +167,6 @@ namespace System
             public System.Func<System.Diagnostics.ActivitySource, bool> ShouldListenTo { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Diagnostics.ActivitySamplingResult` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public enum ActivitySamplingResult : int
         {
             AllData = 2,
@@ -185,7 +175,6 @@ namespace System
             PropagationData = 1,
         }
 
-        // Generated from `System.Diagnostics.ActivitySource` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class ActivitySource : System.IDisposable
         {
             public ActivitySource(string name, string version = default(string)) => throw null;
@@ -203,7 +192,6 @@ namespace System
             public string Version { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.ActivitySpanId` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public struct ActivitySpanId : System.IEquatable<System.Diagnostics.ActivitySpanId>
         {
             public static bool operator !=(System.Diagnostics.ActivitySpanId spanId1, System.Diagnostics.ActivitySpanId spandId2) => throw null;
@@ -221,7 +209,6 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Diagnostics.ActivityStatusCode` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public enum ActivityStatusCode : int
         {
             Error = 2,
@@ -229,10 +216,8 @@ namespace System
             Unset = 0,
         }
 
-        // Generated from `System.Diagnostics.ActivityTagsCollection` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class ActivityTagsCollection : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable
         {
-            // Generated from `System.Diagnostics.ActivityTagsCollection+Enumerator` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerator, System.IDisposable
             {
                 public System.Collections.Generic.KeyValuePair<string, object> Current { get => throw null; }
@@ -265,7 +250,6 @@ namespace System
             public System.Collections.Generic.ICollection<object> Values { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.ActivityTraceFlags` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         [System.Flags]
         public enum ActivityTraceFlags : int
         {
@@ -273,7 +257,6 @@ namespace System
             Recorded = 1,
         }
 
-        // Generated from `System.Diagnostics.ActivityTraceId` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public struct ActivityTraceId : System.IEquatable<System.Diagnostics.ActivityTraceId>
         {
             public static bool operator !=(System.Diagnostics.ActivityTraceId traceId1, System.Diagnostics.ActivityTraceId traceId2) => throw null;
@@ -291,7 +274,6 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Diagnostics.DiagnosticListener` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class DiagnosticListener : System.Diagnostics.DiagnosticSource, System.IDisposable, System.IObservable<System.Collections.Generic.KeyValuePair<string, object>>
         {
             public static System.IObservable<System.Diagnostics.DiagnosticListener> AllListeners { get => throw null; }
@@ -311,7 +293,6 @@ namespace System
             public override void Write(string name, object value) => throw null;
         }
 
-        // Generated from `System.Diagnostics.DiagnosticSource` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public abstract class DiagnosticSource
         {
             protected DiagnosticSource() => throw null;
@@ -324,14 +305,11 @@ namespace System
             public abstract void Write(string name, object value);
         }
 
-        // Generated from `System.Diagnostics.DistributedContextPropagator` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public abstract class DistributedContextPropagator
         {
-            // Generated from `System.Diagnostics.DistributedContextPropagator+PropagatorGetterCallback` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public delegate void PropagatorGetterCallback(object carrier, string fieldName, out string fieldValue, out System.Collections.Generic.IEnumerable<string> fieldValues);
 
 
-            // Generated from `System.Diagnostics.DistributedContextPropagator+PropagatorSetterCallback` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public delegate void PropagatorSetterCallback(object carrier, string fieldName, string fieldValue);
 
 
@@ -346,13 +324,10 @@ namespace System
             public abstract void Inject(System.Diagnostics.Activity activity, object carrier, System.Diagnostics.DistributedContextPropagator.PropagatorSetterCallback setter);
         }
 
-        // Generated from `System.Diagnostics.SampleActivity<>` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate System.Diagnostics.ActivitySamplingResult SampleActivity<T>(ref System.Diagnostics.ActivityCreationOptions<T> options);
 
-        // Generated from `System.Diagnostics.TagList` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public struct TagList : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IList<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable
         {
-            // Generated from `System.Diagnostics.TagList+Enumerator` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerator, System.IDisposable
             {
                 public System.Collections.Generic.KeyValuePair<string, object> Current { get => throw null; }
@@ -385,7 +360,6 @@ namespace System
 
         namespace Metrics
         {
-            // Generated from `System.Diagnostics.Metrics.Counter<>` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class Counter<T> : System.Diagnostics.Metrics.Instrument<T> where T : struct
             {
                 public void Add(T delta) => throw null;
@@ -398,7 +372,6 @@ namespace System
                 internal Counter(System.Diagnostics.Metrics.Meter meter, string name, string unit, string description) : base(default(System.Diagnostics.Metrics.Meter), default(string), default(string), default(string)) => throw null;
             }
 
-            // Generated from `System.Diagnostics.Metrics.Histogram<>` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class Histogram<T> : System.Diagnostics.Metrics.Instrument<T> where T : struct
             {
                 internal Histogram(System.Diagnostics.Metrics.Meter meter, string name, string unit, string description) : base(default(System.Diagnostics.Metrics.Meter), default(string), default(string), default(string)) => throw null;
@@ -411,7 +384,6 @@ namespace System
                 public void Record(T value, params System.Collections.Generic.KeyValuePair<string, object>[] tags) => throw null;
             }
 
-            // Generated from `System.Diagnostics.Metrics.Instrument` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class Instrument
             {
                 public string Description { get => throw null; }
@@ -424,7 +396,6 @@ namespace System
                 public string Unit { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Metrics.Instrument<>` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class Instrument<T> : System.Diagnostics.Metrics.Instrument where T : struct
             {
                 protected Instrument(System.Diagnostics.Metrics.Meter meter, string name, string unit, string description) : base(default(System.Diagnostics.Metrics.Meter), default(string), default(string), default(string)) => throw null;
@@ -436,7 +407,6 @@ namespace System
                 protected void RecordMeasurement(T measurement, System.Diagnostics.TagList tagList) => throw null;
             }
 
-            // Generated from `System.Diagnostics.Metrics.Measurement<>` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct Measurement<T> where T : struct
             {
                 // Stub generator skipped constructor 
@@ -448,10 +418,8 @@ namespace System
                 public T Value { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Metrics.MeasurementCallback<>` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public delegate void MeasurementCallback<T>(System.Diagnostics.Metrics.Instrument instrument, T measurement, System.ReadOnlySpan<System.Collections.Generic.KeyValuePair<string, object>> tags, object state);
 
-            // Generated from `System.Diagnostics.Metrics.Meter` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class Meter : System.IDisposable
             {
                 public System.Diagnostics.Metrics.Counter<T> CreateCounter<T>(string name, string unit = default(string), string description = default(string)) where T : struct => throw null;
@@ -473,7 +441,6 @@ namespace System
                 public string Version { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Metrics.MeterListener` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class MeterListener : System.IDisposable
             {
                 public object DisableMeasurementEvents(System.Diagnostics.Metrics.Instrument instrument) => throw null;
@@ -487,21 +454,18 @@ namespace System
                 public void Start() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Metrics.ObservableCounter<>` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class ObservableCounter<T> : System.Diagnostics.Metrics.ObservableInstrument<T> where T : struct
             {
                 internal ObservableCounter(System.Diagnostics.Metrics.Meter meter, string name, string unit, string description) : base(default(System.Diagnostics.Metrics.Meter), default(string), default(string), default(string)) => throw null;
                 protected override System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<T>> Observe() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Metrics.ObservableGauge<>` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class ObservableGauge<T> : System.Diagnostics.Metrics.ObservableInstrument<T> where T : struct
             {
                 internal ObservableGauge(System.Diagnostics.Metrics.Meter meter, string name, string unit, string description) : base(default(System.Diagnostics.Metrics.Meter), default(string), default(string), default(string)) => throw null;
                 protected override System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<T>> Observe() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Metrics.ObservableInstrument<>` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class ObservableInstrument<T> : System.Diagnostics.Metrics.Instrument where T : struct
             {
                 public override bool IsObservable { get => throw null; }
@@ -509,14 +473,12 @@ namespace System
                 protected abstract System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<T>> Observe();
             }
 
-            // Generated from `System.Diagnostics.Metrics.ObservableUpDownCounter<>` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class ObservableUpDownCounter<T> : System.Diagnostics.Metrics.ObservableInstrument<T> where T : struct
             {
                 internal ObservableUpDownCounter(System.Diagnostics.Metrics.Meter meter, string name, string unit, string description) : base(default(System.Diagnostics.Metrics.Meter), default(string), default(string), default(string)) => throw null;
                 protected override System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<T>> Observe() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Metrics.UpDownCounter<>` in `System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class UpDownCounter<T> : System.Diagnostics.Metrics.Instrument<T> where T : struct
             {
                 public void Add(T delta) => throw null;

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Builder
         {
-            // Generated from `Microsoft.AspNetCore.Builder.EndpointRouteBuilderExtensions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class EndpointRouteBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.RouteHandlerBuilder Map(this Microsoft.AspNetCore.Routing.IEndpointRouteBuilder endpoints, Microsoft.AspNetCore.Routing.Patterns.RoutePattern pattern, System.Delegate handler) => throw null;
@@ -31,14 +31,12 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Builder.IEndpointConventionBuilder MapPut(this Microsoft.AspNetCore.Routing.IEndpointRouteBuilder endpoints, string pattern, Microsoft.AspNetCore.Http.RequestDelegate requestDelegate) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.EndpointRoutingApplicationBuilderExtensions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class EndpointRoutingApplicationBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseEndpoints(this Microsoft.AspNetCore.Builder.IApplicationBuilder builder, System.Action<Microsoft.AspNetCore.Routing.IEndpointRouteBuilder> configure) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseRouting(this Microsoft.AspNetCore.Builder.IApplicationBuilder builder) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.FallbackEndpointRouteBuilderExtensions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class FallbackEndpointRouteBuilderExtensions
             {
                 public static string DefaultPattern;
@@ -46,7 +44,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Builder.IEndpointConventionBuilder MapFallback(this Microsoft.AspNetCore.Routing.IEndpointRouteBuilder endpoints, string pattern, Microsoft.AspNetCore.Http.RequestDelegate requestDelegate) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.MapRouteRouteBuilderExtensions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MapRouteRouteBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Routing.IRouteBuilder MapRoute(this Microsoft.AspNetCore.Routing.IRouteBuilder routeBuilder, string name, string template) => throw null;
@@ -55,7 +52,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Routing.IRouteBuilder MapRoute(this Microsoft.AspNetCore.Routing.IRouteBuilder routeBuilder, string name, string template, object defaults, object constraints, object dataTokens) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.RouteHandlerBuilder` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteHandlerBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder
             {
                 public void Add(System.Action<Microsoft.AspNetCore.Builder.EndpointBuilder> convention) => throw null;
@@ -63,21 +59,18 @@ namespace Microsoft
                 public RouteHandlerBuilder(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Builder.IEndpointConventionBuilder> endpointConventionBuilders) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.RouterMiddleware` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouterMiddleware
             {
                 public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                 public RouterMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, Microsoft.AspNetCore.Routing.IRouter router) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.RoutingBuilderExtensions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RoutingBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseRouter(this Microsoft.AspNetCore.Builder.IApplicationBuilder builder, System.Action<Microsoft.AspNetCore.Routing.IRouteBuilder> action) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseRouter(this Microsoft.AspNetCore.Builder.IApplicationBuilder builder, Microsoft.AspNetCore.Routing.IRouter router) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.RoutingEndpointConventionBuilderExtensions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RoutingEndpointConventionBuilderExtensions
             {
                 public static TBuilder RequireHost<TBuilder>(this TBuilder builder, params string[] hosts) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
@@ -91,7 +84,6 @@ namespace Microsoft
         }
         namespace Http
         {
-            // Generated from `Microsoft.AspNetCore.Http.EndpointFilterExtensions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class EndpointFilterExtensions
             {
                 public static TBuilder AddEndpointFilter<TBuilder, TFilterType>(this TBuilder builder) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder where TFilterType : Microsoft.AspNetCore.Http.IEndpointFilter => throw null;
@@ -102,7 +94,6 @@ namespace Microsoft
                 public static TBuilder AddEndpointFilterFactory<TBuilder>(this TBuilder builder, System.Func<Microsoft.AspNetCore.Http.EndpointFilterFactoryContext, Microsoft.AspNetCore.Http.EndpointFilterDelegate, Microsoft.AspNetCore.Http.EndpointFilterDelegate> filterFactory) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.OpenApiRouteHandlerBuilderExtensions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class OpenApiRouteHandlerBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.RouteHandlerBuilder Accepts(this Microsoft.AspNetCore.Builder.RouteHandlerBuilder builder, System.Type requestType, bool isOptional, string contentType, params string[] additionalContentTypes) => throw null;
@@ -124,7 +115,6 @@ namespace Microsoft
         }
         namespace Routing
         {
-            // Generated from `Microsoft.AspNetCore.Routing.CompositeEndpointDataSource` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class CompositeEndpointDataSource : Microsoft.AspNetCore.Routing.EndpointDataSource, System.IDisposable
             {
                 public CompositeEndpointDataSource(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Routing.EndpointDataSource> endpointDataSources) => throw null;
@@ -135,14 +125,12 @@ namespace Microsoft
                 public override System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> GetGroupedEndpoints(Microsoft.AspNetCore.Routing.RouteGroupContext context) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.DataTokensMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DataTokensMetadata : Microsoft.AspNetCore.Routing.IDataTokensMetadata
             {
                 public System.Collections.Generic.IReadOnlyDictionary<string, object> DataTokens { get => throw null; }
                 public DataTokensMetadata(System.Collections.Generic.IReadOnlyDictionary<string, object> dataTokens) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.DefaultEndpointDataSource` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DefaultEndpointDataSource : Microsoft.AspNetCore.Routing.EndpointDataSource
             {
                 public DefaultEndpointDataSource(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Http.Endpoint> endpoints) => throw null;
@@ -151,14 +139,12 @@ namespace Microsoft
                 public override Microsoft.Extensions.Primitives.IChangeToken GetChangeToken() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.DefaultInlineConstraintResolver` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DefaultInlineConstraintResolver : Microsoft.AspNetCore.Routing.IInlineConstraintResolver
             {
                 public DefaultInlineConstraintResolver(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Routing.RouteOptions> routeOptions, System.IServiceProvider serviceProvider) => throw null;
                 public virtual Microsoft.AspNetCore.Routing.IRouteConstraint ResolveConstraint(string inlineConstraint) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.EndpointDataSource` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class EndpointDataSource
             {
                 protected EndpointDataSource() => throw null;
@@ -167,35 +153,30 @@ namespace Microsoft
                 public virtual System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> GetGroupedEndpoints(Microsoft.AspNetCore.Routing.RouteGroupContext context) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.EndpointGroupNameAttribute` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class EndpointGroupNameAttribute : System.Attribute, Microsoft.AspNetCore.Routing.IEndpointGroupNameMetadata
             {
                 public string EndpointGroupName { get => throw null; }
                 public EndpointGroupNameAttribute(string endpointGroupName) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.EndpointNameAttribute` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class EndpointNameAttribute : System.Attribute, Microsoft.AspNetCore.Routing.IEndpointNameMetadata
             {
                 public string EndpointName { get => throw null; }
                 public EndpointNameAttribute(string endpointName) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.EndpointNameMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class EndpointNameMetadata : Microsoft.AspNetCore.Routing.IEndpointNameMetadata
             {
                 public string EndpointName { get => throw null; }
                 public EndpointNameMetadata(string endpointName) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.ExcludeFromDescriptionAttribute` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ExcludeFromDescriptionAttribute : System.Attribute, Microsoft.AspNetCore.Routing.IExcludeFromDescriptionMetadata
             {
                 public bool ExcludeFromDescription { get => throw null; }
                 public ExcludeFromDescriptionAttribute() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.HostAttribute` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HostAttribute : System.Attribute, Microsoft.AspNetCore.Routing.IHostMetadata
             {
                 public HostAttribute(params string[] hosts) => throw null;
@@ -203,7 +184,6 @@ namespace Microsoft
                 public System.Collections.Generic.IReadOnlyList<string> Hosts { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.HttpMethodMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HttpMethodMetadata : Microsoft.AspNetCore.Routing.IHttpMethodMetadata
             {
                 public bool AcceptCorsPreflight { get => throw null; set => throw null; }
@@ -212,37 +192,31 @@ namespace Microsoft
                 public System.Collections.Generic.IReadOnlyList<string> HttpMethods { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.IDataTokensMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IDataTokensMetadata
             {
                 System.Collections.Generic.IReadOnlyDictionary<string, object> DataTokens { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.IDynamicEndpointMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IDynamicEndpointMetadata
             {
                 bool IsDynamic { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.IEndpointAddressScheme<>` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IEndpointAddressScheme<TAddress>
             {
                 System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Http.Endpoint> FindEndpoints(TAddress address);
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.IEndpointGroupNameMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IEndpointGroupNameMetadata
             {
                 string EndpointGroupName { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.IEndpointNameMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IEndpointNameMetadata
             {
                 string EndpointName { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.IEndpointRouteBuilder` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IEndpointRouteBuilder
             {
                 Microsoft.AspNetCore.Builder.IApplicationBuilder CreateApplicationBuilder();
@@ -250,38 +224,32 @@ namespace Microsoft
                 System.IServiceProvider ServiceProvider { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.IExcludeFromDescriptionMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IExcludeFromDescriptionMetadata
             {
                 bool ExcludeFromDescription { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.IHostMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IHostMetadata
             {
                 System.Collections.Generic.IReadOnlyList<string> Hosts { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.IHttpMethodMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IHttpMethodMetadata
             {
                 bool AcceptCorsPreflight { get => throw null; set => throw null; }
                 System.Collections.Generic.IReadOnlyList<string> HttpMethods { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.IInlineConstraintResolver` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IInlineConstraintResolver
             {
                 Microsoft.AspNetCore.Routing.IRouteConstraint ResolveConstraint(string inlineConstraint);
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.INamedRouter` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface INamedRouter : Microsoft.AspNetCore.Routing.IRouter
             {
                 string Name { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.IRouteBuilder` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IRouteBuilder
             {
                 Microsoft.AspNetCore.Builder.IApplicationBuilder ApplicationBuilder { get; }
@@ -291,37 +259,31 @@ namespace Microsoft
                 System.IServiceProvider ServiceProvider { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.IRouteCollection` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IRouteCollection : Microsoft.AspNetCore.Routing.IRouter
             {
                 void Add(Microsoft.AspNetCore.Routing.IRouter router);
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.IRouteNameMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IRouteNameMetadata
             {
                 string RouteName { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.ISuppressLinkGenerationMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ISuppressLinkGenerationMetadata
             {
                 bool SuppressLinkGeneration { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.ISuppressMatchingMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ISuppressMatchingMetadata
             {
                 bool SuppressMatching { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.InlineRouteParameterParser` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class InlineRouteParameterParser
             {
                 public static Microsoft.AspNetCore.Routing.Template.TemplatePart ParseRouteParameter(string routeParameter) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.LinkGeneratorEndpointNameAddressExtensions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class LinkGeneratorEndpointNameAddressExtensions
             {
                 public static string GetPathByName(this Microsoft.AspNetCore.Routing.LinkGenerator generator, Microsoft.AspNetCore.Http.HttpContext httpContext, string endpointName, Microsoft.AspNetCore.Routing.RouteValueDictionary values = default(Microsoft.AspNetCore.Routing.RouteValueDictionary), Microsoft.AspNetCore.Http.PathString? pathBase = default(Microsoft.AspNetCore.Http.PathString?), Microsoft.AspNetCore.Http.FragmentString fragment = default(Microsoft.AspNetCore.Http.FragmentString), Microsoft.AspNetCore.Routing.LinkOptions options = default(Microsoft.AspNetCore.Routing.LinkOptions)) => throw null;
@@ -334,7 +296,6 @@ namespace Microsoft
                 public static string GetUriByName(this Microsoft.AspNetCore.Routing.LinkGenerator generator, string endpointName, object values, string scheme, Microsoft.AspNetCore.Http.HostString host, Microsoft.AspNetCore.Http.PathString pathBase = default(Microsoft.AspNetCore.Http.PathString), Microsoft.AspNetCore.Http.FragmentString fragment = default(Microsoft.AspNetCore.Http.FragmentString), Microsoft.AspNetCore.Routing.LinkOptions options = default(Microsoft.AspNetCore.Routing.LinkOptions)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.LinkGeneratorRouteValuesAddressExtensions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class LinkGeneratorRouteValuesAddressExtensions
             {
                 public static string GetPathByRouteValues(this Microsoft.AspNetCore.Routing.LinkGenerator generator, Microsoft.AspNetCore.Http.HttpContext httpContext, string routeName, Microsoft.AspNetCore.Routing.RouteValueDictionary values = default(Microsoft.AspNetCore.Routing.RouteValueDictionary), Microsoft.AspNetCore.Http.PathString? pathBase = default(Microsoft.AspNetCore.Http.PathString?), Microsoft.AspNetCore.Http.FragmentString fragment = default(Microsoft.AspNetCore.Http.FragmentString), Microsoft.AspNetCore.Routing.LinkOptions options = default(Microsoft.AspNetCore.Routing.LinkOptions)) => throw null;
@@ -347,20 +308,17 @@ namespace Microsoft
                 public static string GetUriByRouteValues(this Microsoft.AspNetCore.Routing.LinkGenerator generator, string routeName, object values, string scheme, Microsoft.AspNetCore.Http.HostString host, Microsoft.AspNetCore.Http.PathString pathBase = default(Microsoft.AspNetCore.Http.PathString), Microsoft.AspNetCore.Http.FragmentString fragment = default(Microsoft.AspNetCore.Http.FragmentString), Microsoft.AspNetCore.Routing.LinkOptions options = default(Microsoft.AspNetCore.Routing.LinkOptions)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.LinkParser` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class LinkParser
             {
                 protected LinkParser() => throw null;
                 public abstract Microsoft.AspNetCore.Routing.RouteValueDictionary ParsePathByAddress<TAddress>(TAddress address, Microsoft.AspNetCore.Http.PathString path);
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.LinkParserEndpointNameAddressExtensions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class LinkParserEndpointNameAddressExtensions
             {
                 public static Microsoft.AspNetCore.Routing.RouteValueDictionary ParsePathByEndpointName(this Microsoft.AspNetCore.Routing.LinkParser parser, string endpointName, Microsoft.AspNetCore.Http.PathString path) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.MatcherPolicy` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class MatcherPolicy
             {
                 protected static bool ContainsDynamicEndpoints(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> endpoints) => throw null;
@@ -368,7 +326,6 @@ namespace Microsoft
                 public abstract int Order { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.ParameterPolicyFactory` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class ParameterPolicyFactory
             {
                 public abstract Microsoft.AspNetCore.Routing.IParameterPolicy Create(Microsoft.AspNetCore.Routing.Patterns.RoutePatternParameterPart parameter, Microsoft.AspNetCore.Routing.IParameterPolicy parameterPolicy);
@@ -377,7 +334,6 @@ namespace Microsoft
                 protected ParameterPolicyFactory() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RequestDelegateRouteBuilderExtensions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RequestDelegateRouteBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Routing.IRouteBuilder MapDelete(this Microsoft.AspNetCore.Routing.IRouteBuilder builder, string template, System.Func<Microsoft.AspNetCore.Http.HttpRequest, Microsoft.AspNetCore.Http.HttpResponse, Microsoft.AspNetCore.Routing.RouteData, System.Threading.Tasks.Task> handler) => throw null;
@@ -399,7 +355,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Routing.IRouteBuilder MapVerb(this Microsoft.AspNetCore.Routing.IRouteBuilder builder, string verb, string template, Microsoft.AspNetCore.Http.RequestDelegate handler) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.Route` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class Route : Microsoft.AspNetCore.Routing.RouteBase
             {
                 protected override System.Threading.Tasks.Task OnRouteMatched(Microsoft.AspNetCore.Routing.RouteContext context) => throw null;
@@ -410,7 +365,6 @@ namespace Microsoft
                 public string RouteTemplate { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteBase` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class RouteBase : Microsoft.AspNetCore.Routing.INamedRouter, Microsoft.AspNetCore.Routing.IRouter
             {
                 protected virtual Microsoft.AspNetCore.Routing.IInlineConstraintResolver ConstraintResolver { get => throw null; set => throw null; }
@@ -429,7 +383,6 @@ namespace Microsoft
                 public override string ToString() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteBuilder` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteBuilder : Microsoft.AspNetCore.Routing.IRouteBuilder
             {
                 public Microsoft.AspNetCore.Builder.IApplicationBuilder ApplicationBuilder { get => throw null; }
@@ -441,7 +394,6 @@ namespace Microsoft
                 public System.IServiceProvider ServiceProvider { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteCollection` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteCollection : Microsoft.AspNetCore.Routing.IRouteCollection, Microsoft.AspNetCore.Routing.IRouter
             {
                 public void Add(Microsoft.AspNetCore.Routing.IRouter router) => throw null;
@@ -452,7 +404,6 @@ namespace Microsoft
                 public RouteCollection() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteConstraintBuilder` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteConstraintBuilder
             {
                 public void AddConstraint(string key, object value) => throw null;
@@ -462,20 +413,17 @@ namespace Microsoft
                 public void SetOptional(string key) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteConstraintMatcher` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RouteConstraintMatcher
             {
                 public static bool Match(System.Collections.Generic.IDictionary<string, Microsoft.AspNetCore.Routing.IRouteConstraint> constraints, Microsoft.AspNetCore.Routing.RouteValueDictionary routeValues, Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, Microsoft.AspNetCore.Routing.RouteDirection routeDirection, Microsoft.Extensions.Logging.ILogger logger) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteCreationException` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteCreationException : System.Exception
             {
                 public RouteCreationException(string message) => throw null;
                 public RouteCreationException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteEndpoint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteEndpoint : Microsoft.AspNetCore.Http.Endpoint
             {
                 public int Order { get => throw null; }
@@ -483,7 +431,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Routing.Patterns.RoutePattern RoutePattern { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteEndpointBuilder` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteEndpointBuilder : Microsoft.AspNetCore.Builder.EndpointBuilder
             {
                 public override Microsoft.AspNetCore.Http.Endpoint Build() => throw null;
@@ -492,7 +439,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Routing.Patterns.RoutePattern RoutePattern { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteGroupBuilder` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteGroupBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder, Microsoft.AspNetCore.Routing.IEndpointRouteBuilder
             {
                 void Microsoft.AspNetCore.Builder.IEndpointConventionBuilder.Add(System.Action<Microsoft.AspNetCore.Builder.EndpointBuilder> convention) => throw null;
@@ -502,7 +448,6 @@ namespace Microsoft
                 System.IServiceProvider Microsoft.AspNetCore.Routing.IEndpointRouteBuilder.ServiceProvider { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteGroupContext` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteGroupContext
             {
                 public System.IServiceProvider ApplicationServices { get => throw null; set => throw null; }
@@ -512,7 +457,6 @@ namespace Microsoft
                 public RouteGroupContext() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteHandler` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteHandler : Microsoft.AspNetCore.Routing.IRouteHandler, Microsoft.AspNetCore.Routing.IRouter
             {
                 public Microsoft.AspNetCore.Http.RequestDelegate GetRequestHandler(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.RouteData routeData) => throw null;
@@ -521,21 +465,18 @@ namespace Microsoft
                 public RouteHandler(Microsoft.AspNetCore.Http.RequestDelegate requestDelegate) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteHandlerOptions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteHandlerOptions
             {
                 public RouteHandlerOptions() => throw null;
                 public bool ThrowOnBadRequest { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteNameMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteNameMetadata : Microsoft.AspNetCore.Routing.IRouteNameMetadata
             {
                 public string RouteName { get => throw null; }
                 public RouteNameMetadata(string routeName) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteOptions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteOptions
             {
                 public bool AppendTrailingSlash { get => throw null; set => throw null; }
@@ -548,7 +489,6 @@ namespace Microsoft
                 public bool SuppressCheckForUnhandledSecurityMetadata { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteValueEqualityComparer` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteValueEqualityComparer : System.Collections.Generic.IEqualityComparer<object>
             {
                 public static Microsoft.AspNetCore.Routing.RouteValueEqualityComparer Default;
@@ -557,7 +497,6 @@ namespace Microsoft
                 public RouteValueEqualityComparer() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RouteValuesAddress` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteValuesAddress
             {
                 public Microsoft.AspNetCore.Routing.RouteValueDictionary AmbientValues { get => throw null; set => throw null; }
@@ -567,21 +506,18 @@ namespace Microsoft
                 public override string ToString() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.RoutingFeature` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RoutingFeature : Microsoft.AspNetCore.Routing.IRoutingFeature
             {
                 public Microsoft.AspNetCore.Routing.RouteData RouteData { get => throw null; set => throw null; }
                 public RoutingFeature() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.SuppressLinkGenerationMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SuppressLinkGenerationMetadata : Microsoft.AspNetCore.Routing.ISuppressLinkGenerationMetadata
             {
                 public bool SuppressLinkGeneration { get => throw null; }
                 public SuppressLinkGenerationMetadata() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Routing.SuppressMatchingMetadata` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SuppressMatchingMetadata : Microsoft.AspNetCore.Routing.ISuppressMatchingMetadata
             {
                 public bool SuppressMatching { get => throw null; }
@@ -590,13 +526,11 @@ namespace Microsoft
 
             namespace Constraints
             {
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.AlphaRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AlphaRouteConstraint : Microsoft.AspNetCore.Routing.Constraints.RegexRouteConstraint
                 {
                     public AlphaRouteConstraint() : base(default(System.Text.RegularExpressions.Regex)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.BoolRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class BoolRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public BoolRouteConstraint() => throw null;
@@ -604,7 +538,6 @@ namespace Microsoft
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.CompositeRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CompositeRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public CompositeRouteConstraint(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Routing.IRouteConstraint> constraints) => throw null;
@@ -613,7 +546,6 @@ namespace Microsoft
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.DateTimeRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class DateTimeRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public DateTimeRouteConstraint() => throw null;
@@ -621,7 +553,6 @@ namespace Microsoft
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.DecimalRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class DecimalRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public DecimalRouteConstraint() => throw null;
@@ -629,7 +560,6 @@ namespace Microsoft
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.DoubleRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class DoubleRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public DoubleRouteConstraint() => throw null;
@@ -637,7 +567,6 @@ namespace Microsoft
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.FileNameRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FileNameRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public FileNameRouteConstraint() => throw null;
@@ -645,7 +574,6 @@ namespace Microsoft
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.FloatRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FloatRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public FloatRouteConstraint() => throw null;
@@ -653,7 +581,6 @@ namespace Microsoft
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.GuidRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class GuidRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public GuidRouteConstraint() => throw null;
@@ -661,7 +588,6 @@ namespace Microsoft
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.HttpMethodRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HttpMethodRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public System.Collections.Generic.IList<string> AllowedMethods { get => throw null; }
@@ -669,7 +595,6 @@ namespace Microsoft
                     public virtual bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.IntRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class IntRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public IntRouteConstraint() => throw null;
@@ -677,7 +602,6 @@ namespace Microsoft
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.LengthRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class LengthRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public LengthRouteConstraint(int length) => throw null;
@@ -688,7 +612,6 @@ namespace Microsoft
                     public int MinLength { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.LongRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class LongRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public LongRouteConstraint() => throw null;
@@ -696,7 +619,6 @@ namespace Microsoft
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.MaxLengthRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MaxLengthRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
@@ -705,7 +627,6 @@ namespace Microsoft
                     public MaxLengthRouteConstraint(int maxLength) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.MaxRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MaxRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
@@ -714,7 +635,6 @@ namespace Microsoft
                     public MaxRouteConstraint(System.Int64 max) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.MinLengthRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MinLengthRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
@@ -723,7 +643,6 @@ namespace Microsoft
                     public MinLengthRouteConstraint(int minLength) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.MinRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MinRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
@@ -732,7 +651,6 @@ namespace Microsoft
                     public MinRouteConstraint(System.Int64 min) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.NonFileNameRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class NonFileNameRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
@@ -740,7 +658,6 @@ namespace Microsoft
                     public NonFileNameRouteConstraint() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.OptionalRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class OptionalRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public Microsoft.AspNetCore.Routing.IRouteConstraint InnerConstraint { get => throw null; }
@@ -748,7 +665,6 @@ namespace Microsoft
                     public OptionalRouteConstraint(Microsoft.AspNetCore.Routing.IRouteConstraint innerConstraint) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.RangeRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RangeRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
@@ -758,13 +674,11 @@ namespace Microsoft
                     public RangeRouteConstraint(System.Int64 min, System.Int64 max) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.RegexInlineRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RegexInlineRouteConstraint : Microsoft.AspNetCore.Routing.Constraints.RegexRouteConstraint
                 {
                     public RegexInlineRouteConstraint(string regexPattern) : base(default(System.Text.RegularExpressions.Regex)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.RegexRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RegexRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public System.Text.RegularExpressions.Regex Constraint { get => throw null; }
@@ -774,14 +688,12 @@ namespace Microsoft
                     public RegexRouteConstraint(string regexPattern) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.RequiredRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RequiredRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     public RequiredRouteConstraint() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Constraints.StringRouteConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class StringRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
                 {
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
@@ -792,7 +704,6 @@ namespace Microsoft
             }
             namespace Internal
             {
-                // Generated from `Microsoft.AspNetCore.Routing.Internal.DfaGraphWriter` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class DfaGraphWriter
                 {
                     public DfaGraphWriter(System.IServiceProvider services) => throw null;
@@ -802,7 +713,6 @@ namespace Microsoft
             }
             namespace Matching
             {
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.CandidateSet` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CandidateSet
                 {
                     public CandidateSet(Microsoft.AspNetCore.Http.Endpoint[] endpoints, Microsoft.AspNetCore.Routing.RouteValueDictionary[] values, int[] scores) => throw null;
@@ -814,7 +724,6 @@ namespace Microsoft
                     public void SetValidity(int index, bool value) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.CandidateState` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct CandidateState
                 {
                     // Stub generator skipped constructor 
@@ -823,13 +732,11 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Routing.RouteValueDictionary Values { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.EndpointMetadataComparer` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class EndpointMetadataComparer : System.Collections.Generic.IComparer<Microsoft.AspNetCore.Http.Endpoint>
                 {
                     int System.Collections.Generic.IComparer<Microsoft.AspNetCore.Http.Endpoint>.Compare(Microsoft.AspNetCore.Http.Endpoint x, Microsoft.AspNetCore.Http.Endpoint y) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.EndpointMetadataComparer<>` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class EndpointMetadataComparer<TMetadata> : System.Collections.Generic.IComparer<Microsoft.AspNetCore.Http.Endpoint> where TMetadata : class
                 {
                     public int Compare(Microsoft.AspNetCore.Http.Endpoint x, Microsoft.AspNetCore.Http.Endpoint y) => throw null;
@@ -839,14 +746,12 @@ namespace Microsoft
                     protected virtual TMetadata GetMetadata(Microsoft.AspNetCore.Http.Endpoint endpoint) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.EndpointSelector` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class EndpointSelector
                 {
                     protected EndpointSelector() => throw null;
                     public abstract System.Threading.Tasks.Task SelectAsync(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.Matching.CandidateSet candidates);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.HostMatcherPolicy` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HostMatcherPolicy : Microsoft.AspNetCore.Routing.MatcherPolicy, Microsoft.AspNetCore.Routing.Matching.IEndpointComparerPolicy, Microsoft.AspNetCore.Routing.Matching.IEndpointSelectorPolicy, Microsoft.AspNetCore.Routing.Matching.INodeBuilderPolicy
                 {
                     bool Microsoft.AspNetCore.Routing.Matching.IEndpointSelectorPolicy.AppliesToEndpoints(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> endpoints) => throw null;
@@ -859,7 +764,6 @@ namespace Microsoft
                     public override int Order { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.HttpMethodMatcherPolicy` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HttpMethodMatcherPolicy : Microsoft.AspNetCore.Routing.MatcherPolicy, Microsoft.AspNetCore.Routing.Matching.IEndpointComparerPolicy, Microsoft.AspNetCore.Routing.Matching.IEndpointSelectorPolicy, Microsoft.AspNetCore.Routing.Matching.INodeBuilderPolicy
                 {
                     bool Microsoft.AspNetCore.Routing.Matching.IEndpointSelectorPolicy.AppliesToEndpoints(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> endpoints) => throw null;
@@ -872,20 +776,17 @@ namespace Microsoft
                     public override int Order { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.IEndpointComparerPolicy` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IEndpointComparerPolicy
                 {
                     System.Collections.Generic.IComparer<Microsoft.AspNetCore.Http.Endpoint> Comparer { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.IEndpointSelectorPolicy` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IEndpointSelectorPolicy
                 {
                     bool AppliesToEndpoints(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> endpoints);
                     System.Threading.Tasks.Task ApplyAsync(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.Matching.CandidateSet candidates);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.INodeBuilderPolicy` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface INodeBuilderPolicy
                 {
                     bool AppliesToEndpoints(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> endpoints);
@@ -893,20 +794,17 @@ namespace Microsoft
                     System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Routing.Matching.PolicyNodeEdge> GetEdges(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> endpoints);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IParameterLiteralNodeMatchingPolicy : Microsoft.AspNetCore.Routing.IParameterPolicy
                 {
                     bool MatchesLiteral(string parameterName, string literal);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.PolicyJumpTable` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class PolicyJumpTable
                 {
                     public abstract int GetDestination(Microsoft.AspNetCore.Http.HttpContext httpContext);
                     protected PolicyJumpTable() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.PolicyJumpTableEdge` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct PolicyJumpTableEdge
                 {
                     public int Destination { get => throw null; }
@@ -915,7 +813,6 @@ namespace Microsoft
                     public object State { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Matching.PolicyNodeEdge` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct PolicyNodeEdge
                 {
                     public System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> Endpoints { get => throw null; }
@@ -927,7 +824,6 @@ namespace Microsoft
             }
             namespace Patterns
             {
-                // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePattern` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RoutePattern
                 {
                     public System.Collections.Generic.IReadOnlyDictionary<string, object> Defaults { get => throw null; }
@@ -942,7 +838,6 @@ namespace Microsoft
                     public System.Collections.Generic.IReadOnlyDictionary<string, object> RequiredValues { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternException` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RoutePatternException : System.Exception
                 {
                     public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -950,7 +845,6 @@ namespace Microsoft
                     public RoutePatternException(string pattern, string message) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternFactory` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class RoutePatternFactory
                 {
                     public static Microsoft.AspNetCore.Routing.Patterns.RoutePattern Combine(Microsoft.AspNetCore.Routing.Patterns.RoutePattern left, Microsoft.AspNetCore.Routing.Patterns.RoutePattern right) => throw null;
@@ -987,14 +881,12 @@ namespace Microsoft
                     public static Microsoft.AspNetCore.Routing.Patterns.RoutePatternSeparatorPart SeparatorPart(string content) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternLiteralPart` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RoutePatternLiteralPart : Microsoft.AspNetCore.Routing.Patterns.RoutePatternPart
                 {
                     public string Content { get => throw null; }
                     internal RoutePatternLiteralPart(string content) : base(default(Microsoft.AspNetCore.Routing.Patterns.RoutePatternPartKind)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternParameterKind` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum RoutePatternParameterKind : int
                 {
                     CatchAll = 2,
@@ -1002,7 +894,6 @@ namespace Microsoft
                     Standard = 0,
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternParameterPart` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RoutePatternParameterPart : Microsoft.AspNetCore.Routing.Patterns.RoutePatternPart
                 {
                     public object Default { get => throw null; }
@@ -1016,14 +907,12 @@ namespace Microsoft
                     internal RoutePatternParameterPart(string parameterName, object @default, Microsoft.AspNetCore.Routing.Patterns.RoutePatternParameterKind parameterKind, Microsoft.AspNetCore.Routing.Patterns.RoutePatternParameterPolicyReference[] parameterPolicies, bool encodeSlashes) : base(default(Microsoft.AspNetCore.Routing.Patterns.RoutePatternPartKind)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternParameterPolicyReference` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RoutePatternParameterPolicyReference
                 {
                     public string Content { get => throw null; }
                     public Microsoft.AspNetCore.Routing.IParameterPolicy ParameterPolicy { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternPart` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class RoutePatternPart
                 {
                     public bool IsLiteral { get => throw null; }
@@ -1033,7 +922,6 @@ namespace Microsoft
                     protected private RoutePatternPart(Microsoft.AspNetCore.Routing.Patterns.RoutePatternPartKind partKind) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternPartKind` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum RoutePatternPartKind : int
                 {
                     Literal = 0,
@@ -1041,21 +929,18 @@ namespace Microsoft
                     Separator = 2,
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternPathSegment` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RoutePatternPathSegment
                 {
                     public bool IsSimple { get => throw null; }
                     public System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Routing.Patterns.RoutePatternPart> Parts { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternSeparatorPart` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RoutePatternSeparatorPart : Microsoft.AspNetCore.Routing.Patterns.RoutePatternPart
                 {
                     public string Content { get => throw null; }
                     internal RoutePatternSeparatorPart(string content) : base(default(Microsoft.AspNetCore.Routing.Patterns.RoutePatternPartKind)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternTransformer` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class RoutePatternTransformer
                 {
                     protected RoutePatternTransformer() => throw null;
@@ -1066,7 +951,6 @@ namespace Microsoft
             }
             namespace Template
             {
-                // Generated from `Microsoft.AspNetCore.Routing.Template.InlineConstraint` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InlineConstraint
                 {
                     public string Constraint { get => throw null; }
@@ -1074,14 +958,12 @@ namespace Microsoft
                     public InlineConstraint(string constraint) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Template.RoutePrecedence` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class RoutePrecedence
                 {
                     public static System.Decimal ComputeInbound(Microsoft.AspNetCore.Routing.Template.RouteTemplate template) => throw null;
                     public static System.Decimal ComputeOutbound(Microsoft.AspNetCore.Routing.Template.RouteTemplate template) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Template.RouteTemplate` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RouteTemplate
                 {
                     public Microsoft.AspNetCore.Routing.Template.TemplatePart GetParameter(string name) => throw null;
@@ -1094,7 +976,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Routing.Patterns.RoutePattern ToRoutePattern() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Template.TemplateBinder` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TemplateBinder
                 {
                     public string BindValues(Microsoft.AspNetCore.Routing.RouteValueDictionary acceptedValues) => throw null;
@@ -1103,7 +984,6 @@ namespace Microsoft
                     public bool TryProcessConstraints(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.RouteValueDictionary combinedValues, out string parameterName, out Microsoft.AspNetCore.Routing.IRouteConstraint constraint) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Template.TemplateBinderFactory` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class TemplateBinderFactory
                 {
                     public abstract Microsoft.AspNetCore.Routing.Template.TemplateBinder Create(Microsoft.AspNetCore.Routing.Patterns.RoutePattern pattern);
@@ -1111,7 +991,6 @@ namespace Microsoft
                     protected TemplateBinderFactory() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Template.TemplateMatcher` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TemplateMatcher
                 {
                     public Microsoft.AspNetCore.Routing.RouteValueDictionary Defaults { get => throw null; }
@@ -1120,13 +999,11 @@ namespace Microsoft
                     public bool TryMatch(Microsoft.AspNetCore.Http.PathString path, Microsoft.AspNetCore.Routing.RouteValueDictionary values) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Template.TemplateParser` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class TemplateParser
                 {
                     public static Microsoft.AspNetCore.Routing.Template.RouteTemplate Parse(string routeTemplate) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Template.TemplatePart` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TemplatePart
                 {
                     public static Microsoft.AspNetCore.Routing.Template.TemplatePart CreateLiteral(string text) => throw null;
@@ -1145,7 +1022,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Routing.Patterns.RoutePatternPart ToRoutePatternPart() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Template.TemplateSegment` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TemplateSegment
                 {
                     public bool IsSimple { get => throw null; }
@@ -1155,7 +1031,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Routing.Patterns.RoutePatternPathSegment ToRoutePatternPathSegment() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Template.TemplateValuesResult` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TemplateValuesResult
                 {
                     public Microsoft.AspNetCore.Routing.RouteValueDictionary AcceptedValues { get => throw null; set => throw null; }
@@ -1166,7 +1041,6 @@ namespace Microsoft
             }
             namespace Tree
             {
-                // Generated from `Microsoft.AspNetCore.Routing.Tree.InboundMatch` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InboundMatch
                 {
                     public Microsoft.AspNetCore.Routing.Tree.InboundRouteEntry Entry { get => throw null; set => throw null; }
@@ -1174,7 +1048,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Routing.Template.TemplateMatcher TemplateMatcher { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Tree.InboundRouteEntry` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InboundRouteEntry
                 {
                     public System.Collections.Generic.IDictionary<string, Microsoft.AspNetCore.Routing.IRouteConstraint> Constraints { get => throw null; set => throw null; }
@@ -1187,7 +1060,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Routing.Template.RouteTemplate RouteTemplate { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Tree.OutboundMatch` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class OutboundMatch
                 {
                     public Microsoft.AspNetCore.Routing.Tree.OutboundRouteEntry Entry { get => throw null; set => throw null; }
@@ -1195,7 +1067,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Routing.Template.TemplateBinder TemplateBinder { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Tree.OutboundRouteEntry` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class OutboundRouteEntry
                 {
                     public System.Collections.Generic.IDictionary<string, Microsoft.AspNetCore.Routing.IRouteConstraint> Constraints { get => throw null; set => throw null; }
@@ -1210,7 +1081,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Routing.Template.RouteTemplate RouteTemplate { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Tree.TreeRouteBuilder` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TreeRouteBuilder
                 {
                     public Microsoft.AspNetCore.Routing.Tree.TreeRouter Build() => throw null;
@@ -1222,7 +1092,6 @@ namespace Microsoft
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Routing.Tree.OutboundRouteEntry> OutboundEntries { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Tree.TreeRouter` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TreeRouter : Microsoft.AspNetCore.Routing.IRouter
                 {
                     public Microsoft.AspNetCore.Routing.VirtualPathData GetVirtualPath(Microsoft.AspNetCore.Routing.VirtualPathContext context) => throw null;
@@ -1231,7 +1100,6 @@ namespace Microsoft
                     public int Version { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Tree.UrlMatchingNode` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class UrlMatchingNode
                 {
                     public Microsoft.AspNetCore.Routing.Tree.UrlMatchingNode CatchAlls { get => throw null; set => throw null; }
@@ -1245,7 +1113,6 @@ namespace Microsoft
                     public UrlMatchingNode(int length) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Routing.Tree.UrlMatchingTree` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class UrlMatchingTree
                 {
                     public int Order { get => throw null; }
@@ -1260,7 +1127,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.RoutingServiceCollectionExtensions` in `Microsoft.AspNetCore.Routing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RoutingServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddRouting(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace RateLimiting
         {
-            // Generated from `System.Threading.RateLimiting.ConcurrencyLimiter` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class ConcurrencyLimiter : System.Threading.RateLimiting.RateLimiter
             {
                 protected override System.Threading.Tasks.ValueTask<System.Threading.RateLimiting.RateLimitLease> AcquireAsyncCore(int permitCount, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -18,7 +18,6 @@ namespace System
                 public override System.TimeSpan? IdleDuration { get => throw null; }
             }
 
-            // Generated from `System.Threading.RateLimiting.ConcurrencyLimiterOptions` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class ConcurrencyLimiterOptions
             {
                 public ConcurrencyLimiterOptions() => throw null;
@@ -27,7 +26,6 @@ namespace System
                 public System.Threading.RateLimiting.QueueProcessingOrder QueueProcessingOrder { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Threading.RateLimiting.FixedWindowRateLimiter` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class FixedWindowRateLimiter : System.Threading.RateLimiting.ReplenishingRateLimiter
             {
                 protected override System.Threading.Tasks.ValueTask<System.Threading.RateLimiting.RateLimitLease> AcquireAsyncCore(int permitCount, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -42,7 +40,6 @@ namespace System
                 public override bool TryReplenish() => throw null;
             }
 
-            // Generated from `System.Threading.RateLimiting.FixedWindowRateLimiterOptions` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class FixedWindowRateLimiterOptions
             {
                 public bool AutoReplenishment { get => throw null; set => throw null; }
@@ -53,7 +50,6 @@ namespace System
                 public System.TimeSpan Window { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Threading.RateLimiting.MetadataName` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class MetadataName
             {
                 public static System.Threading.RateLimiting.MetadataName<T> Create<T>(string name) => throw null;
@@ -61,7 +57,6 @@ namespace System
                 public static System.Threading.RateLimiting.MetadataName<System.TimeSpan> RetryAfter { get => throw null; }
             }
 
-            // Generated from `System.Threading.RateLimiting.MetadataName<>` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class MetadataName<T> : System.IEquatable<System.Threading.RateLimiting.MetadataName<T>>
             {
                 public static bool operator !=(System.Threading.RateLimiting.MetadataName<T> left, System.Threading.RateLimiting.MetadataName<T> right) => throw null;
@@ -74,14 +69,12 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Threading.RateLimiting.PartitionedRateLimiter` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class PartitionedRateLimiter
             {
                 public static System.Threading.RateLimiting.PartitionedRateLimiter<TResource> Create<TResource, TPartitionKey>(System.Func<TResource, System.Threading.RateLimiting.RateLimitPartition<TPartitionKey>> partitioner, System.Collections.Generic.IEqualityComparer<TPartitionKey> equalityComparer = default(System.Collections.Generic.IEqualityComparer<TPartitionKey>)) => throw null;
                 public static System.Threading.RateLimiting.PartitionedRateLimiter<TResource> CreateChained<TResource>(params System.Threading.RateLimiting.PartitionedRateLimiter<TResource>[] limiters) => throw null;
             }
 
-            // Generated from `System.Threading.RateLimiting.PartitionedRateLimiter<>` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class PartitionedRateLimiter<TResource> : System.IAsyncDisposable, System.IDisposable
             {
                 public System.Threading.Tasks.ValueTask<System.Threading.RateLimiting.RateLimitLease> AcquireAsync(TResource resource, int permitCount = default(int), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -97,14 +90,12 @@ namespace System
                 public System.Threading.RateLimiting.PartitionedRateLimiter<TOuter> WithTranslatedKey<TOuter>(System.Func<TOuter, TResource> keyAdapter, bool leaveOpen) => throw null;
             }
 
-            // Generated from `System.Threading.RateLimiting.QueueProcessingOrder` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum QueueProcessingOrder : int
             {
                 NewestFirst = 1,
                 OldestFirst = 0,
             }
 
-            // Generated from `System.Threading.RateLimiting.RateLimitLease` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class RateLimitLease : System.IDisposable
             {
                 public void Dispose() => throw null;
@@ -117,7 +108,6 @@ namespace System
                 public bool TryGetMetadata<T>(System.Threading.RateLimiting.MetadataName<T> metadataName, out T metadata) => throw null;
             }
 
-            // Generated from `System.Threading.RateLimiting.RateLimitPartition` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class RateLimitPartition
             {
                 public static System.Threading.RateLimiting.RateLimitPartition<TKey> Get<TKey>(TKey partitionKey, System.Func<TKey, System.Threading.RateLimiting.RateLimiter> factory) => throw null;
@@ -128,7 +118,6 @@ namespace System
                 public static System.Threading.RateLimiting.RateLimitPartition<TKey> GetTokenBucketLimiter<TKey>(TKey partitionKey, System.Func<TKey, System.Threading.RateLimiting.TokenBucketRateLimiterOptions> factory) => throw null;
             }
 
-            // Generated from `System.Threading.RateLimiting.RateLimitPartition<>` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct RateLimitPartition<TKey>
             {
                 public System.Func<TKey, System.Threading.RateLimiting.RateLimiter> Factory { get => throw null; }
@@ -137,7 +126,6 @@ namespace System
                 public RateLimitPartition(TKey partitionKey, System.Func<TKey, System.Threading.RateLimiting.RateLimiter> factory) => throw null;
             }
 
-            // Generated from `System.Threading.RateLimiting.RateLimiter` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class RateLimiter : System.IAsyncDisposable, System.IDisposable
             {
                 public System.Threading.Tasks.ValueTask<System.Threading.RateLimiting.RateLimitLease> AcquireAsync(int permitCount = default(int), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -153,7 +141,6 @@ namespace System
                 protected RateLimiter() => throw null;
             }
 
-            // Generated from `System.Threading.RateLimiting.RateLimiterStatistics` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class RateLimiterStatistics
             {
                 public System.Int64 CurrentAvailablePermits { get => throw null; set => throw null; }
@@ -163,7 +150,6 @@ namespace System
                 public System.Int64 TotalSuccessfulLeases { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Threading.RateLimiting.ReplenishingRateLimiter` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class ReplenishingRateLimiter : System.Threading.RateLimiting.RateLimiter
             {
                 public abstract bool IsAutoReplenishing { get; }
@@ -172,7 +158,6 @@ namespace System
                 public abstract bool TryReplenish();
             }
 
-            // Generated from `System.Threading.RateLimiting.SlidingWindowRateLimiter` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class SlidingWindowRateLimiter : System.Threading.RateLimiting.ReplenishingRateLimiter
             {
                 protected override System.Threading.Tasks.ValueTask<System.Threading.RateLimiting.RateLimitLease> AcquireAsyncCore(int permitCount, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -187,7 +172,6 @@ namespace System
                 public override bool TryReplenish() => throw null;
             }
 
-            // Generated from `System.Threading.RateLimiting.SlidingWindowRateLimiterOptions` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class SlidingWindowRateLimiterOptions
             {
                 public bool AutoReplenishment { get => throw null; set => throw null; }
@@ -199,7 +183,6 @@ namespace System
                 public System.TimeSpan Window { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Threading.RateLimiting.TokenBucketRateLimiter` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class TokenBucketRateLimiter : System.Threading.RateLimiting.ReplenishingRateLimiter
             {
                 protected override System.Threading.Tasks.ValueTask<System.Threading.RateLimiting.RateLimitLease> AcquireAsyncCore(int tokenCount, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -214,7 +197,6 @@ namespace System
                 public override bool TryReplenish() => throw null;
             }
 
-            // Generated from `System.Threading.RateLimiting.TokenBucketRateLimiterOptions` in `System.Threading.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class TokenBucketRateLimiterOptions
             {
                 public bool AutoReplenishment { get => throw null; set => throw null; }

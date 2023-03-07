@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Sockets
         {
-            // Generated from `System.Net.Sockets.IOControlCode` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum IOControlCode : long
             {
                 AbsorbRouterAlert = 2550136837,
@@ -45,7 +45,6 @@ namespace System
                 UnicastInterface = 2550136838,
             }
 
-            // Generated from `System.Net.Sockets.IPPacketInformation` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct IPPacketInformation : System.IEquatable<System.Net.Sockets.IPPacketInformation>
             {
                 public static bool operator !=(System.Net.Sockets.IPPacketInformation packetInformation1, System.Net.Sockets.IPPacketInformation packetInformation2) => throw null;
@@ -58,7 +57,6 @@ namespace System
                 public int Interface { get => throw null; }
             }
 
-            // Generated from `System.Net.Sockets.IPProtectionLevel` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum IPProtectionLevel : int
             {
                 EdgeRestricted = 20,
@@ -67,7 +65,6 @@ namespace System
                 Unspecified = -1,
             }
 
-            // Generated from `System.Net.Sockets.IPv6MulticastOption` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IPv6MulticastOption
             {
                 public System.Net.IPAddress Group { get => throw null; set => throw null; }
@@ -76,7 +73,6 @@ namespace System
                 public System.Int64 InterfaceIndex { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Sockets.LingerOption` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class LingerOption
             {
                 public bool Enabled { get => throw null; set => throw null; }
@@ -84,7 +80,6 @@ namespace System
                 public int LingerTime { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Sockets.MulticastOption` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MulticastOption
             {
                 public System.Net.IPAddress Group { get => throw null; set => throw null; }
@@ -95,7 +90,6 @@ namespace System
                 public MulticastOption(System.Net.IPAddress group, int interfaceIndex) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.NetworkStream` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NetworkStream : System.IO.Stream
             {
                 public override System.IAsyncResult BeginRead(System.Byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
@@ -138,7 +132,6 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~NetworkStream
             }
 
-            // Generated from `System.Net.Sockets.ProtocolFamily` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ProtocolFamily : int
             {
                 AppleTalk = 16,
@@ -176,7 +169,6 @@ namespace System
                 VoiceView = 18,
             }
 
-            // Generated from `System.Net.Sockets.ProtocolType` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ProtocolType : int
             {
                 Ggp = 3,
@@ -206,7 +198,6 @@ namespace System
                 Unspecified = 0,
             }
 
-            // Generated from `System.Net.Sockets.SafeSocketHandle` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeSocketHandle : Microsoft.Win32.SafeHandles.SafeHandleMinusOneIsInvalid
             {
                 public override bool IsInvalid { get => throw null; }
@@ -215,7 +206,6 @@ namespace System
                 public SafeSocketHandle(System.IntPtr preexistingHandle, bool ownsHandle) : base(default(bool)) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.SelectMode` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SelectMode : int
             {
                 SelectError = 2,
@@ -223,7 +213,6 @@ namespace System
                 SelectWrite = 1,
             }
 
-            // Generated from `System.Net.Sockets.SendPacketsElement` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SendPacketsElement
             {
                 public System.Byte[] Buffer { get => throw null; }
@@ -249,7 +238,6 @@ namespace System
                 public SendPacketsElement(string filepath, System.Int64 offset, int count, bool endOfPacket) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.Socket` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Socket : System.IDisposable
             {
                 public System.Net.Sockets.Socket Accept() => throw null;
@@ -442,7 +430,6 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~Socket
             }
 
-            // Generated from `System.Net.Sockets.SocketAsyncEventArgs` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SocketAsyncEventArgs : System.EventArgs, System.IDisposable
             {
                 public System.Net.Sockets.Socket AcceptSocket { get => throw null; set => throw null; }
@@ -475,7 +462,6 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~SocketAsyncEventArgs
             }
 
-            // Generated from `System.Net.Sockets.SocketAsyncOperation` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SocketAsyncOperation : int
             {
                 Accept = 1,
@@ -490,7 +476,6 @@ namespace System
                 SendTo = 9,
             }
 
-            // Generated from `System.Net.Sockets.SocketFlags` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum SocketFlags : int
             {
@@ -505,7 +490,6 @@ namespace System
                 Truncated = 256,
             }
 
-            // Generated from `System.Net.Sockets.SocketInformation` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SocketInformation
             {
                 public System.Net.Sockets.SocketInformationOptions Options { get => throw null; set => throw null; }
@@ -513,7 +497,6 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Net.Sockets.SocketInformationOptions` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum SocketInformationOptions : int
             {
@@ -523,7 +506,6 @@ namespace System
                 UseOnlyOverlappedIO = 8,
             }
 
-            // Generated from `System.Net.Sockets.SocketOptionLevel` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SocketOptionLevel : int
             {
                 IP = 0,
@@ -533,7 +515,6 @@ namespace System
                 Udp = 17,
             }
 
-            // Generated from `System.Net.Sockets.SocketOptionName` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SocketOptionName : int
             {
                 AcceptConnection = 2,
@@ -587,7 +568,6 @@ namespace System
                 UseLoopback = 64,
             }
 
-            // Generated from `System.Net.Sockets.SocketReceiveFromResult` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SocketReceiveFromResult
             {
                 public int ReceivedBytes;
@@ -595,7 +575,6 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Net.Sockets.SocketReceiveMessageFromResult` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SocketReceiveMessageFromResult
             {
                 public System.Net.Sockets.IPPacketInformation PacketInformation;
@@ -605,7 +584,6 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Net.Sockets.SocketShutdown` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SocketShutdown : int
             {
                 Both = 2,
@@ -613,7 +591,6 @@ namespace System
                 Send = 1,
             }
 
-            // Generated from `System.Net.Sockets.SocketTaskExtensions` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class SocketTaskExtensions
             {
                 public static System.Threading.Tasks.Task<System.Net.Sockets.Socket> AcceptAsync(this System.Net.Sockets.Socket socket) => throw null;
@@ -637,7 +614,6 @@ namespace System
                 public static System.Threading.Tasks.Task<int> SendToAsync(this System.Net.Sockets.Socket socket, System.ArraySegment<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, System.Net.EndPoint remoteEP) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.SocketType` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SocketType : int
             {
                 Dgram = 2,
@@ -648,7 +624,6 @@ namespace System
                 Unknown = -1,
             }
 
-            // Generated from `System.Net.Sockets.TcpClient` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TcpClient : System.IDisposable
             {
                 protected bool Active { get => throw null; set => throw null; }
@@ -689,7 +664,6 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~TcpClient
             }
 
-            // Generated from `System.Net.Sockets.TcpListener` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TcpListener
             {
                 public System.Net.Sockets.Socket AcceptSocket() => throw null;
@@ -717,7 +691,6 @@ namespace System
                 public TcpListener(int port) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.TransmitFileOptions` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum TransmitFileOptions : int
             {
@@ -729,7 +702,6 @@ namespace System
                 WriteBehind = 4,
             }
 
-            // Generated from `System.Net.Sockets.UdpClient` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UdpClient : System.IDisposable
             {
                 protected bool Active { get => throw null; set => throw null; }
@@ -782,7 +754,6 @@ namespace System
                 public UdpClient(string hostname, int port) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.UdpReceiveResult` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct UdpReceiveResult : System.IEquatable<System.Net.Sockets.UdpReceiveResult>
             {
                 public static bool operator !=(System.Net.Sockets.UdpReceiveResult left, System.Net.Sockets.UdpReceiveResult right) => throw null;
@@ -796,7 +767,6 @@ namespace System
                 public UdpReceiveResult(System.Byte[] buffer, System.Net.IPEndPoint remoteEndPoint) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.UnixDomainSocketEndPoint` in `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UnixDomainSocketEndPoint : System.Net.EndPoint
             {
                 public override System.Net.Sockets.AddressFamily AddressFamily { get => throw null; }
