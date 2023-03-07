@@ -45,7 +45,7 @@ Please note that this sink is already added to the CodeQL Java analysis.
 
    public static void taintsink(Connection conn, String query) throws SQLException {
        Statement stmt = conn.createStatement();
-       stmt.execute(query);
+       stmt.execute(query); // The argument passed to this method is a SQL injection sink.
    }
 
 This can be achieved by adding the following data extension.
@@ -86,7 +86,7 @@ Please note that this source is already added to the CodeQL Java analysis.
 .. code-block:: java
 
    public static InputStream tainted(Socket socket) throws IOException {
-       InputStream stream = socket.getInputStream();
+       InputStream stream = socket.getInputStream(); // The return value of this method is a remote source.
        return stream;
    }
 
@@ -119,9 +119,108 @@ The remaining values are used to define the **access path**, the **kind**, and t
 - The eighth value **remote** is the kind of the source. The source kind is used to define for which queries the source is in scope. **remote** applies to many of security related queries as it means a remote source of untrusted data. As an example the SQL injection query uses **remote** sources. 
 - The ninth value **manual** is the provenance of the source, which is used to identify the origin of the source.
 
-Example: Adding flow through '<TODO>' methods.
-----------------------------------------------
+Example: Adding flow through the **concat** method.
+---------------------------------------------------
+In this example we will see, how to define flow through a method for a simple case.
+This pattern covers many of the cases where we need to define flow through a method.
+Please note that the flow through the **concat** method is already added to the CodeQL Java analysis.
 
+.. code-block:: java
+
+   public static String taintflow(String s1, String s2) {
+       String t = s1.concat(s2); // There is taint flow from s1 and s2 to t.
+       return t;
+   }
+
+This can be achieved by adding the following data extension.
+These are widely known as summary models.
+
+.. code-block:: yaml
+
+   extensions:
+    - addsTo:
+        pack: codeql/java-all
+        extensible: summaryModel
+      data:
+        - ["java.lang", "String", False, "concat", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+        - ["java.lang", "String", False, "concat", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+
+Reasoning:
+
+Since we are adding flow through a method, we need to add tuples to the **summaryModel** extension point.
+Each tuple defines flow from one argument to the return value.
+The first five values are used to identify the method (callable) which we are defining a source on.
+These are the same for both of the rows above.
+
+- The first value **java.lang** is the package name.
+- The second value **String** is the class (type) name.
+- The third value **False** is flag indicating, whether the source also applies to all overrides of the method.
+- The fourth value **concat** is the method name.
+- The fifth value **(String)** is the method input type signature.
+
+For most practical purposes the sixth value is not relevant.
+The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the source.
+
+- The seventh value is the access path to the input where data flows from. **Argument[-1]** is the access path to the qualifier (**s1** in the example) and **Argument[0]** is the access path to the first argument (**s2** in the example).
+- The eighth value **ReturnValue** is the access path to the output where data flows too, in this case **ReturnValue**, which means that the input flows to the return value.
+- The ninth value **taint** is the kind of the flow. **taint** means that taint is propagated through the flow.
+- The tenth value **manual** is the provenance of the source, which is used to identify the origin of the summary.
+
+Example: Add flow through the **map** method.
+---------------------------------------------
+In this example will will see a more complex example of modelling flow through a method.
+This pattern shows how to model flow through higher order methods and collection types.
+Please note that the flow through the **map** method is already added to the CodeQL Java analysis.
+
+.. code-block:: java
+
+   public static Stream<String> taintflow(Stream<String> s) {
+     Stream<String> l = s.map(e -> e.concat("\n"));
+     return l;
+   }
+
+This can be achieved by adding the following data extension.
+
+.. code-block:: yaml
+
+   extensions:
+   - addsTo:
+       pack: codeql/java-all
+       extensible: summaryModel
+     data:
+       - ["java.util.stream", "Stream", True, "map", "(Function)", "", "Argument[-1].Element", "Argument[0].Parameter[0]", "value", "manual"]
+       - ["java.util.stream", "Stream", True, "map", "(Function)", "", "Argument[0].ReturnValue", "ReturnValue.Element", "value", "manual"]
+
+Reasoning:
+
+Since we are adding flow through a method, we need to add tuples to the **summaryModel** extension point.
+Each tuple defines part of the flow that comprises the total flow through the method.
+The first five values are used to identify the method (callable) which we are defining a source on.
+These are the same for both of the rows above.
+
+- The first value **java.util.stream** is the package name.
+- The second value **Stream** is the class (type) name.
+- The third value **True** is flag indicating, whether the source also applies to all overrides of the method.
+- The fourth value **map** is the method name.
+- The fifth value **Function** is the method input type signature.
+
+For most practical purposes the sixth value is not relevant.
+The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the source.
+- The seventh value is the access path to the **input** where data flows from.
+- The eighth value **ReturnValue** is the access path to the **output** where data flows too.
+
+For the first row the
+- The seventh value is **Argument[-1].Element**, which is the access path to the elements of the qualifier (the elements of the stream **s** in the example).
+- The eight value is **Argument[0].Paramter[0]**, which is the access path the first parameter of the **Function** argument of **map** (the lambda parameter **e** in the example).
+
+For the second row the
+- The seventh value is **Argument[0].ReturnValue**, which is the access path to the return value of the **Function** argument of **map** (the return value of the lambda in the example).
+- The eighth value is **ReturnValue.Element**, which is the access path to the elements of the return value of **map** (the elements of the stream **l** in the example).
+
+- The ninth value **value** is the kind of the flow. **value** means that the value is propagated.
+- The tenth value **manual** is the provenance of the source, which is used to identify the origin of the summary.
+
+That is, the first row models that there is value flow from the elements of qualifier stream into the first argument of the Function provided to **map** and the second row models that there is value flow from the return value of the Function to the elements of the stream returned from **map**.
 
 Example: Adding **neutral** methods.
 ------------------------------------
