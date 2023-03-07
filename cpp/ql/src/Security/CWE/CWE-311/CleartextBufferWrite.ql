@@ -56,10 +56,10 @@ predicate isSinkImpl(DataFlow::Node sink, SensitiveBufferWrite w) {
 }
 
 from
-  SensitiveBufferWrite w, ToBufferFlow::PathNode sourceNode,
-  ToBufferFlow::PathNode sinkNode, FlowSource source
+  SensitiveBufferWrite w, ToBufferFlow::PathNode sourceNode, ToBufferFlow::PathNode sinkNode,
+  FlowSource source
 where
-ToBufferFlow::hasFlowPath(sourceNode, sinkNode) and
+  ToBufferFlow::hasFlowPath(sourceNode, sinkNode) and
   sourceNode.getNode() = source and
   isSinkImpl(sinkNode.getNode(), w)
 select w, sourceNode, sinkNode,
