@@ -19,7 +19,7 @@ import semmle.code.cpp.security.FunctionWithWrappers
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import DataFlow::PathGraph
+import TaintedPath::PathGraph
 
 /**
  * A function for opening a file.
@@ -70,18 +70,16 @@ predicate hasUpperBoundsCheck(Variable var) {
   )
 }
 
-class TaintedPathConfiguration extends TaintTracking::Configuration {
-  TaintedPathConfiguration() { this = "TaintedPathConfiguration" }
+module TaintedPathConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
-
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     exists(FileFunction fileFunction |
       fileFunction.outermostWrapperFunctionCall(node.asIndirectArgument(), _)
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.asExpr().(Call).getTarget().getUnspecifiedType() instanceof ArithmeticType
     or
     exists(LoadInstruction load, Variable checkedVar |
@@ -92,13 +90,15 @@ class TaintedPathConfiguration extends TaintTracking::Configuration {
   }
 }
 
+module TaintedPath = TaintTracking::Make<TaintedPathConfiguration>;
+
 from
-  FileFunction fileFunction, Expr taintedArg, FlowSource taintSource, TaintedPathConfiguration cfg,
-  DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode, string callChain
+  FileFunction fileFunction, Expr taintedArg, FlowSource taintSource,
+  TaintedPath::PathNode sourceNode, TaintedPath::PathNode sinkNode, string callChain
 where
   taintedArg = sinkNode.getNode().asIndirectArgument() and
   fileFunction.outermostWrapperFunctionCall(taintedArg, callChain) and
-  cfg.hasFlowPath(sourceNode, sinkNode) and
+  TaintedPath::hasFlowPath(sourceNode, sinkNode) and
   taintSource = sourceNode.getNode()
 select taintedArg, sourceNode, sinkNode,
   "This argument to a file access function is derived from $@ and then passed to " + callChain + ".",
