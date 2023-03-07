@@ -231,8 +231,8 @@ int test_unary(int a) {
     int b = +a;
     range(b); // $ range=<=11 range=>=3
     int c = -a;
-    range(c);
-    range(b+c); // $ range=<=10 range="<=+ ...:a-1" range=">=- ...+1"
+    range(c); // $ range=<=-3 range=>=-11
+    range(b+c); // $ range=<=10 range="<=+ ...:a-1" range=">=- ...+1" range=>=-10
     total += b+c;
     range(total);
   }
@@ -241,8 +241,8 @@ int test_unary(int a) {
     int b = +a;
     range(b); // $ range=<=11 range=>=0
     int c = -a;
-    range(c);
-    range(b+c); // $ range=<=11 range="<=+ ...:a+0" range=">=- ...+0"
+    range(c); // $ range=<=0 range=>=-11
+    range(b+c); // $ range=<=11 range="<=+ ...:a+0" range=">=- ...+0" range=>=-11
     total += b+c;
     range(total);
   }
@@ -251,7 +251,7 @@ int test_unary(int a) {
     int b = +a;
     range(b); // $ range=<=11 range=>=-7
     int c = -a;
-    range(c);
+    range(c); // $ range=<=7 range=>=-11
     range(b+c);
     total += b+c;
     range(total);
@@ -261,7 +261,7 @@ int test_unary(int a) {
     int b = +a;
     range(b); // $ range=<=1 range=>=-7
     int c = -a;
-    range(c);
+    range(c); // $ range=<=7 range=>=-1
     range(b+c);
     total += b+c;
     range(total);
@@ -271,8 +271,8 @@ int test_unary(int a) {
     int b = +a;
     range(b); // $ range=<=0 range=>=-7
     int c = -a;
-    range(c);
-    range(b+c); // $ range="<=- ...+0" range=">=+ ...:a+0" range=>=-7
+    range(c); // $ range=<=7 MISSING: range=>=0
+    range(b+c); // $ range="<=- ...+0" range=">=+ ...:a+0" range=>=-7 range=<=7
     total += b+c;
     range(total);
   }
@@ -281,8 +281,8 @@ int test_unary(int a) {
     int b = +a;
     range(b); // $ range=<=-2 range=>=-7
     int c = -a;
-    range(c);
-    range(b+c); // $ range="<=- ...-1" range=">=+ ...:a+1" range=>=-6
+    range(c); // $ range=<=7 range=>=2
+    range(b+c); // $ range="<=- ...-1" range=">=+ ...:a+1" range=>=-6 range=<=6
     total += b+c;
     range(total);
   }
@@ -552,7 +552,7 @@ int test16(int x) {
       range(x); // $ range=<=-1 range=>=0
       return 1;
     }
-    range(d); // $ range===3
+    range(d); // $ range=<=0 range=>=3 // Unreachable code
     range(x); // $ range=<=-1 range=>=0
   }
   range(x); // $ range=>=0
@@ -1006,6 +1006,6 @@ void test_negate_unsigned(unsigned u) {
 
 void test_negate_signed(int s) {
   if(10 < s && s < 20) {
-    range<int>(-s); // $ MISSING: range=<=-11 range=>=-19
+    range<int>(-s); // $ range=<=-11 range=>=-19
   }
 }
