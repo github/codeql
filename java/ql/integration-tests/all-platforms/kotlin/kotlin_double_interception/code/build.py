@@ -9,10 +9,11 @@ runSuccessfully([get_cmd('kotlinc'), 'normal.kt'])
 
 # Find the extractor jar that is being used
 trapDir = os.environ['CODEQL_EXTRACTOR_JAVA_TRAP_DIR']
-invocationTraps = glob.glob('invocations/*.trap', root_dir = trapDir)
+invocationTrapDir = trapDir + '/invocations'
+invocationTraps = os.listdir(invocationTrapDir)
 if len(invocationTraps) != 1:
     raise Exception('Expected to find 1 invocation TRAP, but found ' + str(invocationTraps))
-invocationTrap = trapDir + '/' + invocationTraps[0]
+invocationTrap = invocationTrapDir + '/' + invocationTraps[0]
 with open(invocationTrap, 'r') as f:
     content = f.read()
     m = re.search('^// Using extractor: (.*)$', content, flags = re.MULTILINE)
