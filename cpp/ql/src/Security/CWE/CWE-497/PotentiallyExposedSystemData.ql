@@ -42,8 +42,8 @@ class PotentiallyExposedSystemDataConfiguration extends TaintTracking::Configura
     exists(OutputWrite ow, Expr child | child = ow.getASource().getAChild*() |
       // Most sinks receive a pointer as an argument (for example `printf`),
       // and we use an indirect sink for those.
-      // However, some sinks (for example `puts`) receive receive a single
-      // character as an argument. For those we have to use a direct sink.
+      // However, some sinks (for example `puts`) receive a single character
+      // as an argument. For those we have to use a direct sink.
       if
         child.getUnspecifiedType() instanceof PointerType or
         child.getUnspecifiedType() instanceof ArrayType
