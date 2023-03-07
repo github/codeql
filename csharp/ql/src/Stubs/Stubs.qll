@@ -120,15 +120,6 @@ abstract private class GeneratedType extends Type, GeneratedElement {
     else result = ""
   }
 
-  private string stubComment() {
-    exists(string qualifier, string name |
-      this.hasQualifiedName(qualifier, name) and
-      result =
-        "// Generated from `" + getQualifiedName(qualifier, name) + "` in `" +
-          concat(this.getALocation().toString(), "; ") + "`\n"
-    )
-  }
-
   /** Gets the entire C# stub code for this type. */
   pragma[nomagic]
   final string getStub(Assembly assembly) {
@@ -141,17 +132,16 @@ abstract private class GeneratedType extends Type, GeneratedElement {
     else (
       not this instanceof DelegateType and
       result =
-        this.stubComment() + this.stubAttributes() + stubAccessibility(this) +
-          this.stubAbstractModifier() + this.stubStaticModifier() + this.stubPartialModifier() +
-          this.stubKeyword() + " " + this.getUndecoratedName() + stubGenericArguments(this) +
-          this.stubBaseTypesString() + stubTypeParametersConstraints(this) + "\n{\n" +
-          this.stubPrivateConstructor() + this.stubMembers(assembly) + "}\n\n"
+        this.stubAttributes() + stubAccessibility(this) + this.stubAbstractModifier() +
+          this.stubStaticModifier() + this.stubPartialModifier() + this.stubKeyword() + " " +
+          this.getUndecoratedName() + stubGenericArguments(this) + this.stubBaseTypesString() +
+          stubTypeParametersConstraints(this) + "\n{\n" + this.stubPrivateConstructor() +
+          this.stubMembers(assembly) + "}\n\n"
       or
       result =
-        this.stubComment() + this.stubAttributes() + stubUnsafe(this) + stubAccessibility(this) +
-          this.stubKeyword() + " " + stubClassName(this.(DelegateType).getReturnType()) + " " +
-          this.getUndecoratedName() + stubGenericArguments(this) + "(" + stubParameters(this) +
-          ");\n\n"
+        this.stubAttributes() + stubUnsafe(this) + stubAccessibility(this) + this.stubKeyword() +
+          " " + stubClassName(this.(DelegateType).getReturnType()) + " " + this.getUndecoratedName()
+          + stubGenericArguments(this) + "(" + stubParameters(this) + ");\n\n"
     )
   }
 
@@ -968,6 +958,8 @@ private string stubSemmleExtractorOptions() {
 /** Gets the generated C# code. */
 string generatedCode(Assembly assembly) {
   result =
-    "// This file contains auto-generated code.\n" + stubSemmleExtractorOptions() + "\n" +
-      any(GeneratedNamespace ns | ns.isGlobalNamespace()).getStubs(assembly)
+    "// This file contains auto-generated code.\n" //
+      + "// Generated from `" + assembly.getFullName() + "`.\n" //
+      + stubSemmleExtractorOptions() + "\n" //
+      + any(GeneratedNamespace ns | ns.isGlobalNamespace()).getStubs(assembly)
 }
