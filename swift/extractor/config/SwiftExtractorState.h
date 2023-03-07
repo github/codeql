@@ -24,6 +24,12 @@ struct SwiftExtractorState {
 
   // The path for the modules outputted by the underlying frontend run, ignoring path redirection
   std::vector<std::filesystem::path> originalOutputModules;
+
+  // All lazy named declarations that were already emitted
+  std::unordered_set<const swift::Decl*> emittedDeclarations;
+
+  // Lazy named declarations that were not yet emitted and will be emitted each one separately
+  std::unordered_set<const swift::Decl*> pendingDeclarations;
 };
 
 }  // namespace codeql

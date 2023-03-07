@@ -88,7 +88,7 @@ pub struct LogWriter {
 }
 
 impl LogWriter {
-    pub fn message(&self, id: &str, name: &str) -> DiagnosticMessage {
+    pub fn new_entry(&self, id: &str, name: &str) -> DiagnosticMessage {
         DiagnosticMessage {
             timestamp: chrono::Utc::now(),
             source: Source {
@@ -199,9 +199,29 @@ impl DiagnosticLoggers {
     }
 }
 
+fn longest_backtick_sequence_length(text: &str) -> usize {
+    let mut result = 0;
+    let mut count = 0;
+    for c in text.chars() {
+        if c == '`' {
+            count += 1;
+        } else {
+            if count > result {
+                result = count;
+            }
+            count = 0;
+        }
+    }
+    result
+}
 impl DiagnosticMessage {
     pub fn full_error_message(&self) -> String {
         match &self.location {
+            Some(Location {
+                file: Some(path),
+                start_line: None,
+                ..
+            }) => format!("{}: {}", path, self.plaintext_message),
             Some(Location {
                 file: Some(path),
                 start_line: Some(line),
@@ -211,12 +231,38 @@ impl DiagnosticMessage {
         }
     }
 
-    pub fn text(&mut self, text: &str) -> &mut Self {
+    fn text(&mut self, text: &str) -> &mut Self {
         self.plaintext_message = text.to_owned();
         self
     }
 
-    #[allow(unused)]
+    pub fn message(&mut self, text: &str, args: &[&str]) -> &mut Self {
+        let parts = text.split("{}");
+        let args = args.iter().chain(std::iter::repeat(&""));
+        let mut plain = String::with_capacity(2 * text.len());
+        let mut markdown = String::with_capacity(2 * text.len());
+        for (p, a) in parts.zip(args) {
+            plain.push_str(p);
+            plain.push_str(a);
+            markdown.push_str(p);
+            if a.len() > 0 {
+                let count = longest_backtick_sequence_length(a) + 1;
+                markdown.push_str(&"`".repeat(count));
+                if count > 1 {
+                    markdown.push_str(" ");
+                }
+                markdown.push_str(a);
+                if count > 1 {
+                    markdown.push_str(" ");
+                }
+                markdown.push_str(&"`".repeat(count));
+            }
+        }
+        self.text(&plain);
+        self.markdown(&markdown);
+        self
+    }
+
     pub fn markdown(&mut self, text: &str) -> &mut Self {
         self.markdown_message = text.to_owned();
         self
@@ -249,6 +295,11 @@ impl DiagnosticMessage {
         self.visibility.telemetry = true;
         self
     }
+    pub fn file(&mut self, path: &str) -> &mut Self {
+        let loc = self.location.get_or_insert(Default::default());
+        loc.file = Some(path.to_owned());
+        self
+    }
     pub fn location(
         &mut self,
         path: &str,
@@ -265,4 +316,24 @@ impl DiagnosticMessage {
         loc.end_column = Some(end_column);
         self
     }
+}
+
+#[test]
+fn test_message() {
+    let mut m = DiagnosticLoggers::new("foo")
+        .logger()
+        .new_entry("id", "name");
+    m.message("hello: {}", &["hello"]);
+    assert_eq!("hello: hello", m.plaintext_message);
+    assert_eq!("hello: `hello`", m.markdown_message);
+
+    let mut m = DiagnosticLoggers::new("foo")
+        .logger()
+        .new_entry("id", "name");
+    m.message("hello with backticks: {}", &["oh `hello`!"]);
+    assert_eq!("hello with backticks: oh `hello`!", m.plaintext_message);
+    assert_eq!(
+        "hello with backticks: `` oh `hello`! ``",
+        m.markdown_message
+    );
 }

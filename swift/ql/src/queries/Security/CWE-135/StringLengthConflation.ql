@@ -12,6 +12,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
@@ -52,7 +53,7 @@ class StringLengthConflationFlowState extends string {
  * a `String` or an `NSString` object, to a sink of a different kind that
  * expects an incompatible measure of length.
  */
-class StringLengthConflationConfiguration extends DataFlow::Configuration {
+class StringLengthConflationConfiguration extends TaintTracking::Configuration {
   StringLengthConflationConfiguration() { this = "StringLengthConflationConfiguration" }
 
   override predicate isSource(DataFlow::Node node, string flowstate) {
@@ -176,11 +177,6 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       flowstate.(StringLengthConflationFlowState).getEquivClass() !=
         correctFlowState.(StringLengthConflationFlowState).getEquivClass()
     )
-  }
-
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // allow flow through `+`, `-`, `*` etc.
-    node2.asExpr().(ArithmeticOperation).getAnOperand() = node1.asExpr()
   }
 }
 

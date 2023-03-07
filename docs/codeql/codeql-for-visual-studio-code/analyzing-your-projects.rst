@@ -5,7 +5,7 @@
 Analyzing your projects
 =================================================
 
-You can run queries on CodeQL databases and view the results in Visual Studio Code.
+You can run queries on CodeQL databases and view the results in Visual Studio Code. This article explains how to get a CodeQL database and analyze it on your local machine. For information on running analysis at scale across many CodeQL databases, see ":ref:`Running CodeQL queries at scale with multi-repository variant analysis <running-codeql-queries-at-scale-with-mrva>`."
 
 Choosing a database
 ------------------------
@@ -24,8 +24,8 @@ To analyze a project, you need to add a :ref:`CodeQL database <codeql-database>`
 
 #. Once you've chosen a database, it is displayed in the Databases view. To see the menu options for interacting with a database, right-click an entry in the list. You can select multiple databases using **Ctrl/Cmd+click**.
 
-Obtaining a local database
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Importing a local database
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you have a CodeQL database saved locally, as an unarchived folder or as a ZIP file, you can add it to Visual Studio Code. There are several ways to obtain a local CodeQL database.
 
@@ -36,6 +36,9 @@ If you have a CodeQL database saved locally, as an unarchived folder or as a ZIP
   If a query fails a regression test, you may want to analyze the test database in Visual Studio Code to debug the failure.
 
   For more information about running query tests, see "`Testing custom queries <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/testing-custom-queries>`__" in the CodeQL CLI help.
+
+Downloading a database from GitHub
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. include:: ../reusables/download-github-database.rst
 

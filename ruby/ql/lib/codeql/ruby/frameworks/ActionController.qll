@@ -520,15 +520,15 @@ ActionControllerClass getAssociatedControllerClass(ErbFile f) {
  * templates in `app/views/` and `app/views/layouts/`.
  */
 predicate controllerTemplateFile(ActionControllerClass cls, ErbFile templateFile) {
-  exists(string templatesPath, string sourcePrefix, string subPath, string controllerPath |
+  exists(string sourcePrefix, string subPath, string controllerPath |
     controllerPath = cls.getLocation().getFile().getRelativePath() and
-    templatesPath = templateFile.getParentContainer().getRelativePath() and
     // `sourcePrefix` is either a prefix path ending in a slash, or empty if
     // the rails app is at the source root
     sourcePrefix = [controllerPath.regexpCapture("^(.*/)app/controllers/(?:.*?)/(?:[^/]*)$", 1), ""] and
     controllerPath = sourcePrefix + "app/controllers/" + subPath + "_controller.rb" and
     (
-      templatesPath = sourcePrefix + "app/views/" + subPath or
+      sourcePrefix + "app/views/" + subPath = templateFile.getParentContainer().getRelativePath()
+      or
       templateFile.getRelativePath().matches(sourcePrefix + "app/views/layouts/" + subPath + "%")
     )
   )

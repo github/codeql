@@ -14,7 +14,7 @@ import experimental.meta.InlineTaintTest::Conf
 import DataFlow::PathGraph
 
 class Conf extends TestTaintTrackingConfiguration {
-  override int explorationLimit() { result = 5 }
+  // override int explorationLimit() { result = 5 }
 }
 
 // from Conf config, DataFlow::PartialPathNode source, DataFlow::PartialPathNode sink

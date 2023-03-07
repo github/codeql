@@ -73,9 +73,8 @@ fn main() -> std::io::Result<()> {
         Err(e) => {
             main_thread_logger.write(
                 main_thread_logger
-                    .message("configuration-error", "Configuration error")
-                    .text(&format!("{}; defaulting to 1 thread.", e))
-                    .status_page()
+                    .new_entry("configuration-error", "Configuration error")
+                    .message("{}; defaulting to 1 thread.", &[&e])
                     .severity(diagnostics::Severity::Warning),
             );
             1
@@ -95,9 +94,8 @@ fn main() -> std::io::Result<()> {
         Err(e) => {
             main_thread_logger.write(
                 main_thread_logger
-                    .message("configuration-error", "Configuration error")
-                    .text(&format!("{}; using gzip.", e))
-                    .status_page()
+                    .new_entry("configuration-error", "Configuration error")
+                    .message("{}; using gzip.", &[&e])
                     .severity(diagnostics::Severity::Warning),
             );
             trap::Compression::Gzip
@@ -199,17 +197,17 @@ fn main() -> std::io::Result<()> {
                                         needs_conversion = false;
                                         diagnostics_writer.write(
                                             diagnostics_writer
-                                                .message(
-                                                    "character-encoding-error",
-                                                    "Character encoding error",
+                                                .new_entry(
+                                                    "character-decoding-error",
+                                                    "Character decoding error",
                                                 )
-                                                .text(&format!(
-                                                    "{}: character decoding failure: {} ({})",
-                                                    &path.to_string_lossy(),
-                                                    msg,
-                                                    &encoding_name
-                                                ))
+                                                .file(&path.to_string_lossy())
+                                                .message(
+                                                    "Could not decode the file contents as {}: {}. The contents of the file must match the character encoding specified in the {} directive.",
+                                                    &[&encoding_name, &msg, "encoding:"],
+                                                )
                                                 .status_page()
+                                                .help_link("https://docs.ruby-lang.org/en/master/syntax/comments_rdoc.html#label-encoding+Directive")
                                                 .severity(diagnostics::Severity::Warning),
                                         );
                                     }
@@ -218,13 +216,14 @@ fn main() -> std::io::Result<()> {
                         } else {
                             diagnostics_writer.write(
                                 diagnostics_writer
-                                    .message("character-encoding-error", "Character encoding error")
-                                    .text(&format!(
-                                        "{}: unknown character encoding: '{}'",
-                                        &path.to_string_lossy(),
-                                        &encoding_name
-                                    ))
+                                    .new_entry("unknown-character-encoding", "Unknown character encoding")
+                                    .file(&path.to_string_lossy())
+                                    .message(
+                                        "Unknown character encoding {} in {} directive.",
+                                        &[&encoding_name, "#encoding:"],
+                                    )
                                     .status_page()
+                                    .help_link("https://docs.ruby-lang.org/en/master/syntax/comments_rdoc.html#label-encoding+Directive")
                                     .severity(diagnostics::Severity::Warning),
                             );
                         }

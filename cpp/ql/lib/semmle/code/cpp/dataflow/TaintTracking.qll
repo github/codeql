@@ -23,5 +23,6 @@ import semmle.code.cpp.dataflow.DataFlow2
  * global (inter-procedural) taint-tracking analyses.
  */
 module TaintTracking {
+  import semmle.code.cpp.dataflow.internal.tainttracking1.TaintTracking
   import semmle.code.cpp.dataflow.internal.tainttracking1.TaintTrackingImpl
 }

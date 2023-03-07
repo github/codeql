@@ -93,6 +93,9 @@ class Modifiable extends Declaration, @modifiable {
   /** Holds if this declaration has the modifier `required`. */
   predicate isRequired() { this.hasModifier("required") }
 
+  /** Holds if this declaration is `file` local. */
+  predicate isFile() { this.hasModifier("file") }
+
   /** Holds if this declaration is `unsafe`. */
   predicate isUnsafe() {
     this.hasModifier("unsafe") or
@@ -183,6 +186,8 @@ class Member extends DotNet::Member, Modifiable, @member {
   override predicate isStatic() { Modifiable.super.isStatic() }
 
   override predicate isRequired() { Modifiable.super.isRequired() }
+
+  override predicate isFile() { Modifiable.super.isFile() }
 }
 
 private class TOverridable = @virtualizable or @callable_accessor;

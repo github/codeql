@@ -6,7 +6,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
-private import codeql.swift.dataflow.ExternalFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for SQL injection vulnerabilities.

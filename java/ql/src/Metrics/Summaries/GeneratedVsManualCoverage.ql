@@ -28,7 +28,7 @@ private int getNumMadModeledApis(string package, string provenance) {
         or
         sc.isManual() and
         (
-          if sc.hasProvenance("generated")
+          if sc.hasProvenance(["generated", "ai-generated"])
           then
             // "both"
             provenance = "both"
