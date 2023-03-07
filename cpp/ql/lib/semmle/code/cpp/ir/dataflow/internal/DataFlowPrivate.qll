@@ -5,6 +5,8 @@ private import DataFlowDispatch
 private import DataFlowImplConsistency
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
+private import DataFlowImplCommon
+private import semmle.code.cpp.ir.ValueNumbering
 
 cached
 private module Cached {
@@ -891,10 +893,80 @@ private class MyConsistencyConfiguration extends Consistency::ConsistencyConfigu
 }
 
 /**
+ * Gets the basic block of `node`.
+ */
+IRBlock getBasicBlock(Node node) {
+  node.asInstruction().getBlock() = result
+  or
+  node.asOperand().getUse().getBlock() = result
+  or
+  node.(SsaPhiNode).getPhiNode().getBasicBlock() = result
+  or
+  node.(RawIndirectOperand).getOperand().getUse().getBlock() = result
+  or
+  node.(RawIndirectInstruction).getInstruction().getBlock() = result
+  or
+  result = getBasicBlock(node.(PostUpdateNode).getPreUpdateNode())
+}
+
+/**
  * Gets an additional term that is added to the `join` and `branch` computations to reflect
  * an additional forward or backwards branching factor that is not taken into account
  * when calculating the (virtual) dispatch cost.
  *
  * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
  */
-int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }
+pragma[nomagic]
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) {
+  exists(ParameterNode switchee, ConditionOperand op, DataFlowCall call |
+    viableParamArg(call, p, arg) and
+    viableParamArg(call, switchee, _) and
+    valueNumber(switchee.asInstruction()).getAUse() = op and
+    result = countNumberOfBranchesUsingParameter(op, p)
+  )
+}
+
+/** Gets the `IRVariable` associated with the parameter node `p`. */
+pragma[nomagic]
+private IRVariable getIRVariableForParameterNode(ParameterNode p) {
+  result = p.(DirectParameterNode).getIRVariable()
+  or
+  result.getAst() = p.(IndirectParameterNode).getParameter()
+}
+
+/** Holds if `v` is the source variable corresponding to the parameter represented by `p`. */
+pragma[nomagic]
+private predicate parameterNodeHasSourceVariable(ParameterNode p, Ssa::SourceIRVariable v) {
+  v.getIRVariable() = getIRVariableForParameterNode(p) and
+  exists(Position pos | p.isParameterOf(_, pos) |
+    pos instanceof DirectPosition and
+    v.getIndirection() = 1
+    or
+    pos.(IndirectionPosition).getIndirectionIndex() + 1 = v.getIndirection()
+  )
+}
+
+private EdgeKind caseOrDefaultEdge() {
+  result instanceof CaseEdge or
+  result instanceof DefaultEdge
+}
+
+/**
+ * Gets the number of switch branches that that read from (or write to) the parameter `p`.
+ */
+int countNumberOfBranchesUsingParameter(ConditionOperand op, ParameterNode p) {
+  exists(SwitchInstruction switch, Ssa::SourceVariable sv |
+    switch.getExpressionOperand() = op and
+    parameterNodeHasSourceVariable(p, sv) and
+    // Count the number of cases that use the parameter. We do this by finding the phi node
+    // that merges the uses/defs of the parameter. There might be multiple such phi nodes, so
+    // we pick the one with the highest edge count.
+    result =
+      max(SsaPhiNode phi |
+        switch.getSuccessor(caseOrDefaultEdge()).getBlock().dominanceFrontier() = getBasicBlock(phi) and
+        phi.getSourceVariable() = sv
+      |
+        strictcount(phi.getAnInput())
+      )
+  )
+}

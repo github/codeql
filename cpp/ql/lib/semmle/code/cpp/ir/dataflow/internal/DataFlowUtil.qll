@@ -525,6 +525,9 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   /** Gets a node that is used as input to this phi node. */
   final Node getAnInput() { result = this.getAnInput(_) }
+
+  /** Gets the source variable underlying this phi node. */
+  Ssa::SourceVariable getSourceVariable() { result = phi.getSourceVariable() }
 }
 
 /**
@@ -1201,10 +1204,20 @@ class ParameterNode extends Node {
   predicate isParameterOf(Function f, ParameterPosition pos) { none() } // overridden by subclasses
 }
 
-/** An explicit positional parameter, not including `this` or `...`. */
-private class ExplicitParameterNode extends ParameterNode, InstructionNode {
+/** An explicit positional parameter, including `this`, but not `...`. */
+class DirectParameterNode extends InstructionNode {
   override InitializeParameterInstruction instr;
 
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Gets the `IRVariable` that this parameter references.
+   */
+  IRVariable getIRVariable() { result = instr.getIRVariable() }
+}
+
+/** An explicit positional parameter, not including `this` or `...`. */
+private class ExplicitParameterNode extends ParameterNode, DirectParameterNode {
   ExplicitParameterNode() { exists(instr.getParameter()) }
 
   override predicate isParameterOf(Function f, ParameterPosition pos) {
@@ -1218,9 +1231,7 @@ private class ExplicitParameterNode extends ParameterNode, InstructionNode {
 }
 
 /** An implicit `this` parameter. */
-class ThisParameterNode extends ParameterNode, InstructionNode {
-  override InitializeParameterInstruction instr;
-
+class ThisParameterNode extends ParameterNode, DirectParameterNode {
   ThisParameterNode() { instr.getIRVariable() instanceof IRThisVariable }
 
   override predicate isParameterOf(Function f, ParameterPosition pos) {
@@ -1771,20 +1782,6 @@ class ContentSet instanceof Content {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     super.hasLocationInfo(path, sl, sc, el, ec)
   }
-}
-
-private IRBlock getBasicBlock(Node node) {
-  node.asInstruction().getBlock() = result
-  or
-  node.asOperand().getUse().getBlock() = result
-  or
-  node.(SsaPhiNode).getPhiNode().getBasicBlock() = result
-  or
-  node.(RawIndirectOperand).getOperand().getUse().getBlock() = result
-  or
-  node.(RawIndirectInstruction).getInstruction().getBlock() = result
-  or
-  result = getBasicBlock(node.(PostUpdateNode).getPreUpdateNode())
 }
 
 /**
