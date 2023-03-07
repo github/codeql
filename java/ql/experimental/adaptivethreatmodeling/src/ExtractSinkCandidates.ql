@@ -4,15 +4,14 @@
  *
  * Note: This query does not actually classify the endpoints using the model.
  *
- * @name Sink candidates with flow (experimental)
- * @description Sink candidates with flow from a source
+ * @name Sink candidates (experimental)
+ * @description Sink candidates
  * @kind problem
- * @id java/ml-powered/sink-candidates-with-flow
+ * @id java/ml-powered/sink-candidates
  * @tags experimental security
  */
 
 private import java
-import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.ExternalFlow
 private import experimental.adaptivethreatmodeling.EndpointCharacteristics as EndpointCharacteristics
 private import experimental.adaptivethreatmodeling.EndpointTypes
@@ -52,6 +51,11 @@ EndpointCharacteristics::EndpointCharacteristic getAReasonSinkExcluded(
     result.hasImplications(sinkType, false, confidence)
   )
 }
+
+/*
+ * TODO: `UninterestingToModelCharacteristic` should _not_ be used to filter out sink candidates when running this
+ * query on a user's codebase for customized modeling.
+ */
 
 from DataFlow::Node sinkCandidate, string message
 where
