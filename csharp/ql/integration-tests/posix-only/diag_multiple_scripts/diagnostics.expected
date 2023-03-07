@@ -11,7 +11,9 @@
     "name": "No project or solutions files found"
   },
   "visibility": {
-    "statusPage": true
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
   }
 }
 {
@@ -27,6 +29,8 @@
     "name": "There are multiple potential build scripts"
   },
   "visibility": {
-    "statusPage": true
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
   }
 }

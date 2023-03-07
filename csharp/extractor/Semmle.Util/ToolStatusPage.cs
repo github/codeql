@@ -58,6 +58,12 @@ namespace Semmle.Util
         public class TspVisibility
         {
             /// <summary>
+            /// A read-only instance of <see cref="TspVisibility" /> which indicates that the
+            /// diagnostic should be used in all supported locations.
+            /// </summary>
+            public static readonly TspVisibility All = new(true, true, true);
+
+            /// <summary>
             /// True if the message should be displayed on the status page (defaults to false).
             /// </summary>
             public bool? StatusPage { get; }
@@ -166,7 +172,7 @@ namespace Semmle.Util
             this.HelpLinks = new List<string>();
             this.Attributes = new Dictionary<string, object>();
             this.Severity = severity;
-            this.Visibility = visibility ?? new TspVisibility(statusPage: true);
+            this.Visibility = visibility ?? TspVisibility.All;
             this.Location = location ?? new TspLocation();
             this.Internal = intrnl ?? false;
             this.MarkdownMessage = markdownMessage;

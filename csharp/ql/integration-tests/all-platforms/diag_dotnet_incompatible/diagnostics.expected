@@ -11,7 +11,9 @@
     "name": "Some projects are incompatible with .NET Core"
   },
   "visibility": {
-    "statusPage": true
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
   }
 }
 {
@@ -27,6 +29,8 @@
     "name": "Some projects or solutions failed to build using MSBuild"
   },
   "visibility": {
-    "statusPage": true
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
   }
 }
