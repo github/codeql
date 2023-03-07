@@ -186,7 +186,7 @@ class Declaration extends Locatable, @declaration {
   predicate hasDefinition() { exists(this.getDefinition()) }
 
   /** DEPRECATED: Use `hasDefinition` instead. */
-  predicate isDefined() { this.hasDefinition() }
+  deprecated predicate isDefined() { this.hasDefinition() }
 
   /** Gets the preferred location of this declaration, if any. */
   override Location getLocation() { none() }

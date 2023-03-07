@@ -4,7 +4,6 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
-private import codeql.ruby.DataFlow2
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
@@ -291,20 +290,18 @@ private module OrmTracking {
   /**
    * A data flow configuration to track flow from finder calls to field accesses.
    */
-  class Configuration extends DataFlow2::Configuration {
-    Configuration() { this = "OrmTracking" }
-
-    override predicate isSource(DataFlow2::Node source) { source instanceof OrmInstantiation }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof OrmInstantiation }
 
     // Select any call receiver and narrow down later
-    override predicate isSink(DataFlow2::Node sink) {
-      sink = any(DataFlow2::CallNode c).getReceiver()
-    }
+    predicate isSink(DataFlow::Node sink) { sink = any(DataFlow::CallNode c).getReceiver() }
 
-    override predicate isAdditionalFlowStep(DataFlow2::Node node1, DataFlow2::Node node2) {
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       Shared::isAdditionalXssFlowStep(node1, node2)
     }
   }
+
+  import DataFlow::Make<Config>
 }
 
 /** Provides default sources, sinks and sanitizers for detecting stored cross-site scripting (XSS) vulnerabilities. */
@@ -333,10 +330,10 @@ module StoredXss {
   /** DEPRECATED: Alias for isAdditionalXssTaintStep */
   deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
 
-  private class OrmFieldAsSource extends Source instanceof DataFlow2::CallNode {
+  private class OrmFieldAsSource extends Source instanceof DataFlow::CallNode {
     OrmFieldAsSource() {
-      exists(OrmTracking::Configuration subConfig, DataFlow2::CallNode subSrc |
-        subConfig.hasFlow(subSrc, this.getReceiver()) and
+      exists(DataFlow::CallNode subSrc |
+        OrmTracking::hasFlow(subSrc, this.getReceiver()) and
         subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName())
       )
     }
