@@ -423,3 +423,9 @@ void scan_and_write() {
 		use(i);  // GOOD [FALSE POSITIVE]: variable is overwritten with a default value when scanf fails
 	}
 }
+
+void scan_and_static_variable() {
+	static int i;
+	scanf("%d", &i);
+	use(i);  // GOOD [FALSE POSITIVE]: static variables are always 0-initialized
+}
