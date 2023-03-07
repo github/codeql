@@ -128,6 +128,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		log.Printf("Done running go list deps: resolved %d packages.", len(pkgInfos))
 	}
 
+	pkgsNotFound := make([]string, 0, len(pkgs))
+
 	// Do a post-order traversal and extract the package scope of each package
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
 		return true
@@ -162,13 +164,18 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 					diagnostics.EmitPackageDifferentOSArchitecture(pkg.PkgPath)
 				} else if strings.Contains(errString, "cannot find package") ||
 					strings.Contains(errString, "no required module provides package") {
-					diagnostics.EmitCannotFindPackage(pkg.PkgPath)
+					pkgsNotFound = append(pkgsNotFound, pkg.PkgPath)
 				}
 				extraction.extractError(tw, err, lbl, i)
 			}
 		}
+
 		log.Printf("Done extracting types for package %s.", pkg.PkgPath)
 	})
+
+	if len(pkgsNotFound) > 0 {
+		diagnostics.EmitCannotFindPackages(pkgsNotFound)
+	}
 
 	for _, pkg := range pkgs {
 		pkgInfo, ok := pkgInfos[pkg.PkgPath]

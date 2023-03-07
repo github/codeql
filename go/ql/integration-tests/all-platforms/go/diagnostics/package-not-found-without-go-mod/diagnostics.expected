@@ -1,11 +1,11 @@
 {
   "internal": false,
-  "markdownMessage": "Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language).",
+  "markdownMessage": "The following packages could not be found. Check that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).\n\n`github.com/linode/linode-docs-theme`",
   "severity": "error",
   "source": {
     "extractorName": "go",
     "id": "go/autobuilder/package-not-found",
-    "name": "Package github.com/linode/linode-docs-theme could not be found"
+    "name": "1 package could not be found"
   },
   "visibility": {
     "cliSummaryTable": true,

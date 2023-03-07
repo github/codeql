@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -124,10 +125,32 @@ func EmitPackageDifferentOSArchitecture(pkgPath string) {
 	)
 }
 
-func EmitCannotFindPackage(pkgPath string) {
-	emitDiagnostic("go/autobuilder/package-not-found",
-		"Package "+pkgPath+" could not be found",
-		"Check that the path is correct. If it is a private package, make sure it can be accessed. If it is contained in the repository then you may need a [custom build command](https://docs.github.com/en/github-ae@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language).",
+const maxNumPkgPaths = 5
+
+func EmitCannotFindPackages(pkgPaths []string) {
+	numPkgPaths := len(pkgPaths)
+
+	ending := "s"
+	if numPkgPaths == 1 {
+		ending = ""
+	}
+
+	numPrinted := numPkgPaths
+	truncated := false
+	if numPrinted > maxNumPkgPaths {
+		numPrinted = maxNumPkgPaths
+		truncated = true
+	}
+
+	secondLine := "`" + strings.Join(pkgPaths[0:numPrinted], "`, `") + "`"
+	if truncated {
+		secondLine += fmt.Sprintf(" and %d more", numPkgPaths-maxNumPkgPaths)
+	}
+
+	emitDiagnostic(
+		"go/autobuilder/package-not-found",
+		fmt.Sprintf("%d package%s could not be found", numPkgPaths, ending),
+		"The following packages could not be found. Check that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).\n\n"+secondLine,
 		severityError, false,
 		true, true, true,
 		"", 0, 0, 0, 0,
