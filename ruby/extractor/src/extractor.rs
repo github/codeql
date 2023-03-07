@@ -306,8 +306,8 @@ impl<'a> Visitor<'a> {
     fn enter_node(&mut self, node: Node) -> bool {
         if node.is_missing() {
             self.record_parse_error_for_node(
-                "A parse error occurred (expected {} symbol). Check the syntax of the file using the {} command. If the file is invalid, correct the error or exclude the file from analysis.",
-                &[node.kind(), "ruby -c"],
+                "A parse error occurred (expected {} symbol). Check the syntax of the file. If the file is invalid, correct the error or exclude the file from analysis.",
+                &[node.kind()],
                 node,
                 true,
             );
@@ -315,8 +315,8 @@ impl<'a> Visitor<'a> {
         }
         if node.is_error() {
             self.record_parse_error_for_node(
-                "A parse error occurred. Check the syntax of the file using the {} command. If the file is invalid, correct the error or exclude the file from analysis.",
-                &["ruby -c"],
+                "A parse error occurred. Check the syntax of the file. If the file is invalid, correct the error or exclude the file from analysis.",
+                &[],
                 node,
                 true,
             );
