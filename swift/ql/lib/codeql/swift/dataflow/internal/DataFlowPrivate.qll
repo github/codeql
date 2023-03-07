@@ -7,6 +7,7 @@ private import codeql.swift.dataflow.Ssa
 private import codeql.swift.controlflow.BasicBlocks
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import codeql.swift.frameworks.StandardLibrary.PointerTypes
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -211,6 +212,8 @@ private predicate modifiable(Argument arg) {
   arg.getExpr() instanceof InOutExpr
   or
   arg.getExpr().getType() instanceof NominalType
+  or
+  arg.getExpr().getType() instanceof PointerType
 }
 
 predicate modifiableParam(ParamDecl param) {
@@ -696,3 +699,12 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }
