@@ -16,11 +16,9 @@ import cpp
 import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.security.PrivateData
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import semmle.code.cpp.ir.dataflow.TaintTracking2
-import semmle.code.cpp.ir.dataflow.TaintTracking3
 import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.commons.File
-import DataFlow::PathGraph
+import FromSensitiveFlow::PathGraph
 
 class SourceVariable extends Variable {
   SourceVariable() {
@@ -236,72 +234,70 @@ predicate isSourceImpl(DataFlow::Node source) {
  * A taint flow configuration for flow from a sensitive expression to a network
  * operation.
  */
-class FromSensitiveConfiguration extends TaintTracking::Configuration {
-  FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
+module FromSensitiveConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isSourceImpl(source) }
 
-  override predicate isSource(DataFlow::Node source) { isSourceImpl(source) }
+  predicate isSink(DataFlow::Node sink) { isSinkSendRecv(sink, _) }
 
-  override predicate isSink(DataFlow::Node sink) { isSinkSendRecv(sink, _) }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
 
-  override predicate isSanitizerIn(DataFlow::Node node) {
+  predicate isBarrierIn(DataFlow::Node node) {
     // As any use of a sensitive variable is a potential source, we need to block flow into
     // sources to not get path duplication.
-    this.isSource(node)
+    isSource(node)
   }
 }
+
+module FromSensitiveFlow = TaintTracking::Make<FromSensitiveConfiguration>;
 
 /**
  * A taint flow configuration for flow from a sensitive expression to an encryption operation.
  */
-class ToEncryptionConfiguration extends TaintTracking2::Configuration {
-  ToEncryptionConfiguration() { this = "ToEncryptionConfiguration" }
+module ToEncryptionConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { FromSensitiveFlow::hasFlow(source, _) }
 
-  override predicate isSource(DataFlow::Node source) {
-    any(FromSensitiveConfiguration config).hasFlow(source, _)
-  }
+  predicate isSink(DataFlow::Node sink) { isSinkEncrypt(sink, _) }
 
-  override predicate isSink(DataFlow::Node sink) { isSinkEncrypt(sink, _) }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
 
-  override predicate isSanitizerIn(DataFlow::Node node) {
+  predicate isBarrierIn(DataFlow::Node node) {
     // As any use of a sensitive variable is a potential source, we need to block flow into
     // sources to not get path duplication.
-    this.isSource(node)
+    isSource(node)
   }
 }
+
+module ToEncryptionFlow = TaintTracking::Make<ToEncryptionConfiguration>;
 
 /**
  * A taint flow configuration for flow from an encryption operation to a network operation.
  */
-class FromEncryptionConfiguration extends TaintTracking3::Configuration {
-  FromEncryptionConfiguration() { this = "FromEncryptionConfiguration" }
+module FromEncryptionConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isSinkEncrypt(source, _) }
 
-  override predicate isSource(DataFlow::Node source) { isSinkEncrypt(source, _) }
+  predicate isSink(DataFlow::Node sink) { FromSensitiveFlow::hasFlowTo(sink) }
 
-  override predicate isSink(DataFlow::Node sink) {
-    any(FromSensitiveConfiguration config).hasFlowTo(sink)
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, NetworkSendRecv networkSendRecv, string msg
+module FromEncryptionFlow = TaintTracking::Make<FromEncryptionConfiguration>;
+
+from
+  FromSensitiveFlow::PathNode source, FromSensitiveFlow::PathNode sink,
+  NetworkSendRecv networkSendRecv, string msg
 where
   // flow from sensitive -> network data
-  any(FromSensitiveConfiguration config).hasFlowPath(source, sink) and
+  FromSensitiveFlow::hasFlowPath(source, sink) and
   isSinkSendRecv(sink.getNode(), networkSendRecv) and
   // no flow from sensitive -> evidence of encryption
-  not any(ToEncryptionConfiguration config).hasFlow(source.getNode(), _) and
-  not any(FromEncryptionConfiguration config).hasFlowTo(sink.getNode()) and
+  not ToEncryptionFlow::hasFlow(source.getNode(), _) and
+  not FromEncryptionFlow::hasFlowTo(sink.getNode()) and
   // construct result
   if networkSendRecv instanceof NetworkSend
   then

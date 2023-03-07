@@ -18,22 +18,22 @@ import semmle.code.cpp.security.FileWrite
 import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import DataFlow::PathGraph
+import FromSensitiveFlow::PathGraph
 
 /**
  * A taint flow configuration for flow from a sensitive expression to a `FileWrite` sink.
  */
-class FromSensitiveConfiguration extends TaintTracking::Configuration {
-  FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
+module FromSensitiveConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isSourceImpl(source, _) }
 
-  override predicate isSource(DataFlow::Node source) { isSourceImpl(source, _) }
+  predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _, _) }
 
-  override predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _, _) }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
 }
+
+module FromSensitiveFlow = TaintTracking::Make<FromSensitiveConfiguration>;
 
 predicate isSinkImpl(DataFlow::Node sink, FileWrite w, Expr dest) {
   exists(Expr e |
@@ -78,10 +78,10 @@ predicate isFileName(GVN gvn) {
 }
 
 from
-  FromSensitiveConfiguration config, SensitiveExpr source, DataFlow::PathNode sourceNode,
-  DataFlow::PathNode midNode, FileWrite w, Expr dest
+  SensitiveExpr source, FromSensitiveFlow::PathNode sourceNode, FromSensitiveFlow::PathNode midNode,
+  FileWrite w, Expr dest
 where
-  config.hasFlowPath(sourceNode, midNode) and
+  FromSensitiveFlow::hasFlowPath(sourceNode, midNode) and
   isSourceImpl(sourceNode.getNode(), source) and
   isSinkImpl(midNode.getNode(), w, dest)
 select w, sourceNode, midNode,
