@@ -36,33 +36,30 @@ class TypeHashtable extends Class {
   TypeHashtable() { this.getSourceDeclaration().hasQualifiedName("java.util", "Hashtable") }
 }
 
+string getHostname(Expr expr) {
+  result = expr.(CompileTimeConstantExpr).getStringValue() or
+  result =
+    expr.(VarAccess).getVariable().getAnAssignedValue().(CompileTimeConstantExpr).getStringValue()
+}
+
 /**
  * Holds if a non-private LDAP string is concatenated from both protocol and host.
  */
-predicate concatInsecureLdapString(Expr protocol, Expr host) {
-  protocol.(CompileTimeConstantExpr).getStringValue() = "ldap://" and
-  not exists(string hostString |
-    hostString = host.(CompileTimeConstantExpr).getStringValue() or
-    hostString =
-      host.(VarAccess).getVariable().getAnAssignedValue().(CompileTimeConstantExpr).getStringValue()
-  |
+predicate concatInsecureLdapString(CompileTimeConstantExpr protocol, Expr host) {
+  protocol.getStringValue() = "ldap://" and
+  not exists(string hostString | hostString = getHostname(host) |
     hostString.length() = 0 or // Empty host is loopback address
     hostString instanceof PrivateHostName
   )
 }
 
-/** Gets the leftmost operand in a concatenated string */
-Expr getLeftmostConcatOperand(Expr expr) {
-  // if expr instanceof AddExpr
-  // then result = getLeftmostConcatOperand(expr.(AddExpr).getLeftOperand())
-  // else result = expr
-  if expr instanceof AddExpr
-  then
-    result = expr.(AddExpr).getLeftOperand*() and
-    not result instanceof AddExpr
-  else result = expr
-}
-
+// Expr getLeftmostConcatOperand(Expr expr) {
+//   if expr instanceof AddExpr
+//   then
+//     result = expr.(AddExpr).getLeftOperand() and
+//     not result instanceof AddExpr
+//   else result = expr
+// }
 /**
  * String concatenated with `InsecureLdapUrlLiteral`.
  */
@@ -70,8 +67,16 @@ class InsecureLdapUrl extends Expr {
   InsecureLdapUrl() {
     this instanceof InsecureLdapUrlLiteral
     or
-    concatInsecureLdapString(this.(AddExpr).getLeftOperand(),
-      getLeftmostConcatOperand(this.(AddExpr).getRightOperand()))
+    // protocol + host + ...
+    exists(AddExpr e, CompileTimeConstantExpr protocol, Expr rest, Expr host |
+      e = this and
+      protocol = e.getLeftOperand() and
+      rest = e.getRightOperand() and
+      if rest instanceof AddExpr then host = rest.(AddExpr).getLeftOperand() else host = rest
+    |
+      protocol.getStringValue() = "ldap://" and
+      concatInsecureLdapString(protocol, host)
+    )
   }
 }
 
