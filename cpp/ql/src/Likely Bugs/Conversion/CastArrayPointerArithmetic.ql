@@ -18,31 +18,39 @@
 
 import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow
-import DataFlow::PathGraph
+import CastToPointerArithFlow::PathGraph
 
 Type getFullyConvertedType(DataFlow::Node node) {
   result = node.asExpr().getFullyConverted().getUnspecifiedType()
 }
 
-class CastToPointerArithFlow extends DataFlow::Configuration {
-  CastToPointerArithFlow() { this = "CastToPointerArithFlow" }
+module CastToPointerArithFlowConfig implements DataFlow::StateConfigSig {
+  class FlowState = Type;
 
-  override predicate isSource(DataFlow::Node node, DataFlow::FlowState state) {
+  predicate isSource(DataFlow::Node node, FlowState state) {
     not node.asExpr() instanceof Conversion and
     exists(Type baseType1, Type baseType2 |
       hasBaseType(node.asExpr(), baseType1) and
       hasBaseType(node.asExpr().getConversion*(), baseType2) and
       introducesNewField(baseType1, baseType2)
     ) and
-    getFullyConvertedType(node).getName() = state
+    getFullyConvertedType(node) = state
   }
 
-  override predicate isSink(DataFlow::Node node, DataFlow::FlowState state) {
+  predicate isSink(DataFlow::Node node, FlowState state) {
     (
       exists(PointerAddExpr pae | pae.getAnOperand() = node.asExpr()) or
       exists(ArrayExpr ae | ae.getArrayBase() = node.asExpr())
     ) and
-    getFullyConvertedType(node).getName() = state
+    getFullyConvertedType(node) = state
+  }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
+  ) {
+    none()
   }
 }
 
@@ -72,15 +80,9 @@ predicate introducesNewField(Class derived, Class base) {
   )
 }
 
-pragma[nomagic]
-predicate hasFullyConvertedType(DataFlow::PathNode node, Type t) {
-  getFullyConvertedType(node.getNode()) = t
-}
+module CastToPointerArithFlow = DataFlow::MakeWithState<CastToPointerArithFlowConfig>;
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, CastToPointerArithFlow cfg, Type t
-where
-  cfg.hasFlowPath(pragma[only_bind_into](source), pragma[only_bind_into](sink)) and
-  hasFullyConvertedType(source, t) and
-  hasFullyConvertedType(sink, t)
+from CastToPointerArithFlow::PathNode source, CastToPointerArithFlow::PathNode sink
+where CastToPointerArithFlow::hasFlowPath(source, sink)
 select sink, source, sink, "This pointer arithmetic may be done with the wrong type because of $@.",
   source, "this cast"
