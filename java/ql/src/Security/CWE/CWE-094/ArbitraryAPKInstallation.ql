@@ -4,7 +4,7 @@
  * @description Creating an intent with a URI pointing to a untrusted file can lead to the installation of an untrusted application.
  * @kind path-problem
  * @security-severity 9.3
- * @problem.severity warning
+ * @problem.severity error
  * @precision medium
  * @tags security
  *       external/cwe/cwe-094
