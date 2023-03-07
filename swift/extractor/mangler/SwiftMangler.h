@@ -4,8 +4,12 @@
 #include <swift/AST/Types.h>
 
 namespace codeql {
+
+class SwiftDispatcher;
+
 class SwiftMangler {
  public:
+  explicit SwiftMangler(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
   std::string mangledName(const swift::Decl& decl);
 
   template <typename T>
@@ -14,6 +18,7 @@ class SwiftMangler {
   }
 
   std::optional<std::string> mangleType(const swift::ModuleType& type);
+  std::optional<std::string> mangleType(const swift::TupleType& type);
 
 #define TYPE(TYPE_ID, PARENT_TYPE)
 #define BUILTIN_TYPE(TYPE_ID, PARENT_TYPE) \
@@ -22,6 +27,7 @@ class SwiftMangler {
 
  private:
   swift::Mangle::ASTMangler mangler;
+  SwiftDispatcher& dispatcher;
 };
 
 }  // namespace codeql

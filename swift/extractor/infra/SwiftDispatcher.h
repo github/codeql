@@ -145,12 +145,11 @@ class SwiftDispatcher {
     // this is required so we avoid any recursive loop: a `fetchLabel` during the visit of `e` might
     // end up calling `fetchLabel` on `e` itself, so we want the visit of `e` to call `fetchLabel`
     // only after having called `assignNewLabel` on `e`.
-    assert(std::holds_alternative<std::monostate>(waitingForNewLabel) &&
-           "fetchLabel called before assignNewLabel");
+    assert(seen.count(e) == 0 && "Infinite recursion?");
     if (auto l = store.get(e)) {
       return *l;
     }
-    waitingForNewLabel = e;
+    seen.insert(e);
     visit(e, std::forward<Args>(args)...);
     // TODO when everything is moved to structured C++ classes, this should be moved to createEntry
     if (auto l = store.get(e)) {
@@ -181,10 +180,9 @@ class SwiftDispatcher {
   // declarations
   template <typename E, typename... Args, std::enable_if_t<IsStorable<E>>* = nullptr>
   TrapLabel<ConcreteTrapTagOf<E>> assignNewLabel(const E& e, Args&&... args) {
-    assert(waitingForNewLabel == Store::Handle{e} && "assignNewLabel called on wrong entity");
+    seen.erase(e);
     auto label = trap.createLabel<ConcreteTrapTagOf<E>>(std::forward<Args>(args)...);
     store.insert(e, label);
-    waitingForNewLabel = std::monostate{};
     return label;
   }
 
@@ -324,9 +322,9 @@ class SwiftDispatcher {
   SwiftExtractorState& state;
   TrapDomain& trap;
   Store store;
+  std::unordered_set<Store::Handle> seen;
   SwiftLocationExtractor& locationExtractor;
   SwiftBodyEmissionStrategy& bodyEmissionStrategy;
-  Store::Handle waitingForNewLabel{std::monostate{}};
   std::unordered_set<swift::ModuleDecl*> encounteredModules;
 };
 

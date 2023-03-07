@@ -20,7 +20,7 @@ namespace codeql {
 template <typename... Ts>
 class TrapLabelStore {
  public:
-  using Handle = std::variant<std::monostate, Ts...>;
+  using Handle = std::variant<Ts...>;
 
   template <typename T>
   std::optional<TrapLabelOf<T>> get(const T& e) {

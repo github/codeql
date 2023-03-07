@@ -91,7 +91,7 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
     entry.module = dispatcher.fetchLabel(decl.getModuleContext());
   }
 
-  SwiftMangler mangler;
+  SwiftMangler mangler{dispatcher};
 };
 
 }  // namespace codeql

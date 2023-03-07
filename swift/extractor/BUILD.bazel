@@ -12,7 +12,6 @@ swift_cc_binary(
         "//swift/extractor/config",
         "//swift/extractor/infra",
         "//swift/extractor/invocation",
-        "//swift/extractor/mangler",
         "//swift/extractor/remapping",
         "//swift/extractor/translators",
         "//swift/third_party/swift-llvm-support",

@@ -1,4 +1,5 @@
 #include "swift/extractor/mangler/SwiftMangler.h"
+#include "swift/extractor/infra/SwiftDispatcher.h"
 #include "swift/extractor/trap/generated/decl/TrapClasses.h"
 #include <swift/AST/Module.h>
 #include <sstream>
@@ -37,6 +38,20 @@ std::optional<std::string> SwiftMangler::mangleType(const swift::ModuleType& typ
     key += "|clang";
   }
   return key;
+}
+
+std::optional<std::string> SwiftMangler::mangleType(const swift::TupleType& type) {
+  std::stringstream stream;
+  stream << "(";
+  for (const auto& element : type.getElements()) {
+    auto s2 = dispatcher.fetchLabel(element.getType());
+    if (element.hasName()) {
+      stream << static_cast<std::string_view>(element.getName().str());
+    }
+    stream << "{" << s2 << "}";
+  }
+  stream << ")";
+  return stream.str();
 }
 
 #define TYPE(TYPE_ID, PARENT_TYPE)

@@ -104,7 +104,7 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
     return entry;
   }
 
-  SwiftMangler mangler;
+  SwiftMangler mangler{dispatcher};
 };
 
 }  // namespace codeql
