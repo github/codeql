@@ -50,7 +50,6 @@ erbAstNodes
 | template.html.erb:31:5:31:9 |  end  |
 | template.html.erb:31:10:31:11 | %> |
 | template.html.erb:31:12:33:5 | \n</ul>\n<%%>\n |
-| template.html.erb:33:1:33:3 | <%% |
 | template.html.erb:34:1:34:3 | <%- |
 | template.html.erb:34:1:34:5 | <%=%> |
 | template.html.erb:34:4:34:5 | %> |
@@ -159,7 +158,6 @@ primaryQlClasses
 | template.html.erb:31:5:31:9 |  end  | ErbToken |
 | template.html.erb:31:10:31:11 | %> | ErbToken |
 | template.html.erb:31:12:33:5 | \n</ul>\n<%%>\n | ErbToken |
-| template.html.erb:33:1:33:3 | <%% | ErbToken |
 | template.html.erb:34:1:34:3 | <%- | ErbToken |
 | template.html.erb:34:1:34:5 | <%=%> | ErbOutputDirective |
 | template.html.erb:34:4:34:5 | %> | ErbToken |

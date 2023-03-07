@@ -326,7 +326,20 @@ impl<'a> Visitor<'a> {
         let id = self.trap_writer.fresh_id();
 
         self.stack.push((id, 0, Vec::new()));
-        true
+
+        let table = self
+            .schema
+            .get(&TypeName {
+                kind: node.kind().to_owned(),
+                named: node.is_named(),
+            })
+            .unwrap();
+
+        match &table.kind {
+            // If the node is a token, we don't want to visit its "ReservedWord" children
+            EntryKind::Token { .. } => false,
+            _ => true,
+        }
     }
 
     fn leave_node(&mut self, field_name: Option<&'static str>, node: Node) {
