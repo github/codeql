@@ -27,13 +27,13 @@
 | ssl_fluent.py:71:14:71:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1 allowed by $@. | ssl_fluent.py:62:12:62:43 | ControlFlowNode for Attribute() | call to ssl.SSLContext |
 | ssl_fluent.py:71:14:71:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1 allowed by $@. | ssl_fluent.py:101:15:101:46 | ControlFlowNode for Attribute() | call to ssl.SSLContext |
 | ssl_fluent.py:71:14:71:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@. | ssl_fluent.py:62:12:62:43 | ControlFlowNode for Attribute() | call to ssl.SSLContext |
+| ssl_fluent.py:71:14:71:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@. | ssl_fluent.py:65:15:65:46 | ControlFlowNode for Attribute() | call to ssl.SSLContext |
 | ssl_fluent.py:71:14:71:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@. | ssl_fluent.py:101:15:101:46 | ControlFlowNode for Attribute() | call to ssl.SSLContext |
-| ssl_fluent.py:71:14:71:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@. | ssl_fluent.py:117:5:117:11 | ControlFlowNode for context | context modification |
-| ssl_fluent.py:71:14:71:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@. | ssl_fluent.py:135:5:135:11 | ControlFlowNode for context | context modification |
+| ssl_fluent.py:71:14:71:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@. | ssl_fluent.py:115:15:115:46 | ControlFlowNode for Attribute() | call to ssl.SSLContext |
 | ssl_fluent.py:77:14:77:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1 allowed by $@. | ssl_fluent.py:62:12:62:43 | ControlFlowNode for Attribute() | call to ssl.SSLContext |
 | ssl_fluent.py:77:14:77:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@. | ssl_fluent.py:62:12:62:43 | ControlFlowNode for Attribute() | call to ssl.SSLContext |
-| ssl_fluent.py:97:14:97:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@. | ssl_fluent.py:95:5:95:11 | ControlFlowNode for context | context modification |
-| ssl_fluent.py:146:14:146:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@. | ssl_fluent.py:143:5:143:11 | ControlFlowNode for context | context modification |
-| ssl_fluent.py:165:14:165:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version SSLv3 allowed by $@. | ssl_fluent.py:162:5:162:11 | ControlFlowNode for context | context modification |
+| ssl_fluent.py:97:14:97:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@. | ssl_fluent.py:65:15:65:46 | ControlFlowNode for Attribute() | call to ssl.SSLContext |
+| ssl_fluent.py:146:14:146:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@. | ssl_fluent.py:142:15:142:46 | ControlFlowNode for Attribute() | call to ssl.SSLContext |
+| ssl_fluent.py:165:14:165:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version SSLv3 allowed by $@. | ssl_fluent.py:161:15:161:65 | ControlFlowNode for Attribute() | call to ssl.create_default_context |
 | ssl_fluent.py:165:14:165:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1 allowed by $@. | ssl_fluent.py:161:15:161:65 | ControlFlowNode for Attribute() | call to ssl.create_default_context |
 | ssl_fluent.py:165:14:165:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@. | ssl_fluent.py:161:15:161:65 | ControlFlowNode for Attribute() | call to ssl.create_default_context |

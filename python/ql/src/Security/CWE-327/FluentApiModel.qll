@@ -61,9 +61,14 @@ module InsecureContextConfiguration implements DataFlow::StateConfigSig {
   }
 
   predicate isSource(DataFlow::Node source, FlowState state) {
-    exists(ProtocolFamily family |
-      source = state.getLibrary().unspecific_context_creation(family) and
-      state.getBits() = family.getBits()
+    exists(ContextCreation creation | source = creation |
+      creation = state.getLibrary().unspecific_context_creation() and
+      state.getBits() =
+        sum(ProtocolVersion version |
+          version = creation.getProtocol() and version.isInsecure()
+        |
+          version.getBit()
+        )
     )
   }
 

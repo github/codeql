@@ -12,14 +12,18 @@ class PyOpenSslContextCreation extends ContextCreation, DataFlow::CallCfgNode {
     this = API::moduleImport("OpenSSL").getMember("SSL").getMember("Context").getACall()
   }
 
-  override string getProtocol() {
+  override ProtocolVersion getProtocol() {
     exists(DataFlow::Node protocolArg, PyOpenSsl pyo |
       protocolArg in [this.getArg(0), this.getArgByName("method")]
     |
-      protocolArg in [
-          pyo.specific_version(result).getAValueReachableFromSource(),
-          pyo.unspecific_version(result).getAValueReachableFromSource()
-        ]
+      protocolArg = pyo.specific_version(result).getAValueReachableFromSource()
+      or
+      protocolArg = pyo.unspecific_version().getAValueReachableFromSource() and
+      // PyOpenSSL also allows DTLS
+      // see https://www.pyopenssl.org/en/stable/api/ssl.html#OpenSSL.SSL.Context
+      // although they are not mentioned here:
+      // https://www.pyopenssl.org/en/stable/api/ssl.html#OpenSSL.SSL.TLS_METHOD
+      result = any(ProtocolVersion pv)
     )
   }
 }
@@ -51,18 +55,21 @@ class SetOptionsCall extends ProtocolRestriction, DataFlow::CallCfgNode {
   }
 }
 
-class UnspecificPyOpenSslContextCreation extends PyOpenSslContextCreation, UnspecificContextCreation {
-  // UnspecificPyOpenSslContextCreation() { library instanceof PyOpenSsl }
-}
-
+// class UnspecificPyOpenSslContextCreation extends PyOpenSslContextCreation, UnspecificContextCreation {
+//   override ProtocolVersion getProtocol() { result = PyOpenSslContextCreation.super.getProtocol() }
+// }
 class PyOpenSsl extends TlsLibrary {
   PyOpenSsl() { this = "pyOpenSSL" }
 
   override string specific_version_name(ProtocolVersion version) { result = version + "_METHOD" }
 
-  override string unspecific_version_name(ProtocolFamily family) {
-    // `"TLS_METHOD"` is not actually available in pyOpenSSL yet, but should be coming soon..
-    result = family + "_METHOD"
+  override string unspecific_version_name() {
+    // See
+    // - https://www.pyopenssl.org/en/23.0.0/api/ssl.html#module-OpenSSL.SSL
+    // - https://www.openssl.org/docs/manmaster/man3/DTLS_server_method.html#NOTES
+    result = ["TLS", "SSLv23"] + "_METHOD"
+    or
+    result = "TLS_" + ["CLIENT", "SERVER"] + "_METHOD"
   }
 
   override API::Node version_constants() { result = API::moduleImport("OpenSSL").getMember("SSL") }
