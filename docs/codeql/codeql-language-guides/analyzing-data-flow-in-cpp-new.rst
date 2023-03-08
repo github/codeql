@@ -2,10 +2,10 @@
 
 .. pull-quote:: Note
 
-   The data flow library described here is available from CodeQL 2.13.0 onwards. See :ref:`here <analyzing-data-flow-in-cpp>` for the library available in earlier versions.
+   The data flow library described here is available from CodeQL 2.12.5 onwards. See :ref:`here <analyzing-data-flow-in-cpp>` for the library available in earlier versions.
 
 Analyzing data flow in C and C++ (New)
-================================
+======================================
 
 You can use data flow analysis to track the flow of potentially malicious or insecure data that can cause vulnerabilities in your codebase.
 
@@ -101,7 +101,7 @@ The following query finds the filename passed to ``fopen``:
      fc.getTarget() = fopen
    select fc.getArgument(0)
 
-Unfortunately, this will only give the expression in the argument, not the values which could be passed to it. So we use local data flow to find all expressions that flow into the argument, where we use ``asIndirectExpr(1)`` as we are interested in the value of the string passed to `fopen`, not the pointer pointing to it:
+However, this will only give the expression in the argument, not the values which could be passed to it. Instead we can use local data flow to find all expressions that flow into the argument, where we use ``asIndirectExpr(1)``. This is because we are interested in the value of the string passed to `fopen`, not the pointer pointing to it:
 
 .. code-block:: ql
 
