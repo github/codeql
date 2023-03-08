@@ -27,7 +27,7 @@ module Erb {
 
   /** A call to `ERB.new`, considered as a template construction. */
   private class ErbTemplateNewCall extends TemplateConstruction::Range, DataFlow::CallNode {
-    ERBTemplateNewCall() { this = API::getTopLevelMember("ERB").getAnInstantiation() }
+    ErbTemplateNewCall() { this = API::getTopLevelMember("ERB").getAnInstantiation() }
 
     override DataFlow::Node getTemplate() { result = this.getArgument(0) }
   }
