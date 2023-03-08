@@ -36,7 +36,7 @@ module PrivateCleartextWrite {
     }
   }
 
-  class WriteConfig extends TaintTracking::Configuration {
+  deprecated class WriteConfig extends TaintTracking::Configuration {
     WriteConfig() { this = "Write configuration" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -45,6 +45,16 @@ module PrivateCleartextWrite {
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
+
+  private module WriteConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+  }
+
+  module WriteFlow = TaintTracking::Make<WriteConfig>;
 
   class PrivateDataSource extends Source {
     PrivateDataSource() { this.getExpr() instanceof PrivateDataExpr }
