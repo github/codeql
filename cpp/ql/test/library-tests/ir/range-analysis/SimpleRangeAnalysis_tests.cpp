@@ -997,3 +997,15 @@ void test_overflow() {
     range(x + y); // $ range===-2147483393
   }
 }
+
+void test_negate_unsigned(unsigned u) {
+  if(10 < u && u < 20) {
+    range<unsigned>(-u); // underflows
+  }
+}
+
+void test_negate_signed(int s) {
+  if(10 < s && s < 20) {
+    range<int>(-s); // $ MISSING: range=<=-11 range=>=-19
+  }
+}
