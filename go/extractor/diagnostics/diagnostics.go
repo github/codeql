@@ -46,7 +46,6 @@ type diagnostic struct {
 	Source          sourceStruct      `json:"source"`
 	MarkdownMessage string            `json:"markdownMessage"`
 	Severity        string            `json:"severity"`
-	Internal        bool              `json:"internal"`
 	Visibility      *visibilityStruct `json:"visibility,omitempty"` // Use a pointer so that it is omitted if nil
 	Location        *locationStruct   `json:"location,omitempty"`   // Use a pointer so that it is omitted if nil
 }
@@ -54,7 +53,7 @@ type diagnostic struct {
 var diagnosticsEmitted, diagnosticsLimit uint = 0, 100
 var noDiagnosticDirPrinted bool = false
 
-func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagnosticSeverity, internal bool, visibility *visibilityStruct, location *locationStruct) {
+func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagnosticSeverity, visibility *visibilityStruct, location *locationStruct) {
 	if diagnosticsEmitted < diagnosticsLimit {
 		diagnosticsEmitted += 1
 
@@ -77,7 +76,6 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 				sourceStruct{sourceid, sourcename, "go"},
 				markdownMessage,
 				string(severity),
-				internal,
 				visibility,
 				location,
 			}
@@ -87,7 +85,6 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 				sourceStruct{"go/autobuilder/diagnostic-limit-reached", "Diagnostics limit exceeded", "go"},
 				fmt.Sprintf("CodeQL has produced more than the maximum number of diagnostics. Only the first %d have been reported.", diagnosticsLimit),
 				string(severityWarning),
-				false,
 				visibility,
 				location,
 			}
@@ -123,7 +120,7 @@ func EmitPackageDifferentOSArchitecture(pkgPath string) {
 		"go/autobuilder/package-different-os-architecture",
 		"Package "+pkgPath+" is intended for a different OS or architecture",
 		"Make sure the `GOOS` and `GOARCH` [environment variables are correctly set](https://docs.github.com/en/actions/learn-github-actions/variables#defining-environment-variables-for-a-single-workflow). Alternatively, [change your OS and architecture](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#using-a-github-hosted-runner).",
-		severityWarning, false,
+		severityWarning,
 		fullVisibility,
 		noLocation,
 	)
@@ -155,7 +152,7 @@ func EmitCannotFindPackages(pkgPaths []string) {
 		"go/autobuilder/package-not-found",
 		fmt.Sprintf("%d package%s could not be found", numPkgPaths, ending),
 		"The following packages could not be found. Check that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).\n\n"+secondLine,
-		severityError, false,
+		severityError,
 		fullVisibility,
 		noLocation,
 	)
@@ -166,7 +163,7 @@ func EmitNewerGoVersionNeeded() {
 		"go/autobuilder/newer-go-version-needed",
 		"Newer Go version needed",
 		"The detected version of Go is lower than the version specified in `go.mod`. [Install a newer version](https://github.com/actions/setup-go#basic).",
-		severityError, false,
+		severityError,
 		fullVisibility,
 		noLocation,
 	)
@@ -177,7 +174,7 @@ func EmitGoFilesFoundButNotProcessed() {
 		"go/autobuilder/go-files-found-but-not-processed",
 		"Go files were found but not processed",
 		"[Specify a custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages) that includes one or more `go build` commands to build the `.go` files to be analyzed.",
-		severityError, false,
+		severityError,
 		fullVisibility,
 		noLocation,
 	)
