@@ -24,7 +24,7 @@ Using local data flow
 
 The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``, ``IndirectExprNode``) and parameter nodes (``ParameterNode``, ``IndirectParameterNode``). The indirect nodes represent expressions or parameters after a fixed number of pointer dereferences.
 
-It is possible to map between data flow nodes and expressions/parameters using the member predicates ``asExpr``, ``asIndirectExpr``, and ``asParameter``:
+It is possible to map between data flow nodes and expressions or parameters using the member predicates ``asExpr``, ``asIndirectExpr``, and ``asParameter``:
 
 .. code-block:: ql
 
