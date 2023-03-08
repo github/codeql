@@ -151,7 +151,7 @@ func EmitCannotFindPackages(pkgPaths []string) {
 	emitDiagnostic(
 		"go/autobuilder/package-not-found",
 		fmt.Sprintf("%d package%s could not be found", numPkgPaths, ending),
-		"The following packages could not be found. Check that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).\n\n"+secondLine,
+		"The following packages could not be found.\n\n"+secondLine+"\n\nCheck that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
 		severityError,
 		fullVisibility,
 		noLocation,
