@@ -15,12 +15,10 @@
 import cpp
 import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.ir.dataflow.DataFlow
-import DataFlow::PathGraph
+import MultToAlloc::PathGraph
 
-class MultToAllocConfig extends DataFlow::Configuration {
-  MultToAllocConfig() { this = "MultToAllocConfig" }
-
-  override predicate isSource(DataFlow::Node node) {
+module MultToAllocConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
     // a multiplication of two non-constant expressions
     exists(MulExpr me |
       me = node.asExpr() and
@@ -28,14 +26,16 @@ class MultToAllocConfig extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     // something that affects an allocation size
     node.asExpr() = any(HeuristicAllocationExpr ae).getSizeExpr().getAChild*()
   }
 }
 
-from MultToAllocConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+module MultToAlloc = DataFlow::Make<MultToAllocConfig>;
+
+from MultToAlloc::PathNode source, MultToAlloc::PathNode sink
+where MultToAlloc::hasFlowPath(source, sink)
 select sink, source, sink,
   "Potentially overflowing value from $@ is used in the size of this allocation.", source,
   "multiplication"

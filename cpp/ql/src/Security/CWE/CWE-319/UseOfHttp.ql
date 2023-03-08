@@ -14,7 +14,7 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
-import DataFlow::PathGraph
+import HttpStringToUrlOpen::PathGraph
 
 /**
  * A string matching private host names of IPv4 and IPv6, which only matches
@@ -54,10 +54,8 @@ class HttpStringLiteral extends StringLiteral {
 /**
  * Taint tracking configuration for HTTP connections.
  */
-class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
-  HttpStringToUrlOpenConfig() { this = "HttpStringToUrlOpenConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
+module HttpStringToUrlOpenConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) {
     // Sources are strings containing an HTTP URL not in a private domain.
     src.asIndirectExpr() instanceof HttpStringLiteral and
     // block taint starting at `strstr`, which is likely testing an existing URL, rather than constructing an HTTP URL.
@@ -67,7 +65,7 @@ class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     // Sinks can be anything that demonstrates the string is likely to be
     // accessed as a URL, for example using it in a network access. Some
     // URLs are only ever displayed or used for data processing.
@@ -91,10 +89,10 @@ class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
   }
 }
 
-from
-  HttpStringToUrlOpenConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  HttpStringLiteral str
+module HttpStringToUrlOpen = TaintTracking::Make<HttpStringToUrlOpenConfig>;
+
+from HttpStringToUrlOpen::PathNode source, HttpStringToUrlOpen::PathNode sink, HttpStringLiteral str
 where
-  config.hasFlowPath(source, sink) and
+  HttpStringToUrlOpen::hasFlowPath(source, sink) and
   str = source.getNode().asIndirectExpr()
 select str, source, sink, "This URL may be constructed with the HTTP protocol."

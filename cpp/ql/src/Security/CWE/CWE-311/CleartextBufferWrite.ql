@@ -16,7 +16,7 @@ import semmle.code.cpp.security.BufferWrite as BufferWrite
 import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import DataFlow::PathGraph
+import ToBufferFlow::PathGraph
 
 /**
  * A buffer write into a sensitive expression.
@@ -39,27 +39,27 @@ class SensitiveBufferWrite extends Expr instanceof BufferWrite::BufferWrite {
  * A taint flow configuration for flow from user input to a buffer write
  * into a sensitive expression.
  */
-class ToBufferConfiguration extends TaintTracking::Configuration {
-  ToBufferConfiguration() { this = "ToBufferConfiguration" }
+module ToBufferConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
 
-  override predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
+  predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
 }
+
+module ToBufferFlow = TaintTracking::Make<ToBufferConfiguration>;
 
 predicate isSinkImpl(DataFlow::Node sink, SensitiveBufferWrite w) {
   w.getASource() = sink.asIndirectExpr()
 }
 
 from
-  ToBufferConfiguration config, SensitiveBufferWrite w, DataFlow::PathNode sourceNode,
-  DataFlow::PathNode sinkNode, FlowSource source
+  SensitiveBufferWrite w, ToBufferFlow::PathNode sourceNode, ToBufferFlow::PathNode sinkNode,
+  FlowSource source
 where
-  config.hasFlowPath(sourceNode, sinkNode) and
+  ToBufferFlow::hasFlowPath(sourceNode, sinkNode) and
   sourceNode.getNode() = source and
   isSinkImpl(sinkNode.getNode(), w)
 select w, sourceNode, sinkNode,

@@ -14,7 +14,7 @@
 import cpp
 import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import DataFlow::PathGraph
+import FromSensitiveFlow::PathGraph
 
 class SqliteFunctionCall extends FunctionCall {
   SqliteFunctionCall() { this.getTarget().getName().matches("sqlite%") }
@@ -56,21 +56,19 @@ predicate isSinkImpl(DataFlow::Node sink, SqliteFunctionCall c, Type t) {
 /**
  * A taint flow configuration for flow from a sensitive expression to a `SqliteFunctionCall` sink.
  */
-class FromSensitiveConfiguration extends TaintTracking::Configuration {
-  FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
+module FromSensitiveConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isSourceImpl(source, _) }
 
-  override predicate isSource(DataFlow::Node source) { isSourceImpl(source, _) }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     isSinkImpl(sink, _, _) and
     not sqlite_encryption_used()
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
 
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet content) {
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet content) {
     // flow out from fields at the sink (only).
     // constrain `content` to a field inside the node.
     exists(Type t |
@@ -80,11 +78,13 @@ class FromSensitiveConfiguration extends TaintTracking::Configuration {
   }
 }
 
+module FromSensitiveFlow = TaintTracking::Make<FromSensitiveConfiguration>;
+
 from
-  FromSensitiveConfiguration config, SensitiveExpr sensitive, DataFlow::PathNode source,
-  DataFlow::PathNode sink, SqliteFunctionCall sqliteCall
+  SensitiveExpr sensitive, FromSensitiveFlow::PathNode source, FromSensitiveFlow::PathNode sink,
+  SqliteFunctionCall sqliteCall
 where
-  config.hasFlowPath(source, sink) and
+  FromSensitiveFlow::hasFlowPath(source, sink) and
   isSourceImpl(source.getNode(), sensitive) and
   isSinkImpl(sink.getNode(), sqliteCall, _)
 select sqliteCall, source, sink,
