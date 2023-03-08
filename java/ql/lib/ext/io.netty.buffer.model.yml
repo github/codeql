@@ -196,8 +196,3 @@ extensions:
       - ["io.netty.buffer", "ByteBufInputStream", True, "ByteBufInputStream", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]  
       - ["io.netty.buffer", "ByteBufOutputStream", True, "ByteBufOutputStream", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]  
       - ["io.netty.buffer", "ByteBufOutputStream", True, "buffer", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]  
-      
-      
-      
-      
-      
