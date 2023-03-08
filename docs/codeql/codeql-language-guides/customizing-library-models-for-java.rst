@@ -38,7 +38,7 @@ The **Reference material** section will in more detail describe the *mini DSLs* 
 Example: Taint sink in the **java.sql** package.
 ------------------------------------------------
 
-In this example we will see, how to define the argument passed to the **execute** method as a SQL injection sink.
+In this example we will see, how to define the argument of the **execute** method as a SQL injection sink.
 This is the **execute** method in the **Statement** class, which is located in the 'java.sql' package.
 Please note that this sink is already added to the CodeQL Java analysis.
 
@@ -46,7 +46,7 @@ Please note that this sink is already added to the CodeQL Java analysis.
 
    public static void taintsink(Connection conn, String query) throws SQLException {
        Statement stmt = conn.createStatement();
-       stmt.execute(query); // The argument passed to this method is a SQL injection sink.
+       stmt.execute(query); // The argument to this method is a SQL injection sink.
    }
 
 This can be achieved by adding the following data extension.
@@ -74,20 +74,20 @@ The first five values are used to identify the method (callable) which we are de
 For most practical purposes the sixth value is not relevant.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the sink.
 
-- The seventh value **Argument[0]** is the access path to the first argument passed to the method, which means that this is the location of the sink.
-- The eighth value **sql** is the kind of the sink. The sink kind is used to define for which queries the sink is in scope.
+- The seventh value **Argument[0]** is the **access path** to the first argument passed to the method, which means that this is the location of the sink.
+- The eighth value **sql** is the kind of the sink. The sink kind is used to define for which queries the sink is in scope. In this case SQL injection queries.
 - The ninth value **manual** is the provenance of the sink, which is used to identify the origin of the sink.
  
 Example: Taint source from the **java.net** package.
 ----------------------------------------------------
-In this example we will see, how to define the return value from the **getInputStream** method as a remote source.
-This is the **getInputStream** method in the **Socket** class, which is located in the 'java.net' package.
+In this example we will see, how to define the return value from the **getInputStream** method as a **remote** source.
+This is the **getInputStream** method in the **Socket** class, which is located in the **java.net** package.
 Please note that this source is already added to the CodeQL Java analysis.
 
 .. code-block:: java
 
    public static InputStream tainted(Socket socket) throws IOException {
-       InputStream stream = socket.getInputStream(); // The return value of this method is a remote source.
+       InputStream stream = socket.getInputStream(); // The return value of this method is a remote source of taint.
        return stream;
    }
 
@@ -207,16 +207,21 @@ These are the same for both of the rows above.
 
 For most practical purposes the sixth value is not relevant.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the source.
+
 - The seventh value is the access path to the **input** where data flows from.
 - The eighth value **ReturnValue** is the access path to the **output** where data flows too.
 
 For the first row the
+
 - The seventh value is **Argument[-1].Element**, which is the access path to the elements of the qualifier (the elements of the stream **s** in the example).
 - The eight value is **Argument[0].Paramter[0]**, which is the access path the first parameter of the **Function** argument of **map** (the lambda parameter **e** in the example).
 
 For the second row the
+
 - The seventh value is **Argument[0].ReturnValue**, which is the access path to the return value of the **Function** argument of **map** (the return value of the lambda in the example).
 - The eighth value is **ReturnValue.Element**, which is the access path to the elements of the return value of **map** (the elements of the stream **l** in the example).
+
+The remaining values for both rows
 
 - The ninth value **value** is the kind of the flow. **value** means that the value is propagated.
 - The tenth value **manual** is the provenance of the source, which is used to identify the origin of the summary.
@@ -283,7 +288,7 @@ Taint source. Most taint tracking queries will use the sources added to this ext
 - **ext**: Specifies additional API-graph-like edges (mostly empty).
 - **output**: Access path to the source, where the possibly tainted data flows from.
 - **kind**: Kind of the source.
-- **provenance**: Provenance (origin) of the source.
+- **provenance**: Provenance (origin) of the source definition.
 
 As most sources are used by all taint tracking queries there are only a few different source kinds.
 The following source kinds are supported:
@@ -306,7 +311,7 @@ Taint sink. As opposed to source kinds, there are many different kinds of sinks 
 - **ext**: Specifies additional API-graph-like edges (mostly empty).
 - **input**: Access path to the sink, where we want to check if possibly tainted data flows too.
 - **kind**: Kind of the sink.
-- **provenance**: Provenance (origin) of the sink.
+- **provenance**: Provenance (origin) of the sink definition.
 
 The following sink kinds are supported:
 
@@ -339,6 +344,24 @@ The following sink kinds are supported:
 
 summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Flow through. This extension point is used to model flow through methods.
+
+- **package**: Name of the package where the method resides.
+- **type**: Name of the type where the method resides.
+- **subtypes**: Whether the method should also apply to all overrides of the method.
+- **name**: Name of the method where we are defining flow through.
+- **signature**: Type signature of the method where we are defining flow through.
+- **ext**: Specifies additional API-graph-like edges (mostly empty).
+- **input**: Access path to the input of the method where data will flow to the output.
+- **output**: Access path to the output of the method where data will flow from the input.
+- **kind**: Kind of the flow through.
+- **provenance**: Provenance (origin) of the flow through.
+
+The following kinds are supported:
+
+- **taint**: This means the output is not necessarily equal to the input, but it was derived from the input in an unrestrictive way. An attacker who controls the input will have significant control over the output as well.
+- **value**: This means that the output equals the input or a copy of the input such that all of its properties are preserved.
 
 neutralModel(package, type, name, signature, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
