@@ -9,7 +9,7 @@ private import codeql.ruby.Concepts
 /**
  * Provides templating for embedding Ruby code into text files, allowing dynamic content generation in web applications.
  */
-module ERB {
+module Erb {
   /**
    * Flow summary for `ERB.new`. This method wraps a template string, compiling it.
    */
@@ -17,7 +17,7 @@ module ERB {
     TemplateSummary() { this = "ERB.new" }
 
     override MethodCall getACall() {
-      result = API::getTopLevelMember("ERB").getAMethodCall("new").asExpr().getExpr()
+      result = any(ErbTemplateNewCall c).asExpr().getExpr()
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -26,18 +26,18 @@ module ERB {
   }
 
   /** A call to `ERB.new`, considered as a template construction. */
-  private class ERBTemplateNewCall extends TemplateConstruction::Range, DataFlow::CallNode {
-    ERBTemplateNewCall() { this = API::getTopLevelMember("ERB").getAMethodCall("new") }
+  private class ErbTemplateNewCall extends TemplateConstruction::Range, DataFlow::CallNode {
+    ERBTemplateNewCall() { this = API::getTopLevelMember("ERB").getAnInstantiation() }
 
     override DataFlow::Node getTemplate() { result = this.getArgument(0) }
   }
 
   /** A call to `ERB.new(foo).result(binding)`, considered as a template rendering. */
-  private class ERBTemplateRendering extends TemplateRendering::Range, DataFlow::CallNode {
-    DataFlow::Node template;
+  private class ErbTemplateRendering extends TemplateRendering::Range, DataFlow::CallNode {
+    private DataFlow::Node template;
 
-    ERBTemplateRendering() {
-      exists(ERBTemplateNewCall templateConstruction |
+    ErbTemplateRendering() {
+      exists(ErbTemplateNewCall templateConstruction |
         this = templateConstruction.getAMethodCall("result") and
         template = templateConstruction.getTemplate()
       )

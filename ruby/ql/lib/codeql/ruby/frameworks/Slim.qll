@@ -13,7 +13,7 @@ module Slim {
   /** A call to `Slim::Template.new`, considered as a template construction. */
   private class SlimTemplateNewCall extends TemplateConstruction::Range, DataFlow::CallNode {
     SlimTemplateNewCall() {
-      this = API::getTopLevelMember("Slim").getMember("Template").getAMethodCall("new")
+      this = API::getTopLevelMember("Slim").getMember("Template").getAnInstantiation()
     }
 
     override DataFlow::Node getTemplate() {
@@ -24,7 +24,7 @@ module Slim {
 
   /** A call to `Slim::Template.new{ foo }.render`, considered as a template rendering */
   private class SlimTemplateRendering extends TemplateRendering::Range, DataFlow::CallNode {
-    DataFlow::Node template;
+    private DataFlow::Node template;
 
     SlimTemplateRendering() {
       exists(SlimTemplateNewCall templateConstruction |

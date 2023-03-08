@@ -43,6 +43,6 @@ module TemplateInjection {
    * An inclusion check against an array of constant strings, considered as a
    * sanitizer-guard.
    */
-  class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
+  private class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
     StringConstArrayInclusionCallBarrier { }
 }
