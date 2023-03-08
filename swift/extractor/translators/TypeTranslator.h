@@ -90,9 +90,7 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
 
   template <typename T>
   auto createTypeEntry(const T& type) {
-    auto mangled = mangler.mangleType(type);
-    llvm::errs() << "PROUT: " << mangled << '\n';
-    auto entry = dispatcher.createEntry(type, mangled);
+    auto entry = dispatcher.createEntry(type, mangler.mangleType(type));
     fillType(type, entry);
     return entry;
   }
