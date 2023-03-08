@@ -918,11 +918,12 @@ IRBlock getBasicBlock(Node node) {
  */
 pragma[nomagic]
 int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) {
-  exists(ParameterNode switchee, ConditionOperand op, DataFlowCall call |
+  exists(ParameterNode switchee, SwitchInstruction switch, ConditionOperand op, DataFlowCall call |
     viableParamArg(call, p, arg) and
     viableParamArg(call, switchee, _) and
+    switch.getExpressionOperand() = op and
     valueNumber(switchee.asInstruction()).getAUse() = op and
-    result = countNumberOfBranchesUsingParameter(op, p)
+    result = countNumberOfBranchesUsingParameter(switch, p)
   )
 }
 
@@ -954,9 +955,8 @@ private EdgeKind caseOrDefaultEdge() {
 /**
  * Gets the number of switch branches that that read from (or write to) the parameter `p`.
  */
-int countNumberOfBranchesUsingParameter(ConditionOperand op, ParameterNode p) {
-  exists(SwitchInstruction switch, Ssa::SourceVariable sv |
-    switch.getExpressionOperand() = op and
+int countNumberOfBranchesUsingParameter(SwitchInstruction switch, ParameterNode p) {
+  exists(Ssa::SourceVariable sv |
     parameterNodeHasSourceVariable(p, sv) and
     // Count the number of cases that use the parameter. We do this by finding the phi node
     // that merges the uses/defs of the parameter. There might be multiple such phi nodes, so
