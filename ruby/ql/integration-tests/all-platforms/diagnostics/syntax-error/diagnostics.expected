@@ -11,7 +11,7 @@
   },
   "markdownMessage": "A parse error occurred. Check the syntax of the file. If the file is invalid, correct the error or [exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.",
   "plaintextMessage": "A parse error occurred. Check the syntax of the file. If the file is invalid, correct the error or exclude the file from analysis.",
-  "severity": "Error",
+  "severity": "Warning",
   "source": {
     "extractorName": "ruby",
     "id": "ruby/parse-error",
@@ -34,7 +34,7 @@
   },
   "markdownMessage": "A parse error occurred (expected `end` symbol). Check the syntax of the file. If the file is invalid, correct the error or [exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.",
   "plaintextMessage": "A parse error occurred (expected end symbol). Check the syntax of the file. If the file is invalid, correct the error or exclude the file from analysis.",
-  "severity": "Error",
+  "severity": "Warning",
   "source": {
     "extractorName": "ruby",
     "id": "ruby/parse-error",
