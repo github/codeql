@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Components.Forms, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -8,7 +9,6 @@ namespace Microsoft
         {
             namespace Forms
             {
-                // Generated from `Microsoft.AspNetCore.Components.Forms.DataAnnotationsValidator` in `Microsoft.AspNetCore.Components.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class DataAnnotationsValidator : Microsoft.AspNetCore.Components.ComponentBase, System.IDisposable
                 {
                     public DataAnnotationsValidator() => throw null;
@@ -18,7 +18,6 @@ namespace Microsoft
                     protected override void OnParametersSet() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.EditContext` in `Microsoft.AspNetCore.Components.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class EditContext
                 {
                     public EditContext(object model) => throw null;
@@ -41,14 +40,13 @@ namespace Microsoft
                     public bool Validate() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.EditContextDataAnnotationsExtensions` in `Microsoft.AspNetCore.Components.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class EditContextDataAnnotationsExtensions
                 {
                     public static Microsoft.AspNetCore.Components.Forms.EditContext AddDataAnnotationsValidation(this Microsoft.AspNetCore.Components.Forms.EditContext editContext) => throw null;
                     public static System.IDisposable EnableDataAnnotationsValidation(this Microsoft.AspNetCore.Components.Forms.EditContext editContext) => throw null;
+                    public static System.IDisposable EnableDataAnnotationsValidation(this Microsoft.AspNetCore.Components.Forms.EditContext editContext, System.IServiceProvider serviceProvider) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.EditContextProperties` in `Microsoft.AspNetCore.Components.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class EditContextProperties
                 {
                     public EditContextProperties() => throw null;
@@ -57,14 +55,12 @@ namespace Microsoft
                     public bool TryGetValue(object key, out object value) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.FieldChangedEventArgs` in `Microsoft.AspNetCore.Components.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FieldChangedEventArgs : System.EventArgs
                 {
                     public FieldChangedEventArgs(Microsoft.AspNetCore.Components.Forms.FieldIdentifier fieldIdentifier) => throw null;
                     public Microsoft.AspNetCore.Components.Forms.FieldIdentifier FieldIdentifier { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.FieldIdentifier` in `Microsoft.AspNetCore.Components.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct FieldIdentifier : System.IEquatable<Microsoft.AspNetCore.Components.Forms.FieldIdentifier>
                 {
                     public static Microsoft.AspNetCore.Components.Forms.FieldIdentifier Create<TField>(System.Linq.Expressions.Expression<System.Func<TField>> accessor) => throw null;
@@ -77,7 +73,6 @@ namespace Microsoft
                     public object Model { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.ValidationMessageStore` in `Microsoft.AspNetCore.Components.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ValidationMessageStore
                 {
                     public void Add(System.Linq.Expressions.Expression<System.Func<object>> accessor, System.Collections.Generic.IEnumerable<string> messages) => throw null;
@@ -92,14 +87,12 @@ namespace Microsoft
                     public ValidationMessageStore(Microsoft.AspNetCore.Components.Forms.EditContext editContext) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.ValidationRequestedEventArgs` in `Microsoft.AspNetCore.Components.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ValidationRequestedEventArgs : System.EventArgs
                 {
                     public static Microsoft.AspNetCore.Components.Forms.ValidationRequestedEventArgs Empty;
                     public ValidationRequestedEventArgs() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.ValidationStateChangedEventArgs` in `Microsoft.AspNetCore.Components.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ValidationStateChangedEventArgs : System.EventArgs
                 {
                     public static Microsoft.AspNetCore.Components.Forms.ValidationStateChangedEventArgs Empty;

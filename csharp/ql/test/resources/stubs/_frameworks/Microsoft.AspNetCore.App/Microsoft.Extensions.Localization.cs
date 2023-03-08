@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Localization, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.LocalizationServiceCollectionExtensions` in `Microsoft.Extensions.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class LocalizationServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddLocalization(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
@@ -16,27 +16,23 @@ namespace Microsoft
         }
         namespace Localization
         {
-            // Generated from `Microsoft.Extensions.Localization.IResourceNamesCache` in `Microsoft.Extensions.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IResourceNamesCache
             {
                 System.Collections.Generic.IList<string> GetOrAdd(string name, System.Func<string, System.Collections.Generic.IList<string>> valueFactory);
             }
 
-            // Generated from `Microsoft.Extensions.Localization.LocalizationOptions` in `Microsoft.Extensions.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class LocalizationOptions
             {
                 public LocalizationOptions() => throw null;
                 public string ResourcesPath { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Localization.ResourceLocationAttribute` in `Microsoft.Extensions.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ResourceLocationAttribute : System.Attribute
             {
                 public string ResourceLocation { get => throw null; }
                 public ResourceLocationAttribute(string resourceLocation) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Localization.ResourceManagerStringLocalizer` in `Microsoft.Extensions.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ResourceManagerStringLocalizer : Microsoft.Extensions.Localization.IStringLocalizer
             {
                 public virtual System.Collections.Generic.IEnumerable<Microsoft.Extensions.Localization.LocalizedString> GetAllStrings(bool includeParentCultures) => throw null;
@@ -47,7 +43,6 @@ namespace Microsoft
                 public ResourceManagerStringLocalizer(System.Resources.ResourceManager resourceManager, System.Reflection.Assembly resourceAssembly, string baseName, Microsoft.Extensions.Localization.IResourceNamesCache resourceNamesCache, Microsoft.Extensions.Logging.ILogger logger) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Localization.ResourceManagerStringLocalizerFactory` in `Microsoft.Extensions.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ResourceManagerStringLocalizerFactory : Microsoft.Extensions.Localization.IStringLocalizerFactory
             {
                 public Microsoft.Extensions.Localization.IStringLocalizer Create(System.Type resourceSource) => throw null;
@@ -62,14 +57,12 @@ namespace Microsoft
                 public ResourceManagerStringLocalizerFactory(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Localization.LocalizationOptions> localizationOptions, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Localization.ResourceNamesCache` in `Microsoft.Extensions.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ResourceNamesCache : Microsoft.Extensions.Localization.IResourceNamesCache
             {
                 public System.Collections.Generic.IList<string> GetOrAdd(string name, System.Func<string, System.Collections.Generic.IList<string>> valueFactory) => throw null;
                 public ResourceNamesCache() => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Localization.RootNamespaceAttribute` in `Microsoft.Extensions.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RootNamespaceAttribute : System.Attribute
             {
                 public string RootNamespace { get => throw null; }

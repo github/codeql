@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Security.Claims, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Claims
         {
-            // Generated from `System.Security.Claims.Claim` in `System.Security.Claims, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Claim
             {
                 public Claim(System.IO.BinaryReader reader) => throw null;
@@ -33,7 +33,6 @@ namespace System
                 protected virtual void WriteTo(System.IO.BinaryWriter writer, System.Byte[] userData) => throw null;
             }
 
-            // Generated from `System.Security.Claims.ClaimTypes` in `System.Security.Claims, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class ClaimTypes
             {
                 public const string Actor = default;
@@ -92,7 +91,6 @@ namespace System
                 public const string X500DistinguishedName = default;
             }
 
-            // Generated from `System.Security.Claims.ClaimValueTypes` in `System.Security.Claims, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class ClaimValueTypes
             {
                 public const string Base64Binary = default;
@@ -124,7 +122,6 @@ namespace System
                 public const string YearMonthDuration = default;
             }
 
-            // Generated from `System.Security.Claims.ClaimsIdentity` in `System.Security.Claims, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ClaimsIdentity : System.Security.Principal.IIdentity
             {
                 public System.Security.Claims.ClaimsIdentity Actor { get => throw null; set => throw null; }
@@ -170,7 +167,6 @@ namespace System
                 protected virtual void WriteTo(System.IO.BinaryWriter writer, System.Byte[] userData) => throw null;
             }
 
-            // Generated from `System.Security.Claims.ClaimsPrincipal` in `System.Security.Claims, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ClaimsPrincipal : System.Security.Principal.IPrincipal
             {
                 public virtual void AddIdentities(System.Collections.Generic.IEnumerable<System.Security.Claims.ClaimsIdentity> identities) => throw null;
@@ -205,7 +201,6 @@ namespace System
         }
         namespace Principal
         {
-            // Generated from `System.Security.Principal.GenericIdentity` in `System.Security.Claims, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class GenericIdentity : System.Security.Claims.ClaimsIdentity
             {
                 public override string AuthenticationType { get => throw null; }
@@ -218,7 +213,6 @@ namespace System
                 public override string Name { get => throw null; }
             }
 
-            // Generated from `System.Security.Principal.GenericPrincipal` in `System.Security.Claims, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class GenericPrincipal : System.Security.Claims.ClaimsPrincipal
             {
                 public GenericPrincipal(System.Security.Principal.IIdentity identity, string[] roles) => throw null;

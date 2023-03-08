@@ -1,16 +1,15 @@
 // This file contains auto-generated code.
+// Generated from `System.Linq.Parallel, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace Linq
     {
-        // Generated from `System.Linq.OrderedParallelQuery<>` in `System.Linq.Parallel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class OrderedParallelQuery<TSource> : System.Linq.ParallelQuery<TSource>
         {
             public override System.Collections.Generic.IEnumerator<TSource> GetEnumerator() => throw null;
         }
 
-        // Generated from `System.Linq.ParallelEnumerable` in `System.Linq.Parallel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class ParallelEnumerable
         {
             public static TResult Aggregate<TSource, TAccumulate, TResult>(this System.Linq.ParallelQuery<TSource> source, System.Func<TAccumulate> seedFactory, System.Func<TAccumulate, TSource, TAccumulate> updateAccumulatorFunc, System.Func<TAccumulate, TAccumulate, TAccumulate> combineAccumulatorsFunc, System.Func<TAccumulate, TResult> resultSelector) => throw null;
@@ -218,14 +217,12 @@ namespace System
             public static System.Linq.ParallelQuery<TResult> Zip<TFirst, TSecond, TResult>(this System.Linq.ParallelQuery<TFirst> first, System.Linq.ParallelQuery<TSecond> second, System.Func<TFirst, TSecond, TResult> resultSelector) => throw null;
         }
 
-        // Generated from `System.Linq.ParallelExecutionMode` in `System.Linq.Parallel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum ParallelExecutionMode : int
         {
             Default = 0,
             ForceParallelism = 1,
         }
 
-        // Generated from `System.Linq.ParallelMergeOptions` in `System.Linq.Parallel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum ParallelMergeOptions : int
         {
             AutoBuffered = 2,
@@ -234,14 +231,12 @@ namespace System
             NotBuffered = 1,
         }
 
-        // Generated from `System.Linq.ParallelQuery` in `System.Linq.Parallel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ParallelQuery : System.Collections.IEnumerable
         {
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             internal ParallelQuery() => throw null;
         }
 
-        // Generated from `System.Linq.ParallelQuery<>` in `System.Linq.Parallel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ParallelQuery<TSource> : System.Linq.ParallelQuery, System.Collections.Generic.IEnumerable<TSource>, System.Collections.IEnumerable
         {
             public virtual System.Collections.Generic.IEnumerator<TSource> GetEnumerator() => throw null;

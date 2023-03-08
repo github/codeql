@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Rewrite, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Builder
         {
-            // Generated from `Microsoft.AspNetCore.Builder.RewriteBuilderExtensions` in `Microsoft.AspNetCore.Rewrite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RewriteBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseRewriter(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
@@ -16,27 +16,23 @@ namespace Microsoft
         }
         namespace Rewrite
         {
-            // Generated from `Microsoft.AspNetCore.Rewrite.ApacheModRewriteOptionsExtensions` in `Microsoft.AspNetCore.Rewrite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ApacheModRewriteOptionsExtensions
             {
                 public static Microsoft.AspNetCore.Rewrite.RewriteOptions AddApacheModRewrite(this Microsoft.AspNetCore.Rewrite.RewriteOptions options, Microsoft.Extensions.FileProviders.IFileProvider fileProvider, string filePath) => throw null;
                 public static Microsoft.AspNetCore.Rewrite.RewriteOptions AddApacheModRewrite(this Microsoft.AspNetCore.Rewrite.RewriteOptions options, System.IO.TextReader reader) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Rewrite.IISUrlRewriteOptionsExtensions` in `Microsoft.AspNetCore.Rewrite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class IISUrlRewriteOptionsExtensions
             {
                 public static Microsoft.AspNetCore.Rewrite.RewriteOptions AddIISUrlRewrite(this Microsoft.AspNetCore.Rewrite.RewriteOptions options, Microsoft.Extensions.FileProviders.IFileProvider fileProvider, string filePath, bool alwaysUseManagedServerVariables = default(bool)) => throw null;
                 public static Microsoft.AspNetCore.Rewrite.RewriteOptions AddIISUrlRewrite(this Microsoft.AspNetCore.Rewrite.RewriteOptions options, System.IO.TextReader reader, bool alwaysUseManagedServerVariables = default(bool)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Rewrite.IRule` in `Microsoft.AspNetCore.Rewrite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IRule
             {
                 void ApplyRule(Microsoft.AspNetCore.Rewrite.RewriteContext context);
             }
 
-            // Generated from `Microsoft.AspNetCore.Rewrite.RewriteContext` in `Microsoft.AspNetCore.Rewrite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RewriteContext
             {
                 public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; set => throw null; }
@@ -46,14 +42,12 @@ namespace Microsoft
                 public Microsoft.Extensions.FileProviders.IFileProvider StaticFileProvider { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Rewrite.RewriteMiddleware` in `Microsoft.AspNetCore.Rewrite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RewriteMiddleware
             {
                 public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
                 public RewriteMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Rewrite.RewriteOptions> options) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Rewrite.RewriteOptions` in `Microsoft.AspNetCore.Rewrite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RewriteOptions
             {
                 public RewriteOptions() => throw null;
@@ -61,7 +55,6 @@ namespace Microsoft
                 public Microsoft.Extensions.FileProviders.IFileProvider StaticFileProvider { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Rewrite.RewriteOptionsExtensions` in `Microsoft.AspNetCore.Rewrite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RewriteOptionsExtensions
             {
                 public static Microsoft.AspNetCore.Rewrite.RewriteOptions Add(this Microsoft.AspNetCore.Rewrite.RewriteOptions options, System.Action<Microsoft.AspNetCore.Rewrite.RewriteContext> applyRule) => throw null;
@@ -87,7 +80,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Rewrite.RewriteOptions AddRewrite(this Microsoft.AspNetCore.Rewrite.RewriteOptions options, string regex, string replacement, bool skipRemainingRules) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Rewrite.RuleResult` in `Microsoft.AspNetCore.Rewrite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public enum RuleResult : int
             {
                 ContinueRules = 0,
