@@ -1,0 +1,3 @@
+dependencies:
+  codeql/javascript-all: '*'
+  codeql/javascript-queries: '*'
