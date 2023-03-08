@@ -7,4 +7,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2023-03-08-08h32m25s.bubbly-pepper-tbcsvlqh.f53fefe6769d2af6fddb62932d072823d12185e5495b9b95103ea6d43e3035a4
