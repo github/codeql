@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/java-experimental-atm-model:
-    version: 0.0.1
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/java-experimental-atm-model:
+    version: 0.0.1-2023-03-07-06h56m33s.dynamic-screw-26w57dk0.a43872faad5d605a8425f8c37b6c18fb09d49839d5c47f87bdbc09ce0986f542
+compiled: false
