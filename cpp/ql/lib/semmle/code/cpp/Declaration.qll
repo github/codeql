@@ -619,11 +619,10 @@ private class DirectAccessHolder extends Element {
   /**
    * Like `couldAccessMember` but only contains derivations in which either
    * (5.2), (5.3) or (5.4) must be invoked. In other words, the `this`
-   * parameter is not ignored. This restriction makes it feasible to fully
-   * enumerate this predicate even on large code bases. We check for 11.4 as
-   * part of (5.3), since this further limits the number of tuples produced by
-   * this predicate.
+   * parameter is not ignored. We check for 11.4 as part of (5.3), since
+   * this further limits the number of tuples produced by this predicate.
    */
+  pragma[inline]
   predicate thisCouldAccessMember(Class memberClass, AccessSpecifier memberAccess, Class derived) {
     // Only (5.4) is recursive, and chains of invocations of (5.4) can always
     // be collapsed to one invocation by the transitivity of 11.2/4.
