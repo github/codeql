@@ -938,6 +938,7 @@ class UninitializedNode extends Node {
 
   UninitializedNode() {
     exists(Ssa::Def def |
+      def.getIndirectionIndex() = 0 and
       def.getValue().asInstruction() instanceof UninitializedInstruction and
       Ssa::nodeToDefOrUse(this, def, _) and
       v = def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable().getAst()

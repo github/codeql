@@ -423,17 +423,17 @@ void intPointerSourceCaller() {
   intPointerSource(&local);
   sink(local); // $ ast,ir=422:7 ast,ir=423:20
 }
-// The IR results for this test _are_ equivalent to the AST ones.
-// The IR annotation is just "ir" because the sink of the unitialized source at
-// `433:7` (i.e., the declaration `int local[1];`) is value of `local`, but the sink
-// of the source from `intPointerSource` value of `*local` (i.e., the indirection node
-// of `local`). So unlike AST dataflow, each of these two sinks correspond to a unique
-// source, and thus we don't need to attach a location annotation to it.
+
+
+
+
+
+
 void intPointerSourceCaller2() {
   int local[1];
   intPointerSource(local);
-  sink(local); // $ ast=433:7 ast=434:20 ir=433:7 ir=434:20 ir
-  sink(*local); // $ ast=433:7 ast=434:20 ir=433:7 ir=434:20
+  sink(local); // $ ast=434:20 ir SPURIOUS: ast=433:7
+  sink(*local); // $ ast=434:20 ir SPURIOUS: ast=433:7
 }
 
 void intArraySourceCaller() {
@@ -447,8 +447,8 @@ void intArraySourceCaller() {
 void intArraySourceCaller2() {
   int local[2];
   intArraySource(local, 2);
-  sink(local); // $ ast=448:7 ast=449:18 ir=448:7 ir=449:18 ir
-  sink(*local); // $ ast=448:7 ast=449:18 ir=448:7 ir=449:18
+  sink(local); // $ ast=449:18 ir SPURIOUS: ast=448:7
+  sink(*local); // $ ast=449:18 ir SPURIOUS: ast=448:7
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -518,7 +518,7 @@ void uncertain_definition() {
   int clean = 0;
   stackArray[0] = source();
   stackArray[1] = clean;
-  sink(stackArray[0]); // $ ast=519:19 ir=517:7 ir=519:19 SPURIOUS: ast=517:7
+  sink(stackArray[0]); // $ ast=519:19 ir SPURIOUS: ast=517:7
 }
 
 void set_through_const_pointer(int x, const int **e) // $ ast-def=e ir-def=**e ir-def=*e
@@ -594,7 +594,7 @@ void test_indirect_flow_to_array() {
   int* p = indirect_source();
   int* xs[2];
   xs[0] = p;
-  sink(*xs[0]); // $ ir=594:12 MISSING: ast SPURIOUS: ir=595:8
+  sink(*xs[0]); // $ ir MISSING: ast // the IR source is the indirection of `indirect_source()`.
 }
 
 void test_def_by_ref_followed_by_uncertain_write_array(int* p) { // $ ast-def=p ir-def=*p
