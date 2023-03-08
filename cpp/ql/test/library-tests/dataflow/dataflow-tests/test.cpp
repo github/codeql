@@ -594,7 +594,7 @@ void test_indirect_flow_to_array() {
   int* p = indirect_source();
   int* xs[2];
   xs[0] = p;
-  sink(*xs[0]); // $ ir MISSING: ast
+  sink(*xs[0]); // $ ir MISSING: ast // the IR source is the indirection of `indirect_source()`.
 }
 
 void test_def_by_ref_followed_by_uncertain_write_array(int* p) { // $ ast-def=p ir-def=*p
