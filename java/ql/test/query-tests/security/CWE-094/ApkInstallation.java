@@ -5,7 +5,7 @@ import android.os.Environment;
 
 import java.io.File;
 
-public class APKInstallation extends Activity {
+public class ApkInstallation extends Activity {
     static final String APK_MIMETYPE = "application/vnd.android.package-archive";
 
     public void installAPK(String path) {
