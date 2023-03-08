@@ -100,6 +100,7 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 		if err != nil {
 			log.Println("Failed to create diagnostic file: ")
 			log.Println(err)
+			return
 		}
 		defer func() {
 			if err := targetFile.Close(); err != nil {
