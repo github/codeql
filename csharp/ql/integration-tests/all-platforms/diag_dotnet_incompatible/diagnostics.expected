@@ -34,3 +34,35 @@
     "telemetry": true
   }
 }
+{
+  "attributes": {},
+  "helpLinks": [],
+  "internal": false,
+  "location": {},
+  "plaintextMessage": "The reference assemblies for .NETFramework,Version=v4.0 were not found. To resolve this, install the Developer Pack (SDK/Targeting Pack) for this framework version or retarget your application. You can download .NET Framework Developer Packs at https://aka.ms/msbuild/developerpacks [<test-root-directory>/test.csproj]",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/msb-3644",
+    "name": "MSB3644"
+  },
+  "visibility": {
+    "telemetry": true
+  }
+}
+{
+  "attributes": {},
+  "helpLinks": [],
+  "internal": false,
+  "location": {},
+  "plaintextMessage": "Too many project files specified",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/msbuild-4",
+    "name": "MSBUILD4"
+  },
+  "visibility": {
+    "telemetry": true
+  }
+}

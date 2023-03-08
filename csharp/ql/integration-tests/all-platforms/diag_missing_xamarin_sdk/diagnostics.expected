@@ -52,3 +52,35 @@
     "telemetry": true
   }
 }
+{
+  "attributes": {},
+  "helpLinks": [],
+  "internal": false,
+  "location": {},
+  "plaintextMessage": "The imported project \"/usr/local/share/dotnet/sdk/7.0.102/Xamarin/iOS/Xamarin.iOS.CSharp.targets\" was not found. Confirm that the expression in the Import declaration \"/usr/local/share/dotnet/sdk/7.0.102/Xamarin/iOS/Xamarin.iOS.CSharp.targets\" is correct, and that the file exists on disk. [<test-root-directory>/test.csproj]",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/msb-4019",
+    "name": "MSB4019"
+  },
+  "visibility": {
+    "telemetry": true
+  }
+}
+{
+  "attributes": {},
+  "helpLinks": [],
+  "internal": false,
+  "location": {},
+  "plaintextMessage": "Too many project files specified",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/msbuild-4",
+    "name": "MSBUILD4"
+  },
+  "visibility": {
+    "telemetry": true
+  }
+}

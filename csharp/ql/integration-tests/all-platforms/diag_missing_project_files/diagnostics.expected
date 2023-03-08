@@ -34,3 +34,35 @@
     "telemetry": true
   }
 }
+{
+  "attributes": {},
+  "helpLinks": [],
+  "internal": false,
+  "location": {},
+  "plaintextMessage": "The project file \"<test-root-directory>/Example.Test.csproj\" was not found. [<test-root-directory>/test.sln]",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/msb-3202",
+    "name": "MSB3202"
+  },
+  "visibility": {
+    "telemetry": true
+  }
+}
+{
+  "attributes": {},
+  "helpLinks": [],
+  "internal": false,
+  "location": {},
+  "plaintextMessage": "The project file \"<test-root-directory>/Example.csproj\" was not found. [<test-root-directory>/test.sln]",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/msb-3202",
+    "name": "MSB3202"
+  },
+  "visibility": {
+    "telemetry": true
+  }
+}
