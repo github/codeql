@@ -17,7 +17,7 @@ use a sandboxed environment where access to unsafe attributes and methods is pro
 
 <example>
 <p>
-        <p>Consider the example given below, an untrusted HTTP parameter `name` is used to generate a template string. This can lead to remote code execution. </p>
+        <p>Consider the example given below, an untrusted HTTP parameter <code>name</code> is used to generate a template string. This can lead to remote code execution. </p>
         <sample src="examples/SSTIBad.rb" />
         
         <p>Here we have fixed the problem by including ERB/Slim syntax in the string, then the user input will be rendered but no evaluated.</p>
