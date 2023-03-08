@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Antiforgery, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Antiforgery
         {
-            // Generated from `Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions` in `Microsoft.AspNetCore.Antiforgery, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AntiforgeryOptions
             {
                 public AntiforgeryOptions() => throw null;
@@ -17,7 +17,6 @@ namespace Microsoft
                 public bool SuppressXFrameOptionsHeader { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Antiforgery.AntiforgeryTokenSet` in `Microsoft.AspNetCore.Antiforgery, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AntiforgeryTokenSet
             {
                 public AntiforgeryTokenSet(string requestToken, string cookieToken, string formFieldName, string headerName) => throw null;
@@ -27,14 +26,12 @@ namespace Microsoft
                 public string RequestToken { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Antiforgery.AntiforgeryValidationException` in `Microsoft.AspNetCore.Antiforgery, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AntiforgeryValidationException : System.Exception
             {
                 public AntiforgeryValidationException(string message) => throw null;
                 public AntiforgeryValidationException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Antiforgery.IAntiforgery` in `Microsoft.AspNetCore.Antiforgery, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IAntiforgery
             {
                 Microsoft.AspNetCore.Antiforgery.AntiforgeryTokenSet GetAndStoreTokens(Microsoft.AspNetCore.Http.HttpContext httpContext);
@@ -44,7 +41,6 @@ namespace Microsoft
                 System.Threading.Tasks.Task ValidateRequestAsync(Microsoft.AspNetCore.Http.HttpContext httpContext);
             }
 
-            // Generated from `Microsoft.AspNetCore.Antiforgery.IAntiforgeryAdditionalDataProvider` in `Microsoft.AspNetCore.Antiforgery, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IAntiforgeryAdditionalDataProvider
             {
                 string GetAdditionalData(Microsoft.AspNetCore.Http.HttpContext context);
@@ -57,7 +53,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.AntiforgeryServiceCollectionExtensions` in `Microsoft.AspNetCore.Antiforgery, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class AntiforgeryServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddAntiforgery(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;

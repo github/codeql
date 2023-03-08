@@ -98,10 +98,21 @@ class Modifiable extends Declaration, @modifiable {
 
   /** Holds if this declaration is `unsafe`. */
   predicate isUnsafe() {
-    this.hasModifier("unsafe") or
-    this.(Parameterizable).getAParameter().getType() instanceof PointerType or
-    this.(Property).getType() instanceof PointerType or
-    this.(Callable).getReturnType() instanceof PointerType
+    this.hasModifier("unsafe")
+    or
+    exists(Type t, Type child |
+      t = this.(Parameterizable).getAParameter().getType() or
+      t = this.(Property).getType() or
+      t = this.(Callable).getReturnType() or
+      t = this.(DelegateType).getReturnType()
+    |
+      child = t.getAChild*() and
+      (
+        child instanceof PointerType
+        or
+        child instanceof FunctionPointerType
+      )
+    )
   }
 
   /** Holds if this declaration is `async`. */

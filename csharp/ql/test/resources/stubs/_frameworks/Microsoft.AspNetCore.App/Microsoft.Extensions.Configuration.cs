@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Configuration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,17 +7,16 @@ namespace Microsoft
     {
         namespace Configuration
         {
-            // Generated from `Microsoft.Extensions.Configuration.ChainedBuilderExtensions` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ChainedBuilderExtensions
             {
                 public static Microsoft.Extensions.Configuration.IConfigurationBuilder AddConfiguration(this Microsoft.Extensions.Configuration.IConfigurationBuilder configurationBuilder, Microsoft.Extensions.Configuration.IConfiguration config) => throw null;
                 public static Microsoft.Extensions.Configuration.IConfigurationBuilder AddConfiguration(this Microsoft.Extensions.Configuration.IConfigurationBuilder configurationBuilder, Microsoft.Extensions.Configuration.IConfiguration config, bool shouldDisposeConfiguration) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.ChainedConfigurationProvider` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ChainedConfigurationProvider : Microsoft.Extensions.Configuration.IConfigurationProvider, System.IDisposable
             {
                 public ChainedConfigurationProvider(Microsoft.Extensions.Configuration.ChainedConfigurationSource source) => throw null;
+                public Microsoft.Extensions.Configuration.IConfiguration Configuration { get => throw null; }
                 public void Dispose() => throw null;
                 public System.Collections.Generic.IEnumerable<string> GetChildKeys(System.Collections.Generic.IEnumerable<string> earlierKeys, string parentPath) => throw null;
                 public Microsoft.Extensions.Primitives.IChangeToken GetReloadToken() => throw null;
@@ -25,7 +25,6 @@ namespace Microsoft
                 public bool TryGet(string key, out string value) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.ChainedConfigurationSource` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ChainedConfigurationSource : Microsoft.Extensions.Configuration.IConfigurationSource
             {
                 public Microsoft.Extensions.Configuration.IConfigurationProvider Build(Microsoft.Extensions.Configuration.IConfigurationBuilder builder) => throw null;
@@ -34,7 +33,6 @@ namespace Microsoft
                 public bool ShouldDisposeConfiguration { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.ConfigurationBuilder` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ConfigurationBuilder : Microsoft.Extensions.Configuration.IConfigurationBuilder
             {
                 public Microsoft.Extensions.Configuration.IConfigurationBuilder Add(Microsoft.Extensions.Configuration.IConfigurationSource source) => throw null;
@@ -44,7 +42,6 @@ namespace Microsoft
                 public System.Collections.Generic.IList<Microsoft.Extensions.Configuration.IConfigurationSource> Sources { get => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.ConfigurationKeyComparer` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ConfigurationKeyComparer : System.Collections.Generic.IComparer<string>
             {
                 public int Compare(string x, string y) => throw null;
@@ -52,7 +49,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.Configuration.ConfigurationKeyComparer Instance { get => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.ConfigurationManager` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ConfigurationManager : Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Configuration.IConfigurationBuilder, Microsoft.Extensions.Configuration.IConfigurationRoot, System.IDisposable
             {
                 Microsoft.Extensions.Configuration.IConfigurationBuilder Microsoft.Extensions.Configuration.IConfigurationBuilder.Add(Microsoft.Extensions.Configuration.IConfigurationSource source) => throw null;
@@ -66,10 +62,9 @@ namespace Microsoft
                 System.Collections.Generic.IDictionary<string, object> Microsoft.Extensions.Configuration.IConfigurationBuilder.Properties { get => throw null; }
                 System.Collections.Generic.IEnumerable<Microsoft.Extensions.Configuration.IConfigurationProvider> Microsoft.Extensions.Configuration.IConfigurationRoot.Providers { get => throw null; }
                 void Microsoft.Extensions.Configuration.IConfigurationRoot.Reload() => throw null;
-                System.Collections.Generic.IList<Microsoft.Extensions.Configuration.IConfigurationSource> Microsoft.Extensions.Configuration.IConfigurationBuilder.Sources { get => throw null; }
+                public System.Collections.Generic.IList<Microsoft.Extensions.Configuration.IConfigurationSource> Sources { get => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.ConfigurationProvider` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class ConfigurationProvider : Microsoft.Extensions.Configuration.IConfigurationProvider
             {
                 protected ConfigurationProvider() => throw null;
@@ -83,7 +78,6 @@ namespace Microsoft
                 public virtual bool TryGet(string key, out string value) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.ConfigurationReloadToken` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ConfigurationReloadToken : Microsoft.Extensions.Primitives.IChangeToken
             {
                 public bool ActiveChangeCallbacks { get => throw null; }
@@ -93,7 +87,6 @@ namespace Microsoft
                 public System.IDisposable RegisterChangeCallback(System.Action<object> callback, object state) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.ConfigurationRoot` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ConfigurationRoot : Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Configuration.IConfigurationRoot, System.IDisposable
             {
                 public ConfigurationRoot(System.Collections.Generic.IList<Microsoft.Extensions.Configuration.IConfigurationProvider> providers) => throw null;
@@ -106,7 +99,6 @@ namespace Microsoft
                 public void Reload() => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.ConfigurationSection` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ConfigurationSection : Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Configuration.IConfigurationSection
             {
                 public ConfigurationSection(Microsoft.Extensions.Configuration.IConfigurationRoot root, string path) => throw null;
@@ -119,14 +111,12 @@ namespace Microsoft
                 public string Value { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.MemoryConfigurationBuilderExtensions` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MemoryConfigurationBuilderExtensions
             {
                 public static Microsoft.Extensions.Configuration.IConfigurationBuilder AddInMemoryCollection(this Microsoft.Extensions.Configuration.IConfigurationBuilder configurationBuilder) => throw null;
                 public static Microsoft.Extensions.Configuration.IConfigurationBuilder AddInMemoryCollection(this Microsoft.Extensions.Configuration.IConfigurationBuilder configurationBuilder, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>> initialData) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.StreamConfigurationProvider` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class StreamConfigurationProvider : Microsoft.Extensions.Configuration.ConfigurationProvider
             {
                 public override void Load() => throw null;
@@ -135,7 +125,6 @@ namespace Microsoft
                 public StreamConfigurationProvider(Microsoft.Extensions.Configuration.StreamConfigurationSource source) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.StreamConfigurationSource` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class StreamConfigurationSource : Microsoft.Extensions.Configuration.IConfigurationSource
             {
                 public abstract Microsoft.Extensions.Configuration.IConfigurationProvider Build(Microsoft.Extensions.Configuration.IConfigurationBuilder builder);
@@ -145,7 +134,6 @@ namespace Microsoft
 
             namespace Memory
             {
-                // Generated from `Microsoft.Extensions.Configuration.Memory.MemoryConfigurationProvider` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MemoryConfigurationProvider : Microsoft.Extensions.Configuration.ConfigurationProvider, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>>, System.Collections.IEnumerable
                 {
                     public void Add(string key, string value) => throw null;
@@ -154,7 +142,6 @@ namespace Microsoft
                     public MemoryConfigurationProvider(Microsoft.Extensions.Configuration.Memory.MemoryConfigurationSource source) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Configuration.Memory.MemoryConfigurationSource` in `Microsoft.Extensions.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MemoryConfigurationSource : Microsoft.Extensions.Configuration.IConfigurationSource
                 {
                     public Microsoft.Extensions.Configuration.IConfigurationProvider Build(Microsoft.Extensions.Configuration.IConfigurationBuilder builder) => throw null;

@@ -132,11 +132,11 @@ abstract private class GeneratedType extends Type, GeneratedElement {
     else (
       not this instanceof DelegateType and
       result =
-        this.stubAttributes() + stubAccessibility(this) + this.stubAbstractModifier() +
-          this.stubStaticModifier() + this.stubPartialModifier() + this.stubKeyword() + " " +
-          this.getUndecoratedName() + stubGenericArguments(this) + this.stubBaseTypesString() +
-          stubTypeParametersConstraints(this) + "\n{\n" + this.stubPrivateConstructor() +
-          this.stubMembers(assembly) + "}\n\n"
+        this.stubAttributes() + stubUnsafe(this) + stubAccessibility(this) +
+          this.stubAbstractModifier() + this.stubStaticModifier() + this.stubPartialModifier() +
+          this.stubKeyword() + " " + this.getUndecoratedName() + stubGenericArguments(this) +
+          this.stubBaseTypesString() + stubTypeParametersConstraints(this) + "\n{\n" +
+          this.stubPrivateConstructor() + this.stubMembers(assembly) + "}\n\n"
       or
       result =
         this.stubAttributes() + stubUnsafe(this) + stubAccessibility(this) + this.stubKeyword() +

@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.Diagnostics.StackTrace, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace Diagnostics
     {
-        // Generated from `System.Diagnostics.StackFrame` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StackFrame
         {
             public virtual int GetFileColumnNumber() => throw null;
@@ -23,7 +23,6 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Diagnostics.StackFrameExtensions` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class StackFrameExtensions
         {
             public static System.IntPtr GetNativeIP(this System.Diagnostics.StackFrame stackFrame) => throw null;
@@ -34,7 +33,6 @@ namespace System
             public static bool HasSource(this System.Diagnostics.StackFrame stackFrame) => throw null;
         }
 
-        // Generated from `System.Diagnostics.StackTrace` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StackTrace
         {
             public virtual int FrameCount { get => throw null; }
@@ -55,19 +53,16 @@ namespace System
 
         namespace SymbolStore
         {
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolBinder` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolBinder
             {
                 System.Diagnostics.SymbolStore.ISymbolReader GetReader(int importer, string filename, string searchPath);
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolBinder1` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolBinder1
             {
                 System.Diagnostics.SymbolStore.ISymbolReader GetReader(System.IntPtr importer, string filename, string searchPath);
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolDocument` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolDocument
             {
                 System.Guid CheckSumAlgorithmId { get; }
@@ -82,14 +77,12 @@ namespace System
                 string URL { get; }
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolDocumentWriter` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolDocumentWriter
             {
                 void SetCheckSum(System.Guid algorithmId, System.Byte[] checkSum);
                 void SetSource(System.Byte[] source);
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolMethod` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolMethod
             {
                 System.Diagnostics.SymbolStore.ISymbolNamespace GetNamespace();
@@ -104,7 +97,6 @@ namespace System
                 System.Diagnostics.SymbolStore.SymbolToken Token { get; }
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolNamespace` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolNamespace
             {
                 System.Diagnostics.SymbolStore.ISymbolNamespace[] GetNamespaces();
@@ -112,7 +104,6 @@ namespace System
                 string Name { get; }
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolReader` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolReader
             {
                 System.Diagnostics.SymbolStore.ISymbolDocument GetDocument(string url, System.Guid language, System.Guid languageVendor, System.Guid documentType);
@@ -127,7 +118,6 @@ namespace System
                 System.Diagnostics.SymbolStore.SymbolToken UserEntryPoint { get; }
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolScope` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolScope
             {
                 int EndOffset { get; }
@@ -139,7 +129,6 @@ namespace System
                 int StartOffset { get; }
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolVariable` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolVariable
             {
                 int AddressField1 { get; }
@@ -153,7 +142,6 @@ namespace System
                 int StartOffset { get; }
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolWriter` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolWriter
             {
                 void Close();
@@ -178,7 +166,6 @@ namespace System
                 void UsingNamespace(string fullName);
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.SymAddressKind` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SymAddressKind : int
             {
                 BitField = 9,
@@ -193,14 +180,12 @@ namespace System
                 NativeStackRegister = 8,
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.SymDocumentType` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SymDocumentType
             {
                 public SymDocumentType() => throw null;
                 public static System.Guid Text;
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.SymLanguageType` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SymLanguageType
             {
                 public static System.Guid Basic;
@@ -217,15 +202,13 @@ namespace System
                 public SymLanguageType() => throw null;
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.SymLanguageVendor` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SymLanguageVendor
             {
                 public static System.Guid Microsoft;
                 public SymLanguageVendor() => throw null;
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.SymbolToken` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public struct SymbolToken
+            public struct SymbolToken : System.IEquatable<System.Diagnostics.SymbolStore.SymbolToken>
             {
                 public static bool operator !=(System.Diagnostics.SymbolStore.SymbolToken a, System.Diagnostics.SymbolStore.SymbolToken b) => throw null;
                 public static bool operator ==(System.Diagnostics.SymbolStore.SymbolToken a, System.Diagnostics.SymbolStore.SymbolToken b) => throw null;

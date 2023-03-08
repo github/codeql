@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Net.Sockets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Sockets
         {
-            // Generated from `System.Net.Sockets.IOControlCode` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum IOControlCode : long
             {
                 AbsorbRouterAlert = 2550136837,
@@ -45,19 +45,18 @@ namespace System
                 UnicastInterface = 2550136838,
             }
 
-            // Generated from `System.Net.Sockets.IPPacketInformation` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public struct IPPacketInformation
+            public struct IPPacketInformation : System.IEquatable<System.Net.Sockets.IPPacketInformation>
             {
                 public static bool operator !=(System.Net.Sockets.IPPacketInformation packetInformation1, System.Net.Sockets.IPPacketInformation packetInformation2) => throw null;
                 public static bool operator ==(System.Net.Sockets.IPPacketInformation packetInformation1, System.Net.Sockets.IPPacketInformation packetInformation2) => throw null;
                 public System.Net.IPAddress Address { get => throw null; }
+                public bool Equals(System.Net.Sockets.IPPacketInformation other) => throw null;
                 public override bool Equals(object comparand) => throw null;
                 public override int GetHashCode() => throw null;
                 // Stub generator skipped constructor 
                 public int Interface { get => throw null; }
             }
 
-            // Generated from `System.Net.Sockets.IPProtectionLevel` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum IPProtectionLevel : int
             {
                 EdgeRestricted = 20,
@@ -66,7 +65,6 @@ namespace System
                 Unspecified = -1,
             }
 
-            // Generated from `System.Net.Sockets.IPv6MulticastOption` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IPv6MulticastOption
             {
                 public System.Net.IPAddress Group { get => throw null; set => throw null; }
@@ -75,7 +73,6 @@ namespace System
                 public System.Int64 InterfaceIndex { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Sockets.LingerOption` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class LingerOption
             {
                 public bool Enabled { get => throw null; set => throw null; }
@@ -83,7 +80,6 @@ namespace System
                 public int LingerTime { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Sockets.MulticastOption` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MulticastOption
             {
                 public System.Net.IPAddress Group { get => throw null; set => throw null; }
@@ -94,7 +90,6 @@ namespace System
                 public MulticastOption(System.Net.IPAddress group, int interfaceIndex) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.NetworkStream` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NetworkStream : System.IO.Stream
             {
                 public override System.IAsyncResult BeginRead(System.Byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
@@ -103,6 +98,7 @@ namespace System
                 public override bool CanSeek { get => throw null; }
                 public override bool CanTimeout { get => throw null; }
                 public override bool CanWrite { get => throw null; }
+                public void Close(System.TimeSpan timeout) => throw null;
                 public void Close(int timeout) => throw null;
                 public virtual bool DataAvailable { get => throw null; }
                 protected override void Dispose(bool disposing) => throw null;
@@ -136,7 +132,6 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~NetworkStream
             }
 
-            // Generated from `System.Net.Sockets.ProtocolFamily` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ProtocolFamily : int
             {
                 AppleTalk = 16,
@@ -174,7 +169,6 @@ namespace System
                 VoiceView = 18,
             }
 
-            // Generated from `System.Net.Sockets.ProtocolType` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ProtocolType : int
             {
                 Ggp = 3,
@@ -204,15 +198,14 @@ namespace System
                 Unspecified = 0,
             }
 
-            // Generated from `System.Net.Sockets.SafeSocketHandle` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeSocketHandle : Microsoft.Win32.SafeHandles.SafeHandleMinusOneIsInvalid
             {
+                public override bool IsInvalid { get => throw null; }
                 protected override bool ReleaseHandle() => throw null;
                 public SafeSocketHandle() : base(default(bool)) => throw null;
                 public SafeSocketHandle(System.IntPtr preexistingHandle, bool ownsHandle) : base(default(bool)) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.SelectMode` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SelectMode : int
             {
                 SelectError = 2,
@@ -220,7 +213,6 @@ namespace System
                 SelectWrite = 1,
             }
 
-            // Generated from `System.Net.Sockets.SendPacketsElement` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SendPacketsElement
             {
                 public System.Byte[] Buffer { get => throw null; }
@@ -246,7 +238,6 @@ namespace System
                 public SendPacketsElement(string filepath, System.Int64 offset, int count, bool endOfPacket) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.Socket` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Socket : System.IDisposable
             {
                 public System.Net.Sockets.Socket Accept() => throw null;
@@ -338,6 +329,7 @@ namespace System
                 public static bool OSSupportsIPv4 { get => throw null; }
                 public static bool OSSupportsIPv6 { get => throw null; }
                 public static bool OSSupportsUnixDomainSockets { get => throw null; }
+                public bool Poll(System.TimeSpan timeout, System.Net.Sockets.SelectMode mode) => throw null;
                 public bool Poll(int microSeconds, System.Net.Sockets.SelectMode mode) => throw null;
                 public System.Net.Sockets.ProtocolType ProtocolType { get => throw null; }
                 public int Receive(System.Byte[] buffer) => throw null;
@@ -351,8 +343,11 @@ namespace System
                 public int Receive(System.Span<System.Byte> buffer) => throw null;
                 public int Receive(System.Span<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags) => throw null;
                 public int Receive(System.Span<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, out System.Net.Sockets.SocketError errorCode) => throw null;
+                public System.Threading.Tasks.Task<int> ReceiveAsync(System.ArraySegment<System.Byte> buffer) => throw null;
                 public System.Threading.Tasks.Task<int> ReceiveAsync(System.ArraySegment<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags) => throw null;
+                public System.Threading.Tasks.Task<int> ReceiveAsync(System.Collections.Generic.IList<System.ArraySegment<System.Byte>> buffers) => throw null;
                 public System.Threading.Tasks.Task<int> ReceiveAsync(System.Collections.Generic.IList<System.ArraySegment<System.Byte>> buffers, System.Net.Sockets.SocketFlags socketFlags) => throw null;
+                public System.Threading.Tasks.ValueTask<int> ReceiveAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public System.Threading.Tasks.ValueTask<int> ReceiveAsync(System.Memory<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public bool ReceiveAsync(System.Net.Sockets.SocketAsyncEventArgs e) => throw null;
                 public int ReceiveBufferSize { get => throw null; set => throw null; }
@@ -362,17 +357,22 @@ namespace System
                 public int ReceiveFrom(System.Byte[] buffer, ref System.Net.EndPoint remoteEP) => throw null;
                 public int ReceiveFrom(System.Span<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, ref System.Net.EndPoint remoteEP) => throw null;
                 public int ReceiveFrom(System.Span<System.Byte> buffer, ref System.Net.EndPoint remoteEP) => throw null;
+                public System.Threading.Tasks.Task<System.Net.Sockets.SocketReceiveFromResult> ReceiveFromAsync(System.ArraySegment<System.Byte> buffer, System.Net.EndPoint remoteEndPoint) => throw null;
                 public System.Threading.Tasks.Task<System.Net.Sockets.SocketReceiveFromResult> ReceiveFromAsync(System.ArraySegment<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, System.Net.EndPoint remoteEndPoint) => throw null;
+                public System.Threading.Tasks.ValueTask<System.Net.Sockets.SocketReceiveFromResult> ReceiveFromAsync(System.Memory<System.Byte> buffer, System.Net.EndPoint remoteEndPoint, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public System.Threading.Tasks.ValueTask<System.Net.Sockets.SocketReceiveFromResult> ReceiveFromAsync(System.Memory<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, System.Net.EndPoint remoteEndPoint, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public bool ReceiveFromAsync(System.Net.Sockets.SocketAsyncEventArgs e) => throw null;
                 public int ReceiveMessageFrom(System.Byte[] buffer, int offset, int size, ref System.Net.Sockets.SocketFlags socketFlags, ref System.Net.EndPoint remoteEP, out System.Net.Sockets.IPPacketInformation ipPacketInformation) => throw null;
                 public int ReceiveMessageFrom(System.Span<System.Byte> buffer, ref System.Net.Sockets.SocketFlags socketFlags, ref System.Net.EndPoint remoteEP, out System.Net.Sockets.IPPacketInformation ipPacketInformation) => throw null;
+                public System.Threading.Tasks.Task<System.Net.Sockets.SocketReceiveMessageFromResult> ReceiveMessageFromAsync(System.ArraySegment<System.Byte> buffer, System.Net.EndPoint remoteEndPoint) => throw null;
                 public System.Threading.Tasks.Task<System.Net.Sockets.SocketReceiveMessageFromResult> ReceiveMessageFromAsync(System.ArraySegment<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, System.Net.EndPoint remoteEndPoint) => throw null;
+                public System.Threading.Tasks.ValueTask<System.Net.Sockets.SocketReceiveMessageFromResult> ReceiveMessageFromAsync(System.Memory<System.Byte> buffer, System.Net.EndPoint remoteEndPoint, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public System.Threading.Tasks.ValueTask<System.Net.Sockets.SocketReceiveMessageFromResult> ReceiveMessageFromAsync(System.Memory<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, System.Net.EndPoint remoteEndPoint, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public bool ReceiveMessageFromAsync(System.Net.Sockets.SocketAsyncEventArgs e) => throw null;
                 public int ReceiveTimeout { get => throw null; set => throw null; }
                 public System.Net.EndPoint RemoteEndPoint { get => throw null; }
                 public System.Net.Sockets.SafeSocketHandle SafeHandle { get => throw null; }
+                public static void Select(System.Collections.IList checkRead, System.Collections.IList checkWrite, System.Collections.IList checkError, System.TimeSpan timeout) => throw null;
                 public static void Select(System.Collections.IList checkRead, System.Collections.IList checkWrite, System.Collections.IList checkError, int microSeconds) => throw null;
                 public int Send(System.Byte[] buffer) => throw null;
                 public int Send(System.Byte[] buffer, System.Net.Sockets.SocketFlags socketFlags) => throw null;
@@ -385,8 +385,11 @@ namespace System
                 public int Send(System.ReadOnlySpan<System.Byte> buffer) => throw null;
                 public int Send(System.ReadOnlySpan<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags) => throw null;
                 public int Send(System.ReadOnlySpan<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, out System.Net.Sockets.SocketError errorCode) => throw null;
+                public System.Threading.Tasks.Task<int> SendAsync(System.ArraySegment<System.Byte> buffer) => throw null;
                 public System.Threading.Tasks.Task<int> SendAsync(System.ArraySegment<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags) => throw null;
+                public System.Threading.Tasks.Task<int> SendAsync(System.Collections.Generic.IList<System.ArraySegment<System.Byte>> buffers) => throw null;
                 public System.Threading.Tasks.Task<int> SendAsync(System.Collections.Generic.IList<System.ArraySegment<System.Byte>> buffers, System.Net.Sockets.SocketFlags socketFlags) => throw null;
+                public System.Threading.Tasks.ValueTask<int> SendAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public System.Threading.Tasks.ValueTask<int> SendAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public bool SendAsync(System.Net.Sockets.SocketAsyncEventArgs e) => throw null;
                 public int SendBufferSize { get => throw null; set => throw null; }
@@ -403,7 +406,9 @@ namespace System
                 public int SendTo(System.Byte[] buffer, int offset, int size, System.Net.Sockets.SocketFlags socketFlags, System.Net.EndPoint remoteEP) => throw null;
                 public int SendTo(System.ReadOnlySpan<System.Byte> buffer, System.Net.EndPoint remoteEP) => throw null;
                 public int SendTo(System.ReadOnlySpan<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, System.Net.EndPoint remoteEP) => throw null;
+                public System.Threading.Tasks.Task<int> SendToAsync(System.ArraySegment<System.Byte> buffer, System.Net.EndPoint remoteEP) => throw null;
                 public System.Threading.Tasks.Task<int> SendToAsync(System.ArraySegment<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, System.Net.EndPoint remoteEP) => throw null;
+                public System.Threading.Tasks.ValueTask<int> SendToAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Net.EndPoint remoteEP, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public System.Threading.Tasks.ValueTask<int> SendToAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, System.Net.EndPoint remoteEP, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public bool SendToAsync(System.Net.Sockets.SocketAsyncEventArgs e) => throw null;
                 public void SetIPProtectionLevel(System.Net.Sockets.IPProtectionLevel level) => throw null;
@@ -425,7 +430,6 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~Socket
             }
 
-            // Generated from `System.Net.Sockets.SocketAsyncEventArgs` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SocketAsyncEventArgs : System.EventArgs, System.IDisposable
             {
                 public System.Net.Sockets.Socket AcceptSocket { get => throw null; set => throw null; }
@@ -458,7 +462,6 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~SocketAsyncEventArgs
             }
 
-            // Generated from `System.Net.Sockets.SocketAsyncOperation` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SocketAsyncOperation : int
             {
                 Accept = 1,
@@ -473,7 +476,6 @@ namespace System
                 SendTo = 9,
             }
 
-            // Generated from `System.Net.Sockets.SocketFlags` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum SocketFlags : int
             {
@@ -488,7 +490,6 @@ namespace System
                 Truncated = 256,
             }
 
-            // Generated from `System.Net.Sockets.SocketInformation` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SocketInformation
             {
                 public System.Net.Sockets.SocketInformationOptions Options { get => throw null; set => throw null; }
@@ -496,7 +497,6 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Net.Sockets.SocketInformationOptions` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum SocketInformationOptions : int
             {
@@ -506,7 +506,6 @@ namespace System
                 UseOnlyOverlappedIO = 8,
             }
 
-            // Generated from `System.Net.Sockets.SocketOptionLevel` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SocketOptionLevel : int
             {
                 IP = 0,
@@ -516,7 +515,6 @@ namespace System
                 Udp = 17,
             }
 
-            // Generated from `System.Net.Sockets.SocketOptionName` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SocketOptionName : int
             {
                 AcceptConnection = 2,
@@ -570,7 +568,6 @@ namespace System
                 UseLoopback = 64,
             }
 
-            // Generated from `System.Net.Sockets.SocketReceiveFromResult` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SocketReceiveFromResult
             {
                 public int ReceivedBytes;
@@ -578,7 +575,6 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Net.Sockets.SocketReceiveMessageFromResult` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SocketReceiveMessageFromResult
             {
                 public System.Net.Sockets.IPPacketInformation PacketInformation;
@@ -588,7 +584,6 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Net.Sockets.SocketShutdown` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SocketShutdown : int
             {
                 Both = 2,
@@ -596,7 +591,6 @@ namespace System
                 Send = 1,
             }
 
-            // Generated from `System.Net.Sockets.SocketTaskExtensions` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class SocketTaskExtensions
             {
                 public static System.Threading.Tasks.Task<System.Net.Sockets.Socket> AcceptAsync(this System.Net.Sockets.Socket socket) => throw null;
@@ -620,7 +614,6 @@ namespace System
                 public static System.Threading.Tasks.Task<int> SendToAsync(this System.Net.Sockets.Socket socket, System.ArraySegment<System.Byte> buffer, System.Net.Sockets.SocketFlags socketFlags, System.Net.EndPoint remoteEP) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.SocketType` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SocketType : int
             {
                 Dgram = 2,
@@ -631,7 +624,6 @@ namespace System
                 Unknown = -1,
             }
 
-            // Generated from `System.Net.Sockets.TcpClient` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TcpClient : System.IDisposable
             {
                 protected bool Active { get => throw null; set => throw null; }
@@ -672,7 +664,6 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~TcpClient
             }
 
-            // Generated from `System.Net.Sockets.TcpListener` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TcpListener
             {
                 public System.Net.Sockets.Socket AcceptSocket() => throw null;
@@ -700,7 +691,6 @@ namespace System
                 public TcpListener(int port) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.TransmitFileOptions` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum TransmitFileOptions : int
             {
@@ -712,7 +702,6 @@ namespace System
                 WriteBehind = 4,
             }
 
-            // Generated from `System.Net.Sockets.UdpClient` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UdpClient : System.IDisposable
             {
                 protected bool Active { get => throw null; set => throw null; }
@@ -765,7 +754,6 @@ namespace System
                 public UdpClient(string hostname, int port) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.UdpReceiveResult` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct UdpReceiveResult : System.IEquatable<System.Net.Sockets.UdpReceiveResult>
             {
                 public static bool operator !=(System.Net.Sockets.UdpReceiveResult left, System.Net.Sockets.UdpReceiveResult right) => throw null;
@@ -779,9 +767,12 @@ namespace System
                 public UdpReceiveResult(System.Byte[] buffer, System.Net.IPEndPoint remoteEndPoint) => throw null;
             }
 
-            // Generated from `System.Net.Sockets.UnixDomainSocketEndPoint` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UnixDomainSocketEndPoint : System.Net.EndPoint
             {
+                public override System.Net.Sockets.AddressFamily AddressFamily { get => throw null; }
+                public override System.Net.EndPoint Create(System.Net.SocketAddress socketAddress) => throw null;
+                public override System.Net.SocketAddress Serialize() => throw null;
+                public override string ToString() => throw null;
                 public UnixDomainSocketEndPoint(string path) => throw null;
             }
 

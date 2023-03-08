@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.ComponentModel.Annotations, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace DataAnnotations
         {
-            // Generated from `System.ComponentModel.DataAnnotations.AssociatedMetadataTypeTypeDescriptionProvider` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AssociatedMetadataTypeTypeDescriptionProvider : System.ComponentModel.TypeDescriptionProvider
             {
                 public AssociatedMetadataTypeTypeDescriptionProvider(System.Type type) => throw null;
@@ -14,7 +14,6 @@ namespace System
                 public override System.ComponentModel.ICustomTypeDescriptor GetTypeDescriptor(System.Type objectType, object instance) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.AssociationAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AssociationAttribute : System.Attribute
             {
                 public AssociationAttribute(string name, string thisKey, string otherKey) => throw null;
@@ -26,7 +25,6 @@ namespace System
                 public System.Collections.Generic.IEnumerable<string> ThisKeyMembers { get => throw null; }
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.CompareAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CompareAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public CompareAttribute(string otherProperty) => throw null;
@@ -37,20 +35,17 @@ namespace System
                 public override bool RequiresValidationContext { get => throw null; }
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.ConcurrencyCheckAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ConcurrencyCheckAttribute : System.Attribute
             {
                 public ConcurrencyCheckAttribute() => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.CreditCardAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CreditCardAttribute : System.ComponentModel.DataAnnotations.DataTypeAttribute
             {
                 public CreditCardAttribute() : base(default(System.ComponentModel.DataAnnotations.DataType)) => throw null;
                 public override bool IsValid(object value) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.CustomValidationAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CustomValidationAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public CustomValidationAttribute(System.Type validatorType, string method) => throw null;
@@ -60,7 +55,6 @@ namespace System
                 public System.Type ValidatorType { get => throw null; }
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.DataType` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum DataType : int
             {
                 CreditCard = 14,
@@ -82,7 +76,6 @@ namespace System
                 Url = 12,
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.DataTypeAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DataTypeAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public string CustomDataType { get => throw null; }
@@ -94,7 +87,6 @@ namespace System
                 public override bool IsValid(object value) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.DisplayAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DisplayAttribute : System.Attribute
             {
                 public bool AutoGenerateField { get => throw null; set => throw null; }
@@ -117,7 +109,6 @@ namespace System
                 public string ShortName { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.DisplayColumnAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DisplayColumnAttribute : System.Attribute
             {
                 public string DisplayColumn { get => throw null; }
@@ -128,7 +119,6 @@ namespace System
                 public bool SortDescending { get => throw null; }
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.DisplayFormatAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DisplayFormatAttribute : System.Attribute
             {
                 public bool ApplyFormatInEditMode { get => throw null; set => throw null; }
@@ -141,7 +131,6 @@ namespace System
                 public System.Type NullDisplayTextResourceType { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.EditableAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EditableAttribute : System.Attribute
             {
                 public bool AllowEdit { get => throw null; }
@@ -149,14 +138,12 @@ namespace System
                 public EditableAttribute(bool allowEdit) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.EmailAddressAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EmailAddressAttribute : System.ComponentModel.DataAnnotations.DataTypeAttribute
             {
                 public EmailAddressAttribute() : base(default(System.ComponentModel.DataAnnotations.DataType)) => throw null;
                 public override bool IsValid(object value) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.EnumDataTypeAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EnumDataTypeAttribute : System.ComponentModel.DataAnnotations.DataTypeAttribute
             {
                 public EnumDataTypeAttribute(System.Type enumType) : base(default(System.ComponentModel.DataAnnotations.DataType)) => throw null;
@@ -164,7 +151,6 @@ namespace System
                 public override bool IsValid(object value) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.FileExtensionsAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FileExtensionsAttribute : System.ComponentModel.DataAnnotations.DataTypeAttribute
             {
                 public string Extensions { get => throw null; set => throw null; }
@@ -173,7 +159,6 @@ namespace System
                 public override bool IsValid(object value) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.FilterUIHintAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FilterUIHintAttribute : System.Attribute
             {
                 public System.Collections.Generic.IDictionary<string, object> ControlParameters { get => throw null; }
@@ -186,19 +171,16 @@ namespace System
                 public string PresentationLayer { get => throw null; }
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.IValidatableObject` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IValidatableObject
             {
                 System.Collections.Generic.IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> Validate(System.ComponentModel.DataAnnotations.ValidationContext validationContext);
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.KeyAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class KeyAttribute : System.Attribute
             {
                 public KeyAttribute() => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.MaxLengthAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MaxLengthAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public override string FormatErrorMessage(string name) => throw null;
@@ -208,14 +190,12 @@ namespace System
                 public MaxLengthAttribute(int length) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.MetadataTypeAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MetadataTypeAttribute : System.Attribute
             {
                 public System.Type MetadataClassType { get => throw null; }
                 public MetadataTypeAttribute(System.Type metadataClassType) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.MinLengthAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MinLengthAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public override string FormatErrorMessage(string name) => throw null;
@@ -224,14 +204,12 @@ namespace System
                 public MinLengthAttribute(int length) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.PhoneAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PhoneAttribute : System.ComponentModel.DataAnnotations.DataTypeAttribute
             {
                 public override bool IsValid(object value) => throw null;
                 public PhoneAttribute() : base(default(System.ComponentModel.DataAnnotations.DataType)) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.RangeAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RangeAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public bool ConvertValueInInvariantCulture { get => throw null; set => throw null; }
@@ -246,17 +224,16 @@ namespace System
                 public RangeAttribute(int minimum, int maximum) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.RegularExpressionAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RegularExpressionAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public override string FormatErrorMessage(string name) => throw null;
                 public override bool IsValid(object value) => throw null;
+                public System.TimeSpan MatchTimeout { get => throw null; }
                 public int MatchTimeoutInMilliseconds { get => throw null; set => throw null; }
                 public string Pattern { get => throw null; }
                 public RegularExpressionAttribute(string pattern) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.RequiredAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RequiredAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public bool AllowEmptyStrings { get => throw null; set => throw null; }
@@ -264,14 +241,12 @@ namespace System
                 public RequiredAttribute() => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ScaffoldColumnAttribute : System.Attribute
             {
                 public bool Scaffold { get => throw null; }
                 public ScaffoldColumnAttribute(bool scaffold) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.StringLengthAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StringLengthAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public override string FormatErrorMessage(string name) => throw null;
@@ -281,13 +256,11 @@ namespace System
                 public StringLengthAttribute(int maximumLength) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.TimestampAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TimestampAttribute : System.Attribute
             {
                 public TimestampAttribute() => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.UIHintAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UIHintAttribute : System.Attribute
             {
                 public System.Collections.Generic.IDictionary<string, object> ControlParameters { get => throw null; }
@@ -300,14 +273,12 @@ namespace System
                 public UIHintAttribute(string uiHint, string presentationLayer, params object[] controlParameters) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.UrlAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UrlAttribute : System.ComponentModel.DataAnnotations.DataTypeAttribute
             {
                 public override bool IsValid(object value) => throw null;
                 public UrlAttribute() : base(default(System.ComponentModel.DataAnnotations.DataType)) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.ValidationAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class ValidationAttribute : System.Attribute
             {
                 public string ErrorMessage { get => throw null; set => throw null; }
@@ -326,7 +297,6 @@ namespace System
                 protected ValidationAttribute(string errorMessage) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.ValidationContext` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ValidationContext : System.IServiceProvider
             {
                 public string DisplayName { get => throw null; set => throw null; }
@@ -341,7 +311,6 @@ namespace System
                 public ValidationContext(object instance, System.IServiceProvider serviceProvider, System.Collections.Generic.IDictionary<object, object> items) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.ValidationException` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ValidationException : System.Exception
             {
                 public System.ComponentModel.DataAnnotations.ValidationAttribute ValidationAttribute { get => throw null; }
@@ -355,7 +324,6 @@ namespace System
                 public object Value { get => throw null; }
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.ValidationResult` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ValidationResult
             {
                 public string ErrorMessage { get => throw null; set => throw null; }
@@ -367,7 +335,6 @@ namespace System
                 public ValidationResult(string errorMessage, System.Collections.Generic.IEnumerable<string> memberNames) => throw null;
             }
 
-            // Generated from `System.ComponentModel.DataAnnotations.Validator` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Validator
             {
                 public static bool TryValidateObject(object instance, System.ComponentModel.DataAnnotations.ValidationContext validationContext, System.Collections.Generic.ICollection<System.ComponentModel.DataAnnotations.ValidationResult> validationResults) => throw null;
@@ -382,7 +349,6 @@ namespace System
 
             namespace Schema
             {
-                // Generated from `System.ComponentModel.DataAnnotations.Schema.ColumnAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ColumnAttribute : System.Attribute
                 {
                     public ColumnAttribute() => throw null;
@@ -392,20 +358,17 @@ namespace System
                     public string TypeName { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.ComponentModel.DataAnnotations.Schema.ComplexTypeAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ComplexTypeAttribute : System.Attribute
                 {
                     public ComplexTypeAttribute() => throw null;
                 }
 
-                // Generated from `System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class DatabaseGeneratedAttribute : System.Attribute
                 {
                     public DatabaseGeneratedAttribute(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption databaseGeneratedOption) => throw null;
                     public System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption DatabaseGeneratedOption { get => throw null; }
                 }
 
-                // Generated from `System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum DatabaseGeneratedOption : int
                 {
                     Computed = 2,
@@ -413,27 +376,23 @@ namespace System
                     None = 0,
                 }
 
-                // Generated from `System.ComponentModel.DataAnnotations.Schema.ForeignKeyAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ForeignKeyAttribute : System.Attribute
                 {
                     public ForeignKeyAttribute(string name) => throw null;
                     public string Name { get => throw null; }
                 }
 
-                // Generated from `System.ComponentModel.DataAnnotations.Schema.InversePropertyAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class InversePropertyAttribute : System.Attribute
                 {
                     public InversePropertyAttribute(string property) => throw null;
                     public string Property { get => throw null; }
                 }
 
-                // Generated from `System.ComponentModel.DataAnnotations.Schema.NotMappedAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class NotMappedAttribute : System.Attribute
                 {
                     public NotMappedAttribute() => throw null;
                 }
 
-                // Generated from `System.ComponentModel.DataAnnotations.Schema.TableAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class TableAttribute : System.Attribute
                 {
                     public string Name { get => throw null; }

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Xml.XmlSerializer, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Serialization
         {
-            // Generated from `System.Xml.Serialization.CodeGenerationOptions` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum CodeGenerationOptions : int
             {
@@ -18,7 +18,6 @@ namespace System
                 None = 0,
             }
 
-            // Generated from `System.Xml.Serialization.CodeIdentifier` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CodeIdentifier
             {
                 public CodeIdentifier() => throw null;
@@ -27,7 +26,6 @@ namespace System
                 public static string MakeValid(string identifier) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.CodeIdentifiers` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CodeIdentifiers
             {
                 public void Add(string identifier, object value) => throw null;
@@ -45,14 +43,12 @@ namespace System
                 public bool UseCamelCasing { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Xml.Serialization.IXmlTextParser` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IXmlTextParser
             {
                 bool Normalized { get; set; }
                 System.Xml.WhitespaceHandling WhitespaceHandling { get; set; }
             }
 
-            // Generated from `System.Xml.Serialization.ImportContext` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ImportContext
             {
                 public ImportContext(System.Xml.Serialization.CodeIdentifiers identifiers, bool shareTypes) => throw null;
@@ -61,13 +57,11 @@ namespace System
                 public System.Collections.Specialized.StringCollection Warnings { get => throw null; }
             }
 
-            // Generated from `System.Xml.Serialization.SchemaImporter` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class SchemaImporter
             {
                 internal SchemaImporter() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.SoapAttributeAttribute` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SoapAttributeAttribute : System.Attribute
             {
                 public string AttributeName { get => throw null; set => throw null; }
@@ -77,7 +71,6 @@ namespace System
                 public SoapAttributeAttribute(string attributeName) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.SoapAttributeOverrides` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SoapAttributeOverrides
             {
                 public void Add(System.Type type, System.Xml.Serialization.SoapAttributes attributes) => throw null;
@@ -87,7 +80,6 @@ namespace System
                 public SoapAttributeOverrides() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.SoapAttributes` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SoapAttributes
             {
                 public System.Xml.Serialization.SoapAttributeAttribute SoapAttribute { get => throw null; set => throw null; }
@@ -100,7 +92,6 @@ namespace System
                 public System.Xml.Serialization.SoapTypeAttribute SoapType { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Xml.Serialization.SoapElementAttribute` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SoapElementAttribute : System.Attribute
             {
                 public string DataType { get => throw null; set => throw null; }
@@ -110,7 +101,6 @@ namespace System
                 public SoapElementAttribute(string elementName) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.SoapEnumAttribute` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SoapEnumAttribute : System.Attribute
             {
                 public string Name { get => throw null; set => throw null; }
@@ -118,20 +108,17 @@ namespace System
                 public SoapEnumAttribute(string name) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.SoapIgnoreAttribute` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SoapIgnoreAttribute : System.Attribute
             {
                 public SoapIgnoreAttribute() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.SoapIncludeAttribute` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SoapIncludeAttribute : System.Attribute
             {
                 public SoapIncludeAttribute(System.Type type) => throw null;
                 public System.Type Type { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Xml.Serialization.SoapReflectionImporter` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SoapReflectionImporter
             {
                 public System.Xml.Serialization.XmlMembersMapping ImportMembersMapping(string elementName, string ns, System.Xml.Serialization.XmlReflectionMember[] members) => throw null;
@@ -148,7 +135,6 @@ namespace System
                 public SoapReflectionImporter(string defaultNamespace) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.SoapSchemaMember` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SoapSchemaMember
             {
                 public string MemberName { get => throw null; set => throw null; }
@@ -156,7 +142,6 @@ namespace System
                 public SoapSchemaMember() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.SoapTypeAttribute` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SoapTypeAttribute : System.Attribute
             {
                 public bool IncludeInSchema { get => throw null; set => throw null; }
@@ -167,7 +152,6 @@ namespace System
                 public string TypeName { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Xml.Serialization.UnreferencedObjectEventArgs` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UnreferencedObjectEventArgs : System.EventArgs
             {
                 public string UnreferencedId { get => throw null; }
@@ -175,10 +159,8 @@ namespace System
                 public UnreferencedObjectEventArgs(object o, string id) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.UnreferencedObjectEventHandler` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void UnreferencedObjectEventHandler(object sender, System.Xml.Serialization.UnreferencedObjectEventArgs e);
 
-            // Generated from `System.Xml.Serialization.XmlAnyElementAttributes` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlAnyElementAttributes : System.Collections.CollectionBase
             {
                 public int Add(System.Xml.Serialization.XmlAnyElementAttribute attribute) => throw null;
@@ -191,7 +173,6 @@ namespace System
                 public XmlAnyElementAttributes() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlArrayAttribute` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlArrayAttribute : System.Attribute
             {
                 public string ElementName { get => throw null; set => throw null; }
@@ -203,7 +184,6 @@ namespace System
                 public XmlArrayAttribute(string elementName) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlArrayItemAttribute` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlArrayItemAttribute : System.Attribute
             {
                 public string DataType { get => throw null; set => throw null; }
@@ -219,7 +199,6 @@ namespace System
                 public XmlArrayItemAttribute(string elementName, System.Type type) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlArrayItemAttributes` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlArrayItemAttributes : System.Collections.CollectionBase
             {
                 public int Add(System.Xml.Serialization.XmlArrayItemAttribute attribute) => throw null;
@@ -232,7 +211,6 @@ namespace System
                 public XmlArrayItemAttributes() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlAttributeEventArgs` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlAttributeEventArgs : System.EventArgs
             {
                 public System.Xml.XmlAttribute Attr { get => throw null; }
@@ -242,10 +220,8 @@ namespace System
                 public object ObjectBeingDeserialized { get => throw null; }
             }
 
-            // Generated from `System.Xml.Serialization.XmlAttributeEventHandler` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void XmlAttributeEventHandler(object sender, System.Xml.Serialization.XmlAttributeEventArgs e);
 
-            // Generated from `System.Xml.Serialization.XmlAttributeOverrides` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlAttributeOverrides
             {
                 public void Add(System.Type type, System.Xml.Serialization.XmlAttributes attributes) => throw null;
@@ -255,7 +231,6 @@ namespace System
                 public XmlAttributeOverrides() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlAttributes` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlAttributes
             {
                 public System.Xml.Serialization.XmlAnyAttributeAttribute XmlAnyAttribute { get => throw null; set => throw null; }
@@ -276,7 +251,6 @@ namespace System
                 public bool Xmlns { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Xml.Serialization.XmlChoiceIdentifierAttribute` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlChoiceIdentifierAttribute : System.Attribute
             {
                 public string MemberName { get => throw null; set => throw null; }
@@ -284,7 +258,6 @@ namespace System
                 public XmlChoiceIdentifierAttribute(string name) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlDeserializationEvents` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct XmlDeserializationEvents
             {
                 public System.Xml.Serialization.XmlAttributeEventHandler OnUnknownAttribute { get => throw null; set => throw null; }
@@ -294,7 +267,6 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Xml.Serialization.XmlElementAttributes` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlElementAttributes : System.Collections.CollectionBase
             {
                 public int Add(System.Xml.Serialization.XmlElementAttribute attribute) => throw null;
@@ -307,7 +279,6 @@ namespace System
                 public XmlElementAttributes() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlElementEventArgs` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlElementEventArgs : System.EventArgs
             {
                 public System.Xml.XmlElement Element { get => throw null; }
@@ -317,17 +288,14 @@ namespace System
                 public object ObjectBeingDeserialized { get => throw null; }
             }
 
-            // Generated from `System.Xml.Serialization.XmlElementEventHandler` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void XmlElementEventHandler(object sender, System.Xml.Serialization.XmlElementEventArgs e);
 
-            // Generated from `System.Xml.Serialization.XmlIncludeAttribute` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlIncludeAttribute : System.Attribute
             {
                 public System.Type Type { get => throw null; set => throw null; }
                 public XmlIncludeAttribute(System.Type type) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlMapping` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlMapping
             {
                 public string ElementName { get => throw null; }
@@ -337,7 +305,6 @@ namespace System
                 public string XsdElementName { get => throw null; }
             }
 
-            // Generated from `System.Xml.Serialization.XmlMappingAccess` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum XmlMappingAccess : int
             {
@@ -346,7 +313,6 @@ namespace System
                 Write = 2,
             }
 
-            // Generated from `System.Xml.Serialization.XmlMemberMapping` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlMemberMapping
             {
                 public bool Any { get => throw null; }
@@ -360,7 +326,6 @@ namespace System
                 public string XsdElementName { get => throw null; }
             }
 
-            // Generated from `System.Xml.Serialization.XmlMembersMapping` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlMembersMapping : System.Xml.Serialization.XmlMapping
             {
                 public int Count { get => throw null; }
@@ -369,7 +334,6 @@ namespace System
                 public string TypeNamespace { get => throw null; }
             }
 
-            // Generated from `System.Xml.Serialization.XmlNodeEventArgs` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlNodeEventArgs : System.EventArgs
             {
                 public int LineNumber { get => throw null; }
@@ -382,10 +346,8 @@ namespace System
                 public string Text { get => throw null; }
             }
 
-            // Generated from `System.Xml.Serialization.XmlNodeEventHandler` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void XmlNodeEventHandler(object sender, System.Xml.Serialization.XmlNodeEventArgs e);
 
-            // Generated from `System.Xml.Serialization.XmlReflectionImporter` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlReflectionImporter
             {
                 public System.Xml.Serialization.XmlMembersMapping ImportMembersMapping(string elementName, string ns, System.Xml.Serialization.XmlReflectionMember[] members, bool hasWrapperElement) => throw null;
@@ -404,7 +366,6 @@ namespace System
                 public XmlReflectionImporter(string defaultNamespace) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlReflectionMember` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlReflectionMember
             {
                 public bool IsReturnValue { get => throw null; set => throw null; }
@@ -416,7 +377,6 @@ namespace System
                 public XmlReflectionMember() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSchemaEnumerator` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaEnumerator : System.Collections.Generic.IEnumerator<System.Xml.Schema.XmlSchema>, System.Collections.IEnumerator, System.IDisposable
             {
                 public System.Xml.Schema.XmlSchema Current { get => throw null; }
@@ -427,7 +387,6 @@ namespace System
                 public XmlSchemaEnumerator(System.Xml.Serialization.XmlSchemas list) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSchemaExporter` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaExporter
             {
                 public string ExportAnyType(System.Xml.Serialization.XmlMembersMapping members) => throw null;
@@ -439,7 +398,6 @@ namespace System
                 public XmlSchemaExporter(System.Xml.Serialization.XmlSchemas schemas) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSchemaImporter` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaImporter : System.Xml.Serialization.SchemaImporter
             {
                 public System.Xml.Serialization.XmlMembersMapping ImportAnyType(System.Xml.XmlQualifiedName typeName, string elementName) => throw null;
@@ -457,7 +415,6 @@ namespace System
                 public XmlSchemaImporter(System.Xml.Serialization.XmlSchemas schemas, System.Xml.Serialization.CodeIdentifiers typeIdentifiers) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSchemas` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemas : System.Collections.CollectionBase, System.Collections.Generic.IEnumerable<System.Xml.Schema.XmlSchema>, System.Collections.IEnumerable
             {
                 public int Add(System.Xml.Schema.XmlSchema schema) => throw null;
@@ -485,25 +442,19 @@ namespace System
                 public XmlSchemas() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSerializationCollectionFixupCallback` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void XmlSerializationCollectionFixupCallback(object collection, object collectionItems);
 
-            // Generated from `System.Xml.Serialization.XmlSerializationFixupCallback` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void XmlSerializationFixupCallback(object fixup);
 
-            // Generated from `System.Xml.Serialization.XmlSerializationGeneratedCode` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSerializationGeneratedCode
             {
                 protected XmlSerializationGeneratedCode() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSerializationReadCallback` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate object XmlSerializationReadCallback();
 
-            // Generated from `System.Xml.Serialization.XmlSerializationReader` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSerializationReader : System.Xml.Serialization.XmlSerializationGeneratedCode
             {
-                // Generated from `System.Xml.Serialization.XmlSerializationReader+CollectionFixup` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 protected class CollectionFixup
                 {
                     public System.Xml.Serialization.XmlSerializationCollectionFixupCallback Callback { get => throw null; }
@@ -513,7 +464,6 @@ namespace System
                 }
 
 
-                // Generated from `System.Xml.Serialization.XmlSerializationReader+Fixup` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 protected class Fixup
                 {
                     public System.Xml.Serialization.XmlSerializationFixupCallback Callback { get => throw null; }
@@ -603,10 +553,8 @@ namespace System
                 protected XmlSerializationReader() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSerializationWriteCallback` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void XmlSerializationWriteCallback(object o);
 
-            // Generated from `System.Xml.Serialization.XmlSerializationWriter` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSerializationWriter : System.Xml.Serialization.XmlSerializationGeneratedCode
             {
                 protected void AddWriteCallback(System.Type type, string typeName, string typeNs, System.Xml.Serialization.XmlSerializationWriteCallback callback) => throw null;
@@ -706,7 +654,6 @@ namespace System
                 protected XmlSerializationWriter() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSerializer` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSerializer
             {
                 public virtual bool CanDeserialize(System.Xml.XmlReader xmlReader) => throw null;
@@ -748,7 +695,6 @@ namespace System
                 public XmlSerializer(System.Xml.Serialization.XmlTypeMapping xmlTypeMapping) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSerializerAssemblyAttribute` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSerializerAssemblyAttribute : System.Attribute
             {
                 public string AssemblyName { get => throw null; set => throw null; }
@@ -758,7 +704,6 @@ namespace System
                 public XmlSerializerAssemblyAttribute(string assemblyName, string codeBase) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSerializerFactory` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSerializerFactory
             {
                 public System.Xml.Serialization.XmlSerializer CreateSerializer(System.Type type) => throw null;
@@ -772,7 +717,6 @@ namespace System
                 public XmlSerializerFactory() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSerializerImplementation` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSerializerImplementation
             {
                 public virtual bool CanSerialize(System.Type type) => throw null;
@@ -785,7 +729,6 @@ namespace System
                 protected XmlSerializerImplementation() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSerializerVersionAttribute` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSerializerVersionAttribute : System.Attribute
             {
                 public string Namespace { get => throw null; set => throw null; }
@@ -796,7 +739,6 @@ namespace System
                 public XmlSerializerVersionAttribute(System.Type type) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlTypeAttribute` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlTypeAttribute : System.Attribute
             {
                 public bool AnonymousType { get => throw null; set => throw null; }
@@ -807,7 +749,6 @@ namespace System
                 public XmlTypeAttribute(string typeName) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlTypeMapping` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlTypeMapping : System.Xml.Serialization.XmlMapping
             {
                 public string TypeFullName { get => throw null; }

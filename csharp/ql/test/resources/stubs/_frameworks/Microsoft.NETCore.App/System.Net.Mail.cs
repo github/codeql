@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Net.Mail, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Mail
         {
-            // Generated from `System.Net.Mail.AlternateView` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class AlternateView : System.Net.Mail.AttachmentBase
             {
                 public AlternateView(System.IO.Stream contentStream) : base(default(System.IO.Stream)) => throw null;
@@ -23,7 +23,6 @@ namespace System
                 public System.Net.Mail.LinkedResourceCollection LinkedResources { get => throw null; }
             }
 
-            // Generated from `System.Net.Mail.AlternateViewCollection` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class AlternateViewCollection : System.Collections.ObjectModel.Collection<System.Net.Mail.AlternateView>, System.IDisposable
             {
                 protected override void ClearItems() => throw null;
@@ -33,7 +32,6 @@ namespace System
                 protected override void SetItem(int index, System.Net.Mail.AlternateView item) => throw null;
             }
 
-            // Generated from `System.Net.Mail.Attachment` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class Attachment : System.Net.Mail.AttachmentBase
             {
                 public Attachment(System.IO.Stream contentStream, System.Net.Mime.ContentType contentType) : base(default(System.IO.Stream)) => throw null;
@@ -50,7 +48,6 @@ namespace System
                 public System.Text.Encoding NameEncoding { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Mail.AttachmentBase` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class AttachmentBase : System.IDisposable
             {
                 protected AttachmentBase(System.IO.Stream contentStream) => throw null;
@@ -67,7 +64,6 @@ namespace System
                 public System.Net.Mime.TransferEncoding TransferEncoding { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Mail.AttachmentCollection` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class AttachmentCollection : System.Collections.ObjectModel.Collection<System.Net.Mail.Attachment>, System.IDisposable
             {
                 protected override void ClearItems() => throw null;
@@ -77,7 +73,6 @@ namespace System
                 protected override void SetItem(int index, System.Net.Mail.Attachment item) => throw null;
             }
 
-            // Generated from `System.Net.Mail.DeliveryNotificationOptions` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             [System.Flags]
             public enum DeliveryNotificationOptions : int
             {
@@ -88,7 +83,6 @@ namespace System
                 OnSuccess = 1,
             }
 
-            // Generated from `System.Net.Mail.LinkedResource` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class LinkedResource : System.Net.Mail.AttachmentBase
             {
                 public System.Uri ContentLink { get => throw null; set => throw null; }
@@ -103,7 +97,6 @@ namespace System
                 public LinkedResource(string fileName, string mediaType) : base(default(System.IO.Stream)) => throw null;
             }
 
-            // Generated from `System.Net.Mail.LinkedResourceCollection` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class LinkedResourceCollection : System.Collections.ObjectModel.Collection<System.Net.Mail.LinkedResource>, System.IDisposable
             {
                 protected override void ClearItems() => throw null;
@@ -113,7 +106,6 @@ namespace System
                 protected override void SetItem(int index, System.Net.Mail.LinkedResource item) => throw null;
             }
 
-            // Generated from `System.Net.Mail.MailAddress` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class MailAddress
             {
                 public string Address { get => throw null; }
@@ -131,7 +123,6 @@ namespace System
                 public string User { get => throw null; }
             }
 
-            // Generated from `System.Net.Mail.MailAddressCollection` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class MailAddressCollection : System.Collections.ObjectModel.Collection<System.Net.Mail.MailAddress>
             {
                 public void Add(string addresses) => throw null;
@@ -141,7 +132,6 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Net.Mail.MailMessage` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class MailMessage : System.IDisposable
             {
                 public System.Net.Mail.AlternateViewCollection AlternateViews { get => throw null; }
@@ -171,7 +161,6 @@ namespace System
                 public System.Net.Mail.MailAddressCollection To { get => throw null; }
             }
 
-            // Generated from `System.Net.Mail.MailPriority` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum MailPriority : int
             {
                 High = 2,
@@ -179,10 +168,8 @@ namespace System
                 Normal = 0,
             }
 
-            // Generated from `System.Net.Mail.SendCompletedEventHandler` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public delegate void SendCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
 
-            // Generated from `System.Net.Mail.SmtpClient` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class SmtpClient : System.IDisposable
             {
                 public System.Security.Cryptography.X509Certificates.X509CertificateCollection ClientCertificates { get => throw null; }
@@ -215,14 +202,12 @@ namespace System
                 public bool UseDefaultCredentials { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Mail.SmtpDeliveryFormat` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum SmtpDeliveryFormat : int
             {
                 International = 1,
                 SevenBit = 0,
             }
 
-            // Generated from `System.Net.Mail.SmtpDeliveryMethod` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum SmtpDeliveryMethod : int
             {
                 Network = 0,
@@ -230,7 +215,6 @@ namespace System
                 SpecifiedPickupDirectory = 1,
             }
 
-            // Generated from `System.Net.Mail.SmtpException` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class SmtpException : System.Exception, System.Runtime.Serialization.ISerializable
             {
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
@@ -244,7 +228,6 @@ namespace System
                 public System.Net.Mail.SmtpStatusCode StatusCode { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.Mail.SmtpFailedRecipientException` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class SmtpFailedRecipientException : System.Net.Mail.SmtpException, System.Runtime.Serialization.ISerializable
             {
                 public string FailedRecipient { get => throw null; }
@@ -259,7 +242,6 @@ namespace System
                 public SmtpFailedRecipientException(string message, string failedRecipient, System.Exception innerException) => throw null;
             }
 
-            // Generated from `System.Net.Mail.SmtpFailedRecipientsException` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class SmtpFailedRecipientsException : System.Net.Mail.SmtpFailedRecipientException, System.Runtime.Serialization.ISerializable
             {
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
@@ -272,7 +254,6 @@ namespace System
                 public SmtpFailedRecipientsException(string message, System.Net.Mail.SmtpFailedRecipientException[] innerExceptions) => throw null;
             }
 
-            // Generated from `System.Net.Mail.SmtpStatusCode` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum SmtpStatusCode : int
             {
                 BadCommandSequence = 503,
@@ -305,7 +286,6 @@ namespace System
         }
         namespace Mime
         {
-            // Generated from `System.Net.Mime.ContentDisposition` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class ContentDisposition
             {
                 public ContentDisposition() => throw null;
@@ -323,7 +303,6 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Net.Mime.ContentType` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class ContentType
             {
                 public string Boundary { get => throw null; set => throw null; }
@@ -338,17 +317,14 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Net.Mime.DispositionTypeNames` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class DispositionTypeNames
             {
                 public const string Attachment = default;
                 public const string Inline = default;
             }
 
-            // Generated from `System.Net.Mime.MediaTypeNames` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class MediaTypeNames
             {
-                // Generated from `System.Net.Mime.MediaTypeNames+Application` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public static class Application
                 {
                     public const string Json = default;
@@ -361,7 +337,6 @@ namespace System
                 }
 
 
-                // Generated from `System.Net.Mime.MediaTypeNames+Image` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public static class Image
                 {
                     public const string Gif = default;
@@ -370,7 +345,6 @@ namespace System
                 }
 
 
-                // Generated from `System.Net.Mime.MediaTypeNames+Text` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public static class Text
                 {
                     public const string Html = default;
@@ -382,7 +356,6 @@ namespace System
 
             }
 
-            // Generated from `System.Net.Mime.TransferEncoding` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum TransferEncoding : int
             {
                 Base64 = 1,

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.DataProtection.Extensions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace DataProtection
         {
-            // Generated from `Microsoft.AspNetCore.DataProtection.DataProtectionAdvancedExtensions` in `Microsoft.AspNetCore.DataProtection.Extensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class DataProtectionAdvancedExtensions
             {
                 public static System.Byte[] Protect(this Microsoft.AspNetCore.DataProtection.ITimeLimitedDataProtector protector, System.Byte[] plaintext, System.TimeSpan lifetime) => throw null;
@@ -16,7 +16,6 @@ namespace Microsoft
                 public static string Unprotect(this Microsoft.AspNetCore.DataProtection.ITimeLimitedDataProtector protector, string protectedData, out System.DateTimeOffset expiration) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.DataProtection.DataProtectionProvider` in `Microsoft.AspNetCore.DataProtection.Extensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class DataProtectionProvider
             {
                 public static Microsoft.AspNetCore.DataProtection.IDataProtectionProvider Create(System.IO.DirectoryInfo keyDirectory) => throw null;
@@ -27,7 +26,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.DataProtection.IDataProtectionProvider Create(string applicationName, System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.DataProtection.ITimeLimitedDataProtector` in `Microsoft.AspNetCore.DataProtection.Extensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ITimeLimitedDataProtector : Microsoft.AspNetCore.DataProtection.IDataProtectionProvider, Microsoft.AspNetCore.DataProtection.IDataProtector
             {
                 Microsoft.AspNetCore.DataProtection.ITimeLimitedDataProtector CreateProtector(string purpose);
