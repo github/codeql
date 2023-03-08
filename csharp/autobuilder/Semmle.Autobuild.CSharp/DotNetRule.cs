@@ -192,7 +192,8 @@ namespace Semmle.Autobuild.CSharp
                             Argument("dotnet-install.sh");
 
                         var install = new CommandBuilder(builder.Actions).
-                            RunCommand("./dotnet-install.sh").
+                            RunCommand("source").
+                            Argument("./dotnet-install.sh").
                             Argument("--channel").
                             Argument("release").
                             Argument("--version").
