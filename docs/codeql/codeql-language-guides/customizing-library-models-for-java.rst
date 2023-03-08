@@ -271,7 +271,23 @@ This includes descriptions of each of the arguments (eg. access paths, types, an
 Extension points
 ----------------
 
-Below is a description of the tuple values for each extension point.
+Below is a description of the columns for each extension point.
+Sources, Sinks, Summaries and Neutrals are commonly known as Models.
+The semantics of many of the columns of the extension points are shared.
+
+
+The shared columns are:
+
+- **package**: Name of the package.
+- **type**: Name of the type.
+- **subtypes**: A flag indicating whether the model should also apply to all overrides of the selected method(s).
+- **name**: Name of the method (optional). If left blank, it means all methods matching the previous selction criteria.
+- **signature**: Type signature of the method where the source resides (optional). If this is left blank it means all methods matching the previous selction criteria.
+- **ext**: Specifies additional API-graph-like edges (mostly empty).
+- **provenance**: Provenance (origin) of the model definition.
+
+The columns **package**, **type**, **subtypes**, **name**, and **signature** are used to select the method(s) that the model applies to.
+
 The section Access paths describes in more detail, how access paths are composed.
 This is the most complicated part of the extension points and the **mini DSL** for access paths is shared accross the extension points.
 
@@ -280,12 +296,6 @@ sourceModel(package, type, subtypes, name, signature, ext, output, kind, provena
 
 Taint source. Most taint tracking queries will use the sources added to this extensions point.
 
-- **package**: Name of the package where the source resides.
-- **type**: Name of the type where the source resides.
-- **subtypes**: Whether the source should also apply to all overrides of the method.
-- **name**: Name of the method where the source resides.
-- **signature**: Type signature of the method where the source resides.
-- **ext**: Specifies additional API-graph-like edges (mostly empty).
 - **output**: Access path to the source, where the possibly tainted data flows from.
 - **kind**: Kind of the source.
 - **provenance**: Provenance (origin) of the source definition.
@@ -303,15 +313,8 @@ sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance
 
 Taint sink. As opposed to source kinds, there are many different kinds of sinks as these tend to be more query specific.
 
-- **package**: Name of the package where the sink resides.
-- **type**: Name of the type where the sink resides.
-- **subtypes**: Whether the sink should also apply to all overrides of the method.
-- **name**: Name of the method where the sink resides.
-- **signature**: Type signature of the method where the sink resides.
-- **ext**: Specifies additional API-graph-like edges (mostly empty).
 - **input**: Access path to the sink, where we want to check if possibly tainted data flows too.
 - **kind**: Kind of the sink.
-- **provenance**: Provenance (origin) of the sink definition.
 
 The following sink kinds are supported:
 
@@ -347,12 +350,6 @@ summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
 
 Flow through. This extension point is used to model flow through methods.
 
-- **package**: Name of the package where the method resides.
-- **type**: Name of the type where the method resides.
-- **subtypes**: Whether the method should also apply to all overrides of the method.
-- **name**: Name of the method where we are defining flow through.
-- **signature**: Type signature of the method where we are defining flow through.
-- **ext**: Specifies additional API-graph-like edges (mostly empty).
 - **input**: Access path to the input of the method where data will flow to the output.
 - **output**: Access path to the output of the method where data will flow from the input.
 - **kind**: Kind of the flow through.
@@ -368,6 +365,38 @@ neutralModel(package, type, name, signature, provenance)
 
 Access paths
 ------------
+The **input**, and **output** columns consist of a **.**-separated list of components, which is evaluted from left to right, with each step selecting a new set of values derived from the previous set of values.
+
+The following components are supported:
+
+- **Argument[**\ `n`\ **]** selects the argument at index `n` (zero-indexed).
+- **Argument[**\ `-1`\ **]** selects the qualifier of the call.
+- **Argument[**\ `n1..n2`\ **]** selects the arguments in the given range (both ends included).
+- **Parameter[**\ `n`\ **]** selects the parameter at index `n` (zero-indexed).
+- **Parameter[**\ `n1..n2`\ **]** selects the parameters in the given range (both ends included).
+- **ReturnValue** selects the return value.
+- **Field[**\ `name`\ **]** selects the field with the fully qualified name `name`.
+- **SyntheticField[**\ `name`\ **]** selects the synthetic field with name `name`.
+- **ArrayElement** selects the elements of an array.
+- **Element** selects the elements of a collection-like container.
+- **MapKey** selects the element keys of a map.
+- **MapValue** selects the element values of a map.
 
 Provenance
 ----------
+
+The **provenance** column is used to specify the provenance (origin) of the model definition.
+
+The following values are supported:
+
+- **manual**: The model was manually created (or verified by a human) and added to the extension point.
+- **generated**: The model was generated by the model generator and added to the extension point.
+- **ai-generated**: The model was generated by AI and added to the extension point.
+
+The provenance is used to distinguish between models that are manually added to the extension point and models that are automatically generated.
+Furthermore, it impacts the dataflow analysis in the following way
+
+- A **manual** model takes precedence over **generated** models. If a **manual** model exist for a method then all generated models are ignored.
+- A **generated** or **ai-generated** model is ignored during analysis, if the source code of the method they are modelling is available.
+
+That is, generated models are less trusted than manual models.
