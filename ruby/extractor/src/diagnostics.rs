@@ -214,10 +214,12 @@ fn longest_backtick_sequence_length(text: &str) -> usize {
     }
     result
 }
-pub enum Arg<'a> {
+/**
+ * An argument of a diagnostic message format string. A message argument is either a "code" snippet or a link.
+ */
+pub enum MessageArg<'a> {
     Code(&'a str),
     Link(&'a str, &'a str),
-    None,
 }
 
 impl DiagnosticMessage {
@@ -242,16 +244,15 @@ impl DiagnosticMessage {
         self
     }
 
-    pub fn message(&mut self, text: &str, args: &[Arg]) -> &mut Self {
+    pub fn message(&mut self, text: &str, args: &[MessageArg]) -> &mut Self {
         let parts = text.split("{}");
-        let args = args.iter().chain(std::iter::repeat(&Arg::None));
         let mut plain = String::with_capacity(2 * text.len());
         let mut markdown = String::with_capacity(2 * text.len());
-        for (p, a) in parts.zip(args) {
+        for (i, p) in parts.enumerate() {
             plain.push_str(p);
             markdown.push_str(p);
-            match a {
-                Arg::Code(t) => {
+            match args.get(i) {
+                Some(MessageArg::Code(t)) => {
                     plain.push_str(t);
                     if t.len() > 0 {
                         let count = longest_backtick_sequence_length(t) + 1;
@@ -266,7 +267,7 @@ impl DiagnosticMessage {
                         markdown.push_str(&"`".repeat(count));
                     }
                 }
-                Arg::Link(text, url) => {
+                Some(MessageArg::Link(text, url)) => {
                     plain.push_str(text);
                     self.help_link(url);
                     markdown.push_str("[");
@@ -275,7 +276,7 @@ impl DiagnosticMessage {
                     markdown.push_str(url);
                     markdown.push_str(")");
                 }
-                Arg::None => {}
+                None => {}
             }
         }
         self.text(&plain);
@@ -343,14 +344,17 @@ fn test_message() {
     let mut m = DiagnosticLoggers::new("foo")
         .logger()
         .new_entry("id", "name");
-    m.message("hello: {}", &[Arg::Code("hello")]);
+    m.message("hello: {}", &[MessageArg::Code("hello")]);
     assert_eq!("hello: hello", m.plaintext_message);
     assert_eq!("hello: `hello`", m.markdown_message);
 
     let mut m = DiagnosticLoggers::new("foo")
         .logger()
         .new_entry("id", "name");
-    m.message("hello with backticks: {}", &[Arg::Code("oh `hello`!")]);
+    m.message(
+        "hello with backticks: {}",
+        &[MessageArg::Code("oh `hello`!")],
+    );
     assert_eq!("hello with backticks: oh `hello`!", m.plaintext_message);
     assert_eq!(
         "hello with backticks: `` oh `hello`! ``",

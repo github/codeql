@@ -74,7 +74,10 @@ fn main() -> std::io::Result<()> {
             main_thread_logger.write(
                 main_thread_logger
                     .new_entry("configuration-error", "Configuration error")
-                    .message("{}; defaulting to 1 thread.", &[diagnostics::Arg::Code(&e)])
+                    .message(
+                        "{}; defaulting to 1 thread.",
+                        &[diagnostics::MessageArg::Code(&e)],
+                    )
                     .severity(diagnostics::Severity::Warning),
             );
             1
@@ -95,7 +98,7 @@ fn main() -> std::io::Result<()> {
             main_thread_logger.write(
                 main_thread_logger
                     .new_entry("configuration-error", "Configuration error")
-                    .message("{}; using gzip.", &[diagnostics::Arg::Code(&e)])
+                    .message("{}; using gzip.", &[diagnostics::MessageArg::Code(&e)])
                     .severity(diagnostics::Severity::Warning),
             );
             trap::Compression::Gzip
@@ -205,10 +208,10 @@ fn main() -> std::io::Result<()> {
                                                 .message(
                                                     "Could not decode the file contents as {}: {}. The contents of the file must match the character encoding specified in the {} {}.",
                                                     &[
-                                                        diagnostics::Arg::Code(&encoding_name),
-                                                        diagnostics::Arg::Code(&msg),
-                                                        diagnostics::Arg::Code("encoding:"),
-                                                        diagnostics::Arg::Link("directive", "https://docs.ruby-lang.org/en/master/syntax/comments_rdoc.html#label-encoding+Directive")
+                                                        diagnostics::MessageArg::Code(&encoding_name),
+                                                        diagnostics::MessageArg::Code(&msg),
+                                                        diagnostics::MessageArg::Code("encoding:"),
+                                                        diagnostics::MessageArg::Link("directive", "https://docs.ruby-lang.org/en/master/syntax/comments_rdoc.html#label-encoding+Directive")
                                                     ],
                                                 )
                                                 .status_page()
@@ -225,9 +228,9 @@ fn main() -> std::io::Result<()> {
                                     .message(
                                         "Unknown character encoding {} in {} {}.",
                                         &[
-                                            diagnostics::Arg::Code(&encoding_name),
-                                            diagnostics::Arg::Code("#encoding:"),
-                                            diagnostics::Arg::Link("directive", "https://docs.ruby-lang.org/en/master/syntax/comments_rdoc.html#label-encoding+Directive")
+                                            diagnostics::MessageArg::Code(&encoding_name),
+                                            diagnostics::MessageArg::Code("#encoding:"),
+                                            diagnostics::MessageArg::Link("directive", "https://docs.ruby-lang.org/en/master/syntax/comments_rdoc.html#label-encoding+Directive")
                                         ],
                                     )
                                     .status_page()

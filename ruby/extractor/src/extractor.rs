@@ -277,7 +277,7 @@ impl<'a> Visitor<'a> {
     fn record_parse_error_for_node(
         &mut self,
         message: &str,
-        args: &[diagnostics::Arg],
+        args: &[diagnostics::MessageArg],
         node: Node,
         status_page: bool,
     ) {
@@ -307,7 +307,7 @@ impl<'a> Visitor<'a> {
         if node.is_missing() {
             self.record_parse_error_for_node(
                 "A parse error occurred (expected {} symbol). Check the syntax of the file. If the file is invalid, correct the error or {} the file from analysis.",
-                &[diagnostics::Arg::Code(node.kind()), diagnostics::Arg::Link("exclude", "https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning")],
+                &[diagnostics::MessageArg::Code(node.kind()), diagnostics::MessageArg::Link("exclude", "https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning")],
                 node,
                 true,
             );
@@ -316,7 +316,7 @@ impl<'a> Visitor<'a> {
         if node.is_error() {
             self.record_parse_error_for_node(
                 "A parse error occurred. Check the syntax of the file. If the file is invalid, correct the error or {} the file from analysis.",
-                &[diagnostics::Arg::Link("exclude", "https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning")],
+                &[diagnostics::MessageArg::Link("exclude", "https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning")],
                 node,
                 true,
             );
@@ -409,7 +409,7 @@ impl<'a> Visitor<'a> {
                         .location(self.path, start_line, start_column, end_line, end_column)
                         .message(
                             "Unknown table type: {}",
-                            &[diagnostics::Arg::Code(node.kind())],
+                            &[diagnostics::MessageArg::Code(node.kind())],
                         ),
                 );
 
@@ -461,10 +461,10 @@ impl<'a> Visitor<'a> {
                     self.record_parse_error_for_node(
                         "Type mismatch for field {}::{} with type {} != {}",
                         &[
-                            diagnostics::Arg::Code(node.kind()),
-                            diagnostics::Arg::Code(child_node.field_name.unwrap_or("child")),
-                            diagnostics::Arg::Code(&format!("{:?}", child_node.type_name)),
-                            diagnostics::Arg::Code(&format!("{:?}", field.type_info)),
+                            diagnostics::MessageArg::Code(node.kind()),
+                            diagnostics::MessageArg::Code(child_node.field_name.unwrap_or("child")),
+                            diagnostics::MessageArg::Code(&format!("{:?}", child_node.type_name)),
+                            diagnostics::MessageArg::Code(&format!("{:?}", field.type_info)),
                         ],
                         *node,
                         false,
@@ -474,9 +474,9 @@ impl<'a> Visitor<'a> {
                 self.record_parse_error_for_node(
                     "Value for unknown field: {}::{} and type {}",
                     &[
-                        diagnostics::Arg::Code(node.kind()),
-                        diagnostics::Arg::Code(&child_node.field_name.unwrap_or("child")),
-                        diagnostics::Arg::Code(&format!("{:?}", child_node.type_name)),
+                        diagnostics::MessageArg::Code(node.kind()),
+                        diagnostics::MessageArg::Code(&child_node.field_name.unwrap_or("child")),
+                        diagnostics::MessageArg::Code(&format!("{:?}", child_node.type_name)),
                     ],
                     *node,
                     false,
@@ -516,8 +516,8 @@ impl<'a> Visitor<'a> {
                             self.record_parse_error_for_node(
                                 "Too many values for field: {}::{}",
                                 &[
-                                    diagnostics::Arg::Code(node.kind()),
-                                    diagnostics::Arg::Code(table_name),
+                                    diagnostics::MessageArg::Code(node.kind()),
+                                    diagnostics::MessageArg::Code(table_name),
                                 ],
                                 *node,
                                 false,
@@ -637,8 +637,8 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
                     .message(
                         "Cannot correct end column value: end_byte index {} is not in range [1,{}].",
                         &[
-                            diagnostics::Arg::Code(&index.to_string()),
-                            diagnostics::Arg::Code(&source.len().to_string()),
+                            diagnostics::MessageArg::Code(&index.to_string()),
+                            diagnostics::MessageArg::Code(&source.len().to_string()),
                         ],
                     )
                     .severity(diagnostics::Severity::Error),
