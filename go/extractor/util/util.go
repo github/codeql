@@ -291,6 +291,7 @@ func FindGoFiles(root string) bool {
 		}
 		if filepath.Ext(d.Name()) == ".go" {
 			found = true
+			return filepath.SkipAll
 		}
 		return nil
 	})

@@ -29,6 +29,8 @@ type visibilityStruct struct {
 	Telemetry       bool `json:"telemetry"`       // True if the message should be sent to telemetry (defaults to false)
 }
 
+var fullVisibility *visibilityStruct = &visibilityStruct{true, true, true}
+
 type locationStruct struct {
 	File        string `json:"file,omitempty"`
 	StartLine   int    `json:"startLine,omitempty"`
@@ -37,20 +39,22 @@ type locationStruct struct {
 	EndColumn   int    `json:"endColumn,omitempty"`
 }
 
+var noLocation *locationStruct = nil
+
 type diagnostic struct {
-	Timestamp       string           `json:"timestamp"`
-	Source          sourceStruct     `json:"source"`
-	MarkdownMessage string           `json:"markdownMessage"`
-	Severity        string           `json:"severity"`
-	Internal        bool             `json:"internal"`
-	Visibility      visibilityStruct `json:"visibility"`
-	Location        *locationStruct  `json:"location,omitempty"` // Use a pointer so that it is omitted if nil
+	Timestamp       string            `json:"timestamp"`
+	Source          sourceStruct      `json:"source"`
+	MarkdownMessage string            `json:"markdownMessage"`
+	Severity        string            `json:"severity"`
+	Internal        bool              `json:"internal"`
+	Visibility      *visibilityStruct `json:"visibility,omitempty"` // Use a pointer so that it is omitted if nil
+	Location        *locationStruct   `json:"location,omitempty"`   // Use a pointer so that it is omitted if nil
 }
 
 var diagnosticsEmitted, diagnosticsLimit uint = 0, 100
 var noDiagnosticDirPrinted bool = false
 
-func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagnosticSeverity, internal, visibilitySP, visibilityCST, visibilityT bool, file string, startLine, startColumn, endLine, endColumn int) {
+func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagnosticSeverity, internal bool, visibility *visibilityStruct, location *locationStruct) {
 	if diagnosticsEmitted < diagnosticsLimit {
 		diagnosticsEmitted += 1
 
@@ -63,43 +67,39 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 			return
 		}
 
-		var optLoc *locationStruct
-		if file == "" && startLine == 0 && startColumn == 0 && endLine == 0 && endColumn == 0 {
-			optLoc = nil
-		} else {
-			optLoc = &locationStruct{file, startLine, startColumn, endLine, endColumn}
-		}
-
 		timestamp := time.Now().UTC().Format("2006-01-02T15:04:05.000") + "Z"
 
-		d := diagnostic{
-			timestamp,
-			sourceStruct{sourceid, sourcename, "go"},
-			markdownMessage,
-			string(severity),
-			internal,
-			visibilityStruct{visibilitySP, visibilityCST, visibilityT},
-			optLoc,
-		}
+		var d diagnostic
 
-		if diagnosticsEmitted == diagnosticsLimit {
+		if diagnosticsEmitted < diagnosticsLimit {
 			d = diagnostic{
 				timestamp,
-				sourceStruct{"go/autobuilder/diagnostic-limit-hit", "Some diagnostics were dropped", "go"},
-				fmt.Sprintf("The number of diagnostics exceeded the limit (%d); the remainder were dropped.", diagnosticsLimit),
+				sourceStruct{sourceid, sourcename, "go"},
+				markdownMessage,
+				string(severity),
+				internal,
+				visibility,
+				location,
+			}
+		} else {
+			d = diagnostic{
+				timestamp,
+				sourceStruct{"go/autobuilder/diagnostic-limit-reached", "Diagnostics limit exceeded", "go"},
+				fmt.Sprintf("CodeQL has produced more than the maximum number of diagnostics. Only the first %d have been reported.", diagnosticsLimit),
 				string(severityWarning),
 				false,
-				visibilityStruct{true, true, true},
-				nil,
+				visibility,
+				location,
 			}
 		}
 
 		content, err := json.Marshal(d)
 		if err != nil {
 			log.Println(err)
+			return
 		}
 
-		targetFile, err := os.CreateTemp(diagnosticDir, "go-extractor.*.jsonl")
+		targetFile, err := os.CreateTemp(diagnosticDir, "go-extractor.*.json")
 		if err != nil {
 			log.Println("Failed to create temporary file for diagnostic: ")
 			log.Println(err)
@@ -124,8 +124,8 @@ func EmitPackageDifferentOSArchitecture(pkgPath string) {
 		"Package "+pkgPath+" is intended for a different OS or architecture",
 		"Make sure the `GOOS` and `GOARCH` [environment variables are correctly set](https://docs.github.com/en/actions/learn-github-actions/variables#defining-environment-variables-for-a-single-workflow). Alternatively, [change your OS and architecture](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#using-a-github-hosted-runner).",
 		severityWarning, false,
-		true, true, true,
-		"", 0, 0, 0, 0,
+		fullVisibility,
+		noLocation,
 	)
 }
 
@@ -156,8 +156,8 @@ func EmitCannotFindPackages(pkgPaths []string) {
 		fmt.Sprintf("%d package%s could not be found", numPkgPaths, ending),
 		"The following packages could not be found. Check that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).\n\n"+secondLine,
 		severityError, false,
-		true, true, true,
-		"", 0, 0, 0, 0,
+		fullVisibility,
+		noLocation,
 	)
 }
 
@@ -167,8 +167,8 @@ func EmitNewerGoVersionNeeded() {
 		"Newer Go version needed",
 		"The detected version of Go is lower than the version specified in `go.mod`. [Install a newer version](https://github.com/actions/setup-go#basic).",
 		severityError, false,
-		true, true, true,
-		"", 0, 0, 0, 0,
+		fullVisibility,
+		noLocation,
 	)
 }
 
@@ -178,7 +178,7 @@ func EmitGoFilesFoundButNotProcessed() {
 		"Go files were found but not processed",
 		"[Specify a custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages) that includes one or more `go build` commands to build the `.go` files to be analyzed.",
 		severityError, false,
-		true, true, true,
-		"", 0, 0, 0, 0,
+		fullVisibility,
+		noLocation,
 	)
 }
