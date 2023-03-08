@@ -28,17 +28,15 @@ import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.security.OutputWrite
-import DataFlow::PathGraph
+import PotentiallyExposedSystemData::PathGraph
 import SystemData
 
-class PotentiallyExposedSystemDataConfiguration extends TaintTracking::Configuration {
-  PotentiallyExposedSystemDataConfiguration() { this = "PotentiallyExposedSystemDataConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
+module PotentiallyExposedSystemDataConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source = any(SystemData sd | sd.isSensitive()).getAnExpr()
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(OutputWrite ow, Expr child | child = ow.getASource().getAChild*() |
       // Most sinks receive a pointer as an argument (for example `printf`),
       // and we use an indirect sink for those.
@@ -53,9 +51,10 @@ class PotentiallyExposedSystemDataConfiguration extends TaintTracking::Configura
   }
 }
 
-from
-  PotentiallyExposedSystemDataConfiguration config, DataFlow::PathNode source,
-  DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+module PotentiallyExposedSystemData =
+  TaintTracking::Make<PotentiallyExposedSystemDataConfiguration>;
+
+from PotentiallyExposedSystemData::PathNode source, PotentiallyExposedSystemData::PathNode sink
+where PotentiallyExposedSystemData::hasFlowPath(source, sink)
 select sink, source, sink, "This operation potentially exposes sensitive system data from $@.",
   source, source.getNode().toString()
