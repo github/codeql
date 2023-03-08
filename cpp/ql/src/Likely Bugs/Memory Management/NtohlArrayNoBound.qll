@@ -147,7 +147,7 @@ deprecated class NetworkToBufferSizeConfiguration extends DataFlow::Configuratio
   }
 }
 
-module NetworkToBufferSizeConfiguration implements DataFlow::ConfigSig {
+private module NetworkToBufferSizeConfiguration implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof NetworkFunctionCall }
 
   predicate isSink(DataFlow::Node node) { node.asExpr() = any(BufferAccess ba).getAccessedLength() }
