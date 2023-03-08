@@ -1020,6 +1020,15 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
         or
         upper = false and delta = D::fromFloat(D::toFloat(d1).minimum(D::toFloat(d2)))
       )
+      or
+      exists(SemExpr mid, D::Delta d, float f |
+        e.(SemNegateExpr).getOperand() = mid and
+        b instanceof SemZeroBound and
+        bounded(mid, b, d, upper.booleanNot(), fromBackEdge, origdelta, reason) and
+        f = -D::toFloat(d) and
+        delta = D::fromFloat(f) and
+        if semPositive(e) then f >= 0 else any()
+      )
     )
   }
 
