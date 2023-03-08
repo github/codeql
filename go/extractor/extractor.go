@@ -101,10 +101,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 		wd, err := os.Getwd()
 		if err != nil {
-			log.Fatalf("Unable to determine current directory: %s\n", err.Error())
-		}
-
-		if util.FindGoFiles(wd) {
+			log.Printf("Warning: failed to get working directory: %s\n", err.Error())
+		} else if util.FindGoFiles(wd) {
 			diagnostics.EmitGoFilesFoundButNotProcessed()
 		}
 	}

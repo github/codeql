@@ -98,7 +98,7 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 
 		targetFile, err := os.CreateTemp(diagnosticDir, "go-extractor.*.json")
 		if err != nil {
-			log.Println("Failed to create temporary file for diagnostic: ")
+			log.Println("Failed to create diagnostic file: ")
 			log.Println(err)
 		}
 		defer func() {
@@ -110,7 +110,8 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 
 		_, err = targetFile.Write(content)
 		if err != nil {
-			log.Fatal(err)
+			log.Println("Failed to write to diagnostic file: ")
+			log.Println(err)
 		}
 	}
 }
