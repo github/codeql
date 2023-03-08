@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-03-01-12h42m55s.sweet-reggae-ty0djj7r.031123cfd356d43bf6a95d786424c7fda1d95d3854c0b016bf7e699b43a4250c
+compiled: false
