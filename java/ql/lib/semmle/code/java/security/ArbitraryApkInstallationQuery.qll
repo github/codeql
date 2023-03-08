@@ -1,3 +1,5 @@
+/** Provides dataflow configurations to reason about installation of arbitrary Android APKs. */
+
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking2
