@@ -262,3 +262,89 @@ Reference material
 
 The following sections provide reference material for extension points.
 This includes descriptions of each of the arguments (eg. access paths, types, and kinds).
+
+Extension points
+----------------
+
+Below is a description of the tuple values for each extension point.
+The section Access paths describes in more detail, how access paths are composed.
+This is the most complicated part of the extension points and the **mini DSL** for access paths is shared accross the extension points.
+
+sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Taint source. Most taint tracking queries will use the sources added to this extensions point.
+
+- **package**: Name of the package where the source resides.
+- **type**: Name of the type where the source resides.
+- **subtypes**: Whether the source should also apply to all overrides of the method.
+- **name**: Name of the method where the source resides.
+- **signature**: Type signature of the method where the source resides.
+- **ext**: Specifies additional API-graph-like edges (mostly empty).
+- **output**: Access path to the source, where the possibly tainted data flows from.
+- **kind**: Kind of the source.
+- **provenance**: Provenance (origin) of the source.
+
+As most sources are used by all taint tracking queries there are only a few different source kinds.
+The following source kinds are supported:
+
+- **remote**: A remote source is tainted data. This is the most common kind of source and sources of this kind is used for almost all taint tracking queries.
+- **contentprovider**: ?
+- **android-widget**: ?
+- **android-external-storage-dir**: ?
+
+sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Taint sink. As opposed to source kinds, there are many different kinds of sinks as these tend to be more query specific.
+
+- **package**: Name of the package where the sink resides.
+- **type**: Name of the type where the sink resides.
+- **subtypes**: Whether the sink should also apply to all overrides of the method.
+- **name**: Name of the method where the sink resides.
+- **signature**: Type signature of the method where the sink resides.
+- **ext**: Specifies additional API-graph-like edges (mostly empty).
+- **input**: Access path to the sink, where we want to check if possibly tainted data flows too.
+- **kind**: Kind of the sink.
+- **provenance**: Provenance (origin) of the sink.
+
+The following sink kinds are supported:
+
+- **open-url**: ?
+- **jndi-injection**: ?
+- **ldap**: ?
+- **sql**: ?
+- **jdbc-url**: ?
+- **logging**: ?
+- **mvel**: ?
+- **xpath**: ?
+- **groovy**: ?
+- **xss**: ?
+- **ognl-injection**: ?
+- **intent-start**: ?
+- **pending-intent-sent**: ?
+- **url-open-stream**: ?
+- **url-redirect**: ?
+- **create-file**: ?
+- **read-file**: ?
+- **write-file**: ?
+- **set-hostname-verifier**: ?
+- **header-splitting**: ?
+- **information-leak**: ?
+- **xslt**: ?
+- **jexl**: ?
+- **bean-validation**: ?
+- **ssti**: ?
+- **fragment-injection**: ?
+
+summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+neutralModel(package, type, name, signature, provenance)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Access paths
+------------
+
+Provenance
+----------
