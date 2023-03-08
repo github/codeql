@@ -32,7 +32,8 @@ Are we going for extensions packs as the recommended default?
 If yes, then we probably need to elaborate with a concrete example.
 
 In the sections below, we will go through the different extension points using concrete examples.
-The **Reference material** section will in more detail describe the *mini DSLs* that are used to comprise a model definition.
+The extension points are used to customize and improve the existing dataflow queries, by providing sources, sinks and flow through for library methods.
+The **Reference material** section will in more detail describe the *mini DSLs* that are used to comprise a model definition for each extension point.
 
 Example: Taint sink in the **java.sql** package.
 ------------------------------------------------
@@ -224,10 +225,40 @@ That is, the first row models that there is value flow from the elements of qual
 
 Example: Adding **neutral** methods.
 ------------------------------------
+In this example we will see, how to define the **now** method as being neutral.
 This is purely for consistency and has no impact on the analysis.
+A neutral model is used to define that there is no flow through a method.
+Please note that the neutral model for the **now** method is already added.
+
+.. code-block:: java
+   
+   public static Instant taintflow() {
+       Instant t = Instant.now(); // There is no flow from now to t.
+       return t;
+   }
+
+.. code-block:: yaml
+
+   extensions:
+   - addsTo:
+       pack: codeql/java-all
+       extensible: neutralModel
+     data:
+       - ["java.time", "Instant", "now", "()", "manual"]
+
+Reasoning:
+
+Since we are adding a neutral model, we need to add tuples to the **neutralModel** extension point.
+The first four values are used to identify the method (callable) which we are defining as a neutral and the fifth value is the provenance (origin) of the neutral.
+
+- The first value **java.time** is the package name.
+- The second value **Instant** is the class (type) name.
+- The third value **now** is the method name.
+- The fourth value **()** is the method input type signature.
+- The fifth value **manual** is the provenance of the neutral.
 
 Reference material
 ------------------
 
 The following sections provide reference material for extension points.
-This includins descriptions of each of the arguments (eg. access paths, types, and kinds).
+This includes descriptions of each of the arguments (eg. access paths, types, and kinds).
