@@ -5,7 +5,7 @@ Customizing Library Models for Java
 
 .. include:: ../reusables/beta-note-customizing-library-models.rst
 
-The Java analysis can be customized by adding library models (summaries, sinks and sources) in data extensions files.
+The Java analysis can be customized by adding library models (summaries, sinks and sources) in data extension files.
 
 A data extension file for Java is a YAML file in the form:
 
@@ -31,15 +31,15 @@ TODO: Link or inline documentation on how to add dataextensions.
 Are we going for extensions packs as the recommended default?
 If yes, then we probably need to elaborate with a concrete example.
 
-In the sections below, we will go through the different extension points using concrete examples.
-The extension points are used to customize and improve the existing dataflow queries, by providing sources, sinks and flow through for library methods.
+In the sections below, we will show by example how to add tuples to the different extension points.
+The extension points are used to customize and improve the existing dataflow queries, by providing sources, sinks, and flow through for library elements.
 The **Reference material** section will in more detail describe the *mini DSLs* that are used to comprise a model definition for each extension point.
 
 Example: Taint sink in the **java.sql** package.
 ------------------------------------------------
 
 In this example we will see, how to define the argument of the **execute** method as a SQL injection sink.
-This is the **execute** method in the **Statement** class, which is located in the 'java.sql' package.
+This is the **execute** method in the **Statement** class, which is located in the **java.sql** package.
 Please note that this sink is already added to the CodeQL Java analysis.
 
 .. code-block:: java
@@ -75,7 +75,7 @@ For most practical purposes the sixth value is not relevant.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the sink.
 
 - The seventh value **Argument[0]** is the **access path** to the first argument passed to the method, which means that this is the location of the sink.
-- The eighth value **sql** is the kind of the sink. The sink kind is used to define for which queries the sink is in scope. In this case SQL injection queries.
+- The eighth value **sql** is the kind of the sink. The sink kind is used to define the queries where the sink is in scope. In this case  - the SQL injection queries.
 - The ninth value **manual** is the provenance of the sink, which is used to identify the origin of the sink.
  
 Example: Taint source from the **java.net** package.
@@ -116,12 +116,12 @@ The first five values are used to identify the method (callable) which we are de
 For most practical purposes the sixth value is not relevant.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the source.
 
-- The seventh value **ReturnValue** is the access path to the return of the method, which means that it is the return value that should be considered a tainted source.
-- The eighth value **remote** is the kind of the source. The source kind is used to define for which queries the source is in scope. **remote** applies to many of security related queries as it means a remote source of untrusted data. As an example the SQL injection query uses **remote** sources. 
+- The seventh value **ReturnValue** is the access path to the return of the method, which means that it is the return value that should be considered a source of tainted input.
+- The eighth value **remote** is the kind of the source. The source kind is used to define the queries where the source is in scope. **remote** applies to many of security related queries as it means a remote source of untrusted data. As an example the SQL injection query uses **remote** sources.
 - The ninth value **manual** is the provenance of the source, which is used to identify the origin of the source.
 
-Example: Adding flow through the **concat** method.
----------------------------------------------------
+Example: Add flow through the **concat** method.
+------------------------------------------------
 In this example we will see, how to define flow through a method for a simple case.
 This pattern covers many of the cases where we need to define flow through a method.
 Please note that the flow through the **concat** method is already added to the CodeQL Java analysis.
@@ -150,26 +150,28 @@ Reasoning:
 
 Since we are adding flow through a method, we need to add tuples to the **summaryModel** extension point.
 Each tuple defines flow from one argument to the return value.
-The first five values are used to identify the method (callable) which we are defining a source on.
-These are the same for both of the rows above.
+The first row defines flow from the qualifier (**s1** in the example) to the return value (**t** in the example) and the second row defines flow from the first argument (**s2** in the example) to the return value (**t** in the example).
+
+The first five values are used to identify the method (callable) which we are defining a summary for.
+These are the same for both of the rows above as we are adding two summaries for the same method.
 
 - The first value **java.lang** is the package name.
 - The second value **String** is the class (type) name.
-- The third value **False** is flag indicating, whether the source also applies to all overrides of the method.
+- The third value **False** is flag indicating, whether the summary also applies to all overrides of the method.
 - The fourth value **concat** is the method name.
 - The fifth value **(String)** is the method input type signature.
 
 For most practical purposes the sixth value is not relevant.
-The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the source.
+The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the summary.
 
-- The seventh value is the access path to the input where data flows from. **Argument[-1]** is the access path to the qualifier (**s1** in the example) and **Argument[0]** is the access path to the first argument (**s2** in the example).
-- The eighth value **ReturnValue** is the access path to the output where data flows too, in this case **ReturnValue**, which means that the input flows to the return value.
+- The seventh value is the access path to the input (where data flows from). **Argument[-1]** is the access path to the qualifier (**s1** in the example) and **Argument[0]** is the access path to the first argument (**s2** in the example).
+- The eighth value **ReturnValue** is the access path to the output (where data flows to), in this case **ReturnValue**, which means that the input flows to the return value.
 - The ninth value **taint** is the kind of the flow. **taint** means that taint is propagated through the flow.
-- The tenth value **manual** is the provenance of the source, which is used to identify the origin of the summary.
+- The tenth value **manual** is the provenance of the summary, which is used to identify the origin of the summary.
 
 Example: Add flow through the **map** method.
 ---------------------------------------------
-In this example will will see a more complex example of modelling flow through a method.
+In this example, we will see a more complex example of modelling flow through a method.
 This pattern shows how to model flow through higher order methods and collection types.
 Please note that the flow through the **map** method is already added to the CodeQL Java analysis.
 
@@ -195,21 +197,21 @@ This can be achieved by adding the following data extension.
 Reasoning:
 
 Since we are adding flow through a method, we need to add tuples to the **summaryModel** extension point.
-Each tuple defines part of the flow that comprises the total flow through the method.
-The first five values are used to identify the method (callable) which we are defining a source on.
-These are the same for both of the rows above.
+Each tuple defines part of the flow that comprises the total flow through the **map** method.
+The first five values are used to identify the method (callable) which we are defining a summary for.
+These are the same for both of the rows above as we are adding two summaries for the same method.
 
 - The first value **java.util.stream** is the package name.
 - The second value **Stream** is the class (type) name.
-- The third value **True** is flag indicating, whether the source also applies to all overrides of the method.
+- The third value **True** is flag indicating, whether the summary also applies to all overrides of the method.
 - The fourth value **map** is the method name.
 - The fifth value **Function** is the method input type signature.
 
 For most practical purposes the sixth value is not relevant.
-The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the source.
+The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the summary definition.
 
-- The seventh value is the access path to the **input** where data flows from.
-- The eighth value **ReturnValue** is the access path to the **output** where data flows too.
+- The seventh value is the access path to the **input** (where data flows from).
+- The eighth value **ReturnValue** is the access path to the **output** (where data flows to).
 
 For the first row the
 
@@ -223,13 +225,13 @@ For the second row the
 
 The remaining values for both rows
 
-- The ninth value **value** is the kind of the flow. **value** means that the value is propagated.
-- The tenth value **manual** is the provenance of the source, which is used to identify the origin of the summary.
+- The ninth value **value** is the kind of the flow. **value** means that the value is preserved.
+- The tenth value **manual** is the provenance of the summary, which is used to identify the origin of the summary.
 
-That is, the first row models that there is value flow from the elements of qualifier stream into the first argument of the Function provided to **map** and the second row models that there is value flow from the return value of the Function to the elements of the stream returned from **map**.
+That is, the first row models that there is value flow from the elements of the qualifier stream into the first argument of the Function provided to **map** and the second row models that there is value flow from the return value of the Function to the elements of the stream returned from **map**.
 
-Example: Adding **neutral** methods.
-------------------------------------
+Example: Add a **neutral** method.
+----------------------------------
 In this example we will see, how to define the **now** method as being neutral.
 This is purely for consistency and has no impact on the analysis.
 A neutral model is used to define that there is no flow through a method.
@@ -266,7 +268,7 @@ Reference material
 ------------------
 
 The following sections provide reference material for extension points.
-This includes descriptions of each of the arguments (eg. access paths, types, and kinds).
+This includes descriptions of each of the arguments (eg. access paths, kinds and provenance).
 
 Extension points
 ----------------
@@ -275,18 +277,17 @@ Below is a description of the columns for each extension point.
 Sources, Sinks, Summaries and Neutrals are commonly known as Models.
 The semantics of many of the columns of the extension points are shared.
 
-
 The shared columns are:
 
 - **package**: Name of the package.
 - **type**: Name of the type.
-- **subtypes**: A flag indicating whether the model should also apply to all overrides of the selected method(s).
-- **name**: Name of the method (optional). If left blank, it means all methods matching the previous selction criteria.
-- **signature**: Type signature of the method where the source resides (optional). If this is left blank it means all methods matching the previous selction criteria.
-- **ext**: Specifies additional API-graph-like edges (mostly empty).
+- **subtypes**: A flag indicating whether the model should also apply to all overrides of the selected element(s).
+- **name**: Name of the element (optional). If this is left blank, it means all elements matching the previous selection criteria.
+- **signature**: Type signature of the selected element (optional). If this is left blank it means all elements matching the previous selection criteria.
+- **ext**: Specifies additional API-graph-like edges (mostly empty) and out of scope for this document.
 - **provenance**: Provenance (origin) of the model definition.
 
-The columns **package**, **type**, **subtypes**, **name**, and **signature** are used to select the method(s) that the model applies to.
+The columns **package**, **type**, **subtypes**, **name**, and **signature** are used to select the element(s) that the model applies to.
 
 The section Access paths describes in more detail, how access paths are composed.
 This is the most complicated part of the extension points and the **mini DSL** for access paths is shared accross the extension points.
@@ -294,7 +295,7 @@ This is the most complicated part of the extension points and the **mini DSL** f
 sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Taint source. Most taint tracking queries will use the sources added to this extensions point.
+Taint source. Most taint tracking queries will use the all sources added to this extensions point regardless of their kind.
 
 - **output**: Access path to the source, where the possibly tainted data flows from.
 - **kind**: Kind of the source.
@@ -303,7 +304,7 @@ Taint source. Most taint tracking queries will use the sources added to this ext
 As most sources are used by all taint tracking queries there are only a few different source kinds.
 The following source kinds are supported:
 
-- **remote**: A remote source is tainted data. This is the most common kind of source and sources of this kind is used for almost all taint tracking queries.
+- **remote**: A remote source of possibly tainted data. This is the most common kind for a source. Sources of this kind is used for almost all taint tracking queries.
 - **contentprovider**: ?
 - **android-widget**: ?
 - **android-external-storage-dir**: ?
@@ -313,7 +314,7 @@ sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance
 
 Taint sink. As opposed to source kinds, there are many different kinds of sinks as these tend to be more query specific.
 
-- **input**: Access path to the sink, where we want to check if possibly tainted data flows too.
+- **input**: Access path to the sink, where we want to check if tainted data can flow to.
 - **kind**: Kind of the sink.
 
 The following sink kinds are supported:
@@ -348,10 +349,10 @@ The following sink kinds are supported:
 summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Flow through. This extension point is used to model flow through methods.
+Flow through. This extension point is used to model flow through elements.
 
-- **input**: Access path to the input of the method where data will flow to the output.
-- **output**: Access path to the output of the method where data will flow from the input.
+- **input**: Access path to the input of the element (where data will flow to the output).
+- **output**: Access path to the output of the element (where data will flow from the input).
 - **kind**: Kind of the flow through.
 - **provenance**: Provenance (origin) of the flow through.
 
@@ -370,7 +371,7 @@ The **input**, and **output** columns consist of a **.**-separated list of compo
 The following components are supported:
 
 - **Argument[**\ `n`\ **]** selects the argument at index `n` (zero-indexed).
-- **Argument[**\ `-1`\ **]** selects the qualifier of the call.
+- **Argument[**\ `-1`\ **]** selects the qualifier.
 - **Argument[**\ `n1..n2`\ **]** selects the arguments in the given range (both ends included).
 - **Parameter[**\ `n`\ **]** selects the parameter at index `n` (zero-indexed).
 - **Parameter[**\ `n1..n2`\ **]** selects the parameters in the given range (both ends included).
@@ -396,7 +397,7 @@ The following values are supported:
 The provenance is used to distinguish between models that are manually added to the extension point and models that are automatically generated.
 Furthermore, it impacts the dataflow analysis in the following way
 
-- A **manual** model takes precedence over **generated** models. If a **manual** model exist for a method then all generated models are ignored.
-- A **generated** or **ai-generated** model is ignored during analysis, if the source code of the method they are modelling is available.
+- A **manual** model takes precedence over **generated** models. If a **manual** model exist for an element then all generated models are ignored.
+- A **generated** or **ai-generated** model is ignored during analysis, if the source code of the element it is modelling is available.
 
-That is, generated models are less trusted than manual models.
+That is, generated models are less trusted than manual models and only used if neither source code or a manual model is available.
