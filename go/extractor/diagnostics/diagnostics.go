@@ -85,8 +85,8 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 				sourceStruct{"go/autobuilder/diagnostic-limit-reached", "Diagnostics limit exceeded", "go"},
 				fmt.Sprintf("CodeQL has produced more than the maximum number of diagnostics. Only the first %d have been reported.", diagnosticsLimit),
 				string(severityWarning),
-				visibility,
-				location,
+				fullVisibility,
+				noLocation,
 			}
 		}
 
