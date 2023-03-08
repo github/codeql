@@ -271,7 +271,7 @@ int test_unary(int a) {
     int b = +a;
     range(b); // $ range=<=0 range=>=-7
     int c = -a;
-    range(c); // $ range=<=7 MISSING: range=>=0
+    range(c); // $ range=<=7 range=>=0
     range(b+c); // $ range="<=- ...+0" range=">=+ ...:a+0" range=>=-7 range=<=7
     total += b+c;
     range(total);
