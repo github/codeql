@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Logging.EventLog, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Logging
         {
-            // Generated from `Microsoft.Extensions.Logging.EventLoggerFactoryExtensions` in `Microsoft.Extensions.Logging.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class EventLoggerFactoryExtensions
             {
                 public static Microsoft.Extensions.Logging.ILoggingBuilder AddEventLog(this Microsoft.Extensions.Logging.ILoggingBuilder builder) => throw null;
@@ -16,7 +16,6 @@ namespace Microsoft
 
             namespace EventLog
             {
-                // Generated from `Microsoft.Extensions.Logging.EventLog.EventLogLoggerProvider` in `Microsoft.Extensions.Logging.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class EventLogLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider, Microsoft.Extensions.Logging.ISupportExternalScope, System.IDisposable
                 {
                     public Microsoft.Extensions.Logging.ILogger CreateLogger(string name) => throw null;
@@ -27,7 +26,6 @@ namespace Microsoft
                     public void SetScopeProvider(Microsoft.Extensions.Logging.IExternalScopeProvider scopeProvider) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.EventLog.EventLogSettings` in `Microsoft.Extensions.Logging.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class EventLogSettings
                 {
                     public EventLogSettings() => throw null;

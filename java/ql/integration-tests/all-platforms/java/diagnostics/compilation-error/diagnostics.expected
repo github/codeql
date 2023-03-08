@@ -1,5 +1,5 @@
 {
-  "markdownMessage": "A compilation error was observed while autobuilding your code. Check that your Code Scanning workflow installs the needed compiler version and dependencies. Suspicious output line: `[ERROR] COMPILATION ERROR : `",
+  "markdownMessage": "A compilation error was observed while autobuilding your code. Check that your Code Scanning workflow installs the needed compiler version and dependencies.\n\nSuspicious output line: `[ERROR] COMPILATION ERROR : `",
   "severity": "error",
   "source": {
     "extractorName": "java",
@@ -13,7 +13,7 @@
   }
 }
 {
-  "markdownMessage": "A compilation error was observed while autobuilding your code. Check that your Code Scanning workflow installs the needed compiler version and dependencies. Suspicious output line: `[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.0:compile (default-compile) on project maven-sample: Compilation failure`",
+  "markdownMessage": "A compilation error was observed while autobuilding your code. Check that your Code Scanning workflow installs the needed compiler version and dependencies.\n\nSuspicious output line: `[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.0:compile (default-compile) on project maven-sample: Compilation failure`",
   "severity": "error",
   "source": {
     "extractorName": "java",
@@ -27,7 +27,7 @@
   }
 }
 {
-  "markdownMessage": "A compilation error was observed while autobuilding your code. Check that your Code Scanning workflow installs the needed compiler version and dependencies. Suspicious output line: `org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.0:compile (default-compile) on project maven-sample: Compilation failure`",
+  "markdownMessage": "A compilation error was observed while autobuilding your code. Check that your Code Scanning workflow installs the needed compiler version and dependencies.\n\nSuspicious output line: `org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.0:compile (default-compile) on project maven-sample: Compilation failure`",
   "severity": "error",
   "source": {
     "extractorName": "java",

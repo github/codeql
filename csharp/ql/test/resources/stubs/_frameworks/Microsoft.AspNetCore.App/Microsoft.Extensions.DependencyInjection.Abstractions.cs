@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.DependencyInjection.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.ActivatorUtilities` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ActivatorUtilities
             {
                 public static Microsoft.Extensions.DependencyInjection.ObjectFactory CreateFactory(System.Type instanceType, System.Type[] argumentTypes) => throw null;
@@ -16,13 +16,11 @@ namespace Microsoft
                 public static T GetServiceOrCreateInstance<T>(System.IServiceProvider provider) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.ActivatorUtilitiesConstructorAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ActivatorUtilitiesConstructorAttribute : System.Attribute
             {
                 public ActivatorUtilitiesConstructorAttribute() => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.AsyncServiceScope` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public struct AsyncServiceScope : Microsoft.Extensions.DependencyInjection.IServiceScope, System.IAsyncDisposable, System.IDisposable
             {
                 // Stub generator skipped constructor 
@@ -32,46 +30,38 @@ namespace Microsoft
                 public System.IServiceProvider ServiceProvider { get => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.IServiceCollection` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IServiceCollection : System.Collections.Generic.ICollection<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>, System.Collections.Generic.IEnumerable<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>, System.Collections.Generic.IList<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>, System.Collections.IEnumerable
             {
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<>` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IServiceProviderFactory<TContainerBuilder>
             {
                 TContainerBuilder CreateBuilder(Microsoft.Extensions.DependencyInjection.IServiceCollection services);
                 System.IServiceProvider CreateServiceProvider(TContainerBuilder containerBuilder);
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.IServiceProviderIsService` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IServiceProviderIsService
             {
                 bool IsService(System.Type serviceType);
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.IServiceScope` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IServiceScope : System.IDisposable
             {
                 System.IServiceProvider ServiceProvider { get; }
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.IServiceScopeFactory` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IServiceScopeFactory
             {
                 Microsoft.Extensions.DependencyInjection.IServiceScope CreateScope();
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.ISupportRequiredService` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ISupportRequiredService
             {
                 object GetRequiredService(System.Type serviceType);
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.ObjectFactory` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public delegate object ObjectFactory(System.IServiceProvider serviceProvider, object[] arguments);
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.ServiceCollection` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ServiceCollection : Microsoft.Extensions.DependencyInjection.IServiceCollection, System.Collections.Generic.ICollection<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>, System.Collections.Generic.IEnumerable<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>, System.Collections.Generic.IList<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>, System.Collections.IEnumerable
             {
                 void System.Collections.Generic.ICollection<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>.Add(Microsoft.Extensions.DependencyInjection.ServiceDescriptor item) => throw null;
@@ -85,12 +75,12 @@ namespace Microsoft
                 public void Insert(int index, Microsoft.Extensions.DependencyInjection.ServiceDescriptor item) => throw null;
                 public bool IsReadOnly { get => throw null; }
                 public Microsoft.Extensions.DependencyInjection.ServiceDescriptor this[int index] { get => throw null; set => throw null; }
+                public void MakeReadOnly() => throw null;
                 public bool Remove(Microsoft.Extensions.DependencyInjection.ServiceDescriptor item) => throw null;
                 public void RemoveAt(int index) => throw null;
                 public ServiceCollection() => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.ServiceCollectionServiceExtensions` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ServiceCollectionServiceExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddScoped(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Type serviceType) => throw null;
@@ -118,7 +108,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddTransient<TService>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Func<System.IServiceProvider, TService> implementationFactory) where TService : class => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.ServiceDescriptor` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ServiceDescriptor
             {
                 public static Microsoft.Extensions.DependencyInjection.ServiceDescriptor Describe(System.Type serviceType, System.Func<System.IServiceProvider, object> implementationFactory, Microsoft.Extensions.DependencyInjection.ServiceLifetime lifetime) => throw null;
@@ -151,7 +140,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.DependencyInjection.ServiceDescriptor Transient<TService>(System.Func<System.IServiceProvider, TService> implementationFactory) where TService : class => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.ServiceLifetime` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public enum ServiceLifetime : int
             {
                 Scoped = 1,
@@ -159,7 +147,6 @@ namespace Microsoft
                 Transient = 2,
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ServiceProviderServiceExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.AsyncServiceScope CreateAsyncScope(this System.IServiceProvider provider) => throw null;
@@ -174,7 +161,6 @@ namespace Microsoft
 
             namespace Extensions
             {
-                // Generated from `Microsoft.Extensions.DependencyInjection.Extensions.ServiceCollectionDescriptorExtensions` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class ServiceCollectionDescriptorExtensions
                 {
                     public static Microsoft.Extensions.DependencyInjection.IServiceCollection Add(this Microsoft.Extensions.DependencyInjection.IServiceCollection collection, System.Collections.Generic.IEnumerable<Microsoft.Extensions.DependencyInjection.ServiceDescriptor> descriptors) => throw null;
@@ -208,23 +194,6 @@ namespace Microsoft
                 }
 
             }
-        }
-    }
-}
-namespace System
-{
-    namespace Diagnostics
-    {
-        namespace CodeAnalysis
-        {
-            /* Duplicate type 'DynamicallyAccessedMemberTypes' is not stubbed in this assembly 'Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'. */
-
-            /* Duplicate type 'DynamicallyAccessedMembersAttribute' is not stubbed in this assembly 'Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'. */
-
-            /* Duplicate type 'MemberNotNullAttribute' is not stubbed in this assembly 'Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'. */
-
-            /* Duplicate type 'MemberNotNullWhenAttribute' is not stubbed in this assembly 'Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'. */
-
         }
     }
 }

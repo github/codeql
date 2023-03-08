@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.HttpLogging, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Builder
         {
-            // Generated from `Microsoft.AspNetCore.Builder.HttpLoggingBuilderExtensions` in `Microsoft.AspNetCore.HttpLogging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HttpLoggingBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseHttpLogging(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
@@ -16,7 +16,6 @@ namespace Microsoft
         }
         namespace HttpLogging
         {
-            // Generated from `Microsoft.AspNetCore.HttpLogging.HttpLoggingFields` in `Microsoft.AspNetCore.HttpLogging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             [System.Flags]
             public enum HttpLoggingFields : long
             {
@@ -41,7 +40,6 @@ namespace Microsoft
                 ResponseTrailers = 512,
             }
 
-            // Generated from `Microsoft.AspNetCore.HttpLogging.HttpLoggingOptions` in `Microsoft.AspNetCore.HttpLogging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HttpLoggingOptions
             {
                 public HttpLoggingOptions() => throw null;
@@ -53,7 +51,6 @@ namespace Microsoft
                 public System.Collections.Generic.ISet<string> ResponseHeaders { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.HttpLogging.MediaTypeOptions` in `Microsoft.AspNetCore.HttpLogging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class MediaTypeOptions
             {
                 public void AddBinary(Microsoft.Net.Http.Headers.MediaTypeHeaderValue mediaType) => throw null;
@@ -63,9 +60,9 @@ namespace Microsoft
                 public void Clear() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.HttpLogging.W3CLoggerOptions` in `Microsoft.AspNetCore.HttpLogging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class W3CLoggerOptions
             {
+                public System.Collections.Generic.ISet<string> AdditionalRequestHeaders { get => throw null; }
                 public string FileName { get => throw null; set => throw null; }
                 public int? FileSizeLimit { get => throw null; set => throw null; }
                 public System.TimeSpan FlushInterval { get => throw null; set => throw null; }
@@ -75,7 +72,6 @@ namespace Microsoft
                 public W3CLoggerOptions() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.HttpLogging.W3CLoggingFields` in `Microsoft.AspNetCore.HttpLogging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             [System.Flags]
             public enum W3CLoggingFields : long
             {
@@ -109,7 +105,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.HttpLoggingServicesExtensions` in `Microsoft.AspNetCore.HttpLogging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HttpLoggingServicesExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddHttpLogging(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.HttpLogging.HttpLoggingOptions> configureOptions) => throw null;

@@ -12,6 +12,6 @@ from
   string input, string output, string kind, string provenance
 where
   summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance) and
-  provenance != "generated"
+  provenance != ["generated", "ai-generated"]
 select package, type, subtypes, name, signature, ext, input, output, kind, provenance order by
     package, type, name, signature, input, output, kind

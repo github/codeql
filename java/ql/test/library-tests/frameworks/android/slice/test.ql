@@ -2,6 +2,10 @@ import java
 import TestUtilities.InlineFlowTest
 import semmle.code.java.dataflow.FlowSources
 
+class EnableLegacy extends EnableLegacyConfiguration {
+  EnableLegacy() { exists(this) }
+}
+
 class SliceValueFlowConf extends DefaultValueFlowConf {
   override predicate isSource(DataFlow::Node source) {
     super.isSource(source) or source instanceof RemoteFlowSource

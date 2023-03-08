@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Authentication.Core, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Authentication
         {
-            // Generated from `Microsoft.AspNetCore.Authentication.AuthenticationFeature` in `Microsoft.AspNetCore.Authentication.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AuthenticationFeature : Microsoft.AspNetCore.Authentication.IAuthenticationFeature
             {
                 public AuthenticationFeature() => throw null;
@@ -14,7 +14,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Http.PathString OriginalPathBase { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.AuthenticationHandlerProvider` in `Microsoft.AspNetCore.Authentication.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AuthenticationHandlerProvider : Microsoft.AspNetCore.Authentication.IAuthenticationHandlerProvider
             {
                 public AuthenticationHandlerProvider(Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider schemes) => throw null;
@@ -22,7 +21,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider Schemes { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.AuthenticationSchemeProvider` in `Microsoft.AspNetCore.Authentication.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AuthenticationSchemeProvider : Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider
             {
                 public virtual void AddScheme(Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme) => throw null;
@@ -40,7 +38,6 @@ namespace Microsoft
                 public virtual bool TryAddScheme(Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.AuthenticationService` in `Microsoft.AspNetCore.Authentication.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AuthenticationService : Microsoft.AspNetCore.Authentication.IAuthenticationService
             {
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Authentication.AuthenticateResult> AuthenticateAsync(Microsoft.AspNetCore.Http.HttpContext context, string scheme) => throw null;
@@ -55,7 +52,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Authentication.IClaimsTransformation Transform { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.NoopClaimsTransformation` in `Microsoft.AspNetCore.Authentication.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class NoopClaimsTransformation : Microsoft.AspNetCore.Authentication.IClaimsTransformation
             {
                 public NoopClaimsTransformation() => throw null;
@@ -68,7 +64,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.AuthenticationCoreServiceCollectionExtensions` in `Microsoft.AspNetCore.Authentication.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class AuthenticationCoreServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddAuthenticationCore(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;

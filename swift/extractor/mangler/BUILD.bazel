@@ -1,0 +1,12 @@
+load("//swift:rules.bzl", "swift_cc_library")
+
+swift_cc_library(
+    name = "mangler",
+    srcs = glob(["*.cpp"]),
+    hdrs = glob(["*.h"]),
+    visibility = ["//swift:__subpackages__"],
+    deps = [
+        "//swift/extractor/trap",
+        "//swift/third_party/swift-llvm-support",
+    ],
+)

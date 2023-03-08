@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.IO.FileSystem.DriveInfo, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace IO
     {
-        // Generated from `System.IO.DriveInfo` in `System.IO.FileSystem.DriveInfo, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DriveInfo : System.Runtime.Serialization.ISerializable
         {
             public System.Int64 AvailableFreeSpace { get => throw null; }
@@ -22,7 +22,6 @@ namespace System
             public string VolumeLabel { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.IO.DriveNotFoundException` in `System.IO.FileSystem.DriveInfo, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DriveNotFoundException : System.IO.IOException
         {
             public DriveNotFoundException() => throw null;
@@ -31,7 +30,6 @@ namespace System
             public DriveNotFoundException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.IO.DriveType` in `System.IO.FileSystem.DriveInfo, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum DriveType : int
         {
             CDRom = 5,
