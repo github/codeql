@@ -404,7 +404,10 @@ private module ReturnNodes {
    * implicitly returned as the newly-constructed object
    * */
   class SelfReturnNode extends InoutReturnNodeImpl {
-    SelfReturnNode() { exit.getScope() instanceof ConstructorDecl }
+    SelfReturnNode() {
+      exit.getScope() instanceof ConstructorDecl and
+      param instanceof SelfParamDecl
+    }
 
     override ReturnKind getKind() { result instanceof NormalReturnKind }
   }

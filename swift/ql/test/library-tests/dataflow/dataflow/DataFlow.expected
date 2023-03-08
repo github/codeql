@@ -158,12 +158,9 @@ edges
 | test.swift:479:14:479:21 | call to source() :  | test.swift:479:13:479:21 | call to +(_:) |
 | test.swift:488:9:488:9 | self [str] :  | file://:0:0:0:0 | self [str] :  |
 | test.swift:489:10:489:13 | s :  | test.swift:490:13:490:13 | s :  |
-| test.swift:490:7:490:7 | [post] self [str] :  | test.swift:489:5:491:5 | self[constructor return] [str] :  |
 | test.swift:490:7:490:7 | [post] self [str] :  | test.swift:489:5:491:5 | self[return] [str] :  |
 | test.swift:490:13:490:13 | s :  | test.swift:490:7:490:7 | [post] self [str] :  |
-| test.swift:495:17:498:5 | self[constructor return] [str] :  | test.swift:503:13:503:41 | call to Self.init(contentsOfFile:) [str] :  |
 | test.swift:495:17:498:5 | self[return] [str] :  | test.swift:503:13:503:41 | call to Self.init(contentsOfFile:) [str] :  |
-| test.swift:496:7:496:7 | [post] self [str] :  | test.swift:495:17:498:5 | self[constructor return] [str] :  |
 | test.swift:496:7:496:7 | [post] self [str] :  | test.swift:495:17:498:5 | self[return] [str] :  |
 | test.swift:496:7:496:7 | [post] self [str] :  | test.swift:497:17:497:17 | self [str] :  |
 | test.swift:496:20:496:28 | call to source3() :  | test.swift:489:10:489:13 | s :  |
@@ -351,16 +348,10 @@ nodes
 | test.swift:479:14:479:21 | call to source() :  | semmle.label | call to source() :  |
 | test.swift:480:14:480:21 | call to source() | semmle.label | call to source() |
 | test.swift:488:9:488:9 | self [str] :  | semmle.label | self [str] :  |
-| test.swift:489:5:491:5 | self[constructor return] [str] :  | semmle.label | self[constructor return] [str] :  |
-| test.swift:489:5:491:5 | self[constructor return] [str] :  | semmle.label | self[return] [str] :  |
-| test.swift:489:5:491:5 | self[return] [str] :  | semmle.label | self[constructor return] [str] :  |
 | test.swift:489:5:491:5 | self[return] [str] :  | semmle.label | self[return] [str] :  |
 | test.swift:489:10:489:13 | s :  | semmle.label | s :  |
 | test.swift:490:7:490:7 | [post] self [str] :  | semmle.label | [post] self [str] :  |
 | test.swift:490:13:490:13 | s :  | semmle.label | s :  |
-| test.swift:495:17:498:5 | self[constructor return] [str] :  | semmle.label | self[constructor return] [str] :  |
-| test.swift:495:17:498:5 | self[constructor return] [str] :  | semmle.label | self[return] [str] :  |
-| test.swift:495:17:498:5 | self[return] [str] :  | semmle.label | self[constructor return] [str] :  |
 | test.swift:495:17:498:5 | self[return] [str] :  | semmle.label | self[return] [str] :  |
 | test.swift:496:7:496:7 | [post] self [str] :  | semmle.label | [post] self [str] :  |
 | test.swift:496:20:496:28 | call to source3() :  | semmle.label | call to source3() :  |
@@ -403,11 +394,8 @@ subpaths
 | test.swift:303:15:303:16 | ...! :  | file://:0:0:0:0 | [summary param] this in signum() :  | file://:0:0:0:0 | [summary] to write: return (return) in signum() :  | test.swift:303:15:303:25 | call to signum() |
 | test.swift:468:12:468:12 | x :  | test.swift:462:9:462:9 | value :  | file://:0:0:0:0 | [post] self [x] :  | test.swift:468:5:468:5 | [post] cx [x] :  |
 | test.swift:472:20:472:20 | cx [x] :  | test.swift:462:9:462:9 | self [x] :  | file://:0:0:0:0 | .x :  | test.swift:472:20:472:23 | .x :  |
-| test.swift:496:20:496:28 | call to source3() :  | test.swift:489:10:489:13 | s :  | test.swift:489:5:491:5 | self[constructor return] [str] :  | test.swift:496:7:496:7 | [post] self [str] :  |
-| test.swift:496:20:496:28 | call to source3() :  | test.swift:489:10:489:13 | s :  | test.swift:489:5:491:5 | self[return] [str] :  | test.swift:496:7:496:7 | [post] self [str] :  |
 | test.swift:496:20:496:28 | call to source3() :  | test.swift:489:10:489:13 | s :  | test.swift:490:7:490:7 | [post] self [str] :  | test.swift:496:7:496:7 | [post] self [str] :  |
 | test.swift:502:13:502:33 | call to MyClass.init(s:) [str] :  | test.swift:488:9:488:9 | self [str] :  | file://:0:0:0:0 | .str :  | test.swift:502:13:502:35 | .str |
-| test.swift:502:24:502:32 | call to source3() :  | test.swift:489:10:489:13 | s :  | test.swift:489:5:491:5 | self[constructor return] [str] :  | test.swift:502:13:502:33 | call to MyClass.init(s:) [str] :  |
 | test.swift:502:24:502:32 | call to source3() :  | test.swift:489:10:489:13 | s :  | test.swift:489:5:491:5 | self[return] [str] :  | test.swift:502:13:502:33 | call to MyClass.init(s:) [str] :  |
 | test.swift:503:13:503:41 | call to Self.init(contentsOfFile:) [str] :  | test.swift:488:9:488:9 | self [str] :  | file://:0:0:0:0 | .str :  | test.swift:503:13:503:43 | .str |
 #select

@@ -502,3 +502,14 @@ func extensionInits(path: String) {
   sink(str: MyClass(s: source3()).str) // $ flow=502
   sink(str: MyClass(contentsOfFile: path).str) // $ flow=496
 }
+
+class InoutConstructorClass {
+  init(_ n : inout Int) { n = source() }
+}
+
+func sink(arg: InoutConstructorClass) {}
+
+func inoutConstructor() {
+  var n = 0
+  sink(arg: InoutConstructorClass(&n))
+}
