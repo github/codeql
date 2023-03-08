@@ -214,6 +214,14 @@ fn longest_backtick_sequence_length(text: &str) -> usize {
     }
     result
 }
+/**
+ * An argument of a diagnostic message format string. A message argument is either a "code" snippet or a link.
+ */
+pub enum MessageArg<'a> {
+    Code(&'a str),
+    Link(&'a str, &'a str),
+}
+
 impl DiagnosticMessage {
     pub fn full_error_message(&self) -> String {
         match &self.location {
@@ -236,26 +244,39 @@ impl DiagnosticMessage {
         self
     }
 
-    pub fn message(&mut self, text: &str, args: &[&str]) -> &mut Self {
+    pub fn message(&mut self, text: &str, args: &[MessageArg]) -> &mut Self {
         let parts = text.split("{}");
-        let args = args.iter().chain(std::iter::repeat(&""));
         let mut plain = String::with_capacity(2 * text.len());
         let mut markdown = String::with_capacity(2 * text.len());
-        for (p, a) in parts.zip(args) {
+        for (i, p) in parts.enumerate() {
             plain.push_str(p);
-            plain.push_str(a);
             markdown.push_str(p);
-            if a.len() > 0 {
-                let count = longest_backtick_sequence_length(a) + 1;
-                markdown.push_str(&"`".repeat(count));
-                if count > 1 {
-                    markdown.push_str(" ");
+            match args.get(i) {
+                Some(MessageArg::Code(t)) => {
+                    plain.push_str(t);
+                    if t.len() > 0 {
+                        let count = longest_backtick_sequence_length(t) + 1;
+                        markdown.push_str(&"`".repeat(count));
+                        if count > 1 {
+                            markdown.push_str(" ");
+                        }
+                        markdown.push_str(t);
+                        if count > 1 {
+                            markdown.push_str(" ");
+                        }
+                        markdown.push_str(&"`".repeat(count));
+                    }
                 }
-                markdown.push_str(a);
-                if count > 1 {
-                    markdown.push_str(" ");
+                Some(MessageArg::Link(text, url)) => {
+                    plain.push_str(text);
+                    self.help_link(url);
+                    markdown.push_str("[");
+                    markdown.push_str(text);
+                    markdown.push_str("](");
+                    markdown.push_str(url);
+                    markdown.push_str(")");
                 }
-                markdown.push_str(&"`".repeat(count));
+                None => {}
             }
         }
         self.text(&plain);
@@ -323,14 +344,17 @@ fn test_message() {
     let mut m = DiagnosticLoggers::new("foo")
         .logger()
         .new_entry("id", "name");
-    m.message("hello: {}", &["hello"]);
+    m.message("hello: {}", &[MessageArg::Code("hello")]);
     assert_eq!("hello: hello", m.plaintext_message);
     assert_eq!("hello: `hello`", m.markdown_message);
 
     let mut m = DiagnosticLoggers::new("foo")
         .logger()
         .new_entry("id", "name");
-    m.message("hello with backticks: {}", &["oh `hello`!"]);
+    m.message(
+        "hello with backticks: {}",
+        &[MessageArg::Code("oh `hello`!")],
+    );
     assert_eq!("hello with backticks: oh `hello`!", m.plaintext_message);
     assert_eq!(
         "hello with backticks: `` oh `hello`! ``",
