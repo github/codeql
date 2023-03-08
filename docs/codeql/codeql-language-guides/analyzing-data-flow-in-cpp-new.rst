@@ -89,7 +89,7 @@ For example, finding taint propagation from a parameter ``source`` to an express
 Examples
 ~~~~~~~~
 
-The following query finds the filename passed to ``fopen``.
+The following query finds the filename passed to ``fopen``:
 
 .. code-block:: ql
 
