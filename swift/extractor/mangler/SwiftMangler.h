@@ -3,6 +3,8 @@
 #include <swift/AST/ASTMangler.h>
 #include <swift/AST/Types.h>
 
+#include <random>
+
 namespace codeql {
 
 class SwiftDispatcher;
@@ -12,18 +14,13 @@ class SwiftMangler {
   explicit SwiftMangler(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
   std::string mangledName(const swift::Decl& decl);
 
-  template <typename T>
-  std::optional<std::string> mangleType(const T& type) {
-    return std::nullopt;
-  }
+  // default fallback for unmangled types. This should never be called in normal situations
+  // TODO: make it assert once we mangle all types
+  static std::string mangleType(const swift::TypeBase& type);
 
-  std::optional<std::string> mangleType(const swift::ModuleType& type);
-  std::optional<std::string> mangleType(const swift::TupleType& type);
-
-#define TYPE(TYPE_ID, PARENT_TYPE)
-#define BUILTIN_TYPE(TYPE_ID, PARENT_TYPE) \
-  std::optional<std::string> mangleType(const swift::TYPE_ID##Type& type);
-#include <swift/AST/TypeNodes.def>
+  std::string mangleType(const swift::ModuleType& type);
+  std::string mangleType(const swift::TupleType& type);
+  std::string mangleType(const swift::BuiltinType& type);
 
  private:
   swift::Mangle::ASTMangler mangler;

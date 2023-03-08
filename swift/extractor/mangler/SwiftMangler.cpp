@@ -32,7 +32,17 @@ std::string SwiftMangler::mangledName(const swift::Decl& decl) {
   return ret.str();
 }
 
-std::optional<std::string> SwiftMangler::mangleType(const swift::ModuleType& type) {
+std::string SwiftMangler::mangleType(const swift::TypeBase& type) {
+  // spit out a random ID
+  static constexpr auto chrs = "0123456789abcdef";
+  static std::mt19937 rg{std::random_device{}()};
+  static std::uniform_int_distribution<std::string::size_type> dist(0, sizeof(chrs) - 2);
+  std::string ret(16, '\0');
+  std::generate_n(ret.begin(), ret.size(), [&] { return chrs[dist(rg)]; });
+  return ret;
+}
+
+std::string SwiftMangler::mangleType(const swift::ModuleType& type) {
   auto key = type.getModule()->getRealName().str().str();
   if (type.getModule()->isNonSwiftModule()) {
     key += "|clang";
@@ -40,13 +50,13 @@ std::optional<std::string> SwiftMangler::mangleType(const swift::ModuleType& typ
   return key;
 }
 
-std::optional<std::string> SwiftMangler::mangleType(const swift::TupleType& type) {
+std::string SwiftMangler::mangleType(const swift::TupleType& type) {
   std::stringstream stream;
   stream << "(";
   for (const auto& element : type.getElements()) {
     auto s2 = dispatcher.fetchLabel(element.getType());
     if (element.hasName()) {
-      stream << static_cast<std::string_view>(element.getName().str());
+      stream << static_cast<std::string_view>(element.getName().str()) << ':';
     }
     stream << "{" << s2 << "}";
   }
@@ -54,11 +64,8 @@ std::optional<std::string> SwiftMangler::mangleType(const swift::TupleType& type
   return stream.str();
 }
 
-#define TYPE(TYPE_ID, PARENT_TYPE)
-#define BUILTIN_TYPE(TYPE_ID, PARENT_TYPE)                                                \
-  std::optional<std::string> SwiftMangler::mangleType(const swift::TYPE_ID##Type& type) { \
-    llvm::SmallString<32> buffer;                                                         \
-    type.getTypeName(buffer);                                                             \
-    return buffer.str().str();                                                            \
-  }
-#include <swift/AST/TypeNodes.def>
+std::string SwiftMangler::mangleType(const swift::BuiltinType& type) {
+  llvm::SmallString<32> buffer;
+  type.getTypeName(buffer);
+  return buffer.str().str();
+}

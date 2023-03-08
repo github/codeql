@@ -89,17 +89,10 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
   void fillAnyGenericType(const swift::AnyGenericType& type, codeql::AnyGenericType& entry);
 
   template <typename T>
-  auto createMangledTypeEntry(const T& type) {
-    auto mangledName = mangler.mangleType(type);
-    if (mangledName) {
-      return dispatcher.createEntry(type, mangledName.value());
-    }
-    return dispatcher.createEntry(type);
-  }
-
-  template <typename T>
   auto createTypeEntry(const T& type) {
-    auto entry = createMangledTypeEntry(type);
+    auto mangled = mangler.mangleType(type);
+    llvm::errs() << "PROUT: " << mangled << '\n';
+    auto entry = dispatcher.createEntry(type, mangled);
     fillType(type, entry);
     return entry;
   }
