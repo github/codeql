@@ -1236,7 +1236,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       if (!extractor.getConfig().isExterns()) seenFiles = true;
       for (ParseError err : loc.getParseErrors()) {
         String msg = "A parse error occurred: " + StringUtil.escapeMarkdown(err.getMessage())
-            + ". Check the syntax of the file. If the file is invalid, correct the error or exclude the file from analysis.";
+            + ". Check the syntax of the file. If the file is invalid, correct the error or [exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.";
         // file, relative to the source root
         String relativeFilePath = null;
         if (file.startsWith(LGTM_SRC)) {
