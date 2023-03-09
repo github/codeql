@@ -3,6 +3,18 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
+| dispatch.cpp:15:8:15:8 | Middle | Node should have one toString but has 2. |
+| dispatch.cpp:15:8:15:8 | Middle indirection | Node should have one toString but has 2. |
+| dispatch.cpp:15:8:15:8 | Middle indirection | Node should have one toString but has 2. |
+| dispatch.cpp:15:8:15:8 | this | Node should have one toString but has 2. |
+| dispatch.cpp:15:8:15:8 | this indirection | Node should have one toString but has 2. |
+| dispatch.cpp:15:8:15:8 | this indirection | Node should have one toString but has 2. |
+| dispatch.cpp:21:8:21:8 | Bottom | Node should have one toString but has 2. |
+| dispatch.cpp:21:8:21:8 | Bottom indirection | Node should have one toString but has 2. |
+| dispatch.cpp:21:8:21:8 | Bottom indirection | Node should have one toString but has 2. |
+| dispatch.cpp:21:8:21:8 | this | Node should have one toString but has 2. |
+| dispatch.cpp:21:8:21:8 | this indirection | Node should have one toString but has 2. |
+| dispatch.cpp:21:8:21:8 | this indirection | Node should have one toString but has 2. |
 missingToString
 parameterCallable
 localFlowIsLocal
