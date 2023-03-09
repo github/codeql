@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.IO.Compression, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Compression
         {
-            // Generated from `System.IO.Compression.CompressionLevel` in `System.IO.Compression, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public enum CompressionLevel : int
             {
                 Fastest = 1,
@@ -15,14 +15,12 @@ namespace System
                 SmallestSize = 3,
             }
 
-            // Generated from `System.IO.Compression.CompressionMode` in `System.IO.Compression, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public enum CompressionMode : int
             {
                 Compress = 1,
                 Decompress = 0,
             }
 
-            // Generated from `System.IO.Compression.DeflateStream` in `System.IO.Compression, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public class DeflateStream : System.IO.Stream
             {
                 public System.IO.Stream BaseStream { get => throw null; }
@@ -56,9 +54,9 @@ namespace System
                 public override void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
                 public override System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
                 public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public override void WriteByte(System.Byte value) => throw null;
             }
 
-            // Generated from `System.IO.Compression.GZipStream` in `System.IO.Compression, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public class GZipStream : System.IO.Stream
             {
                 public System.IO.Stream BaseStream { get => throw null; }
@@ -92,9 +90,9 @@ namespace System
                 public override void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
                 public override System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
                 public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public override void WriteByte(System.Byte value) => throw null;
             }
 
-            // Generated from `System.IO.Compression.ZLibStream` in `System.IO.Compression, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public class ZLibStream : System.IO.Stream
             {
                 public System.IO.Stream BaseStream { get => throw null; }
@@ -131,9 +129,9 @@ namespace System
                 public ZLibStream(System.IO.Stream stream, System.IO.Compression.CompressionMode mode, bool leaveOpen) => throw null;
             }
 
-            // Generated from `System.IO.Compression.ZipArchive` in `System.IO.Compression, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public class ZipArchive : System.IDisposable
             {
+                public string Comment { get => throw null; set => throw null; }
                 public System.IO.Compression.ZipArchiveEntry CreateEntry(string entryName) => throw null;
                 public System.IO.Compression.ZipArchiveEntry CreateEntry(string entryName, System.IO.Compression.CompressionLevel compressionLevel) => throw null;
                 public void Dispose() => throw null;
@@ -147,15 +145,16 @@ namespace System
                 public ZipArchive(System.IO.Stream stream, System.IO.Compression.ZipArchiveMode mode, bool leaveOpen, System.Text.Encoding entryNameEncoding) => throw null;
             }
 
-            // Generated from `System.IO.Compression.ZipArchiveEntry` in `System.IO.Compression, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public class ZipArchiveEntry
             {
                 public System.IO.Compression.ZipArchive Archive { get => throw null; }
+                public string Comment { get => throw null; set => throw null; }
                 public System.Int64 CompressedLength { get => throw null; }
                 public System.UInt32 Crc32 { get => throw null; }
                 public void Delete() => throw null;
                 public int ExternalAttributes { get => throw null; set => throw null; }
                 public string FullName { get => throw null; }
+                public bool IsEncrypted { get => throw null; }
                 public System.DateTimeOffset LastWriteTime { get => throw null; set => throw null; }
                 public System.Int64 Length { get => throw null; }
                 public string Name { get => throw null; }
@@ -163,7 +162,6 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.IO.Compression.ZipArchiveMode` in `System.IO.Compression, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public enum ZipArchiveMode : int
             {
                 Create = 1,

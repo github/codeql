@@ -1,5 +1,0 @@
-| ../src/urandom_no_if_no_problem.py:34:8:34:20 | ../src/urandom_no_if_no_problem.py:34 | os.urandom(..) |
-| ../src/urandom_no_import_no_problem.py:34:8:34:20 | ../src/urandom_no_import_no_problem.py:34 | os.urandom(..) |
-| ../src/urandom_problem.py:34:8:34:20 | ../src/urandom_problem.py:34 | os.urandom(..) |
-| ../src/urandom_problem.py:42:7:42:16 | ../src/urandom_problem.py:42 | give_src() |
-| ../src/urandom_problem.py:43:1:43:9 | ../src/urandom_problem.py:43 | SINK(..) |

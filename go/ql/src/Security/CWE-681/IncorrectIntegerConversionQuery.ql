@@ -19,10 +19,13 @@ import semmle.go.security.IncorrectIntegerConversionLib
 
 from
   DataFlow::PathNode source, DataFlow::PathNode sink, ConversionWithoutBoundsCheckConfig cfg,
-  DataFlow::CallNode call
-where cfg.hasFlowPath(source, sink) and call.getResult(0) = source.getNode()
-select sink.getNode(), source, sink,
+  DataFlow::CallNode call, DataFlow::Node sinkConverted
+where
+  cfg.hasFlowPath(source, sink) and
+  call.getResult(0) = source.getNode() and
+  sinkConverted = sink.getNode().getASuccessor()
+select sinkConverted, source, sink,
   "Incorrect conversion of " +
     describeBitSize(cfg.getSourceBitSize(), getIntTypeBitSize(source.getNode().getFile())) +
-    " from $@ to a lower bit size type " + sink.getNode().getType().getUnderlyingType().getName() +
+    " from $@ to a lower bit size type " + sinkConverted.getType().getUnderlyingType().getName() +
     " without an upper bound check.", source, call.getTarget().getQualifiedName()

@@ -26,4 +26,21 @@ class StaticFields
         staticField = 0;    // BAD
         instanceField = 0;  // OK
     }
+
+    static object backingField;
+    static object StaticProp
+    {
+        get
+        {
+            return backingField ?? (backingField = new object()); // OK
+        }
+    }
+
+    object Prop
+    {
+        get
+        {
+            return backingField ?? (backingField = new object()); // BAD
+        }
+    }
 }

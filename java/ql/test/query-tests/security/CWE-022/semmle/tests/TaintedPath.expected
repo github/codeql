@@ -14,6 +14,7 @@ edges
 | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:99:12:99:33 | new URI(...) |
 | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:100:12:100:45 | new URI(...) |
 | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:101:12:101:54 | new URI(...) |
+| Test.java:105:14:105:34 | getHostName(...) : String | Test.java:107:46:107:46 | t |
 nodes
 | Test.java:19:18:19:38 | getHostName(...) : String | semmle.label | getHostName(...) : String |
 | Test.java:24:20:24:23 | temp | semmle.label | temp |
@@ -34,6 +35,8 @@ nodes
 | Test.java:99:12:99:33 | new URI(...) | semmle.label | new URI(...) |
 | Test.java:100:12:100:45 | new URI(...) | semmle.label | new URI(...) |
 | Test.java:101:12:101:54 | new URI(...) | semmle.label | new URI(...) |
+| Test.java:105:14:105:34 | getHostName(...) : String | semmle.label | getHostName(...) : String |
+| Test.java:107:46:107:46 | t | semmle.label | t |
 subpaths
 #select
 | Test.java:24:11:24:24 | new File(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:24:20:24:23 | temp | This path depends on a $@. | Test.java:19:18:19:38 | getHostName(...) | user-provided value |
@@ -47,3 +50,4 @@ subpaths
 | Test.java:99:3:99:34 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:99:12:99:33 | new URI(...) | This path depends on a $@. | Test.java:95:14:95:34 | getHostName(...) | user-provided value |
 | Test.java:100:3:100:46 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:100:12:100:45 | new URI(...) | This path depends on a $@. | Test.java:95:14:95:34 | getHostName(...) | user-provided value |
 | Test.java:101:3:101:55 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:101:12:101:54 | new URI(...) | This path depends on a $@. | Test.java:95:14:95:34 | getHostName(...) | user-provided value |
+| Test.java:107:46:107:46 | t | Test.java:105:14:105:34 | getHostName(...) : String | Test.java:107:46:107:46 | t | This path depends on a $@. | Test.java:105:14:105:34 | getHostName(...) | user-provided value |

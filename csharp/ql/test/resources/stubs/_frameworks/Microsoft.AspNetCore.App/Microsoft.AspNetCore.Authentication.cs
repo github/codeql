@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Authentication, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Authentication
         {
-            // Generated from `Microsoft.AspNetCore.Authentication.AccessDeniedContext` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AccessDeniedContext : Microsoft.AspNetCore.Authentication.HandleRequestContext<Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions>
             {
                 public AccessDeniedContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme, Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions options) : base(default(Microsoft.AspNetCore.Http.HttpContext), default(Microsoft.AspNetCore.Authentication.AuthenticationScheme), default(Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions)) => throw null;
@@ -16,7 +16,6 @@ namespace Microsoft
                 public string ReturnUrlParameter { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.AuthenticationBuilder` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AuthenticationBuilder
             {
                 public virtual Microsoft.AspNetCore.Authentication.AuthenticationBuilder AddPolicyScheme(string authenticationScheme, string displayName, System.Action<Microsoft.AspNetCore.Authentication.PolicySchemeOptions> configureOptions) => throw null;
@@ -27,7 +26,11 @@ namespace Microsoft
                 public virtual Microsoft.Extensions.DependencyInjection.IServiceCollection Services { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.AuthenticationHandler<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            public static class AuthenticationConfigurationProviderExtensions
+            {
+                public static Microsoft.Extensions.Configuration.IConfiguration GetSchemeConfiguration(this Microsoft.AspNetCore.Authentication.IAuthenticationConfigurationProvider provider, string authenticationScheme) => throw null;
+            }
+
             public abstract class AuthenticationHandler<TOptions> : Microsoft.AspNetCore.Authentication.IAuthenticationHandler where TOptions : Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, new()
             {
                 public System.Threading.Tasks.Task<Microsoft.AspNetCore.Authentication.AuthenticateResult> AuthenticateAsync() => throw null;
@@ -61,7 +64,6 @@ namespace Microsoft
                 protected System.Text.Encodings.Web.UrlEncoder UrlEncoder { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.AuthenticationMiddleware` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AuthenticationMiddleware
             {
                 public AuthenticationMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider schemes) => throw null;
@@ -69,7 +71,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider Schemes { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AuthenticationSchemeOptions
             {
                 public AuthenticationSchemeOptions() => throw null;
@@ -87,14 +88,12 @@ namespace Microsoft
                 public virtual void Validate(string scheme) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.Base64UrlTextEncoder` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class Base64UrlTextEncoder
             {
                 public static System.Byte[] Decode(string text) => throw null;
                 public static string Encode(System.Byte[] data) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.BaseContext<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class BaseContext<TOptions> where TOptions : Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
             {
                 protected BaseContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme, TOptions options) => throw null;
@@ -105,7 +104,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Authentication.AuthenticationScheme Scheme { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.HandleRequestContext<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HandleRequestContext<TOptions> : Microsoft.AspNetCore.Authentication.BaseContext<TOptions> where TOptions : Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
             {
                 protected HandleRequestContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme, TOptions options) : base(default(Microsoft.AspNetCore.Http.HttpContext), default(Microsoft.AspNetCore.Authentication.AuthenticationScheme), default(TOptions)) => throw null;
@@ -114,7 +112,6 @@ namespace Microsoft
                 public void SkipHandler() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.HandleRequestResult` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HandleRequestResult : Microsoft.AspNetCore.Authentication.AuthenticateResult
             {
                 public static Microsoft.AspNetCore.Authentication.HandleRequestResult Fail(System.Exception failure) => throw null;
@@ -130,14 +127,12 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Authentication.HandleRequestResult Success(Microsoft.AspNetCore.Authentication.AuthenticationTicket ticket) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.IDataSerializer<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IDataSerializer<TModel>
             {
                 TModel Deserialize(System.Byte[] data);
                 System.Byte[] Serialize(TModel model);
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.ISecureDataFormat<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ISecureDataFormat<TData>
             {
                 string Protect(TData data);
@@ -146,19 +141,16 @@ namespace Microsoft
                 TData Unprotect(string protectedText, string purpose);
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.ISystemClock` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ISystemClock
             {
                 System.DateTimeOffset UtcNow { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.JsonDocumentAuthExtensions` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class JsonDocumentAuthExtensions
             {
                 public static string GetString(this System.Text.Json.JsonElement element, string key) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.PolicySchemeHandler` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class PolicySchemeHandler : Microsoft.AspNetCore.Authentication.SignInAuthenticationHandler<Microsoft.AspNetCore.Authentication.PolicySchemeOptions>
             {
                 protected override System.Threading.Tasks.Task<Microsoft.AspNetCore.Authentication.AuthenticateResult> HandleAuthenticateAsync() => throw null;
@@ -169,33 +161,28 @@ namespace Microsoft
                 public PolicySchemeHandler(Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.AspNetCore.Authentication.PolicySchemeOptions> options, Microsoft.Extensions.Logging.ILoggerFactory logger, System.Text.Encodings.Web.UrlEncoder encoder, Microsoft.AspNetCore.Authentication.ISystemClock clock) : base(default(Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.AspNetCore.Authentication.PolicySchemeOptions>), default(Microsoft.Extensions.Logging.ILoggerFactory), default(System.Text.Encodings.Web.UrlEncoder), default(Microsoft.AspNetCore.Authentication.ISystemClock)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.PolicySchemeOptions` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class PolicySchemeOptions : Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
             {
                 public PolicySchemeOptions() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.PrincipalContext<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class PrincipalContext<TOptions> : Microsoft.AspNetCore.Authentication.PropertiesContext<TOptions> where TOptions : Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
             {
                 public virtual System.Security.Claims.ClaimsPrincipal Principal { get => throw null; set => throw null; }
                 protected PrincipalContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme, TOptions options, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties) : base(default(Microsoft.AspNetCore.Http.HttpContext), default(Microsoft.AspNetCore.Authentication.AuthenticationScheme), default(TOptions), default(Microsoft.AspNetCore.Authentication.AuthenticationProperties)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.PropertiesContext<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class PropertiesContext<TOptions> : Microsoft.AspNetCore.Authentication.BaseContext<TOptions> where TOptions : Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
             {
                 public virtual Microsoft.AspNetCore.Authentication.AuthenticationProperties Properties { get => throw null; set => throw null; }
                 protected PropertiesContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme, TOptions options, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties) : base(default(Microsoft.AspNetCore.Http.HttpContext), default(Microsoft.AspNetCore.Authentication.AuthenticationScheme), default(TOptions)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.PropertiesDataFormat` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class PropertiesDataFormat : Microsoft.AspNetCore.Authentication.SecureDataFormat<Microsoft.AspNetCore.Authentication.AuthenticationProperties>
             {
                 public PropertiesDataFormat(Microsoft.AspNetCore.DataProtection.IDataProtector protector) : base(default(Microsoft.AspNetCore.Authentication.IDataSerializer<Microsoft.AspNetCore.Authentication.AuthenticationProperties>), default(Microsoft.AspNetCore.DataProtection.IDataProtector)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.PropertiesSerializer` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class PropertiesSerializer : Microsoft.AspNetCore.Authentication.IDataSerializer<Microsoft.AspNetCore.Authentication.AuthenticationProperties>
             {
                 public static Microsoft.AspNetCore.Authentication.PropertiesSerializer Default { get => throw null; }
@@ -206,14 +193,12 @@ namespace Microsoft
                 public virtual void Write(System.IO.BinaryWriter writer, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.RedirectContext<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RedirectContext<TOptions> : Microsoft.AspNetCore.Authentication.PropertiesContext<TOptions> where TOptions : Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
             {
                 public RedirectContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme, TOptions options, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties, string redirectUri) : base(default(Microsoft.AspNetCore.Http.HttpContext), default(Microsoft.AspNetCore.Authentication.AuthenticationScheme), default(TOptions), default(Microsoft.AspNetCore.Authentication.AuthenticationProperties)) => throw null;
                 public string RedirectUri { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.RemoteAuthenticationContext<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class RemoteAuthenticationContext<TOptions> : Microsoft.AspNetCore.Authentication.HandleRequestContext<TOptions> where TOptions : Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
             {
                 public void Fail(System.Exception failure) => throw null;
@@ -224,7 +209,6 @@ namespace Microsoft
                 public void Success() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.RemoteAuthenticationEvents` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RemoteAuthenticationEvents
             {
                 public virtual System.Threading.Tasks.Task AccessDenied(Microsoft.AspNetCore.Authentication.AccessDeniedContext context) => throw null;
@@ -236,7 +220,6 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task TicketReceived(Microsoft.AspNetCore.Authentication.TicketReceivedContext context) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.RemoteAuthenticationHandler<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class RemoteAuthenticationHandler<TOptions> : Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>, Microsoft.AspNetCore.Authentication.IAuthenticationHandler, Microsoft.AspNetCore.Authentication.IAuthenticationRequestHandler where TOptions : Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions, new()
             {
                 protected override System.Threading.Tasks.Task<object> CreateEventsAsync() => throw null;
@@ -253,7 +236,6 @@ namespace Microsoft
                 protected virtual bool ValidateCorrelationId(Microsoft.AspNetCore.Authentication.AuthenticationProperties properties) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RemoteAuthenticationOptions : Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
             {
                 public Microsoft.AspNetCore.Http.PathString AccessDeniedPath { get => throw null; set => throw null; }
@@ -273,7 +255,6 @@ namespace Microsoft
                 public override void Validate(string scheme) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.RemoteFailureContext` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RemoteFailureContext : Microsoft.AspNetCore.Authentication.HandleRequestContext<Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions>
             {
                 public System.Exception Failure { get => throw null; set => throw null; }
@@ -281,7 +262,6 @@ namespace Microsoft
                 public RemoteFailureContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme, Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions options, System.Exception failure) : base(default(Microsoft.AspNetCore.Http.HttpContext), default(Microsoft.AspNetCore.Authentication.AuthenticationScheme), default(Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.RequestPathBaseCookieBuilder` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RequestPathBaseCookieBuilder : Microsoft.AspNetCore.Http.CookieBuilder
             {
                 protected virtual string AdditionalPath { get => throw null; }
@@ -289,7 +269,6 @@ namespace Microsoft
                 public RequestPathBaseCookieBuilder() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.ResultContext<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class ResultContext<TOptions> : Microsoft.AspNetCore.Authentication.BaseContext<TOptions> where TOptions : Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
             {
                 public void Fail(System.Exception failure) => throw null;
@@ -302,7 +281,6 @@ namespace Microsoft
                 public void Success() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.SecureDataFormat<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SecureDataFormat<TData> : Microsoft.AspNetCore.Authentication.ISecureDataFormat<TData>
             {
                 public string Protect(TData data) => throw null;
@@ -312,7 +290,6 @@ namespace Microsoft
                 public TData Unprotect(string protectedText, string purpose) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.SignInAuthenticationHandler<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class SignInAuthenticationHandler<TOptions> : Microsoft.AspNetCore.Authentication.SignOutAuthenticationHandler<TOptions>, Microsoft.AspNetCore.Authentication.IAuthenticationHandler, Microsoft.AspNetCore.Authentication.IAuthenticationSignInHandler, Microsoft.AspNetCore.Authentication.IAuthenticationSignOutHandler where TOptions : Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, new()
             {
                 protected abstract System.Threading.Tasks.Task HandleSignInAsync(System.Security.Claims.ClaimsPrincipal user, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties);
@@ -320,7 +297,6 @@ namespace Microsoft
                 public SignInAuthenticationHandler(Microsoft.Extensions.Options.IOptionsMonitor<TOptions> options, Microsoft.Extensions.Logging.ILoggerFactory logger, System.Text.Encodings.Web.UrlEncoder encoder, Microsoft.AspNetCore.Authentication.ISystemClock clock) : base(default(Microsoft.Extensions.Options.IOptionsMonitor<TOptions>), default(Microsoft.Extensions.Logging.ILoggerFactory), default(System.Text.Encodings.Web.UrlEncoder), default(Microsoft.AspNetCore.Authentication.ISystemClock)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.SignOutAuthenticationHandler<>` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class SignOutAuthenticationHandler<TOptions> : Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>, Microsoft.AspNetCore.Authentication.IAuthenticationHandler, Microsoft.AspNetCore.Authentication.IAuthenticationSignOutHandler where TOptions : Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, new()
             {
                 protected abstract System.Threading.Tasks.Task HandleSignOutAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties properties);
@@ -328,27 +304,23 @@ namespace Microsoft
                 public SignOutAuthenticationHandler(Microsoft.Extensions.Options.IOptionsMonitor<TOptions> options, Microsoft.Extensions.Logging.ILoggerFactory logger, System.Text.Encodings.Web.UrlEncoder encoder, Microsoft.AspNetCore.Authentication.ISystemClock clock) : base(default(Microsoft.Extensions.Options.IOptionsMonitor<TOptions>), default(Microsoft.Extensions.Logging.ILoggerFactory), default(System.Text.Encodings.Web.UrlEncoder), default(Microsoft.AspNetCore.Authentication.ISystemClock)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.SystemClock` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SystemClock : Microsoft.AspNetCore.Authentication.ISystemClock
             {
                 public SystemClock() => throw null;
                 public System.DateTimeOffset UtcNow { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.TicketDataFormat` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class TicketDataFormat : Microsoft.AspNetCore.Authentication.SecureDataFormat<Microsoft.AspNetCore.Authentication.AuthenticationTicket>
             {
                 public TicketDataFormat(Microsoft.AspNetCore.DataProtection.IDataProtector protector) : base(default(Microsoft.AspNetCore.Authentication.IDataSerializer<Microsoft.AspNetCore.Authentication.AuthenticationTicket>), default(Microsoft.AspNetCore.DataProtection.IDataProtector)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.TicketReceivedContext` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class TicketReceivedContext : Microsoft.AspNetCore.Authentication.RemoteAuthenticationContext<Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions>
             {
                 public string ReturnUri { get => throw null; set => throw null; }
                 public TicketReceivedContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme, Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions options, Microsoft.AspNetCore.Authentication.AuthenticationTicket ticket) : base(default(Microsoft.AspNetCore.Http.HttpContext), default(Microsoft.AspNetCore.Authentication.AuthenticationScheme), default(Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions), default(Microsoft.AspNetCore.Authentication.AuthenticationProperties)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Authentication.TicketSerializer` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class TicketSerializer : Microsoft.AspNetCore.Authentication.IDataSerializer<Microsoft.AspNetCore.Authentication.AuthenticationTicket>
             {
                 public static Microsoft.AspNetCore.Authentication.TicketSerializer Default { get => throw null; }
@@ -366,7 +338,6 @@ namespace Microsoft
         }
         namespace Builder
         {
-            // Generated from `Microsoft.AspNetCore.Builder.AuthAppBuilderExtensions` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class AuthAppBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseAuthentication(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
@@ -378,7 +349,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.AuthenticationServiceCollectionExtensions` in `Microsoft.AspNetCore.Authentication, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class AuthenticationServiceCollectionExtensions
             {
                 public static Microsoft.AspNetCore.Authentication.AuthenticationBuilder AddAuthentication(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;

@@ -11,6 +11,15 @@ module Bytes {
     FunctionOutput outp;
 
     FunctionModels() {
+      hasQualifiedName("bytes", "Clone") and
+      (inp.isParameter(0) and outp.isResult())
+      or
+      hasQualifiedName("bytes", "Cut") and
+      (inp.isParameter(0) and outp.isResult([0, 1]))
+      or
+      hasQualifiedName("bytes", ["CutPrefix", "CutSuffix"]) and
+      (inp.isParameter(0) and outp.isResult(0))
+      or
       // signature: func Fields(s []byte) [][]byte
       hasQualifiedName("bytes", "Fields") and
       (inp.isParameter(0) and outp.isResult())

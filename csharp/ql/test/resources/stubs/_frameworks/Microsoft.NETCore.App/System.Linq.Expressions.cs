@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.Linq.Expressions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace Dynamic
     {
-        // Generated from `System.Dynamic.BinaryOperationBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class BinaryOperationBinder : System.Dynamic.DynamicMetaObjectBinder
         {
             protected BinaryOperationBinder(System.Linq.Expressions.ExpressionType operation) => throw null;
@@ -15,7 +15,6 @@ namespace System
             public override System.Type ReturnType { get => throw null; }
         }
 
-        // Generated from `System.Dynamic.BindingRestrictions` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class BindingRestrictions
         {
             public static System.Dynamic.BindingRestrictions Combine(System.Collections.Generic.IList<System.Dynamic.DynamicMetaObject> contributingObjects) => throw null;
@@ -27,7 +26,6 @@ namespace System
             public System.Linq.Expressions.Expression ToExpression() => throw null;
         }
 
-        // Generated from `System.Dynamic.CallInfo` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CallInfo
         {
             public int ArgumentCount { get => throw null; }
@@ -38,7 +36,6 @@ namespace System
             public override int GetHashCode() => throw null;
         }
 
-        // Generated from `System.Dynamic.ConvertBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class ConvertBinder : System.Dynamic.DynamicMetaObjectBinder
         {
             public override System.Dynamic.DynamicMetaObject Bind(System.Dynamic.DynamicMetaObject target, System.Dynamic.DynamicMetaObject[] args) => throw null;
@@ -50,7 +47,6 @@ namespace System
             public System.Type Type { get => throw null; }
         }
 
-        // Generated from `System.Dynamic.CreateInstanceBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class CreateInstanceBinder : System.Dynamic.DynamicMetaObjectBinder
         {
             public override System.Dynamic.DynamicMetaObject Bind(System.Dynamic.DynamicMetaObject target, System.Dynamic.DynamicMetaObject[] args) => throw null;
@@ -61,7 +57,6 @@ namespace System
             public override System.Type ReturnType { get => throw null; }
         }
 
-        // Generated from `System.Dynamic.DeleteIndexBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class DeleteIndexBinder : System.Dynamic.DynamicMetaObjectBinder
         {
             public override System.Dynamic.DynamicMetaObject Bind(System.Dynamic.DynamicMetaObject target, System.Dynamic.DynamicMetaObject[] args) => throw null;
@@ -72,7 +67,6 @@ namespace System
             public override System.Type ReturnType { get => throw null; }
         }
 
-        // Generated from `System.Dynamic.DeleteMemberBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class DeleteMemberBinder : System.Dynamic.DynamicMetaObjectBinder
         {
             public override System.Dynamic.DynamicMetaObject Bind(System.Dynamic.DynamicMetaObject target, System.Dynamic.DynamicMetaObject[] args) => throw null;
@@ -84,7 +78,6 @@ namespace System
             public override System.Type ReturnType { get => throw null; }
         }
 
-        // Generated from `System.Dynamic.DynamicMetaObject` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DynamicMetaObject
         {
             public virtual System.Dynamic.DynamicMetaObject BindBinaryOperation(System.Dynamic.BinaryOperationBinder binder, System.Dynamic.DynamicMetaObject arg) => throw null;
@@ -112,7 +105,6 @@ namespace System
             public object Value { get => throw null; }
         }
 
-        // Generated from `System.Dynamic.DynamicMetaObjectBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class DynamicMetaObjectBinder : System.Runtime.CompilerServices.CallSiteBinder
         {
             public abstract System.Dynamic.DynamicMetaObject Bind(System.Dynamic.DynamicMetaObject target, System.Dynamic.DynamicMetaObject[] args);
@@ -124,7 +116,6 @@ namespace System
             public virtual System.Type ReturnType { get => throw null; }
         }
 
-        // Generated from `System.Dynamic.DynamicObject` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DynamicObject : System.Dynamic.IDynamicMetaObjectProvider
         {
             protected DynamicObject() => throw null;
@@ -144,7 +135,6 @@ namespace System
             public virtual bool TryUnaryOperation(System.Dynamic.UnaryOperationBinder binder, out object result) => throw null;
         }
 
-        // Generated from `System.Dynamic.ExpandoObject` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ExpandoObject : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable, System.ComponentModel.INotifyPropertyChanged, System.Dynamic.IDynamicMetaObjectProvider
         {
             void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>.Add(System.Collections.Generic.KeyValuePair<string, object> item) => throw null;
@@ -168,7 +158,6 @@ namespace System
             System.Collections.Generic.ICollection<object> System.Collections.Generic.IDictionary<string, object>.Values { get => throw null; }
         }
 
-        // Generated from `System.Dynamic.GetIndexBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class GetIndexBinder : System.Dynamic.DynamicMetaObjectBinder
         {
             public override System.Dynamic.DynamicMetaObject Bind(System.Dynamic.DynamicMetaObject target, System.Dynamic.DynamicMetaObject[] args) => throw null;
@@ -179,7 +168,6 @@ namespace System
             public override System.Type ReturnType { get => throw null; }
         }
 
-        // Generated from `System.Dynamic.GetMemberBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class GetMemberBinder : System.Dynamic.DynamicMetaObjectBinder
         {
             public override System.Dynamic.DynamicMetaObject Bind(System.Dynamic.DynamicMetaObject target, System.Dynamic.DynamicMetaObject[] args) => throw null;
@@ -191,19 +179,16 @@ namespace System
             public override System.Type ReturnType { get => throw null; }
         }
 
-        // Generated from `System.Dynamic.IDynamicMetaObjectProvider` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDynamicMetaObjectProvider
         {
             System.Dynamic.DynamicMetaObject GetMetaObject(System.Linq.Expressions.Expression parameter);
         }
 
-        // Generated from `System.Dynamic.IInvokeOnGetBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IInvokeOnGetBinder
         {
             bool InvokeOnGet { get; }
         }
 
-        // Generated from `System.Dynamic.InvokeBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class InvokeBinder : System.Dynamic.DynamicMetaObjectBinder
         {
             public override System.Dynamic.DynamicMetaObject Bind(System.Dynamic.DynamicMetaObject target, System.Dynamic.DynamicMetaObject[] args) => throw null;
@@ -214,7 +199,6 @@ namespace System
             public override System.Type ReturnType { get => throw null; }
         }
 
-        // Generated from `System.Dynamic.InvokeMemberBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class InvokeMemberBinder : System.Dynamic.DynamicMetaObjectBinder
         {
             public override System.Dynamic.DynamicMetaObject Bind(System.Dynamic.DynamicMetaObject target, System.Dynamic.DynamicMetaObject[] args) => throw null;
@@ -228,7 +212,6 @@ namespace System
             public override System.Type ReturnType { get => throw null; }
         }
 
-        // Generated from `System.Dynamic.SetIndexBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class SetIndexBinder : System.Dynamic.DynamicMetaObjectBinder
         {
             public override System.Dynamic.DynamicMetaObject Bind(System.Dynamic.DynamicMetaObject target, System.Dynamic.DynamicMetaObject[] args) => throw null;
@@ -239,7 +222,6 @@ namespace System
             protected SetIndexBinder(System.Dynamic.CallInfo callInfo) => throw null;
         }
 
-        // Generated from `System.Dynamic.SetMemberBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class SetMemberBinder : System.Dynamic.DynamicMetaObjectBinder
         {
             public override System.Dynamic.DynamicMetaObject Bind(System.Dynamic.DynamicMetaObject target, System.Dynamic.DynamicMetaObject[] args) => throw null;
@@ -251,7 +233,6 @@ namespace System
             protected SetMemberBinder(string name, bool ignoreCase) => throw null;
         }
 
-        // Generated from `System.Dynamic.UnaryOperationBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class UnaryOperationBinder : System.Dynamic.DynamicMetaObjectBinder
         {
             public override System.Dynamic.DynamicMetaObject Bind(System.Dynamic.DynamicMetaObject target, System.Dynamic.DynamicMetaObject[] args) => throw null;
@@ -265,17 +246,14 @@ namespace System
     }
     namespace Linq
     {
-        // Generated from `System.Linq.IOrderedQueryable` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IOrderedQueryable : System.Collections.IEnumerable, System.Linq.IQueryable
         {
         }
 
-        // Generated from `System.Linq.IOrderedQueryable<>` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IOrderedQueryable<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Linq.IOrderedQueryable, System.Linq.IQueryable, System.Linq.IQueryable<T>
         {
         }
 
-        // Generated from `System.Linq.IQueryProvider` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IQueryProvider
         {
             System.Linq.IQueryable CreateQuery(System.Linq.Expressions.Expression expression);
@@ -284,7 +262,6 @@ namespace System
             TResult Execute<TResult>(System.Linq.Expressions.Expression expression);
         }
 
-        // Generated from `System.Linq.IQueryable` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IQueryable : System.Collections.IEnumerable
         {
             System.Type ElementType { get; }
@@ -292,14 +269,12 @@ namespace System
             System.Linq.IQueryProvider Provider { get; }
         }
 
-        // Generated from `System.Linq.IQueryable<>` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IQueryable<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Linq.IQueryable
         {
         }
 
         namespace Expressions
         {
-            // Generated from `System.Linq.Expressions.BinaryExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class BinaryExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -314,7 +289,6 @@ namespace System
                 public System.Linq.Expressions.BinaryExpression Update(System.Linq.Expressions.Expression left, System.Linq.Expressions.LambdaExpression conversion, System.Linq.Expressions.Expression right) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.BlockExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class BlockExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -326,7 +300,6 @@ namespace System
                 public System.Collections.ObjectModel.ReadOnlyCollection<System.Linq.Expressions.ParameterExpression> Variables { get => throw null; }
             }
 
-            // Generated from `System.Linq.Expressions.CatchBlock` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CatchBlock
             {
                 public System.Linq.Expressions.Expression Body { get => throw null; }
@@ -337,7 +310,6 @@ namespace System
                 public System.Linq.Expressions.ParameterExpression Variable { get => throw null; }
             }
 
-            // Generated from `System.Linq.Expressions.ConditionalExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ConditionalExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -349,7 +321,6 @@ namespace System
                 public System.Linq.Expressions.ConditionalExpression Update(System.Linq.Expressions.Expression test, System.Linq.Expressions.Expression ifTrue, System.Linq.Expressions.Expression ifFalse) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.ConstantExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ConstantExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -358,7 +329,6 @@ namespace System
                 public object Value { get => throw null; }
             }
 
-            // Generated from `System.Linq.Expressions.DebugInfoExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DebugInfoExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -372,7 +342,6 @@ namespace System
                 public override System.Type Type { get => throw null; }
             }
 
-            // Generated from `System.Linq.Expressions.DefaultExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DefaultExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -380,7 +349,6 @@ namespace System
                 public override System.Type Type { get => throw null; }
             }
 
-            // Generated from `System.Linq.Expressions.DynamicExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DynamicExpression : System.Linq.Expressions.Expression, System.Linq.Expressions.IArgumentProvider, System.Linq.Expressions.IDynamicExpression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -408,14 +376,12 @@ namespace System
                 public System.Linq.Expressions.DynamicExpression Update(System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression> arguments) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.DynamicExpressionVisitor` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DynamicExpressionVisitor : System.Linq.Expressions.ExpressionVisitor
             {
                 protected DynamicExpressionVisitor() => throw null;
                 protected internal override System.Linq.Expressions.Expression VisitDynamic(System.Linq.Expressions.DynamicExpression node) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.ElementInit` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ElementInit : System.Linq.Expressions.IArgumentProvider
             {
                 public System.Reflection.MethodInfo AddMethod { get => throw null; }
@@ -426,7 +392,6 @@ namespace System
                 public System.Linq.Expressions.ElementInit Update(System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression> arguments) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.Expression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class Expression
             {
                 protected internal virtual System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -751,7 +716,6 @@ namespace System
                 protected internal virtual System.Linq.Expressions.Expression VisitChildren(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.Expression<>` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Expression<TDelegate> : System.Linq.Expressions.LambdaExpression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -761,7 +725,6 @@ namespace System
                 public System.Linq.Expressions.Expression<TDelegate> Update(System.Linq.Expressions.Expression body, System.Collections.Generic.IEnumerable<System.Linq.Expressions.ParameterExpression> parameters) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.ExpressionType` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ExpressionType : int
             {
                 Add = 0,
@@ -851,7 +814,6 @@ namespace System
                 Unbox = 62,
             }
 
-            // Generated from `System.Linq.Expressions.ExpressionVisitor` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class ExpressionVisitor
             {
                 protected ExpressionVisitor() => throw null;
@@ -896,7 +858,6 @@ namespace System
                 protected internal virtual System.Linq.Expressions.Expression VisitUnary(System.Linq.Expressions.UnaryExpression node) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.GotoExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class GotoExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -908,7 +869,6 @@ namespace System
                 public System.Linq.Expressions.Expression Value { get => throw null; }
             }
 
-            // Generated from `System.Linq.Expressions.GotoExpressionKind` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum GotoExpressionKind : int
             {
                 Break = 2,
@@ -917,14 +877,12 @@ namespace System
                 Return = 1,
             }
 
-            // Generated from `System.Linq.Expressions.IArgumentProvider` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IArgumentProvider
             {
                 int ArgumentCount { get; }
                 System.Linq.Expressions.Expression GetArgument(int index);
             }
 
-            // Generated from `System.Linq.Expressions.IDynamicExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IDynamicExpression : System.Linq.Expressions.IArgumentProvider
             {
                 object CreateCallSite();
@@ -932,7 +890,6 @@ namespace System
                 System.Linq.Expressions.Expression Rewrite(System.Linq.Expressions.Expression[] args);
             }
 
-            // Generated from `System.Linq.Expressions.IndexExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IndexExpression : System.Linq.Expressions.Expression, System.Linq.Expressions.IArgumentProvider
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -946,7 +903,6 @@ namespace System
                 public System.Linq.Expressions.IndexExpression Update(System.Linq.Expressions.Expression @object, System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression> arguments) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.InvocationExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class InvocationExpression : System.Linq.Expressions.Expression, System.Linq.Expressions.IArgumentProvider
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -959,7 +915,6 @@ namespace System
                 public System.Linq.Expressions.InvocationExpression Update(System.Linq.Expressions.Expression expression, System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression> arguments) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.LabelExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class LabelExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -970,7 +925,6 @@ namespace System
                 public System.Linq.Expressions.LabelExpression Update(System.Linq.Expressions.LabelTarget target, System.Linq.Expressions.Expression defaultValue) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.LabelTarget` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class LabelTarget
             {
                 public string Name { get => throw null; }
@@ -978,7 +932,6 @@ namespace System
                 public System.Type Type { get => throw null; }
             }
 
-            // Generated from `System.Linq.Expressions.LambdaExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class LambdaExpression : System.Linq.Expressions.Expression
             {
                 public System.Linq.Expressions.Expression Body { get => throw null; }
@@ -994,7 +947,6 @@ namespace System
                 public override System.Type Type { get => throw null; }
             }
 
-            // Generated from `System.Linq.Expressions.ListInitExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ListInitExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -1007,7 +959,6 @@ namespace System
                 public System.Linq.Expressions.ListInitExpression Update(System.Linq.Expressions.NewExpression newExpression, System.Collections.Generic.IEnumerable<System.Linq.Expressions.ElementInit> initializers) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.LoopExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class LoopExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -1019,7 +970,6 @@ namespace System
                 public System.Linq.Expressions.LoopExpression Update(System.Linq.Expressions.LabelTarget breakLabel, System.Linq.Expressions.LabelTarget continueLabel, System.Linq.Expressions.Expression body) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.MemberAssignment` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MemberAssignment : System.Linq.Expressions.MemberBinding
             {
                 public System.Linq.Expressions.Expression Expression { get => throw null; }
@@ -1027,7 +977,6 @@ namespace System
                 public System.Linq.Expressions.MemberAssignment Update(System.Linq.Expressions.Expression expression) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.MemberBinding` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class MemberBinding
             {
                 public System.Linq.Expressions.MemberBindingType BindingType { get => throw null; }
@@ -1036,7 +985,6 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.MemberBindingType` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum MemberBindingType : int
             {
                 Assignment = 0,
@@ -1044,7 +992,6 @@ namespace System
                 MemberBinding = 1,
             }
 
-            // Generated from `System.Linq.Expressions.MemberExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MemberExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -1054,7 +1001,6 @@ namespace System
                 public System.Linq.Expressions.MemberExpression Update(System.Linq.Expressions.Expression expression) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.MemberInitExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MemberInitExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -1067,7 +1013,6 @@ namespace System
                 public System.Linq.Expressions.MemberInitExpression Update(System.Linq.Expressions.NewExpression newExpression, System.Collections.Generic.IEnumerable<System.Linq.Expressions.MemberBinding> bindings) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.MemberListBinding` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MemberListBinding : System.Linq.Expressions.MemberBinding
             {
                 public System.Collections.ObjectModel.ReadOnlyCollection<System.Linq.Expressions.ElementInit> Initializers { get => throw null; }
@@ -1075,7 +1020,6 @@ namespace System
                 public System.Linq.Expressions.MemberListBinding Update(System.Collections.Generic.IEnumerable<System.Linq.Expressions.ElementInit> initializers) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.MemberMemberBinding` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MemberMemberBinding : System.Linq.Expressions.MemberBinding
             {
                 public System.Collections.ObjectModel.ReadOnlyCollection<System.Linq.Expressions.MemberBinding> Bindings { get => throw null; }
@@ -1083,7 +1027,6 @@ namespace System
                 public System.Linq.Expressions.MemberMemberBinding Update(System.Collections.Generic.IEnumerable<System.Linq.Expressions.MemberBinding> bindings) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.MethodCallExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MethodCallExpression : System.Linq.Expressions.Expression, System.Linq.Expressions.IArgumentProvider
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -1097,7 +1040,6 @@ namespace System
                 public System.Linq.Expressions.MethodCallExpression Update(System.Linq.Expressions.Expression @object, System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression> arguments) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.NewArrayExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NewArrayExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -1106,7 +1048,6 @@ namespace System
                 public System.Linq.Expressions.NewArrayExpression Update(System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression> expressions) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.NewExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NewExpression : System.Linq.Expressions.Expression, System.Linq.Expressions.IArgumentProvider
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -1120,7 +1061,6 @@ namespace System
                 public System.Linq.Expressions.NewExpression Update(System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression> arguments) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.ParameterExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ParameterExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -1130,7 +1070,6 @@ namespace System
                 public override System.Type Type { get => throw null; }
             }
 
-            // Generated from `System.Linq.Expressions.RuntimeVariablesExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RuntimeVariablesExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -1140,7 +1079,6 @@ namespace System
                 public System.Collections.ObjectModel.ReadOnlyCollection<System.Linq.Expressions.ParameterExpression> Variables { get => throw null; }
             }
 
-            // Generated from `System.Linq.Expressions.SwitchCase` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SwitchCase
             {
                 public System.Linq.Expressions.Expression Body { get => throw null; }
@@ -1149,7 +1087,6 @@ namespace System
                 public System.Linq.Expressions.SwitchCase Update(System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression> testValues, System.Linq.Expressions.Expression body) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.SwitchExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SwitchExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -1162,7 +1099,6 @@ namespace System
                 public System.Linq.Expressions.SwitchExpression Update(System.Linq.Expressions.Expression switchValue, System.Collections.Generic.IEnumerable<System.Linq.Expressions.SwitchCase> cases, System.Linq.Expressions.Expression defaultBody) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.SymbolDocumentInfo` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SymbolDocumentInfo
             {
                 public virtual System.Guid DocumentType { get => throw null; }
@@ -1171,7 +1107,6 @@ namespace System
                 public virtual System.Guid LanguageVendor { get => throw null; }
             }
 
-            // Generated from `System.Linq.Expressions.TryExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TryExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -1184,7 +1119,6 @@ namespace System
                 public System.Linq.Expressions.TryExpression Update(System.Linq.Expressions.Expression body, System.Collections.Generic.IEnumerable<System.Linq.Expressions.CatchBlock> handlers, System.Linq.Expressions.Expression @finally, System.Linq.Expressions.Expression fault) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.TypeBinaryExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TypeBinaryExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -1195,7 +1129,6 @@ namespace System
                 public System.Linq.Expressions.TypeBinaryExpression Update(System.Linq.Expressions.Expression expression) => throw null;
             }
 
-            // Generated from `System.Linq.Expressions.UnaryExpression` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UnaryExpression : System.Linq.Expressions.Expression
             {
                 protected internal override System.Linq.Expressions.Expression Accept(System.Linq.Expressions.ExpressionVisitor visitor) => throw null;
@@ -1216,7 +1149,6 @@ namespace System
     {
         namespace CompilerServices
         {
-            // Generated from `System.Runtime.CompilerServices.CallSite` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CallSite
             {
                 public System.Runtime.CompilerServices.CallSiteBinder Binder { get => throw null; }
@@ -1224,7 +1156,6 @@ namespace System
                 public static System.Runtime.CompilerServices.CallSite Create(System.Type delegateType, System.Runtime.CompilerServices.CallSiteBinder binder) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.CallSite<>` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CallSite<T> : System.Runtime.CompilerServices.CallSite where T : class
             {
                 public static System.Runtime.CompilerServices.CallSite<T> Create(System.Runtime.CompilerServices.CallSiteBinder binder) => throw null;
@@ -1232,7 +1163,6 @@ namespace System
                 public T Update { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.CallSiteBinder` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class CallSiteBinder
             {
                 public abstract System.Linq.Expressions.Expression Bind(object[] args, System.Collections.ObjectModel.ReadOnlyCollection<System.Linq.Expressions.ParameterExpression> parameters, System.Linq.Expressions.LabelTarget returnLabel);
@@ -1242,13 +1172,11 @@ namespace System
                 public static System.Linq.Expressions.LabelTarget UpdateLabel { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.CallSiteHelpers` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class CallSiteHelpers
             {
                 public static bool IsInternalFrame(System.Reflection.MethodBase mb) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.DebugInfoGenerator` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DebugInfoGenerator
             {
                 public static System.Runtime.CompilerServices.DebugInfoGenerator CreatePdbGenerator() => throw null;
@@ -1256,7 +1184,6 @@ namespace System
                 public abstract void MarkSequencePoint(System.Linq.Expressions.LambdaExpression method, int ilOffset, System.Linq.Expressions.DebugInfoExpression sequencePoint);
             }
 
-            // Generated from `System.Runtime.CompilerServices.DynamicAttribute` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DynamicAttribute : System.Attribute
             {
                 public DynamicAttribute() => throw null;
@@ -1264,14 +1191,12 @@ namespace System
                 public System.Collections.Generic.IList<bool> TransformFlags { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.IRuntimeVariables` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IRuntimeVariables
             {
                 int Count { get; }
                 object this[int index] { get; set; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ReadOnlyCollectionBuilder<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IList<T>, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
             {
                 public void Add(T item) => throw null;
@@ -1308,7 +1233,6 @@ namespace System
                 public System.Collections.ObjectModel.ReadOnlyCollection<T> ToReadOnlyCollection() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.RuleCache<>` in `System.Linq.Expressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RuleCache<T> where T : class
             {
             }

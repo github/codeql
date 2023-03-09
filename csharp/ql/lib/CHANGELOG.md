@@ -1,3 +1,21 @@
+## 0.5.3
+
+### Minor Analysis Improvements
+
+* C# 11: Added extractor support for the `scoped` modifier annotation on parameters and local variables.
+
+## 0.5.2
+
+### Major Analysis Improvements
+
+* Add extractor and library support for UTF-8 encoded strings.
+* The `StringLiteral` class includes UTF-8 encoded strings.
+* In the DB Scheme `@string_literal_expr` is renamed to `@utf16_string_literal_expr`.
+
+### Minor Analysis Improvements
+
+* C# 11: Added extractor support for `ref` fields in `ref struct` declarations.
+
 ## 0.5.1
 
 ### Major Analysis Improvements

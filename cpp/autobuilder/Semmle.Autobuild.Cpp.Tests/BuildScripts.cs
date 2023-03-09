@@ -1,5 +1,6 @@
 ﻿using Xunit;
 using Semmle.Autobuild.Shared;
+using Semmle.Util;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -75,6 +76,15 @@ namespace Semmle.Autobuild.Cpp.Tests
             throw new ArgumentException("Missing RunProcess " + pattern);
         }
 
+        int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? env, BuildOutputHandler onOutput, BuildOutputHandler onError)
+        {
+            var ret = (this as IBuildActions).RunProcess(cmd, args, workingDirectory, env, out var stdout);
+
+            stdout.ForEach(line => onOutput(line));
+
+            return ret;
+        }
+
         public IList<string> DirectoryDeleteIn = new List<string>();
 
         void IBuildActions.DirectoryDelete(string dir, bool recursive)
@@ -131,6 +141,14 @@ namespace Semmle.Autobuild.Cpp.Tests
 
         bool IBuildActions.IsWindows() => IsWindows;
 
+        public bool IsMacOs { get; set; }
+
+        bool IBuildActions.IsMacOs() => IsMacOs;
+
+        public bool IsArm { get; set; }
+
+        bool IBuildActions.IsArm() => IsArm;
+
         string IBuildActions.PathCombine(params string[] parts)
         {
             return string.Join(IsWindows ? '\\' : '/', parts.Where(p => !string.IsNullOrWhiteSpace(p)));
@@ -176,6 +194,15 @@ namespace Semmle.Autobuild.Cpp.Tests
             if (!DownloadFiles.Contains((address, fileName)))
                 throw new ArgumentException($"Missing DownloadFile, {address}, {fileName}");
         }
+
+        public IDiagnosticsWriter CreateDiagnosticsWriter(string filename) => new TestDiagnosticWriter();
+    }
+
+    internal class TestDiagnosticWriter : IDiagnosticsWriter
+    {
+        public IList<DiagnosticMessage> Diagnostics { get; } = new List<DiagnosticMessage>();
+
+        public void AddEntry(DiagnosticMessage message) => this.Diagnostics.Add(message);
     }
 
     /// <summary>
@@ -235,6 +262,7 @@ namespace Semmle.Autobuild.Cpp.Tests
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_TRAP_DIR"] = "";
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_SOURCE_ARCHIVE_DIR"] = "";
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_ROOT"] = $@"C:\codeql\{codeqlUpperLanguage.ToLowerInvariant()}";
+            Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_DIAGNOSTIC_DIR"] = "";
             Actions.GetEnvironmentVariable["CODEQL_JAVA_HOME"] = @"C:\codeql\tools\java";
             Actions.GetEnvironmentVariable["CODEQL_PLATFORM"] = "win64";
             Actions.GetEnvironmentVariable["SEMMLE_DIST"] = @"C:\odasa";

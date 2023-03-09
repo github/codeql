@@ -87,7 +87,10 @@ void emitSourceObjectDependencies(const SwiftExtractorState& state,
     object->emitObject(id);
     for (auto encounteredModule : state.encounteredModules) {
       if (auto depHash = getModuleHash(encounteredModule)) {
-        object->emitObjectDependency(getModuleId(encounteredModule, *depHash));
+        auto encounteredModuleId = getModuleId(encounteredModule, *depHash);
+        if (encounteredModuleId != id) {
+          object->emitObjectDependency(encounteredModuleId);
+        }
       }
     }
     for (const auto& requestedTrap : state.traps) {

@@ -5,8 +5,8 @@ qcompilations
 | compilation in 'diagnostics': go-extractor -mod=vendor -- ./... | go.mod:0:0:0:0 | go.mod |
 | compilation in 'diagnostics': go-extractor -mod=vendor -- ./... | notbroken/test.go:0:0:0:0 | notbroken/test.go |
 qdiagnostics
-| broken2/test1.go:4:2:4:2 | error: undeclared name: fmt | compilation in 'diagnostics': go-extractor -mod=vendor -- ./... | broken2/test1.go:0:0:0:0 | broken2/test1.go |
-| broken2/test1.go:5:2:5:2 | error: undeclared name: fmt | compilation in 'diagnostics': go-extractor -mod=vendor -- ./... | broken2/test1.go:0:0:0:0 | broken2/test1.go |
-| broken2/test1.go:5:14:5:14 | error: undeclared name: a | compilation in 'diagnostics': go-extractor -mod=vendor -- ./... | broken2/test1.go:0:0:0:0 | broken2/test1.go |
+| broken2/test1.go:4:2:4:2 | error: undefined: fmt | compilation in 'diagnostics': go-extractor -mod=vendor -- ./... | broken2/test1.go:0:0:0:0 | broken2/test1.go |
+| broken2/test1.go:5:2:5:2 | error: undefined: fmt | compilation in 'diagnostics': go-extractor -mod=vendor -- ./... | broken2/test1.go:0:0:0:0 | broken2/test1.go |
+| broken2/test1.go:5:14:5:14 | error: undefined: a | compilation in 'diagnostics': go-extractor -mod=vendor -- ./... | broken2/test1.go:0:0:0:0 | broken2/test1.go |
 | broken/test.go:7:1:7:1 | error: expected declaration, found This | compilation in 'diagnostics': go-extractor -mod=vendor -- ./... | broken/test.go:0:0:0:0 | broken/test.go |
 duplicateerrs

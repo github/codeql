@@ -123,7 +123,7 @@ codeql generate query-help ./myCustomQuery.qhelp --format=markdown
 
 Please include the `.qhelp` files (and any associated code snippets) in your pull request, but do not commit the generated Markdown.
 
-More information on how to test your `.qhelp` files can be found [within the documentation](https://codeql.github.com/docs/codeql-cli/testing-query-help-files/)
+More information on how to test your `.qhelp` files can be found [within the documentation](https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/testing-query-help-files)
 
 ## Query help example
 

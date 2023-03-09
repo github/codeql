@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.ObjectPool, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace ObjectPool
         {
-            // Generated from `Microsoft.Extensions.ObjectPool.DefaultObjectPool<>` in `Microsoft.Extensions.ObjectPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DefaultObjectPool<T> : Microsoft.Extensions.ObjectPool.ObjectPool<T> where T : class
             {
                 public DefaultObjectPool(Microsoft.Extensions.ObjectPool.IPooledObjectPolicy<T> policy) => throw null;
@@ -15,7 +15,6 @@ namespace Microsoft
                 public override void Return(T obj) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.ObjectPool.DefaultObjectPoolProvider` in `Microsoft.Extensions.ObjectPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DefaultObjectPoolProvider : Microsoft.Extensions.ObjectPool.ObjectPoolProvider
             {
                 public override Microsoft.Extensions.ObjectPool.ObjectPool<T> Create<T>(Microsoft.Extensions.ObjectPool.IPooledObjectPolicy<T> policy) where T : class => throw null;
@@ -23,7 +22,6 @@ namespace Microsoft
                 public int MaximumRetained { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.ObjectPool.DefaultPooledObjectPolicy<>` in `Microsoft.Extensions.ObjectPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DefaultPooledObjectPolicy<T> : Microsoft.Extensions.ObjectPool.PooledObjectPolicy<T> where T : class, new()
             {
                 public override T Create() => throw null;
@@ -31,14 +29,12 @@ namespace Microsoft
                 public override bool Return(T obj) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.ObjectPool.IPooledObjectPolicy<>` in `Microsoft.Extensions.ObjectPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IPooledObjectPolicy<T>
             {
                 T Create();
                 bool Return(T obj);
             }
 
-            // Generated from `Microsoft.Extensions.ObjectPool.LeakTrackingObjectPool<>` in `Microsoft.Extensions.ObjectPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class LeakTrackingObjectPool<T> : Microsoft.Extensions.ObjectPool.ObjectPool<T> where T : class
             {
                 public override T Get() => throw null;
@@ -46,20 +42,17 @@ namespace Microsoft
                 public override void Return(T obj) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.ObjectPool.LeakTrackingObjectPoolProvider` in `Microsoft.Extensions.ObjectPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class LeakTrackingObjectPoolProvider : Microsoft.Extensions.ObjectPool.ObjectPoolProvider
             {
                 public override Microsoft.Extensions.ObjectPool.ObjectPool<T> Create<T>(Microsoft.Extensions.ObjectPool.IPooledObjectPolicy<T> policy) where T : class => throw null;
                 public LeakTrackingObjectPoolProvider(Microsoft.Extensions.ObjectPool.ObjectPoolProvider inner) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.ObjectPool.ObjectPool` in `Microsoft.Extensions.ObjectPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ObjectPool
             {
                 public static Microsoft.Extensions.ObjectPool.ObjectPool<T> Create<T>(Microsoft.Extensions.ObjectPool.IPooledObjectPolicy<T> policy = default(Microsoft.Extensions.ObjectPool.IPooledObjectPolicy<T>)) where T : class, new() => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.ObjectPool.ObjectPool<>` in `Microsoft.Extensions.ObjectPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class ObjectPool<T> where T : class
             {
                 public abstract T Get();
@@ -67,7 +60,6 @@ namespace Microsoft
                 public abstract void Return(T obj);
             }
 
-            // Generated from `Microsoft.Extensions.ObjectPool.ObjectPoolProvider` in `Microsoft.Extensions.ObjectPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class ObjectPoolProvider
             {
                 public Microsoft.Extensions.ObjectPool.ObjectPool<T> Create<T>() where T : class, new() => throw null;
@@ -75,14 +67,12 @@ namespace Microsoft
                 protected ObjectPoolProvider() => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.ObjectPool.ObjectPoolProviderExtensions` in `Microsoft.Extensions.ObjectPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ObjectPoolProviderExtensions
             {
                 public static Microsoft.Extensions.ObjectPool.ObjectPool<System.Text.StringBuilder> CreateStringBuilderPool(this Microsoft.Extensions.ObjectPool.ObjectPoolProvider provider) => throw null;
                 public static Microsoft.Extensions.ObjectPool.ObjectPool<System.Text.StringBuilder> CreateStringBuilderPool(this Microsoft.Extensions.ObjectPool.ObjectPoolProvider provider, int initialCapacity, int maximumRetainedCapacity) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.ObjectPool.PooledObjectPolicy<>` in `Microsoft.Extensions.ObjectPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class PooledObjectPolicy<T> : Microsoft.Extensions.ObjectPool.IPooledObjectPolicy<T>
             {
                 public abstract T Create();
@@ -90,7 +80,6 @@ namespace Microsoft
                 public abstract bool Return(T obj);
             }
 
-            // Generated from `Microsoft.Extensions.ObjectPool.StringBuilderPooledObjectPolicy` in `Microsoft.Extensions.ObjectPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class StringBuilderPooledObjectPolicy : Microsoft.Extensions.ObjectPool.PooledObjectPolicy<System.Text.StringBuilder>
             {
                 public override System.Text.StringBuilder Create() => throw null;

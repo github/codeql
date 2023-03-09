@@ -1,11 +1,23 @@
 import go
-import TestUtilities.InlineFlowTest
+import TestUtilities.InlineExpectationsTest
 import semmle.go.security.IncorrectIntegerConversionLib
 
-class IncorrectIntegerConversionTest extends InlineFlowTest {
-  override DataFlow::Configuration getValueFlowConfig() {
-    result = any(ConversionWithoutBoundsCheckConfig config)
-  }
+class TestIncorrectIntegerConversion extends InlineExpectationsTest {
+  TestIncorrectIntegerConversion() { this = "TestIncorrectIntegerConversion" }
 
-  override DataFlow::Configuration getTaintFlowConfig() { none() }
+  override string getARelevantTag() { result = "hasValueFlow" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    tag = "hasValueFlow" and
+    exists(DataFlow::Node sink, DataFlow::Node sinkConverted |
+      any(ConversionWithoutBoundsCheckConfig config).hasFlowTo(sink) and
+      sinkConverted = sink.getASuccessor()
+    |
+      sinkConverted
+          .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+            location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      element = sinkConverted.toString() and
+      value = "\"" + sinkConverted.toString() + "\""
+    )
+  }
 }

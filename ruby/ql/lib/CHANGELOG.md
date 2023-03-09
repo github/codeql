@@ -1,3 +1,17 @@
+## 0.5.3
+
+### Minor Analysis Improvements
+
+ * Ruby 3.1: one-line pattern matches are now supported. The AST nodes are named `TestPattern` (`expr in pattern`) and `MatchPattern` (`expr => pattern`).
+
+## 0.5.2
+
+### Minor Analysis Improvements
+
+* Data flowing from the `locals` argument of a Rails `render` call is now tracked to uses of that data in an associated view.
+* Access to headers stored in the `env` of Rack requests is now recognized as a source of remote input.
+* Ruby 3.2: anonymous rest and keyword rest arguments can now be passed as arguments, instead of just used in method parameters.
+
 ## 0.5.1
 
 No user-facing changes.

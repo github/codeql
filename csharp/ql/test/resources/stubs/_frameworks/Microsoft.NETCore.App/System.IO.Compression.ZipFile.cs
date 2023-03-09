@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.IO.Compression.ZipFile, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Compression
         {
-            // Generated from `System.IO.Compression.ZipFile` in `System.IO.Compression.ZipFile, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public static class ZipFile
             {
                 public static void CreateFromDirectory(string sourceDirectoryName, string destinationArchiveFileName) => throw null;
@@ -21,7 +21,6 @@ namespace System
                 public static System.IO.Compression.ZipArchive OpenRead(string archiveFileName) => throw null;
             }
 
-            // Generated from `System.IO.Compression.ZipFileExtensions` in `System.IO.Compression.ZipFile, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public static class ZipFileExtensions
             {
                 public static System.IO.Compression.ZipArchiveEntry CreateEntryFromFile(this System.IO.Compression.ZipArchive destination, string sourceFileName, string entryName) => throw null;

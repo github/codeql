@@ -8,7 +8,7 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 ## Building and testing
 
-1. Install the CodeQL CLI as described in [Getting started with the CodeQL CLI](https://codeql.github.com/docs/codeql-cli/getting-started-with-the-codeql-cli/).
+1. Install the CodeQL CLI as described in [Getting started with the CodeQL CLI](https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/getting-started-with-the-codeql-cli).
 
 2. Ensure that `<extraction-root>/codeql` is in your `PATH`.
 

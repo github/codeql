@@ -58,6 +58,30 @@ func TaintStepTest_SyncMapStore_B0I1O0(sourceCQL interface{}) interface{} {
 	return intoMap881
 }
 
+func TaintStepTest_SyncMapSwapinkey(sourceCQL interface{}) interface{} {
+	var m sync.Map
+	m.Swap(sourceCQL, "value")
+	return m
+}
+
+func TaintStepTest_SyncMapSwapinvalue(sourceCQL interface{}) interface{} {
+	var m sync.Map
+	m.Swap("key", sourceCQL)
+	return m
+}
+
+func TaintStepTest_SyncMapSwapout(sourceCQL interface{}) interface{} {
+	m := sourceCQL.(sync.Map)
+	oldVal, _ := m.Swap("key", "value")
+	return oldVal
+}
+
+func TaintStepTest_SyncMapCompareAndSwap(sourceCQL interface{}) interface{} {
+	var m sync.Map
+	m.CompareAndSwap("key", "compareTo", sourceCQL)
+	return m
+}
+
 func TaintStepTest_SyncPoolGet_B0I0O0(sourceCQL interface{}) interface{} {
 	fromPool186 := sourceCQL.(sync.Pool)
 	intoInterface284 := fromPool186.Get()
@@ -121,5 +145,25 @@ func RunAllTaints_Sync() {
 		source := newSource(9)
 		out := TaintStepTest_SyncPoolPut_B0I0O0(source)
 		sink(9, out)
+	}
+	{
+		source := newSource(10)
+		out := TaintStepTest_SyncMapSwapinkey(source)
+		sink(10, out)
+	}
+	{
+		source := newSource(11)
+		out := TaintStepTest_SyncMapSwapinvalue(source)
+		sink(11, out)
+	}
+	{
+		source := newSource(12)
+		out := TaintStepTest_SyncMapSwapout(source)
+		sink(12, out)
+	}
+	{
+		source := newSource(13)
+		out := TaintStepTest_SyncMapCompareAndSwap(source)
+		sink(13, out)
 	}
 }

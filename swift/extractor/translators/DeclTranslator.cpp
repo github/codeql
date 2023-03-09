@@ -3,7 +3,7 @@
 #include <swift/AST/GenericParamList.h>
 #include <swift/AST/ParameterList.h>
 #include "swift/extractor/infra/SwiftDiagnosticKind.h"
-#include "swift/AST/PropertyWrappers.h"
+#include <swift/AST/PropertyWrappers.h>
 
 namespace codeql {
 namespace {
@@ -303,27 +303,7 @@ std::optional<codeql::ModuleDecl> DeclTranslator::translateModuleDecl(
 }
 
 std::string DeclTranslator::mangledName(const swift::ValueDecl& decl) {
-  std::string_view moduleName = decl.getModuleContext()->getRealName().str();
-  // ASTMangler::mangleAnyDecl crashes when called on `ModuleDecl`
-  if (decl.getKind() == swift::DeclKind::Module) {
-    return std::string{moduleName};
-  }
-  std::ostringstream ret;
-  // stamp all declarations with an id-ref of the containing module
-  ret << '{' << ModuleDeclTag::prefix << '_' << moduleName << '}';
-  if (decl.getKind() == swift::DeclKind::TypeAlias) {
-    // In cases like this (when coming from PCM)
-    //  typealias CFXMLTree = CFTree
-    //  typealias CFXMLTreeRef = CFXMLTree
-    // mangleAnyDecl mangles both CFXMLTree and CFXMLTreeRef into 'So12CFXMLTreeRefa'
-    // which is not correct and causes inconsistencies. mangleEntity makes these two distinct
-    // prefix adds a couple of special symbols, we don't necessary need them
-    ret << mangler.mangleEntity(&decl);
-  } else {
-    // prefix adds a couple of special symbols, we don't necessary need them
-    ret << mangler.mangleAnyDecl(&decl, /* prefix = */ false);
-  }
-  return ret.str();
+  return mangler.mangledName(decl);
 }
 
 void DeclTranslator::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& decl,
@@ -334,6 +314,7 @@ void DeclTranslator::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl&
   entry.params = dispatcher.fetchRepeatedLabels(*decl.getParameters());
   auto self = const_cast<swift::ParamDecl* const>(decl.getImplicitSelfDecl());
   entry.self_param = dispatcher.fetchOptionalLabel(self);
+  entry.captures = dispatcher.fetchRepeatedLabels(decl.getCaptureInfo().getCaptures());
   fillValueDecl(decl, entry);
   fillGenericContext(decl, entry);
 }
@@ -437,6 +418,16 @@ codeql::MissingMemberDecl DeclTranslator::translateMissingMemberDecl(
     const swift::MissingMemberDecl& decl) {
   auto entry = createEntry(decl);
   entry.name = decl.getName().getBaseName().userFacingName().str();
+  return entry;
+}
+
+codeql::CapturedDecl DeclTranslator::translateCapturedValue(const swift::CapturedValue& capture) {
+  codeql::CapturedDecl entry{dispatcher.template assignNewLabel(capture)};
+  auto decl = capture.getDecl();
+  entry.decl = dispatcher.fetchLabel(decl);
+  entry.module = dispatcher.fetchLabel(decl->getModuleContext());
+  entry.is_direct = capture.isDirect();
+  entry.is_escaping = !capture.isNoEscape();
   return entry;
 }
 }  // namespace codeql

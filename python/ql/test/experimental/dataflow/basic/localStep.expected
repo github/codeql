@@ -1,4 +1,4 @@
-| file://:0:0:0:0 | [summary] read: argument 0.List element in builtins.reversed | file://:0:0:0:0 | [summary] to write: return (return).List element in builtins.reversed |
+| file://:0:0:0:0 | [summary] read: argument position 0.List element in builtins.reversed | file://:0:0:0:0 | [summary] to write: return (return).List element in builtins.reversed |
 | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:1:5:1:17 | GSSA Variable obfuscated_id |
 | test.py:1:5:1:17 | GSSA Variable obfuscated_id | test.py:7:5:7:17 | ControlFlowNode for obfuscated_id |
 | test.py:1:19:1:19 | ControlFlowNode for x | test.py:1:19:1:19 | SSA variable x |

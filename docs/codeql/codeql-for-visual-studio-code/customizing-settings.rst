@@ -25,10 +25,12 @@ Editing settings
 
 3. Edit a setting. The new settings are saved automatically.
 
+Alternatively, you can edit the settings in JSON format by opening the command palette and selecting **Preferences: Open User Settings (JSON)**.
+
 Choosing a version of the CodeQL CLI
 --------------------------------------
 
-The CodeQL extension uses the CodeQL CLI to run commands. If you already have the CLI installed and added to your ``PATH``, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from GitHub.com. Otherwise, the extension automatically manages access to the executable of the CLI for you. For more information about creating databases, see ":ref:`Creating CodeQL databases <creating-codeql-databases>`" in the CLI help.
+The CodeQL extension uses the CodeQL CLI to run commands. If you already have the CLI installed and added to your ``PATH``, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from GitHub.com. Otherwise, the extension automatically manages access to the executable of the CLI for you. For more information about creating databases, see "`Creating CodeQL databases <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/creating-codeql-databases>`__" in the CLI help.
 
 To override the default behavior and use a different CLI, you can specify the CodeQL CLI **Executable Path**.
 
@@ -55,8 +57,8 @@ By default, items in the query history view are retained for 30 days. You can se
 
 .. _configuring-settings-for-running-queries:
 
-Configuring settings for running queries
------------------------------------------
+Configuring settings for running queries locally
+------------------------------------------------
 
 There are a number of settings for **Running Queries**. If your queries run too slowly and time out frequently, you may want to increase the memory. 
 
@@ -64,8 +66,49 @@ There are a number of settings for **Running Queries**. If your queries run too 
 
 To save query server logs in a custom location, edit the **Running Queries: Custom Log Directory** setting. If you use a custom log directory, the extension saves the logs permanently, instead of deleting them automatically after each workspace session. This is useful if you want to investigate these logs to improve the performance of your queries.
 
-Configuring settings for testing queries
------------------------------------------
+Configuring settings for variant analysis
+------------------------------------------
+
+You can define or edit lists of GitHub repositories for variant analysis, and change to a different controller repository using the **Variant analysis** settings.
+
+For information on the purpose and requirements for a controller repository, see ":ref:`Setting up a controller repository for variant analysis <controller-repository>`."
+
+You can also edit the items shown in the Variant Analysis Repositories panel by editing a file in your Visual Studio Code workspace called ``databases.json``. This file contains a JSON representation of all the items displayed in the panel. To open your ``databases.json`` file in an editor window, click the **{ }** icon in the top right of the Variant Analysis Repositories panel. You can then see a structured representation of the repos, orgs and lists in your panel. For example:
+
+.. code-block:: json
+
+  {
+    "version": 1,
+    "databases": {
+      "variantAnalysis": {
+        "repositoryLists": [
+          {
+            "name": "My favorite JavaScript repos",
+            "repositories": [
+              "facebook/react",
+              "babel/babel",
+              "angular/angular"
+            ]
+          }
+        ],
+        "owners": [
+          "microsoft"
+        ],
+        "repositories": [
+          "apache/hadoop"
+        ]
+      }
+    },
+    "selected": {
+      "kind": "variantAnalysisSystemDefinedList",
+      "listName": "top_10"
+    }
+  }
+
+You can change the items shown in the panel or add new items by directly editing this file.
+
+Configuring settings for testing queries locally
+------------------------------------------------
 
 To increase the number of threads used for testing queries, you can update the **Running Tests > Number Of Threads** setting.
 
@@ -80,4 +123,4 @@ Further reading
 ----------------
 
 - `User and workspace settings <https://code.visualstudio.com/docs/getstarted/settings>`__ in the Visual Studio Code help
-- ":ref:`CodeQL CLI <codeql-cli>`"
+- "`CodeQL CLI <https://docs.github.com/en/code-security/codeql-cli>`__"

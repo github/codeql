@@ -316,6 +316,39 @@ func TaintStepTest_BytesReaderWriteTo_B0I0O0(sourceCQL interface{}) interface{} 
 	return intoWriter197
 }
 
+func TaintStepTest_Clone(sourceCQL interface{}) interface{} {
+	fromReader628 := sourceCQL.([]byte)
+	return bytes.Clone(fromReader628)
+}
+
+func TaintStepTest_Cutleft(sourceCQL interface{}) interface{} {
+	fromReader628 := sourceCQL.([]byte)
+	sep := []byte{}
+	left, _, _ := bytes.Cut(fromReader628, sep)
+	return left
+}
+
+func TaintStepTest_Cutright(sourceCQL interface{}) interface{} {
+	fromReader628 := sourceCQL.([]byte)
+	sep := []byte{}
+	_, right, _ := bytes.Cut(fromReader628, sep)
+	return right
+}
+
+func TaintStepTest_CutPrefix(sourceCQL interface{}) interface{} {
+	fromReader628 := sourceCQL.([]byte)
+	sep := []byte{}
+	result, _ := bytes.CutPrefix(fromReader628, sep)
+	return result
+}
+
+func TaintStepTest_CutSuffix(sourceCQL interface{}) interface{} {
+	fromReader628 := sourceCQL.([]byte)
+	sep := []byte{}
+	result, _ := bytes.CutSuffix(fromReader628, sep)
+	return result
+}
+
 func RunAllTaints_Bytes() {
 	{
 		source := newSource(0)
@@ -566,5 +599,30 @@ func RunAllTaints_Bytes() {
 		source := newSource(49)
 		out := TaintStepTest_BytesReaderWriteTo_B0I0O0(source)
 		sink(49, out)
+	}
+	{
+		source := newSource(50)
+		out := TaintStepTest_Cutleft(source)
+		sink(50, out)
+	}
+	{
+		source := newSource(51)
+		out := TaintStepTest_Cutright(source)
+		sink(51, out)
+	}
+	{
+		source := newSource(52)
+		out := TaintStepTest_CutPrefix(source)
+		sink(52, out)
+	}
+	{
+		source := newSource(53)
+		out := TaintStepTest_CutSuffix(source)
+		sink(53, out)
+	}
+	{
+		source := newSource(54)
+		out := TaintStepTest_Clone(source)
+		sink(54, out)
 	}
 }

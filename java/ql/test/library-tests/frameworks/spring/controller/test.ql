@@ -2,6 +2,10 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import TestUtilities.InlineFlowTest
 
+class EnableLegacy extends EnableLegacyConfiguration {
+  EnableLegacy() { exists(this) }
+}
+
 class ValueFlowConf extends DataFlow::Configuration {
   ValueFlowConf() { this = "ValueFlowConf" }
 

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Net.WebSockets.Client, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace WebSockets
         {
-            // Generated from `System.Net.WebSockets.ClientWebSocket` in `System.Net.WebSockets.Client, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ClientWebSocket : System.Net.WebSockets.WebSocket
             {
                 public override void Abort() => throw null;
@@ -16,7 +16,10 @@ namespace System
                 public override System.Net.WebSockets.WebSocketCloseStatus? CloseStatus { get => throw null; }
                 public override string CloseStatusDescription { get => throw null; }
                 public System.Threading.Tasks.Task ConnectAsync(System.Uri uri, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task ConnectAsync(System.Uri uri, System.Net.Http.HttpMessageInvoker invoker, System.Threading.CancellationToken cancellationToken) => throw null;
                 public override void Dispose() => throw null;
+                public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> HttpResponseHeaders { get => throw null; set => throw null; }
+                public System.Net.HttpStatusCode HttpStatusCode { get => throw null; }
                 public System.Net.WebSockets.ClientWebSocketOptions Options { get => throw null; }
                 public override System.Threading.Tasks.Task<System.Net.WebSockets.WebSocketReceiveResult> ReceiveAsync(System.ArraySegment<System.Byte> buffer, System.Threading.CancellationToken cancellationToken) => throw null;
                 public override System.Threading.Tasks.ValueTask<System.Net.WebSockets.ValueWebSocketReceiveResult> ReceiveAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken) => throw null;
@@ -26,14 +29,16 @@ namespace System
                 public override string SubProtocol { get => throw null; }
             }
 
-            // Generated from `System.Net.WebSockets.ClientWebSocketOptions` in `System.Net.WebSockets.Client, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ClientWebSocketOptions
             {
                 public void AddSubProtocol(string subProtocol) => throw null;
                 public System.Security.Cryptography.X509Certificates.X509CertificateCollection ClientCertificates { get => throw null; set => throw null; }
+                public bool CollectHttpResponseDetails { get => throw null; set => throw null; }
                 public System.Net.CookieContainer Cookies { get => throw null; set => throw null; }
                 public System.Net.ICredentials Credentials { get => throw null; set => throw null; }
                 public System.Net.WebSockets.WebSocketDeflateOptions DangerousDeflateOptions { get => throw null; set => throw null; }
+                public System.Version HttpVersion { get => throw null; set => throw null; }
+                public System.Net.Http.HttpVersionPolicy HttpVersionPolicy { get => throw null; set => throw null; }
                 public System.TimeSpan KeepAliveInterval { get => throw null; set => throw null; }
                 public System.Net.IWebProxy Proxy { get => throw null; set => throw null; }
                 public System.Net.Security.RemoteCertificateValidationCallback RemoteCertificateValidationCallback { get => throw null; set => throw null; }

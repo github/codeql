@@ -16,7 +16,7 @@ private import semmle.python.Frameworks
 // make it more digestible.
 import MatchUnpacking
 import IterableUnpacking
-import DataFlowDispatchPointsTo
+import DataFlowDispatch
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
@@ -39,162 +39,267 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
 //--------
 predicate isExpressionNode(ControlFlowNode node) { node.getNode() instanceof Expr }
 
-/** DEPRECATED: Alias for `SyntheticPreUpdateNode` */
-deprecated module syntheticPreUpdateNode = SyntheticPreUpdateNode;
+// =============================================================================
+// SyntheticPreUpdateNode
+// =============================================================================
+class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
+  CallNode node;
 
-/** A module collecting the different reasons for synthesising a pre-update node. */
-module SyntheticPreUpdateNode {
-  class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
-    NeedsSyntheticPreUpdateNode post;
+  SyntheticPreUpdateNode() { this = TSyntheticPreUpdateNode(node) }
 
-    SyntheticPreUpdateNode() { this = TSyntheticPreUpdateNode(post) }
+  /** Gets the node for which this is a synthetic pre-update node. */
+  CfgNode getPostUpdateNode() { result.getNode() = node }
 
-    /** Gets the node for which this is a synthetic pre-update node. */
-    Node getPostUpdateNode() { result = post }
+  override string toString() { result = "[pre] " + node.toString() }
 
-    override string toString() { result = "[pre " + post.label() + "] " + post.toString() }
+  override Scope getScope() { result = node.getScope() }
 
-    override Scope getScope() { result = post.getScope() }
-
-    override Location getLocation() { result = post.getLocation() }
-  }
-
-  /** A data flow node for which we should synthesise an associated pre-update node. */
-  class NeedsSyntheticPreUpdateNode extends PostUpdateNode {
-    NeedsSyntheticPreUpdateNode() { this = objectCreationNode() }
-
-    override Node getPreUpdateNode() { result.(SyntheticPreUpdateNode).getPostUpdateNode() = this }
-
-    /**
-     * Gets the label for this kind of node. This will figure in the textual representation of the synthesized pre-update node.
-     *
-     * There is currently only one reason for needing a pre-update node, so we always use that as the label.
-     */
-    string label() { result = "objCreate" }
-  }
-
-  /**
-   * Calls to constructors are treated as post-update nodes for the synthesized argument
-   * that is mapped to the `self` parameter. That way, constructor calls represent the value of the
-   * object after the constructor (currently only `__init__`) has run.
-   */
-  CfgNode objectCreationNode() { result.getNode() = any(ClassCall c).getNode() }
+  override Location getLocation() { result = node.getLocation() }
 }
 
-import SyntheticPreUpdateNode
+// =============================================================================
+// *args (StarArgs) related
+// =============================================================================
+/**
+ * A (synthetic) data-flow parameter node to capture all positional arguments that
+ * should be passed to the `*args` parameter.
+ *
+ * To handle
+ * ```py
+ * def func(*args):
+ *     for arg in args:
+ *         sink(arg)
+ *
+ * func(source1, source2, ...)
+ * ```
+ *
+ * we add a synthetic parameter to `func` that accepts any positional argument at (or
+ * after) the index for the `*args` parameter. We add a store step (at any list index) to the real
+ * `*args` parameter. This means we can handle the code above, but if the code had done `sink(args[0])`
+ * we would (wrongly) add flow for `source2` as well.
+ *
+ * To solve this more precisely, we could add a synthetic argument with position `*args`
+ * that had store steps with the correct index (like we do for mapping keyword arguments to a
+ * `**kwargs` parameter). However, if a single call could go to 2 different
+ * targets with `*args` parameters at different positions, as in the example below, it's unclear what
+ * index to store `2` at. For the `foo` callable it should be 1, for the `bar` callable it should be 0.
+ * So this information would need to be encoded in the arguments of a `ArgumentPosition` branch, and
+ * one of the arguments would be which callable is the target. However, we cannot build `ArgumentPosition`
+ * branches based on the call-graph, so this strategy doesn't work.
+ *
+ * Another approach to solving it precisely is to add multiple synthetic parameters that have store steps
+ * to the real `*args` parameter. So for the example below, `foo` would need to have synthetic parameter
+ * nodes for indexes 1 and 2 (which would have store step for index 0 and 1 of the `*args` parameter),
+ * and `bar` would need it for indexes 1, 2, and 3. The question becomes how many synthetic parameters to
+ * create, which _must_ be `max(Call call, int i | exists(call.getArg(i)))`, since (again) we can't base
+ * this on the call-graph. And each function with a `*args` parameter would need this many extra synthetic
+ * nodes. My gut feeling at that this simple approach will be good enough, but if we need to get it more
+ * precise, it should be possible to do it like this.
+ *
+ * In PR review, @yoff suggested an alternative approach for more precise handling:
+ *
+ * - At the call site, all positional arguments are stored into a synthetic starArgs argument, always tarting at index 0
+ * - This is sent to a synthetic star parameter
+ * - At the receiving end, we know the offset of a potential real star parameter, so we can define read steps accordingly: In foo, we read from the synthetic star parameter at index 1 and store to the real star parameter at index 0.
+ *
+ * ```py
+ * def foo(one, *args): ...
+ * def bar(*args): ...
+ *
+ * func = foo if <cond> else bar
+ * func(1, 2, 3)
+ */
+class SynthStarArgsElementParameterNode extends ParameterNodeImpl,
+  TSynthStarArgsElementParameterNode {
+  DataFlowCallable callable;
 
-/** DEPRECATED: Alias for `SyntheticPostUpdateNode` */
-deprecated module syntheticPostUpdateNode = SyntheticPostUpdateNode;
+  SynthStarArgsElementParameterNode() { this = TSynthStarArgsElementParameterNode(callable) }
 
-/** A module collecting the different reasons for synthesising a post-update node. */
-module SyntheticPostUpdateNode {
-  private import semmle.python.SpecialMethods
+  override string toString() { result = "SynthStarArgsElementParameterNode" }
 
-  /** A post-update node is synthesized for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
-  class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
-    NeedsSyntheticPostUpdateNode pre;
+  override Scope getScope() { result = callable.getScope() }
 
-    SyntheticPostUpdateNode() { this = TSyntheticPostUpdateNode(pre) }
+  override Location getLocation() { result = callable.getLocation() }
 
-    override Node getPreUpdateNode() { result = pre }
-
-    override string toString() { result = "[post " + pre.label() + "] " + pre.toString() }
-
-    override Scope getScope() { result = pre.getScope() }
-
-    override Location getLocation() { result = pre.getLocation() }
-  }
-
-  /** A data flow node for which we should synthesise an associated post-update node. */
-  class NeedsSyntheticPostUpdateNode extends Node {
-    NeedsSyntheticPostUpdateNode() {
-      this = argumentPreUpdateNode()
-      or
-      this = storePreUpdateNode()
-      or
-      this = readPreUpdateNode()
-    }
-
-    /**
-     * Gets the label for this kind of node. This will figure in the textual representation of the synthesized post-update node.
-     * We favour being an arguments as the reason for the post-update node in case multiple reasons apply.
-     */
-    string label() {
-      if this = argumentPreUpdateNode()
-      then result = "arg"
-      else
-        if this = storePreUpdateNode()
-        then result = "store"
-        else result = "read"
-    }
-  }
-
-  /**
-   * Gets the pre-update node for this node.
-   *
-   * An argument might have its value changed as a result of a call.
-   * Certain arguments, such as implicit self arguments are already post-update nodes
-   * and should not have an extra node synthesised.
-   */
-  Node argumentPreUpdateNode() {
-    result = any(FunctionCall c).getArg(_)
-    or
-    result = any(LambdaCall c).getArg(_)
-    or
-    // Avoid argument 0 of method calls as those have read post-update nodes.
-    exists(MethodCall c, int n | n > 0 | result = c.getArg(n))
-    or
-    result = any(SpecialCall c).getArg(_)
-    or
-    // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
-    exists(ClassCall c, int n | n > 0 | result = c.getArg(n))
-    or
-    // any argument of any call that we have not been able to resolve
-    exists(CallNode call | not resolvedCall(call) |
-      result.(CfgNode).getNode() in [call.getArg(_), call.getArgByName(_)]
-    )
-  }
-
-  /** Holds if `call` can be resolved as a normal call */
-  private predicate resolvedCall(CallNode call) {
-    call = any(DataFlowCallableValue cv).getACall()
-    or
-    call = any(DataFlowLambda l).getACall()
-  }
-
-  /** Gets the pre-update node associated with a store. This is used for when an object might have its value changed after a store. */
-  CfgNode storePreUpdateNode() {
-    exists(Attribute a |
-      result.getNode() = a.getObject().getAFlowNode() and
-      a.getCtx() instanceof Store
-    )
-  }
-
-  /**
-   * Gets a node marking the state change of an object after a read.
-   *
-   * A reverse read happens when the result of a read is modified, e.g. in
-   * ```python
-   * l = [ mutable ]
-   * l[0].mutate()
-   * ```
-   * we may now have changed the content of `l`. To track this, there must be
-   * a postupdate node for `l`.
-   */
-  CfgNode readPreUpdateNode() {
-    exists(Attribute a |
-      result.getNode() = a.getObject().getAFlowNode() and
-      a.getCtx() instanceof Load
-    )
-    or
-    result.getNode() = any(SubscriptNode s).getObject()
-    or
-    // The dictionary argument is read from if the callable has parameters matching the keys.
-    result.getNode().getNode() = any(Call call).getKwargs()
-  }
+  override Parameter getParameter() { none() }
 }
 
-import SyntheticPostUpdateNode
+predicate synthStarArgsElementParameterNodeStoreStep(
+  SynthStarArgsElementParameterNode nodeFrom, ListElementContent c, ParameterNode nodeTo
+) {
+  c = c and // suppress warning about unused parameter
+  exists(DataFlowCallable callable, ParameterPosition ppos |
+    nodeFrom = TSynthStarArgsElementParameterNode(callable) and
+    nodeTo = callable.getParameter(ppos) and
+    ppos.isStarArgs(_)
+  )
+}
+
+// =============================================================================
+// **kwargs (DictSplat) related
+// =============================================================================
+/**
+ * A (synthetic) data-flow node that represents all keyword arguments, as if they had
+ * been passed in a `**kwargs` argument.
+ */
+class SynthDictSplatArgumentNode extends Node, TSynthDictSplatArgumentNode {
+  CallNode node;
+
+  SynthDictSplatArgumentNode() { this = TSynthDictSplatArgumentNode(node) }
+
+  override string toString() { result = "SynthDictSplatArgumentNode" }
+
+  override Scope getScope() { result = node.getScope() }
+
+  override Location getLocation() { result = node.getLocation() }
+}
+
+private predicate synthDictSplatArgumentNodeStoreStep(
+  ArgumentNode nodeFrom, DictionaryElementContent c, SynthDictSplatArgumentNode nodeTo
+) {
+  exists(string name, CallNode call, ArgumentPosition keywordPos |
+    nodeTo = TSynthDictSplatArgumentNode(call) and
+    getCallArg(call, _, _, nodeFrom, keywordPos) and
+    keywordPos.isKeyword(name) and
+    c.getKey() = name
+  )
+}
+
+/**
+ * Ensures that the a `**kwargs` parameter will not contain elements with names of
+ * keyword parameters.
+ *
+ * For example, for the function below, it's not possible that the `kwargs` dictionary
+ * can contain an element with the name `a`, since that parameter can be given as a
+ * keyword argument.
+ *
+ * ```py
+ * def func(a, **kwargs):
+ *     ...
+ * ```
+ */
+private predicate dictSplatParameterNodeClearStep(ParameterNode n, DictionaryElementContent c) {
+  exists(DataFlowCallable callable, ParameterPosition dictSplatPos, ParameterPosition keywordPos |
+    dictSplatPos.isDictSplat() and
+    (
+      n.getParameter() = callable.(DataFlowFunction).getScope().getKwarg()
+      or
+      n = TSummaryParameterNode(callable.asLibraryCallable(), dictSplatPos)
+    ) and
+    exists(callable.getParameter(keywordPos)) and
+    keywordPos.isKeyword(c.getKey())
+  )
+}
+
+/**
+ * A synthetic data-flow node to allow flow to keyword parameters from a `**kwargs` argument.
+ *
+ * Take the code snippet below as an example. Since the call only has a `**kwargs` argument,
+ * with a `**` argument position, we add this synthetic parameter node with `**` parameter position,
+ * and a read step to the `p1` parameter.
+ *
+ * ```py
+ * def foo(p1, p2): ...
+ *
+ * kwargs = {"p1": 42, "p2": 43}
+ * foo(**kwargs)
+ * ```
+ *
+ *
+ * Note that this will introduce a bit of redundancy in cases like
+ *
+ * ```py
+ * foo(p1=taint(1), p2=taint(2))
+ * ```
+ *
+ * where direct keyword matching is possible, since we construct a synthesized dict
+ * splat argument (`SynthDictSplatArgumentNode`) at the call site, which means that
+ * `taint(1)` will flow into `p1` both via normal keyword matching and via the synthesized
+ * nodes (and similarly for `p2`). However, this redundancy is OK since
+ *  (a) it means that type-tracking through keyword arguments also works in most cases,
+ *  (b) read/store steps can be avoided when direct keyword matching is possible, and
+ *      hence access path limits are not a concern, and
+ *  (c) since the synthesized nodes are hidden, the reported data-flow paths will be
+ *      collapsed anyway.
+ */
+class SynthDictSplatParameterNode extends ParameterNodeImpl, TSynthDictSplatParameterNode {
+  DataFlowCallable callable;
+
+  SynthDictSplatParameterNode() { this = TSynthDictSplatParameterNode(callable) }
+
+  override string toString() { result = "SynthDictSplatParameterNode" }
+
+  override Scope getScope() { result = callable.getScope() }
+
+  override Location getLocation() { result = callable.getLocation() }
+
+  override Parameter getParameter() { none() }
+}
+
+/**
+ * Flow step from the synthetic `**kwargs` parameter to the real `**kwargs` parameter.
+ * Due to restriction in dataflow library, we can only give one of them as result for
+ * `DataFlowCallable.getParameter`, so this is a workaround to ensure there is flow to
+ * _both_ of them.
+ */
+private predicate dictSplatParameterNodeFlowStep(
+  ParameterNodeImpl nodeFrom, ParameterNodeImpl nodeTo
+) {
+  exists(DataFlowCallable callable |
+    nodeFrom = TSynthDictSplatParameterNode(callable) and
+    (
+      nodeTo.getParameter() = callable.(DataFlowFunction).getScope().getKwarg()
+      or
+      exists(ParameterPosition pos |
+        nodeTo = TSummaryParameterNode(callable.asLibraryCallable(), pos) and
+        pos.isDictSplat()
+      )
+    )
+  )
+}
+
+/**
+ * Reads from the synthetic **kwargs parameter to each keyword parameter.
+ */
+predicate synthDictSplatParameterNodeReadStep(
+  SynthDictSplatParameterNode nodeFrom, DictionaryElementContent c, ParameterNode nodeTo
+) {
+  exists(DataFlowCallable callable, ParameterPosition ppos |
+    nodeFrom = TSynthDictSplatParameterNode(callable) and
+    nodeTo = callable.getParameter(ppos) and
+    ppos.isKeyword(c.getKey())
+  )
+}
+
+// =============================================================================
+// PostUpdateNode
+// =============================================================================
+abstract class PostUpdateNodeImpl extends Node {
+  /** Gets the node before the state update. */
+  abstract Node getPreUpdateNode();
+}
+
+class SyntheticPostUpdateNode extends PostUpdateNodeImpl, TSyntheticPostUpdateNode {
+  ControlFlowNode node;
+
+  SyntheticPostUpdateNode() { this = TSyntheticPostUpdateNode(node) }
+
+  override Node getPreUpdateNode() { result.(CfgNode).getNode() = node }
+
+  override string toString() { result = "[post] " + node.toString() }
+
+  override Scope getScope() { result = node.getScope() }
+
+  override Location getLocation() { result = node.getLocation() }
+}
+
+class NonSyntheticPostUpdateNode extends PostUpdateNodeImpl, CfgNode {
+  SyntheticPreUpdateNode pre;
+
+  NonSyntheticPostUpdateNode() { this = pre.getPostUpdateNode() }
+
+  override Node getPreUpdateNode() { result = pre }
+}
 
 class DataFlowExpr = Expr;
 
@@ -274,13 +379,6 @@ module EssaFlow {
     iterableUnpackingFlowStep(nodeFrom, nodeTo)
     or
     matchFlowStep(nodeFrom, nodeTo)
-    or
-    // Overflow keyword argument
-    exists(CallNode call, CallableValue callable |
-      call = callable.getACall() and
-      nodeTo = TKwOverflowNode(call, callable) and
-      nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode()
-    )
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
@@ -305,6 +403,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo)
   or
   summaryFlowSteps(nodeFrom, nodeTo)
+  or
+  dictSplatParameterNodeFlowStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -521,15 +621,15 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   attributeStoreStep(nodeFrom, c, nodeTo)
   or
-  posOverflowStoreStep(nodeFrom, c, nodeTo)
-  or
-  kwOverflowStoreStep(nodeFrom, c, nodeTo)
-  or
   matchStoreStep(nodeFrom, c, nodeTo)
   or
   any(Orm::AdditionalOrmSteps es).storeStep(nodeFrom, c, nodeTo)
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom, c, nodeTo)
+  or
+  synthStarArgsElementParameterNodeStoreStep(nodeFrom, c, nodeTo)
+  or
+  synthDictSplatArgumentNodeStoreStep(nodeFrom, c, nodeTo)
 }
 
 /**
@@ -669,30 +769,6 @@ predicate attributeStoreStep(Node nodeFrom, AttributeContent c, PostUpdateNode n
   )
 }
 
-/**
- * Holds if `nodeFrom` flows into the synthesized positional overflow argument (`nodeTo`)
- * at the position indicated by `c`.
- */
-predicate posOverflowStoreStep(CfgNode nodeFrom, TupleElementContent c, Node nodeTo) {
-  exists(CallNode call, CallableValue callable, int n |
-    nodeFrom.asCfgNode() = getPositionalOverflowArg(call, callable, n) and
-    nodeTo = TPosOverflowNode(call, callable) and
-    c.getIndex() = n
-  )
-}
-
-/**
- * Holds if `nodeFrom` flows into the synthesized keyword overflow argument (`nodeTo`)
- * at the key indicated by `c`.
- */
-predicate kwOverflowStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
-  exists(CallNode call, CallableValue callable, string key |
-    nodeFrom.asCfgNode() = getKeywordOverflowArg(call, callable, key) and
-    nodeTo = TKwOverflowNode(call, callable) and
-    c.getKey() = key
-  )
-}
-
 predicate defaultValueFlowStep(CfgNode nodeFrom, CfgNode nodeTo) {
   exists(Function f, Parameter p, ParameterDefinition def |
     // `getArgByName` supports, unlike `getAnArg`, keyword-only parameters
@@ -722,9 +798,9 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   attributeReadStep(nodeFrom, c, nodeTo)
   or
-  kwUnpackReadStep(nodeFrom, c, nodeTo)
-  or
   FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom, c, nodeTo)
+  or
+  synthDictSplatParameterNodeReadStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -815,42 +891,18 @@ predicate attributeReadStep(Node nodeFrom, AttributeContent c, AttrRead nodeTo) 
 }
 
 /**
- * Holds if `nodeFrom` is a dictionary argument being unpacked and `nodeTo` is the
- * synthesized unpacked argument with the name indicated by `c`.
- */
-predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
-  exists(CallNode call, string name |
-    nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode() and
-    nodeTo = TKwUnpackedNode(call, _, name) and
-    name = c.getKey()
-  )
-}
-
-/**
- * Clear content at key `name` of the synthesized dictionary `TKwOverflowNode(call, callable)`,
- * whenever `call` unpacks `name`.
- */
-predicate kwOverflowClearStep(Node n, Content c) {
-  exists(CallNode call, CallableValue callable, string name |
-    call_unpacks(call, _, callable, name, _) and
-    n = TKwOverflowNode(call, callable) and
-    c.(DictionaryElementContent).getKey() = name
-  )
-}
-
-/**
  * Holds if values stored inside content `c` are cleared at node `n`. For example,
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, Content c) {
-  kwOverflowClearStep(n, c)
-  or
   matchClearStep(n, c)
   or
   attributeClearStep(n, c)
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
+  or
+  dictSplatParameterNodeClearStep(n, c)
 }
 
 /**
@@ -906,23 +958,24 @@ predicate nodeIsHidden(Node n) {
   n instanceof SummaryNode
   or
   n instanceof SummaryParameterNode
+  or
+  n instanceof SynthStarArgsElementParameterNode
+  or
+  n instanceof SynthDictSplatArgumentNode
+  or
+  n instanceof SynthDictSplatParameterNode
 }
 
 class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-  // lambda
+  // lambda and plain functions
   kind = kind and
-  creation.asExpr() = c.(DataFlowLambda).getDefinition()
-  or
-  // normal function
-  exists(FunctionDef def |
-    def.defines(creation.asVar().getSourceVariable()) and
-    def.getDefinedFunction() = c.(DataFlowCallableValue).getCallableValue().getScope()
-  )
+  creation.asExpr() = c.(DataFlowPlainFunction).getScope().getDefinition()
   or
   // summarized function
+  exists(kind) and // avoid warning on unused 'kind'
   exists(Call call |
     creation.asExpr() = call.getAnArg() and
     creation = c.(LibraryCallableValue).getACallback()
@@ -955,3 +1008,12 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }
