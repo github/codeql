@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"github.com/github/codeql-go/extractor/dbscheme"
+	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/srcarchive"
 	"github.com/github/codeql-go/extractor/trap"
 	"github.com/github/codeql-go/extractor/util"
@@ -97,6 +98,13 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	if len(pkgs) == 0 {
 		log.Println("No packages found.")
+
+		wd, err := os.Getwd()
+		if err != nil {
+			log.Printf("Warning: failed to get working directory: %s\n", err.Error())
+		} else if util.FindGoFiles(wd) {
+			diagnostics.EmitGoFilesFoundButNotProcessed()
+		}
 	}
 
 	log.Println("Extracting universe scope.")
@@ -117,6 +125,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		}
 		log.Printf("Done running go list deps: resolved %d packages.", len(pkgInfos))
 	}
+
+	pkgsNotFound := make([]string, 0, len(pkgs))
 
 	// Do a post-order traversal and extract the package scope of each package
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
@@ -144,12 +154,26 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		if len(pkg.Errors) != 0 {
 			log.Printf("Warning: encountered errors extracting package `%s`:", pkg.PkgPath)
 			for i, err := range pkg.Errors {
-				log.Printf("  %s", err.Error())
+				errString := err.Error()
+				log.Printf("  %s", errString)
+
+				if strings.Contains(errString, "build constraints exclude all Go files in ") {
+					// `err` is a NoGoError from the package cmd/go/internal/load, which we cannot access as it is internal
+					diagnostics.EmitPackageDifferentOSArchitecture(pkg.PkgPath)
+				} else if strings.Contains(errString, "cannot find package") ||
+					strings.Contains(errString, "no required module provides package") {
+					pkgsNotFound = append(pkgsNotFound, pkg.PkgPath)
+				}
 				extraction.extractError(tw, err, lbl, i)
 			}
 		}
+
 		log.Printf("Done extracting types for package %s.", pkg.PkgPath)
 	})
+
+	if len(pkgsNotFound) > 0 {
+		diagnostics.EmitCannotFindPackages(pkgsNotFound)
+	}
 
 	for _, pkg := range pkgs {
 		pkgInfo, ok := pkgInfos[pkg.PkgPath]
