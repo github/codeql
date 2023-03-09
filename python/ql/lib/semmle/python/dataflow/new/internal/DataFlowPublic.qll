@@ -121,7 +121,7 @@ newtype TNode =
   TSynthDictSplatArgumentNode(CallNode call) { exists(call.getArgByName(_)) } or
   /** A synthetic node to allow flow to keyword parameters from a `**kwargs` argument. */
   TSynthDictSplatParameterNode(DataFlowCallable callable) {
-    exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
+    exists(ParameterPosition ppos | ppos.isNormal(_, _) or ppos.isKeywordOnly(_) | exists(callable.getParameter(ppos)))
   }
 
 /** Helper for `Node::getEnclosingCallable`. */

@@ -28,20 +28,4 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
     pos.isDictSplat() and
     not exists(p.getLocation().getFile().getRelativePath())
   }
-
-  override predicate uniqueParameterNodePositionExclude(
-    DataFlowCallable c, ParameterPosition pos, Node p
-  ) {
-    // For normal parameters that can both be passed as positional arguments or keyword
-    // arguments, we currently have parameter positions for both cases..
-    //
-    // TODO: Figure out how bad breaking this consistency check is
-    exists(Function func, Parameter param |
-      c.getScope() = func and
-      p = parameterNode(param) and
-      c.getParameter(pos) = p and
-      param = func.getArg(_) and
-      param = func.getArgByName(_)
-    )
-  }
 }

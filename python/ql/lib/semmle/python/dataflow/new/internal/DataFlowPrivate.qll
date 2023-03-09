@@ -187,7 +187,11 @@ private predicate dictSplatParameterNodeClearStep(ParameterNode n, DictionaryEle
       n = TSummaryParameterNode(callable.asLibraryCallable(), dictSplatPos)
     ) and
     exists(callable.getParameter(keywordPos)) and
-    keywordPos.isKeyword(c.getKey())
+    (
+      keywordPos.isNormal(_, c.getKey())
+      or
+      keywordPos.isKeywordOnly(c.getKey())
+    )
   )
 }
 
@@ -267,7 +271,12 @@ predicate synthDictSplatParameterNodeReadStep(
   exists(DataFlowCallable callable, ParameterPosition ppos |
     nodeFrom = TSynthDictSplatParameterNode(callable) and
     nodeTo = callable.getParameter(ppos) and
-    ppos.isKeyword(c.getKey())
+    (
+      ppos.isNormal(_, c.getKey())
+      or
+      ppos.isKeywordOnly(c.getKey())
+
+    )
   )
 }
 
