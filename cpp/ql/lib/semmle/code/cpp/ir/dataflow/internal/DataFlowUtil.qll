@@ -413,7 +413,11 @@ class InstructionNode extends Node0 {
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
 
-  override string toStringImpl() { result = instr.getAst().toString() }
+  override string toStringImpl() {
+    if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
+    then result = "this"
+    else result = instr.getAst().toString()
+  }
 }
 
 /**
@@ -428,7 +432,11 @@ class OperandNode extends Node, Node0 {
   /** Gets the operand corresponding to this node. */
   Operand getOperand() { result = op }
 
-  override string toStringImpl() { result = op.getDef().getAst().toString() }
+  override string toStringImpl() {
+    if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
+    then result = "this"
+    else result = op.getDef().getAst().toString()
+  }
 }
 
 /**

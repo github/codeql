@@ -192,9 +192,7 @@ edges
 | C.cpp:18:12:18:18 | call to C [s3] | C.cpp:19:5:19:5 | c indirection [s3] |
 | C.cpp:19:5:19:5 | c indirection [s1] | C.cpp:27:8:27:11 | this indirection [s1] |
 | C.cpp:19:5:19:5 | c indirection [s3] | C.cpp:27:8:27:11 | this indirection [s3] |
-| C.cpp:22:9:22:22 | C indirection [post update] [s1] | C.cpp:18:12:18:18 | call to C [s1] |
 | C.cpp:22:9:22:22 | this indirection [post update] [s1] | C.cpp:18:12:18:18 | call to C [s1] |
-| C.cpp:22:12:22:21 | new | C.cpp:22:9:22:22 | C indirection [post update] [s1] |
 | C.cpp:22:12:22:21 | new | C.cpp:22:9:22:22 | this indirection [post update] [s1] |
 | C.cpp:22:12:22:21 | new | C.cpp:22:12:22:21 | new |
 | C.cpp:24:5:24:25 | ... = ... | C.cpp:24:11:24:12 | this indirection [post update] [s3] |
@@ -1084,9 +1082,6 @@ nodes
 | C.cpp:18:12:18:18 | call to C [s3] | semmle.label | call to C [s3] |
 | C.cpp:19:5:19:5 | c indirection [s1] | semmle.label | c indirection [s1] |
 | C.cpp:19:5:19:5 | c indirection [s3] | semmle.label | c indirection [s3] |
-| C.cpp:22:9:22:22 | C indirection [post update] [s1] | semmle.label | C indirection [post update] [s1] |
-| C.cpp:22:9:22:22 | C indirection [post update] [s1] | semmle.label | this indirection [post update] [s1] |
-| C.cpp:22:9:22:22 | this indirection [post update] [s1] | semmle.label | C indirection [post update] [s1] |
 | C.cpp:22:9:22:22 | this indirection [post update] [s1] | semmle.label | this indirection [post update] [s1] |
 | C.cpp:22:12:22:21 | new | semmle.label | new |
 | C.cpp:22:12:22:21 | new | semmle.label | new |

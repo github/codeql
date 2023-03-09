@@ -28,94 +28,6 @@ uniqueNodeLocation
 missingLocation
 | Nodes without location: 12 |
 uniqueNodeToString
-| cpp11.cpp:65:20:65:20 | (unnamed constructor) | Node should have one toString but has 2. |
-| cpp11.cpp:65:20:65:20 | (unnamed constructor) indirection | Node should have one toString but has 2. |
-| cpp11.cpp:65:20:65:20 | (unnamed constructor) indirection | Node should have one toString but has 2. |
-| cpp11.cpp:65:20:65:20 | (unnamed constructor) indirection [post update] | Node should have one toString but has 2. |
-| cpp11.cpp:65:20:65:20 | this | Node should have one toString but has 2. |
-| cpp11.cpp:65:20:65:20 | this indirection | Node should have one toString but has 2. |
-| cpp11.cpp:65:20:65:20 | this indirection | Node should have one toString but has 2. |
-| cpp11.cpp:65:20:65:20 | this indirection [post update] | Node should have one toString but has 2. |
-| ir.cpp:747:8:747:8 | Base | Node should have one toString but has 2. |
-| ir.cpp:747:8:747:8 | Base indirection | Node should have one toString but has 2. |
-| ir.cpp:747:8:747:8 | Base indirection | Node should have one toString but has 2. |
-| ir.cpp:747:8:747:8 | Base indirection [post update] | Node should have one toString but has 2. |
-| ir.cpp:747:8:747:8 | Base indirection [post update] | Node should have one toString but has 2. |
-| ir.cpp:747:8:747:8 | this | Node should have one toString but has 2. |
-| ir.cpp:747:8:747:8 | this indirection | Node should have one toString but has 2. |
-| ir.cpp:747:8:747:8 | this indirection | Node should have one toString but has 2. |
-| ir.cpp:747:8:747:8 | this indirection [post update] | Node should have one toString but has 2. |
-| ir.cpp:747:8:747:8 | this indirection [post update] | Node should have one toString but has 2. |
-| ir.cpp:750:3:750:6 | Base | Node should have one toString but has 2. |
-| ir.cpp:750:3:750:6 | Base indirection | Node should have one toString but has 2. |
-| ir.cpp:750:3:750:6 | Base indirection | Node should have one toString but has 2. |
-| ir.cpp:750:3:750:6 | this | Node should have one toString but has 2. |
-| ir.cpp:750:3:750:6 | this indirection | Node should have one toString but has 2. |
-| ir.cpp:750:3:750:6 | this indirection | Node should have one toString but has 2. |
-| ir.cpp:750:10:750:10 | Base indirection [post update] | Node should have one toString but has 2. |
-| ir.cpp:750:10:750:10 | Base indirection [post update] | Node should have one toString but has 2. |
-| ir.cpp:750:10:750:10 | this indirection [post update] | Node should have one toString but has 2. |
-| ir.cpp:750:10:750:10 | this indirection [post update] | Node should have one toString but has 2. |
-| ir.cpp:752:3:752:7 | this | Node should have one toString but has 2. |
-| ir.cpp:752:3:752:7 | this indirection | Node should have one toString but has 2. |
-| ir.cpp:752:3:752:7 | this indirection | Node should have one toString but has 2. |
-| ir.cpp:752:3:752:7 | ~Base | Node should have one toString but has 2. |
-| ir.cpp:752:3:752:7 | ~Base indirection | Node should have one toString but has 2. |
-| ir.cpp:752:3:752:7 | ~Base indirection | Node should have one toString but has 2. |
-| ir.cpp:753:3:753:3 | this indirection [post update] | Node should have one toString but has 2. |
-| ir.cpp:753:3:753:3 | ~Base indirection [post update] | Node should have one toString but has 2. |
-| ir.cpp:848:8:848:8 | PolymorphicDerived | Node should have one toString but has 2. |
-| ir.cpp:848:8:848:8 | PolymorphicDerived indirection | Node should have one toString but has 2. |
-| ir.cpp:848:8:848:8 | PolymorphicDerived indirection | Node should have one toString but has 2. |
-| ir.cpp:848:8:848:8 | this | Node should have one toString but has 2. |
-| ir.cpp:848:8:848:8 | this | Node should have one toString but has 2. |
-| ir.cpp:848:8:848:8 | this indirection | Node should have one toString but has 2. |
-| ir.cpp:848:8:848:8 | this indirection | Node should have one toString but has 2. |
-| ir.cpp:848:8:848:8 | this indirection | Node should have one toString but has 2. |
-| ir.cpp:848:8:848:8 | this indirection | Node should have one toString but has 2. |
-| ir.cpp:848:8:848:8 | ~PolymorphicDerived | Node should have one toString but has 2. |
-| ir.cpp:848:8:848:8 | ~PolymorphicDerived indirection | Node should have one toString but has 2. |
-| ir.cpp:848:8:848:8 | ~PolymorphicDerived indirection | Node should have one toString but has 2. |
-| ir.cpp:869:1:869:14 | String | Node should have one toString but has 2. |
-| ir.cpp:869:1:869:14 | String indirection | Node should have one toString but has 2. |
-| ir.cpp:869:1:869:14 | String indirection | Node should have one toString but has 2. |
-| ir.cpp:869:1:869:14 | this | Node should have one toString but has 2. |
-| ir.cpp:869:1:869:14 | this indirection | Node should have one toString but has 2. |
-| ir.cpp:869:1:869:14 | this indirection | Node should have one toString but has 2. |
-| static_init_templates.cpp:236:7:236:7 | MyDerivedClass | Node should have one toString but has 2. |
-| static_init_templates.cpp:236:7:236:7 | MyDerivedClass indirection | Node should have one toString but has 2. |
-| static_init_templates.cpp:236:7:236:7 | MyDerivedClass indirection | Node should have one toString but has 2. |
-| static_init_templates.cpp:236:7:236:7 | this | Node should have one toString but has 2. |
-| static_init_templates.cpp:236:7:236:7 | this indirection | Node should have one toString but has 2. |
-| static_init_templates.cpp:236:7:236:7 | this indirection | Node should have one toString but has 2. |
-| static_init_templates.cpp:240:7:240:7 | MyContainingClass | Node should have one toString but has 2. |
-| static_init_templates.cpp:240:7:240:7 | MyContainingClass indirection | Node should have one toString but has 2. |
-| static_init_templates.cpp:240:7:240:7 | MyContainingClass indirection | Node should have one toString but has 2. |
-| static_init_templates.cpp:240:7:240:7 | MyContainingClass indirection [post update] | Node should have one toString but has 2. |
-| static_init_templates.cpp:240:7:240:7 | MyContainingClass indirection [post update] | Node should have one toString but has 2. |
-| static_init_templates.cpp:240:7:240:7 | this | Node should have one toString but has 2. |
-| static_init_templates.cpp:240:7:240:7 | this indirection | Node should have one toString but has 2. |
-| static_init_templates.cpp:240:7:240:7 | this indirection | Node should have one toString but has 2. |
-| static_init_templates.cpp:240:7:240:7 | this indirection [post update] | Node should have one toString but has 2. |
-| static_init_templates.cpp:240:7:240:7 | this indirection [post update] | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | exn1 | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | exn1 | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | exn1 indirection | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | exn1 indirection | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | exn1 indirection | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | exn1 indirection | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | this | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | this | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | this | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | this indirection | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | this indirection | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | this indirection | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | this indirection | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | this indirection | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | this indirection | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | ~exn1 | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | ~exn1 indirection | Node should have one toString but has 2. |
-| try_catch.cpp:7:8:7:8 | ~exn1 indirection | Node should have one toString but has 2. |
 missingToString
 parameterCallable
 localFlowIsLocal
@@ -136,16 +48,13 @@ uniquePostUpdate
 | ir.cpp:516:10:516:11 | definition of r4 indirection | Node has multiple PostUpdateNodes. |
 | ir.cpp:659:5:659:5 | this indirection | Node has multiple PostUpdateNodes. |
 | ir.cpp:659:5:659:5 | this indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:747:8:747:8 | Base indirection | Node has multiple PostUpdateNodes. |
 | ir.cpp:747:8:747:8 | this indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:750:3:750:6 | Base indirection | Node has multiple PostUpdateNodes. |
 | ir.cpp:750:3:750:6 | this indirection | Node has multiple PostUpdateNodes. |
 | ir.cpp:759:3:759:8 | this indirection | Node has multiple PostUpdateNodes. |
 | ir.cpp:768:3:768:9 | this indirection | Node has multiple PostUpdateNodes. |
 | ir.cpp:777:3:777:11 | this indirection | Node has multiple PostUpdateNodes. |
 | ir.cpp:786:3:786:11 | this indirection | Node has multiple PostUpdateNodes. |
 | ir.cpp:795:3:795:11 | this indirection | Node has multiple PostUpdateNodes. |
-| static_init_templates.cpp:240:7:240:7 | MyContainingClass indirection | Node has multiple PostUpdateNodes. |
 | static_init_templates.cpp:240:7:240:7 | this indirection | Node has multiple PostUpdateNodes. |
 postIsInSameCallable
 reverseRead

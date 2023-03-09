@@ -3,54 +3,6 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
-| A.cpp:9:9:9:9 | C1 | Node should have one toString but has 2. |
-| A.cpp:9:9:9:9 | C1 indirection | Node should have one toString but has 2. |
-| A.cpp:9:9:9:9 | C1 indirection | Node should have one toString but has 2. |
-| A.cpp:9:9:9:9 | this | Node should have one toString but has 2. |
-| A.cpp:9:9:9:9 | this indirection | Node should have one toString but has 2. |
-| A.cpp:9:9:9:9 | this indirection | Node should have one toString but has 2. |
-| A.cpp:14:9:14:9 | C2 | Node should have one toString but has 2. |
-| A.cpp:14:9:14:9 | C2 indirection | Node should have one toString but has 2. |
-| A.cpp:14:9:14:9 | C2 indirection | Node should have one toString but has 2. |
-| A.cpp:14:9:14:9 | this | Node should have one toString but has 2. |
-| A.cpp:14:9:14:9 | this indirection | Node should have one toString but has 2. |
-| A.cpp:14:9:14:9 | this indirection | Node should have one toString but has 2. |
-| C.cpp:22:3:22:3 | C | Node should have one toString but has 2. |
-| C.cpp:22:3:22:3 | C indirection | Node should have one toString but has 2. |
-| C.cpp:22:3:22:3 | C indirection | Node should have one toString but has 2. |
-| C.cpp:22:3:22:3 | this | Node should have one toString but has 2. |
-| C.cpp:22:3:22:3 | this indirection | Node should have one toString but has 2. |
-| C.cpp:22:3:22:3 | this indirection | Node should have one toString but has 2. |
-| C.cpp:22:9:22:22 | C indirection [post update] | Node should have one toString but has 2. |
-| C.cpp:22:9:22:22 | this indirection [post update] | Node should have one toString but has 2. |
-| complex.cpp:22:3:22:5 | Bar | Node should have one toString but has 2. |
-| complex.cpp:22:3:22:5 | Bar indirection | Node should have one toString but has 2. |
-| complex.cpp:22:3:22:5 | Bar indirection | Node should have one toString but has 2. |
-| complex.cpp:22:3:22:5 | this | Node should have one toString but has 2. |
-| complex.cpp:22:3:22:5 | this indirection | Node should have one toString but has 2. |
-| complex.cpp:22:3:22:5 | this indirection | Node should have one toString but has 2. |
-| complex.cpp:22:11:22:17 | Bar indirection [post update] | Node should have one toString but has 2. |
-| complex.cpp:22:11:22:17 | Bar indirection [post update] | Node should have one toString but has 2. |
-| complex.cpp:22:11:22:17 | this indirection [post update] | Node should have one toString but has 2. |
-| complex.cpp:22:11:22:17 | this indirection [post update] | Node should have one toString but has 2. |
-| complex.cpp:25:7:25:7 | Outer | Node should have one toString but has 2. |
-| complex.cpp:25:7:25:7 | Outer indirection | Node should have one toString but has 2. |
-| complex.cpp:25:7:25:7 | Outer indirection | Node should have one toString but has 2. |
-| complex.cpp:25:7:25:7 | Outer indirection [post update] | Node should have one toString but has 2. |
-| complex.cpp:25:7:25:7 | Outer indirection [post update] | Node should have one toString but has 2. |
-| complex.cpp:25:7:25:7 | this | Node should have one toString but has 2. |
-| complex.cpp:25:7:25:7 | this indirection | Node should have one toString but has 2. |
-| complex.cpp:25:7:25:7 | this indirection | Node should have one toString but has 2. |
-| complex.cpp:25:7:25:7 | this indirection [post update] | Node should have one toString but has 2. |
-| complex.cpp:25:7:25:7 | this indirection [post update] | Node should have one toString but has 2. |
-| conflated.cpp:45:3:45:12 | LinkedList | Node should have one toString but has 2. |
-| conflated.cpp:45:3:45:12 | LinkedList indirection | Node should have one toString but has 2. |
-| conflated.cpp:45:3:45:12 | LinkedList indirection | Node should have one toString but has 2. |
-| conflated.cpp:45:3:45:12 | this | Node should have one toString but has 2. |
-| conflated.cpp:45:3:45:12 | this indirection | Node should have one toString but has 2. |
-| conflated.cpp:45:3:45:12 | this indirection | Node should have one toString but has 2. |
-| conflated.cpp:45:34:45:43 | LinkedList indirection [post update] | Node should have one toString but has 2. |
-| conflated.cpp:45:34:45:43 | this indirection [post update] | Node should have one toString but has 2. |
 missingToString
 parameterCallable
 localFlowIsLocal
@@ -66,9 +18,7 @@ uniquePostUpdate
 | aliasing.cpp:77:11:77:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
 | aliasing.cpp:84:11:84:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
 | aliasing.cpp:91:11:91:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
-| complex.cpp:22:3:22:5 | Bar indirection | Node has multiple PostUpdateNodes. |
 | complex.cpp:22:3:22:5 | this indirection | Node has multiple PostUpdateNodes. |
-| complex.cpp:25:7:25:7 | Outer indirection | Node has multiple PostUpdateNodes. |
 | complex.cpp:25:7:25:7 | this indirection | Node has multiple PostUpdateNodes. |
 | complex.cpp:42:10:42:14 | inner indirection | Node has multiple PostUpdateNodes. |
 | complex.cpp:43:10:43:14 | inner indirection | Node has multiple PostUpdateNodes. |
