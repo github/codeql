@@ -12,6 +12,6 @@ from
   string input, string kind, string provenance
 where
   sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance) and
-  provenance != "generated"
+  provenance != ["generated", "ai-generated"]
 select package, type, subtypes, name, signature, ext, input, kind, provenance order by
     package, type, name, signature, input, kind

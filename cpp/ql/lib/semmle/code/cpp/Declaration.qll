@@ -68,7 +68,9 @@ class Declaration extends Locatable, @declaration {
    * Holds if this declaration has the fully-qualified name `qualifiedName`.
    * See `getQualifiedName`.
    */
-  predicate hasQualifiedName(string qualifiedName) { this.getQualifiedName() = qualifiedName }
+  deprecated predicate hasQualifiedName(string qualifiedName) {
+    this.getQualifiedName() = qualifiedName
+  }
 
   /**
    * Holds if this declaration has a fully-qualified name with a name-space
@@ -184,7 +186,7 @@ class Declaration extends Locatable, @declaration {
   predicate hasDefinition() { exists(this.getDefinition()) }
 
   /** DEPRECATED: Use `hasDefinition` instead. */
-  predicate isDefined() { this.hasDefinition() }
+  deprecated predicate isDefined() { this.hasDefinition() }
 
   /** Gets the preferred location of this declaration, if any. */
   override Location getLocation() { none() }

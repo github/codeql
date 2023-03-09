@@ -140,6 +140,46 @@ namespace Test
         unsafe public void M1(delegate* unmanaged<System.IntPtr, void> f) => throw null;
     }
 
+    public interface IInterface2<T> where T : IInterface2<T>
+    {
+        static abstract T operator +(T left, T right);
+        static virtual T operator -(T left, T right) => throw null;
+        static abstract T operator *(T left, T right);
+        static virtual T operator /(T left, T right) => throw null;
+        static abstract explicit operator short(T n);
+        static abstract explicit operator int(T n);
+        void M1();
+        void M2();
+    }
+
+    public interface IInterface3<T> where T : IInterface3<T>
+    {
+        static abstract T operator +(T left, T right);
+        static virtual T operator -(T left, T right) => throw null;
+        static abstract explicit operator short(T n);
+        void M1();
+    }
+
+    public class Class11 : IInterface2<Class11>, IInterface3<Class11>
+    {
+        public static Class11 operator +(Class11 left, Class11 right) => throw null;
+        public static Class11 operator -(Class11 left, Class11 right) => throw null;
+        static Class11 IInterface2<Class11>.operator *(Class11 left, Class11 right) => throw null;
+        static Class11 IInterface2<Class11>.operator /(Class11 left, Class11 right) => throw null;
+        public void M1() => throw null;
+        void IInterface2<Class11>.M2() => throw null;
+        public static explicit operator short(Class11 n) => 0;
+        static explicit IInterface2<Class11>.operator int(Class11 n) => 0;
+    }
+
+    public unsafe class MyUnsafeClass
+    {
+        public static void M1(delegate*<void> f) => throw null;
+        public static void M2(int*[] x) => throw null;
+        public static char* M3() => throw null;
+        public static void M4(int x) => throw null;
+    }
+
     public enum Enum1
     {
         None1,

@@ -4,6 +4,7 @@ internal static class Modifiers
     public const string Async = "async";
     public const string Const = "const";
     public const string Extern = "extern";
+    public const string File = "file";
     public const string Internal = "internal";
     public const string New = "new";
     public const string Override = "override";

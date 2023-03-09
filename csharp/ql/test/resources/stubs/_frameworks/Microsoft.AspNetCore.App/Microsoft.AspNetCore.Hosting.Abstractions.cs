@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Hosting.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Hosting
         {
-            // Generated from `Microsoft.AspNetCore.Hosting.EnvironmentName` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class EnvironmentName
             {
                 public static string Development;
@@ -14,7 +14,6 @@ namespace Microsoft
                 public static string Staging;
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.HostingAbstractionsWebHostBuilderExtensions` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HostingAbstractionsWebHostBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Hosting.IWebHostBuilder CaptureStartupErrors(this Microsoft.AspNetCore.Hosting.IWebHostBuilder hostBuilder, bool captureStartupErrors) => throw null;
@@ -31,7 +30,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Hosting.IWebHostBuilder UseWebRoot(this Microsoft.AspNetCore.Hosting.IWebHostBuilder hostBuilder, string webRoot) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.HostingEnvironmentExtensions` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static partial class HostingEnvironmentExtensions
             {
                 public static bool IsDevelopment(this Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment) => throw null;
@@ -40,14 +38,12 @@ namespace Microsoft
                 public static bool IsStaging(this Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.HostingStartupAttribute` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HostingStartupAttribute : System.Attribute
             {
                 public HostingStartupAttribute(System.Type hostingStartupType) => throw null;
                 public System.Type HostingStartupType { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.IApplicationLifetime` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IApplicationLifetime
             {
                 System.Threading.CancellationToken ApplicationStarted { get; }
@@ -56,7 +52,6 @@ namespace Microsoft
                 void StopApplication();
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.IHostingEnvironment` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IHostingEnvironment
             {
                 string ApplicationName { get; set; }
@@ -67,38 +62,32 @@ namespace Microsoft
                 string WebRootPath { get; set; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.IHostingStartup` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IHostingStartup
             {
                 void Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder builder);
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.IStartup` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IStartup
             {
                 void Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder app);
                 System.IServiceProvider ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection services);
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.IStartupConfigureContainerFilter<>` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IStartupConfigureContainerFilter<TContainerBuilder>
             {
                 System.Action<TContainerBuilder> ConfigureContainer(System.Action<TContainerBuilder> container);
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.IStartupConfigureServicesFilter` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IStartupConfigureServicesFilter
             {
                 System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection> ConfigureServices(System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection> next);
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.IStartupFilter` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IStartupFilter
             {
                 System.Action<Microsoft.AspNetCore.Builder.IApplicationBuilder> Configure(System.Action<Microsoft.AspNetCore.Builder.IApplicationBuilder> next);
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.IWebHost` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IWebHost : System.IDisposable
             {
                 Microsoft.AspNetCore.Http.Features.IFeatureCollection ServerFeatures { get; }
@@ -108,7 +97,6 @@ namespace Microsoft
                 System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.IWebHostBuilder` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IWebHostBuilder
             {
                 Microsoft.AspNetCore.Hosting.IWebHost Build();
@@ -119,14 +107,12 @@ namespace Microsoft
                 Microsoft.AspNetCore.Hosting.IWebHostBuilder UseSetting(string key, string value);
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.IWebHostEnvironment` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IWebHostEnvironment : Microsoft.Extensions.Hosting.IHostEnvironment
             {
                 Microsoft.Extensions.FileProviders.IFileProvider WebRootFileProvider { get; set; }
                 string WebRootPath { get; set; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.WebHostBuilderContext` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class WebHostBuilderContext
             {
                 public Microsoft.Extensions.Configuration.IConfiguration Configuration { get => throw null; set => throw null; }
@@ -134,7 +120,6 @@ namespace Microsoft
                 public WebHostBuilderContext() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.WebHostDefaults` in `Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class WebHostDefaults
             {
                 public static string ApplicationKey;

@@ -1,6 +1,6 @@
 ---
+lockVersion: 1.0.0
 dependencies:
   codeql/javascript-experimental-atm-model:
-    version: 0.3.0
+    version: 0.3.1-2023-03-01-12h42m43s.strong-turtle-1xp3dqvv.ecb17d40286d14132b481c065a43459a7f0ba9059015b7a49c909c9f9ce5fec5
 compiled: false
-lockVersion: 1.0.0

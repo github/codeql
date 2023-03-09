@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Identity, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,21 +7,18 @@ namespace Microsoft
     {
         namespace Identity
         {
-            // Generated from `Microsoft.AspNetCore.Identity.AspNetRoleManager<>` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AspNetRoleManager<TRole> : Microsoft.AspNetCore.Identity.RoleManager<TRole>, System.IDisposable where TRole : class
             {
                 public AspNetRoleManager(Microsoft.AspNetCore.Identity.IRoleStore<TRole> store, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Identity.IRoleValidator<TRole>> roleValidators, Microsoft.AspNetCore.Identity.ILookupNormalizer keyNormalizer, Microsoft.AspNetCore.Identity.IdentityErrorDescriber errors, Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Identity.RoleManager<TRole>> logger, Microsoft.AspNetCore.Http.IHttpContextAccessor contextAccessor) : base(default(Microsoft.AspNetCore.Identity.IRoleStore<TRole>), default(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Identity.IRoleValidator<TRole>>), default(Microsoft.AspNetCore.Identity.ILookupNormalizer), default(Microsoft.AspNetCore.Identity.IdentityErrorDescriber), default(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Identity.RoleManager<TRole>>)) => throw null;
                 protected override System.Threading.CancellationToken CancellationToken { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.AspNetUserManager<>` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AspNetUserManager<TUser> : Microsoft.AspNetCore.Identity.UserManager<TUser>, System.IDisposable where TUser : class
             {
                 public AspNetUserManager(Microsoft.AspNetCore.Identity.IUserStore<TUser> store, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Identity.IdentityOptions> optionsAccessor, Microsoft.AspNetCore.Identity.IPasswordHasher<TUser> passwordHasher, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Identity.IUserValidator<TUser>> userValidators, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Identity.IPasswordValidator<TUser>> passwordValidators, Microsoft.AspNetCore.Identity.ILookupNormalizer keyNormalizer, Microsoft.AspNetCore.Identity.IdentityErrorDescriber errors, System.IServiceProvider services, Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Identity.UserManager<TUser>> logger) : base(default(Microsoft.AspNetCore.Identity.IUserStore<TUser>), default(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Identity.IdentityOptions>), default(Microsoft.AspNetCore.Identity.IPasswordHasher<TUser>), default(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Identity.IUserValidator<TUser>>), default(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Identity.IPasswordValidator<TUser>>), default(Microsoft.AspNetCore.Identity.ILookupNormalizer), default(Microsoft.AspNetCore.Identity.IdentityErrorDescriber), default(System.IServiceProvider), default(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Identity.UserManager<TUser>>)) => throw null;
                 protected override System.Threading.CancellationToken CancellationToken { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.DataProtectionTokenProviderOptions` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DataProtectionTokenProviderOptions
             {
                 public DataProtectionTokenProviderOptions() => throw null;
@@ -28,7 +26,6 @@ namespace Microsoft
                 public System.TimeSpan TokenLifespan { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.DataProtectorTokenProvider<>` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DataProtectorTokenProvider<TUser> : Microsoft.AspNetCore.Identity.IUserTwoFactorTokenProvider<TUser> where TUser : class
             {
                 public virtual System.Threading.Tasks.Task<bool> CanGenerateTwoFactorTokenAsync(Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user) => throw null;
@@ -41,7 +38,6 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<bool> ValidateAsync(string purpose, string token, Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.ExternalLoginInfo` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ExternalLoginInfo : Microsoft.AspNetCore.Identity.UserLoginInfo
             {
                 public Microsoft.AspNetCore.Authentication.AuthenticationProperties AuthenticationProperties { get => throw null; set => throw null; }
@@ -50,18 +46,15 @@ namespace Microsoft
                 public System.Security.Claims.ClaimsPrincipal Principal { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.ISecurityStampValidator` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ISecurityStampValidator
             {
                 System.Threading.Tasks.Task ValidateAsync(Microsoft.AspNetCore.Authentication.Cookies.CookieValidatePrincipalContext context);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.ITwoFactorSecurityStampValidator` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ITwoFactorSecurityStampValidator : Microsoft.AspNetCore.Identity.ISecurityStampValidator
             {
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IdentityBuilderExtensions` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class IdentityBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Identity.IdentityBuilder AddDefaultTokenProviders(this Microsoft.AspNetCore.Identity.IdentityBuilder builder) => throw null;
@@ -69,7 +62,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Identity.IdentityBuilder AddSignInManager<TSignInManager>(this Microsoft.AspNetCore.Identity.IdentityBuilder builder) where TSignInManager : class => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IdentityConstants` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class IdentityConstants
             {
                 public static string ApplicationScheme;
@@ -79,7 +71,6 @@ namespace Microsoft
                 public static string TwoFactorUserIdScheme;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IdentityCookieAuthenticationBuilderExtensions` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class IdentityCookieAuthenticationBuilderExtensions
             {
                 public static Microsoft.Extensions.Options.OptionsBuilder<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions> AddApplicationCookie(this Microsoft.AspNetCore.Authentication.AuthenticationBuilder builder) => throw null;
@@ -90,7 +81,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.Options.OptionsBuilder<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions> AddTwoFactorUserIdCookie(this Microsoft.AspNetCore.Authentication.AuthenticationBuilder builder) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IdentityCookiesBuilder` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class IdentityCookiesBuilder
             {
                 public Microsoft.Extensions.Options.OptionsBuilder<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions> ApplicationCookie { get => throw null; set => throw null; }
@@ -100,7 +90,6 @@ namespace Microsoft
                 public Microsoft.Extensions.Options.OptionsBuilder<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions> TwoFactorUserIdCookie { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.SecurityStampRefreshingPrincipalContext` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SecurityStampRefreshingPrincipalContext
             {
                 public System.Security.Claims.ClaimsPrincipal CurrentPrincipal { get => throw null; set => throw null; }
@@ -108,14 +97,12 @@ namespace Microsoft
                 public SecurityStampRefreshingPrincipalContext() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.SecurityStampValidator` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class SecurityStampValidator
             {
                 public static System.Threading.Tasks.Task ValidateAsync<TValidator>(Microsoft.AspNetCore.Authentication.Cookies.CookieValidatePrincipalContext context) where TValidator : Microsoft.AspNetCore.Identity.ISecurityStampValidator => throw null;
                 public static System.Threading.Tasks.Task ValidatePrincipalAsync(Microsoft.AspNetCore.Authentication.Cookies.CookieValidatePrincipalContext context) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.SecurityStampValidator<>` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SecurityStampValidator<TUser> : Microsoft.AspNetCore.Identity.ISecurityStampValidator where TUser : class
             {
                 public Microsoft.AspNetCore.Authentication.ISystemClock Clock { get => throw null; }
@@ -128,7 +115,6 @@ namespace Microsoft
                 protected virtual System.Threading.Tasks.Task<TUser> VerifySecurityStamp(System.Security.Claims.ClaimsPrincipal principal) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.SecurityStampValidatorOptions` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SecurityStampValidatorOptions
             {
                 public System.Func<Microsoft.AspNetCore.Identity.SecurityStampRefreshingPrincipalContext, System.Threading.Tasks.Task> OnRefreshingPrincipal { get => throw null; set => throw null; }
@@ -136,7 +122,6 @@ namespace Microsoft
                 public System.TimeSpan ValidationInterval { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.SignInManager<>` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SignInManager<TUser> where TUser : class
             {
                 public virtual System.Threading.Tasks.Task<bool> CanSignInAsync(TUser user) => throw null;
@@ -180,7 +165,6 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<TUser> ValidateTwoFactorSecurityStampAsync(System.Security.Claims.ClaimsPrincipal principal) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.TwoFactorSecurityStampValidator<>` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class TwoFactorSecurityStampValidator<TUser> : Microsoft.AspNetCore.Identity.SecurityStampValidator<TUser>, Microsoft.AspNetCore.Identity.ISecurityStampValidator, Microsoft.AspNetCore.Identity.ITwoFactorSecurityStampValidator where TUser : class
             {
                 protected override System.Threading.Tasks.Task SecurityStampVerified(TUser user, Microsoft.AspNetCore.Authentication.Cookies.CookieValidatePrincipalContext context) => throw null;
@@ -194,7 +178,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.IdentityServiceCollectionExtensions` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static partial class IdentityServiceCollectionExtensions
             {
                 public static Microsoft.AspNetCore.Identity.IdentityBuilder AddIdentity<TUser, TRole>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) where TRole : class where TUser : class => throw null;

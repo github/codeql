@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Authentication.Cookies, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -8,7 +9,6 @@ namespace Microsoft
         {
             namespace Cookies
             {
-                // Generated from `Microsoft.AspNetCore.Authentication.Cookies.ChunkingCookieManager` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ChunkingCookieManager : Microsoft.AspNetCore.Authentication.Cookies.ICookieManager
                 {
                     public void AppendResponseCookie(Microsoft.AspNetCore.Http.HttpContext context, string key, string value, Microsoft.AspNetCore.Http.CookieOptions options) => throw null;
@@ -20,7 +20,6 @@ namespace Microsoft
                     public bool ThrowForPartialCookies { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class CookieAuthenticationDefaults
                 {
                     public static Microsoft.AspNetCore.Http.PathString AccessDeniedPath;
@@ -31,9 +30,9 @@ namespace Microsoft
                     public static string ReturnUrlParameter;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationEvents` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CookieAuthenticationEvents
                 {
+                    public virtual System.Threading.Tasks.Task CheckSlidingExpiration(Microsoft.AspNetCore.Authentication.Cookies.CookieSlidingExpirationContext context) => throw null;
                     public CookieAuthenticationEvents() => throw null;
                     public System.Func<Microsoft.AspNetCore.Authentication.Cookies.CookieSlidingExpirationContext, System.Threading.Tasks.Task> OnCheckSlidingExpiration { get => throw null; set => throw null; }
                     public System.Func<Microsoft.AspNetCore.Authentication.RedirectContext<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions>, System.Threading.Tasks.Task> OnRedirectToAccessDenied { get => throw null; set => throw null; }
@@ -54,7 +53,6 @@ namespace Microsoft
                     public virtual System.Threading.Tasks.Task ValidatePrincipal(Microsoft.AspNetCore.Authentication.Cookies.CookieValidatePrincipalContext context) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CookieAuthenticationHandler : Microsoft.AspNetCore.Authentication.SignInAuthenticationHandler<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions>
                 {
                     public CookieAuthenticationHandler(Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions> options, Microsoft.Extensions.Logging.ILoggerFactory logger, System.Text.Encodings.Web.UrlEncoder encoder, Microsoft.AspNetCore.Authentication.ISystemClock clock) : base(default(Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions>), default(Microsoft.Extensions.Logging.ILoggerFactory), default(System.Text.Encodings.Web.UrlEncoder), default(Microsoft.AspNetCore.Authentication.ISystemClock)) => throw null;
@@ -69,7 +67,6 @@ namespace Microsoft
                     protected override System.Threading.Tasks.Task InitializeHandlerAsync() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CookieAuthenticationOptions : Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
                 {
                     public Microsoft.AspNetCore.Http.PathString AccessDeniedPath { get => throw null; set => throw null; }
@@ -87,27 +84,23 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Authentication.ISecureDataFormat<Microsoft.AspNetCore.Authentication.AuthenticationTicket> TicketDataFormat { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.Cookies.CookieSignedInContext` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CookieSignedInContext : Microsoft.AspNetCore.Authentication.PrincipalContext<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions>
                 {
                     public CookieSignedInContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme, System.Security.Claims.ClaimsPrincipal principal, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties, Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions options) : base(default(Microsoft.AspNetCore.Http.HttpContext), default(Microsoft.AspNetCore.Authentication.AuthenticationScheme), default(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions), default(Microsoft.AspNetCore.Authentication.AuthenticationProperties)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.Cookies.CookieSigningInContext` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CookieSigningInContext : Microsoft.AspNetCore.Authentication.PrincipalContext<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions>
                 {
                     public Microsoft.AspNetCore.Http.CookieOptions CookieOptions { get => throw null; set => throw null; }
                     public CookieSigningInContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme, Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions options, System.Security.Claims.ClaimsPrincipal principal, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties, Microsoft.AspNetCore.Http.CookieOptions cookieOptions) : base(default(Microsoft.AspNetCore.Http.HttpContext), default(Microsoft.AspNetCore.Authentication.AuthenticationScheme), default(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions), default(Microsoft.AspNetCore.Authentication.AuthenticationProperties)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.Cookies.CookieSigningOutContext` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CookieSigningOutContext : Microsoft.AspNetCore.Authentication.PropertiesContext<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions>
                 {
                     public Microsoft.AspNetCore.Http.CookieOptions CookieOptions { get => throw null; set => throw null; }
                     public CookieSigningOutContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme, Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions options, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties, Microsoft.AspNetCore.Http.CookieOptions cookieOptions) : base(default(Microsoft.AspNetCore.Http.HttpContext), default(Microsoft.AspNetCore.Authentication.AuthenticationScheme), default(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions), default(Microsoft.AspNetCore.Authentication.AuthenticationProperties)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.Cookies.CookieSlidingExpirationContext` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CookieSlidingExpirationContext : Microsoft.AspNetCore.Authentication.PrincipalContext<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions>
                 {
                     public CookieSlidingExpirationContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme, Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions options, Microsoft.AspNetCore.Authentication.AuthenticationTicket ticket, System.TimeSpan elapsedTime, System.TimeSpan remainingTime) : base(default(Microsoft.AspNetCore.Http.HttpContext), default(Microsoft.AspNetCore.Authentication.AuthenticationScheme), default(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions), default(Microsoft.AspNetCore.Authentication.AuthenticationProperties)) => throw null;
@@ -116,7 +109,6 @@ namespace Microsoft
                     public bool ShouldRenew { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.Cookies.CookieValidatePrincipalContext` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CookieValidatePrincipalContext : Microsoft.AspNetCore.Authentication.PrincipalContext<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions>
                 {
                     public CookieValidatePrincipalContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Authentication.AuthenticationScheme scheme, Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions options, Microsoft.AspNetCore.Authentication.AuthenticationTicket ticket) : base(default(Microsoft.AspNetCore.Http.HttpContext), default(Microsoft.AspNetCore.Authentication.AuthenticationScheme), default(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions), default(Microsoft.AspNetCore.Authentication.AuthenticationProperties)) => throw null;
@@ -125,7 +117,6 @@ namespace Microsoft
                     public bool ShouldRenew { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.Cookies.ICookieManager` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface ICookieManager
                 {
                     void AppendResponseCookie(Microsoft.AspNetCore.Http.HttpContext context, string key, string value, Microsoft.AspNetCore.Http.CookieOptions options);
@@ -133,20 +124,22 @@ namespace Microsoft
                     string GetRequestCookie(Microsoft.AspNetCore.Http.HttpContext context, string key);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.Cookies.ITicketStore` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface ITicketStore
                 {
                     System.Threading.Tasks.Task RemoveAsync(string key);
                     System.Threading.Tasks.Task RemoveAsync(string key, System.Threading.CancellationToken cancellationToken) => throw null;
+                    System.Threading.Tasks.Task RemoveAsync(string key, Microsoft.AspNetCore.Http.HttpContext httpContext, System.Threading.CancellationToken cancellationToken) => throw null;
                     System.Threading.Tasks.Task RenewAsync(string key, Microsoft.AspNetCore.Authentication.AuthenticationTicket ticket);
                     System.Threading.Tasks.Task RenewAsync(string key, Microsoft.AspNetCore.Authentication.AuthenticationTicket ticket, System.Threading.CancellationToken cancellationToken) => throw null;
+                    System.Threading.Tasks.Task RenewAsync(string key, Microsoft.AspNetCore.Authentication.AuthenticationTicket ticket, Microsoft.AspNetCore.Http.HttpContext httpContext, System.Threading.CancellationToken cancellationToken) => throw null;
                     System.Threading.Tasks.Task<Microsoft.AspNetCore.Authentication.AuthenticationTicket> RetrieveAsync(string key);
                     System.Threading.Tasks.Task<Microsoft.AspNetCore.Authentication.AuthenticationTicket> RetrieveAsync(string key, System.Threading.CancellationToken cancellationToken) => throw null;
+                    System.Threading.Tasks.Task<Microsoft.AspNetCore.Authentication.AuthenticationTicket> RetrieveAsync(string key, Microsoft.AspNetCore.Http.HttpContext httpContext, System.Threading.CancellationToken cancellationToken) => throw null;
                     System.Threading.Tasks.Task<string> StoreAsync(Microsoft.AspNetCore.Authentication.AuthenticationTicket ticket);
                     System.Threading.Tasks.Task<string> StoreAsync(Microsoft.AspNetCore.Authentication.AuthenticationTicket ticket, System.Threading.CancellationToken cancellationToken) => throw null;
+                    System.Threading.Tasks.Task<string> StoreAsync(Microsoft.AspNetCore.Authentication.AuthenticationTicket ticket, Microsoft.AspNetCore.Http.HttpContext httpContext, System.Threading.CancellationToken cancellationToken) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.Cookies.PostConfigureCookieAuthenticationOptions` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PostConfigureCookieAuthenticationOptions : Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions>
                 {
                     public void PostConfigure(string name, Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions options) => throw null;
@@ -160,7 +153,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.CookieExtensions` in `Microsoft.AspNetCore.Authentication.Cookies, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class CookieExtensions
             {
                 public static Microsoft.AspNetCore.Authentication.AuthenticationBuilder AddCookie(this Microsoft.AspNetCore.Authentication.AuthenticationBuilder builder) => throw null;

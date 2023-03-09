@@ -22,5 +22,6 @@
 import cpp
 
 module DataFlow {
-  import experimental.semmle.code.cpp.ir.dataflow.internal.DataFlowImpl
+  import experimental.semmle.code.cpp.ir.dataflow.internal.DataFlow
+  import experimental.semmle.code.cpp.ir.dataflow.internal.DataFlowImpl1
 }

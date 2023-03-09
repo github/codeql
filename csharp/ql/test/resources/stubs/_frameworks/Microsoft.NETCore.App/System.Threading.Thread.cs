@@ -1,8 +1,8 @@
 // This file contains auto-generated code.
+// Generated from `System.Threading.Thread, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
-    // Generated from `System.LocalDataStoreSlot` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class LocalDataStoreSlot
     {
         // ERR: Stub generator didn't handle member: ~LocalDataStoreSlot
@@ -10,7 +10,6 @@ namespace System
 
     namespace Threading
     {
-        // Generated from `System.Threading.ApartmentState` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum ApartmentState : int
         {
             MTA = 1,
@@ -18,7 +17,6 @@ namespace System
             Unknown = 2,
         }
 
-        // Generated from `System.Threading.CompressedStack` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CompressedStack : System.Runtime.Serialization.ISerializable
         {
             public static System.Threading.CompressedStack Capture() => throw null;
@@ -28,10 +26,8 @@ namespace System
             public static void Run(System.Threading.CompressedStack compressedStack, System.Threading.ContextCallback callback, object state) => throw null;
         }
 
-        // Generated from `System.Threading.ParameterizedThreadStart` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void ParameterizedThreadStart(object obj);
 
-        // Generated from `System.Threading.Thread` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Thread : System.Runtime.ConstrainedExecution.CriticalFinalizerObject
         {
             public void Abort() => throw null;
@@ -118,23 +114,19 @@ namespace System
             // ERR: Stub generator didn't handle member: ~Thread
         }
 
-        // Generated from `System.Threading.ThreadAbortException` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ThreadAbortException : System.SystemException
         {
             public object ExceptionState { get => throw null; }
         }
 
-        // Generated from `System.Threading.ThreadExceptionEventArgs` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ThreadExceptionEventArgs : System.EventArgs
         {
             public System.Exception Exception { get => throw null; }
             public ThreadExceptionEventArgs(System.Exception t) => throw null;
         }
 
-        // Generated from `System.Threading.ThreadExceptionEventHandler` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void ThreadExceptionEventHandler(object sender, System.Threading.ThreadExceptionEventArgs e);
 
-        // Generated from `System.Threading.ThreadInterruptedException` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ThreadInterruptedException : System.SystemException
         {
             public ThreadInterruptedException() => throw null;
@@ -143,7 +135,6 @@ namespace System
             public ThreadInterruptedException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Threading.ThreadPriority` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum ThreadPriority : int
         {
             AboveNormal = 3,
@@ -153,15 +144,12 @@ namespace System
             Normal = 2,
         }
 
-        // Generated from `System.Threading.ThreadStart` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void ThreadStart();
 
-        // Generated from `System.Threading.ThreadStartException` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ThreadStartException : System.SystemException
         {
         }
 
-        // Generated from `System.Threading.ThreadState` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
         public enum ThreadState : int
         {
@@ -177,7 +165,6 @@ namespace System
             WaitSleepJoin = 32,
         }
 
-        // Generated from `System.Threading.ThreadStateException` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ThreadStateException : System.SystemException
         {
             public ThreadStateException() => throw null;

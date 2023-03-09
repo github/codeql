@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Runtime.Serialization.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Serialization
         {
-            // Generated from `System.Runtime.Serialization.CollectionDataContractAttribute` in `System.Runtime.Serialization.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CollectionDataContractAttribute : System.Attribute
             {
                 public CollectionDataContractAttribute() => throw null;
@@ -24,7 +24,6 @@ namespace System
                 public string ValueName { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Runtime.Serialization.ContractNamespaceAttribute` in `System.Runtime.Serialization.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ContractNamespaceAttribute : System.Attribute
             {
                 public string ClrNamespace { get => throw null; set => throw null; }
@@ -32,7 +31,6 @@ namespace System
                 public ContractNamespaceAttribute(string contractNamespace) => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.DataContractAttribute` in `System.Runtime.Serialization.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DataContractAttribute : System.Attribute
             {
                 public DataContractAttribute() => throw null;
@@ -44,7 +42,6 @@ namespace System
                 public string Namespace { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Runtime.Serialization.DataMemberAttribute` in `System.Runtime.Serialization.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DataMemberAttribute : System.Attribute
             {
                 public DataMemberAttribute() => throw null;
@@ -55,7 +52,6 @@ namespace System
                 public int Order { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Runtime.Serialization.EnumMemberAttribute` in `System.Runtime.Serialization.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EnumMemberAttribute : System.Attribute
             {
                 public EnumMemberAttribute() => throw null;
@@ -63,7 +59,6 @@ namespace System
                 public string Value { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Runtime.Serialization.ISerializationSurrogateProvider` in `System.Runtime.Serialization.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISerializationSurrogateProvider
             {
                 object GetDeserializedObject(object obj, System.Type targetType);
@@ -71,13 +66,19 @@ namespace System
                 System.Type GetSurrogateType(System.Type type);
             }
 
-            // Generated from `System.Runtime.Serialization.IgnoreDataMemberAttribute` in `System.Runtime.Serialization.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public interface ISerializationSurrogateProvider2 : System.Runtime.Serialization.ISerializationSurrogateProvider
+            {
+                object GetCustomDataToExport(System.Reflection.MemberInfo memberInfo, System.Type dataContractType);
+                object GetCustomDataToExport(System.Type runtimeType, System.Type dataContractType);
+                void GetKnownCustomDataTypes(System.Collections.ObjectModel.Collection<System.Type> customDataTypes);
+                System.Type GetReferencedTypeOnImport(string typeName, string typeNamespace, object customData);
+            }
+
             public class IgnoreDataMemberAttribute : System.Attribute
             {
                 public IgnoreDataMemberAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.InvalidDataContractException` in `System.Runtime.Serialization.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class InvalidDataContractException : System.Exception
             {
                 public InvalidDataContractException() => throw null;
@@ -86,7 +87,6 @@ namespace System
                 public InvalidDataContractException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.KnownTypeAttribute` in `System.Runtime.Serialization.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class KnownTypeAttribute : System.Attribute
             {
                 public KnownTypeAttribute(System.Type type) => throw null;

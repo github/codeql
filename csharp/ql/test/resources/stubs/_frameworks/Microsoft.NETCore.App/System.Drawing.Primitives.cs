@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.Drawing.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace Drawing
     {
-        // Generated from `System.Drawing.Color` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Color : System.IEquatable<System.Drawing.Color>
         {
             public static bool operator !=(System.Drawing.Color left, System.Drawing.Color right) => throw null;
@@ -179,7 +179,6 @@ namespace System
             public static System.Drawing.Color YellowGreen { get => throw null; }
         }
 
-        // Generated from `System.Drawing.ColorTranslator` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class ColorTranslator
         {
             public static System.Drawing.Color FromHtml(string htmlColor) => throw null;
@@ -190,7 +189,6 @@ namespace System
             public static int ToWin32(System.Drawing.Color c) => throw null;
         }
 
-        // Generated from `System.Drawing.KnownColor` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum KnownColor : int
         {
             ActiveBorder = 1,
@@ -370,7 +368,6 @@ namespace System
             YellowGreen = 167,
         }
 
-        // Generated from `System.Drawing.Point` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Point : System.IEquatable<System.Drawing.Point>
         {
             public static bool operator !=(System.Drawing.Point left, System.Drawing.Point right) => throw null;
@@ -400,7 +397,6 @@ namespace System
             public static implicit operator System.Drawing.PointF(System.Drawing.Point p) => throw null;
         }
 
-        // Generated from `System.Drawing.PointF` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct PointF : System.IEquatable<System.Drawing.PointF>
         {
             public static bool operator !=(System.Drawing.PointF left, System.Drawing.PointF right) => throw null;
@@ -429,7 +425,6 @@ namespace System
             public static explicit operator System.Drawing.PointF(System.Numerics.Vector2 vector) => throw null;
         }
 
-        // Generated from `System.Drawing.Rectangle` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Rectangle : System.IEquatable<System.Drawing.Rectangle>
         {
             public static bool operator !=(System.Drawing.Rectangle left, System.Drawing.Rectangle right) => throw null;
@@ -471,7 +466,6 @@ namespace System
             public int Y { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Drawing.RectangleF` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct RectangleF : System.IEquatable<System.Drawing.RectangleF>
         {
             public static bool operator !=(System.Drawing.RectangleF left, System.Drawing.RectangleF right) => throw null;
@@ -515,7 +509,6 @@ namespace System
             public static implicit operator System.Drawing.RectangleF(System.Drawing.Rectangle r) => throw null;
         }
 
-        // Generated from `System.Drawing.Size` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Size : System.IEquatable<System.Drawing.Size>
         {
             public static bool operator !=(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
@@ -548,7 +541,6 @@ namespace System
             public static implicit operator System.Drawing.SizeF(System.Drawing.Size p) => throw null;
         }
 
-        // Generated from `System.Drawing.SizeF` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct SizeF : System.IEquatable<System.Drawing.SizeF>
         {
             public static bool operator !=(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
@@ -581,7 +573,6 @@ namespace System
             public static explicit operator System.Drawing.SizeF(System.Numerics.Vector2 vector) => throw null;
         }
 
-        // Generated from `System.Drawing.SystemColors` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class SystemColors
         {
             public static System.Drawing.Color ActiveBorder { get => throw null; }

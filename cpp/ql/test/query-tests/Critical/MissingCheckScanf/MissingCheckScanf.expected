@@ -19,3 +19,6 @@
 | test.cpp:302:8:302:12 | ptr_i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:301:3:301:7 | call to scanf | call to scanf |
 | test.cpp:310:7:310:7 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:309:3:309:7 | call to scanf | call to scanf |
 | test.cpp:404:25:404:25 | u | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:403:6:403:11 | call to sscanf | call to sscanf |
+| test.cpp:416:7:416:7 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:413:7:413:11 | call to scanf | call to scanf |
+| test.cpp:423:7:423:7 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:420:7:420:11 | call to scanf | call to scanf |
+| test.cpp:430:6:430:6 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:429:2:429:6 | call to scanf | call to scanf |

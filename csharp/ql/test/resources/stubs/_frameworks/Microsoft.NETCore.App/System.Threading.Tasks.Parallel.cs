@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Threading.Tasks.Parallel, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Tasks
         {
-            // Generated from `System.Threading.Tasks.Parallel` in `System.Threading.Tasks.Parallel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Parallel
             {
                 public static System.Threading.Tasks.ParallelLoopResult For(int fromInclusive, int toExclusive, System.Action<int, System.Threading.Tasks.ParallelLoopState> body) => throw null;
@@ -51,7 +51,6 @@ namespace System
                 public static void Invoke(params System.Action[] actions) => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.ParallelLoopResult` in `System.Threading.Tasks.Parallel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ParallelLoopResult
             {
                 public bool IsCompleted { get => throw null; }
@@ -59,7 +58,6 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Threading.Tasks.ParallelLoopState` in `System.Threading.Tasks.Parallel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ParallelLoopState
             {
                 public void Break() => throw null;
@@ -70,7 +68,6 @@ namespace System
                 public void Stop() => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.ParallelOptions` in `System.Threading.Tasks.Parallel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ParallelOptions
             {
                 public System.Threading.CancellationToken CancellationToken { get => throw null; set => throw null; }
