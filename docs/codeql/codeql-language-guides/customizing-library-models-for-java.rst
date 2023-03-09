@@ -1,5 +1,8 @@
 .. _customizing-library-models-for-java:
 
+:orphan:
+:nosearch:
+
 Customizing Library Models for Java
 ===================================
 
@@ -14,13 +17,15 @@ A data extension file for Java is a YAML file in the form:
    extensions:
      - addsTo:
          pack: codeql/java-all
-         extensible: <name of extension point>
+         extensible: <name of extensible predicate>
        data:
          - <tuple1>
          - <tuple2>
          - ...
 
-The data extension can contribute to the following extension points:
+Data extensions contribute to extensible predicates defined CodeQL libraries. For more information on how to define data extensions and extensible predicates as well as how to wire them up, see the following documentation...
+
+The CodeQL libraries for Java expose the following extensible predicates:
 
 - **sourceModel**\(package, type, subtypes, name, signature, ext, output, kind, provenance)
 - **sinkModel**\(package, type, subtypes, name, signature, ext, input, kind, provenance)
@@ -31,14 +36,14 @@ TODO: Link or inline documentation on how to add dataextensions.
 Are we going for extensions packs as the recommended default?
 If yes, then we probably need to elaborate with a concrete example.
 
-In the sections below, we will show by example how to add tuples to the different extension points.
+In the sections below, we will show by example how to add tuples to the different extensible predicates.
 The extension points are used to customize and improve the existing dataflow queries, by providing sources, sinks, and flow through for library elements.
-The **Reference material** section will in more detail describe the *mini DSLs* that are used to comprise a model definition for each extension point.
+The **Reference material** section will provide details on the *mini DSLs* that define models for each extensible predicate.
 
 Example: Taint sink in the **java.sql** package.
 ------------------------------------------------
 
-In this example we will see, how to define the argument of the **execute** method as a SQL injection sink.
+In this example we will show how to model the argument of the **execute** method as a SQL injection sink.
 This is the **execute** method in the **Statement** class, which is located in the **java.sql** package.
 Please note that this sink is already added to the CodeQL Java analysis.
 
@@ -49,7 +54,7 @@ Please note that this sink is already added to the CodeQL Java analysis.
        stmt.execute(query); // The argument to this method is a SQL injection sink.
    }
 
-This can be achieved by adding the following data extension.
+This can be achieved by adding the following row to a data extension file:
 
 .. code-block:: yaml
 
@@ -63,11 +68,11 @@ This can be achieved by adding the following data extension.
 Reasoning:
 
 Since we are adding a new sink, we need to add a tuple to the **sinkModel** extension point.
-The first five values are used to identify the method (callable) which we are defining a sink on.
+The first five values identify the callable (in this case a method) to be modeled as a sink.
 
 - The first value **java.sql** is the package name.
-- The second value **Statement** is the class (type) name.
-- The third value **True** is flag indicating, whether the sink also applies to all overrides of the method.
+- The second value **Statement** is the name of the class (type) that contains the method.
+- The third value **True** is a flag that indicates, whether or not the sink also applies to all overrides of the method.
 - The fourth value **execute** is the method name.
 - The fifth value **(String)** is the method input type signature.
 
@@ -80,7 +85,7 @@ The remaining values are used to define the **access path**, the **kind**, and t
  
 Example: Taint source from the **java.net** package.
 ----------------------------------------------------
-In this example we will see, how to define the return value from the **getInputStream** method as a **remote** source.
+In this example we show how to model the return value from the **getInputStream** method as a **remote** source.
 This is the **getInputStream** method in the **Socket** class, which is located in the **java.net** package.
 Please note that this source is already added to the CodeQL Java analysis.
 
@@ -108,8 +113,8 @@ Since we are adding a new source, we need to add a tuple to the **sourceModel** 
 The first five values are used to identify the method (callable) which we are defining a source on.
 
 - The first value **java.net** is the package name.
-- The second value **Socket** is the class (type) name.
-- The third value **False** is flag indicating, whether the source also applies to all overrides of the method.
+- The second value **Socket** is the name of the class (type) that contains the source.
+- The third value **False** flag indicates, whether or not the source also applies to all overrides of the method.
 - The fourth value **getInputStream** is the method name.
 - The fifth value **()** is the method input type signature.
 
@@ -122,7 +127,7 @@ The remaining values are used to define the **access path**, the **kind**, and t
 
 Example: Add flow through the **concat** method.
 ------------------------------------------------
-In this example we will see, how to define flow through a method for a simple case.
+In this example we show how to model flow through a method for a simple case.
 This pattern covers many of the cases where we need to define flow through a method.
 Please note that the flow through the **concat** method is already added to the CodeQL Java analysis.
 
@@ -280,8 +285,8 @@ The semantics of many of the columns of the extension points are shared.
 The shared columns are:
 
 - **package**: Name of the package.
-- **type**: Name of the type.
-- **subtypes**: A flag indicating whether the model should also apply to all overrides of the selected element(s).
+- **type**: Name of the type containing the element to be modeled.
+- **subtypes**: A boolean flag indicating whether the model should also apply to all overrides of the selected element(s).
 - **name**: Name of the element (optional). If this is left blank, it means all elements matching the previous selection criteria.
 - **signature**: Type signature of the selected element (optional). If this is left blank it means all elements matching the previous selection criteria.
 - **ext**: Specifies additional API-graph-like edges (mostly empty) and out of scope for this document.
@@ -289,8 +294,8 @@ The shared columns are:
 
 The columns **package**, **type**, **subtypes**, **name**, and **signature** are used to select the element(s) that the model applies to.
 
-The section Access paths describes in more detail, how access paths are composed.
-This is the most complicated part of the extension points and the **mini DSL** for access paths is shared accross the extension points.
+The Access Paths section describes how access paths are composed.
+This is the most complicated part of the extension points and the **mini DSL** for access paths is shared across all extension points.
 
 sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -25,7 +25,6 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    javadoc
    working-with-source-locations
    abstract-syntax-tree-classes-for-working-with-java-programs
-   customizing-library-models-for-java
 
 -  :doc:`Basic query for Java code <basic-query-for-java-code>`: Learn to write and run a simple CodeQL query.
 
