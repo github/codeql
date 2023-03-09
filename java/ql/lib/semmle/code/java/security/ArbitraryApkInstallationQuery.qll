@@ -28,21 +28,6 @@ private module ApkConf implements DataFlow::ConfigSig {
 
 module ApkConfiguration = DataFlow::Make<ApkConf>;
 
-// class ApkConfiguration extends DataFlow::Configuration {
-//   ApkConfiguration() { this = "ApkConfiguration" }
-//   override predicate isSource(DataFlow::Node node) { node instanceof ExternalApkSource }
-//   override predicate isSink(DataFlow::Node node) {
-//     exists(MethodAccess ma |
-//       ma.getMethod() instanceof SetDataMethod and
-//       ma.getArgument(0) = node.asExpr() and
-//       (
-//         any(PackageArchiveMimeTypeConfiguration c).hasFlowToExpr(ma.getQualifier())
-//         or
-//         any(InstallPackageActionConfiguration c).hasFlowToExpr(ma.getQualifier())
-//       )
-//     )
-//   }
-// }
 /**
  * A dataflow configuration tracking the flow from the `android.content.Intent.ACTION_INSTALL_PACKAGE`
  * constant to either the constructor of an intent or the `setAction` method of an intent.
