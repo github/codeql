@@ -2,6 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.dataflow.TaintTracking3
 private import semmle.code.java.security.ArbitraryApkInstallation
@@ -18,9 +19,9 @@ private module ApkConf implements DataFlow::ConfigSig {
       ma.getMethod() instanceof SetDataMethod and
       ma.getArgument(0) = node.asExpr() and
       (
-        any(PackageArchiveMimeTypeConfiguration c).hasFlowToExpr(ma.getQualifier())
+        PackageArchiveMimeTypeConfiguration::hasFlowToExpr(ma.getQualifier())
         or
-        any(InstallPackageActionConfiguration c).hasFlowToExpr(ma.getQualifier())
+        InstallPackageActionConfiguration::hasFlowToExpr(ma.getQualifier())
       )
     )
   }
@@ -34,14 +35,14 @@ module ApkConfiguration = DataFlow::Make<ApkConf>;
  *
  * This is used to track if an intent is used to install an APK.
  */
-private class InstallPackageActionConfiguration extends TaintTracking3::Configuration {
-  InstallPackageActionConfiguration() { this = "InstallPackageActionConfiguration" }
+private module InstallPackageActionConfig implements DataFlow::StateConfigSig {
+  class FlowState = string;
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof InstallPackageAction
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source.asExpr() instanceof InstallPackageAction and state instanceof DataFlow::FlowStateEmpty
   }
 
-  override predicate isAdditionalTaintStep(
+  predicate isAdditionalFlowStep(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
     DataFlow::FlowState state2
   ) {
@@ -63,24 +64,30 @@ private class InstallPackageActionConfiguration extends TaintTracking3::Configur
     )
   }
 
-  override predicate isSink(DataFlow::Node node, DataFlow::FlowState state) {
+  predicate isSink(DataFlow::Node node, DataFlow::FlowState state) {
     state = "hasPackageInstallAction" and node.asExpr().getType() instanceof TypeIntent
   }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 }
+
+private module InstallPackageActionConfiguration =
+  TaintTracking::MakeWithState<InstallPackageActionConfig>;
 
 /**
  * A dataflow configuration tracking the flow of the Android APK MIME type to
  * the `setType` or `setTypeAndNormalize` method of an intent, followed by a call
  * to `setData[AndType][AndNormalize]`.
  */
-private class PackageArchiveMimeTypeConfiguration extends TaintTracking2::Configuration {
-  PackageArchiveMimeTypeConfiguration() { this = "PackageArchiveMimeTypeConfiguration" }
+private module PackageArchiveMimeTypeConfig implements DataFlow::StateConfigSig {
+  class FlowState = string;
 
-  override predicate isSource(DataFlow::Node node) {
-    node.asExpr() instanceof PackageArchiveMimeTypeLiteral
+  predicate isSource(DataFlow::Node node, FlowState state) {
+    node.asExpr() instanceof PackageArchiveMimeTypeLiteral and
+    state instanceof DataFlow::FlowStateEmpty
   }
 
-  override predicate isAdditionalTaintStep(
+  predicate isAdditionalFlowStep(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
     DataFlow::FlowState state2
   ) {
@@ -98,8 +105,13 @@ private class PackageArchiveMimeTypeConfiguration extends TaintTracking2::Config
     )
   }
 
-  override predicate isSink(DataFlow::Node node, DataFlow::FlowState state) {
+  predicate isSink(DataFlow::Node node, DataFlow::FlowState state) {
     state = "typeSet" and
     node instanceof SetDataSink
   }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 }
+
+private module PackageArchiveMimeTypeConfiguration =
+  TaintTracking::MakeWithState<PackageArchiveMimeTypeConfig>;
