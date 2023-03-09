@@ -112,6 +112,10 @@ module FromSensitiveConfiguration implements DataFlow::ConfigSig {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
 
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
+  predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
+
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet content) {
     // flow out from fields at the sink (only).
     // constrain `content` to a field inside the node.
