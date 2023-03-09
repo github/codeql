@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.kohsuke.stapler", "HttpResponses", True, "redirectTo", "(String)", "", "Argument[0]", "open-url", "ai-generated"]
+      - ["org.kohsuke.stapler", "HttpResponses", True, "staticResource", "(URL)", "", "Argument[0]", "open-url", "ai-generated"]

@@ -5,3 +5,8 @@ extensions:
     data:
       - ["javax.xml.transform.stream", "StreamSource", False, "StreamSource", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["javax.xml.transform.stream", "StreamSource", False, "getInputStream", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.xml.transform.stream", "StreamResult", True, "StreamResult", "(File)", "", "Argument[0]", "create-file", "ai-generated"]

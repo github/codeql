@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.tools.ant.taskdefs", "Copy", True, "addFileset", "(FileSet)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["org.apache.tools.ant.taskdefs", "Copy", True, "setFile", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["org.apache.tools.ant.taskdefs", "Copy", True, "setTodir", "(File)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["org.apache.tools.ant.taskdefs", "Copy", True, "setTofile", "(File)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["org.apache.tools.ant.taskdefs", "Expand", True, "setDest", "(File)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["org.apache.tools.ant.taskdefs", "Expand", True, "setSrc", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
