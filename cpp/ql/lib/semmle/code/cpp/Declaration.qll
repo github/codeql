@@ -664,7 +664,9 @@ private class DirectAccessHolder extends Element {
     //    bypasses `p`. Then that path must be public, or we are in case 2.
     exists(AccessSpecifier public | public.hasName("public") |
       exists(Class between, Class p |
-        between.accessOfBaseMember(memberClass, memberAccess).hasName("protected") and
+        between
+            .accessOfBaseMember(pragma[only_bind_into](memberClass), memberAccess)
+            .hasName("protected") and
         this.isFriendOfOrEqualTo(p) and
         (
           // This is case 1 from above. If `p` derives privately from `between`
