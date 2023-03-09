@@ -143,12 +143,30 @@ class Exec extends Exec_ {
   override Stmt getASubStatement() { none() }
 }
 
-/** An except statement (part of a `try` statement), such as `except IOError as err:` */
-class ExceptStmt extends ExceptStmt_ {
-  /* syntax: except Expr [ as Expr ]: */
+/**
+ * An exception handler such as an `except` or an `except*` statement
+ * in a `try` statement.
+ */
+class ExceptionHandler extends Stmt {
+  ExceptionHandler() {
+    this instanceof ExceptStmt_
+    or
+    this instanceof ExceptGroupStmt_
+  }
+
   /** Gets the immediately enclosing try statement */
   Try getTry() { result.getAHandler() = this }
 
+  /** Gets the name of this except group block. */
+  abstract Expr getName();
+
+  /** Gets the type of this except group block. */
+  abstract Expr getType();
+}
+
+/** An except group statement (part of a `try` statement), such as `except* IOError as err:` */
+class ExceptGroupStmt extends ExceptGroupStmt_, ExceptionHandler {
+  /* syntax: except Expr [ as Expr ]: */
   override Expr getASubExpression() {
     result = this.getName()
     or
@@ -159,10 +177,34 @@ class ExceptStmt extends ExceptStmt_ {
 
   override Stmt getLastStatement() { result = this.getBody().getLastItem().getLastStatement() }
 
+  override Expr getName() { result = ExceptGroupStmt_.super.getName() }
+
   override Expr getType() {
-    result = super.getType() and not result instanceof Tuple
+    result = ExceptGroupStmt_.super.getType() and not result instanceof Tuple
     or
-    result = super.getType().(Tuple).getAnElt()
+    result = ExceptGroupStmt_.super.getType().(Tuple).getAnElt()
+  }
+}
+
+/** An except statement (part of a `try` statement), such as `except IOError as err:` */
+class ExceptStmt extends ExceptStmt_, ExceptionHandler {
+  /* syntax: except Expr [ as Expr ]: */
+  override Expr getASubExpression() {
+    result = this.getName()
+    or
+    result = this.getType()
+  }
+
+  override Stmt getASubStatement() { result = this.getAStmt() }
+
+  override Stmt getLastStatement() { result = this.getBody().getLastItem().getLastStatement() }
+
+  override Expr getName() { result = ExceptStmt_.super.getName() }
+
+  override Expr getType() {
+    result = ExceptStmt_.super.getType() and not result instanceof Tuple
+    or
+    result = ExceptStmt_.super.getType().(Tuple).getAnElt()
   }
 }
 
@@ -364,10 +406,15 @@ class Try extends Try_ {
     result = this.getAnOrelse()
   }
 
-  override ExceptStmt getHandler(int i) { result = Try_.super.getHandler(i) }
+  override ExceptionHandler getHandler(int i) { result = Try_.super.getHandler(i) }
 
-  /** Gets an exception handler of this try statement. */
-  override ExceptStmt getAHandler() { result = Try_.super.getAHandler() }
+  override ExceptionHandler getAHandler() { result = Try_.super.getAHandler() }
+
+  /** Gets a normal exception handler, `except`, of this try statement. */
+  ExceptStmt getANormalHandler() { result = this.getAHandler() }
+
+  /** Gets a group exception handler, `except*`, of this try statement. */
+  ExceptGroupStmt getAGroupHandler() { result = this.getAHandler() }
 
   override Stmt getLastStatement() {
     result = this.getFinalbody().getLastItem().getLastStatement()

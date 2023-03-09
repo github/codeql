@@ -54,7 +54,7 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * only condition under which a `SubBasicBlock` may have multiple
    * predecessors.
    */
-  predicate firstInBB() { exists(BasicBlock bb | this.getRankInBasicBlock(bb) = 1) }
+  predicate firstInBB() { this.getRankInBasicBlock(_) = 1 }
 
   /**
    * Holds if this `SubBasicBlock` comes last in its basic block. This is the

@@ -13,6 +13,10 @@ class StmtTranslator : public AstTranslatorBase<StmtTranslator> {
   void translateAndEmit(const swift::StmtCondition& cond);
   void translateAndEmit(const swift::StmtConditionElement& element);
   void translateAndEmit(const swift::CaseLabelItem& labelItem);
+  void translateAndEmit(const swift::PoundAvailableInfo& availability);
+  void translateAndEmit(const swift::AvailabilitySpec& spec);
+  void translateAndEmit(const swift::PlatformVersionConstraintAvailabilitySpec& spec);
+  void translateAndEmit(const swift::OtherPlatformAvailabilitySpec& spec);
 
   codeql::BraceStmt translateBraceStmt(const swift::BraceStmt& stmt);
   codeql::ReturnStmt translateReturnStmt(const swift::ReturnStmt& stmt);
@@ -31,6 +35,8 @@ class StmtTranslator : public AstTranslatorBase<StmtTranslator> {
   codeql::SwitchStmt translateSwitchStmt(const swift::SwitchStmt& stmt);
   codeql::FallthroughStmt translateFallthroughStmt(const swift::FallthroughStmt& stmt);
   codeql::YieldStmt translateYieldStmt(const swift::YieldStmt& stmt);
+  codeql::FailStmt translateFailStmt(const swift::FailStmt& stmt);
+  codeql::PoundAssertStmt translatePoundAssertStmt(const swift::PoundAssertStmt& stmt);
 
  private:
   void fillLabeledStmt(const swift::LabeledStmt& stmt, codeql::LabeledStmt& entry);

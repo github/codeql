@@ -3,7 +3,6 @@
 import csharp
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.collections.Specialized
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Web` namespace. */
 class SystemWebNamespace extends Namespace {
@@ -175,17 +174,6 @@ class SystemWebHttpServerUtility extends SystemWebClass {
   Method getAnUrlEncodeMethod() { result = this.getAMethod("UrlEncode") }
 }
 
-/** Data flow for `System.Web.HttpServerUtility`. */
-private class SystemWebHttpServerUtilityFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Web;HttpServerUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint;manual",
-        "System.Web;HttpServerUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint;manual"
-      ]
-  }
-}
-
 /** The `System.Web.HttpUtility` class. */
 class SystemWebHttpUtility extends SystemWebClass {
   SystemWebHttpUtility() { this.hasName("HttpUtility") }
@@ -203,26 +191,6 @@ class SystemWebHttpUtility extends SystemWebClass {
   Method getAnUrlEncodeMethod() { result = this.getAMethod("UrlEncode") }
 }
 
-/** Data flow for `System.Web.HttpUtility`. */
-private class SystemWebHttpUtilityFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Web;HttpUtility;false;HtmlAttributeEncode;(System.String);;Argument[0];ReturnValue;taint;manual",
-        "System.Web;HttpUtility;false;HtmlAttributeEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint;manual",
-        "System.Web;HttpUtility;false;HtmlEncode;(System.Object);;Argument[0];ReturnValue;taint;manual",
-        "System.Web;HttpUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint;manual",
-        "System.Web;HttpUtility;false;HtmlEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint;manual",
-        "System.Web;HttpUtility;false;JavaScriptStringEncode;(System.String);;Argument[0];ReturnValue;taint;manual",
-        "System.Web;HttpUtility;false;JavaScriptStringEncode;(System.String,System.Boolean);;Argument[0];ReturnValue;taint;manual",
-        "System.Web;HttpUtility;false;UrlEncode;(System.Byte[]);;Argument[0];ReturnValue;taint;manual",
-        "System.Web;HttpUtility;false;UrlEncode;(System.Byte[],System.Int32,System.Int32);;Argument[0];ReturnValue;taint;manual",
-        "System.Web;HttpUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint;manual",
-        "System.Web;HttpUtility;false;UrlEncode;(System.String,System.Text.Encoding);;Argument[0];ReturnValue;taint;manual"
-      ]
-  }
-}
-
 /** The `System.Web.HttpCookie` class. */
 class SystemWebHttpCookie extends SystemWebClass {
   SystemWebHttpCookie() { this.hasName("HttpCookie") }
@@ -235,17 +203,6 @@ class SystemWebHttpCookie extends SystemWebClass {
 
   /** Gets the `Secure` property. */
   Property getSecureProperty() { result = this.getProperty("Secure") }
-}
-
-/** Data flow for `System.Web.HttpCookie`. */
-private class SystemWebHttpCookieFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Web;HttpCookie;false;get_Value;();;Argument[this];ReturnValue;taint;manual",
-        "System.Web;HttpCookie;false;get_Values;();;Argument[this];ReturnValue;taint;manual"
-      ]
-  }
 }
 
 /** The `System.Web.IHtmlString` class. */

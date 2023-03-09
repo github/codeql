@@ -12,7 +12,7 @@
  *       external/cwe/cwe-807
  */
 
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 import TaintedWithPath
 
 predicate sensitiveCondition(Expr condition, Expr raise) {

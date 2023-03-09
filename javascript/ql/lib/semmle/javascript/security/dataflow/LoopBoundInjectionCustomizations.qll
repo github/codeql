@@ -122,10 +122,10 @@ module LoopBoundInjection {
         "flattenDeep", "flattenDepth", "initial", "intersection", "intersectionBy",
         "intersectionWith", "join", "remove", "reverse", "slice", "sortedUniq", "sortedUniqBy",
         "tail", "union", "unionBy", "unionWith", "uniqBy", "unzip", "unzipWith", "without", "zip",
-        "zipObject", "zipObjectDeep", "zipWith", "countBy", "each", "forEach", "eachRight",
-        "forEachRight", "filter", "find", "findLast", "flatMap", "flatMapDeep", "flatMapDepth",
-        "forEach", "forEachRight", "groupBy", "invokeMap", "keyBy", "map", "orderBy", "partition",
-        "reduce", "reduceRight", "reject", "sortBy"
+        "zipObject", "zipObjectDeep", "zipWith", "countBy", "each", "eachRight", "forEachRight",
+        "filter", "find", "findLast", "flatMap", "flatMapDeep", "flatMapDepth", "forEach",
+        "groupBy", "invokeMap", "keyBy", "map", "orderBy", "partition", "reduce", "reduceRight",
+        "reject", "sortBy"
       ]
   }
 
@@ -169,9 +169,7 @@ module LoopBoundInjection {
   /**
    * A source of remote user input objects.
    */
-  class TaintedObjectSource extends Source {
-    TaintedObjectSource() { this instanceof TaintedObject::Source }
-  }
+  class TaintedObjectSource extends Source instanceof TaintedObject::Source { }
 
   /**
    * A sanitizer that blocks taint flow if the array is checked to be an array using an `isArray` function.

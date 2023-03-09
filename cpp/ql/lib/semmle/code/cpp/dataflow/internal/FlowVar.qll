@@ -450,10 +450,8 @@ module FlowVar_internal {
     }
 
     override string toString() {
-      exists(Expr e |
-        this.definedByExpr(e, _) and
-        result = "assignment to " + v
-      )
+      this.definedByExpr(_, _) and
+      result = "assignment to " + v
       or
       this.definedByInitialValue(_) and
       result = "initial value of " + v

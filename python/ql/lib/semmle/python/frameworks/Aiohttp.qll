@@ -59,24 +59,24 @@ module AiohttpWebModel {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `AiohttpRouteSetup::Range` instead.
    */
-  class AiohttpRouteSetup extends Http::Server::RouteSetup::Range {
-    AiohttpRouteSetup::Range range;
-
-    AiohttpRouteSetup() { this = range }
-
+  class AiohttpRouteSetup extends Http::Server::RouteSetup::Range instanceof AiohttpRouteSetup::Range {
     override Parameter getARoutedParameter() { none() }
 
     override string getFramework() { result = "aiohttp.web" }
 
     /** Gets the argument specifying the handler (either a coroutine or a view-class). */
-    DataFlow::Node getHandlerArg() { result = range.getHandlerArg() }
+    DataFlow::Node getHandlerArg() { result = super.getHandlerArg() }
 
-    override DataFlow::Node getUrlPatternArg() { result = range.getUrlPatternArg() }
+    override DataFlow::Node getUrlPatternArg() {
+      result = AiohttpRouteSetup::Range.super.getUrlPatternArg()
+    }
 
     /** Gets the view-class that is referenced in the view-class handler argument, if any. */
-    Class getViewClass() { result = range.getViewClass() }
+    Class getViewClass() { result = super.getViewClass() }
 
-    override Function getARequestHandler() { result = range.getARequestHandler() }
+    override Function getARequestHandler() {
+      result = AiohttpRouteSetup::Range.super.getARequestHandler()
+    }
   }
 
   /** Provides a class for modeling new aiohttp.web route setups. */

@@ -180,13 +180,9 @@ class AnalyzedValueNode extends AnalyzedNode, DataFlow::ValueNode { }
  * exports are modeled as property writes on `module.exports`, and imports
  * as property reads on any potential value of `module.exports`.
  */
-class AnalyzedModule extends TopLevel {
-  Module m;
-
-  AnalyzedModule() { this = m }
-
+class AnalyzedModule extends TopLevel instanceof Module {
   /** Gets the name of this module. */
-  string getName() { result = m.getName() }
+  string getName() { result = super.getName() }
 
   /**
    * Gets the abstract value representing this module's `module` object.
@@ -216,7 +212,7 @@ class AnalyzedModule extends TopLevel {
     exists(AbstractValue exports | exports = getAnExportsValue() |
       // CommonJS modules export `module.exports` as their `default`
       // export in an ES2015 setting
-      not m instanceof ES2015Module and
+      not this instanceof ES2015Module and
       name = "default" and
       result = exports
       or

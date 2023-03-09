@@ -16,16 +16,12 @@ module Electron {
   /**
    * An instantiation of `BrowserWindow` or `BrowserView`.
    */
-  abstract private class NewBrowserObject extends BrowserObject {
-    DataFlow::NewNode self;
-
-    NewBrowserObject() { this = self }
-
+  abstract private class NewBrowserObject extends BrowserObject instanceof DataFlow::NewNode {
     /**
      * Gets the data flow node from which this instantiation takes its `webPreferences` object.
      */
     DataFlow::SourceNode getWebPreferences() {
-      result = self.getOptionArgument(0, "webPreferences").getALocalSource()
+      result = super.getOptionArgument(0, "webPreferences").getALocalSource()
     }
   }
 
@@ -182,8 +178,7 @@ module Electron {
   /**
    * A Node.js-style HTTP or HTTPS request made using an Electron module.
    */
-  class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest {
-    ElectronClientRequest() { this instanceof ElectronClientRequest::Range }
+  class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest instanceof ElectronClientRequest::Range {
   }
 
   module ElectronClientRequest {

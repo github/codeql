@@ -6,6 +6,10 @@ private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
 private import experimental.semmle.code.java.frameworks.SpringResource
 
+private class ActiveModels extends ActiveExperimentalModels {
+  ActiveModels() { this = "unsafe-url-forward" }
+}
+
 /** A sink for unsafe URL forward vulnerabilities. */
 abstract class UnsafeUrlForwardSink extends DataFlow::Node { }
 
@@ -159,54 +163,5 @@ private class SpringUrlForwardSink extends UnsafeUrlForwardSink {
   SpringUrlForwardSink() {
     any(SpringRequestMappingMethod sqmm).polyCalls*(this.getEnclosingCallable()) and
     this.asExpr() = any(ForwardPrefix fp).getAnAppendedExpression()
-  }
-}
-
-/** Source model of remote flow source from `getServletPath`. */
-private class ServletGetPathSource extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "javax.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote;manual",
-        "jakarta.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote;manual"
-      ]
-  }
-}
-
-/** Taint model related to `java.nio.file.Path` and `io.undertow.server.handlers.resource.Resource`. */
-private class FilePathFlowStep extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint;manual",
-        "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint;manual",
-        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint;manual",
-        "java.nio.file;Path;true;toString;;;Argument[-1];ReturnValue;taint;manual",
-        "io.undertow.server.handlers.resource;Resource;true;getFile;;;Argument[-1];ReturnValue;taint;manual",
-        "io.undertow.server.handlers.resource;Resource;true;getFilePath;;;Argument[-1];ReturnValue;taint;manual",
-        "io.undertow.server.handlers.resource;Resource;true;getPath;;;Argument[-1];ReturnValue;taint;manual"
-      ]
-  }
-}
-
-/** Taint models related to resource loading in Spring. */
-private class LoadSpringResourceFlowStep extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "org.springframework.core.io;ClassPathResource;false;ClassPathResource;;;Argument[0];Argument[-1];taint;manual",
-        "org.springframework.core.io;ResourceLoader;true;getResource;;;Argument[0];ReturnValue;taint;manual",
-        "org.springframework.core.io;Resource;true;createRelative;;;Argument[0];ReturnValue;taint;manual"
-      ]
-  }
-}
-
-/** Sink models for methods that load Spring resources. */
-private class SpringResourceCsvSink extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      // Get spring resource
-      "org.springframework.core.io;ClassPathResource;true;" +
-        ["getFilename", "getPath", "getURL", "resolveURL"] + ";;;Argument[-1];get-resource;manual"
   }
 }

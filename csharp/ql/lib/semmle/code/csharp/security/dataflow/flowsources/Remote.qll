@@ -12,11 +12,19 @@ private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.WCF
 private import semmle.code.csharp.frameworks.microsoft.Owin
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** A data flow source of remote user input. */
 abstract class RemoteFlowSource extends DataFlow::Node {
   /** Gets a string that describes the type of this remote flow source. */
   abstract string getSourceType();
+}
+
+/**
+ * A module for importing frameworks that defines remote flow sources.
+ */
+private module RemoteFlowSources {
+  private import semmle.code.csharp.frameworks.ServiceStack
 }
 
 /** A data flow source of remote user input (ASP.NET). */
@@ -253,4 +261,10 @@ class AspNetCoreActionMethodParameter extends AspNetCoreRemoteFlowSource, DataFl
   }
 
   override string getSourceType() { result = "ASP.NET Core MVC action method parameter" }
+}
+
+private class ExternalRemoteFlowSource extends RemoteFlowSource {
+  ExternalRemoteFlowSource() { sourceNode(this, "remote") }
+
+  override string getSourceType() { result = "external" }
 }

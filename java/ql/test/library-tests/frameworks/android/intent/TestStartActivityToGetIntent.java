@@ -25,6 +25,12 @@ public class TestStartActivityToGetIntent {
             ctx.startActivities(intents);
         }
         {
+            Intent intent = new Intent(null, AnotherActivity.class);
+            intent.putExtra("data", (String) source("ctx-start-acts-2"));
+            Intent[] intents = new Intent[] {intent};
+            ctx.startActivities(intents);
+        }
+        {
             Intent intent = new Intent(null, SomeActivity.class);
             intent.putExtra("data", (String) source("act-start"));
             act.startActivity(intent);
@@ -32,6 +38,12 @@ public class TestStartActivityToGetIntent {
         {
             Intent intent = new Intent(null, SomeActivity.class);
             intent.putExtra("data", (String) source("act-start-acts"));
+            Intent[] intents = new Intent[] {intent};
+            act.startActivities(intents);
+        }
+        {
+            Intent intent = new Intent(null, Object.class);
+            intent.putExtra("data", (String) source("start-activities-should-not-reach"));
             Intent[] intents = new Intent[] {intent};
             act.startActivities(intents);
         }
@@ -79,9 +91,16 @@ public class TestStartActivityToGetIntent {
     static class SomeActivity extends Activity {
 
         public void test() {
-            sink(getIntent().getStringExtra("data")); // $ hasValueFlow=ctx-start hasValueFlow=act-start hasValueFlow=start-for-result hasValueFlow=start-if-needed hasValueFlow=start-matching hasValueFlow=start-from-child hasValueFlow=start-from-frag hasValueFlow=4-arg MISSING: hasValueFlow=ctx-start-acts hasValueFlow=act-start-acts
+            // @formatter:off
+            sink(getIntent().getStringExtra("data")); // $ hasValueFlow=ctx-start hasValueFlow=act-start hasValueFlow=start-for-result hasValueFlow=start-if-needed hasValueFlow=start-matching hasValueFlow=start-from-child hasValueFlow=start-from-frag hasValueFlow=4-arg hasValueFlow=ctx-start-acts hasValueFlow=act-start-acts
+            // @formatter:on
         }
+    }
 
+    static class AnotherActivity extends Activity {
+        public void test() {
+            sink(getIntent().getStringExtra("data")); // $ hasValueFlow=ctx-start-acts-2
+        }
     }
 
     static class SafeActivity extends Activity {

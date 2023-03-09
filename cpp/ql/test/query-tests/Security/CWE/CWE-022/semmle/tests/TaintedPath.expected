@@ -1,19 +1,19 @@
 edges
-| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | (const char *)... |
-| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | (const char *)... |
-| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName |
-| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName |
-| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName |
-| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName |
-| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName indirection |
-| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName indirection |
-subpaths
+| test.c:8:27:8:30 | argv | test.c:17:11:17:18 | fileName indirection |
+| test.c:8:27:8:30 | argv | test.c:32:11:32:18 | fileName indirection |
+| test.c:37:17:37:24 | scanf output argument | test.c:38:11:38:18 | fileName indirection |
+| test.c:43:17:43:24 | scanf output argument | test.c:44:11:44:18 | fileName indirection |
 nodes
-| test.c:9:23:9:26 | argv | semmle.label | argv |
-| test.c:9:23:9:26 | argv | semmle.label | argv |
-| test.c:17:11:17:18 | (const char *)... | semmle.label | (const char *)... |
-| test.c:17:11:17:18 | fileName | semmle.label | fileName |
-| test.c:17:11:17:18 | fileName | semmle.label | fileName |
+| test.c:8:27:8:30 | argv | semmle.label | argv |
 | test.c:17:11:17:18 | fileName indirection | semmle.label | fileName indirection |
+| test.c:32:11:32:18 | fileName indirection | semmle.label | fileName indirection |
+| test.c:37:17:37:24 | scanf output argument | semmle.label | scanf output argument |
+| test.c:38:11:38:18 | fileName indirection | semmle.label | fileName indirection |
+| test.c:43:17:43:24 | scanf output argument | semmle.label | scanf output argument |
+| test.c:44:11:44:18 | fileName indirection | semmle.label | fileName indirection |
+subpaths
 #select
-| test.c:17:11:17:18 | fileName | test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:9:23:9:26 | argv | user input (argv) |
+| test.c:17:11:17:18 | fileName | test.c:8:27:8:30 | argv | test.c:17:11:17:18 | fileName indirection | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:8:27:8:30 | argv | user input (a command-line argument) |
+| test.c:32:11:32:18 | fileName | test.c:8:27:8:30 | argv | test.c:32:11:32:18 | fileName indirection | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:8:27:8:30 | argv | user input (a command-line argument) |
+| test.c:38:11:38:18 | fileName | test.c:37:17:37:24 | scanf output argument | test.c:38:11:38:18 | fileName indirection | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:37:17:37:24 | scanf output argument | user input (value read by scanf) |
+| test.c:44:11:44:18 | fileName | test.c:43:17:43:24 | scanf output argument | test.c:44:11:44:18 | fileName indirection | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:43:17:43:24 | scanf output argument | user input (value read by scanf) |

@@ -1,4 +1,8 @@
 /**
+ * DEPRECATED: This library has been replaced with a newer version which
+ * provides better performance and precision. Use
+ * `semmle.code.cpp.valuenumbering.GlobalValueNumbering` instead.
+ *
  * Provides an implementation of Global Value Numbering.
  * See https://en.wikipedia.org/wiki/Global_value_numbering
  *
@@ -179,7 +183,7 @@ private newtype GvnBase =
   // global variable will only get the same value number if they are
   // guaranteed to have the same value.
   GVN_OtherVariable(Variable x, ControlFlowNode dominator) { mk_OtherVariable(x, dominator, _) } or
-  GVN_FieldAccess(GVN s, Field f) {
+  deprecated GVN_FieldAccess(GVN s, Field f) {
     mk_DotFieldAccess(s, f, _) or
     mk_PointerFieldAccess_with_deref(s, f, _) or
     mk_ImplicitThisFieldAccess_with_deref(s, f, _)
@@ -188,7 +192,7 @@ private newtype GvnBase =
   // time the pointer was dereferenced, so we need to include a definition
   // location. As a crude (but safe) approximation, we use
   // `mostRecentSideEffect` to compute a definition location.
-  GVN_Deref(GVN p, ControlFlowNode dominator) {
+  deprecated GVN_Deref(GVN p, ControlFlowNode dominator) {
     mk_Deref(p, dominator, _) or
     mk_PointerFieldAccess(p, _, dominator, _) or
     mk_ImplicitThisFieldAccess_with_qualifier(p, _, dominator, _)
@@ -197,10 +201,12 @@ private newtype GvnBase =
     mk_ThisExpr(fcn, _) or
     mk_ImplicitThisFieldAccess(fcn, _, _, _)
   } or
-  GVN_Conversion(Type t, GVN child) { mk_Conversion(t, child, _) } or
-  GVN_BinaryOp(GVN lhs, GVN rhs, string opname) { mk_BinaryOp(lhs, rhs, opname, _) } or
-  GVN_UnaryOp(GVN child, string opname) { mk_UnaryOp(child, opname, _) } or
-  GVN_ArrayAccess(GVN x, GVN i, ControlFlowNode dominator) { mk_ArrayAccess(x, i, dominator, _) } or
+  deprecated GVN_Conversion(Type t, GVN child) { mk_Conversion(t, child, _) } or
+  deprecated GVN_BinaryOp(GVN lhs, GVN rhs, string opname) { mk_BinaryOp(lhs, rhs, opname, _) } or
+  deprecated GVN_UnaryOp(GVN child, string opname) { mk_UnaryOp(child, opname, _) } or
+  deprecated GVN_ArrayAccess(GVN x, GVN i, ControlFlowNode dominator) {
+    mk_ArrayAccess(x, i, dominator, _)
+  } or
   // Any expression that is not handled by the cases above is
   // given a unique number based on the expression itself.
   GVN_Unanalyzable(Expr e) { not analyzableExpr(e) }
@@ -221,7 +227,7 @@ private newtype GvnBase =
  * expression with this `GVN` and using its `toString` and `getLocation`
  * methods.
  */
-class GVN extends GvnBase {
+deprecated class GVN extends GvnBase {
   GVN() { this instanceof GvnBase }
 
   /** Gets an expression that has this GVN. */
@@ -336,7 +342,7 @@ private predicate analyzableDotFieldAccess(DotFieldAccess access) {
   not analyzableConst(access)
 }
 
-private predicate mk_DotFieldAccess(GVN qualifier, Field target, DotFieldAccess access) {
+deprecated private predicate mk_DotFieldAccess(GVN qualifier, Field target, DotFieldAccess access) {
   analyzableDotFieldAccess(access) and
   target = access.getTarget() and
   qualifier = globalValueNumber(access.getQualifier().getFullyConverted())
@@ -349,7 +355,7 @@ private predicate analyzablePointerFieldAccess(PointerFieldAccess access) {
   not analyzableConst(access)
 }
 
-private predicate mk_PointerFieldAccess(
+deprecated private predicate mk_PointerFieldAccess(
   GVN qualifier, Field target, ControlFlowNode dominator, PointerFieldAccess access
 ) {
   analyzablePointerFieldAccess(access) and
@@ -362,7 +368,7 @@ private predicate mk_PointerFieldAccess(
  * `obj->field` is equivalent to `(*obj).field`, so we need to wrap an
  * extra `GVN_Deref` around the qualifier.
  */
-private predicate mk_PointerFieldAccess_with_deref(
+deprecated private predicate mk_PointerFieldAccess_with_deref(
   GVN new_qualifier, Field target, PointerFieldAccess access
 ) {
   exists(GVN qualifier, ControlFlowNode dominator |
@@ -387,7 +393,7 @@ private predicate mk_ImplicitThisFieldAccess(
   fcn = access.getEnclosingFunction()
 }
 
-private predicate mk_ImplicitThisFieldAccess_with_qualifier(
+deprecated private predicate mk_ImplicitThisFieldAccess_with_qualifier(
   GVN qualifier, Field target, ControlFlowNode dominator, ImplicitThisFieldAccess access
 ) {
   exists(Function fcn |
@@ -396,7 +402,7 @@ private predicate mk_ImplicitThisFieldAccess_with_qualifier(
   )
 }
 
-private predicate mk_ImplicitThisFieldAccess_with_deref(
+deprecated private predicate mk_ImplicitThisFieldAccess_with_deref(
   GVN new_qualifier, Field target, ImplicitThisFieldAccess access
 ) {
   exists(GVN qualifier, ControlFlowNode dominator |
@@ -430,7 +436,7 @@ private predicate analyzableConversion(Conversion conv) {
   not analyzableConst(conv)
 }
 
-private predicate mk_Conversion(Type t, GVN child, Conversion conv) {
+deprecated private predicate mk_Conversion(Type t, GVN child, Conversion conv) {
   analyzableConversion(conv) and
   t = conv.getUnspecifiedType() and
   child = globalValueNumber(conv.getExpr())
@@ -444,7 +450,7 @@ private predicate analyzableBinaryOp(BinaryOperation op) {
   not analyzableConst(op)
 }
 
-private predicate mk_BinaryOp(GVN lhs, GVN rhs, string opname, BinaryOperation op) {
+deprecated private predicate mk_BinaryOp(GVN lhs, GVN rhs, string opname, BinaryOperation op) {
   analyzableBinaryOp(op) and
   lhs = globalValueNumber(op.getLeftOperand().getFullyConverted()) and
   rhs = globalValueNumber(op.getRightOperand().getFullyConverted()) and
@@ -459,7 +465,7 @@ private predicate analyzableUnaryOp(UnaryOperation op) {
   not analyzableConst(op)
 }
 
-private predicate mk_UnaryOp(GVN child, string opname, UnaryOperation op) {
+deprecated private predicate mk_UnaryOp(GVN child, string opname, UnaryOperation op) {
   analyzableUnaryOp(op) and
   child = globalValueNumber(op.getOperand().getFullyConverted()) and
   opname = op.getOperator()
@@ -482,7 +488,9 @@ private predicate analyzableArrayAccess(ArrayExpr ae) {
   not analyzableConst(ae)
 }
 
-private predicate mk_ArrayAccess(GVN base, GVN offset, ControlFlowNode dominator, ArrayExpr ae) {
+deprecated private predicate mk_ArrayAccess(
+  GVN base, GVN offset, ControlFlowNode dominator, ArrayExpr ae
+) {
   analyzableArrayAccess(ae) and
   base = globalValueNumber(ae.getArrayBase().getFullyConverted()) and
   offset = globalValueNumber(ae.getArrayOffset().getFullyConverted()) and
@@ -495,7 +503,7 @@ private predicate analyzablePointerDereferenceExpr(PointerDereferenceExpr deref)
   not analyzableConst(deref)
 }
 
-private predicate mk_Deref(GVN p, ControlFlowNode dominator, PointerDereferenceExpr deref) {
+deprecated private predicate mk_Deref(GVN p, ControlFlowNode dominator, PointerDereferenceExpr deref) {
   analyzablePointerDereferenceExpr(deref) and
   p = globalValueNumber(deref.getOperand().getFullyConverted()) and
   dominator = mostRecentSideEffect(deref)
@@ -503,7 +511,7 @@ private predicate mk_Deref(GVN p, ControlFlowNode dominator, PointerDereferenceE
 
 /** Gets the global value number of expression `e`. */
 cached
-GVN globalValueNumber(Expr e) {
+deprecated GVN globalValueNumber(Expr e) {
   exists(int val, Type t |
     mk_IntConst(val, t, e) and
     result = GVN_IntConst(val, t)

@@ -1,5 +1,6 @@
 import cil
 import semmle.code.cil.Type
+import semmle.code.csharp.commons.QualifiedName
 
 bindingset[kind]
 private string getKind(int kind) { if kind = 1 then result = "modreq" else result = "modopt" }
@@ -26,9 +27,12 @@ query predicate params(string fnptr, int i, string param, string t) {
 }
 
 query predicate modifiers(string fnptr, string modifier, string sKind) {
-  exists(Type modType, int kind, FunctionPointerType fn | fnptr = fn.toString() |
+  exists(Type modType, int kind, FunctionPointerType fn, string qualifier, string name |
+    fnptr = fn.toString()
+  |
     cil_custom_modifiers(fn, modType, kind) and
-    modType.getQualifiedName() = modifier and
+    modType.hasQualifiedName(qualifier, name) and
+    modifier = getQualifiedName(qualifier, name) and
     sKind = getKind(kind)
   )
 }

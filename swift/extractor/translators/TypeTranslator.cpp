@@ -242,12 +242,32 @@ codeql::OpenedArchetypeType TypeTranslator::translateOpenedArchetypeType(
 }
 
 codeql::ModuleType TypeTranslator::translateModuleType(const swift::ModuleType& type) {
-  auto key = type.getModule()->getRealName().str().str();
-  if (type.getModule()->isNonSwiftModule()) {
-    key += "|clang";
-  }
-  auto entry = createTypeEntry(type, key);
+  auto entry = createTypeEntry(type);
   entry.module = dispatcher.fetchLabel(type.getModule());
+  return entry;
+}
+
+codeql::OpaqueTypeArchetypeType TypeTranslator::translateOpaqueTypeArchetypeType(
+    const swift::OpaqueTypeArchetypeType& type) {
+  auto entry = createTypeEntry(type);
+  fillArchetypeType(type, entry);
+  entry.declaration = dispatcher.fetchLabel(type.getDecl());
+  return entry;
+}
+
+codeql::ErrorType TypeTranslator::translateErrorType(const swift::ErrorType& type) {
+  return createTypeEntry(type);
+}
+
+codeql::UnresolvedType TypeTranslator::translateUnresolvedType(const swift::UnresolvedType& type) {
+  return createTypeEntry(type);
+}
+
+codeql::ParameterizedProtocolType TypeTranslator::translateParameterizedProtocolType(
+    const swift::ParameterizedProtocolType& type) {
+  auto entry = createTypeEntry(type);
+  entry.base = dispatcher.fetchLabel(type.getBaseType());
+  entry.args = dispatcher.fetchRepeatedLabels(type.getArgs());
   return entry;
 }
 }  // namespace codeql

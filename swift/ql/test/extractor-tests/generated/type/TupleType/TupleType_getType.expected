@@ -1,0 +1,13 @@
+| (Int, Int, Int, Int, Int) | 0 | Int |
+| (Int, Int, Int, Int, Int) | 1 | Int |
+| (Int, Int, Int, Int, Int) | 2 | Int |
+| (Int, Int, Int, Int, Int) | 3 | Int |
+| (Int, Int, Int, Int, Int) | 4 | Int |
+| (Int, String, Double) | 0 | Int |
+| (Int, String, Double) | 1 | String |
+| (Int, String, Double) | 2 | Double |
+| (Int, s: String, Double) | 0 | Int |
+| (Int, s: String, Double) | 1 | String |
+| (Int, s: String, Double) | 2 | Double |
+| (x: Int, y: Int) | 0 | Int |
+| (x: Int, y: Int) | 1 | Int |

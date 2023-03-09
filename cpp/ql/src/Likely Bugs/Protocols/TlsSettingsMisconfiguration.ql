@@ -48,9 +48,7 @@ predicate isOptionSet(ConstructorCall cc, int flag, FunctionCall fcSetOptions) {
 }
 
 bindingset[flag]
-predicate isOptionNotSet(ConstructorCall cc, int flag) {
-  not exists(FunctionCall fcSetOptions | isOptionSet(cc, flag, fcSetOptions))
-}
+predicate isOptionNotSet(ConstructorCall cc, int flag) { not isOptionSet(cc, flag, _) }
 
 from
   BoostorgAsio::SslContextCallTlsProtocolConfig configConstructor, Expr protocolSource,

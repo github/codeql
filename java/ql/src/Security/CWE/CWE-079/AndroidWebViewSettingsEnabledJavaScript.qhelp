@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+ "-//Semmle//qhelp//EN"
+ "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Enabling JavaScript in an Android WebView allows the execution of
+      JavaScript code in the context of the running application. This creates a
+      cross-site scripting vulnerability.
+    </p>
+
+    <p>
+      For example, if your application's WebView allows for visiting web pages
+      that you do not trust, it is possible for an attacker to lead the user to
+      a page which loads malicious JavaScript.
+    </p>
+
+    <p>
+      You can enable or disable Javascript execution using
+      the <code>setJavaScriptEnabled</code> method of the settings of a WebView.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>JavaScript execution is disabled by default. You can explicitly disable
+    it by calling <code>setJavaScriptEnabled(false)</code> on the settings of
+    the WebView.</p>
+
+    <p>If JavaScript is necessary, only load content from trusted servers using encrypted channels, such as HTTPS with certificate verification.</p>
+  </recommendation>
+
+  <example>
+    <p>In the following (bad) example, a WebView has JavaScript enabled in its settings:</p>
+
+    <sample src="WebSettingsEnableJavascript.java"/>
+
+    <p>In the following (good) example, a WebView explicitly disallows JavaScript execution:</p>
+
+    <sample src="WebSettingsDisableJavascript.java"/>
+
+  </example>
+
+  <references>
+    <li>
+      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setJavaScriptEnabled(boolean)">setJavaScriptEnabled</a>
+    </li>
+  </references>
+
+</qhelp>

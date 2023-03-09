@@ -35,4 +35,3 @@
 | restify.js:9:5:9:17 | req.trailer() | header |
 | restify.js:10:5:10:16 | req.header() | header |
 | restify.js:11:5:11:11 | req.url | url |
-| restify.js:12:5:12:15 | req.cookies | cookie |

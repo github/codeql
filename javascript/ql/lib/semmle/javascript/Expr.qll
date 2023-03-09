@@ -379,7 +379,10 @@ class NullLiteral extends @null_literal, Literal { }
  * false
  * ```
  */
-class BooleanLiteral extends @boolean_literal, Literal { }
+class BooleanLiteral extends @boolean_literal, Literal {
+  /** Gets the value of this literal. */
+  boolean getBoolValue() { if this.getRawValue() = "true" then result = true else result = false }
+}
 
 /**
  * A numeric literal.
@@ -571,7 +574,7 @@ class ObjectExpr extends @obj_expr, Expr {
   Property getProperty(int i) { properties(result, this, i, _, _) }
 
   /** Gets a property in this object literal. */
-  Property getAProperty() { exists(int i | result = this.getProperty(i)) }
+  Property getAProperty() { result = this.getProperty(_) }
 
   /** Gets the number of properties in this object literal. */
   int getNumProperty() { result = count(this.getAProperty()) }

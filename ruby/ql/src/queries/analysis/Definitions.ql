@@ -12,6 +12,7 @@
 
 import codeql.ruby.AST
 import codeql.ruby.dataflow.SSA
+import codeql.ruby.dataflow.internal.DataFlowDispatch
 
 from DefLoc loc, Expr src, Expr target, string kind
 where
@@ -38,7 +39,12 @@ newtype DefLoc =
     write = definitionOf(read.getAQualifiedName())
   } or
   /** A method call. */
-  MethodLoc(MethodCall call, Method meth) { meth = call.getATarget() } or
+  MethodLoc(MethodCall call, Method meth) {
+    meth = call.getATarget()
+    or
+    // include implicit `initialize` calls
+    meth = getInitializeTarget(call.getAControlFlowNode())
+  } or
   /** A local variable. */
   LocalVariableLoc(VariableReadAccess read, VariableWriteAccess write) {
     exists(Ssa::WriteDefinition w |

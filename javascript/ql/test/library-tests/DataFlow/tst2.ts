@@ -11,3 +11,5 @@ function setX() {
 var nd2 = A.x as number;                 // flow through type assertions
 
 class StringList extends List<string> {} // flow through expressions with type arguments
+
+var nd2 = A.x satisfies number;          // flow through satisfies expressions

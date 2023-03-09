@@ -1,0 +1,56 @@
+edges
+| tests.go:9:2:9:74 | ... := ...[0] | tests.go:10:9:10:9 | f |
+| tests.go:10:9:10:9 | f | tests.go:43:5:43:38 | ... := ...[0] |
+| tests.go:10:9:10:9 | f | tests.go:60:5:60:38 | ... := ...[0] |
+| tests.go:10:9:10:9 | f | tests.go:108:5:108:38 | ... := ...[0] |
+| tests.go:10:9:10:9 | f | tests.go:124:5:124:38 | ... := ...[0] |
+| tests.go:18:2:18:69 | return statement[0] | tests.go:53:5:53:42 | ... := ...[0] |
+| tests.go:18:2:18:69 | return statement[0] | tests.go:70:5:70:42 | ... := ...[0] |
+| tests.go:21:24:21:24 | definition of f | tests.go:22:8:22:8 | f |
+| tests.go:25:32:25:32 | definition of f | tests.go:26:13:26:13 | capture variable f |
+| tests.go:26:13:26:13 | capture variable f | tests.go:27:3:27:3 | f |
+| tests.go:43:5:43:38 | ... := ...[0] | tests.go:44:21:44:21 | f |
+| tests.go:43:5:43:38 | ... := ...[0] | tests.go:45:29:45:29 | f |
+| tests.go:44:21:44:21 | f | tests.go:21:24:21:24 | definition of f |
+| tests.go:45:29:45:29 | f | tests.go:25:32:25:32 | definition of f |
+| tests.go:53:5:53:42 | ... := ...[0] | tests.go:54:21:54:21 | f |
+| tests.go:53:5:53:42 | ... := ...[0] | tests.go:55:29:55:29 | f |
+| tests.go:54:21:54:21 | f | tests.go:21:24:21:24 | definition of f |
+| tests.go:55:29:55:29 | f | tests.go:25:32:25:32 | definition of f |
+| tests.go:60:5:60:38 | ... := ...[0] | tests.go:62:3:62:3 | f |
+| tests.go:70:5:70:42 | ... := ...[0] | tests.go:72:3:72:3 | f |
+| tests.go:108:5:108:38 | ... := ...[0] | tests.go:110:9:110:9 | f |
+| tests.go:124:5:124:38 | ... := ...[0] | tests.go:128:3:128:3 | f |
+nodes
+| tests.go:9:2:9:74 | ... := ...[0] | semmle.label | ... := ...[0] |
+| tests.go:10:9:10:9 | f | semmle.label | f |
+| tests.go:18:2:18:69 | return statement[0] | semmle.label | return statement[0] |
+| tests.go:21:24:21:24 | definition of f | semmle.label | definition of f |
+| tests.go:22:8:22:8 | f | semmle.label | f |
+| tests.go:25:32:25:32 | definition of f | semmle.label | definition of f |
+| tests.go:26:13:26:13 | capture variable f | semmle.label | capture variable f |
+| tests.go:27:3:27:3 | f | semmle.label | f |
+| tests.go:43:5:43:38 | ... := ...[0] | semmle.label | ... := ...[0] |
+| tests.go:44:21:44:21 | f | semmle.label | f |
+| tests.go:45:29:45:29 | f | semmle.label | f |
+| tests.go:53:5:53:42 | ... := ...[0] | semmle.label | ... := ...[0] |
+| tests.go:54:21:54:21 | f | semmle.label | f |
+| tests.go:55:29:55:29 | f | semmle.label | f |
+| tests.go:60:5:60:38 | ... := ...[0] | semmle.label | ... := ...[0] |
+| tests.go:62:3:62:3 | f | semmle.label | f |
+| tests.go:70:5:70:42 | ... := ...[0] | semmle.label | ... := ...[0] |
+| tests.go:72:3:72:3 | f | semmle.label | f |
+| tests.go:108:5:108:38 | ... := ...[0] | semmle.label | ... := ...[0] |
+| tests.go:110:9:110:9 | f | semmle.label | f |
+| tests.go:124:5:124:38 | ... := ...[0] | semmle.label | ... := ...[0] |
+| tests.go:128:3:128:3 | f | semmle.label | f |
+subpaths
+#select
+| tests.go:22:8:22:8 | f | tests.go:9:2:9:74 | ... := ...[0] | tests.go:22:8:22:8 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |
+| tests.go:22:8:22:8 | f | tests.go:18:2:18:69 | return statement[0] | tests.go:22:8:22:8 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:18:9:18:69 | call to OpenFile | call to OpenFile |
+| tests.go:27:3:27:3 | f | tests.go:9:2:9:74 | ... := ...[0] | tests.go:27:3:27:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |
+| tests.go:27:3:27:3 | f | tests.go:18:2:18:69 | return statement[0] | tests.go:27:3:27:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:18:9:18:69 | call to OpenFile | call to OpenFile |
+| tests.go:62:3:62:3 | f | tests.go:9:2:9:74 | ... := ...[0] | tests.go:62:3:62:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |
+| tests.go:72:3:72:3 | f | tests.go:18:2:18:69 | return statement[0] | tests.go:72:3:72:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:18:9:18:69 | call to OpenFile | call to OpenFile |
+| tests.go:110:9:110:9 | f | tests.go:9:2:9:74 | ... := ...[0] | tests.go:110:9:110:9 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |
+| tests.go:128:3:128:3 | f | tests.go:9:2:9:74 | ... := ...[0] | tests.go:128:3:128:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |

@@ -12,8 +12,8 @@
  */
 
 /*
- * Note: this query is not assigned a precision yet because we don't want it on
- * LGTM until its performance is well understood.
+ * Note: this query is not assigned a precision yet because we don't want it
+ * to be included in query suites until its performance is well understood.
  */
 
 import cpp

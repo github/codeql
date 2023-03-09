@@ -492,3 +492,29 @@ func testIfConfig() {
 
   13
 }
+
+func testAvailable() -> Int {
+  var x = 0;
+
+  if #available(macOS 10, *) {
+    x += 1
+  }
+
+  if #available(macOS 10.13, *) {
+    x += 1
+  }
+
+  if #unavailable(iOS 10, watchOS 10, macOS 10) {
+    x += 1
+  }
+
+  guard #available(macOS 12, *) else {
+    x += 1
+  }
+
+  if #available(macOS 12, *), #available(iOS 12, *) {
+    x += 1
+  }
+
+  return x
+}

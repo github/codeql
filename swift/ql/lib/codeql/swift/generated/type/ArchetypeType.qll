@@ -74,6 +74,6 @@ module Generated {
     /**
      * Gets the number of protocols of this archetype type.
      */
-    final int getNumberOfProtocols() { result = count(getAProtocol()) }
+    final int getNumberOfProtocols() { result = count(int i | exists(getProtocol(i))) }
   }
 }

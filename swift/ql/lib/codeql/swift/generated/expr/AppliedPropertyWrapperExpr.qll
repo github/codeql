@@ -2,9 +2,63 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
+import codeql.swift.elements.decl.ParamDecl
 
 module Generated {
+  /**
+   * An implicit application of a property wrapper on the argument of a call.
+   */
   class AppliedPropertyWrapperExpr extends Synth::TAppliedPropertyWrapperExpr, Expr {
     override string getAPrimaryQlClass() { result = "AppliedPropertyWrapperExpr" }
+
+    /**
+     * Gets the kind of this applied property wrapper expression.
+     *
+     * This is 1 for a wrapped value and 2 for a projected one.
+     */
+    int getKind() {
+      result =
+        Synth::convertAppliedPropertyWrapperExprToRaw(this)
+            .(Raw::AppliedPropertyWrapperExpr)
+            .getKind()
+    }
+
+    /**
+     * Gets the value of this applied property wrapper expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateValue() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertAppliedPropertyWrapperExprToRaw(this)
+              .(Raw::AppliedPropertyWrapperExpr)
+              .getValue())
+    }
+
+    /**
+     * Gets the value of this applied property wrapper expression.
+     *
+     * The value on which the wrapper is applied.
+     */
+    final Expr getValue() { result = getImmediateValue().resolve() }
+
+    /**
+     * Gets the parameter declaration owning this wrapper application.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    ParamDecl getImmediateParam() {
+      result =
+        Synth::convertParamDeclFromRaw(Synth::convertAppliedPropertyWrapperExprToRaw(this)
+              .(Raw::AppliedPropertyWrapperExpr)
+              .getParam())
+    }
+
+    /**
+     * Gets the parameter declaration owning this wrapper application.
+     */
+    final ParamDecl getParam() { result = getImmediateParam().resolve() }
   }
 }

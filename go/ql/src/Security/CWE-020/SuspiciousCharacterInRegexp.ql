@@ -32,7 +32,7 @@ predicate containsEscapedCharacter(DataFlow::Node source, string character) {
 class Config extends DataFlow::Configuration {
   Config() { this = "SuspiciousRegexpEscape" }
 
-  predicate isSource(DataFlow::Node source, string report) {
+  predicate isSourceString(DataFlow::Node source, string report) {
     containsEscapedCharacter(source, "a") and
     report =
       "the bell character \\a; did you mean \\\\a, the Vim alphabetic character class (use [[:alpha:]] instead) or \\\\A, the beginning of text?"
@@ -41,12 +41,12 @@ class Config extends DataFlow::Configuration {
     report = "a literal backspace \\b; did you mean \\\\b, a word boundary?"
   }
 
-  override predicate isSource(DataFlow::Node source) { isSource(source, _) }
+  override predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
 }
 
 from Config c, DataFlow::PathNode source, DataFlow::PathNode sink, string report
-where c.hasFlowPath(source, sink) and c.isSource(source.getNode(), report)
+where c.hasFlowPath(source, sink) and c.isSourceString(source.getNode(), report)
 select source, source, sink, "This string literal that is $@ contains " + report, sink,
   "used as a regular expression"

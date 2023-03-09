@@ -58,19 +58,19 @@ public class B {
     // non-whitelisted constructors don't pass taint
     StringWrapper herring = new StringWrapper(complex);
     sink(herring);
-    // toString does not pass taint yet 
+    // toString does not pass taint yet
     String valueOfObject = String.valueOf(args);
     sink(valueOfObject);
 
-    
+
     // tainted equality check with constant
     boolean cond = "foo" == s;
     sink(cond);
     // tainted logic with tainted operand
     boolean logic = cond && safe();
     sink(logic);
-    // tainted condition
-    sink(concat.endsWith("I'm tainted"));
+
+
     // tainted
     logic = safe() || cond;
     sink(logic);

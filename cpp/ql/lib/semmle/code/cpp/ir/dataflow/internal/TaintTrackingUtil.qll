@@ -169,19 +169,11 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  */
 predicate modeledTaintStep(Operand nodeIn, Instruction nodeOut) {
   exists(CallInstruction call, TaintFunction func, FunctionInput modelIn, FunctionOutput modelOut |
-    (
-      nodeIn = callInput(call, modelIn)
-      or
-      exists(int n |
-        modelIn.isParameterDerefOrQualifierObject(n) and
-        if n = -1
-        then nodeIn = callInput(call, any(InQualifierObject inQualifier))
-        else nodeIn = callInput(call, any(InParameter inParam | inParam.getIndex() = n))
-      )
-    ) and
-    nodeOut = callOutput(call, modelOut) and
     call.getStaticCallTarget() = func and
     func.hasTaintFlow(modelIn, modelOut)
+  |
+    nodeIn = callInput(call, modelIn) and
+    nodeOut = callOutput(call, modelOut)
   )
   or
   // Taint flow from one argument to another and data flow from an argument to a

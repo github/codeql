@@ -20,7 +20,8 @@ string toOtherCase(string s) {
   if s.regexpMatch(".*[a-z].*") then result = s.toUpperCase() else result = s.toLowerCase()
 }
 
-import semmle.javascript.security.regexp.NfaUtils as NfaUtils
+private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeView
+import codeql.regex.nfa.NfaUtils::Make<TreeView> as NfaUtils
 
 /** Holds if `s` is a relevant regexp term were we want to compute a string that matches the term (for `getCaseSensitiveBypassExample`). */
 predicate isCand(NfaUtils::State s) {
@@ -92,7 +93,7 @@ string getAnEndpointExample(Routing::RouteSetup endpoint) {
   )
 }
 
-import semmle.javascript.security.regexp.RegexpMatching as RegexpMatching
+import codeql.regex.nfa.RegexpMatching::Make<TreeView> as RegexpMatching
 
 NfaUtils::RegExpRoot getARoot(DataFlow::RegExpCreationNode creator) {
   result.getRootTerm() = creator.getRoot()

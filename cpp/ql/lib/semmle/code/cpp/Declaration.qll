@@ -68,7 +68,9 @@ class Declaration extends Locatable, @declaration {
    * Holds if this declaration has the fully-qualified name `qualifiedName`.
    * See `getQualifiedName`.
    */
-  predicate hasQualifiedName(string qualifiedName) { this.getQualifiedName() = qualifiedName }
+  deprecated predicate hasQualifiedName(string qualifiedName) {
+    this.getQualifiedName() = qualifiedName
+  }
 
   /**
    * Holds if this declaration has a fully-qualified name with a name-space
@@ -184,7 +186,7 @@ class Declaration extends Locatable, @declaration {
   predicate hasDefinition() { exists(this.getDefinition()) }
 
   /** DEPRECATED: Use `hasDefinition` instead. */
-  predicate isDefined() { this.hasDefinition() }
+  deprecated predicate isDefined() { this.hasDefinition() }
 
   /** Gets the preferred location of this declaration, if any. */
   override Location getLocation() { none() }
@@ -617,11 +619,10 @@ private class DirectAccessHolder extends Element {
   /**
    * Like `couldAccessMember` but only contains derivations in which either
    * (5.2), (5.3) or (5.4) must be invoked. In other words, the `this`
-   * parameter is not ignored. This restriction makes it feasible to fully
-   * enumerate this predicate even on large code bases. We check for 11.4 as
-   * part of (5.3), since this further limits the number of tuples produced by
-   * this predicate.
+   * parameter is not ignored. We check for 11.4 as part of (5.3), since
+   * this further limits the number of tuples produced by this predicate.
    */
+  pragma[inline]
   predicate thisCouldAccessMember(Class memberClass, AccessSpecifier memberAccess, Class derived) {
     // Only (5.4) is recursive, and chains of invocations of (5.4) can always
     // be collapsed to one invocation by the transitivity of 11.2/4.
@@ -663,7 +664,9 @@ private class DirectAccessHolder extends Element {
     //    bypasses `p`. Then that path must be public, or we are in case 2.
     exists(AccessSpecifier public | public.hasName("public") |
       exists(Class between, Class p |
-        between.accessOfBaseMember(memberClass, memberAccess).hasName("protected") and
+        between
+            .accessOfBaseMember(pragma[only_bind_into](memberClass), memberAccess)
+            .hasName("protected") and
         this.isFriendOfOrEqualTo(p) and
         (
           // This is case 1 from above. If `p` derives privately from `between`

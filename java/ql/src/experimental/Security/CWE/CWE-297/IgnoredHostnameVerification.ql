@@ -7,6 +7,7 @@
  * @precision high
  * @id java/ignored-hostname-verification
  * @tags security
+ *       experimental
  *       external/cwe/cwe-297
  */
 

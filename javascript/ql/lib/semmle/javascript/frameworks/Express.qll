@@ -76,17 +76,11 @@ module Express {
     result = "del"
   }
 
-  private class RouterRange extends Routing::Router::Range {
-    RouterDefinition def;
-
-    RouterRange() { this = def }
-
-    override DataFlow::SourceNode getAReference() { result = def.ref() }
+  private class RouterRange extends Routing::Router::Range instanceof RouterDefinition {
+    override DataFlow::SourceNode getAReference() { result = super.ref() }
   }
 
-  private class RoutingTreeSetup extends Routing::RouteSetup::MethodCall {
-    RoutingTreeSetup() { this instanceof RouteSetup }
-
+  private class RoutingTreeSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup {
     override string getRelativePath() {
       not this.getMethodName() = "param" and // do not treat parameter name as a path
       result = this.getArgument(0).getStringValue()

@@ -316,7 +316,7 @@ class Require extends CallExpr, Import {
   override Module resolveImportedPath() {
     moduleInFile(result, this.load(min(int prio | moduleInFile(_, this.load(prio)))))
     or
-    not exists(Module mod | moduleInFile(mod, this.load(_))) and
+    not moduleInFile(_, this.load(_)) and
     result = Import.super.resolveImportedPath()
   }
 

@@ -5,6 +5,7 @@
  * @problem.severity error
  * @id cpp/pam-auth-bypass
  * @tags security
+ *       experimental
  *       external/cwe/cwe-285
  */
 

@@ -112,7 +112,7 @@ Here's a first version of our query:
        wsinner > wsouter
    select outer, "Whitespace around nested operators contradicts precedence."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8141155897270480914/>`__. This query is likely to find results on most projects.
+This query is likely to find results on most codebases.
 
 The first conjunct of the ``where`` clause restricts ``inner`` to be an operand of ``outer``, the second conjunct binds ``wsinner`` and ``wsouter``, while the last conjunct selects the suspicious cases.
 
@@ -143,7 +143,7 @@ Note that our predicate ``operatorWS`` computes the **total** amount of white sp
        wsinner > wsouter
    select outer, "Whitespace around nested operators contradicts precedence."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/3151720037708691205/>`__. Any results will be refined by our changes to the query.
+Any results will be refined by our changes to the query.
 
 Another source of false positives are associative operators: in an expression of the form ``x + y+z``, the first plus is syntactically nested inside the second, since + in Java associates to the left; hence the expression is flagged as suspicious. But since + is associative to begin with, it does not matter which way around the operators are nested, so this is a false positive. To exclude these cases, let us define a new class identifying binary expressions with an associative operator:
 
@@ -174,8 +174,6 @@ Now we can extend our query to discard results where the outer and the inner exp
        wsinner % 2 = 0 and wsouter % 2 = 0 and
        wsinner > wsouter
    select outer, "Whitespace around nested operators contradicts precedence."
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/5714614966569401039/>`__.
 
 Notice that we again use ``getOp``, this time to determine whether two binary expressions have the same operator. Running our improved query now finds the Java standard library bug described in the Overview. It also flags up the following suspicious code in `Hadoop HBase <https://hbase.apache.org/>`__:
 

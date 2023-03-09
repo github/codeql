@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @tags security
+ *       experimental
  *       external/cwe/cwe-675
  *       external/cwe/cwe-666
  */

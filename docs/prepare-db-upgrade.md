@@ -69,10 +69,10 @@ Although we have some automated testing of the scripts (e.g. to test that you ca
 To test the upgrade script, run:
 
 ```
-codeql test run --search-path=<old-extractor-pack> --search-path=ql <test-dir>
+codeql test run --search-path=<old-extractor-pack> --search-path=<codeql-root> <test-dir>
 ```
 
-Where `<old-extractor-pack>` is an extractor pack containing the old extractor and dbscheme that pre-date your changes, and `<test-dir>` is the directory containing the qltests for your language. This will run the tests using an old extractor, and the test databases will all be upgraded in place using your new upgrade script.
+Where `<old-extractor-pack>` is an extractor pack containing the old extractor and dbscheme that pre-date your changes, `<test-dir>` is the directory containing the qltests for your language, and `<codeql-root>` is the root directory directory of the `github/codeql` clone that contains `<test-dir>`. This will run the tests using an old extractor, and the test databases will all be upgraded in place using your new upgrade script.
 
 To test the downgrade script, create an extractor pack that includes your new dbscheme and extractor changes. Then checkout the `main` branch of `codeql` (i.e. a branch that does not include your changes), and run:
 

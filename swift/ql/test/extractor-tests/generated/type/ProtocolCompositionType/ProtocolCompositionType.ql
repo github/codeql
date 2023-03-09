@@ -2,10 +2,12 @@
 import codeql.swift.elements
 import TestUtils
 
-from ProtocolCompositionType x, string getName, Type getCanonicalType
+from ProtocolCompositionType x, string getName, Type getCanonicalType, int getNumberOfMembers
 where
   toBeTested(x) and
   not x.isUnknown() and
   getName = x.getName() and
-  getCanonicalType = x.getCanonicalType()
-select x, "getName:", getName, "getCanonicalType:", getCanonicalType
+  getCanonicalType = x.getCanonicalType() and
+  getNumberOfMembers = x.getNumberOfMembers()
+select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getNumberOfMembers:",
+  getNumberOfMembers

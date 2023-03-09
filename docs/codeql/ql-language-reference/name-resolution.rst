@@ -29,6 +29,10 @@ In summary, the kinds of expressions are:
       - These refer to predicates.
       - They can be simple :ref:`names <names>` or names with arities (for example in an :ref:`alias <aliases>`
         definition), or :ref:`selections <selections>`.
+  - **signature expressions**
+      - These refer to module signatures, type signatures, or predicate signatures.
+      - They can be simple :ref:`names <names>`, names with arities, :ref:`selections <selections>`,
+        or :ref:`instantiations <parameterized-modules>`.
 
 .. _names:
 
@@ -164,14 +168,27 @@ As in many other programming languages, a namespace is a mapping from **keys** t
 **entities**. A key is a kind of identifier, for example a name, and a QL entity is
 a :ref:`module <modules>`, a :ref:`type <types>`, or a :ref:`predicate <predicates>`.
 
-Each module in QL has three namespaces:
+Each module in QL has six namespaces:
 
     - The **module namespace**, where the keys are module names and the entities are modules.
     - The **type namespace**, where the keys are type names and the entities are types.
     - The **predicate namespace**, where the keys are pairs of predicate names and arities, 
       and the entities are predicates.
+    - The **module signature namespace**, where the keys are module signature names and the entities are module signatures.
+    - The **type signature namespace**, where the keys are type signature names and the entities are type signatures.
+    - The **predicate signature namespace**, where the keys are pairs of predicate signature names and arities,
+      and the entities are predicate signatures.
 
-It's important to know that there is no relation between names in different namespaces. 
+The six namespaces of any module are not completely independent of each other:
+
+    - No keys may be shared between the **module namespace** and the **module signature namespace**.
+    - No keys may be shared between the **type namespace** and the **type signature namespace**.
+    - No keys may be shared between the **module namespace** and the **type signature namespace**.
+    - No keys may be shared between the **type namespace** and the **module signature namespace**.
+    - No keys may be shared between the **predicate namespace** and the **predicate signature namespace**.
+    - No keys may be shared between the **module signature namespace** and the **type signature namespace**.
+
+There is no relation between names in namespaces of different modules.
 For example, two different modules can define a predicate ``getLocation()`` without confusion. As long as 
 it's clear which namespace you are in, the QL compiler resolves the name to the correct predicate.
 
@@ -182,11 +199,12 @@ The namespaces containing all the built-in entities are called **global namespac
 and are automatically available in any module.
 In particular: 
 
-    - The **global module namespace** is empty.
+    - The **global module namespace** has a single entry ``QlBuiltins``.
     - The **global type namespace** has entries for the :ref:`primitive types <primitive-types>` ``int``, ``float``, 
       ``string``, ``boolean``, and ``date``, as well as any :ref:`database types <database-types>` defined in the database schema.
     - The **global predicate namespace** includes all the `built-in predicates <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins>`_,
       as well as any :ref:`database predicates <database-predicates>`.
+    - The **global signature namespaces** are empty.
 
 In practice, this means that you can use the built-in types and predicates directly in a QL module (without
 importing any libraries). You can also use any database predicates and types directly—these depend on the
@@ -198,15 +216,23 @@ Local namespaces
 In addition to the global module, type, and predicate namespaces, each module defines a number of local 
 module, type, and predicate namespaces.
 
-For a module ``M``, it's useful to distinguish between its **declared**, **exported**, and **imported** namespaces. 
-(These are described generically, but remember that there is always one for each of modules, types, and predicates.)
+For a module ``M``, it is useful to distinguish between its **privately declared**, **publically declared**, **exported**, and **visible** namespaces.
+(These are described generically, but remember that there is always one for each of modules, module signatures, types, type signatures, predicates, and predicate signatures.)
 
-    - The **declared** namespaces contain any names that are declared—that is, defined—in ``M``.
-    - The **imported** namespaces contain any names exported by the modules that are imported into ``M`` using an 
-      :ref:`import statement <import-statements>`.
-    - The **exported** namespaces contain any names declared in ``M``, or exported from a module imported into ``M``, 
-      except names annotated with ``private``. This includes everything in the imported namespaces that was not introduced
-      by a private import.
+- The **privately declared** namespaces of ``M`` contain all entities and aliases that are declared—that is, defined—in ``M`` and that are annotated as ``private``.
+- The **publically declared** namespaces of ``M`` contain all entities and aliases that are declared—that is, defined—in ``M`` and that are not annotated as ``private``.
+- The **exported** namespaces of ``M`` contain
+    1. all entries from the **publically declared** namespaces of ``M``, and
+    2. for each module ``N`` that is imported into ``M`` with an import statement that is not annotated as ``private``: all entries from the **exported** namespaces of ``N`` that do not have the same name as any of the entries in the **publically declared** namespaces of ``M``, and
+    3. for each module signature ``S`` that is implemented by ``M``: an entry for each module signature default predicate in ``S`` that does not have the same name and arity as any of the entries in the **publically declared** predicate namespace of ``M``.
+- The **visible** namespaces of ``M`` contain
+    1. all entries from the **exported** namespaces of ``M``, and
+    2. all entries from the **global** namespaces, and
+    3. all entries from the **privately declared** namespace of ``M``, and
+    4. for each module ``N`` that is imported into ``M`` with an import statement that is annotated as ``private``: all entries from the **exported** namespaces of ``N`` that do not have the same name as any of the entries in the **publically declared** namespaces of ``M``.
+    5. if ``M`` is nested within a module ``N``: all entries from the **visible** namespaces of ``N`` that do not have the same name as any of the entries in the **publically declared** namespaces of ``M``, and
+    6. all parameters of ``M``.
+
 
 This is easiest to understand in an example: 
 
@@ -230,18 +256,16 @@ This is easiest to understand in an example:
       }
     }
 
-The module ``OneTwoThreeLib`` **imports** anything that is exported by the module ``MyFavoriteNumbers``.
+The module ``OneTwoThreeLib`` **publically declares** the class ``OneTwoThree`` and **privately declares** the module ``P``.
 
-It **declares** the class ``OneTwoThree`` and the module ``P``.
+It **exports** the class ``OneTwoThree`` and anything that is exported by ``MyFavoriteNumbers``
+(assuming ``MyFavoriteNumbers`` does not export a type ``OneTwoThree``, which would not be **exported** by ``OneTwoThreeLib``).
 
-It **exports** the class ``OneTwoThree`` and anything that is exported by ``MyFavoriteNumbers``. 
-It does not export ``P``, since it is annotated with ``private``.
+Within it, the class ``OneTwoThree`` and the module ``P`` are **visible**, as well as anything exported by `MyFavoriteNumbers``
+(assuming ``MyFavoriteNumbers`` does not export a type ``OneTwoThree``, which would not be **visible** within ``OneTwoThreeLib``).
 
 Example
 =======
-
-The namespaces of a general QL module are a union of the local namespaces, the namespaces of any enclosing modules, 
-and the global namespaces. (You can think of global namespaces as the enclosing namespaces of a top-level module.)
 
 Let's see what the module, type, and predicate namespaces look like in a concrete example:
 

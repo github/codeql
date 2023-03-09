@@ -1,4 +1,5 @@
-/* Definitions related to external processes. */
+/** Definitions related to external processes. */
+
 import semmle.code.java.Member
 
 private module Instances {

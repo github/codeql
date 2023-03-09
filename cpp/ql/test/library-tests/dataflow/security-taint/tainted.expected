@@ -1,3 +1,4 @@
+WARNING: Predicate taintedIncludingGlobalVars has been deprecated and may be removed in future (tainted.ql:5,3-29)
 | test.cpp:23:23:23:28 | call to getenv | test.cpp:8:24:8:25 | s1 |  |
 | test.cpp:23:23:23:28 | call to getenv | test.cpp:23:14:23:19 | envStr |  |
 | test.cpp:23:23:23:28 | call to getenv | test.cpp:23:23:23:28 | call to getenv |  |

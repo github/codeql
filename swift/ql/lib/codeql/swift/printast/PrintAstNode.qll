@@ -1,5 +1,5 @@
 /**
- * Provides classes used to pretty-print a Go AST as a graph.
+ * Provides classes used to pretty-print a Swift AST as a graph.
  * This is factored out of `PrintAst.qll` for testing purposes.
  */
 
@@ -20,7 +20,7 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
   /**
    * Holds if the AST for `e` should be printed. By default, holds for all.
    */
-  predicate shouldPrint(Locatable e) { any() }
+  predicate shouldPrint(Locatable e) { not e instanceof Diagnostics }
 }
 
 private predicate shouldPrint(Locatable e) { any(PrintAstConfiguration config).shouldPrint(e) }

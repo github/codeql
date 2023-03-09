@@ -488,4 +488,8 @@ public class Activity extends ContextWrapper {
     public <T extends View> T findViewById(int id) {
         return null;
     }
+
+    public <T extends View> T requireViewById(int id) {
+        return null;
+    }
 }

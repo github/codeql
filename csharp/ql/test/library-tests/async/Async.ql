@@ -1,5 +1,5 @@
 import csharp
 
 from Method m
-where m.getDeclaringType().getQualifiedName() = "Semmle.Asynchronous"
+where m.getDeclaringType().hasQualifiedName("Semmle", "Asynchronous")
 select m, m.getAModifier()

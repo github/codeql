@@ -22,6 +22,10 @@ module Errors {
       // signature: func Unwrap(err error) error
       hasQualifiedName("errors", "Unwrap") and
       (inp.isParameter(0) and outp.isResult())
+      or
+      // signature: func Join(errs ...error) error
+      hasQualifiedName("errors", "Join") and
+      (inp.isParameter(_) and outp.isResult())
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

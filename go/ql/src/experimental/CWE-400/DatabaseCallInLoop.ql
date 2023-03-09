@@ -6,6 +6,8 @@
  * @problem.severity warning
  * @precision high
  * @id go/examples/database-call-in-loop
+ * @tags security
+ *       experimental
  */
 
 import go

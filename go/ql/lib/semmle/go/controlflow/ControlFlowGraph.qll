@@ -106,24 +106,20 @@ module ControlFlow {
    * A control-flow node that initializes or updates the value of a constant, a variable,
    * a field, or an (array, slice, or map) element.
    */
-  class WriteNode extends Node {
-    IR::WriteInstruction self;
-
-    WriteNode() { this = self }
-
+  class WriteNode extends Node instanceof IR::WriteInstruction {
     /** Gets the left-hand side of this write. */
-    IR::WriteTarget getLhs() { result = self.getLhs() }
+    IR::WriteTarget getLhs() { result = super.getLhs() }
 
     /** Gets the right-hand side of this write. */
-    DataFlow::Node getRhs() { self.getRhs() = result.asInstruction() }
+    DataFlow::Node getRhs() { super.getRhs() = result.asInstruction() }
 
     /** Holds if this node sets variable or constant `v` to `rhs`. */
-    predicate writes(ValueEntity v, DataFlow::Node rhs) { self.writes(v, rhs.asInstruction()) }
+    predicate writes(ValueEntity v, DataFlow::Node rhs) { super.writes(v, rhs.asInstruction()) }
 
     /** Holds if this node defines SSA variable `v` to be `rhs`. */
     predicate definesSsaVariable(SsaVariable v, DataFlow::Node rhs) {
-      self.getLhs().asSsaVariable() = v and
-      self.getRhs() = rhs.asInstruction()
+      super.getLhs().asSsaVariable() = v and
+      super.getRhs() = rhs.asInstruction()
     }
 
     /**
@@ -136,13 +132,13 @@ module ControlFlow {
      * node corresponding to `newWidth`.
      */
     predicate writesField(DataFlow::Node base, Field f, DataFlow::Node rhs) {
-      exists(IR::FieldTarget trg | trg = self.getLhs() |
+      exists(IR::FieldTarget trg | trg = super.getLhs() |
         (
           trg.getBase() = base.asInstruction() or
           trg.getBase() = MkImplicitDeref(base.asExpr())
         ) and
         trg.getField() = f and
-        self.getRhs() = rhs.asInstruction()
+        super.getRhs() = rhs.asInstruction()
       )
     }
 
@@ -156,13 +152,13 @@ module ControlFlow {
      * is the data-flow node corresponding to `base`.
      */
     predicate writesElement(DataFlow::Node base, DataFlow::Node index, DataFlow::Node rhs) {
-      exists(IR::ElementTarget trg | trg = self.getLhs() |
+      exists(IR::ElementTarget trg | trg = super.getLhs() |
         (
           trg.getBase() = base.asInstruction() or
           trg.getBase() = MkImplicitDeref(base.asExpr())
         ) and
         trg.getIndex() = index.asInstruction() and
-        self.getRhs() = rhs.asInstruction()
+        super.getRhs() = rhs.asInstruction()
       )
     }
 

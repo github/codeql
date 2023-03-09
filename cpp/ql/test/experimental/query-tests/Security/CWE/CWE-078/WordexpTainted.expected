@@ -1,11 +1,11 @@
 edges
-| test.cpp:23:20:23:23 | argv | test.cpp:29:13:29:20 | (const char *)... |
-| test.cpp:23:20:23:23 | argv | test.cpp:29:13:29:20 | filePath |
+| test.cpp:22:27:22:30 | argv | test.cpp:29:13:29:20 | (const char *)... |
+| test.cpp:22:27:22:30 | argv | test.cpp:29:13:29:20 | filePath |
 nodes
-| test.cpp:23:20:23:23 | argv | semmle.label | argv |
+| test.cpp:22:27:22:30 | argv | semmle.label | argv |
 | test.cpp:29:13:29:20 | (const char *)... | semmle.label | (const char *)... |
 | test.cpp:29:13:29:20 | filePath | semmle.label | filePath |
 subpaths
 #select
-| test.cpp:29:13:29:20 | (const char *)... | test.cpp:23:20:23:23 | argv | test.cpp:29:13:29:20 | (const char *)... | Using user-supplied data in a `wordexp` command, without disabling command substitution, can make code vulnerable to command injection. |
-| test.cpp:29:13:29:20 | filePath | test.cpp:23:20:23:23 | argv | test.cpp:29:13:29:20 | filePath | Using user-supplied data in a `wordexp` command, without disabling command substitution, can make code vulnerable to command injection. |
+| test.cpp:29:13:29:20 | (const char *)... | test.cpp:22:27:22:30 | argv | test.cpp:29:13:29:20 | (const char *)... | Using user-supplied data in a `wordexp` command, without disabling command substitution, can make code vulnerable to command injection. |
+| test.cpp:29:13:29:20 | filePath | test.cpp:22:27:22:30 | argv | test.cpp:29:13:29:20 | filePath | Using user-supplied data in a `wordexp` command, without disabling command substitution, can make code vulnerable to command injection. |

@@ -16,8 +16,8 @@ abstract class DataSetOrTableRelatedClass extends Class { }
  */
 class DataSetOrTable extends DataSetOrTableRelatedClass {
   DataSetOrTable() {
-    this.getABaseType*().getQualifiedName() = "System.Data.DataTable" or
-    this.getABaseType*().getQualifiedName() = "System.Data.DataSet"
+    this.getABaseType*().hasQualifiedName("System.Data", "DataTable") or
+    this.getABaseType*().hasQualifiedName("System.Data", "DataSet")
   }
 }
 
@@ -41,18 +41,18 @@ class ClassWithDataSetOrTableMember extends DataSetOrTableRelatedClass {
 class SerializableClass extends Class {
   SerializableClass() {
     (
-      this.getABaseType*().getQualifiedName() = "System.Xml.Serialization.XmlSerializer" or
-      this.getABaseType*().getQualifiedName() = "System.Runtime.Serialization.ISerializable" or
-      this.getABaseType*().getQualifiedName() = "System.Runtime.Serialization.XmlObjectSerializer" or
-      this.getABaseType*().getQualifiedName() =
-        "System.Runtime.Serialization.ISerializationSurrogateProvider" or
-      this.getABaseType*().getQualifiedName() =
-        "System.Runtime.Serialization.XmlSerializableServices" or
-      this.getABaseType*().getQualifiedName() = "System.Xml.Serialization.IXmlSerializable"
+      this.getABaseType*()
+          .hasQualifiedName("System.Xml.Serialization", ["XmlSerializer", "IXmlSerializable"]) or
+      this.getABaseType*()
+          .hasQualifiedName("System.Runtime.Serialization",
+            [
+              "ISerializable", "XmlObjectSerializer", "ISerializationSurrogateProvider",
+              "XmlSerializableServices"
+            ])
     )
     or
     exists(Attribute a | a = this.getAnAttribute() |
-      a.getType().getQualifiedName() = "System.SerializableAttribute"
+      a.getType().hasQualifiedName("System", "SerializableAttribute")
     )
   }
 }
@@ -77,13 +77,7 @@ class UnsafeXmlSerializerImplementation extends SerializableClass {
  */
 class UnsafeXmlReadMethod extends Method {
   UnsafeXmlReadMethod() {
-    this.getQualifiedName() = "System.Data.DataTable.ReadXml"
-    or
-    this.getQualifiedName() = "System.Data.DataTable.ReadXmlSchema"
-    or
-    this.getQualifiedName() = "System.Data.DataSet.ReadXml"
-    or
-    this.getQualifiedName() = "System.Data.DataSet.ReadXmlSchema"
+    this.hasQualifiedName("System.Data", ["DataTable", "DataSet"], ["ReadXml", "ReadXmlSchema"])
     or
     this.getName().matches("ReadXml%") and
     exists(Class c | c.getAMethod() = this |

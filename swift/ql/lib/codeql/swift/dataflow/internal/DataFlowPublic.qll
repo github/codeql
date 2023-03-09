@@ -159,6 +159,18 @@ module Content {
 
     override string toString() { result = f.toString() }
   }
+
+  /** An element of a tuple at a specific index. */
+  class TupleContent extends Content, TTupleContent {
+    private int index;
+
+    TupleContent() { this = TTupleContent(index) }
+
+    /** Gets the index for this tuple element. */
+    int getIndex() { result = index }
+
+    override string toString() { result = "Tuple element at index " + index.toString() }
+  }
 }
 
 /**

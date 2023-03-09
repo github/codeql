@@ -49,10 +49,10 @@ private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFuncti
 
   override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
     output.isParameterDeref(0) and
-    description = "String read by " + this.getName()
+    description = "string read by " + this.getName()
     or
     output.isReturnValue() and
-    description = "String read by " + this.getName()
+    description = "string read by " + this.getName()
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
@@ -98,10 +98,10 @@ private class GetsFunction extends DataFlowFunction, ArrayFunction, AliasFunctio
 
   override predicate hasLocalFlowSource(FunctionOutput output, string description) {
     output.isParameterDeref(0) and
-    description = "String read by " + this.getName()
+    description = "string read by " + this.getName()
     or
     output.isReturnValue() and
-    description = "String read by " + this.getName()
+    description = "string read by " + this.getName()
   }
 
   override predicate hasArrayWithUnknownSize(int bufParam) { bufParam = 0 }

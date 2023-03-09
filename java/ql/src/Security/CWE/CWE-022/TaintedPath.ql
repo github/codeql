@@ -29,7 +29,7 @@ class TaintedPathConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PathCreation p).getAnInput()
     or
-    sinkNode(sink, "create-file")
+    sinkNode(sink, ["create-file", "read-file"])
   }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {

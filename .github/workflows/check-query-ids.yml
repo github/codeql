@@ -1,0 +1,21 @@
+name: Check query IDs
+
+on:
+  pull_request:
+    paths:
+      - "**/src/**/*.ql"
+      - misc/scripts/check-query-ids.py
+      - .github/workflows/check-query-ids.yml
+    branches:
+      - main
+      - "rc/*"
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Check query IDs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check for duplicate query IDs
+        run: python3 misc/scripts/check-query-ids.py

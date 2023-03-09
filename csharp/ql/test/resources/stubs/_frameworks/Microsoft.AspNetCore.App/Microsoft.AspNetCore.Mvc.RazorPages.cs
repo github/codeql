@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Mvc.RazorPages, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,13 +7,12 @@ namespace Microsoft
     {
         namespace Builder
         {
-            // Generated from `Microsoft.AspNetCore.Builder.PageActionEndpointConventionBuilder` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class PageActionEndpointConventionBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder
             {
                 public void Add(System.Action<Microsoft.AspNetCore.Builder.EndpointBuilder> convention) => throw null;
+                public void Finally(System.Action<Microsoft.AspNetCore.Builder.EndpointBuilder> finalConvention) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.RazorPagesEndpointRouteBuilderExtensions` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RazorPagesEndpointRouteBuilderExtensions
             {
                 public static void MapDynamicPageRoute<TTransformer>(this Microsoft.AspNetCore.Routing.IEndpointRouteBuilder endpoints, string pattern) where TTransformer : Microsoft.AspNetCore.Mvc.Routing.DynamicRouteValueTransformer => throw null;
@@ -30,13 +30,11 @@ namespace Microsoft
         {
             namespace ApplicationModels
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelConvention` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPageApplicationModelConvention : Microsoft.AspNetCore.Mvc.ApplicationModels.IPageConvention
                 {
                     void Apply(Microsoft.AspNetCore.Mvc.ApplicationModels.PageApplicationModel model);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelPartsProvider` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPageApplicationModelPartsProvider
                 {
                     Microsoft.AspNetCore.Mvc.ApplicationModels.PageHandlerModel CreateHandlerModel(System.Reflection.MethodInfo method);
@@ -45,7 +43,6 @@ namespace Microsoft
                     bool IsHandler(System.Reflection.MethodInfo methodInfo);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPageApplicationModelProvider
                 {
                     void OnProvidersExecuted(Microsoft.AspNetCore.Mvc.ApplicationModels.PageApplicationModelProviderContext context);
@@ -53,24 +50,20 @@ namespace Microsoft
                     int Order { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.IPageConvention` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPageConvention
                 {
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.IPageHandlerModelConvention` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPageHandlerModelConvention : Microsoft.AspNetCore.Mvc.ApplicationModels.IPageConvention
                 {
                     void Apply(Microsoft.AspNetCore.Mvc.ApplicationModels.PageHandlerModel model);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelConvention` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPageRouteModelConvention : Microsoft.AspNetCore.Mvc.ApplicationModels.IPageConvention
                 {
                     void Apply(Microsoft.AspNetCore.Mvc.ApplicationModels.PageRouteModel model);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelProvider` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPageRouteModelProvider
                 {
                     void OnProvidersExecuted(Microsoft.AspNetCore.Mvc.ApplicationModels.PageRouteModelProviderContext context);
@@ -78,7 +71,6 @@ namespace Microsoft
                     int Order { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.PageApplicationModel` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageApplicationModel
                 {
                     public Microsoft.AspNetCore.Mvc.RazorPages.PageActionDescriptor ActionDescriptor { get => throw null; }
@@ -101,7 +93,6 @@ namespace Microsoft
                     public string ViewEnginePath { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.PageApplicationModelProviderContext` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageApplicationModelProviderContext
                 {
                     public Microsoft.AspNetCore.Mvc.RazorPages.PageActionDescriptor ActionDescriptor { get => throw null; }
@@ -110,7 +101,6 @@ namespace Microsoft
                     public System.Reflection.TypeInfo PageType { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.PageConventionCollection` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageConventionCollection : System.Collections.ObjectModel.Collection<Microsoft.AspNetCore.Mvc.ApplicationModels.IPageConvention>
                 {
                     public Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelConvention AddAreaFolderApplicationModelConvention(string areaName, string folderPath, System.Action<Microsoft.AspNetCore.Mvc.ApplicationModels.PageApplicationModel> action) => throw null;
@@ -127,7 +117,6 @@ namespace Microsoft
                     public void RemoveType<TPageConvention>() where TPageConvention : Microsoft.AspNetCore.Mvc.ApplicationModels.IPageConvention => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.PageHandlerModel` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageHandlerModel : Microsoft.AspNetCore.Mvc.ApplicationModels.ICommonModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IPropertyModel
                 {
                     public System.Collections.Generic.IReadOnlyList<object> Attributes { get => throw null; }
@@ -143,7 +132,6 @@ namespace Microsoft
                     public System.Collections.Generic.IDictionary<object, object> Properties { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.PageParameterModel` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageParameterModel : Microsoft.AspNetCore.Mvc.ApplicationModels.ParameterModelBase, Microsoft.AspNetCore.Mvc.ApplicationModels.IBindingModel, Microsoft.AspNetCore.Mvc.ApplicationModels.ICommonModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IPropertyModel
                 {
                     public Microsoft.AspNetCore.Mvc.ApplicationModels.PageHandlerModel Handler { get => throw null; set => throw null; }
@@ -154,7 +142,6 @@ namespace Microsoft
                     public string ParameterName { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.PagePropertyModel` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PagePropertyModel : Microsoft.AspNetCore.Mvc.ApplicationModels.ParameterModelBase, Microsoft.AspNetCore.Mvc.ApplicationModels.ICommonModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IPropertyModel
                 {
                     System.Reflection.MemberInfo Microsoft.AspNetCore.Mvc.ApplicationModels.ICommonModel.MemberInfo { get => throw null; }
@@ -165,7 +152,6 @@ namespace Microsoft
                     public string PropertyName { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.PageRouteMetadata` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageRouteMetadata
                 {
                     public string PageRoute { get => throw null; }
@@ -173,7 +159,6 @@ namespace Microsoft
                     public string RouteTemplate { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.PageRouteModel` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageRouteModel
                 {
                     public string AreaName { get => throw null; }
@@ -188,14 +173,12 @@ namespace Microsoft
                     public string ViewEnginePath { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.PageRouteModelProviderContext` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageRouteModelProviderContext
                 {
                     public PageRouteModelProviderContext() => throw null;
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ApplicationModels.PageRouteModel> RouteModels { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationModels.PageRouteTransformerConvention` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageRouteTransformerConvention : Microsoft.AspNetCore.Mvc.ApplicationModels.IPageConvention, Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelConvention
                 {
                     public void Apply(Microsoft.AspNetCore.Mvc.ApplicationModels.PageRouteModel model) => throw null;
@@ -206,7 +189,6 @@ namespace Microsoft
             }
             namespace Diagnostics
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.AfterHandlerMethodEventData` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AfterHandlerMethodEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.ActionContext ActionContext { get => throw null; }
@@ -220,7 +202,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.IActionResult Result { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.AfterPageFilterOnPageHandlerExecutedEventData` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AfterPageFilterOnPageHandlerExecutedEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
@@ -232,7 +213,6 @@ namespace Microsoft
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.AfterPageFilterOnPageHandlerExecutingEventData` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AfterPageFilterOnPageHandlerExecutingEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
@@ -244,7 +224,6 @@ namespace Microsoft
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.AfterPageFilterOnPageHandlerExecutionEventData` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AfterPageFilterOnPageHandlerExecutionEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
@@ -256,7 +235,6 @@ namespace Microsoft
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.AfterPageFilterOnPageHandlerSelectedEventData` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AfterPageFilterOnPageHandlerSelectedEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
@@ -268,7 +246,6 @@ namespace Microsoft
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.AfterPageFilterOnPageHandlerSelectionEventData` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AfterPageFilterOnPageHandlerSelectionEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
@@ -280,7 +257,6 @@ namespace Microsoft
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.BeforeHandlerMethodEventData` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class BeforeHandlerMethodEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.ActionContext ActionContext { get => throw null; }
@@ -293,7 +269,6 @@ namespace Microsoft
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.BeforePageFilterOnPageHandlerExecutedEventData` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class BeforePageFilterOnPageHandlerExecutedEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
@@ -305,7 +280,6 @@ namespace Microsoft
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.BeforePageFilterOnPageHandlerExecutingEventData` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class BeforePageFilterOnPageHandlerExecutingEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
@@ -317,7 +291,6 @@ namespace Microsoft
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.BeforePageFilterOnPageHandlerExecutionEventData` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class BeforePageFilterOnPageHandlerExecutionEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
@@ -329,7 +302,6 @@ namespace Microsoft
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.BeforePageFilterOnPageHandlerSelectedEventData` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class BeforePageFilterOnPageHandlerSelectedEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
@@ -341,7 +313,6 @@ namespace Microsoft
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.BeforePageFilterOnPageHandlerSelectionEventData` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class BeforePageFilterOnPageHandlerSelectionEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
@@ -356,14 +327,12 @@ namespace Microsoft
             }
             namespace Filters
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IAsyncPageFilter` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IAsyncPageFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     System.Threading.Tasks.Task OnPageHandlerExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutingContext context, Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutionDelegate next);
                     System.Threading.Tasks.Task OnPageHandlerSelectionAsync(Microsoft.AspNetCore.Mvc.Filters.PageHandlerSelectedContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IPageFilter` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPageFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     void OnPageHandlerExecuted(Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutedContext context);
@@ -371,7 +340,6 @@ namespace Microsoft
                     void OnPageHandlerSelected(Microsoft.AspNetCore.Mvc.Filters.PageHandlerSelectedContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutedContext` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageHandlerExecutedContext : Microsoft.AspNetCore.Mvc.Filters.FilterContext
                 {
                     public virtual Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
@@ -385,7 +353,6 @@ namespace Microsoft
                     public virtual Microsoft.AspNetCore.Mvc.IActionResult Result { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutingContext` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageHandlerExecutingContext : Microsoft.AspNetCore.Mvc.Filters.FilterContext
                 {
                     public virtual Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
@@ -396,10 +363,8 @@ namespace Microsoft
                     public virtual Microsoft.AspNetCore.Mvc.IActionResult Result { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutionDelegate` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public delegate System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutedContext> PageHandlerExecutionDelegate();
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.PageHandlerSelectedContext` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageHandlerSelectedContext : Microsoft.AspNetCore.Mvc.Filters.FilterContext
                 {
                     public virtual Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
@@ -411,7 +376,6 @@ namespace Microsoft
             }
             namespace RazorPages
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CompiledPageActionDescriptor : Microsoft.AspNetCore.Mvc.RazorPages.PageActionDescriptor
                 {
                     public CompiledPageActionDescriptor() => throw null;
@@ -424,7 +388,6 @@ namespace Microsoft
                     public System.Reflection.TypeInfo PageTypeInfo { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.IPageActivatorProvider` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPageActivatorProvider
                 {
                     System.Func<Microsoft.AspNetCore.Mvc.RazorPages.PageContext, Microsoft.AspNetCore.Mvc.Rendering.ViewContext, object> CreateActivator(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor descriptor);
@@ -432,7 +395,6 @@ namespace Microsoft
                     System.Action<Microsoft.AspNetCore.Mvc.RazorPages.PageContext, Microsoft.AspNetCore.Mvc.Rendering.ViewContext, object> CreateReleaser(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor descriptor);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.IPageFactoryProvider` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPageFactoryProvider
                 {
                     System.Func<Microsoft.AspNetCore.Mvc.RazorPages.PageContext, Microsoft.AspNetCore.Mvc.Rendering.ViewContext, object, System.Threading.Tasks.ValueTask> CreateAsyncPageDisposer(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor descriptor) => throw null;
@@ -440,7 +402,6 @@ namespace Microsoft
                     System.Func<Microsoft.AspNetCore.Mvc.RazorPages.PageContext, Microsoft.AspNetCore.Mvc.Rendering.ViewContext, object> CreatePageFactory(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor descriptor);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.IPageModelActivatorProvider` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPageModelActivatorProvider
                 {
                     System.Func<Microsoft.AspNetCore.Mvc.RazorPages.PageContext, object> CreateActivator(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor descriptor);
@@ -448,7 +409,6 @@ namespace Microsoft
                     System.Action<Microsoft.AspNetCore.Mvc.RazorPages.PageContext, object> CreateReleaser(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor descriptor);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.IPageModelFactoryProvider` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPageModelFactoryProvider
                 {
                     System.Func<Microsoft.AspNetCore.Mvc.RazorPages.PageContext, object, System.Threading.Tasks.ValueTask> CreateAsyncModelDisposer(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor descriptor) => throw null;
@@ -456,19 +416,16 @@ namespace Microsoft
                     System.Func<Microsoft.AspNetCore.Mvc.RazorPages.PageContext, object> CreateModelFactory(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor descriptor);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.NonHandlerAttribute` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class NonHandlerAttribute : System.Attribute
                 {
                     public NonHandlerAttribute() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Page` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class Page : Microsoft.AspNetCore.Mvc.RazorPages.PageBase
                 {
                     protected Page() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.PageActionDescriptor` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageActionDescriptor : Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor
                 {
                     public string AreaName { get => throw null; set => throw null; }
@@ -479,7 +436,6 @@ namespace Microsoft
                     public string ViewEnginePath { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.PageBase` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class PageBase : Microsoft.AspNetCore.Mvc.Razor.RazorPageBase
                 {
                     public virtual Microsoft.AspNetCore.Mvc.BadRequestResult BadRequest() => throw null;
@@ -595,7 +551,6 @@ namespace Microsoft
                     public override Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.PageContext` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageContext : Microsoft.AspNetCore.Mvc.ActionContext
                 {
                     public virtual Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; set => throw null; }
@@ -606,13 +561,11 @@ namespace Microsoft
                     public virtual System.Collections.Generic.IList<System.Func<Microsoft.AspNetCore.Mvc.Razor.IRazorPage>> ViewStartFactories { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.PageContextAttribute` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageContextAttribute : System.Attribute
                 {
                     public PageContextAttribute() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.PageModel` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class PageModel : Microsoft.AspNetCore.Mvc.Filters.IAsyncPageFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IPageFilter
                 {
                     public virtual Microsoft.AspNetCore.Mvc.BadRequestResult BadRequest() => throw null;
@@ -735,7 +688,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary ViewData { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.PageResult` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PageResult : Microsoft.AspNetCore.Mvc.ActionResult
                 {
                     public string ContentType { get => throw null; set => throw null; }
@@ -747,7 +699,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary ViewData { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RazorPagesOptions : System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Infrastructure.ICompatibilitySwitch>, System.Collections.IEnumerable
                 {
                     public Microsoft.AspNetCore.Mvc.ApplicationModels.PageConventionCollection Conventions { get => throw null; set => throw null; }
@@ -759,7 +710,6 @@ namespace Microsoft
 
                 namespace Infrastructure
                 {
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.CompiledPageActionDescriptorProvider` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class CompiledPageActionDescriptorProvider : Microsoft.AspNetCore.Mvc.Abstractions.IActionDescriptorProvider
                     {
                         public CompiledPageActionDescriptorProvider(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelProvider> pageRouteModelProviders, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider> applicationModelProviders, Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager applicationPartManager, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcOptions> mvcOptions, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions> pageOptions) => throw null;
@@ -768,7 +718,6 @@ namespace Microsoft
                         public int Order { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.HandlerMethodDescriptor` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class HandlerMethodDescriptor
                     {
                         public HandlerMethodDescriptor() => throw null;
@@ -778,26 +727,22 @@ namespace Microsoft
                         public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.HandlerParameterDescriptor> Parameters { get => throw null; set => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.HandlerParameterDescriptor` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class HandlerParameterDescriptor : Microsoft.AspNetCore.Mvc.Abstractions.ParameterDescriptor, Microsoft.AspNetCore.Mvc.Infrastructure.IParameterInfoParameterDescriptor
                     {
                         public HandlerParameterDescriptor() => throw null;
                         public System.Reflection.ParameterInfo ParameterInfo { get => throw null; set => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.IPageHandlerMethodSelector` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IPageHandlerMethodSelector
                     {
                         Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.HandlerMethodDescriptor Select(Microsoft.AspNetCore.Mvc.RazorPages.PageContext context);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.IPageLoader` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IPageLoader
                     {
                         Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor Load(Microsoft.AspNetCore.Mvc.RazorPages.PageActionDescriptor actionDescriptor);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionDescriptorProvider` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class PageActionDescriptorProvider : Microsoft.AspNetCore.Mvc.Abstractions.IActionDescriptorProvider
                     {
                         protected System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ApplicationModels.PageRouteModel> BuildModel() => throw null;
@@ -807,7 +752,6 @@ namespace Microsoft
                         public PageActionDescriptorProvider(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelProvider> pageRouteModelProviders, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcOptions> mvcOptionsAccessor, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions> pagesOptionsAccessor) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageBoundPropertyDescriptor` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class PageBoundPropertyDescriptor : Microsoft.AspNetCore.Mvc.Abstractions.ParameterDescriptor, Microsoft.AspNetCore.Mvc.Infrastructure.IPropertyInfoParameterDescriptor
                     {
                         public PageBoundPropertyDescriptor() => throw null;
@@ -815,7 +759,6 @@ namespace Microsoft
                         System.Reflection.PropertyInfo Microsoft.AspNetCore.Mvc.Infrastructure.IPropertyInfoParameterDescriptor.PropertyInfo { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageLoader` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public abstract class PageLoader : Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.IPageLoader
                     {
                         Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.IPageLoader.Load(Microsoft.AspNetCore.Mvc.RazorPages.PageActionDescriptor actionDescriptor) => throw null;
@@ -824,20 +767,17 @@ namespace Microsoft
                         protected PageLoader() => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageModelAttribute` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class PageModelAttribute : System.Attribute
                     {
                         public PageModelAttribute() => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageResultExecutor` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class PageResultExecutor : Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor
                     {
                         public virtual System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Mvc.RazorPages.PageContext pageContext, Microsoft.AspNetCore.Mvc.RazorPages.PageResult result) => throw null;
                         public PageResultExecutor(Microsoft.AspNetCore.Mvc.Infrastructure.IHttpResponseStreamWriterFactory writerFactory, Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine compositeViewEngine, Microsoft.AspNetCore.Mvc.Razor.IRazorViewEngine razorViewEngine, Microsoft.AspNetCore.Mvc.Razor.IRazorPageActivator razorPageActivator, System.Diagnostics.DiagnosticListener diagnosticListener, System.Text.Encodings.Web.HtmlEncoder htmlEncoder) : base(default(Microsoft.AspNetCore.Mvc.Infrastructure.IHttpResponseStreamWriterFactory), default(Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine), default(System.Diagnostics.DiagnosticListener)) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageViewLocationExpander` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class PageViewLocationExpander : Microsoft.AspNetCore.Mvc.Razor.IViewLocationExpander
                     {
                         public System.Collections.Generic.IEnumerable<string> ExpandViewLocations(Microsoft.AspNetCore.Mvc.Razor.ViewLocationExpanderContext context, System.Collections.Generic.IEnumerable<string> viewLocations) => throw null;
@@ -845,7 +785,6 @@ namespace Microsoft
                         public void PopulateValues(Microsoft.AspNetCore.Mvc.Razor.ViewLocationExpanderContext context) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.RazorPageAdapter` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class RazorPageAdapter : Microsoft.AspNetCore.Mvc.Razor.IRazorPage
                     {
                         public Microsoft.AspNetCore.Html.IHtmlContent BodyContent { get => throw null; set => throw null; }
@@ -860,14 +799,12 @@ namespace Microsoft
                         public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.RazorPageAttribute` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class RazorPageAttribute : Microsoft.AspNetCore.Mvc.Razor.Compilation.RazorViewAttribute
                     {
                         public RazorPageAttribute(string path, System.Type viewType, string routeTemplate) : base(default(string), default(System.Type)) => throw null;
                         public string RouteTemplate { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.ServiceBasedPageModelActivatorProvider` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ServiceBasedPageModelActivatorProvider : Microsoft.AspNetCore.Mvc.RazorPages.IPageModelActivatorProvider
                     {
                         public System.Func<Microsoft.AspNetCore.Mvc.RazorPages.PageContext, object> CreateActivator(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor descriptor) => throw null;
@@ -883,7 +820,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.MvcRazorPagesMvcBuilderExtensions` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MvcRazorPagesMvcBuilderExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IMvcBuilder AddRazorPagesOptions(this Microsoft.Extensions.DependencyInjection.IMvcBuilder builder, System.Action<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions> setupAction) => throw null;
@@ -891,7 +827,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.DependencyInjection.IMvcBuilder WithRazorPagesRoot(this Microsoft.Extensions.DependencyInjection.IMvcBuilder builder, string rootDirectory) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.MvcRazorPagesMvcCoreBuilderExtensions` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MvcRazorPagesMvcCoreBuilderExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder AddRazorPages(this Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder builder) => throw null;
@@ -899,7 +834,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder WithRazorPagesRoot(this Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder builder, string rootDirectory) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.PageConventionCollectionExtensions` in `Microsoft.AspNetCore.Mvc.RazorPages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class PageConventionCollectionExtensions
             {
                 public static Microsoft.AspNetCore.Mvc.ApplicationModels.PageConventionCollection Add(this Microsoft.AspNetCore.Mvc.ApplicationModels.PageConventionCollection conventions, Microsoft.AspNetCore.Mvc.ApplicationModels.IParameterModelBaseConvention convention) => throw null;

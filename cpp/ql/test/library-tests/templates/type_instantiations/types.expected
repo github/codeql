@@ -1,4 +1,5 @@
 | file://:0:0:0:0 | Cl<char, Sa, Sb> * |
+| file://:0:0:0:0 | _Complex _Float16 |
 | file://:0:0:0:0 | _Complex __float128 |
 | file://:0:0:0:0 | _Complex double |
 | file://:0:0:0:0 | _Complex float |
@@ -6,6 +7,7 @@
 | file://:0:0:0:0 | _Decimal32 |
 | file://:0:0:0:0 | _Decimal64 |
 | file://:0:0:0:0 | _Decimal128 |
+| file://:0:0:0:0 | _Float16 |
 | file://:0:0:0:0 | _Float32 |
 | file://:0:0:0:0 | _Float32x |
 | file://:0:0:0:0 | _Float64 |

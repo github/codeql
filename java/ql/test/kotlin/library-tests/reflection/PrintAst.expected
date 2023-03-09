@@ -45,7 +45,7 @@ reflection.kt:
 #   50|                 -3: [TypeAccess] KProperty1<String,Character>
 #   50|                   0: [TypeAccess] String
 #   50|                   1: [TypeAccess] Character
-#   50|               0: [StringLiteral] abc
+#   50|               0: [StringLiteral] "abc"
 #   51|         1: [ExprStmt] <Expr>;
 #   51|           0: [MethodAccess] println(...)
 #   51|             -1: [TypeAccess] ConsoleKt
@@ -78,7 +78,7 @@ reflection.kt:
 #   51|                           -1: [ThisAccess] this
 #   51|                 -3: [TypeAccess] KProperty0<Character>
 #   51|                   0: [TypeAccess] Character
-#   51|                 0: [StringLiteral] abcd
+#   51|                 0: [StringLiteral] "abcd"
 #   54|     3: [ExtensionMethod] ext1
 #-----|       2: (Generic Parameters)
 #   54|         0: [TypeVariable] T2
@@ -118,7 +118,7 @@ reflection.kt:
 #   97|               0: [TypeAccess] String
 #   97|             -2: [TypeAccess] String
 #   97|             -1: [TypeAccess] ReflectionKt
-#   97|             0: [StringLiteral] 
+#   97|             0: [StringLiteral] ""
 #   97|             1: [MemberRefExpr] ...::...
 #   97|               -4: [AnonymousClass] new Function1<String,Class2<String>>(...) { ... }
 #   97|                 1: [Constructor] 
@@ -143,7 +143,7 @@ reflection.kt:
 #   98|             -3: [TypeAccess] Unit
 #   98|             -2: [TypeAccess] String
 #   98|             -1: [TypeAccess] ReflectionKt
-#   98|             0: [StringLiteral] 
+#   98|             0: [StringLiteral] ""
 #   98|             1: [MemberRefExpr] ...::...
 #   98|               -4: [AnonymousClass] new Function1<String,Unit>(...) { ... }
 #   98|                 1: [Constructor] 
@@ -169,7 +169,7 @@ reflection.kt:
 #   99|               1: [TypeAccess] Integer
 #   99|             -2: [TypeAccess] String
 #   99|             -1: [TypeAccess] ReflectionKt
-#   99|             0: [StringLiteral] 
+#   99|             0: [StringLiteral] ""
 #   99|             1: [MemberRefExpr] ...::...
 #   99|               -4: [AnonymousClass] new Function1<String,Inner<String>>(...) { ... }
 #   99|                 1: [Constructor] 
@@ -534,7 +534,7 @@ reflection.kt:
 #  150|           0: [AddExpr] ... + ...
 #  150|             0: [VarAccess] x
 #  150|             1: [VarAccess] y
-#  150|     20: [Method] extTakesOptionalParam$default
+#  150|     20: [ExtensionMethod] extTakesOptionalParam$default
 #  150|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #  150|         0: [Parameter] p0
@@ -561,7 +561,7 @@ reflection.kt:
 #  150|         1: [ReturnStmt] return ...
 #  150|           0: [MethodAccess] extTakesOptionalParam(...)
 #  150|             -1: [TypeAccess] ReflectionKt
-#  150|             0: [VarAccess] p0
+#  150|             0: [ExtensionReceiverAccess] this
 #  150|             1: [VarAccess] p1
 #  150|             2: [VarAccess] p2
 #  152|     21: [Method] extensionAdaptedParams
@@ -1026,7 +1026,7 @@ reflection.kt:
 #   24|                           0: [ValueEQExpr] ... (value equals) ...
 #   24|                             0: [MethodAccess] getName(...)
 #   24|                               -1: [VarAccess] it
-#   24|                             1: [StringLiteral] p3
+#   24|                             1: [StringLiteral] "p3"
 #   24|                   -3: [TypeAccess] Function1<KCallable<?>,Boolean>
 #   24|                     0: [TypeAccess] KCallable<?>
 #   24|                     1: [TypeAccess] Boolean
@@ -1534,7 +1534,7 @@ reflection.kt:
 #   90|               1: [TypeAccess] T
 #   90|             -2: [TypeAccess] String
 #   90|             -1: [TypeAccess] ReflectionKt
-#   90|             0: [StringLiteral] 
+#   90|             0: [StringLiteral] ""
 #   90|             1: [MemberRefExpr] ...::...
 #   90|               -4: [AnonymousClass] new Function1<String,Inner<String>>(...) { ... }
 #   90|                 1: [Constructor] 

@@ -175,10 +175,8 @@ module UnsafeJQueryPlugin {
   /**
    * An argument that may act as an HTML fragment rather than a CSS selector, as a sink for remote unsafe jQuery plugins.
    */
-  class AmbiguousHtmlOrSelectorArgumentAsSink extends Sink {
-    AmbiguousHtmlOrSelectorArgumentAsSink() {
-      this instanceof AmbiguousHtmlOrSelectorArgument and not isLikelyIntentionalHtmlSink(this)
-    }
+  class AmbiguousHtmlOrSelectorArgumentAsSink extends Sink instanceof AmbiguousHtmlOrSelectorArgument {
+    AmbiguousHtmlOrSelectorArgumentAsSink() { not isLikelyIntentionalHtmlSink(this) }
   }
 
   /**

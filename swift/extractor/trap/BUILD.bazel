@@ -14,12 +14,16 @@ genrule(
         for ext in ("h", "cpp")
     ],
     cmd = " ".join([
-        "$(location //swift/codegen)",
+        "$(location //misc/codegen)",
         "--generate=dbscheme,trap,cpp",
-        "--dbscheme $(RULEDIR)/generated/swift.dbscheme",
-        "--cpp-output $(RULEDIR)/generated",
+        "--dbscheme=$(RULEDIR)/generated/swift.dbscheme",
+        "--cpp-output=$(RULEDIR)/generated",
+        "--trap-library=swift/extractor/trap",
+        "--use-current-dir",
+        "--schema=$(location //swift:schema)",
+        "--script-name=codegen/codegen.py",
     ]),
-    exec_tools = ["//swift/codegen"],
+    exec_tools = ["//misc/codegen", "//swift:schema"],
 )
 
 filegroup(
@@ -30,7 +34,7 @@ filegroup(
 
 swift_cc_library(
     name = "trap",
-    srcs = [
+    srcs = glob(["*.cpp"]) + [
         "generated/%s%s.cpp" % (dir, name)
         for dir in _dirs
         for name in ("TrapEntries", "TrapClasses")
@@ -43,4 +47,7 @@ swift_cc_library(
         for name in ("TrapEntries", "TrapClasses")
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//swift/extractor/infra/file",
+    ],
 )

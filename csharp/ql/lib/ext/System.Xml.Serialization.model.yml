@@ -1,0 +1,28 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Xml.Serialization", "XmlAnyElementAttributes", False, "Add", "(System.Xml.Serialization.XmlAnyElementAttribute)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlAnyElementAttributes", False, "CopyTo", "(System.Xml.Serialization.XmlAnyElementAttribute[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlAnyElementAttributes", False, "Insert", "(System.Int32,System.Xml.Serialization.XmlAnyElementAttribute)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlAnyElementAttributes", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlAnyElementAttributes", False, "set_Item", "(System.Int32,System.Xml.Serialization.XmlAnyElementAttribute)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlArrayItemAttributes", False, "Add", "(System.Xml.Serialization.XmlArrayItemAttribute)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlArrayItemAttributes", False, "CopyTo", "(System.Xml.Serialization.XmlArrayItemAttribute[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlArrayItemAttributes", False, "Insert", "(System.Int32,System.Xml.Serialization.XmlArrayItemAttribute)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlArrayItemAttributes", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlArrayItemAttributes", False, "set_Item", "(System.Int32,System.Xml.Serialization.XmlArrayItemAttribute)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlElementAttributes", False, "Add", "(System.Xml.Serialization.XmlElementAttribute)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlElementAttributes", False, "CopyTo", "(System.Xml.Serialization.XmlElementAttribute[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlElementAttributes", False, "Insert", "(System.Int32,System.Xml.Serialization.XmlElementAttribute)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlElementAttributes", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlElementAttributes", False, "set_Item", "(System.Int32,System.Xml.Serialization.XmlElementAttribute)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlSchemas", False, "Add", "(System.Xml.Schema.XmlSchema)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlSchemas", False, "Add", "(System.Xml.Serialization.XmlSchemas)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlSchemas", False, "CopyTo", "(System.Xml.Schema.XmlSchema[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlSchemas", False, "Find", "(System.Xml.XmlQualifiedName,System.Type)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlSchemas", False, "Insert", "(System.Int32,System.Xml.Schema.XmlSchema)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlSchemas", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlSchemas", False, "get_Item", "(System.String)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.Xml.Serialization", "XmlSchemas", False, "set_Item", "(System.Int32,System.Xml.Schema.XmlSchema)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]

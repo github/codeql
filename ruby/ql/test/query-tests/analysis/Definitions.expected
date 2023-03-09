@@ -12,3 +12,4 @@
 | Definitions.rb:41:7:41:9 | @@b | Definitions.rb:27:5:27:7 | @@b | class variable |
 | Definitions.rb:46:1:46:1 | C | Definitions.rb:19:1:44:3 | C | constant |
 | Definitions.rb:46:1:46:4 | D | Definitions.rb:26:3:43:5 | D | constant |
+| Definitions.rb:46:1:46:8 | call to new | Definitions.rb:29:5:33:7 | initialize | method |

@@ -2526,11 +2526,10 @@ module PrivateDjango {
    *
    * Needs this subclass to be considered a RegexString.
    */
-  private class DjangoRouteRegex extends RegexString {
+  private class DjangoRouteRegex extends RegexString instanceof StrConst {
     DjangoRegexRouteSetup rePathCall;
 
     DjangoRouteRegex() {
-      this instanceof StrConst and
       rePathCall.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this)
     }
 

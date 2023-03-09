@@ -1,0 +1,42 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.http", "HttpEntity", False, "getContent", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.apache.http", "HttpMessage", False, "getParams", "()", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.http", "HttpRequest", True, "setURI", "", "", "Argument[0]", "open-url", "manual"]
+      - ["org.apache.http", "HttpResponse", True, "setEntity", "(HttpEntity)", "", "Argument[0]", "xss", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.http", "Header", True, "getElements", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HeaderElement", True, "getName", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HeaderElement", True, "getParameter", "(int)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HeaderElement", True, "getParameterByName", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HeaderElement", True, "getParameters", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HeaderElement", True, "getValue", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HeaderIterator", True, "nextHeader", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HttpEntity", True, "getContent", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HttpEntity", True, "getContentEncoding", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HttpEntity", True, "getContentType", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HttpEntityEnclosingRequest", True, "getEntity", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HttpMessage", True, "getAllHeaders", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HttpMessage", True, "getFirstHeader", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HttpMessage", True, "getHeaders", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HttpMessage", True, "getLastHeader", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HttpMessage", True, "getParams", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HttpMessage", True, "headerIterator", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HttpMessage", True, "headerIterator", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HttpRequest", True, "getRequestLine", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "NameValuePair", True, "getName", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "NameValuePair", True, "getValue", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "RequestLine", True, "getMethod", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "RequestLine", True, "getUri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "RequestLine", True, "getUri", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "RequestLine", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

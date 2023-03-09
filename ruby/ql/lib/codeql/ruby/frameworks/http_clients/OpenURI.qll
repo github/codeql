@@ -62,11 +62,8 @@ class OpenUriRequest extends Http::Client::Request::Range, DataFlow::CallNode {
  * Kernel.open("http://example.com").read
  * ```
  */
-class OpenUriKernelOpenRequest extends Http::Client::Request::Range, DataFlow::CallNode {
-  OpenUriKernelOpenRequest() {
-    this instanceof KernelMethodCall and
-    this.getMethodName() = "open"
-  }
+class OpenUriKernelOpenRequest extends Http::Client::Request::Range, DataFlow::CallNode instanceof KernelMethodCall {
+  OpenUriKernelOpenRequest() { this.getMethodName() = "open" }
 
   override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
 

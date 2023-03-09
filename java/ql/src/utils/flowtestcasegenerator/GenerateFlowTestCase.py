@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import errno
 import json
@@ -13,10 +13,13 @@ import tempfile
 
 if any(s == "--help" for s in sys.argv):
     print("""Usage:
-GenerateFlowTestCase.py specsToTest.csv projectPom.xml outdir [--force]
+GenerateFlowTestCase.py specsToTest projectPom.xml outdir [--force]
 
-This generates test cases exercising function model specifications found in specsToTest.csv
-producing files Test.java, test.ql and test.expected in outdir.
+This generates test cases exercising function model specifications found in specsToTest
+producing files Test.java, test.ql, test.ext.yml and test.expected in outdir.
+
+specsToTest should either be a .csv file, a .yml file, or a directory of .yml files, containing the 
+model specifications to test.
 
 projectPom.xml should be a Maven pom sufficient to resolve the classes named in specsToTest.csv.
 Typically this means supplying a skeleton POM <dependencies> section that retrieves whatever jars
@@ -24,7 +27,9 @@ contain the needed classes.
 
 If --force is present, existing files may be overwritten.
 
-Requirements: `mvn` and `codeql` should both appear on your path.
+Requirements:
+ - `mvn` and `codeql` should both appear on your path.
+ - `--additional-packs /path/to/semmle-code/ql` should be added to your `.config/codeql/config` file.
 
 After test generation completes, any lines in specsToTest.csv that didn't produce tests are output.
 If this happens, check the spelling of class and method names, and the syntax of input and output specifications.
@@ -38,24 +43,26 @@ if "--force" in sys.argv:
 
 if len(sys.argv) != 4:
     print(
-        "Usage: GenerateFlowTestCase.py specsToTest.csv projectPom.xml outdir [--force]", file=sys.stderr)
-    print("specsToTest.csv should contain CSV rows describing method taint-propagation specifications to test", file=sys.stderr)
-    print("projectPom.xml should import dependencies sufficient to resolve the types used in specsToTest.csv", file=sys.stderr)
+        "Usage: GenerateFlowTestCase.py specsToTest projectPom.xml outdir [--force]", file=sys.stderr)
+    print("specsToTest should contain CSV rows or YAML models describing method taint-propagation specifications to test", file=sys.stderr)
+    print("projectPom.xml should import dependencies sufficient to resolve the types used in specsToTest", file=sys.stderr)
+    print("\nRun with --help for more details.", file=sys.stderr)
     sys.exit(1)
 
 try:
     os.makedirs(sys.argv[3])
-except Exception as e:
+except OSError as e:
     if e.errno != errno.EEXIST:
         print("Failed to create output directory %s: %s" % (sys.argv[3], e))
         sys.exit(1)
 
 resultJava = os.path.join(sys.argv[3], "Test.java")
 resultQl = os.path.join(sys.argv[3], "test.ql")
+resultYml = os.path.join(sys.argv[3], "test.ext.yml")
 
-if not force and (os.path.exists(resultJava) or os.path.exists(resultQl)):
-    print("Won't overwrite existing files '%s' or '%s'" %
-          (resultJava, resultQl), file=sys.stderr)
+if not force and (os.path.exists(resultJava) or os.path.exists(resultQl) or os.path.exists(resultYml)):
+    print("Won't overwrite existing files '%s', '%s' or '%s'." %
+          (resultJava, resultQl, resultYml), file=sys.stderr)
     sys.exit(1)
 
 workDir = tempfile.mkdtemp()
@@ -72,19 +79,68 @@ except Exception as e:
           (sys.argv[2], e), file=sys.stderr)
     sys.exit(1)
 
-commentRegex = re.compile("^\s*(//|#)")
+commentRegex = re.compile(r"^\s*(//|#)")
 
 
 def isComment(s):
     return commentRegex.match(s) is not None
 
 
-try:
-    with open(sys.argv[1], "r") as f:
-        specs = [l for l in f if not isComment(l)]
-except Exception as e:
-    print("Failed to open %s: %s\n" % (sys.argv[1], e))
+def readCsv(file):
+    try:
+        with open(file, "r") as f:
+            specs = [l.strip() for l in f if not isComment(l)]
+    except Exception as e:
+        print("Failed to open %s: %s\n" % (file, e))
+        sys.exit(1)
+
+    specs = [row.split(";") for row in specs]
+    return specs
+
+
+def readYml(file):
+    try:
+        import yaml
+        with open(file, "r") as f:
+            doc = yaml.load(f.read(), yaml.Loader)
+        specs = []
+        for ext in doc['extensions']:
+            if ext['addsTo']['extensible'] == 'summaryModel':
+                for row in ext['data']:
+                    if isinstance(row[2], bool):
+                        row[2] = str(row[2]).lower()
+                    specs.append(row)
+        return specs
+    except ImportError:
+        print("PyYAML not found - try \n    pip install pyyaml")
+        sys.exit(1)
+    except ValueError as e:
+        print("Invalid yaml model in %s: %s\n" % (file, e))
+        sys.exit(1)
+    except OSError as e:
+        print("Failed to open %s: %s\n" % (file, e))
+        sys.exit(1)
+
+
+def readYmlDir(dirname):
+    specs = []
+    for f in os.listdir(dirname):
+        if f.endswith('.yml'):
+            specs += readYml(f"{dirname}/{f}")
+    return specs
+
+
+specsFile = sys.argv[1]
+if os.path.isdir(specsFile):
+    specs = readYmlDir(specsFile)
+elif specsFile.endswith(".yml") or specsFile.endswith(".yaml"):
+    specs = readYml(specsFile)
+elif specsFile.endswith(".csv"):
+    specs = readCsv(specsFile)
+else:
+    print(f"Invalid specs {specsFile}. Must be a csv file, a yml file, or a directory of yml files.")
     sys.exit(1)
+
 
 projectTestPkgDir = os.path.join(projectDir, "src", "main", "java", "test")
 projectTestFile = os.path.join(projectTestPkgDir, "Test.java")
@@ -92,18 +148,17 @@ projectTestFile = os.path.join(projectTestPkgDir, "Test.java")
 os.makedirs(projectTestPkgDir)
 
 
-def qualifiedOuterNameFromCsvRow(row):
-    cells = row.split(";")
-    if len(cells) < 2:
+def qualifiedOuterNameFromRow(row):
+    if len(row) < 2:
         return None
-    return cells[0] + "." + cells[1].replace("$", ".")
+    return row[0] + "." + row[1].replace("$", ".")
 
 
 with open(projectTestFile, "w") as testJava:
     testJava.write("package test;\n\npublic class Test {\n\n")
 
     for i, spec in enumerate(specs):
-        outerName = qualifiedOuterNameFromCsvRow(spec)
+        outerName = qualifiedOuterNameFromRow(spec)
         if outerName is None:
             print("A taint specification has the wrong format: should be 'package;classname;methodname....'", file=sys.stderr)
             print("Mis-formatted row: " + spec, file=sys.stderr)
@@ -127,11 +182,17 @@ queryDir = os.path.join(workDir, "query")
 os.makedirs(queryDir)
 qlFile = os.path.join(queryDir, "gen.ql")
 with open(os.path.join(queryDir, "qlpack.yml"), "w") as f:
-    f.write("name: test-generation-query\nversion: 0.0.0\nlibraryPathDependencies: codeql/java-queries")
+    f.write("""name: test-generation-query
+version: 0.0.0
+dependencies:
+  codeql/java-all: '*'
+  codeql/java-queries: '*'
+""")
+
 with open(qlFile, "w") as f:
     f.write(
         "import java\nimport utils.flowtestcasegenerator.GenerateFlowTestCase\n\nclass GenRow extends TargetSummaryModelCsv {\n\n\toverride predicate row(string r) {\n\t\tr = [\n")
-    f.write(",\n".join('\t\t\t"%s"' % spec.strip() for spec in specs))
+    f.write(",\n".join('\t\t\t"%s"' % ';'.join(spec) for spec in specs))
     f.write("\n\t\t]\n\t}\n}\n")
 
 print("Generating tests")
@@ -163,9 +224,9 @@ def getTuples(queryName, jsonResult, fname):
 with open(generatedJson, "r") as f:
     generateOutput = json.load(f)
     expectedTables = ("getTestCase", "getASupportMethodModel",
-                      "missingSummaryModelCsv", "getAParseFailure", "noTestCaseGenerated")
+                      "missingSummaryModel", "getAParseFailure", "noTestCaseGenerated")
 
-    testCaseRows, supportModelRows, missingSummaryModelCsvRows, parseFailureRows, noTestCaseGeneratedRows = \
+    testCaseRows, supportModelRows, missingSummaryModelRows, parseFailureRows, noTestCaseGeneratedRows = \
         tuple([getTuples(k, generateOutput, generatedJson)
                for k in expectedTables])
 
@@ -182,9 +243,9 @@ with open(generatedJson, "r") as f:
         print("Expected exactly one column in noTestCaseGenerated relation (got: %s)" %
               json.dumps(noTestCaseGeneratedRows), file=sys.stderr)
 
-    if len(missingSummaryModelCsvRows) != 0:
-        print("Tests for some CSV rows were requested that were not in scope (SummaryModelCsv.row does not hold):\n" +
-              "\n".join(r[0] for r in missingSummaryModelCsvRows))
+    if len(missingSummaryModelRows) != 0:
+        print("Tests for some CSV rows were requested that were not in scope (a summary doesn't already exist):\n" +
+              "\n".join(r[0] for r in missingSummaryModelRows))
         sys.exit(1)
     if len(parseFailureRows) != 0:
         print("The following rows failed to generate any test case. Check package, class and method name spelling, and argument and result specifications:\n%s" %
@@ -207,11 +268,20 @@ def copyfile(fromName, toFileHandle):
 
 with open(resultQl, "w") as f:
     copyfile("testHeader.qlfrag", f)
-    if len(supportModelRows) != 0:
-        copyfile("testModelsHeader.qlfrag", f)
-        f.write(", ".join('"%s"' %
-                          modelSpecRow[0].strip() for modelSpecRow in supportModelRows))
-        copyfile("testModelsFooter.qlfrag", f)
+
+if len(supportModelRows) != 0:
+    # Make a test extension file
+    with open(resultYml, "w") as f:
+        models = "\n".join('      - [%s]' %
+                           modelSpecRow[0].strip() for modelSpecRow in supportModelRows)
+        dataextensions = f"""extensions:
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+{models}
+"""
+        f.write(dataextensions)
 
 # Make an empty .expected file, since this is an inline-exectations test
 with open(os.path.join(sys.argv[3], "test.expected"), "w"):

@@ -1,0 +1,34 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.util.concurrent", "BlockingDeque", True, "offerFirst", "(Object,long,TimeUnit)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+      - ["java.util.concurrent", "BlockingDeque", True, "offerLast", "(Object,long,TimeUnit)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+      - ["java.util.concurrent", "BlockingDeque", True, "pollFirst", "(long,TimeUnit)", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
+      - ["java.util.concurrent", "BlockingDeque", True, "pollLast", "(long,TimeUnit)", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
+      - ["java.util.concurrent", "BlockingDeque", True, "putFirst", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+      - ["java.util.concurrent", "BlockingDeque", True, "putLast", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+      - ["java.util.concurrent", "BlockingDeque", True, "takeFirst", "()", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
+      - ["java.util.concurrent", "BlockingDeque", True, "takeLast", "()", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
+      - ["java.util.concurrent", "BlockingQueue", True, "drainTo", "(Collection)", "", "Argument[-1].Element", "Argument[0].Element", "value", "manual"]
+      - ["java.util.concurrent", "BlockingQueue", True, "drainTo", "(Collection,int)", "", "Argument[-1].Element", "Argument[0].Element", "value", "manual"]
+      - ["java.util.concurrent", "BlockingQueue", True, "offer", "(Object,long,TimeUnit)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+      - ["java.util.concurrent", "BlockingQueue", True, "poll", "(long,TimeUnit)", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
+      - ["java.util.concurrent", "BlockingQueue", True, "put", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+      - ["java.util.concurrent", "BlockingQueue", True, "take", "()", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
+      - ["java.util.concurrent", "ConcurrentHashMap", True, "elements", "()", "", "Argument[-1].MapValue", "ReturnValue.Element", "value", "manual"]
+      - ["java.util.concurrent", "TransferQueue", True, "transfer", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+      - ["java.util.concurrent", "TransferQueue", True, "tryTransfer", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+      - ["java.util.concurrent", "TransferQueue", True, "tryTransfer", "(Object,long,TimeUnit)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.util.concurrent", "CountDownLatch", "countDown", "()", "manual"]
+
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.util.concurrent", "CountDownLatch", "CountDownLatch", "(int)", "manual"] # value-numeric
+      - ["java.util.concurrent", "CountDownLatch", "getCount", "()", "manual"]          # value-numeric

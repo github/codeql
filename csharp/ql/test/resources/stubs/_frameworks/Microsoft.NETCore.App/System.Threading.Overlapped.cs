@@ -1,13 +1,12 @@
 // This file contains auto-generated code.
+// Generated from `System.Threading.Overlapped, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace Threading
     {
-        // Generated from `System.Threading.IOCompletionCallback` in `System.Threading.Overlapped, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         unsafe public delegate void IOCompletionCallback(System.UInt32 errorCode, System.UInt32 numBytes, System.Threading.NativeOverlapped* pOVERLAP);
 
-        // Generated from `System.Threading.NativeOverlapped` in `System.Threading.Overlapped, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct NativeOverlapped
         {
             public System.IntPtr EventHandle;
@@ -18,7 +17,6 @@ namespace System
             public int OffsetLow;
         }
 
-        // Generated from `System.Threading.Overlapped` in `System.Threading.Overlapped, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Overlapped
         {
             public System.IAsyncResult AsyncResult { get => throw null; set => throw null; }
@@ -37,7 +35,6 @@ namespace System
             unsafe public System.Threading.NativeOverlapped* UnsafePack(System.Threading.IOCompletionCallback iocb, object userData) => throw null;
         }
 
-        // Generated from `System.Threading.PreAllocatedOverlapped` in `System.Threading.Overlapped, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class PreAllocatedOverlapped : System.IDisposable
         {
             public void Dispose() => throw null;
@@ -46,7 +43,6 @@ namespace System
             // ERR: Stub generator didn't handle member: ~PreAllocatedOverlapped
         }
 
-        // Generated from `System.Threading.ThreadPoolBoundHandle` in `System.Threading.Overlapped, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ThreadPoolBoundHandle : System.IDisposable
         {
             unsafe public System.Threading.NativeOverlapped* AllocateNativeOverlapped(System.Threading.IOCompletionCallback callback, object state, object pinData) => throw null;

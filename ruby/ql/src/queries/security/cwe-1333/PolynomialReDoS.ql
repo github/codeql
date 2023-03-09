@@ -16,11 +16,10 @@
 import DataFlow::PathGraph
 import codeql.ruby.DataFlow
 import codeql.ruby.security.regexp.PolynomialReDoSQuery
-import codeql.ruby.security.regexp.SuperlinearBackTracking
 
 from
   PolynomialReDoS::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  PolynomialReDoS::Sink sinkNode, PolynomialBackTrackingTerm regexp
+  PolynomialReDoS::Sink sinkNode, PolynomialReDoS::PolynomialBackTrackingTerm regexp
 where
   config.hasFlowPath(source, sink) and
   sinkNode = sink.getNode() and
@@ -28,4 +27,4 @@ where
 select sinkNode.getHighlight(), source, sink,
   "This $@ that depends on a $@ may run slow on strings " + regexp.getPrefixMessage() +
     "with many repetitions of '" + regexp.getPumpString() + "'.", regexp, "regular expression",
-  source.getNode(), "user-provided value"
+  source.getNode(), source.getNode().(PolynomialReDoS::Source).describe()

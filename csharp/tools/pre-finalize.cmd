@@ -7,6 +7,7 @@ type NUL && "%CODEQL_DIST%\codeql" database index-files ^
     --include-extension=.xml ^
     --size-limit 10m ^
     --language xml ^
+    --working-dir=. ^
     -- ^
     "%CODEQL_EXTRACTOR_CSHARP_WIP_DATABASE%" ^
     >nul 2>&1

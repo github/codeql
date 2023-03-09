@@ -33,13 +33,11 @@ class IntLiteralSource extends IterationsSource instanceof IntegerLiteralExpr {
 class InsufficientHashIterationsSink extends Expr {
   InsufficientHashIterationsSink() {
     // `iterations` arg in `init` is a sink
-    exists(ClassOrStructDecl c, AbstractFunctionDecl f, CallExpr call, int arg |
+    exists(ClassOrStructDecl c, ConstructorDecl f, CallExpr call |
       c.getFullName() = ["PBKDF1", "PBKDF2"] and
       c.getAMember() = f and
-      f.getName().matches("init(%iterations:%") and
       call.getStaticTarget() = f and
-      f.getParam(pragma[only_bind_into](arg)).getName() = "iterations" and
-      call.getArgument(pragma[only_bind_into](arg)).getExpr() = this
+      call.getArgumentWithLabel("iterations").getExpr() = this
     )
   }
 }

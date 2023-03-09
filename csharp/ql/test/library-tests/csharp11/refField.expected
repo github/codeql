@@ -1,0 +1,11 @@
+reffields
+| Struct.cs:8:21:8:26 | MyByte |
+| Struct.cs:9:23:9:30 | MyObject |
+| Struct.cs:10:31:10:42 | MyEmptyClass |
+| Struct.cs:12:32:12:47 | MyReadonlyObject |
+readonlyreffields
+| Struct.cs:11:30:11:43 | MyReadonlyByte |
+| Struct.cs:13:41:13:56 | MyReadonlyString |
+readonlyfield
+| Struct.cs:12:32:12:47 | MyReadonlyObject |
+| Struct.cs:13:41:13:56 | MyReadonlyString |

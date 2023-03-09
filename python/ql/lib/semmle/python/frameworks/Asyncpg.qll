@@ -13,35 +13,36 @@ private import semmle.python.frameworks.data.ModelsAsData
 private module Asyncpg {
   class AsyncpgModel extends ModelInput::TypeModelCsv {
     override predicate row(string row) {
-      // package1;type1;package2;type2;path
+      // type1;type2;path
       row =
         [
           // a `ConnectionPool` that is created when the result of `asyncpg.create_pool()` is awaited.
-          "asyncpg;ConnectionPool;asyncpg;;Member[create_pool].ReturnValue.Awaited",
+          "asyncpg.ConnectionPool;asyncpg;Member[create_pool].ReturnValue.Awaited",
           // a `Connection` that is created when
           // * - the result of `asyncpg.connect()` is awaited.
           // * - the result of calling `acquire` on a `ConnectionPool` is awaited.
-          "asyncpg;Connection;asyncpg;;Member[connect].ReturnValue.Awaited",
-          "asyncpg;Connection;asyncpg;ConnectionPool;Member[acquire].ReturnValue.Awaited",
+          "asyncpg.Connection;asyncpg;Member[connect].ReturnValue.Awaited",
+          "asyncpg.Connection;asyncpg.ConnectionPool;Member[acquire].ReturnValue.Awaited",
           // Creating an internal `~Connection` type that contains both `Connection` and `ConnectionPool`.
-          "asyncpg;~Connection;asyncpg;Connection;", "asyncpg;~Connection;asyncpg;ConnectionPool;"
+          "asyncpg.~Connection;asyncpg.Connection;", //
+          "asyncpg.~Connection;asyncpg.ConnectionPool;"
         ]
     }
   }
 
   class AsyncpgSink extends ModelInput::SinkModelCsv {
-    // package;type;path;kind
+    // type;path;kind
     override predicate row(string row) {
       row =
         [
           // `Connection`s and `ConnectionPool`s provide some methods that execute SQL.
-          "asyncpg;~Connection;Member[copy_from_query,execute,fetch,fetchrow,fetchval].Argument[0,query:];sql-injection",
-          "asyncpg;~Connection;Member[executemany].Argument[0,command:];sql-injection",
+          "asyncpg.~Connection;Member[copy_from_query,execute,fetch,fetchrow,fetchval].Argument[0,query:];sql-injection",
+          "asyncpg.~Connection;Member[executemany].Argument[0,command:];sql-injection",
           // A model of `Connection` and `ConnectionPool`, which provide some methods that access the file system.
-          "asyncpg;~Connection;Member[copy_from_query,copy_from_table].Argument[output:];path-injection",
-          "asyncpg;~Connection;Member[copy_to_table].Argument[source:];path-injection",
+          "asyncpg.~Connection;Member[copy_from_query,copy_from_table].Argument[output:];path-injection",
+          "asyncpg.~Connection;Member[copy_to_table].Argument[source:];path-injection",
           // the `PreparedStatement` class in `asyncpg`.
-          "asyncpg;Connection;Member[prepare].Argument[0,query:];sql-injection",
+          "asyncpg.Connection;Member[prepare].Argument[0,query:];sql-injection",
         ]
     }
   }
@@ -58,7 +59,7 @@ private module Asyncpg {
   module Cursor {
     class CursorConstruction extends SqlConstruction::Range, API::CallNode {
       CursorConstruction() {
-        this = ModelOutput::getATypeNode("asyncpg", "Connection").getMember("cursor").getACall()
+        this = ModelOutput::getATypeNode("asyncpg.Connection").getMember("cursor").getACall()
       }
 
       override DataFlow::Node getSql() { result = this.getParameter(0, "query").asSink() }
@@ -76,7 +77,7 @@ private module Asyncpg {
         or
         exists(API::CallNode prepareCall |
           prepareCall =
-            ModelOutput::getATypeNode("asyncpg", "Connection").getMember("prepare").getACall()
+            ModelOutput::getATypeNode("asyncpg.Connection").getMember("prepare").getACall()
         |
           sql = prepareCall.getParameter(0, "query").asSink() and
           this =

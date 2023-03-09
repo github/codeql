@@ -6,11 +6,6 @@ import java
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowUtil
 
-// import all instances of SummarizedCallable below
-private module Summaries {
-  private import semmle.code.java.dataflow.ExternalFlow
-}
-
 class SummaryComponent = Impl::Public::SummaryComponent;
 
 /** Provides predicates for constructing summary components. */
@@ -25,6 +20,9 @@ module SummaryComponent {
 
   /** Gets a summary component for `Element`. */
   SummaryComponent element() { result = content(any(CollectionContent c)) }
+
+  /** Gets a summary component for `ArrayElement`. */
+  SummaryComponent arrayElement() { result = content(any(ArrayContent c)) }
 
   /** Gets a summary component for `MapValue`. */
   SummaryComponent mapValue() { result = content(any(MapValueContent c)) }
@@ -50,6 +48,11 @@ module SummaryComponentStack {
   /** Gets a stack representing `Element` of `object`. */
   SummaryComponentStack elementOf(SummaryComponentStack object) {
     result = push(SummaryComponent::element(), object)
+  }
+
+  /** Gets a stack representing `ArrayElement` of `object`. */
+  SummaryComponentStack arrayElementOf(SummaryComponentStack object) {
+    result = push(SummaryComponent::arrayElement(), object)
   }
 
   /** Gets a stack representing `MapValue` of `object`. */
@@ -92,6 +95,14 @@ abstract class SyntheticCallable extends string {
    * defaults to `Object`.
    */
   Type getReturnType() { none() }
+}
+
+/**
+ * A module for importing frameworks that define synthetic callables.
+ */
+private module SyntheticCallables {
+  private import semmle.code.java.frameworks.android.Intent
+  private import semmle.code.java.frameworks.Stream
 }
 
 private newtype TSummarizedCallableBase =

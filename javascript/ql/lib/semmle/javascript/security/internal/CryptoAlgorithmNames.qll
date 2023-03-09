@@ -14,8 +14,20 @@
 predicate isStrongHashingAlgorithm(string name) {
   name =
     [
+      // see https://cryptography.io/en/latest/hazmat/primitives/cryptographic-hashes/#blake2
+      // and https://www.blake2.net/
+      "BLAKE2", "BLAKE2B", "BLAKE2S",
+      // see https://github.com/BLAKE3-team/BLAKE3
+      "BLAKE3",
+      //
       "DSA", "ED25519", "ES256", "ECDSA256", "ES384", "ECDSA384", "ES512", "ECDSA512", "SHA2",
-      "SHA224", "SHA256", "SHA384", "SHA512", "SHA3", "SHA3224", "SHA3256", "SHA3384", "SHA3512"
+      "SHA224", "SHA256", "SHA384", "SHA512", "SHA3", "SHA3224", "SHA3256", "SHA3384", "SHA3512",
+      // see https://cryptography.io/en/latest/hazmat/primitives/cryptographic-hashes/#cryptography.hazmat.primitives.hashes.SHAKE128
+      "SHAKE128", "SHAKE256",
+      // see https://cryptography.io/en/latest/hazmat/primitives/cryptographic-hashes/#sm3
+      "SM3",
+      // see https://security.stackexchange.com/a/216297
+      "WHIRLPOOL",
     ]
 }
 

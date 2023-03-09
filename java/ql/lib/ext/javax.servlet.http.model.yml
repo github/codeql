@@ -1,0 +1,34 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["javax.servlet.http", "Cookie", False, "getComment", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "Cookie", False, "getName", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "Cookie", False, "getValue", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "HttpServletRequest", False, "getHeader", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "HttpServletRequest", False, "getHeaderNames", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "HttpServletRequest", False, "getHeaders", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "HttpServletRequest", False, "getParameter", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "HttpServletRequest", False, "getParameterMap", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "HttpServletRequest", False, "getParameterNames", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "HttpServletRequest", False, "getParameterValues", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "HttpServletRequest", False, "getPathInfo", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "HttpServletRequest", False, "getQueryString", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "HttpServletRequest", False, "getRemoteUser", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "HttpServletRequest", False, "getRequestURI", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "HttpServletRequest", False, "getRequestURL", "()", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.servlet.http", "HttpServletResponse", False, "addCookie", "", "", "Argument[0]", "header-splitting", "manual"]
+      - ["javax.servlet.http", "HttpServletResponse", False, "addHeader", "", "", "Argument[0..1]", "header-splitting", "manual"]
+      - ["javax.servlet.http", "HttpServletResponse", False, "sendError", "(int,String)", "", "Argument[1]", "information-leak", "manual"]
+      - ["javax.servlet.http", "HttpServletResponse", False, "setHeader", "", "", "Argument[0..1]", "header-splitting", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.servlet.http", "Cookie", False, "Cookie", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["javax.servlet.http", "Cookie", False, "Cookie", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]

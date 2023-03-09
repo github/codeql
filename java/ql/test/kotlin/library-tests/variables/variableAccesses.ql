@@ -1,6 +1,6 @@
 import java
 
-query predicate varAcc(VarAccess va) { any() }
+query predicate varAcc(VarAccess va) { va.getFile().isSourceFile() }
 
 query predicate extensionReceiverAcc(ExtensionReceiverAccess va) { any() }
 

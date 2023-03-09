@@ -1,7 +1,0 @@
-cc_library(
-    name = "fishhook",
-    srcs = glob(["*.c"]),
-    hdrs = glob(["*.h"]),
-    strip_include_prefix = ".",
-    visibility = ["//visibility:public"],
-)

@@ -117,9 +117,7 @@ module OpenUrlRedirect {
 }
 
 /** A sink for an open redirect, considered as a sink for safe URL flow. */
-private class SafeUrlSink extends SafeUrlFlow::Sink {
-  SafeUrlSink() { this instanceof OpenUrlRedirect::Sink }
-}
+private class SafeUrlSink extends SafeUrlFlow::Sink instanceof OpenUrlRedirect::Sink { }
 
 /**
  * A read of a field considered unsafe to redirect to, considered as a sanitizer for a safe
@@ -128,7 +126,7 @@ private class SafeUrlSink extends SafeUrlFlow::Sink {
 private class UnsafeFieldReadSanitizer extends SafeUrlFlow::SanitizerEdge {
   UnsafeFieldReadSanitizer() {
     exists(DataFlow::FieldReadNode frn, string name |
-      name = ["User", "RawQuery", "Fragment", "User"] and
+      name = ["User", "RawQuery", "Fragment"] and
       frn.getField().hasQualifiedName("net/url", "URL")
     |
       this = frn.getBase()

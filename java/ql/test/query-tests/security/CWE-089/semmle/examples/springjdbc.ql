@@ -30,9 +30,7 @@ class HasFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "sqlInjection" and
-    exists(DataFlow::Node src, DataFlow::Node sink, QueryInjectionFlowConfig conf |
-      conf.hasFlow(src, sink)
-    |
+    exists(DataFlow::Node sink, QueryInjectionFlowConfig conf | conf.hasFlowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

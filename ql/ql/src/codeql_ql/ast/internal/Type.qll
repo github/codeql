@@ -322,6 +322,9 @@ predicate resolveTypeExpr2(TypeExpr te, Type t) {
       or
       // e.g. alias for primitives.
       not exists(t.getDeclaration())
+      or
+      // mocks are fine.
+      exists(AstNode decl | decl = t.getDeclaration() | exists(AstNodes::toMock(decl)))
     )
   )
 }
@@ -387,7 +390,7 @@ private predicate defines(FileOrModule m, string name, Type t, boolean public) {
   exists(Module mod, SignatureExpr param, int i |
     m.asModule() = mod and
     mod.hasParameter(i, name, param) and
-    public = true
+    public = false
   |
     // resolve to the signature class
     t = param.asType().getResolvedType()

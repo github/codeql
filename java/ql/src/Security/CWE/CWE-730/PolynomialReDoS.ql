@@ -17,7 +17,9 @@ import java
 import semmle.code.java.security.regexp.PolynomialReDoSQuery
 import DataFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, PolynomialBackTrackingTerm regexp
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink,
+  SuperlinearBackTracking::PolynomialBackTrackingTerm regexp
 where hasPolynomialReDoSResult(source, sink, regexp)
 select sink, source, sink,
   "This $@ that depends on a $@ may run slow on strings " + regexp.getPrefixMessage() +

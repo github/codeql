@@ -9,9 +9,7 @@ class HasJndiInjectionTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasJndiInjection" and
-    exists(DataFlow::Node src, DataFlow::Node sink, JndiInjectionFlowConfig conf |
-      conf.hasFlow(src, sink)
-    |
+    exists(DataFlow::Node sink, JndiInjectionFlowConfig conf | conf.hasFlowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

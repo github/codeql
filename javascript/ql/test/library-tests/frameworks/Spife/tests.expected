@@ -1,0 +1,89 @@
+passingPositiveTests
+| PASSED | candidateHandler | lib/views/index.js:82:32:82:56 | // test ... Handler |
+| PASSED | cleartextStorageSink | lib/views/index.js:57:115:57:193 | // test ... inition |
+| PASSED | cookieDefinition | lib/views/index.js:57:115:57:193 | // test ... inition |
+| PASSED | corsMiconfigurationSink | lib/views/index.js:45:41:45:90 | // test ... inition |
+| PASSED | handler | lib/views/index.js:23:40:23:55 | // test: handler |
+| PASSED | handler | lib/views/index.js:28:35:28:50 | // test: handler |
+| PASSED | handler | lib/views/index.js:41:31:41:46 | // test: handler |
+| PASSED | handler | lib/views/index.js:53:35:53:50 | // test: handler |
+| PASSED | handler | lib/views/index.js:56:31:56:46 | // test: handler |
+| PASSED | handler | lib/views/index.js:60:32:60:47 | // test: handler |
+| PASSED | handler | lib/views/index.js:72:32:72:47 | // test: handler |
+| PASSED | handler | lib/views/index.js:86:32:86:47 | // test: handler |
+| PASSED | handler | lib/views/index.js:93:32:93:47 | // test: handler |
+| PASSED | handler | lib/views/index.js:100:32:100:47 | // test: handler |
+| PASSED | headerDefinition | lib/views/index.js:44:34:44:58 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:45:41:45:90 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:46:102:46:126 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:47:72:47:96 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:48:48:48:71 | //test: ... inition |
+| PASSED | headerDefinition | lib/views/index.js:65:89:65:159 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:67:94:67:184 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:77:94:77:166 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:90:57:90:121 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:105:59:105:123 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:107:88:107:150 | // test ... inition |
+| PASSED | redirectSink | lib/views/index.js:54:54:54:82 | // test ...  source |
+| PASSED | responseBody | lib/views/index.js:38:61:38:136 | // test ... nseBody |
+| PASSED | routeSetup | lib/routes/index.js:20:79:20:96 | // test:routeSetup |
+| PASSED | routeSetup | lib/routes/index.js:22:87:22:105 | // test: routeSetup |
+| PASSED | routeSetup | lib/routes/index.js:24:81:24:99 | // test: routeSetup |
+| PASSED | routeSetup | lib/routes/index.js:26:107:26:125 | // test: routeSetup |
+| PASSED | routeSetup | lib/routes/index.js:28:92:28:110 | // test: routeSetup |
+| PASSED | source | lib/views/index.js:24:56:24:70 | // test: source |
+| PASSED | source | lib/views/index.js:29:28:29:42 | // test: source |
+| PASSED | source | lib/views/index.js:30:28:30:42 | // test: source |
+| PASSED | source | lib/views/index.js:31:26:31:40 | // test: source |
+| PASSED | source | lib/views/index.js:32:27:32:41 | // test: source |
+| PASSED | source | lib/views/index.js:33:25:33:39 | // test: source |
+| PASSED | source | lib/views/index.js:34:17:34:31 | // test: source |
+| PASSED | source | lib/views/index.js:35:32:35:46 | // test: source |
+| PASSED | source | lib/views/index.js:36:32:36:46 | // test: source |
+| PASSED | source | lib/views/index.js:38:61:38:136 | // test ... nseBody |
+| PASSED | source | lib/views/index.js:42:24:42:38 | // test: source |
+| PASSED | source | lib/views/index.js:43:39:43:91 | // test ... nk, xss |
+| PASSED | source | lib/views/index.js:54:54:54:82 | // test ...  source |
+| PASSED | source | lib/views/index.js:57:115:57:193 | // test ... inition |
+| PASSED | source | lib/views/index.js:63:41:63:79 | // test ... ureSink |
+| PASSED | source | lib/views/index.js:65:89:65:159 | // test ... inition |
+| PASSED | source | lib/views/index.js:67:94:67:184 | // test ... inition |
+| PASSED | source | lib/views/index.js:75:41:75:79 | // test ... ureSink |
+| PASSED | source | lib/views/index.js:77:94:77:166 | // test ... inition |
+| PASSED | source | lib/views/index.js:87:25:87:39 | // test: source |
+| PASSED | source | lib/views/index.js:94:25:94:39 | // test: source |
+| PASSED | source | lib/views/index.js:101:25:101:39 | // test: source |
+| PASSED | source | lib/views/index.js:112:34:112:72 | // test ... ureSink |
+| PASSED | stackTraceExposureSink | lib/views/index.js:38:61:38:136 | // test ... nseBody |
+| PASSED | stackTraceExposureSink | lib/views/index.js:43:39:43:91 | // test ... nk, xss |
+| PASSED | stackTraceExposureSink | lib/views/index.js:57:115:57:193 | // test ... inition |
+| PASSED | stackTraceExposureSink | lib/views/index.js:63:41:63:79 | // test ... ureSink |
+| PASSED | stackTraceExposureSink | lib/views/index.js:65:89:65:159 | // test ... inition |
+| PASSED | stackTraceExposureSink | lib/views/index.js:67:94:67:184 | // test ... inition |
+| PASSED | stackTraceExposureSink | lib/views/index.js:75:41:75:79 | // test ... ureSink |
+| PASSED | stackTraceExposureSink | lib/views/index.js:77:94:77:166 | // test ... inition |
+| PASSED | stackTraceExposureSink | lib/views/index.js:90:57:90:121 | // test ... inition |
+| PASSED | stackTraceExposureSink | lib/views/index.js:97:30:97:76 | // test ... k, !xss |
+| PASSED | stackTraceExposureSink | lib/views/index.js:105:59:105:123 | // test ... inition |
+| PASSED | stackTraceExposureSink | lib/views/index.js:107:88:107:150 | // test ... inition |
+| PASSED | stackTraceExposureSink | lib/views/index.js:112:34:112:72 | // test ... ureSink |
+| PASSED | templateInstantiation | lib/views/index.js:38:61:38:136 | // test ... nseBody |
+| PASSED | xss | lib/views/index.js:43:39:43:91 | // test ... nk, xss |
+| PASSED | xss | lib/views/index.js:65:89:65:159 | // test ... inition |
+| PASSED | xss | lib/views/index.js:107:88:107:150 | // test ... inition |
+| PASSED | xssSink | lib/views/index.js:43:39:43:91 | // test ... nk, xss |
+| PASSED | xssSink | lib/views/index.js:65:89:65:159 | // test ... inition |
+| PASSED | xssSink | lib/views/index.js:107:88:107:150 | // test ... inition |
+failingPositiveTests
+passingNegativeTests
+| PASSED | !xss | lib/views/index.js:67:94:67:184 | // test ... inition |
+| PASSED | !xss | lib/views/index.js:77:94:77:166 | // test ... inition |
+| PASSED | !xss | lib/views/index.js:90:57:90:121 | // test ... inition |
+| PASSED | !xss | lib/views/index.js:97:30:97:76 | // test ... k, !xss |
+| PASSED | !xss | lib/views/index.js:105:59:105:123 | // test ... inition |
+| PASSED | !xssSink | lib/views/index.js:67:94:67:184 | // test ... inition |
+| PASSED | !xssSink | lib/views/index.js:77:94:77:166 | // test ... inition |
+| PASSED | !xssSink | lib/views/index.js:90:57:90:121 | // test ... inition |
+| PASSED | !xssSink | lib/views/index.js:97:30:97:76 | // test ... k, !xss |
+| PASSED | !xssSink | lib/views/index.js:105:59:105:123 | // test ... inition |
+failingNegativeTests

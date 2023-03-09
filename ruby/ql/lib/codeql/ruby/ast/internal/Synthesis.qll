@@ -16,12 +16,16 @@ newtype SynthKind =
   BitwiseAndExprKind() or
   BitwiseOrExprKind() or
   BitwiseXorExprKind() or
+  BooleanLiteralKind(boolean value) { value = true or value = false } or
   BraceBlockKind() or
+  CaseMatchKind() or
   ClassVariableAccessKind(ClassVariable v) or
   DivExprKind() or
+  ElseKind() or
   ExponentExprKind() or
   GlobalVariableAccessKind(GlobalVariable v) or
   IfKind() or
+  InClauseKind() or
   InstanceVariableAccessKind(InstanceVariable v) or
   IntegerLiteralKind(int i) { i in [-1000 .. 1000] } or
   LShiftExprKind() or
@@ -1317,46 +1321,62 @@ private module ImplicitHashValueSynthesis {
 
 /**
  * ```rb
- * def foo(&)
- *   bar(&)
+ * def foo(*, **, &)
+ *   bar(*, **, &)
  * end
  * ```
  * desugars to,
  * ```rb
- * def foo(&__synth_0)
- *   bar(&__synth_0)
+ * def foo(*__synth_0, **__synth_1, &__synth_2)
+ *   bar(*__synth_0, **__synth_1, &__synth_2)
  * end
  * ```
  */
-private module AnonymousBlockParameterSynth {
-  private BlockParameter anonymousBlockParameter() {
+private module AnonymousParameterSynth {
+  private class AnonymousParameter = TBlockParameter or THashSplatParameter or TSplatParameter;
+
+  private class AnonymousArgument = TBlockArgument or THashSplatExpr or TSplatExpr;
+
+  private AnonymousParameter anonymousParameter() {
     exists(Ruby::BlockParameter p | not exists(p.getName()) and toGenerated(result) = p)
+    or
+    exists(Ruby::SplatParameter p | not exists(p.getName()) and toGenerated(result) = p)
+    or
+    exists(Ruby::HashSplatParameter p | not exists(p.getName()) and toGenerated(result) = p)
   }
 
-  private BlockArgument anonymousBlockArgument() {
+  private AnonymousArgument anonymousArgument() {
     exists(Ruby::BlockArgument p | not exists(p.getChild()) and toGenerated(result) = p)
+    or
+    exists(Ruby::SplatArgument p | not exists(p.getChild()) and toGenerated(result) = p)
+    or
+    exists(Ruby::HashSplatArgument p | not exists(p.getChild()) and toGenerated(result) = p)
   }
 
-  private class AnonymousBlockParameterSynthesis extends Synthesis {
+  private class AnonymousParameterSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       i = 0 and
-      parent = anonymousBlockParameter() and
+      parent = anonymousParameter() and
       child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(parent, 0)))
     }
 
-    final override predicate localVariable(AstNode n, int i) {
-      n = anonymousBlockParameter() and i = 0
-    }
+    final override predicate localVariable(AstNode n, int i) { n = anonymousParameter() and i = 0 }
   }
 
-  private class AnonymousBlockArgumentSynthesis extends Synthesis {
+  private class AnonymousArgumentSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       i = 0 and
-      parent = anonymousBlockArgument() and
-      exists(BlockParameter param |
-        param = anonymousBlockParameter() and
+      parent = anonymousArgument() and
+      exists(AnonymousParameter param |
+        param = anonymousParameter() and
         scopeOf(toGenerated(parent)).getEnclosingMethod() = scopeOf(toGenerated(param)) and
         child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+      |
+        param instanceof TBlockParameter and parent instanceof TBlockArgument
+        or
+        param instanceof TSplatParameter and parent instanceof TSplatExpr
+        or
+        param instanceof THashSplatParameter and parent instanceof THashSplatExpr
       )
     }
   }
@@ -1478,6 +1498,105 @@ private module SafeNavigationCallDesugar {
         n = seq.getStmt(1).(IfExpr).getElse().(MethodCall).getReceiver() and
         hasLocation(call.getReceiverImpl(), l)
       )
+    }
+  }
+}
+
+private module TestPatternDesugar {
+  /**
+   * ```rb
+   * expr in pattern
+   * ```
+   * desugars to
+   *
+   * ```rb
+   * case expr
+   *   in pattern then true
+   *   else false
+   * end
+   * ```
+   */
+  pragma[nomagic]
+  private predicate testPatternSynthesis(AstNode parent, int i, Child child) {
+    exists(TestPattern test |
+      parent = test and
+      i = -1 and
+      child = SynthChild(CaseMatchKind())
+      or
+      exists(TCaseMatchSynth case | case = TCaseMatchSynth(test, -1) |
+        parent = case and
+        (
+          child = childRef(test.getValue()) and i = 0
+          or
+          child = SynthChild(InClauseKind()) and i = 1
+          or
+          child = SynthChild(ElseKind()) and i = 2
+        )
+        or
+        parent = TInClauseSynth(case, 1) and
+        (
+          child = childRef(test.getPattern()) and
+          i = 0
+          or
+          child = SynthChild(BooleanLiteralKind(true)) and i = 1
+        )
+        or
+        parent = TElseSynth(case, 2) and
+        child = SynthChild(BooleanLiteralKind(false)) and
+        i = 0
+      )
+    )
+  }
+
+  private class TestPatternSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      testPatternSynthesis(parent, i, child)
+    }
+  }
+}
+
+private module MatchPatternDesugar {
+  /**
+   * ```rb
+   * expr => pattern
+   * ```
+   * desugars to
+   *
+   * ```rb
+   * case expr
+   *   in pattern then nil
+   * end
+   * ```
+   */
+  pragma[nomagic]
+  private predicate matchPatternSynthesis(AstNode parent, int i, Child child) {
+    exists(MatchPattern test |
+      parent = test and
+      i = -1 and
+      child = SynthChild(CaseMatchKind())
+      or
+      exists(TCaseMatchSynth case | case = TCaseMatchSynth(test, -1) |
+        parent = case and
+        (
+          child = childRef(test.getValue()) and i = 0
+          or
+          child = SynthChild(InClauseKind()) and i = 1
+        )
+        or
+        parent = TInClauseSynth(case, 1) and
+        (
+          child = childRef(test.getPattern()) and
+          i = 0
+          or
+          child = SynthChild(NilLiteralKind()) and i = 1
+        )
+      )
+    )
+  }
+
+  private class MatchPatternSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      matchPatternSynthesis(parent, i, child)
     }
   }
 }

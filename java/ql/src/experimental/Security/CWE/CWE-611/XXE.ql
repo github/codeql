@@ -8,6 +8,7 @@
  * @precision high
  * @id java/xxe-with-experimental-sinks
  * @tags security
+ *       experimental
  *       external/cwe/cwe-611
  */
 

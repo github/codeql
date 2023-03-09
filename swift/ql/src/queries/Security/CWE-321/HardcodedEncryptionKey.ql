@@ -12,6 +12,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
@@ -46,14 +47,22 @@ class EncryptionKeySink extends Expr {
       fName.matches("init(key:%") and
       call.getArgument(0).getExpr() = this
     )
+    or
+    // RNCryptor
+    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
+      c.getFullName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+      c.getAMember() = f and
+      call.getStaticTarget() = f and
+      call.getArgumentWithLabel(["encryptionKey", "withEncryptionKey"]).getExpr() = this
+    )
   }
 }
 
 /**
- * A dataflow configuration from the key source to expressions that use
+ * A taint configuration from the key source to expressions that use
  * it to initialize a cipher.
  */
-class HardcodedKeyConfig extends DataFlow::Configuration {
+class HardcodedKeyConfig extends TaintTracking::Configuration {
   HardcodedKeyConfig() { this = "HardcodedKeyConfig" }
 
   override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof KeySource }

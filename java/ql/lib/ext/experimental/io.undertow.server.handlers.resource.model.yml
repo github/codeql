@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: experimentalSummaryModel
+    data:
+      - ["io.undertow.server.handlers.resource", "Resource", True, "getFile", "", "", "Argument[-1]", "ReturnValue", "taint", "manual", "unsafe-url-forward"]
+      - ["io.undertow.server.handlers.resource", "Resource", True, "getFilePath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual", "unsafe-url-forward"]
+      - ["io.undertow.server.handlers.resource", "Resource", True, "getPath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual", "unsafe-url-forward"]

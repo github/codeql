@@ -247,6 +247,8 @@ private module Cached {
     or
     i = any(Ruby::KeywordParameter x).getValue()
     or
+    i = any(Ruby::MatchPattern x).getValue()
+    or
     i = any(Ruby::Method x).getBody()
     or
     i = any(Ruby::OperatorAssignment x).getRight()
@@ -284,6 +286,8 @@ private module Cached {
     i = any(Ruby::SplatArgument x).getChild()
     or
     i = any(Ruby::Superclass x).getChild()
+    or
+    i = any(Ruby::TestPattern x).getValue()
     or
     i = any(Ruby::Then x).getChild(_)
     or

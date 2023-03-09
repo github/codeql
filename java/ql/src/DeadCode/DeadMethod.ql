@@ -15,6 +15,8 @@ import semmle.code.java.deadcode.DeadCode
 
 from DeadMethod c, Callable origin, string reason
 where
+  not c.getFile().isKotlinSourceFile() and
+  not origin.getFile().isKotlinSourceFile() and
   not c.isInDeadScope() and
   if exists(DeadRoot deadRoot | deadRoot = getADeadRoot(c) | deadRoot.getSourceDeclaration() != c)
   then (

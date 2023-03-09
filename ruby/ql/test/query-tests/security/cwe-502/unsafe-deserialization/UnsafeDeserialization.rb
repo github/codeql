@@ -88,15 +88,19 @@ class UsersController < ActionController::Base
     object = Psych.load yaml_data
   end
 
-  # BAD - user input determines which class is instantiated
-  def route12
-    klass = Module.const_get(params[:class])
-    object = klass.new
-  end
+  def stdin
+    object = YAML.load $stdin.read
 
-  # BAD - user input determines which class is instantiated
-  def route13
-    klass = ActiveJob::Serializers.deserialize(params[:class])
-    object = klass.new
+    # STDIN
+    object = YAML.load STDIN.gets
+
+    # ARGF
+    object = YAML.load ARGF.read
+
+    # Kernel.gets
+    object = YAML.load gets
+
+    # Kernel.readlines
+    object = YAML.load readlines
   end
 end

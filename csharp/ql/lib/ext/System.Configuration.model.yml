@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Configuration", "CommaDelimitedStringCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["System.Configuration", "ConfigurationLockCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["System.Configuration", "ConfigurationPropertyCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["System.Configuration", "ConfigurationSectionCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["System.Configuration", "ConfigurationSectionGroupCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["System.Configuration", "ConnectionStringSettingsCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["System.Configuration", "KeyValueConfigurationCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["System.Configuration", "NameValueConfigurationCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["System.Configuration", "ProviderSettingsCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["System.Configuration", "SettingElementCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["System.Configuration", "SettingsPropertyCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["System.Configuration", "SettingsPropertyValueCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]

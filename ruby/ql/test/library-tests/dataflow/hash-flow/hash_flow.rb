@@ -628,19 +628,21 @@ end
 
 m38()
 
-def m39()
+def m39(x)
     hash = {
         :a => taint(39.1),
         :b => 1,
         :c => taint(39.2)
     }
+    hash[x] = taint(39.3)
+
     hash.transform_keys! {|key| key.to_s }
-    sink (hash["a"]) # $ hasValueFlow=39.1 $ hasValueFlow=39.2
-    sink (hash["b"]) # $ hasValueFlow=39.1 $ hasValueFlow=39.2
-    sink (hash["c"]) # $ hasValueFlow=39.1 $ hasValueFlow=39.2
+    sink (hash["a"]) # $ hasValueFlow=39.1 $ hasValueFlow=39.2 $ hasValueFlow=39.3
+    sink (hash["b"]) # $ hasValueFlow=39.1 $ hasValueFlow=39.2 $ hasValueFlow=39.3
+    sink (hash["c"]) # $ hasValueFlow=39.1 $ hasValueFlow=39.2 $ hasValueFlow=39.3
 end
 
-m39()
+m39(:d)
 
 def m40()
     hash = {
@@ -842,3 +844,125 @@ def m48()
 end
 
 m48()
+
+def m49()
+    hash1 = {
+        a: taint(49.1),
+        b: 1,
+        c: taint(49.2)
+    }
+    hash2 = {
+        d: taint(49.3),
+        e: 1,
+        f: taint(49.4)
+    }
+
+    hash3 = hash1.reverse_merge(hash2)
+    sink (hash3[:a]) # $ hasValueFlow=49.1
+    sink (hash3[:b])
+    sink (hash3[:c]) # $ hasValueFlow=49.2
+    sink (hash3[:d]) # $ hasValueFlow=49.3
+    sink (hash3[:e])
+    sink (hash3[:f]) # $ hasValueFlow=49.4
+
+    # alias for reverse_merge
+    hash4 = hash1.with_defaults(hash2)
+    sink (hash4[:a]) # $ hasValueFlow=49.1
+    sink (hash4[:b])
+    sink (hash4[:c]) # $ hasValueFlow=49.2
+    sink (hash4[:d]) # $ hasValueFlow=49.3
+    sink (hash4[:e])
+    sink (hash4[:f]) # $ hasValueFlow=49.4
+end
+
+m49()
+
+def m50()
+    hash1 = {
+        a: taint(50.1),
+        b: 1,
+        c: taint(50.2)
+    }
+    hash2 = {
+        d: taint(50.3),
+        e: 1,
+        f: taint(50.4)
+    }
+
+    hash = hash1.reverse_merge!(hash2)
+    sink (hash[:a]) # $ hasValueFlow=50.1
+    sink (hash[:b])
+    sink (hash[:c]) # $ hasValueFlow=50.2
+    sink (hash[:d]) # $ hasValueFlow=50.3
+    sink (hash[:e])
+    sink (hash[:f]) # $ hasValueFlow=50.4
+
+    sink (hash1[:a]) # $ hasValueFlow=50.1
+    sink (hash1[:b])
+    sink (hash1[:c]) # $ hasValueFlow=50.2
+    sink (hash1[:d]) # $ hasValueFlow=50.3
+    sink (hash1[:e])
+    sink (hash1[:f]) # $ hasValueFlow=50.4
+end
+
+m50()
+
+def m51()
+    hash1 = {
+        a: taint(51.1),
+        b: 1,
+        c: taint(51.2)
+    }
+    hash2 = {
+        d: taint(51.3),
+        e: 1,
+        f: taint(51.4)
+    }
+
+    hash = hash1.with_defaults!(hash2)
+    sink (hash[:a]) # $ hasValueFlow=51.1
+    sink (hash[:b])
+    sink (hash[:c]) # $ hasValueFlow=51.2
+    sink (hash[:d]) # $ hasValueFlow=51.3
+    sink (hash[:e])
+    sink (hash[:f]) # $ hasValueFlow=51.4
+
+    sink (hash1[:a]) # $ hasValueFlow=51.1
+    sink (hash1[:b])
+    sink (hash1[:c]) # $ hasValueFlow=51.2
+    sink (hash1[:d]) # $ hasValueFlow=51.3
+    sink (hash1[:e])
+    sink (hash1[:f]) # $ hasValueFlow=51.4
+end
+
+m51()
+
+def m52()
+    hash1 = {
+        a: taint(52.1),
+        b: 1,
+        c: taint(52.2)
+    }
+    hash2 = {
+        d: taint(52.3),
+        e: 1,
+        f: taint(52.4)
+    }
+
+    hash = hash1.with_defaults!(hash2)
+    sink (hash[:a]) # $ hasValueFlow=52.1
+    sink (hash[:b])
+    sink (hash[:c]) # $ hasValueFlow=52.2
+    sink (hash[:d]) # $ hasValueFlow=52.3
+    sink (hash[:e])
+    sink (hash[:f]) # $ hasValueFlow=52.4
+
+    sink (hash1[:a]) # $ hasValueFlow=52.1
+    sink (hash1[:b])
+    sink (hash1[:c]) # $ hasValueFlow=52.2
+    sink (hash1[:d]) # $ hasValueFlow=52.3
+    sink (hash1[:e])
+    sink (hash1[:f]) # $ hasValueFlow=52.4
+end
+
+m52()

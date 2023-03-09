@@ -15,6 +15,6 @@ private class Fread extends AliasFunction, RemoteFlowSourceFunction {
 
   override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
     output.isParameterDeref(0) and
-    description = "String read by " + this.getName()
+    description = "string read by " + this.getName()
   }
 }

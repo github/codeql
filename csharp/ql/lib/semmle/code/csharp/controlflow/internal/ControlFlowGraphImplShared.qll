@@ -907,9 +907,13 @@ module TestOutput {
 
   query predicate edges(RelevantNode pred, RelevantNode succ, string attr, string val) {
     attr = "semmle.label" and
-    exists(SuccessorType t | succ = getASuccessor(pred, t) |
-      if successorTypeIsSimple(t) then val = "" else val = t.toString()
-    )
+    val =
+      strictconcat(SuccessorType t, string s |
+        succ = getASuccessor(pred, t) and
+        if successorTypeIsSimple(t) then s = "" else s = t.toString()
+      |
+        s, ", " order by s
+      )
     or
     attr = "semmle.order" and
     val =

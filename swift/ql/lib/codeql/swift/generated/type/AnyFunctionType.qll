@@ -49,7 +49,7 @@ module Generated {
     /**
      * Gets the number of parameter types of this function type.
      */
-    final int getNumberOfParamTypes() { result = count(getAParamType()) }
+    final int getNumberOfParamTypes() { result = count(int i | exists(getParamType(i))) }
 
     /**
      * Gets the `index`th parameter label of this function type (0-based), if it exists.

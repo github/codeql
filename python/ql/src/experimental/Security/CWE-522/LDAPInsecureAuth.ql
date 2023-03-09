@@ -5,6 +5,7 @@
  * @problem.severity error
  * @id py/insecure-ldap-auth
  * @tags security
+ *       experimental
  *       external/cwe/cwe-522
  *       external/cwe/cwe-523
  */

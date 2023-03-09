@@ -252,6 +252,30 @@ private module Cached {
     cfn.isJoin()
     or
     cfn.getAPredecessor().isBranch()
+    or
+    /*
+     * In cases such as
+     *
+     * ```rb
+     * if x or y
+     *     foo
+     * else
+     *     bar
+     * ```
+     *
+     * we have a CFG that looks like
+     *
+     * x --false--> [false] x or y --false--> bar
+     * \                    |
+     *  --true--> y --false--
+     *            \
+     *             --true--> [true] x or y --true--> foo
+     *
+     * and we want to ensure that both `foo` and `bar` start a new basic block,
+     * in order to get a `ConditionalBlock` out of the disjunction.
+     */
+
+    exists(cfn.getAPredecessor(any(SuccessorTypes::ConditionalSuccessor s)))
   }
 
   /**

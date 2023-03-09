@@ -81,6 +81,14 @@ pub enum Storage {
     },
 }
 
+impl Storage {
+    pub fn is_column(&self) -> bool {
+        match self {
+            Storage::Column { .. } => true,
+            _ => false,
+        }
+    }
+}
 pub fn read_node_types(prefix: &str, node_types_path: &Path) -> std::io::Result<NodeTypeMap> {
     let file = fs::File::open(node_types_path)?;
     let node_types: Vec<NodeInfo> = serde_json::from_reader(file)?;
@@ -245,10 +253,11 @@ fn add_field(
         }
     };
     let converted_types = convert_types(&field_info.types);
-    let type_info = if field_info
-        .types
-        .iter()
-        .all(|t| !t.named && token_kinds.contains(&convert_type(t)))
+    let type_info = if storage.is_column()
+        && field_info
+            .types
+            .iter()
+            .all(|t| !t.named && token_kinds.contains(&convert_type(t)))
     {
         // All possible types for this field are reserved words. The db
         // representation will be an `int` with a `case @foo.field = ...` to

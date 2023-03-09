@@ -112,7 +112,7 @@ statements.cs:
 #   37|           0: [LocalVariableDeclAndInitExpr] String y = ...
 #   37|             -1: [TypeMention] string
 #   37|             0: [LocalVariableAccess] access to local variable y
-#   37|             1: [StringLiteral] "test"
+#   37|             1: [StringLiteralUtf16] "test"
 #   40|     8: [Method] MainLocalConstDecl
 #   40|       -1: [TypeMention] Void
 #   41|       4: [BlockStmt] {...}
@@ -179,13 +179,13 @@ statements.cs:
 #   60|               0: [MethodCall] call to method WriteLine
 #   60|                 -1: [TypeAccess] access to type Console
 #   60|                   0: [TypeMention] Console
-#   60|                 0: [StringLiteral] "No arguments"
+#   60|                 0: [StringLiteralUtf16] "No arguments"
 #   63|           2: [BlockStmt] {...}
 #   64|             0: [ExprStmt] ...;
 #   64|               0: [MethodCall] call to method WriteLine
 #   64|                 -1: [TypeAccess] access to type Console
 #   64|                   0: [TypeMention] Console
-#   64|                 0: [StringLiteral] "One or more arguments"
+#   64|                 0: [StringLiteralUtf16] "One or more arguments"
 #   68|     11: [Method] MainSwitch
 #   68|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
@@ -207,7 +207,7 @@ statements.cs:
 #   74|             0: [MethodCall] call to method WriteLine
 #   74|               -1: [TypeAccess] access to type Console
 #   74|                 0: [TypeMention] Console
-#   74|               0: [StringLiteral] "No arguments"
+#   74|               0: [StringLiteralUtf16] "No arguments"
 #   75|           2: [BreakStmt] break;
 #   76|           3: [ConstCase] case ...:
 #   76|             0: [ConstantPatternExpr,IntLiteral] 1
@@ -215,14 +215,14 @@ statements.cs:
 #   77|             0: [MethodCall] call to method WriteLine
 #   77|               -1: [TypeAccess] access to type Console
 #   77|                 0: [TypeMention] Console
-#   77|               0: [StringLiteral] "One argument"
+#   77|               0: [StringLiteralUtf16] "One argument"
 #   78|           5: [BreakStmt] break;
 #   79|           6: [DefaultCase] default:
 #   80|           7: [ExprStmt] ...;
 #   80|             0: [MethodCall] call to method WriteLine
 #   80|               -1: [TypeAccess] access to type Console
 #   80|                 0: [TypeMention] Console
-#   80|               0: [StringLiteral] "{0} arguments"
+#   80|               0: [StringLiteralUtf16] "{0} arguments"
 #   80|               1: [CastExpr] (...) ...
 #   80|                 1: [LocalVariableAccess] access to local variable n
 #   81|           8: [BreakStmt] break;
@@ -235,37 +235,37 @@ statements.cs:
 #   87|         0: [SwitchStmt] switch (...) {...}
 #   87|           0: [ParameterAccess] access to parameter foo
 #   89|           0: [ConstCase] case ...:
-#   89|             0: [ConstantPatternExpr,StringLiteral] "black"
+#   89|             0: [ConstantPatternExpr,StringLiteralUtf16] "black"
 #   90|           1: [ReturnStmt] return ...;
 #   90|             0: [IntLiteral] 0
 #   91|           2: [ConstCase] case ...:
-#   91|             0: [ConstantPatternExpr,StringLiteral] "red"
+#   91|             0: [ConstantPatternExpr,StringLiteralUtf16] "red"
 #   92|           3: [ReturnStmt] return ...;
 #   92|             0: [IntLiteral] 1
 #   93|           4: [ConstCase] case ...:
-#   93|             0: [ConstantPatternExpr,StringLiteral] "green"
+#   93|             0: [ConstantPatternExpr,StringLiteralUtf16] "green"
 #   94|           5: [ReturnStmt] return ...;
 #   94|             0: [IntLiteral] 2
 #   95|           6: [ConstCase] case ...:
-#   95|             0: [ConstantPatternExpr,StringLiteral] "yellow"
+#   95|             0: [ConstantPatternExpr,StringLiteralUtf16] "yellow"
 #   96|           7: [ReturnStmt] return ...;
 #   96|             0: [IntLiteral] 3
 #   97|           8: [ConstCase] case ...:
-#   97|             0: [ConstantPatternExpr,StringLiteral] "blue"
+#   97|             0: [ConstantPatternExpr,StringLiteralUtf16] "blue"
 #   98|           9: [ReturnStmt] return ...;
 #   98|             0: [IntLiteral] 4
 #   99|           10: [ConstCase] case ...:
-#   99|             0: [ConstantPatternExpr,StringLiteral] "magenta"
+#   99|             0: [ConstantPatternExpr,StringLiteralUtf16] "magenta"
 #  100|           11: [ReturnStmt] return ...;
 #  100|             0: [IntLiteral] 5
 #  101|           12: [ConstCase] case ...:
-#  101|             0: [ConstantPatternExpr,StringLiteral] "cyan"
+#  101|             0: [ConstantPatternExpr,StringLiteralUtf16] "cyan"
 #  102|           13: [ReturnStmt] return ...;
 #  102|             0: [IntLiteral] 6
 #  103|           14: [ConstCase] case ...:
-#  103|             0: [ConstantPatternExpr,StringLiteral] "grey"
+#  103|             0: [ConstantPatternExpr,StringLiteralUtf16] "grey"
 #  104|           15: [ConstCase] case ...:
-#  104|             0: [ConstantPatternExpr,StringLiteral] "white"
+#  104|             0: [ConstantPatternExpr,StringLiteralUtf16] "white"
 #  105|           16: [ReturnStmt] return ...;
 #  105|             0: [IntLiteral] 7
 #  107|         1: [ReturnStmt] return ...;
@@ -414,7 +414,7 @@ statements.cs:
 #  160|                 -1: [ArrayAccess] access to array element
 #  160|                   -1: [ParameterAccess] access to parameter args
 #  160|                   0: [LocalVariableAccess] access to local variable i
-#  160|                 0: [StringLiteral] "/"
+#  160|                 0: [StringLiteralUtf16] "/"
 #  160|               1: [ContinueStmt] continue;
 #  161|             1: [ExprStmt] ...;
 #  161|               0: [MethodCall] call to method WriteLine
@@ -547,7 +547,7 @@ statements.cs:
 #  226|               0: [MethodCall] call to method WriteLine
 #  226|                 -1: [TypeAccess] access to type Console
 #  226|                   0: [TypeMention] Console
-#  226|                 0: [StringLiteral] "Good bye!"
+#  226|                 0: [StringLiteralUtf16] "Good bye!"
 #  207|           0: [BlockStmt] {...}
 #  208|             0: [IfStmt] if (...) ...
 #  208|               0: [NEExpr] ... != ...
@@ -558,7 +558,7 @@ statements.cs:
 #  210|                 0: [ThrowStmt] throw ...;
 #  210|                   0: [ObjectCreation] object creation of type Exception
 #  210|                     -1: [TypeMention] Exception
-#  210|                     0: [StringLiteral] "Two numbers required"
+#  210|                     0: [StringLiteralUtf16] "Two numbers required"
 #  212|             1: [LocalVariableDeclStmt] ... ...;
 #  212|               0: [LocalVariableDeclAndInitExpr] Double x = ...
 #  212|                 -1: [TypeMention] double
@@ -602,7 +602,7 @@ statements.cs:
 #  222|                 0: [MethodCall] call to method WriteLine
 #  222|                   -1: [TypeAccess] access to type Console
 #  222|                     0: [TypeMention] Console
-#  222|                   0: [StringLiteral] "Exception"
+#  222|                   0: [StringLiteralUtf16] "Exception"
 #  230|     26: [Method] MainCheckedUnchecked
 #  230|       -1: [TypeMention] Void
 #  231|       4: [BlockStmt] {...}
@@ -651,7 +651,7 @@ statements.cs:
 #  252|                   0: [ThrowStmt] throw ...;
 #  252|                     0: [ObjectCreation] object creation of type Exception
 #  252|                       -1: [TypeMention] Exception
-#  252|                       0: [StringLiteral] "Insufficient funds"
+#  252|                       0: [StringLiteralUtf16] "Insufficient funds"
 #  254|               1: [ExprStmt] ...;
 #  254|                 0: [AssignSubExpr] ... -= ...
 #  254|                   0: [FieldAccess] access to field balance
@@ -666,25 +666,25 @@ statements.cs:
 #  261|             1: [MethodCall] call to method CreateText
 #  261|               -1: [TypeAccess] access to type File
 #  261|                 0: [TypeMention] File
-#  261|               0: [StringLiteral] "test.txt"
+#  261|               0: [StringLiteralUtf16] "test.txt"
 #  262|           1: [BlockStmt] {...}
 #  263|             0: [ExprStmt] ...;
 #  263|               0: [MethodCall] call to method WriteLine
 #  263|                 -1: [LocalVariableAccess] access to local variable w
-#  263|                 0: [StringLiteral] "Line one"
+#  263|                 0: [StringLiteralUtf16] "Line one"
 #  264|             1: [ExprStmt] ...;
 #  264|               0: [MethodCall] call to method WriteLine
 #  264|                 -1: [LocalVariableAccess] access to local variable w
-#  264|                 0: [StringLiteral] "Line two"
+#  264|                 0: [StringLiteralUtf16] "Line two"
 #  265|             2: [ExprStmt] ...;
 #  265|               0: [MethodCall] call to method WriteLine
 #  265|                 -1: [LocalVariableAccess] access to local variable w
-#  265|                 0: [StringLiteral] "Line three"
+#  265|                 0: [StringLiteralUtf16] "Line three"
 #  267|         1: [UsingBlockStmt] using (...) {...}
 #  267|           0: [MethodCall] call to method CreateText
 #  267|             -1: [TypeAccess] access to type File
 #  267|               0: [TypeMention] File
-#  267|             0: [StringLiteral] "test.txt"
+#  267|             0: [StringLiteralUtf16] "test.txt"
 #  268|           1: [BlockStmt] {...}
 #  272|     29: [Method] MainLabeled
 #  272|       -1: [TypeMention] Void

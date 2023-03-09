@@ -24,6 +24,19 @@ predicate conditionControlsMethod(MethodAccess ma, Expr e) {
 }
 
 /**
+ * Holds if `node1` to `node2` is a dataflow step through the
+ * `endsWith` method of the `java.lang.String` class.
+ */
+private predicate endsWithStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(MethodAccess ma |
+    ma.getMethod().getDeclaringType() instanceof TypeString and
+    ma.getMethod().getName() = "endsWith" and
+    ma.getQualifier() = node1.asExpr() and
+    ma = node2.asExpr()
+  )
+}
+
+/**
  * A taint tracking configuration for untrusted data flowing to sensitive conditions.
  */
 class ConditionalBypassFlowConfig extends TaintTracking::Configuration {
@@ -32,4 +45,8 @@ class ConditionalBypassFlowConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { conditionControlsMethod(_, sink.asExpr()) }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    endsWithStep(node1, node2)
+  }
 }

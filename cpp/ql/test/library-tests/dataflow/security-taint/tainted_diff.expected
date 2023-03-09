@@ -1,3 +1,8 @@
+WARNING: Module TaintedWithPath has been deprecated and may be removed in future (tainted_diff.ql:5,35-54)
+WARNING: Module TaintedWithPath has been deprecated and may be removed in future (tainted_diff.ql:12,7-26)
+WARNING: Module TaintedWithPath has been deprecated and may be removed in future (tainted_diff.ql:16,3-22)
+WARNING: Predicate taintedIncludingGlobalVars has been deprecated and may be removed in future (tainted_diff.ql:11,3-34)
+WARNING: Predicate taintedIncludingGlobalVars has been deprecated and may be removed in future (tainted_diff.ql:17,7-38)
 | test.cpp:23:23:23:28 | call to getenv | test.cpp:8:24:8:25 | s1 | AST only |
 | test.cpp:23:23:23:28 | call to getenv | test.cpp:23:14:23:19 | envStr | AST only |
 | test.cpp:38:23:38:28 | call to getenv | test.cpp:8:24:8:25 | s1 | AST only |

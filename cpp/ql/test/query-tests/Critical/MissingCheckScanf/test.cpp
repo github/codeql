@@ -19,6 +19,11 @@ FILE *get_a_stream();
 const char *get_a_string();
 extern locale_t get_a_locale();
 
+typedef long size_t;
+
+void *malloc(size_t size);
+void free(void *ptr);
+
 int main()
 {
 	// --- simple cases ---
@@ -76,6 +81,22 @@ int main()
 
 		i = 1;
 		use(i); // GOOD
+	}
+
+	{
+		int *i = (int*)malloc(sizeof(int)); // Allocated variable
+
+		scanf("%d", i);
+		use(*i); // BAD
+		free(i); // GOOD
+	}
+
+	{
+		int *i = new int; // Allocated variable
+
+		scanf("%d", i);
+		use(*i); // BAD
+		delete i; // GOOD
 	}
 
 	// --- different scanf functions ---
@@ -384,4 +405,27 @@ char *my_string_copy() {
     }
 	*ptr++ = 0;
 	return DST_STRING;
+}
+
+void scan_and_write() {
+	{
+		int i;
+		if (scanf("%d", &i) < 1) {
+			i = 0;
+		}
+		use(i);  // GOOD [FALSE POSITIVE]: variable is overwritten with a default value when scanf fails
+	}
+	{
+		int i;
+		if (scanf("%d", &i) != 1) {
+			i = 0;
+		}
+		use(i);  // GOOD [FALSE POSITIVE]: variable is overwritten with a default value when scanf fails
+	}
+}
+
+void scan_and_static_variable() {
+	static int i;
+	scanf("%d", &i);
+	use(i);  // GOOD [FALSE POSITIVE]: static variables are always 0-initialized
 }

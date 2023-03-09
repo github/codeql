@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @id cs/backdoor/potential-time-bomb
  * @tags security
+ *       experimental
  *       solorigate
  */
 
@@ -45,10 +46,8 @@ query predicate edges(DataFlow::PathNode a, DataFlow::PathNode b) {
  */
 class GetLastWriteTimeMethod extends Method {
   GetLastWriteTimeMethod() {
-    this.getQualifiedName() in [
-        "System.IO.File.GetLastWriteTime", "System.IO.File.GetFileCreationTime",
-        "System.IO.File.GetCreationTimeUtc", "System.IO.File.GetLastAccessTimeUtc"
-      ]
+    this.hasQualifiedName("System.IO.File",
+      ["GetLastWriteTime", "GetFileCreationTime", "GetCreationTimeUtc", "GetLastAccessTimeUtc"])
   }
 }
 
@@ -56,7 +55,7 @@ class GetLastWriteTimeMethod extends Method {
  * Abstracts `System.DateTime` structure
  */
 class DateTimeStruct extends Struct {
-  DateTimeStruct() { this.getQualifiedName() = "System.DateTime" }
+  DateTimeStruct() { this.hasQualifiedName("System", "DateTime") }
 
   /**
    * holds if the Callable is used for DateTime arithmetic operations

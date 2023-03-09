@@ -9,6 +9,7 @@ private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowImplConsistency
+private import DataFlowNodes
 import DataFlowNodes::Private
 
 private newtype TReturnKind = TNormalReturnKind()
@@ -420,6 +421,48 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
 }
 
+/** An approximated `Content`. */
+class ContentApprox extends TContentApprox {
+  /** Gets a textual representation of this approximated `Content`. */
+  string toString() {
+    exists(string firstChar |
+      this = TFieldContentApprox(firstChar) and
+      result = "approximated field " + firstChar
+    )
+    or
+    this = TArrayContentApprox() and
+    result = "[]"
+    or
+    this = TCollectionContentApprox() and
+    result = "<element>"
+    or
+    this = TMapKeyContentApprox() and
+    result = "<map.key>"
+    or
+    this = TMapValueContentApprox() and
+    result = "<map.value>"
+    or
+    this = TSyntheticFieldApproxContent() and
+    result = "approximated synthetic field"
+  }
+}
+
+/** Gets an approximated value for content `c`. */
+pragma[nomagic]
+ContentApprox getContentApprox(Content c) {
+  result = TFieldContentApprox(approximateFieldContent(c))
+  or
+  c instanceof ArrayContent and result = TArrayContentApprox()
+  or
+  c instanceof CollectionContent and result = TCollectionContentApprox()
+  or
+  c instanceof MapKeyContent and result = TMapKeyContentApprox()
+  or
+  c instanceof MapValueContent and result = TMapValueContentApprox()
+  or
+  c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
+}
+
 private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
   override predicate argHasPostUpdateExclude(ArgumentNode n) {
     n.getType() instanceof ImmutableType or n instanceof ImplicitVarargsArray
@@ -435,3 +478,12 @@ predicate containerContent(Content c) {
   c instanceof MapKeyContent or
   c instanceof MapValueContent
 }
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

@@ -15,9 +15,8 @@
  *       external/cwe/cwe-099
  */
 
-import codeql.ruby.AST
+import ruby
 import codeql.ruby.security.PathInjectionQuery
-import codeql.ruby.DataFlow
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+
+			Using user-controlled data in a permissions check may
+			allow a user to gain unauthorized access to protected functionality or
+			data.
+
+		</p>
+
+	</overview>
+
+	<recommendation>
+		<include src="recommendation.inc.qhelp" />
+	</recommendation>
+
+	<example>
+		<include src="example.inc.qhelp" />
+	</example>
+
+	<references>
+
+	</references>
+</qhelp>

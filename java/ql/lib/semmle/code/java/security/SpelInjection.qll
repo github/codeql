@@ -2,7 +2,6 @@
 
 import java
 private import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.frameworks.spring.SpringExpression
 
 /** A data flow sink for unvalidated user input that is used to construct SpEL expressions. */

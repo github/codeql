@@ -2,12 +2,38 @@ edges
 | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:3:12:3:24 | ...[...] :  |
 | KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:4:10:4:13 | file |
 | KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:5:13:5:16 | file |
+| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:6:14:6:17 | file |
+| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:7:16:7:19 | file |
+| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:8:17:8:20 | file |
+| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:9:16:9:19 | file |
+| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:10:18:10:21 | file |
+| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:11:14:11:17 | file |
+| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:13:23:13:26 | file :  |
+| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:26:10:26:13 | file |
+| KernelOpen.rb:13:23:13:26 | file :  | KernelOpen.rb:13:13:13:31 | call to join |
 nodes
 | KernelOpen.rb:3:12:3:17 | call to params :  | semmle.label | call to params :  |
 | KernelOpen.rb:3:12:3:24 | ...[...] :  | semmle.label | ...[...] :  |
 | KernelOpen.rb:4:10:4:13 | file | semmle.label | file |
 | KernelOpen.rb:5:13:5:16 | file | semmle.label | file |
+| KernelOpen.rb:6:14:6:17 | file | semmle.label | file |
+| KernelOpen.rb:7:16:7:19 | file | semmle.label | file |
+| KernelOpen.rb:8:17:8:20 | file | semmle.label | file |
+| KernelOpen.rb:9:16:9:19 | file | semmle.label | file |
+| KernelOpen.rb:10:18:10:21 | file | semmle.label | file |
+| KernelOpen.rb:11:14:11:17 | file | semmle.label | file |
+| KernelOpen.rb:13:13:13:31 | call to join | semmle.label | call to join |
+| KernelOpen.rb:13:23:13:26 | file :  | semmle.label | file :  |
+| KernelOpen.rb:26:10:26:13 | file | semmle.label | file |
 subpaths
 #select
 | KernelOpen.rb:4:10:4:13 | file | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:4:10:4:13 | file | This call to Kernel.open depends on a $@. Consider replacing it with File.open. | KernelOpen.rb:3:12:3:17 | call to params | user-provided value |
 | KernelOpen.rb:5:13:5:16 | file | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:5:13:5:16 | file | This call to IO.read depends on a $@. Consider replacing it with File.read. | KernelOpen.rb:3:12:3:17 | call to params | user-provided value |
+| KernelOpen.rb:6:14:6:17 | file | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:6:14:6:17 | file | This call to IO.write depends on a $@. Consider replacing it with File.write. | KernelOpen.rb:3:12:3:17 | call to params | user-provided value |
+| KernelOpen.rb:7:16:7:19 | file | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:7:16:7:19 | file | This call to IO.binread depends on a $@. Consider replacing it with File.binread. | KernelOpen.rb:3:12:3:17 | call to params | user-provided value |
+| KernelOpen.rb:8:17:8:20 | file | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:8:17:8:20 | file | This call to IO.binwrite depends on a $@. Consider replacing it with File.binwrite. | KernelOpen.rb:3:12:3:17 | call to params | user-provided value |
+| KernelOpen.rb:9:16:9:19 | file | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:9:16:9:19 | file | This call to IO.foreach depends on a $@. Consider replacing it with File.foreach. | KernelOpen.rb:3:12:3:17 | call to params | user-provided value |
+| KernelOpen.rb:10:18:10:21 | file | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:10:18:10:21 | file | This call to IO.readlines depends on a $@. Consider replacing it with File.readlines. | KernelOpen.rb:3:12:3:17 | call to params | user-provided value |
+| KernelOpen.rb:11:14:11:17 | file | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:11:14:11:17 | file | This call to URI.open depends on a $@. Consider replacing it with URI(<uri>).open. | KernelOpen.rb:3:12:3:17 | call to params | user-provided value |
+| KernelOpen.rb:13:13:13:31 | call to join | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:13:13:13:31 | call to join | This call to IO.read depends on a $@. Consider replacing it with File.read. | KernelOpen.rb:3:12:3:17 | call to params | user-provided value |
+| KernelOpen.rb:26:10:26:13 | file | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:26:10:26:13 | file | This call to Kernel.open depends on a $@. Consider replacing it with File.open. | KernelOpen.rb:3:12:3:17 | call to params | user-provided value |

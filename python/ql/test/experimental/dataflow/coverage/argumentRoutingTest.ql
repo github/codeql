@@ -9,23 +9,64 @@ class Argument1RoutingTest extends RoutingTest {
   override string flowTag() { result = "arg1" }
 
   override predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink) {
-    exists(Argument1RoutingConfig cfg | cfg.hasFlow(source, sink))
+    exists(Argument1ExtraRoutingConfig cfg | cfg.hasFlow(source, sink))
+    or
+    exists(ArgumentRoutingConfig cfg |
+      cfg.hasFlow(source, sink) and
+      cfg.isArgSource(source, 1) and
+      cfg.isGoodSink(sink, 1)
+    )
   }
 }
 
-/**
- * A configuration to check routing of arguments through magic methods.
- */
-class Argument1RoutingConfig extends DataFlow::Configuration {
-  Argument1RoutingConfig() { this = "Argument1RoutingConfig" }
+class ArgNumber extends int {
+  ArgNumber() { this in [1 .. 7] }
+}
+
+class ArgumentRoutingConfig extends DataFlow::Configuration {
+  ArgumentRoutingConfig() { this = "ArgumentRoutingConfig" }
+
+  predicate isArgSource(DataFlow::Node node, ArgNumber argNumber) {
+    node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "arg" + argNumber
+  }
+
+  override predicate isSource(DataFlow::Node node) { this.isArgSource(node, _) }
+
+  predicate isGoodSink(DataFlow::Node node, ArgNumber argNumber) {
+    exists(CallNode call |
+      call.getFunction().(NameNode).getId() = "SINK" + argNumber and
+      node.(DataFlow::CfgNode).getNode() = call.getAnArg()
+    )
+  }
+
+  predicate isBadSink(DataFlow::Node node, ArgNumber argNumber) {
+    exists(CallNode call |
+      call.getFunction().(NameNode).getId() = "SINK" + argNumber + "_F" and
+      node.(DataFlow::CfgNode).getNode() = call.getAnArg()
+    )
+  }
+
+  override predicate isSink(DataFlow::Node node) {
+    this.isGoodSink(node, _) or this.isBadSink(node, _)
+  }
+
+  /**
+   * We want to be able to use `arg` in a sequence of calls such as `func(kw=arg); ... ; func(arg)`.
+   * Use-use flow lets the argument to the first call reach the sink inside the second call,
+   * making it seem like we handle all cases even if we only handle the last one.
+   * We make the test honest by preventing flow into source nodes.
+   */
+  override predicate isBarrierIn(DataFlow::Node node) { this.isSource(node) }
+}
+
+class Argument1ExtraRoutingConfig extends DataFlow::Configuration {
+  Argument1ExtraRoutingConfig() { this = "Argument1ExtraRoutingConfig" }
 
   override predicate isSource(DataFlow::Node node) {
-    node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "arg1"
-    or
-    exists(AssignmentDefinition def, DataFlowPrivate::DataFlowCall call |
+    exists(AssignmentDefinition def, DataFlow::CallCfgNode call |
       def.getVariable() = node.(DataFlow::EssaNode).getVar() and
       def.getValue() = call.getNode() and
-      call.getNode().(CallNode).getFunction().(NameNode).getId().matches("With\\_%")
+      call.getFunction().asCfgNode().(NameNode).getId().matches("With\\_%")
     ) and
     node.(DataFlow::EssaNode).getVar().getName().matches("with\\_%")
   }
@@ -46,57 +87,59 @@ class Argument1RoutingConfig extends DataFlow::Configuration {
   override predicate isBarrierIn(DataFlow::Node node) { this.isSource(node) }
 }
 
-// for argument 2 and up, we use a generic approach. Change `maxNumArgs` below if we
-// need to increase the maximum number of arguments.
-private int maxNumArgs() { result = 7 }
-
 class RestArgumentRoutingTest extends RoutingTest {
-  int argNumber;
+  ArgNumber argNumber;
 
   RestArgumentRoutingTest() {
-    argNumber in [2 .. maxNumArgs()] and
+    argNumber > 1 and
     this = "Argument" + argNumber + "RoutingTest"
   }
 
   override string flowTag() { result = "arg" + argNumber }
 
   override predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink) {
-    exists(RestArgumentRoutingConfig cfg | cfg.getArgNumber() = argNumber |
-      cfg.hasFlow(source, sink)
+    exists(ArgumentRoutingConfig cfg |
+      cfg.hasFlow(source, sink) and
+      cfg.isArgSource(source, argNumber) and
+      cfg.isGoodSink(sink, argNumber)
     )
   }
 }
 
-/**
- * A configuration to check routing of arguments through magic methods.
- */
-class RestArgumentRoutingConfig extends DataFlow::Configuration {
-  int argNumber;
+/** Bad flow from `arg<n>` to `SINK<N>_F` */
+class BadArgumentRoutingTestSinkF extends RoutingTest {
+  ArgNumber argNumber;
 
-  RestArgumentRoutingConfig() {
-    argNumber in [2 .. maxNumArgs()] and
-    this = "Argument" + argNumber + "RoutingConfig"
-  }
+  BadArgumentRoutingTestSinkF() { this = "BadArgumentRoutingTestSinkF" + argNumber }
 
-  /** Gets the argument number this configuration is for. */
-  int getArgNumber() { result = argNumber }
+  override string flowTag() { result = "bad" + argNumber }
 
-  override predicate isSource(DataFlow::Node node) {
-    node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "arg" + argNumber
-  }
-
-  override predicate isSink(DataFlow::Node node) {
-    exists(CallNode call |
-      call.getFunction().(NameNode).getId() = "SINK" + argNumber and
-      node.(DataFlow::CfgNode).getNode() = call.getAnArg()
+  override predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink) {
+    exists(ArgumentRoutingConfig cfg |
+      cfg.hasFlow(source, sink) and
+      cfg.isArgSource(source, argNumber) and
+      cfg.isBadSink(sink, argNumber)
     )
   }
+}
 
-  /**
-   * We want to be able to use `arg` in a sequence of calls such as `func(kw=arg); ... ; func(arg)`.
-   * Use-use flow lets the argument to the first call reach the sink inside the second call,
-   * making it seem like we handle all cases even if we only handle the last one.
-   * We make the test honest by preventing flow into source nodes.
-   */
-  override predicate isBarrierIn(DataFlow::Node node) { this.isSource(node) }
+/** Bad flow from `arg<n>` to `SINK<M>` or `SINK<M>_F`, where `n != m`. */
+class BadArgumentRoutingTestWrongSink extends RoutingTest {
+  ArgNumber argNumber;
+
+  BadArgumentRoutingTestWrongSink() { this = "BadArgumentRoutingTestWrongSink" + argNumber }
+
+  override string flowTag() { result = "bad" + argNumber }
+
+  override predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink) {
+    exists(ArgumentRoutingConfig cfg |
+      cfg.hasFlow(source, sink) and
+      cfg.isArgSource(source, any(ArgNumber i | not i = argNumber)) and
+      (
+        cfg.isGoodSink(sink, argNumber)
+        or
+        cfg.isBadSink(sink, argNumber)
+      )
+    )
+  }
 }

@@ -182,16 +182,17 @@ module UnsafeHtmlConstruction {
   }
 
   /** A test for the value of `typeof x`, restricting the potential types of `x`. */
-  class TypeTestGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+  class TypeTestGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
     override EqualityTest astNode;
     Expr operand;
     boolean polarity;
 
     TypeTestGuard() { TaintTracking::isStringTypeGuard(astNode, operand, polarity) }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
       polarity = outcome and
-      e = operand
+      e = operand and
+      lbl.isTaint()
     }
   }
 }

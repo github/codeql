@@ -1,6 +1,6 @@
 private import codeql.swift.generated.decl.VarDecl
 private import codeql.swift.elements.expr.DeclRefExpr
-private import codeql.swift.elements.decl.IterableDeclContext
+private import codeql.swift.elements.decl.Decl
 
 class VarDecl extends Generated::VarDecl {
   override string toString() { result = this.getName() }
@@ -9,5 +9,5 @@ class VarDecl extends Generated::VarDecl {
 }
 
 class FieldDecl extends VarDecl {
-  FieldDecl() { this = any(IterableDeclContext ctx).getAMember() }
+  FieldDecl() { this = any(Decl ctx).getAMember() }
 }

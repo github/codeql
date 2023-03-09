@@ -91,7 +91,7 @@ module Revel {
   }
 
   private string contentTypeFromFilename(DataFlow::Node filename) {
-    if filename.getStringValue().toLowerCase().matches(["%.htm", "%.html"])
+    if filename.getStringValue().regexpMatch("(?i).*\\.html?")
     then result = "text/html"
     else result = "application/octet-stream"
     // Actually Revel can figure out a variety of other content-types, but none of our analyses care to

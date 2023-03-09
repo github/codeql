@@ -4,10 +4,10 @@
 
 import javascript
 import experimental.poi.PoI
-import semmle.javascript.security.dataflow.ReflectedXss
-import semmle.javascript.security.dataflow.StoredXss
-import semmle.javascript.security.dataflow.DomBasedXss
-import semmle.javascript.security.dataflow.ExceptionXss
+import semmle.javascript.security.dataflow.ReflectedXssQuery as ReflectedXss
+import semmle.javascript.security.dataflow.StoredXssQuery as StoredXss
+import semmle.javascript.security.dataflow.DomBasedXssQuery as DomBasedXss
+import semmle.javascript.security.dataflow.ExceptionXssQuery as ExceptionXss
 
 class MyDataFlowConfigurationPoIs extends DataFlowConfigurationPoI, ActivePoI { }
 

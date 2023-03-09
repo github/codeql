@@ -25,9 +25,8 @@ import DataFlow::PathGraph
  * Holds if `alloc` is an allocation, and `tainted` is a child of it that is a
  * taint sink.
  */
-predicate allocSink(Expr alloc, DataFlow::Node sink) {
+predicate allocSink(HeuristicAllocationExpr alloc, DataFlow::Node sink) {
   exists(Expr e | e = sink.asConvertedExpr() |
-    isAllocationExpr(alloc) and
     e = alloc.getAChild() and
     e.getUnspecifiedType() instanceof IntegralType
   )
@@ -89,6 +88,10 @@ class TaintedAllocationSizeConfiguration extends TaintTracking::Configuration {
       readsVariable(access.getDef(), checkedVar) and
       nodeIsBarrierEqualityCandidate(node, access, checkedVar)
     )
+    or
+    // block flow to inside of identified allocation functions (this flow leads
+    // to duplicate results)
+    any(HeuristicAllocationFunction f).getAParameter() = node.asParameter()
   }
 }
 

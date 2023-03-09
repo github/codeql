@@ -1,0 +1,9 @@
+| java.lang.String#valueOf(Object) | no manual model |
+| java.lang.System#getProperty(String) | no manual model |
+| java.lang.Throwable#printStackTrace() | no manual model |
+| java.util.function.Consumer#accept(Object) | no manual model |
+| java.util.function.Function#apply(Object) | no manual model |
+| java.util.function.Supplier#get() | no manual model |
+| java.util.stream.Collectors#joining(CharSequence) | no manual model |
+| java.util.stream.Collectors#toMap(Function,Function) | no manual model |
+| java.util.stream.Stream#collect(Collector) | no manual model |

@@ -23,7 +23,12 @@ module UntrustedFlowSource {
    */
   abstract class Range extends DataFlow::Node { }
 
-  class CsvRemoteSource extends Range {
-    CsvRemoteSource() { ExternalFlow::sourceNode(this, "remote") }
+  /**
+   * A source of data that is controlled by an untrusted user.
+   */
+  class MaDRemoteSource extends Range {
+    MaDRemoteSource() { ExternalFlow::sourceNode(this, "remote") }
   }
+
+  deprecated class CsvRemoteSource = MaDRemoteSource;
 }

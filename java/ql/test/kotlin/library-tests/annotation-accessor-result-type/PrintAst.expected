@@ -1,82 +1,21 @@
 test.kt:
 #    0| [CompilationUnit] test
 #    3|   1: [Interface] A
-#    3|     1: [Constructor] A
-#-----|       4: (Parameters)
-#    3|         0: [Parameter] c1
-#    3|           0: [TypeAccess] Class<?>
-#    3|             0: [WildcardTypeAccess] ? ...
-#    3|         1: [Parameter] c2
-#    3|           0: [TypeAccess] Class<? extends CharSequence>
-#    3|             0: [WildcardTypeAccess] ? ...
-#    3|               0: [TypeAccess] CharSequence
-#    3|         2: [Parameter] c3
-#    3|           0: [TypeAccess] Class<String>
-#    3|             0: [TypeAccess] String
-#    3|         3: [Parameter] c4
-#    3|           0: [TypeAccess] Class<?>[]
-#    3|             0: [TypeAccess] Class<?>
-#    3|               0: [WildcardTypeAccess] ? ...
-#    3|       5: [BlockStmt] { ... }
-#    3|         0: [SuperConstructorInvocationStmt] super(...)
-#    3|         1: [BlockStmt] { ... }
-#    3|           0: [ExprStmt] <Expr>;
-#    3|             0: [KtInitializerAssignExpr] ...=...
-#    3|               0: [VarAccess] c1
-#    3|           1: [ExprStmt] <Expr>;
-#    3|             0: [KtInitializerAssignExpr] ...=...
-#    3|               0: [VarAccess] c2
-#    3|           2: [ExprStmt] <Expr>;
-#    3|             0: [KtInitializerAssignExpr] ...=...
-#    3|               0: [VarAccess] c3
-#    3|           3: [ExprStmt] <Expr>;
-#    3|             0: [KtInitializerAssignExpr] ...=...
-#    3|               0: [VarAccess] c4
-#    3|     2: [FieldDeclaration] Class<?> c1;
-#    3|       -1: [TypeAccess] Class<?>
-#    3|         0: [WildcardTypeAccess] ? ...
-#    3|       0: [VarAccess] c1
-#    3|     3: [Method] c1
+#-----|     -3: (Annotations)
+#    0|       1: [Annotation] Retention
+#    0|         1: [VarAccess] RetentionPolicy.RUNTIME
+#    0|           -1: [TypeAccess] RetentionPolicy
+#    3|     1: [Method] c1
 #    3|       3: [TypeAccess] Class<?>
 #    3|         0: [WildcardTypeAccess] ? ...
-#    3|       5: [BlockStmt] { ... }
-#    3|         0: [ReturnStmt] return ...
-#    3|           0: [VarAccess] this.c1
-#    3|             -1: [ThisAccess] this
-#    3|     4: [FieldDeclaration] Class<? extends CharSequence> c2;
-#    3|       -1: [TypeAccess] Class<? extends CharSequence>
-#    3|         0: [WildcardTypeAccess] ? ...
-#    3|           0: [TypeAccess] CharSequence
-#    3|       0: [VarAccess] c2
-#    3|     5: [Method] c2
+#    3|     2: [Method] c2
 #    3|       3: [TypeAccess] Class<? extends CharSequence>
 #    3|         0: [WildcardTypeAccess] ? ...
 #    3|           0: [TypeAccess] CharSequence
-#    3|       5: [BlockStmt] { ... }
-#    3|         0: [ReturnStmt] return ...
-#    3|           0: [VarAccess] this.c2
-#    3|             -1: [ThisAccess] this
-#    3|     6: [FieldDeclaration] Class<String> c3;
-#    3|       -1: [TypeAccess] Class<String>
-#    3|         0: [TypeAccess] String
-#    3|       0: [VarAccess] c3
-#    3|     7: [Method] c3
+#    3|     3: [Method] c3
 #    3|       3: [TypeAccess] Class<String>
 #    3|         0: [TypeAccess] String
-#    3|       5: [BlockStmt] { ... }
-#    3|         0: [ReturnStmt] return ...
-#    3|           0: [VarAccess] this.c3
-#    3|             -1: [ThisAccess] this
-#    3|     8: [FieldDeclaration] Class<?>[] c4;
-#    3|       -1: [TypeAccess] Class<?>[]
-#    3|         0: [TypeAccess] Class<?>
-#    3|           0: [WildcardTypeAccess] ? ...
-#    3|       0: [VarAccess] c4
-#    3|     9: [Method] c4
+#    3|     4: [Method] c4
 #    3|       3: [TypeAccess] Class<?>[]
 #    3|         0: [TypeAccess] Class<?>
 #    3|           0: [WildcardTypeAccess] ? ...
-#    3|       5: [BlockStmt] { ... }
-#    3|         0: [ReturnStmt] return ...
-#    3|           0: [VarAccess] this.c4
-#    3|             -1: [ThisAccess] this

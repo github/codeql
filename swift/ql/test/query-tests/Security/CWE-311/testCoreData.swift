@@ -29,7 +29,7 @@ class MyManagedObject : NSManagedObject
 			}
 		}
 		set {
-			setValue(newValue, forKey: "myKey")
+			setValue(newValue, forKey: "myKey") // [additional result reported here]
 		}
 	}
 }
@@ -61,7 +61,7 @@ func test2(obj : MyManagedObject, password : String, password_file : String) {
 	obj.setIndirect(value: password) // BAD [reported on line 19]
 	obj.setIndirect(value: password_file) // GOOD (not sensitive)
 
-	obj.myValue = password // BAD [reported on line 32]
+	obj.myValue = password // BAD [also reported on line 32]
 	obj.myValue = password_file // GOOD (not sensitive)
 }
 

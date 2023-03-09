@@ -468,14 +468,10 @@ abstract class DirectiveTarget extends Locatable {
 /**
  * A DOM element, viewed as directive target.
  */
-private class DomElementAsElement extends DirectiveTarget {
-  DOM::ElementDefinition element;
+private class DomElementAsElement extends DirectiveTarget instanceof DOM::ElementDefinition {
+  override string getName() { result = DOM::ElementDefinition.super.getName() }
 
-  DomElementAsElement() { this = element }
-
-  override string getName() { result = element.getName() }
-
-  override DOM::ElementDefinition getElement() { result = element }
+  override DOM::ElementDefinition getElement() { result = this }
 
   override DirectiveTargetType getType() { result = E() }
 }
@@ -483,18 +479,16 @@ private class DomElementAsElement extends DirectiveTarget {
 /**
  * A DOM attribute, viewed as a directive target.
  */
-private class DomAttributeAsElement extends DirectiveTarget {
-  DOM::AttributeDefinition attr;
+private class DomAttributeAsElement extends DirectiveTarget instanceof DOM::AttributeDefinition {
+  override string getName() { result = DOM::AttributeDefinition.super.getName() }
 
-  DomAttributeAsElement() { this = attr }
-
-  override string getName() { result = attr.getName() }
-
-  override DOM::ElementDefinition getElement() { result = attr.getElement() }
+  override DOM::ElementDefinition getElement() {
+    result = DOM::AttributeDefinition.super.getElement()
+  }
 
   override DirectiveTargetType getType() { result = A() }
 
-  DOM::AttributeDefinition asAttribute() { result = attr }
+  DOM::AttributeDefinition asAttribute() { result = this }
 }
 
 /**
@@ -962,17 +956,13 @@ abstract class Controller extends DataFlow::Node {
 /**
  * A controller instantiated through a directive, e.g. `<div ngController="myController"/>`.
  */
-private class DirectiveController extends Controller {
-  ControllerDefinition def;
-
-  DirectiveController() { this = def }
-
+private class DirectiveController extends Controller instanceof ControllerDefinition {
   private predicate boundAnonymously(DOM::ElementDefinition elem) {
     exists(DirectiveInstance instance, DomAttributeAsElement attr |
       instance.getName() = "ngController" and
       instance.getATarget() = attr and
       elem = attr.getElement() and
-      attr.asAttribute().getStringValue() = def.getName()
+      attr.asAttribute().getStringValue() = super.getName()
     )
   }
 
@@ -989,28 +979,26 @@ private class DirectiveController extends Controller {
         attributeValue = attr.asAttribute().getStringValue() and
         pattern = "([^ ]+) +as +([^ ]+)"
       |
-        attributeValue.regexpCapture(pattern, 1) = def.getName() and
+        attributeValue.regexpCapture(pattern, 1) = ControllerDefinition.super.getName() and
         attributeValue.regexpCapture(pattern, 2) = alias
       )
     )
   }
 
-  override InjectableFunction getFactoryFunction() { result = def.getAFactoryFunction() }
+  override InjectableFunction getFactoryFunction() {
+    result = ControllerDefinition.super.getAFactoryFunction()
+  }
 }
 
 /**
  * A controller instantiated through routes, e.g. `$routeProvider.otherwise({controller: ...})`.
  */
-private class RouteInstantiatedController extends Controller {
-  RouteSetup setup;
-
-  RouteInstantiatedController() { this = setup }
-
-  override InjectableFunction getFactoryFunction() { result = setup.getController() }
+private class RouteInstantiatedController extends Controller instanceof RouteSetup {
+  override InjectableFunction getFactoryFunction() { result = super.getController() }
 
   override predicate boundTo(DOM::ElementDefinition elem) {
     exists(string url, HTML::HtmlFile template |
-      setup.getRouteParam("templateUrl").mayHaveStringValue(url) and
+      super.getRouteParam("templateUrl").mayHaveStringValue(url) and
       template.getAbsolutePath().regexpMatch(".*\\Q" + url + "\\E") and
       elem.getFile() = template
     )
@@ -1018,7 +1006,7 @@ private class RouteInstantiatedController extends Controller {
 
   override predicate boundToAs(DOM::ElementDefinition elem, string name) {
     this.boundTo(elem) and
-    setup.getRouteParam("controllerAs").mayHaveStringValue(name)
+    super.getRouteParam("controllerAs").mayHaveStringValue(name)
   }
 }
 

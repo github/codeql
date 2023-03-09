@@ -51,6 +51,6 @@ module Generated {
     /**
      * Gets the number of cases of this switch statement.
      */
-    final int getNumberOfCases() { result = count(getACase()) }
+    final int getNumberOfCases() { result = count(int i | exists(getCase(i))) }
   }
 }

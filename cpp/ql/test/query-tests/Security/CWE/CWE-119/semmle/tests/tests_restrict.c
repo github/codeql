@@ -12,7 +12,7 @@ void test1()
 	memcpy(largebuf, smallbuf, 2); // BAD: source over-read
 }
 
-int main(int argc, char *argv[])
+int tests_restrict_main(int argc, char *argv[])
 {
 	test1();
 

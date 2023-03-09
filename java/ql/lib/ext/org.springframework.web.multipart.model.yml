@@ -1,0 +1,34 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.springframework.web.multipart", "MultipartFile", True, "getBytes", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.multipart", "MultipartFile", True, "getContentType", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.multipart", "MultipartFile", True, "getInputStream", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.multipart", "MultipartFile", True, "getName", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.multipart", "MultipartFile", True, "getOriginalFilename", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.multipart", "MultipartFile", True, "getResource", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.multipart", "MultipartRequest", True, "getFile", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.multipart", "MultipartRequest", True, "getFileMap", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.multipart", "MultipartRequest", True, "getFileNames", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.multipart", "MultipartRequest", True, "getFiles", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.multipart", "MultipartRequest", True, "getMultiFileMap", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.multipart", "MultipartRequest", True, "getMultipartContentType", "(String)", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.springframework.web.multipart", "MultipartFile", True, "getBytes", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.multipart", "MultipartFile", True, "getInputStream", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.multipart", "MultipartFile", True, "getName", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.multipart", "MultipartFile", True, "getOriginalFilename", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.multipart", "MultipartFile", True, "getResource", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.multipart", "MultipartHttpServletRequest", True, "getMultipartHeaders", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.multipart", "MultipartHttpServletRequest", True, "getRequestHeaders", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.multipart", "MultipartRequest", True, "getFile", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.multipart", "MultipartRequest", True, "getFileMap", "", "", "Argument[-1]", "ReturnValue.MapValue", "taint", "manual"]
+      - ["org.springframework.web.multipart", "MultipartRequest", True, "getFileNames", "", "", "Argument[-1]", "ReturnValue.Element", "taint", "manual"]
+      - ["org.springframework.web.multipart", "MultipartRequest", True, "getFiles", "", "", "Argument[-1]", "ReturnValue.Element", "taint", "manual"]
+      - ["org.springframework.web.multipart", "MultipartRequest", True, "getMultiFileMap", "", "", "Argument[-1]", "ReturnValue.MapValue", "taint", "manual"]
+      - ["org.springframework.web.multipart", "MultipartResolver", True, "resolveMultipart", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

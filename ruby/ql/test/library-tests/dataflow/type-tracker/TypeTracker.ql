@@ -22,7 +22,7 @@ query predicate trackEnd(LocalSourceNode src, DataFlow::Node dst) {
 
 predicate backtrack(LocalSourceNode sink, TypeBackTracker t, LocalSourceNode src) {
   t.start() and
-  sink = src
+  sink.getALocalSource() = src
   or
   exists(TypeBackTracker t2, LocalSourceNode mid |
     backtrack(sink, t2, mid) and

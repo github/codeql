@@ -78,13 +78,10 @@ class JUnitCategory extends WhitelistedLiveClass {
 /**
  * A listener that will be reflectively constructed by TestNG.
  */
-class TestNGReflectivelyConstructedListener extends ReflectivelyConstructedClass {
-  TestNGReflectivelyConstructedListener() {
-    // Consider any class that implements a TestNG listener interface to be live. Listeners can be
-    // specified on the command line, in `testng.xml` files and in Ant build files, so it is safest
-    // to assume that all such listeners are live.
-    this instanceof TestNGListenerImpl
-  }
+class TestNGReflectivelyConstructedListener extends ReflectivelyConstructedClass instanceof TestNGListenerImpl {
+  // Consider any class that implements a TestNG listener interface to be live. Listeners can be
+  // specified on the command line, in `testng.xml` files and in Ant build files, so it is safest
+  // to assume that all such listeners are live.
 }
 
 /**
@@ -99,9 +96,7 @@ class TestNGDataProvidersEntryPoint extends CallableEntryPoint {
 /**
  * A `@Factory` TestNG method or constructor which is live.
  */
-class TestNGFactoryEntryPoint extends CallableEntryPoint {
-  TestNGFactoryEntryPoint() { this instanceof TestNGFactoryCallable }
-}
+class TestNGFactoryEntryPoint extends CallableEntryPoint instanceof TestNGFactoryCallable { }
 
 class TestRefectivelyConstructedClass extends ReflectivelyConstructedClass {
   TestRefectivelyConstructedClass() {
@@ -159,6 +154,5 @@ class CucumberConstructedClass extends ReflectivelyConstructedClass {
 /**
  * A "step definition" that may be called by Cucumber when executing an acceptance test.
  */
-class CucumberStepDefinitionEntryPoint extends CallableEntryPoint {
-  CucumberStepDefinitionEntryPoint() { this instanceof CucumberStepDefinition }
+class CucumberStepDefinitionEntryPoint extends CallableEntryPoint instanceof CucumberStepDefinition {
 }

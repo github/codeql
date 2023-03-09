@@ -37,9 +37,9 @@ private predicate fileRead(VarAccess fileAccess, Expr fileReadingExpr) {
   directFileRead(fileAccess, fileReadingExpr)
   or
   // The `fileAccess` is used in a call which directly or indirectly accesses the file.
-  exists(Call call, int parameterPos, VarAccess nestedFileAccess, Expr nestedFileReadingExpr |
+  exists(Call call, int parameterPos, VarAccess nestedFileAccess |
     call = fileReadingExpr and
-    fileRead(nestedFileAccess, nestedFileReadingExpr) and
+    fileRead(nestedFileAccess, _) and
     call.getCallee().getParameter(parameterPos) = nestedFileAccess.getVariable() and
     fileAccess = call.getArgument(parameterPos)
   )

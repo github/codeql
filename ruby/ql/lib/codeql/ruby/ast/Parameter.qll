@@ -181,7 +181,10 @@ class HashSplatParameter extends NamedParameter, THashSplatParameter {
 
   final override string getAPrimaryQlClass() { result = "HashSplatParameter" }
 
-  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g.getName()) }
+  final override LocalVariable getVariable() {
+    result = TLocalVariableReal(_, _, g.getName()) or
+    result = TLocalVariableSynth(this, 0)
+  }
 
   final override string toString() {
     result = "**" + this.getName()
@@ -307,7 +310,10 @@ class SplatParameter extends NamedParameter, TSplatParameter {
 
   final override string getAPrimaryQlClass() { result = "SplatParameter" }
 
-  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g.getName()) }
+  final override LocalVariable getVariable() {
+    result = TLocalVariableReal(_, _, g.getName()) or
+    result = TLocalVariableSynth(this, 0)
+  }
 
   final override string toString() {
     result = "*" + this.getName()

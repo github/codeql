@@ -8,6 +8,10 @@ import semmle.code.java.controlflow.Guards
 import semmle.code.java.security.UrlRedirect
 import Regex
 
+private class ActivateModels extends ActiveExperimentalModels {
+  ActivateModels() { this = "permissive-dot-regex-query" }
+}
+
 /** A string that ends with `.*` not prefixed with `\`. */
 private class PermissiveDotStr extends StringLiteral {
   PermissiveDotStr() {
@@ -16,20 +20,6 @@ private class PermissiveDotStr extends StringLiteral {
       not s.charAt(i - 1) = "\\" and
       s.length() = i + 2
     )
-  }
-}
-
-/** Remote flow sources obtained from the URI of a servlet request. */
-private class GetServletUriSource extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "javax.servlet.http;HttpServletRequest;false;getPathInfo;();;ReturnValue;uri-path;manual",
-        "javax.servlet.http;HttpServletRequest;false;getPathTranslated;();;ReturnValue;uri-path;manual",
-        "javax.servlet.http;HttpServletRequest;false;getRequestURI;();;ReturnValue;uri-path;manual",
-        "javax.servlet.http;HttpServletRequest;false;getRequestURL;();;ReturnValue;uri-path;manual",
-        "javax.servlet.http;HttpServletRequest;false;getServletPath;();;ReturnValue;uri-path;manual"
-      ]
   }
 }
 

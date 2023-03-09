@@ -5,6 +5,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.QualifiedName
 
 /**
  * An ASP.NET program element. Either an attribute (`AspAttribute`), an open
@@ -40,7 +41,7 @@ class AspAttribute extends AspElement, @asp_attribute { }
  */
 class AspOpenTag extends AspElement, @asp_open_tag {
   /** Either `>` or `/>`, depending on whether it's an empty tag. */
-  private string closeAngle() { if isEmpty() then result = "/>" else result = ">" }
+  private string closeAngle() { if this.isEmpty() then result = "/>" else result = ">" }
 
   /** Gets the `i`th attribute of this open tag. */
   AspAttribute getAttribute(int i) { asp_tag_attribute(this, i, _, result) }
@@ -58,9 +59,9 @@ class AspOpenTag extends AspElement, @asp_open_tag {
   predicate isEmpty() { asp_tag_isempty(this) }
 
   override string toString() {
-    if hasAttribute()
-    then result = "<" + getName() + " ..." + closeAngle()
-    else result = "<" + getName() + closeAngle()
+    if this.hasAttribute()
+    then result = "<" + this.getName() + " ..." + this.closeAngle()
+    else result = "<" + this.getName() + this.closeAngle()
   }
 }
 
@@ -75,9 +76,9 @@ class AspOpenTag extends AspElement, @asp_open_tag {
  */
 class AspCloseTag extends AspElement, @asp_close_tag {
   /** Gets the name of this close tag. */
-  string getName() { result = getBody() }
+  string getName() { result = this.getBody() }
 
-  override string toString() { result = "</" + getName() + ">" }
+  override string toString() { result = "</" + this.getName() + ">" }
 }
 
 /**
@@ -146,44 +147,49 @@ class AspDirective extends AspElement, @asp_directive {
   string getName() { asp_directive_name(this, result) }
 
   /** Holds if this directive has an attribute. */
-  predicate hasAttribute() { exists(getAttribute(_)) }
+  predicate hasAttribute() { exists(this.getAttribute(_)) }
 
   override string toString() {
-    if hasAttribute()
-    then result = "<%@" + getName() + " ...%>"
-    else result = "<%@" + getName() + "%>"
+    if this.hasAttribute()
+    then result = "<%@" + this.getName() + " ...%>"
+    else result = "<%@" + this.getName() + "%>"
   }
 }
 
 /** A quoted string used as an attribute in a tag. */
 class AspQuotedString extends AspAttribute, @asp_quoted_string {
   override string toString() {
-    if exists(getBody().indexOf("\""))
-    then result = "'" + getBody() + "'"
-    else result = "\"" + getBody() + "\""
+    if exists(this.getBody().indexOf("\""))
+    then result = "'" + this.getBody() + "'"
+    else result = "\"" + this.getBody() + "\""
   }
 }
 
 /** Arbitrary text. It will be inserted into the document as is. */
 class AspText extends AspElement, @asp_text {
-  override string toString() { result = getBody() }
+  override string toString() { result = this.getBody() }
 }
 
 /** An XML directive, such as a `DOCTYPE` declaration. */
 class AspXmlDirective extends AspElement, @asp_xml_directive {
-  override string toString() { result = getBody() }
+  override string toString() { result = this.getBody() }
 }
 
 /**
  * A 'Page' ASP directive.
  */
 class PageDirective extends AspDirective {
-  PageDirective() { getName() = "Page" }
+  PageDirective() { this.getName() = "Page" }
 
   /**
    * Gets the 'CodeBehind' class from which this page inherits.
    */
-  ValueOrRefType getInheritedType() { result.getQualifiedName() = getInheritedTypeQualifiedName() }
+  ValueOrRefType getInheritedType() {
+    exists(string qualifier, string type |
+      result.hasQualifiedName(qualifier, type) and
+      splitQualifiedName(this.getInheritedTypeQualifiedName(), qualifier, type)
+    )
+  }
 
   private string getInheritedTypeQualifiedName() {
     // Relevant attributes:
@@ -192,11 +198,11 @@ class PageDirective extends AspDirective {
     //   provide a fallback namespace if `Inherits` does not have one
     // - `CodeBehindFile`/`CodeFile`: used by tooling, but not semantically
     //   relevant at runtime
-    exists(string inherits | inherits = getAttributeByName("Inherits").getBody() |
+    exists(string inherits | inherits = this.getAttributeByName("Inherits").getBody() |
       if inherits.indexOf(".") != -1
       then result = inherits
       else
-        exists(string className | className = getAttributeByName("ClassName").getBody() |
+        exists(string className | className = this.getAttributeByName("ClassName").getBody() |
           // take everything up to and including the last .
           className.prefix(className.indexOf(".", count(className.indexOf(".")) - 1, 0) + 1) +
             inherits = result
@@ -210,7 +216,7 @@ class PageDirective extends AspDirective {
  */
 class CodeBehindFile extends File {
   CodeBehindFile() {
-    getExtension() = "aspx" and
+    this.getExtension() = "aspx" and
     exists(PageDirective pageDir | pageDir.getLocation().getFile() = this)
   }
 
@@ -222,5 +228,5 @@ class CodeBehindFile extends File {
   /**
    * Gets the 'CodeBehind' class from which this page inherits.
    */
-  ValueOrRefType getInheritedType() { result = getPageDirective().getInheritedType() }
+  ValueOrRefType getInheritedType() { result = this.getPageDirective().getInheritedType() }
 }

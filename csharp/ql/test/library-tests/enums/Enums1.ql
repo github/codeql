@@ -7,5 +7,5 @@ import csharp
 from EnumConstant c
 where
   c.getName() = "Red" and
-  c.getDeclaringType().hasQualifiedName("Enums.Color")
+  c.getDeclaringType().hasQualifiedName("Enums", "Color")
 select c, c.getType()

@@ -136,6 +136,18 @@ calls.rb:
 #  605| SingletonC
 #-----| super -> SingletonA
 
+#  618| Included
+
+#  626| IncludesIncluded
+#-----| super -> Object
+#-----| include -> Included
+
+#  633| CustomNew1
+#-----| super -> Object
+
+#  641| CustomNew2
+#-----| super -> Object
+
 hello.rb:
 #    1| EnglishWords
 

@@ -12,5 +12,5 @@ import python
 from ControlFlowNode f, Object o
 where
   f.refersTo(o) and
-  not exists(ClassObject c | f.refersTo(o, c, _))
+  not f.refersTo(o, _, _)
 select o, "Type inference fails for 'object'."

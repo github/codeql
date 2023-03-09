@@ -1,0 +1,3 @@
+| (Int, s: String, Double) | 1 | s |
+| (x: Int, y: Int) | 0 | x |
+| (x: Int, y: Int) | 1 | y |

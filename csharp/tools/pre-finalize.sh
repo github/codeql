@@ -9,6 +9,7 @@ set -eu
     --include-extension=.xml \
     --size-limit 10m \
     --language xml \
+    --working-dir=. \
     -- \
     "$CODEQL_EXTRACTOR_CSHARP_WIP_DATABASE" \
     > /dev/null 2>&1

@@ -51,21 +51,27 @@ def check_tests_valid(testFile):
                 check_async_test_function(item)
 
 
+def check_tests_valid_after_version(testFile, version):
+
+    if sys.version_info[:2] >= version:
+        print("INFO: Will run tests in", testFile, "since we're running Python", version, "or newer")
+        check_tests_valid(testFile)
+    else:
+        print("WARN: Will not run tests in", testFile, "since we're running Python", sys.version_info[:2], "and need", version, "or newer")
+
 if __name__ == "__main__":
     check_tests_valid("coverage.classes")
     check_tests_valid("coverage.test")
     check_tests_valid("coverage.argumentPassing")
+    check_tests_valid("coverage.datamodel")
     check_tests_valid("variable-capture.in")
     check_tests_valid("variable-capture.nonlocal")
     check_tests_valid("variable-capture.dict")
     check_tests_valid("module-initialization.multiphase")
     check_tests_valid("fieldflow.test")
-
-    if sys.version_info[:2] >= (3, 10):
-        print("INFO: Will run `match` tests since we're running Python 3.10 or newer")
-        check_tests_valid("match.test")
-    else:
-        print("WARN: Skipping `match` tests since we're not running 3.10 or newer")
+    check_tests_valid_after_version("match.test", (3, 10))
+    check_tests_valid("exceptions.test")
+    check_tests_valid_after_version("exceptions.test_group", (3, 11))
 
     # The below fails when trying to import modules
     # check_tests_valid("module-initialization.test")

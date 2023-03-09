@@ -46,6 +46,9 @@ sourceSets {
 
                     "utils/versions/v_1_7_20-Beta/createImplicitParameterDeclarationWithWrappedDescriptor.kt",
                     "utils/versions/v_1_7_20-Beta/allOverriddenIncludingSelf.kt",
+
+                    "utils/versions/v_1_8_0/ExperimentalCompilerApi.kt",
+                    "utils/versions/v_1_8_0/FirIncompatiblePluginAPI.kt",
             ]
         }
     }

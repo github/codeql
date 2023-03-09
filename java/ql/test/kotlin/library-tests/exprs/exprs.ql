@@ -35,4 +35,5 @@ MaybeElement enclosingCallable(Expr e) {
 }
 
 from Expr e
+where e.getFile().isSourceFile()
 select e, enclosingCallable(e), e.getPrimaryQlClasses()

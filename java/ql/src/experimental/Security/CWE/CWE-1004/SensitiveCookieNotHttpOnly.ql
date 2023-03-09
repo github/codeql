@@ -7,6 +7,7 @@
  * @precision medium
  * @id java/sensitive-cookie-not-httponly
  * @tags security
+ *       experimental
  *       external/cwe/cwe-1004
  */
 

@@ -29,7 +29,7 @@ class RemoteFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasRemoteValueFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink | any(RemoteValueConf c).hasFlow(src, sink) |
+    exists(DataFlow::Node sink | any(RemoteValueConf c).hasFlowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

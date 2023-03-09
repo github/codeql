@@ -33,26 +33,23 @@ private class RemoteFlowSourceFromCsv extends RemoteFlowSource::Range {
 }
 
 private class SummarizedCallableFromModel extends SummarizedCallable {
-  string package;
   string type;
   string path;
 
   SummarizedCallableFromModel() {
-    ModelOutput::relevantSummaryModel(package, type, path, _, _, _) and
-    this = package + ";" + type + ";" + path
+    ModelOutput::relevantSummaryModel(type, path, _, _, _) and
+    this = type + ";" + path
   }
 
   override Call getACall() {
     exists(API::MethodAccessNode base |
-      ModelOutput::resolvedSummaryBase(package, type, path, base) and
+      ModelOutput::resolvedSummaryBase(type, path, base) and
       result = base.getCallNode().asExpr().getExpr()
     )
   }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    exists(string kind |
-      ModelOutput::relevantSummaryModel(package, type, path, input, output, kind)
-    |
+    exists(string kind | ModelOutput::relevantSummaryModel(type, path, input, output, kind) |
       kind = "value" and
       preservesValue = true
       or

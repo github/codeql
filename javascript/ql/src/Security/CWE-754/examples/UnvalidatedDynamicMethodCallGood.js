@@ -2,10 +2,10 @@ var express = require('express');
 var app = express();
 
 var actions = new Map();
-actions.put("play", function play(data) {
+actions.set("play", function play(data) {
   // ...
 });
-actions.put("pause", function pause(data) {
+actions.set("pause", function pause(data) {
   // ...
 });
 

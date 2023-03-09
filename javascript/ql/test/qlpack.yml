@@ -5,3 +5,5 @@ dependencies:
   codeql/javascript-queries: ${workspace}
 extractor: javascript
 tests: .
+dataExtensions:
+  - library-tests/DataExtensions/*.model.yml

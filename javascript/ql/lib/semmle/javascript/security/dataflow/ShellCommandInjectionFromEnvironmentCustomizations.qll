@@ -27,9 +27,7 @@ module ShellCommandInjectionFromEnvironment {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** An file name from the local file system, considered as a flow source for command injection. */
-  class FileNameSourceAsSource extends Source {
-    FileNameSourceAsSource() { this instanceof FileNameSource }
-
+  class FileNameSourceAsSource extends Source instanceof FileNameSource {
     override string getSourceType() { result = "file name" }
   }
 

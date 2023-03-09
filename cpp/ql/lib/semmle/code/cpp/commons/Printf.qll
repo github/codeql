@@ -397,11 +397,8 @@ private int lengthInBase16(float f) {
 /**
  * A class to represent format strings that occur as arguments to invocations of formatting functions.
  */
-class FormatLiteral extends Literal {
-  FormatLiteral() {
-    exists(FormattingFunctionCall ffc | ffc.getFormat() = this) and
-    this instanceof StringLiteral
-  }
+class FormatLiteral extends Literal instanceof StringLiteral {
+  FormatLiteral() { exists(FormattingFunctionCall ffc | ffc.getFormat() = this) }
 
   /**
    * Gets the function call where this format string is used.

@@ -2,7 +2,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.System
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Net` namespace. */
 class SystemNetNamespace extends Namespace {
@@ -26,18 +25,6 @@ class SystemNetWebUtility extends SystemNetClass {
 
   /** Gets an `UrlEncode` method. */
   Method getAnUrlEncodeMethod() { result = this.getAMethod("UrlEncode") }
-}
-
-/** Data flow for `System.Net.WebUtility`. */
-private class SystemNetWebUtilityFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Net;WebUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint;manual",
-        "System.Net;WebUtility;false;HtmlEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint;manual",
-        "System.Net;WebUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint;manual"
-      ]
-  }
 }
 
 /** The `System.Net.HttpListenerResponse` class. */
@@ -72,52 +59,10 @@ class SystemNetIPHostEntryClass extends SystemNetClass {
   Property getAliasesProperty() { result = this.getProperty("Aliases") }
 }
 
-/** Data flow for `System.Net.IPHostEntry`. */
-private class SystemNetIPHostEntryClassFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Net;IPHostEntry;false;get_Aliases;();;Argument[this];ReturnValue;taint;manual",
-        "System.Net;IPHostEntry;false;get_HostName;();;Argument[this];ReturnValue;taint;manual"
-      ]
-  }
-}
-
 /** The `System.Net.Cookie` class. */
 class SystemNetCookieClass extends SystemNetClass {
   SystemNetCookieClass() { this.hasName("Cookie") }
 
   /** Gets the `Value` property. */
   Property getValueProperty() { result = this.getProperty("Value") }
-}
-
-/** Data flow for `System.Net.Cookie`. */
-private class SystemNetCookieClassFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row = "System.Net;Cookie;false;get_Value;();;Argument[this];ReturnValue;taint;manual"
-  }
-}
-
-/** Data flow for `System.Net.HttpListenerPrefixCollection`. */
-private class SystemNetHttpListenerPrefixCollectionFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      "System.Net;HttpListenerPrefixCollection;false;CopyTo;(System.Array,System.Int32);;Argument[this].Element;Argument[0].Element;value;manual"
-  }
-}
-
-/** Data flow for `System.Net.CookieCollection`. */
-private class SystemNetCookieCollectionFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      "System.Net;CookieCollection;false;Add;(System.Net.CookieCollection);;Argument[0];Argument[this].Element;value;manual"
-  }
-}
-
-/** Data flow for `System.Net.WebHeaderCollection`. */
-private class SystemNetWebHeaderCollectionFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      "System.Net;WebHeaderCollection;false;Add;(System.String);;Argument[0];Argument[this].Element;value;manual"
-  }
 }

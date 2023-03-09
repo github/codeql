@@ -10,18 +10,26 @@
  */
 
 import Documentation
+import semmle.code.csharp.commons.QualifiedName
 
 from SourceMethodOrConstructor m, ThrowElement throw, RefType throwType
 where
   declarationHasXmlComment(m) and
   m = throw.getEnclosingCallable() and
   throwType = throw.getExpr().getType() and
-  not exists(ExceptionXmlComment comment, int offset, string exceptionName, RefType throwBaseType |
+  not exists(ExceptionXmlComment comment, string exceptionName, RefType throwBaseType |
     comment = getADeclarationXmlComment(m) and
-    exceptionName = comment.getCref(offset) and
+    exceptionName = comment.getCref(_) and
     throwType.getABaseType*() = throwBaseType and
-    (throwBaseType.hasName(exceptionName) or throwBaseType.hasQualifiedName(exceptionName))
-    // and comment.hasBody(offset) // Too slow
+    (
+      throwBaseType.hasName(exceptionName)
+      or
+      exists(string qualifier, string type |
+        splitQualifiedName(exceptionName, qualifier, type) and
+        throwBaseType.hasQualifiedName(qualifier, type)
+      )
+      // and comment.hasBody(offset) // Too slow
+    )
   ) and
   not getADeclarationXmlComment(m) instanceof InheritDocXmlComment
 select m, "Exception $@ should be documented.", throw, throw.getExpr().getType().getName()

@@ -5,6 +5,7 @@
  * @problem.severity error
  * @id cs/hash-without-salt
  * @tags security
+ *       experimental
  *       external/cwe-759
  */
 
@@ -96,10 +97,10 @@ predicate hasAnotherHashCall(MethodCall mc) {
 predicate hasFurtherProcessing(MethodCall mc) {
   mc.getTarget().fromLibrary() and
   (
-    mc.getTarget().hasQualifiedName("System.Array", "Copy") or // Array.Copy(passwordHash, 0, password.Length), 0, key, 0, keyLen);
-    mc.getTarget().hasQualifiedName("System.String", "Concat") or // string.Concat(passwordHash, saltkey)
-    mc.getTarget().hasQualifiedName("System.Buffer", "BlockCopy") or // Buffer.BlockCopy(passwordHash, 0, allBytes, 0, 20)
-    mc.getTarget().hasQualifiedName("System.String", "Format") // String.Format("{0}:{1}:{2}", username, salt, password)
+    mc.getTarget().hasQualifiedName("System", "Array", "Copy") or // Array.Copy(passwordHash, 0, password.Length), 0, key, 0, keyLen);
+    mc.getTarget().hasQualifiedName("System", "String", "Concat") or // string.Concat(passwordHash, saltkey)
+    mc.getTarget().hasQualifiedName("System", "Buffer", "BlockCopy") or // Buffer.BlockCopy(passwordHash, 0, allBytes, 0, 20)
+    mc.getTarget().hasQualifiedName("System", "String", "Format") // String.Format("{0}:{1}:{2}", username, salt, password)
   )
 }
 
@@ -150,7 +151,7 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodCall mc |
       mc.getTarget()
-          .hasQualifiedName("Windows.Security.Cryptography.CryptographicBuffer",
+          .hasQualifiedName("Windows.Security.Cryptography", "CryptographicBuffer",
             "ConvertStringToBinary") and
       mc.getArgument(0) = node1.asExpr() and
       mc = node2.asExpr()

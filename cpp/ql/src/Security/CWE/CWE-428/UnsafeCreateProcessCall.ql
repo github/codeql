@@ -100,14 +100,14 @@ predicate isQuotedOrNoSpaceApplicationNameOnCmd(string s) {
 
 from CreateProcessFunctionCall call, string msg1, string msg2
 where
-  exists(Expr source, Expr appName, NullAppNameCreateProcessFunctionConfiguration nullAppConfig |
+  exists(Expr appName, NullAppNameCreateProcessFunctionConfiguration nullAppConfig |
     appName = call.getArgument(call.getApplicationNameArgumentId()) and
-    nullAppConfig.hasFlow(DataFlow2::exprNode(source), DataFlow2::exprNode(appName)) and
+    nullAppConfig.hasFlowToExpr(appName) and
     msg1 = call.toString() + " with lpApplicationName == NULL (" + appName + ")"
   ) and
-  exists(Expr source, Expr cmd, QuotedCommandInCreateProcessFunctionConfiguration quotedConfig |
+  exists(Expr cmd, QuotedCommandInCreateProcessFunctionConfiguration quotedConfig |
     cmd = call.getArgument(call.getCommandLineArgumentId()) and
-    quotedConfig.hasFlow(DataFlow2::exprNode(source), DataFlow2::exprNode(cmd)) and
+    quotedConfig.hasFlowToExpr(cmd) and
     msg2 =
       " and with an unquoted lpCommandLine (" + cmd +
         ") introduces a security vulnerability if the path contains spaces."

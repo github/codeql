@@ -30,15 +30,12 @@ abstract class ScanfFunction extends Function {
 /**
  * The standard function `scanf` (and variations).
  */
-class Scanf extends ScanfFunction {
+class Scanf extends ScanfFunction instanceof TopLevelFunction {
   Scanf() {
-    this instanceof TopLevelFunction and
-    (
-      this.hasGlobalOrStdOrBslName("scanf") or // scanf(format, args...)
-      this.hasGlobalOrStdOrBslName("wscanf") or // wscanf(format, args...)
-      this.hasGlobalName("_scanf_l") or // _scanf_l(format, locale, args...)
-      this.hasGlobalName("_wscanf_l") // _wscanf_l(format, locale, args...)
-    )
+    this.hasGlobalOrStdOrBslName("scanf") or // scanf(format, args...)
+    this.hasGlobalOrStdOrBslName("wscanf") or // wscanf(format, args...)
+    this.hasGlobalName("_scanf_l") or // _scanf_l(format, locale, args...)
+    this.hasGlobalName("_wscanf_l")
   }
 
   override int getInputParameterIndex() { none() }
@@ -49,15 +46,12 @@ class Scanf extends ScanfFunction {
 /**
  * The standard function `fscanf` (and variations).
  */
-class Fscanf extends ScanfFunction {
+class Fscanf extends ScanfFunction instanceof TopLevelFunction {
   Fscanf() {
-    this instanceof TopLevelFunction and
-    (
-      this.hasGlobalOrStdOrBslName("fscanf") or // fscanf(src_stream, format, args...)
-      this.hasGlobalOrStdOrBslName("fwscanf") or // fwscanf(src_stream, format, args...)
-      this.hasGlobalName("_fscanf_l") or // _fscanf_l(src_stream, format, locale, args...)
-      this.hasGlobalName("_fwscanf_l") // _fwscanf_l(src_stream, format, locale, args...)
-    )
+    this.hasGlobalOrStdOrBslName("fscanf") or // fscanf(src_stream, format, args...)
+    this.hasGlobalOrStdOrBslName("fwscanf") or // fwscanf(src_stream, format, args...)
+    this.hasGlobalName("_fscanf_l") or // _fscanf_l(src_stream, format, locale, args...)
+    this.hasGlobalName("_fwscanf_l")
   }
 
   override int getInputParameterIndex() { result = 0 }
@@ -68,15 +62,12 @@ class Fscanf extends ScanfFunction {
 /**
  * The standard function `sscanf` (and variations).
  */
-class Sscanf extends ScanfFunction {
+class Sscanf extends ScanfFunction instanceof TopLevelFunction {
   Sscanf() {
-    this instanceof TopLevelFunction and
-    (
-      this.hasGlobalOrStdOrBslName("sscanf") or // sscanf(src_stream, format, args...)
-      this.hasGlobalOrStdOrBslName("swscanf") or // swscanf(src, format, args...)
-      this.hasGlobalName("_sscanf_l") or // _sscanf_l(src, format, locale, args...)
-      this.hasGlobalName("_swscanf_l") // _swscanf_l(src, format, locale, args...)
-    )
+    this.hasGlobalOrStdOrBslName("sscanf") or // sscanf(src_stream, format, args...)
+    this.hasGlobalOrStdOrBslName("swscanf") or // swscanf(src, format, args...)
+    this.hasGlobalName("_sscanf_l") or // _sscanf_l(src, format, locale, args...)
+    this.hasGlobalName("_swscanf_l")
   }
 
   override int getInputParameterIndex() { result = 0 }
@@ -87,17 +78,12 @@ class Sscanf extends ScanfFunction {
 /**
  * The standard(ish) function `snscanf` (and variations).
  */
-class Snscanf extends ScanfFunction {
+class Snscanf extends ScanfFunction instanceof TopLevelFunction {
   Snscanf() {
-    this instanceof TopLevelFunction and
-    (
-      this.hasGlobalName("_snscanf") or // _snscanf(src, max_amount, format, args...)
-      this.hasGlobalName("_snwscanf") or // _snwscanf(src, max_amount, format, args...)
-      this.hasGlobalName("_snscanf_l") or // _snscanf_l(src, max_amount, format, locale, args...)
-      this.hasGlobalName("_snwscanf_l") // _snwscanf_l(src, max_amount, format, locale, args...)
-      // note that the max_amount is not a limit on the output length, it's an input length
-      // limit used with non null-terminated strings.
-    )
+    this.hasGlobalName("_snscanf") or // _snscanf(src, max_amount, format, args...)
+    this.hasGlobalName("_snwscanf") or // _snwscanf(src, max_amount, format, args...)
+    this.hasGlobalName("_snscanf_l") or // _snscanf_l(src, max_amount, format, locale, args...)
+    this.hasGlobalName("_snwscanf_l")
   }
 
   override int getInputParameterIndex() { result = 0 }
@@ -258,9 +244,7 @@ class ScanfFormatLiteral extends Expr {
   /**
    * Gets the maximum width option of the nth input (empty string if none is given).
    */
-  string getMaxWidthOpt(int n) {
-    exists(string spec, string len, string conv | this.parseConvSpec(n, spec, result, len, conv))
-  }
+  string getMaxWidthOpt(int n) { this.parseConvSpec(n, _, result, _, _) }
 
   /**
    * Gets the maximum width of the nth input.
@@ -270,18 +254,12 @@ class ScanfFormatLiteral extends Expr {
   /**
    * Gets the length flag of the nth conversion specifier.
    */
-  string getLength(int n) {
-    exists(string spec, string width, string conv |
-      this.parseConvSpec(n, spec, width, result, conv)
-    )
-  }
+  string getLength(int n) { this.parseConvSpec(n, _, _, result, _) }
 
   /**
    * Gets the conversion character of the nth conversion specifier.
    */
-  string getConversionChar(int n) {
-    exists(string spec, string width, string len | this.parseConvSpec(n, spec, width, len, result))
-  }
+  string getConversionChar(int n) { this.parseConvSpec(n, _, _, _, result) }
 
   /**
    * Gets the maximum length of the string that can be produced by the nth

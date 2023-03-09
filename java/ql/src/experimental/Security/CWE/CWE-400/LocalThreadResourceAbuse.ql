@@ -3,7 +3,7 @@
  * @description Using user input directly to control a thread's sleep time could lead to
  *              performance problems or even resource exhaustion.
  * @kind path-problem
- * @id java/thread-resource-abuse
+ * @id java/local-thread-resource-abuse
  * @problem.severity recommendation
  * @tags security
  *       external/cwe/cwe-400

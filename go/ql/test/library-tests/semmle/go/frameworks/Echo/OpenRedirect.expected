@@ -1,20 +1,18 @@
 edges
-| test.go:170:11:170:32 | call to Param : string | test.go:171:20:171:24 | param |
-| test.go:176:11:176:32 | call to Param : string | test.go:180:20:180:28 | ...+... |
-| test.go:188:10:188:26 | selection of URL : pointer type | test.go:188:10:188:26 | selection of URL : pointer type |
-| test.go:188:10:188:26 | selection of URL : pointer type | test.go:188:10:188:26 | selection of URL : pointer type |
-| test.go:188:10:188:26 | selection of URL : pointer type | test.go:191:21:191:32 | call to String |
-| test.go:188:10:188:26 | selection of URL : pointer type | test.go:191:21:191:32 | call to String |
+| test.go:170:11:170:32 | call to Param | test.go:171:20:171:24 | param |
+| test.go:176:11:176:32 | call to Param | test.go:180:20:180:28 | ...+... |
+| test.go:188:10:188:26 | selection of URL | test.go:191:21:191:32 | call to String |
+| test.go:188:10:188:26 | selection of URL | test.go:191:21:191:32 | call to String |
 nodes
-| test.go:170:11:170:32 | call to Param : string | semmle.label | call to Param : string |
+| test.go:170:11:170:32 | call to Param | semmle.label | call to Param |
 | test.go:171:20:171:24 | param | semmle.label | param |
-| test.go:176:11:176:32 | call to Param : string | semmle.label | call to Param : string |
+| test.go:176:11:176:32 | call to Param | semmle.label | call to Param |
 | test.go:180:20:180:28 | ...+... | semmle.label | ...+... |
-| test.go:188:10:188:26 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
-| test.go:188:10:188:26 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| test.go:188:10:188:26 | selection of URL | semmle.label | selection of URL |
+| test.go:188:10:188:26 | selection of URL | semmle.label | selection of URL |
 | test.go:191:21:191:32 | call to String | semmle.label | call to String |
 | test.go:191:21:191:32 | call to String | semmle.label | call to String |
 subpaths
 #select
-| test.go:171:20:171:24 | param | test.go:170:11:170:32 | call to Param : string | test.go:171:20:171:24 | param | Untrusted URL redirection depends on a $@. | test.go:170:11:170:32 | call to Param | user-provided value |
-| test.go:180:20:180:28 | ...+... | test.go:176:11:176:32 | call to Param : string | test.go:180:20:180:28 | ...+... | Untrusted URL redirection depends on a $@. | test.go:176:11:176:32 | call to Param | user-provided value |
+| test.go:171:20:171:24 | param | test.go:170:11:170:32 | call to Param | test.go:171:20:171:24 | param | Untrusted URL redirection depends on a $@. | test.go:170:11:170:32 | call to Param | user-provided value |
+| test.go:180:20:180:28 | ...+... | test.go:176:11:176:32 | call to Param | test.go:180:20:180:28 | ...+... | Untrusted URL redirection depends on a $@. | test.go:176:11:176:32 | call to Param | user-provided value |

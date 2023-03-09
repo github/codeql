@@ -5,6 +5,7 @@
  * @problem.severity warning
  * @id cs/dataset-serialization/defining-dataset-related-type
  * @tags security
+ *       experimental
  */
 
 import csharp

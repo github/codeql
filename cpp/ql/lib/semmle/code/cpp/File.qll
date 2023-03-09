@@ -189,18 +189,6 @@ class Folder extends Container, @folder {
    * Gets the URL of this folder.
    */
   deprecated override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
-
-  /**
-   * DEPRECATED: use `getAbsolutePath` instead.
-   * Gets the name of this folder.
-   */
-  deprecated string getName() { folders(underlyingElement(this), result) }
-
-  /**
-   * DEPRECATED: use `getBaseName` instead.
-   * Gets the last part of the folder name.
-   */
-  deprecated string getShortName() { result = this.getBaseName() }
 }
 
 /**

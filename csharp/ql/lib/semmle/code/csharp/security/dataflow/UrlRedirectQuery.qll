@@ -50,9 +50,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
 }
 
 /** A source of remote user input. */
-class RemoteSource extends Source {
-  RemoteSource() { this instanceof RemoteFlowSource }
-}
+class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /**
  * A URL argument to a call to `HttpResponse.Redirect()` or `Controller.Redirect()`, that is a

@@ -39,7 +39,7 @@ class GeneratedAttributeFile extends GeneratedCodeFile {
 class GeneratedNamespaceFile extends GeneratedCodeFile {
   GeneratedNamespaceFile() {
     exists(Namespace n | n.getATypeDeclaration().getFile() = this |
-      n.getQualifiedName() = "Microsoft.Xml.Serialization.GeneratedAssembly"
+      n.getFullName() = "Microsoft.Xml.Serialization.GeneratedAssembly"
     )
   }
 }

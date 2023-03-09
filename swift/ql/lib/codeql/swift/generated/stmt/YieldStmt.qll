@@ -34,6 +34,6 @@ module Generated {
     /**
      * Gets the number of results of this yield statement.
      */
-    final int getNumberOfResults() { result = count(getAResult()) }
+    final int getNumberOfResults() { result = count(int i | exists(getResult(i))) }
   }
 }

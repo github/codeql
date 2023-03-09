@@ -1,4 +1,4 @@
-/*
+/**
  * Predicates that help detect potential non-cryptographic hash functions
  *
  * By themselves, non-cryptographic functions are common and not dangerous
@@ -76,8 +76,8 @@ private predicate maybeUsedInElfHashFunction(Variable v, Operation xor, Operatio
  * where the parameter `param` is likely the message to hash
  */
 predicate isCallableAPotentialNonCryptographicHashFunction(Callable callable, Parameter param) {
-  exists(Variable v, Expr op1, Expr op2, LoopStmt loop |
-    maybeANonCryptographicHash(callable, v, op1, op2, loop) and
+  exists(Expr op1, Expr op2 |
+    maybeANonCryptographicHash(callable, _, op1, op2, _) and
     callable.getAParameter() = param and
     exists(ParameterNode p, ExprNode n |
       p.getParameter() = param and

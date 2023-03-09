@@ -6,5 +6,6 @@
 import java
 
 module DataFlow {
-  import semmle.code.java.dataflow.internal.DataFlowImpl
+  import semmle.code.java.dataflow.internal.DataFlow
+  import semmle.code.java.dataflow.internal.DataFlowImpl1
 }

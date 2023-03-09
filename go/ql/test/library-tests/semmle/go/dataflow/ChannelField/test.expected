@@ -1,22 +1,22 @@
 edges
-| test.go:9:9:9:11 | selection of c [collection] : string | test.go:9:7:9:11 | <-... |
-| test.go:13:16:13:16 | definition of s [pointer, c, collection] : string | test.go:16:2:16:2 | s [pointer, c, collection] : string |
-| test.go:15:10:15:17 | call to source : string | test.go:16:9:16:12 | data : string |
-| test.go:16:2:16:2 | implicit dereference [c, collection] : string | test.go:13:16:13:16 | definition of s [pointer, c, collection] : string |
-| test.go:16:2:16:2 | implicit dereference [c, collection] : string | test.go:16:2:16:4 | selection of c [collection] : string |
-| test.go:16:2:16:2 | s [pointer, c, collection] : string | test.go:16:2:16:2 | implicit dereference [c, collection] : string |
-| test.go:16:2:16:4 | selection of c [collection] : string | test.go:9:9:9:11 | selection of c [collection] : string |
-| test.go:16:2:16:4 | selection of c [collection] : string | test.go:16:2:16:2 | implicit dereference [c, collection] : string |
-| test.go:16:9:16:12 | data : string | test.go:16:2:16:4 | selection of c [collection] : string |
+| test.go:9:9:9:11 | selection of c [collection] | test.go:9:7:9:11 | <-... |
+| test.go:13:16:13:16 | definition of s [pointer, c, collection] | test.go:16:2:16:2 | s [pointer, c, collection] |
+| test.go:15:10:15:17 | call to source | test.go:16:9:16:12 | data |
+| test.go:16:2:16:2 | implicit dereference [c, collection] | test.go:13:16:13:16 | definition of s [pointer, c, collection] |
+| test.go:16:2:16:2 | implicit dereference [c, collection] | test.go:16:2:16:4 | selection of c [collection] |
+| test.go:16:2:16:2 | s [pointer, c, collection] | test.go:16:2:16:2 | implicit dereference [c, collection] |
+| test.go:16:2:16:4 | selection of c [collection] | test.go:9:9:9:11 | selection of c [collection] |
+| test.go:16:2:16:4 | selection of c [collection] | test.go:16:2:16:2 | implicit dereference [c, collection] |
+| test.go:16:9:16:12 | data | test.go:16:2:16:4 | selection of c [collection] |
 nodes
 | test.go:9:7:9:11 | <-... | semmle.label | <-... |
-| test.go:9:9:9:11 | selection of c [collection] : string | semmle.label | selection of c [collection] : string |
-| test.go:13:16:13:16 | definition of s [pointer, c, collection] : string | semmle.label | definition of s [pointer, c, collection] : string |
-| test.go:15:10:15:17 | call to source : string | semmle.label | call to source : string |
-| test.go:16:2:16:2 | implicit dereference [c, collection] : string | semmle.label | implicit dereference [c, collection] : string |
-| test.go:16:2:16:2 | s [pointer, c, collection] : string | semmle.label | s [pointer, c, collection] : string |
-| test.go:16:2:16:4 | selection of c [collection] : string | semmle.label | selection of c [collection] : string |
-| test.go:16:9:16:12 | data : string | semmle.label | data : string |
+| test.go:9:9:9:11 | selection of c [collection] | semmle.label | selection of c [collection] |
+| test.go:13:16:13:16 | definition of s [pointer, c, collection] | semmle.label | definition of s [pointer, c, collection] |
+| test.go:15:10:15:17 | call to source | semmle.label | call to source |
+| test.go:16:2:16:2 | implicit dereference [c, collection] | semmle.label | implicit dereference [c, collection] |
+| test.go:16:2:16:2 | s [pointer, c, collection] | semmle.label | s [pointer, c, collection] |
+| test.go:16:2:16:4 | selection of c [collection] | semmle.label | selection of c [collection] |
+| test.go:16:9:16:12 | data | semmle.label | data |
 subpaths
 #select
-| test.go:15:10:15:17 | call to source : string | test.go:15:10:15:17 | call to source : string | test.go:9:7:9:11 | <-... | path |
+| test.go:15:10:15:17 | call to source | test.go:15:10:15:17 | call to source | test.go:9:7:9:11 | <-... | path |

@@ -121,7 +121,7 @@ string getIdentityString(Function func) { result = func.getLabel() }
 
 predicate hasCaseEdge(string minValue, string maxValue) {
   // TODO: Need to handle pattern matching
-  exists(CSharp::CaseStmt cst | hasCaseEdge(cst, minValue, maxValue))
+  hasCaseEdge(_, minValue, maxValue)
 }
 
 predicate hasPositionalArgIndex(int argIndex) {

@@ -8,11 +8,6 @@ private import semmle.javascript.security.TaintedUrlSuffix
 import DomBasedXssCustomizations::DomBasedXss
 private import Xss::Shared as Shared
 
-/**
- * DEPRECATED. Use `Vue::VHtmlSourceWrite` instead.
- */
-deprecated class VHtmlSourceWrite = Vue::VHtmlSourceWrite;
-
 /** DEPRECATED. Use `Configuration`. */
 deprecated class HtmlInjectionConfiguration = Configuration;
 

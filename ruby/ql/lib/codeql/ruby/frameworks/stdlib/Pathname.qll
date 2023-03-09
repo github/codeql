@@ -123,33 +123,31 @@ module Pathname {
    */
   private class PathnameTypeSummary extends ModelInput::TypeModelCsv {
     override predicate row(string row) {
-      // package1;type1;package2;type2;path
+      // type1;type2;path
       row =
         [
-          // Pathname.new : Pathname
-          ";Pathname;;;Member[Pathname].Instance",
           // Pathname#+(path) : Pathname
-          ";Pathname;;Pathname;Method[+].ReturnValue",
+          "Pathname;Pathname;Method[+].ReturnValue",
           // Pathname#/(path) : Pathname
-          ";Pathname;;Pathname;Method[/].ReturnValue",
+          "Pathname;Pathname;Method[/].ReturnValue",
           // Pathname#basename(path) : Pathname
-          ";Pathname;;Pathname;Method[basename].ReturnValue",
+          "Pathname;Pathname;Method[basename].ReturnValue",
           // Pathname#cleanpath(path) : Pathname
-          ";Pathname;;Pathname;Method[cleanpath].ReturnValue",
+          "Pathname;Pathname;Method[cleanpath].ReturnValue",
           // Pathname#expand_path(path) : Pathname
-          ";Pathname;;Pathname;Method[expand_path].ReturnValue",
+          "Pathname;Pathname;Method[expand_path].ReturnValue",
           // Pathname#join(path) : Pathname
-          ";Pathname;;Pathname;Method[join].ReturnValue",
+          "Pathname;Pathname;Method[join].ReturnValue",
           // Pathname#realpath(path) : Pathname
-          ";Pathname;;Pathname;Method[realpath].ReturnValue",
+          "Pathname;Pathname;Method[realpath].ReturnValue",
           // Pathname#relative_path_from(path) : Pathname
-          ";Pathname;;Pathname;Method[relative_path_from].ReturnValue",
+          "Pathname;Pathname;Method[relative_path_from].ReturnValue",
           // Pathname#sub(path) : Pathname
-          ";Pathname;;Pathname;Method[sub].ReturnValue",
+          "Pathname;Pathname;Method[sub].ReturnValue",
           // Pathname#sub_ext(path) : Pathname
-          ";Pathname;;Pathname;Method[sub_ext].ReturnValue",
+          "Pathname;Pathname;Method[sub_ext].ReturnValue",
           // Pathname#to_path(path) : Pathname
-          ";Pathname;;Pathname;Method[to_path].ReturnValue",
+          "Pathname;Pathname;Method[to_path].ReturnValue",
         ]
     }
   }
@@ -160,31 +158,31 @@ module Pathname {
       row =
         [
           // Pathname.new(path)
-          ";;Member[Pathname].Method[new];Argument[0];ReturnValue;taint",
+          "Pathname!;Method[new];Argument[0];ReturnValue;taint",
           // Pathname#dirname
-          ";Pathname;Method[dirname];Argument[self];ReturnValue;taint",
+          "Pathname;Method[dirname];Argument[self];ReturnValue;taint",
           // Pathname#each_filename
-          ";Pathname;Method[each_filename];Argument[self];Argument[block].Parameter[0];taint",
+          "Pathname;Method[each_filename];Argument[self];Argument[block].Parameter[0];taint",
           // Pathname#expand_path
-          ";Pathname;Method[expand_path];Argument[self];ReturnValue;taint",
+          "Pathname;Method[expand_path];Argument[self];ReturnValue;taint",
           // Pathname#join
-          ";Pathname;Method[join];Argument[self,any];ReturnValue;taint",
+          "Pathname;Method[join];Argument[self,any];ReturnValue;taint",
           // Pathname#parent
-          ";Pathname;Method[parent];Argument[self];ReturnValue;taint",
+          "Pathname;Method[parent];Argument[self];ReturnValue;taint",
           // Pathname#realpath
-          ";Pathname;Method[realpath];Argument[self];ReturnValue;taint",
+          "Pathname;Method[realpath];Argument[self];ReturnValue;taint",
           // Pathname#relative_path_from
-          ";Pathname;Method[relative_path_from];Argument[self];ReturnValue;taint",
+          "Pathname;Method[relative_path_from];Argument[self];ReturnValue;taint",
           // Pathname#to_path
-          ";Pathname;Method[to_path];Argument[self];ReturnValue;taint",
+          "Pathname;Method[to_path];Argument[self];ReturnValue;taint",
           // Pathname#basename
-          ";Pathname;Method[basename];Argument[self];ReturnValue;taint",
+          "Pathname;Method[basename];Argument[self];ReturnValue;taint",
           // Pathname#cleanpath
-          ";Pathname;Method[cleanpath];Argument[self];ReturnValue;taint",
+          "Pathname;Method[cleanpath];Argument[self];ReturnValue;taint",
           // Pathname#sub
-          ";Pathname;Method[sub];Argument[self];ReturnValue;taint",
+          "Pathname;Method[sub];Argument[self];ReturnValue;taint",
           // Pathname#sub_ext
-          ";Pathname;Method[sub_ext];Argument[self];ReturnValue;taint",
+          "Pathname;Method[sub_ext];Argument[self];ReturnValue;taint",
         ]
     }
   }

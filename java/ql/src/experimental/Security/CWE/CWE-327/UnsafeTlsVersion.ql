@@ -7,6 +7,7 @@
  * @precision high
  * @id java/unsafe-tls-version
  * @tags security
+ *       experimental
  *       external/cwe/cwe-327
  */
 

@@ -36,6 +36,13 @@ private module Cached {
     not s instanceof ModuleBase and
     result = getEnclosingMethod(s.getOuterScope())
   }
+
+  cached
+  Toplevel getEnclosingToplevel(Scope s) {
+    result = s
+    or
+    result = getEnclosingToplevel(s.getOuterScope())
+  }
 }
 
 private import Cached
@@ -65,6 +72,9 @@ class AstNode extends TAstNode {
 
   /** Gets the enclosing method, if any. */
   final MethodBase getEnclosingMethod() { result = getEnclosingMethod(scopeOfInclSynth(this)) }
+
+  /** Gets the enclosing top-level. */
+  final Toplevel getEnclosingToplevel() { result = getEnclosingToplevel(scopeOfInclSynth(this)) }
 
   /** Gets a textual representation of this node. */
   cached

@@ -27,3 +27,19 @@ class Attribute extends Element, @cil_attribute {
 
   override CS::Location getLocation() { result = getDeclaration().getLocation() }
 }
+
+/** A generic attribute to a declaration. */
+class GenericAttribute extends Attribute {
+  private ConstructedType type;
+
+  GenericAttribute() { type = this.getType() }
+
+  /** Gets the total number of type arguments. */
+  int getNumberOfTypeArguments() { result = count(int i | cil_type_argument(type, i, _)) }
+
+  /** Gets the `i`th type argument, if any. */
+  Type getTypeArgument(int i) { result = type.getTypeArgument(i) }
+
+  /** Get a type argument. */
+  Type getATypeArgument() { result = this.getTypeArgument(_) }
+}

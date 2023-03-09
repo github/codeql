@@ -5,10 +5,12 @@
  */
 
 import javascript
-import SuperlinearBackTracking
+private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeView
 
 /** Module containing sources, sinks, and sanitizers for polynomial regular expression denial-of-service attacks. */
 module PolynomialReDoS {
+  import codeql.regex.nfa.SuperlinearBackTracking::Make<TreeView>
+
   /**
    * A data flow source node for polynomial regular expression denial-of-service vulnerabilities.
    */
@@ -90,7 +92,8 @@ module PolynomialReDoS {
         isCharClassLike(root)
       )
       or
-      this.(DataFlow::MethodCallNode).getMethodName() = StringOps::substringMethodName()
+      this.(DataFlow::MethodCallNode).getMethodName() = StringOps::substringMethodName() and
+      not this.(DataFlow::MethodCallNode).getNumArgument() = 1 // with one argument it just slices off the beginning
     }
   }
 
@@ -107,6 +110,9 @@ module PolynomialReDoS {
     exists(RegExpAlt alt | term = alt |
       forall(RegExpTerm choice | choice = alt.getAlternative() | isCharClassLike(choice))
     )
+    or
+    // an infinite repetition of a char class, is effectively the same, because the regex is global.
+    exists(InfiniteRepetitionQuantifier quan | term = quan | isCharClassLike(quan.getChild(0)))
   }
 
   /**

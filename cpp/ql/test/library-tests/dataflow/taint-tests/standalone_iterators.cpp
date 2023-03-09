@@ -27,6 +27,10 @@ public:
 template<>
 struct std::iterator_traits<int_iterator_by_trait> {
     typedef input_iterator_tag iterator_category;
+    typedef int value_type;
+    typedef size_t difference_type;
+    typedef int* pointer;
+    typedef int& reference;
 };
 
 class non_iterator {
@@ -69,6 +73,10 @@ public:
 template<>
 struct std::iterator_traits<insert_iterator_by_trait> {
     typedef output_iterator_tag iterator_category;
+    typedef int value_type;
+    typedef size_t difference_type;
+    typedef int* pointer;
+    typedef int& reference;
 };
 
 class container {

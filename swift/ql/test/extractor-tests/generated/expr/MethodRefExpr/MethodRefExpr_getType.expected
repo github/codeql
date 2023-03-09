@@ -1,6 +1,0 @@
-| method_refs.swift:7:13:7:13 | .baz(_:) | (Int) -> () |
-| method_refs.swift:11:1:11:3 | .foo(_:_:) | (Int, Int) -> () |
-| method_refs.swift:12:1:12:3 | .bar() | () -> () |
-| method_refs.swift:13:1:13:5 | .baz(_:) | (Int) -> () |
-| method_refs.swift:15:11:15:11 | .bar() | () -> () |
-| method_refs.swift:16:13:16:13 | .baz(_:) | (Int) -> () |

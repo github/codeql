@@ -381,6 +381,15 @@ class DeclaredRepository extends PomElement {
    * be the string contents of that tag.
    */
   string getRepositoryUrl() { result = this.getAChild("url").(PomElement).getValue() }
+
+  /**
+   * Holds if this repository is disabled in both the `releases` and `snapshots` policies.
+   */
+  predicate isDisabled() {
+    forex(PomElement policy | policy = this.getAChild(["releases", "snapshots"]) |
+      policy.getAChild("enabled").(PomElement).getValue() = "false"
+    )
+  }
 }
 
 /**
