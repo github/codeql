@@ -204,3 +204,12 @@ class AuthorizationCall extends SensitiveAction, DataFlow::CallNode {
     )
   }
 }
+
+/** An expression that might contain a clear-text password. */
+class CleartextPasswordExpr extends SensitiveNode {
+  CleartextPasswordExpr() { this.getClassification() = SensitiveDataClassification::password() }
+
+  override string describe() { none() }
+
+  override SensitiveDataClassification getClassification() { none() }
+}
