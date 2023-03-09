@@ -79,16 +79,16 @@ func testCoreData2_3(dbObj: MyManagedObject2, maybeObj: MyManagedObject2?, conta
 	dbObj.myValue = container.bankAccountNo // BAD
 	dbObj.myValue = container.bankAccountNo2 // BAD
 
-	dbObj.myValue = bankAccountNo.value // BAD [NOT DETECTED]
-	dbObj.myValue = bankAccountNo.value2 // BAD [NOT DETECTED]
-	dbObj.myValue = bankAccountNo2.value // BAD [NOT DETECTED]
-	dbObj.myValue = bankAccountNo2.value2 // BAD [NOT DETECTED]
+	dbObj.myValue = bankAccountNo.value // BAD
+	dbObj.myValue = bankAccountNo.value2 // BAD
+	dbObj.myValue = bankAccountNo2.value // BAD
+	dbObj.myValue = bankAccountNo2.value2 // BAD
 
 	maybeObj?.myValue = container.bankAccountNo // BAD
-	maybeObj?.myValue = bankAccountNo.value // BAD [NOT DETECTED]
-	maybeObj?.myValue = bankAccountNo2.value2 // BAD [NOT DETECTED]
+	maybeObj?.myValue = bankAccountNo.value // BAD
+	maybeObj?.myValue = bankAccountNo2.value2 // BAD
 
 	var a = bankAccountNo // sensitive
 	var b = a.value
-	dbObj.myValue = b // BAD [NOT DETECTED]
+	dbObj.myValue = b // BAD
 }
