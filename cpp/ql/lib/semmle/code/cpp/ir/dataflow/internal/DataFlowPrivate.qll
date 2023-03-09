@@ -57,17 +57,9 @@ class Node0Impl extends TIRDataFlowNode0 {
   Operand asOperand() { result = this.(OperandNode0).getOperand() }
 
   /** INTERNAL: Do not use. */
-  Location getLocationImpl() {
-    none() // overridden by subclasses
-  }
-
-  /** INTERNAL: Do not use. */
   string toStringImpl() {
     none() // overridden by subclasses
   }
-
-  /** Gets the location of this node. */
-  final Location getLocation() { result = this.getLocationImpl() }
 
   /** Gets a textual representation of this node. */
   final string toString() { result = this.toStringImpl() }
@@ -113,8 +105,6 @@ abstract class InstructionNode0 extends Node0Impl {
 
   override DataFlowType getType() { result = getInstructionType(instr, _) }
 
-  final override Location getLocationImpl() { result = instr.getLocation() }
-
   override string toStringImpl() {
     // This predicate is overridden in subclasses. This default implementation
     // does not use `Instruction.toString` because that's expensive to compute.
@@ -157,8 +147,6 @@ abstract class OperandNode0 extends Node0Impl {
   override Declaration getFunction() { result = op.getUse().getEnclosingFunction() }
 
   override DataFlowType getType() { result = getOperandType(op, _) }
-
-  final override Location getLocationImpl() { result = op.getLocation() }
 
   override string toStringImpl() { result = op.toString() }
 
