@@ -13,7 +13,6 @@
 
 import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow
-import semmle.code.cpp.ir.dataflow.DataFlow2
 
 predicate isCreateProcessFunction(FunctionCall call, int applicationNameIndex, int commandLineIndex) {
   call.getTarget().hasGlobalName("CreateProcessA") and
@@ -55,41 +54,39 @@ class CreateProcessFunctionCall extends FunctionCall {
 /**
  * Dataflow that detects a call to CreateProcess with a NULL value for lpApplicationName argument
  */
-class NullAppNameCreateProcessFunctionConfiguration extends DataFlow::Configuration {
-  NullAppNameCreateProcessFunctionConfiguration() {
-    this = "NullAppNameCreateProcessFunctionConfiguration"
-  }
+module NullAppNameCreateProcessFunctionConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof NullValue }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof NullValue }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(CreateProcessFunctionCall call, Expr val | val = sink.asExpr() |
       val = call.getArgument(call.getApplicationNameArgumentId())
     )
   }
 }
 
+module NullAppNameCreateProcessFunction =
+  DataFlow::Make<NullAppNameCreateProcessFunctionConfiguration>;
+
 /**
  * Dataflow that detects a call to CreateProcess with an unquoted commandLine argument
  */
-class QuotedCommandInCreateProcessFunctionConfiguration extends DataFlow2::Configuration {
-  QuotedCommandInCreateProcessFunctionConfiguration() {
-    this = "QuotedCommandInCreateProcessFunctionConfiguration"
-  }
-
-  override predicate isSource(DataFlow2::Node source) {
+module QuotedCommandInCreateProcessFunctionConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(string s |
       s = source.asExpr().getValue().toString() and
       not isQuotedOrNoSpaceApplicationNameOnCmd(s)
     )
   }
 
-  override predicate isSink(DataFlow2::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(CreateProcessFunctionCall call, Expr val | val = sink.asExpr() |
       val = call.getArgument(call.getCommandLineArgumentId())
     )
   }
 }
+
+module QuotedCommandInCreateProcessFunction =
+  DataFlow::Make<QuotedCommandInCreateProcessFunctionConfiguration>;
 
 bindingset[s]
 predicate isQuotedOrNoSpaceApplicationNameOnCmd(string s) {
@@ -100,14 +97,14 @@ predicate isQuotedOrNoSpaceApplicationNameOnCmd(string s) {
 
 from CreateProcessFunctionCall call, string msg1, string msg2
 where
-  exists(Expr appName, NullAppNameCreateProcessFunctionConfiguration nullAppConfig |
+  exists(Expr appName |
     appName = call.getArgument(call.getApplicationNameArgumentId()) and
-    nullAppConfig.hasFlowToExpr(appName) and
+    NullAppNameCreateProcessFunction::hasFlowToExpr(appName) and
     msg1 = call.toString() + " with lpApplicationName == NULL (" + appName + ")"
   ) and
-  exists(Expr cmd, QuotedCommandInCreateProcessFunctionConfiguration quotedConfig |
+  exists(Expr cmd |
     cmd = call.getArgument(call.getCommandLineArgumentId()) and
-    quotedConfig.hasFlowToExpr(cmd) and
+    QuotedCommandInCreateProcessFunction::hasFlowToExpr(cmd) and
     msg2 =
       " and with an unquoted lpCommandLine (" + cmd +
         ") introduces a security vulnerability if the path contains spaces."

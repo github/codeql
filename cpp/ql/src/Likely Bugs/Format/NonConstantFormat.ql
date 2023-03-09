@@ -120,7 +120,7 @@ predicate isNonConst(DataFlow::Node node, boolean isIndirect) {
 }
 
 pragma[noinline]
-predicate isSanitizerNode(DataFlow::Node node) {
+predicate isBarrierNode(DataFlow::Node node) {
   underscoreMacro([node.asExpr(), node.asIndirectExpr()])
   or
   exists(node.asExpr()) and
@@ -132,10 +132,8 @@ predicate isSinkImpl(DataFlow::Node sink, Expr formatString) {
   exists(FormattingFunctionCall fc | formatString = fc.getArgument(fc.getFormatParameterIndex()))
 }
 
-class NonConstFlow extends TaintTracking::Configuration {
-  NonConstFlow() { this = "NonConstFlow" }
-
-  override predicate isSource(DataFlow::Node source) {
+module NonConstFlowConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(boolean isIndirect, Type t |
       isNonConst(source, isIndirect) and
       t = source.getType() and
@@ -143,16 +141,18 @@ class NonConstFlow extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
+  predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
 
-  override predicate isSanitizer(DataFlow::Node node) { isSanitizerNode(node) }
+  predicate isBarrier(DataFlow::Node node) { isBarrierNode(node) }
 }
+
+module NonConstFlow = TaintTracking::Make<NonConstFlowConfiguration>;
 
 from FormattingFunctionCall call, Expr formatString
 where
   call.getArgument(call.getFormatParameterIndex()) = formatString and
-  exists(NonConstFlow cf, DataFlow::Node sink |
-    cf.hasFlowTo(sink) and
+  exists(DataFlow::Node sink |
+    NonConstFlow::hasFlowTo(sink) and
     isSinkImpl(sink, formatString)
   )
 select formatString,
