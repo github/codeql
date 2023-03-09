@@ -2,7 +2,7 @@
 
 .. pull-quote:: Note
 
-   The data flow library described here will be deprecated in the near future. For the replacement library see :ref:`here <analyzing-data-flow-in-cpp-new>`.
+   The data flow library described here will be deprecated in the near future. For the replacement library, which is available from CodeQL 2.12.5 onwards, see :ref:`here <analyzing-data-flow-in-cpp-new>`.
 
 Analyzing data flow in C and C++
 ================================
