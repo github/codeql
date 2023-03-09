@@ -14,7 +14,7 @@
 
 import java
 import semmle.code.java.security.InsecureLdapAuthQuery
-import DataFlow::PathGraph
+import InsecureLdapAuthQuery::PathGraph
 
 from InsecureUrlFlowConfiguration::PathNode source, InsecureUrlFlowConfiguration::PathNode sink
 where
