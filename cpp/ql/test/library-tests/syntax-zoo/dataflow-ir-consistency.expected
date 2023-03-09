@@ -1,12 +1,6 @@
 uniqueEnclosingCallable
 uniqueType
 uniqueNodeLocation
-| cpp11.cpp:28:21:28:21 | (__range) | Node should have one location but has 2. |
-| cpp11.cpp:28:21:28:21 | (__range) | Node should have one location but has 2. |
-| file://:0:0:0:0 | (__range) | Node should have one location but has 2. |
-| file://:0:0:0:0 | (__range) | Node should have one location but has 2. |
-| file://:0:0:0:0 | (__range) | Node should have one location but has 2. |
-| file://:0:0:0:0 | (__range) | Node should have one location but has 2. |
 | file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
@@ -19,12 +13,6 @@ uniqueNodeLocation
 | file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
-| file://:0:0:0:0 | this | Node should have one location but has 2. |
-| file://:0:0:0:0 | this | Node should have one location but has 2. |
-| ir.cpp:756:8:756:8 | this | Node should have one location but has 2. |
-| ir.cpp:765:8:765:8 | this | Node should have one location but has 2. |
-| stream_it.cpp:11:16:11:16 | (__range) | Node should have one location but has 2. |
-| stream_it.cpp:11:16:11:16 | (__range) | Node should have one location but has 2. |
 missingLocation
 | Nodes without location: 12 |
 uniqueNodeToString

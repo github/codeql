@@ -390,7 +390,7 @@ private class Node0 extends Node, TNode0 {
 
   override DataFlowType getType() { result = node.getType() }
 
-  final override Location getLocationImpl() { result = node.getLocationImpl() }
+  override Location getLocationImpl() { result = node.getLocationImpl() }
 
   override string toStringImpl() {
     // This predicate is overridden in subclasses. This default implementation
@@ -413,6 +413,8 @@ class InstructionNode extends Node0 {
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
 
+  override Location getLocationImpl() { result = instr.getAst().getLocation() }
+
   override string toStringImpl() {
     if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
     then result = "this"
@@ -431,6 +433,8 @@ class OperandNode extends Node, Node0 {
 
   /** Gets the operand corresponding to this node. */
   Operand getOperand() { result = op }
+
+  override Location getLocationImpl() { result = op.getDef().getAst().getLocation() }
 
   override string toStringImpl() {
     if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
