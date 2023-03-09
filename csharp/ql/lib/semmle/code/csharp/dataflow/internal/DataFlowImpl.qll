@@ -456,6 +456,7 @@ module Impl<FullStateConfigSig Config> {
      * The Boolean `cc` records whether the node is reached through an
      * argument in a call.
      */
+    pragma[assume_small_delta]
     private predicate fwdFlow(NodeEx node, Cc cc) {
       sourceNode(node, _) and
       if hasSourceCallCtx() then cc = true else cc = false
