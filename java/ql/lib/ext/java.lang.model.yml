@@ -6,20 +6,22 @@ extensions:
       - ["java.lang", "Class", False, "getResource", "(String)", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.lang", "ClassLoader", True, "getSystemResourceAsStream", "(String)", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.lang", "Module", True, "getResourceAsStream", "(String)", "", "Argument[0]", "read-file", "ai-generated"]
-# suggested label is not supported:      - ["java.lang", "ProcessBuilder", False, "directory", "(File)", "", "Argument[0]", "command-injection", "ai-generated"]
-# suggested label is not supported:      - ["java.lang", "ProcessBuilder", True, "ProcessBuilder", "(String[])", "", "Argument[0]", "command-injection", "ai-generated"]
-# suggested label is not supported:      - ["java.lang", "Runtime", True, "exec", "(String,String[],File)", "", "Argument[2]", "command-injection", "ai-generated"]
-# suggested label is not supported:      - ["java.lang", "Runtime", True, "exec", "(String)", "", "Argument[0]", "command-injection", "ai-generated"]
-# suggested label is not supported:      - ["java.lang", "Runtime", True, "exec", "(String[],String[],File)", "", "Argument[0]", "command-injection", "ai-generated"]
-# suggested label is not supported:      - ["java.lang", "Runtime", True, "exec", "(String[],String[],File)", "", "Argument[2]", "command-injection", "ai-generated"]
-# suggested label is not supported:      - ["java.lang", "Runtime", True, "exec", "(String[])", "", "Argument[0]", "command-injection", "ai-generated"]
+      # These are modeled in plain CodeQL. TODO: migrate them.
+      # - ["java.lang", "ProcessBuilder", False, "directory", "(File)", "", "Argument[0]", "command-injection", "ai-generated"]
+      # - ["java.lang", "ProcessBuilder", True, "ProcessBuilder", "(String[])", "", "Argument[0]", "command-injection", "ai-generated"]
+      # - ["java.lang", "Runtime", True, "exec", "(String,String[],File)", "", "Argument[2]", "command-injection", "ai-generated"]
+      # - ["java.lang", "Runtime", True, "exec", "(String)", "", "Argument[0]", "command-injection", "ai-generated"]
+      # - ["java.lang", "Runtime", True, "exec", "(String[],String[],File)", "", "Argument[0]", "command-injection", "ai-generated"]
+      # - ["java.lang", "Runtime", True, "exec", "(String[],String[],File)", "", "Argument[2]", "command-injection", "ai-generated"]
+      # - ["java.lang", "Runtime", True, "exec", "(String[])", "", "Argument[0]", "command-injection", "ai-generated"]
       - ["java.lang", "String", False, "matches", "(String)", "", "Argument[0]", "regex-use[f-1]", "manual"]
       - ["java.lang", "String", False, "replaceAll", "(String,String)", "", "Argument[0]", "regex-use[-1]", "manual"]
       - ["java.lang", "String", False, "replaceFirst", "(String,String)", "", "Argument[0]", "regex-use[-1]", "manual"]
       - ["java.lang", "String", False, "split", "(String)", "", "Argument[0]", "regex-use[-1]", "manual"]
       - ["java.lang", "String", False, "split", "(String,int)", "", "Argument[0]", "regex-use[-1]", "manual"]
-# suggested label is not supported:      - ["java.lang", "System", False, "load", "(String)", "", "Argument[0]", "command-injection", "ai-generated"] # This is actually injecting a library.
-# suggested label is not supported:      - ["java.lang", "System", False, "loadLibrary", "(String)", "", "Argument[0]", "command-injection", "ai-generated"] # This is actually injecting a library.
+      # These are modeled in plain CodeQL. TODO: migrate them.
+      # - ["java.lang", "System", False, "load", "(String)", "", "Argument[0]", "command-injection", "ai-generated"] # This is actually injecting a library.
+      # - ["java.lang", "System", False, "loadLibrary", "(String)", "", "Argument[0]", "command-injection", "ai-generated"] # This is actually injecting a library.
       - ["java.lang", "System$Logger", True, "log", "(Level,Object)", "", "Argument[1]", "logging", "manual"]
       - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Object[])", "", "Argument[2..3]", "logging", "manual"]
       - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Throwable)", "", "Argument[2]", "logging", "manual"]

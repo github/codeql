@@ -4,7 +4,7 @@ extensions:
       extensible: sinkModel
     data:
       - ["java.io", "File", True, "createTempFile", "(String,String,File)", "", "Argument[2]", "create-file", "ai-generated"]
-# suggested label is not supported:      - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[0]", "delete-file", "ai-generated"]
+      - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[0]", "create-file", "ai-generated"]
       - ["java.io", "FileInputStream", True, "FileInputStream", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.io", "FileOutputStream", False, "FileOutputStream", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.io", "FileOutputStream", False, "write", "", "", "Argument[0]", "write-file", "manual"]
