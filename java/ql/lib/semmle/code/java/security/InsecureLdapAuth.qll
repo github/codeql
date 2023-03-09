@@ -22,30 +22,13 @@ class TypeHashtable extends Class {
   TypeHashtable() { this.getSourceDeclaration().hasQualifiedName("java.util", "Hashtable") }
 }
 
-string getHostname(Expr expr) {
+/** Get the string value of an expression representing a hostname. */
+private string getHostname(Expr expr) {
   result = expr.(CompileTimeConstantExpr).getStringValue() or
   result =
     expr.(VarAccess).getVariable().getAnAssignedValue().(CompileTimeConstantExpr).getStringValue()
 }
 
-/**
- * Holds if a non-private LDAP string is concatenated from both protocol and host.
- */
-predicate concatInsecureLdapString(CompileTimeConstantExpr protocol, Expr host) {
-  protocol.getStringValue() = "ldap://" and
-  not exists(string hostString | hostString = getHostname(host) |
-    hostString.length() = 0 or // Empty host is loopback address
-    hostString instanceof PrivateHostName
-  )
-}
-
-// Expr getLeftmostConcatOperand(Expr expr) {
-//   if expr instanceof AddExpr
-//   then
-//     result = expr.(AddExpr).getLeftOperand() and
-//     not result instanceof AddExpr
-//   else result = expr
-// }
 /**
  * String concatenated with `InsecureLdapUrlLiteral`.
  */
@@ -53,6 +36,7 @@ class InsecureLdapUrl extends Expr {
   InsecureLdapUrl() {
     this instanceof InsecureLdapUrlLiteral
     or
+    // Concatentation of insecure protcol and non-private host:
     // protocol + host + ...
     exists(AddExpr e, CompileTimeConstantExpr protocol, Expr rest, Expr host |
       e = this and
@@ -61,7 +45,10 @@ class InsecureLdapUrl extends Expr {
       if rest instanceof AddExpr then host = rest.(AddExpr).getLeftOperand() else host = rest
     |
       protocol.getStringValue() = "ldap://" and
-      concatInsecureLdapString(protocol, host)
+      not exists(string hostString | hostString = getHostname(host) |
+        hostString.length() = 0 or // Empty host is loopback address
+        hostString instanceof PrivateHostName
+      )
     )
   }
 }
