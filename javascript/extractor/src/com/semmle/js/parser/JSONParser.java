@@ -34,21 +34,25 @@ public class JSONParser {
   private String src;
   private List<ParseError> recoverableErrors;
 
-  public Pair<JSONValue, List<ParseError>> parseValue(String json) throws ParseError {
-    line = 1;
-    column = 0;
-    offset = 0;
-    recoverableErrors = new ArrayList<ParseError>();
+  public static Pair<JSONValue, List<ParseError>> parseValue(String json) throws ParseError {
+    JSONParser parser = new JSONParser(json);
+
+    JSONValue value = parser.readValue();
+    parser.consumeWhitespace();
+    if (parser.offset < parser.length) parser.raise("Expected end of input");
+
+    return Pair.make(value, parser.recoverableErrors);
+  }
+
+  private JSONParser(String json) throws ParseError {
+    this.line = 1;
+    this.column = 0;
+    this.offset = 0;
+    this.recoverableErrors = new ArrayList<ParseError>();
 
     if (json == null) raise("Input string may not be null");
-    length = json.length();
-    src = json;
-
-    JSONValue value = readValue();
-    consumeWhitespace();
-    if (offset < length) raise("Expected end of input");
-
-    return Pair.make(value, recoverableErrors);
+    this.length = json.length();
+    this.src = json;
   }
 
   private <T> T raise(String msg) throws ParseError {
@@ -385,7 +389,6 @@ public class JSONParser {
   }
 
   public static void main(String[] args) throws ParseError {
-    JSONParser parser = new JSONParser();
-    System.out.println(parser.parseValue(new WholeIO().strictread(new File(args[0]))).fst());
+    System.out.println(JSONParser.parseValue(new WholeIO().strictread(new File(args[0]))).fst());
   }
 }
