@@ -54,7 +54,7 @@ module BasicAuthFlowConfiguration = DataFlow::Make<BasicAuthFlowConfig>;
 /**
  * A taint-tracking configuration for `ssl` configuration in LDAP authentication.
  */
-private module SslFlowConfig implements DataFlow::ConfigSig {
+private module RequiresSslConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
     exists(MethodAccess ma |
       isSslEnv(ma) and ma.getQualifier() = src.(PostUpdateNode).getPreUpdateNode().asExpr()
@@ -69,4 +69,4 @@ private module SslFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module SslFlowConfiguration = DataFlow::Make<SslFlowConfig>;
+module RequiresSslConfiguration = DataFlow::Make<RequiresSslConfig>;
