@@ -102,12 +102,11 @@ predicate isSinkImpl(DataFlow::Node sink, SqliteFunctionCall c, Type t) {
  * A taint flow configuration for flow from a sensitive expression to a `SqliteFunctionCall` sink.
  */
 module FromSensitiveConfiguration implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { isSourceImpl(source, _) }
-
-  predicate isSink(DataFlow::Node sink) {
-    isSinkImpl(sink, _, _) and
-    not sqlite_encryption_used()
+  predicate isSource(DataFlow::Node source) {
+    isSourceImpl(source, _) and not sqlite_encryption_used()
   }
+
+  predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _, _) }
 
   predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
