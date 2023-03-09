@@ -405,7 +405,11 @@ class InstructionNode extends Node0 {
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
 
-  override Location getLocationImpl() { result = instr.getAst().getLocation() }
+  override Location getLocationImpl() {
+    if exists(instr.getAst().getLocation())
+    then result = instr.getAst().getLocation()
+    else result instanceof UnknownDefaultLocation
+  }
 
   override string toStringImpl() {
     if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
@@ -426,7 +430,11 @@ class OperandNode extends Node, Node0 {
   /** Gets the operand corresponding to this node. */
   Operand getOperand() { result = op }
 
-  override Location getLocationImpl() { result = op.getDef().getAst().getLocation() }
+  override Location getLocationImpl() {
+    if exists(op.getDef().getAst().getLocation())
+    then result = op.getDef().getAst().getLocation()
+    else result instanceof UnknownDefaultLocation
+  }
 
   override string toStringImpl() {
     if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
@@ -640,6 +648,8 @@ class IndirectParameterNode extends Node, IndirectInstruction {
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
   override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
+
+  override Location getLocationImpl() { result = this.getParameter().getLocation() }
 
   override string toStringImpl() {
     result = this.getParameter().toString() + " indirection"
@@ -888,7 +898,11 @@ class RawIndirectOperand extends Node, TRawIndirectOperand {
     )
   }
 
-  final override Location getLocationImpl() { result = this.getOperand().getLocation() }
+  final override Location getLocationImpl() {
+    if exists(this.getOperand().getLocation())
+    then result = this.getOperand().getLocation()
+    else result instanceof UnknownDefaultLocation
+  }
 
   override string toStringImpl() {
     result = instructionNode(this.getOperand().getDef()).toStringImpl() + " indirection"
@@ -987,7 +1001,11 @@ class RawIndirectInstruction extends Node, TRawIndirectInstruction {
     )
   }
 
-  final override Location getLocationImpl() { result = this.getInstruction().getLocation() }
+  final override Location getLocationImpl() {
+    if exists(this.getInstruction().getLocation())
+    then result = this.getInstruction().getLocation()
+    else result instanceof UnknownDefaultLocation
+  }
 
   override string toStringImpl() {
     result = instructionNode(this.getInstruction()).toStringImpl() + " indirection"

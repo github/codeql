@@ -1,20 +1,7 @@
 uniqueEnclosingCallable
 uniqueType
 uniqueNodeLocation
-| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
-| file://:0:0:0:0 | (unnamed parameter 2) indirection | Node should have one location but has 0. |
 missingLocation
-| Nodes without location: 12 |
 uniqueNodeToString
 missingToString
 parameterCallable
