@@ -15,10 +15,10 @@ import java
 import semmle.code.java.security.InsecureLdapAuthQuery
 import DataFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, InsecureUrlFlowConfig config
+from InsecureUrlFlowConfiguration::PathNode source, InsecureUrlFlowConfiguration::PathNode sink
 where
-  config.hasFlowPath(source, sink) and
-  any(BasicAuthFlowConfig bc).hasFlowTo(sink.getNode()) and
-  not any(SslFlowConfig sc).hasFlowTo(sink.getNode())
+  InsecureUrlFlowConfiguration::hasFlowPath(source, sink) and
+  BasicAuthFlowConfiguration::hasFlowTo(sink.getNode()) and
+  not SslFlowConfiguration::hasFlowTo(sink.getNode())
 select sink.getNode(), source, sink, "Insecure LDAP authentication from $@.", source.getNode(),
   "LDAP connection string"
