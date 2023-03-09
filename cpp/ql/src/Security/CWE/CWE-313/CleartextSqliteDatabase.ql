@@ -34,7 +34,7 @@ class SqliteFunctionExecCall extends SqliteFunctionCall {
 
 class SqliteFunctionAppendfCall extends SqliteFunctionCall {
   SqliteFunctionAppendfCall() {
-    this.getTarget().getName().matches(["sqlite3_str_appendf", "sqlite3_str_vappendf"])
+    this.getTarget().hasName(["sqlite3_str_appendf", "sqlite3_str_vappendf"])
   }
 
   override Expr getASource() { result = this.getArgument(any(int n | n > 0)) }
@@ -42,7 +42,7 @@ class SqliteFunctionAppendfCall extends SqliteFunctionCall {
 
 class SqliteFunctionAppendNonCharCall extends SqliteFunctionCall {
   SqliteFunctionAppendNonCharCall() {
-    this.getTarget().getName().matches(["sqlite3_str_append", "sqlite3_str_appendall"])
+    this.getTarget().hasName(["sqlite3_str_append", "sqlite3_str_appendall"])
   }
 
   override Expr getASource() { result = this.getArgument(1) }
@@ -57,8 +57,7 @@ class SqliteFunctionAppendCharCall extends SqliteFunctionCall {
 class SqliteFunctionBindCall extends SqliteFunctionCall {
   SqliteFunctionBindCall() {
     this.getTarget()
-        .getName()
-        .matches([
+        .hasName([
             "sqlite3_bind_blob", "sqlite3_bind_blob64", "sqlite3_bind_text", "sqlite3_bind_text16",
             "sqlite3_bind_text64", "sqlite3_bind_value", "sqlite3_bind_pointer"
           ])
