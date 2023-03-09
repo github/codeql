@@ -10,10 +10,8 @@ import semmle.code.java.security.InsecureLdapAuth
  * A taint-tracking configuration for `ldap://` URL in LDAP authentication.
  */
 private module InsecureUrlFlowConfig implements DataFlow::ConfigSig {
-  /** Source of `ldap://` connection string. */
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof InsecureLdapUrl }
 
-  /** Sink of directory context creation. */
   predicate isSink(DataFlow::Node sink) {
     exists(ConstructorCall cc |
       cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
@@ -37,14 +35,12 @@ module InsecureUrlFlowConfiguration = TaintTracking::Make<InsecureUrlFlowConfig>
  * A taint-tracking configuration for `simple` basic-authentication in LDAP configuration.
  */
 private module BasicAuthFlowConfig implements DataFlow::ConfigSig {
-  /** Source of `simple` configuration. */
   predicate isSource(DataFlow::Node src) {
     exists(MethodAccess ma |
       isBasicAuthEnv(ma) and ma.getQualifier() = src.(PostUpdateNode).getPreUpdateNode().asExpr()
     )
   }
 
-  /** Sink of directory context creation. */
   predicate isSink(DataFlow::Node sink) {
     exists(ConstructorCall cc |
       cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
@@ -59,14 +55,12 @@ module BasicAuthFlowConfiguration = DataFlow::Make<BasicAuthFlowConfig>;
  * A taint-tracking configuration for `ssl` configuration in LDAP authentication.
  */
 private module SslFlowConfig implements DataFlow::ConfigSig {
-  /** Source of `ssl` configuration. */
   predicate isSource(DataFlow::Node src) {
     exists(MethodAccess ma |
       isSslEnv(ma) and ma.getQualifier() = src.(PostUpdateNode).getPreUpdateNode().asExpr()
     )
   }
 
-  /** Sink of directory context creation. */
   predicate isSink(DataFlow::Node sink) {
     exists(ConstructorCall cc |
       cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and

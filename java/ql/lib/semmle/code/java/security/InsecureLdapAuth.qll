@@ -5,7 +5,7 @@ import semmle.code.java.frameworks.Networking
 import semmle.code.java.frameworks.Jndi
 
 /**
- * Insecure (non-SSL, non-private) LDAP URL string literal.
+ * An insecure (non-SSL, non-private) LDAP URL string literal.
  */
 class InsecureLdapUrlLiteral extends StringLiteral {
   InsecureLdapUrlLiteral() {
@@ -30,7 +30,7 @@ private string getHostname(Expr expr) {
 }
 
 /**
- * String concatenated with `InsecureLdapUrlLiteral`.
+ * An expression that represents an insecure (non-SSL, non-private) LDAP URL.
  */
 class InsecureLdapUrl extends Expr {
   InsecureLdapUrl() {
