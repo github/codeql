@@ -390,12 +390,6 @@ private class Node0 extends Node, TNode0 {
 
   override DataFlowType getType() { result = node.getType() }
 
-  override string toStringImpl() {
-    // This predicate is overridden in subclasses. This default implementation
-    // does not use `Instruction.toString` because that's expensive to compute.
-    result = node.toStringImpl()
-  }
-
   override predicate isGLValue() { node.isGLValue() }
 }
 
