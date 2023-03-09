@@ -14,6 +14,6 @@ import java
 import semmle.code.java.security.ArbitraryApkInstallationQuery
 import DataFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ApkConfiguration config
-where config.hasFlowPath(source, sink)
+from DataFlow::PathNode source, DataFlow::PathNode sink
+where ApkConfiguration::hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Arbitrary Android APK installation."

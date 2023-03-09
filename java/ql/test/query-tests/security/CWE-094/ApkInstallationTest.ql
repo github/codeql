@@ -10,7 +10,7 @@ class HasApkInstallationTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasApkInstallation" and
-    exists(DataFlow::Node sink, ApkConfiguration conf | conf.hasFlowTo(sink) |
+    exists(DataFlow::Node sink | ApkConfiguration::hasFlowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

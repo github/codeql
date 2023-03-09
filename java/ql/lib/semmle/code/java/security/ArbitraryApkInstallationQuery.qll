@@ -10,12 +10,10 @@ private import semmle.code.java.security.ArbitraryApkInstallation
  * A dataflow configuration for flow from an external source of an APK to the
  * `setData[AndType][AndNormalize]` method of an intent.
  */
-class ApkConfiguration extends DataFlow::Configuration {
-  ApkConfiguration() { this = "ApkConfiguration" }
+private module ApkConf implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof ExternalApkSource }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof ExternalApkSource }
-
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     exists(MethodAccess ma |
       ma.getMethod() instanceof SetDataMethod and
       ma.getArgument(0) = node.asExpr() and
@@ -28,6 +26,23 @@ class ApkConfiguration extends DataFlow::Configuration {
   }
 }
 
+module ApkConfiguration = DataFlow::Make<ApkConf>;
+
+// class ApkConfiguration extends DataFlow::Configuration {
+//   ApkConfiguration() { this = "ApkConfiguration" }
+//   override predicate isSource(DataFlow::Node node) { node instanceof ExternalApkSource }
+//   override predicate isSink(DataFlow::Node node) {
+//     exists(MethodAccess ma |
+//       ma.getMethod() instanceof SetDataMethod and
+//       ma.getArgument(0) = node.asExpr() and
+//       (
+//         any(PackageArchiveMimeTypeConfiguration c).hasFlowToExpr(ma.getQualifier())
+//         or
+//         any(InstallPackageActionConfiguration c).hasFlowToExpr(ma.getQualifier())
+//       )
+//     )
+//   }
+// }
 /**
  * A dataflow configuration tracking the flow from the `android.content.Intent.ACTION_INSTALL_PACKAGE`
  * constant to either the constructor of an intent or the `setAction` method of an intent.
