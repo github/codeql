@@ -751,7 +751,7 @@ private module Cached {
    */
   cached
   Instruction getIRRepresentationOfOperand(Operand operand) {
-    operand = unique( | | result.getAUse())
+    operand = unique( | | getAUse(result))
   }
 
   /**
