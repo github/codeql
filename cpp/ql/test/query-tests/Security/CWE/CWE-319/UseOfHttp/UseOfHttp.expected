@@ -1,5 +1,4 @@
 edges
-| test.cpp:11:26:11:28 | url | test.cpp:15:30:15:32 | url indirection |
 | test.cpp:11:26:11:28 | url indirection | test.cpp:15:30:15:32 | url indirection |
 | test.cpp:11:26:11:28 | url indirection | test.cpp:15:30:15:32 | url indirection |
 | test.cpp:24:13:24:17 | url_g indirection | test.cpp:38:11:38:15 | url_g indirection |
@@ -17,18 +16,12 @@ edges
 | test.cpp:46:18:46:26 | http:// indirection | test.cpp:49:11:49:16 | buffer indirection |
 | test.cpp:46:18:46:26 | http:// indirection | test.cpp:49:11:49:16 | buffer indirection |
 | test.cpp:49:11:49:16 | buffer indirection | test.cpp:11:26:11:28 | url indirection |
-| test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:121:11:121:13 | ptr |
-| test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:121:11:121:13 | ptr |
-| test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:121:11:121:13 | ptr |
 | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:121:11:121:13 | ptr indirection |
 | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:121:11:121:13 | ptr indirection |
 | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:121:11:121:13 | ptr indirection |
-| test.cpp:121:11:121:13 | ptr | test.cpp:11:26:11:28 | url |
 | test.cpp:121:11:121:13 | ptr indirection | test.cpp:11:26:11:28 | url indirection |
 nodes
-| test.cpp:11:26:11:28 | url | semmle.label | url |
 | test.cpp:11:26:11:28 | url indirection | semmle.label | url indirection |
-| test.cpp:15:30:15:32 | url indirection | semmle.label | url indirection |
 | test.cpp:15:30:15:32 | url indirection | semmle.label | url indirection |
 | test.cpp:15:30:15:32 | url indirection | semmle.label | url indirection |
 | test.cpp:24:13:24:17 | url_g indirection | semmle.label | url_g indirection |
@@ -49,7 +42,6 @@ nodes
 | test.cpp:110:21:110:40 | http://example.com indirection | semmle.label | http://example.com indirection |
 | test.cpp:110:21:110:40 | http://example.com indirection | semmle.label | http://example.com indirection |
 | test.cpp:110:21:110:40 | http://example.com indirection | semmle.label | http://example.com indirection |
-| test.cpp:121:11:121:13 | ptr | semmle.label | ptr |
 | test.cpp:121:11:121:13 | ptr indirection | semmle.label | ptr indirection |
 subpaths
 #select
@@ -73,9 +65,6 @@ subpaths
 | test.cpp:46:18:46:26 | http:// | test.cpp:46:18:46:26 | http:// indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
 | test.cpp:46:18:46:26 | http:// | test.cpp:46:18:46:26 | http:// indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
 | test.cpp:46:18:46:26 | http:// | test.cpp:46:18:46:26 | http:// indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
-| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
-| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
-| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
 | test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
 | test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
 | test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |

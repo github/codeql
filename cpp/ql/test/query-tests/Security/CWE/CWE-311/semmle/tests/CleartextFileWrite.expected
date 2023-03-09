@@ -1,6 +1,5 @@
 edges
 | test2.cpp:62:18:62:25 | password | test2.cpp:65:31:65:34 | cpy1 |
-| test2.cpp:62:18:62:25 | password | test2.cpp:65:31:65:34 | cpy1 indirection |
 | test2.cpp:72:15:72:24 | password | test2.cpp:73:30:73:32 | buf indirection |
 | test2.cpp:72:15:72:24 | password | test2.cpp:76:30:76:32 | buf indirection |
 | test2.cpp:72:17:72:24 | password | test2.cpp:73:30:73:32 | buf indirection |
@@ -28,7 +27,6 @@ nodes
 | test2.cpp:57:39:57:49 | call to getPassword | semmle.label | call to getPassword |
 | test2.cpp:62:18:62:25 | password | semmle.label | password |
 | test2.cpp:65:31:65:34 | cpy1 | semmle.label | cpy1 |
-| test2.cpp:65:31:65:34 | cpy1 indirection | semmle.label | cpy1 indirection |
 | test2.cpp:72:15:72:24 | password | semmle.label | password |
 | test2.cpp:72:17:72:24 | password | semmle.label | password |
 | test2.cpp:73:30:73:32 | buf indirection | semmle.label | buf indirection |
@@ -57,7 +55,6 @@ subpaths
 | test2.cpp:55:2:55:8 | call to fprintf | test2.cpp:55:40:55:51 | widepassword | test2.cpp:55:40:55:51 | widepassword | This write into file 'log' may contain unencrypted data from $@. | test2.cpp:55:40:55:51 | widepassword | this source. |
 | test2.cpp:57:2:57:8 | call to fprintf | test2.cpp:57:39:57:49 | call to getPassword | test2.cpp:57:39:57:49 | call to getPassword | This write into file 'log' may contain unencrypted data from $@. | test2.cpp:57:39:57:49 | call to getPassword | this source. |
 | test2.cpp:65:3:65:9 | call to fprintf | test2.cpp:62:18:62:25 | password | test2.cpp:65:31:65:34 | cpy1 | This write into file 'log' may contain unencrypted data from $@. | test2.cpp:62:18:62:25 | password | this source. |
-| test2.cpp:65:3:65:9 | call to fprintf | test2.cpp:62:18:62:25 | password | test2.cpp:65:31:65:34 | cpy1 indirection | This write into file 'log' may contain unencrypted data from $@. | test2.cpp:62:18:62:25 | password | this source. |
 | test2.cpp:73:3:73:9 | call to fprintf | test2.cpp:72:15:72:24 | password | test2.cpp:73:30:73:32 | buf indirection | This write into file 'log' may contain unencrypted data from $@. | test2.cpp:72:17:72:24 | password | this source. |
 | test2.cpp:73:3:73:9 | call to fprintf | test2.cpp:72:17:72:24 | password | test2.cpp:73:30:73:32 | buf indirection | This write into file 'log' may contain unencrypted data from $@. | test2.cpp:72:17:72:24 | password | this source. |
 | test2.cpp:76:3:76:9 | call to fprintf | test2.cpp:72:15:72:24 | password | test2.cpp:76:30:76:32 | buf indirection | This write into file 'log' may contain unencrypted data from $@. | test2.cpp:72:17:72:24 | password | this source. |

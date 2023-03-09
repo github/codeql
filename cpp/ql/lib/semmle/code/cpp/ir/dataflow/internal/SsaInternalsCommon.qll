@@ -765,7 +765,7 @@ private module Cached {
   Operand getIRRepresentationOfIndirectOperand(Operand operand, int indirectionIndex) {
     exists(Instruction load |
       isDereference(load, operand) and
-      result = unique( | | load.getAUse()) and
+      result = unique( | | getAUse(load)) and
       isUseImpl(operand, _, indirectionIndex - 1)
     )
   }

@@ -9,7 +9,6 @@ edges
 | tests2.cpp:78:18:78:38 | call to mysql_get_client_info indirection | tests2.cpp:81:14:81:19 | buffer indirection |
 | tests2.cpp:91:42:91:45 | str1 indirection | tests2.cpp:93:14:93:17 | str1 indirection |
 | tests2.cpp:91:42:91:45 | str1 indirection | tests2.cpp:93:14:93:17 | str1 indirection |
-| tests2.cpp:91:42:91:45 | str1 indirection | tests2.cpp:93:14:93:17 | str1 indirection |
 | tests2.cpp:101:8:101:15 | call to getpwuid indirection | tests2.cpp:102:14:102:15 | pw indirection |
 | tests2.cpp:101:8:101:15 | call to getpwuid indirection | tests2.cpp:102:14:102:15 | pw indirection |
 | tests2.cpp:109:3:109:36 | ... = ... indirection | tests2.cpp:109:6:109:8 | c1 indirection [post update] [ptr indirection] |
@@ -55,8 +54,6 @@ nodes
 | tests2.cpp:82:14:82:20 | global1 indirection | semmle.label | global1 indirection |
 | tests2.cpp:82:14:82:20 | global1 indirection | semmle.label | global1 indirection |
 | tests2.cpp:91:42:91:45 | str1 indirection | semmle.label | str1 indirection |
-| tests2.cpp:91:42:91:45 | str1 indirection | semmle.label | str1 indirection |
-| tests2.cpp:93:14:93:17 | str1 indirection | semmle.label | str1 indirection |
 | tests2.cpp:93:14:93:17 | str1 indirection | semmle.label | str1 indirection |
 | tests2.cpp:93:14:93:17 | str1 indirection | semmle.label | str1 indirection |
 | tests2.cpp:101:8:101:15 | call to getpwuid indirection | semmle.label | call to getpwuid indirection |
@@ -101,7 +98,6 @@ subpaths
 | tests2.cpp:81:14:81:19 | buffer indirection | tests2.cpp:78:18:78:38 | call to mysql_get_client_info indirection | tests2.cpp:81:14:81:19 | buffer indirection | This operation exposes system data from $@. | tests2.cpp:78:18:78:38 | call to mysql_get_client_info indirection | call to mysql_get_client_info indirection |
 | tests2.cpp:82:14:82:20 | global1 indirection | tests2.cpp:50:23:50:43 | call to mysql_get_client_info indirection | tests2.cpp:82:14:82:20 | global1 indirection | This operation exposes system data from $@. | tests2.cpp:50:23:50:43 | call to mysql_get_client_info indirection | call to mysql_get_client_info indirection |
 | tests2.cpp:82:14:82:20 | global1 indirection | tests2.cpp:50:23:50:43 | call to mysql_get_client_info indirection | tests2.cpp:82:14:82:20 | global1 indirection | This operation exposes system data from $@. | tests2.cpp:50:23:50:43 | call to mysql_get_client_info indirection | call to mysql_get_client_info indirection |
-| tests2.cpp:93:14:93:17 | str1 indirection | tests2.cpp:91:42:91:45 | str1 indirection | tests2.cpp:93:14:93:17 | str1 indirection | This operation exposes system data from $@. | tests2.cpp:91:42:91:45 | str1 indirection | str1 indirection |
 | tests2.cpp:93:14:93:17 | str1 indirection | tests2.cpp:91:42:91:45 | str1 indirection | tests2.cpp:93:14:93:17 | str1 indirection | This operation exposes system data from $@. | tests2.cpp:91:42:91:45 | str1 indirection | str1 indirection |
 | tests2.cpp:93:14:93:17 | str1 indirection | tests2.cpp:91:42:91:45 | str1 indirection | tests2.cpp:93:14:93:17 | str1 indirection | This operation exposes system data from $@. | tests2.cpp:91:42:91:45 | str1 indirection | str1 indirection |
 | tests2.cpp:102:14:102:15 | pw indirection | tests2.cpp:101:8:101:15 | call to getpwuid indirection | tests2.cpp:102:14:102:15 | pw indirection | This operation exposes system data from $@. | tests2.cpp:101:8:101:15 | call to getpwuid indirection | call to getpwuid indirection |
