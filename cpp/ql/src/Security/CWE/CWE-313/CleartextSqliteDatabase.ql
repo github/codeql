@@ -16,10 +16,54 @@ import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import FromSensitiveFlow::PathGraph
 
-class SqliteFunctionCall extends FunctionCall {
-  SqliteFunctionCall() { this.getTarget().getName().matches("sqlite%") }
+abstract class SqliteFunctionCall extends FunctionCall {
+  abstract Expr getASource();
+}
 
-  Expr getASource() { result = this.getAnArgument() }
+class SqliteFunctionPrepareCall extends SqliteFunctionCall {
+  SqliteFunctionPrepareCall() { this.getTarget().getName().matches("sqlite3\\_prepare%") }
+
+  override Expr getASource() { result = this.getArgument(1) }
+}
+
+class SqliteFunctionExecCall extends SqliteFunctionCall {
+  SqliteFunctionExecCall() { this.getTarget().hasName("sqlite3_exec") }
+
+  override Expr getASource() { result = this.getArgument(1) }
+}
+
+class SqliteFunctionAppendfCall extends SqliteFunctionCall {
+  SqliteFunctionAppendfCall() {
+    this.getTarget().hasName(["sqlite3_str_appendf", "sqlite3_str_vappendf"])
+  }
+
+  override Expr getASource() { result = this.getArgument(any(int n | n > 0)) }
+}
+
+class SqliteFunctionAppendNonCharCall extends SqliteFunctionCall {
+  SqliteFunctionAppendNonCharCall() {
+    this.getTarget().hasName(["sqlite3_str_append", "sqlite3_str_appendall"])
+  }
+
+  override Expr getASource() { result = this.getArgument(1) }
+}
+
+class SqliteFunctionAppendCharCall extends SqliteFunctionCall {
+  SqliteFunctionAppendCharCall() { this.getTarget().hasName("sqlite3_str_appendchar") }
+
+  override Expr getASource() { result = this.getArgument(2) }
+}
+
+class SqliteFunctionBindCall extends SqliteFunctionCall {
+  SqliteFunctionBindCall() {
+    this.getTarget()
+        .hasName([
+            "sqlite3_bind_blob", "sqlite3_bind_blob64", "sqlite3_bind_text", "sqlite3_bind_text16",
+            "sqlite3_bind_text64", "sqlite3_bind_value", "sqlite3_bind_pointer"
+          ])
+  }
+
+  override Expr getASource() { result = this.getArgument(2) }
 }
 
 predicate sqlite_encryption_used() {
@@ -57,16 +101,19 @@ predicate isSinkImpl(DataFlow::Node sink, SqliteFunctionCall c, Type t) {
  * A taint flow configuration for flow from a sensitive expression to a `SqliteFunctionCall` sink.
  */
 module FromSensitiveConfiguration implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { isSourceImpl(source, _) }
-
-  predicate isSink(DataFlow::Node sink) {
-    isSinkImpl(sink, _, _) and
-    not sqlite_encryption_used()
+  predicate isSource(DataFlow::Node source) {
+    isSourceImpl(source, _) and not sqlite_encryption_used()
   }
+
+  predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _, _) }
 
   predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
+  predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet content) {
     // flow out from fields at the sink (only).
