@@ -23,13 +23,18 @@ class TaintReachConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node node) { any() }
 }
 
-float taintReach() {
-  exists(TaintReachConfig config, int tainted, int total |
-    tainted = count(DataFlow::Node n | config.hasFlowTo(n)) and
-    total = count(DataFlow::Node n) and
-    result = (tainted * 1000000.0) / total
-  )
+/**
+ * Gets the total number of dataflow nodes that taint reaches (from any source).
+ */
+int taintedNodesCount() {
+  exists(TaintReachConfig config | result = count(DataFlow::Node n | config.hasFlowTo(n)))
 }
+
+/**
+ * Gets the proportion of dataflow nodes that taint reaches (from any source),
+ * expressed as a count per million nodes.
+ */
+float taintReach() { result = (taintedNodesCount() * 1000000.0) / count(DataFlow::Node n) }
 
 predicate statistic(string what, string value) {
   what = "Files" and value = count(File f).toString()
@@ -41,6 +46,10 @@ predicate statistic(string what, string value) {
   what = "Remote flow sources" and value = count(RemoteFlowSource s).toString()
   or
   what = "Sensitive expressions" and value = count(SensitiveExpr e).toString()
+  or
+  what = "Dataflow nodes (total)" and value = count(DataFlow::Node n).toString()
+  or
+  what = "Dataflow nodes (tainted)" and value = taintedNodesCount().toString()
   or
   what = "Taint reach (per million nodes)" and value = taintReach().toString()
 }
