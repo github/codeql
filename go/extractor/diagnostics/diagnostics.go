@@ -120,8 +120,8 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 func EmitPackageDifferentOSArchitecture(pkgPath string) {
 	emitDiagnostic(
 		"go/autobuilder/package-different-os-architecture",
-		"Package "+pkgPath+" is intended for a different OS or architecture",
-		"Make sure the `GOOS` and `GOARCH` [environment variables are correctly set](https://docs.github.com/en/actions/learn-github-actions/variables#defining-environment-variables-for-a-single-workflow). Alternatively, [change your OS and architecture](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#using-a-github-hosted-runner).",
+		"An imported package is intended for a different OS or architecture",
+		"`"+pkgPath+"` could not be imported. Make sure the `GOOS` and `GOARCH` [environment variables are correctly set](https://docs.github.com/en/actions/learn-github-actions/variables#defining-environment-variables-for-a-single-workflow). Alternatively, [change your OS and architecture](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#using-a-github-hosted-runner).",
 		severityWarning,
 		fullVisibility,
 		noLocation,
@@ -152,8 +152,8 @@ func EmitCannotFindPackages(pkgPaths []string) {
 
 	emitDiagnostic(
 		"go/autobuilder/package-not-found",
-		fmt.Sprintf("%d package%s could not be found", numPkgPaths, ending),
-		"The following packages could not be found.\n\n"+secondLine+"\n\nCheck that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
+		"Some packages could not be found",
+		fmt.Sprintf("%d package%s could not be found.\n\n%s.\n\nCheck that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).", numPkgPaths, ending, secondLine),
 		severityError,
 		fullVisibility,
 		noLocation,
