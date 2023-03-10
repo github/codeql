@@ -280,7 +280,8 @@ module Express {
    * The callback given to passport in PassportRouteSetup.
    */
   private class PassportRouteHandler extends RouteHandler, Http::Servers::StandardRouteHandler,
-    DataFlow::FunctionNode {
+    DataFlow::FunctionNode
+  {
     PassportRouteHandler() { this = any(PassportRouteSetup setup).getARouteHandler() }
 
     override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
@@ -496,7 +497,8 @@ module Express {
    * An Express route handler installed by a route setup.
    */
   class StandardRouteHandler extends RouteHandler, Http::Servers::StandardRouteHandler,
-    DataFlow::FunctionNode {
+    DataFlow::FunctionNode
+  {
     RouteSetup routeSetup;
 
     StandardRouteHandler() { this = routeSetup.getARouteHandler() }
@@ -1014,7 +1016,8 @@ module Express {
 
   /** A call to `response.sendFile`, considered as a file system access. */
   private class ResponseSendFileAsFileSystemAccess extends FileSystemReadAccess,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     ResponseSendFileAsFileSystemAccess() {
       exists(string name | name = "sendFile" or name = "sendfile" |
         this.calls(any(ResponseNode res), name)
@@ -1038,7 +1041,8 @@ module Express {
    * A function that flows to a route setup.
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    Http::Servers::StandardRouteHandler, DataFlow::FunctionNode
+  {
     RouteSetup routeSetup;
 
     TrackedRouteHandlerCandidateWithSetup() { this = routeSetup.getARouteHandler() }
@@ -1113,7 +1117,8 @@ module Express {
    * A call to the Express `res.render()` method, seen as a template instantiation.
    */
   private class RenderCallAsTemplateInstantiation extends Templating::TemplateInstantiation::Range,
-    DataFlow::CallNode {
+    DataFlow::CallNode
+  {
     ResponseSource res;
 
     RenderCallAsTemplateInstantiation() { this = res.ref().getAMethodCall("render") }

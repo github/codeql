@@ -57,7 +57,8 @@ module LockElements {
  * The translation of the `try` stmt.
  */
 private class TranslatedLockTry extends TranslatedCompilerGeneratedTry,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override LockStmt generatedBy;
 
   TranslatedLockTry() { this = TTranslatedCompilerGeneratedElement(generatedBy, 0) }
@@ -81,7 +82,8 @@ private class TranslatedLockTry extends TranslatedCompilerGeneratedTry,
  * The translation of the `lock` stmt's body.
  */
 private class TranslatedLockTryBody extends TranslatedCompilerGeneratedBlock,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override LockStmt generatedBy;
 
   TranslatedLockTryBody() { this = TTranslatedCompilerGeneratedElement(generatedBy, 1) }
@@ -102,7 +104,8 @@ private class TranslatedLockTryBody extends TranslatedCompilerGeneratedBlock,
  * The translation of the finally block.
  */
 private class TranslatedLockFinally extends TranslatedCompilerGeneratedBlock,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override LockStmt generatedBy;
 
   TranslatedLockFinally() { this = TTranslatedCompilerGeneratedElement(generatedBy, 2) }
@@ -120,7 +123,8 @@ private class TranslatedLockFinally extends TranslatedCompilerGeneratedBlock,
  * The translation of the call to dispose (inside the finally block)
  */
 private class TranslatedMonitorExit extends TranslatedCompilerGeneratedCall,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override LockStmt generatedBy;
 
   TranslatedMonitorExit() { this = TTranslatedCompilerGeneratedElement(generatedBy, 3) }
@@ -152,7 +156,8 @@ private class TranslatedMonitorExit extends TranslatedCompilerGeneratedCall,
  * The translation of the call to dispose (inside the finally block)
  */
 private class TranslatedMonitorEnter extends TranslatedCompilerGeneratedCall,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override LockStmt generatedBy;
 
   TranslatedMonitorEnter() { this = TTranslatedCompilerGeneratedElement(generatedBy, 4) }
@@ -190,7 +195,8 @@ private class TranslatedMonitorEnter extends TranslatedCompilerGeneratedCall,
  * The translation of the condition of the `if` present in the `finally` clause.
  */
 private class TranslatedIfCondition extends TranslatedCompilerGeneratedValueCondition,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override LockStmt generatedBy;
 
   TranslatedIfCondition() { this = TTranslatedCompilerGeneratedElement(generatedBy, 5) }
@@ -209,7 +215,8 @@ private class TranslatedIfCondition extends TranslatedCompilerGeneratedValueCond
  * The translation of the `if` stmt present in the `finally` clause.
  */
 private class TranslatedFinallyIf extends TranslatedCompilerGeneratedIfStmt,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override LockStmt generatedBy;
 
   TranslatedFinallyIf() { this = TTranslatedCompilerGeneratedElement(generatedBy, 6) }
@@ -236,7 +243,8 @@ private class TranslatedFinallyIf extends TranslatedCompilerGeneratedIfStmt,
  * bool temp variable.
  */
 private class TranslatedWasTakenConst extends TranslatedCompilerGeneratedConstant,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override LockStmt generatedBy;
 
   TranslatedWasTakenConst() { this = TTranslatedCompilerGeneratedElement(generatedBy, 7) }
@@ -255,7 +263,8 @@ private class TranslatedWasTakenConst extends TranslatedCompilerGeneratedConstan
  * Represents the translation of the `lockWasTaken` temp variable declaration.
  */
 private class TranslatedLockWasTakenDecl extends TranslatedCompilerGeneratedDeclaration,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override LockStmt generatedBy;
 
   TranslatedLockWasTakenDecl() { this = TTranslatedCompilerGeneratedElement(generatedBy, 8) }
@@ -286,7 +295,8 @@ private class TranslatedLockWasTakenDecl extends TranslatedCompilerGeneratedDecl
  * expression being locked.
  */
 private class TranslatedLockedVarDecl extends TranslatedCompilerGeneratedDeclaration,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override LockStmt generatedBy;
 
   TranslatedLockedVarDecl() { this = TTranslatedCompilerGeneratedElement(generatedBy, 9) }
@@ -315,7 +325,8 @@ private class TranslatedLockedVarDecl extends TranslatedCompilerGeneratedDeclara
  * Used as an argument for the `MonitorEnter` call.
  */
 private class TranslatedMonitorEnterVarAcc extends TTranslatedCompilerGeneratedElement,
-  TranslatedCompilerGeneratedVariableAccess {
+  TranslatedCompilerGeneratedVariableAccess
+{
   override LockStmt generatedBy;
 
   TranslatedMonitorEnterVarAcc() { this = TTranslatedCompilerGeneratedElement(generatedBy, 10) }
@@ -341,7 +352,8 @@ private class TranslatedMonitorEnterVarAcc extends TTranslatedCompilerGeneratedE
  * Used as an argument for the `MonitorExit` call.
  */
 private class TranslatedMonitorExitVarAcc extends TTranslatedCompilerGeneratedElement,
-  TranslatedCompilerGeneratedVariableAccess {
+  TranslatedCompilerGeneratedVariableAccess
+{
   override LockStmt generatedBy;
 
   TranslatedMonitorExitVarAcc() { this = TTranslatedCompilerGeneratedElement(generatedBy, 11) }
@@ -366,7 +378,8 @@ private class TranslatedMonitorExitVarAcc extends TTranslatedCompilerGeneratedEl
  * Used as an argument for the `MonitorEnter` call.
  */
 private class TranslatedLockWasTakenCondVarAcc extends TTranslatedCompilerGeneratedElement,
-  TranslatedCompilerGeneratedVariableAccess {
+  TranslatedCompilerGeneratedVariableAccess
+{
   override LockStmt generatedBy;
 
   TranslatedLockWasTakenCondVarAcc() { this = TTranslatedCompilerGeneratedElement(generatedBy, 12) }
@@ -391,7 +404,8 @@ private class TranslatedLockWasTakenCondVarAcc extends TTranslatedCompilerGenera
  * as the `if` condition in the finally clause.
  */
 private class TranslatedLockWasTakenRefArg extends TTranslatedCompilerGeneratedElement,
-  TranslatedCompilerGeneratedVariableAccess {
+  TranslatedCompilerGeneratedVariableAccess
+{
   override LockStmt generatedBy;
 
   TranslatedLockWasTakenRefArg() { this = TTranslatedCompilerGeneratedElement(generatedBy, 13) }

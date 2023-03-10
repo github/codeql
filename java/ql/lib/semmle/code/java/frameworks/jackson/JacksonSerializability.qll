@@ -91,7 +91,8 @@ private class FieldReferencedJacksonSerializableType extends JacksonSerializable
 /** A type whose values may be deserialized by the Jackson JSON framework. */
 abstract class JacksonDeserializableType extends Type { }
 
-private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlowForSerializability::Configuration {
+private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlowForSerializability::Configuration
+{
   TypeLiteralToJacksonDatabindFlowConfiguration() {
     this = "TypeLiteralToJacksonDatabindFlowConfiguration"
   }

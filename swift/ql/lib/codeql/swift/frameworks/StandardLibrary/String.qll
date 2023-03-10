@@ -121,7 +121,8 @@ private class StringSummaries extends SummaryModelCsv {
  * tainted. This also includes fields declared in `StringProtocol`.
  */
 private class StringFieldsInheritTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
+  DataFlow::Content::FieldContent
+{
   StringFieldsInheritTaint() {
     exists(FieldDecl f | this.getField() = f |
       (

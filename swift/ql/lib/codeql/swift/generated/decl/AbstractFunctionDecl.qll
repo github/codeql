@@ -7,5 +7,6 @@ import codeql.swift.elements.decl.ValueDecl
 
 module Generated {
   class AbstractFunctionDecl extends Synth::TAbstractFunctionDecl, GenericContext, ValueDecl,
-    Callable { }
+    Callable
+  { }
 }

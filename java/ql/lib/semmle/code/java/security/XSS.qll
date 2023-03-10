@@ -60,7 +60,8 @@ private class DefaultXssSanitizer extends XssSanitizer {
 }
 
 /** A configuration that tracks data from a servlet writer to an output method. */
-private class XssVulnerableWriterSourceToWritingMethodFlowConfig extends TaintTracking2::Configuration {
+private class XssVulnerableWriterSourceToWritingMethodFlowConfig extends TaintTracking2::Configuration
+{
   XssVulnerableWriterSourceToWritingMethodFlowConfig() {
     this = "XSS::XssVulnerableWriterSourceToWritingMethodFlowConfig"
   }

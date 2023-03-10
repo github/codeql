@@ -64,7 +64,8 @@ class TaintedPathSinkType extends EndpointType, TTaintedPathSinkType {
 
 /** The `ShellCommandInjectionFromEnvironmentSink` class that can be predicted by endpoint scoring models. */
 class ShellCommandInjectionFromEnvironmentSinkType extends EndpointType,
-  TShellCommandInjectionFromEnvironmentSinkType {
+  TShellCommandInjectionFromEnvironmentSinkType
+{
   override string getDescription() { result = "ShellCommandInjectionFromEnvironmentSink" }
 
   override int getEncoding() { result = 5 }
