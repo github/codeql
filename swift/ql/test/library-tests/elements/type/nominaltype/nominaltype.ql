@@ -1,11 +1,9 @@
 import swift
 
 string describe(Type t) {
-  (
-    result = "getAliasedType:" + t.(TypeAliasType).getAliasedType()
-  ) or (
-    result = "getABaseType:" + t.(NominalType).getABaseType()
-  )
+  result = "getAliasedType:" + t.(TypeAliasType).getAliasedType()
+  or
+  result = "getABaseType:" + t.(NominalType).getABaseType()
 }
 
 from VarDecl v, Type t
