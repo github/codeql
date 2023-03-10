@@ -1142,7 +1142,8 @@ private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase, RawI
 }
 
 private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase,
-  RawIndirectInstruction {
+  RawIndirectInstruction
+{
   IndirectInstructionIndirectExprNode() { indirectExprNodeShouldBeIndirectInstruction(this, _) }
 
   final override Expr getConvertedExpr(int index) {
@@ -1617,7 +1618,13 @@ private module ExprFlowCached {
    */
   private predicate localStepFromNonExpr(Node n1, Node n2) {
     not exists(n1.asExpr()) and
-    localFlowStep(n1, n2)
+    localFlowStep(n1, n2) and
+    // We should never recursive through any of these nodes while
+    // looking for the next expression.
+    not n1 instanceof SsaPhiNode and
+    not n1 instanceof InitialGlobalValue and
+    // These nodes will never take us to a node for which `asExpr` has a result.
+    not n2 instanceof FinalGlobalValue
   }
 
   /**
