@@ -119,7 +119,7 @@ pub fn extract(
     path: &Path,
     source: &[u8],
     ranges: &[Range],
-) -> std::io::Result<()> {
+) -> () {
     let path_str = format!("{}", path.display());
     let span = tracing::span!(
         tracing::Level::TRACE,
@@ -150,7 +150,7 @@ pub fn extract(
     traverse(&tree, &mut visitor);
 
     parser.reset();
-    Ok(())
+    ()
 }
 
 /// Normalizes the path according the common CodeQL specification. Assumes that

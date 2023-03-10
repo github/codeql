@@ -56,6 +56,53 @@ fn encoding_from_name(encoding_name: &str) -> Option<&(dyn encoding::Encoding + 
     }
 }
 
+/// Convert a user-supplied path to an absolute path, and convert it to a verbatim path on Windows.
+fn path_from_string(path: &str) -> PathBuf {
+    let mut path = PathBuf::from(path);
+    // make path absolute
+    if path.is_relative() {
+        path = std::env::current_dir().unwrap().join(path)
+    };
+    let mut components = path.components();
+
+    // make Windows paths verbatim (with `\\?\` prefixes) which allow for extended-length paths.
+    let mut result = match components.next() {
+        None => unimplemented!("empty path"),
+
+        Some(component) => match component {
+            std::path::Component::Prefix(prefix) => match prefix.kind() {
+                std::path::Prefix::Disk(drive) => {
+                    let root = format!(r"\\?\{}:\", drive as char);
+                    PathBuf::from(root)
+                }
+                std::path::Prefix::UNC(server, share) => {
+                    let mut root = std::ffi::OsString::from(r"\\?\UNC\");
+                    root.push(server);
+                    root.push(r"\");
+                    root.push(share);
+                    PathBuf::from(root)
+                }
+                std::path::Prefix::Verbatim(_)
+                | std::path::Prefix::VerbatimUNC(_, _)
+                | std::path::Prefix::VerbatimDisk(_)
+                | std::path::Prefix::DeviceNS(_) => Path::new(&component).to_path_buf(),
+            },
+            _ => Path::new(&component).to_path_buf(),
+        },
+    };
+    // remove `.` and `..` components
+    for component in components {
+        match component {
+            std::path::Component::CurDir => continue,
+            std::path::Component::ParentDir => {
+                result.pop();
+            }
+            _ => result.push(component),
+        }
+    }
+    result
+}
+
 fn main() -> std::io::Result<()> {
     tracing_subscriber::fmt()
         .with_target(false)
@@ -122,15 +169,15 @@ fn main() -> std::io::Result<()> {
     let src_archive_dir = matches
         .value_of("source-archive-dir")
         .expect("missing --source-archive-dir");
-    let src_archive_dir = PathBuf::from(src_archive_dir);
+    let src_archive_dir = path_from_string(src_archive_dir);
 
     let trap_dir = matches
         .value_of("output-dir")
         .expect("missing --output-dir");
-    let trap_dir = PathBuf::from(trap_dir);
+    let trap_dir = path_from_string(trap_dir);
 
     let file_list = matches.value_of("file-list").expect("missing --file-list");
-    let file_list = fs::File::open(file_list)?;
+    let file_list = fs::File::open(path_from_string(file_list))?;
 
     let language = tree_sitter_ruby::language();
     let erb = tree_sitter_embedded_template::language();
@@ -164,7 +211,7 @@ fn main() -> std::io::Result<()> {
                     &path,
                     &source,
                     &[],
-                )?;
+                );
 
                 let (ranges, line_breaks) = scan_erb(
                     erb,
@@ -251,7 +298,7 @@ fn main() -> std::io::Result<()> {
                 &path,
                 &source,
                 &code_ranges,
-            )?;
+            );
             std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
             if needs_conversion {
                 std::fs::write(&src_archive_file, &source)?;
