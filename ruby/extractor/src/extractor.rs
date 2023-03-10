@@ -120,7 +120,7 @@ pub fn extract(
     source: &[u8],
     ranges: &[Range],
 ) -> () {
-    let path_str = format!("{}", path.display());
+    let path_str = normalize_path(&path);
     let span = tracing::span!(
         tracing::Level::TRACE,
         "extract",
@@ -155,7 +155,7 @@ pub fn extract(
 
 /// Normalizes the path according the common CodeQL specification. Assumes that
 /// `path` has already been canonicalized using `std::fs::canonicalize`.
-fn normalize_path(path: &Path) -> String {
+pub fn normalize_path(path: &Path) -> String {
     if cfg!(windows) {
         // The way Rust canonicalizes paths doesn't match the CodeQL spec, so we
         // have to do a bit of work removing certain prefixes and replacing

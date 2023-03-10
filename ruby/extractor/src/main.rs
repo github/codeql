@@ -252,7 +252,7 @@ fn main() -> std::io::Result<()> {
                                                     "character-decoding-error",
                                                     "Character decoding error",
                                                 )
-                                                .file(&path.to_string_lossy())
+                                                .file(&extractor::normalize_path(&path))
                                                 .message(
                                                     "Could not decode the file contents as {}: {}. The contents of the file must match the character encoding specified in the {} {}.",
                                                     &[
@@ -272,7 +272,7 @@ fn main() -> std::io::Result<()> {
                             diagnostics_writer.write(
                                 diagnostics_writer
                                     .new_entry("unknown-character-encoding", "Unknown character encoding")
-                                    .file(&path.to_string_lossy())
+                                    .file(&extractor::normalize_path(&path))
                                     .message(
                                         "Unknown character encoding {} in {} {}.",
                                         &[
