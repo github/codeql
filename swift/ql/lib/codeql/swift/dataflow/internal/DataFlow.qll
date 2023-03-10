@@ -278,6 +278,9 @@ signature module PathGraphSig<PathNodeSig PathNode> {
   predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out);
 }
 
+/**
+ * Constructs a `PathGraph` from two `PathGraph`s by disjoint union.
+ */
 module MergePathGraph<
 PathNodeSig PathNode1, PathNodeSig PathNode2, PathGraphSig<PathNode1> Graph1,
 PathGraphSig<PathNode2> Graph2> {
@@ -285,16 +288,27 @@ PathGraphSig<PathNode2> Graph2> {
     TPathNode1(PathNode1 p) or
     TPathNode2(PathNode2 p)
 
+  /** A node in a graph of path explanations that is formed by disjoint union of the two given graphs. */
   class PathNode extends TPathNode {
+    /** Gets this as a projection on the first given `PathGraph`. */
     PathNode1 asPathNode1() { this = TPathNode1(result) }
 
+    /** Gets this as a projection on the second given `PathGraph`. */
     PathNode2 asPathNode2() { this = TPathNode2(result) }
 
+    /** Gets a textual representation of this element. */
     string toString() {
       result = this.asPathNode1().toString() or
       result = this.asPathNode2().toString()
     }
 
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+     */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
@@ -302,23 +316,34 @@ PathGraphSig<PathNode2> Graph2> {
       this.asPathNode2().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
+    /** Gets the underlying `Node`. */
     Node getNode() {
       result = this.asPathNode1().getNode() or
       result = this.asPathNode2().getNode()
     }
   }
 
+  /**
+   * Provides the query predicates needed to include a graph in a path-problem query.
+   */
   module PathGraph implements PathGraphSig<PathNode> {
+    /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
     query predicate edges(PathNode a, PathNode b) {
       Graph1::edges(a.asPathNode1(), b.asPathNode1()) or
       Graph2::edges(a.asPathNode2(), b.asPathNode2())
     }
 
+    /** Holds if `n` is a node in the graph of data flow path explanations. */
     query predicate nodes(PathNode n, string key, string val) {
       Graph1::nodes(n.asPathNode1(), key, val) or
       Graph2::nodes(n.asPathNode2(), key, val)
     }
 
+    /**
+     * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
+     * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
+     * `ret -> out` is summarized as the edge `arg -> out`.
+     */
     query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
       Graph1::subpaths(arg.asPathNode1(), par.asPathNode1(), ret.asPathNode1(), out.asPathNode1()) or
       Graph2::subpaths(arg.asPathNode2(), par.asPathNode2(), ret.asPathNode2(), out.asPathNode2())
