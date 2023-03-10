@@ -10,7 +10,7 @@ class TypeAliasType extends Generated::TypeAliasType {
    * typealias MyInt = Int
    * ```
    */
-  Type getAliasedType() { none() } // TODO: not yet implemented.
+  Type getAliasedType() { result = this.getDecl().getAliasedType() }
 
-  override Type getUnderlyingType() { result = this } // TODO: not yet implemented.
+  override Type getUnderlyingType() { result = this.getAliasedType().getUnderlyingType() }
 }
