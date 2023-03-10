@@ -64,7 +64,8 @@ module ForeachElements {
 }
 
 private class TranslatedForeachTry extends TranslatedCompilerGeneratedTry,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override ForeachStmt generatedBy;
 
   TranslatedForeachTry() { this = TTranslatedCompilerGeneratedElement(generatedBy, 0) }
@@ -88,7 +89,8 @@ private class TranslatedForeachTry extends TranslatedCompilerGeneratedTry,
  * The translation of the finally block.
  */
 private class TranslatedForeachFinally extends TranslatedCompilerGeneratedBlock,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override ForeachStmt generatedBy;
 
   TranslatedForeachFinally() { this = TTranslatedCompilerGeneratedElement(generatedBy, 1) }
@@ -108,7 +110,8 @@ private class TranslatedForeachFinally extends TranslatedCompilerGeneratedBlock,
  * to correctly mark which edges should be back edges.
  */
 class TranslatedForeachWhile extends TranslatedCompilerGeneratedStmt, ConditionContext,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override ForeachStmt generatedBy;
 
   TranslatedForeachWhile() { this = TTranslatedCompilerGeneratedElement(generatedBy, 2) }
@@ -164,7 +167,8 @@ class TranslatedForeachWhile extends TranslatedCompilerGeneratedStmt, ConditionC
  * The translation of the call to the `MoveNext` method, used as a condition for the while.
  */
 private class TranslatedForeachMoveNext extends TranslatedCompilerGeneratedCall,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override ForeachStmt generatedBy;
 
   TranslatedForeachMoveNext() { this = TTranslatedCompilerGeneratedElement(generatedBy, 3) }
@@ -192,7 +196,8 @@ private class TranslatedForeachMoveNext extends TranslatedCompilerGeneratedCall,
  * The translation of the call to retrieve the enumerator.
  */
 private class TranslatedForeachGetEnumerator extends TranslatedCompilerGeneratedCall,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override ForeachStmt generatedBy;
 
   TranslatedForeachGetEnumerator() { this = TTranslatedCompilerGeneratedElement(generatedBy, 4) }
@@ -219,7 +224,8 @@ private class TranslatedForeachGetEnumerator extends TranslatedCompilerGenerated
  * The translation of the call to the getter method of the `Current` property of the enumerator.
  */
 private class TranslatedForeachCurrent extends TranslatedCompilerGeneratedCall,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override ForeachStmt generatedBy;
 
   TranslatedForeachCurrent() { this = TTranslatedCompilerGeneratedElement(generatedBy, 5) }
@@ -247,7 +253,8 @@ private class TranslatedForeachCurrent extends TranslatedCompilerGeneratedCall,
  * The translation of the call to dispose (inside the finally block)
  */
 private class TranslatedForeachDispose extends TranslatedCompilerGeneratedCall,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override ForeachStmt generatedBy;
 
   TranslatedForeachDispose() { this = TTranslatedCompilerGeneratedElement(generatedBy, 6) }
@@ -275,7 +282,8 @@ private class TranslatedForeachDispose extends TranslatedCompilerGeneratedCall,
  * The condition for the while, ie. a call to MoveNext.
  */
 private class TranslatedForeachWhileCondition extends TranslatedCompilerGeneratedValueCondition,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override ForeachStmt generatedBy;
 
   TranslatedForeachWhileCondition() { this = TTranslatedCompilerGeneratedElement(generatedBy, 7) }
@@ -295,7 +303,8 @@ private class TranslatedForeachWhileCondition extends TranslatedCompilerGenerate
  * declaration of the `temporary` enumerator variable)
  */
 private class TranslatedForeachEnumerator extends TranslatedCompilerGeneratedDeclaration,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override ForeachStmt generatedBy;
 
   TranslatedForeachEnumerator() { this = TTranslatedCompilerGeneratedElement(generatedBy, 8) }
@@ -323,7 +332,8 @@ private class TranslatedForeachEnumerator extends TranslatedCompilerGeneratedDec
  * Class that represents that translation of the declaration that's happening inside the body of the while.
  */
 private class TranslatedForeachIterVar extends TranslatedCompilerGeneratedDeclaration,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override ForeachStmt generatedBy;
 
   TranslatedForeachIterVar() { this = TTranslatedCompilerGeneratedElement(generatedBy, 9) }
@@ -352,7 +362,8 @@ private class TranslatedForeachIterVar extends TranslatedCompilerGeneratedDeclar
  * for the call to `MoveNext`.
  */
 private class TranslatedMoveNextEnumAcc extends TTranslatedCompilerGeneratedElement,
-  TranslatedCompilerGeneratedVariableAccess {
+  TranslatedCompilerGeneratedVariableAccess
+{
   override ForeachStmt generatedBy;
 
   TranslatedMoveNextEnumAcc() { this = TTranslatedCompilerGeneratedElement(generatedBy, 10) }
@@ -384,7 +395,8 @@ private class TranslatedMoveNextEnumAcc extends TTranslatedCompilerGeneratedElem
  * for the call to the getter of the property `Current`.
  */
 private class TranslatedForeachCurrentEnumAcc extends TTranslatedCompilerGeneratedElement,
-  TranslatedCompilerGeneratedVariableAccess {
+  TranslatedCompilerGeneratedVariableAccess
+{
   override ForeachStmt generatedBy;
 
   TranslatedForeachCurrentEnumAcc() { this = TTranslatedCompilerGeneratedElement(generatedBy, 11) }
@@ -416,7 +428,8 @@ private class TranslatedForeachCurrentEnumAcc extends TTranslatedCompilerGenerat
  * for the call to `Dispose`.
  */
 private class TranslatedForeachDisposeEnumAcc extends TTranslatedCompilerGeneratedElement,
-  TranslatedCompilerGeneratedVariableAccess {
+  TranslatedCompilerGeneratedVariableAccess
+{
   override ForeachStmt generatedBy;
 
   TranslatedForeachDisposeEnumAcc() { this = TTranslatedCompilerGeneratedElement(generatedBy, 12) }

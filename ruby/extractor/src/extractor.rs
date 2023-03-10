@@ -294,7 +294,7 @@ impl<'a> Visitor<'a> {
             .diagnostics_writer
             .new_entry("parse-error", "Parse error");
         &mesg
-            .severity(diagnostics::Severity::Error)
+            .severity(diagnostics::Severity::Warning)
             .location(self.path, start_line, start_column, end_line, end_column)
             .message(message, args);
         if status_page {
@@ -405,7 +405,7 @@ impl<'a> Visitor<'a> {
                     loc,
                     self.diagnostics_writer
                         .new_entry("parse-error", "Parse error")
-                        .severity(diagnostics::Severity::Error)
+                        .severity(diagnostics::Severity::Warning)
                         .location(self.path, start_line, start_column, end_line, end_column)
                         .message(
                             "Unknown table type: {}",

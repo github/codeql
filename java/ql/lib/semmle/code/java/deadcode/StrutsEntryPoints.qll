@@ -33,8 +33,8 @@ class Struts1ActionEntryPoint extends EntryPoint, Class {
 /**
  * A struts 2 action class that is reflectively constructed.
  */
-class Struts2ReflectivelyConstructedAction extends ReflectivelyConstructedClass instanceof Struts2ActionClass {
-}
+class Struts2ReflectivelyConstructedAction extends ReflectivelyConstructedClass instanceof Struts2ActionClass
+{ }
 
 /**
  * A method called on a struts 2 action class when the action is activated.

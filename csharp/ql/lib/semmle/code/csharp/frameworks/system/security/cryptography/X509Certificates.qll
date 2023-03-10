@@ -22,7 +22,8 @@ class SystemSecurityCryptographyX509CertificatesClass extends Class {
  * The `X509Certificate` or `X509Certificate2` class in the namespace
  * `System.Security.Cryptography.X509Certificates`.
  */
-class SystemSecurityCryptographyX509CertificatesX509CertificateClass extends SystemSecurityCryptographyX509CertificatesClass {
+class SystemSecurityCryptographyX509CertificatesX509CertificateClass extends SystemSecurityCryptographyX509CertificatesClass
+{
   SystemSecurityCryptographyX509CertificatesX509CertificateClass() {
     this.hasName("X509Certificate") or
     this.hasName("X509Certificate2")

@@ -85,7 +85,8 @@ deprecated class PatternParameter extends Parameter, Pattern, TPatternParameter 
  * A parameter defined using a tuple pattern.
  */
 deprecated class TuplePatternParameter extends PatternParameter, TuplePattern,
-  TDestructuredParameter {
+  TDestructuredParameter
+{
   final override LocalVariable getAVariable() { result = TuplePattern.super.getAVariable() }
 }
 

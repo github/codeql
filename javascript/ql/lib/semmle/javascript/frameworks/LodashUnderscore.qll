@@ -178,7 +178,8 @@ module LodashUnderscore {
  * still infer the ordinary abstract value.
  */
 private class LodashCallbackAsPartialInvoke extends DataFlow::PartialInvokeNode::Range,
-  DataFlow::CallNode {
+  DataFlow::CallNode
+{
   int callbackIndex;
   int contextIndex;
 
