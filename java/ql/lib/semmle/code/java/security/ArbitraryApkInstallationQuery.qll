@@ -27,6 +27,10 @@ private module ApkInstallationConfiguration implements DataFlow::ConfigSig {
 
 module ApkInstallationFlow = DataFlow::Make<ApkInstallationConfiguration>;
 
+private newtype ActionState =
+  ActionUnset() or
+  HasInstallPackageAction()
+
 /**
  * A dataflow configuration tracking the flow from the `android.content.Intent.ACTION_INSTALL_PACKAGE`
  * constant to either the constructor of an intent or the `setAction` method of an intent.
@@ -34,18 +38,17 @@ module ApkInstallationFlow = DataFlow::Make<ApkInstallationConfiguration>;
  * This is used to track if an intent is used to install an APK.
  */
 private module InstallPackageActionConfiguration implements DataFlow::StateConfigSig {
-  class FlowState = string;
+  class FlowState = ActionState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
-    source.asExpr() instanceof InstallPackageAction and state instanceof DataFlow::FlowStateEmpty
+    source.asExpr() instanceof InstallPackageAction and state instanceof ActionUnset
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    state1 instanceof DataFlow::FlowStateEmpty and
-    state2 = "hasPackageInstallAction" and
+    state1 instanceof ActionUnset and
+    state2 instanceof HasInstallPackageAction and
     (
       exists(ConstructorCall cc |
         cc.getConstructedType() instanceof TypeIntent and
@@ -62,8 +65,8 @@ private module InstallPackageActionConfiguration implements DataFlow::StateConfi
     )
   }
 
-  predicate isSink(DataFlow::Node node, DataFlow::FlowState state) {
-    state = "hasPackageInstallAction" and node.asExpr().getType() instanceof TypeIntent
+  predicate isSink(DataFlow::Node node, FlowState state) {
+    state instanceof HasInstallPackageAction and node.asExpr().getType() instanceof TypeIntent
   }
 
   predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
@@ -72,25 +75,28 @@ private module InstallPackageActionConfiguration implements DataFlow::StateConfi
 private module InstallPackageActionFlow =
   TaintTracking::MakeWithState<InstallPackageActionConfiguration>;
 
+private newtype MimeTypeState =
+  MimeTypeUnset() or
+  HasPackageArchiveMimeType()
+
 /**
  * A dataflow configuration tracking the flow of the Android APK MIME type to
  * the `setType` or `setTypeAndNormalize` method of an intent, followed by a call
  * to `setData[AndType][AndNormalize]`.
  */
 private module PackageArchiveMimeTypeConfiguration implements DataFlow::StateConfigSig {
-  class FlowState = string;
+  class FlowState = MimeTypeState;
 
   predicate isSource(DataFlow::Node node, FlowState state) {
     node.asExpr() instanceof PackageArchiveMimeTypeLiteral and
-    state instanceof DataFlow::FlowStateEmpty
+    state instanceof MimeTypeUnset
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    state1 instanceof DataFlow::FlowStateEmpty and
-    state2 = "typeSet" and
+    state1 instanceof MimeTypeUnset and
+    state2 instanceof HasPackageArchiveMimeType and
     exists(MethodAccess ma |
       ma.getQualifier() = node2.asExpr() and
       (
@@ -103,8 +109,8 @@ private module PackageArchiveMimeTypeConfiguration implements DataFlow::StateCon
     )
   }
 
-  predicate isSink(DataFlow::Node node, DataFlow::FlowState state) {
-    state = "typeSet" and
+  predicate isSink(DataFlow::Node node, FlowState state) {
+    state instanceof HasPackageArchiveMimeType and
     node instanceof SetDataSink
   }
 
