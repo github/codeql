@@ -403,7 +403,7 @@ private module ReturnNodes {
   /**
    * A data-flow node that represents the `self` value in a constructor being
    * implicitly returned as the newly-constructed object
-   * */
+   */
   class SelfReturnNode extends InoutReturnNodeImpl {
     SelfReturnNode() {
       exit.getScope() instanceof ConstructorDecl and
