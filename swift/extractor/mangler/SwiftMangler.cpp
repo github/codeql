@@ -71,22 +71,3 @@ SwiftMangledName SwiftMangler::visitModuleType(const swift::ModuleType* type) {
   }
   return ret;
 }
-
-SwiftMangledName SwiftMangler::visitTupleType(const swift::TupleType* type) {
-  auto ret = initMangled(type);
-  for (const auto& element : type->getElements()) {
-    if (element.hasName()) {
-      ret << element.getName().str();
-    }
-    ret << dispatcher.prefetchLabel(element.getType());
-  }
-  return ret;
-}
-
-SwiftMangledName SwiftMangler::visitBuiltinType(const swift::BuiltinType* type) {
-  auto ret = initMangled(type);
-  llvm::SmallString<32> buffer;
-  type->getTypeName(buffer);
-  ret << buffer.str();
-  return ret;
-}
