@@ -15,20 +15,18 @@ import codeql.swift.dataflow.TaintTracking
 /**
  * A taint configuration for tainted data reaching any node.
  */
-class TaintReachConfig extends TaintTracking::Configuration {
-  TaintReachConfig() { this = "TaintReachConfig" }
+module TaintReachConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
-
-  override predicate isSink(DataFlow::Node node) { any() }
+  predicate isSink(DataFlow::Node node) { any() }
 }
+
+module TaintReachFlow = TaintTracking::Make<TaintReachConfig>;
 
 /**
  * Gets the total number of dataflow nodes that taint reaches (from any source).
  */
-int taintedNodesCount() {
-  exists(TaintReachConfig config | result = count(DataFlow::Node n | config.hasFlowTo(n)))
-}
+int taintedNodesCount() { result = count(DataFlow::Node n | TaintReachFlow::hasFlowTo(n)) }
 
 /**
  * Gets the proportion of dataflow nodes that taint reaches (from any source),
