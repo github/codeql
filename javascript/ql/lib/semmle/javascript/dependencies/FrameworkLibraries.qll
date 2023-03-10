@@ -346,7 +346,8 @@ private class JQueryInstance extends FrameworkLibraryInstance {
 /**
  * The jQuery Mobile framework.
  */
-private class JQueryMobile extends FrameworkLibraryWithGenericUrl, FrameworkLibraryWithMarkerComment {
+private class JQueryMobile extends FrameworkLibraryWithGenericUrl, FrameworkLibraryWithMarkerComment
+{
   JQueryMobile() { this = "jquery-mobile" }
 
   override string getAnAlias() { result = "jquery.mobile" }
@@ -371,7 +372,8 @@ private class JQueryUI extends FrameworkLibraryWithGenericUrl, FrameworkLibraryW
  * The jQuery TextExt framework.
  */
 private class JQueryTextExt extends FrameworkLibraryWithGenericUrl,
-  FrameworkLibraryWithMarkerComment {
+  FrameworkLibraryWithMarkerComment
+{
   JQueryTextExt() { this = "jquery-textext" }
 
   override string getAnAlias() { result = "jquery.textext" }
@@ -387,7 +389,8 @@ private class JQueryTextExt extends FrameworkLibraryWithGenericUrl,
  * The jQuery DataTables framework.
  */
 private class JQueryDataTables extends FrameworkLibraryWithGenericUrl,
-  FrameworkLibraryWithMarkerComment {
+  FrameworkLibraryWithMarkerComment
+{
   JQueryDataTables() { this = "jquery-dataTables" }
 
   override string getAnAlias() { result = "jquery.dataTables" }
@@ -400,7 +403,8 @@ private class JQueryDataTables extends FrameworkLibraryWithGenericUrl,
 /**
  * The jQuery jsTree framework.
  */
-private class JQueryJsTree extends FrameworkLibraryWithGenericUrl, FrameworkLibraryWithMarkerComment {
+private class JQueryJsTree extends FrameworkLibraryWithGenericUrl, FrameworkLibraryWithMarkerComment
+{
   JQueryJsTree() { this = "jquery-jstree" }
 
   override string getAnAlias() { result = "jquery.jstree" }
@@ -412,7 +416,8 @@ private class JQueryJsTree extends FrameworkLibraryWithGenericUrl, FrameworkLibr
  * The jQuery Snippet framework.
  */
 private class JQuerySnippet extends FrameworkLibraryWithGenericUrl,
-  FrameworkLibraryWithMarkerComment {
+  FrameworkLibraryWithMarkerComment
+{
   JQuerySnippet() { this = "jquery-snippet" }
 
   override string getAnAlias() { result = "jquery.snippet" }

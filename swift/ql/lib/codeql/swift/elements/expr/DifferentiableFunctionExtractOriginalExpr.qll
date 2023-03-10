@@ -1,4 +1,4 @@
 private import codeql.swift.generated.expr.DifferentiableFunctionExtractOriginalExpr
 
-class DifferentiableFunctionExtractOriginalExpr extends Generated::DifferentiableFunctionExtractOriginalExpr {
-}
+class DifferentiableFunctionExtractOriginalExpr extends Generated::DifferentiableFunctionExtractOriginalExpr
+{ }

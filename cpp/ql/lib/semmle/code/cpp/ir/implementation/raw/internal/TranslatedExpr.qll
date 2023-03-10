@@ -131,7 +131,8 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
 }
 
 class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
-  TTranslatedConditionValue {
+  TTranslatedConditionValue
+{
   TranslatedConditionValue() { this = TTranslatedConditionValue(expr) }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getCondition() }
@@ -326,7 +327,8 @@ class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad 
  * from the AST.
  */
 class TranslatedSyntheticTemporaryObject extends TranslatedValueCategoryAdjustment,
-  TTranslatedSyntheticTemporaryObject {
+  TTranslatedSyntheticTemporaryObject
+{
   TranslatedSyntheticTemporaryObject() { this = TTranslatedSyntheticTemporaryObject(expr) }
 
   override string toString() { result = "Temporary materialization of " + expr.toString() }
@@ -2302,7 +2304,8 @@ class TranslatedBinaryConditionalExpr extends TranslatedConditionalExpr {
  * its initializer.
  */
 class TranslatedTemporaryObjectExpr extends TranslatedNonConstantExpr,
-  TranslatedVariableInitialization {
+  TranslatedVariableInitialization
+{
   override TemporaryObjectExpr expr;
 
   final override predicate hasTempVariable(TempVariableTag tag, CppType type) {

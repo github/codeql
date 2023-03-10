@@ -47,7 +47,8 @@ private class DefaultFragmentInjectionSink extends FragmentInjectionSink {
   DefaultFragmentInjectionSink() { sinkNode(this, "fragment-injection") }
 }
 
-private class DefaultFragmentInjectionAdditionalTaintStep extends FragmentInjectionAdditionalTaintStep {
+private class DefaultFragmentInjectionAdditionalTaintStep extends FragmentInjectionAdditionalTaintStep
+{
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
     exists(ReflectiveClassIdentifierMethodAccess ma |
       ma.getArgument(0) = n1.asExpr() and ma = n2.asExpr()

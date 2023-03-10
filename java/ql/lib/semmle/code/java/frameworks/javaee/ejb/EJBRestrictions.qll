@@ -75,8 +75,8 @@ class ForbiddenSecurityConfigurationCallable extends ForbiddenCallable {
 }
 
 /** A method or constructor involving serialization that may not be called by an EJB. */
-class ForbiddenSerializationCallable extends ForbiddenCallable instanceof ForbiddenSerializationMethod {
-}
+class ForbiddenSerializationCallable extends ForbiddenCallable instanceof ForbiddenSerializationMethod
+{ }
 
 /** A method or constructor involving network factory operations that may not be called by an EJB. */
 class ForbiddenSetFactoryCallable extends ForbiddenCallable instanceof ForbiddenSetFactoryMethod { }

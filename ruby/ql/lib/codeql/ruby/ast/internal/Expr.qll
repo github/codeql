@@ -101,7 +101,8 @@ abstract class DestructuredLhsExprImpl extends Ruby::AstNode {
 }
 
 class DestructuredLeftAssignmentImpl extends DestructuredLhsExprImpl,
-  Ruby::DestructuredLeftAssignment {
+  Ruby::DestructuredLeftAssignment
+{
   override Ruby::AstNode getChildNode(int i) { result = this.getChild(i) }
 }
 

@@ -126,7 +126,8 @@ abstract class TranslatedCompilerGeneratedBlock extends TranslatedCompilerGenera
  * the body of the `then` and the body of the `else`.
  */
 abstract class TranslatedCompilerGeneratedIfStmt extends TranslatedCompilerGeneratedStmt,
-  ConditionContext {
+  ConditionContext
+{
   override Instruction getFirstInstruction() { result = getCondition().getFirstInstruction() }
 
   override TranslatedElement getChild(int id) {

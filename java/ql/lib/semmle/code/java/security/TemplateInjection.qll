@@ -62,8 +62,8 @@ abstract class TemplateInjectionSanitizerWithState extends DataFlow::Node {
   abstract predicate hasState(DataFlow::FlowState state);
 }
 
-private class DefaultTemplateInjectionSource extends TemplateInjectionSource instanceof RemoteFlowSource {
-}
+private class DefaultTemplateInjectionSource extends TemplateInjectionSource instanceof RemoteFlowSource
+{ }
 
 private class DefaultTemplateInjectionSink extends TemplateInjectionSink {
   DefaultTemplateInjectionSink() { sinkNode(this, "ssti") }
