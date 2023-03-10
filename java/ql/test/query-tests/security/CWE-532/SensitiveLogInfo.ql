@@ -2,14 +2,10 @@ import java
 import TestUtilities.InlineFlowTest
 import semmle.code.java.security.SensitiveLoggingQuery
 
-class EnableLegacy extends EnableLegacyConfiguration {
-  EnableLegacy() { exists(this) }
-}
-
 class HasFlowTest extends InlineFlowTest {
-  override DataFlow::Configuration getTaintFlowConfig() {
-    result instanceof SensitiveLoggerConfiguration
+  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
+    SensitiveLoggerFlow::hasFlow(src, sink)
   }
 
-  override DataFlow::Configuration getValueFlowConfig() { none() }
+  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
 }
