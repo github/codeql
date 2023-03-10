@@ -65,7 +65,8 @@ std::vector<ModuleInfo> emitModuleImplementations(SwiftExtractorState& state,
     if (auto hash = getModuleHash(modulePath)) {
       auto target = getModuleTarget(moduleName, *hash);
       if (auto moduleTrap = createTargetTrapDomain(state, target, TrapType::linkage)) {
-        moduleTrap->createLabelWithImplementationId<ModuleDeclTag>(*hash, moduleName);
+        moduleTrap->createTypedLabelWithImplementationId<ModuleDeclTag>({{"Module_", moduleName}},
+                                                                        *hash);
         ret.push_back({target, getModuleId(moduleName, *hash)});
       }
     }

@@ -2,7 +2,6 @@
 
 #include "swift/extractor/translators/TranslatorBase.h"
 #include "swift/extractor/trap/generated/type/TrapClasses.h"
-#include "swift/extractor/mangler/SwiftMangler.h"
 
 namespace codeql {
 class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
@@ -90,12 +89,10 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
 
   template <typename T>
   auto createTypeEntry(const T& type) {
-    auto entry = dispatcher.createEntry(type, mangler.mangleType(type));
+    auto entry = dispatcher.createEntry(type);
     fillType(type, entry);
     return entry;
   }
-
-  SwiftMangler mangler{dispatcher};
 };
 
 }  // namespace codeql

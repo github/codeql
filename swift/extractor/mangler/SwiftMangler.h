@@ -2,41 +2,44 @@
 
 #include <swift/AST/ASTMangler.h>
 #include <swift/AST/Types.h>
+#include <swift/AST/ASTVisitor.h>
+#include <swift/AST/TypeVisitor.h>
 
-#include <random>
 #include <variant>
 
 #include "swift/extractor/trap/TrapLabel.h"
+#include "swift/extractor/infra/SwiftMangledName.h"
 
 namespace codeql {
 
 class SwiftDispatcher;
 
-struct MangledName {
-  using Part = std::variant<std::string, UntypedTrapLabel>;
-
-  std::vector<Part> parts;
-};
-
-class SwiftMangler {
+class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName> {
  public:
   explicit SwiftMangler(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
-  std::string mangledName(const swift::Decl& decl);
+
+  // TODO actual visit
+  SwiftMangledName mangleDecl(const swift::Decl& decl);
+
+  SwiftMangledName mangleType(const swift::TypeBase& type) {
+    return visit(const_cast<swift::TypeBase*>(&type));
+  }
+
+ private:
+  friend class swift::TypeVisitor<SwiftMangler, SwiftMangledName>;
 
   // default fallback for not yet mangled types. This should never be called in normal situations
   // will just spawn a random name
   // TODO: make it assert once we mangle all types
-  static MangledName mangleType(const swift::TypeBase& type);
+  static SwiftMangledName visitType(const swift::TypeBase* type) { return {}; }
 
-  MangledName mangleType(const swift::ModuleType& type);
-  MangledName mangleType(const swift::TupleType& type);
-  MangledName mangleType(const swift::BuiltinType& type);
+  SwiftMangledName visitModuleType(const swift::ModuleType* type);
+  SwiftMangledName visitTupleType(const swift::TupleType* type);
+  SwiftMangledName visitBuiltinType(const swift::BuiltinType* type);
 
  private:
   swift::Mangle::ASTMangler mangler;
   SwiftDispatcher& dispatcher;
 };
-
-std::ostream& operator<<(std::ostream& out, const MangledName& name);
 
 }  // namespace codeql

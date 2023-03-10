@@ -4,41 +4,50 @@
 #include <swift/AST/Module.h>
 #include <sstream>
 
-namespace codeql {
-namespace {
-// streaming labels into a MangledName just appends them
-template <typename Tag>
-inline MangledName& operator<<(MangledName& name, TrapLabel<Tag> label) {
-  name.parts.emplace_back(label);
-  return name;
-}
-
-// streaming string-like stuff will add a new part it only if strictly required, otherwise it will
-// append to the last part if it is a string
-template <typename T>
-inline MangledName& operator<<(MangledName& name, T&& arg) {
-  if (name.parts.empty() || std::holds_alternative<UntypedTrapLabel>(name.parts.back())) {
-    name.parts.emplace_back("");
-  }
-  std::get<std::string>(name.parts.back()) += std::forward<T>(arg);
-  return name;
-}
-}  // namespace
-}  // namespace codeql
-
 using namespace codeql;
 
-std::string SwiftMangler::mangledName(const swift::Decl& decl) {
-  assert(llvm::isa<swift::ValueDecl>(decl));
+namespace {
+SwiftMangledName initMangled(const swift::TypeBase* type) {
+  switch (type->getKind()) {
+#define TYPE(ID, PARENT)    \
+  case swift::TypeKind::ID: \
+    return {{#ID "Type_"}};
+#include <swift/AST/TypeNodes.def>
+    default:
+      return {};
+  }
+}
+}  // namespace
+
+SwiftMangledName SwiftMangler::mangleDecl(const swift::Decl& decl) {
+  if (!llvm::isa<swift::ValueDecl>(decl)) {
+    return {};
+  }
+  // We do not deduplicate local variables, but for the moment also non-local vars from non-swift
+  // (PCM, clang modules) modules as the mangler crashes sometimes
+  if (decl.getKind() == swift::DeclKind::Var &&
+      (decl.getDeclContext()->isLocalContext() || decl.getModuleContext()->isNonSwiftModule())) {
+    return {};
+  }
+
+  // we do not deduplicate GenericTypeParamDecl of extensions yet, as their mangling is ambiguous
+  if (decl.getKind() == swift::DeclKind::GenericTypeParam &&
+      decl.getDeclContext()->getContextKind() == swift::DeclContextKind::ExtensionDecl) {
+    return {};
+  }
+
+  SwiftMangledName ret{{swift::Decl::getKindName(decl.getKind()).str()}};
+  ret << '_';
   auto& valueDecl = llvm::cast<swift::ValueDecl>(decl);
   std::string_view moduleName = decl.getModuleContext()->getRealName().str();
   // ASTMangler::mangleAnyDecl crashes when called on `ModuleDecl`
   if (decl.getKind() == swift::DeclKind::Module) {
-    return std::string{moduleName};
+    ret << moduleName;
+    return ret;
   }
-  std::ostringstream ret;
   // stamp all declarations with an id-ref of the containing module
-  ret << '{' << ModuleDeclTag::prefix << '_' << moduleName << '}';
+  auto moduleLabel = dispatcher.prefetchLabel(decl.getModuleContext());
+  ret << moduleLabel;
   if (decl.getKind() == swift::DeclKind::TypeAlias) {
     // In cases like this (when coming from PCM)
     //  typealias CFXMLTree = CFTree
@@ -51,59 +60,33 @@ std::string SwiftMangler::mangledName(const swift::Decl& decl) {
     // prefix adds a couple of special symbols, we don't necessary need them
     ret << mangler.mangleAnyDecl(&valueDecl, /* prefix = */ false);
   }
-  return ret.str();
-}
-
-MangledName SwiftMangler::mangleType(const swift::TypeBase& type) {
-  // spit out a random ID
-  static constexpr auto chrs = "0123456789abcdef";
-  static std::mt19937 rg{std::random_device{}()};
-  static std::uniform_int_distribution<std::string::size_type> dist(0, sizeof(chrs) - 2);
-  std::string ret(16, '\0');
-  std::generate_n(ret.begin(), ret.size(), [&] { return chrs[dist(rg)]; });
-  return {{ret}};
-}
-
-MangledName SwiftMangler::mangleType(const swift::ModuleType& type) {
-  auto key = type.getModule()->getRealName().str().str();
-  if (type.getModule()->isNonSwiftModule()) {
-    key += "|clang";
-  }
-  return {{key}};
-}
-
-MangledName SwiftMangler::mangleType(const swift::TupleType& type) {
-  MangledName ret;
-  ret << '(';
-  for (const auto& element : type.getElements()) {
-    if (element.hasName()) {
-      ret << element.getName().str() << ':';
-    }
-    ret << dispatcher.fetchLabel(element.getType());
-  }
-  ret << ')';
   return ret;
 }
 
-MangledName SwiftMangler::mangleType(const swift::BuiltinType& type) {
-  llvm::SmallString<32> buffer;
-  type.getTypeName(buffer);
-  return {{buffer.str().str()}};
-}
-
-namespace {
-void printPart(std::ostream& out, const std::string& prefix) {
-  out << prefix;
-}
-
-void printPart(std::ostream& out, UntypedTrapLabel label) {
-  out << '{' << label << '}';
-}
-}  // namespace
-
-std::ostream& codeql::operator<<(std::ostream& out, const MangledName& name) {
-  for (const auto& part : name.parts) {
-    std::visit([&](const auto& contents) { printPart(out, contents); }, part);
+SwiftMangledName SwiftMangler::visitModuleType(const swift::ModuleType* type) {
+  auto ret = initMangled(type);
+  ret << type->getModule()->getRealName().str();
+  if (type->getModule()->isNonSwiftModule()) {
+    ret << "|clang";
   }
-  return out;
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitTupleType(const swift::TupleType* type) {
+  auto ret = initMangled(type);
+  for (const auto& element : type->getElements()) {
+    if (element.hasName()) {
+      ret << element.getName().str();
+    }
+    ret << dispatcher.prefetchLabel(element.getType());
+  }
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitBuiltinType(const swift::BuiltinType* type) {
+  auto ret = initMangled(type);
+  llvm::SmallString<32> buffer;
+  type->getTypeName(buffer);
+  ret << buffer.str();
+  return ret;
 }
