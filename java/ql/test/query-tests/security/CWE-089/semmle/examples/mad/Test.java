@@ -1,14 +1,20 @@
 import java.sql.DatabaseMetaData;
+import java.util.List;
+import org.apache.hadoop.hive.metastore.api.ColumnStatistics;
+import org.apache.hadoop.hive.metastore.api.DefaultConstraintsRequest;
+import org.apache.hadoop.hive.metastore.ObjectStore;
+import org.apache.hive.hcatalog.templeton.HcatDelegator;
+import org.apache.hive.hcatalog.templeton.ColumnDesc;
 
 public class Test {
     public static Object source() {
         return null;
     }
 
-    public void test(DatabaseMetaData dmd) {
+    public void test(DatabaseMetaData dmd) throws Exception {
         String taint = (String) source();
         // java.sql;DatabaseMetaData;true;getColumns;(String,String,String,String);;Argument[2];sql;ai-generated
-        dmd.getCoolumns("", "", taint, ""); // $ sqlInjection
+        dmd.getColumns("", "", taint, ""); // $ sqlInjection
         // java.sql;DatabaseMetaData;true;getPrimaryKeys;(String,String,String);;Argument[2];sql;ai-generated
         dmd.getPrimaryKeys("", "", taint); // $ sqlInjection
     }

@@ -2,19 +2,19 @@
 
 package org.apache.http;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import org.apache.http.Header;
 
 public interface HttpEntity
 {
     Header getContentEncoding();
     Header getContentType();
-    InputStream getContent();
+    InputStream getContent() throws IOException, IllegalStateException;
     boolean isChunked();
     boolean isRepeatable();
     boolean isStreaming();
     long getContentLength();
-    void consumeContent();
-    void writeTo(OutputStream p0);
+    void consumeContent() throws IOException;
+    void writeTo(OutputStream outstream) throws IOException;
 }

@@ -57,6 +57,7 @@
 | good | 4 | Test.java:126:20:126:88 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY=? ORDER BY PRICE" |
 | good | 5 | Test.java:127:62:127:67 | query2 |
 | good | 6 | Test.java:128:24:128:24 | 1 |
+| source | 1 | mad/Test.java:11:16:11:19 | null |
 | tableNames | 4 | Test.java:187:32:187:56 | "SELECT ITEM,PRICE FROM " |
 | tableNames | 5 | Test.java:188:8:188:55 | " WHERE ITEM_CATEGORY='Biscuits' ORDER BY PRICE" |
 | tableNames | 10 | Test.java:193:33:193:57 | "SELECT ITEM,PRICE FROM " |
@@ -97,6 +98,18 @@
 | tainted | 58 | Test.java:87:8:87:15 | category |
 | tainted | 58 | Test.java:87:19:87:36 | "' ORDER BY PRICE" |
 | tainted | 59 | Test.java:88:47:88:52 | query1 |
+| test | 3 | mad/Test.java:17:24:17:25 | "" |
+| test | 3 | mad/Test.java:17:28:17:29 | "" |
+| test | 3 | mad/Test.java:17:39:17:40 | "" |
+| test | 4 | mad/Test.java:26:43:26:44 | "" |
+| test | 4 | mad/Test.java:26:54:26:55 | "" |
+| test | 5 | mad/Test.java:19:28:19:29 | "" |
+| test | 5 | mad/Test.java:19:32:19:33 | "" |
+| test | 13 | mad/Test.java:35:13:35:80 | updatePartitionColumnStatistics(...) |
+| test | 13 | mad/Test.java:35:76:35:79 | null |
+| test | 18 | mad/Test.java:40:34:40:37 | null |
+| test | 18 | mad/Test.java:40:40:40:43 | null |
+| test | 18 | mad/Test.java:40:46:40:49 | null |
 | unescaped | 4 | Test.java:96:28:96:81 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
 | unescaped | 5 | Test.java:97:23:97:40 | "' ORDER BY PRICE" |
 | unescaped | 11 | Test.java:103:19:103:72 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
