@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.Net.WebProxy, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 
 namespace System
 {
     namespace Net
     {
-        // Generated from `System.Net.IWebProxyScript` in `System.Net.WebProxy, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public interface IWebProxyScript
         {
             void Close();
@@ -12,7 +12,6 @@ namespace System
             string Run(string url, string host);
         }
 
-        // Generated from `System.Net.WebProxy` in `System.Net.WebProxy, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class WebProxy : System.Net.IWebProxy, System.Runtime.Serialization.ISerializable
         {
             public System.Uri Address { get => throw null; set => throw null; }

@@ -89,7 +89,8 @@ private module Shared {
    * tag.
    */
   class ArgumentInterpretedAsUrlAsSink extends Sink, ErbOutputMethodCallArgumentNode,
-    ActionView::ArgumentInterpretedAsUrl { }
+    ActionView::ArgumentInterpretedAsUrl
+  { }
 
   /**
    * A argument to a call to the `link_to` method, which does not expect
@@ -128,13 +129,15 @@ private module Shared {
    * An inclusion check against an array of constant strings, considered as a sanitizer-guard.
    */
   class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
-    StringConstArrayInclusionCallBarrier { }
+    StringConstArrayInclusionCallBarrier
+  { }
 
   /**
    * A `VariableWriteAccessCfgNode` that is not succeeded (locally) by another
    * write to that variable.
    */
-  private class FinalInstanceVarWrite extends CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode {
+  private class FinalInstanceVarWrite extends CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode
+  {
     private InstanceVariable var;
 
     FinalInstanceVarWrite() {

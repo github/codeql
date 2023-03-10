@@ -211,9 +211,7 @@ private module Cached {
 private predicate modifiable(Argument arg) {
   arg.getExpr() instanceof InOutExpr
   or
-  arg.getExpr().getType() instanceof NominalType
-  or
-  arg.getExpr().getType() instanceof PointerType
+  arg.getExpr().getType() instanceof NominalOrBoundGenericNominalType
 }
 
 predicate modifiableParam(ParamDecl param) {

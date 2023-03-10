@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Diagnostics.Contracts, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Contracts
         {
-            // Generated from `System.Diagnostics.Contracts.Contract` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Contract
             {
                 public static void Assert(bool condition) => throw null;
@@ -34,33 +34,28 @@ namespace System
                 public static T ValueAtReturn<T>(out T value) => throw null;
             }
 
-            // Generated from `System.Diagnostics.Contracts.ContractAbbreviatorAttribute` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ContractAbbreviatorAttribute : System.Attribute
             {
                 public ContractAbbreviatorAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Contracts.ContractArgumentValidatorAttribute` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ContractArgumentValidatorAttribute : System.Attribute
             {
                 public ContractArgumentValidatorAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Contracts.ContractClassAttribute` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ContractClassAttribute : System.Attribute
             {
                 public ContractClassAttribute(System.Type typeContainingContracts) => throw null;
                 public System.Type TypeContainingContracts { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Contracts.ContractClassForAttribute` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ContractClassForAttribute : System.Attribute
             {
                 public ContractClassForAttribute(System.Type typeContractsAreFor) => throw null;
                 public System.Type TypeContractsAreFor { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Contracts.ContractFailedEventArgs` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ContractFailedEventArgs : System.EventArgs
             {
                 public string Condition { get => throw null; }
@@ -74,7 +69,6 @@ namespace System
                 public bool Unwind { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Contracts.ContractFailureKind` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ContractFailureKind : int
             {
                 Assert = 4,
@@ -85,13 +79,11 @@ namespace System
                 Precondition = 0,
             }
 
-            // Generated from `System.Diagnostics.Contracts.ContractInvariantMethodAttribute` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ContractInvariantMethodAttribute : System.Attribute
             {
                 public ContractInvariantMethodAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Contracts.ContractOptionAttribute` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ContractOptionAttribute : System.Attribute
             {
                 public string Category { get => throw null; }
@@ -102,33 +94,28 @@ namespace System
                 public string Value { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Contracts.ContractPublicPropertyNameAttribute` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ContractPublicPropertyNameAttribute : System.Attribute
             {
                 public ContractPublicPropertyNameAttribute(string name) => throw null;
                 public string Name { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Contracts.ContractReferenceAssemblyAttribute` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ContractReferenceAssemblyAttribute : System.Attribute
             {
                 public ContractReferenceAssemblyAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Contracts.ContractRuntimeIgnoredAttribute` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ContractRuntimeIgnoredAttribute : System.Attribute
             {
                 public ContractRuntimeIgnoredAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Contracts.ContractVerificationAttribute` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ContractVerificationAttribute : System.Attribute
             {
                 public ContractVerificationAttribute(bool value) => throw null;
                 public bool Value { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Contracts.PureAttribute` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PureAttribute : System.Attribute
             {
                 public PureAttribute() => throw null;
@@ -140,7 +127,6 @@ namespace System
     {
         namespace CompilerServices
         {
-            // Generated from `System.Runtime.CompilerServices.ContractHelper` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class ContractHelper
             {
                 public static string RaiseContractFailedEvent(System.Diagnostics.Contracts.ContractFailureKind failureKind, string userMessage, string conditionText, System.Exception innerException) => throw null;

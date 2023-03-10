@@ -5,7 +5,8 @@ import codeql.swift.elements.expr.ImplicitConversionExpr
 
 module Generated {
   class ProtocolMetatypeToObjectExpr extends Synth::TProtocolMetatypeToObjectExpr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string getAPrimaryQlClass() { result = "ProtocolMetatypeToObjectExpr" }
   }
 }

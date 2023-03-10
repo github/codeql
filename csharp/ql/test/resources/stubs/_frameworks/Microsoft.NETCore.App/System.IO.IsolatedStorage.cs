@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.IO.IsolatedStorage, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,13 +7,11 @@ namespace System
     {
         namespace IsolatedStorage
         {
-            // Generated from `System.IO.IsolatedStorage.INormalizeForIsolatedStorage` in `System.IO.IsolatedStorage, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface INormalizeForIsolatedStorage
             {
                 object Normalize();
             }
 
-            // Generated from `System.IO.IsolatedStorage.IsolatedStorage` in `System.IO.IsolatedStorage, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class IsolatedStorage : System.MarshalByRefObject
             {
                 public object ApplicationIdentity { get => throw null; }
@@ -33,7 +32,6 @@ namespace System
                 public virtual System.Int64 UsedSize { get => throw null; }
             }
 
-            // Generated from `System.IO.IsolatedStorage.IsolatedStorageException` in `System.IO.IsolatedStorage, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IsolatedStorageException : System.Exception
             {
                 public IsolatedStorageException() => throw null;
@@ -42,7 +40,6 @@ namespace System
                 public IsolatedStorageException(string message, System.Exception inner) => throw null;
             }
 
-            // Generated from `System.IO.IsolatedStorage.IsolatedStorageFile` in `System.IO.IsolatedStorage, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IsolatedStorageFile : System.IO.IsolatedStorage.IsolatedStorage, System.IDisposable
             {
                 public override System.Int64 AvailableFreeSpace { get => throw null; }
@@ -90,7 +87,6 @@ namespace System
                 public override System.Int64 UsedSize { get => throw null; }
             }
 
-            // Generated from `System.IO.IsolatedStorage.IsolatedStorageFileStream` in `System.IO.IsolatedStorage, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IsolatedStorageFileStream : System.IO.FileStream
             {
                 public override System.IAsyncResult BeginRead(System.Byte[] array, int offset, int numBytes, System.AsyncCallback userCallback, object stateObject) => throw null;
@@ -134,7 +130,6 @@ namespace System
                 public override void WriteByte(System.Byte value) => throw null;
             }
 
-            // Generated from `System.IO.IsolatedStorage.IsolatedStorageScope` in `System.IO.IsolatedStorage, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum IsolatedStorageScope : int
             {

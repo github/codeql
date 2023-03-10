@@ -246,7 +246,8 @@ class VariableMemoryLocation extends TVariableMemoryLocation, AllocationMemoryLo
 }
 
 class EntireAllocationMemoryLocation extends TEntireAllocationMemoryLocation,
-  AllocationMemoryLocation {
+  AllocationMemoryLocation
+{
   EntireAllocationMemoryLocation() { this = TEntireAllocationMemoryLocation(var, isMayAccess) }
 
   final override string toStringInternal() { result = var.toString() }

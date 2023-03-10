@@ -224,7 +224,8 @@ private module Request {
   }
 
   abstract private class RequestInputAccess extends RequestMethodCall,
-    Http::Server::RequestInputAccess::Range {
+    Http::Server::RequestInputAccess::Range
+  {
     override string getSourceType() { result = "ActionDispatch::Request#" + this.getMethodName() }
   }
 
@@ -556,7 +557,8 @@ class ActionControllerSkipForgeryProtectionCall extends CsrfProtectionSetting::R
  * A call to `protect_from_forgery`.
  */
 private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetting::Range,
-  DataFlow::CallNode {
+  DataFlow::CallNode
+{
   ActionControllerProtectFromForgeryCall() {
     this = actionControllerInstance().getAMethodCall("protect_from_forgery")
   }
@@ -576,7 +578,8 @@ private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetti
  * A call to `send_file`, which sends the file at the given path to the client.
  */
 private class SendFile extends FileSystemAccess::Range, Http::Server::HttpResponse::Range,
-  DataFlow::CallNode {
+  DataFlow::CallNode
+{
   SendFile() {
     this = [actionControllerInstance(), Response::response()].getAMethodCall("send_file")
   }

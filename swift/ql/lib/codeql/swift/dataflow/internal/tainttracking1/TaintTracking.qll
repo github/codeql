@@ -7,7 +7,8 @@ import TaintTrackingParameter::Public
 private import TaintTrackingParameter::Private
 
 private module AddTaintDefaults<DataFlowInternal::FullStateConfigSig Config> implements
-DataFlowInternal::FullStateConfigSig {
+  DataFlowInternal::FullStateConfigSig
+{
   import Config
 
   predicate isBarrier(DataFlow::Node node) {
