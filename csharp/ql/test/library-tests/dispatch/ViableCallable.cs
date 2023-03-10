@@ -565,10 +565,10 @@ public class C20 : I3<C20>
         // Viable callables: {C20,I3<C20>}.op_CheckedDivision(). MISSING: C20.op_CheckedDivision()
         var c8 = checked(c / c);
 
-        // Viable callables: C20.M11. MISSING: C20.M11()
+        // Viable callables: C20.M11.
         c.M11();
 
-        // Viable callables: {C20,I3<C20>}.M12(). MISSING: C20.M12()
+        // Viable callables: {C20,I3<C20>}.M12().
         c.M12();
 
         // Viable callables: I3<C20>.M13()

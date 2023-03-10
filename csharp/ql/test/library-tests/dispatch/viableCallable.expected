@@ -277,5 +277,7 @@
 | ViableCallable.cs:560:26:560:30 | call to operator checked * | checked * | I3<> |
 | ViableCallable.cs:563:18:563:22 | call to operator / | / | I3<> |
 | ViableCallable.cs:566:26:566:30 | call to operator checked / | checked / | I3<> |
+| ViableCallable.cs:569:9:569:15 | call to method M11 | M11 | C20 |
+| ViableCallable.cs:572:9:572:15 | call to method M12 | M12 | C20 |
 | ViableCallable.cs:572:9:572:15 | call to method M12 | M12 | I3<> |
 | ViableCallable.cs:575:9:575:15 | call to method M13 | M13 | I3<> |

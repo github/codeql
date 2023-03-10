@@ -480,5 +480,7 @@
 | ViableCallable.cs:560:26:560:30 | call to operator checked * | I3<T>.checked *(T, T) |
 | ViableCallable.cs:563:18:563:22 | call to operator / | I3<T>./(T, T) |
 | ViableCallable.cs:566:26:566:30 | call to operator checked / | I3<T>.checked /(T, T) |
+| ViableCallable.cs:569:9:569:15 | call to method M11 | C20.M11() |
+| ViableCallable.cs:572:9:572:15 | call to method M12 | C20.M12() |
 | ViableCallable.cs:572:9:572:15 | call to method M12 | I3<T>.M12() |
 | ViableCallable.cs:575:9:575:15 | call to method M13 | I3<T>.M13() |
