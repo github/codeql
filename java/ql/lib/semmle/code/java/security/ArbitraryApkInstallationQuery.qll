@@ -9,7 +9,7 @@ private import semmle.code.java.security.ArbitraryApkInstallation
  * A dataflow configuration for flow from an external source of an APK to the
  * `setData[AndType][AndNormalize]` method of an intent.
  */
-private module ApkConf implements DataFlow::ConfigSig {
+private module ApkInstallationConfiguration implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof ExternalApkSource }
 
   predicate isSink(DataFlow::Node node) {
@@ -17,15 +17,15 @@ private module ApkConf implements DataFlow::ConfigSig {
       ma.getMethod() instanceof SetDataMethod and
       ma.getArgument(0) = node.asExpr() and
       (
-        PackageArchiveMimeTypeConfiguration::hasFlowToExpr(ma.getQualifier())
+        PackageArchiveMimeTypeFlow::hasFlowToExpr(ma.getQualifier())
         or
-        InstallPackageActionConfiguration::hasFlowToExpr(ma.getQualifier())
+        InstallPackageActionFlow::hasFlowToExpr(ma.getQualifier())
       )
     )
   }
 }
 
-module ApkConfiguration = DataFlow::Make<ApkConf>;
+module ApkInstallationFlow = DataFlow::Make<ApkInstallationConfiguration>;
 
 /**
  * A dataflow configuration tracking the flow from the `android.content.Intent.ACTION_INSTALL_PACKAGE`
@@ -33,7 +33,7 @@ module ApkConfiguration = DataFlow::Make<ApkConf>;
  *
  * This is used to track if an intent is used to install an APK.
  */
-private module InstallPackageActionConfig implements DataFlow::StateConfigSig {
+private module InstallPackageActionConfiguration implements DataFlow::StateConfigSig {
   class FlowState = string;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
@@ -69,15 +69,15 @@ private module InstallPackageActionConfig implements DataFlow::StateConfigSig {
   predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 }
 
-private module InstallPackageActionConfiguration =
-  TaintTracking::MakeWithState<InstallPackageActionConfig>;
+private module InstallPackageActionFlow =
+  TaintTracking::MakeWithState<InstallPackageActionConfiguration>;
 
 /**
  * A dataflow configuration tracking the flow of the Android APK MIME type to
  * the `setType` or `setTypeAndNormalize` method of an intent, followed by a call
  * to `setData[AndType][AndNormalize]`.
  */
-private module PackageArchiveMimeTypeConfig implements DataFlow::StateConfigSig {
+private module PackageArchiveMimeTypeConfiguration implements DataFlow::StateConfigSig {
   class FlowState = string;
 
   predicate isSource(DataFlow::Node node, FlowState state) {
@@ -111,5 +111,5 @@ private module PackageArchiveMimeTypeConfig implements DataFlow::StateConfigSig 
   predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 }
 
-private module PackageArchiveMimeTypeConfiguration =
-  TaintTracking::MakeWithState<PackageArchiveMimeTypeConfig>;
+private module PackageArchiveMimeTypeFlow =
+  TaintTracking::MakeWithState<PackageArchiveMimeTypeConfiguration>;
