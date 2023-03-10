@@ -73,6 +73,7 @@ import experimental.semmle.code.cpp.semantic.SemanticCFG
 import experimental.semmle.code.cpp.semantic.SemanticType
 import experimental.semmle.code.cpp.semantic.SemanticOpcode
 private import ConstantAnalysis
+private import semmle.code.cpp.Location
 
 /**
  * Holds if `typ` is a small integral type with the given lower and upper bounds.
@@ -228,6 +229,8 @@ signature module UtilSig<DeltaSig DeltaParam> {
 
 signature module BoundSig<DeltaSig D> {
   class SemBound {
+    string toString();
+    Location getLocation();
     SemExpr getExpr(D::Delta delta);
   }
 
