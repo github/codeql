@@ -9,7 +9,7 @@ import semmle.code.java.security.InsecureLdapAuth
 /**
  * A taint-tracking configuration for `ldap://` URL in LDAP authentication.
  */
-private module InsecureUrlFlowConfig implements DataFlow::ConfigSig {
+private module InsecureLdapUrlConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof InsecureLdapUrl }
 
   predicate isSink(DataFlow::Node sink) {
@@ -29,12 +29,12 @@ private module InsecureUrlFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module InsecureUrlFlowConfiguration = TaintTracking::Make<InsecureUrlFlowConfig>;
+module InsecureLdapUrlFlow = TaintTracking::Make<InsecureLdapUrlConfig>;
 
 /**
  * A taint-tracking configuration for `simple` basic-authentication in LDAP configuration.
  */
-private module BasicAuthFlowConfig implements DataFlow::ConfigSig {
+private module BasicAuthConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
     exists(MethodAccess ma |
       isBasicAuthEnv(ma) and ma.getQualifier() = src.(PostUpdateNode).getPreUpdateNode().asExpr()
@@ -49,7 +49,7 @@ private module BasicAuthFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module BasicAuthFlowConfiguration = DataFlow::Make<BasicAuthFlowConfig>;
+module BasicAuthFlow = DataFlow::Make<BasicAuthConfig>;
 
 /**
  * A taint-tracking configuration for `ssl` configuration in LDAP authentication.
@@ -69,4 +69,4 @@ private module RequiresSslConfig implements DataFlow::ConfigSig {
   }
 }
 
-module RequiresSslConfiguration = DataFlow::Make<RequiresSslConfig>;
+module RequiresSslFlow = DataFlow::Make<RequiresSslConfig>;

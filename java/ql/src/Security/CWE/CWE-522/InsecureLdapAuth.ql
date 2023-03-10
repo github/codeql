@@ -14,12 +14,12 @@
 
 import java
 import semmle.code.java.security.InsecureLdapAuthQuery
-import InsecureUrlFlowConfiguration::PathGraph
+import InsecureLdapUrlFlow::PathGraph
 
-from InsecureUrlFlowConfiguration::PathNode source, InsecureUrlFlowConfiguration::PathNode sink
+from InsecureLdapUrlFlow::PathNode source, InsecureLdapUrlFlow::PathNode sink
 where
-  InsecureUrlFlowConfiguration::hasFlowPath(source, sink) and
-  BasicAuthFlowConfiguration::hasFlowTo(sink.getNode()) and
-  not RequiresSslConfiguration::hasFlowTo(sink.getNode())
+  InsecureLdapUrlFlow::hasFlowPath(source, sink) and
+  BasicAuthFlow::hasFlowTo(sink.getNode()) and
+  not RequiresSslFlow::hasFlowTo(sink.getNode())
 select sink.getNode(), source, sink, "Insecure LDAP authentication from $@.", source.getNode(),
   "LDAP connection string"
