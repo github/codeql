@@ -1619,11 +1619,28 @@ private module ExprFlowCached {
   private predicate localStepFromNonExpr(Node n1, Node n2) {
     not exists(n1.asExpr()) and
     localFlowStep(n1, n2) and
-    // We should never recursive through any of these nodes while
-    // looking for the next expression.
+    // Remember that `localStepsToExpr(n1, n2, e2)` captures that `n2` is
+    // the first node after `n1` in the dataflow local step-relation that has a
+    // result for `asExpr()`. To do this, `localStepsToExpr` does a transitive
+    // closure over `localFlowStep`, but where `localFlowStep` is restricted to
+    // only take a step as long as there is no result for `asExpr()`.
+    // This restricted `localFlowStep` is exactly this predicate. Once we find a
+    // node for which `asExpr()` exists, the transitive closure stops.
+    // But if we've reached a `SsaPhiNode` node, it means that we're about to merge
+    // incoming data from multiple places. And each of those incoming places should
+    // have their own node for which `asExpr()` holds.
+    // Similarly, if we've reached a `InitialGlobalValue` it means we've stepped from
+    // a write to a global variable, and into the dataflow node from the global
+    // variable and from into the initial definition of the global variable at some
+    // function entry. That write to the global variable should have a result for
+    // `asExpr()` at the place where the global variable is written.
     not n1 instanceof SsaPhiNode and
     not n1 instanceof InitialGlobalValue and
-    // These nodes will never take us to a node for which `asExpr` has a result.
+    // And dually to the above case for `InitialGlobalValue`: if we're at a
+    // `FinalGlobalValue` node it means we've reached the final value of a global
+    // variable as we're exiting a function. That global variable will have a final
+    // mention somewhere in the body of the function, and that mention will have a
+    // result for `asExpr()`.
     not n2 instanceof FinalGlobalValue
   }
 
