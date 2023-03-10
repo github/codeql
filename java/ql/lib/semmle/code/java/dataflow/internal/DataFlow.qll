@@ -282,8 +282,9 @@ signature module PathGraphSig<PathNodeSig PathNode> {
  * Constructs a `PathGraph` from two `PathGraph`s by disjoint union.
  */
 module MergePathGraph<
-PathNodeSig PathNode1, PathNodeSig PathNode2, PathGraphSig<PathNode1> Graph1,
-PathGraphSig<PathNode2> Graph2> {
+  PathNodeSig PathNode1, PathNodeSig PathNode2, PathGraphSig<PathNode1> Graph1,
+  PathGraphSig<PathNode2> Graph2>
+{
   private newtype TPathNode =
     TPathNode1(PathNode1 p) or
     TPathNode2(PathNode2 p)
