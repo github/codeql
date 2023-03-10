@@ -9,7 +9,17 @@ Customizing Library Models for Java
 .. include:: ../reusables/beta-note-customizing-library-models.rst
 
 The Java analysis can be customized by adding library models (summaries, sinks and sources) in data extension files.
+A model is a definition of a behavior of a library element, such as a method, that is used to improve the data flow analysis precision by identifying more results.
+Most of the security related queries are *taint tracking* queries that tries to find paths from a *source* of untrusted input to a *sink* that represents a vulnerability.
+Furthermore, the taint tracking queries also need to know how data can flow through elements that are not included in the source code - these are named *summaries*.
 
+That is
+
+- **sources** are the starting points of a taint tracking data flow analysis.
+- **sinks** are the end points of a taint tracking data flow analysis.
+- **summaries** are models of elements that allows us to synthesize the elements flow behavior without having them in the source code. This is especially helpful when using a third party (or the standard) library.
+
+The models are defined using data extensions where each tuple constitutes a model.
 A data extension file for Java is a YAML file in the form:
 
 .. code-block:: yaml
@@ -23,14 +33,14 @@ A data extension file for Java is a YAML file in the form:
          - <tuple2>
          - ...
 
-Data extensions contribute to extensible predicates defined CodeQL libraries. For more information on how to define data extensions and extensible predicates as well as how to wire them up, see the :ref:`data-extensions` documentation.
+Data extensions contribute to the extensible predicates defined in the CodeQL library. For more information on how to define data extensions and extensible predicates as well as how to wire them up, see the :ref:`data-extensions` documentation.
 
-The CodeQL libraries for Java expose the following extensible predicates:
+The CodeQL library for Java expose the following extensible predicates:
 
-- **sourceModel**\(package, type, subtypes, name, signature, ext, output, kind, provenance)
-- **sinkModel**\(package, type, subtypes, name, signature, ext, input, kind, provenance)
-- **summaryModel**\(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
-- **neutralModel**\(package, type, name, signature, provenance)
+- **sourceModel**\(package, type, subtypes, name, signature, ext, output, kind, provenance). This is used for **source** models.
+- **sinkModel**\(package, type, subtypes, name, signature, ext, input, kind, provenance). This is used for **sink** models.
+- **summaryModel**\(package, type, subtypes, name, signature, ext, input, output, kind, provenance). This is used for **summary** models.
+- **neutralModel**\(package, type, name, signature, provenance). This is used for **neutral** models, which does not impact the data flow analysis, but it is included here for completeness.
 
 The extensible predicates are populated using data extensions specified in YAML files.
 
@@ -52,7 +62,7 @@ Please note that this sink is already added to the CodeQL Java analysis.
        stmt.execute(query); // The argument to this method is a SQL injection sink.
    }
 
-This can be achieved by adding the following row to a data extension file:
+This means that we want to add a tuple to the **sinkModel**\(package, type, subtypes, name, signature, ext, input, kind, provenance) extensible predicate, which can be achieved by adding the following to a data extension file:
 
 .. code-block:: yaml
 
@@ -94,7 +104,7 @@ Please note that this source is already added to the CodeQL Java analysis.
        ...
    }
 
-This can be achieved by adding the following data extension.
+This means that we want to add a tuple to the **sourceModel**\(package, type, subtypes, name, signature, ext, output, kind, provenance) extensible predicate, which can be achieved by adding the following to a data extension file:
 
 .. code-block:: yaml
 
@@ -136,8 +146,7 @@ Please note that the flow through the **concat** method is already added to the 
        ...
    }
 
-This can be achieved by adding the following data extension.
-These are widely known as summary models.
+This means that we want to add tuples to the **summaryModel**\(package, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate, which can be achieved by adding the following to a data extension file:
 
 .. code-block:: yaml
 
@@ -246,6 +255,8 @@ Please note that the neutral model for the **now** method is already added.
        Instant t = Instant.now(); // There is no flow from now to t.
        ...
    }
+
+This means that we want to add a tuple to the **neutralModel**\(package, type, name, signature, provenance) extensible predicate, which can be achieved by adding the following to a data extension file:
 
 .. code-block:: yaml
 
