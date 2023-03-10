@@ -80,7 +80,10 @@ predicate defMightOverflowPositively(RangeSsaDefinition def, StackVariable v) { 
  * Holds if the definition might overflow (either positively or
  * negatively).
  */
-predicate defMightOverflow(RangeSsaDefinition def, StackVariable v) { none() }
+predicate defMightOverflow(RangeSsaDefinition def, StackVariable v) {
+  defMightOverflowNegatively(def, v) or
+  defMightOverflowPositively(def, v)
+}
 
 /**
  * Holds if the expression might overflow negatively. This predicate
@@ -95,7 +98,10 @@ predicate exprMightOverflowNegatively(Expr expr) { none() }
  * `(int16)(x+y)` might overflow due to the `(int16)` cast, rather than
  * due to the addition.
  */
-predicate convertedExprMightOverflowNegatively(Expr expr) { none() }
+predicate convertedExprMightOverflowNegatively(Expr expr) {
+  exprMightOverflowNegatively(expr) or
+  convertedExprMightOverflowNegatively(expr.getConversion())
+}
 
 /**
  * Holds if the expression might overflow positively. This predicate
@@ -110,11 +116,17 @@ predicate exprMightOverflowPositively(Expr expr) { none() }
  * `(int16)(x+y)` might overflow due to the `(int16)` cast, rather than
  * due to the addition.
  */
-predicate convertedExprMightOverflowPositively(Expr expr) { none() }
+predicate convertedExprMightOverflowPositively(Expr expr) {
+  exprMightOverflowPositively(expr) or
+  convertedExprMightOverflowPositively(expr.getConversion())
+}
 
 /**
  * Holds if the expression might overflow (either positively or
  * negatively). The possibility that the expression might overflow
  * due to an implicit or explicit cast is also considered.
  */
-predicate convertedExprMightOverflow(Expr expr) { none() }
+predicate convertedExprMightOverflow(Expr expr) {
+  convertedExprMightOverflowNegatively(expr) or
+  convertedExprMightOverflowPositively(expr)
+}
