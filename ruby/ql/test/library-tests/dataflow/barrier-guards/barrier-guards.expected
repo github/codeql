@@ -66,6 +66,8 @@ newStyleBarrierGuards
 | barrier-guards.rb:292:5:292:7 | foo |
 | barrier-guards.rb:301:1:301:3 | foo |
 | barrier-guards.rb:305:1:305:3 | foo |
+| barrier-guards.rb:313:1:313:3 | foo |
+| barrier-guards.rb:317:1:317:3 | foo |
 controls
 | barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:4:5:4:7 | foo | true |
 | barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:6:5:6:7 | foo | false |
@@ -350,6 +352,12 @@ controls
 | barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:298:5:298:7 | foo | match |
 | barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:304:1:304:3 | foo | match |
 | barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:304:1:304:31 | ... unless ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:310:1:312:3 | unless ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:311:5:311:7 | foo | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:316:1:316:3 | foo | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:316:1:316:36 | ... unless ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:320:1:322:3 | if ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:321:5:321:7 | foo | match |
 | barrier-guards.rb:254:4:254:28 | ... == ... | barrier-guards.rb:255:5:255:7 | foo | true |
 | barrier-guards.rb:259:4:259:16 | ... == ... | barrier-guards.rb:260:5:260:7 | foo | true |
 | barrier-guards.rb:264:4:264:16 | ... == ... | barrier-guards.rb:265:5:265:7 | foo | true |
@@ -367,3 +375,6 @@ controls
 | barrier-guards.rb:291:6:291:6 | g | barrier-guards.rb:294:5:294:7 | foo | no-match |
 | barrier-guards.rb:297:4:297:15 | ... != ... | barrier-guards.rb:298:5:298:7 | foo | true |
 | barrier-guards.rb:304:20:304:31 | ... == ... | barrier-guards.rb:304:1:304:3 | foo | false |
+| barrier-guards.rb:310:8:310:24 | call to include? | barrier-guards.rb:311:5:311:7 | foo | false |
+| barrier-guards.rb:316:20:316:36 | call to include? | barrier-guards.rb:316:1:316:3 | foo | false |
+| barrier-guards.rb:320:4:320:20 | call to include? | barrier-guards.rb:321:5:321:7 | foo | true |

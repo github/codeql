@@ -38,7 +38,40 @@ private DataFlow::Node stringConstCompareAndOverwrite() {
     exists(ExprCfgNode value | overwrite.assigns(value) |
       value.getConstantValue().isStringlikeValue(_)
     ) and
-    // ConditionBlock.controls(overwrite.getBasicBlock(), branch.booleanNot()
+    exists(ConditionBlock conditionBlock, SuccessorTypes::ConditionalSuccessor s |
+      guard = conditionBlock.getLastNode() and
+      s.getValue() = branch.booleanNot() and
+      conditionBlock.controls(overwrite.getBasicBlock(), s)
+    ) and
+    phi.getAnInput() = overwrite and
+    result.asExpr() = phi.getARead()
+  )
+}
+
+/**
+ * A barrier guard for code of the form
+ * ```rb
+ * unless a_const_array.include? x
+ *   x = "foo"
+ * end
+ *
+ * x
+ * ```
+ *
+ * This is similar to the `stringConstCompareAndOverwrite` guard, but for string
+ * constant array inclusion tests.
+ */
+cached
+private DataFlow::Node stringConstArrayInclusionAndOverwrite() {
+  exists(
+    CfgNodes::AstCfgNode guard, ExprCfgNode testedNode, boolean branch,
+    Ssa::WriteDefinition overwrite, Ssa::PhiNode phi
+  |
+    stringConstArrayInclusionCall(guard, testedNode, branch) and
+    overwrite.getSourceVariable() = testedNode.getExpr().(VariableReadAccess).getVariable() and
+    exists(ExprCfgNode value | overwrite.assigns(value) |
+      value.getConstantValue().isStringlikeValue(_)
+    ) and
     exists(ConditionBlock conditionBlock, SuccessorTypes::ConditionalSuccessor s |
       guard = conditionBlock.getLastNode() and
       s.getValue() = branch.booleanNot() and
@@ -181,7 +214,8 @@ private predicate stringConstArrayInclusionCall(
  */
 class StringConstArrayInclusionCallBarrier extends DataFlow::Node {
   StringConstArrayInclusionCallBarrier() {
-    this = DataFlow::BarrierGuard<stringConstArrayInclusionCall/3>::getABarrierNode()
+    this = DataFlow::BarrierGuard<stringConstArrayInclusionCall/3>::getABarrierNode() or
+    this = stringConstArrayInclusionAndOverwrite()
   }
 }
 

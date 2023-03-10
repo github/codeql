@@ -303,3 +303,21 @@ foo # $ guarded
 foo = some_call()
 foo = "bar" unless foo == "foo"
 foo # $ guarded
+
+foos = ["foo", "bar"]
+foo = some_call()
+foo # not guarded
+unless foos.include? foo
+    foo = "bar"
+end
+foo # $ guarded
+
+foo = some_call()
+foo = "bar" unless foos.include? foo
+foo # $ guarded
+
+foo = some_call()
+if foos.include? foo
+    foo = "bar"
+end
+foo # not guarded - the overwrite happens in the wrong branch.
