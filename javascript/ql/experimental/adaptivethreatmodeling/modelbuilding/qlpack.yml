@@ -7,4 +7,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2023-03-09-19h37m27s.placid-cart-wdr6h7q1.4f214088e5bb63b4bfdd70ad4028178a057cf4d93eb2e0d34e2d4bb03c0e9c18
