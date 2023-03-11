@@ -53,3 +53,8 @@ class TaintedPathSinkType extends SinkType {
 class RequestForgerySinkType extends SinkType {
   RequestForgerySinkType() { this = "ssrf" }
 }
+
+/** All sinks relevant to the command injection query. */
+class CommandInjectionSinkType extends SinkType {
+  CommandInjectionSinkType() { this = "command-injection" }
+}
