@@ -473,20 +473,44 @@ private class NeutralModelCharacteristic extends NotASinkCharacteristic {
 }
 
 /**
- * A negative characteristic that indicates that an endpoint is unexploitable even if it is a sink.
+ * A negative characteristic that indicates that an is-style boolean method is unexploitable even if it is a sink.
  *
- * A sink is highly unlikely to be exploitable if its callee's name starts with `is` the callee has a boolean return
+ * A sink is highly unlikely to be exploitable if its callee's name starts with `is` and the callee has a boolean return
  * type (e.g. `isDirectory`). These kinds of calls normally do only checks, and appear before the proper call that does
  * the dangerous/interesting thing, so we want the latter to be modeled as the sink.
  */
-private class UnexploitableCharacteristic extends NotASinkCharacteristic {
-  UnexploitableCharacteristic() { this = "unexploitable" }
+private class UnexploitableIsCharacteristic extends NotASinkCharacteristic {
+  UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
     not sinkNode(n, _) and
     exists(Callable callee |
       callee = n.asExpr().(Argument).getCall().getCallee() and
       callee.getName().matches("is%") and
+      callee.getReturnType() instanceof BooleanType
+    )
+  }
+}
+
+/**
+ * A negative characteristic that indicates that an existence-checking boolean method is unexploitable even if it is a
+ * sink.
+ *
+ * A sink is highly unlikely to be exploitable if its callee's name is `exists` or `notExists` and the callee has a
+ * boolean return type. These kinds of calls normally do only checks, and appear before the proper call that does the
+ * dangerous/interesting thing, so we want the latter to be modeled as the sink.
+ */
+private class UnexploitableExistsCharacteristic extends NotASinkCharacteristic {
+  UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) {
+    not sinkNode(n, _) and
+    exists(Callable callee |
+      callee = n.asExpr().(Argument).getCall().getCallee() and
+      (
+        callee.getName().toLowerCase() = "exists" or
+        callee.getName().toLowerCase() = "notexists"
+      ) and
       callee.getReturnType() instanceof BooleanType
     )
   }
