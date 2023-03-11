@@ -346,6 +346,18 @@ private class RequestForgeryOtherSinkCharacteristic extends SinkCharacteristic {
   override EndpointType getSinkType() { result instanceof RequestForgerySinkType }
 }
 
+/**
+ * Endpoints identified as "command-injection" sinks by the standard Java libraries are command injection sinks with
+ * maximal confidence.
+ */
+private class CommandInjectionSinkCharacteristic extends SinkCharacteristic {
+  CommandInjectionSinkCharacteristic() { this = "command injection" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) { n.asExpr() instanceof ArgumentToExec }
+
+  override EndpointType getSinkType() { result instanceof CommandInjectionSinkType }
+}
+
 /*
  * Characteristics that are indicative of not being a sink of any type.
  */
