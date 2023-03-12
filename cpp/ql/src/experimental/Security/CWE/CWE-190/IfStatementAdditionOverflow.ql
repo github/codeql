@@ -1,8 +1,13 @@
 /**
  * @name Integer addition may overflow inside if statement
- * @description "if (a+b>c) a=c-b" was detected where "a+b" may potentially
- *              produce an integer overflow (or wraparound). The code can be
- *              rewritten to "if (a>c-b) a=c-b" which avoids the overflow.
+ * @description Detects "if (a+b>c) a=c-b", which incorrectly implements
+ *              a = min(a,c-b) if a+b overflows. Should be replaced by
+ *              "if (a>c-b) a=c-b". Also detects "if (b+a>c) a=c-b"
+ *              (swapped terms in addition), if (a+b>c) { a=c-b }"
+ *              (assignment inside block), "c<a+b" (swapped operands) and
+ *              ">=", "<", "<=" instead of ">" (all operators). This
+ *              integer overflow is the root cause of the buffer overflow
+ *              in the SHA-3 reference implementation (CVE-2022-37454).
  * @kind problem
  * @problem.severity warning
  * @id cpp/if-statement-addition-overflow
@@ -34,4 +39,4 @@ where ifstmt.getCondition() = relop and
   (hashCons(addexpr.getRightOperand()) = hashCons(assignexpr.getLValue()) and
   globalValueNumber(addexpr.getLeftOperand()) = globalValueNumber(subexpr.getRightOperand()))) and
   globalValueNumber(relop.getAnOperand()) = globalValueNumber(subexpr.getLeftOperand())
-select ifstmt, "Integer addition may overflow inside if statement."
+select ifstmt, "\"if (a+b>c) a=c-b\" was detected where the $@ may potentially overflow/wraparound. The code can be rewritten as \"if (a>c-b) a=c-b\" which avoids the overflow.", addexpr, "addition"
