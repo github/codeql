@@ -90,6 +90,8 @@ class FooController < ActionController::Base
     # BAD: executes `UPDATE "users" SET #{params[:fields]}`
     # where `params[:fields]` is unsanitized
     User.update_all(params[:fields])
+    
+    User.reorder(params[:direction])
   end
 end
 
