@@ -155,3 +155,21 @@ class AnnotatedController < ActionController::Base
     users = User.annotate("this is an unsafe annotation:#{params[:comment]}").find_by(user_name: name)
   end
 end
+
+# A regression test
+
+class Regression < ActiveRecord::Base
+end
+
+class RegressionController < ActionController::Base
+  def index
+    my_params = permitted_params
+    query = "SELECT * FROM users WHERE id = #{my_params[:user_id]}"
+    result = Regression.find_by_sql(query)
+  end
+
+  
+  def permitted_params
+    params.require(:my_key).permit(:id, :user_id, :my_type)
+  end
+end

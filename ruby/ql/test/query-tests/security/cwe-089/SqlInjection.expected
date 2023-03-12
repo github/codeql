@@ -35,6 +35,12 @@ edges
 | ActiveRecordInjection.rb:141:21:141:44 | ...[...] :  | ActiveRecordInjection.rb:20:22:20:30 | condition :  |
 | ActiveRecordInjection.rb:155:59:155:64 | call to params :  | ActiveRecordInjection.rb:155:59:155:74 | ...[...] :  |
 | ActiveRecordInjection.rb:155:59:155:74 | ...[...] :  | ActiveRecordInjection.rb:155:27:155:76 | "this is an unsafe annotation:..." |
+| ActiveRecordInjection.rb:166:17:166:32 | call to permitted_params :  | ActiveRecordInjection.rb:167:47:167:55 | my_params :  |
+| ActiveRecordInjection.rb:167:47:167:55 | my_params :  | ActiveRecordInjection.rb:167:47:167:65 | ...[...] :  |
+| ActiveRecordInjection.rb:167:47:167:65 | ...[...] :  | ActiveRecordInjection.rb:168:37:168:41 | query |
+| ActiveRecordInjection.rb:173:5:173:10 | call to params :  | ActiveRecordInjection.rb:173:5:173:27 | call to require :  |
+| ActiveRecordInjection.rb:173:5:173:27 | call to require :  | ActiveRecordInjection.rb:173:5:173:59 | call to permit :  |
+| ActiveRecordInjection.rb:173:5:173:59 | call to permit :  | ActiveRecordInjection.rb:166:17:166:32 | call to permitted_params :  |
 | ArelInjection.rb:4:12:4:17 | call to params :  | ArelInjection.rb:4:12:4:29 | ...[...] :  |
 | ArelInjection.rb:4:12:4:29 | ...[...] :  | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." |
 nodes
@@ -93,6 +99,13 @@ nodes
 | ActiveRecordInjection.rb:155:27:155:76 | "this is an unsafe annotation:..." | semmle.label | "this is an unsafe annotation:..." |
 | ActiveRecordInjection.rb:155:59:155:64 | call to params :  | semmle.label | call to params :  |
 | ActiveRecordInjection.rb:155:59:155:74 | ...[...] :  | semmle.label | ...[...] :  |
+| ActiveRecordInjection.rb:166:17:166:32 | call to permitted_params :  | semmle.label | call to permitted_params :  |
+| ActiveRecordInjection.rb:167:47:167:55 | my_params :  | semmle.label | my_params :  |
+| ActiveRecordInjection.rb:167:47:167:65 | ...[...] :  | semmle.label | ...[...] :  |
+| ActiveRecordInjection.rb:168:37:168:41 | query | semmle.label | query |
+| ActiveRecordInjection.rb:173:5:173:10 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:173:5:173:27 | call to require :  | semmle.label | call to require :  |
+| ActiveRecordInjection.rb:173:5:173:59 | call to permit :  | semmle.label | call to permit :  |
 | ArelInjection.rb:4:12:4:17 | call to params :  | semmle.label | call to params :  |
 | ArelInjection.rb:4:12:4:29 | ...[...] :  | semmle.label | ...[...] :  |
 | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | semmle.label | "SELECT * FROM users WHERE nam..." |
@@ -118,4 +131,5 @@ subpaths
 | ActiveRecordInjection.rb:96:23:96:47 | ...[...] | ActiveRecordInjection.rb:96:23:96:28 | call to params :  | ActiveRecordInjection.rb:96:23:96:47 | ...[...] | This SQL query depends on a $@. | ActiveRecordInjection.rb:96:23:96:28 | call to params | user-provided value |
 | ActiveRecordInjection.rb:108:20:108:32 | ... + ... | ActiveRecordInjection.rb:102:10:102:15 | call to params :  | ActiveRecordInjection.rb:108:20:108:32 | ... + ... | This SQL query depends on a $@. | ActiveRecordInjection.rb:102:10:102:15 | call to params | user-provided value |
 | ActiveRecordInjection.rb:155:27:155:76 | "this is an unsafe annotation:..." | ActiveRecordInjection.rb:155:59:155:64 | call to params :  | ActiveRecordInjection.rb:155:27:155:76 | "this is an unsafe annotation:..." | This SQL query depends on a $@. | ActiveRecordInjection.rb:155:59:155:64 | call to params | user-provided value |
+| ActiveRecordInjection.rb:168:37:168:41 | query | ActiveRecordInjection.rb:173:5:173:10 | call to params :  | ActiveRecordInjection.rb:168:37:168:41 | query | This SQL query depends on a $@. | ActiveRecordInjection.rb:173:5:173:10 | call to params | user-provided value |
 | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | ArelInjection.rb:4:12:4:17 | call to params :  | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | This SQL query depends on a $@. | ArelInjection.rb:4:12:4:17 | call to params | user-provided value |
