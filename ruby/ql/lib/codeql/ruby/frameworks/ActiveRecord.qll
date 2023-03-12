@@ -123,7 +123,7 @@ private Expr sqlFragmentArgument(MethodCall call) {
       or
       methodName = "calculate" and result = call.getArgument(1)
       or
-      methodName in ["average", "count", "maximum", "minimum", "sum"] and
+      methodName in ["average", "count", "maximum", "minimum", "sum", "count_by_sql"] and
       result = call.getArgument(0)
       or
       // This format was supported until Rails 2.3.8

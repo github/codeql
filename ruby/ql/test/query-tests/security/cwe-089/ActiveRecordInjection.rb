@@ -92,6 +92,8 @@ class FooController < ActionController::Base
     User.update_all(params[:fields])
     
     User.reorder(params[:direction])
+    
+    User.count_by_sql(params[:custom_sql_query])
   end
 end
 
