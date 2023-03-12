@@ -8,7 +8,7 @@ void test()
 	int a = getAnInt();
 	int b = getAnInt();
 	int c = getAnInt();
-    int x = getAnInt();
+	int x = getAnInt();
 	int y = getAnInt();
 	double d = getADouble();
 	unsigned short a1 = getAnUnsignedShort();
