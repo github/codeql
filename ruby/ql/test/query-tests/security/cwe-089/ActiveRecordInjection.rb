@@ -172,4 +172,9 @@ class RegressionController < ActionController::Base
   def permitted_params
     params.require(:my_key).permit(:id, :user_id, :my_type)
   end
+  
+  def show
+    ActiveRecord::Base.connection.execute("SELECT * FROM users WHERE id = #{permitted_params[:user_id]}")
+    Regression.connection.execute("SELECT * FROM users WHERE id = #{permitted_params[:user_id]}")
+  end
 end

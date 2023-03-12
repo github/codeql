@@ -31,6 +31,18 @@ private predicate isBuiltInMethodForActiveRecordModelInstance(string methodName)
   methodName = objectInstanceMethodName()
 }
 
+private API::Node activeRecordClassApiNode() {
+  result =
+    // class Foo < ActiveRecord::Base
+    // class Bar < Foo
+    [
+      API::getTopLevelMember("ActiveRecord").getMember("Base"),
+      // In Rails applications `ApplicationRecord` typically extends `ActiveRecord::Base`, but we
+      // treat it separately in case the `ApplicationRecord` definition is not in the database.
+      API::getTopLevelMember("ApplicationRecord")
+    ].getASubclass()
+}
+
 /**
  * A `ClassDeclaration` for a class that inherits from `ActiveRecord::Base`. For example,
  *
@@ -45,15 +57,8 @@ private predicate isBuiltInMethodForActiveRecordModelInstance(string methodName)
  */
 class ActiveRecordModelClass extends ClassDeclaration {
   ActiveRecordModelClass() {
-    // class Foo < ActiveRecord::Base
-    // class Bar < Foo
     this.getSuperclassExpr() =
-      [
-        API::getTopLevelMember("ActiveRecord").getMember("Base"),
-        // In Rails applications `ApplicationRecord` typically extends `ActiveRecord::Base`, but we
-        // treat it separately in case the `ApplicationRecord` definition is not in the database.
-        API::getTopLevelMember("ApplicationRecord")
-      ].getASubclass().getAValueReachableFromSource().asExpr().getExpr()
+      activeRecordClassApiNode().getAValueReachableFromSource().asExpr().getExpr()
   }
 
   // Gets the class declaration for this class and all of its super classes
@@ -208,9 +213,20 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
     exists(PotentiallyUnsafeSqlExecutingMethodCall mc |
       this.asExpr().getNode() = mc.getSqlFragmentSinkArgument()
     )
+    or
+    exists(DataFlow::CallNode executeCall |
+      executeCall.getReceiver() = activeRecordConnectionInstance() and
+      executeCall.getMethodName() = "execute" and
+      this = executeCall.getArgument(0) and
+      unsafeSqlExpr(this.asExpr().getExpr())
+    )
   }
 
   override DataFlow::Node getSql() { result = this }
+}
+
+private DataFlow::Node activeRecordConnectionInstance() {
+  result = activeRecordClassApiNode().getAMethodCall("connection")
 }
 
 // TODO: model `ActiveRecord` sanitizers
