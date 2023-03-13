@@ -119,7 +119,8 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
 }
 
 class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
-  TTranslatedConditionValue {
+  TTranslatedConditionValue
+{
   TranslatedConditionValue() { this = TTranslatedConditionValue(expr) }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getCondition() }
@@ -1950,7 +1951,8 @@ class TranslatedDelegateCall extends TranslatedNonConstantExpr {
  * object is allocated, which is then initialized by the constructor.
  */
 abstract class TranslatedCreation extends TranslatedCoreExpr, TTranslatedCreationExpr,
-  ConstructorCallContext {
+  ConstructorCallContext
+{
   TranslatedCreation() { this = TTranslatedCreationExpr(expr) }
 
   override TranslatedElement getChild(int id) {

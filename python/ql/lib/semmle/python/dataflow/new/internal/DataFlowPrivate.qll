@@ -110,7 +110,8 @@ class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
  * func(1, 2, 3)
  */
 class SynthStarArgsElementParameterNode extends ParameterNodeImpl,
-  TSynthStarArgsElementParameterNode {
+  TSynthStarArgsElementParameterNode
+{
   DataFlowCallable callable;
 
   SynthStarArgsElementParameterNode() { this = TSynthStarArgsElementParameterNode(callable) }

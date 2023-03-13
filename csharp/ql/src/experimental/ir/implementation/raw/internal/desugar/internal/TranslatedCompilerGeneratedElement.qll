@@ -7,7 +7,8 @@ private import experimental.ir.implementation.raw.internal.TranslatedElement
 private import experimental.ir.internal.IRCSharpLanguage as Language
 
 abstract class TranslatedCompilerGeneratedElement extends TranslatedElement,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   // The element that generates generated the compiler element can
   // only be a stmt or an expr
   ControlFlowElement generatedBy;

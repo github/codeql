@@ -190,7 +190,8 @@ class DynamicAccess extends DynamicExpr {
  * property, or an event).
  */
 class DynamicMemberAccess extends DynamicAccess, MemberAccess, AssignableAccess,
-  @dynamic_member_access_expr {
+  @dynamic_member_access_expr
+{
   override string toString() {
     result = "dynamic access to member " + this.getLateBoundTargetName()
   }

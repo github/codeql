@@ -78,7 +78,8 @@ class JUnitCategory extends WhitelistedLiveClass {
 /**
  * A listener that will be reflectively constructed by TestNG.
  */
-class TestNGReflectivelyConstructedListener extends ReflectivelyConstructedClass instanceof TestNGListenerImpl {
+class TestNGReflectivelyConstructedListener extends ReflectivelyConstructedClass instanceof TestNGListenerImpl
+{
   // Consider any class that implements a TestNG listener interface to be live. Listeners can be
   // specified on the command line, in `testng.xml` files and in Ant build files, so it is safest
   // to assume that all such listeners are live.

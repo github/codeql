@@ -214,9 +214,9 @@ fn longest_backtick_sequence_length(text: &str) -> usize {
     }
     result
 }
-/**
- * An argument of a diagnostic message format string. A message argument is either a "code" snippet or a link.
- */
+
+/// An argument of a diagnostic message format string.
+/// A message argument is either a "code" snippet or a link.
 pub enum MessageArg<'a> {
     Code(&'a str),
     Link(&'a str, &'a str),

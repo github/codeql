@@ -226,7 +226,8 @@ abstract class ScriptDependency extends Dependency {
 /**
  * An embedded JavaScript library included inside a `<script>` tag.
  */
-class InlineScriptDependency extends ScriptDependency, @toplevel instanceof FrameworkLibraryInstance {
+class InlineScriptDependency extends ScriptDependency, @toplevel instanceof FrameworkLibraryInstance
+{
   override predicate info(string id, string v) {
     exists(FrameworkLibrary fl |
       FrameworkLibraryInstance.super.info(fl, v) and
@@ -248,7 +249,8 @@ class InlineScriptDependency extends ScriptDependency, @toplevel instanceof Fram
  * An external JavaScript library referenced via the `src` attribute
  * of a `<script>` tag.
  */
-class ExternalScriptDependency extends ScriptDependency, @xmlattribute instanceof FrameworkLibraryReference {
+class ExternalScriptDependency extends ScriptDependency, @xmlattribute instanceof FrameworkLibraryReference
+{
   override predicate info(string id, string v) {
     exists(FrameworkLibrary fl |
       FrameworkLibraryReference.super.info(fl, v) and

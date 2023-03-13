@@ -75,7 +75,8 @@ abstract class TranslatedLocalVariableDeclaration extends TranslatedVariableInit
  * The IR translation of a local variable declaration within a declaration statement.
  */
 class TranslatedAutoVariableDeclarationEntry extends TranslatedLocalVariableDeclaration,
-  TranslatedDeclarationEntry {
+  TranslatedDeclarationEntry
+{
   StackVariable var;
 
   TranslatedAutoVariableDeclarationEntry() { var = entry.getDeclaration() }
@@ -217,7 +218,8 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
  * with a dynamic initializer.
  */
 class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
-  TranslatedLocalVariableDeclaration, TTranslatedStaticLocalVariableInitialization {
+  TranslatedLocalVariableDeclaration, TTranslatedStaticLocalVariableInitialization
+{
   IRVariableDeclarationEntry entry;
   StaticLocalVariable var;
 

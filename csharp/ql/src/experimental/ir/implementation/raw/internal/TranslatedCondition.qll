@@ -28,7 +28,8 @@ abstract class TranslatedCondition extends ConditionBase {
 }
 
 abstract class TranslatedFlexibleCondition extends TranslatedCondition, ConditionContext,
-  TTranslatedFlexibleCondition {
+  TTranslatedFlexibleCondition
+{
   TranslatedFlexibleCondition() { this = TTranslatedFlexibleCondition(expr) }
 
   final override TranslatedElement getChild(int id) { id = 0 and result = this.getOperand() }
@@ -156,7 +157,8 @@ class TranslatedLogicalOrExpr extends TranslatedBinaryLogicalOperation {
 }
 
 class TranslatedValueCondition extends TranslatedCondition, ValueConditionBase,
-  TTranslatedValueCondition {
+  TTranslatedValueCondition
+{
   TranslatedValueCondition() { this = TTranslatedValueCondition(expr) }
 
   override TranslatedExpr getValueExpr() { result = getTranslatedExpr(expr) }

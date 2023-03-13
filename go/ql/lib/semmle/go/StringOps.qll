@@ -228,7 +228,8 @@ module StringOps {
      * the receiver of a call to `strings.Replacer.Replace` or
      * `strings.Replacer.WriteString`.
      */
-    private class StringsNewReplacerConfiguration extends DataFlowForStringsNewReplacer::Configuration {
+    private class StringsNewReplacerConfiguration extends DataFlowForStringsNewReplacer::Configuration
+    {
       StringsNewReplacerConfiguration() { this = "StringsNewReplacerConfiguration" }
 
       override predicate isSource(DataFlow::Node source) {
