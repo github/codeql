@@ -1,5 +1,6 @@
 mod diagnostics;
 mod extractor;
+mod file_paths;
 mod trap;
 
 #[macro_use]
@@ -73,9 +74,11 @@ fn main() -> std::io::Result<()> {
         Err(e) => {
             main_thread_logger.write(
                 main_thread_logger
-                    .message("configuration-error", "Configuration error")
-                    .text(&format!("{}; defaulting to 1 thread.", e))
-                    .status_page()
+                    .new_entry("configuration-error", "Configuration error")
+                    .message(
+                        "{}; defaulting to 1 thread.",
+                        &[diagnostics::MessageArg::Code(&e)],
+                    )
                     .severity(diagnostics::Severity::Warning),
             );
             1
@@ -90,19 +93,19 @@ fn main() -> std::io::Result<()> {
             "threads"
         }
     );
-    let trap_compression = match trap::Compression::from_env("CODEQL_RUBY_TRAP_COMPRESSION") {
-        Ok(x) => x,
-        Err(e) => {
-            main_thread_logger.write(
-                main_thread_logger
-                    .message("configuration-error", "Configuration error")
-                    .text(&format!("{}; using gzip.", e))
-                    .status_page()
-                    .severity(diagnostics::Severity::Warning),
-            );
-            trap::Compression::Gzip
-        }
-    };
+    let trap_compression =
+        match trap::Compression::from_env("CODEQL_EXTRACTOR_RUBY_OPTION_TRAP_COMPRESSION") {
+            Ok(x) => x,
+            Err(e) => {
+                main_thread_logger.write(
+                    main_thread_logger
+                        .new_entry("configuration-error", "Configuration error")
+                        .message("{}; using gzip.", &[diagnostics::MessageArg::Code(&e)])
+                        .severity(diagnostics::Severity::Warning),
+                );
+                trap::Compression::Gzip
+            }
+        };
     drop(main_thread_logger);
     rayon::ThreadPoolBuilder::new()
         .num_threads(num_threads)
@@ -120,15 +123,15 @@ fn main() -> std::io::Result<()> {
     let src_archive_dir = matches
         .value_of("source-archive-dir")
         .expect("missing --source-archive-dir");
-    let src_archive_dir = PathBuf::from(src_archive_dir);
+    let src_archive_dir = file_paths::path_from_string(src_archive_dir);
 
     let trap_dir = matches
         .value_of("output-dir")
         .expect("missing --output-dir");
-    let trap_dir = PathBuf::from(trap_dir);
+    let trap_dir = file_paths::path_from_string(trap_dir);
 
     let file_list = matches.value_of("file-list").expect("missing --file-list");
-    let file_list = fs::File::open(file_list)?;
+    let file_list = fs::File::open(file_paths::path_from_string(file_list))?;
 
     let language = tree_sitter_ruby::language();
     let erb = tree_sitter_embedded_template::language();
@@ -146,7 +149,7 @@ fn main() -> std::io::Result<()> {
         .try_for_each(|line| {
             let mut diagnostics_writer = diagnostics.logger();
             let path = PathBuf::from(line).canonicalize()?;
-            let src_archive_file = path_for(&src_archive_dir, &path, "");
+            let src_archive_file = file_paths::path_for(&src_archive_dir, &path, "");
             let mut source = std::fs::read(&path)?;
             let mut needs_conversion = false;
             let code_ranges;
@@ -162,7 +165,7 @@ fn main() -> std::io::Result<()> {
                     &path,
                     &source,
                     &[],
-                )?;
+                );
 
                 let (ranges, line_breaks) = scan_erb(
                     erb,
@@ -199,16 +202,20 @@ fn main() -> std::io::Result<()> {
                                         needs_conversion = false;
                                         diagnostics_writer.write(
                                             diagnostics_writer
-                                                .message(
-                                                    "character-encoding-error",
-                                                    "Character encoding error",
+                                                .new_entry(
+                                                    "character-decoding-error",
+                                                    "Character decoding error",
                                                 )
-                                                .text(&format!(
-                                                    "{}: character decoding failure: {} ({})",
-                                                    &path.to_string_lossy(),
-                                                    msg,
-                                                    &encoding_name
-                                                ))
+                                                .file(&file_paths::normalize_path(&path))
+                                                .message(
+                                                    "Could not decode the file contents as {}: {}. The contents of the file must match the character encoding specified in the {} {}.",
+                                                    &[
+                                                        diagnostics::MessageArg::Code(&encoding_name),
+                                                        diagnostics::MessageArg::Code(&msg),
+                                                        diagnostics::MessageArg::Code("encoding:"),
+                                                        diagnostics::MessageArg::Link("directive", "https://docs.ruby-lang.org/en/master/syntax/comments_rdoc.html#label-encoding+Directive")
+                                                    ],
+                                                )
                                                 .status_page()
                                                 .severity(diagnostics::Severity::Warning),
                                         );
@@ -218,12 +225,16 @@ fn main() -> std::io::Result<()> {
                         } else {
                             diagnostics_writer.write(
                                 diagnostics_writer
-                                    .message("character-encoding-error", "Character encoding error")
-                                    .text(&format!(
-                                        "{}: unknown character encoding: '{}'",
-                                        &path.to_string_lossy(),
-                                        &encoding_name
-                                    ))
+                                    .new_entry("unknown-character-encoding", "Unknown character encoding")
+                                    .file(&file_paths::normalize_path(&path))
+                                    .message(
+                                        "Unknown character encoding {} in {} {}.",
+                                        &[
+                                            diagnostics::MessageArg::Code(&encoding_name),
+                                            diagnostics::MessageArg::Code("#encoding:"),
+                                            diagnostics::MessageArg::Link("directive", "https://docs.ruby-lang.org/en/master/syntax/comments_rdoc.html#label-encoding+Directive")
+                                        ],
+                                    )
                                     .status_page()
                                     .severity(diagnostics::Severity::Warning),
                             );
@@ -241,7 +252,7 @@ fn main() -> std::io::Result<()> {
                 &path,
                 &source,
                 &code_ranges,
-            )?;
+            );
             std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
             if needs_conversion {
                 std::fs::write(&src_archive_file, &source)?;
@@ -264,7 +275,7 @@ fn write_trap(
     trap_writer: &trap::Writer,
     trap_compression: trap::Compression,
 ) -> std::io::Result<()> {
-    let trap_file = path_for(trap_dir, &path, trap_compression.extension());
+    let trap_file = file_paths::path_for(trap_dir, &path, trap_compression.extension());
     std::fs::create_dir_all(&trap_file.parent().unwrap())?;
     trap_writer.write_to_file(&trap_file, trap_compression)
 }
@@ -311,54 +322,6 @@ fn scan_erb(
     (result, line_breaks)
 }
 
-fn path_for(dir: &Path, path: &Path, ext: &str) -> PathBuf {
-    let mut result = PathBuf::from(dir);
-    for component in path.components() {
-        match component {
-            std::path::Component::Prefix(prefix) => match prefix.kind() {
-                std::path::Prefix::Disk(letter) | std::path::Prefix::VerbatimDisk(letter) => {
-                    result.push(format!("{}_", letter as char))
-                }
-                std::path::Prefix::Verbatim(x) | std::path::Prefix::DeviceNS(x) => {
-                    result.push(x);
-                }
-                std::path::Prefix::UNC(server, share)
-                | std::path::Prefix::VerbatimUNC(server, share) => {
-                    result.push("unc");
-                    result.push(server);
-                    result.push(share);
-                }
-            },
-            std::path::Component::RootDir => {
-                // skip
-            }
-            std::path::Component::Normal(_) => {
-                result.push(component);
-            }
-            std::path::Component::CurDir => {
-                // skip
-            }
-            std::path::Component::ParentDir => {
-                result.pop();
-            }
-        }
-    }
-    if !ext.is_empty() {
-        match result.extension() {
-            Some(x) => {
-                let mut new_ext = x.to_os_string();
-                new_ext.push(".");
-                new_ext.push(ext);
-                result.set_extension(new_ext);
-            }
-            None => {
-                result.set_extension(ext);
-            }
-        }
-    }
-    result
-}
-
 fn skip_space(content: &[u8], index: usize) -> usize {
     let mut index = index;
     while index < content.len() {
@@ -372,7 +335,6 @@ fn skip_space(content: &[u8], index: usize) -> usize {
     }
     index
 }
-
 fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<str>> {
     let mut index = 0;
     // skip UTF-8 BOM marker if there is one

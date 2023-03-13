@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Security.Principal.Windows, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace SafeHandles
         {
-            // Generated from `Microsoft.Win32.SafeHandles.SafeAccessTokenHandle` in `System.Security.Principal.Windows, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeAccessTokenHandle : System.Runtime.InteropServices.SafeHandle
             {
                 public static Microsoft.Win32.SafeHandles.SafeAccessTokenHandle InvalidHandle { get => throw null; }
@@ -25,7 +25,6 @@ namespace System
     {
         namespace Principal
         {
-            // Generated from `System.Security.Principal.IdentityNotMappedException` in `System.Security.Principal.Windows, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IdentityNotMappedException : System.SystemException
             {
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
@@ -35,7 +34,6 @@ namespace System
                 public System.Security.Principal.IdentityReferenceCollection UnmappedIdentities { get => throw null; }
             }
 
-            // Generated from `System.Security.Principal.IdentityReference` in `System.Security.Principal.Windows, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class IdentityReference
             {
                 public static bool operator !=(System.Security.Principal.IdentityReference left, System.Security.Principal.IdentityReference right) => throw null;
@@ -49,7 +47,6 @@ namespace System
                 public abstract string Value { get; }
             }
 
-            // Generated from `System.Security.Principal.IdentityReferenceCollection` in `System.Security.Principal.Windows, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IdentityReferenceCollection : System.Collections.Generic.ICollection<System.Security.Principal.IdentityReference>, System.Collections.Generic.IEnumerable<System.Security.Principal.IdentityReference>, System.Collections.IEnumerable
             {
                 public void Add(System.Security.Principal.IdentityReference identity) => throw null;
@@ -68,7 +65,6 @@ namespace System
                 public System.Security.Principal.IdentityReferenceCollection Translate(System.Type targetType, bool forceSuccess) => throw null;
             }
 
-            // Generated from `System.Security.Principal.NTAccount` in `System.Security.Principal.Windows, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NTAccount : System.Security.Principal.IdentityReference
             {
                 public static bool operator !=(System.Security.Principal.NTAccount left, System.Security.Principal.NTAccount right) => throw null;
@@ -83,7 +79,6 @@ namespace System
                 public override string Value { get => throw null; }
             }
 
-            // Generated from `System.Security.Principal.SecurityIdentifier` in `System.Security.Principal.Windows, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SecurityIdentifier : System.Security.Principal.IdentityReference, System.IComparable<System.Security.Principal.SecurityIdentifier>
             {
                 public static bool operator !=(System.Security.Principal.SecurityIdentifier left, System.Security.Principal.SecurityIdentifier right) => throw null;
@@ -110,7 +105,6 @@ namespace System
                 public override string Value { get => throw null; }
             }
 
-            // Generated from `System.Security.Principal.TokenAccessLevels` in `System.Security.Principal.Windows, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum TokenAccessLevels : int
             {
@@ -129,7 +123,6 @@ namespace System
                 Write = 131296,
             }
 
-            // Generated from `System.Security.Principal.WellKnownSidType` in `System.Security.Principal.Windows, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum WellKnownSidType : int
             {
                 AccountAdministratorSid = 38,
@@ -230,7 +223,6 @@ namespace System
                 WorldSid = 1,
             }
 
-            // Generated from `System.Security.Principal.WindowsAccountType` in `System.Security.Principal.Windows, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum WindowsAccountType : int
             {
                 Anonymous = 3,
@@ -239,7 +231,6 @@ namespace System
                 System = 2,
             }
 
-            // Generated from `System.Security.Principal.WindowsBuiltInRole` in `System.Security.Principal.Windows, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum WindowsBuiltInRole : int
             {
                 AccountOperator = 548,
@@ -253,7 +244,6 @@ namespace System
                 User = 545,
             }
 
-            // Generated from `System.Security.Principal.WindowsIdentity` in `System.Security.Principal.Windows, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class WindowsIdentity : System.Security.Claims.ClaimsIdentity, System.IDisposable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
             {
                 public Microsoft.Win32.SafeHandles.SafeAccessTokenHandle AccessToken { get => throw null; }
@@ -294,7 +284,6 @@ namespace System
                 public WindowsIdentity(string sUserPrincipalName) => throw null;
             }
 
-            // Generated from `System.Security.Principal.WindowsPrincipal` in `System.Security.Principal.Windows, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class WindowsPrincipal : System.Security.Claims.ClaimsPrincipal
             {
                 public virtual System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> DeviceClaims { get => throw null; }

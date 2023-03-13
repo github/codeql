@@ -41,4 +41,4 @@ func3() # $ pt,tt=33:func3 pt,tt=36:func3
 
 # func4 uses same setup as func3, it's just defined in an other file
 from code.runtime_decision_defns import func4
-func4() # $ pt="code/runtime_decision_defns.py:4:func4" pt="code/runtime_decision_defns.py:7:func4" MISSING: tt
+func4() # $ pt,tt="code/runtime_decision_defns.py:4:func4" pt,tt="code/runtime_decision_defns.py:7:func4"

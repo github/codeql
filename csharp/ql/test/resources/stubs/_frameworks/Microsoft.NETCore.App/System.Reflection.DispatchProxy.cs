@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.Reflection.DispatchProxy, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace Reflection
     {
-        // Generated from `System.Reflection.DispatchProxy` in `System.Reflection.DispatchProxy, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class DispatchProxy
         {
             public static T Create<T, TProxy>() where TProxy : System.Reflection.DispatchProxy => throw null;

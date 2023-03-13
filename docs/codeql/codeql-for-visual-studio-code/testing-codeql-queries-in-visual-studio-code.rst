@@ -5,7 +5,7 @@
 Testing CodeQL queries in Visual Studio Code
 ============================================
 
-You can run unit tests for CodeQL queries using the Visual Studio Code extension.
+You can run unit tests for CodeQL queries using the Visual Studio Code extension. When you are sure that your query finds the results you want to identify, you can use variant analysis to run it at scale. For information on running analysis at scale across many CodeQL databases, see ":ref:`Running CodeQL queries at scale with multi-repository variant analysis <running-codeql-queries-at-scale-with-mrva>`."
 
 About testing queries in VS Code
 ---------------------------------

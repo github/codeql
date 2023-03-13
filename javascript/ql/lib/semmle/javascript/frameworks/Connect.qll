@@ -125,7 +125,8 @@ module Connect {
   /**
    * An access to a user-controlled Connect request input.
    */
-  private class RequestInputAccess extends Http::RequestInputAccess instanceof DataFlow::MethodCallNode {
+  private class RequestInputAccess extends Http::RequestInputAccess instanceof DataFlow::MethodCallNode
+  {
     RequestNode request;
     string kind;
 

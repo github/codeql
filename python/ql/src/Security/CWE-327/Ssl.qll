@@ -162,23 +162,21 @@ class ContextSetVersion extends ProtocolRestriction, ProtocolUnrestriction, Data
 }
 
 class UnspecificSslContextCreation extends SslContextCreation, UnspecificContextCreation {
-  UnspecificSslContextCreation() { library instanceof Ssl }
-
-  override ProtocolVersion getUnrestriction() {
-    result = UnspecificContextCreation.super.getUnrestriction() and
-    // These are turned off by default since Python 3.6
-    // see https://docs.python.org/3.6/library/ssl.html#ssl.SSLContext
-    not result in ["SSLv2", "SSLv3"]
-  }
+  // UnspecificSslContextCreation() { library instanceof Ssl }
+  // override ProtocolVersion getUnrestriction() {
+  //   result = UnspecificContextCreation.super.getUnrestriction() and
+  //   // These are turned off by default since Python 3.6
+  //   // see https://docs.python.org/3.6/library/ssl.html#ssl.SSLContext
+  //   not result in ["SSLv2", "SSLv3"]
+  // }
 }
 
-class UnspecificSslDefaultContextCreation extends SslDefaultContextCreation, ProtocolUnrestriction {
-  override DataFlow::Node getContext() { result = this }
-
-  // see https://docs.python.org/3/library/ssl.html#ssl.create_default_context
-  override ProtocolVersion getUnrestriction() {
-    result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
-  }
+class UnspecificSslDefaultContextCreation extends SslDefaultContextCreation {
+  // override DataFlow::Node getContext() { result = this }
+  // // see https://docs.python.org/3/library/ssl.html#ssl.create_default_context
+  // override ProtocolVersion getUnrestriction() {
+  //   result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
+  // }
 }
 
 class Ssl extends TlsLibrary {

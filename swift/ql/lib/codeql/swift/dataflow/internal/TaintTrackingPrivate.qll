@@ -46,6 +46,15 @@ private module Cached {
     // allow flow through arithmetic (this case includes string concatenation)
     nodeTo.asExpr().(ArithmeticOperation).getAnOperand() = nodeFrom.asExpr()
     or
+    // allow flow through bitwise operations
+    nodeTo.asExpr().(BitwiseOperation).getAnOperand() = nodeFrom.asExpr()
+    or
+    // allow flow through assignment operations (e.g. `+=`)
+    exists(AssignOperation op |
+      nodeFrom.asExpr() = op.getSource() and
+      nodeTo.asExpr() = op.getDest()
+    )
+    or
     // flow through a subscript access
     exists(SubscriptExpr se |
       se.getBase() = nodeFrom.asExpr() and

@@ -434,7 +434,7 @@ class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @de
  * Either a unary operator (`UnaryOperator`), a binary operator
  * (`BinaryOperator`), or a conversion operator (`ConversionOperator`).
  */
-class Operator extends Callable, Member, Attributable, @operator {
+class Operator extends Callable, Member, Attributable, Overridable, @operator {
   /**
    * DEPRECATED: use `getFunctionName()` instead.
    *

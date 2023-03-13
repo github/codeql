@@ -3,11 +3,25 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["java.lang", "Class", False, "getResource", "(String)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.lang", "ClassLoader", True, "getSystemResourceAsStream", "(String)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.lang", "Module", True, "getResourceAsStream", "(String)", "", "Argument[0]", "read-file", "ai-generated"]
+      # These are modeled in plain CodeQL. TODO: migrate them.
+      # - ["java.lang", "ProcessBuilder", False, "directory", "(File)", "", "Argument[0]", "command-injection", "ai-generated"]
+      # - ["java.lang", "ProcessBuilder", True, "ProcessBuilder", "(String[])", "", "Argument[0]", "command-injection", "ai-generated"]
+      # - ["java.lang", "Runtime", True, "exec", "(String,String[],File)", "", "Argument[2]", "command-injection", "ai-generated"]
+      # - ["java.lang", "Runtime", True, "exec", "(String)", "", "Argument[0]", "command-injection", "ai-generated"]
+      # - ["java.lang", "Runtime", True, "exec", "(String[],String[],File)", "", "Argument[0]", "command-injection", "ai-generated"]
+      # - ["java.lang", "Runtime", True, "exec", "(String[],String[],File)", "", "Argument[2]", "command-injection", "ai-generated"]
+      # - ["java.lang", "Runtime", True, "exec", "(String[])", "", "Argument[0]", "command-injection", "ai-generated"]
       - ["java.lang", "String", False, "matches", "(String)", "", "Argument[0]", "regex-use[f-1]", "manual"]
       - ["java.lang", "String", False, "replaceAll", "(String,String)", "", "Argument[0]", "regex-use[-1]", "manual"]
       - ["java.lang", "String", False, "replaceFirst", "(String,String)", "", "Argument[0]", "regex-use[-1]", "manual"]
       - ["java.lang", "String", False, "split", "(String)", "", "Argument[0]", "regex-use[-1]", "manual"]
       - ["java.lang", "String", False, "split", "(String,int)", "", "Argument[0]", "regex-use[-1]", "manual"]
+      # These are modeled in plain CodeQL. TODO: migrate them.
+      # - ["java.lang", "System", False, "load", "(String)", "", "Argument[0]", "command-injection", "ai-generated"] # This is actually injecting a library.
+      # - ["java.lang", "System", False, "loadLibrary", "(String)", "", "Argument[0]", "command-injection", "ai-generated"] # This is actually injecting a library.
       - ["java.lang", "System$Logger", True, "log", "(Level,Object)", "", "Argument[1]", "logging", "manual"]
       - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Object[])", "", "Argument[2..3]", "logging", "manual"]
       - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Throwable)", "", "Argument[2]", "logging", "manual"]
@@ -96,7 +110,6 @@ extensions:
       - ["java.lang", "Throwable", False, "Throwable", "(Throwable)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
       - ["java.lang", "Throwable", True, "getCause", "()", "", "Argument[-1].SyntheticField[java.lang.Throwable.cause]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Throwable", True, "getMessage", "()", "", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "value", "manual"]
-
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
@@ -129,7 +142,6 @@ extensions:
       - ["java.lang", "System", "nanoTime", "()", "manual"]
       - ["java.lang", "Thread", "currentThread", "()", "manual"]
       - ["java.lang", "Thread", "sleep", "(long)", "manual"]
-
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
       - ["java.lang", "Integer", "intValue", "()", "manual"]       # taint-numeric

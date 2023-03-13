@@ -146,4 +146,6 @@ const cashDom = require("cash-dom");
         }
     };
     cashDom("#id").html(DOMPurify ? DOMPurify.sanitize(src) : src); // OK
+
+    $("<a />", { html: src }).appendTo("#id"); // NOT OK
 })();

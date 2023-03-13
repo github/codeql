@@ -26,9 +26,8 @@ jobs:
         shell: bash
         run: |
           EXIT_CODE=0
-          # TODO: remove the swift exception from the regex when we fix generated QLdoc
           # TODO: remove the shared exception from the regex when coverage of qlpacks without dbschemes is supported
-          changed_lib_packs="$(git diff --name-only --diff-filter=ACMRT HEAD^ HEAD | { grep -Po '^(?!(swift|shared))[a-z]*/ql/lib' || true; } | sort -u)"
+          changed_lib_packs="$(git diff --name-only --diff-filter=ACMRT HEAD^ HEAD | { grep -Po '^(?!(shared))[a-z]*/ql/lib' || true; } | sort -u)"
           for pack_dir in ${changed_lib_packs}; do
             lang="${pack_dir%/ql/lib}"
             codeql generate library-doc-coverage --output="${RUNNER_TEMP}/${lang}-current.txt" --dir="${pack_dir}"

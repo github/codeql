@@ -28,7 +28,8 @@ private class WKScriptMessageDecl extends ClassDecl {
  * A content implying that, if a `WKScriptMessage` is tainted, its `body` field is tainted.
  */
 private class WKScriptMessageBodyInheritsTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
+  DataFlow::Content::FieldContent
+{
   WKScriptMessageBodyInheritsTaint() {
     exists(FieldDecl f | this.getField() = f |
       f.getEnclosingDecl() instanceof WKScriptMessageDecl and
@@ -206,7 +207,8 @@ private class WKUserScriptSummaries extends SummaryModelCsv {
  * A content implying that, if a `WKUserScript` is tainted, its `source` field is tainted.
  */
 private class WKUserScriptInheritsTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
+  DataFlow::Content::FieldContent
+{
   WKUserScriptInheritsTaint() {
     exists(FieldDecl f | this.getField() = f |
       f.getEnclosingDecl().(ClassOrStructDecl).getName() = "WKUserScript" and

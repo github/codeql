@@ -27,6 +27,11 @@ The CodeQL extension for Visual Studio Code adds rich language support for CodeQ
   VS Code to help you track the flow of data through a program, highlighting
   areas that are potential security vulnerabilities.  
 
+- :doc:`Running CodeQL queries at scale with multi-repository variant analysis
+  <running-codeql-queries-at-scale-with-mrva>`: You can run queries against groups
+  of repositories on GitHub.com and view results in Visual Studio Code as each analysis
+  finishes. 
+
 - :doc:`Testing CodeQL queries in Visual Studio Code
   <testing-codeql-queries-in-visual-studio-code>`: You can run unit tests for
   CodeQL queries using the Visual Studio Code extension.
@@ -40,7 +45,13 @@ The CodeQL extension for Visual Studio Code adds rich language support for CodeQ
 
 - :doc:`Troubleshooting CodeQL for Visual Studio Code
   <troubleshooting-codeql-for-visual-studio-code>`: You can use the detailed 
-  information written to the extension's log files if you need to troubleshoot problems.
+  information written to the extension's log files if you need to troubleshoot problems with
+  analysis of local CodeQL databases.
+
+- :doc:`Troubleshooting variant analysis
+  <troubleshooting-variant-analysis>`: You can use the detailed 
+  information written to workflow log files in your controller repository if you need to
+  troubleshoot problems with analysis of CodeQL databases stored on GitHub.com.
 
 - :doc:`About telemetry in CodeQL for Visual Studio Code <about-telemetry-in-codeql-for-visual-studio-code>`: If you specifically opt in to permit GitHub to do so, GitHub will collect usage data and metrics for the purposes of helping the core developers to improve the CodeQL extension for VS Code.
 
@@ -53,8 +64,10 @@ The CodeQL extension for Visual Studio Code adds rich language support for CodeQ
    analyzing-your-projects
    exploring-the-structure-of-your-source-code
    exploring-data-flow-with-path-queries
+   running-codeql-queries-at-scale-with-mrva
    testing-codeql-queries-in-visual-studio-code
    working-with-codeql-packs-in-visual-studio-code
    customizing-settings
    troubleshooting-codeql-for-visual-studio-code
+   troubleshooting-variant-analysis
    about-telemetry-in-codeql-for-visual-studio-code

@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.Collections.NonGeneric, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace Collections
     {
-        // Generated from `System.Collections.CaseInsensitiveComparer` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CaseInsensitiveComparer : System.Collections.IComparer
         {
             public CaseInsensitiveComparer() => throw null;
@@ -14,7 +14,6 @@ namespace System
             public static System.Collections.CaseInsensitiveComparer DefaultInvariant { get => throw null; }
         }
 
-        // Generated from `System.Collections.CaseInsensitiveHashCodeProvider` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CaseInsensitiveHashCodeProvider : System.Collections.IHashCodeProvider
         {
             public CaseInsensitiveHashCodeProvider() => throw null;
@@ -24,7 +23,6 @@ namespace System
             public int GetHashCode(object obj) => throw null;
         }
 
-        // Generated from `System.Collections.CollectionBase` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class CollectionBase : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             int System.Collections.IList.Add(object value) => throw null;
@@ -58,7 +56,6 @@ namespace System
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
 
-        // Generated from `System.Collections.DictionaryBase` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class DictionaryBase : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable
         {
             void System.Collections.IDictionary.Add(object key, object value) => throw null;
@@ -91,7 +88,6 @@ namespace System
             System.Collections.ICollection System.Collections.IDictionary.Values { get => throw null; }
         }
 
-        // Generated from `System.Collections.Queue` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Queue : System.Collections.ICollection, System.Collections.IEnumerable, System.ICloneable
         {
             public virtual void Clear() => throw null;
@@ -114,7 +110,6 @@ namespace System
             public virtual void TrimToSize() => throw null;
         }
 
-        // Generated from `System.Collections.ReadOnlyCollectionBase` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class ReadOnlyCollectionBase : System.Collections.ICollection, System.Collections.IEnumerable
         {
             void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
@@ -126,7 +121,6 @@ namespace System
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
 
-        // Generated from `System.Collections.SortedList` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SortedList : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable, System.ICloneable
         {
             public virtual void Add(object key, object value) => throw null;
@@ -166,7 +160,6 @@ namespace System
             public virtual System.Collections.ICollection Values { get => throw null; }
         }
 
-        // Generated from `System.Collections.Stack` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Stack : System.Collections.ICollection, System.Collections.IEnumerable, System.ICloneable
         {
             public virtual void Clear() => throw null;
@@ -189,7 +182,6 @@ namespace System
 
         namespace Specialized
         {
-            // Generated from `System.Collections.Specialized.CollectionsUtil` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CollectionsUtil
             {
                 public CollectionsUtil() => throw null;

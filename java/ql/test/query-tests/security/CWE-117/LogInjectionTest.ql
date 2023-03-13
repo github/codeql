@@ -2,6 +2,10 @@ import java
 import semmle.code.java.security.LogInjectionQuery
 import TestUtilities.InlineFlowTest
 
+class EnableLegacy extends EnableLegacyConfiguration {
+  EnableLegacy() { exists(this) }
+}
+
 private class TestSource extends RemoteFlowSource {
   TestSource() { this.asExpr().(MethodAccess).getMethod().hasName("source") }
 

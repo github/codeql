@@ -116,7 +116,8 @@ class ExconHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode 
 }
 
 /** A configuration to track values that can disable certificate validation for Excon. */
-private class ExconDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
+private class ExconDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration
+{
   ExconDisablesCertificateValidationConfiguration() {
     this = "ExconDisablesCertificateValidationConfiguration"
   }

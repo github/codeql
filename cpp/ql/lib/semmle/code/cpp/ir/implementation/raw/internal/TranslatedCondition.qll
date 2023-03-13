@@ -34,7 +34,8 @@ abstract class TranslatedCondition extends TranslatedElement {
 }
 
 abstract class TranslatedFlexibleCondition extends TranslatedCondition, ConditionContext,
-  TTranslatedFlexibleCondition {
+  TTranslatedFlexibleCondition
+{
   TranslatedFlexibleCondition() { this = TTranslatedFlexibleCondition(expr) }
 
   final override TranslatedElement getChild(int id) { id = 0 and result = getOperand() }

@@ -71,8 +71,6 @@ edges
 | test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | command indirection |
 | test.cpp:220:19:220:26 | filename indirection | test.cpp:220:10:220:16 | strncat output argument |
 | test.cpp:220:19:220:26 | filename indirection | test.cpp:220:10:220:16 | strncat output argument |
-| test.cpp:220:19:220:26 | filename indirection | test.cpp:220:10:220:16 | strncat output argument |
-| test.cpp:220:19:220:26 | filename indirection | test.cpp:220:10:220:16 | strncat output argument |
 nodes
 | test.cpp:15:27:15:30 | argv | semmle.label | argv |
 | test.cpp:22:13:22:20 | sprintf output argument | semmle.label | sprintf output argument |
@@ -150,6 +148,7 @@ nodes
 | test.cpp:220:10:220:16 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:220:19:220:26 | filename indirection | semmle.label | filename indirection |
 | test.cpp:220:19:220:26 | filename indirection | semmle.label | filename indirection |
+| test.cpp:222:32:222:38 | command indirection | semmle.label | command indirection |
 | test.cpp:222:32:222:38 | command indirection | semmle.label | command indirection |
 subpaths
 | test.cpp:196:26:196:33 | filename | test.cpp:186:47:186:54 | filename | test.cpp:188:11:188:17 | command [post update] | test.cpp:196:10:196:16 | command [post update] |

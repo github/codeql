@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Identity.Core, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Identity
         {
-            // Generated from `Microsoft.AspNetCore.Identity.AuthenticatorTokenProvider<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AuthenticatorTokenProvider<TUser> : Microsoft.AspNetCore.Identity.IUserTwoFactorTokenProvider<TUser> where TUser : class
             {
                 public AuthenticatorTokenProvider() => throw null;
@@ -15,7 +15,6 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<bool> ValidateAsync(string purpose, string token, Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.ClaimsIdentityOptions` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ClaimsIdentityOptions
             {
                 public ClaimsIdentityOptions() => throw null;
@@ -26,7 +25,6 @@ namespace Microsoft
                 public string UserNameClaimType { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.DefaultPersonalDataProtector` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DefaultPersonalDataProtector : Microsoft.AspNetCore.Identity.IPersonalDataProtector
             {
                 public DefaultPersonalDataProtector(Microsoft.AspNetCore.Identity.ILookupProtectorKeyRing keyRing, Microsoft.AspNetCore.Identity.ILookupProtector protector) => throw null;
@@ -34,14 +32,12 @@ namespace Microsoft
                 public virtual string Unprotect(string data) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.DefaultUserConfirmation<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DefaultUserConfirmation<TUser> : Microsoft.AspNetCore.Identity.IUserConfirmation<TUser> where TUser : class
             {
                 public DefaultUserConfirmation() => throw null;
                 public virtual System.Threading.Tasks.Task<bool> IsConfirmedAsync(Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.EmailTokenProvider<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class EmailTokenProvider<TUser> : Microsoft.AspNetCore.Identity.TotpSecurityStampBasedTokenProvider<TUser> where TUser : class
             {
                 public override System.Threading.Tasks.Task<bool> CanGenerateTwoFactorTokenAsync(Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user) => throw null;
@@ -49,21 +45,18 @@ namespace Microsoft
                 public override System.Threading.Tasks.Task<string> GetUserModifierAsync(string purpose, Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.ILookupNormalizer` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ILookupNormalizer
             {
                 string NormalizeEmail(string email);
                 string NormalizeName(string name);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.ILookupProtector` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ILookupProtector
             {
                 string Protect(string keyId, string data);
                 string Unprotect(string keyId, string data);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.ILookupProtectorKeyRing` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ILookupProtectorKeyRing
             {
                 string CurrentKeyId { get; }
@@ -71,44 +64,37 @@ namespace Microsoft
                 string this[string keyId] { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IPasswordHasher<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IPasswordHasher<TUser> where TUser : class
             {
                 string HashPassword(TUser user, string password);
                 Microsoft.AspNetCore.Identity.PasswordVerificationResult VerifyHashedPassword(TUser user, string hashedPassword, string providedPassword);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IPasswordValidator<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IPasswordValidator<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ValidateAsync(Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user, string password);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IPersonalDataProtector` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IPersonalDataProtector
             {
                 string Protect(string data);
                 string Unprotect(string data);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IProtectedUserStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IProtectedUserStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IQueryableRoleStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IQueryableRoleStore<TRole> : Microsoft.AspNetCore.Identity.IRoleStore<TRole>, System.IDisposable where TRole : class
             {
                 System.Linq.IQueryable<TRole> Roles { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IQueryableUserStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IQueryableUserStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
                 System.Linq.IQueryable<TUser> Users { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IRoleClaimStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IRoleClaimStore<TRole> : Microsoft.AspNetCore.Identity.IRoleStore<TRole>, System.IDisposable where TRole : class
             {
                 System.Threading.Tasks.Task AddClaimAsync(TRole role, System.Security.Claims.Claim claim, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
@@ -116,7 +102,6 @@ namespace Microsoft
                 System.Threading.Tasks.Task RemoveClaimAsync(TRole role, System.Security.Claims.Claim claim, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IRoleStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IRoleStore<TRole> : System.IDisposable where TRole : class
             {
                 System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> CreateAsync(TRole role, System.Threading.CancellationToken cancellationToken);
@@ -131,13 +116,11 @@ namespace Microsoft
                 System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> UpdateAsync(TRole role, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IRoleValidator<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IRoleValidator<TRole> where TRole : class
             {
                 System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ValidateAsync(Microsoft.AspNetCore.Identity.RoleManager<TRole> manager, TRole role);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserAuthenticationTokenStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserAuthenticationTokenStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
                 System.Threading.Tasks.Task<string> GetTokenAsync(TUser user, string loginProvider, string name, System.Threading.CancellationToken cancellationToken);
@@ -145,14 +128,12 @@ namespace Microsoft
                 System.Threading.Tasks.Task SetTokenAsync(TUser user, string loginProvider, string name, string value, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserAuthenticatorKeyStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserAuthenticatorKeyStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
                 System.Threading.Tasks.Task<string> GetAuthenticatorKeyAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task SetAuthenticatorKeyAsync(TUser user, string key, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserClaimStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserClaimStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
                 System.Threading.Tasks.Task AddClaimsAsync(TUser user, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims, System.Threading.CancellationToken cancellationToken);
@@ -162,19 +143,16 @@ namespace Microsoft
                 System.Threading.Tasks.Task ReplaceClaimAsync(TUser user, System.Security.Claims.Claim claim, System.Security.Claims.Claim newClaim, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserClaimsPrincipalFactory<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserClaimsPrincipalFactory<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<System.Security.Claims.ClaimsPrincipal> CreateAsync(TUser user);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserConfirmation<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserConfirmation<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<bool> IsConfirmedAsync(Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserEmailStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserEmailStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
                 System.Threading.Tasks.Task<TUser> FindByEmailAsync(string normalizedEmail, System.Threading.CancellationToken cancellationToken);
@@ -186,7 +164,6 @@ namespace Microsoft
                 System.Threading.Tasks.Task SetNormalizedEmailAsync(TUser user, string normalizedEmail, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserLockoutStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserLockoutStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
                 System.Threading.Tasks.Task<int> GetAccessFailedCountAsync(TUser user, System.Threading.CancellationToken cancellationToken);
@@ -198,7 +175,6 @@ namespace Microsoft
                 System.Threading.Tasks.Task SetLockoutEndDateAsync(TUser user, System.DateTimeOffset? lockoutEnd, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserLoginStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserLoginStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
                 System.Threading.Tasks.Task AddLoginAsync(TUser user, Microsoft.AspNetCore.Identity.UserLoginInfo login, System.Threading.CancellationToken cancellationToken);
@@ -207,7 +183,6 @@ namespace Microsoft
                 System.Threading.Tasks.Task RemoveLoginAsync(TUser user, string loginProvider, string providerKey, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserPasswordStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserPasswordStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
                 System.Threading.Tasks.Task<string> GetPasswordHashAsync(TUser user, System.Threading.CancellationToken cancellationToken);
@@ -215,7 +190,6 @@ namespace Microsoft
                 System.Threading.Tasks.Task SetPasswordHashAsync(TUser user, string passwordHash, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserPhoneNumberStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserPhoneNumberStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
                 System.Threading.Tasks.Task<string> GetPhoneNumberAsync(TUser user, System.Threading.CancellationToken cancellationToken);
@@ -224,7 +198,6 @@ namespace Microsoft
                 System.Threading.Tasks.Task SetPhoneNumberConfirmedAsync(TUser user, bool confirmed, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserRoleStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserRoleStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
                 System.Threading.Tasks.Task AddToRoleAsync(TUser user, string roleName, System.Threading.CancellationToken cancellationToken);
@@ -234,14 +207,12 @@ namespace Microsoft
                 System.Threading.Tasks.Task RemoveFromRoleAsync(TUser user, string roleName, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserSecurityStampStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserSecurityStampStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
                 System.Threading.Tasks.Task<string> GetSecurityStampAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task SetSecurityStampAsync(TUser user, string stamp, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserStore<TUser> : System.IDisposable where TUser : class
             {
                 System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> CreateAsync(TUser user, System.Threading.CancellationToken cancellationToken);
@@ -256,7 +227,6 @@ namespace Microsoft
                 System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> UpdateAsync(TUser user, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserTwoFactorRecoveryCodeStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserTwoFactorRecoveryCodeStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
                 System.Threading.Tasks.Task<int> CountCodesAsync(TUser user, System.Threading.CancellationToken cancellationToken);
@@ -264,14 +234,12 @@ namespace Microsoft
                 System.Threading.Tasks.Task ReplaceCodesAsync(TUser user, System.Collections.Generic.IEnumerable<string> recoveryCodes, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserTwoFactorStore<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserTwoFactorStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
             {
                 System.Threading.Tasks.Task<bool> GetTwoFactorEnabledAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task SetTwoFactorEnabledAsync(TUser user, bool enabled, System.Threading.CancellationToken cancellationToken);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserTwoFactorTokenProvider<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserTwoFactorTokenProvider<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<bool> CanGenerateTwoFactorTokenAsync(Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user);
@@ -279,13 +247,11 @@ namespace Microsoft
                 System.Threading.Tasks.Task<bool> ValidateAsync(string purpose, string token, Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IUserValidator<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUserValidator<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ValidateAsync(Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user);
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IdentityBuilder` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class IdentityBuilder
             {
                 public virtual Microsoft.AspNetCore.Identity.IdentityBuilder AddClaimsPrincipalFactory<TFactory>() where TFactory : class => throw null;
@@ -309,7 +275,6 @@ namespace Microsoft
                 public System.Type UserType { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IdentityError` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class IdentityError
             {
                 public string Code { get => throw null; set => throw null; }
@@ -317,7 +282,6 @@ namespace Microsoft
                 public IdentityError() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IdentityErrorDescriber` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class IdentityErrorDescriber
             {
                 public virtual Microsoft.AspNetCore.Identity.IdentityError ConcurrencyFailure() => throw null;
@@ -345,7 +309,6 @@ namespace Microsoft
                 public virtual Microsoft.AspNetCore.Identity.IdentityError UserNotInRole(string role) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IdentityOptions` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class IdentityOptions
             {
                 public Microsoft.AspNetCore.Identity.ClaimsIdentityOptions ClaimsIdentity { get => throw null; set => throw null; }
@@ -358,7 +321,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Identity.UserOptions User { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.IdentityResult` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class IdentityResult
             {
                 public System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Identity.IdentityError> Errors { get => throw null; }
@@ -369,7 +331,6 @@ namespace Microsoft
                 public override string ToString() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.LockoutOptions` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class LockoutOptions
             {
                 public bool AllowedForNewUsers { get => throw null; set => throw null; }
@@ -378,7 +339,6 @@ namespace Microsoft
                 public int MaxFailedAccessAttempts { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.PasswordHasher<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class PasswordHasher<TUser> : Microsoft.AspNetCore.Identity.IPasswordHasher<TUser> where TUser : class
             {
                 public virtual string HashPassword(TUser user, string password) => throw null;
@@ -386,14 +346,12 @@ namespace Microsoft
                 public virtual Microsoft.AspNetCore.Identity.PasswordVerificationResult VerifyHashedPassword(TUser user, string hashedPassword, string providedPassword) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.PasswordHasherCompatibilityMode` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public enum PasswordHasherCompatibilityMode : int
             {
                 IdentityV2 = 0,
                 IdentityV3 = 1,
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.PasswordHasherOptions` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class PasswordHasherOptions
             {
                 public Microsoft.AspNetCore.Identity.PasswordHasherCompatibilityMode CompatibilityMode { get => throw null; set => throw null; }
@@ -401,7 +359,6 @@ namespace Microsoft
                 public PasswordHasherOptions() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.PasswordOptions` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class PasswordOptions
             {
                 public PasswordOptions() => throw null;
@@ -413,7 +370,6 @@ namespace Microsoft
                 public int RequiredUniqueChars { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.PasswordValidator<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class PasswordValidator<TUser> : Microsoft.AspNetCore.Identity.IPasswordValidator<TUser> where TUser : class
             {
                 public Microsoft.AspNetCore.Identity.IdentityErrorDescriber Describer { get => throw null; }
@@ -425,7 +381,6 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ValidateAsync(Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user, string password) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.PasswordVerificationResult` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public enum PasswordVerificationResult : int
             {
                 Failed = 0,
@@ -433,13 +388,11 @@ namespace Microsoft
                 SuccessRehashNeeded = 2,
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.PersonalDataAttribute` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class PersonalDataAttribute : System.Attribute
             {
                 public PersonalDataAttribute() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.PhoneNumberTokenProvider<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class PhoneNumberTokenProvider<TUser> : Microsoft.AspNetCore.Identity.TotpSecurityStampBasedTokenProvider<TUser> where TUser : class
             {
                 public override System.Threading.Tasks.Task<bool> CanGenerateTwoFactorTokenAsync(Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user) => throw null;
@@ -447,13 +400,11 @@ namespace Microsoft
                 public PhoneNumberTokenProvider() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.ProtectedPersonalDataAttribute` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ProtectedPersonalDataAttribute : Microsoft.AspNetCore.Identity.PersonalDataAttribute
             {
                 public ProtectedPersonalDataAttribute() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.RoleManager<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RoleManager<TRole> : System.IDisposable where TRole : class
             {
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> AddClaimAsync(TRole role, System.Security.Claims.Claim claim) => throw null;
@@ -487,14 +438,12 @@ namespace Microsoft
                 protected virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ValidateRoleAsync(TRole role) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.RoleValidator<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RoleValidator<TRole> : Microsoft.AspNetCore.Identity.IRoleValidator<TRole> where TRole : class
             {
                 public RoleValidator(Microsoft.AspNetCore.Identity.IdentityErrorDescriber errors = default(Microsoft.AspNetCore.Identity.IdentityErrorDescriber)) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ValidateAsync(Microsoft.AspNetCore.Identity.RoleManager<TRole> manager, TRole role) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.SignInOptions` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SignInOptions
             {
                 public bool RequireConfirmedAccount { get => throw null; set => throw null; }
@@ -503,7 +452,6 @@ namespace Microsoft
                 public SignInOptions() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.SignInResult` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SignInResult
             {
                 public static Microsoft.AspNetCore.Identity.SignInResult Failed { get => throw null; }
@@ -519,7 +467,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Identity.SignInResult TwoFactorRequired { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.StoreOptions` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class StoreOptions
             {
                 public int MaxLengthForKeys { get => throw null; set => throw null; }
@@ -527,7 +474,6 @@ namespace Microsoft
                 public StoreOptions() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.TokenOptions` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class TokenOptions
             {
                 public string AuthenticatorIssuer { get => throw null; set => throw null; }
@@ -544,7 +490,6 @@ namespace Microsoft
                 public TokenOptions() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.TokenProviderDescriptor` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class TokenProviderDescriptor
             {
                 public object ProviderInstance { get => throw null; set => throw null; }
@@ -552,7 +497,6 @@ namespace Microsoft
                 public TokenProviderDescriptor(System.Type type) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.TotpSecurityStampBasedTokenProvider<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class TotpSecurityStampBasedTokenProvider<TUser> : Microsoft.AspNetCore.Identity.IUserTwoFactorTokenProvider<TUser> where TUser : class
             {
                 public abstract System.Threading.Tasks.Task<bool> CanGenerateTwoFactorTokenAsync(Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user);
@@ -562,7 +506,6 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<bool> ValidateAsync(string purpose, string token, Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.UpperInvariantLookupNormalizer` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class UpperInvariantLookupNormalizer : Microsoft.AspNetCore.Identity.ILookupNormalizer
             {
                 public string NormalizeEmail(string email) => throw null;
@@ -570,7 +513,6 @@ namespace Microsoft
                 public UpperInvariantLookupNormalizer() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.UserClaimsPrincipalFactory<,>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class UserClaimsPrincipalFactory<TUser, TRole> : Microsoft.AspNetCore.Identity.UserClaimsPrincipalFactory<TUser> where TRole : class where TUser : class
             {
                 protected override System.Threading.Tasks.Task<System.Security.Claims.ClaimsIdentity> GenerateClaimsAsync(TUser user) => throw null;
@@ -578,7 +520,6 @@ namespace Microsoft
                 public UserClaimsPrincipalFactory(Microsoft.AspNetCore.Identity.UserManager<TUser> userManager, Microsoft.AspNetCore.Identity.RoleManager<TRole> roleManager, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Identity.IdentityOptions> options) : base(default(Microsoft.AspNetCore.Identity.UserManager<TUser>), default(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Identity.IdentityOptions>)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.UserClaimsPrincipalFactory<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class UserClaimsPrincipalFactory<TUser> : Microsoft.AspNetCore.Identity.IUserClaimsPrincipalFactory<TUser> where TUser : class
             {
                 public virtual System.Threading.Tasks.Task<System.Security.Claims.ClaimsPrincipal> CreateAsync(TUser user) => throw null;
@@ -588,7 +529,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Identity.UserManager<TUser> UserManager { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.UserLoginInfo` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class UserLoginInfo
             {
                 public string LoginProvider { get => throw null; set => throw null; }
@@ -597,7 +537,6 @@ namespace Microsoft
                 public UserLoginInfo(string loginProvider, string providerKey, string displayName) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.UserManager<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class UserManager<TUser> : System.IDisposable where TUser : class
             {
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> AccessFailedAsync(TUser user) => throw null;
@@ -723,7 +662,6 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<bool> VerifyUserTokenAsync(TUser user, string tokenProvider, string purpose, string token) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.UserOptions` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class UserOptions
             {
                 public string AllowedUserNameCharacters { get => throw null; set => throw null; }
@@ -731,7 +669,6 @@ namespace Microsoft
                 public UserOptions() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Identity.UserValidator<>` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class UserValidator<TUser> : Microsoft.AspNetCore.Identity.IUserValidator<TUser> where TUser : class
             {
                 public Microsoft.AspNetCore.Identity.IdentityErrorDescriber Describer { get => throw null; }
@@ -745,7 +682,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.IdentityServiceCollectionExtensions` in `Microsoft.AspNetCore.Identity, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static partial class IdentityServiceCollectionExtensions
             {
                 public static Microsoft.AspNetCore.Identity.IdentityBuilder AddIdentityCore<TUser>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) where TUser : class => throw null;
@@ -761,7 +697,6 @@ namespace System
     {
         namespace Claims
         {
-            // Generated from `System.Security.Claims.PrincipalExtensions` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class PrincipalExtensions
             {
                 public static string FindFirstValue(this System.Security.Claims.ClaimsPrincipal principal, string claimType) => throw null;

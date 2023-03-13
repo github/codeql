@@ -219,7 +219,8 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
  * A node that may evaluate to one or more `ActiveRecordModelClass` instances.
  */
 abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range,
-  DataFlow::LocalSourceNode {
+  DataFlow::LocalSourceNode
+{
   /**
    * Gets the `ActiveRecordModelClass` that this instance belongs to.
    */
@@ -272,7 +273,8 @@ private Expr getUltimateReceiver(MethodCall call) {
 }
 
 // A call to `find`, `where`, etc. that may return active record model object(s)
-private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation, DataFlow::CallNode {
+private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation, DataFlow::CallNode
+{
   private ActiveRecordModelClass cls;
 
   ActiveRecordModelFinderCall() {
@@ -305,7 +307,8 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
 
 // A `self` reference that may resolve to an active record model object
 private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInstantiation,
-  SsaSelfDefinitionNode {
+  SsaSelfDefinitionNode
+{
   private ActiveRecordModelClass cls;
 
   ActiveRecordModelClassSelfReference() {
@@ -465,7 +468,8 @@ private module Persistence {
 
   /** A call to e.g. `user.update(name: "foo")` */
   private class UpdateLikeInstanceMethodCall extends PersistentWriteAccess::Range,
-    ActiveRecordInstanceMethodCall {
+    ActiveRecordInstanceMethodCall
+  {
     UpdateLikeInstanceMethodCall() {
       this.getMethodName() = ["update", "update!", "update_attributes", "update_attributes!"]
     }
@@ -485,7 +489,8 @@ private module Persistence {
 
   /** A call to e.g. `user.update_attribute(name, "foo")` */
   private class UpdateAttributeCall extends PersistentWriteAccess::Range,
-    ActiveRecordInstanceMethodCall {
+    ActiveRecordInstanceMethodCall
+  {
     UpdateAttributeCall() { this.getMethodName() = "update_attribute" }
 
     override DataFlow::Node getValue() {
@@ -688,7 +693,8 @@ private class ActiveRecordCollectionProxyMethodCall extends DataFlow::CallNode {
 /**
  * A call to an association method which yields ActiveRecord instances.
  */
-private class ActiveRecordAssociationModelInstantiation extends ActiveRecordModelInstantiation instanceof ActiveRecordAssociationMethodCall {
+private class ActiveRecordAssociationModelInstantiation extends ActiveRecordModelInstantiation instanceof ActiveRecordAssociationMethodCall
+{
   override ActiveRecordModelClass getClass() {
     result = this.(ActiveRecordAssociationMethodCall).getAssociation().getTargetClass()
   }
@@ -697,7 +703,8 @@ private class ActiveRecordAssociationModelInstantiation extends ActiveRecordMode
 /**
  * A call to a method on a collection proxy which yields ActiveRecord instances.
  */
-private class ActiveRecordCollectionProxyModelInstantiation extends ActiveRecordModelInstantiation instanceof ActiveRecordCollectionProxyMethodCall {
+private class ActiveRecordCollectionProxyModelInstantiation extends ActiveRecordModelInstantiation instanceof ActiveRecordCollectionProxyMethodCall
+{
   override ActiveRecordModelClass getClass() {
     result = this.(ActiveRecordCollectionProxyMethodCall).getAssociation().getTargetClass()
   }
