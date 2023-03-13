@@ -190,7 +190,8 @@ abstract class Indirection extends Type {
   predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) { none() }
 }
 
-private class PointerOrArrayOrReferenceTypeIndirection extends Indirection instanceof PointerOrArrayOrReferenceType {
+private class PointerOrArrayOrReferenceTypeIndirection extends Indirection instanceof PointerOrArrayOrReferenceType
+{
   PointerOrArrayOrReferenceTypeIndirection() {
     baseType = PointerOrArrayOrReferenceType.super.getBaseType()
   }
@@ -473,11 +474,13 @@ abstract class BaseSourceVariableInstruction extends Instruction {
 }
 
 private class BaseIRVariableInstruction extends BaseSourceVariableInstruction,
-  VariableAddressInstruction {
+  VariableAddressInstruction
+{
   override BaseIRVariable getBaseSourceVariable() { result.getIRVariable() = this.getIRVariable() }
 }
 
-private class BaseAllocationInstruction extends BaseSourceVariableInstruction, AllocationInstruction {
+private class BaseAllocationInstruction extends BaseSourceVariableInstruction, AllocationInstruction
+{
   override BaseCallVariable getBaseSourceVariable() { result.getCallInstruction() = this }
 }
 

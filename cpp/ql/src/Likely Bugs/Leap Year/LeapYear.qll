@@ -289,7 +289,8 @@ module FiletimeYearArithmeticOperationCheckFlow =
 /**
  * Taint configuration for finding an operation with hardcoded 365 that will flow into any known date/time field.
  */
-deprecated class PossibleYearArithmeticOperationCheckConfiguration extends TaintTracking::Configuration {
+deprecated class PossibleYearArithmeticOperationCheckConfiguration extends TaintTracking::Configuration
+{
   PossibleYearArithmeticOperationCheckConfiguration() {
     this = "PossibleYearArithmeticOperationCheckConfiguration"
   }
