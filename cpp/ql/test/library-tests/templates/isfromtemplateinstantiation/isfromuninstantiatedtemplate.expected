@@ -95,9 +95,6 @@ isFromUninstantiatedTemplate
 | isfromtemplateinstantiation.cpp:94:7:94:15 | declaration of myMethod2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
 | isfromtemplateinstantiation.cpp:94:7:94:15 | declaration of myMethod2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
 | isfromtemplateinstantiation.cpp:94:7:94:15 | declaration of myMethod2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
-| isfromtemplateinstantiation.cpp:94:29:94:32 | declaration of mce2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
-| isfromtemplateinstantiation.cpp:94:29:94:32 | declaration of mce2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
-| isfromtemplateinstantiation.cpp:94:29:94:32 | declaration of mce2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
 | isfromtemplateinstantiation.cpp:97:25:97:60 | definition of myMethod2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
 | isfromtemplateinstantiation.cpp:97:25:97:60 | definition of myMethod2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
 | isfromtemplateinstantiation.cpp:97:25:97:60 | definition of myMethod2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
@@ -110,6 +107,9 @@ isFromUninstantiatedTemplate
 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | declaration of mce2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | declaration of mce2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | declaration of mce2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
 | isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
 | isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
 | isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
@@ -433,6 +433,7 @@ isFromUninstantiatedTemplate
 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 | I |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 |  | T | Definition |  |
 | isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 |  | T | Definition |  |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 | I |  | Definition |  |
 | isfromtemplateinstantiation.cpp:97:74:97:77 | mce2 |  | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:97:74:97:77 | mce2 | I |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:98:1:99:1 | { ... } |  | T | Stmt |  |
