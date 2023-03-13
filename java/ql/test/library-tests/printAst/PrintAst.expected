@@ -1,127 +1,448 @@
 A.java:
+#    8| [Class] A
+#-----| -4 -> (Javadoc)
+#-----| 3 -> [Interface] Ann1
+#-----| 4 -> [Interface] Ann2
+#-----| 5 -> [Method] doSomething
+#-----| 6 -> [FieldDeclaration] int counter;
+#-----| 7 -> [BlockStmt] { ... }
+#-----| 8 -> [Method] doSomethingElse
+#-----| 9 -> [Method] varDecls
+#-----| 10 -> [Class] E
+#-----| 11 -> [FieldDeclaration] int i, ...;
+
+#   44| [Method] varDecls
+#-----| 3 -> [TypeAccess] void
+#-----| 4 -> (Parameters)
+#-----| 5 -> [BlockStmt] { ... }
+
+#   44| [Parameter] things
+#-----| 0 -> [ArrayTypeAccess] ...[]
+
+#   42| [Method] doSomethingElse
+#-----| 1 -> (Annotations)
+#-----| 3 -> [TypeAccess] String
+#-----| 5 -> [BlockStmt] { ... }
+
+#    9| [Interface] Ann1
+#-----| 1 -> [Method] value
+#-----| 2 -> [Method] nest
+
+#   36| [Annotation] Ann1
+#-----| 1 -> [StringLiteral] "a"
+#-----| 2 -> [ArrayInit] {...}
+
+#   10| [Method] value
+#-----| 3 -> [TypeAccess] String
+
+#   14| [Interface] Ann2
+#-----| 1 -> [Method] value
+
+#   11| [Method] nest
+#-----| 3 -> [ArrayTypeAccess] ...[]
+
+#   38| [ArrayInit] {...}
+#-----| 1 -> [Annotation] Ann2
+#-----| 2 -> [Annotation] Ann2
+
+#   39| [Annotation] Ann2
+
+#   15| [Method] value
+#-----| 3 -> [TypeAccess] int
+
+#   40| [Annotation] Ann2
+#-----| 1 -> [IntegerLiteral] 7
+
+#   20| [Method] doSomething
+#-----| 0 -> (Javadoc)
+#-----| 1 -> (Annotations)
+#-----| 3 -> [TypeAccess] int
+#-----| 4 -> (Parameters)
+#-----| 5 -> [BlockStmt] { ... }
+
+#   20| [Parameter] text
+#-----| -1 -> (Annotations)
+#-----| 0 -> [TypeAccess] String
+
+#   19| [Annotation] Deprecated
+
+#   20| [Annotation] SuppressWarnings
+#-----| 1 -> [StringLiteral] "all"
+
+#   30| [IntegerLiteral] 1
+
+#   32| [BlockStmt] { ... }
+#-----| 0 -> [ExprStmt] <Expr>;
+
+#   33| [ExprStmt] <Expr>;
+#-----| 0 -> [AssignExpr] ...=...
+
+#   33| [AssignExpr] ...=...
+#-----| 0 -> [VarAccess] counter
+#-----| 1 -> [MethodAccess] doSomething(...)
+
+#   33| [VarAccess] counter
+
+#   33| [MethodAccess] doSomething(...)
+#-----| 0 -> [StringLiteral] "hi"
+
+#   33| [StringLiteral] "hi"
+
+#   10| [TypeAccess] String
+
+#   11| [ArrayTypeAccess] ...[]
+#-----| 0 -> [TypeAccess] Ann2
+
+#   11| [TypeAccess] Ann2
+
+#   15| [TypeAccess] int
+
+#   20| [BlockStmt] { ... }
+#-----| 0 -> [LocalVariableDeclStmt] var ...;
+#-----| 1 -> [ForStmt] for (...;...;...)
+#-----| 2 -> [ForStmt] for (...;...;...)
+#-----| 3 -> [ReturnStmt] return ...
+
+#   20| [TypeAccess] int
+
+#   20| [StringLiteral] "all"
+
+#   20| [TypeAccess] String
+
+#   21| [LocalVariableDeclStmt] var ...;
+#-----| 0 -> [TypeAccess] int
+#-----| 1 -> [LocalVariableDeclExpr] i
+#-----| 2 -> [LocalVariableDeclExpr] j
+
+#   21| [TypeAccess] int
+
+#   21| [LocalVariableDeclExpr] i
+#-----| 0 -> [IntegerLiteral] 0
+
+#   21| [IntegerLiteral] 0
+
+#   21| [LocalVariableDeclExpr] j
+#-----| 0 -> [IntegerLiteral] 1
+
+#   21| [IntegerLiteral] 1
+
+#   23| [ForStmt] for (...;...;...)
+#-----| 0 -> (For Initializers) 
+#-----| 1 -> [LTExpr] ... < ...
+#-----| 2 -> [BlockStmt] { ... }
+#-----| 3 -> [PostIncExpr] ...++
+
+#   25| [ForStmt] for (...;...;...)
+#-----| 0 -> (For Initializers) 
+#-----| 1 -> [LTExpr] ... < ...
+#-----| 2 -> [BlockStmt] { ... }
+#-----| 3 -> [PostIncExpr] ...++
+
+#   27| [ReturnStmt] return ...
+#-----| 0 -> [IntegerLiteral] 0
+
+#   23| [AssignExpr] ...=...
+#-----| 0 -> [VarAccess] i
+#-----| 1 -> [IntegerLiteral] 0
+
+#   23| [AssignExpr] ...=...
+#-----| 0 -> [VarAccess] j
+#-----| 1 -> [IntegerLiteral] 1
+
+#   23| [LTExpr] ... < ...
+#-----| 0 -> [VarAccess] i
+#-----| 1 -> [IntegerLiteral] 3
+
+#   23| [PostIncExpr] ...++
+#-----| 0 -> [VarAccess] i
+
+#   23| [BlockStmt] { ... }
+
+#   23| [VarAccess] i
+
+#   23| [IntegerLiteral] 0
+
+#   23| [VarAccess] j
+
+#   23| [IntegerLiteral] 1
+
+#   23| [VarAccess] i
+
+#   23| [IntegerLiteral] 3
+
+#   23| [VarAccess] i
+
+#   25| [TypeAccess] int
+
+#   25| [LocalVariableDeclExpr] m
+#-----| 0 -> [IntegerLiteral] 0
+
+#   25| [IntegerLiteral] 0
+
+#   25| [LocalVariableDeclExpr] n
+#-----| 0 -> [IntegerLiteral] 1
+
+#   25| [IntegerLiteral] 1
+
+#   25| [LTExpr] ... < ...
+#-----| 0 -> [VarAccess] m
+#-----| 1 -> [IntegerLiteral] 3
+
+#   25| [PostIncExpr] ...++
+#-----| 0 -> [VarAccess] m
+
+#   25| [BlockStmt] { ... }
+
+#   25| [VarAccess] m
+
+#   25| [IntegerLiteral] 3
+
+#   25| [VarAccess] m
+
+#   27| [IntegerLiteral] 0
+
+#   30| [FieldDeclaration] int counter;
+#-----| -1 -> [TypeAccess] int
+#-----| 0 -> [IntegerLiteral] 1
+
+#   30| [TypeAccess] int
+
+#   37| [StringLiteral] "a"
+
+#   40| [IntegerLiteral] 7
+
+#   42| [BlockStmt] { ... }
+#-----| 0 -> [ReturnStmt] return ...
+
+#   42| [TypeAccess] String
+
+#   42| [ReturnStmt] return ...
+#-----| 0 -> [StringLiteral] "c"
+
+#   42| [StringLiteral] "c"
+
+#   44| [BlockStmt] { ... }
+#-----| 0 -> [TryStmt] try ...
+
+#   44| [TypeAccess] void
+
+#   44| [ArrayTypeAccess] ...[]
+#-----| 0 -> [TypeAccess] Object
+
+#   44| [TypeAccess] Object
+
+#   45| [TryStmt] try ...
+#-----| -1 -> [BlockStmt] { ... }
+#-----| 0 -> [CatchClause] catch (...)
+
+#   45| [BlockStmt] { ... }
+#-----| 0 -> [EnhancedForStmt] for (... : ...)
+
+#   55| [CatchClause] catch (...)
+#-----| 0 -> (Single Local Variable Declaration)
+#-----| 1 -> [BlockStmt] { ... }
+
+#   46| [EnhancedForStmt] for (... : ...)
+#-----| 0 -> (Single Local Variable Declaration)
+#-----| 1 -> [VarAccess] things
+#-----| 2 -> [BlockStmt] { ... }
+
+#   46| [LocalVariableDeclExpr] thing
+
+#   46| [TypeAccess] Object
+
+#   46| [VarAccess] things
+
+#   46| [BlockStmt] { ... }
+#-----| 0 -> [IfStmt] if (...)
+#-----| 1 -> [IfStmt] if (...)
+
+#   47| [IfStmt] if (...)
+#-----| 0 -> [InstanceOfExpr] ...instanceof...
+#-----| 1 -> [BlockStmt] { ... }
+
+#   50| [IfStmt] if (...)
+#-----| 0 -> [InstanceOfExpr] ...instanceof...
+#-----| 1 -> [BlockStmt] { ... }
+
+#   47| [InstanceOfExpr] ...instanceof...
+#-----| 0 -> [VarAccess] thing
+#-----| 1 -> [TypeAccess] Integer
+
+#   47| [BlockStmt] { ... }
+#-----| 0 -> [ReturnStmt] return ...
+
+#   47| [VarAccess] thing
+
+#   47| [TypeAccess] Integer
+
+#   48| [ReturnStmt] return ...
+
+#   50| [InstanceOfExpr] ...instanceof...
+#-----| 0 -> (Single Local Variable Declaration)
+
+#   50| [BlockStmt] { ... }
+#-----| 0 -> [ThrowStmt] throw ...
+
+#   50| [LocalVariableDeclExpr] s
+#-----| 0 -> [VarAccess] thing
+
+#   50| [VarAccess] thing
+
+#   50| [TypeAccess] String
+
+#   51| [ThrowStmt] throw ...
+#-----| 0 -> [ClassInstanceExpr] new RuntimeException(...)
+
+#   51| [ClassInstanceExpr] new RuntimeException(...)
+#-----| -3 -> [TypeAccess] RuntimeException
+#-----| 0 -> [VarAccess] s
+
+#   51| [TypeAccess] RuntimeException
+
+#   51| [VarAccess] s
+
+#   55| [LocalVariableDeclExpr] rte
+
+#   55| [TypeAccess] RuntimeException
+
+#   55| [BlockStmt] { ... }
+#-----| 0 -> [ReturnStmt] return ...
+
+#   56| [ReturnStmt] return ...
+
+#   60| [Class] E
+#-----| 3 -> [FieldDeclaration] E A;
+#-----| 4 -> [FieldDeclaration] E B;
+#-----| 5 -> [FieldDeclaration] E C;
+
+#   64| [ClassInstanceExpr] new E(...)
+#-----| -3 -> [TypeAccess] E
+
+#   64| [TypeAccess] E
+
+#   65| [ClassInstanceExpr] new E(...)
+#-----| -3 -> [TypeAccess] E
+
+#   65| [TypeAccess] E
+
+#   66| [ClassInstanceExpr] new E(...)
+#-----| -3 -> [TypeAccess] E
+
+#   66| [TypeAccess] E
+
+#   64| [FieldDeclaration] E A;
+#-----| -3 -> (Javadoc)
+#-----| -1 -> [TypeAccess] E
+#-----| 0 -> [ClassInstanceExpr] new E(...)
+
+#   64| [TypeAccess] E
+
+#   65| [FieldDeclaration] E B;
+#-----| -3 -> (Javadoc)
+#-----| -1 -> [TypeAccess] E
+#-----| 0 -> [ClassInstanceExpr] new E(...)
+
+#   65| [TypeAccess] E
+
+#   66| [FieldDeclaration] E C;
+#-----| -3 -> (Javadoc)
+#-----| -1 -> [TypeAccess] E
+#-----| 0 -> [ClassInstanceExpr] new E(...)
+
+#   66| [TypeAccess] E
+
+#   72| [FieldDeclaration] int i, ...;
+#-----| -3 -> (Javadoc)
+#-----| -1 -> [TypeAccess] int
+
+#   72| [TypeAccess] int
+
+#-----| (Annotations)
+#-----| 1 -> [Annotation] Ann1
+
+#-----| (Annotations)
+#-----| 1 -> [Annotation] Deprecated
+
+#-----| (Annotations)
+#-----| 1 -> [Annotation] SuppressWarnings
+
+#    3| [Javadoc] /** A class ... */
+#-----| 0 -> [JavadocText] A class
+#-----| 1 -> [JavadocTag] @author
+
+#    1| [Javadoc] /** Another javadoc */
+#-----| 0 -> [JavadocText] Another javadoc
+
+#   18| [Javadoc] /** Does something */
+#-----| 0 -> [JavadocText] Does something
+
+#   61| [Javadoc] /** Javadoc for enum constant */
+#-----| 0 -> [JavadocText] Javadoc for enum constant
+
+#   69| [Javadoc] /** Javadoc for fields */
+#-----| 0 -> [JavadocText] Javadoc for fields
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] things
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] text
+
+#-----| (Javadoc)
+#-----| 1 -> [Javadoc] /** Another javadoc */
+#-----| 2 -> [Javadoc] /** A class ... */
+
+#-----| (Javadoc)
+#-----| 1 -> [Javadoc] /** Javadoc for fields */
+
+#-----| (Javadoc)
+#-----| 1 -> [Javadoc] /** Does something */
+
+#-----| (Javadoc)
+#-----| 1 -> [Javadoc] /** Javadoc for enum constant */
+
+#-----| (Javadoc)
+#-----| 1 -> [Javadoc] /** Javadoc for enum constant */
+
+#-----| (Javadoc)
+#-----| 1 -> [Javadoc] /** Javadoc for enum constant */
+
+#    1| [JavadocText] Another javadoc
+
+#    4| [JavadocText] A class
+
+#    6| [JavadocTag] @author
+#-----| 0 -> [JavadocText] someone
+
+#    6| [JavadocText] someone
+
+#   18| [JavadocText] Does something
+
+#   62| [JavadocText] Javadoc for enum constant
+
+#   70| [JavadocText] Javadoc for fields
+
+#-----| (For Initializers) 
+#-----| 1 -> [AssignExpr] ...=...
+#-----| 2 -> [AssignExpr] ...=...
+
+#-----| (For Initializers) 
+#-----| 0 -> [TypeAccess] int
+#-----| 1 -> [LocalVariableDeclExpr] m
+#-----| 2 -> [LocalVariableDeclExpr] n
+
+#-----| (Single Local Variable Declaration)
+#-----| 0 -> [TypeAccess] Object
+#-----| 1 -> [LocalVariableDeclExpr] thing
+
+#-----| (Single Local Variable Declaration)
+#-----| 0 -> [TypeAccess] String
+#-----| 1 -> [LocalVariableDeclExpr] s
+
+#-----| (Single Local Variable Declaration)
+#-----| 0 -> [TypeAccess] RuntimeException
+#-----| 1 -> [LocalVariableDeclExpr] rte
+
 #    0| [CompilationUnit] A
-#    8|   1: [Class] A
-#-----|     -4: (Javadoc)
-#    1|       1: [Javadoc] /** Another javadoc */
-#    1|         0: [JavadocText] Another javadoc
-#    3|       2: [Javadoc] /** A class ... */
-#    4|         0: [JavadocText] A class
-#    6|         1: [JavadocTag] @author
-#    6|           0: [JavadocText] someone
-#    9|     3: [Interface] Ann1
-#   10|       1: [Method] value
-#   10|         3: [TypeAccess] String
-#   11|       2: [Method] nest
-#   11|         3: [ArrayTypeAccess] ...[]
-#   11|           0: [TypeAccess] Ann2
-#   14|     4: [Interface] Ann2
-#   15|       1: [Method] value
-#   15|         3: [TypeAccess] int
-#   20|     5: [Method] doSomething
-#-----|       0: (Javadoc)
-#   18|         1: [Javadoc] /** Does something */
-#   18|           0: [JavadocText] Does something
-#-----|       1: (Annotations)
-#   19|         1: [Annotation] Deprecated
-#   20|       3: [TypeAccess] int
-#-----|       4: (Parameters)
-#   20|         0: [Parameter] text
-#-----|           -1: (Annotations)
-#   20|             1: [Annotation] SuppressWarnings
-#   20|               1: [StringLiteral] "all"
-#   20|           0: [TypeAccess] String
-#   20|       5: [BlockStmt] { ... }
-#   21|         0: [LocalVariableDeclStmt] var ...;
-#   21|           0: [TypeAccess] int
-#   21|           1: [LocalVariableDeclExpr] i
-#   21|             0: [IntegerLiteral] 0
-#   21|           2: [LocalVariableDeclExpr] j
-#   21|             0: [IntegerLiteral] 1
-#   23|         1: [ForStmt] for (...;...;...)
-#-----|           0: (For Initializers) 
-#   23|             1: [AssignExpr] ...=...
-#   23|               0: [VarAccess] i
-#   23|               1: [IntegerLiteral] 0
-#   23|             2: [AssignExpr] ...=...
-#   23|               0: [VarAccess] j
-#   23|               1: [IntegerLiteral] 1
-#   23|           1: [LTExpr] ... < ...
-#   23|             0: [VarAccess] i
-#   23|             1: [IntegerLiteral] 3
-#   23|           2: [BlockStmt] { ... }
-#   23|           3: [PostIncExpr] ...++
-#   23|             0: [VarAccess] i
-#   25|         2: [ForStmt] for (...;...;...)
-#-----|           0: (For Initializers) 
-#   25|             0: [TypeAccess] int
-#   25|             1: [LocalVariableDeclExpr] m
-#   25|               0: [IntegerLiteral] 0
-#   25|             2: [LocalVariableDeclExpr] n
-#   25|               0: [IntegerLiteral] 1
-#   25|           1: [LTExpr] ... < ...
-#   25|             0: [VarAccess] m
-#   25|             1: [IntegerLiteral] 3
-#   25|           2: [BlockStmt] { ... }
-#   25|           3: [PostIncExpr] ...++
-#   25|             0: [VarAccess] m
-#   27|         3: [ReturnStmt] return ...
-#   27|           0: [IntegerLiteral] 0
-#   30|     6: [FieldDeclaration] int counter;
-#   30|       -1: [TypeAccess] int
-#   30|       0: [IntegerLiteral] 1
-#   32|     7: [BlockStmt] { ... }
-#   33|       0: [ExprStmt] <Expr>;
-#   33|         0: [AssignExpr] ...=...
-#   33|           0: [VarAccess] counter
-#   33|           1: [MethodAccess] doSomething(...)
-#   33|             0: [StringLiteral] "hi"
-#   42|     8: [Method] doSomethingElse
-#-----|       1: (Annotations)
-#   36|         1: [Annotation] Ann1
-#   37|           1: [StringLiteral] "a"
-#   38|           2: [ArrayInit] {...}
-#   39|             1: [Annotation] Ann2
-#   40|             2: [Annotation] Ann2
-#   40|               1: [IntegerLiteral] 7
-#   42|       3: [TypeAccess] String
-#   42|       5: [BlockStmt] { ... }
-#   42|         0: [ReturnStmt] return ...
-#   42|           0: [StringLiteral] "c"
-#   44|     9: [Method] varDecls
-#   44|       3: [TypeAccess] void
-#-----|       4: (Parameters)
-#   44|         0: [Parameter] things
-#   44|           0: [ArrayTypeAccess] ...[]
-#   44|             0: [TypeAccess] Object
-#   44|       5: [BlockStmt] { ... }
-#   45|         0: [TryStmt] try ...
-#   45|           -1: [BlockStmt] { ... }
-#   46|             0: [EnhancedForStmt] for (... : ...)
-#-----|               0: (Single Local Variable Declaration)
-#   46|                 0: [TypeAccess] Object
-#   46|                 1: [LocalVariableDeclExpr] thing
-#   46|               1: [VarAccess] things
-#   46|               2: [BlockStmt] { ... }
-#   47|                 0: [IfStmt] if (...)
-#   47|                   0: [InstanceOfExpr] ...instanceof...
-#   47|                     0: [VarAccess] thing
-#   47|                     1: [TypeAccess] Integer
-#   47|                   1: [BlockStmt] { ... }
-#   48|                     0: [ReturnStmt] return ...
-#   50|                 1: [IfStmt] if (...)
-#   50|                   0: [InstanceOfExpr] ...instanceof...
-#-----|                     0: (Single Local Variable Declaration)
-#   50|                       0: [TypeAccess] String
-#   50|                       1: [LocalVariableDeclExpr] s
-#   50|                         0: [VarAccess] thing
-#   50|                   1: [BlockStmt] { ... }
-#   51|                     0: [ThrowStmt] throw ...
-#   51|                       0: [ClassInstanceExpr] new RuntimeException(...)
-#   51|                         -3: [TypeAccess] RuntimeException
-#   51|                         0: [VarAccess] s
-#   55|           0: [CatchClause] catch (...)
-#-----|             0: (Single Local Variable Declaration)
-#   55|               0: [TypeAccess] RuntimeException
-#   55|               1: [LocalVariableDeclExpr] rte
-#   55|             1: [BlockStmt] { ... }
-#   56|               0: [ReturnStmt] return ...
+#-----| 1 -> [Class] A
