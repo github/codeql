@@ -132,9 +132,9 @@ private newtype TPrintAstNode =
   TGenericTypeNode(GenericType ty) { shouldPrint(ty, _) } or
   TGenericCallableNode(GenericCallable c) { shouldPrint(c, _) } or
   TDocumentableNode(Documentable d) { shouldPrint(d, _) and exists(d.getJavadoc()) } or
-  TJavadocNode(Javadoc jd) { exists(Documentable d | d.getJavadoc() = jd | shouldPrint(d, _)) } or
-  TJavadocElementNode(JavadocElement jd) {
-    exists(Documentable d | d.getJavadoc() = jd.getParent*() | shouldPrint(d, _))
+  TJavadocNode(Javadoc jd, Documentable d) { d.getJavadoc() = jd and shouldPrint(d, _) } or
+  TJavadocElementNode(JavadocElement jd, Documentable d) {
+    d.getJavadoc() = jd.getParent*() and shouldPrint(d, _)
   } or
   TImportsNode(CompilationUnit cu) {
     shouldPrint(cu, _) and exists(Import i | i.getCompilationUnit() = cu)
@@ -794,6 +794,7 @@ final class DocumentableNode extends PrintAstNode, TDocumentableNode {
   override Location getLocation() { none() }
 
   override JavadocNode getChild(int childIndex) {
+    result.getDocumentable() = d and
     result.getJavadoc() =
       rank[childIndex](Javadoc jd, string file, int line, int column |
         jd.getCommentedElement() = d and jd.getLocation().hasLocationInfo(file, line, column, _, _)
@@ -814,14 +815,16 @@ final class DocumentableNode extends PrintAstNode, TDocumentableNode {
  */
 final class JavadocNode extends PrintAstNode, TJavadocNode {
   Javadoc jd;
+  Documentable d;
 
-  JavadocNode() { this = TJavadocNode(jd) }
+  JavadocNode() { this = TJavadocNode(jd, d) and not duplicateMetadata(d) }
 
   override string toString() { result = getQlClass(jd) + jd.toString() }
 
   override Location getLocation() { result = jd.getLocation() }
 
   override JavadocElementNode getChild(int childIndex) {
+    result.getDocumentable() = d and
     result.getJavadocElement() = jd.getChild(childIndex)
   }
 
@@ -829,6 +832,11 @@ final class JavadocNode extends PrintAstNode, TJavadocNode {
    * Gets the `Javadoc` represented by this node.
    */
   Javadoc getJavadoc() { result = jd }
+
+  /**
+   * Gets the `Documentable` whose `Javadoc` is represented by this node.
+   */
+  Documentable getDocumentable() { result = d }
 }
 
 /**
@@ -837,14 +845,16 @@ final class JavadocNode extends PrintAstNode, TJavadocNode {
  */
 final class JavadocElementNode extends PrintAstNode, TJavadocElementNode {
   JavadocElement jd;
+  Documentable d;
 
-  JavadocElementNode() { this = TJavadocElementNode(jd) }
+  JavadocElementNode() { this = TJavadocElementNode(jd, d) and not duplicateMetadata(d) }
 
   override string toString() { result = getQlClass(jd) + jd.toString() }
 
   override Location getLocation() { result = jd.getLocation() }
 
   override JavadocElementNode getChild(int childIndex) {
+    result.getDocumentable() = d and
     result.getJavadocElement() = jd.(JavadocParent).getChild(childIndex)
   }
 
@@ -852,6 +862,11 @@ final class JavadocElementNode extends PrintAstNode, TJavadocElementNode {
    * Gets the `JavadocElement` represented by this node.
    */
   JavadocElement getJavadocElement() { result = jd }
+
+  /**
+   * Gets the `Documentable` whose `JavadocElement` is represented by this node.
+   */
+  Documentable getDocumentable() { result = d }
 }
 
 /**
