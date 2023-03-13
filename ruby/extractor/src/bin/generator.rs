@@ -1,16 +1,13 @@
-mod dbscheme;
-mod language;
-mod ql;
-mod ql_gen;
-
 use clap::arg;
-use language::Language;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fs::File;
 use std::io::LineWriter;
 use std::io::Write;
 use std::path::PathBuf;
+
+use ruby_extractor::generator::{dbscheme, language::Language, ql, ql_gen};
+use ruby_extractor::node_types;
 
 /// Given the name of the parent node, and its field information, returns a pair,
 /// the first of which is the field's type. The second is an optional dbscheme

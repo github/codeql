@@ -1,5 +1,6 @@
-use crate::ql;
 use std::collections::BTreeSet;
+
+use crate::{node_types, generator::ql};
 
 /// Creates the hard-coded `AstNode` class that acts as a supertype of all
 /// classes we generate.

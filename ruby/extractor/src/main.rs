@@ -1,8 +1,3 @@
-mod diagnostics;
-mod extractor;
-mod file_paths;
-mod trap;
-
 #[macro_use]
 extern crate lazy_static;
 extern crate num_cpus;
@@ -15,6 +10,8 @@ use std::fs;
 use std::io::BufRead;
 use std::path::{Path, PathBuf};
 use tree_sitter::{Language, Parser, Range};
+
+use ruby_extractor::{diagnostics, extractor, file_paths, trap, node_types};
 
 /**
  * Gets the number of threads the extractor should use, by reading the

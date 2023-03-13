@@ -309,14 +309,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "node-types"
-version = "0.1.0"
-dependencies = [
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "num-integer"
 version = "0.1.45"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -436,10 +428,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "456c603be3e8d448b072f410900c09faf164fbce2d480456f50eea6e25f9c848"
 
 [[package]]
-name = "ruby-autobuilder"
-version = "0.1.0"
-
-[[package]]
 name = "ruby-extractor"
 version = "0.1.0"
 dependencies = [
@@ -448,7 +436,6 @@ dependencies = [
  "encoding",
  "flate2",
  "lazy_static",
- "node-types",
  "num_cpus",
  "rayon",
  "regex",
@@ -457,18 +444,6 @@ dependencies = [
  "tracing",
  "tracing-subscriber",
  "tree-sitter",
- "tree-sitter-embedded-template",
- "tree-sitter-ruby",
-]
-
-[[package]]
-name = "ruby-generator"
-version = "0.1.0"
-dependencies = [
- "clap",
- "node-types",
- "tracing",
- "tracing-subscriber",
  "tree-sitter-embedded-template",
  "tree-sitter-ruby",
 ]
