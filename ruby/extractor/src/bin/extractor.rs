@@ -11,7 +11,7 @@ use std::io::BufRead;
 use std::path::{Path, PathBuf};
 use tree_sitter::{Language, Parser, Range};
 
-use ruby_extractor::{diagnostics, extractor, file_paths, trap, node_types};
+use ruby_extractor::{diagnostics, extractor, file_paths, node_types, trap};
 
 /**
  * Gets the number of threads the extractor should use, by reading the

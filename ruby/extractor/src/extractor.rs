@@ -1,7 +1,7 @@
 use crate::diagnostics;
 use crate::file_paths;
-use crate::trap;
 use crate::node_types::{self, EntryKind, Field, NodeTypeMap, Storage, TypeName};
+use crate::trap;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fmt;
