@@ -55,12 +55,12 @@ jobs:
         id: cache-extractor
         with:
           path: |
-            ruby/target/release/ruby-autobuilder
-            ruby/target/release/ruby-autobuilder.exe
-            ruby/target/release/ruby-extractor
-            ruby/target/release/ruby-extractor.exe
-            ruby/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
-          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-extractor-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}--${{ hashFiles('ruby/**/*.rs') }}
+            ruby/extractor/target/release/ruby-autobuilder
+            ruby/extractor/target/release/ruby-autobuilder.exe
+            ruby/extractor/target/release/ruby-extractor
+            ruby/extractor/target/release/ruby-extractor.exe
+            ruby/extractor/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-extractor-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/extractor/Cargo.lock') }}--${{ hashFiles('ruby/extractor/**/*.rs') }}
       - uses: actions/cache@v3
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         with:
@@ -68,7 +68,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             ruby/target
-          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-rust-cargo-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-rust-cargo-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/extractor/**/Cargo.lock') }}
       - name: Check formatting
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cargo fmt --all -- --check
@@ -83,7 +83,7 @@ jobs:
         run: cargo build --release
       - name: Generate dbscheme
         if: ${{ matrix.os == 'ubuntu-latest' && steps.cache-extractor.outputs.cache-hit != 'true'}}
-        run: target/release/ruby-generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+        run: extractor/target/release/ruby-generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
@@ -98,10 +98,10 @@ jobs:
         with:
           name: extractor-${{ matrix.os }}
           path: |
-            ruby/target/release/ruby-autobuilder
-            ruby/target/release/ruby-autobuilder.exe
-            ruby/target/release/ruby-extractor
-            ruby/target/release/ruby-extractor.exe
+            ruby/extractor/target/release/ruby-autobuilder
+            ruby/extractor/target/release/ruby-autobuilder.exe
+            ruby/extractor/target/release/ruby-extractor
+            ruby/extractor/target/release/ruby-extractor.exe
           retention-days: 1
   compile-queries:
     runs-on: ubuntu-latest-xl
@@ -130,7 +130,7 @@ jobs:
         with:
           name: codeql-ruby-queries
           path: |
-            ruby/target/packs/*
+            ruby/extractor/target/packs/*
           retention-days: 1
 
   package:
