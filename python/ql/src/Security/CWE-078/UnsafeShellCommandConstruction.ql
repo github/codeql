@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 6.3
- * @precision high
+ * @precision medium
  * @id py/shell-command-constructed-from-input
  * @tags correctness
  *       security
