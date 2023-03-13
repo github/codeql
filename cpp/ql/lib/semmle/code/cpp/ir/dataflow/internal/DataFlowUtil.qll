@@ -1142,7 +1142,8 @@ private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase, RawI
 }
 
 private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase,
-  RawIndirectInstruction {
+  RawIndirectInstruction
+{
   IndirectInstructionIndirectExprNode() { indirectExprNodeShouldBeIndirectInstruction(this, _) }
 
   final override Expr getConvertedExpr(int index) {
@@ -1612,11 +1613,64 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
 cached
 private module ExprFlowCached {
   /**
-   * Holds if `n1.asExpr()` doesn't have a result and `n1` flows to `n2` in a single
-   * dataflow step.
+   * Holds if `n` is an indirect operand of a `PointerArithmeticInstruction`, and
+   * `e` is the result of loading from the `PointerArithmeticInstruction`.
    */
+  private predicate isIndirectBaseOfArrayAccess(IndirectOperand n, Expr e) {
+    exists(LoadInstruction load, PointerArithmeticInstruction pai |
+      pai = load.getSourceAddress() and
+      pai.getLeftOperand() = n.getOperand() and
+      n.getIndirectionIndex() = 1 and
+      e = load.getConvertedResultExpression()
+    )
+  }
+
+  /**
+   * Gets the expression associated with node `n`, if any.
+   *
+   * Unlike `n.asExpr()`, this predicate will also get the
+   * expression `*(x + i)` when `n` is the indirect node
+   * for `x`. This ensures that an assignment in a long chain
+   * of assignments in a macro expansion is properly mapped
+   * to the previous assignment. For example, in:
+   * ```cpp
+   * *x = source();
+   * use(x[0]);
+   * use(x[1]);
+   * ...
+   * use(x[i]);
+   * use(x[i+1]);
+   * ...
+   * use(x[N]);
+   * ```
+   * To see what the problem would be if `asExpr(n)` was replaced
+   * with `n.asExpr()`, consider the transitive closure over
+   * `localStepFromNonExpr` in `localStepsToExpr`. We start at `n2`
+   * for which `n.asExpr()` exists. For example, `n2` in the above
+   * example could be a `x[i]` in any of the `use(x[i])` above.
+   *
+   * We then step to a dataflow predecessor of `n2`. In the above
+   * code fragment, thats the indirect node corresponding to `x` in
+   * `x[i-1]`. Since this doesn't have a result for `Node::asExpr()`
+   * we continue with the recursion until we reach `*x = source()`
+   * which does have a result for `Node::asExpr()`.
+   *
+   * If `N` is very large this blows up.
+   *
+   * To fix this, we map the indirect node corresponding to `x` to
+   * in `x[i - 1]` to the `x[i - 1]` expression. This ensures that
+   * `x[i]` steps to the expression `x[i - 1]` without traversing the
+   * entire chain.
+   */
+  private Expr asExpr(Node n) {
+    isIndirectBaseOfArrayAccess(n, result)
+    or
+    not isIndirectBaseOfArrayAccess(n, _) and
+    result = n.asExpr()
+  }
+
   private predicate localStepFromNonExpr(Node n1, Node n2) {
-    not exists(n1.asExpr()) and
+    not exists(asExpr(n1)) and
     localFlowStep(n1, n2)
   }
 
@@ -1627,7 +1681,7 @@ private module ExprFlowCached {
   pragma[nomagic]
   private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
     localStepFromNonExpr*(n1, n2) and
-    e2 = n2.asExpr()
+    e2 = asExpr(n2)
   }
 
   /**
@@ -1638,7 +1692,7 @@ private module ExprFlowCached {
     exists(Node mid |
       localFlowStep(n1, mid) and
       localStepsToExpr(mid, n2, e2) and
-      e1 = n1.asExpr()
+      e1 = asExpr(n1)
     )
   }
 
