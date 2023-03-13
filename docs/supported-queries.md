@@ -27,7 +27,7 @@ The process must begin with the first step and must conclude with the final step
 
    Add one or more unit tests for the query (and for any library changes you make) to the `ql/<language>/ql/test/experimental` directory. Tests for library changes go into the `library-tests` subdirectory, and tests for queries go into `query-tests` with their relative path mirroring the query's location under `ql/<language>/ql/src/experimental`.
 
-   - See the section on [Testing custom queries](https://codeql.github.com/docs/codeql-cli/testing-custom-queries/) in the [CodeQL documentation](https://codeql.github.com/docs/) for more information.
+   - See the section on [Testing custom queries](https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/testing-custom-queries) in the [CodeQL CLI documentation](https://docs.github.com/en/code-security/codeql-cli) for more information.
    - See [C/C++ CodeQL tests](/cpp/ql/test/README.md) for more information about contributing tests for C/C++ queries in particular.
 
 4. **Test for correctness on real-world code**

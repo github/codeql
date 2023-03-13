@@ -21,7 +21,8 @@ class TokenValidationParametersPropertySensitiveValidation extends Property {
 /**
  * A dataflow from a `false` value to a write sensitive property for `TokenValidationParameters`.
  */
-class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation extends DataFlow::Configuration {
+class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation extends DataFlow::Configuration
+{
   FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation() {
     this = "FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation"
   }
@@ -219,7 +220,8 @@ class CallableAlwaysReturnsParameter0 extends CallableReturnsStringAndArg0IsStri
 /**
  * A Callable that always return the 1st argument, both of `string` type. Higher precision
  */
-class CallableAlwaysReturnsParameter0MayThrowExceptions extends CallableReturnsStringAndArg0IsString {
+class CallableAlwaysReturnsParameter0MayThrowExceptions extends CallableReturnsStringAndArg0IsString
+{
   CallableAlwaysReturnsParameter0MayThrowExceptions() {
     forex(Expr ret | this.canReturn(ret) |
       ret = this.getParameter(0).getAnAccess()

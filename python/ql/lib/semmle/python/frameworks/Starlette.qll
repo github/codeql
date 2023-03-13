@@ -152,7 +152,8 @@ module Starlette {
     }
 
     /** An attribute read on a `starlette.requests.URL` instance that is a `urllib.parse.SplitResult` instance. */
-    private class UrlSplitInstances extends Stdlib::SplitResult::InstanceSource instanceof DataFlow::AttrRead {
+    private class UrlSplitInstances extends Stdlib::SplitResult::InstanceSource instanceof DataFlow::AttrRead
+    {
       UrlSplitInstances() {
         super.getObject() = instance() and
         super.getAttributeName() = "components"

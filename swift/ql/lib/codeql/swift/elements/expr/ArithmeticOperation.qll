@@ -45,30 +45,33 @@ class BinaryArithmeticOperation extends BinaryExpr {
  * An add expression.
  * ```
  * a + b
+ * a &+ b
  * ```
  */
 class AddExpr extends BinaryExpr {
-  AddExpr() { this.getStaticTarget().getName() = "+(_:_:)" }
+  AddExpr() { this.getStaticTarget().getName() = ["+(_:_:)", "&+(_:_:)"] }
 }
 
 /**
  * A subtract expression.
  * ```
  * a - b
+ * a &- b
  * ```
  */
 class SubExpr extends BinaryExpr {
-  SubExpr() { this.getStaticTarget().getName() = "-(_:_:)" }
+  SubExpr() { this.getStaticTarget().getName() = ["-(_:_:)", "&-(_:_:)"] }
 }
 
 /**
  * A multiply expression.
  * ```
  * a * b
+ * a &* b
  * ```
  */
 class MulExpr extends BinaryExpr {
-  MulExpr() { this.getStaticTarget().getName() = "*(_:_:)" }
+  MulExpr() { this.getStaticTarget().getName() = ["*(_:_:)", "&*(_:_:)"] }
 }
 
 /**
@@ -97,7 +100,12 @@ class RemExpr extends BinaryExpr {
  * -a
  * ```
  */
-class UnaryArithmeticOperation extends PrefixUnaryExpr instanceof UnaryMinusExpr { }
+class UnaryArithmeticOperation extends PrefixUnaryExpr {
+  UnaryArithmeticOperation() {
+    this instanceof UnaryMinusExpr or
+    this instanceof UnaryPlusExpr
+  }
+}
 
 /**
  * A unary minus expression.
@@ -107,4 +115,14 @@ class UnaryArithmeticOperation extends PrefixUnaryExpr instanceof UnaryMinusExpr
  */
 class UnaryMinusExpr extends PrefixUnaryExpr {
   UnaryMinusExpr() { this.getStaticTarget().getName() = "-(_:)" }
+}
+
+/**
+ * A unary plus expression.
+ * ```
+ * +a
+ * ```
+ */
+class UnaryPlusExpr extends PrefixUnaryExpr {
+  UnaryPlusExpr() { this.getStaticTarget().getName() = "+(_:)" }
 }

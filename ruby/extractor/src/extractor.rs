@@ -1,4 +1,5 @@
 use crate::diagnostics;
+use crate::file_paths;
 use crate::trap;
 use node_types::{EntryKind, Field, NodeTypeMap, Storage, TypeName};
 use std::collections::BTreeMap as Map;
@@ -9,14 +10,15 @@ use std::path::Path;
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
 pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::Label {
-    let (file_label, fresh) =
-        writer.global_id(&trap::full_id_for_file(&normalize_path(absolute_path)));
+    let (file_label, fresh) = writer.global_id(&trap::full_id_for_file(
+        &file_paths::normalize_path(absolute_path),
+    ));
     if fresh {
         writer.add_tuple(
             "files",
             vec![
                 trap::Arg::Label(file_label),
-                trap::Arg::String(normalize_path(absolute_path)),
+                trap::Arg::String(file_paths::normalize_path(absolute_path)),
             ],
         );
         populate_parent_folders(writer, file_label, absolute_path.parent());
@@ -54,8 +56,9 @@ pub fn populate_parent_folders(
         match path {
             None => break,
             Some(folder) => {
-                let (folder_label, fresh) =
-                    writer.global_id(&trap::full_id_for_folder(&normalize_path(folder)));
+                let (folder_label, fresh) = writer.global_id(&trap::full_id_for_folder(
+                    &file_paths::normalize_path(folder),
+                ));
                 writer.add_tuple(
                     "containerparent",
                     vec![
@@ -68,7 +71,7 @@ pub fn populate_parent_folders(
                         "folders",
                         vec![
                             trap::Arg::Label(folder_label),
-                            trap::Arg::String(normalize_path(folder)),
+                            trap::Arg::String(file_paths::normalize_path(folder)),
                         ],
                     );
                     path = folder.parent();
@@ -119,8 +122,8 @@ pub fn extract(
     path: &Path,
     source: &[u8],
     ranges: &[Range],
-) -> std::io::Result<()> {
-    let path_str = format!("{}", path.display());
+) {
+    let path_str = file_paths::normalize_path(&path);
     let span = tracing::span!(
         tracing::Level::TRACE,
         "extract",
@@ -150,46 +153,6 @@ pub fn extract(
     traverse(&tree, &mut visitor);
 
     parser.reset();
-    Ok(())
-}
-
-/// Normalizes the path according the common CodeQL specification. Assumes that
-/// `path` has already been canonicalized using `std::fs::canonicalize`.
-fn normalize_path(path: &Path) -> String {
-    if cfg!(windows) {
-        // The way Rust canonicalizes paths doesn't match the CodeQL spec, so we
-        // have to do a bit of work removing certain prefixes and replacing
-        // backslashes.
-        let mut components: Vec<String> = Vec::new();
-        for component in path.components() {
-            match component {
-                std::path::Component::Prefix(prefix) => match prefix.kind() {
-                    std::path::Prefix::Disk(letter) | std::path::Prefix::VerbatimDisk(letter) => {
-                        components.push(format!("{}:", letter as char));
-                    }
-                    std::path::Prefix::Verbatim(x) | std::path::Prefix::DeviceNS(x) => {
-                        components.push(x.to_string_lossy().to_string());
-                    }
-                    std::path::Prefix::UNC(server, share)
-                    | std::path::Prefix::VerbatimUNC(server, share) => {
-                        components.push(server.to_string_lossy().to_string());
-                        components.push(share.to_string_lossy().to_string());
-                    }
-                },
-                std::path::Component::Normal(n) => {
-                    components.push(n.to_string_lossy().to_string());
-                }
-                std::path::Component::RootDir => {}
-                std::path::Component::CurDir => {}
-                std::path::Component::ParentDir => {}
-            }
-        }
-        components.join("/")
-    } else {
-        // For other operating systems, we can use the canonicalized path
-        // without modifications.
-        format!("{}", path.display())
-    }
 }
 
 struct ChildNode {
@@ -274,7 +237,13 @@ impl<'a> Visitor<'a> {
         );
     }
 
-    fn record_parse_error_for_node(&mut self, error_message: String, node: Node) {
+    fn record_parse_error_for_node(
+        &mut self,
+        message: &str,
+        args: &[diagnostics::MessageArg],
+        node: Node,
+        status_page: bool,
+    ) {
         let (start_line, start_column, end_line, end_column) = location_for(self, node);
         let loc = location(
             self.trap_writer,
@@ -284,26 +253,38 @@ impl<'a> Visitor<'a> {
             end_line,
             end_column,
         );
-        self.record_parse_error(
-            loc,
-            self.diagnostics_writer
-                .message("parse-error", "Parse error")
-                .severity(diagnostics::Severity::Error)
-                .location(self.path, start_line, start_column, end_line, end_column)
-                .text(&error_message),
-        );
+        let mut mesg = self
+            .diagnostics_writer
+            .new_entry("parse-error", "Parse error");
+        &mesg
+            .severity(diagnostics::Severity::Warning)
+            .location(self.path, start_line, start_column, end_line, end_column)
+            .message(message, args);
+        if status_page {
+            &mesg.status_page();
+        }
+        self.record_parse_error(loc, &mesg);
     }
 
     fn enter_node(&mut self, node: Node) -> bool {
-        if node.is_error() || node.is_missing() {
-            let error_message = if node.is_missing() {
-                format!("parse error: expecting '{}'", node.kind())
-            } else {
-                "parse error".to_string()
-            };
-            self.record_parse_error_for_node(error_message, node);
+        if node.is_missing() {
+            self.record_parse_error_for_node(
+                "A parse error occurred (expected {} symbol). Check the syntax of the file. If the file is invalid, correct the error or {} the file from analysis.",
+                &[diagnostics::MessageArg::Code(node.kind()), diagnostics::MessageArg::Link("exclude", "https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning")],
+                node,
+                true,
+            );
             return false;
         }
+        if node.is_error() {
+            self.record_parse_error_for_node(
+                "A parse error occurred. Check the syntax of the file. If the file is invalid, correct the error or {} the file from analysis.",
+                &[diagnostics::MessageArg::Link("exclude", "https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning")],
+                node,
+                true,
+            );
+            return false;
+        };
 
         let id = self.trap_writer.fresh_id();
 
@@ -383,15 +364,16 @@ impl<'a> Visitor<'a> {
                 }
             }
             _ => {
-                let error_message = format!("unknown table type: '{}'", node.kind());
                 self.record_parse_error(
                     loc,
                     self.diagnostics_writer
-                        .message("parse-error", "Parse error")
-                        .severity(diagnostics::Severity::Error)
+                        .new_entry("parse-error", "Parse error")
+                        .severity(diagnostics::Severity::Warning)
                         .location(self.path, start_line, start_column, end_line, end_column)
-                        .text(&error_message)
-                        .status_page(),
+                        .message(
+                            "Unknown table type: {}",
+                            &[diagnostics::MessageArg::Code(node.kind())],
+                        ),
                 );
 
                 valid = false;
@@ -439,23 +421,29 @@ impl<'a> Visitor<'a> {
                         values.push(trap::Arg::Label(child_node.label));
                     }
                 } else if field.name.is_some() {
-                    let error_message = format!(
-                        "type mismatch for field {}::{} with type {:?} != {:?}",
-                        node.kind(),
-                        child_node.field_name.unwrap_or("child"),
-                        child_node.type_name,
-                        field.type_info
+                    self.record_parse_error_for_node(
+                        "Type mismatch for field {}::{} with type {} != {}",
+                        &[
+                            diagnostics::MessageArg::Code(node.kind()),
+                            diagnostics::MessageArg::Code(child_node.field_name.unwrap_or("child")),
+                            diagnostics::MessageArg::Code(&format!("{:?}", child_node.type_name)),
+                            diagnostics::MessageArg::Code(&format!("{:?}", field.type_info)),
+                        ],
+                        *node,
+                        false,
                     );
-                    self.record_parse_error_for_node(error_message, *node);
                 }
             } else if child_node.field_name.is_some() || child_node.type_name.named {
-                let error_message = format!(
-                    "value for unknown field: {}::{} and type {:?}",
-                    node.kind(),
-                    &child_node.field_name.unwrap_or("child"),
-                    &child_node.type_name
+                self.record_parse_error_for_node(
+                    "Value for unknown field: {}::{} and type {}",
+                    &[
+                        diagnostics::MessageArg::Code(node.kind()),
+                        diagnostics::MessageArg::Code(&child_node.field_name.unwrap_or("child")),
+                        diagnostics::MessageArg::Code(&format!("{:?}", child_node.type_name)),
+                    ],
+                    *node,
+                    false,
                 );
-                self.record_parse_error_for_node(error_message, *node);
             }
         }
         let mut args = Vec::new();
@@ -471,14 +459,14 @@ impl<'a> Visitor<'a> {
                         let error_message = format!(
                             "{} for field: {}::{}",
                             if child_values.is_empty() {
-                                "missing value"
+                                "Missing value"
                             } else {
-                                "too many values"
+                                "Too many values"
                             },
                             node.kind(),
                             column_name
                         );
-                        self.record_parse_error_for_node(error_message, *node);
+                        self.record_parse_error_for_node(&error_message, &[], *node, false);
                     }
                 }
                 Storage::Table {
@@ -488,13 +476,15 @@ impl<'a> Visitor<'a> {
                 } => {
                     for (index, child_value) in child_values.iter().enumerate() {
                         if !*has_index && index > 0 {
-                            let error_message = format!(
-                                "too many values for field: {}::{}",
-                                node.kind(),
-                                table_name,
+                            self.record_parse_error_for_node(
+                                "Too many values for field: {}::{}",
+                                &[
+                                    diagnostics::MessageArg::Code(node.kind()),
+                                    diagnostics::MessageArg::Code(table_name),
+                                ],
+                                *node,
+                                false,
                             );
-
-                            self.record_parse_error_for_node(error_message, *node);
                             break;
                         }
                         let mut args = vec![trap::Arg::Label(parent_id)];
@@ -591,9 +581,8 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
                 visitor.diagnostics_writer.write(
                     visitor
                         .diagnostics_writer
-                        .message("internal-error", "Internal error")
-                        .text("expecting a line break symbol, but none found while correcting end column value")
-                        .status_page()
+                        .new_entry("internal-error", "Internal error")
+                        .message("Expecting a line break symbol, but none found while correcting end column value", &[])
                         .severity(diagnostics::Severity::Error),
                 );
             }
@@ -607,13 +596,14 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
             visitor.diagnostics_writer.write(
                 visitor
                     .diagnostics_writer
-                    .message("internal-error", "Internal error")
-                    .text(&format!(
-                        "cannot correct end column value: end_byte index {} is not in range [1,{}]",
-                        index,
-                        source.len()
-                    ))
-                    .status_page()
+                    .new_entry("internal-error", "Internal error")
+                    .message(
+                        "Cannot correct end column value: end_byte index {} is not in range [1,{}].",
+                        &[
+                            diagnostics::MessageArg::Code(&index.to_string()),
+                            diagnostics::MessageArg::Code(&source.len().to_string()),
+                        ],
+                    )
                     .severity(diagnostics::Severity::Error),
             );
         }

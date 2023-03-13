@@ -59,6 +59,19 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
+        protected void PopulateScopedKind(TextWriter trapFile, ScopedKind kind)
+        {
+            switch (kind)
+            {
+                case ScopedKind.ScopedRef:
+                    trapFile.scoped_annotation(this, Kinds.ScopedAnnotation.ScopedRef);
+                    break;
+                case ScopedKind.ScopedValue:
+                    trapFile.scoped_annotation(this, Kinds.ScopedAnnotation.ScopedValue);
+                    break;
+            }
+        }
+
         protected void ExtractCompilerGenerated(TextWriter trapFile)
         {
             if (Symbol.IsImplicitlyDeclared)

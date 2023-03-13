@@ -27,8 +27,6 @@ clean:
 	rm -rf tools/bin tools/linux64 tools/osx64 tools/win64 tools/net tools/opencsv
 	rm -rf $(EXTRACTOR_PACK_OUT) build/stats build/testdb
 
-DATAFLOW_BRANCH=main
-
 autoformat:
 	find ql -iregex '.*\.qll?' -print0 | xargs -0 codeql query format -qq -i
 	find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -w

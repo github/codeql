@@ -315,6 +315,13 @@ MAP(swift::TypeBase, TypeTag)
         MAP(swift::OptionalType, OptionalTypeTag)
         MAP(swift::VariadicSequenceType, VariadicSequenceTypeTag)
       MAP(swift::DictionaryType, DictionaryTypeTag)
+
+MAP(swift::AvailabilitySpec, AvailabilitySpecTag)
+  MAP(swift::PlatformVersionConstraintAvailabilitySpec, PlatformVersionAvailabilitySpecTag)
+  MAP(swift::OtherPlatformAvailabilitySpec, OtherAvailabilitySpecTag)
+
+MAP(swift::PoundAvailableInfo, AvailabilityInfoTag)
+
 // clang-format on
 #undef MAP
 #undef MAP_CONCRETE

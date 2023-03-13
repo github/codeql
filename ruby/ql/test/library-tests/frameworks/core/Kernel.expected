@@ -38,7 +38,10 @@ kernelSpawnCallExecutions
 | Kernel.rb:68:1:68:61 | call to spawn |
 | Kernel.rb:69:1:69:71 | call to spawn |
 sendCallCodeExecutions
+| Eval.rb:4:1:4:22 | call to send | Eval.rb:4:6:4:12 | "raise" |
+| Eval.rb:7:1:7:19 | call to send | Eval.rb:7:8:7:13 | "push" |
 | Kernel.rb:2:1:2:22 | call to send | Kernel.rb:2:6:2:12 | "raise" |
 | Kernel.rb:5:1:5:19 | call to send | Kernel.rb:5:8:5:13 | "push" |
 evalCallCodeExecutions
+| Eval.rb:3:1:3:43 | call to eval | Eval.rb:3:6:3:22 | "raise \\"error\\"" |
 | Kernel.rb:1:1:1:43 | call to eval | Kernel.rb:1:6:1:22 | "raise \\"error\\"" |

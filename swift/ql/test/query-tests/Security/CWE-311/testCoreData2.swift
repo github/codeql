@@ -57,11 +57,11 @@ class testCoreData2_2 {
 		obj.myBankAccountNumber = bankAccountNo // BAD
 
 		if #available(iOS 10.0, *) {
-			obj.myBankAccountNumber = bankAccountNo // BAD [NOT DETECTED]
+			obj.myBankAccountNumber = bankAccountNo // BAD
 		} else {
-			obj.myBankAccountNumber = bankAccountNo // BAD [NOT DETECTED]
+			obj.myBankAccountNumber = bankAccountNo // BAD
 		}
 
-		obj.myBankAccountNumber = bankAccountNo // BAD [NOT DETECTED]
+		obj.myBankAccountNumber = bankAccountNo // BAD
 	}
 }

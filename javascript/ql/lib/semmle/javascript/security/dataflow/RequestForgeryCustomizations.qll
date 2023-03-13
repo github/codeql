@@ -72,6 +72,11 @@ module RequestForgery {
       succ = url and
       pred = url.getArgument(0)
     )
+    or
+    exists(HtmlSanitizerCall call |
+      pred = call.getInput() and
+      succ = call
+    )
   }
 
   private class SinkFromModel extends Sink {
@@ -81,4 +86,14 @@ module RequestForgery {
 
     override string getKind() { result = "endpoint" }
   }
+
+  private import Xss as Xss
+
+  /**
+   * A call to `encodeURI` or `encodeURIComponent`, viewed as a sanitizer for request forgery.
+   * These calls will escape "/" to "%2F", which is not a problem for request forgery.
+   * The result from calling `encodeURI` or `encodeURIComponent` is not a valid URL, and only makes sense
+   * as a part of a URL.
+   */
+  class UriEncodingSanitizer extends Sanitizer instanceof Xss::Shared::UriEncodingSanitizer { }
 }

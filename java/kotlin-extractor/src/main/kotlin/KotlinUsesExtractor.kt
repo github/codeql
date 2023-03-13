@@ -71,16 +71,16 @@ open class KotlinUsesExtractor(
         TypeResult(fakeKotlinType(), "", "")
     )
 
-    fun extractFileClass(f: IrFile): Label<out DbClass> {
+    fun extractFileClass(f: IrFile): Label<out DbClassorinterface> {
         val pkg = f.fqName.asString()
         val jvmName = getFileClassName(f)
         val qualClassName = if (pkg.isEmpty()) jvmName else "$pkg.$jvmName"
         val label = "@\"class;$qualClassName\""
-        val id: Label<DbClass> = tw.getLabelFor(label) {
+        val id: Label<DbClassorinterface> = tw.getLabelFor(label) {
             val fileId = tw.mkFileId(f.path, false)
             val locId = tw.getWholeFileLocation(fileId)
             val pkgId = extractPackage(pkg)
-            tw.writeClasses(it, jvmName, pkgId, it)
+            tw.writeClasses_or_interfaces(it, jvmName, pkgId, it)
             tw.writeFile_class(it)
             tw.writeHasLocation(it, locId)
 
@@ -478,7 +478,7 @@ open class KotlinUsesExtractor(
     private fun useAnonymousClass(c: IrClass) =
         tw.lm.anonymousTypeMapping.getOrPut(c) {
             TypeResults(
-                TypeResult(tw.getFreshIdLabel<DbClass>(), "", ""),
+                TypeResult(tw.getFreshIdLabel<DbClassorinterface>(), "", ""),
                 TypeResult(fakeKotlinType(), "TODO", "TODO")
             )
         }
@@ -487,8 +487,8 @@ open class KotlinUsesExtractor(
         val fakeKotlinPackageId: Label<DbPackage> = tw.getLabelFor("@\"FakeKotlinPackage\"", {
             tw.writePackages(it, "fake.kotlin")
         })
-        val fakeKotlinClassId: Label<DbClass> = tw.getLabelFor("@\"FakeKotlinClass\"", {
-            tw.writeClasses(it, "FakeKotlinClass", fakeKotlinPackageId, it)
+        val fakeKotlinClassId: Label<DbClassorinterface> = tw.getLabelFor("@\"FakeKotlinClass\"", {
+            tw.writeClasses_or_interfaces(it, "FakeKotlinClass", fakeKotlinPackageId, it)
         })
         val fakeKotlinTypeId: Label<DbKt_nullable_type> = tw.getLabelFor("@\"FakeKotlinType\"", {
             tw.writeKt_nullable_types(it, fakeKotlinClassId)
@@ -650,11 +650,11 @@ open class KotlinUsesExtractor(
         // We use this when we don't actually have an IrClass for a class
         // we want to refer to
         // TODO: Eliminate the need for this if possible
-        fun makeClass(pkgName: String, className: String): Label<DbClass> {
+        fun makeClass(pkgName: String, className: String): Label<DbClassorinterface> {
             val pkgId = extractPackage(pkgName)
             val label = "@\"class;$pkgName.$className\""
-            val classId: Label<DbClass> = tw.getLabelFor(label, {
-                tw.writeClasses(it, className, pkgId, it)
+            val classId: Label<DbClassorinterface> = tw.getLabelFor(label, {
+                tw.writeClasses_or_interfaces(it, className, pkgId, it)
             })
             return classId
         }
@@ -1237,7 +1237,7 @@ open class KotlinUsesExtractor(
 
         var res = tw.lm.locallyVisibleFunctionLabelMapping[f]
         if (res == null) {
-            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
+            val javaResult = TypeResult(tw.getFreshIdLabel<DbClassorinterface>(), "", "")
             val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
             tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
             res = LocallyVisibleFunctionLabels(

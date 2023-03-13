@@ -1,3 +1,10 @@
+package main
+
+import (
+	"math/big"
+	"time"
+)
+
 func GenerateCryptoString(n int) (string, error) {
 	const chars = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-"
 	ret := make([]byte, n)
@@ -11,13 +18,14 @@ func GenerateCryptoString(n int) (string, error) {
 	return string(ret), nil
 }
 
-mySigningKey := GenerateCryptoString(64)
+func good() {
+	mySigningKey := GenerateCryptoString(64)
 
+	claims := &jwt.RegisteredClaims{
+		ExpiresAt: jwt.NewNumericDate(time.Unix(1516239022, 0)),
+		Issuer:    "test",
+	}
 
-claims := &jwt.RegisteredClaims{
-	ExpiresAt: jwt.NewNumericDate(time.Unix(1516239022, 0)),
-	Issuer:    "test",
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	ss, err := token.SignedString(mySigningKey)
 }
-
-token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-ss, err := token.SignedString(mySigningKey)

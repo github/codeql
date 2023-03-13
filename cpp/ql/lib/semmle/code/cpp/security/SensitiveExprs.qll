@@ -14,8 +14,8 @@ import cpp
  */
 bindingset[s]
 private predicate suspicious(string s) {
-  s.regexpMatch(".*(password|passwd|accountid|account.?key|accnt.?key|license.?key|trusted).*") and
-  not s.matches(["%hash%", "%crypt%", "%file%", "%path%", "%invalid%"])
+  s.regexpMatch("(?i).*(password|passwd|accountid|account.?key|accnt.?key|license.?key|trusted).*") and
+  not s.regexpMatch("(?i).*(hash|crypt|file|path|invalid).*")
 }
 
 /**
@@ -23,7 +23,7 @@ private predicate suspicious(string s) {
  */
 class SensitiveVariable extends Variable {
   SensitiveVariable() {
-    suspicious(this.getName().toLowerCase()) and
+    suspicious(this.getName()) and
     not this.getUnspecifiedType() instanceof IntegralType
   }
 }
@@ -33,7 +33,7 @@ class SensitiveVariable extends Variable {
  */
 class SensitiveFunction extends Function {
   SensitiveFunction() {
-    suspicious(this.getName().toLowerCase()) and
+    suspicious(this.getName()) and
     not this.getUnspecifiedType() instanceof IntegralType
   }
 }

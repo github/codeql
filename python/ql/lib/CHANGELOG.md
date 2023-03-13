@@ -1,3 +1,27 @@
+## 0.8.1
+
+### Major Analysis Improvements
+
+* We use a new analysis for the call-graph (determining which function is called). This can lead to changed results. In most cases this is much more accurate than the old call-graph that was based on points-to, but we do lose a few valid edges in the call-graph, especially around methods that are not defined inside its class.
+
+### Minor Analysis Improvements
+
+* Fixed module resolution so we properly recognize definitions made within if-then-else statements.
+* Added modeling of cryptographic operations in the `hmac` library.
+
+## 0.8.0
+
+### Breaking Changes
+
+- Python 2 is no longer supported for extracting databases using the CodeQL CLI. As a consequence,
+  the previously deprecated support for `pyxl` and `spitfire` templates has also been removed. When
+  extracting Python 2 code, having Python 2 installed is still recommended, as this ensures the
+  correct version of the Python standard library is extracted.
+
+### Minor Analysis Improvements
+
+* Fixed module resolution so we properly recognize that in `from <pkg> import *`, where `<pkg>` is a package, the actual imports are made from the `<pkg>/__init__.py` file.
+
 ## 0.7.2
 
 No user-facing changes.

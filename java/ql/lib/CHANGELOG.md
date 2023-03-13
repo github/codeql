@@ -1,3 +1,23 @@
+## 0.5.4
+
+### Minor Analysis Improvements
+
+* Added new sinks for `java/hardcoded-credential-api-call` to identify the use of hardcoded secrets in the creation and verification of JWT tokens using `com.auth0.jwt`. These sinks are from [an experimental query submitted by @luchua](https://github.com/github/codeql/pull/9036).
+* The Java extractor now supports builds against JDK 20.
+* The query `java/hardcoded-credential-api-call` now recognizes methods that accept user and password from the SQLServerDataSource class of the Microsoft JDBC Driver for SQL Server.
+
+## 0.5.3
+
+### New Features
+
+* Kotlin versions up to 1.8.20 are now supported.
+
+### Minor Analysis Improvements
+
+* Removed the first argument of `java.nio.file.Files#createTempDirectory(String,FileAttribute[])` as a "create-file" sink.
+* Added the first argument of `java.nio.file.Files#copy` as a "read-file" sink for the `java/path-injection` query.
+* The data flow library now disregards flow through code that is dead based on some basic constant propagation, for example, guards like `if (1+1>3)`.
+
 ## 0.5.2
 
 ### Minor Analysis Improvements

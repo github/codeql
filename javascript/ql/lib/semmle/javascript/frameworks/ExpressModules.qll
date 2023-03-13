@@ -18,7 +18,8 @@ module ExpressLibraries {
   /**
    * A header produced by a route handler of the "x-frame-options" module.
    */
-  class XFrameOptionsRouteHandlerHeader extends Http::ImplicitHeaderDefinition instanceof XFrameOptionsRouteHandler {
+  class XFrameOptionsRouteHandlerHeader extends Http::ImplicitHeaderDefinition instanceof XFrameOptionsRouteHandler
+  {
     override predicate defines(string headerName, string headerValue) {
       xFrameOptionsDefaultImplicitHeaderDefinition(headerName, headerValue)
     }
@@ -43,7 +44,8 @@ module ExpressLibraries {
   /**
    * A header produced by a route handler of the "frameguard" module.
    */
-  class FrameGuardRouteHandlerHeader extends Http::ImplicitHeaderDefinition instanceof FrameGuardRouteHandler {
+  class FrameGuardRouteHandlerHeader extends Http::ImplicitHeaderDefinition instanceof FrameGuardRouteHandler
+  {
     override predicate defines(string headerName, string headerValue) {
       xFrameOptionsDefaultImplicitHeaderDefinition(headerName, headerValue)
     }
@@ -66,7 +68,8 @@ module ExpressLibraries {
   /**
    * A header produced by a route handler of the "helmet" module.
    */
-  class HelmetRouteHandlerHeader extends Http::ImplicitHeaderDefinition instanceof HelmetRouteHandler {
+  class HelmetRouteHandlerHeader extends Http::ImplicitHeaderDefinition instanceof HelmetRouteHandler
+  {
     override predicate defines(string headerName, string headerValue) {
       xFrameOptionsDefaultImplicitHeaderDefinition(headerName, headerValue)
     }

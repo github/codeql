@@ -389,7 +389,8 @@ private class NewArrayAllocationExpr extends AllocationExpr, NewArrayExpr {
 
 private module HeuristicAllocation {
   /** A class that maps an `AllocationExpr` to an `HeuristicAllocationExpr`. */
-  private class HeuristicAllocationModeled extends HeuristicAllocationExpr instanceof AllocationExpr {
+  private class HeuristicAllocationModeled extends HeuristicAllocationExpr instanceof AllocationExpr
+  {
     override Expr getSizeExpr() { result = AllocationExpr.super.getSizeExpr() }
 
     override int getSizeMult() { result = AllocationExpr.super.getSizeMult() }
@@ -406,7 +407,8 @@ private module HeuristicAllocation {
   }
 
   /** A class that maps an `AllocationFunction` to an `HeuristicAllocationFunction`. */
-  private class HeuristicAllocationFunctionModeled extends HeuristicAllocationFunction instanceof AllocationFunction {
+  private class HeuristicAllocationFunctionModeled extends HeuristicAllocationFunction instanceof AllocationFunction
+  {
     override int getSizeArg() { result = AllocationFunction.super.getSizeArg() }
 
     override int getSizeMult() { result = AllocationFunction.super.getSizeMult() }
@@ -430,7 +432,8 @@ private module HeuristicAllocation {
    * 2. The function must return a pointer type
    * 3. There must be a unique parameter of unsigned integral type.
    */
-  private class HeuristicAllocationFunctionByName extends HeuristicAllocationFunction instanceof Function {
+  private class HeuristicAllocationFunctionByName extends HeuristicAllocationFunction instanceof Function
+  {
     int sizeArg;
 
     HeuristicAllocationFunctionByName() {

@@ -78,6 +78,14 @@ nodes
 | lib/subLib5/main.js:1:28:1:31 | name |
 | lib/subLib5/main.js:2:13:2:16 | name |
 | lib/subLib5/main.js:2:13:2:16 | name |
+| lib/subLib5/subclass.js:4:10:4:13 | name |
+| lib/subLib5/subclass.js:4:10:4:13 | name |
+| lib/subLib5/subclass.js:5:16:5:19 | name |
+| lib/subLib5/subclass.js:5:16:5:19 | name |
+| lib/subLib6/index.js:1:32:1:35 | name |
+| lib/subLib6/index.js:1:32:1:35 | name |
+| lib/subLib6/index.js:2:14:2:17 | name |
+| lib/subLib6/index.js:2:14:2:17 | name |
 | lib/sublib/factory.js:12:26:12:29 | name |
 | lib/sublib/factory.js:12:26:12:29 | name |
 | lib/sublib/factory.js:13:24:13:27 | name |
@@ -315,6 +323,14 @@ edges
 | lib/subLib5/main.js:1:28:1:31 | name | lib/subLib5/main.js:2:13:2:16 | name |
 | lib/subLib5/main.js:1:28:1:31 | name | lib/subLib5/main.js:2:13:2:16 | name |
 | lib/subLib5/main.js:1:28:1:31 | name | lib/subLib5/main.js:2:13:2:16 | name |
+| lib/subLib5/subclass.js:4:10:4:13 | name | lib/subLib5/subclass.js:5:16:5:19 | name |
+| lib/subLib5/subclass.js:4:10:4:13 | name | lib/subLib5/subclass.js:5:16:5:19 | name |
+| lib/subLib5/subclass.js:4:10:4:13 | name | lib/subLib5/subclass.js:5:16:5:19 | name |
+| lib/subLib5/subclass.js:4:10:4:13 | name | lib/subLib5/subclass.js:5:16:5:19 | name |
+| lib/subLib6/index.js:1:32:1:35 | name | lib/subLib6/index.js:2:14:2:17 | name |
+| lib/subLib6/index.js:1:32:1:35 | name | lib/subLib6/index.js:2:14:2:17 | name |
+| lib/subLib6/index.js:1:32:1:35 | name | lib/subLib6/index.js:2:14:2:17 | name |
+| lib/subLib6/index.js:1:32:1:35 | name | lib/subLib6/index.js:2:14:2:17 | name |
 | lib/sublib/factory.js:12:26:12:29 | name | lib/sublib/factory.js:13:24:13:27 | name |
 | lib/sublib/factory.js:12:26:12:29 | name | lib/sublib/factory.js:13:24:13:27 | name |
 | lib/sublib/factory.js:12:26:12:29 | name | lib/sublib/factory.js:13:24:13:27 | name |
@@ -488,6 +504,8 @@ edges
 | lib/subLib4/factory.js:8:2:8:17 | /f*g/.test(name) | lib/subLib4/factory.js:7:27:7:30 | name | lib/subLib4/factory.js:8:13:8:16 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'f'. | lib/subLib4/factory.js:8:3:8:4 | f* | regular expression | lib/subLib4/factory.js:7:27:7:30 | name | library input |
 | lib/subLib5/feature.js:2:2:2:17 | /a*b/.test(name) | lib/subLib5/feature.js:1:28:1:31 | name | lib/subLib5/feature.js:2:13:2:16 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'a'. | lib/subLib5/feature.js:2:3:2:4 | a* | regular expression | lib/subLib5/feature.js:1:28:1:31 | name | library input |
 | lib/subLib5/main.js:2:2:2:17 | /a*b/.test(name) | lib/subLib5/main.js:1:28:1:31 | name | lib/subLib5/main.js:2:13:2:16 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'a'. | lib/subLib5/main.js:2:3:2:4 | a* | regular expression | lib/subLib5/main.js:1:28:1:31 | name | library input |
+| lib/subLib5/subclass.js:5:5:5:20 | /a*b/.test(name) | lib/subLib5/subclass.js:4:10:4:13 | name | lib/subLib5/subclass.js:5:16:5:19 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'a'. | lib/subLib5/subclass.js:5:6:5:7 | a* | regular expression | lib/subLib5/subclass.js:4:10:4:13 | name | library input |
+| lib/subLib6/index.js:2:3:2:18 | /f*g/.test(name) | lib/subLib6/index.js:1:32:1:35 | name | lib/subLib6/index.js:2:14:2:17 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'f'. | lib/subLib6/index.js:2:4:2:5 | f* | regular expression | lib/subLib6/index.js:1:32:1:35 | name | library input |
 | lib/sublib/factory.js:13:13:13:28 | /f*g/.test(name) | lib/sublib/factory.js:12:26:12:29 | name | lib/sublib/factory.js:13:24:13:27 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'f'. | lib/sublib/factory.js:13:14:13:15 | f* | regular expression | lib/sublib/factory.js:12:26:12:29 | name | library input |
 | polynomial-redos.js:7:2:7:34 | tainted ... /g, '') | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:7:2:7:8 | tainted | This $@ that depends on $@ may run slow on strings with many repetitions of '\\t'. | polynomial-redos.js:7:24:7:26 | \\s+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
 | polynomial-redos.js:8:2:8:23 | tainted ...  *, */) | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:8:2:8:8 | tainted | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | polynomial-redos.js:8:17:8:18 |  * | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |

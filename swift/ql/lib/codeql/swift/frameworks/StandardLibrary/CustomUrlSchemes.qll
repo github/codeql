@@ -1,3 +1,7 @@
+/**
+ * Provides models related to custom URL schemes.
+ */
+
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
@@ -66,7 +70,8 @@ private class LaunchOptionsUrlVarDecl extends VarDecl {
  * A content implying that, if a `UIOpenURLContext` is tainted, then its field `url` is also tainted.
  */
 private class UiOpenUrlContextUrlInheritTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
+  DataFlow::Content::FieldContent
+{
   UiOpenUrlContextUrlInheritTaint() {
     this.getField().getEnclosingDecl().(NominalTypeDecl).getName() = "UIOpenURLContext" and
     this.getField().getName() = "url"
@@ -77,7 +82,8 @@ private class UiOpenUrlContextUrlInheritTaint extends TaintInheritingContent,
  * A content implying that, if a `NSUserActivity` is tainted, then its field `webpageURL` is also tainted.
  */
 private class UserActivityUrlInheritTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
+  DataFlow::Content::FieldContent
+{
   UserActivityUrlInheritTaint() {
     this.getField().getEnclosingDecl().(NominalTypeDecl).getName() = "NSUserActivity" and
     this.getField().getName() = "webpageURL"
@@ -89,7 +95,8 @@ private class UserActivityUrlInheritTaint extends TaintInheritingContent,
  * `userActivities` and `urlContexts` are also tainted.
  */
 private class ConnectionOptionsFieldsInheritTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
+  DataFlow::Content::FieldContent
+{
   ConnectionOptionsFieldsInheritTaint() {
     this.getField().getEnclosingDecl().(NominalTypeDecl).getName() = "ConnectionOptions" and
     this.getField().getName() = ["userActivities", "urlContexts"]

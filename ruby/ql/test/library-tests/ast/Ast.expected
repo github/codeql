@@ -1259,6 +1259,22 @@ control/cases.rb:
 #  157|         getExpr: [AddExpr] ... + ...
 #  157|           getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
 #  157|           getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
+#  160|   getStmt: [TestPattern] ... in ...
+#  160|     getValue: [MethodCall] call to expr
+#  160|       getReceiver: [SelfVariableAccess] self
+#  160|     getPattern: [ArrayPattern] [ ..., * ]
+#  160|       getPrefixElement: [IntegerLiteral] 1
+#  160|       getPrefixElement: [IntegerLiteral] 2
+#  162|   getStmt: [MatchPattern] ... => ...
+#  162|     getValue: [MethodCall] call to expr
+#  162|       getReceiver: [SelfVariableAccess] self
+#  162|     getPattern: [HashPattern] { ..., ** }
+#  162|       getKey: [SymbolLiteral] :x
+#  162|         getComponent: [StringTextComponent] x
+#  162|       getValue: [LocalVariableAccess] v
+#  162|       getKey: [SymbolLiteral] :y
+#  162|         getComponent: [StringTextComponent] y
+#  162|       getValue: [IntegerLiteral] 1
 modules/classes.rb:
 #    2| [Toplevel] classes.rb
 #    3|   getStmt: [ClassDeclaration] Foo

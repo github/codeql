@@ -3,8 +3,12 @@ edges
 | summaries.py:32:20:32:25 | ControlFlowNode for SOURCE | summaries.py:32:11:32:26 | ControlFlowNode for identity() |
 | summaries.py:36:18:36:54 | ControlFlowNode for apply_lambda() | summaries.py:37:6:37:19 | ControlFlowNode for tainted_lambda |
 | summaries.py:36:48:36:53 | ControlFlowNode for SOURCE | summaries.py:36:18:36:54 | ControlFlowNode for apply_lambda() |
+| summaries.py:44:16:44:33 | ControlFlowNode for reversed() [List element] | summaries.py:45:6:45:17 | ControlFlowNode for tainted_list [List element] |
 | summaries.py:44:25:44:32 | ControlFlowNode for List | summaries.py:45:6:45:20 | ControlFlowNode for Subscript |
+| summaries.py:44:25:44:32 | ControlFlowNode for List [List element] | summaries.py:44:16:44:33 | ControlFlowNode for reversed() [List element] |
 | summaries.py:44:26:44:31 | ControlFlowNode for SOURCE | summaries.py:44:25:44:32 | ControlFlowNode for List |
+| summaries.py:44:26:44:31 | ControlFlowNode for SOURCE | summaries.py:44:25:44:32 | ControlFlowNode for List [List element] |
+| summaries.py:45:6:45:17 | ControlFlowNode for tainted_list [List element] | summaries.py:45:6:45:20 | ControlFlowNode for Subscript |
 | summaries.py:51:18:51:46 | ControlFlowNode for list_map() [List element] | summaries.py:52:6:52:19 | ControlFlowNode for tainted_mapped [List element] |
 | summaries.py:51:38:51:45 | ControlFlowNode for List [List element] | summaries.py:51:18:51:46 | ControlFlowNode for list_map() [List element] |
 | summaries.py:51:39:51:44 | ControlFlowNode for SOURCE | summaries.py:51:38:51:45 | ControlFlowNode for List [List element] |
@@ -31,8 +35,11 @@ nodes
 | summaries.py:36:18:36:54 | ControlFlowNode for apply_lambda() | semmle.label | ControlFlowNode for apply_lambda() |
 | summaries.py:36:48:36:53 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | summaries.py:37:6:37:19 | ControlFlowNode for tainted_lambda | semmle.label | ControlFlowNode for tainted_lambda |
+| summaries.py:44:16:44:33 | ControlFlowNode for reversed() [List element] | semmle.label | ControlFlowNode for reversed() [List element] |
 | summaries.py:44:25:44:32 | ControlFlowNode for List | semmle.label | ControlFlowNode for List |
+| summaries.py:44:25:44:32 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
 | summaries.py:44:26:44:31 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| summaries.py:45:6:45:17 | ControlFlowNode for tainted_list [List element] | semmle.label | ControlFlowNode for tainted_list [List element] |
 | summaries.py:45:6:45:20 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | summaries.py:51:18:51:46 | ControlFlowNode for list_map() [List element] | semmle.label | ControlFlowNode for list_map() [List element] |
 | summaries.py:51:38:51:45 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |

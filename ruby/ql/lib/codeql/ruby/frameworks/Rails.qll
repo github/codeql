@@ -29,16 +29,13 @@ private module RenderCallUtils {
     result = getTemplatePathValue(renderCall).regexpCapture("^/?(.*/)?(?:[^/]*?)$", 1)
   }
 
-  // everything after the final slash, or the whole string if there is no slash
-  private string getBaseName(MethodCall renderCall) {
-    result = getTemplatePathValue(renderCall).regexpCapture("^/?(?:.*/)?([^/]*?)$", 1)
-  }
-
   /**
    * Gets the template file to be rendered by this render call, if any.
    */
   ErbFile getTemplateFile(MethodCall renderCall) {
-    result.getTemplateName() = getBaseName(renderCall) and
+    // everything after the final slash, or the whole string if there is no slash
+    result.getTemplateName() =
+      getTemplatePathValue(renderCall).regexpCapture("^/?(?:.*/)?([^/]*?)$", 1) and
     result.getRelativePath().matches("%app/views/" + getSubPath(renderCall) + "%")
   }
 
@@ -230,7 +227,8 @@ private module Settings {
  * production code.
  */
 private class AllowForgeryProtectionSetting extends Settings::BooleanSetting,
-  CsrfProtectionSetting::Range {
+  CsrfProtectionSetting::Range
+{
   AllowForgeryProtectionSetting() {
     this = Config::actionController().getAMethodCall("allow_forgery_protection=")
   }
@@ -244,7 +242,8 @@ private class AllowForgeryProtectionSetting extends Settings::BooleanSetting,
  * https://ruby-doc.org/stdlib-2.7.1/libdoc/openssl/rdoc/OpenSSL/Cipher.html
  */
 private class EncryptedCookieCipherSetting extends Settings::StringlikeSetting,
-  CookieSecurityConfigurationSetting::Range {
+  CookieSecurityConfigurationSetting::Range
+{
   EncryptedCookieCipherSetting() {
     this = Config::actionDispatch().getAMethodCall("encrypted_cookie_cipher=")
   }
@@ -264,7 +263,8 @@ private class EncryptedCookieCipherSetting extends Settings::StringlikeSetting,
  * than the older AES-256-CBC cipher. Defaults to true.
  */
 private class UseAuthenticatedCookieEncryptionSetting extends Settings::BooleanSetting,
-  CookieSecurityConfigurationSetting::Range {
+  CookieSecurityConfigurationSetting::Range
+{
   UseAuthenticatedCookieEncryptionSetting() {
     this = Config::actionDispatch().getAMethodCall("use_authenticated_cookie_encryption=")
   }
@@ -286,7 +286,8 @@ private class UseAuthenticatedCookieEncryptionSetting extends Settings::BooleanS
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite#strict
  */
 private class CookiesSameSiteProtectionSetting extends Settings::NillableStringlikeSetting,
-  CookieSecurityConfigurationSetting::Range {
+  CookieSecurityConfigurationSetting::Range
+{
   CookiesSameSiteProtectionSetting() {
     this = Config::actionDispatch().getAMethodCall("cookies_same_site_protection=")
   }
@@ -303,6 +304,13 @@ private class CookiesSameSiteProtectionSetting extends Settings::NillableStringl
   }
 }
 
+pragma[nomagic]
+private predicate isPotentialRenderCall(MethodCall renderCall, Location loc, ErbFile erbFile) {
+  renderCall.getMethodName() = "render" and
+  loc = renderCall.getLocation() and
+  RenderCallUtils::getTemplateFile(renderCall) = erbFile
+}
+
 // TODO: initialization hooks, e.g. before_configuration, after_initialize...
 // TODO: initializers
 /** A synthetic global to represent the value passed to the `locals` argument of a render call for a specific ERB file. */
@@ -313,10 +321,11 @@ private class LocalAssignsHashSyntheticGlobal extends SummaryComponent::Syntheti
   private MethodCall renderCall;
 
   LocalAssignsHashSyntheticGlobal() {
-    this = "LocalAssignsHashSyntheticGlobal+" + id and
-    id = erbFile.getRelativePath() + "+" + renderCall.getLocation() and
-    renderCall.getMethodName() = "render" and
-    RenderCallUtils::getTemplateFile(renderCall) = erbFile
+    exists(Location loc |
+      this = "LocalAssignsHashSyntheticGlobal+" + id and
+      isPotentialRenderCall(renderCall, loc, erbFile) and
+      id = erbFile.getRelativePath() + "+" + loc
+    )
   }
 
   /** Gets the `ErbFile` which this locals hash is accessible from. */

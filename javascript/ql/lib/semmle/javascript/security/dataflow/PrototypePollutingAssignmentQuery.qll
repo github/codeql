@@ -168,7 +168,8 @@ private predicate isPropertyPresentOnObjectPrototype(string prop) {
 
 /** A check of form `e.prop` where `prop` is not present on `Object.prototype`. */
 private class PropertyPresenceCheck extends TaintTracking::LabeledSanitizerGuardNode,
-  DataFlow::ValueNode {
+  DataFlow::ValueNode
+{
   override PropAccess astNode;
 
   PropertyPresenceCheck() {

@@ -481,3 +481,26 @@ class C18 : I2
         i.M2();
     }
 }
+
+class C19
+{
+    public static C19 operator +(C19 x, C19 y) => throw null;
+    public static C19 operator checked +(C19 x, C19 y) => throw null;
+    public static explicit operator int(C19 x) => throw null;
+    public static explicit operator checked int(C19 x) => throw null;
+
+    void Run(C19 c)
+    {
+        // Viable callables: C19.op_Addition()
+        var c1 = c + c;
+
+        // Viable callables: C19.op_CheckedAddition()
+        var c2 = checked(c + c);
+
+        // Viable callables: C19.op_Explicit()
+        var n1 = (int)c;
+
+        // Viable callables: C19.op_CheckedExplicit()
+        var n2 = checked((int)c);
+    }
+}

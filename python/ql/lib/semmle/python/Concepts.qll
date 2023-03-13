@@ -1025,7 +1025,8 @@ module Http {
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `CsrfLocalProtectionSetting::Range` instead.
      */
-    class CsrfLocalProtectionSetting extends DataFlow::Node instanceof CsrfLocalProtectionSetting::Range {
+    class CsrfLocalProtectionSetting extends DataFlow::Node instanceof CsrfLocalProtectionSetting::Range
+    {
       /**
        * Gets a request handler whose CSRF protection is changed.
        */

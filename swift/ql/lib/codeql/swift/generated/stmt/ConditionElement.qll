@@ -2,6 +2,7 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
+import codeql.swift.elements.AvailabilityInfo
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 
@@ -77,5 +78,28 @@ module Generated {
      * Holds if `getInitializer()` exists.
      */
     final predicate hasInitializer() { exists(getInitializer()) }
+
+    /**
+     * Gets the availability of this condition element, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    AvailabilityInfo getImmediateAvailability() {
+      result =
+        Synth::convertAvailabilityInfoFromRaw(Synth::convertConditionElementToRaw(this)
+              .(Raw::ConditionElement)
+              .getAvailability())
+    }
+
+    /**
+     * Gets the availability of this condition element, if it exists.
+     */
+    final AvailabilityInfo getAvailability() { result = getImmediateAvailability().resolve() }
+
+    /**
+     * Holds if `getAvailability()` exists.
+     */
+    final predicate hasAvailability() { exists(getAvailability()) }
   }
 }

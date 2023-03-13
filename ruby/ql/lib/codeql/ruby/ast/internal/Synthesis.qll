@@ -16,12 +16,16 @@ newtype SynthKind =
   BitwiseAndExprKind() or
   BitwiseOrExprKind() or
   BitwiseXorExprKind() or
+  BooleanLiteralKind(boolean value) { value = true or value = false } or
   BraceBlockKind() or
+  CaseMatchKind() or
   ClassVariableAccessKind(ClassVariable v) or
   DivExprKind() or
+  ElseKind() or
   ExponentExprKind() or
   GlobalVariableAccessKind(GlobalVariable v) or
   IfKind() or
+  InClauseKind() or
   InstanceVariableAccessKind(InstanceVariable v) or
   IntegerLiteralKind(int i) { i in [-1000 .. 1000] } or
   LShiftExprKind() or
@@ -1494,6 +1498,105 @@ private module SafeNavigationCallDesugar {
         n = seq.getStmt(1).(IfExpr).getElse().(MethodCall).getReceiver() and
         hasLocation(call.getReceiverImpl(), l)
       )
+    }
+  }
+}
+
+private module TestPatternDesugar {
+  /**
+   * ```rb
+   * expr in pattern
+   * ```
+   * desugars to
+   *
+   * ```rb
+   * case expr
+   *   in pattern then true
+   *   else false
+   * end
+   * ```
+   */
+  pragma[nomagic]
+  private predicate testPatternSynthesis(AstNode parent, int i, Child child) {
+    exists(TestPattern test |
+      parent = test and
+      i = -1 and
+      child = SynthChild(CaseMatchKind())
+      or
+      exists(TCaseMatchSynth case | case = TCaseMatchSynth(test, -1) |
+        parent = case and
+        (
+          child = childRef(test.getValue()) and i = 0
+          or
+          child = SynthChild(InClauseKind()) and i = 1
+          or
+          child = SynthChild(ElseKind()) and i = 2
+        )
+        or
+        parent = TInClauseSynth(case, 1) and
+        (
+          child = childRef(test.getPattern()) and
+          i = 0
+          or
+          child = SynthChild(BooleanLiteralKind(true)) and i = 1
+        )
+        or
+        parent = TElseSynth(case, 2) and
+        child = SynthChild(BooleanLiteralKind(false)) and
+        i = 0
+      )
+    )
+  }
+
+  private class TestPatternSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      testPatternSynthesis(parent, i, child)
+    }
+  }
+}
+
+private module MatchPatternDesugar {
+  /**
+   * ```rb
+   * expr => pattern
+   * ```
+   * desugars to
+   *
+   * ```rb
+   * case expr
+   *   in pattern then nil
+   * end
+   * ```
+   */
+  pragma[nomagic]
+  private predicate matchPatternSynthesis(AstNode parent, int i, Child child) {
+    exists(MatchPattern test |
+      parent = test and
+      i = -1 and
+      child = SynthChild(CaseMatchKind())
+      or
+      exists(TCaseMatchSynth case | case = TCaseMatchSynth(test, -1) |
+        parent = case and
+        (
+          child = childRef(test.getValue()) and i = 0
+          or
+          child = SynthChild(InClauseKind()) and i = 1
+        )
+        or
+        parent = TInClauseSynth(case, 1) and
+        (
+          child = childRef(test.getPattern()) and
+          i = 0
+          or
+          child = SynthChild(NilLiteralKind()) and i = 1
+        )
+      )
+    )
+  }
+
+  private class MatchPatternSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      matchPatternSynthesis(parent, i, child)
     }
   }
 }

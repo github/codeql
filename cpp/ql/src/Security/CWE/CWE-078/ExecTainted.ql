@@ -22,7 +22,7 @@ import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.ir.dataflow.TaintTracking2
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.models.implementations.Strcat
-import DataFlow::PathGraph
+import ExecTaint::PathGraph
 
 Expr sinkAsArgumentIndirection(DataFlow::Node sink) {
   result =
@@ -67,28 +67,28 @@ predicate interestingConcatenation(DataFlow::Node fst, DataFlow::Node snd) {
   )
 }
 
-class ConcatState extends DataFlow::FlowState {
-  ConcatState() { this = "ConcatState" }
+newtype TState =
+  TConcatState() or
+  TExecState(DataFlow::Node fst, DataFlow::Node snd) { interestingConcatenation(fst, snd) }
+
+class ConcatState extends TConcatState {
+  string toString() { result = "ConcatState" }
 }
 
-class ExecState extends DataFlow::FlowState {
+class ExecState extends TExecState {
   DataFlow::Node fst;
   DataFlow::Node snd;
 
-  ExecState() {
-    this =
-      "ExecState (" + fst.getLocation() + " | " + fst + ", " + snd.getLocation() + " | " + snd + ")" and
-    interestingConcatenation(pragma[only_bind_into](fst), pragma[only_bind_into](snd))
-  }
+  ExecState() { this = TExecState(fst, snd) }
 
   DataFlow::Node getFstNode() { result = fst }
 
   DataFlow::Node getSndNode() { result = snd }
 
   /** Holds if this is a possible `ExecState` for `sink`. */
-  predicate isFeasibleForSink(DataFlow::Node sink) {
-    any(ExecStateConfiguration conf).hasFlow(snd, sink)
-  }
+  predicate isFeasibleForSink(DataFlow::Node sink) { ExecState::hasFlow(snd, sink) }
+
+  string toString() { result = "ExecState" }
 }
 
 /**
@@ -96,45 +96,42 @@ class ExecState extends DataFlow::FlowState {
  * given sink. This avoids a cartesian product between all sinks and all `ExecState`s in
  * `ExecTaintConfiguration::isSink`.
  */
-class ExecStateConfiguration extends TaintTracking2::Configuration {
-  ExecStateConfiguration() { this = "ExecStateConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
+module ExecStateConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(ExecState state | state.getSndNode() = source)
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    shellCommand(sinkAsArgumentIndirection(sink), _)
-  }
+  predicate isSink(DataFlow::Node sink) { shellCommand(sinkAsArgumentIndirection(sink), _) }
 
-  override predicate isSanitizerOut(DataFlow::Node node) {
-    isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
+  predicate isBarrierOut(DataFlow::Node node) {
+    isSink(node) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
   }
 }
 
-class ExecTaintConfiguration extends TaintTracking::Configuration {
-  ExecTaintConfiguration() { this = "ExecTaintConfiguration" }
+module ExecState = TaintTracking::Make<ExecStateConfiguration>;
 
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+module ExecTaintConfiguration implements DataFlow::StateConfigSig {
+  class FlowState = TState;
+
+  predicate isSource(DataFlow::Node source, FlowState state) {
     source instanceof FlowSource and
     state instanceof ConcatState
   }
 
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    any(ExecStateConfiguration conf).isSink(sink) and
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    ExecStateConfiguration::isSink(sink) and
     state.(ExecState).isFeasibleForSink(sink)
   }
 
-  override predicate isAdditionalTaintStep(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
     state1 instanceof ConcatState and
     state2.(ExecState).getFstNode() = node1 and
     state2.(ExecState).getSndNode() = node2
   }
 
-  override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
     (
       node.asInstruction().getResultType() instanceof IntegralType
       or
@@ -143,16 +140,18 @@ class ExecTaintConfiguration extends TaintTracking::Configuration {
     state instanceof ConcatState
   }
 
-  override predicate isSanitizerOut(DataFlow::Node node) {
+  predicate isBarrierOut(DataFlow::Node node) {
     isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
   }
 }
 
+module ExecTaint = TaintTracking::MakeWithState<ExecTaintConfiguration>;
+
 from
-  ExecTaintConfiguration conf, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode,
-  string taintCause, string callChain, DataFlow::Node concatResult
+  ExecTaint::PathNode sourceNode, ExecTaint::PathNode sinkNode, string taintCause, string callChain,
+  DataFlow::Node concatResult
 where
-  conf.hasFlowPath(sourceNode, sinkNode) and
+  ExecTaint::hasFlowPath(sourceNode, sinkNode) and
   taintCause = sourceNode.getNode().(FlowSource).getSourceType() and
   shellCommand(sinkAsArgumentIndirection(sinkNode.getNode()), callChain) and
   concatResult = sinkNode.getState().(ExecState).getSndNode()

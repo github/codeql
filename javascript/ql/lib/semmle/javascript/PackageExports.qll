@@ -45,6 +45,9 @@ private DataFlow::Node getAValueExportedByPackage() {
   // module.exports = new Foo();
   exists(DataFlow::SourceNode callee |
     callee = getAValueExportedByPackage().(DataFlow::NewNode).getCalleeNode().getALocalSource()
+    or
+    callee.(DataFlow::ClassNode).getConstructor() =
+      getAValueExportedByPackage().(DataFlow::NewNode).getCalleeNode().getAFunctionValue()
   |
     result = callee.getAPropertyRead("prototype").getAPropertyWrite(publicPropertyName()).getRhs()
     or
@@ -130,7 +133,9 @@ private DataFlow::Node getAValueExportedByPackage() {
     DataFlow::globalVarRef("define").getACall().getAnArgument() = factory.getALocalUse() and
     func.getFile() =
       min(int j, File f |
-        f = NodeModule::resolveMainModule(any(PackageJson pack | exists(pack.getPackageName())), j)
+        f =
+          NodeModule::resolveMainModule(any(PackageJson pack | exists(pack.getPackageName())), j,
+            ".")
       |
         f order by j
       )

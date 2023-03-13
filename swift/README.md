@@ -25,7 +25,7 @@ Notice you can run `bazel run :create-extractor-pack` if you already are in the 
 Using `codeql ... --search-path=swift/extractor-pack` will then pick up the Swift extractor. You can also use
 `--search-path=.`, as the extractor pack is mentioned in the root `codeql-workspace.yml`. Alternatively, you can
 set up the search path
-in [the per-user CodeQL configuration file](https://codeql.github.com/docs/codeql-cli/specifying-command-options-in-a-codeql-configuration-file/#using-a-codeql-configuration-file)
+in [the per-user CodeQL configuration file](https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/specifying-command-options-in-a-codeql-configuration-file#using-a-codeql-configuration-file)
 .
 
 ## Code generation
@@ -38,6 +38,8 @@ bazel run //swift/codegen
 
 to update generated files. This can be shortened to
 `bazel run codegen` if you are in the `swift` directory.
+
+You can also run `../misc/codegen/codegen.py`, as long as you are beneath the `swift` directory.
 
 ## IDE setup
 

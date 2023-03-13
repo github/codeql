@@ -19,4 +19,4 @@ from foo_explicit.bar.a import explicit_afunc
 
 afunc() # $ MISSING: pt,tt=afunc
 
-explicit_afunc() # $ pt=explicit_afunc MISSING: tt=explicit_afunc
+explicit_afunc() # $ pt,tt="foo_explicit/bar/a.py:explicit_afunc"

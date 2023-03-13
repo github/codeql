@@ -5,6 +5,10 @@ import semmle.code.java.security.XSS
 import semmle.code.java.security.UrlRedirect
 import TestUtilities.InlineFlowTest
 
+class EnableLegacy extends EnableLegacyConfiguration {
+  EnableLegacy() { exists(this) }
+}
+
 class Conf extends TaintTracking::Configuration {
   Conf() { this = "qltest:frameworks:apache-http" }
 

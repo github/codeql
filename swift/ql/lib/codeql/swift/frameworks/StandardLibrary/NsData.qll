@@ -1,4 +1,6 @@
-/** Provides classes and models to work with `NSData`-related objects. */
+/**
+ * Provides models for `NSData` and related Swift classes.
+ */
 
 import swift
 private import codeql.swift.dataflow.DataFlow
@@ -81,7 +83,8 @@ private class NsDataTaintedFields extends TaintInheritingContent, DataFlow::Cont
 
 /** A content implying that, if a `NSMutableData` object is tainted, some of its fields are also tainted. */
 private class NsMutableDataTaintedFields extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
+  DataFlow::Content::FieldContent
+{
   NsMutableDataTaintedFields() {
     exists(FieldDecl f | this.getField() = f |
       f.getEnclosingDecl() instanceof NsMutableData and

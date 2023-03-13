@@ -43,3 +43,10 @@ app.get('/terminal', function(req, res) {
   shell.write(taint); // NOT OK
 });
   
+require("express-ws")(app);
+
+app.ws("/socket-thing/", function (ws, req) {
+  ws.on("message", function (msg) {
+    eval(msg); // NOT OK
+  });
+});

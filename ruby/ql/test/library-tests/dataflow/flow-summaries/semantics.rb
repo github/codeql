@@ -44,9 +44,9 @@ end
 
 def m8
     sink(s8 { source "a" }) # $ hasValueFlow=a
-    sink(s8 do # $hasValueFlow=a
+    sink(s8 do
         source "a" 
-    end)
+    end) # $hasValueFlow=a
 end
 
 def m9

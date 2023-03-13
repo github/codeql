@@ -26229,6 +26229,59 @@
             </dependencies>
         </relation>
         <relation>
+            <name>scoped_annotation</name>
+            <cardinality>43498</cardinality>
+            <columnsizes>
+                <e>
+                    <k>id</k>
+                    <v>43498</v>
+                </e>
+                <e>
+                    <k>kind</k>
+                    <v>18</v>
+                </e>
+            </columnsizes>
+            <dependencies>
+                <dep>
+                    <src>id</src>
+                    <trg>kind</trg>
+                    <val>
+                        <hist>
+                            <budget>12</budget>
+                            <bs>
+                                <b>
+                                    <a>1</a>
+                                    <b>2</b>
+                                    <v>43498</v>
+                                </b>
+                            </bs>
+                        </hist>
+                    </val>
+                </dep>
+                <dep>
+                    <src>kind</src>
+                    <trg>id</trg>
+                    <val>
+                        <hist>
+                            <budget>12</budget>
+                            <bs>
+                                <b>
+                                    <a>11</a>
+                                    <b>12</b>
+                                    <v>9</v>
+                                </b>
+                                <b>
+                                    <a>4599</a>
+                                    <b>4600</b>
+                                    <v>9</v>
+                                </b>
+                            </bs>
+                        </hist>
+                    </val>
+                </dep>
+            </dependencies>
+        </relation>
+        <relation>
             <name>statements</name>
             <cardinality>2458000</cardinality>
             <columnsizes>

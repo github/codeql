@@ -67,9 +67,10 @@
  *    "taint" indicates a default additional taint step and "value" indicates a
  *    globally applicable value-preserving step.
  * 9. The `provenance` column is a tag to indicate the origin of the summary.
- *    There are two supported values: "generated" and "manual". "generated" means that
- *    the model has been emitted by the model generator tool and "manual" means
- *    that the model has been written by hand.
+ *    The supported values are: "manual", "generated" and "ai-generated". "manual"
+ *    means that the model has been written by hand, "generated" means that
+ *    the model has been emitted by the model generator tool and
+ *    "ai-generated" means that the model has been AI generated (ATM project).
  */
 
 import java
@@ -261,9 +262,9 @@ module ModelValidation {
         [
           "open-url", "jndi-injection", "ldap", "sql", "jdbc-url", "logging", "mvel", "xpath",
           "groovy", "xss", "ognl-injection", "intent-start", "pending-intent-sent",
-          "url-open-stream", "url-redirect", "create-file", "write-file", "set-hostname-verifier",
-          "header-splitting", "information-leak", "xslt", "jexl", "bean-validation", "ssti",
-          "fragment-injection"
+          "url-open-stream", "url-redirect", "create-file", "read-file", "write-file",
+          "set-hostname-verifier", "header-splitting", "information-leak", "xslt", "jexl",
+          "bean-validation", "ssti", "fragment-injection"
         ] and
       not kind.matches("regex-use%") and
       not kind.matches("qltest%") and
@@ -308,7 +309,7 @@ module ModelValidation {
       not ext.regexpMatch("|Annotated") and
       result = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
       or
-      not provenance = ["manual", "generated"] and
+      not provenance = ["manual", "generated", "ai-generated"] and
       result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
   }
@@ -336,26 +337,17 @@ private predicate elementSpec(
   neutralModel(package, type, name, signature, _) and ext = "" and subtypes = false
 }
 
-private string paramsStringPart(Callable c, int i) {
-  i = -1 and result = "("
-  or
-  exists(int n, string p | c.getParameterType(n).getErasure().toString() = p |
-    i = 2 * n and result = p
-    or
-    i = 2 * n - 1 and result = "," and n != 0
-  )
-  or
-  i = 2 * c.getNumberOfParameters() and result = ")"
-}
-
 /**
  * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
  *
- * Returns the empty string if the callable has no parameters.
+ * Returns an empty parenthesized string if the callable has no parameters.
  * Parameter types are represented by their type erasure.
  */
 cached
-string paramsString(Callable c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
+string paramsString(Callable c) {
+  result =
+    "(" + concat(int i | | c.getParameterType(i).getErasure().toString(), "," order by i) + ")"
+}
 
 private Element interpretElement0(
   string package, string type, boolean subtypes, string name, string signature

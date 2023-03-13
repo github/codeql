@@ -1,7 +1,7 @@
 /** Provides a class hierarchy corresponding to a parse tree of regular expressions. */
 
 private import internal.ParseRegExp
-private import codeql.NumberUtils
+private import codeql.util.Numbers
 private import codeql.ruby.ast.Literal as Ast
 private import codeql.Locations
 private import codeql.regex.nfa.NfaUtils as NfaUtils

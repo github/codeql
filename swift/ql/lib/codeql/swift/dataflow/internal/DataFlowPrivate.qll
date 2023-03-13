@@ -7,6 +7,7 @@ private import codeql.swift.dataflow.Ssa
 private import codeql.swift.controlflow.BasicBlocks
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import codeql.swift.frameworks.StandardLibrary.PointerTypes
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -153,6 +154,9 @@ private module Cached {
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(OptionalEvaluationExpr).getSubExpr()
     or
+    // flow through unary `+` (which does nothing)
+    nodeFrom.asExpr() = nodeTo.asExpr().(UnaryPlusExpr).getOperand()
+    or
     // flow through nil-coalescing operator `??`
     exists(BinaryExpr nco |
       nco.getOperator().(FreeFunctionDecl).getName() = "??(_:_:)" and
@@ -207,7 +211,7 @@ private module Cached {
 private predicate modifiable(Argument arg) {
   arg.getExpr() instanceof InOutExpr
   or
-  arg.getExpr().getType() instanceof NominalType
+  arg.getExpr().getType() instanceof NominalOrBoundGenericNominalType
 }
 
 predicate modifiableParam(ParamDecl param) {
@@ -392,6 +396,19 @@ abstract class ReturnNode extends Node {
 private module ReturnNodes {
   class ReturnReturnNode extends ReturnNode, ExprNode {
     ReturnReturnNode() { exists(ReturnStmt stmt | stmt.getResult() = this.asExpr()) }
+
+    override ReturnKind getKind() { result instanceof NormalReturnKind }
+  }
+
+  /**
+   * A data-flow node that represents the `self` value in a constructor being
+   * implicitly returned as the newly-constructed object
+   */
+  class SelfReturnNode extends InoutReturnNodeImpl {
+    SelfReturnNode() {
+      exit.getScope() instanceof ConstructorDecl and
+      param instanceof SelfParamDecl
+    }
 
     override ReturnKind getKind() { result instanceof NormalReturnKind }
   }
@@ -693,3 +710,12 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

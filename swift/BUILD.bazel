@@ -15,6 +15,12 @@ filegroup(
     visibility = ["//swift:__subpackages__"],
 )
 
+filegroup(
+    name = "codegen_conf",
+    srcs = ["codegen.conf"],
+    visibility = ["//swift:__subpackages__"],
+)
+
 pkg_files(
     name = "dbscheme_files",
     srcs = [

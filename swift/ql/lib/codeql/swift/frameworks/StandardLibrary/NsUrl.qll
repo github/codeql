@@ -1,3 +1,7 @@
+/**
+ * Provides models for the `NSURL` Swift class.
+ */
+
 import swift
 private import codeql.swift.dataflow.ExternalFlow
 

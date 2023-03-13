@@ -2732,6 +2732,30 @@ control/cases.rb:
 #  157|         3: [ReservedWord] )
 #  157|       2: [ReservedWord] ;
 #  158|     5: [ReservedWord] end
+#  160|   17: [TestPattern] TestPattern
+#  160|     0: [Identifier] expr
+#  160|     1: [ReservedWord] in
+#  160|     2: [ArrayPattern] ArrayPattern
+#  160|       0: [ReservedWord] [
+#  160|       1: [Integer] 1
+#  160|       2: [ReservedWord] ,
+#  160|       3: [Integer] 2
+#  160|       4: [ReservedWord] ]
+#  162|   18: [MatchPattern] MatchPattern
+#  162|     0: [Identifier] expr
+#  162|     1: [ReservedWord] =>
+#  162|     2: [HashPattern] HashPattern
+#  162|       0: [ReservedWord] {
+#  162|       1: [KeywordPattern] KeywordPattern
+#  162|         0: [HashKeySymbol] x
+#  162|         1: [ReservedWord] :
+#  162|         2: [Identifier] v
+#  162|       2: [ReservedWord] ,
+#  162|       3: [KeywordPattern] KeywordPattern
+#  162|         0: [HashKeySymbol] y
+#  162|         1: [ReservedWord] :
+#  162|         2: [Integer] 1
+#  162|       4: [ReservedWord] }
 #    1| [Comment] # Define some variables used below
 #    7| [Comment] # A case expr with a value and an else branch
 #   17| [Comment] # A case expr without a value or else branch

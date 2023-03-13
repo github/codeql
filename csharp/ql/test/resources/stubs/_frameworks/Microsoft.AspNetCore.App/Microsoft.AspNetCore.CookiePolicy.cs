@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.CookiePolicy, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,18 +7,17 @@ namespace Microsoft
     {
         namespace Builder
         {
-            // Generated from `Microsoft.AspNetCore.Builder.CookiePolicyAppBuilderExtensions` in `Microsoft.AspNetCore.CookiePolicy, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class CookiePolicyAppBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseCookiePolicy(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseCookiePolicy(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, Microsoft.AspNetCore.Builder.CookiePolicyOptions options) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.CookiePolicyOptions` in `Microsoft.AspNetCore.CookiePolicy, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class CookiePolicyOptions
             {
                 public System.Func<Microsoft.AspNetCore.Http.HttpContext, bool> CheckConsentNeeded { get => throw null; set => throw null; }
                 public Microsoft.AspNetCore.Http.CookieBuilder ConsentCookie { get => throw null; set => throw null; }
+                public string ConsentCookieValue { get => throw null; set => throw null; }
                 public CookiePolicyOptions() => throw null;
                 public Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy HttpOnly { get => throw null; set => throw null; }
                 public Microsoft.AspNetCore.Http.SameSiteMode MinimumSameSitePolicy { get => throw null; set => throw null; }
@@ -29,7 +29,6 @@ namespace Microsoft
         }
         namespace CookiePolicy
         {
-            // Generated from `Microsoft.AspNetCore.CookiePolicy.AppendCookieContext` in `Microsoft.AspNetCore.CookiePolicy, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AppendCookieContext
             {
                 public AppendCookieContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Http.CookieOptions options, string name, string value) => throw null;
@@ -42,7 +41,6 @@ namespace Microsoft
                 public bool IssueCookie { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.CookiePolicy.CookiePolicyMiddleware` in `Microsoft.AspNetCore.CookiePolicy, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class CookiePolicyMiddleware
             {
                 public CookiePolicyMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.CookiePolicyOptions> options) => throw null;
@@ -51,7 +49,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Builder.CookiePolicyOptions Options { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.CookiePolicy.DeleteCookieContext` in `Microsoft.AspNetCore.CookiePolicy, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DeleteCookieContext
             {
                 public Microsoft.AspNetCore.Http.HttpContext Context { get => throw null; }
@@ -63,7 +60,6 @@ namespace Microsoft
                 public bool IssueCookie { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy` in `Microsoft.AspNetCore.CookiePolicy, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public enum HttpOnlyPolicy : int
             {
                 Always = 1,
@@ -76,7 +72,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.CookiePolicyServiceCollectionExtensions` in `Microsoft.AspNetCore.CookiePolicy, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class CookiePolicyServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddCookiePolicy(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.Builder.CookiePolicyOptions> configureOptions) => throw null;

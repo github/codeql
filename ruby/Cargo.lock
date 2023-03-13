@@ -487,18 +487,18 @@ checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 
 [[package]]
 name = "serde"
-version = "1.0.152"
+version = "1.0.155"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bb7d1f0d3021d347a83e556fc4683dea2ea09d87bccdf88ff5c12545d89d5efb"
+checksum = "71f2b4817415c6d4210bfe1c7bfcf4801b2d904cb4d0e1a8fdb651013c9e86b8"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.152"
+version = "1.0.155"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "af487d118eecd09402d70a5d72551860e788df87b464af30e5ea6a38c75c541e"
+checksum = "d071a94a3fac4aff69d023a7f411e33f40f3483f8c5190b1953822b6b76d7630"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -507,9 +507,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.91"
+version = "1.0.94"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "877c235533714907a8c2464236f5c4b2a17262ef1bd71f38f35ea592c8da6883"
+checksum = "1c533a59c9d8a93a09c6ab31f0fd5e5f4dd1b8fc9434804029839884765d04ea"
 dependencies = [
  "itoa",
  "ryu",
@@ -646,9 +646,9 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter"
-version = "0.20.9"
+version = "0.20.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d4423c784fe11398ca91e505cdc71356b07b1a924fc8735cfab5333afe3e18bc"
+checksum = "549a9faf45679ad50b7f603253635598cf5e007d8ceb806a23f95355938f76a0"
 dependencies = [
  "cc",
  "regex",
@@ -657,7 +657,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-embedded-template"
 version = "0.20.0"
-source = "git+https://github.com/tree-sitter/tree-sitter-embedded-template.git?rev=a13085849cf69e2401ec44e38cffc3d73f22f3df#a13085849cf69e2401ec44e38cffc3d73f22f3df"
+source = "git+https://github.com/tree-sitter/tree-sitter-embedded-template.git?rev=203f7bd3c1bbfbd98fc19add4b8fcb213c059205#203f7bd3c1bbfbd98fc19add4b8fcb213c059205"
 dependencies = [
  "cc",
  "tree-sitter",
@@ -666,7 +666,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-ruby"
 version = "0.20.0"
-source = "git+https://github.com/tree-sitter/tree-sitter-ruby.git?rev=7a1921bcfd90e3a04c1ad011059087aaf0168dd4#7a1921bcfd90e3a04c1ad011059087aaf0168dd4"
+source = "git+https://github.com/tree-sitter/tree-sitter-ruby.git?rev=206c7077164372c596ffa8eaadb9435c28941364#206c7077164372c596ffa8eaadb9435c28941364"
 dependencies = [
  "cc",
  "tree-sitter",

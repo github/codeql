@@ -1,3 +1,7 @@
+/**
+ * Provides models for the `FilePath` Swift class.
+ */
+
 import swift
 private import codeql.swift.dataflow.ExternalFlow
 

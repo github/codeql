@@ -1,6 +1,7 @@
 classEvalCallCodeExecutions
 | Module.rb:29:1:29:47 | call to class_eval | Module.rb:29:16:29:32 | "def foo; 1; end" |
 moduleEvalCallCodeExecutions
+| Eval.rb:24:1:24:54 | call to module_eval | Eval.rb:24:17:24:33 | "def bar; 1; end" |
 | Module.rb:30:1:30:54 | call to module_eval | Module.rb:30:17:30:33 | "def bar; 1; end" |
 moduleConstGetCallCodeExecutions
 | Module.rb:1:1:1:24 | call to const_get | Module.rb:1:18:1:23 | "Math" |

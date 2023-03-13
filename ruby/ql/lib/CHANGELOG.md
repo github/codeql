@@ -1,3 +1,17 @@
+## 0.5.4
+
+### Minor Analysis Improvements
+
+* Flow is now tracked between ActionController `before_filter` and `after_filter` callbacks and their associated action methods.
+* Calls to `ApplicationController#render` and `ApplicationController::Renderer#render` are recognized as Rails rendering calls.
+* Support for [Twirp framework](https://twitchtv.github.io/twirp/docs/intro.html).
+
+## 0.5.3
+
+### Minor Analysis Improvements
+
+ * Ruby 3.1: one-line pattern matches are now supported. The AST nodes are named `TestPattern` (`expr in pattern`) and `MatchPattern` (`expr => pattern`).
+
 ## 0.5.2
 
 ### Minor Analysis Improvements

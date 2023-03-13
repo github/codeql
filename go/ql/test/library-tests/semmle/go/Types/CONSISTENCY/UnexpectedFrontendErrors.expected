@@ -1,1 +1,1 @@
-| unknownFunction.go:9:7:9:7 | undeclared name: unknownFunction |
+| unknownFunction.go:9:7:9:7 | undefined: unknownFunction |

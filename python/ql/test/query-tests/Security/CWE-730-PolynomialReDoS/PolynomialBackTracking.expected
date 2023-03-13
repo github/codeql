@@ -1,2 +1,4 @@
 | test.py:8:12:8:23 | Str | test.py:8:21:8:23 | \\s+ | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s+$ |
 | test.py:9:14:9:29 | Str | test.py:9:27:9:29 | \\d+ | Strings starting with '0.9' and with many repetitions of '99' can start matching anywhere after the start of the preceeding \\d+ |
+| test.py:11:22:11:33 | Str | test.py:11:31:11:33 | \\s+ | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s+$ |
+| test.py:18:14:18:25 | Str | test.py:18:23:18:25 | \\s+ | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s+$ |

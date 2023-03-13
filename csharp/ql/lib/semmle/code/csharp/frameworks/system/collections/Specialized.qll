@@ -19,6 +19,7 @@ class SystemCollectionsSpecializedClass extends Class {
 }
 
 /** The `System.Collections.Specialized.NameValueCollection` class. */
-class SystemCollectionsSpecializedNameValueCollectionClass extends SystemCollectionsSpecializedClass {
+class SystemCollectionsSpecializedNameValueCollectionClass extends SystemCollectionsSpecializedClass
+{
   SystemCollectionsSpecializedNameValueCollectionClass() { this.hasName("NameValueCollection") }
 }

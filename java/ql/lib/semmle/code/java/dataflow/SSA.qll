@@ -384,7 +384,7 @@ private module SsaImpl {
   private predicate intraInstanceCallEdge(Callable c1, Method m2) {
     exists(MethodAccess ma, RefType t1 |
       ma.getCaller() = c1 and
-      m2 = viableImpl(ma) and
+      m2 = viableImpl_v2(ma) and
       not m2.isStatic() and
       (
         not exists(ma.getQualifier()) or
@@ -402,7 +402,7 @@ private module SsaImpl {
   }
 
   private Callable tgt(Call c) {
-    result = viableImpl(c)
+    result = viableImpl_v2(c)
     or
     result = getRunnerTarget(c)
     or

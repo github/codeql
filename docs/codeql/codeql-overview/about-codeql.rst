@@ -71,8 +71,8 @@ After you've created a CodeQL database, one or more queries are executed
 against it. CodeQL queries are written in a specially-designed object-oriented
 query language called QL. You can run the queries checked out from the CodeQL
 repo (or custom queries that you've written yourself) using the :ref:`CodeQL
-for VS Code extension <codeql-for-visual-studio-code>` or the :ref:`CodeQL CLI
-<codeql-cli>`. For more information about queries, see ":ref:`About CodeQL queries <about-codeql-queries>`." 
+for VS Code extension <codeql-for-visual-studio-code>` or the `CodeQL CLI
+<https://docs.github.com/en/code-security/codeql-cli>`__. For more information about queries, see ":ref:`About CodeQL queries <about-codeql-queries>`." 
 
 .. _interpret-query-results:
 

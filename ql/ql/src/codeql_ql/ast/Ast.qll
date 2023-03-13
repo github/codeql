@@ -1808,7 +1808,7 @@ class FullAggregate extends TFullAggregate, Aggregate {
 
   /**
    * Gets the kind of aggregate.
-   * E.g. for `min(int i | foo(i))` the result is "foo".
+   * E.g. for `min(int i | foo(i))` the result is "min".
    */
   override string getKind() { result = kind }
 

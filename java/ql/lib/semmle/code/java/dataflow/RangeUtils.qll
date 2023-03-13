@@ -6,6 +6,7 @@ import java
 private import SSA
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
+private import semmle.code.java.Constants
 
 /**
  * Holds if `v` is an input to `phi` that is not along a back edge, and the
@@ -86,7 +87,28 @@ private predicate constantIntegerExpr(Expr e, int val) {
     arrlen.getQualifier() = a.getAnAccess() and
     e = arrlen
   )
+  or
+  CalcConstants::calculateIntValue(e) = val
 }
+
+pragma[nomagic]
+private predicate constantBooleanExpr(Expr e, boolean val) {
+  e.(CompileTimeConstantExpr).getBooleanValue() = val
+  or
+  exists(SsaExplicitUpdate v, Expr src |
+    e = v.getAUse() and
+    src = v.getDefiningExpr().(VariableAssign).getSource() and
+    constantBooleanExpr(src, val)
+  )
+  or
+  CalcConstants::calculateBooleanValue(e) = val
+}
+
+private boolean getBoolValue(Expr e) { constantBooleanExpr(e, result) }
+
+private int getIntValue(Expr e) { constantIntegerExpr(e, result) }
+
+private module CalcConstants = CalculateConstants<getBoolValue/1, getIntValue/1>;
 
 /** An expression that always has the same integer value. */
 class ConstantIntegerExpr extends Expr {
@@ -94,6 +116,14 @@ class ConstantIntegerExpr extends Expr {
 
   /** Gets the integer value of this expression. */
   int getIntValue() { constantIntegerExpr(this, result) }
+}
+
+/** An expression that always has the same boolean value. */
+class ConstantBooleanExpr extends Expr {
+  ConstantBooleanExpr() { constantBooleanExpr(this, _) }
+
+  /** Gets the boolean value of this expression. */
+  boolean getBooleanValue() { constantBooleanExpr(this, result) }
 }
 
 /**

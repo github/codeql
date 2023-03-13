@@ -3,15 +3,18 @@ private import DataFlowImplSpecific::Public
 import Cached
 
 module DataFlowImplCommonPublic {
-  /** A state value to track during data flow. */
-  class FlowState = string;
+  /** Provides `FlowState = string`. */
+  module FlowStateString {
+    /** A state value to track during data flow. */
+    class FlowState = string;
 
-  /**
-   * The default state, which is used when the state is unspecified for a source
-   * or a sink.
-   */
-  class FlowStateEmpty extends FlowState {
-    FlowStateEmpty() { this = "" }
+    /**
+     * The default state, which is used when the state is unspecified for a source
+     * or a sink.
+     */
+    class FlowStateEmpty extends FlowState {
+      FlowStateEmpty() { this = "" }
+    }
   }
 
   private newtype TFlowFeature =
@@ -707,8 +710,8 @@ private module Cached {
      * Gets a viable dispatch target of `call` in the context `ctx`. This is
      * restricted to those `call`s for which a context might make a difference.
      */
-    pragma[nomagic]
-    private DataFlowCallable viableImplInCallContextExt(DataFlowCall call, DataFlowCall ctx) {
+    cached
+    DataFlowCallable viableImplInCallContextExt(DataFlowCall call, DataFlowCall ctx) {
       result = viableImplInCallContext(call, ctx) and
       result = viableCallable(call)
       or
@@ -1391,6 +1394,9 @@ class TypedContentApprox extends MkTypedContentApprox {
   /** Gets a typed content approximated by this value. */
   TypedContent getATypedContent() { result = getATypedContent(this) }
 
+  /** Gets the content. */
+  ContentApprox getContent() { result = c }
+
   /** Gets the container type. */
   DataFlowType getContainerType() { result = t }
 
@@ -1407,6 +1413,8 @@ abstract class ApproxAccessPathFront extends TApproxAccessPathFront {
   abstract DataFlowType getType();
 
   abstract boolean toBoolNonEmpty();
+
+  TypedContentApprox getHead() { this = TApproxFrontHead(result) }
 
   pragma[nomagic]
   TypedContent getAHead() {

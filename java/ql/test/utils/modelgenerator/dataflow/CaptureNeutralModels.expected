@@ -3,7 +3,6 @@
 | p;FluentAPI$Inner;notThis;(String);generated |
 | p;ImmutablePojo;getX;();generated |
 | p;Joiner;length;();generated |
-| p;MultipleImpls$Strategy;doSomething;(String);generated |
 | p;ParamFlow;ignorePrimitiveReturnValue;(String);generated |
 | p;ParamFlow;mapType;(Class);generated |
 | p;Pojo;doNotSetValue;(String);generated |

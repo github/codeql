@@ -50,21 +50,21 @@ func testURLs() async {
 	do
 	{
 		let url = URL(string: "http://example.com/")!
-		let bytes = url.resourceBytes // SOURCE
+		let bytes = url.resourceBytes // $ source=remote
 
 		for try await byte in bytes
 		{
 			print(byte)
 		}
 
-		let lines = url.lines // SOURCE
+		let lines = url.lines // $ source=remote
 
 		for try await line in lines
 		{
 			print(line)
 		}
 
-		let lines2 = bytes.lines // SOURCE
+		let lines2 = bytes.lines // $ source=remote
 
 		for try await line in lines2
 		{

@@ -85,9 +85,13 @@ module Gem {
 
     /** Gets a parameter from an exported method, which is an input to this gem. */
     DataFlow::ParameterNode getAnInputParameter() {
-      exists(MethodBase method | method = getAPublicModule().getAMethod() |
-        result.getParameter() = method.getAParameter() and
+      exists(MethodBase method |
+        method = getAPublicModule().getAMethod() and
+        result.getParameter() = method.getAParameter()
+      |
         method.isPublic()
+        or
+        method.isProtected()
       )
     }
   }

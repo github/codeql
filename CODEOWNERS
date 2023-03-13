@@ -6,6 +6,7 @@
 /python/ @github/codeql-python
 /ruby/ @github/codeql-ruby
 /swift/ @github/codeql-swift
+/misc/codegen/ @github/codeql-swift
 /java/kotlin-extractor/ @github/codeql-kotlin
 /java/kotlin-explorer/ @github/codeql-kotlin
 

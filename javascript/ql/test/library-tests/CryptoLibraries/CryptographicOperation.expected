@@ -1,31 +1,35 @@
-| tst.js:1:1:1:27 | asmCryp ... (input) | SHA256 | tst.js:1:22:1:26 | input |
-| tst.js:5:5:5:43 | jwcrypt ... retKey) | DSA | tst.js:5:19:5:23 | input |
-| tst.js:10:18:10:55 | cipher. ...  'hex') | AES192 | tst.js:10:32:10:39 | 'input1' |
-| tst.js:11:18:11:54 | cipher. ...  'hex') | AES192 | tst.js:11:31:11:38 | 'input2' |
-| tst.js:15:1:15:21 | hash.up ... nput1') | SHA256 | tst.js:15:13:15:20 | 'input1' |
-| tst.js:16:1:16:20 | hash.write('input2') | SHA256 | tst.js:16:12:16:19 | 'input2' |
-| tst.js:20:1:20:21 | hmac.up ... nput1') | SHA256 | tst.js:20:13:20:20 | 'input1' |
-| tst.js:21:1:21:20 | hmac.write('input2') | SHA256 | tst.js:21:12:21:19 | 'input2' |
-| tst.js:25:1:25:21 | sign.up ... nput1') | SHA256 | tst.js:25:13:25:20 | 'input1' |
-| tst.js:26:1:26:20 | sign.write('input2') | SHA256 | tst.js:26:12:26:19 | 'input2' |
-| tst.js:29:1:29:52 | CryptoJ ... y 123') | AES | tst.js:29:22:29:33 | 'my message' |
-| tst.js:32:1:32:31 | CryptoJ ...  "Key") | SHA1 | tst.js:32:15:32:23 | "Message" |
-| tst.js:35:1:35:35 | CryptoJ ...  "Key") | SHA1 | tst.js:35:19:35:27 | "Message" |
-| tst.js:37:1:37:64 | require ... y 123') | AES | tst.js:37:34:37:45 | 'my message' |
-| tst.js:39:1:39:43 | require ...  "Key") | SHA1 | tst.js:39:27:39:35 | "Message" |
-| tst.js:41:1:41:34 | require ... ssage') | ED25519 | tst.js:41:22:41:33 | 'my message' |
-| tst.js:43:1:43:34 | require ... ssage') | SHA512 | tst.js:43:22:43:33 | 'my message' |
-| tst.js:45:1:45:39 | require ... ssage') | ED25519 | tst.js:45:27:45:38 | 'my message' |
-| tst.js:47:1:47:39 | require ... ssage') | SHA512 | tst.js:47:27:47:38 | 'my message' |
-| tst.js:49:1:49:41 | require ... ('abc') | SHA256 | tst.js:49:36:49:40 | 'abc' |
-| tst.js:51:1:51:51 | require ... ('abc') | SHA512 | tst.js:51:46:51:50 | 'abc' |
-| tst.js:53:1:53:86 | require ... y dog') | MD5 | tst.js:53:41:53:85 | 'The qu ... zy dog' |
-| tst.js:55:1:55:91 | require ... y dog') | MD5 | tst.js:55:46:55:90 | 'The qu ... zy dog' |
-| tst.js:57:1:57:65 | require ... ecret") | RC2 | tst.js:57:57:57:64 | "secret" |
-| tst.js:59:1:59:70 | require ... ecret") | 3DES | tst.js:59:62:59:69 | "secret" |
-| tst.js:61:1:61:25 | require ... ssage") | MD5 | tst.js:61:16:61:24 | "message" |
-| tst.js:63:1:63:32 | require ... ssword) | BCRYPT | tst.js:63:24:63:31 | password |
-| tst.js:65:1:65:36 | require ... ssword) | BCRYPT | tst.js:65:28:65:35 | password |
-| tst.js:67:1:67:34 | require ... ssword) | BCRYPT | tst.js:67:26:67:33 | password |
-| tst.js:69:1:69:39 | require ... ssword) | BCRYPT | tst.js:69:31:69:38 | password |
-| tst.js:71:1:71:49 | require ... md5" }) | MD5 | tst.js:71:18:71:26 | 'unicorn' |
+| tst.js:1:1:1:27 | asmCryp ... (input) | SHA256 | tst.js:1:22:1:26 | input | <none> |
+| tst.js:3:1:3:41 | asmCryp ... ey, iv) | AES | tst.js:3:27:3:31 | input | OFB |
+| tst.js:7:5:7:43 | jwcrypt ... retKey) | DSA | tst.js:7:19:7:23 | input | <none> |
+| tst.js:12:18:12:55 | cipher. ...  'hex') | AES192 | tst.js:12:32:12:39 | 'input1' | CBC |
+| tst.js:13:18:13:54 | cipher. ...  'hex') | AES192 | tst.js:13:31:13:38 | 'input2' | CBC |
+| tst.js:17:1:17:21 | hash.up ... nput1') | SHA256 | tst.js:17:13:17:20 | 'input1' | <none> |
+| tst.js:18:1:18:20 | hash.write('input2') | SHA256 | tst.js:18:12:18:19 | 'input2' | <none> |
+| tst.js:22:1:22:21 | hmac.up ... nput1') | SHA256 | tst.js:22:13:22:20 | 'input1' | <none> |
+| tst.js:23:1:23:20 | hmac.write('input2') | SHA256 | tst.js:23:12:23:19 | 'input2' | <none> |
+| tst.js:27:1:27:21 | sign.up ... nput1') | SHA256 | tst.js:27:13:27:20 | 'input1' | <none> |
+| tst.js:28:1:28:20 | sign.write('input2') | SHA256 | tst.js:28:12:28:19 | 'input2' | <none> |
+| tst.js:32:1:32:38 | cipher. ...  'hex') | AES | tst.js:32:15:32:22 | 'input1' | ECB |
+| tst.js:33:1:33:37 | cipher. ...  'hex') | AES | tst.js:33:14:33:21 | 'input2' | ECB |
+| tst.js:36:1:36:52 | CryptoJ ... y 123') | AES | tst.js:36:22:36:33 | 'my message' | CBC |
+| tst.js:39:1:39:31 | CryptoJ ...  "Key") | SHA1 | tst.js:39:15:39:23 | "Message" | <none> |
+| tst.js:42:1:42:35 | CryptoJ ...  "Key") | SHA1 | tst.js:42:19:42:27 | "Message" | <none> |
+| tst.js:44:1:44:64 | require ... y 123') | AES | tst.js:44:34:44:45 | 'my message' | CBC |
+| tst.js:46:1:46:43 | require ...  "Key") | SHA1 | tst.js:46:27:46:35 | "Message" | <none> |
+| tst.js:50:1:50:40 | CryptoJ ... , opts) | AES | tst.js:50:22:50:26 | "msg" | CFB |
+| tst.js:52:1:52:34 | require ... ssage') | ED25519 | tst.js:52:22:52:33 | 'my message' | <none> |
+| tst.js:54:1:54:34 | require ... ssage') | SHA512 | tst.js:54:22:54:33 | 'my message' | <none> |
+| tst.js:56:1:56:39 | require ... ssage') | ED25519 | tst.js:56:27:56:38 | 'my message' | <none> |
+| tst.js:58:1:58:39 | require ... ssage') | SHA512 | tst.js:58:27:58:38 | 'my message' | <none> |
+| tst.js:60:1:60:41 | require ... ('abc') | SHA256 | tst.js:60:36:60:40 | 'abc' | <none> |
+| tst.js:62:1:62:51 | require ... ('abc') | SHA512 | tst.js:62:46:62:50 | 'abc' | <none> |
+| tst.js:64:1:64:86 | require ... y dog') | MD5 | tst.js:64:41:64:85 | 'The qu ... zy dog' | <none> |
+| tst.js:66:1:66:91 | require ... y dog') | MD5 | tst.js:66:46:66:90 | 'The qu ... zy dog' | <none> |
+| tst.js:68:1:68:65 | require ... ecret") | RC2 | tst.js:68:57:68:64 | "secret" | <unknown> |
+| tst.js:70:1:70:70 | require ... ecret") | 3DES | tst.js:70:62:70:69 | "secret" | CBC |
+| tst.js:72:1:72:25 | require ... ssage") | MD5 | tst.js:72:16:72:24 | "message" | <none> |
+| tst.js:74:1:74:32 | require ... ssword) | BCRYPT | tst.js:74:24:74:31 | password | <none> |
+| tst.js:76:1:76:36 | require ... ssword) | BCRYPT | tst.js:76:28:76:35 | password | <none> |
+| tst.js:78:1:78:34 | require ... ssword) | BCRYPT | tst.js:78:26:78:33 | password | <none> |
+| tst.js:80:1:80:39 | require ... ssword) | BCRYPT | tst.js:80:31:80:38 | password | <none> |
+| tst.js:82:1:82:49 | require ... md5" }) | MD5 | tst.js:82:18:82:26 | 'unicorn' | <none> |

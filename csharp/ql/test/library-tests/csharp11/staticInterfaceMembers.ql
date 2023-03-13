@@ -16,3 +16,9 @@ query predicate implements(Overridable o, Virtualizable v) {
   v.isStatic() and
   v.getAnImplementor() = o
 }
+
+query predicate publicmembers(Member m) {
+  m.getFile().getStem() = "StaticInterfaceMembers" and
+  m.getDeclaringType().getName() = "Complex" and
+  m.isPublic()
+}

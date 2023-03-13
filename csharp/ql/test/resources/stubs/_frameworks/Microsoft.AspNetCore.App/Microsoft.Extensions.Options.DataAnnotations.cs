@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Options.DataAnnotations, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.OptionsBuilderDataAnnotationsExtensions` in `Microsoft.Extensions.Options.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class OptionsBuilderDataAnnotationsExtensions
             {
                 public static Microsoft.Extensions.Options.OptionsBuilder<TOptions> ValidateDataAnnotations<TOptions>(this Microsoft.Extensions.Options.OptionsBuilder<TOptions> optionsBuilder) where TOptions : class => throw null;
@@ -15,28 +15,12 @@ namespace Microsoft
         }
         namespace Options
         {
-            // Generated from `Microsoft.Extensions.Options.DataAnnotationValidateOptions<>` in `Microsoft.Extensions.Options.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DataAnnotationValidateOptions<TOptions> : Microsoft.Extensions.Options.IValidateOptions<TOptions> where TOptions : class
             {
                 public DataAnnotationValidateOptions(string name) => throw null;
                 public string Name { get => throw null; }
                 public Microsoft.Extensions.Options.ValidateOptionsResult Validate(string name, TOptions options) => throw null;
             }
-
-        }
-    }
-}
-namespace System
-{
-    namespace Diagnostics
-    {
-        namespace CodeAnalysis
-        {
-            /* Duplicate type 'DynamicallyAccessedMemberTypes' is not stubbed in this assembly 'Microsoft.Extensions.Options.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'. */
-
-            /* Duplicate type 'DynamicallyAccessedMembersAttribute' is not stubbed in this assembly 'Microsoft.Extensions.Options.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'. */
-
-            /* Duplicate type 'RequiresUnreferencedCodeAttribute' is not stubbed in this assembly 'Microsoft.Extensions.Options.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'. */
 
         }
     }

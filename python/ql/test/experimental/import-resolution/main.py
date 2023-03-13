@@ -84,6 +84,15 @@ from attr_clash import clashing_attr, non_clashing_submodule #$ imports=attr_cla
 check("clashing_attr", clashing_attr, "clashing_attr", globals()) #$ prints=clashing_attr SPURIOUS: prints="<module attr_clash.clashing_attr>"
 check("non_clashing_submodule", non_clashing_submodule, "<module attr_clash.non_clashing_submodule>", globals()) #$ prints="<module attr_clash.non_clashing_submodule>"
 
+
+# check that import * from an __init__ file works
+from package.subpackage2 import *
+check("subpackage2_attr", subpackage2_attr, "subpackage2_attr", globals()) #$ prints=subpackage2_attr
+
+# check that definitions from within if-then-else are found
+from if_then_else import if_then_else_defined
+check("if_then_else_defined", if_then_else_defined, "if_defined", globals()) #$ prints=if_defined prints=else_defined_1 prints=else_defined_2
+
 exit(__file__)
 
 print()
@@ -91,4 +100,4 @@ print()
 if status() == 0:
     print("PASS")
 else:
-    print("FAIL")
+    sys.exit("FAIL")
