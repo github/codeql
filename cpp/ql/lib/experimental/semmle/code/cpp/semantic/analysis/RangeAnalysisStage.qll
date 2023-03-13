@@ -230,7 +230,9 @@ signature module UtilSig<DeltaSig DeltaParam> {
 signature module BoundSig<DeltaSig D> {
   class SemBound {
     string toString();
+
     Location getLocation();
+
     SemExpr getExpr(D::Delta delta);
   }
 

@@ -15,7 +15,7 @@ private import semmle.code.cpp.Location // TODO: SemLocation?
 class SemBound instanceof Specific::Bound {
   final string toString() { result = super.toString() }
 
-  final Location getLocation() {result = super.getLocation() }
+  final Location getLocation() { result = super.getLocation() }
 
   final SemExpr getExpr(int delta) { result = Specific::getBoundExpr(this, delta) }
 }
