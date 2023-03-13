@@ -55,7 +55,8 @@ class JwtParserWithInsecureParseAdditionalFlowStep extends Unit {
 }
 
 /** A set of additional flow steps to consider when working with JWT parsing related data flows. */
-private class DefaultJwtParserWithInsecureParseAdditionalFlowStep extends JwtParserWithInsecureParseAdditionalFlowStep {
+private class DefaultJwtParserWithInsecureParseAdditionalFlowStep extends JwtParserWithInsecureParseAdditionalFlowStep
+{
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     jwtParserStep(node1.asExpr(), node2.asExpr())
   }

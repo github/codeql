@@ -24,12 +24,12 @@ func taintThroughArithmetic() {
 
   // overflow operators
 
-  sink(arg: 1 &+ source()) // $ MISSING: tainted=
-  sink(arg: source() &+ 1) // $ MISSING: tainted=
-  sink(arg: 1 &- source()) // $ MISSING: tainted=
-  sink(arg: source() &- 1) // $ MISSING: tainted=
-  sink(arg: 2 &* source()) // $ MISSING: tainted=
-  sink(arg: source() &* 2) // $ MISSING: tainted=
+  sink(arg: 1 &+ source()) // $ tainted=27
+  sink(arg: source() &+ 1) // $ tainted=28
+  sink(arg: 1 &- source()) // $ tainted=29
+  sink(arg: source() &- 1) // $ tainted=30
+  sink(arg: 2 &* source()) // $ tainted=31
+  sink(arg: source() &* 2) // $ tainted=32
 }
 
 func taintThroughAssignmentArithmetic() {
@@ -67,4 +67,22 @@ func taintThroughAssignmentArithmetic() {
   sink(arg: e) // $ tainted=66
   e %= 100
   sink(arg: e) // $ tainted=66
+}
+
+func taintThroughBitwiseOperators() {
+  sink(arg: 0 | source()) // $ tainted=73
+  sink(arg: source() | 0) // $ tainted=74
+
+  sink(arg: 0xffff & source()) // $ tainted=76
+  sink(arg: source() & 0xffff) // $ tainted=77
+
+  sink(arg: 0xffff ^ source()) // $ tainted=79
+  sink(arg: source() ^ 0xffff) // $ tainted=80
+
+  sink(arg: source() << 1) // $ tainted=82
+  sink(arg: source() &<< 1) // $ tainted=83
+  sink(arg: source() >> 1) // $ tainted=84
+  sink(arg: source() &>> 1) // $ tainted=85
+
+  sink(arg: ~source()) // $ tainted=87
 }

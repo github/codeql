@@ -10,6 +10,8 @@ import com.semmle.js.parser.ParseError;
 import com.semmle.util.data.Pair;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
+import com.semmle.js.extractor.ParseResultInfo;
+import java.util.Collections;
 import java.util.List;
 
 /** Extractor for populating JSON files. */
@@ -31,12 +33,12 @@ public class JSONExtractor implements IExtractor {
   }
 
   @Override
-  public LoCInfo extract(final TextualExtractor textualExtractor) {
+  public ParseResultInfo extract(final TextualExtractor textualExtractor) {
     final TrapWriter trapwriter = textualExtractor.getTrapwriter();
     final LocationManager locationManager = textualExtractor.getLocationManager();
     try {
       String source = textualExtractor.getSource();
-      Pair<JSONValue, List<ParseError>> res = new JSONParser().parseValue(source);
+      Pair<JSONValue, List<ParseError>> res = JSONParser.parseValue(source);
       JSONValue v = res.fst();
       List<ParseError> recoverableErrors = res.snd();
       if (!recoverableErrors.isEmpty() && !tolerateParseErrors)
@@ -90,13 +92,14 @@ public class JSONExtractor implements IExtractor {
 
       for (ParseError e : recoverableErrors)
         populateError(textualExtractor, trapwriter, locationManager, e);
+
+      return new ParseResultInfo(0, 0, recoverableErrors);
     } catch (ParseError e) {
       if (!this.tolerateParseErrors) throw e.asUserError();
 
       populateError(textualExtractor, trapwriter, locationManager, e);
+      return new ParseResultInfo(0, 0, Collections.emptyList());
     }
-
-    return new LoCInfo(0, 0);
   }
 
   private void populateError(

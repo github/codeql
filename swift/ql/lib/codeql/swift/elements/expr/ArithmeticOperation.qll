@@ -45,30 +45,33 @@ class BinaryArithmeticOperation extends BinaryExpr {
  * An add expression.
  * ```
  * a + b
+ * a &+ b
  * ```
  */
 class AddExpr extends BinaryExpr {
-  AddExpr() { this.getStaticTarget().getName() = "+(_:_:)" }
+  AddExpr() { this.getStaticTarget().getName() = ["+(_:_:)", "&+(_:_:)"] }
 }
 
 /**
  * A subtract expression.
  * ```
  * a - b
+ * a &- b
  * ```
  */
 class SubExpr extends BinaryExpr {
-  SubExpr() { this.getStaticTarget().getName() = "-(_:_:)" }
+  SubExpr() { this.getStaticTarget().getName() = ["-(_:_:)", "&-(_:_:)"] }
 }
 
 /**
  * A multiply expression.
  * ```
  * a * b
+ * a &* b
  * ```
  */
 class MulExpr extends BinaryExpr {
-  MulExpr() { this.getStaticTarget().getName() = "*(_:_:)" }
+  MulExpr() { this.getStaticTarget().getName() = ["*(_:_:)", "&*(_:_:)"] }
 }
 
 /**

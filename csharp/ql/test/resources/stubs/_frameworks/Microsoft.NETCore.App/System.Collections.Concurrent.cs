@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Collections.Concurrent, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Concurrent
         {
-            // Generated from `System.Collections.Concurrent.BlockingCollection<>` in `System.Collections.Concurrent, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class BlockingCollection<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.ICollection, System.Collections.IEnumerable, System.IDisposable
             {
                 public void Add(T item) => throw null;
@@ -55,7 +55,6 @@ namespace System
                 public static int TryTakeFromAny(System.Collections.Concurrent.BlockingCollection<T>[] collections, out T item, int millisecondsTimeout, System.Threading.CancellationToken cancellationToken) => throw null;
             }
 
-            // Generated from `System.Collections.Concurrent.ConcurrentBag<>` in `System.Collections.Concurrent, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ConcurrentBag<T> : System.Collections.Concurrent.IProducerConsumerCollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.ICollection, System.Collections.IEnumerable
             {
                 public void Add(T item) => throw null;
@@ -76,7 +75,6 @@ namespace System
                 public bool TryTake(out T result) => throw null;
             }
 
-            // Generated from `System.Collections.Concurrent.ConcurrentDictionary<,>` in `System.Collections.Concurrent, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ConcurrentDictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable
             {
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Add(System.Collections.Generic.KeyValuePair<TKey, TValue> keyValuePair) => throw null;
@@ -131,7 +129,6 @@ namespace System
                 System.Collections.ICollection System.Collections.IDictionary.Values { get => throw null; }
             }
 
-            // Generated from `System.Collections.Concurrent.ConcurrentQueue<>` in `System.Collections.Concurrent, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ConcurrentQueue<T> : System.Collections.Concurrent.IProducerConsumerCollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.ICollection, System.Collections.IEnumerable
             {
                 public void Clear() => throw null;
@@ -153,7 +150,6 @@ namespace System
                 bool System.Collections.Concurrent.IProducerConsumerCollection<T>.TryTake(out T item) => throw null;
             }
 
-            // Generated from `System.Collections.Concurrent.ConcurrentStack<>` in `System.Collections.Concurrent, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ConcurrentStack<T> : System.Collections.Concurrent.IProducerConsumerCollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.ICollection, System.Collections.IEnumerable
             {
                 public void Clear() => throw null;
@@ -179,7 +175,6 @@ namespace System
                 bool System.Collections.Concurrent.IProducerConsumerCollection<T>.TryTake(out T item) => throw null;
             }
 
-            // Generated from `System.Collections.Concurrent.EnumerablePartitionerOptions` in `System.Collections.Concurrent, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum EnumerablePartitionerOptions : int
             {
@@ -187,7 +182,6 @@ namespace System
                 None = 0,
             }
 
-            // Generated from `System.Collections.Concurrent.IProducerConsumerCollection<>` in `System.Collections.Concurrent, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IProducerConsumerCollection<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.ICollection, System.Collections.IEnumerable
             {
                 void CopyTo(T[] array, int index);
@@ -196,7 +190,6 @@ namespace System
                 bool TryTake(out T item);
             }
 
-            // Generated from `System.Collections.Concurrent.OrderablePartitioner<>` in `System.Collections.Concurrent, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class OrderablePartitioner<TSource> : System.Collections.Concurrent.Partitioner<TSource>
             {
                 public override System.Collections.Generic.IEnumerable<TSource> GetDynamicPartitions() => throw null;
@@ -209,7 +202,6 @@ namespace System
                 protected OrderablePartitioner(bool keysOrderedInEachPartition, bool keysOrderedAcrossPartitions, bool keysNormalized) => throw null;
             }
 
-            // Generated from `System.Collections.Concurrent.Partitioner` in `System.Collections.Concurrent, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Partitioner
             {
                 public static System.Collections.Concurrent.OrderablePartitioner<System.Tuple<int, int>> Create(int fromInclusive, int toExclusive) => throw null;
@@ -222,7 +214,6 @@ namespace System
                 public static System.Collections.Concurrent.OrderablePartitioner<TSource> Create<TSource>(TSource[] array, bool loadBalance) => throw null;
             }
 
-            // Generated from `System.Collections.Concurrent.Partitioner<>` in `System.Collections.Concurrent, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class Partitioner<TSource>
             {
                 public virtual System.Collections.Generic.IEnumerable<TSource> GetDynamicPartitions() => throw null;

@@ -37,7 +37,8 @@ import javascript
  * ```
  */
 class Function extends @function, Parameterized, TypeParameterized, StmtContainer, Documentable,
-  AST::ValueNode {
+  AST::ValueNode
+{
   /** Gets the `i`th parameter of this function. */
   Parameter getParameter(int i) { result = this.getChildExpr(i) }
 

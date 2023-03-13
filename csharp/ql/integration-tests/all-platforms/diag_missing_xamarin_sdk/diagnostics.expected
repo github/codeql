@@ -11,7 +11,9 @@
     "name": "Some projects or solutions failed to build using .NET Core"
   },
   "visibility": {
-    "statusPage": true
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
   }
 }
 {
@@ -27,7 +29,9 @@
     "name": "Some projects or solutions failed to build using MSBuild"
   },
   "visibility": {
-    "statusPage": true
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
   }
 }
 {
@@ -43,6 +47,8 @@
     "name": "Missing Xamarin SDK for iOS"
   },
   "visibility": {
-    "statusPage": true
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
   }
 }

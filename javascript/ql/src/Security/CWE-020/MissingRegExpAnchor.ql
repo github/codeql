@@ -17,7 +17,8 @@ private import codeql.regex.MissingRegExpAnchor as MissingRegExpAnchor
 private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeImpl
 
 private module Impl implements
-MissingRegExpAnchor::MissingRegExpAnchorSig<TreeImpl, HostnameRegexp::Impl> {
+  MissingRegExpAnchor::MissingRegExpAnchorSig<TreeImpl, HostnameRegexp::Impl>
+{
   predicate isUsedAsReplace(RegExpPatternSource pattern) {
     // is used for capture or replace
     exists(DataFlow::MethodCallNode mcn, string name | name = mcn.getMethodName() |

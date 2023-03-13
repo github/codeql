@@ -13,7 +13,8 @@ import HostnameRegexp as HostnameShared
  * This analysis requires the hostname analysis to be available.
  */
 signature module MissingRegExpAnchorSig<
-RegexTreeViewSig TreeImpl, HostnameShared::HostnameRegexpSig<TreeImpl> Specific> {
+  RegexTreeViewSig TreeImpl, HostnameShared::HostnameRegexpSig<TreeImpl> Specific>
+{
   predicate isUsedAsReplace(Specific::RegExpPatternSource pattern);
 
   /** Gets a string representation of an end anchor from a regular expression. */
@@ -25,8 +26,9 @@ RegexTreeViewSig TreeImpl, HostnameShared::HostnameRegexpSig<TreeImpl> Specific>
  * without anchors.
  */
 module Make<
-RegexTreeViewSig TreeImpl, HostnameShared::HostnameRegexpSig<TreeImpl> HostnameImpl,
-MissingRegExpAnchorSig<TreeImpl, HostnameImpl> Impl> {
+  RegexTreeViewSig TreeImpl, HostnameShared::HostnameRegexpSig<TreeImpl> HostnameImpl,
+  MissingRegExpAnchorSig<TreeImpl, HostnameImpl> Impl>
+{
   private import TreeImpl
   private import HostnameShared::Make<TreeImpl, HostnameImpl> as HostnameRegexp
   private import HostnameImpl

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Razor, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -8,7 +9,6 @@ namespace Microsoft
         {
             namespace TagHelpers
             {
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.DefaultTagHelperContent` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class DefaultTagHelperContent : Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContent
                 {
                     public override Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContent Append(string unencoded) => throw null;
@@ -26,7 +26,6 @@ namespace Microsoft
                     public override void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeNameAttribute` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HtmlAttributeNameAttribute : System.Attribute
                 {
                     public string DictionaryAttributePrefix { get => throw null; set => throw null; }
@@ -36,13 +35,11 @@ namespace Microsoft
                     public string Name { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeNotBoundAttribute` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HtmlAttributeNotBoundAttribute : System.Attribute
                 {
                     public HtmlAttributeNotBoundAttribute() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum HtmlAttributeValueStyle : int
                 {
                     DoubleQuotes = 0,
@@ -51,7 +48,6 @@ namespace Microsoft
                     SingleQuotes = 1,
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.HtmlTargetElementAttribute` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HtmlTargetElementAttribute : System.Attribute
                 {
                     public string Attributes { get => throw null; set => throw null; }
@@ -63,12 +59,10 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Razor.TagHelpers.TagStructure TagStructure { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.ITagHelper` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface ITagHelper : Microsoft.AspNetCore.Razor.TagHelpers.ITagHelperComponent
                 {
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.ITagHelperComponent` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface ITagHelperComponent
                 {
                     void Init(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context);
@@ -76,7 +70,6 @@ namespace Microsoft
                     System.Threading.Tasks.Task ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context, Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput output);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.NullHtmlEncoder` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class NullHtmlEncoder : System.Text.Encodings.Web.HtmlEncoder
                 {
                     public static Microsoft.AspNetCore.Razor.TagHelpers.NullHtmlEncoder Default { get => throw null; }
@@ -89,14 +82,12 @@ namespace Microsoft
                     public override bool WillEncode(int unicodeScalar) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.OutputElementHintAttribute` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class OutputElementHintAttribute : System.Attribute
                 {
                     public string OutputElement { get => throw null; }
                     public OutputElementHintAttribute(string outputElement) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.ReadOnlyTagHelperAttributeList` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class ReadOnlyTagHelperAttributeList : System.Collections.ObjectModel.ReadOnlyCollection<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute>
                 {
                     public bool ContainsName(string name) => throw null;
@@ -109,14 +100,12 @@ namespace Microsoft
                     public bool TryGetAttributes(string name, out System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute> attributes) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.RestrictChildrenAttribute` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RestrictChildrenAttribute : System.Attribute
                 {
                     public System.Collections.Generic.IEnumerable<string> ChildTags { get => throw null; }
                     public RestrictChildrenAttribute(string childTag, params string[] childTags) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.TagHelper` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class TagHelper : Microsoft.AspNetCore.Razor.TagHelpers.ITagHelper, Microsoft.AspNetCore.Razor.TagHelpers.ITagHelperComponent
                 {
                     public virtual void Init(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context) => throw null;
@@ -126,7 +115,6 @@ namespace Microsoft
                     protected TagHelper() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TagHelperAttribute : Microsoft.AspNetCore.Html.IHtmlContent, Microsoft.AspNetCore.Html.IHtmlContentContainer
                 {
                     public void CopyTo(Microsoft.AspNetCore.Html.IHtmlContentBuilder destination) => throw null;
@@ -143,7 +131,6 @@ namespace Microsoft
                     public void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttributeList` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TagHelperAttributeList : Microsoft.AspNetCore.Razor.TagHelpers.ReadOnlyTagHelperAttributeList, System.Collections.Generic.ICollection<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute>, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute>, System.Collections.Generic.IList<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute>, System.Collections.IEnumerable
                 {
                     public void Add(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute attribute) => throw null;
@@ -162,7 +149,6 @@ namespace Microsoft
                     public TagHelperAttributeList(System.Collections.Generic.List<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute> attributes) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.TagHelperComponent` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class TagHelperComponent : Microsoft.AspNetCore.Razor.TagHelpers.ITagHelperComponent
                 {
                     public virtual void Init(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context) => throw null;
@@ -172,7 +158,6 @@ namespace Microsoft
                     protected TagHelperComponent() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContent` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class TagHelperContent : Microsoft.AspNetCore.Html.IHtmlContent, Microsoft.AspNetCore.Html.IHtmlContentBuilder, Microsoft.AspNetCore.Html.IHtmlContentContainer
                 {
                     public abstract Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContent Append(string unencoded);
@@ -199,7 +184,6 @@ namespace Microsoft
                     public abstract void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TagHelperContext
                 {
                     public Microsoft.AspNetCore.Razor.TagHelpers.ReadOnlyTagHelperAttributeList AllAttributes { get => throw null; }
@@ -212,7 +196,6 @@ namespace Microsoft
                     public string UniqueId { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TagHelperOutput : Microsoft.AspNetCore.Html.IHtmlContent, Microsoft.AspNetCore.Html.IHtmlContentContainer
                 {
                     public Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttributeList Attributes { get => throw null; }
@@ -236,7 +219,6 @@ namespace Microsoft
                     public void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.TagMode` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum TagMode : int
                 {
                     SelfClosing = 1,
@@ -244,7 +226,6 @@ namespace Microsoft
                     StartTagOnly = 2,
                 }
 
-                // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.TagStructure` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum TagStructure : int
                 {
                     NormalOrSelfClosing = 1,

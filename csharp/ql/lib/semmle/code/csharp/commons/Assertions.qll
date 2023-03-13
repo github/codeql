@@ -152,7 +152,8 @@ private predicate isDoesNotReturnIfAttributeParameter(Parameter p, boolean value
  * A method with a parameter that is annotated with
  * `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute(false)`.
  */
-class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod extends BooleanAssertMethod {
+class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod extends BooleanAssertMethod
+{
   private int i_;
 
   SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod() {
@@ -170,7 +171,8 @@ class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod exte
  * A method with a parameter that is annotated with
  * `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute(true)`.
  */
-class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod extends BooleanAssertMethod {
+class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod extends BooleanAssertMethod
+{
   private int i_;
 
   SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod() {

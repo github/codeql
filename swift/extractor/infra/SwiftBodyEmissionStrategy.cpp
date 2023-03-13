@@ -16,6 +16,9 @@ bool SwiftBodyEmissionStrategy::shouldEmitDeclBody(const swift::Decl& decl) {
   if (module != &currentModule) {
     return false;
   }
+  if (currentLazyDeclaration && currentLazyDeclaration != &decl) {
+    return false;
+  }
   // ModuleDecl is a special case: if it passed the previous test, it is the current module
   // but it never has a source file, so we short circuit to emit it in any case
   if (!currentPrimarySourceFile || decl.getKind() == swift::DeclKind::Module) {

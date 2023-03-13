@@ -79,7 +79,8 @@ class FileSystemAccessAsExpensiveAction extends ExpensiveAction instanceof FileS
 }
 
 /** A system command execution, considered as an expensive action. */
-class SystemCommandExecutionAsExpensiveAction extends ExpensiveAction instanceof SystemCommandExecution {
+class SystemCommandExecutionAsExpensiveAction extends ExpensiveAction instanceof SystemCommandExecution
+{
   override string describe() { result = "a system command" }
 }
 
@@ -178,8 +179,8 @@ class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
 /**
  * A route-handler expression that is rate-limited by the `rate-limiter-flexible` package.
  */
-class RouteHandlerLimitedByRateLimiterFlexible extends RateLimitingMiddleware instanceof RateLimiterFlexibleRateLimiter {
-}
+class RouteHandlerLimitedByRateLimiterFlexible extends RateLimitingMiddleware instanceof RateLimiterFlexibleRateLimiter
+{ }
 
 private class FastifyRateLimiter extends RateLimitingMiddleware {
   FastifyRateLimiter() { this = DataFlow::moduleImport("fastify-rate-limit") }

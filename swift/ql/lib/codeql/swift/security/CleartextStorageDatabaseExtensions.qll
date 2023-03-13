@@ -124,7 +124,8 @@ private class CleartextStorageDatabaseEncryptionSanitizer extends CleartextStora
  * An additional taint step for cleartext database storage vulnerabilities.
  * Needed until we have proper content flow through arrays.
  */
-private class CleartextStorageDatabaseArrayAdditionalTaintStep extends CleartextStorageDatabaseAdditionalTaintStep {
+private class CleartextStorageDatabaseArrayAdditionalTaintStep extends CleartextStorageDatabaseAdditionalTaintStep
+{
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(ArrayExpr arr |
       nodeFrom.asExpr() = arr.getAnElement() and

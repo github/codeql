@@ -39,6 +39,7 @@ class XssThroughDomQuery extends Query, TXssThroughDomQuery {
 }
 
 class ShellCommandInjectionFromEnvironmentQuery extends Query,
-  TShellCommandInjectionFromEnvironmentQuery {
+  TShellCommandInjectionFromEnvironmentQuery
+{
   override string getName() { result = "ShellCommandInjectionFromEnvironment" }
 }

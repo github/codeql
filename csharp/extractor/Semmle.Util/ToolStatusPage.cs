@@ -58,6 +58,12 @@ namespace Semmle.Util
         public class TspVisibility
         {
             /// <summary>
+            /// A read-only instance of <see cref="TspVisibility" /> which indicates that the
+            /// diagnostic should be used in all supported locations.
+            /// </summary>
+            public static readonly TspVisibility All = new(true, true, true);
+
+            /// <summary>
             /// True if the message should be displayed on the status page (defaults to false).
             /// </summary>
             public bool? StatusPage { get; }
@@ -166,7 +172,7 @@ namespace Semmle.Util
             this.HelpLinks = new List<string>();
             this.Attributes = new Dictionary<string, object>();
             this.Severity = severity;
-            this.Visibility = visibility ?? new TspVisibility(statusPage: true);
+            this.Visibility = visibility ?? TspVisibility.All;
             this.Location = location ?? new TspLocation();
             this.Internal = intrnl ?? false;
             this.MarkdownMessage = markdownMessage;
@@ -175,10 +181,22 @@ namespace Semmle.Util
     }
 
     /// <summary>
+    /// Provides the ability to write diagnostic messages to some output.
+    /// </summary>
+    public interface IDiagnosticsWriter
+    {
+        /// <summary>
+        /// Adds <paramref name="message" /> as a new diagnostics entry.
+        /// </summary>
+        /// <param name="message">The diagnostics entry to add.</param>
+        void AddEntry(DiagnosticMessage message);
+    }
+
+    /// <summary>
     /// A wrapper around an underlying <see cref="StreamWriter" /> which allows
     /// <see cref="DiagnosticMessage" /> objects to be serialized to it.
     /// </summary>
-    public sealed class DiagnosticsStream : IDisposable
+    public sealed class DiagnosticsStream : IDiagnosticsWriter, IDisposable
     {
         private readonly JsonSerializer serializer;
         private readonly StreamWriter writer;

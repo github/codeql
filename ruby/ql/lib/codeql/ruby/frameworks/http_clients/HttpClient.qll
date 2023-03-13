@@ -74,7 +74,8 @@ class HttpClientRequest extends Http::Client::Request::Range, DataFlow::CallNode
 }
 
 /** A configuration to track values that can disable certificate validation for HttpClient. */
-private class HttpClientDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
+private class HttpClientDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration
+{
   HttpClientDisablesCertificateValidationConfiguration() {
     this = "HttpClientDisablesCertificateValidationConfiguration"
   }

@@ -120,7 +120,8 @@ module HtmlSanitization {
   /**
    * An incomplete sanitizer for HTML-relevant characters.
    */
-  class IncompleteSanitizer extends IncompleteBlacklistSanitizer instanceof StringReplaceCallSequence {
+  class IncompleteSanitizer extends IncompleteBlacklistSanitizer instanceof StringReplaceCallSequence
+  {
     string unsanitized;
 
     IncompleteSanitizer() {

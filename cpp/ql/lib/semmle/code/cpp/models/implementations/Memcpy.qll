@@ -15,7 +15,8 @@ import semmle.code.cpp.models.interfaces.Taint
  * `__builtin___memcpy_chk`.
  */
 private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction,
-  AliasFunction {
+  AliasFunction
+{
   MemcpyFunction() {
     // memcpy(dest, src, num)
     // memmove(dest, src, num)

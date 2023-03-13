@@ -11,7 +11,8 @@ private class ParseAsMethod extends Method {
   }
 }
 
-private class TypeLiteralToParseAsFlowConfiguration extends DataFlowForSerializability::Configuration {
+private class TypeLiteralToParseAsFlowConfiguration extends DataFlowForSerializability::Configuration
+{
   TypeLiteralToParseAsFlowConfiguration() {
     this = "GoogleHttpClientApi::TypeLiteralToParseAsFlowConfiguration"
   }

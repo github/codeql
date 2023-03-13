@@ -93,7 +93,8 @@ abstract class InjectableFunction extends DataFlow::ValueNode {
  * An injectable function that does not explicitly list its dependencies,
  * instead relying on implicit matching by parameter names.
  */
-private class FunctionWithImplicitDependencyAnnotation extends InjectableFunction instanceof DataFlow::FunctionNode {
+private class FunctionWithImplicitDependencyAnnotation extends InjectableFunction instanceof DataFlow::FunctionNode
+{
   FunctionWithImplicitDependencyAnnotation() {
     this.(DataFlow::FunctionNode).flowsTo(any(DependencyInjection d).getAnInjectableFunction()) and
     not exists(getAPropertyDependencyInjection(this))
@@ -121,7 +122,8 @@ private DataFlow::PropWrite getAPropertyDependencyInjection(DataFlow::FunctionNo
  * An injectable function with an `$inject` property that lists its
  * dependencies.
  */
-private class FunctionWithInjectProperty extends InjectableFunction instanceof DataFlow::FunctionNode {
+private class FunctionWithInjectProperty extends InjectableFunction instanceof DataFlow::FunctionNode
+{
   DataFlow::ArrayCreationNode dependencies;
 
   FunctionWithInjectProperty() {
@@ -154,7 +156,8 @@ private class FunctionWithInjectProperty extends InjectableFunction instanceof D
 /**
  * An injectable function embedded in an array of dependencies.
  */
-private class FunctionWithExplicitDependencyAnnotation extends InjectableFunction instanceof DataFlow::ArrayCreationNode {
+private class FunctionWithExplicitDependencyAnnotation extends InjectableFunction instanceof DataFlow::ArrayCreationNode
+{
   DataFlow::FunctionNode function;
 
   FunctionWithExplicitDependencyAnnotation() {

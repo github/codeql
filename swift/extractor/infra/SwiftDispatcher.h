@@ -12,6 +12,7 @@
 #include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
 #include "swift/extractor/infra/SwiftBodyEmissionStrategy.h"
+#include "swift/extractor/config/SwiftExtractorState.h"
 
 namespace codeql {
 
@@ -45,10 +46,12 @@ class SwiftDispatcher {
   // all references and pointers passed as parameters to this constructor are supposed to outlive
   // the SwiftDispatcher
   SwiftDispatcher(const swift::SourceManager& sourceManager,
+                  SwiftExtractorState& state,
                   TrapDomain& trap,
                   SwiftLocationExtractor& locationExtractor,
                   SwiftBodyEmissionStrategy& bodyEmissionStrategy)
       : sourceManager{sourceManager},
+        state{state},
         trap{trap},
         locationExtractor{locationExtractor},
         bodyEmissionStrategy{bodyEmissionStrategy} {}
@@ -248,7 +251,23 @@ class SwiftDispatcher {
     locationExtractor.attachLocation(sourceManager, comment, entry.id);
   }
 
+  void extractedDeclaration(const swift::Decl& decl) {
+    if (isLazyDeclaration(decl)) {
+      state.emittedDeclarations.insert(&decl);
+    }
+  }
+  void skippedDeclaration(const swift::Decl& decl) {
+    if (isLazyDeclaration(decl)) {
+      state.pendingDeclarations.insert(&decl);
+    }
+  }
+
  private:
+  bool isLazyDeclaration(const swift::Decl& decl) {
+    swift::ModuleDecl* module = decl.getModuleContext();
+    return module->isBuiltinModule() || module->getName().str() == "__ObjC";
+  }
+
   template <typename T, typename = void>
   struct HasSize : std::false_type {};
 
@@ -302,6 +321,7 @@ class SwiftDispatcher {
   virtual void visit(const swift::CapturedValue* capture) = 0;
 
   const swift::SourceManager& sourceManager;
+  SwiftExtractorState& state;
   TrapDomain& trap;
   Store store;
   SwiftLocationExtractor& locationExtractor;

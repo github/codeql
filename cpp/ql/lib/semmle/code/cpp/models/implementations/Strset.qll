@@ -13,7 +13,8 @@ import semmle.code.cpp.models.interfaces.SideEffect
  * The standard function `strset` and its assorted variants
  */
 private class StrsetFunction extends ArrayFunction, DataFlowFunction, AliasFunction,
-  SideEffectFunction {
+  SideEffectFunction
+{
   StrsetFunction() {
     hasGlobalName([
         "strset", "_strset", "_strset_l", "_wcsset", "_wcsset_l", "_mbsset", "_mbsset_l",
