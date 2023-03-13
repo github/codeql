@@ -55,10 +55,10 @@ jobs:
         id: cache-extractor
         with:
           path: |
-            ruby/extractor/target/release/ruby-autobuilder
-            ruby/extractor/target/release/ruby-autobuilder.exe
-            ruby/extractor/target/release/ruby-extractor
-            ruby/extractor/target/release/ruby-extractor.exe
+            ruby/extractor/target/release/autobuilder
+            ruby/extractor/target/release/autobuilder.exe
+            ruby/extractor/target/release/extractor
+            ruby/extractor/target/release/extractor.exe
             ruby/extractor/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-extractor-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/extractor/Cargo.lock') }}--${{ hashFiles('ruby/extractor/**/*.rs') }}
       - uses: actions/cache@v3
@@ -83,7 +83,7 @@ jobs:
         run: cd extractor && cargo build --release
       - name: Generate dbscheme
         if: ${{ matrix.os == 'ubuntu-latest' && steps.cache-extractor.outputs.cache-hit != 'true'}}
-        run: extractor/target/release/ruby-generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+        run: extractor/target/release/generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
@@ -98,10 +98,10 @@ jobs:
         with:
           name: extractor-${{ matrix.os }}
           path: |
-            ruby/extractor/target/release/ruby-autobuilder
-            ruby/extractor/target/release/ruby-autobuilder.exe
-            ruby/extractor/target/release/ruby-extractor
-            ruby/extractor/target/release/ruby-extractor.exe
+            ruby/extractor/target/release/autobuilder
+            ruby/extractor/target/release/autobuilder.exe
+            ruby/extractor/target/release/extractor
+            ruby/extractor/target/release/extractor.exe
           retention-days: 1
   compile-queries:
     runs-on: ubuntu-latest-xl
@@ -158,12 +158,12 @@ jobs:
           mkdir -p ruby
           cp -r codeql-extractor.yml tools ql/lib/ruby.dbscheme.stats ruby/
           mkdir -p ruby/tools/{linux64,osx64,win64}
-          cp linux64/ruby-autobuilder ruby/tools/linux64/autobuilder
-          cp osx64/ruby-autobuilder ruby/tools/osx64/autobuilder
-          cp win64/ruby-autobuilder.exe ruby/tools/win64/autobuilder.exe
-          cp linux64/ruby-extractor ruby/tools/linux64/extractor
-          cp osx64/ruby-extractor ruby/tools/osx64/extractor
-          cp win64/ruby-extractor.exe ruby/tools/win64/extractor.exe
+          cp linux64/autobuilder ruby/tools/linux64/autobuilder
+          cp osx64/autobuilder ruby/tools/osx64/autobuilder
+          cp win64/autobuilder.exe ruby/tools/win64/autobuilder.exe
+          cp linux64/extractor ruby/tools/linux64/extractor
+          cp osx64/extractor ruby/tools/osx64/extractor
+          cp win64/extractor.exe ruby/tools/win64/extractor.exe
           chmod +x ruby/tools/{linux64,osx64}/{autobuilder,extractor}
           zip -rq codeql-ruby.zip ruby
       - uses: actions/upload-artifact@v3
