@@ -13,7 +13,6 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    codeql-library-for-typescript
    analyzing-data-flow-in-javascript-and-typescript
    using-flow-labels-for-precise-data-flow-analysis
-   customizing-library-models-for-javascript
    specifying-additional-remote-flow-sources-for-javascript
    using-type-tracking-for-api-modeling
    abstract-syntax-tree-classes-for-working-with-javascript-and-typescript-programs

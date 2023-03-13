@@ -1,5 +1,8 @@
 .. _customizing-library-models-for-javascript:
 
+:orphan:
+:nosearch:
+
 Customizing Library Models for JavaScript
 =========================================
 
