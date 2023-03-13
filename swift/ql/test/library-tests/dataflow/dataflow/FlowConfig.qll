@@ -15,7 +15,7 @@ class TestConfiguration extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(CallExpr sinkCall |
-      sinkCall.getStaticTarget().getName() = ["sink(arg:)", "sink(opt:)"] and
+      sinkCall.getStaticTarget().getName() = ["sink(arg:)", "sink(opt:)", "sink(str:)"] and
       sinkCall.getAnArgument().getExpr() = sink.asExpr()
     )
   }
