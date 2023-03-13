@@ -169,8 +169,9 @@ module Sinatra {
   }
 
   /**
-   *  A summary for accessing a local variable in an ERB template.
-   * This is the second half of the modelling of the flow from the `locals` keyword argument to variables in the ERB template.
+   * A summary for accessing a local variable in an ERB template.
+   * This is the second half of the modeling of the flow from the `locals`
+   * keyword argument to variables in the ERB template.
    * The first half is modeled by `ErbLocalsSummary`.
    */
   private class ErbLocalsAccessSummary extends SummarizedCallable {
@@ -233,14 +234,14 @@ module Sinatra {
   }
 
   /**
-   * `before` filters run before the route handler.
+   * A class for Sinatra `before` filters. These run before the route handler.
    */
   class BeforeFilter extends Filter {
     BeforeFilter() { this.getMethodName() = "before" }
   }
 
   /**
-   * `after` filters run after the route handler.
+   * A class for Sinatra `after` filters. These run after the route handler.
    */
   class AfterFilter extends Filter {
     AfterFilter() { this.getMethodName() = "after" }

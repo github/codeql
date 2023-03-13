@@ -92,7 +92,7 @@ class MyApp < Sinatra::Base
   end
   
   get "/home" do
-    sink @user # $ hasTaintFlow=a
+    sink @user # $ hasValueFlow=a
   end
   
   after do
