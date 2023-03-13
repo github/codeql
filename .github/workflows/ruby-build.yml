@@ -74,13 +74,13 @@ jobs:
         run: cd extractor && cargo fmt --all -- --check
       - name: Build
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        run: cargo build --verbose
+        run: cd extractor && cargo build --verbose
       - name: Run tests
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        run: cargo test --verbose
+        run: cd extractor && cargo test --verbose
       - name: Release build
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        run: cargo build --release
+        run: cd extractor && cargo build --release
       - name: Generate dbscheme
         if: ${{ matrix.os == 'ubuntu-latest' && steps.cache-extractor.outputs.cache-hit != 'true'}}
         run: extractor/target/release/ruby-generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
