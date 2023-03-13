@@ -14,13 +14,13 @@ A data extension for JavaScript is a YAML file of form:
   extensions:
     - addsTo:
         pack: codeql/javascript-all
-        extensible: <name of extension point>
+        extensible: <name of extensible predicate>
       data:
         - <tuple1>
         - <tuple2>
         - ...
 
-The data extension can contribute to the following extension points:
+The data extension can contribute to the following extensible predicates:
 
 - **sourceModel**\(type, path, kind)
 - **sinkModel**\(type, path, kind)
@@ -56,7 +56,7 @@ This can be achieved with the following data extension:
 
 To break this down:
 
-- Since we're adding a new sink, we add a tuple to the **sinkModel** extension point.
+- Since we're adding a new sink, we add a tuple to the **sinkModel** extensible predicate.
 - The first column, **"execa"**, identifies a set of values from which to begin the search for the sink.
   The string **"execa"** means we start at the places where the codebase imports the NPM package **execa**.
 - The second column is an access path that is evaluated from left to right, starting at the values that were identified by the first column.
@@ -94,7 +94,7 @@ This source is already known by the CodeQL JS analysis, but we'll show how it co
 
 To break this down:
 
-- Since we're adding a new taint source, we add a tuple to the **sourceModel** extension point.
+- Since we're adding a new taint source, we add a tuple to the **sourceModel** extensible predicate.
 - The first column, **"global"**, begins the search at references to the global object (also known as **window** in browser contexts). This is a special JavaScript object that contains all global variables and methods.
 - **Member[addEventListener]** selects accesses to the **addEventListener** member.
 - **Argument[1]** selects the second argument of calls to that member (the argument containing the callback).
@@ -193,7 +193,7 @@ Using a **typeModel** tuple we can tell our model that this function returns an 
 
 To break this down:
 
-- Since we're providing type information, we add a tuple to the **typeModel** extension point.
+- Since we're providing type information, we add a tuple to the **typeModel** extensible predicate.
 - The first column, **"mysql.Connection"**, names the type that we're adding a new definition for.
 - The second column, **"@example/db"**, begins the search at imports of the hypothetical NPM package **@example/db**.
 - **Member[getConnection]** selects references to the **getConnection** member from that package.
@@ -238,7 +238,7 @@ This flow is already recognized by the CodeQL JS analysis, but this is how it co
 
 To break this down:
 
-- Since we're adding flow *through* a function call, we add a tuple to the **summaryModel** extension point.
+- Since we're adding flow *through* a function call, we add a tuple to the **summaryModel** extensible predicate.
 - The first column, **"global"**, begins the search for relevant calls at references to the global object.
   In JavaScript, global variables are properties of the global object, so this lets us access global variables or functions.
 - The second column, **Member[decodeURIComponent]**, is a path leading to the function calls we wish to model.
@@ -277,7 +277,7 @@ This flow is already recognized by the CodeQL JS analysis, but we'll show how it
 
 To break this down:
 
-- Since we're adding flow *through* a function call, we add a tuple to the **summaryModel** extension point.
+- Since we're adding flow *through* a function call, we add a tuple to the **summaryModel** extensible predicate.
 - The first column, **"underscore"**, begins the search for relevant calls at places where the **underscore** package is imported.
 - The second column, **Member[forEach]**, selects references to the **forEach** member from the **underscore** package.
 - The third column specifies the input of the flow:
@@ -296,10 +296,10 @@ To break this down:
 Reference material
 ------------------
 
-The following sections provide reference material for extension points, access paths, types, and kinds.
+The following sections provide reference material for extensible predicates, access paths, types, and kinds.
 
-Extension points
-----------------
+Extensible predicates
+---------------------
 
 sourceModel(type, path, kind)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -397,7 +397,7 @@ Types
 -----
 
 A type is a string that identifies a set of values.
-In each of the extension points mentioned above, the first column is always the name of a type.
+In each of the extensible predicates mentioned above, the first column is always the name of a type.
 A type can be defined by adding **typeModel** tuples for that type. Additionally, the following built-in types are available:
 
 - The name of an NPM package matches imports of that package. For example, the type **express** matches the expression **require("express")**. If the package name includes dots, it must be surrounded by single quotes, such as in **'lodash.escape'**.
