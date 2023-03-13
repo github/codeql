@@ -214,19 +214,15 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
       this.asExpr().getNode() = mc.getSqlFragmentSinkArgument()
     )
     or
-    exists(DataFlow::CallNode executeCall |
-      executeCall.getReceiver() = activeRecordConnectionInstance() and
-      executeCall.getMethodName() = "execute" and
-      this = executeCall.getArgument(0) and
-      unsafeSqlExpr(this.asExpr().getExpr())
-    )
+    this = activeRecordConnectionInstance().getAMethodCall("execute").getArgument(0) and
+    unsafeSqlExpr(this.asExpr().getExpr())
   }
 
   override DataFlow::Node getSql() { result = this }
 }
 
-private DataFlow::Node activeRecordConnectionInstance() {
-  result = activeRecordClassApiNode().getAMethodCall("connection")
+private API::Node activeRecordConnectionInstance() {
+  result = activeRecordClassApiNode().getReturn("connection")
 }
 
 // TODO: model `ActiveRecord` sanitizers
