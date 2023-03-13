@@ -1669,14 +1669,18 @@ private module ExprFlowCached {
     result = n.asExpr()
   }
 
+  /**
+   * Holds if `asExpr(n1)` doesn't have a result and `n1` flows to `n2` in a single
+   * dataflow step.
+   */
   private predicate localStepFromNonExpr(Node n1, Node n2) {
     not exists(asExpr(n1)) and
     localFlowStep(n1, n2)
   }
 
   /**
-   * Holds if `n1.asExpr()` doesn't have a result, `n2.asExpr() = e2` and
-   * `n2` is the first node reachable from `n1` such that `n2.asExpr()` exists.
+   * Holds if `asExpr(n1)` doesn't have a result, `asExpr(n2) = e2` and
+   * `n2` is the first node reachable from `n1` such that `asExpr(n2)` exists.
    */
   pragma[nomagic]
   private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
@@ -1685,8 +1689,8 @@ private module ExprFlowCached {
   }
 
   /**
-   * Holds if `n1.asExpr() = e1` and `n2.asExpr() = e2` and `n2` is the first node
-   * reachable from `n1` such that `n2.asExpr()` exists.
+   * Holds if `asExpr(n1) = e1` and `asExpr(n2) = e2` and `n2` is the first node
+   * reachable from `n1` such that `asExpr(n2)` exists.
    */
   private predicate localExprFlowSingleExprStep(Node n1, Expr e1, Node n2, Expr e2) {
     exists(Node mid |
@@ -1697,8 +1701,8 @@ private module ExprFlowCached {
   }
 
   /**
-   * Holds if `n1.asExpr() = e1` and `e1 != e2` and `n2` is the first reachable node from
-   * `n1` such that `n2.asExpr() = e2`.
+   * Holds if `asExpr(n1) = e1` and `e1 != e2` and `n2` is the first reachable node from
+   * `n1` such that `asExpr(n2) = e2`.
    */
   private predicate localExprFlowStepImpl(Node n1, Expr e1, Node n2, Expr e2) {
     exists(Node n, Expr e | localExprFlowSingleExprStep(n1, e1, n, e) |
