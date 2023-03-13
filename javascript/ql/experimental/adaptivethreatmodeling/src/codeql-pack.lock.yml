@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2023-03-01-12h43m01s.sweet-chicken-559f7250.1d306da3898cfd7d148fba8beb0578ba819ccbf9a71aa004ca5e5e841eac6044
+compiled: false
