@@ -72,7 +72,7 @@ class MyApp < Sinatra::Base
   end
   
   get '/' do
-    @foo = source "foo"
+    @foo = params["foo"]
     erb :index, locals: {foo:  @foo}
   end
   

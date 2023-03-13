@@ -10,12 +10,37 @@ private import codeql.ruby.dataflow.SSA
 
 /** Provides modeling for the Sinatra library. */
 module Sinatra {
+  /**
+   * A Sinatra application.
+   *
+   * ```rb
+   * class MyApp < Sinatra::Base
+   *   get "/" do
+   *     erb :home
+   *   end
+   * end
+   * ```
+   */
   class App extends DataFlow::ClassNode {
     App() { this = DataFlow::getConstant("Sinatra").getConstant("Base").getADescendentModule() }
 
+    /**
+     * Gets a route defined in this application.
+     */
     Route getARoute() { result.getApp() = this }
   }
 
+  /**
+   * A Sinatra route handler. HTTP requests with a matching method and path will
+   * be handled by the block. For example, the following route will handle `GET`
+   * requests with path `/`.
+   *
+   * ```rb
+   * get "/" do
+   *   erb :home
+   * end
+   * ```
+   */
   class Route extends DataFlow::CallNode {
     private App app;
 
@@ -26,11 +51,20 @@ module Sinatra {
           ])
     }
 
+    /**
+     * Gets the application that defines this route.
+     */
     App getApp() { result = app }
 
+    /**
+     * Gets the body of this route.
+     */
     DataFlow::BlockNode getBody() { result = this.getBlock() }
   }
 
+  /**
+   * An access to the parameters of an HTTP request in a Sinatra route handler or callback.
+   */
   private class Params extends DataFlow::CallNode, Http::Server::RequestInputAccess::Range {
     Params() {
       this.asExpr().getExpr().getEnclosingCallable() =
@@ -45,6 +79,9 @@ module Sinatra {
     }
   }
 
+  /**
+   * A call which renders an ERB template as an HTTP response.
+   */
   class ErbCall extends DataFlow::CallNode {
     private Route route;
 
@@ -57,6 +94,11 @@ module Sinatra {
      * Gets the template file corresponding to this call.
      */
     ErbFile getTemplateFile() { result = getTemplateFile(this.asExpr().getExpr()) }
+
+    /**
+     * Gets the route containing this call.
+     */
+    Route getRoute() { result = route }
   }
 
   /**
@@ -78,6 +120,9 @@ module Sinatra {
         loc.getEndLine() + ":" + loc.getEndColumn()
   }
 
+  /**
+   *  A synthetic global representing the hash of local variables passed to an ERB template.
+   */
   class ErbLocalsHashSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
     private string id;
     private MethodCall erbCall;
@@ -90,25 +135,44 @@ module Sinatra {
       erbFile = getTemplateFile(erbCall)
     }
 
+    /**
+     * Gets the `erb` call associated with this global.
+     */
+    MethodCall getErbCall() { result = erbCall }
+
+    /**
+     * Gets the ERB template that this global contains the locals for.
+     */
     ErbFile getErbFile() { result = erbFile }
 
+    /**
+     * Gets a unique identifer for this global.
+     */
     string getId() { result = id }
   }
 
+  /**
+   * A summary for `Sinatra::Base#erb`. This models the first half of the flow
+   * from the `locals` keyword argument to variables in the ERB template. The
+   * second half is modeled by `ErbLocalsAccessSummary`.
+   */
   private class ErbLocalsSummary extends SummarizedCallable {
-    private ErbLocalsHashSyntheticGlobal global;
-
     ErbLocalsSummary() { this = "Sinatra::Base#erb" }
 
     override MethodCall getACall() { result = any(ErbCall c).asExpr().getExpr() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[locals:]" and
-      output = "SyntheticGlobal[" + global + "]" and
+      output = "SyntheticGlobal[" + any(ErbLocalsHashSyntheticGlobal global) + "]" and
       preservesValue = true
     }
   }
 
+  /**
+   *  A summary for accessing a local variable in an ERB template.
+   * This is the second half of the modelling of the flow from the `locals` keyword argument to variables in the ERB template.
+   * The first half is modeled by `ErbLocalsSummary`.
+   */
   private class ErbLocalsAccessSummary extends SummarizedCallable {
     private ErbLocalsHashSyntheticGlobal global;
     private string local;
@@ -133,6 +197,8 @@ module Sinatra {
   }
 
   /**
+   * A class representing Sinatra filters AKA callbacks.
+   *
    * Filters are run before or after the route handler. They can modify the
    * request and response, and share instance variables with the route handler.
    */
@@ -166,16 +232,24 @@ module Sinatra {
     DataFlow::BlockNode getBody() { result = this.getBlock() }
   }
 
+  /**
+   * `before` filters run before the route handler.
+   */
   class BeforeFilter extends Filter {
     BeforeFilter() { this.getMethodName() = "before" }
   }
 
+  /**
+   * `after` filters run after the route handler.
+   */
   class AfterFilter extends Filter {
     AfterFilter() { this.getMethodName() = "after" }
   }
 
   /**
    * A class defining additional jump steps arising from filters.
+   * This only models flow between filters with no patterns - i.e. those that apply to all routes.
+   * Filters with patterns are not yet modeled.
    */
   class FilterJumpStep extends DataFlowPrivate::AdditionalJumpStep {
     /**
@@ -191,28 +265,31 @@ module Sinatra {
         blockCapturedSelfParameterNode(succ, route.getBody().asExpr().getExpr())
       )
     }
-
-    /**
-     * Holds if `n` is a post-update node for the `self` parameter of `app` in block `b`.
-     *
-     * In this example, `n` is the post-update node for `@foo = 1`.
-     * ```rb
-     * class MyApp < Sinatra::Base
-     *   before do
-     *     @foo = 1
-     *   end
-     * end
-     * ```
-     */
-    private predicate selfPostUpdate(DataFlow::PostUpdateNode n, App app, Block b) {
-      n.getPreUpdateNode().asExpr().getExpr() =
-        any(SelfVariableAccess self |
-          pragma[only_bind_into](b) = self.getEnclosingCallable() and
-          self.getVariable().getDeclaringScope() = app.getADeclaration()
-        )
-    }
   }
 
+  /**
+   * Holds if `n` is a post-update node for the `self` parameter of `app` in block `b`.
+   *
+   * In this example, `n` is the post-update node for `@foo = 1`.
+   * ```rb
+   * class MyApp < Sinatra::Base
+   *   before do
+   *     @foo = 1
+   *   end
+   * end
+   * ```
+   */
+  private predicate selfPostUpdate(DataFlow::PostUpdateNode n, App app, Block b) {
+    n.getPreUpdateNode().asExpr().getExpr() =
+      any(SelfVariableAccess self |
+        pragma[only_bind_into](b) = self.getEnclosingCallable() and
+        self.getVariable().getDeclaringScope() = app.getADeclaration()
+      )
+  }
+
+  /**
+   * Holds if `n` is a node representing the `self` parameter captured by block `b`.
+   */
   private predicate blockCapturedSelfParameterNode(DataFlow::Node n, Block b) {
     exists(Ssa::CapturedSelfDefinition d |
       n.(DataFlowPrivate::SsaDefinitionExtNode).getDefinitionExt() = d and

@@ -24,3 +24,7 @@ query predicate filters(Sinatra::Filter filter, string kind) {
 query predicate filterPatterns(Sinatra::Filter filter, DataFlow::ExprNode pattern) {
   pattern = filter.getPattern()
 }
+
+query predicate additionalFlowSteps(DataFlow::Node pred, DataFlow::Node succ) {
+  any(Sinatra::FilterJumpStep s).step(pred, succ)
+}
