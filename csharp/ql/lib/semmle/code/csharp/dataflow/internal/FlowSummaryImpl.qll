@@ -301,8 +301,8 @@ module Private {
     TWithoutContentSummaryComponent(ContentSet c) or
     TWithContentSummaryComponent(ContentSet c)
 
-  private TParameterSummaryComponent thisParam() {
-    result = TParameterSummaryComponent(instanceParameterPosition())
+  private TParameterSummaryComponent callbackSelfParam() {
+    result = TParameterSummaryComponent(callbackSelfParameterPosition())
   }
 
   newtype TSummaryComponentStack =
@@ -311,7 +311,7 @@ module Private {
       any(RequiredSummaryComponentStack x).required(head, tail)
       or
       any(RequiredSummaryComponentStack x).required(TParameterSummaryComponent(_), tail) and
-      head = thisParam()
+      head = callbackSelfParam()
       or
       derivedFluentFlowPush(_, _, _, head, tail, _)
     }
@@ -336,7 +336,7 @@ module Private {
       callbackRef = s.drop(_) and
       (isCallbackParameter(callbackRef) or callbackRef.head() = TReturnSummaryComponent(_)) and
       input = callbackRef.tail() and
-      output = TConsSummaryComponentStack(thisParam(), input) and
+      output = TConsSummaryComponentStack(callbackSelfParam(), input) and
       preservesValue = true
     )
     or
@@ -439,6 +439,9 @@ module Private {
       out.head() = TParameterSummaryComponent(_) and
       s = out.tail()
     )
+    or
+    // Add the post-update node corresponding to the requested argument node
+    outputState(c, s) and isCallbackParameter(s)
   }
 
   private newtype TSummaryNodeState =
