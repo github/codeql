@@ -5,7 +5,7 @@
  */
 
 import cpp
-import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
 
 /**
  * Holds if `cmp` is a comparison of the following form:

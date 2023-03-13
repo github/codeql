@@ -14,7 +14,7 @@
  */
 
 import cpp
-import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
 
 /**
  * Holds if there is a dataflow path from `source` to `sink`

@@ -14,7 +14,7 @@
  */
 
 import cpp
-import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.controlflow.IRGuards

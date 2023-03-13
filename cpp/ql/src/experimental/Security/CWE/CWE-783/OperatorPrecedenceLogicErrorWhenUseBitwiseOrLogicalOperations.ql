@@ -14,7 +14,7 @@
  */
 
 import cpp
-import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
 
 /** Holds if `exptmp` equals expression logical or followed by logical and. */
 predicate isLogicalOrAndExpr(LogicalOrExpr exptmp) {
