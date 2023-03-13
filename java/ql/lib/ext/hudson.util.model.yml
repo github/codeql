@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["hudson.util", "AtomicFileWriter", True, "AtomicFileWriter", "(File)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["hudson.util", "AtomicFileWriter", True, "AtomicFileWriter", "(Path,Charset,boolean,boolean)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["hudson.util", "AtomicFileWriter", True, "AtomicFileWriter", "(Path,Charset)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["hudson.util", "ClasspathBuilder", True, "add", "(FilePath)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["hudson.util", "IOUtils", True, "mkdirs", "(File)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["hudson.util", "TextFile", True, "TextFile", "(File)", "", "Argument[0]", "create-file", "ai-generated"] # @atorralba, PTAL - this class can be used to later write to/read from the file, but also only check existence. Could make ctor a step instead..?
