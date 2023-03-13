@@ -272,10 +272,15 @@
 | ViableCallable.cs:498:26:498:30 | call to operator checked + | checked + | C19 |
 | ViableCallable.cs:501:18:501:23 | call to operator explicit conversion | explicit conversion | C19 |
 | ViableCallable.cs:504:26:504:31 | call to operator checked explicit conversion | checked explicit conversion | C19 |
+| ViableCallable.cs:545:18:545:22 | call to operator + | + | C20 |
+| ViableCallable.cs:548:26:548:30 | call to operator checked + | checked + | C20 |
+| ViableCallable.cs:551:18:551:22 | call to operator - | - | C20 |
 | ViableCallable.cs:554:26:554:30 | call to operator checked - | checked - | I3<> |
 | ViableCallable.cs:557:18:557:22 | call to operator * | * | I3<> |
 | ViableCallable.cs:560:26:560:30 | call to operator checked * | checked * | I3<> |
+| ViableCallable.cs:563:18:563:22 | call to operator / | / | C20 |
 | ViableCallable.cs:563:18:563:22 | call to operator / | / | I3<> |
+| ViableCallable.cs:566:26:566:30 | call to operator checked / | checked / | C20 |
 | ViableCallable.cs:566:26:566:30 | call to operator checked / | checked / | I3<> |
 | ViableCallable.cs:569:9:569:15 | call to method M11 | M11 | C20 |
 | ViableCallable.cs:572:9:572:15 | call to method M12 | M12 | C20 |
