@@ -114,7 +114,8 @@ module ZipSlip {
    * sanitizer-guard.
    */
   private class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
-    StringConstArrayInclusionCallBarrier { }
+    StringConstArrayInclusionCallBarrier
+  { }
 
   /**
    * A sanitizer like `File.expand_path(path).start_with?` where `path` is a path of a single entry inside the archive.

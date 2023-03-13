@@ -10,7 +10,8 @@ module Generated {
    * wrapper with an initializer.
    */
   class PropertyWrapperValuePlaceholderExpr extends Synth::TPropertyWrapperValuePlaceholderExpr,
-    Expr {
+    Expr
+  {
     override string getAPrimaryQlClass() { result = "PropertyWrapperValuePlaceholderExpr" }
 
     /**

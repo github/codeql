@@ -1115,7 +1115,8 @@ private module Internal {
 
   /** A call using reflection. */
   private class DispatchReflectionCall extends DispatchReflectionOrDynamicCall,
-    TDispatchReflectionCall {
+    TDispatchReflectionCall
+  {
     override MethodCall getCall() { this = TDispatchReflectionCall(result, _, _, _, _) }
 
     override string getName() { this = TDispatchReflectionCall(_, result, _, _, _) }
@@ -1163,7 +1164,8 @@ private module Internal {
 
   /** A method call using dynamic types. */
   private class DispatchDynamicMethodCall extends DispatchReflectionOrDynamicCall,
-    TDispatchDynamicMethodCall {
+    TDispatchDynamicMethodCall
+  {
     override DynamicMethodCall getCall() { this = TDispatchDynamicMethodCall(result) }
 
     override string getName() { result = this.getCall().getLateBoundTargetName() }
@@ -1184,7 +1186,8 @@ private module Internal {
 
   /** An operator call using dynamic types. */
   private class DispatchDynamicOperatorCall extends DispatchReflectionOrDynamicCall,
-    TDispatchDynamicOperatorCall {
+    TDispatchDynamicOperatorCall
+  {
     override DynamicOperatorCall getCall() { this = TDispatchDynamicOperatorCall(result) }
 
     override string getName() {
@@ -1201,7 +1204,8 @@ private module Internal {
 
   /** A (potential) call to a property accessor using dynamic types. */
   private class DispatchDynamicMemberAccess extends DispatchReflectionOrDynamicCall,
-    TDispatchDynamicMemberAccess {
+    TDispatchDynamicMemberAccess
+  {
     override DynamicMemberAccess getCall() { this = TDispatchDynamicMemberAccess(result) }
 
     override string getName() {
@@ -1225,7 +1229,8 @@ private module Internal {
 
   /** A (potential) call to an indexer accessor using dynamic types. */
   private class DispatchDynamicElementAccess extends DispatchReflectionOrDynamicCall,
-    TDispatchDynamicElementAccess {
+    TDispatchDynamicElementAccess
+  {
     override DynamicElementAccess getCall() { this = TDispatchDynamicElementAccess(result) }
 
     override string getName() {
@@ -1251,7 +1256,8 @@ private module Internal {
 
   /** A (potential) call to an event accessor using dynamic types. */
   private class DispatchDynamicEventAccess extends DispatchReflectionOrDynamicCall,
-    TDispatchDynamicEventAccess {
+    TDispatchDynamicEventAccess
+  {
     override AssignArithmeticOperation getCall() {
       this = TDispatchDynamicEventAccess(result, _, _)
     }
@@ -1268,7 +1274,8 @@ private module Internal {
 
   /** A call to a constructor using dynamic types. */
   private class DispatchDynamicObjectCreation extends DispatchReflectionOrDynamicCall,
-    TDispatchDynamicObjectCreation {
+    TDispatchDynamicObjectCreation
+  {
     override DynamicObjectCreation getCall() { this = TDispatchDynamicObjectCreation(result) }
 
     override string getName() { none() }

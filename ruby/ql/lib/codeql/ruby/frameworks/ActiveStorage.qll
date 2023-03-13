@@ -166,7 +166,8 @@ module ActiveStorage {
    * A call on an ActiveStorage object that results in an image transformation.
    * Arguments to these calls may be executed as system commands.
    */
-  private class ImageProcessingCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
+  private class ImageProcessingCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode
+  {
     ImageProcessingCall() {
       this.getReceiver() instanceof BlobInstance and
       this.getMethodName() = ["variant", "preview", "representation"]

@@ -48,7 +48,8 @@ module Closure {
    * A call to a method on the `goog.` namespace, as a closure reference.
    */
   abstract private class DefaultNamespaceRef extends DataFlow::MethodCallNode,
-    ClosureNamespaceRef::Range {
+    ClosureNamespaceRef::Range
+  {
     DefaultNamespaceRef() { this = DataFlow::globalVarRef("goog").getAMethodCall() }
 
     override string getClosureNamespace() { result = getArgument(0).getStringValue() }
@@ -75,21 +76,22 @@ module Closure {
   /**
    * A top-level call to `goog.provide`.
    */
-  class ClosureProvideCall extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureProvideCall {
-  }
+  class ClosureProvideCall extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureProvideCall
+  { }
 
   /**
    * A call to `goog.require`.
    */
-  private class DefaultClosureRequireCall extends DefaultNamespaceRef, ClosureNamespaceAccess::Range {
+  private class DefaultClosureRequireCall extends DefaultNamespaceRef, ClosureNamespaceAccess::Range
+  {
     DefaultClosureRequireCall() { getMethodName() = "require" }
   }
 
   /**
    * A call to `goog.require`.
    */
-  class ClosureRequireCall extends ClosureNamespaceAccess, DataFlow::MethodCallNode instanceof DefaultClosureRequireCall {
-  }
+  class ClosureRequireCall extends ClosureNamespaceAccess, DataFlow::MethodCallNode instanceof DefaultClosureRequireCall
+  { }
 
   /**
    * A top-level call to `goog.module` or `goog.declareModuleId`.
@@ -104,8 +106,8 @@ module Closure {
   /**
    * A top-level call to `goog.module` or `goog.declareModuleId`.
    */
-  class ClosureModuleDeclaration extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureModuleDeclaration {
-  }
+  class ClosureModuleDeclaration extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureModuleDeclaration
+  { }
 
   private GlobalVariable googVariable() { variables(result, "goog", any(GlobalScope sc)) }
 

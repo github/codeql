@@ -14,7 +14,8 @@ import semmle.code.cpp.models.interfaces.FlowSource
  * The standard functions `fgets` and `fgetws`.
  */
 private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, AliasFunction,
-  SideEffectFunction, RemoteFlowSourceFunction {
+  SideEffectFunction, RemoteFlowSourceFunction
+{
   FgetsFunction() {
     // fgets(str, num, stream)
     // fgetws(wstr, num, stream)
@@ -69,7 +70,8 @@ private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFuncti
  * The standard functions `gets`.
  */
 private class GetsFunction extends DataFlowFunction, ArrayFunction, AliasFunction,
-  SideEffectFunction, LocalFlowSourceFunction {
+  SideEffectFunction, LocalFlowSourceFunction
+{
   GetsFunction() {
     // gets(str)
     this.hasGlobalOrStdOrBslName("gets")

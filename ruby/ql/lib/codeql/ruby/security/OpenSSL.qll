@@ -557,7 +557,8 @@ private class CipherNode extends DataFlow::Node {
 
 /** An operation using the OpenSSL library that uses a cipher. */
 private class CipherOperation extends Cryptography::CryptographicOperation::Range,
-  DataFlow::CallNode {
+  DataFlow::CallNode
+{
   private CipherNode cipherNode;
 
   CipherOperation() {
@@ -587,7 +588,8 @@ private module Digest {
   private import codeql.ruby.ApiGraphs
 
   /** A call that hashes some input using a hashing algorithm from the `OpenSSL::Digest` module. */
-  private class DigestCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode {
+  private class DigestCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode
+  {
     Cryptography::HashingAlgorithm algo;
 
     DigestCall() {
@@ -612,7 +614,8 @@ private module Digest {
   }
 
   /** A call to `OpenSSL::Digest.digest` that hashes input directly without constructing a digest instance. */
-  private class DigestCallDirect extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode {
+  private class DigestCallDirect extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode
+  {
     Cryptography::HashingAlgorithm algo;
 
     DigestCallDirect() {

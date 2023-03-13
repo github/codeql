@@ -7,7 +7,8 @@ import semmle.code.cpp.models.interfaces.CommandExecution
  * A function for running a command using a command interpreter.
  */
 private class SystemFunction extends CommandExecutionFunction, ArrayFunction, AliasFunction,
-  SideEffectFunction {
+  SideEffectFunction
+{
   SystemFunction() {
     hasGlobalOrStdName("system") or // system(command)
     hasGlobalName("popen") or // popen(command, mode)

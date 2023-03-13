@@ -9,7 +9,8 @@ private import InstructionTag
 private import semmle.code.cpp.ir.internal.IRUtilities
 
 class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
-  TTranslatedGlobalOrNamespaceVarInit, InitializationContext {
+  TTranslatedGlobalOrNamespaceVarInit, InitializationContext
+{
   GlobalOrNamespaceVariable var;
 
   TranslatedGlobalOrNamespaceVarInit() { this = TTranslatedGlobalOrNamespaceVarInit(var) }
