@@ -1,5 +1,6 @@
 mod diagnostics;
 mod extractor;
+mod file_paths;
 mod trap;
 
 #[macro_use]
@@ -54,53 +55,6 @@ fn encoding_from_name(encoding_name: &str) -> Option<&(dyn encoding::Encoding + 
             )
         }),
     }
-}
-
-/// Convert a user-supplied path to an absolute path, and convert it to a verbatim path on Windows.
-fn path_from_string(path: &str) -> PathBuf {
-    let mut path = PathBuf::from(path);
-    // make path absolute
-    if path.is_relative() {
-        path = std::env::current_dir().unwrap().join(path)
-    };
-    let mut components = path.components();
-
-    // make Windows paths verbatim (with `\\?\` prefixes) which allow for extended-length paths.
-    let mut result = match components.next() {
-        None => unimplemented!("empty path"),
-
-        Some(component) => match component {
-            std::path::Component::Prefix(prefix) => match prefix.kind() {
-                std::path::Prefix::Disk(drive) => {
-                    let root = format!(r"\\?\{}:\", drive as char);
-                    PathBuf::from(root)
-                }
-                std::path::Prefix::UNC(server, share) => {
-                    let mut root = std::ffi::OsString::from(r"\\?\UNC\");
-                    root.push(server);
-                    root.push(r"\");
-                    root.push(share);
-                    PathBuf::from(root)
-                }
-                std::path::Prefix::Verbatim(_)
-                | std::path::Prefix::VerbatimUNC(_, _)
-                | std::path::Prefix::VerbatimDisk(_)
-                | std::path::Prefix::DeviceNS(_) => Path::new(&component).to_path_buf(),
-            },
-            _ => Path::new(&component).to_path_buf(),
-        },
-    };
-    // remove `.` and `..` components
-    for component in components {
-        match component {
-            std::path::Component::CurDir => continue,
-            std::path::Component::ParentDir => {
-                result.pop();
-            }
-            _ => result.push(component),
-        }
-    }
-    result
 }
 
 fn main() -> std::io::Result<()> {
@@ -169,15 +123,15 @@ fn main() -> std::io::Result<()> {
     let src_archive_dir = matches
         .value_of("source-archive-dir")
         .expect("missing --source-archive-dir");
-    let src_archive_dir = path_from_string(src_archive_dir);
+    let src_archive_dir = file_paths::path_from_string(src_archive_dir);
 
     let trap_dir = matches
         .value_of("output-dir")
         .expect("missing --output-dir");
-    let trap_dir = path_from_string(trap_dir);
+    let trap_dir = file_paths::path_from_string(trap_dir);
 
     let file_list = matches.value_of("file-list").expect("missing --file-list");
-    let file_list = fs::File::open(path_from_string(file_list))?;
+    let file_list = fs::File::open(file_paths::path_from_string(file_list))?;
 
     let language = tree_sitter_ruby::language();
     let erb = tree_sitter_embedded_template::language();
@@ -195,7 +149,7 @@ fn main() -> std::io::Result<()> {
         .try_for_each(|line| {
             let mut diagnostics_writer = diagnostics.logger();
             let path = PathBuf::from(line).canonicalize()?;
-            let src_archive_file = path_for(&src_archive_dir, &path, "");
+            let src_archive_file = file_paths::path_for(&src_archive_dir, &path, "");
             let mut source = std::fs::read(&path)?;
             let mut needs_conversion = false;
             let code_ranges;
@@ -252,7 +206,7 @@ fn main() -> std::io::Result<()> {
                                                     "character-decoding-error",
                                                     "Character decoding error",
                                                 )
-                                                .file(&extractor::normalize_path(&path))
+                                                .file(&file_paths::normalize_path(&path))
                                                 .message(
                                                     "Could not decode the file contents as {}: {}. The contents of the file must match the character encoding specified in the {} {}.",
                                                     &[
@@ -272,7 +226,7 @@ fn main() -> std::io::Result<()> {
                             diagnostics_writer.write(
                                 diagnostics_writer
                                     .new_entry("unknown-character-encoding", "Unknown character encoding")
-                                    .file(&extractor::normalize_path(&path))
+                                    .file(&file_paths::normalize_path(&path))
                                     .message(
                                         "Unknown character encoding {} in {} {}.",
                                         &[
@@ -321,7 +275,7 @@ fn write_trap(
     trap_writer: &trap::Writer,
     trap_compression: trap::Compression,
 ) -> std::io::Result<()> {
-    let trap_file = path_for(trap_dir, &path, trap_compression.extension());
+    let trap_file = file_paths::path_for(trap_dir, &path, trap_compression.extension());
     std::fs::create_dir_all(&trap_file.parent().unwrap())?;
     trap_writer.write_to_file(&trap_file, trap_compression)
 }
@@ -368,54 +322,6 @@ fn scan_erb(
     (result, line_breaks)
 }
 
-fn path_for(dir: &Path, path: &Path, ext: &str) -> PathBuf {
-    let mut result = PathBuf::from(dir);
-    for component in path.components() {
-        match component {
-            std::path::Component::Prefix(prefix) => match prefix.kind() {
-                std::path::Prefix::Disk(letter) | std::path::Prefix::VerbatimDisk(letter) => {
-                    result.push(format!("{}_", letter as char))
-                }
-                std::path::Prefix::Verbatim(x) | std::path::Prefix::DeviceNS(x) => {
-                    result.push(x);
-                }
-                std::path::Prefix::UNC(server, share)
-                | std::path::Prefix::VerbatimUNC(server, share) => {
-                    result.push("unc");
-                    result.push(server);
-                    result.push(share);
-                }
-            },
-            std::path::Component::RootDir => {
-                // skip
-            }
-            std::path::Component::Normal(_) => {
-                result.push(component);
-            }
-            std::path::Component::CurDir => {
-                // skip
-            }
-            std::path::Component::ParentDir => {
-                result.pop();
-            }
-        }
-    }
-    if !ext.is_empty() {
-        match result.extension() {
-            Some(x) => {
-                let mut new_ext = x.to_os_string();
-                new_ext.push(".");
-                new_ext.push(ext);
-                result.set_extension(new_ext);
-            }
-            None => {
-                result.set_extension(ext);
-            }
-        }
-    }
-    result
-}
-
 fn skip_space(content: &[u8], index: usize) -> usize {
     let mut index = index;
     while index < content.len() {
@@ -429,7 +335,6 @@ fn skip_space(content: &[u8], index: usize) -> usize {
     }
     index
 }
-
 fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<str>> {
     let mut index = 0;
     // skip UTF-8 BOM marker if there is one

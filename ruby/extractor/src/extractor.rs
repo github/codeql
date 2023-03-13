@@ -1,4 +1,5 @@
 use crate::diagnostics;
+use crate::file_paths;
 use crate::trap;
 use node_types::{EntryKind, Field, NodeTypeMap, Storage, TypeName};
 use std::collections::BTreeMap as Map;
@@ -9,14 +10,15 @@ use std::path::Path;
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
 pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::Label {
-    let (file_label, fresh) =
-        writer.global_id(&trap::full_id_for_file(&normalize_path(absolute_path)));
+    let (file_label, fresh) = writer.global_id(&trap::full_id_for_file(
+        &file_paths::normalize_path(absolute_path),
+    ));
     if fresh {
         writer.add_tuple(
             "files",
             vec![
                 trap::Arg::Label(file_label),
-                trap::Arg::String(normalize_path(absolute_path)),
+                trap::Arg::String(file_paths::normalize_path(absolute_path)),
             ],
         );
         populate_parent_folders(writer, file_label, absolute_path.parent());
@@ -54,8 +56,9 @@ pub fn populate_parent_folders(
         match path {
             None => break,
             Some(folder) => {
-                let (folder_label, fresh) =
-                    writer.global_id(&trap::full_id_for_folder(&normalize_path(folder)));
+                let (folder_label, fresh) = writer.global_id(&trap::full_id_for_folder(
+                    &file_paths::normalize_path(folder),
+                ));
                 writer.add_tuple(
                     "containerparent",
                     vec![
@@ -68,7 +71,7 @@ pub fn populate_parent_folders(
                         "folders",
                         vec![
                             trap::Arg::Label(folder_label),
-                            trap::Arg::String(normalize_path(folder)),
+                            trap::Arg::String(file_paths::normalize_path(folder)),
                         ],
                     );
                     path = folder.parent();
@@ -119,8 +122,8 @@ pub fn extract(
     path: &Path,
     source: &[u8],
     ranges: &[Range],
-) -> () {
-    let path_str = normalize_path(&path);
+) {
+    let path_str = file_paths::normalize_path(&path);
     let span = tracing::span!(
         tracing::Level::TRACE,
         "extract",
@@ -150,46 +153,6 @@ pub fn extract(
     traverse(&tree, &mut visitor);
 
     parser.reset();
-    ()
-}
-
-/// Normalizes the path according the common CodeQL specification. Assumes that
-/// `path` has already been canonicalized using `std::fs::canonicalize`.
-pub fn normalize_path(path: &Path) -> String {
-    if cfg!(windows) {
-        // The way Rust canonicalizes paths doesn't match the CodeQL spec, so we
-        // have to do a bit of work removing certain prefixes and replacing
-        // backslashes.
-        let mut components: Vec<String> = Vec::new();
-        for component in path.components() {
-            match component {
-                std::path::Component::Prefix(prefix) => match prefix.kind() {
-                    std::path::Prefix::Disk(letter) | std::path::Prefix::VerbatimDisk(letter) => {
-                        components.push(format!("{}:", letter as char));
-                    }
-                    std::path::Prefix::Verbatim(x) | std::path::Prefix::DeviceNS(x) => {
-                        components.push(x.to_string_lossy().to_string());
-                    }
-                    std::path::Prefix::UNC(server, share)
-                    | std::path::Prefix::VerbatimUNC(server, share) => {
-                        components.push(server.to_string_lossy().to_string());
-                        components.push(share.to_string_lossy().to_string());
-                    }
-                },
-                std::path::Component::Normal(n) => {
-                    components.push(n.to_string_lossy().to_string());
-                }
-                std::path::Component::RootDir => {}
-                std::path::Component::CurDir => {}
-                std::path::Component::ParentDir => {}
-            }
-        }
-        components.join("/")
-    } else {
-        // For other operating systems, we can use the canonicalized path
-        // without modifications.
-        format!("{}", path.display())
-    }
 }
 
 struct ChildNode {
