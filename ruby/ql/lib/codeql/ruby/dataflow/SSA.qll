@@ -309,9 +309,7 @@ module Ssa {
    * an entry definition for `self` is inserted at the start of the `do` block.
    */
   class CapturedSelfDefinition extends CapturedEntryDefinition {
-    private SelfVariable v;
-
-    CapturedSelfDefinition() { this.getSourceVariable() = v }
+    CapturedSelfDefinition() { this.getSourceVariable() instanceof SelfVariable }
   }
 
   /**
