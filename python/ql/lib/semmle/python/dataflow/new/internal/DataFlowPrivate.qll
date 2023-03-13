@@ -276,7 +276,6 @@ predicate synthDictSplatParameterNodeReadStep(
       ppos.isNormal(_, c.getKey())
       or
       ppos.isKeywordOnly(c.getKey())
-
     )
   )
 }
