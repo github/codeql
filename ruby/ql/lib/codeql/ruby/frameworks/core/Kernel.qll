@@ -205,7 +205,7 @@ module Kernel {
   private class KernelArraySummary extends SummarizedCallable {
     KernelArraySummary() { this = "Array()" }
 
-    override MethodCall getACallSimple() {
+    override MethodCall getACall() {
       result.getMethodName() = "Array" and
       // I have to have a simplified "KernelMethodCall" implementation inlined here, because relying on `UnknownMethodCall` results in non-monotonic recursion (even if using `getACall`).
       (
