@@ -4,7 +4,7 @@
 | instance_variables.rb:36:36:36:54 | # $ hasValueFlow=34 | Missing result:hasValueFlow=34 |
 | instance_variables.rb:39:36:39:54 | # $ hasValueFlow=35 | Missing result:hasValueFlow=35 |
 | instance_variables.rb:49:14:49:14 | x | Unexpected result: hasValueFlow=30 |
-| instance_variables.rb:49:16:49:34 | # $ hasValueFlow=36 | Missing result:hasValueFlow=36 |
+| instance_variables.rb:49:14:49:14 | x | Unexpected result: hasValueFlow=35 |
 | instance_variables.rb:55:21:55:39 | # $ hasValueFlow=42 | Missing result:hasValueFlow=42 |
 | instance_variables.rb:67:22:67:40 | # $ hasValueFlow=21 | Missing result:hasValueFlow=21 |
 | instance_variables.rb:71:18:71:36 | # $ hasValueFlow=22 | Missing result:hasValueFlow=22 |

@@ -299,10 +299,7 @@ private Callable viableSourceCallableNonInit(RelevantCall call) {
   not call.getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
 }
 
-private Callable viableSourceCallableInit(RelevantCall call) {
-  result = getInitializeTarget(call) and
-  not isUserDefinedNew(getTarget(call))
-}
+private Callable viableSourceCallableInit(RelevantCall call) { result = getInitializeTarget(call) }
 
 /** Holds if `call` may resolve to the returned source-code method. */
 private Callable viableSourceCallable(RelevantCall call) {
@@ -374,9 +371,14 @@ private module Cached {
    */
   cached
   Method getInitializeTarget(RelevantCall new) {
-    exists(Module m |
-      moduleFlowsToMethodCallReceiver(new, m, "new") and
-      result = lookupMethod(m, "initialize")
+    exists(Module m, boolean exact |
+      isStandardNewCall(new, m, exact) and
+      result = lookupMethod(m, "initialize", exact) and
+      // In the case where `exact = false`, we need to check that there is
+      // no user-defined `new` method in between `m` and the enclosing module
+      // of the `initialize` method (`isStandardNewCall` already checks that
+      // there is no user-defined `new` method in `m` or any of `m`'s ancestors)
+      not hasUserDefinedNew(result.getEnclosingModule().getModule())
     )
   }
 
@@ -481,6 +483,35 @@ private predicate hasUserDefinedNew(Module m) {
   )
 }
 
+/**
+ * Holds if `new` is a call to `new`, targeting a class of type `m` (or a
+ * sub class, when `exact = false`), where there is no user-defined
+ * `self.new` on `m`.
+ */
+pragma[nomagic]
+private predicate isStandardNewCall(RelevantCall new, Module m, boolean exact) {
+  exists(DataFlow::LocalSourceNode sourceNode |
+    flowsToMethodCallReceiver(new, sourceNode, "new") and
+    // `m` should not have a user-defined `self.new` method
+    not hasUserDefinedNew(m)
+  |
+    // `C.new`
+    sourceNode = trackModuleAccess(m) and
+    exact = true
+    or
+    // `self.new` inside a module
+    selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), m) and
+    exact = true
+    or
+    // `self.new` inside a singleton method
+    exists(MethodBase caller |
+      selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), caller, m) and
+      singletonMethod(caller, _, _) and
+      exact = false
+    )
+  )
+}
+
 /** Holds if `n` is an instance of type `tp`. */
 private predicate isInstance(DataFlow::Node n, Module tp, boolean exact) {
   n.asExpr().getExpr() instanceof NilLiteral and
@@ -535,27 +566,7 @@ private predicate isInstance(DataFlow::Node n, Module tp, boolean exact) {
   tp = TResolved("Proc") and
   exact = true
   or
-  exists(RelevantCall call, DataFlow::LocalSourceNode sourceNode |
-    flowsToMethodCallReceiver(call, sourceNode, "new") and
-    n.asExpr() = call and
-    // `tp` should not have a user-defined `self.new` method
-    not hasUserDefinedNew(tp)
-  |
-    // `C.new`
-    sourceNode = trackModuleAccess(tp) and
-    exact = true
-    or
-    // `self.new` inside a module
-    selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), tp) and
-    exact = true
-    or
-    // `self.new` inside a singleton method
-    exists(MethodBase caller |
-      selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), caller, tp) and
-      singletonMethod(caller, _, _) and
-      exact = false
-    )
-  )
+  isStandardNewCall(n.asExpr(), tp, exact)
   or
   // `self` reference in method or top-level (but not in module or singleton method,
   // where instance methods cannot be called; only singleton methods)
