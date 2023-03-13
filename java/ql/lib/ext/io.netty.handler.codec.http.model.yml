@@ -10,6 +10,7 @@ extensions:
     extensible: summaryModel
   data:
     - ["io.netty.handler.codec.http", "QueryStringEncoder", True, "QueryStringEncoder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
+    # TODO: Use precise access paths. 
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "copy", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "entries", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "get", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
@@ -28,10 +29,12 @@ extensions:
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "valueCharSequenceIterator", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "valueStringIterator", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    # Currently all write steps to http messages are taint flow. It may reduce FPs to use synthetic field for headers instead. 
     - ["io.netty.handler.codec.http", "HttpMessage", True, "headers", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "LastHttpContent", True, "trailingHeaders", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpRequest", True, "getUri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpRequest", True, "uri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpRequest", True, "setUri", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
     - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "QueryStringDecoder", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
     - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "decodeComponent", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "parameters", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
