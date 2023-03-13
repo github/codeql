@@ -1015,7 +1015,7 @@ module Private {
       private predicate relevantSummaryElementGenerated(
         AccessPath inSpec, AccessPath outSpec, string kind
       ) {
-        summaryElement(this, inSpec, outSpec, kind, "generated") and
+        summaryElement(this, inSpec, outSpec, kind, ["generated", "ai-generated"]) and
         not summaryElement(this, _, _, _, "manual")
       }
 
