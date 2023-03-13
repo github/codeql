@@ -3157,7 +3157,7 @@ module Impl<FullStateConfigSig Config> {
   /**
    * Provides the query predicates needed to include a graph in a path-problem query.
    */
-  module PathGraph {
+  module PathGraph implements PathGraphSig<PathNode> {
     /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
     query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b }
 
