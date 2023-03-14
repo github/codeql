@@ -12,15 +12,15 @@ public class Test {
         return address.getHostName();
     }
 
-    void test(InetAddress address) throws IOException {
+    void test() throws IOException {
         // "java.lang;Module;true;getResourceAsStream;(String);;Argument[0];read-file;ai-generated"
         getClass().getModule().getResourceAsStream((String) source(null));
         // "java.lang;Class;false;getResource;(String);;Argument[0];read-file;ai-generated"
         getClass().getResource((String) source(null));
         // "java.lang;ClassLoader;true;getSystemResourceAsStream;(String);;Argument[0];read-file;ai-generated"
-        ClassLoader.getSystemResource((String) source(null));
+        ClassLoader.getSystemResourceAsStream((String) source(null));
         // "java.io;File;true;createTempFile;(String,String,File);;Argument[2];create-file;ai-generated"
-        File.createTempFile(";", (String) source(null));
+        File.createTempFile(";", ";", (File) source(null));
         // "java.io;File;true;renameTo;(File);;Argument[0];create-file;ai-generated"
         new File("").renameTo((File) source(null));
         // "java.io;FileInputStream;true;FileInputStream;(File);;Argument[0];read-file;ai-generated"
