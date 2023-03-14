@@ -1,6 +1,17 @@
-| (Int) -> Int | FunctionType | def_function(_:) |
-| (Int) -> Int | FunctionType | use_function |
-| <A, B> (A, B) -> () | GenericFunctionType | def_generic_function(_:_:) |
-| <A, B> (A, B) -> () | GenericFunctionType | use_generic_function_type(_:_:) |
-| Generic<Int> | BoundGenericStructType | def_instantiated_generic, use_instantiated_generic |
-| Int | StructType | def_int, use_int |
+| (() throws -> ()) async throws -> () | FunctionType | def_async_rethrowing_function(_:) | (() throws -> ()) async throws -> () |
+| (() throws -> ()) throws -> () | FunctionType | def_rethrowing_function(_:) | (() throws -> ()) throws -> () |
+| (Double) -> () | FunctionType | def_function_overloaded_on_parameter_type(_:) | (Double) -> () |
+| (Int) -> () | FunctionType | def_function_overloaded_on_parameter_label(one:) | (Int) -> () |
+| (Int) -> () | FunctionType | def_function_overloaded_on_parameter_label(two:) | (Int) -> () |
+| (Int) -> () | FunctionType | def_function_overloaded_on_parameter_type(_:) | (Int) -> () |
+| (Int) -> Int | FunctionType | def_function(_:) | (Int) -> Int |
+| (Int) -> Int | FunctionType | use_function | (Int) -> Int |
+| (Int) async -> () | FunctionType | def_async_function(_:) | (Int) async -> () |
+| (Int) async throws -> () | FunctionType | def_async_throwing_function(_:) | (Int) async throws -> () |
+| (Int) throws -> () | FunctionType | def_throwing_function(_:) | (Int) throws -> () |
+| (Int, Double) -> Double | FunctionType | def_function_overloaded_on_return(_:_:) | (Int, Double) -> Double |
+| (Int, Double) -> Int | FunctionType | def_function_overloaded_on_return(_:_:) | (Int, Double) -> Int |
+| <A, B> (A, B) -> () | GenericFunctionType | def_generic_function(_:_:) | <\u03c4_0_0, \u03c4_0_1> (\u03c4_0_0, \u03c4_0_1) -> () |
+| <A, B> (A, B) -> () | GenericFunctionType | use_generic_function_type(_:_:) | <\u03c4_0_0, \u03c4_0_1> (\u03c4_0_0, \u03c4_0_1) -> () |
+| Generic<Int> | BoundGenericStructType | def_instantiated_generic, use_instantiated_generic | Generic<Int> |
+| Int | StructType | def_int, use_int | Int |

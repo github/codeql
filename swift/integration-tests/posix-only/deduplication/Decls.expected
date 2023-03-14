@@ -8,11 +8,35 @@
 | Sources/deduplication/def.swift:5:5:5:5 | def_instantiated_generic | ConcreteVarDecl | Generic<Int> |
 | Sources/deduplication/def.swift:7:1:7:46 | def_function(_:) | ConcreteFuncDecl | (Int) -> Int |
 | Sources/deduplication/def.swift:7:19:7:22 | _ | ParamDecl | Int |
-| Sources/deduplication/def.swift:9:1:9:46 | def_generic_function(_:_:) | ConcreteFuncDecl | <A, B> (A, B) -> () |
-| Sources/deduplication/def.swift:9:27:9:27 | A | GenericTypeParamDecl | A.Type |
-| Sources/deduplication/def.swift:9:30:9:30 | B | GenericTypeParamDecl | B.Type |
-| Sources/deduplication/def.swift:9:33:9:36 | _ | ParamDecl | A |
-| Sources/deduplication/def.swift:9:39:9:42 | _ | ParamDecl | B |
+| Sources/deduplication/def.swift:9:1:9:77 | def_function_overloaded_on_return(_:_:) | ConcreteFuncDecl | (Int, Double) -> Int |
+| Sources/deduplication/def.swift:9:40:9:43 | _ | ParamDecl | Int |
+| Sources/deduplication/def.swift:9:48:9:51 | _ | ParamDecl | Double |
+| Sources/deduplication/def.swift:10:1:10:82 | def_function_overloaded_on_return(_:_:) | ConcreteFuncDecl | (Int, Double) -> Double |
+| Sources/deduplication/def.swift:10:40:10:43 | _ | ParamDecl | Int |
+| Sources/deduplication/def.swift:10:48:10:51 | _ | ParamDecl | Double |
+| Sources/deduplication/def.swift:12:1:12:57 | def_function_overloaded_on_parameter_type(_:) | ConcreteFuncDecl | (Int) -> () |
+| Sources/deduplication/def.swift:12:48:12:51 | _ | ParamDecl | Int |
+| Sources/deduplication/def.swift:13:1:13:60 | def_function_overloaded_on_parameter_type(_:) | ConcreteFuncDecl | (Double) -> () |
+| Sources/deduplication/def.swift:13:48:13:51 | _ | ParamDecl | Double |
+| Sources/deduplication/def.swift:15:1:15:62 | def_function_overloaded_on_parameter_label(one:) | ConcreteFuncDecl | (Int) -> () |
+| Sources/deduplication/def.swift:15:49:15:56 | x | ParamDecl | Int |
+| Sources/deduplication/def.swift:16:1:16:62 | def_function_overloaded_on_parameter_label(two:) | ConcreteFuncDecl | (Int) -> () |
+| Sources/deduplication/def.swift:16:49:16:56 | x | ParamDecl | Int |
+| Sources/deduplication/def.swift:18:1:18:44 | def_throwing_function(_:) | ConcreteFuncDecl | (Int) throws -> () |
+| Sources/deduplication/def.swift:18:28:18:31 | _ | ParamDecl | Int |
+| Sources/deduplication/def.swift:19:1:19:60 | def_rethrowing_function(_:) | ConcreteFuncDecl | (() throws -> ()) throws -> () |
+| Sources/deduplication/def.swift:19:30:19:47 | _ | ParamDecl | () throws -> () |
+| Sources/deduplication/def.swift:20:1:20:40 | def_async_function(_:) | ConcreteFuncDecl | (Int) async -> () |
+| Sources/deduplication/def.swift:20:25:20:28 | _ | ParamDecl | Int |
+| Sources/deduplication/def.swift:21:1:21:56 | def_async_throwing_function(_:) | ConcreteFuncDecl | (Int) async throws -> () |
+| Sources/deduplication/def.swift:21:34:21:37 | _ | ParamDecl | Int |
+| Sources/deduplication/def.swift:22:1:22:72 | def_async_rethrowing_function(_:) | ConcreteFuncDecl | (() throws -> ()) async throws -> () |
+| Sources/deduplication/def.swift:22:36:22:53 | _ | ParamDecl | () throws -> () |
+| Sources/deduplication/def.swift:24:1:24:46 | def_generic_function(_:_:) | ConcreteFuncDecl | <A, B> (A, B) -> () |
+| Sources/deduplication/def.swift:24:27:24:27 | A | GenericTypeParamDecl | A.Type |
+| Sources/deduplication/def.swift:24:30:24:30 | B | GenericTypeParamDecl | B.Type |
+| Sources/deduplication/def.swift:24:33:24:36 | _ | ParamDecl | A |
+| Sources/deduplication/def.swift:24:39:24:42 | _ | ParamDecl | B |
 | Sources/deduplication/use.swift:1:1:1:15 | var ... = ... | PatternBindingDecl | - |
 | Sources/deduplication/use.swift:1:5:1:5 | use_int | ConcreteVarDecl | Int |
 | Sources/deduplication/use.swift:2:1:2:32 | var ... = ... | PatternBindingDecl | - |

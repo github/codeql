@@ -9,4 +9,4 @@ where
     |
       d.toString(), ", "
     )
-select t, t.getPrimaryQlClasses(), decls
+select t, t.getPrimaryQlClasses(), decls, t.getCanonicalType()
