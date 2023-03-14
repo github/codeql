@@ -9,14 +9,20 @@ package com.semmle.js.ast;
  */
 public class ExportAllDeclaration extends ExportDeclaration {
   private final Literal source;
+  private final Expression assertion;
 
-  public ExportAllDeclaration(SourceLocation loc, Literal source) {
+  public ExportAllDeclaration(SourceLocation loc, Literal source, Expression assertion) {
     super("ExportAllDeclaration", loc);
     this.source = source;
+    this.assertion = assertion;
   }
 
   public Literal getSource() {
     return source;
+  }
+
+  public Expression getAssertion() {
+    return assertion;
   }
 
   @Override

@@ -949,6 +949,8 @@ nodes
 | tst.ts:237:8:237:16 | [ImportSpecifier] * as Foo3 | semmle.label | [ImportSpecifier] * as Foo3 |
 | tst.ts:237:13:237:16 | [VarDecl] Foo3 | semmle.label | [VarDecl] Foo3 |
 | tst.ts:237:23:237:40 | [Literal] "./something.json" | semmle.label | [Literal] "./something.json" |
+| tst.ts:237:49:237:64 | [ObjectExpr] { type: "json" } | semmle.label | [ObjectExpr] { type: "json" } |
+| tst.ts:237:51:237:62 | [Property] type: "json" | semmle.label | [Property] type: "json" |
 | tst.ts:238:1:238:19 | [DeclStmt] var foo = ... | semmle.label | [DeclStmt] var foo = ... |
 | tst.ts:238:1:238:19 | [DeclStmt] var foo = ... | semmle.order | 59 |
 | tst.ts:238:5:238:7 | [VarDecl] foo | semmle.label | [VarDecl] foo |
@@ -3461,8 +3463,12 @@ edges
 | tst.ts:237:1:237:65 | [ImportDeclaration] import ... son" }; | tst.ts:237:8:237:16 | [ImportSpecifier] * as Foo3 | semmle.order | 1 |
 | tst.ts:237:1:237:65 | [ImportDeclaration] import ... son" }; | tst.ts:237:23:237:40 | [Literal] "./something.json" | semmle.label | 2 |
 | tst.ts:237:1:237:65 | [ImportDeclaration] import ... son" }; | tst.ts:237:23:237:40 | [Literal] "./something.json" | semmle.order | 2 |
+| tst.ts:237:1:237:65 | [ImportDeclaration] import ... son" }; | tst.ts:237:49:237:64 | [ObjectExpr] { type: "json" } | semmle.label | 3 |
+| tst.ts:237:1:237:65 | [ImportDeclaration] import ... son" }; | tst.ts:237:49:237:64 | [ObjectExpr] { type: "json" } | semmle.order | 3 |
 | tst.ts:237:8:237:16 | [ImportSpecifier] * as Foo3 | tst.ts:237:13:237:16 | [VarDecl] Foo3 | semmle.label | 1 |
 | tst.ts:237:8:237:16 | [ImportSpecifier] * as Foo3 | tst.ts:237:13:237:16 | [VarDecl] Foo3 | semmle.order | 1 |
+| tst.ts:237:49:237:64 | [ObjectExpr] { type: "json" } | tst.ts:237:51:237:62 | [Property] type: "json" | semmle.label | 1 |
+| tst.ts:237:49:237:64 | [ObjectExpr] { type: "json" } | tst.ts:237:51:237:62 | [Property] type: "json" | semmle.order | 1 |
 | tst.ts:238:1:238:19 | [DeclStmt] var foo = ... | tst.ts:238:5:238:18 | [VariableDeclarator] foo = Foo3.foo | semmle.label | 1 |
 | tst.ts:238:1:238:19 | [DeclStmt] var foo = ... | tst.ts:238:5:238:18 | [VariableDeclarator] foo = Foo3.foo | semmle.order | 1 |
 | tst.ts:238:5:238:18 | [VariableDeclarator] foo = Foo3.foo | tst.ts:238:5:238:7 | [VarDecl] foo | semmle.label | 1 |
