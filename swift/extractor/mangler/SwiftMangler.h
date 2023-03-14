@@ -16,21 +16,35 @@ namespace codeql {
 
 class SwiftDispatcher;
 
-class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName> {
+class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
+                     private swift::DeclVisitor<SwiftMangler, SwiftMangledName> {
  public:
   explicit SwiftMangler(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
 
   static SwiftMangledName mangleModuleName(std::string_view name);
 
   // TODO actual visit
-  SwiftMangledName mangleDecl(const swift::Decl& decl);
+  SwiftMangledName mangleDecl(const swift::Decl& decl) {
+    return swift::DeclVisitor<SwiftMangler, SwiftMangledName>::visit(
+        const_cast<swift::Decl*>(&decl));
+  }
 
   SwiftMangledName mangleType(const swift::TypeBase& type) {
-    return visit(const_cast<swift::TypeBase*>(&type));
+    return swift::TypeVisitor<SwiftMangler, SwiftMangledName>::visit(
+        const_cast<swift::TypeBase*>(&type));
   }
 
  private:
   friend class swift::TypeVisitor<SwiftMangler, SwiftMangledName>;
+  friend class swift::ASTVisitor<SwiftMangler, void, void, SwiftMangledName>;
+
+  // assign no name by default
+  static SwiftMangledName visitDecl(const swift::Decl* decl) { return {}; }
+
+  // current default, falling back to internal mangling
+  SwiftMangledName visitValueDecl(const swift::ValueDecl* decl);
+
+  SwiftMangledName visitModuleDecl(const swift::ModuleDecl* decl);
 
   // default fallback for not yet mangled types. This should never be called in normal situations
   // will just spawn a random name
